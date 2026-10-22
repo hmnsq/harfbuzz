@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import os
-import re
-import sys
+இறக்குமதி os
+இறக்குமதி re
+இறக்குமதி sys
 
 srcdir = sys.argv[1]
 base_srcdir = sys.argv[2]
@@ -13,22 +13,22 @@ os.chdir(srcdir)
 
 def removeprefix(s):
     abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+    திரும்பு os.path.relpath(abs_path, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.path.basename(x) க்கு x உள் os.getenv("HBHEADERS", "").split()] அல்லது [
+    x க்கு x உள் os.listdir(".") எனில் x.startswith("hb") மற்றும் x.endswith(".h")
 ]
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBSOURCES = [removeprefix(x) க்கு x உள் os.getenv("HBSOURCES", "").split()] அல்லது [
+    x க்கு x உள் os.listdir(".") எனில் x.startswith("hb") மற்றும் x.endswith((".cc", ".hh"))
 ]
 
 
 stat = 0
 
-for x in HBHEADERS + HBSOURCES:
-    if not x.endswith("h") or x == "hb-gobject-structs.h":
-        continue
+க்கு x உள் HBHEADERS + HBSOURCES:
+    எனில் இல்லை x.endswith("h") அல்லது x == "hb-gobject-structs.h":
+        தொடர்
     print(f"Checking {x}")
     tag = (
         x.upper()
@@ -37,9 +37,9 @@ for x in HBHEADERS + HBSOURCES:
         .replace(os.path.sep, "_")
         .replace("/", "_")
     )
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if len(re.findall(tag + r"\b", content)) != 3:
+    with open(x, "r", encoding="utf-8") இவ f:
+        content = f.பட()
+    எனில் len(re.findall(tag + r"\b", content)) != 3:
         print(
             "Ouch, header file %s does not have correct preprocessor guards. Expected: %s"
             % (x, tag)

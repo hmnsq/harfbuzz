@@ -1,4 +1,4 @@
-static const char *hb_gpu_vertex_wgsl =
+நிலையான மாறிலி எழுத்து *hb_gpu_vertex_wgsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

@@ -13,46 +13,46 @@ Input file:
 * https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
 """
 
-import collections
-import os
-def write (s):
+இறக்குமதி collections
+இறக்குமதி os
+def லிக (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
-import sys
+	sys.stdout.buffer.லிக (s.encode ('utf-8'))
+இறக்குமதி sys
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
+எனில் len (sys.argv) > 1 மற்றும் sys.argv[1] == '--rust':
 	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+	output_rust = உண்மை
+இல்லையெனில்:
+	output_rust = பொய்
 
-if len (sys.argv) != 3:
+எனில் len (sys.argv) != 3:
 	sys.exit (__doc__)
 
-with open (sys.argv[2], encoding='utf-8') as f:
-	scripts_header = [f.readline () for i in range (2)]
+with open (sys.argv[2], encoding='utf-8') இவ f:
+	scripts_header = [f.readline () க்கு i உள் range (2)]
 	scripts = {}
 	script_order = {}
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+	க்கு வரி உள் f:
+		j = வரி.find ('#')
+		எனில் j >= 0:
+			வரி = வரி[:j]
+		fields = [x.strip () க்கு x உள் வரி.split (';')]
+		எனில் len (fields) == 1:
+			தொடர்
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = முழு (uu[0], 16)
+		எனில் len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		இல்லையெனில்:
+			end = முழு (uu[1], 16)
 		script = fields[1]
-		for u in range (start, end + 1):
+		க்கு u உள் range (start, end + 1):
 			scripts[u] = script
-		if script not in script_order:
+		எனில் script இல்லை உள் script_order:
 			script_order[script] = start
 
-class ConstraintSet (object):
+வகுப்பு ConstraintSet (object):
 	"""A set of prohibited code point sequences.
 
 	Args:
@@ -70,131 +70,131 @@ class ConstraintSet (object):
 
 	def add (self, constraint):
 		"""Add a constraint to this set."""
-		if not constraint:
-			return
+		எனில் இல்லை constraint:
+			திரும்பு
 		first = constraint[0]
 		rest = constraint[1:]
-		if isinstance (self._c, list):
-			if constraint == self._c[:len (constraint)]:
+		எனில் isinstance (self._c, list):
+			எனில் constraint == self._c[:len (constraint)]:
 				self._c = constraint
-			elif self._c != constraint[:len (self._c)]:
+			அல்லதெனில் self._c != constraint[:len (self._c)]:
 				self._c = {self._c[0]: ConstraintSet (self._c[1:])}
-		if isinstance (self._c, dict):
-			if first in self._c:
+		எனில் isinstance (self._c, dict):
+			எனில் first உள் self._c:
 				self._c[first].add (rest)
-			else:
+			இல்லையெனில்:
 				self._c[first] = ConstraintSet (rest)
 
 	@staticmethod
 	def _indent (depth):
-		return ('  ' * depth).replace ('        ', '\t')
+		திரும்பு ('  ' * depth).replace ('        ', '\t')
 
 	def __str__ (self, index=0, depth=4):
 		s = []
 		indent = self._indent (depth)
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		எனில் isinstance (self._c, list):
+			எனில் len (self._c) == 0:
+				ப்ரதிஜ்ஞா index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('{}matched = true;\n'.format (indent))
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index or ''))
-			else:
-				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index or ''))
-				if index:
+			அல்லதெனில் len (self._c) == 1:
+				ப்ரதிஜ்ஞா index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index அல்லது ''))
+			இல்லையெனில்:
+				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index அல்லது ''))
+				எனில் index:
 					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (depth + 2), index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+				க்கு i, cp உள் enumerate (self._c[1:], start=1):
 					s.append ('{}0x{:04X}u == buffer->cur ({}).codepoint{}\n'.format (
-						self._indent (depth + 2), cp, index + i, ')' if i == len (self._c) - 1 else ' &&'))
+						self._indent (depth + 2), cp, index + i, ')' எனில் i == len (self._c) - 1 இல்லையெனில் ' &&'))
 				s.append ('{}{{\n'.format (indent))
-				for i in range (index):
+				க்கு i உள் range (index):
 					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (depth + 1)))
 				s.append ('{}matched = true;\n'.format (self._indent (depth + 1)))
 				s.append ('{}}}\n'.format (indent))
-		else:
-			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index or ''))
+		இல்லையெனில்:
+			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index அல்லது ''))
 			s.append ('{}{{\n'.format (indent))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
+			க்கு first, rest உள் sorted (self._c.பொருட்கள் ()):
 				cases[rest.__str__ (index + 1, depth + 2)].add (first)
-			for body, labels in sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
-				for i, cp in enumerate (sorted (labels)):
-					if i % 4 == 0:
+			க்கு body, labels உள் sorted (cases.பொருட்கள் (), சாவி_2=பெயரிலி b_ls: sorted (b_ls[1])[0]):
+				க்கு i, cp உள் enumerate (sorted (labels)):
+					எனில் i % 4 == 0:
 						s.append (self._indent (depth + 1))
-					else:
+					இல்லையெனில்:
 						s.append (' ')
-					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' if i % 4 == 3 else ''))
-				if len (labels) % 4 != 0:
+					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' எனில் i % 4 == 3 இல்லையெனில் ''))
+				எனில் len (labels) % 4 != 0:
 					s.append ('\n')
 				s.append (body)
 				s.append ('{}break;\n'.format (self._indent (depth + 2)))
 			s.append ('{}}}\n'.format (indent))
-		return ''.join (s)
+		திரும்பு ''.join (s)
 
 	def rust_str (self, index=0):
 		s = []
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		எனில் isinstance (self._c, list):
+			எனில் len (self._c) == 0:
+				ப்ரதிஜ்ஞா index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = true;\n')
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+			அல்லதெனில் len (self._c) == 1:
+				ப்ரதிஜ்ஞா index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (next (iter (self._c)), index))
-			else:
+			இல்லையெனில்:
 				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], index))
-				if index:
+				எனில் index:
 					s.append ('buffer.idx + {} < buffer.len &&\n'.format (index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+				க்கு i, cp உள் enumerate (self._c[1:], start=1):
 					s.append ('0x{:04X} == buffer.cur({}).glyph_id{}\n'.format (
-						cp, index + i, '' if i == len (self._c) - 1 else ' &&'))
+						cp, index + i, '' எனில் i == len (self._c) - 1 இல்லையெனில் ' &&'))
 				s.append ('{\n')
-				for i in range (index + 1):
+				க்கு i உள் range (index + 1):
 					s.append ('buffer.next_glyph();\n')
 				s.append ('output_dotted_circle(buffer);\n')
 				s.append ('}\n')
-		else:
+		இல்லையெனில்:
 			s.append ('match buffer.cur({}).glyph_id {{\n'.format (index))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
+			க்கு first, rest உள் sorted (self._c.பொருட்கள் ()):
 				cases[rest.rust_str (index + 1)].add (first)
-			items = sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0])
-			for ii, (body, labels) in enumerate (items):
-				for i, cp in enumerate (sorted (labels)):
-					if i == len (labels) - 1:
-						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' if i % 4 == 3 else ''))
-					else:
-						s.append (' 0x{:04X} | {}'.format (cp, '\n' if i % 4 == 3 else ''))
+			பொருட்கள் = sorted (cases.பொருட்கள் (), சாவி_2=பெயரிலி b_ls: sorted (b_ls[1])[0])
+			க்கு ii, (body, labels) உள் enumerate (பொருட்கள்):
+				க்கு i, cp உள் enumerate (sorted (labels)):
+					எனில் i == len (labels) - 1:
+						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' எனில் i % 4 == 3 இல்லையெனில் ''))
+					இல்லையெனில்:
+						s.append (' 0x{:04X} | {}'.format (cp, '\n' எனில் i % 4 == 3 இல்லையெனில் ''))
 				s.append (body)
 				s.append ('}')
-				if ii == len (items) - 1:
+				எனில் ii == len (பொருட்கள்) - 1:
 					s.append ('_ => {}')
 			s.append ('}\n')
-		return ''.join (s)
+		திரும்பு ''.join (s)
 
 constraints = {}
-with open (sys.argv[1], encoding='utf-8') as f:
+with open (sys.argv[1], encoding='utf-8') இவ f:
 	constraints_header = []
-	while True:
-		line = f.readline ().strip ()
-		if line == '#':
-			break
-		constraints_header.append(line)
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		constraint = [int (cp, 16) for cp in line.split (';')[0].split ()]
-		if not constraint: continue
-		assert 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
+	போது உண்மை:
+		வரி = f.readline ().strip ()
+		எனில் வரி == '#':
+			நிறுத்து
+		constraints_header.append(வரி)
+	க்கு வரி உள் f:
+		j = வரி.find ('#')
+		எனில் j >= 0:
+			வரி = வரி[:j]
+		constraint = [முழு (cp, 16) க்கு cp உள் வரி.split (';')[0].split ()]
+		எனில் இல்லை constraint: தொடர்
+		ப்ரதிஜ்ஞா 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
 		script = scripts[constraint[0]]
-		if script in constraints:
+		எனில் script உள் constraints:
 			constraints[script].add (constraint)
-		else:
+		இல்லையெனில்:
 			constraints[script] = ConstraintSet (constraint)
-		assert constraints, 'No constraints found'
+		ப்ரதிஜ்ஞா constraints, 'No constraints found'
 
 print ('/* == Start of generated functions == */')
-if output_rust:
+எனில் output_rust:
 	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
 	print ()
 	print ('#![allow(clippy::single_match)]')
@@ -229,13 +229,13 @@ if output_rust:
 	print ('    buffer.clear_output();')
 	print ('    match buffer.script {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	க்கு script, constraints உள் sorted (constraints.பொருட்கள் (), சாவி_2=பெயரிலி s_c: script_order[s_c[0]]):
 		print ('        Some(script::{}) => {{'.format (script.upper ()))
 		print ('            buffer.idx = 0;')
 		print ('            while buffer.idx + 1 < buffer.len {')
 		print ('                #[allow(unused_mut)]')
 		print ('                let mut matched = false;')
-		write (constraints.rust_str ())
+		லிக (constraints.rust_str ())
 		print ('                buffer.next_glyph();')
 		print ('                if matched { output_with_dotted_circle(buffer); }')
 		print ('            }')
@@ -246,7 +246,7 @@ if output_rust:
 	print ('    }')
 	print ('    buffer.sync();')
 	print ('}')
-else:
+இல்லையெனில்:
 	print ('/*')
 	print (' * The following functions are generated by running:')
 	print (' *')
@@ -254,11 +254,11 @@ else:
 	print (' *')
 	print (' * on files with these headers:')
 	print (' *')
-	for line in constraints_header:
-		print (' * %s' % line.strip ())
+	க்கு வரி உள் constraints_header:
+		print (' * %s' % வரி.strip ())
 	print (' *')
-	for line in scripts_header:
-		print (' * %s' % line.strip ())
+	க்கு வரி உள் scripts_header:
+		print (' * %s' % வரி.strip ())
 	print (' */')
 	print ()
 	print ('#include "hb.hh"')
@@ -303,12 +303,12 @@ else:
 	print ('  switch ((unsigned) buffer->props.script)')
 	print ('  {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	க்கு script, constraints உள் sorted (constraints.பொருட்கள் (), சாவி_2=பெயரிலி s_c: script_order[s_c[0]]):
 		print ('    case HB_SCRIPT_{}:'.format (script.upper ()))
 		print ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
 		print ('      {')
 		print ('\tbool matched = false;')
-		write (str (constraints))
+		லிக (str (constraints))
 		print ('\t(void) buffer->next_glyph ();')
 		print ('\tif (matched) _output_with_dotted_circle (buffer);')
 		print ('      }')

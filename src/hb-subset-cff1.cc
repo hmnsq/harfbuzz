@@ -24,70 +24,70 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 #ifndef HB_NO_SUBSET_CFF
 
-#include "hb-open-type.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-set.h"
-#include "hb-bimap.hh"
-#include "hb-subset-plan.hh"
-#include "hb-subset-cff-common.hh"
-#include "hb-cff1-interp-cs.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-ot-cff1-table.hh"
+#அந்தர்பாவ "hb-set.h"
+#அந்தர்பாவ "hb-bimap.hh"
+#அந்தர்பாவ "hb-subset-plan.hh"
+#அந்தர்பாவ "hb-subset-cff-common.hh"
+#அந்தர்பாவ "hb-cff1-interp-cs.hh"
 
-using namespace CFF;
+using நாமாகாஶ CFF;
 
-struct remap_sid_t
+கட்டமைப்பு remap_sid_t
 {
-  unsigned get_population () const { return vector.length; }
+  unsigned get_population () மாறிலி { திரும்பு vector.length; }
 
-  void alloc (unsigned size)
+  வெறுமை alloc (unsigned size)
   {
     map.alloc (size);
     vector.alloc_exact (size);
   }
 
-  bool in_error () const
-  { return map.in_error () || vector.in_error (); }
+  தருக்க in_error () மாறிலி
+  { திரும்பு map.in_error () || vector.in_error (); }
 
-  unsigned int add (unsigned int sid)
+  unsigned முழு add (unsigned முழு sid)
   {
-    if (is_std_str (sid) || (sid == CFF_UNDEF_SID))
-      return sid;
+    எனில் (is_std_str (sid) || (sid == CFF_UNDEF_SID))
+      திரும்பு sid;
 
     sid = unoffset_sid (sid);
     unsigned v = next;
-    if (map.set (sid, v, false))
+    எனில் (map.set (sid, v, பொய்))
     {
       vector.push (sid);
       next++;
     }
-    else
+    இல்லையெனில்
       v = map.get (sid); // already exists
-    return offset_sid (v);
+    திரும்பு offset_sid (v);
   }
 
-  unsigned int operator[] (unsigned int sid) const
+  unsigned முழு operator[] (unsigned முழு sid) மாறிலி
   {
-    if (is_std_str (sid) || (sid == CFF_UNDEF_SID))
-      return sid;
+    எனில் (is_std_str (sid) || (sid == CFF_UNDEF_SID))
+      திரும்பு sid;
 
-    return offset_sid (map.get (unoffset_sid (sid)));
+    திரும்பு offset_sid (map.get (unoffset_sid (sid)));
   }
 
-  static const unsigned int num_std_strings = 391;
+  நிலையான மாறிலி unsigned முழு இலக்கம்_std_strings = 391;
 
-  static bool is_std_str (unsigned int sid) { return sid < num_std_strings; }
-  static unsigned int offset_sid (unsigned int sid) { return sid + num_std_strings; }
-  static unsigned int unoffset_sid (unsigned int sid) { return sid - num_std_strings; }
+  நிலையான தருக்க is_std_str (unsigned முழு sid) { திரும்பு sid < இலக்கம்_std_strings; }
+  நிலையான unsigned முழு offset_sid (unsigned முழு sid) { திரும்பு sid + இலக்கம்_std_strings; }
+  நிலையான unsigned முழு unoffset_sid (unsigned முழு sid) { திரும்பு sid - இலக்கம்_std_strings; }
   unsigned next = 0;
 
   hb_map_t map;
   hb_vector_t<unsigned> vector;
 };
 
-struct cff1_sub_table_info_t : cff_sub_table_info_t
+கட்டமைப்பு cff1_sub_table_info_t : cff_sub_table_info_t
 {
   cff1_sub_table_info_t ()
     : cff_sub_table_info_t (),
@@ -103,378 +103,378 @@ struct cff1_sub_table_info_t : cff_sub_table_info_t
 };
 
 /* a copy of a parsed out cff1_top_dict_values_t augmented with additional operators */
-struct cff1_top_dict_values_mod_t : cff1_top_dict_values_t
+கட்டமைப்பு cff1_உச்சி_dict_மதிப்புகள்_mod_t : cff1_உச்சி_dict_மதிப்புகள்_t
 {
-  void init (const cff1_top_dict_values_t *base_= &Null (cff1_top_dict_values_t))
+  வெறுமை init (மாறிலி cff1_உச்சி_dict_மதிப்புகள்_t *base_= &Null (cff1_உச்சி_dict_மதிப்புகள்_t))
   {
     SUPER::init ();
     base = base_;
   }
 
-  void fini () { SUPER::fini (); }
+  வெறுமை fini () { SUPER::fini (); }
 
-  unsigned get_count () const { return base->get_count () + SUPER::get_count (); }
-  const cff1_top_dict_val_t &get_value (unsigned int i) const
+  unsigned get_மொத்தம் () மாறிலி { திரும்பு base->get_மொத்தம் () + SUPER::get_மொத்தம் (); }
+  மாறிலி cff1_உச்சி_dict_val_t &get_மதிப்பு (unsigned முழு i) மாறிலி
   {
-    if (i < base->get_count ())
-      return (*base)[i];
-    else
-      return SUPER::values[i - base->get_count ()];
+    எனில் (i < base->get_மொத்தம் ())
+      திரும்பு (*base)[i];
+    இல்லையெனில்
+      திரும்பு SUPER::values[i - base->get_மொத்தம் ()];
   }
-  const cff1_top_dict_val_t &operator [] (unsigned int i) const { return get_value (i); }
+  மாறிலி cff1_உச்சி_dict_val_t &operator [] (unsigned முழு i) மாறிலி { திரும்பு get_மதிப்பு (i); }
 
-  void reassignSIDs (const remap_sid_t& sidmap)
+  வெறுமை reassignSIDs (மாறிலி remap_sid_t& sidmap)
   {
-    for (unsigned int i = 0; i < name_dict_values_t::ValCount; i++)
+    க்கு (unsigned முழு i = 0; i < name_dict_மதிப்புகள்_t::Val_மொத்தம்; i++)
       nameSIDs[i] = sidmap[base->nameSIDs[i]];
   }
 
-  protected:
-  typedef cff1_top_dict_values_t SUPER;
-  const cff1_top_dict_values_t *base;
+  பாதுகாக்கப்பட்ட:
+  வகைவரை cff1_உச்சி_dict_மதிப்புகள்_t SUPER;
+  மாறிலி cff1_உச்சி_dict_மதிப்புகள்_t *base;
 };
 
-struct top_dict_modifiers_t
+கட்டமைப்பு உச்சி_dict_modifiers_t
 {
-  top_dict_modifiers_t (const cff1_sub_table_info_t &info_,
-			const unsigned int (&nameSIDs_)[name_dict_values_t::ValCount])
+  உச்சி_dict_modifiers_t (மாறிலி cff1_sub_table_info_t &info_,
+			மாறிலி unsigned முழு (&nameSIDs_)[name_dict_மதிப்புகள்_t::Val_மொத்தம்])
     : info (info_),
       nameSIDs (nameSIDs_)
   {}
 
-  const cff1_sub_table_info_t &info;
-  const unsigned int	(&nameSIDs)[name_dict_values_t::ValCount];
+  மாறிலி cff1_sub_table_info_t &info;
+  மாறிலி unsigned முழு	(&nameSIDs)[name_dict_மதிப்புகள்_t::Val_மொத்தம்];
 };
 
-struct cff1_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<cff1_top_dict_val_t>
+கட்டமைப்பு cff1_உச்சி_dict_op_serializer_t : cff_உச்சி_dict_op_serializer_t<cff1_உச்சி_dict_val_t>
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const cff1_top_dict_val_t &opstr,
-		  const top_dict_modifiers_t &mod) const
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி cff1_உச்சி_dict_val_t &opstr,
+		  மாறிலி உச்சி_dict_modifiers_t &mod) மாறிலி
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
     op_code_t op = opstr.op;
-    switch (op)
+    தேர்வு (op)
     {
-      case OpCode_charset:
-	if (mod.info.charset_link)
+      நிலை OpCode_charset:
+	எனில் (mod.info.charset_link)
 	  return_trace (FontDict::serialize_link4_op(c, op, mod.info.charset_link, whence_t::Absolute));
-	else
-	  goto fall_back;
+	இல்லையெனில்
+	  செல் fall_back;
 
-      case OpCode_Encoding:
-	if (mod.info.encoding_link)
+      நிலை OpCode_Encoding:
+	எனில் (mod.info.encoding_link)
 	  return_trace (FontDict::serialize_link4_op(c, op, mod.info.encoding_link, whence_t::Absolute));
-	else
-	  goto fall_back;
+	இல்லையெனில்
+	  செல் fall_back;
 
-      case OpCode_Private:
+      நிலை OpCode_Private:
 	return_trace (UnsizedByteStr::serialize_int2 (c, mod.info.privateDictInfo.size) &&
 		      Dict::serialize_link4_op (c, op, mod.info.privateDictInfo.link, whence_t::Absolute));
 
-      case OpCode_version:
-      case OpCode_Notice:
-      case OpCode_Copyright:
-      case OpCode_FullName:
-      case OpCode_FamilyName:
-      case OpCode_Weight:
-      case OpCode_PostScript:
-      case OpCode_BaseFontName:
-      case OpCode_FontName:
-	return_trace (FontDict::serialize_int2_op (c, op, mod.nameSIDs[name_dict_values_t::name_op_to_index (op)]));
+      நிலை OpCode_version:
+      நிலை OpCode_Notice:
+      நிலை OpCode_Copyright:
+      நிலை OpCode_FullName:
+      நிலை OpCode_FamilyName:
+      நிலை OpCode_Weight:
+      நிலை OpCode_PostScript:
+      நிலை OpCode_BaseFontName:
+      நிலை OpCode_FontName:
+	return_trace (FontDict::serialize_int2_op (c, op, mod.nameSIDs[name_dict_மதிப்புகள்_t::name_op_to_index (op)]));
 
-      case OpCode_ROS:
+      நிலை OpCode_ROS:
 	{
 	  /* for registry & ordering, reassigned SIDs are serialized
 	   * for supplement, the original byte string is copied along with the op code */
 	  op_str_t supp_op;
 	  supp_op.op = op;
-	  if ( unlikely (!(opstr.length >= opstr.last_arg_offset + 3)))
-	    return_trace (false);
+	  எனில் ( unlikely (!(opstr.length >= opstr.last_arg_offset + 3)))
+	    return_trace (பொய்);
 	  supp_op.ptr = opstr.ptr + opstr.last_arg_offset;
 	  supp_op.length = opstr.length - opstr.last_arg_offset;
-	  return_trace (UnsizedByteStr::serialize_int2 (c, mod.nameSIDs[name_dict_values_t::registry]) &&
-			UnsizedByteStr::serialize_int2 (c, mod.nameSIDs[name_dict_values_t::ordering]) &&
+	  return_trace (UnsizedByteStr::serialize_int2 (c, mod.nameSIDs[name_dict_மதிப்புகள்_t::registry]) &&
+			UnsizedByteStr::serialize_int2 (c, mod.nameSIDs[name_dict_மதிப்புகள்_t::ordering]) &&
 			copy_opstr (c, supp_op));
 	}
       fall_back:
-      default:
-	return_trace (cff_top_dict_op_serializer_t<cff1_top_dict_val_t>::serialize (c, opstr, mod.info));
+      இயல்பு:
+	return_trace (cff_உச்சி_dict_op_serializer_t<cff1_உச்சி_dict_val_t>::serialize (c, opstr, mod.info));
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
 };
 
-struct cff1_font_dict_op_serializer_t : cff_font_dict_op_serializer_t
+கட்டமைப்பு cff1_font_dict_op_serializer_t : cff_font_dict_op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const op_str_t &opstr,
-		  const cff1_font_dict_values_mod_t &mod) const
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி op_str_t &opstr,
+		  மாறிலி cff1_font_dict_மதிப்புகள்_mod_t &mod) மாறிலி
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
-    if (opstr.op == OpCode_FontName)
+    எனில் (opstr.op == OpCode_FontName)
       return_trace (FontDict::serialize_int2_op (c, opstr.op, mod.fontName));
-    else
+    இல்லையெனில்
       return_trace (SUPER::serialize (c, opstr, mod.privateDictInfo));
   }
 
-  private:
-  typedef cff_font_dict_op_serializer_t SUPER;
+  தனிப்பட்ட:
+  வகைவரை cff_font_dict_op_serializer_t SUPER;
 };
 
-struct cff1_cs_opset_flatten_t : cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatten_param_t>
+கட்டமைப்பு cff1_cs_opset_flatten_t : cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatten_param_t>
 {
-  static void flush_args_and_op (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
+  நிலையான வெறுமை flush_args_and_op (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
   {
-    if (env.arg_start > 0)
+    எனில் (env.arg_start > 0)
       flush_width (env, param);
 
-    switch (op)
+    தேர்வு (op)
     {
-      case OpCode_hstem:
-      case OpCode_hstemhm:
-      case OpCode_vstem:
-      case OpCode_vstemhm:
-      case OpCode_hintmask:
-      case OpCode_cntrmask:
-      case OpCode_dotsection:
-	if (param.drop_hints)
+      நிலை OpCode_hstem:
+      நிலை OpCode_hstemhm:
+      நிலை OpCode_vstem:
+      நிலை OpCode_vstemhm:
+      நிலை OpCode_hintmask:
+      நிலை OpCode_cntrmask:
+      நிலை OpCode_dotsection:
+	எனில் (param.drop_hints)
 	{
 	  env.clear_args ();
-	  return;
+	  திரும்பு;
 	}
 	HB_FALLTHROUGH;
 
-      default:
+      இயல்பு:
 	SUPER::flush_args_and_op (op, env, param);
-	break;
+	நிறுத்து;
     }
   }
-  static void flush_args (cff1_cs_interp_env_t &env, flatten_param_t& param)
+  நிலையான வெறுமை flush_args (cff1_cs_interp_env_t &env, flatten_param_t& param)
   {
     str_encoder_t  encoder (param.flatStr);
-    for (unsigned int i = env.arg_start; i < env.argStack.get_count (); i++)
-      encoder.encode_num_cs (env.eval_arg (i));
+    க்கு (unsigned முழு i = env.arg_start; i < env.arg_அடுக்கு.get_மொத்தம் (); i++)
+      encoder.encode_இலக்கம்_cs (env.eval_arg (i));
     SUPER::flush_args (env, param);
   }
 
-  static void flush_op (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
+  நிலையான வெறுமை flush_op (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
   {
     str_encoder_t  encoder (param.flatStr);
     encoder.encode_op (op);
   }
 
-  static void flush_width (cff1_cs_interp_env_t &env, flatten_param_t& param)
+  நிலையான வெறுமை flush_width (cff1_cs_interp_env_t &env, flatten_param_t& param)
   {
-    assert (env.has_width);
+    ப்ரதிஜ்ஞா (env.has_width);
     str_encoder_t  encoder (param.flatStr);
-    encoder.encode_num_cs (env.width);
+    encoder.encode_இலக்கம்_cs (env.width);
   }
 
-  static void flush_hintmask (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
+  நிலையான வெறுமை flush_hintmask (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
   {
     SUPER::flush_hintmask (op, env, param);
-    if (!param.drop_hints)
+    எனில் (!param.drop_hints)
     {
       str_encoder_t  encoder (param.flatStr);
-      for (unsigned int i = 0; i < env.hintmask_size; i++)
+      க்கு (unsigned முழு i = 0; i < env.hintmask_size; i++)
 	encoder.encode_byte (env.str_ref[i]);
     }
   }
 
-  private:
-  typedef cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatten_param_t> SUPER;
+  தனிப்பட்ட:
+  வகைவரை cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatten_param_t> SUPER;
 };
 
-struct range_list_t : hb_vector_t<code_pair_t>
+கட்டமைப்பு range_list_t : hb_vector_t<code_pair_t>
 {
   /* replace the first glyph ID in the "glyph" field each range with a nLeft value */
-  bool complete (unsigned int last_glyph)
+  தருக்க complete (unsigned முழு last_glyph)
   {
     hb_codepoint_t all_glyphs = 0;
-    unsigned count = this->length;
-    for (unsigned int i = count; i; i--)
+    unsigned மொத்தம் = இது->length;
+    க்கு (unsigned முழு i = மொத்தம்; i; i--)
     {
       code_pair_t &pair = arrayZ[i - 1];
-      unsigned int nLeft = last_glyph - pair.glyph - 1;
-      all_glyphs |= nLeft;
+      unsigned முழு n_இடது = last_glyph - pair.glyph - 1;
+      all_glyphs |= n_இடது;
       last_glyph = pair.glyph;
-      pair.glyph = nLeft;
+      pair.glyph = n_இடது;
     }
-    bool two_byte = all_glyphs >= 0x100;
-    return two_byte;
+    தருக்க two_byte = all_glyphs >= 0x100;
+    திரும்பு two_byte;
   }
 };
 
-struct cff1_cs_opset_subr_subset_t : cff1_cs_opset_t<cff1_cs_opset_subr_subset_t, subr_subset_param_t>
+கட்டமைப்பு cff1_cs_opset_subr_subset_t : cff1_cs_opset_t<cff1_cs_opset_subr_subset_t, subr_subset_param_t>
 {
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, subr_subset_param_t& param)
+  நிலையான வெறுமை process_op (op_code_t op, cff1_cs_interp_env_t &env, subr_subset_param_t& param)
   {
-    switch (op) {
+    தேர்வு (op) {
 
-      case OpCode_return:
+      நிலை OpCode_return:
 	param.current_parsed_str->add_op (op, env.str_ref);
 	param.current_parsed_str->set_parsed ();
 	env.return_from_subr ();
-	param.set_current_str (env, false);
-	break;
+	param.set_current_str (env, பொய்);
+	நிறுத்து;
 
-      case OpCode_endchar:
+      நிலை OpCode_endchar:
 	param.current_parsed_str->add_op (op, env.str_ref);
 	param.current_parsed_str->set_parsed ();
 	SUPER::process_op (op, env, param);
-	break;
+	நிறுத்து;
 
-      case OpCode_callsubr:
+      நிலை OpCode_callsubr:
 	process_call_subr (op, CSType_LocalSubr, env, param, env.localSubrs, param.local_closure);
-	break;
+	நிறுத்து;
 
-      case OpCode_callgsubr:
+      நிலை OpCode_callgsubr:
 	process_call_subr (op, CSType_GlobalSubr, env, param, env.globalSubrs, param.global_closure);
-	break;
+	நிறுத்து;
 
-      default:
+      இயல்பு:
 	SUPER::process_op (op, env, param);
 	param.current_parsed_str->add_op (op, env.str_ref);
-	break;
+	நிறுத்து;
     }
   }
 
-  protected:
-  static void process_call_subr (op_code_t op, cs_type_t type,
+  பாதுகாக்கப்பட்ட:
+  நிலையான வெறுமை process_call_subr (op_code_t op, cs_type_t type,
 				 cff1_cs_interp_env_t &env, subr_subset_param_t& param,
 				 cff1_biased_subrs_t& subrs, hb_set_t *closure)
   {
     byte_str_ref_t    str_ref = env.str_ref;
     env.call_subr (subrs, type);
-    param.current_parsed_str->add_call_op (op, str_ref, env.context.subr_num);
-    closure->add (env.context.subr_num);
-    param.set_current_str (env, true);
+    param.current_parsed_str->add_call_op (op, str_ref, env.context.subr_இலக்கம்_2);
+    closure->add (env.context.subr_இலக்கம்_2);
+    param.set_current_str (env, உண்மை);
   }
 
-  private:
-  typedef cff1_cs_opset_t<cff1_cs_opset_subr_subset_t, subr_subset_param_t> SUPER;
+  தனிப்பட்ட:
+  வகைவரை cff1_cs_opset_t<cff1_cs_opset_subr_subset_t, subr_subset_param_t> SUPER;
 };
 
-struct cff1_private_dict_op_serializer_t : op_serializer_t
+கட்டமைப்பு cff1_private_dict_op_serializer_t : op_serializer_t
 {
-  cff1_private_dict_op_serializer_t (bool desubroutinize_, bool drop_hints_)
+  cff1_private_dict_op_serializer_t (தருக்க desubroutinize_, தருக்க drop_hints_)
     : desubroutinize (desubroutinize_), drop_hints (drop_hints_) {}
 
-  bool serialize (hb_serialize_context_t *c,
-		  const op_str_t &opstr,
-		  objidx_t subrs_link) const
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி op_str_t &opstr,
+		  objidx_t subrs_link) மாறிலி
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
-    if (drop_hints && dict_opset_t::is_hint_op (opstr.op))
-      return_trace (true);
+    எனில் (drop_hints && dict_opset_t::is_hint_op (opstr.op))
+      return_trace (உண்மை);
 
-    if (opstr.op == OpCode_Subrs)
+    எனில் (opstr.op == OpCode_Subrs)
     {
-      if (desubroutinize || !subrs_link)
-	return_trace (true);
-      else
+      எனில் (desubroutinize || !subrs_link)
+	return_trace (உண்மை);
+      இல்லையெனில்
 	return_trace (FontDict::serialize_link2_op (c, opstr.op, subrs_link));
     }
 
     return_trace (copy_opstr (c, opstr));
   }
 
-  protected:
-  const bool desubroutinize;
-  const bool drop_hints;
+  பாதுகாக்கப்பட்ட:
+  மாறிலி தருக்க desubroutinize;
+  மாறிலி தருக்க drop_hints;
 };
 
-struct cff1_subr_subsetter_t : subr_subsetter_t<cff1_subr_subsetter_t, CFF1Subrs, const OT::cff1::accelerator_subset_t, cff1_cs_interp_env_t, cff1_cs_opset_subr_subset_t, OpCode_endchar>
+கட்டமைப்பு cff1_subr_subsetter_t : subr_subsetter_t<cff1_subr_subsetter_t, CFF1Subrs, மாறிலி OT::cff1::accelerator_subset_t, cff1_cs_interp_env_t, cff1_cs_opset_subr_subset_t, OpCode_endchar>
 {
-  cff1_subr_subsetter_t (const OT::cff1::accelerator_subset_t &acc_, const hb_subset_plan_t *plan_)
+  cff1_subr_subsetter_t (மாறிலி OT::cff1::accelerator_subset_t &acc_, மாறிலி hb_subset_plan_t *plan_)
     : subr_subsetter_t (acc_, plan_) {}
 
-  static void complete_parsed_str (cff1_cs_interp_env_t &env, subr_subset_param_t& param, parsed_cs_str_t &charstring)
+  நிலையான வெறுமை complete_parsed_str (cff1_cs_interp_env_t &env, subr_subset_param_t& param, parsed_cs_str_t &charstring)
   {
     /* insert width at the beginning of the charstring as necessary */
-    if (env.has_width)
+    எனில் (env.has_width)
       charstring.set_prefix (env.width);
 
     /* subroutines/charstring left on the call stack are legally left unmarked
      * unmarked when a subroutine terminates with endchar. mark them.
      */
     param.current_parsed_str->set_parsed ();
-    for (unsigned int i = 0; i < env.callStack.get_count (); i++)
+    க்கு (unsigned முழு i = 0; i < env.call_அடுக்கு.get_மொத்தம் (); i++)
     {
-      parsed_cs_str_t *parsed_str = param.get_parsed_str_for_context (env.callStack[i]);
-      if (likely (parsed_str))
+      parsed_cs_str_t *parsed_str = param.get_parsed_str_for_context (env.call_அடுக்கு[i]);
+      எனில் (likely (parsed_str))
 	parsed_str->set_parsed ();
-      else
+      இல்லையெனில்
 	env.set_error ();
     }
   }
 };
 
-namespace OT {
-struct cff1_subset_plan
+நாமாகாஶ OT {
+கட்டமைப்பு cff1_subset_plan
 {
   cff1_subset_plan ()
   {
-    for (unsigned int i = 0; i < name_dict_values_t::ValCount; i++)
-      topDictModSIDs[i] = CFF_UNDEF_SID;
+    க்கு (unsigned முழு i = 0; i < name_dict_மதிப்புகள்_t::Val_மொத்தம்; i++)
+      உச்சி_Dict_Mod_SIDs[i] = CFF_UNDEF_SID;
   }
 
-  void plan_subset_encoding (const OT::cff1::accelerator_subset_t &acc, hb_subset_plan_t *plan)
+  வெறுமை plan_subset_encoding (மாறிலி OT::cff1::accelerator_subset_t &acc, hb_subset_plan_t *plan)
   {
-    const Encoding *encoding = acc.encoding;
-    unsigned int  size0, size1;
+    மாறிலி Encoding *encoding = acc.encoding;
+    unsigned முழு  size0, size1;
     unsigned code, last_code = CFF_UNDEF_CODE - 1;
     hb_vector_t<hb_codepoint_t> supp_codes;
 
     subset_enc_code_ranges.clear ();
-    if (unlikely (subset_enc_code_ranges.in_error ()))
+    எனில் (unlikely (subset_enc_code_ranges.in_error ()))
     {
-      plan->check_success (false);
-      return;
+      plan->check_success (பொய்);
+      திரும்பு;
     }
 
     supp_codes.init ();
 
     code_pair_t glyph_to_sid_cache {0, HB_CODEPOINT_INVALID};
-    subset_enc_num_codes = plan->num_output_glyphs () - 1;
-    unsigned int glyph;
+    subset_enc_இலக்கம்_codes = plan->இலக்கம்_output_glyphs () - 1;
+    unsigned முழு glyph;
     auto it = hb_iter (plan->new_to_old_gid_list);
-    if (it->first == 0) it++;
+    எனில் (it->first == 0) it++;
     auto _ = *it;
-    for (glyph = 1; glyph < num_glyphs; glyph++)
+    க்கு (glyph = 1; glyph < இலக்கம்_glyphs; glyph++)
     {
       hb_codepoint_t old_glyph;
-      if (glyph == _.first)
+      எனில் (glyph == _.first)
       {
 	old_glyph = _.second;
 	_ = *++it;
       }
-      else
+      இல்லையெனில்
       {
 	/* Retain the SID for the old missing glyph ID */
 	old_glyph = glyph;
       }
       code = acc.glyph_to_code (old_glyph, &glyph_to_sid_cache);
-      if (code == CFF_UNDEF_CODE)
+      எனில் (code == CFF_UNDEF_CODE)
       {
-	subset_enc_num_codes = glyph - 1;
-	break;
+	subset_enc_இலக்கம்_codes = glyph - 1;
+	நிறுத்து;
       }
 
-      if (code != last_code + 1)
+      எனில் (code != last_code + 1)
 	subset_enc_code_ranges.push (code_pair_t {code, glyph});
       last_code = code;
 
-      if (encoding != &Null (Encoding))
+      எனில் (encoding != &Null (Encoding))
       {
 	hb_codepoint_t  sid = acc.glyph_to_sid (old_glyph, &glyph_to_sid_cache);
 	encoding->get_supplement_codes (sid, supp_codes);
-	for (unsigned int i = 0; i < supp_codes.length; i++)
+	க்கு (unsigned முழு i = 0; i < supp_codes.length; i++)
 	  subset_enc_supp_codes.push (code_pair_t {supp_codes[i], sid});
       }
     }
@@ -482,93 +482,93 @@ struct cff1_subset_plan
 
     subset_enc_code_ranges.complete (glyph);
 
-    assert (subset_enc_num_codes <= 0xFF);
-    size0 = Encoding0::min_size + HBUINT8::static_size * subset_enc_num_codes;
+    ப்ரதிஜ்ஞா (subset_enc_இலக்கம்_codes <= 0xFF);
+    size0 = Encoding0::min_size + HBUINT8::static_size * subset_enc_இலக்கம்_codes;
     size1 = Encoding1::min_size + Encoding1_Range::static_size * subset_enc_code_ranges.length;
 
-    if (size0 < size1)
+    எனில் (size0 < size1)
       subset_enc_format = 0;
-    else
+    இல்லையெனில்
       subset_enc_format = 1;
   }
 
-  bool plan_subset_charset (const OT::cff1::accelerator_subset_t &acc, hb_subset_plan_t *plan)
+  தருக்க plan_subset_charset (மாறிலி OT::cff1::accelerator_subset_t &acc, hb_subset_plan_t *plan)
   {
-    unsigned int  size0, size_ranges;
+    unsigned முழு  size0, size_ranges;
     unsigned last_sid = CFF_UNDEF_CODE - 1;
 
     subset_charset_ranges.clear ();
-    if (unlikely (subset_charset_ranges.in_error ()))
+    எனில் (unlikely (subset_charset_ranges.in_error ()))
     {
-      plan->check_success (false);
-      return false;
+      plan->check_success (பொய்);
+      திரும்பு பொய்;
     }
 
     code_pair_t glyph_to_sid_cache {0, HB_CODEPOINT_INVALID};
 
-    unsigned num_glyphs = plan->num_output_glyphs ();
+    unsigned இலக்கம்_glyphs = plan->இலக்கம்_output_glyphs ();
 
-    if (unlikely (!subset_charset_ranges.alloc (hb_min (num_glyphs,
-							acc.num_charset_entries))))
+    எனில் (unlikely (!subset_charset_ranges.alloc (hb_min (இலக்கம்_glyphs,
+							acc.இலக்கம்_charset_entries))))
     {
-      plan->check_success (false);
-      return false;
+      plan->check_success (பொய்);
+      திரும்பு பொய்;
     }
 
     glyph_to_sid_map_t *glyph_to_sid_map = acc.cff_accelerator ?
 					   acc.cff_accelerator->glyph_to_sid_map.get_acquire () :
 					   nullptr;
 
-    bool created_map = false;
-    if (!glyph_to_sid_map && acc.cff_accelerator)
+    தருக்க created_map = பொய்;
+    எனில் (!glyph_to_sid_map && acc.cff_accelerator)
     {
-      created_map = true;
+      created_map = உண்மை;
       glyph_to_sid_map = acc.create_glyph_to_sid_map ();
     }
 
-    if (!glyph_to_sid_map || glyph_to_sid_map->in_error ())
+    எனில் (!glyph_to_sid_map || glyph_to_sid_map->in_error ())
     {
       glyph_to_sid_map = nullptr;
-      created_map = false;
+      created_map = பொய்;
     }
 
     auto it = hb_iter (plan->new_to_old_gid_list);
-    if (it->first == 0) it++;
+    எனில் (it->first == 0) it++;
     auto _ = *it;
-    bool not_is_cid = !acc.is_CID ();
-    bool skip = !not_is_cid && glyph_to_sid_map && !identity_charset;
-    if (not_is_cid)
-      sidmap.alloc (num_glyphs);
-    for (hb_codepoint_t glyph = 1; glyph < num_glyphs; glyph++)
+    தருக்க not_is_cid = !acc.is_CID ();
+    தருக்க skip = !not_is_cid && glyph_to_sid_map && !identity_charset;
+    எனில் (not_is_cid)
+      sidmap.alloc (இலக்கம்_glyphs);
+    க்கு (hb_codepoint_t glyph = 1; glyph < இலக்கம்_glyphs; glyph++)
     {
       hb_codepoint_t old_glyph;
-      if (glyph == _.first)
+      எனில் (glyph == _.first)
       {
 	old_glyph = _.second;
 	_ = *++it;
       }
-      else
+      இல்லையெனில்
       {
 	/* Retain the SID for the old missing glyph ID */
 	old_glyph = glyph;
       }
       unsigned sid;
-      if (identity_charset)
+      எனில் (identity_charset)
 	sid = glyph;
-      else
+      இல்லையெனில்
       {
 	sid = glyph_to_sid_map ?
 		       glyph_to_sid_map->arrayZ[old_glyph].code :
 		       acc.glyph_to_sid (old_glyph, &glyph_to_sid_cache);
 
-	if (not_is_cid)
+	எனில் (not_is_cid)
 	  sid = sidmap.add (sid);
       }
 
-      if (sid != last_sid + 1)
+      எனில் (sid != last_sid + 1)
 	subset_charset_ranges.push (code_pair_t {sid, glyph});
 
-      if (glyph == old_glyph && skip)
+      எனில் (glyph == old_glyph && skip)
       {
 	glyph = hb_min (_.first - 1, glyph_to_sid_map->arrayZ[old_glyph].glyph);
 	sid += glyph - old_glyph;
@@ -576,9 +576,9 @@ struct cff1_subset_plan
       last_sid = sid;
     }
 
-    if (created_map)
+    எனில் (created_map)
     {
-      if ((!plan->accelerator && acc.cff_accelerator) ||
+      எனில் ((!plan->accelerator && acc.cff_accelerator) ||
 	  !acc.cff_accelerator->glyph_to_sid_map.cmpexch (nullptr, glyph_to_sid_map))
       {
 	glyph_to_sid_map->~glyph_to_sid_map_t ();
@@ -586,71 +586,71 @@ struct cff1_subset_plan
       }
     }
 
-    bool two_byte = subset_charset_ranges.complete (num_glyphs);
+    தருக்க two_byte = subset_charset_ranges.complete (இலக்கம்_glyphs);
 
-    size0 = Charset0::get_size (plan->num_output_glyphs ());
-    if (!two_byte)
+    size0 = Charset0::get_size (plan->இலக்கம்_output_glyphs ());
+    எனில் (!two_byte)
       size_ranges = Charset1::get_size_for_ranges (subset_charset_ranges.length);
-    else
+    இல்லையெனில்
       size_ranges = Charset2::get_size_for_ranges (subset_charset_ranges.length);
 
-    if (size0 < size_ranges)
+    எனில் (size0 < size_ranges)
       subset_charset_format = 0;
-    else if (!two_byte)
+    இல்லையெனில் எனில் (!two_byte)
       subset_charset_format = 1;
-    else
+    இல்லையெனில்
       subset_charset_format = 2;
 
-    return true;
+    திரும்பு உண்மை;
   }
 
-  bool collect_sids_in_dicts (const OT::cff1::accelerator_subset_t &acc)
+  தருக்க collect_sids_in_dicts (மாறிலி OT::cff1::accelerator_subset_t &acc)
   {
-    for (unsigned int i = 0; i < name_dict_values_t::ValCount; i++)
+    க்கு (unsigned முழு i = 0; i < name_dict_மதிப்புகள்_t::Val_மொத்தம்; i++)
     {
-      unsigned int sid = acc.topDict.nameSIDs[i];
-      if (sid != CFF_UNDEF_SID)
+      unsigned முழு sid = acc.உச்சி_Dict_2.nameSIDs[i];
+      எனில் (sid != CFF_UNDEF_SID)
       {
-	topDictModSIDs[i] = sidmap.add (sid);
+	உச்சி_Dict_Mod_SIDs[i] = sidmap.add (sid);
       }
     }
 
-    if (acc.fdArray != &Null (CFF1FDArray))
-      for (unsigned int i = 0; i < orig_fdcount; i++)
-	if (fdmap.has (i))
-	  (void)sidmap.add (acc.fontDicts[i].fontName);
+    எனில் (acc.fdArray != &Null (CFF1FDArray))
+      க்கு (unsigned முழு i = 0; i < orig_fdcount; i++)
+	எனில் (fdmap.has (i))
+	  (வெறுமை)sidmap.add (acc.fontDicts[i].fontName);
 
-    return true;
+    திரும்பு உண்மை;
   }
 
-  bool create (const OT::cff1::accelerator_subset_t &acc,
+  தருக்க create (மாறிலி OT::cff1::accelerator_subset_t &acc,
 	       hb_subset_plan_t *plan)
   {
     /* make sure notdef is first */
     hb_codepoint_t old_glyph;
-    if (!plan->old_gid_for_new_gid (0, &old_glyph) || (old_glyph != 0)) return false;
+    எனில் (!plan->old_gid_for_new_gid (0, &old_glyph) || (old_glyph != 0)) திரும்பு பொய்;
 
-    num_glyphs = plan->num_output_glyphs ();
-    orig_fdcount = acc.fdCount;
+    இலக்கம்_glyphs = plan->இலக்கம்_output_glyphs ();
+    orig_fdcount = acc.fd_மொத்தம்;
     drop_hints = plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
     desubroutinize = plan->flags & HB_SUBSET_FLAGS_DESUBROUTINIZE;
     identity_charset = (plan->flags & HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET) && acc.is_CID ();
 
  #ifdef HB_EXPERIMENTAL_API
     min_charstrings_off_size = (plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS) ? 4 : 0;
- #else
+ #இல்லையெனில்
     min_charstrings_off_size = 0;
  #endif
 
     subset_charset = !acc.is_predef_charset () || identity_charset;
-    if (!subset_charset)
+    எனில் (!subset_charset)
       /* check whether the subset renumbers any glyph IDs */
-      for (const auto &_ : plan->new_to_old_gid_list)
+      க்கு (மாறிலி auto &_ : plan->new_to_old_gid_list)
       {
-	if (_.first != _.second)
+	எனில் (_.first != _.second)
 	{
-	  subset_charset = true;
-	  break;
+	  subset_charset = உண்மை;
+	  நிறுத்து;
 	}
       }
 
@@ -659,120 +659,120 @@ struct cff1_subset_plan
     /* top dict INDEX */
     {
       /* Add encoding/charset to a (copy of) top dict as necessary */
-      topdict_mod.init (&acc.topDict);
-      bool need_to_add_enc = (subset_encoding && !acc.topDict.has_op (OpCode_Encoding));
-      bool need_to_add_set = (subset_charset && !acc.topDict.has_op (OpCode_charset));
-      if (need_to_add_enc || need_to_add_set)
+      topdict_mod.init (&acc.உச்சி_Dict_2);
+      தருக்க need_to_add_enc = (subset_encoding && !acc.உச்சி_Dict_2.has_op (OpCode_Encoding));
+      தருக்க need_to_add_set = (subset_charset && !acc.உச்சி_Dict_2.has_op (OpCode_charset));
+      எனில் (need_to_add_enc || need_to_add_set)
       {
-	if (need_to_add_enc)
+	எனில் (need_to_add_enc)
 	  topdict_mod.add_op (OpCode_Encoding);
-	if (need_to_add_set)
+	எனில் (need_to_add_set)
 	  topdict_mod.add_op (OpCode_charset);
       }
     }
 
     /* Determine re-mapping of font index as fdmap among other info */
-    if (acc.fdSelect != &Null (CFF1FDSelect))
+    எனில் (acc.fdSelect != &Null (CFF1FDSelect))
     {
-	if (unlikely (!hb_plan_subset_cff_fdselect (plan,
+	எனில் (unlikely (!hb_plan_subset_cff_fdselect (plan,
 				  orig_fdcount,
 				  *acc.fdSelect,
-				  acc.num_glyphs,
+				  acc.இலக்கம்_glyphs,
 				  subset_fdcount,
 				  info.fd_select.size,
 				  subset_fdselect_format,
 				  subset_fdselect_ranges,
 				  fdmap)))
-	return false;
+	திரும்பு பொய்;
     }
-    else
+    இல்லையெனில்
       fdmap.identity (1);
 
     /* remove unused SIDs & reassign SIDs */
     {
       /* SIDs for name strings in dicts are added before glyph names so they fit in 16-bit int range */
-      if (unlikely (!collect_sids_in_dicts (acc)))
-	return false;
-      if (unlikely (sidmap.get_population () > 0x8000))	/* assumption: a dict won't reference that many strings */
-	return false;
+      எனில் (unlikely (!collect_sids_in_dicts (acc)))
+	திரும்பு பொய்;
+      எனில் (unlikely (sidmap.get_population () > 0x8000))	/* assumption: a dict won't reference that many strings */
+	திரும்பு பொய்;
 
-      if (subset_charset && !plan_subset_charset (acc, plan))
-        return false;
+      எனில் (subset_charset && !plan_subset_charset (acc, plan))
+        திரும்பு பொய்;
 
       topdict_mod.reassignSIDs (sidmap);
     }
 
-    if (desubroutinize)
+    எனில் (desubroutinize)
     {
       /* Flatten global & local subrs */
-      subr_flattener_t<const OT::cff1::accelerator_subset_t, cff1_cs_interp_env_t, cff1_cs_opset_flatten_t, OpCode_endchar>
+      subr_flattener_t<மாறிலி OT::cff1::accelerator_subset_t, cff1_cs_interp_env_t, cff1_cs_opset_flatten_t, OpCode_endchar>
 		    flattener(acc, plan);
-      if (!flattener.flatten (subset_charstrings))
-	return false;
+      எனில் (!flattener.flatten (subset_charstrings))
+	திரும்பு பொய்;
     }
-    else
+    இல்லையெனில்
     {
       cff1_subr_subsetter_t       subr_subsetter (acc, plan);
 
       /* Subset subrs: collect used subroutines, leaving all unused ones behind */
-      if (!subr_subsetter.subset ())
-	return false;
+      எனில் (!subr_subsetter.subset ())
+	திரும்பு பொய்;
 
       /* encode charstrings, global subrs, local subrs with new subroutine numbers */
-      if (!subr_subsetter.encode_charstrings (subset_charstrings))
-	return false;
+      எனில் (!subr_subsetter.encode_charstrings (subset_charstrings))
+	திரும்பு பொய்;
 
-      if (!subr_subsetter.encode_globalsubrs (subset_globalsubrs))
-	return false;
+      எனில் (!subr_subsetter.encode_globalsubrs (subset_globalsubrs))
+	திரும்பு பொய்;
 
       /* local subrs */
-      if (!subset_localsubrs.resize (orig_fdcount))
-	return false;
-      for (unsigned int fd = 0; fd < orig_fdcount; fd++)
+      எனில் (!subset_localsubrs.resize (orig_fdcount))
+	திரும்பு பொய்;
+      க்கு (unsigned முழு fd = 0; fd < orig_fdcount; fd++)
       {
 	subset_localsubrs[fd].init ();
-	if (fdmap.has (fd))
+	எனில் (fdmap.has (fd))
 	{
-	  if (!subr_subsetter.encode_localsubrs (fd, subset_localsubrs[fd]))
-	    return false;
+	  எனில் (!subr_subsetter.encode_localsubrs (fd, subset_localsubrs[fd]))
+	    திரும்பு பொய்;
 	}
       }
     }
 
     /* Encoding */
-    if (subset_encoding)
+    எனில் (subset_encoding)
       plan_subset_encoding (acc, plan);
 
     /* private dicts & local subrs */
-    if (!acc.is_CID ())
-      fontdicts_mod.push (cff1_font_dict_values_mod_t ());
-    else
+    எனில் (!acc.is_CID ())
+      fontdicts_mod.push (cff1_font_dict_மதிப்புகள்_mod_t ());
+    இல்லையெனில்
     {
       + hb_iter (acc.fontDicts)
-      | hb_filter ([&] (const cff1_font_dict_values_t &_)
-	{ return fdmap.has (&_ - &acc.fontDicts[0]); } )
-      | hb_map ([&] (const cff1_font_dict_values_t &_)
+      | hb_filter ([&] (மாறிலி cff1_font_dict_மதிப்புகள்_t &_)
+	{ திரும்பு fdmap.has (&_ - &acc.fontDicts[0]); } )
+      | hb_map ([&] (மாறிலி cff1_font_dict_மதிப்புகள்_t &_)
 	{
-	  cff1_font_dict_values_mod_t mod;
+	  cff1_font_dict_மதிப்புகள்_mod_t mod;
 	  mod.init (&_, sidmap[_.fontName]);
-	  return mod;
+	  திரும்பு mod;
 	})
       | hb_sink (fontdicts_mod)
       ;
     }
 
-    return !plan->in_error () &&
-	   (subset_charstrings.length == plan->num_output_glyphs ()) &&
+    திரும்பு !plan->in_error () &&
+	   (subset_charstrings.length == plan->இலக்கம்_output_glyphs ()) &&
 	   (fontdicts_mod.length == subset_fdcount);
   }
 
-  cff1_top_dict_values_mod_t	topdict_mod;
+  cff1_உச்சி_dict_மதிப்புகள்_mod_t	topdict_mod;
   cff1_sub_table_info_t		info;
 
-  unsigned int    num_glyphs;
-  unsigned int    orig_fdcount = 0;
-  unsigned int    subset_fdcount = 1;
-  unsigned int    subset_fdselect_format = 0;
+  unsigned முழு    இலக்கம்_glyphs;
+  unsigned முழு    orig_fdcount = 0;
+  unsigned முழு    subset_fdcount = 1;
+  unsigned முழு    subset_fdselect_format = 0;
   hb_vector_t<code_pair_t>   subset_fdselect_ranges;
 
   /* font dict index remap table from fullset FDArray to subset FDArray.
@@ -782,192 +782,192 @@ struct cff1_subset_plan
   str_buff_vec_t		subset_charstrings;
   str_buff_vec_t		subset_globalsubrs;
   hb_vector_t<str_buff_vec_t>	subset_localsubrs;
-  hb_vector_t<cff1_font_dict_values_mod_t>  fontdicts_mod;
+  hb_vector_t<cff1_font_dict_மதிப்புகள்_mod_t>  fontdicts_mod;
 
-  bool		drop_hints = false;
+  தருக்க		drop_hints = பொய்;
 
-  bool		gid_renum;
-  bool		subset_encoding;
+  தருக்க		gid_renum;
+  தருக்க		subset_encoding;
   uint8_t	subset_enc_format;
-  unsigned int	subset_enc_num_codes;
+  unsigned முழு	subset_enc_இலக்கம்_codes;
   range_list_t	subset_enc_code_ranges;
   hb_vector_t<code_pair_t>  subset_enc_supp_codes;
 
   uint8_t	subset_charset_format;
   range_list_t	subset_charset_ranges;
-  bool		subset_charset;
+  தருக்க		subset_charset;
 
   remap_sid_t	sidmap;
-  unsigned int	topDictModSIDs[name_dict_values_t::ValCount];
+  unsigned முழு	உச்சி_Dict_Mod_SIDs[name_dict_மதிப்புகள்_t::Val_மொத்தம்];
 
-  bool		desubroutinize = false;
-  bool		identity_charset = false;
+  தருக்க		desubroutinize = பொய்;
+  தருக்க		identity_charset = பொய்;
 
   unsigned	min_charstrings_off_size = 0;
 };
 } // namespace OT
 
-static bool _serialize_cff1_charstrings (hb_serialize_context_t *c,
-                                         struct OT::cff1_subset_plan &plan,
-                                         const OT::cff1::accelerator_subset_t  &acc)
+நிலையான தருக்க _serialize_cff1_charstrings (hb_serialize_context_t *c,
+                                         கட்டமைப்பு OT::cff1_subset_plan &plan,
+                                         மாறிலி OT::cff1::accelerator_subset_t  &acc)
 {
   c->push<CFF1CharStrings> ();
 
   unsigned data_size = 0;
   unsigned total_size = CFF1CharStrings::total_size (plan.subset_charstrings, &data_size, plan.min_charstrings_off_size);
-  if (unlikely (!c->start_zerocopy (total_size)))
-    return false;
+  எனில் (unlikely (!c->start_zerocopy (total_size)))
+    திரும்பு பொய்;
 
   auto *cs = c->start_embed<CFF1CharStrings> ();
-  if (unlikely (!cs->serialize (c, plan.subset_charstrings, &data_size, plan.min_charstrings_off_size))) {
-    c->pop_discard ();
-    return false;
+  எனில் (unlikely (!cs->serialize (c, plan.subset_charstrings, &data_size, plan.min_charstrings_off_size))) {
+    c->எடு_discard ();
+    திரும்பு பொய்;
   }
 
-  plan.info.char_strings_link = c->pop_pack (false);
-  return true;
+  plan.info.char_strings_link = c->எடு_pack (பொய்);
+  திரும்பு உண்மை;
 }
 
-bool
+தருக்க
 OT::cff1::accelerator_subset_t::serialize (hb_serialize_context_t *c,
-					   struct OT::cff1_subset_plan &plan) const
+					   கட்டமைப்பு OT::cff1_subset_plan &plan) மாறிலி
 {
   /* push charstrings onto the object stack first which will ensure it packs as the last
      object in the table. Keeping the chastrings last satisfies the requirements for patching
      via IFTB. If this ordering needs to be changed in the future, charstrings should be left
      at the end whenever HB_SUBSET_FLAGS_ITFB_REQUIREMENTS is enabled. */
-  if (!_serialize_cff1_charstrings(c, plan, *this))
-    return false;
+  எனில் (!_serialize_cff1_charstrings(c, plan, *இது))
+    திரும்பு பொய்;
 
   /* private dicts & local subrs */
-  for (int i = (int) privateDicts.length; --i >= 0 ;)
+  க்கு (முழு i = (முழு) privateDicts.length; --i >= 0 ;)
   {
-    if (plan.fdmap.has (i))
+    எனில் (plan.fdmap.has (i))
     {
       objidx_t	subrs_link = 0;
-      if (plan.subset_localsubrs[i].length > 0)
+      எனில் (plan.subset_localsubrs[i].length > 0)
       {
 	auto *dest = c->push <CFF1Subrs> ();
-	if (likely (dest->serialize (c, plan.subset_localsubrs[i])))
-	  subrs_link = c->pop_pack ();
-	else
+	எனில் (likely (dest->serialize (c, plan.subset_localsubrs[i])))
+	  subrs_link = c->எடு_pack ();
+	இல்லையெனில்
 	{
-	  c->pop_discard ();
-	  return false;
+	  c->எடு_discard ();
+	  திரும்பு பொய்;
 	}
       }
 
       auto *pd = c->push<PrivateDict> ();
       cff1_private_dict_op_serializer_t privSzr (plan.desubroutinize, plan.drop_hints);
       /* N.B. local subrs immediately follows its corresponding private dict. i.e., subr offset == private dict size */
-      if (likely (pd->serialize (c, privateDicts[i], privSzr, subrs_link)))
+      எனில் (likely (pd->serialize (c, privateDicts[i], privSzr, subrs_link)))
       {
 	unsigned fd = plan.fdmap[i];
 	plan.fontdicts_mod[fd].privateDictInfo.size = c->length ();
-	plan.fontdicts_mod[fd].privateDictInfo.link = c->pop_pack ();
+	plan.fontdicts_mod[fd].privateDictInfo.link = c->எடு_pack ();
       }
-      else
+      இல்லையெனில்
       {
-	c->pop_discard ();
-	return false;
+	c->எடு_discard ();
+	திரும்பு பொய்;
       }
     }
   }
 
-  if (!is_CID ())
+  எனில் (!is_CID ())
     plan.info.privateDictInfo = plan.fontdicts_mod[0].privateDictInfo;
 
   /* FDArray (FD Index) */
-  if (fdArray != &Null (CFF1FDArray))
+  எனில் (fdArray != &Null (CFF1FDArray))
   {
     auto *fda = c->push<CFF1FDArray> ();
     cff1_font_dict_op_serializer_t  fontSzr;
     auto it = + hb_zip (+ hb_iter (plan.fontdicts_mod), + hb_iter (plan.fontdicts_mod));
-    if (likely (fda->serialize (c, it, fontSzr)))
-      plan.info.fd_array_link = c->pop_pack (false);
-    else
+    எனில் (likely (fda->serialize (c, it, fontSzr)))
+      plan.info.fd_array_link = c->எடு_pack (பொய்);
+    இல்லையெனில்
     {
-      c->pop_discard ();
-      return false;
+      c->எடு_discard ();
+      திரும்பு பொய்;
     }
   }
 
   /* FDSelect */
-  if (fdSelect != &Null (CFF1FDSelect))
+  எனில் (fdSelect != &Null (CFF1FDSelect))
   {
     c->push ();
-    if (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs, *fdSelect, fdCount,
+    எனில் (likely (hb_serialize_cff_fdselect (c, plan.இலக்கம்_glyphs, *fdSelect, fd_மொத்தம்,
 					   plan.subset_fdselect_format, plan.info.fd_select.size,
 					   plan.subset_fdselect_ranges)))
-      plan.info.fd_select.link = c->pop_pack ();
-    else
+      plan.info.fd_select.link = c->எடு_pack ();
+    இல்லையெனில்
     {
-      c->pop_discard ();
-      return false;
+      c->எடு_discard ();
+      திரும்பு பொய்;
     }
   }
 
   /* Charset */
-  if (plan.subset_charset)
+  எனில் (plan.subset_charset)
   {
     auto *dest = c->push<Charset> ();
-    if (likely (dest->serialize (c,
+    எனில் (likely (dest->serialize (c,
 				 plan.subset_charset_format,
-				 plan.num_glyphs,
+				 plan.இலக்கம்_glyphs,
 				 plan.subset_charset_ranges)))
-      plan.info.charset_link = c->pop_pack ();
-    else
+      plan.info.charset_link = c->எடு_pack ();
+    இல்லையெனில்
     {
-      c->pop_discard ();
-      return false;
+      c->எடு_discard ();
+      திரும்பு பொய்;
     }
   }
 
   /* Encoding */
-  if (plan.subset_encoding)
+  எனில் (plan.subset_encoding)
   {
     auto *dest = c->push<Encoding> ();
-    if (likely (dest->serialize (c,
+    எனில் (likely (dest->serialize (c,
 				 plan.subset_enc_format,
-				 plan.subset_enc_num_codes,
+				 plan.subset_enc_இலக்கம்_codes,
 				 plan.subset_enc_code_ranges,
 				 plan.subset_enc_supp_codes)))
-      plan.info.encoding_link = c->pop_pack ();
-    else
+      plan.info.encoding_link = c->எடு_pack ();
+    இல்லையெனில்
     {
-      c->pop_discard ();
-      return false;
+      c->எடு_discard ();
+      திரும்பு பொய்;
     }
   }
 
   /* global subrs */
   {
     auto *dest = c->push <CFF1Subrs> ();
-    if (likely (dest->serialize (c, plan.subset_globalsubrs)))
-      c->pop_pack (false);
-    else
+    எனில் (likely (dest->serialize (c, plan.subset_globalsubrs)))
+      c->எடு_pack (பொய்);
+    இல்லையெனில்
     {
-      c->pop_discard ();
-      return false;
+      c->எடு_discard ();
+      திரும்பு பொய்;
     }
   }
 
   /* String INDEX */
   {
     auto *dest = c->push<CFF1StringIndex> ();
-    if (likely (!plan.sidmap.in_error () &&
+    எனில் (likely (!plan.sidmap.in_error () &&
 		dest->serialize (c, *stringIndex, plan.sidmap.vector)))
-      c->pop_pack ();
-    else
+      c->எடு_pack ();
+    இல்லையெனில்
     {
-      c->pop_discard ();
-      return false;
+      c->எடு_discard ();
+      திரும்பு பொய்;
     }
   }
 
   OT::cff1 *cff = c->allocate_min<OT::cff1> ();
-  if (unlikely (!cff))
-    return false;
+  எனில் (unlikely (!cff))
+    திரும்பு பொய்;
 
   /* header */
   cff->version.major = 0x01;
@@ -976,43 +976,43 @@ OT::cff1::accelerator_subset_t::serialize (hb_serialize_context_t *c,
   cff->offSize = 4; /* unused? */
 
   /* name INDEX */
-  if (unlikely (!c->embed (*nameIndex))) return false;
+  எனில் (unlikely (!c->embed (*nameIndex))) திரும்பு பொய்;
 
   /* top dict INDEX */
   {
     /* serialize singleton TopDict */
-    auto *top = c->push<TopDict> ();
-    cff1_top_dict_op_serializer_t topSzr;
-    unsigned top_size = 0;
-    top_dict_modifiers_t  modifier (plan.info, plan.topDictModSIDs);
-    if (likely (top->serialize (c, plan.topdict_mod, topSzr, modifier)))
+    auto *உச்சி_2 = c->push<உச்சி_Dict> ();
+    cff1_உச்சி_dict_op_serializer_t உச்சி_Szr;
+    unsigned உச்சி_size = 0;
+    உச்சி_dict_modifiers_t  modifier (plan.info, plan.உச்சி_Dict_Mod_SIDs);
+    எனில் (likely (உச்சி_2->serialize (c, plan.topdict_mod, உச்சி_Szr, modifier)))
     {
-      top_size = c->length ();
-      c->pop_pack (false);
+      உச்சி_size = c->length ();
+      c->எடு_pack (பொய்);
     }
-    else
+    இல்லையெனில்
     {
-      c->pop_discard ();
-      return false;
+      c->எடு_discard ();
+      திரும்பு பொய்;
     }
     /* serialize INDEX header for above */
     auto *dest = c->start_embed<CFF1Index> ();
-    return dest->serialize_header (c, hb_iter (&top_size, 1), top_size);
+    திரும்பு dest->serialize_header (c, hb_iter (&உச்சி_size, 1), உச்சி_size);
   }
 }
 
-bool
-OT::cff1::accelerator_subset_t::subset (hb_subset_context_t *c) const
+தருக்க
+OT::cff1::accelerator_subset_t::subset (hb_subset_context_t *c) மாறிலி
 {
   cff1_subset_plan cff_plan;
 
-  if (unlikely (!cff_plan.create (*this, c->plan)))
+  எனில் (unlikely (!cff_plan.create (*இது, c->plan)))
   {
-    DEBUG_MSG(SUBSET, nullptr, "Failed to generate a cff subsetting plan.");
-    return false;
+    DEBUG_செய்தி(SUBSET, nullptr, "Failed to generate a cff subsetting plan.");
+    திரும்பு பொய்;
   }
 
-  return serialize (c->serializer, cff_plan);
+  திரும்பு serialize (c->serializer, cff_plan);
 }
 
 

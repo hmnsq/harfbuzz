@@ -29,15 +29,15 @@
 #ifndef HB_OPEN_TYPE_HH
 #define HB_OPEN_TYPE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-face.hh"
-#include "hb-machinery.hh"
-#include "hb-meta.hh"
-#include "hb-subset.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-blob.hh"
+#அந்தர்பாவ "hb-face.hh"
+#அந்தர்பாவ "hb-machinery.hh"
+#அந்தர்பாவ "hb-meta.hh"
+#அந்தர்பாவ "hb-subset.hh"
 
 
-namespace OT {
+நாமாகாஶ OT {
 
 
 /*
@@ -54,209 +54,209 @@ namespace OT {
  */
 
 /* Integer types in big-endian order and no alignment requirement */
-template <bool BE,
+template <தருக்க BE,
 	  typename Type,
-	  unsigned int Size = sizeof (Type)>
-struct NumType
+	  unsigned முழு Size = அளவு (Type)>
+கட்டமைப்பு இலக்கம்_Type
 {
-  typedef Type type;
+  வகைவரை Type type;
   /* For reason we define cast out operator for signed/unsigned, instead of Type, see:
    * https://github.com/harfbuzz/harfbuzz/pull/2875/commits/09836013995cab2b9f07577a179ad7b024130467 */
-  typedef typename std::conditional<std::is_integral<Type>::value && sizeof (Type) <= sizeof(int),
+  வகைவரை typename std::conditional<std::is_integral<Type>::value && அளவு (Type) <= அளவு(முழு),
 				     typename std::conditional<std::is_signed<Type>::value, signed, unsigned>::type,
 				     Type>::type WideType;
 
-  NumType () = default;
-  explicit constexpr NumType (Type V) : v {V} {}
-  NumType& operator = (Type V) { v = V; return *this; }
+  இலக்கம்_Type () = இயல்பு;
+  explicit constexpr இலக்கம்_Type (Type V) : v {V} {}
+  இலக்கம்_Type& operator = (Type V) { v = V; திரும்பு *இது; }
 
-  operator WideType () const { return v; }
+  operator WideType () மாறிலி { திரும்பு v; }
 
-  bool operator == (const NumType &o) const { return (Type) v == (Type) o.v; }
-  bool operator != (const NumType &o) const { return !(*this == o); }
+  தருக்க operator == (மாறிலி இலக்கம்_Type &o) மாறிலி { திரும்பு (Type) v == (Type) o.v; }
+  தருக்க operator != (மாறிலி இலக்கம்_Type &o) மாறிலி { திரும்பு !(*இது == o); }
 
-  NumType& operator += (WideType count) { *this = *this + count; return *this; }
-  NumType& operator -= (WideType count) { *this = *this - count; return *this; }
-  NumType& operator ++ () { *this += 1; return *this; }
-  NumType& operator -- () { *this -= 1; return *this; }
-  NumType operator ++ (int) { NumType c (*this); ++*this; return c; }
-  NumType operator -- (int) { NumType c (*this); --*this; return c; }
+  இலக்கம்_Type& operator += (WideType மொத்தம்) { *இது = *இது + மொத்தம்; திரும்பு *இது; }
+  இலக்கம்_Type& operator -= (WideType மொத்தம்) { *இது = *இது - மொத்தம்; திரும்பு *இது; }
+  இலக்கம்_Type& operator ++ () { *இது += 1; திரும்பு *இது; }
+  இலக்கம்_Type& operator -- () { *இது -= 1; திரும்பு *இது; }
+  இலக்கம்_Type operator ++ (முழு) { இலக்கம்_Type c (*இது); ++*இது; திரும்பு c; }
+  இலக்கம்_Type operator -- (முழு) { இலக்கம்_Type c (*இது); --*இது; திரும்பு c; }
 
-  uint32_t hash () const { return hb_array ((const char *) &v, sizeof (v)).hash (); }
-  HB_INTERNAL static int cmp (const NumType *a, const NumType *b)
-  { return b->cmp (*a); }
-  HB_INTERNAL static int cmp (const void *a, const void *b)
+  uint32_t hash () மாறிலி { திரும்பு hb_array ((மாறிலி எழுத்து *) &v, அளவு (v)).hash (); }
+  HB_INTERNAL நிலையான முழு cmp (மாறிலி இலக்கம்_Type *a, மாறிலி இலக்கம்_Type *b)
+  { திரும்பு b->cmp (*a); }
+  HB_INTERNAL நிலையான முழு cmp (மாறிலி வெறுமை *a, மாறிலி வெறுமை *b)
   {
-    NumType *pa = (NumType *) a;
-    NumType *pb = (NumType *) b;
+    இலக்கம்_Type *pa = (இலக்கம்_Type *) a;
+    இலக்கம்_Type *pb = (இலக்கம்_Type *) b;
 
-    return pb->cmp (*pa);
+    திரும்பு pb->cmp (*pa);
   }
   template <typename Type2,
 	    hb_enable_if (hb_is_convertible (Type2, Type))>
-  int cmp (Type2 a) const
+  முழு cmp (Type2 a) மாறிலி
   {
     Type b = v;
-    return (a > b) - (a < b);
+    திரும்பு (a > b) - (a < b);
   }
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
-  protected:
+  பாதுகாக்கப்பட்ட:
   typename std::conditional<std::is_integral<Type>::value,
 			    HBInt<BE, Type, Size>,
 			    HBFloat<BE, Type, Size>>::type v;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (Size);
 };
 
-typedef NumType<true, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
-typedef NumType<true, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
-typedef NumType<true, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
-typedef NumType<true, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
-typedef NumType<true, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
-typedef NumType<true, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
-typedef NumType<true, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
-typedef NumType<true, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
+வகைவரை இலக்கம்_Type<உண்மை, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
+வகைவரை இலக்கம்_Type<உண்மை, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
+வகைவரை இலக்கம்_Type<உண்மை, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
+வகைவரை இலக்கம்_Type<உண்மை, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
+வகைவரை இலக்கம்_Type<உண்மை, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
+வகைவரை இலக்கம்_Type<உண்மை, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
+வகைவரை இலக்கம்_Type<உண்மை, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
+வகைவரை இலக்கம்_Type<உண்மை, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
 /* Note: we cannot defined a signed HBINT24 because there's no corresponding C type.
  * Works for unsigned, but not signed, since we rely on compiler for sign-extension. */
-typedef NumType<true, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
+வகைவரை இலக்கம்_Type<உண்மை, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
 
-typedef NumType<false, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
-typedef NumType<false, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
-typedef NumType<false, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
-typedef NumType<false, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
-typedef NumType<false, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
-typedef NumType<false, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
+வகைவரை இலக்கம்_Type<பொய், uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
+வகைவரை இலக்கம்_Type<பொய், int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
+வகைவரை இலக்கம்_Type<பொய், uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
+வகைவரை இலக்கம்_Type<பொய், int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
+வகைவரை இலக்கம்_Type<பொய், uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
+வகைவரை இலக்கம்_Type<பொய், int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
 
-typedef NumType<true,  float>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
-typedef NumType<true,  double> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
-typedef NumType<false, float>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
-typedef NumType<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
+வகைவரை இலக்கம்_Type<உண்மை,  தசம>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
+வகைவரை இலக்கம்_Type<உண்மை,  இரட்டை> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
+வகைவரை இலக்கம்_Type<பொய், தசம>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
+வகைவரை இலக்கம்_Type<பொய், இரட்டை> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
 
 /* 15-bit unsigned number; top bit used for extension. */
-struct HBUINT15 : HBUINT16
+கட்டமைப்பு HBUINT15 : HBUINT16
 {
   /* TODO Flesh out; actually mask top bit. */
-  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); return *this; }
-  public:
+  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); திரும்பு *இது; }
+  பொது:
   DEFINE_SIZE_STATIC (2);
 };
 
 /* 32-bit unsigned integer with variable encoding. */
-struct HBUINT32VAR
+கட்டமைப்பு HBUINT32VAR
 {
-  size_t get_size () const
+  size_t get_size () மாறிலி
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return 1;
-    else if (b0 < 0xC0)
-      return 2;
-    else if (b0 < 0xE0)
-      return 3;
-    else if (b0 < 0xF0)
-      return 4;
-    else
-      return 5;
+    எனில் (b0 < 0x80)
+      திரும்பு 1;
+    இல்லையெனில் எனில் (b0 < 0xC0)
+      திரும்பு 2;
+    இல்லையெனில் எனில் (b0 < 0xE0)
+      திரும்பு 3;
+    இல்லையெனில் எனில் (b0 < 0xF0)
+      திரும்பு 4;
+    இல்லையெனில்
+      திரும்பு 5;
   }
 
-  static size_t get_size (uint32_t v)
+  நிலையான size_t get_size (uint32_t v)
   {
-    if (v < 0x80)
-      return 1;
-    else if (v < 0x4000)
-      return 2;
-    else if (v < 0x200000)
-      return 3;
-    else if (v < 0x10000000)
-      return 4;
-    else
-      return 5;
+    எனில் (v < 0x80)
+      திரும்பு 1;
+    இல்லையெனில் எனில் (v < 0x4000)
+      திரும்பு 2;
+    இல்லையெனில் எனில் (v < 0x200000)
+      திரும்பு 3;
+    இல்லையெனில் எனில் (v < 0x10000000)
+      திரும்பு 4;
+    இல்லையெனில்
+      திரும்பு 5;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (c->check_range (v, 1) &&
 		  hb_barrier () &&
 		  c->check_range (v, get_size ()));
   }
 
-  operator uint32_t () const
+  operator uint32_t () மாறிலி
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return b0;
-    else if (b0 < 0xC0)
-      return ((b0 & 0x3F) << 8) | v[1];
-    else if (b0 < 0xE0)
-      return ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
-    else if (b0 < 0xF0)
-      return ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-    else
-      return (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
+    எனில் (b0 < 0x80)
+      திரும்பு b0;
+    இல்லையெனில் எனில் (b0 < 0xC0)
+      திரும்பு ((b0 & 0x3F) << 8) | v[1];
+    இல்லையெனில் எனில் (b0 < 0xE0)
+      திரும்பு ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
+    இல்லையெனில் எனில் (b0 < 0xF0)
+      திரும்பு ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    இல்லையெனில்
+      திரும்பு (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
   }
 
-  static unsigned serialize_unsafe (unsigned char *buf, uint32_t v)
+  நிலையான unsigned serialize_unsafe (unsigned எழுத்து *buf, uint32_t v)
   {
     unsigned len = get_size (v);
-    unsigned char *p = buf + len;
-    for (unsigned i = 0; i < len; i++)
+    unsigned எழுத்து *p = buf + len;
+    க்கு (unsigned i = 0; i < len; i++)
     {
       *--p = v & 0xFF;
       v >>= 8;
     }
 
-    if (len > 1)
+    எனில் (len > 1)
       buf[0] |= ((1 << (len - 1)) - 1) << (9 - len);
 
-    return len;
+    திரும்பு len;
   }
 
-  static bool serialize (hb_serialize_context_t *c, uint32_t v)
+  நிலையான தருக்க serialize (hb_serialize_context_t *c, uint32_t v)
   {
     unsigned len = get_size (v);
-    unsigned char *buf = c->allocate_size<unsigned char> (len, false);
-    if (unlikely (!buf))
-      return false;
+    unsigned எழுத்து *buf = c->allocate_size<unsigned எழுத்து> (len, பொய்);
+    எனில் (unlikely (!buf))
+      திரும்பு பொய்;
 
     serialize_unsafe (buf, v);
-    return true;
+    திரும்பு உண்மை;
   }
 
-  protected:
-  unsigned char v[5];
+  பாதுகாக்கப்பட்ட:
+  unsigned எழுத்து v[5];
 
-  public:
+  பொது:
   DEFINE_SIZE_MIN (1);
 };
 
 /* 16-bit signed integer (HBINT16) that describes a quantity in FUnits. */
-typedef HBINT16 FWORD;
+வகைவரை HBINT16 FWORD;
 
 /* 32-bit signed integer (HBINT32) that describes a quantity in FUnits. */
-typedef HBINT32 FWORD32;
+வகைவரை HBINT32 FWORD32;
 
 /* 16-bit unsigned integer (HBUINT16) that describes a quantity in FUnits. */
-typedef HBUINT16 UFWORD;
+வகைவரை HBUINT16 UFWORD;
 
 template <typename Type, unsigned fraction_bits>
-struct HBFixed : Type
+கட்டமைப்பு HBFixed : Type
 {
-  static constexpr float mult = 1.f / (1 << fraction_bits);
+  நிலையான constexpr தசம mult = 1.f / (1 << fraction_bits);
   static_assert (Type::static_size * 8 > fraction_bits, "");
 
-  operator signed () const = delete;
-  operator unsigned () const = delete;
-  explicit operator float () const { return to_float (); }
-  typename Type::type to_int () const { return Type::v; }
-  void set_int (typename Type::type i ) { Type::v = i; }
-  float to_float (float offset = 0) const  { return ((int32_t) Type::v + offset) * mult; }
-  void set_float (float f) { Type::v = roundf (f / mult); }
-  public:
+  operator signed () மாறிலி = delete;
+  operator unsigned () மாறிலி = delete;
+  explicit operator தசம () மாறிலி { திரும்பு to_float (); }
+  typename Type::type to_int () மாறிலி { திரும்பு Type::v; }
+  வெறுமை set_int (typename Type::type i ) { Type::v = i; }
+  தசம to_float (தசம offset = 0) மாறிலி  { திரும்பு ((int32_t) Type::v + offset) * mult; }
+  வெறுமை set_float (தசம f) { Type::v = roundf (f / mult); }
+  பொது:
   DEFINE_SIZE_STATIC (Type::static_size);
 };
 
@@ -270,99 +270,99 @@ using F16DOT16 = HBFixed<HBINT32, 16>;
 
 /* Date represented in number of seconds since 12:00 midnight, January 1,
  * 1904. The value is represented as a signed 64-bit integer. */
-struct LONGDATETIME
+கட்டமைப்பு LONGDATETIME
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBINT32 major;
   HBUINT32 minor;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
 /* Array of four uint8s (length = 32 bits) used to identify a script, language
  * system, feature, or baseline */
-struct Tag : HBUINT32
+கட்டமைப்பு Tag : HBUINT32
 {
-  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); return *this; }
+  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); திரும்பு *இது; }
   /* What the char* converters return is NOT nul-terminated.  Print using "%.4s" */
-  operator const char* () const { return reinterpret_cast<const char *> (this); }
-  operator char* ()             { return reinterpret_cast<char *> (this); }
-  public:
+  operator மாறிலி எழுத்து* () மாறிலி { திரும்பு reinterpret_cast<மாறிலி எழுத்து *> (இது); }
+  operator எழுத்து* ()             { திரும்பு reinterpret_cast<எழுத்து *> (இது); }
+  பொது:
   DEFINE_SIZE_STATIC (4);
 };
 
 /* Glyph index number, same as uint16 (length = 16 bits) */
-struct HBGlyphID16 : HBUINT16
+கட்டமைப்பு HBGlyphID16 : HBUINT16
 {
-  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); திரும்பு *இது; }
 };
-struct HBGlyphID24 : HBUINT24
+கட்டமைப்பு HBGlyphID24 : HBUINT24
 {
-  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); return *this; }
+  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); திரும்பு *இது; }
 };
 
 /* Script/language-system/feature index */
-struct Index : HBUINT16 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
-  Index& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+கட்டமைப்பு Index : HBUINT16 {
+  நிலையான constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
+  Index& operator = (uint16_t i) { HBUINT16::operator= (i); திரும்பு *இது; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, Index);
 
-typedef Index NameID;
+வகைவரை Index NameID;
 
-struct VarIdx : HBUINT32 {
-  static constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
+கட்டமைப்பு VarIdx : HBUINT32 {
+  நிலையான constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
   static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_INDEX, "");
-  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); திரும்பு *இது; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, VarIdx);
 
 /* Offset, Null offset = 0 */
-template <typename Type, bool has_null=true>
-struct Offset : Type
+template <typename Type, தருக்க has_null=உண்மை>
+கட்டமைப்பு Offset : Type
 {
-  Offset& operator = (typename Type::type i) { Type::operator= (i); return *this; }
+  Offset& operator = (typename Type::type i) { Type::operator= (i); திரும்பு *இது; }
 
-  typedef Type type;
+  வகைவரை Type type;
 
-  bool is_null () const { return has_null && 0 == *this; }
+  தருக்க is_null () மாறிலி { திரும்பு has_null && 0 == *இது; }
 
-  public:
-  DEFINE_SIZE_STATIC (sizeof (Type));
+  பொது:
+  DEFINE_SIZE_STATIC (அளவு (Type));
 };
 
-typedef Offset<HBUINT16> Offset16;
-typedef Offset<HBUINT24> Offset24;
-typedef Offset<HBUINT32> Offset32;
+வகைவரை Offset<HBUINT16> Offset16;
+வகைவரை Offset<HBUINT24> Offset24;
+வகைவரை Offset<HBUINT32> Offset32;
 
 
 /* CheckSum */
-struct CheckSum : HBUINT32
+கட்டமைப்பு CheckSum : HBUINT32
 {
-  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); திரும்பு *இது; }
 
   /* This is reference implementation from the spec. */
-  static uint32_t CalcTableChecksum (const HBUINT32 *Table, uint32_t Length)
+  நிலையான uint32_t CalcTableChecksum (மாறிலி HBUINT32 *Table, uint32_t Length)
   {
     uint32_t Sum = 0L;
-    assert (0 == (Length & 3));
-    const HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
+    ப்ரதிஜ்ஞா (0 == (Length & 3));
+    மாறிலி HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
 
-    while (Table < EndPtr)
+    போது (Table < EndPtr)
       Sum += *Table++;
-    return Sum;
+    திரும்பு Sum;
   }
 
   /* Note: data should be 4byte aligned and have 4byte padding at the end. */
-  void set_for_data (const void *data, unsigned int length)
-  { *this = CalcTableChecksum ((const HBUINT32 *) data, length); }
+  வெறுமை set_for_data (மாறிலி வெறுமை *data, unsigned முழு length)
+  { *இது = CalcTableChecksum ((மாறிலி HBUINT32 *) data, length); }
 
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (4);
 };
 
@@ -372,20 +372,20 @@ struct CheckSum : HBUINT32
  */
 
 template <typename FixedType=HBUINT16>
-struct FixedVersion
+கட்டமைப்பு FixedVersion
 {
-  uint32_t to_int () const { return (major << (sizeof (FixedType) * 8)) + minor; }
+  uint32_t to_int () மாறிலி { திரும்பு (major << (அளவு (FixedType) * 8)) + minor; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
   FixedType major;
   FixedType minor;
-  public:
-  DEFINE_SIZE_STATIC (2 * sizeof (FixedType));
+  பொது:
+  DEFINE_SIZE_STATIC (2 * அளவு (FixedType));
 };
 
 
@@ -394,95 +394,95 @@ struct FixedVersion
  * Use: (base+offset)
  */
 
-template <typename Type, bool has_null>
-struct _hb_has_null
+template <typename Type, தருக்க has_null>
+கட்டமைப்பு _hb_has_null
 {
-  static const Type *get_null () { return nullptr; }
-  static Type *get_crap ()       { return nullptr; }
+  நிலையான மாறிலி Type *get_null () { திரும்பு nullptr; }
+  நிலையான Type *get_crap ()       { திரும்பு nullptr; }
 };
 template <typename Type>
-struct _hb_has_null<Type, true>
+கட்டமைப்பு _hb_has_null<Type, உண்மை>
 {
-  static const Type *get_null () { return &Null (Type); }
-  static       Type *get_crap () { return &Crap (Type); }
+  நிலையான மாறிலி Type *get_null () { திரும்பு &Null (Type); }
+  நிலையான       Type *get_crap () { திரும்பு &Crap (Type); }
 };
 
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct OffsetTo : Offset<OffsetType, has_null>
+template <typename Type, typename OffsetType, typename BaseType=வெறுமை, தருக்க has_null=உண்மை>
+கட்டமைப்பு OffsetTo : Offset<OffsetType, has_null>
 {
   using target_t = Type;
 
   // Make sure Type is not unbounded; works only for types that are fully defined at OffsetTo time.
-  static_assert (has_null == false ||
+  static_assert (has_null == பொய் ||
 		 (hb_has_null_size (Type) || !hb_has_min_size (Type)), "");
 
   HB_DELETE_COPY_ASSIGN (OffsetTo);
-  OffsetTo () = default;
+  OffsetTo () = இயல்பு;
 
-  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); return *this; }
+  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); திரும்பு *இது; }
 
-  const Type& operator () (const void *base) const
+  மாறிலி Type& operator () (மாறிலி வெறுமை *base) மாறிலி
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_null ();
-    return StructAtOffset<const Type> (base, *this);
+    எனில் (unlikely (இது->is_null ())) திரும்பு *_hb_has_null<Type, has_null>::get_null ();
+    திரும்பு StructAtOffset<மாறிலி Type> (base, *இது);
   }
-  Type& operator () (void *base) const
+  Type& operator () (வெறுமை *base) மாறிலி
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_crap ();
-    return StructAtOffset<Type> (base, *this);
+    எனில் (unlikely (இது->is_null ())) திரும்பு *_hb_has_null<Type, has_null>::get_crap ();
+    திரும்பு StructAtOffset<Type> (base, *இது);
   }
 
   template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const Base &base, const OffsetTo &offset) { return offset ((const void *) base); }
+	    hb_enable_if (hb_is_convertible (மாறிலி Base, மாறிலி BaseType *))>
+  friend மாறிலி Type& operator + (மாறிலி Base &base, மாறிலி OffsetTo &offset) { திரும்பு offset ((மாறிலி வெறுமை *) base); }
   template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const OffsetTo &offset, const Base &base) { return offset ((const void *) base); }
+	    hb_enable_if (hb_is_convertible (மாறிலி Base, மாறிலி BaseType *))>
+  friend மாறிலி Type& operator + (மாறிலி OffsetTo &offset, மாறிலி Base &base) { திரும்பு offset ((மாறிலி வெறுமை *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (Base &&base, OffsetTo &offset) { return offset ((void *) base); }
+  friend Type& operator + (Base &&base, OffsetTo &offset) { திரும்பு offset ((வெறுமை *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (OffsetTo &offset, Base &&base) { return offset ((void *) base); }
+  friend Type& operator + (OffsetTo &offset, Base &&base) { திரும்பு offset ((வெறுமை *) base); }
 
 
   template <typename Base, typename ...Ts>
-  bool serialize_subset (hb_subset_context_t *c, const OffsetTo& src,
-			 const Base *src_base, Ts&&... ds)
+  தருக்க serialize_subset (hb_subset_context_t *c, மாறிலி OffsetTo& src,
+			 மாறிலி Base *src_base, Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *இது = 0;
+    எனில் (src.is_null ())
+      திரும்பு பொய்;
 
     auto *s = c->serializer;
 
     s->push ();
 
-    bool ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
+    தருக்க ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
 
-    if (ret || !has_null)
-      s->add_link (*this, s->pop_pack ());
-    else
-      s->pop_discard ();
+    எனில் (ret || !has_null)
+      s->add_link (*இது, s->எடு_pack ());
+    இல்லையெனில்
+      s->எடு_discard ();
 
-    return ret;
+    திரும்பு ret;
   }
 
 
   template <typename ...Ts>
-  bool serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
+  தருக்க serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
   {
-    *this = 0;
+    *இது = 0;
 
     Type* obj = c->push<Type> ();
-    bool ret = obj->serialize (c, std::forward<Ts> (ds)...);
+    தருக்க ret = obj->serialize (c, std::forward<Ts> (ds)...);
 
-    if (ret)
-      c->add_link (*this, c->pop_pack ());
-    else
-      c->pop_discard ();
+    எனில் (ret)
+      c->add_link (*இது, c->எடு_pack ());
+    இல்லையெனில்
+      c->எடு_discard ();
 
-    return ret;
+    திரும்பு ret;
   }
 
   /* TODO: Somehow merge this with previous function into a serialize_dispatch(). */
@@ -490,62 +490,62 @@ struct OffsetTo : Offset<OffsetType, has_null>
    * Can't compile: whence = hb_serialize_context_t::Head followed by Ts&&...
    */
   template <typename ...Ts>
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias,
+  தருக்க serialize_copy (hb_serialize_context_t *c, மாறிலி OffsetTo& src,
+		       மாறிலி வெறுமை *src_base, unsigned dst_bias,
 		       hb_serialize_context_t::whence_t whence,
 		       Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *இது = 0;
+    எனில் (src.is_null ())
+      திரும்பு பொய்;
 
     c->push ();
 
-    bool ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
+    தருக்க ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
 
-    c->add_link (*this, c->pop_pack (), whence, dst_bias);
+    c->add_link (*இது, c->எடு_pack (), whence, dst_bias);
 
-    return ret;
+    திரும்பு ret;
   }
 
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias = 0)
-  { return serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
+  தருக்க serialize_copy (hb_serialize_context_t *c, மாறிலி OffsetTo& src,
+		       மாறிலி வெறுமை *src_base, unsigned dst_bias = 0)
+  { திரும்பு serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, const BaseType *base) const
+  தருக்க sanitize_shallow (hb_sanitize_context_t *c, மாறிலி BaseType *base) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!c->check_struct (இது))) return_trace (பொய்);
     hb_barrier ();
     //if (unlikely (this->is_null ())) return_trace (true);
-    if (unlikely ((const char *) base + (unsigned) *this < (const char *) base)) return_trace (false);
-    return_trace (true);
+    எனில் (unlikely ((மாறிலி எழுத்து *) base + (unsigned) *இது < (மாறிலி எழுத்து *) base)) return_trace (பொய்);
+    return_trace (உண்மை);
   }
 
   template <typename ...Ts>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool sanitize (hb_sanitize_context_t *c, const BaseType *base, Ts&&... ds) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி BaseType *base, Ts&&... ds) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (sanitize_shallow (c, base) &&
 		  hb_barrier () &&
-		  (this->is_null () ||
-		   c->dispatch (StructAtOffset<Type> (base, *this), std::forward<Ts> (ds)...)));
+		  (இது->is_null () ||
+		   c->dispatch (StructAtOffset<Type> (base, *இது), std::forward<Ts> (ds)...)));
   }
 
-  DEFINE_SIZE_STATIC (sizeof (OffsetType));
+  DEFINE_SIZE_STATIC (அளவு (OffsetType));
 };
 /* Partial specializations. */
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
+template <typename Type, typename BaseType=வெறுமை, தருக்க has_null=உண்மை> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
+template <typename Type, typename BaseType=வெறுமை, தருக்க has_null=உண்மை> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
+template <typename Type, typename BaseType=வெறுமை, தருக்க has_null=உண்மை> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
 
-template <typename Type, typename OffsetType, typename BaseType=void> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset16To = Offset16To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset24To = Offset24To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To<Type, BaseType, false>;
+template <typename Type, typename OffsetType, typename BaseType=வெறுமை> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, பொய்>;
+template <typename Type, typename BaseType=வெறுமை> using NNOffset16To = Offset16To<Type, BaseType, பொய்>;
+template <typename Type, typename BaseType=வெறுமை> using NNOffset24To = Offset24To<Type, BaseType, பொய்>;
+template <typename Type, typename BaseType=வெறுமை> using NNOffset32To = Offset32To<Type, BaseType, பொய்>;
 
 
 /*
@@ -553,248 +553,248 @@ template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To
  */
 
 template <typename Type>
-struct UnsizedArrayOf
+கட்டமைப்பு UnsizedArrayOf
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  வகைவரை Type item_t;
+  நிலையான constexpr unsigned item_size = hb_static_size (Type);
 
   HB_DELETE_CREATE_COPY_ASSIGN (UnsizedArrayOf);
 
-  const Type& operator [] (unsigned int i) const
+  மாறிலி Type& operator [] (unsigned முழு i) மாறிலி
   {
-    return arrayZ[i];
+    திரும்பு arrayZ[i];
   }
-  Type& operator [] (unsigned int i)
+  Type& operator [] (unsigned முழு i)
   {
-    return arrayZ[i];
+    திரும்பு arrayZ[i];
   }
 
-  static size_t get_size (unsigned int len)
-  { return hb_unsigned_mul_saturate (len, Type::static_size); }
+  நிலையான size_t get_size (unsigned முழு len)
+  { திரும்பு hb_unsigned_mul_saturate (len, Type::static_size); }
 
-  template <typename T> operator T * () { return arrayZ; }
-  template <typename T> operator const T * () const { return arrayZ; }
-  hb_array_t<Type> as_array (unsigned int len)
-  { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array (unsigned int len) const
-  { return hb_array (arrayZ, len); }
+  template <typename T> operator T * () { திரும்பு arrayZ; }
+  template <typename T> operator மாறிலி T * () மாறிலி { திரும்பு arrayZ; }
+  hb_array_t<Type> as_array (unsigned முழு len)
+  { திரும்பு hb_array (arrayZ, len); }
+  hb_array_t<மாறிலி Type> as_array (unsigned முழு len) மாறிலி
+  { திரும்பு hb_array (arrayZ, len); }
 
   template <typename T>
-  Type &lsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).lsearch (x, &not_found); }
+  Type &lsearch (unsigned முழு len, மாறிலி T &x, Type &not_found = Crap (Type))
+  { திரும்பு *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).lsearch (x, &not_found); }
+  மாறிலி Type &lsearch (unsigned முழு len, மாறிலி T &x, மாறிலி Type &not_found = Null (Type)) மாறிலி
+  { திரும்பு *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  தருக்க lfind (unsigned முழு len, மாறிலி T &x, unsigned முழு *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).lfind (x, i, not_found, to_store); }
+	      unsigned முழு to_store = (unsigned முழு) -1) மாறிலி
+  { திரும்பு as_array (len).lfind (x, i, not_found, to_store); }
 
-  void qsort (unsigned int len, unsigned int start = 0, unsigned int end = (unsigned int) -1)
+  வெறுமை qsort (unsigned முழு len, unsigned முழு start = 0, unsigned முழு end = (unsigned முழு) -1)
   { as_array (len).qsort (start, end); }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  தருக்க serialize (hb_serialize_context_t *c, unsigned முழு பொருட்கள்_len, தருக்க clear = உண்மை)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_size (இது, get_size (பொருட்கள்_len), clear))) return_trace (பொய்);
+    return_trace (உண்மை);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  தருக்க serialize (hb_serialize_context_t *c, Iterator பொருட்கள்)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    unsigned மொத்தம் = hb_len (பொருட்கள்);
+    எனில் (unlikely (!serialize (c, மொத்தம், பொய்))) return_trace (பொய்);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    க்கு (unsigned i = 0; i < மொத்தம்; i++, ++பொருட்கள்)
+      arrayZ[i] = *பொருட்கள்;
+    return_trace (உண்மை);
   }
 
-  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned count) const
+  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned மொத்தம்) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
+    TRACE_SERIALIZE (இது);
+    auto *out = c->start_embed (இது);
+    எனில் (unlikely (!as_array (மொத்தம்).copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  தருக்க sanitize (hb_sanitize_context_t *c, unsigned முழு மொத்தம், Ts&&... ds) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c, count))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!sanitize_shallow (c, மொத்தம்))) return_trace (பொய்);
+    எனில் (!அளவு... (Ts) && hb_is_trivially_copyable(Type)) return_trace (உண்மை);
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (பொய்);
+    return_trace (உண்மை);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int count) const
+  தருக்க sanitize_shallow (hb_sanitize_context_t *c, unsigned முழு மொத்தம்) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_array (arrayZ, count));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_array (arrayZ, மொத்தம்));
   }
 
-  public:
+  பொது:
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
+  பொது:
   DEFINE_SIZE_UNBOUNDED (0);
 };
 
 /* Unsized array of offset's */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
+template <typename Type, typename OffsetType, typename BaseType=வெறுமை, தருக்க has_null=உண்மை>
 using UnsizedArray16OfOffsetTo = UnsizedArrayOf<OffsetTo<Type, OffsetType, BaseType, has_null>>;
 
 /* Unsized array of offsets relative to the beginning of the array itself. */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
+template <typename Type, typename OffsetType, typename BaseType=வெறுமை, தருக்க has_null=உண்மை>
+கட்டமைப்பு UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
 {
-  const Type& operator [] (int i_) const
+  மாறிலி Type& operator [] (முழு i_) மாறிலி
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Null (Type); /* Overflowed. */
+    unsigned முழு i = (unsigned முழு) i_;
+    மாறிலி OffsetTo<Type, OffsetType, BaseType, has_null> *p = &இது->arrayZ[i];
+    எனில் (unlikely ((மாறிலி வெறுமை *) p < (மாறிலி வெறுமை *) இது->arrayZ)) திரும்பு Null (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    திரும்பு இது+*p;
   }
-  Type& operator [] (int i_)
+  Type& operator [] (முழு i_)
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Crap (Type); /* Overflowed. */
+    unsigned முழு i = (unsigned முழு) i_;
+    மாறிலி OffsetTo<Type, OffsetType, BaseType, has_null> *p = &இது->arrayZ[i];
+    எனில் (unlikely ((மாறிலி வெறுமை *) p < (மாறிலி வெறுமை *) இது->arrayZ)) திரும்பு Crap (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    திரும்பு இது+*p;
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  தருக்க sanitize (hb_sanitize_context_t *c, unsigned முழு மொத்தம், Ts&&... ds) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace ((UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
-		   ::sanitize (c, count, this, std::forward<Ts> (ds)...)));
+		   ::sanitize (c, மொத்தம், இது, std::forward<Ts> (ds)...)));
   }
 };
 
 /* An array with sorted elements.  Supports binary searching. */
 template <typename Type>
-struct SortedUnsizedArrayOf : UnsizedArrayOf<Type>
+கட்டமைப்பு SortedUnsizedArrayOf : UnsizedArrayOf<Type>
 {
-  hb_sorted_array_t<Type> as_array (unsigned int len)
-  { return hb_sorted_array (this->arrayZ, len); }
-  hb_sorted_array_t<const Type> as_array (unsigned int len) const
-  { return hb_sorted_array (this->arrayZ, len); }
-  operator hb_sorted_array_t<Type> ()             { return as_array (); }
-  operator hb_sorted_array_t<const Type> () const { return as_array (); }
+  hb_sorted_array_t<Type> as_array (unsigned முழு len)
+  { திரும்பு hb_sorted_array (இது->arrayZ, len); }
+  hb_sorted_array_t<மாறிலி Type> as_array (unsigned முழு len) மாறிலி
+  { திரும்பு hb_sorted_array (இது->arrayZ, len); }
+  operator hb_sorted_array_t<Type> ()             { திரும்பு as_array (); }
+  operator hb_sorted_array_t<மாறிலி Type> () மாறிலி { திரும்பு as_array (); }
 
   template <typename T>
-  Type &bsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).bsearch (x, &not_found); }
+  Type &bsearch (unsigned முழு len, மாறிலி T &x, Type &not_found = Crap (Type))
+  { திரும்பு *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).bsearch (x, &not_found); }
+  மாறிலி Type &bsearch (unsigned முழு len, மாறிலி T &x, மாறிலி Type &not_found = Null (Type)) மாறிலி
+  { திரும்பு *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  தருக்க bfind (unsigned முழு len, மாறிலி T &x, unsigned முழு *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).bfind (x, i, not_found, to_store); }
+	      unsigned முழு to_store = (unsigned முழு) -1) மாறிலி
+  { திரும்பு as_array (len).bfind (x, i, not_found, to_store); }
 };
 
 
 /* An array with a number of elements. */
 template <typename Type, typename LenType>
-struct ArrayOf
+கட்டமைப்பு ArrayOf
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  வகைவரை Type item_t;
+  நிலையான constexpr unsigned item_size = hb_static_size (Type);
 
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOf);
 
-  const Type& operator [] (int i_) const
+  மாறிலி Type& operator [] (முழு i_) மாறிலி
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Null (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= len)) திரும்பு Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    திரும்பு arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (முழு i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Crap (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= len)) திரும்பு Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    திரும்பு arrayZ[i];
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
 
-  explicit operator bool () const { return len; }
+  explicit operator தருக்க () மாறிலி { திரும்பு len; }
 
-  void pop () { len--; }
+  வெறுமை எடு () { len--; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, len); }
+  hb_array_t<      Type> as_array ()       { திரும்பு hb_array (arrayZ, len); }
+  hb_array_t<மாறிலி Type> as_array () மாறிலி { திரும்பு hb_array (arrayZ, len); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  வகைவரை hb_array_t<மாறிலி Type>   iter_t;
+  வகைவரை hb_array_t<      Type> writer_t;
+    iter_t   iter () மாறிலி { திரும்பு as_array (); }
+  writer_t writer ()       { திரும்பு as_array (); }
+  operator   iter_t () மாறிலி { திரும்பு   iter (); }
+  operator writer_t ()       { திரும்பு writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + len; }
+  மாறிலி Type *begin () மாறிலி { திரும்பு arrayZ; }
+  மாறிலி Type *end () மாறிலி { திரும்பு arrayZ + len; }
 
   template <typename T>
-  Type &lsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().lsearch (x, &not_found); }
+  Type &lsearch (மாறிலி T &x, Type &not_found = Crap (Type))
+  { திரும்பு *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().lsearch (x, &not_found); }
+  மாறிலி Type &lsearch (மாறிலி T &x, மாறிலி Type &not_found = Null (Type)) மாறிலி
+  { திரும்பு *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned int *i = nullptr,
+  தருக்க lfind (மாறிலி T &x, unsigned முழு *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().lfind (x, i, not_found, to_store); }
+	      unsigned முழு to_store = (unsigned முழு) -1) மாறிலி
+  { திரும்பு as_array ().lfind (x, i, not_found, to_store); }
 
-  void qsort ()
+  வெறுமை qsort ()
   { as_array ().qsort (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned items_len, bool clear = true)
+  HB_NODISCARD தருக்க serialize (hb_serialize_context_t *c, unsigned பொருட்கள்_len, தருக்க clear = உண்மை)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (len, items_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
+    c->check_assign (len, பொருட்கள்_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    எனில் (unlikely (!c->extend_size (இது, get_size (), clear))) return_trace (பொய்);
+    return_trace (உண்மை);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD தருக்க serialize (hb_serialize_context_t *c, Iterator பொருட்கள்)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    unsigned மொத்தம் = hb_len (பொருட்கள்);
+    எனில் (unlikely (!serialize (c, மொத்தம், பொய்))) return_trace (பொய்);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    க்கு (unsigned i = 0; i < மொத்தம்; i++, ++பொருட்கள்)
+      arrayZ[i] = *பொருட்கள்;
+    return_trace (உண்மை);
   }
 
   Type* serialize_append (hb_serialize_context_t *c)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     len++;
-    if (unlikely (!len || !c->extend (this)))
+    எனில் (unlikely (!len || !c->extend (இது)))
     {
       len--;
       return_trace (nullptr);
@@ -802,44 +802,44 @@ struct ArrayOf
     return_trace (&arrayZ[len - 1]);
   }
 
-  ArrayOf* copy (hb_serialize_context_t *c) const
+  ArrayOf* copy (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (nullptr);
+    TRACE_SERIALIZE (இது);
+    auto *out = c->start_embed (இது);
+    எனில் (unlikely (!c->extend_min (out))) return_trace (nullptr);
     c->check_assign (out->len, len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!as_array ().copy (c))) return_trace (nullptr);
+    எனில் (unlikely (!as_array ().copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  தருக்க sanitize (hb_sanitize_context_t *c, Ts&&... ds) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!sanitize_shallow (c))) return_trace (பொய்);
+    எனில் (!அளவு... (Ts) && hb_is_trivially_copyable(Type)) return_trace (உண்மை);
     hb_barrier ();
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned முழு மொத்தம் = len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (பொய்);
+    return_trace (உண்மை);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  தருக்க sanitize_shallow (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (len.sanitize (c) &&
 		  hb_barrier () &&
-		  c->check_array_sized (arrayZ, len, sizeof (LenType)));
+		  c->check_array_sized (arrayZ, len, அளவு (LenType)));
   }
 
-  public:
+  பொது:
   LenType	len;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  பொது:
+  DEFINE_SIZE_ARRAY (அளவு (LenType), arrayZ);
 };
 template <typename Type> using Array16Of = ArrayOf<Type, HBUINT16>;
 template <typename Type> using Array24Of = ArrayOf<Type, HBUINT24>;
@@ -854,39 +854,39 @@ template <typename Type> using Array32OfOffset32To = ArrayOf<OffsetTo<Type, HBUI
 
 /* Array of offsets relative to the beginning of the array itself. */
 template <typename Type, typename OffsetType>
-struct List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
+கட்டமைப்பு List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
 {
-  const Type& operator [] (int i_) const
+  மாறிலி Type& operator [] (முழு i_) மாறிலி
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= இது->len)) திரும்பு Null (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    திரும்பு இது+இது->arrayZ[i];
   }
-  const Type& operator [] (int i_)
+  மாறிலி Type& operator [] (முழு i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Crap (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= இது->len)) திரும்பு Crap (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    திரும்பு இது+இது->arrayZ[i];
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    struct List16OfOffsetTo *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    unsigned int count = this->len;
-    for (unsigned int i = 0; i < count; i++)
-      out->arrayZ[i].serialize_subset (c, this->arrayZ[i], this, out);
-    return_trace (true);
+    TRACE_SUBSET (இது);
+    கட்டமைப்பு List16OfOffsetTo *out = c->serializer->embed (*இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
+    unsigned முழு மொத்தம் = இது->len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      out->arrayZ[i].serialize_subset (c, இது->arrayZ[i], இது, out);
+    return_trace (உண்மை);
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  தருக்க sanitize (hb_sanitize_context_t *c, Ts&&... ds) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, this, std::forward<Ts> (ds)...)));
+    TRACE_SANITIZE (இது);
+    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, இது, std::forward<Ts> (ds)...)));
   }
 };
 
@@ -895,206 +895,206 @@ using List16OfOffset16To = List16OfOffsetTo<Type, HBUINT16>;
 
 /* An array starting at second element. */
 template <typename Type, typename LenType>
-struct HeadlessArrayOf
+கட்டமைப்பு HeadlessArrayOf
 {
-  static constexpr unsigned item_size = Type::static_size;
+  நிலையான constexpr unsigned item_size = Type::static_size;
 
   HB_DELETE_CREATE_COPY_ASSIGN (HeadlessArrayOf);
 
-  const Type& operator [] (int i_) const
+  மாறிலி Type& operator [] (முழு i_) மாறிலி
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Null (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= lenP1 || !i)) திரும்பு Null (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    திரும்பு arrayZ[i-1];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (முழு i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Crap (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= lenP1 || !i)) திரும்பு Crap (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    திரும்பு arrayZ[i-1];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
 
-  unsigned get_length () const { return lenP1 ? lenP1 - 1 : 0; }
+  unsigned get_length () மாறிலி { திரும்பு lenP1 ? lenP1 - 1 : 0; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, get_length ()); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, get_length ()); }
+  hb_array_t<      Type> as_array ()       { திரும்பு hb_array (arrayZ, get_length ()); }
+  hb_array_t<மாறிலி Type> as_array () மாறிலி { திரும்பு hb_array (arrayZ, get_length ()); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  வகைவரை hb_array_t<மாறிலி Type>   iter_t;
+  வகைவரை hb_array_t<      Type> writer_t;
+    iter_t   iter () மாறிலி { திரும்பு as_array (); }
+  writer_t writer ()       { திரும்பு as_array (); }
+  operator   iter_t () மாறிலி { திரும்பு   iter (); }
+  operator writer_t ()       { திரும்பு writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + get_length (); }
+  மாறிலி Type *begin () மாறிலி { திரும்பு arrayZ; }
+  மாறிலி Type *end () மாறிலி { திரும்பு arrayZ + get_length (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  HB_NODISCARD தருக்க serialize (hb_serialize_context_t *c, unsigned முழு பொருட்கள்_len, தருக்க clear = உண்மை)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (lenP1, items_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
+    c->check_assign (lenP1, பொருட்கள்_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    எனில் (unlikely (!c->extend_size (இது, get_size (), clear))) return_trace (பொய்);
+    return_trace (உண்மை);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD தருக்க serialize (hb_serialize_context_t *c, Iterator பொருட்கள்)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    unsigned மொத்தம் = hb_len (பொருட்கள்);
+    எனில் (unlikely (!serialize (c, மொத்தம், பொய்))) return_trace (பொய்);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    க்கு (unsigned i = 0; i < மொத்தம்; i++, ++பொருட்கள்)
+      arrayZ[i] = *பொருட்கள்;
+    return_trace (உண்மை);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  தருக்க sanitize (hb_sanitize_context_t *c, Ts&&... ds) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!sanitize_shallow (c))) return_trace (பொய்);
+    எனில் (!அளவு... (Ts) && hb_is_trivially_copyable(Type)) return_trace (உண்மை);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned முழு மொத்தம் = get_length ();
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (பொய்);
+    return_trace (உண்மை);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  தனிப்பட்ட:
+  தருக்க sanitize_shallow (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (lenP1.sanitize (c) &&
 		  hb_barrier () &&
-		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, sizeof (LenType))));
+		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, அளவு (LenType))));
   }
 
-  public:
+  பொது:
   LenType	lenP1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  பொது:
+  DEFINE_SIZE_ARRAY (அளவு (LenType), arrayZ);
 };
 template <typename Type> using HeadlessArray16Of = HeadlessArrayOf<Type, HBUINT16>;
 
 /* An array storing length-1. */
 template <typename Type, typename LenType=HBUINT16>
-struct ArrayOfM1
+கட்டமைப்பு ArrayOfM1
 {
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOfM1);
 
-  const Type& operator [] (int i_) const
+  மாறிலி Type& operator [] (முழு i_) மாறிலி
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Null (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i > lenM1)) திரும்பு Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    திரும்பு arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (முழு i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Crap (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i > lenM1)) திரும்பு Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    திரும்பு arrayZ[i];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  தருக்க sanitize (hb_sanitize_context_t *c, Ts&&... ds) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!sanitize_shallow (c))) return_trace (பொய்);
+    எனில் (!அளவு... (Ts) && hb_is_trivially_copyable(Type)) return_trace (உண்மை);
     hb_barrier ();
-    unsigned int count = lenM1 + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned முழு மொத்தம் = lenM1 + 1;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (பொய்);
+    return_trace (உண்மை);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  தனிப்பட்ட:
+  தருக்க sanitize_shallow (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (lenM1.sanitize (c) &&
 		  hb_barrier () &&
-		  (c->check_array_sized (arrayZ, lenM1 + 1, sizeof (LenType))));
+		  (c->check_array_sized (arrayZ, lenM1 + 1, அளவு (LenType))));
   }
 
-  public:
+  பொது:
   LenType	lenM1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  பொது:
+  DEFINE_SIZE_ARRAY (அளவு (LenType), arrayZ);
 };
 
 /* An array with sorted elements.  Supports binary searching. */
 template <typename Type, typename LenType>
-struct SortedArrayOf : ArrayOf<Type, LenType>
+கட்டமைப்பு SortedArrayOf : ArrayOf<Type, LenType>
 {
-  hb_sorted_array_t<      Type> as_array ()       { return hb_sorted_array (this->arrayZ, this->len); }
-  hb_sorted_array_t<const Type> as_array () const { return hb_sorted_array (this->arrayZ, this->len); }
+  hb_sorted_array_t<      Type> as_array ()       { திரும்பு hb_sorted_array (இது->arrayZ, இது->len); }
+  hb_sorted_array_t<மாறிலி Type> as_array () மாறிலி { திரும்பு hb_sorted_array (இது->arrayZ, இது->len); }
 
   /* Iterator. */
-  typedef hb_sorted_array_t<const Type>   iter_t;
-  typedef hb_sorted_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  வகைவரை hb_sorted_array_t<மாறிலி Type>   iter_t;
+  வகைவரை hb_sorted_array_t<      Type> writer_t;
+    iter_t   iter () மாறிலி { திரும்பு as_array (); }
+  writer_t writer ()       { திரும்பு as_array (); }
+  operator   iter_t () மாறிலி { திரும்பு   iter (); }
+  operator writer_t ()       { திரும்பு writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return this->arrayZ; }
-  const Type *end () const { return this->arrayZ + this->len; }
+  மாறிலி Type *begin () மாறிலி { திரும்பு இது->arrayZ; }
+  மாறிலி Type *end () மாறிலி { திரும்பு இது->arrayZ + இது->len; }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len)
+  தருக்க serialize (hb_serialize_context_t *c, unsigned முழு பொருட்கள்_len)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items_len);
+    TRACE_SERIALIZE (இது);
+    தருக்க ret = ArrayOf<Type, LenType>::serialize (c, பொருட்கள்_len);
     return_trace (ret);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_sorted_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  தருக்க serialize (hb_serialize_context_t *c, Iterator பொருட்கள்)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items);
+    TRACE_SERIALIZE (இது);
+    தருக்க ret = ArrayOf<Type, LenType>::serialize (c, பொருட்கள்);
     return_trace (ret);
   }
 
-  SortedArrayOf* copy (hb_serialize_context_t *c) const
+  SortedArrayOf* copy (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     SortedArrayOf* out = reinterpret_cast<SortedArrayOf *> (ArrayOf<Type, LenType>::copy (c));
     return_trace (out);
   }
 
   template <typename T>
-  Type &bsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().bsearch (x, &not_found); }
+  Type &bsearch (மாறிலி T &x, Type &not_found = Crap (Type))
+  { திரும்பு *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().bsearch (x, &not_found); }
+  மாறிலி Type &bsearch (மாறிலி T &x, மாறிலி Type &not_found = Null (Type)) மாறிலி
+  { திரும்பு *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  தருக்க bfind (மாறிலி T &x, unsigned முழு *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned முழு to_store = (unsigned முழு) -1) மாறிலி
+  { திரும்பு as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type> using SortedArray16Of = SortedArrayOf<Type, HBUINT16>;
@@ -1106,139 +1106,139 @@ template <typename Type> using SortedArray32Of = SortedArrayOf<Type, HBUINT32>;
  */
 
 template <typename LenType=HBUINT16>
-struct BinSearchHeader
+கட்டமைப்பு Bin_தேடல்_Header
 {
-  operator uint32_t () const { return len; }
+  operator uint32_t () மாறிலி { திரும்பு len; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  BinSearchHeader& operator = (unsigned int v)
+  Bin_தேடல்_Header& operator = (unsigned முழு v)
   {
     len = v;
-    assert (len == v);
+    ப்ரதிஜ்ஞா (len == v);
     entrySelector = hb_max (1u, hb_bit_storage (v)) - 1;
-    searchRange = 16 * (1u << entrySelector);
-    rangeShift = v * 16 > searchRange
-		 ? 16 * v - searchRange
+    தேடல்_Range = 16 * (1u << entrySelector);
+    rangeShift = v * 16 > தேடல்_Range
+		 ? 16 * v - தேடல்_Range
 		 : 0;
-    return *this;
+    திரும்பு *இது;
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   LenType	len;
-  LenType	searchRange;
+  LenType	தேடல்_Range;
   LenType	entrySelector;
   LenType	rangeShift;
 
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
 template <typename Type, typename LenType=HBUINT16>
-using BinSearchArrayOf = SortedArrayOf<Type, BinSearchHeader<LenType>>;
+using Bin_தேடல்_Array_Of = SortedArrayOf<Type, Bin_தேடல்_Header<LenType>>;
 
 
-struct VarSizedBinSearchHeader
+கட்டமைப்பு Var_Sized_Bin_தேடல்_Header
 {
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
   HBUINT16	unitSize;	/* Size of a lookup unit for this search in bytes. */
   HBUINT16	nUnits;		/* Number of units of the preceding size to be searched. */
-  HBUINT16	searchRange;	/* The value of unitSize times the largest power of 2
+  HBUINT16	தேடல்_Range;	/* The value of unitSize times the largest power of 2
 				 * that is less than or equal to the value of nUnits. */
   HBUINT16	entrySelector;	/* The log base 2 of the largest power of 2 less than
 				 * or equal to the value of nUnits. */
   HBUINT16	rangeShift;	/* The value of unitSize times the difference of the
 				 * value of nUnits minus the largest power of 2 less
 				 * than or equal to the value of nUnits. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (10);
 };
 
 template <typename Type>
-struct VarSizedBinSearchArrayOf
+கட்டமைப்பு Var_Sized_Bin_தேடல்_Array_Of
 {
-  static constexpr unsigned item_size = Type::static_size;
+  நிலையான constexpr unsigned item_size = Type::static_size;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (VarSizedBinSearchArrayOf);
+  HB_DELETE_CREATE_COPY_ASSIGN (Var_Sized_Bin_தேடல்_Array_Of);
 
-  bool last_is_terminator () const
+  தருக்க last_is_terminator () மாறிலி
   {
-    if (unlikely (!header.nUnits)) return false;
+    எனில் (unlikely (!header.nUnits)) திரும்பு பொய்;
 
     /* Gah.
      *
      * "The number of termination values that need to be included is table-specific.
      * The value that indicates binary search termination is 0xFFFF." */
-    const HBUINT16 *words = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
-    unsigned int count = Type::TerminationWordCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (words[i] != 0xFFFFu)
-	return false;
-    return true;
+    மாறிலி HBUINT16 *சொற்கள் = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
+    unsigned முழு மொத்தம் = Type::Termination_Word_மொத்தம்;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (சொற்கள்[i] != 0xFFFFu)
+	திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
-  const Type& operator [] (int i_) const
+  மாறிலி Type& operator [] (முழு i_) மாறிலி
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Null (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= get_length ())) திரும்பு Null (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    திரும்பு StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  Type& operator [] (int i_)
+  Type& operator [] (முழு i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Crap (Type);
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= get_length ())) திரும்பு Crap (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    திரும்பு StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  unsigned int get_length () const
-  { return header.nUnits - last_is_terminator (); }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
+  unsigned முழு get_length () மாறிலி
+  { திரும்பு header.nUnits - last_is_terminator (); }
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  தருக்க sanitize (hb_sanitize_context_t *c, Ts&&... ds) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!sanitize_shallow (c))) return_trace (பொய்);
+    எனில் (!அளவு... (Ts) && hb_is_trivially_copyable(Type)) return_trace (உண்மை);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned முழு மொத்தம் = get_length ();
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (unlikely (!(*இது)[i].sanitize (c, std::forward<Ts> (ds)...)))
+	return_trace (பொய்);
+    return_trace (உண்மை);
   }
 
   template <typename T>
-  const Type *bsearch (const T &key) const
+  மாறிலி Type *bsearch (மாறிலி T &key) மாறிலி
   {
     unsigned pos;
-    return hb_bsearch_impl (&pos,
+    திரும்பு hb_bsearch_impl (&pos,
 			    key,
-			    (const void *) bytesZ,
+			    (மாறிலி வெறுமை *) bytesZ,
 			    get_length (),
 			    header.unitSize,
 			    _hb_cmp_method<T, Type>)
-	   ? (const Type *) (((const char *) &bytesZ) + (pos * header.unitSize))
+	   ? (மாறிலி Type *) (((மாறிலி எழுத்து *) &bytesZ) + (pos * header.unitSize))
 	   : nullptr;
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  தனிப்பட்ட:
+  தருக்க sanitize_shallow (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (header.sanitize (c) &&
 		  hb_barrier () &&
 		  Type::static_size <= header.unitSize &&
@@ -1247,338 +1247,338 @@ struct VarSizedBinSearchArrayOf
 				  header.unitSize));
   }
 
-  protected:
-  VarSizedBinSearchHeader	header;
+  பாதுகாக்கப்பட்ட:
+  Var_Sized_Bin_தேடல்_Header	header;
   UnsizedArrayOf<HBUINT8>	bytesZ;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (10, bytesZ);
 };
 
 
 /* CFF INDEX */
 
-template <typename COUNT>
-struct CFFIndex
+template <typename மொத்தம்_3>
+கட்டமைப்பு CFFIndex
 {
-  unsigned int offset_array_size () const
-  { return offSize * (count + 1); }
+  unsigned முழு offset_array_size () மாறிலி
+  { திரும்பு offSize * (மொத்தம் + 1); }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool serialize (hb_serialize_context_t *c,
-		  const Iterable &iterable,
-		  const unsigned *p_data_size = nullptr,
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி Iterable &iterable,
+		  மாறிலி unsigned *p_data_size = nullptr,
                   unsigned min_off_size = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     unsigned data_size;
-    if (p_data_size)
+    எனில் (p_data_size)
       data_size = *p_data_size;
-    else
+    இல்லையெனில்
       total_size (iterable, &data_size);
 
     auto it = hb_iter (iterable);
-    if (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (false);
-    unsigned char *ret = c->allocate_size<unsigned char> (data_size, false);
-    if (unlikely (!ret)) return_trace (false);
+    எனில் (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (பொய்);
+    unsigned எழுத்து *ret = c->allocate_size<unsigned எழுத்து> (data_size, பொய்);
+    எனில் (unlikely (!ret)) return_trace (பொய்);
     unsigned remaining = data_size;
-    for (const auto &_ : +it)
+    க்கு (மாறிலி auto &_ : +it)
     {
       unsigned len = _.length;
 
-      if (!len)
-	continue;
+      எனில் (!len)
+	தொடர்;
 
-      if (unlikely (len > remaining)) {
+      எனில் (unlikely (len > remaining)) {
         // We have more bytes to write then the computed data size, so the size calculation
         // must have encountered overflow.
-        return_trace (c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+        return_trace (c->check_success (பொய், HB_SERIALIZE_ERROR_INT_OVERFLOW));
       }
 
       remaining -= len;
 
-      if (len <= 1)
+      எனில் (len <= 1)
       {
 	*ret++ = *_.arrayZ;
-	continue;
+	தொடர்;
       }
       hb_memcpy (ret, _.arrayZ, len);
       ret += len;
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
   template <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_header (hb_serialize_context_t *c,
+  தருக்க serialize_header (hb_serialize_context_t *c,
 			 Iterator it,
 			 unsigned data_size,
                          unsigned min_off_size = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
     unsigned off_size = (hb_bit_storage (data_size + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
     /* serialize CFFIndex header */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    this->count = hb_len (it);
-    if (!this->count) return_trace (true);
-    if (unlikely (!c->extend (this->offSize))) return_trace (false);
-    this->offSize = off_size;
-    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
-      return_trace (false);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
+    இது->மொத்தம் = hb_len (it);
+    எனில் (!இது->மொத்தம்) return_trace (உண்மை);
+    எனில் (unlikely (!c->extend (இது->offSize))) return_trace (பொய்);
+    இது->offSize = off_size;
+    எனில் (unlikely (!c->allocate_size<HBUINT8> (off_size * (இது->மொத்தம் + 1), பொய்)))
+      return_trace (பொய்);
 
     /* serialize indices */
-    unsigned int offset = 1;
-    if (HB_OPTIMIZE_SIZE_VAL)
+    unsigned முழு offset = 1;
+    எனில் (HB_OPTIMIZE_SIZE_VAL)
     {
-      unsigned int i = 0;
-      for (const auto &_ : +it)
+      unsigned முழு i = 0;
+      க்கு (மாறிலி auto &_ : +it)
       {
 	set_offset_at (i++, offset);
 	offset += hb_len_of (_);
       }
       set_offset_at (i, offset);
     }
-    else
-      switch (off_size)
+    இல்லையெனில்
+      தேர்வு (off_size)
       {
-	case 1:
+	நிலை 1:
 	{
 	  HBUINT8 *p = (HBUINT8 *) offsets;
-	  for (const auto &_ : +it)
+	  க்கு (மாறிலி auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 2:
+	நிறுத்து;
+	நிலை 2:
 	{
 	  HBUINT16 *p = (HBUINT16 *) offsets;
-	  for (const auto &_ : +it)
+	  க்கு (மாறிலி auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 3:
+	நிறுத்து;
+	நிலை 3:
 	{
 	  HBUINT24 *p = (HBUINT24 *) offsets;
-	  for (const auto &_ : +it)
+	  க்கு (மாறிலி auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 4:
+	நிறுத்து;
+	நிலை 4:
 	{
 	  HBUINT32 *p = (HBUINT32 *) offsets;
-	  for (const auto &_ : +it)
+	  க்கு (மாறிலி auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	default:
-	break;
+	நிறுத்து;
+	இயல்பு:
+	நிறுத்து;
       }
 
-    assert (offset == data_size + 1);
-    return_trace (true);
+    ப்ரதிஜ்ஞா (offset == data_size + 1);
+    return_trace (உண்மை);
   }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  static unsigned total_size (const Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
+  நிலையான unsigned total_size (மாறிலி Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
   {
     auto it = + hb_iter (iterable);
-    if (!it)
+    எனில் (!it)
     {
-      if (data_size) *data_size = 0;
-      return min_size;
+      எனில் (data_size) *data_size = 0;
+      திரும்பு min_size;
     }
 
     unsigned total = 0;
-    for (const auto &_ : +it)
+    க்கு (மாறிலி auto &_ : +it)
       total += hb_len_of (_);
 
-    if (data_size) *data_size = total;
+    எனில் (data_size) *data_size = total;
 
     unsigned off_size = (hb_bit_storage (total + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
-    return min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
+    திரும்பு min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
   }
 
-  void set_offset_at (unsigned int index, unsigned int offset)
+  வெறுமை set_offset_at (unsigned முழு index, unsigned முழு offset)
   {
-    assert (index <= count);
+    ப்ரதிஜ்ஞா (index <= மொத்தம்);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    unsigned முழு size = offSize;
+    மாறிலி HBUINT8 *p = offsets;
+    தேர்வு (size)
     {
-      case 1: ((HBUINT8  *) p)[index] = offset; break;
-      case 2: ((HBUINT16 *) p)[index] = offset; break;
-      case 3: ((HBUINT24 *) p)[index] = offset; break;
-      case 4: ((HBUINT32 *) p)[index] = offset; break;
-      default: return;
+      நிலை 1: ((HBUINT8  *) p)[index] = offset; நிறுத்து;
+      நிலை 2: ((HBUINT16 *) p)[index] = offset; நிறுத்து;
+      நிலை 3: ((HBUINT24 *) p)[index] = offset; நிறுத்து;
+      நிலை 4: ((HBUINT32 *) p)[index] = offset; நிறுத்து;
+      இயல்பு: திரும்பு;
     }
   }
 
-  private:
-  unsigned int offset_at (unsigned int index) const
+  தனிப்பட்ட:
+  unsigned முழு offset_at (unsigned முழு index) மாறிலி
   {
-    assert (index <= count);
+    ப்ரதிஜ்ஞா (index <= மொத்தம்);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    unsigned முழு size = offSize;
+    மாறிலி HBUINT8 *p = offsets;
+    தேர்வு (size)
     {
-      case 1: return ((HBUINT8  *) p)[index];
-      case 2: return ((HBUINT16 *) p)[index];
-      case 3: return ((HBUINT24 *) p)[index];
-      case 4: return ((HBUINT32 *) p)[index];
-      default: return 0;
+      நிலை 1: திரும்பு ((HBUINT8  *) p)[index];
+      நிலை 2: திரும்பு ((HBUINT16 *) p)[index];
+      நிலை 3: திரும்பு ((HBUINT24 *) p)[index];
+      நிலை 4: திரும்பு ((HBUINT32 *) p)[index];
+      இயல்பு: திரும்பு 0;
     }
   }
 
-  const unsigned char *data_base () const
-  { return (const unsigned char *) this + min_size + offSize.static_size - 1 + offset_array_size (); }
-  public:
+  மாறிலி unsigned எழுத்து *data_base () மாறிலி
+  { திரும்பு (மாறிலி unsigned எழுத்து *) இது + min_size + offSize.static_size - 1 + offset_array_size (); }
+  பொது:
 
-  hb_ubytes_t operator [] (unsigned int index) const
+  hb_ubytes_t operator [] (unsigned முழு index) மாறிலி
   {
-    if (unlikely (index >= count)) return hb_ubytes_t ();
+    எனில் (unlikely (index >= மொத்தம்)) திரும்பு hb_ubytes_t ();
     hb_barrier ();
     unsigned offset0 = offset_at (index);
     unsigned offset1 = offset_at (index + 1);
-    if (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
-      return hb_ubytes_t ();
-    return hb_ubytes_t (data_base () + offset0, offset1 - offset0);
+    எனில் (unlikely (offset1 < offset0 || offset1 > offset_at (மொத்தம்)))
+      திரும்பு hb_ubytes_t ();
+    திரும்பு hb_ubytes_t (data_base () + offset0, offset1 - offset0);
   }
 
-  size_t get_size () const
+  size_t get_size () மாறிலி
   {
-    if (count)
-      return hb_unsigned_add_saturate (min_size, offSize.static_size,
-				       offset_array_size (), offset_at (count) - 1);
-    return min_size;  /* empty CFFIndex contains count only */
+    எனில் (மொத்தம்)
+      திரும்பு hb_unsigned_add_saturate (min_size, offSize.static_size,
+				       offset_array_size (), offset_at (மொத்தம்) - 1);
+    திரும்பு min_size;  /* empty CFFIndex contains count only */
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (likely (c->check_struct (இது) &&
 			  hb_barrier () &&
-			  (count == 0 || /* empty INDEX */
-			   (count < count + 1u &&
+			  (மொத்தம் == 0 || /* empty INDEX */
+			   (மொத்தம் < மொத்தம் + 1u &&
 			    c->check_struct (&offSize) && offSize >= 1 && offSize <= 4 &&
-			    c->check_array (offsets, offSize, count + 1u) &&
-			    c->check_range (data_base (), offset_at (count))))));
+			    c->check_array (offsets, offSize, மொத்தம் + 1u) &&
+			    c->check_range (data_base (), offset_at (மொத்தம்))))));
   }
 
-  public:
-  COUNT		count;		/* Number of object data. Note there are (count+1) offsets */
-  private:
+  பொது:
+  மொத்தம்_3		மொத்தம்;		/* Number of object data. Note there are (count+1) offsets */
+  தனிப்பட்ட:
   HBUINT8	offSize;	/* The byte size of each offset in the offsets array. */
   HBUINT8	offsets[HB_VAR_ARRAY];
 				/* The array of (count + 1) offsets into objects array (1-base). */
   /* HBUINT8 data[HB_VAR_ARRAY];	Object data */
-  public:
-  DEFINE_SIZE_MIN (COUNT::static_size);
+  பொது:
+  DEFINE_SIZE_MIN (மொத்தம்_3::static_size);
 };
-typedef CFFIndex<HBUINT16> CFF1Index;
-typedef CFFIndex<HBUINT32> CFF2Index;
+வகைவரை CFFIndex<HBUINT16> CFF1Index;
+வகைவரை CFFIndex<HBUINT32> CFF2Index;
 
 
 /* TupleValues */
-struct TupleValues
+கட்டமைப்பு Tuple_மதிப்புகள்
 {
-  enum packed_value_flag_t
+  எண்ணிக்கை packed_மதிப்பு_flag_t
   {
-    VALUES_ARE_ZEROS     = 0x80,
-    VALUES_ARE_BYTES     = 0x00,
-    VALUES_ARE_WORDS     = 0x40,
-    VALUES_ARE_LONGS     = 0xC0,
-    VALUES_SIZE_MASK     = 0xC0,
-    VALUE_RUN_COUNT_MASK = 0x3F
+    மதிப்புகள்_ARE_ZEROS     = 0x80,
+    மதிப்புகள்_ARE_BYTES     = 0x00,
+    மதிப்புகள்_ARE_சொற்கள்     = 0x40,
+    மதிப்புகள்_ARE_LONGS     = 0xC0,
+    மதிப்புகள்_SIZE_MASK     = 0xC0,
+    மதிப்பு_RUN_மொத்தம்_MASK = 0x3F
   };
 
-  static unsigned compile_unsafe (hb_array_t<const int> values, /* IN */
-				  unsigned char *encoded_bytes /* OUT */)
+  நிலையான unsigned compile_unsafe (hb_array_t<மாறிலி முழு> values, /* IN */
+				  unsigned எழுத்து *encoded_bytes /* OUT */)
   {
-    unsigned num_values = values.length;
+    unsigned இலக்கம்_மதிப்புகள்_3 = values.length;
     unsigned encoded_len = 0;
     unsigned i = 0;
-    while (i < num_values)
+    போது (i < இலக்கம்_மதிப்புகள்_3)
     {
-      int val = values.arrayZ[i];
-      if (val == 0)
-        encoded_len += encode_value_run_as_zeroes (i, encoded_bytes + encoded_len, values);
-      else if ((int8_t) val == val)
-        encoded_len += encode_value_run_as_bytes (i, encoded_bytes + encoded_len, values);
-      else if ((int16_t) val == val)
-        encoded_len += encode_value_run_as_words (i, encoded_bytes + encoded_len, values);
-      else
-        encoded_len += encode_value_run_as_longs (i, encoded_bytes + encoded_len, values);
+      முழு val = values.arrayZ[i];
+      எனில் (val == 0)
+        encoded_len += encode_மதிப்பு_run_as_zeroes (i, encoded_bytes + encoded_len, values);
+      இல்லையெனில் எனில் ((int8_t) val == val)
+        encoded_len += encode_மதிப்பு_run_as_bytes (i, encoded_bytes + encoded_len, values);
+      இல்லையெனில் எனில் ((int16_t) val == val)
+        encoded_len += encode_மதிப்பு_run_as_சொற்கள் (i, encoded_bytes + encoded_len, values);
+      இல்லையெனில்
+        encoded_len += encode_மதிப்பு_run_as_longs (i, encoded_bytes + encoded_len, values);
     }
-    return encoded_len;
+    திரும்பு encoded_len;
   }
 
-  static unsigned encode_value_run_as_zeroes (unsigned& i,
-					      unsigned char *it,
-					      hb_array_t<const int> values)
+  நிலையான unsigned encode_மதிப்பு_run_as_zeroes (unsigned& i,
+					      unsigned எழுத்து *it,
+					      hb_array_t<மாறிலி முழு> values)
   {
-    unsigned num_values = values.length;
+    unsigned இலக்கம்_மதிப்புகள்_3 = values.length;
     unsigned run_length = 0;
     unsigned encoded_len = 0;
-    while (i < num_values && values.arrayZ[i] == 0)
+    போது (i < இலக்கம்_மதிப்புகள்_3 && values.arrayZ[i] == 0)
     {
       i++;
       run_length++;
     }
 
-    while (run_length >= 64)
+    போது (run_length >= 64)
     {
-      *it++ = char (VALUES_ARE_ZEROS | 63);
+      *it++ = எழுத்து (மதிப்புகள்_ARE_ZEROS | 63);
       run_length -= 64;
       encoded_len++;
     }
 
-    if (run_length)
+    எனில் (run_length)
     {
-      *it++ = char (VALUES_ARE_ZEROS | (run_length - 1));
+      *it++ = எழுத்து (மதிப்புகள்_ARE_ZEROS | (run_length - 1));
       encoded_len++;
     }
-    return encoded_len;
+    திரும்பு encoded_len;
   }
 
-  static unsigned encode_value_run_as_bytes (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  நிலையான unsigned encode_மதிப்பு_run_as_bytes (unsigned &i,
+					     unsigned எழுத்து *it,
+					     hb_array_t<மாறிலி முழு> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned இலக்கம்_மதிப்புகள்_3 = values.length;
+    போது (i < இலக்கம்_மதிப்புகள்_3)
     {
-      int val = values.arrayZ[i];
-      if ((int8_t) val != val)
-        break;
+      முழு val = values.arrayZ[i];
+      எனில் ((int8_t) val != val)
+        நிறுத்து;
 
       /* from fonttools: if there're 2 or more zeros in a sequence,
        * it is better to start a new run to save bytes. */
-      if (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
-        break;
+      எனில் (val == 0 && i + 1 < இலக்கம்_மதிப்புகள்_3 && values.arrayZ[i+1] == 0)
+        நிறுத்து;
 
       i++;
     }
@@ -1586,13 +1586,13 @@ struct TupleValues
 
     unsigned encoded_len = 0;
 
-    while (run_length >= 64)
+    போது (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_BYTES | 63);
+      *it++ = (மதிப்புகள்_ARE_BYTES | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
-	it[j] = static_cast<char> (values.arrayZ[start + j]);
+      க்கு (unsigned j = 0; j < 64; j++)
+	it[j] = static_cast<எழுத்து> (values.arrayZ[start + j]);
       it += 64;
       encoded_len += 64;
 
@@ -1600,58 +1600,58 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    எனில் (run_length)
     {
-      *it++ = (VALUES_ARE_BYTES | (run_length - 1));
+      *it++ = (மதிப்புகள்_ARE_BYTES | (run_length - 1));
       encoded_len++;
 
-      for (unsigned j = 0; j < run_length; j++)
-        it[j] = static_cast<char> (values.arrayZ[start + j]);
+      க்கு (unsigned j = 0; j < run_length; j++)
+        it[j] = static_cast<எழுத்து> (values.arrayZ[start + j]);
       encoded_len += run_length;
     }
 
-    return encoded_len;
+    திரும்பு encoded_len;
   }
 
-  static unsigned encode_value_run_as_words (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  நிலையான unsigned encode_மதிப்பு_run_as_சொற்கள் (unsigned &i,
+					     unsigned எழுத்து *it,
+					     hb_array_t<மாறிலி முழு> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned இலக்கம்_மதிப்புகள்_3 = values.length;
+    போது (i < இலக்கம்_மதிப்புகள்_3)
     {
-      int val = values.arrayZ[i];
+      முழு val = values.arrayZ[i];
 
-      if ((int16_t) val != val)
-        break;
+      எனில் ((int16_t) val != val)
+        நிறுத்து;
 
       /* start a new run for a single zero value. */
-      if (val == 0) break;
+      எனில் (val == 0) நிறுத்து;
 
       /* From fonttools: continue word-encoded run if there's only one
        * single value in the range [-128, 127] because it is more compact.
        * Only start a new run when there're 2 continuous such values. */
-      if ((int8_t) val == val &&
-          i + 1 < num_values &&
+      எனில் ((int8_t) val == val &&
+          i + 1 < இலக்கம்_மதிப்புகள்_3 &&
           (int8_t) values.arrayZ[i+1] == values.arrayZ[i+1])
-        break;
+        நிறுத்து;
 
       i++;
     }
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    போது (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_WORDS | 63);
+      *it++ = (மதிப்புகள்_ARE_சொற்கள் | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      க்கு (unsigned j = 0; j < 64; j++)
       {
-        int16_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t மதிப்பு_val = values.arrayZ[start + j];
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val >> 8);
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val & 0xFF);
 
         encoded_len += 2;
       }
@@ -1660,52 +1660,52 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    எனில் (run_length)
     {
-      *it++ = (VALUES_ARE_WORDS | (run_length - 1));
+      *it++ = (மதிப்புகள்_ARE_சொற்கள் | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      போது (start < i)
       {
-        int16_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t மதிப்பு_val = values.arrayZ[start++];
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val >> 8);
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val & 0xFF);
 
         encoded_len += 2;
       }
     }
-    return encoded_len;
+    திரும்பு encoded_len;
   }
 
-  static unsigned encode_value_run_as_longs (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  நிலையான unsigned encode_மதிப்பு_run_as_longs (unsigned &i,
+					     unsigned எழுத்து *it,
+					     hb_array_t<மாறிலி முழு> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned இலக்கம்_மதிப்புகள்_3 = values.length;
+    போது (i < இலக்கம்_மதிப்புகள்_3)
     {
-      int val = values.arrayZ[i];
+      முழு val = values.arrayZ[i];
 
-      if ((int16_t) val == val)
-        break;
+      எனில் ((int16_t) val == val)
+        நிறுத்து;
 
       i++;
     }
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    போது (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_LONGS | 63);
+      *it++ = (மதிப்புகள்_ARE_LONGS | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      க்கு (unsigned j = 0; j < 64; j++)
       {
-        int32_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t மதிப்பு_val = values.arrayZ[start + j];
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val >> 24);
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val >> 16);
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val >> 8);
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val & 0xFF);
 
         encoded_len += 4;
       }
@@ -1714,324 +1714,324 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    எனில் (run_length)
     {
-      *it++ = (VALUES_ARE_LONGS | (run_length - 1));
+      *it++ = (மதிப்புகள்_ARE_LONGS | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      போது (start < i)
       {
-        int32_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t மதிப்பு_val = values.arrayZ[start++];
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val >> 24);
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val >> 16);
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val >> 8);
+        *it++ = static_cast<எழுத்து> (மதிப்பு_val & 0xFF);
 
         encoded_len += 4;
       }
     }
-    return encoded_len;
+    திரும்பு encoded_len;
   }
 
   template <typename T>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  static bool decompile (const HBUINT8 *&p /* IN/OUT */,
+  நிலையான தருக்க decompile (மாறிலி HBUINT8 *&p /* IN/OUT */,
 			 hb_vector_t<T> &values /* IN/OUT */,
-			 const HBUINT8 *end,
-			 bool consume_all = false,
+			 மாறிலி HBUINT8 *end,
+			 தருக்க consume_all = பொய்,
 			 unsigned start = 0)
   {
     unsigned i = 0;
-    unsigned count = consume_all ? UINT_MAX : values.length;
-    if (consume_all)
+    unsigned மொத்தம் = consume_all ? UINT_MAX : values.length;
+    எனில் (consume_all)
       values.alloc ((end - p) / 2);
-    while (i < count)
+    போது (i < மொத்தம்)
     {
-      if (unlikely (p + 1 > end)) return consume_all;
+      எனில் (unlikely (p + 1 > end)) திரும்பு consume_all;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (consume_all)
+      unsigned run_மொத்தம் = (control & மதிப்பு_RUN_மொத்தம்_MASK) + 1;
+      எனில் (consume_all)
       {
-        if (unlikely (!values.resize_dirty  (values.length + run_count)))
-	  return false;
+        எனில் (unlikely (!values.resize_dirty  (values.length + run_மொத்தம்)))
+	  திரும்பு பொய்;
       }
-      unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
+      unsigned stop = i + run_மொத்தம்;
+      எனில் (unlikely (stop > மொத்தம்)) திரும்பு பொய்;
 
-      unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+      unsigned skip = i < start ? hb_min (start - i, run_மொத்தம்) : 0;
       i += skip;
 
-      if ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
+      எனில் ((control & மதிப்புகள்_SIZE_MASK) == மதிப்புகள்_ARE_ZEROS)
       {
-	hb_memset (&values.arrayZ[i], 0, (stop - i) * sizeof (T));
+	hb_memset (&values.arrayZ[i], 0, (stop - i) * அளவு (T));
 	i = stop;
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
+      இல்லையெனில் எனில் ((control & மதிப்புகள்_SIZE_MASK) ==  மதிப்புகள்_ARE_சொற்கள்)
       {
-        if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
+        எனில் (unlikely (p + run_மொத்தம் * HBINT16::static_size > end)) திரும்பு பொய்;
 	p += skip * HBINT16::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-        for (; i + 3 < stop; i += 4)
+        க்கு (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT16 *) p;
+	  values.arrayZ[i] = * (மாறிலி HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 1] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 1] = * (மாறிலி HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 2] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 2] = * (மாறிலி HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 3] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 3] = * (மாறிலி HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
 #endif
-        for (; i < stop; i++)
+        க்கு (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT16 *) p;
+          values.arrayZ[i] = * (மாறிலி HBINT16 *) p;
           p += HBINT16::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
+      இல்லையெனில் எனில் ((control & மதிப்புகள்_SIZE_MASK) ==  மதிப்புகள்_ARE_LONGS)
       {
-        if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
+        எனில் (unlikely (p + run_மொத்தம் * HBINT32::static_size > end)) திரும்பு பொய்;
 	p += skip * HBINT32::static_size;
-        for (; i < stop; i++)
+        க்கு (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT32 *) p;
+          values.arrayZ[i] = * (மாறிலி HBINT32 *) p;
           p += HBINT32::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
+      இல்லையெனில் எனில் ((control & மதிப்புகள்_SIZE_MASK) ==  மதிப்புகள்_ARE_BYTES)
       {
-        if (unlikely (p + run_count > end)) return false;
+        எனில் (unlikely (p + run_மொத்தம் > end)) திரும்பு பொய்;
 	p += skip * HBINT8::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-	for (; i + 3 < stop; i += 4)
+	க்கு (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 1] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 2] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 3] = * (const HBINT8 *) p++;
+	  values.arrayZ[i] = * (மாறிலி HBINT8 *) p++;
+	  values.arrayZ[i + 1] = * (மாறிலி HBINT8 *) p++;
+	  values.arrayZ[i + 2] = * (மாறிலி HBINT8 *) p++;
+	  values.arrayZ[i + 3] = * (மாறிலி HBINT8 *) p++;
 	}
 #endif
-        for (; i < stop; i++)
-          values.arrayZ[i] = * (const HBINT8 *) p++;
+        க்கு (; i < stop; i++)
+          values.arrayZ[i] = * (மாறிலி HBINT8 *) p++;
       }
     }
-    return true;
+    திரும்பு உண்மை;
   }
 
-  static bool skip (const unsigned char *&p /* IN/OUT */,
-		    const unsigned char *end,
-		    unsigned count)
+  நிலையான தருக்க skip (மாறிலி unsigned எழுத்து *&p /* IN/OUT */,
+		    மாறிலி unsigned எழுத்து *end,
+		    unsigned மொத்தம்)
   {
     unsigned seen = 0;
-    while (seen < count)
+    போது (seen < மொத்தம்)
     {
-      if (unlikely (p >= end)) return false;
+      எனில் (unlikely (p >= end)) திரும்பு பொய்;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (unlikely (run_count > count - seen)) return false;
+      unsigned run_மொத்தம் = (control & மதிப்பு_RUN_மொத்தம்_MASK) + 1;
+      எனில் (unlikely (run_மொத்தம் > மொத்தம் - seen)) திரும்பு பொய்;
 
       unsigned width = 0;
-      switch (control & VALUES_SIZE_MASK)
+      தேர்வு (control & மதிப்புகள்_SIZE_MASK)
       {
-	case VALUES_ARE_ZEROS: break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size; break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+	நிலை மதிப்புகள்_ARE_ZEROS: நிறுத்து;
+	நிலை மதிப்புகள்_ARE_BYTES: width = HBINT8::static_size; நிறுத்து;
+	நிலை மதிப்புகள்_ARE_சொற்கள்: width = HBINT16::static_size; நிறுத்து;
+	நிலை மதிப்புகள்_ARE_LONGS: width = HBINT32::static_size; நிறுத்து;
       }
-      if (unlikely (unsigned (end - p) < run_count * width)) return false;
-      p += run_count * width;
-      seen += run_count;
+      எனில் (unlikely (unsigned (end - p) < run_மொத்தம் * width)) திரும்பு பொய்;
+      p += run_மொத்தம் * width;
+      seen += run_மொத்தம்;
     }
-    return true;
+    திரும்பு உண்மை;
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, int>
+  கட்டமைப்பு iter_t : hb_iter_with_fallback_t<iter_t, முழு>
   {
-    iter_t (const unsigned char *p_, unsigned len_)
+    iter_t (மாறிலி unsigned எழுத்து *p_, unsigned len_)
 	    : p (p_), endp (p_ + len_)
-    { if (likely (ensure_run ())) read_value (); }
+    { எனில் (likely (ensure_run ())) read_மதிப்பு (); }
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const endp;
-    int current_value = 0;
-    signed run_count = 0;
+    தனிப்பட்ட:
+    மாறிலி unsigned எழுத்து *p;
+    மாறிலி unsigned எழுத்து * மாறிலி endp;
+    முழு current_மதிப்பு = 0;
+    signed run_மொத்தம் = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    தருக்க ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      எனில் (likely (run_மொத்தம் > 0)) திரும்பு உண்மை;
+      திரும்பு _ensure_run ();
     }
-    bool _ensure_run ()
+    தருக்க _ensure_run ()
     {
-      if (unlikely (p >= endp))
+      எனில் (unlikely (p >= endp))
       {
-        run_count = 0;
-        current_value = 0;
-	return false;
+        run_மொத்தம் = 0;
+        current_மதிப்பு = 0;
+	திரும்பு பொய்;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      run_மொத்தம் = (control & மதிப்பு_RUN_மொத்தம்_MASK) + 1;
+      width = control & மதிப்புகள்_SIZE_MASK;
+      தேர்வு (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        நிலை மதிப்புகள்_ARE_ZEROS: width = 0; நிறுத்து;
+	நிலை மதிப்புகள்_ARE_BYTES: width = HBINT8::static_size;  நிறுத்து;
+	நிலை மதிப்புகள்_ARE_சொற்கள்: width = HBINT16::static_size; நிறுத்து;
+	நிலை மதிப்புகள்_ARE_LONGS: width = HBINT32::static_size; நிறுத்து;
+	இயல்பு: ப்ரதிஜ்ஞா (பொய்);
       }
 
-      if (unlikely (p + run_count * width > endp))
+      எனில் (unlikely (p + run_மொத்தம் * width > endp))
       {
-	run_count = 0;
-	current_value = 0;
-	return false;
+	run_மொத்தம் = 0;
+	current_மதிப்பு = 0;
+	திரும்பு பொய்;
       }
 
-      return true;
+      திரும்பு உண்மை;
     }
-    void read_value ()
+    வெறுமை read_மதிப்பு ()
     {
-      switch (width)
+      தேர்வு (width)
       {
-        case 0: current_value = 0; break;
-	case 1: current_value = * (const HBINT8  *) p; break;
-	case 2: current_value = * (const HBINT16 *) p; break;
-	case 4: current_value = * (const HBINT32 *) p; break;
+        நிலை 0: current_மதிப்பு = 0; நிறுத்து;
+	நிலை 1: current_மதிப்பு = * (மாறிலி HBINT8  *) p; நிறுத்து;
+	நிலை 2: current_மதிப்பு = * (மாறிலி HBINT16 *) p; நிறுத்து;
+	நிலை 4: current_மதிப்பு = * (மாறிலி HBINT32 *) p; நிறுத்து;
       }
       p += width;
     }
 
-    public:
+    பொது:
 
-    typedef int __item_t__;
-    __item_t__ __item__ () const
-    { return current_value; }
+    வகைவரை முழு __item_t__;
+    __item_t__ __item__ () மாறிலி
+    { திரும்பு current_மதிப்பு; }
 
-    bool __more__ () const { return run_count || p < endp; }
-    void __next__ ()
+    தருக்க __more__ () மாறிலி { திரும்பு run_மொத்தம் || p < endp; }
+    வெறுமை __next__ ()
     {
-      run_count--;
-      if (unlikely (!ensure_run ()))
-	return;
-      read_value ();
+      run_மொத்தம்--;
+      எனில் (unlikely (!ensure_run ()))
+	திரும்பு;
+      read_மதிப்பு ();
     }
-    void __forward__ (unsigned n)
+    வெறுமை __forward__ (unsigned n)
     {
-      if (unlikely (!ensure_run ()))
-	return;
-      while (n)
+      எனில் (unlikely (!ensure_run ()))
+	திரும்பு;
+      போது (n)
       {
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	unsigned i = hb_min (n, (unsigned) run_மொத்தம்);
+	run_மொத்தம் -= i;
 	n -= i;
 	p += (i - 1) * width;
-	if (unlikely (!ensure_run ()))
-	  return;
-	read_value ();
+	எனில் (unlikely (!ensure_run ()))
+	  திரும்பு;
+	read_மதிப்பு ();
       }
     }
-    bool operator != (const iter_t& o) const
-    { return p != o.p || run_count != o.run_count; }
-    iter_t __end__ () const
+    தருக்க operator != (மாறிலி iter_t& o) மாறிலி
+    { திரும்பு p != o.p || run_மொத்தம் != o.run_மொத்தம்; }
+    iter_t __end__ () மாறிலி
     {
       iter_t it (endp, 0);
-      return it;
+      திரும்பு it;
     }
   };
 
-  struct fetcher_t
+  கட்டமைப்பு fetcher_t
   {
-    fetcher_t (const unsigned char *p_, unsigned len_)
+    fetcher_t (மாறிலி unsigned எழுத்து *p_, unsigned len_)
 	      : p (p_), end (p_ + len_) {}
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const end;
-    signed run_count = 0;
+    தனிப்பட்ட:
+    மாறிலி unsigned எழுத்து *p;
+    மாறிலி unsigned எழுத்து * மாறிலி end;
+    signed run_மொத்தம் = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    தருக்க ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      எனில் (likely (run_மொத்தம் > 0)) திரும்பு உண்மை;
+      திரும்பு _ensure_run ();
     }
 
-    bool _ensure_run ()
+    தருக்க _ensure_run ()
     {
-      if (unlikely (p >= end))
+      எனில் (unlikely (p >= end))
       {
-        run_count = 0;
-	return false;
+        run_மொத்தம் = 0;
+	திரும்பு பொய்;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      run_மொத்தம் = (control & மதிப்பு_RUN_மொத்தம்_MASK) + 1;
+      width = control & மதிப்புகள்_SIZE_MASK;
+      தேர்வு (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        நிலை மதிப்புகள்_ARE_ZEROS: width = 0; நிறுத்து;
+	நிலை மதிப்புகள்_ARE_BYTES: width = HBINT8::static_size;  நிறுத்து;
+	நிலை மதிப்புகள்_ARE_சொற்கள்: width = HBINT16::static_size; நிறுத்து;
+	நிலை மதிப்புகள்_ARE_LONGS: width = HBINT32::static_size; நிறுத்து;
+	இயல்பு: ப்ரதிஜ்ஞா (பொய்);
       }
 
-      if (unlikely (p + run_count * width > end))
+      எனில் (unlikely (p + run_மொத்தம் * width > end))
       {
-	run_count = 0;
-	return false;
+	run_மொத்தம் = 0;
+	திரும்பு பொய்;
       }
 
-      return true;
+      திரும்பு உண்மை;
     }
 
-    public:
-    void skip (unsigned n)
+    பொது:
+    வெறுமை skip (unsigned n)
     {
-      while (n)
+      போது (n)
       {
-	if (unlikely (!ensure_run ()))
-	  return;
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	எனில் (unlikely (!ensure_run ()))
+	  திரும்பு;
+	unsigned i = hb_min (n, (unsigned) run_மொத்தம்);
+	run_மொத்தம் -= i;
 	n -= i;
 	p += i * width;
       }
     }
 
-    private:
-    template <bool scaled, typename T>
-    void _add_to (hb_array_t<T> out, T scale = T (1))
+    தனிப்பட்ட:
+    template <தருக்க scaled, typename T>
+    வெறுமை _add_to (hb_array_t<T> out, T scale = T (1))
     {
       unsigned n = out.length;
       T *arrayZ = out.arrayZ;
 
-      for (unsigned i = 0; i < n;)
+      க்கு (unsigned i = 0; i < n;)
       {
-	if (unlikely (!ensure_run ()))
-	  break;
-	unsigned count = hb_min (n - i, (unsigned) run_count);
-	switch (width)
+	எனில் (unlikely (!ensure_run ()))
+	  நிறுத்து;
+	unsigned மொத்தம் = hb_min (n - i, (unsigned) run_மொத்தம்);
+	தேர்வு (width)
 	{
-	  case 0:
+	  நிலை 0:
 	  {
-	    arrayZ += count;
-	    break;
+	    arrayZ += மொத்தம்;
+	    நிறுத்து;
 	  }
-	  case 1:
+	  நிலை 1:
 	  {
-	    const auto *pp = (const HBINT8 *) p;
+	    மாறிலி auto *pp = (மாறிலி HBINT8 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    க்கு (; j + 3 < மொத்தம்; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2039,18 +2039,18 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    க்கு (; j < மொத்தம்; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (மாறிலி unsigned எழுத்து *) pp;
 	  }
-	  break;
-	  case 2:
+	  நிறுத்து;
+	  நிலை 2:
 	  {
-	    const auto *pp = (const HBINT16 *) p;
+	    மாறிலி auto *pp = (மாறிலி HBINT16 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    க்கு (; j + 3 < மொத்தம்; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2058,72 +2058,72 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    க்கு (; j < மொத்தம்; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (மாறிலி unsigned எழுத்து *) pp;
 	  }
-	  break;
-	  case 4:
+	  நிறுத்து;
+	  நிலை 4:
 	  {
-	    const auto *pp = (const HBINT32 *) p;
-	    for (unsigned j = 0; j < count; j++)
+	    மாறிலி auto *pp = (மாறிலி HBINT32 *) p;
+	    க்கு (unsigned j = 0; j < மொத்தம்; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (மாறிலி unsigned எழுத்து *) pp;
 	  }
-	  break;
+	  நிறுத்து;
 	}
-	run_count -= count;
-	i += count;
+	run_மொத்தம் -= மொத்தம்;
+	i += மொத்தம்;
       }
     }
 
-    public:
+    பொது:
     template <typename T>
-    void add_to (hb_array_t<T> out, float scale = 1.0f)
+    வெறுமை add_to (hb_array_t<T> out, தசம scale = 1.0f)
     {
 #ifndef HB_OPTIMIZE_SIZE
       // The following branch is supposed to speed things up by avoiding
       // the multiplication in _add_to<> if scale is 1.0f.
       // But in practice it seems to bloat the code and slow things down.
-      if (false && scale == 1.0f)
-        _add_to<false> (out);
-      else
+      எனில் (பொய் && scale == 1.0f)
+        _add_to<பொய்> (out);
+      இல்லையெனில்
 #endif
-        _add_to<true> (out, (T) scale);
+        _add_to<உண்மை> (out, (T) scale);
     }
   };
 };
 
-struct TupleList : CFF2Index
+கட்டமைப்பு TupleList : CFF2Index
 {
-  TupleValues::iter_t operator [] (unsigned i) const
+  Tuple_மதிப்புகள்::iter_t operator [] (unsigned i) மாறிலி
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::iter_t (bytes.arrayZ, bytes.length);
+    திரும்பு Tuple_மதிப்புகள்::iter_t (bytes.arrayZ, bytes.length);
   }
 
-  TupleValues::fetcher_t fetcher (unsigned i) const
+  Tuple_மதிப்புகள்::fetcher_t fetcher (unsigned i) மாறிலி
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
+    திரும்பு Tuple_மதிப்புகள்::fetcher_t (bytes.arrayZ, bytes.length);
   }
 };
 
 
 // Alignment
 
-template <unsigned int alignment>
-struct Align
+template <unsigned முழு alignment>
+கட்டமைப்பு Align
 {
-  size_t get_size (const void *base) const
+  size_t get_size (மாறிலி வெறுமை *base) மாறிலி
   {
-    unsigned offset = (const char *) this - (const char *) base;
-    return (alignment - offset) & (alignment - 1);
+    unsigned offset = (மாறிலி எழுத்து *) இது - (மாறிலி எழுத்து *) base;
+    திரும்பு (alignment - offset) & (alignment - 1);
   }
 
-  public:
+  பொது:
   DEFINE_SIZE_MIN (0);
 };
 

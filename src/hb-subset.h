@@ -28,11 +28,11 @@
 #define HB_SUBSET_H
 #define HB_SUBSET_H_IN
 
-#include "hb.h"
-#include "hb-ot.h"
-#include "hb-subset-serialize.h"
-#include "hb-subset-depend.h"
-#include "hb-subset-serialize.h"
+#அந்தர்பாவ "hb.h"
+#அந்தர்பாவ "hb-ot.h"
+#அந்தர்பாவ "hb-subset-serialize.h"
+#அந்தர்பாவ "hb-subset-depend.h"
+#அந்தர்பாவ "hb-subset-serialize.h"
 
 #undef HB_SUBSET_H_IN
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  * Things that change based on the input. Characters to keep, etc.
  */
 
-typedef struct hb_subset_input_t hb_subset_input_t;
+வகைவரை கட்டமைப்பு hb_subset_உள்ளீடு_t hb_subset_உள்ளீடு_t;
 
 /**
  * hb_subset_plan_t:
@@ -53,7 +53,7 @@ typedef struct hb_subset_input_t hb_subset_input_t;
  * Such as mappings from the old glyph ids to the new ones in the subset.
  */
 
-typedef struct hb_subset_plan_t hb_subset_plan_t;
+வகைவரை கட்டமைப்பு hb_subset_plan_t hb_subset_plan_t;
 
 /**
  * hb_subset_flags_t:
@@ -101,7 +101,7 @@ typedef struct hb_subset_plan_t hb_subset_plan_t;
  *
  * Since: 2.9.0
  **/
-typedef enum { /*< flags >*/
+வகைவரை எண்ணிக்கை { /*< flags >*/
   HB_SUBSET_FLAGS_DEFAULT =		     0x00000000u,
   HB_SUBSET_FLAGS_NO_HINTING =		     0x00000001u,
   HB_SUBSET_FLAGS_RETAIN_GIDS =		     0x00000002u,
@@ -117,7 +117,7 @@ typedef enum { /*< flags >*/
   HB_SUBSET_FLAGS_NO_BIDI_CLOSURE         =  0x00000800u,
 #ifdef HB_EXPERIMENTAL_API
   HB_SUBSET_FLAGS_IFTB_REQUIREMENTS       =  0x00001000u,
-  HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS  =  0x00002000u,
+  HB_SUBSET_FLAGS_RETAIN_இலக்கம்_GLYPHS  =  0x00002000u,
 #endif
   HB_SUBSET_FLAGS_DOWNGRADE_CFF2          =  0x00004000u,
   HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET    =  0x00008000u,
@@ -142,7 +142,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.9.1
  **/
-typedef enum {
+வகைவரை எண்ணிக்கை {
   HB_SUBSET_SETS_GLYPH_INDEX = 0,
   HB_SUBSET_SETS_UNICODE,
   HB_SUBSET_SETS_NO_SUBSET_TABLE_TAG,
@@ -153,102 +153,102 @@ typedef enum {
   HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG,
 } hb_subset_sets_t;
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_create_or_fail (void);
+HB_EXTERN hb_subset_உள்ளீடு_t *
+hb_subset_உள்ளீடு_create_or_fail (வெறுமை);
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input);
+HB_EXTERN hb_subset_உள்ளீடு_t *
+hb_subset_உள்ளீடு_reference (hb_subset_உள்ளீடு_t *உள்ளீடு);
 
-HB_EXTERN void
-hb_subset_input_destroy (hb_subset_input_t *input);
+HB_EXTERN வெறுமை
+hb_subset_உள்ளீடு_destroy (hb_subset_உள்ளீடு_t *உள்ளீடு);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
+hb_subset_உள்ளீடு_set_user_data (hb_subset_உள்ளீடு_t  *உள்ளீடு,
+			       hb_user_data_சாவி_t *சாவி_2,
+			       வெறுமை *		   data,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace);
 
-HB_EXTERN void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t      *key);
+HB_EXTERN வெறுமை *
+hb_subset_உள்ளீடு_get_user_data (மாறிலி hb_subset_உள்ளீடு_t *உள்ளீடு,
+			       hb_user_data_சாவி_t      *சாவி_2);
 
-HB_EXTERN void
-hb_subset_input_keep_everything (hb_subset_input_t *input);
-
-HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input);
+HB_EXTERN வெறுமை
+hb_subset_உள்ளீடு_keep_everything (hb_subset_உள்ளீடு_t *உள்ளீடு);
 
 HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input);
+hb_subset_உள்ளீடு_unicode_set (hb_subset_உள்ளீடு_t *உள்ளீடு);
 
 HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type);
+hb_subset_உள்ளீடு_glyph_set (hb_subset_உள்ளீடு_t *உள்ளீடு);
+
+HB_EXTERN hb_set_t *
+hb_subset_உள்ளீடு_set (hb_subset_உள்ளீடு_t *உள்ளீடு, hb_subset_sets_t set_type);
 
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input);
+hb_subset_உள்ளீடு_old_to_new_glyph_mapping (hb_subset_உள்ளீடு_t *உள்ளீடு);
 
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input);
+hb_subset_உள்ளீடு_get_flags (hb_subset_உள்ளீடு_t *உள்ளீடு);
 
-HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
-			   unsigned value);
+HB_EXTERN வெறுமை
+hb_subset_உள்ளீடு_set_flags (hb_subset_உள்ளீடு_t *உள்ளீடு,
+			   unsigned மதிப்பு_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_உள்ளீடு_pin_all_axes_to_default (hb_subset_உள்ளீடு_t  *உள்ளீடு,
 					 hb_face_t          *face);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_உள்ளீடு_pin_axis_to_default (hb_subset_உள்ளீடு_t  *உள்ளீடு,
 				     hb_face_t          *face,
 				     hb_tag_t            axis_tag);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_உள்ளீடு_pin_axis_location (hb_subset_உள்ளீடு_t  *உள்ளீடு,
 				   hb_face_t          *face,
 				   hb_tag_t            axis_tag,
-				   float               axis_value);
+				   தசம               axis_மதிப்பு);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
+hb_subset_உள்ளீடு_get_axis_range (hb_subset_உள்ளீடு_t  *உள்ளீடு,
 				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value);
+				தசம              *axis_min_மதிப்பு,
+				தசம              *axis_max_மதிப்பு,
+				தசம              *axis_def_மதிப்பு);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_உள்ளீடு_set_axis_range (hb_subset_உள்ளீடு_t  *உள்ளீடு,
 				hb_face_t          *face,
 				hb_tag_t            axis_tag,
-				float               axis_min_value,
-				float               axis_max_value,
-				float               axis_def_value);
+				தசம               axis_min_மதிப்பு,
+				தசம               axis_max_மதிப்பு,
+				தசம               axis_def_மதிப்பு);
 
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
-				  float *axis_min_value,
-				  float *axis_max_value,
-				  float *axis_def_value);
+hb_subset_axis_range_from_string (மாறிலி எழுத்து *str, முழு len,
+				  தசம *axis_min_மதிப்பு,
+				  தசம *axis_max_மதிப்பு,
+				  தசம *axis_def_மதிப்பு);
 
-HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
+HB_EXTERN வெறுமை
+hb_subset_axis_range_to_string (hb_subset_உள்ளீடு_t *உள்ளீடு,
 				hb_tag_t axis_tag,
-				char *buf,
+				எழுத்து *buf,
 				unsigned size);
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input);
+hb_subset_உள்ளீடு_to_string_or_fail (hb_subset_உள்ளீடு_t *உள்ளீடு);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_உள்ளீடு_override_name_table (hb_subset_உள்ளீடு_t  *உள்ளீடு,
 				     hb_ot_name_id_t     name_id,
 				     unsigned            platform_id,
 				     unsigned            encoding_id,
 				     unsigned            language_id,
-				     const char         *name_str,
-				     int                 str_len);
+				     மாறிலி எழுத்து         *name_str,
+				     முழு                 str_len);
 
 
 /*
@@ -272,26 +272,26 @@ HB_EXTERN hb_face_t *
 hb_subset_preprocess (hb_face_t *source);
 
 HB_EXTERN hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input);
+hb_subset_or_fail (hb_face_t *source, மாறிலி hb_subset_உள்ளீடு_t *உள்ளீடு);
 
 HB_EXTERN hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t                 *face,
-                               const hb_subset_input_t   *input);
+                               மாறிலி hb_subset_உள்ளீடு_t   *உள்ளீடு);
 
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_subset_plan_destroy (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_old_to_new_glyph_mapping (மாறிலி hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_new_to_old_glyph_mapping (மாறிலி hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_unicode_to_old_glyph_mapping (மாறிலி hb_subset_plan_t *plan);
 
 
 HB_EXTERN hb_subset_plan_t *
@@ -299,22 +299,22 @@ hb_subset_plan_reference (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_bool_t
 hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
+                              hb_user_data_சாவி_t *சாவி_2,
+                              வெறுமை               *data,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace);
 
-HB_EXTERN void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key);
+HB_EXTERN வெறுமை *
+hb_subset_plan_get_user_data (மாறிலி hb_subset_plan_t *plan,
+                              hb_user_data_சாவி_t     *சாவி_2);
 
 
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#எனில் defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (subset_input, nullptr);
+HB_DEFINE_VTABLE (subset_உள்ளீடு, nullptr);
 HB_DEFINE_VTABLE (subset_plan,  nullptr);
 } // namespace hb
 #endif

@@ -30,18 +30,18 @@
 #ifndef HB_CORETEXT_HH
 #define HB_CORETEXT_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-coretext.h"
+#அந்தர்பாவ "hb-coretext.h"
 
-#include "hb-aat-layout.hh"
+#அந்தர்பாவ "hb-aat-layout.hh"
 
-
-HB_INTERNAL CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int index);
 
 HB_INTERNAL CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index);
+create_cg_font (CFArrayRef ct_font_desc_array, unsigned முழு index);
+
+HB_INTERNAL CGFontRef
+create_cg_font (hb_blob_t *blob, unsigned முழு index);
 
 HB_INTERNAL CGFontRef
 create_cg_font (hb_face_t *face);
@@ -51,47 +51,47 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size);
 
 
 template <typename T>
-struct hb_cf_releaser_t
+கட்டமைப்பு hb_cf_releaser_t
 {
-  static void release (T obj)
+  நிலையான வெறுமை release (T obj)
   {
-    if (obj)
+    எனில் (obj)
       CFRelease ((CFTypeRef) obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGFontRef>
+கட்டமைப்பு hb_cf_releaser_t<CGFontRef>
 {
-  static void release (CGFontRef obj)
+  நிலையான வெறுமை release (CGFontRef obj)
   {
-    if (obj)
+    எனில் (obj)
       CGFontRelease (obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGDataProviderRef>
+கட்டமைப்பு hb_cf_releaser_t<CGDataProviderRef>
 {
-  static void release (CGDataProviderRef obj)
+  நிலையான வெறுமை release (CGDataProviderRef obj)
   {
-    if (obj)
+    எனில் (obj)
       CGDataProviderRelease (obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGPathRef>
+கட்டமைப்பு hb_cf_releaser_t<CGPathRef>
 {
-  static void release (CGPathRef obj)
+  நிலையான வெறுமை release (CGPathRef obj)
   {
-    if (obj)
+    எனில் (obj)
       CGPathRelease (obj);
   }
 };
 
 template <typename T, typename Releaser = hb_cf_releaser_t<T>>
-struct hb_cf_ptr_t
+கட்டமைப்பு hb_cf_ptr_t
 {
   using element_type = T;
 
@@ -99,20 +99,20 @@ struct hb_cf_ptr_t
   constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (nullptr) {}
   explicit hb_cf_ptr_t (T p) noexcept : p (p) {}
 
-  hb_cf_ptr_t (const hb_cf_ptr_t &) = delete;
-  hb_cf_ptr_t &operator = (const hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t (மாறிலி hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t &operator = (மாறிலி hb_cf_ptr_t &) = delete;
 
   hb_cf_ptr_t (hb_cf_ptr_t &&o) noexcept : p (o.release ()) {}
   hb_cf_ptr_t &operator = (hb_cf_ptr_t &&o) noexcept
   {
     reset (o.release ());
-    return *this;
+    திரும்பு *இது;
   }
 
   hb_cf_ptr_t &operator = (std::nullptr_t) noexcept
   {
     reset ();
-    return *this;
+    திரும்பு *இது;
   }
 
   ~hb_cf_ptr_t ()
@@ -121,9 +121,9 @@ struct hb_cf_ptr_t
     p = nullptr;
   }
 
-  void reset (T new_p = nullptr)
+  வெறுமை reset (T new_p = nullptr)
   {
-    if (p != new_p)
+    எனில் (p != new_p)
     {
       T old_p = p;
       p = new_p;
@@ -135,27 +135,27 @@ struct hb_cf_ptr_t
   {
     T old_p = p;
     p = nullptr;
-    return old_p;
+    திரும்பு old_p;
   }
 
-  T get () const noexcept { return p; }
+  T get () மாறிலி noexcept { திரும்பு p; }
 
-  operator T () const noexcept { return p; }
-  explicit operator bool () const noexcept { return p != nullptr; }
-  bool operator ! () const noexcept { return !p; }
+  operator T () மாறிலி noexcept { திரும்பு p; }
+  explicit operator தருக்க () மாறிலி noexcept { திரும்பு p != nullptr; }
+  தருக்க operator ! () மாறிலி noexcept { திரும்பு !p; }
 
-  void swap (hb_cf_ptr_t &o) noexcept
+  வெறுமை swap (hb_cf_ptr_t &o) noexcept
   {
     T tmp = p;
     p = o.p;
     o.p = tmp;
   }
-  friend void swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
+  friend வெறுமை swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
   {
     a.swap (b);
   }
 
-  private:
+  தனிப்பட்ட:
   T p;
 };
 

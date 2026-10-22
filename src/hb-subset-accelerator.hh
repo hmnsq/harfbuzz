@@ -28,51 +28,51 @@
 #define HB_SUBSET_ACCELERATOR_HH
 
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
+#அந்தர்பாவ "hb-map.hh"
+#அந்தர்பாவ "hb-multimap.hh"
+#அந்தர்பாவ "hb-set.hh"
 
-extern HB_INTERNAL hb_user_data_key_t _hb_subset_accelerator_user_data_key;
+வெளி HB_INTERNAL hb_user_data_சாவி_t hb_subset_accelerator_user_data_சாவி;
 
-namespace CFF {
-struct cff_subset_accelerator_t;
+நாமாகாஶ CFF {
+கட்டமைப்பு cff_subset_accelerator_t;
 }
 
-namespace OT {
-struct SubtableUnicodesCache;
-struct cff1_subset_accelerator_t;
-struct cff2_subset_accelerator_t;
+நாமாகாஶ OT {
+கட்டமைப்பு SubtableUnicodesCache;
+கட்டமைப்பு cff1_subset_accelerator_t;
+கட்டமைப்பு cff2_subset_accelerator_t;
 }
 
-struct hb_subset_accelerator_t
+கட்டமைப்பு hb_subset_accelerator_t
 {
-  static hb_user_data_key_t* user_data_key()
+  நிலையான hb_user_data_சாவி_t* user_data_சாவி()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    திரும்பு &hb_subset_accelerator_user_data_சாவி;
   }
 
-  static hb_subset_accelerator_t* create(hb_face_t *source,
-					 const hb_map_t& unicode_to_gid_,
-					 const hb_set_t& unicodes_,
-					 bool has_seac_) {
+  நிலையான hb_subset_accelerator_t* create(hb_face_t *source,
+					 மாறிலி hb_map_t& unicode_to_gid_,
+					 மாறிலி hb_set_t& unicodes_,
+					 தருக்க has_seac_) {
     hb_subset_accelerator_t* accel =
-        (hb_subset_accelerator_t*) hb_calloc (1, sizeof(hb_subset_accelerator_t));
+        (hb_subset_accelerator_t*) hb_calloc (1, அளவு(hb_subset_accelerator_t));
 
-    if (unlikely (!accel)) return accel;
+    எனில் (unlikely (!accel)) திரும்பு accel;
 
-    new (accel) hb_subset_accelerator_t (source,
+    புதிய (accel) hb_subset_accelerator_t (source,
 					 unicode_to_gid_,
 					 unicodes_,
 					 has_seac_);
 
-    return accel;
+    திரும்பு accel;
   }
 
-  static void destroy (void* p)
+  நிலையான வெறுமை destroy (வெறுமை* p)
   {
-    if (!p) return;
+    எனில் (!p) திரும்பு;
 
     hb_subset_accelerator_t *accel = (hb_subset_accelerator_t *) p;
 
@@ -82,9 +82,9 @@ struct hb_subset_accelerator_t
   }
 
   hb_subset_accelerator_t (hb_face_t *source,
-			   const hb_map_t& unicode_to_gid_,
-			   const hb_set_t& unicodes_,
-			   bool has_seac_) :
+			   மாறிலி hb_map_t& unicode_to_gid_,
+			   மாறிலி hb_set_t& unicodes_,
+			   தருக்க has_seac_) :
     unicode_to_gid(unicode_to_gid_),
     unicodes(unicodes_),
     cmap_cache(nullptr),
@@ -93,7 +93,7 @@ struct hb_subset_accelerator_t
     source(hb_face_reference (source))
   {
     gid_to_unicodes.alloc (unicode_to_gid.get_population ());
-    for (const auto &_ : unicode_to_gid)
+    க்கு (மாறிலி auto &_ : unicode_to_gid)
     {
       auto unicode = _.first;
       auto gid = _.second;
@@ -113,17 +113,17 @@ struct hb_subset_accelerator_t
   hb_set_t unicodes;
 
   // cmap
-  const OT::SubtableUnicodesCache* cmap_cache;
+  மாறிலி OT::SubtableUnicodesCache* cmap_cache;
   hb_destroy_func_t destroy_cmap_cache;
 
   // CFF
-  bool has_seac;
+  தருக்க has_seac;
 
   // TODO(garretrieger): cumulative glyf checksum map
 
-  bool in_error () const
+  தருக்க in_error () மாறிலி
   {
-    return unicode_to_gid.in_error () ||
+    திரும்பு unicode_to_gid.in_error () ||
 	   gid_to_unicodes.in_error () ||
 	   unicodes.in_error () ||
 	   sanitized_table_cache.in_error ();

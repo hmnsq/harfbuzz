@@ -27,9 +27,9 @@
 #ifndef HB_DEBUG_HH
 #define HB_DEBUG_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-algs.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-atomic.hh"
+#அந்தர்பாவ "hb-algs.hh"
 
 
 #ifndef HB_DEBUG
@@ -41,76 +41,76 @@
  * Debug output (needs enabling at compile time.)
  */
 
-static inline bool
-_hb_debug (unsigned int level,
-	   unsigned int max_level)
+நிலையான உள்வரி தருக்க
+_hb_debug (unsigned முழு level,
+	   unsigned முழு max_level)
 {
-  return level < max_level;
+  திரும்பு level < max_level;
 }
 
 #define DEBUG_LEVEL_ENABLED(WHAT, LEVEL) (_hb_debug ((LEVEL), HB_DEBUG_##WHAT))
 #define DEBUG_ENABLED(WHAT) (DEBUG_LEVEL_ENABLED (WHAT, 0))
 
-static inline void
-_hb_print_func (const char *func)
+நிலையான உள்வரி வெறுமை
+_hb_print_func (மாறிலி எழுத்து *func)
 {
-  if (func)
+  எனில் (func)
   {
-    unsigned int func_len = strlen (func);
+    unsigned முழு func_len = strlen (func);
     /* Skip "static" */
-    if (0 == strncmp (func, "static ", 7))
+    எனில் (0 == strncmp (func, "static ", 7))
       func += 7;
     /* Skip "typename" */
-    if (0 == strncmp (func, "typename ", 9))
+    எனில் (0 == strncmp (func, "typename ", 9))
       func += 9;
     /* Skip return type */
-    const char *space = strchr (func, ' ');
-    if (space)
+    மாறிலி எழுத்து *space = strchr (func, ' ');
+    எனில் (space)
       func = space + 1;
     /* Skip parameter list */
-    const char *paren = strchr (func, '(');
-    if (paren)
+    மாறிலி எழுத்து *paren = strchr (func, '(');
+    எனில் (paren)
       func_len = paren - func;
-    fprintf (stderr, "%.*s", (int) func_len, func);
+    fprintf (stderr, "%.*s", (முழு) func_len, func);
   }
 }
 
-template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
-		  const void *obj,
-		  const char *func,
-		  bool indented,
-		  unsigned int level,
-		  int level_dir,
-		  const char *message,
+template <முழு max_level> நிலையான உள்வரி வெறுமை
+hb_debug_செய்தி_va (மாறிலி எழுத்து *what,
+		  மாறிலி வெறுமை *obj,
+		  மாறிலி எழுத்து *func,
+		  தருக்க indented,
+		  unsigned முழு level,
+		  முழு level_dir,
+		  மாறிலி எழுத்து *message,
 		  va_list ap) HB_PRINTF_FUNC(7, 0);
-template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
-		  const void *obj,
-		  const char *func,
-		  bool indented,
-		  unsigned int level,
-		  int level_dir,
-		  const char *message,
+template <முழு max_level> நிலையான உள்வரி வெறுமை
+hb_debug_செய்தி_va (மாறிலி எழுத்து *what,
+		  மாறிலி வெறுமை *obj,
+		  மாறிலி எழுத்து *func,
+		  தருக்க indented,
+		  unsigned முழு level,
+		  முழு level_dir,
+		  மாறிலி எழுத்து *message,
 		  va_list ap)
 {
-  if (!_hb_debug (level, max_level))
-    return;
+  எனில் (!_hb_debug (level, max_level))
+    திரும்பு;
 
   fprintf (stderr, "%-10s", what ? what : "");
 
-  if (obj)
-    fprintf (stderr, "(%*p) ", (int) (2 * sizeof (void *)), obj);
-  else
-    fprintf (stderr, " %*s  ", (int) (2 * sizeof (void *)), "");
+  எனில் (obj)
+    fprintf (stderr, "(%*p) ", (முழு) (2 * அளவு (வெறுமை *)), obj);
+  இல்லையெனில்
+    fprintf (stderr, " %*s  ", (முழு) (2 * அளவு (வெறுமை *)), "");
 
-  if (indented) {
+  எனில் (indented) {
 #define VBAR	"\342\224\202"	/* U+2502 BOX DRAWINGS LIGHT VERTICAL */
 #define VRBAR	"\342\224\234"	/* U+251C BOX DRAWINGS LIGHT VERTICAL AND RIGHT */
 #define DLBAR	"\342\225\256"	/* U+256E BOX DRAWINGS LIGHT ARC DOWN AND LEFT */
 #define ULBAR	"\342\225\257"	/* U+256F BOX DRAWINGS LIGHT ARC UP AND LEFT */
 #define LBAR	"\342\225\264"	/* U+2574 BOX DRAWINGS LIGHT LEFT */
-    static const char bars[] =
+    நிலையான மாறிலி எழுத்து bars[] =
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
@@ -118,14 +118,14 @@ _hb_debug_msg_va (const char *what,
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR;
     fprintf (stderr, "%2u %s" VRBAR "%s",
 	     level,
-	     bars + sizeof (bars) - 1 - hb_min ((unsigned int) sizeof (bars) - 1, (unsigned int) (sizeof (VBAR) - 1) * level),
+	     bars + அளவு (bars) - 1 - hb_min ((unsigned முழு) அளவு (bars) - 1, (unsigned முழு) (அளவு (VBAR) - 1) * level),
 	     level_dir ? (level_dir > 0 ? DLBAR : ULBAR) : LBAR);
-  } else
+  } இல்லையெனில்
     fprintf (stderr, "   " VRBAR LBAR);
 
   _hb_print_func (func);
 
-  if (message)
+  எனில் (message)
   {
     fprintf (stderr, ": ");
     vfprintf (stderr, message, ap);
@@ -133,62 +133,62 @@ _hb_debug_msg_va (const char *what,
 
   fprintf (stderr, "\n");
 }
-template <> inline void HB_PRINTF_FUNC(7, 0)
-_hb_debug_msg_va<0> (const char *what HB_UNUSED,
-		     const void *obj HB_UNUSED,
-		     const char *func HB_UNUSED,
-		     bool indented HB_UNUSED,
-		     unsigned int level HB_UNUSED,
-		     int level_dir HB_UNUSED,
-		     const char *message HB_UNUSED,
+template <> உள்வரி வெறுமை HB_PRINTF_FUNC(7, 0)
+hb_debug_செய்தி_va<0> (மாறிலி எழுத்து *what HB_UNUSED,
+		     மாறிலி வெறுமை *obj HB_UNUSED,
+		     மாறிலி எழுத்து *func HB_UNUSED,
+		     தருக்க indented HB_UNUSED,
+		     unsigned முழு level HB_UNUSED,
+		     முழு level_dir HB_UNUSED,
+		     மாறிலி எழுத்து *message HB_UNUSED,
 		     va_list ap HB_UNUSED) {}
 
-template <int max_level> static inline void
-_hb_debug_msg (const char *what,
-	       const void *obj,
-	       const char *func,
-	       bool indented,
-	       unsigned int level,
-	       int level_dir,
-	       const char *message,
+template <முழு max_level> நிலையான உள்வரி வெறுமை
+hb_debug_செய்தி (மாறிலி எழுத்து *what,
+	       மாறிலி வெறுமை *obj,
+	       மாறிலி எழுத்து *func,
+	       தருக்க indented,
+	       unsigned முழு level,
+	       முழு level_dir,
+	       மாறிலி எழுத்து *message,
 	       ...) HB_PRINTF_FUNC(7, 8);
-template <int max_level> static inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg (const char *what,
-	       const void *obj,
-	       const char *func,
-	       bool indented,
-	       unsigned int level,
-	       int level_dir,
-	       const char *message,
+template <முழு max_level> நிலையான உள்வரி வெறுமை HB_PRINTF_FUNC(7, 8)
+hb_debug_செய்தி (மாறிலி எழுத்து *what,
+	       மாறிலி வெறுமை *obj,
+	       மாறிலி எழுத்து *func,
+	       தருக்க indented,
+	       unsigned முழு level,
+	       முழு level_dir,
+	       மாறிலி எழுத்து *message,
 	       ...)
 {
   va_list ap;
   va_start (ap, message);
-  _hb_debug_msg_va<max_level> (what, obj, func, indented, level, level_dir, message, ap);
+  hb_debug_செய்தி_va<max_level> (what, obj, func, indented, level, level_dir, message, ap);
   va_end (ap);
 }
-template <> inline void
-_hb_debug_msg<0> (const char *what HB_UNUSED,
-		  const void *obj HB_UNUSED,
-		  const char *func HB_UNUSED,
-		  bool indented HB_UNUSED,
-		  unsigned int level HB_UNUSED,
-		  int level_dir HB_UNUSED,
-		  const char *message HB_UNUSED,
+template <> உள்வரி வெறுமை
+hb_debug_செய்தி<0> (மாறிலி எழுத்து *what HB_UNUSED,
+		  மாறிலி வெறுமை *obj HB_UNUSED,
+		  மாறிலி எழுத்து *func HB_UNUSED,
+		  தருக்க indented HB_UNUSED,
+		  unsigned முழு level HB_UNUSED,
+		  முழு level_dir HB_UNUSED,
+		  மாறிலி எழுத்து *message HB_UNUSED,
 		  ...) HB_PRINTF_FUNC(7, 8);
-template <> inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg<0> (const char *what HB_UNUSED,
-		  const void *obj HB_UNUSED,
-		  const char *func HB_UNUSED,
-		  bool indented HB_UNUSED,
-		  unsigned int level HB_UNUSED,
-		  int level_dir HB_UNUSED,
-		  const char *message HB_UNUSED,
+template <> உள்வரி வெறுமை HB_PRINTF_FUNC(7, 8)
+hb_debug_செய்தி<0> (மாறிலி எழுத்து *what HB_UNUSED,
+		  மாறிலி வெறுமை *obj HB_UNUSED,
+		  மாறிலி எழுத்து *func HB_UNUSED,
+		  தருக்க indented HB_UNUSED,
+		  unsigned முழு level HB_UNUSED,
+		  முழு level_dir HB_UNUSED,
+		  மாறிலி எழுத்து *message HB_UNUSED,
 		  ...) {}
 
-#define DEBUG_MSG_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    true, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
-#define DEBUG_MSG(WHAT, OBJ, ...)				_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    false, 0, 0, __VA_ARGS__)
-#define DEBUG_MSG_FUNC(WHAT, OBJ, ...)				_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), HB_FUNC, false, 0, 0, __VA_ARGS__)
+#define DEBUG_செய்தி_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	hb_debug_செய்தி<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    உண்மை, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
+#define DEBUG_செய்தி(WHAT, OBJ, ...)				hb_debug_செய்தி<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    பொய், 0, 0, __VA_ARGS__)
+#define DEBUG_செய்தி_FUNC(WHAT, OBJ, ...)				hb_debug_செய்தி<HB_DEBUG_##WHAT> (#WHAT, (OBJ), HB_FUNC, பொய், 0, 0, __VA_ARGS__)
 
 
 /*
@@ -196,18 +196,18 @@ _hb_debug_msg<0> (const char *what HB_UNUSED,
  */
 
 template <typename T>
-struct hb_printer_t {
-  const char *print (const T&) { return "something"; }
+கட்டமைப்பு hb_printer_t {
+  மாறிலி எழுத்து *print (மாறிலி T&) { திரும்பு "something"; }
 };
 
 template <>
-struct hb_printer_t<bool> {
-  const char *print (bool v) { return v ? "true" : "false"; }
+கட்டமைப்பு hb_printer_t<தருக்க> {
+  மாறிலி எழுத்து *print (தருக்க v) { திரும்பு v ? "true" : "false"; }
 };
 
 template <>
-struct hb_printer_t<hb_empty_t> {
-  const char *print (hb_empty_t) { return ""; }
+கட்டமைப்பு hb_printer_t<hb_empty_t> {
+  மாறிலி எழுத்து *print (hb_empty_t) { திரும்பு ""; }
 };
 
 
@@ -216,96 +216,96 @@ struct hb_printer_t<hb_empty_t> {
  */
 
 template <typename T>
-static inline void _hb_warn_no_return (bool returned)
+நிலையான உள்வரி வெறுமை _hb_warn_no_return (தருக்க returned)
 {
-  if (unlikely (!returned)) {
+  எனில் (unlikely (!returned)) {
     fprintf (stderr, "OUCH, returned with no call to return_trace().  This is a bug, please report.\n");
   }
 }
 template <>
-/*static*/ inline void _hb_warn_no_return<hb_empty_t> (bool returned HB_UNUSED) {}
+/*static*/ உள்வரி வெறுமை _hb_warn_no_return<hb_empty_t> (தருக்க returned HB_UNUSED) {}
 template <>
-/*static*/ inline void _hb_warn_no_return<void> (bool returned HB_UNUSED) {}
+/*static*/ உள்வரி வெறுமை _hb_warn_no_return<வெறுமை> (தருக்க returned HB_UNUSED) {}
 
-template <int max_level, typename ret_t>
-struct hb_auto_trace_t
+template <முழு max_level, typename ret_t>
+கட்டமைப்பு hb_auto_trace_t
 {
-  explicit inline hb_auto_trace_t (unsigned int *plevel_,
-				   const char *what_,
-				   const void *obj_,
-				   const char *func,
-				   const char *message,
+  explicit உள்வரி hb_auto_trace_t (unsigned முழு *plevel_,
+				   மாறிலி எழுத்து *what_,
+				   மாறிலி வெறுமை *obj_,
+				   மாறிலி எழுத்து *func,
+				   மாறிலி எழுத்து *message,
 				   ...) HB_PRINTF_FUNC(6, 7)
-				   : plevel (plevel_), what (what_), obj (obj_), returned (false)
+				   : plevel (plevel_), what (what_), obj (obj_), returned (பொய்)
   {
-    if (plevel) ++*plevel;
+    எனில் (plevel) ++*plevel;
 
     va_list ap;
     va_start (ap, message);
-    _hb_debug_msg_va<max_level> (what, obj, func, true, plevel ? *plevel : 0, +1, message, ap);
+    hb_debug_செய்தி_va<max_level> (what, obj, func, உண்மை, plevel ? *plevel : 0, +1, message, ap);
     va_end (ap);
   }
   ~hb_auto_trace_t ()
   {
     _hb_warn_no_return<ret_t> (returned);
-    if (!returned) {
-      _hb_debug_msg<max_level> (what, obj, nullptr, true, plevel ? *plevel : 1, -1, " ");
+    எனில் (!returned) {
+      hb_debug_செய்தி<max_level> (what, obj, nullptr, உண்மை, plevel ? *plevel : 1, -1, " ");
     }
-    if (plevel) --*plevel;
+    எனில் (plevel) --*plevel;
   }
 
   template <typename T>
   T ret (T&& v,
-	 const char *func = "",
-	 unsigned int line = 0)
+	 மாறிலி எழுத்து *func = "",
+	 unsigned முழு வரி = 0)
   {
-    if (unlikely (returned)) {
+    எனில் (unlikely (returned)) {
       fprintf (stderr, "OUCH, double calls to return_trace().  This is a bug, please report.\n");
-      return std::forward<T> (v);
+      திரும்பு std::forward<T> (v);
     }
 
-    _hb_debug_msg<max_level> (what, obj, func, true, plevel ? *plevel : 1, -1,
+    hb_debug_செய்தி<max_level> (what, obj, func, உண்மை, plevel ? *plevel : 1, -1,
 			      "return %s (line %u)",
-			      hb_printer_t<hb_decay<decltype (v)>>().print (v), line);
-    if (plevel) --*plevel;
+			      hb_printer_t<hb_decay<decltype (v)>>().print (v), வரி);
+    எனில் (plevel) --*plevel;
     plevel = nullptr;
-    returned = true;
-    return std::forward<T> (v);
+    returned = உண்மை;
+    திரும்பு std::forward<T> (v);
   }
 
-  private:
-  unsigned int *plevel;
-  const char *what;
-  const void *obj;
-  bool returned;
+  தனிப்பட்ட:
+  unsigned முழு *plevel;
+  மாறிலி எழுத்து *what;
+  மாறிலி வெறுமை *obj;
+  தருக்க returned;
 };
 template <typename ret_t> /* Make sure we don't use hb_auto_trace_t when not tracing. */
-struct hb_auto_trace_t<0, ret_t>
+கட்டமைப்பு hb_auto_trace_t<0, ret_t>
 {
-  explicit inline hb_auto_trace_t (unsigned int *plevel_,
-				   const char *what_,
-				   const void *obj_,
-				   const char *func,
-				   const char *message,
+  explicit உள்வரி hb_auto_trace_t (unsigned முழு *plevel_,
+				   மாறிலி எழுத்து *what_,
+				   மாறிலி வெறுமை *obj_,
+				   மாறிலி எழுத்து *func,
+				   மாறிலி எழுத்து *message,
 				   ...) HB_PRINTF_FUNC(6, 7) {}
 
   template <typename T>
   T ret (T&& v,
-	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 மாறிலி எழுத்து *func HB_UNUSED = nullptr,
+	 unsigned முழு வரி HB_UNUSED = 0) { திரும்பு std::forward<T> (v); }
 };
 
 /* For disabled tracing; optimize out everything.
  * https://github.com/harfbuzz/harfbuzz/pull/605 */
 template <typename ret_t>
-struct hb_no_trace_t {
+கட்டமைப்பு hb_no_trace_t {
   template <typename T>
   T ret (T&& v,
-	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 மாறிலி எழுத்து *func HB_UNUSED = nullptr,
+	 unsigned முழு வரி HB_UNUSED = 0) { திரும்பு std::forward<T> (v); }
 };
 
-#define return_trace(RET) return trace.ret (RET, HB_FUNC, __LINE__)
+#define return_trace(RET) திரும்பு trace.ret (RET, HB_FUNC, __LINE__)
 
 
 /*
@@ -367,50 +367,50 @@ struct hb_no_trace_t {
 #ifndef HB_DEBUG_APPLY
 #define HB_DEBUG_APPLY (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_APPLY
-#define TRACE_APPLY(this) \
-	hb_auto_trace_t<HB_DEBUG_APPLY, bool> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#எனில் HB_DEBUG_APPLY
+#define TRACE_APPLY(இது) \
+	hb_auto_trace_t<HB_DEBUG_APPLY, தருக்க> trace \
+	(&c->debug_depth, c->get_name (), இது, HB_FUNC, \
 	 "idx %u gid %u lookup %d", \
-	 c->buffer->idx, c->buffer->cur().codepoint, (int) c->lookup_index)
-#else
-#define TRACE_APPLY(this) hb_no_trace_t<bool> trace
+	 c->buffer->idx, c->buffer->cur().codepoint, (முழு) c->lookup_index)
+#இல்லையெனில்
+#define TRACE_APPLY(இது) hb_no_trace_t<தருக்க> trace
 #endif
 
 #ifndef HB_DEBUG_SANITIZE
 #define HB_DEBUG_SANITIZE (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SANITIZE
-#define TRACE_SANITIZE(this) \
-	hb_auto_trace_t<HB_DEBUG_SANITIZE, bool> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#எனில் HB_DEBUG_SANITIZE
+#define TRACE_SANITIZE(இது) \
+	hb_auto_trace_t<HB_DEBUG_SANITIZE, தருக்க> trace \
+	(&c->debug_depth, c->get_name (), இது, HB_FUNC, \
 	 " ")
-#else
-#define TRACE_SANITIZE(this) hb_no_trace_t<bool> trace
+#இல்லையெனில்
+#define TRACE_SANITIZE(இது) hb_no_trace_t<தருக்க> trace
 #endif
 
 #ifndef HB_DEBUG_SERIALIZE
 #define HB_DEBUG_SERIALIZE (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SERIALIZE
-#define TRACE_SERIALIZE(this) \
-	hb_auto_trace_t<HB_DEBUG_SERIALIZE, bool> trace \
+#எனில் HB_DEBUG_SERIALIZE
+#define TRACE_SERIALIZE(இது) \
+	hb_auto_trace_t<HB_DEBUG_SERIALIZE, தருக்க> trace \
 	(&c->debug_depth, "SERIALIZE", c, HB_FUNC, \
 	 " ")
-#else
-#define TRACE_SERIALIZE(this) hb_no_trace_t<bool> trace
+#இல்லையெனில்
+#define TRACE_SERIALIZE(இது) hb_no_trace_t<தருக்க> trace
 #endif
 
 #ifndef HB_DEBUG_SUBSET
 #define HB_DEBUG_SUBSET (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SUBSET
-#define TRACE_SUBSET(this) \
-  hb_auto_trace_t<HB_DEBUG_SUBSET, bool> trace \
-  (&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#எனில் HB_DEBUG_SUBSET
+#define TRACE_SUBSET(இது) \
+  hb_auto_trace_t<HB_DEBUG_SUBSET, தருக்க> trace \
+  (&c->debug_depth, c->get_name (), இது, HB_FUNC, \
    " ")
-#else
-#define TRACE_SUBSET(this) hb_no_trace_t<bool> trace
+#இல்லையெனில்
+#define TRACE_SUBSET(இது) hb_no_trace_t<தருக்க> trace
 #endif
 
 #ifndef HB_DEBUG_SUBSET_REPACK
@@ -420,13 +420,13 @@ struct hb_no_trace_t {
 #ifndef HB_DEBUG_PAINT
 #define HB_DEBUG_PAINT (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_PAINT
-#define TRACE_PAINT(this) \
-  HB_UNUSED hb_auto_trace_t<HB_DEBUG_PAINT, void> trace \
-  (&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#எனில் HB_DEBUG_PAINT
+#define TRACE_PAINT(இது) \
+  HB_UNUSED hb_auto_trace_t<HB_DEBUG_PAINT, வெறுமை> trace \
+  (&c->debug_depth, c->get_name (), இது, HB_FUNC, \
    " ")
-#else
-#define TRACE_PAINT(this) HB_UNUSED hb_no_trace_t<void> trace
+#இல்லையெனில்
+#define TRACE_PAINT(இது) HB_UNUSED hb_no_trace_t<வெறுமை> trace
 #endif
 
 
@@ -439,13 +439,13 @@ struct hb_no_trace_t {
 	HB_DEBUG_PAINT + \
 	0)
 #endif
-#if HB_DEBUG_DISPATCH
-#define TRACE_DISPATCH(this, format) \
+#எனில் HB_DEBUG_DISPATCH
+#define TRACE_DISPATCH(இது, format) \
 	hb_auto_trace_t<context_t::max_debug_depth, typename context_t::return_t> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
+	(&c->debug_depth, c->get_name (), இது, HB_FUNC, \
 	 "format %u", (unsigned) format)
-#else
-#define TRACE_DISPATCH(this, format) hb_no_trace_t<typename context_t::return_t> trace
+#இல்லையெனில்
+#define TRACE_DISPATCH(இது, format) hb_no_trace_t<typename context_t::return_t> trace
 #endif
 
 

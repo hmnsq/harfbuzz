@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-khmer-machine.hh"
-#include "hb-ot-shaper-indic.hh"
-#include "hb-ot-layout.hh"
+#அந்தர்பாவ "hb-ot-shaper-khmer-machine.hh"
+#அந்தர்பாவ "hb-ot-shaper-indic.hh"
+#அந்தர்பாவ "hb-ot-layout.hh"
 
 
 /*
@@ -38,7 +38,7 @@
  */
 
 
-static const hb_ot_map_feature_t
+நிலையான மாறிலி hb_ot_map_feature_t
 khmer_features[] =
 {
   /*
@@ -64,7 +64,7 @@ khmer_features[] =
 /*
  * Must be in the same order as the khmer_features array.
  */
-enum {
+எண்ணிக்கை {
   KHMER_PREF,
   KHMER_BLWF,
   KHMER_ABVF,
@@ -76,29 +76,29 @@ enum {
   _KHMER_BLWS,
   _KHMER_PSTS,
 
-  KHMER_NUM_FEATURES,
+  KHMER_இலக்கம்_FEATURES,
   KHMER_BASIC_FEATURES = _KHMER_PRES, /* Don't forget to update this! */
 };
 
-static inline void
+நிலையான உள்வரி வெறுமை
 set_khmer_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  unsigned முழு type = hb_indic_get_categories (u);
 
   info.khmer_category() = (khmer_category_t) (type & 0xFFu);
 }
 
-static bool
-setup_syllables_khmer (const hb_ot_shape_plan_t *plan,
+நிலையான தருக்க
+setup_syllables_khmer (மாறிலி hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
 		       hb_buffer_t *buffer);
-static bool
-reorder_khmer (const hb_ot_shape_plan_t *plan,
+நிலையான தருக்க
+reorder_khmer (மாறிலி hb_ot_shape_plan_t *plan,
 	       hb_font_t *font,
 	       hb_buffer_t *buffer);
 
-static void
+நிலையான வெறுமை
 collect_features_khmer (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
@@ -120,18 +120,18 @@ collect_features_khmer (hb_ot_shape_planner_t *plan)
   map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
   map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
 
-  unsigned int i = 0;
-  for (; i < KHMER_BASIC_FEATURES; i++)
+  unsigned முழு i = 0;
+  க்கு (; i < KHMER_BASIC_FEATURES; i++)
     map->add_feature (khmer_features[i]);
 
   /* https://github.com/harfbuzz/harfbuzz/issues/3531 */
   map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (; i < KHMER_NUM_FEATURES; i++)
+  க்கு (; i < KHMER_இலக்கம்_FEATURES; i++)
     map->add_feature (khmer_features[i]);
 }
 
-static void
+நிலையான வெறுமை
 override_features_khmer (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
@@ -145,33 +145,33 @@ override_features_khmer (hb_ot_shape_planner_t *plan)
 }
 
 
-struct khmer_shape_plan_t
+கட்டமைப்பு khmer_shape_plan_t
 {
-  hb_mask_t mask_array[KHMER_NUM_FEATURES];
+  hb_mask_t mask_array[KHMER_இலக்கம்_FEATURES];
 };
 
-static void *
-data_create_khmer (const hb_ot_shape_plan_t *plan)
+நிலையான வெறுமை *
+data_create_khmer (மாறிலி hb_ot_shape_plan_t *plan)
 {
-  khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, sizeof (khmer_shape_plan_t));
-  if (unlikely (!khmer_plan))
-    return nullptr;
+  khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, அளவு (khmer_shape_plan_t));
+  எனில் (unlikely (!khmer_plan))
+    திரும்பு nullptr;
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (khmer_plan->mask_array); i++)
+  க்கு (unsigned முழு i = 0; i < ARRAY_LENGTH (khmer_plan->mask_array); i++)
     khmer_plan->mask_array[i] = (khmer_features[i].flags & F_GLOBAL) ?
 				 0 : plan->map.get_1_mask (khmer_features[i].tag);
 
-  return khmer_plan;
+  திரும்பு khmer_plan;
 }
 
-static void
-data_destroy_khmer (void *data)
+நிலையான வெறுமை
+data_destroy_khmer (வெறுமை *data)
 {
   hb_free (data);
 }
 
-static void
-setup_masks_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
+நிலையான வெறுமை
+setup_masks_khmer (மாறிலி hb_ot_shape_plan_t *plan HB_UNUSED,
 		   hb_buffer_t              *buffer,
 		   hb_font_t                *font HB_UNUSED)
 {
@@ -180,14 +180,14 @@ setup_masks_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
+  unsigned முழு மொத்தம் = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     set_khmer_properties (info[i]);
 }
 
-static bool
-setup_syllables_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
+நிலையான தருக்க
+setup_syllables_khmer (மாறிலி hb_ot_shape_plan_t *plan HB_UNUSED,
 		       hb_font_t *font HB_UNUSED,
 		       hb_buffer_t *buffer)
 {
@@ -195,20 +195,20 @@ setup_syllables_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
   find_syllables_khmer (buffer);
   foreach_syllable (buffer, start, end)
     buffer->unsafe_to_break (start, end);
-  return false;
+  திரும்பு பொய்;
 }
 
 
 /* Rules from:
  * https://docs.microsoft.com/en-us/typography/script-development/devanagari */
 
-static void
-reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
+நிலையான வெறுமை
+reorder_consonant_syllable (மாறிலி hb_ot_shape_plan_t *plan,
 			    hb_face_t *face HB_UNUSED,
 			    hb_buffer_t *buffer,
-			    unsigned int start, unsigned int end)
+			    unsigned முழு start, unsigned முழு end)
 {
-  const khmer_shape_plan_t *khmer_plan = (const khmer_shape_plan_t *) plan->data;
+  மாறிலி khmer_shape_plan_t *khmer_plan = (மாறிலி khmer_shape_plan_t *) plan->data;
   hb_glyph_info_t *info = buffer->info;
 
   /* Setup masks. */
@@ -217,12 +217,12 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
     hb_mask_t mask = khmer_plan->mask_array[KHMER_BLWF] |
 		     khmer_plan->mask_array[KHMER_ABVF] |
 		     khmer_plan->mask_array[KHMER_PSTF];
-    for (unsigned int i = start + 1; i < end; i++)
+    க்கு (unsigned முழு i = start + 1; i < end; i++)
       info[i].mask  |= mask;
   }
 
-  unsigned int num_coengs = 0;
-  for (unsigned int i = start + 1; i < end; i++)
+  unsigned முழு இலக்கம்_coengs = 0;
+  க்கு (unsigned முழு i = start + 1; i < end; i++)
   {
     /* """
      * When a COENG + (Cons | IndV) combination are found (and subscript count
@@ -236,20 +236,20 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
      * the 'pref' OpenType feature applied to them.
      * """
      */
-    if (info[i].khmer_category() == K_Cat(H) && num_coengs <= 2 && i + 1 < end)
+    எனில் (info[i].khmer_category() == K_Cat(H) && இலக்கம்_coengs <= 2 && i + 1 < end)
     {
-      num_coengs++;
+      இலக்கம்_coengs++;
 
-      if (info[i + 1].khmer_category() == K_Cat(Ra))
+      எனில் (info[i + 1].khmer_category() == K_Cat(Ra))
       {
-	for (unsigned int j = 0; j < 2; j++)
+	க்கு (unsigned முழு j = 0; j < 2; j++)
 	  info[i + j].mask |= khmer_plan->mask_array[KHMER_PREF];
 
 	/* Move the Coeng,Ro sequence to the start. */
 	buffer->merge_clusters (start, i + 2);
 	hb_glyph_info_t t0 = info[i];
 	hb_glyph_info_t t1 = info[i + 1];
-	memmove (&info[start + 2], &info[start], (i - start) * sizeof (info[0]));
+	memmove (&info[start + 2], &info[start], (i - start) * அளவு (info[0]));
 	info[start] = t0;
 	info[start + 1] = t1;
 
@@ -259,107 +259,107 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
 	 * U+1784,U+17D2,U+179A,U+17D2,U+1782
 	 * U+1784,U+17D2,U+1782,U+17D2,U+179A
 	 */
-	if (khmer_plan->mask_array[KHMER_CFAR])
-	  for (unsigned int j = i + 2; j < end; j++)
+	எனில் (khmer_plan->mask_array[KHMER_CFAR])
+	  க்கு (unsigned முழு j = i + 2; j < end; j++)
 	    info[j].mask |= khmer_plan->mask_array[KHMER_CFAR];
 
-	num_coengs = 2; /* Done. */
+	இலக்கம்_coengs = 2; /* Done. */
       }
     }
 
     /* Reorder left matra piece. */
-    else if (info[i].khmer_category() == K_Cat(VPre))
+    இல்லையெனில் எனில் (info[i].khmer_category() == K_Cat(VPre))
     {
       /* Move to the start. */
       buffer->merge_clusters (start, i + 1);
       hb_glyph_info_t t = info[i];
-      memmove (&info[start + 1], &info[start], (i - start) * sizeof (info[0]));
+      memmove (&info[start + 1], &info[start], (i - start) * அளவு (info[0]));
       info[start] = t;
     }
   }
 }
 
-static void
-reorder_syllable_khmer (const hb_ot_shape_plan_t *plan,
+நிலையான வெறுமை
+reorder_syllable_khmer (மாறிலி hb_ot_shape_plan_t *plan,
 			hb_face_t *face,
 			hb_buffer_t *buffer,
-			unsigned int start, unsigned int end)
+			unsigned முழு start, unsigned முழு end)
 {
   khmer_syllable_type_t syllable_type = (khmer_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
-  switch (syllable_type)
+  தேர்வு (syllable_type)
   {
-    case khmer_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
-    case khmer_consonant_syllable:
+    நிலை khmer_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
+    நிலை khmer_consonant_syllable:
      reorder_consonant_syllable (plan, face, buffer, start, end);
-     break;
+     நிறுத்து;
 
-    case khmer_non_khmer_cluster:
-      break;
+    நிலை khmer_non_khmer_cluster:
+      நிறுத்து;
   }
 }
 
-static bool
-reorder_khmer (const hb_ot_shape_plan_t *plan,
+நிலையான தருக்க
+reorder_khmer (மாறிலி hb_ot_shape_plan_t *plan,
 	       hb_font_t *font,
 	       hb_buffer_t *buffer)
 {
-  bool ret = false;
-  if (buffer->message (font, "start reordering khmer"))
+  தருக்க ret = பொய்;
+  எனில் (buffer->message (font, "start reordering khmer"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    எனில் (hb_syllabic_செருகு_dotted_circles (font, buffer,
 					   khmer_broken_cluster,
 					   K_Cat(DOTTEDCIRCLE),
 					   (unsigned) -1))
-      ret = true;
+      ret = உண்மை;
 
     foreach_syllable (buffer, start, end)
       reorder_syllable_khmer (plan, font->face, buffer, start, end);
-    (void) buffer->message (font, "end reordering khmer");
+    (வெறுமை) buffer->message (font, "end reordering khmer");
   }
   HB_BUFFER_DEALLOCATE_VAR (buffer, khmer_category);
 
-  return ret;
+  திரும்பு ret;
 }
 
 
-static bool
-decompose_khmer (const hb_ot_shape_normalize_context_t *c,
+நிலையான தருக்க
+decompose_khmer (மாறிலி hb_ot_shape_normalize_context_t *c,
 		 hb_codepoint_t  ab,
 		 hb_codepoint_t *a,
 		 hb_codepoint_t *b)
 {
-  switch (ab)
+  தேர்வு (ab)
   {
     /*
      * Decompose split matras that don't have Unicode decompositions.
      */
 
     /* Khmer */
-    case 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; return true;
-    case 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; return true;
-    case 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; return true;
-    case 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; return true;
-    case 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; return true;
+    நிலை 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; திரும்பு உண்மை;
+    நிலை 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; திரும்பு உண்மை;
+    நிலை 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; திரும்பு உண்மை;
+    நிலை 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; திரும்பு உண்மை;
+    நிலை 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; திரும்பு உண்மை;
   }
 
-  return (bool) c->unicode->decompose (ab, a, b);
+  திரும்பு (தருக்க) c->unicode->decompose (ab, a, b);
 }
 
-static bool
-compose_khmer (const hb_ot_shape_normalize_context_t *c,
+நிலையான தருக்க
+compose_khmer (மாறிலி hb_ot_shape_normalize_context_t *c,
 	       hb_codepoint_t  a,
 	       hb_codepoint_t  b,
 	       hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  எனில் (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    திரும்பு பொய்;
 
-  return (bool) c->unicode->compose (a, b, ab);
+  திரும்பு (தருக்க) c->unicode->compose (a, b, ab);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_khmer =
+மாறிலி hb_ot_shaper_t _hb_ot_shaper_khmer =
 {
   collect_features_khmer,
   override_features_khmer,
@@ -374,7 +374,7 @@ const hb_ot_shaper_t _hb_ot_shaper_khmer =
   HB_TAG_NONE, /* gpos_tag */
   HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  false, /* fallback_position */
+  பொய், /* fallback_position */
 };
 
 

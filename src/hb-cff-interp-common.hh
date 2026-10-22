@@ -26,13 +26,13 @@
 #ifndef HB_CFF_INTERP_COMMON_HH
 #define HB_CFF_INTERP_COMMON_HH
 
-extern HB_INTERNAL const unsigned char *endchar_str;
+வெளி HB_INTERNAL மாறிலி unsigned எழுத்து *endchar_str;
 
-namespace CFF {
+நாமாகாஶ CFF {
 
-using namespace OT;
+using நாமாகாஶ OT;
 
-typedef unsigned int op_code_t;
+வகைவரை unsigned முழு op_code_t;
 
 
 /* === Dict operators === */
@@ -44,7 +44,7 @@ typedef unsigned int op_code_t;
 #define OpCode_FamilyName	  3 /* CFF Top */
 #define OpCode_Weight		  4 /* CFF Top */
 #define OpCode_FontBBox		  5 /* CFF Top */
-#define OpCode_BlueValues	  6 /* CFF Private, CFF2 Private */
+#define Op_Code_Blue_மதிப்புகள்	  6 /* CFF Private, CFF2 Private */
 #define OpCode_OtherBlues	  7 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyBlues	  8 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyOtherBlues	  9 /* CFF Private, CFF2 Private */
@@ -92,9 +92,9 @@ typedef unsigned int op_code_t;
 #define OpCode_ESC_Base		256
 #define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+உள்வரி op_code_t Unmake_OpCode_ESC (op_code_t op)  { திரும்பு (op_code_t)(op - OpCode_ESC_Base); }
+உள்வரி தருக்க Is_OpCode_ESC (op_code_t op) { திரும்பு op >= OpCode_ESC_Base; }
+உள்வரி unsigned முழு OpCode_Size (op_code_t op) { திரும்பு Is_OpCode_ESC (op) ? 2: 1; }
 
 #define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
 #define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
@@ -217,80 +217,80 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 #define OpCode_Invalid		0xFFFFu
 
 
-struct number_t
+கட்டமைப்பு எண்_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  வெறுமை set_int (முழு v)       { value = v; }
+  தருக்க to_int (முழு *v) மாறிலி
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    எனில் (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
     {
       *v = 0;
-      return false;
+      திரும்பு பொய்;
     }
-    *v = (int) value;
-    return true;
+    *v = (முழு) value;
+    திரும்பு உண்மை;
   }
-  int to_int () const
+  முழு to_int () மாறிலி
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    முழு v;
+    எனில் (likely (to_int (&v))) திரும்பு v;
+    திரும்பு value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
   }
 
-  void set_fixed (int32_t v) { value = v / 65536.0; }
-  int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  வெறுமை set_fixed (int32_t v) { value = v / 65536.0; }
+  int32_t to_fixed () மாறிலி
+  { திரும்பு (int32_t) hb_clamp (value * 65536.0, (இரட்டை) INT32_MIN, (இரட்டை) INT32_MAX); }
 
-  void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  வெறுமை set_real (இரட்டை v)   { value = v; }
+  இரட்டை to_real () மாறிலி    { திரும்பு value; }
 
-  bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  தருக்க in_int_range () மாறிலி
+  { திரும்பு value >= INT16_MIN && value <= INT16_MAX && (இரட்டை) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  தருக்க operator >  (மாறிலி எண்_t &n) மாறிலி { திரும்பு value > n.to_real (); }
+  தருக்க operator <  (மாறிலி எண்_t &n) மாறிலி { திரும்பு n > *இது; }
+  தருக்க operator >= (மாறிலி எண்_t &n) மாறிலி { திரும்பு !(*இது < n); }
+  தருக்க operator <= (மாறிலி எண்_t &n) மாறிலி { திரும்பு !(*இது > n); }
 
-  const number_t &operator += (const number_t &n)
+  மாறிலி எண்_t &operator += (மாறிலி எண்_t &n)
   {
     set_real (to_real () + n.to_real ());
 
-    return *this;
+    திரும்பு *இது;
   }
 
-  protected:
-  double value = 0.;
+  பாதுகாக்கப்பட்ட:
+  இரட்டை value = 0.;
 };
 
 /* byte string */
-struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
+கட்டமைப்பு UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 {
-  hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  hb_ubytes_t as_ubytes (unsigned l) மாறிலி
+  { திரும்பு hb_ubytes_t ((மாறிலி unsigned எழுத்து *) இது, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
   template <typename T, typename V>
-  static bool serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
+  நிலையான தருக்க serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
     HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    எனில் (unlikely (!p)) return_trace (பொய்);
     *p = intOp;
 
     T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
+    எனில் (unlikely (!ip)) return_trace (பொய்);
     return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   template <typename V>
-  static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  நிலையான தருக்க serialize_int4 (hb_serialize_context_t *c, V value)
+  { திரும்பு serialize_int<HBINT32> (c, OpCode_longintdict, value); }
 
   template <typename V>
-  static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  நிலையான தருக்க serialize_int2 (hb_serialize_context_t *c, V value)
+  { திரும்பு serialize_int<HBINT16> (c, OpCode_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
@@ -300,214 +300,214 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 };
 
 /* A byte string associated with the current offset and an error condition */
-struct byte_str_ref_t
+கட்டமைப்பு byte_str_ref_t
 {
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  byte_str_ref_t (மாறிலி hb_ubytes_t &str_, unsigned முழு offset_ = 0)
     : str (str_) { set_offset (offset_); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  வெறுமை reset (மாறிலி hb_ubytes_t &str_, unsigned முழு offset_ = 0)
   {
     str = str_;
     set_offset (offset_);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  மாறிலி unsigned எழுத்து& operator [] (முழு i) {
+    எனில் (unlikely ((unsigned முழு) (get_offset () + i) >= str.length))
     {
       set_error ();
-      return Null (unsigned char);
+      திரும்பு Null (unsigned எழுத்து);
     }
-    return str.arrayZ[get_offset () + i];
+    திரும்பு str.arrayZ[get_offset () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  unsigned எழுத்து head_unchecked () மாறிலி { திரும்பு str.arrayZ[get_offset ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  operator hb_ubytes_t () மாறிலி { திரும்பு str.sub_array (get_offset ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (unsigned முழு offset_, unsigned முழு len_) மாறிலி
+  { திரும்பு str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  தருக்க avail (unsigned முழு மொத்தம்=1) மாறிலி
+  { திரும்பு get_offset () + மொத்தம் <= str.length; }
+  வெறுமை inc (unsigned முழு மொத்தம்=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
-    set_offset (get_offset () + count);
+    set_offset (get_offset () + மொத்தம்);
   }
 
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
-  void set_offset (unsigned offset) { str.backwards_length = offset; }
+  unsigned get_offset () மாறிலி { திரும்பு str.backwards_length; }
+  வெறுமை set_offset (unsigned offset) { str.backwards_length = offset; }
 
-  void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  வெறுமை set_error ()      { str.backwards_length = str.length + 1; }
+  தருக்க in_error () மாறிலி { திரும்பு str.backwards_length > str.length; }
 
-  unsigned total_size () const { return str.length; }
+  unsigned total_size () மாறிலி { திரும்பு str.length; }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   hb_ubytes_t       str;
 };
 
-/* stack */
-template <typename ELEM, int LIMIT>
-struct cff_stack_t
+/*அடுக்கு*/
+template <typename ELEM, முழு LIMIT>
+கட்டமைப்பு cff_அடுக்கு_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& operator [] (unsigned முழு i)
   {
-    if (unlikely (i >= length))
+    எனில் (unlikely (i >= length))
     {
       set_error ();
-      return Crap (ELEM);
+      திரும்பு Crap (ELEM);
     }
-    return arrayZ[i];
+    திரும்பு arrayZ[i];
   }
 
-  void push (const ELEM &v)
+  வெறுமை push (மாறிலி ELEM &v)
   {
-    if (likely (length < LIMIT))
+    எனில் (likely (length < LIMIT))
       arrayZ[length++] = v;
-    else
+    இல்லையெனில்
       set_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    எனில் (likely (length < LIMIT))
+      திரும்பு arrayZ[length++];
+    இல்லையெனில்
     {
       set_error ();
-      return Crap (ELEM);
+      திரும்பு Crap (ELEM);
     }
   }
 
-  ELEM& pop ()
+  ELEM& எடு ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    எனில் (likely (length > 0))
+      திரும்பு arrayZ[--length];
+    இல்லையெனில்
     {
       set_error ();
-      return Crap (ELEM);
+      திரும்பு Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  வெறுமை எடு (unsigned முழு n)
   {
-    if (likely (length >= n))
+    எனில் (likely (length >= n))
       length -= n;
-    else
+    இல்லையெனில்
       set_error ();
   }
 
-  const ELEM& peek ()
+  மாறிலி ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    எனில் (unlikely (length == 0))
     {
       set_error ();
-      return Null (ELEM);
+      திரும்பு Null (ELEM);
     }
-    return arrayZ[length - 1];
+    திரும்பு arrayZ[length - 1];
   }
 
-  void unpop ()
+  வெறுமை unpop ()
   {
-    if (likely (length < LIMIT))
+    எனில் (likely (length < LIMIT))
       length++;
-    else
+    இல்லையெனில்
       set_error ();
   }
 
-  void clear () { length = 0; }
+  வெறுமை clear () { length = 0; }
 
-  bool in_error () const { return (error); }
-  void set_error ()      { error = true; }
+  தருக்க in_error () மாறிலி { திரும்பு (error); }
+  வெறுமை set_error ()      { error = உண்மை; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  unsigned முழு get_மொத்தம் () மாறிலி { திரும்பு length; }
+  தருக்க is_empty () மாறிலி          { திரும்பு !length; }
 
-  hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  hb_array_t<மாறிலி ELEM> sub_array (unsigned start, unsigned length) மாறிலி
+  { திரும்பு hb_array_t<மாறிலி ELEM> (arrayZ).sub_array (start, length); }
 
-  bool error = false;
-  unsigned int length = 0;
+  தருக்க error = பொய்;
+  unsigned முழு length = 0;
   ELEM arrayZ[LIMIT];
 };
 
 /* argument stack */
-template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+template <typename ARG=எண்_t>
+கட்டமைப்பு arg_அடுக்கு_t : cff_அடுக்கு_t<ARG, 513>
 {
-  void push_int (int v)
+  வெறுமை தள்ளு_int (முழு v)
   {
     ARG &n = S::push ();
     n.set_int (v);
   }
 
-  void push_fixed (int32_t v)
+  வெறுமை தள்ளு_fixed (int32_t v)
   {
     ARG &n = S::push ();
     n.set_fixed (v);
   }
 
-  void push_real (double v)
+  வெறுமை தள்ளு_real (இரட்டை v)
   {
     ARG &n = S::push ();
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& எடு_இலக்கம் () { திரும்பு இது->எடு (); }
 
-  int pop_int ()
+  முழு எடு_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    முழு v;
+    எனில் (unlikely (!இது->எடு ().to_int (&v)))
       S::set_error ();
-    return v;
+    திரும்பு v;
   }
 
-  unsigned int pop_uint ()
+  unsigned முழு எடு_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    முழு i = எடு_int ();
+    எனில் (unlikely (i < 0))
     {
       i = 0;
       S::set_error ();
     }
-    return (unsigned) i;
+    திரும்பு (unsigned) i;
   }
 
-  void push_longint_from_substr (byte_str_ref_t& str_ref)
+  வெறுமை தள்ளு_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    தள்ளு_int ((முழு) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
-  bool push_fixed_from_substr (byte_str_ref_t& str_ref)
+  தருக்க தள்ளு_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
-    push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
+    எனில் (unlikely (!str_ref.avail (4)))
+      திரும்பு பொய்;
+    தள்ளு_fixed ((int32_t)*(மாறிலி HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    திரும்பு உண்மை;
   }
 
-  private:
-  typedef cff_stack_t<ARG, 513> S;
+  தனிப்பட்ட:
+  வகைவரை cff_அடுக்கு_t<ARG, 513> S;
 };
 
 /* an operator prefixed by its operands in a byte string */
-struct op_str_t
+கட்டமைப்பு op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
    * in our parsed_cs_op_t subclass. */
 
-  const unsigned char *ptr = nullptr;
+  மாறிலி unsigned எழுத்து *ptr = nullptr;
 
   op_code_t  op = OpCode_Invalid;
 
@@ -515,38 +515,38 @@ struct op_str_t
 };
 
 /* base of OP_SERIALIZER */
-struct op_serializer_t
+கட்டமைப்பு op_serializer_t
 {
-  protected:
-  bool copy_opstr (hb_serialize_context_t *c, const op_str_t& opstr) const
+  பாதுகாக்கப்பட்ட:
+  தருக்க copy_opstr (hb_serialize_context_t *c, மாறிலி op_str_t& opstr) மாறிலி
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
-    unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    unsigned எழுத்து *d = c->allocate_size<unsigned எழுத்து> (opstr.length);
+    எனில் (unlikely (!d)) return_trace (பொய்);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    க்கு (unsigned i = 0; i < opstr.length; i++)
       d[i] = opstr.ptr[i];
-    return_trace (true);
+    return_trace (உண்மை);
   }
 };
 
 template <typename VAL>
-struct parsed_values_t
+கட்டமைப்பு parsed_மதிப்புகள்_t
 {
-  void init ()
+  வெறுமை init ()
   {
     opStart = 0;
     values.init ();
   }
-  void fini () { values.fini (); }
+  வெறுமை fini () { values.fini (); }
 
-  void alloc (unsigned n)
+  வெறுமை alloc (unsigned n)
   {
     values.alloc_exact (n);
   }
 
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref = byte_str_ref_t (), const VAL &v = VAL ())
+  வெறுமை add_op (op_code_t op, மாறிலி byte_str_ref_t& str_ref = byte_str_ref_t (), மாறிலி VAL &v = VAL ())
   {
     VAL *val = values.push (v);
     val->op = op;
@@ -556,103 +556,103 @@ struct parsed_values_t
     opStart = str_ref.get_offset ();
   }
 
-  bool has_op (op_code_t op) const
+  தருக்க has_op (op_code_t op) மாறிலி
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    க்கு (மாறிலி auto& v : values)
+      எனில் (v.op == op) திரும்பு உண்மை;
+    திரும்பு பொய்;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  unsigned get_மொத்தம் () மாறிலி { திரும்பு values.length; }
+  மாறிலி VAL &operator [] (unsigned முழு i) மாறிலி { திரும்பு values[i]; }
 
-  unsigned int       opStart;
+  unsigned முழு       opStart;
   hb_vector_t<VAL>   values;
 };
 
-template <typename ARG=number_t>
-struct interp_env_t
+template <typename ARG=எண்_t>
+கட்டமைப்பு interp_env_t
 {
   interp_env_t () {}
-  interp_env_t (const hb_ubytes_t &str_)
+  interp_env_t (மாறிலி hb_ubytes_t &str_)
   {
     str_ref.reset (str_);
   }
-  bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  தருக்க in_error () மாறிலி
+  { திரும்பு str_ref.in_error () || arg_அடுக்கு.in_error (); }
 
-  void set_error () { str_ref.set_error (); }
+  வெறுமை set_error () { str_ref.set_error (); }
 
   op_code_t fetch_op ()
   {
     op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
+    எனில் (unlikely (!str_ref.avail ()))
+      திரும்பு OpCode_Invalid;
     op = (op_code_t) str_ref.head_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
+    எனில் (op == OpCode_escape) {
+      எனில் (unlikely (!str_ref.avail ()))
+	திரும்பு OpCode_Invalid;
       op = Make_OpCode_ESC (str_ref.head_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    திரும்பு op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  மாறிலி ARG& eval_arg (unsigned முழு i) { திரும்பு arg_அடுக்கு[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& எடு_arg () { திரும்பு arg_அடுக்கு.எடு (); }
+  வெறுமை எடு_n_args (unsigned முழு n) { arg_அடுக்கு.எடு (n); }
 
-  void clear_args () { pop_n_args (argStack.get_count ()); }
+  வெறுமை clear_args () { எடு_n_args (arg_அடுக்கு.get_மொத்தம் ()); }
 
   byte_str_ref_t
 		str_ref;
-  arg_stack_t<ARG>
-		argStack;
+  arg_அடுக்கு_t<ARG>
+		arg_அடுக்கு;
 };
 
-using num_interp_env_t =  interp_env_t<>;
+using இலக்கம்_interp_env_t =  interp_env_t<>;
 
-template <typename ARG=number_t>
-struct opset_t
+template <typename ARG=எண்_t>
+கட்டமைப்பு opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<ARG>& env)
+  நிலையான வெறுமை process_op (op_code_t op, interp_env_t<ARG>& env)
   {
-    switch (op) {
-      case OpCode_shortint:
-	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
+    தேர்வு (op) {
+      நிலை OpCode_shortint:
+	env.arg_அடுக்கு.தள்ளு_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
-	break;
+	நிறுத்து;
 
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
+      நிலை OpCode_TwoBytePosInt0: நிலை OpCode_TwoBytePosInt1:
+      நிலை OpCode_TwoBytePosInt2: நிலை OpCode_TwoBytePosInt3:
+	env.arg_அடுக்கு.தள்ளு_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
-	break;
+	நிறுத்து;
 
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
+      நிலை OpCode_TwoByteNegInt0: நிலை OpCode_TwoByteNegInt1:
+      நிலை OpCode_TwoByteNegInt2: நிலை OpCode_TwoByteNegInt3:
+	env.arg_அடுக்கு.தள்ளு_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
-	break;
+	நிறுத்து;
 
-      default:
+      இயல்பு:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	எனில் (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.arg_அடுக்கு.தள்ளு_int ((முழு)op - 139);
+	} இல்லையெனில் {
 	  /* invalid unknown operator */
 	  env.clear_args ();
 	}
-	break;
+	நிறுத்து;
     }
   }
 };
 
 template <typename ENV>
-struct interpreter_t
+கட்டமைப்பு interpreter_t
 {
   interpreter_t (ENV& env_) : env (env_) {}
   ENV& env;

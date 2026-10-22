@@ -24,25 +24,25 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-gpu.h"
-#include "hb-gpu-paint.hh"
-#include "hb-gpu-draw.hh"
-#include "hb-draw.hh"
-#include "hb-machinery.hh"
-#include "hb-paint.hh"
+#அந்தர்பாவ "hb-gpu.h"
+#அந்தர்பாவ "hb-gpu-paint.hh"
+#அந்தர்பாவ "hb-gpu-draw.hh"
+#அந்தர்பாவ "hb-draw.hh"
+#அந்தர்பாவ "hb-machinery.hh"
+#அந்தர்பாவ "hb-paint.hh"
 
 
 /* ---- Paint callbacks ---- */
 
 /* Op-type tags.  Must match the layout documented in
  * hb-gpu-paint.hh. */
-enum {
+எண்ணிக்கை {
   HB_GPU_PAINT_OP_LAYER_SOLID    = 0,
   HB_GPU_PAINT_OP_LAYER_GRADIENT = 1,
-  HB_GPU_PAINT_OP_PUSH_GROUP     = 2,
-  HB_GPU_PAINT_OP_POP_GROUP      = 3,
+  HB_GPU_PAINT_OP_தள்ளு_GROUP     = 2,
+  HB_GPU_PAINT_OP_எடு_GROUP      = 3,
 };
 
 /* Encoder limits.  Hitting any of these flips paint->unsupported and
@@ -59,48 +59,48 @@ enum {
 #define HB_GPU_PAINT_FLAG_HAS_CLIP2      0x0100
 #define HB_GPU_PAINT_FLAG_HAS_CLIP3      0x0200
 
-static hb_bool_t
+நிலையான hb_bool_t
 hb_gpu_paint_custom_palette_color (hb_paint_funcs_t *funcs HB_UNUSED,
-				   void             *paint_data,
+				   வெறுமை             *paint_data,
 				   unsigned          color_index,
 				   hb_color_t       *color,
-				   void             *user_data HB_UNUSED)
+				   வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (likely (c->custom_palette && hb_map_has (c->custom_palette, color_index)))
+  எனில் (likely (c->custom_palette && hb_map_has (c->custom_palette, color_index)))
   {
     *color = hb_map_get (c->custom_palette, color_index);
-    return true;
+    திரும்பு உண்மை;
   }
-  return false;
+  திரும்பு பொய்;
 }
 
-static void
-hb_gpu_paint_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void             *paint_data,
+நிலையான வெறுமை
+hb_gpu_paint_தள்ளு_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
+			      வெறுமை             *paint_data,
 			      hb_codepoint_t    glyph,
 			      hb_font_t        *font,
-			      void             *user_data HB_UNUSED)
+			      வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
 
-  if (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
+  எனில் (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
   {
-    c->unsupported = true;
+    c->unsupported = உண்மை;
     c->clip_depth++;
-    return;
+    திரும்பு;
   }
-  c->clip_stack[c->clip_depth] = { glyph, font, c->cur_transform, -1, 0, 0, 0, 0 };
+  c->clip_அடுக்கு[c->clip_depth] = { glyph, font, c->cur_transform, -1, 0, 0, 0, 0 };
   c->clip_depth++;
 }
 
-static void
-hb_gpu_paint_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
-		       void             *paint_data,
-		       void             *user_data HB_UNUSED)
+நிலையான வெறுமை
+hb_gpu_paint_எடு_clip (hb_paint_funcs_t *funcs HB_UNUSED,
+		       வெறுமை             *paint_data,
+		       வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (likely (c->clip_depth > 0)) c->clip_depth--;
+  எனில் (likely (c->clip_depth > 0)) c->clip_depth--;
 }
 
 /* Arbitrary-path clip: hand the caller the same hb_gpu_draw
@@ -109,29 +109,29 @@ hb_gpu_paint_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
  * geometry into a sub-blob and commits it to clip_stack just
  * like a glyph clip.  No font ref needed — the sub-blob is a
  * self-contained slug bundle. */
-static hb_draw_funcs_t *
-hb_gpu_paint_push_clip_path_start (hb_paint_funcs_t *funcs HB_UNUSED,
-				   void             *paint_data,
-				   void            **draw_data,
-				   void             *user_data HB_UNUSED)
+நிலையான hb_draw_funcs_t *
+hb_gpu_paint_தள்ளு_clip_path_start (hb_paint_funcs_t *funcs HB_UNUSED,
+				   வெறுமை             *paint_data,
+				   வெறுமை            **draw_data,
+				   வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
 
-  if (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
+  எனில் (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
   {
-    c->unsupported = true;
+    c->unsupported = உண்மை;
     *draw_data = nullptr;
-    return nullptr;
+    திரும்பு nullptr;
   }
 
-  if (unlikely (!c->scratch_draw))
+  எனில் (unlikely (!c->scratch_draw))
   {
     c->scratch_draw = hb_gpu_draw_create_or_fail ();
-    if (unlikely (!c->scratch_draw))
+    எனில் (unlikely (!c->scratch_draw))
     {
-      c->unsupported = true;
+      c->unsupported = உண்மை;
       *draw_data = nullptr;
-      return nullptr;
+      திரும்பு nullptr;
     }
   }
 
@@ -143,22 +143,22 @@ hb_gpu_paint_push_clip_path_start (hb_paint_funcs_t *funcs HB_UNUSED,
   hb_gpu_draw_set_scale (c->scratch_draw, c->x_scale, c->y_scale);
 
   c->pending_clip_path_transform = c->cur_transform;
-  c->pending_clip_path = true;
+  c->pending_clip_path = உண்மை;
 
   *draw_data = c->scratch_draw;
-  return hb_gpu_draw_get_funcs (c->scratch_draw);
+  திரும்பு hb_gpu_draw_get_funcs (c->scratch_draw);
 }
 
-static void
-hb_gpu_paint_push_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
-				 void             *paint_data,
-				 void             *user_data HB_UNUSED)
+நிலையான வெறுமை
+hb_gpu_paint_தள்ளு_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
+				 வெறுமை             *paint_data,
+				 வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
 
-  if (unlikely (!c->pending_clip_path))
-    return;
-  c->pending_clip_path = false;
+  எனில் (unlikely (!c->pending_clip_path))
+    திரும்பு;
+  c->pending_clip_path = பொய்;
 
   /* Pull back the outline budget the caller's path draw consumed. */
   c->budget_remaining = hb_draw_get_budget_remaining (hb_gpu_draw_get_funcs (c->scratch_draw),
@@ -166,27 +166,27 @@ hb_gpu_paint_push_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
 
   hb_glyph_extents_t ext;
   hb_blob_t *blob = hb_gpu_draw_encode (c->scratch_draw, &ext);
-  if (unlikely (!blob || !c->push_sub_blob (blob)))
+  எனில் (unlikely (!blob || !c->தள்ளு_sub_blob (blob)))
   {
     hb_blob_destroy (blob);
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
-  int idx = (int) (c->sub_blobs.length - 1);
+  முழு idx = (முழு) (c->sub_blobs.length - 1);
 
-  if (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
+  எனில் (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
   {
-    c->unsupported = true;
+    c->unsupported = உண்மை;
     c->clip_depth++;
-    return;
+    திரும்பு;
   }
 
-  int x0 = ext.x_bearing;
-  int x1 = hb_saturate_add (ext.x_bearing, ext.width);
-  int y0 = ext.y_bearing;
-  int y1 = hb_saturate_add (ext.y_bearing, ext.height);
+  முழு x0 = ext.x_bearing;
+  முழு x1 = hb_saturate_add (ext.x_bearing, ext.width);
+  முழு y0 = ext.y_bearing;
+  முழு y1 = hb_saturate_add (ext.y_bearing, ext.height);
 
-  c->clip_stack[c->clip_depth] = {
+  c->clip_அடுக்கு[c->clip_depth] = {
     HB_CODEPOINT_INVALID, nullptr,
     c->pending_clip_path_transform,
     idx,
@@ -196,94 +196,94 @@ hb_gpu_paint_push_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
   c->clip_depth++;
 }
 
-static void
-hb_gpu_paint_push_transform (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void             *paint_data,
-			     float xx, float yx,
-			     float xy, float yy,
-			     float dx, float dy,
-			     void             *user_data HB_UNUSED)
+நிலையான வெறுமை
+hb_gpu_paint_தள்ளு_transform (hb_paint_funcs_t *funcs HB_UNUSED,
+			     வெறுமை             *paint_data,
+			     தசம xx, தசம yx,
+			     தசம xy, தசம yy,
+			     தசம dx, தசம dy,
+			     வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (unlikely (!c->transform_stack.push_or_fail (c->cur_transform)))
+  எனில் (unlikely (!c->transform_அடுக்கு.தள்ளு_or_fail (c->cur_transform)))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
-  hb_transform_t<float> t (xx, yx, xy, yy, dx, dy);
+  hb_transform_t<தசம> t (xx, yx, xy, yy, dx, dy);
   c->cur_transform.multiply (t);  /* cur = cur * t */
 }
 
-static void
-hb_gpu_paint_pop_transform (hb_paint_funcs_t *funcs HB_UNUSED,
-			    void             *paint_data,
-			    void             *user_data HB_UNUSED)
+நிலையான வெறுமை
+hb_gpu_paint_எடு_transform (hb_paint_funcs_t *funcs HB_UNUSED,
+			    வெறுமை             *paint_data,
+			    வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (unlikely (!c->transform_stack.length))
-    return;
-  c->cur_transform = c->transform_stack.arrayZ[c->transform_stack.length - 1];
-  c->transform_stack.shrink (c->transform_stack.length - 1);
+  எனில் (unlikely (!c->transform_அடுக்கு.length))
+    திரும்பு;
+  c->cur_transform = c->transform_அடுக்கு.arrayZ[c->transform_அடுக்கு.length - 1];
+  c->transform_அடுக்கு.shrink (c->transform_அடுக்கு.length - 1);
 }
 
 /* Emit a 1-texel control op.  Used for PUSH_GROUP / POP_GROUP. */
-static void
+நிலையான வெறுமை
 emit_control_op (hb_gpu_paint_t *c, int16_t op_type, int16_t aux)
 {
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  எனில் (unlikely (c->இலக்கம்_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
-  if (unlikely (!c->ops.resize (c->ops.length + 4)))
+  எனில் (unlikely (!c->ops.resize (c->ops.length + 4)))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
   int16_t *o = &c->ops.arrayZ[c->ops.length - 4];
   o[0] = op_type;
   o[1] = aux;
   o[2] = 0;
   o[3] = 0;
-  c->num_ops++;
+  c->இலக்கம்_ops++;
 }
 
-static void
-hb_gpu_paint_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			 void             *paint_data,
-			 void             *user_data HB_UNUSED)
+நிலையான வெறுமை
+hb_gpu_paint_தள்ளு_group (hb_paint_funcs_t *funcs HB_UNUSED,
+			 வெறுமை             *paint_data,
+			 வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
   c->group_depth++;
-  if (unlikely (c->group_depth > HB_GPU_PAINT_MAX_GROUP_DEPTH))
+  எனில் (unlikely (c->group_depth > HB_GPU_PAINT_MAX_GROUP_DEPTH))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
-  emit_control_op (c, HB_GPU_PAINT_OP_PUSH_GROUP, 0);
+  emit_control_op (c, HB_GPU_PAINT_OP_தள்ளு_GROUP, 0);
 }
 
-static void
-hb_gpu_paint_pop_group (hb_paint_funcs_t    *funcs HB_UNUSED,
-			void                *paint_data,
+நிலையான வெறுமை
+hb_gpu_paint_எடு_group (hb_paint_funcs_t    *funcs HB_UNUSED,
+			வெறுமை                *paint_data,
 			hb_paint_composite_mode_t mode,
-			void                *user_data HB_UNUSED)
+			வெறுமை                *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  bool was_in_range = c->group_depth <= HB_GPU_PAINT_MAX_GROUP_DEPTH;
-  if (likely (c->group_depth > 0)) c->group_depth--;
-  if (was_in_range)
-    emit_control_op (c, HB_GPU_PAINT_OP_POP_GROUP, (int16_t) mode);
+  தருக்க was_in_range = c->group_depth <= HB_GPU_PAINT_MAX_GROUP_DEPTH;
+  எனில் (likely (c->group_depth > 0)) c->group_depth--;
+  எனில் (was_in_range)
+    emit_control_op (c, HB_GPU_PAINT_OP_எடு_GROUP, (int16_t) mode);
 }
 
 /* Quantize unsigned byte 0..255 to signed Q15 0..32767. */
-static inline int16_t
-color_to_q15 (unsigned byte_value)
+நிலையான உள்வரி int16_t
+color_to_q15 (unsigned byte_மதிப்பு)
 {
-  return (int16_t) ((byte_value * 32767u + 127u) / 255u);
+  திரும்பு (int16_t) ((byte_மதிப்பு * 32767u + 127u) / 255u);
 }
 
-static inline void
+நிலையான உள்வரி வெறுமை
 color_to_q15_rgba (hb_color_t color, int16_t out[4])
 {
   out[0] = color_to_q15 (hb_color_get_red   (color));
@@ -292,13 +292,13 @@ color_to_q15_rgba (hb_color_t color, int16_t out[4])
   out[3] = color_to_q15 (hb_color_get_alpha (color));
 }
 
-static inline int16_t
-clamp_i16 (float v)
+நிலையான உள்வரி int16_t
+clamp_i16 (தசம v)
 {
-  if (v <= -32768.f) return -32768;
-  if (v >=  32767.f) return  32767;
-  if (unlikely (std::isnan (v))) return 0;
-  return (int16_t) v;
+  எனில் (v <= -32768.f) திரும்பு -32768;
+  எனில் (v >=  32767.f) திரும்பு  32767;
+  எனில் (unlikely (std::isnan (v))) திரும்பு 0;
+  திரும்பு (int16_t) v;
 }
 
 /* Compute the 2x2 inverse of the transform's linear part, quantize
@@ -311,11 +311,11 @@ clamp_i16 (float v)
  * transforms for degenerate cases can check for is_identity before
  * doing the extra work in-shader, but we always emit so the format
  * stays uniform. */
-static inline void
-linv_q10 (const hb_transform_t<float> &t, int16_t out[4])
+நிலையான உள்வரி வெறுமை
+linv_q10 (மாறிலி hb_transform_t<தசம> &t, int16_t out[4])
 {
-  float det = t.xx * t.yy - t.xy * t.yx;
-  float inv = fabsf (det) > 1e-12f ? 1.0f / det : 0.0f;
+  தசம det = t.xx * t.yy - t.xy * t.yx;
+  தசம inv = fabsf (det) > 1e-12f ? 1.0f / det : 0.0f;
   out[0] = clamp_i16 ( t.yy * inv * 1024.f);
   out[1] = clamp_i16 (-t.xy * inv * 1024.f);
   out[2] = clamp_i16 (-t.yx * inv * 1024.f);
@@ -327,43 +327,43 @@ linv_q10 (const hb_transform_t<float> &t, int16_t out[4])
  * downstream's inline draw-state bookkeeping runs against a
  * separate state (down_st) so transformed-space updates don't
  * pollute the caller's pre-transform state. */
-struct hb_gpu_paint_pen_t
+கட்டமைப்பு hb_gpu_paint_pen_t
 {
-  hb_transform_t<float> transform;
+  hb_transform_t<தசம> transform;
   hb_draw_funcs_t  *dfuncs;
-  void             *data;
+  வெறுமை             *data;
   hb_draw_state_t   down_st;
   int64_t          *budget_remaining;
 };
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data, hb_draw_state_t *st HB_UNUSED,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  வெறுமை *data, hb_draw_state_t *st HB_UNUSED,
+			  தசம to_x, தசம to_y,
+			  வெறுமை *user_data HB_UNUSED)
 {
   auto *c = (hb_gpu_paint_pen_t *) data;
   c->transform.transform_point (to_x, to_y);
   c->dfuncs->move_to (c->data, c->down_st, to_x, to_y);
 }
 
-static void
-hb_gpu_paint_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data, hb_draw_state_t *st HB_UNUSED,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+நிலையான வெறுமை
+hb_gpu_paint_pen_வரி_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+			  வெறுமை *data, hb_draw_state_t *st HB_UNUSED,
+			  தசம to_x, தசம to_y,
+			  வெறுமை *user_data HB_UNUSED)
 {
   auto *c = (hb_gpu_paint_pen_t *) data;
   c->transform.transform_point (to_x, to_y);
-  c->dfuncs->line_to (c->data, c->down_st, to_x, to_y);
+  c->dfuncs->வரி_to (c->data, c->down_st, to_x, to_y);
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			       void *data, hb_draw_state_t *st HB_UNUSED,
-			       float c_x, float c_y,
-			       float to_x, float to_y,
-			       void *user_data HB_UNUSED)
+			       வெறுமை *data, hb_draw_state_t *st HB_UNUSED,
+			       தசம c_x, தசம c_y,
+			       தசம to_x, தசம to_y,
+			       வெறுமை *user_data HB_UNUSED)
 {
   auto *c = (hb_gpu_paint_pen_t *) data;
   c->transform.transform_point (c_x, c_y);
@@ -371,13 +371,13 @@ hb_gpu_paint_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   c->dfuncs->quadratic_to (c->data, c->down_st, c_x, c_y, to_x, to_y);
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			   void *data, hb_draw_state_t *st HB_UNUSED,
-			   float c1_x, float c1_y,
-			   float c2_x, float c2_y,
-			   float to_x, float to_y,
-			   void *user_data HB_UNUSED)
+			   வெறுமை *data, hb_draw_state_t *st HB_UNUSED,
+			   தசம c1_x, தசம c1_y,
+			   தசம c2_x, தசம c2_y,
+			   தசம to_x, தசம to_y,
+			   வெறுமை *user_data HB_UNUSED)
 {
   auto *c = (hb_gpu_paint_pen_t *) data;
   c->transform.transform_point (c1_x, c1_y);
@@ -386,42 +386,42 @@ hb_gpu_paint_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   c->dfuncs->cubic_to (c->data, c->down_st, c1_x, c1_y, c2_x, c2_y, to_x, to_y);
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			     void *data, hb_draw_state_t *st HB_UNUSED,
-			     void *user_data HB_UNUSED)
+			     வெறுமை *data, hb_draw_state_t *st HB_UNUSED,
+			     வெறுமை *user_data HB_UNUSED)
 {
   auto *c = (hb_gpu_paint_pen_t *) data;
   c->dfuncs->close_path (c->data, c->down_st);
 }
 
-static int64_t *
-hb_gpu_paint_pen_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+நிலையான int64_t *
+hb_gpu_paint_pen_get_budget_remaining (hb_draw_funcs_t *, வெறுமை *draw_data, வெறுமை *)
 {
-  return ((hb_gpu_paint_pen_t *) draw_data)->budget_remaining;
+  திரும்பு ((hb_gpu_paint_pen_t *) draw_data)->budget_remaining;
 }
 
-static inline void free_static_gpu_paint_pen_funcs ();
+நிலையான உள்வரி வெறுமை free_static_gpu_paint_pen_funcs ();
 
-static struct hb_gpu_paint_pen_funcs_lazy_loader_t
+நிலையான கட்டமைப்பு hb_gpu_paint_pen_funcs_lazy_loader_t
   : hb_draw_funcs_lazy_loader_t<hb_gpu_paint_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  நிலையான hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
     hb_draw_funcs_set_move_to_func      (funcs, hb_gpu_paint_pen_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_gpu_paint_pen_line_to,      nullptr, nullptr);
+    hb_draw_funcs_set_வரி_to_func      (funcs, hb_gpu_paint_pen_வரி_to,      nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_gpu_paint_pen_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func     (funcs, hb_gpu_paint_pen_cubic_to,     nullptr, nullptr);
     hb_draw_funcs_set_close_path_func   (funcs, hb_gpu_paint_pen_close_path,   nullptr, nullptr);
     hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_gpu_paint_pen_get_budget_remaining, nullptr, nullptr);
     hb_draw_funcs_make_immutable (funcs);
     hb_atexit (free_static_gpu_paint_pen_funcs);
-    return funcs;
+    திரும்பு funcs;
   }
 } static_gpu_paint_pen_funcs;
 
-static inline void
+நிலையான உள்வரி வெறுமை
 free_static_gpu_paint_pen_funcs ()
 {
   static_gpu_paint_pen_funcs.free_instance ();
@@ -436,7 +436,7 @@ free_static_gpu_paint_pen_funcs ()
  * path.  This matters for adversarial COLR trees that emit many
  * paint layers under the same clip stack -- without memoization
  * each layer re-rasterizes every clip glyph. */
-static int
+நிலையான முழு
 emit_clip_sub_blob (hb_gpu_paint_t *c,
 		    hb_gpu_paint_t::pending_clip_t &clip)
 {
@@ -444,40 +444,40 @@ emit_clip_sub_blob (hb_gpu_paint_t *c,
    * push_clip_path_end time; glyph clips are cached here on first
    * use.  Either way: just accumulate extents and hand back the
    * recorded index. */
-  if (clip.sub_blob_index >= 0)
+  எனில் (clip.sub_blob_index >= 0)
   {
     c->ext_min_x = hb_min (c->ext_min_x, clip.ext_x0);
     c->ext_max_x = hb_max (c->ext_max_x, clip.ext_x1);
     c->ext_min_y = hb_min (c->ext_min_y, clip.ext_y0);
     c->ext_max_y = hb_max (c->ext_max_y, clip.ext_y1);
-    return clip.sub_blob_index;
+    திரும்பு clip.sub_blob_index;
   }
 
   /* Adversarial COLR trees can drive thousands of fresh
    * push_clip_glyph / paint_color cycles within a single paint
    * walk, each demanding a fresh sub-blob.  Bound the work. */
-  if (unlikely (c->sub_blobs.length >= HB_GPU_PAINT_MAX_SUB_BLOBS))
+  எனில் (unlikely (c->sub_blobs.length >= HB_GPU_PAINT_MAX_SUB_BLOBS))
   {
-    c->unsupported = true;
-    return -1;
+    c->unsupported = உண்மை;
+    திரும்பு -1;
   }
 
   /* Out of budget: skip the glyph-outline extraction entirely, so
    * per-glyph outline limits cannot multiply with the caller's
    * paint-graph traversal limits. */
-  if (unlikely (c->budget_remaining < 0))
+  எனில் (unlikely (c->budget_remaining < 0))
   {
-    c->unsupported = true;
-    return -1;
+    c->unsupported = உண்மை;
+    திரும்பு -1;
   }
 
-  if (unlikely (!c->scratch_draw))
+  எனில் (unlikely (!c->scratch_draw))
   {
     c->scratch_draw = hb_gpu_draw_create_or_fail ();
-    if (unlikely (!c->scratch_draw))
+    எனில் (unlikely (!c->scratch_draw))
     {
-      c->unsupported = true;
-      return -1;
+      c->unsupported = உண்மை;
+      திரும்பு -1;
     }
   }
   hb_gpu_draw_clear (c->scratch_draw);
@@ -487,20 +487,20 @@ emit_clip_sub_blob (hb_gpu_paint_t *c,
   hb_draw_set_budget (hb_gpu_draw_get_funcs (c->scratch_draw), c->scratch_draw,
 		      c->budget_remaining);
 
-  bool ok;
-  if (clip.transform.is_identity ())
+  தருக்க ok;
+  எனில் (clip.transform.is_identity ())
   {
     /* Fast path: feed the glyph outline straight into the draw
      * encoder with no adapter. */
     ok = hb_gpu_draw_glyph_or_fail (c->scratch_draw, clip.font, clip.glyph);
   }
-  else
+  இல்லையெனில்
   {
     /* Transform each outline point by the transform that was
      * current at push_clip_glyph time -- NOT the innermost
      * cur_transform, which may have additional PaintTransform
      * wrappers from the paint child underneath. */
-    int x_scale, y_scale;
+    முழு x_scale, y_scale;
     hb_font_get_scale (clip.font, &x_scale, &y_scale);
     hb_gpu_draw_set_scale (c->scratch_draw, x_scale, y_scale);
 
@@ -519,30 +519,30 @@ emit_clip_sub_blob (hb_gpu_paint_t *c,
   }
   c->budget_remaining = hb_draw_get_budget_remaining (hb_gpu_draw_get_funcs (c->scratch_draw),
 						      c->scratch_draw);
-  if (!ok)
-    return -1;  /* Clip glyph has no outline -- skip. */
+  எனில் (!ok)
+    திரும்பு -1;  /* Clip glyph has no outline -- skip. */
 
   hb_glyph_extents_t ext;
   hb_blob_t *blob = hb_gpu_draw_encode (c->scratch_draw, &ext);
-  if (unlikely (!blob || !c->push_sub_blob (blob)))
+  எனில் (unlikely (!blob || !c->தள்ளு_sub_blob (blob)))
   {
     hb_blob_destroy (blob);
-    c->unsupported = true;
-    return -1;
+    c->unsupported = உண்மை;
+    திரும்பு -1;
   }
 
   /* Accumulate extents: x_bearing/y_bearing are top-left, width
    * positive, height negative (growing down). */
-  int x0 = ext.x_bearing;
-  int x1 = hb_saturate_add (ext.x_bearing, ext.width);
-  int y0 = ext.y_bearing;
-  int y1 = hb_saturate_add (ext.y_bearing, ext.height);
+  முழு x0 = ext.x_bearing;
+  முழு x1 = hb_saturate_add (ext.x_bearing, ext.width);
+  முழு y0 = ext.y_bearing;
+  முழு y1 = hb_saturate_add (ext.y_bearing, ext.height);
   c->ext_min_x = hb_min (c->ext_min_x, hb_min (x0, x1));
   c->ext_max_x = hb_max (c->ext_max_x, hb_max (x0, x1));
   c->ext_min_y = hb_min (c->ext_min_y, hb_min (y0, y1));
   c->ext_max_y = hb_max (c->ext_max_y, hb_max (y0, y1));
 
-  int idx = (int) (c->sub_blobs.length - 1);
+  முழு idx = (முழு) (c->sub_blobs.length - 1);
 
   /* Memoize on the slot.  The (glyph, font, transform) tuple is
    * fixed between push_clip_glyph and pop_clip, and pop_clip's
@@ -554,40 +554,40 @@ emit_clip_sub_blob (hb_gpu_paint_t *c,
   clip.ext_x1 = hb_max (x0, x1);
   clip.ext_y1 = hb_max (y0, y1);
 
-  return idx;
+  திரும்பு idx;
 }
 
 /* Emit a sub-blob for every clip currently on the stack and return
  * their indices in @out (set to -1 for unused slots).  Returns
  * false if any clip's outline is empty (caller should skip the
  * layer entirely) or hb_gpu_draw_encode failed. */
-static bool
-emit_all_clip_sub_blobs (hb_gpu_paint_t *c, int out[HB_GPU_PAINT_MAX_CLIP_DEPTH])
+நிலையான தருக்க
+emit_all_clip_sub_blobs (hb_gpu_paint_t *c, முழு out[HB_GPU_PAINT_MAX_CLIP_DEPTH])
 {
-  for (unsigned i = 0; i < HB_GPU_PAINT_MAX_CLIP_DEPTH; i++)
+  க்கு (unsigned i = 0; i < HB_GPU_PAINT_MAX_CLIP_DEPTH; i++)
     out[i] = -1;
-  for (unsigned i = 0; i < hb_min (c->clip_depth, (unsigned) HB_GPU_PAINT_MAX_CLIP_DEPTH); i++)
+  க்கு (unsigned i = 0; i < hb_min (c->clip_depth, (unsigned) HB_GPU_PAINT_MAX_CLIP_DEPTH); i++)
   {
-    out[i] = emit_clip_sub_blob (c, c->clip_stack[i]);
-    if (out[i] < 0)
-      return false;
+    out[i] = emit_clip_sub_blob (c, c->clip_அடுக்கு[i]);
+    எனில் (out[i] < 0)
+      திரும்பு பொய்;
   }
-  return true;
+  திரும்பு உண்மை;
 }
 
 /* Emit a 3-texel LAYER_GRADIENT op header (excluding the
  * gradient-meta texel which the caller fills in).  @subtype is
  * 0 = linear, 1 = radial, 2 = sweep. */
-static int16_t *
+நிலையான int16_t *
 emit_gradient_op_header (hb_gpu_paint_t *c, unsigned subtype,
-			 const int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH])
+			 மாறிலி முழு clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH])
 {
-  if (unlikely (!c->ops.resize (c->ops.length + 12)))
-  { c->unsupported = true; return nullptr; }
+  எனில் (unlikely (!c->ops.resize (c->ops.length + 12)))
+  { c->unsupported = உண்மை; திரும்பு nullptr; }
   int16_t *o = &c->ops.arrayZ[c->ops.length - 12];
   int16_t flags = (int16_t) subtype;
-  if (clip_idx[1] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP2;
-  if (clip_idx[2] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP3;
+  எனில் (clip_idx[1] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP2;
+  எனில் (clip_idx[2] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP3;
   o[0] = HB_GPU_PAINT_OP_LAYER_GRADIENT;
   o[1] = flags;
   o[2] = (int16_t) ((clip_idx[0] >> 16) & 0xffff);
@@ -596,27 +596,27 @@ emit_gradient_op_header (hb_gpu_paint_t *c, unsigned subtype,
   o[5] = clip_idx[1] >= 0 ? (int16_t) (clip_idx[1] & 0xffff) : 0;
   o[6] = clip_idx[2] >= 0 ? (int16_t) ((clip_idx[2] >> 16) & 0xffff) : 0;
   o[7] = clip_idx[2] >= 0 ? (int16_t) (clip_idx[2] & 0xffff) : 0;
-  return o + 8;  /* texel 2: gradient meta -- caller fills */
+  திரும்பு o + 8;  /* texel 2: gradient meta -- caller fills */
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
 			 hb_bool_t       is_foreground,
 			 hb_color_t      color)
 {
-  if (unlikely (c->unsupported))
-    return;
-  if (unlikely (c->clip_depth == 0))
-    return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  எனில் (unlikely (c->unsupported))
+    திரும்பு;
+  எனில் (unlikely (c->clip_depth == 0))
+    திரும்பு;
+  எனில் (unlikely (c->இலக்கம்_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
 
-  int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
-  if (!emit_all_clip_sub_blobs (c, clip_idx))
-    return;
+  முழு clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
+  எனில் (!emit_all_clip_sub_blobs (c, clip_idx))
+    திரும்பு;
 
   /* Emit LAYER_SOLID op: 3 texels (12 int16s).
    *   texel 0: op_type, flags, clip1_hi, clip1_lo
@@ -627,15 +627,15 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
    * flags bit 0: use shader foreground uniform instead of the
    * baked color (so runtime foreground-color changes still work).
    * flags bit 8: a second clip outline is present in texel 1. */
-  if (unlikely (!c->ops.resize (c->ops.length + 12)))
+  எனில் (unlikely (!c->ops.resize (c->ops.length + 12)))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
   int16_t *o = &c->ops.arrayZ[c->ops.length - 12];
   int16_t flags = (int16_t) (is_foreground ? HB_GPU_PAINT_FLAG_IS_FOREGROUND : 0);
-  if (clip_idx[1] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP2;
-  if (clip_idx[2] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP3;
+  எனில் (clip_idx[1] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP2;
+  எனில் (clip_idx[2] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP3;
   o[0] = HB_GPU_PAINT_OP_LAYER_SOLID;
   o[1] = flags;
   o[2] = (int16_t) ((clip_idx[0] >> 16) & 0xffff);
@@ -645,7 +645,7 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
   o[6] = clip_idx[2] >= 0 ? (int16_t) ((clip_idx[2] >> 16) & 0xffff) : 0;
   o[7] = clip_idx[2] >= 0 ? (int16_t) (clip_idx[2] & 0xffff) : 0;
   color_to_q15_rgba (color, o + 8);
-  c->num_ops++;
+  c->இலக்கம்_ops++;
 }
 
 /* Append a color line (@count stops) to @grad_data in the encoded
@@ -653,20 +653,20 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
  *   texel a: (offset_q15, flags, _, _) with flags bit 0 = is_foreground
  *   texel b: (r_q15, g_q15, b_q15, a_q15)
  * Returns false on allocation failure. */
-static bool
+நிலையான தருக்க
 append_color_stops (hb_vector_t<int16_t> &grad_data,
-		    const hb_color_stop_t *stops,
-		    unsigned count)
+		    மாறிலி hb_color_stop_t *stops,
+		    unsigned மொத்தம்)
 {
   unsigned base = grad_data.length;
-  if (unlikely (!grad_data.resize (base + count * 8)))
-    return false;
+  எனில் (unlikely (!grad_data.resize (base + மொத்தம் * 8)))
+    திரும்பு பொய்;
   int16_t *p = grad_data.arrayZ + base;
-  for (unsigned i = 0; i < count; i++)
+  க்கு (unsigned i = 0; i < மொத்தம்; i++)
   {
-    float off = stops[i].offset;
-    if (off < -1.f) off = -1.f;
-    else if (off > 1.f) off = 1.f;
+    தசம off = stops[i].offset;
+    எனில் (off < -1.f) off = -1.f;
+    இல்லையெனில் எனில் (off > 1.f) off = 1.f;
     p[0] = (int16_t) (off * 32767.f);
     p[1] = (int16_t) (stops[i].is_foreground ? 1 : 0);
     p[2] = 0;
@@ -674,37 +674,37 @@ append_color_stops (hb_vector_t<int16_t> &grad_data,
     color_to_q15_rgba (stops[i].color, p + 4);
     p += 8;
   }
-  return true;
+  திரும்பு உண்மை;
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
-			  hb_color_line_t *color_line,
-			  float x0, float y0,
-			  float x1, float y1,
-			  float x2, float y2)
+			  hb_color_வரி_t *color_வரி,
+			  தசம x0, தசம y0,
+			  தசம x1, தசம y1,
+			  தசம x2, தசம y2)
 {
-  if (unlikely (c->unsupported))
-    return;
-  if (unlikely (c->clip_depth == 0))
-    return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  எனில் (unlikely (c->unsupported))
+    திரும்பு;
+  எனில் (unlikely (c->clip_depth == 0))
+    திரும்பு;
+  எனில் (unlikely (c->இலக்கம்_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
 
   /* Resolve stops (triggers custom_palette_color, etc). */
-  if (unlikely (!c->fetch_color_stops (color_line)))
-    return;
+  எனில் (unlikely (!c->fetch_color_stops (color_வரி)))
+    திரும்பு;
   hb_color_stop_t *stops = c->color_stops_scratch.arrayZ;
   unsigned got = c->color_stops_scratch.length;
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_வரி_get_extend (color_வரி);
 
   /* Emit clip sub-blob(s) first. */
-  int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
-  if (!emit_all_clip_sub_blobs (c, clip_idx)) return;
+  முழு clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
+  எனில் (!emit_all_clip_sub_blobs (c, clip_idx)) திரும்பு;
 
   /* Build gradient params sub-blob.
    *   texel 0: (p0_rendered_x, p0_rendered_y, d_canonical_x, d_canonical_y)
@@ -716,19 +716,19 @@ hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
    * untransformed space, so affine distortions of the axis are
    * handled exactly rather than approximated. */
   hb_vector_t<int16_t> grad_data;
-  if (unlikely (!grad_data.resize (8)))
-  { c->unsupported = true; return; }
+  எனில் (unlikely (!grad_data.resize (8)))
+  { c->unsupported = உண்மை; திரும்பு; }
 
-  float lx0, ly0, lx1, ly1;
+  தசம lx0, ly0, lx1, ly1;
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &lx0, &ly0, &lx1, &ly1);
   /* Normalize stops to [0,1]; shift axis endpoints to compensate. */
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
-  float dx = lx1 - lx0, dy = ly1 - ly0;
-  float ax0 = lx0 + mn * dx, ay0 = ly0 + mn * dy;
-  float ax1 = lx0 + mx * dx, ay1 = ly0 + mx * dy;
+  தசம mn, mx;
+  hb_paint_normalize_color_வரி (stops, got, &mn, &mx);
+  தசம dx = lx1 - lx0, dy = ly1 - ly0;
+  தசம ax0 = lx0 + mn * dx, ay0 = ly0 + mn * dy;
+  தசம ax1 = lx0 + mx * dx, ay1 = ly0 + mx * dy;
   /* p0 in rendered space; d in untransformed space. */
-  float p0x_r = ax0, p0y_r = ay0;
+  தசம p0x_r = ax0, p0y_r = ay0;
   c->cur_transform.transform_point (p0x_r, p0y_r);
   grad_data[0] = clamp_i16 (p0x_r);
   grad_data[1] = clamp_i16 (p0y_r);
@@ -741,55 +741,55 @@ hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
   grad_data[6] = Linv[2];
   grad_data[7] = Linv[3];
 
-  if (unlikely (!append_color_stops (grad_data, stops, got)))
-  { c->unsupported = true; return; }
+  எனில் (unlikely (!append_color_stops (grad_data, stops, got)))
+  { c->unsupported = உண்மை; திரும்பு; }
 
-  unsigned grad_bytes = grad_data.length * sizeof (int16_t);
-  hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
+  unsigned grad_bytes = grad_data.length * அளவு (int16_t);
+  hb_blob_t *grad_blob = hb_blob_create ((மாறிலி எழுத்து *) grad_data.arrayZ,
 					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
 					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  எனில் (unlikely (!grad_blob || !c->தள்ளு_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
   unsigned grad_idx = c->sub_blobs.length - 1;
 
   int16_t *meta = emit_gradient_op_header (c, 0 /* linear */, clip_idx);
-  if (unlikely (!meta)) return;
+  எனில் (unlikely (!meta)) திரும்பு;
   meta[0] = (int16_t) ((grad_idx >> 16) & 0xffff);
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->இலக்கம்_ops++;
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
-			  hb_color_line_t *color_line,
-			  float x0, float y0, float r0,
-			  float x1, float y1, float r1)
+			  hb_color_வரி_t *color_வரி,
+			  தசம x0, தசம y0, தசம r0,
+			  தசம x1, தசம y1, தசம r1)
 {
-  if (unlikely (c->unsupported))
-    return;
-  if (unlikely (c->clip_depth == 0))
-    return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  எனில் (unlikely (c->unsupported))
+    திரும்பு;
+  எனில் (unlikely (c->clip_depth == 0))
+    திரும்பு;
+  எனில் (unlikely (c->இலக்கம்_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
 
-  if (unlikely (!c->fetch_color_stops (color_line)))
-    return;
+  எனில் (unlikely (!c->fetch_color_stops (color_வரி)))
+    திரும்பு;
   hb_color_stop_t *stops = c->color_stops_scratch.arrayZ;
   unsigned got = c->color_stops_scratch.length;
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_வரி_get_extend (color_வரி);
 
-  int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
-  if (!emit_all_clip_sub_blobs (c, clip_idx)) return;
+  முழு clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
+  எனில் (!emit_all_clip_sub_blobs (c, clip_idx)) திரும்பு;
 
   /* Build gradient params sub-blob.
    *   texel 0: (c0_rendered_x, c0_rendered_y, d_canonical_x, d_canonical_y)
@@ -804,15 +804,15 @@ hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
    * exactly.
    */
   hb_vector_t<int16_t> grad_data;
-  if (unlikely (!grad_data.resize (12)))
-  { c->unsupported = true; return; }
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
-  float dx = x1 - x0, dy = y1 - y0, dr = r1 - r0;
-  float cx0 = x0 + mn * dx, cy0 = y0 + mn * dy, cr0 = r0 + mn * dr;
-  float cx1 = x0 + mx * dx, cy1 = y0 + mx * dy, cr1 = r0 + mx * dr;
+  எனில் (unlikely (!grad_data.resize (12)))
+  { c->unsupported = உண்மை; திரும்பு; }
+  தசம mn, mx;
+  hb_paint_normalize_color_வரி (stops, got, &mn, &mx);
+  தசம dx = x1 - x0, dy = y1 - y0, dr = r1 - r0;
+  தசம cx0 = x0 + mn * dx, cy0 = y0 + mn * dy, cr0 = r0 + mn * dr;
+  தசம cx1 = x0 + mx * dx, cy1 = y0 + mx * dy, cr1 = r0 + mx * dr;
   /* c0 in rendered space; d (= c1 - c0) and radii in untransformed. */
-  float cx0_r = cx0, cy0_r = cy0;
+  தசம cx0_r = cx0, cy0_r = cy0;
   c->cur_transform.transform_point (cx0_r, cy0_r);
   grad_data[0] = clamp_i16 (cx0_r);
   grad_data[1] = clamp_i16 (cy0_r);
@@ -829,100 +829,100 @@ hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
   grad_data[10] = Linv[2];
   grad_data[11] = Linv[3];
 
-  if (unlikely (!append_color_stops (grad_data, stops, got)))
-  { c->unsupported = true; return; }
+  எனில் (unlikely (!append_color_stops (grad_data, stops, got)))
+  { c->unsupported = உண்மை; திரும்பு; }
 
-  unsigned grad_bytes = grad_data.length * sizeof (int16_t);
-  hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
+  unsigned grad_bytes = grad_data.length * அளவு (int16_t);
+  hb_blob_t *grad_blob = hb_blob_create ((மாறிலி எழுத்து *) grad_data.arrayZ,
 					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
 					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  எனில் (unlikely (!grad_blob || !c->தள்ளு_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
   unsigned grad_idx = c->sub_blobs.length - 1;
 
   int16_t *meta = emit_gradient_op_header (c, 1 /* radial */, clip_idx);
-  if (unlikely (!meta)) return;
+  எனில் (unlikely (!meta)) திரும்பு;
   meta[0] = (int16_t) ((grad_idx >> 16) & 0xffff);
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->இலக்கம்_ops++;
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_color (hb_paint_funcs_t *funcs HB_UNUSED,
-		    void             *paint_data,
+		    வெறுமை             *paint_data,
 		    hb_bool_t         is_foreground,
 		    hb_color_t        color,
-		    void             *user_data HB_UNUSED)
+		    வெறுமை             *user_data HB_UNUSED)
 {
   hb_gpu_paint_emit_solid ((hb_gpu_paint_t *) paint_data, is_foreground, color);
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_linear_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void             *paint_data,
-			      hb_color_line_t  *color_line,
-			      float x0, float y0,
-			      float x1, float y1,
-			      float x2, float y2,
-			      void             *user_data HB_UNUSED)
+			      வெறுமை             *paint_data,
+			      hb_color_வரி_t  *color_வரி,
+			      தசம x0, தசம y0,
+			      தசம x1, தசம y1,
+			      தசம x2, தசம y2,
+			      வெறுமை             *user_data HB_UNUSED)
 {
-  hb_gpu_paint_emit_linear ((hb_gpu_paint_t *) paint_data, color_line,
+  hb_gpu_paint_emit_linear ((hb_gpu_paint_t *) paint_data, color_வரி,
 			    x0, y0, x1, y1, x2, y2);
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_radial_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void             *paint_data,
-			      hb_color_line_t  *color_line,
-			      float x0, float y0, float r0,
-			      float x1, float y1, float r1,
-			      void             *user_data HB_UNUSED)
+			      வெறுமை             *paint_data,
+			      hb_color_வரி_t  *color_வரி,
+			      தசம x0, தசம y0, தசம r0,
+			      தசம x1, தசம y1, தசம r1,
+			      வெறுமை             *user_data HB_UNUSED)
 {
-  hb_gpu_paint_emit_radial ((hb_gpu_paint_t *) paint_data, color_line,
+  hb_gpu_paint_emit_radial ((hb_gpu_paint_t *) paint_data, color_வரி,
 			    x0, y0, r0, x1, y1, r1);
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
-			 hb_color_line_t *color_line,
-			 float cx, float cy,
-			 float start_angle, float end_angle)
+			 hb_color_வரி_t *color_வரி,
+			 தசம cx, தசம cy,
+			 தசம start_angle, தசம end_angle)
 {
-  if (unlikely (c->unsupported))
-    return;
-  if (unlikely (c->clip_depth == 0))
-    return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  எனில் (unlikely (c->unsupported))
+    திரும்பு;
+  எனில் (unlikely (c->clip_depth == 0))
+    திரும்பு;
+  எனில் (unlikely (c->இலக்கம்_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
 
-  unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-  if (unlikely (!count))
-    return;
-  hb_color_stop_t stack_stops[16];
-  hb_color_stop_t *stops = stack_stops;
+  unsigned மொத்தம் = hb_color_வரி_get_color_stops (color_வரி, 0, nullptr, nullptr);
+  எனில் (unlikely (!மொத்தம்))
+    திரும்பு;
+  hb_color_stop_t அடுக்கு_stops[16];
+  hb_color_stop_t *stops = அடுக்கு_stops;
   hb_color_stop_t *heap_stops = nullptr;
-  if (count > 16)
+  எனில் (மொத்தம் > 16)
   {
-    heap_stops = (hb_color_stop_t *) hb_malloc2 (count, sizeof (hb_color_stop_t));
-    if (unlikely (!heap_stops)) { c->unsupported = true; return; }
+    heap_stops = (hb_color_stop_t *) hb_malloc2 (மொத்தம், அளவு (hb_color_stop_t));
+    எனில் (unlikely (!heap_stops)) { c->unsupported = உண்மை; திரும்பு; }
     stops = heap_stops;
   }
-  unsigned got = count;
-  hb_color_line_get_color_stops (color_line, 0, &got, stops);
+  unsigned got = மொத்தம்;
+  hb_color_வரி_get_color_stops (color_வரி, 0, &got, stops);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_வரி_get_extend (color_வரி);
 
-  int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
-  if (!emit_all_clip_sub_blobs (c, clip_idx)) { hb_free (heap_stops); return; }
+  முழு clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
+  எனில் (!emit_all_clip_sub_blobs (c, clip_idx)) { hb_free (heap_stops); திரும்பு; }
 
   /* Build gradient params sub-blob.
    *   texel 0: (center_rendered_x, center_rendered_y,
@@ -936,22 +936,22 @@ hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
    * handled exactly.
    */
   hb_vector_t<int16_t> grad_data;
-  if (unlikely (!grad_data.resize (8)))
-  { c->unsupported = true; hb_free (heap_stops); return; }
+  எனில் (unlikely (!grad_data.resize (8)))
+  { c->unsupported = உண்மை; hb_free (heap_stops); திரும்பு; }
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
-  float a_span = end_angle - start_angle;
-  float a_lo = start_angle + mn * a_span;
-  float a_hi = start_angle + mx * a_span;
-  auto rad_to_q14_pi = [] (float rad) -> int16_t {
-    float v = rad * (float) (1.0 / M_PI);  /* fraction of pi */
-    if (v <= -2.f) return -32768;
-    if (v >=  2.f) return  32767;
-    return (int16_t) (v * 16384.f);
+  தசம mn, mx;
+  hb_paint_normalize_color_வரி (stops, got, &mn, &mx);
+  தசம a_span = end_angle - start_angle;
+  தசம a_lo = start_angle + mn * a_span;
+  தசம a_hi = start_angle + mx * a_span;
+  auto rad_to_q14_pi = [] (தசம rad) -> int16_t {
+    தசம v = rad * (தசம) (1.0 / M_PI);  /* fraction of pi */
+    எனில் (v <= -2.f) திரும்பு -32768;
+    எனில் (v >=  2.f) திரும்பு  32767;
+    திரும்பு (int16_t) (v * 16384.f);
   };
   /* center in rendered space; angles stay canonical. */
-  float tcx = cx, tcy = cy;
+  தசம tcx = cx, tcy = cy;
   c->cur_transform.transform_point (tcx, tcy);
   grad_data[0] = clamp_i16 (tcx);
   grad_data[1] = clamp_i16 (tcy);
@@ -964,41 +964,41 @@ hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
   grad_data[6] = Linv[2];
   grad_data[7] = Linv[3];
 
-  if (unlikely (!append_color_stops (grad_data, stops, got)))
-  { c->unsupported = true; hb_free (heap_stops); return; }
+  எனில் (unlikely (!append_color_stops (grad_data, stops, got)))
+  { c->unsupported = உண்மை; hb_free (heap_stops); திரும்பு; }
   hb_free (heap_stops);
 
-  unsigned grad_bytes = grad_data.length * sizeof (int16_t);
-  hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
+  unsigned grad_bytes = grad_data.length * அளவு (int16_t);
+  hb_blob_t *grad_blob = hb_blob_create ((மாறிலி எழுத்து *) grad_data.arrayZ,
 					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
 					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  எனில் (unlikely (!grad_blob || !c->தள்ளு_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
-    c->unsupported = true;
-    return;
+    c->unsupported = உண்மை;
+    திரும்பு;
   }
   unsigned grad_idx = c->sub_blobs.length - 1;
 
   int16_t *meta = emit_gradient_op_header (c, 2 /* sweep */, clip_idx);
-  if (unlikely (!meta)) return;
+  எனில் (unlikely (!meta)) திரும்பு;
   meta[0] = (int16_t) ((grad_idx >> 16) & 0xffff);
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->இலக்கம்_ops++;
 }
 
-static void
+நிலையான வெறுமை
 hb_gpu_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void             *paint_data,
-			     hb_color_line_t  *color_line,
-			     float cx, float cy,
-			     float start_angle,
-			     float end_angle,
-			     void             *user_data HB_UNUSED)
+			     வெறுமை             *paint_data,
+			     hb_color_வரி_t  *color_வரி,
+			     தசம cx, தசம cy,
+			     தசம start_angle,
+			     தசம end_angle,
+			     வெறுமை             *user_data HB_UNUSED)
 {
-  hb_gpu_paint_emit_sweep ((hb_gpu_paint_t *) paint_data, color_line,
+  hb_gpu_paint_emit_sweep ((hb_gpu_paint_t *) paint_data, color_வரி,
 			   cx, cy, start_angle, end_angle);
 }
 
@@ -1007,60 +1007,60 @@ hb_gpu_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
  * than getting a partial blob.  PaintRectangleClip is intentionally
  * left to the default no-op: the encoder simply ignores the
  * rectangle (output is bigger than it should be, but renders). */
-static hb_bool_t
+நிலையான hb_bool_t
 hb_gpu_paint_image (hb_paint_funcs_t   *funcs   HB_UNUSED,
-		    void               *paint_data,
+		    வெறுமை               *paint_data,
 		    hb_blob_t          *image   HB_UNUSED,
-		    unsigned int        width   HB_UNUSED,
-		    unsigned int        height  HB_UNUSED,
+		    unsigned முழு        width   HB_UNUSED,
+		    unsigned முழு        height  HB_UNUSED,
 		    hb_tag_t            format  HB_UNUSED,
-		    float               slant   HB_UNUSED,
+		    தசம               slant   HB_UNUSED,
 		    hb_glyph_extents_t *extents HB_UNUSED,
-		    void               *user_data HB_UNUSED)
+		    வெறுமை               *user_data HB_UNUSED)
 {
-  ((hb_gpu_paint_t *) paint_data)->unsupported = true;
-  return false;
+  ((hb_gpu_paint_t *) paint_data)->unsupported = உண்மை;
+  திரும்பு பொய்;
 }
 
-static hb_bool_t
-hb_gpu_paint_set_budget (hb_paint_funcs_t *, void *paint_data,
-			 int64_t budget, void *)
+நிலையான hb_bool_t
+hb_gpu_paint_set_budget (hb_paint_funcs_t *, வெறுமை *paint_data,
+			 int64_t budget, வெறுமை *)
 {
   auto *paint = (hb_gpu_paint_t *) paint_data;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  திரும்பு உண்மை;
 }
 
-static int64_t
-hb_gpu_paint_get_budget (hb_paint_funcs_t *, void *paint_data, void *)
+நிலையான int64_t
+hb_gpu_paint_get_budget (hb_paint_funcs_t *, வெறுமை *paint_data, வெறுமை *)
 {
-  return ((hb_gpu_paint_t *) paint_data)->budget;
+  திரும்பு ((hb_gpu_paint_t *) paint_data)->budget;
 }
 
-static int64_t *
-hb_gpu_paint_get_budget_remaining (hb_paint_funcs_t *, void *paint_data, void *)
+நிலையான int64_t *
+hb_gpu_paint_get_budget_remaining (hb_paint_funcs_t *, வெறுமை *paint_data, வெறுமை *)
 {
-  return &((hb_gpu_paint_t *) paint_data)->budget_remaining;
+  திரும்பு &((hb_gpu_paint_t *) paint_data)->budget_remaining;
 }
 
-static inline void free_static_gpu_paint_funcs ();
+நிலையான உள்வரி வெறுமை free_static_gpu_paint_funcs ();
 
-static struct hb_gpu_paint_funcs_lazy_loader_t
+நிலையான கட்டமைப்பு hb_gpu_paint_funcs_lazy_loader_t
   : hb_paint_funcs_lazy_loader_t<hb_gpu_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  நிலையான hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_transform_func        (funcs, hb_gpu_paint_push_transform,        nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func         (funcs, hb_gpu_paint_pop_transform,         nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func       (funcs, hb_gpu_paint_push_clip_glyph,       nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func  (funcs, hb_gpu_paint_push_clip_path_start,  nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func    (funcs, hb_gpu_paint_push_clip_path_end,    nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func              (funcs, hb_gpu_paint_pop_clip,              nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func            (funcs, hb_gpu_paint_push_group,            nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func             (funcs, hb_gpu_paint_pop_group,             nullptr, nullptr);
+    hb_paint_funcs_set_தள்ளு_transform_func        (funcs, hb_gpu_paint_தள்ளு_transform,        nullptr, nullptr);
+    hb_paint_funcs_set_எடு_transform_func         (funcs, hb_gpu_paint_எடு_transform,         nullptr, nullptr);
+    hb_paint_funcs_set_தள்ளு_clip_glyph_func       (funcs, hb_gpu_paint_தள்ளு_clip_glyph,       nullptr, nullptr);
+    hb_paint_funcs_set_தள்ளு_clip_path_start_func  (funcs, hb_gpu_paint_தள்ளு_clip_path_start,  nullptr, nullptr);
+    hb_paint_funcs_set_தள்ளு_clip_path_end_func    (funcs, hb_gpu_paint_தள்ளு_clip_path_end,    nullptr, nullptr);
+    hb_paint_funcs_set_எடு_clip_func              (funcs, hb_gpu_paint_எடு_clip,              nullptr, nullptr);
+    hb_paint_funcs_set_தள்ளு_group_func            (funcs, hb_gpu_paint_தள்ளு_group,            nullptr, nullptr);
+    hb_paint_funcs_set_எடு_group_func             (funcs, hb_gpu_paint_எடு_group,             nullptr, nullptr);
     hb_paint_funcs_set_color_func                 (funcs, hb_gpu_paint_color,                 nullptr, nullptr);
     hb_paint_funcs_set_linear_gradient_func       (funcs, hb_gpu_paint_linear_gradient,       nullptr, nullptr);
     hb_paint_funcs_set_radial_gradient_func       (funcs, hb_gpu_paint_radial_gradient,       nullptr, nullptr);
@@ -1076,11 +1076,11 @@ static struct hb_gpu_paint_funcs_lazy_loader_t
 
     hb_atexit (free_static_gpu_paint_funcs);
 
-    return funcs;
+    திரும்பு funcs;
   }
 } static_gpu_paint_funcs;
 
-static inline void
+நிலையான உள்வரி வெறுமை
 free_static_gpu_paint_funcs ()
 {
   static_gpu_paint_funcs.free_instance ();
@@ -1101,9 +1101,9 @@ free_static_gpu_paint_funcs ()
  * Since: 14.2.0
  **/
 hb_gpu_paint_t *
-hb_gpu_paint_create_or_fail (void)
+hb_gpu_paint_create_or_fail (வெறுமை)
 {
-  return hb_object_create<hb_gpu_paint_t> ();
+  திரும்பு hb_object_create<hb_gpu_paint_t> ();
 }
 
 /**
@@ -1120,7 +1120,7 @@ hb_gpu_paint_create_or_fail (void)
 hb_gpu_paint_t *
 hb_gpu_paint_reference (hb_gpu_paint_t *paint)
 {
-  return hb_object_reference (paint);
+  திரும்பு hb_object_reference (paint);
 }
 
 /**
@@ -1132,14 +1132,14 @@ hb_gpu_paint_reference (hb_gpu_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+வெறுமை
 hb_gpu_paint_destroy (hb_gpu_paint_t *paint)
 {
-  if (!hb_object_should_destroy (paint))
-    return;
+  எனில் (!hb_object_should_destroy (paint))
+    திரும்பு;
 
   hb_map_destroy (paint->custom_palette);
-  for (hb_blob_t *b : paint->sub_blobs)
+  க்கு (hb_blob_t *b : paint->sub_blobs)
     hb_blob_destroy (b);
   hb_gpu_draw_destroy (paint->scratch_draw);
   hb_blob_destroy (paint->recycled_blob);
@@ -1164,12 +1164,12 @@ hb_gpu_paint_destroy (hb_gpu_paint_t *paint)
  **/
 hb_bool_t
 hb_gpu_paint_set_user_data (hb_gpu_paint_t     *paint,
-			    hb_user_data_key_t *key,
-			    void               *data,
+			    hb_user_data_சாவி_t *key,
+			    வெறுமை               *data,
 			    hb_destroy_func_t   destroy,
 			    hb_bool_t           replace)
 {
-  return hb_object_set_user_data (paint, key, data, destroy, replace);
+  திரும்பு hb_object_set_user_data (paint, key, data, destroy, replace);
 }
 
 /**
@@ -1184,11 +1184,11 @@ hb_gpu_paint_set_user_data (hb_gpu_paint_t     *paint,
  *
  * Since: 14.2.0
  **/
-void *
-hb_gpu_paint_get_user_data (const hb_gpu_paint_t *paint,
-			    hb_user_data_key_t   *key)
+வெறுமை *
+hb_gpu_paint_get_user_data (மாறிலி hb_gpu_paint_t *paint,
+			    hb_user_data_சாவி_t   *key)
 {
-  return hb_object_get_user_data (paint, key);
+  திரும்பு hb_object_get_user_data (paint, key);
 }
 
 /**
@@ -1205,9 +1205,9 @@ hb_gpu_paint_get_user_data (const hb_gpu_paint_t *paint,
  * Since: 14.2.0
  **/
 hb_paint_funcs_t *
-hb_gpu_paint_get_funcs (const hb_gpu_paint_t *paint HB_UNUSED)
+hb_gpu_paint_get_funcs (மாறிலி hb_gpu_paint_t *paint HB_UNUSED)
 {
-  return static_gpu_paint_funcs.get_unconst ();
+  திரும்பு static_gpu_paint_funcs.get_unconst ();
 }
 
 /**
@@ -1220,7 +1220,7 @@ hb_gpu_paint_get_funcs (const hb_gpu_paint_t *paint HB_UNUSED)
  *
  * Since: 14.2.0
  **/
-void
+வெறுமை
 hb_gpu_paint_set_palette (hb_gpu_paint_t *paint,
 			  unsigned        palette)
 {
@@ -1239,9 +1239,9 @@ hb_gpu_paint_set_palette (hb_gpu_paint_t *paint,
  * Since: 14.2.0
  **/
 unsigned
-hb_gpu_paint_get_palette (const hb_gpu_paint_t *paint)
+hb_gpu_paint_get_palette (மாறிலி hb_gpu_paint_t *paint)
 {
-  return paint->palette;
+  திரும்பு paint->palette;
 }
 
 /**
@@ -1252,10 +1252,10 @@ hb_gpu_paint_get_palette (const hb_gpu_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+வெறுமை
 hb_gpu_paint_clear_custom_palette_colors (hb_gpu_paint_t *paint)
 {
-  if (paint->custom_palette)
+  எனில் (paint->custom_palette)
     hb_map_clear (paint->custom_palette);
 }
 
@@ -1275,17 +1275,17 @@ hb_gpu_paint_clear_custom_palette_colors (hb_gpu_paint_t *paint)
  **/
 hb_bool_t
 hb_gpu_paint_set_custom_palette_color (hb_gpu_paint_t *paint,
-				       unsigned int    color_index,
+				       unsigned முழு    color_index,
 				       hb_color_t      color)
 {
-  if (unlikely (!paint->custom_palette))
+  எனில் (unlikely (!paint->custom_palette))
   {
     paint->custom_palette = hb_map_create ();
-    if (unlikely (!paint->custom_palette))
-      return false;
+    எனில் (unlikely (!paint->custom_palette))
+      திரும்பு பொய்;
   }
   hb_map_set (paint->custom_palette, color_index, color);
-  return hb_map_allocation_successful (paint->custom_palette);
+  திரும்பு hb_map_allocation_successful (paint->custom_palette);
 }
 
 /**
@@ -1300,10 +1300,10 @@ hb_gpu_paint_set_custom_palette_color (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-void
+வெறுமை
 hb_gpu_paint_set_scale (hb_gpu_paint_t *paint,
-			int             x_scale,
-			int             y_scale)
+			முழு             x_scale,
+			முழு             y_scale)
 {
   paint->x_scale = x_scale;
   paint->y_scale = y_scale;
@@ -1319,13 +1319,13 @@ hb_gpu_paint_set_scale (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-void
-hb_gpu_paint_get_scale (const hb_gpu_paint_t *paint,
-			int                  *x_scale,
-			int                  *y_scale)
+வெறுமை
+hb_gpu_paint_get_scale (மாறிலி hb_gpu_paint_t *paint,
+			முழு                  *x_scale,
+			முழு                  *y_scale)
 {
-  if (x_scale) *x_scale = paint->x_scale;
-  if (y_scale) *y_scale = paint->y_scale;
+  எனில் (x_scale) *x_scale = paint->x_scale;
+  எனில் (y_scale) *y_scale = paint->y_scale;
 }
 
 /**
@@ -1358,10 +1358,10 @@ hb_gpu_paint_glyph_or_fail (hb_gpu_paint_t *paint,
 			    hb_font_t      *font,
 			    hb_codepoint_t  glyph)
 {
-  int x_scale, y_scale;
+  முழு x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
   hb_gpu_paint_set_scale (paint, x_scale, y_scale);
-  return hb_font_paint_glyph_or_fail (font, glyph,
+  திரும்பு hb_font_paint_glyph_or_fail (font, glyph,
 				      hb_gpu_paint_get_funcs (paint), paint,
 				      paint->palette,
 				      /* Foreground RGB is not read from
@@ -1389,12 +1389,12 @@ hb_gpu_paint_glyph_or_fail (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-void
+வெறுமை
 hb_gpu_paint_glyph (hb_gpu_paint_t *paint,
 		    hb_font_t      *font,
 		    hb_codepoint_t  glyph)
 {
-  int x_scale, y_scale;
+  முழு x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
   hb_gpu_paint_set_scale (paint, x_scale, y_scale);
   hb_font_paint_glyph (font, glyph,
@@ -1440,14 +1440,14 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
 {
   HB_SCOPE_GUARD (hb_gpu_paint_clear (paint));
 
-  if (unlikely (paint->unsupported))
-    return nullptr;
+  எனில் (unlikely (paint->unsupported))
+    திரும்பு nullptr;
   /* No ink (e.g. space glyph): return the empty-blob singleton, not
    * nullptr.  Same convention as hb_gpu_draw_encode(); callers can
    * distinguish "nothing to render" (length 0) from "encoder
    * failed" (NULL). */
-  if (paint->num_ops == 0)
-    return hb_blob_get_empty ();
+  எனில் (paint->இலக்கம்_ops == 0)
+    திரும்பு hb_blob_get_empty ();
 
   /* Layout:
    *   header          (3 texels = 24 bytes)
@@ -1455,52 +1455,52 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
    *   sub-payloads    (concat of each sub_blob's data, 8-byte
    *                    aligned since draw blobs are RGBA16I)
    */
-  const unsigned header_texels = 3;
-  const unsigned texel_bytes   = 8;
+  மாறிலி unsigned header_texels = 3;
+  மாறிலி unsigned texel_bytes   = 8;
 
   unsigned ops_texels = paint->ops.length / 4;
   unsigned sub_bytes = 0;
-  for (hb_blob_t *b : paint->sub_blobs)
-    if (unlikely (hb_unsigned_add_overflows (sub_bytes,
+  க்கு (hb_blob_t *b : paint->sub_blobs)
+    எனில் (unlikely (hb_unsigned_add_overflows (sub_bytes,
 					     hb_blob_get_length (b),
 					     &sub_bytes)))
-      return nullptr;
+      திரும்பு nullptr;
   /* Sub-blobs come from the draw encoder which produces 8-byte
    * aligned blobs; assert so we notice if that ever changes. */
-  if (unlikely (sub_bytes % texel_bytes))
-    return nullptr;
+  எனில் (unlikely (sub_bytes % texel_bytes))
+    திரும்பு nullptr;
 
   unsigned total_bytes = header_texels * texel_bytes
 			+ paint->ops.length * 2;
-  if (unlikely (hb_unsigned_add_overflows (total_bytes, sub_bytes,
+  எனில் (unlikely (hb_unsigned_add_overflows (total_bytes, sub_bytes,
 					   &total_bytes)))
-    return nullptr;
+    திரும்பு nullptr;
 
   unsigned buf_capacity = 0;
-  char *replaced_recycled_buf = nullptr;
-  char *buf_raw = hb_blob_t::recycle_acquire (paint->recycled_blob, total_bytes,
+  எழுத்து *replaced_recycled_buf = nullptr;
+  எழுத்து *buf_raw = hb_blob_t::recycle_acquire (paint->recycled_blob, total_bytes,
 					&buf_capacity, &replaced_recycled_buf);
-  if (unlikely (!buf_raw))
-    return nullptr;
-  int16_t *buf = (int16_t *) (void *) buf_raw;
+  எனில் (unlikely (!buf_raw))
+    திரும்பு nullptr;
+  int16_t *buf = (int16_t *) (வெறுமை *) buf_raw;
 
   /* Compute each sub_blob's texel offset (relative to blob base). */
-  unsigned sub_offsets_count = paint->sub_blobs.length;
+  unsigned sub_offsets_மொத்தம் = paint->sub_blobs.length;
   hb_vector_t<unsigned> sub_offsets;
-  if (unlikely (!sub_offsets.resize (sub_offsets_count)))
+  எனில் (unlikely (!sub_offsets.resize (sub_offsets_மொத்தம்)))
   {
     hb_blob_t::recycle_abort (buf_raw, paint->recycled_blob);
-    return nullptr;
+    திரும்பு nullptr;
   }
   unsigned cursor = header_texels + ops_texels;
-  for (unsigned i = 0; i < sub_offsets_count; i++)
+  க்கு (unsigned i = 0; i < sub_offsets_மொத்தம்; i++)
   {
     sub_offsets[i] = cursor;
     cursor += hb_blob_get_length (paint->sub_blobs[i]) / texel_bytes;
   }
 
   /* Header. */
-  buf[0] = (int16_t) paint->num_ops;
+  buf[0] = (int16_t) paint->இலக்கம்_ops;
   buf[1] = 0;
   buf[2] = 0;
   buf[3] = 0;
@@ -1519,13 +1519,13 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
   hb_memcpy (ops_out, paint->ops.arrayZ, paint->ops.length * 2);
 
   unsigned i = 0;
-  while (i < paint->ops.length)
+  போது (i < paint->ops.length)
   {
     int16_t op_type = ops_out[i];
-    switch (op_type)
+    தேர்வு (op_type)
     {
-      case HB_GPU_PAINT_OP_LAYER_SOLID:
-      case HB_GPU_PAINT_OP_LAYER_GRADIENT:
+      நிலை HB_GPU_PAINT_OP_LAYER_SOLID:
+      நிலை HB_GPU_PAINT_OP_LAYER_GRADIENT:
       {
 	int16_t flags = ops_out[i + 1];
 	/* Sub-blob slots in i16 offsets within the op:
@@ -1539,13 +1539,13 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
 	  (flags & HB_GPU_PAINT_FLAG_HAS_CLIP3) ? 6u : 0u,
 	  op_type == HB_GPU_PAINT_OP_LAYER_GRADIENT ? 8u : 0u
 	};
-	for (unsigned k = 0; k < 4; k++)
+	க்கு (unsigned k = 0; k < 4; k++)
 	{
-	  if (!slots[k]) continue;
+	  எனில் (!slots[k]) தொடர்;
 	  unsigned p = i + slots[k];
 	  unsigned idx = ((uint16_t) ops_out[p] << 16)
 		       |  (uint16_t) ops_out[p + 1];
-	  if (idx < sub_offsets_count)
+	  எனில் (idx < sub_offsets_மொத்தம்)
 	  {
 	    unsigned off = sub_offsets[idx];
 	    ops_out[p]     = (int16_t) ((off >> 16) & 0xffff);
@@ -1553,29 +1553,29 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
 	  }
 	}
 	i += 12;  /* 3 texels */
-	break;
+	நிறுத்து;
       }
-      case HB_GPU_PAINT_OP_PUSH_GROUP:
-      case HB_GPU_PAINT_OP_POP_GROUP:
+      நிலை HB_GPU_PAINT_OP_தள்ளு_GROUP:
+      நிலை HB_GPU_PAINT_OP_எடு_GROUP:
 	i += 4;  /* 1 texel */
-	break;
-      default:
+	நிறுத்து;
+      இயல்பு:
 	hb_blob_t::recycle_abort (buf_raw, paint->recycled_blob);
-	return nullptr;
+	திரும்பு nullptr;
     }
   }
 
   /* Sub-payloads: concat in recorded order. */
-  char *dst = (char *) buf + header_texels * texel_bytes
+  எழுத்து *dst = (எழுத்து *) buf + header_texels * texel_bytes
 			+ paint->ops.length * 2;
-  for (hb_blob_t *b : paint->sub_blobs)
+  க்கு (hb_blob_t *b : paint->sub_blobs)
   {
     unsigned len = hb_blob_get_length (b);
     hb_memcpy (dst, hb_blob_get_data (b, nullptr), len);
     dst += len;
   }
 
-  if (extents)
+  எனில் (extents)
   {
     extents->x_bearing = paint->ext_min_x;
     extents->y_bearing = paint->ext_max_y;
@@ -1585,7 +1585,7 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
 
   hb_blob_t *recycled = paint->recycled_blob;
   paint->recycled_blob = nullptr;
-  return hb_blob_t::recycle_finalize (buf_raw, buf_capacity, total_bytes,
+  திரும்பு hb_blob_t::recycle_finalize (buf_raw, buf_capacity, total_bytes,
 				recycled, replaced_recycled_buf);
 }
 
@@ -1598,7 +1598,7 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
  *
  * Since: 14.2.0
  **/
-void
+வெறுமை
 hb_gpu_paint_clear (hb_gpu_paint_t *paint)
 {
   /* Use reset() not resize(0): if an earlier push_or_fail() set
@@ -1607,17 +1607,17 @@ hb_gpu_paint_clear (hb_gpu_paint_t *paint)
    * subsequent clear would double-destroy the blob pointers left
    * in the array, or keep stale ops across encodes. */
   paint->ops.reset ();
-  paint->num_ops = 0;
-  for (hb_blob_t *b : paint->sub_blobs)
+  paint->இலக்கம்_ops = 0;
+  க்கு (hb_blob_t *b : paint->sub_blobs)
     hb_blob_destroy (b);
   paint->sub_blobs.reset ();
   paint->sub_bytes = 0;
   paint->clip_depth = 0;
-  paint->pending_clip_path = false;
-  paint->unsupported = false;
+  paint->pending_clip_path = பொய்;
+  paint->unsupported = பொய்;
   paint->recharge_budget ();
   paint->cur_transform = {1, 0, 0, 1, 0, 0};
-  paint->transform_stack.reset ();
+  paint->transform_அடுக்கு.reset ();
   paint->ext_min_x =  0x7fffffff;
   paint->ext_min_y =  0x7fffffff;
   paint->ext_max_x = -0x7fffffff;
@@ -1633,7 +1633,7 @@ hb_gpu_paint_clear (hb_gpu_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+வெறுமை
 hb_gpu_paint_reset (hb_gpu_paint_t *paint)
 {
   paint->x_scale = 0;
@@ -1659,7 +1659,7 @@ hb_gpu_paint_reset (hb_gpu_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+வெறுமை
 hb_gpu_paint_recycle_blob (hb_gpu_paint_t *paint,
 			   hb_blob_t      *blob)
 {
@@ -1667,10 +1667,10 @@ hb_gpu_paint_recycle_blob (hb_gpu_paint_t *paint,
 }
 
 
-#include "hb-gpu-paint-fragment-glsl.hh"
-#include "hb-gpu-paint-fragment-msl.hh"
-#include "hb-gpu-paint-fragment-wgsl.hh"
-#include "hb-gpu-paint-fragment-hlsl.hh"
+#அந்தர்பாவ "hb-gpu-paint-fragment-glsl.hh"
+#அந்தர்பாவ "hb-gpu-paint-fragment-msl.hh"
+#அந்தர்பாவ "hb-gpu-paint-fragment-wgsl.hh"
+#அந்தர்பாவ "hb-gpu-paint-fragment-hlsl.hh"
 
 /**
  * hb_gpu_paint_shader_source:
@@ -1698,30 +1698,30 @@ hb_gpu_paint_recycle_blob (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-const char *
+மாறிலி எழுத்து *
 hb_gpu_paint_shader_source (hb_gpu_shader_stage_t stage,
 			    hb_gpu_shader_lang_t  lang)
 {
-  switch (stage) {
-  case HB_GPU_SHADER_STAGE_FRAGMENT:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_paint_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_paint_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_paint_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_paint_fragment_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  தேர்வு (stage) {
+  நிலை HB_GPU_SHADER_STAGE_FRAGMENT:
+    தேர்வு (lang) {
+    நிலை HB_GPU_SHADER_LANG_GLSL: திரும்பு hb_gpu_paint_fragment_glsl;
+    நிலை HB_GPU_SHADER_LANG_MSL:  திரும்பு hb_gpu_paint_fragment_msl;
+    நிலை HB_GPU_SHADER_LANG_WGSL: திரும்பு hb_gpu_paint_fragment_wgsl;
+    நிலை HB_GPU_SHADER_LANG_HLSL: திரும்பு hb_gpu_paint_fragment_hlsl;
+    நிலை HB_GPU_SHADER_LANG_INVALID:
+    இயல்பு: திரும்பு nullptr;
     }
-  case HB_GPU_SHADER_STAGE_VERTEX:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL:
-    case HB_GPU_SHADER_LANG_MSL:
-    case HB_GPU_SHADER_LANG_WGSL:
-    case HB_GPU_SHADER_LANG_HLSL: return "";
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  நிலை HB_GPU_SHADER_STAGE_VERTEX:
+    தேர்வு (lang) {
+    நிலை HB_GPU_SHADER_LANG_GLSL:
+    நிலை HB_GPU_SHADER_LANG_MSL:
+    நிலை HB_GPU_SHADER_LANG_WGSL:
+    நிலை HB_GPU_SHADER_LANG_HLSL: திரும்பு "";
+    நிலை HB_GPU_SHADER_LANG_INVALID:
+    இயல்பு: திரும்பு nullptr;
     }
-  default:
-    return nullptr;
+  இயல்பு:
+    திரும்பு nullptr;
   }
 }

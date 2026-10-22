@@ -25,8 +25,8 @@
 #ifndef HB_OT_STAT_TABLE_HH
 #define HB_OT_STAT_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-ot-layout-common.hh"
 
 /*
  * STAT -- Style Attributes
@@ -35,9 +35,9 @@
 #define HB_OT_TAG_STAT HB_TAG('S','T','A','T')
 
 
-namespace OT {
+நாமாகாஶ OT {
 
-enum
+எண்ணிக்கை
 {
   OLDER_SIBLING_FONT_ATTRIBUTE = 0x0001,	/* If set, this axis value table
 						 * provides axis value information
@@ -50,474 +50,474 @@ enum
 						 * fonts include the information
 						 * themselves and are present,
 						 * then this record is ignored. */
-  ELIDABLE_AXIS_VALUE_NAME = 0x0002		/* If set, it indicates that the axis
+  ELIDABLE_AXIS_மதிப்பு_NAME = 0x0002		/* If set, it indicates that the axis
 						 * value represents the “normal” value
 						 * for the axis and may be omitted when
 						 * composing name strings. */
   // Reserved = 0xFFFC				/* Reserved for future use — set to zero. */
 };
 
-static bool axis_value_is_outside_axis_range (hb_tag_t axis_tag, float axis_value,
-                                              const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
+நிலையான தருக்க axis_மதிப்பு_is_outside_axis_range (hb_tag_t axis_tag, தசம axis_மதிப்பு,
+                                              மாறிலி hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
 {
-  if (!user_axes_location->has (axis_tag))
-    return false;
+  எனில் (!user_axes_location->has (axis_tag))
+    திரும்பு பொய்;
 
   Triple axis_range = user_axes_location->get (axis_tag);
-  return (axis_value < axis_range.minimum || axis_value > axis_range.maximum);
+  திரும்பு (axis_மதிப்பு < axis_range.minimum || axis_மதிப்பு > axis_range.maximum);
 }
 
-struct StatAxisRecord
+கட்டமைப்பு StatAxisRecord
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  முழு cmp (hb_tag_t key) மாறிலி { திரும்பு tag.cmp (key); }
 
-  hb_ot_name_id_t get_name_id () const { return nameID; }
+  hb_ot_name_id_t get_name_id () மாறிலி { திரும்பு nameID; }
 
-  hb_tag_t get_axis_tag () const { return tag; }
+  hb_tag_t get_axis_tag () மாறிலி { திரும்பு tag; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this)));
+    TRACE_SANITIZE (இது);
+    return_trace (likely (c->check_struct (இது)));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Tag		tag;		/* A tag identifying the axis of design variation. */
   NameID	nameID;		/* The name ID for entries in the 'name' table that
 				 * provide a display string for this axis. */
   HBUINT16	ordering;	/* A value that applications can use to determine
 				 * primary sorting of face names, or for ordering
 				 * of descriptors when composing family or face names. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct AxisValueFormat1
+கட்டமைப்பு Axis_மதிப்பு_Format1
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned முழு get_axis_index () மாறிலி { திரும்பு axisIndex; }
+  தசம get_மதிப்பு ()             மாறிலி { திரும்பு value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_மதிப்பு_name_id () மாறிலி { திரும்பு மதிப்பு_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records) மாறிலி
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    திரும்பு axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  தருக்க keep_axis_மதிப்பு (மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records,
+                        மாறிலி hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) மாறிலி
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    தசம axis_மதிப்பு = get_மதிப்பு ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    திரும்பு !axis_மதிப்பு_is_outside_axis_range (axis_tag, axis_மதிப்பு, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  தருக்க subset (hb_subset_context_t *c,
+               மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records) மாறிலி
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (இது);
+    மாறிலி hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    எனில் (keep_axis_மதிப்பு (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (இது));
 
-    return_trace (false);
+    return_trace (பொய்);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier — set to 1. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	மதிப்பு_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct AxisValueFormat2
+கட்டமைப்பு Axis_மதிப்பு_Format2
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return nominalValue.to_float (); }
+  unsigned முழு get_axis_index () மாறிலி { திரும்பு axisIndex; }
+  தசம get_மதிப்பு ()             மாறிலி { திரும்பு nominal_மதிப்பு.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_மதிப்பு_name_id () மாறிலி { திரும்பு மதிப்பு_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records) மாறிலி
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    திரும்பு axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  தருக்க keep_axis_மதிப்பு (மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records,
+                        மாறிலி hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) மாறிலி
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    தசம axis_மதிப்பு = get_மதிப்பு ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    திரும்பு !axis_மதிப்பு_is_outside_axis_range (axis_tag, axis_மதிப்பு, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  தருக்க subset (hb_subset_context_t *c,
+               மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records) மாறிலி
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (இது);
+    மாறிலி hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    எனில் (keep_axis_மதிப்பு (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (இது));
 
-    return_trace (false);
+    return_trace (பொய்);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier — set to 2. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	மதிப்பு_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
-  F16DOT16	nominalValue;	/* A numeric value for this attribute value. */
-  F16DOT16	rangeMinValue;	/* The minimum value for a range associated
+  F16DOT16	nominal_மதிப்பு;	/* A numeric value for this attribute value. */
+  F16DOT16	range_Min_மதிப்பு;	/* The minimum value for a range associated
 				 * with the specified name ID. */
-  F16DOT16	rangeMaxValue;	/* The maximum value for a range associated
+  F16DOT16	range_Max_மதிப்பு;	/* The maximum value for a range associated
 				 * with the specified name ID. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (20);
 };
 
-struct AxisValueFormat3
+கட்டமைப்பு Axis_மதிப்பு_Format3
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned முழு get_axis_index () மாறிலி { திரும்பு axisIndex; }
+  தசம get_மதிப்பு ()             மாறிலி { திரும்பு value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_மதிப்பு_name_id () மாறிலி { திரும்பு மதிப்பு_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records) மாறிலி
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    திரும்பு axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  தருக்க keep_axis_மதிப்பு (மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records,
+                        மாறிலி hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) மாறிலி
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    தசம axis_மதிப்பு = get_மதிப்பு ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    திரும்பு !axis_மதிப்பு_is_outside_axis_range (axis_tag, axis_மதிப்பு, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  தருக்க subset (hb_subset_context_t *c,
+               மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records) மாறிலி
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (இது);
+    மாறிலி hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    எனில் (keep_axis_மதிப்பு (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (இது));
 
-    return_trace (false);
+    return_trace (பொய்);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier — set to 3. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	மதிப்பு_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  F16DOT16	linkedValue;	/* The numeric value for a style-linked mapping
+  F16DOT16	linked_மதிப்பு;	/* The numeric value for a style-linked mapping
 				 * from this value. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (16);
 };
 
-struct AxisValueRecord
+கட்டமைப்பு Axis_மதிப்பு_Record
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned முழு get_axis_index () மாறிலி { திரும்பு axisIndex; }
+  தசம get_மதிப்பு ()             மாறிலி { திரும்பு value.to_float (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis to which this value
 				 * applies. Must be less than designAxisCount. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct AxisValueFormat4
+கட்டமைப்பு Axis_மதிப்பு_Format4
 {
-  const AxisValueRecord &get_axis_record (unsigned int axis_index) const
-  { return axisValues.as_array (axisCount)[axis_index]; }
+  மாறிலி Axis_மதிப்பு_Record &get_axis_record (unsigned முழு axis_index) மாறிலி
+  { திரும்பு axis_மதிப்புகள்_2.as_array (axis_மொத்தம்_2)[axis_index]; }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  தருக்க keep_axis_மதிப்பு (மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records,
+                        மாறிலி hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) மாறிலி
   {
-    hb_array_t<const AxisValueRecord> axis_value_records = axisValues.as_array (axisCount);
+    hb_array_t<மாறிலி Axis_மதிப்பு_Record> axis_மதிப்பு_records = axis_மதிப்புகள்_2.as_array (axis_மொத்தம்_2);
 
-    for (const auto& rec : axis_value_records)
+    க்கு (மாறிலி auto& rec : axis_மதிப்பு_records)
     {
       unsigned axis_idx = rec.get_axis_index ();
-      float axis_value = rec.get_value ();
+      தசம axis_மதிப்பு = rec.get_மதிப்பு ();
       hb_tag_t axis_tag = axis_records[axis_idx].get_axis_tag ();
 
-      if (axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location))
-        return false;
+      எனில் (axis_மதிப்பு_is_outside_axis_range (axis_tag, axis_மதிப்பு, user_axes_location))
+        திரும்பு பொய்;
     }
 
-    return true;
+    திரும்பு உண்மை;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  தருக்க subset (hb_subset_context_t *c,
+               மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records) மாறிலி
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
-    if (!keep_axis_value (axis_records, user_axes_location))
-      return_trace (false);
+    TRACE_SUBSET (இது);
+    மாறிலி hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
+    எனில் (!keep_axis_மதிப்பு (axis_records, user_axes_location))
+      return_trace (பொய்);
 
-    unsigned total_size = min_size + axisCount * AxisValueRecord::static_size;
-    auto *out = c->serializer->allocate_size<AxisValueFormat4> (total_size);
-    if (unlikely (!out)) return_trace (false);
-    hb_memcpy (out, this, total_size);
-    return_trace (true);
+    unsigned total_size = min_size + axis_மொத்தம்_2 * Axis_மதிப்பு_Record::static_size;
+    auto *out = c->serializer->allocate_size<Axis_மதிப்பு_Format4> (total_size);
+    எனில் (unlikely (!out)) return_trace (பொய்);
+    hb_memcpy (out, இது, total_size);
+    return_trace (உண்மை);
   }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_மதிப்பு_name_id () மாறிலி { திரும்பு மதிப்பு_Name_ID; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (likely (c->check_struct (இது) &&
 			  hb_barrier () &&
-                          axisValues.sanitize (c, axisCount)));
+                          axis_மதிப்புகள்_2.sanitize (c, axis_மொத்தம்_2)));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier — set to 4. */
-  HBUINT16	axisCount;	/* The total number of axes contributing to
+  HBUINT16	axis_மொத்தம்_2;	/* The total number of axes contributing to
 				 * this axis-values combination. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	மதிப்பு_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
-  UnsizedArrayOf<AxisValueRecord>
-		axisValues;	/* Array of AxisValue records that provide the
+  UnsizedArrayOf<Axis_மதிப்பு_Record>
+		axis_மதிப்புகள்_2;	/* Array of AxisValue records that provide the
 				 * combination of axis values, one for each
 				 * contributing axis. */
-  public:
-  DEFINE_SIZE_ARRAY (8, axisValues);
+  பொது:
+  DEFINE_SIZE_ARRAY (8, axis_மதிப்புகள்_2);
 };
 
-struct AxisValue
+கட்டமைப்பு Axis_மதிப்பு
 {
-  float get_value (unsigned int axis_index) const
+  தசம get_மதிப்பு (unsigned முழு axis_index) மாறிலி
   {
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value ();
-    case 2: hb_barrier (); return u.format2.get_value ();
-    case 3: hb_barrier (); return u.format3.get_value ();
-    case 4: hb_barrier (); return u.format4.get_axis_record (axis_index).get_value ();
-    default:return 0.f;
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_மதிப்பு ();
+    நிலை 2: hb_barrier (); திரும்பு u.format2.get_மதிப்பு ();
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_மதிப்பு ();
+    நிலை 4: hb_barrier (); திரும்பு u.format4.get_axis_record (axis_index).get_மதிப்பு ();
+    இயல்பு:திரும்பு 0.f;
     }
   }
 
-  unsigned int get_axis_index () const
+  unsigned முழு get_axis_index () மாறிலி
   {
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_axis_index ();
-    case 2: hb_barrier (); return u.format2.get_axis_index ();
-    case 3: hb_barrier (); return u.format3.get_axis_index ();
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_axis_index ();
+    நிலை 2: hb_barrier (); திரும்பு u.format2.get_axis_index ();
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_axis_index ();
     /* case 4: Makes more sense for variable fonts which are handled by fvar in hb-style */
-    default:return -1;
+    இயல்பு:திரும்பு -1;
     }
   }
 
-  hb_ot_name_id_t get_value_name_id () const
+  hb_ot_name_id_t get_மதிப்பு_name_id () மாறிலி
   {
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value_name_id ();
-    case 2: hb_barrier (); return u.format2.get_value_name_id ();
-    case 3: hb_barrier (); return u.format3.get_value_name_id ();
-    case 4: hb_barrier (); return u.format4.get_value_name_id ();
-    default:return HB_OT_NAME_ID_INVALID;
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_மதிப்பு_name_id ();
+    நிலை 2: hb_barrier (); திரும்பு u.format2.get_மதிப்பு_name_id ();
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_மதிப்பு_name_id ();
+    நிலை 4: hb_barrier (); திரும்பு u.format4.get_மதிப்பு_name_id ();
+    இயல்பு:திரும்பு HB_OT_NAME_ID_INVALID;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) மாறிலி
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    எனில் (unlikely (!c->may_dispatch (இது, &u.format.v))) திரும்பு c->no_dispatch_return_மதிப்பு ();
+    TRACE_DISPATCH (இது, u.format.v);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    நிலை 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    நிலை 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    நிலை 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    இயல்பு:return_trace (c->default_return_மதிப்பு ());
     }
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  தருக்க keep_axis_மதிப்பு (மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records,
+                        hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) மாறிலி
   {
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.keep_axis_value (axis_records, user_axes_location);
-    case 2: hb_barrier (); return u.format2.keep_axis_value (axis_records, user_axes_location);
-    case 3: hb_barrier (); return u.format3.keep_axis_value (axis_records, user_axes_location);
-    case 4: hb_barrier (); return u.format4.keep_axis_value (axis_records, user_axes_location);
-    default:return false;
+    நிலை 1: hb_barrier (); திரும்பு u.format1.keep_axis_மதிப்பு (axis_records, user_axes_location);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.keep_axis_மதிப்பு (axis_records, user_axes_location);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.keep_axis_மதிப்பு (axis_records, user_axes_location);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.keep_axis_மதிப்பு (axis_records, user_axes_location);
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!c->check_struct (இது)))
+      return_trace (பொய்);
     hb_barrier ();
 
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-    default:return_trace (true);
+    நிலை 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    நிலை 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    நிலை 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    நிலை 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    இயல்பு:return_trace (உண்மை);
     }
   }
 
-  protected:
-  union
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு
   {
-  struct { HBUINT16 v; }	format;
-  AxisValueFormat1	format1;
-  AxisValueFormat2	format2;
-  AxisValueFormat3	format3;
-  AxisValueFormat4	format4;
+  கட்டமைப்பு { HBUINT16 v; }	format;
+  Axis_மதிப்பு_Format1	format1;
+  Axis_மதிப்பு_Format2	format2;
+  Axis_மதிப்பு_Format3	format3;
+  Axis_மதிப்பு_Format4	format4;
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
-struct AxisValueOffsetArray: UnsizedArrayOf<Offset16To<AxisValue>>
+கட்டமைப்பு Axis_மதிப்பு_Offset_Array: UnsizedArrayOf<Offset16To<Axis_மதிப்பு>>
 {
-  bool subset (hb_subset_context_t *c,
-               unsigned axisValueCount,
-               unsigned& count,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  தருக்க subset (hb_subset_context_t *c,
+               unsigned axis_மதிப்பு_மொத்தம்,
+               unsigned& மொத்தம்,
+               மாறிலி hb_array_t<மாறிலி StatAxisRecord> axis_records) மாறிலி
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (இது);
 
-    auto axisValueOffsets = as_array (axisValueCount);
-    count = 0;
-    for (const auto& offset : axisValueOffsets)
+    auto axis_மதிப்பு_Offsets = as_array (axis_மதிப்பு_மொத்தம்);
+    மொத்தம் = 0;
+    க்கு (மாறிலி auto& offset : axis_மதிப்பு_Offsets)
     {
-      if (!offset) continue;
+      எனில் (!offset) தொடர்;
       auto o_snap = c->serializer->snapshot ();
       auto *o = c->serializer->embed (offset);
-      if (!o) return_trace (false);
-      if (!o->serialize_subset (c, offset, this, axis_records))
+      எனில் (!o) return_trace (பொய்);
+      எனில் (!o->serialize_subset (c, offset, இது, axis_records))
       {
         c->serializer->revert (o_snap);
-        continue;
+        தொடர்;
       }
-      count++;
+      மொத்தம்++;
     }
 
-    return_trace (count);
+    return_trace (மொத்தம்);
   }
 };
 
-struct STAT
+கட்டமைப்பு STAT
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
 
-  bool has_data () const { return version.to_int (); }
+  தருக்க has_data () மாறிலி { திரும்பு version.to_int (); }
 
-  bool get_value (hb_tag_t tag, float *value) const
+  தருக்க get_மதிப்பு (hb_tag_t tag, தசம *value) மாறிலி
   {
-    unsigned int axis_index;
-    if (!get_design_axes ().lfind (tag, &axis_index)) return false;
+    unsigned முழு axis_index;
+    எனில் (!get_design_axes ().lfind (tag, &axis_index)) திரும்பு பொய்;
 
-    hb_array_t<const Offset16To<AxisValue>> axis_values = get_axis_value_offsets ();
-    for (unsigned int i = 0; i < axis_values.length; i++)
+    hb_array_t<மாறிலி Offset16To<Axis_மதிப்பு>> axis_மதிப்புகள் = get_axis_மதிப்பு_offsets ();
+    க்கு (unsigned முழு i = 0; i < axis_மதிப்புகள்.length; i++)
     {
-      const AxisValue& axis_value = this+offsetToAxisValueOffsets+axis_values[i];
-      if (axis_value.get_axis_index () == axis_index)
+      மாறிலி Axis_மதிப்பு& axis_மதிப்பு = இது+offset_To_Axis_மதிப்பு_Offsets+axis_மதிப்புகள்[i];
+      எனில் (axis_மதிப்பு.get_axis_index () == axis_index)
       {
-	if (value)
-	  *value = axis_value.get_value (axis_index);
-	return true;
+	எனில் (value)
+	  *value = axis_மதிப்பு.get_மதிப்பு (axis_index);
+	திரும்பு உண்மை;
       }
     }
-    return false;
+    திரும்பு பொய்;
   }
 
-  unsigned get_design_axis_count () const { return designAxisCount; }
+  unsigned get_design_axis_மொத்தம் () மாறிலி { திரும்பு design_Axis_மொத்தம்; }
 
-  hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) const
+  hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) மாறிலி
   {
-    if (unlikely (axis_record_index >= designAxisCount)) return HB_OT_NAME_ID_INVALID;
-    const StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
-    return axis_record.get_name_id ();
+    எனில் (unlikely (axis_record_index >= design_Axis_மொத்தம்)) திரும்பு HB_OT_NAME_ID_INVALID;
+    மாறிலி StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
+    திரும்பு axis_record.get_name_id ();
   }
 
-  unsigned get_axis_value_count () const { return axisValueCount; }
+  unsigned get_axis_மதிப்பு_மொத்தம் () மாறிலி { திரும்பு axis_மதிப்பு_மொத்தம்; }
 
-  hb_ot_name_id_t get_axis_value_name_id (unsigned axis_value_index) const
+  hb_ot_name_id_t get_axis_மதிப்பு_name_id (unsigned axis_மதிப்பு_index) மாறிலி
   {
-    if (unlikely (axis_value_index >= axisValueCount)) return HB_OT_NAME_ID_INVALID;
-    const AxisValue &axis_value = (this + get_axis_value_offsets ()[axis_value_index]);
-    return axis_value.get_value_name_id ();
+    எனில் (unlikely (axis_மதிப்பு_index >= axis_மதிப்பு_மொத்தம்)) திரும்பு HB_OT_NAME_ID_INVALID;
+    மாறிலி Axis_மதிப்பு &axis_மதிப்பு = (இது + get_axis_மதிப்பு_offsets ()[axis_மதிப்பு_index]);
+    திரும்பு axis_மதிப்பு.get_மதிப்பு_name_id ();
   }
 
-  void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  வெறுமை collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
+                         hb_set_t *nameids_to_retain /* OUT */) மாறிலி
   {
-    if (!has_data ()) return;
+    எனில் (!has_data ()) திரும்பு;
 
     + get_design_axes ()
     | hb_map (&StatAxisRecord::get_name_id)
@@ -526,62 +526,62 @@ struct STAT
 
     auto designAxes = get_design_axes ();
 
-    + get_axis_value_offsets ()
-    | hb_map (hb_add (&(this + offsetToAxisValueOffsets)))
-    | hb_filter ([&] (const AxisValue& _)
-                 { return _.keep_axis_value (designAxes, user_axes_location); })
-    | hb_map (&AxisValue::get_value_name_id)
+    + get_axis_மதிப்பு_offsets ()
+    | hb_map (hb_add (&(இது + offset_To_Axis_மதிப்பு_Offsets)))
+    | hb_filter ([&] (மாறிலி Axis_மதிப்பு& _)
+                 { திரும்பு _.keep_axis_மதிப்பு (designAxes, user_axes_location); })
+    | hb_map (&Axis_மதிப்பு::get_மதிப்பு_name_id)
     | hb_sink (nameids_to_retain)
     ;
 
     nameids_to_retain->add (elidedFallbackNameID);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    STAT *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (இது);
+    STAT *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
     auto designAxes = get_design_axes ();
-    for (unsigned i = 0; i < (unsigned)designAxisCount; i++)
-      if (unlikely (!c->serializer->embed (designAxes[i])))
-          return_trace (false);
+    க்கு (unsigned i = 0; i < (unsigned)design_Axis_மொத்தம்; i++)
+      எனில் (unlikely (!c->serializer->embed (designAxes[i])))
+          return_trace (பொய்);
 
-    if (designAxisCount)
-      c->serializer->check_assign (out->designAxesOffset, this->get_size (),
+    எனில் (design_Axis_மொத்தம்)
+      c->serializer->check_assign (out->designAxesOffset, இது->get_size (),
                                    HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
-    unsigned count = 0;
-    out->offsetToAxisValueOffsets.serialize_subset (c, offsetToAxisValueOffsets, this,
-                                                    axisValueCount, count, designAxes);
-    return_trace (c->serializer->check_assign (out->axisValueCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned மொத்தம் = 0;
+    out->offset_To_Axis_மதிப்பு_Offsets.serialize_subset (c, offset_To_Axis_மதிப்பு_Offsets, இது,
+                                                    axis_மதிப்பு_மொத்தம், மொத்தம், designAxes);
+    return_trace (c->serializer->check_assign (out->axis_மதிப்பு_மொத்தம், மொத்தம், HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (likely (c->check_struct (இது) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
 			  version.minor > 0 &&
-			  designAxesOffset.sanitize (c, this, designAxisCount) &&
-			  offsetToAxisValueOffsets.sanitize (c, this, axisValueCount, &(this+offsetToAxisValueOffsets))));
+			  designAxesOffset.sanitize (c, இது, design_Axis_மொத்தம்) &&
+			  offset_To_Axis_மதிப்பு_Offsets.sanitize (c, இது, axis_மதிப்பு_மொத்தம், &(இது+offset_To_Axis_மதிப்பு_Offsets))));
   }
 
-  protected:
-  hb_array_t<const StatAxisRecord> const get_design_axes () const
-  { return (this+designAxesOffset).as_array (designAxisCount); }
+  பாதுகாக்கப்பட்ட:
+  hb_array_t<மாறிலி StatAxisRecord> மாறிலி get_design_axes () மாறிலி
+  { திரும்பு (இது+designAxesOffset).as_array (design_Axis_மொத்தம்); }
 
-  hb_array_t<const Offset16To<AxisValue>> const get_axis_value_offsets () const
-  { return (this+offsetToAxisValueOffsets).as_array (axisValueCount); }
+  hb_array_t<மாறிலி Offset16To<Axis_மதிப்பு>> மாறிலி get_axis_மதிப்பு_offsets () மாறிலி
+  { திரும்பு (இது+offset_To_Axis_மதிப்பு_Offsets).as_array (axis_மதிப்பு_மொத்தம்); }
 
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   FixedVersion<>version;	/* Version of the stat table
 				 * initially set to 0x00010002u */
   HBUINT16	designAxisSize;	/* The size in bytes of each axis record. */
-  HBUINT16	designAxisCount;/* The number of design axis records. In a
+  HBUINT16	design_Axis_மொத்தம்;/* The number of design axis records. In a
 				 * font with an 'fvar' table, this value must be
 				 * greater than or equal to the axisCount value
 				 * in the 'fvar' table. In all fonts, must
@@ -594,9 +594,9 @@ struct STAT
 				 * axes array. If designAxisCount is zero,
 				 * set to zero; if designAxisCount is greater
 				 * than zero, must be greater than zero. */
-  HBUINT16	axisValueCount;	/* The number of axis value tables. */
-  NNOffset32To<AxisValueOffsetArray>
-		offsetToAxisValueOffsets;
+  HBUINT16	axis_மதிப்பு_மொத்தம்;	/* The number of axis value tables. */
+  NNOffset32To<Axis_மதிப்பு_Offset_Array>
+		offset_To_Axis_மதிப்பு_Offsets;
 				/* Offset in bytes from the beginning of
 				 * the STAT table to the start of the design
 				 * axes value offsets array. If axisValueCount
@@ -607,7 +607,7 @@ struct STAT
 				 * names into a particular font model produces
 				 * a subfamily name containing only elidable
 				 * elements. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (20);
 };
 

@@ -1,98 +1,98 @@
 #ifndef OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
 
-#include "Anchor.hh"
-#include "../../../hb-limits.hh"
+#அந்தர்பாவ "Anchor.hh"
+#அந்தர்பாவ "../../../hb-limits.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
-
-template <typename Types>
-struct CursivePosFormat1_2;
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ GPOS_impl {
 
 template <typename Types>
-struct EntryExitRecord
+கட்டமைப்பு CursivePosFormat1_2;
+
+template <typename Types>
+கட்டமைப்பு EntryExitRecord
 {
-  template <typename Types2> friend struct CursivePosFormat1_2;
+  template <typename Types2> friend கட்டமைப்பு CursivePosFormat1_2;
 
-  bool sanitize (hb_sanitize_context_t *c, const struct CursivePosFormat1_2<Types> *base) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி கட்டமைப்பு CursivePosFormat1_2<Types> *base) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (entryAnchor.sanitize (c, base) && exitAnchor.sanitize (c, base));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const struct CursivePosFormat1_2<Types> *src_base) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  மாறிலி கட்டமைப்பு CursivePosFormat1_2<Types> *src_base) மாறிலி
   {
     (src_base+entryAnchor).collect_variation_indices (c);
     (src_base+exitAnchor).collect_variation_indices (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const struct CursivePosFormat1_2<Types> *src_base) const
+  தருக்க subset (hb_subset_context_t *c,
+	       மாறிலி கட்டமைப்பு CursivePosFormat1_2<Types> *src_base) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    auto *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
-    bool ret = false;
+    தருக்க ret = பொய்;
     ret |= out->entryAnchor.serialize_subset (c, entryAnchor, src_base);
     ret |= out->exitAnchor.serialize_subset (c, exitAnchor, src_base);
     return_trace (ret);
   }
 
-  protected:
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
+  பாதுகாக்கப்பட்ட:
+  typename Types::template OffsetTo<Anchor, கட்டமைப்பு CursivePosFormat1_2<Types>>
                 entryAnchor;            /* Offset to EntryAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
+  typename Types::template OffsetTo<Anchor, கட்டமைப்பு CursivePosFormat1_2<Types>>
                 exitAnchor;             /* Offset to ExitAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (2 * Types::size);
 };
 
-static inline void
+நிலையான உள்வரி வெறுமை
 reverse_cursive_minor_offset (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned முழு len,
+                              unsigned முழு i,
                               hb_direction_t direction,
-                              unsigned int new_parent,
+                              unsigned முழு new_parent,
                               unsigned nesting_level = 0)
 {
-  if (nesting_level > HB_MAX_NESTING_LEVEL)
-    return;
+  எனில் (nesting_level > HB_MAX_NESTING_LEVEL)
+    திரும்பு;
 
-  int chain = pos[i].attach_chain(), type = pos[i].attach_type();
-  if (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
-    return;
+  முழு chain = pos[i].attach_chain(), type = pos[i].attach_type();
+  எனில் (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
+    திரும்பு;
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  unsigned முழு j = (முழு) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  எனில் (unlikely (j >= len))
+    திரும்பு;
 
   /* Stop if we see new parent in the chain. */
-  if (j == new_parent)
-    return;
+  எனில் (j == new_parent)
+    திரும்பு;
 
   int16_t reversed_chain = -chain;
   /* The old edge was cleared above; if the reversed distance truncates,
    * keep it detached instead of storing a poisoned chain.
    */
-  if (unlikely (reversed_chain != -chain))
-    return;
+  எனில் (unlikely (reversed_chain != -chain))
+    திரும்பு;
 
   reverse_cursive_minor_offset (pos, len, j, direction, new_parent, nesting_level + 1);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  எனில் (HB_DIRECTION_IS_HORIZONTAL (direction))
     pos[j].y_offset = hb_saturate_neg (pos[i].y_offset);
-  else
+  இல்லையெனில்
     pos[j].x_offset = hb_saturate_neg (pos[i].x_offset);
 
   pos[j].attach_chain() = reversed_chain;
@@ -100,16 +100,16 @@ reverse_cursive_minor_offset (hb_glyph_position_t *pos,
 }
 
 
-static inline bool
+நிலையான உள்வரி தருக்க
 apply_cursive_attachment (hb_ot_apply_context_t *c,
-                          const Anchor &exit_anchor,
-                          const Anchor &entry_anchor,
+                          மாறிலி Anchor &exit_anchor,
+                          மாறிலி Anchor &entry_anchor,
                           unsigned i)
 {
   hb_buffer_t *buffer = c->buffer;
-  unsigned int j = buffer->idx;
+  unsigned முழு j = buffer->idx;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  எனில் (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "cursive attaching glyph at %u to glyph at %u",
@@ -117,7 +117,7 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
   }
 
   buffer->unsafe_to_break (i, j + 1);
-  float entry_x, entry_y, exit_x, exit_y;
+  தசம entry_x, entry_y, exit_x, exit_y;
   exit_anchor.get_anchor (c, buffer->info[i].codepoint, &exit_x, &exit_y);
   entry_anchor.get_anchor (c, buffer->info[j].codepoint, &entry_x, &entry_y);
 
@@ -125,38 +125,38 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
 
   hb_position_t d;
   /* Main-direction adjustment */
-  switch (c->direction) {
-    case HB_DIRECTION_LTR:
+  தேர்வு (c->direction) {
+    நிலை HB_DIRECTION_LTR:
       pos[i].x_advance = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
 
       d = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
       pos[j].x_advance = hb_saturate_sub (pos[j].x_advance, d);
       pos[j].x_offset = hb_saturate_sub (pos[j].x_offset, d);
-      break;
-    case HB_DIRECTION_RTL:
+      நிறுத்து;
+    நிலை HB_DIRECTION_RTL:
       d = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
       pos[i].x_advance = hb_saturate_sub (pos[i].x_advance, d);
       pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, d);
 
       pos[j].x_advance = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
-      break;
-    case HB_DIRECTION_TTB:
+      நிறுத்து;
+    நிலை HB_DIRECTION_TTB:
       pos[i].y_advance = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
 
       d = hb_saturate_add ((hb_position_t) roundf (entry_y), pos[j].y_offset);
       pos[j].y_advance = hb_saturate_sub (pos[j].y_advance, d);
       pos[j].y_offset = hb_saturate_sub (pos[j].y_offset, d);
-      break;
-    case HB_DIRECTION_BTT:
+      நிறுத்து;
+    நிலை HB_DIRECTION_BTT:
       d = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
       pos[i].y_advance = hb_saturate_sub (pos[i].y_advance, d);
       pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, d);
 
       pos[j].y_advance = (hb_position_t) roundf (entry_y);
-      break;
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+      நிறுத்து;
+    நிலை HB_DIRECTION_INVALID:
+    இயல்பு:
+      நிறுத்து;
   }
 
   /* Cross-direction adjustment */
@@ -167,13 +167,13 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    *
    * Optimize things for the case of RightToLeft, as that's most common in
    * Arabic. */
-  unsigned int child  = i;
-  unsigned int parent = j;
+  unsigned முழு child  = i;
+  unsigned முழு parent = j;
   hb_position_t x_offset = (hb_position_t) roundf (entry_x - exit_x);
   hb_position_t y_offset = (hb_position_t) roundf (entry_y - exit_y);
-  if  (!(c->lookup_props & LookupFlag::RightToLeft))
+  எனில்  (!(c->lookup_props & LookupFlag::வலது_To_இடது))
   {
-    unsigned int k = child;
+    unsigned முழு k = child;
     child = parent;
     parent = k;
     x_offset = -x_offset;
@@ -187,32 +187,32 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    */
   reverse_cursive_minor_offset (pos, buffer->len, child, c->direction, parent);
 
-  pos[child].attach_chain() = (int) parent - (int) child;
-  if (pos[child].attach_chain() != (int) parent - (int) child)
+  pos[child].attach_chain() = (முழு) parent - (முழு) child;
+  எனில் (pos[child].attach_chain() != (முழு) parent - (முழு) child)
   {
     pos[child].attach_chain() = 0;
-    goto overflow;
+    செல் overflow;
   }
   pos[child].attach_type() = ATTACH_TYPE_CURSIVE;
   buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
-  if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+  எனில் (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
     pos[child].y_offset = y_offset;
-  else
+  இல்லையெனில்
     pos[child].x_offset = x_offset;
 
   /* If parent was attached to child, separate them.
    * https://github.com/harfbuzz/harfbuzz/issues/2469
    */
-  if (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
+  எனில் (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
   {
     pos[parent].attach_chain() = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+    எனில் (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
 	pos[parent].y_offset = 0;
-    else
+    இல்லையெனில்
 	pos[parent].x_offset = 0;
   }
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  எனில் (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "cursive attached glyph at %u to glyph at %u",
@@ -221,102 +221,102 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
 
 overflow:
   buffer->idx++;
-  return true;
+  திரும்பு உண்மை;
 }
 
 template <typename Types>
-struct CursivePosFormat1_2
+கட்டமைப்பு CursivePosFormat1_2
 {
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from beginning of subtable */
   typename Types::template ArrayOf<EntryExitRecord<Types>>
                 entryExitRecord;        /* Array of EntryExit records--in
                                          * Coverage Index order */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, entryExitRecord);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!coverage.sanitize (c, this)))
-      return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!coverage.sanitize (c, இது)))
+      return_trace (பொய்);
 
-    if (c->lazy_some_gpos)
+    எனில் (c->lazy_some_gpos)
       return_trace (entryExitRecord.sanitize_shallow (c));
-    else
-      return_trace (entryExitRecord.sanitize (c, this));
+    இல்லையெனில்
+      return_trace (entryExitRecord.sanitize (c, இது));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  தருக்க intersects (மாறிலி hb_set_t *glyphs) மாறிலி
+  { திரும்பு (இது+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  வெறுமை closure_lookups (hb_closure_lookups_context_t *c) மாறிலி {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c) மாறிலி
   {
-    + hb_zip (this+coverage, entryExitRecord)
+    + hb_zip (இது+coverage, entryExitRecord)
     | hb_filter (c->glyph_set, hb_first)
     | hb_map (hb_second)
-    | hb_apply ([&] (const EntryExitRecord<Types>& record) { record.collect_variation_indices (c, this); })
+    | hb_apply ([&] (மாறிலி EntryExitRecord<Types>& record) { record.collect_variation_indices (c, இது); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  வெறுமை collect_glyphs (hb_collect_glyphs_context_t *c) மாறிலி
+  { எனில் (unlikely (!(இது+coverage).collect_coverage (c->உள்ளீடு))) திரும்பு; }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+coverage).collect_coverage (digest); }
+  வெறுமை collect_second_glyphs (hb_set_digest_t *digest) மாறிலி
+  { (இது+coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  மாறிலி Coverage &get_coverage () மாறிலி { திரும்பு இது+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  தருக்க apply (hb_ot_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
     hb_buffer_t *buffer = c->buffer;
 
-    const EntryExitRecord<Types> &this_record = entryExitRecord[(this+coverage).get_coverage  (buffer->cur().codepoint)];
-    if (!this_record.entryAnchor ||
-	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, this))) return_trace (false);
+    மாறிலி EntryExitRecord<Types> &this_record = entryExitRecord[(இது+coverage).get_coverage  (buffer->cur().codepoint)];
+    எனில் (!this_record.entryAnchor ||
+	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, இது))) return_trace (பொய்);
     hb_barrier ();
 
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_உள்ளீடு;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_from;
-    if (unlikely (!skippy_iter.prev (&unsafe_from)))
+    எனில் (unlikely (!skippy_iter.prev (&unsafe_from)))
     {
       buffer->unsafe_to_concat_from_outbuffer (unsafe_from, buffer->idx + 1);
-      return_trace (false);
+      return_trace (பொய்);
     }
 
-    const EntryExitRecord<Types> &prev_record = entryExitRecord[(this+coverage).get_coverage  (buffer->info[skippy_iter.idx].codepoint)];
-    if (!prev_record.exitAnchor ||
-	unlikely (!prev_record.exitAnchor.sanitize (&c->sanitizer, this)))
+    மாறிலி EntryExitRecord<Types> &prev_record = entryExitRecord[(இது+coverage).get_coverage  (buffer->info[skippy_iter.idx].codepoint)];
+    எனில் (!prev_record.exitAnchor ||
+	unlikely (!prev_record.exitAnchor.sanitize (&c->sanitizer, இது)))
     {
       buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-      return_trace (false);
+      return_trace (பொய்);
     }
     hb_barrier ();
 
     return_trace (apply_cursive_attachment (c,
-                                            this+prev_record.exitAnchor,
-                                            this+this_record.entryAnchor,
+                                            இது+prev_record.exitAnchor,
+                                            இது+this_record.entryAnchor,
                                             skippy_iter.idx));
   }
 
   template <typename Iterator,
             hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_subset_context_t *c,
+  வெறுமை serialize (hb_subset_context_t *c,
                   Iterator it,
-                  const struct CursivePosFormat1_2<Types> *src_base)
+                  மாறிலி கட்டமைப்பு CursivePosFormat1_2<Types> *src_base)
   {
-    if (unlikely (!c->serializer->extend_min ((*this)))) return;
-    this->format = src_base->format;
-    this->entryExitRecord.len = it.len ();
+    எனில் (unlikely (!c->serializer->extend_min ((*இது)))) திரும்பு;
+    இது->format = src_base->format;
+    இது->entryExitRecord.len = it.len ();
 
-    for (const EntryExitRecord<Types>& entry_record : + it
+    க்கு (மாறிலி EntryExitRecord<Types>& entry_record : + it
                                                       | hb_map (hb_second))
       entry_record.subset (c, src_base);
 
@@ -328,24 +328,24 @@ struct CursivePosFormat1_2
     coverage.serialize_serialize (c->serializer, glyphs);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (இது);
+    மாறிலி hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    மாறிலி hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
+    auto *out = c->serializer->start_embed (*இது);
 
     auto it =
-    + hb_zip (this+coverage, entryExitRecord)
+    + hb_zip (இது+coverage, entryExitRecord)
     | hb_filter (glyphset, hb_first)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&> p)
-                              -> hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&>
-                              { return hb_pair (glyph_map[p.first], p.second);})
+    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, மாறிலி EntryExitRecord<Types>&> p)
+                              -> hb_pair_t<hb_codepoint_t, மாறிலி EntryExitRecord<Types>&>
+                              { திரும்பு hb_pair (glyph_map[p.first], p.second);})
     ;
 
-    bool ret = bool (it);
-    out->serialize (c, it, this);
+    தருக்க ret = தருக்க (it);
+    out->serialize (c, it, இது);
     return_trace (ret);
   }
 };

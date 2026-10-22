@@ -27,62 +27,62 @@
 #ifndef HB_VECTOR_HH
 #define HB_VECTOR_HH
 
-#include "hb.hh"
-#include "hb-array.hh"
-#include "hb-meta.hh"
-#include "hb-null.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-array.hh"
+#அந்தர்பாவ "hb-meta.hh"
+#அந்தர்பாவ "hb-null.hh"
 
 // Change to 1 to force inline vector allocs, to see callsite in malloc-stats tool.
-#if 0
+#எனில் 0
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS HB_ALWAYS_INLINE
-#else
+#இல்லையெனில்
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS
 #endif
 
 template <typename Type,
-	  bool sorted=false>
-struct hb_vector_t
+	  தருக்க sorted=பொய்>
+கட்டமைப்பு hb_vector_t
 {
-  static constexpr bool realloc_move = true;
+  நிலையான constexpr தருக்க realloc_move = உண்மை;
 
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  வகைவரை Type item_t;
+  நிலையான constexpr unsigned item_size = hb_static_size (Type);
   using array_t = typename std::conditional<sorted, hb_sorted_array_t<Type>, hb_array_t<Type>>::type;
-  using c_array_t = typename std::conditional<sorted, hb_sorted_array_t<const Type>, hb_array_t<const Type>>::type;
+  using c_array_t = typename std::conditional<sorted, hb_sorted_array_t<மாறிலி Type>, hb_array_t<மாறிலி Type>>::type;
 
-  hb_vector_t () = default;
+  hb_vector_t () = இயல்பு;
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (std::initializer_list<Type> lst) : hb_vector_t ()
   {
-    alloc (lst.size (), true);
-    for (auto&& item : lst)
+    alloc (lst.size (), உண்மை);
+    க்கு (auto&& item : lst)
       push (item);
   }
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  explicit hb_vector_t (const Iterable &o) : hb_vector_t ()
+  explicit hb_vector_t (மாறிலி Iterable &o) : hb_vector_t ()
   {
-    extend (o, true);
+    extend (o, உண்மை);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  hb_vector_t (const hb_vector_t &o) : hb_vector_t ()
+  hb_vector_t (மாறிலி hb_vector_t &o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    எனில் (unlikely (in_error ())) திரும்பு;
     copy_array (o.as_array ());
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    எனில் (unlikely (in_error ())) திரும்பு;
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (c_array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    எனில் (unlikely (in_error ())) திரும்பு;
     copy_array (o);
   }
   hb_vector_t (hb_vector_t &&o) noexcept
@@ -95,20 +95,20 @@ struct hb_vector_t
   ~hb_vector_t () { fini (); }
 
   template <unsigned n>
-  void
+  வெறுமை
   set_storage (Type (&array)[n])
   { set_storage (array, n); }
-  void
+  வெறுமை
   set_storage (hb_array_t<Type> array)
   { set_storage (array.arrayZ, array.length); }
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_constructible(T) &&
 			  hb_is_trivially_destructible(T))>
-  void
+  வெறுமை
   set_storage (Type *array, unsigned n)
   {
-    assert (allocated == 0);
-    assert (length == 0);
+    ப்ரதிஜ்ஞா (allocated == 0);
+    ப்ரதிஜ்ஞா (length == 0);
 
     arrayZ = array;
     length = n;
@@ -117,64 +117,64 @@ struct hb_vector_t
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (const Iterable &o, bool exact=false)
+  வெறுமை extend (மாறிலி Iterable &o, தருக்க exact=பொய்)
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    எனில் (iter.is_random_access_iterator || iter.has_fast_len)
     {
-      if (unlikely (!alloc (length + hb_len (iter), exact)))
-	return;
-      unsigned count = hb_len (iter);
-      for (unsigned i = 0; i < count; i++)
-	push_has_room (*iter++);
+      எனில் (unlikely (!alloc (length + hb_len (iter), exact)))
+	திரும்பு;
+      unsigned மொத்தம் = hb_len (iter);
+      க்கு (unsigned i = 0; i < மொத்தம்; i++)
+	தள்ளு_has_room (*iter++);
     }
-    while (iter)
+    போது (iter)
     {
-      if (unlikely (!alloc (length + 1)))
-        return;
+      எனில் (unlikely (!alloc (length + 1)))
+        திரும்பு;
       unsigned room = allocated - length;
-      for (unsigned i = 0; i < room && iter; i++)
-	push_has_room (*iter++);
+      க்கு (unsigned i = 0; i < room && iter; i++)
+	தள்ளு_has_room (*iter++);
     }
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (array_t o, bool exact=false)
+  வெறுமை extend (array_t o, தருக்க exact=பொய்)
   { extend (c_array_t (o), exact); }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (c_array_t o, bool exact=false)
+  வெறுமை extend (c_array_t o, தருக்க exact=பொய்)
   {
     /* o may point into our own storage, eg. v.extend (v.as_array ()).
      * alloc() may move that storage, so find o again afterwards. */
-    bool aliased = o.length && in_storage (*o.arrayZ);
+    தருக்க aliased = o.length && in_storage (*o.arrayZ);
     unsigned offset = aliased ? o.arrayZ - arrayZ : 0;
     alloc (length + o.length, exact);
-    if (unlikely (in_error ())) return;
-    if (unlikely (aliased))
+    எனில் (unlikely (in_error ())) திரும்பு;
+    எனில் (unlikely (aliased))
       o = {arrayZ + offset, o.length};
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (const hb_vector_t &o, bool exact=false)
+  வெறுமை extend (மாறிலி hb_vector_t &o, தருக்க exact=பொய்)
   { extend (o.as_array (), exact); }
 
-  public:
-  int allocated = 0; /* < 0 means allocation failed. */
-  unsigned int length = 0;
-  public:
+  பொது:
+  முழு allocated = 0; /* < 0 means allocation failed. */
+  unsigned முழு length = 0;
+  பொது:
   Type *arrayZ = nullptr;
 
-  void init ()
+  வெறுமை init ()
   {
     allocated = length = 0;
     arrayZ = nullptr;
   }
-  void init0 ()
+  வெறுமை init0 ()
   {
   }
 
-  void fini ()
+  வெறுமை fini ()
   {
-    if (is_owned ())
+    எனில் (is_owned ())
     {
       shrink_vector (0);
       hb_free (arrayZ);
@@ -185,41 +185,41 @@ struct hb_vector_t
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset ()
   {
-    if (unlikely (in_error ()))
+    எனில் (unlikely (in_error ()))
       reset_error ();
     clear ();
-    return *this;
+    திரும்பு *இது;
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset_if_error ()
   {
-    if (unlikely (in_error ()))
+    எனில் (unlikely (in_error ()))
       reset ();
-    return *this;
+    திரும்பு *இது;
   }
 
   /* Transfer ownership of the backing storage to caller.
    * Returns nullptr if storage is not owned by this vector. */
   Type *
-  steal (unsigned *len = nullptr, int *allocated_out = nullptr)
+  steal (unsigned *len = nullptr, முழு *allocated_out = nullptr)
   {
-    if (!is_owned ())
-      return nullptr;
-    if (len)
+    எனில் (!is_owned ())
+      திரும்பு nullptr;
+    எனில் (len)
       *len = length;
-    if (allocated_out)
+    எனில் (allocated_out)
       *allocated_out = allocated;
     Type *p = arrayZ;
     init ();
-    return p;
+    திரும்பு p;
   }
 
   /* Adopt a previously detached owned buffer. */
-  void
+  வெறுமை
   recycle_buffer (Type *buffer,
                   unsigned len,
-                  int allocated_len)
+                  முழு allocated_len)
   {
     fini ();
     arrayZ = buffer;
@@ -227,215 +227,215 @@ struct hb_vector_t
     allocated = allocated_len;
   }
 
-  friend void swap (hb_vector_t& a, hb_vector_t& b) noexcept
+  friend வெறுமை swap (hb_vector_t& a, hb_vector_t& b) noexcept
   {
     hb_swap (a.allocated, b.allocated);
     hb_swap (a.length, b.length);
     hb_swap (a.arrayZ, b.arrayZ);
   }
 
-  hb_vector_t& operator = (const hb_vector_t &o)
+  hb_vector_t& operator = (மாறிலி hb_vector_t &o)
   {
-    if (this == &o) return *this;
+    எனில் (இது == &o) திரும்பு *இது;
 
     reset ();
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return *this;
+    எனில் (unlikely (in_error ())) திரும்பு *இது;
 
     length = 0;
     copy_array (o.as_array ());
 
-    return *this;
+    திரும்பு *இது;
   }
   hb_vector_t& operator = (hb_vector_t &&o) noexcept
   {
-    hb_swap (*this, o);
-    return *this;
+    hb_swap (*இது, o);
+    திரும்பு *இது;
   }
 
-  hb_bytes_t as_bytes () const
-  { return hb_bytes_t ((const char *) arrayZ, get_size ()); }
+  hb_bytes_t as_bytes () மாறிலி
+  { திரும்பு hb_bytes_t ((மாறிலி எழுத்து *) arrayZ, get_size ()); }
 
-  bool operator == (const hb_vector_t &o) const { return as_array () == o.as_array (); }
-  bool operator != (const hb_vector_t &o) const { return !(*this == o); }
-  uint32_t hash () const { return as_array ().hash (); }
+  தருக்க operator == (மாறிலி hb_vector_t &o) மாறிலி { திரும்பு as_array () == o.as_array (); }
+  தருக்க operator != (மாறிலி hb_vector_t &o) மாறிலி { திரும்பு !(*இது == o); }
+  uint32_t hash () மாறிலி { திரும்பு as_array ().hash (); }
 
-  Type& operator [] (int i_)
+  Type& operator [] (முழு i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Crap (Type);
-    return arrayZ[i];
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= length))
+      திரும்பு Crap (Type);
+    திரும்பு arrayZ[i];
   }
-  const Type& operator [] (int i_) const
+  மாறிலி Type& operator [] (முழு i_) மாறிலி
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Null (Type);
-    return arrayZ[i];
+    unsigned முழு i = (unsigned முழு) i_;
+    எனில் (unlikely (i >= length))
+      திரும்பு Null (Type);
+    திரும்பு arrayZ[i];
   }
 
-  Type& tail () { return (*this)[length - 1]; }
-  const Type& tail () const { return (*this)[length - 1]; }
+  Type& tail () { திரும்பு (*இது)[length - 1]; }
+  மாறிலி Type& tail () மாறிலி { திரும்பு (*இது)[length - 1]; }
 
-  explicit operator bool () const { return length; }
-  size_t get_size () const { return hb_unsigned_mul_saturate (length, item_size); }
+  explicit operator தருக்க () மாறிலி { திரும்பு length; }
+  size_t get_size () மாறிலி { திரும்பு hb_unsigned_mul_saturate (length, item_size); }
 
   /* Sink interface. */
   template <typename T>
-  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); return *this; }
+  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); திரும்பு *இது; }
 
-  array_t   as_array ()       { return hb_array (arrayZ, length); }
-  c_array_t as_array () const { return hb_array (arrayZ, length); }
+  array_t   as_array ()       { திரும்பு hb_array (arrayZ, length); }
+  c_array_t as_array () மாறிலி { திரும்பு hb_array (arrayZ, length); }
 
   /* Iterator. */
-  typedef c_array_t   iter_t;
-  typedef array_t   writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  வகைவரை c_array_t   iter_t;
+  வகைவரை array_t   writer_t;
+    iter_t   iter () மாறிலி { திரும்பு as_array (); }
+  writer_t writer ()       { திரும்பு as_array (); }
+  operator   iter_t () மாறிலி { திரும்பு   iter (); }
+  operator writer_t ()       { திரும்பு writer (); }
 
   /* Faster range-based for loop. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () மாறிலி { திரும்பு arrayZ; }
+  Type *end () மாறிலி { திரும்பு arrayZ + length; }
 
 
   hb_sorted_array_t<Type> as_sorted_array ()
-  { return hb_sorted_array (arrayZ, length); }
-  hb_sorted_array_t<const Type> as_sorted_array () const
-  { return hb_sorted_array (arrayZ, length); }
+  { திரும்பு hb_sorted_array (arrayZ, length); }
+  hb_sorted_array_t<மாறிலி Type> as_sorted_array () மாறிலி
+  { திரும்பு hb_sorted_array (arrayZ, length); }
 
-  template <typename T> explicit operator T * () { return arrayZ; }
-  template <typename T> explicit operator const T * () const { return arrayZ; }
+  template <typename T> explicit operator T * () { திரும்பு arrayZ; }
+  template <typename T> explicit operator மாறிலி T * () மாறிலி { திரும்பு arrayZ; }
 
-  Type * operator  + (unsigned int i) { return arrayZ + i; }
-  const Type * operator  + (unsigned int i) const { return arrayZ + i; }
+  Type * operator  + (unsigned முழு i) { திரும்பு arrayZ + i; }
+  மாறிலி Type * operator  + (unsigned முழு i) மாறிலி { திரும்பு arrayZ + i; }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push ()
   {
-    if (unlikely (!resize (length + 1)))
-      return std::addressof (Crap (Type));
-    return std::addressof (arrayZ[length - 1]);
+    எனில் (unlikely (!resize (length + 1)))
+      திரும்பு std::addressof (Crap (Type));
+    திரும்பு std::addressof (arrayZ[length - 1]);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push (Args&&... args)
   {
-    if (unlikely ((int) length >= allocated))
+    எனில் (unlikely ((முழு) length >= allocated))
     {
-      if (unlikely (in_error ()))
-	return std::addressof (Crap (Type));
+      எனில் (unlikely (in_error ()))
+	திரும்பு std::addressof (Crap (Type));
 
       /* An argument may live in our own storage, eg. v.push (v[i]).
        * alloc() frees that storage, so copy it out first. */
-      if (unlikely (in_storage (args...)))
+      எனில் (unlikely (in_storage (args...)))
       {
 	Type copy (std::forward<Args> (args)...);
-	if (unlikely (!alloc (length + 1)))
-	  return std::addressof (Crap (Type));
-	return push_has_room (std::move (copy));
+	எனில் (unlikely (!alloc (length + 1)))
+	  திரும்பு std::addressof (Crap (Type));
+	திரும்பு தள்ளு_has_room (std::move (copy));
       }
-      if (unlikely (!alloc (length + 1)))
+      எனில் (unlikely (!alloc (length + 1)))
 	// If push failed to allocate then don't copy v, since this may cause
 	// the created copy to leak memory since we won't have stored a
 	// reference to it.
-	return std::addressof (Crap (Type));
+	திரும்பு std::addressof (Crap (Type));
     }
 
-    return push_has_room (std::forward<Args> (args)...);
+    திரும்பு தள்ளு_has_room (std::forward<Args> (args)...);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool push_or_fail (Args&&... args)
+  தருக்க தள்ளு_or_fail (Args&&... args)
   {
-    return push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
+    திரும்பு push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  Type *push_has_room (Args&&... args)
+  Type *தள்ளு_has_room (Args&&... args)
   {
     /* Emplace. */
     Type *p = std::addressof (arrayZ[length++]);
-    return new (p) Type (std::forward<Args> (args)...);
+    திரும்பு புதிய (p) Type (std::forward<Args> (args)...);
   }
 
-  bool in_storage () const { return false; }
+  தருக்க in_storage () மாறிலி { திரும்பு பொய்; }
   template <typename T, typename... Ts>
-  bool in_storage (const T &v, const Ts &...vs) const
+  தருக்க in_storage (மாறிலி T &v, மாறிலி Ts &...vs) மாறிலி
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return (arrayZ &&
+    திரும்பு (arrayZ &&
 	    (uintptr_t) arrayZ <= p && p < (uintptr_t) (arrayZ + length)) ||
 	   in_storage (vs...);
   }
 
-  bool is_owned () const
+  தருக்க is_owned () மாறிலி
   {
-    return allocated != 0 && allocated != -1;
+    திரும்பு allocated != 0 && allocated != -1;
   }
 
-  bool in_error () const { return allocated < 0; }
-  void set_error ()
+  தருக்க in_error () மாறிலி { திரும்பு allocated < 0; }
+  வெறுமை set_error ()
   {
-    assert (allocated >= 0);
+    ப்ரதிஜ்ஞா (allocated >= 0);
     allocated = -allocated - 1;
   }
-  void reset_error ()
+  வெறுமை reset_error ()
   {
-    assert (allocated < 0);
+    ப்ரதிஜ்ஞா (allocated < 0);
     allocated = -(allocated + 1);
   }
-  void ensure_error ()
+  வெறுமை ensure_error ()
   {
-    if (!in_error ())
+    எனில் (!in_error ())
       set_error ();
   }
 
   Type *
   _realloc (unsigned new_allocated)
   {
-    if (!new_allocated)
+    எனில் (!new_allocated)
     {
-      if (is_owned ())
+      எனில் (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      திரும்பு nullptr;
     }
-    if (!allocated && arrayZ)
+    எனில் (!allocated && arrayZ)
     {
       /* If we have a non-null arrayZ but allocated is 0, then we are
        * reallocating from a foreign array. */
-      Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-      if (unlikely (!new_array))
-	return nullptr;
-      hb_memcpy ((void *) new_array, (const void *) arrayZ, length * sizeof (Type));
-      return new_array;
+      Type *new_array = (Type *) hb_malloc (new_allocated * அளவு (Type));
+      எனில் (unlikely (!new_array))
+	திரும்பு nullptr;
+      hb_memcpy ((வெறுமை *) new_array, (மாறிலி வெறுமை *) arrayZ, length * அளவு (Type));
+      திரும்பு new_array;
     }
-    return (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
+    திரும்பு (Type *) hb_realloc (arrayZ, new_allocated * அளவு (Type));
   }
   Type *
   _malloc_move (unsigned new_allocated)
   {
-    if (!new_allocated)
+    எனில் (!new_allocated)
     {
-      if (is_owned ())
+      எனில் (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      திரும்பு nullptr;
     }
-    Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-    if (likely (new_array))
+    Type *new_array = (Type *) hb_malloc (new_allocated * அளவு (Type));
+    எனில் (likely (new_array))
     {
-      for (unsigned i = 0; i < length; i++)
+      க்கு (unsigned i = 0; i < length; i++)
       {
-	new (std::addressof (new_array[i])) Type ();
+	புதிய (std::addressof (new_array[i])) Type ();
 	new_array[i] = std::move (arrayZ[i]);
 	arrayZ[i].~Type ();
       }
-      if (is_owned ())
+      எனில் (is_owned ())
 	hb_free (arrayZ);
     }
-    return new_array;
+    திரும்பு new_array;
   }
 
   template <typename T = Type,
@@ -443,14 +443,14 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _realloc (new_allocated);
+    திரும்பு _realloc (new_allocated);
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copy_assignable(T))>
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _malloc_move (new_allocated);
+    திரும்பு _malloc_move (new_allocated);
   }
   /* Specialization for types that can be moved using realloc(). */
   template <typename T = Type,
@@ -458,60 +458,60 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<1>)
   {
-    return _realloc (new_allocated);
+    திரும்பு _realloc (new_allocated);
   }
 
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_constructible(T))>
-  void
+  வெறுமை
   grow_vector (unsigned size, hb_priority<0>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * அளவு (*arrayZ));
     length = size;
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_constructible(T))>
-  void
+  வெறுமை
   grow_vector (unsigned size, hb_priority<0>)
   {
-    for (; length < size; length++)
-      new (std::addressof (arrayZ[length])) Type ();
+    க்கு (; length < size; length++)
+      புதிய (std::addressof (arrayZ[length])) Type ();
   }
   /* Specialization for hb_vector_t<hb_{vector,array}_t<U>> to speed up. */
   template <typename T = Type,
 	    hb_enable_if (hb_is_same (T, hb_vector_t<typename T::item_t>) ||
 			  hb_is_same (T, hb_array_t <typename T::item_t>))>
-  void
+  வெறுமை
   grow_vector (unsigned size, hb_priority<1>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * அளவு (*arrayZ));
     length = size;
   }
 
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_copyable (T))>
-  void
+  வெறுமை
   copy_array (hb_array_t<Type> other)
   {
-    hb_memcpy ((void *) (arrayZ + length), (const void *) other.arrayZ, other.length * item_size);
+    hb_memcpy ((வெறுமை *) (arrayZ + length), (மாறிலி வெறுமை *) other.arrayZ, other.length * item_size);
     length += other.length;
   }
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_copyable (T))>
-  void
-  copy_array (hb_array_t<const Type> other)
+  வெறுமை
+  copy_array (hb_array_t<மாறிலி Type> other)
   {
-    hb_memcpy ((void *) (arrayZ + length), (const void *) other.arrayZ, other.length * item_size);
+    hb_memcpy ((வெறுமை *) (arrayZ + length), (மாறிலி வெறுமை *) other.arrayZ, other.length * item_size);
     length += other.length;
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copyable (T) &&
 			   std::is_copy_constructible<T>::value)>
-  void
-  copy_array (hb_array_t<const Type> other)
+  வெறுமை
+  copy_array (hb_array_t<மாறிலி Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
-      new (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
+    க்கு (unsigned i = 0; i < other.length; i++)
+      புதிய (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
     length += other.length;
   }
   template <typename T = Type,
@@ -519,269 +519,269 @@ struct hb_vector_t
 			  !std::is_copy_constructible<T>::value &&
 			  std::is_default_constructible<T>::value &&
 			  std::is_copy_assignable<T>::value)>
-  void
-  copy_array (hb_array_t<const Type> other)
+  வெறுமை
+  copy_array (hb_array_t<மாறிலி Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    க்கு (unsigned i = 0; i < other.length; i++)
     {
-      new (std::addressof (arrayZ[length + i])) Type ();
+      புதிய (std::addressof (arrayZ[length + i])) Type ();
       arrayZ[length + i] = other.arrayZ[i];
     }
     length += other.length;
   }
 
-  void
+  வெறுமை
   shrink_vector (unsigned size)
   {
-    assert (size <= length);
-    if (!hb_is_trivially_destructible(Type))
+    ப்ரதிஜ்ஞா (size <= length);
+    எனில் (!hb_is_trivially_destructible(Type))
     {
-      unsigned count = length - size;
+      unsigned மொத்தம் = length - size;
       Type *p = arrayZ + length;
-      while (count--)
+      போது (மொத்தம்--)
         (--p)->~Type ();
     }
     length = size;
   }
 
-  void
+  வெறுமை
   shift_down_vector (unsigned i)
   {
-    for (; i < length; i++)
+    க்கு (; i < length; i++)
       arrayZ[i - 1] = std::move (arrayZ[i]);
   }
 
   /* Allocate for size but don't adjust length. */
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc (unsigned int size, bool exact=false)
+  தருக்க alloc (unsigned முழு size, தருக்க exact=பொய்)
   {
-    if (unlikely (in_error ()))
-      return false;
+    எனில் (unlikely (in_error ()))
+      திரும்பு பொய்;
 
-    unsigned int new_allocated;
-    if (exact)
+    unsigned முழு new_allocated;
+    எனில் (exact)
     {
       /* If exact was specified, we allow shrinking the storage. */
       size = hb_max (size, length);
-      if (size <= (unsigned) allocated &&
+      எனில் (size <= (unsigned) allocated &&
 	  size >= (unsigned) allocated >> 2)
-	return true;
+	திரும்பு உண்மை;
 
       new_allocated = size;
     }
-    else
+    இல்லையெனில்
     {
-      if (likely (size <= (unsigned) allocated))
-	return true;
+      எனில் (likely (size <= (unsigned) allocated))
+	திரும்பு உண்மை;
 
       new_allocated = allocated;
-      while (size > new_allocated)
+      போது (size > new_allocated)
 	new_allocated += (new_allocated >> 1) + 8;
     }
 
     /* Reallocate */
 
-    bool overflows =
-      (int) in_error () ||
+    தருக்க overflows =
+      (முழு) in_error () ||
       (new_allocated < size) ||
-      hb_unsigned_mul_overflows (new_allocated, sizeof (Type));
+      hb_unsigned_mul_overflows (new_allocated, அளவு (Type));
 
-    if (unlikely (overflows))
+    எனில் (unlikely (overflows))
     {
       set_error ();
-      return false;
+      திரும்பு பொய்;
     }
 
     Type *new_array = realloc_vector (new_allocated, hb_prioritize);
 
-    if (unlikely (new_allocated && !new_array))
+    எனில் (unlikely (new_allocated && !new_array))
     {
-      if (new_allocated <= (unsigned) allocated)
-        return true; // shrinking failed; it's okay; happens in our fuzzer
+      எனில் (new_allocated <= (unsigned) allocated)
+        திரும்பு உண்மை; // shrinking failed; it's okay; happens in our fuzzer
 
       set_error ();
-      return false;
+      திரும்பு பொய்;
     }
 
     arrayZ = new_array;
     allocated = new_allocated;
 
-    return true;
+    திரும்பு உண்மை;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc_exact (unsigned int size)
+  தருக்க alloc_exact (unsigned முழு size)
   {
-    return alloc (size, true);
+    திரும்பு alloc (size, உண்மை);
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void clear ()
+  வெறுமை clear ()
   {
     shrink_vector (0);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned int initialize = true)
+  தருக்க allocate_from_pool (allocator_t *allocator, unsigned size, unsigned முழு initialize = உண்மை)
   {
-    if (allocator)
+    எனில் (allocator)
     {
-      assert (!length && !allocated);
-      arrayZ = (Type *) allocator->alloc (size * sizeof (Type), alignof (Type));
-      if (unlikely (!arrayZ))
+      ப்ரதிஜ்ஞா (!length && !allocated);
+      arrayZ = (Type *) allocator->alloc (size * அளவு (Type), alignof (Type));
+      எனில் (unlikely (!arrayZ))
       {
 	set_error ();
-	return false;
+	திரும்பு பொய்;
       }
-      if (initialize)
+      எனில் (initialize)
 	grow_vector (size, hb_prioritize);
-      else
+      இல்லையெனில்
 	length = size;
-      return true;
+      திரும்பு உண்மை;
     }
-    return resize_full ((int) size, initialize, true);
+    திரும்பு resize_full ((முழு) size, initialize, உண்மை);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool duplicate_vector_from_pool (allocator_t *allocator, const hb_vector_t &other)
+  தருக்க duplicate_vector_from_pool (allocator_t *allocator, மாறிலி hb_vector_t &other)
   {
-    if (unlikely (!allocate_from_pool (allocator, other.length, false)))
-      return false;
+    எனில் (unlikely (!allocate_from_pool (allocator, other.length, பொய்)))
+      திரும்பு பொய்;
     length = 0;
     copy_array (other.as_array ());
-    return true;
+    திரும்பு உண்மை;
   }
 
   template <typename allocator_t>
-  void shrink_back_to_pool (allocator_t *allocator, int size)
+  வெறுமை shrink_back_to_pool (allocator_t *allocator, முழு size)
   {
     unsigned orig_length = length;
 
-    shrink (size, false);
+    shrink (size, பொய்);
 
-    if (allocator && !is_owned ())
-      allocator->discard (arrayZ + length, (orig_length - length) * sizeof (Type));
+    எனில் (allocator && !is_owned ())
+      allocator->discard (arrayZ + length, (orig_length - length) * அளவு (Type));
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_full (int size_, bool initialize, bool exact)
+  தருக்க resize_full (முழு size_, தருக்க initialize, தருக்க exact)
   {
-    if (unlikely (size_ < 0))
-      return false;
-    unsigned int size = (unsigned int) size_;
-    if (!alloc (size, exact))
-      return false;
+    எனில் (unlikely (size_ < 0))
+      திரும்பு பொய்;
+    unsigned முழு size = (unsigned முழு) size_;
+    எனில் (!alloc (size, exact))
+      திரும்பு பொய்;
 
-    if (size > length)
+    எனில் (size > length)
     {
-      if (initialize)
+      எனில் (initialize)
 	grow_vector (size, hb_prioritize);
     }
-    else if (size < length)
+    இல்லையெனில் எனில் (size < length)
     {
-      if (initialize)
+      எனில் (initialize)
 	shrink_vector (size);
     }
 
     length = size;
-    return true;
+    திரும்பு உண்மை;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize (int size_)
+  தருக்க resize (முழு size_)
   {
-    return resize_full (size_, true, false);
+    திரும்பு resize_full (size_, உண்மை, பொய்);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_dirty (int size_)
+  தருக்க resize_dirty (முழு size_)
   {
-    return resize_full (size_, false, false);
+    திரும்பு resize_full (size_, பொய், பொய்);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_exact (int size_)
+  தருக்க resize_exact (முழு size_)
   {
-    return resize_full (size_, true, true);
+    திரும்பு resize_full (size_, உண்மை, உண்மை);
   }
 
-  Type pop ()
+  Type எடு ()
   {
-    if (!length) return Null (Type);
+    எனில் (!length) திரும்பு Null (Type);
     Type v (std::move (arrayZ[length - 1]));
     arrayZ[length - 1].~Type ();
     length--;
-    return v;
+    திரும்பு v;
   }
 
-  void remove_ordered (unsigned int i)
+  வெறுமை remove_ordered (unsigned முழு i)
   {
-    if (unlikely (i >= length))
-      return;
+    எனில் (unlikely (i >= length))
+      திரும்பு;
     shift_down_vector (i + 1);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  template <bool Sorted = sorted,
+  template <தருக்க Sorted = sorted,
 	    hb_enable_if (!Sorted)>
-  void remove_unordered (unsigned int i)
+  வெறுமை remove_unordered (unsigned முழு i)
   {
-    if (unlikely (i >= length))
-      return;
-    if (i != length - 1)
+    எனில் (unlikely (i >= length))
+      திரும்பு;
+    எனில் (i != length - 1)
       arrayZ[i] = std::move (arrayZ[length - 1]);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  void shrink (int size_, bool shrink_memory = true)
+  வெறுமை shrink (முழு size_, தருக்க shrink_memory = உண்மை)
   {
-    unsigned int size = size_ < 0 ? 0u : (unsigned int) size_;
-    if (size >= length)
-      return;
+    unsigned முழு size = size_ < 0 ? 0u : (unsigned முழு) size_;
+    எனில் (size >= length)
+      திரும்பு;
 
     shrink_vector (size);
 
-    if (is_owned () && shrink_memory)
+    எனில் (is_owned () && shrink_memory)
       alloc_exact (size); /* To force shrinking memory if needed. */
   }
 
 
   /* Sorting API. */
   template <typename Compar>
-  void qsort (Compar compar)
+  வெறுமை qsort (Compar compar)
   { as_array ().qsort (compar); }
-  void qsort ()
+  வெறுமை qsort ()
   { as_array ().qsort (); }
 
   /* Unsorted search API. */
   template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().lsearch (x, not_found); }
+  Type *lsearch (மாறிலி T &x, Type *not_found = nullptr)
+  { திரும்பு as_array ().lsearch (x, not_found); }
   template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().lsearch (x, not_found); }
+  மாறிலி Type *lsearch (மாறிலி T &x, மாறிலி Type *not_found = nullptr) மாறிலி
+  { திரும்பு as_array ().lsearch (x, not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr) const
-  { return as_array ().lfind (x, pos); }
+  தருக்க lfind (மாறிலி T &x, unsigned *pos = nullptr) மாறிலி
+  { திரும்பு as_array ().lfind (x, pos); }
 
   /* Sorted search API. */
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().bsearch (x, not_found); }
+	    தருக்க Sorted=sorted, hb_enable_if (Sorted)>
+  Type *bsearch (மாறிலி T &x, Type *not_found = nullptr)
+  { திரும்பு as_array ().bsearch (x, not_found); }
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().bsearch (x, not_found); }
+	    தருக்க Sorted=sorted, hb_enable_if (Sorted)>
+  மாறிலி Type *bsearch (மாறிலி T &x, மாறிலி Type *not_found = nullptr) மாறிலி
+  { திரும்பு as_array ().bsearch (x, not_found); }
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+	    தருக்க Sorted=sorted, hb_enable_if (Sorted)>
+  தருக்க bfind (மாறிலி T &x, unsigned முழு *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned முழு to_store = (unsigned முழு) -1) மாறிலி
+  { திரும்பு as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type>
-using hb_sorted_vector_t = hb_vector_t<Type, true>;
+using hb_sorted_vector_t = hb_vector_t<Type, உண்மை>;
 
 #endif /* HB_VECTOR_HH */

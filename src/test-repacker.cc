@@ -24,22 +24,22 @@
  * Google Author(s): Garret Rieger
  */
 
-#include <cstdint>
-#include <string>
+#அந்தர்பாவ <cstdint>
+#அந்தர்பாவ <string>
 
-#include "hb-repacker.hh"
-#include "hb-open-type.hh"
-#include "graph/serialize.hh"
+#அந்தர்பாவ "hb-repacker.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "graph/serialize.hh"
 
-static void extend (const char* value,
+நிலையான வெறுமை extend (மாறிலி எழுத்து* value,
                     unsigned len,
                     hb_serialize_context_t* c)
 {
-  char* obj = c->allocate_size<char> (len);
+  எழுத்து* obj = c->allocate_size<எழுத்து> (len);
   hb_memcpy (obj, value, len);
 }
 
-static void start_object(const char* tag,
+நிலையான வெறுமை start_object(மாறிலி எழுத்து* tag,
                          unsigned len,
                          hb_serialize_context_t* c)
 {
@@ -47,17 +47,17 @@ static void start_object(const char* tag,
   extend (tag, len, c);
 }
 
-static unsigned add_object(const char* tag,
+நிலையான unsigned add_object(மாறிலி எழுத்து* tag,
                            unsigned len,
                            hb_serialize_context_t* c,
-                           bool shared = false)
+                           தருக்க shared = பொய்)
 {
   start_object (tag, len, c);
-  return c->pop_pack (shared);
+  திரும்பு c->எடு_pack (shared);
 }
 
 
-static void add_offset (unsigned id,
+நிலையான வெறுமை add_offset (unsigned id,
                         hb_serialize_context_t* c)
 {
   OT::Offset16* offset = c->start_embed<OT::Offset16> ();
@@ -65,7 +65,7 @@ static void add_offset (unsigned id,
   c->add_link (*offset, id);
 }
 
-static void add_24_offset (unsigned id,
+நிலையான வெறுமை add_24_offset (unsigned id,
                            hb_serialize_context_t* c)
 {
   OT::Offset24* offset = c->start_embed<OT::Offset24> ();
@@ -73,7 +73,7 @@ static void add_24_offset (unsigned id,
   c->add_link (*offset, id);
 }
 
-static void add_wide_offset (unsigned id,
+நிலையான வெறுமை add_wide_offset (unsigned id,
                              hb_serialize_context_t* c)
 {
   OT::Offset32* offset = c->start_embed<OT::Offset32> ();
@@ -81,10 +81,10 @@ static void add_wide_offset (unsigned id,
   c->add_link (*offset, id);
 }
 
-static void add_gsubgpos_header (unsigned lookup_list,
+நிலையான வெறுமை add_gsubgpos_header (unsigned lookup_list,
                                  hb_serialize_context_t* c)
 {
-  char header[] = {
+  எழுத்து header[] = {
     0, 1, // major
     0, 0, // minor
     0, 0, // script list
@@ -93,13 +93,13 @@ static void add_gsubgpos_header (unsigned lookup_list,
 
   start_object (header, 8, c);
   add_offset (lookup_list, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 }
 
-static void add_gsubgpos_header_1_2 (unsigned lookup_list,
+நிலையான வெறுமை add_gsubgpos_header_1_2 (unsigned lookup_list,
                                      hb_serialize_context_t* c)
 {
-  char header[] = {
+  எழுத்து header[] = {
     0, 1, 0, 2, // version
     0, 0, // script list
     0, 0, // feature list
@@ -109,94 +109,94 @@ static void add_gsubgpos_header_1_2 (unsigned lookup_list,
     0, 0, 0, 0, // feature list 2
   };
 
-  start_object (header, sizeof (header), c);
+  start_object (header, அளவு (header), c);
   add_wide_offset (lookup_list, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 }
 
-static unsigned add_lookup_list (const unsigned* lookups,
-                                 char count,
+நிலையான unsigned add_lookup_list (மாறிலி unsigned* lookups,
+                                 எழுத்து மொத்தம்,
                                  hb_serialize_context_t* c)
 {
-  char lookup_count[] = {0, count};
-  start_object  ((char *) &lookup_count, 2, c);
+  எழுத்து lookup_மொத்தம்[] = {0, மொத்தம்};
+  start_object  ((எழுத்து *) &lookup_மொத்தம், 2, c);
 
-  for (int i = 0; i < count; i++)
+  க்கு (முழு i = 0; i < மொத்தம்; i++)
     add_offset (lookups[i], c);
 
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 }
 
-static unsigned add_lookup_list_1_2 (const unsigned* lookups,
-                                     char count,
+நிலையான unsigned add_lookup_list_1_2 (மாறிலி unsigned* lookups,
+                                     எழுத்து மொத்தம்,
                                      hb_serialize_context_t* c)
 {
-  char lookup_count[] = {0, count};
-  start_object ((char *) &lookup_count, 2, c);
+  எழுத்து lookup_மொத்தம்[] = {0, மொத்தம்};
+  start_object ((எழுத்து *) &lookup_மொத்தம், 2, c);
 
-  for (int i = 0; i < count; i++)
+  க்கு (முழு i = 0; i < மொத்தம்; i++)
     add_wide_offset (lookups[i], c);
 
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 }
 
-static void start_lookup (int8_t type,
-                          int8_t num_subtables,
+நிலையான வெறுமை start_lookup (int8_t type,
+                          int8_t இலக்கம்_subtables,
                           hb_serialize_context_t* c)
 {
-  char lookup[] = {
-    0, (char)type, // type
-    0, (char)2, // flag
-    0, (char)num_subtables, // num subtables
+  எழுத்து lookup[] = {
+    0, (எழுத்து)type, // type
+    0, (எழுத்து)2, // flag
+    0, (எழுத்து)இலக்கம்_subtables, // num subtables
   };
 
   start_object (lookup, 6, c);
 }
 
-static unsigned finish_lookup (hb_serialize_context_t* c)
+நிலையான unsigned finish_lookup (hb_serialize_context_t* c)
 {
-  char filter[] = {0, 0};
+  எழுத்து filter[] = {0, 0};
   extend (filter, 2, c);
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 }
 
-static unsigned add_extension (unsigned child,
+நிலையான unsigned add_extension (unsigned child,
                                uint8_t type,
                                hb_serialize_context_t* c)
 {
-  char ext[] = {
+  எழுத்து ext[] = {
     0, 1,
-    0, (char) type,
+    0, (எழுத்து) type,
   };
 
   start_object (ext, 4, c);
   add_wide_offset (child, c);
 
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 
 }
 
 // Adds coverage table fro [start, end]
-static unsigned add_coverage (unsigned start, unsigned end,
+நிலையான unsigned add_coverage (unsigned start, unsigned end,
                               hb_serialize_context_t* c,
-                              bool shared = false)
+                              தருக்க shared = பொய்)
 {
-  if (end - start == 0) {
+  எனில் (end - start == 0) {
     uint8_t coverage[] = {
       0, 1, // format
-      0, 1, // count
+      0, 1, //மொத்தம்
 
       (uint8_t) ((start >> 8) & 0xFF),
       (uint8_t) (start & 0xFF), // glyph[0]
     };
-    return add_object ((char*) coverage, 6, c, shared);
+    திரும்பு add_object ((எழுத்து*) coverage, 6, c, shared);
   }
 
-  if (end - start == 1)
+  எனில் (end - start == 1)
   {
     uint8_t coverage[] = {
       0, 1, // format
-      0, 2, // count
+      0, 2, //மொத்தம்
 
       (uint8_t) ((start >> 8) & 0xFF),
       (uint8_t) (start & 0xFF), // glyph[0]
@@ -204,7 +204,7 @@ static unsigned add_coverage (unsigned start, unsigned end,
       (uint8_t) ((end >> 8) & 0xFF),
       (uint8_t) (end & 0xFF), // glyph[1]
     };
-    return add_object ((char*) coverage, 8, c, shared);
+    திரும்பு add_object ((எழுத்து*) coverage, 8, c, shared);
   }
 
   uint8_t coverage[] = {
@@ -219,103 +219,103 @@ static unsigned add_coverage (unsigned start, unsigned end,
 
     0, 0,
   };
-  return add_object ((char*) coverage, 10, c, shared);
+  திரும்பு add_object ((எழுத்து*) coverage, 10, c, shared);
 }
 
 
 template<typename It>
-static unsigned add_coverage (It it,
+நிலையான unsigned add_coverage (It it,
                               hb_serialize_context_t* c)
 {
   c->push ();
   OT::Layout::Common::Coverage_serialize (c, it);
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 }
 
 // Adds a class that maps glyphs from [start_glyph, end_glyph)
 // to classes 1...n
-static unsigned add_class_def (uint16_t start_glyph,
+நிலையான unsigned add_class_def (uint16_t start_glyph,
                                uint16_t end_glyph,
                                hb_serialize_context_t* c)
 {
-  unsigned count = end_glyph - start_glyph;
+  unsigned மொத்தம் = end_glyph - start_glyph;
   uint8_t header[] = {
     0, 1, // format
 
     (uint8_t) ((start_glyph >> 8) & 0xFF),
     (uint8_t) (start_glyph & 0xFF), // start_glyph
 
-    (uint8_t) ((count >> 8) & 0xFF),
-    (uint8_t) (count & 0xFF), // count
+    (uint8_t) ((மொத்தம் >> 8) & 0xFF),
+    (uint8_t) (மொத்தம் & 0xFF), //மொத்தம்
   };
 
-  start_object ((char*) header, 6, c);
-  for (uint16_t i = 1; i <= count; i++)
+  start_object ((எழுத்து*) header, 6, c);
+  க்கு (uint16_t i = 1; i <= மொத்தம்; i++)
   {
-    uint8_t class_value[] = {
+    uint8_t class_மதிப்பு_2[] = {
       (uint8_t) ((i >> 8) & 0xFF),
-      (uint8_t) (i & 0xFF), // count
+      (uint8_t) (i & 0xFF), //மொத்தம்
     };
-    extend ((char*) class_value, 2, c);
+    extend ((எழுத்து*) class_மதிப்பு_2, 2, c);
   }
 
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 }
 
-static unsigned add_pair_pos_1 (unsigned* pair_sets,
-                                char count,
+நிலையான unsigned add_pair_pos_1 (unsigned* pair_sets,
+                                எழுத்து மொத்தம்,
                                 unsigned coverage,
                                 hb_serialize_context_t* c)
 {
-  char format[] = {
+  எழுத்து format[] = {
     0, 1
   };
 
   start_object (format, 2, c);
   add_offset (coverage, c);
 
-  char value_format[] = {
+  எழுத்து மதிப்பு_format[] = {
     0, 0,
     0, 0,
-    0, count,
+    0, மொத்தம்,
   };
-  extend (value_format, 6, c);
+  extend (மதிப்பு_format, 6, c);
 
-  for (char i = 0; i < count; i++)
+  க்கு (எழுத்து i = 0; i < மொத்தம்; i++)
     add_offset (pair_sets[(unsigned) i], c);
 
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 }
 
-static void add_liga_set_header (char liga_count,
+நிலையான வெறுமை add_liga_set_header (எழுத்து liga_மொத்தம்,
                                  hb_serialize_context_t* c)
 {
-  uint8_t liga_count_bytes[] = {
-    (uint8_t) (0xFF & (liga_count >> 8)),
-    (uint8_t) (0xFF & liga_count),
+  uint8_t liga_மொத்தம்_bytes[] = {
+    (uint8_t) (0xFF & (liga_மொத்தம் >> 8)),
+    (uint8_t) (0xFF & liga_மொத்தம்),
   };
 
-  start_object ((const char*) liga_count_bytes, 2, c);
+  start_object ((மாறிலி எழுத்து*) liga_மொத்தம்_bytes, 2, c);
 }
 
-static void add_liga_header (unsigned coverage, unsigned liga_set_count, hb_serialize_context_t* c)
+நிலையான வெறுமை add_liga_header (unsigned coverage, unsigned liga_set_மொத்தம், hb_serialize_context_t* c)
 {
   uint8_t format[] = {0, 1};
-  start_object ((const char*) format, 2, c);
+  start_object ((மாறிலி எழுத்து*) format, 2, c);
   add_offset(coverage, c);
 
-  uint8_t liga_set_count_bytes[] = {
-    (uint8_t) (0xFF & (liga_set_count >> 8)),
-    (uint8_t) (0xFF & liga_set_count),
+  uint8_t liga_set_மொத்தம்_bytes[] = {
+    (uint8_t) (0xFF & (liga_set_மொத்தம் >> 8)),
+    (uint8_t) (0xFF & liga_set_மொத்தம்),
   };
 
-  extend((const char *) liga_set_count_bytes, 2, c);
+  extend((மாறிலி எழுத்து *) liga_set_மொத்தம்_bytes, 2, c);
 }
 
-static unsigned add_pair_pos_2 (unsigned starting_class,
+நிலையான unsigned add_pair_pos_2 (unsigned starting_class,
                                 unsigned coverage,
-                                unsigned class_def_1, uint16_t class_def_1_count,
-                                unsigned class_def_2, uint16_t class_def_2_count,
+                                unsigned class_def_1, uint16_t class_def_1_மொத்தம்,
+                                unsigned class_def_2, uint16_t class_def_2_மொத்தம்,
                                 unsigned* device_tables,
                                 hb_serialize_context_t* c)
 {
@@ -323,178 +323,178 @@ static unsigned add_pair_pos_2 (unsigned starting_class,
     0, 2
   };
 
-  start_object ((char*) format, 2, c);
+  start_object ((எழுத்து*) format, 2, c);
   add_offset (coverage, c);
 
-  unsigned num_values = 4;
+  unsigned இலக்கம்_மதிப்புகள்_3 = 4;
   uint8_t format1 = 0x01 | 0x02 | 0x08;
   uint8_t format2 = 0x04;
-  if (device_tables) {
+  எனில் (device_tables) {
     format2 |= 0x20;
-    num_values += 1;
+    இலக்கம்_மதிப்புகள்_3 += 1;
   }
-  uint8_t value_format[] = {
+  uint8_t மதிப்பு_format[] = {
     0, format1,
     0, format2,
   };
 
-  extend ((char*) value_format, 4, c);
+  extend ((எழுத்து*) மதிப்பு_format, 4, c);
 
   add_offset (class_def_1, c);
   add_offset (class_def_2, c);
 
   uint8_t class_counts[] = {
-    (uint8_t) ((class_def_1_count >> 8) & 0xFF),
-    (uint8_t) (class_def_1_count & 0xFF),
-    (uint8_t) ((class_def_2_count >> 8) & 0xFF),
-    (uint8_t) (class_def_2_count & 0xFF),
+    (uint8_t) ((class_def_1_மொத்தம் >> 8) & 0xFF),
+    (uint8_t) (class_def_1_மொத்தம் & 0xFF),
+    (uint8_t) ((class_def_2_மொத்தம் >> 8) & 0xFF),
+    (uint8_t) (class_def_2_மொத்தம் & 0xFF),
   };
-  extend ((char*) class_counts, 4, c);
+  extend ((எழுத்து*) class_counts, 4, c);
 
-  unsigned num_bytes_per_record = class_def_2_count * num_values * 2;
-  uint8_t* record = (uint8_t*) calloc (1, num_bytes_per_record);
-  int device_index = 0;
-  for (uint16_t i = 0; i < class_def_1_count; i++)
+  unsigned இலக்கம்_bytes_per_record = class_def_2_மொத்தம் * இலக்கம்_மதிப்புகள்_3 * 2;
+  uint8_t* record = (uint8_t*) calloc (1, இலக்கம்_bytes_per_record);
+  முழு device_index = 0;
+  க்கு (uint16_t i = 0; i < class_def_1_மொத்தம்; i++)
   {
 
-    for (uint16_t j = 0; j < class_def_2_count; j++)
+    க்கு (uint16_t j = 0; j < class_def_2_மொத்தம்; j++)
     {
-      for (int k = 0; k < 4; k++) {
+      க்கு (முழு k = 0; k < 4; k++) {
         uint8_t value[] = {
           (uint8_t) (i + starting_class),
           (uint8_t) (i + starting_class),
         };
-        extend ((char*) value, 2, c);
+        extend ((எழுத்து*) value, 2, c);
       }
 
-      if (device_tables) {
+      எனில் (device_tables) {
         add_offset (device_tables[device_index++], c);
       }
     }
   }
-  free (record);
+  விடுவி (record);
 
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 }
 
-static unsigned add_mark_base_pos_1 (unsigned mark_coverage,
+நிலையான unsigned add_mark_base_pos_1 (unsigned mark_coverage,
                                      unsigned base_coverage,
                                      unsigned mark_array,
                                      unsigned base_array,
-                                     unsigned class_count,
+                                     unsigned class_மொத்தம்,
                                      hb_serialize_context_t* c)
 {
   uint8_t format[] = {
     0, 1
   };
 
-  start_object ((char*) format, 2, c);
+  start_object ((எழுத்து*) format, 2, c);
   add_offset (mark_coverage, c);
   add_offset (base_coverage, c);
 
-  uint8_t count[] = {
-    (uint8_t) ((class_count >> 8) & 0xFF),
-    (uint8_t) (class_count & 0xFF),
+  uint8_t மொத்தம்[] = {
+    (uint8_t) ((class_மொத்தம் >> 8) & 0xFF),
+    (uint8_t) (class_மொத்தம் & 0xFF),
   };
-  extend ((char*) count, 2, c);
+  extend ((எழுத்து*) மொத்தம், 2, c);
 
   add_offset (mark_array, c);
   add_offset (base_array, c);
 
-  return c->pop_pack (false);
+  திரும்பு c->எடு_pack (பொய்);
 }
 
-template<int mark_count,
-    int class_count,
-    int base_count,
-    int table_count>
-struct MarkBasePosBuffers
+template<முழு mark_மொத்தம்,
+    முழு class_மொத்தம்,
+    முழு base_மொத்தம்,
+    முழு table_மொத்தம்_2>
+கட்டமைப்பு MarkBasePosBuffers
 {
-  unsigned base_anchors[class_count * base_count];
-  unsigned mark_anchors[mark_count];
-  uint8_t anchor_buffers[class_count * base_count + 100];
-  uint8_t class_buffer[class_count * 2];
+  unsigned base_anchors[class_மொத்தம் * base_மொத்தம்];
+  unsigned mark_anchors[mark_மொத்தம்];
+  uint8_t anchor_buffers[class_மொத்தம் * base_மொத்தம் + 100];
+  uint8_t class_buffer[class_மொத்தம் * 2];
 
   MarkBasePosBuffers(hb_serialize_context_t* c)
   {
-    for (unsigned i = 0; i < sizeof(anchor_buffers) / 2; i++)
+    க்கு (unsigned i = 0; i < அளவு(anchor_buffers) / 2; i++)
     {
       OT::HBUINT16* value = (OT::HBUINT16*) (&anchor_buffers[2*i]);
       *value = i;
     }
 
-    for (unsigned i = 0; i < class_count * base_count; i++)
+    க்கு (unsigned i = 0; i < class_மொத்தம் * base_மொத்தம்; i++)
     {
-      base_anchors[i] = add_object ((char*) &anchor_buffers[i], 100, c);
-      if (i < class_count) {
+      base_anchors[i] = add_object ((எழுத்து*) &anchor_buffers[i], 100, c);
+      எனில் (i < class_மொத்தம்) {
         class_buffer[i*2] = (uint8_t) ((i >> 8) & 0xFF);
         class_buffer[i*2 + 1] = (uint8_t) (i & 0xFF);
       }
     }
 
-    for (unsigned i = 0; i < mark_count; i++)
+    க்கு (unsigned i = 0; i < mark_மொத்தம்; i++)
     {
-      mark_anchors[i] = add_object ((char*) &anchor_buffers[i], 4, c);
+      mark_anchors[i] = add_object ((எழுத்து*) &anchor_buffers[i], 4, c);
     }
   }
 
   unsigned create_mark_base_pos_1 (unsigned table_index, hb_serialize_context_t* c)
   {
-    unsigned class_per_table = class_count / table_count;
-    unsigned mark_per_class = mark_count / class_count;
+    unsigned class_per_table = class_மொத்தம் / table_மொத்தம்_2;
+    unsigned mark_per_class = mark_மொத்தம் / class_மொத்தம்;
     unsigned start_class = class_per_table * table_index;
     unsigned end_class = class_per_table * (table_index + 1) - 1;
 
     // baseArray
-    uint8_t base_count_buffer[] = {
-      (uint8_t) ((base_count >> 8) & 0xFF),
-      (uint8_t) (base_count & 0xFF),
+    uint8_t base_மொத்தம்_buffer[] = {
+      (uint8_t) ((base_மொத்தம் >> 8) & 0xFF),
+      (uint8_t) (base_மொத்தம் & 0xFF),
 
     };
-    start_object ((char*) base_count_buffer, 2, c);
-    for (unsigned base = 0; base < base_count; base++)
+    start_object ((எழுத்து*) base_மொத்தம்_buffer, 2, c);
+    க்கு (unsigned base = 0; base < base_மொத்தம்; base++)
     {
-      for (unsigned klass = start_class; klass <= end_class; klass++)
+      க்கு (unsigned klass = start_class; klass <= end_class; klass++)
       {
-        unsigned i = base * class_count + klass;
+        unsigned i = base * class_மொத்தம் + klass;
         add_offset (base_anchors[i], c);
       }
     }
-    unsigned base_array = c->pop_pack (false);
+    unsigned base_array = c->எடு_pack (பொய்);
 
     // markArray
-    unsigned num_marks = class_per_table * mark_per_class;
-    uint8_t mark_count_buffer[] = {
-      (uint8_t) ((num_marks >> 8) & 0xFF),
-      (uint8_t) (num_marks & 0xFF),
+    unsigned இலக்கம்_marks = class_per_table * mark_per_class;
+    uint8_t mark_மொத்தம்_buffer[] = {
+      (uint8_t) ((இலக்கம்_marks >> 8) & 0xFF),
+      (uint8_t) (இலக்கம்_marks & 0xFF),
     };
-    start_object ((char*) mark_count_buffer, 2, c);
-    for (unsigned mark = 0; mark < mark_count; mark++)
+    start_object ((எழுத்து*) mark_மொத்தம்_buffer, 2, c);
+    க்கு (unsigned mark = 0; mark < mark_மொத்தம்; mark++)
     {
-      unsigned klass = mark % class_count;
-      if (klass < start_class || klass > end_class) continue;
+      unsigned klass = mark % class_மொத்தம்;
+      எனில் (klass < start_class || klass > end_class) தொடர்;
       klass -= start_class;
 
-      extend ((char*) &class_buffer[2 * klass], 2, c);
+      extend ((எழுத்து*) &class_buffer[2 * klass], 2, c);
       add_offset (mark_anchors[mark], c);
     }
-    unsigned mark_array = c->pop_pack (false);
+    unsigned mark_array = c->எடு_pack (பொய்);
 
     // markCoverage
     auto it =
-        + hb_range ((hb_codepoint_t) mark_count)
+        + hb_range ((hb_codepoint_t) mark_மொத்தம்)
         | hb_filter ([&] (hb_codepoint_t mark) {
-          unsigned klass = mark % class_count;
-          return klass >= class_per_table * table_index &&
+          unsigned klass = mark % class_மொத்தம்;
+          திரும்பு klass >= class_per_table * table_index &&
               klass < class_per_table * (table_index + 1);
         })
         ;
     unsigned mark_coverage = add_coverage (it, c);
 
     // baseCoverage
-    unsigned base_coverage = add_coverage (10, 10 + base_count - 1, c);
+    unsigned base_coverage = add_coverage (10, 10 + base_மொத்தம் - 1, c);
 
-    return add_mark_base_pos_1 (mark_coverage,
+    திரும்பு add_mark_base_pos_1 (mark_coverage,
                                 base_coverage,
                                 mark_array,
                                 base_array,
@@ -503,13 +503,13 @@ struct MarkBasePosBuffers
   }
 };
 
-static void run_resolve_overflow_test (const char* name,
+நிலையான வெறுமை run_resolve_overflow_test (மாறிலி எழுத்து* name,
                                        hb_serialize_context_t& overflowing,
                                        hb_serialize_context_t& expected,
-                                       unsigned num_iterations = 0,
-                                       bool recalculate_extensions = false,
+                                       unsigned இலக்கம்_iterations = 0,
+                                       தருக்க recalculate_extensions = பொய்,
                                        hb_tag_t tag = HB_TAG ('G', 'S', 'U', 'B'),
-                                       bool check_binary_equivalence = false)
+                                       தருக்க check_இருமம்_equivalence = பொய்)
 {
   printf (">>> Testing overflowing resolution for %s\n",
           name);
@@ -517,11 +517,11 @@ static void run_resolve_overflow_test (const char* name,
   graph_t graph = graph_t::create (overflowing.object_graph ()).value ();
 
   graph_t expected_graph = graph_t::create (expected.object_graph ()).value ();
-  if (graph::will_overflow (expected_graph).value ())
+  எனில் (graph::will_overflow (expected_graph).value ())
   {
-    if (check_binary_equivalence) {
+    எனில் (check_இருமம்_equivalence) {
       printf("when binary equivalence checking is enabled, the expected graph cannot overflow.");
-      hb_always_assert(!check_binary_equivalence);
+      hb_always_assert(!check_இருமம்_equivalence);
     }
     hb_always_assert (expected_graph.assign_spaces ().is_ok ());
     hb_always_assert (expected_graph.sort_shortest_distance ().is_ok ());
@@ -530,10 +530,10 @@ static void run_resolve_overflow_test (const char* name,
   // Check that overflow resolution succeeds
   hb_always_assert (overflowing.offset_overflow ());
   auto r = hb_resolve_graph_overflows (tag,
-                                      num_iterations,
+                                      இலக்கம்_iterations,
                                       recalculate_extensions,
                                       graph);
-  if (r.is_err())
+  எனில் (r.is_err())
     printf("run_resolve_overflow_test: overflow resolution failed, cause: %s\n", graph::to_string(r.error()));
   hb_always_assert (r.is_ok());
 
@@ -542,13 +542,13 @@ static void run_resolve_overflow_test (const char* name,
   hb_always_assert (out1);
   hb_blob_t* out2 = graph::serialize (expected_graph).value ();
   hb_always_assert (out2);
-  if (check_binary_equivalence) {
+  எனில் (check_இருமம்_equivalence) {
     unsigned l1, l2;
-    const char* d1 = hb_blob_get_data(out1, &l1);
-    const char* d2 = hb_blob_get_data(out2, &l2);
+    மாறிலி எழுத்து* d1 = hb_blob_get_data(out1, &l1);
+    மாறிலி எழுத்து* d2 = hb_blob_get_data(out2, &l2);
 
-    bool match = (l1 == l2) && (memcmp(d1, d2, l1) == 0);
-    if (!match) {
+    தருக்க match = (l1 == l2) && (memcmp(d1, d2, l1) == 0);
+    எனில் (!match) {
       printf("## Result:\n");
       graph.print();
       printf("## Expected:\n");
@@ -563,7 +563,7 @@ static void run_resolve_overflow_test (const char* name,
   // Check the graphs are equivalent
   graph.normalize ();
   expected_graph.normalize ();
-  if (!(graph == expected_graph)) {
+  எனில் (!(graph == expected_graph)) {
     printf("## Expected:\n");
     expected_graph.print();
     printf("## Result:\n");
@@ -572,16 +572,16 @@ static void run_resolve_overflow_test (const char* name,
   hb_always_assert (graph == expected_graph);
 }
 
-static void add_virtual_offset (unsigned id,
+நிலையான வெறுமை add_virtual_offset (unsigned id,
                                 hb_serialize_context_t* c)
 {
   c->add_virtual_link (id);
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_simple (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_1 = add_object ("ghi", 3, c);
   unsigned obj_2 = add_object ("def", 3, c);
@@ -589,49 +589,49 @@ populate_serializer_simple (hb_serialize_context_t* c)
   start_object ("abc", 3, c);
   add_offset (obj_2, c);
   add_offset (obj_1, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
-populate_serializer_virtual (hb_serialize_context_t* c, bool with_overflow)
+நிலையான வெறுமை
+populate_serializer_virtual (hb_serialize_context_t* c, தருக்க with_overflow)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_4, obj_5;
-  if (with_overflow) {
+  எனில் (with_overflow) {
     obj_5 = add_object("55555", 5, c);
     obj_4 = add_object(large_string.c_str(), 50000, c);
-  } else {
+  } இல்லையெனில் {
     obj_4 = add_object(large_string.c_str(), 50000, c);
     obj_5 = add_object("55555", 5, c);
   }
 
   start_object(large_string.c_str(), 20000, c);
   add_offset(obj_5, c);
-  unsigned obj_3 = c->pop_pack(false);
+  unsigned obj_3 = c->எடு_pack(பொய்);
 
   start_object("2", 2, c);
   add_virtual_offset(obj_5, c);
-  unsigned obj_2 = c->pop_pack(false);
+  unsigned obj_2 = c->எடு_pack(பொய்);
 
   // obj 1
   start_object("1", 1, c);
   add_offset(obj_2, c);
   add_offset(obj_3, c);
   add_offset(obj_4, c);
-  c->pop_pack(false);
+  c->எடு_pack(பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_1 = add_object (large_string.c_str(), 10000, c);
   unsigned obj_2 = add_object (large_string.c_str(), 20000, c);
@@ -641,209 +641,209 @@ populate_serializer_with_overflow (hb_serialize_context_t* c)
   add_offset (obj_3, c);
   add_offset (obj_2, c);
   add_offset (obj_1, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_priority_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_e = add_object ("e", 1, c);
   unsigned obj_d = add_object ("d", 1, c);
 
   start_object (large_string.c_str (), 50000, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str (), 20000, c);
   add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_offset (obj_b, c);
   add_offset (obj_c, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_priority_overflow_expected (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_e = add_object ("e", 1, c);
 
   start_object (large_string.c_str (), 50000, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   unsigned obj_d = add_object ("d", 1, c);
 
   start_object (large_string.c_str (), 20000, c);
   add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_offset (obj_b, c);
   add_offset (obj_c, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_dedup_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_1 = add_object ("def", 3, c);
 
   start_object (large_string.c_str(), 60000, c);
   add_offset (obj_1, c);
-  unsigned obj_2 = c->pop_pack (false);
+  unsigned obj_2 = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 10000, c);
   add_offset (obj_2, c);
   add_offset (obj_1, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_multiple_dedup_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned leaf = add_object("def", 3, c);
 
-  constexpr unsigned num_mid_nodes = 20;
-  unsigned mid_nodes[num_mid_nodes];
-  for (unsigned i = 0; i < num_mid_nodes; i++) {
+  constexpr unsigned இலக்கம்_mid_nodes = 20;
+  unsigned mid_nodes[இலக்கம்_mid_nodes];
+  க்கு (unsigned i = 0; i < இலக்கம்_mid_nodes; i++) {
     start_object(large_string.c_str(), 10000 + i, c);
     add_offset(leaf, c);
-    mid_nodes[i] = c->pop_pack(false);
+    mid_nodes[i] = c->எடு_pack(பொய்);
   }
 
   start_object("abc", 3, c);
-  for (unsigned i = 0; i < num_mid_nodes; i++) {
+  க்கு (unsigned i = 0; i < இலக்கம்_mid_nodes; i++) {
     add_wide_offset(mid_nodes[i], c);
   }
-  c->pop_pack(false);
+  c->எடு_pack(பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_isolation_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_4 = add_object ("4", 1, c);
 
   start_object (large_string.c_str(), 60000, c);
   add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  unsigned obj_3 = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 10000, c);
   add_offset (obj_4, c);
-  unsigned obj_2 = c->pop_pack (false);
+  unsigned obj_2 = c->எடு_pack (பொய்);
 
   start_object ("1", 1, c);
   add_wide_offset (obj_3, c);
   add_offset (obj_2, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_isolation_overflow_complex (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_f = add_object ("f", 1, c);
 
   start_object ("e", 1, c);
   add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object ("d", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 60000, c);
   add_offset (obj_d, c);
-  unsigned obj_h = c->pop_pack (false);
+  unsigned obj_h = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 60000, c);
   add_offset (obj_c, c);
   add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 10000, c);
   add_offset (obj_d, c);
-  unsigned obj_g = c->pop_pack (false);
+  unsigned obj_g = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 11000, c);
   add_offset (obj_d, c);
-  unsigned obj_i = c->pop_pack (false);
+  unsigned obj_i = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_wide_offset (obj_b, c);
   add_offset (obj_g, c);
   add_offset (obj_i, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_isolation_overflow_complex_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
 
   // space 1
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  unsigned obj_f_பகாஎண் = add_object ("f", 1, c);
 
   start_object ("e", 1, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_e_prime = c->pop_pack (false);
+  add_offset (obj_f_பகாஎண், c);
+  unsigned obj_e_பகாஎண் = c->எடு_pack (பொய்);
 
   start_object ("d", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_d_prime = c->pop_pack (false);
+  add_offset (obj_e_பகாஎண், c);
+  unsigned obj_d_பகாஎண் = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_d_prime, c);
-  unsigned obj_h = c->pop_pack (false);
+  add_offset (obj_d_பகாஎண், c);
+  unsigned obj_h = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c = c->pop_pack (false);
+  add_offset (obj_e_பகாஎண், c);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 60000, c);
   add_offset (obj_c, c);
   add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   // space 0
 
@@ -851,69 +851,69 @@ populate_serializer_with_isolation_overflow_complex_expected (hb_serialize_conte
 
   start_object ("e", 1, c);
   add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
 
   start_object ("d", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 11000, c);
   add_offset (obj_d, c);
-  unsigned obj_i = c->pop_pack (false);
+  unsigned obj_i = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 10000, c);
   add_offset (obj_d, c);
-  unsigned obj_g = c->pop_pack (false);
+  unsigned obj_g = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_wide_offset (obj_b, c);
   add_offset (obj_g, c);
   add_offset (obj_i, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_isolation_overflow_spaces (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_d = add_object ("f", 1, c);
   unsigned obj_e = add_object ("f", 1, c);
 
   start_object (large_string.c_str(), 60000, c);
   add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack ();
+  unsigned obj_b = c->எடு_pack ();
 
   start_object (large_string.c_str(), 60000, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack ();
+  unsigned obj_c = c->எடு_pack ();
 
 
   start_object ("a", 1, c);
   add_wide_offset (obj_b, c);
   add_wide_offset (obj_c, c);
-  c->pop_pack ();
+  c->எடு_pack ();
 
   c->end_serialize();
 }
 
-static void
-populate_serializer_with_repack_last (hb_serialize_context_t* c, bool with_overflow)
+நிலையான வெறுமை
+populate_serializer_with_repack_last (hb_serialize_context_t* c, தருக்க with_overflow)
 {
   std::string large_string(70000, 'c');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
   c->push();
 
   // Obj E
   unsigned obj_e_1, obj_e_2;
-  if (with_overflow) {
+  எனில் (with_overflow) {
     obj_e_1 = add_object("a", 1, c);
     obj_e_2 = obj_e_1;
-  } else {
+  } இல்லையெனில் {
     obj_e_2 = add_object("a", 1, c);
   }
 
@@ -921,12 +921,12 @@ populate_serializer_with_repack_last (hb_serialize_context_t* c, bool with_overf
   c->push();
   add_offset(obj_e_2, c);
   extend(large_string.c_str(), 30000, c);
-  unsigned obj_d = c->pop_pack(false);
+  unsigned obj_d = c->எடு_pack(பொய்);
 
   add_offset(obj_d, c);
   hb_always_assert(c->last_added_child_index() == obj_d);
 
-  if (!with_overflow) {
+  எனில் (!with_overflow) {
     obj_e_1 = add_object("a", 1, c);
   }
 
@@ -934,7 +934,7 @@ populate_serializer_with_repack_last (hb_serialize_context_t* c, bool with_overf
   c->push();
   add_offset(obj_e_1, c);
   extend(large_string.c_str(), 40000, c);
-  unsigned obj_c = c->pop_pack(false);
+  unsigned obj_c = c->எடு_pack(பொய்);
 
   add_offset(obj_c, c);
 
@@ -944,20 +944,20 @@ populate_serializer_with_repack_last (hb_serialize_context_t* c, bool with_overf
 
   // Obj A
   c->repack_last(obj_d);
-  c->pop_pack(false);
+  c->எடு_pack(பொய்);
 
   c->end_serialize();
 }
 
-static void
-populate_serializer_spaces (hb_serialize_context_t* c, bool with_overflow)
+நிலையான வெறுமை
+populate_serializer_spaces (hb_serialize_context_t* c, தருக்க with_overflow)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_i;
 
-  if (with_overflow)
+  எனில் (with_overflow)
     obj_i = add_object ("i", 1, c);
 
   // Space 2
@@ -965,329 +965,329 @@ populate_serializer_spaces (hb_serialize_context_t* c, bool with_overflow)
 
   start_object (large_string.c_str(), 30000, c);
   add_offset (obj_h, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   // Space 1
-  if (!with_overflow)
+  எனில் (!with_overflow)
     obj_i = add_object ("i", 1, c);
 
   start_object (large_string.c_str(), 30000, c);
   add_offset (obj_i, c);
-  unsigned obj_g = c->pop_pack (false);
+  unsigned obj_g = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 30000, c);
   add_offset (obj_i, c);
-  unsigned obj_f = c->pop_pack (false);
+  unsigned obj_f = c->எடு_pack (பொய்);
 
   start_object ("d", 1, c);
   add_offset (obj_g, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
   add_offset (obj_f, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_wide_offset (obj_b, c);
   add_wide_offset (obj_c, c);
   add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_spaces_16bit_connection (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_g = add_object ("g", 1, c);
   unsigned obj_h = add_object ("h", 1, c);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_g, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_h, c);
-  unsigned obj_f = c->pop_pack (false);
+  unsigned obj_f = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object ("d", 1, c);
   add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
   add_offset (obj_e, c);
   add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_offset (obj_b, c);
   add_wide_offset (obj_c, c);
   add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_spaces_16bit_connection_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
-  unsigned obj_g_prime = add_object ("g", 1, c);
+  unsigned obj_g_பகாஎண் = add_object ("g", 1, c);
 
   start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g_prime, c);
-  unsigned obj_e_prime = c->pop_pack (false);
+  add_offset (obj_g_பகாஎண், c);
+  unsigned obj_e_பகாஎண் = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c = c->pop_pack (false);
+  add_offset (obj_e_பகாஎண், c);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
-  unsigned obj_h_prime = add_object ("h", 1, c);
+  unsigned obj_h_பகாஎண் = add_object ("h", 1, c);
 
   start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_h_prime, c);
-  unsigned obj_f = c->pop_pack (false);
+  add_offset (obj_h_பகாஎண், c);
+  unsigned obj_f = c->எடு_pack (பொய்);
 
   start_object ("d", 1, c);
   add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   unsigned obj_g = add_object ("g", 1, c);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_g, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   unsigned obj_h = add_object ("h", 1, c);
 
   start_object ("b", 1, c);
   add_offset (obj_e, c);
   add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_offset (obj_b, c);
   add_wide_offset (obj_c, c);
   add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize ();
 }
 
-static void
-populate_serializer_short_and_wide_subgraph_root (hb_serialize_context_t* c)
+நிலையான வெறுமை
+populate_serializer_short_and_wide_subgraph_வேர் (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_e = add_object ("e", 1, c);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_c, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
   add_offset (obj_c, c);
   add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_offset (obj_b, c);
   add_wide_offset (obj_c, c);
   add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
-populate_serializer_short_and_wide_subgraph_root_expected (hb_serialize_context_t* c)
+நிலையான வெறுமை
+populate_serializer_short_and_wide_subgraph_வேர்_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
-  unsigned obj_e_prime = add_object ("e", 1, c);
-
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c_prime = c->pop_pack (false);
+  unsigned obj_e_பகாஎண் = add_object ("e", 1, c);
 
   start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_c_prime, c);
-  unsigned obj_d = c->pop_pack (false);
+  add_offset (obj_e_பகாஎண், c);
+  unsigned obj_c_பகாஎண் = c->எடு_pack (பொய்);
+
+  start_object (large_string.c_str (), 40000, c);
+  add_offset (obj_c_பகாஎண், c);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   unsigned obj_e = add_object ("e", 1, c);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
 
   start_object ("b", 1, c);
   add_offset (obj_c, c);
   add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_offset (obj_b, c);
-  add_wide_offset (obj_c_prime, c);
+  add_wide_offset (obj_c_பகாஎண், c);
   add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_split_spaces (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_f = add_object ("f", 1, c);
 
   start_object (large_string.c_str(), 40000, c);
   add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 40000, c);
   add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
   add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_wide_offset (obj_b, c);
   add_wide_offset (obj_c, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_split_spaces_2 (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_f = add_object ("f", 1, c);
 
   start_object (large_string.c_str(), 40000, c);
   add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str(), 40000, c);
   add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
   add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_offset (obj_b, c);
   add_wide_offset (obj_b, c);
   add_wide_offset (obj_c, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_split_spaces_expected (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
 
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  unsigned obj_f_பகாஎண் = add_object ("f", 1, c);
 
   start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_d = c->pop_pack (false);
+  add_offset (obj_f_பகாஎண், c);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
   add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   unsigned obj_f = add_object ("f", 1, c);
 
   start_object (large_string.c_str(), 40000, c);
   add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_wide_offset (obj_b, c);
   add_wide_offset (obj_c, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_split_spaces_expected_2 (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
 
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   // Space 2
 
-  unsigned obj_f_double_prime = add_object ("f", 1, c);
+  unsigned obj_f_double_பகாஎண் = add_object ("f", 1, c);
 
   start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_double_prime, c);
-  unsigned obj_d_prime = c->pop_pack (false);
+  add_offset (obj_f_double_பகாஎண், c);
+  unsigned obj_d_பகாஎண் = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
-  add_offset (obj_d_prime, c);
-  unsigned obj_b_prime = c->pop_pack (false);
+  add_offset (obj_d_பகாஎண், c);
+  unsigned obj_b_பகாஎண் = c->எடு_pack (பொய்);
 
   // Space 1
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  unsigned obj_f_பகாஎண் = add_object ("f", 1, c);
 
   start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_e = c->pop_pack (false);
+  add_offset (obj_f_பகாஎண், c);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   // Space 0
 
@@ -1295,26 +1295,26 @@ populate_serializer_with_split_spaces_expected_2 (hb_serialize_context_t* c)
 
   start_object (large_string.c_str(), 40000, c);
   add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
   add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
-  // Root
+  //வேர்
   start_object ("a", 1, c);
   add_offset (obj_b, c);
-  add_wide_offset (obj_b_prime, c);
+  add_wide_offset (obj_b_பகாஎண், c);
   add_wide_offset (obj_c, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_complex_2 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_5 = add_object ("mn", 2, c);
 
@@ -1322,25 +1322,25 @@ populate_serializer_complex_2 (hb_serialize_context_t* c)
 
   start_object ("ghi", 3, c);
   add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  unsigned obj_3 = c->எடு_pack (பொய்);
 
   start_object ("def", 3, c);
   add_offset (obj_3, c);
-  unsigned obj_2 = c->pop_pack (false);
+  unsigned obj_2 = c->எடு_pack (பொய்);
 
   start_object ("abc", 3, c);
   add_offset (obj_2, c);
   add_offset (obj_4, c);
   add_offset (obj_5, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_complex_3 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_6 = add_object ("opqrst", 6, c);
 
@@ -1348,57 +1348,57 @@ populate_serializer_complex_3 (hb_serialize_context_t* c)
 
   start_object ("jkl", 3, c);
   add_offset (obj_6, c);
-  unsigned obj_4 = c->pop_pack (false);
+  unsigned obj_4 = c->எடு_pack (பொய்);
 
   start_object ("ghi", 3, c);
   add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  unsigned obj_3 = c->எடு_pack (பொய்);
 
   start_object ("def", 3, c);
   add_offset (obj_3, c);
-  unsigned obj_2 = c->pop_pack (false);
+  unsigned obj_2 = c->எடு_pack (பொய்);
 
   start_object ("abc", 3, c);
   add_offset (obj_2, c);
   add_offset (obj_4, c);
   add_offset (obj_5, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_virtual_link (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_d = add_object ("d", 1, c);
 
   start_object ("b", 1, c);
   add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("e", 1, c);
   add_virtual_offset (obj_b, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object ("c", 1, c);
   add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_offset (obj_b, c);
   add_offset (obj_c, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_24_and_32_bit_offsets (hb_serialize_context_t* c)
 {
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned obj_f = add_object ("f", 1, c);
   unsigned obj_g = add_object ("g", 1, c);
@@ -1407,80 +1407,80 @@ populate_serializer_with_24_and_32_bit_offsets (hb_serialize_context_t* c)
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_f, c);
-  unsigned obj_c = c->pop_pack (false);
+  unsigned obj_c = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_g, c);
-  unsigned obj_d = c->pop_pack (false);
+  unsigned obj_d = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_j, c);
-  unsigned obj_h = c->pop_pack (false);
+  unsigned obj_h = c->எடு_pack (பொய்);
 
   start_object (large_string.c_str (), 40000, c);
   add_offset (obj_k, c);
-  unsigned obj_i = c->pop_pack (false);
+  unsigned obj_i = c->எடு_pack (பொய்);
 
   start_object ("e", 1, c);
   add_wide_offset (obj_h, c);
   add_wide_offset (obj_i, c);
-  unsigned obj_e = c->pop_pack (false);
+  unsigned obj_e = c->எடு_pack (பொய்);
 
   start_object ("b", 1, c);
   add_24_offset (obj_c, c);
   add_24_offset (obj_d, c);
   add_24_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  unsigned obj_b = c->எடு_pack (பொய்);
 
   start_object ("a", 1, c);
   add_24_offset (obj_b, c);
-  c->pop_pack (false);
+  c->எடு_pack (பொய்);
 
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_extension_promotion (hb_serialize_context_t* c,
-                                              int num_extensions = 0,
-                                              bool shared_subtables = false,
-                                              bool version_1_2 = false)
+                                              முழு இலக்கம்_extensions = 0,
+                                              தருக்க shared_subtables = பொய்,
+                                              தருக்க version_1_2 = பொய்)
 {
-  constexpr int num_lookups = 5;
-  constexpr int num_subtables = num_lookups * 2;
-  unsigned int lookups[num_lookups];
-  unsigned int subtables[num_subtables];
-  unsigned int extensions[num_subtables];
+  constexpr முழு இலக்கம்_lookups = 5;
+  constexpr முழு இலக்கம்_subtables = இலக்கம்_lookups * 2;
+  unsigned முழு lookups[இலக்கம்_lookups];
+  unsigned முழு subtables[இலக்கம்_subtables];
+  unsigned முழு extensions[இலக்கம்_subtables];
 
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
 
-  for (int i = num_subtables - 1; i >= 0; i--)
+  க்கு (முழு i = இலக்கம்_subtables - 1; i >= 0; i--)
     subtables[i] = add_object(large_string.c_str (), 15000 + i, c);
 
-  for (int i = num_subtables - 1;
-       i >= (num_lookups - num_extensions) * 2;
+  க்கு (முழு i = இலக்கம்_subtables - 1;
+       i >= (இலக்கம்_lookups - இலக்கம்_extensions) * 2;
        i--)
   {
     extensions[i] = add_extension (subtables[i], 5, c);
   }
 
-  for (int i = num_lookups - 1; i >= 0; i--)
+  க்கு (முழு i = இலக்கம்_lookups - 1; i >= 0; i--)
   {
-    bool is_ext = (i >= (num_lookups - num_extensions));
+    தருக்க is_ext = (i >= (இலக்கம்_lookups - இலக்கம்_extensions));
 
-    start_lookup (is_ext ? (char) 7 : (char) 5,
+    start_lookup (is_ext ? (எழுத்து) 7 : (எழுத்து) 5,
                   shared_subtables && i > 2 ? 3 : 2,
                   c);
 
-    if (is_ext) {
-      if (shared_subtables && i > 2) {
+    எனில் (is_ext) {
+      எனில் (shared_subtables && i > 2) {
         add_offset (extensions[i * 2 - 1], c);
       }
       add_offset (extensions[i * 2], c);
       add_offset (extensions[i * 2 + 1], c);
-    } else {
-      if (shared_subtables && i > 2) {
+    } இல்லையெனில் {
+      எனில் (shared_subtables && i > 2) {
         add_offset (subtables[i * 2 - 1], c);
       }
       add_offset (subtables[i * 2], c);
@@ -1491,55 +1491,55 @@ populate_serializer_with_extension_promotion (hb_serialize_context_t* c,
   }
 
   unsigned lookup_list = version_1_2
-                         ? add_lookup_list_1_2 (lookups, num_lookups, c)
-                         : add_lookup_list (lookups, num_lookups, c);
+                         ? add_lookup_list_1_2 (lookups, இலக்கம்_lookups, c)
+                         : add_lookup_list (lookups, இலக்கம்_lookups, c);
 
-  if (version_1_2)
+  எனில் (version_1_2)
     add_gsubgpos_header_1_2 (lookup_list, c);
-  else
+  இல்லையெனில்
     add_gsubgpos_header (lookup_list, c);
 
   c->end_serialize();
 }
 
-template<int num_pair_pos_1, int num_pair_set>
-static void
+template<முழு இலக்கம்_pair_pos_1, முழு இலக்கம்_pair_set>
+நிலையான வெறுமை
 populate_serializer_with_large_pair_pos_1 (hb_serialize_context_t* c,
-                                           bool as_extension = false)
+                                           தருக்க as_extension = பொய்)
 {
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
-  constexpr int total_pair_set = num_pair_pos_1 * num_pair_set;
+  constexpr முழு total_pair_set = இலக்கம்_pair_pos_1 * இலக்கம்_pair_set;
   unsigned pair_set[total_pair_set];
-  unsigned coverage[num_pair_pos_1];
-  unsigned pair_pos_1[num_pair_pos_1];
+  unsigned coverage[இலக்கம்_pair_pos_1];
+  unsigned pair_pos_1[இலக்கம்_pair_pos_1];
 
-  for (int i = num_pair_pos_1 - 1; i >= 0; i--)
+  க்கு (முழு i = இலக்கம்_pair_pos_1 - 1; i >= 0; i--)
   {
-    for (int j = (i + 1) * num_pair_set - 1; j >= i * num_pair_set; j--)
+    க்கு (முழு j = (i + 1) * இலக்கம்_pair_set - 1; j >= i * இலக்கம்_pair_set; j--)
       pair_set[j] = add_object (large_string.c_str (), 30000 + j, c);
 
-    coverage[i] = add_coverage (i * num_pair_set,
-                                (i + 1) * num_pair_set - 1, c);
+    coverage[i] = add_coverage (i * இலக்கம்_pair_set,
+                                (i + 1) * இலக்கம்_pair_set - 1, c);
 
-    pair_pos_1[i] = add_pair_pos_1 (&pair_set[i * num_pair_set],
-                                    num_pair_set,
+    pair_pos_1[i] = add_pair_pos_1 (&pair_set[i * இலக்கம்_pair_set],
+                                    இலக்கம்_pair_set,
                                     coverage[i],
                                     c);
   }
 
   unsigned pair_pos_2 = add_object (large_string.c_str(), 200, c);
 
-  if (as_extension) {
+  எனில் (as_extension) {
     pair_pos_2 = add_extension (pair_pos_2, 2, c);
-    for (int i = num_pair_pos_1 - 1; i >= 0; i--)
+    க்கு (முழு i = இலக்கம்_pair_pos_1 - 1; i >= 0; i--)
       pair_pos_1[i] = add_extension (pair_pos_1[i], 2, c);
   }
 
-  start_lookup (as_extension ? 9 : 2, 1 + num_pair_pos_1, c);
+  start_lookup (as_extension ? 9 : 2, 1 + இலக்கம்_pair_pos_1, c);
 
-  for (int i = 0; i < num_pair_pos_1; i++)
+  க்கு (முழு i = 0; i < இலக்கம்_pair_pos_1; i++)
     add_offset (pair_pos_1[i], c);
   add_offset (pair_pos_2, c);
 
@@ -1552,89 +1552,89 @@ populate_serializer_with_large_pair_pos_1 (hb_serialize_context_t* c,
   c->end_serialize();
 }
 
-template<int num_pair_pos_2, int num_class_1, int num_class_2>
-static void
+template<முழு இலக்கம்_pair_pos_2, முழு இலக்கம்_class_1, முழு இலக்கம்_class_2>
+நிலையான வெறுமை
 populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
-                                           bool as_extension = false,
-                                           bool with_device_tables = false,
-                                           bool extra_table = true)
+                                           தருக்க as_extension = பொய்,
+                                           தருக்க with_device_tables = பொய்,
+                                           தருக்க extra_table = உண்மை)
 {
   std::string large_string(100000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
-  unsigned coverage[num_pair_pos_2];
-  unsigned class_def_1[num_pair_pos_2];
-  unsigned class_def_2[num_pair_pos_2];
-  unsigned pair_pos_2[num_pair_pos_2];
+  unsigned coverage[இலக்கம்_pair_pos_2];
+  unsigned class_def_1[இலக்கம்_pair_pos_2];
+  unsigned class_def_2[இலக்கம்_pair_pos_2];
+  unsigned pair_pos_2[இலக்கம்_pair_pos_2];
 
-  unsigned* device_tables = (unsigned*) calloc (num_pair_pos_2 * num_class_1 * num_class_2,
-                                                sizeof(unsigned));
+  unsigned* device_tables = (unsigned*) calloc (இலக்கம்_pair_pos_2 * இலக்கம்_class_1 * இலக்கம்_class_2,
+                                                அளவு(unsigned));
 
   // Total glyphs = num_class_1 * num_pair_pos_2
-  for (int i = num_pair_pos_2 - 1; i >= 0; i--)
+  க்கு (முழு i = இலக்கம்_pair_pos_2 - 1; i >= 0; i--)
   {
-    unsigned start_glyph = 5 + i * num_class_1;
-    if (num_class_2 >= num_class_1)
+    unsigned start_glyph = 5 + i * இலக்கம்_class_1;
+    எனில் (இலக்கம்_class_2 >= இலக்கம்_class_1)
     {
       class_def_2[i] = add_class_def (11,
-                                      10 + num_class_2, c);
+                                      10 + இலக்கம்_class_2, c);
       class_def_1[i] = add_class_def (start_glyph + 1,
-                                      start_glyph + num_class_1,
+                                      start_glyph + இலக்கம்_class_1,
                                       c);
-    } else {
+    } இல்லையெனில் {
       class_def_1[i] = add_class_def (start_glyph + 1,
-                                      start_glyph + num_class_1,
+                                      start_glyph + இலக்கம்_class_1,
                                       c);
       class_def_2[i] = add_class_def (11,
-                                      10 + num_class_2, c);
+                                      10 + இலக்கம்_class_2, c);
     }
 
     coverage[i] = add_coverage (start_glyph,
-                                start_glyph + num_class_1 - 1,
+                                start_glyph + இலக்கம்_class_1 - 1,
                                 c);
 
-    if (with_device_tables)
+    எனில் (with_device_tables)
     {
-      for(int j = (i + 1) * num_class_1 * num_class_2 - 1;
-          j >= i * num_class_1 * num_class_2;
+      க்கு(முழு j = (i + 1) * இலக்கம்_class_1 * இலக்கம்_class_2 - 1;
+          j >= i * இலக்கம்_class_1 * இலக்கம்_class_2;
           j--)
       {
         uint8_t table[] = {
           (uint8_t) ((j >> 8) & 0xFF),
           (uint8_t) (j & 0xFF),
         };
-        device_tables[j] = add_object ((char*) table, 2, c);
+        device_tables[j] = add_object ((எழுத்து*) table, 2, c);
       }
     }
 
-    pair_pos_2[i] = add_pair_pos_2 (1 + i * num_class_1,
+    pair_pos_2[i] = add_pair_pos_2 (1 + i * இலக்கம்_class_1,
                                     coverage[i],
-                                    class_def_1[i], num_class_1,
-                                    class_def_2[i], num_class_2,
+                                    class_def_1[i], இலக்கம்_class_1,
+                                    class_def_2[i], இலக்கம்_class_2,
                                     with_device_tables
-                                    ? &device_tables[i * num_class_1 * num_class_2]
+                                    ? &device_tables[i * இலக்கம்_class_1 * இலக்கம்_class_2]
                                     : nullptr,
                                     c);
   }
 
 
   unsigned pair_pos_1 = 0;
-  if (extra_table) pair_pos_1 = add_object (large_string.c_str(), 100000, c);
+  எனில் (extra_table) pair_pos_1 = add_object (large_string.c_str(), 100000, c);
 
-  if (as_extension) {
-    for (int i = num_pair_pos_2 - 1; i >= 0; i--)
+  எனில் (as_extension) {
+    க்கு (முழு i = இலக்கம்_pair_pos_2 - 1; i >= 0; i--)
       pair_pos_2[i] = add_extension (pair_pos_2[i], 2, c);
 
-    if (extra_table)
+    எனில் (extra_table)
       pair_pos_1 = add_extension (pair_pos_1, 2, c);
   }
 
-  start_lookup (as_extension ? 9 : 2, 1 + num_pair_pos_2, c);
+  start_lookup (as_extension ? 9 : 2, 1 + இலக்கம்_pair_pos_2, c);
 
-  if (extra_table)
+  எனில் (extra_table)
     add_offset (pair_pos_1, c);
 
-  for (int i = 0; i < num_pair_pos_2; i++)
+  க்கு (முழு i = 0; i < இலக்கம்_pair_pos_2; i++)
     add_offset (pair_pos_2[i], c);
 
   unsigned lookup = finish_lookup (c);
@@ -1645,30 +1645,30 @@ populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
 
   c->end_serialize();
 
-  free (device_tables);
+  விடுவி (device_tables);
 }
 
-template<int mark_count,
-    int class_count,
-    int base_count,
-    int table_count>
-static void
+template<முழு mark_மொத்தம்,
+    முழு class_மொத்தம்,
+    முழு base_மொத்தம்,
+    முழு table_மொத்தம்_2>
+நிலையான வெறுமை
 populate_serializer_with_large_mark_base_pos_1 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
-  MarkBasePosBuffers<mark_count, class_count, base_count, table_count> buffers (c);
+  MarkBasePosBuffers<mark_மொத்தம், class_மொத்தம், base_மொத்தம், table_மொத்தம்_2> buffers (c);
 
-  unsigned mark_base_pos[table_count];
-  for (unsigned i = 0; i < table_count; i++)
+  unsigned mark_base_pos[table_மொத்தம்_2];
+  க்கு (unsigned i = 0; i < table_மொத்தம்_2; i++)
     mark_base_pos[i] = buffers.create_mark_base_pos_1 (i, c);
 
-  for (int i = 0; i < table_count; i++)
+  க்கு (முழு i = 0; i < table_மொத்தம்_2; i++)
     mark_base_pos[i] = add_extension (mark_base_pos[i], 4, c);
 
-  start_lookup (9, table_count, c);
+  start_lookup (9, table_மொத்தம்_2, c);
 
-  for (int i = 0; i < table_count; i++)
+  க்கு (முழு i = 0; i < table_மொத்தம்_2; i++)
     add_offset (mark_base_pos[i], c);
 
   unsigned lookup = finish_lookup (c);
@@ -1680,78 +1680,78 @@ populate_serializer_with_large_mark_base_pos_1 (hb_serialize_context_t* c)
   c->end_serialize();
 }
 
-template<unsigned LigSubstCount,
-         unsigned LigaSetCount,
-         unsigned LigaPerSetCount,
+template<unsigned Lig_Subst_மொத்தம்,
+         unsigned Liga_Set_மொத்தம்,
+         unsigned Liga_Per_Set_மொத்தம்,
          unsigned LigaSize>
-static void populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
-                                                    bool sequential_liga_sets,
-                                                    bool shared,
+நிலையான வெறுமை populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
+                                                    தருக்க sequential_liga_sets,
+                                                    தருக்க shared,
                                                     unsigned *liga_subst_id,
-                                                    bool unique_lig_str = false)
+                                                    தருக்க unique_lig_str = பொய்)
 {
-  char ch = 'a';
+  எழுத்து ch = 'a';
 
-  unsigned liga[LigaSetCount * LigaPerSetCount];
-  unsigned liga_set[LigaSetCount];
-  for (unsigned l = 0; l < LigSubstCount; l++) {
+  unsigned liga[Liga_Set_மொத்தம் * Liga_Per_Set_மொத்தம்];
+  unsigned liga_set[Liga_Set_மொத்தம்];
+  க்கு (unsigned l = 0; l < Lig_Subst_மொத்தம்; l++) {
     unsigned coverage_start = 0;
-    unsigned coverage_end = LigaSetCount - 1;
-    if (sequential_liga_sets) {
-      coverage_start = l * LigaSetCount;
-      coverage_end = (l + 1) * LigaSetCount - 1;
+    unsigned coverage_end = Liga_Set_மொத்தம் - 1;
+    எனில் (sequential_liga_sets) {
+      coverage_start = l * Liga_Set_மொத்தம்;
+      coverage_end = (l + 1) * Liga_Set_மொத்தம் - 1;
     }
     unsigned coverage = add_coverage(coverage_start, coverage_end, c, shared);
 
-    for (unsigned i = 0; i < LigaSetCount; i++) {
-      for (unsigned j = 0; j < LigaPerSetCount; j++)
+    க்கு (unsigned i = 0; i < Liga_Set_மொத்தம்; i++) {
+      க்கு (unsigned j = 0; j < Liga_Per_Set_மொத்தம்; j++)
       {
         std::string large_string(100000, ch);
         start_object (large_string.c_str(), LigaSize, c);
-        if (unique_lig_str)
+        எனில் (unique_lig_str)
           ch += 1;
         add_virtual_offset(coverage, c);
-        liga[i * LigaPerSetCount + j] = c->pop_pack (shared);
+        liga[i * Liga_Per_Set_மொத்தம் + j] = c->எடு_pack (shared);
       }
 
-      add_liga_set_header(LigaPerSetCount, c);
+      add_liga_set_header(Liga_Per_Set_மொத்தம், c);
       add_virtual_offset(coverage, c);
-      for (unsigned j = 0; j < LigaPerSetCount; j++)
+      க்கு (unsigned j = 0; j < Liga_Per_Set_மொத்தம்; j++)
       {
-        add_offset(liga[i * LigaPerSetCount + j], c);
+        add_offset(liga[i * Liga_Per_Set_மொத்தம் + j], c);
       }
 
-      liga_set[i] = c->pop_pack(shared);
+      liga_set[i] = c->எடு_pack(shared);
     }
 
-    add_liga_header(coverage, LigaSetCount, c);
-    for (unsigned i = 0; i < LigaSetCount; i++)
+    add_liga_header(coverage, Liga_Set_மொத்தம், c);
+    க்கு (unsigned i = 0; i < Liga_Set_மொத்தம்; i++)
     {
       add_offset(liga_set[i], c);
     }
 
-    liga_subst_id[l] = c->pop_pack(shared);
+    liga_subst_id[l] = c->எடு_pack(shared);
   }
 
-  for (unsigned l = 0; l < LigSubstCount; l++) {
+  க்கு (unsigned l = 0; l < Lig_Subst_மொத்தம்; l++) {
     liga_subst_id[l] = add_extension(liga_subst_id[l], 4, c);
   }
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
+template<unsigned liga_subst_மொத்தம்,
+         unsigned liga_set_மொத்தம்,
+         unsigned liga_per_set_மொத்தம்,
          unsigned liga_size>
-static void
-populate_serializer_with_large_liga (hb_serialize_context_t* c, bool sequential_liga_sets)
+நிலையான வெறுமை
+populate_serializer_with_large_liga (hb_serialize_context_t* c, தருக்க sequential_liga_sets)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
-  unsigned liga_subst[liga_subst_count];
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, false, liga_subst);
+  unsigned liga_subst[liga_subst_மொத்தம்];
+  populate_serializer_with_large_ligsubst<liga_subst_மொத்தம், liga_set_மொத்தம், liga_per_set_மொத்தம், liga_size>(c, sequential_liga_sets, பொய், liga_subst);
 
-  start_lookup (7, liga_subst_count, c);
-  for (unsigned l = 0; l < liga_subst_count; l++) {
+  start_lookup (7, liga_subst_மொத்தம், c);
+  க்கு (unsigned l = 0; l < liga_subst_மொத்தம்; l++) {
     add_offset(liga_subst[l], c);
   }
 
@@ -1764,11 +1764,11 @@ populate_serializer_with_large_liga (hb_serialize_context_t* c, bool sequential_
   c->end_serialize();
 }
 
-static void
+நிலையான வெறுமை
 populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_context_t* c)
 {
   std::string large_string(100000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   constexpr unsigned liga_size = 30000;
 
@@ -1778,69 +1778,69 @@ populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_conte
 
   // LigaSubst 3
   unsigned coverage = add_coverage(1, 1, c);
-  for (int i = 1; i >= 0; i--) {
+  க்கு (முழு i = 1; i >= 0; i--) {
     start_object (large_string.c_str(), liga_size, c);
     add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+    liga[i] = c->எடு_pack (பொய்);
   }
 
   add_liga_set_header(2, c);
   add_virtual_offset(coverage, c);
-  for (unsigned i = 0; i < 2; i++)
+  க்கு (unsigned i = 0; i < 2; i++)
     add_offset(liga[i], c);
-  liga_set[0] = c->pop_pack(false);
+  liga_set[0] = c->எடு_pack(பொய்);
 
   add_liga_header(coverage, 1, c);
   add_offset(liga_set[0], c);
-  liga_subst[2] = c->pop_pack(false);
+  liga_subst[2] = c->எடு_pack(பொய்);
 
   // LigaSubst 2
   coverage = add_coverage(0, 1, c);
-  for (int i = 1; i >= 0; i--) {
+  க்கு (முழு i = 1; i >= 0; i--) {
     start_object (large_string.c_str(), liga_size, c);
     add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+    liga[i] = c->எடு_pack (பொய்);
   }
 
   add_liga_set_header(1, c);
   add_virtual_offset(coverage, c);
   add_offset(liga[1], c);
-  liga_set[1] = c->pop_pack(false);
+  liga_set[1] = c->எடு_pack(பொய்);
 
   add_liga_set_header(1, c);
   add_virtual_offset(coverage, c);
   add_offset(liga[0], c);
-  liga_set[0] = c->pop_pack(false);
+  liga_set[0] = c->எடு_pack(பொய்);
 
   add_liga_header(coverage, 2, c);
   add_offset(liga_set[0], c);
   add_offset(liga_set[1], c);
-  liga_subst[1] = c->pop_pack(false);
+  liga_subst[1] = c->எடு_pack(பொய்);
 
   // LigaSubst 1
   coverage = add_coverage(0, 0, c);
-  for (int i = 1; i >= 0; i--) {
+  க்கு (முழு i = 1; i >= 0; i--) {
     start_object (large_string.c_str(), liga_size, c);
     add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+    liga[i] = c->எடு_pack (பொய்);
   }
 
   add_liga_set_header(2, c);
   add_virtual_offset(coverage, c);
-  for (unsigned i = 0; i < 2; i++)
+  க்கு (unsigned i = 0; i < 2; i++)
     add_offset(liga[i], c);
-  liga_set[0] = c->pop_pack(false);
+  liga_set[0] = c->எடு_pack(பொய்);
 
   add_liga_header(coverage, 1, c);
   add_offset(liga_set[0], c);
-  liga_subst[0] = c->pop_pack(false);
+  liga_subst[0] = c->எடு_pack(பொய்);
 
-  for (int l = 2; l >= 0; l--) {
+  க்கு (முழு l = 2; l >= 0; l--) {
     liga_subst[l] = add_extension(liga_subst[l], 4, c);
   }
 
   start_lookup (7, 3, c);
-  for (unsigned l = 0; l < 3; l++) {
+  க்கு (unsigned l = 0; l < 3; l++) {
     add_offset(liga_subst[l], c);
   }
 
@@ -1853,38 +1853,38 @@ populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_conte
   c->end_serialize();
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
+template<unsigned liga_subst_மொத்தம்,
+         unsigned liga_set_மொத்தம்,
+         unsigned liga_per_set_மொத்தம்,
          unsigned liga_size>
-static void
-populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, bool sequential_liga_sets)
+நிலையான வெறுமை
+populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, தருக்க sequential_liga_sets)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
   unsigned lookups[2];
   // Lookup
   // LigSubst: shared with another Lookup table, needs splitting
-  unsigned liga_subst_idx[liga_subst_count];
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, true, liga_subst_idx, true);
+  unsigned liga_subst_idx[liga_subst_மொத்தம்];
+  populate_serializer_with_large_ligsubst<liga_subst_மொத்தம், liga_set_மொத்தம், liga_per_set_மொத்தம், liga_size>(c, sequential_liga_sets, உண்மை, liga_subst_idx, உண்மை);
 
-  start_lookup (7, liga_subst_count, c);
-  for (unsigned l = 0; l < liga_subst_count; l++) {
+  start_lookup (7, liga_subst_மொத்தம், c);
+  க்கு (unsigned l = 0; l < liga_subst_மொத்தம்; l++) {
     add_offset(liga_subst_idx[l], c);
   }
 
   lookups[0] = finish_lookup (c);
 
   // Lookup with 2 LigSubst tables
-  unsigned liga_subst[liga_subst_count + 1];
+  unsigned liga_subst[liga_subst_மொத்தம் + 1];
   // LigSubst: small one, not shared, no split
-  populate_serializer_with_large_ligsubst<1, 1, 1, 10>(c, sequential_liga_sets, false, liga_subst);
+  populate_serializer_with_large_ligsubst<1, 1, 1, 10>(c, sequential_liga_sets, பொய், liga_subst);
 
   // LigSubst: shared, needs splitting
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, true, &liga_subst[1], true);
+  populate_serializer_with_large_ligsubst<liga_subst_மொத்தம், liga_set_மொத்தம், liga_per_set_மொத்தம், liga_size>(c, sequential_liga_sets, உண்மை, &liga_subst[1], உண்மை);
 
-  start_lookup (7, liga_subst_count + 1, c);
-  for (unsigned l = 0; l <= liga_subst_count; l++) {
+  start_lookup (7, liga_subst_மொத்தம் + 1, c);
+  க்கு (unsigned l = 0; l <= liga_subst_மொத்தம்; l++) {
     add_offset(liga_subst[l], c);
   }
 
@@ -1896,24 +1896,24 @@ populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, bool sequ
   c->end_serialize();
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
+template<unsigned liga_subst_மொத்தம்,
+         unsigned liga_set_மொத்தம்,
+         unsigned liga_per_set_மொத்தம்,
          unsigned liga_size>
-static void
+நிலையான வெறுமை
 populate_serializer_with_liga_shared_coverage (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<எழுத்து> ();
 
-  unsigned liga_subst[liga_subst_count + 1];
+  unsigned liga_subst[liga_subst_மொத்தம் + 1];
   // LigSubst: small one, no split, coverage shared
-  populate_serializer_with_large_ligsubst<1, 6, 2, 10>(c, true, true, liga_subst, true);
+  populate_serializer_with_large_ligsubst<1, 6, 2, 10>(c, உண்மை, உண்மை, liga_subst, உண்மை);
 
   // LigSubst: shared coverage, needs splitting
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, true, true, &liga_subst[1], true);
+  populate_serializer_with_large_ligsubst<liga_subst_மொத்தம், liga_set_மொத்தம், liga_per_set_மொத்தம், liga_size>(c, உண்மை, உண்மை, &liga_subst[1], உண்மை);
 
-  start_lookup (7, liga_subst_count + 1, c);
-  for (unsigned l = 0; l <= liga_subst_count; l++) {
+  start_lookup (7, liga_subst_மொத்தம் + 1, c);
+  க்கு (unsigned l = 0; l <= liga_subst_மொத்தம்; l++) {
     add_offset(liga_subst[l], c);
   }
 
@@ -1925,11 +1925,11 @@ populate_serializer_with_liga_shared_coverage (hb_serialize_context_t* c)
   c->end_serialize();
 }
 
-static void test_sort_shortest ()
+நிலையான வெறுமை test_sort_shortest ()
 {
   size_t buffer_size = 100;
-  void* buffer_a = malloc (buffer_size);
-  void* buffer_e = malloc (buffer_size);
+  வெறுமை* buffer_a = malloc (buffer_size);
+  வெறுமை* buffer_e = malloc (buffer_size);
   hb_serialize_context_t a (buffer_a, buffer_size);
   hb_serialize_context_t e (buffer_e, buffer_size);
   populate_serializer_complex_2 (&a);
@@ -1944,11 +1944,11 @@ static void test_sort_shortest ()
 
   start_object("ghi", 3, &e);
   add_offset(jkl, &e);
-  unsigned ghi = e.pop_pack(false);
+  unsigned ghi = e.எடு_pack(பொய்);
 
   start_object("def", 3, &e);
   add_offset(ghi, &e);
-  unsigned def = e.pop_pack(false);
+  unsigned def = e.எடு_pack(பொய்);
 
   unsigned mn = add_object("mn", 2, &e);
 
@@ -1956,29 +1956,29 @@ static void test_sort_shortest ()
   add_offset (def, &e);
   add_offset (jkl, &e);
   add_offset (mn, &e);
-  e.pop_pack (false);
+  e.எடு_pack (பொய்);
   e.end_serialize();
 
   graph_t expected = graph_t::create (e.object_graph ()).value ();
   expected.normalize();
 
-  assert(expected == graph);
+  ப்ரதிஜ்ஞா(expected == graph);
 
-  free (buffer_a);
-  free (buffer_e);
+  விடுவி (buffer_a);
+  விடுவி (buffer_e);
 }
 
-static void test_duplicate_leaf ()
+நிலையான வெறுமை test_duplicate_leaf ()
 {
   size_t buffer_size = 100;
-  void* buffer_a = malloc (buffer_size);
-  void* buffer_e = malloc (buffer_size);
+  வெறுமை* buffer_a = malloc (buffer_size);
+  வெறுமை* buffer_e = malloc (buffer_size);
   hb_serialize_context_t a (buffer_a, buffer_size);
   hb_serialize_context_t e (buffer_e, buffer_size);
   populate_serializer_complex_2 (&a);
 
   graph_t graph = graph_t::create (a.object_graph ()).value ();
-  hb_always_assert (graph.duplicate (4, 1, false).is_ok ());
+  hb_always_assert (graph.duplicate (4, 1, பொய்).is_ok ());
   graph.normalize();
 
   e.start_serialize();
@@ -1987,11 +1987,11 @@ static void test_duplicate_leaf ()
 
   start_object("ghi", 3, &e);
   add_offset(jkl_2, &e);
-  unsigned ghi = e.pop_pack(false);
+  unsigned ghi = e.எடு_pack(பொய்);
 
   start_object("def", 3, &e);
   add_offset(ghi, &e);
-  unsigned def = e.pop_pack(false);
+  unsigned def = e.எடு_pack(பொய்);
 
   unsigned jkl_1 = add_object("jkl", 3, &e);
 
@@ -1999,26 +1999,26 @@ static void test_duplicate_leaf ()
   add_offset(def, &e);
   add_offset(jkl_1, &e);
   add_offset(mn, &e);
-  e.pop_pack(false);
+  e.எடு_pack(பொய்);
 
   graph_t expected = graph_t::create (e.object_graph ()).value ();
   expected.normalize();
 
-  assert(expected == graph);
+  ப்ரதிஜ்ஞா(expected == graph);
 
-  free (buffer_a);
-  free (buffer_e);
+  விடுவி (buffer_a);
+  விடுவி (buffer_e);
 }
 
-static void test_duplicate_interior ()
+நிலையான வெறுமை test_duplicate_interior ()
 {
   size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_complex_3 (&c);
 
   graph_t graph = graph_t::create (c.object_graph ()).value ();
-  hb_always_assert (graph.duplicate (3, 2, false).is_ok ());
+  hb_always_assert (graph.duplicate (3, 2, பொய்).is_ok ());
 
   hb_always_assert(strncmp (graph.object (6).head, "jkl", 3) == 0);
   hb_always_assert(graph.object (6).real_links.length == 1);
@@ -2048,21 +2048,21 @@ static void test_duplicate_interior ()
   hb_always_assert(strncmp (graph.object (0).head, "opqrst", 6) == 0);
   hb_always_assert(graph.object (0).real_links.length == 0);
 
-  free (buffer);
+  விடுவி (buffer);
 }
 
-static void
+நிலையான வெறுமை
 test_serialize ()
 {
   size_t buffer_size = 100;
-  void* buffer_1 = malloc (buffer_size);
+  வெறுமை* buffer_1 = malloc (buffer_size);
   hb_serialize_context_t c1 (buffer_1, buffer_size);
   populate_serializer_simple (&c1);
   hb_bytes_t expected = c1.copy_bytes ();
 
   graph_t graph = graph_t::create (c1.object_graph ()).value ();
   hb_blob_t* out = graph::serialize (graph).value ();
-  free (buffer_1);
+  விடுவி (buffer_1);
 
   hb_bytes_t actual = out->as_bytes ();
   hb_always_assert (actual == expected);
@@ -2070,10 +2070,10 @@ test_serialize ()
   hb_blob_destroy (out);
 }
 
-static void test_will_overflow_1 ()
+நிலையான வெறுமை test_will_overflow_1 ()
 {
   size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
 
   populate_serializer_complex_2 (&c);
@@ -2081,39 +2081,39 @@ static void test_will_overflow_1 ()
 
   hb_always_assert (!graph::will_overflow (graph, nullptr).value ());
 
-  free (buffer);
+  விடுவி (buffer);
 }
 
-static void test_will_overflow_2 ()
+நிலையான வெறுமை test_will_overflow_2 ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_overflow (&c);
   graph_t graph = graph_t::create (c.object_graph ()).value ();
 
   hb_always_assert (graph::will_overflow (graph, nullptr).value ());
 
-  free (buffer);
+  விடுவி (buffer);
 }
 
-static void test_will_overflow_3 ()
+நிலையான வெறுமை test_will_overflow_3 ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_dedup_overflow (&c);
   graph_t graph = graph_t::create (c.object_graph ()).value ();
 
   hb_always_assert (graph::will_overflow (graph, nullptr).value ());
 
-  free (buffer);
+  விடுவி (buffer);
 }
 
-static void test_resolve_overflows_via_sort ()
+நிலையான வெறுமை test_resolve_overflows_via_sort ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_overflow (&c);
   graph_t graph = graph_t::create (c.object_graph ()).value ();
@@ -2123,14 +2123,14 @@ static void test_resolve_overflows_via_sort ()
   hb_bytes_t result = out->as_bytes ();
   hb_always_assert (result.length == (80000 + 3 + 3 * 2));
 
-  free (buffer);
+  விடுவி (buffer);
   hb_blob_destroy (out);
 }
 
-static void test_resolve_overflows_via_duplication ()
+நிலையான வெறுமை test_resolve_overflows_via_duplication ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_dedup_overflow (&c);
   graph_t graph = graph_t::create (c.object_graph ()).value ();
@@ -2140,14 +2140,14 @@ static void test_resolve_overflows_via_duplication ()
   hb_bytes_t result = out->as_bytes ();
   hb_always_assert (result.length == (10000 + 2 * 2 + 60000 + 2 + 3 * 2));
 
-  free (buffer);
+  விடுவி (buffer);
   hb_blob_destroy (out);
 }
 
-static void test_resolve_overflows_via_multiple_duplications ()
+நிலையான வெறுமை test_resolve_overflows_via_multiple_duplications ()
 {
   size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_multiple_dedup_overflow (&c);
   graph_t graph = graph_t::create (c.object_graph ()).value ();
@@ -2155,33 +2155,33 @@ static void test_resolve_overflows_via_multiple_duplications ()
   hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE, 5);
   hb_always_assert (out);
 
-  free (buffer);
+  விடுவி (buffer);
   hb_blob_destroy (out);
 }
 
-static void test_resolve_overflows_via_space_assignment ()
+நிலையான வெறுமை test_resolve_overflows_via_space_assignment ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_spaces (&c, true);
+  populate_serializer_spaces (&c, உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_spaces (&e, false);
+  populate_serializer_spaces (&e, பொய்);
 
   run_resolve_overflow_test ("test_resolve_overflows_via_space_assignment",
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_overflows_via_isolation ()
+நிலையான வெறுமை test_resolve_overflows_via_isolation ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_isolation_overflow (&c);
   graph_t graph = graph_t::create (c.object_graph ()).value ();
@@ -2193,36 +2193,36 @@ static void test_resolve_overflows_via_isolation ()
   hb_always_assert (result.length == (1 + 10000 + 60000 + 1 + 1
                             + 4 + 3 * 2));
 
-  free (buffer);
+  விடுவி (buffer);
   hb_blob_destroy (out);
 }
 
-static void test_resolve_overflows_via_isolation_with_recursive_duplication ()
+நிலையான வெறுமை test_resolve_overflows_via_isolation_with_recursive_duplication ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_isolation_overflow_complex (&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_with_isolation_overflow_complex_expected (&e);
 
   run_resolve_overflow_test ("test_resolve_overflows_via_isolation_with_recursive_duplication",
                              c,
                              e);
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_overflows_via_isolating_16bit_space ()
+நிலையான வெறுமை test_resolve_overflows_via_isolating_16bit_space ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_spaces_16bit_connection (&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_spaces_16bit_connection_expected (&e);
 
@@ -2230,33 +2230,33 @@ static void test_resolve_overflows_via_isolating_16bit_space ()
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_overflows_via_isolating_16bit_space_2 ()
+நிலையான வெறுமை test_resolve_overflows_via_isolating_16bit_space_2 ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_short_and_wide_subgraph_root (&c);
+  populate_serializer_short_and_wide_subgraph_வேர் (&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_short_and_wide_subgraph_root_expected (&e);
+  populate_serializer_short_and_wide_subgraph_வேர்_expected (&e);
 
   run_resolve_overflow_test ("test_resolve_overflows_via_isolating_16bit_space_2",
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_overflows_via_isolation_spaces ()
+நிலையான வெறுமை test_resolve_overflows_via_isolation_spaces ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_isolation_overflow_spaces (&c);
   graph_t graph = graph_t::create (c.object_graph ()).value ();
@@ -2270,14 +2270,14 @@ static void test_resolve_overflows_via_isolation_spaces ()
   expected_length += 2 * 4 + 2 * 2; // links
   hb_always_assert (result.length == expected_length);
 
-  free (buffer);
+  விடுவி (buffer);
   hb_blob_destroy (out);
 }
 
-static void test_resolve_mixed_overflows_via_isolation_spaces ()
+நிலையான வெறுமை test_resolve_mixed_overflows_via_isolation_spaces ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_24_and_32_bit_offsets (&c);
   graph_t graph = graph_t::create (c.object_graph ()).value ();
@@ -2300,19 +2300,19 @@ static void test_resolve_mixed_overflows_via_isolation_spaces ()
 
   hb_always_assert (result.length == expected_length);
 
-  free (buffer);
+  விடுவி (buffer);
   hb_blob_destroy (out);
 }
 
-static void test_resolve_with_extension_promotion ()
+நிலையான வெறுமை test_resolve_with_extension_promotion ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_extension_promotion (&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_with_extension_promotion (&e, 3);
@@ -2321,65 +2321,65 @@ static void test_resolve_with_extension_promotion ()
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             உண்மை);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_shared_extension_promotion ()
+நிலையான வெறுமை test_resolve_with_shared_extension_promotion ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&c, 0, true);
+  populate_serializer_with_extension_promotion (&c, 0, உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&e, 3, true);
+  populate_serializer_with_extension_promotion (&e, 3, உண்மை);
 
   run_resolve_overflow_test ("test_resolve_with_extension_promotion",
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             உண்மை);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
 #ifndef HB_NO_BEYOND_64K
-static void test_resolve_with_extension_promotion_1_2 ()
+நிலையான வெறுமை test_resolve_with_extension_promotion_1_2 ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&c, 0, false, true);
+  populate_serializer_with_extension_promotion (&c, 0, பொய், உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&e, 3, false, true);
+  populate_serializer_with_extension_promotion (&e, 3, பொய், உண்மை);
 
   run_resolve_overflow_test ("test_resolve_with_extension_promotion_1_2",
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             உண்மை);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 #endif
 
-static void test_resolve_with_repeated_extension_promotion ()
+நிலையான வெறுமை test_resolve_with_repeated_extension_promotion ()
 {
   size_t buffer_size = 1000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
 
-  c.start_serialize<char> ();
+  c.start_serialize<எழுத்து> ();
   unsigned subtable = add_object ("subt", 4, &c);
   start_lookup (5, 2, &c);
   add_offset (subtable, &c);
@@ -2393,11 +2393,11 @@ static void test_resolve_with_repeated_extension_promotion ()
   auto context = graph::gsubgpos_graph_context_t::create (HB_TAG ('G', 'S', 'U', 'B'),
                                                           graph).value ();
   hb_always_assert (context.lookups.get_population () == 1);
-  unsigned lookup_index = *context.lookups.keys ();
+  unsigned lookup_index = *context.lookups.சாவிகள் ();
   graph::Lookup* lookup_table = context.lookups.get (lookup_index);
   hb_always_assert (lookup_table->make_extension (context, lookup_index).is_ok ());
 
-  const auto& lookup_vertex = graph.vertices_[lookup_index];
+  மாறிலி auto& lookup_vertex = graph.vertices_[lookup_index];
   hb_always_assert (lookup_vertex.obj ().real_links.length == 2);
   unsigned extension_index = lookup_vertex.obj ().real_links[0].objidx;
   hb_always_assert (lookup_vertex.obj ().real_links[1].objidx == extension_index);
@@ -2412,133 +2412,133 @@ static void test_resolve_with_repeated_extension_promotion ()
 
   hb_blob_t* out = graph::serialize (graph).value ();
   hb_blob_destroy (out);
-  free (buffer);
+  விடுவி (buffer);
 }
 
-static void test_resolve_with_basic_pair_pos_1_split ()
+நிலையான வெறுமை test_resolve_with_basic_pair_pos_1_split ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_large_pair_pos_1 <1, 4>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, true);
+  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, உண்மை);
 
   run_resolve_overflow_test ("test_resolve_with_basic_pair_pos_1_split",
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_extension_pair_pos_1_split ()
+நிலையான வெறுமை test_resolve_with_extension_pair_pos_1_split ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <1, 4>(&c, true);
+  populate_serializer_with_large_pair_pos_1 <1, 4>(&c, உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, true);
+  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, உண்மை);
 
   run_resolve_overflow_test ("test_resolve_with_extension_pair_pos_1_split",
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_basic_pair_pos_2_split ()
+நிலையான வெறுமை test_resolve_with_basic_pair_pos_2_split ()
 {
   size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_large_pair_pos_2 <1, 4, 3000>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 2, 3000>(&e, true);
+  populate_serializer_with_large_pair_pos_2 <2, 2, 3000>(&e, உண்மை);
 
   run_resolve_overflow_test ("test_resolve_with_basic_pair_pos_2_split",
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_close_to_limit_pair_pos_2_split ()
+நிலையான வெறுமை test_resolve_with_close_to_limit_pair_pos_2_split ()
 {
   size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <1, 1636, 10>(&c, true, false, false);
+  populate_serializer_with_large_pair_pos_2 <1, 1636, 10>(&c, உண்மை, பொய், பொய்);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 818, 10>(&e, true, false, false);
+  populate_serializer_with_large_pair_pos_2 <2, 818, 10>(&e, உண்மை, பொய், பொய்);
 
   run_resolve_overflow_test ("test_resolve_with_close_to_limit_pair_pos_2_split",
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_pair_pos_2_split_with_device_tables ()
+நிலையான வெறுமை test_resolve_with_pair_pos_2_split_with_device_tables ()
 {
   size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <1, 4, 2000>(&c, false, true);
+  populate_serializer_with_large_pair_pos_2 <1, 4, 2000>(&c, பொய், உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 2, 2000>(&e, true, true);
+  populate_serializer_with_large_pair_pos_2 <2, 2, 2000>(&e, உண்மை, உண்மை);
 
   run_resolve_overflow_test ("test_resolve_with_pair_pos_2_split_with_device_tables",
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_basic_mark_base_pos_1_split ()
+நிலையான வெறுமை test_resolve_with_basic_mark_base_pos_1_split ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_large_mark_base_pos_1 <40, 10, 110, 1>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_with_large_mark_base_pos_1 <40, 10, 110, 2>(&e);
@@ -2547,67 +2547,67 @@ static void test_resolve_with_basic_mark_base_pos_1_split ()
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_basic_liga_split ()
+நிலையான வெறுமை test_resolve_with_basic_liga_split ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 1, 2, 40000>(&c, false);
+  populate_serializer_with_large_liga<1, 1, 2, 40000>(&c, பொய்);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_liga<2, 1, 1, 40000>(&e, false);
+  populate_serializer_with_large_liga<2, 1, 1, 40000>(&e, பொய்);
 
   run_resolve_overflow_test ("test_resolve_with_basic_liga_split",
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_liga_split_move ()
+நிலையான வெறுமை test_resolve_with_liga_split_move ()
 {
   size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 6, 2, 16000>(&c, true);
+  populate_serializer_with_large_liga<1, 6, 2, 16000>(&c, உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_liga<3, 2, 2, 16000>(&e, true);
+  populate_serializer_with_large_liga<3, 2, 2, 16000>(&e, உண்மை);
 
   run_resolve_overflow_test ("test_resolve_with_liga_split_move",
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_liga_split_overlapping_clone ()
+நிலையான வெறுமை test_resolve_with_liga_split_overlapping_clone ()
 {
   size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 2, 3, 30000>(&c, true);
+  populate_serializer_with_large_liga<1, 2, 3, 30000>(&c, உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_with_large_liga_overlapping_clone_result(&e);
@@ -2616,44 +2616,44 @@ static void test_resolve_with_liga_split_overlapping_clone ()
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_liga_split_shared_table ()
+நிலையான வெறுமை test_resolve_with_liga_split_shared_table ()
 {
   size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_shared_large_liga<1, 6, 2, 16000>(&c, true);
+  populate_serializer_with_shared_large_liga<1, 6, 2, 16000>(&c, உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_shared_large_liga<3, 2, 2, 16000>(&e, true);
+  populate_serializer_with_shared_large_liga<3, 2, 2, 16000>(&e, உண்மை);
 
   run_resolve_overflow_test ("test_resolve_with_liga_split_shared_table",
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_with_liga_split_shared_coverage ()
+நிலையான வெறுமை test_resolve_with_liga_split_shared_coverage ()
 {
   size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_liga_shared_coverage<1, 6, 2, 16000>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_with_liga_shared_coverage<3, 2, 2, 16000>(&e);
@@ -2662,20 +2662,20 @@ static void test_resolve_with_liga_split_shared_coverage ()
                              c,
                              e,
                              20,
-                             true,
+                             உண்மை,
                              HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_overflows_via_splitting_spaces ()
+நிலையான வெறுமை test_resolve_overflows_via_splitting_spaces ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_split_spaces (&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_with_split_spaces_expected (&e);
 
@@ -2684,19 +2684,19 @@ static void test_resolve_overflows_via_splitting_spaces ()
                              e,
                              1);
 
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 
 }
 
-static void test_resolve_overflows_via_splitting_spaces_2 ()
+நிலையான வெறுமை test_resolve_overflows_via_splitting_spaces_2 ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_split_spaces_2 (&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_with_split_spaces_expected_2 (&e);
 
@@ -2704,18 +2704,18 @@ static void test_resolve_overflows_via_splitting_spaces_2 ()
                              c,
                              e,
                              1);
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void test_resolve_overflows_via_priority ()
+நிலையான வெறுமை test_resolve_overflows_via_priority ()
 {
   size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_with_priority_overflow (&c);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_serialize_context_t e (expected_buffer, buffer_size);
   populate_serializer_with_priority_overflow_expected (&e);
 
@@ -2723,15 +2723,15 @@ static void test_resolve_overflows_via_priority ()
                              c,
                              e,
                              3);
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
 
-static void test_virtual_link ()
+நிலையான வெறுமை test_virtual_link ()
 {
   size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_virtual_link (&c);
 
@@ -2746,29 +2746,29 @@ static void test_virtual_link ()
   hb_always_assert (result[9]  == 'b');
   hb_always_assert (result[12] == 'd');
 
-  free (buffer);
+  விடுவி (buffer);
   hb_blob_destroy (out);
 }
 
-static void
-test_shared_node_with_virtual_links ()
+நிலையான வெறுமை
+test_shared_முனை_with_virtual_links ()
 {
   size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
 
-  c.start_serialize<char> ();
+  c.start_serialize<எழுத்து> ();
 
   unsigned obj_b = add_object ("b", 1, &c);
   unsigned obj_c = add_object ("c", 1, &c);
 
   start_object ("d", 1, &c);
   add_virtual_offset (obj_b, &c);
-  unsigned obj_d_1 = c.pop_pack ();
+  unsigned obj_d_1 = c.எடு_pack ();
 
   start_object ("d", 1, &c);
   add_virtual_offset (obj_c, &c);
-  unsigned obj_d_2 = c.pop_pack ();
+  unsigned obj_d_2 = c.எடு_pack ();
 
   hb_always_assert (obj_d_1 == obj_d_2);
 
@@ -2777,81 +2777,81 @@ test_shared_node_with_virtual_links ()
   add_offset (obj_c, &c);
   add_offset (obj_d_1, &c);
   add_offset (obj_d_2, &c);
-  c.pop_pack ();
+  c.எடு_pack ();
   c.end_serialize ();
 
   hb_always_assert(c.object_graph() [obj_d_1]->virtual_links.length == 2);
   hb_always_assert(c.object_graph() [obj_d_1]->virtual_links[0].objidx == obj_b);
   hb_always_assert(c.object_graph() [obj_d_1]->virtual_links[1].objidx == obj_c);
-  free(buffer);
+  விடுவி(buffer);
 }
 
-static void
+நிலையான வெறுமை
 test_repack_last ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_repack_last (&c, true);
+  populate_serializer_with_repack_last (&c, உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_repack_last (&e, false);
+  populate_serializer_with_repack_last (&e, பொய்);
 
   run_resolve_overflow_test ("test_repack_last",
                              c,
                              e,
                              20,
-                             false,
+                             பொய்,
                              HB_TAG('a', 'b', 'c', 'd'),
-                             true);
+                             உண்மை);
 
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void
+நிலையான வெறுமை
 test_dont_duplicate_virtual ()
 {
   size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_virtual (&c, true);
+  populate_serializer_virtual (&c, உண்மை);
 
-  void* expected_buffer = malloc (buffer_size);
+  வெறுமை* expected_buffer = malloc (buffer_size);
   hb_always_assert (expected_buffer);
   hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_virtual (&e, false);
+  populate_serializer_virtual (&e, பொய்);
 
   run_resolve_overflow_test ("test_dont_duplicate_virtual",
                              c,
                              e,
                              20,
-                             false,
+                             பொய்,
                              HB_TAG('a', 'b', 'c', 'd'),
-                             true);
+                             உண்மை);
 
-  free (buffer);
-  free (expected_buffer);
+  விடுவி (buffer);
+  விடுவி (expected_buffer);
 }
 
-static void
+நிலையான வெறுமை
 test_deep_graph_traversal ()
 {
   size_t buffer_size = 1000000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
 
   c.start_serialize ();
   unsigned prev = add_object ("leaf", 4, &c);
-  for (unsigned i = 0; i < 2000; i++)
+  க்கு (unsigned i = 0; i < 2000; i++)
   {
     start_object ("node", 4, &c);
     add_offset (prev, &c);
-    prev = c.pop_pack (false);
+    prev = c.எடு_pack (பொய்);
   }
   c.end_serialize ();
 
@@ -2859,18 +2859,18 @@ test_deep_graph_traversal ()
 
   // Test find_subgraph (set)
   hb_set_t visited_set;
-  hb_always_assert (graph.find_subgraph (graph.root_idx (), visited_set).is_ok ());
+  hb_always_assert (graph.find_subgraph (graph.வேர்_idx (), visited_set).is_ok ());
   hb_always_assert (visited_set.get_population () == 2001);
 
   // Test find_subgraph_size
   hb_set_t size_set;
-  size_t sz = graph.find_subgraph_size (graph.root_idx (), size_set).value ();
+  size_t sz = graph.find_subgraph_size (graph.வேர்_idx (), size_set).value ();
   hb_always_assert (sz == 4 + 2000 * 6);
 
   // Test find_subgraph (map)
   hb_map_t map;
-  map.set (graph.root_idx (), 1);
-  hb_always_assert (graph.find_subgraph (graph.root_idx (), map).is_ok ());
+  map.set (graph.வேர்_idx (), 1);
+  hb_always_assert (graph.find_subgraph (graph.வேர்_idx (), map).is_ok ());
   hb_always_assert (map.get_population () == 2001);
 
   // Test assign_spaces (which exercises find_connected_nodes and find_space_roots)
@@ -2878,17 +2878,17 @@ test_deep_graph_traversal ()
 
   // Test duplicate_subgraph
   hb_map_t index_map;
-  hb_always_assert (graph.duplicate_subgraph (graph.root_idx (), index_map).is_ok ());
+  hb_always_assert (graph.duplicate_subgraph (graph.வேர்_idx (), index_map).is_ok ());
   hb_always_assert (index_map.get_population () == 2001);
 
-  free (buffer);
+  விடுவி (buffer);
 }
 
-static void
+நிலையான வெறுமை
 test_32bit_roots_traversal ()
 {
   size_t buffer_size = 1000;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
 
   c.start_serialize ();
@@ -2897,24 +2897,24 @@ test_32bit_roots_traversal ()
 
   start_object ("mid", 3, &c);
   add_wide_offset (leaf1, &c);
-  unsigned mid = c.pop_pack (false);
+  unsigned mid = c.எடு_pack (பொய்);
 
   start_object ("root", 4, &c);
   add_offset (mid, &c);
   add_wide_offset (leaf2, &c);
-  c.pop_pack (false);
+  c.எடு_pack (பொய்);
   c.end_serialize ();
 
   graph_t graph = graph_t::create (c.object_graph ()).value ();
 
   hb_set_t roots;
-  hb_always_assert (graph.find_32bit_roots (graph.root_idx (), roots).is_ok ());
+  hb_always_assert (graph.find_32bit_roots (graph.வேர்_idx (), roots).is_ok ());
   hb_always_assert (roots.has (leaf1 - 1));
   hb_always_assert (roots.has (leaf2 - 1));
   hb_always_assert (!roots.has (mid - 1));
   hb_always_assert (roots.get_population () == 2);
 
-  free (buffer);
+  விடுவி (buffer);
 
   // Test case where DFS fails but BFS succeeds:
   // root -16-> a
@@ -2934,50 +2934,50 @@ test_32bit_roots_traversal ()
 
   start_object ("a", 1, &c2);
   add_wide_offset (b, &c2);
-  unsigned a = c2.pop_pack (false);
+  unsigned a = c2.எடு_pack (பொய்);
 
   start_object ("r", 1, &c2);
   add_offset (a, &c2);
   add_wide_offset (a, &c2);
-  c2.pop_pack (false);
+  c2.எடு_pack (பொய்);
 
   c2.end_serialize ();
 
   graph_t graph2 = graph_t::create (c2.object_graph ()).value ();
 
   hb_set_t roots2;
-  hb_always_assert (graph2.find_32bit_roots (graph2.root_idx (), roots2).is_ok ());
+  hb_always_assert (graph2.find_32bit_roots (graph2.வேர்_idx (), roots2).is_ok ());
   hb_always_assert (roots2.get_population () == 1);
   hb_always_assert (roots2.has (a - 1));
   hb_always_assert (!roots2.has (b - 1));
 
-  free (buffer);
+  விடுவி (buffer);
 }
 
-static void test_invalid_link_objidx ()
+நிலையான வெறுமை test_invalid_link_objidx ()
 {
   size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_complex_2 (&c);
 
   graph_t graph = graph_t::create (c.object_graph ()).value ();
 
   // Poison a link to point to (unsigned) -1
-  auto links = graph.vertices_[graph.root_idx ()].real_links_writer();
+  auto links = graph.vertices_[graph.வேர்_idx ()].real_links_writer();
   links->objidx = (unsigned) -1;
 
   // Running Dijkstra / shortest distance sorting must not crash or OOB access,
   // and must return an error.
   hb_always_assert (!graph.sort_shortest_distance ().is_ok ());
 
-  free (buffer);
+  விடுவி (buffer);
 }
 
-static void test_invalid_link_add_and_move ()
+நிலையான வெறுமை test_invalid_link_add_and_move ()
 {
   size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
+  வெறுமை* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
   populate_serializer_complex_2 (&c);
 
@@ -2991,14 +2991,14 @@ static void test_invalid_link_add_and_move ()
   auto res = graph.move_child (0, &dummy, 1, &dummy);
   hb_always_assert (!res.is_ok ());
 
-  free (buffer);
+  விடுவி (buffer);
 }
 
 // TODO(garretrieger): update will_overflow tests to check the overflows array.
 // TODO(garretrieger): add tests for priority raising.
 
-int
-main (int argc, char **argv)
+முழு
+முதன்மை (முழு argc, எழுத்து **argv)
 {
   test_invalid_link_objidx ();
   test_invalid_link_add_and_move ();
@@ -3024,7 +3024,7 @@ main (int argc, char **argv)
   test_duplicate_interior ();
   test_virtual_link ();
   test_repack_last();
-  test_shared_node_with_virtual_links ();
+  test_shared_முனை_with_virtual_links ();
   test_resolve_with_extension_promotion ();
   test_resolve_with_shared_extension_promotion ();
 #ifndef HB_NO_BEYOND_64K

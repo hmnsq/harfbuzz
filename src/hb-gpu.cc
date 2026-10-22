@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-gpu.h"
-#include "hb-blob.hh"
+#அந்தர்பாவ "hb-gpu.h"
+#அந்தர்பாவ "hb-blob.hh"
 
 /**
  * SECTION:hb-gpu
@@ -519,14 +519,14 @@
  **/
 
 
-#include "hb-gpu-fragment-glsl.hh"
-#include "hb-gpu-fragment-msl.hh"
-#include "hb-gpu-fragment-wgsl.hh"
-#include "hb-gpu-fragment-hlsl.hh"
-#include "hb-gpu-vertex-glsl.hh"
-#include "hb-gpu-vertex-msl.hh"
-#include "hb-gpu-vertex-wgsl.hh"
-#include "hb-gpu-vertex-hlsl.hh"
+#அந்தர்பாவ "hb-gpu-fragment-glsl.hh"
+#அந்தர்பாவ "hb-gpu-fragment-msl.hh"
+#அந்தர்பாவ "hb-gpu-fragment-wgsl.hh"
+#அந்தர்பாவ "hb-gpu-fragment-hlsl.hh"
+#அந்தர்பாவ "hb-gpu-vertex-glsl.hh"
+#அந்தர்பாவ "hb-gpu-vertex-msl.hh"
+#அந்தர்பாவ "hb-gpu-vertex-wgsl.hh"
+#அந்தர்பாவ "hb-gpu-vertex-hlsl.hh"
 
 /**
  * hb_gpu_shader_source:
@@ -552,31 +552,31 @@
  *
  * Since: 14.2.0
  **/
-const char *
+மாறிலி எழுத்து *
 hb_gpu_shader_source (hb_gpu_shader_stage_t stage,
 		      hb_gpu_shader_lang_t  lang)
 {
-  switch (stage) {
-  case HB_GPU_SHADER_STAGE_FRAGMENT:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_fragment_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  தேர்வு (stage) {
+  நிலை HB_GPU_SHADER_STAGE_FRAGMENT:
+    தேர்வு (lang) {
+    நிலை HB_GPU_SHADER_LANG_GLSL: திரும்பு hb_gpu_fragment_glsl;
+    நிலை HB_GPU_SHADER_LANG_MSL:  திரும்பு hb_gpu_fragment_msl;
+    நிலை HB_GPU_SHADER_LANG_WGSL: திரும்பு hb_gpu_fragment_wgsl;
+    நிலை HB_GPU_SHADER_LANG_HLSL: திரும்பு hb_gpu_fragment_hlsl;
+    நிலை HB_GPU_SHADER_LANG_INVALID:
+    இயல்பு: திரும்பு nullptr;
     }
-  case HB_GPU_SHADER_STAGE_VERTEX:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_vertex_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_vertex_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_vertex_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_vertex_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  நிலை HB_GPU_SHADER_STAGE_VERTEX:
+    தேர்வு (lang) {
+    நிலை HB_GPU_SHADER_LANG_GLSL: திரும்பு hb_gpu_vertex_glsl;
+    நிலை HB_GPU_SHADER_LANG_MSL:  திரும்பு hb_gpu_vertex_msl;
+    நிலை HB_GPU_SHADER_LANG_WGSL: திரும்பு hb_gpu_vertex_wgsl;
+    நிலை HB_GPU_SHADER_LANG_HLSL: திரும்பு hb_gpu_vertex_hlsl;
+    நிலை HB_GPU_SHADER_LANG_INVALID:
+    இயல்பு: திரும்பு nullptr;
     }
-  default:
-    return nullptr;
+  இயல்பு:
+    திரும்பு nullptr;
   }
 }
 

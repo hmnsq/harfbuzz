@@ -29,9 +29,9 @@
 #ifndef HB_SANITIZE_HH
 #define HB_SANITIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-dispatch.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-blob.hh"
+#அந்தர்பாவ "hb-dispatch.hh"
 
 
 /*
@@ -120,355 +120,355 @@
 #define HB_SANITIZE_MAX_SUBTABLES 0x4000
 #endif
 
-struct hb_sanitize_context_t :
-       hb_dispatch_context_t<hb_sanitize_context_t, bool, HB_DEBUG_SANITIZE>
+கட்டமைப்பு hb_sanitize_context_t :
+       hb_dispatch_context_t<hb_sanitize_context_t, தருக்க, HB_DEBUG_SANITIZE>
 {
-  hb_sanitize_context_t (const char *start_ = nullptr, const char *end_ = nullptr) :
+  hb_sanitize_context_t (மாறிலி எழுத்து *start_ = nullptr, மாறிலி எழுத்து *end_ = nullptr) :
 	start (start_), end (end_),
 	length (0),
 	max_ops (0), max_subtables (0),
         recursion_depth (0),
-	writable (false),
+	writable (பொய்),
 	blob (nullptr),
-	num_glyphs (65536),
-	num_glyphs_set (false),
-	lazy_some_gpos (false) {}
+	இலக்கம்_glyphs (65536),
+	இலக்கம்_glyphs_set (பொய்),
+	lazy_some_gpos (பொய்) {}
 
-  const char *get_name () { return "SANITIZE"; }
+  மாறிலி எழுத்து *get_name () { திரும்பு "SANITIZE"; }
   template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format)
+  தருக்க may_dispatch (மாறிலி T *obj HB_UNUSED, மாறிலி F *format)
   {
-    return format->sanitize (this) &&
+    திரும்பு format->sanitize (இது) &&
 	   hb_barrier ();
   }
-  static return_t default_return_value () { return true; }
-  static return_t no_dispatch_return_value () { return false; }
-  bool stop_sublookup_iteration (const return_t r) const { return !r; }
+  நிலையான return_t default_return_மதிப்பு () { திரும்பு உண்மை; }
+  நிலையான return_t no_dispatch_return_மதிப்பு () { திரும்பு பொய்; }
+  தருக்க stop_sublookup_iteration (மாறிலி return_t r) மாறிலி { திரும்பு !r; }
 
-  bool visit_subtables (unsigned count)
+  தருக்க visit_subtables (unsigned மொத்தம்)
   {
-    max_subtables += count;
-    return max_subtables < HB_SANITIZE_MAX_SUBTABLES;
+    max_subtables += மொத்தம்;
+    திரும்பு max_subtables < HB_SANITIZE_MAX_SUBTABLES;
   }
 
-  private:
+  தனிப்பட்ட:
   template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.sanitize (this, std::forward<Ts> (ds)...) )
+  _dispatch (மாறிலி T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.sanitize (இது, std::forward<Ts> (ds)...) )
   template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
+  _dispatch (மாறிலி T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (இது, std::forward<Ts> (ds)...) )
+  பொது:
   template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  dispatch (மாறிலி T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
   hb_sanitize_context_t (hb_blob_t *b) : hb_sanitize_context_t ()
   {
     init (b);
 
-    if (blob)
+    எனில் (blob)
       start_processing ();
   }
 
   ~hb_sanitize_context_t ()
   {
-    if (blob)
+    எனில் (blob)
       end_processing ();
   }
 
-  void init (hb_blob_t *b)
+  வெறுமை init (hb_blob_t *b)
   {
-    this->blob = hb_blob_reference (b);
-    this->writable = false;
+    இது->blob = hb_blob_reference (b);
+    இது->writable = பொய்;
   }
 
-  void set_num_glyphs (unsigned int num_glyphs_)
+  வெறுமை set_இலக்கம்_glyphs (unsigned முழு இலக்கம்_glyphs_2)
   {
-    num_glyphs = num_glyphs_;
-    num_glyphs_set = true;
+    இலக்கம்_glyphs = இலக்கம்_glyphs_2;
+    இலக்கம்_glyphs_set = உண்மை;
   }
-  unsigned int get_num_glyphs () { return num_glyphs; }
+  unsigned முழு get_இலக்கம்_glyphs () { திரும்பு இலக்கம்_glyphs; }
 
-  void set_max_ops (int max_ops_) { max_ops = max_ops_; }
+  வெறுமை set_max_ops (முழு max_ops_) { max_ops = max_ops_; }
 
   template <typename T>
-  void set_object (const T *obj)
+  வெறுமை set_object (மாறிலி T *obj)
   {
     reset_object ();
 
-    if (!obj) return;
+    எனில் (!obj) திரும்பு;
 
-    const char *obj_start = (const char *) obj;
-    if (unlikely (obj_start < this->start || this->end <= obj_start))
+    மாறிலி எழுத்து *obj_start = (மாறிலி எழுத்து *) obj;
+    எனில் (unlikely (obj_start < இது->start || இது->end <= obj_start))
     {
-      this->start = this->end = nullptr;
-      this->length = 0;
+      இது->start = இது->end = nullptr;
+      இது->length = 0;
     }
-    else
+    இல்லையெனில்
     {
-      this->start = obj_start;
-      this->end   = obj_start + hb_min (size_t (this->end - obj_start), obj->get_size ());
-      this->length = this->end - this->start;
+      இது->start = obj_start;
+      இது->end   = obj_start + hb_min (size_t (இது->end - obj_start), obj->get_size ());
+      இது->length = இது->end - இது->start;
     }
   }
 
-  void reset_object ()
+  வெறுமை reset_object ()
   {
-    if (this->blob)
+    எனில் (இது->blob)
     {
-      this->start = this->blob->data;
-      this->end = this->start + this->blob->length;
+      இது->start = இது->blob->data;
+      இது->end = இது->start + இது->blob->length;
     }
-    this->length = this->end - this->start;
-    assert (this->start <= this->end); /* Must not overflow. */
+    இது->length = இது->end - இது->start;
+    ப்ரதிஜ்ஞா (இது->start <= இது->end); /* Must not overflow. */
   }
 
-  void start_processing (const char *start_ = nullptr, const char *end_ = nullptr)
+  வெறுமை start_processing (மாறிலி எழுத்து *start_ = nullptr, மாறிலி எழுத்து *end_ = nullptr)
   {
-    if (start_)
+    எனில் (start_)
     {
-      this->start = start_;
-      this->end = end_;
+      இது->start = start_;
+      இது->end = end_;
     }
     reset_object ();
     unsigned m;
-    if (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
-      this->max_ops = HB_SANITIZE_MAX_OPS_MAX;
-    else
-      this->max_ops = hb_clamp (m,
+    எனில் (unlikely (hb_unsigned_mul_overflows (இது->end - இது->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
+      இது->max_ops = HB_SANITIZE_MAX_OPS_MAX;
+    இல்லையெனில்
+      இது->max_ops = hb_clamp (m,
 				(unsigned) HB_SANITIZE_MAX_OPS_MIN,
 				(unsigned) HB_SANITIZE_MAX_OPS_MAX);
-    this->debug_depth = 0;
-    this->recursion_depth = 0;
+    இது->debug_depth = 0;
+    இது->recursion_depth = 0;
 
-    DEBUG_MSG_LEVEL (SANITIZE, start, 0, +1,
+    DEBUG_செய்தி_LEVEL (SANITIZE, start, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     இது->start, இது->end,
+		     (unsigned long) (இது->end - இது->start));
   }
 
-  void end_processing ()
+  வெறுமை end_processing ()
   {
-    DEBUG_MSG_LEVEL (SANITIZE, this->start, 0, -1,
+    DEBUG_செய்தி_LEVEL (SANITIZE, இது->start, 0, -1,
 		     "end [%p..%p]",
-		     this->start, this->end);
+		     இது->start, இது->end);
 
-    hb_blob_destroy (this->blob);
-    this->blob = nullptr;
-    this->start = this->end = nullptr;
-    this->length = 0;
+    hb_blob_destroy (இது->blob);
+    இது->blob = nullptr;
+    இது->start = இது->end = nullptr;
+    இது->length = 0;
   }
 
-  bool check_ops(unsigned count)
+  தருக்க check_ops(unsigned மொத்தம்)
   {
     /* Avoid underflow */
-    if (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
+    எனில் (unlikely (இது->max_ops < 0 || மொத்தம் >= (unsigned) இது->max_ops))
     {
-      this->max_ops = -1;
-      return false;
+      இது->max_ops = -1;
+      திரும்பு பொய்;
     }
-    this->max_ops -= (int) count;
-    return true;
+    இது->max_ops -= (முழு) மொத்தம்;
+    திரும்பு உண்மை;
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_range (const void *base,
-		    unsigned int len) const
+  தருக்க check_range (மாறிலி வெறுமை *base,
+		    unsigned முழு len) மாறிலி
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length &&
-	      (unsigned int) (this->end - p) >= len &&
-	      ((this->max_ops -= len) > 0);
+    மாறிலி எழுத்து *p = (மாறிலி எழுத்து *) base;
+    தருக்க ok = (uintptr_t) (p - இது->start) <= இது->length &&
+	      (unsigned முழு) (இது->end - p) >= len &&
+	      ((இது->max_ops -= len) > 0);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_செய்தி_LEVEL (SANITIZE, p, இது->debug_depth+1, 0,
 		     "check_range [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     இது->start, இது->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    திரும்பு likely (ok);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_range_fast (const void *base,
-			 unsigned int len) const
+  தருக்க check_range_fast (மாறிலி வெறுமை *base,
+			 unsigned முழு len) மாறிலி
   {
-    const char *p = (const char *) base;
-    bool ok = ((uintptr_t) (p - this->start) <= this->length &&
-	       (unsigned int) (this->end - p) >= len);
+    மாறிலி எழுத்து *p = (மாறிலி எழுத்து *) base;
+    தருக்க ok = ((uintptr_t) (p - இது->start) <= இது->length &&
+	       (unsigned முழு) (இது->end - p) >= len);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_செய்தி_LEVEL (SANITIZE, p, இது->debug_depth+1, 0,
 		     "check_range_fast [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     இது->start, இது->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    திரும்பு likely (ok);
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_point (const void *base) const
+  தருக்க check_point (மாறிலி வெறுமை *base) மாறிலி
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length;
+    மாறிலி எழுத்து *p = (மாறிலி எழுத்து *) base;
+    தருக்க ok = (uintptr_t) (p - இது->start) <= இது->length;
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_செய்தி_LEVEL (SANITIZE, p, இது->debug_depth+1, 0,
 		     "check_point [%p]"
 		     " in [%p..%p] -> %s",
 		     p,
-		     this->start, this->end,
+		     இது->start, இது->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    திரும்பு likely (ok);
   }
 
   template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  தருக்க check_range (மாறிலி T *base,
+		    unsigned முழு a,
+		    unsigned முழு b) மாறிலி
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m);
+    திரும்பு !hb_unsigned_mul_overflows (a, b, &m) &&
+	   இது->check_range (base, m);
   }
 
   template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b,
-		    unsigned int c) const
+  தருக்க check_range (மாறிலி T *base,
+		    unsigned முழு a,
+		    unsigned முழு b,
+		    unsigned முழு c) மாறிலி
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m, c);
+    திரும்பு !hb_unsigned_mul_overflows (a, b, &m) &&
+	   இது->check_range (base, m, c);
   }
 
   template <typename T>
   HB_ALWAYS_INLINE
-  bool check_array_sized (const T *base, unsigned int len, unsigned len_size) const
+  தருக்க check_array_sized (மாறிலி T *base, unsigned முழு len, unsigned len_size) மாறிலி
   {
-    if (len_size >= 4)
+    எனில் (len_size >= 4)
     {
-      if (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
-	return false;
+      எனில் (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
+	திரும்பு பொய்;
     }
-    else
+    இல்லையெனில்
       len = len * hb_static_size (T);
-    return this->check_range (base, len);
+    திரும்பு இது->check_range (base, len);
   }
 
   template <typename T>
-  bool check_array (const T *base, unsigned int len) const
+  தருக்க check_array (மாறிலி T *base, unsigned முழு len) மாறிலி
   {
-    return this->check_range (base, len, hb_static_size (T));
+    திரும்பு இது->check_range (base, len, hb_static_size (T));
   }
 
   template <typename T>
-  bool check_array (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  தருக்க check_array (மாறிலி T *base,
+		    unsigned முழு a,
+		    unsigned முழு b) மாறிலி
   {
-    return this->check_range (base, hb_static_size (T), a, b);
+    திரும்பு இது->check_range (base, hb_static_size (T), a, b);
   }
 
-  bool check_start_recursion (int max_depth)
+  தருக்க check_start_recursion (முழு max_depth)
   {
-    if (unlikely (recursion_depth >= max_depth)) return false;
-    return ++recursion_depth;
+    எனில் (unlikely (recursion_depth >= max_depth)) திரும்பு பொய்;
+    திரும்பு ++recursion_depth;
   }
 
-  bool end_recursion (bool result)
+  தருக்க end_recursion (தருக்க result)
   {
     recursion_depth--;
-    return result;
+    திரும்பு result;
   }
 
   template <typename Type>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_struct (const Type *obj) const
+  தருக்க check_struct (மாறிலி Type *obj) மாறிலி
   {
-    if (sizeof (uintptr_t) == sizeof (uint32_t))
-      return likely (this->check_range_fast (obj, obj->min_size));
-    else
-      return likely (this->check_point ((const char *) obj + obj->min_size));
+    எனில் (அளவு (uintptr_t) == அளவு (uint32_t))
+      திரும்பு likely (இது->check_range_fast (obj, obj->min_size));
+    இல்லையெனில்
+      திரும்பு likely (இது->check_point ((மாறிலி எழுத்து *) obj + obj->min_size));
   }
 
   template <typename Type>
   hb_blob_t *sanitize_blob (hb_blob_t *blob)
   {
-    bool sane;
+    தருக்க sane;
 
     init (blob);
 
-    DEBUG_MSG_FUNC (SANITIZE, start, "start");
+    DEBUG_செய்தி_FUNC (SANITIZE, start, "start");
 
     start_processing ();
 
-    if (unlikely (!start))
+    எனில் (unlikely (!start))
     {
       end_processing ();
-      return blob;
+      திரும்பு blob;
     }
 
-    Type *t = reinterpret_cast<Type *> (const_cast<char *> (start));
+    Type *t = reinterpret_cast<Type *> (const_cast<எழுத்து *> (start));
 
-    sane = t->sanitize (this);
+    sane = t->sanitize (இது);
 
     end_processing ();
 
-    DEBUG_MSG_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
-    if (sane)
+    DEBUG_செய்தி_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
+    எனில் (sane)
     {
       hb_blob_make_immutable (blob);
-      return blob;
+      திரும்பு blob;
     }
-    else
+    இல்லையெனில்
     {
       hb_blob_destroy (blob);
-      return hb_blob_get_empty ();
+      திரும்பு hb_blob_get_empty ();
     }
   }
 
   template <typename Type>
-  hb_blob_t *reference_table (const hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
+  hb_blob_t *reference_table (மாறிலி hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
   {
-    if (!num_glyphs_set)
-      set_num_glyphs (hb_face_get_glyph_count (face));
-    return sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
+    எனில் (!இலக்கம்_glyphs_set)
+      set_இலக்கம்_glyphs (hb_face_get_glyph_மொத்தம் (face));
+    திரும்பு sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
   }
 
-  const char *start, *end;
+  மாறிலி எழுத்து *start, *end;
   unsigned length;
-  mutable int max_ops, max_subtables;
-  private:
-  int recursion_depth;
-  bool writable;
+  mutable முழு max_ops, max_subtables;
+  தனிப்பட்ட:
+  முழு recursion_depth;
+  தருக்க writable;
   hb_blob_t *blob;
-  unsigned int num_glyphs;
-  bool  num_glyphs_set;
-  public:
-  bool lazy_some_gpos;
+  unsigned முழு இலக்கம்_glyphs;
+  தருக்க  இலக்கம்_glyphs_set;
+  பொது:
+  தருக்க lazy_some_gpos;
 };
 
-struct hb_sanitize_with_object_t
+கட்டமைப்பு hb_sanitize_with_object_t
 {
   template <typename T>
-  hb_sanitize_with_object_t (hb_sanitize_context_t *c, const T& obj) : c (c)
+  hb_sanitize_with_object_t (hb_sanitize_context_t *c, மாறிலி T& obj) : c (c)
   { c->set_object (obj); }
   ~hb_sanitize_with_object_t ()
   { c->reset_object (); }
 
-  private:
+  தனிப்பட்ட:
   hb_sanitize_context_t *c;
 };
 

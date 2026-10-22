@@ -50,9 +50,9 @@
 #ifndef HB_OT_SHAPER_USE_TABLE_HH
 #define HB_OT_SHAPER_USE_TABLE_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-ot-shaper-use-machine.hh"
+#அந்தர்பாவ "hb-ot-shaper-use-machine.hh"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-macros"
@@ -100,14 +100,14 @@
 #define VMBlw	USE(VMBlw)
 #define VMPst	USE(VMPst)
 #define VMPre	USE(VMPre)
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic எடு
 
 
 #ifndef HB_OPTIMIZE_SIZE
 
-#include <stdint.h>
+#அந்தர்பாவ <stdint.h>
 
-static const uint8_t hb_use_u8[3359]=
+நிலையான மாறிலி uint8_t hb_use_u8[3359]=
 {
      33,    3,    0,    0,    0,    4,    0,   80,  118,  128,    9,   10,   11,  192,  208,   14,
       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -320,7 +320,7 @@ static const uint8_t hb_use_u8[3359]=
     SUB,  SUB,   GB,CMAbv,   IS, VBlw,   IS,    R, MBlw,   GB, VAbv,    R,VMPst,    J,   SB,   SE,
       J,   HR,    G,    G,   HM,    G,    O, MPre, MPre, MPst,VMAbv, MBlw, VBlw,    O, VBlw,
 };
-static const uint16_t hb_use_u16[864]=
+நிலையான மாறிலி uint16_t hb_use_u16[864]=
 {
      0,   0,   0,   0,   0,   0,   0,   0,   8,   8,   8,   8,   8,   8,   8,   8,
     16,  16,  16,  16,  16,  16,  16,  16,  24,  24,  24,  24,  24,  24,  24,  24,
@@ -378,22 +378,22 @@ static const uint16_t hb_use_u16[864]=
     40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  16,
 };
 
-static inline uint8_t hb_use_b4 (const uint8_t* a, unsigned i)
+நிலையான உள்வரி uint8_t hb_use_b4 (மாறிலி uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  திரும்பு (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t hb_use_get_category (unsigned u)
+நிலையான உள்வரி uint8_t hb_use_get_category (unsigned u)
 {
   /* packtab: [2^4,2^5,2^3,2^3,2^1] */
-  return u<921600u ? (uint8_t)(hb_use_u8[2969u+((hb_use_u8[625u+hb_use_u16[((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((u)>>1))>>3))>>3))>>5)))<<5)+((((((((u)>>1))>>3))>>3))&31)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
+  திரும்பு u<921600u ? (uint8_t)(hb_use_u8[2969u+((hb_use_u8[625u+hb_use_u16[((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((u)>>1))>>3))>>3))>>5)))<<5)+((((((((u)>>1))>>3))>>3))&31)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
 }
 
 
-#else
+#இல்லையெனில்
 
-#include <stdint.h>
+#அந்தர்பாவ <stdint.h>
 
-static const uint8_t hb_use_u8[3679]=
+நிலையான மாறிலி uint8_t hb_use_u8[3679]=
 {
      33,    3,    0,    0,    0,    4,    0,   80,  118,  128,    9,   10,   11,  192,  208,   14,
       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -626,7 +626,7 @@ static const uint8_t hb_use_u8[3679]=
     SUB,  SUB,   GB,CMAbv,   IS, VBlw,   IS,    R, MBlw,   GB, VAbv,    R,VMPst,    J,   SB,   SE,
       J,   HR,    G,    G,   HM,    G,    O, MPre, MPre, MPst,VMAbv, MBlw, VBlw,    O, VBlw,
 };
-static const uint16_t hb_use_u16[492]=
+நிலையான மாறிலி uint16_t hb_use_u16[492]=
 {
      0,   0,   8,   8,  16,  16,  24,  24,  40,  40,   0,  24,  32,   0,   0, 120,
    136,  24,  56,   0, 168,  24, 240,  24, 272,  32, 280, 288,   0, 296, 304,   0,
@@ -661,14 +661,14 @@ static const uint16_t hb_use_u16[492]=
   2304,   0,2312,  32,2320,  32,2328, 104,2336,  32,  40,  16,
 };
 
-static inline uint8_t hb_use_b4 (const uint8_t* a, unsigned i)
+நிலையான உள்வரி uint8_t hb_use_b4 (மாறிலி uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  திரும்பு (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t hb_use_get_category (unsigned u)
+நிலையான உள்வரி uint8_t hb_use_get_category (unsigned u)
 {
   /* packtab: [2^4,2^4,2^3,2^1,2^3,2^1] */
-  return u<921600u ? (uint8_t)(hb_use_u8[3289u+((hb_use_u8[945u+hb_use_u16[((hb_use_u8[369u+((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((((u)>>1))>>3))>>1))>>3))>>4)))<<4)+((((((((((u)>>1))>>3))>>1))>>3))&15)])<<3)+((((((((u)>>1))>>3))>>1))&7)])<<1)+((((((u)>>1))>>3))&1)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
+  திரும்பு u<921600u ? (uint8_t)(hb_use_u8[3289u+((hb_use_u8[945u+hb_use_u16[((hb_use_u8[369u+((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((((u)>>1))>>3))>>1))>>3))>>4)))<<4)+((((((((((u)>>1))>>3))>>1))>>3))&15)])<<3)+((((((((u)>>1))>>3))>>1))&7)])<<1)+((((((u)>>1))>>3))&1)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
 }
 
 

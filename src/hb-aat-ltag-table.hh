@@ -25,7 +25,7 @@
 #ifndef HB_AAT_LTAG_TABLE_HH
 #define HB_AAT_LTAG_TABLE_HH
 
-#include "hb-open-type.hh"
+#அந்தர்பாவ "hb-open-type.hh"
 
 /*
  * ltag -- Language Tag
@@ -34,58 +34,58 @@
 #define HB_AAT_TAG_ltag HB_TAG('l','t','a','g')
 
 
-namespace AAT {
+நாமாகாஶ AAT {
 
-using namespace OT;
+using நாமாகாஶ OT;
 
 
-struct FTStringRange
+கட்டமைப்பு FTStringRange
 {
-  friend struct ltag;
+  friend கட்டமைப்பு ltag;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி வெறுமை *base) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
 		  (base+tag).sanitize (c, length));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		tag;		/* Offset from the start of the table to
 				 * the beginning of the string */
   HBUINT16	length;		/* String length (in bytes) */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct ltag
+கட்டமைப்பு ltag
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
+  நிலையான constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
 
-  hb_language_t get_language (unsigned int i) const
+  hb_language_t get_language (unsigned முழு i) மாறிலி
   {
-    const FTStringRange &range = tagRanges[i];
-    return hb_language_from_string ((const char *) (this+range.tag).arrayZ,
+    மாறிலி FTStringRange &range = tagRanges[i];
+    திரும்பு hb_language_from_string ((மாறிலி எழுத்து *) (இது+range.tag).arrayZ,
 				    range.length);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (likely (c->check_struct (இது) &&
 			  hb_barrier () &&
 			  version >= 1 &&
-			  tagRanges.sanitize (c, this)));
+			  tagRanges.sanitize (c, இது)));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT32	version;	/* Table version; currently 1 */
   HBUINT32	flags;		/* Table flags; currently none defined */
   Array32Of<FTStringRange>
 		tagRanges;	/* Range for each tag's string */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (12, tagRanges);
 };
 

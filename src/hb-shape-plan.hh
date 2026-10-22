@@ -27,58 +27,58 @@
 #ifndef HB_SHAPE_PLAN_HH
 #define HB_SHAPE_PLAN_HH
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-ot-shape.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-shaper.hh"
+#அந்தர்பாவ "hb-ot-shape.hh"
 
-struct hb_shape_plan_key_t
+கட்டமைப்பு hb_shape_plan_சாவி_t
 {
   hb_segment_properties_t  props;
 
-  const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  மாறிலி hb_feature_t      *user_features;
+  unsigned முழு             இலக்கம்_user_features;
 
 #ifndef HB_NO_OT_SHAPE
-  hb_ot_shape_plan_key_t   ot;
+  hb_ot_shape_plan_சாவி_t   ot;
 #endif
 
   hb_shape_func_t         *shaper_func;
-  const char              *shaper_name;
+  மாறிலி எழுத்து              *shaper_name;
 
-  HB_INTERNAL bool init (bool                           copy,
+  HB_INTERNAL தருக்க init (தருக்க                           copy,
 			 hb_face_t                     *face,
-			 const hb_segment_properties_t *props,
-			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
-			 const int                     *coords,
-			 unsigned int                   num_coords,
-			 const char * const            *shaper_list);
+			 மாறிலி hb_segment_properties_t *props,
+			 மாறிலி hb_feature_t            *user_features,
+			 unsigned முழு                   இலக்கம்_user_features,
+			 மாறிலி முழு                     *coords,
+			 unsigned முழு                   இலக்கம்_coords,
+			 மாறிலி எழுத்து * மாறிலி            *shaper_list);
 
-  HB_INTERNAL void fini ()
+  HB_INTERNAL வெறுமை fini ()
   {
-    hb_free ((void *) user_features);
+    hb_free ((வெறுமை *) user_features);
     user_features = nullptr;
 #ifndef HB_NO_OT_SHAPE
     ot.fini ();
 #endif
   }
 
-  HB_INTERNAL bool user_features_match (const hb_shape_plan_key_t *other);
+  HB_INTERNAL தருக்க user_features_match (மாறிலி hb_shape_plan_சாவி_t *other);
 
-  HB_INTERNAL bool equal (const hb_shape_plan_key_t *other);
+  HB_INTERNAL தருக்க equal (மாறிலி hb_shape_plan_சாவி_t *other);
 };
 
-struct hb_shape_plan_t
+கட்டமைப்பு hb_shape_plan_t
 {
   HB_INTERNAL ~hb_shape_plan_t ();
   hb_object_header_t header;
   hb_face_t *face_unsafe; /* We don't carry a reference to face. */
-  hb_shape_plan_key_t key;
+  hb_shape_plan_சாவி_t key;
 #ifndef HB_NO_OT_SHAPE
   hb_ot_shape_plan_t ot;
 #endif
 #ifdef HAVE_HARFRUST
-  hb_atomic_t<void *> harfrust_data;
+  hb_atomic_t<வெறுமை *> harfrust_data;
 #endif
 };
 

@@ -1,19 +1,19 @@
 #define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#அந்தர்பாவ <hb-wasm-api.h>
 
-extern "C" {
-void debugprint (const char *s);
-void debugprint1 (const char *s, int32_t);
-void debugprint2 (const char *s, int32_t, int32_t);
+வெளி "C" {
+வெறுமை debugprint (மாறிலி எழுத்து *s);
+வெறுமை debugprint1 (மாறிலி எழுத்து *s, int32_t);
+வெறுமை debugprint2 (மாறிலி எழுத்து *s, int32_t, int32_t);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (வெறுமை *shape_plan,
        font_t *font,
        buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       மாறிலி feature_t *features,
+       uint32_t இலக்கம்_features)
 {
   face_t *face = font_get_face (font);
 
@@ -25,20 +25,20 @@ shape (void *shape_plan,
   blob_free (&blob);
 
   buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  எனில் (!buffer_copy_contents (buffer, &contents))
+    திரும்பு பொய்;
 
   debugprint1 ("buffer length", contents.length);
 
   glyph_outline_t outline = GLYPH_OUTLINE_INIT;
 
-  for (unsigned i = 0; i < contents.length; i++)
+  க்கு (unsigned i = 0; i < contents.length; i++)
   {
-    char name[64];
+    எழுத்து name[64];
 
     debugprint1 ("glyph at", i);
 
-    font_glyph_to_string (font, contents.info[i].codepoint, name, sizeof (name));
+    font_glyph_to_string (font, contents.info[i].codepoint, name, அளவு (name));
 
     debugprint (name);
 
@@ -56,5 +56,5 @@ shape (void *shape_plan,
 
   buffer_contents_free (&contents);
 
-  return ret;
+  திரும்பு ret;
 }

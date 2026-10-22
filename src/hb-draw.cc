@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 #ifndef HB_NO_DRAW
 
-#include "hb-draw.hh"
+#அந்தர்பாவ "hb-draw.hh"
 
-#include "hb-geometry.hh"
+#அந்தர்பாவ "hb-geometry.hh"
 
-#include "hb-machinery.hh"
+#அந்தர்பாவ "hb-machinery.hh"
 
-#include <cmath>
+#அந்தர்பாவ <cmath>
 
 
 /**
@@ -46,145 +46,145 @@
  * The #hb_draw_funcs_t struct can be used with hb_font_draw_glyph().
  **/
 
-static void
-hb_draw_move_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+நிலையான வெறுமை
+hb_draw_move_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, வெறுமை *draw_data HB_UNUSED,
 		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x HB_UNUSED, float to_y HB_UNUSED,
-		     void *user_data HB_UNUSED) {}
+		     தசம to_x HB_UNUSED, தசம to_y HB_UNUSED,
+		     வெறுமை *user_data HB_UNUSED) {}
 
-static void
-hb_draw_line_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+நிலையான வெறுமை
+hb_draw_வரி_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, வெறுமை *draw_data HB_UNUSED,
 		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x HB_UNUSED, float to_y HB_UNUSED,
-		     void *user_data HB_UNUSED) {}
+		     தசம to_x HB_UNUSED, தசம to_y HB_UNUSED,
+		     வெறுமை *user_data HB_UNUSED) {}
 
-static void
-hb_draw_quadratic_to_nil (hb_draw_funcs_t *dfuncs, void *draw_data,
+நிலையான வெறுமை
+hb_draw_quadratic_to_nil (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 			  hb_draw_state_t *st,
-			  float control_x, float control_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  தசம control_x, தசம control_y,
+			  தசம to_x, தசம to_y,
+			  வெறுமை *user_data HB_UNUSED)
 {
   /* Compute in double precision, so that the result does not depend
    * on how the compiler evaluates float expressions. */
 #define HB_TWO_THIRD 0.66666666666666666666666667
-  double current_x = (double) st->current_x;
-  double current_y = (double) st->current_y;
-  double cx = (double) control_x;
-  double cy = (double) control_y;
-  double tx = (double) to_x;
-  double ty = (double) to_y;
+  இரட்டை current_x = (இரட்டை) st->current_x;
+  இரட்டை current_y = (இரட்டை) st->current_y;
+  இரட்டை cx = (இரட்டை) control_x;
+  இரட்டை cy = (இரட்டை) control_y;
+  இரட்டை tx = (இரட்டை) to_x;
+  இரட்டை ty = (இரட்டை) to_y;
   dfuncs->emit_cubic_to (draw_data, *st,
-			 (float) (current_x + (cx - current_x) * HB_TWO_THIRD),
-			 (float) (current_y + (cy - current_y) * HB_TWO_THIRD),
-			 (float) (tx + (cx - tx) * HB_TWO_THIRD),
-			 (float) (ty + (cy - ty) * HB_TWO_THIRD),
+			 (தசம) (current_x + (cx - current_x) * HB_TWO_THIRD),
+			 (தசம) (current_y + (cy - current_y) * HB_TWO_THIRD),
+			 (தசம) (tx + (cx - tx) * HB_TWO_THIRD),
+			 (தசம) (ty + (cy - ty) * HB_TWO_THIRD),
 			 to_x, to_y);
 #undef HB_TWO_THIRD
 }
 
-static void
-hb_draw_cubic_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+நிலையான வெறுமை
+hb_draw_cubic_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, வெறுமை *draw_data HB_UNUSED,
 		      hb_draw_state_t *st HB_UNUSED,
-		      float control1_x HB_UNUSED, float control1_y HB_UNUSED,
-		      float control2_x HB_UNUSED, float control2_y HB_UNUSED,
-		      float to_x HB_UNUSED, float to_y HB_UNUSED,
-		      void *user_data HB_UNUSED) {}
+		      தசம control1_x HB_UNUSED, தசம control1_y HB_UNUSED,
+		      தசம control2_x HB_UNUSED, தசம control2_y HB_UNUSED,
+		      தசம to_x HB_UNUSED, தசம to_y HB_UNUSED,
+		      வெறுமை *user_data HB_UNUSED) {}
 
-static void
-hb_draw_close_path_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+நிலையான வெறுமை
+hb_draw_close_path_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, வெறுமை *draw_data HB_UNUSED,
 			hb_draw_state_t *st HB_UNUSED,
-			void *user_data HB_UNUSED) {}
+			வெறுமை *user_data HB_UNUSED) {}
 
-static hb_bool_t
-hb_draw_set_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+நிலையான hb_bool_t
+hb_draw_set_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, வெறுமை *draw_data HB_UNUSED,
 			int64_t budget HB_UNUSED,
-			void *user_data HB_UNUSED) { return false; }
+			வெறுமை *user_data HB_UNUSED) { திரும்பு பொய்; }
 
-static int64_t
-hb_draw_get_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-			void *user_data HB_UNUSED) { return HB_BUDGET_DEFAULT; }
+நிலையான int64_t
+hb_draw_get_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, வெறுமை *draw_data HB_UNUSED,
+			வெறுமை *user_data HB_UNUSED) { திரும்பு HB_BUDGET_DEFAULT; }
 
-static int64_t *
-hb_draw_get_budget_remaining_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-				  void *user_data HB_UNUSED) { return nullptr; }
+நிலையான int64_t *
+hb_draw_get_budget_remaining_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, வெறுமை *draw_data HB_UNUSED,
+				  வெறுமை *user_data HB_UNUSED) { திரும்பு nullptr; }
 
 
-static bool
+நிலையான தருக்க
 _hb_draw_funcs_set_preamble (hb_draw_funcs_t    *dfuncs,
-			     bool                func_is_null,
-			     void              **user_data,
+			     தருக்க                func_is_null,
+			     வெறுமை              **user_data,
 			     hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (dfuncs))
+  எனில் (hb_object_is_immutable (dfuncs))
   {
-    if (*destroy)
+    எனில் (*destroy)
       (*destroy) (*user_data);
-    return false;
+    திரும்பு பொய்;
   }
 
-  if (func_is_null)
+  எனில் (func_is_null)
   {
-    if (*destroy)
+    எனில் (*destroy)
       (*destroy) (*user_data);
     *destroy = nullptr;
     *user_data = nullptr;
   }
 
-  return true;
+  திரும்பு உண்மை;
 }
 
-static bool
-_hb_draw_funcs_set_middle (hb_draw_funcs_t   *dfuncs,
-			   void              *user_data,
+நிலையான தருக்க
+hb_draw_funcs_set_நடு (hb_draw_funcs_t   *dfuncs,
+			   வெறுமை              *user_data,
 			   hb_destroy_func_t  destroy)
 {
   auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+    எனில் (destroy) destroy (user_data);
   });
 
-  if (user_data && !dfuncs->user_data)
+  எனில் (user_data && !dfuncs->user_data)
   {
-    dfuncs->user_data = (decltype (dfuncs->user_data)) hb_calloc (1, sizeof (*dfuncs->user_data));
-    if (unlikely (!dfuncs->user_data))
-      return false;
+    dfuncs->user_data = (decltype (dfuncs->user_data)) hb_calloc (1, அளவு (*dfuncs->user_data));
+    எனில் (unlikely (!dfuncs->user_data))
+      திரும்பு பொய்;
   }
-  if (destroy && !dfuncs->destroy)
+  எனில் (destroy && !dfuncs->destroy)
   {
-    dfuncs->destroy = (decltype (dfuncs->destroy)) hb_calloc (1, sizeof (*dfuncs->destroy));
-    if (unlikely (!dfuncs->destroy))
-      return false;
+    dfuncs->destroy = (decltype (dfuncs->destroy)) hb_calloc (1, அளவு (*dfuncs->destroy));
+    எனில் (unlikely (!dfuncs->destroy))
+      திரும்பு பொய்;
   }
 
   destroy_guard.release ();
-  return true;
+  திரும்பு உண்மை;
 }
 
 #define HB_DRAW_FUNC_IMPLEMENT(name)						\
 										\
-void										\
+வெறுமை										\
 hb_draw_funcs_set_##name##_func (hb_draw_funcs_t	 *dfuncs,		\
 				 hb_draw_##name##_func_t  func,			\
-				 void			 *user_data,		\
+				 வெறுமை			 *user_data,		\
 				 hb_destroy_func_t	  destroy)		\
 {										\
-  if (!_hb_draw_funcs_set_preamble (dfuncs, !func, &user_data, &destroy))\
-      return;                                                            \
+  எனில் (!_hb_draw_funcs_set_preamble (dfuncs, !func, &user_data, &destroy))\
+      திரும்பு;                                                            \
 										\
-  if (dfuncs->destroy && dfuncs->destroy->name)					\
+  எனில் (dfuncs->destroy && dfuncs->destroy->name)					\
     dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name); \
 									 \
-  if (!_hb_draw_funcs_set_middle (dfuncs, user_data, destroy))           \
-      return;                                                            \
+  எனில் (!hb_draw_funcs_set_நடு (dfuncs, user_data, destroy))           \
+      திரும்பு;                                                            \
 									\
-  if (func)								\
+  எனில் (func)								\
     dfuncs->func.name = func;						\
-  else									\
+  இல்லையெனில்									\
     dfuncs->func.name = hb_draw_##name##_nil;				\
 									\
-  if (dfuncs->user_data)						\
+  எனில் (dfuncs->user_data)						\
     dfuncs->user_data->name = user_data;				\
-  if (dfuncs->destroy)							\
+  எனில் (dfuncs->destroy)							\
     dfuncs->destroy->name = destroy;					\
 }
 
@@ -209,12 +209,12 @@ hb_draw_funcs_t *
 hb_draw_funcs_create ()
 {
   hb_draw_funcs_t *dfuncs;
-  if (unlikely (!(dfuncs = hb_object_create<hb_draw_funcs_t> ())))
-    return const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
+  எனில் (unlikely (!(dfuncs = hb_object_create<hb_draw_funcs_t> ())))
+    திரும்பு const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
 
   dfuncs->func =  Null (hb_draw_funcs_t).func;
 
-  return dfuncs;
+  திரும்பு dfuncs;
 }
 
 DEFINE_NULL_INSTANCE (hb_draw_funcs_t) =
@@ -240,7 +240,7 @@ DEFINE_NULL_INSTANCE (hb_draw_funcs_t) =
 hb_draw_funcs_t *
 hb_draw_funcs_get_empty ()
 {
-  return const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
+  திரும்பு const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
 }
 
 /**
@@ -260,7 +260,7 @@ hb_draw_funcs_get_empty ()
 hb_draw_funcs_t *
 hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs)
 {
-  return hb_object_reference (dfuncs);
+  திரும்பு hb_object_reference (dfuncs);
 }
 
 /**
@@ -273,15 +273,15 @@ hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs)
  *
  * Since: 4.0.0
  **/
-void
+வெறுமை
 hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs)
 {
-  if (!hb_object_destroy (dfuncs)) return;
+  எனில் (!hb_object_destroy (dfuncs)) திரும்பு;
 
-  if (dfuncs->destroy)
+  எனில் (dfuncs->destroy)
   {
 #define HB_DRAW_FUNC_IMPLEMENT(name) \
-    if (dfuncs->destroy->name) dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name);
+    எனில் (dfuncs->destroy->name) dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name);
       HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
   }
@@ -308,12 +308,12 @@ hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs)
  **/
 hb_bool_t
 hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t *key,
-			     void *              data,
+			     hb_user_data_சாவி_t *key,
+			     வெறுமை *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (dfuncs, key, data, destroy, replace);
+  திரும்பு hb_object_set_user_data (dfuncs, key, data, destroy, replace);
 }
 
 /**
@@ -328,11 +328,11 @@ hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
  *
  * Since: 7.0.0
  **/
-void *
-hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t       *key)
+வெறுமை *
+hb_draw_funcs_get_user_data (மாறிலி hb_draw_funcs_t *dfuncs,
+			     hb_user_data_சாவி_t       *key)
 {
-  return hb_object_get_user_data (dfuncs, key);
+  திரும்பு hb_object_get_user_data (dfuncs, key);
 }
 
 /**
@@ -343,11 +343,11 @@ hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
  *
  * Since: 4.0.0
  **/
-void
+வெறுமை
 hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs)
 {
-  if (hb_object_is_immutable (dfuncs))
-    return;
+  எனில் (hb_object_is_immutable (dfuncs))
+    திரும்பு;
 
   hb_object_make_immutable (dfuncs);
 }
@@ -365,7 +365,7 @@ hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs)
 hb_bool_t
 hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs)
 {
-  return hb_object_is_immutable (dfuncs);
+  திரும்பு hb_object_is_immutable (dfuncs);
 }
 
 /**
@@ -382,9 +382,9 @@ hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs)
  * Since: 14.5.0
  **/
 hb_bool_t
-hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data, int64_t budget)
+hb_draw_set_budget (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data, int64_t budget)
 {
-  return dfuncs->set_budget (draw_data, budget);
+  திரும்பு dfuncs->set_budget (draw_data, budget);
 }
 
 /**
@@ -399,9 +399,9 @@ hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data, int64_t budget)
  * Since: 14.5.0
  **/
 int64_t
-hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data)
+hb_draw_get_budget (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data)
 {
-  return dfuncs->get_budget (draw_data);
+  திரும்பு dfuncs->get_budget (draw_data);
 }
 
 /**
@@ -419,14 +419,14 @@ hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data)
  * Since: 14.5.0
  **/
 int64_t
-hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data)
+hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data)
 {
   int64_t *remaining = dfuncs->get_budget_remaining_ptr (draw_data);
-  if (remaining)
-    return *remaining;
+  எனில் (remaining)
+    திரும்பு *remaining;
 
   int64_t budget = dfuncs->get_budget (draw_data);
-  return budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
+  திரும்பு budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
 }
 
 
@@ -442,10 +442,10 @@ hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data)
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+வெறுமை
+hb_draw_move_to (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y)
+		 தசம to_x, தசம to_y)
 {
   dfuncs->move_to (draw_data, *st,
 		   to_x, to_y);
@@ -463,12 +463,12 @@ hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+வெறுமை
+hb_draw_வரி_to (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y)
+		 தசம to_x, தசம to_y)
 {
-  dfuncs->line_to (draw_data, *st,
+  dfuncs->வரி_to (draw_data, *st,
 		   to_x, to_y);
 }
 
@@ -486,11 +486,11 @@ hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+வெறுமை
+hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 		      hb_draw_state_t *st,
-		      float control_x, float control_y,
-		      float to_x, float to_y)
+		      தசம control_x, தசம control_y,
+		      தசம to_x, தசம to_y)
 {
   dfuncs->quadratic_to (draw_data, *st,
 			control_x, control_y,
@@ -513,12 +513,12 @@ hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+வெறுமை
+hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 		  hb_draw_state_t *st,
-		  float control1_x, float control1_y,
-		  float control2_x, float control2_y,
-		  float to_x, float to_y)
+		  தசம control1_x, தசம control1_y,
+		  தசம control2_x, தசம control2_y,
+		  தசம to_x, தசம to_y)
 {
   dfuncs->cubic_to (draw_data, *st,
 		    control1_x, control1_y,
@@ -536,8 +536,8 @@ hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
+வெறுமை
+hb_draw_close_path (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 		    hb_draw_state_t *st)
 {
   dfuncs->close_path (draw_data, *st);
@@ -570,66 +570,66 @@ hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
+வெறுமை
+hb_draw_வரி (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 	      hb_draw_state_t *st,
-	      float x0, float y0, float w0,
-	      float x1, float y1, float w1,
-	      hb_draw_line_cap_t cap)
+	      தசம x0, தசம y0, தசம w0,
+	      தசம x1, தசம y1, தசம w1,
+	      hb_draw_வரி_cap_t cap)
 {
-  if (std::isnan (w1)) w1 = w0;
-  float dx = x1 - x0, dy = y1 - y0;
-  float len = sqrtf (dx * dx + dy * dy);
-  if (len <= 0.f)
-    return;
+  எனில் (std::isnan (w1)) w1 = w0;
+  தசம dx = x1 - x0, dy = y1 - y0;
+  தசம len = sqrtf (dx * dx + dy * dy);
+  எனில் (len <= 0.f)
+    திரும்பு;
   /* Unit tangent and normal to the line direction. */
-  float tx = dx / len;
-  float ty = dy / len;
-  float nx = -ty;
-  float ny =  tx;
-  float h0 = 0.5f * w0;
-  float h1 = 0.5f * w1;
+  தசம tx = dx / len;
+  தசம ty = dy / len;
+  தசம nx = -ty;
+  தசம ny =  tx;
+  தசம h0 = 0.5f * w0;
+  தசம h1 = 0.5f * w1;
   /* Square caps: extend each endpoint outward along the line
    * tangent by half its local stroke width. */
-  if (cap == HB_DRAW_LINE_CAP_SQUARE)
+  எனில் (cap == HB_DRAW_வரி_CAP_SQUARE)
   {
     x0 -= tx * h0; y0 -= ty * h0;
     x1 += tx * h1; y1 += ty * h1;
   }
   /* Trapezoid corners (counter-clockwise). */
-  float ax = x0 + nx * h0, ay = y0 + ny * h0;
-  float bx = x1 + nx * h1, by = y1 + ny * h1;
-  float cx = x1 - nx * h1, cy = y1 - ny * h1;
-  float dx_ = x0 - nx * h0, dy_ = y0 - ny * h0;
+  தசம ax = x0 + nx * h0, ay = y0 + ny * h0;
+  தசம bx = x1 + nx * h1, by = y1 + ny * h1;
+  தசம cx = x1 - nx * h1, cy = y1 - ny * h1;
+  தசம dx_ = x0 - nx * h0, dy_ = y0 - ny * h0;
 
   hb_draw_move_to   (dfuncs, draw_data, st, ax, ay);
-  hb_draw_line_to   (dfuncs, draw_data, st, bx, by);
-  hb_draw_line_to   (dfuncs, draw_data, st, cx, cy);
-  hb_draw_line_to   (dfuncs, draw_data, st, dx_, dy_);
+  hb_draw_வரி_to   (dfuncs, draw_data, st, bx, by);
+  hb_draw_வரி_to   (dfuncs, draw_data, st, cx, cy);
+  hb_draw_வரி_to   (dfuncs, draw_data, st, dx_, dy_);
   hb_draw_close_path (dfuncs, draw_data, st);
 }
 
 /* Emit an axis-aligned rectangle as a single closed contour.
  * @ccw picks the winding direction (useful for cutting a hole
  * out of another rectangle in a stroked rect). */
-static void
-_hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
+நிலையான வெறுமை
+_hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 		       hb_draw_state_t *st,
-		       float x, float y, float w, float h,
-		       bool ccw)
+		       தசம x, தசம y, தசம w, தசம h,
+		       தருக்க ccw)
 {
   hb_draw_move_to (dfuncs, draw_data, st, x, y);
-  if (ccw)
+  எனில் (ccw)
   {
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
+    hb_draw_வரி_to (dfuncs, draw_data, st, x + w, y);
+    hb_draw_வரி_to (dfuncs, draw_data, st, x + w, y + h);
+    hb_draw_வரி_to (dfuncs, draw_data, st, x,     y + h);
   }
-  else
+  இல்லையெனில்
   {
-    hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y);
+    hb_draw_வரி_to (dfuncs, draw_data, st, x,     y + h);
+    hb_draw_வரி_to (dfuncs, draw_data, st, x + w, y + h);
+    hb_draw_வரி_to (dfuncs, draw_data, st, x + w, y);
   }
   hb_draw_close_path (dfuncs, draw_data, st);
 }
@@ -660,30 +660,30 @@ _hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
+வெறுமை
+hb_draw_rectangle (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 		   hb_draw_state_t *st,
-		   float x, float y,
-		   float w, float h,
-		   float stroke_width)
+		   தசம x, தசம y,
+		   தசம w, தசம h,
+		   தசம stroke_width)
 {
-  if (std::isnan (stroke_width))
+  எனில் (std::isnan (stroke_width))
   {
     /* Filled rectangle with zero area is nothing to draw. */
-    if (w == 0.f || h == 0.f)
-      return;
-    _hb_draw_rect_contour (dfuncs, draw_data, st, x, y, w, h, /*ccw*/ true);
-    return;
+    எனில் (w == 0.f || h == 0.f)
+      திரும்பு;
+    _hb_draw_rect_contour (dfuncs, draw_data, st, x, y, w, h, /*ccw*/ உண்மை);
+    திரும்பு;
   }
 
-  if (stroke_width <= 0.f || !std::isfinite (stroke_width))
-    return;
+  எனில் (stroke_width <= 0.f || !std::isfinite (stroke_width))
+    திரும்பு;
 
   /* Normalize to non-negative width/height so the stroke math
    * below (outer grows by sw, inner shrinks by sw) produces the
    * expected outer-contains-inner ring regardless of w/h signs. */
-  if (w < 0.f) { x += w; w = -w; }
-  if (h < 0.f) { y += h; h = -h; }
+  எனில் (w < 0.f) { x += w; w = -w; }
+  எனில் (h < 0.f) { y += h; h = -h; }
   /* w or h == 0 is still meaningful when stroking: a stroked
    * zero-height rect is a horizontal line of length w; zero
    * width is a vertical line.  Both degenerate to a single
@@ -691,36 +691,36 @@ hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
 
   /* Stroke is centered on the edge: outer contour grows by
    * stroke_width/2, inner contour shrinks by the same. */
-  float s = 0.5f * stroke_width;
+  தசம s = 0.5f * stroke_width;
   /* Outer rectangle (CCW = adds coverage). */
   _hb_draw_rect_contour (dfuncs, draw_data, st,
 			 x - s, y - s,
 			 w + stroke_width, h + stroke_width,
-			 /*ccw*/ true);
+			 /*ccw*/ உண்மை);
   /* Inner rectangle (CW = removes coverage for the hole). */
-  float iw = w - stroke_width;
-  float ih = h - stroke_width;
-  if (iw > 0.f && ih > 0.f)
+  தசம iw = w - stroke_width;
+  தசம ih = h - stroke_width;
+  எனில் (iw > 0.f && ih > 0.f)
     _hb_draw_rect_contour (dfuncs, draw_data, st,
 			   x + s, y + s, iw, ih,
-			   /*ccw*/ false);
+			   /*ccw*/ பொய்);
 }
 
 /* Circle approximated by 4 cubic Beziers, one per quadrant.
  * The magic constant 0.5522847498307936 is
  *   (4/3) * (sqrt(2) - 1)
  * and minimizes the max radial error to ~2.7e-4 of r. */
-static void
-_hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
+நிலையான வெறுமை
+_hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 			 hb_draw_state_t *st,
-			 float cx, float cy, float r,
-			 bool ccw)
+			 தசம cx, தசம cy, தசம r,
+			 தருக்க ccw)
 {
-  static const float k = 0.5522847498307936f;
-  float ck = r * k;
+  நிலையான மாறிலி தசம k = 0.5522847498307936f;
+  தசம ck = r * k;
 
   hb_draw_move_to (dfuncs, draw_data, st, cx + r, cy);
-  if (ccw)
+  எனில் (ccw)
   {
     hb_draw_cubic_to (dfuncs, draw_data, st,
 		      cx + r, cy + ck,
@@ -739,7 +739,7 @@ _hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
 		      cx + r,  cy - ck,
 		      cx + r,  cy);
   }
-  else
+  இல்லையெனில்
   {
     hb_draw_cubic_to (dfuncs, draw_data, st,
 		      cx + r, cy - ck,
@@ -779,64 +779,64 @@ _hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_circle (hb_draw_funcs_t *dfuncs, void *draw_data,
+வெறுமை
+hb_draw_circle (hb_draw_funcs_t *dfuncs, வெறுமை *draw_data,
 		hb_draw_state_t *st,
-		float cx, float cy,
-		float r,
-		float stroke_width)
+		தசம cx, தசம cy,
+		தசம r,
+		தசம stroke_width)
 {
-  if (r <= 0.f)
-    return;
+  எனில் (r <= 0.f)
+    திரும்பு;
 
-  if (std::isnan (stroke_width))
+  எனில் (std::isnan (stroke_width))
   {
-    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r, /*ccw*/ true);
-    return;
+    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r, /*ccw*/ உண்மை);
+    திரும்பு;
   }
 
-  if (stroke_width <= 0.f || !std::isfinite (stroke_width))
-    return;
+  எனில் (stroke_width <= 0.f || !std::isfinite (stroke_width))
+    திரும்பு;
 
-  float s = 0.5f * stroke_width;
-  _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r + s, /*ccw*/ true);
-  float ir = r - s;
-  if (ir > 0.f)
-    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, ir, /*ccw*/ false);
+  தசம s = 0.5f * stroke_width;
+  _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r + s, /*ccw*/ உண்மை);
+  தசம ir = r - s;
+  எனில் (ir > 0.f)
+    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, ir, /*ccw*/ பொய்);
 }
 
 
-static void
+நிலையான வெறுமை
 hb_draw_extents_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *data,
+			 வெறுமை *data,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 தசம to_x, தசம to_y,
+			 வெறுமை *user_data HB_UNUSED)
 {
   hb_extents_t<> *extents = (hb_extents_t<> *) data;
 
   extents->add_point (to_x, to_y);
 }
 
-static void
-hb_draw_extents_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *data,
+நிலையான வெறுமை
+hb_draw_extents_வரி_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+			 வெறுமை *data,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 தசம to_x, தசம to_y,
+			 வெறுமை *user_data HB_UNUSED)
 {
   hb_extents_t<> *extents = (hb_extents_t<> *) data;
 
   extents->add_point (to_x, to_y);
 }
 
-static void
+நிலையான வெறுமை
 hb_draw_extents_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			      void *data,
+			      வெறுமை *data,
 			      hb_draw_state_t *st,
-			      float control_x, float control_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      தசம control_x, தசம control_y,
+			      தசம to_x, தசம to_y,
+			      வெறுமை *user_data HB_UNUSED)
 {
   hb_extents_t<> *extents = (hb_extents_t<> *) data;
 
@@ -844,14 +844,14 @@ hb_draw_extents_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   extents->add_point (to_x, to_y);
 }
 
-static void
+நிலையான வெறுமை
 hb_draw_extents_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data,
+			  வெறுமை *data,
 			  hb_draw_state_t *st,
-			  float control1_x, float control1_y,
-			  float control2_x, float control2_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  தசம control1_x, தசம control1_y,
+			  தசம control2_x, தசம control2_y,
+			  தசம to_x, தசம to_y,
+			  வெறுமை *user_data HB_UNUSED)
 {
   hb_extents_t<> *extents = (hb_extents_t<> *) data;
 
@@ -860,16 +860,16 @@ hb_draw_extents_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   extents->add_point (to_x, to_y);
 }
 
-static inline void free_static_draw_extents_funcs ();
+நிலையான உள்வரி வெறுமை free_static_draw_extents_funcs ();
 
-static struct hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_draw_extents_funcs_lazy_loader_t>
+நிலையான கட்டமைப்பு hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_draw_extents_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  நிலையான hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func (funcs, hb_draw_extents_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_draw_extents_line_to, nullptr, nullptr);
+    hb_draw_funcs_set_வரி_to_func (funcs, hb_draw_extents_வரி_to, nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_draw_extents_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func (funcs, hb_draw_extents_cubic_to, nullptr, nullptr);
 
@@ -877,12 +877,12 @@ static struct hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<
 
     hb_atexit (free_static_draw_extents_funcs);
 
-    return funcs;
+    திரும்பு funcs;
   }
 } static_draw_extents_funcs;
 
-static inline
-void free_static_draw_extents_funcs ()
+நிலையான உள்வரி
+வெறுமை free_static_draw_extents_funcs ()
 {
   static_draw_extents_funcs.free_instance ();
 }
@@ -890,7 +890,7 @@ void free_static_draw_extents_funcs ()
 hb_draw_funcs_t *
 hb_draw_extents_get_funcs ()
 {
-  return static_draw_extents_funcs.get_unconst ();
+  திரும்பு static_draw_extents_funcs.get_unconst ();
 }
 
 

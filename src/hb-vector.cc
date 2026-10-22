@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
+#அந்தர்பாவ "hb-machinery.hh"
+#அந்தர்பாவ "hb-vector-buf.hh"
 
 /**
  * SECTION:hb-vector
@@ -74,23 +74,23 @@
  * painted as a single uniform layer.
  **/
 
-struct hb_vector_decimal_point_t
+கட்டமைப்பு hb_vector_decimal_point_t
 {
-  char value[8];
+  எழுத்து value[8];
 };
 
-static hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
+நிலையான hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
 
-static inline void free_static_svg_decimal_point ();
+நிலையான உள்வரி வெறுமை free_static_svg_decimal_point ();
 
-static struct hb_vector_decimal_point_lazy_loader_t
+நிலையான கட்டமைப்பு hb_vector_decimal_point_lazy_loader_t
   : hb_lazy_loader_t<hb_vector_decimal_point_t, hb_vector_decimal_point_lazy_loader_t>
 {
-  static hb_vector_decimal_point_t *create ()
+  நிலையான hb_vector_decimal_point_t *create ()
   {
-    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, அளவு (hb_vector_decimal_point_t));
+    எனில் (!p)
+      திரும்பு nullptr;
 
     p->value[0] = '.';
     p->value[1] = '\0';
@@ -99,37 +99,37 @@ static struct hb_vector_decimal_point_lazy_loader_t
     lconv *lc = nullptr;
 #ifdef HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    எனில் (current_locale)
       lc = localeconv_l (current_locale);
 #endif
-    if (!lc)
+    எனில் (!lc)
       lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+    எனில் (lc && lc->decimal_point && lc->decimal_point[0])
     {
-      strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
-      p->value[sizeof (p->value) - 1] = '\0';
+      strncpy (p->value, lc->decimal_point, அளவு (p->value) - 1);
+      p->value[அளவு (p->value) - 1] = '\0';
     }
 #endif
 
     hb_atexit (free_static_svg_decimal_point);
-    return p;
+    திரும்பு p;
   }
 
-  static void destroy (hb_vector_decimal_point_t *p)
+  நிலையான வெறுமை destroy (hb_vector_decimal_point_t *p)
   { hb_free (p); }
 
-  static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
+  நிலையான மாறிலி hb_vector_decimal_point_t *get_null ()
+  { திரும்பு &hb_vector_decimal_point_default; }
 } static_svg_decimal_point;
 
-static inline void
+நிலையான உள்வரி வெறுமை
 free_static_svg_decimal_point ()
 {
   static_svg_decimal_point.free_instance ();
 }
 
-const char *
-hb_vector_decimal_point_get (void)
+மாறிலி எழுத்து *
+hb_vector_decimal_point_get (வெறுமை)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  திரும்பு static_svg_decimal_point.get_unconst ()->value;
 }

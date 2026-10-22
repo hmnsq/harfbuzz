@@ -24,16 +24,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include <hb.h>
-#include <hb-ot.h>
+#அந்தர்பாவ <hb.h>
+#அந்தர்பாவ <hb-ot.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#அந்தர்பாவ <stdlib.h>
+#அந்தர்பாவ <stdio.h>
 
-int
-main (int argc, char **argv)
+முழு
+முதன்மை (முழு argc, எழுத்து **argv)
 {
-  if (argc != 3) {
+  எனில் (argc != 3) {
     fprintf (stderr, "usage: %s font-file text\n", argv[0]);
     exit (1);
   }
@@ -49,32 +49,32 @@ main (int argc, char **argv)
 
   hb_buffer_add_utf8 (buffer, argv[2], -1, 0, -1);
   hb_buffer_guess_segment_properties (buffer);
-  hb_shape (font, buffer, NULL, 0);
+  hb_shape (font, buffer, வெற்று, 0);
 
   hb_tag_t features[] = {HB_TAG('a','a','l','t'), HB_TAG_NONE};
   hb_set_t *lookup_indexes = hb_set_create ();
   hb_ot_layout_collect_lookups (face,
 				HB_OT_TAG_GSUB,
-				NULL, NULL,
+				வெற்று, வெற்று,
 				features,
 				lookup_indexes);
   printf ("lookups %u\n", hb_set_get_population (lookup_indexes));
 
-  unsigned count;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  unsigned மொத்தம்;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &மொத்தம்);
+  க்கு (unsigned i = 0; i < மொத்தம்; i++)
   {
-    unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
+    unsigned alt_மொத்தம் = 0;
+    க்கு (hb_codepoint_t lookup_index = HB_SET_மதிப்பு_INVALID;
 	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
+      எனில் ((alt_மொத்தம் = hb_ot_layout_lookup_get_glyph_alternates (face,
 								 lookup_index,
 								 info[i].codepoint,
 								 0,
-								 NULL,
-								 NULL)))
-        break;
-    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
+								 வெற்று,
+								 வெற்று)))
+        நிறுத்து;
+    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_மொத்தம்);
   }
 
   hb_set_destroy (lookup_indexes);
@@ -82,5 +82,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  திரும்பு 0;
 }

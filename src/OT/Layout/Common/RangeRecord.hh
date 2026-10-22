@@ -29,52 +29,52 @@
 #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
 #define OT_LAYOUT_COMMON_RANGERECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ Common {
 
-template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+template <typename Types, typename மதிப்பு = HBUINT16>
+கட்டமைப்பு RangeRecord
 {
   typename Types::HBGlyphID     first;          /* First GlyphID in the range */
   typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  மதிப்பு                         value;          /*மதிப்பு*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_SIZE_STATIC (2 * Types::size + மதிப்பு::static_size);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  முழு cmp (hb_codepoint_t g) மாறிலி
+  { திரும்பு g < first ? -1 : g <= last ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
-    const RangeRecord *a = (const RangeRecord *) pa;
-    const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+  HB_INTERNAL நிலையான முழு cmp_range (மாறிலி வெறுமை *pa, மாறிலி வெறுமை *pb) {
+    மாறிலி RangeRecord *a = (மாறிலி RangeRecord *) pa;
+    மாறிலி RangeRecord *b = (மாறிலி RangeRecord *) pb;
+    எனில் (a->first < b->first) திரும்பு -1;
+    எனில் (a->first > b->first) திரும்பு +1;
+    எனில் (a->last < b->last) திரும்பு -1;
+    எனில் (a->last > b->last) திரும்பு +1;
+    எனில் (a->value < b->value) திரும்பு -1;
+    எனில் (a->value > b->value) திரும்பு +1;
+    திரும்பு 0;
   }
 
-  unsigned get_population () const
+  unsigned get_population () மாறிலி
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    எனில் (unlikely (last < first)) திரும்பு 0;
+    திரும்பு (last - first + 1);
   }
 
-  bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  தருக்க intersects (மாறிலி hb_set_t &glyphs) மாறிலி
+  { திரும்பு glyphs.intersects (first, last); }
 
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  தருக்க collect_coverage (set_t *glyphs) மாறிலி
+  { திரும்பு glyphs->add_range (first, last); }
 };
 
 }
@@ -85,11 +85,11 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+வெளி HB_INTERNAL மாறிலி unsigned எழுத்து _hb_Null_OT_RangeRecord[9];
+template <typename Spec, typename மதிப்பு>
+கட்டமைப்பு Null<OT::Layout::Common::RangeRecord<Spec, மதிப்பு>> {
+  நிலையான OT::Layout::Common::RangeRecord<Spec, மதிப்பு> மாறிலி & get_null () {
+    திரும்பு *reinterpret_cast<மாறிலி OT::Layout::Common::RangeRecord<Spec, மதிப்பு> *> (_hb_Null_OT_RangeRecord);
   }
 };
 

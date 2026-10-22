@@ -1,93 +1,93 @@
 #ifndef OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 #define OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 
-#include "ValueFormat.hh"
+#அந்தர்பாவ "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ GPOS_impl {
 
 
-struct pair_value_record_context_t
+கட்டமைப்பு pair_மதிப்பு_record_context_t
 {
-  const ValueBase     *base;
-  const ValueFormat   *valueFormats;
-  const ValueFormat   *newFormats;
+  மாறிலி மதிப்பு_Base     *base;
+  மாறிலி மதிப்பு_Format   *மதிப்பு_Formats;
+  மாறிலி மதிப்பு_Format   *newFormats;
   unsigned            len1; /* valueFormats[0].get_len() */
-  const hb_map_t      *glyph_map;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map;
+  மாறிலி hb_map_t      *glyph_map;
+  மாறிலி hb_hashmap_t<unsigned, hb_pair_t<unsigned, முழு>> *layout_variation_idx_delta_map;
 
-  void copy_values (hb_serialize_context_t *s, const Value *values) const
+  வெறுமை copy_மதிப்புகள் (hb_serialize_context_t *s, மாறிலி மதிப்பு *values) மாறிலி
   {
-    valueFormats[0].copy_values (s, newFormats[0], base, values,
+    மதிப்பு_Formats[0].copy_மதிப்புகள் (s, newFormats[0], base, values,
                                 layout_variation_idx_delta_map);
-    valueFormats[1].copy_values (s, newFormats[1], base, values + len1,
+    மதிப்பு_Formats[1].copy_மதிப்புகள் (s, newFormats[1], base, values + len1,
                                 layout_variation_idx_delta_map);
   }
 };
 
 template <typename Types>
-struct PairValueRecord
+கட்டமைப்பு Pair_மதிப்பு_Record
 {
   template <typename Types2>
-  friend struct PairSet;
+  friend கட்டமைப்பு PairSet;
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   typename Types::HBGlyphID
 	        secondGlyph;            /* GlyphID of second glyph in the
                                          * pair--first glyph is listed in the
                                          * Coverage table */
-  ValueRecord   values;                 /* Positioning data for the first glyph
+  மதிப்பு_Record   values;                 /* Positioning data for the first glyph
                                          * followed by for second glyph */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (Types::HBGlyphID::static_size, values);
 
-  int cmp (hb_codepoint_t k) const
-  { return secondGlyph.cmp (k); }
+  முழு cmp (hb_codepoint_t k) மாறிலி
+  { திரும்பு secondGlyph.cmp (k); }
 
-  bool subset (hb_subset_context_t *c,
-               pair_value_record_context_t *closure) const
+  தருக்க subset (hb_subset_context_t *c,
+               pair_மதிப்பு_record_context_t *closure) மாறிலி
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     auto *s = c->serializer;
-    auto *out = s->start_embed (*this);
-    if (unlikely (!s->extend_min (out))) return_trace (false);
+    auto *out = s->start_embed (*இது);
+    எனில் (unlikely (!s->extend_min (out))) return_trace (பொய்);
 
     out->secondGlyph = (*closure->glyph_map)[secondGlyph];
 
-    closure->copy_values (s, values);
+    closure->copy_மதிப்புகள் (s, values);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats,
-                                  const ValueBase *base) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  மாறிலி மதிப்பு_Format *மதிப்பு_Formats,
+                                  மாறிலி மதிப்பு_Base *base) மாறிலி
   {
-    unsigned record1_len = valueFormats[0].get_len ();
-    unsigned record2_len = valueFormats[1].get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (record1_len + record2_len);
+    unsigned record1_len = மதிப்பு_Formats[0].get_len ();
+    unsigned record2_len = மதிப்பு_Formats[1].get_len ();
+    மாறிலி hb_array_t<மாறிலி மதிப்பு> மதிப்புகள்_array = values.as_array (record1_len + record2_len);
 
-    if (valueFormats[0].has_device ())
-      valueFormats[0].collect_variation_indices (c, base, values_array.sub_array (0, record1_len));
+    எனில் (மதிப்பு_Formats[0].has_device ())
+      மதிப்பு_Formats[0].collect_variation_indices (c, base, மதிப்புகள்_array.sub_array (0, record1_len));
 
-    if (valueFormats[1].has_device ())
-      valueFormats[1].collect_variation_indices (c, base, values_array.sub_array (record1_len, record2_len));
+    எனில் (மதிப்பு_Formats[1].has_device ())
+      மதிப்பு_Formats[1].collect_variation_indices (c, base, மதிப்புகள்_array.sub_array (record1_len, record2_len));
   }
 
-  bool intersects (const hb_set_t& glyphset) const
+  தருக்க intersects (மாறிலி hb_set_t& glyphset) மாறிலி
   {
-    return glyphset.has(secondGlyph);
+    திரும்பு glyphset.has(secondGlyph);
   }
 
-  const Value* get_values_1 () const
+  மாறிலி மதிப்பு* get_மதிப்புகள்_1 () மாறிலி
   {
-    return &values[0];
+    திரும்பு &values[0];
   }
 
-  const Value* get_values_2 (ValueFormat format1) const
+  மாறிலி மதிப்பு* get_மதிப்புகள்_2 (மதிப்பு_Format format1) மாறிலி
   {
-    return &values[format1.get_len ()];
+    திரும்பு &values[format1.get_len ()];
   }
 };
 

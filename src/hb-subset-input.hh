@@ -24,22 +24,22 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_INPUT_HH
-#define HB_SUBSET_INPUT_HH
+#ifndef HB_SUBSET_உள்ளீடு_HH
+#define HB_SUBSET_உள்ளீடு_HH
 
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-cplusplus.hh"
-#include "hb-font.hh"
-#include "hb-subset-instancer-solver.hh"
+#அந்தர்பாவ "hb-subset.h"
+#அந்தர்பாவ "hb-map.hh"
+#அந்தர்பாவ "hb-set.hh"
+#அந்தர்பாவ "hb-cplusplus.hh"
+#அந்தர்பாவ "hb-font.hh"
+#அந்தர்பாவ "hb-subset-instancer-solver.hh"
 
-struct hb_ot_name_record_ids_t
+கட்டமைப்பு hb_ot_name_record_ids_t
 {
-  hb_ot_name_record_ids_t () = default;
+  hb_ot_name_record_ids_t () = இயல்பு;
   hb_ot_name_record_ids_t (unsigned platform_id_,
                            unsigned encoding_id_,
                            unsigned language_id_,
@@ -49,25 +49,25 @@ struct hb_ot_name_record_ids_t
       language_id (language_id_),
       name_id (name_id_) {}
 
-  bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  தருக்க operator != (மாறிலி hb_ot_name_record_ids_t o) மாறிலி
+  { திரும்பு !(*இது == o); }
 
-  inline bool operator == (const hb_ot_name_record_ids_t& o) const
+  உள்வரி தருக்க operator == (மாறிலி hb_ot_name_record_ids_t& o) மாறிலி
   {
-    return platform_id == o.platform_id &&
+    திரும்பு platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
   }
 
-  inline uint32_t hash () const
+  உள்வரி uint32_t hash () மாறிலி
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (platform_id);
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    திரும்பு current;
   }
 
   unsigned platform_id;
@@ -76,28 +76,28 @@ struct hb_ot_name_record_ids_t
   unsigned name_id;
 };
 
-typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
+வகைவரை கட்டமைப்பு hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
 
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+கட்டமைப்பு hb_subset_உள்ளீடு_t
 {
-  HB_INTERNAL hb_subset_input_t ();
+  HB_INTERNAL hb_subset_உள்ளீடு_t ();
 
-  ~hb_subset_input_t ()
+  ~hb_subset_உள்ளீடு_t ()
   {
     sets.~sets_t ();
 
 #ifdef HB_EXPERIMENTAL_API
-    for (auto _ : name_table_overrides.values ())
+    க்கு (auto _ : name_table_overrides.values ())
       _.fini ();
 #endif
   }
 
   hb_object_header_t header;
 
-  struct sets_t {
+  கட்டமைப்பு sets_t {
     hb::shared_ptr<hb_set_t> glyphs;
     hb::shared_ptr<hb_set_t> unicodes;
     hb::shared_ptr<hb_set_t> no_subset_tables;
@@ -108,16 +108,16 @@ struct hb_subset_input_t
     hb::shared_ptr<hb_set_t> layout_scripts;
   };
 
-  union {
+  ஒன்றிப்பு {
     sets_t sets;
-    hb::shared_ptr<hb_set_t> set_ptrs[sizeof (sets_t) / sizeof (hb_set_t*)];
+    hb::shared_ptr<hb_set_t> set_ptrs[அளவு (sets_t) / அளவு (hb_set_t*)];
   };
 
   unsigned flags;
-  bool attach_accelerator_data = false;
+  தருக்க attach_accelerator_data = பொய்;
 
   // If set loca format will always be the long version.
-  bool force_long_loca = false;
+  தருக்க force_long_loca = பொய்;
 
   hb_hashmap_t<hb_tag_t, Triple> axes_location;
   hb_map_t glyph_map;
@@ -125,25 +125,25 @@ struct hb_subset_input_t
   hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
 #endif
 
-  inline unsigned num_sets () const
+  உள்வரி unsigned இலக்கம்_sets () மாறிலி
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    திரும்பு அளவு (set_ptrs) / அளவு (hb_set_t*);
   }
 
-  inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
+  உள்வரி hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    திரும்பு hb_array (set_ptrs);
   }
 
-  bool in_error () const
+  தருக்க in_error () மாறிலி
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    க்கு (unsigned i = 0; i < இலக்கம்_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      எனில் (unlikely (set_ptrs[i]->in_error ()))
+        திரும்பு உண்மை;
     }
 
-    return axes_location.in_error ()
+    திரும்பு axes_location.in_error ()
 #ifdef HB_EXPERIMENTAL_API
 	|| name_table_overrides.in_error ()
 #endif

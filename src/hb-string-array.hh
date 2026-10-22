@@ -25,11 +25,11 @@
  */
 
 #ifndef HB_STRING_ARRAY_HH
-#if 0 /* Make checks happy. */
+#எனில் 0 /* Make checks happy. */
 #define HB_STRING_ARRAY_HH
 #endif
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 /* Based on Bruno Haible's code in Appendix B of Ulrich Drepper's dsohowto.pdf:
  * https://software.intel.com/sites/default/files/m/a/1/e/dsohowto.pdf */
@@ -39,41 +39,41 @@
 #define HB_STRING_ARRAY_OFFS_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgidx)
 #define HB_STRING_ARRAY_LENG_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _length)
 
-static const union HB_STRING_ARRAY_TYPE_NAME {
-  struct {
+நிலையான மாறிலி ஒன்றிப்பு HB_STRING_ARRAY_TYPE_NAME {
+  கட்டமைப்பு {
 /* I like to avoid storing the nul-termination byte since we don't need it,
  * but C++ does not allow that.
  * https://stackoverflow.com/q/28433862
  */
-#define HB_STR(s) char HB_PASTE (str, __LINE__)[sizeof (s)];
-#include HB_STRING_ARRAY_LIST
+#define HB_STR(s) எழுத்து HB_PASTE (str, __LINE__)[அளவு (s)];
+#அந்தர்பாவ HB_STRING_ARRAY_LIST
 #undef HB_STR
   } st;
-  char str[HB_VAR_ARRAY];
+  எழுத்து str[HB_VAR_ARRAY];
 }
 HB_STRING_ARRAY_POOL_NAME =
 {
   {
 #define HB_STR(s) s,
-#include HB_STRING_ARRAY_LIST
+#அந்தர்பாவ HB_STRING_ARRAY_LIST
 #undef HB_STR
   }
 };
-static const unsigned int HB_STRING_ARRAY_OFFS_NAME[] =
+நிலையான மாறிலி unsigned முழு HB_STRING_ARRAY_OFFS_NAME[] =
 {
-#define HB_STR(s) offsetof (union HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
-#include HB_STRING_ARRAY_LIST
+#define HB_STR(s) offsetof (ஒன்றிப்பு HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
+#அந்தர்பாவ HB_STRING_ARRAY_LIST
 #undef HB_STR
-  sizeof (HB_STRING_ARRAY_TYPE_NAME)
+  அளவு (HB_STRING_ARRAY_TYPE_NAME)
 };
 
-static const unsigned int HB_STRING_ARRAY_LENG_NAME = ARRAY_LENGTH_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
+நிலையான மாறிலி unsigned முழு HB_STRING_ARRAY_LENG_NAME = ARRAY_LENGTH_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
 
-static inline hb_bytes_t
-HB_STRING_ARRAY_NAME (unsigned int i)
+நிலையான உள்வரி hb_bytes_t
+HB_STRING_ARRAY_NAME (unsigned முழு i)
 {
-  assert (i < ARRAY_LENGTH (HB_STRING_ARRAY_OFFS_NAME) - 1);
-  return hb_bytes_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
+  ப்ரதிஜ்ஞா (i < ARRAY_LENGTH (HB_STRING_ARRAY_OFFS_NAME) - 1);
+  திரும்பு hb_bytes_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
 		     HB_STRING_ARRAY_OFFS_NAME[i + 1] - HB_STRING_ARRAY_OFFS_NAME[i] - 1);
 }
 

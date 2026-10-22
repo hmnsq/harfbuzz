@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-map.hh"
+#அந்தர்பாவ "hb-map.hh"
 
 
 /**
@@ -53,10 +53,10 @@ hb_map_create ()
 {
   hb_map_t *map;
 
-  if (!(map = hb_object_create<hb_map_t> ()))
-    return hb_map_get_empty ();
+  எனில் (!(map = hb_object_create<hb_map_t> ()))
+    திரும்பு hb_map_get_empty ();
 
-  return map;
+  திரும்பு map;
 }
 
 /**
@@ -71,7 +71,7 @@ hb_map_create ()
 hb_map_t *
 hb_map_get_empty ()
 {
-  return const_cast<hb_map_t *> (&Null (hb_map_t));
+  திரும்பு const_cast<hb_map_t *> (&Null (hb_map_t));
 }
 
 /**
@@ -87,7 +87,7 @@ hb_map_get_empty ()
 hb_map_t *
 hb_map_reference (hb_map_t *map)
 {
-  return hb_object_reference (map);
+  திரும்பு hb_object_reference (map);
 }
 
 /**
@@ -100,10 +100,10 @@ hb_map_reference (hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
+வெறுமை
 hb_map_destroy (hb_map_t *map)
 {
-  if (!hb_object_destroy (map)) return;
+  எனில் (!hb_object_destroy (map)) திரும்பு;
 
   hb_free (map);
 }
@@ -124,12 +124,12 @@ hb_map_destroy (hb_map_t *map)
  **/
 hb_bool_t
 hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
-		      void *              data,
+		      hb_user_data_சாவி_t *key,
+		      வெறுமை *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (map, key, data, destroy, replace);
+  திரும்பு hb_object_set_user_data (map, key, data, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_map_set_user_data (hb_map_t           *map,
  *
  * Since: 1.7.7
  **/
-void *
-hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key)
+வெறுமை *
+hb_map_get_user_data (மாறிலி hb_map_t     *map,
+		      hb_user_data_சாவி_t *key)
 {
-  return hb_object_get_user_data (map, key);
+  திரும்பு hb_object_get_user_data (map, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_map_get_user_data (const hb_map_t     *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_allocation_successful (const hb_map_t  *map)
+hb_map_allocation_successful (மாறிலி hb_map_t  *map)
 {
-  return map->successful;
+  திரும்பு map->successful;
 }
 
 /**
@@ -179,14 +179,14 @@ hb_map_allocation_successful (const hb_map_t  *map)
  * Since: 4.4.0
  **/
 hb_map_t *
-hb_map_copy (const hb_map_t *map)
+hb_map_copy (மாறிலி hb_map_t *map)
 {
   hb_map_t *copy = hb_map_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_map_get_empty ();
+  எனில் (unlikely (copy->in_error ()))
+    திரும்பு hb_map_get_empty ();
 
   *copy = *map;
-  return copy;
+  திரும்பு copy;
 }
 
 /**
@@ -199,7 +199,7 @@ hb_map_copy (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
+வெறுமை
 hb_map_set (hb_map_t       *map,
 	    hb_codepoint_t  key,
 	    hb_codepoint_t  value)
@@ -218,10 +218,10 @@ hb_map_set (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_codepoint_t
-hb_map_get (const hb_map_t *map,
+hb_map_get (மாறிலி hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->get (key);
+  திரும்பு map->get (key);
 }
 
 /**
@@ -233,7 +233,7 @@ hb_map_get (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+வெறுமை
 hb_map_del (hb_map_t       *map,
 	    hb_codepoint_t  key)
 {
@@ -253,10 +253,10 @@ hb_map_del (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_has (const hb_map_t *map,
+hb_map_has (மாறிலி hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->has (key);
+  திரும்பு map->has (key);
 }
 
 
@@ -268,10 +268,10 @@ hb_map_has (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+வெறுமை
 hb_map_clear (hb_map_t *map)
 {
-  return map->clear ();
+  திரும்பு map->clear ();
 }
 
 /**
@@ -285,9 +285,9 @@ hb_map_clear (hb_map_t *map)
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_is_empty (const hb_map_t *map)
+hb_map_is_empty (மாறிலி hb_map_t *map)
 {
-  return map->is_empty ();
+  திரும்பு map->is_empty ();
 }
 
 /**
@@ -300,10 +300,10 @@ hb_map_is_empty (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_map_get_population (const hb_map_t *map)
+unsigned முழு
+hb_map_get_population (மாறிலி hb_map_t *map)
 {
-  return map->get_population ();
+  திரும்பு map->get_population ();
 }
 
 /**
@@ -319,10 +319,10 @@ hb_map_get_population (const hb_map_t *map)
  * Since: 4.3.0
  **/
 hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other)
+hb_map_is_equal (மாறிலி hb_map_t *map,
+		 மாறிலி hb_map_t *other)
 {
-  return map->is_equal (*other);
+  திரும்பு map->is_equal (*other);
 }
 
 /**
@@ -336,10 +336,10 @@ hb_map_is_equal (const hb_map_t *map,
  *
  * Since: 4.4.0
  **/
-unsigned int
-hb_map_hash (const hb_map_t *map)
+unsigned முழு
+hb_map_hash (மாறிலி hb_map_t *map)
 {
-  return map->hash ();
+  திரும்பு map->hash ();
 }
 
 /**
@@ -351,9 +351,9 @@ hb_map_hash (const hb_map_t *map)
  *
  * Since: 7.0.0
  **/
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other)
+	       மாறிலி hb_map_t *other)
 {
   map->update (*other);
 }
@@ -378,12 +378,12 @@ hb_map_update (hb_map_t *map,
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
+hb_map_next (மாறிலி hb_map_t *map,
+	     முழு *idx,
 	     hb_codepoint_t *key,
 	     hb_codepoint_t *value)
 {
-  return map->next (idx, key, value);
+  திரும்பு map->next (idx, key, value);
 }
 
 /**
@@ -395,11 +395,11 @@ hb_map_next (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys)
+வெறுமை
+hb_map_சாவிகள் (மாறிலி hb_map_t *map,
+	     hb_set_t *சாவிகள்)
 {
-  hb_copy (map->keys() , *keys);
+  hb_copy (map->சாவிகள்() , *சாவிகள்);
 }
 
 /**
@@ -411,8 +411,8 @@ hb_map_keys (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_values (const hb_map_t *map,
+வெறுமை
+hb_map_மதிப்புகள் (மாறிலி hb_map_t *map,
 	       hb_set_t *values)
 {
   hb_copy (map->values() , *values);

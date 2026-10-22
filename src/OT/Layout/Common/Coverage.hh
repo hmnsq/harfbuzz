@@ -29,24 +29,24 @@
 #ifndef OT_LAYOUT_COMMON_COVERAGE_HH
 #define OT_LAYOUT_COMMON_COVERAGE_HH
 
-#include "../../../hb-ot-dual.hh"
-#include "CoverageFormat1.hh"
-#include "CoverageFormat2.hh"
+#அந்தர்பாவ "../../../hb-ot-dual.hh"
+#அந்தர்பாவ "CoverageFormat1.hh"
+#அந்தர்பாவ "CoverageFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ Common {
 
 template<typename Iterator>
-static inline void Coverage_serialize (hb_serialize_context_t *c,
+நிலையான உள்வரி வெறுமை Coverage_serialize (hb_serialize_context_t *c,
                                        Iterator it);
 
-struct Coverage
+கட்டமைப்பு Coverage
 {
 
-  protected:
-  union {
-  struct { HBUINT16 v; }        format;         /* Format identifier */
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு { HBUINT16 v; }        format;         /* Format identifier */
   CoverageFormat1_3<SmallTypes> format1;
   CoverageFormat2_4<SmallTypes> format2;
 #ifndef HB_NO_BEYOND_64K
@@ -54,325 +54,325 @@ struct Coverage
   CoverageFormat2_4<MediumTypes>format4;
 #endif
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (2, format.v);
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (!u.format.v.sanitize (c)) return_trace (பொய்);
     hb_barrier ();
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    நிலை 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    நிலை 2: hb_barrier (); return_trace (u.format2.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    நிலை 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    நிலை 4: hb_barrier (); return_trace (u.format4.sanitize (c));
 #endif
-    default:return_trace (true);
+    இயல்பு:return_trace (உண்மை);
     }
   }
 
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k] != NOT_COVERED; }
+  unsigned operator [] (hb_codepoint_t k) மாறிலி { திரும்பு get (k); }
+  தருக்க has (hb_codepoint_t k) மாறிலி { திரும்பு (*இது)[k] != NOT_COVERED; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  தருக்க operator () (hb_codepoint_t k) மாறிலி { திரும்பு has (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_coverage (k); }
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned முழு get (hb_codepoint_t k) மாறிலி { திரும்பு get_coverage (k); }
+  unsigned முழு get_coverage (hb_codepoint_t glyph_id) மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coverage (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_coverage (glyph_id);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_coverage (glyph_id);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.get_coverage (glyph_id);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_coverage (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_coverage (glyph_id);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_coverage (glyph_id);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.get_coverage (glyph_id);
 #endif
-    default:return NOT_COVERED;
+    இயல்பு:திரும்பு NOT_COVERED;
     }
   }
-  unsigned int get_coverage (hb_codepoint_t glyph_id,
-			     hb_ot_layout_mapping_cache_t *cache) const
+  unsigned முழு get_coverage (hb_codepoint_t glyph_id,
+			     hb_ot_layout_mapping_cache_t *cache) மாறிலி
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    எனில் (cache && cache->get (glyph_id, &coverage)) திரும்பு coverage < cache->MAX_மதிப்பு ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else if (likely (coverage < cache->MAX_VALUE))
+    எனில் (cache) {
+      எனில் (coverage == NOT_COVERED)
+	cache->set (glyph_id, cache->MAX_மதிப்பு);
+      இல்லையெனில் எனில் (likely (coverage < cache->MAX_மதிப்பு))
 	cache->set (glyph_id, coverage);
     }
-    return coverage;
+    திரும்பு coverage;
   }
 
-  unsigned int get_coverage_binary (hb_codepoint_t glyph_id,
-				    hb_ot_layout_binary_cache_t *cache) const
+  unsigned முழு get_coverage_இருமம் (hb_codepoint_t glyph_id,
+				    hb_ot_layout_இருமம்_cache_t *cache) மாறிலி
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    எனில் (cache && cache->get (glyph_id, &coverage)) திரும்பு coverage < cache->MAX_மதிப்பு ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else
+    எனில் (cache) {
+      எனில் (coverage == NOT_COVERED)
+	cache->set (glyph_id, cache->MAX_மதிப்பு);
+      இல்லையெனில்
 	cache->set (glyph_id, 0);
     }
-    return coverage;
+    திரும்பு coverage;
   }
 
-  unsigned get_population () const
+  unsigned get_population () மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_population ();
+    நிலை 2: hb_barrier (); திரும்பு u.format2.get_population ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_population ();
+    நிலை 4: hb_barrier (); திரும்பு u.format4.get_population ();
 #endif
-    default:return NOT_COVERED;
+    இயல்பு:திரும்பு NOT_COVERED;
     }
   }
 
   template <typename Iterator,
       hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  தருக்க serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
 
-    unsigned count = hb_len (+ glyphs);
-    unsigned num_ranges = 0;
+    unsigned மொத்தம் = hb_len (+ glyphs);
+    unsigned இலக்கம்_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
     hb_codepoint_t max = 0;
-    bool unsorted = false;
-    for (auto g: + glyphs)
+    தருக்க unsorted = பொய்;
+    க்கு (auto g: + glyphs)
     {
-      if (last != (hb_codepoint_t) -2 && g < last)
-	unsorted = true;
-      if (last + 1 != g)
-	num_ranges++;
+      எனில் (last != (hb_codepoint_t) -2 && g < last)
+	unsorted = உண்மை;
+      எனில் (last + 1 != g)
+	இலக்கம்_ranges++;
       last = g;
-      if (g > max) max = g;
+      எனில் (g > max) max = g;
     }
-    u.format.v = !unsorted && count <= num_ranges * 3 ? 1 : 2;
+    u.format.v = !unsorted && மொத்தம் <= இலக்கம்_ranges * 3 ? 1 : 2;
 
 #ifndef HB_NO_BEYOND_64K
-    if (max > 0xFFFFu)
+    எனில் (max > 0xFFFFu)
       u.format.v += 2;
-    if (unlikely (max > 0xFFFFFFu))
-#else
-    if (unlikely (max > 0xFFFFu))
+    எனில் (unlikely (max > 0xFFFFFFu))
+#இல்லையெனில்
+    எனில் (unlikely (max > 0xFFFFu))
 #endif
     {
-      c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return_trace (false);
+      c->check_success (பொய், HB_SERIALIZE_ERROR_INT_OVERFLOW);
+      return_trace (பொய்);
     }
 
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
+    நிலை 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
+    நிலை 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
+    நிலை 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
+    நிலை 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
 #endif
-    default:return_trace (false);
+    இயல்பு:return_trace (பொய்);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    const hb_subset_plan_t *plan = c->plan;
+    TRACE_SUBSET (இது);
+    மாறிலி hb_subset_plan_t *plan = c->plan;
     auto it =
     + iter ()
-    | hb_take (plan->source->get_num_glyphs ())
+    | hb_take (plan->source->get_இலக்கம்_glyphs ())
     | hb_map_retains_sorting ([plan] (hb_codepoint_t g) {
-	return plan->map_gsub_glyph (g);
+	திரும்பு plan->map_gsub_glyph (g);
       })
-    | hb_filter ([] (hb_codepoint_t glyph) { return glyph != HB_MAP_VALUE_INVALID; })
+    | hb_filter ([] (hb_codepoint_t glyph) { திரும்பு glyph != HB_MAP_மதிப்பு_INVALID; })
     ;
 
     // Cache the iterator result as it will be iterated multiple times
     // by the serialize code below.
     hb_sorted_vector_t<hb_codepoint_t> glyphs (it);
     Coverage_serialize (c->serializer, glyphs.iter ());
-    return_trace (bool (glyphs));
+    return_trace (தருக்க (glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  தருக்க intersects (மாறிலி hb_set_t *glyphs) மாறிலி
   {
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
+    நிலை 1: hb_barrier (); திரும்பு u.format1.intersects (glyphs);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.intersects (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.intersects (glyphs);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.intersects (glyphs);
 #endif
-    default:return false;
+    இயல்பு:திரும்பு பொய்;
     }
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  தருக்க intersects_coverage (மாறிலி hb_set_t *glyphs, unsigned முழு index) மாறிலி
   {
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects_coverage (glyphs, index);
-    case 2: hb_barrier (); return u.format2.intersects_coverage (glyphs, index);
+    நிலை 1: hb_barrier (); திரும்பு u.format1.intersects_coverage (glyphs, index);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.intersects_coverage (glyphs, index);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_coverage (glyphs, index);
-    case 4: hb_barrier (); return u.format4.intersects_coverage (glyphs, index);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.intersects_coverage (glyphs, index);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.intersects_coverage (glyphs, index);
 #endif
-    default:return false;
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
-  unsigned cost () const
+  unsigned cost () மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.cost ();
+    நிலை 2: hb_barrier (); திரும்பு u.format2.cost ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
+    நிலை 3: hb_barrier (); திரும்பு u.format3.cost ();
+    நிலை 4: hb_barrier (); திரும்பு u.format4.cost ();
 #endif
-    default:return 0u;
+    இயல்பு:திரும்பு 0u;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  தருக்க collect_coverage (set_t *glyphs) மாறிலி
   {
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
+    நிலை 1: hb_barrier (); திரும்பு u.format1.collect_coverage (glyphs);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.collect_coverage (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.collect_coverage (glyphs);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.collect_coverage (glyphs);
 #endif
-    default:return false;
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
   template <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  வெறுமை intersect_set (மாறிலி hb_set_t &glyphs, IterableOut&& intersect_glyphs) மாறிலி
   {
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersect_set (glyphs, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersect_set (glyphs, intersect_glyphs);
+    நிலை 1: hb_barrier (); திரும்பு u.format1.intersect_set (glyphs, intersect_glyphs);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.intersect_set (glyphs, intersect_glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersect_set (glyphs, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersect_set (glyphs, intersect_glyphs);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.intersect_set (glyphs, intersect_glyphs);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.intersect_set (glyphs, intersect_glyphs);
 #endif
-    default:return ;
+    இயல்பு:திரும்பு ;
     }
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  கட்டமைப்பு iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    iter_t (const Coverage &c_ = Null (Coverage))
+    நிலையான constexpr தருக்க is_sorted_iterator = உண்மை;
+    iter_t (மாறிலி Coverage &c_ = Null (Coverage))
     {
-      hb_memset (this, 0, sizeof (*this));
+      hb_memset (இது, 0, அளவு (*இது));
       format = c_.u.format.v;
-      switch (format)
+      தேர்வு (format)
       {
-      case 1: hb_barrier (); u.format1.init (c_.u.format1); return;
-      case 2: hb_barrier (); u.format2.init (c_.u.format2); return;
+      நிலை 1: hb_barrier (); u.format1.init (c_.u.format1); திரும்பு;
+      நிலை 2: hb_barrier (); u.format2.init (c_.u.format2); திரும்பு;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.init (c_.u.format3); return;
-      case 4: hb_barrier (); u.format4.init (c_.u.format4); return;
+      நிலை 3: hb_barrier (); u.format3.init (c_.u.format3); திரும்பு;
+      நிலை 4: hb_barrier (); u.format4.init (c_.u.format4); திரும்பு;
 #endif
-      default:                               return;
+      இயல்பு:                               திரும்பு;
       }
     }
-    bool __more__ () const
+    தருக்க __more__ () மாறிலி
     {
-      switch (format)
+      தேர்வு (format)
       {
-      case 1: hb_barrier (); return u.format1.__more__ ();
-      case 2: hb_barrier (); return u.format2.__more__ ();
+      நிலை 1: hb_barrier (); திரும்பு u.format1.__more__ ();
+      நிலை 2: hb_barrier (); திரும்பு u.format2.__more__ ();
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.__more__ ();
-      case 4: hb_barrier (); return u.format4.__more__ ();
+      நிலை 3: hb_barrier (); திரும்பு u.format3.__more__ ();
+      நிலை 4: hb_barrier (); திரும்பு u.format4.__more__ ();
 #endif
-      default:return false;
+      இயல்பு:திரும்பு பொய்;
       }
     }
-    void __next__ ()
+    வெறுமை __next__ ()
     {
-      switch (format)
+      தேர்வு (format)
       {
-      case 1: hb_barrier (); u.format1.__next__ (); break;
-      case 2: hb_barrier (); u.format2.__next__ (); break;
+      நிலை 1: hb_barrier (); u.format1.__next__ (); நிறுத்து;
+      நிலை 2: hb_barrier (); u.format2.__next__ (); நிறுத்து;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.__next__ (); break;
-      case 4: hb_barrier (); u.format4.__next__ (); break;
+      நிலை 3: hb_barrier (); u.format3.__next__ (); நிறுத்து;
+      நிலை 4: hb_barrier (); u.format4.__next__ (); நிறுத்து;
 #endif
-      default:                   break;
+      இயல்பு:                   நிறுத்து;
       }
     }
-    typedef hb_codepoint_t __item_t__;
-    __item_t__ __item__ () const { return get_glyph (); }
+    வகைவரை hb_codepoint_t __item_t__;
+    __item_t__ __item__ () மாறிலி { திரும்பு get_glyph (); }
 
-    hb_codepoint_t get_glyph () const
+    hb_codepoint_t get_glyph () மாறிலி
     {
-      switch (format)
+      தேர்வு (format)
       {
-      case 1: hb_barrier (); return u.format1.get_glyph ();
-      case 2: hb_barrier (); return u.format2.get_glyph ();
+      நிலை 1: hb_barrier (); திரும்பு u.format1.get_glyph ();
+      நிலை 2: hb_barrier (); திரும்பு u.format2.get_glyph ();
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.get_glyph ();
-      case 4: hb_barrier (); return u.format4.get_glyph ();
+      நிலை 3: hb_barrier (); திரும்பு u.format3.get_glyph ();
+      நிலை 4: hb_barrier (); திரும்பு u.format4.get_glyph ();
 #endif
-      default:return 0;
+      இயல்பு:திரும்பு 0;
       }
     }
-    bool operator != (const iter_t& o) const
+    தருக்க operator != (மாறிலி iter_t& o) மாறிலி
     {
-      if (unlikely (format != o.format)) return true;
-      switch (format)
+      எனில் (unlikely (format != o.format)) திரும்பு உண்மை;
+      தேர்வு (format)
       {
-      case 1: hb_barrier (); return u.format1 != o.u.format1;
-      case 2: hb_barrier (); return u.format2 != o.u.format2;
+      நிலை 1: hb_barrier (); திரும்பு u.format1 != o.u.format1;
+      நிலை 2: hb_barrier (); திரும்பு u.format2 != o.u.format2;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3 != o.u.format3;
-      case 4: hb_barrier (); return u.format4 != o.u.format4;
+      நிலை 3: hb_barrier (); திரும்பு u.format3 != o.u.format3;
+      நிலை 4: hb_barrier (); திரும்பு u.format4 != o.u.format4;
 #endif
-      default:return false;
+      இயல்பு:திரும்பு பொய்;
       }
     }
-    iter_t __end__ () const
+    iter_t __end__ () மாறிலி
     {
       iter_t it;
       it.format = format;
-      switch (format)
+      தேர்வு (format)
       {
-      case 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); break;
-      case 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); break;
+      நிலை 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); நிறுத்து;
+      நிலை 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); நிறுத்து;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); break;
-      case 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); break;
+      நிலை 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); நிறுத்து;
+      நிலை 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); நிறுத்து;
 #endif
-      default: break;
+      இயல்பு: நிறுத்து;
       }
-      return it;
+      திரும்பு it;
     }
 
-    private:
-    unsigned int format;
-    union {
+    தனிப்பட்ட:
+    unsigned முழு format;
+    ஒன்றிப்பு {
 #ifndef HB_NO_BEYOND_64K
     CoverageFormat2_4<MediumTypes>::iter_t      format4; /* Put this one first since it's larger; helps shut up compiler. */
     CoverageFormat1_3<MediumTypes>::iter_t      format3;
@@ -381,11 +381,11 @@ struct Coverage
     CoverageFormat1_3<SmallTypes>::iter_t       format1;
     } u;
   };
-  iter_t iter () const { return iter_t (*this); }
+  iter_t iter () மாறிலி { திரும்பு iter_t (*இது); }
 };
 
 template<typename Iterator>
-static inline void
+நிலையான உள்வரி வெறுமை
 Coverage_serialize (hb_serialize_context_t *c,
                     Iterator it)
 { c->start_embed<Coverage> ()->serialize (c, it); }

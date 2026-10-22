@@ -29,7 +29,7 @@
 #ifndef HB_OT_HEAD_TABLE_HH
 #define HB_OT_HEAD_TABLE_HH
 
-#include "hb-open-type.hh"
+#அந்தர்பாவ "hb-open-type.hh"
 
 /*
  * head -- Font Header
@@ -38,53 +38,53 @@
 #define HB_OT_TAG_head HB_TAG('h','e','a','d')
 
 
-namespace OT {
+நாமாகாஶ OT {
 
 
-struct head
+கட்டமைப்பு head
 {
-  friend struct OpenTypeOffsetTable;
+  friend கட்டமைப்பு OpenTypeOffsetTable;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_head;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_head;
 
-  unsigned int get_upem () const
+  unsigned முழு get_upem () மாறிலி
   {
-    unsigned int upem = unitsPerEm;
+    unsigned முழு upem = unitsPerEm;
     /* If no valid head table found, assume 1000, which matches typical Type1 usage. */
-    return 16 <= upem && upem <= 16384 ? upem : 1000;
+    திரும்பு 16 <= upem && upem <= 16384 ? upem : 1000;
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  தருக்க serialize (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    return_trace ((bool) c->embed (this));
+    TRACE_SERIALIZE (இது);
+    return_trace ((தருக்க) c->embed (இது));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    head *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (இது);
+    head *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
-    if (c->plan->normalized_coords)
+    எனில் (c->plan->normalized_coords)
     {
-      if (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
+      எனில் (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
+        return_trace (பொய்);
+      எனில் (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
+        return_trace (பொய்);
+      எனில் (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
+        return_trace (பொய்);
+      எனில் (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
+        return_trace (பொய்);
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  enum mac_style_flag_t {
+  எண்ணிக்கை mac_style_flag_t {
     BOLD	= 1u<<0,
     ITALIC	= 1u<<1,
     UNDERLINE	= 1u<<2,
@@ -94,31 +94,31 @@ struct head
     EXPANDED	= 1u<<6,
   };
 
-  bool is_bold () const      { return macStyle & BOLD; }
-  bool is_italic () const    { return macStyle & ITALIC; }
-  bool is_condensed () const { return macStyle & CONDENSED; }
-  bool is_expanded () const  { return macStyle & EXPANDED; }
+  தருக்க is_bold () மாறிலி      { திரும்பு macStyle & BOLD; }
+  தருக்க is_italic () மாறிலி    { திரும்பு macStyle & ITALIC; }
+  தருக்க is_condensed () மாறிலி { திரும்பு macStyle & CONDENSED; }
+  தருக்க is_expanded () மாறிலி  { திரும்பு macStyle & EXPANDED; }
 
-  unsigned get_mac_style () const { return macStyle; }
+  unsigned get_mac_style () மாறிலி { திரும்பு macStyle; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
 		  version.major == 1 &&
-		  magicNumber == 0x5F0F3CF5u);
+		  magic_எண் == 0x5F0F3CF5u);
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   FixedVersion<>version;		/* Version of the head table--currently
 					 * 0x00010000u for version 1.0. */
   FixedVersion<>fontRevision;		/* Set by font manufacturer. */
   HBUINT32	checkSumAdjustment;	/* To compute: set it to 0, sum the
 					 * entire font as HBUINT32, then store
 					 * 0xB1B0AFBAu - sum. */
-  HBUINT32	magicNumber;		/* Set to 0x5F0F3CF5u. */
-  public:
+  HBUINT32	magic_எண்;		/* Set to 0x5F0F3CF5u. */
+  பொது:
   HBUINT16	flags;			/* Bit 0: Baseline for font at y=0;
 					 * Bit 1: Left sidebearing point at x=0;
 					 * Bit 2: Instructions may depend on point size;
@@ -163,7 +163,7 @@ struct head
 					 * encoded in the cmap subtables represent proper
 					 * support for those code points.
 					 * Bit 15: Reserved, set to 0. */
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	unitsPerEm;		/* Valid range is from 16 to 16384. This value
 					 * should be a power of 2 for fonts that have
 					 * TrueType outlines. */
@@ -171,12 +171,12 @@ struct head
 					   January 1, 1904. 64-bit integer */
   LONGDATETIME	modified;		/* Number of seconds since 12:00 midnight,
 					   January 1, 1904. 64-bit integer */
-  public:
+  பொது:
   HBINT16	xMin;			/* For all glyph bounding boxes. */
   HBINT16	yMin;			/* For all glyph bounding boxes. */
   HBINT16	xMax;			/* For all glyph bounding boxes. */
   HBINT16	yMax;			/* For all glyph bounding boxes. */
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	macStyle;		/* Bit 0: Bold (if set to 1);
 					 * Bit 1: Italic (if set to 1)
 					 * Bit 2: Underline (if set to 1)
@@ -192,7 +192,7 @@ struct head
 					 * 2: Like 1 but also contains neutrals;
 					 * -1: Only strongly right to left;
 					 * -2: Like -1 but also contains neutrals. */
-  public:
+  பொது:
   HBUINT16	indexToLocFormat;	/* 0 for short offsets, 1 for long. */
   HBUINT16	glyphDataFormat;	/* 0 for current format. */
 

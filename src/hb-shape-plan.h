@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#எனில் !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_SHAPE_PLAN_H
 #define HB_SHAPE_PLAN_H
 
-#include "hb-common.h"
-#include "hb-font.h"
+#அந்தர்பாவ "hb-common.h"
+#அந்தர்பாவ "hb-font.h"
 
 HB_BEGIN_DECLS
 
@@ -50,70 +50,70 @@ HB_BEGIN_DECLS
  * etc.).
  *
  **/
-typedef struct hb_shape_plan_t hb_shape_plan_t;
+வகைவரை கட்டமைப்பு hb_shape_plan_t hb_shape_plan_t;
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
-		      const hb_segment_properties_t *props,
-		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list);
+		      மாறிலி hb_segment_properties_t *props,
+		      மாறிலி hb_feature_t            *user_features,
+		      unsigned முழு                   இலக்கம்_user_features,
+		      மாறிலி எழுத்து * மாறிலி            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
-			     const hb_segment_properties_t *props,
-			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list);
+			     மாறிலி hb_segment_properties_t *props,
+			     மாறிலி hb_feature_t            *user_features,
+			     unsigned முழு                   இலக்கம்_user_features,
+			     மாறிலி எழுத்து * மாறிலி            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
-		       const hb_segment_properties_t *props,
-		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list);
+		       மாறிலி hb_segment_properties_t *props,
+		       மாறிலி hb_feature_t            *user_features,
+		       unsigned முழு                   இலக்கம்_user_features,
+		       மாறிலி முழு                     *coords,
+		       unsigned முழு                   இலக்கம்_coords,
+		       மாறிலி எழுத்து * மாறிலி            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
-			      const hb_segment_properties_t *props,
-			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list);
+			      மாறிலி hb_segment_properties_t *props,
+			      மாறிலி hb_feature_t            *user_features,
+			      unsigned முழு                   இலக்கம்_user_features,
+			      மாறிலி முழு                     *coords,
+			      unsigned முழு                   இலக்கம்_coords,
+			      மாறிலி எழுத்து * மாறிலி            *shaper_list);
 
 
 HB_EXTERN hb_shape_plan_t *
-hb_shape_plan_get_empty (void);
+hb_shape_plan_get_empty (வெறுமை);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_reference (hb_shape_plan_t *shape_plan);
 
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_shape_plan_destroy (hb_shape_plan_t *shape_plan);
 
 HB_EXTERN hb_bool_t
 hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
-			     hb_user_data_key_t *key,
-			     void *              data,
+			     hb_user_data_சாவி_t *சாவி_2,
+			     வெறுமை *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
-			     hb_user_data_key_t    *key);
+HB_EXTERN வெறுமை *
+hb_shape_plan_get_user_data (மாறிலி hb_shape_plan_t *shape_plan,
+			     hb_user_data_சாவி_t    *சாவி_2);
 
 
 HB_EXTERN hb_bool_t
 hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       மாறிலி hb_feature_t *features,
+		       unsigned முழு        இலக்கம்_features);
 
-HB_EXTERN const char *
+HB_EXTERN மாறிலி எழுத்து *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan);
 
 

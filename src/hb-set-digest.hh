@@ -27,8 +27,8 @@
 #ifndef HB_SET_DIGEST_HH
 #define HB_SET_DIGEST_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-machinery.hh"
 
 /*
  * The set-digests implement "filters" that support "approximate
@@ -63,110 +63,110 @@
  * check is done using four bitwise operations only.
  */
 
-static constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
+நிலையான constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
 
-struct hb_set_digest_t
+கட்டமைப்பு hb_set_digest_t
 {
   // No science in these. Intuition and testing only.
   using mask_t = uint64_t;
 
-  static constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
-  static constexpr unsigned mask_bytes = sizeof (mask_t);
-  static constexpr unsigned mask_bits = sizeof (mask_t) * 8;
-  static constexpr hb_codepoint_t mb1 = mask_bits - 1;
-  static constexpr mask_t one = 1;
-  static constexpr mask_t all = (mask_t) -1;
+  நிலையான constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
+  நிலையான constexpr unsigned mask_bytes = அளவு (mask_t);
+  நிலையான constexpr unsigned mask_bits = அளவு (mask_t) * 8;
+  நிலையான constexpr hb_codepoint_t mb1 = mask_bits - 1;
+  நிலையான constexpr mask_t one = 1;
+  நிலையான constexpr mask_t all = (mask_t) -1;
 
-  void init ()
-  { for (unsigned i = 0; i < n; i++) masks[i] = 0; }
+  வெறுமை init ()
+  { க்கு (unsigned i = 0; i < n; i++) masks[i] = 0; }
 
-  void clear () { init (); }
+  வெறுமை clear () { init (); }
 
-  static hb_set_digest_t full ()
+  நிலையான hb_set_digest_t full ()
   {
     hb_set_digest_t d;
-    for (unsigned i = 0; i < n; i++) d.masks[i] = all;
-    return d;
+    க்கு (unsigned i = 0; i < n; i++) d.masks[i] = all;
+    திரும்பு d;
   }
 
-  void union_ (const hb_set_digest_t &o)
-  { for (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
+  வெறுமை union_ (மாறிலி hb_set_digest_t &o)
+  { க்கு (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
 
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  தருக்க add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    bool ret;
+    தருக்க ret;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
-      if (masks[i] != all)
-	ret = true;
-    if (!ret) return false;
+    ret = பொய்;
+    க்கு (unsigned i = 0; i < n; i++)
+      எனில் (masks[i] != all)
+	ret = உண்மை;
+    எனில் (!ret) திரும்பு பொய்;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
+    ret = பொய்;
+    க்கு (unsigned i = 0; i < n; i++)
     {
       mask_t shift = hb_set_digest_shifts[i];
-      if ((b >> shift) - (a >> shift) >= mb1)
+      எனில் ((b >> shift) - (a >> shift) >= mb1)
 	masks[i] = all;
-      else
+      இல்லையெனில்
       {
 	mask_t ma = one << ((a >> shift) & mb1);
 	mask_t mb = one << ((b >> shift) & mb1);
 	masks[i] |= mb + (mb - ma) - (mb < ma);
-	ret = true;
+	ret = உண்மை;
       }
     }
-    return ret;
+    திரும்பு ret;
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  வெறுமை add_array (மாறிலி T *array, unsigned முழு மொத்தம், unsigned முழு stride=அளவு(T))
   {
-    for (unsigned int i = 0; i < count; i++)
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
       add (*array);
-      array = &StructAtOffsetUnaligned<T> ((const void *) array, stride);
+      array = &StructAtOffsetUnaligned<T> ((மாறிலி வெறுமை *) array, stride);
     }
   }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  வெறுமை add_array (மாறிலி hb_array_t<மாறிலி T>& arr) { add_array (&arr, arr.len ()); }
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  தருக்க add_sorted_array (மாறிலி T *array, unsigned முழு மொத்தம், unsigned முழு stride=அளவு(T))
   {
-    add_array (array, count, stride);
-    return true;
+    add_array (array, மொத்தம், stride);
+    திரும்பு உண்மை;
   }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  தருக்க add_sorted_array (மாறிலி hb_sorted_array_t<மாறிலி T>& arr) { திரும்பு add_sorted_array (&arr, arr.len ()); }
 
-  bool operator [] (hb_codepoint_t g) const
-  { return may_have (g); }
+  தருக்க operator [] (hb_codepoint_t g) மாறிலி
+  { திரும்பு may_have (g); }
 
 
-  void add (hb_codepoint_t g)
+  வெறுமை add (hb_codepoint_t g)
   {
-    for (unsigned i = 0; i < n; i++)
+    க்கு (unsigned i = 0; i < n; i++)
       masks[i] |= one << ((g >> hb_set_digest_shifts[i]) & mb1);
   }
 
   HB_ALWAYS_INLINE
-  bool may_have (hb_codepoint_t g) const
+  தருக்க may_have (hb_codepoint_t g) மாறிலி
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
-	return false;
-    return true;
+    க்கு (unsigned i = 0; i < n; i++)
+      எனில் (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
+	திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
-  bool may_intersect (const hb_set_digest_t &o) const
+  தருக்க may_intersect (மாறிலி hb_set_digest_t &o) மாறிலி
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & o.masks[i]))
-	return false;
-    return true;
+    க்கு (unsigned i = 0; i < n; i++)
+      எனில் (!(masks[i] & o.masks[i]))
+	திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
-  private:
+  தனிப்பட்ட:
 
   mask_t masks[n] = {};
 };

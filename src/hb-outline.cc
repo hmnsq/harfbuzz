@@ -25,49 +25,49 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 #ifndef HB_NO_OUTLINE
 
-#include "hb-outline.hh"
+#அந்தர்பாவ "hb-outline.hh"
 
-#include "hb-machinery.hh"
+#அந்தர்பாவ "hb-machinery.hh"
 
 
-void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
+வெறுமை hb_outline_t::replay (hb_draw_funcs_t *pen, வெறுமை *pen_data) மாறிலி
 {
   hb_draw_state_t st = HB_DRAW_STATE_DEFAULT;
 
   unsigned first = 0;
-  for (unsigned contour : contours)
+  க்கு (unsigned contour : contours)
   {
     auto it = points.as_array ().sub_array (first, contour - first);
-    while (it)
+    போது (it)
     {
       hb_outline_point_t p1 = *it++;
-      switch (p1.type)
+      தேர்வு (p1.type)
       {
-	case hb_outline_point_t::type_t::MOVE_TO:
+	நிலை hb_outline_point_t::type_t::MOVE_TO:
 	{
 	  pen->move_to (pen_data, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::LINE_TO:
+	நிறுத்து;
+	நிலை hb_outline_point_t::type_t::வரி_TO:
 	{
-	  pen->line_to (pen_data, st,
+	  pen->வரி_to (pen_data, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::QUADRATIC_TO:
+	நிறுத்து;
+	நிலை hb_outline_point_t::type_t::QUADRATIC_TO:
 	{
 	  hb_outline_point_t p2 = *it++;
 	  pen->quadratic_to (pen_data, st,
 				p1.x, p1.y,
 				p2.x, p2.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::CUBIC_TO:
+	நிறுத்து;
+	நிலை hb_outline_point_t::type_t::CUBIC_TO:
 	{
 	  hb_outline_point_t p2 = *it++;
 	  hb_outline_point_t p3 = *it++;
@@ -76,7 +76,7 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
 			    p2.x, p2.y,
 			    p3.x, p3.y);
 	}
-	break;
+	நிறுத்து;
       }
     }
     pen->close_path (pen_data, st);
@@ -84,28 +84,28 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
   }
 }
 
-void hb_outline_t::translate (float dx, float dy)
+வெறுமை hb_outline_t::translate (தசம dx, தசம dy)
 {
-  for (auto &p : points)
+  க்கு (auto &p : points)
   {
     p.x += dx;
     p.y += dy;
   }
 }
 
-void hb_outline_t::slant (float slant_xy)
+வெறுமை hb_outline_t::slant (தசம slant_xy)
 {
-  for (auto &p : points)
+  க்கு (auto &p : points)
     p.x += slant_xy * p.y;
 }
 
-float hb_outline_t::control_area () const
+தசம hb_outline_t::control_area () மாறிலி
 {
-  float a = 0;
+  தசம a = 0;
   unsigned first = 0;
-  for (unsigned contour : contours)
+  க்கு (unsigned contour : contours)
   {
-    for (unsigned i = first; i < contour; i++)
+    க்கு (unsigned i = first; i < contour; i++)
     {
       unsigned j = i + 1 < contour ? i + 1 : first;
 
@@ -116,60 +116,60 @@ float hb_outline_t::control_area () const
 
     first = contour;
   }
-  return a * .5f;
+  திரும்பு a * .5f;
 }
 
-void hb_outline_t::embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift)
+வெறுமை hb_outline_t::embolden (தசம x_strength, தசம y_strength,
+			     தசம x_shift, தசம y_shift)
 {
   /* This function is a straight port of FreeType's FT_Outline_EmboldenXY.
    * Permission has been obtained from the FreeType authors of the code
    * to relicense it under the HarfBuzz license. */
 
-  if (!x_strength && !y_strength) return;
-  if (!points) return;
+  எனில் (!x_strength && !y_strength) திரும்பு;
+  எனில் (!points) திரும்பு;
 
   x_strength /= 2.f;
   y_strength /= 2.f;
 
-  bool orientation_negative = control_area () < 0;
+  தருக்க orientation_negative = control_area () < 0;
 
   signed first = 0;
-  for (unsigned c = 0; c < contours.length; c++)
+  க்கு (unsigned c = 0; c < contours.length; c++)
   {
     hb_outline_vector_t in, out, anchor, shift;
-    float l_in, l_out, l_anchor = 0, l, q, d;
+    தசம l_in, l_out, l_anchor = 0, l, q, d;
 
     l_in = 0;
-    signed last = (int) contours[c] - 1;
+    signed last = (முழு) contours[c] - 1;
 
     /* pacify compiler */
     in.x = in.y = anchor.x = anchor.y = 0;
 
     /* Counter j cycles though the points; counter i advances only  */
     /* when points are moved; anchor k marks the first moved point. */
-    for ( signed i = last, j = first, k = -1;
+    க்கு ( signed i = last, j = first, k = -1;
 	  j != i && i != k;
 	  j = j < last ? j + 1 : first )
     {
-      if ( j != k )
+      எனில் ( j != k )
       {
 	out.x = points[j].x - points[i].x;
 	out.y = points[j].y - points[i].y;
 	l_out = out.normalize_len ();
 
-	if ( l_out == 0 )
-	  continue;
+	எனில் ( l_out == 0 )
+	  தொடர்;
       }
-      else
+      இல்லையெனில்
       {
 	out   = anchor;
 	l_out = l_anchor;
       }
 
-      if ( l_in != 0 )
+      எனில் ( l_in != 0 )
       {
-	if ( k < 0 )
+	எனில் ( k < 0 )
 	{
 	  k        = i;
 	  anchor   = in;
@@ -179,7 +179,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	d = in.x * out.x + in.y * out.y;
 
 	/* shift only if turn is less than ~160 degrees */
-	if ( d > -15.f/16.f )
+	எனில் ( d > -15.f/16.f )
 	{
 	  d = d + 1.f;
 
@@ -187,34 +187,34 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  shift.x = in.y + out.y;
 	  shift.y = in.x + out.x;
 
-	  if ( orientation_negative )
+	  எனில் ( orientation_negative )
 	    shift.x = -shift.x;
-	  else
+	  இல்லையெனில்
 	    shift.y = -shift.y;
 
 	  /* restrict shift magnitude to better handle collapsing segments */
 	  q = out.x * in.y - out.y * in.x;
-	  if ( orientation_negative )
+	  எனில் ( orientation_negative )
 	    q = -q;
 
 	  l = hb_min (l_in, l_out);
 
 	  /* non-strict inequalities avoid divide-by-zero when q == l == 0 */
-	  if (x_strength * q <= l * d)
+	  எனில் (x_strength * q <= l * d)
 	    shift.x = shift.x * x_strength / d;
-	  else
+	  இல்லையெனில்
 	    shift.x = shift.x * l / q;
 
 
-	  if (y_strength * q <= l * d)
+	  எனில் (y_strength * q <= l * d)
 	    shift.y = shift.y * y_strength / d;
-	  else
+	  இல்லையெனில்
 	    shift.y = shift.y * l / q;
 	}
-	else
+	இல்லையெனில்
 	  shift.x = shift.y = 0;
 
-	for ( ;
+	க்கு ( ;
 	      i != j;
 	      i = i < last ? i + 1 : first )
 	{
@@ -222,7 +222,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  points[i].y += y_shift + shift.y;
 	}
       }
-      else
+      இல்லையெனில்
 	i = j;
 
       in   = out;
@@ -233,37 +233,37 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
   }
 }
 
-static void
+நிலையான வெறுமை
 hb_outline_recording_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+				  வெறுமை *data,
 				  hb_draw_state_t *st,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  தசம to_x, தசம to_y,
+				  வெறுமை *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
   c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::MOVE_TO});
 }
 
-static void
-hb_outline_recording_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+நிலையான வெறுமை
+hb_outline_recording_pen_வரி_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+				  வெறுமை *data,
 				  hb_draw_state_t *st,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  தசம to_x, தசம to_y,
+				  வெறுமை *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::LINE_TO});
+  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::வரி_TO});
 }
 
-static void
+நிலையான வெறுமை
 hb_outline_recording_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				       void *data,
+				       வெறுமை *data,
 				       hb_draw_state_t *st,
-				       float control_x, float control_y,
-				       float to_x, float to_y,
-				       void *user_data HB_UNUSED)
+				       தசம control_x, தசம control_y,
+				       தசம to_x, தசம to_y,
+				       வெறுமை *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
@@ -271,14 +271,14 @@ hb_outline_recording_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::QUADRATIC_TO});
 }
 
-static void
+நிலையான வெறுமை
 hb_outline_recording_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				   void *data,
+				   வெறுமை *data,
 				   hb_draw_state_t *st,
-				   float control1_x, float control1_y,
-				   float control2_x, float control2_y,
-				   float to_x, float to_y,
-				   void *user_data HB_UNUSED)
+				   தசம control1_x, தசம control1_y,
+				   தசம control2_x, தசம control2_y,
+				   தசம to_x, தசம to_y,
+				   வெறுமை *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
@@ -287,37 +287,37 @@ hb_outline_recording_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::CUBIC_TO});
 }
 
-static void
+நிலையான வெறுமை
 hb_outline_recording_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				     void *data,
+				     வெறுமை *data,
 				     hb_draw_state_t *st,
-				     void *user_data HB_UNUSED)
+				     வெறுமை *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
   c->contours.push (c->points.length);
 }
 
-static int64_t *
+நிலையான int64_t *
 hb_outline_recording_pen_get_budget_remaining (hb_draw_funcs_t *dfuncs HB_UNUSED,
-					       void *data,
-					       void *user_data HB_UNUSED)
+					       வெறுமை *data,
+					       வெறுமை *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
-  return c->budget_remaining;
+  திரும்பு c->budget_remaining;
 }
 
-static inline void free_static_outline_recording_pen_funcs ();
+நிலையான உள்வரி வெறுமை free_static_outline_recording_pen_funcs ();
 
-static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
+நிலையான கட்டமைப்பு hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  நிலையான hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func (funcs, hb_outline_recording_pen_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_outline_recording_pen_line_to, nullptr, nullptr);
+    hb_draw_funcs_set_வரி_to_func (funcs, hb_outline_recording_pen_வரி_to, nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_outline_recording_pen_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func (funcs, hb_outline_recording_pen_cubic_to, nullptr, nullptr);
     hb_draw_funcs_set_close_path_func (funcs, hb_outline_recording_pen_close_path, nullptr, nullptr);
@@ -327,12 +327,12 @@ static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_
 
     hb_atexit (free_static_outline_recording_pen_funcs);
 
-    return funcs;
+    திரும்பு funcs;
   }
 } static_outline_recording_pen_funcs;
 
-static inline
-void free_static_outline_recording_pen_funcs ()
+நிலையான உள்வரி
+வெறுமை free_static_outline_recording_pen_funcs ()
 {
   static_outline_recording_pen_funcs.free_instance ();
 }
@@ -340,7 +340,7 @@ void free_static_outline_recording_pen_funcs ()
 hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ()
 {
-  return static_outline_recording_pen_funcs.get_unconst ();
+  திரும்பு static_outline_recording_pen_funcs.get_unconst ();
 }
 
 

@@ -26,15 +26,15 @@
 #ifndef HB_OT_CFF_COMMON_HH
 #define HB_OT_CFF_COMMON_HH
 
-#include "hb-open-type.hh"
-#include "hb-bimap.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-cff-interp-dict-common.hh"
-#include "hb-subset-plan.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-bimap.hh"
+#அந்தர்பாவ "hb-ot-layout-common.hh"
+#அந்தர்பாவ "hb-cff-interp-dict-common.hh"
+#அந்தர்பாவ "hb-subset-plan.hh"
 
-namespace CFF {
+நாமாகாஶ CFF {
 
-using namespace OT;
+using நாமாகாஶ OT;
 
 #define CFF_UNDEF_CODE  0xFFFFFFFF
 
@@ -43,168 +43,168 @@ using whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
 template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+நிலையான உள்வரி மாறிலி Type& StructAtOffsetOrNull (மாறிலி வெறுமை *P, முழு offset, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  எனில் (!offset) திரும்பு Null (Type);
 
-  const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  மாறிலி எழுத்து *p = (மாறிலி எழுத்து *) P + offset;
+  எனில் (!sc.check_point (p)) திரும்பு Null (Type);
 
-  const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  மாறிலி Type &obj = *reinterpret_cast<மாறிலி Type *> (p);
+  எனில் (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) திரும்பு Null (Type);
 
-  return obj;
+  திரும்பு obj;
 }
 
 
-struct code_pair_t
+கட்டமைப்பு code_pair_t
 {
   unsigned code;
   hb_codepoint_t glyph;
 };
 
 
-using str_buff_t = hb_vector_t<unsigned char>;
+using str_buff_t = hb_vector_t<unsigned எழுத்து>;
 using str_buff_vec_t = hb_vector_t<str_buff_t>;
 using glyph_to_sid_map_t = hb_vector_t<code_pair_t>;
 
 /* Top Dict, Font Dict, Private Dict */
-struct Dict : UnsizedByteStr
+கட்டமைப்பு Dict : UnsizedByteStr
 {
   template <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
-  bool serialize (hb_serialize_context_t *c,
-		  const DICTVAL &dictval,
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி DICTVAL &dictval,
 		  OP_SERIALIZER& opszr,
 		  Ts&&... ds)
   {
-    TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
-	return_trace (false);
+    TRACE_SERIALIZE (இது);
+    க்கு (unsigned முழு i = 0; i < dictval.get_மொத்தம் (); i++)
+      எனில் (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+	return_trace (பொய்);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
   template <typename T, typename V>
-  static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
+  நிலையான தருக்க serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    எனில் (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      திரும்பு பொய்;
 
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     /* serialize the opcode */
-    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), பொய்);
+    எனில் (unlikely (!p)) return_trace (பொய்);
+    எனில் (Is_OpCode_ESC (op))
     {
       *p = OpCode_escape;
       op = Unmake_OpCode_ESC (op);
       p++;
     }
     *p = op;
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
   template <typename V>
-  static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  நிலையான தருக்க serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
+  { திரும்பு serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
 
   template <typename V>
-  static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  நிலையான தருக்க serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
+  { திரும்பு serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
 
-  template <typename T, int int_op>
-  static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
+  template <typename T, முழு int_op>
+  நிலையான தருக்க serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
   {
     T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
+    எனில் (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) திரும்பு பொய்;
     c->add_link (ofs, link, whence);
-    return true;
+    திரும்பு உண்மை;
   }
 
-  static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  நிலையான தருக்க serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
+  { திரும்பு serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
 
-  static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  நிலையான தருக்க serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
+  { திரும்பு serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
-struct FontDict : Dict {};
-struct PrivateDict : Dict {};
+கட்டமைப்பு உச்சி_Dict : Dict {};
+கட்டமைப்பு FontDict : Dict {};
+கட்டமைப்பு PrivateDict : Dict {};
 
-struct table_info_t
+கட்டமைப்பு table_info_t
 {
-  void init () { offset = size = 0; link = 0; }
+  வெறுமை init () { offset = size = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  unsigned முழு    offset;
+  unsigned முழு    size;
   objidx_t	  link;
 };
 
-template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+template <typename மொத்தம்_3>
+கட்டமைப்பு FDArray : CFFIndex<மொத்தம்_3>
 {
   template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c,
+  தருக்க serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  OP_SERIALIZER& opszr)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
     /* serialize INDEX data */
     hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    எனில் (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
-    char *data_base = c->head;
+    எழுத்து *data_base = c->head;
     + it
-    | hb_map ([&] (const hb_pair_t<const DICTVAL&, const INFO&> &_)
+    | hb_map ([&] (மாறிலி hb_pair_t<மாறிலி DICTVAL&, மாறிலி INFO&> &_)
     {
       FontDict *dict = c->start_embed<FontDict> ();
 		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+		திரும்பு c->head - (மாறிலி எழுத்து*)dict;
 	      })
     | hb_sink (sizes)
     ;
     unsigned data_size = c->head - data_base;
-    c->pop_pack (false);
+    c->எடு_pack (பொய்);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    எனில் (unlikely (sizes.in_error ())) return_trace (பொய்);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
 
     /* serialize INDEX header */
-    return_trace (CFFIndex<COUNT>::serialize_header (c, hb_iter (sizes), data_size));
+    return_trace (CFFIndex<மொத்தம்_3>::serialize_header (c, hb_iter (sizes), data_size));
   }
 };
 
 /* FDSelect */
-struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+கட்டமைப்பு FDSelect0 {
+  தருக்க sanitize (hb_sanitize_context_t *c, unsigned முழு fdcount,
+                 unsigned முழு glyph_மொத்தம் = HB_CODEPOINT_INVALID) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
-      return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!(c->check_struct (இது))))
+      return_trace (பொய்);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
-                                     c->get_num_glyphs () : glyph_count)))
-      return_trace (false);
+    எனில் (unlikely (!c->check_array (fds, glyph_மொத்தம் == HB_CODEPOINT_INVALID ?
+                                     c->get_இலக்கம்_glyphs () : glyph_மொத்தம்)))
+      return_trace (பொய்);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  unsigned get_fd (hb_codepoint_t glyph) மாறிலி
+  { திரும்பு fds[glyph]; }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) மாறிலி
+  { திரும்பு {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_size (unsigned முழு இலக்கம்_glyphs) மாறிலி
+  { திரும்பு hb_unsigned_mul_saturate (HBUINT8::static_size, இலக்கம்_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
@@ -212,82 +212,82 @@ struct FDSelect0 {
 };
 
 template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4_Range
+கட்டமைப்பு FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி வெறுமை * /*nullptr*/, unsigned முழு fdcount) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
-		  first < c->get_num_glyphs () && (fd < fdcount));
+		  first < c->get_இலக்கம்_glyphs () && (fd < fdcount));
   }
 
   GID_TYPE    first;
   FD_TYPE     fd;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (GID_TYPE::static_size + FD_TYPE::static_size);
 };
 
 template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4
+கட்டமைப்பு FDSelect3_4
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  தருக்க sanitize (hb_sanitize_context_t *c, unsigned முழு fdcount,
+                 unsigned முழு min_glyphs = HB_CODEPOINT_INVALID) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!(c->check_struct (இது) &&
 		    ranges.sanitize (c, nullptr, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
 		    ranges[0].first == 0)))
-      return_trace (false);
+      return_trace (பொய்);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
-	return_trace (false);
+    க்கு (unsigned முழு i = 1; i < nRanges (); i++)
+      எனில் (unlikely (ranges[i - 1].first >= ranges[i].first))
+	return_trace (பொய்);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    எனில் (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
                    sentinel() > ranges[nRanges () - 1].first &&
-                   sentinel() <= c->get_num_glyphs () &&
+                   sentinel() <= c->get_இலக்கம்_glyphs () &&
                    sentinel() >= (min_glyphs == HB_CODEPOINT_INVALID ?
-                                  c->get_num_glyphs () : min_glyphs))))
-      return_trace (false);
+                                  c->get_இலக்கம்_glyphs () : min_glyphs))))
+      return_trace (பொய்);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  நிலையான முழு _cmp_range (மாறிலி வெறுமை *சாவி_3, மாறிலி வெறுமை *_item)
   {
-    hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
+    hb_codepoint_t glyph = * (hb_codepoint_t *) சாவி_3;
     FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    எனில் (glyph < range[0].first) திரும்பு -1;
+    எனில் (glyph < range[1].first) திரும்பு 0;
+    திரும்பு +1;
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  unsigned get_fd (hb_codepoint_t glyph) மாறிலி
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, அளவு (ranges[0]), _cmp_range);
+    திரும்பு range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) மாறிலி
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
+    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, அளவு (ranges[0]), _cmp_range);
     unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
     hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    திரும்பு {fd, end};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { திரும்பு ranges.len; }
+  GID_TYPE         nRanges () மாறிலி { திரும்பு ranges.len; }
+  GID_TYPE       &sentinel ()       { திரும்பு StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  மாறிலி GID_TYPE &sentinel () மாறிலி { திரும்பு StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
   ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
@@ -295,84 +295,84 @@ struct FDSelect3_4
   DEFINE_SIZE_ARRAY (GID_TYPE::static_size, ranges);
 };
 
-typedef FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
-typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
+வகைவரை FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
+வகைவரை FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
-struct FDSelect
+கட்டமைப்பு FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  தருக்க serialize (hb_serialize_context_t *c, மாறிலி FDSelect &src, unsigned முழு இலக்கம்_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
-    FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    unsigned முழு size = src.get_size (இலக்கம்_glyphs);
+    FDSelect *dest = c->allocate_size<FDSelect> (size, பொய்);
+    எனில் (unlikely (!dest)) return_trace (பொய்);
     hb_memcpy (dest, &src, size);
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned முழு இலக்கம்_glyphs) மாறிலி
   {
-    switch (format)
+    தேர்வு (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    நிலை 0: hb_barrier (); திரும்பு hb_unsigned_add_saturate (format.static_size, u.format0.get_size (இலக்கம்_glyphs));
+    நிலை 3: hb_barrier (); திரும்பு hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
+    இயல்பு:திரும்பு 0;
     }
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  unsigned get_fd (hb_codepoint_t glyph) மாறிலி
   {
-    if (this == &Null (FDSelect)) return 0;
+    எனில் (இது == &Null (FDSelect)) திரும்பு 0;
 
-    switch (format)
+    தேர்வு (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    நிலை 0: hb_barrier (); திரும்பு u.format0.get_fd (glyph);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_fd (glyph);
+    இயல்பு:திரும்பு 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) மாறிலி
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    எனில் (இது == &Null (FDSelect)) திரும்பு {0, 1};
 
-    switch (format)
+    தேர்வு (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    நிலை 0: hb_barrier (); திரும்பு u.format0.get_fd_range (glyph);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_fd_range (glyph);
+    இயல்பு:திரும்பு {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  தருக்க sanitize (hb_sanitize_context_t *c, unsigned முழு fdcount) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!c->check_struct (இது)))
+      return_trace (பொய்);
     hb_barrier ();
 
-    switch (format)
+    தேர்வு (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
-    default:return_trace (false);
+    நிலை 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
+    நிலை 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
+    இயல்பு:return_trace (பொய்);
     }
   }
 
   HBUINT8	format;
-  union {
+  ஒன்றிப்பு {
   FDSelect0	format0;
   FDSelect3	format3;
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_MIN (1);
 };
 
-template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+template <typename மொத்தம்_3>
+கட்டமைப்பு Subrs : CFFIndex<மொத்தம்_3>
 {
-  typedef COUNT count_type;
-  typedef CFFIndex<COUNT> SUPER;
+  வகைவரை மொத்தம்_3 மொத்தம்_type;
+  வகைவரை CFFIndex<மொத்தம்_3> SUPER;
 };
 
 } /* namespace CFF */

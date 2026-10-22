@@ -25,169 +25,169 @@
 #ifndef HB_BIT_VECTOR_HH
 #define HB_BIT_VECTOR_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-atomic.hh"
+#அந்தர்பாவ "hb-atomic.hh"
 
-struct hb_min_max_t
+கட்டமைப்பு hb_min_max_t
 {
-  void add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  வெறுமை add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
+  வெறுமை add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     min_v = hb_min (min_v, a);
     max_v = hb_max (max_v, b);
   }
 
   template <typename set_t>
-  void union_ (const set_t &set)
+  வெறுமை union_ (மாறிலி set_t &set)
   {
     hb_codepoint_t set_min = set.get_min ();
-    if (unlikely (set_min == HB_CODEPOINT_INVALID))
-      return;
+    எனில் (unlikely (set_min == HB_CODEPOINT_INVALID))
+      திரும்பு;
     hb_codepoint_t set_max = set.get_max ();
     min_v = hb_min (min_v, set_min);
     max_v = hb_max (max_v, set_max);
   }
 
-  hb_codepoint_t get_min () const { return min_v; }
-  hb_codepoint_t get_max () const { return max_v; }
+  hb_codepoint_t get_min () மாறிலி { திரும்பு min_v; }
+  hb_codepoint_t get_max () மாறிலி { திரும்பு max_v; }
 
-  private:
+  தனிப்பட்ட:
   hb_codepoint_t min_v = HB_CODEPOINT_INVALID;
   hb_codepoint_t max_v = 0;
 };
 
-template <bool atomic = false>
-struct hb_bit_vector_t
+template <தருக்க atomic = பொய்>
+கட்டமைப்பு hb_bit_vector_t
 {
   using int_t = uint64_t;
   using elt_t = typename std::conditional<atomic, hb_atomic_t<int_t>, int_t>::type;
 
   hb_bit_vector_t () = delete;
-  hb_bit_vector_t (const hb_bit_vector_t &other) = delete;
-  hb_bit_vector_t &operator= (const hb_bit_vector_t &other) = delete;
+  hb_bit_vector_t (மாறிலி hb_bit_vector_t &other) = delete;
+  hb_bit_vector_t &operator= (மாறிலி hb_bit_vector_t &other) = delete;
 
   // Move
   hb_bit_vector_t (hb_bit_vector_t &&other)
-		: min_v (other.min_v), max_v (other.max_v), count (other.count), elts (other.elts)
+		: min_v (other.min_v), max_v (other.max_v), மொத்தம் (other.மொத்தம்), elts (other.elts)
   {
-    other.min_v = other.max_v = other.count = 0;
+    other.min_v = other.max_v = other.மொத்தம் = 0;
     other.elts = nullptr;
   }
   hb_bit_vector_t &operator= (hb_bit_vector_t &&other)
   {
     hb_swap (min_v, other.min_v);
     hb_swap (max_v, other.max_v);
-    hb_swap (count, other.count);
+    hb_swap (மொத்தம், other.மொத்தம்);
     hb_swap (elts, other.elts);
-    return *this;
+    திரும்பு *இது;
   }
 
   hb_bit_vector_t (unsigned min_v, unsigned max_v)
     : min_v (min_v), max_v (max_v)
   {
-    if (unlikely (min_v >= max_v))
+    எனில் (unlikely (min_v >= max_v))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = மொத்தம் = 0;
+      திரும்பு;
     }
 
-    unsigned num = (max_v - min_v + sizeof (int_t) * 8) / (sizeof (int_t) * 8);
-    elts = (elt_t *) hb_calloc (num, sizeof (int_t));
-    if (unlikely (!elts))
+    unsigned இலக்கம் = (max_v - min_v + அளவு (int_t) * 8) / (அளவு (int_t) * 8);
+    elts = (elt_t *) hb_calloc (இலக்கம், அளவு (int_t));
+    எனில் (unlikely (!elts))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = மொத்தம் = 0;
+      திரும்பு;
     }
 
-    count = max_v - min_v + 1;
+    மொத்தம் = max_v - min_v + 1;
   }
   ~hb_bit_vector_t ()
   {
     hb_free (elts);
   }
 
-  void add (hb_codepoint_t g) { elt (g) |= mask (g); }
-  void del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  வெறுமை add (hb_codepoint_t g) { elt (g) |= mask (g); }
+  வெறுமை del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
+  வெறுமை set (hb_codepoint_t g, தருக்க value) { எனில் (value) add (g); இல்லையெனில் del (g); }
+  தருக்க get (hb_codepoint_t g) மாறிலி { திரும்பு elt (g) & mask (g); }
+  தருக்க has (hb_codepoint_t g) மாறிலி { திரும்பு get (g); }
+  தருக்க may_have (hb_codepoint_t g) மாறிலி { திரும்பு get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
+  தருக்க operator [] (hb_codepoint_t g) மாறிலி { திரும்பு get (g); }
+  தருக்க operator () (hb_codepoint_t g) மாறிலி { திரும்பு get (g); }
 
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  வெறுமை add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    எனில் (unlikely (!மொத்தம் || a > b || a < min_v || b > max_v))
+      திரும்பு;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    எனில் (la == lb)
       *la |= (mask (b) << 1) - mask(a);
-    else
+    இல்லையெனில்
     {
       *la |= ~(mask (a) - 1llu);
       la++;
 
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (எழுத்து *) lb - (எழுத்து *) la);
 
       *lb |= ((mask (b) << 1) - 1llu);
     }
   }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  வெறுமை del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    எனில் (unlikely (!மொத்தம் || a > b || a < min_v || b > max_v))
+      திரும்பு;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    எனில் (la == lb)
       *la &= ~((mask (b) << 1llu) - mask(a));
-    else
+    இல்லையெனில்
     {
       *la &= mask (a) - 1;
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0, (எழுத்து *) lb - (எழுத்து *) la);
 
       *lb &= ~((mask (b) << 1) - 1llu);
     }
   }
-  void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  வெறுமை set_range (hb_codepoint_t a, hb_codepoint_t b, தருக்க v)
+  { எனில் (v) add_range (a, b); இல்லையெனில் del_range (a, b); }
 
   template <typename set_t>
-  void union_ (const set_t &set)
+  வெறுமை union_ (மாறிலி set_t &set)
   {
-    for (hb_codepoint_t g : set)
+    க்கு (hb_codepoint_t g : set)
       add (g);
   }
 
-  static const unsigned int ELT_BITS = sizeof (elt_t) * 8;
-  static constexpr unsigned ELT_MASK = ELT_BITS - 1;
+  நிலையான மாறிலி unsigned முழு ELT_BITS = அளவு (elt_t) * 8;
+  நிலையான constexpr unsigned ELT_MASK = ELT_BITS - 1;
 
-  static constexpr elt_t zero = 0;
+  நிலையான constexpr elt_t zero = 0;
 
   elt_t &elt (hb_codepoint_t g)
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Crap(elt_t);
-    return elts[g / ELT_BITS];
+    எனில் (unlikely (g >= மொத்தம்))
+      திரும்பு Crap(elt_t);
+    திரும்பு elts[g / ELT_BITS];
   }
-  const elt_t& elt (hb_codepoint_t g) const
+  மாறிலி elt_t& elt (hb_codepoint_t g) மாறிலி
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Null(elt_t);
-    return elts[g / ELT_BITS];
+    எனில் (unlikely (g >= மொத்தம்))
+      திரும்பு Null(elt_t);
+    திரும்பு elts[g / ELT_BITS];
   }
 
-  static constexpr int_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  நிலையான constexpr int_t mask (hb_codepoint_t g) { திரும்பு elt_t (1) << (g & ELT_MASK); }
 
-  hb_codepoint_t min_v = 0, max_v = 0, count = 0;
+  hb_codepoint_t min_v = 0, max_v = 0, மொத்தம் = 0;
   elt_t *elts = nullptr;
 };
 

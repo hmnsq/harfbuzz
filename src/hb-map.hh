@@ -27,82 +27,82 @@
 #ifndef HB_MAP_HH
 #define HB_MAP_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-set.hh"
+#அந்தர்பாவ "hb-set.hh"
 
 
 /*
  * hb_hashmap_t
  */
 
-extern HB_INTERNAL const hb_codepoint_t minus_1;
+வெளி HB_INTERNAL மாறிலி hb_codepoint_t minus_1;
 
 template <typename K, typename V,
-	  bool minus_one = false>
-struct hb_hashmap_t
+	  தருக்க minus_one = பொய்>
+கட்டமைப்பு hb_hashmap_t
 {
-  static constexpr bool realloc_move = true;
+  நிலையான constexpr தருக்க realloc_move = உண்மை;
 
   hb_hashmap_t ()  { init (); }
   ~hb_hashmap_t () { fini (); }
 
-  void _copy (const hb_hashmap_t& o)
+  வெறுமை _copy (மாறிலி hb_hashmap_t& o)
   {
-    if (unlikely (!o.successful))
+    எனில் (unlikely (!o.successful))
     {
-      successful = false;
-      return;
+      successful = பொய்;
+      திரும்பு;
     }
-    if (unlikely (!o.mask)) return;
+    எனில் (unlikely (!o.mask)) திரும்பு;
 
-    if (hb_is_trivially_copy_assignable (item_t))
+    எனில் (hb_is_trivially_copy_assignable (item_t))
     {
-      items = (item_t *) hb_malloc2 ((o.mask + 1), sizeof (item_t));
-      if (unlikely (!items))
+      பொருட்கள் = (item_t *) hb_malloc2 ((o.mask + 1), அளவு (item_t));
+      எனில் (unlikely (!பொருட்கள்))
       {
-	successful = false;
-	return;
+	successful = பொய்;
+	திரும்பு;
       }
       population = o.population;
       occupancy = o.occupancy;
       mask = o.mask;
-      prime = o.prime;
+      பகாஎண் = o.பகாஎண்;
       max_chain_length = o.max_chain_length;
-      memcpy (items, o.items, sizeof (item_t) * (mask + 1));
-      return;
+      memcpy (பொருட்கள், o.பொருட்கள், அளவு (item_t) * (mask + 1));
+      திரும்பு;
     }
 
-    alloc (o.population); hb_copy (o, *this);
+    alloc (o.population); hb_copy (o, *இது);
   }
 
-  hb_hashmap_t (const hb_hashmap_t& o) : hb_hashmap_t () { _copy (o); }
-  hb_hashmap_t& operator= (const hb_hashmap_t& o)
+  hb_hashmap_t (மாறிலி hb_hashmap_t& o) : hb_hashmap_t () { _copy (o); }
+  hb_hashmap_t& operator= (மாறிலி hb_hashmap_t& o)
   {
     reset ();
-    if (!items) { _copy (o); return *this; }
-    alloc (o.population); hb_copy (o, *this); return *this;
+    எனில் (!பொருட்கள்) { _copy (o); திரும்பு *இது; }
+    alloc (o.population); hb_copy (o, *இது); திரும்பு *இது;
   }
 
-  hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*this, o); }
-  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*this, o); return *this; }
+  hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*இது, o); }
+  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*இது, o); திரும்பு *இது; }
 
   hb_hashmap_t (std::initializer_list<hb_pair_t<K, V>> lst) : hb_hashmap_t ()
   {
-    for (auto&& item : lst)
+    க்கு (auto&& item : lst)
       set (item.first, item.second);
   }
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_hashmap_t (const Iterable &o) : hb_hashmap_t ()
+  hb_hashmap_t (மாறிலி Iterable &o) : hb_hashmap_t ()
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    எனில் (iter.is_random_access_iterator || iter.has_fast_len)
       alloc (hb_len (iter));
-    hb_copy (iter, *this);
+    hb_copy (iter, *இது);
   }
 
-  struct item_t
+  கட்டமைப்பு item_t
   {
     K key;
     uint32_t is_real_ : 1;
@@ -111,203 +111,203 @@ struct hb_hashmap_t
     V value;
 
     item_t () : key (),
-		is_real_ (false), is_used_ (false),
+		is_real_ (பொய்), is_used_ (பொய்),
 		hash (0),
 		value () {}
 
     // Needed for https://github.com/harfbuzz/harfbuzz/issues/4138
-    K& get_key () { return key; }
-    V& get_value () { return value; }
+    K& get_சாவி () { திரும்பு key; }
+    V& get_மதிப்பு () { திரும்பு value; }
 
-    bool is_used () const { return is_used_; }
-    void set_used (bool is_used) { is_used_ = is_used; }
-    void set_real (bool is_real) { is_real_ = is_real; }
-    bool is_real () const { return is_real_; }
+    தருக்க is_used () மாறிலி { திரும்பு is_used_; }
+    வெறுமை set_used (தருக்க is_used) { is_used_ = is_used; }
+    வெறுமை set_real (தருக்க is_real) { is_real_ = is_real; }
+    தருக்க is_real () மாறிலி { திரும்பு is_real_; }
 
-    template <bool v = minus_one,
-	      hb_enable_if (v == false)>
-    static inline const V& default_value () { return Null(V); };
-    template <bool v = minus_one,
-	      hb_enable_if (v == true)>
-    static inline const V& default_value ()
+    template <தருக்க v = minus_one,
+	      hb_enable_if (v == பொய்)>
+    நிலையான உள்வரி மாறிலி V& default_மதிப்பு () { திரும்பு Null(V); };
+    template <தருக்க v = minus_one,
+	      hb_enable_if (v == உண்மை)>
+    நிலையான உள்வரி மாறிலி V& default_மதிப்பு ()
     {
       static_assert (hb_is_same (V, hb_codepoint_t), "");
-      return minus_1;
+      திரும்பு minus_1;
     };
 
-    bool operator == (const K &o) const { return hb_deref (key) == hb_deref (o); }
-    bool operator == (const item_t &o) const { return *this == o.key; }
-    hb_pair_t<K, V> get_pair() const { return hb_pair_t<K, V> (key, value); }
-    hb_pair_t<const K &, V &> get_pair_ref() { return hb_pair_t<const K &, V &> (key, value); }
+    தருக்க operator == (மாறிலி K &o) மாறிலி { திரும்பு hb_deref (key) == hb_deref (o); }
+    தருக்க operator == (மாறிலி item_t &o) மாறிலி { திரும்பு *இது == o.key; }
+    hb_pair_t<K, V> get_pair() மாறிலி { திரும்பு hb_pair_t<K, V> (key, value); }
+    hb_pair_t<மாறிலி K &, V &> get_pair_ref() { திரும்பு hb_pair_t<மாறிலி K &, V &> (key, value); }
 
-    uint32_t total_hash () const
-    { return (hash * 31u) + hb_hash (value); }
+    uint32_t total_hash () மாறிலி
+    { திரும்பு (hash * 31u) + hb_hash (value); }
 
-    static constexpr bool is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
+    நிலையான constexpr தருக்க is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
   };
 
   hb_object_header_t header;
-  bool successful; /* Allocations successful */
+  தருக்க successful; /* Allocations successful */
   unsigned short max_chain_length;
-  unsigned int population; /* Not including tombstones. */
-  unsigned int occupancy; /* Including tombstones. */
-  unsigned int mask;
-  unsigned int prime;
-  item_t *items;
+  unsigned முழு population; /* Not including tombstones. */
+  unsigned முழு occupancy; /* Including tombstones. */
+  unsigned முழு mask;
+  unsigned முழு பகாஎண்;
+  item_t *பொருட்கள்;
 
-  friend void swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
+  friend வெறுமை swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
   {
-    if (unlikely (!a.successful || !b.successful))
-      return;
+    எனில் (unlikely (!a.successful || !b.successful))
+      திரும்பு;
     hb_swap (a.max_chain_length, b.max_chain_length);
     hb_swap (a.population, b.population);
     hb_swap (a.occupancy, b.occupancy);
     hb_swap (a.mask, b.mask);
-    hb_swap (a.prime, b.prime);
-    hb_swap (a.items, b.items);
+    hb_swap (a.பகாஎண், b.பகாஎண்);
+    hb_swap (a.பொருட்கள், b.பொருட்கள்);
   }
-  void init ()
+  வெறுமை init ()
   {
-    hb_object_init (this);
+    hb_object_init (இது);
 
-    successful = true;
+    successful = உண்மை;
     max_chain_length = 0;
     population = occupancy = 0;
     mask = 0;
-    prime = 0;
-    items = nullptr;
+    பகாஎண் = 0;
+    பொருட்கள் = nullptr;
   }
-  void fini ()
+  வெறுமை fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (இது);
 
-    if (likely (items))
+    எனில் (likely (பொருட்கள்))
     {
       unsigned size = mask + 1;
-      for (unsigned i = 0; i < size; i++)
-	items[i].~item_t ();
-      hb_free (items);
-      items = nullptr;
+      க்கு (unsigned i = 0; i < size; i++)
+	பொருட்கள்[i].~item_t ();
+      hb_free (பொருட்கள்);
+      பொருட்கள் = nullptr;
     }
     population = occupancy = 0;
   }
 
   hb_hashmap_t& reset ()
   {
-    successful = true;
+    successful = உண்மை;
     clear ();
-    return *this;
+    திரும்பு *இது;
   }
 
-  bool in_error () const { return !successful; }
+  தருக்க in_error () மாறிலி { திரும்பு !successful; }
 
-  bool alloc (unsigned new_population = 0)
+  தருக்க alloc (unsigned new_population = 0)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
+    எனில் (unlikely (!successful)) திரும்பு பொய்;
+    எனில் (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
     {
       // Population sizes >0x3FFFFFFF will result in power
       // being larger than 31, which in turn leads to a new size
       // that overflows u32.
-      successful = false;
-      return false;
+      successful = பொய்;
+      திரும்பு பொய்;
     }
 
-    if (new_population != 0 && (new_population + new_population / 2) < mask) return true;
+    எனில் (new_population != 0 && (new_population + new_population / 2) < mask) திரும்பு உண்மை;
 
-    unsigned int power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
-    unsigned int new_size = 1u << power;
-    item_t *new_items = (item_t *) hb_malloc2 ((size_t) new_size, sizeof (item_t));
-    if (unlikely (!new_items))
+    unsigned முழு power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
+    unsigned முழு new_size = 1u << power;
+    item_t *new_பொருட்கள் = (item_t *) hb_malloc2 ((size_t) new_size, அளவு (item_t));
+    எனில் (unlikely (!new_பொருட்கள்))
     {
-      successful = false;
-      return false;
+      successful = பொய்;
+      திரும்பு பொய்;
     }
-    if (!item_t::is_trivially_constructible)
-      for (auto &_ : hb_iter (new_items, new_size))
-	new (&_) item_t ();
-    else
-      hb_memset (new_items, 0, (size_t) new_size * sizeof (item_t));
+    எனில் (!item_t::is_trivially_constructible)
+      க்கு (auto &_ : hb_iter (new_பொருட்கள், new_size))
+	புதிய (&_) item_t ();
+    இல்லையெனில்
+      hb_memset (new_பொருட்கள், 0, (size_t) new_size * அளவு (item_t));
 
-    unsigned int old_size = size ();
-    item_t *old_items = items;
+    unsigned முழு old_size = size ();
+    item_t *old_பொருட்கள் = பொருட்கள்;
 
     /* Switch to new, empty, array. */
     population = occupancy = 0;
     mask = new_size - 1;
-    prime = prime_for (power);
+    பகாஎண் = பகாஎண்_for (power);
     max_chain_length = power * 2;
-    items = new_items;
+    பொருட்கள் = new_பொருட்கள்;
 
     /* Insert back old items. */
-    for (unsigned int i = 0; i < old_size; i++)
+    க்கு (unsigned முழு i = 0; i < old_size; i++)
     {
-      if (old_items[i].is_real ())
+      எனில் (old_பொருட்கள்[i].is_real ())
       {
-	set_with_hash (std::move (old_items[i].key),
-		       old_items[i].hash,
-		       std::move (old_items[i].value));
+	set_with_hash (std::move (old_பொருட்கள்[i].key),
+		       old_பொருட்கள்[i].hash,
+		       std::move (old_பொருட்கள்[i].value));
       }
     }
-    for (unsigned int i = 0; i < old_size; i++)
-      old_items[i].~item_t ();
+    க்கு (unsigned முழு i = 0; i < old_size; i++)
+      old_பொருட்கள்[i].~item_t ();
 
-    hb_free (old_items);
+    hb_free (old_பொருட்கள்);
 
-    return true;
+    திரும்பு உண்மை;
   }
 
   template <typename T>
-  bool in_storage (const T &v) const
+  தருக்க in_storage (மாறிலி T &v) மாறிலி
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return items &&
-	   (uintptr_t) items <= p && p < (uintptr_t) (items + size ());
+    திரும்பு பொருட்கள் &&
+	   (uintptr_t) பொருட்கள் <= p && p < (uintptr_t) (பொருட்கள் + size ());
   }
 
   template <typename KK, typename VV>
-  bool set_with_hash (KK&& key, uint32_t hash, VV&& value, bool overwrite = true)
+  தருக்க set_with_hash (KK&& key, uint32_t hash, VV&& value, தருக்க overwrite = உண்மை)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely ((occupancy + occupancy / 2) >= mask))
+    எனில் (unlikely (!successful)) திரும்பு பொய்;
+    எனில் (unlikely ((occupancy + occupancy / 2) >= mask))
     {
       /* key or value may live in our own storage, eg. m.set (k, m.get (j)).
        * alloc() frees that storage, so copy them out first. */
-      if (unlikely (in_storage (key) || in_storage (value)))
+      எனில் (unlikely (in_storage (key) || in_storage (value)))
       {
-	K key_copy;
-	key_copy = std::forward<KK> (key);
-	V value_copy;
-	value_copy = std::forward<VV> (value);
-	return set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
+	K சாவி_copy;
+	சாவி_copy = std::forward<KK> (key);
+	V மதிப்பு_copy;
+	மதிப்பு_copy = std::forward<VV> (value);
+	திரும்பு set_with_hash (std::move (சாவி_copy), hash, std::move (மதிப்பு_copy), overwrite);
       }
-      if (unlikely (!alloc ())) return false;
+      எனில் (unlikely (!alloc ())) திரும்பு பொய்;
     }
 
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int tombstone = (unsigned int) -1;
-    unsigned int i = hash % prime;
+    unsigned முழு tombstone = (unsigned முழு) -1;
+    unsigned முழு i = hash % பகாஎண்;
     unsigned length = 0;
     unsigned step = 0;
-    while (items[i].is_used ())
+    போது (பொருட்கள்[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      எனில் ((std::is_integral<K>::value || பொருட்கள்[i].hash == hash) &&
+	  பொருட்கள்[i] == key)
       {
-        if (!overwrite)
-	  return false;
-        else
-	  break;
+        எனில் (!overwrite)
+	  திரும்பு பொய்;
+        இல்லையெனில்
+	  நிறுத்து;
       }
-      if (!items[i].is_real () && tombstone == (unsigned) -1)
+      எனில் (!பொருட்கள்[i].is_real () && tombstone == (unsigned) -1)
         tombstone = i;
       i = (i + ++step) & mask;
       length++;
     }
 
-    item_t &item = items[tombstone == (unsigned) -1 ? i : tombstone];
+    item_t &item = பொருட்கள்[tombstone == (unsigned) -1 ? i : tombstone];
 
-    if (item.is_used ())
+    எனில் (item.is_used ())
     {
       occupancy--;
       population -= item.is_real ();
@@ -316,234 +316,234 @@ struct hb_hashmap_t
     item.key = std::forward<KK> (key);
     item.value = std::forward<VV> (value);
     item.hash = hash;
-    item.set_used (true);
-    item.set_real (true);
+    item.set_used (உண்மை);
+    item.set_real (உண்மை);
 
     occupancy++;
     population++;
 
-    if (unlikely (length > max_chain_length) && occupancy > mask / 8)
+    எனில் (unlikely (length > max_chain_length) && occupancy > mask / 8)
       alloc (mask - 8); // This ensures we jump to next larger size
 
-    return true;
+    திரும்பு உண்மை;
   }
 
   template <typename VV>
-  bool set (const K &key, VV&& value, bool overwrite = true) { return set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
+  தருக்க set (மாறிலி K &key, VV&& value, தருக்க overwrite = உண்மை) { திரும்பு set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
   template <typename VV>
-  bool set (K &&key, VV&& value, bool overwrite = true)
+  தருக்க set (K &&key, VV&& value, தருக்க overwrite = உண்மை)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
+    திரும்பு set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
   }
-  bool add (const K &key)
+  தருக்க add (மாறிலி K &key)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (key, hash, item_t::default_value ());
+    திரும்பு set_with_hash (key, hash, item_t::default_மதிப்பு ());
   }
 
-  const V& get_with_hash (const K &key, uint32_t hash) const
+  மாறிலி V& get_with_hash (மாறிலி K &key, uint32_t hash) மாறிலி
   {
-    if (!items) return item_t::default_value ();
+    எனில் (!பொருட்கள்) திரும்பு item_t::default_மதிப்பு ();
     auto *item = fetch_item (key, hash);
-    if (item)
-      return item->value;
-    return item_t::default_value ();
+    எனில் (item)
+      திரும்பு item->value;
+    திரும்பு item_t::default_மதிப்பு ();
   }
-  const V& get (const K &key) const
+  மாறிலி V& get (மாறிலி K &key) மாறிலி
   {
-    if (!items) return item_t::default_value ();
-    return get_with_hash (key, hb_hash (key));
+    எனில் (!பொருட்கள்) திரும்பு item_t::default_மதிப்பு ();
+    திரும்பு get_with_hash (key, hb_hash (key));
   }
 
-  void del (const K &key)
+  வெறுமை del (மாறிலி K &key)
   {
-    if (!items) return;
+    எனில் (!பொருட்கள்) திரும்பு;
     auto *item = fetch_item (key, hb_hash (key));
-    if (item)
+    எனில் (item)
     {
-      item->set_real (false);
+      item->set_real (பொய்);
       population--;
     }
   }
 
   /* Has interface. */
-  const V& operator [] (K k) const { return get (k); }
+  மாறிலி V& operator [] (K k) மாறிலி { திரும்பு get (k); }
   template <typename VV=V>
-  bool has (const K &key, VV **vp = nullptr) const
+  தருக்க has (மாறிலி K &key, VV **vp = nullptr) மாறிலி
   {
-    if (!items) return false;
-    return has_with_hash (key, hb_hash (key), vp);
+    எனில் (!பொருட்கள்) திரும்பு பொய்;
+    திரும்பு has_with_hash (key, hb_hash (key), vp);
   }
   template <typename VV=V>
-  bool has_with_hash (const K &key, uint32_t hash, VV **vp = nullptr) const
+  தருக்க has_with_hash (மாறிலி K &key, uint32_t hash, VV **vp = nullptr) மாறிலி
   {
-    if (!items) return false;
+    எனில் (!பொருட்கள்) திரும்பு பொய்;
     auto *item = fetch_item (key, hash);
-    if (item)
+    எனில் (item)
     {
-      if (vp) *vp = std::addressof (item->value);
-      return true;
+      எனில் (vp) *vp = std::addressof (item->value);
+      திரும்பு உண்மை;
     }
-    return false;
+    திரும்பு பொய்;
   }
-  item_t *fetch_item (const K &key, uint32_t hash) const
+  item_t *fetch_item (மாறிலி K &key, uint32_t hash) மாறிலி
   {
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int i = hash % prime;
+    unsigned முழு i = hash % பகாஎண்;
     unsigned step = 0;
-    while (items[i].is_used ())
+    போது (பொருட்கள்[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      எனில் ((std::is_integral<K>::value || பொருட்கள்[i].hash == hash) &&
+	  பொருட்கள்[i] == key)
       {
-	if (items[i].is_real ())
-	  return &items[i];
-	else
-	  return nullptr;
+	எனில் (பொருட்கள்[i].is_real ())
+	  திரும்பு &பொருட்கள்[i];
+	இல்லையெனில்
+	  திரும்பு nullptr;
       }
       i = (i + ++step) & mask;
     }
-    return nullptr;
+    திரும்பு nullptr;
   }
   /* Projection. */
-  const V& operator () (K k) const { return get (k); }
+  மாறிலி V& operator () (K k) மாறிலி { திரும்பு get (k); }
 
-  unsigned size () const { return mask ? mask + 1 : 0; }
+  unsigned size () மாறிலி { திரும்பு mask ? mask + 1 : 0; }
 
-  void clear ()
+  வெறுமை clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (zero-initialized) from any writes.  Any non-empty hashmap
      * is a real heap instance with writable items, so clearing
      * under !successful is safe. */
-    if (!population && !occupancy) return;
+    எனில் (!population && !occupancy) திரும்பு;
 
-    for (auto &_ : hb_iter (items, size ()))
+    க்கு (auto &_ : hb_iter (பொருட்கள், size ()))
     {
       /* Reconstruct items. */
       _.~item_t ();
-      new (&_) item_t ();
+      புதிய (&_) item_t ();
     }
 
     population = occupancy = 0;
   }
 
-  bool is_empty () const { return population == 0; }
-  explicit operator bool () const { return !is_empty (); }
+  தருக்க is_empty () மாறிலி { திரும்பு population == 0; }
+  explicit operator தருக்க () மாறிலி { திரும்பு !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () மாறிலி
   {
-    return
-    + iter_items ()
-    | hb_reduce ([] (uint32_t h, const item_t &_) { return h ^ _.total_hash (); }, (uint32_t) 0u)
+    திரும்பு
+    + iter_பொருட்கள் ()
+    | hb_reduce ([] (uint32_t h, மாறிலி item_t &_) { திரும்பு h ^ _.total_hash (); }, (uint32_t) 0u)
     ;
   }
 
-  bool is_equal (const hb_hashmap_t &other) const
+  தருக்க is_equal (மாறிலி hb_hashmap_t &other) மாறிலி
   {
-    if (population != other.population) return false;
+    எனில் (population != other.population) திரும்பு பொய்;
 
-    for (auto pair : iter ())
-      if (other.get (pair.first) != pair.second)
-        return false;
+    க்கு (auto pair : iter ())
+      எனில் (other.get (pair.first) != pair.second)
+        திரும்பு பொய்;
 
-    return true;
+    திரும்பு உண்மை;
   }
-  bool operator == (const hb_hashmap_t &other) const { return is_equal (other); }
-  bool operator != (const hb_hashmap_t &other) const { return !is_equal (other); }
+  தருக்க operator == (மாறிலி hb_hashmap_t &other) மாறிலி { திரும்பு is_equal (other); }
+  தருக்க operator != (மாறிலி hb_hashmap_t &other) மாறிலி { திரும்பு !is_equal (other); }
 
-  unsigned int get_population () const { return population; }
+  unsigned முழு get_population () மாறிலி { திரும்பு population; }
 
-  void update (const hb_hashmap_t &other)
+  வெறுமை update (மாறிலி hb_hashmap_t &other)
   {
-    if (unlikely (!successful)) return;
+    எனில் (unlikely (!successful)) திரும்பு;
 
-    hb_copy (other, *this);
+    hb_copy (other, *இது);
   }
 
   /*
    * Iterator
    */
 
-  auto iter_items () const HB_AUTO_RETURN
+  auto iter_பொருட்கள் () மாறிலி HB_AUTO_RETURN
   (
-    + hb_iter (items, this->size ())
+    + hb_iter (பொருட்கள், இது->size ())
     | hb_filter (&item_t::is_real)
   )
-  auto iter_ref () const HB_AUTO_RETURN
+  auto iter_ref () மாறிலி HB_AUTO_RETURN
   (
-    + this->iter_items ()
+    + இது->iter_பொருட்கள் ()
     | hb_map (&item_t::get_pair_ref)
   )
-  auto iter () const HB_AUTO_RETURN
+  auto iter () மாறிலி HB_AUTO_RETURN
   (
-    + this->iter_items ()
+    + இது->iter_பொருட்கள் ()
     | hb_map (&item_t::get_pair)
   )
-  auto keys_ref () const HB_AUTO_RETURN
+  auto சாவிகள்_ref () மாறிலி HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_key)
+    + இது->iter_பொருட்கள் ()
+    | hb_map (&item_t::get_சாவி)
   )
-  auto keys () const HB_AUTO_RETURN
+  auto சாவிகள் () மாறிலி HB_AUTO_RETURN
   (
-    + this->keys_ref ()
+    + இது->சாவிகள்_ref ()
     | hb_map (hb_ridentity)
   )
-  auto values_ref () const HB_AUTO_RETURN
+  auto மதிப்புகள்_ref () மாறிலி HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_value)
+    + இது->iter_பொருட்கள் ()
+    | hb_map (&item_t::get_மதிப்பு)
   )
-  auto values () const HB_AUTO_RETURN
+  auto values () மாறிலி HB_AUTO_RETURN
   (
-    + this->values_ref ()
+    + இது->மதிப்புகள்_ref ()
     | hb_map (hb_ridentity)
   )
 
   /* C iterator. */
-  bool next (int *idx,
+  தருக்க next (முழு *idx,
 	     K *key,
-	     V *value) const
+	     V *value) மாறிலி
   {
     unsigned i = (unsigned) (*idx + 1);
 
-    unsigned count = size ();
-    while (i < count && !items[i].is_real ())
+    unsigned மொத்தம் = size ();
+    போது (i < மொத்தம் && !பொருட்கள்[i].is_real ())
       i++;
 
-    if (i >= count)
+    எனில் (i >= மொத்தம்)
     {
       *idx = -1;
-      return false;
+      திரும்பு பொய்;
     }
 
-    *key = items[i].key;
-    *value = items[i].value;
+    *key = பொருட்கள்[i].key;
+    *value = பொருட்கள்[i].value;
 
     *idx = (signed) i;
-    return true;
+    திரும்பு உண்மை;
   }
 
   /* Sink interface. */
-  hb_hashmap_t& operator << (const hb_pair_t<K, V>& v)
-  { set (v.first, v.second); return *this; }
+  hb_hashmap_t& operator << (மாறிலி hb_pair_t<K, V>& v)
+  { set (v.first, v.second); திரும்பு *இது; }
   template <typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (V2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K, V&&>& v)
-  { set (v.first, std::move (v.second)); return *this; }
+  hb_hashmap_t& operator << (மாறிலி hb_pair_t<K, V&&>& v)
+  { set (v.first, std::move (v.second)); திரும்பு *இது; }
   template <typename K2 = K,
 	    hb_enable_if (!hb_is_trivially_copyable (K2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K&&, V>& v)
-  { set (std::move (v.first), v.second); return *this; }
+  hb_hashmap_t& operator << (மாறிலி hb_pair_t<K&&, V>& v)
+  { set (std::move (v.first), v.second); திரும்பு *இது; }
   template <typename K2 = K, typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (K2) &&
 			  !hb_is_trivially_copyable (V2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K&&, V&&>& v)
-  { set (std::move (v.first), std::move (v.second)); return *this; }
+  hb_hashmap_t& operator << (மாறிலி hb_pair_t<K&&, V&&>& v)
+  { set (std::move (v.first), std::move (v.second)); திரும்பு *இது; }
 
-  static unsigned int prime_for (unsigned int shift)
+  நிலையான unsigned முழு பகாஎண்_for (unsigned முழு shift)
   {
     /* Following comment and table copied from glib. */
     /* Each table size has an associated prime modulo (the first prime
@@ -552,7 +552,7 @@ struct hb_hashmap_t
      * good distribution with poor hash functions.
      */
     /* Not declaring static to make all kinds of compilers happy... */
-    /*static*/ const unsigned int prime_mod [32] =
+    /*static*/ மாறிலி unsigned முழு பகாஎண்_mod [32] =
     {
       1,          /* For 1 << 0 */
       2,
@@ -588,10 +588,10 @@ struct hb_hashmap_t
       2147483647  /* For 1 << 31 */
     };
 
-    if (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
-      return prime_mod[ARRAY_LENGTH (prime_mod) - 1];
+    எனில் (unlikely (shift >= ARRAY_LENGTH (பகாஎண்_mod)))
+      திரும்பு பகாஎண்_mod[ARRAY_LENGTH (பகாஎண்_mod) - 1];
 
-    return prime_mod[shift];
+    திரும்பு பகாஎண்_mod[shift];
   }
 };
 
@@ -599,24 +599,24 @@ struct hb_hashmap_t
  * hb_map_t
  */
 
-struct hb_map_t : hb_hashmap_t<hb_codepoint_t,
+கட்டமைப்பு hb_map_t : hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
-			       true>
+			       உண்மை>
 {
   using hashmap = hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
-			       true>;
+			       உண்மை>;
 
-  ~hb_map_t () = default;
+  ~hb_map_t () = இயல்பு;
   hb_map_t () : hashmap () {}
-  hb_map_t (const hb_map_t &o) : hashmap ((hashmap &) o) {}
+  hb_map_t (மாறிலி hb_map_t &o) : hashmap ((hashmap &) o) {}
   hb_map_t (hb_map_t &&o)  noexcept : hashmap (std::move ((hashmap &) o)) {}
-  hb_map_t& operator= (const hb_map_t&) = default;
-  hb_map_t& operator= (hb_map_t&&) = default;
+  hb_map_t& operator= (மாறிலி hb_map_t&) = இயல்பு;
+  hb_map_t& operator= (hb_map_t&&) = இயல்பு;
   hb_map_t (std::initializer_list<hb_codepoint_pair_t> lst) : hashmap (lst) {}
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_map_t (const Iterable &o) : hashmap (o) {}
+  hb_map_t (மாறிலி Iterable &o) : hashmap (o) {}
 };
 
 

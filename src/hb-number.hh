@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_HH
-#define HB_NUMBER_HH
+#ifndef HB_எண்_HH
+#define HB_எண்_HH
 
-HB_INTERNAL bool
-hb_parse_int (const char **pp, const char *end, int *pv,
-	      bool whole_buffer = false);
+HB_INTERNAL தருக்க
+hb_parse_int (மாறிலி எழுத்து **pp, மாறிலி எழுத்து *end, முழு *pv,
+	      தருக்க whole_buffer = பொய்);
 
-HB_INTERNAL bool
-hb_parse_uint (const char **pp, const char *end, unsigned int *pv,
-	       bool whole_buffer = false, int base = 10);
+HB_INTERNAL தருக்க
+hb_parse_uint (மாறிலி எழுத்து **pp, மாறிலி எழுத்து *end, unsigned முழு *pv,
+	       தருக்க whole_buffer = பொய், முழு base = 10);
 
-HB_INTERNAL bool
-hb_parse_double (const char **pp, const char *end, double *pv,
-		 bool whole_buffer = false);
+HB_INTERNAL தருக்க
+hb_parse_double (மாறிலி எழுத்து **pp, மாறிலி எழுத்து *end, இரட்டை *pv,
+		 தருக்க whole_buffer = பொய்);
 
 #endif /* HB_NUMBER_HH */

@@ -24,33 +24,33 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 #ifndef HB_NO_BUFFER_VERIFY
 
-#include "hb-buffer.hh"
+#அந்தர்பாவ "hb-buffer.hh"
 
 
 #define BUFFER_VERIFY_ERROR "buffer verify error: "
-static inline void
+நிலையான உள்வரி வெறுமை
 buffer_verify_error (hb_buffer_t *buffer,
 		     hb_font_t *font,
-		     const char *fmt,
+		     மாறிலி எழுத்து *fmt,
 		     ...) HB_PRINTF_FUNC(3, 4);
 
-static inline void
+நிலையான உள்வரி வெறுமை
 buffer_verify_error (hb_buffer_t *buffer,
 		     hb_font_t *font,
-		     const char *fmt,
+		     மாறிலி எழுத்து *fmt,
 		     ...)
 {
   va_list ap;
   va_start (ap, fmt);
-  if (buffer->messaging ())
+  எனில் (buffer->messaging ())
   {
     buffer->message_impl (font, fmt, ap);
   }
-  else
+  இல்லையெனில்
   {
     fprintf (stderr, "harfbuzz ");
     vfprintf (stderr, fmt, ap);
@@ -59,44 +59,44 @@ buffer_verify_error (hb_buffer_t *buffer,
   va_end (ap);
 }
 
-static bool
+நிலையான தருக்க
 buffer_verify_monotone (hb_buffer_t *buffer,
 			hb_font_t   *font)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  எனில் (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    திரும்பு உண்மை;
   }
 
-  bool is_forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
+  தருக்க is_forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
 
-  unsigned int num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned முழு இலக்கம்_glyphs;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &இலக்கம்_glyphs);
 
-  for (unsigned int i = 1; i < num_glyphs; i++)
-    if (info[i-1].cluster != info[i].cluster &&
+  க்கு (unsigned முழு i = 1; i < இலக்கம்_glyphs; i++)
+    எனில் (info[i-1].cluster != info[i].cluster &&
 	(info[i-1].cluster < info[i].cluster) != is_forward)
     {
       buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "clusters are not monotone.");
-      return false;
+      திரும்பு பொய்;
     }
 
-  return true;
+  திரும்பு உண்மை;
 }
 
-static bool
+நிலையான தருக்க
 buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
 			       hb_buffer_t  *text_buffer,
 			       hb_font_t          *font,
-			       const hb_feature_t *features,
-			       unsigned int        num_features,
-			       const char * const *shapers)
+			       மாறிலி hb_feature_t *features,
+			       unsigned முழு        இலக்கம்_features,
+			       மாறிலி எழுத்து * மாறிலி *shapers)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  எனில் (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    திரும்பு உண்மை;
   }
 
   /* Check that breaking up shaping at safe-to-break is indeed safe. */
@@ -106,86 +106,86 @@ buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
   hb_unique_ptr_t<hb_buffer_t> reconstruction (hb_buffer_create_similar (buffer));
   hb_buffer_set_flags (reconstruction, (hb_buffer_flags_t (hb_buffer_get_flags (reconstruction) & ~HB_BUFFER_FLAG_VERIFY)));
 
-  unsigned int num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned முழு இலக்கம்_glyphs;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &இலக்கம்_glyphs);
 
-  unsigned int num_chars;
-  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &num_chars);
+  unsigned முழு இலக்கம்_chars;
+  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &இலக்கம்_chars);
 
   /* Chop text and shape fragments. */
-  bool forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
-  unsigned int start = 0;
-  unsigned int text_start = forward ? 0 : num_chars;
-  unsigned int text_end = text_start;
-  for (unsigned int end = 1; end < num_glyphs + 1; end++)
+  தருக்க forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
+  unsigned முழு start = 0;
+  unsigned முழு text_start = forward ? 0 : இலக்கம்_chars;
+  unsigned முழு text_end = text_start;
+  க்கு (unsigned முழு end = 1; end < இலக்கம்_glyphs + 1; end++)
   {
-    if (end < num_glyphs &&
+    எனில் (end < இலக்கம்_glyphs &&
 	(info[end].cluster == info[end-1].cluster ||
 	 info[end-(forward?0:1)].mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK))
-	continue;
+	தொடர்;
 
     /* Shape segment corresponding to glyphs start..end. */
-    if (end == num_glyphs)
+    எனில் (end == இலக்கம்_glyphs)
     {
-      if (forward)
-	text_end = num_chars;
-      else
+      எனில் (forward)
+	text_end = இலக்கம்_chars;
+      இல்லையெனில்
 	text_start = 0;
     }
-    else
+    இல்லையெனில்
     {
-      if (forward)
+      எனில் (forward)
       {
-	unsigned int cluster = info[end].cluster;
-	while (text_end < num_chars && text[text_end].cluster < cluster)
+	unsigned முழு cluster = info[end].cluster;
+	போது (text_end < இலக்கம்_chars && text[text_end].cluster < cluster)
 	  text_end++;
       }
-      else
+      இல்லையெனில்
       {
-	unsigned int cluster = info[end - 1].cluster;
-	while (text_start && text[text_start - 1].cluster >= cluster)
+	unsigned முழு cluster = info[end - 1].cluster;
+	போது (text_start && text[text_start - 1].cluster >= cluster)
 	  text_start--;
       }
     }
-    if (unlikely (text_start >= text_end))
+    எனில் (unlikely (text_start >= text_end))
     {
       buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-break text range is invalid.");
-      return false;
+      திரும்பு பொய்;
     }
 
-    if (false)
+    எனில் (பொய்)
       printf("start %u end %u text start %u end %u\n", start, end, text_start, text_end);
 
     hb_buffer_clear_contents (fragment);
 
     hb_buffer_flags_t flags = hb_buffer_get_flags (fragment);
-    if (0 < text_start)
+    எனில் (0 < text_start)
       flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_BOT);
-    if (text_end < num_chars)
+    எனில் (text_end < இலக்கம்_chars)
       flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_EOT);
     hb_buffer_set_flags (fragment, flags);
 
     hb_buffer_append (fragment, text_buffer, text_start, text_end);
-    if (!hb_shape_full (font, fragment, features, num_features, shapers) ||
+    எனில் (!hb_shape_full (font, fragment, features, இலக்கம்_features, shapers) ||
 	!fragment->successful)
-      return true;
+      திரும்பு உண்மை;
     hb_buffer_append (reconstruction, fragment, 0, -1);
 
     start = end;
-    if (forward)
+    எனில் (forward)
       text_start = text_end;
-    else
+    இல்லையெனில்
       text_end = text_start;
   }
 
-  bool ret = true;
-  if (likely (reconstruction->successful))
+  தருக்க ret = உண்மை;
+  எனில் (likely (reconstruction->successful))
   {
     hb_buffer_diff_flags_t diff = hb_buffer_diff (reconstruction, buffer, (hb_codepoint_t) -1, 0);
-    if (diff & ~HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
+    எனில் (diff & ~HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
     {
       buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-break test failed.");
-      ret = false;
+      ret = பொய்;
 
       /* Return the reconstructed result instead so it can be inspected. */
       hb_buffer_set_length (buffer, 0);
@@ -193,21 +193,21 @@ buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
     }
   }
 
-  return ret;
+  திரும்பு ret;
 }
 
-static bool
+நிலையான தருக்க
 buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
 				hb_buffer_t        *text_buffer,
 				hb_font_t          *font,
-				const hb_feature_t *features,
-				unsigned int        num_features,
-				const char * const *shapers)
+				மாறிலி hb_feature_t *features,
+				unsigned முழு        இலக்கம்_features,
+				மாறிலி எழுத்து * மாறிலி *shapers)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  எனில் (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    திரும்பு உண்மை;
   }
 
   /* Check that shuffling up text before shaping at safe-to-concat points
@@ -249,15 +249,15 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
   hb_buffer_set_segment_properties (fragments[1], &props);
   hb_buffer_set_segment_properties (reconstruction, &props);
 
-  unsigned num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned இலக்கம்_glyphs;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &இலக்கம்_glyphs);
 
-  unsigned num_chars;
-  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &num_chars);
+  unsigned இலக்கம்_chars;
+  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &இலக்கம்_chars);
 
-  bool forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
+  தருக்க forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
 
-  if (!forward)
+  எனில் (!forward)
     hb_buffer_reverse (buffer);
 
   /*
@@ -268,32 +268,32 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
     unsigned start = 0;
     unsigned text_start = 0;
     unsigned text_end = 0;
-    for (unsigned end = 1; end < num_glyphs + 1; end++)
+    க்கு (unsigned end = 1; end < இலக்கம்_glyphs + 1; end++)
     {
-      if (end < num_glyphs &&
+      எனில் (end < இலக்கம்_glyphs &&
 	  (info[end].cluster == info[end-1].cluster ||
 	   info[end].mask & HB_GLYPH_FLAG_UNSAFE_TO_CONCAT))
-	  continue;
+	  தொடர்;
 
       /* Accumulate segment corresponding to glyphs start..end. */
-      if (end == num_glyphs)
-	text_end = num_chars;
-      else
+      எனில் (end == இலக்கம்_glyphs)
+	text_end = இலக்கம்_chars;
+      இல்லையெனில்
       {
 	unsigned cluster = info[end].cluster;
-	while (text_end < num_chars && text[text_end].cluster < cluster)
+	போது (text_end < இலக்கம்_chars && text[text_end].cluster < cluster)
 	  text_end++;
       }
-      assert (text_start < text_end);
+      ப்ரதிஜ்ஞா (text_start < text_end);
 
-      if (false)
+      எனில் (பொய்)
 	printf("start %u end %u text start %u end %u\n", start, end, text_start, text_end);
 
-#if 0
+#எனில் 0
       hb_buffer_flags_t flags = hb_buffer_get_flags (fragment);
-      if (0 < text_start)
+      எனில் (0 < text_start)
 	flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_BOT);
-      if (text_end < num_chars)
+      எனில் (text_end < இலக்கம்_chars)
 	flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_EOT);
       hb_buffer_set_flags (fragment, flags);
 #endif
@@ -306,19 +306,19 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
     }
   }
 
-  bool ret = true;
+  தருக்க ret = உண்மை;
   /*
    * Shape the two fragment streams.
    */
-  if (!hb_shape_full (font, fragments[0], features, num_features, shapers) ||
+  எனில் (!hb_shape_full (font, fragments[0], features, இலக்கம்_features, shapers) ||
       !fragments[0]->successful)
-    return ret;
+    திரும்பு ret;
 
-  if (!hb_shape_full (font, fragments[1], features, num_features, shapers) ||
+  எனில் (!hb_shape_full (font, fragments[1], features, இலக்கம்_features, shapers) ||
       !fragments[1]->successful)
-    return ret;
+    திரும்பு ret;
 
-  if (!forward)
+  எனில் (!forward)
   {
     hb_buffer_reverse (fragments[0]);
     hb_buffer_reverse (fragments[1]);
@@ -330,15 +330,15 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
   {
     unsigned fragment_idx = 0;
     unsigned fragment_start[2] {0, 0};
-    unsigned fragment_num_glyphs[2];
+    unsigned fragment_இலக்கம்_glyphs[2];
     hb_glyph_info_t *fragment_info[2];
-    for (unsigned i = 0; i < 2; i++)
-      fragment_info[i] = hb_buffer_get_glyph_infos (fragments[i], &fragment_num_glyphs[i]);
-    while (fragment_start[0] < fragment_num_glyphs[0] ||
-	   fragment_start[1] < fragment_num_glyphs[1])
+    க்கு (unsigned i = 0; i < 2; i++)
+      fragment_info[i] = hb_buffer_get_glyph_infos (fragments[i], &fragment_இலக்கம்_glyphs[i]);
+    போது (fragment_start[0] < fragment_இலக்கம்_glyphs[0] ||
+	   fragment_start[1] < fragment_இலக்கம்_glyphs[1])
     {
       unsigned fragment_end = fragment_start[fragment_idx] + 1;
-      while (fragment_end < fragment_num_glyphs[fragment_idx] &&
+      போது (fragment_end < fragment_இலக்கம்_glyphs[fragment_idx] &&
 	     (fragment_info[fragment_idx][fragment_end].cluster == fragment_info[fragment_idx][fragment_end - 1].cluster ||
 	      fragment_info[fragment_idx][fragment_end].mask & HB_GLYPH_FLAG_UNSAFE_TO_CONCAT))
 	fragment_end++;
@@ -350,22 +350,22 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
     }
   }
 
-  if (!forward)
+  எனில் (!forward)
   {
     hb_buffer_reverse (buffer);
     hb_buffer_reverse (reconstruction);
   }
 
-  if (likely (reconstruction->successful))
+  எனில் (likely (reconstruction->successful))
   {
     /*
      * Diff results.
      */
     hb_buffer_diff_flags_t diff = hb_buffer_diff (reconstruction, buffer, (hb_codepoint_t) -1, 0);
-    if (diff & ~HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
+    எனில் (diff & ~HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
     {
       buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-concat test failed.");
-      ret = false;
+      ret = பொய்;
 
       /* Return the reconstructed result instead so it can be inspected. */
       hb_buffer_set_length (buffer, 0);
@@ -373,33 +373,33 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
     }
   }
 
-  return ret;
+  திரும்பு ret;
 }
 
-bool
+தருக்க
 hb_buffer_t::verify (hb_buffer_t        *text_buffer,
 		     hb_font_t          *font,
-		     const hb_feature_t *features,
-		     unsigned int        num_features,
-		     const char * const *shapers)
+		     மாறிலி hb_feature_t *features,
+		     unsigned முழு        இலக்கம்_features,
+		     மாறிலி எழுத்து * மாறிலி *shapers)
 {
-  bool ret = true;
-  bool monotone = buffer_verify_monotone (this, font);
-  if (!monotone)
-    ret = false;
-  if (monotone &&
-      !buffer_verify_unsafe_to_break (this, text_buffer, font, features, num_features, shapers))
-    ret = false;
-  if (monotone &&
+  தருக்க ret = உண்மை;
+  தருக்க monotone = buffer_verify_monotone (இது, font);
+  எனில் (!monotone)
+    ret = பொய்;
+  எனில் (monotone &&
+      !buffer_verify_unsafe_to_break (இது, text_buffer, font, features, இலக்கம்_features, shapers))
+    ret = பொய்;
+  எனில் (monotone &&
       (flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) != 0 &&
-      !buffer_verify_unsafe_to_concat (this, text_buffer, font, features, num_features, shapers))
-    ret = false;
-  if (!ret)
+      !buffer_verify_unsafe_to_concat (இது, text_buffer, font, features, இலக்கம்_features, shapers))
+    ret = பொய்;
+  எனில் (!ret)
   {
 #ifndef HB_NO_BUFFER_SERIALIZE
     unsigned len = text_buffer->len;
-    hb_vector_t<char> bytes;
-    if (likely (bytes.resize (len * 10 + 16)))
+    hb_vector_t<எழுத்து> bytes;
+    எனில் (likely (bytes.resize (len * 10 + 16)))
     {
       hb_buffer_serialize_unicode (text_buffer,
 				   0, len,
@@ -407,11 +407,11 @@ hb_buffer_t::verify (hb_buffer_t        *text_buffer,
 				   &len,
 				   HB_BUFFER_SERIALIZE_FORMAT_TEXT,
 				   HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS);
-      buffer_verify_error (this, font, BUFFER_VERIFY_ERROR "text was: %s.", bytes.arrayZ ? bytes.arrayZ : "");
+      buffer_verify_error (இது, font, BUFFER_VERIFY_ERROR "text was: %s.", bytes.arrayZ ? bytes.arrayZ : "");
     }
 #endif
   }
-  return ret;
+  திரும்பு ret;
 }
 
 

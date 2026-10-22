@@ -39,26 +39,26 @@
 /* First we measure, then we cut. */
 #ifndef OT_MEASURE
 #define OT_MEASURE
-#define OT_TABLE_START			static const struct TABLE_NAME {
+#define OT_TABLE_START			நிலையான மாறிலி கட்டமைப்பு TABLE_NAME {
 #define OT_TABLE_END			}
-#define OT_LABEL_START(Name)		unsigned char Name[
+#define OT_LABEL_START(Name)		unsigned எழுத்து Name[
 #define OT_LABEL_END			];
 #define OT_UINT8(u8)			+1/*byte*/
 #define OT_UINT16(u16)			+2/*bytes*/
-#else
+#இல்லையெனில்
 #undef  OT_MEASURE
 #define OT_TABLE_START			TABLE_NAME = {
 #define OT_TABLE_END			};
 #define OT_LABEL_START(Name)		{
 #define OT_LABEL_END			},
 #define OT_UINT8(u8)			(u8),
-#define OT_UINT16(u16)			(unsigned char)((u16)>>8), (unsigned char)((u16)&0xFFu),
-#define OT_COUNT(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
-					 / (unsigned int)(ItemSize) \
+#define OT_UINT16(u16)			(unsigned எழுத்து)((u16)>>8), (unsigned எழுத்து)((u16)&0xFFu),
+#define OT_மொத்தம்(Name, ItemSize)	((unsigned முழு) அளவு(((கட்டமைப்பு TABLE_NAME*)0)->Name) \
+					 / (unsigned முழு)(ItemSize) \
 					 /* OT_ASSERT it's divisible (and positive). */)
-#define OT_DISTANCE(From,To)		((unsigned int) \
-					 ((char*)(&((struct TABLE_NAME*)0)->To) - \
-					  (char*)(&((struct TABLE_NAME*)0)->From)) \
+#define OT_DISTANCE(From,To)		((unsigned முழு) \
+					 ((எழுத்து*)(&((கட்டமைப்பு TABLE_NAME*)0)->To) - \
+					  (எழுத்து*)(&((கட்டமைப்பு TABLE_NAME*)0)->From)) \
 					 /* OT_ASSERT it's positive. */)
 #endif
 
@@ -90,18 +90,18 @@
 /* Shorthand. */
 #define G	OT_GLYPHID
 
-#define OT_UARRAY(Name, Items) \
+#define OT_UARRAY(Name, பொருட்கள்_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2)) \
+	OT_UINT16(OT_மொத்தம்(Name##Data, 2)) \
 	OT_LABEL(Name##Data) \
-	Items \
+	பொருட்கள்_2 \
 	OT_LABEL_END
 
-#define OT_UHEADLESSARRAY(Name, Items) \
+#define OT_UHEADLESSARRAY(Name, பொருட்கள்_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2) + 1) \
+	OT_UINT16(OT_மொத்தம்(Name##Data, 2) + 1) \
 	OT_LABEL(Name##Data) \
-	Items \
+	பொருட்கள்_2 \
 	OT_LABEL_END
 
 
@@ -118,16 +118,16 @@
 	OT_LABEL_END \
 	OT_UARRAY(Name##SubLookupOffsetsArray, OT_LIST(SubLookupOffsets))
 
-#define OT_SUBLOOKUP(Name, SubFormat, Items) \
+#define OT_SUBLOOKUP(Name, SubFormat, பொருட்கள்_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(SubFormat) \
-	Items
+	பொருட்கள்_2
 
-#define OT_COVERAGE1(Name, Items) \
+#define OT_COVERAGE1(Name, பொருட்கள்_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(1) \
 	OT_LABEL_END \
-	OT_UARRAY(Name##Glyphs, OT_LIST(Items))
+	OT_UARRAY(Name##Glyphs, OT_LIST(பொருட்கள்_2))
 
 
 /*
@@ -174,11 +174,11 @@
 #define TABLE_NAME arabic_win1256_gsub_lookups
 
 /* Table manifest. */
-#define MANIFEST(Items) \
+#define MANIFEST(பொருட்கள்_2) \
 	OT_LABEL_START(manifest) \
-	OT_UINT16(OT_COUNT(manifestData, 6)) \
+	OT_UINT16(OT_மொத்தம்(manifestData, 6)) \
 	OT_LABEL(manifestData) \
-	Items \
+	பொருட்கள்_2 \
 	OT_LABEL_END
 
 #define MANIFEST_LOOKUP(Tag, Name) \
@@ -310,7 +310,7 @@ OT_TABLE_END
 #undef OT_LABEL_END
 #undef OT_UINT8
 #undef OT_UINT16
-#undef OT_COUNT
+#undef OT_மொத்தம்
 #undef OT_DISTANCE
 
 #undef OT_LABEL
@@ -338,11 +338,11 @@ OT_TABLE_END
 /*
  * Include a second time to get the table data...
  */
-#if 0
-#include "hb.hh" /* Make check-includes.sh happy. */
+#எனில் 0
+#அந்தர்பாவ "hb.hh" /* Make check-includes.sh happy. */
 #endif
 #ifdef OT_MEASURE
-#include "hb-ot-shaper-arabic-win1256.hh"
+#அந்தர்பாவ "hb-ot-shaper-arabic-win1256.hh"
 #endif
 
 #define HB_OT_SHAPER_ARABIC_WIN1256_HH

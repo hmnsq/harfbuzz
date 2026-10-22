@@ -29,11 +29,11 @@
 #ifndef HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH
 #define HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 
 #line 33 "hb-buffer-deserialize-text-glyphs.hh"
-static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
+நிலையான மாறிலி unsigned எழுத்து deserialize_text_glyphs_trans_சாவிகள்[] = {
 	0u, 0u, 35u, 124u, 48u, 57u, 60u, 124u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 
 	48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 62u, 62u, 
 	93u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 35u, 124u, 
@@ -43,7 +43,7 @@ static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
 	35u, 124u, 0
 };
 
-static const char _deserialize_text_glyphs_key_spans[] = {
+நிலையான மாறிலி எழுத்து deserialize_text_glyphs_சாவி_spans[] = {
 	0, 90, 10, 65, 13, 10, 1, 13, 
 	10, 1, 13, 10, 1, 13, 10, 1, 
 	32, 13, 10, 90, 13, 10, 90, 90, 
@@ -53,7 +53,7 @@ static const char _deserialize_text_glyphs_key_spans[] = {
 	90
 };
 
-static const short _deserialize_text_glyphs_index_offsets[] = {
+நிலையான மாறிலி short _deserialize_text_glyphs_index_offsets[] = {
 	0, 0, 91, 102, 168, 182, 193, 195, 
 	209, 220, 222, 236, 247, 249, 263, 274, 
 	276, 309, 323, 334, 425, 439, 450, 541, 
@@ -63,7 +63,7 @@ static const short _deserialize_text_glyphs_index_offsets[] = {
 	1933
 };
 
-static const char _deserialize_text_glyphs_indicies[] = {
+நிலையான மாறிலி எழுத்து _deserialize_text_glyphs_indicies[] = {
 	1, 0, 0, 0, 0, 0, 0, 
 	0, 2, 3, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -320,7 +320,7 @@ static const char _deserialize_text_glyphs_indicies[] = {
 	74, 0
 };
 
-static const char _deserialize_text_glyphs_trans_targs[] = {
+நிலையான மாறிலி எழுத்து _deserialize_text_glyphs_trans_targs[] = {
 	1, 2, 17, 0, 25, 28, 30, 39, 
 	47, 3, 45, 4, 47, 5, 6, 44, 
 	7, 8, 9, 43, 10, 11, 12, 42, 
@@ -336,7 +336,7 @@ static const char _deserialize_text_glyphs_trans_targs[] = {
 	47
 };
 
-static const char _deserialize_text_glyphs_trans_actions[] = {
+நிலையான மாறிலி எழுத்து _deserialize_text_glyphs_trans_actions[] = {
 	0, 1, 1, 0, 1, 1, 1, 0, 
 	1, 2, 2, 3, 3, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -352,7 +352,7 @@ static const char _deserialize_text_glyphs_trans_actions[] = {
 	14
 };
 
-static const char _deserialize_text_glyphs_eof_actions[] = {
+நிலையான மாறிலி எழுத்து _deserialize_text_glyphs_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -362,30 +362,30 @@ static const char _deserialize_text_glyphs_eof_actions[] = {
 	0
 };
 
-static const int deserialize_text_glyphs_start = 46;
-static const int deserialize_text_glyphs_first_final = 46;
-static const int deserialize_text_glyphs_error = 0;
+நிலையான மாறிலி முழு deserialize_text_glyphs_start = 46;
+நிலையான மாறிலி முழு deserialize_text_glyphs_first_final = 46;
+நிலையான மாறிலி முழு deserialize_text_glyphs_error = 0;
 
-static const int deserialize_text_glyphs_en_main = 46;
+நிலையான மாறிலி முழு deserialize_text_glyphs_en_main = 46;
 
 
 #line 101 "hb-buffer-deserialize-text-glyphs.rl"
 
 
-static hb_bool_t
+நிலையான hb_bool_t
 _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
-				    const char *buf,
-				    unsigned int buf_len,
-				    const char **end_ptr,
+				    மாறிலி எழுத்து *buf,
+				    unsigned முழு buf_len,
+				    மாறிலி எழுத்து **end_ptr,
 				    hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len, *eof = pe;
+  மாறிலி எழுத்து *p = buf, *pe = buf + buf_len, *eof = pe;
 
   /* Ensure we have positions. */
-  (void) hb_buffer_get_glyph_positions (buffer, nullptr);
+  (வெறுமை) hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  const char *tok = nullptr;
-  int cs;
+  மாறிலி எழுத்து *tok = nullptr;
+  முழு cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
@@ -396,85 +396,85 @@ _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
 
 #line 389 "hb-buffer-deserialize-text-glyphs.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	முழு _slen;
+	முழு _trans;
+	மாறிலி unsigned எழுத்து *சாவிகள்_2;
+	மாறிலி எழுத்து *_inds;
+	எனில் ( p == pe )
+		செல் _test_eof;
+	எனில் ( cs == 0 )
+		செல் _out;
 _resume:
-	_keys = _deserialize_text_glyphs_trans_keys + (cs<<1);
+	சாவிகள்_2 = deserialize_text_glyphs_trans_சாவிகள் + (cs<<1);
 	_inds = _deserialize_text_glyphs_indicies + _deserialize_text_glyphs_index_offsets[cs];
 
-	_slen = _deserialize_text_glyphs_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_text_glyphs_சாவி_spans[cs];
+	_trans = _inds[ _slen > 0 && சாவிகள்_2[0] <=(*p) &&
+		(*p) <= சாவிகள்_2[1] ?
+		(*p) - சாவிகள்_2[0] : _slen ];
 
 	cs = _deserialize_text_glyphs_trans_targs[_trans];
 
-	if ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
-		goto _again;
+	எனில் ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
+		செல் _again;
 
-	switch ( _deserialize_text_glyphs_trans_actions[_trans] ) {
-	case 2:
+	தேர்வு ( _deserialize_text_glyphs_trans_actions[_trans] ) {
+	நிலை 2:
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 1:
+	நிறுத்து;
+	நிலை 1:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	எனில் (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  திரும்பு பொய்;
 }
-	break;
-	case 6:
+	நிறுத்து;
+	நிலை 6:
 #line 62 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 7:
+	{ எனில் (!parse_uint (tok, p, &info.cluster )) திரும்பு பொய்; }
+	நிறுத்து;
+	நிலை 7:
 #line 63 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
-	break;
-	case 8:
+	{ எனில் (!parse_int  (tok, p, &pos.x_offset )) திரும்பு பொய்; }
+	நிறுத்து;
+	நிலை 8:
 #line 64 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
-	break;
-	case 4:
+	{ எனில் (!parse_int  (tok, p, &pos.y_offset )) திரும்பு பொய்; }
+	நிறுத்து;
+	நிலை 4:
 #line 65 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
-	break;
-	case 5:
+	{ எனில் (!parse_int  (tok, p, &pos.x_advance)) திரும்பு பொய்; }
+	நிறுத்து;
+	நிலை 5:
 #line 66 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
-	break;
-	case 3:
+	{ எனில் (!parse_int  (tok, p, &pos.y_advance)) திரும்பு பொய்; }
+	நிறுத்து;
+	நிலை 3:
 #line 67 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
-	break;
-	case 9:
+	{ எனில் (!parse_uint (tok, p, &info.mask    )) திரும்பு பொய்; }
+	நிறுத்து;
+	நிலை 9:
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, அளவு (info));
+	hb_memset (&pos , 0, அளவு (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 10:
+	நிறுத்து;
+	நிலை 10:
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, அளவு (info));
+	hb_memset (&pos , 0, அளவு (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
@@ -483,61 +483,61 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	எனில் (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  திரும்பு பொய்;
 }
-	break;
-	case 12:
+	நிறுத்து;
+	நிலை 12:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	எனில் (unlikely (!buffer->successful))
+	  திரும்பு பொய்;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, அளவு (info));
+	hb_memset (&pos , 0, அளவு (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 14:
+	நிறுத்து;
+	நிலை 14:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	எனில் (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  திரும்பு பொய்;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, அளவு (info));
+	hb_memset (&pos , 0, அளவு (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 13:
+	நிறுத்து;
+	நிலை 13:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	எனில் (unlikely (!buffer->successful))
+	  திரும்பு பொய்;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, அளவு (info));
+	hb_memset (&pos , 0, அளவு (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
@@ -546,33 +546,33 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	எனில் (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  திரும்பு பொய்;
 }
-	break;
+	நிறுத்து;
 #line 523 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	எனில் ( cs == 0 )
+		செல் _out;
+	எனில் ( ++p != pe )
+		செல் _resume;
 	_test_eof: {}
-	if ( p == eof )
+	எனில் ( p == eof )
 	{
-	switch ( _deserialize_text_glyphs_eof_actions[cs] ) {
-	case 11:
+	தேர்வு ( _deserialize_text_glyphs_eof_actions[cs] ) {
+	நிலை 11:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	எனில் (unlikely (!buffer->successful))
+	  திரும்பு பொய்;
 	*end_ptr = p;
 }
-	break;
+	நிறுத்து;
 #line 542 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 	}
@@ -585,7 +585,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  திரும்பு p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH */

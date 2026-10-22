@@ -1,46 +1,46 @@
 #ifndef OT_LAYOUT_GPOS_MARKRECORD_HH
 #define OT_LAYOUT_GPOS_MARKRECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ GPOS_impl {
 
-template <typename Types> struct MarkArray;
+template <typename Types> கட்டமைப்பு MarkArray;
 
 template <typename Types>
-struct MarkRecord
+கட்டமைப்பு MarkRecord
 {
-  friend struct MarkArray<Types>;
+  friend கட்டமைப்பு MarkArray<Types>;
 
-  public:
+  பொது:
   HBUINT16      klass;                  /* Class defined for this mark */
   typename Types::template OffsetTo<Anchor, MarkArray<Types>>
                 markAnchor;             /* Offset to Anchor table--from
                                          * beginning of MarkArray table */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (2 + Types::size);
 
-  unsigned get_class () const { return (unsigned) klass; }
-  bool sanitize (hb_sanitize_context_t *c, const MarkArray<Types> *base) const
+  unsigned get_class () மாறிலி { திரும்பு (unsigned) klass; }
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி MarkArray<Types> *base) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && markAnchor.sanitize (c, base));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) && markAnchor.sanitize (c, base));
   }
 
-  bool subset (hb_subset_context_t    *c,
-	       const MarkArray<Types> *src_base,
-	       const hb_map_t         *klass_mapping) const
+  தருக்க subset (hb_subset_context_t    *c,
+	       மாறிலி MarkArray<Types> *src_base,
+	       மாறிலி hb_map_t         *klass_mapping) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
     out->klass = klass_mapping->get (klass);
     return_trace (out->markAnchor.serialize_subset (c, markAnchor, src_base));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const MarkArray<Types> *src_base) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  மாறிலி MarkArray<Types> *src_base) மாறிலி
   {
     (src_base+markAnchor).collect_variation_indices (c);
   }

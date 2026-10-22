@@ -27,87 +27,87 @@
 #ifndef HB_RESULT_HH
 #define HB_RESULT_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 // Helper structs for Ok(...) and Err(...), not used directly
 // by users of hb_result_t.
 template <typename T>
-struct hb_result_ok_t
+கட்டமைப்பு hb_result_ok_t
 {
   T value;
 };
 
 template <>
-struct hb_result_ok_t<void> {};
+கட்டமைப்பு hb_result_ok_t<வெறுமை> {};
 
 template <typename E>
-struct hb_result_err_t
+கட்டமைப்பு hb_result_err_t
 {
   E error;
 
   template <typename OtherE>
-  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { return error == other.error; }
+  constexpr தருக்க operator == (மாறிலி hb_result_err_t<OtherE>& other) மாறிலி { திரும்பு error == other.error; }
   template <typename OtherE>
-  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { return error != other.error; }
+  constexpr தருக்க operator != (மாறிலி hb_result_err_t<OtherE>& other) மாறிலி { திரும்பு error != other.error; }
 };
 
-template <typename X> struct _hb_is_result_tag : hb_false_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
+template <typename X> கட்டமைப்பு _hb_is_result_tag : hb_false_type {};
+template <typename X> கட்டமைப்பு _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
+template <typename X> கட்டமைப்பு _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
 
 template <typename T>
-static inline constexpr hb_result_ok_t<T&&> Ok (T&& v)
+நிலையான உள்வரி constexpr hb_result_ok_t<T&&> Ok (T&& v)
 {
-  return hb_result_ok_t<T&&>{std::forward<T> (v)};
+  திரும்பு hb_result_ok_t<T&&>{std::forward<T> (v)};
 }
 
-static inline constexpr hb_result_ok_t<void> Ok ()
+நிலையான உள்வரி constexpr hb_result_ok_t<வெறுமை> Ok ()
 {
-  return hb_result_ok_t<void>{};
+  திரும்பு hb_result_ok_t<வெறுமை>{};
 }
 
 template <typename E>
-static inline constexpr hb_result_err_t<E&&> Err (E&& e)
+நிலையான உள்வரி constexpr hb_result_err_t<E&&> Err (E&& e)
 {
-  return hb_result_err_t<E&&>{std::forward<E> (e)};
+  திரும்பு hb_result_err_t<E&&>{std::forward<E> (e)};
 }
 
 template <typename T, typename E>
-struct HB_NODISCARD_STRUCT hb_result_t
+கட்டமைப்பு HB_NODISCARD_STRUCT hb_result_t
 {
-  private:
-  union
+  தனிப்பட்ட:
+  ஒன்றிப்பு
   {
     T val_;
     E err_;
   };
-  bool is_ok_;
+  தருக்க is_ok_;
 
-  void destroy ()
+  வெறுமை destroy ()
   {
-    if (is_ok_)
+    எனில் (is_ok_)
       val_.~T ();
-    else
+    இல்லையெனில்
       err_.~E ();
   }
 
-  void init(const hb_result_t& o) {
+  வெறுமை init(மாறிலி hb_result_t& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (o.val_);
-    else
-      new (std::addressof (err_)) E (o.err_);
+    எனில் (is_ok_)
+      புதிய (std::addressof (val_)) T (o.val_);
+    இல்லையெனில்
+      புதிய (std::addressof (err_)) E (o.err_);
   }
 
-  void init(hb_result_t&& o) {
+  வெறுமை init(hb_result_t&& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (std::move (o.val_));
-    else
-      new (std::addressof (err_)) E (std::move (o.err_));
+    எனில் (is_ok_)
+      புதிய (std::addressof (val_)) T (std::move (o.val_));
+    இல்லையெனில்
+      புதிய (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  public:
+  பொது:
   ~hb_result_t ()
   {
     destroy ();
@@ -115,94 +115,94 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
   hb_result_t () = delete;
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (false)
+  hb_result_t (மாறிலி hb_result_t& o) : is_ok_ (பொய்)
   {
     init (o);
   }
 
   hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
                                      std::is_nothrow_move_constructible<E>::value)
-      : is_ok_ (false)
+      : is_ok_ (பொய்)
   {
     init (std::move (o));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_result_t& operator = (மாறிலி hb_result_t& o)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    எனில் (இது == &o) திரும்பு *இது;
+    எனில் (is_ok_ && o.is_ok_)
     {
       val_ = o.val_;
     }
-    else if (!is_ok_ && !o.is_ok_)
+    இல்லையெனில் எனில் (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else
+    இல்லையெனில்
     {
       destroy ();
       init (o);
     }
-    return *this;
+    திரும்பு *இது;
   }
 
   hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
                                                 std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    எனில் (இது == &o) திரும்பு *இது;
+    எனில் (is_ok_ && o.is_ok_)
     {
       val_ = std::move (o.val_);
     }
-    else if (!is_ok_ && !o.is_ok_)
+    இல்லையெனில் எனில் (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else
+    இல்லையெனில்
     {
       destroy ();
       init (std::move (o));
     }
-    return *this;
+    திரும்பு *இது;
   }
 
   // Construct from Ok(...) tag
   template <typename U,
             hb_enable_if ((std::is_constructible<T, U>::value))>
-  hb_result_t (hb_result_ok_t<U>&& o) : is_ok_ (true)
+  hb_result_t (hb_result_ok_t<U>&& o) : is_ok_ (உண்மை)
   {
-    new (std::addressof (val_)) T (std::move (o.value));
+    புதிய (std::addressof (val_)) T (std::move (o.value));
   }
 
   template <typename U,
-            hb_enable_if ((std::is_constructible<T, const U&>::value))>
-  hb_result_t (const hb_result_ok_t<U>& o) : is_ok_ (true)
+            hb_enable_if ((std::is_constructible<T, மாறிலி U&>::value))>
+  hb_result_t (மாறிலி hb_result_ok_t<U>& o) : is_ok_ (உண்மை)
   {
-    new (std::addressof (val_)) T (o.value);
+    புதிய (std::addressof (val_)) T (o.value);
   }
 
   // Construct from Err(...) tag
   template <typename F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (பொய்)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    புதிய (std::addressof (err_)) E (std::move (e.error));
   }
 
   template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+            hb_enable_if ((std::is_constructible<E, மாறிலி F&>::value))>
+  hb_result_t (மாறிலி hb_result_err_t<F>& e) : is_ok_ (பொய்)
   {
-    new (std::addressof (err_)) E (e.error);
+    புதிய (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E (when neither T or E are convertible into each other)
   template <typename F = E,
             hb_enable_if ((hb_is_same (F, E) &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (F e) : is_ok_ (false)
+  hb_result_t (F e) : is_ok_ (பொய்)
   {
-    new (std::addressof (err_)) E (std::move (e));
+    புதிய (std::addressof (err_)) E (std::move (e));
   }
 
   // Construct directly from value T (when neither T or E are convertible into each other)
@@ -212,297 +212,297 @@ struct HB_NODISCARD_STRUCT hb_result_t
                            !hb_is_same (hb_decay<U>, hb_result_t) &&
                            !_hb_is_result_tag<hb_decay<U>>::value &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (U&& v) : is_ok_ (true)
+  hb_result_t (U&& v) : is_ok_ (உண்மை)
   {
-    new (std::addressof (val_)) T (std::forward<U> (v));
+    புதிய (std::addressof (val_)) T (std::forward<U> (v));
   }
 
   // Move fallible into a result if it's in_error() method returns false.
-  static hb_result_t from (T&& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  நிலையான hb_result_t from (T&& fallible, E error_மதிப்பு) {
+    எனில் (fallible.in_error()) {
+      திரும்பு Err(error_மதிப்பு);
     }
-    return Ok(fallible);
+    திரும்பு Ok(fallible);
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  தருக்க is_ok () மாறிலி { திரும்பு is_ok_; }
+  தருக்க is_err () மாறிலி { திரும்பு !is_ok_; }
+  explicit operator தருக்க () மாறிலி { திரும்பு is_ok (); }
 
-  T& value () & { assert (is_ok_); return val_; }
-  const T& value () const & { assert (is_ok_); return val_; }
-  T value () && { assert (is_ok_); return std::move (val_); }
+  T& value () & { ப்ரதிஜ்ஞா (is_ok_); திரும்பு val_; }
+  மாறிலி T& value () மாறிலி & { ப்ரதிஜ்ஞா (is_ok_); திரும்பு val_; }
+  T value () && { ப்ரதிஜ்ஞா (is_ok_); திரும்பு std::move (val_); }
 
-  T& operator * () & { return value (); }
-  const T& operator * () const & { return value (); }
-  T operator * () && { return std::move (*this).value (); }
+  T& operator * () & { திரும்பு value (); }
+  மாறிலி T& operator * () மாறிலி & { திரும்பு value (); }
+  T operator * () && { திரும்பு std::move (*இது).value (); }
 
-  T* operator -> () { return std::addressof (value ()); }
-  const T* operator -> () const { return std::addressof (value ()); }
+  T* operator -> () { திரும்பு std::addressof (value ()); }
+  மாறிலி T* operator -> () மாறிலி { திரும்பு std::addressof (value ()); }
 
   template <typename U>
-  T value_or (U&& default_value) const &
+  T மதிப்பு_or (U&& default_மதிப்பு) மாறிலி &
   {
-    if (is_ok_) return val_;
-    return std::forward<U> (default_value);
-  }
-
-  template <typename U>
-  T value_or (U&& default_value) &&
-  {
-    if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
-  }
-
-  T value_or_default () const &
-  {
-    if (is_ok_) return val_;
-    return T ();
-  }
-
-  T value_or_default () &&
-  {
-    if (is_ok_) return std::move (val_);
-    return T ();
-  }
-
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
-
-  bool operator == (const hb_result_t& o) const
-  {
-    if (is_ok_ != o.is_ok_) return false;
-    if (is_ok_) return val_ == o.val_;
-    return err_ == o.err_;
-  }
-
-  bool operator != (const hb_result_t& o) const
-  {
-    return !(*this == o);
+    எனில் (is_ok_) திரும்பு val_;
+    திரும்பு std::forward<U> (default_மதிப்பு);
   }
 
   template <typename U>
-  bool operator == (const hb_result_ok_t<U>& o) const
+  T மதிப்பு_or (U&& default_மதிப்பு) &&
   {
-    return is_ok_ && val_ == o.value;
+    எனில் (is_ok_) திரும்பு std::move (val_);
+    திரும்பு std::forward<U> (default_மதிப்பு);
+  }
+
+  T மதிப்பு_or_default () மாறிலி &
+  {
+    எனில் (is_ok_) திரும்பு val_;
+    திரும்பு T ();
+  }
+
+  T மதிப்பு_or_default () &&
+  {
+    எனில் (is_ok_) திரும்பு std::move (val_);
+    திரும்பு T ();
+  }
+
+  மாறிலி E& error () மாறிலி & { ப்ரதிஜ்ஞா (!is_ok_); திரும்பு err_; }
+  E& error () & { ப்ரதிஜ்ஞா (!is_ok_); திரும்பு err_; }
+  E error () && { ப்ரதிஜ்ஞா (!is_ok_); திரும்பு std::move (err_); }
+
+  தருக்க operator == (மாறிலி hb_result_t& o) மாறிலி
+  {
+    எனில் (is_ok_ != o.is_ok_) திரும்பு பொய்;
+    எனில் (is_ok_) திரும்பு val_ == o.val_;
+    திரும்பு err_ == o.err_;
+  }
+
+  தருக்க operator != (மாறிலி hb_result_t& o) மாறிலி
+  {
+    திரும்பு !(*இது == o);
   }
 
   template <typename U>
-  bool operator != (const hb_result_ok_t<U>& o) const
+  தருக்க operator == (மாறிலி hb_result_ok_t<U>& o) மாறிலி
   {
-    return !(*this == o);
+    திரும்பு is_ok_ && val_ == o.value;
+  }
+
+  template <typename U>
+  தருக்க operator != (மாறிலி hb_result_ok_t<U>& o) மாறிலி
+  {
+    திரும்பு !(*இது == o);
   }
 
   template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  தருக்க operator == (மாறிலி hb_result_err_t<F>& e) மாறிலி
   {
-    return !is_ok_ && err_ == e.error;
+    திரும்பு !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  தருக்க operator != (மாறிலி hb_result_err_t<F>& e) மாறிலி
   {
-    return !(*this == e);
+    திரும்பு !(*இது == e);
   }
 
   template <typename U>
-  bool operator == (const U&) const = delete;
+  தருக்க operator == (மாறிலி U&) மாறிலி = delete;
 
   template <typename U>
-  bool operator != (const U&) const = delete;
+  தருக்க operator != (மாறிலி U&) மாறிலி = delete;
 };
 
 // Partial specialization for void
 template <typename E>
-struct HB_NODISCARD_STRUCT hb_result_t<void, E>
+கட்டமைப்பு HB_NODISCARD_STRUCT hb_result_t<வெறுமை, E>
 {
-  private:
-  union
+  தனிப்பட்ட:
+  ஒன்றிப்பு
   {
     E err_;
   };
-  bool is_ok_;
+  தருக்க is_ok_;
 
-  template <typename, typename> friend struct hb_result_t;
+  template <typename, typename> friend கட்டமைப்பு hb_result_t;
 
-  public:
+  பொது:
   ~hb_result_t ()
   {
-    if (!is_ok_)
+    எனில் (!is_ok_)
       err_.~E ();
   }
 
-  hb_result_t () : is_ok_ (true) {}
-  hb_result_t (hb_result_ok_t<void>) : is_ok_ (true) {}
+  hb_result_t () : is_ok_ (உண்மை) {}
+  hb_result_t (hb_result_ok_t<வெறுமை>) : is_ok_ (உண்மை) {}
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (o.is_ok_)
+  hb_result_t (மாறிலி hb_result_t& o) : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (o.err_);
+    எனில் (!is_ok_)
+      புதிய (std::addressof (err_)) E (o.err_);
   }
 
   hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
       : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (std::move (o.err_));
+    எனில் (!is_ok_)
+      புதிய (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_result_t& operator = (மாறிலி hb_result_t& o)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    எனில் (இது == &o) திரும்பு *இது;
+    எனில் (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else if (!is_ok_ && o.is_ok_)
+    இல்லையெனில் எனில் (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = உண்மை;
     }
-    else if (is_ok_ && !o.is_ok_)
+    இல்லையெனில் எனில் (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (o.err_);
-      is_ok_ = false;
+      புதிய (std::addressof (err_)) E (o.err_);
+      is_ok_ = பொய்;
     }
-    return *this;
+    திரும்பு *இது;
   }
 
   hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    எனில் (இது == &o) திரும்பு *இது;
+    எனில் (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else if (!is_ok_ && o.is_ok_)
+    இல்லையெனில் எனில் (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = உண்மை;
     }
-    else if (is_ok_ && !o.is_ok_)
+    இல்லையெனில் எனில் (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (std::move (o.err_));
-      is_ok_ = false;
+      புதிய (std::addressof (err_)) E (std::move (o.err_));
+      is_ok_ = பொய்;
     }
-    return *this;
+    திரும்பு *இது;
   }
 
   template <typename F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (பொய்)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    புதிய (std::addressof (err_)) E (std::move (e.error));
   }
 
   template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+            hb_enable_if ((std::is_constructible<E, மாறிலி F&>::value))>
+  hb_result_t (மாறிலி hb_result_err_t<F>& e) : is_ok_ (பொய்)
   {
-    new (std::addressof (err_)) E (e.error);
+    புதிய (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E
-  hb_result_t (E e) : is_ok_ (false)
+  hb_result_t (E e) : is_ok_ (பொய்)
   {
-    new (std::addressof (err_)) E (std::move(e));
+    புதிய (std::addressof (err_)) E (std::move(e));
   }
 
   // V is any class which has an in_error() method. This checks the result
   // of in_error() and returns either Ok() or Err(error_value).
   template<typename V>
-  static hb_result_t<void, E> from (const V& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  நிலையான hb_result_t<வெறுமை, E> from (மாறிலி V& fallible, E error_மதிப்பு) {
+    எனில் (fallible.in_error()) {
+      திரும்பு Err(error_மதிப்பு);
     }
-    return Ok();
+    திரும்பு Ok();
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  தருக்க is_ok () மாறிலி { திரும்பு is_ok_; }
+  தருக்க is_err () மாறிலி { திரும்பு !is_ok_; }
+  explicit operator தருக்க () மாறிலி { திரும்பு is_ok (); }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  மாறிலி E& error () மாறிலி & { ப்ரதிஜ்ஞா (!is_ok_); திரும்பு err_; }
+  E& error () & { ப்ரதிஜ்ஞா (!is_ok_); திரும்பு err_; }
+  E error () && { ப்ரதிஜ்ஞா (!is_ok_); திரும்பு std::move (err_); }
 
-  void operator * () & { return; }
-  void operator * () const & { return; }
-  void operator * () && { return; }
+  வெறுமை operator * () & { திரும்பு; }
+  வெறுமை operator * () மாறிலி & { திரும்பு; }
+  வெறுமை operator * () && { திரும்பு; }
 
-  bool operator == (const hb_result_t<void, E>& o) const
+  தருக்க operator == (மாறிலி hb_result_t<வெறுமை, E>& o) மாறிலி
   {
-    return is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
+    திரும்பு is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
   }
 
-  bool operator != (const hb_result_t<void, E>& o) const
+  தருக்க operator != (மாறிலி hb_result_t<வெறுமை, E>& o) மாறிலி
   {
-    return !(*this == o);
+    திரும்பு !(*இது == o);
   }
 
-  bool operator == (hb_result_ok_t<void>) const
+  தருக்க operator == (hb_result_ok_t<வெறுமை>) மாறிலி
   {
-    return is_ok_;
+    திரும்பு is_ok_;
   }
 
-  bool operator != (hb_result_ok_t<void>) const
+  தருக்க operator != (hb_result_ok_t<வெறுமை>) மாறிலி
   {
-    return !is_ok_;
+    திரும்பு !is_ok_;
   }
 
   template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  தருக்க operator == (மாறிலி hb_result_err_t<F>& e) மாறிலி
   {
-    return !is_ok_ && err_ == e.error;
+    திரும்பு !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  தருக்க operator != (மாறிலி hb_result_err_t<F>& e) மாறிலி
   {
-    return !(*this == e);
+    திரும்பு !(*இது == e);
   }
 
   template <typename U>
-  bool operator == (const U&) const = delete;
+  தருக்க operator == (மாறிலி U&) மாறிலி = delete;
 
   template <typename U>
-  bool operator != (const U&) const = delete;
+  தருக்க operator != (மாறிலி U&) மாறிலி = delete;
 };
 
 template <typename U, typename T, typename E>
-static inline bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+நிலையான உள்வரி தருக்க operator == (மாறிலி hb_result_ok_t<U>& o, மாறிலி hb_result_t<T, E>& r)
 {
-  return r == o;
+  திரும்பு r == o;
 }
 template <typename U, typename T, typename E>
-static inline bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+நிலையான உள்வரி தருக்க operator != (மாறிலி hb_result_ok_t<U>& o, மாறிலி hb_result_t<T, E>& r)
 {
-  return r != o;
+  திரும்பு r != o;
 }
 template <typename F, typename T, typename E>
-static inline bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+நிலையான உள்வரி தருக்க operator == (மாறிலி hb_result_err_t<F>& e, மாறிலி hb_result_t<T, E>& r)
 {
-  return r == e;
+  திரும்பு r == e;
 }
 template <typename F, typename T, typename E>
-static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+நிலையான உள்வரி தருக்க operator != (மாறிலி hb_result_err_t<F>& e, மாறிலி hb_result_t<T, E>& r)
 {
-  return r != e;
+  திரும்பு r != e;
 }
 
 #ifndef TRY
-#define TRY(expr)                                                             \
-  do {                                                                        \
-    auto _res = (expr);                                                       \
-    if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
-  } while (0)
+#define TRY(கோவை)                                                             \
+  செய் {                                                                        \
+    auto _res = (கோவை);                                                       \
+    எனில் (unlikely (!_res.is_ok())) திரும்பு Err(std::move(_res).error());        \
+  } போது (0)
 #endif
 
 #ifndef TRY_ASSIGN
 #define TRY_ASSIGN(var, ...)                                                  \
   auto HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
-  if (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) return Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
+  எனில் (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) திரும்பு Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
   var = *std::move(HB_PASTE(_res_, __LINE__))
 #endif
 

@@ -1,105 +1,105 @@
 #ifndef OT_LAYOUT_GPOS_SINGLEPOSFORMAT2_HH
 #define OT_LAYOUT_GPOS_SINGLEPOSFORMAT2_HH
 
-#include "Common.hh"
+#அந்தர்பாவ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ GPOS_impl {
 
 /* Keep the iterator type independent of the source table width so
  * the output serializers can share their instantiations. */
-struct single_pos_value_mapper_t
+கட்டமைப்பு single_pos_மதிப்பு_mapper_t
 {
-  const hb_map_t &glyph_map;
-  const hb_array_t<const Value> &values;
-  const unsigned &sub_length;
+  மாறிலி hb_map_t &glyph_map;
+  மாறிலி hb_array_t<மாறிலி மதிப்பு> &values;
+  மாறிலி unsigned &sub_length;
 
-  hb_pair_t<hb_codepoint_t, hb_array_t<const Value>>
-  operator () (const hb_pair_t<hb_codepoint_t, unsigned> &_) const
+  hb_pair_t<hb_codepoint_t, hb_array_t<மாறிலி மதிப்பு>>
+  operator () (மாறிலி hb_pair_t<hb_codepoint_t, unsigned> &_) மாறிலி
   {
-    return hb_pair (glyph_map[_.first],
+    திரும்பு hb_pair (glyph_map[_.first],
                     values.sub_array (_.second * sub_length, sub_length));
   }
 };
 
 template <typename Types>
-struct SinglePosFormat2_4 : ValueBase
+கட்டமைப்பு SinglePosFormat2_4 : மதிப்பு_Base
 {
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat;            /* Defines the types of data in the
+  மதிப்பு_Format   மதிப்பு_Format_2;            /* Defines the types of data in the
                                          * ValueRecord */
   typename Types::HBUINT
-                valueCount;             /* Number of ValueRecords */
-  ValueRecord   values;                 /* Array of ValueRecords--positioning
+                மதிப்பு_மொத்தம்;             /* Number of ValueRecords */
+  மதிப்பு_Record   values;                 /* Array of ValueRecords--positioning
                                          * values applied to glyphs */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + ValueFormat::static_size + Types::HBUINT::static_size, values);
+  பொது:
+  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + மதிப்பு_Format::static_size + Types::HBUINT::static_size, values);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  coverage.sanitize (c, this) &&
-                  valueFormat.sanitize_values (c, this, values, valueCount));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
+                  coverage.sanitize (c, இது) &&
+                  மதிப்பு_Format_2.sanitize_மதிப்புகள் (c, இது, values, மதிப்பு_மொத்தம்));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  தருக்க intersects (மாறிலி hb_set_t *glyphs) மாறிலி
+  { திரும்பு (இது+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  வெறுமை closure_lookups (hb_closure_lookups_context_t *c) மாறிலி {}
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c) மாறிலி
   {
-    if (!valueFormat.has_device ()) return;
+    எனில் (!மதிப்பு_Format_2.has_device ()) திரும்பு;
 
     auto it =
-    + hb_zip (this+coverage, hb_range ((unsigned) valueCount))
+    + hb_zip (இது+coverage, hb_range ((unsigned) மதிப்பு_மொத்தம்))
     | hb_filter (c->glyph_set, hb_first)
     ;
 
-    if (!it) return;
+    எனில் (!it) திரும்பு;
 
-    unsigned sub_length = valueFormat.get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (valueCount * sub_length);
+    unsigned sub_length = மதிப்பு_Format_2.get_len ();
+    மாறிலி hb_array_t<மாறிலி மதிப்பு> மதிப்புகள்_array = values.as_array (மதிப்பு_மொத்தம் * sub_length);
 
-    for (unsigned i : + it
+    க்கு (unsigned i : + it
                       | hb_map (hb_second))
-      valueFormat.collect_variation_indices (c, this, values_array.sub_array (i * sub_length, sub_length));
+      மதிப்பு_Format_2.collect_variation_indices (c, இது, மதிப்புகள்_array.sub_array (i * sub_length, sub_length));
 
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  வெறுமை collect_glyphs (hb_collect_glyphs_context_t *c) மாறிலி
+  { எனில் (unlikely (!(இது+coverage).collect_coverage (c->உள்ளீடு))) திரும்பு; }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  மாறிலி Coverage &get_coverage () மாறிலி { திரும்பு இது+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  மதிப்பு_Format get_மதிப்பு_format () மாறிலி { திரும்பு மதிப்பு_Format_2; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  தருக்க apply (hb_ot_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned முழு index = (இது+coverage).get_coverage  (buffer->cur().codepoint);
+    எனில் (index == NOT_COVERED) return_trace (பொய்);
 
-    if (unlikely (index >= valueCount)) return_trace (false);
+    எனில் (unlikely (index >= மதிப்பு_மொத்தம்)) return_trace (பொய்);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    எனில் (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioning glyph at %u",
 			  c->buffer->idx);
     }
 
-    valueFormat.apply_value (c, this,
-                             &values[index * valueFormat.get_len ()],
+    மதிப்பு_Format_2.apply_மதிப்பு (c, இது,
+                             &values[index * மதிப்பு_Format_2.get_len ()],
                              buffer->cur_pos());
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    எனில் (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioned glyph at %u",
@@ -107,44 +107,44 @@ struct SinglePosFormat2_4 : ValueBase
     }
 
     buffer->idx++;
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool
+  தருக்க
   position_single (hb_font_t           *font,
 		   hb_blob_t           *table_blob,
 		   hb_direction_t       direction,
 		   hb_codepoint_t       gid,
-		   hb_glyph_position_t &pos) const
+		   hb_glyph_position_t &pos) மாறிலி
   {
-    unsigned int index = (this+coverage).get_coverage  (gid);
-    if (likely (index == NOT_COVERED)) return false;
-    if (unlikely (index >= valueCount)) return false;
+    unsigned முழு index = (இது+coverage).get_coverage  (gid);
+    எனில் (likely (index == NOT_COVERED)) திரும்பு பொய்;
+    எனில் (unlikely (index >= மதிப்பு_மொத்தம்)) திரும்பு பொய்;
 
-    valueFormat.position_single (font, table_blob, direction, this,
-                                 &values[index * valueFormat.get_len ()], pos);
-    return true;
+    மதிப்பு_Format_2.position_single (font, table_blob, direction, இது,
+                                 &values[index * மதிப்பு_Format_2.get_len ()], pos);
+    திரும்பு உண்மை;
   }
 
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
-                  const ValueBase *src,
-                  ValueFormat src_format,
+  வெறுமை serialize (hb_serialize_context_t *c,
+                  மாறிலி மதிப்பு_Base *src,
+                  மதிப்பு_Format src_format,
                   Iterator it,
-                  ValueFormat newFormat,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
+                  மதிப்பு_Format newFormat,
+                  மாறிலி hb_hashmap_t<unsigned, hb_pair_t<unsigned, முழு>> *layout_variation_idx_delta_map)
   {
-    auto out = c->extend_min (this);
-    if (unlikely (!out)) return;
-    if (unlikely (!c->check_assign (valueFormat, newFormat, HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
-    if (unlikely (!c->check_assign (valueCount, it.len (), HB_SERIALIZE_ERROR_ARRAY_OVERFLOW))) return;
+    auto out = c->extend_min (இது);
+    எனில் (unlikely (!out)) திரும்பு;
+    எனில் (unlikely (!c->check_assign (மதிப்பு_Format_2, newFormat, HB_SERIALIZE_ERROR_INT_OVERFLOW))) திரும்பு;
+    எனில் (unlikely (!c->check_assign (மதிப்பு_மொத்தம், it.len (), HB_SERIALIZE_ERROR_ARRAY_OVERFLOW))) திரும்பு;
 
     + it
     | hb_map (hb_second)
-    | hb_apply ([&] (hb_array_t<const Value> _)
-    { src_format.copy_values (c, newFormat, src, &_, layout_variation_idx_delta_map); })
+    | hb_apply ([&] (hb_array_t<மாறிலி மதிப்பு> _)
+    { src_format.copy_மதிப்புகள் (c, newFormat, src, &_, layout_variation_idx_delta_map); })
     ;
 
     auto glyphs =
@@ -157,59 +157,59 @@ struct SinglePosFormat2_4 : ValueBase
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  unsigned compute_effective_format (const hb_face_t *face,
+  unsigned compute_effective_format (மாறிலி hb_face_t *face,
                                      Iterator it,
-                                     bool is_instancing, bool strip_hints,
-                                     bool has_gdef_varstore,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+                                     தருக்க is_instancing, தருக்க strip_hints,
+                                     தருக்க has_gdef_varstore,
+                                     மாறிலி hb_hashmap_t<unsigned, hb_pair_t<unsigned, முழு>> *varidx_delta_map) மாறிலி
   {
     hb_blob_t* blob = hb_face_reference_table (face, HB_TAG ('f','v','a','r'));
-    bool has_fvar = (blob != hb_blob_get_empty ());
+    தருக்க has_fvar = (blob != hb_blob_get_empty ());
     hb_blob_destroy (blob);
 
     unsigned new_format = 0;
-    if (is_instancing)
+    எனில் (is_instancing)
     {
-      new_format = new_format | valueFormat.get_effective_format (+ it | hb_map (hb_second), false, false, this, varidx_delta_map);
+      new_format = new_format | மதிப்பு_Format_2.get_effective_format (+ it | hb_map (hb_second), பொய், பொய், இது, varidx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (strip_hints)
+    இல்லையெனில் எனில் (strip_hints)
     {
-      bool strip = !has_fvar;
-      if (has_fvar && !has_gdef_varstore)
-        strip = true;
-      new_format = new_format | valueFormat.get_effective_format (+ it | hb_map (hb_second), strip, true, this, nullptr);
+      தருக்க strip = !has_fvar;
+      எனில் (has_fvar && !has_gdef_varstore)
+        strip = உண்மை;
+      new_format = new_format | மதிப்பு_Format_2.get_effective_format (+ it | hb_map (hb_second), strip, உண்மை, இது, nullptr);
     }
-    else
-      new_format = valueFormat;
+    இல்லையெனில்
+      new_format = மதிப்பு_Format_2;
 
-    return new_format;
+    திரும்பு new_format;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (இது);
+    மாறிலி hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    மாறிலி hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    unsigned sub_length = valueFormat.get_len ();
-    auto values_array = values.as_array ((unsigned) valueCount * sub_length);
+    unsigned sub_length = மதிப்பு_Format_2.get_len ();
+    auto மதிப்புகள்_array = values.as_array ((unsigned) மதிப்பு_மொத்தம் * sub_length);
 
     auto it =
-    + hb_zip (this+coverage, hb_range ((unsigned) valueCount))
+    + hb_zip (இது+coverage, hb_range ((unsigned) மதிப்பு_மொத்தம்))
     | hb_filter (glyphset, hb_first)
-    | hb_map_retains_sorting (single_pos_value_mapper_t {glyph_map,
-                                                       values_array,
+    | hb_map_retains_sorting (single_pos_மதிப்பு_mapper_t {glyph_map,
+                                                       மதிப்புகள்_array,
                                                        sub_length})
     ;
 
     unsigned new_format = compute_effective_format (c->plan->source, it,
-                                                    bool (c->plan->normalized_coords),
-                                                    bool (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
+                                                    தருக்க (c->plan->normalized_coords),
+                                                    தருக்க (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
                                                     c->plan->has_gdef_varstore,
                                                     &c->plan->layout_variation_idx_delta_map);
-    bool ret = bool (it);
-    SinglePos_serialize (c->serializer, this, valueFormat, it, &c->plan->layout_variation_idx_delta_map, new_format);
+    தருக்க ret = தருக்க (it);
+    SinglePos_serialize (c->serializer, இது, மதிப்பு_Format_2, it, &c->plan->layout_variation_idx_delta_map, new_format);
     return_trace (ret);
   }
 };

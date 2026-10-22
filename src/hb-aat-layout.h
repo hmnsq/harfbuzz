@@ -22,16 +22,16 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_AAT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#எனில் !defined(HB_AAT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-aat.h> instead."
 #endif
 
 #ifndef HB_AAT_LAYOUT_H
 #define HB_AAT_LAYOUT_H
 
-#include "hb.h"
+#அந்தர்பாவ "hb.h"
 
-#include "hb-ot.h"
+#அந்தர்பாவ "hb-ot.h"
 
 HB_BEGIN_DECLS
 
@@ -82,7 +82,7 @@ HB_BEGIN_DECLS
  *
  * Since: 2.2.0
  */
-typedef enum
+வகைவரை எண்ணிக்கை
 {
   HB_AAT_LAYOUT_FEATURE_TYPE_INVALID				= 0xFFFF,
 
@@ -92,7 +92,7 @@ typedef enum
   HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE			= 3,
   HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_SUBSTITUTION		= 4,
   HB_AAT_LAYOUT_FEATURE_TYPE_LINGUISTIC_REARRANGEMENT		= 5,
-  HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_SPACING			= 6,
+  HB_AAT_LAYOUT_FEATURE_TYPE_எண்_SPACING			= 6,
   HB_AAT_LAYOUT_FEATURE_TYPE_SMART_SWASH_TYPE			= 8,
   HB_AAT_LAYOUT_FEATURE_TYPE_DIACRITICS_TYPE			= 9,
   HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION			= 10,
@@ -105,7 +105,7 @@ typedef enum
   HB_AAT_LAYOUT_FEATURE_TYPE_DESIGN_COMPLEXITY_TYPE		= 18,
   HB_AAT_LAYOUT_FEATURE_TYPE_STYLE_OPTIONS			= 19,
   HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE			= 20,
-  HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_CASE			= 21,
+  HB_AAT_LAYOUT_FEATURE_TYPE_எண்_CASE			= 21,
   HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING			= 22,
   HB_AAT_LAYOUT_FEATURE_TYPE_TRANSLITERATION			= 23,
   HB_AAT_LAYOUT_FEATURE_TYPE_ANNOTATION_TYPE			= 24,
@@ -113,7 +113,7 @@ typedef enum
   HB_AAT_LAYOUT_FEATURE_TYPE_IDEOGRAPHIC_SPACING_TYPE		= 26,
   HB_AAT_LAYOUT_FEATURE_TYPE_UNICODE_DECOMPOSITION_TYPE		= 27,
   HB_AAT_LAYOUT_FEATURE_TYPE_RUBY_KANA				= 28,
-  HB_AAT_LAYOUT_FEATURE_TYPE_CJK_SYMBOL_ALTERNATIVES_TYPE	= 29,
+  HB_AAT_LAYOUT_FEATURE_TYPE_CJK_குறியீடு_ALTERNATIVES_TYPE	= 29,
   HB_AAT_LAYOUT_FEATURE_TYPE_IDEOGRAPHIC_ALTERNATIVES_TYPE	= 30,
   HB_AAT_LAYOUT_FEATURE_TYPE_CJK_VERTICAL_ROMAN_PLACEMENT_TYPE	= 31,
   HB_AAT_LAYOUT_FEATURE_TYPE_ITALIC_CJK_ROMAN			= 32,
@@ -127,7 +127,7 @@ typedef enum
   HB_AAT_LAYOUT_FEATURE_TYPE_CJK_ROMAN_SPACING_TYPE		= 103,
 
   /*< private >*/
-  _HB_AAT_LAYOUT_FEATURE_TYPE_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_AAT_LAYOUT_FEATURE_TYPE_MAX_மதிப்பு = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_aat_layout_feature_type_t;
 
 /**
@@ -388,7 +388,7 @@ typedef enum
  *
  * Since: 2.2.0
  */
-typedef enum
+வகைவரை எண்ணிக்கை
 {
   HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID			= 0xFFFF,
 
@@ -413,8 +413,8 @@ typedef enum
   HB_AAT_LAYOUT_FEATURE_SELECTOR_SQUARED_LIGATURES_OFF		= 13,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_ABBREV_SQUARED_LIGATURES_ON	= 14,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_ABBREV_SQUARED_LIGATURES_OFF	= 15,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_SYMBOL_LIGATURES_ON		= 16,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_SYMBOL_LIGATURES_OFF		= 17,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_குறியீடு_LIGATURES_ON		= 16,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_குறியீடு_LIGATURES_OFF		= 17,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_LIGATURES_ON	= 18,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_LIGATURES_OFF	= 19,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_HISTORICAL_LIGATURES_ON	= 20,
@@ -452,10 +452,10 @@ typedef enum
   HB_AAT_LAYOUT_FEATURE_SELECTOR_WORD_INITIAL_SWASHES_OFF	= 1,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_WORD_FINAL_SWASHES_ON		= 2,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_WORD_FINAL_SWASHES_OFF		= 3,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_LINE_INITIAL_SWASHES_ON	= 4,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_LINE_INITIAL_SWASHES_OFF	= 5,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_LINE_FINAL_SWASHES_ON		= 6,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_LINE_FINAL_SWASHES_OFF		= 7,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_வரி_INITIAL_SWASHES_ON	= 4,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_வரி_INITIAL_SWASHES_OFF	= 5,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_வரி_FINAL_SWASHES_ON		= 6,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_வரி_FINAL_SWASHES_OFF		= 7,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_NON_FINAL_SWASHES_ON		= 8,
   HB_AAT_LAYOUT_FEATURE_SELECTOR_NON_FINAL_SWASHES_OFF		= 9,
 
@@ -614,12 +614,12 @@ typedef enum
   HB_AAT_LAYOUT_FEATURE_SELECTOR_RUBY_KANA_OFF			= 3,
 
   /* Selectors for #HB_AAT_LAYOUT_FEATURE_TYPE_CJK_SYMBOL_ALTERNATIVES_TYPE */
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_CJK_SYMBOL_ALTERNATIVES	= 0,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_SYMBOL_ALT_ONE		= 1,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_SYMBOL_ALT_TWO		= 2,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_SYMBOL_ALT_THREE		= 3,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_SYMBOL_ALT_FOUR		= 4,
-  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_SYMBOL_ALT_FIVE		= 5,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_CJK_குறியீடு_ALTERNATIVES	= 0,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_குறியீடு_ALT_ONE		= 1,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_குறியீடு_ALT_TWO		= 2,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_குறியீடு_ALT_THREE		= 3,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_குறியீடு_ALT_FOUR		= 4,
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_குறியீடு_ALT_FIVE		= 5,
 
   /* Selectors for #HB_AAT_LAYOUT_FEATURE_TYPE_IDEOGRAPHIC_ALTERNATIVES_TYPE */
   HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_IDEOGRAPHIC_ALTERNATIVES	= 0,
@@ -719,13 +719,13 @@ typedef enum
   HB_AAT_LAYOUT_FEATURE_SELECTOR_FULL_WIDTH_CJK_ROMAN		= 3,
 
   /*< private >*/
-  _HB_AAT_LAYOUT_FEATURE_SELECTOR_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_AAT_LAYOUT_FEATURE_SELECTOR_MAX_மதிப்பு = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_aat_layout_feature_selector_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned முழு
 hb_aat_layout_get_feature_types (hb_face_t                    *face,
-				 unsigned int                  start_offset,
-				 unsigned int                 *feature_count, /* IN/OUT.  May be NULL. */
+				 unsigned முழு                  start_offset,
+				 unsigned முழு                 *feature_மொத்தம்_2, /* IN/OUT.  May be NULL. */
 				 hb_aat_layout_feature_type_t *features       /* OUT.     May be NULL. */);
 
 HB_EXTERN hb_ot_name_id_t
@@ -740,12 +740,12 @@ hb_aat_layout_feature_type_get_name_id (hb_face_t                    *face,
  *
  * Structure representing a setting for an #hb_aat_layout_feature_type_t.
  */
-typedef struct hb_aat_layout_feature_selector_info_t {
+வகைவரை கட்டமைப்பு hb_aat_layout_feature_selector_info_t {
   hb_ot_name_id_t			name_id;
   hb_aat_layout_feature_selector_t	enable;
   hb_aat_layout_feature_selector_t	disable;
   /*< private >*/
-  unsigned int				reserved;
+  unsigned முழு				reserved;
 } hb_aat_layout_feature_selector_info_t;
 
 /**
@@ -757,13 +757,13 @@ typedef struct hb_aat_layout_feature_selector_info_t {
  */
 #define HB_AAT_LAYOUT_NO_SELECTOR_INDEX		0xFFFFu
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned முழு
 hb_aat_layout_feature_type_get_selector_infos (hb_face_t                             *face,
 					       hb_aat_layout_feature_type_t           feature_type,
-					       unsigned int                           start_offset,
-					       unsigned int                          *selector_count, /* IN/OUT.  May be NULL. */
+					       unsigned முழு                           start_offset,
+					       unsigned முழு                          *selector_மொத்தம், /* IN/OUT.  May be NULL. */
 					       hb_aat_layout_feature_selector_info_t *selectors,      /* OUT.     May be NULL. */
-					       unsigned int                          *default_index   /* OUT.     May be NULL. */);
+					       unsigned முழு                          *default_index   /* OUT.     May be NULL. */);
 
 
 /*

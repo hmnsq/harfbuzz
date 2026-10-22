@@ -27,8 +27,8 @@
 #ifndef HB_OT_KERN_TABLE_HH
 #define HB_OT_KERN_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-kerx-table.hh"
+#அந்தர்பாவ "hb-aat-layout-common.hh"
+#அந்தர்பாவ "hb-aat-layout-kerx-table.hh"
 
 
 /*
@@ -39,153 +39,153 @@
 #define HB_OT_TAG_kern HB_TAG('k','e','r','n')
 
 
-namespace OT {
+நாமாகாஶ OT {
 
 
 template <typename KernSubTableHeader>
-struct KernSubTableFormat3
+கட்டமைப்பு KernSubTableFormat3
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  முழு get_kerning (hb_codepoint_t left, hb_codepoint_t வலது) மாறிலி
   {
-    hb_array_t<const FWORD> kernValue = kernValueZ.as_array (kernValueCount);
-    hb_array_t<const HBUINT8> leftClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (kernValue).as_array (glyphCount);
-    hb_array_t<const HBUINT8> rightClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (leftClass).as_array (glyphCount);
-    hb_array_t<const HBUINT8> kernIndex = StructAfter<const UnsizedArrayOf<HBUINT8>> (rightClass).as_array (leftClassCount * rightClassCount);
+    hb_array_t<மாறிலி FWORD> kern_மதிப்பு = kern_மதிப்பு_Z.as_array (kern_மதிப்பு_மொத்தம்);
+    hb_array_t<மாறிலி HBUINT8> இடது_Class = StructAfter<மாறிலி UnsizedArrayOf<HBUINT8>> (kern_மதிப்பு).as_array (glyph_மொத்தம்_2);
+    hb_array_t<மாறிலி HBUINT8> வலது_Class = StructAfter<மாறிலி UnsizedArrayOf<HBUINT8>> (இடது_Class).as_array (glyph_மொத்தம்_2);
+    hb_array_t<மாறிலி HBUINT8> kernIndex = StructAfter<மாறிலி UnsizedArrayOf<HBUINT8>> (வலது_Class).as_array (இடது_Class_மொத்தம் * வலது_Class_மொத்தம்);
 
-    unsigned int leftC = leftClass[left];
-    unsigned int rightC = rightClass[right];
-    if (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
-      return 0;
-    unsigned int i = leftC * rightClassCount + rightC;
-    return kernValue[kernIndex[i]];
+    unsigned முழு இடது_C = இடது_Class[left];
+    unsigned முழு வலது_C = வலது_Class[வலது];
+    எனில் (unlikely (இடது_C >= இடது_Class_மொத்தம் || வலது_C >= வலது_Class_மொத்தம்))
+      திரும்பு 0;
+    unsigned முழு i = இடது_C * வலது_Class_மொத்தம் + வலது_C;
+    திரும்பு kern_மதிப்பு[kernIndex[i]];
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c) const
+  தருக்க apply (AAT::hb_aat_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
 
-    if (!c->plan->requested_kerning)
-      return false;
+    எனில் (!c->plan->requested_kerning)
+      திரும்பு பொய்;
 
-    if (header.coverage & header.Backwards)
-      return false;
+    எனில் (header.coverage & header.Backwards)
+      திரும்பு பொய்;
 
-    hb_kern_machine_t<KernSubTableFormat3> machine (*this, header.coverage & header.CrossStream);
+    hb_kern_machine_t<KernSubTableFormat3> machine (*இது, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
-		  c->check_range (kernValueZ,
-				  kernValueCount * sizeof (FWORD) +
-				  glyphCount * 2 +
-				  leftClassCount * rightClassCount));
+		  c->check_range (kern_மதிப்பு_Z,
+				  kern_மதிப்பு_மொத்தம் * அளவு (FWORD) +
+				  glyph_மொத்தம்_2 * 2 +
+				  இடது_Class_மொத்தம் * வலது_Class_மொத்தம்));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  வெறுமை collect_glyphs (set_t &இடது_set, set_t &வலது_set, unsigned இலக்கம்_glyphs) மாறிலி
   {
-    if (likely (glyphCount))
+    எனில் (likely (glyph_மொத்தம்_2))
     {
-      left_set.add_range (0, num_glyphs - 1);
-      right_set.add_range (0, num_glyphs - 1);
+      இடது_set.add_range (0, இலக்கம்_glyphs - 1);
+      வலது_set.add_range (0, இலக்கம்_glyphs - 1);
     }
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   KernSubTableHeader
 		header;
-  HBUINT16	glyphCount;	/* The number of glyphs in this font. */
-  HBUINT8	kernValueCount;	/* The number of kerning values. */
-  HBUINT8	leftClassCount;	/* The number of left-hand classes. */
-  HBUINT8	rightClassCount;/* The number of right-hand classes. */
+  HBUINT16	glyph_மொத்தம்_2;	/* The number of glyphs in this font. */
+  HBUINT8	kern_மதிப்பு_மொத்தம்;	/* The number of kerning values. */
+  HBUINT8	இடது_Class_மொத்தம்;	/* The number of left-hand classes. */
+  HBUINT8	வலது_Class_மொத்தம்;/* The number of right-hand classes. */
   HBUINT8	flags;		/* Set to zero (reserved for future use). */
   UnsizedArrayOf<FWORD>
-		kernValueZ;	/* The kerning values.
+		kern_மதிப்பு_Z;	/* The kerning values.
 				 * Length kernValueCount. */
-#if 0
+#எனில் 0
   UnsizedArrayOf<HBUINT8>
-		leftClass;	/* The left-hand classes.
+		இடது_Class;	/* The left-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>
-		rightClass;	/* The right-hand classes.
+		வலது_Class;	/* The right-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>kernIndex;
 				/* The indices into the kernValue array.
 				 * Length leftClassCount * rightClassCount */
 #endif
-  public:
-  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kernValueZ);
+  பொது:
+  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kern_மதிப்பு_Z);
 };
 
 template <typename KernSubTableHeader>
-struct KernSubTable
+கட்டமைப்பு KernSubTable
 {
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.format; }
+  size_t get_size () மாறிலி { திரும்பு u.header.length; }
+  unsigned முழு get_type () மாறிலி { திரும்பு u.header.format; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  முழு get_kerning (hb_codepoint_t left, hb_codepoint_t வலது) மாறிலி
   {
-    switch (get_type ()) {
+    தேர்வு (get_type ()) {
     /* This method hooks up to hb_font_t's get_h_kerning.  Only support Format0. */
-    case 0: hb_barrier (); return u.format0.get_kerning (left, right);
-    default:return 0;
+    நிலை 0: hb_barrier (); திரும்பு u.format0.get_kerning (left, வலது);
+    இயல்பு:திரும்பு 0;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) மாறிலி
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
+    unsigned முழு subtable_type = get_type ();
+    TRACE_DISPATCH (இது, subtable_type);
+    தேர்வு (subtable_type) {
+    நிலை 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    நிலை 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #endif
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
+    நிலை 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    நிலை 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    இயல்பு:	return_trace (c->default_return_மதிப்பு ());
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  வெறுமை collect_glyphs (set_t &இடது_set, set_t &வலது_set, unsigned இலக்கம்_glyphs) மாறிலி
   {
-    unsigned int subtable_type = get_type ();
-    switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); return;
+    unsigned முழு subtable_type = get_type ();
+    தேர்வு (subtable_type) {
+    நிலை 0:	hb_barrier (); u.format0.collect_glyphs (இடது_set, வலது_set, இலக்கம்_glyphs); திரும்பு;
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); return;
+    நிலை 1:	hb_barrier (); u.format1.collect_glyphs (இடது_set, வலது_set, இலக்கம்_glyphs); திரும்பு;
 #endif
-    case 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); return;
+    நிலை 2:	hb_barrier (); u.format2.collect_glyphs (இடது_set, வலது_set, இலக்கம்_glyphs); திரும்பு;
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); return;
+    நிலை 3:	hb_barrier (); u.format3.collect_glyphs (இடது_set, வலது_set, இலக்கம்_glyphs); திரும்பு;
 #endif
-    default:	return;
+    இயல்பு:	திரும்பு;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(u.header.sanitize (c) &&
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!(u.header.sanitize (c) &&
 		    hb_barrier () &&
 		    u.header.length >= u.header.min_size &&
-		    c->check_range (this, u.header.length)))) return_trace (false);
+		    c->check_range (இது, u.header.length)))) return_trace (பொய்);
 
     return_trace (dispatch (c));
   }
 
-  public:
-  union {
+  பொது:
+  ஒன்றிப்பு {
   KernSubTableHeader				header;
   AAT::KerxSubTableFormat0<KernSubTableHeader>	format0;
 #ifndef HB_NO_AAT_SHAPE
@@ -196,20 +196,20 @@ struct KernSubTable
   KernSubTableFormat3<KernSubTableHeader>	format3;
 #endif
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_MIN (KernSubTableHeader::static_size);
 };
 
 
-struct KernOTSubTableHeader
+கட்டமைப்பு KernOTSubTableHeader
 {
-  static constexpr bool apple = false;
-  typedef AAT::ObsoleteTypes Types;
+  நிலையான constexpr தருக்க apple = பொய்;
+  வகைவரை AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return (coverage & Horizontal); }
+  unsigned   tuple_மொத்தம்_2 () மாறிலி { திரும்பு 0; }
+  தருக்க     is_horizontal () மாறிலி { திரும்பு (coverage & Horizontal); }
 
-  enum Coverage
+  எண்ணிக்கை Coverage
   {
     Horizontal	= 0x01u,
     Minimum	= 0x02u,
@@ -221,50 +221,50 @@ struct KernOTSubTableHeader
     Variation	= 0x00u,
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  public:
+  பொது:
   HBUINT16	versionZ;	/* Unused. */
   HBUINT16	length;		/* Length of the subtable (including this header). */
   HBUINT8	format;		/* Subtable format. */
   HBUINT8	coverage;	/* Coverage bits. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct KernOT : AAT::KerxTable<KernOT>
+கட்டமைப்பு KernOT : AAT::KerxTable<KernOT>
 {
-  friend struct AAT::KerxTable<KernOT>;
+  friend கட்டமைப்பு AAT::KerxTable<KernOT>;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
-  static constexpr unsigned minVersion = 0u;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  நிலையான constexpr unsigned minVersion = 0u;
 
-  typedef KernOTSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KernSubTable<SubTableHeader> SubTable;
+  வகைவரை KernOTSubTableHeader SubTableHeader;
+  வகைவரை SubTableHeader::Types Types;
+  வகைவரை KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	version;	/* Version--0x0000u */
-  HBUINT16	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT16	table_மொத்தம்;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
-  public:
+  பொது:
   DEFINE_SIZE_MIN (4);
 };
 
 
-struct KernAATSubTableHeader
+கட்டமைப்பு KernAATSubTableHeader
 {
-  static constexpr bool apple = true;
-  typedef AAT::ObsoleteTypes Types;
+  நிலையான constexpr தருக்க apple = உண்மை;
+  வகைவரை AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  unsigned   tuple_மொத்தம்_2 () மாறிலி { திரும்பு 0; }
+  தருக்க     is_horizontal () மாறிலி { திரும்பு !(coverage & Vertical); }
 
-  enum Coverage
+  எண்ணிக்கை Coverage
   {
     Vertical	= 0x80u,
     CrossStream	= 0x40u,
@@ -274,137 +274,137 @@ struct KernAATSubTableHeader
     Backwards	= 0x00u,
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  public:
+  பொது:
   HBUINT32	length;		/* Length of the subtable (including this header). */
   HBUINT8	coverage;	/* Coverage bits. */
   HBUINT8	format;		/* Subtable format. */
   HBUINT16	tupleIndex;	/* The tuple index (used for variations fonts).
 				 * This value specifies which tuple this subtable covers.
 				 * Note: We don't implement. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct KernAAT : AAT::KerxTable<KernAAT>
+கட்டமைப்பு KernAAT : AAT::KerxTable<KernAAT>
 {
-  friend struct AAT::KerxTable<KernAAT>;
+  friend கட்டமைப்பு AAT::KerxTable<KernAAT>;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
-  static constexpr unsigned minVersion = 0x00010000u;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  நிலையான constexpr unsigned minVersion = 0x00010000u;
 
-  typedef KernAATSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KernSubTable<SubTableHeader> SubTable;
+  வகைவரை KernAATSubTableHeader SubTableHeader;
+  வகைவரை SubTableHeader::Types Types;
+  வகைவரை KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT32	version;	/* Version--0x00010000u */
-  HBUINT32	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT32	table_மொத்தம்;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
-  public:
+  பொது:
   DEFINE_SIZE_MIN (8);
 };
 
-struct kern
+கட்டமைப்பு kern
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
 
-  bool     has_data () const { return u.version32.v; }
-  unsigned get_type () const { return u.major.v; }
+  தருக்க     has_data () மாறிலி { திரும்பு u.version32.v; }
+  unsigned get_type () மாறிலி { திரும்பு u.major.v; }
 
-  bool has_state_machine () const
+  தருக்க has_state_machine () மாறிலி
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_state_machine ();
+    தேர்வு (get_type ()) {
+    நிலை 0: hb_barrier (); திரும்பு u.ot.has_state_machine ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_state_machine ();
+    நிலை 1: hb_barrier (); திரும்பு u.aat.has_state_machine ();
 #endif
-    default:return false;
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
-  bool has_cross_stream () const
+  தருக்க has_cross_stream () மாறிலி
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_cross_stream ();
+    தேர்வு (get_type ()) {
+    நிலை 0: hb_barrier (); திரும்பு u.ot.has_cross_stream ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_cross_stream ();
+    நிலை 1: hb_barrier (); திரும்பு u.aat.has_cross_stream ();
 #endif
-    default:return false;
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  முழு get_h_kerning (hb_codepoint_t left, hb_codepoint_t வலது) மாறிலி
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.get_h_kerning (left, right);
+    தேர்வு (get_type ()) {
+    நிலை 0: hb_barrier (); திரும்பு u.ot.get_h_kerning (left, வலது);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.get_h_kerning (left, right);
+    நிலை 1: hb_barrier (); திரும்பு u.aat.get_h_kerning (left, வலது);
 #endif
-    default:return 0;
+    இயல்பு:திரும்பு 0;
     }
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c,
-	      const AAT::kern_accelerator_data_t &accel_data) const
-  { return dispatch (c, accel_data); }
+  தருக்க apply (AAT::hb_aat_apply_context_t *c,
+	      மாறிலி AAT::kern_accelerator_data_t &accel_data) மாறிலி
+  { திரும்பு dispatch (c, accel_data); }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) மாறிலி
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
+    unsigned முழு subtable_type = get_type ();
+    TRACE_DISPATCH (இது, subtable_type);
+    தேர்வு (subtable_type) {
+    நிலை 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
+    நிலை 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    இயல்பு:	return_trace (c->default_return_மதிப்பு ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!u.version32.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (!u.version32.v.sanitize (c)) return_trace (பொய்);
     hb_barrier ();
     return_trace (dispatch (c));
   }
 
-  AAT::kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  AAT::kern_accelerator_data_t create_accelerator_data (unsigned இலக்கம்_glyphs) மாறிலி
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.create_accelerator_data (num_glyphs);
+    தேர்வு (get_type ()) {
+    நிலை 0: hb_barrier (); திரும்பு u.ot.create_accelerator_data (இலக்கம்_glyphs);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.create_accelerator_data (num_glyphs);
+    நிலை 1: hb_barrier (); திரும்பு u.aat.create_accelerator_data (இலக்கம்_glyphs);
 #endif
-    default:return AAT::kern_accelerator_data_t ();
+    இயல்பு:திரும்பு AAT::kern_accelerator_data_t ();
     }
   }
 
-  struct accelerator_t
+  கட்டமைப்பு accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<kern> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      இது->table = sc.reference_table<kern> (face);
+      இது->accel_data = இது->table->create_accelerator_data (face->get_இலக்கம்_glyphs ());
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      இது->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () மாறிலி { திரும்பு table.get_blob (); }
 
-    bool apply (AAT::hb_aat_apply_context_t *c) const
+    தருக்க apply (AAT::hb_aat_apply_context_t *c) மாறிலி
     {
-      return table->apply (c, accel_data);
+      திரும்பு table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<kern> table;
@@ -412,20 +412,20 @@ struct kern
     AAT::hb_aat_scratch_t scratch;
   };
 
-  protected:
-  union {
-  struct { HBUINT32 v; }	version32;
-  struct { HBUINT16 v; }	major;
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு { HBUINT32 v; }	version32;
+  கட்டமைப்பு { HBUINT16 v; }	major;
   KernOT		ot;
 #ifndef HB_NO_AAT_SHAPE
   KernAAT		aat;
 #endif
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (4, version32.v);
 };
 
-struct kern_accelerator_t : kern::accelerator_t {
+கட்டமைப்பு kern_accelerator_t : kern::accelerator_t {
   kern_accelerator_t (hb_face_t *face) : kern::accelerator_t (face) {}
 };
 

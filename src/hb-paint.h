@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#எனில் !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_PAINT_H
 #define HB_PAINT_H
 
-#include "hb-common.h"
-#include "hb-draw.h"
+#அந்தர்பாவ "hb-common.h"
+#அந்தர்பாவ "hb-draw.h"
 
 HB_BEGIN_DECLS
 
@@ -61,7 +61,7 @@ HB_BEGIN_DECLS
  *
  * Since: 7.0.0
  **/
-typedef struct hb_paint_funcs_t hb_paint_funcs_t;
+வகைவரை கட்டமைப்பு hb_paint_funcs_t hb_paint_funcs_t;
 
 /**
  * hb_paint_set_budget_func_t:
@@ -77,10 +77,10 @@ typedef struct hb_paint_funcs_t hb_paint_funcs_t;
  *
  * Since: 14.5.0
  **/
-typedef hb_bool_t (*hb_paint_set_budget_func_t) (hb_paint_funcs_t *funcs,
-						  void *paint_data,
+வகைவரை hb_bool_t (*hb_paint_set_budget_func_t) (hb_paint_funcs_t *funcs,
+						  வெறுமை *paint_data,
 						  int64_t budget,
-						  void *user_data);
+						  வெறுமை *user_data);
 
 /**
  * hb_paint_get_budget_func_t:
@@ -94,9 +94,9 @@ typedef hb_bool_t (*hb_paint_set_budget_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.5.0
  **/
-typedef int64_t (*hb_paint_get_budget_func_t) (hb_paint_funcs_t *funcs,
-					       void *paint_data,
-					       void *user_data);
+வகைவரை int64_t (*hb_paint_get_budget_func_t) (hb_paint_funcs_t *funcs,
+					       வெறுமை *paint_data,
+					       வெறுமை *user_data);
 
 /**
  * hb_paint_get_budget_remaining_func_t:
@@ -114,9 +114,9 @@ typedef int64_t (*hb_paint_get_budget_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.5.0
  **/
-typedef int64_t *(*hb_paint_get_budget_remaining_func_t) (hb_paint_funcs_t *funcs,
-							  void *paint_data,
-							  void *user_data);
+வகைவரை int64_t *(*hb_paint_get_budget_remaining_func_t) (hb_paint_funcs_t *funcs,
+							  வெறுமை *paint_data,
+							  வெறுமை *user_data);
 
 /**
  * hb_paint_funcs_set_set_budget_func:
@@ -129,10 +129,10 @@ typedef int64_t *(*hb_paint_get_budget_remaining_func_t) (hb_paint_funcs_t *func
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_set_budget_func (hb_paint_funcs_t         *funcs,
 				    hb_paint_set_budget_func_t  func,
-				    void *user_data, hb_destroy_func_t destroy);
+				    வெறுமை *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_paint_funcs_set_get_budget_func:
@@ -145,10 +145,10 @@ hb_paint_funcs_set_set_budget_func (hb_paint_funcs_t         *funcs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_get_budget_func (hb_paint_funcs_t         *funcs,
 				    hb_paint_get_budget_func_t  func,
-				    void *user_data, hb_destroy_func_t destroy);
+				    வெறுமை *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_paint_funcs_set_get_budget_remaining_func:
@@ -161,50 +161,50 @@ hb_paint_funcs_set_get_budget_func (hb_paint_funcs_t         *funcs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_get_budget_remaining_func (hb_paint_funcs_t                   *funcs,
 					      hb_paint_get_budget_remaining_func_t  func,
-					      void *user_data, hb_destroy_func_t destroy);
+					      வெறுமை *user_data, hb_destroy_func_t destroy);
 
 HB_EXTERN hb_paint_funcs_t *
-hb_paint_funcs_create (void);
+hb_paint_funcs_create (வெறுமை);
 
 HB_EXTERN hb_paint_funcs_t *
-hb_paint_funcs_get_empty (void);
+hb_paint_funcs_get_empty (வெறுமை);
 
 HB_EXTERN hb_paint_funcs_t *
 hb_paint_funcs_reference (hb_paint_funcs_t *funcs);
 
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_destroy (hb_paint_funcs_t *funcs);
 
 HB_EXTERN hb_bool_t
 hb_paint_funcs_set_user_data (hb_paint_funcs_t *funcs,
-			      hb_user_data_key_t *key,
-			      void *              data,
+			      hb_user_data_சாவி_t *சாவி_2,
+			      வெறுமை *              data,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_paint_funcs_get_user_data (const hb_paint_funcs_t *funcs,
-			      hb_user_data_key_t       *key);
+HB_EXTERN வெறுமை *
+hb_paint_funcs_get_user_data (மாறிலி hb_paint_funcs_t *funcs,
+			      hb_user_data_சாவி_t       *சாவி_2);
 
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_make_immutable (hb_paint_funcs_t *funcs);
 
 HB_EXTERN hb_bool_t
 hb_paint_funcs_is_immutable (hb_paint_funcs_t *funcs);
 
 HB_EXTERN hb_bool_t
-hb_paint_set_budget (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_set_budget (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
 		     int64_t budget);
 
 HB_EXTERN int64_t
-hb_paint_get_budget (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_get_budget (hb_paint_funcs_t *funcs, வெறுமை *paint_data);
 
 HB_EXTERN int64_t
-hb_paint_get_budget_remaining (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_get_budget_remaining (hb_paint_funcs_t *funcs, வெறுமை *paint_data);
 
 /**
  * hb_paint_push_transform_func_t:
@@ -227,12 +227,12 @@ hb_paint_get_budget_remaining (hb_paint_funcs_t *funcs, void *paint_data);
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_transform_func_t) (hb_paint_funcs_t *funcs,
-                                                void *paint_data,
-                                                float xx, float yx,
-                                                float xy, float yy,
-                                                float dx, float dy,
-                                                void *user_data);
+வகைவரை வெறுமை (*hb_paint_தள்ளு_transform_func_t) (hb_paint_funcs_t *funcs,
+                                                வெறுமை *paint_data,
+                                                தசம xx, தசம yx,
+                                                தசம xy, தசம yy,
+                                                தசம dx, தசம dy,
+                                                வெறுமை *user_data);
 
 /**
  * hb_paint_pop_transform_func_t:
@@ -246,9 +246,9 @@ typedef void (*hb_paint_push_transform_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_transform_func_t) (hb_paint_funcs_t *funcs,
-                                               void *paint_data,
-                                               void *user_data);
+வகைவரை வெறுமை (*hb_paint_எடு_transform_func_t) (hb_paint_funcs_t *funcs,
+                                               வெறுமை *paint_data,
+                                               வெறுமை *user_data);
 
 /**
  * hb_paint_color_glyph_func_t:
@@ -264,11 +264,11 @@ typedef void (*hb_paint_pop_transform_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 8.2.0
  */
-typedef hb_bool_t (*hb_paint_color_glyph_func_t) (hb_paint_funcs_t *funcs,
-                                                  void *paint_data,
+வகைவரை hb_bool_t (*hb_paint_color_glyph_func_t) (hb_paint_funcs_t *funcs,
+                                                  வெறுமை *paint_data,
                                                   hb_codepoint_t glyph,
                                                   hb_font_t *font,
-                                                  void *user_data);
+                                                  வெறுமை *user_data);
 
 /**
  * hb_paint_fill_glyph_func_t:
@@ -287,13 +287,13 @@ typedef hb_bool_t (*hb_paint_color_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.3.0
  */
-typedef void (*hb_paint_fill_glyph_func_t) (hb_paint_funcs_t *funcs,
-                                            void *paint_data,
+வகைவரை வெறுமை (*hb_paint_fill_glyph_func_t) (hb_paint_funcs_t *funcs,
+                                            வெறுமை *paint_data,
                                             hb_codepoint_t glyph,
                                             hb_font_t *font,
                                             hb_bool_t is_foreground,
                                             hb_color_t color,
-                                            void *user_data);
+                                            வெறுமை *user_data);
 
 /**
  * hb_paint_push_clip_glyph_func_t:
@@ -317,11 +317,11 @@ typedef void (*hb_paint_fill_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
+வகைவரை வெறுமை (*hb_paint_தள்ளு_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
+                                                 வெறுமை *paint_data,
                                                  hb_codepoint_t glyph,
                                                  hb_font_t *font,
-                                                 void *user_data);
+                                                 வெறுமை *user_data);
 
 /**
  * hb_paint_push_clip_rectangle_func_t:
@@ -345,11 +345,11 @@ typedef void (*hb_paint_push_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
-                                                     void *paint_data,
-                                                     float xmin, float ymin,
-                                                     float xmax, float ymax,
-                                                     void *user_data);
+வகைவரை வெறுமை (*hb_paint_தள்ளு_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
+                                                     வெறுமை *paint_data,
+                                                     தசம xmin, தசம ymin,
+                                                     தசம xmax, தசம ymax,
+                                                     வெறுமை *user_data);
 
 /**
  * hb_paint_push_clip_path_start_func_t:
@@ -375,10 +375,10 @@ typedef void (*hb_paint_push_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.2.0
  */
-typedef hb_draw_funcs_t * (*hb_paint_push_clip_path_start_func_t) (hb_paint_funcs_t *funcs,
-                                                                   void             *paint_data,
-                                                                   void            **draw_data,
-                                                                   void             *user_data);
+வகைவரை hb_draw_funcs_t * (*hb_paint_தள்ளு_clip_path_start_func_t) (hb_paint_funcs_t *funcs,
+                                                                   வெறுமை             *paint_data,
+                                                                   வெறுமை            **draw_data,
+                                                                   வெறுமை             *user_data);
 
 /**
  * hb_paint_push_clip_path_end_func_t:
@@ -394,9 +394,9 @@ typedef hb_draw_funcs_t * (*hb_paint_push_clip_path_start_func_t) (hb_paint_func
  *
  * Since: 14.2.0
  */
-typedef void (*hb_paint_push_clip_path_end_func_t) (hb_paint_funcs_t *funcs,
-                                                    void             *paint_data,
-                                                    void             *user_data);
+வகைவரை வெறுமை (*hb_paint_தள்ளு_clip_path_end_func_t) (hb_paint_funcs_t *funcs,
+                                                    வெறுமை             *paint_data,
+                                                    வெறுமை             *user_data);
 
 /**
  * hb_paint_pop_clip_func_t:
@@ -411,9 +411,9 @@ typedef void (*hb_paint_push_clip_path_end_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_clip_func_t) (hb_paint_funcs_t *funcs,
-                                          void *paint_data,
-                                          void *user_data);
+வகைவரை வெறுமை (*hb_paint_எடு_clip_func_t) (hb_paint_funcs_t *funcs,
+                                          வெறுமை *paint_data,
+                                          வெறுமை *user_data);
 
 /**
  * hb_paint_color_func_t:
@@ -445,11 +445,11 @@ typedef void (*hb_paint_pop_clip_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
-                                       void *paint_data,
+வகைவரை வெறுமை (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
+                                       வெறுமை *paint_data,
                                        hb_bool_t is_foreground,
                                        hb_color_t color,
-                                       void *user_data);
+                                       வெறுமை *user_data);
 
 /**
  * HB_PAINT_IMAGE_FORMAT_PNG:
@@ -505,15 +505,15 @@ typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
-					    void *paint_data,
+வகைவரை hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
+					    வெறுமை *paint_data,
 					    hb_blob_t *image,
-					    unsigned int width,
-					    unsigned int height,
+					    unsigned முழு width,
+					    unsigned முழு height,
 					    hb_tag_t format,
-					    float slant,
+					    தசம slant,
 					    hb_glyph_extents_t *extents,
-					    void *user_data);
+					    வெறுமை *user_data);
 
 /**
  * hb_color_stop_t:
@@ -536,8 +536,8 @@ typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef struct {
-  float offset;
+வகைவரை கட்டமைப்பு {
+  தசம offset;
   hb_bool_t is_foreground;
   hb_color_t color;
 } hb_color_stop_t;
@@ -562,13 +562,13 @@ typedef struct {
  *
  * Since: 7.0.0
  */
-typedef enum {
+வகைவரை எண்ணிக்கை {
   HB_PAINT_EXTEND_PAD,
   HB_PAINT_EXTEND_REPEAT,
   HB_PAINT_EXTEND_REFLECT
 } hb_paint_extend_t;
 
-typedef struct hb_color_line_t hb_color_line_t;
+வகைவரை கட்டமைப்பு hb_color_வரி_t hb_color_வரி_t;
 
 /**
  * hb_color_line_get_color_stops_func_t:
@@ -586,12 +586,12 @@ typedef struct hb_color_line_t hb_color_line_t;
  *
  * Since: 7.0.0
  */
-typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *color_line,
-							      void *color_line_data,
-							      unsigned int start,
-							      unsigned int *count,
+வகைவரை unsigned முழு (*hb_color_வரி_get_color_stops_func_t) (hb_color_வரி_t *color_வரி,
+							      வெறுமை *color_வரி_data,
+							      unsigned முழு start,
+							      unsigned முழு *மொத்தம்,
 							      hb_color_stop_t *color_stops,
-							      void *user_data);
+							      வெறுமை *user_data);
 
 /**
  * hb_color_line_get_extend_func_t:
@@ -605,9 +605,9 @@ typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *color_line,
-							      void *color_line_data,
-							      void *user_data);
+வகைவரை hb_paint_extend_t (*hb_color_வரி_get_extend_func_t) (hb_color_வரி_t *color_வரி,
+							      வெறுமை *color_வரி_data,
+							      வெறுமை *user_data);
 
 /**
  * hb_color_line_t:
@@ -616,33 +616,33 @@ typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-struct hb_color_line_t {
-  void *data;
+கட்டமைப்பு hb_color_வரி_t {
+  வெறுமை *data;
 
-  hb_color_line_get_color_stops_func_t get_color_stops;
-  void *get_color_stops_user_data;
+  hb_color_வரி_get_color_stops_func_t get_color_stops;
+  வெறுமை *get_color_stops_user_data;
 
-  hb_color_line_get_extend_func_t get_extend;
-  void *get_extend_user_data;
+  hb_color_வரி_get_extend_func_t get_extend;
+  வெறுமை *get_extend_user_data;
 
-  void *reserved0;
-  void *reserved1;
-  void *reserved2;
-  void *reserved3;
-  void *reserved5;
-  void *reserved6;
-  void *reserved7;
-  void *reserved8;
+  வெறுமை *reserved0;
+  வெறுமை *reserved1;
+  வெறுமை *reserved2;
+  வெறுமை *reserved3;
+  வெறுமை *reserved5;
+  வெறுமை *reserved6;
+  வெறுமை *reserved7;
+  வெறுமை *reserved8;
 };
 
-HB_EXTERN unsigned int
-hb_color_line_get_color_stops (hb_color_line_t *color_line,
-                               unsigned int start,
-                               unsigned int *count,
+HB_EXTERN unsigned முழு
+hb_color_வரி_get_color_stops (hb_color_வரி_t *color_வரி,
+                               unsigned முழு start,
+                               unsigned முழு *மொத்தம்,
                                hb_color_stop_t *color_stops);
 
 HB_EXTERN hb_paint_extend_t
-hb_color_line_get_extend (hb_color_line_t *color_line);
+hb_color_வரி_get_extend (hb_color_வரி_t *color_வரி);
 
 /**
  * hb_paint_linear_gradient_func_t:
@@ -672,13 +672,13 @@ hb_color_line_get_extend (hb_color_line_t *color_line);
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0,
-                                                 float x1, float y1,
-                                                 float x2, float y2,
-                                                 void *user_data);
+வகைவரை வெறுமை (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
+                                                 வெறுமை *paint_data,
+                                                 hb_color_வரி_t *color_வரி,
+                                                 தசம x0, தசம y0,
+                                                 தசம x1, தசம y1,
+                                                 தசம x2, தசம y2,
+                                                 வெறுமை *user_data);
 
 /**
  * hb_paint_radial_gradient_func_t:
@@ -708,12 +708,12 @@ typedef void (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0, float r0,
-                                                 float x1, float y1, float r1,
-                                                 void *user_data);
+வகைவரை வெறுமை (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
+                                                 வெறுமை *paint_data,
+                                                 hb_color_வரி_t *color_வரி,
+                                                 தசம x0, தசம y0, தசம r0,
+                                                 தசம x1, தசம y1, தசம r1,
+                                                 வெறுமை *user_data);
 
 /**
  * hb_paint_sweep_gradient_func_t:
@@ -741,13 +741,13 @@ typedef void (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0,
-                                                 float start_angle,
-                                                 float end_angle,
-                                                 void *user_data);
+வகைவரை வெறுமை (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
+                                                 வெறுமை *paint_data,
+                                                 hb_color_வரி_t *color_வரி,
+                                                 தசம x0, தசம y0,
+                                                 தசம start_angle,
+                                                 தசம end_angle,
+                                                 வெறுமை *user_data);
 
 /**
  * hb_paint_composite_mode_t:
@@ -817,7 +817,7 @@ typedef void (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef enum {
+வகைவரை எண்ணிக்கை {
   HB_PAINT_COMPOSITE_MODE_CLEAR,
   HB_PAINT_COMPOSITE_MODE_SRC,
   HB_PAINT_COMPOSITE_MODE_DEST,
@@ -863,9 +863,9 @@ typedef enum {
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_group_func_t) (hb_paint_funcs_t *funcs,
-                                            void *paint_data,
-                                            void *user_data);
+வகைவரை வெறுமை (*hb_paint_தள்ளு_group_func_t) (hb_paint_funcs_t *funcs,
+                                            வெறுமை *paint_data,
+                                            வெறுமை *user_data);
 
 /**
  * hb_paint_push_group_for_func_t:
@@ -884,10 +884,10 @@ typedef void (*hb_paint_push_group_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.2.0
  */
-typedef void (*hb_paint_push_group_for_func_t) (hb_paint_funcs_t *funcs,
-                                                void *paint_data,
+வகைவரை வெறுமை (*hb_paint_தள்ளு_group_for_func_t) (hb_paint_funcs_t *funcs,
+                                                வெறுமை *paint_data,
                                                 hb_paint_composite_mode_t mode,
-                                                void *user_data);
+                                                வெறுமை *user_data);
 
 /**
  * hb_paint_pop_group_func_t:
@@ -906,10 +906,10 @@ typedef void (*hb_paint_push_group_for_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
-                                           void *paint_data,
+வகைவரை வெறுமை (*hb_paint_எடு_group_func_t) (hb_paint_funcs_t *funcs,
+                                           வெறுமை *paint_data,
                                            hb_paint_composite_mode_t mode,
-                                           void *user_data);
+                                           வெறுமை *user_data);
 
 /**
  * hb_paint_custom_palette_color_func_t:
@@ -934,11 +934,11 @@ typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *funcs,
-                                                           void *paint_data,
-                                                           unsigned int color_index,
+வகைவரை hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *funcs,
+                                                           வெறுமை *paint_data,
+                                                           unsigned முழு color_index,
                                                            hb_color_t *color,
-                                                           void *user_data);
+                                                           வெறுமை *user_data);
 
 
 /**
@@ -952,10 +952,10 @@ typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *fun
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_transform_func (hb_paint_funcs_t               *funcs,
-                                        hb_paint_push_transform_func_t  func,
-                                        void                           *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_தள்ளு_transform_func (hb_paint_funcs_t               *funcs,
+                                        hb_paint_தள்ளு_transform_func_t  func,
+                                        வெறுமை                           *user_data,
                                         hb_destroy_func_t               destroy);
 
 /**
@@ -969,10 +969,10 @@ hb_paint_funcs_set_push_transform_func (hb_paint_funcs_t               *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_pop_transform_func (hb_paint_funcs_t              *funcs,
-                                       hb_paint_pop_transform_func_t  func,
-                                       void                          *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_எடு_transform_func (hb_paint_funcs_t              *funcs,
+                                       hb_paint_எடு_transform_func_t  func,
+                                       வெறுமை                          *user_data,
                                        hb_destroy_func_t              destroy);
 
 /**
@@ -986,10 +986,10 @@ hb_paint_funcs_set_pop_transform_func (hb_paint_funcs_t              *funcs,
  *
  * Since: 8.2.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_color_glyph_func (hb_paint_funcs_t                *funcs,
 				     hb_paint_color_glyph_func_t     func,
-				     void                            *user_data,
+				     வெறுமை                            *user_data,
 				     hb_destroy_func_t                destroy);
 
 /**
@@ -1003,10 +1003,10 @@ hb_paint_funcs_set_color_glyph_func (hb_paint_funcs_t                *funcs,
  *
  * Since: 14.3.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_fill_glyph_func (hb_paint_funcs_t           *funcs,
                                     hb_paint_fill_glyph_func_t  func,
-                                    void                       *user_data,
+                                    வெறுமை                       *user_data,
                                     hb_destroy_func_t           destroy);
 
 /**
@@ -1020,10 +1020,10 @@ hb_paint_funcs_set_fill_glyph_func (hb_paint_funcs_t           *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_clip_glyph_func (hb_paint_funcs_t                *funcs,
-                                         hb_paint_push_clip_glyph_func_t  func,
-                                         void                            *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_தள்ளு_clip_glyph_func (hb_paint_funcs_t                *funcs,
+                                         hb_paint_தள்ளு_clip_glyph_func_t  func,
+                                         வெறுமை                            *user_data,
                                          hb_destroy_func_t                destroy);
 
 /**
@@ -1037,10 +1037,10 @@ hb_paint_funcs_set_push_clip_glyph_func (hb_paint_funcs_t                *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_clip_rectangle_func (hb_paint_funcs_t                    *funcs,
-                                             hb_paint_push_clip_rectangle_func_t  func,
-                                             void                                *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_தள்ளு_clip_rectangle_func (hb_paint_funcs_t                    *funcs,
+                                             hb_paint_தள்ளு_clip_rectangle_func_t  func,
+                                             வெறுமை                                *user_data,
                                              hb_destroy_func_t                    destroy);
 
 /**
@@ -1054,10 +1054,10 @@ hb_paint_funcs_set_push_clip_rectangle_func (hb_paint_funcs_t                   
  *
  * Since: 14.2.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_clip_path_start_func (hb_paint_funcs_t                     *funcs,
-                                              hb_paint_push_clip_path_start_func_t  func,
-                                              void                                 *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_தள்ளு_clip_path_start_func (hb_paint_funcs_t                     *funcs,
+                                              hb_paint_தள்ளு_clip_path_start_func_t  func,
+                                              வெறுமை                                 *user_data,
                                               hb_destroy_func_t                     destroy);
 
 /**
@@ -1071,10 +1071,10 @@ hb_paint_funcs_set_push_clip_path_start_func (hb_paint_funcs_t                  
  *
  * Since: 14.2.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_clip_path_end_func (hb_paint_funcs_t                   *funcs,
-                                            hb_paint_push_clip_path_end_func_t  func,
-                                            void                               *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_தள்ளு_clip_path_end_func (hb_paint_funcs_t                   *funcs,
+                                            hb_paint_தள்ளு_clip_path_end_func_t  func,
+                                            வெறுமை                               *user_data,
                                             hb_destroy_func_t                   destroy);
 
 /**
@@ -1088,10 +1088,10 @@ hb_paint_funcs_set_push_clip_path_end_func (hb_paint_funcs_t                   *
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_pop_clip_func (hb_paint_funcs_t         *funcs,
-                                  hb_paint_pop_clip_func_t  func,
-                                  void                     *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_எடு_clip_func (hb_paint_funcs_t         *funcs,
+                                  hb_paint_எடு_clip_func_t  func,
+                                  வெறுமை                     *user_data,
                                   hb_destroy_func_t         destroy);
 
 /**
@@ -1105,10 +1105,10 @@ hb_paint_funcs_set_pop_clip_func (hb_paint_funcs_t         *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_color_func (hb_paint_funcs_t      *funcs,
                                hb_paint_color_func_t  func,
-                               void                  *user_data,
+                               வெறுமை                  *user_data,
                                hb_destroy_func_t      destroy);
 
 /**
@@ -1122,10 +1122,10 @@ hb_paint_funcs_set_color_func (hb_paint_funcs_t      *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_image_func (hb_paint_funcs_t      *funcs,
                                hb_paint_image_func_t  func,
-                               void                  *user_data,
+                               வெறுமை                  *user_data,
                                hb_destroy_func_t      destroy);
 
 /**
@@ -1139,10 +1139,10 @@ hb_paint_funcs_set_image_func (hb_paint_funcs_t      *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_linear_gradient_func (hb_paint_funcs_t                *funcs,
                                          hb_paint_linear_gradient_func_t  func,
-                                         void                            *user_data,
+                                         வெறுமை                            *user_data,
                                          hb_destroy_func_t                destroy);
 
 /**
@@ -1156,10 +1156,10 @@ hb_paint_funcs_set_linear_gradient_func (hb_paint_funcs_t                *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_radial_gradient_func (hb_paint_funcs_t                *funcs,
                                          hb_paint_radial_gradient_func_t  func,
-                                         void                            *user_data,
+                                         வெறுமை                            *user_data,
                                          hb_destroy_func_t                destroy);
 
 /**
@@ -1173,10 +1173,10 @@ hb_paint_funcs_set_radial_gradient_func (hb_paint_funcs_t                *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_sweep_gradient_func (hb_paint_funcs_t               *funcs,
                                         hb_paint_sweep_gradient_func_t  func,
-                                        void                           *user_data,
+                                        வெறுமை                           *user_data,
                                         hb_destroy_func_t               destroy);
 
 /**
@@ -1190,10 +1190,10 @@ hb_paint_funcs_set_sweep_gradient_func (hb_paint_funcs_t               *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_group_func (hb_paint_funcs_t           *funcs,
-                                    hb_paint_push_group_func_t  func,
-                                    void                       *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_தள்ளு_group_func (hb_paint_funcs_t           *funcs,
+                                    hb_paint_தள்ளு_group_func_t  func,
+                                    வெறுமை                       *user_data,
                                     hb_destroy_func_t           destroy);
 
 /**
@@ -1207,10 +1207,10 @@ hb_paint_funcs_set_push_group_func (hb_paint_funcs_t           *funcs,
  *
  * Since: 14.2.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_group_for_func (hb_paint_funcs_t               *funcs,
-                                        hb_paint_push_group_for_func_t  func,
-                                        void                           *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_தள்ளு_group_for_func (hb_paint_funcs_t               *funcs,
+                                        hb_paint_தள்ளு_group_for_func_t  func,
+                                        வெறுமை                           *user_data,
                                         hb_destroy_func_t               destroy);
 
 /**
@@ -1224,10 +1224,10 @@ hb_paint_funcs_set_push_group_for_func (hb_paint_funcs_t               *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_pop_group_func (hb_paint_funcs_t          *funcs,
-                                   hb_paint_pop_group_func_t  func,
-                                   void                       *user_data,
+HB_EXTERN வெறுமை
+hb_paint_funcs_set_எடு_group_func (hb_paint_funcs_t          *funcs,
+                                   hb_paint_எடு_group_func_t  func,
+                                   வெறுமை                       *user_data,
                                    hb_destroy_func_t           destroy);
 
 /**
@@ -1241,115 +1241,115 @@ hb_paint_funcs_set_pop_group_func (hb_paint_funcs_t          *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_funcs_set_custom_palette_color_func (hb_paint_funcs_t                     *funcs,
                                               hb_paint_custom_palette_color_func_t  func,
-                                              void                                 *user_data,
+                                              வெறுமை                                 *user_data,
                                               hb_destroy_func_t                     destroy);
 /*
  * Manual API
  */
 
-HB_EXTERN void
-hb_paint_push_transform (hb_paint_funcs_t *funcs, void *paint_data,
-                         float xx, float yx,
-                         float xy, float yy,
-                         float dx, float dy);
+HB_EXTERN வெறுமை
+hb_paint_தள்ளு_transform (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
+                         தசம xx, தசம yx,
+                         தசம xy, தசம yy,
+                         தசம dx, தசம dy);
 
-HB_EXTERN void
-hb_paint_push_font_transform (hb_paint_funcs_t *funcs, void *paint_data,
-                              const hb_font_t *font);
+HB_EXTERN வெறுமை
+hb_paint_தள்ளு_font_transform (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
+                              மாறிலி hb_font_t *font);
 
-HB_EXTERN void
-hb_paint_push_inverse_font_transform (hb_paint_funcs_t *funcs, void *paint_data,
-                                      const hb_font_t *font);
+HB_EXTERN வெறுமை
+hb_paint_தள்ளு_inverse_font_transform (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
+                                      மாறிலி hb_font_t *font);
 
-HB_EXTERN void
-hb_paint_pop_transform (hb_paint_funcs_t *funcs, void *paint_data);
+HB_EXTERN வெறுமை
+hb_paint_எடு_transform (hb_paint_funcs_t *funcs, வெறுமை *paint_data);
 
 HB_EXTERN hb_bool_t
-hb_paint_color_glyph (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_color_glyph (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
                       hb_codepoint_t glyph,
                       hb_font_t *font);
 
-HB_EXTERN void
-hb_paint_fill_glyph (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN வெறுமை
+hb_paint_fill_glyph (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
                      hb_codepoint_t glyph,
                      hb_font_t *font,
                      hb_bool_t is_foreground,
                      hb_color_t color);
 
-HB_EXTERN void
-hb_paint_push_clip_glyph (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN வெறுமை
+hb_paint_தள்ளு_clip_glyph (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
                           hb_codepoint_t glyph,
                           hb_font_t *font);
 
-HB_EXTERN void
-hb_paint_push_clip_rectangle (hb_paint_funcs_t *funcs, void *paint_data,
-                              float xmin, float ymin,
-                              float xmax, float ymax);
+HB_EXTERN வெறுமை
+hb_paint_தள்ளு_clip_rectangle (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
+                              தசம xmin, தசம ymin,
+                              தசம xmax, தசம ymax);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_paint_push_clip_path_start (hb_paint_funcs_t  *funcs,
-                               void              *paint_data,
-                               void             **draw_data);
+hb_paint_தள்ளு_clip_path_start (hb_paint_funcs_t  *funcs,
+                               வெறுமை              *paint_data,
+                               வெறுமை             **draw_data);
 
-HB_EXTERN void
-hb_paint_push_clip_path_end (hb_paint_funcs_t *funcs,
-                             void             *paint_data);
+HB_EXTERN வெறுமை
+hb_paint_தள்ளு_clip_path_end (hb_paint_funcs_t *funcs,
+                             வெறுமை             *paint_data);
 
-HB_EXTERN void
-hb_paint_pop_clip (hb_paint_funcs_t *funcs, void *paint_data);
+HB_EXTERN வெறுமை
+hb_paint_எடு_clip (hb_paint_funcs_t *funcs, வெறுமை *paint_data);
 
-HB_EXTERN void
-hb_paint_color (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN வெறுமை
+hb_paint_color (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
                 hb_bool_t is_foreground,
                 hb_color_t color);
 
-HB_EXTERN void
-hb_paint_image (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN வெறுமை
+hb_paint_image (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
                 hb_blob_t *image,
-                unsigned int width,
-                unsigned int height,
+                unsigned முழு width,
+                unsigned முழு height,
                 hb_tag_t format,
-                float slant,
+                தசம slant,
                 hb_glyph_extents_t *extents);
 
-HB_EXTERN void
-hb_paint_linear_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                          hb_color_line_t *color_line,
-                          float x0, float y0,
-                          float x1, float y1,
-                          float x2, float y2);
+HB_EXTERN வெறுமை
+hb_paint_linear_gradient (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
+                          hb_color_வரி_t *color_வரி,
+                          தசம x0, தசம y0,
+                          தசம x1, தசம y1,
+                          தசம x2, தசம y2);
 
-HB_EXTERN void
-hb_paint_radial_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                          hb_color_line_t *color_line,
-                          float x0, float y0,
-                          float r0,
-                          float x1, float y1,
-                          float r1);
+HB_EXTERN வெறுமை
+hb_paint_radial_gradient (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
+                          hb_color_வரி_t *color_வரி,
+                          தசம x0, தசம y0,
+                          தசம r0,
+                          தசம x1, தசம y1,
+                          தசம r1);
 
-HB_EXTERN void
-hb_paint_sweep_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                         hb_color_line_t *color_line,
-                         float x0, float y0,
-                         float start_angle, float end_angle);
+HB_EXTERN வெறுமை
+hb_paint_sweep_gradient (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
+                         hb_color_வரி_t *color_வரி,
+                         தசம x0, தசம y0,
+                         தசம start_angle, தசம end_angle);
 
-HB_EXTERN void
-hb_paint_push_group (hb_paint_funcs_t *funcs, void *paint_data);
+HB_EXTERN வெறுமை
+hb_paint_தள்ளு_group (hb_paint_funcs_t *funcs, வெறுமை *paint_data);
 
-HB_EXTERN void
-hb_paint_push_group_for (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN வெறுமை
+hb_paint_தள்ளு_group_for (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
                          hb_paint_composite_mode_t mode);
 
-HB_EXTERN void
-hb_paint_pop_group (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN வெறுமை
+hb_paint_எடு_group (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
                     hb_paint_composite_mode_t mode);
 
 HB_EXTERN hb_bool_t
-hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, void *paint_data,
-                               unsigned int color_index,
+hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, வெறுமை *paint_data,
+                               unsigned முழு color_index,
                                hb_color_t *color);
 
 
@@ -1362,18 +1362,18 @@ hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, void *paint_data,
  * instead of forking one per project.
  */
 
-HB_EXTERN void
-hb_paint_reduce_linear_anchors (float x0, float y0,
-                                float x1, float y1,
-                                float x2, float y2,
-                                float *xx0, float *yy0,
-                                float *xx1, float *yy1);
+HB_EXTERN வெறுமை
+hb_paint_reduce_linear_anchors (தசம x0, தசம y0,
+                                தசம x1, தசம y1,
+                                தசம x2, தசம y2,
+                                தசம *xx0, தசம *yy0,
+                                தசம *xx1, தசம *yy1);
 
-HB_EXTERN void
-hb_paint_normalize_color_line (hb_color_stop_t *stops,
-                               unsigned int     len,
-                               float           *min,
-                               float           *max);
+HB_EXTERN வெறுமை
+hb_paint_normalize_color_வரி (hb_color_stop_t *stops,
+                               unsigned முழு     len,
+                               தசம           *min,
+                               தசம           *max);
 
 /**
  * hb_paint_sweep_gradient_tile_func_t:
@@ -1388,20 +1388,20 @@ hb_paint_normalize_color_line (hb_color_stop_t *stops,
  *
  * Since: 14.2.0
  **/
-typedef void (*hb_paint_sweep_gradient_tile_func_t) (float       a0,
+வகைவரை வெறுமை (*hb_paint_sweep_gradient_tile_func_t) (தசம       a0,
                                                      hb_color_t  c0,
-                                                     float       a1,
+                                                     தசம       a1,
                                                      hb_color_t  c1,
-                                                     void       *user_data);
+                                                     வெறுமை       *user_data);
 
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
-                               unsigned int                         n_stops,
+                               unsigned முழு                         n_stops,
                                hb_paint_extend_t                    extend,
-                               float                                start_angle,
-                               float                                end_angle,
+                               தசம                                start_angle,
+                               தசம                                end_angle,
                                hb_paint_sweep_gradient_tile_func_t  emit_patch,
-                               void                                *user_data);
+                               வெறுமை                                *user_data);
 
 
 HB_END_DECLS

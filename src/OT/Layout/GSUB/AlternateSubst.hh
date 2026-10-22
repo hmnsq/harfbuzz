@@ -1,54 +1,54 @@
 #ifndef OT_LAYOUT_GSUB_ALTERNATESUBST_HH
 #define OT_LAYOUT_GSUB_ALTERNATESUBST_HH
 
-#include "AlternateSubstFormat1.hh"
-#include "Common.hh"
+#அந்தர்பாவ "AlternateSubstFormat1.hh"
+#அந்தர்பாவ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ GSUB_impl {
 
-struct AlternateSubst
+கட்டமைப்பு AlternateSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு { HBUINT16 v; }		format;         /* Format identifier */
   AlternateSubstFormat1_2<SmallTypes>	format1;
 #ifndef HB_NO_BEYOND_64K
   AlternateSubstFormat1_2<MediumTypes>	format2;
 #endif
   } u;
-  public:
+  பொது:
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) மாறிலி
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    எனில் (unlikely (!c->may_dispatch (இது, &u.format.v))) திரும்பு c->no_dispatch_return_மதிப்பு ();
+    TRACE_DISPATCH (இது, u.format.v);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    நிலை 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    இயல்பு:return_trace (c->default_return_மதிப்பு ());
     }
   }
 
   /* TODO This function is unused and should be done using iterators. While
    * at it perhaps using iterator of arrays of hb_codepoint_t instead. */
   template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
+  தருக்க serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> glyphs,
-                  hb_array_t<const unsigned int> alternate_len_list,
+                  hb_array_t<மாறிலி unsigned முழு> alternate_len_list,
                   hb_array_t<GlyphID> alternate_glyphs_list)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (u.format.v))) return_trace (பொய்);
+    unsigned முழு format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs, alternate_len_list, alternate_glyphs_list));
-    default:return_trace (false);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs, alternate_len_list, alternate_glyphs_list));
+    இயல்பு:return_trace (பொய்);
     }
   }
 

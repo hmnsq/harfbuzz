@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+கட்டமைப்பு hb_intp_lazy_loader_t : hb_lazy_loader_t<முழு, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  நிலையான முழு* create () { திரும்பு nullptr; }
+  நிலையான வெறுமை destroy (முழு* l) {}
+  நிலையான முழு* get_null () { திரும்பு nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+கட்டமைப்பு hb_void_lazy_loader_t : hb_lazy_loader_t<வெறுமை, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  நிலையான வெறுமை* create () { திரும்பு nullptr; }
+  நிலையான வெறுமை destroy (வெறுமை* l) {}
+  நிலையான வெறுமை* get_null () { திரும்பு nullptr; }
 };
 
-int
-main (int argc, char **argv)
+முழு
+முதன்மை (முழு argc, எழுத்து **argv)
 {
-  return 0;
+  திரும்பு 0;
 }

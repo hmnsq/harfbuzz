@@ -27,109 +27,109 @@
 #ifndef OT_COLOR_COLR_COLRV1_CLOSURE_HH
 #define OT_COLOR_COLR_COLRV1_CLOSURE_HH
 
-#include "../../../hb-open-type.hh"
-#include "COLR.hh"
+#அந்தர்பாவ "../../../hb-open-type.hh"
+#அந்தர்பாவ "COLR.hh"
 
 /*
  * COLR -- Color
  * https://docs.microsoft.com/en-us/typography/opentype/spec/colr
  */
-namespace OT {
+நாமாகாஶ OT {
 
-HB_INTERNAL void PaintColrLayers::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintColrLayers::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  c->add_layer_indices (firstLayerIndex, numLayers);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  c->add_layer_indices (firstLayerIndex, இலக்கம்_Layers);
+  மாறிலி LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
+  க்கு (unsigned i = firstLayerIndex; i < firstLayerIndex + இலக்கம்_Layers; i++)
   {
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    மாறிலி Paint &paint = paint_offset_lists.get_paint (i);
     paint.dispatch (c);
   }
 }
 
 template <typename Types>
-HB_INTERNAL void PaintGlyph<Types>::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintGlyph<Types>::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
   c->add_glyph (gid);
-  (this+paint).dispatch (c);
+  (இது+paint).dispatch (c);
 }
 
-HB_INTERNAL void PaintColrGlyph::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintColrGlyph::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  const COLR *colr_table = c->get_colr_table ();
-  const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
+  மாறிலி COLR *colr_table = c->get_colr_table ();
+  மாறிலி BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
+  எனில் (!baseglyph_paintrecord) திரும்பு;
   c->add_glyph (gid);
 
-  const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
+  மாறிலி BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
   (&baseglyph_list+baseglyph_paintrecord->paint).dispatch (c);
 }
 
-template <template<typename> class Var>
-HB_INTERNAL void PaintTransform<Var>::closurev1 (hb_colrv1_closure_context_t* c) const
+template <template<typename> வகுப்பு Var>
+HB_INTERNAL வெறுமை PaintTransform<Var>::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  (this+transform).closurev1 (c);
+  (இது+src).dispatch (c);
+  (இது+transform).closurev1 (c);
 }
 
-HB_INTERNAL void PaintTranslate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintTranslate::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScale::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintScale::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScaleAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintScaleAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintScaleUniform::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintScaleUniform::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintScaleUniformAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintScaleUniformAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintRotate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintRotate::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintRotateAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintRotateAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintSkew::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintSkew::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintSkewAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintSkewAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (இது+src).dispatch (c);
+  c->இலக்கம்_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintComposite::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL வெறுமை PaintComposite::closurev1 (hb_colrv1_closure_context_t* c) மாறிலி
 {
-  (this+src).dispatch (c);
-  (this+backdrop).dispatch (c);
+  (இது+src).dispatch (c);
+  (இது+backdrop).dispatch (c);
 }
 
 } /* namespace OT */

@@ -1,59 +1,59 @@
 #ifndef OT_LAYOUT_GSUB_GSUB_HH
 #define OT_LAYOUT_GSUB_GSUB_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
-#include "SubstLookup.hh"
+#அந்தர்பாவ "../../../hb-ot-layout-gsubgpos.hh"
+#அந்தர்பாவ "Common.hh"
+#அந்தர்பாவ "SubstLookup.hh"
 
-namespace OT {
+நாமாகாஶ OT {
 
 using Layout::GSUB_impl::SubstLookup;
 
-namespace Layout {
+நாமாகாஶ Layout {
 
 /*
  * GSUB -- Glyph Substitution
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gsub
  */
 
-struct GSUB : GSUBGPOS
+கட்டமைப்பு GSUB : GSUBGPOS
 {
   using Lookup = SubstLookup;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
 
-  const SubstLookup& get_lookup (unsigned int i) const
-  { return static_cast<const SubstLookup &> (GSUBGPOS::get_lookup (i)); }
+  மாறிலி SubstLookup& get_lookup (unsigned முழு i) மாறிலி
+  { திரும்பு static_cast<மாறிலி SubstLookup &> (GSUBGPOS::get_lookup (i)); }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
     hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<SubstLookup> (&l);
+    திரும்பு GSUBGPOS::subset<SubstLookup> (&l);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (GSUBGPOS::sanitize<SubstLookup> (c));
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_INTERNAL தருக்க is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) மாறிலி;
 
-  void closure_lookups (hb_face_t      *face,
-                        const hb_set_t *glyphs,
-                        hb_set_t       *lookup_indexes /* IN/OUT */) const
+  வெறுமை closure_lookups (hb_face_t      *face,
+                        மாறிலி hb_set_t *glyphs,
+                        hb_set_t       *lookup_indexes /* IN/OUT */) மாறிலி
   { GSUBGPOS::closure_lookups<SubstLookup> (face, glyphs, lookup_indexes); }
 
-  typedef GSUBGPOS::accelerator_t<GSUB> accelerator_t;
+  வகைவரை GSUBGPOS::accelerator_t<GSUB> accelerator_t;
 };
 
 
 }
 
-struct GSUB_accelerator_t : Layout::GSUB::accelerator_t {
+கட்டமைப்பு GSUB_accelerator_t : Layout::GSUB::accelerator_t {
   GSUB_accelerator_t (hb_face_t *face) : Layout::GSUB::accelerator_t (face) {}
-  HB_INTERNAL void depend (hb_depend_data_builder_t *builder, hb_face_t *face) const;
+  HB_INTERNAL வெறுமை depend (hb_depend_data_builder_t *builder, hb_face_t *face) மாறிலி;
 };
 
 

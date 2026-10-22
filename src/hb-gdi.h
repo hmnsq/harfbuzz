@@ -25,9 +25,9 @@
 #ifndef HB_GDI_H
 #define HB_GDI_H
 
-#include "hb.h"
+#அந்தர்பாவ "hb.h"
 
-#include <windows.h>
+#அந்தர்பாவ <windows.h>
 
 HB_BEGIN_DECLS
 

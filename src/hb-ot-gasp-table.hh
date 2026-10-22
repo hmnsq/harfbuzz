@@ -25,10 +25,10 @@
 #ifndef HB_OT_GASP_TABLE_HH
 #define HB_OT_GASP_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-ot-hhea-table.hh"
+#அந்தர்பாவ "hb-ot-os2-table.hh"
+#அந்தர்பாவ "hb-ot-var-hvar-table.hh"
 
 /*
  * gasp -- Grid-fitting and Scan-conversion Procedure
@@ -37,44 +37,44 @@
 #define HB_OT_TAG_gasp HB_TAG('g','a','s','p')
 
 
-namespace OT {
+நாமாகாஶ OT {
 
-struct GaspRange
+கட்டமைப்பு GaspRange
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  public:
+  பொது:
   HBUINT16	rangeMaxPPEM;	/* Upper limit of range, in PPEM */
   HBUINT16	rangeGaspBehavior;
 				/* Flags describing desired rasterizer behavior. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct gasp
+கட்டமைப்பு gasp
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  மாறிலி GaspRange &get_gasp_range (unsigned முழு i) மாறிலி
+  { திரும்பு gaspRanges[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  gaspRanges.sanitize (c));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	version;	/* Version number (set to 1) */
   Array16Of<GaspRange>
 		gaspRanges;	/* Number of records to follow
 				 * Sorted by ppem */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (4, gaspRanges);
 };
 

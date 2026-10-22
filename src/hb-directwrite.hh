@@ -26,12 +26,12 @@
 #ifndef HB_DIRECTWRITE_HH
 #define HB_DIRECTWRITE_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-directwrite.h"
+#அந்தர்பாவ "hb-directwrite.h"
 
-#include "hb-mutex.hh"
-#include "hb-map.hh"
+#அந்தர்பாவ "hb-mutex.hh"
+#அந்தர்பாவ "hb-map.hh"
 
 /*
  * DirectWrite font stream helpers
@@ -41,145 +41,145 @@
 
 
 /* Declare object creator for dynamic support of DWRITE */
-typedef HRESULT (WINAPI *t_DWriteCreateFactory)(
+வகைவரை HRESULT (WINAPI *t_DWriteCreateFactory)(
   DWRITE_FACTORY_TYPE factoryType,
   REFIID              iid,
   IUnknown            **factory
 );
 
 template <typename Type, typename ...Ts>
-static Type *
+நிலையான Type *
 hb_directwrite_object_create (Ts&&... args)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
-  if (unlikely (!obj))
-    return nullptr;
+  Type *obj = (Type *) hb_calloc (1, அளவு (Type));
+  எனில் (unlikely (!obj))
+    திரும்பு nullptr;
 
-  return new (obj) Type (std::forward<Ts> (args)...);
+  திரும்பு புதிய (obj) Type (std::forward<Ts> (args)...);
 }
 
 template <typename Type>
-static void
+நிலையான வெறுமை
 hb_directwrite_object_destroy (Type *obj)
 {
-  if (!obj)
-    return;
+  எனில் (!obj)
+    திரும்பு;
 
   obj->~Type ();
   hb_free (obj);
 }
 
-class DWriteFontFileLoader final : public IDWriteFontFileLoader
+வகுப்பு DWriteFontFileLoader final : பொது IDWriteFontFileLoader
 {
-private:
-  hb_reference_count_t mRefCount;
+தனிப்பட்ட:
+  hb_reference_மொத்தம்_t m_Ref_மொத்தம்;
   hb_mutex_t mutex;
   hb_hashmap_t<uint64_t, IDWriteFontFileStream *> mFontStreams;
-  uint64_t mNextFontFileKey = 0;
-public:
+  uint64_t m_Next_Font_File_சாவி = 0;
+பொது:
   DWriteFontFileLoader ()
   {
-    mRefCount.init ();
+    m_Ref_மொத்தம்.init ();
   }
 
   uint64_t RegisterFontFileStream (IDWriteFontFileStream *fontFileStream)
   {
     fontFileStream->AddRef ();
     hb_lock_t lock {mutex};
-    mFontStreams.set (mNextFontFileKey, fontFileStream);
-    return mNextFontFileKey++;
+    mFontStreams.set (m_Next_Font_File_சாவி, fontFileStream);
+    திரும்பு m_Next_Font_File_சாவி++;
   }
-  void UnregisterFontFileStream (uint64_t fontFileKey)
+  வெறுமை UnregisterFontFileStream (uint64_t font_File_சாவி)
   {
     hb_lock_t lock {mutex};
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (stream)
+    IDWriteFontFileStream *stream = mFontStreams.get (font_File_சாவி);
+    எனில் (stream)
     {
-      mFontStreams.del (fontFileKey);
+      mFontStreams.del (font_File_சாவி);
       stream->Release ();
     }
   }
 
   // IUnknown interface
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
+  IFACEMETHOD (QueryInterface) (IID மாறிலி& iid, OUT வெறுமை** ppObject)
+  { திரும்பு S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    திரும்பு m_Ref_மொத்தம்.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    hb_directwrite_object_destroy (this);
-    return 0;
+    signed ref_மொத்தம் = m_Ref_மொத்தம்.dec () - 1;
+    ப்ரதிஜ்ஞா (ref_மொத்தம் >= 0);
+    எனில் (ref_மொத்தம்)
+      திரும்பு ref_மொத்தம்;
+    hb_directwrite_object_destroy (இது);
+    திரும்பு 0;
   }
 
   // IDWriteFontFileLoader methods
-  virtual HRESULT STDMETHODCALLTYPE
-  CreateStreamFromKey (void const* fontFileReferenceKey,
-		       uint32_t fontFileReferenceKeySize,
+  மெய்நிகர் HRESULT STDMETHODCALLTYPE
+  Create_Stream_From_சாவி (வெறுமை மாறிலி* font_File_Reference_சாவி,
+		       uint32_t font_File_Reference_சாவி_Size,
 		       OUT IDWriteFontFileStream** fontFileStream)
   {
-    if (fontFileReferenceKeySize != sizeof (uint64_t))
-      return E_INVALIDARG;
-    uint64_t fontFileKey = * (uint64_t *) fontFileReferenceKey;
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (!stream)
-      return E_FAIL;
+    எனில் (font_File_Reference_சாவி_Size != அளவு (uint64_t))
+      திரும்பு E_INVALIDARG;
+    uint64_t font_File_சாவி = * (uint64_t *) font_File_Reference_சாவி;
+    IDWriteFontFileStream *stream = mFontStreams.get (font_File_சாவி);
+    எனில் (!stream)
+      திரும்பு E_FAIL;
     stream->AddRef ();
     *fontFileStream = stream;
-    return S_OK;
+    திரும்பு S_OK;
   }
 
   ~DWriteFontFileLoader()
   {
-    for (auto v : mFontStreams.values ())
+    க்கு (auto v : mFontStreams.values ())
       v->Release ();
   }
 };
 
-class DWriteFontFileStream final : public IDWriteFontFileStream
+வகுப்பு DWriteFontFileStream final : பொது IDWriteFontFileStream
 {
-private:
-  hb_reference_count_t mRefCount;
+தனிப்பட்ட:
+  hb_reference_மொத்தம்_t m_Ref_மொத்தம்;
   hb_blob_t *mBlob;
   uint8_t *mData;
   unsigned mSize;
   DWriteFontFileLoader *mLoader;
-public:
-  uint64_t fontFileKey;
-public:
+பொது:
+  uint64_t font_File_சாவி;
+பொது:
   DWriteFontFileStream (hb_blob_t *blob);
 
   // IUnknown interface
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
+  IFACEMETHOD (QueryInterface) (IID மாறிலி& iid, OUT வெறுமை** ppObject)
+  { திரும்பு S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    திரும்பு m_Ref_மொத்தம்.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    hb_directwrite_object_destroy (this);
-    return 0;
+    signed ref_மொத்தம் = m_Ref_மொத்தம்.dec () - 1;
+    ப்ரதிஜ்ஞா (ref_மொத்தம் >= 0);
+    எனில் (ref_மொத்தம்)
+      திரும்பு ref_மொத்தம்;
+    hb_directwrite_object_destroy (இது);
+    திரும்பு 0;
   }
 
   // IDWriteFontFileStream methods
-  virtual HRESULT STDMETHODCALLTYPE
-  ReadFileFragment (void const** fragmentStart,
+  மெய்நிகர் HRESULT STDMETHODCALLTYPE
+  ReadFileFragment (வெறுமை மாறிலி** fragmentStart,
 		    UINT64 fileOffset,
 		    UINT64 fragmentSize,
-		    OUT void** fragmentContext)
+		    OUT வெறுமை** fragmentContext)
   {
     // We are required to do bounds checking.
-    if (fileOffset + fragmentSize > mSize) return E_FAIL;
+    எனில் (fileOffset + fragmentSize > mSize) திரும்பு E_FAIL;
 
     // truncate the 64 bit fileOffset to size_t sized index into mData
     size_t index = static_cast<size_t> (fileOffset);
@@ -187,52 +187,52 @@ public:
     // We should be alive for the duration of this.
     *fragmentStart = &mData[index];
     *fragmentContext = nullptr;
-    return S_OK;
+    திரும்பு S_OK;
   }
 
-  virtual void STDMETHODCALLTYPE
-  ReleaseFileFragment (void* fragmentContext) {}
+  மெய்நிகர் வெறுமை STDMETHODCALLTYPE
+  ReleaseFileFragment (வெறுமை* fragmentContext) {}
 
-  virtual HRESULT STDMETHODCALLTYPE
+  மெய்நிகர் HRESULT STDMETHODCALLTYPE
   GetFileSize (OUT UINT64* fileSize)
   {
     *fileSize = mSize;
-    return S_OK;
+    திரும்பு S_OK;
   }
 
-  virtual HRESULT STDMETHODCALLTYPE
-  GetLastWriteTime (OUT UINT64* lastWriteTime) { return E_NOTIMPL; }
+  மெய்நிகர் HRESULT STDMETHODCALLTYPE
+  GetLastWriteTime (OUT UINT64* lastWriteTime) { திரும்பு E_NOTIMPL; }
 
   ~DWriteFontFileStream();
 };
 
-struct hb_directwrite_global_t
+கட்டமைப்பு hb_directwrite_global_t
 {
   hb_directwrite_global_t ()
   {
     HRESULT hr = DWriteCreateFactory (DWRITE_FACTORY_TYPE_SHARED, __uuidof (IDWriteFactory),
 				      (IUnknown**) &dwriteFactory);
 
-    if (unlikely (hr != S_OK))
-      return;
+    எனில் (unlikely (hr != S_OK))
+      திரும்பு;
 
     fontFileLoader = hb_directwrite_object_create<DWriteFontFileLoader> ();
-    if (unlikely (!fontFileLoader))
-      return;
-    if (unlikely (FAILED (dwriteFactory->RegisterFontFileLoader (fontFileLoader))))
-      return;
+    எனில் (unlikely (!fontFileLoader))
+      திரும்பு;
+    எனில் (unlikely (FAILED (dwriteFactory->RegisterFontFileLoader (fontFileLoader))))
+      திரும்பு;
 
-    success = true;
+    success = உண்மை;
   }
   ~hb_directwrite_global_t ()
   {
-    if (fontFileLoader)
+    எனில் (fontFileLoader)
       fontFileLoader->Release ();
-    if (dwriteFactory)
+    எனில் (dwriteFactory)
       dwriteFactory->Release ();
   }
 
-  bool success = false;
+  தருக்க success = பொய்;
   IDWriteFactory *dwriteFactory = nullptr;
   DWriteFontFileLoader *fontFileLoader = nullptr;
 };

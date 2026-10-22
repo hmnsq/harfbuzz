@@ -15,26 +15,26 @@ Input files:
 * ms-use/IndicPositionalCategory-Additional.txt
 """
 
-import os
-import packTab
+இறக்குமதி os
+இறக்குமதி packTab
 
-import sys
-import logging
+இறக்குமதி sys
+இறக்குமதி logging
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
+எனில் len(sys.argv) > 1 மற்றும் sys.argv[1] == "--rust":
     del sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+இல்லையெனில்:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
-import sys
+இறக்குமதி sys
 
-if len (sys.argv) != 10:
+எனில் len (sys.argv) != 10:
 	sys.exit (__doc__)
 
 DISABLED_SCRIPTS = {
@@ -45,68 +45,68 @@ DISABLED_SCRIPTS = {
 	'Thai',
 }
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') க்கு x உள் sys.argv[1:]]
 
-headers = [[f.readline () for i in range (2)] for j,f in enumerate(files) if j != 4]
-for j in range(7, 9):
-	for line in files[j]:
-		line = line.rstrip()
-		if not line:
-			break
-		headers[j - 1].append(line)
+headers = [[f.readline () க்கு i உள் range (2)] க்கு j,f உள் enumerate(files) எனில் j != 4]
+க்கு j உள் range(7, 9):
+	க்கு வரி உள் files[j]:
+		வரி = வரி.rstrip()
+		எனில் இல்லை வரி:
+			நிறுத்து
+		headers[j - 1].append(வரி)
 headers.append (["UnicodeData.txt does not have a header."])
 
-unicode_data = [{} for _ in files]
-values = [{} for _ in files]
-for i, f in enumerate (files):
-	for line in f:
+unicode_data = [{} க்கு _ உள் files]
+மதிப்புகள் = [{} க்கு _ உள் files]
+க்கு i, f உள் enumerate (files):
+	க்கு வரி உள் f:
 
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
+		j = வரி.find ('#')
+		எனில் j >= 0:
+			வரி = வரி[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () க்கு x உள் வரி.split (';')]
+		எனில் len (fields) == 1:
+			தொடர்
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = முழு (uu[0], 16)
+		எனில் len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		இல்லையெனில்:
+			end = முழு (uu[1], 16)
 
-		t = fields[1 if i not in [2, 4] else 2]
+		t = fields[1 எனில் i இல்லை உள் [2, 4] இல்லையெனில் 2]
 
-		if i == 2:
+		எனில் i == 2:
 			t = 'jt_' + t
-		elif i == 3 and t != 'Default_Ignorable_Code_Point':
-			continue
-		elif i == 7 and t == 'Consonant_Final_Modifier':
+		அல்லதெனில் i == 3 மற்றும் t != 'Default_Ignorable_Code_Point':
+			தொடர்
+		அல்லதெனில் i == 7 மற்றும் t == 'Consonant_Final_Modifier':
 			# TODO: https://github.com/MicrosoftDocs/typography-issues/issues/336
 			t = 'Syllable_Modifier'
-		elif i == 8 and t == 'NA':
+		அல்லதெனில் i == 8 மற்றும் t == 'NA':
 			t = 'Not_Applicable'
 
-		i0 = i if i < 7 else i - 7
-		for u in range (start, end + 1):
+		i0 = i எனில் i < 7 இல்லையெனில் i - 7
+		க்கு u உள் range (start, end + 1):
 			unicode_data[i0][u] = t
-		values[i0][t] = values[i0].get (t, 0) + end - start + 1
+		மதிப்புகள்[i0][t] = மதிப்புகள்[i0].get (t, 0) + end - start + 1
 
 defaults = ('Other', 'Not_Applicable', 'jt_X', '', 'Cn', 'No_Block', 'Unknown')
 
 # Merge data into one dict:
-for i,v in enumerate (defaults):
-	values[i][v] = values[i].get (v, 0) + 1
+க்கு i,v உள் enumerate (defaults):
+	மதிப்புகள்[i][v] = மதிப்புகள்[i].get (v, 0) + 1
 combined = {}
-for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
-		if not u in combined:
-			if i >= 4:
-				continue
+க்கு i,d உள் enumerate (unicode_data):
+	க்கு u,v உள் d.பொருட்கள் ():
+		எனில் இல்லை u உள் combined:
+			எனில் i >= 4:
+				தொடர்
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k: v for k, v in combined.items() if v[6] not in DISABLED_SCRIPTS}
+combined = {k: v க்கு k, v உள் combined.பொருட்கள்() எனில் v[6] இல்லை உள் DISABLED_SCRIPTS}
 
 
 property_names = [
@@ -188,120 +188,120 @@ property_names = [
 	'jt_X',
 ]
 
-class PropertyValue(object):
+வகுப்பு Property_மதிப்பு(object):
 	def __init__(self, name_):
 		self.name = name_
 	def __str__(self):
-		return self.name
+		திரும்பு self.name
 	def __eq__(self, other):
-		return self.name == (other if isinstance(other, str) else other.name)
+		திரும்பு self.name == (other எனில் isinstance(other, str) இல்லையெனில் other.name)
 	def __ne__(self, other):
-		return not (self == other)
+		திரும்பு இல்லை (self == other)
 	def __hash__(self):
-		return hash(str(self))
+		திரும்பு hash(str(self))
 
-property_values = {}
+property_மதிப்புகள் = {}
 
-for name in property_names:
-	value = PropertyValue(name)
-	assert value not in property_values
-	assert value not in globals()
-	property_values[name] = value
-globals().update(property_values)
+க்கு name உள் property_names:
+	மதிப்பு_2 = Property_மதிப்பு(name)
+	ப்ரதிஜ்ஞா மதிப்பு_2 இல்லை உள் property_மதிப்புகள்
+	ப்ரதிஜ்ஞா மதிப்பு_2 இல்லை உள் globals()
+	property_மதிப்புகள்[name] = மதிப்பு_2
+globals().update(property_மதிப்புகள்)
 
 
 def is_BASE(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Number, Consonant, Consonant_Head_Letter,
+	திரும்பு (UISC உள் [எண், Consonant, Consonant_Head_Letter,
 			Tone_Letter,
 			Vowel_Independent,
-			] or
+			] அல்லது
 		# TODO: https://github.com/MicrosoftDocs/typography-issues/issues/484
-		AJT in [jt_C, jt_D, jt_L, jt_R] and UISC != Joiner or
-		(UGC == Lo and UISC in [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
+		AJT உள் [jt_C, jt_D, jt_L, jt_R] மற்றும் UISC != Joiner அல்லது
+		(UGC == Lo மற்றும் UISC உள் [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
 					Consonant_Subjoined, Vowel, Vowel_Dependent]))
-def is_BASE_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Brahmi_Joining_Number
+def is_BASE_இலக்கம்(U, UISC, UDI, UGC, AJT):
+	திரும்பு UISC == Brahmi_Joining_எண்
 def is_BASE_OTHER(U, UISC, UDI, UGC, AJT):
-	if UISC == Consonant_Placeholder: return True
-	return U in [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
+	எனில் UISC == Consonant_Placeholder: திரும்பு உண்மை
+	திரும்பு U உள் [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
 def is_CGJ(U, UISC, UDI, UGC, AJT):
 	# Also includes VARIATION_SELECTOR and ZWJ
-	return UISC == Joiner or UDI and UGC in [Mc, Me, Mn]
+	திரும்பு UISC == Joiner அல்லது UDI மற்றும் UGC உள் [Mc, Me, Mn]
 def is_CONS_FINAL(U, UISC, UDI, UGC, AJT):
-	return ((UISC == Consonant_Final and UGC != Lo) or
+	திரும்பு ((UISC == Consonant_Final மற்றும் UGC != Lo) அல்லது
 		UISC == Consonant_Succeeding_Repha)
 def is_CONS_FINAL_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Syllable_Modifier
+	திரும்பு UISC == Syllable_Modifier
 def is_CONS_MED(U, UISC, UDI, UGC, AJT):
 	# Consonant_Initial_Postfixed is new in Unicode 11; not in the spec.
-	return (UISC == Consonant_Medial and UGC != Lo or
+	திரும்பு (UISC == Consonant_Medial மற்றும் UGC != Lo அல்லது
 		UISC == Consonant_Initial_Postfixed)
 def is_CONS_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC in [Nukta, Gemination_Mark, Consonant_Killer]
+	திரும்பு UISC உள் [Nukta, Gemination_Mark, Consonant_Killer]
 def is_CONS_SUB(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_Subjoined and UGC != Lo
+	திரும்பு UISC == Consonant_Subjoined மற்றும் UGC != Lo
 def is_CONS_WITH_STACKER(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_With_Stacker
+	திரும்பு UISC == Consonant_With_Stacker
 def is_HALANT(U, UISC, UDI, UGC, AJT):
-	return UISC == Virama and not is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
+	திரும்பு UISC == Virama மற்றும் இல்லை is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
 def is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x0DCA
-def is_HALANT_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Number_Joiner
+	திரும்பு U == 0x0DCA
+def is_HALANT_இலக்கம்(U, UISC, UDI, UGC, AJT):
+	திரும்பு UISC == எண்_Joiner
 def is_HIEROGLYPH(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph
+	திரும்பு UISC == Hieroglyph
 def is_HIEROGLYPH_JOINER(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Joiner
+	திரும்பு UISC == Hieroglyph_Joiner
 def is_HIEROGLYPH_MIRROR(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Mirror
+	திரும்பு UISC == Hieroglyph_Mirror
 def is_HIEROGLYPH_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Modifier
+	திரும்பு UISC == Hieroglyph_Modifier
 def is_HIEROGLYPH_SEGMENT_BEGIN(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
+	திரும்பு UISC உள் [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
 def is_HIEROGLYPH_SEGMENT_END(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_End, Hieroglyph_Segment_End]
+	திரும்பு UISC உள் [Hieroglyph_Mark_End, Hieroglyph_Segment_End]
 def is_INVISIBLE_STACKER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return (UISC == Invisible_Stacker
-		and not is_SAKOT(U, UISC, UDI, UGC, AJT)
+	திரும்பு (UISC == Invisible_Stacker
+		மற்றும் இல்லை is_SAKOT(U, UISC, UDI, UGC, AJT)
 	)
 def is_ZWNJ(U, UISC, UDI, UGC, AJT):
-	return UISC == Non_Joiner
+	திரும்பு UISC == Non_Joiner
 def is_OTHER(U, UISC, UDI, UGC, AJT):
 	# Also includes BASE_IND and SYM
-	return ((UGC == Po or UISC in [Consonant_Dead, Joiner, Modifying_Letter, Other])
-		and not is_BASE(U, UISC, UDI, UGC, AJT)
-		and not is_BASE_OTHER(U, UISC, UDI, UGC, AJT)
-		and not is_CGJ(U, UISC, UDI, UGC, AJT)
-		and not is_SYM_MOD(U, UISC, UDI, UGC, AJT)
-		and not is_Word_Joiner(U, UISC, UDI, UGC, AJT)
+	திரும்பு ((UGC == Po அல்லது UISC உள் [Consonant_Dead, Joiner, Modifying_Letter, Other])
+		மற்றும் இல்லை is_BASE(U, UISC, UDI, UGC, AJT)
+		மற்றும் இல்லை is_BASE_OTHER(U, UISC, UDI, UGC, AJT)
+		மற்றும் இல்லை is_CGJ(U, UISC, UDI, UGC, AJT)
+		மற்றும் இல்லை is_SYM_MOD(U, UISC, UDI, UGC, AJT)
+		மற்றும் இல்லை is_Word_Joiner(U, UISC, UDI, UGC, AJT)
 	)
 def is_REORDERING_KILLER(U, UISC, UDI, UGC, AJT):
-	return UISC == Reordering_Killer
+	திரும்பு UISC == Reordering_Killer
 def is_REPHA(U, UISC, UDI, UGC, AJT):
-	return UISC in [Consonant_Preceding_Repha, Consonant_Prefixed]
+	திரும்பு UISC உள் [Consonant_Preceding_Repha, Consonant_Prefixed]
 def is_SAKOT(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x1A60
+	திரும்பு U == 0x1A60
 def is_SYM_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Symbol_Modifier
+	திரும்பு UISC == குறியீடு_Modifier
 def is_VOWEL(U, UISC, UDI, UGC, AJT):
-	return (UISC == Pure_Killer or
-		UGC != Lo and UISC in [Vowel, Vowel_Dependent])
+	திரும்பு (UISC == Pure_Killer அல்லது
+		UGC != Lo மற்றும் UISC உள் [Vowel, Vowel_Dependent])
 def is_VOWEL_MOD(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Tone_Mark, Cantillation_Mark, Register_Shifter, Visarga] or
-		UGC != Lo and UISC == Bindu)
+	திரும்பு (UISC உள் [Tone_Mark, Cantillation_Mark, Register_Shifter, Visarga] அல்லது
+		UGC != Lo மற்றும் UISC == Bindu)
 def is_Word_Joiner(U, UISC, UDI, UGC, AJT):
 	# Also includes Rsv
-	return (UDI and U not in [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
-		and UISC == Other
-		and not is_CGJ(U, UISC, UDI, UGC, AJT)
-	) or UGC == Cn
+	திரும்பு (UDI மற்றும் U இல்லை உள் [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
+		மற்றும் UISC == Other
+		மற்றும் இல்லை is_CGJ(U, UISC, UDI, UGC, AJT)
+	) அல்லது UGC == Cn
 
 use_mapping = {
 	'B':	is_BASE,
-	'N':	is_BASE_NUM,
+	'N':	is_BASE_இலக்கம்,
 	'GB':	is_BASE_OTHER,
 	'CGJ':	is_CGJ,
 	'F':	is_CONS_FINAL,
@@ -312,7 +312,7 @@ use_mapping = {
 	'CS':	is_CONS_WITH_STACKER,
 	'H':	is_HALANT,
 	'HVM':	is_HALANT_OR_VOWEL_MODIFIER,
-	'HN':	is_HALANT_NUM,
+	'HN':	is_HALANT_இலக்கம்,
 	'IS':	is_INVISIBLE_STACKER,
 	'G':	is_HIEROGLYPH,
 	'HM':	is_HIEROGLYPH_MOD,
@@ -333,34 +333,34 @@ use_mapping = {
 
 use_positions = {
 	'F': {
-		'Abv': [Top],
+		'Abv': [உச்சி],
 		'Blw': [Bottom],
-		'Pst': [Right],
+		'Pst': [வலது_2],
 	},
 	'M': {
-		'Abv': [Top],
-		'Blw': [Bottom, Bottom_And_Left, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Bottom_And_Left],
+		'Abv': [உச்சி],
+		'Blw': [Bottom, Bottom_And_இடது, Bottom_And_வலது],
+		'Pst': [வலது_2],
+		'Pre': [இடது, உச்சி_And_Bottom_And_இடது],
 	},
 	'CM': {
-		'Abv': [Top],
+		'Abv': [உச்சி],
 		'Blw': [Bottom, Overstruck],
 	},
 	'V': {
-		'Abv': [Top, Top_And_Bottom, Top_And_Bottom_And_Right, Top_And_Right],
-		'Blw': [Bottom, Overstruck, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Left, Top_And_Left_And_Right, Left_And_Right],
+		'Abv': [உச்சி, உச்சி_And_Bottom, உச்சி_And_Bottom_And_வலது, உச்சி_And_வலது],
+		'Blw': [Bottom, Overstruck, Bottom_And_வலது],
+		'Pst': [வலது_2],
+		'Pre': [இடது, உச்சி_And_இடது, உச்சி_And_இடது_And_வலது, இடது_And_வலது],
 	},
 	'VM': {
-		'Abv': [Top],
+		'Abv': [உச்சி],
 		'Blw': [Bottom, Overstruck],
-		'Pst': [Right],
-		'Pre': [Left],
+		'Pst': [வலது_2],
+		'Pre': [இடது],
 	},
 	'SM': {
-		'Abv': [Top],
+		'Abv': [உச்சி],
 		'Blw': [Bottom],
 	},
 	'H': None,
@@ -370,7 +370,7 @@ use_positions = {
 	'IS': None,
 	'B': None,
 	'FM': {
-		'Abv': [Top],
+		'Abv': [உச்சி],
 		'Blw': [Bottom],
 		'Pst': [Not_Applicable],
 	},
@@ -381,44 +381,44 @@ use_positions = {
 
 def map_to_use(data):
 	out = {}
-	items = use_mapping.items()
-	for U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) in data.items():
+	பொருட்கள் = use_mapping.பொருட்கள்()
+	க்கு U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) உள் data.பொருட்கள்():
 
 		# Resolve Indic_Syllabic_Category
 
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
+		எனில் 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
 
 		# Tibetan:
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x0F18 <= U <= 0x0F19 or 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
+		எனில் 0x0F18 <= U <= 0x0F19 அல்லது 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
 
 		# TODO: U+1CED should only be allowed after some of
 		# the nasalization marks, maybe only for U+1CE9..U+1CF1.
-		if U == 0x1CED: UISC = Tone_Mark
+		எனில் U == 0x1CED: UISC = Tone_Mark
 
-		values = [k for k,v in items if v(U, UISC, UDI, UGC, AJT)]
-		assert len(values) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, values)
-		USE = values[0]
+		மதிப்புகள் = [k க்கு k,v உள் பொருட்கள் எனில் v(U, UISC, UDI, UGC, AJT)]
+		ப்ரதிஜ்ஞா len(மதிப்புகள்) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, மதிப்புகள்)
+		USE = மதிப்புகள்[0]
 
 		# Resolve Indic_Positional_Category
 
 		# TODO: https://github.com/harfbuzz/harfbuzz/pull/1037
 		#  and https://github.com/harfbuzz/harfbuzz/issues/1631
-		if U in [0x11302, 0x11303, 0x114C1]: UIPC = Top
+		எனில் U உள் [0x11302, 0x11303, 0x114C1]: UIPC = உச்சி
 
-		assert (UIPC in [Not_Applicable, Visual_Order_Left] or
-			U == 0x0F7F or
-			USE in use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
+		ப்ரதிஜ்ஞா (UIPC உள் [Not_Applicable, Visual_Order_இடது] அல்லது
+			U == 0x0F7F அல்லது
+			USE உள் use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
 
 		pos_mapping = use_positions.get(USE, None)
-		if pos_mapping:
-			values = [k for k,v in pos_mapping.items() if v and UIPC in v]
-			assert len(values) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, values)
-			USE = USE + values[0]
+		எனில் pos_mapping:
+			மதிப்புகள் = [k க்கு k,v உள் pos_mapping.பொருட்கள்() எனில் v மற்றும் UIPC உள் v]
+			ப்ரதிஜ்ஞா len(மதிப்புகள்) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, மதிப்புகள்)
+			USE = USE + மதிப்புகள்[0]
 
 		out[U] = (USE, UBlock)
-	return out
+	திரும்பு out
 
 use_data = map_to_use(combined)
 
@@ -430,12 +430,12 @@ print (" *   {} IndicSyllabicCategory.txt IndicPositionalCategory.txt ArabicShap
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+க்கு h உள் headers:
+	க்கு l உள் h:
 		print (" * %s" % (l.strip()))
 print (" */")
 print ()
-if language.name == "c":
+எனில் language.name == "c":
     print ("#ifndef HB_OT_SHAPER_USE_TABLE_HH")
     print ("#define HB_OT_SHAPER_USE_TABLE_HH")
     print ()
@@ -446,38 +446,38 @@ if language.name == "c":
 
     print ('#pragma GCC diagnostic push')
     print ('#pragma GCC diagnostic ignored "-Wunused-macros"')
-    for k,v in sorted(use_mapping.items()):
-        if k in use_positions and use_positions[k]: continue
+    க்கு k,v உள் sorted(use_mapping.பொருட்கள்()):
+        எனில் k உள் use_positions மற்றும் use_positions[k]: தொடர்
         print ("#define %s	USE(%s)	/* %s */" % (k, k, v.__name__[3:]))
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
+    க்கு k,v உள் sorted(use_positions.பொருட்கள்()):
+        எனில் இல்லை v: தொடர்
+        க்கு suf உள் v.சாவிகள்():
             tag = k + suf
             print ("#define %s	USE(%s)" % (tag, tag))
     print ('#pragma GCC diagnostic pop')
     print ("")
 
-elif language.name == "rust":
+அல்லதெனில் language.name == "rust":
     print()
     print("#![allow(unused_parens)]")
     print("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
     print()
     print("use super::ot_shaper_use::category::*;")
     print()
-else:
-    assert False, "Unknown language: %s" % language.name
+இல்லையெனில்:
+    ப்ரதிஜ்ஞா பொய், "Unknown language: %s" % language.name
 
-uu = sorted (use_data.keys ())
+uu = sorted (use_data.சாவிகள் ())
 
-data = {u:v[0] for u,v in use_data.items()}
+data = {u:v[0] க்கு u,v உள் use_data.பொருட்கள்()}
 
-if language.name == "c":
-    private = True
-elif language.name == "rust":
-    private = False
+எனில் language.name == "c":
+    தனிப்பட்ட = உண்மை
+அல்லதெனில் language.name == "rust":
+    தனிப்பட்ட = பொய்
     language.public_function_linkage = "pub(crate)"
-else:
-    assert False, "Unknown language: %s" % language.name
+இல்லையெனில்:
+    ப்ரதிஜ்ஞா பொய், "Unknown language: %s" % language.name
 
 
 DEFAULT = "DEFAULT"
@@ -489,46 +489,46 @@ compression_level = {
 }
 
 modes = {}
-if language.name == "c":
+எனில் language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#else"
     modes[None] = "#endif"
-else:
+இல்லையெனில்:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
+க்கு step, text உள் modes.பொருட்கள்():
     print()
-    if text:
+    எனில் text:
         print(text)
         print()
-    if step is None:
-        continue
+    எனில் step is None:
+        தொடர்
 
     compression = compression_level[step]
     logging.info("  Compression=%d:" % compression)
 
     code = packTab.Code('hb_use')
-    sol = packTab.pack_table(data, compression=compression, default='O')
+    sol = packTab.pack_table(data, compression=compression, இயல்பு='O')
     logging.info('      FullCost=%d' % (sol.fullCost))
-    sol.genCode(code, f'get_category', language=language, private=private)
-    code.print_code(language=language, private=private)
+    sol.genCode(code, f'get_category', language=language, தனிப்பட்ட=தனிப்பட்ட)
+    code.print_code(language=language, தனிப்பட்ட=தனிப்பட்ட)
     print ()
 
-if language.name == "c":
+எனில் language.name == "c":
     print ()
-    for k in sorted(use_mapping.keys()):
-        if k in use_positions and use_positions[k]: continue
+    க்கு k உள் sorted(use_mapping.சாவிகள்()):
+        எனில் k உள் use_positions மற்றும் use_positions[k]: தொடர்
         print ("#undef %s" % k)
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
+    க்கு k,v உள் sorted(use_positions.பொருட்கள்()):
+        எனில் இல்லை v: தொடர்
+        க்கு suf உள் v.சாவிகள்():
             tag = k + suf
             print ("#undef %s" % tag)
     print ()
     print ()
     print ("#endif /* HB_OT_SHAPER_USE_TABLE_HH */")
-elif language.name == "rust":
+அல்லதெனில் language.name == "rust":
     pass
-else:
-    assert False, "Unknown language: %s" % language.name
+இல்லையெனில்:
+    ப்ரதிஜ்ஞா பொய், "Unknown language: %s" % language.name
 print ("/* == End of generated table == */")

@@ -32,10 +32,10 @@
 #ifndef HB_OBJECT_HH
 #define HB_OBJECT_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-mutex.hh"
-#include "hb-vector.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-atomic.hh"
+#அந்தர்பாவ "hb-mutex.hh"
+#அந்தர்பாவ "hb-vector.hh"
 
 
 /*
@@ -43,93 +43,93 @@
  */
 
 template <typename item_t, typename lock_t>
-struct hb_lockable_set_t
+கட்டமைப்பு hb_lockable_set_t
 {
-  hb_vector_t<item_t> items;
+  hb_vector_t<item_t> பொருட்கள்;
 
-  void init () { items.init (); }
+  வெறுமை init () { பொருட்கள்.init (); }
 
   template <typename T>
-  item_t *replace_or_insert (T v, lock_t &l, bool replace)
+  item_t *replace_or_செருகு (T v, lock_t &l, தருக்க replace)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
+    item_t *item = பொருட்கள்.lsearch (v);
+    எனில் (item) {
+      எனில் (replace) {
 	item_t old = *item;
 	*item = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
+      இல்லையெனில் {
 	item = nullptr;
 	l.unlock ();
       }
-    } else {
-      item = items.push (v);
+    } இல்லையெனில் {
+      item = பொருட்கள்.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    திரும்பு பொருட்கள்.in_error () ? nullptr : item;
   }
 
   template <typename T>
-  void remove (T v, lock_t &l)
+  வெறுமை remove (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    item_t *item = பொருட்கள்.lsearch (v);
+    எனில் (item)
     {
       item_t old = *item;
-      *item = std::move (items.tail ());
-      items.pop ();
+      *item = std::move (பொருட்கள்.tail ());
+      பொருட்கள்.எடு ();
       l.unlock ();
       old.fini ();
-    } else {
+    } இல்லையெனில் {
       l.unlock ();
     }
   }
 
   template <typename T>
-  bool find (T v, item_t *i, lock_t &l)
+  தருக்க find (T v, item_t *i, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    item_t *item = பொருட்கள்.lsearch (v);
+    எனில் (item)
       *i = *item;
     l.unlock ();
-    return !!item;
+    திரும்பு !!item;
   }
 
   template <typename T>
-  item_t *find_or_insert (T v, lock_t &l)
+  item_t *find_or_செருகு (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.find (v);
-    if (!item) {
-      item = items.push (v);
+    item_t *item = பொருட்கள்.find (v);
+    எனில் (!item) {
+      item = பொருட்கள்.push (v);
     }
     l.unlock ();
-    return item;
+    திரும்பு item;
   }
 
-  void fini (lock_t &l)
+  வெறுமை fini (lock_t &l)
   {
-    if (!items.length)
+    எனில் (!பொருட்கள்.length)
     {
       /* No need to lock. */
-      items.fini ();
-      return;
+      பொருட்கள்.fini ();
+      திரும்பு;
     }
     l.lock ();
-    while (items.length)
+    போது (பொருட்கள்.length)
     {
-      item_t old = items.tail ();
-      items.pop ();
+      item_t old = பொருட்கள்.tail ();
+      பொருட்கள்.எடு ();
       l.unlock ();
       old.fini ();
       l.lock ();
     }
-    items.fini ();
+    பொருட்கள்.fini ();
     l.unlock ();
   }
 
@@ -140,68 +140,68 @@ struct hb_lockable_set_t
  * Reference-count.
  */
 
-struct hb_reference_count_t
+கட்டமைப்பு hb_reference_மொத்தம்_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  mutable hb_atomic_t<முழு> ref_மொத்தம்_2;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
-  void fini () { ref_count = -0x0000DEAD; }
+  வெறுமை init (முழு v = 1) { ref_மொத்தம்_2 = v; }
+  முழு get_relaxed () மாறிலி { திரும்பு ref_மொத்தம்_2; }
+  முழு inc () மாறிலி { திரும்பு ref_மொத்தம்_2.inc (); }
+  முழு dec () மாறிலி { திரும்பு ref_மொத்தம்_2.dec (); }
+  வெறுமை fini () { ref_மொத்தம்_2 = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  தருக்க is_inert () மாறிலி { திரும்பு !ref_மொத்தம்_2; }
+  தருக்க is_valid () மாறிலி { திரும்பு ref_மொத்தம்_2 > 0; }
 };
 
 
 /* user_data */
 
-struct hb_user_data_array_t
+கட்டமைப்பு hb_user_data_array_t
 {
-  struct hb_user_data_item_t {
-    hb_user_data_key_t *key;
-    void *data;
+  கட்டமைப்பு hb_user_data_item_t {
+    hb_user_data_சாவி_t *key;
+    வெறுமை *data;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    தருக்க operator == (மாறிலி hb_user_data_சாவி_t *other_சாவி) மாறிலி { திரும்பு key == other_சாவி; }
+    தருக்க operator == (மாறிலி hb_user_data_item_t &other) மாறிலி { திரும்பு key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    வெறுமை fini () { எனில் (destroy) destroy (data); }
   };
 
   hb_mutex_t lock;
-  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> items;
+  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> பொருட்கள்;
 
-  void init () { lock.init (); items.init (); }
+  வெறுமை init () { lock.init (); பொருட்கள்.init (); }
 
-  void fini () { items.fini (lock); lock.fini (); }
+  வெறுமை fini () { பொருட்கள்.fini (lock); lock.fini (); }
 
-  bool set (hb_user_data_key_t *key,
-	    void *              data,
+  தருக்க set (hb_user_data_சாவி_t *key,
+	    வெறுமை *              data,
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    எனில் (!key)
+      திரும்பு பொய்;
 
-    if (replace) {
-      if (!data && !destroy) {
-	items.remove (key, lock);
-	return true;
+    எனில் (replace) {
+      எனில் (!data && !destroy) {
+	பொருட்கள்.remove (key, lock);
+	திரும்பு உண்மை;
       }
     }
     hb_user_data_item_t item = {key, data, destroy};
-    bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
+    தருக்க ret = !!பொருட்கள்.replace_or_செருகு (item, lock, (தருக்க) replace);
 
-    return ret;
+    திரும்பு ret;
   }
 
-  void *get (hb_user_data_key_t *key)
+  வெறுமை *get (hb_user_data_சாவி_t *key)
   {
     hb_user_data_item_t item = {nullptr, nullptr, nullptr};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    திரும்பு பொருட்கள்.find (key, &item, lock) ? item.data : nullptr;
   }
 };
 
@@ -210,13 +210,13 @@ struct hb_user_data_array_t
  * Object header
  */
 
-struct hb_object_header_t
+கட்டமைப்பு hb_object_header_t
 {
-  hb_reference_count_t ref_count;
-  mutable hb_atomic_t<bool> writable = false;
+  hb_reference_மொத்தம்_t ref_மொத்தம்_2;
+  mutable hb_atomic_t<தருக்க> writable = பொய்;
   hb_atomic_t<hb_user_data_array_t *> user_data;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  தருக்க is_inert () மாறிலி { திரும்பு !ref_மொத்தம்_2.get_relaxed (); }
 };
 #define HB_OBJECT_HEADER_STATIC {}
 
@@ -226,99 +226,99 @@ struct hb_object_header_t
  */
 
 template <typename Type>
-static inline void hb_object_trace (const Type *obj, const char *function)
+நிலையான உள்வரி வெறுமை hb_object_trace (மாறிலி Type *obj, மாறிலி எழுத்து *function)
 {
-  DEBUG_MSG (OBJECT, (void *) obj,
+  DEBUG_செய்தி (OBJECT, (வெறுமை *) obj,
 	     "%s refcount=%d",
 	     function,
-	     obj ? obj->header.ref_count.get_relaxed () : 0);
+	     obj ? obj->header.ref_மொத்தம்_2.get_relaxed () : 0);
 }
 
 template <typename Type, typename ...Ts>
-static inline Type *hb_object_create (Ts... ds)
+நிலையான உள்வரி Type *hb_object_create (Ts... ds)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
+  Type *obj = (Type *) hb_calloc (1, அளவு (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  எனில் (unlikely (!obj))
+    திரும்பு obj;
 
-  new (obj) Type (std::forward<Ts> (ds)...);
+  புதிய (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  திரும்பு obj;
 }
 template <typename Type>
-static inline void hb_object_init (Type *obj)
+நிலையான உள்வரி வெறுமை hb_object_init (Type *obj)
 {
-  obj->header.ref_count.init ();
-  obj->header.writable = true;
+  obj->header.ref_மொத்தம்_2.init ();
+  obj->header.writable = உண்மை;
   obj->header.user_data.init ();
 }
 template <typename Type>
-static inline bool hb_object_is_valid (const Type *obj)
+நிலையான உள்வரி தருக்க hb_object_is_valid (மாறிலி Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  திரும்பு likely (obj->header.ref_மொத்தம்_2.is_valid ());
 }
 template <typename Type>
-static inline bool hb_object_is_immutable (const Type *obj)
+நிலையான உள்வரி தருக்க hb_object_is_immutable (மாறிலி Type *obj)
 {
-  return !obj->header.writable;
+  திரும்பு !obj->header.writable;
 }
 template <typename Type>
-static inline void hb_object_make_immutable (const Type *obj)
+நிலையான உள்வரி வெறுமை hb_object_make_immutable (மாறிலி Type *obj)
 {
-  obj->header.writable = false;
+  obj->header.writable = பொய்;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj);
+நிலையான உள்வரி வெறுமை hb_object_fini (Type *obj);
 template <typename Type>
-static inline Type *hb_object_reference (Type *obj)
+நிலையான உள்வரி Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
-  assert (hb_object_is_valid (obj));
-  obj->header.ref_count.inc ();
-  return obj;
+  எனில் (unlikely (!obj || obj->header.is_inert ()))
+    திரும்பு obj;
+  ப்ரதிஜ்ஞா (hb_object_is_valid (obj));
+  obj->header.ref_மொத்தம்_2.inc ();
+  திரும்பு obj;
 }
 template <typename Type>
-static inline bool hb_object_should_destroy (Type *obj)
+நிலையான உள்வரி தருக்க hb_object_should_destroy (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  எனில் (unlikely (!obj || obj->header.is_inert ()))
+    திரும்பு பொய்;
+  ப்ரதிஜ்ஞா (hb_object_is_valid (obj));
+  எனில் (obj->header.ref_மொத்தம்_2.dec () != 1)
+    திரும்பு பொய்;
+  திரும்பு உண்மை;
 }
 
 template <typename Type>
-static inline void hb_object_actually_destroy (Type *obj)
+நிலையான உள்வரி வெறுமை hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  எனில் (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
 template <typename Type>
-static inline bool hb_object_destroy (Type *obj)
+நிலையான உள்வரி தருக்க hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  எனில் (!hb_object_should_destroy (obj))
+    திரும்பு பொய்;
 
   hb_object_actually_destroy (obj);
-  return true;
+  திரும்பு உண்மை;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj)
+நிலையான உள்வரி வெறுமை hb_object_fini (Type *obj)
 {
-  obj->header.ref_count.fini (); /* Do this before user_data */
+  obj->header.ref_மொத்தம்_2.fini (); /* Do this before user_data */
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  எனில் (user_data)
   {
     user_data->fini ();
     hb_free (user_data);
@@ -326,46 +326,46 @@ static inline void hb_object_fini (Type *obj)
   }
 }
 template <typename Type>
-static inline bool hb_object_set_user_data (Type               *obj,
-					    hb_user_data_key_t *key,
-					    void *              data,
+நிலையான உள்வரி தருக்க hb_object_set_user_data (Type               *obj,
+					    hb_user_data_சாவி_t *key,
+					    வெறுமை *              data,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
+  எனில் (unlikely (!obj || obj->header.is_inert ()))
+    திரும்பு பொய்;
+  ப்ரதிஜ்ஞா (hb_object_is_valid (obj));
 
 retry:
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  எனில் (unlikely (!user_data))
   {
-    user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
+    user_data = (hb_user_data_array_t *) hb_calloc (1, அளவு (hb_user_data_array_t));
+    எனில் (unlikely (!user_data))
+      திரும்பு பொய்;
     user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    எனில் (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
     {
       user_data->fini ();
       hb_free (user_data);
-      goto retry;
+      செல் retry;
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  திரும்பு user_data->set (key, data, destroy, replace);
 }
 
 template <typename Type>
-static inline void *hb_object_get_user_data (Type               *obj,
-					     hb_user_data_key_t *key)
+நிலையான உள்வரி வெறுமை *hb_object_get_user_data (Type               *obj,
+					     hb_user_data_சாவி_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
-  assert (hb_object_is_valid (obj));
+  எனில் (unlikely (!obj || obj->header.is_inert ()))
+    திரும்பு nullptr;
+  ப்ரதிஜ்ஞா (hb_object_is_valid (obj));
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  எனில் (!user_data)
+    திரும்பு nullptr;
+  திரும்பு user_data->get (key);
 }
 
 

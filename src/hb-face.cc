@@ -26,22 +26,22 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-face.hh"
-#include "hb-blob.hh"
-#include "hb-open-file.hh"
-#include "hb-ot-face.hh"
-#include "hb-ot-cmap-table.hh"
+#அந்தர்பாவ "hb-face.hh"
+#அந்தர்பாவ "hb-blob.hh"
+#அந்தர்பாவ "hb-open-file.hh"
+#அந்தர்பாவ "hb-ot-face.hh"
+#அந்தர்பாவ "hb-ot-cmap-table.hh"
 
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#அந்தர்பாவ "hb-ft.h"
 #endif
 #ifdef HAVE_CORETEXT
-#include "hb-coretext.h"
+#அந்தர்பாவ "hb-coretext.h"
 #endif
 #ifdef HAVE_DIRECTWRITE
-#include "hb-directwrite.h"
+#அந்தர்பாவ "hb-directwrite.h"
 #endif
 
 
@@ -76,19 +76,19 @@
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_face_count (hb_blob_t *blob)
+unsigned முழு
+hb_face_மொத்தம் (hb_blob_t *blob)
 {
-  if (unlikely (!blob))
-    return 0;
+  எனில் (unlikely (!blob))
+    திரும்பு 0;
 
   hb_sanitize_context_t c (blob);
 
   auto *ot = blob->as<OT::OpenTypeFontFile> ();
-  if (unlikely (!ot->sanitize (&c)))
-    return 0;
+  எனில் (unlikely (!ot->sanitize (&c)))
+    திரும்பு 0;
 
-  return ot->get_face_count ();
+  திரும்பு ot->get_face_மொத்தம் ();
 }
 
 /*
@@ -128,52 +128,52 @@ DEFINE_NULL_INSTANCE (hb_face_t) =
  **/
 hb_face_t *
 hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
-			   void                      *user_data,
+			   வெறுமை                      *user_data,
 			   hb_destroy_func_t          destroy)
 {
   hb_face_t *face;
 
-  if (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
-    if (destroy)
+  எனில் (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
+    எனில் (destroy)
       destroy (user_data);
-    return hb_face_get_empty ();
+    திரும்பு hb_face_get_empty ();
   }
 
   face->reference_table_func = reference_table_func;
   face->user_data = user_data;
   face->destroy = destroy;
 
-  face->num_glyphs = -1;
+  face->இலக்கம்_glyphs = -1;
 
   face->data.init0 (face);
   face->table.init0 (face);
 
-  return face;
+  திரும்பு face;
 }
 
 
-typedef struct hb_face_for_data_closure_t {
+வகைவரை கட்டமைப்பு hb_face_for_data_closure_t {
   hb_blob_t *blob;
   uint16_t  index;
 } hb_face_for_data_closure_t;
 
-static hb_face_for_data_closure_t *
-_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned int index)
+நிலையான hb_face_for_data_closure_t *
+_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned முழு index)
 {
   hb_face_for_data_closure_t *closure;
 
-  closure = (hb_face_for_data_closure_t *) hb_calloc (1, sizeof (hb_face_for_data_closure_t));
-  if (unlikely (!closure))
-    return nullptr;
+  closure = (hb_face_for_data_closure_t *) hb_calloc (1, அளவு (hb_face_for_data_closure_t));
+  எனில் (unlikely (!closure))
+    திரும்பு nullptr;
 
   closure->blob = blob;
   closure->index = (uint16_t) (index & 0xFFFFu);
 
-  return closure;
+  திரும்பு closure;
 }
 
-static void
-_hb_face_for_data_closure_destroy (void *data)
+நிலையான வெறுமை
+_hb_face_for_data_closure_destroy (வெறுமை *data)
 {
   hb_face_for_data_closure_t *closure = (hb_face_for_data_closure_t *) data;
 
@@ -181,38 +181,38 @@ _hb_face_for_data_closure_destroy (void *data)
   hb_free (closure);
 }
 
-static hb_blob_t *
-_hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+நிலையான hb_blob_t *
+_hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, வெறுமை *user_data)
 {
   hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
 
-  if (tag == HB_TAG_NONE)
-    return hb_blob_reference (data->blob);
+  எனில் (tag == HB_TAG_NONE)
+    திரும்பு hb_blob_reference (data->blob);
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  unsigned int base_offset;
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
+  மாறிலி OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
+  unsigned முழு base_offset;
+  மாறிலி OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
 
-  const OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
+  மாறிலி OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
 
   hb_blob_t *blob = hb_blob_create_sub_blob (data->blob, base_offset + table.offset, table.length);
 
-  return blob;
+  திரும்பு blob;
 }
 
-static unsigned
-_hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
-				  unsigned int start_offset,
-				  unsigned int *table_count,
+நிலையான unsigned
+_hb_face_for_data_get_table_tags (மாறிலி hb_face_t *face HB_UNUSED,
+				  unsigned முழு start_offset,
+				  unsigned முழு *table_மொத்தம்_2,
 				  hb_tag_t *table_tags,
-				  void *user_data)
+				  வெறுமை *user_data)
 {
   hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
+  மாறிலி OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
+  மாறிலி OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
 
-  return ot_face.get_table_tags (start_offset, table_count, table_tags);
+  திரும்பு ot_face.get_table_tags (start_offset, table_மொத்தம்_2, table_tags);
 }
 
 
@@ -242,21 +242,21 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
  **/
 hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index)
+		unsigned முழு  index)
 {
   hb_face_t *face;
 
-  if (unlikely (!blob))
+  எனில் (unlikely (!blob))
     blob = hb_blob_get_empty ();
 
   blob = hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (hb_blob_reference (blob));
 
   hb_face_for_data_closure_t *closure = _hb_face_for_data_closure_create (blob, index);
 
-  if (unlikely (!closure))
+  எனில் (unlikely (!closure))
   {
     hb_blob_destroy (blob);
-    return hb_face_get_empty ();
+    திரும்பு hb_face_get_empty ();
   }
 
   face = hb_face_create_for_tables (_hb_face_for_data_reference_table,
@@ -269,7 +269,7 @@ hb_face_create (hb_blob_t    *blob,
 
   face->index = index;
 
-  return face;
+  திரும்பு face;
 }
 
 /**
@@ -287,17 +287,17 @@ hb_face_create (hb_blob_t    *blob,
  **/
 hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index)
+			unsigned முழு  index)
 {
-  unsigned num_faces = hb_face_count (blob);
-  if (index >= num_faces)
-    return nullptr;
+  unsigned இலக்கம்_faces = hb_face_மொத்தம் (blob);
+  எனில் (index >= இலக்கம்_faces)
+    திரும்பு nullptr;
 
   hb_face_t *face = hb_face_create (blob, index);
-  if (hb_object_is_immutable (face))
-    return nullptr;
+  எனில் (hb_object_is_immutable (face))
+    திரும்பு nullptr;
 
-  return face;
+  திரும்பு face;
 }
 
 #ifndef HB_NO_OPEN
@@ -315,29 +315,29 @@ hb_face_create_or_fail (hb_blob_t    *blob,
  * Since: 10.1.0
  **/
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index)
+hb_face_create_from_file_or_fail (மாறிலி எழுத்து   *file_name,
+				  unsigned முழு  index)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  எனில் (unlikely (!blob))
+    திரும்பு nullptr;
 
   hb_face_t *face = hb_face_create_or_fail (blob, index);
   hb_blob_destroy (blob);
 
-  return face;
+  திரும்பு face;
 }
 
-static const struct supported_face_loaders_t {
-	char name[16];
-	hb_face_t * (*from_file) (const char *font_file, unsigned face_index);
+நிலையான மாறிலி கட்டமைப்பு supported_face_loaders_t {
+	எழுத்து name[16];
+	hb_face_t * (*from_file) (மாறிலி எழுத்து *font_file, unsigned face_index);
 	hb_face_t * (*from_blob) (hb_blob_t *blob, unsigned face_index);
 } supported_face_loaders[] =
 {
   {"ot",
 #ifndef HB_NO_OPEN
    hb_face_create_from_file_or_fail,
-#else
+#இல்லையெனில்
    nullptr,
 #endif
    hb_face_create_or_fail
@@ -362,19 +362,19 @@ static const struct supported_face_loaders_t {
 #endif
 };
 
-static const char *get_default_loader_name ()
+நிலையான மாறிலி எழுத்து *get_default_loader_name ()
 {
-  static hb_atomic_t<const char *> static_loader_name;
-  const char *loader_name = static_loader_name.get_acquire ();
-  if (!loader_name)
+  நிலையான hb_atomic_t<மாறிலி எழுத்து *> static_loader_name;
+  மாறிலி எழுத்து *loader_name = static_loader_name.get_acquire ();
+  எனில் (!loader_name)
   {
     loader_name = getenv ("HB_FACE_LOADER");
-    if (!loader_name)
+    எனில் (!loader_name)
       loader_name = "";
-    if (!static_loader_name.cmpexch (nullptr, loader_name))
+    எனில் (!static_loader_name.cmpexch (nullptr, loader_name))
       loader_name = static_loader_name.get_acquire ();
   }
-  return loader_name;
+  திரும்பு loader_name;
 }
 
 /**
@@ -397,34 +397,34 @@ static const char *get_default_loader_name ()
  * Since: 11.0.0
  **/
 hb_face_t *
-hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
-					const char   *loader_name)
+hb_face_create_from_file_or_fail_using (மாறிலி எழுத்து   *file_name,
+					unsigned முழு  index,
+					மாறிலி எழுத்து   *loader_name)
 {
   // Duplicated in hb_face_create_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  தருக்க retry = பொய்;
+  எனில் (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = உண்மை;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  எனில் (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  க்கு (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_file (file_name, index);
+    எனில் (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
+      திரும்பு supported_face_loaders[i].from_file (file_name, index);
   }
 
-  if (retry)
+  எனில் (retry)
   {
-    retry = false;
+    retry = பொய்;
     loader_name = nullptr;
-    goto retry;
+    செல் retry;
   }
 
-  return nullptr;
+  திரும்பு nullptr;
 }
 
 /**
@@ -448,65 +448,65 @@ retry:
  **/
 hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
-			      const char   *loader_name)
+			      unsigned முழு  index,
+			      மாறிலி எழுத்து   *loader_name)
 {
   // Duplicated in hb_face_create_from_file_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  தருக்க retry = பொய்;
+  எனில் (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = உண்மை;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  எனில் (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  க்கு (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_blob (blob, index);
+    எனில் (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
+      திரும்பு supported_face_loaders[i].from_blob (blob, index);
   }
 
-  if (retry)
+  எனில் (retry)
   {
-    retry = false;
+    retry = பொய்;
     loader_name = nullptr;
-    goto retry;
+    செல் retry;
   }
 
-  return nullptr;
+  திரும்பு nullptr;
 }
 
-static inline void free_static_face_loader_list ();
+நிலையான உள்வரி வெறுமை free_static_face_loader_list ();
 
-static const char * const nil_face_loader_list[] = {nullptr};
+நிலையான மாறிலி எழுத்து * மாறிலி nil_face_loader_list[] = {nullptr};
 
-static struct hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+நிலையான கட்டமைப்பு hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<மாறிலி எழுத்து *,
 								  hb_face_loader_list_lazy_loader_t>
 {
-  static const char ** create ()
+  நிலையான மாறிலி எழுத்து ** create ()
   {
-    const char **face_loader_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), sizeof (const char *));
-    if (unlikely (!face_loader_list))
-      return nullptr;
+    மாறிலி எழுத்து **face_loader_list = (மாறிலி எழுத்து **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), அளவு (மாறிலி எழுத்து *));
+    எனில் (unlikely (!face_loader_list))
+      திரும்பு nullptr;
 
     unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+    க்கு (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
       face_loader_list[i] = supported_face_loaders[i].name;
     face_loader_list[i] = nullptr;
 
     hb_atexit (free_static_face_loader_list);
 
-    return face_loader_list;
+    திரும்பு face_loader_list;
   }
-  static void destroy (const char **l)
+  நிலையான வெறுமை destroy (மாறிலி எழுத்து **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_face_loader_list; }
+  நிலையான மாறிலி எழுத்து * மாறிலி * get_null ()
+  { திரும்பு nil_face_loader_list; }
 } static_face_loader_list;
 
-static inline
-void free_static_face_loader_list ()
+நிலையான உள்வரி
+வெறுமை free_static_face_loader_list ()
 {
   static_face_loader_list.free_instance ();
 }
@@ -523,10 +523,10 @@ void free_static_face_loader_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+மாறிலி எழுத்து **
 hb_face_list_loaders ()
 {
-  return static_face_loader_list.get_unconst ();
+  திரும்பு static_face_loader_list.get_unconst ();
 }
 #endif
 
@@ -543,7 +543,7 @@ hb_face_list_loaders ()
 hb_face_t *
 hb_face_get_empty ()
 {
-  return const_cast<hb_face_t *> (&Null (hb_face_t));
+  திரும்பு const_cast<hb_face_t *> (&Null (hb_face_t));
 }
 
 
@@ -560,7 +560,7 @@ hb_face_get_empty ()
 hb_face_t *
 hb_face_reference (hb_face_t *face)
 {
-  return hb_object_reference (face);
+  திரும்பு hb_object_reference (face);
 }
 
 /**
@@ -573,15 +573,15 @@ hb_face_reference (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_face_destroy (hb_face_t *face)
 {
-  if (!hb_object_destroy (face)) return;
+  எனில் (!hb_object_destroy (face)) திரும்பு;
 
 #ifndef HB_NO_SHAPER
-  for (hb_face_t::plan_node_t *node = face->shape_plans; node; )
+  க்கு (hb_face_t::plan_முனை_t *node = face->shape_plans; node; )
   {
-    hb_face_t::plan_node_t *next = node->next;
+    hb_face_t::plan_முனை_t *next = node->next;
     hb_shape_plan_destroy (node->shape_plan);
     hb_free (node);
     node = next;
@@ -591,10 +591,10 @@ hb_face_destroy (hb_face_t *face)
   face->data.fini ();
   face->table.fini ();
 
-  if (face->get_table_tags_destroy)
+  எனில் (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
-  if (face->destroy)
+  எனில் (face->destroy)
     face->destroy (face->user_data);
 
   hb_free (face);
@@ -616,12 +616,12 @@ hb_face_destroy (hb_face_t *face)
  **/
 hb_bool_t
 hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
-		       void *              data,
+		       hb_user_data_சாவி_t *key,
+		       வெறுமை *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (face, key, data, destroy, replace);
+  திரும்பு hb_object_set_user_data (face, key, data, destroy, replace);
 }
 
 /**
@@ -636,11 +636,11 @@ hb_face_set_user_data (hb_face_t          *face,
  *
  * Since: 0.9.2
  **/
-void *
-hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key)
+வெறுமை *
+hb_face_get_user_data (மாறிலி hb_face_t    *face,
+		       hb_user_data_சாவி_t *key)
 {
-  return hb_object_get_user_data (face, key);
+  திரும்பு hb_object_get_user_data (face, key);
 }
 
 /**
@@ -651,11 +651,11 @@ hb_face_get_user_data (const hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_face_make_immutable (hb_face_t *face)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  எனில் (hb_object_is_immutable (face))
+    திரும்பு;
 
   hb_object_make_immutable (face);
 }
@@ -673,7 +673,7 @@ hb_face_make_immutable (hb_face_t *face)
 hb_bool_t
 hb_face_is_immutable (hb_face_t *face)
 {
-  return hb_object_is_immutable (face);
+  திரும்பு hb_object_is_immutable (face);
 }
 
 
@@ -691,13 +691,13 @@ hb_face_is_immutable (hb_face_t *face)
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_face_reference_table (const hb_face_t *face,
+hb_face_reference_table (மாறிலி hb_face_t *face,
 			 hb_tag_t tag)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return hb_blob_get_empty ();
+  எனில் (unlikely (tag == HB_TAG_NONE))
+    திரும்பு hb_blob_get_empty ();
 
-  return face->reference_table (tag);
+  திரும்பு face->reference_table (tag);
 }
 
 /**
@@ -718,27 +718,27 @@ hb_face_reference_blob (hb_face_t *face)
 {
   hb_blob_t *blob = face->reference_table (HB_TAG_NONE);
 
-  if (blob == hb_blob_get_empty ())
+  எனில் (blob == hb_blob_get_empty ())
   {
     // If referencing the face blob is not possible (e.g. not implemented by the
     // font functions), use face builder to create a blob out of individual
     // table blobs.
-    unsigned total_count = hb_face_get_table_tags (face, 0, nullptr, nullptr);
-    if (total_count)
+    unsigned total_மொத்தம் = hb_face_get_table_tags (face, 0, nullptr, nullptr);
+    எனில் (total_மொத்தம்)
     {
       hb_tag_t tags[64];
-      unsigned count = ARRAY_LENGTH (tags);
+      unsigned மொத்தம் = ARRAY_LENGTH (tags);
       hb_face_t* builder = hb_face_builder_create ();
 
-      for (unsigned offset = 0; offset < total_count; offset += count)
+      க்கு (unsigned offset = 0; offset < total_மொத்தம்; offset += மொத்தம்)
       {
-        hb_face_get_table_tags (face, offset, &count, tags);
-	if (unlikely (!count))
-	  break; // Allocation error
-        for (unsigned i = 0; i < count; i++)
+        hb_face_get_table_tags (face, offset, &மொத்தம், tags);
+	எனில் (unlikely (!மொத்தம்))
+	  நிறுத்து; // Allocation error
+        க்கு (unsigned i = 0; i < மொத்தம்; i++)
         {
-	  if (unlikely (!tags[i]))
-	    continue;
+	  எனில் (unlikely (!tags[i]))
+	    தொடர்;
 	  hb_blob_t *table = hb_face_reference_table (face, tags[i]);
 	  hb_face_builder_add_table (builder, tags[i], table);
 	  hb_blob_destroy (table);
@@ -750,7 +750,7 @@ hb_face_reference_blob (hb_face_t *face)
     }
   }
 
-  return blob;
+  திரும்பு blob;
 }
 
 /**
@@ -766,12 +766,12 @@ hb_face_reference_blob (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index)
+		   unsigned முழு  index)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  எனில் (hb_object_is_immutable (face))
+    திரும்பு;
 
   face->index = index;
 }
@@ -788,10 +788,10 @@ hb_face_set_index (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_index (const hb_face_t *face)
+unsigned முழு
+hb_face_get_index (மாறிலி hb_face_t *face)
 {
-  return face->index;
+  திரும்பு face->index;
 }
 
 /**
@@ -805,12 +805,12 @@ hb_face_get_index (const hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem)
+		  unsigned முழு  upem)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  எனில் (hb_object_is_immutable (face))
+    திரும்பு;
 
   face->upem = upem;
 }
@@ -828,10 +828,10 @@ hb_face_set_upem (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_upem (const hb_face_t *face)
+unsigned முழு
+hb_face_get_upem (மாறிலி hb_face_t *face)
 {
-  return face->get_upem ();
+  திரும்பு face->get_upem ();
 }
 
 /**
@@ -845,14 +845,14 @@ hb_face_get_upem (const hb_face_t *face)
  *
  * Since: 0.9.7
  **/
-void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count)
+வெறுமை
+hb_face_set_glyph_மொத்தம் (hb_face_t    *face,
+			 unsigned முழு  glyph_மொத்தம்)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  எனில் (hb_object_is_immutable (face))
+    திரும்பு;
 
-  face->num_glyphs = glyph_count;
+  face->இலக்கம்_glyphs = glyph_மொத்தம்;
 }
 
 /**
@@ -865,10 +865,10 @@ hb_face_set_glyph_count (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_face_get_glyph_count (const hb_face_t *face)
+unsigned முழு
+hb_face_get_glyph_மொத்தம் (மாறிலி hb_face_t *face)
 {
-  return face->get_num_glyphs ();
+  திரும்பு face->get_இலக்கம்_glyphs ();
 }
 
 /**
@@ -882,20 +882,20 @@ hb_face_get_glyph_count (const hb_face_t *face)
  *
  * Since: 10.0.0
  */
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_face_set_get_table_tags_func (hb_face_t *face,
 				 hb_get_table_tags_func_t func,
-				 void                    *user_data,
+				 வெறுமை                    *user_data,
 				 hb_destroy_func_t        destroy)
 {
-  if (hb_object_is_immutable (face))
+  எனில் (hb_object_is_immutable (face))
   {
-    if (destroy)
+    எனில் (destroy)
       destroy (user_data);
-    return;
+    திரும்பு;
   }
 
-  if (face->get_table_tags_destroy)
+  எனில் (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
   face->get_table_tags_func = func;
@@ -918,20 +918,20 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
  *
  * Since: 1.6.0
  **/
-unsigned int
-hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+unsigned முழு
+hb_face_get_table_tags (மாறிலி hb_face_t *face,
+			unsigned முழு  start_offset,
+			unsigned முழு *table_மொத்தம்_2, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */)
 {
-  if (!face->get_table_tags_func)
+  எனில் (!face->get_table_tags_func)
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    எனில் (table_மொத்தம்_2)
+      *table_மொத்தம்_2 = 0;
+    திரும்பு 0;
   }
 
-  return face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
+  திரும்பு face->get_table_tags_func (face, start_offset, table_மொத்தம்_2, table_tags, face->get_table_tags_user_data);
 }
 
 
@@ -951,11 +951,11 @@ hb_face_get_table_tags (const hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+வெறுமை
 hb_face_collect_unicodes (hb_face_t *face,
 			  hb_set_t  *out)
 {
-  face->table.cmap->collect_unicodes (out, face->get_num_glyphs ());
+  face->table.cmap->collect_unicodes (out, face->get_இலக்கம்_glyphs ());
 }
 /**
  * hb_face_collect_nominal_glyph_mapping:
@@ -968,15 +968,15 @@ hb_face_collect_unicodes (hb_face_t *face,
  *
  * Since: 7.0.0
  */
-void
+வெறுமை
 hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
 				       hb_set_t  *unicodes)
 {
-  hb_set_t stack_unicodes;
-  if (!unicodes)
-    unicodes = &stack_unicodes;
-  face->table.cmap->collect_mapping (unicodes, mapping, face->get_num_glyphs ());
+  hb_set_t அடுக்கு_unicodes;
+  எனில் (!unicodes)
+    unicodes = &அடுக்கு_unicodes;
+  face->table.cmap->collect_mapping (unicodes, mapping, face->get_இலக்கம்_glyphs ());
 }
 /**
  * hb_face_collect_variation_selectors:
@@ -988,7 +988,7 @@ hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+வெறுமை
 hb_face_collect_variation_selectors (hb_face_t *face,
 				     hb_set_t  *out)
 {
@@ -1005,7 +1005,7 @@ hb_face_collect_variation_selectors (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+வெறுமை
 hb_face_collect_variation_unicodes (hb_face_t *face,
 				    hb_codepoint_t variation_selector,
 				    hb_set_t  *out)

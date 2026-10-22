@@ -2,16 +2,16 @@
 #define OT_GLYF_SIMPLEGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#அந்தர்பாவ "../../hb-open-type.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+நாமாகாஶ OT {
+நாமாகாஶ glyf_impl {
 
 
-struct SimpleGlyph
+கட்டமைப்பு SimpleGlyph
 {
-  enum simple_glyph_flag_t
+  எண்ணிக்கை simple_glyph_flag_t
   {
     FLAG_ON_CURVE       = 0x01,
     FLAG_X_SHORT        = 0x02,
@@ -23,226 +23,226 @@ struct SimpleGlyph
     FLAG_CUBIC          = 0x80
   };
 
-  const GlyphHeader &header;
+  மாறிலி GlyphHeader &header;
   hb_bytes_t bytes;
-  SimpleGlyph (const GlyphHeader &header_, hb_bytes_t bytes_) :
+  SimpleGlyph (மாறிலி GlyphHeader &header_, hb_bytes_t bytes_) :
     header (header_), bytes (bytes_) {}
 
-  unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  unsigned முழு instruction_len_offset () மாறிலி
+  { திரும்பு GlyphHeader::static_size + 2 * header.எண்_Of_Contours; }
 
-  unsigned int length (unsigned int instruction_len) const
-  { return instruction_len_offset () + 2 + instruction_len; }
+  unsigned முழு length (unsigned முழு instruction_len) மாறிலி
+  { திரும்பு instruction_len_offset () + 2 + instruction_len; }
 
-  bool has_instructions_length () const
+  தருக்க has_instructions_length () மாறிலி
   {
-    return instruction_len_offset () + 2 <= bytes.length;
+    திரும்பு instruction_len_offset () + 2 <= bytes.length;
   }
 
-  unsigned int instructions_length () const
+  unsigned முழு instructions_length () மாறிலி
   {
-    unsigned int instruction_length_offset = instruction_len_offset ();
-    if (unlikely (instruction_length_offset + 2 > bytes.length)) return 0;
+    unsigned முழு instruction_length_offset = instruction_len_offset ();
+    எனில் (unlikely (instruction_length_offset + 2 > bytes.length)) திரும்பு 0;
 
-    const HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
+    மாறிலி HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
     /* Out of bounds of the current glyph */
-    if (unlikely (length (instructionLength) > bytes.length)) return 0;
-    return instructionLength;
+    எனில் (unlikely (length (instructionLength) > bytes.length)) திரும்பு 0;
+    திரும்பு instructionLength;
   }
 
-  const hb_bytes_t trim_padding () const
+  மாறிலி hb_bytes_t trim_padding () மாறிலி
   {
     /* based on FontTools _g_l_y_f.py::trim */
-    const uint8_t *glyph = (uint8_t*) bytes.arrayZ;
-    const uint8_t *glyph_end = glyph + bytes.length;
+    மாறிலி uint8_t *glyph = (uint8_t*) bytes.arrayZ;
+    மாறிலி uint8_t *glyph_end = glyph + bytes.length;
     /* simple glyph w/contours, possibly trimmable */
     glyph += instruction_len_offset ();
 
-    if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    எனில் (unlikely (glyph + 2 >= glyph_end)) திரும்பு hb_bytes_t ();
+    unsigned முழு இலக்கம்_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
+    unsigned முழு இலக்கம்_instructions = StructAtOffset<HBUINT16> (glyph, 0);
 
-    glyph += 2 + num_instructions;
+    glyph += 2 + இலக்கம்_instructions;
 
-    unsigned int coord_bytes = 0;
-    unsigned int coords_with_flags = 0;
-    while (glyph < glyph_end)
+    unsigned முழு coord_bytes = 0;
+    unsigned முழு coords_with_flags = 0;
+    போது (glyph < glyph_end)
     {
       uint8_t flag = *glyph;
       glyph++;
 
-      unsigned int repeat = 1;
-      if (flag & FLAG_REPEAT)
+      unsigned முழு repeat = 1;
+      எனில் (flag & FLAG_REPEAT)
       {
-	if (unlikely (glyph >= glyph_end)) return hb_bytes_t ();
+	எனில் (unlikely (glyph >= glyph_end)) திரும்பு hb_bytes_t ();
 	repeat = *glyph + 1;
 	glyph++;
       }
 
-      unsigned int xBytes, yBytes;
+      unsigned முழு xBytes, yBytes;
       xBytes = yBytes = 0;
-      if (flag & FLAG_X_SHORT) xBytes = 1;
-      else if ((flag & FLAG_X_SAME) == 0) xBytes = 2;
+      எனில் (flag & FLAG_X_SHORT) xBytes = 1;
+      இல்லையெனில் எனில் ((flag & FLAG_X_SAME) == 0) xBytes = 2;
 
-      if (flag & FLAG_Y_SHORT) yBytes = 1;
-      else if ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
+      எனில் (flag & FLAG_Y_SHORT) yBytes = 1;
+      இல்லையெனில் எனில் ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
 
       coord_bytes += (xBytes + yBytes) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      எனில் (coords_with_flags >= இலக்கம்_coordinates) நிறுத்து;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
-    return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
+    எனில் (unlikely (coords_with_flags != இலக்கம்_coordinates)) திரும்பு hb_bytes_t ();
+    திரும்பு bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
   }
 
   /* zero instruction length */
-  void drop_hints ()
+  வெறுமை drop_hints ()
   {
-    if (!has_instructions_length ()) return;
+    எனில் (!has_instructions_length ()) திரும்பு;
     GlyphHeader &glyph_header = const_cast<GlyphHeader &> (header);
     (HBUINT16 &) StructAtOffset<HBUINT16> (&glyph_header, instruction_len_offset ()) = 0;
   }
 
-  void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
+  வெறுமை drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) மாறிலி
   {
-    unsigned int instructions_len = instructions_length ();
-    unsigned int glyph_length = length (instructions_len);
+    unsigned முழு instructions_len = instructions_length ();
+    unsigned முழு glyph_length = length (instructions_len);
     dest_start = bytes.sub_array (0, glyph_length - instructions_len);
     dest_end = bytes.sub_array (glyph_length, bytes.length - glyph_length);
   }
 
-  void set_overlaps_flag ()
+  வெறுமை set_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    எனில் (unlikely (!header.எண்_Of_Contours)) திரும்பு;
 
     unsigned flags_offset = length (instructions_length ());
-    if (unlikely (flags_offset + 1 > bytes.length)) return;
+    எனில் (unlikely (flags_offset + 1 > bytes.length)) திரும்பு;
 
     HBUINT8 &first_flag = (HBUINT8 &) StructAtOffset<HBUINT16> (&bytes, flags_offset);
     first_flag = (uint8_t) first_flag | FLAG_OVERLAP_SIMPLE;
   }
 
-  static bool read_flags (const HBUINT8 *&p /* IN/OUT */,
+  நிலையான தருக்க read_flags (மாறிலி HBUINT8 *&p /* IN/OUT */,
 			  hb_array_t<contour_point_t> points_ /* IN/OUT */,
-			  const HBUINT8 *end,
-			  bool extended)
+			  மாறிலி HBUINT8 *end,
+			  தருக்க extended)
   {
     auto *points = points_.arrayZ;
-    unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    unsigned மொத்தம் = points_.length;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்;)
     {
-      if (unlikely (p + 1 > end)) return false;
+      எனில் (unlikely (p + 1 > end)) திரும்பு பொய்;
       uint8_t flag = *p++;
-      if (!extended)
+      எனில் (!extended)
 	flag &= ~FLAG_CUBIC;
       points[i++].flag = flag;
-      if (flag & FLAG_REPEAT)
+      எனில் (flag & FLAG_REPEAT)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
-	unsigned stop = hb_min (i + repeat_count, count);
-	for (; i < stop; i++)
+	எனில் (unlikely (p + 1 > end)) திரும்பு பொய்;
+	unsigned முழு repeat_மொத்தம் = *p++;
+	unsigned stop = hb_min (i + repeat_மொத்தம், மொத்தம்);
+	க்கு (; i < stop; i++)
 	  points[i].flag = flag;
       }
     }
-    return true;
+    திரும்பு உண்மை;
   }
 
-  static bool read_points (const HBUINT8 *&p /* IN/OUT */,
+  நிலையான தருக்க read_points (மாறிலி HBUINT8 *&p /* IN/OUT */,
 			   hb_array_t<contour_point_t> points_ /* IN/OUT */,
-			   const HBUINT8 *end,
-			   float contour_point_t::*m,
-			   const simple_glyph_flag_t short_flag,
-			   const simple_glyph_flag_t same_flag)
+			   மாறிலி HBUINT8 *end,
+			   தசம contour_point_t::*m,
+			   மாறிலி simple_glyph_flag_t short_flag,
+			   மாறிலி simple_glyph_flag_t same_flag)
   {
-    int v = 0;
+    முழு v = 0;
 
-    for (auto &point : points_)
+    க்கு (auto &point : points_)
     {
       unsigned flag = point.flag;
-      if (flag & short_flag)
+      எனில் (flag & short_flag)
       {
-	if (unlikely (p + 1 > end)) return false;
-	v += (bool(flag & same_flag) * 2 - 1) * *p++;
+	எனில் (unlikely (p + 1 > end)) திரும்பு பொய்;
+	v += (தருக்க(flag & same_flag) * 2 - 1) * *p++;
       }
-      else
+      இல்லையெனில்
       {
-	if (!(flag & same_flag))
+	எனில் (!(flag & same_flag))
 	{
-	  if (unlikely (p + HBINT16::static_size > end)) return false;
-	  v += *(const HBINT16 *) p;
+	  எனில் (unlikely (p + HBINT16::static_size > end)) திரும்பு பொய்;
+	  v += *(மாறிலி HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
       }
       point.*m = v;
     }
-    return true;
+    திரும்பு உண்மை;
   }
 
-  bool get_contour_points (contour_point_vector_t &points /* OUT */,
-			   bool extended,
-			   bool phantom_only = false,
-			   int64_t *budget = nullptr) const
+  தருக்க get_contour_points (contour_point_vector_t &points /* OUT */,
+			   தருக்க extended,
+			   தருக்க phantom_only = பொய்,
+			   int64_t *budget = nullptr) மாறிலி
   {
-    const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
-    assert (num_contours > 0);
+    மாறிலி HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
+    முழு இலக்கம்_contours = header.எண்_Of_Contours;
+    ப்ரதிஜ்ஞா (இலக்கம்_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    எனில் (unlikely (!bytes.check_range (&endPtsOfContours[இலக்கம்_contours]))) திரும்பு பொய்;
+    unsigned முழு இலக்கம்_points = endPtsOfContours[இலக்கம்_contours - 1] + 1;
+    எனில் (unlikely (இலக்கம்_points < (unsigned) இலக்கம்_contours)) திரும்பு பொய்;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    எனில் (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, இலக்கம்_points))) திரும்பு பொய்;
 
     unsigned old_length = points.length;
-    points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
+    points.alloc (points.length + இலக்கம்_points + 4); // Allocate for phantom points, to avoid a possible copy
+    எனில் (unlikely (!points.resize_dirty (points.length + இலக்கம்_points))) திரும்பு பொய்;
     auto points_ = points.as_array ().sub_array (old_length);
-    if (!phantom_only)
-      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
-    if (phantom_only) return true;
+    எனில் (!phantom_only)
+      hb_memset (points_.arrayZ, 0, அளவு (contour_point_t) * இலக்கம்_points);
+    எனில் (phantom_only) திரும்பு உண்மை;
 
-    for (int i = 0; i < num_contours; i++)
-      points_[endPtsOfContours[i]].is_end_point = true;
+    க்கு (முழு i = 0; i < இலக்கம்_contours; i++)
+      points_[endPtsOfContours[i]].is_end_point = உண்மை;
 
     /* Skip instructions */
-    const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
-						 endPtsOfContours[num_contours]);
+    மாறிலி HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[இலக்கம்_contours + 1],
+						 endPtsOfContours[இலக்கம்_contours]);
 
-    if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
-    const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
-    if (unlikely (p >= end)) return false;
+    எனில் (unlikely ((மாறிலி எழுத்து *) p < bytes.arrayZ)) திரும்பு பொய்; /* Unlikely overflow */
+    மாறிலி HBUINT8 *end = (மாறிலி HBUINT8 *) (bytes.arrayZ + bytes.length);
+    எனில் (unlikely (p >= end)) திரும்பு பொய்;
 
     /* Read x & y coordinates */
-    return read_flags (p, points_, end, extended)
+    திரும்பு read_flags (p, points_, end, extended)
         && read_points (p, points_, end, &contour_point_t::x,
 			FLAG_X_SHORT, FLAG_X_SAME)
 	&& read_points (p, points_, end, &contour_point_t::y,
 			FLAG_Y_SHORT, FLAG_Y_SAME);
   }
 
-  static void encode_coord (int value,
+  நிலையான வெறுமை encode_coord (முழு value,
                             unsigned &flag,
-                            const simple_glyph_flag_t short_flag,
-                            const simple_glyph_flag_t same_flag,
+                            மாறிலி simple_glyph_flag_t short_flag,
+                            மாறிலி simple_glyph_flag_t same_flag,
                             hb_vector_t<uint8_t> &coords /* OUT */)
   {
-    if (value == 0)
+    எனில் (value == 0)
     {
       flag |= same_flag;
     }
-    else if (value >= -255 && value <= 255)
+    இல்லையெனில் எனில் (value >= -255 && value <= 255)
     {
       flag |= short_flag;
-      if (value > 0) flag |= same_flag;
-      else value = -value;
+      எனில் (value > 0) flag |= same_flag;
+      இல்லையெனில் value = -value;
 
       coords.arrayZ[coords.length++] = (uint8_t) value;
     }
-    else
+    இல்லையெனில்
     {
       int16_t val = value;
       coords.arrayZ[coords.length++] = val >> 8;
@@ -250,59 +250,59 @@ struct SimpleGlyph
     }
   }
 
-  static void encode_flag (unsigned flag,
+  நிலையான வெறுமை encode_flag (unsigned flag,
                            unsigned &repeat,
                            unsigned lastflag,
                            hb_vector_t<uint8_t> &flags /* OUT */)
   {
-    if (flag == lastflag && repeat != 255)
+    எனில் (flag == lastflag && repeat != 255)
     {
       repeat++;
-      if (repeat == 1)
+      எனில் (repeat == 1)
       {
         /* We know there's room. */
         flags.arrayZ[flags.length++] = flag;
       }
-      else
+      இல்லையெனில்
       {
         unsigned len = flags.length;
         flags.arrayZ[len-2] = flag | FLAG_REPEAT;
         flags.arrayZ[len-1] = repeat;
       }
     }
-    else
+    இல்லையெனில்
     {
       repeat = 0;
       flags.arrayZ[flags.length++] = flag;
     }
   }
 
-  bool compile_bytes_with_deltas (const contour_point_vector_t &all_points,
-                                  bool no_hinting,
+  தருக்க compile_bytes_with_deltas (மாறிலி contour_point_vector_t &all_points,
+                                  தருக்க no_hinting,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    எனில் (header.எண்_Of_Contours == 0 || all_points.length <= 4)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      திரும்பு உண்மை;
     }
-    unsigned num_points = all_points.length - 4;
+    unsigned இலக்கம்_points = all_points.length - 4;
 
     hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    எனில் (unlikely (!flags.alloc_exact (இலக்கம்_points))) திரும்பு பொய்;
+    எனில் (unlikely (!x_coords.alloc_exact (2*இலக்கம்_points))) திரும்பு பொய்;
+    எனில் (unlikely (!y_coords.alloc_exact (2*இலக்கம்_points))) திரும்பு பொய்;
 
     unsigned lastflag = 255, repeat = 0;
-    int prev_x = 0, prev_y = 0;
+    முழு prev_x = 0, prev_y = 0;
 
-    for (unsigned i = 0; i < num_points; i++)
+    க்கு (unsigned i = 0; i < இலக்கம்_points; i++)
     {
       unsigned flag = all_points.arrayZ[i].flag;
       flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
 
-      int cur_x = roundf (all_points.arrayZ[i].x);
-      int cur_y = roundf (all_points.arrayZ[i].y);
+      முழு cur_x = roundf (all_points.arrayZ[i].x);
+      முழு cur_y = roundf (all_points.arrayZ[i].y);
       encode_coord (cur_x - prev_x, flag, FLAG_X_SHORT, FLAG_X_SAME, x_coords);
       encode_coord (cur_y - prev_y, flag, FLAG_Y_SHORT, FLAG_Y_SAME, y_coords);
       encode_flag (flag, repeat, lastflag, flags);
@@ -312,24 +312,24 @@ struct SimpleGlyph
       lastflag = flag;
     }
 
-    unsigned len_before_instrs = 2 * header.numberOfContours + 2;
+    unsigned len_before_instrs = 2 * header.எண்_Of_Contours + 2;
     unsigned len_instrs = instructions_length ();
     unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
 
-    if (!no_hinting)
+    எனில் (!no_hinting)
       total_len += len_instrs;
 
-    char *p = (char *) hb_malloc (total_len);
-    if (unlikely (!p)) return false;
+    எழுத்து *p = (எழுத்து *) hb_malloc (total_len);
+    எனில் (unlikely (!p)) திரும்பு பொய்;
 
-    const char *src = bytes.arrayZ + GlyphHeader::static_size;
-    char *cur = p;
+    மாறிலி எழுத்து *src = bytes.arrayZ + GlyphHeader::static_size;
+    எழுத்து *cur = p;
     hb_memcpy (p, src, len_before_instrs);
 
     cur += len_before_instrs;
     src += len_before_instrs;
 
-    if (!no_hinting)
+    எனில் (!no_hinting)
     {
       hb_memcpy (cur, src, len_instrs);
       cur += len_instrs;
@@ -344,7 +344,7 @@ struct SimpleGlyph
     hb_memcpy (cur, y_coords.arrayZ, y_coords.length);
 
     dest_bytes = hb_bytes_t (p, total_len);
-    return true;
+    திரும்பு உண்மை;
   }
 };
 

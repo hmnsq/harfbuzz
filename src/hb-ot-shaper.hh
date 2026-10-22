@@ -27,11 +27,11 @@
 #ifndef HB_OT_SHAPER_HH
 #define HB_OT_SHAPER_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-ot-layout.hh"
-#include "hb-ot-shape.hh"
-#include "hb-ot-shape-normalize.hh"
+#அந்தர்பாவ "hb-ot-layout.hh"
+#அந்தர்பாவ "hb-ot-shape.hh"
+#அந்தர்பாவ "hb-ot-shape-normalize.hh"
 
 
 /* buffer var allocations, used by all OT shapers */
@@ -41,7 +41,7 @@
 
 #define HB_OT_SHAPE_MAX_COMBINING_MARKS 32
 
-enum hb_ot_shape_zero_width_marks_type_t {
+எண்ணிக்கை hb_ot_shape_zero_width_marks_type_t {
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE
@@ -51,7 +51,7 @@ enum hb_ot_shape_zero_width_marks_type_t {
 /* Master OT shaper list */
 #define HB_OT_SHAPERS_IMPLEMENT_SHAPERS \
   HB_OT_SHAPER_IMPLEMENT (arabic) \
-  HB_OT_SHAPER_IMPLEMENT (default) \
+  HB_OT_SHAPER_IMPLEMENT (இயல்பு) \
   HB_OT_SHAPER_IMPLEMENT (dumber) \
   HB_OT_SHAPER_IMPLEMENT (hangul) \
   HB_OT_SHAPER_IMPLEMENT (hebrew) \
@@ -64,14 +64,14 @@ enum hb_ot_shape_zero_width_marks_type_t {
   /* ^--- Add new shapers here; keep sorted. */
 
 
-struct hb_ot_shaper_t
+கட்டமைப்பு hb_ot_shaper_t
 {
   /* collect_features()
    * Called during shape_plan().
    * Shapers should use plan->map to add their features and callbacks.
    * May be NULL.
    */
-  void (*collect_features) (hb_ot_shape_planner_t *plan);
+  வெறுமை (*collect_features) (hb_ot_shape_planner_t *plan);
 
   /* override_features()
    * Called during shape_plan().
@@ -79,7 +79,7 @@ struct hb_ot_shaper_t
    * common features are added.
    * May be NULL.
    */
-  void (*override_features) (hb_ot_shape_planner_t *plan);
+  வெறுமை (*override_features) (hb_ot_shape_planner_t *plan);
 
 
   /* data_create()
@@ -87,7 +87,7 @@ struct hb_ot_shaper_t
    * Whatever shapers return will be accessible through plan->data later.
    * If nullptr is returned, means a plan failure.
    */
-  void *(*data_create) (const hb_ot_shape_plan_t *plan);
+  வெறுமை *(*data_create) (மாறிலி hb_ot_shape_plan_t *plan);
 
   /* data_destroy()
    * Called when the shape_plan is being destroyed.
@@ -95,7 +95,7 @@ struct hb_ot_shaper_t
    * If nullptr is returned, means a plan failure.
    * May be NULL.
    */
-  void (*data_destroy) (void *data);
+  வெறுமை (*data_destroy) (வெறுமை *data);
 
 
   /* preprocess_text()
@@ -103,7 +103,7 @@ struct hb_ot_shaper_t
    * Shapers can use to modify text before shaping starts.
    * May be NULL.
    */
-  void (*preprocess_text) (const hb_ot_shape_plan_t *plan,
+  வெறுமை (*preprocess_text) (மாறிலி hb_ot_shape_plan_t *plan,
 			   hb_buffer_t              *buffer,
 			   hb_font_t                *font);
 
@@ -112,7 +112,7 @@ struct hb_ot_shaper_t
    * Shapers can use to modify glyphs after shaping ends.
    * May be NULL.
    */
-  void (*postprocess_glyphs) (const hb_ot_shape_plan_t *plan,
+  வெறுமை (*postprocess_glyphs) (மாறிலி hb_ot_shape_plan_t *plan,
 			      hb_buffer_t              *buffer,
 			      hb_font_t                *font);
 
@@ -121,7 +121,7 @@ struct hb_ot_shaper_t
    * Called during shape()'s normalization.
    * May be NULL.
    */
-  bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  தருக்க (*decompose) (மாறிலி hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b);
@@ -130,7 +130,7 @@ struct hb_ot_shaper_t
    * Called during shape()'s normalization.
    * May be NULL.
    */
-  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+  தருக்க (*compose) (மாறிலி hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab);
@@ -141,7 +141,7 @@ struct hb_ot_shaper_t
    * Shapers may NOT modify characters.
    * May be NULL.
    */
-  void (*setup_masks) (const hb_ot_shape_plan_t *plan,
+  வெறுமை (*setup_masks) (மாறிலி hb_ot_shape_plan_t *plan,
 		       hb_buffer_t              *buffer,
 		       hb_font_t                *font);
 
@@ -150,10 +150,10 @@ struct hb_ot_shaper_t
    * Shapers can use to modify ordering of combining marks.
    * May be NULL.
    */
-  void (*reorder_marks) (const hb_ot_shape_plan_t *plan,
+  வெறுமை (*reorder_marks) (மாறிலி hb_ot_shape_plan_t *plan,
 			 hb_buffer_t              *buffer,
-			 unsigned int              start,
-			 unsigned int              end);
+			 unsigned முழு              start,
+			 unsigned முழு              end);
 
   /* gpos_tag()
    * If not HB_TAG_NONE, then must match found GPOS script tag for
@@ -165,89 +165,89 @@ struct hb_ot_shaper_t
 
   hb_ot_shape_zero_width_marks_type_t zero_width_marks;
 
-  bool fallback_position;
+  தருக்க fallback_position;
 };
 
-#define HB_OT_SHAPER_IMPLEMENT(name) extern HB_INTERNAL const hb_ot_shaper_t _hb_ot_shaper_##name;
+#define HB_OT_SHAPER_IMPLEMENT(name) வெளி HB_INTERNAL மாறிலி hb_ot_shaper_t _hb_ot_shaper_##name;
 HB_OT_SHAPERS_IMPLEMENT_SHAPERS
 #undef HB_OT_SHAPER_IMPLEMENT
 
 
-static inline const hb_ot_shaper_t *
+நிலையான உள்வரி மாறிலி hb_ot_shaper_t *
 hb_ot_shaper_categorize (hb_script_t script,
 			 hb_direction_t direction,
 			 hb_tag_t gsub_script)
 {
-  switch ((hb_tag_t) script)
+  தேர்வு ((hb_tag_t) script)
   {
-    default:
-      return &_hb_ot_shaper_default;
+    இயல்பு:
+      திரும்பு &_hb_ot_shaper_default;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_ARABIC:
+    நிலை HB_SCRIPT_ARABIC:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_SYRIAC:
+    நிலை HB_SCRIPT_SYRIAC:
 
       /* For Arabic script, use the Arabic shaper even if no OT script tag was found.
        * This is because we do fallback shaping for Arabic script (and not others).
        * But note that Arabic shaping is applicable only to horizontal layout; for
        * vertical text, just use the generic shaper instead. */
-      if ((gsub_script != HB_OT_TAG_DEFAULT_SCRIPT || script == HB_SCRIPT_ARABIC) &&
+      எனில் ((gsub_script != HB_OT_TAG_DEFAULT_SCRIPT || script == HB_SCRIPT_ARABIC) &&
 	  HB_DIRECTION_IS_HORIZONTAL (direction))
-	return &_hb_ot_shaper_arabic;
-      else
-	return &_hb_ot_shaper_default;
+	திரும்பு &_hb_ot_shaper_arabic;
+      இல்லையெனில்
+	திரும்பு &_hb_ot_shaper_default;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_THAI:
-    case HB_SCRIPT_LAO:
+    நிலை HB_SCRIPT_THAI:
+    நிலை HB_SCRIPT_LAO:
 
-      return &_hb_ot_shaper_thai;
-
-
-    /* Unicode-1.1 additions */
-    case HB_SCRIPT_HANGUL:
-
-      return &_hb_ot_shaper_hangul;
+      திரும்பு &_hb_ot_shaper_thai;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_HEBREW:
+    நிலை HB_SCRIPT_HANGUL:
 
-      return &_hb_ot_shaper_hebrew;
+      திரும்பு &_hb_ot_shaper_hangul;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_BENGALI:
-    case HB_SCRIPT_DEVANAGARI:
-    case HB_SCRIPT_GUJARATI:
-    case HB_SCRIPT_GURMUKHI:
-    case HB_SCRIPT_KANNADA:
-    case HB_SCRIPT_MALAYALAM:
-    case HB_SCRIPT_ORIYA:
-    case HB_SCRIPT_TAMIL:
-    case HB_SCRIPT_TELUGU:
+    நிலை HB_SCRIPT_HEBREW:
+
+      திரும்பு &_hb_ot_shaper_hebrew;
+
+
+    /* Unicode-1.1 additions */
+    நிலை HB_SCRIPT_BENGALI:
+    நிலை HB_SCRIPT_DEVANAGARI:
+    நிலை HB_SCRIPT_GUJARATI:
+    நிலை HB_SCRIPT_GURMUKHI:
+    நிலை HB_SCRIPT_KANNADA:
+    நிலை HB_SCRIPT_MALAYALAM:
+    நிலை HB_SCRIPT_ORIYA:
+    நிலை HB_SCRIPT_TAMIL:
+    நிலை HB_SCRIPT_TELUGU:
 
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
        *
        * If it's indy3 tag, send to USE. */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      எனில் (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n'))
-	return &_hb_ot_shaper_default;
-      else if ((gsub_script & 0x000000FF) == '3')
-	return &_hb_ot_shaper_use;
-      else
-	return &_hb_ot_shaper_indic;
+	திரும்பு &_hb_ot_shaper_default;
+      இல்லையெனில் எனில் ((gsub_script & 0x000000FF) == '3')
+	திரும்பு &_hb_ot_shaper_use;
+      இல்லையெனில்
+	திரும்பு &_hb_ot_shaper_indic;
 
-    case HB_SCRIPT_KHMER:
-	return &_hb_ot_shaper_khmer;
+    நிலை HB_SCRIPT_KHMER:
+	திரும்பு &_hb_ot_shaper_khmer;
 
-    case HB_SCRIPT_MYANMAR:
+    நிலை HB_SCRIPT_MYANMAR:
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
@@ -255,168 +255,168 @@ hb_ot_shaper_categorize (hb_script_t script,
        * If designer designed for 'mymr' tag, also send to default
        * shaper.  That's tag used from before Myanmar shaping spec
        * was developed.  The shaping spec uses 'mym2' tag. */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      எனில் (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n') ||
 	  gsub_script == HB_TAG ('m','y','m','r'))
-	return &_hb_ot_shaper_default;
-      else
-	return &_hb_ot_shaper_myanmar;
+	திரும்பு &_hb_ot_shaper_default;
+      இல்லையெனில்
+	திரும்பு &_hb_ot_shaper_myanmar;
 
 
 #ifndef HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
 #define HB_SCRIPT_MYANMAR_ZAWGYI	((hb_script_t) HB_TAG ('Q','a','a','g'))
-    case HB_SCRIPT_MYANMAR_ZAWGYI:
+    நிலை HB_SCRIPT_MYANMAR_ZAWGYI:
     /* https://github.com/harfbuzz/harfbuzz/issues/1162 */
 
-      return &_hb_ot_shaper_myanmar_zawgyi;
+      திரும்பு &_hb_ot_shaper_myanmar_zawgyi;
 #endif
 
 
     /* Unicode-2.0 additions */
-    case HB_SCRIPT_TIBETAN:
+    நிலை HB_SCRIPT_TIBETAN:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_MONGOLIAN:
-    case HB_SCRIPT_SINHALA:
+    நிலை HB_SCRIPT_MONGOLIAN:
+    நிலை HB_SCRIPT_SINHALA:
 
     /* Unicode-3.2 additions */
-    case HB_SCRIPT_BUHID:
-    case HB_SCRIPT_HANUNOO:
-    case HB_SCRIPT_TAGALOG:
-    case HB_SCRIPT_TAGBANWA:
+    நிலை HB_SCRIPT_BUHID:
+    நிலை HB_SCRIPT_HANUNOO:
+    நிலை HB_SCRIPT_TAGALOG:
+    நிலை HB_SCRIPT_TAGBANWA:
 
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_LIMBU:
-    case HB_SCRIPT_TAI_LE:
+    நிலை HB_SCRIPT_LIMBU:
+    நிலை HB_SCRIPT_TAI_LE:
 
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_BUGINESE:
-    case HB_SCRIPT_KHAROSHTHI:
-    case HB_SCRIPT_SYLOTI_NAGRI:
-    case HB_SCRIPT_TIFINAGH:
+    நிலை HB_SCRIPT_BUGINESE:
+    நிலை HB_SCRIPT_KHAROSHTHI:
+    நிலை HB_SCRIPT_SYLOTI_NAGRI:
+    நிலை HB_SCRIPT_TIFINAGH:
 
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_BALINESE:
-    case HB_SCRIPT_NKO:
-    case HB_SCRIPT_PHAGS_PA:
+    நிலை HB_SCRIPT_BALINESE:
+    நிலை HB_SCRIPT_NKO:
+    நிலை HB_SCRIPT_PHAGS_PA:
 
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_CHAM:
-    case HB_SCRIPT_KAYAH_LI:
-    case HB_SCRIPT_LEPCHA:
-    case HB_SCRIPT_REJANG:
-    case HB_SCRIPT_SAURASHTRA:
-    case HB_SCRIPT_SUNDANESE:
+    நிலை HB_SCRIPT_CHAM:
+    நிலை HB_SCRIPT_KAYAH_LI:
+    நிலை HB_SCRIPT_LEPCHA:
+    நிலை HB_SCRIPT_REJANG:
+    நிலை HB_SCRIPT_SAURASHTRA:
+    நிலை HB_SCRIPT_SUNDANESE:
 
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_EGYPTIAN_HIEROGLYPHS:
-    case HB_SCRIPT_JAVANESE:
-    case HB_SCRIPT_KAITHI:
-    case HB_SCRIPT_MEETEI_MAYEK:
-    case HB_SCRIPT_TAI_THAM:
-    case HB_SCRIPT_TAI_VIET:
+    நிலை HB_SCRIPT_EGYPTIAN_HIEROGLYPHS:
+    நிலை HB_SCRIPT_JAVANESE:
+    நிலை HB_SCRIPT_KAITHI:
+    நிலை HB_SCRIPT_MEETEI_MAYEK:
+    நிலை HB_SCRIPT_TAI_THAM:
+    நிலை HB_SCRIPT_TAI_VIET:
 
     /* Unicode-6.0 additions */
-    case HB_SCRIPT_BATAK:
-    case HB_SCRIPT_BRAHMI:
-    case HB_SCRIPT_MANDAIC:
+    நிலை HB_SCRIPT_BATAK:
+    நிலை HB_SCRIPT_BRAHMI:
+    நிலை HB_SCRIPT_MANDAIC:
 
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_CHAKMA:
-    case HB_SCRIPT_MIAO:
-    case HB_SCRIPT_SHARADA:
-    case HB_SCRIPT_TAKRI:
+    நிலை HB_SCRIPT_CHAKMA:
+    நிலை HB_SCRIPT_MIAO:
+    நிலை HB_SCRIPT_SHARADA:
+    நிலை HB_SCRIPT_TAKRI:
 
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_DUPLOYAN:
-    case HB_SCRIPT_GRANTHA:
-    case HB_SCRIPT_KHOJKI:
-    case HB_SCRIPT_KHUDAWADI:
-    case HB_SCRIPT_MAHAJANI:
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MODI:
-    case HB_SCRIPT_PAHAWH_HMONG:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
-    case HB_SCRIPT_SIDDHAM:
-    case HB_SCRIPT_TIRHUTA:
+    நிலை HB_SCRIPT_DUPLOYAN:
+    நிலை HB_SCRIPT_GRANTHA:
+    நிலை HB_SCRIPT_KHOJKI:
+    நிலை HB_SCRIPT_KHUDAWADI:
+    நிலை HB_SCRIPT_MAHAJANI:
+    நிலை HB_SCRIPT_MANICHAEAN:
+    நிலை HB_SCRIPT_MODI:
+    நிலை HB_SCRIPT_PAHAWH_HMONG:
+    நிலை HB_SCRIPT_PSALTER_PAHLAVI:
+    நிலை HB_SCRIPT_SIDDHAM:
+    நிலை HB_SCRIPT_TIRHUTA:
 
     /* Unicode-8.0 additions */
-    case HB_SCRIPT_AHOM:
-    case HB_SCRIPT_MULTANI:
+    நிலை HB_SCRIPT_AHOM:
+    நிலை HB_SCRIPT_MULTANI:
 
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_ADLAM:
-    case HB_SCRIPT_BHAIKSUKI:
-    case HB_SCRIPT_MARCHEN:
-    case HB_SCRIPT_NEWA:
+    நிலை HB_SCRIPT_ADLAM:
+    நிலை HB_SCRIPT_BHAIKSUKI:
+    நிலை HB_SCRIPT_MARCHEN:
+    நிலை HB_SCRIPT_NEWA:
 
     /* Unicode-10.0 additions */
-    case HB_SCRIPT_MASARAM_GONDI:
-    case HB_SCRIPT_SOYOMBO:
-    case HB_SCRIPT_ZANABAZAR_SQUARE:
+    நிலை HB_SCRIPT_MASARAM_GONDI:
+    நிலை HB_SCRIPT_SOYOMBO:
+    நிலை HB_SCRIPT_ZANABAZAR_SQUARE:
 
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_DOGRA:
-    case HB_SCRIPT_GUNJALA_GONDI:
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_MAKASAR:
-    case HB_SCRIPT_MEDEFAIDRIN:
-    case HB_SCRIPT_OLD_SOGDIAN:
-    case HB_SCRIPT_SOGDIAN:
+    நிலை HB_SCRIPT_DOGRA:
+    நிலை HB_SCRIPT_GUNJALA_GONDI:
+    நிலை HB_SCRIPT_HANIFI_ROHINGYA:
+    நிலை HB_SCRIPT_MAKASAR:
+    நிலை HB_SCRIPT_MEDEFAIDRIN:
+    நிலை HB_SCRIPT_OLD_SOGDIAN:
+    நிலை HB_SCRIPT_SOGDIAN:
 
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_ELYMAIC:
-    case HB_SCRIPT_NANDINAGARI:
-    case HB_SCRIPT_NYIAKENG_PUACHUE_HMONG:
-    case HB_SCRIPT_WANCHO:
+    நிலை HB_SCRIPT_ELYMAIC:
+    நிலை HB_SCRIPT_NANDINAGARI:
+    நிலை HB_SCRIPT_NYIAKENG_PUACHUE_HMONG:
+    நிலை HB_SCRIPT_WANCHO:
 
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_DIVES_AKURU:
-    case HB_SCRIPT_KHITAN_SMALL_SCRIPT:
-    case HB_SCRIPT_YEZIDI:
+    நிலை HB_SCRIPT_CHORASMIAN:
+    நிலை HB_SCRIPT_DIVES_AKURU:
+    நிலை HB_SCRIPT_KHITAN_SMALL_SCRIPT:
+    நிலை HB_SCRIPT_YEZIDI:
 
     /* Unicode-14.0 additions */
-    case HB_SCRIPT_CYPRO_MINOAN:
-    case HB_SCRIPT_OLD_UYGHUR:
-    case HB_SCRIPT_TANGSA:
-    case HB_SCRIPT_TOTO:
-    case HB_SCRIPT_VITHKUQI:
+    நிலை HB_SCRIPT_CYPRO_MINOAN:
+    நிலை HB_SCRIPT_OLD_UYGHUR:
+    நிலை HB_SCRIPT_TANGSA:
+    நிலை HB_SCRIPT_TOTO:
+    நிலை HB_SCRIPT_VITHKUQI:
 
     /* Unicode-15.0 additions */
-    case HB_SCRIPT_KAWI:
-    case HB_SCRIPT_NAG_MUNDARI:
+    நிலை HB_SCRIPT_KAWI:
+    நிலை HB_SCRIPT_NAG_MUNDARI:
 
     /* Unicode-16.0 additions */
-    case HB_SCRIPT_GARAY:
-    case HB_SCRIPT_GURUNG_KHEMA:
-    case HB_SCRIPT_KIRAT_RAI:
-    case HB_SCRIPT_OL_ONAL:
-    case HB_SCRIPT_SUNUWAR:
-    case HB_SCRIPT_TODHRI:
-    case HB_SCRIPT_TULU_TIGALARI:
+    நிலை HB_SCRIPT_GARAY:
+    நிலை HB_SCRIPT_GURUNG_KHEMA:
+    நிலை HB_SCRIPT_KIRAT_RAI:
+    நிலை HB_SCRIPT_OL_ONAL:
+    நிலை HB_SCRIPT_SUNUWAR:
+    நிலை HB_SCRIPT_TODHRI:
+    நிலை HB_SCRIPT_TULU_TIGALARI:
 
     /* Unicode-17.0 additions */
-    case HB_SCRIPT_BERIA_ERFE:
-    case HB_SCRIPT_SIDETIC:
-    case HB_SCRIPT_TAI_YO:
-    case HB_SCRIPT_TOLONG_SIKI:
+    நிலை HB_SCRIPT_BERIA_ERFE:
+    நிலை HB_SCRIPT_SIDETIC:
+    நிலை HB_SCRIPT_TAI_YO:
+    நிலை HB_SCRIPT_TOLONG_SIKI:
 
     /* Unicode-18.0 additions */
-    case HB_SCRIPT_JURCHEN:
-    case HB_SCRIPT_PROTO_CUNEIFORM:
-    case HB_SCRIPT_SEAL:
+    நிலை HB_SCRIPT_JURCHEN:
+    நிலை HB_SCRIPT_PROTO_CUNEIFORM:
+    நிலை HB_SCRIPT_SEAL:
 
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
        * Note that for some simple scripts, there may not be *any*
        * GSUB/GPOS needed, so there may be no scripts found! */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      எனில் (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n'))
-	return &_hb_ot_shaper_default;
-      else
-	return &_hb_ot_shaper_use;
+	திரும்பு &_hb_ot_shaper_default;
+      இல்லையெனில்
+	திரும்பு &_hb_ot_shaper_use;
   }
 }
 

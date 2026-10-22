@@ -1,80 +1,80 @@
 #ifndef OT_LAYOUT_GPOS_ANCHOR_HH
 #define OT_LAYOUT_GPOS_ANCHOR_HH
 
-#include "AnchorFormat1.hh"
-#include "AnchorFormat2.hh"
-#include "AnchorFormat3.hh"
+#அந்தர்பாவ "AnchorFormat1.hh"
+#அந்தர்பாவ "AnchorFormat2.hh"
+#அந்தர்பாவ "AnchorFormat3.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ GPOS_impl {
 
-struct Anchor
+கட்டமைப்பு Anchor
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு { HBUINT16 v; } format;        /* Format identifier */
   AnchorFormat1         format1;
   AnchorFormat2         format2;
   AnchorFormat3         format3;
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (2, format.v);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (!u.format.v.sanitize (c)) return_trace (பொய்);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    நிலை 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    நிலை 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    இயல்பு:return_trace (உண்மை);
     }
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  வெறுமை get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   தசம *x, தசம *y) மாறிலி
   {
     *x = *y = 0;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); return;
-    case 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); return;
-    case 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); return;
-    default:                                          return;
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); திரும்பு;
+    நிலை 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); திரும்பு;
+    நிலை 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); திரும்பு;
+    இயல்பு:                                          திரும்பு;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
-    case 2:
+    TRACE_SUBSET (இது);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); return_trace (தருக்க (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+    நிலை 2:
       hb_barrier ();
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      எனில் (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       {
         // AnchorFormat 2 just containins extra hinting information, so
         // if hints are being dropped convert to format 1.
-        return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+        return_trace (தருக்க (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
       }
-      return_trace (bool (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
-    case 3: hb_barrier (); return_trace (u.format3.subset (c));
-    default:return_trace (false);
+      return_trace (தருக்க (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
+    நிலை 3: hb_barrier (); return_trace (u.format3.subset (c));
+    இயல்பு:return_trace (பொய்);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c) மாறிலி
   {
-    switch (u.format.v) {
-    case 1: case 2:
-      return;
-    case 3:
+    தேர்வு (u.format.v) {
+    நிலை 1: நிலை 2:
+      திரும்பு;
+    நிலை 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      திரும்பு;
+    இயல்பு: திரும்பு;
     }
   }
 };

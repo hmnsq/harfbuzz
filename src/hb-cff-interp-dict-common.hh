@@ -26,174 +26,174 @@
 #ifndef HB_CFF_INTERP_DICT_COMMON_HH
 #define HB_CFF_INTERP_DICT_COMMON_HH
 
-#include "hb-cff-interp-common.hh"
+#அந்தர்பாவ "hb-cff-interp-common.hh"
 
-namespace CFF {
+நாமாகாஶ CFF {
 
-using namespace OT;
+using நாமாகாஶ OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+கட்டமைப்பு dict_val_t : op_str_t
 {
-  void init () {}
-  void fini () {}
+  வெறுமை init () {}
+  வெறுமை fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+வகைவரை dict_val_t இலக்கம்_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+template <typename VAL> கட்டமைப்பு dict_மதிப்புகள்_t : parsed_மதிப்புகள்_t<VAL> {};
 
 template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+கட்டமைப்பு உச்சி_dict_மதிப்புகள்_t : dict_மதிப்புகள்_t<OPSTR>
 {
-  void init ()
+  வெறுமை init ()
   {
-    dict_values_t<OPSTR>::init ();
+    dict_மதிப்புகள்_t<OPSTR>::init ();
     charStringsOffset = 0;
     FDArrayOffset = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  வெறுமை fini () { dict_மதிப்புகள்_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  முழு  charStringsOffset;
+  முழு  FDArrayOffset;
 };
 
-struct dict_opset_t : opset_t<number_t>
+கட்டமைப்பு dict_opset_t : opset_t<எண்_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  நிலையான வெறுமை process_op (op_code_t op, interp_env_t<எண்_t>& env)
   {
-    switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+    தேர்வு (op) {
+      நிலை OpCode_longintdict:  /* 5-byte integer */
+	env.arg_அடுக்கு.தள்ளு_longint_from_substr (env.str_ref);
+	நிறுத்து;
 
-      case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+      நிலை OpCode_BCD:  /* real number */
+	env.arg_அடுக்கு.தள்ளு_real (parse_bcd (env.str_ref));
+	நிறுத்து;
 
-      default:
-	opset_t<number_t>::process_op (op, env);
-	break;
+      இயல்பு:
+	opset_t<எண்_t>::process_op (op, env);
+	நிறுத்து;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  நிலையான இரட்டை parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    எனில் (unlikely (str_ref.in_error ())) திரும்பு .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    எண்ணிக்கை Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    எழுத்து buf[32] = {0};
+    unsigned எழுத்து byte = 0;
+    க்கு (unsigned i = 0, மொத்தம் = 0; மொத்தம் < ARRAY_LENGTH (buf); ++i, ++மொத்தம்)
     {
       unsigned nibble;
-      if (!(i & 1))
+      எனில் (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	எனில் (unlikely (!str_ref.avail ())) நிறுத்து;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      இல்லையெனில்
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      எனில் (unlikely (nibble == RESERVED)) நிறுத்து;
+      இல்லையெனில் எனில் (nibble == END)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	மாறிலி எழுத்து *p = buf;
+	இரட்டை pv;
+	எனில் (unlikely (!hb_parse_double (&p, p + மொத்தம், &pv, உண்மை/* whole buffer */)))
+	  நிறுத்து;
+	திரும்பு pv;
       }
-      else
+      இல்லையெனில்
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	buf[மொத்தம்] = "0123456789.EE?-?"[nibble];
+	எனில் (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++மொத்தம்;
+	  எனில் (unlikely (மொத்தம் == ARRAY_LENGTH (buf))) நிறுத்து;
+	  buf[மொத்தம்] = '-';
 	}
       }
     }
 
     str_ref.set_error ();
-    return .0;
+    திரும்பு .0;
   }
 
-  static bool is_hint_op (op_code_t op)
+  நிலையான தருக்க is_hint_op (op_code_t op)
   {
-    switch (op)
+    தேர்வு (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
-      default:
-	return false;
+      நிலை Op_Code_Blue_மதிப்புகள்:
+      நிலை OpCode_OtherBlues:
+      நிலை OpCode_FamilyBlues:
+      நிலை OpCode_FamilyOtherBlues:
+      நிலை OpCode_StemSnapH:
+      நிலை OpCode_StemSnapV:
+      நிலை OpCode_StdHW:
+      நிலை OpCode_StdVW:
+      நிலை OpCode_BlueScale:
+      நிலை OpCode_BlueShift:
+      நிலை OpCode_BlueFuzz:
+      நிலை OpCode_ForceBold:
+      நிலை OpCode_LanguageGroup:
+      நிலை OpCode_ExpansionFactor:
+	திரும்பு உண்மை;
+      இயல்பு:
+	திரும்பு பொய்;
     }
   }
 };
 
 template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+கட்டமைப்பு உச்சி_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  நிலையான வெறுமை process_op (op_code_t op, interp_env_t<எண்_t>& env, உச்சி_dict_மதிப்புகள்_t<VAL> & dictval)
   {
-    switch (op) {
-      case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
+    தேர்வு (op) {
+      நிலை OpCode_CharStrings:
+	dictval.charStringsOffset = env.arg_அடுக்கு.எடு_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
+	நிறுத்து;
+      நிலை OpCode_FDArray:
+	dictval.FDArrayOffset = env.arg_அடுக்கு.எடு_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
+	நிறுத்து;
+      நிலை OpCode_FontMatrix:
 	env.clear_args ();
-	break;
-      default:
+	நிறுத்து;
+      இயல்பு:
 	dict_opset_t::process_op (op, env);
-	break;
+	நிறுத்து;
     }
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+template <typename OPSET, typename PARAM, typename ENV=இலக்கம்_interp_env_t>
+கட்டமைப்பு dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param)
+  தருக்க interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    போது (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      எனில் (unlikely (SUPER::env.in_error ()))
+	திரும்பு பொய்;
     }
 
-    return true;
+    திரும்பு உண்மை;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  தனிப்பட்ட:
+  வகைவரை interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */

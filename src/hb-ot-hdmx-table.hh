@@ -27,7 +27,7 @@
 #ifndef HB_OT_HDMX_TABLE_HH
 #define HB_OT_HDMX_TABLE_HH
 
-#include "hb-open-type.hh"
+#அந்தர்பாவ "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
@@ -36,138 +36,138 @@
 #define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
 
 
-namespace OT {
+நாமாகாஶ OT {
 
 
-struct DeviceRecord
+கட்டமைப்பு DeviceRecord
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  நிலையான size_t get_size (unsigned மொத்தம்)
+  { திரும்பு hb_ceil_to_4 (hb_unsigned_mul_add_saturate (மொத்தம், HBUINT8::static_size, min_size)); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  தருக்க serialize (hb_serialize_context_t *c,
 		  unsigned pixelSize,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  மாறிலி hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned இலக்கம்_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    எனில் (unlikely (!c->extend (இது, இலக்கம்_glyphs)))  return_trace (பொய்);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    இது->pixelSize = pixelSize;
+    இது->maxWidth =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
+    க்கு (auto &_ : new_to_old_gid_list)
       widthsZ[_.first] = *it++;
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  தருக்க sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (likely (c->check_struct (இது) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (இது, sizeDeviceRecord)));
   }
 
   HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
   HBUINT8			maxWidth;	/* Maximum width. */
   UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
+  பொது:
   DEFINE_SIZE_UNBOUNDED (2);
 };
 
 
-struct hdmx
+கட்டமைப்பு hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_mul_add_saturate (இலக்கம்_Records, sizeDeviceRecord, min_size); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  தருக்க serialize (hb_serialize_context_t *c,
 		  unsigned version,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<மாறிலி hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned இலக்கம்_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    எனில் (unlikely (!c->extend_min ((*இது))))  return_trace (பொய்);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    இது->version = version;
+    இது->இலக்கம்_Records = it.len ();
+    இது->sizeDeviceRecord = DeviceRecord::get_size (இலக்கம்_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    க்கு (மாறிலி hb_item_type<Iterator>& _ : +it)
+      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, இலக்கம்_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (இது);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    auto *hdmx_பகாஎண் = c->serializer->start_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
+    unsigned இலக்கம்_உள்ளீடு_glyphs = get_இலக்கம்_glyphs ();
     auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    + hb_range ((unsigned) இலக்கம்_Records)
+    | hb_map ([c, இலக்கம்_உள்ளீடு_glyphs, இது] (unsigned _)
 	{
-	  const DeviceRecord *device_record =
+	  மாறிலி DeviceRecord *device_record =
 	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
 					   _ * sizeDeviceRecord);
 	  auto row =
 	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	    | hb_map ([இலக்கம்_உள்ளீடு_glyphs, device_record] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			திரும்பு device_record->widthsZ.as_array (இலக்கம்_உள்ளீடு_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  திரும்பு hb_pair ((unsigned) device_record->pixelSize, +row);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
+    hdmx_பகாஎண்->serialize (c->serializer, version, it,
 			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
-    return_trace (true);
+			   c->plan->இலக்கம்_output_glyphs ());
+    return_trace (உண்மை);
   }
 
-  unsigned get_num_glyphs () const
+  unsigned get_இலக்கம்_glyphs () மாறிலி
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    திரும்பு sizeDeviceRecord - DeviceRecord::min_size;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
+		  !hb_unsigned_mul_overflows (இலக்கம்_Records, sizeDeviceRecord) &&
+                  min_size + இலக்கம்_Records * sizeDeviceRecord > இலக்கம்_Records * sizeDeviceRecord &&
 		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  c->check_range (இது, get_size ()));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
+  HBUINT16	இலக்கம்_Records;	/* Number of device records. */
   HBUINT32	sizeDeviceRecord;
 				/* Size of a device record, 32-bit aligned. */
   DeviceRecord	firstDeviceRecord;
 				/* Array of device records. */
-  public:
+  பொது:
   DEFINE_SIZE_MIN (8);
 };
 

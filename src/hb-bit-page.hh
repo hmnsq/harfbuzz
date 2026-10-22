@@ -28,7 +28,7 @@
 #ifndef HB_BIT_PAGE_HH
 #define HB_BIT_PAGE_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 
 /* Compiler-assisted vectorization. */
@@ -36,182 +36,182 @@
 /* Type behaving similar to vectorized vars defined using __attribute__((vector_size(...))),
  * basically a fixed-size bitset. We can't use the compiler type because hb_vector_t cannot
  * guarantee alignment requirements. */
-template <typename elt_t, unsigned int byte_size>
-struct hb_vector_size_t
+template <typename elt_t, unsigned முழு byte_size>
+கட்டமைப்பு hb_vector_size_t
 {
-  elt_t& operator [] (unsigned int i) { return v[i]; }
-  const elt_t& operator [] (unsigned int i) const { return v[i]; }
+  elt_t& operator [] (unsigned முழு i) { திரும்பு v[i]; }
+  மாறிலி elt_t& operator [] (unsigned முழு i) மாறிலி { திரும்பு v[i]; }
 
-  void init0 ()
+  வெறுமை init0 ()
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    க்கு (unsigned முழு i = 0; i < ARRAY_LENGTH (v); i++)
       v[i] = 0;
   }
-  void init1 ()
+  வெறுமை init1 ()
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    க்கு (unsigned முழு i = 0; i < ARRAY_LENGTH (v); i++)
       v[i] = (elt_t) -1;
   }
 
   template <typename Op>
-  hb_vector_size_t process (const Op& op) const
+  hb_vector_size_t process (மாறிலி Op& op) மாறிலி
   {
     hb_vector_size_t r;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    க்கு (unsigned முழு i = 0; i < ARRAY_LENGTH (v); i++)
       r.v[i] = op (v[i]);
-    return r;
+    திரும்பு r;
   }
   template <typename Op>
-  hb_vector_size_t process (const Op& op, const hb_vector_size_t &o) const
+  hb_vector_size_t process (மாறிலி Op& op, மாறிலி hb_vector_size_t &o) மாறிலி
   {
     hb_vector_size_t r;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    க்கு (unsigned முழு i = 0; i < ARRAY_LENGTH (v); i++)
       r.v[i] = op (v[i], o.v[i]);
-    return r;
+    திரும்பு r;
   }
-  hb_vector_size_t operator | (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_or, o); }
-  hb_vector_size_t operator & (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_and, o); }
-  hb_vector_size_t operator ^ (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_xor, o); }
-  hb_vector_size_t operator ~ () const
-  { return process (hb_bitwise_neg); }
+  hb_vector_size_t operator | (மாறிலி hb_vector_size_t &o) மாறிலி
+  { திரும்பு process (hb_bitwise_or, o); }
+  hb_vector_size_t operator & (மாறிலி hb_vector_size_t &o) மாறிலி
+  { திரும்பு process (hb_bitwise_and, o); }
+  hb_vector_size_t operator ^ (மாறிலி hb_vector_size_t &o) மாறிலி
+  { திரும்பு process (hb_bitwise_xor, o); }
+  hb_vector_size_t operator ~ () மாறிலி
+  { திரும்பு process (hb_bitwise_neg); }
 
-  operator bool () const
+  operator தருக்க () மாறிலி
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
-      if (v[i])
-	return true;
-    return false;
+    க்கு (unsigned முழு i = 0; i < ARRAY_LENGTH (v); i++)
+      எனில் (v[i])
+	திரும்பு உண்மை;
+    திரும்பு பொய்;
   }
-  operator unsigned int () const
+  operator unsigned முழு () மாறிலி
   {
-    unsigned int r = 0;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    unsigned முழு r = 0;
+    க்கு (unsigned முழு i = 0; i < ARRAY_LENGTH (v); i++)
       r += hb_popcount (v[i]);
-    return r;
+    திரும்பு r;
   }
-  bool operator == (const hb_vector_size_t &o) const
+  தருக்க operator == (மாறிலி hb_vector_size_t &o) மாறிலி
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
-      if (v[i] != o.v[i])
-	return false;
-    return true;
+    க்கு (unsigned முழு i = 0; i < ARRAY_LENGTH (v); i++)
+      எனில் (v[i] != o.v[i])
+	திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
-  hb_array_t<const elt_t> iter () const
-  { return hb_array (v); }
+  hb_array_t<மாறிலி elt_t> iter () மாறிலி
+  { திரும்பு hb_array (v); }
 
-  private:
-  static_assert (0 == byte_size % sizeof (elt_t), "");
-  elt_t v[byte_size / sizeof (elt_t)];
+  தனிப்பட்ட:
+  static_assert (0 == byte_size % அளவு (elt_t), "");
+  elt_t v[byte_size / அளவு (elt_t)];
 };
 
 
-struct hb_bit_page_t
+கட்டமைப்பு hb_bit_page_t
 {
   hb_bit_page_t () { init0 (); }
 
-  void init0 () { v.init0 (); population = 0; }
-  void init1 () { v.init1 (); population = PAGE_BITS; }
+  வெறுமை init0 () { v.init0 (); population = 0; }
+  வெறுமை init1 () { v.init1 (); population = PAGE_BITS; }
 
-  void dirty () { population = UINT_MAX; }
+  வெறுமை dirty () { population = UINT_MAX; }
 
-  static inline constexpr unsigned len ()
-  { return ARRAY_LENGTH_CONST (v); }
+  நிலையான உள்வரி constexpr unsigned len ()
+  { திரும்பு ARRAY_LENGTH_CONST (v); }
 
-  operator bool () const { return !is_empty (); }
-  bool is_empty () const
+  operator தருக்க () மாறிலி { திரும்பு !is_empty (); }
+  தருக்க is_empty () மாறிலி
   {
-    if (has_population ()) return !population;
-    bool empty = !v;
-    if (empty) population = 0;
-    return empty;
+    எனில் (has_population ()) திரும்பு !population;
+    தருக்க empty = !v;
+    எனில் (empty) population = 0;
+    திரும்பு empty;
   }
-  uint32_t hash () const
+  uint32_t hash () மாறிலி
   {
-    return hb_bytes_t ((const char *) &v, sizeof (v)).hash ();
+    திரும்பு hb_bytes_t ((மாறிலி எழுத்து *) &v, அளவு (v)).hash ();
   }
 
-  void add (hb_codepoint_t g) { elt (g) |= mask (g); dirty (); }
-  void add_bits (hb_codepoint_t g, uint64_t bits) { elt (g) |= bits; dirty (); }
-  void del (hb_codepoint_t g) { elt (g) &= ~mask (g); dirty (); }
-  void del_bits (hb_codepoint_t g, uint64_t bits) { elt (g) &= ~bits; dirty (); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  வெறுமை add (hb_codepoint_t g) { elt (g) |= mask (g); dirty (); }
+  வெறுமை add_bits (hb_codepoint_t g, uint64_t bits) { elt (g) |= bits; dirty (); }
+  வெறுமை del (hb_codepoint_t g) { elt (g) &= ~mask (g); dirty (); }
+  வெறுமை del_bits (hb_codepoint_t g, uint64_t bits) { elt (g) &= ~bits; dirty (); }
+  வெறுமை set (hb_codepoint_t g, தருக்க value) { எனில் (value) add (g); இல்லையெனில் del (g); }
+  தருக்க get (hb_codepoint_t g) மாறிலி { திரும்பு elt (g) & mask (g); }
+  தருக்க may_have (hb_codepoint_t g) மாறிலி { திரும்பு get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
+  தருக்க operator [] (hb_codepoint_t g) மாறிலி { திரும்பு get (g); }
+  தருக்க operator () (hb_codepoint_t g) மாறிலி { திரும்பு get (g); }
+  தருக்க has (hb_codepoint_t g) மாறிலி { திரும்பு get (g); }
 
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  வெறுமை add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    எனில் (la == lb)
       *la |= (mask (b) << 1) - mask(a);
-    else if (likely (la < lb))
+    இல்லையெனில் எனில் (likely (la < lb))
     {
       *la |= ~(mask (a) - 1llu);
       la++;
 
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (எழுத்து *) lb - (எழுத்து *) la);
 
       *lb |= ((mask (b) << 1) - 1llu);
     }
-    else
-      return;
+    இல்லையெனில்
+      திரும்பு;
     dirty ();
   }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  வெறுமை del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    எனில் (la == lb)
       *la &= ~((mask (b) << 1llu) - mask(a));
-    else if (likely (la < lb))
+    இல்லையெனில் எனில் (likely (la < lb))
     {
       *la &= mask (a) - 1;
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0, (எழுத்து *) lb - (எழுத்து *) la);
 
       *lb &= ~((mask (b) << 1) - 1llu);
     }
-    else
-      return;
+    இல்லையெனில்
+      திரும்பு;
     dirty ();
   }
-  void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  வெறுமை set_range (hb_codepoint_t a, hb_codepoint_t b, தருக்க v)
+  { எனில் (v) add_range (a, b); இல்லையெனில் del_range (a, b); }
 
 
   // Writes out page values to the array p. Returns the number of values
   // written. At most size codepoints will be written.
-  unsigned int write (uint32_t        base,
-		      unsigned int    start_value,
+  unsigned முழு லிக (uint32_t        base,
+		      unsigned முழு    start_மதிப்பு,
 		      hb_codepoint_t *p,
-		      unsigned int    size) const
+		      unsigned முழு    size) மாறிலி
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    unsigned முழு start_v = start_மதிப்பு / ELT_BITS;
+    unsigned முழு start_bit = start_மதிப்பு & ELT_MASK;
+    unsigned முழு மொத்தம் = 0;
+    க்கு (unsigned i = start_v; i < len () && மொத்தம் < size; i++)
     {
       elt_t bits = v[i];
       uint32_t v_base = base | (i * ELT_BITS);
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      க்கு (unsigned முழு j = start_bit; j < ELT_BITS && மொத்தம் < size; j++)
       {
-	if ((elt_t(1) << j) & bits) {
+	எனில் ((elt_t(1) << j) & bits) {
 	  *p++ = v_base | j;
-	  count++;
+	  மொத்தம்++;
 	}
       }
       start_bit = 0;
     }
-    return count;
+    திரும்பு மொத்தம்;
   }
 
   // Writes out the values NOT in this page to the array p. Returns the
@@ -220,193 +220,193 @@ struct hb_bit_page_t
   // that should be written (if not present in this page). This is used to fill
   // any missing value gaps between this page and the previous page, if any.
   // next_value is updated to one more than the last value present in this page.
-  unsigned int write_inverted (uint32_t        base,
-			       unsigned int    start_value,
+  unsigned முழு write_inverted (uint32_t        base,
+			       unsigned முழு    start_மதிப்பு,
 			       hb_codepoint_t *p,
-			       unsigned int    size,
-			       hb_codepoint_t *next_value) const
+			       unsigned முழு    size,
+			       hb_codepoint_t *next_மதிப்பு) மாறிலி
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    unsigned முழு start_v = start_மதிப்பு / ELT_BITS;
+    unsigned முழு start_bit = start_மதிப்பு & ELT_MASK;
+    unsigned முழு மொத்தம் = 0;
+    க்கு (unsigned i = start_v; i < len () && மொத்தம் < size; i++)
     {
       elt_t bits = v[i];
       uint32_t v_offset = i * ELT_BITS;
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      க்கு (unsigned முழு j = start_bit; j < ELT_BITS && மொத்தம் < size; j++)
       {
-	if ((elt_t(1) << j) & bits)
+	எனில் ((elt_t(1) << j) & bits)
 	{
 	  hb_codepoint_t value = base | v_offset | j;
 	  // Emit all the missing values from next_value up to value - 1.
-	  for (hb_codepoint_t k = *next_value; k < value && count < size; k++)
+	  க்கு (hb_codepoint_t k = *next_மதிப்பு; k < value && மொத்தம் < size; k++)
 	  {
 	    *p++ = k;
-	    count++;
+	    மொத்தம்++;
 	  }
 	  // Skip over this value;
-	  *next_value = value + 1;
+	  *next_மதிப்பு = value + 1;
 	}
       }
       start_bit = 0;
     }
-    return count;
+    திரும்பு மொத்தம்;
   }
 
-  bool operator == (const hb_bit_page_t &other) const { return is_equal (other); }
-  bool is_equal (const hb_bit_page_t &other) const { return v == other.v; }
-  bool intersects (const hb_bit_page_t &other) const
+  தருக்க operator == (மாறிலி hb_bit_page_t &other) மாறிலி { திரும்பு is_equal (other); }
+  தருக்க is_equal (மாறிலி hb_bit_page_t &other) மாறிலி { திரும்பு v == other.v; }
+  தருக்க intersects (மாறிலி hb_bit_page_t &other) மாறிலி
   {
-    for (unsigned i = 0; i < len (); i++)
-      if (v[i] & other.v[i])
-	return true;
-    return false;
+    க்கு (unsigned i = 0; i < len (); i++)
+      எனில் (v[i] & other.v[i])
+	திரும்பு உண்மை;
+    திரும்பு பொய்;
   }
-  bool may_intersect (const hb_bit_page_t &other) const
-  { return intersects (other); }
+  தருக்க may_intersect (மாறிலி hb_bit_page_t &other) மாறிலி
+  { திரும்பு intersects (other); }
 
-  bool operator <= (const hb_bit_page_t &larger_page) const { return is_subset (larger_page); }
-  bool is_subset (const hb_bit_page_t &larger_page) const
+  தருக்க operator <= (மாறிலி hb_bit_page_t &larger_page) மாறிலி { திரும்பு is_subset (larger_page); }
+  தருக்க is_subset (மாறிலி hb_bit_page_t &larger_page) மாறிலி
   {
-    if (has_population () && larger_page.has_population () &&
+    எனில் (has_population () && larger_page.has_population () &&
 	population > larger_page.population)
-      return false;
+      திரும்பு பொய்;
 
-    for (unsigned i = 0; i < len (); i++)
-      if (~larger_page.v[i] & v[i])
-	return false;
-    return true;
+    க்கு (unsigned i = 0; i < len (); i++)
+      எனில் (~larger_page.v[i] & v[i])
+	திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned get_population () const
+  தருக்க has_population () மாறிலி { திரும்பு population != UINT_MAX; }
+  unsigned get_population () மாறிலி
   {
-    if (has_population ()) return population;
-    return population = v;
+    எனில் (has_population ()) திரும்பு population;
+    திரும்பு population = v;
   }
 
-  bool next (hb_codepoint_t *codepoint) const
+  தருக்க next (hb_codepoint_t *codepoint) மாறிலி
   {
-    unsigned int m = (*codepoint + 1) & MASK;
-    if (!m)
+    unsigned முழு m = (*codepoint + 1) & MASK;
+    எனில் (!m)
     {
       *codepoint = INVALID;
-      return false;
+      திரும்பு பொய்;
     }
-    unsigned int i = m / ELT_BITS;
-    unsigned int j = m & ELT_MASK;
+    unsigned முழு i = m / ELT_BITS;
+    unsigned முழு j = m & ELT_MASK;
 
-    const elt_t vv = v[i] & ~((elt_t (1) << j) - 1);
-    for (const elt_t *p = &vv; i < len (); p = ((const elt_t *) &v[0]) + (++i))
-      if (*p)
+    மாறிலி elt_t vv = v[i] & ~((elt_t (1) << j) - 1);
+    க்கு (மாறிலி elt_t *p = &vv; i < len (); p = ((மாறிலி elt_t *) &v[0]) + (++i))
+      எனில் (*p)
       {
 	*codepoint = i * ELT_BITS + elt_get_min (*p);
-	return true;
+	திரும்பு உண்மை;
       }
 
     *codepoint = INVALID;
-    return false;
+    திரும்பு பொய்;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  தருக்க previous (hb_codepoint_t *codepoint) மாறிலி
   {
-    unsigned int m = (*codepoint - 1) & MASK;
-    if (m == MASK)
+    unsigned முழு m = (*codepoint - 1) & MASK;
+    எனில் (m == MASK)
     {
       *codepoint = INVALID;
-      return false;
+      திரும்பு பொய்;
     }
-    unsigned int i = m / ELT_BITS;
-    unsigned int j = m & ELT_MASK;
+    unsigned முழு i = m / ELT_BITS;
+    unsigned முழு j = m & ELT_MASK;
 
     /* Fancy mask to avoid shifting by elt_t bitsize, which is undefined. */
-    const elt_t mask = j < 8 * sizeof (elt_t) - 1 ?
+    மாறிலி elt_t mask = j < 8 * அளவு (elt_t) - 1 ?
 		       ((elt_t (1) << (j + 1)) - 1) :
 		       (elt_t) -1;
-    const elt_t vv = v[i] & mask;
-    const elt_t *p = &vv;
-    while (true)
+    மாறிலி elt_t vv = v[i] & mask;
+    மாறிலி elt_t *p = &vv;
+    போது (உண்மை)
     {
-      if (*p)
+      எனில் (*p)
       {
 	*codepoint = i * ELT_BITS + elt_get_max (*p);
-	return true;
+	திரும்பு உண்மை;
       }
-      if ((int) i <= 0) break;
+      எனில் ((முழு) i <= 0) நிறுத்து;
       p = &v[--i];
     }
 
     *codepoint = INVALID;
-    return false;
+    திரும்பு பொய்;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () மாறிலி
   {
-    for (unsigned int i = 0; i < len (); i++)
-      if (v[i])
-	return i * ELT_BITS + elt_get_min (v[i]);
-    return INVALID;
+    க்கு (unsigned முழு i = 0; i < len (); i++)
+      எனில் (v[i])
+	திரும்பு i * ELT_BITS + elt_get_min (v[i]);
+    திரும்பு INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () மாறிலி
   {
-    for (int i = len () - 1; i >= 0; i--)
-      if (v[i])
-	return i * ELT_BITS + elt_get_max (v[i]);
-    return INVALID;
+    க்கு (முழு i = len () - 1; i >= 0; i--)
+      எனில் (v[i])
+	திரும்பு i * ELT_BITS + elt_get_max (v[i]);
+    திரும்பு INVALID;
   }
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  கட்டமைப்பு iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    iter_t (const hb_bit_page_t &s_ = Null (hb_bit_page_t), bool init = true) : s (&s_), v (INVALID)
+    நிலையான constexpr தருக்க is_sorted_iterator = உண்மை;
+    iter_t (மாறிலி hb_bit_page_t &s_ = Null (hb_bit_page_t), தருக்க init = உண்மை) : s (&s_), v (INVALID)
     {
-      if (init)
+      எனில் (init)
 	v = s->get_min ();
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () {
+    வகைவரை hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () மாறிலி { திரும்பு v; }
+    தருக்க __more__ () மாறிலி { திரும்பு v != INVALID; }
+    வெறுமை __next__ () {
        s->next (&v);
     }
-    void __prev__ () { s->previous (&v); }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    வெறுமை __prev__ () { s->previous (&v); }
+    iter_t end () மாறிலி { திரும்பு iter_t (*s, பொய்); }
+    தருக்க operator != (மாறிலி iter_t& o) மாறிலி
+    { திரும்பு v != o.v; }
 
-    protected:
-    const hb_bit_page_t *s;
+    பாதுகாக்கப்பட்ட:
+    மாறிலி hb_bit_page_t *s;
     hb_codepoint_t v;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () மாறிலி { திரும்பு iter_t (*இது); }
+  operator iter_t () மாறிலி { திரும்பு iter (); }
 
-  static constexpr hb_codepoint_t INVALID = HB_SET_VALUE_INVALID;
+  நிலையான constexpr hb_codepoint_t INVALID = HB_SET_மதிப்பு_INVALID;
 
-  typedef unsigned long long elt_t;
-  static constexpr unsigned PAGE_BITS_LOG_2 = 9; // 512 bits
-  static constexpr unsigned PAGE_BITS = 1 << PAGE_BITS_LOG_2;
+  வகைவரை unsigned long long elt_t;
+  நிலையான constexpr unsigned PAGE_BITS_LOG_2 = 9; // 512 bits
+  நிலையான constexpr unsigned PAGE_BITS = 1 << PAGE_BITS_LOG_2;
   static_assert (1 << PAGE_BITS_LOG_2 == PAGE_BITS, "");
   static_assert ((PAGE_BITS & ((PAGE_BITS) - 1)) == 0, "");
-  static constexpr unsigned PAGE_BITMASK = PAGE_BITS - 1;
+  நிலையான constexpr unsigned PAGE_BITMASK = PAGE_BITS - 1;
 
-  static unsigned int elt_get_min (const elt_t &elt) { return hb_ctz (elt); }
-  static unsigned int elt_get_max (const elt_t &elt) { return hb_bit_storage (elt) - 1; }
+  நிலையான unsigned முழு elt_get_min (மாறிலி elt_t &elt) { திரும்பு hb_ctz (elt); }
+  நிலையான unsigned முழு elt_get_max (மாறிலி elt_t &elt) { திரும்பு hb_bit_storage (elt) - 1; }
 
-  typedef hb_vector_size_t<elt_t, PAGE_BITS / 8> vector_t;
+  வகைவரை hb_vector_size_t<elt_t, PAGE_BITS / 8> vector_t;
 
-  static constexpr unsigned ELT_BITS = sizeof (elt_t) * 8;
-  static constexpr unsigned ELT_MASK = ELT_BITS - 1;
+  நிலையான constexpr unsigned ELT_BITS = அளவு (elt_t) * 8;
+  நிலையான constexpr unsigned ELT_MASK = ELT_BITS - 1;
 
-  static constexpr unsigned BITS = sizeof (vector_t) * 8;
-  static constexpr unsigned MASK = BITS - 1;
+  நிலையான constexpr unsigned BITS = அளவு (vector_t) * 8;
+  நிலையான constexpr unsigned MASK = BITS - 1;
   static_assert ((unsigned) PAGE_BITS == (unsigned) BITS, "");
 
-  elt_t &elt (hb_codepoint_t g) { return v[(g & MASK) / ELT_BITS]; }
-  const elt_t& elt (hb_codepoint_t g) const { return v[(g & MASK) / ELT_BITS]; }
-  static constexpr elt_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  elt_t &elt (hb_codepoint_t g) { திரும்பு v[(g & MASK) / ELT_BITS]; }
+  மாறிலி elt_t& elt (hb_codepoint_t g) மாறிலி { திரும்பு v[(g & MASK) / ELT_BITS]; }
+  நிலையான constexpr elt_t mask (hb_codepoint_t g) { திரும்பு elt_t (1) << (g & ELT_MASK); }
 
   mutable unsigned population;
   vector_t v;

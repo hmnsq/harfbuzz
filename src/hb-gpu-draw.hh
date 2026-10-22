@@ -27,35 +27,35 @@
 #ifndef HB_GPU_DRAW_HH
 #define HB_GPU_DRAW_HH
 
-#include "hb.hh"
-#include "hb-gpu.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-gpu.h"
+#அந்தர்பாவ "hb-object.hh"
+#அந்தர்பாவ "hb-vector.hh"
 
-#include <cmath>
+#அந்தர்பாவ <cmath>
 
 
 #define HB_GPU_UNITS_PER_EM 4
 
 
-struct hb_gpu_curve_t
+கட்டமைப்பு hb_gpu_curve_t
 {
-  double p1x, p1y;
-  double p2x, p2y;
-  double p3x, p3y;
-  bool contour_start;
+  இரட்டை p1x, p1y;
+  இரட்டை p2x, p2y;
+  இரட்டை p3x, p3y;
+  தருக்க contour_start;
 };
 
-struct hb_gpu_encode_curve_info_t
+கட்டமைப்பு hb_gpu_encode_curve_info_t
 {
-  double min_x, max_x, min_y, max_y;
-  bool is_horizontal;
-  bool is_vertical;
-  int hband_lo, hband_hi;
-  int vband_lo, vband_hi;
+  இரட்டை min_x, max_x, min_y, max_y;
+  தருக்க is_horizontal;
+  தருக்க is_vertical;
+  முழு hband_lo, hband_hi;
+  முழு vband_lo, vband_hi;
 };
 
-struct hb_gpu_encode_scratch_t
+கட்டமைப்பு hb_gpu_encode_scratch_t
 {
   hb_vector_t<hb_gpu_encode_curve_info_t> curve_infos;
   hb_vector_t<unsigned> hband_curve_counts;
@@ -70,7 +70,7 @@ struct hb_gpu_encode_scratch_t
   hb_vector_t<unsigned> vband_cursors;
   hb_vector_t<unsigned> curve_texel_offset;
 
-  void clear ()
+  வெறுமை clear ()
   {
     curve_infos.clear ();
     hband_curve_counts.clear ();
@@ -87,28 +87,28 @@ struct hb_gpu_encode_scratch_t
   }
 };
 
-struct hb_gpu_draw_t
+கட்டமைப்பு hb_gpu_draw_t
 {
   hb_object_header_t header;
 
   /* Accumulator state */
-  double start_x = 0, start_y = 0;
-  double current_x = 0, current_y = 0;
-  bool need_moveto = true;
-  unsigned num_curves = 0;
-  bool success = true;
+  இரட்டை start_x = 0, start_y = 0;
+  இரட்டை current_x = 0, current_y = 0;
+  தருக்க need_moveto = உண்மை;
+  unsigned இலக்கம்_curves = 0;
+  தருக்க success = உண்மை;
 
   hb_vector_t<hb_gpu_curve_t> curves;
 
   /* Extents tracking (updated during accumulation) */
-  double ext_min_x =  HUGE_VAL;
-  double ext_min_y =  HUGE_VAL;
-  double ext_max_x = -HUGE_VAL;
-  double ext_max_y = -HUGE_VAL;
+  இரட்டை ext_min_x =  HUGE_VAL;
+  இரட்டை ext_min_y =  HUGE_VAL;
+  இரட்டை ext_max_x = -HUGE_VAL;
+  இரட்டை ext_max_y = -HUGE_VAL;
 
   /* Font scale (set by hb_gpu_draw_set_scale or hb_gpu_draw_glyph). */
-  int x_scale = 0;
-  int y_scale = 0;
+  முழு x_scale = 0;
+  முழு y_scale = 0;
 
   /* Work budget for outline traversal and generated curves.  A paint
    * backend seeds this through the public draw-budget API before drawing
@@ -117,14 +117,14 @@ struct hb_gpu_draw_t
   int64_t  budget = HB_BUDGET_DEFAULT;
   int64_t  budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  வெறுமை recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
   int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  { திரும்பு &budget_remaining; }
 
   /* Encode scratch (reused across calls) */
   hb_gpu_encode_scratch_t scratch;
@@ -133,13 +133,13 @@ struct hb_gpu_draw_t
   hb_blob_t *recycled_blob = nullptr;
 
   /* Internal accumulation methods */
-  HB_INTERNAL void acc_move_to (double x, double y);
-  HB_INTERNAL void acc_line_to (double x, double y);
-  HB_INTERNAL void acc_conic_to (double cx, double cy, double x, double y);
-  HB_INTERNAL void acc_cubic_to (double c1x, double c1y,
-				 double c2x, double c2y,
-				 double x, double y);
-  HB_INTERNAL void acc_close_path ();
+  HB_INTERNAL வெறுமை acc_move_to (இரட்டை x, இரட்டை y);
+  HB_INTERNAL வெறுமை acc_வரி_to (இரட்டை x, இரட்டை y);
+  HB_INTERNAL வெறுமை acc_conic_to (இரட்டை cx, இரட்டை cy, இரட்டை x, இரட்டை y);
+  HB_INTERNAL வெறுமை acc_cubic_to (இரட்டை c1x, இரட்டை c1y,
+				 இரட்டை c2x, இரட்டை c2y,
+				 இரட்டை x, இரட்டை y);
+  HB_INTERNAL வெறுமை acc_close_path ();
 };
 
 

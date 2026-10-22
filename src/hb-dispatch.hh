@@ -29,30 +29,30 @@
 #ifndef HB_DISPATCH_HH
 #define HB_DISPATCH_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 /*
  * Dispatch
  */
 
-template <typename Context, typename Return=hb_empty_t, unsigned int MaxDebugDepth=0>
-struct hb_dispatch_context_t
+template <typename Context, typename Return=hb_empty_t, unsigned முழு MaxDebugDepth=0>
+கட்டமைப்பு hb_dispatch_context_t
 {
-  private:
+  தனிப்பட்ட:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const Context* thiz () const { return static_cast<const Context *> (this); }
-	Context* thiz ()       { return static_cast<      Context *> (this); }
-  public:
-  const char *get_name () { return "UNKNOWN"; }
-  static constexpr unsigned max_debug_depth = MaxDebugDepth;
-  typedef Return return_t;
+  மாறிலி Context* thiz () மாறிலி { திரும்பு static_cast<மாறிலி Context *> (இது); }
+	Context* thiz ()       { திரும்பு static_cast<      Context *> (இது); }
+  பொது:
+  மாறிலி எழுத்து *get_name () { திரும்பு "UNKNOWN"; }
+  நிலையான constexpr unsigned max_debug_depth = MaxDebugDepth;
+  வகைவரை Return return_t;
   template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format HB_UNUSED) { return true; }
+  தருக்க may_dispatch (மாறிலி T *obj HB_UNUSED, மாறிலி F *format HB_UNUSED) { திரும்பு உண்மை; }
   template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
-  static return_t no_dispatch_return_value () { return Context::default_return_value (); }
-  static bool stop_sublookup_iteration (const return_t r HB_UNUSED) { return false; }
+  return_t dispatch (மாறிலி T &obj, Ts&&... ds)
+  { திரும்பு obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
+  நிலையான return_t no_dispatch_return_மதிப்பு () { திரும்பு Context::default_return_மதிப்பு (); }
+  நிலையான தருக்க stop_sublookup_iteration (மாறிலி return_t r HB_UNUSED) { திரும்பு பொய்; }
   unsigned debug_depth = 0;
 };
 

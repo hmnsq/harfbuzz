@@ -29,21 +29,21 @@
 #ifndef HB_OT_LAYOUT_COMMON_HH
 #define HB_OT_LAYOUT_COMMON_HH
 
-#include "hb.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
-#include "hb-set.hh"
-#include "hb-bimap.hh"
-#include "hb-cache.hh"
-#include "hb-ot-dual.hh"
+#அந்தர்பாவ "hb.hh"
+#அந்தர்பாவ "hb-ot-layout.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-set.hh"
+#அந்தர்பாவ "hb-bimap.hh"
+#அந்தர்பாவ "hb-cache.hh"
+#அந்தர்பாவ "hb-ot-dual.hh"
 
 using hb_ot_layout_mapping_cache_t = hb_cache_t<16, 8, 8>;
-static_assert (sizeof (hb_ot_layout_mapping_cache_t) == 512, "");
+static_assert (அளவு (hb_ot_layout_mapping_cache_t) == 512, "");
 
-using hb_ot_layout_binary_cache_t = hb_cache_t<14, 1, 8>;
-static_assert (sizeof (hb_ot_layout_binary_cache_t) == 256, "");
+using hb_ot_layout_இருமம்_cache_t = hb_cache_t<14, 1, 8>;
+static_assert (அளவு (hb_ot_layout_இருமம்_cache_t) == 256, "");
 
-#include "OT/Layout/Common/Coverage.hh"
+#அந்தர்பாவ "OT/Layout/Common/Coverage.hh"
 
 // TODO(garretrieger): cleanup these after migration.
 using OT::Layout::Common::Coverage;
@@ -52,111 +52,111 @@ using OT::Layout::SmallTypes;
 using OT::Layout::MediumTypes;
 
 
-namespace OT {
+நாமாகாஶ OT {
 
 template<typename Iterator>
-static inline bool ClassDef_serialize (hb_serialize_context_t *c,
+நிலையான உள்வரி தருக்க ClassDef_serialize (hb_serialize_context_t *c,
 				       Iterator it);
 
-static bool ClassDef_remap_and_serialize (
+நிலையான தருக்க ClassDef_remap_and_serialize (
     hb_serialize_context_t *c,
-    const hb_set_t &klasses,
-    bool use_class_zero,
+    மாறிலி hb_set_t &klasses,
+    தருக்க use_class_zero,
     hb_sorted_vector_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
     hb_map_t *klass_map /*IN/OUT*/);
 
-struct ItemVarStoreInstancer;
+கட்டமைப்பு ItemVarStoreInstancer;
 
-struct hb_collect_feature_substitutes_with_var_context_t
+கட்டமைப்பு hb_collect_feature_substitutes_with_var_context_t
 {
-  const hb_map_t *axes_index_tag_map;
-  const hb_hashmap_t<hb_tag_t, Triple> *axes_location;
+  மாறிலி hb_map_t *axes_index_tag_map;
+  மாறிலி hb_hashmap_t<hb_tag_t, Triple> *axes_location;
   hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *record_cond_idx_map;
-  hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map;
+  hb_hashmap_t<unsigned, மாறிலி Feature*> *feature_substitutes_map;
   hb_set_t& catch_all_record_feature_idxes;
 
   // not stored in subset_plan
   hb_set_t *feature_indices;
-  bool apply;
-  bool variation_applied;
-  bool universal;
+  தருக்க apply;
+  தருக்க variation_applied;
+  தருக்க universal;
   unsigned cur_record_idx;
   hb_hashmap_t<hb::shared_ptr<hb_map_t>, unsigned> *conditionset_map;
   ItemVarStoreInstancer *instancer;
-  bool all_axes_pinned;
+  தருக்க all_axes_pinned;
 };
 
-struct hb_prune_langsys_context_t
+கட்டமைப்பு hb_prune_langsys_context_t
 {
-  hb_prune_langsys_context_t (const void         *table_,
+  hb_prune_langsys_context_t (மாறிலி வெறுமை         *table_,
                               hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map_,
-                              const hb_map_t     *duplicate_feature_map_,
+                              மாறிலி hb_map_t     *duplicate_feature_map_,
                               hb_set_t           *new_collected_feature_indexes_)
       :table (table_),
       script_langsys_map (script_langsys_map_),
       duplicate_feature_map (duplicate_feature_map_),
       new_feature_indexes (new_collected_feature_indexes_),
-      script_count (0),langsys_feature_count (0) {}
+      script_மொத்தம் (0),langsys_feature_மொத்தம் (0) {}
 
-  bool visitScript ()
-  { return script_count++ < HB_MAX_SCRIPTS; }
+  தருக்க visitScript ()
+  { திரும்பு script_மொத்தம்++ < HB_MAX_SCRIPTS; }
 
-  bool visitLangsys (unsigned feature_count)
+  தருக்க visitLangsys (unsigned feature_மொத்தம்_2)
   {
-    langsys_feature_count += feature_count;
-    return langsys_feature_count < HB_MAX_LANGSYS_FEATURE_COUNT;
+    langsys_feature_மொத்தம் += feature_மொத்தம்_2;
+    திரும்பு langsys_feature_மொத்தம் < HB_MAX_LANGSYS_FEATURE_மொத்தம்;
   }
 
-  public:
-  const void *table;
+  பொது:
+  மாறிலி வெறுமை *table;
   hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map;
-  const hb_map_t     *duplicate_feature_map;
+  மாறிலி hb_map_t     *duplicate_feature_map;
   hb_set_t           *new_feature_indexes;
 
-  private:
-  unsigned script_count;
-  unsigned langsys_feature_count;
+  தனிப்பட்ட:
+  unsigned script_மொத்தம்;
+  unsigned langsys_feature_மொத்தம்;
 };
 
-struct hb_subset_layout_context_t :
+கட்டமைப்பு hb_subset_layout_context_t :
   hb_dispatch_context_t<hb_subset_layout_context_t, hb_empty_t, HB_DEBUG_SUBSET>
 {
-  const char *get_name () { return "SUBSET_LAYOUT"; }
-  static return_t default_return_value () { return hb_empty_t (); }
+  மாறிலி எழுத்து *get_name () { திரும்பு "SUBSET_LAYOUT"; }
+  நிலையான return_t default_return_மதிப்பு () { திரும்பு hb_empty_t (); }
 
-  bool visitScript ()
+  தருக்க visitScript ()
   {
-    return script_count++ < HB_MAX_SCRIPTS;
+    திரும்பு script_மொத்தம்++ < HB_MAX_SCRIPTS;
   }
 
-  bool visitLangSys ()
+  தருக்க visitLangSys ()
   {
-    return langsys_count++ < HB_MAX_LANGSYS;
+    திரும்பு langsys_மொத்தம்++ < HB_MAX_LANGSYS;
   }
 
-  bool visitFeatureIndex (int count)
+  தருக்க visitFeatureIndex (முழு மொத்தம்)
   {
-    feature_index_count += count;
-    return feature_index_count < HB_MAX_FEATURE_INDICES;
+    feature_index_மொத்தம் += மொத்தம்;
+    திரும்பு feature_index_மொத்தம் < HB_MAX_FEATURE_INDICES;
   }
 
-  bool visitLookupIndex()
+  தருக்க visitLookupIndex()
   {
-    lookup_index_count++;
-    return lookup_index_count < HB_MAX_LOOKUP_VISIT_COUNT;
+    lookup_index_மொத்தம்++;
+    திரும்பு lookup_index_மொத்தம் < HB_MAX_LOOKUP_VISIT_மொத்தம்;
   }
 
   hb_subset_context_t *subset_context;
-  const hb_tag_t table_tag;
-  const hb_map_t *lookup_index_map;
-  const hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map;
-  const hb_map_t *feature_index_map;
-  const hb_map_t *feature_map_w_duplicates;
-  const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map;
-  const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations;
+  மாறிலி hb_tag_t table_tag;
+  மாறிலி hb_map_t *lookup_index_map;
+  மாறிலி hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map;
+  மாறிலி hb_map_t *feature_index_map;
+  மாறிலி hb_map_t *feature_map_w_duplicates;
+  மாறிலி hb_hashmap_t<unsigned, மாறிலி Feature*> *feature_substitutes_map;
+  மாறிலி hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations;
   hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map;
-  const hb_set_t *catch_all_record_feature_idxes;
-  const hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>> *feature_idx_tag_map;
+  மாறிலி hb_set_t *catch_all_record_feature_idxes;
+  மாறிலி hb_hashmap_t<unsigned, hb_pair_t<மாறிலி வெறுமை*, மாறிலி வெறுமை*>> *feature_idx_tag_map;
 
   unsigned cur_script_index;
   unsigned cur_feature_index;
@@ -169,12 +169,12 @@ struct hb_subset_layout_context_t :
 				cur_script_index (0xFFFFu),
 				cur_feature_index (Index::NOT_FOUND_INDEX),
 				cur_feature_var_record_idx (0u),
-				script_count (0),
-				langsys_count (0),
-				feature_index_count (0),
-				lookup_index_count (0)
+				script_மொத்தம் (0),
+				langsys_மொத்தம் (0),
+				feature_index_மொத்தம் (0),
+				lookup_index_மொத்தம் (0)
   {
-    if (tag_ == HB_OT_TAG_GSUB)
+    எனில் (tag_ == HB_OT_TAG_GSUB)
     {
       lookup_index_map = &c_->plan->gsub_lookups;
       script_langsys_map = &c_->plan->gsub_langsys;
@@ -186,7 +186,7 @@ struct hb_subset_layout_context_t :
       catch_all_record_feature_idxes = &c_->plan->gsub_old_features;
       feature_idx_tag_map = &c_->plan->gsub_old_feature_idx_tag_map;
     }
-    else
+    இல்லையெனில்
     {
       lookup_index_map = &c_->plan->gpos_lookups;
       script_langsys_map = &c_->plan->gpos_langsys;
@@ -200,92 +200,92 @@ struct hb_subset_layout_context_t :
     }
   }
 
-  private:
-  unsigned script_count;
-  unsigned langsys_count;
-  unsigned feature_index_count;
-  unsigned lookup_index_count;
+  தனிப்பட்ட:
+  unsigned script_மொத்தம்;
+  unsigned langsys_மொத்தம்;
+  unsigned feature_index_மொத்தம்;
+  unsigned lookup_index_மொத்தம்;
 };
 
-struct ItemVariationStore;
-struct hb_collect_variation_indices_context_t :
+கட்டமைப்பு ItemVariationStore;
+கட்டமைப்பு hb_collect_variation_indices_context_t :
        hb_dispatch_context_t<hb_collect_variation_indices_context_t>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { obj.collect_variation_indices (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  return_t dispatch (மாறிலி T &obj) { obj.collect_variation_indices (இது); திரும்பு hb_empty_t (); }
+  நிலையான return_t default_return_மதிப்பு () { திரும்பு hb_empty_t (); }
 
   hb_set_t *layout_variation_indices;
-  const hb_set_t *glyph_set;
-  const hb_map_t *gpos_lookups;
-  hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values = nullptr;
+  மாறிலி hb_set_t *glyph_set;
+  மாறிலி hb_map_t *gpos_lookups;
+  hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, முழு>> *condition_மதிப்புகள் = nullptr;
 
   hb_collect_variation_indices_context_t (hb_set_t *layout_variation_indices_,
-					  const hb_set_t *glyph_set_,
-					  const hb_map_t *gpos_lookups_) :
+					  மாறிலி hb_set_t *glyph_set_,
+					  மாறிலி hb_map_t *gpos_lookups_) :
 					layout_variation_indices (layout_variation_indices_),
 					glyph_set (glyph_set_),
 					gpos_lookups (gpos_lookups_) {}
 };
 
 template<typename OutputArray>
-struct subset_offset_array_t
+கட்டமைப்பு subset_offset_array_t
 {
   subset_offset_array_t (hb_subset_context_t *subset_context_,
 			 OutputArray& out_,
-			 const void *base_) : subset_context (subset_context_),
+			 மாறிலி வெறுமை *base_) : subset_context (subset_context_),
 					      out (out_), base (base_) {}
 
   template <typename T>
-  bool operator () (T&& offset)
+  தருக்க operator () (T&& offset)
   {
     auto snap = subset_context->serializer->snapshot ();
     auto *o = out.serialize_append (subset_context->serializer);
-    if (unlikely (!o)) return false;
-    bool ret = o->serialize_subset (subset_context, offset, base);
-    if (!ret)
+    எனில் (unlikely (!o)) திரும்பு பொய்;
+    தருக்க ret = o->serialize_subset (subset_context, offset, base);
+    எனில் (!ret)
     {
-      out.pop ();
+      out.எடு ();
       subset_context->serializer->revert (snap);
     }
-    return ret;
+    திரும்பு ret;
   }
 
-  private:
+  தனிப்பட்ட:
   hb_subset_context_t *subset_context;
   OutputArray &out;
-  const void *base;
+  மாறிலி வெறுமை *base;
 };
 
 
 template<typename OutputArray, typename Arg>
-struct subset_offset_array_arg_t
+கட்டமைப்பு subset_offset_array_arg_t
 {
   subset_offset_array_arg_t (hb_subset_context_t *subset_context_,
 			     OutputArray& out_,
-			     const void *base_,
+			     மாறிலி வெறுமை *base_,
 			     Arg &&arg_) : subset_context (subset_context_), out (out_),
 					  base (base_), arg (arg_) {}
 
   template <typename T>
-  bool operator () (T&& offset)
+  தருக்க operator () (T&& offset)
   {
     auto snap = subset_context->serializer->snapshot ();
     auto *o = out.serialize_append (subset_context->serializer);
-    if (unlikely (!o)) return false;
-    bool ret = o->serialize_subset (subset_context, offset, base, arg);
-    if (!ret)
+    எனில் (unlikely (!o)) திரும்பு பொய்;
+    தருக்க ret = o->serialize_subset (subset_context, offset, base, arg);
+    எனில் (!ret)
     {
-      out.pop ();
+      out.எடு ();
       subset_context->serializer->revert (snap);
     }
-    return ret;
+    திரும்பு ret;
   }
 
-  private:
+  தனிப்பட்ட:
   hb_subset_context_t *subset_context;
   OutputArray &out;
-  const void *base;
+  மாறிலி வெறுமை *base;
   Arg &&arg;
 };
 
@@ -294,68 +294,68 @@ struct subset_offset_array_arg_t
  * and discards the offset in the array if the subset operation results in an empty
  * thing.
  */
-struct
+கட்டமைப்பு
 {
   template<typename OutputArray>
   subset_offset_array_t<OutputArray>
   operator () (hb_subset_context_t *subset_context, OutputArray& out,
-	       const void *base) const
-  { return subset_offset_array_t<OutputArray> (subset_context, out, base); }
+	       மாறிலி வெறுமை *base) மாறிலி
+  { திரும்பு subset_offset_array_t<OutputArray> (subset_context, out, base); }
 
   /* Variant with one extra argument passed to serialize_subset */
   template<typename OutputArray, typename Arg>
   subset_offset_array_arg_t<OutputArray, Arg>
   operator () (hb_subset_context_t *subset_context, OutputArray& out,
-	       const void *base, Arg &&arg) const
-  { return subset_offset_array_arg_t<OutputArray, Arg> (subset_context, out, base, arg); }
+	       மாறிலி வெறுமை *base, Arg &&arg) மாறிலி
+  { திரும்பு subset_offset_array_arg_t<OutputArray, Arg> (subset_context, out, base, arg); }
 }
 HB_FUNCOBJ (subset_offset_array);
 
 template<typename OutputArray>
-struct subset_record_array_t
+கட்டமைப்பு subset_record_array_t
 {
   subset_record_array_t (hb_subset_layout_context_t *c_, OutputArray* out_,
-			 const void *base_) : subset_layout_context (c_),
+			 மாறிலி வெறுமை *base_) : subset_layout_context (c_),
 					      out (out_), base (base_) {}
 
   template <typename T>
-  void
+  வெறுமை
   operator () (T&& record)
   {
     auto snap = subset_layout_context->subset_context->serializer->snapshot ();
-    bool ret = record.subset (subset_layout_context, base);
-    if (!ret) subset_layout_context->subset_context->serializer->revert (snap);
-    else out->len++;
+    தருக்க ret = record.subset (subset_layout_context, base);
+    எனில் (!ret) subset_layout_context->subset_context->serializer->revert (snap);
+    இல்லையெனில் out->len++;
   }
 
-  private:
+  தனிப்பட்ட:
   hb_subset_layout_context_t *subset_layout_context;
   OutputArray *out;
-  const void *base;
+  மாறிலி வெறுமை *base;
 };
 
 template<typename OutputArray, typename Arg>
-struct subset_record_array_arg_t
+கட்டமைப்பு subset_record_array_arg_t
 {
   subset_record_array_arg_t (hb_subset_layout_context_t *c_, OutputArray* out_,
-			     const void *base_,
+			     மாறிலி வெறுமை *base_,
 			     Arg &&arg_) : subset_layout_context (c_),
 					   out (out_), base (base_), arg (arg_) {}
 
   template <typename T>
-  void
+  வெறுமை
   operator () (T&& record)
   {
     auto snap = subset_layout_context->subset_context->serializer->snapshot ();
-    bool ret = record.subset (subset_layout_context, base, arg);
-    if (!ret) subset_layout_context->subset_context->serializer->revert (snap);
-    else out->len++;
+    தருக்க ret = record.subset (subset_layout_context, base, arg);
+    எனில் (!ret) subset_layout_context->subset_context->serializer->revert (snap);
+    இல்லையெனில் out->len++;
   }
 
-  private:
+  தனிப்பட்ட:
   hb_subset_layout_context_t *subset_layout_context;
   OutputArray *out;
-  const void *base;
+  மாறிலி வெறுமை *base;
   Arg &&arg;
 };
 
@@ -363,60 +363,60 @@ struct subset_record_array_arg_t
  * Helper to subset a RecordList/record array. Subsets each Record in the array and
  * discards the record if the subset operation returns false.
  */
-struct
+கட்டமைப்பு
 {
   template<typename OutputArray>
   subset_record_array_t<OutputArray>
   operator () (hb_subset_layout_context_t *c, OutputArray* out,
-	       const void *base) const
-  { return subset_record_array_t<OutputArray> (c, out, base); }
+	       மாறிலி வெறுமை *base) மாறிலி
+  { திரும்பு subset_record_array_t<OutputArray> (c, out, base); }
 
   /* Variant with one extra argument passed to subset */
   template<typename OutputArray, typename Arg>
   subset_record_array_arg_t<OutputArray, Arg>
   operator () (hb_subset_layout_context_t *c, OutputArray* out,
-               const void *base, Arg &&arg) const
-  { return subset_record_array_arg_t<OutputArray, Arg> (c, out, base, arg); }
+               மாறிலி வெறுமை *base, Arg &&arg) மாறிலி
+  { திரும்பு subset_record_array_arg_t<OutputArray, Arg> (c, out, base, arg); }
 }
 HB_FUNCOBJ (subset_record_array);
 
 
 template<typename OutputArray>
-struct serialize_math_record_array_t
+கட்டமைப்பு serialize_math_record_array_t
 {
   serialize_math_record_array_t (hb_serialize_context_t *serialize_context_,
                          OutputArray& out_,
-                         const void *base_,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map_) :
+                         மாறிலி வெறுமை *base_,
+                         மாறிலி hb_hashmap_t<unsigned, hb_pair_t<unsigned, முழு>> *variation_map_) :
                                               serialize_context (serialize_context_),
                                               out (out_), base (base_), variation_map (variation_map_) {}
 
   template <typename T>
-  bool operator () (T&& record)
+  தருக்க operator () (T&& record)
   {
-    if (!serialize_context->copy (record, base, variation_map)) return false;
+    எனில் (!serialize_context->copy (record, base, variation_map)) திரும்பு பொய்;
     out.len++;
-    return true;
+    திரும்பு உண்மை;
   }
 
-  private:
+  தனிப்பட்ட:
   hb_serialize_context_t *serialize_context;
   OutputArray &out;
-  const void *base;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map;
+  மாறிலி வெறுமை *base;
+  மாறிலி hb_hashmap_t<unsigned, hb_pair_t<unsigned, முழு>> *variation_map;
 };
 
 /*
  * Helper to serialize an array of MATH records.
  */
-struct
+கட்டமைப்பு
 {
   template<typename OutputArray>
   serialize_math_record_array_t<OutputArray>
   operator () (hb_serialize_context_t *serialize_context, OutputArray& out,
-               const void *base,
-               const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
-  { return serialize_math_record_array_t<OutputArray> (serialize_context, out, base, variation_map); }
+               மாறிலி வெறுமை *base,
+               மாறிலி hb_hashmap_t<unsigned, hb_pair_t<unsigned, முழு>> *variation_map) மாறிலி
+  { திரும்பு serialize_math_record_array_t<OutputArray> (serialize_context, out, base, variation_map); }
 
 }
 HB_FUNCOBJ (serialize_math_record_array);
@@ -432,45 +432,45 @@ HB_FUNCOBJ (serialize_math_record_array);
  * Script, ScriptList, LangSys, Feature, FeatureList, Lookup, LookupList
  */
 
-struct IndexArray : Array16Of<Index>
+கட்டமைப்பு IndexArray : Array16Of<Index>
 {
-  bool intersects (const hb_map_t *indexes) const
-  { return hb_any (*this, indexes); }
+  தருக்க intersects (மாறிலி hb_map_t *indexes) மாறிலி
+  { திரும்பு hb_any (*இது, indexes); }
 
   template <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  வெறுமை serialize (hb_serialize_context_t *c,
 		  hb_subset_layout_context_t *l,
 		  Iterator it)
   {
-    if (!it) return;
-    if (unlikely (!c->extend_min ((*this)))) return;
+    எனில் (!it) திரும்பு;
+    எனில் (unlikely (!c->extend_min ((*இது)))) திரும்பு;
 
-    for (const auto _ : it)
+    க்கு (மாறிலி auto _ : it)
     {
-      if (!l->visitLookupIndex()) break;
+      எனில் (!l->visitLookupIndex()) நிறுத்து;
 
       Index i;
       i = _;
       c->copy (i);
-      this->len++;
+      இது->len++;
     }
   }
 
-  unsigned int get_indexes (unsigned int start_offset,
-			    unsigned int *_count /* IN/OUT */,
-			    unsigned int *_indexes /* OUT */) const
+  unsigned முழு get_indexes (unsigned முழு start_offset,
+			    unsigned முழு *மொத்தம்_2 /* IN/OUT */,
+			    unsigned முழு *_indexes /* OUT */) மாறிலி
   {
-    if (_count && _indexes)
+    எனில் (மொத்தம்_2 && _indexes)
     {
-      + this->as_array ().sub_array (start_offset, _count)
-      | hb_sink (hb_array (_indexes, *_count))
+      + இது->as_array ().sub_array (start_offset, மொத்தம்_2)
+      | hb_sink (hb_array (_indexes, *மொத்தம்_2))
       ;
     }
-    return this->len;
+    திரும்பு இது->len;
   }
 
-  void add_indexes_to (hb_set_t* output /* OUT */) const
+  வெறுமை add_indexes_to (hb_set_t* output /* OUT */) மாறிலி
   {
     output->add_array (as_array ());
   }
@@ -478,12 +478,12 @@ struct IndexArray : Array16Of<Index>
 
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size */
-struct FeatureParamsSize
+கட்டமைப்பு FeatureParamsSize
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!c->check_struct (இது))) return_trace (பொய்);
     hb_barrier ();
 
     /* This subtable has some "history", if you will.  Some earlier versions of
@@ -535,29 +535,29 @@ struct FeatureParamsSize
      *     passes test.
      */
 
-    if (!designSize)
-      return_trace (false);
-    else if (subfamilyID == 0 &&
+    எனில் (!designSize)
+      return_trace (பொய்);
+    இல்லையெனில் எனில் (subfamilyID == 0 &&
 	     subfamilyNameID == 0 &&
 	     rangeStart == 0 &&
 	     rangeEnd == 0)
-      return_trace (true);
-    else if (designSize < rangeStart ||
+      return_trace (உண்மை);
+    இல்லையெனில் எனில் (designSize < rangeStart ||
 	     designSize > rangeEnd ||
 	     subfamilyNameID < 256 ||
 	     subfamilyNameID > 32767)
-      return_trace (false);
-    else
-      return_trace (true);
+      return_trace (பொய்);
+    இல்லையெனில்
+      return_trace (உண்மை);
   }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
+  வெறுமை collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) மாறிலி
   { nameids_to_retain->add (subfamilyNameID); }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (இது);
+    return_trace ((தருக்க) c->serializer->embed (*இது));
   }
 
   HBUINT16	designSize;	/* Represents the design size in 720/inch
@@ -595,28 +595,28 @@ struct FeatureParamsSize
   HBUINT16	rangeEnd;	/* Small end of the recommended usage range
 				   (exclusive), stored in 720/inch units
 				 * (decipoints). */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (10);
 };
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#ssxx */
-struct FeatureParamsStylisticSet
+கட்டமைப்பு FeatureParamsStylisticSet
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     /* Right now minorVersion is at zero.  Which means, any table supports
      * the uiNameID field. */
-    return_trace (c->check_struct (this));
+    return_trace (c->check_struct (இது));
   }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
+  வெறுமை collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) மாறிலி
   { nameids_to_retain->add (uiNameID); }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (இது);
+    return_trace ((தருக்க) c->serializer->embed (*இது));
   }
 
   HBUINT16	version;	/* (set to 0): This corresponds to a “minor”
@@ -638,51 +638,51 @@ struct FeatureParamsStylisticSet
 				 * fallback. The string should be kept to a
 				 * minimal length to fit comfortably with
 				 * different application interfaces. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (4);
 };
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_ae#cv01-cv99 */
-struct FeatureParamsCharacterVariants
+கட்டமைப்பு FeatureParamsCharacterVariants
 {
   unsigned
-  get_characters (unsigned start_offset, unsigned *char_count, hb_codepoint_t *chars) const
+  get_characters (unsigned start_offset, unsigned *char_மொத்தம், hb_codepoint_t *chars) மாறிலி
   {
-    if (char_count && chars)
+    எனில் (char_மொத்தம் && chars)
     {
-      + characters.as_array ().sub_array (start_offset, char_count)
-      | hb_sink (hb_array (chars, *char_count))
+      + characters.as_array ().sub_array (start_offset, char_மொத்தம்)
+      | hb_sink (hb_array (chars, *char_மொத்தம்))
       ;
     }
-    return characters.len;
+    திரும்பு characters.len;
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (characters.len, HBUINT24::static_size, min_size); }
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_mul_add_saturate (characters.len, HBUINT24::static_size, min_size); }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
+  வெறுமை collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) மாறிலி
   {
-    if (featUILableNameID) nameids_to_retain->add (featUILableNameID);
-    if (featUITooltipTextNameID) nameids_to_retain->add (featUITooltipTextNameID);
-    if (sampleTextNameID) nameids_to_retain->add (sampleTextNameID);
+    எனில் (featUILableNameID) nameids_to_retain->add (featUILableNameID);
+    எனில் (featUITooltipTextNameID) nameids_to_retain->add (featUITooltipTextNameID);
+    எனில் (sampleTextNameID) nameids_to_retain->add (sampleTextNameID);
 
-    if (!firstParamUILabelNameID || !numNamedParameters || numNamedParameters >= 0x7FFF)
-      return;
+    எனில் (!firstParamUILabelNameID || !இலக்கம்_Named_Parameters || இலக்கம்_Named_Parameters >= 0x7FFF)
+      திரும்பு;
 
-    unsigned last_name_id = (unsigned) firstParamUILabelNameID + (unsigned) numNamedParameters - 1;
+    unsigned last_name_id = (unsigned) firstParamUILabelNameID + (unsigned) இலக்கம்_Named_Parameters - 1;
     nameids_to_retain->add_range (firstParamUILabelNameID, last_name_id);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (இது);
+    return_trace ((தருக்க) c->serializer->embed (*இது));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  characters.sanitize (c));
   }
 
@@ -702,7 +702,7 @@ struct FeatureParamsCharacterVariants
 					 * specifies sample text that
 					 * illustrates the effect of this
 					 * feature. (May be NULL.) */
-  HBUINT16	numNamedParameters;	/* Number of named parameters. (May
+  HBUINT16	இலக்கம்_Named_Parameters;	/* Number of named parameters. (May
 					 * be zero.) */
   NameID	firstParamUILabelNameID;/* The first ‘name’ table name ID
 					 * used to specify strings for
@@ -714,129 +714,129 @@ struct FeatureParamsCharacterVariants
 					 * of the characters for which this
 					 * feature provides glyph variants.
 					 * (May be zero.) */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (14, characters);
 };
 
-struct FeatureParams
+கட்டமைப்பு FeatureParams
 {
-  bool sanitize (hb_sanitize_context_t *c, hb_tag_t tag) const
+  தருக்க sanitize (hb_sanitize_context_t *c, hb_tag_t tag) மாறிலி
   {
 #ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return true;
+    திரும்பு உண்மை;
 #endif
-    TRACE_SANITIZE (this);
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
+    TRACE_SANITIZE (இது);
+    எனில் (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
       return_trace (u.size.sanitize (c));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
+    எனில் ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
       return_trace (u.stylisticSet.sanitize (c));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
+    எனில் ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
       return_trace (u.characterVariants.sanitize (c));
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  void collect_name_ids (hb_tag_t tag, hb_set_t *nameids_to_retain /* OUT */) const
+  வெறுமை collect_name_ids (hb_tag_t tag, hb_set_t *nameids_to_retain /* OUT */) மாறிலி
   {
 #ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return;
+    திரும்பு;
 #endif
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return (u.size.collect_name_ids (nameids_to_retain));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return (u.stylisticSet.collect_name_ids (nameids_to_retain));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
-      return (u.characterVariants.collect_name_ids (nameids_to_retain));
+    எனில் (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
+      திரும்பு (u.size.collect_name_ids (nameids_to_retain));
+    எனில் ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
+      திரும்பு (u.stylisticSet.collect_name_ids (nameids_to_retain));
+    எனில் ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
+      திரும்பு (u.characterVariants.collect_name_ids (nameids_to_retain));
   }
 
-  bool subset (hb_subset_context_t *c, const Tag* tag) const
+  தருக்க subset (hb_subset_context_t *c, மாறிலி Tag* tag) மாறிலி
   {
 #ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return false;
+    திரும்பு பொய்;
 #endif
-    TRACE_SUBSET (this);
-    if (!tag) return_trace (false);
-    if (*tag == HB_TAG ('s','i','z','e') && hb_barrier ())
+    TRACE_SUBSET (இது);
+    எனில் (!tag) return_trace (பொய்);
+    எனில் (*tag == HB_TAG ('s','i','z','e') && hb_barrier ())
       return_trace (u.size.subset (c));
-    if ((*tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
+    எனில் ((*tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
       return_trace (u.stylisticSet.subset (c));
-    if ((*tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
+    எனில் ((*tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
       return_trace (u.characterVariants.subset (c));
-    return_trace (false);
+    return_trace (பொய்);
   }
 
 #ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  const FeatureParamsSize& get_size_params (hb_tag_t tag) const
+  மாறிலி FeatureParamsSize& get_size_params (hb_tag_t tag) மாறிலி
   {
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return u.size;
-    return Null (FeatureParamsSize);
+    எனில் (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
+      திரும்பு u.size;
+    திரும்பு Null (FeatureParamsSize);
   }
-  const FeatureParamsStylisticSet& get_stylistic_set_params (hb_tag_t tag) const
+  மாறிலி FeatureParamsStylisticSet& get_stylistic_set_params (hb_tag_t tag) மாறிலி
   {
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return u.stylisticSet;
-    return Null (FeatureParamsStylisticSet);
+    எனில் ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
+      திரும்பு u.stylisticSet;
+    திரும்பு Null (FeatureParamsStylisticSet);
   }
-  const FeatureParamsCharacterVariants& get_character_variants_params (hb_tag_t tag) const
+  மாறிலி FeatureParamsCharacterVariants& get_character_variants_params (hb_tag_t tag) மாறிலி
   {
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
-      return u.characterVariants;
-    return Null (FeatureParamsCharacterVariants);
+    எனில் ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
+      திரும்பு u.characterVariants;
+    திரும்பு Null (FeatureParamsCharacterVariants);
   }
 #endif
 
-  private:
-  union {
+  தனிப்பட்ட:
+  ஒன்றிப்பு {
   FeatureParamsSize			size;
   FeatureParamsStylisticSet		stylisticSet;
   FeatureParamsCharacterVariants	characterVariants;
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_MIN (0);
 };
 
-struct Record_sanitize_closure_t {
+கட்டமைப்பு Record_sanitize_closure_t {
   hb_tag_t tag;
-  const void *list_base;
+  மாறிலி வெறுமை *list_base;
 };
 
-struct Feature
+கட்டமைப்பு Feature
 {
-  unsigned int get_lookup_count () const
-  { return lookupIndex.len; }
-  hb_tag_t get_lookup_index (unsigned int i) const
-  { return lookupIndex[i]; }
-  unsigned int get_lookup_indexes (unsigned int start_index,
-				   unsigned int *lookup_count /* IN/OUT */,
-				   unsigned int *lookup_tags /* OUT */) const
-  { return lookupIndex.get_indexes (start_index, lookup_count, lookup_tags); }
-  void add_lookup_indexes_to (hb_set_t *lookup_indexes) const
+  unsigned முழு get_lookup_மொத்தம் () மாறிலி
+  { திரும்பு lookupIndex.len; }
+  hb_tag_t get_lookup_index (unsigned முழு i) மாறிலி
+  { திரும்பு lookupIndex[i]; }
+  unsigned முழு get_lookup_indexes (unsigned முழு start_index,
+				   unsigned முழு *lookup_மொத்தம் /* IN/OUT */,
+				   unsigned முழு *lookup_tags /* OUT */) மாறிலி
+  { திரும்பு lookupIndex.get_indexes (start_index, lookup_மொத்தம், lookup_tags); }
+  வெறுமை add_lookup_indexes_to (hb_set_t *lookup_indexes) மாறிலி
   { lookupIndex.add_indexes_to (lookup_indexes); }
 
-  const FeatureParams &get_feature_params () const
-  { return this+featureParams; }
+  மாறிலி FeatureParams &get_feature_params () மாறிலி
+  { திரும்பு இது+featureParams; }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
-  { return lookupIndex.intersects (lookup_indexes); }
+  தருக்க intersects_lookup_indexes (மாறிலி hb_map_t *lookup_indexes) மாறிலி
+  { திரும்பு lookupIndex.intersects (lookup_indexes); }
 
-  void collect_name_ids (hb_tag_t tag, hb_set_t *nameids_to_retain /* OUT */) const
+  வெறுமை collect_name_ids (hb_tag_t tag, hb_set_t *nameids_to_retain /* OUT */) மாறிலி
   {
-    if (featureParams)
+    எனில் (featureParams)
       get_feature_params ().collect_name_ids (tag, nameids_to_retain);
   }
 
-  bool subset (hb_subset_context_t         *c,
+  தருக்க subset (hb_subset_context_t         *c,
 	       hb_subset_layout_context_t  *l,
-	       const Tag                   *tag = nullptr) const
+	       மாறிலி Tag                   *tag = nullptr) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!c->serializer->extend_min (out))) return_trace (பொய்);
 
-    out->featureParams.serialize_subset (c, featureParams, this, tag);
+    out->featureParams.serialize_subset (c, featureParams, இது, tag);
 
     hb::shared_ptr<hb_set_t> *lookup_variations;
-    if (l->cur_feature_index != Index::NOT_FOUND_INDEX &&
+    எனில் (l->cur_feature_index != Index::NOT_FOUND_INDEX &&
 	l->lookup_variations->has (l->cur_feature_index, &lookup_variations))
     {
       auto it =
@@ -846,7 +846,7 @@ struct Feature
       ;
       out->lookupIndex.serialize (c->serializer, l, it);
     }
-    else
+    இல்லையெனில்
     {
       auto it =
       + hb_iter (lookupIndex)
@@ -857,15 +857,15 @@ struct Feature
     }
     // The decision to keep or drop this feature is already made before we get here
     // so always retain it.
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t *closure = nullptr) const
+  தருக்க sanitize (hb_sanitize_context_t *c,
+		 மாறிலி Record_sanitize_closure_t *closure = nullptr) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  featureParams.sanitize (c, this, closure ? closure->tag : HB_TAG_NONE) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
+		  featureParams.sanitize (c, இது, closure ? closure->tag : HB_TAG_NONE) &&
 		  lookupIndex.sanitize (c));
   }
 
@@ -875,43 +875,43 @@ struct Feature
 				 * to the beginning of the Feature Table; = Null
 				 * if not required */
   IndexArray	 lookupIndex;	/* Array of LookupList indices */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY_SIZED (4, lookupIndex);
 };
 
 template <typename Type>
-struct Record
+கட்டமைப்பு Record
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  முழு cmp (hb_tag_t a) மாறிலி { திரும்பு tag.cmp (a); }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base, const void *f_sub = nullptr) const
+  தருக்க subset (hb_subset_layout_context_t *c, மாறிலி வெறுமை *base, மாறிலி வெறுமை *f_sub = nullptr) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->subset_context->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
-    if (!f_sub)
+    எனில் (!f_sub)
       return_trace (out->offset.serialize_subset (c->subset_context, offset, base, c, &tag));
 
-    const Feature& f = *reinterpret_cast<const Feature *> (f_sub);
+    மாறிலி Feature& f = *reinterpret_cast<மாறிலி Feature *> (f_sub);
     auto *s = c->subset_context->serializer;
     s->push ();
 
     out->offset = 0;
-    bool ret = f.subset (c->subset_context, c, &tag);
-    if (ret)
-      s->add_link (out->offset, s->pop_pack ());
-    else
-      s->pop_discard ();
+    தருக்க ret = f.subset (c->subset_context, c, &tag);
+    எனில் (ret)
+      s->add_link (out->offset, s->எடு_pack ());
+    இல்லையெனில்
+      s->எடு_discard ();
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி வெறுமை *base) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    மாறிலி Record_sanitize_closure_t closure = {tag, base};
+    return_trace (c->check_struct (இது) &&
 		  offset.sanitize (c, base, &closure));
   }
 
@@ -919,126 +919,126 @@ struct Record
   Offset16To<Type>
                 offset;         /* Offset from beginning of object holding
                                  * the Record */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (6);
 };
 
 template <typename Type>
-struct RecordArrayOf : SortedArray16Of<Record<Type>>
+கட்டமைப்பு RecordArrayOf : SortedArray16Of<Record<Type>>
 {
-  const Offset16To<Type>& get_offset (unsigned int i) const
-  { return (*this)[i].offset; }
-  Offset16To<Type>& get_offset (unsigned int i)
-  { return (*this)[i].offset; }
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-                         unsigned int *record_count /* IN/OUT */,
-                         hb_tag_t     *record_tags /* OUT */) const
+  மாறிலி Offset16To<Type>& get_offset (unsigned முழு i) மாறிலி
+  { திரும்பு (*இது)[i].offset; }
+  Offset16To<Type>& get_offset (unsigned முழு i)
+  { திரும்பு (*இது)[i].offset; }
+  மாறிலி Tag& get_tag (unsigned முழு i) மாறிலி
+  { திரும்பு (*இது)[i].tag; }
+  unsigned முழு get_tags (unsigned முழு start_offset,
+                         unsigned முழு *record_மொத்தம் /* IN/OUT */,
+                         hb_tag_t     *record_tags /* OUT */) மாறிலி
   {
-    if (record_count && record_tags)
+    எனில் (record_மொத்தம் && record_tags)
     {
-      + this->as_array ().sub_array (start_offset, record_count)
+      + இது->as_array ().sub_array (start_offset, record_மொத்தம்)
       | hb_map (&Record<Type>::tag)
-      | hb_sink (hb_array (record_tags, *record_count))
+      | hb_sink (hb_array (record_tags, *record_மொத்தம்))
       ;
     }
-    return this->len;
+    திரும்பு இது->len;
   }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  தருக்க find_index (hb_tag_t tag, unsigned முழு *index) மாறிலி
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    திரும்பு இது->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
 };
 
 template <typename Type>
-struct RecordListOf : RecordArrayOf<Type>
+கட்டமைப்பு RecordListOf : RecordArrayOf<Type>
 {
-  const Type& operator [] (unsigned int i) const
-  { return this+this->get_offset (i); }
+  மாறிலி Type& operator [] (unsigned முழு i) மாறிலி
+  { திரும்பு இது+இது->get_offset (i); }
 
-  bool subset (hb_subset_context_t *c,
-               hb_subset_layout_context_t *l) const
+  தருக்க subset (hb_subset_context_t *c,
+               hb_subset_layout_context_t *l) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!c->serializer->extend_min (out))) return_trace (பொய்);
 
-    + this->iter ()
-    | hb_apply (subset_record_array (l, out, this))
+    + இது->iter ()
+    | hb_apply (subset_record_array (l, out, இது))
     ;
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (RecordArrayOf<Type>::sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (RecordArrayOf<Type>::sanitize (c, இது));
   }
 };
 
-struct RecordListOfFeature : RecordListOf<Feature>
+கட்டமைப்பு RecordListOfFeature : RecordListOf<Feature>
 {
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  தருக்க subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!c->serializer->extend_min (out))) return_trace (பொய்);
 
-    + hb_enumerate (*this)
+    + hb_enumerate (*இது)
     | hb_filter (l->feature_index_map, hb_first)
-    | hb_apply ([l, out, this] (const hb_pair_t<unsigned, const Record<Feature>&>& _)
+    | hb_apply ([l, out, இது] (மாறிலி hb_pair_t<unsigned, மாறிலி Record<Feature>&>& _)
                 {
-                  const Feature *f_sub = nullptr;
-                  const Feature **f = nullptr;
-                  if (l->feature_substitutes_map->has (_.first, &f))
+                  மாறிலி Feature *f_sub = nullptr;
+                  மாறிலி Feature **f = nullptr;
+                  எனில் (l->feature_substitutes_map->has (_.first, &f))
                     f_sub = *f;
 
                   l->cur_feature_index = _.first;
-                  subset_record_array (l, out, this, f_sub) (_.second);
+                  subset_record_array (l, out, இது, f_sub) (_.second);
                   l->cur_feature_index = Index::NOT_FOUND_INDEX;
                 })
     ;
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 };
 
-typedef RecordListOf<Feature> FeatureList;
+வகைவரை RecordListOf<Feature> FeatureList;
 
 
-struct LangSys
+கட்டமைப்பு LangSys
 {
-  unsigned int get_feature_count () const
-  { return featureIndex.len; }
-  hb_tag_t get_feature_index (unsigned int i) const
-  { return featureIndex[i]; }
-  unsigned int get_feature_indexes (unsigned int start_offset,
-				    unsigned int *feature_count /* IN/OUT */,
-				    unsigned int *feature_indexes /* OUT */) const
-  { return featureIndex.get_indexes (start_offset, feature_count, feature_indexes); }
-  void add_feature_indexes_to (hb_set_t *feature_indexes) const
+  unsigned முழு get_feature_மொத்தம் () மாறிலி
+  { திரும்பு featureIndex.len; }
+  hb_tag_t get_feature_index (unsigned முழு i) மாறிலி
+  { திரும்பு featureIndex[i]; }
+  unsigned முழு get_feature_indexes (unsigned முழு start_offset,
+				    unsigned முழு *feature_மொத்தம்_2 /* IN/OUT */,
+				    unsigned முழு *feature_indexes /* OUT */) மாறிலி
+  { திரும்பு featureIndex.get_indexes (start_offset, feature_மொத்தம்_2, feature_indexes); }
+  வெறுமை add_feature_indexes_to (hb_set_t *feature_indexes) மாறிலி
   { featureIndex.add_indexes_to (feature_indexes); }
 
-  bool has_required_feature () const { return reqFeatureIndex != 0xFFFFu; }
-  unsigned int get_required_feature_index () const
+  தருக்க has_required_feature () மாறிலி { திரும்பு reqFeatureIndex != 0xFFFFu; }
+  unsigned முழு get_required_feature_index () மாறிலி
   {
-    if (reqFeatureIndex == 0xFFFFu)
-      return Index::NOT_FOUND_INDEX;
-   return reqFeatureIndex;
+    எனில் (reqFeatureIndex == 0xFFFFu)
+      திரும்பு Index::NOT_FOUND_INDEX;
+   திரும்பு reqFeatureIndex;
   }
 
-  LangSys* copy (hb_serialize_context_t *c) const
+  LangSys* copy (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (*this));
+    TRACE_SERIALIZE (இது);
+    return_trace (c->embed (*இது));
   }
 
-  bool compare (const LangSys& o, const hb_map_t *feature_index_map) const
+  தருக்க compare (மாறிலி LangSys& o, மாறிலி hb_map_t *feature_index_map) மாறிலி
   {
-    if (reqFeatureIndex != o.reqFeatureIndex)
-      return false;
+    எனில் (reqFeatureIndex != o.reqFeatureIndex)
+      திரும்பு பொய்;
 
     auto iter =
     + hb_iter (featureIndex)
@@ -1052,22 +1052,22 @@ struct LangSys
     | hb_map (feature_index_map)
     ;
 
-    for (; iter && o_iter; iter++, o_iter++)
+    க்கு (; iter && o_iter; iter++, o_iter++)
     {
       unsigned a = *iter;
       unsigned b = *o_iter;
-      if (a != b) return false;
+      எனில் (a != b) திரும்பு பொய்;
     }
 
-    if (iter || o_iter) return false;
+    எனில் (iter || o_iter) திரும்பு பொய்;
 
-    return true;
+    திரும்பு உண்மை;
   }
 
-  void collect_features (hb_prune_langsys_context_t *c) const
+  வெறுமை collect_features (hb_prune_langsys_context_t *c) மாறிலி
   {
-    if (!has_required_feature () && !get_feature_count ()) return;
-    if (has_required_feature () &&
+    எனில் (!has_required_feature () && !get_feature_மொத்தம் ()) திரும்பு;
+    எனில் (has_required_feature () &&
         c->duplicate_feature_map->has (reqFeatureIndex))
       c->new_feature_indexes->add (get_required_feature_index ());
 
@@ -1077,19 +1077,19 @@ struct LangSys
     ;
   }
 
-  bool subset (hb_subset_context_t        *c,
+  தருக்க subset (hb_subset_context_t        *c,
 	       hb_subset_layout_context_t *l,
-	       const Tag                  *tag = nullptr) const
+	       மாறிலி Tag                  *tag = nullptr) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!c->serializer->extend_min (out))) return_trace (பொய்);
 
-    const uint32_t *v;
+    மாறிலி uint32_t *v;
     out->reqFeatureIndex = l->feature_map_w_duplicates->has (reqFeatureIndex, &v) ? *v : 0xFFFFu;
 
-    if (!l->visitFeatureIndex (featureIndex.len))
-      return_trace (false);
+    எனில் (!l->visitFeatureIndex (featureIndex.len))
+      return_trace (பொய்);
 
     auto it =
     + hb_iter (featureIndex)
@@ -1097,16 +1097,16 @@ struct LangSys
     | hb_map (l->feature_map_w_duplicates)
     ;
 
-    bool ret = bool (it);
+    தருக்க ret = தருக்க (it);
     out->featureIndex.serialize (c->serializer, l, it);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  தருக்க sanitize (hb_sanitize_context_t *c,
+		 மாறிலி Record_sanitize_closure_t * = nullptr) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && featureIndex.sanitize (c));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) && featureIndex.sanitize (c));
   }
 
   Offset16	lookupOrderZ;	/* = Null (reserved for an offset to a
@@ -1115,166 +1115,166 @@ struct LangSys
 				 * language system--if no required features
 				 * = 0xFFFFu */
   IndexArray	featureIndex;	/* Array of indices into the FeatureList */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY_SIZED (6, featureIndex);
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, LangSys);
 
-struct Script
+கட்டமைப்பு Script
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const LangSys& get_lang_sys (unsigned int i) const
+  unsigned முழு get_lang_sys_மொத்தம் () மாறிலி
+  { திரும்பு langSys.len; }
+  மாறிலி Tag& get_lang_sys_tag (unsigned முழு i) மாறிலி
+  { திரும்பு langSys.get_tag (i); }
+  unsigned முழு get_lang_sys_tags (unsigned முழு start_offset,
+				  unsigned முழு *lang_sys_மொத்தம் /* IN/OUT */,
+				  hb_tag_t     *lang_sys_tags /* OUT */) மாறிலி
+  { திரும்பு langSys.get_tags (start_offset, lang_sys_மொத்தம், lang_sys_tags); }
+  மாறிலி LangSys& get_lang_sys (unsigned முழு i) மாறிலி
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    எனில் (i == Index::NOT_FOUND_INDEX) திரும்பு get_default_lang_sys ();
+    திரும்பு இது+langSys[i].offset;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  தருக்க find_lang_sys_index (hb_tag_t tag, unsigned முழு *index) மாறிலி
+  { திரும்பு langSys.find_index (tag, index); }
 
-  bool has_default_lang_sys () const           { return defaultLangSys != 0; }
-  const LangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  தருக்க has_default_lang_sys () மாறிலி           { திரும்பு defaultLangSys != 0; }
+  மாறிலி LangSys& get_default_lang_sys () மாறிலி { திரும்பு இது+defaultLangSys; }
 
-  void prune_langsys (hb_prune_langsys_context_t *c,
-                      unsigned script_index) const
+  வெறுமை prune_langsys (hb_prune_langsys_context_t *c,
+                      unsigned script_index) மாறிலி
   {
-    if (!has_default_lang_sys () && !get_lang_sys_count ()) return;
-    if (!c->visitScript ()) return;
+    எனில் (!has_default_lang_sys () && !get_lang_sys_மொத்தம் ()) திரும்பு;
+    எனில் (!c->visitScript ()) திரும்பு;
 
-    if (!c->script_langsys_map->has (script_index))
+    எனில் (!c->script_langsys_map->has (script_index))
     {
-      if (unlikely (!c->script_langsys_map->set (script_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
-	return;
+      எனில் (unlikely (!c->script_langsys_map->set (script_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
+	திரும்பு;
     }
 
-    if (has_default_lang_sys ())
+    எனில் (has_default_lang_sys ())
     {
       //only collect features from non-redundant langsys
-      const LangSys& d = get_default_lang_sys ();
-      if (c->visitLangsys (d.get_feature_count ())) {
+      மாறிலி LangSys& d = get_default_lang_sys ();
+      எனில் (c->visitLangsys (d.get_feature_மொத்தம் ())) {
         d.collect_features (c);
       }
 
-      for (auto _ : + hb_enumerate (langSys))
+      க்கு (auto _ : + hb_enumerate (langSys))
       {
-        const LangSys& l = this+_.second.offset;
-        if (!c->visitLangsys (l.get_feature_count ())) continue;
-        if (l.compare (d, c->duplicate_feature_map)) continue;
+        மாறிலி LangSys& l = இது+_.second.offset;
+        எனில் (!c->visitLangsys (l.get_feature_மொத்தம் ())) தொடர்;
+        எனில் (l.compare (d, c->duplicate_feature_map)) தொடர்;
 
         l.collect_features (c);
         c->script_langsys_map->get (script_index)->add (_.first);
       }
     }
-    else
+    இல்லையெனில்
     {
-      for (auto _ : + hb_enumerate (langSys))
+      க்கு (auto _ : + hb_enumerate (langSys))
       {
-        const LangSys& l = this+_.second.offset;
-        if (!c->visitLangsys (l.get_feature_count ())) continue;
+        மாறிலி LangSys& l = இது+_.second.offset;
+        எனில் (!c->visitLangsys (l.get_feature_மொத்தம் ())) தொடர்;
         l.collect_features (c);
         c->script_langsys_map->get (script_index)->add (_.first);
       }
     }
   }
 
-  bool subset (hb_subset_context_t         *c,
+  தருக்க subset (hb_subset_context_t         *c,
 	       hb_subset_layout_context_t  *l,
-	       const Tag                   *tag) const
+	       மாறிலி Tag                   *tag) மாறிலி
   {
-    TRACE_SUBSET (this);
-    if (!l->visitScript ()) return_trace (false);
-    if (tag && !c->plan->layout_scripts.has (*tag))
-      return false;
+    TRACE_SUBSET (இது);
+    எனில் (!l->visitScript ()) return_trace (பொய்);
+    எனில் (tag && !c->plan->layout_scripts.has (*tag))
+      திரும்பு பொய்;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!c->serializer->extend_min (out))) return_trace (பொய்);
 
-    bool defaultLang = false;
-    if (has_default_lang_sys ())
+    தருக்க defaultLang = பொய்;
+    எனில் (has_default_lang_sys ())
     {
       c->serializer->push ();
-      const LangSys& ls = this+defaultLangSys;
-      bool ret = ls.subset (c, l);
-      if (!ret && tag && *tag != HB_TAG ('D', 'F', 'L', 'T'))
+      மாறிலி LangSys& ls = இது+defaultLangSys;
+      தருக்க ret = ls.subset (c, l);
+      எனில் (!ret && tag && *tag != HB_TAG ('D', 'F', 'L', 'T'))
       {
-	c->serializer->pop_discard ();
+	c->serializer->எடு_discard ();
 	out->defaultLangSys = 0;
       }
-      else
+      இல்லையெனில்
       {
-	c->serializer->add_link (out->defaultLangSys, c->serializer->pop_pack ());
-	defaultLang = true;
+	c->serializer->add_link (out->defaultLangSys, c->serializer->எடு_pack ());
+	defaultLang = உண்மை;
       }
     }
 
-    const hb_set_t *active_langsys = l->script_langsys_map->get (l->cur_script_index);
-    if (active_langsys)
+    மாறிலி hb_set_t *active_langsys = l->script_langsys_map->get (l->cur_script_index);
+    எனில் (active_langsys)
     {
       + hb_enumerate (langSys)
       | hb_filter (active_langsys, hb_first)
       | hb_map (hb_second)
-      | hb_filter ([=] (const Record<LangSys>& record) {return l->visitLangSys (); })
-      | hb_apply (subset_record_array (l, &(out->langSys), this))
+      | hb_filter ([=] (மாறிலி Record<LangSys>& record) {திரும்பு l->visitLangSys (); })
+      | hb_apply (subset_record_array (l, &(out->langSys), இது))
       ;
     }
 
-    return_trace (bool (out->langSys.len) || defaultLang || l->table_tag == HB_OT_TAG_GSUB);
+    return_trace (தருக்க (out->langSys.len) || defaultLang || l->table_tag == HB_OT_TAG_GSUB);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  தருக்க sanitize (hb_sanitize_context_t *c,
+		 மாறிலி Record_sanitize_closure_t * = nullptr) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (defaultLangSys.sanitize (c, this) && langSys.sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (defaultLangSys.sanitize (c, இது) && langSys.sanitize (c, இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Offset16To<LangSys>
 		defaultLangSys;	/* Offset to DefaultLangSys table--from
 				 * beginning of Script table--may be Null */
   RecordArrayOf<LangSys>
 		langSys;	/* Array of LangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY_SIZED (4, langSys);
 };
 
-struct RecordListOfScript : RecordListOf<Script>
+கட்டமைப்பு RecordListOfScript : RecordListOf<Script>
 {
-  bool subset (hb_subset_context_t *c,
-               hb_subset_layout_context_t *l) const
+  தருக்க subset (hb_subset_context_t *c,
+               hb_subset_layout_context_t *l) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!c->serializer->extend_min (out))) return_trace (பொய்);
 
-    for (auto _ : + hb_enumerate (*this))
+    க்கு (auto _ : + hb_enumerate (*இது))
     {
       auto snap = c->serializer->snapshot ();
       l->cur_script_index = _.first;
-      bool ret = _.second.subset (l, this);
-      if (!ret) c->serializer->revert (snap);
-      else out->len++;
+      தருக்க ret = _.second.subset (l, இது);
+      எனில் (!ret) c->serializer->revert (snap);
+      இல்லையெனில் out->len++;
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 };
 
-typedef RecordListOfScript ScriptList;
+வகைவரை RecordListOfScript ScriptList;
 
 
 
-struct LookupFlag : HBUINT16
+கட்டமைப்பு LookupFlag : HBUINT16
 {
-  enum Flags {
-    RightToLeft		= 0x0001u,
+  எண்ணிக்கை Flags {
+    வலது_To_இடது		= 0x0001u,
     IgnoreBaseGlyphs	= 0x0002u,
     IgnoreLigatures	= 0x0004u,
     IgnoreMarks		= 0x0008u,
@@ -1283,111 +1283,111 @@ struct LookupFlag : HBUINT16
     Reserved		= 0x00E0u,
     MarkAttachmentType	= 0xFF00u
   };
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (2);
 };
 
 } /* namespace OT */
 /* This has to be outside the namespace. */
 HB_MARK_AS_FLAG_T (OT::LookupFlag::Flags);
-namespace OT {
+நாமாகாஶ OT {
 
-struct Lookup
+கட்டமைப்பு Lookup
 {
-  unsigned int get_subtable_count () const { return subTable.len; }
+  unsigned முழு get_subtable_மொத்தம் () மாறிலி { திரும்பு subTable.len; }
 
   template <typename TSubTable>
-  const Array16OfOffset16To<TSubTable>& get_subtables () const
-  { return reinterpret_cast<const Array16OfOffset16To<TSubTable> &> (subTable); }
+  மாறிலி Array16OfOffset16To<TSubTable>& get_subtables () மாறிலி
+  { திரும்பு reinterpret_cast<மாறிலி Array16OfOffset16To<TSubTable> &> (subTable); }
   template <typename TSubTable>
   Array16OfOffset16To<TSubTable>& get_subtables ()
-  { return reinterpret_cast<Array16OfOffset16To<TSubTable> &> (subTable); }
+  { திரும்பு reinterpret_cast<Array16OfOffset16To<TSubTable> &> (subTable); }
 
   template <typename TSubTable>
-  const TSubTable& get_subtable (unsigned int i) const
-  { return this+get_subtables<TSubTable> ()[i]; }
+  மாறிலி TSubTable& get_subtable (unsigned முழு i) மாறிலி
+  { திரும்பு இது+get_subtables<TSubTable> ()[i]; }
   template <typename TSubTable>
-  TSubTable& get_subtable (unsigned int i)
-  { return this+get_subtables<TSubTable> ()[i]; }
+  TSubTable& get_subtable (unsigned முழு i)
+  { திரும்பு இது+get_subtables<TSubTable> ()[i]; }
 
-  size_t get_size () const
+  size_t get_size () மாறிலி
   {
-    const HBUINT16 &markFilteringSet = StructAfter<const HBUINT16> (subTable);
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
-      return (const char *) &StructAfter<const char> (markFilteringSet) - (const char *) this;
-    return (const char *) &markFilteringSet - (const char *) this;
+    மாறிலி HBUINT16 &markFilteringSet = StructAfter<மாறிலி HBUINT16> (subTable);
+    எனில் (lookupFlag & LookupFlag::UseMarkFilteringSet)
+      திரும்பு (மாறிலி எழுத்து *) &StructAfter<மாறிலி எழுத்து> (markFilteringSet) - (மாறிலி எழுத்து *) இது;
+    திரும்பு (மாறிலி எழுத்து *) &markFilteringSet - (மாறிலி எழுத்து *) இது;
   }
 
-  unsigned int get_type () const { return lookupType; }
+  unsigned முழு get_type () மாறிலி { திரும்பு lookupType; }
 
   /* lookup_props is a 32-bit integer where the lower 16-bit is LookupFlag and
    * higher 16-bit is mark-filtering-set if the lookup uses one.
    * Not to be confused with glyph_props which is very similar. */
-  uint32_t get_props () const
+  uint32_t get_props () மாறிலி
   {
-    unsigned int flag = lookupFlag;
-    if (unlikely (flag & LookupFlag::UseMarkFilteringSet))
+    unsigned முழு flag = lookupFlag;
+    எனில் (unlikely (flag & LookupFlag::UseMarkFilteringSet))
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
+      மாறிலி HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
       flag += (markFilteringSet << 16);
     }
-    return flag;
+    திரும்பு flag;
   }
 
   template <typename TSubTable, typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) மாறிலி
   {
-    unsigned int lookup_type = get_type ();
-    TRACE_DISPATCH (this, lookup_type);
-    unsigned int count = get_subtable_count ();
-    for (unsigned int i = 0; i < count; i++) {
+    unsigned முழு lookup_type = get_type ();
+    TRACE_DISPATCH (இது, lookup_type);
+    unsigned முழு மொத்தம் = get_subtable_மொத்தம் ();
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++) {
       typename context_t::return_t r = get_subtable<TSubTable> (i).dispatch (c, lookup_type, ds...);
-      if (c->stop_sublookup_iteration (r))
+      எனில் (c->stop_sublookup_iteration (r))
 	return_trace (r);
     }
-    return_trace (c->default_return_value ());
+    return_trace (c->default_return_மதிப்பு ());
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned int lookup_type,
+  தருக்க serialize (hb_serialize_context_t *c,
+		  unsigned முழு lookup_type,
 		  uint32_t lookup_props,
-		  unsigned int num_subtables)
+		  unsigned முழு இலக்கம்_subtables)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
     lookupType = lookup_type;
     lookupFlag = lookup_props & 0xFFFFu;
-    if (unlikely (!subTable.serialize (c, num_subtables))) return_trace (false);
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    எனில் (unlikely (!subTable.serialize (c, இலக்கம்_subtables))) return_trace (பொய்);
+    எனில் (lookupFlag & LookupFlag::UseMarkFilteringSet)
     {
-      if (unlikely (!c->extend (this))) return_trace (false);
+      எனில் (unlikely (!c->extend (இது))) return_trace (பொய்);
       HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
       markFilteringSet = lookup_props >> 16;
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
   template <typename TSubTable>
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!c->serializer->extend_min (out))) return_trace (பொய்);
     out->lookupType = lookupType;
     out->lookupFlag = lookupFlag;
 
-    const hb_set_t *glyphset = c->plan->glyphset_gsub ();
-    unsigned int lookup_type = get_type ();
+    மாறிலி hb_set_t *glyphset = c->plan->glyphset_gsub ();
+    unsigned முழு lookup_type = get_type ();
     + hb_iter (get_subtables <TSubTable> ())
-    | hb_filter ([this, glyphset, lookup_type] (const Offset16To<TSubTable> &_) { return (this+_).intersects (glyphset, lookup_type); })
-    | hb_apply (subset_offset_array (c, out->get_subtables<TSubTable> (), this, lookup_type))
+    | hb_filter ([இது, glyphset, lookup_type] (மாறிலி Offset16To<TSubTable> &_) { திரும்பு (இது+_).intersects (glyphset, lookup_type); })
+    | hb_apply (subset_offset_array (c, out->get_subtables<TSubTable> (), இது, lookup_type))
     ;
 
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    எனில் (lookupFlag & LookupFlag::UseMarkFilteringSet)
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
+      மாறிலி HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
       hb_codepoint_t *idx;
-      if (!c->plan->used_mark_sets_map.has (markFilteringSet, &idx))
+      எனில் (!c->plan->used_mark_sets_map.has (markFilteringSet, &idx))
       {
         unsigned new_flag = lookupFlag;
         new_flag &= ~LookupFlag::UseMarkFilteringSet;
@@ -1398,9 +1398,9 @@ struct Lookup
         new_flag |= LookupFlag::IgnoreMarks;
         out->lookupFlag = new_flag;
       }
-      else
+      இல்லையெனில்
       {
-        if (unlikely (!c->serializer->extend (out))) return_trace (false);
+        எனில் (unlikely (!c->serializer->extend (out))) return_trace (பொய்);
         HBUINT16 &outMarkFilteringSet = StructAfter<HBUINT16> (out->subTable);
         outMarkFilteringSet = *idx;
       }
@@ -1412,29 +1412,29 @@ struct Lookup
     // Generally we shouldn't end up with an empty lookup as we pre-prune them during the planning
     // phase, but it can happen in rare cases such as when during closure subtable is considered
     // degenerate (see: https://github.com/harfbuzz/harfbuzz/issues/3853)
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
   template <typename TSubTable>
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this) && subTable.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (!(c->check_struct (இது) && subTable.sanitize (c))) return_trace (பொய்);
     hb_barrier ();
 
-    unsigned subtables = get_subtable_count ();
-    if (unlikely (!c->visit_subtables (subtables))) return_trace (false);
+    unsigned subtables = get_subtable_மொத்தம் ();
+    எனில் (unlikely (!c->visit_subtables (subtables))) return_trace (பொய்);
 
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    எனில் (lookupFlag & LookupFlag::UseMarkFilteringSet)
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
-      if (!markFilteringSet.sanitize (c)) return_trace (false);
+      மாறிலி HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
+      எனில் (!markFilteringSet.sanitize (c)) return_trace (பொய்);
     }
 
-    if (unlikely (!get_subtables<TSubTable> ().sanitize (c, this, get_type ())))
-      return_trace (false);
+    எனில் (unlikely (!get_subtables<TSubTable> ().sanitize (c, இது, get_type ())))
+      return_trace (பொய்);
 
-    if (unlikely (get_type () == TSubTable::Extension))
+    எனில் (unlikely (get_type () == TSubTable::Extension))
     {
       hb_barrier ();
 
@@ -1443,15 +1443,15 @@ struct Lookup
        * itself (but we already checked for that).
        * This is specially important if one has a reverse type!
        */
-      unsigned int type = get_subtable<TSubTable> (0).u.extension.get_type ();
-      for (unsigned int i = 1; i < subtables; i++)
-	if (get_subtable<TSubTable> (i).u.extension.get_type () != type)
-	  return_trace (false);
+      unsigned முழு type = get_subtable<TSubTable> (0).u.extension.get_type ();
+      க்கு (unsigned முழு i = 1; i < subtables; i++)
+	எனில் (get_subtable<TSubTable> (i).u.extension.get_type () != type)
+	  return_trace (பொய்);
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	lookupType;		/* Different enumerations for GSUB and GPOS */
   HBUINT16	lookupFlag;		/* Lookup qualifiers */
   Array16Of<Offset16>
@@ -1459,7 +1459,7 @@ struct Lookup
 /*HBUINT16	markFilteringSetX[HB_VAR_ARRAY];*//* Index (base 0) into GDEF mark glyph sets
 					 * structure. This field is only present if bit
 					 * UseMarkFilteringSet of lookup flags is set. */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (6, subTable);
 };
 
@@ -1467,27 +1467,27 @@ template <typename Types>
 using LookupList = List16OfOffsetTo<Lookup, typename Types::HBLUINT>;
 
 template <typename TLookup, typename OffsetType>
-struct LookupOffsetList : List16OfOffsetTo<TLookup, OffsetType>
+கட்டமைப்பு LookupOffsetList : List16OfOffsetTo<TLookup, OffsetType>
 {
-  bool subset (hb_subset_context_t        *c,
-	       hb_subset_layout_context_t *l) const
+  தருக்க subset (hb_subset_context_t        *c,
+	       hb_subset_layout_context_t *l) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (இது);
+    எனில் (unlikely (!c->serializer->extend_min (out))) return_trace (பொய்);
 
-    + hb_enumerate (*this)
+    + hb_enumerate (*இது)
     | hb_filter (l->lookup_index_map, hb_first)
     | hb_map (hb_second)
-    | hb_apply (subset_offset_array (c, *out, this))
+    | hb_apply (subset_offset_array (c, *out, இது))
     ;
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace ((List16OfOffsetTo<TLookup, OffsetType>::sanitize (c, this)));
+    TRACE_SANITIZE (இது);
+    return_trace ((List16OfOffsetTo<TLookup, OffsetType>::sanitize (c, இது)));
   }
 };
 
@@ -1497,39 +1497,39 @@ struct LookupOffsetList : List16OfOffsetTo<TLookup, OffsetType>
  */
 
 
-static bool ClassDef_remap_and_serialize (hb_serialize_context_t *c,
-					  const hb_set_t &klasses,
-                                          bool use_class_zero,
+நிலையான தருக்க ClassDef_remap_and_serialize (hb_serialize_context_t *c,
+					  மாறிலி hb_set_t &klasses,
+                                          தருக்க use_class_zero,
                                           hb_sorted_vector_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
 					  hb_map_t *klass_map /*IN/OUT*/)
 {
-  if (!klass_map)
-    return ClassDef_serialize (c, glyph_and_klass.iter ());
+  எனில் (!klass_map)
+    திரும்பு ClassDef_serialize (c, glyph_and_klass.iter ());
 
   /* any glyph not assigned a class value falls into Class zero (0),
    * if any glyph assigned to class 0, remapping must start with 0->0*/
-  if (!use_class_zero)
+  எனில் (!use_class_zero)
     klass_map->set (0, 0);
 
   unsigned idx = klass_map->has (0) ? 1 : 0;
-  for (const unsigned k: klasses)
+  க்கு (மாறிலி unsigned k: klasses)
   {
-    if (klass_map->has (k)) continue;
+    எனில் (klass_map->has (k)) தொடர்;
     klass_map->set (k, idx);
     idx++;
   }
 
 
-  if (unlikely (!c->propagate_error (glyph_and_klass, klasses, klass_map)))
-    return false;
+  எனில் (unlikely (!c->propagate_error (glyph_and_klass, klasses, klass_map)))
+    திரும்பு பொய்;
 
-  for (unsigned i = 0; i < glyph_and_klass.length; i++)
+  க்கு (unsigned i = 0; i < glyph_and_klass.length; i++)
   {
     hb_codepoint_t klass = glyph_and_klass[i].second;
     glyph_and_klass[i].second = klass_map->get (klass);
   }
 
-  return ClassDef_serialize (c, glyph_and_klass.iter ());
+  திரும்பு ClassDef_serialize (c, glyph_and_klass.iter ());
 }
 
 /*
@@ -1537,274 +1537,274 @@ static bool ClassDef_remap_and_serialize (hb_serialize_context_t *c,
  */
 
 template <typename Types>
-struct ClassDefFormat1_3
+கட்டமைப்பு ClassDefFormat1_3
 {
-  friend struct ClassDef;
+  friend கட்டமைப்பு ClassDef;
 
-  private:
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  தனிப்பட்ட:
+  unsigned முழு get_class (hb_codepoint_t glyph_id) மாறிலி
   {
-    return classValue[(unsigned int) (glyph_id - startGlyph)];
+    திரும்பு class_மதிப்பு[(unsigned முழு) (glyph_id - startGlyph)];
   }
 
-  unsigned get_population () const
+  unsigned get_population () மாறிலி
   {
-    return classValue.len;
+    திரும்பு class_மதிப்பு.len;
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  தருக்க serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
 
-    if (unlikely (!it))
+    எனில் (unlikely (!it))
     {
       classFormat = Types::size == 2 ? 1 : 3;
       startGlyph = 0;
-      classValue.len = 0;
-      return_trace (true);
+      class_மதிப்பு.len = 0;
+      return_trace (உண்மை);
     }
 
     hb_codepoint_t glyph_min = (*it).first;
     hb_codepoint_t glyph_max = + it
 			       | hb_map (hb_first)
 			       | hb_reduce (hb_max, 0u);
-    unsigned glyph_count = glyph_max - glyph_min + 1;
+    unsigned glyph_மொத்தம் = glyph_max - glyph_min + 1;
 
     startGlyph = glyph_min;
-    if (unlikely (!classValue.serialize (c, glyph_count))) return_trace (false);
-    for (const hb_pair_t<hb_codepoint_t, uint32_t> gid_klass_pair : + it)
+    எனில் (unlikely (!class_மதிப்பு.serialize (c, glyph_மொத்தம்))) return_trace (பொய்);
+    க்கு (மாறிலி hb_pair_t<hb_codepoint_t, uint32_t> gid_klass_pair : + it)
     {
       unsigned idx = gid_klass_pair.first - glyph_min;
-      classValue[idx] = gid_klass_pair.second;
+      class_மதிப்பு[idx] = gid_klass_pair.second;
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool subset (hb_subset_context_t *c,
+  தருக்க subset (hb_subset_context_t *c,
 	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+               தருக்க keep_empty_table = உண்மை,
+               தருக்க use_class_zero = உண்மை,
+               மாறிலி Coverage* glyph_filter = nullptr) மாறிலி
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (இது);
 
     hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
     hb_set_t orig_klasses;
 
     hb_codepoint_t start = startGlyph;
-    hb_codepoint_t end   = start + classValue.len;
+    hb_codepoint_t end   = start + class_மதிப்பு.len;
 
-    for (const hb_codepoint_t gid : + hb_range (start, end))
+    க்கு (மாறிலி hb_codepoint_t gid : + hb_range (start, end))
     {
       hb_codepoint_t new_gid = c->plan->map_gsub_glyph (gid);
-      if (new_gid == HB_MAP_VALUE_INVALID) continue;
-      if (glyph_filter && !glyph_filter->has(gid)) continue;
+      எனில் (new_gid == HB_MAP_மதிப்பு_INVALID) தொடர்;
+      எனில் (glyph_filter && !glyph_filter->has(gid)) தொடர்;
 
-      unsigned klass = classValue[gid - start];
-      if (!klass) continue;
+      unsigned klass = class_மதிப்பு[gid - start];
+      எனில் (!klass) தொடர்;
 
       glyph_and_klass.push (hb_pair (new_gid, klass));
       orig_klasses.add (klass);
     }
 
-    if (use_class_zero)
+    எனில் (use_class_zero)
     {
-      const hb_set_t& glyphset = *c->plan->glyphset_gsub ();
-      unsigned glyph_count = glyph_filter
+      மாறிலி hb_set_t& glyphset = *c->plan->glyphset_gsub ();
+      unsigned glyph_மொத்தம் = glyph_filter
 			     ? hb_len (hb_iter (glyphset) | hb_filter (glyph_filter))
 			     : glyphset.get_population ();
-      use_class_zero = glyph_count <= glyph_and_klass.length;
+      use_class_zero = glyph_மொத்தம் <= glyph_and_klass.length;
     }
-    if (!ClassDef_remap_and_serialize (c->serializer,
+    எனில் (!ClassDef_remap_and_serialize (c->serializer,
                                        orig_klasses,
                                        use_class_zero,
                                        glyph_and_klass,
                                        klass_map))
-      return_trace (false);
-    return_trace (keep_empty_table || (bool) glyph_and_klass);
+      return_trace (பொய்);
+    return_trace (keep_empty_table || (தருக்க) glyph_and_klass);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && classValue.sanitize (c));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) && class_மதிப்பு.sanitize (c));
   }
 
-  unsigned cost () const { return 1; }
+  unsigned cost () மாறிலி { திரும்பு 1; }
 
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  தருக்க collect_coverage (set_t *glyphs) மாறிலி
   {
-    unsigned int start = 0;
-    unsigned int count = classValue.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு start = 0;
+    unsigned முழு மொத்தம் = class_மதிப்பு.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      if (classValue[i])
-	continue;
+      எனில் (class_மதிப்பு[i])
+	தொடர்;
 
-      if (start != i)
-	if (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + i)))
-	  return false;
+      எனில் (start != i)
+	எனில் (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + i)))
+	  திரும்பு பொய்;
 
       start = i + 1;
     }
-    if (start != count)
-      if (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + count)))
-	return false;
+    எனில் (start != மொத்தம்)
+      எனில் (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + மொத்தம்)))
+	திரும்பு பொய்;
 
-    return true;
+    திரும்பு உண்மை;
   }
 
   template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned klass) const
+  தருக்க collect_class (set_t *glyphs, unsigned klass) மாறிலி
   {
-    unsigned int count = classValue.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (classValue[i] == klass) glyphs->add (startGlyph + i);
-    return true;
+    unsigned முழு மொத்தம் = class_மதிப்பு.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (class_மதிப்பு[i] == klass) glyphs->add (startGlyph + i);
+    திரும்பு உண்மை;
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  தருக்க intersects (மாறிலி hb_set_t *glyphs) மாறிலி
   {
     hb_codepoint_t start = startGlyph;
-    hb_codepoint_t end = startGlyph + classValue.len;
-    for (hb_codepoint_t iter = startGlyph - 1;
+    hb_codepoint_t end = startGlyph + class_மதிப்பு.len;
+    க்கு (hb_codepoint_t iter = startGlyph - 1;
 	 glyphs->next (&iter) && iter < end;)
-      if (classValue[iter - start]) return true;
-    return false;
+      எனில் (class_மதிப்பு[iter - start]) திரும்பு உண்மை;
+    திரும்பு பொய்;
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned klass) const
+  தருக்க intersects_class (மாறிலி hb_set_t *glyphs, unsigned klass) மாறிலி
   {
-    unsigned int count = classValue.len;
-    if (klass == 0)
+    unsigned முழு மொத்தம் = class_மதிப்பு.len;
+    எனில் (klass == 0)
     {
       /* Match if there's any glyph that is not listed! */
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      if (!glyphs->next (&g)) return false;
-      if (g < startGlyph) return true;
-      g = startGlyph + count - 1;
-      if (glyphs->next (&g)) return true;
+      hb_codepoint_t g = HB_SET_மதிப்பு_INVALID;
+      எனில் (!glyphs->next (&g)) திரும்பு பொய்;
+      எனில் (g < startGlyph) திரும்பு உண்மை;
+      g = startGlyph + மொத்தம் - 1;
+      எனில் (glyphs->next (&g)) திரும்பு உண்மை;
       /* Fall through. */
     }
     /* TODO Speed up, using set overlap first? */
     /* TODO(iter) Rewrite as dagger. */
-    const typename Types::HBUINT *arr = classValue.arrayZ;
-    for (unsigned int i = 0; i < count; i++)
-      if (arr[i] == klass && glyphs->has (startGlyph + i))
-	return true;
-    return false;
+    மாறிலி typename Types::HBUINT *arr = class_மதிப்பு.arrayZ;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (arr[i] == klass && glyphs->has (startGlyph + i))
+	திரும்பு உண்மை;
+    திரும்பு பொய்;
   }
 
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
+  வெறுமை intersected_class_glyphs (மாறிலி hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) மாறிலி
   {
-    unsigned count = classValue.len;
-    if (klass == 0)
+    unsigned மொத்தம் = class_மதிப்பு.len;
+    எனில் (klass == 0)
     {
       unsigned start_glyph = startGlyph;
-      for (uint32_t g = HB_SET_VALUE_INVALID;
+      க்கு (uint32_t g = HB_SET_மதிப்பு_INVALID;
 	   glyphs->next (&g) && g < start_glyph;)
 	intersect_glyphs->add (g);
 
-      for (uint32_t g = startGlyph + count - 1;
+      க்கு (uint32_t g = startGlyph + மொத்தம் - 1;
 	   glyphs-> next (&g);)
 	intersect_glyphs->add (g);
 
-      return;
+      திரும்பு;
     }
 
-    for (unsigned i = 0; i < count; i++)
-      if (classValue[i] == klass && glyphs->has (startGlyph + i))
+    க்கு (unsigned i = 0; i < மொத்தம்; i++)
+      எனில் (class_மதிப்பு[i] == klass && glyphs->has (startGlyph + i))
 	intersect_glyphs->add (startGlyph + i);
 
-#if 0
+#எனில் 0
     /* The following implementation is faster asymptotically, but slower
      * in practice. */
     unsigned start_glyph = startGlyph;
-    unsigned end_glyph = start_glyph + count;
-    for (unsigned g = startGlyph - 1;
+    unsigned end_glyph = start_glyph + மொத்தம்;
+    க்கு (unsigned g = startGlyph - 1;
 	 glyphs->next (&g) && g < end_glyph;)
-      if (classValue.arrayZ[g - start_glyph] == klass)
+      எனில் (class_மதிப்பு.arrayZ[g - start_glyph] == klass)
         intersect_glyphs->add (g);
 #endif
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  வெறுமை intersected_classes (மாறிலி hb_set_t *glyphs, hb_set_t *intersect_classes) மாறிலி
   {
-    if (glyphs->is_empty ()) return;
+    எனில் (glyphs->is_empty ()) திரும்பு;
 
     /* An empty ClassDef assigns class zero to every glyph, so every glyph in
      * `glyphs` intersects class zero.  Handle it up front: `end_glyph` below
      * underflows when startGlyph is zero, and neither comparison can then be
      * true. */
-    if (!classValue.len)
+    எனில் (!class_மதிப்பு.len)
     {
       intersect_classes->add (0);
-      return;
+      திரும்பு;
     }
 
-    hb_codepoint_t end_glyph = startGlyph + classValue.len - 1;
-    if (glyphs->get_min () < startGlyph ||
+    hb_codepoint_t end_glyph = startGlyph + class_மதிப்பு.len - 1;
+    எனில் (glyphs->get_min () < startGlyph ||
         glyphs->get_max () > end_glyph)
       intersect_classes->add (0);
 
-    for (const auto& _ : + hb_enumerate (classValue))
+    க்கு (மாறிலி auto& _ : + hb_enumerate (class_மதிப்பு))
     {
       hb_codepoint_t g = startGlyph + _.first;
-      if (glyphs->has (g))
+      எனில் (glyphs->has (g))
         intersect_classes->add (_.second);
     }
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	classFormat;	/* Format identifier--format = 1 */
   typename Types::HBGlyphID
 		 startGlyph;	/* First GlyphID of the classValueArray */
   typename Types::template ArrayOf<typename Types::HBUINT>
-		classValue;	/* Array of Class Values--one per GlyphID */
-  public:
-  DEFINE_SIZE_ARRAY (2 + 2 * Types::size, classValue);
+		class_மதிப்பு;	/* Array of Class Values--one per GlyphID */
+  பொது:
+  DEFINE_SIZE_ARRAY (2 + 2 * Types::size, class_மதிப்பு);
 };
 
 template <typename Types>
-struct ClassDefFormat2_4
+கட்டமைப்பு ClassDefFormat2_4
 {
-  friend struct ClassDef;
+  friend கட்டமைப்பு ClassDef;
 
-  private:
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  தனிப்பட்ட:
+  unsigned முழு get_class (hb_codepoint_t glyph_id) மாறிலி
   {
-    return rangeRecord.bsearch (glyph_id).value;
+    திரும்பு rangeRecord.bsearch (glyph_id).value;
   }
 
-  unsigned get_population () const
+  unsigned get_population () மாறிலி
   {
     typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    க்கு (மாறிலி auto &r : rangeRecord)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    திரும்பு ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  தருக்க serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
 
-    if (unlikely (!it))
+    எனில் (unlikely (!it))
     {
       classFormat = Types::size == 2 ? 2 : 4;
       rangeRecord.len = 0;
-      return_trace (true);
+      return_trace (உண்மை);
     }
 
-    unsigned unsorted = false;
-    unsigned num_ranges = 1;
+    unsigned unsorted = பொய்;
+    unsigned இலக்கம்_ranges = 1;
     hb_codepoint_t prev_gid = (*it).first;
     unsigned prev_klass = (*it).second;
 
@@ -1814,23 +1814,23 @@ struct ClassDefFormat2_4
     range_rec.value = prev_klass;
 
     auto *record = c->copy (range_rec);
-    if (unlikely (!record)) return_trace (false);
+    எனில் (unlikely (!record)) return_trace (பொய்);
 
-    for (const auto gid_klass_pair : + (++it))
+    க்கு (மாறிலி auto gid_klass_pair : + (++it))
     {
       hb_codepoint_t cur_gid = gid_klass_pair.first;
       unsigned cur_klass = gid_klass_pair.second;
 
-      if (cur_gid != prev_gid + 1 ||
+      எனில் (cur_gid != prev_gid + 1 ||
 	  cur_klass != prev_klass)
       {
 
-	if (unlikely (cur_gid < prev_gid))
-	  unsorted = true;
+	எனில் (unlikely (cur_gid < prev_gid))
+	  unsorted = உண்மை;
 
-	if (unlikely (!record)) break;
+	எனில் (unlikely (!record)) நிறுத்து;
 	record->last = prev_gid;
-	num_ranges++;
+	இலக்கம்_ranges++;
 
 	range_rec.first = cur_gid;
 	range_rec.last = cur_gid;
@@ -1843,57 +1843,57 @@ struct ClassDefFormat2_4
       prev_gid = cur_gid;
     }
 
-    if (unlikely (c->in_error ())) return_trace (false);
+    எனில் (unlikely (c->in_error ())) return_trace (பொய்);
 
-    if (likely (record)) record->last = prev_gid;
-    rangeRecord.len = num_ranges;
+    எனில் (likely (record)) record->last = prev_gid;
+    rangeRecord.len = இலக்கம்_ranges;
 
-    if (unlikely (unsorted))
+    எனில் (unlikely (unsorted))
       rangeRecord.as_array ().qsort (RangeRecord<Types>::cmp_range);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool subset (hb_subset_context_t *c,
+  தருக்க subset (hb_subset_context_t *c,
 	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+               தருக்க keep_empty_table = உண்மை,
+               தருக்க use_class_zero = உண்மை,
+               மாறிலி Coverage* glyph_filter = nullptr) மாறிலி
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyph_set = *c->plan->glyphset_gsub ();
+    TRACE_SUBSET (இது);
+    மாறிலி hb_set_t &glyph_set = *c->plan->glyphset_gsub ();
 
     hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
     hb_set_t orig_klasses;
 
-    if (glyph_set.get_population () * hb_bit_storage ((unsigned) rangeRecord.len)
+    எனில் (glyph_set.get_population () * hb_bit_storage ((unsigned) rangeRecord.len)
 	< get_population ())
     {
-      for (hb_codepoint_t g : glyph_set)
+      க்கு (hb_codepoint_t g : glyph_set)
       {
 	unsigned klass = get_class (g);
-	if (!klass) continue;
+	எனில் (!klass) தொடர்;
 	hb_codepoint_t new_gid = c->plan->map_gsub_glyph (g);
-	if (new_gid == HB_MAP_VALUE_INVALID) continue;
-	if (glyph_filter && !glyph_filter->has (g)) continue;
+	எனில் (new_gid == HB_MAP_மதிப்பு_INVALID) தொடர்;
+	எனில் (glyph_filter && !glyph_filter->has (g)) தொடர்;
 	glyph_and_klass.push (hb_pair (new_gid, klass));
 	orig_klasses.add (klass);
       }
     }
-    else
+    இல்லையெனில்
     {
-      unsigned num_source_glyphs = c->plan->source->get_num_glyphs ();
-      for (auto &range : rangeRecord)
+      unsigned இலக்கம்_source_glyphs = c->plan->source->get_இலக்கம்_glyphs ();
+      க்கு (auto &range : rangeRecord)
       {
 	unsigned klass = range.value;
-	if (!klass) continue;
+	எனில் (!klass) தொடர்;
 	hb_codepoint_t start = range.first;
-	hb_codepoint_t end   = hb_min (range.last + 1, num_source_glyphs);
-	for (hb_codepoint_t g = start; g < end; g++)
+	hb_codepoint_t end   = hb_min (range.last + 1, இலக்கம்_source_glyphs);
+	க்கு (hb_codepoint_t g = start; g < end; g++)
 	{
 	  hb_codepoint_t new_gid = c->plan->map_gsub_glyph (g);
-	  if (new_gid == HB_MAP_VALUE_INVALID) continue;
-	  if (glyph_filter && !glyph_filter->has (g)) continue;
+	  எனில் (new_gid == HB_MAP_மதிப்பு_INVALID) தொடர்;
+	  எனில் (glyph_filter && !glyph_filter->has (g)) தொடர்;
 
 	  glyph_and_klass.push (hb_pair (new_gid, klass));
 	  orig_klasses.add (klass);
@@ -1901,269 +1901,269 @@ struct ClassDefFormat2_4
       }
     }
 
-    const hb_set_t& glyphset = *c->plan->glyphset_gsub ();
-    unsigned glyph_count = glyph_filter
+    மாறிலி hb_set_t& glyphset = *c->plan->glyphset_gsub ();
+    unsigned glyph_மொத்தம் = glyph_filter
                            ? hb_len (hb_iter (glyphset) | hb_filter (glyph_filter))
                            : glyphset.get_population ();
-    use_class_zero = use_class_zero && glyph_count <= glyph_and_klass.length;
-    if (!ClassDef_remap_and_serialize (c->serializer,
+    use_class_zero = use_class_zero && glyph_மொத்தம் <= glyph_and_klass.length;
+    எனில் (!ClassDef_remap_and_serialize (c->serializer,
                                        orig_klasses,
                                        use_class_zero,
                                        glyph_and_klass,
                                        klass_map))
-      return_trace (false);
-    return_trace (keep_empty_table || (bool) glyph_and_klass);
+      return_trace (பொய்);
+    return_trace (keep_empty_table || (தருக்க) glyph_and_klass);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (rangeRecord.sanitize (c));
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  unsigned cost () மாறிலி { திரும்பு hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
 
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  தருக்க collect_coverage (set_t *glyphs) மாறிலி
   {
-    for (auto &range : rangeRecord)
-      if (range.value)
-	if (unlikely (!range.collect_coverage (glyphs)))
-	  return false;
-    return true;
+    க்கு (auto &range : rangeRecord)
+      எனில் (range.value)
+	எனில் (unlikely (!range.collect_coverage (glyphs)))
+	  திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
   template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned int klass) const
+  தருக்க collect_class (set_t *glyphs, unsigned முழு klass) மாறிலி
   {
-    for (auto &range : rangeRecord)
+    க்கு (auto &range : rangeRecord)
     {
-      if (range.value == klass)
-	if (unlikely (!range.collect_coverage (glyphs)))
-	  return false;
+      எனில் (range.value == klass)
+	எனில் (unlikely (!range.collect_coverage (glyphs)))
+	  திரும்பு பொய்;
     }
-    return true;
+    திரும்பு உண்மை;
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  தருக்க intersects (மாறிலி hb_set_t *glyphs) மாறிலி
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    எனில் (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
     {
-      for (auto g : *glyphs)
-        if (get_class (g))
-	  return true;
-      return false;
+      க்கு (auto g : *glyphs)
+        எனில் (get_class (g))
+	  திரும்பு உண்மை;
+      திரும்பு பொய்;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const RangeRecord<Types> &range) { return range.intersects (*glyphs) && range.value; }));
+    திரும்பு hb_any (+ hb_iter (rangeRecord)
+                   | hb_map ([glyphs] (மாறிலி RangeRecord<Types> &range) { திரும்பு range.intersects (*glyphs) && range.value; }));
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned klass) const
+  தருக்க intersects_class (மாறிலி hb_set_t *glyphs, unsigned klass) மாறிலி
   {
-    if (klass == 0)
+    எனில் (klass == 0)
     {
       /* An empty ClassDef assigns class zero to every glyph, so it intersects
        * class zero as long as there is any glyph at all.  The loop below is a
        * no-op when there are no ranges, and the `g != HB_SET_VALUE_INVALID`
        * guard after it would then wrongly report no intersection. */
-      if (!rangeRecord.len)
-        return !glyphs->is_empty ();
+      எனில் (!rangeRecord.len)
+        திரும்பு !glyphs->is_empty ();
 
       /* Match if there's any glyph that is not listed! */
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      hb_codepoint_t last = HB_SET_VALUE_INVALID;
+      hb_codepoint_t g = HB_SET_மதிப்பு_INVALID;
+      hb_codepoint_t last = HB_SET_மதிப்பு_INVALID;
       auto it = hb_iter (rangeRecord);
-      for (auto &range : it)
+      க்கு (auto &range : it)
       {
-        if (it->first == last + 1)
+        எனில் (it->first == last + 1)
 	{
 	  it++;
-	  continue;
+	  தொடர்;
 	}
 
-	if (!glyphs->next (&g))
-	  break;
-	if (g < range.first)
-	  return true;
+	எனில் (!glyphs->next (&g))
+	  நிறுத்து;
+	எனில் (g < range.first)
+	  திரும்பு உண்மை;
 	g = range.last;
 	last = g;
       }
-      if (g != HB_SET_VALUE_INVALID && glyphs->next (&g))
-	return true;
+      எனில் (g != HB_SET_மதிப்பு_INVALID && glyphs->next (&g))
+	திரும்பு உண்மை;
       /* Fall through. */
     }
-    for (const auto &range : rangeRecord)
-      if (range.value == klass && range.intersects (*glyphs))
-	return true;
-    return false;
+    க்கு (மாறிலி auto &range : rangeRecord)
+      எனில் (range.value == klass && range.intersects (*glyphs))
+	திரும்பு உண்மை;
+    திரும்பு பொய்;
   }
 
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
+  வெறுமை intersected_class_glyphs (மாறிலி hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) மாறிலி
   {
-    if (klass == 0)
+    எனில் (klass == 0)
     {
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      for (auto &range : rangeRecord)
+      hb_codepoint_t g = HB_SET_மதிப்பு_INVALID;
+      க்கு (auto &range : rangeRecord)
       {
-	if (!glyphs->next (&g))
-	  goto done;
-	while (g < range.first)
+	எனில் (!glyphs->next (&g))
+	  செல் done;
+	போது (g < range.first)
 	{
 	  intersect_glyphs->add (g);
-	  if (!glyphs->next (&g))
-	    goto done;
+	  எனில் (!glyphs->next (&g))
+	    செல் done;
         }
         g = range.last;
       }
-      while (glyphs->next (&g))
+      போது (glyphs->next (&g))
 	intersect_glyphs->add (g);
       done:
 
-      return;
+      திரும்பு;
     }
 
-    unsigned count = rangeRecord.len;
-    if (count > glyphs->get_population () * hb_bit_storage (count))
+    unsigned மொத்தம் = rangeRecord.len;
+    எனில் (மொத்தம் > glyphs->get_population () * hb_bit_storage (மொத்தம்))
     {
-      for (auto g : *glyphs)
+      க்கு (auto g : *glyphs)
       {
         unsigned i;
-        if (rangeRecord.as_array ().bfind (g, &i) &&
+        எனில் (rangeRecord.as_array ().bfind (g, &i) &&
 	    rangeRecord.arrayZ[i].value == klass)
 	  intersect_glyphs->add (g);
       }
-      return;
+      திரும்பு;
     }
 
-    for (auto &range : rangeRecord)
+    க்கு (auto &range : rangeRecord)
     {
-      if (range.value != klass) continue;
+      எனில் (range.value != klass) தொடர்;
 
       unsigned end = range.last + 1;
-      for (hb_codepoint_t g = range.first - 1;
+      க்கு (hb_codepoint_t g = range.first - 1;
 	   glyphs->next (&g) && g < end;)
 	intersect_glyphs->add (g);
     }
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  வெறுமை intersected_classes (மாறிலி hb_set_t *glyphs, hb_set_t *intersect_classes) மாறிலி
   {
-    if (glyphs->is_empty ()) return;
+    எனில் (glyphs->is_empty ()) திரும்பு;
 
     /* An empty ClassDef assigns class zero to every glyph, so every glyph in
      * `glyphs` intersects class zero.  Handle it up front: the loops below are
      * no-ops when there are no ranges, and the `g != HB_SET_VALUE_INVALID`
      * guard would then wrongly skip adding class zero. */
-    if (!rangeRecord.len)
+    எனில் (!rangeRecord.len)
     {
       intersect_classes->add (0);
-      return;
+      திரும்பு;
     }
 
-    hb_codepoint_t g = HB_SET_VALUE_INVALID;
-    for (auto &range : rangeRecord)
+    hb_codepoint_t g = HB_SET_மதிப்பு_INVALID;
+    க்கு (auto &range : rangeRecord)
     {
-      if (!glyphs->next (&g))
-        break;
-      if (g < range.first)
+      எனில் (!glyphs->next (&g))
+        நிறுத்து;
+      எனில் (g < range.first)
       {
         intersect_classes->add (0);
-        break;
+        நிறுத்து;
       }
       g = range.last;
     }
-    if (g != HB_SET_VALUE_INVALID && glyphs->next (&g))
+    எனில் (g != HB_SET_மதிப்பு_INVALID && glyphs->next (&g))
       intersect_classes->add (0);
 
-    for (const auto& range : rangeRecord)
-      if (range.intersects (*glyphs))
+    க்கு (மாறிலி auto& range : rangeRecord)
+      எனில் (range.intersects (*glyphs))
         intersect_classes->add (range.value);
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	classFormat;	/* Format identifier--format = 2 */
   typename Types::template SortedArrayOf<RangeRecord<Types>>
 		rangeRecord;	/* Array of glyph ranges--ordered by
 				 * Start GlyphID */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (2 + Types::size, rangeRecord);
 };
 
-struct ClassDef
+கட்டமைப்பு ClassDef
 {
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  unsigned operator [] (hb_codepoint_t k) மாறிலி { திரும்பு get (k); }
+  தருக்க has (hb_codepoint_t k) மாறிலி { திரும்பு (*இது)[k]; }
   /* Projection. */
-  hb_codepoint_t operator () (hb_codepoint_t k) const { return get (k); }
+  hb_codepoint_t operator () (hb_codepoint_t k) மாறிலி { திரும்பு get (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_class (k); }
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  unsigned முழு get (hb_codepoint_t k) மாறிலி { திரும்பு get_class (k); }
+  unsigned முழு get_class (hb_codepoint_t glyph_id) மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_class (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_class (glyph_id);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_class (glyph_id);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.get_class (glyph_id);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_class (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_class (glyph_id);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_class (glyph_id);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.get_class (glyph_id);
 #endif
-    default:return 0;
+    இயல்பு:திரும்பு 0;
     }
   }
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  hb_ot_layout_mapping_cache_t *cache) const
+  unsigned முழு get_class (hb_codepoint_t glyph_id,
+			  hb_ot_layout_mapping_cache_t *cache) மாறிலி
   {
     unsigned klass;
-    if (cache && cache->get (glyph_id, &klass)) return klass;
+    எனில் (cache && cache->get (glyph_id, &klass)) திரும்பு klass;
     klass = get_class (glyph_id);
-    if (cache) cache->set (glyph_id, klass);
-    return klass;
+    எனில் (cache) cache->set (glyph_id, klass);
+    திரும்பு klass;
   }
 
-  unsigned get_population () const
+  unsigned get_population () மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_population ();
+    நிலை 2: hb_barrier (); திரும்பு u.format2.get_population ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
+    நிலை 3: hb_barrier (); திரும்பு u.format3.get_population ();
+    நிலை 4: hb_barrier (); திரும்பு u.format4.get_population ();
 #endif
-    default:return NOT_COVERED;
+    இயல்பு:திரும்பு NOT_COVERED;
     }
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator it_with_class_zero)
+  தருக்க serialize (hb_serialize_context_t *c, Iterator it_with_class_zero)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
 
     auto glyphs = + it_with_class_zero | hb_filter (hb_second);
 
     unsigned format = 2;
     hb_codepoint_t glyph_max = 0;
     unsigned class_max = 0;
-    if (likely (glyphs))
+    எனில் (likely (glyphs))
     {
       hb_codepoint_t glyph_min = (*glyphs).first;
       glyph_max = glyph_min;
 
-      unsigned num_ranges = 1;
+      unsigned இலக்கம்_ranges = 1;
       hb_codepoint_t prev_gid = glyph_min;
       unsigned prev_klass = (*glyphs).second;
 
-      for (const auto gid_klass_pair : + glyphs)
+      க்கு (மாறிலி auto gid_klass_pair : + glyphs)
       {
 	hb_codepoint_t cur_gid = gid_klass_pair.first;
 	unsigned cur_klass = gid_klass_pair.second;
-	if (cur_klass > class_max) class_max = cur_klass;
-	if (cur_gid == glyph_min) continue;
-        if (cur_gid > glyph_max) glyph_max = cur_gid;
-	if (cur_gid != prev_gid + 1 ||
+	எனில் (cur_klass > class_max) class_max = cur_klass;
+	எனில் (cur_gid == glyph_min) தொடர்;
+        எனில் (cur_gid > glyph_max) glyph_max = cur_gid;
+	எனில் (cur_gid != prev_gid + 1 ||
 	    cur_klass != prev_klass)
-	  num_ranges++;
+	  இலக்கம்_ranges++;
 
 	prev_gid = cur_gid;
 	prev_klass = cur_klass;
@@ -2173,178 +2173,178 @@ struct ClassDef
       unsigned glyph_span = glyph_max - glyph_min + 1;
       auto consider = [&] (unsigned candidate, uint64_t size)
       {
-	if (size >= best_size) return;
+	எனில் (size >= best_size) திரும்பு;
 	best_size = size;
 	format = candidate;
       };
 
-      if (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
+      எனில் (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
 	consider (1, 6 + (uint64_t) HBUINT16::static_size * glyph_span);
-      if (glyph_max <= 0xFFFFu && num_ranges <= 0xFFFFu && class_max <= 0xFFFFu)
-	consider (2, 4 + (uint64_t) num_ranges *
+      எனில் (glyph_max <= 0xFFFFu && இலக்கம்_ranges <= 0xFFFFu && class_max <= 0xFFFFu)
+	consider (2, 4 + (uint64_t) இலக்கம்_ranges *
 		     (2 * HBGlyphID16::static_size + HBUINT16::static_size));
 #ifndef HB_NO_BEYOND_64K
-      if (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
+      எனில் (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
 	consider (3, 8 + (uint64_t) HBUINT24::static_size * glyph_span);
-      if (glyph_max <= 0xFFFFFFu && num_ranges <= 0xFFFFFFu && class_max <= 0xFFFFu)
-	consider (4, 5 + (uint64_t) num_ranges *
+      எனில் (glyph_max <= 0xFFFFFFu && இலக்கம்_ranges <= 0xFFFFFFu && class_max <= 0xFFFFu)
+	consider (4, 5 + (uint64_t) இலக்கம்_ranges *
 		     (2 * HBGlyphID24::static_size + HBUINT16::static_size));
 #endif
-      if (unlikely (best_size == UINT64_MAX))
+      எனில் (unlikely (best_size == UINT64_MAX))
       {
-	c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
-	return_trace (false);
+	c->check_success (பொய், HB_SERIALIZE_ERROR_INT_OVERFLOW);
+	return_trace (பொய்);
       }
     }
 
     u.format.v = format;
 
-    switch (u.format.v)
+    தேர்வு (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
+    நிலை 1: hb_barrier (); return_trace (u.format1.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
+    நிலை 2: hb_barrier (); return_trace (u.format2.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
+    நிலை 3: hb_barrier (); return_trace (u.format3.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
+    நிலை 4: hb_barrier (); return_trace (u.format4.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
 #endif
-    default:return_trace (false);
+    இயல்பு:return_trace (பொய்);
     }
   }
 
-  bool subset (hb_subset_context_t *c,
+  தருக்க subset (hb_subset_context_t *c,
 	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+               தருக்க keep_empty_table = உண்மை,
+               தருக்க use_class_zero = உண்மை,
+               மாறிலி Coverage* glyph_filter = nullptr) மாறிலி
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-    case 2: hb_barrier (); return_trace (u.format2.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
+    TRACE_SUBSET (இது);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); return_trace (u.format1.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
+    நிலை 2: hb_barrier (); return_trace (u.format2.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-    case 4: hb_barrier (); return_trace (u.format4.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
+    நிலை 3: hb_barrier (); return_trace (u.format3.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
+    நிலை 4: hb_barrier (); return_trace (u.format4.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
 #endif
-    default:return_trace (false);
+    இயல்பு:return_trace (பொய்);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (!u.format.v.sanitize (c)) return_trace (பொய்);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    நிலை 2: hb_barrier (); return_trace (u.format2.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    நிலை 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    நிலை 4: hb_barrier (); return_trace (u.format4.sanitize (c));
 #endif
-    default:return_trace (true);
+    இயல்பு:return_trace (உண்மை);
     }
   }
 
-  unsigned cost () const
+  unsigned cost () மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.cost ();
+    நிலை 2: hb_barrier (); திரும்பு u.format2.cost ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
+    நிலை 3: hb_barrier (); திரும்பு u.format3.cost ();
+    நிலை 4: hb_barrier (); திரும்பு u.format4.cost ();
 #endif
-    default:return 0u;
+    இயல்பு:திரும்பு 0u;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  தருக்க collect_coverage (set_t *glyphs) மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.collect_coverage (glyphs);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.collect_coverage (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.collect_coverage (glyphs);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.collect_coverage (glyphs);
 #endif
-    default:return false;
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned int klass) const
+  தருக்க collect_class (set_t *glyphs, unsigned முழு klass) மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.collect_class (glyphs, klass);
-    case 2: hb_barrier (); return u.format2.collect_class (glyphs, klass);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.collect_class (glyphs, klass);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.collect_class (glyphs, klass);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_class (glyphs, klass);
-    case 4: hb_barrier (); return u.format4.collect_class (glyphs, klass);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.collect_class (glyphs, klass);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.collect_class (glyphs, klass);
 #endif
-    default:return false;
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  தருக்க intersects (மாறிலி hb_set_t *glyphs) மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.intersects (glyphs);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.intersects (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.intersects (glyphs);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.intersects (glyphs);
 #endif
-    default:return false;
+    இயல்பு:திரும்பு பொய்;
     }
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned int klass) const
+  தருக்க intersects_class (மாறிலி hb_set_t *glyphs, unsigned முழு klass) மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersects_class (glyphs, klass);
-    case 2: hb_barrier (); return u.format2.intersects_class (glyphs, klass);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.intersects_class (glyphs, klass);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.intersects_class (glyphs, klass);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_class (glyphs, klass);
-    case 4: hb_barrier (); return u.format4.intersects_class (glyphs, klass);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.intersects_class (glyphs, klass);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.intersects_class (glyphs, klass);
 #endif
-    default:return false;
-    }
-  }
-
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
-  {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-#endif
-    default:return;
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  வெறுமை intersected_class_glyphs (மாறிலி hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) மாறிலி
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersected_classes (glyphs, intersect_classes);
-    case 2: hb_barrier (); return u.format2.intersected_classes (glyphs, intersect_classes);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersected_classes (glyphs, intersect_classes);
-    case 4: hb_barrier (); return u.format4.intersected_classes (glyphs, intersect_classes);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
 #endif
-    default:return;
+    இயல்பு:திரும்பு;
+    }
+  }
+
+  வெறுமை intersected_classes (மாறிலி hb_set_t *glyphs, hb_set_t *intersect_classes) மாறிலி
+  {
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); திரும்பு u.format1.intersected_classes (glyphs, intersect_classes);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.intersected_classes (glyphs, intersect_classes);
+#ifndef HB_NO_BEYOND_64K
+    நிலை 3: hb_barrier (); திரும்பு u.format3.intersected_classes (glyphs, intersect_classes);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.intersected_classes (glyphs, intersect_classes);
+#endif
+    இயல்பு:திரும்பு;
     }
   }
 
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு { HBUINT16 v; }	format;		/* Format identifier */
   ClassDefFormat1_3<SmallTypes>	format1;
   ClassDefFormat2_4<SmallTypes>	format2;
 #ifndef HB_NO_BEYOND_64K
@@ -2352,14 +2352,14 @@ struct ClassDef
   ClassDefFormat2_4<MediumTypes>format4;
 #endif
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
 template<typename Iterator>
-static inline bool ClassDef_serialize (hb_serialize_context_t *c,
+நிலையான உள்வரி தருக்க ClassDef_serialize (hb_serialize_context_t *c,
 				       Iterator it)
-{ return (c->start_embed<ClassDef> ()->serialize (c, it)); }
+{ திரும்பு (c->start_embed<ClassDef> ()->serialize (c, it)); }
 
 
 /*
@@ -2367,324 +2367,324 @@ static inline bool ClassDef_serialize (hb_serialize_context_t *c,
  */
 
 /* ported from fonttools (class _Encoding) */
-struct delta_row_encoding_t
+கட்டமைப்பு delta_row_encoding_t
 {
   /* each byte represents a region, value is one of 0/1/2/4, which means bytes
    * needed for this region */
-  struct chars_t : hb_vector_t<uint8_t>
+  கட்டமைப்பு chars_t : hb_vector_t<uint8_t>
   {
-    int cmp (const chars_t& other) const
+    முழு cmp (மாறிலி chars_t& other) மாறிலி
     {
-      return as_array ().cmp (other.as_array ());
+      திரும்பு as_array ().cmp (other.as_array ());
     }
 
     hb_pair_t<unsigned, unsigned> get_width ()
     {
       unsigned width = 0;
       unsigned columns = 0;
-      for (unsigned i = 0; i < length; i++)
+      க்கு (unsigned i = 0; i < length; i++)
       {
 	unsigned v = arrayZ[i];
 	width += v;
 	columns += (v != 0);
       }
-      return hb_pair (width, columns);
+      திரும்பு hb_pair (width, columns);
     }
 
     HB_HOT
-    hb_pair_t<unsigned, unsigned> combine_width (const chars_t& other) const
+    hb_pair_t<unsigned, unsigned> combine_width (மாறிலி chars_t& other) மாறிலி
     {
       unsigned combined_width = 0;
       unsigned combined_columns = 0;
-      for (unsigned i = 0; i < length; i++)
+      க்கு (unsigned i = 0; i < length; i++)
       {
         unsigned v = hb_max (arrayZ[i], other.arrayZ[i]);
 	combined_width += v;
 	combined_columns += (v != 0);
       }
-      return hb_pair (combined_width, combined_columns);
+      திரும்பு hb_pair (combined_width, combined_columns);
     }
   };
 
-  hb_pair_t<unsigned, unsigned> combine_width (const delta_row_encoding_t& other_encoding) const { return chars.combine_width (other_encoding.chars); }
+  hb_pair_t<unsigned, unsigned> combine_width (மாறிலி delta_row_encoding_t& other_encoding) மாறிலி { திரும்பு chars.combine_width (other_encoding.chars); }
 
   // Actual data
 
   chars_t chars;
   unsigned width = 0;
   unsigned overhead = 0;
-  hb_vector_t<const hb_vector_t<int>*> items;
+  hb_vector_t<மாறிலி hb_vector_t<முழு>*> பொருட்கள்;
 
-  delta_row_encoding_t () = default;
-  delta_row_encoding_t (hb_vector_t<const hb_vector_t<int>*> &&rows, unsigned num_cols)
+  delta_row_encoding_t () = இயல்பு;
+  delta_row_encoding_t (hb_vector_t<மாறிலி hb_vector_t<முழு>*> &&rows, unsigned இலக்கம்_cols)
   {
-    assert (rows);
+    ப்ரதிஜ்ஞா (rows);
 
-    items = std::move (rows);
+    பொருட்கள் = std::move (rows);
 
-    if (unlikely (!chars.resize (num_cols)))
-      return;
+    எனில் (unlikely (!chars.resize (இலக்கம்_cols)))
+      திரும்பு;
 
     calculate_chars ();
   }
 
-  void merge (const delta_row_encoding_t& other)
+  வெறுமை merge (மாறிலி delta_row_encoding_t& other)
   {
-    items.alloc (items.length + other.items.length);
-    for (auto &row : other.items)
+    பொருட்கள்.alloc (பொருட்கள்.length + other.பொருட்கள்.length);
+    க்கு (auto &row : other.பொருட்கள்)
       add_row (row);
 
     // Merge chars
-    assert (chars.length == other.chars.length);
-    for (unsigned i = 0; i < chars.length; i++)
+    ப்ரதிஜ்ஞா (chars.length == other.chars.length);
+    க்கு (unsigned i = 0; i < chars.length; i++)
       chars.arrayZ[i] = hb_max (chars.arrayZ[i], other.chars.arrayZ[i]);
     chars_changed ();
   }
 
-  void chars_changed ()
+  வெறுமை chars_changed ()
   {
     auto _ = chars.get_width ();
     width = _.first;
     overhead = get_chars_overhead (_.second);
   }
 
-  void calculate_chars ()
+  வெறுமை calculate_chars ()
   {
-    assert (items);
+    ப்ரதிஜ்ஞா (பொருட்கள்);
 
-    bool long_words = false;
+    தருக்க long_சொற்கள் = பொய்;
 
-    for (auto &row : items)
+    க்கு (auto &row : பொருட்கள்)
     {
-      assert (row->length == chars.length);
+      ப்ரதிஜ்ஞா (row->length == chars.length);
 
       /* 0/1/2 byte encoding */
-      for (unsigned i = 0; i < row->length; i++)
+      க்கு (unsigned i = 0; i < row->length; i++)
       {
-	int v =  row->arrayZ[i];
-	if (v == 0)
-	  continue;
-	else if (v > 32767 || v < -32768)
+	முழு v =  row->arrayZ[i];
+	எனில் (v == 0)
+	  தொடர்;
+	இல்லையெனில் எனில் (v > 32767 || v < -32768)
 	{
-	  long_words = true;
+	  long_சொற்கள் = உண்மை;
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 4);
 	}
-	else if (v > 127 || v < -128)
+	இல்லையெனில் எனில் (v > 127 || v < -128)
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 2);
-	else
+	இல்லையெனில்
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 1);
       }
     }
 
-    if (long_words)
+    எனில் (long_சொற்கள்)
     {
       // Convert 1s to 2s
-      for (auto &v : chars)
-	if (v == 1)
+      க்கு (auto &v : chars)
+	எனில் (v == 1)
 	  v = 2;
     }
 
     chars_changed ();
   }
 
-  bool is_empty () const
-  { return !items; }
+  தருக்க is_empty () மாறிலி
+  { திரும்பு !பொருட்கள்; }
 
-  bool in_error () const
-  { return chars.in_error () || items.in_error (); }
+  தருக்க in_error () மாறிலி
+  { திரும்பு chars.in_error () || பொருட்கள்.in_error (); }
 
-  static inline unsigned get_chars_overhead (unsigned num_columns)
+  நிலையான உள்வரி unsigned get_chars_overhead (unsigned இலக்கம்_columns)
   {
     unsigned c = 4 + 6; // 4 bytes for LOffset, 6 bytes for VarData header
-    return c + num_columns * 2;
+    திரும்பு c + இலக்கம்_columns * 2;
   }
 
-  unsigned get_gain (unsigned additional_bytes_per_rows = 1) const
+  unsigned get_gain (unsigned additional_bytes_per_rows = 1) மாறிலி
   {
-    int count = items.length;
-    return hb_max (0, (int) overhead - count * (int) additional_bytes_per_rows);
+    முழு மொத்தம் = பொருட்கள்.length;
+    திரும்பு hb_max (0, (முழு) overhead - மொத்தம் * (முழு) additional_bytes_per_rows);
   }
 
-  int gain_from_merging (const delta_row_encoding_t& other_encoding) const
+  முழு gain_from_merging (மாறிலி delta_row_encoding_t& other_encoding) மாறிலி
   {
     // Back of the envelope calculations to reject early.
     signed additional_bytes_per_rows = other_encoding.width - width;
-    if (additional_bytes_per_rows > 0)
+    எனில் (additional_bytes_per_rows > 0)
     {
-      if (get_gain (additional_bytes_per_rows) == 0)
-        return 0;
+      எனில் (get_gain (additional_bytes_per_rows) == 0)
+        திரும்பு 0;
     }
-    else
+    இல்லையெனில்
     {
-      if (other_encoding.get_gain (-additional_bytes_per_rows) == 0)
-	return 0;
+      எனில் (other_encoding.get_gain (-additional_bytes_per_rows) == 0)
+	திரும்பு 0;
     }
 
     auto pair = combine_width (other_encoding);
     unsigned combined_width = pair.first;
     unsigned combined_columns = pair.second;
 
-    int combined_gain = (int) overhead + (int) other_encoding.overhead;
-    combined_gain -= (combined_width - (int) width) * items.length;
-    combined_gain -= (combined_width - (int) other_encoding.width) * other_encoding.items.length;
+    முழு combined_gain = (முழு) overhead + (முழு) other_encoding.overhead;
+    combined_gain -= (combined_width - (முழு) width) * பொருட்கள்.length;
+    combined_gain -= (combined_width - (முழு) other_encoding.width) * other_encoding.பொருட்கள்.length;
     combined_gain -= get_chars_overhead (combined_columns);
 
-    return combined_gain;
+    திரும்பு combined_gain;
   }
 
-  bool add_row (const hb_vector_t<int>* row)
-  { return items.push (row); }
+  தருக்க add_row (மாறிலி hb_vector_t<முழு>* row)
+  { திரும்பு பொருட்கள்.push (row); }
 
-  static int cmp (const void *pa, const void *pb)
+  நிலையான முழு cmp (மாறிலி வெறுமை *pa, மாறிலி வெறுமை *pb)
   {
-    const delta_row_encoding_t *a = (const delta_row_encoding_t *)pa;
-    const delta_row_encoding_t *b = (const delta_row_encoding_t *)pb;
+    மாறிலி delta_row_encoding_t *a = (மாறிலி delta_row_encoding_t *)pa;
+    மாறிலி delta_row_encoding_t *b = (மாறிலி delta_row_encoding_t *)pb;
 
-    if (a->width != b->width)
-      return (int) a->width - (int) b->width;
+    எனில் (a->width != b->width)
+      திரும்பு (முழு) a->width - (முழு) b->width;
 
-    return b->chars.cmp (a->chars);
+    திரும்பு b->chars.cmp (a->chars);
   }
 };
 
-struct VarRegionAxis
+கட்டமைப்பு VarRegionAxis
 {
-  float evaluate (int coord) const
+  தசம evaluate (முழு coord) மாறிலி
   {
-    int peak = peakCoord.to_int ();
-    if (peak == 0 || coord == peak)
-      return 1.f;
-    else if (coord == 0) // Faster
-      return 0.f;
+    முழு peak = peakCoord.to_int ();
+    எனில் (peak == 0 || coord == peak)
+      திரும்பு 1.f;
+    இல்லையெனில் எனில் (coord == 0) // Faster
+      திரும்பு 0.f;
 
-    int start = startCoord.to_int (), end = endCoord.to_int ();
+    முழு start = startCoord.to_int (), end = endCoord.to_int ();
 
     /* TODO Move these to sanitize(). */
-    if (unlikely (start > peak || peak > end))
-      return 1.f;
-    if (unlikely (start < 0 && end > 0))
-      return 1.f;
+    எனில் (unlikely (start > peak || peak > end))
+      திரும்பு 1.f;
+    எனில் (unlikely (start < 0 && end > 0))
+      திரும்பு 1.f;
 
-    if (coord <= start || end <= coord)
-      return 0.f;
+    எனில் (coord <= start || end <= coord)
+      திரும்பு 0.f;
 
     /* Interpolate */
-    if (coord < peak)
-      return float (coord - start) / (peak - start);
-    else
-      return float (end - coord) / (end - peak);
+    எனில் (coord < peak)
+      திரும்பு தசம (coord - start) / (peak - start);
+    இல்லையெனில்
+      திரும்பு தசம (end - coord) / (end - peak);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  தருக்க serialize (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (இது);
+    return_trace (c->embed (இது));
   }
 
-  public:
+  பொது:
   F2DOT14	startCoord;
   F2DOT14	peakCoord;
   F2DOT14	endCoord;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (6);
 };
-struct SparseVarRegionAxis
+கட்டமைப்பு SparseVarRegionAxis
 {
-  float evaluate (const int *coords, unsigned int coord_len) const
+  தசம evaluate (மாறிலி முழு *coords, unsigned முழு coord_len) மாறிலி
   {
     unsigned i = axisIndex;
-    int coord = i < coord_len ? coords[i] : 0;
-    return axis.evaluate (coord);
+    முழு coord = i < coord_len ? coords[i] : 0;
+    திரும்பு axis.evaluate (coord);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVarRegionAxis *src,
-		  const hb_map_t *axis_map)
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி SparseVarRegionAxis *src,
+		  மாறிலி hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     auto *out = c->embed (src);
-    if (unlikely (!out)) return_trace (false);
-    if (axis_map)
+    எனில் (unlikely (!out)) return_trace (பொய்);
+    எனில் (axis_map)
     {
-      if (unlikely (!axis_map->has (out->axisIndex)))
+      எனில் (unlikely (!axis_map->has (out->axisIndex)))
       {
 	c->err (HB_SERIALIZE_ERROR_OTHER);
-	return_trace (false);
+	return_trace (பொய்);
       }
-      if (unlikely (!c->check_assign (out->axisIndex, axis_map->get (out->axisIndex),
+      எனில் (unlikely (!c->check_assign (out->axisIndex, axis_map->get (out->axisIndex),
 				    HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-	return_trace (false);
+	return_trace (பொய்);
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  public:
+  பொது:
   HBUINT16 axisIndex;
   VarRegionAxis axis;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct hb_scalar_cache_t
+கட்டமைப்பு hb_scalar_cache_t
 {
-  private:
-  static constexpr unsigned STATIC_LENGTH = 128;
-  static constexpr float INVALID = NAN;
+  தனிப்பட்ட:
+  நிலையான constexpr unsigned STATIC_LENGTH = 128;
+  நிலையான constexpr தசம INVALID = NAN;
 
-  public:
+  பொது:
   hb_scalar_cache_t () {}
 
-  hb_scalar_cache_t (const hb_scalar_cache_t&) = delete;
+  hb_scalar_cache_t (மாறிலி hb_scalar_cache_t&) = delete;
   hb_scalar_cache_t (hb_scalar_cache_t&&) = delete;
-  hb_scalar_cache_t& operator= (const hb_scalar_cache_t&) = delete;
+  hb_scalar_cache_t& operator= (மாறிலி hb_scalar_cache_t&) = delete;
   hb_scalar_cache_t& operator= (hb_scalar_cache_t&&) = delete;
 
-  static hb_scalar_cache_t *create (unsigned int count,
+  நிலையான hb_scalar_cache_t *create (unsigned முழு மொத்தம்,
 				    hb_scalar_cache_t *scratch_cache = nullptr)
   {
-    if (!count) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
+    எனில் (!மொத்தம்) திரும்பு (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-    if (scratch_cache && count <= STATIC_LENGTH)
+    எனில் (scratch_cache && மொத்தம் <= STATIC_LENGTH)
     {
-      scratch_cache->length = count;
+      scratch_cache->length = மொத்தம்;
       scratch_cache->clear ();
-      return scratch_cache;
+      திரும்பு scratch_cache;
     }
 
-    auto *cache = (hb_scalar_cache_t *) hb_malloc (sizeof (hb_scalar_cache_t) - sizeof (static_values) + sizeof (static_values[0]) * count);
-    if (unlikely (!cache)) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
+    auto *cache = (hb_scalar_cache_t *) hb_malloc (அளவு (hb_scalar_cache_t) - அளவு (static_மதிப்புகள்) + அளவு (static_மதிப்புகள்[0]) * மொத்தம்);
+    எனில் (unlikely (!cache)) திரும்பு (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-    cache->length = count;
+    cache->length = மொத்தம்;
     cache->clear ();
 
-    return cache;
+    திரும்பு cache;
   }
 
-  static void destroy (hb_scalar_cache_t *cache,
+  நிலையான வெறுமை destroy (hb_scalar_cache_t *cache,
 		       hb_scalar_cache_t *scratch_cache = nullptr)
   {
-    if (cache != &Null(hb_scalar_cache_t) && cache != scratch_cache)
+    எனில் (cache != &Null(hb_scalar_cache_t) && cache != scratch_cache)
       hb_free (cache);
   }
 
-  void clear ()
+  வெறுமை clear ()
   {
-    auto *values = &static_values[0];
+    auto *values = &static_மதிப்புகள்[0];
     unsigned i = 0;
 #ifndef HB_OPTIMIZE_SIZE
-    for (; i + 3 < length; i += 4)
+    க்கு (; i + 3 < length; i += 4)
     {
       values[i + 0] = INVALID;
       values[i + 1] = INVALID;
@@ -2692,207 +2692,207 @@ struct hb_scalar_cache_t
       values[i + 3] = INVALID;
     }
 #endif
-    for (; i < length; i++)
+    க்கு (; i < length; i++)
       values[i] = INVALID;
   }
 
   HB_ALWAYS_INLINE
-  bool get (unsigned i, float *value) const
+  தருக்க get (unsigned i, தசம *value) மாறிலி
   {
-    if (unlikely (i >= length))
+    எனில் (unlikely (i >= length))
     {
       *value = 0.f;
-      return true;
+      திரும்பு உண்மை;
     }
-    auto *values = &static_values[0];
-    auto *cached_value = &values[i];
-    float v = *cached_value;
-    if (std::isnan (v))
-      return false;
+    auto *values = &static_மதிப்புகள்[0];
+    auto *cached_மதிப்பு = &values[i];
+    தசம v = *cached_மதிப்பு;
+    எனில் (std::isnan (v))
+      திரும்பு பொய்;
     *value = v;
-    return true;
+    திரும்பு உண்மை;
   }
 
   HB_ALWAYS_INLINE
-  void set (unsigned i, float value)
+  வெறுமை set (unsigned i, தசம value)
   {
-    if (unlikely (i >= length)) return;
-    auto *values = &static_values[0];
-    auto *cached_value = &values[i];
-    *cached_value = value;
+    எனில் (unlikely (i >= length)) திரும்பு;
+    auto *values = &static_மதிப்புகள்[0];
+    auto *cached_மதிப்பு = &values[i];
+    *cached_மதிப்பு = value;
   }
 
-  public:
+  பொது:
   unsigned length;
-  private:
-  mutable hb_atomic_t<float> static_values[STATIC_LENGTH];
+  தனிப்பட்ட:
+  mutable hb_atomic_t<தசம> static_மதிப்புகள்[STATIC_LENGTH];
 };
 
-struct VarRegionList
+கட்டமைப்பு VarRegionList
 {
-  private:
-  float evaluate_impl (unsigned int region_index,
-		       const int *coords, unsigned int coord_len) const
+  தனிப்பட்ட:
+  தசம evaluate_impl (unsigned முழு region_index,
+		       மாறிலி முழு *coords, unsigned முழு coord_len) மாறிலி
   {
-    const VarRegionAxis *axes = axesZ.arrayZ + (region_index * axisCount);
-    float v = 1.f;
+    மாறிலி VarRegionAxis *axes = axesZ.arrayZ + (region_index * axis_மொத்தம்_2);
+    தசம v = 1.f;
 
-    unsigned int count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு மொத்தம் = axis_மொத்தம்_2;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      int coord = i < coord_len ? coords[i] : 0;
-      float factor = axes[i].evaluate (coord);
-      if (factor == 0.f)
+      முழு coord = i < coord_len ? coords[i] : 0;
+      தசம factor = axes[i].evaluate (coord);
+      எனில் (factor == 0.f)
       {
 	v = 0.f;
-	break;
+	நிறுத்து;
       }
       v *= factor;
     }
 
-    return v;
+    திரும்பு v;
   }
 
-  public:
+  பொது:
   HB_ALWAYS_INLINE
-  float evaluate (unsigned int region_index,
-		  const int *coords, unsigned int coord_len,
-		  hb_scalar_cache_t *cache = nullptr) const
+  தசம evaluate (unsigned முழு region_index,
+		  மாறிலி முழு *coords, unsigned முழு coord_len,
+		  hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
-    if (unlikely (region_index >= regionCount))
-      return 0.;
+    எனில் (unlikely (region_index >= region_மொத்தம்))
+      திரும்பு 0.;
 
-    float v;
-    if (cache && cache->get (region_index, &v))
-      return v;
+    தசம v;
+    எனில் (cache && cache->get (region_index, &v))
+      திரும்பு v;
 
     v = evaluate_impl (region_index, coords, coord_len);
 
-    if (cache)
+    எனில் (cache)
       cache->set (region_index, v);
-    return v;
+    திரும்பு v;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
-		  axesZ.sanitize (c, axisCount * regionCount));
+		  axesZ.sanitize (c, axis_மொத்தம்_2 * region_மொத்தம்));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  const hb_vector_t<hb_tag_t>& axis_tags,
-                  const hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*>& regions)
+  தருக்க serialize (hb_serialize_context_t *c,
+                  மாறிலி hb_vector_t<hb_tag_t>& axis_tags,
+                  மாறிலி hb_vector_t<மாறிலி hb_hashmap_t<hb_tag_t, Triple>*>& regions)
   {
-    TRACE_SERIALIZE (this);
-    unsigned axis_count = axis_tags.length;
-    unsigned region_count = regions.length;
-    if (!axis_count || !region_count) return_trace (false);
-    if (unlikely (hb_unsigned_mul_overflows (axis_count * region_count,
-                                             VarRegionAxis::static_size))) return_trace (false);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    axisCount = axis_count;
-    regionCount = region_count;
+    TRACE_SERIALIZE (இது);
+    unsigned axis_மொத்தம் = axis_tags.length;
+    unsigned region_மொத்தம்_2 = regions.length;
+    எனில் (!axis_மொத்தம் || !region_மொத்தம்_2) return_trace (பொய்);
+    எனில் (unlikely (hb_unsigned_mul_overflows (axis_மொத்தம் * region_மொத்தம்_2,
+                                             VarRegionAxis::static_size))) return_trace (பொய்);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
+    axis_மொத்தம்_2 = axis_மொத்தம்;
+    region_மொத்தம் = region_மொத்தம்_2;
 
-    for (unsigned r = 0; r < region_count; r++)
+    க்கு (unsigned r = 0; r < region_மொத்தம்_2; r++)
     {
-      const auto& region = regions[r];
-      for (unsigned i = 0; i < axis_count; i++)
+      மாறிலி auto& region = regions[r];
+      க்கு (unsigned i = 0; i < axis_மொத்தம்; i++)
       {
         hb_tag_t tag = axis_tags.arrayZ[i];
         VarRegionAxis var_region_rec;
         Triple *coords;
-        if (region->has (tag, &coords))
+        எனில் (region->has (tag, &coords))
         {
           var_region_rec.startCoord.set_float (coords->minimum);
-          var_region_rec.peakCoord.set_float (coords->middle);
+          var_region_rec.peakCoord.set_float (coords->நடு);
           var_region_rec.endCoord.set_float (coords->maximum);
         }
-        else
+        இல்லையெனில்
         {
           var_region_rec.startCoord.set_int (0);
           var_region_rec.peakCoord.set_int (0);
           var_region_rec.endCoord.set_int (0);
         }
-        if (!var_region_rec.serialize (c))
-          return_trace (false);
+        எனில் (!var_region_rec.serialize (c))
+          return_trace (பொய்);
       }
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool serialize (hb_serialize_context_t *c, const VarRegionList *src, const hb_inc_bimap_t &region_map)
+  தருக்க serialize (hb_serialize_context_t *c, மாறிலி VarRegionList *src, மாறிலி hb_inc_bimap_t &region_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    axisCount = src->axisCount;
-    regionCount = region_map.get_population ();
-    if (unlikely (hb_unsigned_mul_overflows (axisCount * regionCount,
-					     VarRegionAxis::static_size))) return_trace (false);
-    if (unlikely (!c->extend (this))) return_trace (false);
-    unsigned int region_count = src->regionCount;
-    for (unsigned int r = 0; r < regionCount; r++)
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
+    axis_மொத்தம்_2 = src->axis_மொத்தம்_2;
+    region_மொத்தம் = region_map.get_population ();
+    எனில் (unlikely (hb_unsigned_mul_overflows (axis_மொத்தம்_2 * region_மொத்தம்,
+					     VarRegionAxis::static_size))) return_trace (பொய்);
+    எனில் (unlikely (!c->extend (இது))) return_trace (பொய்);
+    unsigned முழு region_மொத்தம்_2 = src->region_மொத்தம்;
+    க்கு (unsigned முழு r = 0; r < region_மொத்தம்; r++)
     {
-      unsigned int backward = region_map.backward (r);
-      if (backward >= region_count) return_trace (false);
-      hb_memcpy (&axesZ[axisCount * r], &src->axesZ[axisCount * backward], VarRegionAxis::static_size * axisCount);
+      unsigned முழு backward = region_map.backward (r);
+      எனில் (backward >= region_மொத்தம்_2) return_trace (பொய்);
+      hb_memcpy (&axesZ[axis_மொத்தம்_2 * r], &src->axesZ[axis_மொத்தம்_2 * backward], VarRegionAxis::static_size * axis_மொத்தம்_2);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool get_var_region (unsigned region_index,
-                       const hb_map_t& axes_old_index_tag_map,
-                       hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) const
+  தருக்க get_var_region (unsigned region_index,
+                       மாறிலி hb_map_t& axes_old_index_tag_map,
+                       hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) மாறிலி
   {
-    if (region_index >= regionCount) return false;
-    const VarRegionAxis* axis_region = axesZ.arrayZ + (region_index * axisCount);
-    for (unsigned i = 0; i < axisCount; i++)
+    எனில் (region_index >= region_மொத்தம்) திரும்பு பொய்;
+    மாறிலி VarRegionAxis* axis_region = axesZ.arrayZ + (region_index * axis_மொத்தம்_2);
+    க்கு (unsigned i = 0; i < axis_மொத்தம்_2; i++)
     {
       hb_tag_t *axis_tag;
-      if (!axes_old_index_tag_map.has (i, &axis_tag))
-        return false;
+      எனில் (!axes_old_index_tag_map.has (i, &axis_tag))
+        திரும்பு பொய்;
 
-      float min_val = axis_region->startCoord.to_float ();
-      float def_val = axis_region->peakCoord.to_float ();
-      float max_val = axis_region->endCoord.to_float ();
+      தசம min_val = axis_region->startCoord.to_float ();
+      தசம def_val = axis_region->peakCoord.to_float ();
+      தசம max_val = axis_region->endCoord.to_float ();
 
-      if (def_val != 0.f)
-        axis_tuples.set (*axis_tag, Triple ((double) min_val, (double) def_val, (double) max_val));
+      எனில் (def_val != 0.f)
+        axis_tuples.set (*axis_tag, Triple ((இரட்டை) min_val, (இரட்டை) def_val, (இரட்டை) max_val));
       axis_region++;
     }
-    return !axis_tuples.in_error ();
+    திரும்பு !axis_tuples.in_error ();
   }
 
-  bool get_var_regions (const hb_map_t& axes_old_index_tag_map,
-                        hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions /* OUT */) const
+  தருக்க get_var_regions (மாறிலி hb_map_t& axes_old_index_tag_map,
+                        hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions /* OUT */) மாறிலி
   {
-    if (!regions.alloc (regionCount))
-      return false;
+    எனில் (!regions.alloc (region_மொத்தம்))
+      திரும்பு பொய்;
 
-    for (unsigned i = 0; i < regionCount; i++)
+    க்கு (unsigned i = 0; i < region_மொத்தம்; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-      if (!get_var_region (i, axes_old_index_tag_map, axis_tuples))
-        return false;
+      எனில் (!get_var_region (i, axes_old_index_tag_map, axis_tuples))
+        திரும்பு பொய்;
       regions.push (std::move (axis_tuples));
     }
-    return !regions.in_error ();
+    திரும்பு !regions.in_error ();
   }
 
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size,
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_add_saturate (min_size,
 				     hb_unsigned_mul_saturate (VarRegionAxis::static_size,
-							       axisCount, regionCount)); }
+							       axis_மொத்தம்_2, region_மொத்தம்)); }
 
-  public:
-  HBUINT16	axisCount;
-  HBUINT15	regionCount;
-  protected:
+  பொது:
+  HBUINT16	axis_மொத்தம்_2;
+  HBUINT15	region_மொத்தம்;
+  பாதுகாக்கப்பட்ட:
   UnsizedArrayOf<VarRegionAxis>
 		axesZ;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (4, axesZ);
 };
 
@@ -2902,274 +2902,274 @@ struct VarRegionList
  * if some axis's tent evaluates to zero over the axis's entire reachable
  * range. Mirrors the runtime evaluation: invalid tents evaluate as
  * constant 1 and never kill a region. */
-static inline bool
-_hb_avar2_region_is_dead (const hb_hashmap_t<hb_tag_t, Triple> &axis_tuples,
-			  const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges)
+நிலையான உள்வரி தருக்க
+_hb_avar2_region_is_dead (மாறிலி hb_hashmap_t<hb_tag_t, Triple> &axis_tuples,
+			  மாறிலி hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges)
 {
-  for (auto _ : axis_tuples)
+  க்கு (auto _ : axis_tuples)
   {
     Triple *range;
-    if (!reachable_ranges.has (_.first, &range)) continue;
-    const Triple &tent = _.second;
-    int start = (int) roundf ((float) tent.minimum * 16384.f);
-    int peak  = (int) roundf ((float) tent.middle * 16384.f);
-    int end   = (int) roundf ((float) tent.maximum * 16384.f);
-    if (!peak) continue;
-    if (start > peak || peak > end) continue;
-    if (start < 0 && end > 0) continue;
-    int lo = (int) roundf ((float) range->minimum * 16384.f);
-    int hi = (int) roundf ((float) range->maximum * 16384.f);
+    எனில் (!reachable_ranges.has (_.first, &range)) தொடர்;
+    மாறிலி Triple &tent = _.second;
+    முழு start = (முழு) roundf ((தசம) tent.minimum * 16384.f);
+    முழு peak  = (முழு) roundf ((தசம) tent.நடு * 16384.f);
+    முழு end   = (முழு) roundf ((தசம) tent.maximum * 16384.f);
+    எனில் (!peak) தொடர்;
+    எனில் (start > peak || peak > end) தொடர்;
+    எனில் (start < 0 && end > 0) தொடர்;
+    முழு lo = (முழு) roundf ((தசம) range->minimum * 16384.f);
+    முழு hi = (முழு) roundf ((தசம) range->maximum * 16384.f);
     /* Strict comparisons: the scalar is 1 (not 0) at v == peak, so a tent
      * whose peak sits exactly on the range boundary is still live there.
      * (Reachable ranges are padded by one F2Dot14 unit at their producer,
      * which already covers this; strictness keeps the predicate correct on
      * its own terms.) */
-    if (hi < start || lo > end)
-      return true;
+    எனில் (hi < start || lo > end)
+      திரும்பு உண்மை;
   }
-  return false;
+  திரும்பு பொய்;
 }
 
-struct SparseVariationRegion
+கட்டமைப்பு SparseVariationRegion
 {
-  float evaluate (const int *coords, unsigned int coord_len) const
+  தசம evaluate (மாறிலி முழு *coords, unsigned முழு coord_len) மாறிலி
   {
-    float v = 1.f;
-    unsigned int count = axes.len;
-    for (unsigned int i = 0; i < count; i++)
+    தசம v = 1.f;
+    unsigned முழு மொத்தம் = axes.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      float factor = (this+axes[i]).evaluate (coords, coord_len);
-      if (factor == 0.f)
-	return 0.;
+      தசம factor = (இது+axes[i]).evaluate (coords, coord_len);
+      எனில் (factor == 0.f)
+	திரும்பு 0.;
       v *= factor;
     }
-    return v;
+    திரும்பு v;
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVariationRegion *src,
-		  const hb_map_t *axis_map)
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி SparseVariationRegion *src,
+		  மாறிலி hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!axes.serialize (c, (unsigned) src->axes.len))) return_trace (false);
-    for (unsigned i = 0; i < axes.len; i++)
-      if (unlikely (src->axes[i].is_null () ||
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!axes.serialize (c, (unsigned) src->axes.len))) return_trace (பொய்);
+    க்கு (unsigned i = 0; i < axes.len; i++)
+      எனில் (unlikely (src->axes[i].is_null () ||
 		    !axes[i].serialize_serialize (c, &(src+src->axes[i]), axis_map)))
-	return_trace (false);
-    return_trace (true);
+	return_trace (பொய்);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (axes.sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (axes.sanitize (c, இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Array16Of<Offset32To<SparseVarRegionAxis>> axes;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (2, axes);
 };
 
-struct SparseVarRegionList
+கட்டமைப்பு SparseVarRegionList
 {
   HB_ALWAYS_INLINE
-  float evaluate (unsigned int region_index,
-		  const int *coords, unsigned int coord_len,
-		  hb_scalar_cache_t *cache = nullptr) const
+  தசம evaluate (unsigned முழு region_index,
+		  மாறிலி முழு *coords, unsigned முழு coord_len,
+		  hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
-    if (unlikely (region_index >= regions.len))
-      return 0.;
+    எனில் (unlikely (region_index >= regions.len))
+      திரும்பு 0.;
 
-    float v;
-    if (cache && cache->get (region_index, &v))
-      return v;
+    தசம v;
+    எனில் (cache && cache->get (region_index, &v))
+      திரும்பு v;
 
-    const SparseVariationRegion &region = this+regions[region_index];
+    மாறிலி SparseVariationRegion &region = இது+regions[region_index];
 
     v = region.evaluate (coords, coord_len);
-    if (cache)
+    எனில் (cache)
       cache->set (region_index, v);
 
-    return v;
+    திரும்பு v;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (regions.sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (regions.sanitize (c, இது));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVarRegionList *src,
-		  const hb_inc_bimap_t &region_map,
-		  const hb_map_t *axis_map)
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி SparseVarRegionList *src,
+		  மாறிலி hb_inc_bimap_t &region_map,
+		  மாறிலி hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
     regions.len = region_map.get_population ();
-    if (unlikely (!c->extend (regions))) return_trace (false);
+    எனில் (unlikely (!c->extend (regions))) return_trace (பொய்);
 
-    for (unsigned i = 0; i < regions.len; i++)
+    க்கு (unsigned i = 0; i < regions.len; i++)
     {
       unsigned old_index = region_map.backward (i);
-      if (unlikely (old_index >= src->regions.len ||
+      எனில் (unlikely (old_index >= src->regions.len ||
 		    !regions[i].serialize_serialize (c,
 					     &(src+src->regions[old_index]),
 					     axis_map)))
-	return_trace (false);
+	return_trace (பொய்);
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  public:
+  பொது:
   Array32Of<Offset32To<SparseVariationRegion>>
 		regions;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (4, regions);
 };
 
 
-struct VarData
+கட்டமைப்பு VarData
 {
-  unsigned int get_item_count () const
-  { return itemCount; }
+  unsigned முழு get_item_மொத்தம் () மாறிலி
+  { திரும்பு item_மொத்தம்; }
 
-  unsigned int get_region_index_count () const
-  { return regionIndices.len; }
+  unsigned முழு get_region_index_மொத்தம் () மாறிலி
+  { திரும்பு regionIndices.len; }
 
-  unsigned get_region_index (unsigned i) const
-  { return i >= regionIndices.len ? -1 : regionIndices[i]; }
+  unsigned get_region_index (unsigned i) மாறிலி
+  { திரும்பு i >= regionIndices.len ? -1 : regionIndices[i]; }
 
-  size_t get_row_size () const
-  { return (wordCount () + regionIndices.len) * (longWords () ? 2 : 1); }
+  size_t get_row_size () மாறிலி
+  { திரும்பு (word_மொத்தம் () + regionIndices.len) * (long_சொற்கள்_2 () ? 2 : 1); }
 
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size - regionIndices.min_size,
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_add_saturate (min_size - regionIndices.min_size,
 				     regionIndices.get_size (),
-				     hb_unsigned_mul_saturate (itemCount, get_row_size ())); }
+				     hb_unsigned_mul_saturate (item_மொத்தம், get_row_size ())); }
 
-  template <typename Float = float>
-  Float _get_delta (unsigned int inner,
-		    const int *coords, unsigned int coord_count,
-		    const VarRegionList &regions,
-		    hb_scalar_cache_t *cache = nullptr) const
+  template <typename Float = தசம>
+  Float _get_delta (unsigned முழு inner,
+		    மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+		    மாறிலி VarRegionList &regions,
+		    hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
-    if (unlikely (inner >= itemCount))
-      return 0.;
-    bool is_long = longWords ();
-    unsigned int count = regionIndices.len;
-    unsigned word_count = wordCount ();
-    unsigned int scount = is_long ? count : word_count;
-    unsigned int lcount = is_long ? word_count : 0;
+    எனில் (unlikely (inner >= item_மொத்தம்))
+      திரும்பு 0.;
+    தருக்க is_long = long_சொற்கள்_2 ();
+    unsigned முழு மொத்தம் = regionIndices.len;
+    unsigned word_மொத்தம்_2 = word_மொத்தம் ();
+    unsigned முழு scount = is_long ? மொத்தம் : word_மொத்தம்_2;
+    unsigned முழு lcount = is_long ? word_மொத்தம்_2 : 0;
 
-    const HBUINT8 *bytes = get_delta_bytes ();
-    const HBUINT8 *row = bytes + inner * get_row_size ();
+    மாறிலி HBUINT8 *bytes = get_delta_bytes ();
+    மாறிலி HBUINT8 *row = bytes + inner * get_row_size ();
 
     Float delta = 0;
-    unsigned int i = 0;
+    unsigned முழு i = 0;
 
-    const HBINT32 *lcursor = reinterpret_cast<const HBINT32 *> (row);
-    for (; i < lcount; i++)
+    மாறிலி HBINT32 *lcursor = reinterpret_cast<மாறிலி HBINT32 *> (row);
+    க்கு (; i < lcount; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-        delta += (Float) scalar * (int) *lcursor;
+      தசம scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_மொத்தம், cache);
+      எனில் (scalar)
+        delta += (Float) scalar * (முழு) *lcursor;
       lcursor++;
     }
-    const HBINT16 *scursor = reinterpret_cast<const HBINT16 *> (lcursor);
-    for (; i < scount; i++)
+    மாறிலி HBINT16 *scursor = reinterpret_cast<மாறிலி HBINT16 *> (lcursor);
+    க்கு (; i < scount; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-       delta += (Float) scalar * (int) *scursor;
+      தசம scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_மொத்தம், cache);
+      எனில் (scalar)
+       delta += (Float) scalar * (முழு) *scursor;
       scursor++;
     }
-    const HBINT8 *bcursor = reinterpret_cast<const HBINT8 *> (scursor);
-    for (; i < count; i++)
+    மாறிலி HBINT8 *bcursor = reinterpret_cast<மாறிலி HBINT8 *> (scursor);
+    க்கு (; i < மொத்தம்; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-        delta += (Float) scalar * (int) *bcursor;
+      தசம scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_மொத்தம், cache);
+      எனில் (scalar)
+        delta += (Float) scalar * (முழு) *bcursor;
       bcursor++;
     }
 
-    return delta;
+    திரும்பு delta;
   }
 
-  template <typename Float = float>
+  template <typename Float = தசம>
   HB_ALWAYS_INLINE
-  Float get_delta (unsigned int inner,
-		   const int *coords, unsigned int coord_count,
-		   const VarRegionList &regions,
-		   hb_scalar_cache_t *cache = nullptr) const
+  Float get_delta (unsigned முழு inner,
+		   மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+		   மாறிலி VarRegionList &regions,
+		   hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
-    unsigned int count = regionIndices.len;
-    if (!count) return Float (0); // This is quite common, so optimize it.
-    return _get_delta<Float> (inner, coords, coord_count, regions, cache);
+    unsigned முழு மொத்தம் = regionIndices.len;
+    எனில் (!மொத்தம்) திரும்பு Float (0); // This is quite common, so optimize it.
+    திரும்பு _get_delta<Float> (inner, coords, coord_மொத்தம், regions, cache);
   }
 
-  void get_region_scalars (const int *coords, unsigned int coord_count,
-			   const VarRegionList &regions,
-			   float *scalars /*OUT */,
-			   unsigned int num_scalars) const
+  வெறுமை get_region_scalars (மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+			   மாறிலி VarRegionList &regions,
+			   தசம *scalars /*OUT */,
+			   unsigned முழு இலக்கம்_scalars) மாறிலி
   {
-    unsigned count = hb_min (num_scalars, regionIndices.len);
-    for (unsigned int i = 0; i < count; i++)
-      scalars[i] = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count);
-    for (unsigned int i = count; i < num_scalars; i++)
+    unsigned மொத்தம் = hb_min (இலக்கம்_scalars, regionIndices.len);
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      scalars[i] = regions.evaluate (regionIndices.arrayZ[i], coords, coord_மொத்தம்);
+    க்கு (unsigned முழு i = மொத்தம்; i < இலக்கம்_scalars; i++)
       scalars[i] = 0.f;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  regionIndices.sanitize (c) &&
 		  hb_barrier () &&
-		  wordCount () <= regionIndices.len &&
+		  word_மொத்தம் () <= regionIndices.len &&
 		  c->check_range (get_delta_bytes (),
-				  itemCount,
+				  item_மொத்தம்,
 				  get_row_size ()));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  bool has_long,
-                  const hb_vector_t<const hb_vector_t<int>*>& rows)
+  தருக்க serialize (hb_serialize_context_t *c,
+                  தருக்க has_long,
+                  மாறிலி hb_vector_t<மாறிலி hb_vector_t<முழு>*>& rows)
   {
-    TRACE_SERIALIZE (this);
-    unsigned row_count = rows.length;
-    if (!row_count) {
+    TRACE_SERIALIZE (இது);
+    unsigned row_மொத்தம்_2 = rows.length;
+    எனில் (!row_மொத்தம்_2) {
       // Nothing to serialize, will be empty.
-      return false;
+      திரும்பு பொய்;
     }
 
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!c->check_assign (itemCount, row_count,
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
+    எனில் (unlikely (!c->check_assign (item_மொத்தம், row_மொத்தம்_2,
                                     HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+      return_trace (பொய்);
 
-    int min_threshold = has_long ? -32768 : -128;
-    int max_threshold = has_long ? +32767 : +127;
-    enum delta_size_t { kZero=0, kNonWord, kWord };
+    முழு min_threshold = has_long ? -32768 : -128;
+    முழு max_threshold = has_long ? +32767 : +127;
+    எண்ணிக்கை delta_size_t { kZero=0, kNonWord, kWord };
     hb_vector_t<delta_size_t> delta_sz;
-    unsigned num_regions = rows[0]->length;
-    if (!delta_sz.resize (num_regions))
-      return_trace (false);
+    unsigned இலக்கம்_regions = rows[0]->length;
+    எனில் (!delta_sz.resize (இலக்கம்_regions))
+      return_trace (பொய்);
 
-    unsigned word_count = 0;
-    for (unsigned r = 0; r < num_regions; r++)
+    unsigned word_மொத்தம்_2 = 0;
+    க்கு (unsigned r = 0; r < இலக்கம்_regions; r++)
     {
-      for (unsigned i = 0; i < row_count; i++)
+      க்கு (unsigned i = 0; i < row_மொத்தம்_2; i++)
       {
-        int delta = rows[i]->arrayZ[r];
-        if (delta < min_threshold || delta > max_threshold)
+        முழு delta = rows[i]->arrayZ[r];
+        எனில் (delta < min_threshold || delta > max_threshold)
         {
           delta_sz[r] = kWord;
-          word_count++;
-          break;
+          word_மொத்தம்_2++;
+          நிறுத்து;
         }
-        else if (delta != 0)
+        இல்லையெனில் எனில் (delta != 0)
         {
           delta_sz[r] = kNonWord;
         }
@@ -3178,80 +3178,80 @@ struct VarData
 
     /* reorder regions: words and then non-words*/
     unsigned word_index = 0;
-    unsigned non_word_index = word_count;
+    unsigned non_word_index = word_மொத்தம்_2;
     hb_map_t ri_map;
-    for (unsigned r = 0; r < num_regions; r++)
+    க்கு (unsigned r = 0; r < இலக்கம்_regions; r++)
     {
-      if (!delta_sz[r]) continue;
+      எனில் (!delta_sz[r]) தொடர்;
       unsigned new_r = (delta_sz[r] == kWord)? word_index++ : non_word_index++;
-      if (!ri_map.set (new_r, r))
-        return_trace (false);
+      எனில் (!ri_map.set (new_r, r))
+        return_trace (பொய்);
     }
 
-    wordSizeCount = word_count | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
+    word_Size_மொத்தம் = word_மொத்தம்_2 | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
 
-    unsigned ri_count = ri_map.get_population ();
-    regionIndices.len = ri_count;
-    if (unlikely (!c->extend (this))) return_trace (false);
+    unsigned ri_மொத்தம் = ri_map.get_population ();
+    regionIndices.len = ri_மொத்தம்;
+    எனில் (unlikely (!c->extend (இது))) return_trace (பொய்);
 
-    for (unsigned r = 0; r < ri_count; r++)
+    க்கு (unsigned r = 0; r < ri_மொத்தம்; r++)
     {
       hb_codepoint_t *idx;
-      if (!ri_map.has (r, &idx))
-        return_trace (false);
+      எனில் (!ri_map.has (r, &idx))
+        return_trace (பொய்);
       regionIndices[r] = *idx;
     }
 
     HBUINT8 *delta_bytes = get_delta_bytes ();
     unsigned row_size = get_row_size ();
-    for (unsigned int i = 0; i < row_count; i++)
+    க்கு (unsigned முழு i = 0; i < row_மொத்தம்_2; i++)
     {
-      for (unsigned int r = 0; r < ri_count; r++)
+      க்கு (unsigned முழு r = 0; r < ri_மொத்தம்; r++)
       {
-        int delta = rows[i]->arrayZ[ri_map[r]];
+        முழு delta = rows[i]->arrayZ[ri_map[r]];
         set_item_delta_fast (i, r, delta, delta_bytes, row_size);
       }
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const VarData *src,
-		  const hb_inc_bimap_t &inner_map,
-		  const hb_inc_bimap_t &region_map,
-		  const hb_set_t *culled_regions = nullptr)
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி VarData *src,
+		  மாறிலி hb_inc_bimap_t &inner_map,
+		  மாறிலி hb_inc_bimap_t &region_map,
+		  மாறிலி hb_set_t *culled_regions = nullptr)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    itemCount = inner_map.get_next_value ();
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
+    item_மொத்தம் = inner_map.get_next_மதிப்பு ();
 
     /* Optimize word count */
-    unsigned ri_count = src->regionIndices.len;
-    enum delta_size_t { kZero=0, kNonWord, kWord };
+    unsigned ri_மொத்தம் = src->regionIndices.len;
+    எண்ணிக்கை delta_size_t { kZero=0, kNonWord, kWord };
     hb_vector_t<delta_size_t> delta_sz;
-    hb_vector_t<unsigned int> ri_map;	/* maps new index to old index */
-    delta_sz.resize (ri_count);
-    ri_map.resize (ri_count);
-    unsigned int new_word_count = 0;
-    unsigned int r;
+    hb_vector_t<unsigned முழு> ri_map;	/* maps new index to old index */
+    delta_sz.resize (ri_மொத்தம்);
+    ri_map.resize (ri_மொத்தம்);
+    unsigned முழு new_word_மொத்தம் = 0;
+    unsigned முழு r;
 
-    const HBUINT8 *src_delta_bytes = src->get_delta_bytes ();
+    மாறிலி HBUINT8 *src_delta_bytes = src->get_delta_bytes ();
     unsigned src_row_size = src->get_row_size ();
-    unsigned src_word_count = src->wordCount ();
-    bool     src_long_words = src->longWords ();
+    unsigned src_word_மொத்தம் = src->word_மொத்தம் ();
+    தருக்க     src_long_சொற்கள் = src->long_சொற்கள்_2 ();
 
-    bool has_long = false;
-    if (src_long_words)
+    தருக்க has_long = பொய்;
+    எனில் (src_long_சொற்கள்)
     {
-      for (r = 0; r < src_word_count; r++)
+      க்கு (r = 0; r < src_word_மொத்தம்; r++)
       {
-        for (unsigned old_gid : inner_map.keys())
+        க்கு (unsigned old_gid : inner_map.சாவிகள்())
 	{
 	  int32_t delta = src->get_item_delta_fast (old_gid, r, src_delta_bytes, src_row_size);
-	  if (delta < -32768 || 32767 < delta)
+	  எனில் (delta < -32768 || 32767 < delta)
 	  {
-	    has_long = true;
-	    break;
+	    has_long = உண்மை;
+	    நிறுத்து;
 	  }
         }
       }
@@ -3259,419 +3259,419 @@ struct VarData
 
     signed min_threshold = has_long ? -32768 : -128;
     signed max_threshold = has_long ? +32767 : +127;
-    for (r = 0; r < ri_count; r++)
+    க்கு (r = 0; r < ri_மொத்தம்; r++)
     {
-      bool short_circuit = src_long_words == has_long && src_word_count <= r;
+      தருக்க short_circuit = src_long_சொற்கள் == has_long && src_word_மொத்தம் <= r;
 
       delta_sz[r] = kZero;
-      if (culled_regions && culled_regions->has (src->regionIndices[r]))
-	continue; /* unreachable region: drop its column */
-      for (unsigned old_gid : inner_map.keys())
+      எனில் (culled_regions && culled_regions->has (src->regionIndices[r]))
+	தொடர்; /* unreachable region: drop its column */
+      க்கு (unsigned old_gid : inner_map.சாவிகள்())
       {
 	int32_t delta = src->get_item_delta_fast (old_gid, r, src_delta_bytes, src_row_size);
-	if (delta < min_threshold || max_threshold < delta)
+	எனில் (delta < min_threshold || max_threshold < delta)
 	{
 	  delta_sz[r] = kWord;
-	  new_word_count++;
-	  break;
+	  new_word_மொத்தம்++;
+	  நிறுத்து;
 	}
-	else if (delta != 0)
+	இல்லையெனில் எனில் (delta != 0)
 	{
 	  delta_sz[r] = kNonWord;
-	  if (short_circuit)
-	    break;
+	  எனில் (short_circuit)
+	    நிறுத்து;
 	}
       }
     }
 
-    unsigned int word_index = 0;
-    unsigned int non_word_index = new_word_count;
-    unsigned int new_ri_count = 0;
-    for (r = 0; r < ri_count; r++)
-      if (delta_sz[r])
+    unsigned முழு word_index = 0;
+    unsigned முழு non_word_index = new_word_மொத்தம்;
+    unsigned முழு new_ri_மொத்தம் = 0;
+    க்கு (r = 0; r < ri_மொத்தம்; r++)
+      எனில் (delta_sz[r])
       {
 	unsigned new_r = (delta_sz[r] == kWord)? word_index++ : non_word_index++;
 	ri_map[new_r] = r;
-	new_ri_count++;
+	new_ri_மொத்தம்++;
       }
 
-    wordSizeCount = new_word_count | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
+    word_Size_மொத்தம் = new_word_மொத்தம் | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
 
-    regionIndices.len = new_ri_count;
+    regionIndices.len = new_ri_மொத்தம்;
 
-    if (unlikely (!c->extend (this))) return_trace (false);
+    எனில் (unlikely (!c->extend (இது))) return_trace (பொய்);
 
-    for (r = 0; r < new_ri_count; r++)
+    க்கு (r = 0; r < new_ri_மொத்தம்; r++)
       regionIndices[r] = region_map[src->regionIndices[ri_map[r]]];
 
     HBUINT8 *delta_bytes = get_delta_bytes ();
     unsigned row_size = get_row_size ();
-    unsigned count = itemCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned மொத்தம் = item_மொத்தம்;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      unsigned int old = inner_map.backward (i);
-      for (unsigned int r = 0; r < new_ri_count; r++)
+      unsigned முழு old = inner_map.backward (i);
+      க்கு (unsigned முழு r = 0; r < new_ri_மொத்தம்; r++)
 	set_item_delta_fast (i, r,
 			     src->get_item_delta_fast (old, ri_map[r],
 						       src_delta_bytes, src_row_size),
 			     delta_bytes, row_size);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  void collect_region_refs (hb_set_t &region_indices, const hb_inc_bimap_t &inner_map) const
+  வெறுமை collect_region_refs (hb_set_t &region_indices, மாறிலி hb_inc_bimap_t &inner_map) மாறிலி
   {
-    const HBUINT8 *delta_bytes = get_delta_bytes ();
+    மாறிலி HBUINT8 *delta_bytes = get_delta_bytes ();
     unsigned row_size = get_row_size ();
 
-    for (unsigned int r = 0; r < regionIndices.len; r++)
+    க்கு (unsigned முழு r = 0; r < regionIndices.len; r++)
     {
-      unsigned int region = regionIndices.arrayZ[r];
-      if (region_indices.has (region)) continue;
-      for (hb_codepoint_t old_gid : inner_map.keys())
-	if (get_item_delta_fast (old_gid, r, delta_bytes, row_size) != 0)
+      unsigned முழு region = regionIndices.arrayZ[r];
+      எனில் (region_indices.has (region)) தொடர்;
+      க்கு (hb_codepoint_t old_gid : inner_map.சாவிகள்())
+	எனில் (get_item_delta_fast (old_gid, r, delta_bytes, row_size) != 0)
 	{
 	  region_indices.add (region);
-	  break;
+	  நிறுத்து;
 	}
     }
   }
 
-  public:
-  const HBUINT8 *get_delta_bytes () const
-  { return &StructAfter<HBUINT8> (regionIndices); }
+  பொது:
+  மாறிலி HBUINT8 *get_delta_bytes () மாறிலி
+  { திரும்பு &StructAfter<HBUINT8> (regionIndices); }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT8 *get_delta_bytes ()
-  { return &StructAfter<HBUINT8> (regionIndices); }
+  { திரும்பு &StructAfter<HBUINT8> (regionIndices); }
 
-  public:
-  int32_t get_item_delta_fast (unsigned int item, unsigned int region,
-			       const HBUINT8 *delta_bytes, unsigned row_size) const
+  பொது:
+  int32_t get_item_delta_fast (unsigned முழு item, unsigned முழு region,
+			       மாறிலி HBUINT8 *delta_bytes, unsigned row_size) மாறிலி
   {
-    if (unlikely (item >= itemCount || region >= regionIndices.len)) return 0;
+    எனில் (unlikely (item >= item_மொத்தம் || region >= regionIndices.len)) திரும்பு 0;
 
-    const HBINT8 *p = (const HBINT8 *) delta_bytes + item * row_size;
-    unsigned word_count = wordCount ();
-    bool is_long = longWords ();
-    if (is_long)
+    மாறிலி HBINT8 *p = (மாறிலி HBINT8 *) delta_bytes + item * row_size;
+    unsigned word_மொத்தம்_2 = word_மொத்தம் ();
+    தருக்க is_long = long_சொற்கள்_2 ();
+    எனில் (is_long)
     {
-      if (region < word_count)
-	return ((const HBINT32 *) p)[region];
-      else
-	return ((const HBINT16 *)(p + HBINT32::static_size * word_count))[region - word_count];
+      எனில் (region < word_மொத்தம்_2)
+	திரும்பு ((மாறிலி HBINT32 *) p)[region];
+      இல்லையெனில்
+	திரும்பு ((மாறிலி HBINT16 *)(p + HBINT32::static_size * word_மொத்தம்_2))[region - word_மொத்தம்_2];
     }
-    else
+    இல்லையெனில்
     {
-      if (region < word_count)
-	return ((const HBINT16 *) p)[region];
-      else
-	return (p + HBINT16::static_size * word_count)[region - word_count];
+      எனில் (region < word_மொத்தம்_2)
+	திரும்பு ((மாறிலி HBINT16 *) p)[region];
+      இல்லையெனில்
+	திரும்பு (p + HBINT16::static_size * word_மொத்தம்_2)[region - word_மொத்தம்_2];
     }
   }
-  int32_t get_item_delta (unsigned int item, unsigned int region) const
+  int32_t get_item_delta (unsigned முழு item, unsigned முழு region) மாறிலி
   {
-     return get_item_delta_fast (item, region,
+     திரும்பு get_item_delta_fast (item, region,
 				 get_delta_bytes (),
 				 get_row_size ());
   }
 
-  protected:
-  void set_item_delta_fast (unsigned int item, unsigned int region, int32_t delta,
+  பாதுகாக்கப்பட்ட:
+  வெறுமை set_item_delta_fast (unsigned முழு item, unsigned முழு region, int32_t delta,
 			    HBUINT8 *delta_bytes, unsigned row_size)
   {
     HBINT8 *p = (HBINT8 *) delta_bytes + item * row_size;
-    unsigned word_count = wordCount ();
-    bool is_long = longWords ();
-    if (is_long)
+    unsigned word_மொத்தம்_2 = word_மொத்தம் ();
+    தருக்க is_long = long_சொற்கள்_2 ();
+    எனில் (is_long)
     {
-      if (region < word_count)
+      எனில் (region < word_மொத்தம்_2)
 	((HBINT32 *) p)[region] = delta;
-      else
-	((HBINT16 *)(p + HBINT32::static_size * word_count))[region - word_count] = delta;
+      இல்லையெனில்
+	((HBINT16 *)(p + HBINT32::static_size * word_மொத்தம்_2))[region - word_மொத்தம்_2] = delta;
     }
-    else
+    இல்லையெனில்
     {
-      if (region < word_count)
+      எனில் (region < word_மொத்தம்_2)
 	((HBINT16 *) p)[region] = delta;
-      else
-	(p + HBINT16::static_size * word_count)[region - word_count] = delta;
+      இல்லையெனில்
+	(p + HBINT16::static_size * word_மொத்தம்_2)[region - word_மொத்தம்_2] = delta;
     }
   }
-  void set_item_delta (unsigned int item, unsigned int region, int32_t delta)
+  வெறுமை set_item_delta (unsigned முழு item, unsigned முழு region, int32_t delta)
   {
     set_item_delta_fast (item, region, delta,
 			 get_delta_bytes (),
 			 get_row_size ());
   }
 
-  bool longWords () const { return wordSizeCount & 0x8000u /* LONG_WORDS */; }
-  unsigned wordCount () const { return wordSizeCount & 0x7FFFu /* WORD_DELTA_COUNT_MASK */; }
+  தருக்க long_சொற்கள்_2 () மாறிலி { திரும்பு word_Size_மொத்தம் & 0x8000u /* LONG_WORDS */; }
+  unsigned word_மொத்தம் () மாறிலி { திரும்பு word_Size_மொத்தம் & 0x7FFFu /* WORD_DELTA_COUNT_MASK */; }
 
-  protected:
-  HBUINT16		itemCount;
-  HBUINT16		wordSizeCount;
+  பாதுகாக்கப்பட்ட:
+  HBUINT16		item_மொத்தம்;
+  HBUINT16		word_Size_மொத்தம்;
   Array16Of<HBUINT16>	regionIndices;
 /*UnsizedArrayOf<HBUINT8>bytesX;*/
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (6, regionIndices);
 };
 
-struct MultiVarData
+கட்டமைப்பு MultiVarData
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size - regionIndices.min_size,
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_add_saturate (min_size - regionIndices.min_size,
 				     regionIndices.get_size ()); }
 
-  const TupleList &get_delta_sets () const
-  { return this+StructAfter<decltype (deltaSetsX)> (regionIndices); }
+  மாறிலி TupleList &get_delta_sets () மாறிலி
+  { திரும்பு இது+StructAfter<decltype (deltaSetsX)> (regionIndices); }
 
-  void get_delta (unsigned int inner,
-		  const int *coords, unsigned int coord_count,
-		  const SparseVarRegionList &regions,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  வெறுமை get_delta (unsigned முழு inner,
+		  மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+		  மாறிலி SparseVarRegionList &regions,
+		  hb_array_t<இரட்டை> out,
+		  hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
     auto &deltaSets = get_delta_sets ();
 
-    auto values_iter = deltaSets.fetcher (inner);
-    unsigned regionCount = regionIndices.len;
+    auto மதிப்புகள்_iter = deltaSets.fetcher (inner);
+    unsigned region_மொத்தம் = regionIndices.len;
     unsigned skip = 0;
-    for (unsigned regionIndex = 0; regionIndex < regionCount; regionIndex++)
+    க்கு (unsigned regionIndex = 0; regionIndex < region_மொத்தம்; regionIndex++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[regionIndex],
-				       coords, coord_count,
+      தசம scalar = regions.evaluate (regionIndices.arrayZ[regionIndex],
+				       coords, coord_மொத்தம்,
 				       cache);
       // We skip lazily. Helps with the tail end.
-      if (scalar == 0.0f)
+      எனில் (scalar == 0.0f)
         skip += out.length;
-      else
+      இல்லையெனில்
       {
-        if (skip)
+        எனில் (skip)
 	{
-	  values_iter.skip (skip);
+	  மதிப்புகள்_iter.skip (skip);
 	  skip = 0;
 	}
-	values_iter.add_to (out, scalar);
+	மதிப்புகள்_iter.add_to (out, scalar);
       }
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (format.sanitize (c) &&
 		  hb_barrier () &&
 		  format == 1 &&
 		  regionIndices.sanitize (c) &&
 		  hb_barrier () &&
-		  StructAfter<decltype (deltaSetsX)> (regionIndices).sanitize (c, this));
+		  StructAfter<decltype (deltaSetsX)> (regionIndices).sanitize (c, இது));
   }
 
-  unsigned get_item_count () const
-  { return get_delta_sets ().count; }
+  unsigned get_item_மொத்தம் () மாறிலி
+  { திரும்பு get_delta_sets ().மொத்தம்; }
 
-  void collect_region_refs (hb_set_t &region_indices) const
+  வெறுமை collect_region_refs (hb_set_t &region_indices) மாறிலி
   {
-    for (unsigned region : regionIndices)
+    க்கு (unsigned region : regionIndices)
       region_indices.add (region);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const MultiVarData *src,
-		  const hb_inc_bimap_t &inner_map,
-		  const hb_inc_bimap_t &region_map)
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி MultiVarData *src,
+		  மாறிலி hb_inc_bimap_t &inner_map,
+		  மாறிலி hb_inc_bimap_t &region_map)
   {
-    TRACE_SERIALIZE (this);
-    unsigned region_count = src->regionIndices.len;
+    TRACE_SERIALIZE (இது);
+    unsigned region_மொத்தம்_2 = src->regionIndices.len;
     unsigned header_size = HBUINT8::static_size +
 			   Array16Of<HBUINT16>::min_size +
-			   region_count * HBUINT16::static_size +
+			   region_மொத்தம்_2 * HBUINT16::static_size +
 			   HBUINT32::static_size;
-    if (unlikely (!c->extend_size (this, header_size, false)))
-      return_trace (false);
+    எனில் (unlikely (!c->extend_size (இது, header_size, பொய்)))
+      return_trace (பொய்);
     format = 1;
-    regionIndices.len = region_count;
-    for (unsigned i = 0; i < regionIndices.len; i++)
+    regionIndices.len = region_மொத்தம்_2;
+    க்கு (unsigned i = 0; i < regionIndices.len; i++)
     {
       unsigned old_region = src->regionIndices[i];
-      if (unlikely (!region_map.has (old_region)))
-	return_trace (false);
+      எனில் (unlikely (!region_map.has (old_region)))
+	return_trace (பொய்);
       regionIndices[i] = region_map.get (old_region);
     }
 
-    const auto &src_delta_sets = src->get_delta_sets ();
+    மாறிலி auto &src_delta_sets = src->get_delta_sets ();
     hb_vector_t<hb_ubytes_t> delta_sets;
     unsigned data_size = 0;
-    if (unlikely (!delta_sets.alloc_exact (inner_map.get_population ())))
-      return_trace (false);
-    for (unsigned i = 0; i < inner_map.get_population (); i++)
+    எனில் (unlikely (!delta_sets.alloc_exact (inner_map.get_population ())))
+      return_trace (பொய்);
+    க்கு (unsigned i = 0; i < inner_map.get_population (); i++)
     {
       unsigned old_inner = inner_map.backward (i);
-      if (unlikely (old_inner >= src_delta_sets.count)) return_trace (false);
-      hb_ubytes_t bytes = static_cast<const CFF2Index &> (src_delta_sets)[old_inner];
+      எனில் (unlikely (old_inner >= src_delta_sets.மொத்தம்)) return_trace (பொய்);
+      hb_ubytes_t bytes = static_cast<மாறிலி CFF2Index &> (src_delta_sets)[old_inner];
       data_size = hb_unsigned_add_saturate (data_size, bytes.length);
       delta_sets.push (bytes);
     }
-    if (unlikely (data_size == UINT_MAX || delta_sets.in_error ()))
-      return_trace (false);
+    எனில் (unlikely (data_size == UINT_MAX || delta_sets.in_error ()))
+      return_trace (பொய்);
 
     auto &out_delta_sets = StructAfter<decltype (deltaSetsX)> (regionIndices);
     return_trace (out_delta_sets.serialize_serialize (c, delta_sets.iter (), &data_size));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT8	      format; // 1
   Array16Of<HBUINT16> regionIndices;
   Offset32To<TupleList> deltaSetsX;
-  public:
+  பொது:
   DEFINE_SIZE_MIN (7);
 };
 
-struct ItemVariationStore
+கட்டமைப்பு ItemVariationStore
 {
-  friend struct item_variations_t;
+  friend கட்டமைப்பு item_variations_t;
 
-  hb_scalar_cache_t *create_cache () const
+  hb_scalar_cache_t *create_cache () மாறிலி
   {
 #ifdef HB_NO_VAR
-    return hb_scalar_cache_t::create (0);
+    திரும்பு hb_scalar_cache_t::create (0);
 #endif
-    return hb_scalar_cache_t::create ((this+regions).regionCount);
+    திரும்பு hb_scalar_cache_t::create ((இது+regions).region_மொத்தம்);
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache)
+  நிலையான வெறுமை destroy_cache (hb_scalar_cache_t *cache)
   {
     hb_scalar_cache_t::destroy (cache);
   }
 
-  private:
-  template <typename Float = float>
-  Float get_delta (unsigned int outer, unsigned int inner,
-		   const int *coords, unsigned int coord_count,
-		   hb_scalar_cache_t *cache = nullptr) const
+  தனிப்பட்ட:
+  template <typename Float = தசம>
+  Float get_delta (unsigned முழு outer, unsigned முழு inner,
+		   மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+		   hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
 #ifdef HB_NO_VAR
-    return Float (0);
+    திரும்பு Float (0);
 #endif
 
-    if (unlikely (outer >= dataSets.len))
-      return Float (0);
+    எனில் (unlikely (outer >= dataSets.len))
+      திரும்பு Float (0);
 
-    return (this+dataSets[outer]).get_delta<Float> (inner,
-					     coords, coord_count,
-					     this+regions,
+    திரும்பு (இது+dataSets[outer]).get_delta<Float> (inner,
+					     coords, coord_மொத்தம்,
+					     இது+regions,
 					     cache);
   }
 
-  public:
-  bool has_delta_set (unsigned int index) const
+  பொது:
+  தருக்க has_delta_set (unsigned முழு index) மாறிலி
   {
 #ifdef HB_NO_VAR
-    return false;
+    திரும்பு பொய்;
 #endif
 
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    return outer < dataSets.len &&
-	   inner < (this+dataSets[outer]).get_item_count ();
+    unsigned முழு outer = index >> 16;
+    unsigned முழு inner = index & 0xFFFF;
+    திரும்பு outer < dataSets.len &&
+	   inner < (இது+dataSets[outer]).get_item_மொத்தம் ();
   }
 
-  template <typename Float = float>
-  Float get_delta (unsigned int index,
-		   const int *coords, unsigned int coord_count,
-		   hb_scalar_cache_t *cache = nullptr) const
+  template <typename Float = தசம>
+  Float get_delta (unsigned முழு index,
+		   மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+		   hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    return get_delta<Float> (outer, inner, coords, coord_count, cache);
+    unsigned முழு outer = index >> 16;
+    unsigned முழு inner = index & 0xFFFF;
+    திரும்பு get_delta<Float> (outer, inner, coords, coord_மொத்தம், cache);
   }
-  template <typename Float = float>
-  Float get_delta (unsigned int index,
-		   hb_array_t<const int> coords,
-		   hb_scalar_cache_t *cache = nullptr) const
+  template <typename Float = தசம>
+  Float get_delta (unsigned முழு index,
+		   hb_array_t<மாறிலி முழு> coords,
+		   hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
-    return get_delta<Float> (index,
+    திரும்பு get_delta<Float> (index,
 		      coords.arrayZ, coords.length,
 		      cache);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
 #ifdef HB_NO_VAR
-    return true;
+    திரும்பு உண்மை;
 #endif
 
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
 		  format == 1 &&
-		  regions.sanitize (c, this) &&
-		  dataSets.sanitize (c, this));
+		  regions.sanitize (c, இது) &&
+		  dataSets.sanitize (c, இது));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  bool has_long,
-                  const hb_vector_t<hb_tag_t>& axis_tags,
-                  const hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*>& region_list,
-                  const hb_vector_t<delta_row_encoding_t>& vardata_encodings)
+  தருக்க serialize (hb_serialize_context_t *c,
+                  தருக்க has_long,
+                  மாறிலி hb_vector_t<hb_tag_t>& axis_tags,
+                  மாறிலி hb_vector_t<மாறிலி hb_hashmap_t<hb_tag_t, Triple>*>& region_list,
+                  மாறிலி hb_vector_t<delta_row_encoding_t>& vardata_encodings)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 #ifdef HB_NO_VAR
-    return_trace (false);
+    return_trace (பொய்);
 #endif
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
 
     format = 1;
-    if (!regions.serialize_serialize (c, axis_tags, region_list))
-      return_trace (false);
+    எனில் (!regions.serialize_serialize (c, axis_tags, region_list))
+      return_trace (பொய்);
 
-    unsigned num_var_data = vardata_encodings.length;
-    if (!num_var_data) return_trace (false);
-    if (unlikely (!c->check_assign (dataSets.len, num_var_data,
+    unsigned இலக்கம்_var_data = vardata_encodings.length;
+    எனில் (!இலக்கம்_var_data) return_trace (பொய்);
+    எனில் (unlikely (!c->check_assign (dataSets.len, இலக்கம்_var_data,
                                     HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+      return_trace (பொய்);
 
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
-    for (unsigned i = 0; i < num_var_data; i++)
-      if (!dataSets[i].serialize_serialize (c, has_long, vardata_encodings[i].items))
-        return_trace (false);
+    எனில் (unlikely (!c->extend (dataSets))) return_trace (பொய்);
+    க்கு (unsigned i = 0; i < இலக்கம்_var_data; i++)
+      எனில் (!dataSets[i].serialize_serialize (c, has_long, vardata_encodings[i].பொருட்கள்))
+        return_trace (பொய்);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const ItemVariationStore *src,
-		  const hb_array_t <const hb_inc_bimap_t> &inner_maps,
-		  const hb_set_t *culled_regions = nullptr)
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி ItemVariationStore *src,
+		  மாறிலி hb_array_t <மாறிலி hb_inc_bimap_t> &inner_maps,
+		  மாறிலி hb_set_t *culled_regions = nullptr)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
 #ifdef HB_NO_VAR
-    return_trace (false);
+    return_trace (பொய்);
 #endif
 
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
 
-    unsigned int set_count = 0;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
-      if (inner_maps[i].get_population ())
-	set_count++;
+    unsigned முழு set_மொத்தம் = 0;
+    க்கு (unsigned முழு i = 0; i < inner_maps.length; i++)
+      எனில் (inner_maps[i].get_population ())
+	set_மொத்தம்++;
 
     format = 1;
 
-    const auto &src_regions = src+src->regions;
+    மாறிலி auto &src_regions = src+src->regions;
 
     hb_set_t region_indices;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
+    க்கு (unsigned முழு i = 0; i < inner_maps.length; i++)
       (src+src->dataSets[i]).collect_region_refs (region_indices, inner_maps[i]);
 
-    if (region_indices.in_error ())
-      return_trace (false);
+    எனில் (region_indices.in_error ())
+      return_trace (பொய்);
 
-    region_indices.del_range ((src_regions).regionCount, hb_set_t::INVALID);
+    region_indices.del_range ((src_regions).region_மொத்தம், hb_set_t::INVALID);
 
-    if (culled_regions)
+    எனில் (culled_regions)
       region_indices.subtract (*culled_regions);
 
     /* TODO use constructor when our data-structures support that. */
@@ -3679,257 +3679,257 @@ struct ItemVariationStore
     + hb_iter (region_indices)
     | hb_apply ([&region_map] (unsigned _) { region_map.add(_); })
     ;
-    if (region_map.in_error())
-      return_trace (false);
+    எனில் (region_map.in_error())
+      return_trace (பொய்);
 
-    if (unlikely (!regions.serialize_serialize (c, &src_regions, region_map)))
-      return_trace (false);
+    எனில் (unlikely (!regions.serialize_serialize (c, &src_regions, region_map)))
+      return_trace (பொய்);
 
-    dataSets.len = set_count;
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
+    dataSets.len = set_மொத்தம்;
+    எனில் (unlikely (!c->extend (dataSets))) return_trace (பொய்);
 
     /* TODO: The following code could be simplified when
      * List16OfOffset16To::subset () can take a custom param to be passed to VarData::serialize () */
-    unsigned int set_index = 0;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
+    unsigned முழு set_index = 0;
+    க்கு (unsigned முழு i = 0; i < inner_maps.length; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      if (unlikely (!dataSets[set_index++]
+      எனில் (!inner_maps[i].get_population ()) தொடர்;
+      எனில் (unlikely (!dataSets[set_index++]
 		     .serialize_serialize (c, &(src+src->dataSets[i]), inner_maps[i], region_map,
 					   culled_regions)))
-	return_trace (false);
+	return_trace (பொய்);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  ItemVariationStore *copy (hb_serialize_context_t *c) const
+  ItemVariationStore *copy (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    TRACE_SERIALIZE (இது);
+    auto *out = c->start_embed (இது);
+    எனில் (unlikely (!out)) return_trace (nullptr);
 
     hb_vector_t <hb_inc_bimap_t> inner_maps;
-    unsigned count = dataSets.len;
-    for (unsigned i = 0; i < count; i++)
+    unsigned மொத்தம் = dataSets.len;
+    க்கு (unsigned i = 0; i < மொத்தம்; i++)
     {
       hb_inc_bimap_t *map = inner_maps.push ();
-      if (unlikely (!c->propagate_error(inner_maps)))
+      எனில் (unlikely (!c->propagate_error(inner_maps)))
         return_trace(nullptr);
-      auto &data = this+dataSets[i];
+      auto &data = இது+dataSets[i];
 
-      unsigned itemCount = data.get_item_count ();
-      for (unsigned j = 0; j < itemCount; j++)
+      unsigned item_மொத்தம் = data.get_item_மொத்தம் ();
+      க்கு (unsigned j = 0; j < item_மொத்தம்; j++)
 	map->add (j);
     }
 
-    if (unlikely (!out->serialize (c, this, inner_maps))) return_trace (nullptr);
+    எனில் (unlikely (!out->serialize (c, இது, inner_maps))) return_trace (nullptr);
 
     return_trace (out);
   }
 
   /* Collect regions that a partial avar2 instance can never reach, per the
    * plan's reachable final-coordinate ranges. */
-  bool collect_dead_regions (const hb_map_t &axes_old_index_tag_map,
-			     const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges,
-			     hb_set_t &dead_regions /* OUT */) const
+  தருக்க collect_dead_regions (மாறிலி hb_map_t &axes_old_index_tag_map,
+			     மாறிலி hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges,
+			     hb_set_t &dead_regions /* OUT */) மாறிலி
   {
 #ifndef HB_NO_VAR
-    if (!reachable_ranges.get_population ()) return true;
-    const VarRegionList &region_list = this+regions;
-    unsigned count = region_list.regionCount;
-    for (unsigned i = 0; i < count; i++)
+    எனில் (!reachable_ranges.get_population ()) திரும்பு உண்மை;
+    மாறிலி VarRegionList &region_list = இது+regions;
+    unsigned மொத்தம் = region_list.region_மொத்தம்;
+    க்கு (unsigned i = 0; i < மொத்தம்; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-      if (!region_list.get_var_region (i, axes_old_index_tag_map, axis_tuples))
-	return false;
-      if (_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
+      எனில் (!region_list.get_var_region (i, axes_old_index_tag_map, axis_tuples))
+	திரும்பு பொய்;
+      எனில் (_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
 	dead_regions.add (i);
     }
-    return !dead_regions.in_error ();
-#else
-    return true;
+    திரும்பு !dead_regions.in_error ();
+#இல்லையெனில்
+    திரும்பு உண்மை;
 #endif
   }
 
-  bool subset (hb_subset_context_t *c, const hb_array_t<const hb_inc_bimap_t> &inner_maps) const
+  தருக்க subset (hb_subset_context_t *c, மாறிலி hb_array_t<மாறிலி hb_inc_bimap_t> &inner_maps) மாறிலி
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (இது);
 #ifdef HB_NO_VAR
-    return_trace (false);
+    return_trace (பொய்);
 #endif
 
-    ItemVariationStore *varstore_prime = c->serializer->start_embed<ItemVariationStore> ();
-    if (unlikely (!varstore_prime)) return_trace (false);
+    ItemVariationStore *varstore_பகாஎண் = c->serializer->start_embed<ItemVariationStore> ();
+    எனில் (unlikely (!varstore_பகாஎண்)) return_trace (பொய்);
 
     /* avar2 partial instancing: cull unreachable regions. */
     hb_set_t dead_regions;
-    if (c->plan->has_avar2)
-      if (!collect_dead_regions (c->plan->axes_old_index_tag_map,
+    எனில் (c->plan->has_avar2)
+      எனில் (!collect_dead_regions (c->plan->axes_old_index_tag_map,
 				 c->plan->avar2_reachable_ranges,
 				 dead_regions))
-	return_trace (false);
+	return_trace (பொய்);
 
-    varstore_prime->serialize (c->serializer, this, inner_maps,
+    varstore_பகாஎண்->serialize (c->serializer, இது, inner_maps,
 			       dead_regions.get_population () ? &dead_regions : nullptr);
 
     return_trace (
         !c->serializer->in_error()
-        && varstore_prime->dataSets);
+        && varstore_பகாஎண்->dataSets);
   }
 
-  unsigned int get_region_index_count (unsigned int major) const
+  unsigned முழு get_region_index_மொத்தம் (unsigned முழு major) மாறிலி
   {
 #ifdef HB_NO_VAR
-    return 0;
+    திரும்பு 0;
 #endif
-    return (this+dataSets[major]).get_region_index_count ();
+    திரும்பு (இது+dataSets[major]).get_region_index_மொத்தம் ();
   }
 
-  void get_region_scalars (unsigned int major,
-			   const int *coords, unsigned int coord_count,
-			   float *scalars /*OUT*/,
-			   unsigned int num_scalars) const
+  வெறுமை get_region_scalars (unsigned முழு major,
+			   மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+			   தசம *scalars /*OUT*/,
+			   unsigned முழு இலக்கம்_scalars) மாறிலி
   {
 #ifdef HB_NO_VAR
-    for (unsigned i = 0; i < num_scalars; i++)
+    க்கு (unsigned i = 0; i < இலக்கம்_scalars; i++)
       scalars[i] = 0.f;
-    return;
+    திரும்பு;
 #endif
 
-    (this+dataSets[major]).get_region_scalars (coords, coord_count,
-					       this+regions,
-					       &scalars[0], num_scalars);
+    (இது+dataSets[major]).get_region_scalars (coords, coord_மொத்தம்,
+					       இது+regions,
+					       &scalars[0], இலக்கம்_scalars);
   }
 
-  unsigned int get_sub_table_count () const
+  unsigned முழு get_sub_table_மொத்தம் () மாறிலி
    {
 #ifdef HB_NO_VAR
-     return 0;
+     திரும்பு 0;
 #endif
-     return dataSets.len;
+     திரும்பு dataSets.len;
    }
 
-  const VarData& get_sub_table (unsigned i) const
+  மாறிலி VarData& get_sub_table (unsigned i) மாறிலி
   {
 #ifdef HB_NO_VAR
-     return Null (VarData);
+     திரும்பு Null (VarData);
 #endif
-     return this+dataSets[i];
+     திரும்பு இது+dataSets[i];
   }
 
-  const VarRegionList& get_region_list () const
+  மாறிலி VarRegionList& get_region_list () மாறிலி
   {
 #ifdef HB_NO_VAR
-     return Null (VarRegionList);
+     திரும்பு Null (VarRegionList);
 #endif
-     return this+regions;
+     திரும்பு இது+regions;
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16				format;
   Offset32To<VarRegionList>		regions;
   Array16OfOffset32To<VarData>		dataSets;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY_SIZED (8, dataSets);
 };
 
-struct MultiItemVariationStore
+கட்டமைப்பு MultiItemVariationStore
 {
-  hb_scalar_cache_t *create_cache (hb_scalar_cache_t *static_cache = nullptr) const
+  hb_scalar_cache_t *create_cache (hb_scalar_cache_t *static_cache = nullptr) மாறிலி
   {
 #ifdef HB_NO_VAR
-    return hb_scalar_cache_t::create (0);
+    திரும்பு hb_scalar_cache_t::create (0);
 #endif
-    auto &r = this+regions;
-    unsigned count = r.regions.len;
+    auto &r = இது+regions;
+    unsigned மொத்தம் = r.regions.len;
 
-    return hb_scalar_cache_t::create (count, static_cache);
+    திரும்பு hb_scalar_cache_t::create (மொத்தம், static_cache);
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache,
+  நிலையான வெறுமை destroy_cache (hb_scalar_cache_t *cache,
 			     hb_scalar_cache_t *static_cache = nullptr)
   {
     hb_scalar_cache_t::destroy (cache, static_cache);
   }
 
-  private:
-  void get_delta (unsigned int outer, unsigned int inner,
-		  const int *coords, unsigned int coord_count,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  தனிப்பட்ட:
+  வெறுமை get_delta (unsigned முழு outer, unsigned முழு inner,
+		  மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+		  hb_array_t<இரட்டை> out,
+		  hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
 #ifdef HB_NO_VAR
-    return;
+    திரும்பு;
 #endif
 
-    if (unlikely (outer >= dataSets.len))
-      return;
+    எனில் (unlikely (outer >= dataSets.len))
+      திரும்பு;
 
-    return (this+dataSets[outer]).get_delta (inner,
-					     coords, coord_count,
-					     this+regions,
+    திரும்பு (இது+dataSets[outer]).get_delta (inner,
+					     coords, coord_மொத்தம்,
+					     இது+regions,
 					     out,
 					     cache);
   }
 
-  public:
-  void get_delta (unsigned int index,
-		  const int *coords, unsigned int coord_count,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  பொது:
+  வெறுமை get_delta (unsigned முழு index,
+		  மாறிலி முழு *coords, unsigned முழு coord_மொத்தம்,
+		  hb_array_t<இரட்டை> out,
+		  hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    get_delta (outer, inner, coords, coord_count, out, cache);
+    unsigned முழு outer = index >> 16;
+    unsigned முழு inner = index & 0xFFFF;
+    get_delta (outer, inner, coords, coord_மொத்தம், out, cache);
   }
-  void get_delta (unsigned int index,
-		  hb_array_t<const int> coords,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  வெறுமை get_delta (unsigned முழு index,
+		  hb_array_t<மாறிலி முழு> coords,
+		  hb_array_t<இரட்டை> out,
+		  hb_scalar_cache_t *cache = nullptr) மாறிலி
   {
-    return get_delta (index,
+    திரும்பு get_delta (index,
 		      coords.arrayZ, coords.length,
 		      out,
 		      cache);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
 #ifdef HB_NO_VAR
-    return true;
+    திரும்பு உண்மை;
 #endif
 
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
 		  format == 1 &&
-		  regions.sanitize (c, this) &&
-		  dataSets.sanitize (c, this));
+		  regions.sanitize (c, இது) &&
+		  dataSets.sanitize (c, இது));
   }
 
-  bool create_subset_plan (const hb_set_t &var_indices,
+  தருக்க create_subset_plan (மாறிலி hb_set_t &var_indices,
 			   hb_vector_t<hb_inc_bimap_t> *inner_maps,
-			   hb_map_t *varidx_map) const
+			   hb_map_t *varidx_map) மாறிலி
   {
-    if (unlikely (!inner_maps->resize (dataSets.len))) return false;
-    for (hb_codepoint_t var_idx : var_indices)
+    எனில் (unlikely (!inner_maps->resize (dataSets.len))) திரும்பு பொய்;
+    க்கு (hb_codepoint_t var_idx : var_indices)
     {
       unsigned outer = var_idx >> 16;
       unsigned inner = var_idx & 0xFFFFu;
-      if (unlikely (outer >= dataSets.len ||
-		    inner >= (this+dataSets[outer]).get_item_count ()))
-	return false;
+      எனில் (unlikely (outer >= dataSets.len ||
+		    inner >= (இது+dataSets[outer]).get_item_மொத்தம் ()))
+	திரும்பு பொய்;
       (*inner_maps)[outer].add (inner);
     }
 
     unsigned new_outer = 0;
-    for (unsigned outer = 0; outer < inner_maps->length; outer++)
+    க்கு (unsigned outer = 0; outer < inner_maps->length; outer++)
     {
-      const hb_inc_bimap_t &inner_map = (*inner_maps)[outer];
-      if (!inner_map.get_population ()) continue;
-      if (unlikely (inner_map.in_error ())) return false;
-      for (unsigned new_inner = 0;
+      மாறிலி hb_inc_bimap_t &inner_map = (*inner_maps)[outer];
+      எனில் (!inner_map.get_population ()) தொடர்;
+      எனில் (unlikely (inner_map.in_error ())) திரும்பு பொய்;
+      க்கு (unsigned new_inner = 0;
 	   new_inner < inner_map.get_population ();
 	   new_inner++)
       {
@@ -3939,97 +3939,97 @@ struct MultiItemVariationStore
       }
       new_outer++;
     }
-    return !inner_maps->in_error () && !varidx_map->in_error ();
+    திரும்பு !inner_maps->in_error () && !varidx_map->in_error ();
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const MultiItemVariationStore *src,
-		  const hb_array_t<const hb_inc_bimap_t> &inner_maps,
-		  const hb_map_t *axis_map)
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி MultiItemVariationStore *src,
+		  மாறிலி hb_array_t<மாறிலி hb_inc_bimap_t> &inner_maps,
+		  மாறிலி hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this) ||
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது) ||
 		  inner_maps.length < src->dataSets.len))
-      return_trace (false);
+      return_trace (பொய்);
     format = 1;
 
-    const auto &src_regions = src+src->regions;
+    மாறிலி auto &src_regions = src+src->regions;
     hb_set_t region_indices;
-    unsigned set_count = 0;
-    for (unsigned i = 0; i < src->dataSets.len; i++)
+    unsigned set_மொத்தம் = 0;
+    க்கு (unsigned i = 0; i < src->dataSets.len; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      set_count++;
+      எனில் (!inner_maps[i].get_population ()) தொடர்;
+      set_மொத்தம்++;
       (src+src->dataSets[i]).collect_region_refs (region_indices);
     }
     region_indices.del_range (src_regions.regions.len, hb_set_t::INVALID);
     hb_inc_bimap_t region_map;
     region_map.add_set (&region_indices);
-    if (unlikely (region_indices.in_error () || region_map.in_error () ||
+    எனில் (unlikely (region_indices.in_error () || region_map.in_error () ||
 		  !regions.serialize_serialize (c, &src_regions, region_map, axis_map)))
-      return_trace (false);
+      return_trace (பொய்);
 
-    dataSets.len = set_count;
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
+    dataSets.len = set_மொத்தம்;
+    எனில் (unlikely (!c->extend (dataSets))) return_trace (பொய்);
     unsigned set_index = 0;
-    for (unsigned i = 0; i < src->dataSets.len; i++)
+    க்கு (unsigned i = 0; i < src->dataSets.len; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      if (unlikely (!dataSets[set_index++].serialize_serialize (
+      எனில் (!inner_maps[i].get_population ()) தொடர்;
+      எனில் (unlikely (!dataSets[set_index++].serialize_serialize (
 			    c, &(src+src->dataSets[i]), inner_maps[i], region_map)))
-	return_trace (false);
+	return_trace (பொய்);
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16				format; // 1
   Offset32To<SparseVarRegionList>	regions;
   Array16OfOffset32To<MultiVarData>	dataSets;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY_SIZED (8, dataSets);
 };
 
-template <typename MapCountT>
-struct DeltaSetIndexMapFormat01
+template <typename Map_மொத்தம்_T>
+கட்டமைப்பு DeltaSetIndexMapFormat01
 {
-  friend struct DeltaSetIndexMap;
+  friend கட்டமைப்பு DeltaSetIndexMap;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (mapCount, get_width (), min_size); }
+  size_t get_size () மாறிலி
+  { திரும்பு hb_unsigned_mul_add_saturate (map_மொத்தம்_2, get_width (), min_size); }
 
-  private:
-  DeltaSetIndexMapFormat01* copy (hb_serialize_context_t *c) const
+  தனிப்பட்ட:
+  DeltaSetIndexMapFormat01* copy (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (இது);
+    return_trace (c->embed (இது));
   }
 
   template <typename T>
-  bool serialize (hb_serialize_context_t *c, const T &plan)
+  தருக்க serialize (hb_serialize_context_t *c, மாறிலி T &plan)
   {
-    unsigned int width = plan.get_width ();
-    unsigned int inner_bit_count = plan.get_inner_bit_count ();
-    const hb_array_t<const uint32_t> output_map = plan.get_output_map ();
+    unsigned முழு width = plan.get_width ();
+    unsigned முழு inner_bit_மொத்தம் = plan.get_inner_bit_மொத்தம் ();
+    மாறிலி hb_array_t<மாறிலி uint32_t> output_map = plan.get_output_map ();
 
-    TRACE_SERIALIZE (this);
-    if (unlikely (output_map.length && ((((inner_bit_count-1)&~0xF)!=0) || (((width-1)&~0x3)!=0))))
-      return_trace (false);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (output_map.length && ((((inner_bit_மொத்தம்-1)&~0xF)!=0) || (((width-1)&~0x3)!=0))))
+      return_trace (பொய்);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
 
-    entryFormat = ((width-1)<<4)|(inner_bit_count-1);
-    mapCount = output_map.length;
+    entryFormat = ((width-1)<<4)|(inner_bit_மொத்தம்-1);
+    map_மொத்தம்_2 = output_map.length;
     HBUINT8 *p = c->allocate_size<HBUINT8> (width * output_map.length);
-    if (unlikely (!p)) return_trace (false);
-    for (unsigned int i = 0; i < output_map.length; i++)
+    எனில் (unlikely (!p)) return_trace (பொய்);
+    க்கு (unsigned முழு i = 0; i < output_map.length; i++)
     {
-      unsigned int v = output_map.arrayZ[i];
-      if (v)
+      unsigned முழு v = output_map.arrayZ[i];
+      எனில் (v)
       {
-	unsigned int outer = v >> 16;
-	unsigned int inner = v & 0xFFFF;
-	unsigned int u = (outer << inner_bit_count) | inner;
-	for (unsigned int w = width; w > 0;)
+	unsigned முழு outer = v >> 16;
+	unsigned முழு inner = v & 0xFFFF;
+	unsigned முழு u = (outer << inner_bit_மொத்தம்) | inner;
+	க்கு (unsigned முழு w = width; w > 0;)
 	{
 	  p[--w] = u;
 	  u >>= 8;
@@ -4037,242 +4037,242 @@ struct DeltaSetIndexMapFormat01
       }
       p += width;
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
   HB_ALWAYS_INLINE
-  uint32_t map (unsigned int v) const /* Returns 16.16 outer.inner. */
+  uint32_t map (unsigned முழு v) மாறிலி /* Returns 16.16 outer.inner. */
   {
     /* If count is zero, pass value unchanged.  This takes
      * care of direct mapping for advance map. */
-    if (!mapCount)
-      return v;
-    return _map (v);
+    எனில் (!map_மொத்தம்_2)
+      திரும்பு v;
+    திரும்பு _map (v);
   }
 
   HB_HOT
-  uint32_t _map (unsigned int v) const /* Returns 16.16 outer.inner. */
+  uint32_t _map (unsigned முழு v) மாறிலி /* Returns 16.16 outer.inner. */
   {
-    if (v >= mapCount)
-      v = mapCount - 1;
+    எனில் (v >= map_மொத்தம்_2)
+      v = map_மொத்தம்_2 - 1;
 
-    unsigned int u = 0;
+    unsigned முழு u = 0;
     { /* Fetch it. */
-      unsigned int w = get_width ();
-      const HBUINT8 *p = mapDataZ.arrayZ + w * v;
-      for (; w; w--)
+      unsigned முழு w = get_width ();
+      மாறிலி HBUINT8 *p = mapDataZ.arrayZ + w * v;
+      க்கு (; w; w--)
         u = (u << 8) + *p++;
     }
 
     { /* Repack it. */
-      unsigned int n = get_inner_bit_count ();
-      unsigned int outer = u >> n;
-      unsigned int inner = u & ((1 << n) - 1);
+      unsigned முழு n = get_inner_bit_மொத்தம் ();
+      unsigned முழு outer = u >> n;
+      unsigned முழு inner = u & ((1 << n) - 1);
       u = (outer<<16) | inner;
     }
 
-    return u;
+    திரும்பு u;
   }
 
-  unsigned get_map_count () const       { return mapCount; }
-  unsigned get_width () const           { return ((entryFormat >> 4) & 3) + 1; }
-  unsigned get_inner_bit_count () const { return (entryFormat & 0xF) + 1; }
+  unsigned get_map_மொத்தம் () மாறிலி       { திரும்பு map_மொத்தம்_2; }
+  unsigned get_width () மாறிலி           { திரும்பு ((entryFormat >> 4) & 3) + 1; }
+  unsigned get_inner_bit_மொத்தம் () மாறிலி { திரும்பு (entryFormat & 0xF) + 1; }
 
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
                   c->check_range (mapDataZ.arrayZ,
-                                  mapCount,
+                                  map_மொத்தம்_2,
                                   get_width ()));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT8       format;         /* Format identifier--format = 0 */
   HBUINT8       entryFormat;    /* A packed field that describes the compressed
                                  * representation of delta-set indices. */
-  MapCountT     mapCount;       /* The number of mapping entries. */
+  Map_மொத்தம்_T     map_மொத்தம்_2;       /* The number of mapping entries. */
   UnsizedArrayOf<HBUINT8>
                 mapDataZ;       /* The delta-set index mapping data. */
 
-  public:
-  DEFINE_SIZE_ARRAY (2+MapCountT::static_size, mapDataZ);
+  பொது:
+  DEFINE_SIZE_ARRAY (2+Map_மொத்தம்_T::static_size, mapDataZ);
 };
 
-struct DeltaSetIndexMap
+கட்டமைப்பு DeltaSetIndexMap
 {
   template <typename T>
-  bool serialize (hb_serialize_context_t *c, const T &plan)
+  தருக்க serialize (hb_serialize_context_t *c, மாறிலி T &plan)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     unsigned length = plan.get_output_map ().length;
     u.format.v = length <= 0xFFFF ? 0 : 1;
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.serialize (c, plan));
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, plan));
-    default:return_trace (false);
+    தேர்வு (u.format.v) {
+    நிலை 0: hb_barrier (); return_trace (u.format0.serialize (c, plan));
+    நிலை 1: hb_barrier (); return_trace (u.format1.serialize (c, plan));
+    இயல்பு:return_trace (பொய்);
     }
   }
 
-  uint32_t map (unsigned v) const
+  uint32_t map (unsigned v) மாறிலி
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return (u.format0.map (v));
-    case 1: hb_barrier (); return (u.format1.map (v));
-    default:return v;
+    தேர்வு (u.format.v) {
+    நிலை 0: hb_barrier (); திரும்பு (u.format0.map (v));
+    நிலை 1: hb_barrier (); திரும்பு (u.format1.map (v));
+    இயல்பு:திரும்பு v;
     }
   }
 
-  unsigned get_map_count () const
+  unsigned get_map_மொத்தம் () மாறிலி
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_map_count ();
-    case 1: hb_barrier (); return u.format1.get_map_count ();
-    default:return 0;
+    தேர்வு (u.format.v) {
+    நிலை 0: hb_barrier (); திரும்பு u.format0.get_map_மொத்தம் ();
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_map_மொத்தம் ();
+    இயல்பு:திரும்பு 0;
     }
   }
 
-  unsigned get_width () const
+  unsigned get_width () மாறிலி
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_width ();
-    case 1: hb_barrier (); return u.format1.get_width ();
-    default:return 0;
+    தேர்வு (u.format.v) {
+    நிலை 0: hb_barrier (); திரும்பு u.format0.get_width ();
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_width ();
+    இயல்பு:திரும்பு 0;
     }
   }
 
-  unsigned get_inner_bit_count () const
+  unsigned get_inner_bit_மொத்தம் () மாறிலி
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_inner_bit_count ();
-    case 1: hb_barrier (); return u.format1.get_inner_bit_count ();
-    default:return 0;
+    தேர்வு (u.format.v) {
+    நிலை 0: hb_barrier (); திரும்பு u.format0.get_inner_bit_மொத்தம் ();
+    நிலை 1: hb_barrier (); திரும்பு u.format1.get_inner_bit_மொத்தம் ();
+    இயல்பு:திரும்பு 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (!u.format.v.sanitize (c)) return_trace (பொய்);
     hb_barrier ();
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    default:return_trace (true);
+    தேர்வு (u.format.v) {
+    நிலை 0: hb_barrier (); return_trace (u.format0.sanitize (c));
+    நிலை 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    இயல்பு:return_trace (உண்மை);
     }
   }
 
-  DeltaSetIndexMap* copy (hb_serialize_context_t *c) const
+  DeltaSetIndexMap* copy (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (reinterpret_cast<DeltaSetIndexMap *> (u.format0.copy (c)));
-    case 1: hb_barrier (); return_trace (reinterpret_cast<DeltaSetIndexMap *> (u.format1.copy (c)));
-    default:return_trace (nullptr);
+    TRACE_SERIALIZE (இது);
+    தேர்வு (u.format.v) {
+    நிலை 0: hb_barrier (); return_trace (reinterpret_cast<DeltaSetIndexMap *> (u.format0.copy (c)));
+    நிலை 1: hb_barrier (); return_trace (reinterpret_cast<DeltaSetIndexMap *> (u.format1.copy (c)));
+    இயல்பு:return_trace (nullptr);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }             format;         /* Format identifier */
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு { HBUINT8 v; }             format;         /* Format identifier */
   DeltaSetIndexMapFormat01<HBUINT16> format0;
   DeltaSetIndexMapFormat01<HBUINT32> format1;
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (1, format.v);
 };
 
 
-struct ItemVarStoreInstancer
+கட்டமைப்பு ItemVarStoreInstancer
 {
-  ItemVarStoreInstancer (const ItemVariationStore *varStore_,
-			 const DeltaSetIndexMap *varIdxMap,
-			 hb_array_t<const int> coords,
+  ItemVarStoreInstancer (மாறிலி ItemVariationStore *varStore_,
+			 மாறிலி DeltaSetIndexMap *varIdxMap,
+			 hb_array_t<மாறிலி முழு> coords,
 			 hb_scalar_cache_t *cache = nullptr) :
     varStore (varStore_), varIdxMap (varIdxMap), coords (coords), cache (cache)
   {
-    if (!varStore)
+    எனில் (!varStore)
       varStore = &Null(ItemVariationStore);
     /* Like hb_font_t::has_nonzero_coords, treat explicit all-zero coordinates
      * as the default instance, which uses unadjusted values (OFF 7.1). */
-    if (!hb_any (coords))
-      this->coords = {};
+    எனில் (!hb_any (coords))
+      இது->coords = {};
   }
 
-  operator bool () const { return varStore && bool (coords); }
+  operator தருக்க () மாறிலி { திரும்பு varStore && தருக்க (coords); }
 
-  float operator[] (uint32_t varIdx) const
-  { return (*this) (varIdx); }
+  தசம operator[] (uint32_t varIdx) மாறிலி
+  { திரும்பு (*இது) (varIdx); }
 
-  float operator() (uint32_t varIdx, unsigned short offset = 0) const
-  { return get_delta (varIdx, offset); }
+  தசம operator() (uint32_t varIdx, unsigned short offset = 0) மாறிலி
+  { திரும்பு get_delta (varIdx, offset); }
 
-  double get_condition_delta (uint32_t varIdx) const
-  { return get_delta<double> (varIdx); }
+  இரட்டை get_condition_delta (uint32_t varIdx) மாறிலி
+  { திரும்பு get_delta<இரட்டை> (varIdx); }
 
-  template <typename Float = float>
-  Float get_delta (uint32_t varIdx, unsigned short offset = 0) const
+  template <typename Float = தசம>
+  Float get_delta (uint32_t varIdx, unsigned short offset = 0) மாறிலி
   {
    /* Ordinary stores do not apply deltas at the default instance. */
-   if (!coords || varIdx == VarIdx::NO_VARIATION)
-     return Float (0);
+   எனில் (!coords || varIdx == VarIdx::NO_VARIATION)
+     திரும்பு Float (0);
 
     varIdx += offset;
-    if (varIdxMap)
+    எனில் (varIdxMap)
       varIdx = varIdxMap->map (varIdx);
-    return varStore->get_delta<Float> (varIdx, coords, cache);
+    திரும்பு varStore->get_delta<Float> (varIdx, coords, cache);
   }
 
-  const ItemVariationStore *varStore;
-  const DeltaSetIndexMap *varIdxMap;
-  hb_array_t<const int> coords;
+  மாறிலி ItemVariationStore *varStore;
+  மாறிலி DeltaSetIndexMap *varIdxMap;
+  hb_array_t<மாறிலி முழு> coords;
   hb_scalar_cache_t *cache;
 };
 
-struct MultiItemVarStoreInstancer
+கட்டமைப்பு MultiItemVarStoreInstancer
 {
-  MultiItemVarStoreInstancer (const MultiItemVariationStore *varStore,
-			      const DeltaSetIndexMap *varIdxMap,
-			      hb_array_t<const int> coords,
+  MultiItemVarStoreInstancer (மாறிலி MultiItemVariationStore *varStore,
+			      மாறிலி DeltaSetIndexMap *varIdxMap,
+			      hb_array_t<மாறிலி முழு> coords,
 			      hb_scalar_cache_t *cache = nullptr) :
     varStore (varStore), varIdxMap (varIdxMap), coords (coords), cache (cache)
   {
-    if (!varStore)
+    எனில் (!varStore)
       varStore = &Null(MultiItemVariationStore);
   }
 
-  operator bool () const { return varStore; }
+  operator தருக்க () மாறிலி { திரும்பு varStore; }
 
-  double get_condition_delta (uint32_t varIdx) const
-  { return (double) (*this)[varIdx]; }
+  இரட்டை get_condition_delta (uint32_t varIdx) மாறிலி
+  { திரும்பு (இரட்டை) (*இது)[varIdx]; }
 
-  double operator[] (uint32_t varIdx) const
+  இரட்டை operator[] (uint32_t varIdx) மாறிலி
   {
-    double v = 0;
-    (*this) (hb_array (&v, 1), varIdx);
-    return v;
+    இரட்டை v = 0;
+    (*இது) (hb_array (&v, 1), varIdx);
+    திரும்பு v;
   }
 
-  void operator() (hb_array_t<double> out, uint32_t varIdx, unsigned short offset = 0) const
+  வெறுமை operator() (hb_array_t<இரட்டை> out, uint32_t varIdx, unsigned short offset = 0) மாறிலி
   {
     /* Static VARC fonts can have constant deltas even with empty coordinates. */
-    if (varIdx != VarIdx::NO_VARIATION)
+    எனில் (varIdx != VarIdx::NO_VARIATION)
     {
       varIdx += offset;
-      if (varIdxMap)
+      எனில் (varIdxMap)
 	varIdx = varIdxMap->map (varIdx);
       varStore->get_delta (varIdx, coords, out, cache);
     }
-    else
-      for (unsigned i = 0; i < out.length; i++)
+    இல்லையெனில்
+      க்கு (unsigned i = 0; i < out.length; i++)
         out.arrayZ[i] = 0.;
   }
 
-  const MultiItemVariationStore *varStore;
-  const DeltaSetIndexMap *varIdxMap;
-  hb_array_t<const int> coords;
+  மாறிலி MultiItemVariationStore *varStore;
+  மாறிலி DeltaSetIndexMap *varIdxMap;
+  hb_array_t<மாறிலி முழு> coords;
   hb_scalar_cache_t *cache;
 };
 
@@ -4280,7 +4280,7 @@ struct MultiItemVarStoreInstancer
 /*
  * Feature Variations
  */
-enum Cond_with_Var_flag_t
+எண்ணிக்கை Cond_with_Var_flag_t
 {
   KEEP_COND_WITH_VAR = 0,
   KEEP_RECORD_WITH_VAR = 1,
@@ -4288,7 +4288,7 @@ enum Cond_with_Var_flag_t
   DROP_RECORD_WITH_VAR = 3,
 };
 
-enum lookup_condition_subset_result_t
+எண்ணிக்கை lookup_condition_subset_result_t
 {
   LOOKUP_CONDITION_SUBSET_ERROR,
   LOOKUP_CONDITION_SUBSET_FALSE,
@@ -4296,1346 +4296,1346 @@ enum lookup_condition_subset_result_t
   LOOKUP_CONDITION_SUBSET_KEEP,
 };
 
-struct Condition;
+கட்டமைப்பு Condition;
 
 template <typename Instancer>
-static bool
-_hb_recurse_condition_evaluate (const struct Condition &condition,
-				const int *coords,
-				unsigned int coord_len,
+நிலையான தருக்க
+_hb_recurse_condition_evaluate (மாறிலி கட்டமைப்பு Condition &condition,
+				மாறிலி முழு *coords,
+				unsigned முழு coord_len,
 				Instancer *instancer);
 
-struct ConditionAxisRange
+கட்டமைப்பு ConditionAxisRange
 {
-  friend struct Condition;
+  friend கட்டமைப்பு Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
-    const hb_map_t *index_map = &c->plan->axes_index_map;
-    if (index_map->is_empty ()) return_trace (true);
+    மாறிலி hb_map_t *index_map = &c->plan->axes_index_map;
+    எனில் (index_map->is_empty ()) return_trace (உண்மை);
 
-    const hb_map_t& axes_old_index_tag_map = c->plan->axes_old_index_tag_map;
+    மாறிலி hb_map_t& axes_old_index_tag_map = c->plan->axes_old_index_tag_map;
     hb_codepoint_t *axis_tag;
-    if (!axes_old_index_tag_map.has (axisIndex, &axis_tag) ||
+    எனில் (!axes_old_index_tag_map.has (axisIndex, &axis_tag) ||
         !index_map->has (axisIndex))
-      return_trace (false);
+      return_trace (பொய்);
 
-    const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location = c->plan->axes_location;
+    மாறிலி hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location = c->plan->axes_location;
     Triple axis_limit{-1.0, 0.0, 1.0};
     Triple *normalized_limit;
-    if (normalized_axes_location.has (*axis_tag, &normalized_limit))
+    எனில் (normalized_axes_location.has (*axis_tag, &normalized_limit))
       axis_limit = *normalized_limit;
 
-    const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances = c->plan->axes_triple_distances;
+    மாறிலி hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances = c->plan->axes_triple_distances;
     TripleDistances axis_triple_distances{1.0, 1.0};
     TripleDistances *triple_dists;
-    if (axes_triple_distances.has (*axis_tag, &triple_dists))
+    எனில் (axes_triple_distances.has (*axis_tag, &triple_dists))
       axis_triple_distances = *triple_dists;
 
-    float normalized_min = renormalizeValue ((double) filterRangeMinValue.to_float (), axis_limit, axis_triple_distances, false);
-    float normalized_max = renormalizeValue ((double) filterRangeMaxValue.to_float (), axis_limit, axis_triple_distances, false);
-    out->filterRangeMinValue.set_float (normalized_min);
-    out->filterRangeMaxValue.set_float (normalized_max);
+    தசம normalized_min = renormalize_மதிப்பு ((இரட்டை) filter_Range_Min_மதிப்பு.to_float (), axis_limit, axis_triple_distances, பொய்);
+    தசம normalized_max = renormalize_மதிப்பு ((இரட்டை) filter_Range_Max_மதிப்பு.to_float (), axis_limit, axis_triple_distances, பொய்);
+    out->filter_Range_Min_மதிப்பு.set_float (normalized_min);
+    out->filter_Range_Max_மதிப்பு.set_float (normalized_max);
 
     return_trace (c->serializer->check_assign (out->axisIndex, index_map->get (axisIndex),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  private:
+  தனிப்பட்ட:
   Cond_with_Var_flag_t keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
-                                             hb_map_t *condition_map /* OUT */) const
+                                             hb_map_t *condition_map /* OUT */) மாறிலி
   {
     //invalid axis index, drop the entire record
-    if (!c->axes_index_tag_map->has (axisIndex))
-      return DROP_RECORD_WITH_VAR;
+    எனில் (!c->axes_index_tag_map->has (axisIndex))
+      திரும்பு DROP_RECORD_WITH_VAR;
 
     hb_tag_t axis_tag = c->axes_index_tag_map->get (axisIndex);
 
     Triple axis_range (-1.0, 0.0, 1.0);
     Triple *axis_limit;
-    bool axis_set_by_user = false;
-    if (c->axes_location->has (axis_tag, &axis_limit))
+    தருக்க axis_set_by_user = பொய்;
+    எனில் (c->axes_location->has (axis_tag, &axis_limit))
     {
       axis_range = *axis_limit;
-      axis_set_by_user = true;
+      axis_set_by_user = உண்மை;
     }
 
-    float axis_min_val = axis_range.minimum;
-    float axis_default_val = axis_range.middle;
-    float axis_max_val = axis_range.maximum;
+    தசம axis_min_val = axis_range.minimum;
+    தசம axis_default_val = axis_range.நடு;
+    தசம axis_max_val = axis_range.maximum;
 
-    float filter_min_val = filterRangeMinValue.to_float ();
-    float filter_max_val = filterRangeMaxValue.to_float ();
+    தசம filter_min_val = filter_Range_Min_மதிப்பு.to_float ();
+    தசம filter_max_val = filter_Range_Max_மதிப்பு.to_float ();
 
-    if (axis_default_val < filter_min_val ||
+    எனில் (axis_default_val < filter_min_val ||
         axis_default_val > filter_max_val)
-      c->apply = false;
+      c->apply = பொய்;
 
     //condition not met, drop the entire record
-    if (axis_min_val > filter_max_val || axis_max_val < filter_min_val ||
+    எனில் (axis_min_val > filter_max_val || axis_max_val < filter_min_val ||
         filter_min_val > filter_max_val)
-      return DROP_RECORD_WITH_VAR;
+      திரும்பு DROP_RECORD_WITH_VAR;
 
     //condition met and axis pinned, drop the condition
-    if (axis_set_by_user && axis_range.is_point ())
-      return DROP_COND_WITH_VAR;
+    எனில் (axis_set_by_user && axis_range.is_point ())
+      திரும்பு DROP_COND_WITH_VAR;
 
-    if (filter_max_val != axis_max_val || filter_min_val != axis_min_val)
+    எனில் (filter_max_val != axis_max_val || filter_min_val != axis_min_val)
     {
       // add axisIndex->value into the hashmap so we can check if the record is
       // unique with variations
-      uint16_t int_filter_max_val = (uint16_t) filterRangeMaxValue.to_int ();
-      uint16_t int_filter_min_val = (uint16_t) filterRangeMinValue.to_int ();
+      uint16_t int_filter_max_val = (uint16_t) filter_Range_Max_மதிப்பு.to_int ();
+      uint16_t int_filter_min_val = (uint16_t) filter_Range_Min_மதிப்பு.to_int ();
       hb_codepoint_t val = (int_filter_max_val << 16) + int_filter_min_val;
 
       condition_map->set (axisIndex, val);
-      return KEEP_COND_WITH_VAR;
+      திரும்பு KEEP_COND_WITH_VAR;
     }
-    return KEEP_RECORD_WITH_VAR;
+    திரும்பு KEEP_RECORD_WITH_VAR;
   }
 
   template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer HB_UNUSED) const
+  தருக்க evaluate (மாறிலி முழு *coords, unsigned முழு coord_len,
+		 Instancer *instancer HB_UNUSED) மாறிலி
   {
-    int coord = axisIndex < coord_len ? coords[axisIndex] : 0;
-    return filterRangeMinValue.to_int () <= coord && coord <= filterRangeMaxValue.to_int ();
+    முழு coord = axisIndex < coord_len ? coords[axisIndex] : 0;
+    திரும்பு filter_Range_Min_மதிப்பு.to_int () <= coord && coord <= filter_Range_Max_மதிப்பு.to_int ();
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  பொது:
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier--format = 1 */
   HBUINT16	axisIndex;
-  F2DOT14	filterRangeMinValue;
-  F2DOT14	filterRangeMaxValue;
-  public:
+  F2DOT14	filter_Range_Min_மதிப்பு;
+  F2DOT14	filter_Range_Max_மதிப்பு;
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ConditionValue
+கட்டமைப்பு Condition_மதிப்பு
 {
-  friend struct Condition;
+  friend கட்டமைப்பு Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
-    if (varIdx == VarIdx::NO_VARIATION)
-      return_trace (true);
+    எனில் (varIdx == VarIdx::NO_VARIATION)
+      return_trace (உண்மை);
 
-    hb_pair_t<unsigned, int> *condition_value;
-    if (c->plan->layout_condition_idx_value_map.has ((uintptr_t) this, &condition_value))
+    hb_pair_t<unsigned, முழு> *condition_மதிப்பு;
+    எனில் (c->plan->layout_condition_idx_மதிப்பு_map.has ((uintptr_t) இது, &condition_மதிப்பு))
     {
-      out->defaultValue = condition_value->second;
-      out->varIdx = condition_value->first;
-      return_trace (true);
+      out->default_மதிப்பு_2 = condition_மதிப்பு->second;
+      out->varIdx = condition_மதிப்பு->first;
+      return_trace (உண்மை);
     }
 
-    hb_pair_t<unsigned, int> *new_varidx_delta;
-    if (!c->plan->layout_variation_idx_delta_map.has (varIdx, &new_varidx_delta))
-      return_trace (false);
+    hb_pair_t<unsigned, முழு> *new_varidx_delta;
+    எனில் (!c->plan->layout_variation_idx_delta_map.has (varIdx, &new_varidx_delta))
+      return_trace (பொய்);
 
-    if (unlikely (!c->serializer->check_assign (
-		out->defaultValue,
-		defaultValue + hb_second (*new_varidx_delta),
+    எனில் (unlikely (!c->serializer->check_assign (
+		out->default_மதிப்பு_2,
+		default_மதிப்பு_2 + hb_second (*new_varidx_delta),
 		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+      return_trace (பொய்);
     out->varIdx = hb_first (*new_varidx_delta);
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  private:
+  தனிப்பட்ட:
   template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  தருக்க evaluate (மாறிலி முழு *coords, unsigned முழு coord_len,
+		 Instancer *instancer) மாறிலி
   {
-    double value = defaultValue;
+    இரட்டை value = default_மதிப்பு_2;
     value += instancer->get_condition_delta (varIdx);
-    return value > 0;
+    திரும்பு value > 0;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  பொது:
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier--format = 2 */
-  HBINT16	defaultValue;   /* Value at default instance. */
+  HBINT16	default_மதிப்பு_2;   /* Value at default instance. */
   VarIdx	varIdx;		/* Variation index */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ConditionAnd
+கட்டமைப்பு ConditionAnd
 {
-  friend struct Condition;
+  friend கட்டமைப்பு Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (இது);
+    எனில் (unlikely (!out || !c->serializer->extend_min (out)))
+      return_trace (பொய்);
     out->format = format;
 
-    for (const auto &offset : conditions)
+    க்கு (மாறிலி auto &offset : conditions)
     {
-      if (offset.is_null ())
+      எனில் (offset.is_null ())
       {
 	auto *out_offset = out->conditions.serialize_append (c->serializer);
-	if (unlikely (!out_offset)) return_trace (false);
+	எனில் (unlikely (!out_offset)) return_trace (பொய்);
 	*out_offset = 0;
       }
-      else if (unlikely (!subset_offset_array (c, out->conditions, this) (offset)))
-	return_trace (false);
+      இல்லையெனில் எனில் (unlikely (!subset_offset_array (c, out->conditions, இது) (offset)))
+	return_trace (பொய்);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  private:
+  தனிப்பட்ட:
   template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  தருக்க evaluate (மாறிலி முழு *coords, unsigned முழு coord_len,
+		 Instancer *instancer) மாறிலி
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!_hb_recurse_condition_evaluate (this+conditions.arrayZ[i],
+    unsigned முழு மொத்தம் = conditions.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (!_hb_recurse_condition_evaluate (இது+conditions.arrayZ[i],
 					   coords, coord_len,
 					   instancer))
-	return false;
-    return true;
+	திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  பொது:
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (conditions.sanitize (c, இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier--format = 3 */
-  Array8OfOffset24To<struct Condition>	conditions;
-  public:
+  Array8OfOffset24To<கட்டமைப்பு Condition>	conditions;
+  பொது:
   DEFINE_SIZE_ARRAY (3, conditions);
 };
 
-struct ConditionOr
+கட்டமைப்பு ConditionOr
 {
-  friend struct Condition;
+  friend கட்டமைப்பு Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (இது);
+    எனில் (unlikely (!out || !c->serializer->extend_min (out)))
+      return_trace (பொய்);
     out->format = format;
 
-    for (const auto &offset : conditions)
+    க்கு (மாறிலி auto &offset : conditions)
     {
-      if (offset.is_null ())
+      எனில் (offset.is_null ())
       {
 	auto *out_offset = out->conditions.serialize_append (c->serializer);
-	if (unlikely (!out_offset)) return_trace (false);
+	எனில் (unlikely (!out_offset)) return_trace (பொய்);
 	*out_offset = 0;
       }
-      else if (unlikely (!subset_offset_array (c, out->conditions, this) (offset)))
-	return_trace (false);
+      இல்லையெனில் எனில் (unlikely (!subset_offset_array (c, out->conditions, இது) (offset)))
+	return_trace (பொய்);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  private:
+  தனிப்பட்ட:
   template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  தருக்க evaluate (மாறிலி முழு *coords, unsigned முழு coord_len,
+		 Instancer *instancer) மாறிலி
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (_hb_recurse_condition_evaluate (this+conditions.arrayZ[i],
+    unsigned முழு மொத்தம் = conditions.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (_hb_recurse_condition_evaluate (இது+conditions.arrayZ[i],
 					  coords, coord_len,
 					  instancer))
-	return true;
-    return false;
+	திரும்பு உண்மை;
+    திரும்பு பொய்;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  பொது:
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (conditions.sanitize (c, இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier--format = 4 */
-  Array8OfOffset24To<struct Condition>	conditions;
-  public:
+  Array8OfOffset24To<கட்டமைப்பு Condition>	conditions;
+  பொது:
   DEFINE_SIZE_ARRAY (3, conditions);
 };
 
-struct ConditionNegate
+கட்டமைப்பு ConditionNegate
 {
-  friend struct Condition;
+  friend கட்டமைப்பு Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (condition.is_null ())
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
+    எனில் (condition.is_null ())
     {
       out->condition = 0;
-      return_trace (true);
+      return_trace (உண்மை);
     }
-    return_trace (out->condition.serialize_subset (c, condition, this));
+    return_trace (out->condition.serialize_subset (c, condition, இது));
   }
 
-  private:
+  தனிப்பட்ட:
   template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  தருக்க evaluate (மாறிலி முழு *coords, unsigned முழு coord_len,
+		 Instancer *instancer) மாறிலி
   {
-    return !_hb_recurse_condition_evaluate (this+condition,
+    திரும்பு !_hb_recurse_condition_evaluate (இது+condition,
 					    coords, coord_len,
 					    instancer);
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  பொது:
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (condition.sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (condition.sanitize (c, இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	format;		/* Format identifier--format = 5 */
-  Offset24To<struct Condition>	condition;
-  public:
+  Offset24To<கட்டமைப்பு Condition>	condition;
+  பொது:
   DEFINE_SIZE_STATIC (5);
 };
 
-struct Condition
+கட்டமைப்பு Condition
 {
-  friend struct ConditionSet;
+  friend கட்டமைப்பு ConditionSet;
 
-  static bool serialize_constant (hb_serialize_context_t *c, bool value)
+  நிலையான தருக்க serialize_constant (hb_serialize_context_t *c, தருக்க value)
   {
-    auto *out = c->start_embed<ConditionValue> ();
-    if (unlikely (!out || !c->extend_min (out))) return false;
+    auto *out = c->start_embed<Condition_மதிப்பு> ();
+    எனில் (unlikely (!out || !c->extend_min (out))) திரும்பு பொய்;
     out->format = 2;
-    out->defaultValue = value ? 1 : 0;
+    out->default_மதிப்பு_2 = value ? 1 : 0;
     out->varIdx = VarIdx::NO_VARIATION;
-    return true;
+    திரும்பு உண்மை;
   }
 
   lookup_condition_subset_result_t subset_lookup_condition (
 				      hb_subset_context_t *c,
 				      unsigned depth = HB_MAX_NESTING_LEVEL,
-				      bool materialize_true = false) const;
+				      தருக்க materialize_true = பொய்) மாறிலி;
 
   template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  தருக்க evaluate (மாறிலி முழு *coords, unsigned முழு coord_len,
+		 Instancer *instancer) மாறிலி
   {
-    switch (u.format.v) {
+    தேர்வு (u.format.v) {
     /* A null condition offset resolves to the nil Condition, whose reserved
      * format 0 represents the True condition required by the specification. */
-    case 0: return true;
-    case 1: hb_barrier (); return u.format1.evaluate (coords, coord_len, instancer);
-    case 2: hb_barrier (); return u.format2.evaluate (coords, coord_len, instancer);
-    case 3: hb_barrier (); return u.format3.evaluate (coords, coord_len, instancer);
-    case 4: hb_barrier (); return u.format4.evaluate (coords, coord_len, instancer);
-    case 5: hb_barrier (); return u.format5.evaluate (coords, coord_len, instancer);
-    default:return false;
+    நிலை 0: திரும்பு உண்மை;
+    நிலை 1: hb_barrier (); திரும்பு u.format1.evaluate (coords, coord_len, instancer);
+    நிலை 2: hb_barrier (); திரும்பு u.format2.evaluate (coords, coord_len, instancer);
+    நிலை 3: hb_barrier (); திரும்பு u.format3.evaluate (coords, coord_len, instancer);
+    நிலை 4: hb_barrier (); திரும்பு u.format4.evaluate (coords, coord_len, instancer);
+    நிலை 5: hb_barrier (); திரும்பு u.format5.evaluate (coords, coord_len, instancer);
+    இயல்பு:திரும்பு பொய்;
     }
   }
 
   Cond_with_Var_flag_t keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
                                              hb_map_t *condition_map /* OUT */,
-                                             unsigned depth = HB_MAX_NESTING_LEVEL) const
+                                             unsigned depth = HB_MAX_NESTING_LEVEL) மாறிலி
   {
-    if (unlikely (!depth))
+    எனில் (unlikely (!depth))
     {
-      c->apply = false;
-      return DROP_RECORD_WITH_VAR;
+      c->apply = பொய்;
+      திரும்பு DROP_RECORD_WITH_VAR;
     }
 
-    switch (u.format.v) {
-    case 0: return KEEP_RECORD_WITH_VAR;
-    case 1: hb_barrier (); return u.format1.keep_with_variations (c, condition_map);
-    case 2: case 3: case 4: case 5: break;
-    default: c->apply = false; return DROP_RECORD_WITH_VAR;
+    தேர்வு (u.format.v) {
+    நிலை 0: திரும்பு KEEP_RECORD_WITH_VAR;
+    நிலை 1: hb_barrier (); திரும்பு u.format1.keep_with_variations (c, condition_map);
+    நிலை 2: நிலை 3: நிலை 4: நிலை 5: நிறுத்து;
+    இயல்பு: c->apply = பொய்; திரும்பு DROP_RECORD_WITH_VAR;
     }
 
     hb_barrier ();
-    bool applies = evaluate (c->instancer->coords.arrayZ,
+    தருக்க applies = evaluate (c->instancer->coords.arrayZ,
 			     c->instancer->coords.length, c->instancer);
     c->apply &= applies;
-    if (c->all_axes_pinned)
-      return applies ? DROP_COND_WITH_VAR : DROP_RECORD_WITH_VAR;
+    எனில் (c->all_axes_pinned)
+      திரும்பு applies ? DROP_COND_WITH_VAR : DROP_RECORD_WITH_VAR;
 
-    if (u.format.v == 2)
-      return u.format2.varIdx == VarIdx::NO_VARIATION ||
+    எனில் (u.format.v == 2)
+      திரும்பு u.format2.varIdx == VarIdx::NO_VARIATION ||
              !c->instancer->varStore->has_delta_set (u.format2.varIdx) ?
              (applies ? KEEP_RECORD_WITH_VAR : DROP_RECORD_WITH_VAR) :
              KEEP_COND_WITH_VAR;
 
-    auto classify_child = [c, condition_map, depth] (const Condition &child)
+    auto classify_child = [c, condition_map, depth] (மாறிலி Condition &child)
     {
       auto child_context = *c;
-      child_context.apply = true;
-      return child.keep_with_variations (&child_context, condition_map, depth - 1);
+      child_context.apply = உண்மை;
+      திரும்பு child.keep_with_variations (&child_context, condition_map, depth - 1);
     };
 
-    if (u.format.v == 5)
+    எனில் (u.format.v == 5)
     {
       auto result = classify_child (&u.format5 + u.format5.condition);
-      return result == DROP_RECORD_WITH_VAR ? KEEP_RECORD_WITH_VAR :
+      திரும்பு result == DROP_RECORD_WITH_VAR ? KEEP_RECORD_WITH_VAR :
              result == KEEP_COND_WITH_VAR ? KEEP_COND_WITH_VAR :
              DROP_RECORD_WITH_VAR;
     }
 
-    bool is_and = u.format.v == 3;
-    bool variable = false;
-    const auto &conditions = is_and ? u.format3.conditions : u.format4.conditions;
-    const void *base = is_and ? (const void *) &u.format3 : (const void *) &u.format4;
-    for (const auto &offset : conditions)
+    தருக்க is_and = u.format.v == 3;
+    தருக்க variable = பொய்;
+    மாறிலி auto &conditions = is_and ? u.format3.conditions : u.format4.conditions;
+    மாறிலி வெறுமை *base = is_and ? (மாறிலி வெறுமை *) &u.format3 : (மாறிலி வெறுமை *) &u.format4;
+    க்கு (மாறிலி auto &offset : conditions)
     {
       auto result = classify_child (base + offset);
-      if (is_and && result == DROP_RECORD_WITH_VAR)
-        return DROP_RECORD_WITH_VAR;
-      if (!is_and && (result == DROP_COND_WITH_VAR || result == KEEP_RECORD_WITH_VAR))
-        return KEEP_RECORD_WITH_VAR;
+      எனில் (is_and && result == DROP_RECORD_WITH_VAR)
+        திரும்பு DROP_RECORD_WITH_VAR;
+      எனில் (!is_and && (result == DROP_COND_WITH_VAR || result == KEEP_RECORD_WITH_VAR))
+        திரும்பு KEEP_RECORD_WITH_VAR;
       variable |= result == KEEP_COND_WITH_VAR;
     }
-    return variable ? KEEP_COND_WITH_VAR :
+    திரும்பு variable ? KEEP_COND_WITH_VAR :
            is_and ? KEEP_RECORD_WITH_VAR : DROP_RECORD_WITH_VAR;
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) மாறிலி
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    எனில் (unlikely (!c->may_dispatch (இது, &u.format.v))) திரும்பு c->no_dispatch_return_மதிப்பு ();
+    TRACE_DISPATCH (இது, u.format.v);
+    தேர்வு (u.format.v) {
+    நிலை 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    நிலை 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    நிலை 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    நிலை 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    நிலை 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    இயல்பு:return_trace (c->default_return_மதிப்பு ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
 
-    if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+    எனில் (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
+      return_trace (c->no_dispatch_return_மதிப்பு ());
 
-    return_trace (c->end_recursion (this->dispatch (c)));
+    return_trace (c->end_recursion (இது->dispatch (c)));
   }
 
-  bool collect_var_indices (hb_set_t *var_indices,
+  தருக்க collect_var_indices (hb_set_t *var_indices,
 			    unsigned depth = HB_MAX_NESTING_LEVEL,
-                            hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values = nullptr) const;
+                            hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, முழு>> *condition_மதிப்புகள் = nullptr) மாறிலி;
 
-  bool serialize (hb_serialize_context_t *c,
-		  const Condition *src,
-		  const hb_map_t &varidx_map,
-		  const hb_map_t *axis_map = nullptr);
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி Condition *src,
+		  மாறிலி hb_map_t &varidx_map,
+		  மாறிலி hb_map_t *axis_map = nullptr);
 
-  private:
+  தனிப்பட்ட:
   lookup_condition_subset_result_t subset_lookup_condition_impl (
 				      hb_subset_context_t *c,
-				      unsigned depth) const;
+				      unsigned depth) மாறிலி;
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு { HBUINT16 v; }	format;		/* Format identifier */
   ConditionAxisRange	format1;
-  ConditionValue	format2;
+  Condition_மதிப்பு	format2;
   ConditionAnd		format3;
   ConditionOr		format4;
   ConditionNegate	format5;
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
 template <typename Instancer>
-bool
-_hb_recurse_condition_evaluate (const struct Condition &condition,
-				const int *coords,
-				unsigned int coord_len,
+தருக்க
+_hb_recurse_condition_evaluate (மாறிலி கட்டமைப்பு Condition &condition,
+				மாறிலி முழு *coords,
+				unsigned முழு coord_len,
 				Instancer *instancer)
 {
-  return condition.evaluate (coords, coord_len, instancer);
+  திரும்பு condition.evaluate (coords, coord_len, instancer);
 }
 
-struct ConditionList
+கட்டமைப்பு ConditionList
 {
-  const Condition& operator[] (unsigned i) const
-  { return this+conditions[i]; }
+  மாறிலி Condition& operator[] (unsigned i) மாறிலி
+  { திரும்பு இது+conditions[i]; }
 
-  unsigned get_count () const { return conditions.len; }
+  unsigned get_மொத்தம் () மாறிலி { திரும்பு conditions.len; }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const ConditionList *src,
-		  const hb_inc_bimap_t &condition_map,
-		  const hb_map_t &varidx_map,
-		  const hb_map_t *axis_map)
+  தருக்க serialize (hb_serialize_context_t *c,
+		  மாறிலி ConditionList *src,
+		  மாறிலி hb_inc_bimap_t &condition_map,
+		  மாறிலி hb_map_t &varidx_map,
+		  மாறிலி hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (இது);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
     conditions.len = condition_map.get_population ();
-    if (unlikely (!c->extend (conditions))) return_trace (false);
-    for (unsigned i = 0; i < conditions.len; i++)
+    எனில் (unlikely (!c->extend (conditions))) return_trace (பொய்);
+    க்கு (unsigned i = 0; i < conditions.len; i++)
     {
       unsigned old_index = condition_map.backward (i);
-      if (unlikely (old_index >= src->conditions.len ||
+      எனில் (unlikely (old_index >= src->conditions.len ||
 		    !conditions[i].serialize_serialize (
 			c, &(src+src->conditions[old_index]), varidx_map, axis_map)))
-	return_trace (false);
+	return_trace (பொய்);
     }
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (conditions.sanitize (c, இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Array32OfOffset32To<Condition> conditions;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (4, conditions);
 };
 
-inline bool
+உள்வரி தருக்க
 Condition::collect_var_indices (hb_set_t *var_indices, unsigned depth,
-                               hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values) const
+                               hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, முழு>> *condition_மதிப்புகள்) மாறிலி
 {
-  if (unlikely (!depth)) return false;
-  switch (u.format.v)
+  எனில் (unlikely (!depth)) திரும்பு பொய்;
+  தேர்வு (u.format.v)
   {
-    case 0:
-    case 1:
-      return true;
-    case 2:
-      if (u.format2.varIdx != VarIdx::NO_VARIATION)
+    நிலை 0:
+    நிலை 1:
+      திரும்பு உண்மை;
+    நிலை 2:
+      எனில் (u.format2.varIdx != VarIdx::NO_VARIATION)
       {
         var_indices->add (u.format2.varIdx);
-        if (condition_values &&
-            !condition_values->set ((uintptr_t) &u.format2,
-                                    hb_pair (unsigned (u.format2.varIdx), int (u.format2.defaultValue))))
-          return false;
+        எனில் (condition_மதிப்புகள் &&
+            !condition_மதிப்புகள்->set ((uintptr_t) &u.format2,
+                                    hb_pair (unsigned (u.format2.varIdx), முழு (u.format2.default_மதிப்பு_2))))
+          திரும்பு பொய்;
       }
-      return !var_indices->in_error ();
-    case 3:
-      for (const auto &offset : u.format3.conditions)
-	if (unlikely (!(&u.format3+offset).collect_var_indices (var_indices,
-							     depth - 1, condition_values)))
-	  return false;
-      return true;
-    case 4:
-      for (const auto &offset : u.format4.conditions)
-	if (unlikely (!(&u.format4+offset).collect_var_indices (var_indices,
-							     depth - 1, condition_values)))
-	  return false;
-      return true;
-    case 5:
-      return (&u.format5+u.format5.condition).collect_var_indices (var_indices,
-								  depth - 1, condition_values);
-    default:
-      return false;
+      திரும்பு !var_indices->in_error ();
+    நிலை 3:
+      க்கு (மாறிலி auto &offset : u.format3.conditions)
+	எனில் (unlikely (!(&u.format3+offset).collect_var_indices (var_indices,
+							     depth - 1, condition_மதிப்புகள்)))
+	  திரும்பு பொய்;
+      திரும்பு உண்மை;
+    நிலை 4:
+      க்கு (மாறிலி auto &offset : u.format4.conditions)
+	எனில் (unlikely (!(&u.format4+offset).collect_var_indices (var_indices,
+							     depth - 1, condition_மதிப்புகள்)))
+	  திரும்பு பொய்;
+      திரும்பு உண்மை;
+    நிலை 5:
+      திரும்பு (&u.format5+u.format5.condition).collect_var_indices (var_indices,
+								  depth - 1, condition_மதிப்புகள்);
+    இயல்பு:
+      திரும்பு பொய்;
   }
 }
 
-inline bool
+உள்வரி தருக்க
 Condition::serialize (hb_serialize_context_t *c,
-		      const Condition *src,
-		      const hb_map_t &varidx_map,
-		      const hb_map_t *axis_map)
+		      மாறிலி Condition *src,
+		      மாறிலி hb_map_t &varidx_map,
+		      மாறிலி hb_map_t *axis_map)
 {
-  TRACE_SERIALIZE (this);
-  switch (src->u.format.v)
+  TRACE_SERIALIZE (இது);
+  தேர்வு (src->u.format.v)
   {
-    case 0:
+    நிலை 0:
     {
-      auto *out = c->start_embed<ConditionValue> ();
-      if (unlikely (!out || !c->extend_min (out))) return_trace (false);
+      auto *out = c->start_embed<Condition_மதிப்பு> ();
+      எனில் (unlikely (!out || !c->extend_min (out))) return_trace (பொய்);
       out->format = 2;
-      out->defaultValue = 1;
+      out->default_மதிப்பு_2 = 1;
       out->varIdx = VarIdx::NO_VARIATION;
-      return_trace (true);
+      return_trace (உண்மை);
     }
-    case 1:
+    நிலை 1:
     {
       auto *out = c->embed (&src->u.format1);
-      if (unlikely (!out)) return_trace (false);
-      if (axis_map)
+      எனில் (unlikely (!out)) return_trace (பொய்);
+      எனில் (axis_map)
       {
-	if (unlikely (!axis_map->has (out->axisIndex)))
+	எனில் (unlikely (!axis_map->has (out->axisIndex)))
 	{
 	  c->err (HB_SERIALIZE_ERROR_OTHER);
-	  return_trace (false);
+	  return_trace (பொய்);
 	}
-	if (unlikely (!c->check_assign (out->axisIndex, axis_map->get (out->axisIndex),
+	எனில் (unlikely (!c->check_assign (out->axisIndex, axis_map->get (out->axisIndex),
 				      HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-	  return_trace (false);
+	  return_trace (பொய்);
       }
-      return_trace (true);
+      return_trace (உண்மை);
     }
-    case 2:
+    நிலை 2:
     {
       auto *out = c->embed (&src->u.format2);
-      if (unlikely (!out ||
+      எனில் (unlikely (!out ||
 		    (src->u.format2.varIdx != VarIdx::NO_VARIATION &&
 		     !varidx_map.has (src->u.format2.varIdx))))
-	return_trace (false);
+	return_trace (பொய்);
       out->varIdx = src->u.format2.varIdx == VarIdx::NO_VARIATION ?
 		    src->u.format2.varIdx : varidx_map.get (src->u.format2.varIdx);
-      return_trace (true);
+      return_trace (உண்மை);
     }
-    case 3:
+    நிலை 3:
     {
       auto *out = c->start_embed<ConditionAnd> ();
-      if (unlikely (!c->extend_min (out))) return_trace (false);
+      எனில் (unlikely (!c->extend_min (out))) return_trace (பொய்);
       out->format = 3;
       out->conditions.len = src->u.format3.conditions.len;
-      if (unlikely (!c->extend (out->conditions))) return_trace (false);
-      for (unsigned i = 0; i < out->conditions.len; i++)
-	if (unlikely (!out->conditions[i].serialize_serialize (
+      எனில் (unlikely (!c->extend (out->conditions))) return_trace (பொய்);
+      க்கு (unsigned i = 0; i < out->conditions.len; i++)
+	எனில் (unlikely (!out->conditions[i].serialize_serialize (
 			c, &(&src->u.format3+src->u.format3.conditions[i]),
 			varidx_map, axis_map)))
-	  return_trace (false);
-      return_trace (true);
+	  return_trace (பொய்);
+      return_trace (உண்மை);
     }
-    case 4:
+    நிலை 4:
     {
       auto *out = c->start_embed<ConditionOr> ();
-      if (unlikely (!c->extend_min (out))) return_trace (false);
+      எனில் (unlikely (!c->extend_min (out))) return_trace (பொய்);
       out->format = 4;
       out->conditions.len = src->u.format4.conditions.len;
-      if (unlikely (!c->extend (out->conditions))) return_trace (false);
-      for (unsigned i = 0; i < out->conditions.len; i++)
-	if (unlikely (!out->conditions[i].serialize_serialize (
+      எனில் (unlikely (!c->extend (out->conditions))) return_trace (பொய்);
+      க்கு (unsigned i = 0; i < out->conditions.len; i++)
+	எனில் (unlikely (!out->conditions[i].serialize_serialize (
 			c, &(&src->u.format4+src->u.format4.conditions[i]),
 			varidx_map, axis_map)))
-	  return_trace (false);
-      return_trace (true);
+	  return_trace (பொய்);
+      return_trace (உண்மை);
     }
-    case 5:
+    நிலை 5:
     {
       auto *out = c->embed (&src->u.format5);
-      if (unlikely (!out ||
+      எனில் (unlikely (!out ||
 		    !out->condition.serialize_serialize (
 			c, &(&src->u.format5+src->u.format5.condition),
 			varidx_map, axis_map)))
-	return_trace (false);
-      return_trace (true);
+	return_trace (பொய்);
+      return_trace (உண்மை);
     }
-    default:
-      return_trace (false);
+    இயல்பு:
+      return_trace (பொய்);
   }
 }
 
-inline lookup_condition_subset_result_t
+உள்வரி lookup_condition_subset_result_t
 Condition::subset_lookup_condition (hb_subset_context_t *c,
 				    unsigned depth,
-				    bool materialize_true) const
+				    தருக்க materialize_true) மாறிலி
 {
   auto snap = c->serializer->snapshot ();
   lookup_condition_subset_result_t result =
       subset_lookup_condition_impl (c, depth);
-  if (result == LOOKUP_CONDITION_SUBSET_KEEP)
-    return result;
+  எனில் (result == LOOKUP_CONDITION_SUBSET_KEEP)
+    திரும்பு result;
 
   c->serializer->revert (snap);
-  if (result != LOOKUP_CONDITION_SUBSET_TRUE || !materialize_true)
-    return result;
+  எனில் (result != LOOKUP_CONDITION_SUBSET_TRUE || !materialize_true)
+    திரும்பு result;
 
-  return serialize_constant (c->serializer, true) ?
+  திரும்பு serialize_constant (c->serializer, உண்மை) ?
          LOOKUP_CONDITION_SUBSET_KEEP : LOOKUP_CONDITION_SUBSET_ERROR;
 }
 
-inline lookup_condition_subset_result_t
+உள்வரி lookup_condition_subset_result_t
 Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
-					 unsigned depth) const
+					 unsigned depth) மாறிலி
 {
-  if (unlikely (!depth))
-    return LOOKUP_CONDITION_SUBSET_ERROR;
+  எனில் (unlikely (!depth))
+    திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
 
   auto subset_offset = [c, depth] (Array8OfOffset24To<Condition> &out,
-				   const Condition &condition)
+				   மாறிலி Condition &condition)
       -> lookup_condition_subset_result_t
   {
     auto snap = c->serializer->snapshot ();
     auto *offset = out.serialize_append (c->serializer);
-    if (unlikely (!offset))
-      return LOOKUP_CONDITION_SUBSET_ERROR;
+    எனில் (unlikely (!offset))
+      திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
 
     c->serializer->push ();
     lookup_condition_subset_result_t result =
         condition.subset_lookup_condition (c, depth - 1);
-    if (result == LOOKUP_CONDITION_SUBSET_KEEP)
-      c->serializer->add_link (*offset, c->serializer->pop_pack ());
-    else
+    எனில் (result == LOOKUP_CONDITION_SUBSET_KEEP)
+      c->serializer->add_link (*offset, c->serializer->எடு_pack ());
+    இல்லையெனில்
     {
-      c->serializer->pop_discard ();
-      out.pop ();
+      c->serializer->எடு_discard ();
+      out.எடு ();
       c->serializer->revert (snap);
     }
-    return result;
+    திரும்பு result;
   };
 
-  switch (u.format.v)
+  தேர்வு (u.format.v)
   {
-    case 0:
-      return LOOKUP_CONDITION_SUBSET_TRUE;
+    நிலை 0:
+      திரும்பு LOOKUP_CONDITION_SUBSET_TRUE;
 
-    case 1:
+    நிலை 1:
     {
-      const ConditionAxisRange &src = u.format1;
-      if (c->plan->user_axes_location.is_empty ())
-        return c->serializer->embed (&src) ?
+      மாறிலி ConditionAxisRange &src = u.format1;
+      எனில் (c->plan->user_axes_location.is_empty ())
+        திரும்பு c->serializer->embed (&src) ?
                LOOKUP_CONDITION_SUBSET_KEEP :
                LOOKUP_CONDITION_SUBSET_ERROR;
 
       hb_codepoint_t *axis_tag;
-      if (!c->plan->axes_old_index_tag_map.has (src.axisIndex, &axis_tag))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      எனில் (!c->plan->axes_old_index_tag_map.has (src.axisIndex, &axis_tag))
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
 
       Triple axis_limit {-1.f, 0.f, 1.f};
       Triple *normalized_limit;
-      if (c->plan->axes_location.has (*axis_tag, &normalized_limit))
+      எனில் (c->plan->axes_location.has (*axis_tag, &normalized_limit))
         axis_limit = *normalized_limit;
 
-      float filter_min = src.filterRangeMinValue.to_float ();
-      float filter_max = src.filterRangeMaxValue.to_float ();
-      if (filter_min > filter_max)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (axis_limit.is_point ())
-        return filter_min <= axis_limit.middle &&
-	       axis_limit.middle <= filter_max ?
+      தசம filter_min = src.filter_Range_Min_மதிப்பு.to_float ();
+      தசம filter_max = src.filter_Range_Max_மதிப்பு.to_float ();
+      எனில் (filter_min > filter_max)
+        திரும்பு LOOKUP_CONDITION_SUBSET_FALSE;
+      எனில் (axis_limit.is_point ())
+        திரும்பு filter_min <= axis_limit.நடு &&
+	       axis_limit.நடு <= filter_max ?
 	       LOOKUP_CONDITION_SUBSET_TRUE :
 	       LOOKUP_CONDITION_SUBSET_FALSE;
-      if (axis_limit.maximum < filter_min ||
+      எனில் (axis_limit.maximum < filter_min ||
 	  filter_max < axis_limit.minimum)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (filter_min <= axis_limit.minimum &&
+        திரும்பு LOOKUP_CONDITION_SUBSET_FALSE;
+      எனில் (filter_min <= axis_limit.minimum &&
 	  axis_limit.maximum <= filter_max)
-        return LOOKUP_CONDITION_SUBSET_TRUE;
-      if (!c->plan->axes_index_map.has (src.axisIndex))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+        திரும்பு LOOKUP_CONDITION_SUBSET_TRUE;
+      எனில் (!c->plan->axes_index_map.has (src.axisIndex))
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
 
       auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      எனில் (unlikely (!out))
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
 
       TripleDistances axis_distances {1.f, 1.f};
       TripleDistances *distances;
-      if (c->plan->axes_triple_distances.has (*axis_tag, &distances))
+      எனில் (c->plan->axes_triple_distances.has (*axis_tag, &distances))
         axis_distances = *distances;
 
-      out->filterRangeMinValue.set_float (
-	  renormalizeValue (filter_min, axis_limit, axis_distances, false));
-      out->filterRangeMaxValue.set_float (
-	  renormalizeValue (filter_max, axis_limit, axis_distances, false));
-      if (unlikely (!c->serializer->check_assign (
+      out->filter_Range_Min_மதிப்பு.set_float (
+	  renormalize_மதிப்பு (filter_min, axis_limit, axis_distances, பொய்));
+      out->filter_Range_Max_மதிப்பு.set_float (
+	  renormalize_மதிப்பு (filter_max, axis_limit, axis_distances, பொய்));
+      எனில் (unlikely (!c->serializer->check_assign (
 		out->axisIndex,
 		c->plan->axes_index_map.get (src.axisIndex),
 		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      return LOOKUP_CONDITION_SUBSET_KEEP;
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
+      திரும்பு LOOKUP_CONDITION_SUBSET_KEEP;
     }
 
-    case 2:
+    நிலை 2:
     {
-      const ConditionValue &src = u.format2;
+      மாறிலி Condition_மதிப்பு &src = u.format2;
       auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      எனில் (unlikely (!out))
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
 
-      if (src.varIdx == VarIdx::NO_VARIATION)
-        return c->plan->user_axes_location.is_empty () ?
+      எனில் (src.varIdx == VarIdx::NO_VARIATION)
+        திரும்பு c->plan->user_axes_location.is_empty () ?
                LOOKUP_CONDITION_SUBSET_KEEP :
-               ((int) src.defaultValue > 0 ?
+               ((முழு) src.default_மதிப்பு_2 > 0 ?
 		LOOKUP_CONDITION_SUBSET_TRUE :
 		LOOKUP_CONDITION_SUBSET_FALSE);
 
-      hb_pair_t<unsigned, int> *condition_value;
-      if (c->plan->layout_condition_idx_value_map.has ((uintptr_t) &src, &condition_value))
+      hb_pair_t<unsigned, முழு> *condition_மதிப்பு;
+      எனில் (c->plan->layout_condition_idx_மதிப்பு_map.has ((uintptr_t) &src, &condition_மதிப்பு))
       {
-        out->defaultValue = condition_value->second;
-        out->varIdx = condition_value->first;
-        if (out->varIdx == VarIdx::NO_VARIATION)
-          return out->defaultValue > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
+        out->default_மதிப்பு_2 = condition_மதிப்பு->second;
+        out->varIdx = condition_மதிப்பு->first;
+        எனில் (out->varIdx == VarIdx::NO_VARIATION)
+          திரும்பு out->default_மதிப்பு_2 > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
                                         LOOKUP_CONDITION_SUBSET_FALSE;
-        return LOOKUP_CONDITION_SUBSET_KEEP;
+        திரும்பு LOOKUP_CONDITION_SUBSET_KEEP;
       }
 
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (src.varIdx,
+      hb_pair_t<unsigned, முழு> *new_varidx_delta;
+      எனில் (!c->plan->layout_variation_idx_delta_map.has (src.varIdx,
 							&new_varidx_delta))
-        return c->plan->user_axes_location.is_empty () ?
+        திரும்பு c->plan->user_axes_location.is_empty () ?
                LOOKUP_CONDITION_SUBSET_KEEP :
-               ((int) src.defaultValue > 0 ?
+               ((முழு) src.default_மதிப்பு_2 > 0 ?
 		LOOKUP_CONDITION_SUBSET_TRUE :
 		LOOKUP_CONDITION_SUBSET_FALSE);
 
-      if (!c->plan->user_axes_location.is_empty () &&
+      எனில் (!c->plan->user_axes_location.is_empty () &&
           hb_first (*new_varidx_delta) == VarIdx::NO_VARIATION)
       {
         // Conditions becoming constant depend on the unrounded sign, not
         // the integer delta used to instance positioning values.
-        double value = (int) src.defaultValue +
+        இரட்டை value = (முழு) src.default_மதிப்பு_2 +
                       c->plan->layout_variation_delta (src.varIdx);
-        return value > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
+        திரும்பு value > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
                           LOOKUP_CONDITION_SUBSET_FALSE;
       }
 
-      int default_value = (int) src.defaultValue +
+      முழு default_மதிப்பு = (முழு) src.default_மதிப்பு_2 +
 			  hb_second (*new_varidx_delta);
-      if (unlikely (!c->serializer->check_assign (
-		out->defaultValue,
-		default_value,
+      எனில் (unlikely (!c->serializer->check_assign (
+		out->default_மதிப்பு_2,
+		default_மதிப்பு,
 		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
       out->varIdx = hb_first (*new_varidx_delta);
 
-      return LOOKUP_CONDITION_SUBSET_KEEP;
+      திரும்பு LOOKUP_CONDITION_SUBSET_KEEP;
     }
 
-    case 3:
+    நிலை 3:
     {
-      const ConditionAnd &src = u.format3;
+      மாறிலி ConditionAnd &src = u.format3;
       auto *out = c->serializer->start_embed (&src);
-      if (unlikely (!out || !c->serializer->extend_min (out)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      எனில் (unlikely (!out || !c->serializer->extend_min (out)))
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
       out->format = 3;
 
-      for (const auto &offset : src.conditions)
+      க்கு (மாறிலி auto &offset : src.conditions)
       {
         lookup_condition_subset_result_t result =
             subset_offset (out->conditions, &src + offset);
-        if (result == LOOKUP_CONDITION_SUBSET_ERROR ||
+        எனில் (result == LOOKUP_CONDITION_SUBSET_ERROR ||
 	    result == LOOKUP_CONDITION_SUBSET_FALSE)
-          return result;
+          திரும்பு result;
       }
-      return out->conditions ?
+      திரும்பு out->conditions ?
 	     LOOKUP_CONDITION_SUBSET_KEEP :
 	     LOOKUP_CONDITION_SUBSET_TRUE;
     }
 
-    case 4:
+    நிலை 4:
     {
-      const ConditionOr &src = u.format4;
+      மாறிலி ConditionOr &src = u.format4;
       auto *out = c->serializer->start_embed (&src);
-      if (unlikely (!out || !c->serializer->extend_min (out)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      எனில் (unlikely (!out || !c->serializer->extend_min (out)))
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
       out->format = 4;
 
-      for (const auto &offset : src.conditions)
+      க்கு (மாறிலி auto &offset : src.conditions)
       {
         lookup_condition_subset_result_t result =
             subset_offset (out->conditions, &src + offset);
-        if (result == LOOKUP_CONDITION_SUBSET_ERROR ||
+        எனில் (result == LOOKUP_CONDITION_SUBSET_ERROR ||
 	    result == LOOKUP_CONDITION_SUBSET_TRUE)
-          return result;
+          திரும்பு result;
       }
-      return out->conditions ?
+      திரும்பு out->conditions ?
 	     LOOKUP_CONDITION_SUBSET_KEEP :
 	     LOOKUP_CONDITION_SUBSET_FALSE;
     }
 
-    case 5:
+    நிலை 5:
     {
-      const ConditionNegate &src = u.format5;
+      மாறிலி ConditionNegate &src = u.format5;
       auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      எனில் (unlikely (!out))
+        திரும்பு LOOKUP_CONDITION_SUBSET_ERROR;
       out->condition = 0;
 
       c->serializer->push ();
       lookup_condition_subset_result_t result =
           (&src + src.condition).subset_lookup_condition (c, depth - 1);
-      if (result == LOOKUP_CONDITION_SUBSET_KEEP)
+      எனில் (result == LOOKUP_CONDITION_SUBSET_KEEP)
       {
         c->serializer->add_link (out->condition,
-				 c->serializer->pop_pack ());
-        return result;
+				 c->serializer->எடு_pack ());
+        திரும்பு result;
       }
 
-      c->serializer->pop_discard ();
-      if (result == LOOKUP_CONDITION_SUBSET_TRUE)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (result == LOOKUP_CONDITION_SUBSET_FALSE)
-        return LOOKUP_CONDITION_SUBSET_TRUE;
-      return result;
+      c->serializer->எடு_discard ();
+      எனில் (result == LOOKUP_CONDITION_SUBSET_TRUE)
+        திரும்பு LOOKUP_CONDITION_SUBSET_FALSE;
+      எனில் (result == LOOKUP_CONDITION_SUBSET_FALSE)
+        திரும்பு LOOKUP_CONDITION_SUBSET_TRUE;
+      திரும்பு result;
     }
 
-    default:
-      return LOOKUP_CONDITION_SUBSET_FALSE;
+    இயல்பு:
+      திரும்பு LOOKUP_CONDITION_SUBSET_FALSE;
   }
 }
 
-struct ConditionSet
+கட்டமைப்பு ConditionSet
 {
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 ItemVarStoreInstancer *instancer) const
+  தருக்க evaluate (மாறிலி முழு *coords, unsigned முழு coord_len,
+		 ItemVarStoreInstancer *instancer) மாறிலி
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+conditions.arrayZ[i]).evaluate (coords, coord_len, instancer))
-	return false;
-    return true;
+    unsigned முழு மொத்தம் = conditions.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (!(இது+conditions.arrayZ[i]).evaluate (coords, coord_len, instancer))
+	திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
-  void keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  வெறுமை keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) மாறிலி
   {
     hb_map_t *condition_map = hb_map_create ();
-    if (unlikely (!condition_map)) return;
+    எனில் (unlikely (!condition_map)) திரும்பு;
     hb::shared_ptr<hb_map_t> p {condition_map};
 
     hb_set_t *cond_set = hb_set_create ();
-    if (unlikely (!cond_set)) return;
+    எனில் (unlikely (!cond_set)) திரும்பு;
     hb::shared_ptr<hb_set_t> s {cond_set};
 
-    c->apply = true;
-    bool should_keep = false;
+    c->apply = உண்மை;
+    தருக்க should_keep = பொய்;
     /* The range map cannot identify value or boolean expressions uniquely. */
-    bool can_deduplicate = true;
-    unsigned num_kept_cond = 0, cond_idx = 0;
-    for (const auto& offset : conditions)
+    தருக்க can_deduplicate = உண்மை;
+    unsigned இலக்கம்_kept_cond = 0, cond_idx = 0;
+    க்கு (மாறிலி auto& offset : conditions)
     {
-      const Condition &condition = this+offset;
+      மாறிலி Condition &condition = இது+offset;
       can_deduplicate &= condition.u.format.v <= 1;
       Cond_with_Var_flag_t ret = condition.keep_with_variations (c, condition_map);
       // condition is not met or condition out of range, drop the entire record
-      if (ret == DROP_RECORD_WITH_VAR)
+      எனில் (ret == DROP_RECORD_WITH_VAR)
       {
-        c->apply = false;
-        return;
+        c->apply = பொய்;
+        திரும்பு;
       }
 
-      if (ret == KEEP_COND_WITH_VAR)
+      எனில் (ret == KEEP_COND_WITH_VAR)
       {
-        should_keep = true;
+        should_keep = உண்மை;
         cond_set->add (cond_idx);
-        num_kept_cond++;
+        இலக்கம்_kept_cond++;
       }
 
-      if (ret == KEEP_RECORD_WITH_VAR)
-        should_keep = true;
+      எனில் (ret == KEEP_RECORD_WITH_VAR)
+        should_keep = உண்மை;
 
       cond_idx++;
     }
 
     /* Satisfied pinned conditions still terminate first-match processing.
      * Keep their universal record when other axes remain variable. */
-    c->universal = num_kept_cond == 0;
-    if (!should_keep && c->all_axes_pinned) return;
+    c->universal = இலக்கம்_kept_cond == 0;
+    எனில் (!should_keep && c->all_axes_pinned) திரும்பு;
 
     //check if condition_set is unique with variations
-    if (can_deduplicate && c->conditionset_map->has (p))
+    எனில் (can_deduplicate && c->conditionset_map->has (p))
       //duplicate found, drop the entire record
-      return;
+      திரும்பு;
 
-    if (can_deduplicate)
+    எனில் (can_deduplicate)
       c->conditionset_map->set (p, 1);
     c->record_cond_idx_map->set (c->cur_record_idx, s);
   }
 
-  bool subset (hb_subset_context_t *c,
+  தருக்க subset (hb_subset_context_t *c,
                hb_subset_layout_context_t *l,
-               bool insert_catch_all) const
+               தருக்க செருகு_catch_all) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (இது);
+    எனில் (unlikely (!out || !c->serializer->extend_min (out))) return_trace (பொய்);
 
-    if (insert_catch_all) return_trace (true);
+    எனில் (செருகு_catch_all) return_trace (உண்மை);
 
     hb_set_t *retained_cond_set = nullptr;
-    if (l->feature_record_cond_idx_map != nullptr)
+    எனில் (l->feature_record_cond_idx_map != nullptr)
       retained_cond_set = l->feature_record_cond_idx_map->get (l->cur_feature_var_record_idx);
 
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு மொத்தம் = conditions.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      if (retained_cond_set != nullptr && !retained_cond_set->has (i))
-        continue;
-      const Condition &condition = this+conditions[i];
-      if (condition.u.format.v == 1)
+      எனில் (retained_cond_set != nullptr && !retained_cond_set->has (i))
+        தொடர்;
+      மாறிலி Condition &condition = இது+conditions[i];
+      எனில் (condition.u.format.v == 1)
       {
-        subset_offset_array (c, out->conditions, this) (conditions[i]);
-        continue;
+        subset_offset_array (c, out->conditions, இது) (conditions[i]);
+        தொடர்;
       }
 
       auto *offset = out->conditions.serialize_append (c->serializer);
-      if (unlikely (!offset)) return_trace (false);
+      எனில் (unlikely (!offset)) return_trace (பொய்);
       c->serializer->push ();
-      auto result = condition.subset_lookup_condition (c, HB_MAX_NESTING_LEVEL, true);
-      if (result == LOOKUP_CONDITION_SUBSET_FALSE)
+      auto result = condition.subset_lookup_condition (c, HB_MAX_NESTING_LEVEL, உண்மை);
+      எனில் (result == LOOKUP_CONDITION_SUBSET_FALSE)
         /* A false condition must not become a null (true) ConditionSet. */
-        result = Condition::serialize_constant (c->serializer, false) ?
+        result = Condition::serialize_constant (c->serializer, பொய்) ?
                  LOOKUP_CONDITION_SUBSET_KEEP : LOOKUP_CONDITION_SUBSET_ERROR;
-      if (unlikely (result == LOOKUP_CONDITION_SUBSET_ERROR))
+      எனில் (unlikely (result == LOOKUP_CONDITION_SUBSET_ERROR))
       {
-        c->serializer->pop_discard ();
-        c->serializer->check_success (false);
-        return_trace (false);
+        c->serializer->எடு_discard ();
+        c->serializer->check_success (பொய்);
+        return_trace (பொய்);
       }
-      c->serializer->add_link (*offset, c->serializer->pop_pack ());
+      c->serializer->add_link (*offset, c->serializer->எடு_pack ());
     }
 
-    return_trace (bool (out->conditions));
+    return_trace (தருக்க (out->conditions));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (இது);
+    return_trace (conditions.sanitize (c, இது));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c) மாறிலி
   {
-    for (const auto &offset : conditions)
-      if (unlikely (!(this+offset).collect_var_indices (c->layout_variation_indices,
+    க்கு (மாறிலி auto &offset : conditions)
+      எனில் (unlikely (!(இது+offset).collect_var_indices (c->layout_variation_indices,
                                                        HB_MAX_NESTING_LEVEL,
-                                                       c->condition_values)))
+                                                       c->condition_மதிப்புகள்)))
 	c->layout_variation_indices->err ();
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Array16OfOffset32To<Condition>	conditions;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (2, conditions);
 };
 
-struct FeatureTableSubstitutionRecord
+கட்டமைப்பு FeatureTableSubstitutionRecord
 {
-  friend struct FeatureTableSubstitution;
+  friend கட்டமைப்பு FeatureTableSubstitution;
 
-  void collect_lookups (const void *base, hb_set_t *lookup_indexes /* OUT */) const
+  வெறுமை collect_lookups (மாறிலி வெறுமை *base, hb_set_t *lookup_indexes /* OUT */) மாறிலி
   {
-    return (base+feature).add_lookup_indexes_to (lookup_indexes);
+    திரும்பு (base+feature).add_lookup_indexes_to (lookup_indexes);
   }
 
-  void closure_features (const void *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  வெறுமை closure_features (மாறிலி வெறுமை *base,
+			 மாறிலி hb_map_t *lookup_indexes,
+			 hb_set_t       *feature_indexes /* OUT */) மாறிலி
   {
-    if ((base+feature).intersects_lookup_indexes (lookup_indexes))
+    எனில் ((base+feature).intersects_lookup_indexes (lookup_indexes))
       feature_indexes->add (featureIndex);
   }
 
-  void collect_feature_substitutes_with_variations (hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map,
+  வெறுமை collect_feature_substitutes_with_variations (hb_hashmap_t<unsigned, மாறிலி Feature*> *feature_substitutes_map,
                                                     hb_set_t& catch_all_record_feature_idxes,
-                                                    const hb_set_t *feature_indices,
-                                                    const void *base) const
+                                                    மாறிலி hb_set_t *feature_indices,
+                                                    மாறிலி வெறுமை *base) மாறிலி
   {
-    if (feature_indices->has (featureIndex))
+    எனில் (feature_indices->has (featureIndex))
     {
       feature_substitutes_map->set (featureIndex, &(base+feature));
       catch_all_record_feature_idxes.add (featureIndex);
     }
   }
 
-  bool serialize (hb_subset_layout_context_t *c,
+  தருக்க serialize (hb_subset_layout_context_t *c,
                   unsigned feature_index,
-                  const Feature *f, const Tag *tag)
+                  மாறிலி Feature *f, மாறிலி Tag *tag)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     hb_serialize_context_t *s = c->subset_context->serializer;
-    if (unlikely (!s->extend_min (this))) return_trace (false);
+    எனில் (unlikely (!s->extend_min (இது))) return_trace (பொய்);
 
     uint32_t *new_feature_idx;
-    if (!c->feature_map_w_duplicates->has (feature_index, &new_feature_idx))
-      return_trace (false);
+    எனில் (!c->feature_map_w_duplicates->has (feature_index, &new_feature_idx))
+      return_trace (பொய்);
 
-    if (!s->check_assign (featureIndex, *new_feature_idx, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    எனில் (!s->check_assign (featureIndex, *new_feature_idx, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (பொய்);
 
     s->push ();
-    bool ret = f->subset (c->subset_context, c, tag);
-    if (ret) s->add_link (feature, s->pop_pack ());
-    else s->pop_discard ();
+    தருக்க ret = f->subset (c->subset_context, c, tag);
+    எனில் (ret) s->add_link (feature, s->எடு_pack ());
+    இல்லையெனில் s->எடு_discard ();
 
     return_trace (ret);
   }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base) const
+  தருக்க subset (hb_subset_layout_context_t *c, மாறிலி வெறுமை *base) மாறிலி
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (இது);
     uint32_t *new_feature_index;
-    if (!c->feature_map_w_duplicates->has (featureIndex, &new_feature_index))
-      return_trace (false);
+    எனில் (!c->feature_map_w_duplicates->has (featureIndex, &new_feature_index))
+      return_trace (பொய்);
 
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->subset_context->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
     out->featureIndex = *new_feature_index;
-    hb_pair_t<const void*, const void*> *original;
-    if (!c->feature_idx_tag_map->has (featureIndex, &original))
-      return_trace (false);
-    const Tag *tag = reinterpret_cast<const Tag*> (original->second);
+    hb_pair_t<மாறிலி வெறுமை*, மாறிலி வெறுமை*> *original;
+    எனில் (!c->feature_idx_tag_map->has (featureIndex, &original))
+      return_trace (பொய்);
+    மாறிலி Tag *tag = reinterpret_cast<மாறிலி Tag*> (original->second);
     return_trace (out->feature.serialize_subset (c->subset_context, feature, base, c, tag));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base,
-		 const FeatureList *feature_list) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி வெறுமை *base,
+		 மாறிலி FeatureList *feature_list) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!c->check_struct (இது))) return_trace (பொய்);
     hb_barrier ();
     /* The substitute is read with the tag of the feature it replaces. */
-    const Record_sanitize_closure_t closure = {feature_list->get_tag (featureIndex), base};
+    மாறிலி Record_sanitize_closure_t closure = {feature_list->get_tag (featureIndex), base};
     return_trace (feature.sanitize (c, base, &closure));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16		featureIndex;
   Offset32To<Feature>	feature;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct FeatureTableSubstitution
+கட்டமைப்பு FeatureTableSubstitution
 {
-  void collect_feature_indices (hb_set_t *feature_indices) const
+  வெறுமை collect_feature_indices (hb_set_t *feature_indices) மாறிலி
   {
-    for (const FeatureTableSubstitutionRecord &record : substitutions)
+    க்கு (மாறிலி FeatureTableSubstitutionRecord &record : substitutions)
       feature_indices->add (record.featureIndex);
   }
 
-  const Feature *find_substitute (unsigned int feature_index) const
+  மாறிலி Feature *find_substitute (unsigned முழு feature_index) மாறிலி
   {
-    unsigned int count = substitutions.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு மொத்தம் = substitutions.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      const FeatureTableSubstitutionRecord &record = substitutions.arrayZ[i];
-      if (record.featureIndex == feature_index)
-	return &(this+record.feature);
+      மாறிலி FeatureTableSubstitutionRecord &record = substitutions.arrayZ[i];
+      எனில் (record.featureIndex == feature_index)
+	திரும்பு &(இது+record.feature);
     }
-    return nullptr;
+    திரும்பு nullptr;
   }
 
-  void collect_lookups (const hb_set_t *feature_indexes,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  வெறுமை collect_lookups (மாறிலி hb_set_t *feature_indexes,
+			hb_set_t       *lookup_indexes /* OUT */) மாறிலி
   {
     + hb_iter (substitutions)
     | hb_filter (feature_indexes, &FeatureTableSubstitutionRecord::featureIndex)
-    | hb_apply ([this, lookup_indexes] (const FeatureTableSubstitutionRecord& r)
-		{ r.collect_lookups (this, lookup_indexes); })
+    | hb_apply ([இது, lookup_indexes] (மாறிலி FeatureTableSubstitutionRecord& r)
+		{ r.collect_lookups (இது, lookup_indexes); })
     ;
   }
 
   template <typename TagGetter>
-  void collect_name_ids (const hb_map_t *feature_index_map,
+  வெறுமை collect_name_ids (மாறிலி hb_map_t *feature_index_map,
                          TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+                         hb_set_t *nameids_to_retain) மாறிலி
   {
-    for (const FeatureTableSubstitutionRecord &record : substitutions)
-      if (feature_index_map->has (record.featureIndex))
-        (this+record.feature).collect_name_ids (get_tag (record.featureIndex), nameids_to_retain);
+    க்கு (மாறிலி FeatureTableSubstitutionRecord &record : substitutions)
+      எனில் (feature_index_map->has (record.featureIndex))
+        (இது+record.feature).collect_name_ids (get_tag (record.featureIndex), nameids_to_retain);
   }
 
-  void closure_features (const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  வெறுமை closure_features (மாறிலி hb_map_t *lookup_indexes,
+			 hb_set_t       *feature_indexes /* OUT */) மாறிலி
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
-      record.closure_features (this, lookup_indexes, feature_indexes);
+    க்கு (மாறிலி FeatureTableSubstitutionRecord& record : substitutions)
+      record.closure_features (இது, lookup_indexes, feature_indexes);
   }
 
-  bool intersects_features (const hb_map_t *feature_index_map) const
+  தருக்க intersects_features (மாறிலி hb_map_t *feature_index_map) மாறிலி
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
+    க்கு (மாறிலி FeatureTableSubstitutionRecord& record : substitutions)
     {
-      if (feature_index_map->has (record.featureIndex)) return true;
+      எனில் (feature_index_map->has (record.featureIndex)) திரும்பு உண்மை;
     }
-    return false;
+    திரும்பு பொய்;
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  வெறுமை collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) மாறிலி
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
+    க்கு (மாறிலி FeatureTableSubstitutionRecord& record : substitutions)
       record.collect_feature_substitutes_with_variations (c->feature_substitutes_map,
                                                           c->catch_all_record_feature_idxes,
-                                                          c->feature_indices, this);
+                                                          c->feature_indices, இது);
   }
 
-  bool subset (hb_subset_context_t        *c,
+  தருக்க subset (hb_subset_context_t        *c,
 	       hb_subset_layout_context_t *l,
-               bool insert_catch_all) const
+               தருக்க செருகு_catch_all) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!out || !c->serializer->extend_min (out))) return_trace (பொய்);
 
     out->version.major = version.major;
     out->version.minor = version.minor;
 
-    if (insert_catch_all)
+    எனில் (செருகு_catch_all)
     {
-      for (unsigned feature_index : *(l->catch_all_record_feature_idxes))
+      க்கு (unsigned feature_index : *(l->catch_all_record_feature_idxes))
       {
-        hb_pair_t<const void*, const void*> *p;
-        if (!l->feature_idx_tag_map->has (feature_index, &p))
-          return_trace (false);
+        hb_pair_t<மாறிலி வெறுமை*, மாறிலி வெறுமை*> *p;
+        எனில் (!l->feature_idx_tag_map->has (feature_index, &p))
+          return_trace (பொய்);
         auto *o = out->substitutions.serialize_append (c->serializer);
-        if (!o->serialize (l, feature_index,
-                           reinterpret_cast<const Feature*> (p->first),
-                           reinterpret_cast<const Tag*> (p->second)))
-          return_trace (false);
+        எனில் (!o->serialize (l, feature_index,
+                           reinterpret_cast<மாறிலி Feature*> (p->first),
+                           reinterpret_cast<மாறிலி Tag*> (p->second)))
+          return_trace (பொய்);
       }
-      return_trace (true);
+      return_trace (உண்மை);
     }
 
     + substitutions.iter ()
-    | hb_apply (subset_record_array (l, &(out->substitutions), this))
+    | hb_apply (subset_record_array (l, &(out->substitutions), இது))
     ;
 
-    return_trace (bool (out->substitutions));
+    return_trace (தருக்க (out->substitutions));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const FeatureList *feature_list) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி FeatureList *feature_list) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  substitutions.sanitize (c, this, feature_list));
+		  substitutions.sanitize (c, இது, feature_list));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   FixedVersion<>	version;	/* Version--0x00010000u */
   Array16Of<FeatureTableSubstitutionRecord>
 			substitutions;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (6, substitutions);
 };
 
-struct FeatureVariationRecord
+கட்டமைப்பு FeatureVariationRecord
 {
-  friend struct FeatureVariations;
+  friend கட்டமைப்பு FeatureVariations;
 
-  void collect_lookups (const void     *base,
-			const hb_set_t *feature_indexes,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  வெறுமை collect_lookups (மாறிலி வெறுமை     *base,
+			மாறிலி hb_set_t *feature_indexes,
+			hb_set_t       *lookup_indexes /* OUT */) மாறிலி
   {
-    return (base+substitutions).collect_lookups (feature_indexes, lookup_indexes);
+    திரும்பு (base+substitutions).collect_lookups (feature_indexes, lookup_indexes);
   }
 
   template <typename TagGetter>
-  void collect_name_ids (const void *base,
-                         const hb_map_t *feature_index_map,
+  வெறுமை collect_name_ids (மாறிலி வெறுமை *base,
+                         மாறிலி hb_map_t *feature_index_map,
                          TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+                         hb_set_t *nameids_to_retain) மாறிலி
   {
     (base+substitutions).collect_name_ids (feature_index_map, get_tag, nameids_to_retain);
   }
 
-  void closure_features (const void     *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  வெறுமை closure_features (மாறிலி வெறுமை     *base,
+			 மாறிலி hb_map_t *lookup_indexes,
+			 hb_set_t       *feature_indexes /* OUT */) மாறிலி
   {
     (base+substitutions).closure_features (lookup_indexes, feature_indexes);
   }
 
-  bool intersects_features (const void *base, const hb_map_t *feature_index_map) const
+  தருக்க intersects_features (மாறிலி வெறுமை *base, மாறிலி hb_map_t *feature_index_map) மாறிலி
   {
-    return (base+substitutions).intersects_features (feature_index_map);
+    திரும்பு (base+substitutions).intersects_features (feature_index_map);
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
-                                                    const void *base) const
+  வெறுமை collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
+                                                    மாறிலி வெறுமை *base) மாறிலி
   {
     (base+conditions).keep_with_variations (c);
-    if (c->apply && !c->variation_applied)
+    எனில் (c->apply && !c->variation_applied)
     {
       (base+substitutions).collect_feature_substitutes_with_variations (c);
-      c->variation_applied = true; // set variations only once
+      c->variation_applied = உண்மை; // set variations only once
     }
   }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base,
-               bool insert_catch_all = false) const
+  தருக்க subset (hb_subset_layout_context_t *c, மாறிலி வெறுமை *base,
+               தருக்க செருகு_catch_all = பொய்) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->subset_context->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
     hb_set_t *retained_conditions = c->feature_record_cond_idx_map ?
         c->feature_record_cond_idx_map->get (c->cur_feature_var_record_idx).get () : nullptr;
-    if (!insert_catch_all && retained_conditions && retained_conditions->is_empty ())
+    எனில் (!செருகு_catch_all && retained_conditions && retained_conditions->is_empty ())
       /* A null ConditionSet is the unconditional first-match record. */
       out->conditions = 0;
-    else
-      out->conditions.serialize_subset (c->subset_context, conditions, base, c, insert_catch_all);
-    out->substitutions.serialize_subset (c->subset_context, substitutions, base, c, insert_catch_all);
+    இல்லையெனில்
+      out->conditions.serialize_subset (c->subset_context, conditions, base, c, செருகு_catch_all);
+    out->substitutions.serialize_subset (c->subset_context, substitutions, base, c, செருகு_catch_all);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base,
-		 const FeatureList *feature_list) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி வெறுமை *base,
+		 மாறிலி FeatureList *feature_list) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (conditions.sanitize (c, base) &&
 		  substitutions.sanitize (c, base, feature_list));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  மாறிலி வெறுமை *base) மாறிலி
   { (base+conditions).collect_variation_indices (c); }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Offset32To<ConditionSet>
 			conditions;
   Offset32To<FeatureTableSubstitution>
 			substitutions;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct LookupIndexList
+கட்டமைப்பு LookupIndexList
 {
-  void add_lookup_indexes_to (hb_set_t *lookup_indexes) const
+  வெறுமை add_lookup_indexes_to (hb_set_t *lookup_indexes) மாறிலி
   { lookupIndices.add_indexes_to (lookup_indexes); }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
-  { return lookupIndices.intersects (lookup_indexes); }
+  தருக்க intersects_lookup_indexes (மாறிலி hb_map_t *lookup_indexes) மாறிலி
+  { திரும்பு lookupIndices.intersects (lookup_indexes); }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  தருக்க subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (இது);
+    எனில் (unlikely (!out || !c->serializer->extend_min (out)))
+      return_trace (பொய்);
 
     auto it =
     + hb_iter (lookupIndices)
@@ -5643,537 +5643,537 @@ struct LookupIndexList
     | hb_map (l->lookup_index_map)
     ;
     out->lookupIndices.serialize (c->serializer, l, it);
-    return_trace (bool (out->lookupIndices));
+    return_trace (தருக்க (out->lookupIndices));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (lookupIndices.sanitize (c));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   IndexArray	lookupIndices;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY_SIZED (2, lookupIndices);
 };
 
-struct LookupConditionRecord
+கட்டமைப்பு LookupConditionRecord
 {
-  unsigned get_condition_offset (const void *base, const void *variations) const
-  { return (const char *) &(base+condition) - (const char *) variations; }
+  unsigned get_condition_offset (மாறிலி வெறுமை *base, மாறிலி வெறுமை *variations) மாறிலி
+  { திரும்பு (மாறிலி எழுத்து *) &(base+condition) - (மாறிலி எழுத்து *) variations; }
 
   template <typename Instancer>
-  bool evaluate (const void *base,
-		 const int *coords,
-		 unsigned int coord_len,
-		 Instancer *instancer) const
-  { return (base+condition).evaluate (coords, coord_len, instancer); }
+  தருக்க evaluate (மாறிலி வெறுமை *base,
+		 மாறிலி முழு *coords,
+		 unsigned முழு coord_len,
+		 Instancer *instancer) மாறிலி
+  { திரும்பு (base+condition).evaluate (coords, coord_len, instancer); }
 
-  bool evaluate (const void *base,
-                 const void *variations,
-                 hb_sorted_array_t<const unsigned> conditions) const
+  தருக்க evaluate (மாறிலி வெறுமை *base,
+                 மாறிலி வெறுமை *variations,
+                 hb_sorted_array_t<மாறிலி unsigned> conditions) மாறிலி
   {
-    return !condition || hb_bsearch (get_condition_offset (base, variations),
+    திரும்பு !condition || hb_bsearch (get_condition_offset (base, variations),
                                      conditions.arrayZ, conditions.length,
-                                     sizeof (unsigned),
+                                     அளவு (unsigned),
                                      _hb_cmp_operator<unsigned, unsigned>);
   }
 
-  bool collect_condition (const void *base,
-                          const void *variations,
-                          const int *coords,
-                          unsigned int coord_len,
+  தருக்க collect_condition (மாறிலி வெறுமை *base,
+                          மாறிலி வெறுமை *variations,
+                          மாறிலி முழு *coords,
+                          unsigned முழு coord_len,
                           ItemVarStoreInstancer *instancer,
                           hb_set_t *visited,
-                          hb_vector_t<unsigned> *conditions) const
+                          hb_vector_t<unsigned> *conditions) மாறிலி
   {
     /* Null conditions always apply and need no key state. */
-    if (!condition) return true;
+    எனில் (!condition) திரும்பு உண்மை;
 
     unsigned offset = get_condition_offset (base, variations);
-    if (visited->has (offset)) return true;
+    எனில் (visited->has (offset)) திரும்பு உண்மை;
     visited->add (offset);
-    if (unlikely (visited->in_error ())) return false;
+    எனில் (unlikely (visited->in_error ())) திரும்பு பொய்;
 
-    if (evaluate (base, coords, coord_len, instancer))
+    எனில் (evaluate (base, coords, coord_len, instancer))
       conditions->push (offset);
-    return !conditions->in_error ();
+    திரும்பு !conditions->in_error ();
   }
 
-  void add_lookup_indexes_to (const void *base,
-			      hb_set_t *lookup_indexes) const
+  வெறுமை add_lookup_indexes_to (மாறிலி வெறுமை *base,
+			      hb_set_t *lookup_indexes) மாறிலி
   { (base+lookupIndices).add_lookup_indexes_to (lookup_indexes); }
 
-  bool intersects_lookup_indexes (const void *base,
-				   const hb_map_t *lookup_indexes) const
-  { return (base+lookupIndices).intersects_lookup_indexes (lookup_indexes); }
+  தருக்க intersects_lookup_indexes (மாறிலி வெறுமை *base,
+				   மாறிலி hb_map_t *lookup_indexes) மாறிலி
+  { திரும்பு (base+lookupIndices).intersects_lookup_indexes (lookup_indexes); }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  மாறிலி வெறுமை *base) மாறிலி
   {
-    if (unlikely (!(base+condition).collect_var_indices (c->layout_variation_indices,
+    எனில் (unlikely (!(base+condition).collect_var_indices (c->layout_variation_indices,
                                                         HB_MAX_NESTING_LEVEL,
-                                                        c->condition_values)))
+                                                        c->condition_மதிப்புகள்)))
       c->layout_variation_indices->err ();
   }
 
-  bool subset (hb_subset_context_t *c,
+  தருக்க subset (hb_subset_context_t *c,
 	       hb_subset_layout_context_t *l,
-	       const void *base) const
+	       மாறிலி வெறுமை *base) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out)) return_trace (பொய்);
 
     out->condition = 0;
     c->serializer->push ();
     lookup_condition_subset_result_t result =
         (base + condition).subset_lookup_condition (c,
 					    HB_MAX_NESTING_LEVEL,
-					    true);
-    if (result != LOOKUP_CONDITION_SUBSET_KEEP)
+					    உண்மை);
+    எனில் (result != LOOKUP_CONDITION_SUBSET_KEEP)
     {
-      c->serializer->pop_discard ();
-      return_trace (false);
+      c->serializer->எடு_discard ();
+      return_trace (பொய்);
     }
-    c->serializer->add_link (out->condition, c->serializer->pop_pack ());
+    c->serializer->add_link (out->condition, c->serializer->எடு_pack ());
 
     return_trace (out->lookupIndices.serialize_subset (c, lookupIndices, base, l));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி வெறுமை *base) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (condition.sanitize (c, base) &&
 		  lookupIndices.sanitize (c, base));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Offset32To<Condition>		condition;
   Offset32To<LookupIndexList>	lookupIndices;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct FeatureLookupsTable
+கட்டமைப்பு FeatureLookupsTable
 {
-  bool adds_default_lookups () const { return flags & 0x0001u; }
+  தருக்க adds_default_lookups () மாறிலி { திரும்பு flags & 0x0001u; }
 
-  bool collect_conditions (const void *variations,
-                           const int *coords,
-                           unsigned int coord_len,
+  தருக்க collect_conditions (மாறிலி வெறுமை *variations,
+                           மாறிலி முழு *coords,
+                           unsigned முழு coord_len,
                            ItemVarStoreInstancer *instancer,
                            hb_set_t *visited,
-                           hb_vector_t<unsigned> *conditions) const
+                           hb_vector_t<unsigned> *conditions) மாறிலி
   {
-    for (const LookupConditionRecord &record : records)
-      if (unlikely (!record.collect_condition (this, variations, coords, coord_len,
+    க்கு (மாறிலி LookupConditionRecord &record : records)
+      எனில் (unlikely (!record.collect_condition (இது, variations, coords, coord_len,
                                                instancer, visited, conditions)))
-	return false;
-    return true;
+	திரும்பு பொய்;
+    திரும்பு உண்மை;
   }
 
-  void collect_lookups (const void *variations,
-                       hb_sorted_array_t<const unsigned> conditions,
-                       hb_set_t *lookup_indexes) const
+  வெறுமை collect_lookups (மாறிலி வெறுமை *variations,
+                       hb_sorted_array_t<மாறிலி unsigned> conditions,
+                       hb_set_t *lookup_indexes) மாறிலி
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.evaluate (this, variations, conditions))
-	record.add_lookup_indexes_to (this, lookup_indexes);
+    க்கு (மாறிலி LookupConditionRecord &record : records)
+      எனில் (record.evaluate (இது, variations, conditions))
+	record.add_lookup_indexes_to (இது, lookup_indexes);
   }
 
   template <typename Instancer>
-  void collect_lookups (const int *coords,
-			unsigned int coord_len,
+  வெறுமை collect_lookups (மாறிலி முழு *coords,
+			unsigned முழு coord_len,
 			Instancer *instancer,
-			hb_set_t *lookup_indexes) const
+			hb_set_t *lookup_indexes) மாறிலி
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.evaluate (this, coords, coord_len, instancer))
-	record.add_lookup_indexes_to (this, lookup_indexes);
+    க்கு (மாறிலி LookupConditionRecord &record : records)
+      எனில் (record.evaluate (இது, coords, coord_len, instancer))
+	record.add_lookup_indexes_to (இது, lookup_indexes);
   }
 
-  void collect_lookups (hb_set_t *lookup_indexes) const
+  வெறுமை collect_lookups (hb_set_t *lookup_indexes) மாறிலி
   {
-    for (const LookupConditionRecord &record : records)
-      record.add_lookup_indexes_to (this, lookup_indexes);
+    க்கு (மாறிலி LookupConditionRecord &record : records)
+      record.add_lookup_indexes_to (இது, lookup_indexes);
   }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
+  தருக்க intersects_lookup_indexes (மாறிலி hb_map_t *lookup_indexes) மாறிலி
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.intersects_lookup_indexes (this, lookup_indexes))
-	return true;
-    return false;
+    க்கு (மாறிலி LookupConditionRecord &record : records)
+      எனில் (record.intersects_lookup_indexes (இது, lookup_indexes))
+	திரும்பு உண்மை;
+    திரும்பு பொய்;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c) மாறிலி
   {
-    for (const LookupConditionRecord &record : records)
-      record.collect_variation_indices (c, this);
+    க்கு (மாறிலி LookupConditionRecord &record : records)
+      record.collect_variation_indices (c, இது);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  தருக்க subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (இது);
+    எனில் (unlikely (!out || !c->serializer->extend_min (out)))
+      return_trace (பொய்);
 
     out->version.major = version.major;
     out->version.minor = version.minor;
     out->flags = flags;
 
-    for (const LookupConditionRecord &record : records)
+    க்கு (மாறிலி LookupConditionRecord &record : records)
     {
       auto snap = c->serializer->snapshot ();
-      if (record.subset (c, l, this))
+      எனில் (record.subset (c, l, இது))
 	out->records.len++;
-      else
+      இல்லையெனில்
 	c->serializer->revert (snap);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  records.sanitize (c, this));
+		  records.sanitize (c, இது));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   FixedVersion<>	version;	/* Version--0x00010000u */
   HBUINT16	flags;
   Array32Of<LookupConditionRecord>
 		records;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (10, records);
 };
 
-struct LookupVariationRecord
+கட்டமைப்பு LookupVariationRecord
 {
-  friend struct FeatureVariations;
+  friend கட்டமைப்பு FeatureVariations;
 
-  unsigned get_feature_index () const { return featureIndex; }
+  unsigned get_feature_index () மாறிலி { திரும்பு featureIndex; }
 
-  void collect_lookups (const void *base,
-                       const Feature &feature,
-                       hb_sorted_array_t<const unsigned> conditions,
-                       hb_set_t *lookup_indexes) const
+  வெறுமை collect_lookups (மாறிலி வெறுமை *base,
+                       மாறிலி Feature &feature,
+                       hb_sorted_array_t<மாறிலி unsigned> conditions,
+                       hb_set_t *lookup_indexes) மாறிலி
   {
-    const FeatureLookupsTable &feature_lookups = base+featureLookups;
-    if (feature_lookups.adds_default_lookups ())
+    மாறிலி FeatureLookupsTable &feature_lookups = base+featureLookups;
+    எனில் (feature_lookups.adds_default_lookups ())
       feature.add_lookup_indexes_to (lookup_indexes);
     feature_lookups.collect_lookups (base, conditions, lookup_indexes);
   }
 
-  void collect_lookups (const void *base,
-			const hb_set_t *feature_indexes,
-			hb_set_t *lookup_indexes) const
+  வெறுமை collect_lookups (மாறிலி வெறுமை *base,
+			மாறிலி hb_set_t *feature_indexes,
+			hb_set_t *lookup_indexes) மாறிலி
   {
-    if (feature_indexes->has (featureIndex))
+    எனில் (feature_indexes->has (featureIndex))
       (base+featureLookups).collect_lookups (lookup_indexes);
   }
 
-  void closure_features (const void *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t *feature_indexes) const
+  வெறுமை closure_features (மாறிலி வெறுமை *base,
+			 மாறிலி hb_map_t *lookup_indexes,
+			 hb_set_t *feature_indexes) மாறிலி
   {
-    if ((base+featureLookups).intersects_lookup_indexes (lookup_indexes))
+    எனில் ((base+featureLookups).intersects_lookup_indexes (lookup_indexes))
       feature_indexes->add (featureIndex);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  மாறிலி வெறுமை *base) மாறிலி
   { (base+featureLookups).collect_variation_indices (c); }
 
-  bool subset (hb_subset_layout_context_t *l, const void *base) const
+  தருக்க subset (hb_subset_layout_context_t *l, மாறிலி வெறுமை *base) மாறிலி
   {
     hb_subset_context_t *c = l->subset_context;
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (இது);
     uint32_t *new_feature_index;
-    if (!l->feature_map_w_duplicates->has (featureIndex, &new_feature_index))
-      return_trace (false);
+    எனில் (!l->feature_map_w_duplicates->has (featureIndex, &new_feature_index))
+      return_trace (பொய்);
 
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out ||
+    auto *out = c->serializer->embed (இது);
+    எனில் (unlikely (!out ||
 		  !c->serializer->check_assign (out->featureIndex,
 						*new_feature_index,
 						HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+      return_trace (பொய்);
 
     return_trace (out->featureLookups.serialize_subset (c, featureLookups, base, l));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி வெறுமை *base) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  featureLookups.sanitize (c, base));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16			featureIndex;
   Offset32To<FeatureLookupsTable>	featureLookups;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct FeatureVariations
+கட்டமைப்பு FeatureVariations
 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFFFFFu;
+  நிலையான constexpr unsigned NOT_FOUND_INDEX = 0xFFFFFFFFu;
 
-  const Array32Of<LookupVariationRecord> &get_lookup_variation_records () const
+  மாறிலி Array32Of<LookupVariationRecord> &get_lookup_variation_records () மாறிலி
   {
-    if (version.to_int () < 0x00010001u)
-      return Null (Array32Of<LookupVariationRecord>);
-    return StructAfter<Array32Of<LookupVariationRecord>> (varRecords);
+    எனில் (version.to_int () < 0x00010001u)
+      திரும்பு Null (Array32Of<LookupVariationRecord>);
+    திரும்பு StructAfter<Array32Of<LookupVariationRecord>> (varRecords);
   }
 
-  unsigned record_count () const
+  unsigned record_மொத்தம் () மாறிலி
   {
-    return varRecords.len;
+    திரும்பு varRecords.len;
   }
 
-  bool find_index (const int *coords, unsigned int coord_len,
-		   unsigned int *index,
-		   ItemVarStoreInstancer *instancer) const
+  தருக்க find_index (மாறிலி முழு *coords, unsigned முழு coord_len,
+		   unsigned முழு *index,
+		   ItemVarStoreInstancer *instancer) மாறிலி
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு மொத்தம் = varRecords.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      const FeatureVariationRecord &record = varRecords.arrayZ[i];
-      if ((this+record.conditions).evaluate (coords, coord_len, instancer))
+      மாறிலி FeatureVariationRecord &record = varRecords.arrayZ[i];
+      எனில் ((இது+record.conditions).evaluate (coords, coord_len, instancer))
       {
 	*index = i;
-	return true;
+	திரும்பு உண்மை;
       }
     }
     *index = NOT_FOUND_INDEX;
-    return false;
+    திரும்பு பொய்;
   }
 
-  const Feature *find_substitute (unsigned int variations_index,
-				  unsigned int feature_index) const
+  மாறிலி Feature *find_substitute (unsigned முழு variations_index,
+				  unsigned முழு feature_index) மாறிலி
   {
-    const FeatureVariationRecord &record = varRecords[variations_index];
-    return (this+record.substitutions).find_substitute (feature_index);
+    மாறிலி FeatureVariationRecord &record = varRecords[variations_index];
+    திரும்பு (இது+record.substitutions).find_substitute (feature_index);
   }
 
-  bool collect_lookup_conditions (const int *coords,
-                                  unsigned int coord_len,
+  தருக்க collect_lookup_conditions (மாறிலி முழு *coords,
+                                  unsigned முழு coord_len,
                                   ItemVarStoreInstancer *instancer,
-                                  hb_vector_t<unsigned> *state) const
+                                  hb_vector_t<unsigned> *state) மாறிலி
   {
     hb_set_t visited_tables, visited_conditions;
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    க்கு (மாறிலி LookupVariationRecord &record : get_lookup_variation_records ())
     {
       unsigned offset = record.featureLookups;
-      if (visited_tables.has (offset)) continue;
+      எனில் (visited_tables.has (offset)) தொடர்;
       visited_tables.add (offset);
-      if (unlikely (visited_tables.in_error ())) return false;
+      எனில் (unlikely (visited_tables.in_error ())) திரும்பு பொய்;
 
-      const FeatureLookupsTable &feature_lookups = this+record.featureLookups;
-      if (unlikely (!feature_lookups.collect_conditions (this, coords, coord_len,
+      மாறிலி FeatureLookupsTable &feature_lookups = இது+record.featureLookups;
+      எனில் (unlikely (!feature_lookups.collect_conditions (இது, coords, coord_len,
                                                          instancer, &visited_conditions,
                                                          state)))
-	return false;
+	திரும்பு பொய்;
     }
 
     /* Key size depends on distinct conditions, not expanded lookup sets.
      * Sorting makes it independent of their first traversal order. */
     state->qsort (_hb_cmp_operator<unsigned, unsigned>);
-    return true;
+    திரும்பு உண்மை;
   }
 
-  bool get_lookup_variations (unsigned feature_index,
-                              const Feature &feature,
-                              hb_sorted_array_t<const unsigned> conditions,
-                              hb_set_t *lookup_indexes) const
+  தருக்க get_lookup_variations (unsigned feature_index,
+                              மாறிலி Feature &feature,
+                              hb_sorted_array_t<மாறிலி unsigned> conditions,
+                              hb_set_t *lookup_indexes) மாறிலி
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    க்கு (மாறிலி LookupVariationRecord &record : get_lookup_variation_records ())
     {
-      if (record.featureIndex != feature_index) continue;
+      எனில் (record.featureIndex != feature_index) தொடர்;
 
-      record.collect_lookups (this, feature, conditions, lookup_indexes);
-      return true;
+      record.collect_lookups (இது, feature, conditions, lookup_indexes);
+      திரும்பு உண்மை;
     }
-    return false;
+    திரும்பு பொய்;
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  வெறுமை collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) மாறிலி
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு மொத்தம் = varRecords.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
       c->cur_record_idx = i;
-      varRecords[i].collect_feature_substitutes_with_variations (c, this);
-      if (c->universal)
-        break;
+      varRecords[i].collect_feature_substitutes_with_variations (c, இது);
+      எனில் (c->universal)
+        நிறுத்து;
     }
-    if (c->universal || c->record_cond_idx_map->is_empty ())
+    எனில் (c->universal || c->record_cond_idx_map->is_empty ())
       c->catch_all_record_feature_idxes.reset ();
   }
 
-  FeatureVariations* copy (hb_serialize_context_t *c) const
+  FeatureVariations* copy (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (*this));
+    TRACE_SERIALIZE (இது);
+    return_trace (c->embed (*இது));
   }
 
-  void collect_lookups (const hb_set_t *feature_indexes,
-			const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  வெறுமை collect_lookups (மாறிலி hb_set_t *feature_indexes,
+			மாறிலி hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
+			hb_set_t       *lookup_indexes /* OUT */) மாறிலி
   {
-    unsigned count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned மொத்தம் = varRecords.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      if (feature_record_cond_idx_map &&
+      எனில் (feature_record_cond_idx_map &&
           !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].collect_lookups (this, feature_indexes, lookup_indexes);
+        தொடர்;
+      varRecords[i].collect_lookups (இது, feature_indexes, lookup_indexes);
     }
 
     collect_lookup_variation_lookups (feature_indexes, lookup_indexes);
   }
 
   template <typename TagGetter>
-  void collect_name_ids (const hb_map_t *feature_index_map,
-                         const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
+  வெறுமை collect_name_ids (மாறிலி hb_map_t *feature_index_map,
+                         மாறிலி hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
                          TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+                         hb_set_t *nameids_to_retain) மாறிலி
   {
-    for (unsigned i = 0; i < varRecords.len; i++)
+    க்கு (unsigned i = 0; i < varRecords.len; i++)
     {
-      if (feature_record_cond_idx_map && !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].collect_name_ids (this, feature_index_map, get_tag, nameids_to_retain);
+      எனில் (feature_record_cond_idx_map && !feature_record_cond_idx_map->has (i))
+        தொடர்;
+      varRecords[i].collect_name_ids (இது, feature_index_map, get_tag, nameids_to_retain);
     }
   }
 
-  void collect_lookup_variation_lookups (const hb_set_t *feature_indexes,
-					 hb_set_t *lookup_indexes /* OUT */) const
+  வெறுமை collect_lookup_variation_lookups (மாறிலி hb_set_t *feature_indexes,
+					 hb_set_t *lookup_indexes /* OUT */) மாறிலி
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.collect_lookups (this, feature_indexes, lookup_indexes);
+    க்கு (மாறிலி LookupVariationRecord &record : get_lookup_variation_records ())
+      record.collect_lookups (இது, feature_indexes, lookup_indexes);
   }
 
-  void closure_features (const hb_map_t *lookup_indexes,
-			 const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  வெறுமை closure_features (மாறிலி hb_map_t *lookup_indexes,
+			 மாறிலி hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
+			 hb_set_t       *feature_indexes /* OUT */) மாறிலி
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு மொத்தம் = varRecords.len;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      if (feature_record_cond_idx_map != nullptr &&
+      எனில் (feature_record_cond_idx_map != nullptr &&
           !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].closure_features (this, lookup_indexes, feature_indexes);
+        தொடர்;
+      varRecords[i].closure_features (இது, lookup_indexes, feature_indexes);
     }
 
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.closure_features (this, lookup_indexes, feature_indexes);
+    க்கு (மாறிலி LookupVariationRecord &record : get_lookup_variation_records ())
+      record.closure_features (இது, lookup_indexes, feature_indexes);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c) மாறிலி
   {
-    for (const FeatureVariationRecord &record : varRecords)
-      record.collect_variation_indices (c, this);
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.collect_variation_indices (c, this);
+    க்கு (மாறிலி FeatureVariationRecord &record : varRecords)
+      record.collect_variation_indices (c, இது);
+    க்கு (மாறிலி LookupVariationRecord &record : get_lookup_variation_records ())
+      record.collect_variation_indices (c, இது);
   }
 
-  void collect_feature_indices (hb_set_t *feature_indices) const
+  வெறுமை collect_feature_indices (hb_set_t *feature_indices) மாறிலி
   {
-    for (const FeatureVariationRecord &record : varRecords)
-      (this+record.substitutions).collect_feature_indices (feature_indices);
+    க்கு (மாறிலி FeatureVariationRecord &record : varRecords)
+      (இது+record.substitutions).collect_feature_indices (feature_indices);
   }
 
-  bool has_lookup_variations (unsigned feature_index) const
+  தருக்க has_lookup_variations (unsigned feature_index) மாறிலி
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    க்கு (மாறிலி LookupVariationRecord &record : get_lookup_variation_records ())
     {
-      if (record.featureIndex == feature_index)
-	return true;
-      if (record.featureIndex > feature_index)
-	break;
+      எனில் (record.featureIndex == feature_index)
+	திரும்பு உண்மை;
+      எனில் (record.featureIndex > feature_index)
+	நிறுத்து;
     }
-    return false;
+    திரும்பு பொய்;
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  தருக்க subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *out = c->serializer->start_embed (*இது);
+    எனில் (unlikely (!out || !c->serializer->extend_min (out))) return_trace (பொய்);
 
     out->version.major = version.major;
     out->version.minor = version.minor;
 
-    int keep_up_to = -1;
-    for (int i = varRecords.len - 1; i >= 0; i--) {
-      if (varRecords[i].intersects_features (this, l->feature_map_w_duplicates)) {
+    முழு keep_up_to = -1;
+    க்கு (முழு i = varRecords.len - 1; i >= 0; i--) {
+      எனில் (varRecords[i].intersects_features (இது, l->feature_map_w_duplicates)) {
         keep_up_to = i;
-        break;
+        நிறுத்து;
       }
     }
 
-    unsigned count = (unsigned) (keep_up_to + 1);
-    for (unsigned i = 0; i < count; i++)
+    unsigned மொத்தம் = (unsigned) (keep_up_to + 1);
+    க்கு (unsigned i = 0; i < மொத்தம்; i++)
     {
-      if (l->feature_record_cond_idx_map != nullptr &&
+      எனில் (l->feature_record_cond_idx_map != nullptr &&
           !l->feature_record_cond_idx_map->has (i))
-        continue;
+        தொடர்;
 
       l->cur_feature_var_record_idx = i;
-      subset_record_array (l, &(out->varRecords), this) (varRecords[i]);
+      subset_record_array (l, &(out->varRecords), இது) (varRecords[i]);
     }
 
-    if (out->varRecords.len && !l->catch_all_record_feature_idxes->is_empty ())
+    எனில் (out->varRecords.len && !l->catch_all_record_feature_idxes->is_empty ())
     {
-      bool insert_catch_all_record = true;
-      subset_record_array (l, &(out->varRecords), this, insert_catch_all_record) (varRecords[0]);
+      தருக்க செருகு_catch_all_record = உண்மை;
+      subset_record_array (l, &(out->varRecords), இது, செருகு_catch_all_record) (varRecords[0]);
     }
 
     Array32Of<LookupVariationRecord> *out_lookup_records = nullptr;
-    if (version.minor >= 1)
+    எனில் (version.minor >= 1)
     {
       out_lookup_records = &StructAfter<Array32Of<LookupVariationRecord>> (out->varRecords);
-      if (unlikely (!c->serializer->extend_min (out_lookup_records)))
-	return_trace (false);
+      எனில் (unlikely (!c->serializer->extend_min (out_lookup_records)))
+	return_trace (பொய்);
 
       + get_lookup_variation_records ().iter ()
-      | hb_apply (subset_record_array (l, out_lookup_records, this))
+      | hb_apply (subset_record_array (l, out_lookup_records, இது))
       ;
     }
 
-    return_trace (bool (out->varRecords) ||
-		  (out_lookup_records && bool (*out_lookup_records)));
+    return_trace (தருக்க (out->varRecords) ||
+		  (out_lookup_records && தருக்க (*out_lookup_records)));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const FeatureList *feature_list) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி FeatureList *feature_list) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  varRecords.sanitize (c, this, feature_list) &&
+		  varRecords.sanitize (c, இது, feature_list) &&
 		  (version.minor < 1 ||
-		   get_lookup_variation_records ().sanitize (c, this)));
+		   get_lookup_variation_records ().sanitize (c, இது)));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   FixedVersion<>	version;	/* Version--0x00010000u */
   Array32Of<FeatureVariationRecord>
 			varRecords;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY_SIZED (8, varRecords);
 };
 
@@ -6182,75 +6182,75 @@ struct FeatureVariations
  * Device Tables
  */
 
-struct HintingDevice
+கட்டமைப்பு HintingDevice
 {
-  friend struct Device;
+  friend கட்டமைப்பு Device;
 
-  private:
+  தனிப்பட்ட:
 
-  hb_position_t get_x_delta (hb_font_t *font) const
-  { return get_delta (font->x_ppem, font->x_scale); }
+  hb_position_t get_x_delta (hb_font_t *font) மாறிலி
+  { திரும்பு get_delta (font->x_ppem, font->x_scale); }
 
-  hb_position_t get_y_delta (hb_font_t *font) const
-  { return get_delta (font->y_ppem, font->y_scale); }
+  hb_position_t get_y_delta (hb_font_t *font) மாறிலி
+  { திரும்பு get_delta (font->y_ppem, font->y_scale); }
 
-  public:
+  பொது:
 
-  size_t get_size () const
+  size_t get_size () மாறிலி
   {
-    unsigned int f = deltaFormat;
-    if (unlikely (f < 1 || f > 3 || startSize > endSize)) return 3 * HBUINT16::static_size;
-    return HBUINT16::static_size * (4 + ((endSize - startSize) >> (4 - f)));
+    unsigned முழு f = deltaFormat;
+    எனில் (unlikely (f < 1 || f > 3 || startSize > endSize)) திரும்பு 3 * HBUINT16::static_size;
+    திரும்பு HBUINT16::static_size * (4 + ((endSize - startSize) >> (4 - f)));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && c->check_range (this, this->get_size ()));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) && c->check_range (இது, இது->get_size ()));
   }
 
-  HintingDevice* copy (hb_serialize_context_t *c) const
+  HintingDevice* copy (hb_serialize_context_t *c) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed<HintingDevice> (this));
+    TRACE_SERIALIZE (இது);
+    return_trace (c->embed<HintingDevice> (இது));
   }
 
-  private:
+  தனிப்பட்ட:
 
-  int get_delta (unsigned int ppem, int scale) const
+  முழு get_delta (unsigned முழு ppem, முழு scale) மாறிலி
   {
-    if (!ppem) return 0;
+    எனில் (!ppem) திரும்பு 0;
 
-    int pixels = get_delta_pixels (ppem);
+    முழு pixels = get_delta_pixels (ppem);
 
-    if (!pixels) return 0;
+    எனில் (!pixels) திரும்பு 0;
 
-    return (int) (pixels * (int64_t) scale / ppem);
+    திரும்பு (முழு) (pixels * (int64_t) scale / ppem);
   }
-  int get_delta_pixels (unsigned int ppem_size) const
+  முழு get_delta_pixels (unsigned முழு ppem_size) மாறிலி
   {
-    unsigned int f = deltaFormat;
-    if (unlikely (f < 1 || f > 3))
-      return 0;
+    unsigned முழு f = deltaFormat;
+    எனில் (unlikely (f < 1 || f > 3))
+      திரும்பு 0;
 
-    if (ppem_size < startSize || ppem_size > endSize)
-      return 0;
+    எனில் (ppem_size < startSize || ppem_size > endSize)
+      திரும்பு 0;
 
-    unsigned int s = ppem_size - startSize;
+    unsigned முழு s = ppem_size - startSize;
 
-    unsigned int byte = deltaValueZ[s >> (4 - f)];
-    unsigned int bits = (byte >> (16 - (((s & ((1 << (4 - f)) - 1)) + 1) << f)));
-    unsigned int mask = (0xFFFFu >> (16 - (1 << f)));
+    unsigned முழு byte = delta_மதிப்பு_Z[s >> (4 - f)];
+    unsigned முழு bits = (byte >> (16 - (((s & ((1 << (4 - f)) - 1)) + 1) << f)));
+    unsigned முழு mask = (0xFFFFu >> (16 - (1 << f)));
 
-    int delta = bits & mask;
+    முழு delta = bits & mask;
 
-    if ((unsigned int) delta >= ((mask + 1) >> 1))
+    எனில் ((unsigned முழு) delta >= ((mask + 1) >> 1))
       delta -= mask + 1;
 
-    return delta;
+    திரும்பு delta;
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	startSize;		/* Smallest size to correct--in ppem */
   HBUINT16	endSize;		/* Largest size to correct--in ppem */
   HBUINT16	deltaFormat;		/* Format of DeltaValue array data: 1, 2, or 3
@@ -6259,266 +6259,266 @@ struct HintingDevice
 					 * 3	Signed 8-bit value, 2 values per uint16
 					 */
   UnsizedArrayOf<HBUINT16>
-		deltaValueZ;		/* Array of compressed data */
-  public:
-  DEFINE_SIZE_ARRAY (6, deltaValueZ);
+		delta_மதிப்பு_Z;		/* Array of compressed data */
+  பொது:
+  DEFINE_SIZE_ARRAY (6, delta_மதிப்பு_Z);
 };
 
-struct VariationDevice
+கட்டமைப்பு VariationDevice
 {
-  friend struct Device;
+  friend கட்டமைப்பு Device;
 
-  private:
+  தனிப்பட்ட:
 
   hb_position_t get_x_delta (hb_font_t *font,
-			     const ItemVariationStore &store,
-			     hb_scalar_cache_t *store_cache = nullptr) const
-  { return !font->has_nonzero_coords ? 0 : font->em_scalef_x (get_delta (font, store, store_cache)); }
+			     மாறிலி ItemVariationStore &store,
+			     hb_scalar_cache_t *store_cache = nullptr) மாறிலி
+  { திரும்பு !font->has_nonzero_coords ? 0 : font->em_scalef_x (get_delta (font, store, store_cache)); }
 
   hb_position_t get_y_delta (hb_font_t *font,
-			     const ItemVariationStore &store,
-			     hb_scalar_cache_t *store_cache = nullptr) const
-  { return !font->has_nonzero_coords ? 0 : font->em_scalef_y (get_delta (font, store, store_cache)); }
+			     மாறிலி ItemVariationStore &store,
+			     hb_scalar_cache_t *store_cache = nullptr) மாறிலி
+  { திரும்பு !font->has_nonzero_coords ? 0 : font->em_scalef_y (get_delta (font, store, store_cache)); }
 
-  float get_x_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache) const
-  { return !font->has_nonzero_coords ? 0.f : font->em_fscalef_x (get_delta (font, store, store_cache)); }
+  தசம get_x_delta_f (hb_font_t *font,
+		       மாறிலி ItemVariationStore &store,
+		       hb_scalar_cache_t *store_cache) மாறிலி
+  { திரும்பு !font->has_nonzero_coords ? 0.f : font->em_fscalef_x (get_delta (font, store, store_cache)); }
 
-  float get_y_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache) const
-  { return !font->has_nonzero_coords ? 0.f : font->em_fscalef_y (get_delta (font, store, store_cache)); }
+  தசம get_y_delta_f (hb_font_t *font,
+		       மாறிலி ItemVariationStore &store,
+		       hb_scalar_cache_t *store_cache) மாறிலி
+  { திரும்பு !font->has_nonzero_coords ? 0.f : font->em_fscalef_y (get_delta (font, store, store_cache)); }
 
   VariationDevice* copy (hb_serialize_context_t *c,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+                         மாறிலி hb_hashmap_t<unsigned, hb_pair_t<unsigned, முழு>> *layout_variation_idx_delta_map) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    if (!layout_variation_idx_delta_map) return_trace (nullptr);
+    TRACE_SERIALIZE (இது);
+    எனில் (!layout_variation_idx_delta_map) return_trace (nullptr);
 
-    hb_pair_t<unsigned, int> *v;
-    if (!layout_variation_idx_delta_map->has (varIdx, &v))
+    hb_pair_t<unsigned, முழு> *v;
+    எனில் (!layout_variation_idx_delta_map->has (varIdx, &v))
       return_trace (nullptr);
     /* The varidx was mapped to "no variations" during instancing (e.g. the
      * instantiated row is all zeros). Drop the device instead of emitting one
      * with an out-of-range varidx. */
-    if (hb_first (*v) == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    எனில் (hb_first (*v) == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
       return_trace (nullptr);
 
-    c->start_zerocopy (this->static_size);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    c->start_zerocopy (இது->static_size);
+    auto *out = c->embed (இது);
+    எனில் (unlikely (!out)) return_trace (nullptr);
 
-    if (!c->check_assign (out->varIdx, hb_first (*v), HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    எனில் (!c->check_assign (out->varIdx, hb_first (*v), HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (nullptr);
     return_trace (out);
   }
 
-  void collect_variation_index (hb_collect_variation_indices_context_t *c) const
+  வெறுமை collect_variation_index (hb_collect_variation_indices_context_t *c) மாறிலி
   { c->layout_variation_indices->add (varIdx); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  private:
+  தனிப்பட்ட:
 
-  float get_delta (hb_font_t *font,
-		   const ItemVariationStore &store,
-		   hb_scalar_cache_t *store_cache = nullptr) const
+  தசம get_delta (hb_font_t *font,
+		   மாறிலி ItemVariationStore &store,
+		   hb_scalar_cache_t *store_cache = nullptr) மாறிலி
   {
-    return store.get_delta (varIdx, font->coords, font->num_coords, store_cache);
+    திரும்பு store.get_delta (varIdx, font->coords, font->இலக்கம்_coords, store_cache);
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   VarIdx	varIdx;		/* Variation index */
   HBUINT16	deltaFormat;	/* Format identifier for this table: 0x0x8000 */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct DeviceHeader
+கட்டமைப்பு DeviceHeader
 {
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16		reserved1;
   HBUINT16		reserved2;
-  public:
+  பொது:
   HBUINT16		format;		/* Format identifier */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct Device
+கட்டமைப்பு Device
 {
   // Anchors retain fractional coordinates until their difference is rounded.
   // Hinting adjustments and value records keep their integer semantics.
-  float get_x_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache = nullptr) const
+  தசம get_x_delta_f (hb_font_t *font,
+		       மாறிலி ItemVariationStore &store,
+		       hb_scalar_cache_t *store_cache = nullptr) மாறிலி
   {
 #ifndef HB_NO_VAR
-    if (u.b.format == 0x8000)
+    எனில் (u.b.format == 0x8000)
     {
       hb_barrier ();
-      return u.variation.get_x_delta_f (font, store, store_cache);
+      திரும்பு u.variation.get_x_delta_f (font, store, store_cache);
     }
 #endif
-    return get_x_delta (font, store, store_cache);
+    திரும்பு get_x_delta (font, store, store_cache);
   }
 
-  float get_y_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache = nullptr) const
+  தசம get_y_delta_f (hb_font_t *font,
+		       மாறிலி ItemVariationStore &store,
+		       hb_scalar_cache_t *store_cache = nullptr) மாறிலி
   {
 #ifndef HB_NO_VAR
-    if (u.b.format == 0x8000)
+    எனில் (u.b.format == 0x8000)
     {
       hb_barrier ();
-      return u.variation.get_y_delta_f (font, store, store_cache);
+      திரும்பு u.variation.get_y_delta_f (font, store, store_cache);
     }
 #endif
-    return get_y_delta (font, store, store_cache);
+    திரும்பு get_y_delta (font, store, store_cache);
   }
 
   hb_position_t get_x_delta (hb_font_t *font,
-			     const ItemVariationStore &store=Null (ItemVariationStore),
-			     hb_scalar_cache_t *store_cache = nullptr) const
+			     மாறிலி ItemVariationStore &store=Null (ItemVariationStore),
+			     hb_scalar_cache_t *store_cache = nullptr) மாறிலி
   {
-    switch (u.b.format)
+    தேர்வு (u.b.format)
     {
 #ifndef HB_NO_HINTING
-    case 1: case 2: case 3:
+    நிலை 1: நிலை 2: நிலை 3:
       hb_barrier ();
-      return u.hinting.get_x_delta (font);
+      திரும்பு u.hinting.get_x_delta (font);
 #endif
 #ifndef HB_NO_VAR
-    case 0x8000:
+    நிலை 0x8000:
       hb_barrier ();
-      return u.variation.get_x_delta (font, store, store_cache);
+      திரும்பு u.variation.get_x_delta (font, store, store_cache);
 #endif
-    default:
-      return 0;
+    இயல்பு:
+      திரும்பு 0;
     }
   }
   hb_position_t get_y_delta (hb_font_t *font,
-			     const ItemVariationStore &store=Null (ItemVariationStore),
-			     hb_scalar_cache_t *store_cache = nullptr) const
+			     மாறிலி ItemVariationStore &store=Null (ItemVariationStore),
+			     hb_scalar_cache_t *store_cache = nullptr) மாறிலி
   {
-    switch (u.b.format)
+    தேர்வு (u.b.format)
     {
-    case 1: case 2: case 3:
+    நிலை 1: நிலை 2: நிலை 3:
 #ifndef HB_NO_HINTING
       hb_barrier ();
-      return u.hinting.get_y_delta (font);
+      திரும்பு u.hinting.get_y_delta (font);
 #endif
 #ifndef HB_NO_VAR
-    case 0x8000:
+    நிலை 0x8000:
       hb_barrier ();
-      return u.variation.get_y_delta (font, store, store_cache);
+      திரும்பு u.variation.get_y_delta (font, store, store_cache);
 #endif
-    default:
-      return 0;
+    இயல்பு:
+      திரும்பு 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!u.b.format.sanitize (c)) return_trace (false);
-    switch (u.b.format) {
+    TRACE_SANITIZE (இது);
+    எனில் (!u.b.format.sanitize (c)) return_trace (பொய்);
+    தேர்வு (u.b.format) {
 #ifndef HB_NO_HINTING
-    case 1: case 2: case 3:
+    நிலை 1: நிலை 2: நிலை 3:
       hb_barrier ();
       return_trace (u.hinting.sanitize (c));
 #endif
 #ifndef HB_NO_VAR
-    case 0x8000:
+    நிலை 0x8000:
       hb_barrier ();
       return_trace (u.variation.sanitize (c));
 #endif
-    default:
-      return_trace (true);
+    இயல்பு:
+      return_trace (உண்மை);
     }
   }
 
   Device* copy (hb_serialize_context_t *c,
-                const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map=nullptr) const
+                மாறிலி hb_hashmap_t<unsigned, hb_pair_t<unsigned, முழு>> *layout_variation_idx_delta_map=nullptr) மாறிலி
   {
-    TRACE_SERIALIZE (this);
-    switch (u.b.format) {
+    TRACE_SERIALIZE (இது);
+    தேர்வு (u.b.format) {
 #ifndef HB_NO_HINTING
-    case 1:
-    case 2:
-    case 3:
+    நிலை 1:
+    நிலை 2:
+    நிலை 3:
       hb_barrier ();
       return_trace (reinterpret_cast<Device *> (u.hinting.copy (c)));
 #endif
 #ifndef HB_NO_VAR
-    case 0x8000:
+    நிலை 0x8000:
       hb_barrier ();
       return_trace (reinterpret_cast<Device *> (u.variation.copy (c, layout_variation_idx_delta_map)));
 #endif
-    default:
+    இயல்பு:
       return_trace (nullptr);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c) மாறிலி
   {
-    switch (u.b.format) {
+    தேர்வு (u.b.format) {
 #ifndef HB_NO_HINTING
-    case 1:
-    case 2:
-    case 3:
-      return;
+    நிலை 1:
+    நிலை 2:
+    நிலை 3:
+      திரும்பு;
 #endif
 #ifndef HB_NO_VAR
-    case 0x8000:
+    நிலை 0x8000:
       hb_barrier ();
       u.variation.collect_variation_index (c);
-      return;
+      திரும்பு;
 #endif
-    default:
-      return;
+    இயல்பு:
+      திரும்பு;
     }
   }
 
-  unsigned get_variation_index () const
+  unsigned get_variation_index () மாறிலி
   {
-    switch (u.b.format) {
+    தேர்வு (u.b.format) {
 #ifndef HB_NO_VAR
-    case 0x8000:
+    நிலை 0x8000:
       hb_barrier ();
-      return u.variation.varIdx;
+      திரும்பு u.variation.varIdx;
 #endif
-    default:
-      return HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+    இயல்பு:
+      திரும்பு HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
     }
   }
 
-  bool is_variation_device () const
+  தருக்க is_variation_device () மாறிலி
   {
-    switch (u.b.format) {
+    தேர்வு (u.b.format) {
 #ifndef HB_NO_VAR
-    case 0x8000:
-      return true;
+    நிலை 0x8000:
+      திரும்பு உண்மை;
 #endif
-    default:
-      return false;
+    இயல்பு:
+      திரும்பு பொய்;
     }
   }
 
-  protected:
-  union {
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
   DeviceHeader		b;
   HintingDevice		hinting;
 #ifndef HB_NO_VAR
   VariationDevice	variation;
 #endif
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (6, b);
 };
 

@@ -29,11 +29,11 @@
 #ifndef HB_OPEN_FILE_HH
 #define HB_OPEN_FILE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-head-table.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-ot-head-table.hh"
 
 
-namespace OT {
+நாமாகாஶ OT {
 
 /*
  *
@@ -46,26 +46,26 @@ namespace OT {
  * Organization of an OpenType Font
  */
 
-struct OpenTypeFontFile;
-struct OpenTypeOffsetTable;
-struct TTCHeader;
+கட்டமைப்பு OpenTypeFontFile;
+கட்டமைப்பு OpenTypeOffsetTable;
+கட்டமைப்பு TTCHeader;
 
 
-typedef struct TableRecord
+வகைவரை கட்டமைப்பு TableRecord
 {
-  int cmp (Tag t) const { return -t.cmp (tag); }
+  முழு cmp (Tag t) மாறிலி { திரும்பு -t.cmp (tag); }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL நிலையான முழு cmp (மாறிலி வெறுமை *pa, மாறிலி வெறுமை *pb)
   {
-    const TableRecord *a = (const TableRecord *) pa;
-    const TableRecord *b = (const TableRecord *) pb;
-    return b->cmp (a->tag);
+    மாறிலி TableRecord *a = (மாறிலி TableRecord *) pa;
+    மாறிலி TableRecord *b = (மாறிலி TableRecord *) pb;
+    திரும்பு b->cmp (a->tag);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
   Tag		tag;		/* 4-byte identifier. */
@@ -73,98 +73,98 @@ typedef struct TableRecord
   Offset32	offset;		/* Offset from beginning of TrueType font
 				 * file. */
   HBUINT32	length;		/* Length of this table. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (16);
 } OpenTypeTable;
 
-typedef struct OpenTypeOffsetTable
+வகைவரை கட்டமைப்பு OpenTypeOffsetTable
 {
-  friend struct OpenTypeFontFile;
+  friend கட்டமைப்பு OpenTypeFontFile;
 
-  unsigned int get_table_count () const { return tables.len; }
-  const TableRecord& get_table (unsigned int i) const
-  { return tables[i]; }
-  unsigned int get_table_tags (unsigned int  start_offset,
-			       unsigned int *table_count, /* IN/OUT */
-			       hb_tag_t     *table_tags /* OUT */) const
+  unsigned முழு get_table_மொத்தம் () மாறிலி { திரும்பு tables.len; }
+  மாறிலி TableRecord& get_table (unsigned முழு i) மாறிலி
+  { திரும்பு tables[i]; }
+  unsigned முழு get_table_tags (unsigned முழு  start_offset,
+			       unsigned முழு *table_மொத்தம்_2, /* IN/OUT */
+			       hb_tag_t     *table_tags /* OUT */) மாறிலி
   {
-    if (table_count && table_tags)
+    எனில் (table_மொத்தம்_2 && table_tags)
     {
-      + tables.as_array ().sub_array (start_offset, table_count)
+      + tables.as_array ().sub_array (start_offset, table_மொத்தம்_2)
       | hb_map (&TableRecord::tag)
-      | hb_sink (hb_array (table_tags, *table_count))
+      | hb_sink (hb_array (table_tags, *table_மொத்தம்_2))
       ;
     }
-    return tables.len;
+    திரும்பு tables.len;
   }
-  bool find_table_index (hb_tag_t tag, unsigned int *table_index) const
+  தருக்க find_table_index (hb_tag_t tag, unsigned முழு *table_index) மாறிலி
   {
     Tag t;
     t = tag;
     /* Use lfind for small fonts; there are fonts that have unsorted table entries;
      * those tend to work in other tools, so tolerate them.
      * https://github.com/harfbuzz/harfbuzz/issues/3065 */
-    if (tables.len < 16)
-      return tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
-    else
-      return tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    எனில் (tables.len < 16)
+      திரும்பு tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    இல்லையெனில்
+      திரும்பு tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
-  const TableRecord& get_table_by_tag (hb_tag_t tag) const
+  மாறிலி TableRecord& get_table_by_tag (hb_tag_t tag) மாறிலி
   {
-    unsigned int table_index;
+    unsigned முழு table_index;
     find_table_index (tag, &table_index);
-    return get_table (table_index);
+    திரும்பு get_table (table_index);
   }
 
-  public:
+  பொது:
 
   template <typename Iterator,
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
-  bool serialize (hb_serialize_context_t *c,
+  தருக்க serialize (hb_serialize_context_t *c,
 		  hb_tag_t sfnt_tag,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (இது);
     /* Alloc 12 for the OTHeader. */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
     /* Write sfntVersion (bytes 0..3). */
     sfnt_version = sfnt_tag;
     /* Take space for numTables, searchRange, entrySelector, RangeShift
      * and the TableRecords themselves.  */
-    unsigned num_items = hb_len (it);
-    if (unlikely (!tables.serialize (c, num_items))) return_trace (false);
+    unsigned இலக்கம்_பொருட்கள் = hb_len (it);
+    எனில் (unlikely (!tables.serialize (c, இலக்கம்_பொருட்கள்))) return_trace (பொய்);
 
-    const char *dir_end = (const char *) c->head;
+    மாறிலி எழுத்து *dir_end = (மாறிலி எழுத்து *) c->head;
     HBUINT32 *checksum_adjustment = nullptr;
 
     /* Write OffsetTables, alloc for and write actual table blobs. */
     unsigned i = 0;
-    for (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
+    க்கு (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
     {
       hb_blob_t *blob = entry.second;
       unsigned len = blob->length;
 
       /* Allocate room for the table and copy it. */
-      char *start = (char *) c->allocate_size<void> (len, false);
-      if (unlikely (!start)) return false;
+      எழுத்து *start = (எழுத்து *) c->allocate_size<வெறுமை> (len, பொய்);
+      எனில் (unlikely (!start)) திரும்பு பொய்;
 
       TableRecord &rec = tables.arrayZ[i];
       rec.tag = entry.first;
       rec.length = len;
       rec.offset = 0;
-      if (unlikely (!c->check_assign (rec.offset,
-				      (unsigned) ((char *) start - (char *) this),
+      எனில் (unlikely (!c->check_assign (rec.offset,
+				      (unsigned) ((எழுத்து *) start - (எழுத்து *) இது),
 				      HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)))
-        return_trace (false);
+        return_trace (பொய்);
 
-      if (likely (len))
+      எனில் (likely (len))
 	hb_memcpy (start, blob->data, len);
 
       /* 4-byte alignment. */
       c->align (4);
-      const char *end = (const char *) c->head;
+      மாறிலி எழுத்து *end = (மாறிலி எழுத்து *) c->head;
 
-      if (entry.first == HB_OT_TAG_head &&
+      எனில் (entry.first == HB_OT_TAG_head &&
 	  (unsigned) (end - start) >= head::static_size)
       {
 	head *h = (head *) start;
@@ -178,14 +178,14 @@ typedef struct OpenTypeOffsetTable
 
     tables.qsort ();
 
-    if (checksum_adjustment)
+    எனில் (checksum_adjustment)
     {
       CheckSum checksum;
 
       /* The following line is a slower version of the following block. */
       //checksum.set_for_data (this, (const char *) c->head - (const char *) this);
-      checksum.set_for_data (this, dir_end - (const char *) this);
-      for (unsigned int i = 0; i < num_items; i++)
+      checksum.set_for_data (இது, dir_end - (மாறிலி எழுத்து *) இது);
+      க்கு (unsigned முழு i = 0; i < இலக்கம்_பொருட்கள்; i++)
       {
 	TableRecord &rec = tables.arrayZ[i];
 	checksum = checksum + rec.checkSum;
@@ -194,20 +194,20 @@ typedef struct OpenTypeOffsetTable
       *checksum_adjustment = 0xB1B0AFBAu - checksum;
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && tables.sanitize (c));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) && tables.sanitize (c));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Tag		sfnt_version;	/* '\0\001\0\00' if TrueType / 'OTTO' if CFF */
-  BinSearchArrayOf<TableRecord>
+  Bin_தேடல்_Array_Of<TableRecord>
 		tables;
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (12, tables);
 } OpenTypeFontFace;
 
@@ -216,96 +216,96 @@ typedef struct OpenTypeOffsetTable
  * TrueType Collections
  */
 
-struct TTCHeaderVersion1
+கட்டமைப்பு TTCHeaderVersion1
 {
-  friend struct TTCHeader;
+  friend கட்டமைப்பு TTCHeader;
 
   using DirectoryList = Array32Of<Offset32To<OpenTypeOffsetTable>>;
 
-  unsigned int get_face_count () const { return get_directory_list ().len; }
-  const OpenTypeFontFace& get_face (unsigned int i) const
-  { return this+get_directory_list ()[i]; }
+  unsigned முழு get_face_மொத்தம் () மாறிலி { திரும்பு get_directory_list ().len; }
+  மாறிலி OpenTypeFontFace& get_face (unsigned முழு i) மாறிலி
+  { திரும்பு இது+get_directory_list ()[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    எனில் (version.minor >= 1)
     {
-      if (unlikely (!table.sanitize_shallow (c)))
-	return_trace (false);
+      எனில் (unlikely (!table.sanitize_shallow (c)))
+	return_trace (பொய்);
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      if (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
-	return_trace (false);
-      const DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
+      எனில் (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
+	return_trace (பொய்);
+      மாறிலி DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
 								   table.get_size () + extra_size);
-      return_trace (table2.sanitize (c, this));
+      return_trace (table2.sanitize (c, இது));
     }
 #endif
-    return_trace (table.sanitize (c, this));
+    return_trace (table.sanitize (c, இது));
   }
 
-  private:
-  const DirectoryList& get_directory_list () const
+  தனிப்பட்ட:
+  மாறிலி DirectoryList& get_directory_list () மாறிலி
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    எனில் (version.minor >= 1)
     {
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      return StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
+      திரும்பு StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
     }
 #endif
-    return table;
+    திரும்பு table;
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header. */
   DirectoryList
 		table;		/* Array of offsets to the OffsetTable for each font
 				 * from the beginning of the file */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (12, table);
 };
 
-struct TTCHeader
+கட்டமைப்பு TTCHeader
 {
-  friend struct OpenTypeFontFile;
+  friend கட்டமைப்பு OpenTypeFontFile;
 
-  private:
+  தனிப்பட்ட:
 
-  unsigned int get_face_count () const
+  unsigned முழு get_face_மொத்தம் () மாறிலி
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face_count ();
-    default:return 0;
+    தேர்வு (u.header.version.major) {
+    நிலை 2: /* version 2 is compatible with version 1 */
+    நிலை 1: hb_barrier (); திரும்பு u.version1.get_face_மொத்தம் ();
+    இயல்பு:திரும்பு 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i) const
+  மாறிலி OpenTypeFontFace& get_face (unsigned முழு i) மாறிலி
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face (i);
-    default:return Null (OpenTypeFontFace);
+    தேர்வு (u.header.version.major) {
+    நிலை 2: /* version 2 is compatible with version 1 */
+    நிலை 1: hb_barrier (); திரும்பு u.version1.get_face (i);
+    இயல்பு:திரும்பு Null (OpenTypeFontFace);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.header.version.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!u.header.version.sanitize (c))) return_trace (பொய்);
     hb_barrier ();
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
-    default:return_trace (true);
+    தேர்வு (u.header.version.major) {
+    நிலை 2: /* version 2 is compatible with version 1 */
+    நிலை 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    இயல்பு:return_trace (உண்மை);
     }
   }
 
-  protected:
-  union {
-  struct {
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு {
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header (1.0 or 2.0),
 				 * 0x00010000u or 0x00020000u */
@@ -320,22 +320,22 @@ struct TTCHeader
  * http://mirror.informatimago.com/next/developer.apple.com/documentation/mac/MoreToolbox/MoreToolbox-99.html
  */
 
-struct ResourceRecord
+கட்டமைப்பு ResourceRecord
 {
-  const OpenTypeFontFace & get_face (const void *data_base) const
-  { return * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
+  மாறிலி OpenTypeFontFace & get_face (மாறிலி வெறுமை *data_base) மாறிலி
+  { திரும்பு * reinterpret_cast<மாறிலி OpenTypeFontFace *> ((data_base+offset).arrayZ); }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *data_base) const
+  தருக்க sanitize (hb_sanitize_context_t *c,
+		 மாறிலி வெறுமை *data_base) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  offset.sanitize (c, data_base) &&
 		  hb_barrier () &&
 		  get_face (data_base).sanitize (c));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	id;		/* Resource ID. */
   HBINT16	nameOffset;	/* Offset from beginning of resource name list
 				 * to resource name, -1 means there is none. */
@@ -344,91 +344,91 @@ struct ResourceRecord
 		offset;		/* Offset from beginning of data block to
 				 * data for this resource */
   HBUINT32	reserved;	/* Reserved for handle to resource */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (12);
 };
 
 #define HB_TAG_sfnt HB_TAG ('s','f','n','t')
 
-struct ResourceTypeRecord
+கட்டமைப்பு ResourceTypeRecord
 {
-  unsigned int get_resource_count () const
-  { return tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
+  unsigned முழு get_resource_மொத்தம் () மாறிலி
+  { திரும்பு tag == HB_TAG_sfnt ? res_மொத்தம்_M1 + 1 : 0; }
 
-  bool is_sfnt () const { return tag == HB_TAG_sfnt; }
+  தருக்க is_sfnt () மாறிலி { திரும்பு tag == HB_TAG_sfnt; }
 
-  const ResourceRecord& get_resource_record (unsigned int i,
-					     const void *type_base) const
-  { return (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
+  மாறிலி ResourceRecord& get_resource_record (unsigned முழு i,
+					     மாறிலி வெறுமை *type_base) மாறிலி
+  { திரும்பு (type_base+resourcesZ).as_array (get_resource_மொத்தம் ())[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *type_base,
-		 const void *data_base) const
+  தருக்க sanitize (hb_sanitize_context_t *c,
+		 மாறிலி வெறுமை *type_base,
+		 மாறிலி வெறுமை *data_base) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
 		  resourcesZ.sanitize (c, type_base,
-				       get_resource_count (),
+				       get_resource_மொத்தம் (),
 				       data_base));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Tag		tag;		/* Resource type. */
-  HBUINT16	resCountM1;	/* Number of resources minus 1. */
+  HBUINT16	res_மொத்தம்_M1;	/* Number of resources minus 1. */
   NNOffset16To<UnsizedArrayOf<ResourceRecord>>
 		resourcesZ;	/* Offset from beginning of resource type list
 				 * to reference item list for this type. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ResourceMap
+கட்டமைப்பு ResourceMap
 {
-  unsigned int get_face_count () const
+  unsigned முழு get_face_மொத்தம் () மாறிலி
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு மொத்தம் = get_type_மொத்தம் ();
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
-      if (type.is_sfnt ())
-	return type.get_resource_count ();
+      மாறிலி ResourceTypeRecord& type = get_type_record (i);
+      எனில் (type.is_sfnt ())
+	திரும்பு type.get_resource_மொத்தம் ();
     }
-    return 0;
+    திரும்பு 0;
   }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    const void *data_base) const
+  மாறிலி OpenTypeFontFace& get_face (unsigned முழு idx,
+				    மாறிலி வெறுமை *data_base) மாறிலி
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned முழு மொத்தம் = get_type_மொத்தம் ();
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
+      மாறிலி ResourceTypeRecord& type = get_type_record (i);
       /* The check for idx < count is here because ResourceRecord is NOT null-safe.
        * Because an offset of 0 there does NOT mean null. */
-      if (type.is_sfnt () && idx < type.get_resource_count ())
-	return type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
+      எனில் (type.is_sfnt () && idx < type.get_resource_மொத்தம் ())
+	திரும்பு type.get_resource_record (idx, &(இது+typeList)).get_face (data_base);
     }
-    return Null (OpenTypeFontFace);
+    திரும்பு Null (OpenTypeFontFace);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *data_base) const
+  தருக்க sanitize (hb_sanitize_context_t *c, மாறிலி வெறுமை *data_base) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
-		  typeList.sanitize (c, this,
-				     &(this+typeList),
+		  typeList.sanitize (c, இது,
+				     &(இது+typeList),
 				     data_base));
   }
 
-  private:
-  unsigned int get_type_count () const { return (this+typeList).lenM1 + 1; }
+  தனிப்பட்ட:
+  unsigned முழு get_type_மொத்தம் () மாறிலி { திரும்பு (இது+typeList).lenM1 + 1; }
 
-  const ResourceTypeRecord& get_type_record (unsigned int i) const
-  { return (this+typeList)[i]; }
+  மாறிலி ResourceTypeRecord& get_type_record (unsigned முழு i) மாறிலி
+  { திரும்பு (இது+typeList)[i]; }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT8	reserved0[16];	/* Reserved for copy of resource header */
   HBUINT32	reserved1;	/* Reserved for handle to next resource map */
   HBUINT16	resreved2;	/* Reserved for file reference number */
@@ -438,34 +438,34 @@ struct ResourceMap
 				 * resource type list */
   Offset16	nameList;	/* Offset from beginning of map to
 				 * resource name list */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (28);
 };
 
-struct ResourceForkHeader
+கட்டமைப்பு ResourceForkHeader
 {
-  unsigned int get_face_count () const
-  { return (this+map).get_face_count (); }
+  unsigned முழு get_face_மொத்தம் () மாறிலி
+  { திரும்பு (இது+map).get_face_மொத்தம் (); }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    unsigned int *base_offset = nullptr) const
+  மாறிலி OpenTypeFontFace& get_face (unsigned முழு idx,
+				    unsigned முழு *base_offset = nullptr) மாறிலி
   {
-    const OpenTypeFontFace &face = (this+map).get_face (idx, &(this+data));
-    if (base_offset)
-      *base_offset = (const char *) &face - (const char *) this;
-    return face;
+    மாறிலி OpenTypeFontFace &face = (இது+map).get_face (idx, &(இது+data));
+    எனில் (base_offset)
+      *base_offset = (மாறிலி எழுத்து *) &face - (மாறிலி எழுத்து *) இது;
+    திரும்பு face;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
-		  data.sanitize (c, this, dataLen) &&
-		  map.sanitize (c, this, &(this+data)));
+		  data.sanitize (c, இது, dataLen) &&
+		  map.sanitize (c, இது, &(இது+data)));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   NNOffset32To<UnsizedArrayOf<HBUINT8>>
 		data;		/* Offset from beginning of resource fork
 				 * to resource data */
@@ -474,7 +474,7 @@ struct ResourceForkHeader
 				 * to resource map */
   HBUINT32	dataLen;	/* Length of resource data */
   HBUINT32	mapLen;		/* Length of resource map */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (16);
 };
 
@@ -482,9 +482,9 @@ struct ResourceForkHeader
  * OpenType Font File
  */
 
-struct OpenTypeFontFile
+கட்டமைப்பு OpenTypeFontFile
 {
-  enum {
+  எண்ணிக்கை {
     CFFTag		= HB_TAG ('O','T','T','O'), /* OpenType with Postscript outlines */
     TrueTypeTag		= HB_TAG ( 0 , 1 , 0 , 0 ), /* OpenType with TrueType outlines */
     TTCTag		= HB_TAG ('t','t','c','f'), /* TrueType Collection */
@@ -493,74 +493,74 @@ struct OpenTypeFontFile
     Typ1Tag		= HB_TAG ('t','y','p','1')  /* Obsolete Apple Type1 font in SFNT container */
   };
 
-  hb_tag_t get_tag () const { return u.tag.v; }
+  hb_tag_t get_tag () மாறிலி { திரும்பு u.tag.v; }
 
-  unsigned int get_face_count () const
+  unsigned முழு get_face_மொத்தம் () மாறிலி
   {
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	return 1;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_count ();
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_count ();
-    default:		return 0;
+    தேர்வு (u.tag.v) {
+    நிலை CFFTag:	/* All the non-collection tags */
+    நிலை TrueTag:
+    நிலை Typ1Tag:
+    நிலை TrueTypeTag:	திரும்பு 1;
+    நிலை TTCTag:	hb_barrier (); திரும்பு u.ttcHeader.get_face_மொத்தம் ();
+    நிலை DFontTag:	hb_barrier (); திரும்பு u.rfHeader.get_face_மொத்தம் ();
+    இயல்பு:		திரும்பு 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i, unsigned int *base_offset = nullptr) const
+  மாறிலி OpenTypeFontFace& get_face (unsigned முழு i, unsigned முழு *base_offset = nullptr) மாறிலி
   {
-    if (base_offset)
+    எனில் (base_offset)
       *base_offset = 0;
-    switch (u.tag.v) {
+    தேர்வு (u.tag.v) {
     /* Note: for non-collection SFNT data we ignore index.  This is because
      * Apple dfont container is a container of SFNT's.  So each SFNT is a
      * non-TTC, but the index is more than zero. */
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return u.fontFace;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face (i);
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face (i, base_offset);
-    default:		return Null (OpenTypeFontFace);
+    நிலை CFFTag:	/* All the non-collection tags */
+    நிலை TrueTag:
+    நிலை Typ1Tag:
+    நிலை TrueTypeTag:	hb_barrier (); திரும்பு u.fontFace;
+    நிலை TTCTag:	hb_barrier (); திரும்பு u.ttcHeader.get_face (i);
+    நிலை DFontTag:	hb_barrier (); திரும்பு u.rfHeader.get_face (i, base_offset);
+    இயல்பு:		திரும்பு Null (OpenTypeFontFace);
     }
   }
 
   template <typename Iterator,
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
-  bool serialize_single (hb_serialize_context_t *c,
+  தருக்க serialize_single (hb_serialize_context_t *c,
 			 hb_tag_t sfnt_tag,
-			 Iterator items)
+			 Iterator பொருட்கள்)
   {
-    TRACE_SERIALIZE (this);
-    assert (sfnt_tag != TTCTag);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    return_trace (u.fontFace.serialize (c, sfnt_tag, items));
+    TRACE_SERIALIZE (இது);
+    ப்ரதிஜ்ஞா (sfnt_tag != TTCTag);
+    எனில் (unlikely (!c->extend_min (இது))) return_trace (பொய்);
+    return_trace (u.fontFace.serialize (c, sfnt_tag, பொருட்கள்));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!u.tag.v.sanitize (c))) return_trace (பொய்);
     hb_barrier ();
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
-    case TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
-    case DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
-    default:		return_trace (true);
+    தேர்வு (u.tag.v) {
+    நிலை CFFTag:	/* All the non-collection tags */
+    நிலை TrueTag:
+    நிலை Typ1Tag:
+    நிலை TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
+    நிலை TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
+    நிலை DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
+    இயல்பு:		return_trace (உண்மை);
     }
   }
 
-  protected:
-  union {
-  struct { Tag v; }	tag;		/* 4-byte identifier. */
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு { Tag v; }	tag;		/* 4-byte identifier. */
   OpenTypeFontFace	fontFace;
   TTCHeader		ttcHeader;
   ResourceForkHeader	rfHeader;
   } u;
-  public:
+  பொது:
   DEFINE_SIZE_UNION (4, tag.v);
 };
 

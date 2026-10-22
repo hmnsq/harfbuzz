@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shape-normalize.hh"
-#include "hb-ot-shaper.hh"
-#include "hb-ot-shape.hh"
+#அந்தர்பாவ "hb-ot-shape-normalize.hh"
+#அந்தர்பாவ "hb-ot-shaper.hh"
+#அந்தர்பாவ "hb-ot-shape.hh"
 
 
 /*
@@ -75,224 +75,224 @@
  */
 
 
-static inline void
+நிலையான உள்வரி வெறுமை
 set_glyph (hb_glyph_info_t &info, hb_font_t *font)
 {
-  (void) font->get_nominal_glyph (info.codepoint, &info.normalizer_glyph_index());
+  (வெறுமை) font->get_nominal_glyph (info.codepoint, &info.normalizer_glyph_index());
 }
 
-static inline void
+நிலையான உள்வரி வெறுமை
 output_char (hb_buffer_t *buffer, hb_codepoint_t unichar, hb_codepoint_t glyph)
 {
   /* This is very confusing indeed. */
   buffer->cur().normalizer_glyph_index() = glyph;
-  (void) buffer->output_glyph (unichar);
+  (வெறுமை) buffer->output_glyph (unichar);
   _hb_glyph_info_set_unicode_props (&buffer->prev(), buffer);
 }
 
-static inline void
+நிலையான உள்வரி வெறுமை
 next_char (hb_buffer_t *buffer, hb_codepoint_t glyph)
 {
   buffer->cur().normalizer_glyph_index() = glyph;
-  (void) buffer->next_glyph ();
+  (வெறுமை) buffer->next_glyph ();
 }
 
-static inline void
+நிலையான உள்வரி வெறுமை
 skip_char (hb_buffer_t *buffer)
 {
   buffer->skip_glyph ();
 }
 
 /* Returns 0 if didn't decompose, number of resulting characters otherwise. */
-static inline unsigned int
-decompose (const hb_ot_shape_normalize_context_t *c, bool shortest, hb_codepoint_t ab)
+நிலையான உள்வரி unsigned முழு
+decompose (மாறிலி hb_ot_shape_normalize_context_t *c, தருக்க shortest, hb_codepoint_t ab)
 {
   hb_codepoint_t a = 0, b = 0, a_glyph = 0, b_glyph = 0;
-  hb_buffer_t * const buffer = c->buffer;
-  hb_font_t * const font = c->font;
+  hb_buffer_t * மாறிலி buffer = c->buffer;
+  hb_font_t * மாறிலி font = c->font;
 
-  if (!c->decompose (c, ab, &a, &b) ||
+  எனில் (!c->decompose (c, ab, &a, &b) ||
       (b && !font->get_nominal_glyph (b, &b_glyph)))
-    return 0;
+    திரும்பு 0;
 
-  bool has_a = (bool) font->get_nominal_glyph (a, &a_glyph);
-  if (shortest && has_a) {
+  தருக்க has_a = (தருக்க) font->get_nominal_glyph (a, &a_glyph);
+  எனில் (shortest && has_a) {
     /* Output a and b */
     output_char (buffer, a, a_glyph);
-    if (likely (b)) {
+    எனில் (likely (b)) {
       output_char (buffer, b, b_glyph);
-      return 2;
+      திரும்பு 2;
     }
-    return 1;
+    திரும்பு 1;
   }
 
-  if (unsigned ret = decompose (c, shortest, a)) {
-    if (b) {
+  எனில் (unsigned ret = decompose (c, shortest, a)) {
+    எனில் (b) {
       output_char (buffer, b, b_glyph);
-      return ret + 1;
+      திரும்பு ret + 1;
     }
-    return ret;
+    திரும்பு ret;
   }
 
-  if (has_a) {
+  எனில் (has_a) {
     output_char (buffer, a, a_glyph);
-    if (likely (b)) {
+    எனில் (likely (b)) {
       output_char (buffer, b, b_glyph);
-      return 2;
+      திரும்பு 2;
     }
-    return 1;
+    திரும்பு 1;
   }
 
-  return 0;
+  திரும்பு 0;
 }
 
-static inline void
-decompose_current_character (const hb_ot_shape_normalize_context_t *c, bool shortest)
+நிலையான உள்வரி வெறுமை
+decompose_current_character (மாறிலி hb_ot_shape_normalize_context_t *c, தருக்க shortest)
 {
-  hb_buffer_t * const buffer = c->buffer;
+  hb_buffer_t * மாறிலி buffer = c->buffer;
   hb_codepoint_t u = buffer->cur().codepoint;
   hb_codepoint_t glyph = 0;
 
-  if (shortest && c->font->get_nominal_glyph (u, &glyph, buffer->not_found))
+  எனில் (shortest && c->font->get_nominal_glyph (u, &glyph, buffer->not_found))
   {
     next_char (buffer, glyph);
-    return;
+    திரும்பு;
   }
 
-  if (decompose (c, shortest, u))
+  எனில் (decompose (c, shortest, u))
   {
     skip_char (buffer);
-    return;
+    திரும்பு;
   }
 
-  if (!shortest && c->font->get_nominal_glyph (u, &glyph, buffer->not_found))
+  எனில் (!shortest && c->font->get_nominal_glyph (u, &glyph, buffer->not_found))
   {
     next_char (buffer, glyph);
-    return;
+    திரும்பு;
   }
 
-  if (_hb_glyph_info_is_unicode_space (&buffer->cur()))
+  எனில் (_hb_glyph_info_is_unicode_space (&buffer->cur()))
   {
     hb_codepoint_t space_glyph;
     hb_unicode_funcs_t::space_t space_type = buffer->unicode->space_fallback_type (u);
-    if (space_type != hb_unicode_funcs_t::NOT_SPACE &&
+    எனில் (space_type != hb_unicode_funcs_t::NOT_SPACE &&
 	(c->font->get_nominal_glyph (0x0020, &space_glyph) || (space_glyph = buffer->invisible)))
     {
       _hb_glyph_info_set_unicode_space_fallback_type (&buffer->cur(), space_type);
       next_char (buffer, space_glyph);
       buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK;
-      return;
+      திரும்பு;
     }
   }
 
-  if (u == 0x2011u)
+  எனில் (u == 0x2011u)
   {
     /* U+2011 is the only sensible character that is a no-break version of another character
      * and not a space.  The space ones are handled already.  Handle this lone one. */
     hb_codepoint_t other_glyph;
-    if (c->font->get_nominal_glyph (0x2010u, &other_glyph))
+    எனில் (c->font->get_nominal_glyph (0x2010u, &other_glyph))
     {
       next_char (buffer, other_glyph);
-      return;
+      திரும்பு;
     }
   }
 
   next_char (buffer, glyph); /* glyph is initialized in earlier branches. */
 }
 
-static inline void
-handle_variation_selector_cluster (const hb_ot_shape_normalize_context_t *c,
-				   unsigned int end,
-				   bool short_circuit HB_UNUSED)
+நிலையான உள்வரி வெறுமை
+handle_variation_selector_cluster (மாறிலி hb_ot_shape_normalize_context_t *c,
+				   unsigned முழு end,
+				   தருக்க short_circuit HB_UNUSED)
 {
   /* Currently if there's a variation-selector we give-up on normalization, it's just too hard. */
-  hb_buffer_t * const buffer = c->buffer;
-  hb_font_t * const font = c->font;
-  for (; buffer->idx < end - 1 && buffer->successful;) {
-    if (unlikely (buffer->unicode->is_variation_selector (buffer->cur(+1).codepoint))) {
-      if (font->get_variation_glyph (buffer->cur().codepoint, buffer->cur(+1).codepoint, &buffer->cur().normalizer_glyph_index()))
+  hb_buffer_t * மாறிலி buffer = c->buffer;
+  hb_font_t * மாறிலி font = c->font;
+  க்கு (; buffer->idx < end - 1 && buffer->successful;) {
+    எனில் (unlikely (buffer->unicode->is_variation_selector (buffer->cur(+1).codepoint))) {
+      எனில் (font->get_variation_glyph (buffer->cur().codepoint, buffer->cur(+1).codepoint, &buffer->cur().normalizer_glyph_index()))
       {
 	hb_codepoint_t unicode = buffer->cur().codepoint;
-	(void) buffer->replace_glyphs (2, 1, &unicode);
+	(வெறுமை) buffer->replace_glyphs (2, 1, &unicode);
       }
-      else
+      இல்லையெனில்
       {
 	/* Just pass on the two characters separately, let GSUB do its magic. */
 	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	(வெறுமை) buffer->next_glyph ();
 
         buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK;
-	_hb_glyph_info_set_variation_selector (&buffer->cur(), true);
-	if (buffer->not_found_variation_selector != HB_CODEPOINT_INVALID)
+	_hb_glyph_info_set_variation_selector (&buffer->cur(), உண்மை);
+	எனில் (buffer->not_found_variation_selector != HB_CODEPOINT_INVALID)
 	  _hb_glyph_info_clear_default_ignorable (&buffer->cur());
 
 	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	(வெறுமை) buffer->next_glyph ();
       }
       /* Skip any further variation selectors. */
-      while (buffer->idx < end &&
+      போது (buffer->idx < end &&
 	     buffer->successful &&
 	     unlikely (buffer->unicode->is_variation_selector (buffer->cur().codepoint)))
       {
 	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	(வெறுமை) buffer->next_glyph ();
       }
     }
-    else
+    இல்லையெனில்
     {
       set_glyph (buffer->cur(), font);
-      (void) buffer->next_glyph ();
+      (வெறுமை) buffer->next_glyph ();
     }
   }
-  if (likely (buffer->idx < end))
+  எனில் (likely (buffer->idx < end))
   {
     set_glyph (buffer->cur(), font);
-    (void) buffer->next_glyph ();
+    (வெறுமை) buffer->next_glyph ();
   }
 }
 
-static inline void
-decompose_multi_char_cluster (const hb_ot_shape_normalize_context_t *c, unsigned int end, bool short_circuit)
+நிலையான உள்வரி வெறுமை
+decompose_multi_char_cluster (மாறிலி hb_ot_shape_normalize_context_t *c, unsigned முழு end, தருக்க short_circuit)
 {
-  hb_buffer_t * const buffer = c->buffer;
-  for (unsigned int i = buffer->idx; i < end && buffer->successful; i++)
-    if (unlikely (buffer->unicode->is_variation_selector (buffer->info[i].codepoint))) {
+  hb_buffer_t * மாறிலி buffer = c->buffer;
+  க்கு (unsigned முழு i = buffer->idx; i < end && buffer->successful; i++)
+    எனில் (unlikely (buffer->unicode->is_variation_selector (buffer->info[i].codepoint))) {
       handle_variation_selector_cluster (c, end, short_circuit);
-      return;
+      திரும்பு;
     }
 
-  while (buffer->idx < end && buffer->successful)
+  போது (buffer->idx < end && buffer->successful)
     decompose_current_character (c, short_circuit);
 }
 
 
-static int
-compare_combining_class (const hb_glyph_info_t *pa, const hb_glyph_info_t *pb)
+நிலையான முழு
+compare_combining_class (மாறிலி hb_glyph_info_t *pa, மாறிலி hb_glyph_info_t *pb)
 {
-  unsigned int a = _hb_glyph_info_get_modified_combining_class (pa);
-  unsigned int b = _hb_glyph_info_get_modified_combining_class (pb);
+  unsigned முழு a = _hb_glyph_info_get_modified_combining_class (pa);
+  unsigned முழு b = _hb_glyph_info_get_modified_combining_class (pb);
 
-  return a < b ? -1 : a == b ? 0 : +1;
+  திரும்பு a < b ? -1 : a == b ? 0 : +1;
 }
 
 
-void
-_hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
+வெறுமை
+_hb_ot_shape_normalize (மாறிலி hb_ot_shape_plan_t *plan,
 			hb_buffer_t *buffer,
 			hb_font_t *font)
 {
-  if (unlikely (!buffer->len)) return;
+  எனில் (unlikely (!buffer->len)) திரும்பு;
 
   _hb_buffer_assert_unicode_vars (buffer);
 
   hb_ot_shape_normalization_mode_t mode = plan->shaper->normalization_preference;
-  if (mode == HB_OT_SHAPE_NORMALIZATION_MODE_AUTO)
+  எனில் (mode == HB_OT_SHAPE_NORMALIZATION_MODE_AUTO)
   {
-    if (plan->has_gpos_mark)
+    எனில் (plan->has_gpos_mark)
       // https://github.com/harfbuzz/harfbuzz/issues/653#issuecomment-423905920
       //mode = HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED;
       mode = HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS;
-    else
+    இல்லையெனில்
       mode = HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS;
   }
 
@@ -306,11 +306,11 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
   };
   c.override_decompose_and_compose (plan->shaper->decompose, plan->shaper->compose);
 
-  bool always_short_circuit = mode == HB_OT_SHAPE_NORMALIZATION_MODE_NONE;
-  bool might_short_circuit = always_short_circuit ||
+  தருக்க always_short_circuit = mode == HB_OT_SHAPE_NORMALIZATION_MODE_NONE;
+  தருக்க might_short_circuit = always_short_circuit ||
 			     (mode != HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED &&
 			      mode != HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT);
-  unsigned int count;
+  unsigned முழு மொத்தம்;
 
   /* We do a fairly straightforward yet custom normalization process in three
    * separate rounds: decompose, reorder, recompose (if desired).  Currently
@@ -321,95 +321,95 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 
   /* First round, decompose */
 
-  bool all_simple = true;
-  if (buffer->message (font, "start decompose"))
+  தருக்க all_simple = உண்மை;
+  எனில் (buffer->message (font, "start decompose"))
   {
     buffer->clear_output ();
-    count = buffer->len;
+    மொத்தம் = buffer->len;
     buffer->idx = 0;
-    do
+    செய்
     {
-      unsigned int end;
-      for (end = buffer->idx + 1; end < count; end++)
-	if (_hb_glyph_info_is_unicode_mark (&buffer->info[end]))
-	  break;
+      unsigned முழு end;
+      க்கு (end = buffer->idx + 1; end < மொத்தம்; end++)
+	எனில் (_hb_glyph_info_is_unicode_mark (&buffer->info[end]))
+	  நிறுத்து;
 
-      if (end < count)
+      எனில் (end < மொத்தம்)
 	end--; /* Leave one base for the marks to cluster with. */
 
       /* From idx to end are simple clusters. */
-      if (might_short_circuit)
+      எனில் (might_short_circuit)
       {
-	unsigned int done = font->get_nominal_glyphs (end - buffer->idx,
+	unsigned முழு done = font->get_nominal_glyphs (end - buffer->idx,
 						      &buffer->cur().codepoint,
-						      sizeof (buffer->info[0]),
+						      அளவு (buffer->info[0]),
 						      &buffer->cur().normalizer_glyph_index(),
-						      sizeof (buffer->info[0]));
-	if (unlikely (!buffer->next_glyphs (done))) break;
+						      அளவு (buffer->info[0]));
+	எனில் (unlikely (!buffer->next_glyphs (done))) நிறுத்து;
       }
-      while (buffer->idx < end && buffer->successful)
+      போது (buffer->idx < end && buffer->successful)
 	decompose_current_character (&c, might_short_circuit);
 
-      if (buffer->idx == count || !buffer->successful)
-	break;
+      எனில் (buffer->idx == மொத்தம் || !buffer->successful)
+	நிறுத்து;
 
-      all_simple = false;
+      all_simple = பொய்;
 
       /* Find all the marks now. */
-      for (end = buffer->idx + 1; end < count; end++)
-	if (!_hb_glyph_info_is_unicode_mark(&buffer->info[end]))
-	  break;
+      க்கு (end = buffer->idx + 1; end < மொத்தம்; end++)
+	எனில் (!_hb_glyph_info_is_unicode_mark(&buffer->info[end]))
+	  நிறுத்து;
 
       /* idx to end is one non-simple cluster. */
       decompose_multi_char_cluster (&c, end, always_short_circuit);
     }
-    while (buffer->idx < count && buffer->successful);
-    buffer->sync ();
-    (void) buffer->message (font, "end decompose");
+    போது (buffer->idx < மொத்தம் && buffer->successful);
+    buffer->ஒத்திசை ();
+    (வெறுமை) buffer->message (font, "end decompose");
   }
 
 
   /* Second round, reorder (inplace) */
 
-  if (!all_simple && buffer->message(font, "start reorder"))
+  எனில் (!all_simple && buffer->message(font, "start reorder"))
   {
-    count = buffer->len;
+    மொத்தம் = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++)
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      if (_hb_glyph_info_get_modified_combining_class (&info[i]) == 0)
-	continue;
+      எனில் (_hb_glyph_info_get_modified_combining_class (&info[i]) == 0)
+	தொடர்;
 
-      unsigned int end;
-      for (end = i + 1; end < count; end++)
-	if (_hb_glyph_info_get_modified_combining_class (&info[end]) == 0)
-	  break;
+      unsigned முழு end;
+      க்கு (end = i + 1; end < மொத்தம்; end++)
+	எனில் (_hb_glyph_info_get_modified_combining_class (&info[end]) == 0)
+	  நிறுத்து;
 
       /* We are going to do a O(n^2).  Only do this if the sequence is short. */
-      if (end - i > HB_OT_SHAPE_MAX_COMBINING_MARKS) {
+      எனில் (end - i > HB_OT_SHAPE_MAX_COMBINING_MARKS) {
 	i = end;
-	continue;
+	தொடர்;
       }
 
       buffer->sort (i, end, compare_combining_class);
 
-      if (plan->shaper->reorder_marks)
+      எனில் (plan->shaper->reorder_marks)
 	plan->shaper->reorder_marks (plan, buffer, i, end);
 
       i = end;
     }
-    (void) buffer->message(font, "end reorder");
+    (வெறுமை) buffer->message(font, "end reorder");
   }
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_CGJ)
+  எனில் (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_CGJ)
   {
     /* For all CGJ, check if it prevented any reordering at all.
      * If it did NOT, then make it skippable.
      * https://github.com/harfbuzz/harfbuzz/issues/554
      */
-    unsigned count = buffer->len;
+    unsigned மொத்தம் = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 1; i + 1 < count; i++)
-      if (info[i].codepoint == 0x034Fu/*CGJ*/ &&
+    க்கு (unsigned முழு i = 1; i + 1 < மொத்தம்; i++)
+      எனில் (info[i].codepoint == 0x034Fu/*CGJ*/ &&
 	  (info_cc(info[i+1]) == 0 || info_cc(info[i-1]) <= info_cc(info[i+1])))
       {
 	_hb_glyph_info_unhide (&info[i]);
@@ -419,7 +419,7 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 
   /* Third round, recompose */
 
-  if (!all_simple &&
+  எனில் (!all_simple &&
       buffer->successful &&
       (mode == HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS ||
        mode == HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT) &&
@@ -429,19 +429,19 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
      * ccc=0 chars with their previous Starter. */
 
     buffer->clear_output ();
-    count = buffer->len;
-    unsigned int starter = 0;
-    (void) buffer->next_glyph ();
-    while (buffer->idx < count /* No need for: && buffer->successful */)
+    மொத்தம் = buffer->len;
+    unsigned முழு starter = 0;
+    (வெறுமை) buffer->next_glyph ();
+    போது (buffer->idx < மொத்தம் /* No need for: && buffer->successful */)
     {
       hb_codepoint_t composed, glyph;
-      if (/* We don't try to compose a non-mark character with it's preceding starter.
+      எனில் (/* We don't try to compose a non-mark character with it's preceding starter.
 	   * This is both an optimization to avoid trying to compose every two neighboring
 	   * glyphs in most scripts AND a desired feature for Hangul.  Apparently Hangul
 	   * fonts are not designed to mix-and-match pre-composed syllables and Jamo. */
 	  _hb_glyph_info_is_unicode_mark(&buffer->cur()))
       {
-	if (/* If there's anything between the starter and this char, they should have CCC
+	எனில் (/* If there's anything between the starter and this char, they should have CCC
 	     * smaller than this character's. */
 	    (starter == buffer->out_len - 1 ||
 	     info_cc (buffer->prev()) < info_cc (buffer->cur())) &&
@@ -454,7 +454,7 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 	    font->get_nominal_glyph (composed, &glyph))
 	{
 	  /* Composes. */
-	  if (unlikely (!buffer->next_glyph ())) break; /* Copy to out-buffer. */
+	  எனில் (unlikely (!buffer->next_glyph ())) நிறுத்து; /* Copy to out-buffer. */
 	  buffer->merge_out_clusters (starter, buffer->out_len);
 	  buffer->out_len--; /* Remove the second composable. */
 	  /* Modify starter and carry on. */
@@ -462,18 +462,18 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 	  buffer->out_info[starter].normalizer_glyph_index() = glyph;
 	  _hb_glyph_info_set_unicode_props (&buffer->out_info[starter], buffer);
 
-	  continue;
+	  தொடர்;
 	}
       }
 
       /* Blocked, or doesn't compose. */
-      if (unlikely (!buffer->next_glyph ())) break;
+      எனில் (unlikely (!buffer->next_glyph ())) நிறுத்து;
 
-      if (info_cc (buffer->prev()) == 0)
+      எனில் (info_cc (buffer->prev()) == 0)
 	starter = buffer->out_len - 1;
     }
-    buffer->sync ();
-    (void) buffer->message (font, "end compose");
+    buffer->ஒத்திசை ();
+    (வெறுமை) buffer->message (font, "end compose");
   }
 }
 

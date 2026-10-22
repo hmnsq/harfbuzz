@@ -25,18 +25,18 @@
 #ifndef HB_WASM_API_BLOB_HH
 #define HB_WASM_API_BLOB_HH
 
-#include "hb-wasm-api.hh"
+#அந்தர்பாவ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+நாமாகாஶ hb {
+நாமாகாஶ wasm {
 
 
-HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (வெறுமை, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob))
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return;
+  எனில் (unlikely (!blob))
+    திரும்பு;
 
   module_free (blob->data);
 

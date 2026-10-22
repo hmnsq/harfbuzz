@@ -27,8 +27,8 @@
 #ifndef HB_OT_VORG_TABLE_HH
 #define HB_OT_VORG_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-ot-dual.hh"
 
 /*
  * VORG -- Vertical Origin Table
@@ -36,155 +36,155 @@
  */
 #define HB_OT_TAG_VORG HB_TAG('V','O','R','G')
 
-namespace OT {
+நாமாகாஶ OT {
 
 template <typename Types>
-struct VertOriginMetric
+கட்டமைப்பு VertOriginMetric
 {
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  முழு cmp (hb_codepoint_t g) மாறிலி { திரும்பு glyph.cmp (g); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  public:
+  பொது:
   typename Types::HBGlyphID
 		glyph;
   FWORD		vertOriginY;
 
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (Types::HBGlyphID::static_size + FWORD::static_size);
 };
 
 template <typename Types>
-struct VORGFormat1_2
+கட்டமைப்பு VORGFormat1_2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return version.to_int (); }
+  தருக்க has_data () மாறிலி { திரும்பு version.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  முழு get_y_origin (hb_codepoint_t glyph) மாறிலி
   {
-    unsigned int i;
-    if (!vertYOrigins.bfind (glyph, &i))
-      return defaultVertOriginY;
-    return vertYOrigins[i].vertOriginY;
+    unsigned முழு i;
+    எனில் (!vertYOrigins.bfind (glyph, &i))
+      திரும்பு defaultVertOriginY;
+    திரும்பு vertYOrigins[i].vertOriginY;
   }
 
   template <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  வெறுமை serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  FWORD defaultVertOriginY)
   {
 
-    if (unlikely (!c->extend_min ((*this))))  return;
+    எனில் (unlikely (!c->extend_min ((*இது))))  திரும்பு;
 
-    this->version.major = Types::size == 2 ? 1 : 2;
-    this->version.minor = 0;
+    இது->version.major = Types::size == 2 ? 1 : 2;
+    இது->version.minor = 0;
 
-    this->defaultVertOriginY = defaultVertOriginY;
-    this->vertYOrigins.len = it.len ();
+    இது->defaultVertOriginY = defaultVertOriginY;
+    இது->vertYOrigins.len = it.len ();
 
     c->copy_all (it);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    auto *vorg_prime = c->serializer->start_embed<VORGFormat1_2> ();
-    if (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
+    TRACE_SUBSET (இது);
+    auto *vorg_பகாஎண் = c->serializer->start_embed<VORGFormat1_2> ();
+    எனில் (unlikely (!c->serializer->check_success (vorg_பகாஎண்))) return_trace (பொய்);
 
     auto it =
     + vertYOrigins.as_array ()
     | hb_filter (c->plan->glyphset (), &VertOriginMetric<Types>::glyph)
-    | hb_map ([&] (const VertOriginMetric<Types>& _)
+    | hb_map ([&] (மாறிலி VertOriginMetric<Types>& _)
 	      {
-		hb_codepoint_t new_glyph = HB_SET_VALUE_INVALID;
+		hb_codepoint_t new_glyph = HB_SET_மதிப்பு_INVALID;
 		c->plan->new_gid_for_old_gid (_.glyph, &new_glyph);
 
 		VertOriginMetric<Types> metric;
 		metric.glyph = new_glyph;
 		metric.vertOriginY = _.vertOriginY;
-		return metric;
+		திரும்பு metric;
 	      })
     ;
 
     /* serialize the new table */
-    vorg_prime->serialize (c->serializer, it, defaultVertOriginY);
-    return_trace (true);
+    vorg_பகாஎண்->serialize (c->serializer, it, defaultVertOriginY);
+    return_trace (உண்மை);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது) &&
 		  hb_barrier () &&
 		  version.major == (Types::size == 2 ? 1 : 2) &&
 		  vertYOrigins.sanitize (c));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   FixedVersion<>version;	/* Version of VORG table. */
   FWORD		defaultVertOriginY;
 				/* The default vertical origin. */
   typename Types::template SortedArrayOf<VertOriginMetric<Types>>
 		vertYOrigins;	/* The array of vertical origins. */
 
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY(6 + Types::HBUINT::static_size, vertYOrigins);
 };
 
-struct VORG
+கட்டமைப்பு VORG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return u.version.v.to_int (); }
+  தருக்க has_data () மாறிலி { திரும்பு u.version.v.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  முழு get_y_origin (hb_codepoint_t glyph) மாறிலி
   {
-    switch (u.version.v.major) {
-    case 1: return u.version1.get_y_origin (glyph);
+    தேர்வு (u.version.v.major) {
+    நிலை 1: திரும்பு u.version1.get_y_origin (glyph);
 #ifndef HB_NO_BEYOND_64K
-    case 2: return u.version2.get_y_origin (glyph);
+    நிலை 2: திரும்பு u.version2.get_y_origin (glyph);
 #endif
-    default: return 0;
+    இயல்பு: திரும்பு 0;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
-    switch (u.version.v.major) {
-    case 1: return_trace (u.version1.subset (c));
+    TRACE_SUBSET (இது);
+    தேர்வு (u.version.v.major) {
+    நிலை 1: return_trace (u.version1.subset (c));
 #ifndef HB_NO_BEYOND_64K
-    case 2: return_trace (u.version2.subset (c));
+    நிலை 2: return_trace (u.version2.subset (c));
 #endif
-    default: return_trace (false);
+    இயல்பு: return_trace (பொய்);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.version.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (unlikely (!u.version.v.sanitize (c))) return_trace (பொய்);
     hb_barrier ();
-    switch (u.version.v.major) {
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    தேர்வு (u.version.v.major) {
+    நிலை 1: hb_barrier (); return_trace (u.version1.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (u.version2.sanitize (c));
+    நிலை 2: hb_barrier (); return_trace (u.version2.sanitize (c));
 #endif
-    default: return_trace (false);
+    இயல்பு: return_trace (பொய்);
     }
   }
 
-  protected:
-  union {
-  struct {
+  பாதுகாக்கப்பட்ட:
+  ஒன்றிப்பு {
+  கட்டமைப்பு {
   FixedVersion<>v;		/* Version of VORG table. */
   }				version;
   VORGFormat1_2<Layout::SmallTypes>version1;
@@ -193,7 +193,7 @@ struct VORG
 #endif
   } u;
 
-  public:
+  பொது:
   DEFINE_SIZE_UNION (4, version.v);
 };
 } /* namespace OT */

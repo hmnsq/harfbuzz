@@ -27,14 +27,14 @@
 #ifndef HB_OT_HMTX_TABLE_HH
 #define HB_OT_HMTX_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-ot-maxp-table.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
-#include "hb-ot-metrics.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-ot-dual.hh"
+#அந்தர்பாவ "hb-ot-maxp-table.hh"
+#அந்தர்பாவ "hb-ot-hhea-table.hh"
+#அந்தர்பாவ "hb-ot-os2-table.hh"
+#அந்தர்பாவ "hb-ot-var-hvar-table.hh"
+#அந்தர்பாவ "hb-ot-var-mvar-table.hh"
+#அந்தர்பாவ "hb-ot-metrics.hh"
 
 /*
  * hmtx -- Horizontal Metrics
@@ -48,84 +48,84 @@
 #define HB_OT_TAG_VMTX HB_TAG('V','M','T','X')
 
 
-namespace OT {
+நாமாகாஶ OT {
 
 
-struct LongMetric
+கட்டமைப்பு LongMetric
 {
   UFWORD	advance; /* Advance width/height. */
   FWORD		sb; /* Leading (left/top) side bearing. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (4);
 };
 
 
 template <typename T/*Data table type*/, typename H/*Header table type*/, typename V/*Var table type*/>
-struct hmtxvmtx
+கட்டமைப்பு hmtxvmtx
 {
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  தருக்க sanitize (hb_sanitize_context_t *c HB_UNUSED) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     /* We don't check for anything specific here.  The users of the
      * struct do all the hard work... */
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>>* get_mtx_map (const hb_subset_plan_t *plan) const
-  { return T::is_horizontal ? &plan->hmtx_map : &plan->vmtx_map; }
+  மாறிலி hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, முழு>>* get_mtx_map (மாறிலி hb_subset_plan_t *plan) மாறிலி
+  { திரும்பு T::is_horizontal ? &plan->hmtx_map : &plan->vmtx_map; }
 
-  bool subset_update_header (hb_subset_context_t *c,
-			     unsigned int num_hmetrics,
-			     const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map,
-			     const hb_vector_t<unsigned> &bounds_vec) const
+  தருக்க subset_update_header (hb_subset_context_t *c,
+			     unsigned முழு இலக்கம்_hmetrics,
+			     மாறிலி hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, முழு>> *mtx_map,
+			     மாறிலி hb_vector_t<unsigned> &bounds_vec) மாறிலி
   {
     hb_blob_t *src_blob = hb_sanitize_context_t ().reference_table<H> (c->plan->source, H::tableTag);
     hb_blob_t *dest_blob = hb_blob_copy_writable_or_fail (src_blob);
     hb_blob_destroy (src_blob);
 
-    if (unlikely (!dest_blob)) {
-      return false;
+    எனில் (unlikely (!dest_blob)) {
+      திரும்பு பொய்;
     }
 
-    unsigned int length;
+    unsigned முழு length;
     H *table = (H *) hb_blob_get_data (dest_blob, &length);
-    c->serializer->check_assign (table->numberOfLongMetrics, num_hmetrics, HB_SERIALIZE_ERROR_INT_OVERFLOW);
+    c->serializer->check_assign (table->எண்_Of_Long_Metrics, இலக்கம்_hmetrics, HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
 #ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+    எனில் (c->plan->normalized_coords)
     {
       auto &MVAR = *c->plan->source->table.MVAR;
-      if (T::is_horizontal)
+      எனில் (T::is_horizontal)
       {
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE,   caretSlopeRise);
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN,    caretSlopeRun);
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET, caretOffset);
       }
-      else
+      இல்லையெனில்
       {
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_RISE,     caretSlopeRise);
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_RUN,      caretSlopeRun);
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET,   caretOffset);
       }
 
-      bool empty = true;
-      int min_lsb = 0x7FFF;
-      int min_rsb = 0x7FFF;
-      int max_extent = -0x7FFF;
+      தருக்க empty = உண்மை;
+      முழு min_lsb = 0x7FFF;
+      முழு min_rsb = 0x7FFF;
+      முழு max_extent = -0x7FFF;
       unsigned max_adv = 0;
-      for (const auto _ : *mtx_map)
+      க்கு (மாறிலி auto _ : *mtx_map)
       {
         hb_codepoint_t gid = _.first;
         unsigned adv = _.second.first;
-        int lsb = _.second.second;
+        முழு lsb = _.second.second;
         max_adv = hb_max (max_adv, adv);
 
-        if (bounds_vec[gid] != 0xFFFFFFFF)
+        எனில் (bounds_vec[gid] != 0xFFFFFFFF)
         {
-	  empty = false;
+	  empty = பொய்;
           unsigned bound_width = bounds_vec[gid];
-          int rsb = adv - lsb - bound_width;
-          int extent = lsb + bound_width;
+          முழு rsb = adv - lsb - bound_width;
+          முழு extent = lsb + bound_width;
           min_lsb = hb_min (min_lsb, lsb);
           min_rsb = hb_min (min_rsb, rsb);
           max_extent = hb_max (max_extent, extent);
@@ -133,31 +133,31 @@ struct hmtxvmtx
       }
 
       table->advanceMax = max_adv;
-      if (!empty)
+      எனில் (!empty)
       {
         table->minLeadingBearing = min_lsb;
         table->minTrailingBearing = min_rsb;
         table->maxExtent = max_extent;
       }
 
-      if (T::is_horizontal)
+      எனில் (T::is_horizontal)
       {
-        const auto &OS2 = *c->plan->source->table.OS2;
-        if (OS2.has_data () &&
+        மாறிலி auto &OS2 = *c->plan->source->table.OS2;
+        எனில் (OS2.has_data () &&
             table->ascender == OS2.sTypoAscender &&
             table->descender == OS2.sTypoDescender &&
-            table->lineGap == OS2.sTypoLineGap)
+            table->வரி_Gap == OS2.s_Typo_வரி_Gap)
         {
-          table->ascender = static_cast<int> (roundf (OS2.sTypoAscender +
+          table->ascender = static_cast<முழு> (roundf (OS2.sTypoAscender +
                                                       MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,
                                                                     c->plan->normalized_coords.arrayZ,
                                                                     c->plan->normalized_coords.length)));
-          table->descender = static_cast<int> (roundf (OS2.sTypoDescender +
+          table->descender = static_cast<முழு> (roundf (OS2.sTypoDescender +
                                                        MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER,
                                                                      c->plan->normalized_coords.arrayZ,
                                                                      c->plan->normalized_coords.length)));
-          table->lineGap = static_cast<int> (roundf (OS2.sTypoLineGap +
-                                                     MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP,
+          table->வரி_Gap = static_cast<முழு> (roundf (OS2.s_Typo_வரி_Gap +
+                                                     MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_வரி_GAP,
                                                                    c->plan->normalized_coords.arrayZ,
                                                                    c->plan->normalized_coords.length)));
         }
@@ -165,63 +165,63 @@ struct hmtxvmtx
     }
 #endif
 
-    bool result = c->plan->add_table (H::tableTag, dest_blob);
+    தருக்க result = c->plan->add_table (H::tableTag, dest_blob);
     hb_blob_destroy (dest_blob);
 
-    return result;
+    திரும்பு result;
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  வெறுமை serialize (hb_serialize_context_t *c,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_long_metrics,
-                  unsigned total_num_metrics)
+		  hb_array_t<மாறிலி hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned இலக்கம்_long_metrics,
+                  unsigned total_இலக்கம்_metrics)
   {
-    LongMetric* long_metrics = c->allocate_size<LongMetric> (num_long_metrics * LongMetric::static_size);
-    FWORD* short_metrics = c->allocate_size<FWORD> ((total_num_metrics - num_long_metrics) * FWORD::static_size);
-    if (!long_metrics || !short_metrics) return;
+    LongMetric* long_metrics = c->allocate_size<LongMetric> (இலக்கம்_long_metrics * LongMetric::static_size);
+    FWORD* short_metrics = c->allocate_size<FWORD> ((total_இலக்கம்_metrics - இலக்கம்_long_metrics) * FWORD::static_size);
+    எனில் (!long_metrics || !short_metrics) திரும்பு;
 
-    short_metrics -= num_long_metrics;
+    short_metrics -= இலக்கம்_long_metrics;
 
-    for (auto _ : new_to_old_gid_list)
+    க்கு (auto _ : new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
       auto mtx = *it++;
 
-      if (gid < num_long_metrics)
+      எனில் (gid < இலக்கம்_long_metrics)
       {
 	LongMetric& lm = long_metrics[gid];
 	lm.advance = mtx.first;
 	lm.sb = mtx.second;
       }
-      else
+      இல்லையெனில்
         short_metrics[gid] = mtx.second;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  தருக்க subset (hb_subset_context_t *c) மாறிலி
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (இது);
 
-    auto *table_prime = c->serializer->start_embed <T> ();
+    auto *table_பகாஎண் = c->serializer->start_embed <T> ();
 
     accelerator_t _mtx (c->plan->source);
-    unsigned num_long_metrics;
-    const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map = get_mtx_map (c->plan);
+    unsigned இலக்கம்_long_metrics;
+    மாறிலி hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, முழு>> *mtx_map = get_mtx_map (c->plan);
     {
       /* Determine num_long_metrics to encode. */
       auto& plan = c->plan;
 
       // TODO Don't consider retaingid holes here.
 
-      num_long_metrics = hb_min (plan->num_output_glyphs (), H::long_metric_count_max ());
-      unsigned int last_advance = get_new_gid_advance_unscaled (plan, mtx_map, num_long_metrics - 1, _mtx);
-      while (num_long_metrics > 1 &&
-	     last_advance == get_new_gid_advance_unscaled (plan, mtx_map, num_long_metrics - 2, _mtx))
+      இலக்கம்_long_metrics = hb_min (plan->இலக்கம்_output_glyphs (), H::long_metric_மொத்தம்_max ());
+      unsigned முழு last_advance = get_new_gid_advance_unscaled (plan, mtx_map, இலக்கம்_long_metrics - 1, _mtx);
+      போது (இலக்கம்_long_metrics > 1 &&
+	     last_advance == get_new_gid_advance_unscaled (plan, mtx_map, இலக்கம்_long_metrics - 2, _mtx))
       {
-	num_long_metrics--;
+	இலக்கம்_long_metrics--;
       }
     }
 
@@ -232,43 +232,43 @@ struct hmtxvmtx
 		hb_codepoint_t new_gid = _.first;
 		hb_codepoint_t old_gid = _.second;
 
-		hb_pair_t<unsigned, int> *v = nullptr;
-		if (!mtx_map->has (new_gid, &v))
+		hb_pair_t<unsigned, முழு> *v = nullptr;
+		எனில் (!mtx_map->has (new_gid, &v))
 		{
-		  int lsb = 0;
+		  முழு lsb = 0;
 		  _mtx.get_leading_bearing_without_var_unscaled (old_gid, &lsb);
-		  return hb_pair (_mtx.get_advance_without_var_unscaled (old_gid), +lsb);
+		  திரும்பு hb_pair (_mtx.get_advance_without_var_unscaled (old_gid), +lsb);
 		}
-		return *v;
+		திரும்பு *v;
 	      })
     ;
 
-    table_prime->serialize (c->serializer,
+    table_பகாஎண்->serialize (c->serializer,
 			    it,
 			    c->plan->new_to_old_gid_list,
-			    num_long_metrics,
-			    c->plan->num_output_glyphs ());
+			    இலக்கம்_long_metrics,
+			    c->plan->இலக்கம்_output_glyphs ());
 
-    if (unlikely (c->serializer->in_error ()))
-      return_trace (false);
+    எனில் (unlikely (c->serializer->in_error ()))
+      return_trace (பொய்);
 
     // Amend header num hmetrics
-    if (unlikely (!subset_update_header (c, num_long_metrics, mtx_map,
+    எனில் (unlikely (!subset_update_header (c, இலக்கம்_long_metrics, mtx_map,
                                          T::is_horizontal ? c->plan->bounds_width_vec : c->plan->bounds_height_vec)))
-      return_trace (false);
+      return_trace (பொய்);
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  struct accelerator_t
+  கட்டமைப்பு accelerator_t
   {
-    friend struct hmtxvmtx;
+    friend கட்டமைப்பு hmtxvmtx;
 
     accelerator_t (hb_face_t *face) :
-      accelerator_t (face, T::tableTag, get_num_long_metrics (face))
+      accelerator_t (face, T::tableTag, get_இலக்கம்_long_metrics (face))
     {}
 
-    accelerator_t (hb_face_t *face, hb_tag_t tableTag, unsigned num_long_metrics_)
+    accelerator_t (hb_face_t *face, hb_tag_t tableTag, unsigned இலக்கம்_long_metrics_2)
     {
       table = hb_sanitize_context_t ().reference_table<hmtxvmtx> (face, tableTag);
       var_table = hb_sanitize_context_t ().reference_table<V> (face, T::variationsTag);
@@ -277,32 +277,32 @@ struct hmtxvmtx
 
       /* Populate count variables and sort them out as we go */
 
-      unsigned int len = table.get_length ();
-      if (len & 1)
+      unsigned முழு len = table.get_length ();
+      எனில் (len & 1)
         len--;
 
-      num_long_metrics = num_long_metrics_;
-      if (unlikely (num_long_metrics > len / 4))
-	num_long_metrics = len / 4;
-      len -= num_long_metrics * 4;
+      இலக்கம்_long_metrics = இலக்கம்_long_metrics_2;
+      எனில் (unlikely (இலக்கம்_long_metrics > len / 4))
+	இலக்கம்_long_metrics = len / 4;
+      len -= இலக்கம்_long_metrics * 4;
 
-      num_bearings = face->table.maxp->get_num_glyphs ();
+      இலக்கம்_bearings = face->table.maxp->get_இலக்கம்_glyphs ();
 
-      if (unlikely (num_bearings < num_long_metrics))
-        num_bearings = num_long_metrics;
-      if (unlikely ((num_bearings - num_long_metrics) * 2 > len))
-        num_bearings = num_long_metrics + len / 2;
-      len -= (num_bearings - num_long_metrics) * 2;
+      எனில் (unlikely (இலக்கம்_bearings < இலக்கம்_long_metrics))
+        இலக்கம்_bearings = இலக்கம்_long_metrics;
+      எனில் (unlikely ((இலக்கம்_bearings - இலக்கம்_long_metrics) * 2 > len))
+        இலக்கம்_bearings = இலக்கம்_long_metrics + len / 2;
+      len -= (இலக்கம்_bearings - இலக்கம்_long_metrics) * 2;
 
       /* We MUST set num_bearings to zero if num_long_metrics is zero.
        * Our get_advance() depends on that. */
-      if (unlikely (!num_long_metrics))
-	num_bearings = num_long_metrics = 0;
+      எனில் (unlikely (!இலக்கம்_long_metrics))
+	இலக்கம்_bearings = இலக்கம்_long_metrics = 0;
 
-      num_advances = num_bearings + len / 2;
-      num_glyphs = face->get_num_glyphs ();
-      if (num_glyphs < num_advances)
-        num_glyphs = num_advances;
+      இலக்கம்_advances = இலக்கம்_bearings + len / 2;
+      இலக்கம்_glyphs = face->get_இலக்கம்_glyphs ();
+      எனில் (இலக்கம்_glyphs < இலக்கம்_advances)
+        இலக்கம்_glyphs = இலக்கம்_advances;
     }
     ~accelerator_t ()
     {
@@ -310,92 +310,92 @@ struct hmtxvmtx
       var_table.destroy ();
     }
 
-    bool has_data () const { return (bool) num_bearings; }
+    தருக்க has_data () மாறிலி { திரும்பு (தருக்க) இலக்கம்_bearings; }
 
-    void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						   int *lsb) const
+    வெறுமை get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						   முழு *lsb) மாறிலி
     {
-      if (glyph < num_long_metrics)
+      எனில் (glyph < இலக்கம்_long_metrics)
       {
 	*lsb = table->longMetricZ[glyph].sb;
-	return;
+	திரும்பு;
       }
 
-      if (unlikely (glyph >= num_bearings))
+      எனில் (unlikely (glyph >= இலக்கம்_bearings))
       {
         *lsb = 0;
-	return;
+	திரும்பு;
       }
 
-      const FWORD *bearings = (const FWORD *) &table->longMetricZ[num_long_metrics];
-      *lsb = bearings[glyph - num_long_metrics];
+      மாறிலி FWORD *bearings = (மாறிலி FWORD *) &table->longMetricZ[இலக்கம்_long_metrics];
+      *lsb = bearings[glyph - இலக்கம்_long_metrics];
     }
 
-    unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+    unsigned முழு get_advance_without_var_unscaled (hb_codepoint_t glyph) மாறிலி
     {
-      if (glyph < num_bearings)
-	return table->longMetricZ[hb_min (glyph, (uint32_t) num_long_metrics - 1)].advance;
+      எனில் (glyph < இலக்கம்_bearings)
+	திரும்பு table->longMetricZ[hb_min (glyph, (uint32_t) இலக்கம்_long_metrics - 1)].advance;
 
       /* If num_advances is zero, it means we don't have the metrics table
        * for this direction: return default advance. */
-      if (unlikely (!num_advances))
-	return default_advance;
+      எனில் (unlikely (!இலக்கம்_advances))
+	திரும்பு default_advance;
 
-      return 0;
+      திரும்பு 0;
     }
 
 #ifndef HB_NO_VAR
     unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					    hb_font_t         *font,
-					    hb_scalar_cache_t *store_cache = nullptr) const
+					    hb_scalar_cache_t *store_cache = nullptr) மாறிலி
     {
-      unsigned int advance = get_advance_without_var_unscaled (glyph);
-      return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								      font->coords, font->num_coords,
+      unsigned முழு advance = get_advance_without_var_unscaled (glyph);
+      திரும்பு hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
+								      font->coords, font->இலக்கம்_coords,
 								      store_cache)));
     }
 #endif
 
-    protected:
+    பாதுகாக்கப்பட்ட:
     // 0 <= num_long_metrics <= num_bearings <= num_advances <= num_glyphs
-    unsigned num_long_metrics;
-    unsigned num_bearings;
-    unsigned num_advances;
-    unsigned num_glyphs;
+    unsigned இலக்கம்_long_metrics;
+    unsigned இலக்கம்_bearings;
+    unsigned இலக்கம்_advances;
+    unsigned இலக்கம்_glyphs;
 
-    unsigned int default_advance;
+    unsigned முழு default_advance;
 
-    public:
+    பொது:
     hb_blob_ptr_t<hmtxvmtx> table;
     hb_blob_ptr_t<V> var_table;
 
-    private:
-    static unsigned get_num_long_metrics (hb_face_t *face)
+    தனிப்பட்ட:
+    நிலையான unsigned get_இலக்கம்_long_metrics (hb_face_t *face)
     {
       hb_blob_ptr_t<H> hea = hb_sanitize_context_t ().reference_table<H> (face);
-      unsigned ret = hea->numberOfLongMetrics;
+      unsigned ret = hea->எண்_Of_Long_Metrics;
       hea.destroy ();
-      return ret;
+      திரும்பு ret;
     }
   };
 
   /* get advance: when no variations, call get_advance_without_var_unscaled.
    * when there're variations, get advance value from mtx_map in subset_plan*/
-  unsigned get_new_gid_advance_unscaled (const hb_subset_plan_t *plan,
-                                         const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map,
+  unsigned get_new_gid_advance_unscaled (மாறிலி hb_subset_plan_t *plan,
+                                         மாறிலி hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, முழு>> *mtx_map,
                                          unsigned new_gid,
-                                         const accelerator_t &_mtx) const
+                                         மாறிலி accelerator_t &_mtx) மாறிலி
   {
-    if (mtx_map->is_empty ())
+    எனில் (mtx_map->is_empty ())
     {
       hb_codepoint_t old_gid = 0;
-      return plan->old_gid_for_new_gid (new_gid, &old_gid) ?
+      திரும்பு plan->old_gid_for_new_gid (new_gid, &old_gid) ?
              _mtx.get_advance_without_var_unscaled (old_gid) : 0;
     }
-    return mtx_map->get (new_gid).first;
+    திரும்பு mtx_map->get (new_gid).first;
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   UnsizedArrayOf<LongMetric>
 		longMetricZ;	/* Paired advance width and leading
 				 * bearing values for each glyph. The
@@ -421,32 +421,32 @@ struct hmtxvmtx
 				 * values for each glyph. */
 /*UnsizedArrayOf<UFWORD>advancesX;*/
 				/* TODO Document. */
-  public:
+  பொது:
   DEFINE_SIZE_ARRAY (0, longMetricZ);
 };
 
-struct hmtx : hmtxvmtx<hmtx, hhea, HVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hmtx;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
-  static constexpr bool is_horizontal = true;
+கட்டமைப்பு hmtx : hmtxvmtx<hmtx, hhea, HVAR> {
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_hmtx;
+  நிலையான constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
+  நிலையான constexpr தருக்க is_horizontal = உண்மை;
 };
-struct HMTX : hmtxvmtx<HMTX, HHEA, HVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HMTX;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
-  static constexpr bool is_horizontal = true;
+கட்டமைப்பு HMTX : hmtxvmtx<HMTX, HHEA, HVAR> {
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_HMTX;
+  நிலையான constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
+  நிலையான constexpr தருக்க is_horizontal = உண்மை;
 };
-struct vmtx : hmtxvmtx<vmtx, vhea, VVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_vmtx;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
-  static constexpr bool is_horizontal = false;
+கட்டமைப்பு vmtx : hmtxvmtx<vmtx, vhea, VVAR> {
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_vmtx;
+  நிலையான constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
+  நிலையான constexpr தருக்க is_horizontal = பொய்;
 };
-struct VMTX : hmtxvmtx<VMTX, VHEA, VVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VMTX;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
-  static constexpr bool is_horizontal = false;
+கட்டமைப்பு VMTX : hmtxvmtx<VMTX, VHEA, VVAR> {
+  நிலையான constexpr hb_tag_t tableTag = HB_OT_TAG_VMTX;
+  நிலையான constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
+  நிலையான constexpr தருக்க is_horizontal = பொய்;
 };
 
-struct hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
+கட்டமைப்பு hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
 						  HMTX::accelerator_t>
 {
   hmtx_accelerator_t (hb_face_t *face) :
@@ -460,25 +460,25 @@ struct hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
     var_table.destroy ();
   }
 
-  void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						 int *lsb) const
+  வெறுமை get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						 முழு *lsb) மாறிலி
   {
-    HB_DUAL_GET (*this, get_leading_bearing_without_var_unscaled (glyph, lsb));
+    HB_DUAL_GET (*இது, get_leading_bearing_without_var_unscaled (glyph, lsb));
   }
 
-  unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+  unsigned முழு get_advance_without_var_unscaled (hb_codepoint_t glyph) மாறிலி
   {
-    return HB_DUAL_GET (*this, get_advance_without_var_unscaled (glyph));
+    திரும்பு HB_DUAL_GET (*இது, get_advance_without_var_unscaled (glyph));
   }
 
 #ifndef HB_NO_VAR
   unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					  hb_font_t         *font,
-					  hb_scalar_cache_t *store_cache = nullptr) const
+					  hb_scalar_cache_t *store_cache = nullptr) மாறிலி
   {
-    unsigned int advance = get_advance_without_var_unscaled (glyph);
-    return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								    font->coords, font->num_coords,
+    unsigned முழு advance = get_advance_without_var_unscaled (glyph);
+    திரும்பு hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
+								    font->coords, font->இலக்கம்_coords,
 								    store_cache)));
   }
 #endif
@@ -487,7 +487,7 @@ struct hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
 };
 
 #ifndef HB_NO_VERTICAL
-struct vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
+கட்டமைப்பு vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
 						  VMTX::accelerator_t>
 {
   vmtx_accelerator_t (hb_face_t *face) :
@@ -501,33 +501,33 @@ struct vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
     var_table.destroy ();
   }
 
-  void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						 int *lsb) const
+  வெறுமை get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						 முழு *lsb) மாறிலி
   {
-    HB_DUAL_GET (*this, get_leading_bearing_without_var_unscaled (glyph, lsb));
+    HB_DUAL_GET (*இது, get_leading_bearing_without_var_unscaled (glyph, lsb));
   }
 
-  unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+  unsigned முழு get_advance_without_var_unscaled (hb_codepoint_t glyph) மாறிலி
   {
-    return HB_DUAL_GET (*this, get_advance_without_var_unscaled (glyph));
+    திரும்பு HB_DUAL_GET (*இது, get_advance_without_var_unscaled (glyph));
   }
 
 #ifndef HB_NO_VAR
   unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					  hb_font_t         *font,
-					  hb_scalar_cache_t *store_cache = nullptr) const
+					  hb_scalar_cache_t *store_cache = nullptr) மாறிலி
   {
-    unsigned int advance = get_advance_without_var_unscaled (glyph);
-    return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								    font->coords, font->num_coords,
+    unsigned முழு advance = get_advance_without_var_unscaled (glyph);
+    திரும்பு hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
+								    font->coords, font->இலக்கம்_coords,
 								    store_cache)));
   }
 #endif
 
   hb_blob_ptr_t<VVAR> var_table;
 };
-#else
-struct vmtx_accelerator_t : vmtx::accelerator_t {
+#இல்லையெனில்
+கட்டமைப்பு vmtx_accelerator_t : vmtx::accelerator_t {
   vmtx_accelerator_t (hb_face_t *face) : vmtx::accelerator_t (face) {}
 };
 #endif

@@ -26,64 +26,64 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-face.hh"
+#அந்தர்பாவ "hb-face.hh"
 
-#include "hb-map.hh"
-#include "hb-open-file.hh"
-#include "hb-serialize.hh"
+#அந்தர்பாவ "hb-map.hh"
+#அந்தர்பாவ "hb-open-file.hh"
+#அந்தர்பாவ "hb-serialize.hh"
 
 
 /*
  * face-builder: A face that has add_table().
  */
 
-struct face_table_info_t
+கட்டமைப்பு face_table_info_t
 {
   hb_blob_t* data;
   unsigned order;
 };
 
-struct hb_face_builder_data_t
+கட்டமைப்பு hb_face_builder_data_t
 {
   hb_hashmap_t<hb_tag_t, face_table_info_t> tables;
 };
 
-static int compare_entries (const void* pa, const void* pb)
+நிலையான முழு compare_entries (மாறிலி வெறுமை* pa, மாறிலி வெறுமை* pb)
 {
-  const auto& a = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
-  const auto& b = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
+  மாறிலி auto& a = * (மாறிலி hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
+  மாறிலி auto& b = * (மாறிலி hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
 
   /* Order by blob size first (smallest to largest) and then table tag */
 
-  if (a.second.order != b.second.order)
-    return a.second.order < b.second.order ? -1 : +1;
+  எனில் (a.second.order != b.second.order)
+    திரும்பு a.second.order < b.second.order ? -1 : +1;
 
-  if (a.second.data->length != b.second.data->length)
-    return a.second.data->length < b.second.data->length ? -1 : +1;
+  எனில் (a.second.data->length != b.second.data->length)
+    திரும்பு a.second.data->length < b.second.data->length ? -1 : +1;
 
-  return a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
+  திரும்பு a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
 }
 
-static hb_face_builder_data_t *
+நிலையான hb_face_builder_data_t *
 _hb_face_builder_data_create ()
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, sizeof (hb_face_builder_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, அளவு (hb_face_builder_data_t));
+  எனில் (unlikely (!data))
+    திரும்பு nullptr;
 
   data->tables.init ();
 
-  return data;
+  திரும்பு data;
 }
 
-static void
-_hb_face_builder_data_destroy (void *user_data)
+நிலையான வெறுமை
+_hb_face_builder_data_destroy (வெறுமை *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
-  for (auto info : data->tables.values())
+  க்கு (auto info : data->tables.values())
     hb_blob_destroy (info.data);
 
   data->tables.fini ();
@@ -91,110 +91,110 @@ _hb_face_builder_data_destroy (void *user_data)
   hb_free (data);
 }
 
-static hb_blob_t *
+நிலையான hb_blob_t *
 _hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
 {
 
-  unsigned int table_count = data->tables.get_population ();
-  unsigned int face_length = table_count * 16 + 12;
+  unsigned முழு table_மொத்தம்_2 = data->tables.get_population ();
+  unsigned முழு face_length = table_மொத்தம்_2 * 16 + 12;
 
-  for (auto info : data->tables.values())
+  க்கு (auto info : data->tables.values())
     face_length += hb_ceil_to_4 (hb_blob_get_length (info.data));
 
-  char *buf = (char *) hb_malloc (face_length);
-  if (unlikely (!buf))
-    return nullptr;
+  எழுத்து *buf = (எழுத்து *) hb_malloc (face_length);
+  எனில் (unlikely (!buf))
+    திரும்பு nullptr;
 
   hb_serialize_context_t c (buf, face_length);
   c.propagate_error (data->tables);
   OT::OpenTypeFontFile *f = c.start_serialize<OT::OpenTypeFontFile> ();
 
-  bool is_cff = (data->tables.has (HB_TAG ('C','F','F',' '))
+  தருக்க is_cff = (data->tables.has (HB_TAG ('C','F','F',' '))
                  || data->tables.has (HB_TAG ('C','F','F','2')));
   hb_tag_t sfnt_tag = is_cff ? OT::OpenTypeFontFile::CFFTag : OT::OpenTypeFontFile::TrueTypeTag;
 
   // Sort the tags so that produced face is deterministic.
   hb_vector_t<hb_pair_t <hb_tag_t, face_table_info_t>> sorted_entries;
   data->tables.iter () | hb_sink (sorted_entries);
-  if (unlikely (sorted_entries.in_error ()))
+  எனில் (unlikely (sorted_entries.in_error ()))
   {
     hb_free (buf);
-    return nullptr;
+    திரும்பு nullptr;
   }
 
   sorted_entries.qsort (compare_entries);
 
-  bool ret = f->serialize_single (&c,
+  தருக்க ret = f->serialize_single (&c,
                                   sfnt_tag,
                                   + sorted_entries.iter()
                                   | hb_map ([&] (hb_pair_t<hb_tag_t, face_table_info_t> _) {
-                                    return hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
+                                    திரும்பு hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
                                   }));
 
   c.end_serialize ();
 
-  if (unlikely (!ret))
+  எனில் (unlikely (!ret))
   {
     hb_free (buf);
-    return nullptr;
+    திரும்பு nullptr;
   }
 
-  return hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  திரும்பு hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
 }
 
-static hb_blob_t *
-_hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+நிலையான hb_blob_t *
+_hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, வெறுமை *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
-  if (!tag)
-    return _hb_face_builder_data_reference_blob (data);
+  எனில் (!tag)
+    திரும்பு _hb_face_builder_data_reference_blob (data);
 
-  return hb_blob_reference (data->tables[tag].data);
+  திரும்பு hb_blob_reference (data->tables[tag].data);
 }
 
-static unsigned
-_hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
-				 unsigned int start_offset,
-				 unsigned int *table_count,
+நிலையான unsigned
+_hb_face_builder_get_table_tags (மாறிலி hb_face_t *face HB_UNUSED,
+				 unsigned முழு start_offset,
+				 unsigned முழு *table_மொத்தம்_2,
 				 hb_tag_t *table_tags,
-				 void *user_data)
+				 வெறுமை *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
   unsigned population = data->tables.get_population ();
 
-  if (!table_count)
-    return population;
+  எனில் (!table_மொத்தம்_2)
+    திரும்பு population;
 
-  if (unlikely (start_offset >= population))
+  எனில் (unlikely (start_offset >= population))
   {
-    *table_count = 0;
-    return population;
+    *table_மொத்தம்_2 = 0;
+    திரும்பு population;
   }
 
   // Sort the tags.
   hb_vector_t<hb_tag_t> sorted_tags;
-  data->tables.keys () | hb_sink (sorted_tags);
-  if (unlikely (sorted_tags.in_error ()))
+  data->tables.சாவிகள் () | hb_sink (sorted_tags);
+  எனில் (unlikely (sorted_tags.in_error ()))
   {
     // Not much to do...
   }
-  sorted_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) {
-    return (a > b) - (a < b);
+  sorted_tags.qsort ([] (மாறிலி hb_tag_t &a, மாறிலி hb_tag_t &b) {
+    திரும்பு (a > b) - (a < b);
   });
 
-  auto array = sorted_tags.as_array ().sub_array (start_offset, table_count);
-  if (table_tags)
+  auto array = sorted_tags.as_array ().sub_array (start_offset, table_மொத்தம்_2);
+  எனில் (table_tags)
   {
-    auto out = hb_array (table_tags, *table_count);
+    auto out = hb_array (table_tags, *table_மொத்தம்_2);
 
     + array.iter ()
     | hb_sink (out)
     ;
   }
 
-  return population;
+  திரும்பு population;
 }
 
 
@@ -213,7 +213,7 @@ hb_face_t *
 hb_face_builder_create ()
 {
   hb_face_builder_data_t *data = _hb_face_builder_data_create ();
-  if (unlikely (!data)) return hb_face_get_empty ();
+  எனில் (unlikely (!data)) திரும்பு hb_face_get_empty ();
 
   hb_face_t *face = hb_face_create_for_tables (_hb_face_builder_reference_table,
 					       data,
@@ -224,7 +224,7 @@ hb_face_builder_create ()
 				   data,
 				   nullptr);
 
-  return face;
+  திரும்பு face;
 }
 
 /**
@@ -241,23 +241,23 @@ hb_face_builder_create ()
 hb_bool_t
 hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return false;
+  எனில் (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
+    திரும்பு பொய்;
 
-  if (tag == HB_MAP_VALUE_INVALID)
-    return false;
+  எனில் (tag == HB_MAP_மதிப்பு_INVALID)
+    திரும்பு பொய்;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   hb_blob_t* previous = data->tables.get (tag).data;
-  if (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
+  எனில் (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
   {
     hb_blob_destroy (blob);
-    return false;
+    திரும்பு பொய்;
   }
 
   hb_blob_destroy (previous);
-  return true;
+  திரும்பு உண்மை;
 }
 
 /**
@@ -272,26 +272,26 @@ hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
  *
  * Since: 5.3.0
  **/
-void
+வெறுமை
 hb_face_builder_sort_tables (hb_face_t *face,
-                             const hb_tag_t  *tags)
+                             மாறிலி hb_tag_t  *tags)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return;
+  எனில் (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
+    திரும்பு;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   // Sort all unspecified tables after any specified tables.
-  for (auto& info : data->tables.values_ref())
+  க்கு (auto& info : data->tables.மதிப்புகள்_ref())
     info.order = (unsigned) -1;
 
   signed order = 0;
-  for (const hb_tag_t* tag = tags;
+  க்கு (மாறிலி hb_tag_t* tag = tags;
        *tag;
        tag++)
   {
     face_table_info_t* info;
-    if (!data->tables.has (*tag, &info)) continue;
+    எனில் (!data->tables.has (*tag, &info)) தொடர்;
     info->order = order++;
   }
 }

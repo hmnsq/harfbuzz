@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_PARSER_HH
-#define HB_NUMBER_PARSER_HH
+#ifndef HB_எண்_PARSER_HH
+#define HB_எண்_PARSER_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 // Handles 0..308; anything larger overflows double and returns HUGE_VAL.
-static inline double
+நிலையான உள்வரி இரட்டை
 _pow10 (unsigned exponent)
 {
   // DBL_MAX is between 10^308 and 10^309
-  if (unlikely (exponent > 308)) return HUGE_VAL;
+  எனில் (unlikely (exponent > 308)) திரும்பு HUGE_VAL;
 
-  static const double _powers_of_10[] =
+  நிலையான மாறிலி இரட்டை _powers_of_10[] =
   {
     1.0e+256,
     1.0e+128,
@@ -48,42 +48,42 @@ _pow10 (unsigned exponent)
     10.
   };
   unsigned mask = 1 << (ARRAY_LENGTH (_powers_of_10) - 1);
-  double result = 1;
-  for (const double *power = _powers_of_10; mask; ++power, mask >>= 1)
-    if (exponent & mask) result *= *power;
-  return result;
+  இரட்டை result = 1;
+  க்கு (மாறிலி இரட்டை *power = _powers_of_10; mask; ++power, mask >>= 1)
+    எனில் (exponent & mask) result *= *power;
+  திரும்பு result;
 }
 
-struct _hb_fraction
+கட்டமைப்பு _hb_fraction
 {
-  void add (int digit)
+  வெறுமை add (முழு digit)
   {
-    if (likely (fraction <= MAX_FRACT / 10))
+    எனில் (likely (fraction <= MAX_FRACT / 10))
     {
       fraction = fraction * 10. + digit;
-      ++count;
+      ++மொத்தம்;
     }
-    else if (drop < 0) drop = digit;
-    else if (digit != 0) sticky = true;
+    இல்லையெனில் எனில் (drop < 0) drop = digit;
+    இல்லையெனில் எனில் (digit != 0) sticky = உண்மை;
   }
 
-  double get_value () const
+  இரட்டை get_மதிப்பு () மாறிலி
   {
-    double result = fraction;
+    இரட்டை result = fraction;
     // Round-to-nearest-even using the recorded tail
-    if (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
+    எனில் (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
       result += 1;
-    return result / _pow10 (count);
+    திரும்பு result / _pow10 (மொத்தம்);
   }
 
-  bool is_empty () const { return !count; }
+  தருக்க is_empty () மாறிலி { திரும்பு !மொத்தம்; }
 
-private:
-  unsigned count = 0;
-  double fraction = 0;
-  int drop = -1; // drop is the first digit we couldn't accumulate
-  bool sticky = false; // sticky is set when any later digit was nonzero.
-  static constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
+தனிப்பட்ட:
+  unsigned மொத்தம் = 0;
+  இரட்டை fraction = 0;
+  முழு drop = -1; // drop is the first digit we couldn't accumulate
+  தருக்க sticky = பொய்; // sticky is set when any later digit was nonzero.
+  நிலையான constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
 };
 
 // A variant of strtod that also gets end of buffer in its second argument.
@@ -99,103 +99,103 @@ private:
 // On success, *end_ptr is set just past the longest well-formed prefix.
 // On no match, *end_ptr is left at the original p (matching strtod's
 // "no conversion performed" behavior, so the caller's pointer is unchanged).
-static inline double
-hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
+நிலையான உள்வரி இரட்டை
+hb_strtod (மாறிலி எழுத்து *p, மாறிலி எழுத்து **end_ptr /* IN/OUT */)
 {
-  const char *p_original = p;
-  const char *pe = *end_ptr;
+  மாறிலி எழுத்து *p_original = p;
+  மாறிலி எழுத்து *pe = *end_ptr;
 
   // Skip leading whitespace
-  while (p < pe && ISSPACE (*p))
+  போது (p < pe && ISSPACE (*p))
     p++;
 
   // Sign
-  bool neg = false;
-  if (p < pe && (*p == '+' || *p == '-'))
+  தருக்க neg = பொய்;
+  எனில் (p < pe && (*p == '+' || *p == '-'))
   {
     neg = (*p == '-');
     p++;
   }
 
-  double value = 0;
+  இரட்டை value = 0;
 
   // Integer and fraction
   {
-    const char *int_start = p;
-    while (p < pe && '0' <= *p && *p <= '9')
+    மாறிலி எழுத்து *int_start = p;
+    போது (p < pe && '0' <= *p && *p <= '9')
     {
       value = value * 10. + (*p - '0');
       p++;
     }
-    bool has_int = p > int_start;
+    தருக்க has_int = p > int_start;
 
     _hb_fraction frac;
-    if (p < pe && *p == '.')
+    எனில் (p < pe && *p == '.')
     {
       p++;
-      while (p < pe && '0' <= *p && *p <= '9')
+      போது (p < pe && '0' <= *p && *p <= '9')
       {
 	frac.add (*p - '0');
 	p++;
       }
     }
 
-    if (!frac.is_empty ()) value += frac.get_value ();
-    else if (!has_int)
+    எனில் (!frac.is_empty ()) value += frac.get_மதிப்பு ();
+    இல்லையெனில் எனில் (!has_int)
     {
       // Nothing could be parsed
       *end_ptr = p_original;
-      return .0;
+      திரும்பு .0;
     }
   }
 
   // Exponent
   unsigned exp = 0;
-  bool exp_neg = false, exp_overflow = false;
-  if (p < pe && (*p == 'e' || *p == 'E'))
+  தருக்க exp_neg = பொய், exp_overflow = பொய்;
+  எனில் (p < pe && (*p == 'e' || *p == 'E'))
   {
     constexpr unsigned MAX_EXP = 0x7FFu; /* 2^11-1 */
-    const char *before_exponent = p;
+    மாறிலி எழுத்து *before_exponent = p;
     p++;
-    if (p < pe && (*p == '+' || *p == '-'))
+    எனில் (p < pe && (*p == '+' || *p == '-'))
     {
       exp_neg = (*p == '-');
       p++;
     }
 
-    if (p < pe && '0' <= *p && *p <= '9')
-      do
+    எனில் (p < pe && '0' <= *p && *p <= '9')
+      செய்
       {
-	if (likely (exp * 10 + (*p - '0') <= MAX_EXP))
+	எனில் (likely (exp * 10 + (*p - '0') <= MAX_EXP))
 	  exp = exp * 10 + (*p - '0');
-	else
-	  exp_overflow = true;
+	இல்லையெனில்
+	  exp_overflow = உண்மை;
 	p++;
-      } while (p < pe && '0' <= *p && *p <= '9');
-    else
+      } போது (p < pe && '0' <= *p && *p <= '9');
+    இல்லையெனில்
       p = before_exponent; // rewind
   }
   *end_ptr = p;
 
-  if (neg) value *= -1.;
+  எனில் (neg) value *= -1.;
 
-  if (unlikely (exp_overflow))
+  எனில் (unlikely (exp_overflow))
   {
-    if (value == 0) return value;
-    if (exp_neg)    return neg ? -.0 : .0;
-    else            return neg ? -DBL_MAX : DBL_MAX;
+    எனில் (value == 0) திரும்பு value;
+    எனில் (exp_neg)    திரும்பு neg ? -.0 : .0;
+    இல்லையெனில்            திரும்பு neg ? -DBL_MAX : DBL_MAX;
   }
 
-  if (exp)
+  எனில் (exp)
   {
-    if (exp_neg)
+    எனில் (exp_neg)
     {
       // 10^308 is the largest finite power of ten, so two reductions of 308 suffice.
-      if (unlikely (exp > 308))
+      எனில் (unlikely (exp > 308))
       {
 	value /= 1e308;
 	exp -= 308;
-	if (unlikely (exp > 308))
+	எனில் (unlikely (exp > 308))
 	{
 	  value /= 1e308;
 	  exp -= 308;
@@ -203,11 +203,11 @@ hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
       }
       value /= _pow10 (exp);
     }
-    else
+    இல்லையெனில்
       value *= _pow10 (exp);
   }
 
-  return value;
+  திரும்பு value;
 }
 
 #endif /* HB_NUMBER_PARSER_HH */

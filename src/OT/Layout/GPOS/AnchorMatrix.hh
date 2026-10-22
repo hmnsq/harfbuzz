@@ -1,158 +1,158 @@
 #ifndef OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 #define OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+நாமாகாஶ OT {
+நாமாகாஶ Layout {
+நாமாகாஶ GPOS_impl {
 
-HB_INTERNAL inline
-void collect_ligature_anchor_indexes (unsigned rows,
-                                     unsigned class_count,
-                                     const hb_map_t &klass_mapping,
+HB_INTERNAL உள்வரி
+வெறுமை collect_ligature_anchor_indexes (unsigned rows,
+                                     unsigned class_மொத்தம்,
+                                     மாறிலி hb_map_t &klass_mapping,
                                      hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (unsigned row = 0; row < rows; row++)
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+  க்கு (unsigned row = 0; row < rows; row++)
+    க்கு (unsigned col = 0; col < class_மொத்தம்; col++)
+      எனில் (klass_mapping.has (col))
+        indexes.push (row * class_மொத்தம் + col);
 }
 
-HB_INTERNAL inline
-void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
-                                      const void *base,
+HB_INTERNAL உள்வரி
+வெறுமை collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
+                                      மாறிலி வெறுமை *base,
                                       glyph_data_t offsets,
-                                      hb_array_t<const unsigned> indexes)
+                                      hb_array_t<மாறிலி unsigned> indexes)
 {
-  for (unsigned i : indexes)
+  க்கு (unsigned i : indexes)
   {
     unsigned offset = offsets[i];
-    if (offset)
-      StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
+    எனில் (offset)
+      StructAtOffset<மாறிலி Anchor> (base, offset).collect_variation_indices (c);
   }
 }
 
-HB_INTERNAL inline
-void collect_anchor_indexes (const Coverage &coverage,
+HB_INTERNAL உள்வரி
+வெறுமை collect_anchor_indexes (மாறிலி Coverage &coverage,
                              unsigned rows,
-                             unsigned class_count,
-                             const hb_set_t &glyphset,
-                             const hb_map_t &klass_mapping,
+                             unsigned class_மொத்தம்,
+                             மாறிலி hb_set_t &glyphset,
+                             மாறிலி hb_map_t &klass_mapping,
                              hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
-    if (glyphset.has (_.first))
-      for (unsigned col = 0; col < class_count; col++)
-        if (klass_mapping.has (col))
-          indexes.push (_.second * class_count + col);
+  க்கு (மாறிலி auto _ : hb_zip (coverage, hb_range (rows)))
+    எனில் (glyphset.has (_.first))
+      க்கு (unsigned col = 0; col < class_மொத்தம்; col++)
+        எனில் (klass_mapping.has (col))
+          indexes.push (_.second * class_மொத்தம் + col);
 }
 
-HB_INTERNAL inline
-void collect_subset_anchor_indexes (const Coverage &coverage,
+HB_INTERNAL உள்வரி
+வெறுமை collect_subset_anchor_indexes (மாறிலி Coverage &coverage,
                                     unsigned rows,
-                                    unsigned class_count,
+                                    unsigned class_மொத்தம்,
                                     glyph_data_t offsets,
-                                    const hb_set_t &glyphset,
-                                    const hb_map_t &glyph_map,
-                                    const hb_map_t &klass_mapping,
+                                    மாறிலி hb_set_t &glyphset,
+                                    மாறிலி hb_map_t &glyph_map,
+                                    மாறிலி hb_map_t &klass_mapping,
                                     hb_sorted_vector_t<hb_codepoint_t> &new_coverage,
                                     hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
+  க்கு (மாறிலி auto _ : hb_zip (coverage, hb_range (rows)))
   {
-    if (!glyphset.has (_.first)) continue;
+    எனில் (!glyphset.has (_.first)) தொடர்;
     unsigned row = _.second;
-    bool non_empty = false;
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+    தருக்க non_empty = பொய்;
+    க்கு (unsigned col = 0; col < class_மொத்தம்; col++)
+      எனில் (klass_mapping.has (col) && offsets[row * class_மொத்தம் + col])
       {
-        non_empty = true;
-        break;
+        non_empty = உண்மை;
+        நிறுத்து;
       }
-    if (!non_empty) continue;
+    எனில் (!non_empty) தொடர்;
 
     new_coverage.push (glyph_map.get (_.first));
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+    க்கு (unsigned col = 0; col < class_மொத்தம்; col++)
+      எனில் (klass_mapping.has (col))
+        indexes.push (row * class_மொத்தம் + col);
   }
 }
 
-template <typename Types, typename RowCount=typename Types::HBUINT>
-struct AnchorMatrix
+template <typename Types, typename Row_மொத்தம்=typename Types::HBUINT>
+கட்டமைப்பு AnchorMatrix
 {
-  RowCount      rows;                   /* Number of rows */
+  Row_மொத்தம்      rows;                   /* Number of rows */
   UnsizedArrayOf<typename Types::template OffsetTo<Anchor, AnchorMatrix>>
                 matrixZ;                /* Matrix of offsets to Anchor tables--
                                          * from beginning of AnchorMatrix table */
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
+  பொது:
+  DEFINE_SIZE_ARRAY (அளவு (Row_மொத்தம்), matrixZ);
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  தருக்க sanitize (hb_sanitize_context_t *c, unsigned முழு cols) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!c->check_struct (this)) return_trace (false);
+    TRACE_SANITIZE (இது);
+    எனில் (!c->check_struct (இது)) return_trace (பொய்);
     hb_barrier ();
-    if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    எனில் (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (பொய்);
+    unsigned முழு மொத்தம் = rows * cols;
+    எனில் (!c->check_array (matrixZ.arrayZ, மொத்தம்)) return_trace (பொய்);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    எனில் (c->lazy_some_gpos)
+      return_trace (உண்மை);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (!matrixZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+      எனில் (!matrixZ[i].sanitize (c, இது)) return_trace (பொய்);
+    return_trace (உண்மை);
   }
 
-  const Anchor& get_anchor (hb_ot_apply_context_t *c,
-			    unsigned int row, unsigned int col,
-			    unsigned int cols, bool *found) const
+  மாறிலி Anchor& get_anchor (hb_ot_apply_context_t *c,
+			    unsigned முழு row, unsigned முழு col,
+			    unsigned முழு cols, தருக்க *found) மாறிலி
   {
-    *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
+    *found = பொய்;
+    எனில் (unlikely (row >= rows || col >= cols)) திரும்பு Null (Anchor);
     auto &offset = matrixZ[row * cols + col];
-    if (unlikely (!offset.sanitize (&c->sanitizer, this))) return Null (Anchor);
+    எனில் (unlikely (!offset.sanitize (&c->sanitizer, இது))) திரும்பு Null (Anchor);
     hb_barrier ();
     *found = !offset.is_null ();
-    return this+offset;
+    திரும்பு இது+offset;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  hb_array_t<const unsigned> indexes) const
+  வெறுமை collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  hb_array_t<மாறிலி unsigned> indexes) மாறிலி
   {
-    collect_anchor_variation_indices (c, this, matrixZ.arrayZ, indexes);
+    collect_anchor_variation_indices (c, இது, matrixZ.arrayZ, indexes);
   }
 
   template <typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
-               unsigned             num_rows,
-               Iterator             index_iter) const
+  தருக்க subset (hb_subset_context_t *c,
+               unsigned             இலக்கம்_rows,
+               Iterator             index_iter) மாறிலி
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (இது);
 
-    auto *out = c->serializer->start_embed (this);
+    auto *out = c->serializer->start_embed (இது);
 
-    if (!index_iter) return_trace (false);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    எனில் (!index_iter) return_trace (பொய்);
+    எனில் (unlikely (!c->serializer->extend_min (out)))  return_trace (பொய்);
 
-    out->rows = num_rows;
-    for (const unsigned i : index_iter)
+    out->rows = இலக்கம்_rows;
+    க்கு (மாறிலி unsigned i : index_iter)
     {
       auto *offset = c->serializer->embed (matrixZ[i]);
-      if (!offset) return_trace (false);
-      offset->serialize_subset (c, matrixZ[i], this);
+      எனில் (!offset) return_trace (பொய்);
+      offset->serialize_subset (c, matrixZ[i], இது);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
+  தருக்க offset_is_null (unsigned row, unsigned col, unsigned இலக்கம்_cols) மாறிலி
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
-    auto &offset = matrixZ[row * num_cols + col];
-    return offset.is_null ();
+    எனில் (unlikely (row >= rows || col >= இலக்கம்_cols)) திரும்பு உண்மை;
+    auto &offset = matrixZ[row * இலக்கம்_cols + col];
+    திரும்பு offset.is_null ();
   }
 };
 

@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 #ifdef HAVE_WASM
 
-#include "hb-wasm-api.hh"
+#அந்தர்பாவ "hb-wasm-api.hh"
 
 #define module_inst wasm_runtime_get_module_inst (exec_env)
 
 
-#include "hb-wasm-api-blob.hh"
-#include "hb-wasm-api-buffer.hh"
-#include "hb-wasm-api-common.hh"
-#include "hb-wasm-api-face.hh"
-#include "hb-wasm-api-font.hh"
-#include "hb-wasm-api-shape.hh"
+#அந்தர்பாவ "hb-wasm-api-blob.hh"
+#அந்தர்பாவ "hb-wasm-api-buffer.hh"
+#அந்தர்பாவ "hb-wasm-api-common.hh"
+#அந்தர்பாவ "hb-wasm-api-face.hh"
+#அந்தர்பாவ "hb-wasm-api-font.hh"
+#அந்தர்பாவ "hb-wasm-api-shape.hh"
 
 
 #undef module_inst
 
-hb_user_data_key_t _hb_wasm_ref_type_key = {};
+hb_user_data_சாவி_t hb_wasm_ref_type_சாவி = {};
 
 #endif

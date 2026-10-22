@@ -25,12 +25,12 @@
  * Google Author(s): Matthias Clasen
  */
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
 #ifdef HAVE_CAIRO
 
-#include "hb-cairo-utils.hh"
-#include "hb-paint.hh"
+#அந்தர்பாவ "hb-cairo-utils.hh"
+#அந்தர்பாவ "hb-paint.hh"
 
 /* Some routines in this file were ported from BlackRenderer by Black Foundry.
  * Used by permission to relicense to HarfBuzz license.
@@ -40,79 +40,79 @@
 
 #define PREALLOCATED_COLOR_STOPS 16
 
-typedef struct {
-  float r, g, b, a;
+வகைவரை கட்டமைப்பு {
+  தசம r, g, b, a;
 } hb_cairo_color_t;
 
-static inline cairo_extend_t
+நிலையான உள்வரி cairo_extend_t
 hb_cairo_extend (hb_paint_extend_t extend)
 {
-  switch (extend)
+  தேர்வு (extend)
     {
-    case HB_PAINT_EXTEND_PAD: return CAIRO_EXTEND_PAD;
-    case HB_PAINT_EXTEND_REPEAT: return CAIRO_EXTEND_REPEAT;
-    case HB_PAINT_EXTEND_REFLECT: return CAIRO_EXTEND_REFLECT;
-    default: break;
+    நிலை HB_PAINT_EXTEND_PAD: திரும்பு CAIRO_EXTEND_PAD;
+    நிலை HB_PAINT_EXTEND_REPEAT: திரும்பு CAIRO_EXTEND_REPEAT;
+    நிலை HB_PAINT_EXTEND_REFLECT: திரும்பு CAIRO_EXTEND_REFLECT;
+    இயல்பு: நிறுத்து;
     }
 
-  return CAIRO_EXTEND_PAD;
+  திரும்பு CAIRO_EXTEND_PAD;
 }
 
 #ifdef CAIRO_HAS_PNG_FUNCTIONS
-typedef struct
+வகைவரை கட்டமைப்பு
 {
   hb_blob_t *blob;
-  unsigned int offset;
+  unsigned முழு offset;
 } hb_cairo_read_blob_data_t;
 
-static cairo_status_t
-hb_cairo_read_blob (void *closure,
-		    unsigned char *data,
-		    unsigned int length)
+நிலையான cairo_status_t
+hb_cairo_read_blob (வெறுமை *closure,
+		    unsigned எழுத்து *data,
+		    unsigned முழு length)
 {
   hb_cairo_read_blob_data_t *r = (hb_cairo_read_blob_data_t *) closure;
-  const char *d;
-  unsigned int size;
+  மாறிலி எழுத்து *d;
+  unsigned முழு size;
 
   d = hb_blob_get_data (r->blob, &size);
 
-  if (r->offset + length > size)
-    return CAIRO_STATUS_READ_ERROR;
+  எனில் (r->offset + length > size)
+    திரும்பு CAIRO_STATUS_READ_ERROR;
 
   hb_memcpy (data, d + r->offset, length);
   r->offset += length;
 
-  return CAIRO_STATUS_SUCCESS;
+  திரும்பு CAIRO_STATUS_SUCCESS;
 }
 #endif
 
-static const cairo_user_data_key_t *_hb_cairo_surface_blob_user_data_key = {0};
+நிலையான மாறிலி cairo_user_data_சாவி_t *hb_cairo_surface_blob_user_data_சாவி = {0};
 
-static void
-_hb_cairo_destroy_blob (void *p)
+நிலையான வெறுமை
+_hb_cairo_destroy_blob (வெறுமை *p)
 {
   hb_blob_destroy ((hb_blob_t *) p);
 }
 
-void
+வெறுமை
 _hb_cairo_set_source_color (hb_cairo_context_t *c,
 			    hb_bool_t use_foreground,
 			    hb_color_t color)
 {
   cairo_t *cr = c->cr;
 
-  if (use_foreground)
+  எனில் (use_foreground)
   {
 #ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
-    double r, g, b, a;
+    இரட்டை r, g, b, a;
     cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-    if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+    எனில் (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
       cairo_set_source_rgba (cr, r, g, b, a * hb_color_get_alpha (color) / 255.);
-    else
+    இல்லையெனில்
 #endif
       cairo_set_source_rgba (cr, 0, 0, 0, hb_color_get_alpha (color) / 255.);
   }
-  else
+  இல்லையெனில்
     cairo_set_source_rgba (cr,
 			   hb_color_get_red (color) / 255.,
 			   hb_color_get_green (color) / 255.,
@@ -126,18 +126,18 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 			     unsigned width,
 			     unsigned height,
 			     hb_tag_t format,
-			     HB_UNUSED float slant_deprecated,
+			     HB_UNUSED தசம slant_deprecated,
 			     hb_glyph_extents_t *extents)
 {
   cairo_t *cr = c->cr;
 
-  if (!extents) /* SVG currently. */
-    return false;
+  எனில் (!extents) /* SVG currently. */
+    திரும்பு பொய்;
 
   cairo_surface_t *surface = nullptr;
 
 #ifdef CAIRO_HAS_PNG_FUNCTIONS
-  if (format == HB_PAINT_IMAGE_FORMAT_PNG)
+  எனில் (format == HB_PAINT_IMAGE_FORMAT_PNG)
   {
     hb_cairo_read_blob_data_t r;
     r.blob = blob;
@@ -149,27 +149,27 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
     width = cairo_image_surface_get_width (surface);
     height = cairo_image_surface_get_width (surface);
   }
-  else
+  இல்லையெனில்
 #endif
-  if (format == HB_PAINT_IMAGE_FORMAT_BGRA)
+  எனில் (format == HB_PAINT_IMAGE_FORMAT_BGRA)
   {
     /* Byte-endian conversion. */
     unsigned data_size = hb_blob_get_length (blob);
-    if (data_size < width * height * 4)
-      return false;
+    எனில் (data_size < width * height * 4)
+      திரும்பு பொய்;
 
-    unsigned char *data;
+    unsigned எழுத்து *data;
 #ifdef __BYTE_ORDER
-    if (__BYTE_ORDER == __BIG_ENDIAN)
+    எனில் (__BYTE_ORDER == __BIG_ENDIAN)
     {
-      data = (unsigned char *) hb_blob_get_data_writable (blob, nullptr);
-      if (!data)
-        return false;
+      data = (unsigned எழுத்து *) hb_blob_get_data_writable (blob, nullptr);
+      எனில் (!data)
+        திரும்பு பொய்;
 
-      unsigned count = width * height * 4;
-      for (unsigned i = 0; i < count; i += 4)
+      unsigned மொத்தம் = width * height * 4;
+      க்கு (unsigned i = 0; i < மொத்தம்; i += 4)
       {
-        unsigned char b;
+        unsigned எழுத்து b;
 	b = data[i];
 	data[i] = data[i+3];
 	data[i+3] = b;
@@ -178,9 +178,9 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 	data[i+2] = b;
       }
     }
-    else
+    இல்லையெனில்
 #endif
-      data = (unsigned char *) hb_blob_get_data (blob, nullptr);
+      data = (unsigned எழுத்து *) hb_blob_get_data (blob, nullptr);
 
     surface = cairo_image_surface_create_for_data (data,
 						   CAIRO_FORMAT_ARGB32,
@@ -188,13 +188,13 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 						   width * 4);
 
     cairo_surface_set_user_data (surface,
-				 _hb_cairo_surface_blob_user_data_key,
+				 hb_cairo_surface_blob_user_data_சாவி,
 				 hb_blob_reference (blob),
 				 _hb_cairo_destroy_blob);
   }
 
-  if (!surface)
-    return false;
+  எனில் (!surface)
+    திரும்பு பொய்;
 
   cairo_save (cr);
   /* this clip is here to work around recording surface limitations */
@@ -208,7 +208,7 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
   cairo_pattern_t *pattern = cairo_pattern_create_for_surface (surface);
   cairo_pattern_set_extend (pattern, CAIRO_EXTEND_PAD);
 
-  cairo_matrix_t matrix = {(double) width, 0, 0, (double) height, 0, 0};
+  cairo_matrix_t matrix = {(இரட்டை) width, 0, 0, (இரட்டை) height, 0, 0};
   cairo_pattern_set_matrix (pattern, &matrix);
 
   cairo_translate (cr, extents->x_bearing, extents->y_bearing);
@@ -222,74 +222,74 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 
   cairo_restore (cr);
 
-  return true;
+  திரும்பு உண்மை;
 }
 
-static bool
+நிலையான தருக்க
 _hb_cairo_get_color_stops (hb_cairo_context_t *c,
-			   hb_color_line_t *color_line,
-			   unsigned *count,
+			   hb_color_வரி_t *color_வரி,
+			   unsigned *மொத்தம்,
 			   hb_color_stop_t **stops)
 {
-  unsigned len = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-  bool allocated = false;
-  if (unlikely (!len))
-    return false;
-  if (len > *count)
+  unsigned len = hb_color_வரி_get_color_stops (color_வரி, 0, nullptr, nullptr);
+  தருக்க allocated = பொய்;
+  எனில் (unlikely (!len))
+    திரும்பு பொய்;
+  எனில் (len > *மொத்தம்)
   {
-    *stops = (hb_color_stop_t *) hb_malloc2 (len, sizeof (hb_color_stop_t));
-    if (unlikely (!*stops))
-      return false;
-    allocated = true;
+    *stops = (hb_color_stop_t *) hb_malloc2 (len, அளவு (hb_color_stop_t));
+    எனில் (unlikely (!*stops))
+      திரும்பு பொய்;
+    allocated = உண்மை;
   }
-  hb_color_line_get_color_stops (color_line, 0, &len, *stops);
-  if (unlikely (!len))
+  hb_color_வரி_get_color_stops (color_வரி, 0, &len, *stops);
+  எனில் (unlikely (!len))
   {
-    if (allocated)
+    எனில் (allocated)
     {
       hb_free (*stops);
       *stops = nullptr;
     }
-    return false;
+    திரும்பு பொய்;
   }
-  for (unsigned i = 0; i < len; i++)
-    if ((*stops)[i].is_foreground)
+  க்கு (unsigned i = 0; i < len; i++)
+    எனில் ((*stops)[i].is_foreground)
     {
 #ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
-      double r, g, b, a;
+      இரட்டை r, g, b, a;
       cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-      if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+      எனில் (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
         (*stops)[i].color = HB_COLOR (round (b * 255.), round (g * 255.), round (r * 255.),
                                       round (a * hb_color_get_alpha ((*stops)[i].color)));
-      else
+      இல்லையெனில்
 #endif
         (*stops)[i].color = HB_COLOR (0, 0, 0, hb_color_get_alpha ((*stops)[i].color));
     }
 
-  *count = len;
-  return true;
+  *மொத்தம் = len;
+  திரும்பு உண்மை;
 }
 
-void
+வெறுமை
 _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0,
-				 float x1, float y1,
-				 float x2, float y2)
+				 hb_color_வரி_t *color_வரி,
+				 தசம x0, தசம y0,
+				 தசம x1, தசம y1,
+				 தசம x2, தசம y2)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned முழு len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
-  float xx0, yy0, xx1, yy1;
-  float xxx0, yyy0, xxx1, yyy1;
-  float min, max;
+  தசம xx0, yy0, xx1, yy1;
+  தசம xxx0, yyy0, xxx1, yyy1;
+  தசம min, max;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
-  hb_paint_normalize_color_line (stops, len, &min, &max);
+  எனில் (unlikely (!_hb_cairo_get_color_stops (c, color_வரி, &len, &stops)))
+    திரும்பு;
+  hb_paint_normalize_color_வரி (stops, len, &min, &max);
 
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &xx0, &yy0, &xx1, &yy1);
 
@@ -298,16 +298,16 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
   xxx1 = xx0 + max * (xx1 - xx0);
   yyy1 = yy0 + max * (yy1 - yy0);
 
-  pattern = cairo_pattern_create_linear ((double) xxx0, (double) yyy0, (double) xxx1, (double) yyy1);
-  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
-  for (unsigned int i = 0; i < len; i++)
+  pattern = cairo_pattern_create_linear ((இரட்டை) xxx0, (இரட்டை) yyy0, (இரட்டை) xxx1, (இரட்டை) yyy1);
+  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_வரி_get_extend (color_வரி)));
+  க்கு (unsigned முழு i = 0; i < len; i++)
     {
-      double r, g, b, a;
+      இரட்டை r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
       g = hb_color_get_green (stops[i].color) / 255.;
       b = hb_color_get_blue (stops[i].color) / 255.;
       a = hb_color_get_alpha (stops[i].color) / 255.;
-      cairo_pattern_add_color_stop_rgba (pattern, (double) stops[i].offset, r, g, b, a);
+      cairo_pattern_add_color_stop_rgba (pattern, (இரட்டை) stops[i].offset, r, g, b, a);
     }
 
   cairo_set_source (cr, pattern);
@@ -315,29 +315,29 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  எனில் (stops != stops_)
     hb_free (stops);
 }
 
-void
+வெறுமை
 _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0, float r0,
-				 float x1, float y1, float r1)
+				 hb_color_வரி_t *color_வரி,
+				 தசம x0, தசம y0, தசம r0,
+				 தசம x1, தசம y1, தசம r1)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned முழு len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
-  float min, max;
-  float xx0, yy0, xx1, yy1;
-  float rr0, rr1;
+  தசம min, max;
+  தசம xx0, yy0, xx1, yy1;
+  தசம rr0, rr1;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
-  hb_paint_normalize_color_line (stops, len, &min, &max);
+  எனில் (unlikely (!_hb_cairo_get_color_stops (c, color_வரி, &len, &stops)))
+    திரும்பு;
+  hb_paint_normalize_color_வரி (stops, len, &min, &max);
 
   xx0 = x0 + min * (x1 - x0);
   yy0 = y0 + min * (y1 - y0);
@@ -346,17 +346,17 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   rr0 = r0 + min * (r1 - r0);
   rr1 = r0 + max * (r1 - r0);
 
-  pattern = cairo_pattern_create_radial ((double) xx0, (double) yy0, (double) rr0, (double) xx1, (double) yy1, (double) rr1);
-  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
+  pattern = cairo_pattern_create_radial ((இரட்டை) xx0, (இரட்டை) yy0, (இரட்டை) rr0, (இரட்டை) xx1, (இரட்டை) yy1, (இரட்டை) rr1);
+  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_வரி_get_extend (color_வரி)));
 
-  for (unsigned int i = 0; i < len; i++)
+  க்கு (unsigned முழு i = 0; i < len; i++)
     {
-      double r, g, b, a;
+      இரட்டை r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
       g = hb_color_get_green (stops[i].color) / 255.;
       b = hb_color_get_blue (stops[i].color) / 255.;
       a = hb_color_get_alpha (stops[i].color) / 255.;
-      cairo_pattern_add_color_stop_rgba (pattern, (double) stops[i].offset, r, g, b, a);
+      cairo_pattern_add_color_stop_rgba (pattern, (இரட்டை) stops[i].offset, r, g, b, a);
     }
 
   cairo_set_source (cr, pattern);
@@ -364,21 +364,21 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  எனில் (stops != stops_)
     hb_free (stops);
 }
 
-typedef struct {
-  float x, y;
+வகைவரை கட்டமைப்பு {
+  தசம x, y;
 } hb_cairo_point_t;
 
-static inline float
-_hb_cairo_interpolate (float f0, float f1, float f)
+நிலையான உள்வரி தசம
+_hb_cairo_interpolate (தசம f0, தசம f1, தசம f)
 {
-  return f0 + f * (f1 - f0);
+  திரும்பு f0 + f * (f1 - f0);
 }
 
-static inline void
+நிலையான உள்வரி வெறுமை
 _hb_cairo_premultiply (hb_cairo_color_t *c)
 {
   c->r *= c->a;
@@ -386,10 +386,10 @@ _hb_cairo_premultiply (hb_cairo_color_t *c)
   c->b *= c->a;
 }
 
-static inline void
+நிலையான உள்வரி வெறுமை
 _hb_cairo_unpremultiply (hb_cairo_color_t *c)
 {
-  if (c->a != 0.f)
+  எனில் (c->a != 0.f)
   {
      c->r /= c->a;
      c->g /= c->a;
@@ -397,8 +397,8 @@ _hb_cairo_unpremultiply (hb_cairo_color_t *c)
   }
 }
 
-static void
-_hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, float k, hb_cairo_color_t *c)
+நிலையான வெறுமை
+_hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, தசம k, hb_cairo_color_t *c)
 {
   // According to the COLR specification, gradients
   // should be interpolated in premultiplied form
@@ -411,98 +411,98 @@ _hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, float 
   _hb_cairo_unpremultiply (c);
 }
 
-static inline float
+நிலையான உள்வரி தசம
 _hb_cairo_dot (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return p.x * q.x + p.y * q.y;
+  திரும்பு p.x * q.x + p.y * q.y;
 }
 
-static inline hb_cairo_point_t
+நிலையான உள்வரி hb_cairo_point_t
 _hb_cairo_normalize (hb_cairo_point_t p)
 {
-  float len = sqrtf (_hb_cairo_dot (p, p));
+  தசம len = sqrtf (_hb_cairo_dot (p, p));
 
-  return hb_cairo_point_t { p.x / len, p.y / len };
+  திரும்பு hb_cairo_point_t { p.x / len, p.y / len };
 }
 
-static inline hb_cairo_point_t
+நிலையான உள்வரி hb_cairo_point_t
 _hb_cairo_sum (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return hb_cairo_point_t { p.x + q.x, p.y + q.y };
+  திரும்பு hb_cairo_point_t { p.x + q.x, p.y + q.y };
 }
 
-static inline hb_cairo_point_t
+நிலையான உள்வரி hb_cairo_point_t
 _hb_cairo_difference (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return hb_cairo_point_t { p.x - q.x, p.y - q.y };
+  திரும்பு hb_cairo_point_t { p.x - q.x, p.y - q.y };
 }
 
-static inline hb_cairo_point_t
-_hb_cairo_scale (hb_cairo_point_t p, float f)
+நிலையான உள்வரி hb_cairo_point_t
+_hb_cairo_scale (hb_cairo_point_t p, தசம f)
 {
-  return hb_cairo_point_t { p.x * f, p.y * f };
+  திரும்பு hb_cairo_point_t { p.x * f, p.y * f };
 }
 
-typedef struct {
+வகைவரை கட்டமைப்பு {
   hb_cairo_point_t center, p0, c0, c1, p1;
   hb_cairo_color_t color0, color1;
 } hb_cairo_patch_t;
 
-static void
+நிலையான வெறுமை
 _hb_cairo_add_patch (cairo_pattern_t *pattern, hb_cairo_point_t *center, hb_cairo_patch_t *p)
 {
   cairo_mesh_pattern_begin_patch (pattern);
-  cairo_mesh_pattern_move_to (pattern, (double) center->x, (double) center->y);
-  cairo_mesh_pattern_line_to (pattern, (double) p->p0.x, (double) p->p0.y);
+  cairo_mesh_pattern_move_to (pattern, (இரட்டை) center->x, (இரட்டை) center->y);
+  cairo_mesh_pattern_வரி_to (pattern, (இரட்டை) p->p0.x, (இரட்டை) p->p0.y);
   cairo_mesh_pattern_curve_to (pattern,
-                               (double) p->c0.x, (double) p->c0.y,
-                               (double) p->c1.x, (double) p->c1.y,
-                               (double) p->p1.x, (double) p->p1.y);
-  cairo_mesh_pattern_line_to (pattern, (double) center->x, (double) center->y);
+                               (இரட்டை) p->c0.x, (இரட்டை) p->c0.y,
+                               (இரட்டை) p->c1.x, (இரட்டை) p->c1.y,
+                               (இரட்டை) p->p1.x, (இரட்டை) p->p1.y);
+  cairo_mesh_pattern_வரி_to (pattern, (இரட்டை) center->x, (இரட்டை) center->y);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 0,
-                                            (double) p->color0.r,
-                                            (double) p->color0.g,
-                                            (double) p->color0.b,
-                                            (double) p->color0.a);
+                                            (இரட்டை) p->color0.r,
+                                            (இரட்டை) p->color0.g,
+                                            (இரட்டை) p->color0.b,
+                                            (இரட்டை) p->color0.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 1,
-                                            (double) p->color0.r,
-                                            (double) p->color0.g,
-                                            (double) p->color0.b,
-                                            (double) p->color0.a);
+                                            (இரட்டை) p->color0.r,
+                                            (இரட்டை) p->color0.g,
+                                            (இரட்டை) p->color0.b,
+                                            (இரட்டை) p->color0.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 2,
-                                            (double) p->color1.r,
-                                            (double) p->color1.g,
-                                            (double) p->color1.b,
-                                            (double) p->color1.a);
+                                            (இரட்டை) p->color1.r,
+                                            (இரட்டை) p->color1.g,
+                                            (இரட்டை) p->color1.b,
+                                            (இரட்டை) p->color1.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 3,
-                                            (double) p->color1.r,
-                                            (double) p->color1.g,
-                                            (double) p->color1.b,
-                                            (double) p->color1.a);
+                                            (இரட்டை) p->color1.r,
+                                            (இரட்டை) p->color1.g,
+                                            (இரட்டை) p->color1.b,
+                                            (இரட்டை) p->color1.a);
   cairo_mesh_pattern_end_patch (pattern);
 }
 
 #define MAX_ANGLE (HB_PI / 8.f)
 
-static void
-_hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
-				       float a0, hb_cairo_color_t *c0,
-				       float a1, hb_cairo_color_t *c1,
+நிலையான வெறுமை
+_hb_cairo_add_sweep_gradient_patches1 (தசம cx, தசம cy, தசம radius,
+				       தசம a0, hb_cairo_color_t *c0,
+				       தசம a1, hb_cairo_color_t *c1,
 				       cairo_pattern_t *pattern)
 {
   hb_cairo_point_t center = hb_cairo_point_t { cx, cy };
-  int num_splits;
+  முழு இலக்கம்_splits;
   hb_cairo_point_t p0;
   hb_cairo_color_t color0, color1;
 
-  num_splits = ceilf (fabsf (a1 - a0) / MAX_ANGLE);
+  இலக்கம்_splits = ceilf (fabsf (a1 - a0) / MAX_ANGLE);
   p0 = hb_cairo_point_t { cosf (a0), sinf (a0) };
   color0 = *c0;
 
-  for (int a = 0; a < num_splits; a++)
+  க்கு (முழு a = 0; a < இலக்கம்_splits; a++)
     {
-      float k = (a + 1.) / num_splits;
-      float angle1;
+      தசம k = (a + 1.) / இலக்கம்_splits;
+      தசம angle1;
       hb_cairo_point_t p1;
       hb_cairo_point_t A, U;
       hb_cairo_point_t C0, C1;
@@ -533,10 +533,10 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
     }
 }
 
-static inline hb_cairo_color_t
+நிலையான உள்வரி hb_cairo_color_t
 _hb_cairo_color_from_hb_color (hb_color_t c)
 {
-  return {
+  திரும்பு {
     hb_color_get_red   (c) / 255.f,
     hb_color_get_green (c) / 255.f,
     hb_color_get_blue  (c) / 255.f,
@@ -544,15 +544,15 @@ _hb_cairo_color_from_hb_color (hb_color_t c)
   };
 }
 
-struct _hb_cairo_sweep_patch_ctx {
-  float cx, cy, radius;
+கட்டமைப்பு _hb_cairo_sweep_patch_ctx {
+  தசம cx, cy, radius;
   cairo_pattern_t *pattern;
 };
 
-static void
-_hb_cairo_sweep_emit_patch (float a0, hb_color_t c0,
-			    float a1, hb_color_t c1,
-			    void *user_data)
+நிலையான வெறுமை
+_hb_cairo_sweep_emit_patch (தசம a0, hb_color_t c0,
+			    தசம a1, hb_color_t c1,
+			    வெறுமை *user_data)
 {
   auto *ctx = (_hb_cairo_sweep_patch_ctx *) user_data;
   hb_cairo_color_t cc0 = _hb_cairo_color_from_hb_color (c0);
@@ -562,14 +562,14 @@ _hb_cairo_sweep_emit_patch (float a0, hb_color_t c0,
 					 ctx->pattern);
 }
 
-static void
+நிலையான வெறுமை
 _hb_cairo_add_sweep_gradient_patches (hb_color_stop_t *stops,
-				      unsigned int n_stops,
+				      unsigned முழு n_stops,
 				      cairo_extend_t extend,
-				      float cx, float cy,
-				      float radius,
-				      float start_angle,
-				      float end_angle,
+				      தசம cx, தசம cy,
+				      தசம radius,
+				      தசம start_angle,
+				      தசம end_angle,
 				      cairo_pattern_t *pattern)
 {
   hb_paint_extend_t hb_extend =
@@ -583,37 +583,37 @@ _hb_cairo_add_sweep_gradient_patches (hb_color_stop_t *stops,
 				 _hb_cairo_sweep_emit_patch, &ctx);
 }
 
-void
+வெறுமை
 _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
-				hb_color_line_t *color_line,
-				float cx, float cy,
-				float start_angle,
-				float end_angle)
+				hb_color_வரி_t *color_வரி,
+				தசம cx, தசம cy,
+				தசம start_angle,
+				தசம end_angle)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned முழு len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   cairo_extend_t extend;
-  double x1, y1, x2, y2;
-  float max_x, max_y, radius;
+  இரட்டை x1, y1, x2, y2;
+  தசம max_x, max_y, radius;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  எனில் (unlikely (!_hb_cairo_get_color_stops (c, color_வரி, &len, &stops)))
+    திரும்பு;
 
   hb_array_t<hb_color_stop_t> (stops, len)
-    .qsort ([] (const hb_color_stop_t &a, const hb_color_stop_t &b) {
-      return (a.offset > b.offset) - (a.offset < b.offset);
+    .qsort ([] (மாறிலி hb_color_stop_t &a, மாறிலி hb_color_stop_t &b) {
+      திரும்பு (a.offset > b.offset) - (a.offset < b.offset);
     });
 
   cairo_clip_extents (cr, &x1, &y1, &x2, &y2);
-  max_x = (float) hb_max ((x1 - (double) cx) * (x1 - (double) cx), (x2 - (double) cx) * (x2 - (double) cx));
-  max_y = (float) hb_max ((y1 - (double) cy) * (y1 - (double) cy), (y2 - (double) cy) * (y2 - (double) cy));
+  max_x = (தசம) hb_max ((x1 - (இரட்டை) cx) * (x1 - (இரட்டை) cx), (x2 - (இரட்டை) cx) * (x2 - (இரட்டை) cx));
+  max_y = (தசம) hb_max ((y1 - (இரட்டை) cy) * (y1 - (இரட்டை) cy), (y2 - (இரட்டை) cy) * (y2 - (இரட்டை) cy));
   radius = sqrtf (max_x + max_y);
 
-  extend = hb_cairo_extend (hb_color_line_get_extend (color_line));
+  extend = hb_cairo_extend (hb_color_வரி_get_extend (color_வரி));
   pattern = cairo_pattern_create_mesh ();
 
   _hb_cairo_add_sweep_gradient_patches (stops, len, extend, cx, cy,
@@ -624,7 +624,7 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  எனில் (stops != stops_)
     hb_free (stops);
 }
 

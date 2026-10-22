@@ -27,8 +27,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-buffer.hh"
-#include "hb-utf.hh"
+#அந்தர்பாவ "hb-buffer.hh"
+#அந்தர்பாவ "hb-utf.hh"
 
 
 /**
@@ -61,10 +61,10 @@
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_segment_properties_equal (const hb_segment_properties_t *a,
-			     const hb_segment_properties_t *b)
+hb_segment_properties_equal (மாறிலி hb_segment_properties_t *a,
+			     மாறிலி hb_segment_properties_t *b)
 {
-  return a->direction == b->direction &&
+  திரும்பு a->direction == b->direction &&
 	 a->script    == b->script    &&
 	 a->language  == b->language  &&
 	 a->reserved1 == b->reserved1 &&
@@ -83,11 +83,11 @@ hb_segment_properties_equal (const hb_segment_properties_t *a,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_segment_properties_hash (const hb_segment_properties_t *p)
+unsigned முழு
+hb_segment_properties_hash (மாறிலி hb_segment_properties_t *p)
 {
-  return ((unsigned int) p->direction * 31 +
-	  (unsigned int) p->script) * 31 +
+  திரும்பு ((unsigned முழு) p->direction * 31 +
+	  (unsigned முழு) p->script) * 31 +
 	 (intptr_t) (p->language);
 }
 
@@ -109,26 +109,26 @@ hb_segment_properties_hash (const hb_segment_properties_t *p)
  *
  * Since: 3.3.0
  **/
-void
+வெறுமை
 hb_segment_properties_overlay (hb_segment_properties_t *p,
-			       const hb_segment_properties_t *src)
+			       மாறிலி hb_segment_properties_t *src)
 {
-  if (unlikely (!p || !src))
-    return;
+  எனில் (unlikely (!p || !src))
+    திரும்பு;
 
-  if (!p->direction)
+  எனில் (!p->direction)
     p->direction = src->direction;
 
-  if (p->direction != src->direction)
-    return;
+  எனில் (p->direction != src->direction)
+    திரும்பு;
 
-  if (!p->script)
+  எனில் (!p->script)
     p->script = src->script;
 
-  if (p->script != src->script)
-    return;
+  எனில் (p->script != src->script)
+    திரும்பு;
 
-  if (!p->language)
+  எனில் (!p->language)
     p->language = src->language;
 }
 
@@ -155,87 +155,87 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
 
 /* Internal API */
 
-bool
-hb_buffer_t::enlarge (unsigned int size)
+தருக்க
+hb_buffer_t::enlarge (unsigned முழு size)
 {
-  if (unlikely (size > max_len))
+  எனில் (unlikely (size > max_len))
   {
-    successful = false;
-    return false;
+    successful = பொய்;
+    திரும்பு பொய்;
   }
 
-  if (unlikely (!successful))
-    return false;
+  எனில் (unlikely (!successful))
+    திரும்பு பொய்;
 
-  unsigned int new_allocated = allocated;
+  unsigned முழு new_allocated = allocated;
   hb_glyph_position_t *new_pos = nullptr;
   hb_glyph_info_t *new_info = nullptr;
-  bool separate_out = out_info != info;
+  தருக்க separate_out = out_info != info;
 
-  if (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
-    goto done;
+  எனில் (unlikely (hb_unsigned_mul_overflows (size, அளவு (info[0]))))
+    செல் done;
 
-  while (size >= new_allocated)
+  போது (size >= new_allocated)
     new_allocated += (new_allocated >> 1) + 32;
 
   unsigned new_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
-    goto done;
+  எனில் (unlikely (hb_unsigned_mul_overflows (new_allocated, அளவு (info[0]), &new_bytes)))
+    செல் done;
 
-  static_assert (sizeof (info[0]) == sizeof (pos[0]), "");
+  static_assert (அளவு (info[0]) == அளவு (pos[0]), "");
   new_pos = (hb_glyph_position_t *) hb_realloc (pos, new_bytes);
   new_info = (hb_glyph_info_t *) hb_realloc (info, new_bytes);
 
 done:
-  if (unlikely (!new_pos || !new_info))
-    successful = false;
+  எனில் (unlikely (!new_pos || !new_info))
+    successful = பொய்;
 
-  if (likely (new_pos))
+  எனில் (likely (new_pos))
     pos = new_pos;
 
-  if (likely (new_info))
+  எனில் (likely (new_info))
     info = new_info;
 
   out_info = separate_out ? (hb_glyph_info_t *) pos : info;
-  if (likely (successful))
+  எனில் (likely (successful))
     allocated = new_allocated;
 
-  return likely (successful);
+  திரும்பு likely (successful);
 }
 
-bool
-hb_buffer_t::make_room_for (unsigned int num_in,
-			    unsigned int num_out)
+தருக்க
+hb_buffer_t::make_room_for (unsigned முழு இலக்கம்_in,
+			    unsigned முழு இலக்கம்_out)
 {
-  if (unlikely (!ensure (out_len + num_out))) return false;
+  எனில் (unlikely (!ensure (out_len + இலக்கம்_out))) திரும்பு பொய்;
 
-  if (out_info == info &&
-      out_len + num_out > idx + num_in)
+  எனில் (out_info == info &&
+      out_len + இலக்கம்_out > idx + இலக்கம்_in)
   {
-    assert (have_output);
+    ப்ரதிஜ்ஞா (have_output);
 
     out_info = (hb_glyph_info_t *) pos;
-    hb_memcpy (out_info, info, out_len * sizeof (out_info[0]));
+    hb_memcpy (out_info, info, out_len * அளவு (out_info[0]));
   }
 
-  return true;
+  திரும்பு உண்மை;
 }
 
-bool
-hb_buffer_t::shift_forward (unsigned int count)
+தருக்க
+hb_buffer_t::shift_forward (unsigned முழு மொத்தம்)
 {
-  assert (have_output);
-  if (unlikely (!ensure (len + count))) return false;
+  ப்ரதிஜ்ஞா (have_output);
+  எனில் (unlikely (!ensure (len + மொத்தம்))) திரும்பு பொய்;
 
   max_ops -= len - idx;
-  if (unlikely (max_ops < 0))
+  எனில் (unlikely (max_ops < 0))
   {
-    successful = false;
-    return false;
+    successful = பொய்;
+    திரும்பு பொய்;
   }
 
-  memmove (info + idx + count, info + idx, (len - idx) * sizeof (info[0]));
-  if (idx + count > len)
+  memmove (info + idx + மொத்தம், info + idx, (len - idx) * அளவு (info[0]));
+  எனில் (idx + மொத்தம் > len)
   {
     /* Under memory failure we might expose this area.  At least
      * clean it up.  Oh well...
@@ -243,34 +243,34 @@ hb_buffer_t::shift_forward (unsigned int count)
      * Ideally, we should at least set Default_Ignorable bits on
      * these, as well as consistent cluster values.  But the former
      * is layering violation... */
-    hb_memset (info + len, 0, (idx + count - len) * sizeof (info[0]));
+    hb_memset (info + len, 0, (idx + மொத்தம் - len) * அளவு (info[0]));
   }
-  len += count;
-  idx += count;
+  len += மொத்தம்;
+  idx += மொத்தம்;
 
-  return true;
+  திரும்பு உண்மை;
 }
 
 hb_buffer_t::scratch_buffer_t *
-hb_buffer_t::get_scratch_buffer (unsigned int *size)
+hb_buffer_t::get_scratch_buffer (unsigned முழு *size)
 {
-  have_output = false;
-  have_positions = false;
+  have_output = பொய்;
+  have_positions = பொய்;
 
   out_len = 0;
   out_info = info;
 
-  assert ((uintptr_t) pos % sizeof (scratch_buffer_t) == 0);
-  *size = allocated * sizeof (pos[0]) / sizeof (scratch_buffer_t);
-  return (scratch_buffer_t *) (void *) pos;
+  ப்ரதிஜ்ஞா ((uintptr_t) pos % அளவு (scratch_buffer_t) == 0);
+  *size = allocated * அளவு (pos[0]) / அளவு (scratch_buffer_t);
+  திரும்பு (scratch_buffer_t *) (வெறுமை *) pos;
 }
 
 
 
 /* HarfBuzz-Internal API */
 
-void
-hb_buffer_t::similar (const hb_buffer_t &src)
+வெறுமை
+hb_buffer_t::similar (மாறிலி hb_buffer_t &src)
 {
   hb_unicode_funcs_destroy (unicode);
   unicode = hb_unicode_funcs_reference (src.unicode);
@@ -282,7 +282,7 @@ hb_buffer_t::similar (const hb_buffer_t &src)
   not_found_variation_selector = src.not_found_variation_selector;
 }
 
-void
+வெறுமை
 hb_buffer_t::reset ()
 {
   hb_unicode_funcs_destroy (unicode);
@@ -297,24 +297,24 @@ hb_buffer_t::reset ()
   clear ();
 }
 
-void
+வெறுமை
 hb_buffer_t::clear ()
 {
   content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
   hb_segment_properties_t default_props = HB_SEGMENT_PROPERTIES_DEFAULT;
   props = default_props;
 
-  successful = true;
-  have_output = false;
-  have_positions = false;
+  successful = உண்மை;
+  have_output = பொய்;
+  have_positions = பொய்;
 
   idx = 0;
   len = 0;
   out_len = 0;
   out_info = info;
 
-  hb_memset (context, 0, sizeof context);
-  hb_memset (context_len, 0, sizeof context_len);
+  hb_memset (context, 0, அளவு context);
+  hb_memset (context_len, 0, அளவு context_len);
 
   deallocate_var_all ();
   serial = 0;
@@ -322,23 +322,23 @@ hb_buffer_t::clear ()
   scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
 }
 
-void
+வெறுமை
 hb_buffer_t::enter ()
 {
   deallocate_var_all ();
   serial = 0;
   scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
   unsigned mul;
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
+  எனில் (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
   {
     max_len = hb_max (mul, (unsigned) HB_BUFFER_MAX_LEN_MIN);
   }
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
+  எனில் (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
   {
     max_ops = hb_max (mul, (unsigned) HB_BUFFER_MAX_OPS_MIN);
   }
 }
-void
+வெறுமை
 hb_buffer_t::leave ()
 {
   max_len = HB_BUFFER_MAX_LEN_DEFAULT;
@@ -348,17 +348,17 @@ hb_buffer_t::leave ()
 }
 
 
-void
+வெறுமை
 hb_buffer_t::add (hb_codepoint_t  codepoint,
-		  unsigned int    cluster)
+		  unsigned முழு    cluster)
 {
   hb_glyph_info_t *glyph;
 
-  if (unlikely (!ensure (len + 1))) return;
+  எனில் (unlikely (!ensure (len + 1))) திரும்பு;
 
   glyph = &info[len];
 
-  hb_memset (glyph, 0, sizeof (*glyph));
+  hb_memset (glyph, 0, அளவு (*glyph));
   glyph->codepoint = codepoint;
   glyph->mask = 0;
   glyph->cluster = cluster;
@@ -366,139 +366,139 @@ hb_buffer_t::add (hb_codepoint_t  codepoint,
   len++;
 }
 
-void
-hb_buffer_t::add_info (const hb_glyph_info_t &glyph_info)
+வெறுமை
+hb_buffer_t::add_info (மாறிலி hb_glyph_info_t &glyph_info)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  எனில் (unlikely (!ensure (len + 1))) திரும்பு;
 
   info[len] = glyph_info;
 
   len++;
 }
-void
-hb_buffer_t::add_info_and_pos (const hb_glyph_info_t &glyph_info,
-			       const hb_glyph_position_t &glyph_pos)
+வெறுமை
+hb_buffer_t::add_info_and_pos (மாறிலி hb_glyph_info_t &glyph_info,
+			       மாறிலி hb_glyph_position_t &glyph_pos)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  எனில் (unlikely (!ensure (len + 1))) திரும்பு;
 
   info[len] = glyph_info;
-  assert (have_positions);
+  ப்ரதிஜ்ஞா (have_positions);
   pos[len] = glyph_pos;
 
   len++;
 }
 
 
-void
+வெறுமை
 hb_buffer_t::clear_output ()
 {
-  have_output = true;
-  have_positions = false;
+  have_output = உண்மை;
+  have_positions = பொய்;
 
   idx = 0;
   out_len = 0;
   out_info = info;
 }
 
-void
+வெறுமை
 hb_buffer_t::clear_positions ()
 {
-  have_output = false;
-  have_positions = true;
+  have_output = பொய்;
+  have_positions = உண்மை;
 
   out_len = 0;
   out_info = info;
 
-  hb_memset (pos, 0, sizeof (pos[0]) * len);
+  hb_memset (pos, 0, அளவு (pos[0]) * len);
 }
 
-bool
-hb_buffer_t::sync ()
+தருக்க
+hb_buffer_t::ஒத்திசை ()
 {
-  bool ret = false;
+  தருக்க ret = பொய்;
 
-  assert (have_output);
+  ப்ரதிஜ்ஞா (have_output);
 
-  assert (idx <= len);
+  ப்ரதிஜ்ஞா (idx <= len);
 
-  if (unlikely (!successful || !next_glyphs (len - idx)))
-    goto reset;
+  எனில் (unlikely (!successful || !next_glyphs (len - idx)))
+    செல் reset;
 
-  if (out_info != info)
+  எனில் (out_info != info)
   {
     pos = (hb_glyph_position_t *) info;
     info = out_info;
   }
   len = out_len;
-  ret = true;
+  ret = உண்மை;
 
 reset:
-  have_output = false;
+  have_output = பொய்;
   out_len = 0;
   out_info = info;
   idx = 0;
 
-  return ret;
+  திரும்பு ret;
 }
 
-int
+முழு
 hb_buffer_t::sync_so_far ()
 {
-  bool had_output = have_output;
+  தருக்க had_output = have_output;
   unsigned out_i = out_len;
   unsigned i = idx;
   unsigned old_idx = idx;
 
-  if (sync ())
+  எனில் (ஒத்திசை ())
     idx = out_i;
-  else
+  இல்லையெனில்
     idx = i;
 
-  if (had_output)
+  எனில் (had_output)
   {
-    have_output = true;
+    have_output = உண்மை;
     out_len = idx;
   }
 
-  assert (idx <= len);
+  ப்ரதிஜ்ஞா (idx <= len);
 
-  return idx - old_idx;
+  திரும்பு idx - old_idx;
 }
 
-bool
-hb_buffer_t::move_to (unsigned int i)
+தருக்க
+hb_buffer_t::move_to (unsigned முழு i)
 {
-  if (!have_output)
+  எனில் (!have_output)
   {
-    assert (i <= len);
+    ப்ரதிஜ்ஞா (i <= len);
     idx = i;
-    return true;
+    திரும்பு உண்மை;
   }
-  if (unlikely (!successful))
-    return false;
+  எனில் (unlikely (!successful))
+    திரும்பு பொய்;
 
-  assert (i <= out_len + (len - idx));
+  ப்ரதிஜ்ஞா (i <= out_len + (len - idx));
 
-  if (out_len < i)
+  எனில் (out_len < i)
   {
-    unsigned int count = i - out_len;
-    if (unlikely (!make_room_for (count, count))) return false;
+    unsigned முழு மொத்தம் = i - out_len;
+    எனில் (unlikely (!make_room_for (மொத்தம், மொத்தம்))) திரும்பு பொய்;
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= மொத்தம்;
+    எனில் (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = பொய்;
+      திரும்பு பொய்;
     }
 
-    memmove (out_info + out_len, info + idx, count * sizeof (out_info[0]));
-    idx += count;
-    out_len += count;
+    memmove (out_info + out_len, info + idx, மொத்தம் * அளவு (out_info[0]));
+    idx += மொத்தம்;
+    out_len += மொத்தம்;
   }
-  else if (out_len > i)
+  இல்லையெனில் எனில் (out_len > i)
   {
     /* Tricky part: rewinding... */
-    unsigned int count = out_len - i;
+    unsigned முழு மொத்தம் = out_len - i;
 
     /* This will blow in our face if memory allocation fails later
      * in this same lookup...
@@ -507,191 +507,191 @@ hb_buffer_t::move_to (unsigned int i)
      * But that would leave empty slots in the buffer in case of allocation
      * failures.  See comments in shift_forward().  This can cause O(N^2)
      * behavior more severely than adding 32 empty slots can... */
-    if (unlikely (idx < count && !shift_forward (count - idx))) return false;
+    எனில் (unlikely (idx < மொத்தம் && !shift_forward (மொத்தம் - idx))) திரும்பு பொய்;
 
-    assert (idx >= count);
+    ப்ரதிஜ்ஞா (idx >= மொத்தம்);
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= மொத்தம்;
+    எனில் (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = பொய்;
+      திரும்பு பொய்;
     }
 
-    idx -= count;
-    out_len -= count;
-    memmove (info + idx, out_info + out_len, count * sizeof (out_info[0]));
+    idx -= மொத்தம்;
+    out_len -= மொத்தம்;
+    memmove (info + idx, out_info + out_len, மொத்தம் * அளவு (out_info[0]));
   }
 
-  return true;
+  திரும்பு உண்மை;
 }
 
 
-void
+வெறுமை
 hb_buffer_t::set_masks (hb_mask_t    value,
 			hb_mask_t    mask,
-			unsigned int cluster_start,
-			unsigned int cluster_end)
+			unsigned முழு cluster_start,
+			unsigned முழு cluster_end)
 {
-  if (!mask)
-    return;
+  எனில் (!mask)
+    திரும்பு;
 
   hb_mask_t not_mask = ~mask;
   value &= mask;
 
   max_ops -= len;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  எனில் (unlikely (max_ops < 0))
+    successful = பொய்;
 
-  unsigned int count = len;
+  unsigned முழு மொத்தம் = len;
 
-  if (cluster_start == 0 && cluster_end == (unsigned int) -1)
+  எனில் (cluster_start == 0 && cluster_end == (unsigned முழு) -1)
   {
-    for (unsigned int i = 0; i < count; i++)
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
       info[i].mask = (info[i].mask & not_mask) | value;
-    return;
+    திரும்பு;
   }
 
-  for (unsigned int i = 0; i < count; i++)
-    if (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
+  க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
+    எனில் (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
       info[i].mask = (info[i].mask & not_mask) | value;
 }
 
-void
-hb_buffer_t::merge_clusters_impl (unsigned int start,
-				  unsigned int end)
+வெறுமை
+hb_buffer_t::merge_clusters_impl (unsigned முழு start,
+				  unsigned முழு end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  எனில் (unlikely (max_ops < 0))
+    successful = பொய்;
 
-  unsigned int cluster = info[start].cluster;
+  unsigned முழு cluster = info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  க்கு (unsigned முழு i = start + 1; i < end; i++)
     cluster = hb_min (cluster, info[i].cluster);
 
   /* Extend end */
-  if (cluster != info[end - 1].cluster)
-    while (end < len && info[end - 1].cluster == info[end].cluster)
+  எனில் (cluster != info[end - 1].cluster)
+    போது (end < len && info[end - 1].cluster == info[end].cluster)
       end++;
 
   /* Extend start */
-  if (cluster != info[start].cluster)
-    while (idx < start && info[start - 1].cluster == info[start].cluster)
+  எனில் (cluster != info[start].cluster)
+    போது (idx < start && info[start - 1].cluster == info[start].cluster)
       start--;
 
   /* If we hit the start of buffer, continue in out-buffer. */
-  if (idx == start && info[start].cluster != cluster)
-    for (unsigned int i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
+  எனில் (idx == start && info[start].cluster != cluster)
+    க்கு (unsigned முழு i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
       set_cluster (out_info[i - 1], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  க்கு (unsigned முழு i = start; i < end; i++)
     set_cluster (info[i], cluster);
 }
-void
-hb_buffer_t::merge_out_clusters_impl (unsigned int start,
-				      unsigned int end)
+வெறுமை
+hb_buffer_t::merge_out_clusters_impl (unsigned முழு start,
+				      unsigned முழு end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  எனில் (unlikely (max_ops < 0))
+    successful = பொய்;
 
-  unsigned int cluster = out_info[start].cluster;
+  unsigned முழு cluster = out_info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  க்கு (unsigned முழு i = start + 1; i < end; i++)
     cluster = hb_min (cluster, out_info[i].cluster);
 
   /* Extend start */
-  while (start && out_info[start - 1].cluster == out_info[start].cluster)
+  போது (start && out_info[start - 1].cluster == out_info[start].cluster)
     start--;
 
   /* Extend end */
-  while (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
+  போது (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
     end++;
 
   /* If we hit the end of out-buffer, continue in buffer. */
-  if (end == out_len)
-    for (unsigned int i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
+  எனில் (end == out_len)
+    க்கு (unsigned முழு i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
       set_cluster (info[i], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  க்கு (unsigned முழு i = start; i < end; i++)
     set_cluster (out_info[i], cluster);
 }
-void
+வெறுமை
 hb_buffer_t::delete_glyph ()
 {
   /* The logic here is duplicated in hb_ot_hide_default_ignorables(). */
 
-  unsigned int cluster = info[idx].cluster;
-  if ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
+  unsigned முழு cluster = info[idx].cluster;
+  எனில் ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
       (out_len && cluster == out_info[out_len - 1].cluster))
   {
     /* Cluster survives; do nothing. */
-    goto done;
+    செல் done;
   }
 
-  if (out_len)
+  எனில் (out_len)
   {
     /* Merge cluster backward. */
-    if (cluster < out_info[out_len - 1].cluster)
+    எனில் (cluster < out_info[out_len - 1].cluster)
     {
-      unsigned int mask = info[idx].mask;
-      unsigned int old_cluster = out_info[out_len - 1].cluster;
-      for (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
+      unsigned முழு mask = info[idx].mask;
+      unsigned முழு old_cluster = out_info[out_len - 1].cluster;
+      க்கு (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
 	set_cluster (out_info[i - 1], cluster, mask);
     }
-    goto done;
+    செல் done;
   }
 
-  if (idx + 1 < len)
+  எனில் (idx + 1 < len)
   {
     /* Merge cluster forward. */
     merge_clusters (idx, idx + 2);
-    goto done;
+    செல் done;
   }
 
 done:
   skip_glyph ();
 }
 
-void
-hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info))
+வெறுமை
+hb_buffer_t::delete_glyphs_inplace (தருக்க (*filter) (மாறிலி hb_glyph_info_t *info))
 {
   /* Merge clusters and delete filtered glyphs.
    * NOTE! We can't use out-buffer as we have positioning data. */
-  unsigned int j = 0;
-  unsigned int count = len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned முழு j = 0;
+  unsigned முழு மொத்தம் = len;
+  க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
   {
-    if (filter (&info[i]))
+    எனில் (filter (&info[i]))
     {
       /* Merge clusters.
        * Same logic as delete_glyph(), but for in-place removal. */
 
-      unsigned int cluster = info[i].cluster;
-      if (i + 1 < count && cluster == info[i + 1].cluster)
-	continue; /* Cluster survives; do nothing. */
+      unsigned முழு cluster = info[i].cluster;
+      எனில் (i + 1 < மொத்தம் && cluster == info[i + 1].cluster)
+	தொடர்; /* Cluster survives; do nothing. */
 
-      if (j)
+      எனில் (j)
       {
 	/* Merge cluster backward. */
-	if (cluster < info[j - 1].cluster)
+	எனில் (cluster < info[j - 1].cluster)
 	{
-	  unsigned int mask = info[i].mask;
-	  unsigned int old_cluster = info[j - 1].cluster;
-	  for (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
+	  unsigned முழு mask = info[i].mask;
+	  unsigned முழு old_cluster = info[j - 1].cluster;
+	  க்கு (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
 	    set_cluster (info[k - 1], cluster, mask);
 	}
-	continue;
+	தொடர்;
       }
 
-      if (i + 1 < count)
+      எனில் (i + 1 < மொத்தம்)
 	merge_clusters (i, i + 2); /* Merge cluster forward. */
 
-      continue;
+      தொடர்;
     }
 
-    if (j != i)
+    எனில் (j != i)
     {
       info[j] = info[i];
       pos[j] = pos[i];
@@ -701,33 +701,33 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
   len = j;
 }
 
-void
+வெறுமை
 hb_buffer_t::guess_segment_properties ()
 {
   assert_unicode ();
 
   /* If script is set to INVALID, guess from buffer contents */
-  if (props.script == HB_SCRIPT_INVALID) {
-    for (unsigned int i = 0; i < len; i++) {
+  எனில் (props.script == HB_SCRIPT_INVALID) {
+    க்கு (unsigned முழு i = 0; i < len; i++) {
       hb_script_t script = unicode->script (info[i].codepoint);
-      if (likely (script != HB_SCRIPT_COMMON &&
+      எனில் (likely (script != HB_SCRIPT_COMMON &&
 		  script != HB_SCRIPT_INHERITED &&
 		  script != HB_SCRIPT_UNKNOWN)) {
 	props.script = script;
-	break;
+	நிறுத்து;
       }
     }
   }
 
   /* If direction is set to INVALID, guess from script */
-  if (props.direction == HB_DIRECTION_INVALID) {
+  எனில் (props.direction == HB_DIRECTION_INVALID) {
     props.direction = hb_script_get_horizontal_direction (props.script);
-    if (props.direction == HB_DIRECTION_INVALID)
+    எனில் (props.direction == HB_DIRECTION_INVALID)
       props.direction = HB_DIRECTION_LTR;
   }
 
   /* If language is not set, use default language from locale */
-  if (props.language == HB_LANGUAGE_INVALID) {
+  எனில் (props.language == HB_LANGUAGE_INVALID) {
     /* TODO get_default_for_script? using $LANGUAGE */
     props.language = hb_language_get_default ();
   }
@@ -752,9 +752,9 @@ DEFINE_NULL_INSTANCE (hb_buffer_t) =
   HB_BUFFER_CONTENT_TYPE_INVALID,
   HB_SEGMENT_PROPERTIES_DEFAULT,
 
-  false, /* successful */
-  false, /* have_output */
-  true  /* have_positions */
+  பொய், /* successful */
+  பொய், /* have_output */
+  உண்மை  /* have_positions */
 
   /* Zero is good enough for everything else. */
 };
@@ -779,15 +779,15 @@ hb_buffer_create ()
 {
   hb_buffer_t *buffer;
 
-  if (!(buffer = hb_object_create<hb_buffer_t> ()))
-    return hb_buffer_get_empty ();
+  எனில் (!(buffer = hb_object_create<hb_buffer_t> ()))
+    திரும்பு hb_buffer_get_empty ();
 
   buffer->max_len = HB_BUFFER_MAX_LEN_DEFAULT;
   buffer->max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
 
   buffer->reset ();
 
-  return buffer;
+  திரும்பு buffer;
 }
 
 /**
@@ -803,13 +803,13 @@ hb_buffer_create ()
  * Since: 3.3.0
  **/
 hb_buffer_t *
-hb_buffer_create_similar (const hb_buffer_t *src)
+hb_buffer_create_similar (மாறிலி hb_buffer_t *src)
 {
   hb_buffer_t *buffer = hb_buffer_create ();
 
   buffer->similar (*src);
 
-  return buffer;
+  திரும்பு buffer;
 }
 
 /**
@@ -825,11 +825,11 @@ hb_buffer_create_similar (const hb_buffer_t *src)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_reset (hb_buffer_t *buffer)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->reset ();
 }
@@ -846,7 +846,7 @@ hb_buffer_reset (hb_buffer_t *buffer)
 hb_buffer_t *
 hb_buffer_get_empty ()
 {
-  return const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
+  திரும்பு const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
 }
 
 /**
@@ -864,7 +864,7 @@ hb_buffer_get_empty ()
 hb_buffer_t *
 hb_buffer_reference (hb_buffer_t *buffer)
 {
-  return hb_object_reference (buffer);
+  திரும்பு hb_object_reference (buffer);
 }
 
 /**
@@ -877,17 +877,17 @@ hb_buffer_reference (hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_destroy (hb_buffer_t *buffer)
 {
-  if (!hb_object_destroy (buffer)) return;
+  எனில் (!hb_object_destroy (buffer)) திரும்பு;
 
   hb_unicode_funcs_destroy (buffer->unicode);
 
   hb_free (buffer->info);
   hb_free (buffer->pos);
 #ifndef HB_NO_BUFFER_MESSAGE
-  if (buffer->message_destroy)
+  எனில் (buffer->message_destroy)
     buffer->message_destroy (buffer->message_data);
 #endif
 
@@ -910,12 +910,12 @@ hb_buffer_destroy (hb_buffer_t *buffer)
  **/
 hb_bool_t
 hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
-			 void *              data,
+			 hb_user_data_சாவி_t *key,
+			 வெறுமை *              data,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace)
 {
-  return hb_object_set_user_data (buffer, key, data, destroy, replace);
+  திரும்பு hb_object_set_user_data (buffer, key, data, destroy, replace);
 }
 
 /**
@@ -930,11 +930,11 @@ hb_buffer_set_user_data (hb_buffer_t        *buffer,
  *
  * Since: 0.9.2
  **/
-void *
-hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key)
+வெறுமை *
+hb_buffer_get_user_data (மாறிலி hb_buffer_t  *buffer,
+			 hb_user_data_சாவி_t *key)
 {
-  return hb_object_get_user_data (buffer, key);
+  திரும்பு hb_object_get_user_data (buffer, key);
 }
 
 
@@ -974,12 +974,12 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * Since: 0.9.5
  **/
-void
+வெறுமை
 hb_buffer_set_content_type (hb_buffer_t              *buffer,
 			    hb_buffer_content_type_t  content_type)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->content_type = content_type;
 }
@@ -997,9 +997,9 @@ hb_buffer_set_content_type (hb_buffer_t              *buffer,
  * Since: 0.9.5
  **/
 hb_buffer_content_type_t
-hb_buffer_get_content_type (const hb_buffer_t *buffer)
+hb_buffer_get_content_type (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->content_type;
+  திரும்பு buffer->content_type;
 }
 
 
@@ -1013,14 +1013,14 @@ hb_buffer_get_content_type (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
 			     hb_unicode_funcs_t *unicode_funcs)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
-  if (!unicode_funcs)
+  எனில் (!unicode_funcs)
     unicode_funcs = hb_unicode_funcs_get_default ();
 
   hb_unicode_funcs_reference (unicode_funcs);
@@ -1039,9 +1039,9 @@ hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
  * Since: 0.9.2
  **/
 hb_unicode_funcs_t *
-hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
+hb_buffer_get_unicode_funcs (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->unicode;
+  திரும்பு buffer->unicode;
 }
 
 /**
@@ -1059,12 +1059,12 @@ hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_set_direction (hb_buffer_t    *buffer,
 			 hb_direction_t  direction)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->props.direction = direction;
 }
@@ -1081,9 +1081,9 @@ hb_buffer_set_direction (hb_buffer_t    *buffer,
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_buffer_get_direction (const hb_buffer_t *buffer)
+hb_buffer_get_direction (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->props.direction;
+  திரும்பு buffer->props.direction;
 }
 
 /**
@@ -1103,12 +1103,12 @@ hb_buffer_get_direction (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_set_script (hb_buffer_t *buffer,
 		      hb_script_t  script)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->props.script = script;
 }
@@ -1125,9 +1125,9 @@ hb_buffer_set_script (hb_buffer_t *buffer,
  * Since: 0.9.2
  **/
 hb_script_t
-hb_buffer_get_script (const hb_buffer_t *buffer)
+hb_buffer_get_script (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->props.script;
+  திரும்பு buffer->props.script;
 }
 
 /**
@@ -1147,12 +1147,12 @@ hb_buffer_get_script (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_set_language (hb_buffer_t   *buffer,
 			hb_language_t  language)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->props.language = language;
 }
@@ -1169,9 +1169,9 @@ hb_buffer_set_language (hb_buffer_t   *buffer,
  * Since: 0.9.2
  **/
 hb_language_t
-hb_buffer_get_language (const hb_buffer_t *buffer)
+hb_buffer_get_language (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->props.language;
+  திரும்பு buffer->props.language;
 }
 
 /**
@@ -1185,12 +1185,12 @@ hb_buffer_get_language (const hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
+வெறுமை
 hb_buffer_set_segment_properties (hb_buffer_t *buffer,
-				  const hb_segment_properties_t *props)
+				  மாறிலி hb_segment_properties_t *props)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->props = *props;
 }
@@ -1204,8 +1204,8 @@ hb_buffer_set_segment_properties (hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
+வெறுமை
+hb_buffer_get_segment_properties (மாறிலி hb_buffer_t *buffer,
 				  hb_segment_properties_t *props)
 {
   *props = buffer->props;
@@ -1221,12 +1221,12 @@ hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
+வெறுமை
 hb_buffer_set_flags (hb_buffer_t       *buffer,
 		     hb_buffer_flags_t  flags)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->flags = flags;
 }
@@ -1243,9 +1243,9 @@ hb_buffer_set_flags (hb_buffer_t       *buffer,
  * Since: 0.9.7
  **/
 hb_buffer_flags_t
-hb_buffer_get_flags (const hb_buffer_t *buffer)
+hb_buffer_get_flags (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->flags;
+  திரும்பு buffer->flags;
 }
 
 /**
@@ -1259,12 +1259,12 @@ hb_buffer_get_flags (const hb_buffer_t *buffer)
  *
  * Since: 0.9.42
  **/
-void
+வெறுமை
 hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
 			     hb_buffer_cluster_level_t  cluster_level)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->cluster_level = cluster_level;
 }
@@ -1282,9 +1282,9 @@ hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
  * Since: 0.9.42
  **/
 hb_buffer_cluster_level_t
-hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
+hb_buffer_get_cluster_level (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->cluster_level;
+  திரும்பு buffer->cluster_level;
 }
 
 
@@ -1300,12 +1300,12 @@ hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
  *
  * Since: 0.9.31
  **/
-void
+வெறுமை
 hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
 				     hb_codepoint_t  replacement)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->replacement = replacement;
 }
@@ -1323,9 +1323,9 @@ hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
  * Since: 0.9.31
  **/
 hb_codepoint_t
-hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
+hb_buffer_get_replacement_codepoint (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->replacement;
+  திரும்பு buffer->replacement;
 }
 
 
@@ -1341,12 +1341,12 @@ hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
  *
  * Since: 2.0.0
  **/
-void
+வெறுமை
 hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
 			       hb_codepoint_t  invisible)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->invisible = invisible;
 }
@@ -1363,9 +1363,9 @@ hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
  * Since: 2.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
+hb_buffer_get_invisible_glyph (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->invisible;
+  திரும்பு buffer->invisible;
 }
 
 /**
@@ -1381,12 +1381,12 @@ hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
  *
  * Since: 3.1.0
  **/
-void
+வெறுமை
 hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
 			       hb_codepoint_t  not_found)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->not_found = not_found;
 }
@@ -1403,9 +1403,9 @@ hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
  * Since: 3.1.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
+hb_buffer_get_not_found_glyph (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->not_found;
+  திரும்பு buffer->not_found;
 }
 
 /**
@@ -1424,7 +1424,7 @@ hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
  *
  * Since: 10.0.0
  **/
-void
+வெறுமை
 hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
 						  hb_codepoint_t  not_found_variation_selector)
 {
@@ -1443,9 +1443,9 @@ hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
  * Since: 10.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
+hb_buffer_get_not_found_variation_selector_glyph (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->not_found_variation_selector;
+  திரும்பு buffer->not_found_variation_selector;
 }
 
 /**
@@ -1465,12 +1465,12 @@ hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
  *
  * Since: 8.4.0
  **/
-void
+வெறுமை
 hb_buffer_set_random_state (hb_buffer_t    *buffer,
 			    unsigned        state)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->random_state = state;
 }
@@ -1487,9 +1487,9 @@ hb_buffer_set_random_state (hb_buffer_t    *buffer,
  * Since: 8.4.0
  **/
 unsigned
-hb_buffer_get_random_state (const hb_buffer_t *buffer)
+hb_buffer_get_random_state (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->random_state;
+  திரும்பு buffer->random_state;
 }
 
 /**
@@ -1505,11 +1505,11 @@ hb_buffer_get_random_state (const hb_buffer_t *buffer)
  *
  * Since: 0.9.11
  **/
-void
+வெறுமை
 hb_buffer_clear_contents (hb_buffer_t *buffer)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
   buffer->clear ();
 }
@@ -1527,9 +1527,9 @@ hb_buffer_clear_contents (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
+hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned முழு size)
 {
-  return buffer->ensure (size);
+  திரும்பு buffer->ensure (size);
 }
 
 /**
@@ -1546,7 +1546,7 @@ hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
 hb_bool_t
 hb_buffer_allocation_successful (hb_buffer_t  *buffer)
 {
-  return buffer->successful;
+  திரும்பு buffer->successful;
 }
 
 /**
@@ -1566,10 +1566,10 @@ hb_buffer_allocation_successful (hb_buffer_t  *buffer)
  *
  * Since: 0.9.7
  **/
-void
+வெறுமை
 hb_buffer_add (hb_buffer_t    *buffer,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster)
+	       unsigned முழு    cluster)
 {
   buffer->add (codepoint, cluster);
   buffer->clear_context (1);
@@ -1590,31 +1590,31 @@ hb_buffer_add (hb_buffer_t    *buffer,
  **/
 hb_bool_t
 hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length)
+		      unsigned முழு  length)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return length == 0;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு length == 0;
 
-  if (unlikely (!buffer->ensure (length)))
-    return false;
+  எனில் (unlikely (!buffer->ensure (length)))
+    திரும்பு பொய்;
 
   /* Wipe the new space */
-  if (length > buffer->len) {
-    hb_memset (buffer->info + buffer->len, 0, sizeof (buffer->info[0]) * (length - buffer->len));
-    if (buffer->have_positions)
-      hb_memset (buffer->pos + buffer->len, 0, sizeof (buffer->pos[0]) * (length - buffer->len));
+  எனில் (length > buffer->len) {
+    hb_memset (buffer->info + buffer->len, 0, அளவு (buffer->info[0]) * (length - buffer->len));
+    எனில் (buffer->have_positions)
+      hb_memset (buffer->pos + buffer->len, 0, அளவு (buffer->pos[0]) * (length - buffer->len));
   }
 
   buffer->len = length;
 
-  if (!length)
+  எனில் (!length)
   {
     buffer->content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
     buffer->clear_context (0);
   }
   buffer->clear_context (1);
 
-  return true;
+  திரும்பு உண்மை;
 }
 
 /**
@@ -1629,10 +1629,10 @@ hb_buffer_set_length (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_buffer_get_length (const hb_buffer_t *buffer)
+unsigned முழு
+hb_buffer_get_length (மாறிலி hb_buffer_t *buffer)
 {
-  return buffer->len;
+  திரும்பு buffer->len;
 }
 
 /**
@@ -1651,12 +1651,12 @@ hb_buffer_get_length (const hb_buffer_t *buffer)
  **/
 hb_glyph_info_t *
 hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length)
+			   unsigned முழு *length)
 {
-  if (length)
+  எனில் (length)
     *length = buffer->len;
 
-  return (hb_glyph_info_t *) buffer->info;
+  திரும்பு (hb_glyph_info_t *) buffer->info;
 }
 
 /**
@@ -1680,20 +1680,20 @@ hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
  **/
 hb_glyph_position_t *
 hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length)
+			       unsigned முழு *length)
 {
-  if (length)
+  எனில் (length)
     *length = buffer->len;
 
-  if (!buffer->have_positions)
+  எனில் (!buffer->have_positions)
   {
-    if (unlikely (buffer->message_depth))
-      return nullptr;
+    எனில் (unlikely (buffer->message_depth))
+      திரும்பு nullptr;
 
     buffer->clear_positions ();
   }
 
-  return (hb_glyph_position_t *) buffer->pos;
+  திரும்பு (hb_glyph_position_t *) buffer->pos;
 }
 
 /**
@@ -1712,7 +1712,7 @@ hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
 HB_EXTERN hb_bool_t
 hb_buffer_has_positions (hb_buffer_t  *buffer)
 {
-  return buffer->have_positions;
+  திரும்பு buffer->have_positions;
 }
 
 /**
@@ -1727,9 +1727,9 @@ hb_buffer_has_positions (hb_buffer_t  *buffer)
  * Since: 1.5.0
  **/
 hb_glyph_flags_t
-(hb_glyph_info_get_glyph_flags) (const hb_glyph_info_t *info)
+(hb_glyph_info_get_glyph_flags) (மாறிலி hb_glyph_info_t *info)
 {
-  return hb_glyph_info_get_glyph_flags (info);
+  திரும்பு hb_glyph_info_get_glyph_flags (info);
 }
 
 /**
@@ -1740,7 +1740,7 @@ hb_glyph_flags_t
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_reverse (hb_buffer_t *buffer)
 {
   buffer->reverse ();
@@ -1756,9 +1756,9 @@ hb_buffer_reverse (hb_buffer_t *buffer)
  *
  * Since: 0.9.41
  **/
-void
+வெறுமை
 hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end)
+			 unsigned முழு start, unsigned முழு end)
 {
   buffer->reverse_range (start, end);
 }
@@ -1773,7 +1773,7 @@ hb_buffer_reverse_range (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_reverse_clusters (hb_buffer_t *buffer)
 {
   buffer->reverse_clusters ();
@@ -1807,41 +1807,41 @@ hb_buffer_reverse_clusters (hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
+வெறுமை
 hb_buffer_guess_segment_properties (hb_buffer_t *buffer)
 {
   buffer->guess_segment_properties ();
 }
 
 template <typename utf_t>
-static inline void
+நிலையான உள்வரி வெறுமை
 hb_buffer_add_utf (hb_buffer_t  *buffer,
-		   const typename utf_t::codepoint_t *text,
-		   int           text_length,
-		   unsigned int  item_offset,
-		   int           item_length)
+		   மாறிலி typename utf_t::codepoint_t *text,
+		   முழு           text_length,
+		   unsigned முழு  item_offset,
+		   முழு           item_length)
 {
-  typedef typename utf_t::codepoint_t T;
-  const hb_codepoint_t replacement = buffer->replacement;
+  வகைவரை typename utf_t::codepoint_t T;
+  மாறிலி hb_codepoint_t replacement = buffer->replacement;
 
   buffer->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  எனில் (unlikely (hb_object_is_immutable (buffer)))
+    திரும்பு;
 
-  if (text_length == -1)
+  எனில் (text_length == -1)
     text_length = utf_t::strlen (text);
 
-  if (item_length == -1)
+  எனில் (item_length == -1)
     item_length = text_length - item_offset;
 
   item_offset = hb_min (item_offset, (unsigned) text_length);
-  item_length = hb_clamp (item_length, 0, text_length - (int) item_offset);
+  item_length = hb_clamp (item_length, 0, text_length - (முழு) item_offset);
 
-  if (unlikely (item_length < 0 ||
+  எனில் (unlikely (item_length < 0 ||
 		item_length > INT_MAX / 8 ||
-		!buffer->ensure (buffer->len + item_length * sizeof (T) / 4)))
-    return;
+		!buffer->ensure (buffer->len + item_length * அளவு (T) / 4)))
+    திரும்பு;
 
   /* If buffer is empty and pre-context provided, install it.
    * This check is written this way, to make sure people can
@@ -1850,13 +1850,13 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
    *
    * https://bugzilla.mozilla.org/show_bug.cgi?id=801410#c13
    */
-  if (!buffer->len && item_offset > 0)
+  எனில் (!buffer->len && item_offset > 0)
   {
     /* Add pre-context */
     buffer->clear_context (0);
-    const T *prev = text + item_offset;
-    const T *start = text;
-    while (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+    மாறிலி T *prev = text + item_offset;
+    மாறிலி T *start = text;
+    போது (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
     {
       hb_codepoint_t u;
       prev = utf_t::prev (prev, start, &u, replacement);
@@ -1864,20 +1864,20 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
     }
   }
 
-  const T *next = text + item_offset;
-  const T *end = next + item_length;
-  while (next < end)
+  மாறிலி T *next = text + item_offset;
+  மாறிலி T *end = next + item_length;
+  போது (next < end)
   {
     hb_codepoint_t u;
-    const T *old_next = next;
+    மாறிலி T *old_next = next;
     next = utf_t::next (next, end, &u, replacement);
-    buffer->add (u, old_next - (const T *) text);
+    buffer->add (u, old_next - (மாறிலி T *) text);
   }
 
   /* Add post-context */
   buffer->clear_context (1);
   end = text + text_length;
-  while (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+  போது (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
   {
     hb_codepoint_t u;
     next = utf_t::next (next, end, &u, replacement);
@@ -1904,14 +1904,14 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length)
+		    மாறிலி எழுத்து   *text,
+		    முழு           text_length,
+		    unsigned முழு  item_offset,
+		    முழு           item_length)
 {
-  hb_buffer_add_utf<hb_utf8_t> (buffer, (const uint8_t *) text, text_length, item_offset, item_length);
+  hb_buffer_add_utf<hb_utf8_t> (buffer, (மாறிலி uint8_t *) text, text_length, item_offset, item_length);
 }
 
 /**
@@ -1930,12 +1930,12 @@ hb_buffer_add_utf8 (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_add_utf16 (hb_buffer_t    *buffer,
-		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+		     மாறிலி uint16_t *text,
+		     முழு             text_length,
+		     unsigned முழு    item_offset,
+		     முழு             item_length)
 {
   hb_buffer_add_utf<hb_utf16_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -1956,12 +1956,12 @@ hb_buffer_add_utf16 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_add_utf32 (hb_buffer_t    *buffer,
-		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+		     மாறிலி uint32_t *text,
+		     முழு             text_length,
+		     unsigned முழு    item_offset,
+		     முழு             item_length)
 {
   hb_buffer_add_utf<hb_utf32_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -1983,12 +1983,12 @@ hb_buffer_add_utf32 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.39
  **/
-void
+வெறுமை
 hb_buffer_add_latin1 (hb_buffer_t   *buffer,
-		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length)
+		      மாறிலி uint8_t *text,
+		      முழு            text_length,
+		      unsigned முழு   item_offset,
+		      முழு            item_length)
 {
   hb_buffer_add_utf<hb_latin1_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -2019,12 +2019,12 @@ hb_buffer_add_latin1 (hb_buffer_t   *buffer,
  *
  * Since: 0.9.31
  **/
-void
+வெறுமை
 hb_buffer_add_codepoints (hb_buffer_t          *buffer,
-			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length)
+			  மாறிலி hb_codepoint_t *text,
+			  முழு                   text_length,
+			  unsigned முழு          item_offset,
+			  முழு                   item_length)
 {
   hb_buffer_add_utf<hb_utf32_novalidate_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -2041,96 +2041,96 @@ hb_buffer_add_codepoints (hb_buffer_t          *buffer,
  *
  * Since: 1.5.0
  **/
-HB_EXTERN void
+HB_EXTERN வெறுமை
 hb_buffer_append (hb_buffer_t *buffer,
-		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end)
+		  மாறிலி hb_buffer_t *source,
+		  unsigned முழு start,
+		  unsigned முழு end)
 {
-  assert (!buffer->have_output && !source->have_output);
-  assert (buffer->have_positions == source->have_positions ||
+  ப்ரதிஜ்ஞா (!buffer->have_output && !source->have_output);
+  ப்ரதிஜ்ஞா (buffer->have_positions == source->have_positions ||
 	  !buffer->len || !source->len);
-  assert (buffer->content_type == source->content_type ||
+  ப்ரதிஜ்ஞா (buffer->content_type == source->content_type ||
 	  !buffer->len || !source->len);
 
-  if (end > source->len)
+  எனில் (end > source->len)
     end = source->len;
-  if (start > end)
+  எனில் (start > end)
     start = end;
-  if (start == end)
-    return;
+  எனில் (start == end)
+    திரும்பு;
 
-  if (buffer->len + (end - start) < buffer->len) /* Overflows. */
+  எனில் (buffer->len + (end - start) < buffer->len) /* Overflows. */
   {
-    buffer->successful = false;
-    return;
+    buffer->successful = பொய்;
+    திரும்பு;
   }
 
-  unsigned int orig_len = buffer->len;
+  unsigned முழு orig_len = buffer->len;
   hb_buffer_set_length (buffer, buffer->len + (end - start));
-  if (unlikely (!buffer->successful))
-    return;
+  எனில் (unlikely (!buffer->successful))
+    திரும்பு;
 
-  if (!orig_len)
+  எனில் (!orig_len)
     buffer->content_type = source->content_type;
-  if (!buffer->have_positions && source->have_positions)
+  எனில் (!buffer->have_positions && source->have_positions)
     buffer->clear_positions ();
 
   hb_segment_properties_overlay (&buffer->props, &source->props);
 
-  hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * sizeof (buffer->info[0]));
-  if (buffer->have_positions)
-    hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * sizeof (buffer->pos[0]));
+  hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * அளவு (buffer->info[0]));
+  எனில் (buffer->have_positions)
+    hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * அளவு (buffer->pos[0]));
 
-  if (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  எனில் (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
   {
     /* See similar logic in add_utf. */
 
     /* pre-context */
-    if (!orig_len && start + source->context_len[0] > 0)
+    எனில் (!orig_len && start + source->context_len[0] > 0)
     {
       buffer->clear_context (0);
-      while (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+      போது (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
 	buffer->context[0][buffer->context_len[0]++] = source->info[--start].codepoint;
-      for (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
+      க்கு (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
 	buffer->context[0][buffer->context_len[0]++] = source->context[0][i];
     }
 
     /* post-context */
     buffer->clear_context (1);
-    while (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+    போது (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
       buffer->context[1][buffer->context_len[1]++] = source->info[end++].codepoint;
-    for (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
+    க்கு (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
       buffer->context[1][buffer->context_len[1]++] = source->context[1][i];
   }
 }
 
 
-static int
-compare_info_codepoint (const hb_glyph_info_t *pa,
-			const hb_glyph_info_t *pb)
+நிலையான முழு
+compare_info_codepoint (மாறிலி hb_glyph_info_t *pa,
+			மாறிலி hb_glyph_info_t *pb)
 {
-  return (int) pb->codepoint - (int) pa->codepoint;
+  திரும்பு (முழு) pb->codepoint - (முழு) pa->codepoint;
 }
 
-static inline void
+நிலையான உள்வரி வெறுமை
 normalize_glyphs_cluster (hb_buffer_t *buffer,
-			  unsigned int start,
-			  unsigned int end,
-			  bool backward)
+			  unsigned முழு start,
+			  unsigned முழு end,
+			  தருக்க backward)
 {
   hb_glyph_position_t *pos = buffer->pos;
 
   /* Total cluster advance */
   hb_position_t total_x_advance = 0, total_y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  க்கு (unsigned முழு i = start; i < end; i++)
   {
     total_x_advance = hb_saturate_add (total_x_advance, pos[i].x_advance);
     total_y_advance = hb_saturate_add (total_y_advance, pos[i].y_advance);
   }
 
   hb_position_t x_advance = 0, y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  க்கு (unsigned முழு i = start; i < end; i++)
   {
     pos[i].x_offset = hb_saturate_add (pos[i].x_offset, x_advance);
     pos[i].y_offset = hb_saturate_add (pos[i].y_offset, y_advance);
@@ -2142,18 +2142,18 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
     pos[i].y_advance = 0;
   }
 
-  if (backward)
+  எனில் (backward)
   {
     /* Transfer all cluster advance to the last glyph. */
     pos[end - 1].x_advance = total_x_advance;
     pos[end - 1].y_advance = total_y_advance;
 
     hb_stable_sort (buffer->info + start, end - start - 1, compare_info_codepoint, buffer->pos + start);
-  } else {
+  } இல்லையெனில் {
     /* Transfer all cluster advance to the first glyph. */
     pos[start].x_advance = hb_saturate_add (pos[start].x_advance, total_x_advance);
     pos[start].y_advance = hb_saturate_add (pos[start].y_advance, total_y_advance);
-    for (unsigned int i = start + 1; i < end; i++) {
+    க்கு (unsigned முழு i = start + 1; i < end; i++) {
       pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, total_x_advance);
       pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, total_y_advance);
     }
@@ -2172,35 +2172,35 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
+வெறுமை
 hb_buffer_normalize_glyphs (hb_buffer_t *buffer)
 {
-  assert (buffer->have_positions);
+  ப்ரதிஜ்ஞா (buffer->have_positions);
 
   buffer->assert_glyphs ();
 
-  bool backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  தருக்க backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
 
   foreach_cluster (buffer, start, end)
     normalize_glyphs_cluster (buffer, start, end, backward);
 }
 
-void
-hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
+வெறுமை
+hb_buffer_t::sort (unsigned முழு start, unsigned முழு end, முழு(*compar)(மாறிலி hb_glyph_info_t *, மாறிலி hb_glyph_info_t *))
 {
-  assert (!have_positions);
-  for (unsigned int i = start + 1; i < end; i++)
+  ப்ரதிஜ்ஞா (!have_positions);
+  க்கு (unsigned முழு i = start + 1; i < end; i++)
   {
-    unsigned int j = i;
-    while (j > start && compar (&info[j - 1], &info[i]) > 0)
+    unsigned முழு j = i;
+    போது (j > start && compar (&info[j - 1], &info[i]) > 0)
       j--;
-    if (i == j)
-      continue;
+    எனில் (i == j)
+      தொடர்;
     /* Move item i to occupy place for item j, shift what's in between. */
     merge_clusters (j, i + 1);
     {
       hb_glyph_info_t t = info[i];
-      memmove (&info[j + 1], &info[j], (i - j) * sizeof (hb_glyph_info_t));
+      memmove (&info[j + 1], &info[j], (i - j) * அளவு (hb_glyph_info_t));
       info[j] = t;
     }
   }
@@ -2228,82 +2228,82 @@ hb_buffer_diff_flags_t
 hb_buffer_diff (hb_buffer_t *buffer,
 		hb_buffer_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz)
+		unsigned முழு position_fuzz)
 {
-  if (buffer->content_type != reference->content_type && buffer->len && reference->len)
-    return HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
+  எனில் (buffer->content_type != reference->content_type && buffer->len && reference->len)
+    திரும்பு HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
 
   hb_buffer_diff_flags_t result = HB_BUFFER_DIFF_FLAG_EQUAL;
-  bool contains = dottedcircle_glyph != (hb_codepoint_t) -1;
+  தருக்க contains = dottedcircle_glyph != (hb_codepoint_t) -1;
 
-  unsigned int count = reference->len;
+  unsigned முழு மொத்தம் = reference->len;
 
-  if (buffer->len != count)
+  எனில் (buffer->len != மொத்தம்)
   {
     /*
      * we can't compare glyph-by-glyph, but we do want to know if there
      * are .notdef or dottedcircle glyphs present in the reference buffer
      */
-    const hb_glyph_info_t *info = reference->info;
-    unsigned int i;
-    for (i = 0; i < count; i++)
+    மாறிலி hb_glyph_info_t *info = reference->info;
+    unsigned முழு i;
+    க்கு (i = 0; i < மொத்தம்; i++)
     {
-      if (contains && info[i].codepoint == dottedcircle_glyph)
+      எனில் (contains && info[i].codepoint == dottedcircle_glyph)
 	result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-      if (contains && info[i].codepoint == 0)
+      எனில் (contains && info[i].codepoint == 0)
 	result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
     }
     result |= HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH;
-    return hb_buffer_diff_flags_t (result);
+    திரும்பு hb_buffer_diff_flags_t (result);
   }
 
-  if (!count)
-    return hb_buffer_diff_flags_t (result);
+  எனில் (!மொத்தம்)
+    திரும்பு hb_buffer_diff_flags_t (result);
 
-  const hb_glyph_info_t *buf_info = buffer->info;
-  const hb_glyph_info_t *ref_info = reference->info;
-  for (unsigned int i = 0; i < count; i++)
+  மாறிலி hb_glyph_info_t *buf_info = buffer->info;
+  மாறிலி hb_glyph_info_t *ref_info = reference->info;
+  க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
   {
-    if (buf_info->codepoint != ref_info->codepoint)
+    எனில் (buf_info->codepoint != ref_info->codepoint)
       result |= HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH;
-    if (buf_info->cluster != ref_info->cluster)
+    எனில் (buf_info->cluster != ref_info->cluster)
       result |= HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH;
-    if ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
+    எனில் ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
       result |= HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
-    if (contains && ref_info->codepoint == dottedcircle_glyph)
+    எனில் (contains && ref_info->codepoint == dottedcircle_glyph)
       result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-    if (contains && ref_info->codepoint == 0)
+    எனில் (contains && ref_info->codepoint == 0)
       result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
     buf_info++;
     ref_info++;
   }
 
-  if (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
+  எனில் (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
   {
     auto position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
     {
       int64_t diff = (int64_t) a - b;
-      return diff < 0 ? -diff : diff;
+      திரும்பு diff < 0 ? -diff : diff;
     };
-    assert (buffer->have_positions);
-    const hb_glyph_position_t *buf_pos = buffer->pos;
-    const hb_glyph_position_t *ref_pos = reference->pos;
-    for (unsigned int i = 0; i < count; i++)
+    ப்ரதிஜ்ஞா (buffer->have_positions);
+    மாறிலி hb_glyph_position_t *buf_pos = buffer->pos;
+    மாறிலி hb_glyph_position_t *ref_pos = reference->pos;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      if (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
+      எனில் (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
 	  position_diff (buf_pos->y_advance, ref_pos->y_advance) > position_fuzz ||
 	  position_diff (buf_pos->x_offset, ref_pos->x_offset) > position_fuzz ||
 	  position_diff (buf_pos->y_offset, ref_pos->y_offset) > position_fuzz)
       {
 	result |= HB_BUFFER_DIFF_FLAG_POSITION_MISMATCH;
-	break;
+	நிறுத்து;
       }
       buf_pos++;
       ref_pos++;
     }
   }
 
-  return result;
+  திரும்பு result;
 }
 
 
@@ -2311,18 +2311,18 @@ hb_buffer_diff (hb_buffer_t *buffer,
  * Debugging.
  */
 
-void
+வெறுமை
 hb_buffer_t::changed ()
 {
 #ifdef HB_NO_BUFFER_MESSAGE
-  return;
-#else
-  if (!message_depth)
-    return;
+  திரும்பு;
+#இல்லையெனில்
+  எனில் (!message_depth)
+    திரும்பு;
 
-  if (changed_func)
-    changed_func (this, changed_data);
-  else
+  எனில் (changed_func)
+    changed_func (இது, changed_data);
+  இல்லையெனில்
     update_digest ();
 #endif
 }
@@ -2342,27 +2342,27 @@ hb_buffer_t::changed ()
  *
  * Since: 1.1.3
  **/
-void
+வெறுமை
 hb_buffer_set_message_func (hb_buffer_t *buffer,
 			    hb_buffer_message_func_t func,
-			    void *user_data, hb_destroy_func_t destroy)
+			    வெறுமை *user_data, hb_destroy_func_t destroy)
 {
-  if (unlikely (hb_object_is_immutable (buffer)) ||
+  எனில் (unlikely (hb_object_is_immutable (buffer)) ||
       unlikely (buffer->message_depth))
   {
-    if (destroy)
+    எனில் (destroy)
       destroy (user_data);
-    return;
+    திரும்பு;
   }
 
-  if (buffer->message_destroy)
+  எனில் (buffer->message_destroy)
     buffer->message_destroy (buffer->message_data);
 
-  if (func) {
+  எனில் (func) {
     buffer->message_func = func;
     buffer->message_data = user_data;
     buffer->message_destroy = destroy;
-  } else {
+  } இல்லையெனில் {
     buffer->message_func = nullptr;
     buffer->message_data = nullptr;
     buffer->message_destroy = nullptr;
@@ -2379,25 +2379,25 @@ hb_buffer_set_message_func (hb_buffer_t *buffer,
  *
  * Since: 13.0.0
  **/
-void
+வெறுமை
 hb_buffer_changed (hb_buffer_t *buffer)
 {
   buffer->changed ();
 }
 
-bool
-hb_buffer_t::message_impl (hb_font_t *font, const char *fmt, va_list ap)
+தருக்க
+hb_buffer_t::message_impl (hb_font_t *font, மாறிலி எழுத்து *fmt, va_list ap)
 {
-  assert (!have_output || (out_info == info && out_len == idx));
+  ப்ரதிஜ்ஞா (!have_output || (out_info == info && out_len == idx));
 
   message_depth++;
 
-  char buf[100];
-  vsnprintf (buf, sizeof (buf), fmt, ap);
-  bool ret = (bool) this->message_func (this, font, buf, this->message_data);
+  எழுத்து buf[100];
+  vsnprintf (buf, அளவு (buf), fmt, ap);
+  தருக்க ret = (தருக்க) இது->message_func (இது, font, buf, இது->message_data);
 
   message_depth--;
 
-  return ret;
+  திரும்பு ret;
 }
 #endif

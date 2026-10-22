@@ -27,10 +27,10 @@
 #ifndef HB_AAT_LAYOUT_MORX_TABLE_HH
 #define HB_AAT_LAYOUT_MORX_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-aat-map.hh"
+#அந்தர்பாவ "hb-open-type.hh"
+#அந்தர்பாவ "hb-aat-layout-common.hh"
+#அந்தர்பாவ "hb-ot-layout.hh"
+#அந்தர்பாவ "hb-aat-map.hh"
 
 /*
  * morx -- Extended Glyph Metamorphosis
@@ -41,18 +41,18 @@
 #define HB_AAT_TAG_mort HB_TAG('m','o','r','t')
 
 
-namespace AAT {
+நாமாகாஶ AAT {
 
-using namespace OT;
+using நாமாகாஶ OT;
 
 template <typename Types>
-struct RearrangementSubtable
+கட்டமைப்பு RearrangementSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  வகைவரை typename Types::HBUINT HBUINT;
 
-  typedef void EntryData;
+  வகைவரை வெறுமை EntryData;
 
-  enum Flags
+  எண்ணிக்கை Flags
   {
     MarkFirst		= 0x8000,	/* If set, make the current glyph the first
 					 * glyph to be rearranged. */
@@ -66,44 +66,44 @@ struct RearrangementSubtable
     Verb		= 0x000F,	/* The type of rearrangement specified. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  தருக்க is_action_initiable (மாறிலி Entry<EntryData> &entry) மாறிலி
   {
-    return (entry.flags & MarkFirst);
+    திரும்பு (entry.flags & MarkFirst);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  தருக்க is_actionable (மாறிலி Entry<EntryData> &entry) மாறிலி
   {
-    return (entry.flags & Verb);
+    திரும்பு (entry.flags & Verb);
   }
 
-  struct driver_context_t
+  கட்டமைப்பு driver_context_t
   {
-    static constexpr bool in_place = true;
+    நிலையான constexpr தருக்க in_place = உண்மை;
 
-    driver_context_t (const RearrangementSubtable *table_) :
-	ret (false),
+    driver_context_t (மாறிலி RearrangementSubtable *table_) :
+	ret (பொய்),
 	table (table_),
 	start (0), end (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    வெறுமை transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     மாறிலி Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      unsigned முழு flags = entry.flags;
 
-      if (flags & MarkFirst)
+      எனில் (flags & MarkFirst)
 	start = buffer->idx;
 
-      if (flags & MarkLast)
+      எனில் (flags & MarkLast)
 	end = hb_min (buffer->idx + 1, buffer->len);
 
-      if ((flags & Verb) && start < end)
+      எனில் ((flags & Verb) && start < end)
       {
 	/* The following map has two nibbles, for start-side
 	 * and end-side. Values of 0,1,2 mean move that many
 	 * to the other side. Value of 3 means move 2 and
 	 * flip them. */
-	const unsigned char map[16] =
+	மாறிலி unsigned எழுத்து map[16] =
 	{
 	  0x00,	/* 0	no change */
 	  0x10,	/* 1	Ax => xA */
@@ -123,13 +123,13 @@ struct RearrangementSubtable
 	  0x33,	/* 15	ABxCD => DCxBA */
 	};
 
-	unsigned int m = map[flags & Verb];
-	unsigned int l = hb_min (2u, m >> 4);
-	unsigned int r = hb_min (2u, m & 0x0F);
-	bool reverse_l = 3 == (m >> 4);
-	bool reverse_r = 3 == (m & 0x0F);
+	unsigned முழு m = map[flags & Verb];
+	unsigned முழு l = hb_min (2u, m >> 4);
+	unsigned முழு r = hb_min (2u, m & 0x0F);
+	தருக்க reverse_l = 3 == (m >> 4);
+	தருக்க reverse_r = 3 == (m & 0x0F);
 
-	if (end - start >= l + r && end-start <= HB_MAX_CONTEXT_LENGTH)
+	எனில் (end - start >= l + r && end-start <= HB_MAX_CONTEXT_LENGTH)
 	{
 	  buffer->merge_clusters (start, hb_min (buffer->idx + 1, buffer->len));
 	  buffer->merge_clusters (start, end);
@@ -137,21 +137,21 @@ struct RearrangementSubtable
 	  hb_glyph_info_t *info = buffer->info;
 	  hb_glyph_info_t buf[4];
 
-	  hb_memcpy (buf, info + start, l * sizeof (buf[0]));
-	  hb_memcpy (buf + 2, info + end - r, r * sizeof (buf[0]));
+	  hb_memcpy (buf, info + start, l * அளவு (buf[0]));
+	  hb_memcpy (buf + 2, info + end - r, r * அளவு (buf[0]));
 
-	  if (l != r)
-	    memmove (info + start + r, info + start + l, (end - start - l - r) * sizeof (buf[0]));
+	  எனில் (l != r)
+	    memmove (info + start + r, info + start + l, (end - start - l - r) * அளவு (buf[0]));
 
-	  hb_memcpy (info + start, buf + 2, r * sizeof (buf[0]));
-	  hb_memcpy (info + end - l, buf, l * sizeof (buf[0]));
-	  if (reverse_l)
+	  hb_memcpy (info + start, buf + 2, r * அளவு (buf[0]));
+	  hb_memcpy (info + end - l, buf, l * அளவு (buf[0]));
+	  எனில் (reverse_l)
 	  {
 	    buf[0] = info[end - 1];
 	    info[end - 1] = info[end - 2];
 	    info[end - 2] = buf[0];
 	  }
-	  if (reverse_r)
+	  எனில் (reverse_r)
 	  {
 	    buf[0] = info[start];
 	    info[start] = info[start + 1];
@@ -161,19 +161,19 @@ struct RearrangementSubtable
       }
     }
 
-    public:
-    bool ret;
-    const RearrangementSubtable *table;
-    private:
-    unsigned int start;
-    unsigned int end;
+    பொது:
+    தருக்க ret;
+    மாறிலி RearrangementSubtable *table;
+    தனிப்பட்ட:
+    unsigned முழு start;
+    unsigned முழு end;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  தருக்க apply (hb_aat_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
 
-    driver_context_t dc (this);
+    driver_context_t dc (இது);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
 
@@ -182,36 +182,36 @@ struct RearrangementSubtable
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (machine.sanitize (c));
   }
 
-  public:
+  பொது:
   StateTable<Types, EntryData>	machine;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size));
 };
 
 template <typename Types>
-struct ContextualSubtable
+கட்டமைப்பு ContextualSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  வகைவரை typename Types::HBUINT HBUINT;
 
-  struct EntryData
+  கட்டமைப்பு EntryData
   {
-    typedef typename std::conditional<Types::extended, HBUINT16, HBINT16>::type OffsetType;
+    வகைவரை typename std::conditional<Types::extended, HBUINT16, HBINT16>::type OffsetType;
 
     OffsetType	markIndex;	/* Index/offset of the substitution table for the
 				 * marked glyph. */
     OffsetType	currentIndex;	/* Index/offset of the substitution table for the
 				 * current glyph. */
-    public:
+    பொது:
     DEFINE_SIZE_STATIC (4);
   };
 
-  enum Flags
+  எண்ணிக்கை Flags
   {
     SetMark		= 0x8000,	/* If set, make the current glyph the marked glyph. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph before
@@ -219,123 +219,123 @@ struct ContextualSubtable
     Reserved		= 0x3FFF,	/* These bits are reserved and should be set to 0. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  தருக்க is_action_initiable (மாறிலி Entry<EntryData> &entry) மாறிலி
   {
-    return (entry.flags & SetMark);
+    திரும்பு (entry.flags & SetMark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  தருக்க is_actionable (மாறிலி Entry<EntryData> &entry) மாறிலி
   {
-    if (Types::extended)
-      return entry.data.markIndex != 0xFFFF || entry.data.currentIndex != 0xFFFF;
-    else
-      return entry.data.markIndex || entry.data.currentIndex;
+    எனில் (Types::extended)
+      திரும்பு entry.data.markIndex != 0xFFFF || entry.data.currentIndex != 0xFFFF;
+    இல்லையெனில்
+      திரும்பு entry.data.markIndex || entry.data.currentIndex;
   }
 
-  struct driver_context_t
+  கட்டமைப்பு driver_context_t
   {
-    static constexpr bool in_place = true;
+    நிலையான constexpr தருக்க in_place = உண்மை;
 
-    driver_context_t (const ContextualSubtable *table_,
+    driver_context_t (மாறிலி ContextualSubtable *table_,
 			     hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (பொய்),
 	c (c_),
 	table (table_),
-	mark_set (false),
+	mark_set (பொய்),
 	mark (0),
 	subs (table+table->substitutionTables) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    வெறுமை transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     மாறிலி Entry<EntryData> &entry)
     {
       /* Looks like CoreText applies neither mark nor current substitution for
        * end-of-text if mark was not explicitly set. */
-      if (buffer->idx == buffer->len && !mark_set)
-	return;
+      எனில் (buffer->idx == buffer->len && !mark_set)
+	திரும்பு;
 
-      const HBGlyphID16 *replacement;
+      மாறிலி HBGlyphID16 *replacement;
 
       replacement = nullptr;
-      if (Types::extended)
+      எனில் (Types::extended)
       {
-	if (entry.data.markIndex != 0xFFFF)
+	எனில் (entry.data.markIndex != 0xFFFF)
 	{
-	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.markIndex];
-	  replacement = lookup.get_value (buffer->info[mark].codepoint, driver->num_glyphs);
+	  மாறிலி Lookup<HBGlyphID16> &lookup = subs[entry.data.markIndex];
+	  replacement = lookup.get_மதிப்பு (buffer->info[mark].codepoint, driver->இலக்கம்_glyphs);
 	}
       }
-      else
+      இல்லையெனில்
       {
-	if (entry.data.markIndex)
+	எனில் (entry.data.markIndex)
 	{
-	  int offset = (int) entry.data.markIndex + buffer->info[mark].codepoint;
-	  const UnsizedArrayOf<HBGlyphID16> &subs_old = (const UnsizedArrayOf<HBGlyphID16> &) subs;
+	  முழு offset = (முழு) entry.data.markIndex + buffer->info[mark].codepoint;
+	  மாறிலி UnsizedArrayOf<HBGlyphID16> &subs_old = (மாறிலி UnsizedArrayOf<HBGlyphID16> &) subs;
 	  replacement = &subs_old[Types::wordOffsetToIndex (offset, table, subs_old.arrayZ)];
-	  if (!(replacement->sanitize (&c->sanitizer) &&
+	  எனில் (!(replacement->sanitize (&c->sanitizer) &&
 		hb_barrier () &&
 		*replacement))
 	    replacement = nullptr;
 	}
       }
-      if (replacement)
+      எனில் (replacement)
       {
 	buffer->unsafe_to_break (mark, hb_min (buffer->idx + 1, buffer->len));
 	c->replace_glyph_inplace (mark, *replacement);
-	ret = true;
+	ret = உண்மை;
       }
 
       replacement = nullptr;
-      unsigned int idx = hb_min (buffer->idx, buffer->len - 1);
-      if (Types::extended)
+      unsigned முழு idx = hb_min (buffer->idx, buffer->len - 1);
+      எனில் (Types::extended)
       {
-	if (entry.data.currentIndex != 0xFFFF)
+	எனில் (entry.data.currentIndex != 0xFFFF)
 	{
-	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.currentIndex];
-	  replacement = lookup.get_value (buffer->info[idx].codepoint, driver->num_glyphs);
+	  மாறிலி Lookup<HBGlyphID16> &lookup = subs[entry.data.currentIndex];
+	  replacement = lookup.get_மதிப்பு (buffer->info[idx].codepoint, driver->இலக்கம்_glyphs);
 	}
       }
-      else
+      இல்லையெனில்
       {
-	if (entry.data.currentIndex)
+	எனில் (entry.data.currentIndex)
 	{
-	  int offset = (int) entry.data.currentIndex + buffer->info[idx].codepoint;
-	  const UnsizedArrayOf<HBGlyphID16> &subs_old = (const UnsizedArrayOf<HBGlyphID16> &) subs;
+	  முழு offset = (முழு) entry.data.currentIndex + buffer->info[idx].codepoint;
+	  மாறிலி UnsizedArrayOf<HBGlyphID16> &subs_old = (மாறிலி UnsizedArrayOf<HBGlyphID16> &) subs;
 	  replacement = &subs_old[Types::wordOffsetToIndex (offset, table, subs_old.arrayZ)];
-	  if (!(replacement->sanitize (&c->sanitizer) &&
+	  எனில் (!(replacement->sanitize (&c->sanitizer) &&
 		hb_barrier () &&
 		*replacement))
 	    replacement = nullptr;
 	}
       }
-      if (replacement)
+      எனில் (replacement)
       {
 	c->replace_glyph_inplace (idx, *replacement);
-	ret = true;
+	ret = உண்மை;
       }
 
-      if (entry.flags & SetMark)
+      எனில் (entry.flags & SetMark)
       {
-	mark_set = true;
+	mark_set = உண்மை;
 	mark = buffer->idx;
       }
     }
 
-    public:
-    bool ret;
+    பொது:
+    தருக்க ret;
     hb_aat_apply_context_t *c;
-    const ContextualSubtable *table;
-    private:
-    bool mark_set;
-    unsigned int mark;
-    const UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, void, false> &subs;
+    மாறிலி ContextualSubtable *table;
+    தனிப்பட்ட:
+    தருக்க mark_set;
+    unsigned முழு mark;
+    மாறிலி UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, வெறுமை, பொய்> &subs;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  தருக்க apply (hb_aat_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (இது, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
 
@@ -344,61 +344,61 @@ struct ContextualSubtable
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
 
-    unsigned int num_entries = 0;
-    if (unlikely (!machine.sanitize (c, &num_entries))) return_trace (false);
+    unsigned முழு இலக்கம்_entries = 0;
+    எனில் (unlikely (!machine.sanitize (c, &இலக்கம்_entries))) return_trace (பொய்);
     hb_barrier ();
 
-    if (!Types::extended)
-      return_trace (substitutionTables.sanitize (c, this, 0));
+    எனில் (!Types::extended)
+      return_trace (substitutionTables.sanitize (c, இது, 0));
 
-    unsigned int num_lookups = 0;
+    unsigned முழு இலக்கம்_lookups = 0;
 
-    const Entry<EntryData> *entries = machine.get_entries ();
-    for (unsigned int i = 0; i < num_entries; i++)
+    மாறிலி Entry<EntryData> *entries = machine.get_entries ();
+    க்கு (unsigned முழு i = 0; i < இலக்கம்_entries; i++)
     {
-      const EntryData &data = entries[i].data;
+      மாறிலி EntryData &data = entries[i].data;
 
-      if (data.markIndex != 0xFFFF)
-	num_lookups = hb_max (num_lookups, 1u + data.markIndex);
-      if (data.currentIndex != 0xFFFF)
-	num_lookups = hb_max (num_lookups, 1u + data.currentIndex);
+      எனில் (data.markIndex != 0xFFFF)
+	இலக்கம்_lookups = hb_max (இலக்கம்_lookups, 1u + data.markIndex);
+      எனில் (data.currentIndex != 0xFFFF)
+	இலக்கம்_lookups = hb_max (இலக்கம்_lookups, 1u + data.currentIndex);
     }
 
-    return_trace (substitutionTables.sanitize (c, this, num_lookups));
+    return_trace (substitutionTables.sanitize (c, இது, இலக்கம்_lookups));
   }
 
-  public:
+  பொது:
   StateTable<Types, EntryData>
 		machine;
-  protected:
-  NNOffsetTo<UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, void, false>, HBUINT>
+  பாதுகாக்கப்பட்ட:
+  NNOffsetTo<UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, வெறுமை, பொய்>, HBUINT>
 		substitutionTables;
-  public:
+  பொது:
   DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + HBUINT::static_size));
 };
 
 
-template <bool extended>
-struct LigatureEntry;
+template <தருக்க extended>
+கட்டமைப்பு LigatureEntry;
 
 template <>
-struct LigatureEntry<true>
+கட்டமைப்பு LigatureEntry<உண்மை>
 {
 
-  struct EntryData
+  கட்டமைப்பு EntryData
   {
     HBUINT16	ligActionIndex;	/* Index to the first ligActionTable entry
 				 * for processing this group, if indicated
 				 * by the flags. */
-    public:
+    பொது:
     DEFINE_SIZE_STATIC (2);
   };
 
-  enum Flags
+  எண்ணிக்கை Flags
   {
     SetComponent	= 0x8000,	/* Push this glyph onto the component stack for
 					 * eventual processing. */
@@ -409,21 +409,21 @@ struct LigatureEntry<true>
     Reserved		= 0x1FFF,	/* These bits are reserved and should be set to 0. */
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & SetComponent; }
+  நிலையான தருக்க initiateAction (மாறிலி Entry<EntryData> &entry)
+  { திரும்பு entry.flags & SetComponent; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & PerformAction; }
+  நிலையான தருக்க performAction (மாறிலி Entry<EntryData> &entry)
+  { திரும்பு entry.flags & PerformAction; }
 
-  static unsigned int ligActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.ligActionIndex; }
+  நிலையான unsigned முழு ligActionIndex (மாறிலி Entry<EntryData> &entry)
+  { திரும்பு entry.data.ligActionIndex; }
 };
 template <>
-struct LigatureEntry<false>
+கட்டமைப்பு LigatureEntry<பொய்>
 {
-  typedef void EntryData;
+  வகைவரை வெறுமை EntryData;
 
-  enum Flags
+  எண்ணிக்கை Flags
   {
     SetComponent	= 0x8000,	/* Push this glyph onto the component stack for
 					 * eventual processing. */
@@ -434,43 +434,43 @@ struct LigatureEntry<false>
 					 * multiple of 4. */
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & SetComponent; }
+  நிலையான தருக்க initiateAction (மாறிலி Entry<EntryData> &entry)
+  { திரும்பு entry.flags & SetComponent; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  நிலையான தருக்க performAction (மாறிலி Entry<EntryData> &entry)
+  { திரும்பு entry.flags & Offset; }
 
-  static unsigned int ligActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  நிலையான unsigned முழு ligActionIndex (மாறிலி Entry<EntryData> &entry)
+  { திரும்பு entry.flags & Offset; }
 };
 
 
 template <typename Types>
-struct LigatureSubtable
+கட்டமைப்பு LigatureSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  வகைவரை typename Types::HBUINT HBUINT;
 
-  typedef LigatureEntry<Types::extended> LigatureEntryT;
-  typedef typename LigatureEntryT::EntryData EntryData;
+  வகைவரை LigatureEntry<Types::extended> LigatureEntryT;
+  வகைவரை typename LigatureEntryT::EntryData EntryData;
 
-  enum Flags
+  எண்ணிக்கை Flags
   {
     DontAdvance	= LigatureEntryT::DontAdvance,
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  தருக்க is_action_initiable (மாறிலி Entry<EntryData> &entry) மாறிலி
   {
-    return LigatureEntryT::initiateAction (entry);
+    திரும்பு LigatureEntryT::initiateAction (entry);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  தருக்க is_actionable (மாறிலி Entry<EntryData> &entry) மாறிலி
   {
-    return LigatureEntryT::performAction (entry);
+    திரும்பு LigatureEntryT::performAction (entry);
   }
 
-  struct driver_context_t
+  கட்டமைப்பு driver_context_t
   {
-    static constexpr bool in_place = false;
-    enum LigActionFlags
+    நிலையான constexpr தருக்க in_place = பொய்;
+    எண்ணிக்கை LigActionFlags
     {
       LigActionLast	= 0x80000000,	/* This is the last action in the list. This also
 					 * implies storage. */
@@ -482,9 +482,9 @@ struct LigatureSubtable
 					 * into the component table. */
     };
 
-    driver_context_t (const LigatureSubtable *table_,
+    driver_context_t (மாறிலி LigatureSubtable *table_,
 		      hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (பொய்),
 	c (c_),
 	table (table_),
 	ligAction (table+table->ligAction),
@@ -493,119 +493,119 @@ struct LigatureSubtable
 	match_length (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    வெறுமை transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     மாறிலி Entry<EntryData> &entry)
     {
-      DEBUG_MSG (APPLY, nullptr, "Ligature transition at %u", buffer->idx);
-      if (entry.flags & LigatureEntryT::SetComponent)
+      DEBUG_செய்தி (APPLY, nullptr, "Ligature transition at %u", buffer->idx);
+      எனில் (entry.flags & LigatureEntryT::SetComponent)
       {
 	/* Never mark same index twice, in case DontAdvance was used... */
-	if (unlikely (match_length && match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] == buffer->out_len))
+	எனில் (unlikely (match_length && match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] == buffer->out_len))
 	  match_length--;
 
 	match_positions[match_length++ % ARRAY_LENGTH (match_positions)] = buffer->out_len;
-	DEBUG_MSG (APPLY, nullptr, "Set component at %u", buffer->out_len);
+	DEBUG_செய்தி (APPLY, nullptr, "Set component at %u", buffer->out_len);
       }
 
-      if (LigatureEntryT::performAction (entry))
+      எனில் (LigatureEntryT::performAction (entry))
       {
-	DEBUG_MSG (APPLY, nullptr, "Perform action with %u", match_length);
-	unsigned int end = buffer->out_len;
+	DEBUG_செய்தி (APPLY, nullptr, "Perform action with %u", match_length);
+	unsigned முழு end = buffer->out_len;
 
-	if (unlikely (!match_length))
-	  return;
+	எனில் (unlikely (!match_length))
+	  திரும்பு;
 
-	if (buffer->idx >= buffer->len)
-	  return; /* TODO Work on previous instead? */
+	எனில் (buffer->idx >= buffer->len)
+	  திரும்பு; /* TODO Work on previous instead? */
 
-	unsigned int cursor = match_length;
+	unsigned முழு cursor = match_length;
 
-	unsigned int action_idx = LigatureEntryT::ligActionIndex (entry);
+	unsigned முழு action_idx = LigatureEntryT::ligActionIndex (entry);
 	action_idx = Types::offsetToIndex (action_idx, table, ligAction.arrayZ);
-	const HBUINT32 *actionData = &ligAction[action_idx];
+	மாறிலி HBUINT32 *actionData = &ligAction[action_idx];
 
-	unsigned int ligature_idx = 0;
-	unsigned int action;
-	do
+	unsigned முழு ligature_idx = 0;
+	unsigned முழு action;
+	செய்
 	{
-	  if (unlikely (!cursor))
+	  எனில் (unlikely (!cursor))
 	  {
 	    /* Stack underflow.  Clear the stack. */
-	    DEBUG_MSG (APPLY, nullptr, "Stack underflow");
+	    DEBUG_செய்தி (APPLY, nullptr, "Stack underflow");
 	    match_length = 0;
-	    break;
+	    நிறுத்து;
 	  }
 
-	  DEBUG_MSG (APPLY, nullptr, "Moving to stack position %u", cursor - 1);
-	  if (unlikely (!buffer->move_to (match_positions[--cursor % ARRAY_LENGTH (match_positions)]))) return;
+	  DEBUG_செய்தி (APPLY, nullptr, "Moving to stack position %u", cursor - 1);
+	  எனில் (unlikely (!buffer->move_to (match_positions[--cursor % ARRAY_LENGTH (match_positions)]))) திரும்பு;
 
-	  if (unlikely (!actionData->sanitize (&c->sanitizer))) break;
+	  எனில் (unlikely (!actionData->sanitize (&c->sanitizer))) நிறுத்து;
 	  hb_barrier ();
 	  action = *actionData;
 
 	  uint32_t uoffset = action & LigActionOffset;
-	  if (uoffset & 0x20000000)
+	  எனில் (uoffset & 0x20000000)
 	    uoffset |= 0xC0000000; /* Sign-extend. */
 	  int32_t offset = (int32_t) uoffset;
-	  unsigned int component_idx = buffer->cur().codepoint + offset;
+	  unsigned முழு component_idx = buffer->cur().codepoint + offset;
 	  component_idx = Types::wordOffsetToIndex (component_idx, table, component.arrayZ);
-	  const HBUINT16 &componentData = component[component_idx];
-	  if (unlikely (!componentData.sanitize (&c->sanitizer))) break;
+	  மாறிலி HBUINT16 &componentData = component[component_idx];
+	  எனில் (unlikely (!componentData.sanitize (&c->sanitizer))) நிறுத்து;
 	  hb_barrier ();
 	  ligature_idx += componentData;
 
-	  DEBUG_MSG (APPLY, nullptr, "Action store %d last %d",
-		     bool (action & LigActionStore),
-		     bool (action & LigActionLast));
-	  if (action & (LigActionStore | LigActionLast))
+	  DEBUG_செய்தி (APPLY, nullptr, "Action store %d last %d",
+		     தருக்க (action & LigActionStore),
+		     தருக்க (action & LigActionLast));
+	  எனில் (action & (LigActionStore | LigActionLast))
 	  {
 	    ligature_idx = Types::offsetToIndex (ligature_idx, table, ligature.arrayZ);
-	    const HBGlyphID16 &ligatureData = ligature[ligature_idx];
-	    if (unlikely (!ligatureData.sanitize (&c->sanitizer))) break;
+	    மாறிலி HBGlyphID16 &ligatureData = ligature[ligature_idx];
+	    எனில் (unlikely (!ligatureData.sanitize (&c->sanitizer))) நிறுத்து;
 	    hb_barrier ();
 	    hb_codepoint_t lig = ligatureData;
 
-	    DEBUG_MSG (APPLY, nullptr, "Produced ligature %u", lig);
-	    if (unlikely (!c->replace_glyph (lig))) return;
+	    DEBUG_செய்தி (APPLY, nullptr, "Produced ligature %u", lig);
+	    எனில் (unlikely (!c->replace_glyph (lig))) திரும்பு;
 
-	    unsigned int lig_end = match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] + 1u;
+	    unsigned முழு lig_end = match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] + 1u;
 	    /* Now go and delete all subsequent components. */
-	    while (match_length - 1u > cursor)
+	    போது (match_length - 1u > cursor)
 	    {
-	      DEBUG_MSG (APPLY, nullptr, "Skipping ligature component");
-	      if (unlikely (!buffer->move_to (match_positions[--match_length % ARRAY_LENGTH (match_positions)]))) return;
-	      if (!c->delete_glyph ()) return;
+	      DEBUG_செய்தி (APPLY, nullptr, "Skipping ligature component");
+	      எனில் (unlikely (!buffer->move_to (match_positions[--match_length % ARRAY_LENGTH (match_positions)]))) திரும்பு;
+	      எனில் (!c->delete_glyph ()) திரும்பு;
 	    }
 
-	    if (unlikely (!buffer->move_to (lig_end))) return;
+	    எனில் (unlikely (!buffer->move_to (lig_end))) திரும்பு;
 	    buffer->merge_out_clusters (match_positions[cursor % ARRAY_LENGTH (match_positions)], buffer->out_len);
 	  }
 
 	  actionData++;
 	}
-	while (!(action & LigActionLast));
-	if (unlikely (!buffer->move_to (end))) return;
+	போது (!(action & LigActionLast));
+	எனில் (unlikely (!buffer->move_to (end))) திரும்பு;
       }
     }
 
-    public:
-    bool ret;
+    பொது:
+    தருக்க ret;
     hb_aat_apply_context_t *c;
-    const LigatureSubtable *table;
-    private:
-    const UnsizedArrayOf<HBUINT32> &ligAction;
-    const UnsizedArrayOf<HBUINT16> &component;
-    const UnsizedArrayOf<HBGlyphID16> &ligature;
-    unsigned int match_length;
-    unsigned int match_positions[HB_MAX_CONTEXT_LENGTH];
+    மாறிலி LigatureSubtable *table;
+    தனிப்பட்ட:
+    மாறிலி UnsizedArrayOf<HBUINT32> &ligAction;
+    மாறிலி UnsizedArrayOf<HBUINT16> &component;
+    மாறிலி UnsizedArrayOf<HBGlyphID16> &ligature;
+    unsigned முழு match_length;
+    unsigned முழு match_positions[HB_MAX_CONTEXT_LENGTH];
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  தருக்க apply (hb_aat_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (இது, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
 
@@ -614,67 +614,67 @@ struct LigatureSubtable
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (c->check_struct (this) && machine.sanitize (c) &&
+    return_trace (c->check_struct (இது) && machine.sanitize (c) &&
 		  hb_barrier () &&
 		  ligAction && component && ligature);
   }
 
-  public:
+  பொது:
   StateTable<Types, EntryData>
 		machine;
-  protected:
+  பாதுகாக்கப்பட்ட:
   NNOffsetTo<UnsizedArrayOf<HBUINT32>, HBUINT>
 		ligAction;	/* Offset to the ligature action table. */
   NNOffsetTo<UnsizedArrayOf<HBUINT16>, HBUINT>
 		component;	/* Offset to the component table. */
   NNOffsetTo<UnsizedArrayOf<HBGlyphID16>, HBUINT>
 		ligature;	/* Offset to the actual ligature lists. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + 3 * HBUINT::static_size));
 };
 
 template <typename Types>
-struct NoncontextualSubtable
+கட்டமைப்பு NoncontextualSubtable
 {
-  bool apply (hb_aat_apply_context_t *c) const
+  தருக்க apply (hb_aat_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
 
-    bool ret = false;
-    unsigned int num_glyphs = c->face->get_num_glyphs ();
+    தருக்க ret = பொய்;
+    unsigned முழு இலக்கம்_glyphs = c->face->get_இலக்கம்_glyphs ();
 
     hb_glyph_info_t *info = c->buffer->info;
-    unsigned int count = c->buffer->len;
+    unsigned முழு மொத்தம் = c->buffer->len;
     // If there's only one range, we already checked the flag.
     auto *last_range = c->range_flags && (c->range_flags->length > 1) ? &(*c->range_flags)[0] : nullptr;
-    for (unsigned int i = 0; i < count; i++)
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
       /* This block copied from StateTableDriver::drive. Keep in sync. */
-      if (unlikely (last_range))
+      எனில் (unlikely (last_range))
       {
 	auto *range = last_range;
 	{
 	  unsigned cluster = info[i].cluster;
-	  while (cluster < range->cluster_first)
+	  போது (cluster < range->cluster_first)
 	    range--;
-	  while (cluster > range->cluster_last)
+	  போது (cluster > range->cluster_last)
 	    range++;
 
 	  last_range = range;
 	}
-	if (!(range->flags & c->subtable_flags))
-	  continue;
+	எனில் (!(range->flags & c->subtable_flags))
+	  தொடர்;
       }
 
-      const HBGlyphID16 *replacement = substitute.get_value (info[i].codepoint, num_glyphs);
-      if (replacement)
+      மாறிலி HBGlyphID16 *replacement = substitute.get_மதிப்பு (info[i].codepoint, இலக்கம்_glyphs);
+      எனில் (replacement)
       {
 	c->replace_glyph_inplace (i, *replacement);
-	ret = true;
+	ret = உண்மை;
       }
     }
 
@@ -682,45 +682,45 @@ struct NoncontextualSubtable
   }
 
   template <typename set_t>
-  void collect_initial_glyphs (set_t &glyphs, unsigned num_glyphs) const
+  வெறுமை collect_initial_glyphs (set_t &glyphs, unsigned இலக்கம்_glyphs) மாறிலி
   {
-    substitute.collect_glyphs (glyphs, num_glyphs);
+    substitute.collect_glyphs (glyphs, இலக்கம்_glyphs);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     return_trace (substitute.sanitize (c));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   Lookup<HBGlyphID16>	substitute;
-  public:
+  பொது:
   DEFINE_SIZE_MIN (2);
 };
 
 template <typename Types>
-struct InsertionSubtable
+கட்டமைப்பு InsertionSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  வகைவரை typename Types::HBUINT HBUINT;
 
-  struct EntryData
+  கட்டமைப்பு EntryData
   {
-    HBUINT16	currentInsertIndex;	/* Zero-based index into the insertion glyph table.
+    HBUINT16	current_செருகு_Index;	/* Zero-based index into the insertion glyph table.
 					 * The number of glyphs to be inserted is contained
 					 * in the currentInsertCount field in the flags.
 					 * A value of 0xFFFF indicates no insertion is to
 					 * be done. */
-    HBUINT16	markedInsertIndex;	/* Zero-based index into the insertion glyph table.
+    HBUINT16	marked_செருகு_Index;	/* Zero-based index into the insertion glyph table.
 					 * The number of glyphs to be inserted is contained
 					 * in the markedInsertCount field in the flags.
 					 * A value of 0xFFFF indicates no insertion is to
 					 * be done. */
-    public:
+    பொது:
     DEFINE_SIZE_STATIC (4);
   };
 
-  enum Flags
+  எண்ணிக்கை Flags
   {
     SetMark		= 0x8000,     /* If set, mark the current glyph. */
     DontAdvance		= 0x4000,     /* If set, don't advance to the next glyph before
@@ -750,104 +750,104 @@ struct InsertionSubtable
 				       * split-vowel-like insertion, either before or
 				       * after the marked glyph (depending on the state
 				       * of the markedInsertBefore flag). */
-    CurrentInsertBefore= 0x0800,      /* If set, specifies that insertions are to be made
+    Current_செருகு_Before= 0x0800,      /* If set, specifies that insertions are to be made
 				       * to the left of the current glyph. If clear,
 				       * they're made to the right of the current glyph. */
-    MarkedInsertBefore= 0x0400,	      /* If set, specifies that insertions are to be
+    Marked_செருகு_Before= 0x0400,	      /* If set, specifies that insertions are to be
 				       * made to the left of the marked glyph. If clear,
 				       * they're made to the right of the marked glyph. */
-    CurrentInsertCount= 0x3E0,	      /* This 5-bit field is treated as a count of the
+    Current_செருகு_மொத்தம்= 0x3E0,	      /* This 5-bit field is treated as a count of the
 				       * number of glyphs to insert at the current
 				       * position. Since zero means no insertions, the
 				       * largest number of insertions at any given
 				       * current location is 31 glyphs. */
-    MarkedInsertCount= 0x001F,	      /* This 5-bit field is treated as a count of the
+    Marked_செருகு_மொத்தம்= 0x001F,	      /* This 5-bit field is treated as a count of the
 				       * number of glyphs to insert at the marked
 				       * position. Since zero means no insertions, the
 				       * largest number of insertions at any given
 				       * marked location is 31 glyphs. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  தருக்க is_action_initiable (மாறிலி Entry<EntryData> &entry) மாறிலி
   {
-    return (entry.flags & SetMark);
+    திரும்பு (entry.flags & SetMark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  தருக்க is_actionable (மாறிலி Entry<EntryData> &entry) மாறிலி
   {
-    return (entry.flags & (CurrentInsertCount | MarkedInsertCount)) &&
-	   (entry.data.currentInsertIndex != 0xFFFF ||entry.data.markedInsertIndex != 0xFFFF);
+    திரும்பு (entry.flags & (Current_செருகு_மொத்தம் | Marked_செருகு_மொத்தம்)) &&
+	   (entry.data.current_செருகு_Index != 0xFFFF ||entry.data.marked_செருகு_Index != 0xFFFF);
   }
 
-  struct driver_context_t
+  கட்டமைப்பு driver_context_t
   {
-    static constexpr bool in_place = false;
+    நிலையான constexpr தருக்க in_place = பொய்;
 
-    driver_context_t (const InsertionSubtable *table_,
+    driver_context_t (மாறிலி InsertionSubtable *table_,
 		      hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (பொய்),
 	c (c_),
 	table (table_),
 	mark (0),
 	insertionAction (table+table->insertionAction) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    வெறுமை transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     மாறிலி Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      unsigned முழு flags = entry.flags;
 
       unsigned mark_loc = buffer->out_len;
 
-      if (entry.data.markedInsertIndex != 0xFFFF)
+      எனில் (entry.data.marked_செருகு_Index != 0xFFFF)
       {
-	unsigned int count = (flags & MarkedInsertCount);
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.markedInsertIndex;
-	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	unsigned முழு மொத்தம் = (flags & Marked_செருகு_மொத்தம்);
+	எனில் (unlikely ((buffer->max_ops -= மொத்தம்) <= 0)) திரும்பு;
+	unsigned முழு start = entry.data.marked_செருகு_Index;
+	மாறிலி HBGlyphID16 *glyphs = &insertionAction[start];
+	எனில் (unlikely (!c->sanitizer.check_array (glyphs, மொத்தம்))) மொத்தம் = 0;
 	hb_barrier ();
 
-	bool before = flags & MarkedInsertBefore;
+	தருக்க before = flags & Marked_செருகு_Before;
 
-	unsigned int end = buffer->out_len;
-	if (unlikely (!buffer->move_to (mark))) return;
+	unsigned முழு end = buffer->out_len;
+	எனில் (unlikely (!buffer->move_to (mark))) திரும்பு;
 
-	if (buffer->idx < buffer->len && !before)
-	  if (unlikely (!buffer->copy_glyph ())) return;
+	எனில் (buffer->idx < buffer->len && !before)
+	  எனில் (unlikely (!buffer->copy_glyph ())) திரும்பு;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
-	ret = true;
-	if (buffer->idx < buffer->len && !before)
+	எனில் (unlikely (!c->output_glyphs (மொத்தம், glyphs))) திரும்பு;
+	ret = உண்மை;
+	எனில் (buffer->idx < buffer->len && !before)
 	  buffer->skip_glyph ();
 
-	if (unlikely (!buffer->move_to (end + count))) return;
+	எனில் (unlikely (!buffer->move_to (end + மொத்தம்))) திரும்பு;
 
 	buffer->unsafe_to_break_from_outbuffer (mark, hb_min (buffer->idx + 1, buffer->len));
       }
 
-      if (flags & SetMark)
+      எனில் (flags & SetMark)
 	mark = mark_loc;
 
-      if (entry.data.currentInsertIndex != 0xFFFF)
+      எனில் (entry.data.current_செருகு_Index != 0xFFFF)
       {
-	unsigned int count = (flags & CurrentInsertCount) >> 5;
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.currentInsertIndex;
-	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	unsigned முழு மொத்தம் = (flags & Current_செருகு_மொத்தம்) >> 5;
+	எனில் (unlikely ((buffer->max_ops -= மொத்தம்) <= 0)) திரும்பு;
+	unsigned முழு start = entry.data.current_செருகு_Index;
+	மாறிலி HBGlyphID16 *glyphs = &insertionAction[start];
+	எனில் (unlikely (!c->sanitizer.check_array (glyphs, மொத்தம்))) மொத்தம் = 0;
 	hb_barrier ();
 
-	bool before = flags & CurrentInsertBefore;
+	தருக்க before = flags & Current_செருகு_Before;
 
-	unsigned int end = buffer->out_len;
+	unsigned முழு end = buffer->out_len;
 
-	if (buffer->idx < buffer->len && !before)
-	  if (unlikely (!buffer->copy_glyph ())) return;
+	எனில் (buffer->idx < buffer->len && !before)
+	  எனில் (unlikely (!buffer->copy_glyph ())) திரும்பு;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
-	ret = true;
-	if (buffer->idx < buffer->len && !before)
+	எனில் (unlikely (!c->output_glyphs (மொத்தம், glyphs))) திரும்பு;
+	ret = உண்மை;
+	எனில் (buffer->idx < buffer->len && !before)
 	  buffer->skip_glyph ();
 
 	/* Humm. Not sure where to move to.  There's this wording under
@@ -865,24 +865,24 @@ struct InsertionSubtable
 	 *
 	 * https://github.com/harfbuzz/harfbuzz/issues/1224#issuecomment-427691417
 	 */
-	if (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + count))) return;
+	எனில் (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + மொத்தம்))) திரும்பு;
       }
     }
 
-    public:
-    bool ret;
+    பொது:
+    தருக்க ret;
     hb_aat_apply_context_t *c;
-    const InsertionSubtable *table;
-    private:
-    unsigned int mark;
-    const UnsizedArrayOf<HBGlyphID16> &insertionAction;
+    மாறிலி InsertionSubtable *table;
+    தனிப்பட்ட:
+    unsigned முழு mark;
+    மாறிலி UnsizedArrayOf<HBGlyphID16> &insertionAction;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  தருக்க apply (hb_aat_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (இது, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
 
@@ -891,36 +891,36 @@ struct InsertionSubtable
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (இது);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (c->check_struct (this) && machine.sanitize (c) &&
+    return_trace (c->check_struct (இது) && machine.sanitize (c) &&
 		  hb_barrier () &&
 		  insertionAction);
   }
 
-  public:
+  பொது:
   StateTable<Types, EntryData>
 		machine;
-  protected:
+  பாதுகாக்கப்பட்ட:
   NNOffsetTo<UnsizedArrayOf<HBGlyphID16>, HBUINT>
 		insertionAction;	/* Byte offset from stateHeader to the start of
 					 * the insertion glyph table. */
-  public:
+  பொது:
   DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + HBUINT::static_size));
 };
 
 
-struct Feature
+கட்டமைப்பு Feature
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (இது);
+    return_trace (c->check_struct (இது));
   }
 
-  public:
+  பொது:
   HBUINT16	featureType;	/* The type of feature. */
   HBUINT16	featureSetting;	/* The feature's setting (aka selector). */
   HBUINT32	enableFlags;	/* Flags for the settings that this feature
@@ -928,44 +928,44 @@ struct Feature
   HBUINT32	disableFlags;	/* Complement of flags for the settings that this
 				 * feature and setting disable. */
 
-  public:
+  பொது:
   DEFINE_SIZE_STATIC (12);
 };
 
 
-struct hb_accelerate_subtables_context_t :
+கட்டமைப்பு hb_accelerate_subtables_context_t :
        hb_dispatch_context_t<hb_accelerate_subtables_context_t>
 {
-  struct hb_applicable_t
+  கட்டமைப்பு hb_applicable_t
   {
-    friend struct hb_accelerate_subtables_context_t;
-    friend struct hb_aat_layout_lookup_accelerator_t;
+    friend கட்டமைப்பு hb_accelerate_subtables_context_t;
+    friend கட்டமைப்பு hb_aat_layout_lookup_accelerator_t;
 
-    public:
+    பொது:
     hb_bit_set_t glyph_set;
     mutable hb_aat_class_cache_t class_cache;
 
     template <typename T>
-    auto init_ (const T &obj_, unsigned num_glyphs, hb_priority<1>) HB_AUTO_RETURN
+    auto init_ (மாறிலி T &obj_, unsigned இலக்கம்_glyphs, hb_priority<1>) HB_AUTO_RETURN
     (
-      obj_.machine.collect_initial_glyphs (glyph_set, num_glyphs, obj_)
+      obj_.machine.collect_initial_glyphs (glyph_set, இலக்கம்_glyphs, obj_)
     )
 
     template <typename T>
-    void init_ (const T &obj_, unsigned num_glyphs, hb_priority<0>)
+    வெறுமை init_ (மாறிலி T &obj_, unsigned இலக்கம்_glyphs, hb_priority<0>)
     {
-      obj_.collect_initial_glyphs (glyph_set, num_glyphs);
+      obj_.collect_initial_glyphs (glyph_set, இலக்கம்_glyphs);
     }
 
     template <typename T>
-    void init (const T &obj_, unsigned num_glyphs)
+    வெறுமை init (மாறிலி T &obj_, unsigned இலக்கம்_glyphs)
     {
       glyph_set.init ();
-      init_ (obj_, num_glyphs, hb_prioritize);
+      init_ (obj_, இலக்கம்_glyphs, hb_prioritize);
       class_cache.clear ();
     }
 
-    void
+    வெறுமை
     fini ()
     {
       glyph_set.fini ();
@@ -974,43 +974,43 @@ struct hb_accelerate_subtables_context_t :
 
   /* Dispatch interface. */
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (மாறிலி T &obj)
   {
     hb_applicable_t *entry = &array[i++];
 
-    entry->init (obj, num_glyphs);
+    entry->init (obj, இலக்கம்_glyphs);
 
-    return hb_empty_t ();
+    திரும்பு hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  நிலையான return_t default_return_மதிப்பு () { திரும்பு hb_empty_t (); }
 
-  bool stop_sublookup_iteration (return_t r) const { return false; }
+  தருக்க stop_sublookup_iteration (return_t r) மாறிலி { திரும்பு பொய்; }
 
-  hb_accelerate_subtables_context_t (hb_applicable_t *array_, unsigned num_glyphs_) :
+  hb_accelerate_subtables_context_t (hb_applicable_t *array_, unsigned இலக்கம்_glyphs_2) :
 				     hb_dispatch_context_t<hb_accelerate_subtables_context_t> (),
-				     array (array_), num_glyphs (num_glyphs_) {}
+				     array (array_), இலக்கம்_glyphs (இலக்கம்_glyphs_2) {}
 
   hb_applicable_t *array;
-  unsigned num_glyphs;
+  unsigned இலக்கம்_glyphs;
   unsigned i = 0;
 };
 
-struct hb_aat_layout_chain_accelerator_t
+கட்டமைப்பு hb_aat_layout_chain_accelerator_t
 {
   template <typename TChain>
-  static hb_aat_layout_chain_accelerator_t *create (const TChain &chain, unsigned num_glyphs)
+  நிலையான hb_aat_layout_chain_accelerator_t *create (மாறிலி TChain &chain, unsigned இலக்கம்_glyphs)
   {
-    unsigned count = chain.get_subtable_count ();
+    unsigned மொத்தம் = chain.get_subtable_மொத்தம் ();
 
     unsigned product;
-    if (unlikely (hb_unsigned_mul_overflows (count,
-        sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), &product)))
-      return nullptr;
+    எனில் (unlikely (hb_unsigned_mul_overflows (மொத்தம்,
+        அளவு (hb_accelerate_subtables_context_t::hb_applicable_t), &product)))
+      திரும்பு nullptr;
 
     unsigned size;
-    if (unlikely (hb_unsigned_add_overflows (sizeof (hb_aat_layout_chain_accelerator_t) -
-        HB_VAR_ARRAY * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), product, &size))) {
-      return nullptr;
+    எனில் (unlikely (hb_unsigned_add_overflows (அளவு (hb_aat_layout_chain_accelerator_t) -
+        HB_VAR_ARRAY * அளவு (hb_accelerate_subtables_context_t::hb_applicable_t), product, &size))) {
+      திரும்பு nullptr;
     }
 
     /* The following is a calloc because when we are collecting subtables,
@@ -1019,40 +1019,40 @@ struct hb_aat_layout_chain_accelerator_t
      * Zeroing it allows the set digest to gatekeep it without having to
      * initialize it further. */
     auto *thiz = (hb_aat_layout_chain_accelerator_t *) hb_calloc (1, size);
-    if (unlikely (!thiz))
-      return nullptr;
+    எனில் (unlikely (!thiz))
+      திரும்பு nullptr;
 
-    thiz->count = count;
+    thiz->மொத்தம் = மொத்தம்;
 
-    hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, num_glyphs);
+    hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, இலக்கம்_glyphs);
     chain.dispatch (&c_accelerate_subtables);
 
-    return thiz;
+    திரும்பு thiz;
   }
 
-  void destroy ()
+  வெறுமை destroy ()
   {
-    for (unsigned i = 0; i < count; i++)
+    க்கு (unsigned i = 0; i < மொத்தம்; i++)
       subtables[i].fini ();
   }
 
-  unsigned count;
+  unsigned மொத்தம்;
   hb_accelerate_subtables_context_t::hb_applicable_t subtables[HB_VAR_ARRAY];
 };
 
 template <typename Types>
-struct ChainSubtable
+கட்டமைப்பு ChainSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  வகைவரை typename Types::HBUINT HBUINT;
 
   template <typename T>
-  friend struct Chain;
+  friend கட்டமைப்பு Chain;
 
-  size_t get_size () const     { return length; }
-  unsigned int get_type () const     { return coverage & 0xFF; }
-  unsigned int get_coverage () const { return coverage >> (sizeof (HBUINT) * 8 - 8); }
+  size_t get_size () மாறிலி     { திரும்பு length; }
+  unsigned முழு get_type () மாறிலி     { திரும்பு coverage & 0xFF; }
+  unsigned முழு get_coverage () மாறிலி { திரும்பு coverage >> (அளவு (HBUINT) * 8 - 8); }
 
-  enum Coverage
+  எண்ணிக்கை Coverage
   {
     Vertical		= 0x80,	/* If set, this subtable will only be applied
 				 * to vertical text. If clear, this subtable
@@ -1067,7 +1067,7 @@ struct ChainSubtable
 				 * in logical order (or reverse logical order,
 				 * depending on the value of bit 0x80000000). */
   };
-  enum Type
+  எண்ணிக்கை Type
   {
     Rearrangement	= 0,
     Contextual		= 1,
@@ -1077,92 +1077,92 @@ struct ChainSubtable
   };
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) மாறிலி
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case Rearrangement:		hb_barrier (); return_trace (c->dispatch (u.rearrangement, std::forward<Ts> (ds)...));
-    case Contextual:		hb_barrier (); return_trace (c->dispatch (u.contextual, std::forward<Ts> (ds)...));
-    case Ligature:		hb_barrier (); return_trace (c->dispatch (u.ligature, std::forward<Ts> (ds)...));
-    case Noncontextual:		hb_barrier (); return_trace (c->dispatch (u.noncontextual, std::forward<Ts> (ds)...));
-    case Insertion:		hb_barrier (); return_trace (c->dispatch (u.insertion, std::forward<Ts> (ds)...));
-    default:			return_trace (c->default_return_value ());
+    unsigned முழு subtable_type = get_type ();
+    TRACE_DISPATCH (இது, subtable_type);
+    தேர்வு (subtable_type) {
+    நிலை Rearrangement:		hb_barrier (); return_trace (c->dispatch (u.rearrangement, std::forward<Ts> (ds)...));
+    நிலை Contextual:		hb_barrier (); return_trace (c->dispatch (u.contextual, std::forward<Ts> (ds)...));
+    நிலை Ligature:		hb_barrier (); return_trace (c->dispatch (u.ligature, std::forward<Ts> (ds)...));
+    நிலை Noncontextual:		hb_barrier (); return_trace (c->dispatch (u.noncontextual, std::forward<Ts> (ds)...));
+    நிலை Insertion:		hb_barrier (); return_trace (c->dispatch (u.insertion, std::forward<Ts> (ds)...));
+    இயல்பு:			return_trace (c->default_return_மதிப்பு ());
     }
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  தருக்க apply (hb_aat_apply_context_t *c) மாறிலி
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (இது);
     // Disabled for https://github.com/harfbuzz/harfbuzz/issues/4873
     //hb_sanitize_with_object_t with (&c->sanitizer, this);
     return_trace (dispatch (c));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!(length.sanitize (c) &&
+    TRACE_SANITIZE (இது);
+    எனில் (!(length.sanitize (c) &&
 	  hb_barrier () &&
 	  length >= min_size &&
-	  c->check_range (this, length)))
-      return_trace (false);
+	  c->check_range (இது, length)))
+      return_trace (பொய்);
 
     // Disabled for https://github.com/harfbuzz/harfbuzz/issues/4873
     //hb_sanitize_with_object_t with (c, this);
     return_trace (dispatch (c));
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT	length;		/* Total subtable length, including this header. */
   HBUINT	coverage;	/* Coverage flags and subtable type. */
   HBUINT32	subFeatureFlags;/* The 32-bit mask identifying which subtable this is. */
-  union {
+  ஒன்றிப்பு {
   RearrangementSubtable<Types>	rearrangement;
   ContextualSubtable<Types>	contextual;
   LigatureSubtable<Types>	ligature;
   NoncontextualSubtable<Types>	noncontextual;
   InsertionSubtable<Types>	insertion;
   } u;
-  public:
-  DEFINE_SIZE_MIN (2 * sizeof (HBUINT) + 4);
+  பொது:
+  DEFINE_SIZE_MIN (2 * அளவு (HBUINT) + 4);
 };
 
 template <typename Types>
-struct Chain
+கட்டமைப்பு Chain
 {
-  typedef typename Types::HBUINT HBUINT;
+  வகைவரை typename Types::HBUINT HBUINT;
 
-  unsigned get_subtable_count () const { return subtableCount; }
+  unsigned get_subtable_மொத்தம் () மாறிலி { திரும்பு subtable_மொத்தம்_2; }
 
-  hb_mask_t compile_flags (const hb_aat_map_builder_t *map) const
+  hb_mask_t compile_flags (மாறிலி hb_aat_map_builder_t *map) மாறிலி
   {
     hb_mask_t flags = defaultFlags;
     {
-      unsigned int count = featureCount;
-      for (unsigned i = 0; i < count; i++)
+      unsigned முழு மொத்தம் = feature_மொத்தம்;
+      க்கு (unsigned i = 0; i < மொத்தம்; i++)
       {
-	const Feature &feature = featureZ[i];
-	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (unsigned int) feature.featureType;
-	hb_aat_layout_feature_selector_t setting = (hb_aat_layout_feature_selector_t) (unsigned int) feature.featureSetting;
+	மாறிலி Feature &feature = featureZ[i];
+	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (unsigned முழு) feature.featureType;
+	hb_aat_layout_feature_selector_t setting = (hb_aat_layout_feature_selector_t) (unsigned முழு) feature.featureSetting;
       retry:
 	// Check whether this type/setting pair was requested in the map, and if so, apply its flags.
 	// (The search here only looks at the type and setting fields of feature_info_t.)
-	hb_aat_map_builder_t::feature_info_t info = { type, setting, false, 0 };
-	if (map->current_features.bsearch (info))
+	hb_aat_map_builder_t::feature_info_t info = { type, setting, பொய், 0 };
+	எனில் (map->current_features.bsearch (info))
 	{
 	  flags &= feature.disableFlags;
 	  flags |= feature.enableFlags;
 	}
-	else if (type == HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE && setting == HB_AAT_LAYOUT_FEATURE_SELECTOR_SMALL_CAPS)
+	இல்லையெனில் எனில் (type == HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE && setting == HB_AAT_LAYOUT_FEATURE_SELECTOR_SMALL_CAPS)
 	{
 	  /* Deprecated. https://github.com/harfbuzz/harfbuzz/issues/1342 */
 	  type = HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE;
 	  setting = HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS;
-	  goto retry;
+	  செல் retry;
 	}
 #ifndef HB_NO_AAT
-	else if (type == HB_AAT_LAYOUT_FEATURE_TYPE_LANGUAGE_TAG_TYPE && setting &&
+	இல்லையெனில் எனில் (type == HB_AAT_LAYOUT_FEATURE_TYPE_LANGUAGE_TAG_TYPE && setting &&
 		 /* TODO: Rudimentary language matching. */
 		 hb_language_matches (map->face->table.ltag->get_language (setting - 1), map->props.language))
 	{
@@ -1172,38 +1172,38 @@ struct Chain
 #endif
       }
     }
-    return flags;
+    திரும்பு flags;
   }
 
-  void apply (hb_aat_apply_context_t *c,
-	      const hb_aat_layout_chain_accelerator_t *accel) const
+  வெறுமை apply (hb_aat_apply_context_t *c,
+	      மாறிலி hb_aat_layout_chain_accelerator_t *accel) மாறிலி
   {
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    மாறிலி ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_மொத்தம்));
+    unsigned முழு மொத்தம் = subtable_மொத்தம்_2;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      bool reverse;
+      தருக்க reverse;
 
       auto coverage = subtable->get_coverage ();
 
       hb_mask_t subtable_flags = subtable->subFeatureFlags;
-      if (hb_none (hb_iter (c->range_flags) |
-		   hb_map ([subtable_flags] (const hb_aat_map_t::range_flags_t _) -> bool { return subtable_flags & (_.flags); })))
-	goto skip;
+      எனில் (hb_none (hb_iter (c->range_flags) |
+		   hb_map ([subtable_flags] (மாறிலி hb_aat_map_t::range_flags_t _) -> தருக்க { திரும்பு subtable_flags & (_.flags); })))
+	செல் skip;
 
-      if (!(coverage & ChainSubtable<Types>::AllDirections) &&
+      எனில் (!(coverage & ChainSubtable<Types>::AllDirections) &&
 	  HB_DIRECTION_IS_VERTICAL (c->buffer->props.direction) !=
-	  bool (coverage & ChainSubtable<Types>::Vertical))
-	goto skip;
+	  தருக்க (coverage & ChainSubtable<Types>::Vertical))
+	செல் skip;
 
       c->subtable_flags = subtable_flags;
       c->first_set = accel ? &accel->subtables[i].glyph_set : &Null(hb_bit_set_t);
       c->machine_class_cache = accel ? &accel->subtables[i].class_cache : nullptr;
 
-      if (!c->buffer_intersects_machine ())
+      எனில் (!c->buffer_intersects_machine ())
       {
-	(void) c->buffer->message (c->font, "skipped chainsubtable %u because no glyph matches", c->lookup_index);
-	goto skip;
+	(வெறுமை) c->buffer->message (c->font, "skipped chainsubtable %u because no glyph matches", c->lookup_index);
+	செல் skip;
       }
 
       /* Buffer contents is always in logical direction.  Determine if
@@ -1234,91 +1234,91 @@ struct Chain
 				may be right-to-left or left-to-right).
        */
       reverse = coverage & ChainSubtable<Types>::Logical ?
-		bool (coverage & ChainSubtable<Types>::Backwards) :
-		bool (coverage & ChainSubtable<Types>::Backwards) !=
+		தருக்க (coverage & ChainSubtable<Types>::Backwards) :
+		தருக்க (coverage & ChainSubtable<Types>::Backwards) !=
 		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
 
-      if (!c->buffer->message (c->font, "start chainsubtable %u", c->lookup_index))
-	goto skip;
+      எனில் (!c->buffer->message (c->font, "start chainsubtable %u", c->lookup_index))
+	செல் skip;
 
-      if (reverse != c->buffer_is_reversed)
+      எனில் (reverse != c->buffer_is_reversed)
         c->reverse_buffer ();
 
       subtable->apply (c);
 
-      (void) c->buffer->message (c->font, "end chainsubtable %u", c->lookup_index);
+      (வெறுமை) c->buffer->message (c->font, "end chainsubtable %u", c->lookup_index);
 
-      if (unlikely (!c->buffer->successful)) break;
+      எனில் (unlikely (!c->buffer->successful)) நிறுத்து;
 
     skip:
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
       c->set_lookup_index (c->lookup_index + 1);
     }
-    if (c->buffer_is_reversed)
+    எனில் (c->buffer_is_reversed)
       c->reverse_buffer ();
   }
 
-  size_t get_size () const { return length; }
+  size_t get_size () மாறிலி { திரும்பு length; }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) மாறிலி
   {
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    மாறிலி ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_மொத்தம்));
+    unsigned முழு மொத்தம் = subtable_மொத்தம்_2;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
       typename context_t::return_t ret = subtable->dispatch (c, std::forward<Ts> (ds)...);
-      if (c->stop_sublookup_iteration (ret))
-	return ret;
+      எனில் (c->stop_sublookup_iteration (ret))
+	திரும்பு ret;
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
-    return c->default_return_value ();
+    திரும்பு c->default_return_மதிப்பு ();
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int version) const
+  தருக்க sanitize (hb_sanitize_context_t *c, unsigned முழு version) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!(length.sanitize (c) &&
+    TRACE_SANITIZE (இது);
+    எனில் (!(length.sanitize (c) &&
 	  hb_barrier () &&
 	  length >= min_size &&
-	  c->check_range (this, length)))
-      return_trace (false);
+	  c->check_range (இது, length)))
+      return_trace (பொய்);
 
-    if (!c->check_array (featureZ.arrayZ, featureCount))
-      return_trace (false);
+    எனில் (!c->check_array (featureZ.arrayZ, feature_மொத்தம்))
+      return_trace (பொய்);
 
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    மாறிலி ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_மொத்தம்));
+    unsigned முழு மொத்தம் = subtable_மொத்தம்_2;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      if (!subtable->sanitize (c))
-	return_trace (false);
+      எனில் (!subtable->sanitize (c))
+	return_trace (பொய்);
       hb_barrier ();
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
 
-    if (version >= 3)
+    எனில் (version >= 3)
     {
-      const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) subtable;
-      if (!coverage->sanitize (c, count))
-        return_trace (false);
+      மாறிலி SubtableGlyphCoverage *coverage = (மாறிலி SubtableGlyphCoverage *) subtable;
+      எனில் (!coverage->sanitize (c, மொத்தம்))
+        return_trace (பொய்);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT32	defaultFlags;	/* The default specification for subtables. */
   HBUINT32	length;		/* Total byte count, including this header. */
-  HBUINT	featureCount;	/* Number of feature subtable entries. */
-  HBUINT	subtableCount;	/* The number of subtables in the chain. */
+  HBUINT	feature_மொத்தம்;	/* Number of feature subtable entries. */
+  HBUINT	subtable_மொத்தம்_2;	/* The number of subtables in the chain. */
 
   UnsizedArrayOf<Feature>	featureZ;	/* Features. */
 /*ChainSubtable	firstSubtable;*//* Subtables. */
 /*SubtableGlyphCoverage coverages*//* Only if version >= 3. */
 
-  public:
-  DEFINE_SIZE_MIN (8 + 2 * sizeof (HBUINT));
+  பொது:
+  DEFINE_SIZE_MIN (8 + 2 * அளவு (HBUINT));
 };
 
 
@@ -1327,87 +1327,87 @@ struct Chain
  */
 
 template <typename T, typename Types, hb_tag_t TAG>
-struct mortmorx
+கட்டமைப்பு mortmorx
 {
-  static constexpr hb_tag_t tableTag = TAG;
+  நிலையான constexpr hb_tag_t tableTag = TAG;
 
-  bool has_data () const { return version != 0; }
+  தருக்க has_data () மாறிலி { திரும்பு version != 0; }
 
-  struct accelerator_t
+  கட்டமைப்பு accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<T> (face);
+      இது->table = sc.reference_table<T> (face);
 
-      if (unlikely (this->table->is_blocklisted (this->table.get_blob (), face)))
+      எனில் (unlikely (இது->table->is_blocklisted (இது->table.get_blob (), face)))
       {
-        hb_blob_destroy (this->table.get_blob ());
-        this->table = hb_blob_get_empty ();
+        hb_blob_destroy (இது->table.get_blob ());
+        இது->table = hb_blob_get_empty ();
       }
 
-      this->chain_count = table->get_chain_count ();
+      இது->chain_மொத்தம் = table->get_chain_மொத்தம் ();
 
-      this->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (this->chain_count, sizeof (*accels));
-      if (unlikely (!this->accels))
+      இது->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (இது->chain_மொத்தம், அளவு (*accels));
+      எனில் (unlikely (!இது->accels))
       {
-	this->chain_count = 0;
-	this->table.destroy ();
-	this->table = hb_blob_get_empty ();
+	இது->chain_மொத்தம் = 0;
+	இது->table.destroy ();
+	இது->table = hb_blob_get_empty ();
       }
     }
     ~accelerator_t ()
     {
-      for (unsigned int i = 0; i < this->chain_count; i++)
+      க்கு (unsigned முழு i = 0; i < இது->chain_மொத்தம்; i++)
       {
-	if (this->accels[i])
-	  this->accels[i]->destroy ();
-	hb_free (this->accels[i]);
+	எனில் (இது->accels[i])
+	  இது->accels[i]->destroy ();
+	hb_free (இது->accels[i]);
       }
-      hb_free (this->accels);
-      this->table.destroy ();
+      hb_free (இது->accels);
+      இது->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () மாறிலி { திரும்பு table.get_blob (); }
 
     template <typename Chain>
-    hb_aat_layout_chain_accelerator_t *get_accel (unsigned chain_index, const Chain &chain, unsigned num_glyphs) const
+    hb_aat_layout_chain_accelerator_t *get_accel (unsigned chain_index, மாறிலி Chain &chain, unsigned இலக்கம்_glyphs) மாறிலி
     {
-      if (unlikely (chain_index >= chain_count)) return nullptr;
+      எனில் (unlikely (chain_index >= chain_மொத்தம்)) திரும்பு nullptr;
 
     retry:
       auto *accel = accels[chain_index].get_acquire ();
-      if (unlikely (!accel))
+      எனில் (unlikely (!accel))
       {
-	accel = hb_aat_layout_chain_accelerator_t::create (chain, num_glyphs);
-	if (unlikely (!accel))
-	  return nullptr;
+	accel = hb_aat_layout_chain_accelerator_t::create (chain, இலக்கம்_glyphs);
+	எனில் (unlikely (!accel))
+	  திரும்பு nullptr;
 
-	if (unlikely (!accels[chain_index].cmpexch (nullptr, accel)))
+	எனில் (unlikely (!accels[chain_index].cmpexch (nullptr, accel)))
 	{
 	  hb_free (accel);
-	  goto retry;
+	  செல் retry;
 	}
       }
 
-      return accel;
+      திரும்பு accel;
     }
 
     hb_blob_ptr_t<T> table;
-    unsigned int chain_count;
+    unsigned முழு chain_மொத்தம்;
     hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *accels;
     hb_aat_scratch_t scratch;
   };
 
 
-  void compile_flags (const hb_aat_map_builder_t *mapper,
-		      hb_aat_map_t *map) const
+  வெறுமை compile_flags (மாறிலி hb_aat_map_builder_t *mapper,
+		      hb_aat_map_t *map) மாறிலி
   {
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    if (unlikely (!map->chain_flags.resize (count)))
-      return;
-    for (unsigned int i = 0; i < count; i++)
+    மாறிலி Chain<Types> *chain = &firstChain;
+    unsigned முழு மொத்தம் = chain_மொத்தம்_2;
+    எனில் (unlikely (!map->chain_flags.resize (மொத்தம்)))
+      திரும்பு;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
       map->chain_flags[i].push (hb_aat_map_t::range_flags_t {chain->compile_flags (mapper),
 							     mapper->range_first,
@@ -1416,83 +1416,83 @@ struct mortmorx
     }
   }
 
-  unsigned get_chain_count () const
+  unsigned get_chain_மொத்தம் () மாறிலி
   {
-    return chainCount;
+    திரும்பு chain_மொத்தம்_2;
   }
-  void apply (hb_aat_apply_context_t *c,
-	      const hb_aat_map_t &map,
-	      const accelerator_t &accel) const
+  வெறுமை apply (hb_aat_apply_context_t *c,
+	      மாறிலி hb_aat_map_t &map,
+	      மாறிலி accelerator_t &accel) மாறிலி
   {
-    if (unlikely (!c->buffer->successful)) return;
+    எனில் (unlikely (!c->buffer->successful)) திரும்பு;
 
     c->buffer->unsafe_to_concat ();
 
     c->setup_buffer_glyph_set ();
 
     c->set_lookup_index (0);
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    மாறிலி Chain<Types> *chain = &firstChain;
+    unsigned முழு மொத்தம் = chain_மொத்தம்_2;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      auto *chain_accel = accel.get_accel (i, *chain, c->face->get_num_glyphs ());
+      auto *chain_accel = accel.get_accel (i, *chain, c->face->get_இலக்கம்_glyphs ());
       c->range_flags = &map.chain_flags[i];
       chain->apply (c, chain_accel);
-      if (unlikely (!c->buffer->successful)) return;
+      எனில் (unlikely (!c->buffer->successful)) திரும்பு;
       chain = &StructAfter<Chain<Types>> (*chain);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  தருக்க sanitize (hb_sanitize_context_t *c) மாறிலி
   {
-    TRACE_SANITIZE (this);
-    if (!(version.sanitize (c) &&
+    TRACE_SANITIZE (இது);
+    எனில் (!(version.sanitize (c) &&
 	  hb_barrier () &&
 	  version &&
-	  chainCount.sanitize (c)))
-      return_trace (false);
+	  chain_மொத்தம்_2.sanitize (c)))
+      return_trace (பொய்);
 
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    மாறிலி Chain<Types> *chain = &firstChain;
+    unsigned முழு மொத்தம் = chain_மொத்தம்_2;
+    க்கு (unsigned முழு i = 0; i < மொத்தம்; i++)
     {
-      if (!chain->sanitize (c, version))
-	return_trace (false);
+      எனில் (!chain->sanitize (c, version))
+	return_trace (பொய்);
       hb_barrier ();
       chain = &StructAfter<Chain<Types>> (*chain);
     }
 
-    return_trace (true);
+    return_trace (உண்மை);
   }
 
-  protected:
+  பாதுகாக்கப்பட்ட:
   HBUINT16	version;	/* Version number of the glyph metamorphosis table.
 				 * 1, 2, or 3. */
   HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	chainCount;	/* Number of metamorphosis chains contained in this
+  HBUINT32	chain_மொத்தம்_2;	/* Number of metamorphosis chains contained in this
 				 * table. */
   Chain<Types>	firstChain;	/* Chains. */
 
-  public:
+  பொது:
   DEFINE_SIZE_MIN (8);
 };
 
-struct morx : mortmorx<morx, ExtendedTypes, HB_AAT_TAG_morx>
+கட்டமைப்பு morx : mortmorx<morx, ExtendedTypes, HB_AAT_TAG_morx>
 {
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_INTERNAL தருக்க is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) மாறிலி;
 };
 
-struct mort : mortmorx<mort, ObsoleteTypes, HB_AAT_TAG_mort>
+கட்டமைப்பு mort : mortmorx<mort, ObsoleteTypes, HB_AAT_TAG_mort>
 {
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_INTERNAL தருக்க is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) மாறிலி;
 };
 
-struct morx_accelerator_t : morx::accelerator_t {
+கட்டமைப்பு morx_accelerator_t : morx::accelerator_t {
   morx_accelerator_t (hb_face_t *face) : morx::accelerator_t (face) {}
 };
-struct mort_accelerator_t : mort::accelerator_t {
+கட்டமைப்பு mort_accelerator_t : mort::accelerator_t {
   mort_accelerator_t (hb_face_t *face) : mort::accelerator_t (face) {}
 };
 

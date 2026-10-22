@@ -31,22 +31,22 @@
 #ifndef HB_OT_SHAPER_USE_MACHINE_HH
 #define HB_OT_SHAPER_USE_MACHINE_HH
 
-#include "hb.hh"
+#அந்தர்பாவ "hb.hh"
 
-#include "hb-ot-shaper-syllabic.hh"
+#அந்தர்பாவ "hb-ot-shaper-syllabic.hh"
 
 /* buffer var allocations */
 #define use_category() ot_shaper_var_u8_category()
 
 #define USE(Cat) use_syllable_machine_ex_##Cat
 
-enum use_syllable_type_t {
+எண்ணிக்கை use_syllable_type_t {
   use_virama_terminated_cluster,
   use_sakot_terminated_cluster,
   use_standard_cluster,
-  use_number_joiner_terminated_cluster,
+  use_எண்_joiner_terminated_cluster,
   use_numeral_cluster,
-  use_symbol_cluster,
+  use_குறியீடு_cluster,
   use_hieroglyph_cluster,
   use_broken_cluster,
   use_non_cluster,
@@ -101,7 +101,7 @@ enum use_syllable_type_t {
 
 
 #line 99 "hb-ot-shaper-use-machine.hh"
-static const unsigned char _use_syllable_machine_trans_keys[] = {
+நிலையான மாறிலி unsigned எழுத்து use_syllable_machine_trans_சாவிகள்[] = {
 	49u, 51u, 0u, 56u, 11u, 56u, 11u, 56u, 1u, 53u, 14u, 48u, 14u, 47u, 14u, 47u, 
 	14u, 47u, 14u, 46u, 14u, 46u, 14u, 14u, 14u, 48u, 14u, 48u, 14u, 48u, 1u, 14u, 
 	14u, 48u, 14u, 53u, 14u, 53u, 14u, 53u, 14u, 53u, 12u, 53u, 14u, 53u, 12u, 53u, 
@@ -120,7 +120,7 @@ static const unsigned char _use_syllable_machine_trans_keys[] = {
 	14u, 42u, 1u, 5u, 14u, 55u, 14u, 51u, 14u, 52u, 14u, 54u, 11u, 56u, 0
 };
 
-static const char _use_syllable_machine_key_spans[] = {
+நிலையான மாறிலி எழுத்து use_syllable_machine_சாவி_spans[] = {
 	3, 57, 46, 46, 53, 35, 34, 34, 
 	34, 33, 33, 1, 35, 35, 35, 14, 
 	35, 40, 40, 40, 40, 42, 40, 42, 
@@ -139,7 +139,7 @@ static const char _use_syllable_machine_key_spans[] = {
 	29, 5, 42, 38, 39, 41, 46
 };
 
-static const short _use_syllable_machine_index_offsets[] = {
+நிலையான மாறிலி short _use_syllable_machine_index_offsets[] = {
 	0, 4, 62, 109, 156, 210, 246, 281, 
 	316, 351, 385, 419, 421, 457, 493, 529, 
 	544, 580, 621, 662, 703, 744, 787, 828, 
@@ -158,7 +158,7 @@ static const short _use_syllable_machine_index_offsets[] = {
 	4203, 4233, 4239, 4282, 4321, 4361, 4403
 };
 
-static const unsigned char _use_syllable_machine_indicies[] = {
+நிலையான மாறிலி unsigned எழுத்து _use_syllable_machine_indicies[] = {
 	1, 0, 2, 0, 3, 4, 5, 5, 
 	6, 7, 5, 5, 5, 5, 5, 8, 
 	9, 10, 11, 5, 5, 5, 12, 5, 
@@ -718,7 +718,7 @@ static const unsigned char _use_syllable_machine_indicies[] = {
 	64, 39, 0
 };
 
-static const char _use_syllable_machine_trans_targs[] = {
+நிலையான மாறிலி எழுத்து _use_syllable_machine_trans_targs[] = {
 	1, 122, 0, 2, 31, 1, 59, 61, 
 	90, 91, 116, 1, 118, 104, 92, 93, 
 	94, 95, 108, 110, 111, 112, 113, 105, 
@@ -740,7 +740,7 @@ static const char _use_syllable_machine_trans_targs[] = {
 	123, 124, 125
 };
 
-static const char _use_syllable_machine_trans_actions[] = {
+நிலையான மாறிலி எழுத்து _use_syllable_machine_trans_actions[] = {
 	1, 0, 0, 0, 0, 4, 0, 0, 
 	0, 0, 0, 5, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -762,7 +762,7 @@ static const char _use_syllable_machine_trans_actions[] = {
 	0, 0, 0
 };
 
-static const char _use_syllable_machine_to_state_actions[] = {
+நிலையான மாறிலி எழுத்து _use_syllable_machine_to_state_actions[] = {
 	0, 2, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -781,7 +781,7 @@ static const char _use_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0
 };
 
-static const char _use_syllable_machine_from_state_actions[] = {
+நிலையான மாறிலி எழுத்து _use_syllable_machine_from_state_actions[] = {
 	0, 3, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -800,7 +800,7 @@ static const char _use_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0
 };
 
-static const short _use_syllable_machine_eof_trans[] = {
+நிலையான மாறிலி short _use_syllable_machine_eof_trans[] = {
 	1, 0, 40, 40, 40, 40, 40, 40, 
 	40, 40, 40, 40, 40, 40, 40, 40, 
 	40, 40, 40, 40, 40, 40, 40, 40, 
@@ -819,11 +819,11 @@ static const short _use_syllable_machine_eof_trans[] = {
 	136, 142, 143, 143, 143, 143, 40
 };
 
-static const int use_syllable_machine_start = 1;
-static const int use_syllable_machine_first_final = 1;
-static const int use_syllable_machine_error = -1;
+நிலையான மாறிலி முழு use_syllable_machine_start = 1;
+நிலையான மாறிலி முழு use_syllable_machine_first_final = 1;
+நிலையான மாறிலி முழு use_syllable_machine_error = -1;
 
-static const int use_syllable_machine_en_main = 1;
+நிலையான மாறிலி முழு use_syllable_machine_en_main = 1;
 
 
 #line 58 "hb-ot-shaper-use-machine.rl"
@@ -835,89 +835,89 @@ static const int use_syllable_machine_en_main = 1;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", (*ts).second.first, (*te).second.first, #syllable_type); \
-    for (unsigned i = (*ts).second.first; i < (*te).second.first; ++i) \
+    எனில் (0) fprintf (stderr, "syllable %u..%u %s\n", (*ts).second.first, (*te).second.first, #syllable_type); \
+    க்கு (unsigned i = (*ts).second.first; i < (*te).second.first; ++i) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    எனில் (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
 
 template <typename Iter>
-struct machine_index_t :
+கட்டமைப்பு machine_index_t :
   hb_iter_with_fallback_t<machine_index_t<Iter>,
 			  typename Iter::item_t>
 {
-  machine_index_t (const Iter& it) : it (it) {}
-  machine_index_t (const machine_index_t& o) : hb_iter_with_fallback_t<machine_index_t<Iter>,
+  machine_index_t (மாறிலி Iter& it) : it (it) {}
+  machine_index_t (மாறிலி machine_index_t& o) : hb_iter_with_fallback_t<machine_index_t<Iter>,
 								       typename Iter::item_t> (),
 					       it (o.it), is_null (o.is_null) {}
 
-  static constexpr bool is_random_access_iterator = Iter::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
+  நிலையான constexpr தருக்க is_random_access_iterator = Iter::is_random_access_iterator;
+  நிலையான constexpr தருக்க is_sorted_iterator = Iter::is_sorted_iterator;
 
-  typename Iter::item_t __item__ () const { return *it; }
-  typename Iter::item_t __item_at__ (unsigned i) const { return it[i]; }
-  unsigned __len__ () const { return it.len (); }
-  void __next__ () { ++it; }
-  void __forward__ (unsigned n) { it += n; }
-  void __prev__ () { --it; }
-  void __rewind__ (unsigned n) { it -= n; }
+  typename Iter::item_t __item__ () மாறிலி { திரும்பு *it; }
+  typename Iter::item_t __item_at__ (unsigned i) மாறிலி { திரும்பு it[i]; }
+  unsigned __len__ () மாறிலி { திரும்பு it.len (); }
+  வெறுமை __next__ () { ++it; }
+  வெறுமை __forward__ (unsigned n) { it += n; }
+  வெறுமை __prev__ () { --it; }
+  வெறுமை __rewind__ (unsigned n) { it -= n; }
 
-  void operator = (unsigned n)
+  வெறுமை operator = (unsigned n)
   {
-    assert (n == 0);
-    is_null = true;
+    ப்ரதிஜ்ஞா (n == 0);
+    is_null = உண்மை;
   }
-  explicit operator bool () { return !is_null; }
+  explicit operator தருக்க () { திரும்பு !is_null; }
 
-  void operator = (const machine_index_t& o)
+  வெறுமை operator = (மாறிலி machine_index_t& o)
   {
     is_null = o.is_null;
     unsigned index = (*it).first;
     unsigned n = (*o.it).first;
-    if (index < n) it += n - index; else if (index > n) it -= index - n;
+    எனில் (index < n) it += n - index; இல்லையெனில் எனில் (index > n) it -= index - n;
   }
-  bool operator == (const machine_index_t& o) const
-  { return is_null ? o.is_null : !o.is_null && (*it).first == (*o.it).first; }
-  bool operator != (const machine_index_t& o) const { return !(*this == o); }
+  தருக்க operator == (மாறிலி machine_index_t& o) மாறிலி
+  { திரும்பு is_null ? o.is_null : !o.is_null && (*it).first == (*o.it).first; }
+  தருக்க operator != (மாறிலி machine_index_t& o) மாறிலி { திரும்பு !(*இது == o); }
 
-  private:
+  தனிப்பட்ட:
   Iter it;
-  bool is_null = false;
+  தருக்க is_null = பொய்;
 };
-struct
+கட்டமைப்பு
 {
   template <typename Iter,
 	    hb_requires (hb_is_iterable (Iter))>
   machine_index_t<hb_iter_type<Iter>>
-  operator () (Iter&& it) const
-  { return machine_index_t<hb_iter_type<Iter>> (hb_iter (it)); }
+  operator () (Iter&& it) மாறிலி
+  { திரும்பு machine_index_t<hb_iter_type<Iter>> (hb_iter (it)); }
 }
 HB_FUNCOBJ (machine_index);
 
 
 
-static bool
-not_ccs_default_ignorable (const hb_glyph_info_t &i)
-{ return i.use_category() != USE(CGJ); }
+நிலையான தருக்க
+not_ccs_default_ignorable (மாறிலி hb_glyph_info_t &i)
+{ திரும்பு i.use_category() != USE(CGJ); }
 
-static inline void
+நிலையான உள்வரி வெறுமை
 find_syllables_use (hb_buffer_t *buffer)
 {
   hb_glyph_info_t *info = buffer->info;
   auto p =
     + hb_iter (info, buffer->len)
     | hb_enumerate
-    | hb_filter ([] (const hb_glyph_info_t &i) { return not_ccs_default_ignorable (i); },
+    | hb_filter ([] (மாறிலி hb_glyph_info_t &i) { திரும்பு not_ccs_default_ignorable (i); },
 		 hb_second)
-    | hb_filter ([&] (const hb_pair_t<unsigned, const hb_glyph_info_t &> p)
+    | hb_filter ([&] (மாறிலி hb_pair_t<unsigned, மாறிலி hb_glyph_info_t &> p)
 		 {
-		   if (p.second.use_category() == USE(ZWNJ))
-		     for (unsigned i = p.first + 1; i < buffer->len; ++i)
-		       if (not_ccs_default_ignorable (info[i]))
-			 return !_hb_glyph_info_is_unicode_mark (&info[i]);
-		   return true;
+		   எனில் (p.second.use_category() == USE(ZWNJ))
+		     க்கு (unsigned i = p.first + 1; i < buffer->len; ++i)
+		       எனில் (not_ccs_default_ignorable (info[i]))
+			 திரும்பு !_hb_glyph_info_is_unicode_mark (&info[i]);
+		   திரும்பு உண்மை;
 		 })
     | hb_enumerate
     | machine_index
@@ -926,8 +926,8 @@ find_syllables_use (hb_buffer_t *buffer)
   auto eof = +pe;
   auto ts = +p;
   auto te = +p;
-  unsigned int act HB_UNUSED;
-  int cs;
+  unsigned முழு act HB_UNUSED;
+  முழு cs;
   
 #line 922 "hb-ot-shaper-use-machine.hh"
 	{
@@ -940,164 +940,164 @@ find_syllables_use (hb_buffer_t *buffer)
 #line 286 "hb-ot-shaper-use-machine.rl"
 
 
-  unsigned int syllable_serial = 1;
+  unsigned முழு syllable_serial = 1;
   
 #line 931 "hb-ot-shaper-use-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const unsigned char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	முழு _slen;
+	முழு _trans;
+	மாறிலி unsigned எழுத்து *சாவிகள்_2;
+	மாறிலி unsigned எழுத்து *_inds;
+	எனில் ( p == pe )
+		செல் _test_eof;
 _resume:
-	switch ( _use_syllable_machine_from_state_actions[cs] ) {
-	case 3:
+	தேர்வு ( _use_syllable_machine_from_state_actions[cs] ) {
+	நிலை 3:
 #line 1 "NONE"
 	{ts = p;}
-	break;
+	நிறுத்து;
 #line 943 "hb-ot-shaper-use-machine.hh"
 	}
 
-	_keys = _use_syllable_machine_trans_keys + (cs<<1);
+	சாவிகள்_2 = use_syllable_machine_trans_சாவிகள் + (cs<<1);
 	_inds = _use_syllable_machine_indicies + _use_syllable_machine_index_offsets[cs];
 
-	_slen = _use_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( (*p).second.second.use_category()) &&
-		( (*p).second.second.use_category()) <= _keys[1] ?
-		( (*p).second.second.use_category()) - _keys[0] : _slen ];
+	_slen = use_syllable_machine_சாவி_spans[cs];
+	_trans = _inds[ _slen > 0 && சாவிகள்_2[0] <=( (*p).second.second.use_category()) &&
+		( (*p).second.second.use_category()) <= சாவிகள்_2[1] ?
+		( (*p).second.second.use_category()) - சாவிகள்_2[0] : _slen ];
 
 _eof_trans:
 	cs = _use_syllable_machine_trans_targs[_trans];
 
-	if ( _use_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	எனில் ( _use_syllable_machine_trans_actions[_trans] == 0 )
+		செல் _again;
 
-	switch ( _use_syllable_machine_trans_actions[_trans] ) {
-	case 7:
+	தேர்வு ( _use_syllable_machine_trans_actions[_trans] ) {
+	நிலை 7:
 #line 1 "NONE"
 	{te = p+1;}
-	break;
-	case 16:
+	நிறுத்து;
+	நிலை 16:
 #line 173 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_virama_terminated_cluster); }}
-	break;
-	case 14:
+	நிறுத்து;
+	நிலை 14:
 #line 174 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_sakot_terminated_cluster); }}
-	break;
-	case 12:
+	நிறுத்து;
+	நிலை 12:
 #line 175 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_standard_cluster); }}
-	break;
-	case 20:
+	நிறுத்து;
+	நிலை 20:
 #line 176 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_number_joiner_terminated_cluster); }}
-	break;
-	case 18:
+	{te = p+1;{ found_syllable (use_எண்_joiner_terminated_cluster); }}
+	நிறுத்து;
+	நிலை 18:
 #line 177 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_numeral_cluster); }}
-	break;
-	case 10:
+	நிறுத்து;
+	நிலை 10:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 25:
+	{te = p+1;{ found_syllable (use_குறியீடு_cluster); }}
+	நிறுத்து;
+	நிலை 25:
 #line 179 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_hieroglyph_cluster); }}
-	break;
-	case 5:
+	நிறுத்து;
+	நிலை 5:
 #line 181 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 4:
+	நிறுத்து;
+	நிலை 4:
 #line 182 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_non_cluster); }}
-	break;
-	case 15:
+	நிறுத்து;
+	நிலை 15:
 #line 173 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_virama_terminated_cluster); }}
-	break;
-	case 13:
+	நிறுத்து;
+	நிலை 13:
 #line 174 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_sakot_terminated_cluster); }}
-	break;
-	case 11:
+	நிறுத்து;
+	நிலை 11:
 #line 175 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_standard_cluster); }}
-	break;
-	case 19:
+	நிறுத்து;
+	நிலை 19:
 #line 176 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_number_joiner_terminated_cluster); }}
-	break;
-	case 17:
+	{te = p;p--;{ found_syllable (use_எண்_joiner_terminated_cluster); }}
+	நிறுத்து;
+	நிலை 17:
 #line 177 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_numeral_cluster); }}
-	break;
-	case 9:
+	நிறுத்து;
+	நிலை 9:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 24:
+	{te = p;p--;{ found_syllable (use_குறியீடு_cluster); }}
+	நிறுத்து;
+	நிலை 24:
 #line 179 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_hieroglyph_cluster); }}
-	break;
-	case 21:
+	நிறுத்து;
+	நிலை 21:
 #line 181 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 23:
+	நிறுத்து;
+	நிலை 23:
 #line 182 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_non_cluster); }}
-	break;
-	case 1:
+	நிறுத்து;
+	நிலை 1:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{{p = ((te))-1;}{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 22:
+	{{p = ((te))-1;}{ found_syllable (use_குறியீடு_cluster); }}
+	நிறுத்து;
+	நிலை 22:
 #line 1 "NONE"
-	{	switch( act ) {
-	case 8:
+	{	தேர்வு( act ) {
+	நிலை 8:
 	{{p = ((te))-1;} found_syllable (use_non_cluster); }
-	break;
-	case 9:
+	நிறுத்து;
+	நிலை 9:
 	{{p = ((te))-1;} found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
+	நிறுத்து;
 	}
 	}
-	break;
-	case 6:
+	நிறுத்து;
+	நிலை 6:
 #line 1 "NONE"
 	{te = p+1;}
 #line 180 "hb-ot-shaper-use-machine.rl"
 	{act = 8;}
-	break;
-	case 8:
+	நிறுத்து;
+	நிலை 8:
 #line 1 "NONE"
 	{te = p+1;}
 #line 181 "hb-ot-shaper-use-machine.rl"
 	{act = 9;}
-	break;
+	நிறுத்து;
 #line 1039 "hb-ot-shaper-use-machine.hh"
 	}
 
 _again:
-	switch ( _use_syllable_machine_to_state_actions[cs] ) {
-	case 2:
+	தேர்வு ( _use_syllable_machine_to_state_actions[cs] ) {
+	நிலை 2:
 #line 1 "NONE"
 	{ts = 0;}
-	break;
+	நிறுத்து;
 #line 1046 "hb-ot-shaper-use-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	எனில் ( ++p != pe )
+		செல் _resume;
 	_test_eof: {}
-	if ( p == eof )
+	எனில் ( p == eof )
 	{
-	if ( _use_syllable_machine_eof_trans[cs] > 0 ) {
+	எனில் ( _use_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _use_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		செல் _eof_trans;
 	}
 	}
 
