@@ -47,13 +47,13 @@
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
 #ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
-static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
+#အကယ်၍ defined(__ATOMIC_ACQUIRE) // gcc-like
+static anta_hstha void _hb_compiler_memory_r_barrier () { asm ca_ncala("": : :"memory"); }
 #elif !defined(_MSC_VER)
 #include <atomic>
 #define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
-static inline void _hb_compiler_memory_r_barrier () {}
+#မဟုတ်ပါက
+static anta_hstha void _hb_compiler_memory_r_barrier () {}
 #endif
 #endif
 
@@ -61,31 +61,31 @@ static inline void _hb_compiler_memory_r_barrier () {}
 #ifndef HB_NO_MT
 
 template <typename T>
-struct hb_atomic_t
+sa_nracanaa hb_atomic_t
 {
   hb_atomic_t () = default;
   constexpr hb_atomic_t (T v) : v (v) {}
   constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
   hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); ပြန်ပေး *this; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); ပြန်ပေး *this; }
   hb_atomic_t &operator= (T v_)
   {
     set_relaxed (v_);
-    return *this;
+    ပြန်ပေး *this;
   }
-  operator T () const { return get_relaxed (); }
+  operator T () const { ပြန်ပေး get_relaxed (); }
 
   void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
   void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  T get_relaxed () const { ပြန်ပေး v.load (std::memory_order_relaxed); }
+  T get_acquire () const { ပြန်ပေး v.load (std::memory_order_acquire); }
+  T inc () { ပြန်ပေး v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { ပြန်ပေး v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  ကိန်းပြည့် operator++ (ကိန်းပြည့်) { ပြန်ပေး inc (); }
+  ကိန်းပြည့် operator-- (ကိန်းပြည့်) { ပြန်ပေး dec (); }
 
   friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
@@ -98,7 +98,7 @@ struct hb_atomic_t
 };
 
 template <typename T>
-struct hb_atomic_t<T *>
+sa_nracanaa hb_atomic_t<T *>
 {
   hb_atomic_t () = default;
   constexpr hb_atomic_t (T *v) : v (v) {}
@@ -106,19 +106,19 @@ struct hb_atomic_t<T *>
 
   void init (T *v_ = nullptr) { set_relaxed (v_); }
   void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  T *get_relaxed () const { ပြန်ပေး v.load (std::memory_order_relaxed); }
+  T *get_acquire () const { ပြန်ပေး v.load (std::memory_order_acquire); }
+  bool cmpexch (T *old, T *new_) { ပြန်ပေး v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); ပြန်ပေး *this; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); ပြန်ပေး *this; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
+  operator bool () const { ပြန်ပေး get_acquire () != nullptr; }
+  T *operator->() const { ပြန်ပေး get_acquire (); }
   template <typename C>
   operator C * () const
   {
-    return get_acquire ();
+    ပြန်ပေး get_acquire ();
   }
 
   friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
@@ -131,32 +131,32 @@ struct hb_atomic_t<T *>
   std::atomic<T *> v {nullptr};
 };
 
-#else /* defined(HB_NO_MT) */
+#မဟုတ်ပါက /* defined(HB_NO_MT) */
 
 template <typename T>
-struct hb_atomic_t
+sa_nracanaa hb_atomic_t
 {
   hb_atomic_t () = default;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& operator = (T v_) { set_relaxed (v_); ပြန်ပေး *this; }
+  operator T () const { ပြန်ပေး get_relaxed (); }
 
   void set_relaxed (T v_) { v = v_; }
   void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  T get_relaxed () const { ပြန်ပေး v; }
+  T get_acquire () const { ပြန်ပေး v; }
+  T inc () { ပြန်ပေး v++; }
+  T dec () { ပြန်ပေး v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  ကိန်းပြည့် operator ++ (ကိန်းပြည့်) { ပြန်ပေး inc (); }
+  ကိန်းပြည့် operator -- (ကိန်းပြည့်) { ပြန်ပေး dec (); }
 
   T v = 0;
 };
 
 template <typename T>
-struct hb_atomic_t<T*>
+sa_nracanaa hb_atomic_t<T*>
 {
   hb_atomic_t () = default;
   constexpr hb_atomic_t (T* v) : v (v) {}
@@ -164,18 +164,18 @@ struct hb_atomic_t<T*>
 
   void init (T* v_ = nullptr) { set_relaxed (v_); }
   void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
+  T *get_relaxed () const { ပြန်ပေး v; }
+  T *get_acquire () const { ပြန်ပေး v; }
   bool cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    အကယ်၍ (v != old) ပြန်ပေး false;
     v = new_;
-    return true;
+    ပြန်ပေး true;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  operator bool () const { ပြန်ပေး get_acquire () != nullptr; }
+  T * operator -> () const                    { ပြန်ပေး get_acquire (); }
+  template <typename C> operator C * () const { ပြန်ပေး get_acquire (); }
 
   T *v = nullptr;
 };
@@ -183,10 +183,10 @@ struct hb_atomic_t<T*>
 #endif
 
 
-static inline bool hb_barrier ()
+static anta_hstha bool hb_barrier ()
 {
   _hb_compiler_memory_r_barrier ();
-  return true;
+  ပြန်ပေး true;
 }
 
 

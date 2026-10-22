@@ -33,7 +33,7 @@
 
 
 #line 33 "hb-buffer-deserialize-json.hh"
-static const unsigned char _deserialize_json_trans_keys[] = {
+static const unsigned var_na _deserialize_json_trans_keys[] = {
 	0u, 0u, 9u, 34u, 97u, 121u, 120u, 121u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 9u, 93u, 9u, 125u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 108u, 108u, 34u, 34u, 9u, 58u, 9u, 57u, 9u, 125u, 9u, 125u, 
@@ -45,7 +45,7 @@ static const unsigned char _deserialize_json_trans_keys[] = {
 	0
 };
 
-static const char _deserialize_json_key_spans[] = {
+static const var_na _deserialize_json_key_spans[] = {
 	0, 26, 25, 2, 1, 50, 49, 10, 
 	117, 117, 85, 117, 1, 50, 49, 10, 
 	117, 117, 1, 1, 50, 49, 117, 117, 
@@ -67,7 +67,7 @@ static const short _deserialize_json_index_offsets[] = {
 	3154, 3156, 3207, 3257, 3375, 3377, 3493, 3609
 };
 
-static const char _deserialize_json_indicies[] = {
+static const var_na _deserialize_json_indicies[] = {
 	0, 0, 0, 0, 0, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
@@ -536,7 +536,7 @@ static const char _deserialize_json_indicies[] = {
 	1, 1, 1, 1, 104, 1, 0
 };
 
-static const char _deserialize_json_trans_targs[] = {
+static const var_na _deserialize_json_trans_targs[] = {
 	1, 0, 2, 3, 18, 24, 37, 43, 
 	51, 56, 60, 4, 12, 5, 6, 7, 
 	8, 11, 8, 11, 9, 1, 10, 9, 
@@ -553,7 +553,7 @@ static const char _deserialize_json_trans_targs[] = {
 	1
 };
 
-static const char _deserialize_json_trans_actions[] = {
+static const var_na _deserialize_json_trans_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 1, 
 	1, 1, 0, 0, 2, 2, 2, 0, 
@@ -570,11 +570,11 @@ static const char _deserialize_json_trans_actions[] = {
 	15
 };
 
-static const int deserialize_json_start = 61;
-static const int deserialize_json_first_final = 61;
-static const int deserialize_json_error = 0;
+static const ကိန်းပြည့် deserialize_json_start = 61;
+static const ကိန်းပြည့် deserialize_json_first_final = 61;
+static const ကိန်းပြည့် deserialize_json_error = 0;
 
-static const int deserialize_json_en_main = 61;
+static const ကိန်းပြည့် deserialize_json_en_main = 61;
 
 
 #line 115 "hb-buffer-deserialize-json.rl"
@@ -582,18 +582,18 @@ static const int deserialize_json_en_main = 61;
 
 static hb_bool_t
 _hb_buffer_deserialize_json (hb_buffer_t *buffer,
-				    const char *buf,
-				    unsigned int buf_len,
-				    const char **end_ptr,
+				    const var_na *buf,
+				    unsigned ကိန်းပြည့် buf_len,
+				    const var_na **end_ptr,
 				    hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len;
+  const var_na *p = buf, *pe = buf + buf_len;
 
   /* Ensure we have positions. */
   (void) hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  const char *tok = nullptr;
-  int cs;
+  const var_na *tok = nullptr;
+  ကိန်းပြည့် cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
@@ -604,13 +604,13 @@ _hb_buffer_deserialize_json (hb_buffer_t *buffer,
 
 #line 597 "hb-buffer-deserialize-json.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
+	ကိန်းပြည့် _slen;
+	ကိန်းပြည့် _trans;
+	const unsigned var_na *_keys;
+	const var_na *_inds;
+	အကယ်၍ ( p == pe )
 		goto _test_eof;
-	if ( cs == 0 )
+	အကယ်၍ ( cs == 0 )
 		goto _out;
 _resume:
 	_keys = _deserialize_json_trans_keys + (cs<<1);
@@ -623,102 +623,102 @@ _resume:
 
 	cs = _deserialize_json_trans_targs[_trans];
 
-	if ( _deserialize_json_trans_actions[_trans] == 0 )
+	အကယ်၍ ( _deserialize_json_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _deserialize_json_trans_actions[_trans] ) {
-	case 15:
+	pak_sa 15:
 #line 38 "hb-buffer-deserialize-json.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, parimaa_na (info));
+	hb_memset (&pos , 0, parimaa_na (pos ));
 }
-	break;
-	case 3:
+	bha_nga;
+	pak_sa 3:
 #line 43 "hb-buffer-deserialize-json.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
+	အကယ်၍ (unlikely (!buffer->successful))
+	  ပြန်ပေး false;
 	buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
-	break;
-	case 1:
+	bha_nga;
+	pak_sa 1:
 #line 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
-	break;
-	case 10:
+	bha_nga;
+	pak_sa 10:
 #line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
-	break;
-	case 14:
+	{ အကယ်၍ (unlikely (!buffer->ensure_glyphs ())) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 14:
 #line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
-	break;
-	case 11:
+	{ အကယ်၍ (unlikely (!buffer->ensure_unicode ())) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 11:
 #line 58 "hb-buffer-deserialize-json.rl"
 	{
 	/* TODO Unescape \" and \\ if found. */
-	if (!hb_font_glyph_from_string (font,
+	အကယ်၍ (!hb_font_glyph_from_string (font,
 					tok+1, p - tok - 2, /* Skip "" */
 					&info.codepoint))
-	  return false;
+	  ပြန်ပေး false;
 }
-	break;
-	case 12:
+	bha_nga;
+	pak_sa 12:
 #line 66 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.codepoint)) return false; }
-	break;
-	case 5:
+	{ အကယ်၍ (!parse_uint (tok, p, &info.codepoint)) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 5:
 #line 67 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 6:
+	{ အကယ်၍ (!parse_uint (tok, p, &info.cluster )) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 6:
 #line 68 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
-	break;
-	case 7:
+	{ အကယ်၍ (!parse_int  (tok, p, &pos.x_offset )) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 7:
 #line 69 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
-	break;
-	case 2:
+	{ အကယ်၍ (!parse_int  (tok, p, &pos.y_offset )) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 2:
 #line 70 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
-	break;
-	case 4:
+	{ အကယ်၍ (!parse_int  (tok, p, &pos.x_advance)) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 4:
 #line 71 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
-	break;
-	case 8:
+	{ အကယ်၍ (!parse_int  (tok, p, &pos.y_advance)) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 8:
 #line 72 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
-	break;
-	case 9:
+	{ အကယ်၍ (!parse_uint (tok, p, &info.mask    )) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 9:
 #line 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
 #line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
-	break;
-	case 13:
+	{ အကယ်၍ (unlikely (!buffer->ensure_glyphs ())) ပြန်ပေး false; }
+	bha_nga;
+	pak_sa 13:
 #line 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
 #line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
-	break;
+	{ အကယ်၍ (unlikely (!buffer->ensure_unicode ())) ပြန်ပေး false; }
+	bha_nga;
 #line 689 "hb-buffer-deserialize-json.hh"
 	}
 
 _again:
-	if ( cs == 0 )
+	အကယ်၍ ( cs == 0 )
 		goto _out;
-	if ( ++p != pe )
+	အကယ်၍ ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
 	_out: {}
@@ -729,7 +729,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  ပြန်ပေး p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_JSON_HH */

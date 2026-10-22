@@ -46,28 +46,28 @@ hb_raster_draw_set_clip_box (hb_raster_draw_t *draw,
  * rendering a mask. */
 HB_INTERNAL int64_t
 hb_raster_draw_get_pixel_work (const hb_raster_draw_t *draw,
-			       unsigned int max_rows,
-			       unsigned int max_cols);
+			       unsigned ကိန်းပြည့် max_rows,
+			       unsigned ကိန်းပြည့် max_cols);
 
 /* Shared pixel helpers (used by paint and image compositing). */
 
 static HB_ALWAYS_INLINE uint8_t
 hb_raster_div255 (unsigned a)
 {
-  if (true)
+  အကယ်၍ (true)
   {
     // An approximation. Slightly faster.
     // https://github.com/linebender/vello/blob/ab58009c8289e83689cd0effc4e34d1c6e8b51f5/sparse_strips/vello_cpu/src/util.rs#L10-L63
-    return (a + 255) >> 8;
+    ပြန်ပေး (a + 255) >> 8;
   }
 
-  return (uint8_t) ((a + 128 + ((a + 128) >> 8)) >> 8);
+  ပြန်ပေး (uint8_t) ((a + 128 + ((a + 128) >> 8)) >> 8);
 }
 
 static HB_ALWAYS_INLINE uint32_t
 hb_raster_pack_pixel (uint8_t b, uint8_t g, uint8_t r, uint8_t a)
 {
-  return (uint32_t) b | ((uint32_t) g << 8) | ((uint32_t) r << 16) | ((uint32_t) a << 24);
+  ပြန်ပေး (uint32_t) b | ((uint32_t) g << 8) | ((uint32_t) r << 16) | ((uint32_t) a << 24);
 }
 
 /* SRC_OVER: premultiplied src over premultiplied dst. */
@@ -75,27 +75,27 @@ static HB_ALWAYS_INLINE uint32_t
 hb_raster_src_over (uint32_t src, uint32_t dst)
 {
   uint8_t sa = (uint8_t) (src >> 24);
-  if (sa == 255) return src;
-  if (sa == 0) return dst;
+  အကယ်၍ (sa == 255) ပြန်ပေး src;
+  အကယ်၍ (sa == 0) ပြန်ပေး dst;
   unsigned inv_sa = 255 - sa;
   uint8_t rb = hb_raster_div255 ((dst & 0xFF) * inv_sa) + (uint8_t) (src & 0xFF);
   uint8_t rg = hb_raster_div255 (((dst >> 8) & 0xFF) * inv_sa) + (uint8_t) ((src >> 8) & 0xFF);
   uint8_t rr = hb_raster_div255 (((dst >> 16) & 0xFF) * inv_sa) + (uint8_t) ((src >> 16) & 0xFF);
   uint8_t ra = hb_raster_div255 (((dst >> 24) & 0xFF) * inv_sa) + sa;
-  return (uint32_t) rb | ((uint32_t) rg << 8) | ((uint32_t) rr << 16) | ((uint32_t) ra << 24);
+  ပြန်ပေး (uint32_t) rb | ((uint32_t) rg << 8) | ((uint32_t) rr << 16) | ((uint32_t) ra << 24);
 }
 
 /* Scale a premultiplied pixel by an alpha [0,255]. */
 static HB_ALWAYS_INLINE uint32_t
 hb_raster_alpha_mul (uint32_t px, unsigned a)
 {
-  if (a == 255) return px;
-  if (a == 0) return 0;
+  အကယ်၍ (a == 255) ပြန်ပေး px;
+  အကယ်၍ (a == 0) ပြန်ပေး 0;
   uint8_t rb = hb_raster_div255 ((px & 0xFF) * a);
   uint8_t rg = hb_raster_div255 (((px >> 8) & 0xFF) * a);
   uint8_t rr = hb_raster_div255 (((px >> 16) & 0xFF) * a);
   uint8_t ra = hb_raster_div255 (((px >> 24) & 0xFF) * a);
-  return (uint32_t) rb | ((uint32_t) rg << 8) | ((uint32_t) rr << 16) | ((uint32_t) ra << 24);
+  ပြန်ပေး (uint32_t) rb | ((uint32_t) rg << 8) | ((uint32_t) rr << 16) | ((uint32_t) ra << 24);
 }
 
 #endif /* HB_RASTER_HH */

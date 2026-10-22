@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#အကယ်၍ !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -50,7 +50,7 @@ HB_BEGIN_DECLS
  *
  * Since: 14.3.0
  **/
-typedef enum {
+typedef ga_nanaa {
   HB_OT_BITS_TAG_FS_TYPE		= HB_TAG ('f','s','t','p'),
   HB_OT_BITS_TAG_FS_SELECTION		= HB_TAG ('f','s','s','l'),
   HB_OT_BITS_TAG_MAC_STYLE		= HB_TAG ('m','c','s','t'),
@@ -82,7 +82,7 @@ hb_ot_fetch_bits (hb_face_t        *face,
  *
  * Since: 14.3.0
  **/
-typedef enum {
+typedef ga_nanaa {
   HB_OT_NUMBER_TAG_FONT_X_MIN		= HB_TAG ('x','m','i','n'),
   HB_OT_NUMBER_TAG_FONT_Y_MIN		= HB_TAG ('y','m','i','n'),
   HB_OT_NUMBER_TAG_FONT_X_MAX		= HB_TAG ('x','m','a','x'),

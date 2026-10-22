@@ -33,7 +33,7 @@
 #include "hb-geometry.hh"
 
 /* hb_raster_clip_t — alpha mask for clipping */
-struct hb_raster_clip_t
+sa_nracanaa hb_raster_clip_t
 {
   hb_vector_t<uint8_t> alpha;	/* A8 mask, same extents as root surface */
   unsigned width  = 0;
@@ -42,8 +42,8 @@ struct hb_raster_clip_t
 
   /* Fast path: simple rectangle (no alpha buffer needed) */
   bool is_rect = true;
-  int rect_x0 = 0, rect_y0 = 0;
-  int rect_x1 = 0, rect_y1 = 0;
+  ကိန်းပြည့် rect_x0 = 0, rect_y0 = 0;
+  ကိန်းပြည့် rect_x1 = 0, rect_y1 = 0;
 
   /* Bounding box of non-zero alpha region (valid for both rect and mask) */
   unsigned min_x = 0, min_y = 0;
@@ -57,8 +57,8 @@ struct hb_raster_clip_t
     is_rect = true;
     rect_x0 = 0;
     rect_y0 = 0;
-    rect_x1 = (int) w;
-    rect_y1 = (int) h;
+    rect_x1 = (ကိန်းပြည့်) w;
+    rect_y1 = (ကိန်းပြည့်) h;
     min_x = 0;
     min_y = 0;
     max_x = w;
@@ -69,38 +69,38 @@ struct hb_raster_clip_t
   {
     min_x = (unsigned) hb_max (rect_x0, 0);
     min_y = (unsigned) hb_max (rect_y0, 0);
-    max_x = (unsigned) hb_max (hb_min (rect_x1, (int) width), 0);
-    max_y = (unsigned) hb_max (hb_min (rect_y1, (int) height), 0);
+    max_x = (unsigned) hb_max (hb_min (rect_x1, (ကိန်းပြည့်) width), 0);
+    max_y = (unsigned) hb_max (hb_min (rect_y1, (ကိန်းပြည့်) height), 0);
   }
 
   uint8_t get_alpha (unsigned x, unsigned y) const
   {
-    if (is_rect)
-      return ((int) x >= rect_x0 && (int) x < rect_x1 &&
-	      (int) y >= rect_y0 && (int) y < rect_y1) ? 255 : 0;
-    if (x >= width || y >= height) return 0;
-    if (stride < width) return 0;
-    if (height && stride > (size_t) -1 / height) return 0;
+    အကယ်၍ (is_rect)
+      ပြန်ပေး ((ကိန်းပြည့်) x >= rect_x0 && (ကိန်းပြည့်) x < rect_x1 &&
+	      (ကိန်းပြည့်) y >= rect_y0 && (ကိန်းပြည့်) y < rect_y1) ? 255 : 0;
+    အကယ်၍ (x >= width || y >= height) ပြန်ပေး 0;
+    အကယ်၍ (stride < width) ပြန်ပေး 0;
+    အကယ်၍ (height && stride > (size_t) -1 / height) ပြန်ပေး 0;
     size_t idx = (size_t) y * stride + x;
-    if (!alpha.arrayZ || idx >= alpha.length) return 0;
-    return alpha[idx];
+    အကယ်၍ (!alpha.arrayZ || idx >= alpha.length) ပြန်ပေး 0;
+    ပြန်ပေး alpha[idx];
   }
 
   bool has_valid_alpha_mask () const
   {
-    if (is_rect)
-      return true;
-    if (!alpha.arrayZ || stride < width)
-      return false;
-    if (height && stride > (size_t) -1 / height)
-      return false;
-    return (size_t) stride * height <= alpha.length;
+    အကယ်၍ (is_rect)
+      ပြန်ပေး true;
+    အကယ်၍ (!alpha.arrayZ || stride < width)
+      ပြန်ပေး false;
+    အကယ်၍ (height && stride > (size_t) -1 / height)
+      ပြန်ပေး false;
+    ပြန်ပေး (size_t) stride * height <= alpha.length;
   }
 };
 
 
 /* hb_raster_paint_t — color glyph paint context */
-struct hb_raster_paint_t
+sa_nracanaa hb_raster_paint_t
 {
   hb_object_header_t header;
 
@@ -150,7 +150,7 @@ struct hb_raster_paint_t
 
   int64_t get_default_pixel_budget () const
   {
-    return hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
+    ပြန်ပေး hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
 		   (int64_t) HB_BUDGET_RASTER_PAINT_PASSES *
 		   fixed_extents.width * fixed_extents.height);
   }
@@ -168,53 +168,53 @@ struct hb_raster_paint_t
    * overshoot past zero; callers skip work once the budget is spent. */
   bool charge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < 0)) return false;
+    အကယ်၍ (unlikely (pixel_remaining < 0)) ပြန်ပေး false;
     pixel_remaining -= work;
-    return true;
+    ပြန်ပေး true;
   }
 
   /* Reject work that would exceed the remaining budget before it starts. */
   bool precharge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < work))
+    အကယ်၍ (unlikely (pixel_remaining < work))
     {
       pixel_remaining = -1;
-      return false;
+      ပြန်ပေး false;
     }
     pixel_remaining -= work;
-    return true;
+    ပြန်ပေး true;
   }
 
   hb_raster_image_t *acquire_surface ()
   {
     hb_raster_image_t *img;
-    if (surface_cache.length)
+    အကယ်၍ (surface_cache.length)
       img = surface_cache.pop ();
-    else
+    မဟုတ်ပါက
     {
       img = hb_raster_image_create_or_fail ();
-      if (unlikely (!img)) return nullptr;
+      အကယ်၍ (unlikely (!img)) ပြန်ပေး nullptr;
     }
 
-    if (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
+    အကယ်၍ (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
     {
       hb_raster_image_destroy (img);
-      return nullptr;
+      ပြန်ပေး nullptr;
     }
     img->clear ();
-    return img;
+    ပြန်ပေး img;
   }
 
   void release_surface (hb_raster_image_t *img)
   {
-    if (!surface_cache.push_or_fail (img))
+    အကယ်၍ (!surface_cache.push_or_fail (img))
       hb_raster_image_destroy (img);
   }
 
   hb_raster_clip_t acquire_clip (unsigned w, unsigned h)
   {
     hb_raster_clip_t clip;
-    if (clip_cache.length)
+    အကယ်၍ (clip_cache.length)
       clip = clip_cache.pop ();
     clip.width = w;
     clip.height = h;
@@ -223,36 +223,36 @@ struct hb_raster_paint_t
     clip.rect_x0 = clip.rect_y0 = 0;
     clip.rect_x1 = clip.rect_y1 = 0;
     clip.min_x = clip.min_y = clip.max_x = clip.max_y = 0;
-    return clip;
+    ပြန်ပေး clip;
   }
 
   void release_clip (hb_raster_clip_t &&clip)
   {
-    if (clip.alpha.arrayZ)
+    အကယ်၍ (clip.alpha.arrayZ)
       clip_cache.push (std::move (clip));
   }
 
   void release_all_clips ()
   {
-    while (clip_stack.length)
+    နေစဉ် (clip_stack.length)
       release_clip (clip_stack.pop ());
   }
 
   hb_raster_image_t *current_surface ()
   {
-    return surface_stack.length ? surface_stack.tail () : nullptr;
+    ပြန်ပေး surface_stack.length ? surface_stack.tail () : nullptr;
   }
 
   hb_raster_clip_t &current_clip ()
   {
-    return clip_stack.tail ();
+    ပြန်ပေး clip_stack.tail ();
   }
 
   hb_transform_t<> current_transform ()
   {
-    if (unlikely (!transform_stack.length))
-      return {1, 0, 0, 1, 0, 0};
-    return transform_stack.tail ();
+    အကယ်၍ (unlikely (!transform_stack.length))
+      ပြန်ပေး {1, 0, 0, 1, 0, 0};
+    ပြန်ပေး transform_stack.tail ();
   }
 
   void apply_scale_factor (hb_transform_t<> &t) const
@@ -269,19 +269,19 @@ struct hb_raster_paint_t
   {
     hb_transform_t<> t = current_transform ();
     apply_scale_factor (t);
-    return t;
+    ပြန်ပေး t;
   }
 
   bool fetch_color_stops (hb_color_line_t *color_line)
   {
     unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !scratch_color_stops.resize (count)))
+    အကယ်၍ (unlikely (!count || !scratch_color_stops.resize (count)))
     {
       scratch_color_stops.resize (0);
-      return false;
+      ပြန်ပေး false;
     }
     hb_color_line_get_color_stops (color_line, 0, &count, scratch_color_stops.arrayZ);
-    return true;
+    ပြန်ပေး true;
   }
 };
 

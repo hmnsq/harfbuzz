@@ -43,32 +43,32 @@ namespace OT {
 
 
 template <typename KernSubTableHeader>
-struct KernSubTableFormat3
+sa_nracanaa KernSubTableFormat3
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  ကိန်းပြည့် get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
   {
     hb_array_t<const FWORD> kernValue = kernValueZ.as_array (kernValueCount);
     hb_array_t<const HBUINT8> leftClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (kernValue).as_array (glyphCount);
     hb_array_t<const HBUINT8> rightClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (leftClass).as_array (glyphCount);
     hb_array_t<const HBUINT8> kernIndex = StructAfter<const UnsizedArrayOf<HBUINT8>> (rightClass).as_array (leftClassCount * rightClassCount);
 
-    unsigned int leftC = leftClass[left];
-    unsigned int rightC = rightClass[right];
-    if (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
-      return 0;
-    unsigned int i = leftC * rightClassCount + rightC;
-    return kernValue[kernIndex[i]];
+    unsigned ကိန်းပြည့် leftC = leftClass[left];
+    unsigned ကိန်းပြည့် rightC = rightClass[right];
+    အကယ်၍ (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
+      ပြန်ပေး 0;
+    unsigned ကိန်းပြည့် i = leftC * rightClassCount + rightC;
+    ပြန်ပေး kernValue[kernIndex[i]];
   }
 
   bool apply (AAT::hb_aat_apply_context_t *c) const
   {
     TRACE_APPLY (this);
 
-    if (!c->plan->requested_kerning)
-      return false;
+    အကယ်၍ (!c->plan->requested_kerning)
+      ပြန်ပေး false;
 
-    if (header.coverage & header.Backwards)
-      return false;
+    အကယ်၍ (header.coverage & header.Backwards)
+      ပြန်ပေး false;
 
     hb_kern_machine_t<KernSubTableFormat3> machine (*this, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
@@ -82,7 +82,7 @@ struct KernSubTableFormat3
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
 		  c->check_range (kernValueZ,
-				  kernValueCount * sizeof (FWORD) +
+				  kernValueCount * parimaa_na (FWORD) +
 				  glyphCount * 2 +
 				  leftClassCount * rightClassCount));
   }
@@ -90,14 +90,14 @@ struct KernSubTableFormat3
   template <typename set_t>
   void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
   {
-    if (likely (glyphCount))
+    အကယ်၍ (likely (glyphCount))
     {
       left_set.add_range (0, num_glyphs - 1);
       right_set.add_range (0, num_glyphs - 1);
     }
   }
 
-  protected:
+  rak_sita:
   KernSubTableHeader
 		header;
   HBUINT16	glyphCount;	/* The number of glyphs in this font. */
@@ -108,7 +108,7 @@ struct KernSubTableFormat3
   UnsizedArrayOf<FWORD>
 		kernValueZ;	/* The kerning values.
 				 * Length kernValueCount. */
-#if 0
+#အကယ်၍ 0
   UnsizedArrayOf<HBUINT8>
 		leftClass;	/* The left-hand classes.
 				 * Length glyphCount. */
@@ -124,33 +124,33 @@ struct KernSubTableFormat3
 };
 
 template <typename KernSubTableHeader>
-struct KernSubTable
+sa_nracanaa KernSubTable
 {
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.format; }
+  size_t get_size () const { ပြန်ပေး u.header.length; }
+  unsigned ကိန်းပြည့် get_type () const { ပြန်ပေး u.header.format; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  ကိန်းပြည့် get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
   {
     switch (get_type ()) {
     /* This method hooks up to hb_font_t's get_h_kerning.  Only support Format0. */
-    case 0: hb_barrier (); return u.format0.get_kerning (left, right);
-    default:return 0;
+    pak_sa 0: hb_barrier (); ပြန်ပေး u.format0.get_kerning (left, right);
+    default:ပြန်ပေး 0;
     }
   }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned ကိန်းပြည့် subtable_type = get_type ();
     TRACE_DISPATCH (this, subtable_type);
     switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
+    pak_sa 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    pak_sa 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #endif
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
+    pak_sa 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    pak_sa 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #endif
     default:	return_trace (c->default_return_value ());
     }
@@ -159,24 +159,24 @@ struct KernSubTable
   template <typename set_t>
   void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned ကိန်းပြည့် subtable_type = get_type ();
     switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); return;
+    pak_sa 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); ပြန်ပေး;
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); return;
+    pak_sa 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); ပြန်ပေး;
 #endif
-    case 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); return;
+    pak_sa 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); ပြန်ပေး;
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); return;
+    pak_sa 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); ပြန်ပေး;
 #endif
-    default:	return;
+    default:	ပြန်ပေး;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(u.header.sanitize (c) &&
+    အကယ်၍ (unlikely (!(u.header.sanitize (c) &&
 		    hb_barrier () &&
 		    u.header.length >= u.header.min_size &&
 		    c->check_range (this, u.header.length)))) return_trace (false);
@@ -185,7 +185,7 @@ struct KernSubTable
   }
 
   public:
-  union {
+  sa_ngha {
   KernSubTableHeader				header;
   AAT::KerxSubTableFormat0<KernSubTableHeader>	format0;
 #ifndef HB_NO_AAT_SHAPE
@@ -201,15 +201,15 @@ struct KernSubTable
 };
 
 
-struct KernOTSubTableHeader
+sa_nracanaa KernOTSubTableHeader
 {
   static constexpr bool apple = false;
   typedef AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return (coverage & Horizontal); }
+  unsigned   tuple_count () const { ပြန်ပေး 0; }
+  bool     is_horizontal () const { ပြန်ပေး (coverage & Horizontal); }
 
-  enum Coverage
+  ga_nanaa Coverage
   {
     Horizontal	= 0x01u,
     Minimum	= 0x02u,
@@ -236,9 +236,9 @@ struct KernOTSubTableHeader
   DEFINE_SIZE_STATIC (6);
 };
 
-struct KernOT : AAT::KerxTable<KernOT>
+sa_nracanaa KernOT : AAT::KerxTable<KernOT>
 {
-  friend struct AAT::KerxTable<KernOT>;
+  friend sa_nracanaa AAT::KerxTable<KernOT>;
 
   static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
   static constexpr unsigned minVersion = 0u;
@@ -247,7 +247,7 @@ struct KernOT : AAT::KerxTable<KernOT>
   typedef SubTableHeader::Types Types;
   typedef KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  rak_sita:
   HBUINT16	version;	/* Version--0x0000u */
   HBUINT16	tableCount;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
@@ -256,15 +256,15 @@ struct KernOT : AAT::KerxTable<KernOT>
 };
 
 
-struct KernAATSubTableHeader
+sa_nracanaa KernAATSubTableHeader
 {
   static constexpr bool apple = true;
   typedef AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  unsigned   tuple_count () const { ပြန်ပေး 0; }
+  bool     is_horizontal () const { ပြန်ပေး !(coverage & Vertical); }
 
-  enum Coverage
+  ga_nanaa Coverage
   {
     Vertical	= 0x80u,
     CrossStream	= 0x40u,
@@ -291,9 +291,9 @@ struct KernAATSubTableHeader
   DEFINE_SIZE_STATIC (8);
 };
 
-struct KernAAT : AAT::KerxTable<KernAAT>
+sa_nracanaa KernAAT : AAT::KerxTable<KernAAT>
 {
-  friend struct AAT::KerxTable<KernAAT>;
+  friend sa_nracanaa AAT::KerxTable<KernAAT>;
 
   static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
   static constexpr unsigned minVersion = 0x00010000u;
@@ -302,7 +302,7 @@ struct KernAAT : AAT::KerxTable<KernAAT>
   typedef SubTableHeader::Types Types;
   typedef KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  rak_sita:
   HBUINT32	version;	/* Version--0x00010000u */
   HBUINT32	tableCount;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
@@ -310,59 +310,59 @@ struct KernAAT : AAT::KerxTable<KernAAT>
   DEFINE_SIZE_MIN (8);
 };
 
-struct kern
+sa_nracanaa kern
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
 
-  bool     has_data () const { return u.version32.v; }
-  unsigned get_type () const { return u.major.v; }
+  bool     has_data () const { ပြန်ပေး u.version32.v; }
+  unsigned get_type () const { ပြန်ပေး u.major.v; }
 
   bool has_state_machine () const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_state_machine ();
+    pak_sa 0: hb_barrier (); ပြန်ပေး u.ot.has_state_machine ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_state_machine ();
+    pak_sa 1: hb_barrier (); ပြန်ပေး u.aat.has_state_machine ();
 #endif
-    default:return false;
+    default:ပြန်ပေး false;
     }
   }
 
   bool has_cross_stream () const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_cross_stream ();
+    pak_sa 0: hb_barrier (); ပြန်ပေး u.ot.has_cross_stream ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_cross_stream ();
+    pak_sa 1: hb_barrier (); ပြန်ပေး u.aat.has_cross_stream ();
 #endif
-    default:return false;
+    default:ပြန်ပေး false;
     }
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  ကိန်းပြည့် get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.get_h_kerning (left, right);
+    pak_sa 0: hb_barrier (); ပြန်ပေး u.ot.get_h_kerning (left, right);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.get_h_kerning (left, right);
+    pak_sa 1: hb_barrier (); ပြန်ပေး u.aat.get_h_kerning (left, right);
 #endif
-    default:return 0;
+    default:ပြန်ပေး 0;
     }
   }
 
   bool apply (AAT::hb_aat_apply_context_t *c,
 	      const AAT::kern_accelerator_data_t &accel_data) const
-  { return dispatch (c, accel_data); }
+  { ပြန်ပေး dispatch (c, accel_data); }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned ကိန်းပြည့် subtable_type = get_type ();
     TRACE_DISPATCH (this, subtable_type);
     switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
+    pak_sa 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
+    pak_sa 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
 #endif
     default:	return_trace (c->default_return_value ());
     }
@@ -371,7 +371,7 @@ struct kern
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!u.version32.v.sanitize (c)) return_trace (false);
+    အကယ်၍ (!u.version32.v.sanitize (c)) return_trace (false);
     hb_barrier ();
     return_trace (dispatch (c));
   }
@@ -379,15 +379,15 @@ struct kern
   AAT::kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.create_accelerator_data (num_glyphs);
+    pak_sa 0: hb_barrier (); ပြန်ပေး u.ot.create_accelerator_data (num_glyphs);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.create_accelerator_data (num_glyphs);
+    pak_sa 1: hb_barrier (); ပြန်ပေး u.aat.create_accelerator_data (num_glyphs);
 #endif
-    default:return AAT::kern_accelerator_data_t ();
+    default:ပြန်ပေး AAT::kern_accelerator_data_t ();
     }
   }
 
-  struct accelerator_t
+  sa_nracanaa accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
@@ -400,11 +400,11 @@ struct kern
       this->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () const { ပြန်ပေး table.get_blob (); }
 
     bool apply (AAT::hb_aat_apply_context_t *c) const
     {
-      return table->apply (c, accel_data);
+      ပြန်ပေး table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<kern> table;
@@ -412,10 +412,10 @@ struct kern
     AAT::hb_aat_scratch_t scratch;
   };
 
-  protected:
-  union {
-  struct { HBUINT32 v; }	version32;
-  struct { HBUINT16 v; }	major;
+  rak_sita:
+  sa_ngha {
+  sa_nracanaa { HBUINT32 v; }	version32;
+  sa_nracanaa { HBUINT16 v; }	major;
   KernOT		ot;
 #ifndef HB_NO_AAT_SHAPE
   KernAAT		aat;
@@ -425,7 +425,7 @@ struct kern
   DEFINE_SIZE_UNION (4, version32.v);
 };
 
-struct kern_accelerator_t : kern::accelerator_t {
+sa_nracanaa kern_accelerator_t : kern::accelerator_t {
   kern_accelerator_t (hb_face_t *face) : kern::accelerator_t (face) {}
 };
 

@@ -31,9 +31,9 @@
 #include "hb-geometry.hh"
 
 
-typedef struct  hb_paint_extents_context_t hb_paint_extents_context_t;
+typedef sa_nracanaa  hb_paint_extents_context_t hb_paint_extents_context_t;
 
-struct hb_paint_extents_context_t
+sa_nracanaa hb_paint_extents_context_t
 {
   void clear ()
   {
@@ -43,7 +43,7 @@ struct hb_paint_extents_context_t
     /* COLR scratch storage is zero-allocated and reused without running
      * constructors.  Distinguish that state from an explicitly requested
      * zero budget. */
-    if (unlikely (!budget_initialized))
+    အကယ်၍ (unlikely (!budget_initialized))
     {
       budget = HB_BUDGET_DEFAULT;
       budget_initialized = true;
@@ -62,12 +62,12 @@ struct hb_paint_extents_context_t
 
   hb_extents_t<> get_extents ()
   {
-    return groups.tail().extents;
+    ပြန်ပေး groups.tail().extents;
   }
 
   bool is_bounded ()
   {
-    return groups.tail().status != hb_bounds_t<>::UNBOUNDED;
+    ပြန်ပေး groups.tail().status != hb_bounds_t<>::UNBOUNDED;
   }
 
   void push_transform (const hb_transform_t<> &trans)
@@ -110,25 +110,25 @@ struct hb_paint_extents_context_t
     hb_bounds_t<> &backdrop_bounds = groups.tail ();
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    switch ((ကိန်းပြည့်) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
+      pak_sa HB_PAINT_COMPOSITE_MODE_CLEAR:
 	backdrop_bounds.status = hb_bounds_t<>::EMPTY;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+	bha_nga;
+      pak_sa HB_PAINT_COMPOSITE_MODE_SRC:
+      pak_sa HB_PAINT_COMPOSITE_MODE_SRC_OUT:
 	backdrop_bounds = src_bounds;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	bha_nga;
+      pak_sa HB_PAINT_COMPOSITE_MODE_DEST:
+      pak_sa HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+	bha_nga;
+      pak_sa HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      pak_sa HB_PAINT_COMPOSITE_MODE_DEST_IN:
 	backdrop_bounds.intersect (src_bounds);
-	break;
+	bha_nga;
       default:
 	backdrop_bounds.union_ (src_bounds);
-	break;
+	bha_nga;
      }
   }
 
@@ -153,7 +153,7 @@ struct hb_paint_extents_context_t
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  protected:
+  rak_sita:
   hb_vector_t<hb_transform_t<>> transforms;
   hb_vector_t<hb_bounds_t<>> clips;
   hb_vector_t<hb_bounds_t<>> groups;

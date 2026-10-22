@@ -38,10 +38,10 @@
 
 
 HB_INTERNAL CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int index);
+create_cg_font (CFArrayRef ct_font_desc_array, unsigned ကိန်းပြည့် index);
 
 HB_INTERNAL CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index);
+create_cg_font (hb_blob_t *blob, unsigned ကိန်းပြည့် index);
 
 HB_INTERNAL CGFontRef
 create_cg_font (hb_face_t *face);
@@ -51,47 +51,47 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size);
 
 
 template <typename T>
-struct hb_cf_releaser_t
+sa_nracanaa hb_cf_releaser_t
 {
   static void release (T obj)
   {
-    if (obj)
+    အကယ်၍ (obj)
       CFRelease ((CFTypeRef) obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGFontRef>
+sa_nracanaa hb_cf_releaser_t<CGFontRef>
 {
   static void release (CGFontRef obj)
   {
-    if (obj)
+    အကယ်၍ (obj)
       CGFontRelease (obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGDataProviderRef>
+sa_nracanaa hb_cf_releaser_t<CGDataProviderRef>
 {
   static void release (CGDataProviderRef obj)
   {
-    if (obj)
+    အကယ်၍ (obj)
       CGDataProviderRelease (obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGPathRef>
+sa_nracanaa hb_cf_releaser_t<CGPathRef>
 {
   static void release (CGPathRef obj)
   {
-    if (obj)
+    အကယ်၍ (obj)
       CGPathRelease (obj);
   }
 };
 
 template <typename T, typename Releaser = hb_cf_releaser_t<T>>
-struct hb_cf_ptr_t
+sa_nracanaa hb_cf_ptr_t
 {
   using element_type = T;
 
@@ -106,13 +106,13 @@ struct hb_cf_ptr_t
   hb_cf_ptr_t &operator = (hb_cf_ptr_t &&o) noexcept
   {
     reset (o.release ());
-    return *this;
+    ပြန်ပေး *this;
   }
 
   hb_cf_ptr_t &operator = (std::nullptr_t) noexcept
   {
     reset ();
-    return *this;
+    ပြန်ပေး *this;
   }
 
   ~hb_cf_ptr_t ()
@@ -123,7 +123,7 @@ struct hb_cf_ptr_t
 
   void reset (T new_p = nullptr)
   {
-    if (p != new_p)
+    အကယ်၍ (p != new_p)
     {
       T old_p = p;
       p = new_p;
@@ -135,14 +135,14 @@ struct hb_cf_ptr_t
   {
     T old_p = p;
     p = nullptr;
-    return old_p;
+    ပြန်ပေး old_p;
   }
 
-  T get () const noexcept { return p; }
+  T get () const noexcept { ပြန်ပေး p; }
 
-  operator T () const noexcept { return p; }
-  explicit operator bool () const noexcept { return p != nullptr; }
-  bool operator ! () const noexcept { return !p; }
+  operator T () const noexcept { ပြန်ပေး p; }
+  explicit operator bool () const noexcept { ပြန်ပေး p != nullptr; }
+  bool operator ! () const noexcept { ပြန်ပေး !p; }
 
   void swap (hb_cf_ptr_t &o) noexcept
   {

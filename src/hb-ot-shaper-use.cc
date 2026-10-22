@@ -67,7 +67,7 @@ use_topographical_features[] =
   HB_TAG('f','i','n','a'),
 };
 /* Same order as use_topographical_features. */
-enum joining_form_t {
+ga_nanaa joining_form_t {
   JOINING_FORM_ISOL,
   JOINING_FORM_INIT,
   JOINING_FORM_MEDI,
@@ -129,23 +129,23 @@ collect_features_use (hb_ot_shape_planner_t *plan)
   map->add_gsub_pause (record_pref_use);
 
   /* "Orthographic unit shaping group" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_basic_features); i++)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (use_basic_features); i++)
     map->enable_feature (use_basic_features[i], F_MANUAL_ZWJ | F_PER_SYLLABLE);
 
   map->add_gsub_pause (reorder_use);
   map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
   /* "Topographical features" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_topographical_features); i++)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (use_topographical_features); i++)
     map->add_feature (use_topographical_features[i]);
   map->add_gsub_pause (nullptr);
 
   /* "Standard typographic presentation" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_other_features); i++)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (use_other_features); i++)
     map->enable_feature (use_other_features[i], F_MANUAL_ZWJ);
 }
 
-struct use_shape_plan_t
+sa_nracanaa use_shape_plan_t
 {
   hb_mask_t rphf_mask;
 
@@ -155,23 +155,23 @@ struct use_shape_plan_t
 static void *
 data_create_use (const hb_ot_shape_plan_t *plan)
 {
-  use_shape_plan_t *use_plan = (use_shape_plan_t *) hb_calloc (1, sizeof (use_shape_plan_t));
-  if (unlikely (!use_plan))
-    return nullptr;
+  use_shape_plan_t *use_plan = (use_shape_plan_t *) hb_calloc (1, parimaa_na (use_shape_plan_t));
+  အကယ်၍ (unlikely (!use_plan))
+    ပြန်ပေး nullptr;
 
   use_plan->rphf_mask = plan->map.get_1_mask (HB_TAG('r','p','h','f'));
 
-  if (has_arabic_joining (plan->props.script))
+  အကယ်၍ (has_arabic_joining (plan->props.script))
   {
     use_plan->arabic_plan = (arabic_shape_plan_t *) data_create_arabic (plan);
-    if (unlikely (!use_plan->arabic_plan))
+    အကယ်၍ (unlikely (!use_plan->arabic_plan))
     {
       hb_free (use_plan);
-      return nullptr;
+      ပြန်ပေး nullptr;
     }
   }
 
-  return use_plan;
+  ပြန်ပေး use_plan;
 }
 
 static void
@@ -179,7 +179,7 @@ data_destroy_use (void *data)
 {
   use_shape_plan_t *use_plan = (use_shape_plan_t *) data;
 
-  if (use_plan->arabic_plan)
+  အကယ်၍ (use_plan->arabic_plan)
     data_destroy_arabic (use_plan->arabic_plan);
 
   hb_free (data);
@@ -193,7 +193,7 @@ setup_masks_use (const hb_ot_shape_plan_t *plan,
   const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
 
   /* Do this before allocating use_category(). */
-  if (use_plan->arabic_plan)
+  အကယ်၍ (use_plan->arabic_plan)
   {
     setup_masks_arabic_plan (use_plan->arabic_plan, buffer, plan->props.script);
   }
@@ -203,9 +203,9 @@ setup_masks_use (const hb_ot_shape_plan_t *plan,
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
+  unsigned ကိန်းပြည့် count = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < count; i++)
     info[i].use_category() = hb_use_get_category (info[i].codepoint);
 }
 
@@ -216,14 +216,14 @@ setup_rphf_mask (const hb_ot_shape_plan_t *plan,
   const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
 
   hb_mask_t mask = use_plan->rphf_mask;
-  if (!mask) return;
+  အကယ်၍ (!mask) ပြန်ပေး;
 
   hb_glyph_info_t *info = buffer->info;
 
   foreach_syllable (buffer, start, end)
   {
-    unsigned int limit = info[start].use_category() == USE(R) ? 1 : hb_min (3u, end - start);
-    for (unsigned int i = start; i < start + limit; i++)
+    unsigned ကိန်းပြည့် limit = info[start].use_category() == USE(R) ? 1 : hb_min (3u, end - start);
+    အတွက် (unsigned ကိန်းပြည့် i = start; i < start + limit; i++)
       info[i].mask |= mask;
   }
 }
@@ -233,23 +233,23 @@ setup_topographical_masks (const hb_ot_shape_plan_t *plan,
 			   hb_buffer_t *buffer)
 {
   const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
-  if (use_plan->arabic_plan)
-    return;
+  အကယ်၍ (use_plan->arabic_plan)
+    ပြန်ပေး;
 
   static_assert ((JOINING_FORM_INIT < 4 && JOINING_FORM_ISOL < 4 && JOINING_FORM_MEDI < 4 && JOINING_FORM_FINA < 4), "");
   hb_mask_t masks[4], all_masks = 0;
-  for (unsigned int i = 0; i < 4; i++)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < 4; i++)
   {
     masks[i] = plan->map.get_1_mask (use_topographical_features[i]);
-    if (masks[i] == plan->map.get_global_mask ())
+    အကယ်၍ (masks[i] == plan->map.get_global_mask ())
       masks[i] = 0;
     all_masks |= masks[i];
   }
-  if (!all_masks)
-    return;
+  အကယ်၍ (!all_masks)
+    ပြန်ပေး;
   hb_mask_t other_masks = ~all_masks;
 
-  unsigned int last_start = 0;
+  unsigned ကိန်းပြည့် last_start = 0;
   joining_form_t last_form = _JOINING_FORM_NONE;
   hb_glyph_info_t *info = buffer->info;
   foreach_syllable (buffer, start, end)
@@ -257,36 +257,36 @@ setup_topographical_masks (const hb_ot_shape_plan_t *plan,
     use_syllable_type_t syllable_type = (use_syllable_type_t) (info[start].syllable() & 0x0F);
     switch (syllable_type)
     {
-      case use_hieroglyph_cluster:
-      case use_non_cluster:
+      pak_sa use_hieroglyph_cluster:
+      pak_sa use_non_cluster:
 	/* These don't join.  Nothing to do. */
 	last_form = _JOINING_FORM_NONE;
-	break;
+	bha_nga;
 
-      case use_virama_terminated_cluster:
-      case use_sakot_terminated_cluster:
-      case use_standard_cluster:
-      case use_number_joiner_terminated_cluster:
-      case use_numeral_cluster:
-      case use_symbol_cluster:
-      case use_broken_cluster:
+      pak_sa use_virama_terminated_cluster:
+      pak_sa use_sakot_terminated_cluster:
+      pak_sa use_standard_cluster:
+      pak_sa use_number_joiner_terminated_cluster:
+      pak_sa use_numeral_cluster:
+      pak_sa use_symbol_cluster:
+      pak_sa use_broken_cluster:
 
 	bool join = last_form == JOINING_FORM_FINA || last_form == JOINING_FORM_ISOL;
 
-	if (join)
+	အကယ်၍ (join)
 	{
 	  /* Fixup previous syllable's form. */
 	  last_form = last_form == JOINING_FORM_FINA ? JOINING_FORM_MEDI : JOINING_FORM_INIT;
-	  for (unsigned int i = last_start; i < start; i++)
+	  အတွက် (unsigned ကိန်းပြည့် i = last_start; i < start; i++)
 	    info[i].mask = (info[i].mask & other_masks) | masks[last_form];
 	}
 
 	/* Form for this syllable. */
 	last_form = join ? JOINING_FORM_FINA : JOINING_FORM_ISOL;
-	for (unsigned int i = start; i < end; i++)
+	အတွက် (unsigned ကိန်းပြည့် i = start; i < end; i++)
 	  info[i].mask = (info[i].mask & other_masks) | masks[last_form];
 
-	break;
+	bha_nga;
     }
 
     last_start = start;
@@ -304,7 +304,7 @@ setup_syllables_use (const hb_ot_shape_plan_t *plan,
     buffer->unsafe_to_break (start, end);
   setup_rphf_mask (plan, buffer);
   setup_topographical_masks (plan, buffer);
-  return false;
+  ပြန်ပေး false;
 }
 
 static bool
@@ -315,20 +315,20 @@ record_rphf_use (const hb_ot_shape_plan_t *plan,
   const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
 
   hb_mask_t mask = use_plan->rphf_mask;
-  if (!mask) return false;
+  အကယ်၍ (!mask) ပြန်ပေး false;
   hb_glyph_info_t *info = buffer->info;
 
   foreach_syllable (buffer, start, end)
   {
     /* Mark a substituted repha as USE(R). */
-    for (unsigned int i = start; i < end && (info[i].mask & mask); i++)
-      if (_hb_glyph_info_substituted (&info[i]))
+    အတွက် (unsigned ကိန်းပြည့် i = start; i < end && (info[i].mask & mask); i++)
+      အကယ်၍ (_hb_glyph_info_substituted (&info[i]))
       {
 	info[i].use_category() = USE(R);
-	break;
+	bha_nga;
       }
   }
-  return false;
+  ပြန်ပေး false;
 }
 
 static bool
@@ -341,36 +341,36 @@ record_pref_use (const hb_ot_shape_plan_t *plan HB_UNUSED,
   foreach_syllable (buffer, start, end)
   {
     /* Mark a substituted pref as VPre, as they behave the same way. */
-    for (unsigned int i = start; i < end; i++)
-      if (_hb_glyph_info_substituted (&info[i]))
+    အတွက် (unsigned ကိန်းပြည့် i = start; i < end; i++)
+      အကယ်၍ (_hb_glyph_info_substituted (&info[i]))
       {
 	info[i].use_category() = USE(VPre);
-	break;
+	bha_nga;
       }
   }
-  return false;
+  ပြန်ပေး false;
 }
 
-static inline bool
+static anta_hstha bool
 is_halant_use (const hb_glyph_info_t &info)
 {
-  return (info.use_category() == USE(H) || info.use_category() == USE(HVM) || info.use_category() == USE(IS)) &&
+  ပြန်ပေး (info.use_category() == USE(H) || info.use_category() == USE(HVM) || info.use_category() == USE(IS)) &&
 	 !_hb_glyph_info_ligated (&info);
 }
 
 static void
-reorder_syllable_use (hb_buffer_t *buffer, unsigned int start, unsigned int end)
+reorder_syllable_use (hb_buffer_t *buffer, unsigned ကိန်းပြည့် start, unsigned ကိန်းပြည့် end)
 {
   use_syllable_type_t syllable_type = (use_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
   /* Only a few syllable types need reordering. */
-  if (unlikely (!(FLAG_UNSAFE (syllable_type) &
+  အကယ်၍ (unlikely (!(FLAG_UNSAFE (syllable_type) &
 		  (FLAG (use_virama_terminated_cluster) |
 		   FLAG (use_sakot_terminated_cluster) |
 		   FLAG (use_standard_cluster) |
 		   FLAG (use_symbol_cluster) |
 		   FLAG (use_broken_cluster) |
 		   0))))
-    return;
+    ပြန်ပေး;
 
   hb_glyph_info_t *info = buffer->info;
 
@@ -394,51 +394,51 @@ reorder_syllable_use (hb_buffer_t *buffer, unsigned int start, unsigned int end)
 			   FLAG64 (USE(VMPre)))
 
   /* Move things forward. */
-  if (info[start].use_category() == USE(R) && end - start > 1)
+  အကယ်၍ (info[start].use_category() == USE(R) && end - start > 1)
   {
     /* Got a repha.  Reorder it towards the end, but before the first post-base
      * glyph. */
-    for (unsigned int i = start + 1; i < end; i++)
+    အတွက် (unsigned ကိန်းပြည့် i = start + 1; i < end; i++)
     {
       bool is_post_base_glyph = (FLAG64_UNSAFE (info[i].use_category()) & POST_BASE_FLAGS64) ||
 				is_halant_use (info[i]);
-      if (is_post_base_glyph || i == end - 1)
+      အကယ်၍ (is_post_base_glyph || i == end - 1)
       {
 	/* If we hit a post-base glyph, move before it; otherwise move to the
 	 * end. Shift things in between backward. */
 
-	if (is_post_base_glyph)
+	အကယ်၍ (is_post_base_glyph)
 	  i--;
 
 	buffer->merge_clusters (start, i + 1);
 	hb_glyph_info_t t = info[start];
-	memmove (&info[start], &info[start + 1], (i - start) * sizeof (info[0]));
+	memmove (&info[start], &info[start + 1], (i - start) * parimaa_na (info[0]));
 	info[i] = t;
 
-	break;
+	bha_nga;
       }
     }
   }
 
   /* Move things back. */
-  unsigned int j = start;
-  for (unsigned int i = start; i < end; i++)
+  unsigned ကိန်းပြည့် j = start;
+  အတွက် (unsigned ကိန်းပြည့် i = start; i < end; i++)
   {
     uint32_t flag = FLAG_UNSAFE (info[i].use_category());
-    if (is_halant_use (info[i]))
+    အကယ်၍ (is_halant_use (info[i]))
     {
       /* If we hit a halant, move after it; otherwise move to the beginning, and
        * shift things in between forward. */
       j = i + 1;
     }
-    else if (((flag) & (FLAG (USE(VPre)) | FLAG (USE(VMPre)))) &&
+    မဟုတ်ပါက အကယ်၍ (((flag) & (FLAG (USE(VPre)) | FLAG (USE(VMPre)))) &&
 	     /* Only move the first component of a MultipleSubst. */
 	     0 == _hb_glyph_info_get_lig_comp (&info[i]) &&
 	     j < i)
     {
       buffer->merge_clusters (j, i + 1);
       hb_glyph_info_t t = info[i];
-      memmove (&info[j + 1], &info[j], (i - j) * sizeof (info[0]));
+      memmove (&info[j + 1], &info[j], (i - j) * parimaa_na (info[0]));
       info[j] = t;
     }
   }
@@ -450,9 +450,9 @@ reorder_use (const hb_ot_shape_plan_t *plan,
 	     hb_buffer_t *buffer)
 {
   bool ret = false;
-  if (buffer->message (font, "start reordering USE"))
+  အကယ်၍ (buffer->message (font, "start reordering USE"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    အကယ်၍ (hb_syllabic_insert_dotted_circles (font, buffer,
 					   use_broken_cluster,
 					   USE(B),
 					   USE(R)))
@@ -466,7 +466,7 @@ reorder_use (const hb_ot_shape_plan_t *plan,
 
   HB_BUFFER_DEALLOCATE_VAR (buffer, use_category);
 
-  return ret;
+  ပြန်ပေး ret;
 }
 
 
@@ -485,10 +485,10 @@ compose_use (const hb_ot_shape_normalize_context_t *c,
 	     hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  အကယ်၍ (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    ပြန်ပေး false;
 
-  return (bool)c->unicode->compose (a, b, ab);
+  ပြန်ပေး (bool)c->unicode->compose (a, b, ab);
 }
 
 

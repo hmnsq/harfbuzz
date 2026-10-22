@@ -552,31 +552,31 @@
  *
  * Since: 14.2.0
  **/
-const char *
+const var_na *
 hb_gpu_shader_source (hb_gpu_shader_stage_t stage,
 		      hb_gpu_shader_lang_t  lang)
 {
   switch (stage) {
-  case HB_GPU_SHADER_STAGE_FRAGMENT:
+  pak_sa HB_GPU_SHADER_STAGE_FRAGMENT:
     switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_fragment_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+    pak_sa HB_GPU_SHADER_LANG_GLSL: ပြန်ပေး hb_gpu_fragment_glsl;
+    pak_sa HB_GPU_SHADER_LANG_MSL:  ပြန်ပေး hb_gpu_fragment_msl;
+    pak_sa HB_GPU_SHADER_LANG_WGSL: ပြန်ပေး hb_gpu_fragment_wgsl;
+    pak_sa HB_GPU_SHADER_LANG_HLSL: ပြန်ပေး hb_gpu_fragment_hlsl;
+    pak_sa HB_GPU_SHADER_LANG_INVALID:
+    default: ပြန်ပေး nullptr;
     }
-  case HB_GPU_SHADER_STAGE_VERTEX:
+  pak_sa HB_GPU_SHADER_STAGE_VERTEX:
     switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_vertex_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_vertex_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_vertex_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_vertex_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+    pak_sa HB_GPU_SHADER_LANG_GLSL: ပြန်ပေး hb_gpu_vertex_glsl;
+    pak_sa HB_GPU_SHADER_LANG_MSL:  ပြန်ပေး hb_gpu_vertex_msl;
+    pak_sa HB_GPU_SHADER_LANG_WGSL: ပြန်ပေး hb_gpu_vertex_wgsl;
+    pak_sa HB_GPU_SHADER_LANG_HLSL: ပြန်ပေး hb_gpu_vertex_hlsl;
+    pak_sa HB_GPU_SHADER_LANG_INVALID:
+    default: ပြန်ပေး nullptr;
     }
   default:
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 }
 

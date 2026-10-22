@@ -31,15 +31,15 @@
 #include "hb-open-type.hh"
 #include "graph/serialize.hh"
 
-static void extend (const char* value,
+static void extend (const var_na* value,
                     unsigned len,
                     hb_serialize_context_t* c)
 {
-  char* obj = c->allocate_size<char> (len);
+  var_na* obj = c->allocate_size<var_na> (len);
   hb_memcpy (obj, value, len);
 }
 
-static void start_object(const char* tag,
+static void start_object(const var_na* tag,
                          unsigned len,
                          hb_serialize_context_t* c)
 {
@@ -47,13 +47,13 @@ static void start_object(const char* tag,
   extend (tag, len, c);
 }
 
-static unsigned add_object(const char* tag,
+static unsigned add_object(const var_na* tag,
                            unsigned len,
                            hb_serialize_context_t* c,
                            bool shared = false)
 {
   start_object (tag, len, c);
-  return c->pop_pack (shared);
+  ပြန်ပေး c->pop_pack (shared);
 }
 
 
@@ -84,7 +84,7 @@ static void add_wide_offset (unsigned id,
 static void add_gsubgpos_header (unsigned lookup_list,
                                  hb_serialize_context_t* c)
 {
-  char header[] = {
+  var_na header[] = {
     0, 1, // major
     0, 0, // minor
     0, 0, // script list
@@ -99,7 +99,7 @@ static void add_gsubgpos_header (unsigned lookup_list,
 static void add_gsubgpos_header_1_2 (unsigned lookup_list,
                                      hb_serialize_context_t* c)
 {
-  char header[] = {
+  var_na header[] = {
     0, 1, 0, 2, // version
     0, 0, // script list
     0, 0, // feature list
@@ -109,45 +109,45 @@ static void add_gsubgpos_header_1_2 (unsigned lookup_list,
     0, 0, 0, 0, // feature list 2
   };
 
-  start_object (header, sizeof (header), c);
+  start_object (header, parimaa_na (header), c);
   add_wide_offset (lookup_list, c);
   c->pop_pack (false);
 }
 
 static unsigned add_lookup_list (const unsigned* lookups,
-                                 char count,
+                                 var_na count,
                                  hb_serialize_context_t* c)
 {
-  char lookup_count[] = {0, count};
-  start_object  ((char *) &lookup_count, 2, c);
+  var_na lookup_count[] = {0, count};
+  start_object  ((var_na *) &lookup_count, 2, c);
 
-  for (int i = 0; i < count; i++)
+  အတွက် (ကိန်းပြည့် i = 0; i < count; i++)
     add_offset (lookups[i], c);
 
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 }
 
 static unsigned add_lookup_list_1_2 (const unsigned* lookups,
-                                     char count,
+                                     var_na count,
                                      hb_serialize_context_t* c)
 {
-  char lookup_count[] = {0, count};
-  start_object ((char *) &lookup_count, 2, c);
+  var_na lookup_count[] = {0, count};
+  start_object ((var_na *) &lookup_count, 2, c);
 
-  for (int i = 0; i < count; i++)
+  အတွက် (ကိန်းပြည့် i = 0; i < count; i++)
     add_wide_offset (lookups[i], c);
 
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 }
 
 static void start_lookup (int8_t type,
                           int8_t num_subtables,
                           hb_serialize_context_t* c)
 {
-  char lookup[] = {
-    0, (char)type, // type
-    0, (char)2, // flag
-    0, (char)num_subtables, // num subtables
+  var_na lookup[] = {
+    0, (var_na)type, // type
+    0, (var_na)2, // flag
+    0, (var_na)num_subtables, // num subtables
   };
 
   start_object (lookup, 6, c);
@@ -155,24 +155,24 @@ static void start_lookup (int8_t type,
 
 static unsigned finish_lookup (hb_serialize_context_t* c)
 {
-  char filter[] = {0, 0};
+  var_na filter[] = {0, 0};
   extend (filter, 2, c);
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 }
 
 static unsigned add_extension (unsigned child,
                                uint8_t type,
                                hb_serialize_context_t* c)
 {
-  char ext[] = {
+  var_na ext[] = {
     0, 1,
-    0, (char) type,
+    0, (var_na) type,
   };
 
   start_object (ext, 4, c);
   add_wide_offset (child, c);
 
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 
 }
 
@@ -181,7 +181,7 @@ static unsigned add_coverage (unsigned start, unsigned end,
                               hb_serialize_context_t* c,
                               bool shared = false)
 {
-  if (end - start == 0) {
+  အကယ်၍ (end - start == 0) {
     uint8_t coverage[] = {
       0, 1, // format
       0, 1, // count
@@ -189,10 +189,10 @@ static unsigned add_coverage (unsigned start, unsigned end,
       (uint8_t) ((start >> 8) & 0xFF),
       (uint8_t) (start & 0xFF), // glyph[0]
     };
-    return add_object ((char*) coverage, 6, c, shared);
+    ပြန်ပေး add_object ((var_na*) coverage, 6, c, shared);
   }
 
-  if (end - start == 1)
+  အကယ်၍ (end - start == 1)
   {
     uint8_t coverage[] = {
       0, 1, // format
@@ -204,7 +204,7 @@ static unsigned add_coverage (unsigned start, unsigned end,
       (uint8_t) ((end >> 8) & 0xFF),
       (uint8_t) (end & 0xFF), // glyph[1]
     };
-    return add_object ((char*) coverage, 8, c, shared);
+    ပြန်ပေး add_object ((var_na*) coverage, 8, c, shared);
   }
 
   uint8_t coverage[] = {
@@ -219,7 +219,7 @@ static unsigned add_coverage (unsigned start, unsigned end,
 
     0, 0,
   };
-  return add_object ((char*) coverage, 10, c, shared);
+  ပြန်ပေး add_object ((var_na*) coverage, 10, c, shared);
 }
 
 
@@ -229,7 +229,7 @@ static unsigned add_coverage (It it,
 {
   c->push ();
   OT::Layout::Common::Coverage_serialize (c, it);
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 }
 
 // Adds a class that maps glyphs from [start_glyph, end_glyph)
@@ -249,45 +249,45 @@ static unsigned add_class_def (uint16_t start_glyph,
     (uint8_t) (count & 0xFF), // count
   };
 
-  start_object ((char*) header, 6, c);
-  for (uint16_t i = 1; i <= count; i++)
+  start_object ((var_na*) header, 6, c);
+  အတွက် (uint16_t i = 1; i <= count; i++)
   {
     uint8_t class_value[] = {
       (uint8_t) ((i >> 8) & 0xFF),
       (uint8_t) (i & 0xFF), // count
     };
-    extend ((char*) class_value, 2, c);
+    extend ((var_na*) class_value, 2, c);
   }
 
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 }
 
 static unsigned add_pair_pos_1 (unsigned* pair_sets,
-                                char count,
+                                var_na count,
                                 unsigned coverage,
                                 hb_serialize_context_t* c)
 {
-  char format[] = {
+  var_na format[] = {
     0, 1
   };
 
   start_object (format, 2, c);
   add_offset (coverage, c);
 
-  char value_format[] = {
+  var_na value_format[] = {
     0, 0,
     0, 0,
     0, count,
   };
   extend (value_format, 6, c);
 
-  for (char i = 0; i < count; i++)
+  အတွက် (var_na i = 0; i < count; i++)
     add_offset (pair_sets[(unsigned) i], c);
 
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 }
 
-static void add_liga_set_header (char liga_count,
+static void add_liga_set_header (var_na liga_count,
                                  hb_serialize_context_t* c)
 {
   uint8_t liga_count_bytes[] = {
@@ -295,13 +295,13 @@ static void add_liga_set_header (char liga_count,
     (uint8_t) (0xFF & liga_count),
   };
 
-  start_object ((const char*) liga_count_bytes, 2, c);
+  start_object ((const var_na*) liga_count_bytes, 2, c);
 }
 
 static void add_liga_header (unsigned coverage, unsigned liga_set_count, hb_serialize_context_t* c)
 {
   uint8_t format[] = {0, 1};
-  start_object ((const char*) format, 2, c);
+  start_object ((const var_na*) format, 2, c);
   add_offset(coverage, c);
 
   uint8_t liga_set_count_bytes[] = {
@@ -309,7 +309,7 @@ static void add_liga_header (unsigned coverage, unsigned liga_set_count, hb_seri
     (uint8_t) (0xFF & liga_set_count),
   };
 
-  extend((const char *) liga_set_count_bytes, 2, c);
+  extend((const var_na *) liga_set_count_bytes, 2, c);
 }
 
 static unsigned add_pair_pos_2 (unsigned starting_class,
@@ -323,13 +323,13 @@ static unsigned add_pair_pos_2 (unsigned starting_class,
     0, 2
   };
 
-  start_object ((char*) format, 2, c);
+  start_object ((var_na*) format, 2, c);
   add_offset (coverage, c);
 
   unsigned num_values = 4;
   uint8_t format1 = 0x01 | 0x02 | 0x08;
   uint8_t format2 = 0x04;
-  if (device_tables) {
+  အကယ်၍ (device_tables) {
     format2 |= 0x20;
     num_values += 1;
   }
@@ -338,7 +338,7 @@ static unsigned add_pair_pos_2 (unsigned starting_class,
     0, format2,
   };
 
-  extend ((char*) value_format, 4, c);
+  extend ((var_na*) value_format, 4, c);
 
   add_offset (class_def_1, c);
   add_offset (class_def_2, c);
@@ -349,32 +349,32 @@ static unsigned add_pair_pos_2 (unsigned starting_class,
     (uint8_t) ((class_def_2_count >> 8) & 0xFF),
     (uint8_t) (class_def_2_count & 0xFF),
   };
-  extend ((char*) class_counts, 4, c);
+  extend ((var_na*) class_counts, 4, c);
 
   unsigned num_bytes_per_record = class_def_2_count * num_values * 2;
   uint8_t* record = (uint8_t*) calloc (1, num_bytes_per_record);
-  int device_index = 0;
-  for (uint16_t i = 0; i < class_def_1_count; i++)
+  ကိန်းပြည့် device_index = 0;
+  အတွက် (uint16_t i = 0; i < class_def_1_count; i++)
   {
 
-    for (uint16_t j = 0; j < class_def_2_count; j++)
+    အတွက် (uint16_t j = 0; j < class_def_2_count; j++)
     {
-      for (int k = 0; k < 4; k++) {
+      အတွက် (ကိန်းပြည့် k = 0; k < 4; k++) {
         uint8_t value[] = {
           (uint8_t) (i + starting_class),
           (uint8_t) (i + starting_class),
         };
-        extend ((char*) value, 2, c);
+        extend ((var_na*) value, 2, c);
       }
 
-      if (device_tables) {
+      အကယ်၍ (device_tables) {
         add_offset (device_tables[device_index++], c);
       }
     }
   }
   free (record);
 
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 }
 
 static unsigned add_mark_base_pos_1 (unsigned mark_coverage,
@@ -388,7 +388,7 @@ static unsigned add_mark_base_pos_1 (unsigned mark_coverage,
     0, 1
   };
 
-  start_object ((char*) format, 2, c);
+  start_object ((var_na*) format, 2, c);
   add_offset (mark_coverage, c);
   add_offset (base_coverage, c);
 
@@ -396,19 +396,19 @@ static unsigned add_mark_base_pos_1 (unsigned mark_coverage,
     (uint8_t) ((class_count >> 8) & 0xFF),
     (uint8_t) (class_count & 0xFF),
   };
-  extend ((char*) count, 2, c);
+  extend ((var_na*) count, 2, c);
 
   add_offset (mark_array, c);
   add_offset (base_array, c);
 
-  return c->pop_pack (false);
+  ပြန်ပေး c->pop_pack (false);
 }
 
-template<int mark_count,
-    int class_count,
-    int base_count,
-    int table_count>
-struct MarkBasePosBuffers
+template<ကိန်းပြည့် mark_count,
+    ကိန်းပြည့် class_count,
+    ကိန်းပြည့် base_count,
+    ကိန်းပြည့် table_count>
+sa_nracanaa MarkBasePosBuffers
 {
   unsigned base_anchors[class_count * base_count];
   unsigned mark_anchors[mark_count];
@@ -417,24 +417,24 @@ struct MarkBasePosBuffers
 
   MarkBasePosBuffers(hb_serialize_context_t* c)
   {
-    for (unsigned i = 0; i < sizeof(anchor_buffers) / 2; i++)
+    အတွက် (unsigned i = 0; i < parimaa_na(anchor_buffers) / 2; i++)
     {
       OT::HBUINT16* value = (OT::HBUINT16*) (&anchor_buffers[2*i]);
       *value = i;
     }
 
-    for (unsigned i = 0; i < class_count * base_count; i++)
+    အတွက် (unsigned i = 0; i < class_count * base_count; i++)
     {
-      base_anchors[i] = add_object ((char*) &anchor_buffers[i], 100, c);
-      if (i < class_count) {
+      base_anchors[i] = add_object ((var_na*) &anchor_buffers[i], 100, c);
+      အကယ်၍ (i < class_count) {
         class_buffer[i*2] = (uint8_t) ((i >> 8) & 0xFF);
         class_buffer[i*2 + 1] = (uint8_t) (i & 0xFF);
       }
     }
 
-    for (unsigned i = 0; i < mark_count; i++)
+    အတွက် (unsigned i = 0; i < mark_count; i++)
     {
-      mark_anchors[i] = add_object ((char*) &anchor_buffers[i], 4, c);
+      mark_anchors[i] = add_object ((var_na*) &anchor_buffers[i], 4, c);
     }
   }
 
@@ -451,10 +451,10 @@ struct MarkBasePosBuffers
       (uint8_t) (base_count & 0xFF),
 
     };
-    start_object ((char*) base_count_buffer, 2, c);
-    for (unsigned base = 0; base < base_count; base++)
+    start_object ((var_na*) base_count_buffer, 2, c);
+    အတွက် (unsigned base = 0; base < base_count; base++)
     {
-      for (unsigned klass = start_class; klass <= end_class; klass++)
+      အတွက် (unsigned klass = start_class; klass <= end_class; klass++)
       {
         unsigned i = base * class_count + klass;
         add_offset (base_anchors[i], c);
@@ -468,14 +468,14 @@ struct MarkBasePosBuffers
       (uint8_t) ((num_marks >> 8) & 0xFF),
       (uint8_t) (num_marks & 0xFF),
     };
-    start_object ((char*) mark_count_buffer, 2, c);
-    for (unsigned mark = 0; mark < mark_count; mark++)
+    start_object ((var_na*) mark_count_buffer, 2, c);
+    အတွက် (unsigned mark = 0; mark < mark_count; mark++)
     {
       unsigned klass = mark % class_count;
-      if (klass < start_class || klass > end_class) continue;
+      အကယ်၍ (klass < start_class || klass > end_class) continue;
       klass -= start_class;
 
-      extend ((char*) &class_buffer[2 * klass], 2, c);
+      extend ((var_na*) &class_buffer[2 * klass], 2, c);
       add_offset (mark_anchors[mark], c);
     }
     unsigned mark_array = c->pop_pack (false);
@@ -485,7 +485,7 @@ struct MarkBasePosBuffers
         + hb_range ((hb_codepoint_t) mark_count)
         | hb_filter ([&] (hb_codepoint_t mark) {
           unsigned klass = mark % class_count;
-          return klass >= class_per_table * table_index &&
+          ပြန်ပေး klass >= class_per_table * table_index &&
               klass < class_per_table * (table_index + 1);
         })
         ;
@@ -494,7 +494,7 @@ struct MarkBasePosBuffers
     // baseCoverage
     unsigned base_coverage = add_coverage (10, 10 + base_count - 1, c);
 
-    return add_mark_base_pos_1 (mark_coverage,
+    ပြန်ပေး add_mark_base_pos_1 (mark_coverage,
                                 base_coverage,
                                 mark_array,
                                 base_array,
@@ -503,7 +503,7 @@ struct MarkBasePosBuffers
   }
 };
 
-static void run_resolve_overflow_test (const char* name,
+static void run_resolve_overflow_test (const var_na* name,
                                        hb_serialize_context_t& overflowing,
                                        hb_serialize_context_t& expected,
                                        unsigned num_iterations = 0,
@@ -517,9 +517,9 @@ static void run_resolve_overflow_test (const char* name,
   graph_t graph = graph_t::create (overflowing.object_graph ()).value ();
 
   graph_t expected_graph = graph_t::create (expected.object_graph ()).value ();
-  if (graph::will_overflow (expected_graph).value ())
+  အကယ်၍ (graph::will_overflow (expected_graph).value ())
   {
-    if (check_binary_equivalence) {
+    အကယ်၍ (check_binary_equivalence) {
       printf("when binary equivalence checking is enabled, the expected graph cannot overflow.");
       hb_always_assert(!check_binary_equivalence);
     }
@@ -533,7 +533,7 @@ static void run_resolve_overflow_test (const char* name,
                                       num_iterations,
                                       recalculate_extensions,
                                       graph);
-  if (r.is_err())
+  အကယ်၍ (r.is_err())
     printf("run_resolve_overflow_test: overflow resolution failed, cause: %s\n", graph::to_string(r.error()));
   hb_always_assert (r.is_ok());
 
@@ -542,13 +542,13 @@ static void run_resolve_overflow_test (const char* name,
   hb_always_assert (out1);
   hb_blob_t* out2 = graph::serialize (expected_graph).value ();
   hb_always_assert (out2);
-  if (check_binary_equivalence) {
+  အကယ်၍ (check_binary_equivalence) {
     unsigned l1, l2;
-    const char* d1 = hb_blob_get_data(out1, &l1);
-    const char* d2 = hb_blob_get_data(out2, &l2);
+    const var_na* d1 = hb_blob_get_data(out1, &l1);
+    const var_na* d2 = hb_blob_get_data(out2, &l2);
 
     bool match = (l1 == l2) && (memcmp(d1, d2, l1) == 0);
-    if (!match) {
+    အကယ်၍ (!match) {
       printf("## Result:\n");
       graph.print();
       printf("## Expected:\n");
@@ -563,7 +563,7 @@ static void run_resolve_overflow_test (const char* name,
   // Check the graphs are equivalent
   graph.normalize ();
   expected_graph.normalize ();
-  if (!(graph == expected_graph)) {
+  အကယ်၍ (!(graph == expected_graph)) {
     printf("## Expected:\n");
     expected_graph.print();
     printf("## Result:\n");
@@ -581,7 +581,7 @@ static void add_virtual_offset (unsigned id,
 static void
 populate_serializer_simple (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_1 = add_object ("ghi", 3, c);
   unsigned obj_2 = add_object ("def", 3, c);
@@ -598,13 +598,13 @@ static void
 populate_serializer_virtual (hb_serialize_context_t* c, bool with_overflow)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_4, obj_5;
-  if (with_overflow) {
+  အကယ်၍ (with_overflow) {
     obj_5 = add_object("55555", 5, c);
     obj_4 = add_object(large_string.c_str(), 50000, c);
-  } else {
+  } မဟုတ်ပါက {
     obj_4 = add_object(large_string.c_str(), 50000, c);
     obj_5 = add_object("55555", 5, c);
   }
@@ -631,7 +631,7 @@ static void
 populate_serializer_with_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_1 = add_object (large_string.c_str(), 10000, c);
   unsigned obj_2 = add_object (large_string.c_str(), 20000, c);
@@ -650,7 +650,7 @@ static void
 populate_serializer_with_priority_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_e = add_object ("e", 1, c);
   unsigned obj_d = add_object ("d", 1, c);
@@ -675,7 +675,7 @@ static void
 populate_serializer_with_priority_overflow_expected (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_e = add_object ("e", 1, c);
 
@@ -702,7 +702,7 @@ static void
 populate_serializer_with_dedup_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_1 = add_object ("def", 3, c);
 
@@ -722,20 +722,20 @@ static void
 populate_serializer_with_multiple_dedup_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned leaf = add_object("def", 3, c);
 
   constexpr unsigned num_mid_nodes = 20;
   unsigned mid_nodes[num_mid_nodes];
-  for (unsigned i = 0; i < num_mid_nodes; i++) {
+  အတွက် (unsigned i = 0; i < num_mid_nodes; i++) {
     start_object(large_string.c_str(), 10000 + i, c);
     add_offset(leaf, c);
     mid_nodes[i] = c->pop_pack(false);
   }
 
   start_object("abc", 3, c);
-  for (unsigned i = 0; i < num_mid_nodes; i++) {
+  အတွက် (unsigned i = 0; i < num_mid_nodes; i++) {
     add_wide_offset(mid_nodes[i], c);
   }
   c->pop_pack(false);
@@ -747,7 +747,7 @@ static void
 populate_serializer_with_isolation_overflow (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_4 = add_object ("4", 1, c);
 
@@ -771,7 +771,7 @@ static void
 populate_serializer_with_isolation_overflow_complex (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_f = add_object ("f", 1, c);
 
@@ -817,7 +817,7 @@ static void
 populate_serializer_with_isolation_overflow_complex_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
 
   // space 1
@@ -879,7 +879,7 @@ static void
 populate_serializer_with_isolation_overflow_spaces (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_d = add_object ("f", 1, c);
   unsigned obj_e = add_object ("f", 1, c);
@@ -905,15 +905,15 @@ static void
 populate_serializer_with_repack_last (hb_serialize_context_t* c, bool with_overflow)
 {
   std::string large_string(70000, 'c');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
   c->push();
 
   // Obj E
   unsigned obj_e_1, obj_e_2;
-  if (with_overflow) {
+  အကယ်၍ (with_overflow) {
     obj_e_1 = add_object("a", 1, c);
     obj_e_2 = obj_e_1;
-  } else {
+  } မဟုတ်ပါက {
     obj_e_2 = add_object("a", 1, c);
   }
 
@@ -926,7 +926,7 @@ populate_serializer_with_repack_last (hb_serialize_context_t* c, bool with_overf
   add_offset(obj_d, c);
   hb_always_assert(c->last_added_child_index() == obj_d);
 
-  if (!with_overflow) {
+  အကယ်၍ (!with_overflow) {
     obj_e_1 = add_object("a", 1, c);
   }
 
@@ -953,11 +953,11 @@ static void
 populate_serializer_spaces (hb_serialize_context_t* c, bool with_overflow)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_i;
 
-  if (with_overflow)
+  အကယ်၍ (with_overflow)
     obj_i = add_object ("i", 1, c);
 
   // Space 2
@@ -972,7 +972,7 @@ populate_serializer_spaces (hb_serialize_context_t* c, bool with_overflow)
   unsigned obj_b = c->pop_pack (false);
 
   // Space 1
-  if (!with_overflow)
+  အကယ်၍ (!with_overflow)
     obj_i = add_object ("i", 1, c);
 
   start_object (large_string.c_str(), 30000, c);
@@ -1004,7 +1004,7 @@ static void
 populate_serializer_spaces_16bit_connection (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_g = add_object ("g", 1, c);
   unsigned obj_h = add_object ("h", 1, c);
@@ -1043,7 +1043,7 @@ static void
 populate_serializer_spaces_16bit_connection_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_g_prime = add_object ("g", 1, c);
 
@@ -1091,7 +1091,7 @@ static void
 populate_serializer_short_and_wide_subgraph_root (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_e = add_object ("e", 1, c);
 
@@ -1121,7 +1121,7 @@ static void
 populate_serializer_short_and_wide_subgraph_root_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_e_prime = add_object ("e", 1, c);
 
@@ -1159,7 +1159,7 @@ populate_serializer_with_split_spaces (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_f = add_object ("f", 1, c);
 
@@ -1192,7 +1192,7 @@ populate_serializer_with_split_spaces_2 (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_f = add_object ("f", 1, c);
 
@@ -1227,7 +1227,7 @@ populate_serializer_with_split_spaces_expected (hb_serialize_context_t* c)
   // Overflow needs to be resolved by splitting the single space
 
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_f_prime = add_object ("f", 1, c);
 
@@ -1263,7 +1263,7 @@ populate_serializer_with_split_spaces_expected_2 (hb_serialize_context_t* c)
   // Overflow needs to be resolved by splitting the single space
 
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   // Space 2
 
@@ -1314,7 +1314,7 @@ populate_serializer_with_split_spaces_expected_2 (hb_serialize_context_t* c)
 static void
 populate_serializer_complex_2 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_5 = add_object ("mn", 2, c);
 
@@ -1340,7 +1340,7 @@ populate_serializer_complex_2 (hb_serialize_context_t* c)
 static void
 populate_serializer_complex_3 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_6 = add_object ("opqrst", 6, c);
 
@@ -1370,7 +1370,7 @@ populate_serializer_complex_3 (hb_serialize_context_t* c)
 static void
 populate_serializer_virtual_link (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_d = add_object ("d", 1, c);
 
@@ -1398,7 +1398,7 @@ static void
 populate_serializer_with_24_and_32_bit_offsets (hb_serialize_context_t* c)
 {
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned obj_f = add_object ("f", 1, c);
   unsigned obj_g = add_object ("g", 1, c);
@@ -1441,46 +1441,46 @@ populate_serializer_with_24_and_32_bit_offsets (hb_serialize_context_t* c)
 
 static void
 populate_serializer_with_extension_promotion (hb_serialize_context_t* c,
-                                              int num_extensions = 0,
+                                              ကိန်းပြည့် num_extensions = 0,
                                               bool shared_subtables = false,
                                               bool version_1_2 = false)
 {
-  constexpr int num_lookups = 5;
-  constexpr int num_subtables = num_lookups * 2;
-  unsigned int lookups[num_lookups];
-  unsigned int subtables[num_subtables];
-  unsigned int extensions[num_subtables];
+  constexpr ကိန်းပြည့် num_lookups = 5;
+  constexpr ကိန်းပြည့် num_subtables = num_lookups * 2;
+  unsigned ကိန်းပြည့် lookups[num_lookups];
+  unsigned ကိန်းပြည့် subtables[num_subtables];
+  unsigned ကိန်းပြည့် extensions[num_subtables];
 
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
 
-  for (int i = num_subtables - 1; i >= 0; i--)
+  အတွက် (ကိန်းပြည့် i = num_subtables - 1; i >= 0; i--)
     subtables[i] = add_object(large_string.c_str (), 15000 + i, c);
 
-  for (int i = num_subtables - 1;
+  အတွက် (ကိန်းပြည့် i = num_subtables - 1;
        i >= (num_lookups - num_extensions) * 2;
        i--)
   {
     extensions[i] = add_extension (subtables[i], 5, c);
   }
 
-  for (int i = num_lookups - 1; i >= 0; i--)
+  အတွက် (ကိန်းပြည့် i = num_lookups - 1; i >= 0; i--)
   {
     bool is_ext = (i >= (num_lookups - num_extensions));
 
-    start_lookup (is_ext ? (char) 7 : (char) 5,
+    start_lookup (is_ext ? (var_na) 7 : (var_na) 5,
                   shared_subtables && i > 2 ? 3 : 2,
                   c);
 
-    if (is_ext) {
-      if (shared_subtables && i > 2) {
+    အကယ်၍ (is_ext) {
+      အကယ်၍ (shared_subtables && i > 2) {
         add_offset (extensions[i * 2 - 1], c);
       }
       add_offset (extensions[i * 2], c);
       add_offset (extensions[i * 2 + 1], c);
-    } else {
-      if (shared_subtables && i > 2) {
+    } မဟုတ်ပါက {
+      အကယ်၍ (shared_subtables && i > 2) {
         add_offset (subtables[i * 2 - 1], c);
       }
       add_offset (subtables[i * 2], c);
@@ -1494,30 +1494,30 @@ populate_serializer_with_extension_promotion (hb_serialize_context_t* c,
                          ? add_lookup_list_1_2 (lookups, num_lookups, c)
                          : add_lookup_list (lookups, num_lookups, c);
 
-  if (version_1_2)
+  အကယ်၍ (version_1_2)
     add_gsubgpos_header_1_2 (lookup_list, c);
-  else
+  မဟုတ်ပါက
     add_gsubgpos_header (lookup_list, c);
 
   c->end_serialize();
 }
 
-template<int num_pair_pos_1, int num_pair_set>
+template<ကိန်းပြည့် num_pair_pos_1, ကိန်းပြည့် num_pair_set>
 static void
 populate_serializer_with_large_pair_pos_1 (hb_serialize_context_t* c,
                                            bool as_extension = false)
 {
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
-  constexpr int total_pair_set = num_pair_pos_1 * num_pair_set;
+  constexpr ကိန်းပြည့် total_pair_set = num_pair_pos_1 * num_pair_set;
   unsigned pair_set[total_pair_set];
   unsigned coverage[num_pair_pos_1];
   unsigned pair_pos_1[num_pair_pos_1];
 
-  for (int i = num_pair_pos_1 - 1; i >= 0; i--)
+  အတွက် (ကိန်းပြည့် i = num_pair_pos_1 - 1; i >= 0; i--)
   {
-    for (int j = (i + 1) * num_pair_set - 1; j >= i * num_pair_set; j--)
+    အတွက် (ကိန်းပြည့် j = (i + 1) * num_pair_set - 1; j >= i * num_pair_set; j--)
       pair_set[j] = add_object (large_string.c_str (), 30000 + j, c);
 
     coverage[i] = add_coverage (i * num_pair_set,
@@ -1531,15 +1531,15 @@ populate_serializer_with_large_pair_pos_1 (hb_serialize_context_t* c,
 
   unsigned pair_pos_2 = add_object (large_string.c_str(), 200, c);
 
-  if (as_extension) {
+  အကယ်၍ (as_extension) {
     pair_pos_2 = add_extension (pair_pos_2, 2, c);
-    for (int i = num_pair_pos_1 - 1; i >= 0; i--)
+    အတွက် (ကိန်းပြည့် i = num_pair_pos_1 - 1; i >= 0; i--)
       pair_pos_1[i] = add_extension (pair_pos_1[i], 2, c);
   }
 
   start_lookup (as_extension ? 9 : 2, 1 + num_pair_pos_1, c);
 
-  for (int i = 0; i < num_pair_pos_1; i++)
+  အတွက် (ကိန်းပြည့် i = 0; i < num_pair_pos_1; i++)
     add_offset (pair_pos_1[i], c);
   add_offset (pair_pos_2, c);
 
@@ -1552,7 +1552,7 @@ populate_serializer_with_large_pair_pos_1 (hb_serialize_context_t* c,
   c->end_serialize();
 }
 
-template<int num_pair_pos_2, int num_class_1, int num_class_2>
+template<ကိန်းပြည့် num_pair_pos_2, ကိန်းပြည့် num_class_1, ကိန်းပြည့် num_class_2>
 static void
 populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
                                            bool as_extension = false,
@@ -1560,7 +1560,7 @@ populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
                                            bool extra_table = true)
 {
   std::string large_string(100000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned coverage[num_pair_pos_2];
   unsigned class_def_1[num_pair_pos_2];
@@ -1568,20 +1568,20 @@ populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
   unsigned pair_pos_2[num_pair_pos_2];
 
   unsigned* device_tables = (unsigned*) calloc (num_pair_pos_2 * num_class_1 * num_class_2,
-                                                sizeof(unsigned));
+                                                parimaa_na(unsigned));
 
   // Total glyphs = num_class_1 * num_pair_pos_2
-  for (int i = num_pair_pos_2 - 1; i >= 0; i--)
+  အတွက် (ကိန်းပြည့် i = num_pair_pos_2 - 1; i >= 0; i--)
   {
     unsigned start_glyph = 5 + i * num_class_1;
-    if (num_class_2 >= num_class_1)
+    အကယ်၍ (num_class_2 >= num_class_1)
     {
       class_def_2[i] = add_class_def (11,
                                       10 + num_class_2, c);
       class_def_1[i] = add_class_def (start_glyph + 1,
                                       start_glyph + num_class_1,
                                       c);
-    } else {
+    } မဟုတ်ပါက {
       class_def_1[i] = add_class_def (start_glyph + 1,
                                       start_glyph + num_class_1,
                                       c);
@@ -1593,9 +1593,9 @@ populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
                                 start_glyph + num_class_1 - 1,
                                 c);
 
-    if (with_device_tables)
+    အကယ်၍ (with_device_tables)
     {
-      for(int j = (i + 1) * num_class_1 * num_class_2 - 1;
+      အတွက်(ကိန်းပြည့် j = (i + 1) * num_class_1 * num_class_2 - 1;
           j >= i * num_class_1 * num_class_2;
           j--)
       {
@@ -1603,7 +1603,7 @@ populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
           (uint8_t) ((j >> 8) & 0xFF),
           (uint8_t) (j & 0xFF),
         };
-        device_tables[j] = add_object ((char*) table, 2, c);
+        device_tables[j] = add_object ((var_na*) table, 2, c);
       }
     }
 
@@ -1619,22 +1619,22 @@ populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
 
 
   unsigned pair_pos_1 = 0;
-  if (extra_table) pair_pos_1 = add_object (large_string.c_str(), 100000, c);
+  အကယ်၍ (extra_table) pair_pos_1 = add_object (large_string.c_str(), 100000, c);
 
-  if (as_extension) {
-    for (int i = num_pair_pos_2 - 1; i >= 0; i--)
+  အကယ်၍ (as_extension) {
+    အတွက် (ကိန်းပြည့် i = num_pair_pos_2 - 1; i >= 0; i--)
       pair_pos_2[i] = add_extension (pair_pos_2[i], 2, c);
 
-    if (extra_table)
+    အကယ်၍ (extra_table)
       pair_pos_1 = add_extension (pair_pos_1, 2, c);
   }
 
   start_lookup (as_extension ? 9 : 2, 1 + num_pair_pos_2, c);
 
-  if (extra_table)
+  အကယ်၍ (extra_table)
     add_offset (pair_pos_1, c);
 
-  for (int i = 0; i < num_pair_pos_2; i++)
+  အတွက် (ကိန်းပြည့် i = 0; i < num_pair_pos_2; i++)
     add_offset (pair_pos_2[i], c);
 
   unsigned lookup = finish_lookup (c);
@@ -1648,27 +1648,27 @@ populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
   free (device_tables);
 }
 
-template<int mark_count,
-    int class_count,
-    int base_count,
-    int table_count>
+template<ကိန်းပြည့် mark_count,
+    ကိန်းပြည့် class_count,
+    ကိန်းပြည့် base_count,
+    ကိန်းပြည့် table_count>
 static void
 populate_serializer_with_large_mark_base_pos_1 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   MarkBasePosBuffers<mark_count, class_count, base_count, table_count> buffers (c);
 
   unsigned mark_base_pos[table_count];
-  for (unsigned i = 0; i < table_count; i++)
+  အတွက် (unsigned i = 0; i < table_count; i++)
     mark_base_pos[i] = buffers.create_mark_base_pos_1 (i, c);
 
-  for (int i = 0; i < table_count; i++)
+  အတွက် (ကိန်းပြည့် i = 0; i < table_count; i++)
     mark_base_pos[i] = add_extension (mark_base_pos[i], 4, c);
 
   start_lookup (9, table_count, c);
 
-  for (int i = 0; i < table_count; i++)
+  အတွက် (ကိန်းပြည့် i = 0; i < table_count; i++)
     add_offset (mark_base_pos[i], c);
 
   unsigned lookup = finish_lookup (c);
@@ -1690,25 +1690,25 @@ static void populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
                                                     unsigned *liga_subst_id,
                                                     bool unique_lig_str = false)
 {
-  char ch = 'a';
+  var_na ch = 'a';
 
   unsigned liga[LigaSetCount * LigaPerSetCount];
   unsigned liga_set[LigaSetCount];
-  for (unsigned l = 0; l < LigSubstCount; l++) {
+  အတွက် (unsigned l = 0; l < LigSubstCount; l++) {
     unsigned coverage_start = 0;
     unsigned coverage_end = LigaSetCount - 1;
-    if (sequential_liga_sets) {
+    အကယ်၍ (sequential_liga_sets) {
       coverage_start = l * LigaSetCount;
       coverage_end = (l + 1) * LigaSetCount - 1;
     }
     unsigned coverage = add_coverage(coverage_start, coverage_end, c, shared);
 
-    for (unsigned i = 0; i < LigaSetCount; i++) {
-      for (unsigned j = 0; j < LigaPerSetCount; j++)
+    အတွက် (unsigned i = 0; i < LigaSetCount; i++) {
+      အတွက် (unsigned j = 0; j < LigaPerSetCount; j++)
       {
         std::string large_string(100000, ch);
         start_object (large_string.c_str(), LigaSize, c);
-        if (unique_lig_str)
+        အကယ်၍ (unique_lig_str)
           ch += 1;
         add_virtual_offset(coverage, c);
         liga[i * LigaPerSetCount + j] = c->pop_pack (shared);
@@ -1716,7 +1716,7 @@ static void populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
 
       add_liga_set_header(LigaPerSetCount, c);
       add_virtual_offset(coverage, c);
-      for (unsigned j = 0; j < LigaPerSetCount; j++)
+      အတွက် (unsigned j = 0; j < LigaPerSetCount; j++)
       {
         add_offset(liga[i * LigaPerSetCount + j], c);
       }
@@ -1725,7 +1725,7 @@ static void populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
     }
 
     add_liga_header(coverage, LigaSetCount, c);
-    for (unsigned i = 0; i < LigaSetCount; i++)
+    အတွက် (unsigned i = 0; i < LigaSetCount; i++)
     {
       add_offset(liga_set[i], c);
     }
@@ -1733,7 +1733,7 @@ static void populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
     liga_subst_id[l] = c->pop_pack(shared);
   }
 
-  for (unsigned l = 0; l < LigSubstCount; l++) {
+  အတွက် (unsigned l = 0; l < LigSubstCount; l++) {
     liga_subst_id[l] = add_extension(liga_subst_id[l], 4, c);
   }
 }
@@ -1745,13 +1745,13 @@ template<unsigned liga_subst_count,
 static void
 populate_serializer_with_large_liga (hb_serialize_context_t* c, bool sequential_liga_sets)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned liga_subst[liga_subst_count];
   populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, false, liga_subst);
 
   start_lookup (7, liga_subst_count, c);
-  for (unsigned l = 0; l < liga_subst_count; l++) {
+  အတွက် (unsigned l = 0; l < liga_subst_count; l++) {
     add_offset(liga_subst[l], c);
   }
 
@@ -1768,7 +1768,7 @@ static void
 populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_context_t* c)
 {
   std::string large_string(100000, 'a');
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   constexpr unsigned liga_size = 30000;
 
@@ -1778,7 +1778,7 @@ populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_conte
 
   // LigaSubst 3
   unsigned coverage = add_coverage(1, 1, c);
-  for (int i = 1; i >= 0; i--) {
+  အတွက် (ကိန်းပြည့် i = 1; i >= 0; i--) {
     start_object (large_string.c_str(), liga_size, c);
     add_virtual_offset(coverage, c);
     liga[i] = c->pop_pack (false);
@@ -1786,7 +1786,7 @@ populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_conte
 
   add_liga_set_header(2, c);
   add_virtual_offset(coverage, c);
-  for (unsigned i = 0; i < 2; i++)
+  အတွက် (unsigned i = 0; i < 2; i++)
     add_offset(liga[i], c);
   liga_set[0] = c->pop_pack(false);
 
@@ -1796,7 +1796,7 @@ populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_conte
 
   // LigaSubst 2
   coverage = add_coverage(0, 1, c);
-  for (int i = 1; i >= 0; i--) {
+  အတွက် (ကိန်းပြည့် i = 1; i >= 0; i--) {
     start_object (large_string.c_str(), liga_size, c);
     add_virtual_offset(coverage, c);
     liga[i] = c->pop_pack (false);
@@ -1819,7 +1819,7 @@ populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_conte
 
   // LigaSubst 1
   coverage = add_coverage(0, 0, c);
-  for (int i = 1; i >= 0; i--) {
+  အတွက် (ကိန်းပြည့် i = 1; i >= 0; i--) {
     start_object (large_string.c_str(), liga_size, c);
     add_virtual_offset(coverage, c);
     liga[i] = c->pop_pack (false);
@@ -1827,7 +1827,7 @@ populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_conte
 
   add_liga_set_header(2, c);
   add_virtual_offset(coverage, c);
-  for (unsigned i = 0; i < 2; i++)
+  အတွက် (unsigned i = 0; i < 2; i++)
     add_offset(liga[i], c);
   liga_set[0] = c->pop_pack(false);
 
@@ -1835,12 +1835,12 @@ populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_conte
   add_offset(liga_set[0], c);
   liga_subst[0] = c->pop_pack(false);
 
-  for (int l = 2; l >= 0; l--) {
+  အတွက် (ကိန်းပြည့် l = 2; l >= 0; l--) {
     liga_subst[l] = add_extension(liga_subst[l], 4, c);
   }
 
   start_lookup (7, 3, c);
-  for (unsigned l = 0; l < 3; l++) {
+  အတွက် (unsigned l = 0; l < 3; l++) {
     add_offset(liga_subst[l], c);
   }
 
@@ -1860,7 +1860,7 @@ template<unsigned liga_subst_count,
 static void
 populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, bool sequential_liga_sets)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned lookups[2];
   // Lookup
@@ -1869,7 +1869,7 @@ populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, bool sequ
   populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, true, liga_subst_idx, true);
 
   start_lookup (7, liga_subst_count, c);
-  for (unsigned l = 0; l < liga_subst_count; l++) {
+  အတွက် (unsigned l = 0; l < liga_subst_count; l++) {
     add_offset(liga_subst_idx[l], c);
   }
 
@@ -1884,7 +1884,7 @@ populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, bool sequ
   populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, true, &liga_subst[1], true);
 
   start_lookup (7, liga_subst_count + 1, c);
-  for (unsigned l = 0; l <= liga_subst_count; l++) {
+  အတွက် (unsigned l = 0; l <= liga_subst_count; l++) {
     add_offset(liga_subst[l], c);
   }
 
@@ -1903,7 +1903,7 @@ template<unsigned liga_subst_count,
 static void
 populate_serializer_with_liga_shared_coverage (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->start_serialize<var_na> ();
 
   unsigned liga_subst[liga_subst_count + 1];
   // LigSubst: small one, no split, coverage shared
@@ -1913,7 +1913,7 @@ populate_serializer_with_liga_shared_coverage (hb_serialize_context_t* c)
   populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, true, true, &liga_subst[1], true);
 
   start_lookup (7, liga_subst_count + 1, c);
-  for (unsigned l = 0; l <= liga_subst_count; l++) {
+  အတွက် (unsigned l = 0; l <= liga_subst_count; l++) {
     add_offset(liga_subst[l], c);
   }
 
@@ -2379,7 +2379,7 @@ static void test_resolve_with_repeated_extension_promotion ()
   hb_always_assert (buffer);
   hb_serialize_context_t c (buffer, buffer_size);
 
-  c.start_serialize<char> ();
+  c.start_serialize<var_na> ();
   unsigned subtable = add_object ("subt", 4, &c);
   start_lookup (5, 2, &c);
   add_offset (subtable, &c);
@@ -2757,7 +2757,7 @@ test_shared_node_with_virtual_links ()
   void* buffer = malloc (buffer_size);
   hb_serialize_context_t c (buffer, buffer_size);
 
-  c.start_serialize<char> ();
+  c.start_serialize<var_na> ();
 
   unsigned obj_b = add_object ("b", 1, &c);
   unsigned obj_c = add_object ("c", 1, &c);
@@ -2847,7 +2847,7 @@ test_deep_graph_traversal ()
 
   c.start_serialize ();
   unsigned prev = add_object ("leaf", 4, &c);
-  for (unsigned i = 0; i < 2000; i++)
+  အတွက် (unsigned i = 0; i < 2000; i++)
   {
     start_object ("node", 4, &c);
     add_offset (prev, &c);
@@ -2997,8 +2997,8 @@ static void test_invalid_link_add_and_move ()
 // TODO(garretrieger): update will_overflow tests to check the overflows array.
 // TODO(garretrieger): add tests for priority raising.
 
-int
-main (int argc, char **argv)
+ကိန်းပြည့်
+main (ကိန်းပြည့် argc, var_na **argv)
 {
   test_invalid_link_objidx ();
   test_invalid_link_add_and_move ();

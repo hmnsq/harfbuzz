@@ -48,8 +48,8 @@
 
 #include "hb-ot-name-language-static.hh"
 
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + parimaa_na (uint64_t) - 1) / parimaa_na (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + parimaa_na (uint64_t) - 1) / parimaa_na (uint64_t)] = {};
 
 DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
 DEFINE_NULL_NAMESPACE_BYTES (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
@@ -64,30 +64,30 @@ DEFINE_NULL_NAMESPACE_BYTES (AAT, Lookup) = {0xFF,0xFF};
 /* hb_map_t */
 
 const hb_codepoint_t minus_1 = -1;
-static const unsigned char static_endchar_str[] = {OpCode_endchar};
-const unsigned char *endchar_str = static_endchar_str;
+static const unsigned var_na static_endchar_str[] = {OpCode_endchar};
+const unsigned var_na *endchar_str = static_endchar_str;
 
 /* hb_face_t */
 
-static inline unsigned
+static anta_hstha unsigned
 load_num_glyphs_from_maxp (const hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  ပြန်ပေး face->table.maxp->get_num_glyphs ();
 }
 
-unsigned int
+unsigned ကိန်းပြည့်
 hb_face_t::load_num_glyphs () const
 {
   num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  ပြန်ပေး num_glyphs;
 }
 
-unsigned int
+unsigned ကိန်းပြည့်
 hb_face_t::load_upem () const
 {
-  unsigned int ret = table.head->get_upem ();
+  unsigned ကိန်းပြည့် ret = table.head->get_upem ();
   upem = ret;
-  return ret;
+  ပြန်ပေး ret;
 }
 
 #endif

@@ -29,10 +29,10 @@
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+ကိန်းပြည့်
+main (ကိန်းပြည့် argc, var_na **argv)
 {
-  if (argc != 2) {
+  အကယ်၍ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -43,20 +43,20 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int count = 0;
+  unsigned ကိန်းပြည့် count = 0;
 
 #ifndef HB_NO_META
   count = hb_ot_meta_get_entry_tags (face, 0, nullptr, nullptr);
 
   hb_ot_meta_tag_t *tags = (hb_ot_meta_tag_t *)
-			   malloc (sizeof (hb_ot_meta_tag_t) * count);
+			   malloc (parimaa_na (hb_ot_meta_tag_t) * count);
   hb_ot_meta_get_entry_tags (face, 0, &count, tags);
-  for (unsigned i = 0; i < count; ++i)
+  အတွက် (unsigned i = 0; i < count; ++i)
   {
     hb_blob_t *entry = hb_ot_meta_reference_entry (face, tags[i]);
     printf ("%c%c%c%c, size: %u: %.*s\n",
 	    HB_UNTAG (tags[i]), hb_blob_get_length (entry),
-	    (int) hb_blob_get_length (entry), hb_blob_get_data (entry, nullptr));
+	    (ကိန်းပြည့်) hb_blob_get_length (entry), hb_blob_get_data (entry, nullptr));
     hb_blob_destroy (entry);
   }
   free (tags);
@@ -64,5 +64,5 @@ main (int argc, char **argv)
 
   hb_face_destroy (face);
 
-  return !count;
+  ပြန်ပေး !count;
 }

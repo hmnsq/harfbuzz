@@ -30,7 +30,7 @@
 #include "hb-geometry.hh"
 #include "hb-machinery.hh"
 
-#if defined(__aarch64__) || defined(_M_ARM64)
+#အကယ်၍ defined(__aarch64__) || defined(_M_ARM64)
 #include <arm_neon.h>
 #define HB_RASTER_NEON 1
 #elif defined(__SSE2__) || defined(_M_X64) || defined(_M_AMD64)
@@ -51,7 +51,7 @@
 
 
 /* Normalized edge: yH > yL always */
-struct hb_raster_edge_t
+sa_nracanaa hb_raster_edge_t
 {
   int32_t xL, yL;   /* lower endpoint (fixed-point) */
   int32_t xH, yH;   /* upper endpoint (fixed-point) */
@@ -60,7 +60,7 @@ struct hb_raster_edge_t
 };
 
 /* hb_raster_draw_t — outline rasterizer */
-struct hb_raster_draw_t
+sa_nracanaa hb_raster_draw_t
 {
   hb_object_header_t header;
 
@@ -97,7 +97,7 @@ struct hb_raster_draw_t
   }
 
   int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  { ပြန်ပေး &budget_remaining; }
 
   /* Accumulated geometry */
   int64_t edges_left = HB_RASTER_MAX_DRAW_EDGES;
@@ -146,7 +146,7 @@ hb_raster_draw_t *
 hb_raster_draw_create_or_fail (void)
 {
   hb_raster_draw_t *draw = hb_object_create<hb_raster_draw_t> ();
-  return draw;
+  ပြန်ပေး draw;
 }
 
 /**
@@ -166,7 +166,7 @@ hb_raster_draw_create_or_fail (void)
 hb_raster_draw_t *
 hb_raster_draw_reference (hb_raster_draw_t *draw)
 {
-  return hb_object_reference (draw);
+  ပြန်ပေး hb_object_reference (draw);
 }
 
 /**
@@ -181,8 +181,8 @@ hb_raster_draw_reference (hb_raster_draw_t *draw)
 void
 hb_raster_draw_destroy (hb_raster_draw_t *draw)
 {
-  if (!hb_object_should_destroy (draw))
-    return;
+  အကယ်၍ (!hb_object_should_destroy (draw))
+    ပြန်ပေး;
 
   hb_raster_image_destroy (draw->recycled_image);
   hb_object_actually_destroy (draw);
@@ -210,7 +210,7 @@ hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (draw, key, data, destroy, replace);
+  ပြန်ပေး hb_object_set_user_data (draw, key, data, destroy, replace);
 }
 
 /**
@@ -230,7 +230,7 @@ void *
 hb_raster_draw_get_user_data (const hb_raster_draw_t   *draw,
 			      hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (draw, key);
+  ပြန်ပေး hb_object_get_user_data (draw, key);
 }
 
 /**
@@ -292,8 +292,8 @@ hb_raster_draw_get_scale_factor (const hb_raster_draw_t *draw,
 				 float *x_scale_factor,
 				 float *y_scale_factor)
 {
-  if (x_scale_factor) *x_scale_factor = draw->x_scale_factor;
-  if (y_scale_factor) *y_scale_factor = draw->y_scale_factor;
+  အကယ်၍ (x_scale_factor) *x_scale_factor = draw->x_scale_factor;
+  အကယ်၍ (y_scale_factor) *y_scale_factor = draw->y_scale_factor;
 }
 
 /**
@@ -316,12 +316,12 @@ hb_raster_draw_get_transform (const hb_raster_draw_t *draw,
 			      float *xy, float *yy,
 			      float *dx, float *dy)
 {
-  if (xx) *xx = draw->transform.xx;
-  if (yx) *yx = draw->transform.yx;
-  if (xy) *xy = draw->transform.xy;
-  if (yy) *yy = draw->transform.yy;
-  if (dx) *dx = draw->transform.x0;
-  if (dy) *dy = draw->transform.y0;
+  အကယ်၍ (xx) *xx = draw->transform.xx;
+  အကယ်၍ (yx) *yx = draw->transform.yx;
+  အကယ်၍ (xy) *xy = draw->transform.xy;
+  အကယ်၍ (yy) *yy = draw->transform.yy;
+  အကယ်၍ (dx) *dx = draw->transform.x0;
+  အကယ်၍ (dy) *dy = draw->transform.y0;
 }
 
 /* Recompute the resolved flattening clip box: the internal clip box
@@ -336,7 +336,7 @@ hb_raster_draw_get_transform (const hb_raster_draw_t *draw,
 static void
 hb_raster_draw_update_flatten_clip (hb_raster_draw_t *draw)
 {
-  if (draw->has_clip_box)
+  အကယ်၍ (draw->has_clip_box)
   {
     draw->flatten_clip_active = true;
     draw->flatten_clip_x0 = draw->clip_x0 - 1.f;
@@ -344,7 +344,7 @@ hb_raster_draw_update_flatten_clip (hb_raster_draw_t *draw)
     draw->flatten_clip_x1 = draw->clip_x1 + 1.f;
     draw->flatten_clip_y1 = draw->clip_y1 + 1.f;
   }
-  else if (draw->has_extents)
+  မဟုတ်ပါက အကယ်၍ (draw->has_extents)
   {
     draw->flatten_clip_active = true;
     draw->flatten_clip_x0 = (float) draw->fixed_extents.x_origin - 1.f;
@@ -352,7 +352,7 @@ hb_raster_draw_update_flatten_clip (hb_raster_draw_t *draw)
     draw->flatten_clip_x1 = (float) draw->fixed_extents.x_origin + (float) draw->fixed_extents.width + 1.f;
     draw->flatten_clip_y1 = (float) draw->fixed_extents.y_origin + (float) draw->fixed_extents.height + 1.f;
   }
-  else
+  မဟုတ်ပါက
     draw->flatten_clip_active = false;
 }
 
@@ -391,12 +391,12 @@ hb_bool_t
 hb_raster_draw_get_extents (const hb_raster_draw_t    *draw,
 			    hb_raster_extents_t *extents)
 {
-  if (!draw->has_extents)
-    return false;
+  အကယ်၍ (!draw->has_extents)
+    ပြန်ပေး false;
 
-  if (extents)
+  အကယ်၍ (extents)
     *extents = draw->fixed_extents;
-  return true;
+  ပြန်ပေး true;
 }
 
 /**
@@ -439,7 +439,7 @@ hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
   float tx_min = tx, tx_max = tx;
   float ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  အတွက် (unsigned i = 1; i < 4; i++)
   {
     hb_raster_draw_transform_point (draw, px[i], py[i], tx, ty);
     tx_min = hb_min (tx_min, tx);
@@ -453,12 +453,12 @@ hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
   int32_t ex1 = hb_clamp_to<int32_t> (ceilf  (tx_max));
   int32_t ey1 = hb_clamp_to<int32_t> (ceilf  (ty_max));
 
-  if (ex1 <= ex0 || ey1 <= ey0)
+  အကယ်၍ (ex1 <= ex0 || ey1 <= ey0)
   {
     draw->fixed_extents = {};
     draw->has_extents = false;
     hb_raster_draw_update_flatten_clip (draw);
-    return false;
+    ပြန်ပေး false;
   }
 
   draw->fixed_extents = {
@@ -469,7 +469,7 @@ hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
   };
   draw->has_extents = true;
   hb_raster_draw_update_flatten_clip (draw);
-  return true;
+  ပြန်ပေး true;
 }
 
 /**
@@ -531,20 +531,20 @@ hb_raster_draw_set_clip_box (hb_raster_draw_t *draw,
 
 int64_t
 hb_raster_draw_get_pixel_work (const hb_raster_draw_t *draw,
-			       unsigned int max_rows,
-			       unsigned int max_cols)
+			       unsigned ကိန်းပြည့် max_rows,
+			       unsigned ကိန်းပြည့် max_cols)
 {
   int64_t work = 0;
-  for (const auto &edge : draw->edges)
+  အတွက် (const auto &edge : draw->edges)
   {
     int64_t dx = (int64_t) edge.xH - edge.xL;
-    if (dx < 0) dx = -dx;
+    အကယ်၍ (dx < 0) dx = -dx;
     work += 1 + hb_min (((int64_t) edge.yH - edge.yL) >> HB_RASTER_PIXEL_BITS,
 			(int64_t) max_rows)
 	      + hb_min (dx >> HB_RASTER_PIXEL_BITS,
 			(int64_t) max_cols);
   }
-  return work;
+  ပြန်ပေး work;
 }
 
 /**
@@ -574,7 +574,7 @@ hb_raster_draw_recycle_image (hb_raster_draw_t  *draw,
  * Draw callbacks — flatten on the fly into hb_raster_edge_t
  */
 
-static inline void
+static anta_hstha void
 transform_point (const hb_raster_draw_t *draw,
 		 float  x,  float  y,
 		 float &tx, float &ty)
@@ -587,44 +587,44 @@ emit_segment (hb_raster_draw_t *draw,
 	      float x0, float y0,
 	      float x1, float y1)
 {
-  if (unlikely (draw->edges_left <= 0))
-    return;
+  အကယ်၍ (unlikely (draw->edges_left <= 0))
+    ပြန်ပေး;
 
   int32_t X0 = hb_clamp_to<int32_t> (roundf (x0 * HB_RASTER_ONE_PIXEL));
   int32_t Y0 = hb_clamp_to<int32_t> (roundf (y0 * HB_RASTER_ONE_PIXEL));
   int32_t X1 = hb_clamp_to<int32_t> (roundf (x1 * HB_RASTER_ONE_PIXEL));
   int32_t Y1 = hb_clamp_to<int32_t> (roundf (y1 * HB_RASTER_ONE_PIXEL));
 
-  if (Y0 == Y1) return; /* horizontal — skip */
+  အကယ်၍ (Y0 == Y1) ပြန်ပေး; /* horizontal — skip */
 
   hb_raster_edge_t e;
-  if (Y0 < Y1) {
+  အကယ်၍ (Y0 < Y1) {
     e.xL = X0; e.yL = Y0; e.xH = X1; e.yH = Y1; e.wind = +1;
-  } else {
+  } မဟုတ်ပါက {
     e.xL = X1; e.yL = Y1; e.xH = X0; e.yH = Y0; e.wind = -1;
   }
   e.slope = (((int64_t) e.xH - (int64_t) e.xL) * (int64_t) 65536) /
 	    ((int64_t) e.yH - (int64_t) e.yL);
 
-  if (likely (draw->edges.push_or_fail (e)))
+  အကယ်၍ (likely (draw->edges.push_or_fail (e)))
     draw->edges_left--;
-  else
+  မဟုတ်ပါက
     draw->edges_left = 0;
 }
 
 
 /* Quadratic Bézier flattener — iterative de Casteljau at t=0.5. */
-static inline void
+static anta_hstha void
 flatten_quadratic_recursive (hb_raster_draw_t *draw,
 			     float x0, float y0,
 			     float x1, float y1,
 			     float x2, float y2,
-			     int depth = 0)
+			     ကိန်းပြည့် depth = 0)
 {
-  struct quad_node_t
+  sa_nracanaa quad_node_t
   {
     float x0, y0, x1, y1, x2, y2;
-    int depth;
+    ကိန်းပြည့် depth;
     bool check_clip;
   };
 
@@ -635,7 +635,7 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
   int64_t *work = draw->get_budget_remaining ();
   int64_t work_left = *work;
 
-  while (true)
+  နေစဉ် (true)
   {
     bool emit_chord = depth >= 16;
 
@@ -643,24 +643,24 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
        Subdivided control points are convex combinations of their
        parent's, so once a node is entirely inside the box no
        descendant can leave it and the test is skipped below. */
-    if (!emit_chord && check_clip)
+    အကယ်၍ (!emit_chord && check_clip)
     {
       float bx0 = hb_min (x0, hb_min (x1, x2));
       float bx1 = hb_max (x0, hb_max (x1, x2));
       float by0 = hb_min (y0, hb_min (y1, y2));
       float by1 = hb_max (y0, hb_max (y1, y2));
-      if (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
+      အကယ်၍ (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
 	  by1 < draw->flatten_clip_y0 || by0 > draw->flatten_clip_y1)
 	emit_chord = true;
-      else if (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
+      မဟုတ်ပါက အကယ်၍ (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
 	       by0 >= draw->flatten_clip_y0 && by1 <= draw->flatten_clip_y1)
 	check_clip = false;
     }
 
-    if (!emit_chord)
+    အကယ်၍ (!emit_chord)
     {
       bool is_flat;
-      if (false)
+      အကယ်၍ (false)
       {
 	/* Old behavior: midpoint deviation from chord midpoint. */
 	float mx = x0 * 0.25f + x1 * 0.5f + x2 * 0.25f;
@@ -672,14 +672,14 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
 	static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 	is_flat = (dx * dx + dy * dy) <= flat_thresh;
       }
-      else
+      မဟုတ်ပါက
       {
 	/* FreeType behavior: control-point deviation from chord center. */
 	const float flat_thresh = 0.25f;
 	float dx = x0 + x2 - 2.f * x1;
 	float dy = y0 + y2 - 2.f * y1;
-	if (dx < 0) dx = -dx;
-	if (dy < 0) dy = -dy;
+	အကယ်၍ (dx < 0) dx = -dx;
+	အကယ်၍ (dy < 0) dy = -dy;
 	is_flat = dx <= flat_thresh && dy <= flat_thresh;
       }
       emit_chord = is_flat;
@@ -687,21 +687,21 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
 
     /* Charge one unit per subdivision; degrade to the chord when the
        session work budget is spent. */
-    if (!emit_chord)
+    အကယ်၍ (!emit_chord)
     {
-      if (unlikely (work_left <= 0))
+      အကယ်၍ (unlikely (work_left <= 0))
 	emit_chord = true;
-      else
+      မဟုတ်ပါက
 	work_left--;
     }
 
-    if (emit_chord)
+    အကယ်၍ (emit_chord)
     {
       emit_segment (draw, x0, y0, x2, y2);
-      if (!top)
+      အကယ်၍ (!top)
       {
 	*work = work_left;
-	return;
+	ပြန်ပေး;
       }
       const quad_node_t &n = stack[--top];
       x0 = n.x0; y0 = n.y0;
@@ -728,7 +728,7 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
    The error (midpoint deviation) shrinks exactly 4× per de Casteljau
    subdivision, so we compute the subdivision count upfront and iterate
    with constant-cost additions instead of recursive branching. */
-static inline void
+static anta_hstha void
 flatten_quadratic_fd (hb_raster_draw_t *draw,
 		      float x0, float y0,
 		      float x1, float y1,
@@ -741,10 +741,10 @@ flatten_quadratic_fd (hb_raster_draw_t *draw,
 
   static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 
-  if (err2 <= flat_thresh)
+  အကယ်၍ (err2 <= flat_thresh)
   {
     emit_segment (draw, x0, y0, x2, y2);
-    return;
+    ပြန်ပေး;
   }
 
   /* err² shrinks 16× per subdivision level.  Find n such that
@@ -752,8 +752,8 @@ flatten_quadratic_fd (hb_raster_draw_t *draw,
   unsigned n = 1;
   {
     float ratio = err2 / flat_thresh;
-    while (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
-    if (n > 16) n = 16;
+    နေစဉ် (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
+    အကယ်၍ (n > 16) n = 16;
   }
   unsigned N = 1u << n;   /* number of line segments */
   float h = 1.f / N;
@@ -775,7 +775,7 @@ flatten_quadratic_fd (hb_raster_draw_t *draw,
   float fx   = x0;
   float fy   = y0;
 
-  for (unsigned i = 1; i < N; i++)
+  အတွက် (unsigned i = 1; i < N; i++)
   {
     float nx = fx + dfx;
     float ny = fy + dfy;
@@ -795,9 +795,9 @@ flatten_quadratic (hb_raster_draw_t *draw,
 		   float x1, float y1,
 		   float x2, float y2)
 {
-  if (false)
+  အကယ်၍ (false)
     flatten_quadratic_fd (draw, x0, y0, x1, y1, x2, y2);
-  else
+  မဟုတ်ပါက
     flatten_quadratic_recursive (draw, x0, y0, x1, y1, x2, y2);
 }
 
@@ -805,7 +805,7 @@ flatten_quadratic (hb_raster_draw_t *draw,
      max||B(t)-L(t)|| <= max_t ||B''(t)|| / 8.
    B''(t) is linear, so max norm is attained at t=0 or t=1:
      B''(0)=6*(P0-2P1+P2), B''(1)=6*(P1-2P2+P3). */
-static inline float
+static anta_hstha float
 cubic_chord_error_bound2 (float x0, float y0,
 			  float x1, float y1,
 			  float x2, float y2,
@@ -819,22 +819,22 @@ cubic_chord_error_bound2 (float x0, float y0,
   float m1 = d21x * d21x + d21y * d21y;
   float m = m0 > m1 ? m0 : m1;
   /* (max||B''||/8)^2 = (6/8)^2 * max||d2||^2 = (3/4)^2 * m. */
-  return m * (9.f / 16.f);
+  ပြန်ပေး m * (9.f / 16.f);
 }
 
 /* Cubic Bézier flattener — iterative de Casteljau at t=0.5. */
-static inline void
+static anta_hstha void
 flatten_cubic_recursive (hb_raster_draw_t *draw,
 			 float x0, float y0,
 			 float x1, float y1,
 			 float x2, float y2,
 			 float x3, float y3,
-			 int depth = 0)
+			 ကိန်းပြည့် depth = 0)
 {
-  struct cubic_node_t
+  sa_nracanaa cubic_node_t
   {
     float x0, y0, x1, y1, x2, y2, x3, y3;
-    int depth;
+    ကိန်းပြည့် depth;
     bool check_clip;
   };
 
@@ -845,7 +845,7 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
   int64_t *work = draw->get_budget_remaining ();
   int64_t work_left = *work;
 
-  while (true)
+  နေစဉ် (true)
   {
     bool emit_chord = depth >= 16;
 
@@ -853,31 +853,31 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
        Subdivided control points are convex combinations of their
        parent's, so once a node is entirely inside the box no
        descendant can leave it and the test is skipped below. */
-    if (!emit_chord && check_clip)
+    အကယ်၍ (!emit_chord && check_clip)
     {
       float bx0 = hb_min (hb_min (x0, x1), hb_min (x2, x3));
       float bx1 = hb_max (hb_max (x0, x1), hb_max (x2, x3));
       float by0 = hb_min (hb_min (y0, y1), hb_min (y2, y3));
       float by1 = hb_max (hb_max (y0, y1), hb_max (y2, y3));
-      if (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
+      အကယ်၍ (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
 	  by1 < draw->flatten_clip_y0 || by0 > draw->flatten_clip_y1)
 	emit_chord = true;
-      else if (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
+      မဟုတ်ပါက အကယ်၍ (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
 	       by0 >= draw->flatten_clip_y0 && by1 <= draw->flatten_clip_y1)
 	check_clip = false;
     }
 
-    if (!emit_chord)
+    အကယ်၍ (!emit_chord)
     {
       bool is_flat;
-      if (false)
+      အကယ်၍ (false)
       {
 	/* Old behavior: curvature/chord-error bound. */
 	float err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
 	static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 	is_flat = err2 <= flat_thresh;
       }
-      else
+      မဟုတ်ပါက
       {
 	/* FreeType behavior: chord-trisection distance test. */
 	const float flat_thresh = 0.5f;
@@ -887,10 +887,10 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
 	float d20x = x0 - 3.f * x2 + 2.f * x3;
 	float d20y = y0 - 3.f * y2 + 2.f * y3;
 
-	if (d10x < 0) d10x = -d10x;
-	if (d10y < 0) d10y = -d10y;
-	if (d20x < 0) d20x = -d20x;
-	if (d20y < 0) d20y = -d20y;
+	အကယ်၍ (d10x < 0) d10x = -d10x;
+	အကယ်၍ (d10y < 0) d10y = -d10y;
+	အကယ်၍ (d20x < 0) d20x = -d20x;
+	အကယ်၍ (d20y < 0) d20y = -d20y;
 
 	is_flat = d10x <= flat_thresh &&
 		  d10y <= flat_thresh &&
@@ -902,21 +902,21 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
 
     /* Charge one unit per subdivision; degrade to the chord when the
        session work budget is spent. */
-    if (!emit_chord)
+    အကယ်၍ (!emit_chord)
     {
-      if (unlikely (work_left <= 0))
+      အကယ်၍ (unlikely (work_left <= 0))
 	emit_chord = true;
-      else
+      မဟုတ်ပါက
 	work_left--;
     }
 
-    if (emit_chord)
+    အကယ်၍ (emit_chord)
     {
       emit_segment (draw, x0, y0, x3, y3);
-      if (!top)
+      အကယ်၍ (!top)
       {
 	*work = work_left;
-	return;
+	ပြန်ပေး;
       }
       const cubic_node_t &n = stack[--top];
       x0 = n.x0; y0 = n.y0;
@@ -948,7 +948,7 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
    Use a curvature-based chord-error bound (max||B''||/8), then choose a
    uniform subdivision count n such that the bound drops below threshold.
    The cubic adds a constant third difference d³f = 6·a·h³. */
-static inline void
+static anta_hstha void
 flatten_cubic_fd (hb_raster_draw_t *draw,
 		  float x0, float y0,
 		  float x1, float y1,
@@ -959,18 +959,18 @@ flatten_cubic_fd (hb_raster_draw_t *draw,
 
   static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 
-  if (err2 <= flat_thresh)
+  အကယ်၍ (err2 <= flat_thresh)
   {
     emit_segment (draw, x0, y0, x3, y3);
-    return;
+    ပြန်ပေး;
   }
 
   /* The bound scales with h², so err² shrinks 16× per subdivision level. */
   unsigned n = 1;
   {
     float ratio = err2 / flat_thresh;
-    while (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
-    if (n > 16) n = 16;
+    နေစဉ် (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
+    အကယ်၍ (n > 16) n = 16;
   }
   unsigned N = 1u << n;
   float h = 1.f / N;
@@ -1002,7 +1002,7 @@ flatten_cubic_fd (hb_raster_draw_t *draw,
   float fx   = x0;
   float fy   = y0;
 
-  for (unsigned i = 1; i < N; i++)
+  အတွက် (unsigned i = 1; i < N; i++)
   {
     float nx = fx + dfx;
     float ny = fy + dfy;
@@ -1022,9 +1022,9 @@ flatten_cubic (hb_raster_draw_t *draw,
 	       float x2, float y2,
 	       float x3, float y3)
 {
-  if (false)
+  အကယ်၍ (false)
     flatten_cubic_fd (draw, x0, y0, x1, y1, x2, y2, x3, y3);
-  else
+  မဟုတ်ပါက
     flatten_cubic_recursive (draw, x0, y0, x1, y1, x2, y2, x3, y3);
 }
 
@@ -1049,7 +1049,7 @@ hb_raster_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		   void *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  အကယ်၍ (unlikely (draw->edges_left <= 0)) ပြန်ပေး;
 
   float tx0, ty0, tx1, ty1;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
@@ -1066,7 +1066,7 @@ hb_raster_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 			void *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  အကယ်၍ (unlikely (draw->edges_left <= 0)) ပြန်ပေး;
 
   float tx0, ty0, tx1, ty1, tx2, ty2;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
@@ -1085,7 +1085,7 @@ hb_raster_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		    void *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  အကယ်၍ (unlikely (draw->edges_left <= 0)) ပြန်ပေး;
 
   float tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
@@ -1111,27 +1111,27 @@ hb_raster_draw_set_budget (hb_draw_funcs_t *, void *draw_data,
   auto *draw = (hb_raster_draw_t *) draw_data;
   draw->budget = budget;
   draw->recharge_budget ();
-  return true;
+  ပြန်ပေး true;
 }
 
 static int64_t
 hb_raster_draw_get_budget (hb_draw_funcs_t *, void *draw_data, void *)
 {
-  return ((hb_raster_draw_t *) draw_data)->budget;
+  ပြန်ပေး ((hb_raster_draw_t *) draw_data)->budget;
 }
 
 static int64_t *
 hb_raster_draw_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
 {
-  return ((hb_raster_draw_t *) draw_data)->get_budget_remaining ();
+  ပြန်ပေး ((hb_raster_draw_t *) draw_data)->get_budget_remaining ();
 }
 
 
 /* Lazy-loader singleton for draw funcs */
 
-static inline void free_static_raster_draw_funcs ();
+static anta_hstha void free_static_raster_draw_funcs ();
 
-static struct hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_raster_draw_funcs_lazy_loader_t>
+static sa_nracanaa hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_raster_draw_funcs_lazy_loader_t>
 {
   static hb_draw_funcs_t *create ()
   {
@@ -1150,11 +1150,11 @@ static struct hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<h
 
     hb_atexit (free_static_raster_draw_funcs);
 
-    return funcs;
+    ပြန်ပေး funcs;
   }
 } static_raster_draw_funcs;
 
-static inline void
+static anta_hstha void
 free_static_raster_draw_funcs ()
 {
   static_raster_draw_funcs.free_instance ();
@@ -1176,7 +1176,7 @@ free_static_raster_draw_funcs ()
 hb_draw_funcs_t *
 hb_raster_draw_get_funcs (const hb_raster_draw_t *draw HB_UNUSED)
 {
-  return static_raster_draw_funcs.get_unconst ();
+  ပြန်ပေး static_raster_draw_funcs.get_unconst ();
 }
 
 /**
@@ -1202,7 +1202,7 @@ hb_raster_draw_glyph_or_fail (hb_raster_draw_t *draw,
 			      hb_font_t       *font,
 			      hb_codepoint_t   glyph)
 {
-  return hb_font_draw_glyph_or_fail (font, glyph,
+  ပြန်ပေး hb_font_draw_glyph_or_fail (font, glyph,
 				     hb_raster_draw_get_funcs (draw), draw);
 }
 
@@ -1253,13 +1253,13 @@ static constexpr unsigned HB_RASTER_NARROW_MAX_ACTIVE_EDGES =
 /* Add one edge piece's area/cover into a single cell. */
 template <typename Area, typename Cover>
 static HB_ALWAYS_INLINE void
-cell_add (Area *area, Cover *cover, unsigned width, int col,
+cell_add (Area *area, Cover *cover, unsigned width, ကိန်းပြည့် col,
 	  int32_t fx0, int32_t fy0, int32_t fx1, int32_t fy1, int32_t wind,
 	  unsigned &x_min, unsigned &x_max)
 {
-  if (unlikely ((unsigned) col >= width))
+  အကယ်၍ (unlikely ((unsigned) col >= width))
   {
-    if (unlikely (col < 0))
+    အကယ်၍ (unlikely (col < 0))
     {
       /* Edge is to the left of the surface.  The winding contribution
        * still carries into the visible region, so add the cover delta
@@ -1270,7 +1270,7 @@ cell_add (Area *area, Cover *cover, unsigned width, int col,
       x_min = hb_min (x_min, 0u);
       x_max = hb_max (x_max, 0u);
     }
-    return;
+    ပြန်ပေး;
   }
   int32_t dy = fy1 - fy0;
   area[col]  += (Area) (fx0 + fx1) * dy * wind;
@@ -1286,7 +1286,7 @@ static HB_ALWAYS_INLINE void
 edge_sweep_row (Area                   *area,
 		Cover                  *cover,
 		unsigned                width,
-		int                     x_org,
+		ကိန်းပြည့်                     x_org,
 		int32_t                 y_top,
 		const hb_raster_edge_t &edge,
 		unsigned               &x_min,
@@ -1299,7 +1299,7 @@ edge_sweep_row (Area                   *area,
 
   int32_t ey0 = hb_max (edge.yL, y_top);
   int32_t ey1 = hb_min (edge.yH, y_bot);
-  if (ey0 >= ey1) return;
+  အကယ်၍ (ey0 >= ey1) ပြန်ပေး;
 
   /* X at clipped endpoints (fixed-point). Keep the interpolation in 64-bit
    * so extreme y values do not overflow before the slope multiply. */
@@ -1321,10 +1321,10 @@ edge_sweep_row (Area                   *area,
   int32_t wind = edge.wind;
 
   /* Fast path: both endpoints in the same pixel column. */
-  if (cx0 == cx1)
+  အကယ်၍ (cx0 == cx1)
   {
     cell_add (area, cover, width, cx0 - x_org, fx0, fy0, fx1, fy1, wind, x_min, x_max);
-    return;
+    ပြန်ပေး;
   }
 
   int64_t total_dx = (int64_t) x1 - (int64_t) x0;
@@ -1333,10 +1333,10 @@ edge_sweep_row (Area                   *area,
   /* fy increment per pixel column (constant since x_b advances by ONE_PIXEL). */
   int32_t delta_fy = (int32_t) ((int64_t) HB_RASTER_ONE_PIXEL * total_dy / total_dx);
 
-  if (total_dx > 0)
+  အကယ်၍ (total_dx > 0)
   {
     /* Left-to-right edge. */
-    if (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
+    အကယ်၍ (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
     {
       /* Entirely inside the surface: unclipped walk. */
       int32_t x_b = (int32_t) hb_clamp (((int64_t) cx0 + 1) * HB_RASTER_ONE_PIXEL,
@@ -1345,7 +1345,7 @@ edge_sweep_row (Area                   *area,
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
 
       int32_t fy_prev = fy_b;
-      for (int32_t cx = cx0 + 1; cx < cx1; cx++)
+      အတွက် (int32_t cx = cx0 + 1; cx < cx1; cx++)
       {
 	fy_b = fy_prev + delta_fy;
 	cell_add (area, cover, width, cx - x_org, 0, fy_prev, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
@@ -1353,7 +1353,7 @@ edge_sweep_row (Area                   *area,
       }
 
       cell_add (area, cover, width, cx1 - x_org, 0, fy_prev, fx1, fy1, wind, x_min, x_max);
-      return;
+      ပြန်ပေး;
     }
 
     /* Visible column window.  Columns left of it only contribute their
@@ -1365,14 +1365,14 @@ edge_sweep_row (Area                   *area,
     int64_t col_min = (int64_t) x_org;
     int64_t col_max = (int64_t) x_org + (int64_t) width - 1;
 
-    if (unlikely (cx1 < col_min))
+    အကယ်၍ (unlikely (cx1 < col_min))
     {
       /* Entirely left of the surface. */
       cell_add (area, cover, width, -1, 0, fy0, 0, fy1, wind, x_min, x_max);
-      return;
+      ပြန်ပေး;
     }
-    if (unlikely (cx0 > col_max))
-      return; /* Entirely right of the surface. */
+    အကယ်၍ (unlikely (cx0 > col_max))
+      ပြန်ပေး; /* Entirely right of the surface. */
 
     int32_t x_b = (int32_t) hb_clamp (((int64_t) cx0 + 1) * HB_RASTER_ONE_PIXEL,
 				      (int64_t) INT32_MIN, (int64_t) INT32_MAX);
@@ -1380,9 +1380,9 @@ edge_sweep_row (Area                   *area,
 
     int32_t cx = cx0 + 1;
     int32_t fy_prev = fy_b;
-    if (likely (cx0 >= col_min))
+    အကယ်၍ (likely (cx0 >= col_min))
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
-    else
+    မဟုတ်ပါက
     {
       /* Fold the first cell and the mid columns left of the surface
        * into one column-0 cover update. */
@@ -1393,20 +1393,20 @@ edge_sweep_row (Area                   *area,
     }
 
     int32_t cx_end = (int32_t) hb_min ((int64_t) cx1, col_max + 1);
-    for (; cx < cx_end; cx++)
+    အတွက် (; cx < cx_end; cx++)
     {
       fy_b = fy_prev + delta_fy;
       cell_add (area, cover, width, cx - x_org, 0, fy_prev, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
       fy_prev = fy_b;
     }
 
-    if (likely (cx1 <= col_max))
+    အကယ်၍ (likely (cx1 <= col_max))
       cell_add (area, cover, width, cx1 - x_org, 0, fy_prev, fx1, fy1, wind, x_min, x_max);
   }
-  else
+  မဟုတ်ပါက
   {
     /* Right-to-left edge. */
-    if (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
+    အကယ်၍ (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
     {
       /* Entirely inside the surface: unclipped walk. */
       int32_t x_b = (int32_t) hb_clamp ((int64_t) cx0 * HB_RASTER_ONE_PIXEL,
@@ -1415,7 +1415,7 @@ edge_sweep_row (Area                   *area,
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, 0, fy_b, wind, x_min, x_max);
 
       int32_t fy_prev = fy_b;
-      for (int32_t cx = cx0 - 1; cx > cx1; cx--)
+      အတွက် (int32_t cx = cx0 - 1; cx > cx1; cx--)
       {
 	fy_b = fy_prev - delta_fy;
 	cell_add (area, cover, width, cx - x_org, HB_RASTER_ONE_PIXEL, fy_prev, 0, fy_b, wind, x_min, x_max);
@@ -1423,20 +1423,20 @@ edge_sweep_row (Area                   *area,
       }
 
       cell_add (area, cover, width, cx1 - x_org, HB_RASTER_ONE_PIXEL, fy_prev, fx1, fy1, wind, x_min, x_max);
-      return;
+      ပြန်ပေး;
     }
 
     int64_t col_min = (int64_t) x_org;
     int64_t col_max = (int64_t) x_org + (int64_t) width - 1;
 
-    if (unlikely (cx0 < col_min))
+    အကယ်၍ (unlikely (cx0 < col_min))
     {
       /* Entirely left of the surface. */
       cell_add (area, cover, width, -1, 0, fy0, 0, fy1, wind, x_min, x_max);
-      return;
+      ပြန်ပေး;
     }
-    if (unlikely (cx1 > col_max))
-      return; /* Entirely right of the surface. */
+    အကယ်၍ (unlikely (cx1 > col_max))
+      ပြန်ပေး; /* Entirely right of the surface. */
 
     int32_t x_b = (int32_t) hb_clamp ((int64_t) cx0 * HB_RASTER_ONE_PIXEL,
 				      (int64_t) INT32_MIN, (int64_t) INT32_MAX);
@@ -1445,7 +1445,7 @@ edge_sweep_row (Area                   *area,
 
     int32_t cx = cx0 - 1;
     int32_t fy_prev = fy_b;
-    if (unlikely (cx > col_max))
+    အကယ်၍ (unlikely (cx > col_max))
     {
       /* Mid columns right of the surface contribute nothing. */
       int32_t cx_skip = (int32_t) col_max; /* ≥ cx1, so it fits */
@@ -1454,16 +1454,16 @@ edge_sweep_row (Area                   *area,
     }
 
     int32_t cx_stop = (int32_t) hb_max ((int64_t) cx1, col_min - 1);
-    for (; cx > cx_stop; cx--)
+    အတွက် (; cx > cx_stop; cx--)
     {
       fy_b = fy_prev - delta_fy;
       cell_add (area, cover, width, cx - x_org, HB_RASTER_ONE_PIXEL, fy_prev, 0, fy_b, wind, x_min, x_max);
       fy_prev = fy_b;
     }
 
-    if (likely (cx1 >= col_min))
+    အကယ်၍ (likely (cx1 >= col_min))
       cell_add (area, cover, width, cx1 - x_org, HB_RASTER_ONE_PIXEL, fy_prev, fx1, fy1, wind, x_min, x_max);
-    else
+    မဟုတ်ပါက
       /* Fold the mid columns left of the surface and the last cell
        * into one column-0 cover update. */
       cell_add (area, cover, width, -1, 0, fy_prev, 0, fy1, wind, x_min, x_max);
@@ -1488,10 +1488,10 @@ sweep_row_to_alpha (uint8_t *__restrict row_buf,
   int32x4_t bias_v  = vdupq_n_s32 (HB_RASTER_FULL_COVERAGE / 2);
   int32x4_t zero32  = vdupq_n_s32 (0);
   int16x8_t zero16  = vdupq_n_s16 (0);
-  for (; x + 7 <= x_max; x += 8)
+  အတွက် (; x + 7 <= x_max; x += 8)
   {
     int32_t ctmp[8];
-    for (unsigned i = 0; i < 8; i++)
+    အတွက် (unsigned i = 0; i < 8; i++)
     {
       cover_accum += cover[x + i];
       ctmp[i] = cover_accum * cover_scale;
@@ -1525,10 +1525,10 @@ sweep_row_to_alpha (uint8_t *__restrict row_buf,
   __m128i clamp_v = _mm_set1_epi32 (HB_RASTER_FULL_COVERAGE);
   __m128i bias_v  = _mm_set1_epi32 (HB_RASTER_FULL_COVERAGE / 2);
   __m128i zero_v  = _mm_setzero_si128 ();
-  for (; x + 7 <= x_max; x += 8)
+  အတွက် (; x + 7 <= x_max; x += 8)
   {
     int32_t ctmp[8];
-    for (unsigned i = 0; i < 8; i++)
+    အတွက် (unsigned i = 0; i < 8; i++)
     {
       cover_accum += cover[x + i];
       ctmp[i] = cover_accum * cover_scale;
@@ -1565,18 +1565,18 @@ sweep_row_to_alpha (uint8_t *__restrict row_buf,
   }
 #endif
 
-  for (; x <= x_max; x++)
+  အတွက် (; x <= x_max; x++)
   {
     cover_accum += cover[x];
     int32_t val   = cover_accum * cover_scale - area[x];
     int32_t alpha = val < 0 ? -val : val;
-    if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+    အကယ်၍ (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
     row_buf[x] = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
     area[x]  = 0;
     cover[x] = 0;
   }
 
-  return cover_accum;
+  ပြန်ပေး cover_accum;
 }
 
 static int64_t
@@ -1589,18 +1589,18 @@ sweep_row_to_alpha_wide (uint8_t *__restrict row_buf,
   const int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
   int64_t cover_accum = 0;
 
-  for (unsigned x = x_min; x <= x_max; x++)
+  အတွက် (unsigned x = x_min; x <= x_max; x++)
   {
     cover_accum += cover[x];
     int64_t val = cover_accum * cover_scale - area[x];
     int64_t alpha = val < 0 ? -val : val;
-    if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+    အကယ်၍ (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
     row_buf[x] = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
     area[x] = 0;
     cover[x] = 0;
   }
 
-  return cover_accum;
+  ပြန်ပေး cover_accum;
 }
 
 
@@ -1625,24 +1625,24 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
   /* ── 1. Compute result extents ─────────────────────────────────── */
   hb_raster_extents_t ext;
 
-  if (draw->has_extents)
+  အကယ်၍ (draw->has_extents)
   {
     ext = draw->fixed_extents;
   }
-  else
+  မဟုတ်ပါက
   {
     /* Auto-size from edge bounding box */
-    if (draw->edges.length == 0)
+    အကယ်၍ (draw->edges.length == 0)
     {
       /* No edges: produce 0×0 image */
       ext = { 0, 0, 0, 0, 0 };
     }
-    else
+    မဟုတ်ပါက
     {
       int32_t xmin = draw->edges.arrayZ[0].xL, xmax = draw->edges.arrayZ[0].xL;
       int32_t ymin = draw->edges.arrayZ[0].yL, ymax = draw->edges.arrayZ[0].yH;
 
-      for (const auto &e : draw->edges)
+      အတွက် (const auto &e : draw->edges)
       {
 	xmin = hb_min (xmin, hb_min (e.xL, e.xH));
 	xmax = hb_max (xmax, hb_max (e.xL, e.xH));
@@ -1653,10 +1653,10 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
       /* Convert fixed-point → pixels (floor for min, ceil for max).  Edge
 	 coordinates are saturated to int32 range in emit_segment, so the
 	 +MASK ceil step must be widened to avoid signed overflow. */
-      int x0 = xmin >> HB_RASTER_PIXEL_BITS;
-      int y0 = ymin >> HB_RASTER_PIXEL_BITS;
-      int x1 = (int) (((int64_t) xmax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
-      int y1 = (int) (((int64_t) ymax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
+      ကိန်းပြည့် x0 = xmin >> HB_RASTER_PIXEL_BITS;
+      ကိန်းပြည့် y0 = ymin >> HB_RASTER_PIXEL_BITS;
+      ကိန်းပြည့် x1 = (ကိန်းပြည့်) (((int64_t) xmax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
+      ကိန်းပြည့် y1 = (ကိန်းပြည့်) (((int64_t) ymax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
 
       ext.x_origin = x0;
       ext.y_origin = y0;
@@ -1667,7 +1667,7 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
   }
 
   /* ── 2. Compute stride ─────────────────────────────────────────── */
-  if (ext.stride == 0)
+  အကယ်၍ (ext.stride == 0)
     ext.stride = (ext.width + 3u) & ~3u;
 
   /* ── 3. Allocate or reuse image ─────────────────────────────────── */
@@ -1675,47 +1675,47 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
   HB_SCOPE_GUARD (hb_raster_draw_clear (draw));
 
   hb_unique_ptr_t<hb_raster_image_t> image;
-  if (draw->recycled_image)
+  အကယ်၍ (draw->recycled_image)
   {
     image = hb_unique_ptr_t<hb_raster_image_t> (draw->recycled_image);
     draw->recycled_image = nullptr;
   }
-  else
+  မဟုတ်ပါက
   {
     image = hb_unique_ptr_t<hb_raster_image_t> (hb_raster_image_create_or_fail ());
-    if (unlikely (!image)) return nullptr;
+    အကယ်၍ (unlikely (!image)) ပြန်ပေး nullptr;
   }
 
-  if (unlikely (!image->configure (HB_RASTER_FORMAT_A8, ext)))
-    return nullptr;
+  အကယ်၍ (unlikely (!image->configure (HB_RASTER_FORMAT_A8, ext)))
+    ပြန်ပေး nullptr;
   image->clear ();
 
   /* ── 4. Bucket edges by starting row and rasterize scanlines ──── */
-  if (draw->edges.length && ext.width && ext.height)
+  အကယ်၍ (draw->edges.length && ext.width && ext.height)
   {
-    if (unlikely (!draw->row_area.resize_dirty (ext.width) ||
+    အကယ်၍ (unlikely (!draw->row_area.resize_dirty (ext.width) ||
 		  !draw->row_cover.resize_dirty (ext.width)))
-      return nullptr;
-    hb_memset (draw->row_area.arrayZ,  0, ext.width * sizeof (int32_t));
-    hb_memset (draw->row_cover.arrayZ, 0, ext.width * sizeof (int16_t));
+      ပြန်ပေး nullptr;
+    hb_memset (draw->row_area.arrayZ,  0, ext.width * parimaa_na (int32_t));
+    hb_memset (draw->row_cover.arrayZ, 0, ext.width * parimaa_na (int16_t));
 
     /* Bucket edges by their starting pixel row.
        Only grow the outer vector; clear inner vectors without freeing. */
     unsigned old_buckets = draw->edge_buckets.length;
-    if (ext.height > old_buckets)
+    အကယ်၍ (ext.height > old_buckets)
     {
-      if (unlikely (!draw->edge_buckets.resize (ext.height)))
-	return nullptr;
+      အကယ်၍ (unlikely (!draw->edge_buckets.resize (ext.height)))
+	ပြန်ပေး nullptr;
     }
-    for (unsigned i = 0; i < hb_min (ext.height, old_buckets); i++)
+    အတွက် (unsigned i = 0; i < hb_min (ext.height, old_buckets); i++)
       draw->edge_buckets.arrayZ[i].clear ();
     /* New buckets (if any) are already empty from resize's zero-init. */
 
-    for (unsigned i = 0; i < draw->edges.length; i++)
+    အတွက် (unsigned i = 0; i < draw->edges.length; i++)
     {
-      int row = (draw->edges.arrayZ[i].yL >> HB_RASTER_PIXEL_BITS) - ext.y_origin;
-      if (row < 0) row = 0;
-      if ((unsigned) row >= ext.height) continue;
+      ကိန်းပြည့် row = (draw->edges.arrayZ[i].yL >> HB_RASTER_PIXEL_BITS) - ext.y_origin;
+      အကယ်၍ (row < 0) row = 0;
+      အကယ်၍ ((unsigned) row >= ext.height) continue;
       draw->edge_buckets.arrayZ[row].push (i);
     }
 
@@ -1723,7 +1723,7 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
     draw->active_edges.clear ();
     bool wide_initialized = false;
 
-    for (unsigned row = 0; row < ext.height; row++)
+    အတွက် (unsigned row = 0; row < ext.height; row++)
     {
       int64_t y_top_64 = ((int64_t) ext.y_origin + (int64_t) row) * HB_RASTER_ONE_PIXEL;
       int32_t y_top = (int32_t) hb_clamp (y_top_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
@@ -1736,33 +1736,33 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
       unsigned write = 0;
       unsigned active_len = draw->active_edges.length;
       bool use_wide = active_len > HB_RASTER_NARROW_MAX_ACTIVE_EDGES;
-      if (unlikely (use_wide && !wide_initialized))
+      အကယ်၍ (unlikely (use_wide && !wide_initialized))
       {
-	if (unlikely (!draw->row_area_wide.resize_dirty (ext.width) ||
+	အကယ်၍ (unlikely (!draw->row_area_wide.resize_dirty (ext.width) ||
 		      !draw->row_cover_wide.resize_dirty (ext.width)))
-	  return nullptr;
-	hb_memset (draw->row_area_wide.arrayZ,  0, ext.width * sizeof (int64_t));
-	hb_memset (draw->row_cover_wide.arrayZ, 0, ext.width * sizeof (int64_t));
+	  ပြန်ပေး nullptr;
+	hb_memset (draw->row_area_wide.arrayZ,  0, ext.width * parimaa_na (int64_t));
+	hb_memset (draw->row_cover_wide.arrayZ, 0, ext.width * parimaa_na (int64_t));
 	wide_initialized = true;
       }
-      for (unsigned j = 0; j < active_len; j++)
+      အတွက် (unsigned j = 0; j < active_len; j++)
       {
 	unsigned edge_idx = draw->active_edges.arrayZ[j];
 	const auto &e = draw->edges.arrayZ[edge_idx];
-	if (e.yH <= y_top)
+	အကယ်၍ (e.yH <= y_top)
 	  continue;
 
-	if (unlikely (use_wide))
+	အကယ်၍ (unlikely (use_wide))
 	  edge_sweep_row (draw->row_area_wide.arrayZ, draw->row_cover_wide.arrayZ,
 			  ext.width, ext.x_origin, y_top, e, x_min, x_max);
-	else
+	မဟုတ်ပါက
 	  edge_sweep_row (draw->row_area.arrayZ, draw->row_cover.arrayZ,
 			  ext.width, ext.x_origin, y_top, e, x_min, x_max);
 	draw->active_edges.arrayZ[write++] = edge_idx;
       }
       draw->active_edges.resize (write);
 
-      if (x_min <= x_max)
+      အကယ်၍ (x_min <= x_max)
       {
 	int64_t cover_accum = use_wide ?
 	  sweep_row_to_alpha_wide (image->buffer.arrayZ + row * ext.stride,
@@ -1773,11 +1773,11 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
 			      x_min, x_max);
 
 	/* If cover doesn't cancel, memset the constant-alpha tail. */
-	if (cover_accum != 0)
+	အကယ်၍ (cover_accum != 0)
 	{
 	  int64_t alpha = cover_accum * (2 * HB_RASTER_ONE_PIXEL);
 	  alpha = alpha < 0 ? -alpha : alpha;
-	  if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+	  အကယ်၍ (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
 	  uint8_t byte = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
 
 	  uint8_t *row_buf = image->buffer.arrayZ + row * ext.stride;
@@ -1787,5 +1787,5 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
     }
   }
 
-  return image.release ();
+  ပြန်ပေး image.release ();
 }

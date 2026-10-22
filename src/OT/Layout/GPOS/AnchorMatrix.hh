@@ -5,33 +5,33 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_ligature_anchor_indexes (unsigned rows,
                                      unsigned class_count,
                                      const hb_map_t &klass_mapping,
                                      hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (unsigned row = 0; row < rows; row++)
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
+  အတွက် (unsigned row = 0; row < rows; row++)
+    အတွက် (unsigned col = 0; col < class_count; col++)
+      အကယ်၍ (klass_mapping.has (col))
         indexes.push (row * class_count + col);
 }
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
                                       const void *base,
                                       glyph_data_t offsets,
                                       hb_array_t<const unsigned> indexes)
 {
-  for (unsigned i : indexes)
+  အတွက် (unsigned i : indexes)
   {
     unsigned offset = offsets[i];
-    if (offset)
+    အကယ်၍ (offset)
       StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
   }
 }
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_anchor_indexes (const Coverage &coverage,
                              unsigned rows,
                              unsigned class_count,
@@ -39,14 +39,14 @@ void collect_anchor_indexes (const Coverage &coverage,
                              const hb_map_t &klass_mapping,
                              hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
-    if (glyphset.has (_.first))
-      for (unsigned col = 0; col < class_count; col++)
-        if (klass_mapping.has (col))
+  အတွက် (const auto _ : hb_zip (coverage, hb_range (rows)))
+    အကယ်၍ (glyphset.has (_.first))
+      အတွက် (unsigned col = 0; col < class_count; col++)
+        အကယ်၍ (klass_mapping.has (col))
           indexes.push (_.second * class_count + col);
 }
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_subset_anchor_indexes (const Coverage &coverage,
                                     unsigned rows,
                                     unsigned class_count,
@@ -57,65 +57,65 @@ void collect_subset_anchor_indexes (const Coverage &coverage,
                                     hb_sorted_vector_t<hb_codepoint_t> &new_coverage,
                                     hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
+  အတွက် (const auto _ : hb_zip (coverage, hb_range (rows)))
   {
-    if (!glyphset.has (_.first)) continue;
+    အကယ်၍ (!glyphset.has (_.first)) continue;
     unsigned row = _.second;
     bool non_empty = false;
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+    အတွက် (unsigned col = 0; col < class_count; col++)
+      အကယ်၍ (klass_mapping.has (col) && offsets[row * class_count + col])
       {
         non_empty = true;
-        break;
+        bha_nga;
       }
-    if (!non_empty) continue;
+    အကယ်၍ (!non_empty) continue;
 
     new_coverage.push (glyph_map.get (_.first));
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
+    အတွက် (unsigned col = 0; col < class_count; col++)
+      အကယ်၍ (klass_mapping.has (col))
         indexes.push (row * class_count + col);
   }
 }
 
 template <typename Types, typename RowCount=typename Types::HBUINT>
-struct AnchorMatrix
+sa_nracanaa AnchorMatrix
 {
   RowCount      rows;                   /* Number of rows */
   UnsizedArrayOf<typename Types::template OffsetTo<Anchor, AnchorMatrix>>
                 matrixZ;                /* Matrix of offsets to Anchor tables--
                                          * from beginning of AnchorMatrix table */
   public:
-  DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
+  DEFINE_SIZE_ARRAY (parimaa_na (RowCount), matrixZ);
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned ကိန်းပြည့် cols) const
   {
     TRACE_SANITIZE (this);
-    if (!c->check_struct (this)) return_trace (false);
+    အကယ်၍ (!c->check_struct (this)) return_trace (false);
     hb_barrier ();
-    if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    အကယ်၍ (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
+    unsigned ကိန်းပြည့် count = rows * cols;
+    အကယ်၍ (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
 
-    if (c->lazy_some_gpos)
+    အကယ်၍ (c->lazy_some_gpos)
       return_trace (true);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (!matrixZ[i].sanitize (c, this)) return_trace (false);
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < count; i++)
+      အကယ်၍ (!matrixZ[i].sanitize (c, this)) return_trace (false);
     return_trace (true);
   }
 
   const Anchor& get_anchor (hb_ot_apply_context_t *c,
-			    unsigned int row, unsigned int col,
-			    unsigned int cols, bool *found) const
+			    unsigned ကိန်းပြည့် row, unsigned ကိန်းပြည့် col,
+			    unsigned ကိန်းပြည့် cols, bool *found) const
   {
     *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
+    အကယ်၍ (unlikely (row >= rows || col >= cols)) ပြန်ပေး Null (Anchor);
     auto &offset = matrixZ[row * cols + col];
-    if (unlikely (!offset.sanitize (&c->sanitizer, this))) return Null (Anchor);
+    အကယ်၍ (unlikely (!offset.sanitize (&c->sanitizer, this))) ပြန်ပေး Null (Anchor);
     hb_barrier ();
     *found = !offset.is_null ();
-    return this+offset;
+    ပြန်ပေး this+offset;
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
@@ -134,14 +134,14 @@ struct AnchorMatrix
 
     auto *out = c->serializer->start_embed (this);
 
-    if (!index_iter) return_trace (false);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    အကယ်၍ (!index_iter) return_trace (false);
+    အကယ်၍ (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
 
     out->rows = num_rows;
-    for (const unsigned i : index_iter)
+    အတွက် (const unsigned i : index_iter)
     {
       auto *offset = c->serializer->embed (matrixZ[i]);
-      if (!offset) return_trace (false);
+      အကယ်၍ (!offset) return_trace (false);
       offset->serialize_subset (c, matrixZ[i], this);
     }
 
@@ -150,9 +150,9 @@ struct AnchorMatrix
 
   bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
+    အကယ်၍ (unlikely (row >= rows || col >= num_cols)) ပြန်ပေး true;
     auto &offset = matrixZ[row * num_cols + col];
-    return offset.is_null ();
+    ပြန်ပေး offset.is_null ();
   }
 };
 

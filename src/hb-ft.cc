@@ -47,7 +47,7 @@
 #include FT_OUTLINE_H
 #include FT_TRUETYPE_TABLES_H
 #include FT_SYNTHESIS_H
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#အကယ်၍ (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
 #include FT_COLOR_H
 #endif
 
@@ -90,9 +90,9 @@ using hb_ft_advance_cache_t = hb_cache_t<16, 24, 8, false>;
 
 static void _hb_ft_face_destroy_static (void *data);
 
-struct hb_ft_font_t
+sa_nracanaa hb_ft_font_t
 {
-  int load_flags;
+  ကိန်းပြည့် load_flags;
   bool symbol; /* Whether selected cmap is symbol cmap. */
   bool unref; /* Whether to destroy ft_face when done. */
   bool transform; /* Whether to apply FT_Face's transform. */
@@ -107,8 +107,8 @@ struct hb_ft_font_t
 static hb_ft_font_t *
 _hb_ft_font_create (FT_Face ft_face, bool symbol, bool unref, bool static_library)
 {
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) hb_calloc (1, sizeof (hb_ft_font_t));
-  if (unlikely (!ft_font)) return nullptr;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) hb_calloc (1, parimaa_na (hb_ft_font_t));
+  အကယ်၍ (unlikely (!ft_font)) ပြန်ပေး nullptr;
 
   ft_font->lock.init ();
   ft_font->ft_face = ft_face;
@@ -121,7 +121,7 @@ _hb_ft_font_create (FT_Face ft_face, bool symbol, bool unref, bool static_librar
   ft_font->cached_serial = UINT_MAX;
   new (&ft_font->advance_cache) hb_ft_advance_cache_t;
 
-  return ft_font;
+  ပြန်ပေး ft_font;
 }
 
 static void
@@ -135,9 +135,9 @@ _hb_ft_font_destroy (void *data)
 {
   hb_ft_font_t *ft_font = (hb_ft_font_t *) data;
 
-  if (ft_font->unref)
+  အကယ်၍ (ft_font->unref)
   {
-    if (ft_font->static_library)
+    အကယ်၍ (ft_font->static_library)
     {
       /* ft_font->ft_face->generic.data is the blob that hb_ft_font_set_funcs()
        * hooked up as this internal FT_Face's finalizer target (_release_blob).
@@ -151,7 +151,7 @@ _hb_ft_font_destroy (void *data)
       _hb_ft_face_destroy_static (ft_font->ft_face);
       hb_blob_destroy (blob);
     }
-    else
+    မဟုတ်ပါက
       _hb_ft_face_destroy (ft_font->ft_face);
   }
 
@@ -164,20 +164,20 @@ _hb_ft_font_destroy (void *data)
 /* hb_font changed, update FT_Face. */
 static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  အကယ်၍ (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ပြန်ပေး;
 
   hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
 
   float x_mult = 1.f, y_mult = 1.f;
 
-  if (font->x_scale < 0) x_mult = -x_mult;
-  if (font->y_scale < 0) y_mult = -y_mult;
+  အကယ်၍ (font->x_scale < 0) x_mult = -x_mult;
+  အကယ်၍ (font->y_scale < 0) y_mult = -y_mult;
 
-  if (FT_Set_Char_Size (ft_face,
+  အကယ်၍ (FT_Set_Char_Size (ft_face,
 			abs (font->x_scale), abs (font->y_scale),
 			0, 0
-#if 0
+#အကယ်၍ 0
 		    font->x_ppem * 72 * 64 / font->x_scale,
 		    font->y_ppem * 72 * 64 / font->y_scale
 #endif
@@ -186,8 +186,8 @@ static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 #ifdef HAVE_FT_GET_TRANSFORM
     /* Bitmap font, eg. bitmap color emoji. */
     /* Pick largest size? */
-    int x_scale  = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].x_ppem;
-    int y_scale = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].y_ppem;
+    ကိန်းပြည့် x_scale  = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].x_ppem;
+    ကိန်းပြည့် y_scale = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].y_ppem;
     FT_Set_Char_Size (ft_face,
 		      x_scale, y_scale,
 		      0, 0);
@@ -197,35 +197,35 @@ static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
     y_mult = (float) font->y_scale / y_scale;
 #endif
   }
-  else
+  မဟုတ်ပါက
   { /* Shrug */ }
 
 
-  if (x_mult != 1.f || y_mult != 1.f)
+  အကယ်၍ (x_mult != 1.f || y_mult != 1.f)
   {
-    FT_Matrix matrix = { (int) roundf (x_mult * (1<<16)), 0,
-			  0, (int) roundf (y_mult * (1<<16))};
+    FT_Matrix matrix = { (ကိန်းပြည့်) roundf (x_mult * (1<<16)), 0,
+			  0, (ကိန်းပြည့်) roundf (y_mult * (1<<16))};
     FT_Set_Transform (ft_face, &matrix, nullptr);
     ft_font->transform = true;
   }
-  else
+  မဟုတ်ပါက
     FT_Set_Transform (ft_face, nullptr, nullptr);
 
-#if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
-  if (font->has_nonzero_coords)
+#အကယ်၍ defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
+  အကယ်၍ (font->has_nonzero_coords)
   {
-    unsigned int num_coords;
+    unsigned ကိန်းပြည့် num_coords;
     const float *coords = hb_font_get_var_coords_design (font, &num_coords);
-    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (num_coords, sizeof (FT_Fixed));
-    if (ft_coords)
+    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (num_coords, parimaa_na (FT_Fixed));
+    အကယ်၍ (ft_coords)
     {
-      for (unsigned int i = 0; i < num_coords; i++)
+      အတွက် (unsigned ကိန်းပြည့် i = 0; i < num_coords; i++)
 	  ft_coords[i] = coords[i] * 65536.f;
       FT_Set_Var_Design_Coordinates (ft_face, num_coords, ft_coords);
       hb_free (ft_coords);
     }
   }
-  else if (font->num_coords)
+  မဟုတ်ပါက အကယ်၍ (font->num_coords)
   {
     // Some old versions of FreeType crash if we
     // call this function on non-variable fonts.
@@ -235,19 +235,19 @@ static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 }
 
 /* Check if hb_font changed, update FT_Face. */
-static inline bool
+static anta_hstha bool
 _hb_ft_hb_font_check_changed (hb_font_t *font,
 			      const hb_ft_font_t *ft_font)
 {
-  if (font->serial != ft_font->cached_serial)
+  အကယ်၍ (font->serial != ft_font->cached_serial)
   {
     hb_lock_t lock (ft_font->lock);
     _hb_ft_hb_font_changed (font, ft_font->ft_face);
     ft_font->advance_cache.clear ();
     ft_font->cached_serial.set_release (font->serial.get_acquire ());
-    return true;
+    ပြန်ပေး true;
   }
-  return false;
+  ပြန်ပေး false;
 }
 
 
@@ -267,13 +267,13 @@ _hb_ft_hb_font_check_changed (hb_font_t *font,
  * Since: 1.0.5
  **/
 void
-hb_ft_font_set_load_flags (hb_font_t *font, int load_flags)
+hb_ft_font_set_load_flags (hb_font_t *font, ကိန်းပြည့် load_flags)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  အကယ်၍ (hb_object_is_immutable (font))
+    ပြန်ပေး;
 
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  အကယ်၍ (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ပြန်ပေး;
 
   hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
 
@@ -296,15 +296,15 @@ hb_ft_font_set_load_flags (hb_font_t *font, int load_flags)
  *
  * Since: 1.0.5
  **/
-int
+ကိန်းပြည့်
 hb_ft_font_get_load_flags (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return 0;
+  အကယ်၍ (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ပြန်ပေး 0;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
 
-  return ft_font->load_flags;
+  ပြန်ပေး ft_font->load_flags;
 }
 
 /**
@@ -324,12 +324,12 @@ hb_ft_font_get_load_flags (hb_font_t *font)
 FT_Face
 hb_ft_font_get_ft_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return nullptr;
+  အကယ်၍ (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ပြန်ပေး nullptr;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
 
-  return ft_font->ft_face;
+  ပြန်ပေး ft_font->ft_face;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -352,7 +352,7 @@ hb_ft_font_get_ft_face (hb_font_t *font)
 FT_Face
 hb_ft_font_get_face (hb_font_t *font)
 {
-  return hb_ft_font_get_ft_face (font);
+  ပြန်ပေး hb_ft_font_get_ft_face (font);
 }
 
 #endif
@@ -375,14 +375,14 @@ hb_ft_font_get_face (hb_font_t *font)
 FT_Face
 hb_ft_font_lock_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return nullptr;
+  အကယ်၍ (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ပြန်ပေး nullptr;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
 
   ft_font->lock.lock ();
 
-  return ft_font->ft_face;
+  ပြန်ပေး ft_font->ft_face;
 }
 
 /**
@@ -396,8 +396,8 @@ hb_ft_font_lock_face (hb_font_t *font)
 void
 hb_ft_font_unlock_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  အကယ်၍ (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ပြန်ပေး;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
 
@@ -414,58 +414,58 @@ hb_ft_get_nominal_glyph (hb_font_t *font,
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   hb_lock_t lock (ft_font->lock);
-  unsigned int g = FT_Get_Char_Index (ft_font->ft_face, unicode);
+  unsigned ကိန်းပြည့် g = FT_Get_Char_Index (ft_font->ft_face, unicode);
 
-  if (unlikely (!g))
+  အကယ်၍ (unlikely (!g))
   {
-    if (unlikely (ft_font->symbol))
+    အကယ်၍ (unlikely (ft_font->symbol))
     {
       switch ((unsigned) font->face->table.OS2->get_font_page ()) {
-      case OT::OS2::font_page_t::FONT_PAGE_NONE:
-	if (unicode <= 0x00FFu)
+      pak_sa OT::OS2::font_page_t::FONT_PAGE_NONE:
+	အကယ်၍ (unicode <= 0x00FFu)
 	  /* For symbol-encoded OpenType fonts, we duplicate the
 	   * U+F000..F0FF range at U+0000..U+00FF.  That's what
 	   * Windows seems to do, and that's hinted about at:
 	   * https://docs.microsoft.com/en-us/typography/opentype/spec/recom
 	   * under "Non-Standard (Symbol) Fonts". */
 	  g = FT_Get_Char_Index (ft_font->ft_face, 0xF000u + unicode);
-	break;
+	bha_nga;
 #ifndef HB_NO_OT_SHAPER_ARABIC_FALLBACK
-      case OT::OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
+      pak_sa OT::OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
 	g = FT_Get_Char_Index (ft_font->ft_face, _hb_arabic_pua_simp_map (unicode));
-	break;
-      case OT::OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
+	bha_nga;
+      pak_sa OT::OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
 	g = FT_Get_Char_Index (ft_font->ft_face, _hb_arabic_pua_trad_map (unicode));
-	break;
+	bha_nga;
 #endif
       default:
-	break;
+	bha_nga;
       }
-      if (!g)
-	return false;
+      အကယ်၍ (!g)
+	ပြန်ပေး false;
     }
-    else
-      return false;
+    မဟုတ်ပါက
+      ပြန်ပေး false;
   }
 
   *glyph = g;
-  return true;
+  ပြန်ပေး true;
 }
 
-static unsigned int
+static unsigned ကိန်းပြည့်
 hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
 			  void *font_data,
-			  unsigned int count,
+			  unsigned ကိန်းပြည့် count,
 			  const hb_codepoint_t *first_unicode,
-			  unsigned int unicode_stride,
+			  unsigned ကိန်းပြည့် unicode_stride,
 			  hb_codepoint_t *first_glyph,
-			  unsigned int glyph_stride,
+			  unsigned ကိန်းပြည့် glyph_stride,
 			  void *user_data HB_UNUSED)
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   hb_lock_t lock (ft_font->lock);
-  unsigned int done;
-  for (done = 0;
+  unsigned ကိန်းပြည့် done;
+  အတွက် (done = 0;
        done < count && (*first_glyph = FT_Get_Char_Index (ft_font->ft_face, *first_unicode));
        done++)
   {
@@ -474,7 +474,7 @@ hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
   }
   /* We don't need to do ft_font->symbol dance here, since HB calls the singular
    * nominal_glyph() for what we don't handle here. */
-  return done;
+  ပြန်ပေး done;
 }
 
 
@@ -488,13 +488,13 @@ hb_ft_get_variation_glyph (hb_font_t *font HB_UNUSED,
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   hb_lock_t lock (ft_font->lock);
-  unsigned int g = FT_Face_GetCharVariantIndex (ft_font->ft_face, unicode, variation_selector);
+  unsigned ကိန်းပြည့် g = FT_Face_GetCharVariantIndex (ft_font->ft_face, unicode, variation_selector);
 
-  if (unlikely (!g))
-    return false;
+  အကယ်၍ (unlikely (!g))
+    ပြန်ပေး false;
 
   *glyph = g;
-  return true;
+  ပြန်ပေး true;
 }
 
 static void
@@ -511,37 +511,37 @@ hb_ft_get_glyph_h_advances (hb_font_t* font, void* font_data,
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  int load_flags = ft_font->load_flags;
+  ကိန်းပြည့် load_flags = ft_font->load_flags;
   float x_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  အကယ်၍ (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
     x_mult = sqrtf ((float)matrix.xx * matrix.xx + (float)matrix.xy * matrix.xy) / 65536.f;
     x_mult *= font->x_scale < 0 ? -1 : +1;
   }
-  else
+  မဟုတ်ပါက
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
   }
 
-  for (unsigned int i = 0; i < count; i++)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < count; i++)
   {
     hb_position_t advance;
     hb_codepoint_t glyph = *first_glyph;
 
-    unsigned int cv;
-    if (ft_font->advance_cache.get (glyph, &cv))
+    unsigned ကိန်းပြည့် cv;
+    အကယ်၍ (ft_font->advance_cache.get (glyph, &cv))
       advance = (hb_position_t) cv;
-    else
+    မဟုတ်ပါက
     {
       FT_Fixed v = 0;
       FT_Get_Advance (ft_face, glyph, load_flags, &v);
       /* Work around bug that FreeType seems to return negative advance
        * for variable-set fonts if x_scale is negative! */
-      double scaled = trunc (fabs ((double) v) * (double) x_mult + (1<<9)) / (1<<10);
+      dviguu_na scaled = trunc (fabs ((dviguu_na) v) * (dviguu_na) x_mult + (1<<9)) / (1<<10);
       advance = hb_clamp_to<hb_position_t> (floor (scaled));
       ft_font->advance_cache.set (glyph, advance);
     }
@@ -566,27 +566,27 @@ hb_ft_get_glyph_v_advance (hb_font_t *font,
   FT_Fixed v;
   float y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  အကယ်၍ (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_font->ft_face, &matrix, nullptr);
     y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  မဟုတ်ပါက
 #endif
   {
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Get_Advance (ft_font->ft_face, glyph, ft_font->load_flags | FT_LOAD_VERTICAL_LAYOUT, &v)))
-    return 0;
+  အကယ်၍ (unlikely (FT_Get_Advance (ft_font->ft_face, glyph, ft_font->load_flags | FT_LOAD_VERTICAL_LAYOUT, &v)))
+    ပြန်ပေး 0;
 
   /* Note: FreeType's vertical metrics grows downward while other FreeType coordinates
    * have a Y growing upward.  Hence the extra negation. */
-  double advance = floor ((-(double) v + (1<<9)) / (1<<10));
+  dviguu_na advance = floor ((-(dviguu_na) v + (1<<9)) / (1<<10));
 
-  return hb_clamp_to<hb_position_t> ((double) y_mult * advance);
+  ပြန်ပေး hb_clamp_to<hb_position_t> ((dviguu_na) y_mult * advance);
 }
 #endif
 
@@ -606,7 +606,7 @@ hb_ft_get_glyph_v_origin (hb_font_t *font,
   FT_Face ft_face = ft_font->ft_face;
   float x_mult, y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  အကယ်၍ (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
@@ -615,26 +615,26 @@ hb_ft_get_glyph_v_origin (hb_font_t *font,
     y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  မဟုတ်ပါက
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-    return false;
+  အကယ်၍ (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+    ပြန်ပေး false;
 
   /* Note: FreeType's vertical metrics grows downward while other FreeType coordinates
    * have a Y growing upward.  Hence the extra negation. */
-  *x = hb_clamp_to<hb_position_t> ((double) x_mult *
-				   ((double) ft_face->glyph->metrics.horiBearingX -
+  *x = hb_clamp_to<hb_position_t> ((dviguu_na) x_mult *
+				   ((dviguu_na) ft_face->glyph->metrics.horiBearingX -
 				    ft_face->glyph->metrics.vertBearingX));
-  *y = hb_clamp_to<hb_position_t> ((double) y_mult *
-				   ((double) ft_face->glyph->metrics.horiBearingY +
+  *y = hb_clamp_to<hb_position_t> ((dviguu_na) y_mult *
+				   ((dviguu_na) ft_face->glyph->metrics.horiBearingY +
 				    ft_face->glyph->metrics.vertBearingY));
 
-  return true;
+  ပြန်ပေး true;
 }
 #endif
 
@@ -653,10 +653,10 @@ hb_ft_get_glyph_h_kerning (hb_font_t *font,
   FT_Vector kerningv;
 
   FT_Kerning_Mode mode = font->x_ppem ? FT_KERNING_DEFAULT : FT_KERNING_UNFITTED;
-  if (FT_Get_Kerning (ft_font->ft_face, left_glyph, right_glyph, mode, &kerningv))
-    return 0;
+  အကယ်၍ (FT_Get_Kerning (ft_font->ft_face, left_glyph, right_glyph, mode, &kerningv))
+    ပြန်ပေး 0;
 
-  return hb_clamp_to<hb_position_t> ((int64_t) kerningv.x);
+  ပြန်ပေး hb_clamp_to<hb_position_t> ((int64_t) kerningv.x);
 }
 #endif
 
@@ -666,33 +666,33 @@ hb_ft_is_colr_glyph (hb_font_t *font,
 		     hb_codepoint_t gid)
 {
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#အကယ်၍ (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   FT_Face ft_face = ft_font->ft_face;
 
 
   /* COLRv1 */
   FT_OpaquePaint paint = {0};
-  if (FT_Get_Color_Glyph_Paint (ft_face, gid,
+  အကယ်၍ (FT_Get_Color_Glyph_Paint (ft_face, gid,
 			        FT_COLOR_NO_ROOT_TRANSFORM,
 			        &paint))
-    return true;
+    ပြန်ပေး true;
 
   /* COLRv0 */
   FT_LayerIterator  iterator;
   FT_UInt  layer_glyph_index;
   FT_UInt  layer_color_index;
   iterator.p  = NULL;
-  if (FT_Get_Color_Glyph_Layer (ft_face,
+  အကယ်၍ (FT_Get_Color_Glyph_Layer (ft_face,
 				gid,
 				&layer_glyph_index,
 				&layer_color_index,
 				&iterator))
-    return true;
+    ပြန်ပေး true;
 #endif
 #endif
 
-  return false;
+  ပြန်ပေး false;
 }
 
 static hb_bool_t
@@ -703,8 +703,8 @@ hb_ft_get_glyph_extents (hb_font_t *font,
 			 void *user_data HB_UNUSED)
 {
   // FreeType doesn't return COLR glyph extents.
-  if (hb_ft_is_colr_glyph (font, font_data, glyph))
-    return false;
+  အကယ်၍ (hb_ft_is_colr_glyph (font, font_data, glyph))
+    ပြန်ပေး false;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   _hb_ft_hb_font_check_changed (font, ft_font);
@@ -714,7 +714,7 @@ hb_ft_get_glyph_extents (hb_font_t *font,
   float x_mult, y_mult;
 
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  အကယ်၍ (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
@@ -723,15 +723,15 @@ hb_ft_get_glyph_extents (hb_font_t *font,
     y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  မဟုတ်ပါက
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-    return false;
+  အကယ်၍ (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+    ပြန်ပေး false;
 
   /* Copied from hb_font_t::scale_glyph_extents. */
 
@@ -740,24 +740,24 @@ hb_ft_get_glyph_extents (hb_font_t *font,
   float x2 = x1 + x_mult *  ft_face->glyph->metrics.width;
   float y2 = y1 + y_mult * -ft_face->glyph->metrics.height;
 
-  double rx1 = (double) roundf (x1);
-  double ry1 = (double) roundf (y1);
-  double rx2 = (double) roundf (x2);
-  double ry2 = (double) roundf (y2);
+  dviguu_na rx1 = (dviguu_na) roundf (x1);
+  dviguu_na ry1 = (dviguu_na) roundf (y1);
+  dviguu_na rx2 = (dviguu_na) roundf (x2);
+  dviguu_na ry2 = (dviguu_na) roundf (y2);
 
   extents->x_bearing = hb_clamp_to<hb_position_t> (rx1);
   extents->y_bearing = hb_clamp_to<hb_position_t> (ry1);
   extents->width = hb_clamp_to<hb_position_t> (rx2 - rx1);
   extents->height = hb_clamp_to<hb_position_t> (ry2 - ry1);
 
-  return true;
+  ပြန်ပေး true;
 }
 
 static hb_bool_t
 hb_ft_get_glyph_contour_point (hb_font_t *font HB_UNUSED,
 			       void *font_data,
 			       hb_codepoint_t glyph,
-			       unsigned int point_index,
+			       unsigned ကိန်းပြည့် point_index,
 			       hb_position_t *x,
 			       hb_position_t *y,
 			       void *user_data HB_UNUSED)
@@ -768,49 +768,49 @@ hb_ft_get_glyph_contour_point (hb_font_t *font HB_UNUSED,
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-      return false;
+  အကယ်၍ (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+      ပြန်ပေး false;
 
-  if (unlikely (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE))
-      return false;
+  အကယ်၍ (unlikely (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE))
+      ပြန်ပေး false;
 
-  if (unlikely (point_index >= (unsigned int) ft_face->glyph->outline.n_points))
-      return false;
+  အကယ်၍ (unlikely (point_index >= (unsigned ကိန်းပြည့်) ft_face->glyph->outline.n_points))
+      ပြန်ပေး false;
 
   *x = ft_face->glyph->outline.points[point_index].x;
   *y = ft_face->glyph->outline.points[point_index].y;
 
-  return true;
+  ပြန်ပေး true;
 }
 
 static hb_bool_t
 hb_ft_get_glyph_name (hb_font_t *font HB_UNUSED,
 		      void *font_data,
 		      hb_codepoint_t glyph,
-		      char *name, unsigned int size,
+		      var_na *name, unsigned ကိန်းပြည့် size,
 		      void *user_data HB_UNUSED)
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (!size)
+  အကယ်၍ (!size)
   {
-    char buf[128];
-    return !FT_Get_Glyph_Name (ft_face, glyph, buf, sizeof (buf)) && *buf;
+    var_na buf[128];
+    ပြန်ပေး !FT_Get_Glyph_Name (ft_face, glyph, buf, parimaa_na (buf)) && *buf;
   }
 
   hb_bool_t ret = !FT_Get_Glyph_Name (ft_face, glyph, name, size);
-  if (ret && (size && !*name))
+  အကယ်၍ (ret && (size && !*name))
     ret = false;
 
-  return ret;
+  ပြန်ပေး ret;
 }
 
 static hb_bool_t
 hb_ft_get_glyph_from_name (hb_font_t *font HB_UNUSED,
 			   void *font_data,
-			   const char *name, int len, /* -1 means nul-terminated */
+			   const var_na *name, ကိန်းပြည့် len, /* -1 means nul-terminated */
 			   hb_codepoint_t *glyph,
 			   void *user_data HB_UNUSED)
 {
@@ -818,27 +818,27 @@ hb_ft_get_glyph_from_name (hb_font_t *font HB_UNUSED,
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (len < 0)
+  အကယ်၍ (len < 0)
     *glyph = FT_Get_Name_Index (ft_face, (FT_String *) name);
-  else {
+  မဟုတ်ပါက {
     /* Make a nul-terminated version. */
-    char buf[128];
-    len = hb_min (len, (int) sizeof (buf) - 1);
+    var_na buf[128];
+    len = hb_min (len, (ကိန်းပြည့်) parimaa_na (buf) - 1);
     strncpy (buf, name, len);
     buf[len] = '\0';
     *glyph = FT_Get_Name_Index (ft_face, buf);
   }
 
-  if (*glyph == 0)
+  အကယ်၍ (*glyph == 0)
   {
     /* Check whether the given name was actually the name of glyph 0. */
-    char buf[128];
-    if (!FT_Get_Glyph_Name(ft_face, 0, buf, sizeof (buf)) &&
+    var_na buf[128];
+    အကယ်၍ (!FT_Get_Glyph_Name(ft_face, 0, buf, parimaa_na (buf)) &&
 	len < 0 ? !strcmp (buf, name) : !strncmp (buf, name, len))
-      return true;
+      ပြန်ပေး true;
   }
 
-  return *glyph != 0;
+  ပြန်ပေး *glyph != 0;
 }
 
 static hb_bool_t
@@ -854,63 +854,63 @@ hb_ft_get_font_h_extents (hb_font_t *font HB_UNUSED,
   FT_Face ft_face = ft_font->ft_face;
   float y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  အကယ်၍ (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
     y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  မဟုတ်ပါက
 #endif
   {
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (ft_face->units_per_EM != 0)
+  အကယ်၍ (ft_face->units_per_EM != 0)
   {
-    double ascender = FT_MulFix(ft_face->ascender, ft_face->size->metrics.y_scale);
-    double descender = FT_MulFix(ft_face->descender, ft_face->size->metrics.y_scale);
-    double height = FT_MulFix( ft_face->height, ft_face->size->metrics.y_scale );
-    metrics->ascender = hb_clamp_to<hb_position_t> ((double) y_mult * ascender);
-    metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
-    metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
+    dviguu_na ascender = FT_MulFix(ft_face->ascender, ft_face->size->metrics.y_scale);
+    dviguu_na descender = FT_MulFix(ft_face->descender, ft_face->size->metrics.y_scale);
+    dviguu_na height = FT_MulFix( ft_face->height, ft_face->size->metrics.y_scale );
+    metrics->ascender = hb_clamp_to<hb_position_t> ((dviguu_na) y_mult * ascender);
+    metrics->descender = hb_clamp_to<hb_position_t> ((dviguu_na) y_mult * descender);
+    metrics->line_gap = hb_clamp_to<hb_position_t> ((dviguu_na) y_mult * (height - (ascender - descender)));
   }
-  else
+  မဟုတ်ပါက
   {
     /* Bitmap-only font, eg. color bitmap font. */
-    double ascender = ft_face->size->metrics.ascender;
-    double descender = ft_face->size->metrics.descender;
-    double height = ft_face->size->metrics.height;
-    metrics->ascender = hb_clamp_to<hb_position_t> ((double) y_mult * ascender);
-    metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
-    metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
+    dviguu_na ascender = ft_face->size->metrics.ascender;
+    dviguu_na descender = ft_face->size->metrics.descender;
+    dviguu_na height = ft_face->size->metrics.height;
+    metrics->ascender = hb_clamp_to<hb_position_t> ((dviguu_na) y_mult * ascender);
+    metrics->descender = hb_clamp_to<hb_position_t> ((dviguu_na) y_mult * descender);
+    metrics->line_gap = hb_clamp_to<hb_position_t> ((dviguu_na) y_mult * (height - (ascender - descender)));
   }
 
-  return true;
+  ပြန်ပေး true;
 }
 
 #ifndef HB_NO_DRAW
 
-static int
+static ကိန်းပြည့်
 _hb_ft_move_to (const FT_Vector *to,
 		void *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->move_to (to->x, to->y);
-  return FT_Err_Ok;
+  ပြန်ပေး FT_Err_Ok;
 }
 
-static int
+static ကိန်းပြည့်
 _hb_ft_line_to (const FT_Vector *to,
 		void *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->line_to (to->x, to->y);
-  return FT_Err_Ok;
+  ပြန်ပေး FT_Err_Ok;
 }
 
-static int
+static ကိန်းပြည့်
 _hb_ft_conic_to (const FT_Vector *control,
 		 const FT_Vector *to,
 		 void *arg)
@@ -918,10 +918,10 @@ _hb_ft_conic_to (const FT_Vector *control,
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->quadratic_to (control->x, control->y,
 			 to->x, to->y);
-  return FT_Err_Ok;
+  ပြန်ပေး FT_Err_Ok;
 }
 
-static int
+static ကိန်းပြည့်
 _hb_ft_cubic_to (const FT_Vector *control1,
 		 const FT_Vector *control2,
 		 const FT_Vector *to,
@@ -931,7 +931,7 @@ _hb_ft_cubic_to (const FT_Vector *control1,
   drawing->cubic_to (control1->x, control1->y,
 		     control2->x, control2->y,
 		     to->x, to->y);
-  return FT_Err_Ok;
+  ပြန်ပေး FT_Err_Ok;
 }
 
 static hb_bool_t
@@ -947,12 +947,12 @@ hb_ft_draw_glyph_or_fail (hb_font_t *font,
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph,
+  အကယ်၍ (unlikely (FT_Load_Glyph (ft_face, glyph,
 			       FT_LOAD_NO_BITMAP | ft_font->load_flags)))
-    return false;
+    ပြန်ပေး false;
 
-  if (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
-    return false;
+  အကယ်၍ (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
+    ပြန်ပေး false;
 
   const FT_Outline_Funcs outline_funcs = {
     _hb_ft_move_to,
@@ -969,12 +969,12 @@ hb_ft_draw_glyph_or_fail (hb_font_t *font,
 			&outline_funcs,
 			&draw_session);
 
-  return true;
+  ပြန်ပေး true;
 }
 #endif
 
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#အကယ်၍ (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
 
 #include "hb-ft-colr.hh"
 
@@ -983,7 +983,7 @@ hb_ft_paint_glyph_or_fail (hb_font_t *font,
 			   void *font_data,
 			   hb_codepoint_t gid,
 			   hb_paint_funcs_t *paint_funcs, void *paint_data,
-			   unsigned int palette_index,
+			   unsigned ကိန်းပြည့် palette_index,
 			   hb_color_t foreground,
 			   void *user_data)
 {
@@ -994,50 +994,50 @@ hb_ft_paint_glyph_or_fail (hb_font_t *font,
   FT_Face ft_face = ft_font->ft_face;
 
   FT_Long load_flags = ft_font->load_flags | FT_LOAD_COLOR;
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21301
+#အကယ်၍ (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21301
   load_flags |= FT_LOAD_NO_SVG;
 #endif
 
   /* We release the lock before calling into glyph callbacks, such that
    * eg. draw API can call back into the face.*/
 
-  if (unlikely (FT_Load_Glyph (ft_face, gid, load_flags)))
-    return false;
+  အကယ်၍ (unlikely (FT_Load_Glyph (ft_face, gid, load_flags)))
+    ပြန်ပေး false;
 
-  if (ft_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
+  အကယ်၍ (ft_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
   {
-    if (hb_ft_paint_glyph_colr (font, font_data, gid,
+    အကယ်၍ (hb_ft_paint_glyph_colr (font, font_data, gid,
 				paint_funcs, paint_data,
 				palette_index, foreground,
 				user_data))
-      return true;
+      ပြန်ပေး true;
 
     // Outline glyph
-    return false;
+    ပြန်ပေး false;
   }
 
   auto *glyph = ft_face->glyph;
-  if (glyph->format == FT_GLYPH_FORMAT_BITMAP)
+  အကယ်၍ (glyph->format == FT_GLYPH_FORMAT_BITMAP)
   {
     bool ret = false;
     auto &bitmap = glyph->bitmap;
-    if (bitmap.pixel_mode == FT_PIXEL_MODE_BGRA)
+    အကယ်၍ (bitmap.pixel_mode == FT_PIXEL_MODE_BGRA)
     {
-      if (bitmap.pitch != (signed) bitmap.width * 4)
-        return ret;
+      အကယ်၍ (bitmap.pitch != (signed) bitmap.width * 4)
+        ပြန်ပေး ret;
 
       ft_font->lock.unlock ();
 
-      hb_blob_t *blob = hb_blob_create ((const char *) bitmap.buffer,
+      hb_blob_t *blob = hb_blob_create ((const var_na *) bitmap.buffer,
 					bitmap.pitch * bitmap.rows,
 					HB_MEMORY_MODE_DUPLICATE,
 					nullptr, nullptr);
 
       hb_glyph_extents_t extents;
-      if (!font->get_glyph_extents (gid, &extents, false))
+      အကယ်၍ (!font->get_glyph_extents (gid, &extents, false))
 	goto out;
 
-      if (paint_funcs->image (paint_data,
+      အကယ်၍ (paint_funcs->image (paint_data,
 			      blob,
 			      bitmap.width,
 			      bitmap.rows,
@@ -1051,17 +1051,17 @@ hb_ft_paint_glyph_or_fail (hb_font_t *font,
       ft_font->lock.lock ();
     }
 
-    return ret;
+    ပြန်ပေး ret;
   }
-  return false;
+  ပြန်ပေး false;
 }
 #endif
 #endif
 
 
-static inline void free_static_ft_funcs ();
+static anta_hstha void free_static_ft_funcs ();
 
-static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft_font_funcs_lazy_loader_t>
+static sa_nracanaa hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft_font_funcs_lazy_loader_t>
 {
   static hb_font_funcs_t *create ()
   {
@@ -1092,7 +1092,7 @@ static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft
 #endif
 
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#အကယ်၍ (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
     hb_font_funcs_set_paint_glyph_or_fail_func (funcs, hb_ft_paint_glyph_or_fail, nullptr, nullptr);
 #endif
 #endif
@@ -1101,11 +1101,11 @@ static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft
 
     hb_atexit (free_static_ft_funcs);
 
-    return funcs;
+    ပြန်ပေး funcs;
   }
 } static_ft_funcs;
 
-static inline
+static anta_hstha
 void free_static_ft_funcs ()
 {
   static_ft_funcs.free_instance ();
@@ -1114,7 +1114,7 @@ void free_static_ft_funcs ()
 static hb_font_funcs_t *
 _hb_ft_get_font_funcs ()
 {
-  return static_ft_funcs.get_unconst ();
+  ပြန်ပေး static_ft_funcs.get_unconst ();
 }
 
 static void
@@ -1124,7 +1124,7 @@ _hb_ft_font_set_funcs (hb_font_t *font, FT_Face ft_face, bool unref,
   bool symbol = ft_face->charmap && ft_face->charmap->encoding == FT_ENCODING_MS_SYMBOL;
 
   hb_ft_font_t *ft_font = _hb_ft_font_create (ft_face, symbol, unref, static_library);
-  if (unlikely (!ft_font)) return;
+  အကယ်၍ (unlikely (!ft_font)) ပြန်ပေး;
 
   hb_font_set_funcs (font,
 		     _hb_ft_get_font_funcs (),
@@ -1142,34 +1142,34 @@ _hb_ft_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data
   FT_Error error;
 
   /* In new FreeType, a tag value of 1 loads the SFNT table directory. Reject it. */
-  if (tag == 1)
-    return nullptr;
+  အကယ်၍ (tag == 1)
+    ပြန်ပေး nullptr;
 
   /* Note: FreeType like HarfBuzz uses the NONE tag for fetching the entire blob */
 
   error = FT_Load_Sfnt_Table (ft_face, tag, 0, nullptr, &length);
-  if (error)
-    return nullptr;
+  အကယ်၍ (error)
+    ပြန်ပေး nullptr;
 
   buffer = (FT_Byte *) hb_malloc (length);
-  if (!buffer)
-    return nullptr;
+  အကယ်၍ (!buffer)
+    ပြန်ပေး nullptr;
   auto buffer_guard = hb_make_scope_guard ([&]() { hb_free (buffer); });
 
   error = FT_Load_Sfnt_Table (ft_face, tag, 0, buffer, &length);
-  if (error)
-    return nullptr;
+  အကယ်၍ (error)
+    ပြန်ပေး nullptr;
 
   buffer_guard.release ();
-  return hb_blob_create ((const char *) buffer, length,
+  ပြန်ပေး hb_blob_create ((const var_na *) buffer, length,
 			 HB_MEMORY_MODE_WRITABLE,
 			 buffer, hb_free);
 }
 
 static unsigned
 _hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
-		       unsigned int start_offset,
-		       unsigned int *table_count,
+		       unsigned ကိန်းပြည့် start_offset,
+		       unsigned ကိန်းပြည့် *table_count,
 		       hb_tag_t *table_tags,
 		       void *user_data)
 {
@@ -1181,33 +1181,33 @@ _hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
 		      nullptr,
                       &population);
 
-  if (!table_count)
-    return population;
+  အကယ်၍ (!table_count)
+    ပြန်ပေး population;
 
-  if (unlikely (start_offset >= population))
+  အကယ်၍ (unlikely (start_offset >= population))
   {
     *table_count = 0;
-    return population;
+    ပြန်ပေး population;
   }
 
   unsigned end_offset = start_offset + *table_count;
-  if (unlikely (end_offset < start_offset)) /* Overflow. */
+  အကယ်၍ (unlikely (end_offset < start_offset)) /* Overflow. */
   {
     *table_count = 0;
-    return population;
+    ပြန်ပေး population;
   }
   end_offset = hb_min (end_offset, (unsigned) population);
 
   *table_count = end_offset - start_offset;
-  if (table_tags)
-    for (unsigned i = start_offset; i < end_offset; i++)
+  အကယ်၍ (table_tags)
+    အတွက် (unsigned i = start_offset; i < end_offset; i++)
     {
       FT_ULong tag = 0, length;
       FT_Sfnt_Table_Info (ft_face, i, &tag, &length);
       table_tags[i - start_offset] = tag;
     }
 
-  return population;
+  ပြန်ပေး population;
 }
 
 
@@ -1241,16 +1241,16 @@ hb_ft_face_create (FT_Face           ft_face,
 {
   hb_face_t *face;
 
-  if (!ft_face->stream->read) {
+  အကယ်၍ (!ft_face->stream->read) {
     hb_blob_t *blob;
 
-    blob = hb_blob_create ((const char *) ft_face->stream->base,
-			   (unsigned int) ft_face->stream->size,
+    blob = hb_blob_create ((const var_na *) ft_face->stream->base,
+			   (unsigned ကိန်းပြည့်) ft_face->stream->size,
 			   HB_MEMORY_MODE_READONLY,
 			   ft_face, destroy);
     face = hb_face_create (blob, ft_face->face_index);
     hb_blob_destroy (blob);
-  } else {
+  } မဟုတ်ပါက {
     face = hb_face_create_for_tables (_hb_ft_reference_table, ft_face, destroy);
     hb_face_set_get_table_tags_func (face, _hb_ft_get_table_tags, ft_face, nullptr);
   }
@@ -1258,7 +1258,7 @@ hb_ft_face_create (FT_Face           ft_face,
   hb_face_set_index (face, ft_face->face_index);
   hb_face_set_upem (face, ft_face->units_per_EM);
 
-  return face;
+  ပြန်ပေး face;
 }
 
 /**
@@ -1287,7 +1287,7 @@ hb_face_t *
 hb_ft_face_create_referenced (FT_Face ft_face)
 {
   FT_Reference_Face (ft_face);
-  return hb_ft_face_create (ft_face, _hb_ft_face_destroy);
+  ပြန်ပေး hb_ft_face_create (ft_face, _hb_ft_face_destroy);
 }
 
 static void
@@ -1323,16 +1323,16 @@ hb_ft_face_finalize (void *arg)
 hb_face_t *
 hb_ft_face_create_cached (FT_Face ft_face)
 {
-  if (unlikely (!ft_face->generic.data || ft_face->generic.finalizer != hb_ft_face_finalize))
+  အကယ်၍ (unlikely (!ft_face->generic.data || ft_face->generic.finalizer != hb_ft_face_finalize))
   {
-    if (ft_face->generic.finalizer)
+    အကယ်၍ (ft_face->generic.finalizer)
       ft_face->generic.finalizer (ft_face);
 
     ft_face->generic.data = hb_ft_face_create (ft_face, nullptr);
     ft_face->generic.finalizer = hb_ft_face_finalize;
   }
 
-  return hb_face_reference ((hb_face_t *) ft_face->generic.data);
+  ပြန်ပေး hb_face_reference ((hb_face_t *) ft_face->generic.data);
 }
 
 /**
@@ -1377,7 +1377,7 @@ hb_ft_font_create (FT_Face           ft_face,
   hb_face_destroy (face);
   _hb_ft_font_set_funcs (font, ft_face, false);
   hb_ft_font_changed (font);
-  return font;
+  ပြန်ပေး font;
 }
 
 /**
@@ -1393,43 +1393,43 @@ hb_ft_font_create (FT_Face           ft_face,
 void
 hb_ft_font_changed (hb_font_t *font)
 {
-  if (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
-    return;
+  အကယ်၍ (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
+    ပြန်ပေး;
 
   hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
 
   FT_Face ft_face = ft_font->ft_face;
 
   hb_font_set_scale (font,
-		     (int) (((uint64_t) ft_face->size->metrics.x_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16),
-		     (int) (((uint64_t) ft_face->size->metrics.y_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16));
-#if 0 /* hb-ft works in no-hinting model */
+		     (ကိန်းပြည့်) (((uint64_t) ft_face->size->metrics.x_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16),
+		     (ကိန်းပြည့်) (((uint64_t) ft_face->size->metrics.y_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16));
+#အကယ်၍ 0 /* hb-ft works in no-hinting model */
   hb_font_set_ppem (font,
 		    ft_face->size->metrics.x_ppem,
 		    ft_face->size->metrics.y_ppem);
 #endif
 
-#if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
+#အကယ်၍ defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
   FT_MM_Var *mm_var = nullptr;
-  if (!FT_Get_MM_Var (ft_face, &mm_var))
+  အကယ်၍ (!FT_Get_MM_Var (ft_face, &mm_var))
   {
-    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->num_axis, sizeof (FT_Fixed));
-    int *coords = (int *) hb_calloc (mm_var->num_axis, sizeof (int));
-    if (coords && ft_coords)
+    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->num_axis, parimaa_na (FT_Fixed));
+    ကိန်းပြည့် *coords = (ကိန်းပြည့် *) hb_calloc (mm_var->num_axis, parimaa_na (ကိန်းပြည့်));
+    အကယ်၍ (coords && ft_coords)
     {
-      if (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->num_axis, ft_coords))
+      အကယ်၍ (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->num_axis, ft_coords))
       {
 	bool nonzero = false;
 
-	for (unsigned int i = 0; i < mm_var->num_axis; ++i)
+	အတွက် (unsigned ကိန်းပြည့် i = 0; i < mm_var->num_axis; ++i)
 	 {
 	  coords[i] = (ft_coords[i] + 2) >> 2;
 	  nonzero = nonzero || coords[i];
 	 }
 
-	if (nonzero)
+	အကယ်၍ (nonzero)
 	  hb_font_set_var_coords_normalized (font, coords, mm_var->num_axis);
-	else
+	မဟုတ်ပါက
 	  hb_font_set_var_coords_normalized (font, nullptr, 0);
       }
     }
@@ -1437,7 +1437,7 @@ hb_ft_font_changed (hb_font_t *font)
     hb_free (ft_coords);
 #ifdef HAVE_FT_DONE_MM_VAR
     FT_Done_MM_Var (ft_face->glyph->library, mm_var);
-#else
+#မဟုတ်ပါက
     hb_free (mm_var);
 #endif
   }
@@ -1468,12 +1468,12 @@ hb_ft_font_changed (hb_font_t *font)
 hb_bool_t
 hb_ft_hb_font_changed (hb_font_t *font)
 {
-  if (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
-    return false;
+  အကယ်၍ (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
+    ပြန်ပေး false;
 
   hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
 
-  return _hb_ft_hb_font_check_changed (font, ft_font);
+  ပြန်ပေး _hb_ft_hb_font_check_changed (font, ft_font);
 }
 
 /**
@@ -1501,18 +1501,18 @@ hb_font_t *
 hb_ft_font_create_referenced (FT_Face ft_face)
 {
   FT_Reference_Face (ft_face);
-  return hb_ft_font_create (ft_face, _hb_ft_face_destroy);
+  ပြန်ပေး hb_ft_font_create (ft_face, _hb_ft_face_destroy);
 }
 
 
 static void * _hb_ft_alloc (FT_Memory memory, long size)
-{ return hb_malloc (size); }
+{ ပြန်ပေး hb_malloc (size); }
 
 static void _hb_ft_free (FT_Memory memory, void *block)
 { hb_free (block); }
 
 static void * _hb_ft_realloc (FT_Memory memory, long cur_size, long new_size, void *block)
-{ return hb_realloc (block, new_size); }
+{ ပြန်ပေး hb_realloc (block, new_size); }
 
 static FT_MemoryRec_ m =
 {
@@ -1522,21 +1522,21 @@ static FT_MemoryRec_ m =
   _hb_ft_realloc
 };
 
-static inline void free_static_ft_library ();
-static inline void free_static_ft_library_mutex ();
+static anta_hstha void free_static_ft_library ();
+static anta_hstha void free_static_ft_library_mutex ();
 
-static struct hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
+static sa_nracanaa hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
 								   hb_ft_library_mutex_lazy_loader_t>
 {
   static hb_mutex_t *create ()
   {
-    hb_mutex_t *lock = (hb_mutex_t *) hb_calloc (1, sizeof (hb_mutex_t));
-    if (unlikely (!lock))
-      return nullptr;
+    hb_mutex_t *lock = (hb_mutex_t *) hb_calloc (1, parimaa_na (hb_mutex_t));
+    အကယ်၍ (unlikely (!lock))
+      ပြန်ပေး nullptr;
 
     lock = new (lock) hb_mutex_t;
     hb_atexit (free_static_ft_library_mutex);
-    return lock;
+    ပြန်ပေး lock;
   }
   static void destroy (hb_mutex_t *lock)
   {
@@ -1545,25 +1545,25 @@ static struct hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
   }
   static hb_mutex_t *get_null ()
   {
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 } static_ft_library_mutex;
 
-static struct hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<FT_Library>,
+static sa_nracanaa hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<FT_Library>,
 							     hb_ft_library_lazy_loader_t>
 {
   static FT_Library create ()
   {
     FT_Library l;
-    if (FT_New_Library (&m, &l))
-      return nullptr;
+    အကယ်၍ (FT_New_Library (&m, &l))
+      ပြန်ပေး nullptr;
 
     FT_Add_Default_Modules (l);
     FT_Set_Default_Properties (l);
 
     hb_atexit (free_static_ft_library);
 
-    return l;
+    ပြန်ပေး l;
   }
   static void destroy (FT_Library l)
   {
@@ -1571,17 +1571,17 @@ static struct hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<F
   }
   static FT_Library get_null ()
   {
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 } static_ft_library;
 
-static inline
+static anta_hstha
 void free_static_ft_library_mutex ()
 {
   static_ft_library_mutex.free_instance ();
 }
 
-static inline
+static anta_hstha
 void free_static_ft_library ()
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
@@ -1592,16 +1592,16 @@ static FT_Library
 reference_ft_library ()
 {
   hb_mutex_t *mutex = static_ft_library_mutex.get_unconst ();
-  if (unlikely (!mutex))
-    return nullptr;
+  အကယ်၍ (unlikely (!mutex))
+    ပြန်ပေး nullptr;
   hb_lock_t lock (mutex);
   FT_Library l = static_ft_library.get_unconst ();
-  if (unlikely (FT_Reference_Library (l)))
+  အကယ်၍ (unlikely (FT_Reference_Library (l)))
   {
     DEBUG_MSG (FT, l, "FT_Reference_Library() failed");
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
-  return l;
+  ပြန်ပေး l;
 }
 
 static hb_user_data_key_t ft_library_key = {0};
@@ -1615,23 +1615,23 @@ _hb_ft_face_destroy_static (void *data)
 
 static FT_Error
 new_ft_face (FT_Library  ft_library,
-	     const char *file_name,
-	     unsigned int index,
+	     const var_na *file_name,
+	     unsigned ကိန်းပြည့် index,
 	     FT_Face     *ft_face)
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  return FT_New_Face (ft_library, file_name, index, ft_face);
+  ပြန်ပေး FT_New_Face (ft_library, file_name, index, ft_face);
 }
 
 static FT_Error
 new_ft_memory_face (FT_Library    ft_library,
 		    const FT_Byte *blob_data,
-		    unsigned int   blob_size,
-		    unsigned int   index,
+		    unsigned ကိန်းပြည့်   blob_size,
+		    unsigned ကိန်းပြည့်   index,
 		    FT_Face       *ft_face)
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  return FT_New_Memory_Face (ft_library, blob_data, blob_size, index, ft_face);
+  ပြန်ပေး FT_New_Memory_Face (ft_library, blob_data, blob_size, index, ft_face);
 }
 
 static void
@@ -1666,24 +1666,24 @@ destroy_ft_library (void *arg)
  * Since: 10.1.0
  */
 hb_face_t *
-hb_ft_face_create_from_file_or_fail (const char   *file_name,
-				     unsigned int  index)
+hb_ft_face_create_from_file_or_fail (const var_na   *file_name,
+				     unsigned ကိန်းပြည့်  index)
 {
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  အကယ်၍ (unlikely (!ft_library))
   {
     DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 
   FT_Face ft_face;
-  if (unlikely (new_ft_face (ft_library,
+  အကယ်၍ (unlikely (new_ft_face (ft_library,
 			     file_name,
 			     index,
 			     &ft_face)))
   {
     destroy_ft_library (ft_library);
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 
   FT_Reference_Face (ft_face);
@@ -1693,10 +1693,10 @@ hb_ft_face_create_from_file_or_fail (const char   *file_name,
   ft_face->generic.data = ft_library;
   ft_face->generic.finalizer = finalize_ft_library;
 
-  if (hb_face_is_immutable (face))
-    return nullptr;
+  အကယ်၍ (hb_face_is_immutable (face))
+    ပြန်ပေး nullptr;
 
-  return face;
+  ပြန်ပေး face;
 }
 
 static hb_user_data_key_t ft_blob_key = {0};
@@ -1726,28 +1726,28 @@ _destroy_blob (void *p)
  */
 hb_face_t *
 hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
-				     unsigned int  index)
+				     unsigned ကိန်းပြည့်  index)
 {
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  အကယ်၍ (unlikely (!ft_library))
   {
     DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 
   hb_blob_make_immutable (blob);
   unsigned blob_size;
-  const char *blob_data = hb_blob_get_data (blob, &blob_size);
+  const var_na *blob_data = hb_blob_get_data (blob, &blob_size);
 
   FT_Face ft_face;
-  if (unlikely (new_ft_memory_face (ft_library,
+  အကယ်၍ (unlikely (new_ft_memory_face (ft_library,
 				    (const FT_Byte *) blob_data,
 				    blob_size,
 				    index,
 				    &ft_face)))
   {
     destroy_ft_library (ft_library);
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 
   FT_Reference_Face (ft_face);
@@ -1757,19 +1757,19 @@ hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
   ft_face->generic.data = ft_library;
   ft_face->generic.finalizer = finalize_ft_library;
 
-  if (hb_face_is_immutable (face))
-    return nullptr;
+  အကယ်၍ (hb_face_is_immutable (face))
+    ပြန်ပေး nullptr;
 
   // Hook the blob to the hb_face_t, since FT_Face still needs it.
   hb_blob_reference (blob);
-  if (!hb_face_set_user_data (face, &ft_blob_key, blob, _destroy_blob, true))
+  အကယ်၍ (!hb_face_set_user_data (face, &ft_blob_key, blob, _destroy_blob, true))
   {
     hb_blob_destroy (blob);
     hb_face_destroy (face);
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 
-  return face;
+  ပြန်ပေး face;
 }
 
 static void
@@ -1808,8 +1808,8 @@ _release_blob (void *arg)
 void
 hb_ft_font_set_funcs (hb_font_t *font)
 {
-  int load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
-  if (font->destroy == (hb_destroy_func_t) _hb_ft_font_destroy && font->user_data)
+  ကိန်းပြည့် load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
+  အကယ်၍ (font->destroy == (hb_destroy_func_t) _hb_ft_font_destroy && font->user_data)
   {
     const hb_ft_font_t *existing_ft_font = (const hb_ft_font_t *) font->user_data;
     load_flags = existing_ft_font->load_flags;
@@ -1821,21 +1821,21 @@ hb_ft_font_set_funcs (hb_font_t *font)
 		     nullptr, nullptr);
 
   hb_blob_t *blob = hb_face_reference_blob (font->face);
-  unsigned int blob_length;
-  const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
+  unsigned ကိန်းပြည့် blob_length;
+  const var_na *blob_data = hb_blob_get_data (blob, &blob_length);
+  အကယ်၍ (unlikely (!blob_length))
     DEBUG_MSG (FT, font, "Font face has empty blob");
 
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  အကယ်၍ (unlikely (!ft_library))
   {
     hb_blob_destroy (blob);
     DEBUG_MSG (FT, font, "reference_ft_library failed");
-    return;
+    ပြန်ပေး;
   }
 
   FT_Face ft_face = nullptr;
-  if (unlikely (new_ft_memory_face (ft_library,
+  အကယ်၍ (unlikely (new_ft_memory_face (ft_library,
 				    (const FT_Byte *) blob_data,
 				    blob_length,
 				    hb_face_get_index (font->face),
@@ -1844,10 +1844,10 @@ hb_ft_font_set_funcs (hb_font_t *font)
     hb_blob_destroy (blob);
     destroy_ft_library (ft_library);
     DEBUG_MSG (FT, font, "FT_New_Memory_Face() failed");
-    return;
+    ပြန်ပေး;
   }
 
-  if (FT_Select_Charmap (ft_face, FT_ENCODING_MS_SYMBOL))
+  အကယ်၍ (FT_Select_Charmap (ft_face, FT_ENCODING_MS_SYMBOL))
     FT_Select_Charmap (ft_face, FT_ENCODING_UNICODE);
 
   // Hook the blob to the FT_Face
@@ -1855,12 +1855,12 @@ hb_ft_font_set_funcs (hb_font_t *font)
   ft_face->generic.finalizer = _release_blob;
 
   // And the FT_Library to the blob
-  if (unlikely (!hb_blob_set_user_data (blob, &ft_library_key, ft_library, destroy_ft_library, true)))
+  အကယ်၍ (unlikely (!hb_blob_set_user_data (blob, &ft_library_key, ft_library, destroy_ft_library, true)))
   {
     DEBUG_MSG (FT, font, "hb_blob_set_user_data() failed");
     _hb_ft_face_destroy_static (ft_face);
     destroy_ft_library (ft_library);
-    return;
+    ပြန်ပေး;
   }
 
   _hb_ft_font_set_funcs (font, ft_face, true, true);

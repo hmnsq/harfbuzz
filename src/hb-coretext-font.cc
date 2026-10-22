@@ -35,7 +35,7 @@
 #include "hb-font.hh"
 #include "hb-machinery.hh"
 
-#if (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
+#အကယ်၍ (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
     || (defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__ < 60000) \
     || (defined(__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__ < 90000)
 #  define kCTFontOrientationDefault kCTFontDefaultOrientation
@@ -58,34 +58,34 @@ hb_coretext_get_nominal_glyph (hb_font_t *font,
   CGGlyph cg_glyph[2];
   unsigned count = 0;
 
-  if (unicode <= 0xFFFF)
+  အကယ်၍ (unicode <= 0xFFFF)
   {
     ch[count++] = unicode;
   }
-  else if (unicode <= 0x10FFFF)
+  မဟုတ်ပါက အကယ်၍ (unicode <= 0x10FFFF)
   {
     ch[count++] = (unicode >> 10) + 0xD7C0;
     ch[count++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
+  မဟုတ်ပါက
     ch[count++] = 0xFFFD;
 
-  if (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count))
+  အကယ်၍ (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count))
   {
     *glyph = cg_glyph[0];
-    return true;
+    ပြန်ပေး true;
   }
-  return false;
+  ပြန်ပေး false;
 }
 
-static unsigned int
+static unsigned ကိန်းပြည့်
 hb_coretext_get_nominal_glyphs (hb_font_t *font,
 				void *font_data,
-				unsigned int count,
+				unsigned ကိန်းပြည့် count,
 				const hb_codepoint_t *first_unicode,
-				unsigned int unicode_stride,
+				unsigned ကိန်းပြည့် unicode_stride,
 				hb_codepoint_t *first_glyph,
-				unsigned int glyph_stride,
+				unsigned ကိန်းပြည့် glyph_stride,
 				void *user_data HB_UNUSED)
 {
   CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
@@ -93,56 +93,56 @@ hb_coretext_get_nominal_glyphs (hb_font_t *font,
   // If any non-BMP codepoint is requested, use the slow path.
   bool slow_path = false;
   auto *unicode = first_unicode;
-  for (unsigned i = 0; i < count; i++)
+  အတွက် (unsigned i = 0; i < count; i++)
   {
-    if (*unicode > 0xFFFF)
+    အကယ်၍ (*unicode > 0xFFFF)
     {
       slow_path = true;
-      break;
+      bha_nga;
     }
     unicode = &StructAtOffset<const hb_codepoint_t> (unicode, unicode_stride);
   }
 
-  if (unlikely (slow_path))
+  အကယ်၍ (unlikely (slow_path))
   {
-    for (unsigned i = 0; i < count; i++)
+    အတွက် (unsigned i = 0; i < count; i++)
     {
-      if (!hb_coretext_get_nominal_glyph (font, font_data, *first_unicode, first_glyph, nullptr))
-	return i;
+      အကယ်၍ (!hb_coretext_get_nominal_glyph (font, font_data, *first_unicode, first_glyph, nullptr))
+	ပြန်ပေး i;
       first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return count;
+    ပြန်ပေး count;
   }
 
   UniChar ch[MAX_GLYPHS];
   CGGlyph cg_glyph[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  အတွက် (unsigned i = 0; i < count; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((ကိန်းပြည့်) MAX_GLYPHS, (ကိန်းပြည့်) count - (ကိန်းပြည့်) i);
+    အတွက် (unsigned j = 0; j < c; j++)
     {
       ch[j] = *first_unicode;
       first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
     }
-    if (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
+    အကယ်၍ (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
     {
       // Use slow path partially and return at first failure.
-      for (unsigned j = 0; j < c; j++)
+      အတွက် (unsigned j = 0; j < c; j++)
       {
-	if (!hb_coretext_get_nominal_glyph (font, font_data, ch[j], first_glyph, nullptr))
-	  return i + j;
+	အကယ်၍ (!hb_coretext_get_nominal_glyph (font, font_data, ch[j], first_glyph, nullptr))
+	  ပြန်ပေး i + j;
 	first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
       }
     }
-    for (unsigned j = 0; j < c; j++)
+    အတွက် (unsigned j = 0; j < c; j++)
     {
       *first_glyph = cg_glyph[j];
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
   }
 
-  return count;
+  ပြန်ပေး count;
 }
 
 static hb_bool_t
@@ -161,39 +161,39 @@ hb_coretext_get_variation_glyph (hb_font_t *font,
 
   // Add Unicode, then variation selector. Ugly, but works.
   //
-  if (unicode <= 0xFFFF)
+  အကယ်၍ (unicode <= 0xFFFF)
     ch[count++] = unicode;
-  else if (unicode <= 0x10FFFF)
+  မဟုတ်ပါက အကယ်၍ (unicode <= 0x10FFFF)
   {
     ch[count++] = (unicode >> 10) + 0xD7C0;
     ch[count++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
+  မဟုတ်ပါက
     ch[count++] = 0xFFFD;
 
-  if (variation_selector <= 0xFFFF)
+  အကယ်၍ (variation_selector <= 0xFFFF)
     ch[count++] = variation_selector;
-  else if (variation_selector <= 0x10FFFF)
+  မဟုတ်ပါက အကယ်၍ (variation_selector <= 0x10FFFF)
   {
     ch[count++] = (variation_selector >> 10) + 0xD7C0;
     ch[count++] = (variation_selector & 0x3FF) + 0xDC00;
   }
-  else
+  မဟုတ်ပါက
     ch[count++] = 0xFFFD;
 
   CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count);
 
   // All except for first should be zero if we succeeded
-  for (unsigned i = 1; i < count; i++)
-    if (cg_glyph[i])
-      return false;
+  အတွက် (unsigned i = 1; i < count; i++)
+    အကယ်၍ (cg_glyph[i])
+      ပြန်ပေး false;
 
   // Humm. CoreText falls back to the default glyph if the variation selector
   // is not supported.  We cannot truly detect that case. So, in essence,
   // we are always returning true here...
 
   *glyph = cg_glyph[0];
-  return true;
+  ပြန်ပေး true;
 }
 
 static void
@@ -214,19 +214,19 @@ hb_coretext_get_glyph_h_advances (hb_font_t* font,
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  အတွက် (unsigned i = 0; i < count; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((ကိန်းပြည့်) MAX_GLYPHS, (ကိန်းပြည့်) count - (ကိန်းပြည့်) i);
+    အတွက် (unsigned j = 0; j < c; j++)
     {
       cg_glyph[j] = *first_glyph;
       first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationHorizontal, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    အတွက် (unsigned j = 0; j < c; j++)
     {
       *first_advance = hb_clamp_to<hb_position_t> (
-	  round (advances[j].width * x_mult) - (double) tracking);
+	  round (advances[j].width * x_mult) - (dviguu_na) tracking);
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
     }
   }
@@ -251,19 +251,19 @@ hb_coretext_get_glyph_v_advances (hb_font_t* font,
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  အတွက် (unsigned i = 0; i < count; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((ကိန်းပြည့်) MAX_GLYPHS, (ကိန်းပြည့်) count - (ကိန်းပြည့်) i);
+    အတွက် (unsigned j = 0; j < c; j++)
     {
       cg_glyph[j] = *first_glyph;
       first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationVertical, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    အတွက် (unsigned j = 0; j < c; j++)
     {
       *first_advance = hb_clamp_to<hb_position_t> (
-	  round (advances[j].width * y_mult) - (double) tracking);
+	  round (advances[j].width * y_mult) - (dviguu_na) tracking);
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
     }
   }
@@ -290,7 +290,7 @@ hb_coretext_get_glyph_v_origin (hb_font_t *font,
   *x = hb_clamp_to<hb_position_t> (round (x_mult * origin.width));
   *y = hb_clamp_to<hb_position_t> (round (y_mult * origin.height));
 
-  return true;
+  ပြန်ပေး true;
 }
 #endif
 
@@ -311,14 +311,14 @@ hb_coretext_get_glyph_extents (hb_font_t *font,
   CGRect bounds = ::CTFontGetBoundingRectsForGlyphs(ct_font,
 						    kCTFontOrientationDefault, glyphs, NULL, 1);
 
-  double y_bearing = round ((bounds.origin.y + bounds.size.height) * y_mult);
+  dviguu_na y_bearing = round ((bounds.origin.y + bounds.size.height) * y_mult);
 
   extents->x_bearing = hb_clamp_to<hb_position_t> (round (bounds.origin.x * x_mult));
   extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
   extents->width = hb_clamp_to<hb_position_t> (round (bounds.size.width * x_mult));
   extents->height = hb_clamp_to<hb_position_t> (round (bounds.origin.y * y_mult) - y_bearing);
 
-  return true;
+  ပြန်ပေး true;
 }
 
 static hb_bool_t
@@ -336,7 +336,7 @@ hb_coretext_get_font_h_extents (hb_font_t *font,
   metrics->descender = hb_clamp_to<hb_position_t> (-round (CTFontGetDescent (ct_font) * y_mult));
   metrics->line_gap = hb_clamp_to<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
 
-  return true;
+  ပြန်ပေး true;
 }
 
 #ifndef HB_NO_DRAW
@@ -348,24 +348,24 @@ ct_apply_func (void *info, const CGPathElement *element)
 
   switch (element->type)
   {
-  case kCGPathElementMoveToPoint:
+  pak_sa kCGPathElementMoveToPoint:
     draws->move_to (element->points[0].x, element->points[0].y);
-    break;
-  case kCGPathElementAddLineToPoint:
+    bha_nga;
+  pak_sa kCGPathElementAddLineToPoint:
     draws->line_to (element->points[0].x, element->points[0].y);
-    break;
-  case kCGPathElementAddQuadCurveToPoint:
+    bha_nga;
+  pak_sa kCGPathElementAddQuadCurveToPoint:
     draws->quadratic_to (element->points[0].x, element->points[0].y,
 			 element->points[1].x, element->points[1].y);
-    break;
-  case kCGPathElementAddCurveToPoint:
+    bha_nga;
+  pak_sa kCGPathElementAddCurveToPoint:
     draws->cubic_to (element->points[0].x, element->points[0].y,
 		     element->points[1].x, element->points[1].y,
 		     element->points[2].x, element->points[2].y);
-    break;
-  case kCGPathElementCloseSubpath:
+    bha_nga;
+  pak_sa kCGPathElementCloseSubpath:
     draws->close_path ();
-    break;
+    bha_nga;
   }
 }
 
@@ -386,14 +386,14 @@ hb_coretext_draw_glyph_or_fail (hb_font_t *font,
   transform = CGAffineTransformScale (transform, x_mult, y_mult);
 
   hb_cf_ptr_t<CGPathRef> path (CTFontCreatePathForGlyph (ct_font, glyph, &transform));
-  if (!path)
-    return false;
+  အကယ်၍ (!path)
+    ပြန်ပေး false;
 
   hb_draw_session_t drawing {draw_funcs, draw_data};
 
   CGPathApply (path, &drawing, ct_apply_func);
 
-  return true;
+  ပြန်ပေး true;
 }
 #endif
 
@@ -401,21 +401,21 @@ static hb_bool_t
 hb_coretext_get_glyph_name (hb_font_t *font,
 			    void *font_data HB_UNUSED,
 			    hb_codepoint_t glyph,
-			    char *name, unsigned int size,
+			    var_na *name, unsigned ကိန်းပြည့် size,
 			    void *user_data HB_UNUSED)
 {
   CGFontRef cg_font = (CGFontRef) (const void *) font->face->data.coretext;
 
   CGGlyph cg_glyph = glyph;
   hb_cf_ptr_t<CFStringRef> cf_name (CGFontCopyGlyphNameForGlyph (cg_font, cg_glyph));
-  if (!cf_name)
-    return false;
+  အကယ်၍ (!cf_name)
+    ပြန်ပေး false;
 
-  if (!size)
-    return true;
+  အကယ်၍ (!size)
+    ပြန်ပေး true;
 
   CFIndex len = CFStringGetLength (cf_name);
-  if (len > (CFIndex)size - 1)
+  အကယ်၍ (len > (CFIndex)size - 1)
     len = (CFIndex)size - 1;
 
   CFStringGetBytes (cf_name, CFRangeMake (0, len),
@@ -424,19 +424,19 @@ hb_coretext_get_glyph_name (hb_font_t *font,
 
   name[len] = '\0';
 
-  return true;
+  ပြန်ပေး true;
 }
 
 static hb_bool_t
 hb_coretext_get_glyph_from_name (hb_font_t *font,
 				 void *font_data HB_UNUSED,
-				 const char *name, int len,
+				 const var_na *name, ကိန်းပြည့် len,
 				 hb_codepoint_t *glyph,
 				 void *user_data HB_UNUSED)
 {
   CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
 
-  if (len == -1)
+  အကယ်၍ (len == -1)
     len = strlen (name);
 
   hb_cf_ptr_t<CFStringRef> cf_name (CFStringCreateWithBytes (kCFAllocatorDefault,
@@ -447,13 +447,13 @@ hb_coretext_get_glyph_from_name (hb_font_t *font,
 
   // TODO Return true for .notdef; hb-ft does that.
 
-  return cg_glyph != 0;
+  ပြန်ပေး cg_glyph != 0;
 }
 
 
-static inline void free_static_coretext_funcs ();
+static anta_hstha void free_static_coretext_funcs ();
 
-static struct hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_coretext_font_funcs_lazy_loader_t>
+static sa_nracanaa hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_coretext_font_funcs_lazy_loader_t>
 {
   static hb_font_funcs_t *create ()
   {
@@ -486,11 +486,11 @@ static struct hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t
 
     hb_atexit (free_static_coretext_funcs);
 
-    return funcs;
+    ပြန်ပေး funcs;
   }
 } static_coretext_funcs;
 
-static inline
+static anta_hstha
 void free_static_coretext_funcs ()
 {
   static_coretext_funcs.free_instance ();
@@ -499,7 +499,7 @@ void free_static_coretext_funcs ()
 static hb_font_funcs_t *
 _hb_coretext_get_font_funcs ()
 {
-  return static_coretext_funcs.get_unconst ();
+  ပြန်ပေး static_coretext_funcs.get_unconst ();
 }
 
 
@@ -525,12 +525,12 @@ void
 hb_coretext_font_set_funcs (hb_font_t *font)
 {
   CTFontRef ct_font = hb_coretext_font_get_ct_font (font);
-  if (unlikely (!ct_font))
+  အကယ်၍ (unlikely (!ct_font))
   {
     hb_font_set_funcs (font,
 		       hb_font_funcs_get_empty (),
 		       nullptr, nullptr);
-    return;
+    ပြန်ပေး;
   }
 
   hb_font_set_funcs (font,

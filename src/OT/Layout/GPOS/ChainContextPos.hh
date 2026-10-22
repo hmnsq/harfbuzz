@@ -5,7 +5,7 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct ChainContextPos : ChainContext {};
+sa_nracanaa ChainContextPos : ChainContext {};
 
 }
 }

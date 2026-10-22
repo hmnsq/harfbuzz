@@ -41,51 +41,51 @@
 static hb_position_t
 hb_directwrite_scale_x (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_x ((int16_t) value);
-  return font->em_scalef_x ((float) value);
+  အကယ်၍ (value >= INT16_MIN && value <= INT16_MAX)
+    ပြန်ပေး font->em_scale_x ((int16_t) value);
+  ပြန်ပေး font->em_scalef_x ((float) value);
 }
 
 static hb_position_t
 hb_directwrite_scale_y (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_y ((int16_t) value);
-  return font->em_scalef_y ((float) value);
+  အကယ်၍ (value >= INT16_MIN && value <= INT16_MAX)
+    ပြန်ပေး font->em_scale_y ((int16_t) value);
+  ပြန်ပေး font->em_scalef_y ((float) value);
 }
 
-static unsigned int
+static unsigned ကိန်းပြည့်
 hb_directwrite_get_nominal_glyphs (hb_font_t *font,
 				   void *font_data HB_UNUSED,
-				   unsigned int count,
+				   unsigned ကိန်းပြည့် count,
 				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+				   unsigned ကိန်းပြည့် unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride,
+				   unsigned ကိန်းပြည့် glyph_stride,
 				   void *user_data HB_UNUSED)
 {
   IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
 
-  for (unsigned i = 0; i < count;)
+  အတွက် (unsigned i = 0; i < count;)
   {
     UINT32 unicodes[MAX_GLYPHS];
     UINT16 gids[MAX_GLYPHS];
 
     unsigned n = hb_min (MAX_GLYPHS, count - i);
 
-    for (unsigned j = 0; j < n; j++)
+    အတွက် (unsigned j = 0; j < n; j++)
     {
       unicodes[j] = *first_unicode;
       first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
     }
 
-    if (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
-      return i;
+    အကယ်၍ (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
+      ပြန်ပေး i;
 
-    for (unsigned j = 0; j < n; j++)
+    အတွက် (unsigned j = 0; j < n; j++)
     {
-      if (!gids[j])
-        return i + j;
+      အကယ်၍ (!gids[j])
+        ပြန်ပေး i + j;
       *first_glyph = gids[j];
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
@@ -93,7 +93,7 @@ hb_directwrite_get_nominal_glyphs (hb_font_t *font,
     i += n;
   }
 
-  return count;
+  ပြန်ပေး count;
 }
 
 static hb_bool_t
@@ -111,7 +111,7 @@ hb_directwrite_get_font_h_extents (hb_font_t *font,
   metrics->descender = hb_saturate_neg (hb_directwrite_scale_y (font, dw_metrics.descent));
   metrics->line_gap = hb_directwrite_scale_y (font, dw_metrics.lineGap);
 
-  return true;
+  ပြန်ပေး true;
 }
 
 static void
@@ -130,23 +130,23 @@ hb_directwrite_get_glyph_h_advances (hb_font_t* font,
   dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
   assert (dw_face1);
 
-  unsigned int num_glyphs = font->face->get_num_glyphs ();
+  unsigned ကိန်းပြည့် num_glyphs = font->face->get_num_glyphs ();
 
-  for (unsigned i = 0; i < count;)
+  အတွက် (unsigned i = 0; i < count;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
     unsigned n = hb_min (MAX_GLYPHS, count - i);
 
-    for (unsigned j = 0; j < n; j++)
+    အတွက် (unsigned j = 0; j < n; j++)
     {
       gids[j] = *first_glyph;
       advances[j] = 0;
       first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
     }
     dw_face1->GetDesignGlyphAdvances (n, gids, advances, false);
-    for (unsigned j = 0; j < n; j++)
+    အတွက် (unsigned j = 0; j < n; j++)
     {
       // https://github.com/harfbuzz/harfbuzz/issues/5319
       auto advance = gids[j] < num_glyphs ? advances[j] : 0;
@@ -176,21 +176,21 @@ hb_directwrite_get_glyph_v_advances (hb_font_t* font,
   dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
   assert (dw_face1);
 
-  for (unsigned i = 0; i < count;)
+  အတွက် (unsigned i = 0; i < count;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
     unsigned n = hb_min (MAX_GLYPHS, count - i);
 
-    for (unsigned j = 0; j < n; j++)
+    အတွက် (unsigned j = 0; j < n; j++)
     {
       gids[j] = *first_glyph;
       advances[j] = 0;
       first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
     }
     dw_face1->GetDesignGlyphAdvances (n, gids, advances, true);
-    for (unsigned j = 0; j < n; j++)
+    အတွက် (unsigned j = 0; j < n; j++)
     {
       *first_advance = hb_saturate_neg (hb_directwrite_scale_y (font, advances[j]));
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
@@ -213,13 +213,13 @@ hb_directwrite_get_glyph_v_origin (hb_font_t *font,
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  အကယ်၍ (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    ပြန်ပေး false;
 
   *x = hb_directwrite_scale_x (font, metrics.advanceWidth / 2);
   *y = hb_directwrite_scale_y (font, metrics.verticalOriginY); // Untested
 
-  return true;
+  ပြန်ပေး true;
 }
 #endif
 
@@ -235,8 +235,8 @@ hb_directwrite_get_glyph_extents (hb_font_t *font,
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  အကယ်၍ (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    ပြန်ပေး false;
 
   int64_t right = (int64_t) metrics.advanceWidth - metrics.rightSideBearing;
   int64_t top = (int64_t) metrics.verticalOriginY - metrics.topSideBearing;
@@ -248,7 +248,7 @@ hb_directwrite_get_glyph_extents (hb_font_t *font,
   extents->height = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
 				     extents->y_bearing); // Magic
 
-  return true;
+  ပြန်ပေး true;
 }
 
 
@@ -265,13 +265,13 @@ public:
 	       void *draw_data)
     : font (font), drawing ({draw_funcs, draw_data}) {}
 
-  HRESULT STDMETHODCALLTYPE Close() override { return S_OK; }
+  HRESULT STDMETHODCALLTYPE Close() override { ပြန်ပေး S_OK; }
   void STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
   void STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
 
-  IFACEMETHOD(QueryInterface)(REFIID, void **) override { return E_NOINTERFACE; }
-  IFACEMETHOD_(ULONG, AddRef)() override { return 1; }
-  IFACEMETHOD_(ULONG, Release)() override { return 1; }
+  IFACEMETHOD(QueryInterface)(REFIID, void **) override { ပြန်ပေး E_NOINTERFACE; }
+  IFACEMETHOD_(ULONG, AddRef)() override { ပြန်ပေး 1; }
+  IFACEMETHOD_(ULONG, Release)() override { ပြန်ပေး 1; }
 
   void STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F startPoint, D2D1_FIGURE_BEGIN) override
   {
@@ -280,7 +280,7 @@ public:
 
   void STDMETHODCALLTYPE AddBeziers(const D2D1_BEZIER_SEGMENT *beziers, UINT beziersCount) override
   {
-    for (unsigned i = 0; i < beziersCount; ++i)
+    အတွက် (unsigned i = 0; i < beziersCount; ++i)
       drawing.cubic_to (font->em_scalef_x (beziers[i].point1.x), -(float) font->em_scalef_y (beziers[i].point1.y),
 			font->em_scalef_x (beziers[i].point2.x), -(float) font->em_scalef_y (beziers[i].point2.y),
 			font->em_scalef_x (beziers[i].point3.x), -(float) font->em_scalef_y (beziers[i].point3.y));
@@ -288,7 +288,7 @@ public:
 
   void STDMETHODCALLTYPE AddLines(const D2D1_POINT_2F *points, UINT pointsCount) override
   {
-    for (unsigned i = 0; i < pointsCount; ++i)
+    အတွက် (unsigned i = 0; i < pointsCount; ++i)
       drawing.line_to (font->em_scalef_x (points[i].x), -(float) font->em_scalef_y (points[i].y));
   }
 
@@ -311,7 +311,7 @@ hb_directwrite_draw_glyph_or_fail (hb_font_t *font,
   UINT16 gid = static_cast<UINT16>(glyph);
   unsigned upem = font->face->get_upem();
 
-  return S_OK == dw_face->GetGlyphRunOutline (upem,
+  ပြန်ပေး S_OK == dw_face->GetGlyphRunOutline (upem,
 					      &gid, nullptr, nullptr,
 					      1,
 					      false, false,
@@ -320,9 +320,9 @@ hb_directwrite_draw_glyph_or_fail (hb_font_t *font,
 
 #endif
 
-static inline void free_static_directwrite_funcs ();
+static anta_hstha void free_static_directwrite_funcs ();
 
-static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
+static sa_nracanaa hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
 {
   static hb_font_funcs_t *create ()
   {
@@ -354,11 +354,11 @@ static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loade
 
     hb_atexit (free_static_directwrite_funcs);
 
-    return funcs;
+    ပြန်ပေး funcs;
   }
 } static_directwrite_funcs;
 
-static inline
+static anta_hstha
 void free_static_directwrite_funcs ()
 {
   static_directwrite_funcs.free_instance ();
@@ -367,7 +367,7 @@ void free_static_directwrite_funcs ()
 static hb_font_funcs_t *
 _hb_directwrite_get_font_funcs ()
 {
-  return static_directwrite_funcs.get_unconst ();
+  ပြန်ပေး static_directwrite_funcs.get_unconst ();
 }
 
 /**
@@ -392,12 +392,12 @@ void
 hb_directwrite_font_set_funcs (hb_font_t *font)
 {
   IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
-  if (unlikely (!dw_face))
+  အကယ်၍ (unlikely (!dw_face))
   {
     hb_font_set_funcs (font,
 		       hb_font_funcs_get_empty (),
 		       nullptr, nullptr);
-    return;
+    ပြန်ပေး;
   }
 
   dw_face->AddRef ();

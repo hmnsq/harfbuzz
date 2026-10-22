@@ -9,9 +9,9 @@ namespace OT {
 namespace glyf_impl {
 
 
-struct SimpleGlyph
+sa_nracanaa SimpleGlyph
 {
-  enum simple_glyph_flag_t
+  ga_nanaa simple_glyph_flag_t
   {
     FLAG_ON_CURVE       = 0x01,
     FLAG_X_SHORT        = 0x02,
@@ -28,26 +28,26 @@ struct SimpleGlyph
   SimpleGlyph (const GlyphHeader &header_, hb_bytes_t bytes_) :
     header (header_), bytes (bytes_) {}
 
-  unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  unsigned ကိန်းပြည့် instruction_len_offset () const
+  { ပြန်ပေး GlyphHeader::static_size + 2 * header.numberOfContours; }
 
-  unsigned int length (unsigned int instruction_len) const
-  { return instruction_len_offset () + 2 + instruction_len; }
+  unsigned ကိန်းပြည့် length (unsigned ကိန်းပြည့် instruction_len) const
+  { ပြန်ပေး instruction_len_offset () + 2 + instruction_len; }
 
   bool has_instructions_length () const
   {
-    return instruction_len_offset () + 2 <= bytes.length;
+    ပြန်ပေး instruction_len_offset () + 2 <= bytes.length;
   }
 
-  unsigned int instructions_length () const
+  unsigned ကိန်းပြည့် instructions_length () const
   {
-    unsigned int instruction_length_offset = instruction_len_offset ();
-    if (unlikely (instruction_length_offset + 2 > bytes.length)) return 0;
+    unsigned ကိန်းပြည့် instruction_length_offset = instruction_len_offset ();
+    အကယ်၍ (unlikely (instruction_length_offset + 2 > bytes.length)) ပြန်ပေး 0;
 
     const HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
     /* Out of bounds of the current glyph */
-    if (unlikely (length (instructionLength) > bytes.length)) return 0;
-    return instructionLength;
+    အကယ်၍ (unlikely (length (instructionLength) > bytes.length)) ပြန်ပေး 0;
+    ပြန်ပေး instructionLength;
   }
 
   const hb_bytes_t trim_padding () const
@@ -58,66 +58,66 @@ struct SimpleGlyph
     /* simple glyph w/contours, possibly trimmable */
     glyph += instruction_len_offset ();
 
-    if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    အကယ်၍ (unlikely (glyph + 2 >= glyph_end)) ပြန်ပေး hb_bytes_t ();
+    unsigned ကိန်းပြည့် num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
+    unsigned ကိန်းပြည့် num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
 
     glyph += 2 + num_instructions;
 
-    unsigned int coord_bytes = 0;
-    unsigned int coords_with_flags = 0;
-    while (glyph < glyph_end)
+    unsigned ကိန်းပြည့် coord_bytes = 0;
+    unsigned ကိန်းပြည့် coords_with_flags = 0;
+    နေစဉ် (glyph < glyph_end)
     {
       uint8_t flag = *glyph;
       glyph++;
 
-      unsigned int repeat = 1;
-      if (flag & FLAG_REPEAT)
+      unsigned ကိန်းပြည့် repeat = 1;
+      အကယ်၍ (flag & FLAG_REPEAT)
       {
-	if (unlikely (glyph >= glyph_end)) return hb_bytes_t ();
+	အကယ်၍ (unlikely (glyph >= glyph_end)) ပြန်ပေး hb_bytes_t ();
 	repeat = *glyph + 1;
 	glyph++;
       }
 
-      unsigned int xBytes, yBytes;
+      unsigned ကိန်းပြည့် xBytes, yBytes;
       xBytes = yBytes = 0;
-      if (flag & FLAG_X_SHORT) xBytes = 1;
-      else if ((flag & FLAG_X_SAME) == 0) xBytes = 2;
+      အကယ်၍ (flag & FLAG_X_SHORT) xBytes = 1;
+      မဟုတ်ပါက အကယ်၍ ((flag & FLAG_X_SAME) == 0) xBytes = 2;
 
-      if (flag & FLAG_Y_SHORT) yBytes = 1;
-      else if ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
+      အကယ်၍ (flag & FLAG_Y_SHORT) yBytes = 1;
+      မဟုတ်ပါက အကယ်၍ ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
 
       coord_bytes += (xBytes + yBytes) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      အကယ်၍ (coords_with_flags >= num_coordinates) bha_nga;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
-    return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
+    အကယ်၍ (unlikely (coords_with_flags != num_coordinates)) ပြန်ပေး hb_bytes_t ();
+    ပြန်ပေး bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
   }
 
   /* zero instruction length */
   void drop_hints ()
   {
-    if (!has_instructions_length ()) return;
+    အကယ်၍ (!has_instructions_length ()) ပြန်ပေး;
     GlyphHeader &glyph_header = const_cast<GlyphHeader &> (header);
     (HBUINT16 &) StructAtOffset<HBUINT16> (&glyph_header, instruction_len_offset ()) = 0;
   }
 
   void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
   {
-    unsigned int instructions_len = instructions_length ();
-    unsigned int glyph_length = length (instructions_len);
+    unsigned ကိန်းပြည့် instructions_len = instructions_length ();
+    unsigned ကိန်းပြည့် glyph_length = length (instructions_len);
     dest_start = bytes.sub_array (0, glyph_length - instructions_len);
     dest_end = bytes.sub_array (glyph_length, bytes.length - glyph_length);
   }
 
   void set_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    အကယ်၍ (unlikely (!header.numberOfContours)) ပြန်ပေး;
 
     unsigned flags_offset = length (instructions_length ());
-    if (unlikely (flags_offset + 1 > bytes.length)) return;
+    အကယ်၍ (unlikely (flags_offset + 1 > bytes.length)) ပြန်ပေး;
 
     HBUINT8 &first_flag = (HBUINT8 &) StructAtOffset<HBUINT16> (&bytes, flags_offset);
     first_flag = (uint8_t) first_flag | FLAG_OVERLAP_SIMPLE;
@@ -130,23 +130,23 @@ struct SimpleGlyph
   {
     auto *points = points_.arrayZ;
     unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < count;)
     {
-      if (unlikely (p + 1 > end)) return false;
+      အကယ်၍ (unlikely (p + 1 > end)) ပြန်ပေး false;
       uint8_t flag = *p++;
-      if (!extended)
+      အကယ်၍ (!extended)
 	flag &= ~FLAG_CUBIC;
       points[i++].flag = flag;
-      if (flag & FLAG_REPEAT)
+      အကယ်၍ (flag & FLAG_REPEAT)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
+	အကယ်၍ (unlikely (p + 1 > end)) ပြန်ပေး false;
+	unsigned ကိန်းပြည့် repeat_count = *p++;
 	unsigned stop = hb_min (i + repeat_count, count);
-	for (; i < stop; i++)
+	အတွက် (; i < stop; i++)
 	  points[i].flag = flag;
       }
     }
-    return true;
+    ပြန်ပေး true;
   }
 
   static bool read_points (const HBUINT8 *&p /* IN/OUT */,
@@ -156,28 +156,28 @@ struct SimpleGlyph
 			   const simple_glyph_flag_t short_flag,
 			   const simple_glyph_flag_t same_flag)
   {
-    int v = 0;
+    ကိန်းပြည့် v = 0;
 
-    for (auto &point : points_)
+    အတွက် (auto &point : points_)
     {
       unsigned flag = point.flag;
-      if (flag & short_flag)
+      အကယ်၍ (flag & short_flag)
       {
-	if (unlikely (p + 1 > end)) return false;
+	အကယ်၍ (unlikely (p + 1 > end)) ပြန်ပေး false;
 	v += (bool(flag & same_flag) * 2 - 1) * *p++;
       }
-      else
+      မဟုတ်ပါက
       {
-	if (!(flag & same_flag))
+	အကယ်၍ (!(flag & same_flag))
 	{
-	  if (unlikely (p + HBINT16::static_size > end)) return false;
+	  အကယ်၍ (unlikely (p + HBINT16::static_size > end)) ပြန်ပေး false;
 	  v += *(const HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
       }
       point.*m = v;
     }
-    return true;
+    ပြန်ပေး true;
   }
 
   bool get_contour_points (contour_point_vector_t &points /* OUT */,
@@ -186,63 +186,63 @@ struct SimpleGlyph
 			   int64_t *budget = nullptr) const
   {
     const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
+    ကိန်းပြည့် num_contours = header.numberOfContours;
     assert (num_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    အကယ်၍ (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) ပြန်ပေး false;
+    unsigned ကိန်းပြည့် num_points = endPtsOfContours[num_contours - 1] + 1;
+    အကယ်၍ (unlikely (num_points < (unsigned) num_contours)) ပြန်ပေး false;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    အကယ်၍ (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) ပြန်ပေး false;
 
     unsigned old_length = points.length;
     points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
+    အကယ်၍ (unlikely (!points.resize_dirty (points.length + num_points))) ပြန်ပေး false;
     auto points_ = points.as_array ().sub_array (old_length);
-    if (!phantom_only)
-      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
-    if (phantom_only) return true;
+    အကယ်၍ (!phantom_only)
+      hb_memset (points_.arrayZ, 0, parimaa_na (contour_point_t) * num_points);
+    အကယ်၍ (phantom_only) ပြန်ပေး true;
 
-    for (int i = 0; i < num_contours; i++)
+    အတွက် (ကိန်းပြည့် i = 0; i < num_contours; i++)
       points_[endPtsOfContours[i]].is_end_point = true;
 
     /* Skip instructions */
     const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
 						 endPtsOfContours[num_contours]);
 
-    if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
+    အကယ်၍ (unlikely ((const var_na *) p < bytes.arrayZ)) ပြန်ပေး false; /* Unlikely overflow */
     const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
-    if (unlikely (p >= end)) return false;
+    အကယ်၍ (unlikely (p >= end)) ပြန်ပေး false;
 
     /* Read x & y coordinates */
-    return read_flags (p, points_, end, extended)
+    ပြန်ပေး read_flags (p, points_, end, extended)
         && read_points (p, points_, end, &contour_point_t::x,
 			FLAG_X_SHORT, FLAG_X_SAME)
 	&& read_points (p, points_, end, &contour_point_t::y,
 			FLAG_Y_SHORT, FLAG_Y_SAME);
   }
 
-  static void encode_coord (int value,
+  static void encode_coord (ကိန်းပြည့် value,
                             unsigned &flag,
                             const simple_glyph_flag_t short_flag,
                             const simple_glyph_flag_t same_flag,
                             hb_vector_t<uint8_t> &coords /* OUT */)
   {
-    if (value == 0)
+    အကယ်၍ (value == 0)
     {
       flag |= same_flag;
     }
-    else if (value >= -255 && value <= 255)
+    မဟုတ်ပါက အကယ်၍ (value >= -255 && value <= 255)
     {
       flag |= short_flag;
-      if (value > 0) flag |= same_flag;
-      else value = -value;
+      အကယ်၍ (value > 0) flag |= same_flag;
+      မဟုတ်ပါက value = -value;
 
       coords.arrayZ[coords.length++] = (uint8_t) value;
     }
-    else
+    မဟုတ်ပါက
     {
       int16_t val = value;
       coords.arrayZ[coords.length++] = val >> 8;
@@ -255,22 +255,22 @@ struct SimpleGlyph
                            unsigned lastflag,
                            hb_vector_t<uint8_t> &flags /* OUT */)
   {
-    if (flag == lastflag && repeat != 255)
+    အကယ်၍ (flag == lastflag && repeat != 255)
     {
       repeat++;
-      if (repeat == 1)
+      အကယ်၍ (repeat == 1)
       {
         /* We know there's room. */
         flags.arrayZ[flags.length++] = flag;
       }
-      else
+      မဟုတ်ပါက
       {
         unsigned len = flags.length;
         flags.arrayZ[len-2] = flag | FLAG_REPEAT;
         flags.arrayZ[len-1] = repeat;
       }
     }
-    else
+    မဟုတ်ပါက
     {
       repeat = 0;
       flags.arrayZ[flags.length++] = flag;
@@ -281,28 +281,28 @@ struct SimpleGlyph
                                   bool no_hinting,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    အကယ်၍ (header.numberOfContours == 0 || all_points.length <= 4)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      ပြန်ပေး true;
     }
     unsigned num_points = all_points.length - 4;
 
     hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    အကယ်၍ (unlikely (!flags.alloc_exact (num_points))) ပြန်ပေး false;
+    အကယ်၍ (unlikely (!x_coords.alloc_exact (2*num_points))) ပြန်ပေး false;
+    အကယ်၍ (unlikely (!y_coords.alloc_exact (2*num_points))) ပြန်ပေး false;
 
     unsigned lastflag = 255, repeat = 0;
-    int prev_x = 0, prev_y = 0;
+    ကိန်းပြည့် prev_x = 0, prev_y = 0;
 
-    for (unsigned i = 0; i < num_points; i++)
+    အတွက် (unsigned i = 0; i < num_points; i++)
     {
       unsigned flag = all_points.arrayZ[i].flag;
       flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
 
-      int cur_x = roundf (all_points.arrayZ[i].x);
-      int cur_y = roundf (all_points.arrayZ[i].y);
+      ကိန်းပြည့် cur_x = roundf (all_points.arrayZ[i].x);
+      ကိန်းပြည့် cur_y = roundf (all_points.arrayZ[i].y);
       encode_coord (cur_x - prev_x, flag, FLAG_X_SHORT, FLAG_X_SAME, x_coords);
       encode_coord (cur_y - prev_y, flag, FLAG_Y_SHORT, FLAG_Y_SAME, y_coords);
       encode_flag (flag, repeat, lastflag, flags);
@@ -316,20 +316,20 @@ struct SimpleGlyph
     unsigned len_instrs = instructions_length ();
     unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
 
-    if (!no_hinting)
+    အကယ်၍ (!no_hinting)
       total_len += len_instrs;
 
-    char *p = (char *) hb_malloc (total_len);
-    if (unlikely (!p)) return false;
+    var_na *p = (var_na *) hb_malloc (total_len);
+    အကယ်၍ (unlikely (!p)) ပြန်ပေး false;
 
-    const char *src = bytes.arrayZ + GlyphHeader::static_size;
-    char *cur = p;
+    const var_na *src = bytes.arrayZ + GlyphHeader::static_size;
+    var_na *cur = p;
     hb_memcpy (p, src, len_before_instrs);
 
     cur += len_before_instrs;
     src += len_before_instrs;
 
-    if (!no_hinting)
+    အကယ်၍ (!no_hinting)
     {
       hb_memcpy (cur, src, len_instrs);
       cur += len_instrs;
@@ -344,7 +344,7 @@ struct SimpleGlyph
     hb_memcpy (cur, y_coords.arrayZ, y_coords.length);
 
     dest_bytes = hb_bytes_t (p, total_len);
-    return true;
+    ပြန်ပေး true;
   }
 };
 

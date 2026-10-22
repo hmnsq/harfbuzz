@@ -36,20 +36,20 @@
 /* Type behaving similar to vectorized vars defined using __attribute__((vector_size(...))),
  * basically a fixed-size bitset. We can't use the compiler type because hb_vector_t cannot
  * guarantee alignment requirements. */
-template <typename elt_t, unsigned int byte_size>
-struct hb_vector_size_t
+template <typename elt_t, unsigned ကိန်းပြည့် byte_size>
+sa_nracanaa hb_vector_size_t
 {
-  elt_t& operator [] (unsigned int i) { return v[i]; }
-  const elt_t& operator [] (unsigned int i) const { return v[i]; }
+  elt_t& operator [] (unsigned ကိန်းပြည့် i) { ပြန်ပေး v[i]; }
+  const elt_t& operator [] (unsigned ကိန်းပြည့် i) const { ပြန်ပေး v[i]; }
 
   void init0 ()
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (v); i++)
       v[i] = 0;
   }
   void init1 ()
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (v); i++)
       v[i] = (elt_t) -1;
   }
 
@@ -57,59 +57,59 @@ struct hb_vector_size_t
   hb_vector_size_t process (const Op& op) const
   {
     hb_vector_size_t r;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (v); i++)
       r.v[i] = op (v[i]);
-    return r;
+    ပြန်ပေး r;
   }
   template <typename Op>
   hb_vector_size_t process (const Op& op, const hb_vector_size_t &o) const
   {
     hb_vector_size_t r;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (v); i++)
       r.v[i] = op (v[i], o.v[i]);
-    return r;
+    ပြန်ပေး r;
   }
   hb_vector_size_t operator | (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_or, o); }
+  { ပြန်ပေး process (hb_bitwise_or, o); }
   hb_vector_size_t operator & (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_and, o); }
+  { ပြန်ပေး process (hb_bitwise_and, o); }
   hb_vector_size_t operator ^ (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_xor, o); }
+  { ပြန်ပေး process (hb_bitwise_xor, o); }
   hb_vector_size_t operator ~ () const
-  { return process (hb_bitwise_neg); }
+  { ပြန်ပေး process (hb_bitwise_neg); }
 
   operator bool () const
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
-      if (v[i])
-	return true;
-    return false;
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (v); i++)
+      အကယ်၍ (v[i])
+	ပြန်ပေး true;
+    ပြန်ပေး false;
   }
-  operator unsigned int () const
+  operator unsigned ကိန်းပြည့် () const
   {
-    unsigned int r = 0;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    unsigned ကိန်းပြည့် r = 0;
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (v); i++)
       r += hb_popcount (v[i]);
-    return r;
+    ပြန်ပေး r;
   }
   bool operator == (const hb_vector_size_t &o) const
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
-      if (v[i] != o.v[i])
-	return false;
-    return true;
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < ARRAY_LENGTH (v); i++)
+      အကယ်၍ (v[i] != o.v[i])
+	ပြန်ပေး false;
+    ပြန်ပေး true;
   }
 
   hb_array_t<const elt_t> iter () const
-  { return hb_array (v); }
+  { ပြန်ပေး hb_array (v); }
 
   private:
-  static_assert (0 == byte_size % sizeof (elt_t), "");
-  elt_t v[byte_size / sizeof (elt_t)];
+  static_assert (0 == byte_size % parimaa_na (elt_t), "");
+  elt_t v[byte_size / parimaa_na (elt_t)];
 };
 
 
-struct hb_bit_page_t
+sa_nracanaa hb_bit_page_t
 {
   hb_bit_page_t () { init0 (); }
 
@@ -118,100 +118,100 @@ struct hb_bit_page_t
 
   void dirty () { population = UINT_MAX; }
 
-  static inline constexpr unsigned len ()
-  { return ARRAY_LENGTH_CONST (v); }
+  static anta_hstha constexpr unsigned len ()
+  { ပြန်ပေး ARRAY_LENGTH_CONST (v); }
 
-  operator bool () const { return !is_empty (); }
+  operator bool () const { ပြန်ပေး !is_empty (); }
   bool is_empty () const
   {
-    if (has_population ()) return !population;
+    အကယ်၍ (has_population ()) ပြန်ပေး !population;
     bool empty = !v;
-    if (empty) population = 0;
-    return empty;
+    အကယ်၍ (empty) population = 0;
+    ပြန်ပေး empty;
   }
   uint32_t hash () const
   {
-    return hb_bytes_t ((const char *) &v, sizeof (v)).hash ();
+    ပြန်ပေး hb_bytes_t ((const var_na *) &v, parimaa_na (v)).hash ();
   }
 
   void add (hb_codepoint_t g) { elt (g) |= mask (g); dirty (); }
   void add_bits (hb_codepoint_t g, uint64_t bits) { elt (g) |= bits; dirty (); }
   void del (hb_codepoint_t g) { elt (g) &= ~mask (g); dirty (); }
   void del_bits (hb_codepoint_t g, uint64_t bits) { elt (g) &= ~bits; dirty (); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  void set (hb_codepoint_t g, bool value) { အကယ်၍ (value) add (g); မဟုတ်ပါက del (g); }
+  bool get (hb_codepoint_t g) const { ပြန်ပေး elt (g) & mask (g); }
+  bool may_have (hb_codepoint_t g) const { ပြန်ပေး get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
+  bool operator [] (hb_codepoint_t g) const { ပြန်ပေး get (g); }
+  bool operator () (hb_codepoint_t g) const { ပြန်ပေး get (g); }
+  bool has (hb_codepoint_t g) const { ပြန်ပေး get (g); }
 
   void add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    အကယ်၍ (la == lb)
       *la |= (mask (b) << 1) - mask(a);
-    else if (likely (la < lb))
+    မဟုတ်ပါက အကယ်၍ (likely (la < lb))
     {
       *la |= ~(mask (a) - 1llu);
       la++;
 
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (var_na *) lb - (var_na *) la);
 
       *lb |= ((mask (b) << 1) - 1llu);
     }
-    else
-      return;
+    မဟုတ်ပါက
+      ပြန်ပေး;
     dirty ();
   }
   void del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    အကယ်၍ (la == lb)
       *la &= ~((mask (b) << 1llu) - mask(a));
-    else if (likely (la < lb))
+    မဟုတ်ပါက အကယ်၍ (likely (la < lb))
     {
       *la &= mask (a) - 1;
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0, (var_na *) lb - (var_na *) la);
 
       *lb &= ~((mask (b) << 1) - 1llu);
     }
-    else
-      return;
+    မဟုတ်ပါက
+      ပြန်ပေး;
     dirty ();
   }
   void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  { အကယ်၍ (v) add_range (a, b); မဟုတ်ပါက del_range (a, b); }
 
 
   // Writes out page values to the array p. Returns the number of values
   // written. At most size codepoints will be written.
-  unsigned int write (uint32_t        base,
-		      unsigned int    start_value,
+  unsigned ကိန်းပြည့် write (uint32_t        base,
+		      unsigned ကိန်းပြည့်    start_value,
 		      hb_codepoint_t *p,
-		      unsigned int    size) const
+		      unsigned ကိန်းပြည့်    size) const
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    unsigned ကိန်းပြည့် start_v = start_value / ELT_BITS;
+    unsigned ကိန်းပြည့် start_bit = start_value & ELT_MASK;
+    unsigned ကိန်းပြည့် count = 0;
+    အတွက် (unsigned i = start_v; i < len () && count < size; i++)
     {
       elt_t bits = v[i];
       uint32_t v_base = base | (i * ELT_BITS);
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      အတွက် (unsigned ကိန်းပြည့် j = start_bit; j < ELT_BITS && count < size; j++)
       {
-	if ((elt_t(1) << j) & bits) {
+	အကယ်၍ ((elt_t(1) << j) & bits) {
 	  *p++ = v_base | j;
 	  count++;
 	}
       }
       start_bit = 0;
     }
-    return count;
+    ပြန်ပေး count;
   }
 
   // Writes out the values NOT in this page to the array p. Returns the
@@ -220,26 +220,26 @@ struct hb_bit_page_t
   // that should be written (if not present in this page). This is used to fill
   // any missing value gaps between this page and the previous page, if any.
   // next_value is updated to one more than the last value present in this page.
-  unsigned int write_inverted (uint32_t        base,
-			       unsigned int    start_value,
+  unsigned ကိန်းပြည့် write_inverted (uint32_t        base,
+			       unsigned ကိန်းပြည့်    start_value,
 			       hb_codepoint_t *p,
-			       unsigned int    size,
+			       unsigned ကိန်းပြည့်    size,
 			       hb_codepoint_t *next_value) const
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    unsigned ကိန်းပြည့် start_v = start_value / ELT_BITS;
+    unsigned ကိန်းပြည့် start_bit = start_value & ELT_MASK;
+    unsigned ကိန်းပြည့် count = 0;
+    အတွက် (unsigned i = start_v; i < len () && count < size; i++)
     {
       elt_t bits = v[i];
       uint32_t v_offset = i * ELT_BITS;
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      အတွက် (unsigned ကိန်းပြည့် j = start_bit; j < ELT_BITS && count < size; j++)
       {
-	if ((elt_t(1) << j) & bits)
+	အကယ်၍ ((elt_t(1) << j) & bits)
 	{
 	  hb_codepoint_t value = base | v_offset | j;
 	  // Emit all the missing values from next_value up to value - 1.
-	  for (hb_codepoint_t k = *next_value; k < value && count < size; k++)
+	  အတွက် (hb_codepoint_t k = *next_value; k < value && count < size; k++)
 	  {
 	    *p++ = k;
 	    count++;
@@ -250,138 +250,138 @@ struct hb_bit_page_t
       }
       start_bit = 0;
     }
-    return count;
+    ပြန်ပေး count;
   }
 
-  bool operator == (const hb_bit_page_t &other) const { return is_equal (other); }
-  bool is_equal (const hb_bit_page_t &other) const { return v == other.v; }
+  bool operator == (const hb_bit_page_t &other) const { ပြန်ပေး is_equal (other); }
+  bool is_equal (const hb_bit_page_t &other) const { ပြန်ပေး v == other.v; }
   bool intersects (const hb_bit_page_t &other) const
   {
-    for (unsigned i = 0; i < len (); i++)
-      if (v[i] & other.v[i])
-	return true;
-    return false;
+    အတွက် (unsigned i = 0; i < len (); i++)
+      အကယ်၍ (v[i] & other.v[i])
+	ပြန်ပေး true;
+    ပြန်ပေး false;
   }
   bool may_intersect (const hb_bit_page_t &other) const
-  { return intersects (other); }
+  { ပြန်ပေး intersects (other); }
 
-  bool operator <= (const hb_bit_page_t &larger_page) const { return is_subset (larger_page); }
+  bool operator <= (const hb_bit_page_t &larger_page) const { ပြန်ပေး is_subset (larger_page); }
   bool is_subset (const hb_bit_page_t &larger_page) const
   {
-    if (has_population () && larger_page.has_population () &&
+    အကယ်၍ (has_population () && larger_page.has_population () &&
 	population > larger_page.population)
-      return false;
+      ပြန်ပေး false;
 
-    for (unsigned i = 0; i < len (); i++)
-      if (~larger_page.v[i] & v[i])
-	return false;
-    return true;
+    အတွက် (unsigned i = 0; i < len (); i++)
+      အကယ်၍ (~larger_page.v[i] & v[i])
+	ပြန်ပေး false;
+    ပြန်ပေး true;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
+  bool has_population () const { ပြန်ပေး population != UINT_MAX; }
   unsigned get_population () const
   {
-    if (has_population ()) return population;
-    return population = v;
+    အကယ်၍ (has_population ()) ပြန်ပေး population;
+    ပြန်ပေး population = v;
   }
 
   bool next (hb_codepoint_t *codepoint) const
   {
-    unsigned int m = (*codepoint + 1) & MASK;
-    if (!m)
+    unsigned ကိန်းပြည့် m = (*codepoint + 1) & MASK;
+    အကယ်၍ (!m)
     {
       *codepoint = INVALID;
-      return false;
+      ပြန်ပေး false;
     }
-    unsigned int i = m / ELT_BITS;
-    unsigned int j = m & ELT_MASK;
+    unsigned ကိန်းပြည့် i = m / ELT_BITS;
+    unsigned ကိန်းပြည့် j = m & ELT_MASK;
 
     const elt_t vv = v[i] & ~((elt_t (1) << j) - 1);
-    for (const elt_t *p = &vv; i < len (); p = ((const elt_t *) &v[0]) + (++i))
-      if (*p)
+    အတွက် (const elt_t *p = &vv; i < len (); p = ((const elt_t *) &v[0]) + (++i))
+      အကယ်၍ (*p)
       {
 	*codepoint = i * ELT_BITS + elt_get_min (*p);
-	return true;
+	ပြန်ပေး true;
       }
 
     *codepoint = INVALID;
-    return false;
+    ပြန်ပေး false;
   }
   bool previous (hb_codepoint_t *codepoint) const
   {
-    unsigned int m = (*codepoint - 1) & MASK;
-    if (m == MASK)
+    unsigned ကိန်းပြည့် m = (*codepoint - 1) & MASK;
+    အကယ်၍ (m == MASK)
     {
       *codepoint = INVALID;
-      return false;
+      ပြန်ပေး false;
     }
-    unsigned int i = m / ELT_BITS;
-    unsigned int j = m & ELT_MASK;
+    unsigned ကိန်းပြည့် i = m / ELT_BITS;
+    unsigned ကိန်းပြည့် j = m & ELT_MASK;
 
     /* Fancy mask to avoid shifting by elt_t bitsize, which is undefined. */
-    const elt_t mask = j < 8 * sizeof (elt_t) - 1 ?
+    const elt_t mask = j < 8 * parimaa_na (elt_t) - 1 ?
 		       ((elt_t (1) << (j + 1)) - 1) :
 		       (elt_t) -1;
     const elt_t vv = v[i] & mask;
     const elt_t *p = &vv;
-    while (true)
+    နေစဉ် (true)
     {
-      if (*p)
+      အကယ်၍ (*p)
       {
 	*codepoint = i * ELT_BITS + elt_get_max (*p);
-	return true;
+	ပြန်ပေး true;
       }
-      if ((int) i <= 0) break;
+      အကယ်၍ ((ကိန်းပြည့်) i <= 0) bha_nga;
       p = &v[--i];
     }
 
     *codepoint = INVALID;
-    return false;
+    ပြန်ပေး false;
   }
   hb_codepoint_t get_min () const
   {
-    for (unsigned int i = 0; i < len (); i++)
-      if (v[i])
-	return i * ELT_BITS + elt_get_min (v[i]);
-    return INVALID;
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < len (); i++)
+      အကယ်၍ (v[i])
+	ပြန်ပေး i * ELT_BITS + elt_get_min (v[i]);
+    ပြန်ပေး INVALID;
   }
   hb_codepoint_t get_max () const
   {
-    for (int i = len () - 1; i >= 0; i--)
-      if (v[i])
-	return i * ELT_BITS + elt_get_max (v[i]);
-    return INVALID;
+    အတွက် (ကိန်းပြည့် i = len () - 1; i >= 0; i--)
+      အကယ်၍ (v[i])
+	ပြန်ပေး i * ELT_BITS + elt_get_max (v[i]);
+    ပြန်ပေး INVALID;
   }
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  sa_nracanaa iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
     static constexpr bool is_sorted_iterator = true;
     iter_t (const hb_bit_page_t &s_ = Null (hb_bit_page_t), bool init = true) : s (&s_), v (INVALID)
     {
-      if (init)
+      အကယ်၍ (init)
 	v = s->get_min ();
     }
 
     typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
+    hb_codepoint_t __item__ () const { ပြန်ပေး v; }
+    bool __more__ () const { ပြန်ပေး v != INVALID; }
     void __next__ () {
        s->next (&v);
     }
     void __prev__ () { s->previous (&v); }
-    iter_t end () const { return iter_t (*s, false); }
+    iter_t end () const { ပြန်ပေး iter_t (*s, false); }
     bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    { ပြန်ပေး v != o.v; }
 
-    protected:
+    rak_sita:
     const hb_bit_page_t *s;
     hb_codepoint_t v;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () const { ပြန်ပေး iter_t (*this); }
+  operator iter_t () const { ပြန်ပေး iter (); }
 
   static constexpr hb_codepoint_t INVALID = HB_SET_VALUE_INVALID;
 
@@ -392,21 +392,21 @@ struct hb_bit_page_t
   static_assert ((PAGE_BITS & ((PAGE_BITS) - 1)) == 0, "");
   static constexpr unsigned PAGE_BITMASK = PAGE_BITS - 1;
 
-  static unsigned int elt_get_min (const elt_t &elt) { return hb_ctz (elt); }
-  static unsigned int elt_get_max (const elt_t &elt) { return hb_bit_storage (elt) - 1; }
+  static unsigned ကိန်းပြည့် elt_get_min (const elt_t &elt) { ပြန်ပေး hb_ctz (elt); }
+  static unsigned ကိန်းပြည့် elt_get_max (const elt_t &elt) { ပြန်ပေး hb_bit_storage (elt) - 1; }
 
   typedef hb_vector_size_t<elt_t, PAGE_BITS / 8> vector_t;
 
-  static constexpr unsigned ELT_BITS = sizeof (elt_t) * 8;
+  static constexpr unsigned ELT_BITS = parimaa_na (elt_t) * 8;
   static constexpr unsigned ELT_MASK = ELT_BITS - 1;
 
-  static constexpr unsigned BITS = sizeof (vector_t) * 8;
+  static constexpr unsigned BITS = parimaa_na (vector_t) * 8;
   static constexpr unsigned MASK = BITS - 1;
   static_assert ((unsigned) PAGE_BITS == (unsigned) BITS, "");
 
-  elt_t &elt (hb_codepoint_t g) { return v[(g & MASK) / ELT_BITS]; }
-  const elt_t& elt (hb_codepoint_t g) const { return v[(g & MASK) / ELT_BITS]; }
-  static constexpr elt_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  elt_t &elt (hb_codepoint_t g) { ပြန်ပေး v[(g & MASK) / ELT_BITS]; }
+  const elt_t& elt (hb_codepoint_t g) const { ပြန်ပေး v[(g & MASK) / ELT_BITS]; }
+  static constexpr elt_t mask (hb_codepoint_t g) { ပြန်ပေး elt_t (1) << (g & ELT_MASK); }
 
   mutable unsigned population;
   vector_t v;

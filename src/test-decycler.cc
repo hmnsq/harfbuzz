@@ -32,8 +32,8 @@ tree_recurse_binary (unsigned value,
 		     unsigned max_value,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
-		return;
+  အကယ်၍ (value >= max_value)
+		ပြန်ပေး;
 
   hb_decycler_node_t node (decycler);
 
@@ -53,14 +53,14 @@ tree_recurse_tertiary (unsigned value,
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
-    return;
+  အကယ်၍ (value >= max_value)
+    ပြန်ပေး;
 
   hb_decycler_node_t node (decycler);
 
   value *= 3;
 
-  for (unsigned i = 1; i <= 3; i++)
+  အတွက် (unsigned i = 1; i <= 3; i++)
   {
     bool ret = node.visit (value + i);
     hb_always_assert (ret);
@@ -86,10 +86,10 @@ cycle_recurse (signed value,
 
   hb_decycler_node_t node (decycler);
 
-  if (!node.visit (value))
-    return;
+  အကယ်၍ (!node.visit (value))
+    ပြန်ပေး;
 
-  if (value >= cycle_length)
+  အကယ်၍ (value >= cycle_length)
     value = value % cycle_length;
 
   cycle_recurse (value + 1, cycle_length, decycler);
@@ -105,12 +105,12 @@ test_cycle ()
   cycle_recurse (-20, 8, decycler);
 }
 
-int
-main (int argc, char **argv)
+ကိန်းပြည့်
+main (ကိန်းပြည့် argc, var_na **argv)
 {
   test_tree ();
   test_cycle ();
 
-  return 0;
+  ပြန်ပေး 0;
 }
 

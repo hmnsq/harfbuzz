@@ -39,7 +39,7 @@
 
 namespace OT {
 
-struct GaspRange
+sa_nracanaa GaspRange
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -55,12 +55,12 @@ struct GaspRange
   DEFINE_SIZE_STATIC (4);
 };
 
-struct gasp
+sa_nracanaa gasp
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  const GaspRange &get_gasp_range (unsigned ကိန်းပြည့် i) const
+  { ပြန်ပေး gaspRanges[i]; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -69,7 +69,7 @@ struct gasp
 		  gaspRanges.sanitize (c));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	version;	/* Version number (set to 1) */
   Array16Of<GaspRange>
 		gaspRanges;	/* Number of records to follow

@@ -71,20 +71,20 @@ static const uint8_t _hb_arabic_joining_u8[749]=
     0, 32, 19,119,119, 51, 51,119,119,119,103,119,119,
 };
 
-static inline uint8_t _hb_arabic_joining_b4 (const uint8_t* a, unsigned i)
+static anta_hstha uint8_t _hb_arabic_joining_b4 (const uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  ပြန်ပေး (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_arabic_joining_joining_type (unsigned u)
+static anta_hstha uint8_t _hb_arabic_joining_joining_type (unsigned u)
 {
   /* packtab: [2^4,2^3,2^3,2^3] */
-  return u<125260u ? (uint8_t)(_hb_arabic_joining_b4(_hb_arabic_joining_u8+441u,((_hb_arabic_joining_u8[209u+_hb_arabic_joining_u8[123u+((_hb_arabic_joining_b4(_hb_arabic_joining_u8,((((((u)>>3))>>3))>>3)))<<3)+((((((u)>>3))>>3))&7)]+((((u)>>3))&7)])<<3)+((u)&7))) : 7;
+  ပြန်ပေး u<125260u ? (uint8_t)(_hb_arabic_joining_b4(_hb_arabic_joining_u8+441u,((_hb_arabic_joining_u8[209u+_hb_arabic_joining_u8[123u+((_hb_arabic_joining_b4(_hb_arabic_joining_u8,((((((u)>>3))>>3))>>3)))<<3)+((((((u)>>3))>>3))&7)]+((((u)>>3))&7)])<<3)+((u)&7))) : 7;
 }
 
-static unsigned int
+static unsigned ကိန်းပြည့်
 joining_type (hb_codepoint_t u)
 {
-  return _hb_arabic_joining_joining_type (u);
+  ပြန်ပေး _hb_arabic_joining_joining_type (u);
 }
 
 
@@ -275,9 +275,9 @@ static const uint16_t shaping_table[][4] =
 #define SHAPING_TABLE_LAST	0x06D3u
 
 
-static const struct ligature_set_t {
+static const sa_nracanaa ligature_set_t {
  uint16_t first;
- struct ligature_pairs_t {
+ sa_nracanaa ligature_pairs_t {
    uint16_t components[1];
    uint16_t ligature;
  } ligatures[15];
@@ -380,9 +380,9 @@ static const struct ligature_set_t {
 };
 
 
-static const struct ligature_mark_set_t {
+static const sa_nracanaa ligature_mark_set_t {
  uint16_t first;
- struct ligature_pairs_t {
+ sa_nracanaa ligature_pairs_t {
    uint16_t components[1];
    uint16_t ligature;
  } ligatures[5];
@@ -398,9 +398,9 @@ static const struct ligature_mark_set_t {
 };
 
 
-static const struct ligature_3_set_t {
+static const sa_nracanaa ligature_3_set_t {
  uint16_t first;
- struct ligature_triplets_t {
+ sa_nracanaa ligature_triplets_t {
    uint16_t components[2];
    uint16_t ligature;
  } ligatures[3];

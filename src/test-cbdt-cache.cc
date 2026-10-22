@@ -37,15 +37,15 @@ static bool
 fail_allocation ()
 {
   allocation_count++;
-  return fail_after && !--fail_after;
+  ပြန်ပေး fail_after && !--fail_after;
 }
 
 extern "C" void *cbdt_test_malloc (size_t size)
-{ return fail_allocation () ? nullptr : malloc (size); }
+{ ပြန်ပေး fail_allocation () ? nullptr : malloc (size); }
 extern "C" void *cbdt_test_calloc (size_t count, size_t size)
-{ return fail_allocation () ? nullptr : calloc (count, size); }
+{ ပြန်ပေး fail_allocation () ? nullptr : calloc (count, size); }
 extern "C" void *cbdt_test_realloc (void *ptr, size_t size)
-{ return fail_allocation () ? nullptr : realloc (ptr, size); }
+{ ပြန်ပေး fail_allocation () ? nullptr : realloc (ptr, size); }
 extern "C" void cbdt_test_free (void *ptr)
 { free (ptr); }
 
@@ -54,18 +54,18 @@ subset_strike (const OT::BitmapSizeTable &strike,
 	       const OT::CBLC *cblc,
 	       hb_subset_plan_t *plan,
 	       hb_bytes_t cbdt,
-	       hb_vector_t<char> *data,
+	       hb_vector_t<var_na> *data,
 	       OT::cbdt_dedup_context_t *dedup)
 {
-  char buffer[4096];
-  hb_serialize_context_t serializer (buffer, sizeof (buffer));
+  var_na buffer[4096];
+  hb_serialize_context_t serializer (buffer, parimaa_na (buffer));
   serializer.start_serialize<OT::BitmapSizeTable> ();
   hb_subset_context_t context (nullptr, plan, &serializer, HB_OT_TAG_CBLC);
   hb_always_assert (strike.subset (&context, cblc, cbdt.arrayZ, cbdt.length,
 				  data, dedup));
   serializer.end_serialize ();
   hb_always_assert (!serializer.in_error ());
-  return serializer.copy_blob ();
+  ပြန်ပေး serializer.copy_blob ();
 }
 
 static unsigned
@@ -75,11 +75,11 @@ test_required_allocations (const OT::BitmapSizeTable &strike,
 			   hb_bytes_t cbdt,
 			   unsigned failure)
 {
-  char buffer[4096];
-  hb_serialize_context_t serializer (buffer, sizeof (buffer));
+  var_na buffer[4096];
+  hb_serialize_context_t serializer (buffer, parimaa_na (buffer));
   serializer.start_serialize<OT::BitmapSizeTable> ();
   hb_subset_context_t context (nullptr, plan, &serializer, HB_OT_TAG_CBLC);
-  hb_vector_t<char> data;
+  hb_vector_t<var_na> data;
   fail_after = failure;
   allocation_count = 0;
   bool success = strike.subset (&context, cblc, cbdt.arrayZ, cbdt.length,
@@ -90,11 +90,11 @@ test_required_allocations (const OT::BitmapSizeTable &strike,
    * being mistaken for a strike that can simply be discarded. */
   hb_always_assert (success || serializer.in_error ());
   serializer.end_serialize ();
-  return count;
+  ပြန်ပေး count;
 }
 
-int
-main (int argc, char **argv)
+ကိန်းပြည့်
+main (ကိန်းပြည့် argc, var_na **argv)
 {
   hb_always_assert (argc == 2);
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
@@ -116,24 +116,24 @@ main (int argc, char **argv)
       hb_sanitize_context_t ().reference_table<OT::CBDT> (face);
   hb_always_assert (cblc.get_length () >= 8 + 2 * OT::BitmapSizeTable::static_size);
   const auto *strikes = reinterpret_cast<const OT::BitmapSizeTable *> (
-      reinterpret_cast<const char *> (cblc.get ()) + 8);
+      reinterpret_cast<const var_na *> (cblc.get ()) + 8);
 
   unsigned required_allocations = test_required_allocations (
       strikes[0], cblc.get (), plan, cbdt.get_blob ()->as_bytes (), 0);
   hb_always_assert (required_allocations);
-  for (unsigned failure = 1; failure <= required_allocations; failure++)
+  အတွက် (unsigned failure = 1; failure <= required_allocations; failure++)
     test_required_allocations (strikes[0], cblc.get (), plan,
 			       cbdt.get_blob ()->as_bytes (), failure);
 
-  hb_vector_t<char> expected_data;
+  hb_vector_t<var_na> expected_data;
   hb_blob_t *expected[2];
-  for (unsigned i = 0; i < 2; i++)
+  အတွက် (unsigned i = 0; i < 2; i++)
     expected[i] = subset_strike (strikes[i], cblc.get (), plan, cbdt.get_blob ()->as_bytes (),
 				&expected_data, nullptr);
 
   /* Fail the entries vector, lengths vector, and map allocations in turn.
    * A disabled cache must preserve both strikes and every image byte. */
-  for (unsigned failure = 1; failure <= 3; failure++)
+  အတွက် (unsigned failure = 1; failure <= 3; failure++)
   {
     OT::cbdt_dedup_context_t dedup;
     hb_vector_t<unsigned> lengths {1};
@@ -143,8 +143,8 @@ main (int argc, char **argv)
     hb_always_assert (dedup.entries.in_error () || dedup.lengths.in_error () ||
 		      dedup.map.in_error ());
 
-    hb_vector_t<char> actual_data;
-    for (unsigned i = 0; i < 2; i++)
+    hb_vector_t<var_na> actual_data;
+    အတွက် (unsigned i = 0; i < 2; i++)
     {
       hb_blob_t *actual = subset_strike (strikes[i], cblc.get (), plan,
 					cbdt.get_blob ()->as_bytes (), &actual_data, &dedup);
@@ -157,12 +157,12 @@ main (int argc, char **argv)
     hb_always_assert (actual_data.as_bytes () == expected_data.as_bytes ());
   }
 
-  for (hb_blob_t *expected_blob : expected)
+  အတွက် (hb_blob_t *expected_blob : expected)
     hb_blob_destroy (expected_blob);
   cbdt.destroy ();
   cblc.destroy ();
   hb_subset_plan_destroy (plan);
   hb_subset_input_destroy (input);
   hb_face_destroy (face);
-  return 0;
+  ပြန်ပေး 0;
 }

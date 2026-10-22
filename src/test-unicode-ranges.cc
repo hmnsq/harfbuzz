@@ -28,9 +28,9 @@
 #include "hb-ot-os2-unicode-ranges.hh"
 
 static void
-test (hb_codepoint_t cp, unsigned int bit)
+test (hb_codepoint_t cp, unsigned ကိန်းပြည့် bit)
 {
-  if (OT::_hb_ot_os2_get_unicode_range_bit (cp) != bit)
+  အကယ်၍ (OT::_hb_ot_os2_get_unicode_range_bit (cp) != bit)
   {
     fprintf (stderr, "got incorrect bit (%u) for cp 0x%X. Should have been %u.",
 	     OT::_hb_ot_os2_get_unicode_range_bit (cp),
@@ -58,9 +58,9 @@ test_get_unicode_range_bit ()
   test (0x110000, -1);
 }
 
-int
+ကိန်းပြည့်
 main ()
 {
   test_get_unicode_range_bit ();
-  return 0;
+  ပြန်ပေး 0;
 }

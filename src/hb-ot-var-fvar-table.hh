@@ -44,46 +44,46 @@ static bool axis_coord_pinned_or_within_axis_range (const hb_array_t<const F16DO
                                                     Triple axis_limit)
 {
   float axis_coord = coords[axis_index].to_float ();
-  if (axis_limit.is_point ())
+  အကယ်၍ (axis_limit.is_point ())
   {
-    if (axis_limit.minimum != axis_coord)
-      return false;
+    အကယ်၍ (axis_limit.minimum != axis_coord)
+      ပြန်ပေး false;
   }
-  else
+  မဟုတ်ပါက
   {
-    if (axis_coord < axis_limit.minimum ||
+    အကယ်၍ (axis_coord < axis_limit.minimum ||
         axis_coord > axis_limit.maximum)
-      return false;
+      ပြန်ပေး false;
   }
-  return true;
+  ပြန်ပေး true;
 }
 
-struct InstanceRecord
+sa_nracanaa InstanceRecord
 {
-  friend struct fvar;
+  friend sa_nracanaa fvar;
 
-  hb_array_t<const F16DOT16> get_coordinates (unsigned int axis_count) const
-  { return coordinatesZ.as_array (axis_count); }
+  hb_array_t<const F16DOT16> get_coordinates (unsigned ကိန်းပြည့် axis_count) const
+  { ပြန်ပေး coordinatesZ.as_array (axis_count); }
 
   bool keep_instance (unsigned axis_count,
                       const hb_map_t *axes_index_tag_map,
                       const hb_hashmap_t<hb_tag_t, Triple> *axes_location) const
   {
-    if (axes_location->is_empty ()) return true;
+    အကယ်၍ (axes_location->is_empty ()) ပြန်ပေး true;
     const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    for (unsigned i = 0 ; i < axis_count; i++)
+    အတွက် (unsigned i = 0 ; i < axis_count; i++)
     {
       uint32_t *axis_tag;
-      if (!axes_index_tag_map->has (i, &axis_tag))
-        return false;
-      if (!axes_location->has (*axis_tag))
+      အကယ်၍ (!axes_index_tag_map->has (i, &axis_tag))
+        ပြန်ပေး false;
+      အကယ်၍ (!axes_location->has (*axis_tag))
         continue;
 
       Triple axis_limit = axes_location->get (*axis_tag);
-      if (!axis_coord_pinned_or_within_axis_range (coords, i, axis_limit))
-        return false;
+      အကယ်၍ (!axis_coord_pinned_or_within_axis_range (coords, i, axis_limit))
+        ပြန်ပေး false;
     }
-    return true;
+    ပြန်ပေး true;
   }
 
   bool subset (hb_subset_context_t *c,
@@ -91,44 +91,44 @@ struct InstanceRecord
                bool has_postscript_nameid) const
   {
     TRACE_SUBSET (this);
-    if (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (false);
-    if (unlikely (!c->serializer->embed (flags))) return_trace (false);
+    အကယ်၍ (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (false);
+    အကယ်၍ (unlikely (!c->serializer->embed (flags))) return_trace (false);
 
     const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
     const hb_hashmap_t<hb_tag_t, Triple> *axes_location = &c->plan->user_axes_location;
-    for (unsigned i = 0 ; i < axis_count; i++)
+    အတွက် (unsigned i = 0 ; i < axis_count; i++)
     {
       uint32_t *axis_tag;
       Triple *axis_limit;
       // only keep instances whose coordinates == pinned axis location
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag)) return_trace (false);
-      if (axes_location->has (*axis_tag, &axis_limit))
+      အကယ်၍ (!c->plan->axes_old_index_tag_map.has (i, &axis_tag)) return_trace (false);
+      အကယ်၍ (axes_location->has (*axis_tag, &axis_limit))
       {
-        if (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_limit))
+        အကယ်၍ (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_limit))
           return_trace (false);
 
         //skip axes dropped from fvar (pinned; or self-contained under avar2,
         //where other pinned axes stay in fvar as hidden)
-        if (axis_limit->is_point () && !c->plan->axes_index_map.has (i))
+        အကယ်၍ (axis_limit->is_point () && !c->plan->axes_index_map.has (i))
           continue;
       }
 
-      if (!c->serializer->embed (coords[i]))
+      အကယ်၍ (!c->serializer->embed (coords[i]))
         return_trace (false);
     }
 
-    if (has_postscript_nameid)
+    အကယ်၍ (has_postscript_nameid)
     {
       NameID name_id;
       name_id = StructAfter<NameID> (coords);
-      if (!c->serializer->embed (name_id))
+      အကယ်၍ (!c->serializer->embed (name_id))
         return_trace (false);
     }
 
     return_trace (true);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int axis_count) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned ကိန်းပြည့် axis_count) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -136,7 +136,7 @@ struct InstanceRecord
 		  c->check_array (coordinatesZ.arrayZ, axis_count));
   }
 
-  protected:
+  rak_sita:
   NameID	subfamilyNameID;/* The name ID for entries in the 'name' table
 				 * that provide subfamily names for this instance. */
   HBUINT16	flags;		/* Reserved for future use — set to 0. */
@@ -150,11 +150,11 @@ struct InstanceRecord
   DEFINE_SIZE_UNBOUNDED (4);
 };
 
-struct AxisRecord
+sa_nracanaa AxisRecord
 {
-  int cmp (hb_tag_t key) const { return axisTag.cmp (key); }
+  ကိန်းပြည့် cmp (hb_tag_t key) const { ပြန်ပေး axisTag.cmp (key); }
 
-  enum
+  ga_nanaa
   {
     AXIS_FLAG_HIDDEN	= 0x0001,
   };
@@ -173,14 +173,14 @@ struct AxisRecord
     info->axis_index = axis_index;
     info->tag = axisTag;
     info->name_id = axisNameID;
-    info->flags = (hb_ot_var_axis_flags_t) (unsigned int) flags;
+    info->flags = (hb_ot_var_axis_flags_t) (unsigned ကိန်းပြည့်) flags;
     get_coordinates (info->min_value, info->default_value, info->max_value);
     info->reserved = 0;
   }
 
-  hb_tag_t get_axis_tag () const { return axisTag; }
+  hb_tag_t get_axis_tag () const { ပြန်ပေး axisTag; }
 
-  bool is_hidden () const { return flags & AXIS_FLAG_HIDDEN; }
+  bool is_hidden () const { ပြန်ပေး flags & AXIS_FLAG_HIDDEN; }
 
   float normalize_axis_value (float v) const
   {
@@ -189,15 +189,15 @@ struct AxisRecord
 
     v = hb_clamp (v, min_value, max_value);
 
-    if (v == default_value)
-      return 0;
-    else if (v < default_value)
-      return (v - default_value) / (default_value - min_value);
-    else
-      return (v - default_value) / (max_value - default_value);
+    အကယ်၍ (v == default_value)
+      ပြန်ပေး 0;
+    မဟုတ်ပါက အကယ်၍ (v < default_value)
+      ပြန်ပေး (v - default_value) / (default_value - min_value);
+    မဟုတ်ပါက
+      ပြန်ပေး (v - default_value) / (max_value - default_value);
   }
 
-  hb_ot_name_id_t get_name_id () const { return axisNameID; }
+  hb_ot_name_id_t get_name_id () const { ပြန်ပေး axisNameID; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -215,27 +215,27 @@ struct AxisRecord
 
   float get_default () const
   {
-    return defaultValue.to_float ();
+    ပြန်ပေး defaultValue.to_float ();
   }
 
   TripleDistances get_triple_distances () const
   {
     float min, default_, max;
     get_coordinates (min, default_, max);
-    return TripleDistances (min, default_, max);
+    ပြန်ပေး TripleDistances (min, default_, max);
   }
 
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    အကယ်၍ (unlikely (!out)) return_trace (false);
 
     const hb_hashmap_t<hb_tag_t, Triple>& user_axes_location = c->plan->user_axes_location;
     Triple *axis_limit;
-    if (user_axes_location.has (axisTag, &axis_limit))
+    အကယ်၍ (user_axes_location.has (axisTag, &axis_limit))
     {
-      if (c->plan->has_avar2 && axis_limit->is_point ())
+      အကယ်၍ (c->plan->has_avar2 && axis_limit->is_point ())
       {
         /* Pinned axis in avar2 mode: keep in fvar as hidden with
          * min=default=max=pinned_value. */
@@ -244,7 +244,7 @@ struct AxisRecord
         out->maxValue.set_float (axis_limit->middle);
         out->flags = out->flags | (HBUINT16) AXIS_FLAG_HIDDEN;
       }
-      else
+      မဟုတ်ပါက
       {
         out->minValue.set_float (axis_limit->minimum);
         out->defaultValue.set_float (axis_limit->middle);
@@ -256,7 +256,7 @@ struct AxisRecord
 
   public:
   Tag		axisTag;	/* Tag identifying the design variation for the axis. */
-  protected:
+  rak_sita:
   F16DOT16	minValue;	/* The minimum coordinate value for the axis. */
   F16DOT16	defaultValue;	/* The default coordinate value for the axis. */
   F16DOT16	maxValue;	/* The maximum coordinate value for the axis. */
@@ -269,11 +269,11 @@ struct AxisRecord
   DEFINE_SIZE_STATIC (20);
 };
 
-struct fvar
+sa_nracanaa fvar
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_fvar;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { ပြန်ပေး version.to_int (); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -290,34 +290,34 @@ struct fvar
 				  instanceCount, instanceSize));
   }
 
-  unsigned int get_axis_count () const { return axisCount; }
+  unsigned ကိန်းပြည့် get_axis_count () const { ပြန်ပေး axisCount; }
 
 #ifndef HB_DISABLE_DEPRECATED
-  unsigned int get_axes_deprecated (unsigned int      start_offset,
-				    unsigned int     *axes_count /* IN/OUT */,
+  unsigned ကိန်းပြည့် get_axes_deprecated (unsigned ကိန်းပြည့်      start_offset,
+				    unsigned ကိန်းပြည့်     *axes_count /* IN/OUT */,
 				    hb_ot_var_axis_t *axes_array /* OUT */) const
   {
-    if (axes_count && axes_array)
+    အကယ်၍ (axes_count && axes_array)
     {
       hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
+      အတွက် (unsigned i = 0; i < arr.length; ++i)
 	arr[i].get_axis_deprecated (&axes_array[i]);
     }
-    return axisCount;
+    ပြန်ပေး axisCount;
   }
 #endif
 
-  unsigned int get_axis_infos (unsigned int           start_offset,
-			       unsigned int          *axes_count /* IN/OUT */,
+  unsigned ကိန်းပြည့် get_axis_infos (unsigned ကိန်းပြည့်           start_offset,
+			       unsigned ကိန်းပြည့်          *axes_count /* IN/OUT */,
 			       hb_ot_var_axis_info_t *axes_array /* OUT */) const
   {
-    if (axes_count && axes_array)
+    အကယ်၍ (axes_count && axes_array)
     {
       hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
+      အတွက် (unsigned i = 0; i < arr.length; ++i)
 	arr[i].get_axis_info (start_offset + i, &axes_array[i]);
     }
-    return axisCount;
+    ပြန်ပေး axisCount;
   }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -325,10 +325,10 @@ struct fvar
   find_axis_deprecated (hb_tag_t tag, unsigned *axis_index, hb_ot_var_axis_t *info) const
   {
     unsigned i;
-    if (!axis_index) axis_index = &i;
+    အကယ်၍ (!axis_index) axis_index = &i;
     *axis_index = HB_OT_VAR_NO_AXIS_INDEX;
     auto axes = get_axes ();
-    return axes.lfind (tag, axis_index) && ((void) axes[*axis_index].get_axis_deprecated (info), true);
+    ပြန်ပေး axes.lfind (tag, axis_index) && ((void) axes[*axis_index].get_axis_deprecated (info), true);
   }
 #endif
   bool
@@ -336,82 +336,82 @@ struct fvar
   {
     unsigned i;
     auto axes = get_axes ();
-    return axes.lfind (tag, &i) && ((void) axes[i].get_axis_info (i, info), true);
+    ပြန်ပေး axes.lfind (tag, &i) && ((void) axes[i].get_axis_info (i, info), true);
   }
 
-  float normalize_axis_value (unsigned int axis_index, float v) const
-  { return get_axes ()[axis_index].normalize_axis_value (v); }
+  float normalize_axis_value (unsigned ကိန်းပြည့် axis_index, float v) const
+  { ပြန်ပေး get_axes ()[axis_index].normalize_axis_value (v); }
 
-  unsigned int get_instance_count () const { return instanceCount; }
+  unsigned ကိန်းပြည့် get_instance_count () const { ပြန်ပေး instanceCount; }
 
-  hb_ot_name_id_t get_instance_subfamily_name_id (unsigned int instance_index) const
+  hb_ot_name_id_t get_instance_subfamily_name_id (unsigned ကိန်းပြည့် instance_index) const
   {
     const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    return instance->subfamilyNameID;
+    အကယ်၍ (unlikely (!instance)) ပြန်ပေး HB_OT_NAME_ID_INVALID;
+    ပြန်ပေး instance->subfamilyNameID;
   }
 
-  hb_ot_name_id_t get_instance_postscript_name_id (unsigned int instance_index) const
+  hb_ot_name_id_t get_instance_postscript_name_id (unsigned ကိန်းပြည့် instance_index) const
   {
     const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    if (instanceSize >= axisCount * 4 + 6)
-      return StructAfter<NameID> (instance->get_coordinates (axisCount));
-    return HB_OT_NAME_ID_INVALID;
+    အကယ်၍ (unlikely (!instance)) ပြန်ပေး HB_OT_NAME_ID_INVALID;
+    အကယ်၍ (instanceSize >= axisCount * 4 + 6)
+      ပြန်ပေး StructAfter<NameID> (instance->get_coordinates (axisCount));
+    ပြန်ပေး HB_OT_NAME_ID_INVALID;
   }
 
-  unsigned int get_instance_coords (unsigned int  instance_index,
-				    unsigned int *coords_length, /* IN/OUT */
+  unsigned ကိန်းပြည့် get_instance_coords (unsigned ကိန်းပြည့်  instance_index,
+				    unsigned ကိန်းပြည့် *coords_length, /* IN/OUT */
 				    float        *coords         /* OUT */) const
   {
     const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance))
+    အကယ်၍ (unlikely (!instance))
     {
-      if (coords_length)
+      အကယ်၍ (coords_length)
 	*coords_length = 0;
-      return 0;
+      ပြန်ပေး 0;
     }
 
-    if (coords_length && *coords_length && coords)
+    အကယ်၍ (coords_length && *coords_length && coords)
     {
       hb_array_t<const F16DOT16> instanceCoords = instance->get_coordinates (axisCount)
 							 .sub_array (0, coords_length);
-      for (unsigned int i = 0; i < instanceCoords.length; i++)
+      အတွက် (unsigned ကိန်းပြည့် i = 0; i < instanceCoords.length; i++)
 	coords[i] = instanceCoords.arrayZ[i].to_float ();
     }
-    return axisCount;
+    ပြန်ပေး axisCount;
   }
 
   void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
 			 hb_map_t *axes_old_index_tag_map,
 			 hb_set_t *nameids  /* IN/OUT */) const
   {
-    if (!has_data ()) return;
+    အကယ်၍ (!has_data ()) ပြန်ပေး;
 
     auto axis_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
+    အတွက် (unsigned i = 0 ; i < (unsigned)axisCount; i++)
     {
       hb_tag_t axis_tag = axis_records[i].get_axis_tag ();
-      if (user_axes_location->has (axis_tag) &&
+      အကယ်၍ (user_axes_location->has (axis_tag) &&
           user_axes_location->get (axis_tag).is_point ())
         continue;
 
       nameids->add (axis_records[i].get_name_id ());
     }
 
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    အတွက် (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
     {
       const InstanceRecord *instance = get_instance (i);
 
-      if (!instance->keep_instance (axisCount, axes_old_index_tag_map, user_axes_location))
+      အကယ်၍ (!instance->keep_instance (axisCount, axes_old_index_tag_map, user_axes_location))
         continue;
 
       nameids->add (instance->subfamilyNameID);
 
-      if (instanceSize >= axisCount * 4 + 6)
+      အကယ်၍ (instanceSize >= axisCount * 4 + 6)
       {
         unsigned post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axisCount));
-        if (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->add (post_script_name_id);
+        အကယ်၍ (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->add (post_script_name_id);
       }
     }
   }
@@ -420,42 +420,42 @@ struct fvar
   {
     TRACE_SUBSET (this);
     unsigned retained_axis_count = c->plan->axes_index_map.get_population ();
-    if (!retained_axis_count) //all axes are pinned
+    အကယ်၍ (!retained_axis_count) //all axes are pinned
       return_trace (false);
 
     fvar *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    အကယ်၍ (unlikely (!out)) return_trace (false);
 
-    if (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    အကယ်၍ (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
     bool has_postscript_nameid = false;
-    if (instanceSize >= axisCount * 4 + 6)
+    အကယ်၍ (instanceSize >= axisCount * 4 + 6)
       has_postscript_nameid = true;
 
-    if (!c->serializer->check_assign (out->instanceSize, retained_axis_count * 4 + (has_postscript_nameid ? 6 : 4),
+    အကယ်၍ (!c->serializer->check_assign (out->instanceSize, retained_axis_count * 4 + (has_postscript_nameid ? 6 : 4),
                                       HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
     auto axes_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
+    အတွက် (unsigned i = 0 ; i < (unsigned)axisCount; i++)
     {
-      if (!c->plan->axes_index_map.has (i)) continue;
-      if (unlikely (!axes_records[i].subset (c)))
+      အကယ်၍ (!c->plan->axes_index_map.has (i)) continue;
+      အကယ်၍ (unlikely (!axes_records[i].subset (c)))
         return_trace (false);
     }
 
-    if (!c->serializer->check_assign (out->firstAxis, get_size (), HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    အကယ်၍ (!c->serializer->check_assign (out->firstAxis, get_size (), HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
     unsigned num_retained_instances = 0;
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    အတွက် (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
     {
       const InstanceRecord *instance = get_instance (i);
       auto snap = c->serializer->snapshot ();
-      if (!instance->subset (c, axisCount, has_postscript_nameid))
+      အကယ်၍ (!instance->subset (c, axisCount, has_postscript_nameid))
         c->serializer->revert (snap);
-      else
+      မဟုတ်ပါက
         num_retained_instances++;
     }
 
@@ -464,16 +464,16 @@ struct fvar
 
   public:
   hb_array_t<const AxisRecord> get_axes () const
-  { return hb_array (&(this+firstAxis), axisCount); }
+  { ပြန်ပေး hb_array (&(this+firstAxis), axisCount); }
 
-  const InstanceRecord *get_instance (unsigned int i) const
+  const InstanceRecord *get_instance (unsigned ကိန်းပြည့် i) const
   {
-    if (unlikely (i >= instanceCount)) return nullptr;
-   return &StructAtOffset<InstanceRecord> (&StructAfter<InstanceRecord> (get_axes ()),
+    အကယ်၍ (unlikely (i >= instanceCount)) ပြန်ပေး nullptr;
+   ပြန်ပေး &StructAtOffset<InstanceRecord> (&StructAfter<InstanceRecord> (get_axes ()),
 					   i * instanceSize);
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version of the fvar table
 				 * initially set to 0x00010000u */
   Offset16To<AxisRecord>

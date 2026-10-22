@@ -57,41 +57,41 @@
  * shaper face data
  */
 
-typedef struct hb_graphite2_tablelist_t
+typedef sa_nracanaa hb_graphite2_tablelist_t
 {
-  struct hb_graphite2_tablelist_t *next;
+  sa_nracanaa hb_graphite2_tablelist_t *next;
   hb_blob_t *blob;
-  unsigned int tag;
+  unsigned ကိန်းပြည့် tag;
 } hb_graphite2_tablelist_t;
 
-struct hb_graphite2_face_data_t
+sa_nracanaa hb_graphite2_face_data_t
 {
   hb_face_t *face;
   gr_face   *grface;
   hb_atomic_t<hb_graphite2_tablelist_t *> tlist;
 };
 
-static const void *hb_graphite2_get_table (const void *data, unsigned int tag, size_t *len)
+static const void *hb_graphite2_get_table (const void *data, unsigned ကိန်းပြည့် tag, size_t *len)
 {
   hb_graphite2_face_data_t *face_data = (hb_graphite2_face_data_t *) data;
   hb_graphite2_tablelist_t *tlist = face_data->tlist;
 
   hb_blob_t *blob = nullptr;
 
-  for (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
-    if (p->tag == tag) {
+  အတွက် (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
+    အကယ်၍ (p->tag == tag) {
       blob = p->blob;
-      break;
+      bha_nga;
     }
 
-  if (unlikely (!blob))
+  အကယ်၍ (unlikely (!blob))
   {
     blob = face_data->face->reference_table (tag);
 
-    hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, sizeof (hb_graphite2_tablelist_t));
-    if (unlikely (!p)) {
+    hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, parimaa_na (hb_graphite2_tablelist_t));
+    အကယ်၍ (unlikely (!p)) {
       hb_blob_destroy (blob);
-      return nullptr;
+      ပြန်ပေး nullptr;
     }
     p->blob = blob;
     p->tag = tag;
@@ -100,14 +100,14 @@ retry:
     hb_graphite2_tablelist_t *tlist = face_data->tlist;
     p->next = tlist;
 
-    if (unlikely (!face_data->tlist.cmpexch (tlist, p)))
+    အကယ်၍ (unlikely (!face_data->tlist.cmpexch (tlist, p)))
       goto retry;
   }
 
-  unsigned int tlen;
-  const char *d = hb_blob_get_data (blob, &tlen);
+  unsigned ကိန်းပြည့် tlen;
+  const var_na *d = hb_blob_get_data (blob, &tlen);
   *len = tlen;
-  return d;
+  ပြန်ပေး d;
 }
 
 hb_graphite2_face_data_t *
@@ -116,25 +116,25 @@ _hb_graphite2_shaper_face_data_create (hb_face_t *face)
   hb_unique_ptr_t<hb_blob_t> silf_blob (face->reference_table (HB_GRAPHITE2_TAG_SILF));
   /* Umm, we just reference the table to check whether it exists.
    * Maybe add better API for this? */
-  if (!hb_blob_get_length (silf_blob))
-    return nullptr;
+  အကယ်၍ (!hb_blob_get_length (silf_blob))
+    ပြန်ပေး nullptr;
 
-  hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, sizeof (hb_graphite2_face_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, parimaa_na (hb_graphite2_face_data_t));
+  အကယ်၍ (unlikely (!data))
+    ပြန်ပေး nullptr;
 
   data->face = face;
-  const gr_face_ops ops = {sizeof(gr_face_ops), &hb_graphite2_get_table, NULL};
+  const gr_face_ops ops = {parimaa_na(gr_face_ops), &hb_graphite2_get_table, NULL};
   data->grface = gr_make_face_with_ops (data, &ops, gr_face_preloadAll);
 
-  if (unlikely (!data->grface)) {
+  အကယ်၍ (unlikely (!data->grface)) {
     /* data->tlist has already been populated by the callback,
      * so everything needs to be destroyed */
     _hb_graphite2_shaper_face_data_destroy (data);
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 
-  return data;
+  ပြန်ပေး data;
 }
 
 void
@@ -142,7 +142,7 @@ _hb_graphite2_shaper_face_data_destroy (hb_graphite2_face_data_t *data)
 {
   hb_graphite2_tablelist_t *tlist = data->tlist;
 
-  while (tlist)
+  နေစဉ် (tlist)
   {
     hb_graphite2_tablelist_t *old = tlist;
     hb_blob_destroy (tlist->blob);
@@ -170,7 +170,7 @@ gr_face *
 hb_graphite2_face_get_gr_face (hb_face_t *face)
 {
   const hb_graphite2_face_data_t *data = face->data.graphite2;
-  return data ? data->grface : nullptr;
+  ပြန်ပေး data ? data->grface : nullptr;
 }
 
 
@@ -178,12 +178,12 @@ hb_graphite2_face_get_gr_face (hb_face_t *face)
  * shaper font data
  */
 
-struct hb_graphite2_font_data_t {};
+sa_nracanaa hb_graphite2_font_data_t {};
 
 hb_graphite2_font_data_t *
 _hb_graphite2_shaper_font_data_create (hb_font_t *font HB_UNUSED)
 {
-  return (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  ပြန်ပေး (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
 void
@@ -206,7 +206,7 @@ _hb_graphite2_shaper_font_data_destroy (hb_graphite2_font_data_t *data HB_UNUSED
 gr_font *
 hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
 {
-  return nullptr;
+  ပြန်ပေး nullptr;
 }
 #endif
 
@@ -215,18 +215,18 @@ hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
  * shaper
  */
 
-struct hb_graphite2_cluster_t {
-  unsigned int base_char;
-  unsigned int num_chars;
-  unsigned int base_glyph;
-  unsigned int num_glyphs;
-  unsigned int cluster;
+sa_nracanaa hb_graphite2_cluster_t {
+  unsigned ကိန်းပြည့် base_char;
+  unsigned ကိန်းပြည့် num_chars;
+  unsigned ကိန်းပြည့် base_glyph;
+  unsigned ကိန်းပြည့် num_glyphs;
+  unsigned ကိန်းပြည့် cluster;
   hb_position_t advance;
 };
 
-struct hb_graphite2_glyph_t {
+sa_nracanaa hb_graphite2_glyph_t {
   hb_codepoint_t codepoint;
-  unsigned int cluster;
+  unsigned ကိန်းပြည့် cluster;
 };
 
 hb_bool_t
@@ -234,20 +234,20 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     hb_font_t          *font,
 		     hb_buffer_t        *buffer,
 		     const hb_feature_t *features,
-		     unsigned int        num_features)
+		     unsigned ကိန်းပြည့်        num_features)
 {
   hb_face_t *face = font->face;
   gr_face *grface = face->data.graphite2->grface;
 
-  const char *lang = hb_language_to_string (hb_buffer_get_language (buffer));
-  const char *lang_end = lang ? strchr (lang, '-') : nullptr;
-  int lang_len = lang_end ? lang_end - lang : -1;
+  const var_na *lang = hb_language_to_string (hb_buffer_get_language (buffer));
+  const var_na *lang_end = lang ? strchr (lang, '-') : nullptr;
+  ကိန်းပြည့် lang_len = lang_end ? lang_end - lang : -1;
   gr_feature_val *feats = gr_face_featureval_for_lang (grface, lang ? hb_tag_from_string (lang, lang_len) : 0);
 
-  for (unsigned int i = 0; i < num_features; i++)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < num_features; i++)
   {
     const gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
-    if (fref)
+    အကယ်၍ (fref)
       gr_fref_set_feature_value (fref, features[i].value, feats);
   }
 
@@ -257,7 +257,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
+  အကယ်၍ ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && horiz_dir != HB_DIRECTION_INVALID) ||
       (HB_DIRECTION_IS_VERTICAL   (direction) &&
        direction != HB_DIRECTION_TTB))
@@ -268,15 +268,15 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 
   gr_segment *seg = nullptr;
   const gr_slot *is;
-  unsigned int ci = 0, ic = 0;
+  unsigned ကိန်းပြည့် ci = 0, ic = 0;
   hb_position_t curradvx = 0, curradvy = 0;
 
-  unsigned int scratch_size;
+  unsigned ကိန်းပြည့် scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 
   uint32_t *chars = (uint32_t *) scratch;
 
-  for (unsigned int i = 0; i < buffer->len; ++i)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < buffer->len; ++i)
     chars[i] = buffer->info[i].codepoint;
 
   seg = gr_make_seg (nullptr, grface,
@@ -285,29 +285,29 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     gr_utf32, chars, buffer->len,
 		     2 | (direction == HB_DIRECTION_RTL ? 1 : 0));
 
-  if (unlikely (!seg)) {
-    if (feats) gr_featureval_destroy (feats);
-    return false;
+  အကယ်၍ (unlikely (!seg)) {
+    အကယ်၍ (feats) gr_featureval_destroy (feats);
+    ပြန်ပေး false;
   }
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
-  if (unlikely (!glyph_count)) {
-    if (feats) gr_featureval_destroy (feats);
+  unsigned ကိန်းပြည့် glyph_count = gr_seg_n_slots (seg);
+  အကယ်၍ (unlikely (!glyph_count)) {
+    အကယ်၍ (feats) gr_featureval_destroy (feats);
     gr_seg_destroy (seg);
     buffer->len = 0;
-    return true;
+    ပြန်ပေး true;
   }
 
   (void) buffer->ensure (glyph_count);
   scratch = buffer->get_scratch_buffer (&scratch_size);
-  while ((DIV_CEIL (sizeof (hb_graphite2_cluster_t) * buffer->len, sizeof (*scratch)) +
-	  DIV_CEIL (sizeof (hb_graphite2_glyph_t) * glyph_count, sizeof (*scratch))) > scratch_size)
+  နေစဉ် ((DIV_CEIL (parimaa_na (hb_graphite2_cluster_t) * buffer->len, parimaa_na (*scratch)) +
+	  DIV_CEIL (parimaa_na (hb_graphite2_glyph_t) * glyph_count, parimaa_na (*scratch))) > scratch_size)
   {
-    if (unlikely (!buffer->ensure (buffer->allocated * 2)))
+    အကယ်၍ (unlikely (!buffer->ensure (buffer->allocated * 2)))
     {
-      if (feats) gr_featureval_destroy (feats);
+      အကယ်၍ (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      ပြန်ပေး false;
     }
     scratch = buffer->get_scratch_buffer (&scratch_size);
   }
@@ -315,52 +315,52 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 #define ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
   do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
+    unsigned ကိန်းပြည့် _consumed = DIV_CEIL ((len) * parimaa_na (Type), parimaa_na (*scratch)); \
     assert (_consumed <= scratch_size); \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } နေစဉ် (0)
 
   ALLOCATE_ARRAY (hb_graphite2_cluster_t, clusters, buffer->len);
   ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_count);
 
 #undef ALLOCATE_ARRAY
 
-  hb_memset (clusters, 0, sizeof (clusters[0]) * buffer->len);
+  hb_memset (clusters, 0, parimaa_na (clusters[0]) * buffer->len);
 
   hb_graphite2_glyph_t *pg = glyphs;
   clusters[0].cluster = buffer->info[0].cluster;
-  unsigned int upem = hb_face_get_upem (face);
+  unsigned ကိန်းပြည့် upem = hb_face_get_upem (face);
   float xscale = (float) font->x_scale / upem;
   float yscale = (float) font->y_scale / upem;
   yscale *= yscale / xscale;
   hb_position_t curradv = 0;
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  အကယ်၍ (HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradv = hb_clamp_to<hb_position_t> (gr_slot_origin_X(gr_seg_first_slot(seg)) * xscale);
-    clusters[0].advance = hb_clamp_to<hb_position_t> ((double) (gr_seg_advance_X(seg) * xscale) - curradv);
+    clusters[0].advance = hb_clamp_to<hb_position_t> ((dviguu_na) (gr_seg_advance_X(seg) * xscale) - curradv);
   }
-  else
+  မဟုတ်ပါက
     clusters[0].advance = 0;
-  for (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
+  အတွက် (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
   {
-    int slot_before = gr_slot_before (is);
-    int slot_after = gr_slot_after (is);
-    if (unlikely (slot_before < 0 ||
+    ကိန်းပြည့် slot_before = gr_slot_before (is);
+    ကိန်းပြည့် slot_after = gr_slot_after (is);
+    အကယ်၍ (unlikely (slot_before < 0 ||
 		  slot_after < slot_before ||
-		  (unsigned int) slot_after >= buffer->len))
+		  (unsigned ကိန်းပြည့်) slot_after >= buffer->len))
     {
-      if (feats) gr_featureval_destroy (feats);
+      အကယ်၍ (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      ပြန်ပေး false;
     }
-    unsigned int before = (unsigned int) slot_before;
-    unsigned int after = (unsigned int) slot_after;
+    unsigned ကိန်းပြည့် before = (unsigned ကိန်းပြည့်) slot_before;
+    unsigned ကိန်းပြည့် after = (unsigned ကိန်းပြည့်) slot_after;
     pg->codepoint = gr_slot_gid (is);
     pg->cluster = hb_min (buffer->info[before].cluster,
 			  buffer->info[after].cluster);
     pg++;
-    while (clusters[ci].base_char > before && ci)
+    နေစဉ် (clusters[ci].base_char > before && ci)
     {
       clusters[ci-1].num_chars += clusters[ci].num_chars;
       clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
@@ -368,7 +368,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    အကယ်၍ (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
     {
       hb_graphite2_cluster_t *c = clusters + ci + 1;
       c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
@@ -376,13 +376,13 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       c->num_chars = before - c->base_char;
       c->base_glyph = ic;
       c->num_glyphs = 0;
-      if (HB_DIRECTION_IS_BACKWARD (direction))
+      အကယ်၍ (HB_DIRECTION_IS_BACKWARD (direction))
       {
-	c->advance = hb_clamp_to<hb_position_t> ((double) curradv -
-						   (double) (gr_slot_origin_X(is) * xscale));
+	c->advance = hb_clamp_to<hb_position_t> ((dviguu_na) curradv -
+						   (dviguu_na) (gr_slot_origin_X(is) * xscale));
 	curradv = hb_saturate_sub (curradv, c->advance);
       }
-      else
+      မဟုတ်ပါက
       {
 	hb_position_t origin_X = hb_clamp_to<hb_position_t> (gr_slot_origin_X (is) * xscale);
 	c->advance = 0;
@@ -394,20 +394,20 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
     }
     clusters[ci].num_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
+    အကယ်၍ (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
 	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
   }
 
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  အကယ်၍ (HB_DIRECTION_IS_BACKWARD (direction))
     clusters[ci].advance = hb_saturate_add (clusters[ci].advance, curradv);
-  else
-    clusters[ci].advance = hb_clamp_to<hb_position_t> ((double) clusters[ci].advance +
-							       (double) (gr_seg_advance_X(seg) * xscale) - curradv);
+  မဟုတ်ပါက
+    clusters[ci].advance = hb_clamp_to<hb_position_t> ((dviguu_na) clusters[ci].advance +
+							       (dviguu_na) (gr_seg_advance_X(seg) * xscale) - curradv);
   ci++;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    အတွက် (unsigned ကိန်းပြည့် j = 0; j < clusters[i].num_glyphs; ++j)
     {
       hb_glyph_info_t *info = &buffer->info[clusters[i].base_glyph + j];
       info->codepoint = glyphs[clusters[i].base_glyph + j].codepoint;
@@ -420,61 +420,61 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
   }
   buffer->len = glyph_count;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  အတွက် (unsigned ကိန်းပြည့် i = 0; i < ci; ++i)
     buffer->merge_clusters (clusters[i].base_glyph,
 			    clusters[i].base_glyph + clusters[i].num_glyphs);
 
   /* Positioning. */
-  unsigned int curr_gr_cluster = UINT_MAX;
+  unsigned ကိန်းပြည့် curr_gr_cluster = UINT_MAX;
   const hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pPos = hb_buffer_get_glyph_positions (buffer, nullptr);
-  if (!HB_DIRECTION_IS_BACKWARD (direction))
+  အကယ်၍ (!HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradvx = 0;
-    for (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
+    အတွက် (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
     {
-      pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) - curradvx);
-      pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
-      if (info->var2.u32 != curr_gr_cluster) {
+      pPos->x_offset = hb_clamp_to<hb_position_t> ((dviguu_na) (gr_slot_origin_X (is) * xscale) - curradvx);
+      pPos->y_offset = hb_clamp_to<hb_position_t> ((dviguu_na) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      အကယ်၍ (info->var2.u32 != curr_gr_cluster) {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_add (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } မဟုတ်ပါက
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_add (curradvy, pPos->y_advance);
     }
   }
-  else
+  မဟုတ်ပါက
   {
     curradvx = hb_clamp_to<hb_position_t> (gr_seg_advance_X(seg) * xscale);
-    for (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
+    အတွက် (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
     {
-      if (info->var2.u32 != curr_gr_cluster)
+      အကယ်၍ (info->var2.u32 != curr_gr_cluster)
       {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_sub (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } မဟုတ်ပါက
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_sub (curradvy, pPos->y_advance);
-      pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) -
+      pPos->x_offset = hb_clamp_to<hb_position_t> ((dviguu_na) (gr_slot_origin_X (is) * xscale) -
 							  info->var1.i32 - curradvx + pPos->x_advance);
-      pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      pPos->y_offset = hb_clamp_to<hb_position_t> ((dviguu_na) (gr_slot_origin_Y (is) * yscale) - curradvy);
     }
     hb_buffer_reverse_clusters (buffer);
   }
 
-  if (feats) gr_featureval_destroy (feats);
+  အကယ်၍ (feats) gr_featureval_destroy (feats);
   gr_seg_destroy (seg);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();
 
-  return true;
+  ပြန်ပေး true;
 }
 
 

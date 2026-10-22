@@ -63,9 +63,9 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
+  အကယ်၍ (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
     successful = false;
-    return;
+    ပြန်ပေး;
   }
   successful = hb_depend_data_builder_t (data).compile (f);
 }
@@ -82,7 +82,7 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
    * in libharfbuzz, after which get_relaxed() safely returns the already-
    * constructed accelerator without instantiating the GSUB_accelerator_t
    * constructor (which references a hidden is_blocklisted symbol) in this TU. */
-  if (hb_ot_layout_has_substitution (face))
+  အကယ်၍ (hb_ot_layout_has_substitution (face))
     face->table.GSUB.get_relaxed ()->depend (this, face);
 #ifndef HB_NO_MATH
   face->table.MATH->depend (this);
@@ -97,7 +97,7 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
 #ifndef HB_NO_VAR_COMPOSITES
   face->table.VARC->depend (this);
 #endif
-  return successful;
+  ပြန်ပေး successful;
 }
 
 
@@ -132,16 +132,16 @@ hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face)
 {
   hb_subset_depend_t *depend;
-  if (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
-    return nullptr;
+  အကယ်၍ (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
+    ပြန်ပေး nullptr;
 
-  if (unlikely (depend->in_error ()))
+  အကယ်၍ (unlikely (depend->in_error ()))
   {
     hb_subset_depend_destroy (depend);
-    return nullptr;
+    ပြန်ပေး nullptr;
   }
 
-  return depend;
+  ပြန်ပေး depend;
 }
 
 /**
@@ -173,19 +173,19 @@ hb_subset_depend_from_face_or_fail (hb_face_t *face)
  *
  * Since: 14.3.0
  **/
-unsigned int
+unsigned ကိန်းပြည့်
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count,
+                                unsigned ကိန်းပြည့် start_offset,
+                                unsigned ကိန်းပြည့် *entry_count,
                                 hb_subset_depend_entry_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  unsigned ကိန်းပြည့် total = depend->data.get_glyph_entry_count (gid);
+  အကယ်၍ (entry_count)
   {
-    unsigned int count = hb_min (*entry_count,
+    unsigned ကိန်းပြည့် count = hb_min (*entry_count,
                                   start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    အတွက် (unsigned ကိန်းပြည့် i = 0; i < count; i++)
     {
       uint8_t flags_byte = 0;
       depend->data.get_glyph_entry (gid, start_offset + i,
@@ -197,7 +197,7 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
     }
     *entry_count = count;
   }
-  return total;
+  ပြန်ပေး total;
 }
 
 /**
@@ -228,9 +228,9 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
                               hb_set_t *out)
 {
   const hb_set_t *s = depend->get_set_from_index (index);
-  if (!s) return false;
+  အကယ်၍ (!s) ပြန်ပေး false;
   out->set (*s);
-  return true;
+  ပြန်ပေး true;
 }
 
 /**
@@ -245,7 +245,7 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
 void
 hb_subset_depend_destroy (hb_subset_depend_t *depend)
 {
-  if (!hb_object_destroy (depend)) return;
+  အကယ်၍ (!hb_object_destroy (depend)) ပြန်ပေး;
 
   hb_free (depend);
 }

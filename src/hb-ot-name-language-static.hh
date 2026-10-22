@@ -35,13 +35,13 @@
  * https://docs.microsoft.com/en-us/windows/desktop/intl/language-identifier-constants-and-strings
  */
 
-struct hb_ot_language_map_t
+sa_nracanaa hb_ot_language_map_t
 {
-  int cmp (unsigned int key) const
-  { return key < code ? -1 : key > code ? +1 : 0; }
+  ကိန်းပြည့် cmp (unsigned ကိန်းပြည့် key) const
+  { ပြန်ပေး key < code ? -1 : key > code ? +1 : 0; }
 
   uint16_t	code;
-  char		lang[6];
+  var_na		lang[6];
 };
 
 static const hb_ot_language_map_t
@@ -422,33 +422,33 @@ _hb_mac_language_map[] =
 
 
 static hb_language_t
-_hb_ot_name_language_for (unsigned int code,
+_hb_ot_name_language_for (unsigned ကိန်းပြည့် code,
 			  const hb_ot_language_map_t *array,
-			  unsigned int len)
+			  unsigned ကိန်းပြည့် len)
 {
 #ifdef HB_NO_OT_NAME_LANGUAGE
-  return HB_LANGUAGE_INVALID;
+  ပြန်ပေး HB_LANGUAGE_INVALID;
 #endif
   auto *entry = hb_bsearch (code, array, len);
 
-  if (entry)
-    return hb_language_from_string (entry->lang, -1);
+  အကယ်၍ (entry)
+    ပြန်ပေး hb_language_from_string (entry->lang, -1);
 
-  return HB_LANGUAGE_INVALID;
+  ပြန်ပေး HB_LANGUAGE_INVALID;
 }
 
 hb_language_t
-_hb_ot_name_language_for_ms_code (unsigned int code)
+_hb_ot_name_language_for_ms_code (unsigned ကိန်းပြည့် code)
 {
-  return _hb_ot_name_language_for (code,
+  ပြန်ပေး _hb_ot_name_language_for (code,
 				   _hb_ms_language_map,
 				   ARRAY_LENGTH (_hb_ms_language_map));
 }
 
 hb_language_t
-_hb_ot_name_language_for_mac_code (unsigned int code)
+_hb_ot_name_language_for_mac_code (unsigned ကိန်းပြည့် code)
 {
-  return _hb_ot_name_language_for (code,
+  ပြန်ပေး _hb_ot_name_language_for (code,
 				   _hb_mac_language_map,
 				   ARRAY_LENGTH (_hb_mac_language_map));
 }

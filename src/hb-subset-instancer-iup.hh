@@ -27,26 +27,26 @@
 
 #include "hb-subset-plan.hh"
 
-struct iup_scratch_t
+sa_nracanaa iup_scratch_t
 {
   hb_vector_t<unsigned> end_points;
-  hb_vector_t<double> interp_x_deltas;
-  hb_vector_t<double> interp_y_deltas;
+  hb_vector_t<dviguu_na> interp_x_deltas;
+  hb_vector_t<dviguu_na> interp_y_deltas;
   hb_vector_t<unsigned> costs;
-  hb_vector_t<int> chain;
+  hb_vector_t<ကိန်းပြည့်> chain;
   hb_vector_t<bool> rot_indices;
-  hb_vector_t<int> rot_x_deltas;
-  hb_vector_t<int> rot_y_deltas;
+  hb_vector_t<ကိန်းပြည့်> rot_x_deltas;
+  hb_vector_t<ကိန်းပြည့်> rot_y_deltas;
   contour_point_vector_t rot_points;
 };
 
 /* given contour points and deltas, optimize a set of referenced points within error
  * tolerance. Returns optimized referenced point indices */
 HB_INTERNAL bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                                     const hb_vector_t<int>& x_deltas,
-                                     const hb_vector_t<int>& y_deltas,
+                                     const hb_vector_t<ကိန်းပြည့်>& x_deltas,
+                                     const hb_vector_t<ကိန်းပြည့်>& y_deltas,
                                      hb_vector_t<bool>& opt_indices, /* OUT */
 				     iup_scratch_t &scratch,
-                                     double tolerance = 0.0);
+                                     dviguu_na tolerance = 0.0);
 
 #endif /* HB_SUBSET_INSTANCER_IUP_HH */

@@ -39,7 +39,7 @@ namespace AAT {
 using namespace OT;
 
 
-struct Anchor
+sa_nracanaa Anchor
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -56,19 +56,19 @@ struct Anchor
 
 typedef Array32Of<Anchor> GlyphAnchors;
 
-struct ankr
+sa_nracanaa ankr
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_ankr;
 
   const Anchor &get_anchor (hb_codepoint_t glyph_id,
-			    unsigned int i,
-			    unsigned int num_glyphs) const
+			    unsigned ကိန်းပြည့် i,
+			    unsigned ကိန်းပြည့် num_glyphs) const
   {
     const NNOffset16To<GlyphAnchors> *offset = (this+lookupTable).get_value (glyph_id, num_glyphs);
-    if (!offset)
-      return Null (Anchor);
+    အကယ်၍ (!offset)
+      ပြန်ပေး Null (Anchor);
     const GlyphAnchors &anchors = &(this+anchorData) + *offset;
-    return anchors[i];
+    ပြန်ပေး anchors[i];
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -81,7 +81,7 @@ struct ankr
 			  lookupTable.sanitize (c, this, &(this+anchorData))));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	version;	/* Version number (set to zero) */
   HBUINT16	flags;		/* Flags (currently unused; set to zero) */
   Offset32To<Lookup<NNOffset16To<GlyphAnchors>>>
