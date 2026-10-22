@@ -1,23 +1,23 @@
 #ifndef OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 #define OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 
-#include "ValueFormat.hh"
+#ضمن "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
 
-struct pair_value_record_context_t
+بنية pair_value_record_context_t
 {
-  const ValueBase     *base;
-  const ValueFormat   *valueFormats;
-  const ValueFormat   *newFormats;
+  ثابت ValueBase     *base;
+  ثابت ValueFormat   *valueFormats;
+  ثابت ValueFormat   *newFormats;
   unsigned            len1; /* valueFormats[0].get_len() */
-  const hb_map_t      *glyph_map;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map;
+  ثابت hb_map_t      *glyph_map;
+  ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحيح>> *layout_variation_idx_delta_map;
 
-  void copy_values (hb_serialize_context_t *s, const Value *values) const
+  فراغ copy_values (hb_serialize_context_t *s, ثابت Value *values) ثابت
   {
     valueFormats[0].copy_values (s, newFormats[0], base, values,
                                 layout_variation_idx_delta_map);
@@ -27,67 +27,67 @@ struct pair_value_record_context_t
 };
 
 template <typename Types>
-struct PairValueRecord
+بنية PairValueRecord
 {
   template <typename Types2>
-  friend struct PairSet;
+  friend بنية PairSet;
 
-  protected:
+  محمي:
   typename Types::HBGlyphID
 	        secondGlyph;            /* GlyphID of second glyph in the
                                          * pair--first glyph is listed in the
                                          * Coverage table */
   ValueRecord   values;                 /* Positioning data for the first glyph
                                          * followed by for second glyph */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (Types::HBGlyphID::static_size, values);
 
-  int cmp (hb_codepoint_t k) const
-  { return secondGlyph.cmp (k); }
+  صحيح cmp (hb_codepoint_t k) ثابت
+  { החזר secondGlyph.cmp (k); }
 
-  bool subset (hb_subset_context_t *c,
-               pair_value_record_context_t *closure) const
+  منطقي subset (hb_subset_context_t *c,
+               pair_value_record_context_t *closure) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     auto *s = c->serializer;
-    auto *out = s->start_embed (*this);
-    if (unlikely (!s->extend_min (out))) return_trace (false);
+    auto *out = s->start_embed (*هذا);
+    אם (unlikely (!s->extend_min (out))) return_trace (שקר);
 
     out->secondGlyph = (*closure->glyph_map)[secondGlyph];
 
     closure->copy_values (s, values);
 
-    return_trace (true);
+    return_trace (אמת);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats,
-                                  const ValueBase *base) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت ValueFormat *valueFormats,
+                                  ثابت ValueBase *base) ثابت
   {
     unsigned record1_len = valueFormats[0].get_len ();
     unsigned record2_len = valueFormats[1].get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (record1_len + record2_len);
+    ثابت hb_array_t<ثابت Value> values_array = values.as_array (record1_len + record2_len);
 
-    if (valueFormats[0].has_device ())
+    אם (valueFormats[0].has_device ())
       valueFormats[0].collect_variation_indices (c, base, values_array.sub_array (0, record1_len));
 
-    if (valueFormats[1].has_device ())
+    אם (valueFormats[1].has_device ())
       valueFormats[1].collect_variation_indices (c, base, values_array.sub_array (record1_len, record2_len));
   }
 
-  bool intersects (const hb_set_t& glyphset) const
+  منطقي intersects (ثابت hb_set_t& glyphset) ثابت
   {
-    return glyphset.has(secondGlyph);
+    החזר glyphset.has(secondGlyph);
   }
 
-  const Value* get_values_1 () const
+  ثابت Value* get_values_1 () ثابت
   {
-    return &values[0];
+    החזר &values[0];
   }
 
-  const Value* get_values_2 (ValueFormat format1) const
+  ثابت Value* get_values_2 (ValueFormat format1) ثابت
   {
-    return &values[format1.get_len ()];
+    החזר &values[format1.get_len ()];
   }
 };
 

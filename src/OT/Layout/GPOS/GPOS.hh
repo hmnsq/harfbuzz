@@ -1,21 +1,21 @@
 #ifndef OT_LAYOUT_GPOS_GPOS_HH
 #define OT_LAYOUT_GPOS_GPOS_HH
 
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
-#include "PosLookup.hh"
+#ضمن "../../../hb-ot-layout-common.hh"
+#ضمن "../../../hb-ot-layout-gsubgpos.hh"
+#ضمن "Common.hh"
+#ضمن "PosLookup.hh"
 
-namespace OT {
+نطاق OT {
 
 using Layout::GPOS_impl::PosLookup;
 
-namespace Layout {
+نطاق Layout {
 
-static void
+ساكن فراغ
 propagate_attachment_offsets (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned صحيح len,
+                              unsigned صحيح i,
                               hb_direction_t direction,
                               unsigned nesting_level = HB_MAX_NESTING_LEVEL);
 
@@ -24,121 +24,121 @@ propagate_attachment_offsets (hb_glyph_position_t *pos,
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gpos
  */
 
-struct GPOS : GSUBGPOS
+بنية GPOS : GSUBGPOS
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GPOS;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_GPOS;
 
   using Lookup = PosLookup;
 
-  const PosLookup& get_lookup (unsigned int i) const
-  { return static_cast<const PosLookup &> (GSUBGPOS::get_lookup (i)); }
+  ثابت PosLookup& get_lookup (unsigned صحيح i) ثابت
+  { החזר static_cast<ثابت PosLookup &> (GSUBGPOS::get_lookup (i)); }
 
-  static inline void position_start (hb_font_t *font, hb_buffer_t *buffer);
-  static inline void position_finish_advances (hb_font_t *font, hb_buffer_t *buffer);
-  static inline void position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer);
+  ساكن مضمن فراغ position_start (hb_font_t *font, hb_buffer_t *buffer);
+  ساكن مضمن فراغ position_finish_advances (hb_font_t *font, hb_buffer_t *buffer);
+  ساكن مضمن فراغ position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer);
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
     hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<PosLookup> (&l);
+    החזר GSUBGPOS::subset<PosLookup> (&l);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (GSUBGPOS::sanitize<PosLookup> (c));
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_INTERNAL منطقي is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) ثابت;
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (unsigned i = 0; i < GSUBGPOS::get_lookup_count (); i++)
+    עבור (unsigned i = 0; i < GSUBGPOS::get_lookup_count (); i++)
     {
-      if (!c->gpos_lookups->has (i)) continue;
-      const PosLookup &l = get_lookup (i);
+      אם (!c->gpos_lookups->has (i)) استمر;
+      ثابت PosLookup &l = get_lookup (i);
       l.dispatch (c);
     }
   }
 
-  void closure_lookups (hb_face_t      *face,
-                        const hb_set_t *glyphs,
-                        hb_set_t       *lookup_indexes /* IN/OUT */) const
+  فراغ closure_lookups (hb_face_t      *face,
+                        ثابت hb_set_t *glyphs,
+                        hb_set_t       *lookup_indexes /* IN/OUT */) ثابت
   { GSUBGPOS::closure_lookups<PosLookup> (face, glyphs, lookup_indexes); }
 
-  typedef GSUBGPOS::accelerator_t<GPOS> accelerator_t;
+  تعريفنوع GSUBGPOS::accelerator_t<GPOS> accelerator_t;
 };
 
 
-static void
+ساكن فراغ
 propagate_attachment_offsets (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned صحيح len,
+                              unsigned صحيح i,
                               hb_direction_t direction,
                               unsigned nesting_level)
 {
   /* Adjusts offsets of attached glyphs (both cursive and mark) to accumulate
    * offset of glyph they are attached to. */
-  int chain = pos[i].attach_chain();
-  int type = pos[i].attach_type();
+  صحيح chain = pos[i].attach_chain();
+  صحيح type = pos[i].attach_type();
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  unsigned صحيح j = (صحيح) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  אם (unlikely (j >= len))
+    החזר;
 
-  if (unlikely (!nesting_level))
-    return;
+  אם (unlikely (!nesting_level))
+    החזר;
 
-  if (pos[j].attach_chain())
+  אם (pos[j].attach_chain())
     propagate_attachment_offsets (pos, len, j, direction, nesting_level - 1);
 
-  assert (!!(type & GPOS_impl::ATTACH_TYPE_MARK) ^ !!(type & GPOS_impl::ATTACH_TYPE_CURSIVE));
+  أكد (!!(type & GPOS_impl::ATTACH_TYPE_MARK) ^ !!(type & GPOS_impl::ATTACH_TYPE_CURSIVE));
 
-  if (type & GPOS_impl::ATTACH_TYPE_CURSIVE)
+  אם (type & GPOS_impl::ATTACH_TYPE_CURSIVE)
   {
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+    אם (HB_DIRECTION_IS_HORIZONTAL (direction))
       pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[j].y_offset);
-    else
+    אחרת
       pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[j].x_offset);
   }
-  else /*if (type & GPOS_impl::ATTACH_TYPE_MARK)*/
+  אחרת /*if (type & GPOS_impl::ATTACH_TYPE_MARK)*/
   {
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+    אם (HB_DIRECTION_IS_HORIZONTAL (direction))
       pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[j].x_offset);
-    else
+    אחרת
       pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[j].y_offset);
 
     // i is the position of the mark; j is the base.
-    if (j < i)
+    אם (j < i)
     {
       /* This is the common case: mark follows base.
        * And currently the only way in OpenType. */
-      if (HB_DIRECTION_IS_FORWARD (direction))
-	for (unsigned int k = j; k < i; k++) {
+      אם (HB_DIRECTION_IS_FORWARD (direction))
+	עבור (unsigned صحيح k = j; k < i; k++) {
 	  pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, pos[k].y_advance);
 	}
-      else
-	for (unsigned int k = j + 1; k < i + 1; k++) {
+      אחרת
+	עבור (unsigned صحيح k = j + 1; k < i + 1; k++) {
 	  pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[k].y_advance);
 	}
     }
-    else // j > i
+    אחרת // j > i
     {
       /* This can happen with `kerx`: a mark attaching
        * to a base after it in the logical order. */
-      if (HB_DIRECTION_IS_FORWARD (direction))
-	for (unsigned int k = i; k < j; k++) {
+      אם (HB_DIRECTION_IS_FORWARD (direction))
+	עבור (unsigned صحيح k = i; k < j; k++) {
 	  pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[k].y_advance);
 	}
-      else
-	for (unsigned int k = i + 1; k < j + 1; k++) {
+      אחרת
+	עבור (unsigned صحيح k = i + 1; k < j + 1; k++) {
 	  pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, pos[k].y_advance);
 	}
@@ -146,61 +146,61 @@ propagate_attachment_offsets (hb_glyph_position_t *pos,
   }
 }
 
-void
+فراغ
 GPOS::position_start (hb_font_t *font HB_UNUSED, hb_buffer_t *buffer)
 {
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned صحيح count = buffer->len;
+  עבור (unsigned صحيح i = 0; i < count; i++)
     buffer->pos[i].attach_chain() = buffer->pos[i].attach_type() = 0;
 }
 
-void
+فراغ
 GPOS::position_finish_advances (hb_font_t *font HB_UNUSED, hb_buffer_t *buffer HB_UNUSED)
 {
   //_hb_buffer_assert_gsubgpos_vars (buffer);
 }
 
-void
+فراغ
 GPOS::position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
 {
   _hb_buffer_assert_gsubgpos_vars (buffer);
 
-  unsigned int len;
+  unsigned صحيح len;
   hb_glyph_position_t *pos = hb_buffer_get_glyph_positions (buffer, &len);
   hb_direction_t direction = buffer->props.direction;
 
   /* Handle attachments */
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT)
+  אם (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT)
   {
     auto *pos = buffer->pos;
     // https://github.com/harfbuzz/harfbuzz/issues/5514
-    if (HB_DIRECTION_IS_FORWARD (direction))
+    אם (HB_DIRECTION_IS_FORWARD (direction))
     {
-      for (unsigned i = 0; i < len; i++)
-	if (pos[i].attach_chain())
+      עבור (unsigned i = 0; i < len; i++)
+	אם (pos[i].attach_chain())
 	  propagate_attachment_offsets (pos, len, i, direction);
-    } else {
-      for (unsigned i = len; i-- > 0; )
-	if (pos[i].attach_chain())
+    } אחרת {
+      עבור (unsigned i = len; i-- > 0; )
+	אם (pos[i].attach_chain())
 	  propagate_attachment_offsets (pos, len, i, direction);
     }
   }
 
-  if (unlikely (font->slant_xy) &&
+  אם (unlikely (font->slant_xy) &&
       HB_DIRECTION_IS_HORIZONTAL (direction))
   {
     /* Slanting shaping results is only supported for horizontal text,
      * as it gets weird otherwise. */
-    for (unsigned i = 0; i < len; i++)
-      if (unlikely (pos[i].y_offset))
-        pos[i].x_offset = hb_clamp_to<hb_position_t> ((double) pos[i].x_offset +
-						      (double) roundf (font->slant_xy * pos[i].y_offset));
+    עבור (unsigned i = 0; i < len; i++)
+      אם (unlikely (pos[i].y_offset))
+        pos[i].x_offset = hb_clamp_to<hb_position_t> ((مزدوج) pos[i].x_offset +
+						      (مزدوج) roundf (font->slant_xy * pos[i].y_offset));
   }
 }
 
 }
 
-struct GPOS_accelerator_t : Layout::GPOS::accelerator_t {
+بنية GPOS_accelerator_t : Layout::GPOS::accelerator_t {
   GPOS_accelerator_t (hb_face_t *face) : Layout::GPOS::accelerator_t (face) {}
 };
 

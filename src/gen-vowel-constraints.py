@@ -13,46 +13,46 @@ Input file:
 * https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
 """
 
-import collections
-import os
-def write (s):
+استورد collections
+استورد os
+def اكتب (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
-import sys
+	sys.stdout.buffer.اكتب (s.encode ('utf-8'))
+استورد sys
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
+אם len (sys.argv) > 1 וגם sys.argv[1] == '--rust':
 	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+	output_rust = אמת
+אחרת:
+	output_rust = שקר
 
-if len (sys.argv) != 3:
+אם len (sys.argv) != 3:
 	sys.exit (__doc__)
 
-with open (sys.argv[2], encoding='utf-8') as f:
-	scripts_header = [f.readline () for i in range (2)]
+with open (sys.argv[2], encoding='utf-8') كـ f:
+	scripts_header = [f.readline () עבור i في range (2)]
 	scripts = {}
 	script_order = {}
-	for line in f:
+	עבור line في f:
 		j = line.find ('#')
-		if j >= 0:
+		אם j >= 0:
 			line = line[:j]
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () עבור x في line.split (';')]
+		אם len (fields) == 1:
+			استمر
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = صحيح (uu[0], 16)
+		אם len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		אחרת:
+			end = صحيح (uu[1], 16)
 		script = fields[1]
-		for u in range (start, end + 1):
+		עבור u في range (start, end + 1):
 			scripts[u] = script
-		if script not in script_order:
+		אם script לא في script_order:
 			script_order[script] = start
 
-class ConstraintSet (object):
+מחלקה ConstraintSet (object):
 	"""A set of prohibited code point sequences.
 
 	Args:
@@ -70,131 +70,131 @@ class ConstraintSet (object):
 
 	def add (self, constraint):
 		"""Add a constraint to this set."""
-		if not constraint:
-			return
+		אם לא constraint:
+			החזר
 		first = constraint[0]
 		rest = constraint[1:]
-		if isinstance (self._c, list):
-			if constraint == self._c[:len (constraint)]:
+		אם isinstance (self._c, list):
+			אם constraint == self._c[:len (constraint)]:
 				self._c = constraint
-			elif self._c != constraint[:len (self._c)]:
+			وإلاإذا self._c != constraint[:len (self._c)]:
 				self._c = {self._c[0]: ConstraintSet (self._c[1:])}
-		if isinstance (self._c, dict):
-			if first in self._c:
+		אם isinstance (self._c, dict):
+			אם first في self._c:
 				self._c[first].add (rest)
-			else:
+			אחרת:
 				self._c[first] = ConstraintSet (rest)
 
 	@staticmethod
 	def _indent (depth):
-		return ('  ' * depth).replace ('        ', '\t')
+		החזר ('  ' * depth).replace ('        ', '\t')
 
 	def __str__ (self, index=0, depth=4):
 		s = []
 		indent = self._indent (depth)
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		אם isinstance (self._c, list):
+			אם len (self._c) == 0:
+				أكد index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('{}matched = true;\n'.format (indent))
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index or ''))
-			else:
-				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index or ''))
-				if index:
+			وإلاإذا len (self._c) == 1:
+				أكد index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index או ''))
+			אחרת:
+				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index או ''))
+				אם index:
 					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (depth + 2), index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+				עבור i, cp في enumerate (self._c[1:], start=1):
 					s.append ('{}0x{:04X}u == buffer->cur ({}).codepoint{}\n'.format (
-						self._indent (depth + 2), cp, index + i, ')' if i == len (self._c) - 1 else ' &&'))
+						self._indent (depth + 2), cp, index + i, ')' אם i == len (self._c) - 1 אחרת ' &&'))
 				s.append ('{}{{\n'.format (indent))
-				for i in range (index):
+				עבור i في range (index):
 					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (depth + 1)))
 				s.append ('{}matched = true;\n'.format (self._indent (depth + 1)))
 				s.append ('{}}}\n'.format (indent))
-		else:
-			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index or ''))
+		אחרת:
+			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index או ''))
 			s.append ('{}{{\n'.format (indent))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
+			עבור first, rest في sorted (self._c.items ()):
 				cases[rest.__str__ (index + 1, depth + 2)].add (first)
-			for body, labels in sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
-				for i, cp in enumerate (sorted (labels)):
-					if i % 4 == 0:
+			עבור body, labels في sorted (cases.items (), key=مجهول b_ls: sorted (b_ls[1])[0]):
+				עבור i, cp في enumerate (sorted (labels)):
+					אם i % 4 == 0:
 						s.append (self._indent (depth + 1))
-					else:
+					אחרת:
 						s.append (' ')
-					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' if i % 4 == 3 else ''))
-				if len (labels) % 4 != 0:
+					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' אם i % 4 == 3 אחרת ''))
+				אם len (labels) % 4 != 0:
 					s.append ('\n')
 				s.append (body)
 				s.append ('{}break;\n'.format (self._indent (depth + 2)))
 			s.append ('{}}}\n'.format (indent))
-		return ''.join (s)
+		החזר ''.join (s)
 
 	def rust_str (self, index=0):
 		s = []
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		אם isinstance (self._c, list):
+			אם len (self._c) == 0:
+				أكد index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = true;\n')
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+			وإلاإذا len (self._c) == 1:
+				أكد index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (next (iter (self._c)), index))
-			else:
+			אחרת:
 				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], index))
-				if index:
+				אם index:
 					s.append ('buffer.idx + {} < buffer.len &&\n'.format (index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+				עבור i, cp في enumerate (self._c[1:], start=1):
 					s.append ('0x{:04X} == buffer.cur({}).glyph_id{}\n'.format (
-						cp, index + i, '' if i == len (self._c) - 1 else ' &&'))
+						cp, index + i, '' אם i == len (self._c) - 1 אחרת ' &&'))
 				s.append ('{\n')
-				for i in range (index + 1):
+				עבור i في range (index + 1):
 					s.append ('buffer.next_glyph();\n')
 				s.append ('output_dotted_circle(buffer);\n')
 				s.append ('}\n')
-		else:
+		אחרת:
 			s.append ('match buffer.cur({}).glyph_id {{\n'.format (index))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
+			עבור first, rest في sorted (self._c.items ()):
 				cases[rest.rust_str (index + 1)].add (first)
-			items = sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0])
-			for ii, (body, labels) in enumerate (items):
-				for i, cp in enumerate (sorted (labels)):
-					if i == len (labels) - 1:
-						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' if i % 4 == 3 else ''))
-					else:
-						s.append (' 0x{:04X} | {}'.format (cp, '\n' if i % 4 == 3 else ''))
+			items = sorted (cases.items (), key=مجهول b_ls: sorted (b_ls[1])[0])
+			עבור ii, (body, labels) في enumerate (items):
+				עבור i, cp في enumerate (sorted (labels)):
+					אם i == len (labels) - 1:
+						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' אם i % 4 == 3 אחרת ''))
+					אחרת:
+						s.append (' 0x{:04X} | {}'.format (cp, '\n' אם i % 4 == 3 אחרת ''))
 				s.append (body)
 				s.append ('}')
-				if ii == len (items) - 1:
+				אם ii == len (items) - 1:
 					s.append ('_ => {}')
 			s.append ('}\n')
-		return ''.join (s)
+		החזר ''.join (s)
 
 constraints = {}
-with open (sys.argv[1], encoding='utf-8') as f:
+with open (sys.argv[1], encoding='utf-8') كـ f:
 	constraints_header = []
-	while True:
+	כלעוד אמת:
 		line = f.readline ().strip ()
-		if line == '#':
-			break
+		אם line == '#':
+			اكسر
 		constraints_header.append(line)
-	for line in f:
+	עבור line في f:
 		j = line.find ('#')
-		if j >= 0:
+		אם j >= 0:
 			line = line[:j]
-		constraint = [int (cp, 16) for cp in line.split (';')[0].split ()]
-		if not constraint: continue
-		assert 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
+		constraint = [صحيح (cp, 16) עבור cp في line.split (';')[0].split ()]
+		אם לא constraint: استمر
+		أكد 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
 		script = scripts[constraint[0]]
-		if script in constraints:
+		אם script في constraints:
 			constraints[script].add (constraint)
-		else:
+		אחרת:
 			constraints[script] = ConstraintSet (constraint)
-		assert constraints, 'No constraints found'
+		أكد constraints, 'No constraints found'
 
 print ('/* == Start of generated functions == */')
-if output_rust:
+אם output_rust:
 	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
 	print ()
 	print ('#![allow(clippy::single_match)]')
@@ -229,13 +229,13 @@ if output_rust:
 	print ('    buffer.clear_output();')
 	print ('    match buffer.script {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	עבור script, constraints في sorted (constraints.items (), key=مجهول s_c: script_order[s_c[0]]):
 		print ('        Some(script::{}) => {{'.format (script.upper ()))
 		print ('            buffer.idx = 0;')
 		print ('            while buffer.idx + 1 < buffer.len {')
 		print ('                #[allow(unused_mut)]')
 		print ('                let mut matched = false;')
-		write (constraints.rust_str ())
+		اكتب (constraints.rust_str ())
 		print ('                buffer.next_glyph();')
 		print ('                if matched { output_with_dotted_circle(buffer); }')
 		print ('            }')
@@ -246,7 +246,7 @@ if output_rust:
 	print ('    }')
 	print ('    buffer.sync();')
 	print ('}')
-else:
+אחרת:
 	print ('/*')
 	print (' * The following functions are generated by running:')
 	print (' *')
@@ -254,10 +254,10 @@ else:
 	print (' *')
 	print (' * on files with these headers:')
 	print (' *')
-	for line in constraints_header:
+	עבור line في constraints_header:
 		print (' * %s' % line.strip ())
 	print (' *')
-	for line in scripts_header:
+	עבור line في scripts_header:
 		print (' * %s' % line.strip ())
 	print (' */')
 	print ()
@@ -303,12 +303,12 @@ else:
 	print ('  switch ((unsigned) buffer->props.script)')
 	print ('  {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	עבור script, constraints في sorted (constraints.items (), key=مجهول s_c: script_order[s_c[0]]):
 		print ('    case HB_SCRIPT_{}:'.format (script.upper ()))
 		print ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
 		print ('      {')
 		print ('\tbool matched = false;')
-		write (str (constraints))
+		اكتب (str (constraints))
 		print ('\t(void) buffer->next_glyph ();')
 		print ('\tif (matched) _output_with_dotted_circle (buffer);')
 		print ('      }')

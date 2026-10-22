@@ -27,11 +27,11 @@
 #ifndef HB_GPU_PAINT_HH
 #define HB_GPU_PAINT_HH
 
-#include "hb.hh"
-#include "hb-gpu.h"
-#include "hb-geometry.hh"
-#include "hb-map.hh"
-#include "hb-object.hh"
+#ضمن "hb.hh"
+#ضمن "hb-gpu.h"
+#ضمن "hb-geometry.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-object.hh"
 
 
 /*
@@ -237,7 +237,7 @@
  *     bitmap path.
  */
 
-struct hb_gpu_paint_t
+بنية hb_gpu_paint_t
 {
   hb_object_header_t header;
 
@@ -247,12 +247,12 @@ struct hb_gpu_paint_t
 
   /* Current effective affine (stack is grown/shrunk by
    * push_transform / pop_transform callbacks). */
-  hb_transform_t<float> cur_transform = {1, 0, 0, 1, 0, 0};
-  hb_vector_t<hb_transform_t<float>> transform_stack;
+  hb_transform_t<عائم> cur_transform = {1, 0, 0, 1, 0, 0};
+  hb_vector_t<hb_transform_t<عائم>> transform_stack;
 
   /* Font scale (set by hb_gpu_paint_glyph()). */
-  int x_scale = 0;
-  int y_scale = 0;
+  صحيح x_scale = 0;
+  صحيح y_scale = 0;
 
   /* Accumulator state (cleared by hb_gpu_paint_clear). */
 
@@ -270,14 +270,14 @@ struct hb_gpu_paint_t
   /* Total bytes held in sub_blobs; bounded by HB_GPU_PAINT_MAX_SUB_BYTES. */
   unsigned sub_bytes = 0;
 
-  bool push_sub_blob (hb_blob_t *blob)
+  منطقي push_sub_blob (hb_blob_t *blob)
   {
     unsigned len = hb_blob_get_length (blob);
-    if (unlikely (len > HB_GPU_PAINT_MAX_SUB_BYTES - sub_bytes ||
+    אם (unlikely (len > HB_GPU_PAINT_MAX_SUB_BYTES - sub_bytes ||
 		  !sub_blobs.push_or_fail (blob)))
-      return false;
+      החזר שקר;
     sub_bytes += len;
-    return true;
+    החזר אמת;
   }
 
   /* Nesting depth of push_group / pop_group.  We bail (set
@@ -294,7 +294,7 @@ struct hb_gpu_paint_t
   int64_t budget = HB_BUDGET_DEFAULT;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  فراغ recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
@@ -308,18 +308,18 @@ struct hb_gpu_paint_t
    * the clip outline is defined in that coord space, a subsequent
    * gradient params callback may run under deeper transforms which
    * we use for the gradient but not the clip outline. */
-  struct pending_clip_t
+  بنية pending_clip_t
   {
     hb_codepoint_t        glyph;    /* HB_CODEPOINT_INVALID for path clips */
     hb_font_t            *font;     /* borrowed; nullptr for path clips */
-    hb_transform_t<float> transform;
+    hb_transform_t<عائم> transform;
     /* Path clips are encoded into a sub-blob at push_clip_path_end
      * time; glyph clips are encoded lazily on first consuming layer
      * and cached.  sub_blob_index is -1 until the encode happens,
      * then holds the index into c->sub_blobs and ext_* hold the
      * design-unit extents. */
-    int                   sub_blob_index;
-    int                   ext_x0, ext_y0, ext_x1, ext_y1;
+    صحيح                   sub_blob_index;
+    صحيح                   ext_x0, ext_y0, ext_x1, ext_y1;
   };
   pending_clip_t clip_stack[3];
   unsigned       clip_depth = 0;
@@ -327,18 +327,18 @@ struct hb_gpu_paint_t
   /* Carries the cur_transform captured at push_clip_path_start
    * through to push_clip_path_end, where the encoded clip is
    * committed to clip_stack. */
-  hb_transform_t<float> pending_clip_path_transform = {};
-  bool                  pending_clip_path = false;
+  hb_transform_t<عائم> pending_clip_path_transform = {};
+  منطقي                  pending_clip_path = שקר;
 
   /* Set when the paint walk emits v1-only callbacks we do not yet
    * support.  hb_gpu_paint_encode() returns NULL in that case. */
-  bool unsupported = false;
+  منطقي unsupported = שקר;
 
   /* Extents in font design units, accumulated across layers. */
-  int ext_min_x =  0x7fffffff;
-  int ext_min_y =  0x7fffffff;
-  int ext_max_x = -0x7fffffff;
-  int ext_max_y = -0x7fffffff;
+  صحيح ext_min_x =  0x7fffffff;
+  صحيح ext_min_y =  0x7fffffff;
+  صحيح ext_max_x = -0x7fffffff;
+  صحيح ext_max_y = -0x7fffffff;
 
   /* Scratch: used to rasterize each clip-glyph outline. */
   hb_gpu_draw_t *scratch_draw = nullptr;
@@ -349,16 +349,16 @@ struct hb_gpu_paint_t
   /* Recycled output blob. */
   hb_blob_t *recycled_blob = nullptr;
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  منطقي fetch_color_stops (hb_color_line_t *color_line)
   {
     unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    אם (unlikely (!count || !color_stops_scratch.resize (count)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      החזר שקר;
     }
     hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    החזר אמת;
   }
 };
 

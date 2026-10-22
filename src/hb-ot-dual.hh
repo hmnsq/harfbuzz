@@ -29,23 +29,23 @@
 #ifndef HB_OT_DUAL_HH
 #define HB_OT_DUAL_HH
 
-#include "hb-open-type.hh"
+#ضمن "hb-open-type.hh"
 
 
-namespace OT {
-namespace Layout {
+نطاق OT {
+نطاق Layout {
 
-struct SmallTypes {
-  static constexpr unsigned size = 2;
+بنية SmallTypes {
+  ساكن constexpr unsigned size = 2;
   using large_int = uint32_t;
   using HBUINT = HBUINT16;
   using HBLUINT = HBUINT16;
   using HBGlyphID = HBGlyphID16;
   using Offset = Offset16;
   using LOffset = Offset16;
-  template <typename Type, typename BaseType=void, bool has_null=true>
+  template <typename Type, typename BaseType=فراغ, منطقي has_null=אמת>
   using OffsetTo = OT::Offset16To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
+  template <typename Type, typename BaseType=فراغ, منطقي has_null=אמת>
   using LOffsetTo = OT::Offset16To<Type, BaseType, has_null>;
   template <typename Type>
   using ArrayOf = OT::Array16Of<Type>;
@@ -53,8 +53,8 @@ struct SmallTypes {
   using SortedArrayOf = OT::SortedArray16Of<Type>;
 };
 
-struct MediumTypes {
-  static constexpr unsigned size = 3;
+بنية MediumTypes {
+  ساكن constexpr unsigned size = 3;
   using large_int = uint64_t;
   using HBUINT = HBUINT24;
   using HBLUINT = HBUINT32;
@@ -62,9 +62,9 @@ struct MediumTypes {
   using Offset = Offset24;
   /* Long offsets for large tables. */
   using LOffset = Offset32;
-  template <typename Type, typename BaseType=void, bool has_null=true>
+  template <typename Type, typename BaseType=فراغ, منطقي has_null=אמת>
   using OffsetTo = OT::Offset24To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
+  template <typename Type, typename BaseType=فراغ, منطقي has_null=אמת>
   using LOffsetTo = OT::Offset32To<Type, BaseType, has_null>;
   template <typename Type>
   using ArrayOf = OT::Array24Of<Type>;
@@ -77,7 +77,7 @@ struct MediumTypes {
 
 
 template <typename Lower, typename Upper>
-struct hb_dual_accelerator_t
+بنية hb_dual_accelerator_t
 {
   hb_dual_accelerator_t (hb_face_t *face) :
 #ifndef HB_NO_BEYOND_64K
@@ -90,20 +90,20 @@ struct hb_dual_accelerator_t
 	   face)
   {}
 
-  bool has_data () const
+  منطقي has_data () ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (upper.has_data ()) return true;
+    אם (upper.has_data ()) החזר אמת;
 #endif
-    return lower.has_data ();
+    החזר lower.has_data ();
   }
 
-  bool has_upper_data () const
+  منطقي has_upper_data () ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    return upper.has_data ();
-#else
-    return false;
+    החזר upper.has_data ();
+#אחרת
+    החזר שקר;
 #endif
   }
 
@@ -114,20 +114,20 @@ struct hb_dual_accelerator_t
 };
 
 template <typename Table>
-struct hb_table_accelerator_t
+بنية hb_table_accelerator_t
 {
   hb_table_accelerator_t (hb_face_t *face) :
     table (hb_sanitize_context_t ().reference_table<Table> (face))
   {}
   ~hb_table_accelerator_t () { table.destroy (); }
 
-  bool has_data () const { return table->has_data (); }
+  منطقي has_data () ثابت { החזר table->has_data (); }
 
   hb_blob_ptr_t<Table> table;
 };
 
 template <typename Lower, typename Upper>
-struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
+بنية hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
 					       hb_table_accelerator_t<Upper>>
 {
   hb_dual_table_t (hb_face_t *face) :
@@ -137,7 +137,7 @@ struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
 
 #ifndef HB_NO_BEYOND_64K
 #define HB_DUAL_GET(accel, expr) ((accel).upper.has_data () ? (accel).upper.expr : (accel).lower.expr)
-#else
+#אחרת
 #define HB_DUAL_GET(accel, expr) ((accel).lower.expr)
 #endif
 

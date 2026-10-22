@@ -27,7 +27,7 @@
 #ifndef HB_DECYCLER_HH
 #define HB_DECYCLER_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 /*
  * hb_decycler_t is an efficient cycle detector for graph traversal.
@@ -82,19 +82,19 @@
  * For usage examples see test-decycler.cc.
  */
 
-struct hb_decycler_node_t;
+بنية hb_decycler_node_t;
 
-struct hb_decycler_t
+بنية hb_decycler_t
 {
-  friend struct hb_decycler_node_t;
+  friend بنية hb_decycler_node_t;
 
-  private:
-  bool tortoise_awake = false;
+  خاص:
+  منطقي tortoise_awake = שקר;
   hb_decycler_node_t *tortoise = nullptr;
   hb_decycler_node_t *hare = nullptr;
 };
 
-struct hb_decycler_node_t
+بنية hb_decycler_node_t
 {
   hb_decycler_node_t (hb_decycler_t &decycler)
   {
@@ -102,21 +102,21 @@ struct hb_decycler_node_t
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    אם (!decycler.tortoise)
     {
       // First node.
-      assert (decycler.tortoise_awake);
-      assert (!decycler.hare);
-      decycler.tortoise = decycler.hare = this;
-      return;
+      أكد (decycler.tortoise_awake);
+      أكد (!decycler.hare);
+      decycler.tortoise = decycler.hare = هذا;
+      החזר;
     }
 
-    if (decycler.tortoise_awake)
+    אם (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
-    this->prev = decycler.hare;
-    decycler.hare->u.next = this;
-    decycler.hare = this;
+    هذا->prev = decycler.hare;
+    decycler.hare->u.next = هذا;
+    decycler.hare = هذا;
   }
 
   ~hb_decycler_node_t ()
@@ -125,35 +125,35 @@ struct hb_decycler_node_t
 
     // Inverse of the constructor.
 
-    assert (decycler.hare == this);
+    أكد (decycler.hare == هذا);
     decycler.hare = prev;
-    if (prev)
+    אם (prev)
       prev->u.decycler = &decycler;
 
-    assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    أكد (decycler.tortoise);
+    אם (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
   }
 
-  bool visit (uintptr_t value_)
+  منطقي visit (uintptr_t value_)
   {
     value = value_;
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    אם (decycler.tortoise == هذا)
+      החזר אמת; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    אם (decycler.tortoise->value == value)
+      החזר שקר; // Cycle detected.
 
-    return true;
+    החזר אמת;
   }
 
-  private:
-  union {
+  خاص:
+  اتحاد {
     hb_decycler_t *decycler;
     hb_decycler_node_t *next;
   } u = {nullptr};

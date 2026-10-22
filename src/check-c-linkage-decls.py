@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import os
-import sys
+استورد os
+استورد sys
 
 srcdir = sys.argv[1]
 base_srcdir = sys.argv[2]
@@ -12,34 +12,34 @@ os.chdir(srcdir)
 
 def removeprefix(s):
     abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+    החזר os.path.relpath(abs_path, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.path.basename(x) עבור x في os.getenv("HBHEADERS", "").split()] או [
+    x עבור x في os.listdir(".") אם x.startswith("hb") וגם x.endswith(".h")
 ]
-HBHEADERS = [x for x in HBHEADERS if x.endswith(".h")]
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBHEADERS = [x עבור x في HBHEADERS אם x.endswith(".h")]
+HBSOURCES = [removeprefix(x) עבור x في os.getenv("HBSOURCES", "").split()] או [
+    x עבור x في os.listdir(".") אם x.startswith("hb") וגם x.endswith((".cc", ".hh"))
 ]
 stat = 0
 
-for x in HBHEADERS:
+עבור x في HBHEADERS:
     print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if ("HB_BEGIN_DECLS" not in content) or ("HB_END_DECLS" not in content):
+    with open(x, "r", encoding="utf-8") كـ f:
+        content = f.اقرأ()
+    אם ("HB_BEGIN_DECLS" לא في content) או ("HB_END_DECLS" לא في content):
         print(
             "Ouch, file %s does not have HB_BEGIN_DECLS / HB_END_DECLS, but it should"
             % x
         )
         stat = 1
 
-for x in HBSOURCES:
+עבור x في HBSOURCES:
     print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if ("HB_BEGIN_DECLS" in content) or ("HB_END_DECLS" in content):
+    with open(x, "r", encoding="utf-8") كـ f:
+        content = f.اقرأ()
+    אם ("HB_BEGIN_DECLS" في content) או ("HB_END_DECLS" في content):
         print("Ouch, file %s has HB_BEGIN_DECLS / HB_END_DECLS, but it shouldn't" % x)
         stat = 1
 

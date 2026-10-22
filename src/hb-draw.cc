@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 #ifndef HB_NO_DRAW
 
-#include "hb-draw.hh"
+#ضمن "hb-draw.hh"
 
-#include "hb-geometry.hh"
+#ضمن "hb-geometry.hh"
 
-#include "hb-machinery.hh"
+#ضمن "hb-machinery.hh"
 
-#include <cmath>
+#ضمن <cmath>
 
 
 /**
@@ -46,145 +46,145 @@
  * The #hb_draw_funcs_t struct can be used with hb_font_draw_glyph().
  **/
 
-static void
-hb_draw_move_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+ساكن فراغ
+hb_draw_move_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data HB_UNUSED,
 		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x HB_UNUSED, float to_y HB_UNUSED,
-		     void *user_data HB_UNUSED) {}
+		     عائم to_x HB_UNUSED, عائم to_y HB_UNUSED,
+		     فراغ *user_data HB_UNUSED) {}
 
-static void
-hb_draw_line_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+ساكن فراغ
+hb_draw_line_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data HB_UNUSED,
 		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x HB_UNUSED, float to_y HB_UNUSED,
-		     void *user_data HB_UNUSED) {}
+		     عائم to_x HB_UNUSED, عائم to_y HB_UNUSED,
+		     فراغ *user_data HB_UNUSED) {}
 
-static void
-hb_draw_quadratic_to_nil (hb_draw_funcs_t *dfuncs, void *draw_data,
+ساكن فراغ
+hb_draw_quadratic_to_nil (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 			  hb_draw_state_t *st,
-			  float control_x, float control_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  عائم control_x, عائم control_y,
+			  عائم to_x, عائم to_y,
+			  فراغ *user_data HB_UNUSED)
 {
   /* Compute in double precision, so that the result does not depend
    * on how the compiler evaluates float expressions. */
 #define HB_TWO_THIRD 0.66666666666666666666666667
-  double current_x = (double) st->current_x;
-  double current_y = (double) st->current_y;
-  double cx = (double) control_x;
-  double cy = (double) control_y;
-  double tx = (double) to_x;
-  double ty = (double) to_y;
+  مزدوج current_x = (مزدوج) st->current_x;
+  مزدوج current_y = (مزدوج) st->current_y;
+  مزدوج cx = (مزدوج) control_x;
+  مزدوج cy = (مزدوج) control_y;
+  مزدوج tx = (مزدوج) to_x;
+  مزدوج ty = (مزدوج) to_y;
   dfuncs->emit_cubic_to (draw_data, *st,
-			 (float) (current_x + (cx - current_x) * HB_TWO_THIRD),
-			 (float) (current_y + (cy - current_y) * HB_TWO_THIRD),
-			 (float) (tx + (cx - tx) * HB_TWO_THIRD),
-			 (float) (ty + (cy - ty) * HB_TWO_THIRD),
+			 (عائم) (current_x + (cx - current_x) * HB_TWO_THIRD),
+			 (عائم) (current_y + (cy - current_y) * HB_TWO_THIRD),
+			 (عائم) (tx + (cx - tx) * HB_TWO_THIRD),
+			 (عائم) (ty + (cy - ty) * HB_TWO_THIRD),
 			 to_x, to_y);
 #undef HB_TWO_THIRD
 }
 
-static void
-hb_draw_cubic_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+ساكن فراغ
+hb_draw_cubic_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data HB_UNUSED,
 		      hb_draw_state_t *st HB_UNUSED,
-		      float control1_x HB_UNUSED, float control1_y HB_UNUSED,
-		      float control2_x HB_UNUSED, float control2_y HB_UNUSED,
-		      float to_x HB_UNUSED, float to_y HB_UNUSED,
-		      void *user_data HB_UNUSED) {}
+		      عائم control1_x HB_UNUSED, عائم control1_y HB_UNUSED,
+		      عائم control2_x HB_UNUSED, عائم control2_y HB_UNUSED,
+		      عائم to_x HB_UNUSED, عائم to_y HB_UNUSED,
+		      فراغ *user_data HB_UNUSED) {}
 
-static void
-hb_draw_close_path_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+ساكن فراغ
+hb_draw_close_path_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data HB_UNUSED,
 			hb_draw_state_t *st HB_UNUSED,
-			void *user_data HB_UNUSED) {}
+			فراغ *user_data HB_UNUSED) {}
 
-static hb_bool_t
-hb_draw_set_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+ساكن hb_bool_t
+hb_draw_set_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data HB_UNUSED,
 			int64_t budget HB_UNUSED,
-			void *user_data HB_UNUSED) { return false; }
+			فراغ *user_data HB_UNUSED) { החזר שקר; }
 
-static int64_t
-hb_draw_get_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-			void *user_data HB_UNUSED) { return HB_BUDGET_DEFAULT; }
+ساكن int64_t
+hb_draw_get_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data HB_UNUSED,
+			فراغ *user_data HB_UNUSED) { החזר HB_BUDGET_DEFAULT; }
 
-static int64_t *
-hb_draw_get_budget_remaining_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-				  void *user_data HB_UNUSED) { return nullptr; }
+ساكن int64_t *
+hb_draw_get_budget_remaining_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data HB_UNUSED,
+				  فراغ *user_data HB_UNUSED) { החזר nullptr; }
 
 
-static bool
+ساكن منطقي
 _hb_draw_funcs_set_preamble (hb_draw_funcs_t    *dfuncs,
-			     bool                func_is_null,
-			     void              **user_data,
+			     منطقي                func_is_null,
+			     فراغ              **user_data,
 			     hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (dfuncs))
+  אם (hb_object_is_immutable (dfuncs))
   {
-    if (*destroy)
+    אם (*destroy)
       (*destroy) (*user_data);
-    return false;
+    החזר שקר;
   }
 
-  if (func_is_null)
+  אם (func_is_null)
   {
-    if (*destroy)
+    אם (*destroy)
       (*destroy) (*user_data);
     *destroy = nullptr;
     *user_data = nullptr;
   }
 
-  return true;
+  החזר אמת;
 }
 
-static bool
+ساكن منطقي
 _hb_draw_funcs_set_middle (hb_draw_funcs_t   *dfuncs,
-			   void              *user_data,
+			   فراغ              *user_data,
 			   hb_destroy_func_t  destroy)
 {
   auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+    אם (destroy) destroy (user_data);
   });
 
-  if (user_data && !dfuncs->user_data)
+  אם (user_data && !dfuncs->user_data)
   {
-    dfuncs->user_data = (decltype (dfuncs->user_data)) hb_calloc (1, sizeof (*dfuncs->user_data));
-    if (unlikely (!dfuncs->user_data))
-      return false;
+    dfuncs->user_data = (decltype (dfuncs->user_data)) hb_calloc (1, حجم (*dfuncs->user_data));
+    אם (unlikely (!dfuncs->user_data))
+      החזר שקר;
   }
-  if (destroy && !dfuncs->destroy)
+  אם (destroy && !dfuncs->destroy)
   {
-    dfuncs->destroy = (decltype (dfuncs->destroy)) hb_calloc (1, sizeof (*dfuncs->destroy));
-    if (unlikely (!dfuncs->destroy))
-      return false;
+    dfuncs->destroy = (decltype (dfuncs->destroy)) hb_calloc (1, حجم (*dfuncs->destroy));
+    אם (unlikely (!dfuncs->destroy))
+      החזר שקר;
   }
 
   destroy_guard.release ();
-  return true;
+  החזר אמת;
 }
 
 #define HB_DRAW_FUNC_IMPLEMENT(name)						\
 										\
-void										\
+فراغ										\
 hb_draw_funcs_set_##name##_func (hb_draw_funcs_t	 *dfuncs,		\
 				 hb_draw_##name##_func_t  func,			\
-				 void			 *user_data,		\
+				 فراغ			 *user_data,		\
 				 hb_destroy_func_t	  destroy)		\
 {										\
-  if (!_hb_draw_funcs_set_preamble (dfuncs, !func, &user_data, &destroy))\
-      return;                                                            \
+  אם (!_hb_draw_funcs_set_preamble (dfuncs, !func, &user_data, &destroy))\
+      החזר;                                                            \
 										\
-  if (dfuncs->destroy && dfuncs->destroy->name)					\
+  אם (dfuncs->destroy && dfuncs->destroy->name)					\
     dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name); \
 									 \
-  if (!_hb_draw_funcs_set_middle (dfuncs, user_data, destroy))           \
-      return;                                                            \
+  אם (!_hb_draw_funcs_set_middle (dfuncs, user_data, destroy))           \
+      החזר;                                                            \
 									\
-  if (func)								\
+  אם (func)								\
     dfuncs->func.name = func;						\
-  else									\
+  אחרת									\
     dfuncs->func.name = hb_draw_##name##_nil;				\
 									\
-  if (dfuncs->user_data)						\
+  אם (dfuncs->user_data)						\
     dfuncs->user_data->name = user_data;				\
-  if (dfuncs->destroy)							\
+  אם (dfuncs->destroy)							\
     dfuncs->destroy->name = destroy;					\
 }
 
@@ -209,12 +209,12 @@ hb_draw_funcs_t *
 hb_draw_funcs_create ()
 {
   hb_draw_funcs_t *dfuncs;
-  if (unlikely (!(dfuncs = hb_object_create<hb_draw_funcs_t> ())))
-    return const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
+  אם (unlikely (!(dfuncs = hb_object_create<hb_draw_funcs_t> ())))
+    החזר const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
 
   dfuncs->func =  Null (hb_draw_funcs_t).func;
 
-  return dfuncs;
+  החזר dfuncs;
 }
 
 DEFINE_NULL_INSTANCE (hb_draw_funcs_t) =
@@ -240,7 +240,7 @@ DEFINE_NULL_INSTANCE (hb_draw_funcs_t) =
 hb_draw_funcs_t *
 hb_draw_funcs_get_empty ()
 {
-  return const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
+  החזר const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
 }
 
 /**
@@ -260,7 +260,7 @@ hb_draw_funcs_get_empty ()
 hb_draw_funcs_t *
 hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs)
 {
-  return hb_object_reference (dfuncs);
+  החזר hb_object_reference (dfuncs);
 }
 
 /**
@@ -273,15 +273,15 @@ hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs)
  *
  * Since: 4.0.0
  **/
-void
+فراغ
 hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs)
 {
-  if (!hb_object_destroy (dfuncs)) return;
+  אם (!hb_object_destroy (dfuncs)) החזר;
 
-  if (dfuncs->destroy)
+  אם (dfuncs->destroy)
   {
 #define HB_DRAW_FUNC_IMPLEMENT(name) \
-    if (dfuncs->destroy->name) dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name);
+    אם (dfuncs->destroy->name) dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name);
       HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
   }
@@ -309,11 +309,11 @@ hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs)
 hb_bool_t
 hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
 			     hb_user_data_key_t *key,
-			     void *              data,
+			     فراغ *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (dfuncs, key, data, destroy, replace);
+  החזר hb_object_set_user_data (dfuncs, key, data, destroy, replace);
 }
 
 /**
@@ -328,11 +328,11 @@ hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
  *
  * Since: 7.0.0
  **/
-void *
-hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
+فراغ *
+hb_draw_funcs_get_user_data (ثابت hb_draw_funcs_t *dfuncs,
 			     hb_user_data_key_t       *key)
 {
-  return hb_object_get_user_data (dfuncs, key);
+  החזר hb_object_get_user_data (dfuncs, key);
 }
 
 /**
@@ -343,11 +343,11 @@ hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
  *
  * Since: 4.0.0
  **/
-void
+فراغ
 hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs)
 {
-  if (hb_object_is_immutable (dfuncs))
-    return;
+  אם (hb_object_is_immutable (dfuncs))
+    החזר;
 
   hb_object_make_immutable (dfuncs);
 }
@@ -365,7 +365,7 @@ hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs)
 hb_bool_t
 hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs)
 {
-  return hb_object_is_immutable (dfuncs);
+  החזר hb_object_is_immutable (dfuncs);
 }
 
 /**
@@ -382,9 +382,9 @@ hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs)
  * Since: 14.5.0
  **/
 hb_bool_t
-hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data, int64_t budget)
+hb_draw_set_budget (hb_draw_funcs_t *dfuncs, فراغ *draw_data, int64_t budget)
 {
-  return dfuncs->set_budget (draw_data, budget);
+  החזר dfuncs->set_budget (draw_data, budget);
 }
 
 /**
@@ -399,9 +399,9 @@ hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data, int64_t budget)
  * Since: 14.5.0
  **/
 int64_t
-hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data)
+hb_draw_get_budget (hb_draw_funcs_t *dfuncs, فراغ *draw_data)
 {
-  return dfuncs->get_budget (draw_data);
+  החזר dfuncs->get_budget (draw_data);
 }
 
 /**
@@ -419,14 +419,14 @@ hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data)
  * Since: 14.5.0
  **/
 int64_t
-hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data)
+hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, فراغ *draw_data)
 {
   int64_t *remaining = dfuncs->get_budget_remaining_ptr (draw_data);
-  if (remaining)
-    return *remaining;
+  אם (remaining)
+    החזר *remaining;
 
   int64_t budget = dfuncs->get_budget (draw_data);
-  return budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
+  החזר budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
 }
 
 
@@ -442,10 +442,10 @@ hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data)
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+فراغ
+hb_draw_move_to (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y)
+		 عائم to_x, عائم to_y)
 {
   dfuncs->move_to (draw_data, *st,
 		   to_x, to_y);
@@ -463,10 +463,10 @@ hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+فراغ
+hb_draw_line_to (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y)
+		 عائم to_x, عائم to_y)
 {
   dfuncs->line_to (draw_data, *st,
 		   to_x, to_y);
@@ -486,11 +486,11 @@ hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+فراغ
+hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 		      hb_draw_state_t *st,
-		      float control_x, float control_y,
-		      float to_x, float to_y)
+		      عائم control_x, عائم control_y,
+		      عائم to_x, عائم to_y)
 {
   dfuncs->quadratic_to (draw_data, *st,
 			control_x, control_y,
@@ -513,12 +513,12 @@ hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+فراغ
+hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 		  hb_draw_state_t *st,
-		  float control1_x, float control1_y,
-		  float control2_x, float control2_y,
-		  float to_x, float to_y)
+		  عائم control1_x, عائم control1_y,
+		  عائم control2_x, عائم control2_y,
+		  عائم to_x, عائم to_y)
 {
   dfuncs->cubic_to (draw_data, *st,
 		    control1_x, control1_y,
@@ -536,8 +536,8 @@ hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
+فراغ
+hb_draw_close_path (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 		    hb_draw_state_t *st)
 {
   dfuncs->close_path (draw_data, *st);
@@ -570,37 +570,37 @@ hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
+فراغ
+hb_draw_line (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 	      hb_draw_state_t *st,
-	      float x0, float y0, float w0,
-	      float x1, float y1, float w1,
+	      عائم x0, عائم y0, عائم w0,
+	      عائم x1, عائم y1, عائم w1,
 	      hb_draw_line_cap_t cap)
 {
-  if (std::isnan (w1)) w1 = w0;
-  float dx = x1 - x0, dy = y1 - y0;
-  float len = sqrtf (dx * dx + dy * dy);
-  if (len <= 0.f)
-    return;
+  אם (std::isnan (w1)) w1 = w0;
+  عائم dx = x1 - x0, dy = y1 - y0;
+  عائم len = sqrtf (dx * dx + dy * dy);
+  אם (len <= 0.f)
+    החזר;
   /* Unit tangent and normal to the line direction. */
-  float tx = dx / len;
-  float ty = dy / len;
-  float nx = -ty;
-  float ny =  tx;
-  float h0 = 0.5f * w0;
-  float h1 = 0.5f * w1;
+  عائم tx = dx / len;
+  عائم ty = dy / len;
+  عائم nx = -ty;
+  عائم ny =  tx;
+  عائم h0 = 0.5f * w0;
+  عائم h1 = 0.5f * w1;
   /* Square caps: extend each endpoint outward along the line
    * tangent by half its local stroke width. */
-  if (cap == HB_DRAW_LINE_CAP_SQUARE)
+  אם (cap == HB_DRAW_LINE_CAP_SQUARE)
   {
     x0 -= tx * h0; y0 -= ty * h0;
     x1 += tx * h1; y1 += ty * h1;
   }
   /* Trapezoid corners (counter-clockwise). */
-  float ax = x0 + nx * h0, ay = y0 + ny * h0;
-  float bx = x1 + nx * h1, by = y1 + ny * h1;
-  float cx = x1 - nx * h1, cy = y1 - ny * h1;
-  float dx_ = x0 - nx * h0, dy_ = y0 - ny * h0;
+  عائم ax = x0 + nx * h0, ay = y0 + ny * h0;
+  عائم bx = x1 + nx * h1, by = y1 + ny * h1;
+  عائم cx = x1 - nx * h1, cy = y1 - ny * h1;
+  عائم dx_ = x0 - nx * h0, dy_ = y0 - ny * h0;
 
   hb_draw_move_to   (dfuncs, draw_data, st, ax, ay);
   hb_draw_line_to   (dfuncs, draw_data, st, bx, by);
@@ -612,20 +612,20 @@ hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
 /* Emit an axis-aligned rectangle as a single closed contour.
  * @ccw picks the winding direction (useful for cutting a hole
  * out of another rectangle in a stroked rect). */
-static void
-_hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
+ساكن فراغ
+_hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 		       hb_draw_state_t *st,
-		       float x, float y, float w, float h,
-		       bool ccw)
+		       عائم x, عائم y, عائم w, عائم h,
+		       منطقي ccw)
 {
   hb_draw_move_to (dfuncs, draw_data, st, x, y);
-  if (ccw)
+  אם (ccw)
   {
     hb_draw_line_to (dfuncs, draw_data, st, x + w, y);
     hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
     hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
   }
-  else
+  אחרת
   {
     hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
     hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
@@ -660,30 +660,30 @@ _hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
+فراغ
+hb_draw_rectangle (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 		   hb_draw_state_t *st,
-		   float x, float y,
-		   float w, float h,
-		   float stroke_width)
+		   عائم x, عائم y,
+		   عائم w, عائم h,
+		   عائم stroke_width)
 {
-  if (std::isnan (stroke_width))
+  אם (std::isnan (stroke_width))
   {
     /* Filled rectangle with zero area is nothing to draw. */
-    if (w == 0.f || h == 0.f)
-      return;
-    _hb_draw_rect_contour (dfuncs, draw_data, st, x, y, w, h, /*ccw*/ true);
-    return;
+    אם (w == 0.f || h == 0.f)
+      החזר;
+    _hb_draw_rect_contour (dfuncs, draw_data, st, x, y, w, h, /*ccw*/ אמת);
+    החזר;
   }
 
-  if (stroke_width <= 0.f || !std::isfinite (stroke_width))
-    return;
+  אם (stroke_width <= 0.f || !std::isfinite (stroke_width))
+    החזר;
 
   /* Normalize to non-negative width/height so the stroke math
    * below (outer grows by sw, inner shrinks by sw) produces the
    * expected outer-contains-inner ring regardless of w/h signs. */
-  if (w < 0.f) { x += w; w = -w; }
-  if (h < 0.f) { y += h; h = -h; }
+  אם (w < 0.f) { x += w; w = -w; }
+  אם (h < 0.f) { y += h; h = -h; }
   /* w or h == 0 is still meaningful when stroking: a stroked
    * zero-height rect is a horizontal line of length w; zero
    * width is a vertical line.  Both degenerate to a single
@@ -691,36 +691,36 @@ hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
 
   /* Stroke is centered on the edge: outer contour grows by
    * stroke_width/2, inner contour shrinks by the same. */
-  float s = 0.5f * stroke_width;
+  عائم s = 0.5f * stroke_width;
   /* Outer rectangle (CCW = adds coverage). */
   _hb_draw_rect_contour (dfuncs, draw_data, st,
 			 x - s, y - s,
 			 w + stroke_width, h + stroke_width,
-			 /*ccw*/ true);
+			 /*ccw*/ אמת);
   /* Inner rectangle (CW = removes coverage for the hole). */
-  float iw = w - stroke_width;
-  float ih = h - stroke_width;
-  if (iw > 0.f && ih > 0.f)
+  عائم iw = w - stroke_width;
+  عائم ih = h - stroke_width;
+  אם (iw > 0.f && ih > 0.f)
     _hb_draw_rect_contour (dfuncs, draw_data, st,
 			   x + s, y + s, iw, ih,
-			   /*ccw*/ false);
+			   /*ccw*/ שקר);
 }
 
 /* Circle approximated by 4 cubic Beziers, one per quadrant.
  * The magic constant 0.5522847498307936 is
  *   (4/3) * (sqrt(2) - 1)
  * and minimizes the max radial error to ~2.7e-4 of r. */
-static void
-_hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
+ساكن فراغ
+_hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 			 hb_draw_state_t *st,
-			 float cx, float cy, float r,
-			 bool ccw)
+			 عائم cx, عائم cy, عائم r,
+			 منطقي ccw)
 {
-  static const float k = 0.5522847498307936f;
-  float ck = r * k;
+  ساكن ثابت عائم k = 0.5522847498307936f;
+  عائم ck = r * k;
 
   hb_draw_move_to (dfuncs, draw_data, st, cx + r, cy);
-  if (ccw)
+  אם (ccw)
   {
     hb_draw_cubic_to (dfuncs, draw_data, st,
 		      cx + r, cy + ck,
@@ -739,7 +739,7 @@ _hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
 		      cx + r,  cy - ck,
 		      cx + r,  cy);
   }
-  else
+  אחרת
   {
     hb_draw_cubic_to (dfuncs, draw_data, st,
 		      cx + r, cy - ck,
@@ -779,64 +779,64 @@ _hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_circle (hb_draw_funcs_t *dfuncs, void *draw_data,
+فراغ
+hb_draw_circle (hb_draw_funcs_t *dfuncs, فراغ *draw_data,
 		hb_draw_state_t *st,
-		float cx, float cy,
-		float r,
-		float stroke_width)
+		عائم cx, عائم cy,
+		عائم r,
+		عائم stroke_width)
 {
-  if (r <= 0.f)
-    return;
+  אם (r <= 0.f)
+    החזר;
 
-  if (std::isnan (stroke_width))
+  אם (std::isnan (stroke_width))
   {
-    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r, /*ccw*/ true);
-    return;
+    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r, /*ccw*/ אמת);
+    החזר;
   }
 
-  if (stroke_width <= 0.f || !std::isfinite (stroke_width))
-    return;
+  אם (stroke_width <= 0.f || !std::isfinite (stroke_width))
+    החזר;
 
-  float s = 0.5f * stroke_width;
-  _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r + s, /*ccw*/ true);
-  float ir = r - s;
-  if (ir > 0.f)
-    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, ir, /*ccw*/ false);
+  عائم s = 0.5f * stroke_width;
+  _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r + s, /*ccw*/ אמת);
+  عائم ir = r - s;
+  אם (ir > 0.f)
+    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, ir, /*ccw*/ שקר);
 }
 
 
-static void
+ساكن فراغ
 hb_draw_extents_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *data,
+			 فراغ *data,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 عائم to_x, عائم to_y,
+			 فراغ *user_data HB_UNUSED)
 {
   hb_extents_t<> *extents = (hb_extents_t<> *) data;
 
   extents->add_point (to_x, to_y);
 }
 
-static void
+ساكن فراغ
 hb_draw_extents_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *data,
+			 فراغ *data,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 عائم to_x, عائم to_y,
+			 فراغ *user_data HB_UNUSED)
 {
   hb_extents_t<> *extents = (hb_extents_t<> *) data;
 
   extents->add_point (to_x, to_y);
 }
 
-static void
+ساكن فراغ
 hb_draw_extents_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			      void *data,
+			      فراغ *data,
 			      hb_draw_state_t *st,
-			      float control_x, float control_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      عائم control_x, عائم control_y,
+			      عائم to_x, عائم to_y,
+			      فراغ *user_data HB_UNUSED)
 {
   hb_extents_t<> *extents = (hb_extents_t<> *) data;
 
@@ -844,14 +844,14 @@ hb_draw_extents_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   extents->add_point (to_x, to_y);
 }
 
-static void
+ساكن فراغ
 hb_draw_extents_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data,
+			  فراغ *data,
 			  hb_draw_state_t *st,
-			  float control1_x, float control1_y,
-			  float control2_x, float control2_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  عائم control1_x, عائم control1_y,
+			  عائم control2_x, عائم control2_y,
+			  عائم to_x, عائم to_y,
+			  فراغ *user_data HB_UNUSED)
 {
   hb_extents_t<> *extents = (hb_extents_t<> *) data;
 
@@ -860,11 +860,11 @@ hb_draw_extents_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   extents->add_point (to_x, to_y);
 }
 
-static inline void free_static_draw_extents_funcs ();
+ساكن مضمن فراغ free_static_draw_extents_funcs ();
 
-static struct hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_draw_extents_funcs_lazy_loader_t>
+ساكن بنية hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_draw_extents_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساكن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
@@ -877,12 +877,12 @@ static struct hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<
 
     hb_atexit (free_static_draw_extents_funcs);
 
-    return funcs;
+    החזר funcs;
   }
 } static_draw_extents_funcs;
 
-static inline
-void free_static_draw_extents_funcs ()
+ساكن مضمن
+فراغ free_static_draw_extents_funcs ()
 {
   static_draw_extents_funcs.free_instance ();
 }
@@ -890,7 +890,7 @@ void free_static_draw_extents_funcs ()
 hb_draw_funcs_t *
 hb_draw_extents_get_funcs ()
 {
-  return static_draw_extents_funcs.get_unconst ();
+  החזר static_draw_extents_funcs.get_unconst ();
 }
 
 

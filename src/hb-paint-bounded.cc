@@ -22,13 +22,13 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 #ifndef HB_NO_PAINT
 
-#include "hb-paint-bounded.hh"
+#ضمن "hb-paint-bounded.hh"
 
-#include "hb-machinery.hh"
+#ضمن "hb-machinery.hh"
 
 
 /*
@@ -37,70 +37,70 @@
  * https://learn.microsoft.com/en-us/typography/opentype/spec/colr#glyph-metrics-and-boundedness
  */
 
-static void
+ساكن فراغ
 hb_paint_bounded_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
-				  void *paint_data,
+				  فراغ *paint_data,
 				  hb_codepoint_t glyph,
 				  hb_font_t *font,
-				  void *user_data HB_UNUSED)
+				  فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->push_clip ();
 }
 
-static void
+ساكن فراغ
 hb_paint_bounded_push_clip_rectangle (hb_paint_funcs_t *funcs HB_UNUSED,
-				      void *paint_data,
-				      float xmin, float ymin, float xmax, float ymax,
-				      void *user_data)
+				      فراغ *paint_data,
+				      عائم xmin, عائم ymin, عائم xmax, عائم ymax,
+				      فراغ *user_data)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->push_clip ();
 }
 
-static void
+ساكن فراغ
 hb_paint_bounded_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
-			   void *paint_data,
-			   void *user_data HB_UNUSED)
+			   فراغ *paint_data,
+			   فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->pop_clip ();
 }
 
-static void
+ساكن فراغ
 hb_paint_bounded_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void *paint_data,
-			     void *user_data HB_UNUSED)
+			     فراغ *paint_data,
+			     فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->push_group ();
 }
 
-static void
+ساكن فراغ
 hb_paint_bounded_pop_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			    void *paint_data,
+			    فراغ *paint_data,
 			    hb_paint_composite_mode_t mode,
-			    void *user_data HB_UNUSED)
+			    فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->pop_group (mode);
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
+			      فراغ *paint_data,
 			      hb_blob_t *blob HB_UNUSED,
-			      unsigned int width HB_UNUSED,
-			      unsigned int height HB_UNUSED,
+			      unsigned صحيح width HB_UNUSED,
+			      unsigned صحيح height HB_UNUSED,
 			      hb_tag_t format HB_UNUSED,
-			      float slant HB_UNUSED,
+			      عائم slant HB_UNUSED,
 			      hb_glyph_extents_t *glyph_extents,
-			      void *user_data HB_UNUSED)
+			      فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
@@ -108,67 +108,67 @@ hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
   c->paint ();
   c->pop_clip ();
 
-  return true;
+  החזר אמת;
 }
 
-static void
+ساكن فراغ
 hb_paint_bounded_paint_color (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
+			      فراغ *paint_data,
 			      hb_bool_t use_foreground HB_UNUSED,
 			      hb_color_t color HB_UNUSED,
-			      void *user_data HB_UNUSED)
+			      فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->paint ();
 }
 
-static void
+ساكن فراغ
 hb_paint_bounded_paint_linear_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
+				        فراغ *paint_data,
 				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED,
-				        float x2 HB_UNUSED, float y2 HB_UNUSED,
-				        void *user_data HB_UNUSED)
+				        عائم x0 HB_UNUSED, عائم y0 HB_UNUSED,
+				        عائم x1 HB_UNUSED, عائم y1 HB_UNUSED,
+				        عائم x2 HB_UNUSED, عائم y2 HB_UNUSED,
+				        فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->paint ();
 }
 
-static void
+ساكن فراغ
 hb_paint_bounded_paint_radial_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
+				        فراغ *paint_data,
 				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED, float r0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED, float r1 HB_UNUSED,
-				        void *user_data HB_UNUSED)
+				        عائم x0 HB_UNUSED, عائم y0 HB_UNUSED, عائم r0 HB_UNUSED,
+				        عائم x1 HB_UNUSED, عائم y1 HB_UNUSED, عائم r1 HB_UNUSED,
+				        فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->paint ();
 }
 
-static void
+ساكن فراغ
 hb_paint_bounded_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				       void *paint_data,
+				       فراغ *paint_data,
 				       hb_color_line_t *color_line HB_UNUSED,
-				       float cx HB_UNUSED, float cy HB_UNUSED,
-				       float start_angle HB_UNUSED,
-				       float end_angle HB_UNUSED,
-				       void *user_data HB_UNUSED)
+				       عائم cx HB_UNUSED, عائم cy HB_UNUSED,
+				       عائم start_angle HB_UNUSED,
+				       عائم end_angle HB_UNUSED,
+				       فراغ *user_data HB_UNUSED)
 {
   hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
 
   c->paint ();
 }
 
-static inline void free_static_paint_bounded_funcs ();
+ساكن مضمن فراغ free_static_paint_bounded_funcs ();
 
-static struct hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_bounded_funcs_lazy_loader_t>
+ساكن بنية hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_bounded_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  ساكن hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
@@ -187,12 +187,12 @@ static struct hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_
 
     hb_atexit (free_static_paint_bounded_funcs);
 
-    return funcs;
+    החזר funcs;
   }
 } static_paint_bounded_funcs;
 
-static inline
-void free_static_paint_bounded_funcs ()
+ساكن مضمن
+فراغ free_static_paint_bounded_funcs ()
 {
   static_paint_bounded_funcs.free_instance ();
 }
@@ -200,7 +200,7 @@ void free_static_paint_bounded_funcs ()
 hb_paint_funcs_t *
 hb_paint_bounded_get_funcs ()
 {
-  return static_paint_bounded_funcs.get_unconst ();
+  החזר static_paint_bounded_funcs.get_unconst ();
 }
 
 

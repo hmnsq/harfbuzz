@@ -25,8 +25,8 @@
 #ifndef HB_OT_STAT_TABLE_HH
 #define HB_OT_STAT_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-layout-common.hh"
 
 /*
  * STAT -- Style Attributes
@@ -35,9 +35,9 @@
 #define HB_OT_TAG_STAT HB_TAG('S','T','A','T')
 
 
-namespace OT {
+نطاق OT {
 
-enum
+تعداد
 {
   OLDER_SIBLING_FONT_ATTRIBUTE = 0x0001,	/* If set, this axis value table
 						 * provides axis value information
@@ -57,82 +57,82 @@ enum
   // Reserved = 0xFFFC				/* Reserved for future use — set to zero. */
 };
 
-static bool axis_value_is_outside_axis_range (hb_tag_t axis_tag, float axis_value,
-                                              const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
+ساكن منطقي axis_value_is_outside_axis_range (hb_tag_t axis_tag, عائم axis_value,
+                                              ثابت hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
 {
-  if (!user_axes_location->has (axis_tag))
-    return false;
+  אם (!user_axes_location->has (axis_tag))
+    החזר שקר;
 
   Triple axis_range = user_axes_location->get (axis_tag);
-  return (axis_value < axis_range.minimum || axis_value > axis_range.maximum);
+  החזר (axis_value < axis_range.minimum || axis_value > axis_range.maximum);
 }
 
-struct StatAxisRecord
+بنية StatAxisRecord
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  صحيح cmp (hb_tag_t key) ثابت { החזר tag.cmp (key); }
 
-  hb_ot_name_id_t get_name_id () const { return nameID; }
+  hb_ot_name_id_t get_name_id () ثابت { החזר nameID; }
 
-  hb_tag_t get_axis_tag () const { return tag; }
+  hb_tag_t get_axis_tag () ثابت { החזר tag; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this)));
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا)));
   }
 
-  protected:
+  محمي:
   Tag		tag;		/* A tag identifying the axis of design variation. */
   NameID	nameID;		/* The name ID for entries in the 'name' table that
 				 * provide a display string for this axis. */
   HBUINT16	ordering;	/* A value that applications can use to determine
 				 * primary sorting of face names, or for ordering
 				 * of descriptors when composing family or face names. */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct AxisValueFormat1
+بنية AxisValueFormat1
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned صحيح get_axis_index () ثابت { החזר axisIndex; }
+  عائم get_value ()             ثابت { החזר value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_value_name_id () ثابت { החזר valueNameID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (ثابت hb_array_t<ثابت StatAxisRecord> axis_records) ثابت
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    החזר axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  منطقي keep_axis_value (ثابت hb_array_t<ثابت StatAxisRecord> axis_records,
+                        ثابت hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) ثابت
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    عائم axis_value = get_value ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    החזר !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  منطقي subset (hb_subset_context_t *c,
+               ثابت hb_array_t<ثابت StatAxisRecord> axis_records) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (هذا);
+    ثابت hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    אם (keep_axis_value (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (هذا));
 
-    return_trace (false);
+    return_trace (שקר);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier — set to 1. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
@@ -143,51 +143,51 @@ struct AxisValueFormat1
 				 * that provide a display string for this
 				 * attribute value. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct AxisValueFormat2
+بنية AxisValueFormat2
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return nominalValue.to_float (); }
+  unsigned صحيح get_axis_index () ثابت { החזר axisIndex; }
+  عائم get_value ()             ثابت { החזר nominalValue.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_value_name_id () ثابت { החזר valueNameID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (ثابت hb_array_t<ثابت StatAxisRecord> axis_records) ثابت
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    החזר axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  منطقي keep_axis_value (ثابت hb_array_t<ثابت StatAxisRecord> axis_records,
+                        ثابت hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) ثابت
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    عائم axis_value = get_value ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    החזר !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  منطقي subset (hb_subset_context_t *c,
+               ثابت hb_array_t<ثابت StatAxisRecord> axis_records) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (هذا);
+    ثابت hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    אם (keep_axis_value (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (هذا));
 
-    return_trace (false);
+    return_trace (שקר);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier — set to 2. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
@@ -202,51 +202,51 @@ struct AxisValueFormat2
 				 * with the specified name ID. */
   F16DOT16	rangeMaxValue;	/* The maximum value for a range associated
 				 * with the specified name ID. */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (20);
 };
 
-struct AxisValueFormat3
+بنية AxisValueFormat3
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned صحيح get_axis_index () ثابت { החזר axisIndex; }
+  عائم get_value ()             ثابت { החזר value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_value_name_id () ثابت { החזר valueNameID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (ثابت hb_array_t<ثابت StatAxisRecord> axis_records) ثابت
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    החזר axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  منطقي keep_axis_value (ثابت hb_array_t<ثابت StatAxisRecord> axis_records,
+                        ثابت hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) ثابت
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    عائم axis_value = get_value ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    החזר !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  منطقي subset (hb_subset_context_t *c,
+               ثابت hb_array_t<ثابت StatAxisRecord> axis_records) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (هذا);
+    ثابت hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    אם (keep_axis_value (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (هذا));
 
-    return_trace (false);
+    return_trace (שקר);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier — set to 3. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
@@ -259,79 +259,79 @@ struct AxisValueFormat3
   F16DOT16	value;		/* A numeric value for this attribute value. */
   F16DOT16	linkedValue;	/* The numeric value for a style-linked mapping
 				 * from this value. */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (16);
 };
 
-struct AxisValueRecord
+بنية AxisValueRecord
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned صحيح get_axis_index () ثابت { החזר axisIndex; }
+  عائم get_value ()             ثابت { החזר value.to_float (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis to which this value
 				 * applies. Must be less than designAxisCount. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct AxisValueFormat4
+بنية AxisValueFormat4
 {
-  const AxisValueRecord &get_axis_record (unsigned int axis_index) const
-  { return axisValues.as_array (axisCount)[axis_index]; }
+  ثابت AxisValueRecord &get_axis_record (unsigned صحيح axis_index) ثابت
+  { החזר axisValues.as_array (axisCount)[axis_index]; }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  منطقي keep_axis_value (ثابت hb_array_t<ثابت StatAxisRecord> axis_records,
+                        ثابت hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) ثابت
   {
-    hb_array_t<const AxisValueRecord> axis_value_records = axisValues.as_array (axisCount);
+    hb_array_t<ثابت AxisValueRecord> axis_value_records = axisValues.as_array (axisCount);
 
-    for (const auto& rec : axis_value_records)
+    עבור (ثابت auto& rec : axis_value_records)
     {
       unsigned axis_idx = rec.get_axis_index ();
-      float axis_value = rec.get_value ();
+      عائم axis_value = rec.get_value ();
       hb_tag_t axis_tag = axis_records[axis_idx].get_axis_tag ();
 
-      if (axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location))
-        return false;
+      אם (axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location))
+        החזר שקר;
     }
 
-    return true;
+    החזר אמת;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  منطقي subset (hb_subset_context_t *c,
+               ثابت hb_array_t<ثابت StatAxisRecord> axis_records) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
-    if (!keep_axis_value (axis_records, user_axes_location))
-      return_trace (false);
+    TRACE_SUBSET (هذا);
+    ثابت hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
+    אם (!keep_axis_value (axis_records, user_axes_location))
+      return_trace (שקר);
 
     unsigned total_size = min_size + axisCount * AxisValueRecord::static_size;
     auto *out = c->serializer->allocate_size<AxisValueFormat4> (total_size);
-    if (unlikely (!out)) return_trace (false);
-    hb_memcpy (out, this, total_size);
-    return_trace (true);
+    אם (unlikely (!out)) return_trace (שקר);
+    hb_memcpy (out, هذا, total_size);
+    return_trace (אמת);
   }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_value_name_id () ثابت { החזר valueNameID; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
                           axisValues.sanitize (c, axisCount)));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier — set to 4. */
   HBUINT16	axisCount;	/* The total number of axes contributing to
 				 * this axis-values combination. */
@@ -343,126 +343,126 @@ struct AxisValueFormat4
 		axisValues;	/* Array of AxisValue records that provide the
 				 * combination of axis values, one for each
 				 * contributing axis. */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (8, axisValues);
 };
 
-struct AxisValue
+بنية AxisValue
 {
-  float get_value (unsigned int axis_index) const
+  عائم get_value (unsigned صحيح axis_index) ثابت
   {
-    switch (u.format.v)
+    بدل (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value ();
-    case 2: hb_barrier (); return u.format2.get_value ();
-    case 3: hb_barrier (); return u.format3.get_value ();
-    case 4: hb_barrier (); return u.format4.get_axis_record (axis_index).get_value ();
-    default:return 0.f;
+    حالة 1: hb_barrier (); החזר u.format1.get_value ();
+    حالة 2: hb_barrier (); החזר u.format2.get_value ();
+    حالة 3: hb_barrier (); החזר u.format3.get_value ();
+    حالة 4: hb_barrier (); החזר u.format4.get_axis_record (axis_index).get_value ();
+    افتراضي:החזר 0.f;
     }
   }
 
-  unsigned int get_axis_index () const
+  unsigned صحيح get_axis_index () ثابت
   {
-    switch (u.format.v)
+    بدل (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_axis_index ();
-    case 2: hb_barrier (); return u.format2.get_axis_index ();
-    case 3: hb_barrier (); return u.format3.get_axis_index ();
+    حالة 1: hb_barrier (); החזר u.format1.get_axis_index ();
+    حالة 2: hb_barrier (); החזר u.format2.get_axis_index ();
+    حالة 3: hb_barrier (); החזר u.format3.get_axis_index ();
     /* case 4: Makes more sense for variable fonts which are handled by fvar in hb-style */
-    default:return -1;
+    افتراضي:החזר -1;
     }
   }
 
-  hb_ot_name_id_t get_value_name_id () const
+  hb_ot_name_id_t get_value_name_id () ثابت
   {
-    switch (u.format.v)
+    بدل (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value_name_id ();
-    case 2: hb_barrier (); return u.format2.get_value_name_id ();
-    case 3: hb_barrier (); return u.format3.get_value_name_id ();
-    case 4: hb_barrier (); return u.format4.get_value_name_id ();
-    default:return HB_OT_NAME_ID_INVALID;
+    حالة 1: hb_barrier (); החזר u.format1.get_value_name_id ();
+    حالة 2: hb_barrier (); החזר u.format2.get_value_name_id ();
+    حالة 3: hb_barrier (); החזר u.format3.get_value_name_id ();
+    حالة 4: hb_barrier (); החזר u.format4.get_value_name_id ();
+    افتراضي:החזר HB_OT_NAME_ID_INVALID;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    אם (unlikely (!c->may_dispatch (هذا, &u.format.v))) החזר c->no_dispatch_return_value ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالة 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    حالة 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    حالة 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    افتراضي:return_trace (c->default_return_value ());
     }
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  منطقي keep_axis_value (ثابت hb_array_t<ثابت StatAxisRecord> axis_records,
+                        hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) ثابت
   {
-    switch (u.format.v)
+    بدل (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.keep_axis_value (axis_records, user_axes_location);
-    case 2: hb_barrier (); return u.format2.keep_axis_value (axis_records, user_axes_location);
-    case 3: hb_barrier (); return u.format3.keep_axis_value (axis_records, user_axes_location);
-    case 4: hb_barrier (); return u.format4.keep_axis_value (axis_records, user_axes_location);
-    default:return false;
+    حالة 1: hb_barrier (); החזר u.format1.keep_axis_value (axis_records, user_axes_location);
+    حالة 2: hb_barrier (); החזר u.format2.keep_axis_value (axis_records, user_axes_location);
+    حالة 3: hb_barrier (); החזר u.format3.keep_axis_value (axis_records, user_axes_location);
+    حالة 4: hb_barrier (); החזר u.format4.keep_axis_value (axis_records, user_axes_location);
+    افتراضي:החזר שקר;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (هذا);
+    אם (unlikely (!c->check_struct (هذا)))
+      return_trace (שקר);
     hb_barrier ();
 
-    switch (u.format.v)
+    بدل (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-    default:return_trace (true);
+    حالة 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    حالة 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    حالة 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    حالة 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    افتراضي:return_trace (אמת);
     }
   }
 
-  protected:
-  union
+  محمي:
+  اتحاد
   {
-  struct { HBUINT16 v; }	format;
+  بنية { HBUINT16 v; }	format;
   AxisValueFormat1	format1;
   AxisValueFormat2	format2;
   AxisValueFormat3	format3;
   AxisValueFormat4	format4;
   } u;
-  public:
+  عام:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
-struct AxisValueOffsetArray: UnsizedArrayOf<Offset16To<AxisValue>>
+بنية AxisValueOffsetArray: UnsizedArrayOf<Offset16To<AxisValue>>
 {
-  bool subset (hb_subset_context_t *c,
+  منطقي subset (hb_subset_context_t *c,
                unsigned axisValueCount,
                unsigned& count,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+               ثابت hb_array_t<ثابت StatAxisRecord> axis_records) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
     auto axisValueOffsets = as_array (axisValueCount);
     count = 0;
-    for (const auto& offset : axisValueOffsets)
+    עבור (ثابت auto& offset : axisValueOffsets)
     {
-      if (!offset) continue;
+      אם (!offset) استمر;
       auto o_snap = c->serializer->snapshot ();
       auto *o = c->serializer->embed (offset);
-      if (!o) return_trace (false);
-      if (!o->serialize_subset (c, offset, this, axis_records))
+      אם (!o) return_trace (שקר);
+      אם (!o->serialize_subset (c, offset, هذا, axis_records))
       {
         c->serializer->revert (o_snap);
-        continue;
+        استمر;
       }
       count++;
     }
@@ -471,53 +471,53 @@ struct AxisValueOffsetArray: UnsizedArrayOf<Offset16To<AxisValue>>
   }
 };
 
-struct STAT
+بنية STAT
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
 
-  bool has_data () const { return version.to_int (); }
+  منطقي has_data () ثابت { החזר version.to_int (); }
 
-  bool get_value (hb_tag_t tag, float *value) const
+  منطقي get_value (hb_tag_t tag, عائم *value) ثابت
   {
-    unsigned int axis_index;
-    if (!get_design_axes ().lfind (tag, &axis_index)) return false;
+    unsigned صحيح axis_index;
+    אם (!get_design_axes ().lfind (tag, &axis_index)) החזר שקר;
 
-    hb_array_t<const Offset16To<AxisValue>> axis_values = get_axis_value_offsets ();
-    for (unsigned int i = 0; i < axis_values.length; i++)
+    hb_array_t<ثابت Offset16To<AxisValue>> axis_values = get_axis_value_offsets ();
+    עבור (unsigned صحيح i = 0; i < axis_values.length; i++)
     {
-      const AxisValue& axis_value = this+offsetToAxisValueOffsets+axis_values[i];
-      if (axis_value.get_axis_index () == axis_index)
+      ثابت AxisValue& axis_value = هذا+offsetToAxisValueOffsets+axis_values[i];
+      אם (axis_value.get_axis_index () == axis_index)
       {
-	if (value)
+	אם (value)
 	  *value = axis_value.get_value (axis_index);
-	return true;
+	החזר אמת;
       }
     }
-    return false;
+    החזר שקר;
   }
 
-  unsigned get_design_axis_count () const { return designAxisCount; }
+  unsigned get_design_axis_count () ثابت { החזר designAxisCount; }
 
-  hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) const
+  hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) ثابت
   {
-    if (unlikely (axis_record_index >= designAxisCount)) return HB_OT_NAME_ID_INVALID;
-    const StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
-    return axis_record.get_name_id ();
+    אם (unlikely (axis_record_index >= designAxisCount)) החזר HB_OT_NAME_ID_INVALID;
+    ثابت StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
+    החזר axis_record.get_name_id ();
   }
 
-  unsigned get_axis_value_count () const { return axisValueCount; }
+  unsigned get_axis_value_count () ثابت { החזר axisValueCount; }
 
-  hb_ot_name_id_t get_axis_value_name_id (unsigned axis_value_index) const
+  hb_ot_name_id_t get_axis_value_name_id (unsigned axis_value_index) ثابت
   {
-    if (unlikely (axis_value_index >= axisValueCount)) return HB_OT_NAME_ID_INVALID;
-    const AxisValue &axis_value = (this + get_axis_value_offsets ()[axis_value_index]);
-    return axis_value.get_value_name_id ();
+    אם (unlikely (axis_value_index >= axisValueCount)) החזר HB_OT_NAME_ID_INVALID;
+    ثابت AxisValue &axis_value = (هذا + get_axis_value_offsets ()[axis_value_index]);
+    החזר axis_value.get_value_name_id ();
   }
 
-  void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  فراغ collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
+                         hb_set_t *nameids_to_retain /* OUT */) ثابت
   {
-    if (!has_data ()) return;
+    אם (!has_data ()) החזר;
 
     + get_design_axes ()
     | hb_map (&StatAxisRecord::get_name_id)
@@ -527,9 +527,9 @@ struct STAT
     auto designAxes = get_design_axes ();
 
     + get_axis_value_offsets ()
-    | hb_map (hb_add (&(this + offsetToAxisValueOffsets)))
-    | hb_filter ([&] (const AxisValue& _)
-                 { return _.keep_axis_value (designAxes, user_axes_location); })
+    | hb_map (hb_add (&(هذا + offsetToAxisValueOffsets)))
+    | hb_filter ([&] (ثابت AxisValue& _)
+                 { החזר _.keep_axis_value (designAxes, user_axes_location); })
     | hb_map (&AxisValue::get_value_name_id)
     | hb_sink (nameids_to_retain)
     ;
@@ -537,47 +537,47 @@ struct STAT
     nameids_to_retain->add (elidedFallbackNameID);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    STAT *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (هذا);
+    STAT *out = c->serializer->embed (هذا);
+    אם (unlikely (!out)) return_trace (שקר);
 
     auto designAxes = get_design_axes ();
-    for (unsigned i = 0; i < (unsigned)designAxisCount; i++)
-      if (unlikely (!c->serializer->embed (designAxes[i])))
-          return_trace (false);
+    עבור (unsigned i = 0; i < (unsigned)designAxisCount; i++)
+      אם (unlikely (!c->serializer->embed (designAxes[i])))
+          return_trace (שקר);
 
-    if (designAxisCount)
-      c->serializer->check_assign (out->designAxesOffset, this->get_size (),
+    אם (designAxisCount)
+      c->serializer->check_assign (out->designAxesOffset, هذا->get_size (),
                                    HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
     unsigned count = 0;
-    out->offsetToAxisValueOffsets.serialize_subset (c, offsetToAxisValueOffsets, this,
+    out->offsetToAxisValueOffsets.serialize_subset (c, offsetToAxisValueOffsets, هذا,
                                                     axisValueCount, count, designAxes);
     return_trace (c->serializer->check_assign (out->axisValueCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
 			  version.minor > 0 &&
-			  designAxesOffset.sanitize (c, this, designAxisCount) &&
-			  offsetToAxisValueOffsets.sanitize (c, this, axisValueCount, &(this+offsetToAxisValueOffsets))));
+			  designAxesOffset.sanitize (c, هذا, designAxisCount) &&
+			  offsetToAxisValueOffsets.sanitize (c, هذا, axisValueCount, &(هذا+offsetToAxisValueOffsets))));
   }
 
-  protected:
-  hb_array_t<const StatAxisRecord> const get_design_axes () const
-  { return (this+designAxesOffset).as_array (designAxisCount); }
+  محمي:
+  hb_array_t<ثابت StatAxisRecord> ثابت get_design_axes () ثابت
+  { החזר (هذا+designAxesOffset).as_array (designAxisCount); }
 
-  hb_array_t<const Offset16To<AxisValue>> const get_axis_value_offsets () const
-  { return (this+offsetToAxisValueOffsets).as_array (axisValueCount); }
+  hb_array_t<ثابت Offset16To<AxisValue>> ثابت get_axis_value_offsets () ثابت
+  { החזר (هذا+offsetToAxisValueOffsets).as_array (axisValueCount); }
 
 
-  protected:
+  محمي:
   FixedVersion<>version;	/* Version of the stat table
 				 * initially set to 0x00010002u */
   HBUINT16	designAxisSize;	/* The size in bytes of each axis record. */
@@ -607,7 +607,7 @@ struct STAT
 				 * names into a particular font model produces
 				 * a subfamily name containing only elidable
 				 * elements. */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (20);
 };
 

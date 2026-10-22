@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-shape-plan.hh"
-#include "hb-shaper.hh"
-#include "hb-font.hh"
-#include "hb-buffer.hh"
+#ضمن "hb.hh"
+#ضمن "hb-shape-plan.hh"
+#ضمن "hb-shaper.hh"
+#ضمن "hb-font.hh"
+#ضمن "hb-buffer.hh"
 
 
 #ifndef HB_NO_SHAPER
@@ -53,14 +53,14 @@
  **/
 
 #ifdef HAVE_HARFRUST
-extern "C" void _hb_harfrust_shape_plan_destroy_rs (void *data);
+خارجي "C" فراغ _hb_harfrust_shape_plan_destroy_rs (فراغ *data);
 #endif
 
 hb_shape_plan_t::~hb_shape_plan_t ()
 {
 #ifdef HAVE_HARFRUST
-  void *data = harfrust_data.get_relaxed ();
-  if (data)
+  فراغ *data = harfrust_data.get_relaxed ();
+  אם (data)
     _hb_harfrust_shape_plan_destroy_rs (data);
 #endif
   key.fini ();
@@ -71,40 +71,40 @@ hb_shape_plan_t::~hb_shape_plan_t ()
  * hb_shape_plan_key_t
  */
 
-bool
-hb_shape_plan_key_t::init (bool                           copy,
+منطقي
+hb_shape_plan_key_t::init (منطقي                           copy,
 			   hb_face_t                     *face,
-			   const hb_segment_properties_t *props,
-			   const hb_feature_t            *user_features,
-			   unsigned int                   num_user_features,
-			   const int                     *coords,
-			   unsigned int                   num_coords,
-			   const char * const            *shaper_list)
+			   ثابت hb_segment_properties_t *props,
+			   ثابت hb_feature_t            *user_features,
+			   unsigned صحيح                   num_user_features,
+			   ثابت صحيح                     *coords,
+			   unsigned صحيح                   num_coords,
+			   ثابت حرف * ثابت            *shaper_list)
 {
   hb_feature_t *features = nullptr;
-  if (copy && num_user_features && !(features = (hb_feature_t *) hb_calloc (num_user_features, sizeof (hb_feature_t))))
-    goto bail;
+  אם (copy && num_user_features && !(features = (hb_feature_t *) hb_calloc (num_user_features, حجم (hb_feature_t))))
+    اذهب bail;
 
-  this->props = *props;
-  this->num_user_features = num_user_features;
-  this->user_features = copy ? features : user_features;
-  if (copy && num_user_features)
+  هذا->props = *props;
+  هذا->num_user_features = num_user_features;
+  هذا->user_features = copy ? features : user_features;
+  אם (copy && num_user_features)
   {
-    hb_memcpy (features, user_features, num_user_features * sizeof (hb_feature_t));
+    hb_memcpy (features, user_features, num_user_features * حجم (hb_feature_t));
     /* Make start/end uniform to easier catch bugs. */
-    for (unsigned int i = 0; i < num_user_features; i++)
+    עבור (unsigned صحيح i = 0; i < num_user_features; i++)
     {
-      if (features[0].start != HB_FEATURE_GLOBAL_START)
+      אם (features[0].start != HB_FEATURE_GLOBAL_START)
 	features[0].start = 1;
-      if (features[0].end   != HB_FEATURE_GLOBAL_END)
+      אם (features[0].end   != HB_FEATURE_GLOBAL_END)
 	features[0].end   = 2;
     }
   }
-  this->shaper_func = nullptr;
-  this->shaper_name = nullptr;
+  هذا->shaper_func = nullptr;
+  هذا->shaper_name = nullptr;
 #ifndef HB_NO_OT_SHAPE
-  if (unlikely (!this->ot.init (face, coords, num_coords)))
-    goto bail;
+  אם (unlikely (!هذا->ot.init (face, coords, num_coords)))
+    اذهب bail;
 #endif
 
   /*
@@ -113,75 +113,75 @@ hb_shape_plan_key_t::init (bool                           copy,
 
 #define HB_SHAPER_PLAN(shaper) \
 	HB_STMT_START { \
-	  if (face->data.shaper) \
+	  אם (face->data.shaper) \
 	  { \
-	    this->shaper_func = _hb_##shaper##_shape; \
-	    this->shaper_name = #shaper; \
-	    return true; \
+	    هذا->shaper_func = _hb_##shaper##_shape; \
+	    هذا->shaper_name = #shaper; \
+	    החזר אמת; \
 	  } \
 	} HB_STMT_END
 
-  if (unlikely (shaper_list))
+  אם (unlikely (shaper_list))
   {
-    for (; *shaper_list; shaper_list++)
-      if (false)
+    עבור (; *shaper_list; shaper_list++)
+      אם (שקר)
 	;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-      else if (0 == strcmp (*shaper_list, #shaper)) \
+      אחרת אם (0 == strcmp (*shaper_list, #shaper)) \
 	HB_SHAPER_PLAN (shaper);
-#include "hb-shaper-list.hh"
+#ضمن "hb-shaper-list.hh"
 
 #undef HB_SHAPER_IMPLEMENT
   }
-  else
+  אחרת
   {
-    const HB_UNUSED hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    for (unsigned int i = 0; i < HB_SHAPERS_COUNT; i++)
-      if (false)
+    ثابت HB_UNUSED hb_shaper_entry_t *shapers = _hb_shapers_get ();
+    עבור (unsigned صحيح i = 0; i < HB_SHAPERS_COUNT; i++)
+      אם (שקר)
 	;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-      else if (shapers[i].func == _hb_##shaper##_shape) \
+      אחרת אם (shapers[i].func == _hb_##shaper##_shape) \
 	HB_SHAPER_PLAN (shaper);
-#include "hb-shaper-list.hh"
+#ضمن "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
   }
 #undef HB_SHAPER_PLAN
 
 bail:
 #ifndef HB_NO_OT_SHAPE
-  this->ot.fini ();
+  هذا->ot.fini ();
 #endif
   ::hb_free (features);
-  return false;
+  החזר שקר;
 }
 
-bool
-hb_shape_plan_key_t::user_features_match (const hb_shape_plan_key_t *other)
+منطقي
+hb_shape_plan_key_t::user_features_match (ثابت hb_shape_plan_key_t *other)
 {
-  if (this->num_user_features != other->num_user_features)
-    return false;
-  for (unsigned int i = 0; i < num_user_features; i++)
+  אם (هذا->num_user_features != other->num_user_features)
+    החזר שקר;
+  עבור (unsigned صحيح i = 0; i < num_user_features; i++)
   {
-    if (this->user_features[i].tag   != other->user_features[i].tag   ||
-	this->user_features[i].value != other->user_features[i].value ||
-	(this->user_features[i].start == HB_FEATURE_GLOBAL_START &&
-	 this->user_features[i].end   == HB_FEATURE_GLOBAL_END) !=
+    אם (هذا->user_features[i].tag   != other->user_features[i].tag   ||
+	هذا->user_features[i].value != other->user_features[i].value ||
+	(هذا->user_features[i].start == HB_FEATURE_GLOBAL_START &&
+	 هذا->user_features[i].end   == HB_FEATURE_GLOBAL_END) !=
 	(other->user_features[i].start == HB_FEATURE_GLOBAL_START &&
 	 other->user_features[i].end   == HB_FEATURE_GLOBAL_END))
-      return false;
+      החזר שקר;
   }
-  return true;
+  החזר אמת;
 }
 
-bool
-hb_shape_plan_key_t::equal (const hb_shape_plan_key_t *other)
+منطقي
+hb_shape_plan_key_t::equal (ثابت hb_shape_plan_key_t *other)
 {
-  return hb_segment_properties_equal (&this->props, &other->props) &&
-	 this->user_features_match (other) &&
+  החזר hb_segment_properties_equal (&هذا->props, &other->props) &&
+	 هذا->user_features_match (other) &&
 #ifndef HB_NO_OT_SHAPE
-	 this->ot.equal (&other->ot) &&
+	 هذا->ot.equal (&other->ot) &&
 #endif
-	 this->shaper_func == other->shaper_func;
+	 هذا->shaper_func == other->shaper_func;
 }
 
 
@@ -207,12 +207,12 @@ hb_shape_plan_key_t::equal (const hb_shape_plan_key_t *other)
  **/
 hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
-		      const hb_segment_properties_t *props,
-		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list)
+		      ثابت hb_segment_properties_t *props,
+		      ثابت hb_feature_t            *user_features,
+		      unsigned صحيح                   num_user_features,
+		      ثابت حرف * ثابت            *shaper_list)
 {
-  return hb_shape_plan_create2 (face, props,
+  החזר hb_shape_plan_create2 (face, props,
 				user_features, num_user_features,
 				nullptr, 0,
 				shaper_list);
@@ -238,12 +238,12 @@ hb_shape_plan_create (hb_face_t                     *face,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
-		       const hb_segment_properties_t *props,
-		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list)
+		       ثابت hb_segment_properties_t *props,
+		       ثابت hb_feature_t            *user_features,
+		       unsigned صحيح                   num_user_features,
+		       ثابت صحيح                     *coords,
+		       unsigned صحيح                   num_coords,
+		       ثابت حرف * ثابت            *shaper_list)
 {
   DEBUG_MSG_FUNC (SHAPE_PLAN, nullptr,
 		  "face=%p num_features=%u num_coords=%u shaper_list=%p",
@@ -252,22 +252,22 @@ hb_shape_plan_create2 (hb_face_t                     *face,
 		  num_coords,
 		  shaper_list);
 
-  if (unlikely (!HB_DIRECTION_IS_VALID (props->direction)))
-    return hb_shape_plan_get_empty ();
+  אם (unlikely (!HB_DIRECTION_IS_VALID (props->direction)))
+    החזר hb_shape_plan_get_empty ();
 
   hb_shape_plan_t *shape_plan;
 
-  if (unlikely (!props))
-    goto bail;
-  if (!(shape_plan = hb_object_create<hb_shape_plan_t> ()))
-    goto bail;
+  אם (unlikely (!props))
+    اذهب bail;
+  אם (!(shape_plan = hb_object_create<hb_shape_plan_t> ()))
+    اذهب bail;
 
-  if (unlikely (!face))
+  אם (unlikely (!face))
     face = hb_face_get_empty ();
   hb_face_make_immutable (face);
   shape_plan->face_unsafe = face;
 
-  if (unlikely (!shape_plan->key.init (true,
+  אם (unlikely (!shape_plan->key.init (אמת,
 				       face,
 				       props,
 				       user_features,
@@ -275,13 +275,13 @@ hb_shape_plan_create2 (hb_face_t                     *face,
 				       coords,
 				       num_coords,
 				       shaper_list)))
-    goto bail2;
+    اذهب bail2;
 #ifndef HB_NO_OT_SHAPE
-  if (unlikely (!shape_plan->ot.init0 (face, &shape_plan->key)))
-    goto bail3;
+  אם (unlikely (!shape_plan->ot.init0 (face, &shape_plan->key)))
+    اذهب bail3;
 #endif
 
-  return shape_plan;
+  החזר shape_plan;
 
 #ifndef HB_NO_OT_SHAPE
 bail3:
@@ -290,7 +290,7 @@ bail3:
 bail2:
   hb_free (shape_plan);
 bail:
-  return hb_shape_plan_get_empty ();
+  החזר hb_shape_plan_get_empty ();
 }
 
 /**
@@ -305,7 +305,7 @@ bail:
 hb_shape_plan_t *
 hb_shape_plan_get_empty ()
 {
-  return const_cast<hb_shape_plan_t *> (&Null (hb_shape_plan_t));
+  החזר const_cast<hb_shape_plan_t *> (&Null (hb_shape_plan_t));
 }
 
 /**
@@ -321,7 +321,7 @@ hb_shape_plan_get_empty ()
 hb_shape_plan_t *
 hb_shape_plan_reference (hb_shape_plan_t *shape_plan)
 {
-  return hb_object_reference (shape_plan);
+  החזר hb_object_reference (shape_plan);
 }
 
 /**
@@ -334,10 +334,10 @@ hb_shape_plan_reference (hb_shape_plan_t *shape_plan)
  *
  * Since: 0.9.7
  **/
-void
+فراغ
 hb_shape_plan_destroy (hb_shape_plan_t *shape_plan)
 {
-  if (!hb_object_destroy (shape_plan)) return;
+  אם (!hb_object_destroy (shape_plan)) החזר;
 
   hb_free (shape_plan);
 }
@@ -359,11 +359,11 @@ hb_shape_plan_destroy (hb_shape_plan_t *shape_plan)
 hb_bool_t
 hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
 			     hb_user_data_key_t *key,
-			     void *              data,
+			     فراغ *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (shape_plan, key, data, destroy, replace);
+  החזר hb_object_set_user_data (shape_plan, key, data, destroy, replace);
 }
 
 /**
@@ -378,11 +378,11 @@ hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
  *
  * Since: 0.9.7
  **/
-void *
-hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
+فراغ *
+hb_shape_plan_get_user_data (ثابت hb_shape_plan_t *shape_plan,
 			     hb_user_data_key_t    *key)
 {
-  return hb_object_get_user_data (shape_plan, key);
+  החזר hb_object_get_user_data (shape_plan, key);
 }
 
 /**
@@ -395,19 +395,19 @@ hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
  *
  * Since: 0.9.7
  **/
-const char *
+ثابت حرف *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan)
 {
-  return shape_plan->key.shaper_name;
+  החזר shape_plan->key.shaper_name;
 }
 
 
-static bool
+ساكن منطقي
 _hb_shape_plan_execute_internal (hb_shape_plan_t    *shape_plan,
 				 hb_font_t          *font,
 				 hb_buffer_t        *buffer,
-				 const hb_feature_t *features,
-				 unsigned int        num_features)
+				 ثابت hb_feature_t *features,
+				 unsigned صحيح        num_features)
 {
   DEBUG_MSG_FUNC (SHAPE_PLAN, shape_plan,
 		  "num_features=%u shaper_func=%p, shaper_name=%s",
@@ -415,36 +415,36 @@ _hb_shape_plan_execute_internal (hb_shape_plan_t    *shape_plan,
 		  shape_plan->key.shaper_func,
 		  shape_plan->key.shaper_name);
 
-  if (unlikely (!buffer->len))
-    return true;
+  אם (unlikely (!buffer->len))
+    החזר אמת;
 
-  assert (!hb_object_is_immutable (buffer));
+  أكد (!hb_object_is_immutable (buffer));
 
   buffer->assert_unicode ();
 
-  if (unlikely (!hb_object_is_valid (shape_plan)))
-    return false;
+  אם (unlikely (!hb_object_is_valid (shape_plan)))
+    החזר שקר;
 
-  assert (shape_plan->face_unsafe == font->face);
-  assert (hb_segment_properties_equal (&shape_plan->key.props, &buffer->props));
+  أكد (shape_plan->face_unsafe == font->face);
+  أكد (hb_segment_properties_equal (&shape_plan->key.props, &buffer->props));
 
 #define HB_SHAPER_EXECUTE(shaper) \
 	HB_STMT_START { \
-	  return font->data.shaper && \
+	  החזר font->data.shaper && \
 		 _hb_##shaper##_shape (shape_plan, font, buffer, features, num_features); \
 	} HB_STMT_END
 
-  if (false)
+  אם (שקר)
     ;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-  else if (shape_plan->key.shaper_func == _hb_##shaper##_shape) \
+  אחרת אם (shape_plan->key.shaper_func == _hb_##shaper##_shape) \
     HB_SHAPER_EXECUTE (shaper);
-#include "hb-shaper-list.hh"
+#ضمن "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
 
 #undef HB_SHAPER_EXECUTE
 
-  return false;
+  החזר שקר;
 }
 /**
  * hb_shape_plan_execute:
@@ -465,16 +465,16 @@ hb_bool_t
 hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features)
+		       ثابت hb_feature_t *features,
+		       unsigned صحيح        num_features)
 {
-  bool ret = _hb_shape_plan_execute_internal (shape_plan, font, buffer,
+  منطقي ret = _hb_shape_plan_execute_internal (shape_plan, font, buffer,
 					      features, num_features);
 
-  if (ret && buffer->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  אם (ret && buffer->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
     buffer->content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
 
-  return ret;
+  החזר ret;
 }
 
 
@@ -499,12 +499,12 @@ hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
-			     const hb_segment_properties_t *props,
-			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list)
+			     ثابت hb_segment_properties_t *props,
+			     ثابت hb_feature_t            *user_features,
+			     unsigned صحيح                   num_user_features,
+			     ثابت حرف * ثابت            *shaper_list)
 {
-  return hb_shape_plan_create_cached2 (face, props,
+  החזר hb_shape_plan_create_cached2 (face, props,
 				       user_features, num_user_features,
 				       nullptr, 0,
 				       shaper_list);
@@ -531,12 +531,12 @@ hb_shape_plan_create_cached (hb_face_t                     *face,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
-			      const hb_segment_properties_t *props,
-			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list)
+			      ثابت hb_segment_properties_t *props,
+			      ثابت hb_feature_t            *user_features,
+			      unsigned صحيح                   num_user_features,
+			      ثابت صحيح                     *coords,
+			      unsigned صحيح                   num_coords,
+			      ثابت حرف * ثابت            *shaper_list)
 {
   DEBUG_MSG_FUNC (SHAPE_PLAN, nullptr,
 		  "face=%p num_features=%u shaper_list=%p",
@@ -547,12 +547,12 @@ hb_shape_plan_create_cached2 (hb_face_t                     *face,
 retry:
   hb_face_t::plan_node_t *cached_plan_nodes = face->shape_plans;
 
-  bool dont_cache = !hb_object_is_valid (face);
+  منطقي dont_cache = !hb_object_is_valid (face);
 
-  if (likely (!dont_cache))
+  אם (likely (!dont_cache))
   {
     hb_shape_plan_key_t key;
-    if (!key.init (false,
+    אם (!key.init (שקר,
 		   face,
 		   props,
 		   user_features,
@@ -560,13 +560,13 @@ retry:
 		   coords,
 		   num_coords,
 		   shaper_list))
-      return hb_shape_plan_get_empty ();
+      החזר hb_shape_plan_get_empty ();
 
-    for (hb_face_t::plan_node_t *node = cached_plan_nodes; node; node = node->next)
-      if (node->shape_plan->key.equal (&key))
+    עבור (hb_face_t::plan_node_t *node = cached_plan_nodes; node; node = node->next)
+      אם (node->shape_plan->key.equal (&key))
       {
 	DEBUG_MSG_FUNC (SHAPE_PLAN, node->shape_plan, "fulfilled from cache");
-	return hb_shape_plan_reference (node->shape_plan);
+	החזר hb_shape_plan_reference (node->shape_plan);
       }
   }
 
@@ -575,25 +575,25 @@ retry:
 						       coords, num_coords,
 						       shaper_list);
 
-  if (unlikely (dont_cache))
-    return shape_plan;
+  אם (unlikely (dont_cache))
+    החזר shape_plan;
 
-  hb_face_t::plan_node_t *node = (hb_face_t::plan_node_t *) hb_calloc (1, sizeof (hb_face_t::plan_node_t));
-  if (unlikely (!node))
-    return shape_plan;
+  hb_face_t::plan_node_t *node = (hb_face_t::plan_node_t *) hb_calloc (1, حجم (hb_face_t::plan_node_t));
+  אם (unlikely (!node))
+    החזר shape_plan;
 
   node->shape_plan = shape_plan;
   node->next = cached_plan_nodes;
 
-  if (unlikely (!face->shape_plans.cmpexch (cached_plan_nodes, node)))
+  אם (unlikely (!face->shape_plans.cmpexch (cached_plan_nodes, node)))
   {
     hb_shape_plan_destroy (shape_plan);
     hb_free (node);
-    goto retry;
+    اذهب retry;
   }
   DEBUG_MSG_FUNC (SHAPE_PLAN, shape_plan, "inserted into cache");
 
-  return hb_shape_plan_reference (shape_plan);
+  החזר hb_shape_plan_reference (shape_plan);
 }
 
 

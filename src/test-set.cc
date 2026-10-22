@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-set.hh"
+#ضمن "hb.hh"
+#ضمن "hb-set.hh"
 
-int
-main (int argc, char **argv)
+صحيح
+main (صحيح argc, حرف **argv)
 {
 
   /* Test copy constructor. */
@@ -222,8 +222,8 @@ main (int argc, char **argv)
 		HB_SET_VALUE_INVALID - 1};
     hb_codepoint_t expected[] = {0, 1, 63, 64, 65, 127, 511, 512, 513,
 				 1024, HB_SET_VALUE_INVALID - 1};
-    unsigned int i = 0;
-    for (hb_codepoint_t v : s)
+    unsigned صحيح i = 0;
+    עבור (hb_codepoint_t v : s)
     {
       hb_always_assert (i < ARRAY_LENGTH (expected));
       hb_always_assert (v == expected[i++]);
@@ -281,5 +281,5 @@ main (int argc, char **argv)
     hb_always_assert (*it == HB_SET_VALUE_INVALID - 2);
   }
 
-  return 0;
+  החזר 0;
 }

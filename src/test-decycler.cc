@@ -24,27 +24,27 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-decycler.hh"
+#ضمن "hb.hh"
+#ضمن "hb-decycler.hh"
 
-static void
+ساكن فراغ
 tree_recurse_binary (unsigned value,
 		     unsigned max_value,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
-		return;
+  אם (value >= max_value)
+		החזר;
 
   hb_decycler_node_t node (decycler);
 
-  bool ret = node.visit (value);
+  منطقي ret = node.visit (value);
   hb_always_assert (ret);
 
   tree_recurse_binary (value * 2 + 1, max_value, decycler);
   tree_recurse_binary (value * 2 + 2, max_value, decycler);
 }
 
-static void
+ساكن فراغ
 tree_recurse_tertiary (unsigned value,
 		       unsigned max_value,
 		       hb_decycler_t &decycler)
@@ -53,23 +53,23 @@ tree_recurse_tertiary (unsigned value,
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
-    return;
+  אם (value >= max_value)
+    החזר;
 
   hb_decycler_node_t node (decycler);
 
   value *= 3;
 
-  for (unsigned i = 1; i <= 3; i++)
+  עבור (unsigned i = 1; i <= 3; i++)
   {
-    bool ret = node.visit (value + i);
+    منطقي ret = node.visit (value + i);
     hb_always_assert (ret);
 
     tree_recurse_tertiary (value + i, max_value, decycler);
   }
 }
 
-static void
+ساكن فراغ
 test_tree ()
 {
   hb_decycler_t decycler;
@@ -77,7 +77,7 @@ test_tree ()
   tree_recurse_tertiary (0, 1000, decycler);
 }
 
-static void
+ساكن فراغ
 cycle_recurse (signed value,
 	       signed cycle_length,
 	       hb_decycler_t &decycler)
@@ -86,16 +86,16 @@ cycle_recurse (signed value,
 
   hb_decycler_node_t node (decycler);
 
-  if (!node.visit (value))
-    return;
+  אם (!node.visit (value))
+    החזר;
 
-  if (value >= cycle_length)
+  אם (value >= cycle_length)
     value = value % cycle_length;
 
   cycle_recurse (value + 1, cycle_length, decycler);
 }
 
-static void
+ساكن فراغ
 test_cycle ()
 {
   hb_decycler_t decycler;
@@ -105,12 +105,12 @@ test_cycle ()
   cycle_recurse (-20, 8, decycler);
 }
 
-int
-main (int argc, char **argv)
+صحيح
+main (صحيح argc, حرف **argv)
 {
   test_tree ();
   test_cycle ();
 
-  return 0;
+  החזר 0;
 }
 

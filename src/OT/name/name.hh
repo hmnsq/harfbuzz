@@ -27,40 +27,40 @@
 #ifndef OT_NAME_NAME_HH
 #define OT_NAME_NAME_HH
 
-#include "../../hb-open-type.hh"
-#include "../../hb-ot-name-language.hh"
-#include "../../hb-aat-layout.hh"
-#include "../../hb-utf.hh"
+#ضمن "../../hb-open-type.hh"
+#ضمن "../../hb-ot-name-language.hh"
+#ضمن "../../hb-aat-layout.hh"
+#ضمن "../../hb-utf.hh"
 
 
-namespace OT {
+نطاق OT {
 
 template <typename in_utf_t, typename out_utf_t>
-inline unsigned int
+مضمن unsigned صحيح
 hb_ot_name_convert_utf (hb_bytes_t                       bytes,
-			unsigned int                    *text_size /* IN/OUT */,
+			unsigned صحيح                    *text_size /* IN/OUT */,
 			typename out_utf_t::codepoint_t *text /* OUT */)
 {
-  unsigned int src_len = bytes.length / sizeof (typename in_utf_t::codepoint_t);
-  const typename in_utf_t::codepoint_t *src = (const typename in_utf_t::codepoint_t *) bytes.arrayZ;
-  const typename in_utf_t::codepoint_t *src_end = src + src_len;
+  unsigned صحيح src_len = bytes.length / حجم (typename in_utf_t::codepoint_t);
+  ثابت typename in_utf_t::codepoint_t *src = (ثابت typename in_utf_t::codepoint_t *) bytes.arrayZ;
+  ثابت typename in_utf_t::codepoint_t *src_end = src + src_len;
 
   typename out_utf_t::codepoint_t *dst = text;
 
   hb_codepoint_t unicode;
-  const hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
+  ثابت hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
 
-  if (text_size && *text_size)
+  אם (text_size && *text_size)
   {
     (*text_size)--; /* Save room for NUL-termination. */
-    const typename out_utf_t::codepoint_t *dst_end = text + *text_size;
+    ثابت typename out_utf_t::codepoint_t *dst_end = text + *text_size;
 
-    while (src < src_end && dst < dst_end)
+    כלעוד (src < src_end && dst < dst_end)
     {
-      const typename in_utf_t::codepoint_t *src_next = in_utf_t::next (src, src_end, &unicode, replacement);
+      ثابت typename in_utf_t::codepoint_t *src_next = in_utf_t::next (src, src_end, &unicode, replacement);
       typename out_utf_t::codepoint_t *dst_next = out_utf_t::encode (dst, dst_end, unicode);
-      if (dst_next == dst)
-	break; /* Out-of-room. */
+      אם (dst_next == dst)
+	اكسر; /* Out-of-room. */
 
       dst = dst_next;
       src = src_next;
@@ -71,13 +71,13 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
   }
 
   /* Accumulate length of rest. */
-  unsigned int dst_len = dst - text;
-  while (src < src_end)
+  unsigned صحيح dst_len = dst - text;
+  כלעוד (src < src_end)
   {
     src = in_utf_t::next (src, src_end, &unicode, replacement);
     dst_len += out_utf_t::encode_len (unicode);
   }
-  return dst_len;
+  החזר dst_len;
 }
 
 #define entry_score var.u16[0]
@@ -92,82 +92,82 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
 
 #define UNSUPPORTED	42
 
-struct NameRecord
+بنية NameRecord
 {
-  hb_language_t language (hb_face_t *face) const
+  hb_language_t language (hb_face_t *face) ثابت
   {
 #ifndef HB_NO_OT_NAME_LANGUAGE
-    unsigned int p = platformID;
-    unsigned int l = languageID;
+    unsigned صحيح p = platformID;
+    unsigned صحيح l = languageID;
 
-    if (p == 3)
-      return _hb_ot_name_language_for_ms_code (l);
+    אם (p == 3)
+      החזר _hb_ot_name_language_for_ms_code (l);
 
-    if (p == 1)
-      return _hb_ot_name_language_for_mac_code (l);
+    אם (p == 1)
+      החזר _hb_ot_name_language_for_mac_code (l);
 
 #ifndef HB_NO_OT_NAME_LANGUAGE_AAT
-    if (p == 0)
-      return face->table.ltag->get_language (l);
+    אם (p == 0)
+      החזר face->table.ltag->get_language (l);
 #endif
 
 #endif
-    return HB_LANGUAGE_INVALID;
+    החזר HB_LANGUAGE_INVALID;
   }
 
-  uint16_t score () const
+  uint16_t score () ثابت
   {
     /* Same order as in cmap::find_best_subtable(). */
-    unsigned int p = platformID;
-    unsigned int e = encodingID;
+    unsigned صحيح p = platformID;
+    unsigned صحيح e = encodingID;
 
     /* 32-bit. */
-    if (p == 3 && e == 10) return 0;
-    if (p == 0 && e ==  6) return 1;
-    if (p == 0 && e ==  4) return 2;
+    אם (p == 3 && e == 10) החזר 0;
+    אם (p == 0 && e ==  6) החזר 1;
+    אם (p == 0 && e ==  4) החזר 2;
 
     /* 16-bit. */
-    if (p == 3 && e ==  1) return 3;
-    if (p == 0 && e ==  3) return 4;
-    if (p == 0 && e ==  2) return 5;
-    if (p == 0 && e ==  1) return 6;
-    if (p == 0 && e ==  0) return 7;
+    אם (p == 3 && e ==  1) החזר 3;
+    אם (p == 0 && e ==  3) החזר 4;
+    אם (p == 0 && e ==  2) החזר 5;
+    אם (p == 0 && e ==  1) החזר 6;
+    אם (p == 0 && e ==  0) החזר 7;
 
     /* Symbol. */
-    if (p == 3 && e ==  0) return 8;
+    אם (p == 3 && e ==  0) החזר 8;
 
     /* We treat all Mac Latin names as ASCII only. */
-    if (p == 1 && e ==  0) return 10; /* 10 is magic number :| */
+    אם (p == 1 && e ==  0) החזר 10; /* 10 is magic number :| */
 
-    return UNSUPPORTED;
+    החזר UNSUPPORTED;
   }
 
-  NameRecord* copy (hb_serialize_context_t *c, const void *base
+  NameRecord* copy (hb_serialize_context_t *c, ثابت فراغ *base
 #ifdef HB_EXPERIMENTAL_API
-                    , const hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
+                    , ثابت hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
 #endif
-		    ) const
+		    ) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     HB_UNUSED auto snap = c->snapshot ();
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    auto *out = c->embed (هذا);
+    אם (unlikely (!out)) return_trace (nullptr);
 #ifdef HB_EXPERIMENTAL_API
     hb_ot_name_record_ids_t record_ids (platformID, encodingID, languageID, nameID);
     hb_bytes_t* name_bytes;
 
-    if (name_table_overrides->has (record_ids, &name_bytes)) {
+    אם (name_table_overrides->has (record_ids, &name_bytes)) {
       hb_bytes_t encoded_bytes = *name_bytes;
-      char *name_str_utf16_be = nullptr;
+      حرف *name_str_utf16_be = nullptr;
 
-      if (platformID != 1)
+      אם (platformID != 1)
       {
         unsigned text_size = hb_ot_name_convert_utf<hb_utf8_t, hb_utf16_be_t> (*name_bytes, nullptr, nullptr);
 
         text_size++; // needs to consider NULL terminator for use in hb_ot_name_convert_utf()
         unsigned byte_len = text_size * hb_utf16_be_t::codepoint_t::static_size;
-        name_str_utf16_be = (char *) hb_calloc (byte_len, 1);
-        if (!name_str_utf16_be)
+        name_str_utf16_be = (حرف *) hb_calloc (byte_len, 1);
+        אם (!name_str_utf16_be)
         {
           c->revert (snap);
           return_trace (nullptr);
@@ -176,7 +176,7 @@ struct NameRecord
                                                           (hb_utf16_be_t::codepoint_t *) name_str_utf16_be);
 
         unsigned encoded_byte_len = text_size * hb_utf16_be_t::codepoint_t::static_size;
-        if (!encoded_byte_len || !c->check_assign (out->length, encoded_byte_len, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
+        אם (!encoded_byte_len || !c->check_assign (out->length, encoded_byte_len, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
           c->revert (snap);
           hb_free (name_str_utf16_be);
           return_trace (nullptr);
@@ -184,10 +184,10 @@ struct NameRecord
 
         encoded_bytes = hb_bytes_t (name_str_utf16_be, encoded_byte_len);
       }
-      else
+      אחרת
       {
         // mac platform, copy the UTF-8 string(all ascii characters) as is
-        if (!c->check_assign (out->length, encoded_bytes.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
+        אם (!c->check_assign (out->length, encoded_bytes.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
           c->revert (snap);
           return_trace (nullptr);
         }
@@ -199,7 +199,7 @@ struct NameRecord
       c->add_link (out->offset, c->pop_pack (), hb_serialize_context_t::Tail, 0);
       hb_free (name_str_utf16_be);
     }
-    else
+    אחרת
 #endif
     {
       out->offset.serialize_copy (c, offset, base, 0, hb_serialize_context_t::Tail, length);
@@ -207,42 +207,42 @@ struct NameRecord
     return_trace (out);
   }
 
-  bool isUnicode () const
+  منطقي isUnicode () ثابت
   {
-    unsigned int p = platformID;
-    unsigned int e = encodingID;
+    unsigned صحيح p = platformID;
+    unsigned صحيح e = encodingID;
 
-    return (p == 0 ||
+    החזר (p == 0 ||
 	    (p == 3 && (e == 0 || e == 1 || e == 10)));
   }
 
-  static int cmp (const void *pa, const void *pb)
+  ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
   {
-    const NameRecord *a = (const NameRecord *)pa;
-    const NameRecord *b = (const NameRecord *)pb;
+    ثابت NameRecord *a = (ثابت NameRecord *)pa;
+    ثابت NameRecord *b = (ثابت NameRecord *)pb;
 
-    if (a->platformID != b->platformID)
-      return a->platformID - b->platformID;
+    אם (a->platformID != b->platformID)
+      החזר a->platformID - b->platformID;
 
-    if (a->encodingID != b->encodingID)
-      return a->encodingID - b->encodingID;
+    אם (a->encodingID != b->encodingID)
+      החזר a->encodingID - b->encodingID;
 
-    if (a->languageID != b->languageID)
-      return a->languageID - b->languageID;
+    אם (a->languageID != b->languageID)
+      החזר a->languageID - b->languageID;
 
-    if (a->nameID != b->nameID)
-      return a->nameID - b->nameID;
+    אם (a->nameID != b->nameID)
+      החזר a->nameID - b->nameID;
 
-    if (a->length != b->length)
-      return a->length - b->length;
+    אם (a->length != b->length)
+      החזר a->length - b->length;
 
-    return 0;
+    החזר 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  offset.sanitize (c, base, length));
   }
@@ -254,106 +254,106 @@ struct NameRecord
   HBUINT16	length;		/* String length (in bytes). */
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		offset;		/* String offset from start of storage area (in bytes). */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (12);
 };
 
-static int
-_hb_ot_name_entry_cmp_key (const void *pa, const void *pb, bool exact)
+ساكن صحيح
+_hb_ot_name_entry_cmp_key (ثابت فراغ *pa, ثابت فراغ *pb, منطقي exact)
 {
-  const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
-  const hb_ot_name_entry_t *b = (const hb_ot_name_entry_t *) pb;
+  ثابت hb_ot_name_entry_t *a = (ثابت hb_ot_name_entry_t *) pa;
+  ثابت hb_ot_name_entry_t *b = (ثابت hb_ot_name_entry_t *) pb;
 
   /* Compare by name_id, then language. */
 
-  if (a->name_id != b->name_id)
-    return a->name_id - b->name_id;
+  אם (a->name_id != b->name_id)
+    החזר a->name_id - b->name_id;
 
-  if (a->language == b->language) return 0;
-  if (!a->language) return -1;
-  if (!b->language) return +1;
+  אם (a->language == b->language) החזר 0;
+  אם (!a->language) החזר -1;
+  אם (!b->language) החזר +1;
 
-  const char *astr = hb_language_to_string (a->language);
-  const char *bstr = hb_language_to_string (b->language);
+  ثابت حرف *astr = hb_language_to_string (a->language);
+  ثابت حرف *bstr = hb_language_to_string (b->language);
 
   signed c = strcmp (astr, bstr);
 
   // 'a' is the user request, and 'b' is string in the font.
   // If eg. user asks for "en-us" and font has "en", approve.
-  if (!exact && c &&
+  אם (!exact && c &&
       hb_language_matches (b->language, a->language))
-    return 0;
+    החזר 0;
 
-  return c;
+  החזר c;
 }
 
-static int
-_hb_ot_name_entry_cmp (const void *pa, const void *pb)
+ساكن صحيح
+_hb_ot_name_entry_cmp (ثابت فراغ *pa, ثابت فراغ *pb)
 {
   /* Compare by name_id, then language, then score, then index. */
 
-  int v = _hb_ot_name_entry_cmp_key (pa, pb, true);
-  if (v)
-    return v;
+  صحيح v = _hb_ot_name_entry_cmp_key (pa, pb, אמת);
+  אם (v)
+    החזר v;
 
-  const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
-  const hb_ot_name_entry_t *b = (const hb_ot_name_entry_t *) pb;
+  ثابت hb_ot_name_entry_t *a = (ثابت hb_ot_name_entry_t *) pa;
+  ثابت hb_ot_name_entry_t *b = (ثابت hb_ot_name_entry_t *) pb;
 
-  if (a->entry_score != b->entry_score)
-    return a->entry_score - b->entry_score;
+  אם (a->entry_score != b->entry_score)
+    החזר a->entry_score - b->entry_score;
 
-  if (a->entry_index != b->entry_index)
-    return a->entry_index - b->entry_index;
+  אם (a->entry_index != b->entry_index)
+    החזר a->entry_index - b->entry_index;
 
-  return 0;
+  החזר 0;
 }
 
-struct name
+بنية name
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_name;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_name;
 
-  size_t get_size () const
-  { return min_size + count * nameRecordZ.item_size; }
+  size_t get_size () ثابت
+  { החזר min_size + count * nameRecordZ.item_size; }
 
   template <typename Iterator,
-	    hb_requires (hb_is_source_of (Iterator, const NameRecord &))>
-  bool serialize (hb_serialize_context_t *c,
+	    hb_requires (hb_is_source_of (Iterator, ثابت NameRecord &))>
+  منطقي serialize (hb_serialize_context_t *c,
 		  Iterator it,
-		  const void *src_string_pool
+		  ثابت فراغ *src_string_pool
 #ifdef HB_EXPERIMENTAL_API
-                  , const hb_vector_t<hb_ot_name_record_ids_t>& insert_name_records
-		  , const hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
+                  , ثابت hb_vector_t<hb_ot_name_record_ids_t>& insert_name_records
+		  , ثابت hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
 #endif
 		  )
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    אם (unlikely (!c->extend_min ((*هذا))))  return_trace (שקר);
 
     unsigned total_count = it.len ()
 #ifdef HB_EXPERIMENTAL_API
         + insert_name_records.length
 #endif
         ;
-    this->format = 0;
-    if (!c->check_assign (this->count, total_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return false;
+    هذا->format = 0;
+    אם (!c->check_assign (هذا->count, total_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      החזר שקר;
 
     NameRecord *name_records = (NameRecord *) hb_calloc (total_count, NameRecord::static_size);
-    if (unlikely (!name_records)) return_trace (false);
+    אם (unlikely (!name_records)) return_trace (שקר);
 
     hb_array_t<NameRecord> records (name_records, total_count);
 
-    for (const NameRecord& record : it)
+    עבור (ثابت NameRecord& record : it)
     {
       hb_memcpy (name_records, &record, NameRecord::static_size);
       name_records++;
     }
 
 #ifdef HB_EXPERIMENTAL_API
-    for (unsigned i = 0; i < insert_name_records.length; i++)
+    עבור (unsigned i = 0; i < insert_name_records.length; i++)
     {
-      const hb_ot_name_record_ids_t& ids = insert_name_records[i];
+      ثابت hb_ot_name_record_ids_t& ids = insert_name_records[i];
       NameRecord record;
       record.platformID = ids.platform_id;
       record.encodingID = ids.encoding_id;
@@ -377,19 +377,19 @@ struct name
     hb_free (records.arrayZ);
 
 
-    if (unlikely (c->ran_out_of_room ())) return_trace (false);
+    אם (unlikely (c->ran_out_of_room ())) return_trace (שקר);
 
-    this->stringOffset = c->length ();
+    هذا->stringOffset = c->length ();
 
-    return_trace (true);
+    return_trace (אמת);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
     auto *name_prime = c->serializer->start_embed<name> ();
 
 #ifdef HB_EXPERIMENTAL_API
-    const hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides =
+    ثابت hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides =
         &c->plan->name_table_overrides;
 #endif
 
@@ -397,32 +397,32 @@ struct name
     + nameRecordZ.as_array (count)
     | hb_filter (c->plan->name_ids, &NameRecord::nameID)
     | hb_filter (c->plan->name_languages, &NameRecord::languageID)
-    | hb_filter ([&] (const NameRecord& namerecord) {
-      return
+    | hb_filter ([&] (ثابت NameRecord& namerecord) {
+      החזר
           (c->plan->flags & HB_SUBSET_FLAGS_NAME_LEGACY)
           || namerecord.isUnicode ();
     })
 #ifdef HB_EXPERIMENTAL_API
-    | hb_filter ([&] (const NameRecord& namerecord) {
-      if (name_table_overrides->is_empty ())
-        return true;
+    | hb_filter ([&] (ثابت NameRecord& namerecord) {
+      אם (name_table_overrides->is_empty ())
+        החזר אמת;
       hb_ot_name_record_ids_t rec_ids (namerecord.platformID,
                                        namerecord.encodingID,
                                        namerecord.languageID,
                                        namerecord.nameID);
 
       hb_bytes_t *p;
-      if (name_table_overrides->has (rec_ids, &p) &&
+      אם (name_table_overrides->has (rec_ids, &p) &&
           (*p).length == 0)
-        return false;
-      return true;
+        החזר שקר;
+      החזר אמת;
     })
 #endif
     ;
 
 #ifdef HB_EXPERIMENTAL_API
     hb_hashmap_t<hb_ot_name_record_ids_t, unsigned> retained_name_record_ids;
-    for (const NameRecord& rec : it)
+    עבור (ثابت NameRecord& rec : it)
     {
       hb_ot_name_record_ids_t rec_ids (rec.platformID,
                                        rec.encodingID,
@@ -432,23 +432,23 @@ struct name
     }
 
     hb_vector_t<hb_ot_name_record_ids_t> insert_name_records;
-    if (!name_table_overrides->is_empty ())
+    אם (!name_table_overrides->is_empty ())
     {
-      if (unlikely (!insert_name_records.alloc (name_table_overrides->get_population (), true)))
-        return false;
-      for (const auto& record_ids : name_table_overrides->keys ())
+      אם (unlikely (!insert_name_records.alloc (name_table_overrides->get_population (), אמת)))
+        החזר שקר;
+      עבור (ثابت auto& record_ids : name_table_overrides->keys ())
       {
-        if (name_table_overrides->get (record_ids).length == 0)
-          continue;
-        if (retained_name_record_ids.has (record_ids))
-          continue;
+        אם (name_table_overrides->get (record_ids).length == 0)
+          استمر;
+        אם (retained_name_record_ids.has (record_ids))
+          استمر;
         insert_name_records.push (record_ids);
       }
     }
 #endif
 
-    return name_prime->serialize (c->serializer, it,
-				  std::addressof (this + stringOffset)
+    החזר name_prime->serialize (c->serializer, it,
+				  std::addressof (هذا + stringOffset)
 #ifdef HB_EXPERIMENTAL_API
 				  , insert_name_records
 				  , name_table_overrides
@@ -456,40 +456,40 @@ struct name
 				  );
   }
 
-  bool sanitize_records (hb_sanitize_context_t *c) const
+  منطقي sanitize_records (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    const void *string_pool = (this+stringOffset).arrayZ;
+    TRACE_SANITIZE (هذا);
+    ثابت فراغ *string_pool = (هذا+stringOffset).arrayZ;
     return_trace (nameRecordZ.sanitize (c, count, string_pool));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  likely (format == 0 || format == 1) &&
 		  c->check_array (nameRecordZ.arrayZ, count) &&
-		  c->check_range (this, stringOffset) &&
+		  c->check_range (هذا, stringOffset) &&
 		  sanitize_records (c));
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
-      this->table = hb_sanitize_context_t ().reference_table<name> (face);
-      assert (this->table.get_length () >= this->table->stringOffset);
-      this->pool = (const char *) (const void *) (this->table+this->table->stringOffset);
-      this->pool_len = this->table.get_length () - this->table->stringOffset;
-      const hb_array_t<const NameRecord> all_names (this->table->nameRecordZ.arrayZ,
-						    this->table->count);
+      هذا->table = hb_sanitize_context_t ().reference_table<name> (face);
+      أكد (هذا->table.get_length () >= هذا->table->stringOffset);
+      هذا->pool = (ثابت حرف *) (ثابت فراغ *) (هذا->table+هذا->table->stringOffset);
+      هذا->pool_len = هذا->table.get_length () - هذا->table->stringOffset;
+      ثابت hb_array_t<ثابت NameRecord> all_names (هذا->table->nameRecordZ.arrayZ,
+						    هذا->table->count);
 
-      this->names.alloc_exact (all_names.length);
+      هذا->names.alloc_exact (all_names.length);
 
-      for (unsigned int i = 0; i < all_names.length; i++)
+      עבור (unsigned صحيح i = 0; i < all_names.length; i++)
       {
-	hb_ot_name_entry_t *entry = this->names.push ();
+	hb_ot_name_entry_t *entry = هذا->names.push ();
 
 	entry->name_id = all_names[i].nameID;
 	entry->language = all_names[i].language (face);
@@ -497,74 +497,74 @@ struct name
 	entry->entry_index = i;
       }
 
-      this->names.qsort (_hb_ot_name_entry_cmp);
+      هذا->names.qsort (_hb_ot_name_entry_cmp);
       /* Walk and pick best only for each name_id,language pair,
        * while dropping unsupported encodings. */
-      unsigned int j = 0;
-      for (unsigned int i = 0; i < this->names.length; i++)
+      unsigned صحيح j = 0;
+      עבור (unsigned صحيح i = 0; i < هذا->names.length; i++)
       {
-	if (this->names[i].entry_score == UNSUPPORTED ||
-	    this->names[i].language == HB_LANGUAGE_INVALID)
-	  continue;
-	if (i &&
-	    this->names[i - 1].name_id  == this->names[i].name_id &&
-	    this->names[i - 1].language == this->names[i].language)
-	  continue;
-	this->names[j++] = this->names[i];
+	אם (هذا->names[i].entry_score == UNSUPPORTED ||
+	    هذا->names[i].language == HB_LANGUAGE_INVALID)
+	  استمر;
+	אם (i &&
+	    هذا->names[i - 1].name_id  == هذا->names[i].name_id &&
+	    هذا->names[i - 1].language == هذا->names[i].language)
+	  استمر;
+	هذا->names[j++] = هذا->names[i];
       }
-      this->names.resize (j);
+      هذا->names.resize (j);
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      هذا->table.destroy ();
     }
 
-    int get_index (hb_ot_name_id_t  name_id,
+    صحيح get_index (hb_ot_name_id_t  name_id,
 		   hb_language_t    language,
-		   unsigned int    *width=nullptr) const
+		   unsigned صحيح    *width=nullptr) ثابت
     {
-      const hb_ot_name_entry_t key = {name_id, {0}, language};
-      const hb_ot_name_entry_t *entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
-						    this->names.length,
-						    sizeof (hb_ot_name_entry_t),
+      ثابت hb_ot_name_entry_t key = {name_id, {0}, language};
+      ثابت hb_ot_name_entry_t *entry = hb_bsearch (key, (ثابت hb_ot_name_entry_t *) هذا->names,
+						    هذا->names.length,
+						    حجم (hb_ot_name_entry_t),
 						    _hb_ot_name_entry_cmp_key,
-						    true);
+						    אמת);
 
-      if (!entry)
+      אם (!entry)
       {
-	entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
-			    this->names.length,
-			    sizeof (hb_ot_name_entry_t),
+	entry = hb_bsearch (key, (ثابت hb_ot_name_entry_t *) هذا->names,
+			    هذا->names.length,
+			    حجم (hb_ot_name_entry_t),
 			    _hb_ot_name_entry_cmp_key,
-			    false);
+			    שקר);
       }
 
-      if (!entry)
-	return -1;
+      אם (!entry)
+	החזר -1;
 
-      if (width)
+      אם (width)
 	*width = entry->entry_score < 10 ? 2 : 1;
 
-      return entry->entry_index;
+      החזר entry->entry_index;
     }
 
-    hb_bytes_t get_name (unsigned int idx) const
+    hb_bytes_t get_name (unsigned صحيح idx) ثابت
     {
-      const hb_array_t<const NameRecord> all_names (table->nameRecordZ.arrayZ, table->count);
-      const NameRecord &record = all_names[idx];
-      const hb_bytes_t string_pool (pool, pool_len);
-      return string_pool.sub_array (record.offset, record.length);
+      ثابت hb_array_t<ثابت NameRecord> all_names (table->nameRecordZ.arrayZ, table->count);
+      ثابت NameRecord &record = all_names[idx];
+      ثابت hb_bytes_t string_pool (pool, pool_len);
+      החזר string_pool.sub_array (record.offset, record.length);
     }
 
-    private:
-    const char *pool;
-    unsigned int pool_len;
-    public:
+    خاص:
+    ثابت حرف *pool;
+    unsigned صحيح pool_len;
+    عام:
     hb_blob_ptr_t<name> table;
     hb_vector_t<hb_ot_name_entry_t> names;
   };
 
-  public:
+  عام:
   /* We only implement format 0 for now. */
   HBUINT16	format;		/* Format selector (=0/1). */
   HBUINT16	count;		/* Number of name records. */
@@ -572,14 +572,14 @@ struct name
 		stringOffset;	/* Offset to start of string storage (from start of table). */
   UnsizedArrayOf<NameRecord>
 		nameRecordZ;	/* The name records where count is the number of records. */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (6, nameRecordZ);
 };
 
 #undef entry_index
 #undef entry_score
 
-struct name_accelerator_t : name::accelerator_t {
+بنية name_accelerator_t : name::accelerator_t {
   name_accelerator_t (hb_face_t *face) : name::accelerator_t (face) {}
 };
 

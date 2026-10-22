@@ -27,29 +27,29 @@
 #ifndef HB_KERN_HH
 #define HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-aat-layout-common.hh"
+#ضمن "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+نطاق OT {
 
 
 template <typename Driver>
-struct hb_kern_machine_t
+بنية hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
-		     bool crossStream_ = false) :
+  hb_kern_machine_t (ثابت Driver &driver_,
+		     منطقي crossStream_ = שקר) :
 		       driver (driver_),
 		       crossStream (crossStream_) {}
 
-  void kern (hb_font_t   *font,
+  فراغ kern (hb_font_t   *font,
 	     hb_buffer_t *buffer,
 	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+	     منطقي         scale = אמת) ثابت
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    אם (!buffer->message (font, "start kern"))
+      החזר;
 
     buffer->unsafe_to_concat ();
     OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
@@ -57,46 +57,46 @@ struct hb_kern_machine_t
     c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
     auto &skippy_iter = c.iter_input;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
+    منطقي horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
+    unsigned صحيح count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    עבור (unsigned صحيح idx = 0; idx < count;)
     {
-      if (!(info[idx].mask & kern_mask))
+      אם (!(info[idx].mask & kern_mask))
       {
 	idx++;
-	continue;
+	استمر;
       }
 
       skippy_iter.reset_fast (idx);
       unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      אם (unlikely (!skippy_iter.next (&unsafe_to)))
       {
 	idx = unsafe_to;
-	continue;
+	استمر;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      unsigned صحيح i = idx;
+      unsigned صحيح j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      אם (likely (!kern))
+	اذهب skip;
 
-      if (horizontal)
+      אם (horizontal)
       {
-	if (scale)
+	אם (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	אם (crossStream)
 	{
 	  pos[j].y_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	אחרת
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -105,16 +105,16 @@ struct hb_kern_machine_t
 	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
 	}
       }
-      else
+      אחרת
       {
-	if (scale)
+	אם (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	אם (crossStream)
 	{
 	  pos[j].x_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	אחרת
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -130,11 +130,11 @@ struct hb_kern_machine_t
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (فراغ) buffer->message (font, "end kern");
   }
 
-  const Driver &driver;
-  bool crossStream;
+  ثابت Driver &driver;
+  منطقي crossStream;
 };
 
 

@@ -9,9 +9,9 @@ Each --TAG starts a new group.  The template file has %%TAG%%
 placeholders that get replaced with #include lines for that group.
 """
 
-import os, sys, shutil, pathlib
+استورد os, sys, shutil, pathlib
 
-if len(sys.argv) < 4:
+אם len(sys.argv) < 4:
     sys.exit(__doc__)
 
 OUTPUT = sys.argv[1]
@@ -21,49 +21,49 @@ TEMPLATE = sys.argv[3]
 # Parse --TAG file... groups
 groups = {}
 current_tag = None
-for arg in sys.argv[4:]:
-    if arg.startswith('--'):
+עבור arg في sys.argv[4:]:
+    אם arg.startswith('--'):
         current_tag = arg[2:]
         groups[current_tag] = []
-    elif current_tag is not None:
+    وإلاإذا current_tag is לא None:
         groups[current_tag].append(arg)
 
 # Build #include lines for each group
 def make_includes(files):
     seen = set()
     lines = []
-    for f in sorted(files):
-        if not f.endswith('.cc'):
-            continue
+    עבור f في sorted(files):
+        אם לא f.endswith('.cc'):
+            استمر
         rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
-        if rel not in seen:
+        אם rel לא في seen:
             seen.add(rel)
             lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+    החזר '\n'.join(lines)
 
 # Read template and substitute
-with open(TEMPLATE, 'r') as f:
-    content = f.read()
+with open(TEMPLATE, 'r') كـ f:
+    content = f.اقرأ()
 
-for tag, files in groups.items():
+עבור tag, files في groups.items():
     placeholder = '%%{}%%'.format(tag)
     content = content.replace(placeholder, make_includes(files))
 
-with open(OUTPUT, 'w') as f:
-    f.write(content)
+with open(OUTPUT, 'w') كـ f:
+    f.اكتب(content)
 
 # Copy back to source tree if changed
 baseline = os.path.join(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
-try:
-    with open(baseline, 'r') as b:
-        if b.read() == content:
+حاول:
+    with open(baseline, 'r') كـ b:
+        אם b.اقرأ() == content:
             sys.exit(0)
-except FileNotFoundError:
+استثناء FileNotFoundError:
     pass
 
-try:
+حاول:
     shutil.copyfile(OUTPUT, baseline)
-except OSError:
-    import filecmp
-    if os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
+استثناء OSError:
+    استورد filecmp
+    אם os.path.exists(baseline) וגם לא filecmp.cmp(OUTPUT, baseline, shallow=שקר):
         sys.exit('{} is out of date; regenerate with a writable source tree'.format(baseline))

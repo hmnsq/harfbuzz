@@ -27,12 +27,12 @@
 #ifndef HB_OT_POST_TABLE_HH
 #define HB_OT_POST_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-var-mvar-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-var-mvar-table.hh"
 
 #define HB_STRING_ARRAY_NAME format1_names
 #define HB_STRING_ARRAY_LIST "hb-ot-post-macroman.hh"
-#include "hb-string-array.hh"
+#ضمن "hb-string-array.hh"
 #undef HB_STRING_ARRAY_LIST
 #undef HB_STRING_ARRAY_NAME
 
@@ -43,27 +43,27 @@
 #define HB_OT_TAG_post HB_TAG('p','o','s','t')
 
 
-namespace OT {
+نطاق OT {
 
 
-struct postV2Tail
+بنية postV2Tail
 {
-  friend struct post;
+  friend بنية post;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (glyphNameIndex.sanitize (c));
   }
 
   template<typename Iterator>
-  bool serialize (hb_serialize_context_t *c,
+  منطقي serialize (hb_serialize_context_t *c,
                   Iterator it,
-                  const void* _post) const;
+                  ثابت فراغ* _post) ثابت;
 
-  bool subset (hb_subset_context_t *c) const;
+  منطقي subset (hb_subset_context_t *c) ثابت;
 
-  protected:
+  محمي:
   Array16Of<HBUINT16>	glyphNameIndex;	/* This is not an offset, but is the
 					 * ordinal number of the glyph in 'post'
 					 * string tables. */
@@ -71,39 +71,39 @@ struct postV2Tail
 			namesX;*/	/* Glyph names with length bytes [variable]
 					 * (a Pascal string). */
 
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (2, glyphNameIndex);
 };
 
-struct post
+بنية post
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_post;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_post;
 
-  bool serialize (hb_serialize_context_t *c, bool glyph_names) const
+  منطقي serialize (hb_serialize_context_t *c, منطقي glyph_names) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     post *post_prime = c->allocate_min<post> ();
-    if (unlikely (!post_prime))  return_trace (false);
+    אם (unlikely (!post_prime))  return_trace (שקר);
 
-    hb_memcpy (post_prime, this, post::min_size);
-    if (!glyph_names)
+    hb_memcpy (post_prime, هذا, post::min_size);
+    אם (!glyph_names)
       return_trace (c->check_assign (post_prime->version.major, 3,
                                      HB_SERIALIZE_ERROR_INT_OVERFLOW)); // Version 3 does not have any glyph names.
 
-    return_trace (true);
+    return_trace (אמת);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
     auto *post_prime = c->serializer->start_embed<post> ();
 
-    bool glyph_names = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_NAMES;
-    if (!serialize (c->serializer, glyph_names))
-      return_trace (false);
+    منطقي glyph_names = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_NAMES;
+    אם (!serialize (c->serializer, glyph_names))
+      return_trace (שקר);
 
 #ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+    אם (c->plan->normalized_coords)
     {
       auto &MVAR = *c->plan->source->table.MVAR;
       auto *table = post_prime;
@@ -114,43 +114,43 @@ struct post
 #endif
 
     Triple *axis_range;
-    if (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
+    אם (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
     {
-      float italic_angle = hb_max (-90.f, hb_min (axis_range->middle, 90.f));
-      if (post_prime->italicAngle.to_float () != italic_angle)
+      عائم italic_angle = hb_max (-90.f, hb_min (axis_range->middle, 90.f));
+      אם (post_prime->italicAngle.to_float () != italic_angle)
         post_prime->italicAngle.set_float (italic_angle);
     }
 
-    if (glyph_names && version.major == 2)
+    אם (glyph_names && version.major == 2)
     {
       hb_barrier ();
       return_trace (v2X.subset (c));
     }
 
-    return_trace (true);
+    return_trace (אמת);
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
-    friend struct postV2Tail;
+    friend بنية postV2Tail;
 
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<post> (face);
-      unsigned int table_length = table.get_length ();
+      unsigned صحيح table_length = table.get_length ();
 
       version = table->version.to_int ();
-      if (version != 0x00020000) return;
+      אם (version != 0x00020000) החזר;
       hb_barrier ();
 
-      const postV2Tail &v2 = table->v2X;
+      ثابت postV2Tail &v2 = table->v2X;
 
       glyphNameIndex = &v2.glyphNameIndex;
       pool = &StructAfter<uint8_t> (v2.glyphNameIndex);
 
-      const uint8_t *end = (const uint8_t *) (const void *) table + table_length;
+      ثابت uint8_t *end = (ثابت uint8_t *) (ثابت فراغ *) table + table_length;
       index_to_offset.alloc (hb_min (face->get_num_glyphs (), table_length / 8));
-      for (const uint8_t *data = pool;
+      עבור (ثابت uint8_t *data = pool;
 	   index_to_offset.length < 65535 && data < end && data + *data < end;
 	   data += 1 + *data)
 	index_to_offset.push (data - pool);
@@ -161,150 +161,150 @@ struct post
       table.destroy ();
     }
 
-    bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+    منطقي get_glyph_name (hb_codepoint_t glyph,
+			 حرف *buf, unsigned صحيح buf_len) ثابت
     {
       hb_bytes_t s = find_glyph_name (glyph);
-      if (!s.length) return false;
-      if (!buf_len) return true;
-      unsigned int len = hb_min (buf_len - 1, s.length);
+      אם (!s.length) החזר שקר;
+      אם (!buf_len) החזר אמת;
+      unsigned صحيح len = hb_min (buf_len - 1, s.length);
       strncpy (buf, s.arrayZ, len);
       buf[len] = '\0';
-      return true;
+      החזר אמת;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
-			      hb_codepoint_t *glyph) const
+    منطقي get_glyph_from_name (ثابت حرف *name, صحيح len,
+			      hb_codepoint_t *glyph) ثابت
     {
-      unsigned int count = get_glyph_count ();
-      if (unlikely (!count)) return false;
+      unsigned صحيح count = get_glyph_count ();
+      אם (unlikely (!count)) החזר שקר;
 
-      if (len < 0) len = strlen (name);
+      אם (len < 0) len = strlen (name);
 
-      if (unlikely (!len)) return false;
+      אם (unlikely (!len)) החזר שקר;
 
     retry:
       uint16_t *gids = gids_sorted_by_name.get_acquire ();
 
-      if (unlikely (!gids))
+      אם (unlikely (!gids))
       {
-	gids = (uint16_t *) hb_malloc2 (count, sizeof (gids[0]));
-	if (unlikely (!gids))
-	  return false; /* Anything better?! */
+	gids = (uint16_t *) hb_malloc2 (count, حجم (gids[0]));
+	אם (unlikely (!gids))
+	  החזר שקר; /* Anything better?! */
 
-	for (unsigned int i = 0; i < count; i++)
+	עבור (unsigned صحيح i = 0; i < count; i++)
 	  gids[i] = i;
-	auto thiz = this;
+	auto thiz = هذا;
 	hb_array_t<uint16_t> (gids, count)
-	  .qsort ([thiz] (const uint16_t &a, const uint16_t &b) {
+	  .qsort ([thiz] (ثابت uint16_t &a, ثابت uint16_t &b) {
 	    /* hb_array_t::cmp has reversed argument order, so
 	     * x.cmp(y) returns sign of (y - x).  Pass (b, a) to
 	     * get standard "negative when a < b" ordering. */
-	    return thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
+	    החזר thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
 	  });
 
-	if (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
+	אם (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
 	{
 	  hb_free (gids);
-	  goto retry;
+	  اذهب retry;
 	}
       }
 
       hb_bytes_t st (name, len);
-      auto* gid = hb_bsearch (st, gids, count, sizeof (gids[0]), cmp_key, (void *) this);
-      if (gid)
+      auto* gid = hb_bsearch (st, gids, count, حجم (gids[0]), cmp_key, (فراغ *) هذا);
+      אם (gid)
       {
 	*glyph = *gid;
-	return true;
+	החזר אמת;
       }
 
-      return false;
+      החזר שקר;
     }
 
     hb_blob_ptr_t<post> table;
 
-    protected:
+    محمي:
 
-    unsigned int get_glyph_count () const
+    unsigned صحيح get_glyph_count () ثابت
     {
-      if (version == 0x00010000)
+      אם (version == 0x00010000)
       {
         hb_barrier ();
-	return format1_names_length;
+	החזר format1_names_length;
       }
 
-      if (version == 0x00020000)
+      אם (version == 0x00020000)
       {
         hb_barrier ();
-	return glyphNameIndex->len;
+	החזר glyphNameIndex->len;
       }
 
-      return 0;
+      החזר 0;
     }
 
-    static int cmp_key (const void *pk, const void *po, void *arg)
+    ساكن صحيح cmp_key (ثابت فراغ *pk, ثابت فراغ *po, فراغ *arg)
     {
-      const accelerator_t *thiz = (const accelerator_t *) arg;
-      const hb_bytes_t *key = (const hb_bytes_t *) pk;
-      uint16_t o = * (const uint16_t *) po;
-      return thiz->find_glyph_name (o).cmp (*key);
+      ثابت accelerator_t *thiz = (ثابت accelerator_t *) arg;
+      ثابت hb_bytes_t *key = (ثابت hb_bytes_t *) pk;
+      uint16_t o = * (ثابت uint16_t *) po;
+      החזר thiz->find_glyph_name (o).cmp (*key);
     }
 
-    hb_bytes_t find_glyph_name (hb_codepoint_t glyph) const
+    hb_bytes_t find_glyph_name (hb_codepoint_t glyph) ثابت
     {
-      if (version == 0x00010000)
+      אם (version == 0x00010000)
       {
         hb_barrier ();
-	if (glyph >= format1_names_length)
-	  return hb_bytes_t ();
+	אם (glyph >= format1_names_length)
+	  החזר hb_bytes_t ();
 
-	return format1_names (glyph);
+	החזר format1_names (glyph);
       }
 
-      if (version != 0x00020000)
-	return hb_bytes_t ();
+      אם (version != 0x00020000)
+	החזר hb_bytes_t ();
       hb_barrier ();
 
-      if (glyph >= glyphNameIndex->len)
-	return hb_bytes_t ();
+      אם (glyph >= glyphNameIndex->len)
+	החזר hb_bytes_t ();
 
-      unsigned int index = glyphNameIndex->arrayZ[glyph];
-      if (index < format1_names_length)
-	return format1_names (index);
+      unsigned صحيح index = glyphNameIndex->arrayZ[glyph];
+      אם (index < format1_names_length)
+	החזר format1_names (index);
       index -= format1_names_length;
 
-      if (index >= index_to_offset.length)
-	return hb_bytes_t ();
-      unsigned int offset = index_to_offset[index];
+      אם (index >= index_to_offset.length)
+	החזר hb_bytes_t ();
+      unsigned صحيح offset = index_to_offset[index];
 
-      const uint8_t *data = pool + offset;
-      unsigned int name_length = *data;
+      ثابت uint8_t *data = pool + offset;
+      unsigned صحيح name_length = *data;
       data++;
 
-      return hb_bytes_t ((const char *) data, name_length);
+      החזר hb_bytes_t ((ثابت حرف *) data, name_length);
     }
 
-    private:
+    خاص:
     uint32_t version;
-    const Array16Of<HBUINT16> *glyphNameIndex = nullptr;
+    ثابت Array16Of<HBUINT16> *glyphNameIndex = nullptr;
     hb_vector_t<uint32_t> index_to_offset;
-    const uint8_t *pool = nullptr;
+    ثابت uint8_t *pool = nullptr;
     mutable hb_atomic_t<uint16_t *> gids_sorted_by_name;
   };
 
-  bool has_data () const { return version.to_int (); }
+  منطقي has_data () ثابت { החזר version.to_int (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  (version.to_int () == 0x00010000 ||
 		   (version.to_int () == 0x00020000 && hb_barrier () && v2X.sanitize (c)) ||
 		   version.to_int () == 0x00030000));
   }
 
-  public:
+  عام:
   FixedVersion<>version;		/* 0x00010000 for version 1.0
 					 * 0x00020000 for version 2.0
 					 * 0x00025000 for version 2.5 (deprecated)
@@ -340,7 +340,7 @@ struct post
   DEFINE_SIZE_MIN (32);
 };
 
-struct post_accelerator_t : post::accelerator_t {
+بنية post_accelerator_t : post::accelerator_t {
   post_accelerator_t (hb_face_t *face) : post::accelerator_t (face) {}
 };
 
