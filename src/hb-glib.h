@@ -29,9 +29,9 @@
 #ifndef HB_GLIB_H
 #define HB_GLIB_H
 
-#include "hb.h"
+#अन्तर्भाव "hb.h"
 
-#include <glib.h>
+#अन्तर्भाव <glib.h>
 
 HB_BEGIN_DECLS
 
@@ -44,9 +44,9 @@ hb_glib_script_from_script (hb_script_t script);
 
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_glib_get_unicode_funcs (void);
+hb_glib_get_unicode_funcs (शून्य);
 
-#if GLIB_CHECK_VERSION(2,31,10)
+#यदि GLIB_CHECK_VERSION(2,31,10)
 HB_EXTERN hb_blob_t *
 hb_glib_blob_create (GBytes *gbytes);
 #endif

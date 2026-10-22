@@ -27,8 +27,8 @@
 #ifndef HB_OT_HHEA_TABLE_HH
 #define HB_OT_HHEA_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-ot-dual.hh"
 
 /*
  * hhea -- Horizontal Header
@@ -42,32 +42,32 @@
 #define HB_OT_TAG_VHEA HB_TAG('V','H','E','A')
 
 
-namespace OT {
+नामाकाश OT {
 
 
 template <typename T, typename Types>
-struct _hea
+संरचना _hea
 {
-  using LongMetricCount = typename Types::HBLUINT;
+  using Long_Metric_गिनती = typename Types::HBLUINT;
 
-  static constexpr unsigned long_metric_count_max ()
-  { return LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
+  स्थिर constexpr unsigned long_metric_गिनती_max ()
+  { प्रत्यागम Long_Metric_गिनती::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
 
-  bool has_data () const { return version.major; }
+  तार्किक has_data () ध्रुव { प्रत्यागम version.major; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
 		  hb_barrier () &&
 		  likely (version.major == 1));
   }
 
-  public:
+  सार्वजनिक:
   FixedVersion<>version;	/* 0x00010000u for version 1.0. */
   FWORD		ascender;	/* Typographic ascent. */
   FWORD		descender;	/* Typographic descent. */
-  FWORD		lineGap;	/* Typographic line gap. */
+  FWORD		पंक्ति_Gap;	/* Typographic line gap. */
   UFWORD	advanceMax;	/* Maximum advance width/height value in
 				 * metrics table. */
   FWORD		minLeadingBearing;
@@ -93,34 +93,34 @@ struct _hea
   HBINT16	reserved3;	/* Set to 0. */
   HBINT16	reserved4;	/* Set to 0. */
   HBINT16	metricDataFormat;/* 0 for current format. */
-  LongMetricCount
-		numberOfLongMetrics;
+  Long_Metric_गिनती
+		संख्या_Of_Long_Metrics;
 				/* Number of LongMetric entries in metric
 				 * table. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (34 + Types::HBLUINT::static_size);
 };
 
-struct hhea : _hea<hhea, Layout::SmallTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hhea;
+संरचना hhea : _hea<hhea, Layout::SmallTypes> {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_hhea;
 };
-struct HHEA : _hea<HHEA, Layout::MediumTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HHEA;
+संरचना HHEA : _hea<HHEA, Layout::MediumTypes> {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_HHEA;
 };
-struct vhea : _hea<vhea, Layout::SmallTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_vhea;
+संरचना vhea : _hea<vhea, Layout::SmallTypes> {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_vhea;
 };
-struct VHEA : _hea<VHEA, Layout::MediumTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VHEA;
+संरचना VHEA : _hea<VHEA, Layout::MediumTypes> {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_VHEA;
 };
 
-struct hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
+संरचना hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
 {
   hhea_accelerator_t (hb_face_t *face) :
     hb_dual_table_t<hhea, HHEA> (face) {}
 };
 
-struct vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
+संरचना vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
 {
   vhea_accelerator_t (hb_face_t *face) :
     hb_dual_table_t<vhea, VHEA> (face) {}

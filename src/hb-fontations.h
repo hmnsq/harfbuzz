@@ -25,7 +25,7 @@
 #ifndef HB_FONTATIONS_H
 #define HB_FONTATIONS_H
 
-#include "hb.h"
+#अन्तर्भाव "hb.h"
 
 /**
  * SECTION: hb-fontations
@@ -48,7 +48,7 @@ HB_BEGIN_DECLS
  *
  * Since: 11.0.0
  **/
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_fontations_font_set_funcs (hb_font_t *font);
 
 HB_END_DECLS
