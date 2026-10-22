@@ -50,7 +50,7 @@ struct hb_subset_accelerator_t
 {
   static hb_user_data_key_t* user_data_key()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    반환 &_hb_subset_accelerator_user_data_key;
   }
 
   static hb_subset_accelerator_t* create(hb_face_t *source,
@@ -60,19 +60,19 @@ struct hb_subset_accelerator_t
     hb_subset_accelerator_t* accel =
         (hb_subset_accelerator_t*) hb_calloc (1, sizeof(hb_subset_accelerator_t));
 
-    if (unlikely (!accel)) return accel;
+    만약 (unlikely (!accel)) 반환 accel;
 
     new (accel) hb_subset_accelerator_t (source,
 					 unicode_to_gid_,
 					 unicodes_,
 					 has_seac_);
 
-    return accel;
+    반환 accel;
   }
 
   static void destroy (void* p)
   {
-    if (!p) return;
+    만약 (!p) 반환;
 
     hb_subset_accelerator_t *accel = (hb_subset_accelerator_t *) p;
 
@@ -93,7 +93,7 @@ struct hb_subset_accelerator_t
     source(hb_face_reference (source))
   {
     gid_to_unicodes.alloc (unicode_to_gid.get_population ());
-    for (const auto &_ : unicode_to_gid)
+    위해 (const auto &_ : unicode_to_gid)
     {
       auto unicode = _.first;
       auto gid = _.second;
@@ -123,7 +123,7 @@ struct hb_subset_accelerator_t
 
   bool in_error () const
   {
-    return unicode_to_gid.in_error () ||
+    반환 unicode_to_gid.in_error () ||
 	   gid_to_unicodes.in_error () ||
 	   unicodes.in_error () ||
 	   sanitized_table_cache.in_error ();

@@ -37,8 +37,8 @@
 
 struct hb_ot_language_map_t
 {
-  int cmp (unsigned int key) const
-  { return key < code ? -1 : key > code ? +1 : 0; }
+  정수 cmp (unsigned 정수 key) const
+  { 반환 key < code ? -1 : key > code ? +1 : 0; }
 
   uint16_t	code;
   char		lang[6];
@@ -422,33 +422,33 @@ _hb_mac_language_map[] =
 
 
 static hb_language_t
-_hb_ot_name_language_for (unsigned int code,
+_hb_ot_name_language_for (unsigned 정수 code,
 			  const hb_ot_language_map_t *array,
-			  unsigned int len)
+			  unsigned 정수 len)
 {
 #ifdef HB_NO_OT_NAME_LANGUAGE
-  return HB_LANGUAGE_INVALID;
+  반환 HB_LANGUAGE_INVALID;
 #endif
   auto *entry = hb_bsearch (code, array, len);
 
-  if (entry)
-    return hb_language_from_string (entry->lang, -1);
+  만약 (entry)
+    반환 hb_language_from_string (entry->lang, -1);
 
-  return HB_LANGUAGE_INVALID;
+  반환 HB_LANGUAGE_INVALID;
 }
 
 hb_language_t
-_hb_ot_name_language_for_ms_code (unsigned int code)
+_hb_ot_name_language_for_ms_code (unsigned 정수 code)
 {
-  return _hb_ot_name_language_for (code,
+  반환 _hb_ot_name_language_for (code,
 				   _hb_ms_language_map,
 				   ARRAY_LENGTH (_hb_ms_language_map));
 }
 
 hb_language_t
-_hb_ot_name_language_for_mac_code (unsigned int code)
+_hb_ot_name_language_for_mac_code (unsigned 정수 code)
 {
-  return _hb_ot_name_language_for (code,
+  반환 _hb_ot_name_language_for (code,
 				   _hb_mac_language_map,
 				   ARRAY_LENGTH (_hb_mac_language_map));
 }

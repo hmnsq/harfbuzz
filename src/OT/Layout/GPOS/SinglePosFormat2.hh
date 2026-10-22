@@ -18,7 +18,7 @@ struct single_pos_value_mapper_t
   hb_pair_t<hb_codepoint_t, hb_array_t<const Value>>
   operator () (const hb_pair_t<hb_codepoint_t, unsigned> &_) const
   {
-    return hb_pair (glyph_map[_.first],
+    반환 hb_pair (glyph_map[_.first],
                     values.sub_array (_.second * sub_length, sub_length));
   }
 };
@@ -49,46 +49,46 @@ struct SinglePosFormat2_4 : ValueBase
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { 반환 (this+coverage).intersects (glyphs); }
 
   void closure_lookups (hb_closure_lookups_context_t *c) const {}
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    if (!valueFormat.has_device ()) return;
+    만약 (!valueFormat.has_device ()) 반환;
 
     auto it =
     + hb_zip (this+coverage, hb_range ((unsigned) valueCount))
     | hb_filter (c->glyph_set, hb_first)
     ;
 
-    if (!it) return;
+    만약 (!it) 반환;
 
     unsigned sub_length = valueFormat.get_len ();
     const hb_array_t<const Value> values_array = values.as_array (valueCount * sub_length);
 
-    for (unsigned i : + it
+    위해 (unsigned i : + it
                       | hb_map (hb_second))
       valueFormat.collect_variation_indices (c, this, values_array.sub_array (i * sub_length, sub_length));
 
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  { 만약 (unlikely (!(this+coverage).collect_coverage (c->input))) 반환; }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { 반환 this+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  ValueFormat get_value_format () const { 반환 valueFormat; }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned 정수 index = (this+coverage).get_coverage  (buffer->cur().codepoint);
+    만약 (index == NOT_COVERED) return_trace (false);
 
-    if (unlikely (index >= valueCount)) return_trace (false);
+    만약 (unlikely (index >= valueCount)) return_trace (false);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    만약 (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioning glyph at %u",
@@ -99,7 +99,7 @@ struct SinglePosFormat2_4 : ValueBase
                              &values[index * valueFormat.get_len ()],
                              buffer->cur_pos());
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    만약 (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioned glyph at %u",
@@ -117,13 +117,13 @@ struct SinglePosFormat2_4 : ValueBase
 		   hb_codepoint_t       gid,
 		   hb_glyph_position_t &pos) const
   {
-    unsigned int index = (this+coverage).get_coverage  (gid);
-    if (likely (index == NOT_COVERED)) return false;
-    if (unlikely (index >= valueCount)) return false;
+    unsigned 정수 index = (this+coverage).get_coverage  (gid);
+    만약 (likely (index == NOT_COVERED)) 반환 false;
+    만약 (unlikely (index >= valueCount)) 반환 false;
 
     valueFormat.position_single (font, table_blob, direction, this,
                                  &values[index * valueFormat.get_len ()], pos);
-    return true;
+    반환 true;
   }
 
 
@@ -134,12 +134,12 @@ struct SinglePosFormat2_4 : ValueBase
                   ValueFormat src_format,
                   Iterator it,
                   ValueFormat newFormat,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
+                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 정수>> *layout_variation_idx_delta_map)
   {
     auto out = c->extend_min (this);
-    if (unlikely (!out)) return;
-    if (unlikely (!c->check_assign (valueFormat, newFormat, HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
-    if (unlikely (!c->check_assign (valueCount, it.len (), HB_SERIALIZE_ERROR_ARRAY_OVERFLOW))) return;
+    만약 (unlikely (!out)) 반환;
+    만약 (unlikely (!c->check_assign (valueFormat, newFormat, HB_SERIALIZE_ERROR_INT_OVERFLOW))) 반환;
+    만약 (unlikely (!c->check_assign (valueCount, it.len (), HB_SERIALIZE_ERROR_ARRAY_OVERFLOW))) 반환;
 
     + it
     | hb_map (hb_second)
@@ -161,29 +161,29 @@ struct SinglePosFormat2_4 : ValueBase
                                      Iterator it,
                                      bool is_instancing, bool strip_hints,
                                      bool has_gdef_varstore,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 정수>> *varidx_delta_map) const
   {
     hb_blob_t* blob = hb_face_reference_table (face, HB_TAG ('f','v','a','r'));
     bool has_fvar = (blob != hb_blob_get_empty ());
     hb_blob_destroy (blob);
 
     unsigned new_format = 0;
-    if (is_instancing)
+    만약 (is_instancing)
     {
       new_format = new_format | valueFormat.get_effective_format (+ it | hb_map (hb_second), false, false, this, varidx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (strip_hints)
+    아니면 만약 (strip_hints)
     {
       bool strip = !has_fvar;
-      if (has_fvar && !has_gdef_varstore)
+      만약 (has_fvar && !has_gdef_varstore)
         strip = true;
       new_format = new_format | valueFormat.get_effective_format (+ it | hb_map (hb_second), strip, true, this, nullptr);
     }
-    else
+    아니면
       new_format = valueFormat;
 
-    return new_format;
+    반환 new_format;
   }
 
   bool subset (hb_subset_context_t *c) const

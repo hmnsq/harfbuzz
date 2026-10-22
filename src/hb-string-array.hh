@@ -25,7 +25,7 @@
  */
 
 #ifndef HB_STRING_ARRAY_HH
-#if 0 /* Make checks happy. */
+#만약 0 /* Make checks happy. */
 #define HB_STRING_ARRAY_HH
 #endif
 
@@ -59,7 +59,7 @@ HB_STRING_ARRAY_POOL_NAME =
 #undef HB_STR
   }
 };
-static const unsigned int HB_STRING_ARRAY_OFFS_NAME[] =
+static const unsigned 정수 HB_STRING_ARRAY_OFFS_NAME[] =
 {
 #define HB_STR(s) offsetof (union HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
 #include HB_STRING_ARRAY_LIST
@@ -67,13 +67,13 @@ static const unsigned int HB_STRING_ARRAY_OFFS_NAME[] =
   sizeof (HB_STRING_ARRAY_TYPE_NAME)
 };
 
-static const unsigned int HB_STRING_ARRAY_LENG_NAME = ARRAY_LENGTH_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
+static const unsigned 정수 HB_STRING_ARRAY_LENG_NAME = ARRAY_LENGTH_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
 
 static inline hb_bytes_t
-HB_STRING_ARRAY_NAME (unsigned int i)
+HB_STRING_ARRAY_NAME (unsigned 정수 i)
 {
   assert (i < ARRAY_LENGTH (HB_STRING_ARRAY_OFFS_NAME) - 1);
-  return hb_bytes_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
+  반환 hb_bytes_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
 		     HB_STRING_ARRAY_OFFS_NAME[i + 1] - HB_STRING_ARRAY_OFFS_NAME[i] - 1);
 }
 

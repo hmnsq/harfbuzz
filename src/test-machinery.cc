@@ -25,22 +25,22 @@
 #include "hb.hh"
 #include "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+struct hb_intp_lazy_loader_t : hb_lazy_loader_t<정수, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  static 정수* create () { 반환 nullptr; }
+  static void destroy (정수* l) {}
+  static 정수* get_null () { 반환 nullptr; }
 };
 
 struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
+  static void* create () { 반환 nullptr; }
   static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  static void* get_null () { 반환 nullptr; }
 };
 
-int
-main (int argc, char **argv)
+정수
+main (정수 argc, char **argv)
 {
-  return 0;
+  반환 0;
 }

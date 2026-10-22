@@ -39,20 +39,20 @@ struct hb_multimap_t
   void add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    만약 (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      반환;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    만약 (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      반환;
     }
 
     singulars.set (k, v);
@@ -61,24 +61,24 @@ struct hb_multimap_t
   hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
   {
     const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    만약 (singulars.has (k, &v))
+      반환 hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    만약 (multiples.has (k, &m))
+      반환 m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    반환 hb_array_t<const hb_codepoint_t> ();
   }
 
   bool in_error () const
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    만약 (singulars.in_error () || multiples.in_error ())
+      반환 true;
+    위해 (const auto &m : multiples.values_ref ())
+      만약 (m.in_error ())
+        반환 true;
+    반환 false;
   }
 
   void alloc (unsigned size)

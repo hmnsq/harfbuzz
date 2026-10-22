@@ -46,26 +46,26 @@ static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
   static hb_shaper_entry_t *create ()
   {
     char *env = getenv ("HB_SHAPER_LIST");
-    if (!env || !*env)
-      return nullptr;
+    만약 (!env || !*env)
+      반환 nullptr;
 
     hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, sizeof (_hb_all_shapers));
-    if (unlikely (!shapers))
-      return nullptr;
+    만약 (unlikely (!shapers))
+      반환 nullptr;
 
     hb_memcpy (shapers, _hb_all_shapers, sizeof (_hb_all_shapers));
 
      /* Reorder shaper list to prefer requested shapers. */
-    unsigned int i = 0;
+    unsigned 정수 i = 0;
     char *end, *p = env;
-    for (;;)
+    위해 (;;)
     {
       end = strchr (p, ',');
-      if (!end)
+      만약 (!end)
 	end = p + strlen (p);
 
-      for (unsigned int j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
-	if (end - p == (int) strlen (shapers[j].name) &&
+      위해 (unsigned 정수 j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
+	만약 (end - p == (정수) strlen (shapers[j].name) &&
 	    0 == strncmp (shapers[j].name, p, end - p))
 	{
 	  /* Reorder this shaper to position i */
@@ -75,18 +75,18 @@ static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
 	 i++;
 	}
 
-      if (!*end)
+      만약 (!*end)
 	break;
-      else
+      아니면
 	p = end + 1;
     }
 
     hb_atexit (free_static_shapers);
 
-    return shapers;
+    반환 shapers;
   }
   static void destroy (hb_shaper_entry_t *p) { hb_free (p); }
-  static const hb_shaper_entry_t *get_null ()      { return _hb_all_shapers; }
+  static const hb_shaper_entry_t *get_null ()      { 반환 _hb_all_shapers; }
 } static_shapers;
 
 static inline
@@ -98,5 +98,5 @@ void free_static_shapers ()
 const hb_shaper_entry_t *
 _hb_shapers_get ()
 {
-  return static_shapers.get_unconst ();
+  반환 static_shapers.get_unconst ();
 }

@@ -57,22 +57,22 @@
  * Since: 0.9.2
  **/
 hb_tag_t
-hb_tag_from_string (const char *str, int len)
+hb_tag_from_string (const char *str, 정수 len)
 {
   char tag[4];
-  unsigned int i;
+  unsigned 정수 i;
 
-  if (!str || !len || !*str)
-    return HB_TAG_NONE;
+  만약 (!str || !len || !*str)
+    반환 HB_TAG_NONE;
 
-  if (len < 0 || len > 4)
+  만약 (len < 0 || len > 4)
     len = 4;
-  for (i = 0; i < (unsigned) len && str[i]; i++)
+  위해 (i = 0; i < (unsigned) len && str[i]; i++)
     tag[i] = str[i];
-  for (; i < 4; i++)
+  위해 (; i < 4; i++)
     tag[i] = ' ';
 
-  return HB_TAG (tag[0], tag[1], tag[2], tag[3]);
+  반환 HB_TAG (tag[0], tag[1], tag[2], tag[3]);
 }
 
 /**
@@ -121,20 +121,20 @@ static const char direction_strings[][4] = {
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_direction_from_string (const char *str, int len)
+hb_direction_from_string (const char *str, 정수 len)
 {
-  if (unlikely (!str || !len || !*str))
-    return HB_DIRECTION_INVALID;
+  만약 (unlikely (!str || !len || !*str))
+    반환 HB_DIRECTION_INVALID;
 
   /* Lets match loosely: just match the first letter, such that
    * all of "ltr", "left-to-right", etc work!
    */
   char c = TOLOWER (str[0]);
-  for (unsigned int i = 0; i < ARRAY_LENGTH (direction_strings); i++)
-    if (c == direction_strings[i][0])
-      return (hb_direction_t) (HB_DIRECTION_LTR + i);
+  위해 (unsigned 정수 i = 0; i < ARRAY_LENGTH (direction_strings); i++)
+    만약 (c == direction_strings[i][0])
+      반환 (hb_direction_t) (HB_DIRECTION_LTR + i);
 
-  return HB_DIRECTION_INVALID;
+  반환 HB_DIRECTION_INVALID;
 }
 
 /**
@@ -150,11 +150,11 @@ hb_direction_from_string (const char *str, int len)
 const char *
 hb_direction_to_string (hb_direction_t direction)
 {
-  if (likely ((unsigned int) (direction - HB_DIRECTION_LTR)
+  만약 (likely ((unsigned 정수) (direction - HB_DIRECTION_LTR)
 	      < ARRAY_LENGTH (direction_strings)))
-    return direction_strings[direction - HB_DIRECTION_LTR];
+    반환 direction_strings[direction - HB_DIRECTION_LTR];
 
-  return "invalid";
+  반환 "invalid";
 }
 
 
@@ -182,27 +182,27 @@ lang_equal (hb_language_t  v1,
   const unsigned char *p1 = (const unsigned char *) v1;
   const unsigned char *p2 = (const unsigned char *) v2;
 
-  while (*p1 && *p1 == canon_map[*p2]) {
+  동안 (*p1 && *p1 == canon_map[*p2]) {
     p1++;
     p2++;
   }
 
-  return *p1 == canon_map[*p2];
+  반환 *p1 == canon_map[*p2];
 }
 
-#if 0
-static unsigned int
+#만약 0
+static unsigned 정수
 lang_hash (const void *key)
 {
   const unsigned char *p = key;
-  unsigned int h = 0;
-  while (canon_map[*p])
+  unsigned 정수 h = 0;
+  동안 (canon_map[*p])
     {
       h = (h << 5) - h + canon_map[*p];
       p++;
     }
 
-  return h;
+  반환 h;
 }
 #endif
 
@@ -213,21 +213,21 @@ struct hb_language_item_t {
   hb_language_t lang;
 
   bool operator == (const char *s) const
-  { return lang_equal (lang, s); }
+  { 반환 lang_equal (lang, s); }
 
   hb_language_item_t & operator = (const char *s)
   {
     /* We can't call strdup(), because we allow custom allocators. */
     size_t len = strlen(s) + 1;
     lang = (hb_language_t) hb_malloc(len);
-    if (likely (lang))
+    만약 (likely (lang))
     {
       hb_memcpy((unsigned char *) lang, s, len);
-      for (unsigned char *p = (unsigned char *) lang; *p; p++)
+      위해 (unsigned char *p = (unsigned char *) lang; *p; p++)
 	*p = canon_map[*p];
     }
 
-    return *this;
+    반환 *this;
   }
 
   void fini () { hb_free ((void *) lang); }
@@ -243,10 +243,10 @@ free_langs ()
 {
 retry:
   hb_language_item_t *first_lang = langs;
-  if (unlikely (!langs.cmpexch (first_lang, nullptr)))
+  만약 (unlikely (!langs.cmpexch (first_lang, nullptr)))
     goto retry;
 
-  while (first_lang) {
+  동안 (first_lang) {
     hb_language_item_t *next = first_lang->next;
     first_lang->fini ();
     hb_free (first_lang);
@@ -260,33 +260,33 @@ lang_find_or_insert (const char *key)
 retry:
   hb_language_item_t *first_lang = langs;
 
-  for (hb_language_item_t *lang = first_lang; lang; lang = lang->next)
-    if (*lang == key)
-      return lang;
+  위해 (hb_language_item_t *lang = first_lang; lang; lang = lang->next)
+    만약 (*lang == key)
+      반환 lang;
 
   /* Not found; allocate one. */
   hb_language_item_t *lang = (hb_language_item_t *) hb_calloc (1, sizeof (hb_language_item_t));
-  if (unlikely (!lang))
-    return nullptr;
+  만약 (unlikely (!lang))
+    반환 nullptr;
   lang->next = first_lang;
   *lang = key;
-  if (unlikely (!lang->lang))
+  만약 (unlikely (!lang->lang))
   {
     hb_free (lang);
-    return nullptr;
+    반환 nullptr;
   }
 
-  if (unlikely (!langs.cmpexch (first_lang, lang)))
+  만약 (unlikely (!langs.cmpexch (first_lang, lang)))
   {
     lang->fini ();
     hb_free (lang);
     goto retry;
   }
 
-  if (!first_lang)
+  만약 (!first_lang)
     hb_atexit (free_langs); /* First person registers atexit() callback. */
 
-  return lang;
+  반환 lang;
 }
 
 
@@ -305,25 +305,25 @@ retry:
  * Since: 0.9.2
  **/
 hb_language_t
-hb_language_from_string (const char *str, int len)
+hb_language_from_string (const char *str, 정수 len)
 {
-  if (!str || !len || !*str)
-    return HB_LANGUAGE_INVALID;
+  만약 (!str || !len || !*str)
+    반환 HB_LANGUAGE_INVALID;
 
   hb_language_item_t *item = nullptr;
-  if (len >= 0)
+  만약 (len >= 0)
   {
     /* NUL-terminate it. */
     char strbuf[64];
-    len = hb_min (len, (int) sizeof (strbuf) - 1);
+    len = hb_min (len, (정수) sizeof (strbuf) - 1);
     hb_memcpy (strbuf, str, len);
     strbuf[len] = '\0';
     item = lang_find_or_insert (strbuf);
   }
-  else
+  아니면
     item = lang_find_or_insert (str);
 
-  return likely (item) ? item->lang : HB_LANGUAGE_INVALID;
+  반환 likely (item) ? item->lang : HB_LANGUAGE_INVALID;
 }
 
 /**
@@ -341,9 +341,9 @@ hb_language_from_string (const char *str, int len)
 const char *
 hb_language_to_string (hb_language_t language)
 {
-  if (unlikely (!language)) return nullptr;
+  만약 (unlikely (!language)) 반환 nullptr;
 
-  return language->s;
+  반환 language->s;
 }
 
 /**
@@ -369,13 +369,13 @@ hb_language_get_default ()
   static hb_atomic_t<hb_language_t> default_language;
 
   hb_language_t language = default_language;
-  if (unlikely (language == HB_LANGUAGE_INVALID))
+  만약 (unlikely (language == HB_LANGUAGE_INVALID))
   {
     language = hb_language_from_string (hb_setlocale (LC_CTYPE, nullptr), -1);
     (void) default_language.cmpexch (HB_LANGUAGE_INVALID, language);
   }
 
-  return language;
+  반환 language;
 }
 
 /**
@@ -395,18 +395,18 @@ hb_bool_t
 hb_language_matches (hb_language_t language,
 		     hb_language_t specific)
 {
-  if (language == specific) return true;
-  if (!language || !specific) return false;
+  만약 (language == specific) 반환 true;
+  만약 (!language || !specific) 반환 false;
 
   const char *l = language->s;
   const char *s = specific->s;
   unsigned ll = strlen (l);
   unsigned sl = strlen (s);
 
-  if (ll > sl)
-    return false;
+  만약 (ll > sl)
+    반환 false;
 
-  return strncmp (l, s, ll) == 0 &&
+  반환 strncmp (l, s, ll) == 0 &&
 	 (s[ll] == '\0' || s[ll] == '-');
 }
 
@@ -427,8 +427,8 @@ hb_language_matches (hb_language_t language,
 hb_script_t
 hb_script_from_iso15924_tag (hb_tag_t tag)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return HB_SCRIPT_INVALID;
+  만약 (unlikely (tag == HB_TAG_NONE))
+    반환 HB_SCRIPT_INVALID;
 
   /* Be lenient, adjust case (one capital letter followed by three small letters) */
   tag = (tag & 0xDFDFDFDFu) | 0x00202020u;
@@ -436,25 +436,25 @@ hb_script_from_iso15924_tag (hb_tag_t tag)
   switch (tag)
   {
     /* Script variants from https://unicode.org/iso15924/ */
-    case HB_TAG('A','r','a','n'): return HB_SCRIPT_ARABIC;
-    case HB_TAG('C','y','r','s'): return HB_SCRIPT_CYRILLIC;
-    case HB_TAG('G','e','o','k'): return HB_SCRIPT_GEORGIAN;
-    case HB_TAG('H','a','n','s'): return HB_SCRIPT_HAN;
-    case HB_TAG('H','a','n','t'): return HB_SCRIPT_HAN;
-    case HB_TAG('J','a','m','o'): return HB_SCRIPT_HANGUL;
-    case HB_TAG('L','a','t','f'): return HB_SCRIPT_LATIN;
-    case HB_TAG('L','a','t','g'): return HB_SCRIPT_LATIN;
-    case HB_TAG('S','y','r','e'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','j'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','n'): return HB_SCRIPT_SYRIAC;
+    case HB_TAG('A','r','a','n'): 반환 HB_SCRIPT_ARABIC;
+    case HB_TAG('C','y','r','s'): 반환 HB_SCRIPT_CYRILLIC;
+    case HB_TAG('G','e','o','k'): 반환 HB_SCRIPT_GEORGIAN;
+    case HB_TAG('H','a','n','s'): 반환 HB_SCRIPT_HAN;
+    case HB_TAG('H','a','n','t'): 반환 HB_SCRIPT_HAN;
+    case HB_TAG('J','a','m','o'): 반환 HB_SCRIPT_HANGUL;
+    case HB_TAG('L','a','t','f'): 반환 HB_SCRIPT_LATIN;
+    case HB_TAG('L','a','t','g'): 반환 HB_SCRIPT_LATIN;
+    case HB_TAG('S','y','r','e'): 반환 HB_SCRIPT_SYRIAC;
+    case HB_TAG('S','y','r','j'): 반환 HB_SCRIPT_SYRIAC;
+    case HB_TAG('S','y','r','n'): 반환 HB_SCRIPT_SYRIAC;
   }
 
   /* If it looks right, just use the tag as a script */
-  if (((uint32_t) tag & 0xE0E0E0E0u) == 0x40606060u)
-    return (hb_script_t) tag;
+  만약 (((uint32_t) tag & 0xE0E0E0E0u) == 0x40606060u)
+    반환 (hb_script_t) tag;
 
   /* Otherwise, return unknown */
-  return HB_SCRIPT_UNKNOWN;
+  반환 HB_SCRIPT_UNKNOWN;
 }
 
 /**
@@ -473,9 +473,9 @@ hb_script_from_iso15924_tag (hb_tag_t tag)
  * Since: 0.9.2
  **/
 hb_script_t
-hb_script_from_string (const char *str, int len)
+hb_script_from_string (const char *str, 정수 len)
 {
-  return hb_script_from_iso15924_tag (hb_tag_from_string (str, len));
+  반환 hb_script_from_iso15924_tag (hb_tag_from_string (str, len));
 }
 
 /**
@@ -492,7 +492,7 @@ hb_script_from_string (const char *str, int len)
 hb_tag_t
 hb_script_to_iso15924_tag (hb_script_t script)
 {
-  return (hb_tag_t) script;
+  반환 (hb_tag_t) script;
 }
 
 /**
@@ -591,7 +591,7 @@ hb_script_get_horizontal_direction (hb_script_t script)
     /* Unicode-17.0 additions */
     case HB_SCRIPT_SIDETIC:
 
-      return HB_DIRECTION_RTL;
+      반환 HB_DIRECTION_RTL;
 
 
     /* https://github.com/harfbuzz/harfbuzz/issues/1000 */
@@ -600,10 +600,10 @@ hb_script_get_horizontal_direction (hb_script_t script)
     case HB_SCRIPT_RUNIC:
     case HB_SCRIPT_TIFINAGH:
 
-      return HB_DIRECTION_INVALID;
+      반환 HB_DIRECTION_INVALID;
   }
 
-  return HB_DIRECTION_LTR;
+  반환 HB_DIRECTION_LTR;
 }
 
 
@@ -633,9 +633,9 @@ hb_script_get_horizontal_direction (hb_script_t script)
  * Since: 0.9.2
  **/
 void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro)
+hb_version (unsigned 정수 *major,
+	    unsigned 정수 *minor,
+	    unsigned 정수 *micro)
 {
   *major = HB_VERSION_MAJOR;
   *minor = HB_VERSION_MINOR;
@@ -654,7 +654,7 @@ hb_version (unsigned int *major,
 const char *
 hb_version_string ()
 {
-  return HB_VERSION_STRING;
+  반환 HB_VERSION_STRING;
 }
 
 /**
@@ -672,11 +672,11 @@ hb_version_string ()
  * Since: 0.9.30
  **/
 hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro)
+hb_version_atleast (unsigned 정수 major,
+		    unsigned 정수 minor,
+		    unsigned 정수 micro)
 {
-  return HB_VERSION_ATLEAST (major, minor, micro);
+  반환 HB_VERSION_ATLEAST (major, minor, micro);
 }
 
 
@@ -686,9 +686,9 @@ hb_version_atleast (unsigned int major,
 static bool
 parse_space (const char **pp, const char *end)
 {
-  while (*pp < end && ISSPACE (**pp))
+  동안 (*pp < end && ISSPACE (**pp))
     (*pp)++;
-  return true;
+  반환 true;
 }
 
 static bool
@@ -696,23 +696,23 @@ parse_char (const char **pp, const char *end, char c)
 {
   parse_space (pp, end);
 
-  if (*pp == end || **pp != c)
-    return false;
+  만약 (*pp == end || **pp != c)
+    반환 false;
 
   (*pp)++;
-  return true;
+  반환 true;
 }
 
 static bool
-parse_uint (const char **pp, const char *end, unsigned int *pv)
+parse_uint (const char **pp, const char *end, unsigned 정수 *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  정수 v;
+  만약 (unlikely (!hb_parse_int (pp, end, &v))) 반환 false;
 
   *pv = v;
-  return true;
+  반환 true;
 }
 
 static bool
@@ -720,11 +720,11 @@ parse_uint32 (const char **pp, const char *end, uint32_t *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  정수 v;
+  만약 (unlikely (!hb_parse_int (pp, end, &v))) 반환 false;
 
   *pv = v;
-  return true;
+  반환 true;
 }
 
 static bool
@@ -733,23 +733,23 @@ parse_bool (const char **pp, const char *end, uint32_t *pv)
   parse_space (pp, end);
 
   const char *p = *pp;
-  while (*pp < end && ISALPHA(**pp))
+  동안 (*pp < end && ISALPHA(**pp))
     (*pp)++;
 
   /* CSS allows on/off as aliases 1/0. */
-  if (*pp - p == 2
+  만약 (*pp - p == 2
       && TOLOWER (p[0]) == 'o'
       && TOLOWER (p[1]) == 'n')
     *pv = 1;
-  else if (*pp - p == 3
+  아니면 만약 (*pp - p == 3
 	   && TOLOWER (p[0]) == 'o'
 	   && TOLOWER (p[1]) == 'f'
 	   && TOLOWER (p[2]) == 'f')
     *pv = 0;
-  else
-    return false;
+  아니면
+    반환 false;
 
-  return true;
+  반환 true;
 }
 
 /* hb_feature_t */
@@ -757,14 +757,14 @@ parse_bool (const char **pp, const char *end, uint32_t *pv)
 static bool
 parse_feature_value_prefix (const char **pp, const char *end, hb_feature_t *feature)
 {
-  if (parse_char (pp, end, '-'))
+  만약 (parse_char (pp, end, '-'))
     feature->value = 0;
-  else {
+  아니면 {
     parse_char (pp, end, '+');
     feature->value = 1;
   }
 
-  return true;
+  반환 true;
 }
 
 static bool
@@ -774,33 +774,33 @@ parse_tag (const char **pp, const char *end, hb_tag_t *tag)
 
   char quote = 0;
 
-  if (*pp < end && (**pp == '\'' || **pp == '"'))
+  만약 (*pp < end && (**pp == '\'' || **pp == '"'))
   {
     quote = **pp;
     (*pp)++;
   }
 
   const char *p = *pp;
-  while (*pp < end && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
+  동안 (*pp < end && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
     (*pp)++;
 
-  if (p == *pp || *pp - p > 4)
-    return false;
+  만약 (p == *pp || *pp - p > 4)
+    반환 false;
 
   *tag = hb_tag_from_string (p, *pp - p);
 
-  if (quote)
+  만약 (quote)
   {
     /* CSS expects exactly four bytes.  And we only allow quotations for
      * CSS compatibility.  So, enforce the length. */
-     if (*pp - p != 4)
-       return false;
-    if (*pp == end || **pp != quote)
-      return false;
+     만약 (*pp - p != 4)
+       반환 false;
+    만약 (*pp == end || **pp != quote)
+      반환 false;
     (*pp)++;
   }
 
-  return true;
+  반환 true;
 }
 
 static bool
@@ -813,19 +813,19 @@ parse_feature_indices (const char **pp, const char *end, hb_feature_t *feature)
   feature->start = HB_FEATURE_GLOBAL_START;
   feature->end = HB_FEATURE_GLOBAL_END;
 
-  if (!parse_char (pp, end, '['))
-    return true;
+  만약 (!parse_char (pp, end, '['))
+    반환 true;
 
   has_start = parse_uint (pp, end, &feature->start);
 
-  if (parse_char (pp, end, ':') || parse_char (pp, end, ';')) {
+  만약 (parse_char (pp, end, ':') || parse_char (pp, end, ';')) {
     parse_uint (pp, end, &feature->end);
-  } else {
-    if (has_start)
+  } 아니면 {
+    만약 (has_start)
       feature->end = feature->start + 1;
   }
 
-  return parse_char (pp, end, ']');
+  반환 parse_char (pp, end, ']');
 }
 
 static bool
@@ -837,13 +837,13 @@ parse_feature_value_postfix (const char **pp, const char *end, hb_feature_t *fea
   /* CSS doesn't use equal-sign between tag and value.
    * If there was an equal-sign, then there *must* be a value.
    * A value without an equal-sign is ok, but not required. */
-  return !had_equal || had_value;
+  반환 !had_equal || had_value;
 }
 
 static bool
 parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
 {
-  return parse_feature_value_prefix (pp, end, feature) &&
+  반환 parse_feature_value_prefix (pp, end, feature) &&
 	 parse_tag (pp, end, &feature->tag) &&
 	 parse_feature_indices (pp, end, feature) &&
 	 parse_feature_value_postfix (pp, end, feature) &&
@@ -901,24 +901,24 @@ parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
  * Since: 0.9.5
  **/
 hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (const char *str, 정수 len,
 			hb_feature_t *feature)
 {
   hb_feature_t feat;
 
-  if (len < 0)
+  만약 (len < 0)
     len = strlen (str);
 
-  if (likely (parse_one_feature (&str, str + len, &feat)))
+  만약 (likely (parse_one_feature (&str, str + len, &feat)))
   {
-    if (feature)
+    만약 (feature)
       *feature = feat;
-    return true;
+    반환 true;
   }
 
-  if (feature)
+  만약 (feature)
     hb_memset (feature, 0, sizeof (*feature));
-  return false;
+  반환 false;
 }
 
 /**
@@ -938,31 +938,31 @@ hb_feature_from_string (const char *str, int len,
  **/
 void
 hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size)
+		      char *buf, unsigned 정수 size)
 {
-  if (unlikely (!size)) return;
+  만약 (unlikely (!size)) 반환;
 
   char s[128];
-  unsigned int len = 0;
-  if (feature->value == 0)
+  unsigned 정수 len = 0;
+  만약 (feature->value == 0)
     s[len++] = '-';
   hb_tag_to_string (feature->tag, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  동안 (len && s[len - 1] == ' ')
     len--;
-  if (feature->start != HB_FEATURE_GLOBAL_START || feature->end != HB_FEATURE_GLOBAL_END)
+  만약 (feature->start != HB_FEATURE_GLOBAL_START || feature->end != HB_FEATURE_GLOBAL_END)
   {
     s[len++] = '[';
-    if (feature->start)
+    만약 (feature->start)
       len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->start));
-    if (feature->end != feature->start + 1) {
+    만약 (feature->end != feature->start + 1) {
       s[len++] = ':';
-      if (feature->end != HB_FEATURE_GLOBAL_END)
+      만약 (feature->end != HB_FEATURE_GLOBAL_END)
 	len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->end));
     }
     s[len++] = ']';
   }
-  if (feature->value > 1)
+  만약 (feature->value > 1)
   {
     s[len++] = '=';
     len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%" PRIu32, feature->value));
@@ -980,16 +980,16 @@ parse_variation_value (const char **pp, const char *end, hb_variation_t *variati
 {
   parse_char (pp, end, '='); /* Optional. */
   double v;
-  if (unlikely (!hb_parse_double (pp, end, &v))) return false;
+  만약 (unlikely (!hb_parse_double (pp, end, &v))) 반환 false;
 
   variation->value = v;
-  return true;
+  반환 true;
 }
 
 static bool
 parse_one_variation (const char **pp, const char *end, hb_variation_t *variation)
 {
-  return parse_tag (pp, end, &variation->tag) &&
+  반환 parse_tag (pp, end, &variation->tag) &&
 	 parse_variation_value (pp, end, variation) &&
 	 parse_space (pp, end) &&
 	 *pp == end;
@@ -1016,24 +1016,24 @@ parse_one_variation (const char **pp, const char *end, hb_variation_t *variation
  * Since: 1.4.2
  */
 hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (const char *str, 정수 len,
 			  hb_variation_t *variation)
 {
   hb_variation_t var;
 
-  if (len < 0)
+  만약 (len < 0)
     len = strlen (str);
 
-  if (likely (parse_one_variation (&str, str + len, &var)))
+  만약 (likely (parse_one_variation (&str, str + len, &var)))
   {
-    if (variation)
+    만약 (variation)
       *variation = var;
-    return true;
+    반환 true;
   }
 
-  if (variation)
+  만약 (variation)
     hb_memset (variation, 0, sizeof (*variation));
-  return false;
+  반환 false;
 }
 
 #ifndef HB_NO_SETLOCALE
@@ -1046,12 +1046,12 @@ static struct hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_
   static hb_locale_t create ()
   {
     hb_locale_t l = newlocale (LC_ALL_MASK, "C", NULL);
-    if (!l)
-      return l;
+    만약 (!l)
+      반환 l;
 
     hb_atexit (free_static_C_locale);
 
-    return l;
+    반환 l;
   }
   static void destroy (hb_locale_t l)
   {
@@ -1059,7 +1059,7 @@ static struct hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_
   }
   static hb_locale_t get_null ()
   {
-    return (hb_locale_t) 0;
+    반환 (hb_locale_t) 0;
   }
 } static_C_locale;
 
@@ -1072,7 +1072,7 @@ void free_static_C_locale ()
 static hb_locale_t
 get_C_locale ()
 {
-  return static_C_locale.get_unconst ();
+  반환 static_C_locale.get_unconst ();
 }
 
 #endif
@@ -1093,15 +1093,15 @@ get_C_locale ()
  */
 void
 hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size)
+			char *buf, unsigned 정수 size)
 {
-  if (unlikely (!size)) return;
+  만약 (unlikely (!size)) 반환;
 
   char s[128];
-  unsigned int len = 0;
+  unsigned 정수 len = 0;
   hb_tag_to_string (variation->tag, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  동안 (len && s[len - 1] == ' ')
     len--;
   s[len++] = '=';
 
@@ -1129,7 +1129,7 @@ hb_variation_to_string (hb_variation_t *variation,
 uint8_t
 (hb_color_get_alpha) (hb_color_t color)
 {
-  return hb_color_get_alpha (color);
+  반환 hb_color_get_alpha (color);
 }
 
 /**
@@ -1145,7 +1145,7 @@ uint8_t
 uint8_t
 (hb_color_get_red) (hb_color_t color)
 {
-  return hb_color_get_red (color);
+  반환 hb_color_get_red (color);
 }
 
 /**
@@ -1161,7 +1161,7 @@ uint8_t
 uint8_t
 (hb_color_get_green) (hb_color_t color)
 {
-  return hb_color_get_green (color);
+  반환 hb_color_get_green (color);
 }
 
 /**
@@ -1177,7 +1177,7 @@ uint8_t
 uint8_t
 (hb_color_get_blue) (hb_color_t color)
 {
-  return hb_color_get_blue (color);
+  반환 hb_color_get_blue (color);
 }
 
 /**
@@ -1191,7 +1191,7 @@ uint8_t
  *
  * Since: 11.0.0
  **/
-void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
+void* hb_malloc(size_t size) { 반환 hb_malloc_impl (size); }
 
 /**
  * hb_calloc:
@@ -1205,7 +1205,7 @@ void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
  *
  * Since: 11.0.0
  **/
-void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size); }
+void* hb_calloc(size_t nmemb, size_t size) { 반환 hb_calloc_impl (nmemb, size); }
 
 /**
  * hb_realloc:
@@ -1219,7 +1219,7 @@ void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size)
  *
  * Since: 11.0.0
  **/
-void* hb_realloc(void *ptr, size_t size) { return hb_realloc_impl (ptr, size); }
+void* hb_realloc(void *ptr, size_t size) { 반환 hb_realloc_impl (ptr, size); }
 
 /**
  * hb_free:

@@ -87,7 +87,7 @@ using OT::Layout::GPOS;
 bool
 hb_ot_layout_has_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_data ();
+  반환 face->table.kern->table->has_data ();
 }
 
 /**
@@ -103,7 +103,7 @@ hb_ot_layout_has_kerning (hb_face_t *face)
 bool
 hb_ot_layout_has_machine_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_state_machine ();
+  반환 face->table.kern->table->has_state_machine ();
 }
 
 /**
@@ -123,7 +123,7 @@ hb_ot_layout_has_machine_kerning (hb_face_t *face)
 bool
 hb_ot_layout_has_cross_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_cross_stream ();
+  반환 face->table.kern->table->has_cross_stream ();
 }
 
 void
@@ -136,7 +136,7 @@ hb_ot_layout_kern (const hb_ot_shape_plan_t *plan,
 
   AAT::hb_aat_apply_context_t c (plan, font, buffer, blob);
 
-  if (!buffer->message (font, "start table kern")) return;
+  만약 (!buffer->message (font, "start table kern")) 반환;
   c.buffer_glyph_set = accel.scratch.create_buffer_glyph_set ();
   accel.apply (&c);
   accel.scratch.destroy_buffer_glyph_set (c.buffer_glyph_set);
@@ -154,7 +154,7 @@ OT::GDEF::is_blocklisted (hb_blob_t *blob,
 			  hb_face_t *face) const
 {
 #ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
+  반환 false;
 #endif
   /* The ugly business of blocklisting individual fonts' tables happen here!
    * See this thread for why we finally had to bend in and do this:
@@ -260,9 +260,9 @@ OT::GDEF::is_blocklisted (hb_blob_t *blob,
     case HB_CODEPOINT_ENCODE3 (816, 7868, 17052):
     /* 920483d8a8ed37f7f0afdabbe7f679aece7c75d8  courbd.ttf from Windows 8.1 */
     case HB_CODEPOINT_ENCODE3 (816, 7868, 17138):
-      return true;
+      반환 true;
   }
-  return false;
+  반환 false;
 }
 
 template <bool SetDigest>
@@ -273,11 +273,11 @@ _hb_ot_layout_set_glyph_props (hb_font_t *font,
   _hb_buffer_assert_gsubgpos_vars (buffer);
 
   const auto &gdef = *font->face->table.GDEF;
-  unsigned int count = buffer->len;
+  unsigned 정수 count = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  위해 (unsigned 정수 i = 0; i < count; i++)
   {
-    if (SetDigest)
+    만약 (SetDigest)
       buffer->digest.add (info[i].codepoint);
     _hb_glyph_info_set_glyph_props (&info[i], gdef.get_glyph_props (info[i].codepoint));
     _hb_glyph_info_clear_lig_props (&info[i]);
@@ -298,7 +298,7 @@ _hb_ot_layout_set_glyph_props (hb_font_t *font,
 hb_bool_t
 hb_ot_layout_has_glyph_classes (hb_face_t *face)
 {
-  return face->table.GDEF->table->has_glyph_classes ();
+  반환 face->table.GDEF->table->has_glyph_classes ();
 }
 
 /**
@@ -317,7 +317,7 @@ hb_ot_layout_glyph_class_t
 hb_ot_layout_get_glyph_class (hb_face_t      *face,
 			      hb_codepoint_t  glyph)
 {
-  return (hb_ot_layout_glyph_class_t) face->table.GDEF->table->get_glyph_class (glyph);
+  반환 (hb_ot_layout_glyph_class_t) face->table.GDEF->table->get_glyph_class (glyph);
 }
 
 /**
@@ -337,7 +337,7 @@ hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
 				  hb_ot_layout_glyph_class_t  klass,
 				  hb_set_t                   *glyphs /* OUT */)
 {
-  return face->table.GDEF->table->get_glyphs_in_class (klass, glyphs);
+  반환 face->table.GDEF->table->get_glyphs_in_class (klass, glyphs);
 }
 
 #ifndef HB_NO_LAYOUT_UNUSED
@@ -358,14 +358,14 @@ hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
  * Return value: Total number of attachment points for @glyph.
  *
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
-				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
-				unsigned int   *point_array /* OUT */)
+				unsigned 정수    start_offset,
+				unsigned 정수   *point_count /* IN/OUT */,
+				unsigned 정수   *point_array /* OUT */)
 {
-  return face->table.GDEF->table->get_attach_points (glyph,
+  반환 face->table.GDEF->table->get_attach_points (glyph,
 						     start_offset,
 						     point_count,
 						     point_array);
@@ -393,15 +393,15 @@ hb_ot_layout_get_attach_points (hb_face_t      *face,
  * Return value: Total number of ligature caret positions for @glyph.
  *
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
-				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
+				  unsigned 정수    start_offset,
+				  unsigned 정수   *caret_count /* IN/OUT */,
 				  hb_position_t  *caret_array /* OUT */)
 {
-  return font->face->table.GDEF->table->get_lig_carets (font, direction, glyph, start_offset, caret_count, caret_array);
+  반환 font->face->table.GDEF->table->get_lig_carets (font, direction, glyph, start_offset, caret_count, caret_array);
 }
 #endif
 
@@ -415,9 +415,9 @@ GSUB::is_blocklisted (hb_blob_t *blob HB_UNUSED,
 			  hb_face_t *face) const
 {
 #ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
+  반환 false;
 #endif
-  return false;
+  반환 false;
 }
 
 bool
@@ -425,9 +425,9 @@ GPOS::is_blocklisted (hb_blob_t *blob HB_UNUSED,
 			  hb_face_t *face HB_UNUSED) const
 {
 #ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
+  반환 false;
 #endif
-  return false;
+  반환 false;
 }
 
 static const OT::GSUBGPOS&
@@ -435,9 +435,9 @@ get_gsubgpos_table (hb_face_t *face,
 		    hb_tag_t   table_tag)
 {
   switch (table_tag) {
-    case HB_OT_TAG_GSUB: return *face->table.GSUB->table;
-    case HB_OT_TAG_GPOS: return *face->table.GPOS->table;
-    default:             return Null (OT::GSUBGPOS);
+    case HB_OT_TAG_GSUB: 반환 *face->table.GSUB->table;
+    case HB_OT_TAG_GPOS: 반환 *face->table.GPOS->table;
+    default:             반환 Null (OT::GSUBGPOS);
   }
 }
 
@@ -457,16 +457,16 @@ get_gsubgpos_table (hb_face_t *face,
  * Return value: Total number of script tags.
  *
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_table_get_script_tags (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
+				    unsigned 정수  start_offset,
+				    unsigned 정수 *script_count /* IN/OUT */,
 				    hb_tag_t     *script_tags  /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  return g.get_script_tags (start_offset, script_count, script_tags);
+  반환 g.get_script_tags (start_offset, script_count, script_tags);
 }
 
 #define HB_OT_TAG_LATIN_SCRIPT		HB_TAG ('l', 'a', 't', 'n')
@@ -488,30 +488,30 @@ hb_bool_t
 hb_ot_layout_table_find_script (hb_face_t    *face,
 				hb_tag_t      table_tag,
 				hb_tag_t      script_tag,
-				unsigned int *script_index /* OUT */)
+				unsigned 정수 *script_index /* OUT */)
 {
   static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_SCRIPT_INDEX), "");
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  if (g.find_script_index (script_tag, script_index))
-    return true;
+  만약 (g.find_script_index (script_tag, script_index))
+    반환 true;
 
   /* try finding 'DFLT' */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_SCRIPT, script_index))
-    return false;
+  만약 (g.find_script_index (HB_OT_TAG_DEFAULT_SCRIPT, script_index))
+    반환 false;
 
   /* try with 'dflt'; MS site has had typos and many fonts use it now :(.
    * including many versions of DejaVu Sans Mono! */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_LANGUAGE, script_index))
-    return false;
+  만약 (g.find_script_index (HB_OT_TAG_DEFAULT_LANGUAGE, script_index))
+    반환 false;
 
   /* try with 'latn'; some old fonts put their features there even though
      they're really trying to support Thai, for example :( */
-  if (g.find_script_index (HB_OT_TAG_LATIN_SCRIPT, script_index))
-    return false;
+  만약 (g.find_script_index (HB_OT_TAG_LATIN_SCRIPT, script_index))
+    반환 false;
 
-  if (script_index) *script_index = HB_OT_LAYOUT_NO_SCRIPT_INDEX;
-  return false;
+  만약 (script_index) *script_index = HB_OT_LAYOUT_NO_SCRIPT_INDEX;
+  반환 false;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -529,12 +529,12 @@ hb_bool_t
 hb_ot_layout_table_choose_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
 				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index  /* OUT */,
+				  unsigned 정수   *script_index  /* OUT */,
 				  hb_tag_t       *chosen_script /* OUT */)
 {
   const hb_tag_t *t;
-  for (t = script_tags; *t; t++);
-  return hb_ot_layout_table_select_script (face, table_tag, t - script_tags, script_tags, script_index, chosen_script);
+  위해 (t = script_tags; *t; t++);
+  반환 hb_ot_layout_table_select_script (face, table_tag, t - script_tags, script_tags, script_index, chosen_script);
 }
 #endif
 
@@ -563,51 +563,51 @@ hb_ot_layout_table_choose_script (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_table_select_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
+				  unsigned 정수    script_count,
 				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index  /* OUT */,
+				  unsigned 정수   *script_index  /* OUT */,
 				  hb_tag_t       *chosen_script /* OUT */)
 {
   static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_SCRIPT_INDEX), "");
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  unsigned int i;
+  unsigned 정수 i;
 
-  for (i = 0; i < script_count; i++)
+  위해 (i = 0; i < script_count; i++)
   {
-    if (g.find_script_index (script_tags[i], script_index))
+    만약 (g.find_script_index (script_tags[i], script_index))
     {
-      if (chosen_script)
+      만약 (chosen_script)
 	*chosen_script = script_tags[i];
-      return true;
+      반환 true;
     }
   }
 
   /* try finding 'DFLT' */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_SCRIPT, script_index)) {
-    if (chosen_script)
+  만약 (g.find_script_index (HB_OT_TAG_DEFAULT_SCRIPT, script_index)) {
+    만약 (chosen_script)
       *chosen_script = HB_OT_TAG_DEFAULT_SCRIPT;
-    return false;
+    반환 false;
   }
 
   /* try with 'dflt'; MS site has had typos and many fonts use it now :( */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_LANGUAGE, script_index)) {
-    if (chosen_script)
+  만약 (g.find_script_index (HB_OT_TAG_DEFAULT_LANGUAGE, script_index)) {
+    만약 (chosen_script)
       *chosen_script = HB_OT_TAG_DEFAULT_LANGUAGE;
-    return false;
+    반환 false;
   }
 
   /* try with 'latn'; some old fonts put their features there even though
      they're really trying to support Thai, for example :( */
-  if (g.find_script_index (HB_OT_TAG_LATIN_SCRIPT, script_index)) {
-    if (chosen_script)
+  만약 (g.find_script_index (HB_OT_TAG_LATIN_SCRIPT, script_index)) {
+    만약 (chosen_script)
       *chosen_script = HB_OT_TAG_LATIN_SCRIPT;
-    return false;
+    반환 false;
   }
 
-  if (script_index) *script_index = HB_OT_LAYOUT_NO_SCRIPT_INDEX;
-  if (chosen_script)
+  만약 (script_index) *script_index = HB_OT_LAYOUT_NO_SCRIPT_INDEX;
+  만약 (chosen_script)
     *chosen_script = HB_TAG_NONE;
-  return false;
+  반환 false;
 }
 
 
@@ -629,16 +629,16 @@ hb_ot_layout_table_select_script (hb_face_t      *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
 				     hb_tag_t      table_tag,
-				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
+				     unsigned 정수  start_offset,
+				     unsigned 정수 *feature_count /* IN/OUT */,
 				     hb_tag_t     *feature_tags  /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  return g.get_feature_tags (start_offset, feature_count, feature_tags);
+  반환 g.get_feature_tags (start_offset, feature_count, feature_tags);
 }
 
 
@@ -661,22 +661,22 @@ bool
 hb_ot_layout_table_find_feature (hb_face_t    *face,
 				 hb_tag_t      table_tag,
 				 hb_tag_t      feature_tag,
-				 unsigned int *feature_index /* OUT */)
+				 unsigned 정수 *feature_index /* OUT */)
 {
   static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_FEATURE_INDEX), "");
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  unsigned int num_features = g.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++)
+  unsigned 정수 num_features = g.get_feature_count ();
+  위해 (unsigned 정수 i = 0; i < num_features; i++)
   {
-    if (feature_tag == g.get_feature_tag (i)) {
-      if (feature_index) *feature_index = i;
-      return true;
+    만약 (feature_tag == g.get_feature_tag (i)) {
+      만약 (feature_index) *feature_index = i;
+      반환 true;
     }
   }
 
-  if (feature_index) *feature_index = HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  return false;
+  만약 (feature_index) *feature_index = HB_OT_LAYOUT_NO_FEATURE_INDEX;
+  반환 false;
 }
 
 
@@ -698,17 +698,17 @@ hb_ot_layout_table_find_feature (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_script_get_language_tags (hb_face_t    *face,
 				       hb_tag_t      table_tag,
-				       unsigned int  script_index,
-				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
+				       unsigned 정수  script_index,
+				       unsigned 정수  start_offset,
+				       unsigned 정수 *language_count /* IN/OUT */,
 				       hb_tag_t     *language_tags  /* OUT */)
 {
   const OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_index);
 
-  return s.get_lang_sys_tags (start_offset, language_count, language_tags);
+  반환 s.get_lang_sys_tags (start_offset, language_count, language_tags);
 }
 
 
@@ -732,11 +732,11 @@ hb_ot_layout_script_get_language_tags (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_script_find_language (hb_face_t    *face,
 				   hb_tag_t      table_tag,
-				   unsigned int  script_index,
+				   unsigned 정수  script_index,
 				   hb_tag_t      language_tag,
-				   unsigned int *language_index)
+				   unsigned 정수 *language_index)
 {
-  return hb_ot_layout_script_select_language (face,
+  반환 hb_ot_layout_script_select_language (face,
 					      table_tag,
 					      script_index,
 					      1,
@@ -771,39 +771,39 @@ hb_ot_layout_script_find_language (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
+				     unsigned 정수    script_index,
+				     unsigned 정수    language_count,
 				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */,
+				     unsigned 정수   *language_index /* OUT */,
 				     hb_tag_t       *chosen_language /* OUT */)
 {
   static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX), "");
   const OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_index);
-  unsigned int i;
+  unsigned 정수 i;
 
-  for (i = 0; i < language_count; i++)
+  위해 (i = 0; i < language_count; i++)
   {
-    if (s.find_lang_sys_index (language_tags[i], language_index))
+    만약 (s.find_lang_sys_index (language_tags[i], language_index))
     {
-      if (chosen_language)
+      만약 (chosen_language)
         *chosen_language = language_tags[i];
-      return true;
+      반환 true;
     }
   }
 
   /* try finding 'dflt' */
-  if (s.find_lang_sys_index (HB_OT_TAG_DEFAULT_LANGUAGE, language_index))
+  만약 (s.find_lang_sys_index (HB_OT_TAG_DEFAULT_LANGUAGE, language_index))
   {
-    if (chosen_language)
+    만약 (chosen_language)
       *chosen_language = HB_OT_TAG_DEFAULT_LANGUAGE;
-    return false;
+    반환 false;
   }
 
-  if (language_index)
+  만약 (language_index)
     *language_index = HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX;
-  if (chosen_language)
+  만약 (chosen_language)
     *chosen_language = HB_TAG_NONE;
-  return false;
+  반환 false;
 }
 
 /**
@@ -829,12 +829,12 @@ hb_ot_layout_script_select_language2 (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
+				     unsigned 정수    script_index,
+				     unsigned 정수    language_count,
 				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */)
+				     unsigned 정수   *language_index /* OUT */)
 {
-  return hb_ot_layout_script_select_language2 (face, table_tag,
+  반환 hb_ot_layout_script_select_language2 (face, table_tag,
 					       script_index,
 					       language_count, language_tags,
 					       language_index, nullptr);
@@ -859,11 +859,11 @@ hb_ot_layout_script_select_language (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
 						  hb_tag_t      table_tag,
-						  unsigned int  script_index,
-						  unsigned int  language_index,
-						  unsigned int *feature_index /* OUT */)
+						  unsigned 정수  script_index,
+						  unsigned 정수  language_index,
+						  unsigned 정수 *feature_index /* OUT */)
 {
-  return hb_ot_layout_language_get_required_feature (face,
+  반환 hb_ot_layout_language_get_required_feature (face,
 						     table_tag,
 						     script_index,
 						     language_index,
@@ -891,19 +891,19 @@ hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_language_get_required_feature (hb_face_t    *face,
 					    hb_tag_t      table_tag,
-					    unsigned int  script_index,
-					    unsigned int  language_index,
-					    unsigned int *feature_index /* OUT */,
+					    unsigned 정수  script_index,
+					    unsigned 정수  language_index,
+					    unsigned 정수 *feature_index /* OUT */,
 					    hb_tag_t     *feature_tag   /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
-  unsigned int index = l.get_required_feature_index ();
-  if (feature_index) *feature_index = index;
-  if (feature_tag) *feature_tag = g.get_feature_tag (index);
+  unsigned 정수 index = l.get_required_feature_index ();
+  만약 (feature_index) *feature_index = index;
+  만약 (feature_tag) *feature_tag = g.get_feature_tag (index);
 
-  return l.has_required_feature ();
+  반환 l.has_required_feature ();
 }
 
 
@@ -927,19 +927,19 @@ hb_ot_layout_language_get_required_feature (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
 					   hb_tag_t      table_tag,
-					   unsigned int  script_index,
-					   unsigned int  language_index,
-					   unsigned int  start_offset,
-					   unsigned int *feature_count   /* IN/OUT */,
-					   unsigned int *feature_indexes /* OUT */)
+					   unsigned 정수  script_index,
+					   unsigned 정수  language_index,
+					   unsigned 정수  start_offset,
+					   unsigned 정수 *feature_count   /* IN/OUT */,
+					   unsigned 정수 *feature_indexes /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
-  return l.get_feature_indexes (start_offset, feature_count, feature_indexes);
+  반환 l.get_feature_indexes (start_offset, feature_count, feature_indexes);
 }
 
 
@@ -963,28 +963,28 @@ hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
 					hb_tag_t      table_tag,
-					unsigned int  script_index,
-					unsigned int  language_index,
-					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
+					unsigned 정수  script_index,
+					unsigned 정수  language_index,
+					unsigned 정수  start_offset,
+					unsigned 정수 *feature_count /* IN/OUT */,
 					hb_tag_t     *feature_tags  /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
-  static_assert ((sizeof (unsigned int) == sizeof (hb_tag_t)), "");
-  unsigned int ret = l.get_feature_indexes (start_offset, feature_count, (unsigned int *) feature_tags);
+  static_assert ((sizeof (unsigned 정수) == sizeof (hb_tag_t)), "");
+  unsigned 정수 ret = l.get_feature_indexes (start_offset, feature_count, (unsigned 정수 *) feature_tags);
 
-  if (feature_count && feature_tags) {
-    unsigned int count = *feature_count;
-    for (unsigned int i = 0; i < count; i++)
-      feature_tags[i] = g.get_feature_tag ((unsigned int) feature_tags[i]);
+  만약 (feature_count && feature_tags) {
+    unsigned 정수 count = *feature_count;
+    위해 (unsigned 정수 i = 0; i < count; i++)
+      feature_tags[i] = g.get_feature_tag ((unsigned 정수) feature_tags[i]);
   }
 
-  return ret;
+  반환 ret;
 }
 
 
@@ -1008,27 +1008,27 @@ hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_language_find_feature (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  script_index,
-				    unsigned int  language_index,
+				    unsigned 정수  script_index,
+				    unsigned 정수  language_index,
 				    hb_tag_t      feature_tag,
-				    unsigned int *feature_index /* OUT */)
+				    unsigned 정수 *feature_index /* OUT */)
 {
   static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_FEATURE_INDEX), "");
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
-  unsigned int num_features = l.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++) {
-    unsigned int f_index = l.get_feature_index (i);
+  unsigned 정수 num_features = l.get_feature_count ();
+  위해 (unsigned 정수 i = 0; i < num_features; i++) {
+    unsigned 정수 f_index = l.get_feature_index (i);
 
-    if (feature_tag == g.get_feature_tag (f_index)) {
-      if (feature_index) *feature_index = f_index;
-      return true;
+    만약 (feature_tag == g.get_feature_tag (f_index)) {
+      만약 (feature_index) *feature_index = f_index;
+      반환 true;
     }
   }
 
-  if (feature_index) *feature_index = HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  return false;
+  만약 (feature_index) *feature_index = HB_OT_LAYOUT_NO_FEATURE_INDEX;
+  반환 false;
 }
 
 
@@ -1050,15 +1050,15 @@ hb_ot_layout_language_find_feature (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_feature_get_lookups (hb_face_t    *face,
 				  hb_tag_t      table_tag,
-				  unsigned int  feature_index,
-				  unsigned int  start_offset,
-				  unsigned int *lookup_count   /* IN/OUT */,
-				  unsigned int *lookup_indexes /* OUT */)
+				  unsigned 정수  feature_index,
+				  unsigned 정수  start_offset,
+				  unsigned 정수 *lookup_count   /* IN/OUT */,
+				  unsigned 정수 *lookup_indexes /* OUT */)
 {
-  return hb_ot_layout_feature_with_variations_get_lookups (face,
+  반환 hb_ot_layout_feature_with_variations_get_lookups (face,
 							   table_tag,
 							   feature_index,
 							   HB_OT_LAYOUT_NO_VARIATIONS_INDEX,
@@ -1080,11 +1080,11 @@ hb_ot_layout_feature_get_lookups (hb_face_t    *face,
  *
  * Since: 0.9.22
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
 				     hb_tag_t      table_tag)
 {
-  return get_gsubgpos_table (face, table_tag).get_lookup_count ();
+  반환 get_gsubgpos_table (face, table_tag).get_lookup_count ();
 }
 
 
@@ -1105,21 +1105,21 @@ struct hb_collect_features_context_t
 
   void compute_feature_filter (const hb_tag_t *features)
   {
-    if (features == nullptr)
+    만약 (features == nullptr)
     {
       has_feature_filter = false;
-      return;
+      반환;
     }
 
     has_feature_filter = true;
     hb_set_t features_set;
-    for (; *features; features++)
+    위해 (; *features; features++)
       features_set.add (*features);
 
-    for (unsigned i = 0; i < g.get_feature_count (); i++)
+    위해 (unsigned i = 0; i < g.get_feature_count (); i++)
     {
       hb_tag_t tag = g.get_feature_tag (i);
-      if (features_set.has (tag))
+      만약 (features_set.has (tag))
 	feature_indices_filter.add(i);
     }
   }
@@ -1128,33 +1128,33 @@ struct hb_collect_features_context_t
   {
     /* We might have Null() object here.  Don't want to involve
      * that in the memoize.  So, detect empty objects and return. */
-    if (unlikely (!s.has_default_lang_sys () &&
+    만약 (unlikely (!s.has_default_lang_sys () &&
 		  !s.get_lang_sys_count ()))
-      return true;
+      반환 true;
 
-    if (script_count++ > HB_MAX_SCRIPTS)
-      return true;
+    만약 (script_count++ > HB_MAX_SCRIPTS)
+      반환 true;
 
-    return visited (s, visited_script);
+    반환 visited (s, visited_script);
   }
   bool visited (const OT::LangSys &l)
   {
     /* We might have Null() object here.  Don't want to involve
      * that in the memoize.  So, detect empty objects and return. */
-    if (unlikely (!l.has_required_feature () &&
+    만약 (unlikely (!l.has_required_feature () &&
 		  !l.get_feature_count ()))
-      return true;
+      반환 true;
 
-    if (langsys_count++ > HB_MAX_LANGSYS)
-      return true;
+    만약 (langsys_count++ > HB_MAX_LANGSYS)
+      반환 true;
 
-    return visited (l, visited_langsys);
+    반환 visited (l, visited_langsys);
   }
 
   bool visited_feature_indices (unsigned count)
   {
     feature_index_count += count;
-    return feature_index_count > HB_MAX_FEATURE_INDICES;
+    반환 feature_index_count > HB_MAX_FEATURE_INDICES;
   }
 
   private:
@@ -1162,11 +1162,11 @@ struct hb_collect_features_context_t
   bool visited (const T &p, hb_set_t &visited_set)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) &p - (uintptr_t) &g);
-     if (visited_set.has (delta))
-      return true;
+     만약 (visited_set.has (delta))
+      반환 true;
 
     visited_set.add (delta);
-    return false;
+    반환 false;
   }
 
   public:
@@ -1178,35 +1178,35 @@ struct hb_collect_features_context_t
   private:
   hb_set_t visited_script;
   hb_set_t visited_langsys;
-  unsigned int script_count;
-  unsigned int langsys_count;
-  unsigned int feature_index_count;
+  unsigned 정수 script_count;
+  unsigned 정수 langsys_count;
+  unsigned 정수 feature_index_count;
 };
 
 static void
 langsys_collect_features (hb_collect_features_context_t *c,
 			  const OT::LangSys  &l)
 {
-  if (c->visited (l)) return;
+  만약 (c->visited (l)) 반환;
 
-  if (!c->has_feature_filter)
+  만약 (!c->has_feature_filter)
   {
     /* All features. */
-    if (l.has_required_feature () && !c->visited_feature_indices (1))
+    만약 (l.has_required_feature () && !c->visited_feature_indices (1))
       c->feature_indices->add (l.get_required_feature_index ());
 
     // TODO(garretrieger): filter out indices >= feature count?
-    if (!c->visited_feature_indices (l.featureIndex.len))
+    만약 (!c->visited_feature_indices (l.featureIndex.len))
       l.add_feature_indexes_to (c->feature_indices);
   }
-  else
+  아니면
   {
-    if (c->feature_indices_filter.is_empty()) return;
-    unsigned int num_features = l.get_feature_count ();
-    for (unsigned int i = 0; i < num_features; i++)
+    만약 (c->feature_indices_filter.is_empty()) 반환;
+    unsigned 정수 num_features = l.get_feature_count ();
+    위해 (unsigned 정수 i = 0; i < num_features; i++)
     {
-      unsigned int feature_index = l.get_feature_index (i);
-      if (!c->feature_indices_filter.has (feature_index)) continue;
+      unsigned 정수 feature_index = l.get_feature_index (i);
+      만약 (!c->feature_indices_filter.has (feature_index)) continue;
 
       c->feature_indices->add (feature_index);
       c->feature_indices_filter.del (feature_index);
@@ -1219,27 +1219,27 @@ script_collect_features (hb_collect_features_context_t *c,
 			 const OT::Script   &s,
 			 const hb_tag_t *languages)
 {
-  if (c->visited (s)) return;
+  만약 (c->visited (s)) 반환;
 
-  if (!languages)
+  만약 (!languages)
   {
     /* All languages. */
-    if (s.has_default_lang_sys ())
+    만약 (s.has_default_lang_sys ())
       langsys_collect_features (c,
 				s.get_default_lang_sys ());
 
 
-    unsigned int count = s.get_lang_sys_count ();
-    for (unsigned int language_index = 0; language_index < count; language_index++)
+    unsigned 정수 count = s.get_lang_sys_count ();
+    위해 (unsigned 정수 language_index = 0; language_index < count; language_index++)
       langsys_collect_features (c,
 				s.get_lang_sys (language_index));
   }
-  else
+  아니면
   {
-    for (; *languages; languages++)
+    위해 (; *languages; languages++)
     {
-      unsigned int language_index;
-      if (s.find_lang_sys_index (*languages, &language_index))
+      unsigned 정수 language_index;
+      만약 (s.find_lang_sys_index (*languages, &language_index))
 	langsys_collect_features (c,
 				  s.get_lang_sys (language_index));
 
@@ -1277,21 +1277,21 @@ hb_ot_layout_collect_features (hb_face_t      *face,
 			       hb_set_t       *feature_indexes /* OUT */)
 {
   hb_collect_features_context_t c (face, table_tag, feature_indexes, features);
-  if (!scripts)
+  만약 (!scripts)
   {
     /* All scripts. */
-    unsigned int count = c.g.get_script_count ();
-    for (unsigned int script_index = 0; script_index < count; script_index++)
+    unsigned 정수 count = c.g.get_script_count ();
+    위해 (unsigned 정수 script_index = 0; script_index < count; script_index++)
       script_collect_features (&c,
 			       c.g.get_script (script_index),
 			       languages);
   }
-  else
+  아니면
   {
-    for (; *scripts; scripts++)
+    위해 (; *scripts; scripts++)
     {
-      unsigned int script_index;
-      if (c.g.find_script_index (*scripts, &script_index))
+      unsigned 정수 script_index;
+      만약 (c.g.find_script_index (*scripts, &script_index))
 	script_collect_features (&c,
 				 c.g.get_script (script_index),
 				 languages);
@@ -1322,7 +1322,7 @@ hb_ot_layout_collect_features_map (hb_face_t      *face,
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
-  unsigned int count = l.get_feature_indexes (0, nullptr, nullptr);
+  unsigned 정수 count = l.get_feature_indexes (0, nullptr, nullptr);
   feature_map->alloc (count);
 
   /* Loop in reverse, such that earlier entries win. That emulates
@@ -1330,12 +1330,12 @@ hb_ot_layout_collect_features_map (hb_face_t      *face,
    * We found that with arialuni_t.ttf, the "ur" language system has
    * duplicate features, and the earlier ones work but not later ones.
    */
-  for (unsigned int i = count; i; i--)
+  위해 (unsigned 정수 i = count; i; i--)
   {
     unsigned feature_index = 0;
     unsigned feature_count = 1;
     l.get_feature_indexes (i - 1, &feature_count, &feature_index);
-    if (!feature_count)
+    만약 (!feature_count)
       break;
     hb_tag_t feature_tag = g.get_feature_tag (feature_index);
     feature_map->set (feature_tag, feature_index);
@@ -1376,7 +1376,7 @@ hb_ot_layout_collect_lookups (hb_face_t      *face,
   hb_set_t feature_indexes;
   hb_ot_layout_collect_features (face, table_tag, scripts, languages, features, &feature_indexes);
 
-  for (auto feature_index : feature_indexes)
+  위해 (auto feature_index : feature_indexes)
     g.get_feature (feature_index).add_lookup_indexes_to (lookup_indexes);
 
   g.feature_variation_collect_lookups (&feature_indexes, nullptr, lookup_indexes);
@@ -1402,7 +1402,7 @@ hb_ot_layout_collect_lookups (hb_face_t      *face,
 void
 hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  lookup_index,
+				    unsigned 정수  lookup_index,
 				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
@@ -1420,13 +1420,13 @@ hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
     {
       const OT::SubstLookup& l = face->table.GSUB->table->get_lookup (lookup_index);
       l.collect_glyphs (&c);
-      return;
+      반환;
     }
     case HB_OT_TAG_GPOS:
     {
       const OT::PosLookup& l = face->table.GPOS->table->get_lookup (lookup_index);
       l.collect_glyphs (&c);
-      return;
+      반환;
     }
   }
 }
@@ -1438,9 +1438,9 @@ hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 bool
 _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
 						   hb_tag_t               table_tag,
-						   const int             *coords,
-						   unsigned int           num_coords,
-						   unsigned int          *variations_index,
+						   const 정수             *coords,
+						   unsigned 정수           num_coords,
+						   unsigned 정수          *variations_index,
 						   hb_vector_t<unsigned> *lookup_conditions)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
@@ -1449,7 +1449,7 @@ _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
   auto instancer = OT::ItemVarStoreInstancer (&gdef.get_var_store (), nullptr,
 					      hb_array (coords, num_coords));
 
-  return g.get_feature_variations_state (coords,
+  반환 g.get_feature_variations_state (coords,
 					 num_coords,
 					 variations_index,
 					 &instancer,
@@ -1464,7 +1464,7 @@ _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
                                              hb_sorted_array_t<const unsigned> conditions,
                                              hb_set_t *lookup_indexes)
 {
-  return get_gsubgpos_table (face, table_tag).get_lookup_variations (
+  반환 get_gsubgpos_table (face, table_tag).get_lookup_variations (
       feature_index, variations_index, conditions, lookup_indexes);
 }
 
@@ -1488,9 +1488,9 @@ _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
 hb_bool_t
 hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
 					    hb_tag_t      table_tag,
-					    const int    *coords,
-					    unsigned int  num_coords,
-					    unsigned int *variations_index /* out */)
+					    const 정수    *coords,
+					    unsigned 정수  num_coords,
+					    unsigned 정수 *variations_index /* out */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::GDEF &gdef = *face->table.GDEF->table;
@@ -1498,7 +1498,7 @@ hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
   auto instancer = OT::ItemVarStoreInstancer(&gdef.get_var_store(), nullptr,
 					     hb_array (coords, num_coords));
 
-  return g.find_variations_index (coords, num_coords, variations_index, &instancer);
+  반환 g.find_variations_index (coords, num_coords, variations_index, &instancer);
 }
 
 
@@ -1522,21 +1522,21 @@ hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
  * Since: 1.4.0
  *
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 						  hb_tag_t      table_tag,
-						  unsigned int  feature_index,
-						  unsigned int  variations_index,
-						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
-						  unsigned int *lookup_indexes /* OUT */)
+						  unsigned 정수  feature_index,
+						  unsigned 정수  variations_index,
+						  unsigned 정수  start_offset,
+						  unsigned 정수 *lookup_count /* IN/OUT */,
+						  unsigned 정수 *lookup_indexes /* OUT */)
 {
   static_assert ((OT::FeatureVariations::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_VARIATIONS_INDEX), "");
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
   const OT::Feature &f = g.get_feature_variation (feature_index, variations_index);
 
-  return f.get_lookup_indexes (start_offset, lookup_count, lookup_indexes);
+  반환 f.get_lookup_indexes (start_offset, lookup_count, lookup_indexes);
 }
 
 
@@ -1559,7 +1559,7 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_has_substitution (hb_face_t *face)
 {
-  return face->table.GSUB->table->has_data ();
+  반환 face->table.GSUB->table->has_data ();
 }
 
 
@@ -1581,18 +1581,18 @@ hb_ot_layout_has_substitution (hb_face_t *face)
  **/
 hb_bool_t
 hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
-				      unsigned int          lookup_index,
+				      unsigned 정수          lookup_index,
 				      const hb_codepoint_t *glyphs,
-				      unsigned int          glyphs_length,
+				      unsigned 정수          glyphs_length,
 				      hb_bool_t             zero_context)
 {
   auto &gsub = face->table.GSUB;
-  if (unlikely (lookup_index >= gsub->lookup_count)) return false;
+  만약 (unlikely (lookup_index >= gsub->lookup_count)) 반환 false;
   OT::hb_would_apply_context_t c (face, glyphs, glyphs_length, (bool) zero_context);
 
   const OT::SubstLookup& l = gsub->table->get_lookup (lookup_index);
   auto *accel = gsub->get_accel (lookup_index);
-  return accel && l.would_apply (&c, accel);
+  반환 accel && l.would_apply (&c, accel);
 }
 
 
@@ -1633,7 +1633,7 @@ hb_ot_layout_substitute_start_with_digest (hb_font_t    *font,
  **/
 void
 hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
-					unsigned int  lookup_index,
+					unsigned 정수  lookup_index,
 					hb_set_t     *glyphs /* OUT */)
 {
   hb_map_t done_lookups_glyph_count;
@@ -1666,23 +1666,23 @@ hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
   OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_count, &done_lookups_glyph_set);
   const GSUB& gsub = *face->table.GSUB->table;
 
-  unsigned int iteration_count = 0;
-  unsigned int glyphs_length;
+  unsigned 정수 iteration_count = 0;
+  unsigned 정수 glyphs_length;
   do
   {
     c.reset_lookup_visit_count ();
     glyphs_length = glyphs->get_population ();
-    if (lookups)
+    만약 (lookups)
     {
-      for (auto lookup_index : *lookups)
+      위해 (auto lookup_index : *lookups)
 	gsub.get_lookup (lookup_index).closure (&c, lookup_index);
     }
-    else
+    아니면
     {
-      for (unsigned int i = 0; i < gsub.get_lookup_count (); i++)
+      위해 (unsigned 정수 i = 0; i < gsub.get_lookup_count (); i++)
 	gsub.get_lookup (i).closure (&c, i);
     }
-  } while (iteration_count++ <= HB_CLOSURE_MAX_STAGES &&
+  } 동안 (iteration_count++ <= HB_CLOSURE_MAX_STAGES &&
 	   glyphs_length != glyphs->get_population ());
 }
 
@@ -1703,7 +1703,7 @@ hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_has_positioning (hb_face_t *face)
 {
-  return face->table.GPOS->table->has_data ();
+  반환 face->table.GPOS->table->has_data ();
 }
 
 /**
@@ -1776,43 +1776,43 @@ hb_ot_layout_position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
  **/
 hb_bool_t
 hb_ot_layout_get_size_params (hb_face_t       *face,
-			      unsigned int    *design_size,       /* OUT.  May be NULL */
-			      unsigned int    *subfamily_id,      /* OUT.  May be NULL */
+			      unsigned 정수    *design_size,       /* OUT.  May be NULL */
+			      unsigned 정수    *subfamily_id,      /* OUT.  May be NULL */
 			      hb_ot_name_id_t *subfamily_name_id, /* OUT.  May be NULL */
-			      unsigned int    *range_start,       /* OUT.  May be NULL */
-			      unsigned int    *range_end          /* OUT.  May be NULL */)
+			      unsigned 정수    *range_start,       /* OUT.  May be NULL */
+			      unsigned 정수    *range_end          /* OUT.  May be NULL */)
 {
   const GPOS &gpos = *face->table.GPOS->table;
   const hb_tag_t tag = HB_TAG ('s','i','z','e');
 
-  unsigned int num_features = gpos.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++)
+  unsigned 정수 num_features = gpos.get_feature_count ();
+  위해 (unsigned 정수 i = 0; i < num_features; i++)
   {
-    if (tag == gpos.get_feature_tag (i))
+    만약 (tag == gpos.get_feature_tag (i))
     {
       const OT::Feature &f = gpos.get_feature (i);
       const OT::FeatureParamsSize &params = f.get_feature_params ().get_size_params (tag);
 
-      if (params.designSize)
+      만약 (params.designSize)
       {
-	if (design_size) *design_size = params.designSize;
-	if (subfamily_id) *subfamily_id = params.subfamilyID;
-	if (subfamily_name_id) *subfamily_name_id = params.subfamilyNameID;
-	if (range_start) *range_start = params.rangeStart;
-	if (range_end) *range_end = params.rangeEnd;
+	만약 (design_size) *design_size = params.designSize;
+	만약 (subfamily_id) *subfamily_id = params.subfamilyID;
+	만약 (subfamily_name_id) *subfamily_name_id = params.subfamilyNameID;
+	만약 (range_start) *range_start = params.rangeStart;
+	만약 (range_end) *range_end = params.rangeEnd;
 
-	return true;
+	반환 true;
       }
     }
   }
 
-  if (design_size) *design_size = 0;
-  if (subfamily_id) *subfamily_id = 0;
-  if (subfamily_name_id) *subfamily_name_id = HB_OT_NAME_ID_INVALID;
-  if (range_start) *range_start = 0;
-  if (range_end) *range_end = 0;
+  만약 (design_size) *design_size = 0;
+  만약 (subfamily_id) *subfamily_id = 0;
+  만약 (subfamily_name_id) *subfamily_name_id = HB_OT_NAME_ID_INVALID;
+  만약 (range_start) *range_start = 0;
+  만약 (range_end) *range_end = 0;
 
-  return false;
+  반환 false;
 }
 
 
@@ -1843,11 +1843,11 @@ hb_ot_layout_get_size_params (hb_face_t       *face,
 hb_bool_t
 hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
 				   hb_tag_t         table_tag,
-				   unsigned int     feature_index,
+				   unsigned 정수     feature_index,
 				   hb_ot_name_id_t *label_id,             /* OUT.  May be NULL */
 				   hb_ot_name_id_t *tooltip_id,           /* OUT.  May be NULL */
 				   hb_ot_name_id_t *sample_id,            /* OUT.  May be NULL */
-				   unsigned int    *num_named_parameters, /* OUT.  May be NULL */
+				   unsigned 정수    *num_named_parameters, /* OUT.  May be NULL */
 				   hb_ot_name_id_t *first_param_id        /* OUT.  May be NULL */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
@@ -1856,39 +1856,39 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
   const OT::Feature &f = g.get_feature (feature_index);
 
   const OT::FeatureParams &feature_params = f.get_feature_params ();
-  if (&feature_params != &Null (OT::FeatureParams))
+  만약 (&feature_params != &Null (OT::FeatureParams))
   {
     const OT::FeatureParamsStylisticSet& ss_params =
       feature_params.get_stylistic_set_params (feature_tag);
-    if (&ss_params != &Null (OT::FeatureParamsStylisticSet)) /* ssXX */
+    만약 (&ss_params != &Null (OT::FeatureParamsStylisticSet)) /* ssXX */
     {
-      if (label_id) *label_id = ss_params.uiNameID;
+      만약 (label_id) *label_id = ss_params.uiNameID;
       // ssXX features don't have the rest
-      if (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
-      if (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
-      if (num_named_parameters) *num_named_parameters = 0;
-      if (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
-      return true;
+      만약 (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
+      만약 (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
+      만약 (num_named_parameters) *num_named_parameters = 0;
+      만약 (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
+      반환 true;
     }
     const OT::FeatureParamsCharacterVariants& cv_params =
       feature_params.get_character_variants_params (feature_tag);
-    if (&cv_params != &Null (OT::FeatureParamsCharacterVariants)) /* cvXX */
+    만약 (&cv_params != &Null (OT::FeatureParamsCharacterVariants)) /* cvXX */
     {
-      if (label_id) *label_id = cv_params.featUILableNameID;
-      if (tooltip_id) *tooltip_id = cv_params.featUITooltipTextNameID;
-      if (sample_id) *sample_id = cv_params.sampleTextNameID;
-      if (num_named_parameters) *num_named_parameters = cv_params.numNamedParameters;
-      if (first_param_id) *first_param_id = cv_params.firstParamUILabelNameID;
-      return true;
+      만약 (label_id) *label_id = cv_params.featUILableNameID;
+      만약 (tooltip_id) *tooltip_id = cv_params.featUITooltipTextNameID;
+      만약 (sample_id) *sample_id = cv_params.sampleTextNameID;
+      만약 (num_named_parameters) *num_named_parameters = cv_params.numNamedParameters;
+      만약 (first_param_id) *first_param_id = cv_params.firstParamUILabelNameID;
+      반환 true;
     }
   }
 
-  if (label_id) *label_id = HB_OT_NAME_ID_INVALID;
-  if (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
-  if (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
-  if (num_named_parameters) *num_named_parameters = 0;
-  if (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
-  return false;
+  만약 (label_id) *label_id = HB_OT_NAME_ID_INVALID;
+  만약 (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
+  만약 (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
+  만약 (num_named_parameters) *num_named_parameters = 0;
+  만약 (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
+  반환 false;
 }
 /**
  * hb_ot_layout_feature_get_characters:
@@ -1909,16 +1909,16 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
  *
  * Since: 2.0.0
  **/
-unsigned int
+unsigned 정수
 hb_ot_layout_feature_get_characters (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    feature_index,
-				     unsigned int    start_offset,
-				     unsigned int   *char_count, /* IN/OUT.  May be NULL */
+				     unsigned 정수    feature_index,
+				     unsigned 정수    start_offset,
+				     unsigned 정수   *char_count, /* IN/OUT.  May be NULL */
 				     hb_codepoint_t *characters  /* OUT.     May be NULL */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  return g.get_feature (feature_index)
+  반환 g.get_feature (feature_index)
 	  .get_feature_params ()
 	  .get_character_variants_params(g.get_feature_tag (feature_index))
 	  .get_characters (start_offset, char_count, characters);
@@ -1965,30 +1965,30 @@ apply_forward (OT::hb_ot_apply_context_t *c,
 
   bool ret = false;
   hb_buffer_t *buffer = c->buffer;
-  while (buffer->successful)
+  동안 (buffer->successful)
   {
     hb_glyph_info_t *info = buffer->info;
     unsigned j = buffer->idx;
-    while (j < buffer->len &&
+    동안 (j < buffer->len &&
 	   !(accel.digest.may_have (info[j].codepoint) &&
 	     (info[j].mask & c->lookup_mask) &&
 	     c->check_glyph_property (&info[j], c->lookup_props)))
       j++;
-    if (unlikely (j > buffer->idx && !buffer->next_glyphs (j - buffer->idx)))
+    만약 (unlikely (j > buffer->idx && !buffer->next_glyphs (j - buffer->idx)))
       break;
-    if (buffer->idx >= buffer->len)
+    만약 (buffer->idx >= buffer->len)
       break;
 
-    if (accel.apply (c, use_hot_subtable_cache))
+    만약 (accel.apply (c, use_hot_subtable_cache))
       ret = true;
-    else
+    아니면
       (void) buffer->next_glyph ();
   }
 
-  if (use_hot_subtable_cache)
+  만약 (use_hot_subtable_cache)
     accel.cache_leave (c);
 
-  return ret;
+  반환 ret;
 }
 
 static inline bool
@@ -2000,7 +2000,7 @@ apply_backward (OT::hb_ot_apply_context_t *c,
   do
   {
     auto &cur = buffer->cur();
-    if (accel.digest.may_have (cur.codepoint) &&
+    만약 (accel.digest.may_have (cur.codepoint) &&
 	(cur.mask & c->lookup_mask) &&
 	c->check_glyph_property (&cur, c->lookup_props))
       ret |= accel.apply (c, false);
@@ -2008,8 +2008,8 @@ apply_backward (OT::hb_ot_apply_context_t *c,
     /* The reverse lookup doesn't "advance" cursor (for good reason). */
     buffer->idx--;
   }
-  while ((int) buffer->idx >= 0);
-  return ret;
+  동안 ((정수) buffer->idx >= 0);
+  반환 ret;
 }
 
 template <typename Proxy>
@@ -2020,26 +2020,26 @@ apply_string (OT::hb_ot_apply_context_t *c,
 {
   hb_buffer_t *buffer = c->buffer;
 
-  if (unlikely (!buffer->len || !c->lookup_mask))
-    return false;
+  만약 (unlikely (!buffer->len || !c->lookup_mask))
+    반환 false;
 
   bool ret = false;
 
   c->set_lookup_props (lookup.get_props ());
 
-  if (likely (!lookup.is_reverse ()))
+  만약 (likely (!lookup.is_reverse ()))
   {
     /* in/out forward substitution/positioning */
-    if (!Proxy::always_inplace)
+    만약 (!Proxy::always_inplace)
       buffer->clear_output ();
 
     buffer->idx = 0;
     ret = apply_forward (c, accel);
 
-    if (!Proxy::always_inplace)
+    만약 (!Proxy::always_inplace)
       buffer->sync ();
   }
-  else
+  아니면
   {
     /* in-place backward substitution/positioning */
     assert (!buffer->have_output);
@@ -2047,7 +2047,7 @@ apply_string (OT::hb_ot_apply_context_t *c,
     ret = apply_backward (c, accel);
   }
 
-  return ret;
+  반환 ret;
 }
 
 template <typename Proxy>
@@ -2056,8 +2056,8 @@ inline void hb_ot_map_t::apply (const Proxy &proxy,
 				hb_font_t *font,
 				hb_buffer_t *buffer) const
 {
-  const unsigned int table_index = proxy.table_index;
-  unsigned int i = 0;
+  const unsigned 정수 table_index = proxy.table_index;
+  unsigned 정수 i = 0;
 
   auto *font_data = font->data.ot.get ();
   auto *var_store_cache = (OT::hb_scalar_cache_t *) font_data;
@@ -2065,23 +2065,23 @@ inline void hb_ot_map_t::apply (const Proxy &proxy,
   OT::hb_ot_apply_context_t c (table_index, font, buffer, proxy.accel.get_blob (), var_store_cache);
   c.set_recurse_func (Proxy::Lookup::template dispatch_recurse_func<OT::hb_ot_apply_context_t>);
 
-  for (unsigned int stage_index = 0; stage_index < stages[table_index].length; stage_index++)
+  위해 (unsigned 정수 stage_index = 0; stage_index < stages[table_index].length; stage_index++)
   {
     const stage_map_t *stage = &stages[table_index][stage_index];
-    for (; i < stage->last_lookup; i++)
+    위해 (; i < stage->last_lookup; i++)
     {
       auto &lookup = lookups[table_index][i];
 
-      unsigned int lookup_index = lookup.index;
+      unsigned 정수 lookup_index = lookup.index;
 
       auto *accel = proxy.accel.get_accel (lookup_index);
-      if (unlikely (!accel)) continue;
+      만약 (unlikely (!accel)) continue;
 
-      if (buffer->messaging () &&
+      만약 (buffer->messaging () &&
 	  !buffer->message (font, "start lookup %u feature '%c%c%c%c'", lookup_index, HB_UNTAG (lookup.feature_tag))) continue;
 
       /* Only try applying the lookup if there is any overlap. */
-      if (accel->digest.may_intersect (buffer->digest) &&
+      만약 (accel->digest.may_intersect (buffer->digest) &&
 	  ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) ||
 	   accel->digest_second.may_intersect (buffer->digest)))
       {
@@ -2097,16 +2097,16 @@ inline void hb_ot_map_t::apply (const Proxy &proxy,
 			     proxy.accel.table->get_lookup (lookup_index),
 			     *accel);
       }
-      else if (buffer->messaging ())
+      아니면 만약 (buffer->messaging ())
 	(void) buffer->message (font, "skipped lookup %u feature '%c%c%c%c' because no glyph matches", lookup_index, HB_UNTAG (lookup.feature_tag));
 
-      if (buffer->messaging ())
+      만약 (buffer->messaging ())
 	(void) buffer->message (font, "end lookup %u feature '%c%c%c%c'", lookup_index, HB_UNTAG (lookup.feature_tag));
     }
 
-    if (stage->pause_func)
+    만약 (stage->pause_func)
     {
-      if (stage->pause_func (plan, font, buffer))
+      만약 (stage->pause_func (plan, font, buffer))
       {
 	/* Refresh working buffer digest since buffer changed. */
 	buffer->update_digest ();
@@ -2120,10 +2120,10 @@ void hb_ot_map_t::substitute (const hb_ot_shape_plan_t *plan, hb_font_t *font, h
   GSUBProxy proxy (font->face);
   char tag[5] = {0};
   hb_tag_to_string (chosen_script[0], tag);
-  if (buffer->messaging () &&
-      !buffer->message (font, "start table GSUB script tag '%s'", tag)) return;
+  만약 (buffer->messaging () &&
+      !buffer->message (font, "start table GSUB script tag '%s'", tag)) 반환;
   apply (proxy, plan, font, buffer);
-  if (buffer->messaging ())
+  만약 (buffer->messaging ())
     (void) buffer->message (font, "end table GSUB script tag '%s'", tag);
 }
 
@@ -2132,10 +2132,10 @@ void hb_ot_map_t::position (const hb_ot_shape_plan_t *plan, hb_font_t *font, hb_
   GPOSProxy proxy (font->face);
   char tag[5] = {0};
   hb_tag_to_string (chosen_script[0], tag);
-  if (buffer->messaging () &&
-      !buffer->message (font, "start table GPOS script tag '%s'", tag)) return;
+  만약 (buffer->messaging () &&
+      !buffer->message (font, "start table GPOS script tag '%s'", tag)) 반환;
   apply (proxy, plan, font, buffer);
-  if (buffer->messaging ())
+  만약 (buffer->messaging ())
     (void) buffer->message (font, "end table GPOS script tag '%s'", tag);
 }
 
@@ -2198,20 +2198,20 @@ hb_ot_layout_get_font_extents (hb_font_t         *font,
 			       hb_font_extents_t *extents)
 {
   hb_position_t min = 0, max = 0;
-  if (font->face->table.BASE->get_min_max (font, direction, script_tag, language_tag, HB_TAG_NONE,
+  만약 (font->face->table.BASE->get_min_max (font, direction, script_tag, language_tag, HB_TAG_NONE,
 					   &min, &max))
   {
-    if (extents)
+    만약 (extents)
     {
       extents->ascender  = max;
       extents->descender = min;
       extents->line_gap  = 0;
     }
-    return true;
+    반환 true;
   }
 
   hb_font_get_extents_for_direction (font, direction, extents);
-  return false;
+  반환 false;
 }
 
 /**
@@ -2247,7 +2247,7 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
 {
   hb_tag_t script_tag, language_tag;
   choose_base_tags (script, language, &script_tag, &language_tag);
-  return hb_ot_layout_get_font_extents (font,
+  반환 hb_ot_layout_get_font_extents (font,
 					direction,
 					script_tag,
 					language_tag,
@@ -2268,7 +2268,7 @@ hb_ot_layout_baseline_tag_t
 hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script)
 {
   /* Keep in sync with hb_ot_layout_get_baseline_with_fallback */
-  switch ((int) script)
+  switch ((정수) script)
   {
     /* Unicode-1.1 additions */
     case HB_SCRIPT_BENGALI:
@@ -2303,7 +2303,7 @@ hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script)
     case HB_SCRIPT_GUNJALA_GONDI:
     /* Unicode-12.0 additions */
     case HB_SCRIPT_NANDINAGARI:
-      return HB_OT_LAYOUT_BASELINE_TAG_HANGING;
+      반환 HB_OT_LAYOUT_BASELINE_TAG_HANGING;
 
     /* Unicode-1.1 additions */
     case HB_SCRIPT_HANGUL:
@@ -2321,10 +2321,10 @@ hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script)
     /* Unicode-18.0 additions */
     case HB_SCRIPT_JURCHEN:
     case HB_SCRIPT_SEAL:
-      return HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT;
+      반환 HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT;
 
     default:
-      return HB_OT_LAYOUT_BASELINE_TAG_ROMAN;
+      반환 HB_OT_LAYOUT_BASELINE_TAG_ROMAN;
   }
 }
 
@@ -2351,7 +2351,7 @@ hb_ot_layout_get_baseline (hb_font_t                   *font,
 			   hb_tag_t                     language_tag,
 			   hb_position_t               *coord        /* OUT.  May be NULL. */)
 {
-  return font->face->table.BASE->get_baseline (font, baseline_tag, direction, script_tag, language_tag, coord);
+  반환 font->face->table.BASE->get_baseline (font, baseline_tag, direction, script_tag, language_tag, coord);
 }
 
 /**
@@ -2382,7 +2382,7 @@ hb_ot_layout_get_baseline2 (hb_font_t                   *font,
 {
   hb_tag_t script_tag, language_tag;
   choose_base_tags (script, language, &script_tag, &language_tag);
-  return hb_ot_layout_get_baseline (font,
+  반환 hb_ot_layout_get_baseline (font,
 				    baseline_tag,
 				    direction,
 				    script_tag,
@@ -2412,13 +2412,13 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 					 hb_tag_t                     language_tag,
 					 hb_position_t               *coord /* OUT */)
 {
-  if (hb_ot_layout_get_baseline (font,
+  만약 (hb_ot_layout_get_baseline (font,
 				 baseline_tag,
 				 direction,
 				 script_tag,
 				 language_tag,
 				 coord))
-    return;
+    반환;
 
   /* Synthesize missing baselines.
    * See https://www.w3.org/TR/css-inline-3/#baseline-synthesis-fonts
@@ -2433,14 +2433,14 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
     {
       hb_codepoint_t glyph;
       hb_glyph_extents_t extents;
-      if (HB_DIRECTION_IS_HORIZONTAL (direction) &&
+      만약 (HB_DIRECTION_IS_HORIZONTAL (direction) &&
 	  (hb_font_get_nominal_glyph (font, 0x2212u, &glyph) ||
 	   hb_font_get_nominal_glyph (font, '-', &glyph)) &&
 	  hb_font_get_glyph_extents (font, glyph, &extents))
       {
 	*coord = hb_saturate_add (extents.y_bearing, extents.height / 2);
       }
-      else
+      아니면
       {
 	hb_position_t x_height = font->y_scale / 2;
 #ifndef HB_NO_METRICS
@@ -2469,17 +2469,17 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 					       language_tag,
 					       &embox_bottom);
 
-      if (baseline_tag == HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT)
+      만약 (baseline_tag == HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT)
 	*coord = hb_saturate_add (embox_top,
 				  hb_clamp_to<hb_position_t> (((int64_t) embox_bottom - embox_top) / 10));
-      else
+      아니면
 	*coord = hb_saturate_add (embox_bottom,
 				  hb_clamp_to<hb_position_t> (((int64_t) embox_top - embox_bottom) / 10));
     }
     break;
 
   case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT:
-    if (hb_ot_layout_get_baseline (font,
+    만약 (hb_ot_layout_get_baseline (font,
 				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
 				   direction,
 				   script_tag,
@@ -2487,7 +2487,7 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 				   coord))
       *coord = hb_saturate_add (*coord,
 				HB_DIRECTION_IS_HORIZONTAL (direction) ? font->y_scale : font->x_scale);
-    else
+    아니면
     {
       hb_font_extents_t font_extents;
       hb_font_get_extents_for_direction (font, direction, &font_extents);
@@ -2496,7 +2496,7 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
     break;
 
   case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT:
-    if (hb_ot_layout_get_baseline (font,
+    만약 (hb_ot_layout_get_baseline (font,
 				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
 				   direction,
 				   script_tag,
@@ -2504,7 +2504,7 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 				   coord))
       *coord = hb_saturate_sub (*coord,
 				HB_DIRECTION_IS_HORIZONTAL (direction) ? font->y_scale : font->x_scale);
-    else
+    아니면
     {
       hb_font_extents_t font_extents;
       hb_font_get_extents_for_direction (font, direction, &font_extents);
@@ -2513,14 +2513,14 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
     break;
 
   case HB_OT_LAYOUT_BASELINE_TAG_HANGING:
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+    만약 (HB_DIRECTION_IS_HORIZONTAL (direction))
     {
       hb_codepoint_t ch;
       hb_codepoint_t glyph;
       hb_glyph_extents_t extents;
 
       /* Keep in sync with hb_ot_layout_get_horizontal_baseline_for_script */
-      switch ((int) script_tag)
+      switch ((정수) script_tag)
       {
       /* Unicode-1.1 additions */
       case HB_SCRIPT_BENGALI:          ch = 0x0995u; break;
@@ -2558,14 +2558,14 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
       default:                         ch = 0;        break;
       }
 
-      if (ch &&
+      만약 (ch &&
 	  hb_font_get_nominal_glyph (font, ch, &glyph) &&
 	  hb_font_get_glyph_extents (font, glyph, &extents))
 	*coord = extents.y_bearing;
-      else
+      아니면
 	*coord = hb_clamp_to<hb_position_t> ((int64_t) font->y_scale * 6 / 10); // FIXME makes assumptions about origin
     }
-    else
+    아니면
       *coord = hb_clamp_to<hb_position_t> ((int64_t) font->x_scale * 6 / 10); // FIXME makes assumptions about origin
     break;
 
@@ -2658,8 +2658,8 @@ hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
 struct hb_get_glyph_alternates_dispatch_t :
        hb_dispatch_context_t<hb_get_glyph_alternates_dispatch_t, unsigned>
 {
-  static return_t default_return_value () { return 0; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  static return_t default_return_value () { 반환 0; }
+  bool stop_sublookup_iteration (return_t r) const { 반환 r; }
 
   private:
   template <typename T, typename ...Ts> auto
@@ -2703,15 +2703,15 @@ hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
   hb_get_glyph_alternates_dispatch_t c;
   const OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_index);
   auto ret = lookup.dispatch (&c, glyph, start_offset, alternate_count, alternate_glyphs);
-  if (!ret && alternate_count) *alternate_count = 0;
-  return ret;
+  만약 (!ret && alternate_count) *alternate_count = 0;
+  반환 ret;
 }
 
 struct hb_collect_glyph_alternates_dispatch_t :
        hb_dispatch_context_t<hb_collect_glyph_alternates_dispatch_t, bool>
 {
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return false; }
+  static return_t default_return_value () { 반환 false; }
+  bool stop_sublookup_iteration (return_t r) const { 반환 false; }
 
   private:
   template <typename T, typename ...Ts> auto
@@ -2763,14 +2763,14 @@ hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
 {
   hb_collect_glyph_alternates_dispatch_t c;
   const OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_index);
-  return lookup.dispatch (&c, alternate_count, alternate_glyphs);
+  반환 lookup.dispatch (&c, alternate_count, alternate_glyphs);
 }
 
 struct hb_position_single_dispatch_t :
        hb_dispatch_context_t<hb_position_single_dispatch_t, bool>
 {
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  static return_t default_return_value () { 반환 false; }
+  bool stop_sublookup_iteration (return_t r) const { 반환 r; }
 
   private:
   template <typename T, typename ...Ts> auto
@@ -2829,7 +2829,7 @@ hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
     default:
       break;
   }
-  return ret;
+  반환 ret;
 }
 #endif
 

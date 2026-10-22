@@ -152,8 +152,8 @@ struct hb_ot_shaper_t
    */
   void (*reorder_marks) (const hb_ot_shape_plan_t *plan,
 			 hb_buffer_t              *buffer,
-			 unsigned int              start,
-			 unsigned int              end);
+			 unsigned 정수              start,
+			 unsigned 정수              end);
 
   /* gpos_tag()
    * If not HB_TAG_NONE, then must match found GPOS script tag for
@@ -181,7 +181,7 @@ hb_ot_shaper_categorize (hb_script_t script,
   switch ((hb_tag_t) script)
   {
     default:
-      return &_hb_ot_shaper_default;
+      반환 &_hb_ot_shaper_default;
 
 
     /* Unicode-1.1 additions */
@@ -194,30 +194,30 @@ hb_ot_shaper_categorize (hb_script_t script,
        * This is because we do fallback shaping for Arabic script (and not others).
        * But note that Arabic shaping is applicable only to horizontal layout; for
        * vertical text, just use the generic shaper instead. */
-      if ((gsub_script != HB_OT_TAG_DEFAULT_SCRIPT || script == HB_SCRIPT_ARABIC) &&
+      만약 ((gsub_script != HB_OT_TAG_DEFAULT_SCRIPT || script == HB_SCRIPT_ARABIC) &&
 	  HB_DIRECTION_IS_HORIZONTAL (direction))
-	return &_hb_ot_shaper_arabic;
-      else
-	return &_hb_ot_shaper_default;
+	반환 &_hb_ot_shaper_arabic;
+      아니면
+	반환 &_hb_ot_shaper_default;
 
 
     /* Unicode-1.1 additions */
     case HB_SCRIPT_THAI:
     case HB_SCRIPT_LAO:
 
-      return &_hb_ot_shaper_thai;
+      반환 &_hb_ot_shaper_thai;
 
 
     /* Unicode-1.1 additions */
     case HB_SCRIPT_HANGUL:
 
-      return &_hb_ot_shaper_hangul;
+      반환 &_hb_ot_shaper_hangul;
 
 
     /* Unicode-1.1 additions */
     case HB_SCRIPT_HEBREW:
 
-      return &_hb_ot_shaper_hebrew;
+      반환 &_hb_ot_shaper_hebrew;
 
 
     /* Unicode-1.1 additions */
@@ -236,16 +236,16 @@ hb_ot_shaper_categorize (hb_script_t script,
        * Otherwise, use the specific shaper.
        *
        * If it's indy3 tag, send to USE. */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      만약 (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n'))
-	return &_hb_ot_shaper_default;
-      else if ((gsub_script & 0x000000FF) == '3')
-	return &_hb_ot_shaper_use;
-      else
-	return &_hb_ot_shaper_indic;
+	반환 &_hb_ot_shaper_default;
+      아니면 만약 ((gsub_script & 0x000000FF) == '3')
+	반환 &_hb_ot_shaper_use;
+      아니면
+	반환 &_hb_ot_shaper_indic;
 
     case HB_SCRIPT_KHMER:
-	return &_hb_ot_shaper_khmer;
+	반환 &_hb_ot_shaper_khmer;
 
     case HB_SCRIPT_MYANMAR:
       /* If the designer designed the font for the 'DFLT' script,
@@ -255,12 +255,12 @@ hb_ot_shaper_categorize (hb_script_t script,
        * If designer designed for 'mymr' tag, also send to default
        * shaper.  That's tag used from before Myanmar shaping spec
        * was developed.  The shaping spec uses 'mym2' tag. */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      만약 (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n') ||
 	  gsub_script == HB_TAG ('m','y','m','r'))
-	return &_hb_ot_shaper_default;
-      else
-	return &_hb_ot_shaper_myanmar;
+	반환 &_hb_ot_shaper_default;
+      아니면
+	반환 &_hb_ot_shaper_myanmar;
 
 
 #ifndef HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
@@ -268,7 +268,7 @@ hb_ot_shaper_categorize (hb_script_t script,
     case HB_SCRIPT_MYANMAR_ZAWGYI:
     /* https://github.com/harfbuzz/harfbuzz/issues/1162 */
 
-      return &_hb_ot_shaper_myanmar_zawgyi;
+      반환 &_hb_ot_shaper_myanmar_zawgyi;
 #endif
 
 
@@ -412,11 +412,11 @@ hb_ot_shaper_categorize (hb_script_t script,
        * Otherwise, use the specific shaper.
        * Note that for some simple scripts, there may not be *any*
        * GSUB/GPOS needed, so there may be no scripts found! */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      만약 (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n'))
-	return &_hb_ot_shaper_default;
-      else
-	return &_hb_ot_shaper_use;
+	반환 &_hb_ot_shaper_default;
+      아니면
+	반환 &_hb_ot_shaper_use;
   }
 }
 

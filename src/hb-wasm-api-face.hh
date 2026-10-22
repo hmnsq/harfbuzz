@@ -33,15 +33,15 @@ namespace wasm {
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int index)
+					  unsigned 정수 index)
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return nullref;
+  만약 (unlikely (!blob))
+    반환 nullref;
 
   char *data = HB_ARRAY_APP2NATIVE (char, blob->data, blob->length);
-  if (unlikely (!data))
-    return nullref;
+  만약 (unlikely (!data))
+    반환 nullref;
 
   hb_blob_t *hb_blob = hb_blob_create(
 				      data,
@@ -54,7 +54,7 @@ HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
   hb_blob_destroy (hb_blob);
 
   HB_OBJ2REF (face);
-  return faceref;
+  반환 faceref;
 }
 
 HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
@@ -64,27 +64,27 @@ HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (face);
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return false;
+  만약 (unlikely (!blob))
+    반환 false;
 
   hb_blob_t *hb_blob = hb_face_reference_table (face, table_tag);
 
   unsigned length;
   const char *hb_data = hb_blob_get_data (hb_blob, &length);
 
-  if (length <= blob->length)
+  만약 (length <= blob->length)
   {
     char *data = HB_ARRAY_APP2NATIVE (char, blob->data, length);
 
-    if (unlikely (!data))
+    만약 (unlikely (!data))
     {
       blob->length = 0;
-      return false;
+      반환 false;
     }
 
     hb_memcpy (data, hb_data, length);
 
-    return true;
+    반환 true;
   }
 
   module_free (blob->data);
@@ -94,13 +94,13 @@ HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
 
   hb_blob_destroy (hb_blob);
 
-  if (blob->length && !blob->data)
+  만약 (blob->length && !blob->data)
   {
     blob->length = 0;
-    return false;
+    반환 false;
   }
 
-  return true;
+  반환 true;
 }
 
 HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
@@ -108,7 +108,7 @@ HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (face);
 
-  return hb_face_get_upem (face);
+  반환 hb_face_get_upem (face);
 }
 
 

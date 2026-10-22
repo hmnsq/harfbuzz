@@ -33,11 +33,11 @@ create_face (const char *data, unsigned length)
 				    nullptr, nullptr);
   hb_always_assert (hb_face_builder_add_table (face, HB_OT_TAG_JSTF, blob));
   hb_blob_destroy (blob);
-  return face;
+  반환 face;
 }
 
-int
-main (int argc, char **argv)
+정수
+main (정수 argc, char **argv)
 {
   static const char data[] = {
     0, 1, 0, 1,				/* version 1.1 */
@@ -61,7 +61,7 @@ main (int argc, char **argv)
   hb_always_assert (jstf->find_script_index (HB_TAG ('a','r','a','b'), &index));
   hb_always_assert (index == 0);
   hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_count ());
-#else
+#아니면
   hb_always_assert (jstf.get_length ());
   hb_always_assert (!jstf->get_script_count ());
 #endif
@@ -76,5 +76,5 @@ main (int argc, char **argv)
   hb_face_destroy (face);
 #endif
 
-  return 0;
+  반환 0;
 }

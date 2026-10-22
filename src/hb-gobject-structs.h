@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_GOBJECT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#만약 !defined(HB_GOBJECT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-gobject.h> instead."
 #endif
 

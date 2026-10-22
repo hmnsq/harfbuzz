@@ -30,9 +30,9 @@
 
 
 static char *
-test_func (int a, char **b)
+test_func (정수 a, char **b)
 {
-  return b ? b[a] : nullptr;
+  반환 b ? b[a] : nullptr;
 }
 
 struct A
@@ -40,8 +40,8 @@ struct A
   void a () {}
 };
 
-int
-main (int argc, char **argv)
+정수
+main (정수 argc, char **argv)
 {
   hb_always_assert (roundf (0.5f) == 1.f);
   hb_always_assert (roundf (-0.5f) == 0.f);
@@ -56,13 +56,13 @@ main (int argc, char **argv)
   hb_always_assert (roundf (8388609.f) == 8388609.f);
   hb_always_assert (roundf (-8388609.f) == -8388609.f);
 
-  int i = 1;
+  정수 i = 1;
   auto p = hb_pair (1, i);
 
   p.second = 2;
   hb_always_assert (i == 2);
 
-  const int c = 3;
+  const 정수 c = 3;
   auto pc = hb_pair (1, c);
   hb_always_assert (pc.second == 3);
 
@@ -79,17 +79,17 @@ main (int argc, char **argv)
   hb_always_assert (1 == hb_min (8, 1));
   hb_always_assert (8 == hb_max (8, 1));
 
-  int x = 1, y = 2;
+  정수 x = 1, y = 2;
   hb_min (x, 3);
   hb_min (3, x);
   hb_min (x, 4 + 3);
-  int &z = hb_min (x, y);
+  정수 &z = hb_min (x, y);
   z = 3;
   hb_always_assert (x == 3);
 
-  hb_pair_t<const int*, int> xp = hb_pair_t<int *, long> (nullptr, 0);
-  xp = hb_pair_t<int *, double> (nullptr, 1);
-  xp = hb_pair_t<const int*, int> (nullptr, 1);
+  hb_pair_t<const 정수*, 정수> xp = hb_pair_t<정수 *, long> (nullptr, 0);
+  xp = hb_pair_t<정수 *, double> (nullptr, 1);
+  xp = hb_pair_t<const 정수*, 정수> (nullptr, 1);
 
   hb_always_assert (3 == hb_partial (hb_min, 3) (4));
   hb_always_assert (3 == hb_partial<1> (hb_min, 4) (3));
@@ -112,12 +112,12 @@ main (int argc, char **argv)
   hb_always_assert (hb_saturate_neg (2) == -2);
   hb_always_assert (hb_saturate_neg (-2) == 2);
   hb_always_assert (hb_saturate_neg (INT_MIN) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> (1.) == 1);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MAX + 1.) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MIN - 1.) == INT_MIN);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) 1) == 1);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MAX + 1) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MIN - 1) == INT_MIN);
+  hb_always_assert (hb_clamp_to<정수> (1.) == 1);
+  hb_always_assert (hb_clamp_to<정수> ((double) INT_MAX + 1.) == INT_MAX);
+  hb_always_assert (hb_clamp_to<정수> ((double) INT_MIN - 1.) == INT_MIN);
+  hb_always_assert (hb_clamp_to<정수> ((int64_t) 1) == 1);
+  hb_always_assert (hb_clamp_to<정수> ((int64_t) INT_MAX + 1) == INT_MAX);
+  hb_always_assert (hb_clamp_to<정수> ((int64_t) INT_MIN - 1) == INT_MIN);
 
   int64_t budget = 10;
   hb_always_assert (hb_budget_spend (budget, 4, 2));
@@ -154,5 +154,5 @@ main (int argc, char **argv)
   hb_always_assert (hb_hash (set1) == hb_hash (hb::shared_ptr<hb_set_t> {hb_set_reference (&set1)}));
   hb_always_assert (hb_hash (set1) == hb_hash (hb::unique_ptr<hb_set_t> {hb_set_reference (&set1)}));
 
-  return 0;
+  반환 0;
 }

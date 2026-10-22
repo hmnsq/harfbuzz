@@ -40,12 +40,12 @@ namespace OT {
 
 struct DataMap
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  정수 cmp (hb_tag_t a) const { 반환 tag.cmp (a); }
 
-  hb_tag_t get_tag () const { return tag; }
+  hb_tag_t get_tag () const { 반환 tag; }
 
   hb_blob_t *reference_entry (hb_blob_t *meta_blob) const
-  { return hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
+  { 반환 hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -77,21 +77,21 @@ struct meta
     ~accelerator_t () { table.destroy (); }
 
     hb_blob_t *reference_entry (hb_tag_t tag) const
-    { return table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
+    { 반환 table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
 
-    unsigned int get_entries (unsigned int      start_offset,
-			      unsigned int     *count,
+    unsigned 정수 get_entries (unsigned 정수      start_offset,
+			      unsigned 정수     *count,
 			      hb_ot_meta_tag_t *entries) const
     {
-      if (count && entries)
+      만약 (count && entries)
       {
 	+ table->dataMaps.as_array ().sub_array (start_offset, count)
 	| hb_map (&DataMap::get_tag)
-	| hb_map ([](hb_tag_t tag) { return (hb_ot_meta_tag_t) tag; })
+	| hb_map ([](hb_tag_t tag) { 반환 (hb_ot_meta_tag_t) tag; })
 	| hb_sink (hb_array (entries, *count))
 	;
       }
-      return table->dataMaps.len;
+      반환 table->dataMaps.len;
     }
 
     private:

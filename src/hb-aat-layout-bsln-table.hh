@@ -121,7 +121,7 @@ struct bsln
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) && defaultBaseline < 32)))
+    만약 (unlikely (!(c->check_struct (this) && defaultBaseline < 32)))
       return_trace (false);
     hb_barrier ();
 

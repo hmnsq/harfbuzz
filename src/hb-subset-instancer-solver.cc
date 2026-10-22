@@ -36,7 +36,7 @@ constexpr static float EPSILON = 1.f / (1 << 14);
 constexpr static float MAX_F2DOT14 = float (0x7FFF) / (1 << 14);
 
 static inline Triple _reverse_negate(const Triple &v)
-{ return {-v.maximum, -v.middle, -v.minimum}; }
+{ 반환 {-v.maximum, -v.middle, -v.minimum}; }
 
 
 static inline float supportScalar (float coord, const Triple &tent)
@@ -44,22 +44,22 @@ static inline float supportScalar (float coord, const Triple &tent)
   /* Copied from VarRegionAxis::evaluate() */
   float start = tent.minimum, peak = tent.middle, end = tent.maximum;
 
-  if (unlikely (start > peak || peak > end))
-    return 1.f;
-  if (unlikely (start < 0 && end > 0 && peak != 0))
-    return 1.f;
+  만약 (unlikely (start > peak || peak > end))
+    반환 1.f;
+  만약 (unlikely (start < 0 && end > 0 && peak != 0))
+    반환 1.f;
 
-  if (peak == 0 || coord == peak)
-    return 1.f;
+  만약 (peak == 0 || coord == peak)
+    반환 1.f;
 
-  if (coord <= start || end <= coord)
-    return 0.f;
+  만약 (coord <= start || end <= coord)
+    반환 0.f;
 
   /* Interpolate */
-  if (coord < peak)
-    return (coord - start) / (peak - start);
-  else
-    return  (end - coord) / (end - peak);
+  만약 (coord < peak)
+    반환 (coord - start) / (peak - start);
+  아니면
+    반환  (end - coord) / (end - peak);
 }
 
 static inline void
@@ -74,14 +74,14 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
   float upper = tent.maximum;
 
   // Mirror the problem such that axisDef <= peak
-  if (axisDef > peak)
+  만약 (axisDef > peak)
   {
     _solve (_reverse_negate (tent), _reverse_negate (axisLimit), out, !negative);
 
-    for (auto &p : out)
+    위해 (auto &p : out)
       p = hb_pair (p.first, _reverse_negate (p.second));
 
-    return;
+    반환;
   }
   // axisDef <= peak
 
@@ -96,8 +96,8 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *  0---|-----------|----------|-------- o         o----1
    *    axisMin     axisDef    axisMax   lower     upper
    */
-  if (axisMax <= lower && axisMax < peak)
-      return;  // No overlap
+  만약 (axisMax <= lower && axisMax < peak)
+      반환;  // No overlap
 
   /* case 2: Only the peak and outermost bound fall outside the new limit;
    * we keep the deltaset, update peak and outermost bound and scale deltas
@@ -127,17 +127,17 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                                  |
    *                                axisMax
    */
-  if (axisMax < peak)
+  만약 (axisMax < peak)
   {
     float mult = supportScalar (axisMax, tent);
     tent = Triple{lower, axisMax, axisMax};
 
     _solve (tent, axisLimit, out);
 
-    for (auto &p : out)
+    위해 (auto &p : out)
       p = hb_pair (p.first * mult, p.second);
 
-    return;
+    반환;
   }
 
   // lower <= axisDef <= peak <= axisMax
@@ -167,7 +167,7 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                           |
    *                      crossing
    */
-  if (gain >= outGain)
+  만약 (gain >= outGain)
   {
     // Note that this is the branch taken if both gain and outGain are 0.
 
@@ -187,7 +187,7 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      * Case 3a1, similar to case 1neg; just one tent needed, as in
      * the drawing above.
      */
-    if (upper >= axisMax)
+    만약 (upper >= axisMax)
     {
       Triple loc {crossing, axisMax, axisMax};
       float scalar = outGain;
@@ -212,10 +212,10 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      *                           |
      *                      crossing
      */
-    else
+    아니면
     {
       // A tent's peak cannot fall on axis default. Nudge it.
-      if (upper == axisDef)
+      만약 (upper == axisDef)
 	upper += EPSILON;
 
       // Downslope.
@@ -231,10 +231,10 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
     }
   }
 
-  else
+  아니면
   {
     // Special-case if peak is at axisMax.
-    if (axisMax == peak)
+    만약 (axisMax == peak)
 	upper = peak;
 
     /* Case 3:
@@ -258,10 +258,10 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
     /* Disabled because ots doesn't like us:
      * https://github.com/fonttools/fonttools/issues/3350 */
 
-    if (false && (newUpper <= axisDef + (axisMax - axisDef) * 2))
+    만약 (false && (newUpper <= axisDef + (axisMax - axisDef) * 2))
     {
       upper = newUpper;
-      if (!negative && axisDef + (axisMax - axisDef) * MAX_F2DOT14 < upper)
+      만약 (!negative && axisDef + (axisMax - axisDef) * MAX_F2DOT14 < upper)
       {
 	// we clamp +2.0 to the max F2Dot14 (~1.99994) for convenience
 	upper = axisDef + (axisMax - axisDef) * MAX_F2DOT14;
@@ -290,7 +290,7 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      *            |        |
      *          axisDef  axisMax
      */
-    else
+    아니면
     {
       Triple loc1 {hb_max (axisDef, lower), peak, axisMax};
       float scalar1 = 1.f;
@@ -300,7 +300,7 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
 
       out.push (hb_pair (scalar1 - gain, loc1));
       // Don't add a dirac delta!
-      if (peak < axisMax)
+      만약 (peak < axisMax)
 	out.push (hb_pair (scalar2 - gain, loc2));
     }
   }
@@ -321,7 +321,7 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                     |   |
    *               axisMin   axisDef
    */
-  if (lower <= axisMin)
+  만약 (lower <= axisMin)
   {
     Triple loc {axisMin, axisMin, axisDef};
     float scalar = supportScalar (axisMin, tent);
@@ -344,10 +344,10 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                      |
    *                    axisDef
    */
-  else
+  아니면
   {
     // A tent's peak cannot fall on axis default. Nudge it.
-    if (lower == axisDef)
+    만약 (lower == axisDef)
       lower -= EPSILON;
 
     // Downslope.
@@ -364,55 +364,55 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
 }
 
 static inline TripleDistances _reverse_triple_distances (const TripleDistances &v)
-{ return TripleDistances (v.positive, v.negative); }
+{ 반환 TripleDistances (v.positive, v.negative); }
 
 float renormalizeValue (float v, const Triple &triple,
                          const TripleDistances &triple_distances, bool extrapolate)
 {
   float lower = triple.minimum, def = triple.middle, upper = triple.maximum;
-  if (unlikely (!(lower <= def && def <= upper)))
-    return hb_clamp (v, -1.f, +1.f);
+  만약 (unlikely (!(lower <= def && def <= upper)))
+    반환 hb_clamp (v, -1.f, +1.f);
 
-  if (!extrapolate)
+  만약 (!extrapolate)
     v = hb_clamp (v, lower, upper);
 
-  if (v == def)
-    return 0.f;
+  만약 (v == def)
+    반환 0.f;
 
-  if (def < 0.f)
-    return -renormalizeValue (-v, _reverse_negate (triple),
+  만약 (def < 0.f)
+    반환 -renormalizeValue (-v, _reverse_negate (triple),
                               _reverse_triple_distances (triple_distances), extrapolate);
 
   /* default >= 0 and v != default */
-  if (v > def)
+  만약 (v > def)
   {
     float positive_range = upper - def;
-    if (unlikely (!positive_range))
-      return +1.f;
-    return (v - def) / positive_range;
+    만약 (unlikely (!positive_range))
+      반환 +1.f;
+    반환 (v - def) / positive_range;
   }
 
   /* v < def */
-  if (lower >= 0.f)
+  만약 (lower >= 0.f)
   {
     float negative_range = def - lower;
-    if (unlikely (!negative_range))
-      return -1.f;
-    return (v - def) / negative_range;
+    만약 (unlikely (!negative_range))
+      반환 -1.f;
+    반환 (v - def) / negative_range;
   }
 
   /* lower < 0 and v < default */
   float total_distance = triple_distances.negative * (-lower) + triple_distances.positive * def;
-  if (unlikely (!total_distance))
-    return 0.f;
+  만약 (unlikely (!total_distance))
+    반환 0.f;
 
   float v_distance;
-  if (v >= 0.f)
+  만약 (v >= 0.f)
     v_distance = (def - v) * triple_distances.positive;
-  else
+  아니면
     v_distance = (-v) * triple_distances.negative + triple_distances.positive * def;
 
-  return (-v_distance) /total_distance;
+  반환 (-v_distance) /total_distance;
 }
 
 void
@@ -420,7 +420,7 @@ rebase_tent (Triple tent, Triple axisLimit, TripleDistances axis_triple_distance
 	     rebase_tent_result_t &out,
 	     rebase_tent_result_t &scratch)
 {
-  if (unlikely (!(-1.f <= axisLimit.minimum &&
+  만약 (unlikely (!(-1.f <= axisLimit.minimum &&
                   axisLimit.minimum <= axisLimit.middle &&
                   axisLimit.middle <= axisLimit.maximum &&
                   axisLimit.maximum <= +1.f) ||
@@ -431,19 +431,19 @@ rebase_tent (Triple tent, Triple axisLimit, TripleDistances axis_triple_distance
                 tent.middle == 0.f))
   {
     out.reset ();
-    return;
+    반환;
   }
 
   rebase_tent_result_t &sols = scratch;
   _solve (tent, axisLimit, sols);
 
-  auto n = [&axisLimit, &axis_triple_distances] (float v) { return renormalizeValue (v, axisLimit, axis_triple_distances); };
+  auto n = [&axisLimit, &axis_triple_distances] (float v) { 반환 renormalizeValue (v, axisLimit, axis_triple_distances); };
 
   out.reset();
-  for (auto &p : sols)
+  위해 (auto &p : sols)
   {
-    if (!p.first) continue;
-    if (p.second == Triple{})
+    만약 (!p.first) continue;
+    만약 (p.second == Triple{})
     {
       out.push (p);
       continue;

@@ -59,7 +59,7 @@ template <typename iter_t, typename Item = typename iter_t::__item_t__>
 struct hb_iter_t
 {
   typedef Item item_t;
-  constexpr unsigned get_item_size () const { return hb_static_size (Item); }
+  constexpr unsigned get_item_size () const { 반환 hb_static_size (Item); }
   static constexpr bool is_iterator = true;
   static constexpr bool is_random_access_iterator = false;
   static constexpr bool is_sorted_iterator = false;
@@ -67,49 +67,49 @@ struct hb_iter_t
 
   private:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
+  const iter_t* thiz () const { 반환 static_cast<const iter_t *> (this); }
+	iter_t* thiz ()       { 반환 static_cast<      iter_t *> (this); }
   public:
 
   /* Operators. */
-  iter_t iter () const { return *thiz(); }
-  iter_t operator + () const { return *thiz(); }
-  iter_t _begin () const { return *thiz(); }
-  iter_t begin () const { return _begin (); }
-  iter_t _end () const { return thiz()->__end__ (); }
-  iter_t end () const { return _end (); }
-  explicit operator bool () const { return thiz()->__more__ (); }
-  unsigned len () const { return thiz()->__len__ (); }
+  iter_t iter () const { 반환 *thiz(); }
+  iter_t operator + () const { 반환 *thiz(); }
+  iter_t _begin () const { 반환 *thiz(); }
+  iter_t begin () const { 반환 _begin (); }
+  iter_t _end () const { 반환 thiz()->__end__ (); }
+  iter_t end () const { 반환 _end (); }
+  explicit operator bool () const { 반환 thiz()->__more__ (); }
+  unsigned len () const { 반환 thiz()->__len__ (); }
   /* The following can only be enabled if item_t is reference type.  Otherwise
    * it will be returning pointer to temporary rvalue. */
   template <typename T = item_t,
 	    hb_enable_if (std::is_reference<T>::value)>
-  hb_remove_reference<item_t>* operator -> () const { return std::addressof (**thiz()); }
-  item_t operator * () const { return thiz()->__item__ (); }
-  item_t operator * () { return thiz()->__item__ (); }
-  item_t operator [] (unsigned i) const { return thiz()->__item_at__ (i); }
-  item_t operator [] (unsigned i) { return thiz()->__item_at__ (i); }
-  iter_t& operator += (unsigned count) &  { thiz()->__forward__ (count); return *thiz(); }
-  iter_t  operator += (unsigned count) && { thiz()->__forward__ (count); return *thiz(); }
-  iter_t& operator ++ () &  { thiz()->__next__ (); return *thiz(); }
-  iter_t  operator ++ () && { thiz()->__next__ (); return *thiz(); }
-  iter_t& operator -= (unsigned count) &  { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t  operator -= (unsigned count) && { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t& operator -- () &  { thiz()->__prev__ (); return *thiz(); }
-  iter_t  operator -- () && { thiz()->__prev__ (); return *thiz(); }
-  iter_t operator + (unsigned count) const { auto c = thiz()->iter (); c += count; return c; }
-  friend iter_t operator + (unsigned count, const iter_t &it) { return it + count; }
-  iter_t operator ++ (int) { iter_t c (*thiz()); ++*thiz(); return c; }
-  iter_t operator - (unsigned count) const { auto c = thiz()->iter (); c -= count; return c; }
-  iter_t operator -- (int) { iter_t c (*thiz()); --*thiz(); return c; }
+  hb_remove_reference<item_t>* operator -> () const { 반환 std::addressof (**thiz()); }
+  item_t operator * () const { 반환 thiz()->__item__ (); }
+  item_t operator * () { 반환 thiz()->__item__ (); }
+  item_t operator [] (unsigned i) const { 반환 thiz()->__item_at__ (i); }
+  item_t operator [] (unsigned i) { 반환 thiz()->__item_at__ (i); }
+  iter_t& operator += (unsigned count) &  { thiz()->__forward__ (count); 반환 *thiz(); }
+  iter_t  operator += (unsigned count) && { thiz()->__forward__ (count); 반환 *thiz(); }
+  iter_t& operator ++ () &  { thiz()->__next__ (); 반환 *thiz(); }
+  iter_t  operator ++ () && { thiz()->__next__ (); 반환 *thiz(); }
+  iter_t& operator -= (unsigned count) &  { thiz()->__rewind__ (count); 반환 *thiz(); }
+  iter_t  operator -= (unsigned count) && { thiz()->__rewind__ (count); 반환 *thiz(); }
+  iter_t& operator -- () &  { thiz()->__prev__ (); 반환 *thiz(); }
+  iter_t  operator -- () && { thiz()->__prev__ (); 반환 *thiz(); }
+  iter_t operator + (unsigned count) const { auto c = thiz()->iter (); c += count; 반환 c; }
+  friend iter_t operator + (unsigned count, const iter_t &it) { 반환 it + count; }
+  iter_t operator ++ (정수) { iter_t c (*thiz()); ++*thiz(); 반환 c; }
+  iter_t operator - (unsigned count) const { auto c = thiz()->iter (); c -= count; 반환 c; }
+  iter_t operator -- (정수) { iter_t c (*thiz()); --*thiz(); 반환 c; }
   template <typename T>
-  iter_t& operator >> (T &v) &  { v = **thiz(); ++*thiz(); return *thiz(); }
+  iter_t& operator >> (T &v) &  { v = **thiz(); ++*thiz(); 반환 *thiz(); }
   template <typename T>
-  iter_t  operator >> (T &v) && { v = **thiz(); ++*thiz(); return *thiz(); }
+  iter_t  operator >> (T &v) && { v = **thiz(); ++*thiz(); 반환 *thiz(); }
   template <typename T>
-  iter_t& operator << (const T v) &  { **thiz() = v; ++*thiz(); return *thiz(); }
+  iter_t& operator << (const T v) &  { **thiz() = v; ++*thiz(); 반환 *thiz(); }
   template <typename T>
-  iter_t  operator << (const T v) && { **thiz() = v; ++*thiz(); return *thiz(); }
+  iter_t  operator << (const T v) && { **thiz() = v; ++*thiz(); 반환 *thiz(); }
 
   protected:
   hb_iter_t () = default;
@@ -157,17 +157,17 @@ struct
 {
   template <typename T> hb_iter_type<T>
   operator () (T&& c) const
-  { return hb_deref (std::forward<T> (c)).iter (); }
+  { 반환 hb_deref (std::forward<T> (c)).iter (); }
 
   /* Specialization for C arrays. */
 
   template <typename Type> inline hb_array_t<Type>
-  operator () (Type *array, unsigned int length) const
-  { return hb_array_t<Type> (array, length); }
+  operator () (Type *array, unsigned 정수 length) const
+  { 반환 hb_array_t<Type> (array, length); }
 
-  template <typename Type, unsigned int length> hb_array_t<Type>
+  template <typename Type, unsigned 정수 length> hb_array_t<Type>
   operator () (Type (&array)[length]) const
-  { return hb_array_t<Type> (array, length); }
+  { 반환 hb_array_t<Type> (array, length); }
 
 }
 HB_FUNCOBJ (hb_iter);
@@ -192,37 +192,37 @@ struct hb_iter_fallback_mixin_t
 {
   private:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
+  const iter_t* thiz () const { 반환 static_cast<const iter_t *> (this); }
+	iter_t* thiz ()       { 반환 static_cast<      iter_t *> (this); }
   public:
 
   /* Access: Implement __item__(), or __item_at__() if random-access. */
-  item_t __item__ () const { return (*thiz())[0]; }
-  item_t __item_at__ (unsigned i) const { return *(*thiz() + i); }
+  item_t __item__ () const { 반환 (*thiz())[0]; }
+  item_t __item_at__ (unsigned i) const { 반환 *(*thiz() + i); }
 
   /* Termination: Implement __more__(), or __len__() if random-access. */
-  bool __more__ () const { return bool (thiz()->len ()); }
+  bool __more__ () const { 반환 bool (thiz()->len ()); }
   unsigned __len__ () const
-  { iter_t c (*thiz()); unsigned l = 0; while (c) { c++; l++; } return l; }
+  { iter_t c (*thiz()); unsigned l = 0; 동안 (c) { c++; l++; } 반환 l; }
 
   /* Advancing: Implement __next__(), or __forward__() if random-access. */
   void __next__ () { *thiz() += 1; }
-  void __forward__ (unsigned n) { while (*thiz() && n--) ++*thiz(); }
+  void __forward__ (unsigned n) { 동안 (*thiz() && n--) ++*thiz(); }
 
   /* Rewinding: Implement __prev__() or __rewind__() if bidirectional. */
   void __prev__ () { *thiz() -= 1; }
-  void __rewind__ (unsigned n) { while (*thiz() && n--) --*thiz(); }
+  void __rewind__ (unsigned n) { 동안 (*thiz() && n--) --*thiz(); }
 
   /* Range-based for: Implement __end__() if can be done faster,
    * and operator!=. */
   iter_t __end__ () const
   {
-    if (thiz()->is_random_access_iterator)
-      return *thiz() + thiz()->len ();
+    만약 (thiz()->is_random_access_iterator)
+      반환 *thiz() + thiz()->len ();
     /* Above expression loops twice. Following loops once. */
     auto it = *thiz();
-    while (it) ++it;
-    return it;
+    동안 (it) ++it;
+    반환 it;
   }
 
   protected:
@@ -328,9 +328,9 @@ struct
 {
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  unsigned operator () (const Iterable &_) const { return hb_len (hb_iter (_)); }
+  unsigned operator () (const Iterable &_) const { 반환 hb_len (hb_iter (_)); }
 
-  unsigned operator () (unsigned _) const { return _; }
+  unsigned operator () (unsigned _) const { 반환 _; }
 }
 HB_FUNCOBJ (hb_len_of);
 
@@ -390,17 +390,17 @@ struct hb_map_iter_t :
     Sorted == hb_function_sortedness_t::SORTED ? true :
     Sorted == hb_function_sortedness_t::RETAINS_SORTING ? Iter::is_sorted_iterator :
     false;
-  __item_t__ __item__ () const { return hb_get (f.get (), *it); }
-  __item_t__ __item_at__ (unsigned i) const { return hb_get (f.get (), it[i]); }
-  bool __more__ () const { return bool (it); }
-  unsigned __len__ () const { return it.len (); }
+  __item_t__ __item__ () const { 반환 hb_get (f.get (), *it); }
+  __item_t__ __item_at__ (unsigned i) const { 반환 hb_get (f.get (), it[i]); }
+  bool __more__ () const { 반환 bool (it); }
+  unsigned __len__ () const { 반환 it.len (); }
   void __next__ () { ++it; }
   void __forward__ (unsigned n) { it += n; }
   void __prev__ () { --it; }
   void __rewind__ (unsigned n) { it -= n; }
-  hb_map_iter_t __end__ () const { return hb_map_iter_t (it._end (), f); }
+  hb_map_iter_t __end__ () const { 반환 hb_map_iter_t (it._end (), f); }
   bool operator != (const hb_map_iter_t& o) const
-  { return it != o.it; }
+  { 반환 it != o.it; }
 
   private:
   Iter it;
@@ -416,7 +416,7 @@ struct hb_map_iter_factory_t
 	    hb_requires (hb_is_iterator (Iter))>
   hb_map_iter_t<Iter, Proj, Sorted>
   operator () (Iter it)
-  { return hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
+  { 반환 hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
 
   private:
   Proj f;
@@ -426,7 +426,7 @@ struct
   template <typename Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED>
   operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
+  { 반환 hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map);
 struct
@@ -434,7 +434,7 @@ struct
   template <typename Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING>
   operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING> (f); }
+  { 반환 hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING> (f); }
 }
 HB_FUNCOBJ (hb_map_retains_sorting);
 struct
@@ -442,7 +442,7 @@ struct
   template <typename Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED>
   operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
+  { 반환 hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map_sorted);
 
@@ -453,13 +453,13 @@ struct hb_filter_iter_t :
 			  typename Iter::item_t>
 {
   hb_filter_iter_t (const Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
-  { while (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
+  { 동안 (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
 
   typedef typename Iter::item_t __item_t__;
   static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
-  __item_t__ __item__ () const { return *it; }
-  bool __more__ () const { return bool (it); }
-  void __next__ () { do ++it; while (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
+  __item_t__ __item__ () const { 반환 *it; }
+  bool __more__ () const { 반환 bool (it); }
+  void __next__ () { do ++it; 동안 (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
   void __prev__ ()
   {
     unsigned count = 0;
@@ -467,18 +467,18 @@ struct hb_filter_iter_t :
     {
       Iter old = it;
       --it;
-      if (!(it != old))
+      만약 (!(it != old))
       {
 	it += count;
-	return;
+	반환;
       }
       count++;
     }
-    while (!hb_has (p.get (), hb_get (f.get (), *it)));
+    동안 (!hb_has (p.get (), hb_get (f.get (), *it)));
   }
-  hb_filter_iter_t __end__ () const { return hb_filter_iter_t (it._end (), p, f); }
+  hb_filter_iter_t __end__ () const { 반환 hb_filter_iter_t (it._end (), p, f); }
   bool operator != (const hb_filter_iter_t& o) const
-  { return it != o.it; }
+  { 반환 it != o.it; }
 
   private:
   Iter it;
@@ -494,7 +494,7 @@ struct hb_filter_iter_factory_t
 	    hb_requires (hb_is_iterator (Iter))>
   hb_filter_iter_t<Iter, Pred, Proj>
   operator () (Iter it)
-  { return hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
+  { 반환 hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
 
   private:
   Pred p;
@@ -506,7 +506,7 @@ struct
 	    typename Proj = decltype ((hb_identity))>
   hb_filter_iter_factory_t<Pred, Proj>
   operator () (Pred&& p = hb_identity, Proj&& f = hb_identity) const
-  { return hb_filter_iter_factory_t<Pred, Proj> (p, f); }
+  { 반환 hb_filter_iter_factory_t<Pred, Proj> (p, f); }
 }
 HB_FUNCOBJ (hb_filter);
 
@@ -522,9 +522,9 @@ struct hb_reduce_t
   operator () (Iter it)
   {
     AccuT value = init_value;
-    for (; it; ++it)
+    위해 (; it; ++it)
       value = r (value, *it);
-    return value;
+    반환 value;
   }
 
   private:
@@ -536,7 +536,7 @@ struct
   template <typename Redu, typename InitT>
   hb_reduce_t<Redu, InitT>
   operator () (Redu&& r, InitT init_value) const
-  { return hb_reduce_t<Redu, InitT> (r, init_value); }
+  { 반환 hb_reduce_t<Redu, InitT> (r, init_value); }
 }
 HB_FUNCOBJ (hb_reduce);
 
@@ -581,19 +581,19 @@ struct hb_zip_iter_t :
    */
   static constexpr bool is_sorted_iterator = A::is_sorted_iterator;
 
-  __item_t__ __item__ () const { return __item_t__ (*a, *b); }
-  __item_t__ __item_at__ (unsigned i) const { return __item_t__ (a[i], b[i]); }
-  bool __more__ () const { return bool (a) && bool (b); }
-  unsigned __len__ () const { return hb_min (a.len (), b.len ()); }
+  __item_t__ __item__ () const { 반환 __item_t__ (*a, *b); }
+  __item_t__ __item_at__ (unsigned i) const { 반환 __item_t__ (a[i], b[i]); }
+  bool __more__ () const { 반환 bool (a) && bool (b); }
+  unsigned __len__ () const { 반환 hb_min (a.len (), b.len ()); }
   void __next__ () { ++a; ++b; }
   void __forward__ (unsigned n) { a += n; b += n; }
   void __prev__ () { --a; --b; }
   void __rewind__ (unsigned n) { a -= n; b -= n; }
-  hb_zip_iter_t __end__ () const { return hb_zip_iter_t (a._end (), b._end ()); }
+  hb_zip_iter_t __end__ () const { 반환 hb_zip_iter_t (a._end (), b._end ()); }
   /* Note, we should stop if ANY of the iters reaches end.  As such two compare
    * unequal if both items are unequal, NOT if either is unequal. */
   bool operator != (const hb_zip_iter_t& o) const
-  { return a != o.a && b != o.b; }
+  { 반환 a != o.a && b != o.b; }
 
   private:
   A a;
@@ -605,7 +605,7 @@ struct
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>>
   operator () (A&& a, B&& b) const
-  { return hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  { 반환 hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_zip);
 
@@ -628,55 +628,55 @@ struct hb_concat_iter_t :
 
   __item_t__ __item__ () const
   {
-    if (!a)
-      return *b;
-    return *a;
+    만약 (!a)
+      반환 *b;
+    반환 *a;
   }
 
   __item_t__ __item_at__ (unsigned i) const
   {
     unsigned a_len = a.len ();
-    if (i < a_len)
-      return a[i];
-    return b[i - a_len];
+    만약 (i < a_len)
+      반환 a[i];
+    반환 b[i - a_len];
   }
 
-  bool __more__ () const { return bool (a) || bool (b); }
+  bool __more__ () const { 반환 bool (a) || bool (b); }
 
-  unsigned __len__ () const { return a.len () + b.len (); }
+  unsigned __len__ () const { 반환 a.len () + b.len (); }
 
   void __next__ ()
   {
-    if (a)
+    만약 (a)
       ++a;
-    else
+    아니면
       ++b;
   }
 
   void __forward__ (unsigned n)
   {
-    if (!n) return;
-    if (!is_random_access_iterator) {
-      while (n-- && *this) {
+    만약 (!n) 반환;
+    만약 (!is_random_access_iterator) {
+      동안 (n-- && *this) {
         (*this)++;
       }
-      return;
+      반환;
     }
 
     unsigned a_len = a.len ();
-    if (n > a_len) {
+    만약 (n > a_len) {
       n -= a_len;
       a.__forward__ (a_len);
       b.__forward__ (n);
-    } else {
+    } 아니면 {
       a.__forward__ (n);
     }
   }
 
-  hb_concat_iter_t __end__ () const { return hb_concat_iter_t (a._end (), b._end ()); }
+  hb_concat_iter_t __end__ () const { 반환 hb_concat_iter_t (a._end (), b._end ()); }
   bool operator != (const hb_concat_iter_t& o) const
   {
-    return a != o.a
+    반환 a != o.a
         || b != o.b;
   }
 
@@ -690,7 +690,7 @@ struct
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>>
   operator () (A&& a, B&& b) const
-  { return hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  { 반환 hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_concat);
 
@@ -705,7 +705,7 @@ struct hb_apply_t
 	    hb_requires (hb_is_iterator (Iter))>
   void operator () (Iter it)
   {
-    for (; it; ++it)
+    위해 (; it; ++it)
       (void) hb_invoke (a, *it);
   }
 
@@ -716,11 +716,11 @@ struct
 {
   template <typename Appl> hb_apply_t<Appl>
   operator () (Appl&& a) const
-  { return hb_apply_t<Appl> (a); }
+  { 반환 hb_apply_t<Appl> (a); }
 
   template <typename Appl> hb_apply_t<Appl&>
   operator () (Appl *a) const
-  { return hb_apply_t<Appl&> (*a); }
+  { 반환 hb_apply_t<Appl&> (*a); }
 }
 HB_FUNCOBJ (hb_apply);
 
@@ -735,28 +735,28 @@ struct hb_range_iter_t :
   typedef T __item_t__;
   static constexpr bool is_random_access_iterator = true;
   static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  __item_t__ __item_at__ (unsigned j) const { return v + j * step; }
-  bool __more__ () const { return v != end_; }
-  unsigned __len__ () const { return !step ? UINT_MAX : (end_ - v) / step; }
+  __item_t__ __item__ () const { 반환 hb_ridentity (v); }
+  __item_t__ __item_at__ (unsigned j) const { 반환 v + j * step; }
+  bool __more__ () const { 반환 v != end_; }
+  unsigned __len__ () const { 반환 !step ? UINT_MAX : (end_ - v) / step; }
   void __next__ () { v += step; }
   void __forward__ (unsigned n) { v += n * step; }
   void __prev__ () { v -= step; }
   void __rewind__ (unsigned n) { v -= n * step; }
-  hb_range_iter_t __end__ () const { return hb_range_iter_t (end_, end_, step); }
+  hb_range_iter_t __end__ () const { 반환 hb_range_iter_t (end_, end_, step); }
   bool operator != (const hb_range_iter_t& o) const
-  { return v != o.v; }
+  { 반환 v != o.v; }
 
   private:
   static inline T end_for (T start, T end_, S step)
   {
-    if (!step)
-      return end_;
+    만약 (!step)
+      반환 end_;
     auto res = (end_ - start) % step;
-    if (!res)
-      return end_;
+    만약 (!res)
+      반환 end_;
     end_ += step - res;
-    return end_;
+    반환 end_;
   }
 
   private:
@@ -768,11 +768,11 @@ struct
 {
   template <typename T = unsigned> hb_range_iter_t<T, unsigned>
   operator () (T end = (unsigned) -1) const
-  { return hb_range_iter_t<T, unsigned> (0, end, 1u); }
+  { 반환 hb_range_iter_t<T, unsigned> (0, end, 1u); }
 
   template <typename T, typename S = unsigned> hb_range_iter_t<T, S>
   operator () (T start, T end, S step = 1u) const
-  { return hb_range_iter_t<T, S> (start, end, step); }
+  { 반환 hb_range_iter_t<T, S> (start, end, step); }
 }
 HB_FUNCOBJ (hb_range);
 
@@ -800,13 +800,13 @@ struct hb_iota_iter_t :
   typedef T __item_t__;
   static constexpr bool is_random_access_iterator = true;
   static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
+  __item_t__ __item__ () const { 반환 hb_ridentity (v); }
+  bool __more__ () const { 반환 true; }
+  unsigned __len__ () const { 반환 UINT_MAX; }
   void __next__ () { inc (step, hb_prioritize); }
   void __prev__ () { v -= step; }
-  hb_iota_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_iota_iter_t& o) const { return true; }
+  hb_iota_iter_t __end__ () const { 반환 *this; }
+  bool operator != (const hb_iota_iter_t& o) const { 반환 true; }
 
   private:
   T v;
@@ -816,7 +816,7 @@ struct
 {
   template <typename T = unsigned, typename S = unsigned> hb_iota_iter_t<T, S>
   operator () (T start = 0u, S step = 1u) const
-  { return hb_iota_iter_t<T, S> (start, step); }
+  { 반환 hb_iota_iter_t<T, S> (start, step); }
 }
 HB_FUNCOBJ (hb_iota);
 
@@ -829,16 +829,16 @@ struct hb_repeat_iter_t :
   typedef T __item_t__;
   static constexpr bool is_random_access_iterator = true;
   static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return v; }
-  __item_t__ __item_at__ (unsigned j) const { return v; }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
+  __item_t__ __item__ () const { 반환 v; }
+  __item_t__ __item_at__ (unsigned j) const { 반환 v; }
+  bool __more__ () const { 반환 true; }
+  unsigned __len__ () const { 반환 UINT_MAX; }
   void __next__ () {}
   void __forward__ (unsigned) {}
   void __prev__ () {}
   void __rewind__ (unsigned) {}
-  hb_repeat_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_repeat_iter_t& o) const { return true; }
+  hb_repeat_iter_t __end__ () const { 반환 *this; }
+  bool operator != (const hb_repeat_iter_t& o) const { 반환 true; }
 
   private:
   T v;
@@ -847,7 +847,7 @@ struct
 {
   template <typename T> hb_repeat_iter_t<T>
   operator () (T value) const
-  { return hb_repeat_iter_t<T> (value); }
+  { 반환 hb_repeat_iter_t<T> (value); }
 }
 HB_FUNCOBJ (hb_repeat);
 
@@ -874,11 +874,11 @@ struct
 
   template <typename Type> inline hb_array_t<Type>
   operator () (hb_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  { 반환 array.sub_array (0, count); }
 
   template <typename Type> inline hb_sorted_array_t<Type>
   operator () (hb_sorted_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  { 반환 array.sub_array (0, count); }
 }
 HB_FUNCOBJ (hb_take);
 
@@ -906,7 +906,7 @@ struct hb_sink_t
 	    hb_requires (hb_is_iterator (Iter))>
   void operator () (Iter it)
   {
-    for (; it; ++it)
+    위해 (; it; ++it)
       s << *it;
   }
 
@@ -917,11 +917,11 @@ struct
 {
   template <typename Sink> hb_sink_t<Sink>
   operator () (Sink&& s) const
-  { return hb_sink_t<Sink> (s); }
+  { 반환 hb_sink_t<Sink> (s); }
 
   template <typename Sink> hb_sink_t<Sink&>
   operator () (Sink *s) const
-  { return hb_sink_t<Sink&> (*s); }
+  { 반환 hb_sink_t<Sink&> (*s); }
 }
 HB_FUNCOBJ (hb_sink);
 
@@ -933,7 +933,7 @@ struct
 	    hb_requires (hb_is_iterator (Iter))>
   void operator () (Iter it) const
   {
-    for (; it; ++it)
+    위해 (; it; ++it)
       (void) *it;
   }
 }
@@ -950,7 +950,7 @@ struct hb_unzip_t
 	    hb_requires (hb_is_iterator (Iter))>
   void operator () (Iter it)
   {
-    for (; it; ++it)
+    위해 (; it; ++it)
     {
       const auto &v = *it;
       s1 << v.first;
@@ -966,11 +966,11 @@ struct
 {
   template <typename Sink1, typename Sink2> hb_unzip_t<Sink1, Sink2>
   operator () (Sink1&& s1, Sink2&& s2) const
-  { return hb_unzip_t<Sink1, Sink2> (s1, s2); }
+  { 반환 hb_unzip_t<Sink1, Sink2> (s1, s2); }
 
   template <typename Sink1, typename Sink2> hb_unzip_t<Sink1&, Sink2&>
   operator () (Sink1 *s1, Sink2 *s2) const
-  { return hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
+  { 반환 hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
 }
 HB_FUNCOBJ (hb_unzip);
 
@@ -987,10 +987,10 @@ struct
 		    Pred&& p = hb_identity,
 		    Proj&& f = hb_identity) const
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (!hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    위해 (auto it = hb_iter (c); it; ++it)
+      만약 (!hb_match (p, hb_get (f, *it)))
+	반환 false;
+    반환 true;
   }
 }
 HB_FUNCOBJ (hb_all);
@@ -1004,10 +1004,10 @@ struct
 		    Pred&& p = hb_identity,
 		    Proj&& f = hb_identity) const
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return true;
-    return false;
+    위해 (auto it = hb_iter (c); it; ++it)
+      만약 (hb_match (p, hb_get (f, *it)))
+	반환 true;
+    반환 false;
   }
 }
 HB_FUNCOBJ (hb_any);
@@ -1021,10 +1021,10 @@ struct
 		    Pred&& p = hb_identity,
 		    Proj&& f = hb_identity) const
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    위해 (auto it = hb_iter (c); it; ++it)
+      만약 (hb_match (p, hb_get (f, *it)))
+	반환 false;
+    반환 true;
   }
 }
 HB_FUNCOBJ (hb_none);
@@ -1038,7 +1038,7 @@ template <typename C, typename V,
 inline void
 hb_fill (C&& c, const V &v)
 {
-  for (auto i = hb_iter (c); i; i++)
+  위해 (auto i = hb_iter (c); i; i++)
     *i = v;
 }
 

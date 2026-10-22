@@ -58,20 +58,20 @@ struct CoverageFormat2_4
     return_trace (rangeRecord.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned 정수 get_coverage (hb_codepoint_t glyph_id) const
   {
     const CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
-    return likely (range.first <= range.last)
-         ? (unsigned int) range.value + (glyph_id - range.first)
+    반환 likely (range.first <= range.last)
+         ? (unsigned 정수) range.value + (glyph_id - range.first)
          : NOT_COVERED;
   }
 
   unsigned get_population () const
   {
     typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    위해 (const auto &r : rangeRecord)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    반환 ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
   }
 
   template <typename Iterator,
@@ -79,29 +79,29 @@ struct CoverageFormat2_4
   bool serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    만약 (unlikely (!c->extend_min (this))) return_trace (false);
 
     unsigned num_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
-    for (auto g: glyphs)
+    위해 (auto g: glyphs)
     {
-      if (last + 1 != g)
+      만약 (last + 1 != g)
         num_ranges++;
       last = g;
     }
 
-    if (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
-    if (!num_ranges) return_trace (true);
+    만약 (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
+    만약 (!num_ranges) return_trace (true);
 
     unsigned count = 0;
     unsigned range = (unsigned) -1;
     last = (hb_codepoint_t) -2;
     unsigned unsorted = false;
-    for (auto g: glyphs)
+    위해 (auto g: glyphs)
     {
-      if (last + 1 != g)
+      만약 (last + 1 != g)
       {
-	if (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
+	만약 (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
 	  unsorted = true;
 
         range++;
@@ -113,7 +113,7 @@ struct CoverageFormat2_4
       count++;
     }
 
-    if (unlikely (unsorted))
+    만약 (unlikely (unsorted))
       rangeRecord.as_array ().qsort (CoverageRangeRecord::cmp_range);
 
     return_trace (true);
@@ -121,23 +121,23 @@ struct CoverageFormat2_4
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    만약 (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      위해 (auto g : *glyphs)
+        만약 (get_coverage (g) != NOT_COVERED)
+	  반환 true;
+      반환 false;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { return range.intersects (*glyphs); }));
+    반환 hb_any (+ hb_iter (rangeRecord)
+                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { 반환 range.intersects (*glyphs); }));
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  bool intersects_coverage (const hb_set_t *glyphs, unsigned 정수 index) const
   {
     auto *range = rangeRecord.as_array ().bsearch (index);
-    if (range)
-      return range->intersects (*glyphs);
-    return false;
+    만약 (range)
+      반환 range->intersects (*glyphs);
+    반환 false;
   }
 
   static void add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
@@ -146,7 +146,7 @@ struct CoverageFormat2_4
   template <typename IterableOut>
   static void add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
   {
-    while (bits)
+    동안 (bits)
     {
       out << base + hb_ctz (bits);
       bits &= bits - 1;
@@ -160,35 +160,35 @@ struct CoverageFormat2_4
     /* Break out of loop for overlapping, broken, tables,
      * to avoid fuzzer timouts. */
     hb_codepoint_t last = 0;
-    for (const auto& range : rangeRecord)
+    위해 (const auto& range : rangeRecord)
     {
-      if (unlikely (range.first < last))
+      만약 (unlikely (range.first < last))
         break;
       last = range.last;
       hb_codepoint_t cursor = range.first & ~hb_bit_page_t::ELT_MASK;
       cursor = cursor ? cursor - 1 : HB_SET_VALUE_INVALID;
       uint64_t bits;
-      while (glyphs.next_bits (&cursor, &bits) && cursor <= last)
+      동안 (glyphs.next_bits (&cursor, &bits) && cursor <= last)
       {
-	if (range.first > cursor)
+	만약 (range.first > cursor)
 	  bits &= UINT64_MAX << (range.first - cursor);
-	unsigned int end = last - cursor;
-	if (end < hb_bit_page_t::ELT_BITS - 1)
+	unsigned 정수 end = last - cursor;
+	만약 (end < hb_bit_page_t::ELT_BITS - 1)
 	  bits &= (uint64_t (1) << (end + 1)) - 1;
 	add_intersected_bits (intersect_glyphs, cursor, bits);
       }
     }
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  unsigned cost () const { 반환 hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
 
   template <typename set_t>
   bool collect_coverage (set_t *glyphs) const
   {
-    for (const auto& range: rangeRecord)
-      if (unlikely (!range.collect_coverage (glyphs)))
-        return false;
-    return true;
+    위해 (const auto& range: rangeRecord)
+      만약 (unlikely (!range.collect_coverage (glyphs)))
+        반환 false;
+    반환 true;
   }
 
   public:
@@ -201,25 +201,25 @@ struct CoverageFormat2_4
       coverage = 0;
       i = 0;
       j = c->rangeRecord.len ? c->rangeRecord[0].first : 0;
-      if (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
+      만약 (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
       {
         /* Broken table. Skip. */
         i = c->rangeRecord.len;
         j = 0;
       }
     }
-    bool __more__ () const { return i < c->rangeRecord.len; }
+    bool __more__ () const { 반환 i < c->rangeRecord.len; }
     void __next__ ()
     {
-      if (j >= c->rangeRecord[i].last)
+      만약 (j >= c->rangeRecord[i].last)
       {
         i++;
-        if (__more__ ())
+        만약 (__more__ ())
         {
-          unsigned int old = coverage;
+          unsigned 정수 old = coverage;
           j = c->rangeRecord.arrayZ[i].first;
           coverage = c->rangeRecord.arrayZ[i].value;
-          if (unlikely (coverage != old + 1))
+          만약 (unlikely (coverage != old + 1))
           {
             /* Broken table. Skip. Important to avoid DoS.
              * Also, our callers depend on coverage being
@@ -227,31 +227,31 @@ struct CoverageFormat2_4
              * ie. iota(). */
            i = c->rangeRecord.len;
            j = 0;
-           return;
+           반환;
           }
         }
-        else
+        아니면
           j = 0;
-        return;
+        반환;
       }
       coverage++;
       j++;
     }
-    hb_codepoint_t get_glyph () const { return j; }
+    hb_codepoint_t get_glyph () const { 반환 j; }
     bool operator != (const iter_t& o) const
-    { return i != o.i || j != o.j; }
+    { 반환 i != o.i || j != o.j; }
     iter_t __end__ () const
     {
       iter_t it;
       it.init (*c);
       it.i = c->rangeRecord.len;
       it.j = 0;
-      return it;
+      반환 it;
     }
 
     private:
     const struct CoverageFormat2_4 *c;
-    unsigned int i, coverage;
+    unsigned 정수 i, coverage;
     hb_codepoint_t j;
   };
   private:

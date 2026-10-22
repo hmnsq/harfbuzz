@@ -11,9 +11,9 @@ void collect_ligature_anchor_indexes (unsigned rows,
                                      const hb_map_t &klass_mapping,
                                      hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (unsigned row = 0; row < rows; row++)
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
+  위해 (unsigned row = 0; row < rows; row++)
+    위해 (unsigned col = 0; col < class_count; col++)
+      만약 (klass_mapping.has (col))
         indexes.push (row * class_count + col);
 }
 
@@ -23,10 +23,10 @@ void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c
                                       glyph_data_t offsets,
                                       hb_array_t<const unsigned> indexes)
 {
-  for (unsigned i : indexes)
+  위해 (unsigned i : indexes)
   {
     unsigned offset = offsets[i];
-    if (offset)
+    만약 (offset)
       StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
   }
 }
@@ -39,10 +39,10 @@ void collect_anchor_indexes (const Coverage &coverage,
                              const hb_map_t &klass_mapping,
                              hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
-    if (glyphset.has (_.first))
-      for (unsigned col = 0; col < class_count; col++)
-        if (klass_mapping.has (col))
+  위해 (const auto _ : hb_zip (coverage, hb_range (rows)))
+    만약 (glyphset.has (_.first))
+      위해 (unsigned col = 0; col < class_count; col++)
+        만약 (klass_mapping.has (col))
           indexes.push (_.second * class_count + col);
 }
 
@@ -57,22 +57,22 @@ void collect_subset_anchor_indexes (const Coverage &coverage,
                                     hb_sorted_vector_t<hb_codepoint_t> &new_coverage,
                                     hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
+  위해 (const auto _ : hb_zip (coverage, hb_range (rows)))
   {
-    if (!glyphset.has (_.first)) continue;
+    만약 (!glyphset.has (_.first)) continue;
     unsigned row = _.second;
     bool non_empty = false;
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+    위해 (unsigned col = 0; col < class_count; col++)
+      만약 (klass_mapping.has (col) && offsets[row * class_count + col])
       {
         non_empty = true;
         break;
       }
-    if (!non_empty) continue;
+    만약 (!non_empty) continue;
 
     new_coverage.push (glyph_map.get (_.first));
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
+    위해 (unsigned col = 0; col < class_count; col++)
+      만약 (klass_mapping.has (col))
         indexes.push (row * class_count + col);
   }
 }
@@ -87,35 +87,35 @@ struct AnchorMatrix
   public:
   DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned 정수 cols) const
   {
     TRACE_SANITIZE (this);
-    if (!c->check_struct (this)) return_trace (false);
+    만약 (!c->check_struct (this)) return_trace (false);
     hb_barrier ();
-    if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    만약 (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
+    unsigned 정수 count = rows * cols;
+    만약 (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
 
-    if (c->lazy_some_gpos)
+    만약 (c->lazy_some_gpos)
       return_trace (true);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (!matrixZ[i].sanitize (c, this)) return_trace (false);
+    위해 (unsigned 정수 i = 0; i < count; i++)
+      만약 (!matrixZ[i].sanitize (c, this)) return_trace (false);
     return_trace (true);
   }
 
   const Anchor& get_anchor (hb_ot_apply_context_t *c,
-			    unsigned int row, unsigned int col,
-			    unsigned int cols, bool *found) const
+			    unsigned 정수 row, unsigned 정수 col,
+			    unsigned 정수 cols, bool *found) const
   {
     *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
+    만약 (unlikely (row >= rows || col >= cols)) 반환 Null (Anchor);
     auto &offset = matrixZ[row * cols + col];
-    if (unlikely (!offset.sanitize (&c->sanitizer, this))) return Null (Anchor);
+    만약 (unlikely (!offset.sanitize (&c->sanitizer, this))) 반환 Null (Anchor);
     hb_barrier ();
     *found = !offset.is_null ();
-    return this+offset;
+    반환 this+offset;
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
@@ -134,14 +134,14 @@ struct AnchorMatrix
 
     auto *out = c->serializer->start_embed (this);
 
-    if (!index_iter) return_trace (false);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    만약 (!index_iter) return_trace (false);
+    만약 (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
 
     out->rows = num_rows;
-    for (const unsigned i : index_iter)
+    위해 (const unsigned i : index_iter)
     {
       auto *offset = c->serializer->embed (matrixZ[i]);
-      if (!offset) return_trace (false);
+      만약 (!offset) return_trace (false);
       offset->serialize_subset (c, matrixZ[i], this);
     }
 
@@ -150,9 +150,9 @@ struct AnchorMatrix
 
   bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
+    만약 (unlikely (row >= rows || col >= num_cols)) 반환 true;
     auto &offset = matrixZ[row * num_cols + col];
-    return offset.is_null ();
+    반환 offset.is_null ();
   }
 };
 

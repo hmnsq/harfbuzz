@@ -54,7 +54,7 @@ extern HB_INTERNAL const uint8_t _hb_modified_combining_class[256];
 /* Simple callbacks are those taking a hb_codepoint_t and returning a hb_codepoint_t */
 #define HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE \
   HB_UNICODE_FUNC_IMPLEMENT (hb_unicode_combining_class_t, combining_class) \
-  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (unsigned int, eastasian_width)) \
+  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (unsigned 정수, eastasian_width)) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_unicode_general_category_t, general_category) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_codepoint_t, mirroring) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_script_t, script) \
@@ -67,7 +67,7 @@ struct hb_unicode_funcs_t
   hb_unicode_funcs_t *parent;
 
 #define HB_UNICODE_FUNC_IMPLEMENT(return_type, name) \
-  return_type name (hb_codepoint_t unicode) { return func.name (this, unicode, user_data.name); }
+  return_type name (hb_codepoint_t unicode) { 반환 func.name (this, unicode, user_data.name); }
 HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
 #undef HB_UNICODE_FUNC_IMPLEMENT
 
@@ -75,44 +75,44 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
 		     hb_codepoint_t *ab)
   {
     *ab = 0;
-    if (unlikely (!a || !b)) return false;
-    return func.compose (this, a, b, ab, user_data.compose);
+    만약 (unlikely (!a || !b)) 반환 false;
+    반환 func.compose (this, a, b, ab, user_data.compose);
   }
 
   hb_bool_t decompose (hb_codepoint_t ab,
 		       hb_codepoint_t *a, hb_codepoint_t *b)
   {
     *a = ab; *b = 0;
-    return func.decompose (this, ab, a, b, user_data.decompose);
+    반환 func.decompose (this, ab, a, b, user_data.decompose);
   }
 
-  unsigned int decompose_compatibility (hb_codepoint_t  u,
+  unsigned 정수 decompose_compatibility (hb_codepoint_t  u,
 					hb_codepoint_t *decomposed)
   {
 #ifdef HB_DISABLE_DEPRECATED
-    unsigned int ret  = 0;
-#else
-    unsigned int ret = func.decompose_compatibility (this, u, decomposed, user_data.decompose_compatibility);
+    unsigned 정수 ret  = 0;
+#아니면
+    unsigned 정수 ret = func.decompose_compatibility (this, u, decomposed, user_data.decompose_compatibility);
 #endif
-    if (ret == 1 && u == decomposed[0]) {
+    만약 (ret == 1 && u == decomposed[0]) {
       decomposed[0] = 0;
-      return 0;
+      반환 0;
     }
     decomposed[ret] = 0;
-    return ret;
+    반환 ret;
   }
 
-  unsigned int
+  unsigned 정수
   modified_combining_class (hb_codepoint_t u)
   {
     /* Reorder SAKOT to ensure it comes after any tone marks. */
-    if (unlikely (u == 0x1A60u)) return 254;
+    만약 (unlikely (u == 0x1A60u)) 반환 254;
     /* Reorder PADMA to ensure it comes after any vowel marks. */
-    if (unlikely (u == 0x0FC6u)) return 254;
+    만약 (unlikely (u == 0x0FC6u)) 반환 254;
     /* Reorder TSA -PHRU to reorder before U+0F74 */
-    if (unlikely (u == 0x0F39u)) return 127;
+    만약 (unlikely (u == 0x0F39u)) 반환 127;
 
-    return _hb_modified_combining_class[combining_class (u)];
+    반환 _hb_modified_combining_class[combining_class (u)];
   }
 
   static hb_bool_t
@@ -120,7 +120,7 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
   {
     /* U+180B..180D, U+180F MONGOLIAN FREE VARIATION SELECTORs are handled in the
      * Arabic shaper.  No need to match them here. */
-    return unlikely (hb_in_ranges<hb_codepoint_t> (unicode,
+    반환 unlikely (hb_in_ranges<hb_codepoint_t> (unicode,
 						   0xFE00u, 0xFE0Fu, /* VARIATION SELECTOR-1..16 */
 						   0xE0100u, 0xE01EFu));  /* VARIATION SELECTOR-17..256 */
   }
@@ -167,31 +167,31 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
   is_default_ignorable (hb_codepoint_t ch)
   {
     hb_codepoint_t plane = ch >> 16;
-    if (likely (plane == 0))
+    만약 (likely (plane == 0))
     {
       /* BMP */
       hb_codepoint_t page = ch >> 8;
       switch (page) {
-	case 0x00: return unlikely (ch == 0x00ADu);
-	case 0x03: return unlikely (ch == 0x034Fu);
-	case 0x06: return unlikely (ch == 0x061Cu);
-	case 0x17: return hb_in_range<hb_codepoint_t> (ch, 0x17B4u, 0x17B5u);
-	case 0x18: return hb_in_range<hb_codepoint_t> (ch, 0x180Bu, 0x180Fu);
-	case 0x20: return hb_in_ranges<hb_codepoint_t> (ch, 0x200Bu, 0x200Fu,
+	case 0x00: 반환 unlikely (ch == 0x00ADu);
+	case 0x03: 반환 unlikely (ch == 0x034Fu);
+	case 0x06: 반환 unlikely (ch == 0x061Cu);
+	case 0x17: 반환 hb_in_range<hb_codepoint_t> (ch, 0x17B4u, 0x17B5u);
+	case 0x18: 반환 hb_in_range<hb_codepoint_t> (ch, 0x180Bu, 0x180Fu);
+	case 0x20: 반환 hb_in_ranges<hb_codepoint_t> (ch, 0x200Bu, 0x200Fu,
 					    0x202Au, 0x202Eu,
 					    0x2060u, 0x206Fu);
-	case 0xFE: return hb_in_range<hb_codepoint_t> (ch, 0xFE00u, 0xFE0Fu) || ch == 0xFEFFu;
-	case 0xFF: return hb_in_range<hb_codepoint_t> (ch, 0xFFF0u, 0xFFF8u);
-	default: return false;
+	case 0xFE: 반환 hb_in_range<hb_codepoint_t> (ch, 0xFE00u, 0xFE0Fu) || ch == 0xFEFFu;
+	case 0xFF: 반환 hb_in_range<hb_codepoint_t> (ch, 0xFFF0u, 0xFFF8u);
+	default: 반환 false;
       }
     }
-    else
+    아니면
     {
       /* Other planes */
       switch (plane) {
-	case 0x01: return hb_in_range<hb_codepoint_t> (ch, 0x1D173u, 0x1D17Au);
-	case 0x0E: return hb_in_range<hb_codepoint_t> (ch, 0xE0000u, 0xE0FFFu);
-	default: return false;
+	case 0x01: 반환 hb_in_range<hb_codepoint_t> (ch, 0x1D173u, 0x1D17Au);
+	case 0x0E: 반환 hb_in_range<hb_codepoint_t> (ch, 0xE0000u, 0xE0FFFu);
+	default: 반환 false;
       }
     }
   }
@@ -221,23 +221,23 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
     switch (u)
     {
       /* All GC=Zs chars that can use a fallback. */
-      default:	    return NOT_SPACE;	/* U+1680 OGHAM SPACE MARK */
-      case 0x0020u: return SPACE;	/* U+0020 SPACE */
-      case 0x00A0u: return SPACE;	/* U+00A0 NO-BREAK SPACE */
-      case 0x2000u: return SPACE_EM_2;	/* U+2000 EN QUAD */
-      case 0x2001u: return SPACE_EM;	/* U+2001 EM QUAD */
-      case 0x2002u: return SPACE_EM_2;	/* U+2002 EN SPACE */
-      case 0x2003u: return SPACE_EM;	/* U+2003 EM SPACE */
-      case 0x2004u: return SPACE_EM_3;	/* U+2004 THREE-PER-EM SPACE */
-      case 0x2005u: return SPACE_EM_4;	/* U+2005 FOUR-PER-EM SPACE */
-      case 0x2006u: return SPACE_EM_6;	/* U+2006 SIX-PER-EM SPACE */
-      case 0x2007u: return SPACE_FIGURE;	/* U+2007 FIGURE SPACE */
-      case 0x2008u: return SPACE_PUNCTUATION;	/* U+2008 PUNCTUATION SPACE */
-      case 0x2009u: return SPACE_EM_5;		/* U+2009 THIN SPACE */
-      case 0x200Au: return SPACE_EM_16;		/* U+200A HAIR SPACE */
-      case 0x202Fu: return SPACE_NARROW;	/* U+202F NARROW NO-BREAK SPACE */
-      case 0x205Fu: return SPACE_4_EM_18;	/* U+205F MEDIUM MATHEMATICAL SPACE */
-      case 0x3000u: return SPACE_EM;		/* U+3000 IDEOGRAPHIC SPACE */
+      default:	    반환 NOT_SPACE;	/* U+1680 OGHAM SPACE MARK */
+      case 0x0020u: 반환 SPACE;	/* U+0020 SPACE */
+      case 0x00A0u: 반환 SPACE;	/* U+00A0 NO-BREAK SPACE */
+      case 0x2000u: 반환 SPACE_EM_2;	/* U+2000 EN QUAD */
+      case 0x2001u: 반환 SPACE_EM;	/* U+2001 EM QUAD */
+      case 0x2002u: 반환 SPACE_EM_2;	/* U+2002 EN SPACE */
+      case 0x2003u: 반환 SPACE_EM;	/* U+2003 EM SPACE */
+      case 0x2004u: 반환 SPACE_EM_3;	/* U+2004 THREE-PER-EM SPACE */
+      case 0x2005u: 반환 SPACE_EM_4;	/* U+2005 FOUR-PER-EM SPACE */
+      case 0x2006u: 반환 SPACE_EM_6;	/* U+2006 SIX-PER-EM SPACE */
+      case 0x2007u: 반환 SPACE_FIGURE;	/* U+2007 FIGURE SPACE */
+      case 0x2008u: 반환 SPACE_PUNCTUATION;	/* U+2008 PUNCTUATION SPACE */
+      case 0x2009u: 반환 SPACE_EM_5;		/* U+2009 THIN SPACE */
+      case 0x200Au: 반환 SPACE_EM_16;		/* U+200A HAIR SPACE */
+      case 0x202Fu: 반환 SPACE_NARROW;	/* U+202F NARROW NO-BREAK SPACE */
+      case 0x205Fu: 반환 SPACE_4_EM_18;	/* U+205F MEDIUM MATHEMATICAL SPACE */
+      case 0x3000u: 반환 SPACE_EM;		/* U+3000 IDEOGRAPHIC SPACE */
     }
   }
 
@@ -247,49 +247,49 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
     switch (u >> 8)
     {
       case 0x20: switch (u) {
-	case 0x2013u: return 0xfe32u; // EN DASH
-	case 0x2014u: return 0xfe31u; // EM DASH
-	case 0x2025u: return 0xfe30u; // TWO DOT LEADER
-	case 0x2026u: return 0xfe19u; // HORIZONTAL ELLIPSIS
+	case 0x2013u: 반환 0xfe32u; // EN DASH
+	case 0x2014u: 반환 0xfe31u; // EM DASH
+	case 0x2025u: 반환 0xfe30u; // TWO DOT LEADER
+	case 0x2026u: 반환 0xfe19u; // HORIZONTAL ELLIPSIS
       } break;
       case 0x30: switch (u) {
-	case 0x3001u: return 0xfe11u; // IDEOGRAPHIC COMMA
-	case 0x3002u: return 0xfe12u; // IDEOGRAPHIC FULL STOP
-	case 0x3008u: return 0xfe3fu; // LEFT ANGLE BRACKET
-	case 0x3009u: return 0xfe40u; // RIGHT ANGLE BRACKET
-	case 0x300au: return 0xfe3du; // LEFT DOUBLE ANGLE BRACKET
-	case 0x300bu: return 0xfe3eu; // RIGHT DOUBLE ANGLE BRACKET
-	case 0x300cu: return 0xfe41u; // LEFT CORNER BRACKET
-	case 0x300du: return 0xfe42u; // RIGHT CORNER BRACKET
-	case 0x300eu: return 0xfe43u; // LEFT WHITE CORNER BRACKET
-	case 0x300fu: return 0xfe44u; // RIGHT WHITE CORNER BRACKET
-	case 0x3010u: return 0xfe3bu; // LEFT BLACK LENTICULAR BRACKET
-	case 0x3011u: return 0xfe3cu; // RIGHT BLACK LENTICULAR BRACKET
-	case 0x3014u: return 0xfe39u; // LEFT TORTOISE SHELL BRACKET
-	case 0x3015u: return 0xfe3au; // RIGHT TORTOISE SHELL BRACKET
-	case 0x3016u: return 0xfe17u; // LEFT WHITE LENTICULAR BRACKET
-	case 0x3017u: return 0xfe18u; // RIGHT WHITE LENTICULAR BRACKET
+	case 0x3001u: 반환 0xfe11u; // IDEOGRAPHIC COMMA
+	case 0x3002u: 반환 0xfe12u; // IDEOGRAPHIC FULL STOP
+	case 0x3008u: 반환 0xfe3fu; // LEFT ANGLE BRACKET
+	case 0x3009u: 반환 0xfe40u; // RIGHT ANGLE BRACKET
+	case 0x300au: 반환 0xfe3du; // LEFT DOUBLE ANGLE BRACKET
+	case 0x300bu: 반환 0xfe3eu; // RIGHT DOUBLE ANGLE BRACKET
+	case 0x300cu: 반환 0xfe41u; // LEFT CORNER BRACKET
+	case 0x300du: 반환 0xfe42u; // RIGHT CORNER BRACKET
+	case 0x300eu: 반환 0xfe43u; // LEFT WHITE CORNER BRACKET
+	case 0x300fu: 반환 0xfe44u; // RIGHT WHITE CORNER BRACKET
+	case 0x3010u: 반환 0xfe3bu; // LEFT BLACK LENTICULAR BRACKET
+	case 0x3011u: 반환 0xfe3cu; // RIGHT BLACK LENTICULAR BRACKET
+	case 0x3014u: 반환 0xfe39u; // LEFT TORTOISE SHELL BRACKET
+	case 0x3015u: 반환 0xfe3au; // RIGHT TORTOISE SHELL BRACKET
+	case 0x3016u: 반환 0xfe17u; // LEFT WHITE LENTICULAR BRACKET
+	case 0x3017u: 반환 0xfe18u; // RIGHT WHITE LENTICULAR BRACKET
       } break;
       case 0xfe: switch (u) {
-	case 0xfe4fu: return 0xfe34u; // WAVY LOW LINE
+	case 0xfe4fu: 반환 0xfe34u; // WAVY LOW LINE
       } break;
       case 0xff: switch (u) {
-	case 0xff01u: return 0xfe15u; // FULLWIDTH EXCLAMATION MARK
-	case 0xff08u: return 0xfe35u; // FULLWIDTH LEFT PARENTHESIS
-	case 0xff09u: return 0xfe36u; // FULLWIDTH RIGHT PARENTHESIS
-	case 0xff0cu: return 0xfe10u; // FULLWIDTH COMMA
-	case 0xff1au: return 0xfe13u; // FULLWIDTH COLON
-	case 0xff1bu: return 0xfe14u; // FULLWIDTH SEMICOLON
-	case 0xff1fu: return 0xfe16u; // FULLWIDTH QUESTION MARK
-	case 0xff3bu: return 0xfe47u; // FULLWIDTH LEFT SQUARE BRACKET
-	case 0xff3du: return 0xfe48u; // FULLWIDTH RIGHT SQUARE BRACKET
-	case 0xff3fu: return 0xfe33u; // FULLWIDTH LOW LINE
-	case 0xff5bu: return 0xfe37u; // FULLWIDTH LEFT CURLY BRACKET
-	case 0xff5du: return 0xfe38u; // FULLWIDTH RIGHT CURLY BRACKET
+	case 0xff01u: 반환 0xfe15u; // FULLWIDTH EXCLAMATION MARK
+	case 0xff08u: 반환 0xfe35u; // FULLWIDTH LEFT PARENTHESIS
+	case 0xff09u: 반환 0xfe36u; // FULLWIDTH RIGHT PARENTHESIS
+	case 0xff0cu: 반환 0xfe10u; // FULLWIDTH COMMA
+	case 0xff1au: 반환 0xfe13u; // FULLWIDTH COLON
+	case 0xff1bu: 반환 0xfe14u; // FULLWIDTH SEMICOLON
+	case 0xff1fu: 반환 0xfe16u; // FULLWIDTH QUESTION MARK
+	case 0xff3bu: 반환 0xfe47u; // FULLWIDTH LEFT SQUARE BRACKET
+	case 0xff3du: 반환 0xfe48u; // FULLWIDTH RIGHT SQUARE BRACKET
+	case 0xff3fu: 반환 0xfe33u; // FULLWIDTH LOW LINE
+	case 0xff5bu: 반환 0xfe37u; // FULLWIDTH LEFT CURLY BRACKET
+	case 0xff5du: 반환 0xfe38u; // FULLWIDTH RIGHT CURLY BRACKET
       } break;
     }
 
-    return u;
+    반환 u;
   }
 
   struct {
@@ -422,18 +422,18 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
 
 struct hb_unicode_range_t
 {
-  static int
+  static 정수
   cmp (const void *_key, const void *_item)
   {
     hb_codepoint_t cp = *((hb_codepoint_t *) _key);
     const hb_unicode_range_t *range = (hb_unicode_range_t *) _item;
 
-    if (cp < range->start)
-      return -1;
-    else if (cp <= range->end)
-      return 0;
-    else
-      return +1;
+    만약 (cp < range->start)
+      반환 -1;
+    아니면 만약 (cp <= range->end)
+      반환 0;
+    아니면
+      반환 +1;
   }
 
   hb_codepoint_t start;

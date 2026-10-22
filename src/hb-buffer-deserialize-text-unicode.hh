@@ -126,11 +126,11 @@ static const char _deserialize_text_unicode_eof_actions[] = {
 	0, 5
 };
 
-static const int deserialize_text_unicode_start = 7;
-static const int deserialize_text_unicode_first_final = 7;
-static const int deserialize_text_unicode_error = 0;
+static const 정수 deserialize_text_unicode_start = 7;
+static const 정수 deserialize_text_unicode_first_final = 7;
+static const 정수 deserialize_text_unicode_error = 0;
 
-static const int deserialize_text_unicode_en_main = 7;
+static const 정수 deserialize_text_unicode_en_main = 7;
 
 
 #line 80 "hb-buffer-deserialize-text-unicode.rl"
@@ -139,14 +139,14 @@ static const int deserialize_text_unicode_en_main = 7;
 static hb_bool_t
 _hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
 				     const char *buf,
-				     unsigned int buf_len,
+				     unsigned 정수 buf_len,
 				     const char **end_ptr,
 				     hb_font_t *font)
 {
   const char *p = buf, *pe = buf + buf_len, *eof = pe;
 
   const char *tok = nullptr;
-  int cs;
+  정수 cs;
   hb_glyph_info_t info = {0};
   const hb_glyph_position_t pos = {0};
   
@@ -157,13 +157,13 @@ _hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
 
 #line 150 "hb-buffer-deserialize-text-unicode.hh"
 	{
-	int _slen;
-	int _trans;
+	정수 _slen;
+	정수 _trans;
 	const unsigned char *_keys;
 	const char *_inds;
-	if ( p == pe )
+	만약 ( p == pe )
 		goto _test_eof;
-	if ( cs == 0 )
+	만약 ( cs == 0 )
 		goto _out;
 _resume:
 	_keys = _deserialize_text_unicode_trans_keys + (cs<<1);
@@ -176,7 +176,7 @@ _resume:
 
 	cs = _deserialize_text_unicode_trans_targs[_trans];
 
-	if ( _deserialize_text_unicode_trans_actions[_trans] == 0 )
+	만약 ( _deserialize_text_unicode_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _deserialize_text_unicode_trans_actions[_trans] ) {
@@ -194,19 +194,19 @@ _resume:
 	break;
 	case 2:
 #line 55 "hb-buffer-deserialize-text-unicode.rl"
-	{if (!parse_hex (tok, p, &info.codepoint )) return false; }
+	{만약 (!parse_hex (tok, p, &info.codepoint )) 반환 false; }
 	break;
 	case 3:
 #line 57 "hb-buffer-deserialize-text-unicode.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
+	{ 만약 (!parse_uint (tok, p, &info.cluster )) 반환 false; }
 	break;
 	case 6:
 #line 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
+	만약 (unlikely (!buffer->successful))
+	  반환 false;
+	만약 (buffer->have_positions)
 	  buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
@@ -219,21 +219,21 @@ _resume:
 	}
 
 _again:
-	if ( cs == 0 )
+	만약 ( cs == 0 )
 		goto _out;
-	if ( ++p != pe )
+	만약 ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
-	if ( p == eof )
+	만약 ( p == eof )
 	{
 	switch ( _deserialize_text_unicode_eof_actions[cs] ) {
 	case 5:
 #line 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
+	만약 (unlikely (!buffer->successful))
+	  반환 false;
+	만약 (buffer->have_positions)
 	  buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
@@ -250,7 +250,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  반환 p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH */

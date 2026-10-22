@@ -36,7 +36,7 @@ struct hb_shape_plan_key_t
   hb_segment_properties_t  props;
 
   const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  unsigned 정수             num_user_features;
 
 #ifndef HB_NO_OT_SHAPE
   hb_ot_shape_plan_key_t   ot;
@@ -49,9 +49,9 @@ struct hb_shape_plan_key_t
 			 hb_face_t                     *face,
 			 const hb_segment_properties_t *props,
 			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
-			 const int                     *coords,
-			 unsigned int                   num_coords,
+			 unsigned 정수                   num_user_features,
+			 const 정수                     *coords,
+			 unsigned 정수                   num_coords,
 			 const char * const            *shaper_list);
 
   HB_INTERNAL void fini ()

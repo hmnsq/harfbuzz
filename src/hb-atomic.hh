@@ -47,12 +47,12 @@
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
 #ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
+#만약 defined(__ATOMIC_ACQUIRE) // gcc-like
 static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
 #elif !defined(_MSC_VER)
 #include <atomic>
 #define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
+#아니면
 static inline void _hb_compiler_memory_r_barrier () {}
 #endif
 #endif
@@ -68,24 +68,24 @@ struct hb_atomic_t
   constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
   hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); 반환 *this; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); 반환 *this; }
   hb_atomic_t &operator= (T v_)
   {
     set_relaxed (v_);
-    return *this;
+    반환 *this;
   }
-  operator T () const { return get_relaxed (); }
+  operator T () const { 반환 get_relaxed (); }
 
   void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
   void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  T get_relaxed () const { 반환 v.load (std::memory_order_relaxed); }
+  T get_acquire () const { 반환 v.load (std::memory_order_acquire); }
+  T inc () { 반환 v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { 반환 v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  정수 operator++ (정수) { 반환 inc (); }
+  정수 operator-- (정수) { 반환 dec (); }
 
   friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
@@ -106,19 +106,19 @@ struct hb_atomic_t<T *>
 
   void init (T *v_ = nullptr) { set_relaxed (v_); }
   void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  T *get_relaxed () const { 반환 v.load (std::memory_order_relaxed); }
+  T *get_acquire () const { 반환 v.load (std::memory_order_acquire); }
+  bool cmpexch (T *old, T *new_) { 반환 v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); 반환 *this; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); 반환 *this; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
+  operator bool () const { 반환 get_acquire () != nullptr; }
+  T *operator->() const { 반환 get_acquire (); }
   template <typename C>
   operator C * () const
   {
-    return get_acquire ();
+    반환 get_acquire ();
   }
 
   friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
@@ -131,7 +131,7 @@ struct hb_atomic_t<T *>
   std::atomic<T *> v {nullptr};
 };
 
-#else /* defined(HB_NO_MT) */
+#아니면 /* defined(HB_NO_MT) */
 
 template <typename T>
 struct hb_atomic_t
@@ -139,18 +139,18 @@ struct hb_atomic_t
   hb_atomic_t () = default;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& operator = (T v_) { set_relaxed (v_); 반환 *this; }
+  operator T () const { 반환 get_relaxed (); }
 
   void set_relaxed (T v_) { v = v_; }
   void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  T get_relaxed () const { 반환 v; }
+  T get_acquire () const { 반환 v; }
+  T inc () { 반환 v++; }
+  T dec () { 반환 v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  정수 operator ++ (정수) { 반환 inc (); }
+  정수 operator -- (정수) { 반환 dec (); }
 
   T v = 0;
 };
@@ -164,18 +164,18 @@ struct hb_atomic_t<T*>
 
   void init (T* v_ = nullptr) { set_relaxed (v_); }
   void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
+  T *get_relaxed () const { 반환 v; }
+  T *get_acquire () const { 반환 v; }
   bool cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    만약 (v != old) 반환 false;
     v = new_;
-    return true;
+    반환 true;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  operator bool () const { 반환 get_acquire () != nullptr; }
+  T * operator -> () const                    { 반환 get_acquire (); }
+  template <typename C> operator C * () const { 반환 get_acquire (); }
 
   T *v = nullptr;
 };
@@ -186,7 +186,7 @@ struct hb_atomic_t<T*>
 static inline bool hb_barrier ()
 {
   _hb_compiler_memory_r_barrier ();
-  return true;
+  반환 true;
 }
 
 

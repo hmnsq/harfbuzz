@@ -26,7 +26,7 @@ static void SinglePos_serialize (hb_serialize_context_t *c,
                                  const ValueBase *src,
                                  ValueFormat src_format,
                                  Iterator it,
-                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
+                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 정수>> *layout_variation_idx_delta_map,
                                  unsigned new_format);
 
 

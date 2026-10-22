@@ -1,12 +1,12 @@
 #include "hb-ot-shaper-use-table.hh"
 
-int main (int argc, char **argv)
+정수 main (정수 argc, char **argv)
 {
-  if (argc != 2)
+  만약 (argc != 2)
   {
-    for (unsigned u = 0; u < 0x10FFFFu; u++)
+    위해 (unsigned u = 0; u < 0x10FFFFu; u++)
       printf ("U+%04X %d\n", u, hb_use_get_category (u));
-    return 0;
+    반환 0;
   }
 
   hb_codepoint_t u;
@@ -14,5 +14,5 @@ int main (int argc, char **argv)
 
   printf ("%d\n", hb_use_get_category (u));
 
-  return 0;
+  반환 0;
 }

@@ -59,7 +59,7 @@ collect_features_hangul (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
-  for (unsigned int i = FIRST_HANGUL_FEATURE; i < HANGUL_FEATURE_COUNT; i++)
+  위해 (unsigned 정수 i = FIRST_HANGUL_FEATURE; i < HANGUL_FEATURE_COUNT; i++)
     map->add_feature (hangul_features[i]);
 }
 
@@ -90,15 +90,15 @@ static void *
 data_create_hangul (const hb_ot_shape_plan_t *plan)
 {
   hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, sizeof (hangul_shape_plan_t));
-  if (unlikely (!hangul_plan))
-    return nullptr;
+  만약 (unlikely (!hangul_plan))
+    반환 nullptr;
 
-  for (unsigned int i = 0; i < HANGUL_FEATURE_COUNT; i++)
+  위해 (unsigned 정수 i = 0; i < HANGUL_FEATURE_COUNT; i++)
     hangul_plan->mask_array[i] = plan->map.get_1_mask (hangul_features[i]);
 
   hangul_plan->calt_mask = plan->map.get_1_mask (HB_TAG('c','a','l','t'));
 
-  return hangul_plan;
+  반환 hangul_plan;
 }
 
 static void
@@ -137,7 +137,7 @@ is_zero_width_char (hb_font_t *font,
 		    hb_codepoint_t unicode)
 {
   hb_codepoint_t glyph;
-  return hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
+  반환 hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
 }
 
 static void
@@ -196,28 +196,28 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
    */
 
   buffer->clear_output ();
-  unsigned int start = 0, end = 0; /* Extent of most recently seen syllable;
+  unsigned 정수 start = 0, end = 0; /* Extent of most recently seen syllable;
 				    * valid only if start < end
 				    */
-  unsigned int count = buffer->len;
+  unsigned 정수 count = buffer->len;
 
-  for (buffer->idx = 0; buffer->idx < count && buffer->successful;)
+  위해 (buffer->idx = 0; buffer->idx < count && buffer->successful;)
   {
     hb_codepoint_t u = buffer->cur().codepoint;
 
-    if (isHangulTone (u))
+    만약 (isHangulTone (u))
     {
       /*
        * We could cache the width of the tone marks and the existence of dotted-circle,
        * but the use of the Hangul tone mark characters seems to be rare enough that
        * I didn't bother for now.
        */
-      if (start < end && end == buffer->out_len)
+      만약 (start < end && end == buffer->out_len)
       {
 	/* Tone mark follows a valid syllable; move it in front, unless it's zero width. */
 	buffer->unsafe_to_break_from_outbuffer (start, buffer->idx);
-	if (unlikely (!buffer->next_glyph ())) break;
-	if (!is_zero_width_char (font, u))
+	만약 (unlikely (!buffer->next_glyph ())) break;
+	만약 (!is_zero_width_char (font, u))
 	{
 	  buffer->merge_out_clusters (start, end + 1);
 	  hb_glyph_info_t *info = buffer->out_info;
@@ -226,25 +226,25 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	  info[start] = tone;
 	}
       }
-      else
+      아니면
       {
 	/* No valid syllable as base for tone mark; try to insert dotted circle. */
-	if (!(buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE) &&
+	만약 (!(buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE) &&
 	    font->has_glyph (0x25CCu))
 	{
 	  hb_codepoint_t chars[2];
-	  if (!is_zero_width_char (font, u))
+	  만약 (!is_zero_width_char (font, u))
 	  {
 	    chars[0] = u;
 	    chars[1] = 0x25CCu;
-	  } else
+	  } 아니면
 	  {
 	    chars[0] = 0x25CCu;
 	    chars[1] = u;
 	  }
 	  (void) buffer->replace_glyphs (1, 2, chars);
 	}
-	else
+	아니면
 	{
 	  /* No dotted circle available in the font; just leave tone mark untouched. */
 	  (void) buffer->next_glyph ();
@@ -258,31 +258,31 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 			      * will only be used if we set end to a later position.
 			      */
 
-    if (isL (u) && buffer->idx + 1 < count)
+    만약 (isL (u) && buffer->idx + 1 < count)
     {
       hb_codepoint_t l = u;
       hb_codepoint_t v = buffer->cur(+1).codepoint;
-      if (isV (v))
+      만약 (isV (v))
       {
 	/* Have <L,V> or <L,V,T>. */
 	hb_codepoint_t t = 0;
-	unsigned int tindex = 0;
-	if (buffer->idx + 2 < count)
+	unsigned 정수 tindex = 0;
+	만약 (buffer->idx + 2 < count)
 	{
 	  t = buffer->cur(+2).codepoint;
-	  if (isT (t))
+	  만약 (isT (t))
 	    tindex = t - TBase; /* Only used if isCombiningT (t); otherwise invalid. */
-	  else
+	  아니면
 	    t = 0; /* The next character was not a trailing jamo. */
 	}
 	buffer->unsafe_to_break (buffer->idx, buffer->idx + (t ? 3 : 2));
 
 	/* We've got a syllable <L,V,T?>; see if it can potentially be composed. */
-	if (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
+	만약 (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
 	{
 	  /* Try to compose; if this succeeds, end is set to start+1. */
 	  hb_codepoint_t s = SBase + (l - LBase) * NCount + (v - VBase) * TCount + tindex;
-	  if (font->has_glyph (s))
+	  만약 (font->has_glyph (s))
 	  {
 	    (void) buffer->replace_glyphs (t ? 3 : 2, 1, &s);
 	    end = start + 1;
@@ -299,52 +299,52 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	(void) buffer->next_glyph ();
 	buffer->cur().hangul_shaping_feature() = VJMO;
 	(void) buffer->next_glyph ();
-	if (t)
+	만약 (t)
 	{
 	  buffer->cur().hangul_shaping_feature() = TJMO;
 	  (void) buffer->next_glyph ();
 	  end = start + 3;
 	}
-	else
+	아니면
 	  end = start + 2;
-	if (unlikely (!buffer->successful))
+	만약 (unlikely (!buffer->successful))
 	  break;
 	buffer->merge_out_grapheme_clusters (start, end);
 	continue;
       }
     }
 
-    else if (isCombinedS (u))
+    아니면 만약 (isCombinedS (u))
     {
       /* Have <LV>, <LVT>, or <LV,T> */
       hb_codepoint_t s = u;
       bool has_glyph = font->has_glyph (s);
-      unsigned int lindex = (s - SBase) / NCount;
-      unsigned int nindex = (s - SBase) % NCount;
-      unsigned int vindex = nindex / TCount;
-      unsigned int tindex = nindex % TCount;
+      unsigned 정수 lindex = (s - SBase) / NCount;
+      unsigned 정수 nindex = (s - SBase) % NCount;
+      unsigned 정수 vindex = nindex / TCount;
+      unsigned 정수 tindex = nindex % TCount;
 
-      if (!tindex &&
+      만약 (!tindex &&
 	  buffer->idx + 1 < count &&
 	  isCombiningT (buffer->cur(+1).codepoint))
       {
 	/* <LV,T>, try to combine. */
-	unsigned int new_tindex = buffer->cur(+1).codepoint - TBase;
+	unsigned 정수 new_tindex = buffer->cur(+1).codepoint - TBase;
 	hb_codepoint_t new_s = s + new_tindex;
-	if (font->has_glyph (new_s))
+	만약 (font->has_glyph (new_s))
 	{
 	  (void) buffer->replace_glyphs (2, 1, &new_s);
 	  end = start + 1;
 	  continue;
 	}
-	else
+	아니면
 	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
       }
 
       /* Otherwise, decompose if font doesn't support <LV> or <LVT>,
        * or if having non-combining <LV,T>.  Note that we already handled
        * combining <LV,T> above. */
-      if (!has_glyph ||
+      만약 (!has_glyph ||
 	  (!tindex &&
 	   buffer->idx + 1 < count &&
 	   isT (buffer->cur(+1).codepoint)))
@@ -352,22 +352,22 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	hb_codepoint_t decomposed[3] = {LBase + lindex,
 					VBase + vindex,
 					TBase + tindex};
-	if (font->has_glyph (decomposed[0]) &&
+	만약 (font->has_glyph (decomposed[0]) &&
 	    font->has_glyph (decomposed[1]) &&
 	    (!tindex || font->has_glyph (decomposed[2])))
 	{
-	  unsigned int s_len = tindex ? 3 : 2;
+	  unsigned 정수 s_len = tindex ? 3 : 2;
 	  (void) buffer->replace_glyphs (1, s_len, decomposed);
 
 	  /* If we decomposed an LV because of a non-combining T following,
 	   * we want to include this T in the syllable.
 	   */
-	  if (has_glyph && !tindex)
+	  만약 (has_glyph && !tindex)
 	  {
 	    (void) buffer->next_glyph ();
 	    s_len++;
 	  }
-	  if (unlikely (!buffer->successful))
+	  만약 (unlikely (!buffer->successful))
 	    break;
 
 	  /* We decomposed S: apply jamo features to the individual glyphs
@@ -376,20 +376,20 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	  hb_glyph_info_t *info = buffer->out_info;
 	  end = start + s_len;
 
-	  unsigned int i = start;
+	  unsigned 정수 i = start;
 	  info[i++].hangul_shaping_feature() = LJMO;
 	  info[i++].hangul_shaping_feature() = VJMO;
-	  if (i < end)
+	  만약 (i < end)
 	    info[i++].hangul_shaping_feature() = TJMO;
 
 	  buffer->merge_out_grapheme_clusters (start, end);
 	  continue;
 	}
-	else if ((!tindex && buffer->idx + 1 < count && isT (buffer->cur(+1).codepoint)))
+	아니면 만약 ((!tindex && buffer->idx + 1 < count && isT (buffer->cur(+1).codepoint)))
 	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
       }
 
-      if (has_glyph)
+      만약 (has_glyph)
       {
 	/* We didn't decompose the S, so just advance past it and fall through. */
 	end = start + 1;
@@ -411,17 +411,17 @@ setup_masks_hangul (const hb_ot_shape_plan_t *plan,
 {
   const hangul_shape_plan_t *hangul_plan = (const hangul_shape_plan_t *) plan->data;
 
-  if (likely (hangul_plan))
+  만약 (likely (hangul_plan))
   {
-    unsigned int count = buffer->len;
+    unsigned 정수 count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++, info++)
+    위해 (unsigned 정수 i = 0; i < count; i++, info++)
     {
       info->mask |= hangul_plan->mask_array[info->hangul_shaping_feature()];
 
       /* Keep 'calt' away from jamo; see override_features_hangul(). */
       hb_codepoint_t u = info->codepoint;
-      if (isL (u) || isV (u) || isT (u))
+      만약 (isL (u) || isV (u) || isT (u))
 	info->mask &= ~hangul_plan->calt_mask;
     }
   }

@@ -59,17 +59,17 @@ struct opbdFormat0
 		   hb_glyph_extents_t *extents, const void *base) const
   {
     const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
+    만약 (!bounds_offset) 반환 false;
     const OpticalBounds &bounds = base+*bounds_offset;
 
-    if (extents)
+    만약 (extents)
       *extents = {
 	font->em_scale_x (bounds.leftSide),
 	font->em_scale_y (bounds.topSide),
 	font->em_scale_x (bounds.rightSide),
 	font->em_scale_y (bounds.bottomSide)
       };
-    return true;
+    반환 true;
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -93,20 +93,20 @@ struct opbdFormat1
 		   hb_glyph_extents_t *extents, const void *base) const
   {
     const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
+    만약 (!bounds_offset) 반환 false;
     const OpticalBounds &bounds = base+*bounds_offset;
 
     hb_position_t left = 0, top = 0, right = 0, bottom = 0, ignore;
-    if (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
+    만약 (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
 	font->get_glyph_contour_point (glyph_id, bounds.topSide, &ignore, &top) ||
 	font->get_glyph_contour_point (glyph_id, bounds.rightSide, &right, &ignore) ||
 	font->get_glyph_contour_point (glyph_id, bounds.bottomSide, &ignore, &bottom))
     {
-      if (extents)
+      만약 (extents)
 	*extents = {left, top, right, bottom};
-      return true;
+      반환 true;
     }
-    return false;
+    반환 false;
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -133,16 +133,16 @@ struct opbd
   {
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_bounds (font, glyph_id, extents, this);
-    case 1: hb_barrier (); return u.format1.get_bounds (font, glyph_id, extents, this);
-    default:return false;
+    case 0: hb_barrier (); 반환 u.format0.get_bounds (font, glyph_id, extents, this);
+    case 1: hb_barrier (); 반환 u.format1.get_bounds (font, glyph_id, extents, this);
+    default:반환 false;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this) || version.major != 1))
+    만약 (unlikely (!c->check_struct (this) || version.major != 1))
       return_trace (false);
     hb_barrier ();
 

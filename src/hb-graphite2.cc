@@ -61,7 +61,7 @@ typedef struct hb_graphite2_tablelist_t
 {
   struct hb_graphite2_tablelist_t *next;
   hb_blob_t *blob;
-  unsigned int tag;
+  unsigned 정수 tag;
 } hb_graphite2_tablelist_t;
 
 struct hb_graphite2_face_data_t
@@ -71,27 +71,27 @@ struct hb_graphite2_face_data_t
   hb_atomic_t<hb_graphite2_tablelist_t *> tlist;
 };
 
-static const void *hb_graphite2_get_table (const void *data, unsigned int tag, size_t *len)
+static const void *hb_graphite2_get_table (const void *data, unsigned 정수 tag, size_t *len)
 {
   hb_graphite2_face_data_t *face_data = (hb_graphite2_face_data_t *) data;
   hb_graphite2_tablelist_t *tlist = face_data->tlist;
 
   hb_blob_t *blob = nullptr;
 
-  for (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
-    if (p->tag == tag) {
+  위해 (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
+    만약 (p->tag == tag) {
       blob = p->blob;
       break;
     }
 
-  if (unlikely (!blob))
+  만약 (unlikely (!blob))
   {
     blob = face_data->face->reference_table (tag);
 
     hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, sizeof (hb_graphite2_tablelist_t));
-    if (unlikely (!p)) {
+    만약 (unlikely (!p)) {
       hb_blob_destroy (blob);
-      return nullptr;
+      반환 nullptr;
     }
     p->blob = blob;
     p->tag = tag;
@@ -100,14 +100,14 @@ retry:
     hb_graphite2_tablelist_t *tlist = face_data->tlist;
     p->next = tlist;
 
-    if (unlikely (!face_data->tlist.cmpexch (tlist, p)))
+    만약 (unlikely (!face_data->tlist.cmpexch (tlist, p)))
       goto retry;
   }
 
-  unsigned int tlen;
+  unsigned 정수 tlen;
   const char *d = hb_blob_get_data (blob, &tlen);
   *len = tlen;
-  return d;
+  반환 d;
 }
 
 hb_graphite2_face_data_t *
@@ -116,25 +116,25 @@ _hb_graphite2_shaper_face_data_create (hb_face_t *face)
   hb_unique_ptr_t<hb_blob_t> silf_blob (face->reference_table (HB_GRAPHITE2_TAG_SILF));
   /* Umm, we just reference the table to check whether it exists.
    * Maybe add better API for this? */
-  if (!hb_blob_get_length (silf_blob))
-    return nullptr;
+  만약 (!hb_blob_get_length (silf_blob))
+    반환 nullptr;
 
   hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, sizeof (hb_graphite2_face_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  만약 (unlikely (!data))
+    반환 nullptr;
 
   data->face = face;
   const gr_face_ops ops = {sizeof(gr_face_ops), &hb_graphite2_get_table, NULL};
   data->grface = gr_make_face_with_ops (data, &ops, gr_face_preloadAll);
 
-  if (unlikely (!data->grface)) {
+  만약 (unlikely (!data->grface)) {
     /* data->tlist has already been populated by the callback,
      * so everything needs to be destroyed */
     _hb_graphite2_shaper_face_data_destroy (data);
-    return nullptr;
+    반환 nullptr;
   }
 
-  return data;
+  반환 data;
 }
 
 void
@@ -142,7 +142,7 @@ _hb_graphite2_shaper_face_data_destroy (hb_graphite2_face_data_t *data)
 {
   hb_graphite2_tablelist_t *tlist = data->tlist;
 
-  while (tlist)
+  동안 (tlist)
   {
     hb_graphite2_tablelist_t *old = tlist;
     hb_blob_destroy (tlist->blob);
@@ -170,7 +170,7 @@ gr_face *
 hb_graphite2_face_get_gr_face (hb_face_t *face)
 {
   const hb_graphite2_face_data_t *data = face->data.graphite2;
-  return data ? data->grface : nullptr;
+  반환 data ? data->grface : nullptr;
 }
 
 
@@ -183,7 +183,7 @@ struct hb_graphite2_font_data_t {};
 hb_graphite2_font_data_t *
 _hb_graphite2_shaper_font_data_create (hb_font_t *font HB_UNUSED)
 {
-  return (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  반환 (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
 void
@@ -206,7 +206,7 @@ _hb_graphite2_shaper_font_data_destroy (hb_graphite2_font_data_t *data HB_UNUSED
 gr_font *
 hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
 {
-  return nullptr;
+  반환 nullptr;
 }
 #endif
 
@@ -216,17 +216,17 @@ hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
  */
 
 struct hb_graphite2_cluster_t {
-  unsigned int base_char;
-  unsigned int num_chars;
-  unsigned int base_glyph;
-  unsigned int num_glyphs;
-  unsigned int cluster;
+  unsigned 정수 base_char;
+  unsigned 정수 num_chars;
+  unsigned 정수 base_glyph;
+  unsigned 정수 num_glyphs;
+  unsigned 정수 cluster;
   hb_position_t advance;
 };
 
 struct hb_graphite2_glyph_t {
   hb_codepoint_t codepoint;
-  unsigned int cluster;
+  unsigned 정수 cluster;
 };
 
 hb_bool_t
@@ -234,20 +234,20 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     hb_font_t          *font,
 		     hb_buffer_t        *buffer,
 		     const hb_feature_t *features,
-		     unsigned int        num_features)
+		     unsigned 정수        num_features)
 {
   hb_face_t *face = font->face;
   gr_face *grface = face->data.graphite2->grface;
 
   const char *lang = hb_language_to_string (hb_buffer_get_language (buffer));
   const char *lang_end = lang ? strchr (lang, '-') : nullptr;
-  int lang_len = lang_end ? lang_end - lang : -1;
+  정수 lang_len = lang_end ? lang_end - lang : -1;
   gr_feature_val *feats = gr_face_featureval_for_lang (grface, lang ? hb_tag_from_string (lang, lang_len) : 0);
 
-  for (unsigned int i = 0; i < num_features; i++)
+  위해 (unsigned 정수 i = 0; i < num_features; i++)
   {
     const gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
-    if (fref)
+    만약 (fref)
       gr_fref_set_feature_value (fref, features[i].value, feats);
   }
 
@@ -257,7 +257,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
+  만약 ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && horiz_dir != HB_DIRECTION_INVALID) ||
       (HB_DIRECTION_IS_VERTICAL   (direction) &&
        direction != HB_DIRECTION_TTB))
@@ -268,15 +268,15 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 
   gr_segment *seg = nullptr;
   const gr_slot *is;
-  unsigned int ci = 0, ic = 0;
+  unsigned 정수 ci = 0, ic = 0;
   hb_position_t curradvx = 0, curradvy = 0;
 
-  unsigned int scratch_size;
+  unsigned 정수 scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 
   uint32_t *chars = (uint32_t *) scratch;
 
-  for (unsigned int i = 0; i < buffer->len; ++i)
+  위해 (unsigned 정수 i = 0; i < buffer->len; ++i)
     chars[i] = buffer->info[i].codepoint;
 
   seg = gr_make_seg (nullptr, grface,
@@ -285,29 +285,29 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     gr_utf32, chars, buffer->len,
 		     2 | (direction == HB_DIRECTION_RTL ? 1 : 0));
 
-  if (unlikely (!seg)) {
-    if (feats) gr_featureval_destroy (feats);
-    return false;
+  만약 (unlikely (!seg)) {
+    만약 (feats) gr_featureval_destroy (feats);
+    반환 false;
   }
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
-  if (unlikely (!glyph_count)) {
-    if (feats) gr_featureval_destroy (feats);
+  unsigned 정수 glyph_count = gr_seg_n_slots (seg);
+  만약 (unlikely (!glyph_count)) {
+    만약 (feats) gr_featureval_destroy (feats);
     gr_seg_destroy (seg);
     buffer->len = 0;
-    return true;
+    반환 true;
   }
 
   (void) buffer->ensure (glyph_count);
   scratch = buffer->get_scratch_buffer (&scratch_size);
-  while ((DIV_CEIL (sizeof (hb_graphite2_cluster_t) * buffer->len, sizeof (*scratch)) +
+  동안 ((DIV_CEIL (sizeof (hb_graphite2_cluster_t) * buffer->len, sizeof (*scratch)) +
 	  DIV_CEIL (sizeof (hb_graphite2_glyph_t) * glyph_count, sizeof (*scratch))) > scratch_size)
   {
-    if (unlikely (!buffer->ensure (buffer->allocated * 2)))
+    만약 (unlikely (!buffer->ensure (buffer->allocated * 2)))
     {
-      if (feats) gr_featureval_destroy (feats);
+      만약 (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      반환 false;
     }
     scratch = buffer->get_scratch_buffer (&scratch_size);
   }
@@ -315,11 +315,11 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 #define ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
   do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
+    unsigned 정수 _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
     assert (_consumed <= scratch_size); \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } 동안 (0)
 
   ALLOCATE_ARRAY (hb_graphite2_cluster_t, clusters, buffer->len);
   ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_count);
@@ -330,37 +330,37 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 
   hb_graphite2_glyph_t *pg = glyphs;
   clusters[0].cluster = buffer->info[0].cluster;
-  unsigned int upem = hb_face_get_upem (face);
+  unsigned 정수 upem = hb_face_get_upem (face);
   float xscale = (float) font->x_scale / upem;
   float yscale = (float) font->y_scale / upem;
   yscale *= yscale / xscale;
   hb_position_t curradv = 0;
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  만약 (HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradv = hb_clamp_to<hb_position_t> (gr_slot_origin_X(gr_seg_first_slot(seg)) * xscale);
     clusters[0].advance = hb_clamp_to<hb_position_t> ((double) (gr_seg_advance_X(seg) * xscale) - curradv);
   }
-  else
+  아니면
     clusters[0].advance = 0;
-  for (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
+  위해 (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
   {
-    int slot_before = gr_slot_before (is);
-    int slot_after = gr_slot_after (is);
-    if (unlikely (slot_before < 0 ||
+    정수 slot_before = gr_slot_before (is);
+    정수 slot_after = gr_slot_after (is);
+    만약 (unlikely (slot_before < 0 ||
 		  slot_after < slot_before ||
-		  (unsigned int) slot_after >= buffer->len))
+		  (unsigned 정수) slot_after >= buffer->len))
     {
-      if (feats) gr_featureval_destroy (feats);
+      만약 (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      반환 false;
     }
-    unsigned int before = (unsigned int) slot_before;
-    unsigned int after = (unsigned int) slot_after;
+    unsigned 정수 before = (unsigned 정수) slot_before;
+    unsigned 정수 after = (unsigned 정수) slot_after;
     pg->codepoint = gr_slot_gid (is);
     pg->cluster = hb_min (buffer->info[before].cluster,
 			  buffer->info[after].cluster);
     pg++;
-    while (clusters[ci].base_char > before && ci)
+    동안 (clusters[ci].base_char > before && ci)
     {
       clusters[ci-1].num_chars += clusters[ci].num_chars;
       clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
@@ -368,7 +368,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    만약 (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
     {
       hb_graphite2_cluster_t *c = clusters + ci + 1;
       c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
@@ -376,13 +376,13 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       c->num_chars = before - c->base_char;
       c->base_glyph = ic;
       c->num_glyphs = 0;
-      if (HB_DIRECTION_IS_BACKWARD (direction))
+      만약 (HB_DIRECTION_IS_BACKWARD (direction))
       {
 	c->advance = hb_clamp_to<hb_position_t> ((double) curradv -
 						   (double) (gr_slot_origin_X(is) * xscale));
 	curradv = hb_saturate_sub (curradv, c->advance);
       }
-      else
+      아니면
       {
 	hb_position_t origin_X = hb_clamp_to<hb_position_t> (gr_slot_origin_X (is) * xscale);
 	c->advance = 0;
@@ -394,20 +394,20 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
     }
     clusters[ci].num_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
+    만약 (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
 	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
   }
 
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  만약 (HB_DIRECTION_IS_BACKWARD (direction))
     clusters[ci].advance = hb_saturate_add (clusters[ci].advance, curradv);
-  else
+  아니면
     clusters[ci].advance = hb_clamp_to<hb_position_t> ((double) clusters[ci].advance +
 							       (double) (gr_seg_advance_X(seg) * xscale) - curradv);
   ci++;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  위해 (unsigned 정수 i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    위해 (unsigned 정수 j = 0; j < clusters[i].num_glyphs; ++j)
     {
       hb_glyph_info_t *info = &buffer->info[clusters[i].base_glyph + j];
       info->codepoint = glyphs[clusters[i].base_glyph + j].codepoint;
@@ -420,43 +420,43 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
   }
   buffer->len = glyph_count;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  위해 (unsigned 정수 i = 0; i < ci; ++i)
     buffer->merge_clusters (clusters[i].base_glyph,
 			    clusters[i].base_glyph + clusters[i].num_glyphs);
 
   /* Positioning. */
-  unsigned int curr_gr_cluster = UINT_MAX;
+  unsigned 정수 curr_gr_cluster = UINT_MAX;
   const hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pPos = hb_buffer_get_glyph_positions (buffer, nullptr);
-  if (!HB_DIRECTION_IS_BACKWARD (direction))
+  만약 (!HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradvx = 0;
-    for (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
+    위해 (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
     {
       pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) - curradvx);
       pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
-      if (info->var2.u32 != curr_gr_cluster) {
+      만약 (info->var2.u32 != curr_gr_cluster) {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_add (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } 아니면
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_add (curradvy, pPos->y_advance);
     }
   }
-  else
+  아니면
   {
     curradvx = hb_clamp_to<hb_position_t> (gr_seg_advance_X(seg) * xscale);
-    for (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
+    위해 (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
     {
-      if (info->var2.u32 != curr_gr_cluster)
+      만약 (info->var2.u32 != curr_gr_cluster)
       {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_sub (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } 아니면
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
@@ -468,13 +468,13 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
     hb_buffer_reverse_clusters (buffer);
   }
 
-  if (feats) gr_featureval_destroy (feats);
+  만약 (feats) gr_featureval_destroy (feats);
   gr_seg_destroy (seg);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();
 
-  return true;
+  반환 true;
 }
 
 

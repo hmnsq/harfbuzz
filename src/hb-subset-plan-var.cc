@@ -41,15 +41,15 @@
                                unsigned subtable_count,
                                hb_vector_t<hb_inc_bimap_t> &inner_maps /* OUT */)
  {
-   if (varidx_set.is_empty () || subtable_count == 0) return;
+   만약 (varidx_set.is_empty () || subtable_count == 0) 반환;
 
-   if (unlikely (!inner_maps.resize (subtable_count))) return;
-   for (unsigned idx : varidx_set)
+   만약 (unlikely (!inner_maps.resize (subtable_count))) 반환;
+   위해 (unsigned idx : varidx_set)
    {
      uint16_t major = idx >> 16;
      uint16_t minor = idx & 0xFFFF;
 
-     if (major >= subtable_count)
+     만약 (major >= subtable_count)
        continue;
      inner_maps[major].add (minor);
    }
@@ -63,12 +63,12 @@
    double start = (double) tent.minimum;
    double peak = (double) tent.middle;
    double end = (double) tent.maximum;
-   if (unlikely (start > peak || peak > end)) return 1.0;
-   if (unlikely (start < 0.0 && end > 0.0 && peak != 0.0)) return 1.0;
-   if (peak == 0.0 || v == peak) return 1.0;
-   if (v <= start || end <= v) return 0.0;
-   if (v < peak) return (v - start) / (peak - start);
-   return (end - v) / (end - peak);
+   만약 (unlikely (start > peak || peak > end)) 반환 1.0;
+   만약 (unlikely (start < 0.0 && end > 0.0 && peak != 0.0)) 반환 1.0;
+   만약 (peak == 0.0 || v == peak) 반환 1.0;
+   만약 (v <= start || end <= v) 반환 0.0;
+   만약 (v < peak) 반환 (v - start) / (peak - start);
+   반환 (end - v) / (end - peak);
  }
 
  /* Range of a tent's scalar over an input interval [lo, hi]. The tent is
@@ -82,7 +82,7 @@
    double b = _tent_eval (tent, hi);
    *tmin = hb_min (a, b);
    *tmax = hb_max (a, b);
-   if (lo <= (double) tent.middle && (double) tent.middle <= hi)
+   만약 (lo <= (double) tent.middle && (double) tent.middle <= hi)
      *tmax = hb_max (*tmax, 1.0);
  }
 
@@ -107,53 +107,53 @@
  {
    const OT::ItemVariationStore *var_store;
    const OT::DeltaSetIndexMap *varidx_map;
-   if (!avar_table->get_v2_store_and_map (&var_store, &varidx_map))
-     return false;
+   만약 (!avar_table->get_v2_store_and_map (&var_store, &varidx_map))
+     반환 false;
 
    /* Old-intermediate input box per axis. */
    hb_hashmap_t<hb_tag_t, hb_pair_t<double, double>> box;
-   for (const auto &axis : axes)
+   위해 (const auto &axis : axes)
    {
      hb_tag_t tag = axis.get_axis_tag ();
      double lo = -1.0, hi = +1.0;
      Triple *old_int;
-     if (plan->user_axes_location.has (tag))
+     만약 (plan->user_axes_location.has (tag))
      {
-       if (!plan->old_intermediates.has (tag, &old_int)) return false;
+       만약 (!plan->old_intermediates.has (tag, &old_int)) 반환 false;
        lo = (double) old_int->minimum;
        hi = (double) old_int->maximum;
      }
-     else if (axis.is_hidden ())
+     아니면 만약 (axis.is_hidden ())
        lo = hi = 0.0; /* private axis: intermediate is always 0 */
-     if (!box.set (tag, hb_pair (lo, hi))) return false;
+     만약 (!box.set (tag, hb_pair (lo, hi))) 반환 false;
    }
 
    hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>> regions;
-   if (!var_store->get_region_list ().get_var_regions (plan->axes_old_index_tag_map, regions))
-     return false;
+   만약 (!var_store->get_region_list ().get_var_regions (plan->axes_old_index_tag_map, regions))
+     반환 false;
 
    hb_hashmap_t<hb_tag_t, unsigned> grid_pos;
    hb_vector_t<hb_vector_t<double>> grid_points;
-   for (unsigned i = 0; i < axes.length; i++)
+   위해 (unsigned i = 0; i < axes.length; i++)
    {
      grid_pos.reset ();
      grid_points.reset ();
 
      hb_tag_t tag = axes[i].get_axis_tag ();
      hb_pair_t<double, double> *identity;
-     if (!box.has (tag, &identity)) return false;
+     만약 (!box.has (tag, &identity)) 반환 false;
 
      /* Collect the row's active regions (non-zero delta). A varidx (or the
       * implicit identity mapping) that doesn't resolve to a real store row
       * behaves as "no variation" at runtime, so it contributes no regions;
       * this also covers a NULL VarStore. */
-     hb_vector_t<hb_pair_t<int, unsigned>> active; /* (delta, region index) */
+     hb_vector_t<hb_pair_t<정수, unsigned>> active; /* (delta, region index) */
      uint32_t varidx = varidx_map->map (i);
      /* Runtime treats out-of-range delta-set indices as zero. */
-     if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
+     만약 (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
 	 !var_store->has_delta_set (varidx))
        varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-     if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+     만약 (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
      {
        unsigned outer = varidx >> 16;
        unsigned inner = varidx & 0xFFFF;
@@ -161,15 +161,15 @@
        const OT::HBUINT8 *delta_bytes = vd.get_delta_bytes ();
        unsigned row_size = vd.get_row_size ();
        unsigned region_count = vd.get_region_index_count ();
-       for (unsigned r = 0; r < region_count; r++)
+       위해 (unsigned r = 0; r < region_count; r++)
        {
-	 int delta = vd.get_item_delta_fast (inner, r, delta_bytes, row_size);
-	 if (!delta) continue;
+	 정수 delta = vd.get_item_delta_fast (inner, r, delta_bytes, row_size);
+	 만약 (!delta) continue;
 	 unsigned region_idx = vd.get_region_index (r);
-	 if (region_idx >= regions.length) return false;
+	 만약 (region_idx >= regions.length) 반환 false;
 	 active.push (hb_pair (delta, region_idx));
        }
-       if (active.in_error ()) return false;
+       만약 (active.in_error ()) 반환 false;
      }
 
      /* The delta is piecewise multilinear in the axis coordinates (each
@@ -187,126 +187,126 @@
 
      /* Grid axes: the target axis (identity term), plus every axis a valid
       * tent of an active region references. */
-     auto add_grid_axis = [&] (hb_tag_t t) -> int
+     auto add_grid_axis = [&] (hb_tag_t t) -> 정수
      {
        unsigned *pos;
-       if (grid_pos.has (t, &pos)) return (int) *pos;
+       만약 (grid_pos.has (t, &pos)) 반환 (정수) *pos;
        unsigned new_pos = grid_pos.get_population ();
        hb_pair_t<double, double> *input;
        double blo = -1.0, bhi = +1.0;
-       if (box.has (t, &input)) { blo = input->first; bhi = input->second; }
+       만약 (box.has (t, &input)) { blo = input->first; bhi = input->second; }
        grid_points.push (hb_vector_t<double> ());
-       if (grid_points.in_error ()) return -1;
+       만약 (grid_points.in_error ()) 반환 -1;
        auto &points = grid_points[new_pos];
        points.push (blo);
        points.push (bhi);
-       if (points.in_error () || !grid_pos.set (t, new_pos)) return -1;
-       return (int) new_pos;
+       만약 (points.in_error () || !grid_pos.set (t, new_pos)) 반환 -1;
+       반환 (정수) new_pos;
      };
 
-     if (add_grid_axis (tag) < 0) return false;
+     만약 (add_grid_axis (tag) < 0) 반환 false;
      /* Per active region: (grid axis position, tent) for its valid tents. */
      hb_vector_t<hb_vector_t<hb_pair_t<unsigned, Triple>>> region_tents;
-     for (const auto &ar : active)
+     위해 (const auto &ar : active)
      {
        region_tents.push (hb_vector_t<hb_pair_t<unsigned, Triple>> ());
-       if (region_tents.in_error ()) return false;
+       만약 (region_tents.in_error ()) 반환 false;
        auto &tents = region_tents[region_tents.length - 1];
-       for (const auto &_ : regions[ar.second])
+       위해 (const auto &_ : regions[ar.second])
        {
 	 const Triple &tent = _.second;
 	 /* Tents the runtime ignores (constant scalar 1) add no breakpoints. */
-	 if (tent.middle == 0.f ||
+	 만약 (tent.middle == 0.f ||
 	     tent.minimum > tent.middle || tent.middle > tent.maximum ||
 	     (tent.minimum < 0.f && tent.maximum > 0.f))
 	   continue;
-	 int pos = add_grid_axis (_.first);
-	 if (pos < 0) return false;
+	 정수 pos = add_grid_axis (_.first);
+	 만약 (pos < 0) 반환 false;
 	 auto &points = grid_points[pos];
 	 double blo = points[0], bhi = points[1];
 	 points.push (hb_clamp ((double) tent.minimum, blo, bhi));
 	 points.push (hb_clamp ((double) tent.middle, blo, bhi));
 	 points.push (hb_clamp ((double) tent.maximum, blo, bhi));
 	 tents.push (hb_pair ((unsigned) pos, tent));
-	 if (points.in_error () || tents.in_error ()) return false;
+	 만약 (points.in_error () || tents.in_error ()) 반환 false;
        }
      }
 
      unsigned grid_size = 1;
-     for (auto &points : grid_points)
+     위해 (auto &points : grid_points)
      {
-       points.qsort ([] (const double &a, const double &b) -> int
-		     { return a < b ? -1 : a > b ? +1 : 0; });
+       points.qsort ([] (const double &a, const double &b) -> 정수
+		     { 반환 a < b ? -1 : a > b ? +1 : 0; });
        unsigned n = 0;
-       for (unsigned j = 0; j < points.length; j++)
-	 if (!n || points.arrayZ[j] != points.arrayZ[n - 1])
+       위해 (unsigned j = 0; j < points.length; j++)
+	 만약 (!n || points.arrayZ[j] != points.arrayZ[n - 1])
 	   points.arrayZ[n++] = points.arrayZ[j];
        points.shrink (n);
-       if (grid_size > MAX_GRID / points.length) { exact = false; break; }
+       만약 (grid_size > MAX_GRID / points.length) { exact = false; break; }
        grid_size *= points.length;
      }
 
-     if (exact)
+     만약 (exact)
      {
        unsigned target_pos = 0; /* the target axis was added first */
        hb_vector_t<unsigned> odometer;
-       if (!odometer.resize (grid_pos.get_population ())) return false;
+       만약 (!odometer.resize (grid_pos.get_population ())) 반환 false;
        bool first = true;
-       while (true)
+       동안 (true)
        {
 	 double delta_sum = 0.0;
-	 for (unsigned r = 0; r < active.length; r++)
+	 위해 (unsigned r = 0; r < active.length; r++)
 	 {
 	   double scalar = 1.0;
-	   for (const auto &pt : region_tents[r])
+	   위해 (const auto &pt : region_tents[r])
 	   {
 	     double v = grid_points[pt.first][odometer[pt.first]];
 	     scalar *= _tent_eval (pt.second, v);
-	     if (scalar == 0.0) break;
+	     만약 (scalar == 0.0) break;
 	   }
 	   delta_sum += scalar * active[r].first;
 	 }
 	 double coord = grid_points[target_pos][odometer[target_pos]];
 	 double value = coord + delta_sum / 16384.0;
-	 if (first)
+	 만약 (first)
 	 {
 	   dmin = dmax = delta_sum;
 	   vmin = vmax = value;
 	   first = false;
 	 }
-	 else
+	 아니면
 	 {
 	   dmin = hb_min (dmin, delta_sum); dmax = hb_max (dmax, delta_sum);
 	   vmin = hb_min (vmin, value);     vmax = hb_max (vmax, value);
 	 }
 	 unsigned k = 0;
-	 for (; k < odometer.length; k++)
+	 위해 (; k < odometer.length; k++)
 	 {
-	   if (++odometer[k] < grid_points[k].length) break;
+	   만약 (++odometer[k] < grid_points[k].length) break;
 	   odometer[k] = 0;
 	 }
-	 if (k == odometer.length) break;
+	 만약 (k == odometer.length) break;
        }
      }
-     else
+     아니면
      {
-       for (const auto &ar : active)
+       위해 (const auto &ar : active)
        {
-	 int delta = ar.first;
+	 정수 delta = ar.first;
 	 double smin = 1.0, smax = 1.0;
-	 for (const auto &_ : regions[ar.second])
+	 위해 (const auto &_ : regions[ar.second])
 	 {
 	   hb_pair_t<double, double> *input;
 	   double blo = -1.0, bhi = +1.0;
-	   if (box.has (_.first, &input)) { blo = input->first; bhi = input->second; }
+	   만약 (box.has (_.first, &input)) { blo = input->first; bhi = input->second; }
 	   double tmin, tmax;
 	   _tent_value_range (_.second, blo, bhi, &tmin, &tmax);
 	   smin *= tmin;
 	   smax *= tmax;
-	   if (smax == 0.0) break;
+	   만약 (smax == 0.0) break;
 	 }
-	 if (delta > 0) { dmin += smin * delta; dmax += smax * delta; }
-	 else           { dmin += smax * delta; dmax += smin * delta; }
+	 만약 (delta > 0) { dmin += smin * delta; dmax += smax * delta; }
+	 아니면           { dmin += smax * delta; dmax += smin * delta; }
        }
        vmin = identity->first + dmin / 16384.0;
        vmax = identity->second + dmax / 16384.0;
@@ -318,13 +318,13 @@
       * and add it to the exact quantized intermediate, matching the runtime
       * (map_coords_2_14) and fontTools. */
      Triple *user;
-     if (detect_self_contained && dmin == dmax &&
+     만약 (detect_self_contained && dmin == dmax &&
 	 plan->user_axes_location.has (tag, &user) && user->is_point ())
      {
-       int v_int = (int) roundf ((float) identity->first * 16384.f) +
-		   (int) roundf ((float) dmin);
+       정수 v_int = (정수) roundf ((float) identity->first * 16384.f) +
+		   (정수) roundf ((float) dmin);
        v_int = hb_clamp (v_int, -(1 << 14), +(1 << 14));
-       if (!plan->avar2_self_contained.set (tag, v_int / 16384.0)) return false;
+       만약 (!plan->avar2_self_contained.set (tag, v_int / 16384.0)) 반환 false;
        continue; /* axis is dropped; no region can reference it afterwards */
      }
 
@@ -334,12 +334,12 @@
      double hi = hb_clamp (vmax + 1.0 / 16384.0, -1.0, +1.0);
      lo = floor (lo * 16384.0) / 16384.0;
      hi = ceil (hi * 16384.0) / 16384.0;
-     if (lo <= -1.0 && hi >= +1.0)
+     만약 (lo <= -1.0 && hi >= +1.0)
        continue; /* not constraining */
-     if (!plan->avar2_reachable_ranges.set (tag, Triple (lo, hb_clamp (0.0, lo, hi), hi)))
-       return false;
+     만약 (!plan->avar2_reachable_ranges.set (tag, Triple (lo, hb_clamp (0.0, lo, hi), hi)))
+       반환 false;
    }
-   return true;
+   반환 true;
  }
 
 #ifndef HB_NO_OT_FONT_CFF
@@ -348,7 +348,7 @@
  {
    hb_font_t *font = hb_font_create (plan->source);
 
-   if (plan->has_avar2)
+   만약 (plan->has_avar2)
    {
      /* Under avar2, instancing applies only to the self-contained pins,
       * whose constant final coordinates the plan holds in normalized_coords.
@@ -356,16 +356,16 @@
       * bake contributions that remain live in the instance's variations. */
      hb_font_set_var_coords_normalized (font, plan->normalized_coords.arrayZ,
                                         plan->normalized_coords.length);
-     return font;
+     반환 font;
    }
 
    hb_vector_t<hb_variation_t> vars;
-   if (!vars.alloc (plan->user_axes_location.get_population ())) {
+   만약 (!vars.alloc (plan->user_axes_location.get_population ())) {
      hb_font_destroy (font);
-     return nullptr;
+     반환 nullptr;
    }
 
-   for (auto _ : plan->user_axes_location)
+   위해 (auto _ : plan->user_axes_location)
    {
      hb_variation_t var;
      var.tag = _.first;
@@ -374,7 +374,7 @@
    }
 
    hb_font_set_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
-   return font;
+   반환 font;
  }
 #endif
 
@@ -382,40 +382,40 @@
  void
  remap_variation_indices (const ItemVarStore &var_store,
                           const hb_set_t &variation_indices,
-                          const hb_vector_t<int>& normalized_coords,
+                          const hb_vector_t<정수>& normalized_coords,
                           bool calculate_delta, /* not pinned at default */
                           bool no_variations, /* all axes pinned */
-                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */)
+                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, 정수>> &variation_idx_delta_map /* OUT */)
  {
-   if (&var_store == &Null (OT::ItemVariationStore)) return;
+   만약 (&var_store == &Null (OT::ItemVariationStore)) 반환;
    unsigned subtable_count = var_store.get_sub_table_count ();
    auto *store_cache = var_store.create_cache ();
 
    unsigned new_major = 0, new_minor = 0;
    unsigned last_major = (variation_indices.get_min ()) >> 16;
-   for (unsigned idx : variation_indices)
+   위해 (unsigned idx : variation_indices)
    {
-     int delta = 0;
-     if (calculate_delta)
+     정수 delta = 0;
+     만약 (calculate_delta)
        delta = roundf (var_store.get_delta (idx, normalized_coords.arrayZ,
                                             normalized_coords.length, store_cache));
 
-     if (no_variations)
+     만약 (no_variations)
      {
-       variation_idx_delta_map.set (idx, hb_pair_t<unsigned, int> (HB_OT_LAYOUT_NO_VARIATIONS_INDEX, delta));
+       variation_idx_delta_map.set (idx, hb_pair_t<unsigned, 정수> (HB_OT_LAYOUT_NO_VARIATIONS_INDEX, delta));
        continue;
      }
 
      uint16_t major = idx >> 16;
-     if (major >= subtable_count) break;
-     if (major != last_major)
+     만약 (major >= subtable_count) break;
+     만약 (major != last_major)
      {
        new_minor = 0;
        ++new_major;
      }
 
      unsigned new_idx = (new_major << 16) + new_minor;
-     variation_idx_delta_map.set (idx, hb_pair_t<unsigned, int> (new_idx, delta));
+     variation_idx_delta_map.set (idx, hb_pair_t<unsigned, 정수> (new_idx, delta));
      ++new_minor;
      last_major = major;
    }
@@ -426,20 +426,20 @@
  void
  remap_variation_indices<OT::ItemVariationStore> (const OT::ItemVariationStore &var_store,
                           const hb_set_t &variation_indices,
-                          const hb_vector_t<int>& normalized_coords,
+                          const hb_vector_t<정수>& normalized_coords,
                           bool calculate_delta, /* not pinned at default */
                           bool no_variations, /* all axes pinned */
-                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, 정수>> &variation_idx_delta_map /* OUT */);
 
  #ifndef HB_NO_BASE
  void
  collect_base_variation_indices (hb_subset_plan_t* plan)
  {
    hb_blob_ptr_t<OT::BASE> base = plan->source_table<OT::BASE> ();
-   if (!base->has_var_store ())
+   만약 (!base->has_var_store ())
    {
      base.destroy ();
-     return;
+     반환;
    }
 
    hb_set_t varidx_set;
@@ -463,51 +463,51 @@
 bool
 normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
 {
-  if (plan->user_axes_location.is_empty ())
-    return true;
+  만약 (plan->user_axes_location.is_empty ())
+    반환 true;
 
   hb_array_t<const OT::AxisRecord> axes = face->table.fvar->get_axes ();
-  for (const auto &axis : axes)
+  위해 (const auto &axis : axes)
   {
     hb_tag_t tag = axis.get_axis_tag ();
     const Triple *range;
     float minimum, middle, maximum;
     axis.get_coordinates (minimum, middle, maximum);
-    if (plan->user_axes_location.has (tag, &range) && !range->is_point () &&
+    만약 (plan->user_axes_location.has (tag, &range) && !range->is_point () &&
         range->minimum == minimum &&
         range->middle == middle &&
         range->maximum == maximum)
       plan->user_axes_location.del (tag);
   }
-  if (plan->user_axes_location.is_empty ())
-    return true;
+  만약 (plan->user_axes_location.is_empty ())
+    반환 true;
 
-  if (!plan->check_success (plan->normalized_coords.resize (axes.length)))
-    return false;
+  만약 (!plan->check_success (plan->normalized_coords.resize (axes.length)))
+    반환 false;
 
   bool has_avar = face->table.avar->has_data ();
   hb_vector_t<float> normalized_mins;
   hb_vector_t<float> normalized_defaults;
   hb_vector_t<float> normalized_maxs;
-  if (has_avar)
+  만약 (has_avar)
   {
-    if (!plan->check_success (normalized_mins.resize (axes.length)) ||
+    만약 (!plan->check_success (normalized_mins.resize (axes.length)) ||
         !plan->check_success (normalized_defaults.resize (axes.length)) ||
         !plan->check_success (normalized_maxs.resize (axes.length)))
-      return false;
+      반환 false;
   }
 
   bool axis_not_pinned = false;
   unsigned new_axis_idx = 0;
   unsigned last_idx = 0;
-  for (const auto& _ : + hb_enumerate (axes))
+  위해 (const auto& _ : + hb_enumerate (axes))
   {
     unsigned i = _.first;
     const OT::AxisRecord &axis = _.second;
     hb_tag_t axis_tag = axis.get_axis_tag ();
     plan->axes_old_index_tag_map.set (i, axis_tag);
 
-    if (!plan->user_axes_location.has (axis_tag) ||
+    만약 (!plan->user_axes_location.has (axis_tag) ||
         !plan->user_axes_location.get (axis_tag).is_point ())
     {
       axis_not_pinned = true;
@@ -517,7 +517,7 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
     }
 
     Triple *axis_range;
-    if (plan->user_axes_location.has (axis_tag, &axis_range))
+    만약 (plan->user_axes_location.has (axis_tag, &axis_range))
     {
       plan->axes_triple_distances.set (axis_tag, axis.get_triple_distances ());
 
@@ -538,21 +538,21 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       normalized_default = roundf (normalized_default * 16384.f) / 16384.f;
       normalized_max = roundf (normalized_max * 16384.f) / 16384.f;
 
-      if (has_avar)
+      만약 (has_avar)
       {
         normalized_mins[i] = normalized_min;
         normalized_defaults[i] = normalized_default;
         normalized_maxs[i] = normalized_max;
         last_idx = i;
       }
-      else
+      아니면
       {
         plan->axes_location.set (axis_tag, Triple ((double) normalized_min,
                                                    (double) normalized_default,
                                                    (double) normalized_max));
-        if (normalized_default == -0.f)
+        만약 (normalized_default == -0.f)
           normalized_default = 0.f; // Normalize -0 to 0
-        if (normalized_default != 0.f)
+        만약 (normalized_default != 0.f)
           plan->pinned_at_default = false;
 
         plan->normalized_coords[i] = roundf (normalized_default * 16384.f);
@@ -563,27 +563,27 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
 
   // TODO: use avar map_coords_16_16() when normalization is changed to 16.16
   // in fonttools
-  if (has_avar)
+  만약 (has_avar)
   {
     const OT::avar* avar_table = face->table.avar;
     unsigned coords_len = last_idx + 1;
 
-    if (avar_table->has_v2_data () && !plan->all_axes_pinned)
+    만약 (avar_table->has_v2_data () && !plan->all_axes_pinned)
     {
       /* avar2 partial instancing: use v1-only mapping to get intermediate-space
        * coords. These are used for IVS rebasing and offset compensation. */
       plan->has_avar2 = true;
 
-      if (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len, true)) ||
+      만약 (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len, true)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len, true)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len, true)))
-        return false;
+        반환 false;
 
-      for (const auto& _ : + hb_enumerate (axes))
+      위해 (const auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->user_axes_location.has (axis_tag))
+        만약 (plan->user_axes_location.has (axis_tag))
         {
           /* Store intermediate-space coords for offset compensation,
            * segment-map renormalization, and IVS rebasing. */
@@ -606,17 +606,17 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       hb_blob_t *cff2_blob = hb_face_reference_table (face, HB_TAG ('C','F','F','2'));
       bool detect_self_contained = !hb_blob_get_length (cff2_blob);
       hb_blob_destroy (cff2_blob);
-      if (!_compute_avar2_reachable_ranges (plan, axes, avar_table,
+      만약 (!_compute_avar2_reachable_ranges (plan, axes, avar_table,
                                             detect_self_contained))
-        return false;
+        반환 false;
 
 #ifndef HB_NO_VAR_COMPOSITES
       /* VARC overrides can reach coordinates outside the font-level
        * ranges. Do not cull variation data using those ranges. */
-      if (!plan->drop_tables.has (HB_TAG ('V','A','R','C')))
+      만약 (!plan->drop_tables.has (HB_TAG ('V','A','R','C')))
       {
         hb_blob_t *varc_blob = hb_face_reference_table (face, HB_TAG ('V','A','R','C'));
-        if (hb_blob_get_length (varc_blob))
+        만약 (hb_blob_get_length (varc_blob))
           plan->avar2_reachable_ranges.reset ();
         hb_blob_destroy (varc_blob);
       }
@@ -627,11 +627,11 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       plan->axes_index_map.reset ();
       plan->axis_tags.reset ();
       unsigned retained_axis_idx = 0;
-      for (const auto& _ : + hb_enumerate (axes))
+      위해 (const auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->avar2_self_contained.has (axis_tag))
+        만약 (plan->avar2_self_contained.has (axis_tag))
           continue;
         plan->axes_index_map.set (i, retained_axis_idx++);
         plan->axis_tags.push (axis_tag);
@@ -641,48 +641,48 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
        * instancing machinery bakes those axes' contributions in. The
        * remaining restriction is carried entirely by avar. */
       plan->axes_location.reset ();
-      if (plan->avar2_self_contained.get_population ())
+      만약 (plan->avar2_self_contained.get_population ())
       {
         bool sc_pinned_at_default = true;
-        for (auto _ : plan->avar2_self_contained)
+        위해 (auto _ : plan->avar2_self_contained)
         {
           plan->axes_location.set (_.first, Triple (_.second, _.second, _.second));
-          if (_.second != 0.0)
+          만약 (_.second != 0.0)
             sc_pinned_at_default = false;
         }
-        for (const auto& _ : + hb_enumerate (axes))
+        위해 (const auto& _ : + hb_enumerate (axes))
         {
           double *v;
           plan->normalized_coords[_.first] =
               plan->avar2_self_contained.has (_.second.get_axis_tag (), &v)
-              ? (int) roundf ((float) (*v * 16384.0)) : 0;
+              ? (정수) roundf ((float) (*v * 16384.0)) : 0;
         }
         plan->pinned_at_default = sc_pinned_at_default;
       }
-      else
+      아니면
         plan->normalized_coords.shrink (0);
     }
-    else
+    아니면
     {
       /* Standard avar v1 (or v1+v2 with all axes pinned) */
-      if (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len)) ||
+      만약 (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len)))
-        return false;
+        반환 false;
 
-      for (const auto& _ : + hb_enumerate (axes))
+      위해 (const auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->user_axes_location.has (axis_tag))
+        만약 (plan->user_axes_location.has (axis_tag))
         {
           plan->axes_location.set (axis_tag, Triple ((double) normalized_mins[i],
                                                      (double) normalized_defaults[i],
                                                      (double) normalized_maxs[i]));
           float normalized_default = normalized_defaults[i];
-          if (normalized_default == -0.f)
+          만약 (normalized_default == -0.f)
             normalized_default = 0.f;
-          if (normalized_default != 0.f)
+          만약 (normalized_default != 0.f)
             plan->pinned_at_default = false;
 
           plan->normalized_coords[i] = roundf (normalized_default * 16384.f);
@@ -690,46 +690,46 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       }
     }
   }
-  return true;
+  반환 true;
 }
 
 #ifndef HB_NO_OT_FONT_CFF
 void
 update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
 {
-  if (!plan->normalized_coords) return;
+  만약 (!plan->normalized_coords) 반환;
   OT::cff2::accelerator_t cff2 (plan->source);
-  if (!cff2.is_valid ()) return;
+  만약 (!cff2.is_valid ()) 반환;
 
   hb_font_t *font = _get_hb_font_with_variations (plan);
-  if (unlikely (!plan->check_success (font != nullptr)))
+  만약 (unlikely (!plan->check_success (font != nullptr)))
   {
     hb_font_destroy (font);
-    return;
+    반환;
   }
 
   hb_glyph_extents_t extents = {0x7FFF, -0x7FFF};
   OT::hmtx_accelerator_t _hmtx (plan->source);
   OT::hb_scalar_cache_t *hvar_store_cache = nullptr;
-  if (_hmtx.has_data () && _hmtx.var_table.get_length ())
+  만약 (_hmtx.has_data () && _hmtx.var_table.get_length ())
     hvar_store_cache = _hmtx.var_table->get_var_store ().create_cache ();
 
   OT::vmtx_accelerator_t _vmtx (plan->source);
   OT::hb_scalar_cache_t *vvar_store_cache = nullptr;
-  if (_vmtx.has_data () && _vmtx.var_table.get_length ())
+  만약 (_vmtx.has_data () && _vmtx.var_table.get_length ())
     vvar_store_cache = _vmtx.var_table->get_var_store ().create_cache ();
 
-  for (auto p : *plan->glyph_map)
+  위해 (auto p : *plan->glyph_map)
   {
     hb_codepoint_t old_gid = p.first;
     hb_codepoint_t new_gid = p.second;
-    if (!cff2.get_extents (font, old_gid, &extents)) continue;
+    만약 (!cff2.get_extents (font, old_gid, &extents)) continue;
     bool has_bounds_info = true;
-    if (extents.x_bearing == 0 && extents.width == 0 &&
+    만약 (extents.x_bearing == 0 && extents.width == 0 &&
         extents.height == 0 && extents.y_bearing == 0)
       has_bounds_info = false;
 
-    if (has_bounds_info)
+    만약 (has_bounds_info)
     {
       plan->head_maxp_info.xMin = hb_min (plan->head_maxp_info.xMin, extents.x_bearing);
       plan->head_maxp_info.xMax = hb_max (plan->head_maxp_info.xMax,
@@ -739,18 +739,18 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
 						 hb_saturate_add (extents.y_bearing, extents.height));
     }
 
-    if (_hmtx.has_data ())
+    만약 (_hmtx.has_data ())
     {
       double hori_aw = _hmtx.get_advance_without_var_unscaled (old_gid);
-      if (_hmtx.var_table.get_length ())
+      만약 (_hmtx.var_table.get_length ())
         hori_aw += (double) roundf (_hmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
 									 hvar_store_cache));
       /* Malicious deltas can take the advance out of the UFWORD range that
        * hmtx serialization stores.  Clamp, to keep downstream consumers
        * (e.g. CFF width optimizer) bounded and consistent with hmtx. */
       hori_aw = hb_clamp (hori_aw, 0., 65535.);
-      int lsb = extents.x_bearing;
-      if (!has_bounds_info)
+      정수 lsb = extents.x_bearing;
+      만약 (!has_bounds_info)
       {
         _hmtx.get_leading_bearing_without_var_unscaled (old_gid, &lsb);
       }
@@ -758,21 +758,21 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
       plan->bounds_width_vec[new_gid] = extents.width;
     }
 
-    if (_vmtx.has_data ())
+    만약 (_vmtx.has_data ())
     {
       double vert_aw = _vmtx.get_advance_without_var_unscaled (old_gid);
-      if (_vmtx.var_table.get_length ())
+      만약 (_vmtx.var_table.get_length ())
         vert_aw += (double) roundf (_vmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
 									 vvar_store_cache));
       vert_aw = hb_clamp (vert_aw, 0., 65535.);
       hb_position_t vorg_x = 0;
       hb_position_t vorg_y = 0;
-      int tsb = 0;
-      if (has_bounds_info &&
+      정수 tsb = 0;
+      만약 (has_bounds_info &&
            hb_font_get_glyph_v_origin (font, old_gid, &vorg_x, &vorg_y))
       {
         tsb = hb_saturate_sub (vorg_y, extents.y_bearing);
-      } else {
+      } 아니면 {
         _vmtx.get_leading_bearing_without_var_unscaled (old_gid, &tsb);
       }
 
@@ -782,15 +782,15 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
   }
   /* No glyph contributed bounds: do not serialize the accumulator's
    * inverted sentinels into head (or a downgraded CFF FontBBox). */
-  if (plan->head_maxp_info.xMin > plan->head_maxp_info.xMax)
+  만약 (plan->head_maxp_info.xMin > plan->head_maxp_info.xMax)
   {
     plan->head_maxp_info.xMin = plan->head_maxp_info.xMax = 0;
     plan->head_maxp_info.yMin = plan->head_maxp_info.yMax = 0;
   }
   hb_font_destroy (font);
-  if (hvar_store_cache)
+  만약 (hvar_store_cache)
     _hmtx.var_table->get_var_store ().destroy_cache (hvar_store_cache);
-  if (vvar_store_cache)
+  만약 (vvar_store_cache)
     _vmtx.var_table->get_var_store ().destroy_cache (vvar_store_cache);
 }
 #endif
@@ -800,65 +800,65 @@ get_instance_glyphs_contour_points (hb_subset_plan_t *plan)
 {
   /* contour_points vector only needed for updating gvar table (infer delta and
    * iup delta optimization) during partial instancing */
-  if (plan->user_axes_location.is_empty () || plan->all_axes_pinned)
-    return true;
+  만약 (plan->user_axes_location.is_empty () || plan->all_axes_pinned)
+    반환 true;
 
   OT::glyf_accelerator_t glyf (plan->source);
 
-  for (auto &_ : plan->new_to_old_gid_list)
+  위해 (auto &_ : plan->new_to_old_gid_list)
   {
     hb_codepoint_t new_gid = _.first;
     contour_point_vector_t all_points;
-    if (new_gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    만약 (new_gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
-      if (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
-        return false;
+      만약 (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
+        반환 false;
       continue;
     }
 
     hb_codepoint_t old_gid = _.second;
     auto glyph = glyf.glyph_for_gid (old_gid);
-    if (unlikely (!glyph.get_all_points_without_var (plan->source, all_points)))
-      return false;
-    if (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
-      return false;
+    만약 (unlikely (!glyph.get_all_points_without_var (plan->source, all_points)))
+      반환 false;
+    만약 (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
+      반환 false;
 
     /* composite new gids are only needed by iup delta optimization */
-    if ((plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS) && glyph.is_composite ())
+    만약 ((plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS) && glyph.is_composite ())
       plan->composite_new_gids.add (new_gid);
   }
-  return true;
+  반환 true;
 }
 
 template<typename DeltaSetIndexMap>
 void
 remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
                                       const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, 정수>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */)
 {
-  if (!index_map.get_map_count ())
-    return;
+  만약 (!index_map.get_map_count ())
+    반환;
 
-  hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> delta_set_idx_delta_map;
+  hb_hashmap_t<unsigned, hb_pair_t<unsigned, 정수>> delta_set_idx_delta_map;
   unsigned new_delta_set_idx = 0;
-  for (unsigned delta_set_idx : delta_set_idxes)
+  위해 (unsigned delta_set_idx : delta_set_idxes)
   {
     unsigned var_idx = index_map.map (delta_set_idx);
     unsigned new_varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    int delta = 0;
+    정수 delta = 0;
 
-    if (var_idx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    만약 (var_idx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!variation_idx_delta_map.has (var_idx, &new_varidx_delta)) continue;
+      hb_pair_t<unsigned, 정수> *new_varidx_delta;
+      만약 (!variation_idx_delta_map.has (var_idx, &new_varidx_delta)) continue;
 
       new_varidx = hb_first (*new_varidx_delta);
       delta = hb_second (*new_varidx_delta);
     }
 
     new_deltaset_idx_varidx_map.set (new_delta_set_idx, new_varidx);
-    delta_set_idx_delta_map.set (delta_set_idx, hb_pair_t<unsigned, int> (new_delta_set_idx, delta));
+    delta_set_idx_delta_map.set (delta_set_idx, hb_pair_t<unsigned, 정수> (new_delta_set_idx, delta));
     new_delta_set_idx++;
   }
   variation_idx_delta_map = std::move (delta_set_idx_delta_map);
@@ -867,7 +867,7 @@ remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
 template void
 remap_colrv1_delta_set_index_indices<OT::DeltaSetIndexMap> (const OT::DeltaSetIndexMap &index_map,
                                       const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, 정수>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
 
  #endif

@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#만약 !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -508,8 +508,8 @@ typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
 typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
 					    void *paint_data,
 					    hb_blob_t *image,
-					    unsigned int width,
-					    unsigned int height,
+					    unsigned 정수 width,
+					    unsigned 정수 height,
 					    hb_tag_t format,
 					    float slant,
 					    hb_glyph_extents_t *extents,
@@ -586,10 +586,10 @@ typedef struct hb_color_line_t hb_color_line_t;
  *
  * Since: 7.0.0
  */
-typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *color_line,
+typedef unsigned 정수 (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *color_line,
 							      void *color_line_data,
-							      unsigned int start,
-							      unsigned int *count,
+							      unsigned 정수 start,
+							      unsigned 정수 *count,
 							      hb_color_stop_t *color_stops,
 							      void *user_data);
 
@@ -635,10 +635,10 @@ struct hb_color_line_t {
   void *reserved8;
 };
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 정수
 hb_color_line_get_color_stops (hb_color_line_t *color_line,
-                               unsigned int start,
-                               unsigned int *count,
+                               unsigned 정수 start,
+                               unsigned 정수 *count,
                                hb_color_stop_t *color_stops);
 
 HB_EXTERN hb_paint_extend_t
@@ -936,7 +936,7 @@ typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
  */
 typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *funcs,
                                                            void *paint_data,
-                                                           unsigned int color_index,
+                                                           unsigned 정수 color_index,
                                                            hb_color_t *color,
                                                            void *user_data);
 
@@ -1309,8 +1309,8 @@ hb_paint_color (hb_paint_funcs_t *funcs, void *paint_data,
 HB_EXTERN void
 hb_paint_image (hb_paint_funcs_t *funcs, void *paint_data,
                 hb_blob_t *image,
-                unsigned int width,
-                unsigned int height,
+                unsigned 정수 width,
+                unsigned 정수 height,
                 hb_tag_t format,
                 float slant,
                 hb_glyph_extents_t *extents);
@@ -1349,7 +1349,7 @@ hb_paint_pop_group (hb_paint_funcs_t *funcs, void *paint_data,
 
 HB_EXTERN hb_bool_t
 hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, void *paint_data,
-                               unsigned int color_index,
+                               unsigned 정수 color_index,
                                hb_color_t *color);
 
 
@@ -1371,7 +1371,7 @@ hb_paint_reduce_linear_anchors (float x0, float y0,
 
 HB_EXTERN void
 hb_paint_normalize_color_line (hb_color_stop_t *stops,
-                               unsigned int     len,
+                               unsigned 정수     len,
                                float           *min,
                                float           *max);
 
@@ -1396,7 +1396,7 @@ typedef void (*hb_paint_sweep_gradient_tile_func_t) (float       a0,
 
 HB_EXTERN void
 hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
-                               unsigned int                         n_stops,
+                               unsigned 정수                         n_stops,
                                hb_paint_extend_t                    extend,
                                float                                start_angle,
                                float                                end_angle,

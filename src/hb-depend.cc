@@ -63,9 +63,9 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
+  만약 (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
     successful = false;
-    return;
+    반환;
   }
   successful = hb_depend_data_builder_t (data).compile (f);
 }
@@ -82,7 +82,7 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
    * in libharfbuzz, after which get_relaxed() safely returns the already-
    * constructed accelerator without instantiating the GSUB_accelerator_t
    * constructor (which references a hidden is_blocklisted symbol) in this TU. */
-  if (hb_ot_layout_has_substitution (face))
+  만약 (hb_ot_layout_has_substitution (face))
     face->table.GSUB.get_relaxed ()->depend (this, face);
 #ifndef HB_NO_MATH
   face->table.MATH->depend (this);
@@ -97,7 +97,7 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
 #ifndef HB_NO_VAR_COMPOSITES
   face->table.VARC->depend (this);
 #endif
-  return successful;
+  반환 successful;
 }
 
 
@@ -132,16 +132,16 @@ hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face)
 {
   hb_subset_depend_t *depend;
-  if (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
-    return nullptr;
+  만약 (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
+    반환 nullptr;
 
-  if (unlikely (depend->in_error ()))
+  만약 (unlikely (depend->in_error ()))
   {
     hb_subset_depend_destroy (depend);
-    return nullptr;
+    반환 nullptr;
   }
 
-  return depend;
+  반환 depend;
 }
 
 /**
@@ -173,19 +173,19 @@ hb_subset_depend_from_face_or_fail (hb_face_t *face)
  *
  * Since: 14.3.0
  **/
-unsigned int
+unsigned 정수
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count,
+                                unsigned 정수 start_offset,
+                                unsigned 정수 *entry_count,
                                 hb_subset_depend_entry_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  unsigned 정수 total = depend->data.get_glyph_entry_count (gid);
+  만약 (entry_count)
   {
-    unsigned int count = hb_min (*entry_count,
+    unsigned 정수 count = hb_min (*entry_count,
                                   start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    위해 (unsigned 정수 i = 0; i < count; i++)
     {
       uint8_t flags_byte = 0;
       depend->data.get_glyph_entry (gid, start_offset + i,
@@ -197,7 +197,7 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
     }
     *entry_count = count;
   }
-  return total;
+  반환 total;
 }
 
 /**
@@ -228,9 +228,9 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
                               hb_set_t *out)
 {
   const hb_set_t *s = depend->get_set_from_index (index);
-  if (!s) return false;
+  만약 (!s) 반환 false;
   out->set (*s);
-  return true;
+  반환 true;
 }
 
 /**
@@ -245,7 +245,7 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
 void
 hb_subset_depend_destroy (hb_subset_depend_t *depend)
 {
-  if (!hb_object_destroy (depend)) return;
+  만약 (!hb_object_destroy (depend)) 반환;
 
   hb_free (depend);
 }

@@ -48,7 +48,7 @@ struct hb_face_t
 {
   hb_object_header_t header;
 
-  unsigned int index;			/* Face index in a collection, zero-based. */
+  unsigned 정수 index;			/* Face index in a collection, zero-based. */
   mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
   mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
 
@@ -77,37 +77,37 @@ struct hb_face_t
   {
     hb_blob_t *blob;
 
-    if (unlikely (!reference_table_func))
-      return hb_blob_get_empty ();
+    만약 (unlikely (!reference_table_func))
+      반환 hb_blob_get_empty ();
 
     blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (this), tag, user_data);
-    if (unlikely (!blob))
-      return hb_blob_get_empty ();
+    만약 (unlikely (!blob))
+      반환 hb_blob_get_empty ();
 
-    return blob;
+    반환 blob;
   }
 
-  unsigned int get_upem () const
+  unsigned 정수 get_upem () const
   {
-    unsigned int ret = upem;
-    if (unlikely (!ret))
+    unsigned 정수 ret = upem;
+    만약 (unlikely (!ret))
     {
-      return load_upem ();
+      반환 load_upem ();
     }
-    return ret;
+    반환 ret;
   }
 
-  unsigned int get_num_glyphs () const
+  unsigned 정수 get_num_glyphs () const
   {
-    unsigned int ret = num_glyphs;
-    if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
-    return ret;
+    unsigned 정수 ret = num_glyphs;
+    만약 (unlikely (ret == UINT_MAX))
+      반환 load_num_glyphs ();
+    반환 ret;
   }
 
   private:
-  HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  HB_INTERNAL unsigned 정수 load_upem () const;
+  HB_INTERNAL unsigned 정수 load_num_glyphs () const;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 

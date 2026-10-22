@@ -42,7 +42,7 @@ namespace OT {
 struct DeviceRecord
 {
   static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  { 반환 hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
@@ -54,14 +54,14 @@ struct DeviceRecord
   {
     TRACE_SERIALIZE (this);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    만약 (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
 
     this->pixelSize = pixelSize;
     this->maxWidth =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
+    위해 (auto &_ : new_to_old_gid_list)
       widthsZ[_.first] = *it++;
 
     return_trace (true);
@@ -88,7 +88,7 @@ struct hdmx
   static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
 
   size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  { 반환 hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
@@ -100,13 +100,13 @@ struct hdmx
   {
     TRACE_SERIALIZE (this);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    만약 (unlikely (!c->extend_min ((*this))))  return_trace (false);
 
     this->version = version;
     this->numRecords = it.len ();
     this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
+    위해 (const hb_item_type<Iterator>& _ : +it)
       c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
 
     return_trace (c->successful ());
@@ -131,10 +131,10 @@ struct hdmx
 	    + hb_iter (c->plan->new_to_old_gid_list)
 	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			반환 device_record->widthsZ.as_array (num_input_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  반환 hb_pair ((unsigned) device_record->pixelSize, +row);
 	})
     ;
 
@@ -146,7 +146,7 @@ struct hdmx
 
   unsigned get_num_glyphs () const
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    반환 sizeDeviceRecord - DeviceRecord::min_size;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const

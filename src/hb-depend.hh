@@ -50,11 +50,11 @@ struct hb_subset_depend_t
 
   bool successful;
 
-  bool in_error () const { return !successful; }
+  bool in_error () const { 반환 !successful; }
 
   const hb_set_t *get_set_from_index (hb_codepoint_t index)
   {
-    return data.get_set_from_index (index);
+    반환 data.get_set_from_index (index);
   }
 
   hb_depend_data_t data;

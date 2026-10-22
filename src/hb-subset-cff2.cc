@@ -74,7 +74,7 @@ struct cff2_instancing_plan_t
     hb_vector_t<unsigned> region_indices;
     unsigned new_major = 0;
     bool alive_ = false;
-    bool alive () const { return alive_; }
+    bool alive () const { 반환 alive_; }
 
     /* One value's delta for new region j, from its old per-region deltas. */
     double transform_delta (unsigned j, hb_array_t<const number_t> deltas) const
@@ -82,9 +82,9 @@ struct cff2_instancing_plan_t
       const hb_vector_t<float> &col = matrix.arrayZ[j];
       double d = 0.;
       unsigned count = hb_min (col.length, deltas.length);
-      for (unsigned c = 0; c < count; c++)
+      위해 (unsigned c = 0; c < count; c++)
 	d += (double) col.arrayZ[c] * deltas.arrayZ[c].to_real ();
-      return d;
+      반환 d;
     }
   };
 
@@ -93,10 +93,10 @@ struct cff2_instancing_plan_t
   hb_set_t used_majors;
   unsigned new_major_count = 0;
 
-  bool has_variations () const { return new_major_count; }
+  bool has_variations () const { 반환 new_major_count; }
 
   const vardata_transform_t *get_transform (unsigned major) const
-  { return major < transforms.length ? &transforms.arrayZ[major] : nullptr; }
+  { 반환 major < transforms.length ? &transforms.arrayZ[major] : nullptr; }
 
   /* Record that a retained blend references this VarData. */
   void note_use (unsigned major) { used_majors.add (major); }
@@ -106,17 +106,17 @@ struct cff2_instancing_plan_t
   unsigned remap_ivs (unsigned old_ivs) const
   {
     const vardata_transform_t *t = get_transform (old_ivs);
-    return (t && t->alive ()) ? t->new_major : 0;
+    반환 (t && t->alive ()) ? t->new_major : 0;
   }
 
   double fold_deltas (unsigned old_ivs, hb_array_t<const number_t> deltas) const
   {
     const vardata_transform_t *t = get_transform (old_ivs);
-    if (unlikely (!t || t->gains.length != deltas.length)) return 0.;
+    만약 (unlikely (!t || t->gains.length != deltas.length)) 반환 0.;
     double v = 0.;
-    for (unsigned i = 0; i < deltas.length; i++)
+    위해 (unsigned i = 0; i < deltas.length; i++)
       v += (double) t->gains.arrayZ[i] * deltas.arrayZ[i].to_real ();
-    return v;
+    반환 v;
   }
 
   bool create (const CFF2ItemVariationStore *cff2VarStore,
@@ -124,60 +124,60 @@ struct cff2_instancing_plan_t
   {
     const OT::ItemVariationStore &varStore = cff2VarStore->varStore;
     unsigned major_count = varStore.get_sub_table_count ();
-    if (!transforms.resize (major_count)) return false;
+    만약 (!transforms.resize (major_count)) 반환 false;
 
-    if (!varStore.get_region_list ().get_var_regions (plan->axes_old_index_tag_map, orig_regions))
-      return false;
+    만약 (!varStore.get_region_list ().get_var_regions (plan->axes_old_index_tag_map, orig_regions))
+      반환 false;
 
     /* Instance each VarData with identity delta rows; the surviving tuples'
      * delta columns are the old-region → new-region transform. */
     OT::optimize_scratch_t scratch;
-    for (unsigned m = 0; m < major_count; m++)
+    위해 (unsigned m = 0; m < major_count; m++)
     {
       const OT::VarData &var_data = varStore.get_sub_table (m);
       unsigned k = var_data.get_region_index_count ();
       vardata_transform_t &t = transforms.arrayZ[m];
 
-      if (!t.gains.resize_exact (k)) return false;
+      만약 (!t.gains.resize_exact (k)) 반환 false;
       varStore.get_region_scalars (m, plan->normalized_coords.arrayZ,
 				   plan->normalized_coords.length,
 				   t.gains.arrayZ, k);
 
       OT::tuple_variations_t tuples;
-      for (unsigned r = 0; r < k; r++)
+      위해 (unsigned r = 0; r < k; r++)
       {
 	OT::tuple_delta_t tuple;
-	if (!tuple.deltas_x.resize (k) ||
+	만약 (!tuple.deltas_x.resize (k) ||
 	    !tuple.indices.resize (k))
-	  return false;
-	for (unsigned i = 0; i < k; i++)
+	  반환 false;
+	위해 (unsigned i = 0; i < k; i++)
 	  tuple.indices.arrayZ[i] = true;
 	tuple.deltas_x.arrayZ[r] = 1.f;
 	unsigned region_index = var_data.get_region_index (r);
-	if (unlikely (region_index >= orig_regions.length)) return false;
+	만약 (unlikely (region_index >= orig_regions.length)) 반환 false;
 	tuple.axis_tuples = orig_regions.arrayZ[region_index];
-	if (unlikely (tuple.axis_tuples.in_error ())) return false;
+	만약 (unlikely (tuple.axis_tuples.in_error ())) 반환 false;
 	tuples.tuple_vars.push (std::move (tuple));
       }
-      if (unlikely (tuples.tuple_vars.in_error ())) return false;
+      만약 (unlikely (tuples.tuple_vars.in_error ())) 반환 false;
 
-      if (!tuples.instantiate (plan->axes_location, plan->axes_triple_distances, scratch))
-	return false;
+      만약 (!tuples.instantiate (plan->axes_location, plan->axes_triple_distances, scratch))
+	반환 false;
 
-      for (auto &tuple : tuples.tuple_vars)
+      위해 (auto &tuple : tuples.tuple_vars)
       {
-	if (unlikely (tuple.deltas_x.length != k)) return false;
+	만약 (unlikely (tuple.deltas_x.length != k)) 반환 false;
 	hb_vector_t<float> col;
-	if (unlikely (!col.resize_exact (k))) return false;
-	for (unsigned i = 0; i < k; i++)
+	만약 (unlikely (!col.resize_exact (k))) 반환 false;
+	위해 (unsigned i = 0; i < k; i++)
 	  col.arrayZ[i] = tuple.deltas_x.arrayZ[i];
 	t.matrix.push (std::move (col));
 	t.regions.push (std::move (tuple.axis_tuples));
       }
-      if (unlikely (t.matrix.in_error () || t.regions.in_error ())) return false;
+      만약 (unlikely (t.matrix.in_error () || t.regions.in_error ())) 반환 false;
     }
 
-    return true;
+    반환 true;
   }
 
   /* Decide which VarDatas survive, number them, and build the new global
@@ -186,69 +186,69 @@ struct cff2_instancing_plan_t
    * rebuildRegions + prune_regions). */
   bool finalize ()
   {
-    for (unsigned m = 0; m < transforms.length; m++)
+    위해 (unsigned m = 0; m < transforms.length; m++)
     {
       vardata_transform_t &t = transforms.arrayZ[m];
       t.alive_ = t.matrix.length && used_majors.has (m);
-      if (t.alive_)
+      만약 (t.alive_)
 	t.new_major = new_major_count++;
     }
 
     /* Keys hash by content, so pointers into different owners compare fine. */
     hb_hashmap_t<const hb_hashmap_t<hb_tag_t, Triple>*, unsigned> region_idx_map;
     hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*> region_ptrs;
-    for (const vardata_transform_t &t : transforms)
+    위해 (const vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
-      for (const auto &region : t.regions)
-	if (!region_idx_map.has (&region))
-	  if (unlikely (!region_idx_map.set (&region, (unsigned) -1)))
-	    return false;
+      만약 (!t.alive ()) continue;
+      위해 (const auto &region : t.regions)
+	만약 (!region_idx_map.has (&region))
+	  만약 (unlikely (!region_idx_map.set (&region, (unsigned) -1)))
+	    반환 false;
     }
-    for (const auto &r : orig_regions)
+    위해 (const auto &r : orig_regions)
     {
       unsigned *idx;
-      if (region_idx_map.has (&r, &idx) && *idx == (unsigned) -1)
+      만약 (region_idx_map.has (&r, &idx) && *idx == (unsigned) -1)
       {
-	if (unlikely (!region_idx_map.set (&r, region_ptrs.length))) return false;
+	만약 (unlikely (!region_idx_map.set (&r, region_ptrs.length))) 반환 false;
 	region_ptrs.push (&r);
       }
     }
-    for (const vardata_transform_t &t : transforms)
+    위해 (const vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
-      for (const auto &region : t.regions)
+      만약 (!t.alive ()) continue;
+      위해 (const auto &region : t.regions)
       {
 	unsigned *idx;
-	if (region_idx_map.has (&region, &idx) && *idx == (unsigned) -1)
+	만약 (region_idx_map.has (&region, &idx) && *idx == (unsigned) -1)
 	{
-	  if (unlikely (!region_idx_map.set (&region, region_ptrs.length))) return false;
+	  만약 (unlikely (!region_idx_map.set (&region, region_ptrs.length))) 반환 false;
 	  region_ptrs.push (&region);
 	}
       }
     }
-    if (unlikely (region_ptrs.in_error ())) return false;
+    만약 (unlikely (region_ptrs.in_error ())) 반환 false;
 
-    for (vardata_transform_t &t : transforms)
+    위해 (vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
-      for (const auto &region : t.regions)
+      만약 (!t.alive ()) continue;
+      위해 (const auto &region : t.regions)
       {
 	unsigned *idx;
-	if (unlikely (!region_idx_map.has (&region, &idx))) return false;
+	만약 (unlikely (!region_idx_map.has (&region, &idx))) 반환 false;
 	t.region_indices.push (*idx);
       }
-      if (unlikely (t.region_indices.in_error ())) return false;
+      만약 (unlikely (t.region_indices.in_error ())) 반환 false;
     }
 
-    if (!new_regions.resize (region_ptrs.length)) return false;
-    for (unsigned i = 0; i < region_ptrs.length; i++)
+    만약 (!new_regions.resize (region_ptrs.length)) 반환 false;
+    위해 (unsigned i = 0; i < region_ptrs.length; i++)
     {
       new_regions.arrayZ[i] = *region_ptrs.arrayZ[i];
-      if (unlikely (new_regions.arrayZ[i].in_error ())) return false;
+      만약 (unlikely (new_regions.arrayZ[i].in_error ())) 반환 false;
     }
 
-    return true;
+    반환 true;
   }
 
   /* Serialize the instanced store: a CFF2ItemVariationStore whose VarDatas
@@ -262,50 +262,50 @@ struct cff2_instancing_plan_t
 
     uint64_t offset = header_size;
     hb_vector_t<unsigned> data_offsets;
-    for (const vardata_transform_t &t : transforms)
+    위해 (const vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
+      만약 (!t.alive ()) continue;
       data_offsets.push ((unsigned) offset);
       offset += 6 + 2 * (uint64_t) t.region_indices.length;
     }
-    if (unlikely (data_offsets.in_error () || data_offsets.length != data_count))
-      return false;
+    만약 (unlikely (data_offsets.in_error () || data_offsets.length != data_count))
+      반환 false;
     unsigned regions_offset = (unsigned) offset;
     uint64_t total = offset + 4 + (uint64_t) new_regions.length * axis_tags.length * 6;
-    if (unlikely (total > 0xFFFFFFFFu)) return false;
+    만약 (unlikely (total > 0xFFFFFFFFu)) 반환 false;
 
     HBUINT16 *size_field = c->allocate_size<HBUINT16> (HBUINT16::static_size);
-    if (unlikely (!size_field)) return false;
+    만약 (unlikely (!size_field)) 반환 false;
     /* OFF 2026 5.3.3.11.2 permits larger stores with length=65535. */
     *size_field = hb_min (total, (uint64_t) 0xFFFFu);
 
     char *header = c->allocate_size<char> (header_size);
-    if (unlikely (!header)) return false;
+    만약 (unlikely (!header)) 반환 false;
     * (HBUINT16 *) (header + 0) = 1;			/* format */
     * (HBUINT32 *) (header + 2) = regions_offset;
     * (HBUINT16 *) (header + 6) = data_count;
-    for (unsigned i = 0; i < data_count; i++)
+    위해 (unsigned i = 0; i < data_count; i++)
       * (HBUINT32 *) (header + 8 + 4 * i) = data_offsets.arrayZ[i];
 
-    for (const vardata_transform_t &t : transforms)
+    위해 (const vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
+      만약 (!t.alive ()) continue;
       unsigned k = t.region_indices.length;
       HBUINT16 *v = (HBUINT16 *) c->allocate_size<char> (6 + 2 * k);
-      if (unlikely (!v)) return false;
+      만약 (unlikely (!v)) 반환 false;
       v[0] = 0;						/* itemCount */
       v[1] = 0;						/* wordSizeCount */
       v[2] = k;						/* regionIndices.len */
-      for (unsigned j = 0; j < k; j++)
+      위해 (unsigned j = 0; j < k; j++)
 	v[3 + j] = t.region_indices.arrayZ[j];
     }
 
     hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*> region_ptrs;
-    if (unlikely (!region_ptrs.alloc_exact (new_regions.length))) return false;
-    for (const auto &r : new_regions)
+    만약 (unlikely (!region_ptrs.alloc_exact (new_regions.length))) 반환 false;
+    위해 (const auto &r : new_regions)
       region_ptrs.push (&r);
     auto *region_list = c->start_embed<OT::VarRegionList> ();
-    return region_list->serialize (c, axis_tags, region_ptrs);
+    반환 region_list->serialize (c, axis_tags, region_ptrs);
   }
 
   private:
@@ -342,7 +342,7 @@ struct cff2_cs_opset_usage_t : cff2_cs_opset_t<cff2_cs_opset_usage_t, cff2_usage
       case OpCode_vstemhm:
       case OpCode_hintmask:
       case OpCode_cntrmask:
-	if (param.drop_hints)
+	만약 (param.drop_hints)
 	  counts = false;
 	break;
 
@@ -350,9 +350,9 @@ struct cff2_cs_opset_usage_t : cff2_cs_opset_t<cff2_cs_opset_usage_t, cff2_usage
 	break;
     }
 
-    if (counts)
-      for (unsigned int i = 0; i < env.argStack.get_count (); i++)
-	if (env.argStack[i].blending ())
+    만약 (counts)
+      위해 (unsigned 정수 i = 0; i < env.argStack.get_count (); i++)
+	만약 (env.argStack[i].blending ())
 	{
 	  param.instancing->note_use (env.get_ivs ());
 	  break;
@@ -371,16 +371,16 @@ struct cff2_private_dict_usage_opset_t : dict_opset_t
 	env.process_vsindex ();
 	param.ivs = env.get_ivs ();
 	env.clear_args ();
-	return;
+	반환;
       case OpCode_blenddict:
 	param.instancing->note_use (param.ivs);
 	env.clear_args ();
-	return;
+	반환;
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	만약 (!env.argStack.is_empty ()) 반환;
 	env.clear_args ();
-	return;
+	반환;
     }
   }
 };
@@ -408,9 +408,9 @@ struct cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
     switch (opstr.op)
     {
       case OpCode_vstore:
-        if (info.var_store_link)
+        만약 (info.var_store_link)
 	  return_trace (FontDict::serialize_link4_op(c, opstr.op, info.var_store_link));
-	else
+	아니면
 	  return_trace (true);
 
       default:
@@ -424,7 +424,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
   static void flush_args_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     /* Optionally capture command for specialization (before flushing, to preserve args) */
-    if (param.commands)
+    만약 (param.commands)
     {
       bool skip_command = false;
 
@@ -441,7 +441,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
 	case OpCode_vstemhm:
 	case OpCode_hintmask:
 	case OpCode_cntrmask:
-	  if (param.drop_hints)
+	  만약 (param.drop_hints)
 	    skip_command = true;
 	  break;
 
@@ -449,21 +449,21 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
 	  break;
       }
 
-      if (!skip_command)
+      만약 (!skip_command)
       {
 	cs_command_t cmd (op);
 	/* Capture resolved blend values */
-	for (unsigned int i = 0; i < env.argStack.get_count ();)
+	위해 (unsigned 정수 i = 0; i < env.argStack.get_count ();)
 	{
 	  const blend_arg_t &arg = env.argStack[i];
-	  if (arg.blending ())
+	  만약 (arg.blending ())
 	  {
 	    /* For blend args, capture only the resolved default value */
 	    cmd.args.push (arg);
 	    /* Skip over the multiple blend values */
 	    i += arg.numValues;
 	  }
-	  else
+	  아니면
 	  {
 	    cmd.args.push (arg);
 	    i++;
@@ -478,7 +478,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
       case OpCode_return:
       case OpCode_endchar:
 	/* dummy opcodes in CFF2. ignore */
-	if (op == OpCode_endchar && param.instancer)
+	만약 (op == OpCode_endchar && param.instancer)
 	  emit_vsindex_prefix (env, param);
 	break;
 
@@ -488,10 +488,10 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
       case OpCode_vstemhm:
       case OpCode_hintmask:
       case OpCode_cntrmask:
-	if (param.drop_hints)
+	만약 (param.drop_hints)
 	{
 	  env.clear_args ();
-	  return;
+	  반환;
 	}
 	HB_FALLTHROUGH;
 
@@ -503,23 +503,23 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
 
   static void flush_args (cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
-    for (unsigned int i = 0; i < env.argStack.get_count ();)
+    위해 (unsigned 정수 i = 0; i < env.argStack.get_count ();)
     {
       const blend_arg_t &arg = env.argStack[i];
-      if (arg.blending ())
+      만약 (arg.blending ())
       {
-	if (unlikely (!((arg.numValues > 0) && (env.argStack.get_count () >= arg.numValues))))
+	만약 (unlikely (!((arg.numValues > 0) && (env.argStack.get_count () >= arg.numValues))))
 	{
 	  env.set_error ();
-	  return;
+	  반환;
 	}
-	if (param.instancer)
+	만약 (param.instancer)
 	  rewrite_blends (arg, i, env, param);
-	else
+	아니면
 	  flatten_blends (arg, i, env, param);
 	i += arg.numValues;
       }
-      else
+      아니면
       {
 	str_encoder_t  encoder (param.flatStr);
 	encoder.encode_num_cs (arg);
@@ -529,26 +529,26 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
     SUPER::flush_args (env, param);
   }
 
-  static void flatten_blends (const blend_arg_t &arg, unsigned int i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flatten_blends (const blend_arg_t &arg, unsigned 정수 i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     /* flatten the default values */
     str_encoder_t  encoder (param.flatStr);
-    for (unsigned int j = 0; j < arg.numValues; j++)
+    위해 (unsigned 정수 j = 0; j < arg.numValues; j++)
     {
       const blend_arg_t &arg1 = env.argStack[i + j];
-      if (unlikely (!((arg1.blending () && (arg.numValues == arg1.numValues) && (arg1.valueIndex == j) &&
+      만약 (unlikely (!((arg1.blending () && (arg.numValues == arg1.numValues) && (arg1.valueIndex == j) &&
 	      (arg1.deltas.length == env.get_region_count ())))))
       {
 	env.set_error ();
-	return;
+	반환;
       }
       encoder.encode_num_cs (arg1);
     }
     /* flatten deltas for each value */
-    for (unsigned int j = 0; j < arg.numValues; j++)
+    위해 (unsigned 정수 j = 0; j < arg.numValues; j++)
     {
       const blend_arg_t &arg1 = env.argStack[i + j];
-      for (unsigned int k = 0; k < arg1.deltas.length; k++)
+      위해 (unsigned 정수 k = 0; k < arg1.deltas.length; k++)
 	encoder.encode_num_cs (arg1.deltas[k]);
     }
     /* flatten the number of values followed by blend operator */
@@ -559,74 +559,74 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
   /* Partial instancing: rewrite one blend group against the instanced store.
    * Each value's default absorbs the folded (pinned-away) contribution, and
    * its deltas are mapped onto the new region list. */
-  static void rewrite_blends (const blend_arg_t &arg, unsigned int i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void rewrite_blends (const blend_arg_t &arg, unsigned 정수 i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     const cff2_instancing_plan_t &instancer = *param.instancer;
     unsigned ivs = env.get_ivs ();
     const cff2_instancing_plan_t::vardata_transform_t *t = instancer.get_transform (ivs);
-    if (unlikely (!t))
+    만약 (unlikely (!t))
     {
       env.set_error ();
-      return;
+      반환;
     }
 
     unsigned n = arg.numValues;
-    for (unsigned int j = 0; j < n; j++)
+    위해 (unsigned 정수 j = 0; j < n; j++)
     {
       const blend_arg_t &arg1 = env.argStack[i + j];
-      if (unlikely (!(arg1.blending () && (arg1.numValues == n) && (arg1.valueIndex == j) &&
+      만약 (unlikely (!(arg1.blending () && (arg1.numValues == n) && (arg1.valueIndex == j) &&
 		      (arg1.deltas.length == env.get_region_count ()) &&
 		      (arg1.deltas.length == t->gains.length))))
       {
 	env.set_error ();
-	return;
+	반환;
       }
     }
 
     str_encoder_t encoder (param.flatStr);
     unsigned k_new = t->alive () ? t->matrix.length : 0;
 
-    if (!k_new)
+    만약 (!k_new)
     {
       /* All of this VarData's regions died; blends dissolve into statics. */
-      for (unsigned int j = 0; j < n; j++)
+      위해 (unsigned 정수 j = 0; j < n; j++)
       {
 	const blend_arg_t &arg1 = env.argStack[i + j];
 	number_t v;
 	v.set_real (arg1.to_real () + round (instancer.fold_deltas (ivs, arg1.deltas.as_array ())));
 	encoder.encode_num_cs (v);
       }
-      return;
+      반환;
     }
 
     /* Emit in chunks so the output charstring stays within the argument
      * stack limit: values already emitted for this op, plus this chunk's
      * defaults, deltas and count, must not exceed 513. */
     unsigned done = 0;
-    while (done < n)
+    동안 (done < n)
     {
       unsigned avail = 512 > (i + done) ? 512 - (i + done) : 0;
       unsigned chunk = hb_min (avail / (k_new + 1), n - done);
-      if (unlikely (!chunk))
+      만약 (unlikely (!chunk))
       {
 	env.set_error ();
-	return;
+	반환;
       }
 
-      for (unsigned int j = done; j < done + chunk; j++)
+      위해 (unsigned 정수 j = done; j < done + chunk; j++)
       {
 	const blend_arg_t &arg1 = env.argStack[i + j];
 	number_t v;
 	v.set_real (arg1.to_real () + round (instancer.fold_deltas (ivs, arg1.deltas.as_array ())));
 	encoder.encode_num_cs (v);
       }
-      for (unsigned int j = done; j < done + chunk; j++)
+      위해 (unsigned 정수 j = done; j < done + chunk; j++)
       {
 	const blend_arg_t &arg1 = env.argStack[i + j];
-	for (unsigned r = 0; r < k_new; r++)
+	위해 (unsigned r = 0; r < k_new; r++)
 	{
 	  number_t v;
-	  v.set_int (hb_clamp_to<int> (round (t->transform_delta (r, arg1.deltas.as_array ()))));
+	  v.set_int (hb_clamp_to<정수> (round (t->transform_delta (r, arg1.deltas.as_array ()))));
 	  encoder.encode_num_cs (v);
 	}
       }
@@ -641,23 +641,23 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
    * (remapped) ivs differs from its FD's (remapped) private-dict ivs. */
   static void emit_vsindex_prefix (cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
-    if (!param.emitted_blend) return;
+    만약 (!param.emitted_blend) 반환;
     const cff2_instancing_plan_t &instancer = *param.instancer;
     unsigned new_ivs = instancer.remap_ivs (env.get_ivs ());
     unsigned fd_ivs = instancer.remap_ivs (env.get_orig_ivs ());
-    if (new_ivs == fd_ivs) return;
+    만약 (new_ivs == fd_ivs) 반환;
 
     str_buff_t prefix;
     str_encoder_t enc (prefix);
-    enc.encode_int ((int) new_ivs);
+    enc.encode_int ((정수) new_ivs);
     enc.encode_op (OpCode_vsindexcs);
 
     str_buff_t &buf = param.flatStr;
     unsigned old_len = buf.length;
-    if (unlikely (prefix.in_error () || !buf.resize (old_len + prefix.length)))
+    만약 (unlikely (prefix.in_error () || !buf.resize (old_len + prefix.length)))
     {
       env.set_error ();
-      return;
+      반환;
     }
     memmove (buf.arrayZ + prefix.length, buf.arrayZ, old_len);
     hb_memcpy (buf.arrayZ, prefix.arrayZ, prefix.length);
@@ -669,7 +669,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
     {
       case OpCode_return:
       case OpCode_endchar:
-	return;
+	반환;
       default:
 	str_encoder_t  encoder (param.flatStr);
 	encoder.encode_op (op);
@@ -680,25 +680,25 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
   {
     SUPER::flush_hintmask (op, env, param);
     /* Preserve hintmask payload in captured commands for specializer re-encoding. */
-    if (param.commands && !param.drop_hints && param.commands->length > 0)
+    만약 (param.commands && !param.drop_hints && param.commands->length > 0)
     {
       auto &cmd = param.commands->tail ();
-      if (cmd.op == op)
+      만약 (cmd.op == op)
       {
         cmd.mask_bytes.resize (env.hintmask_size);
-        if (unlikely (cmd.mask_bytes.in_error ()))
+        만약 (unlikely (cmd.mask_bytes.in_error ()))
         {
           env.set_error ();
-          return;
+          반환;
         }
-        for (unsigned int i = 0; i < env.hintmask_size; i++)
+        위해 (unsigned 정수 i = 0; i < env.hintmask_size; i++)
           cmd.mask_bytes[i] = env.str_ref[i];
       }
     }
-    if (!param.drop_hints)
+    만약 (!param.drop_hints)
     {
       str_encoder_t  encoder (param.flatStr);
-      for (unsigned int i = 0; i < env.hintmask_size; i++)
+      위해 (unsigned 정수 i = 0; i < env.hintmask_size; i++)
 	encoder.encode_byte (env.str_ref[i]);
     }
   }
@@ -766,10 +766,10 @@ struct cff2_subr_subsetter_t : subr_subsetter_t<cff2_subr_subsetter_t, CFF2Subrs
   static void complete_parsed_str (cff2_cs_interp_env_t<blend_arg_t> &env, subr_subset_param_t& param, parsed_cs_str_t &charstring)
   {
     /* vsindex is inserted at the beginning of the charstring as necessary */
-    if (env.seen_vsindex ())
+    만약 (env.seen_vsindex ())
     {
       number_t  ivs;
-      ivs.set_int ((int)env.get_ivs ());
+      ivs.set_int ((정수)env.get_ivs ());
       charstring.set_prefix (ivs, OpCode_vsindexcs);
     }
   }
@@ -779,21 +779,21 @@ struct cff2_private_blend_encoder_param_t
 {
   cff2_private_blend_encoder_param_t (hb_serialize_context_t *c,
 				      const CFF2ItemVariationStore *varStore,
-				      hb_array_t<int> normalized_coords) :
+				      hb_array_t<정수> normalized_coords) :
     c (c), varStore (varStore), normalized_coords (normalized_coords) {}
 
   void init () {}
 
   void process_blend ()
   {
-    if (!seen_blend)
+    만약 (!seen_blend)
     {
       region_count = varStore->varStore.get_region_index_count (ivs);
-      if (unlikely (!scalars.resize_exact (region_count)))
+      만약 (unlikely (!scalars.resize_exact (region_count)))
       {
-	if (c) c->err (HB_SERIALIZE_ERROR_OTHER);
+	만약 (c) c->err (HB_SERIALIZE_ERROR_OTHER);
 	seen_blend = true;
-	return;
+	반환;
       }
       varStore->varStore.get_region_scalars (ivs, normalized_coords.arrayZ, normalized_coords.length,
 					     &scalars[0], region_count);
@@ -804,13 +804,13 @@ struct cff2_private_blend_encoder_param_t
   double blend_deltas (hb_array_t<const number_t> deltas) const
   {
     double v = 0;
-    if (likely (scalars.length == deltas.length))
+    만약 (likely (scalars.length == deltas.length))
     {
       unsigned count = scalars.length;
-      for (unsigned i = 0; i < count; i++)
+      위해 (unsigned i = 0; i < count; i++)
 	v += (double) scalars.arrayZ[i] * deltas.arrayZ[i].to_real ();
     }
-    return v;
+    반환 v;
   }
 
 
@@ -820,7 +820,7 @@ struct cff2_private_blend_encoder_param_t
   unsigned region_count = 0;
   hb_vector_t<float> scalars;
   const	 CFF2ItemVariationStore *varStore = nullptr;
-  hb_array_t<int> normalized_coords;
+  hb_array_t<정수> normalized_coords;
 
   /* CFF2 partial instancing: when set, blends are rewritten against the
    * instanced variation store instead of being flattened. */
@@ -852,7 +852,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
     double emit = round (param.fold_exact + f) - param.fold_emitted;
     param.fold_exact += f;
     param.fold_emitted += emit;
-    return emit;
+    반환 emit;
   }
 
   /* Partial instancing: emit the args preceding this blend group, then the
@@ -864,25 +864,25 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
   {
     const cff2_instancing_plan_t &instancer = *param.instancer;
     const cff2_instancing_plan_t::vardata_transform_t *t = instancer.get_transform (param.ivs);
-    if (unlikely (!t || t->gains.length != k))
+    만약 (unlikely (!t || t->gains.length != k))
     {
       env.set_error ();
-      return;
+      반환;
     }
 
     str_buff_t str;
     str_encoder_t encoder (str);
 
-    for (unsigned idx = 0; idx < start; idx++)
+    위해 (unsigned idx = 0; idx < start; idx++)
       encoder.encode_num_tp (env.argStack[idx]);
 
     unsigned k_new = t->alive () ? t->matrix.length : 0;
-    if (!k_new)
+    만약 (!k_new)
     {
       /* This VarData died (or is unused by any retained charstring, which
        * can happen for FDs kept only for retain-gids holes); blends
        * dissolve into statics. */
-      for (unsigned j = 0; j < n; j++)
+      위해 (unsigned j = 0; j < n; j++)
       {
 	const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
 	number_t v;
@@ -890,33 +890,33 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
 	encoder.encode_num_tp (v);
       }
     }
-    else
+    아니면
     {
       unsigned done = 0;
-      while (done < n)
+      동안 (done < n)
       {
 	unsigned avail = 512 > (start + done) ? 512 - (start + done) : 0;
 	unsigned chunk = hb_min (avail / (k_new + 1), n - done);
-	if (unlikely (!chunk))
+	만약 (unlikely (!chunk))
 	{
 	  env.set_error ();
-	  return;
+	  반환;
 	}
 
-	for (unsigned j = done; j < done + chunk; j++)
+	위해 (unsigned j = done; j < done + chunk; j++)
 	{
 	  const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
 	  number_t v;
 	  v.set_real (env.argStack[start + j].to_real () + fold (param, blends));
 	  encoder.encode_num_tp (v);
 	}
-	for (unsigned j = done; j < done + chunk; j++)
+	위해 (unsigned j = done; j < done + chunk; j++)
 	{
 	  const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
-	  for (unsigned r = 0; r < k_new; r++)
+	  위해 (unsigned r = 0; r < k_new; r++)
 	  {
 	    number_t v;
-	    v.set_int (hb_clamp_to<int> (round (t->transform_delta (r, blends))));
+	    v.set_int (hb_clamp_to<정수> (round (t->transform_delta (r, blends))));
 	    encoder.encode_num_tp (v);
 	  }
 	}
@@ -934,36 +934,36 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
 
   static void process_blend (cff2_priv_dict_interp_env_t& env, cff2_private_blend_encoder_param_t& param)
   {
-    unsigned int n, k;
+    unsigned 정수 n, k;
 
     param.process_blend ();
     k = param.region_count;
     n = env.argStack.pop_uint ();
 
     unsigned count = env.argStack.get_count ();
-    unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    unsigned 정수 total;
+    만약 (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
     {
       env.set_error ();
-      return;
+      반환;
     }
 
     /* copy the blend values into blend array of the default values */
-    unsigned int start = count - total;
+    unsigned 정수 start = count - total;
     /* let an obvious error case fail, but note CFF2 spec doesn't forbid n==0 */
-    if (unlikely (start > count))
+    만약 (unlikely (start > count))
     {
       env.set_error ();
-      return;
+      반환;
     }
 
-    if (param.instancer && k)
+    만약 (param.instancer && k)
     {
       rewrite_blends (env, param, start, n, k);
-      return;
+      반환;
     }
 
-    for (unsigned int i = 0; i < n; i++)
+    위해 (unsigned 정수 i = 0; i < n; i++)
     {
       const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (i * k), k);
       process_arg_blend (param, env.argStack[start + i], blends, n, i);
@@ -993,33 +993,33 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
       case OpCode_vsindexdict:
 	env.process_vsindex ();
 	param.ivs = env.get_ivs ();
-	if (param.instancer)
+	만약 (param.instancer)
 	{
 	  /* Re-emit with the remapped vsindex; 0 is the dict default. */
 	  unsigned new_ivs = param.instancer->remap_ivs (param.ivs);
-	  if (new_ivs)
+	  만약 (new_ivs)
 	  {
 	    str_buff_t str;
 	    str_encoder_t encoder (str);
-	    encoder.encode_int ((int) new_ivs);
+	    encoder.encode_int ((정수) new_ivs);
 	    encoder.encode_op (OpCode_vsindexdict);
 	    auto bytes = str.as_bytes ();
 	    param.c->embed (&bytes, bytes.length);
 	  }
 	}
 	env.clear_args ();
-	return;
+	반환;
       case OpCode_blenddict:
 	process_blend (env, param);
-	return;
+	반환;
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	만약 (!env.argStack.is_empty ()) 반환;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    만약 (unlikely (env.in_error ())) 반환;
 
     // Write args then op
 
@@ -1027,7 +1027,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
     str_encoder_t encoder (str);
 
     unsigned count = env.argStack.get_count ();
-    for (unsigned i = 0; i < count; i++)
+    위해 (unsigned i = 0; i < count; i++)
       encoder.encode_num_tp (env.argStack[i]);
 
     encoder.encode_op (op);
@@ -1044,7 +1044,7 @@ struct cff2_private_dict_op_serializer_t : op_serializer_t
 {
   cff2_private_dict_op_serializer_t (bool desubroutinize_, bool drop_hints_, bool pinned_,
 				     const CFF::CFF2ItemVariationStore* varStore_,
-				     hb_array_t<int> normalized_coords_,
+				     hb_array_t<정수> normalized_coords_,
 				     const cff2_instancing_plan_t *instancer_ = nullptr)
     : desubroutinize (desubroutinize_), drop_hints (drop_hints_), pinned (pinned_),
       param (nullptr, varStore_, normalized_coords_)
@@ -1056,18 +1056,18 @@ struct cff2_private_dict_op_serializer_t : op_serializer_t
   {
     TRACE_SERIALIZE (this);
 
-    if (drop_hints && dict_opset_t::is_hint_op (opstr.op))
+    만약 (drop_hints && dict_opset_t::is_hint_op (opstr.op))
       return_trace (true);
 
-    if (opstr.op == OpCode_Subrs)
+    만약 (opstr.op == OpCode_Subrs)
     {
-      if (desubroutinize || !subrs_link)
+      만약 (desubroutinize || !subrs_link)
 	return_trace (true);
-      else
+      아니면
 	return_trace (FontDict::serialize_link2_op (c, opstr.op, subrs_link));
     }
 
-    if (pinned || param.instancer)
+    만약 (pinned || param.instancer)
     {
       /* Reinterpret opstr and process blends.  The param persists across
        * this dict's opstrs, so that an ivs set by a vsindexdict opstr is
@@ -1098,7 +1098,7 @@ struct cff2_subset_plan
   {
     /* make sure notdef is first */
     hb_codepoint_t old_glyph;
-    if (!plan->old_gid_for_new_gid (0, &old_glyph) || (old_glyph != 0)) return false;
+    만약 (!plan->old_gid_for_new_gid (0, &old_glyph) || (old_glyph != 0)) 반환 false;
 
     num_glyphs = plan->num_output_glyphs ();
     orig_fdcount = acc.fdArray->count;
@@ -1115,9 +1115,9 @@ struct cff2_subset_plan
     /* Partial instancing: some axes pinned or limited, others kept. */
     partial_instancing = instancing_requested && !pinned &&
 			 acc.varStore != &Null (CFF2ItemVariationStore);
-    if (partial_instancing &&
+    만약 (partial_instancing &&
 	unlikely (!instancing.create (acc.varStore, plan)))
-      return false;
+      반환 false;
     axis_tags = &plan->axis_tags;
 
     /* Enable command capture for CFF2→CFF1 conversion (for specialization) */
@@ -1125,26 +1125,26 @@ struct cff2_subset_plan
 
  #ifdef HB_EXPERIMENTAL_API
     min_charstrings_off_size = (plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS) ? 4 : 0;
- #else
+ #아니면
     min_charstrings_off_size = 0;
  #endif
 
-    if (desubroutinize)
+    만약 (desubroutinize)
     {
-      if (partial_instancing)
+      만약 (partial_instancing)
       {
 	/* Pass 1: collect which VarDatas the retained blends reference, so
 	 * unused ones get pruned and the survivors renumbered. */
 	hb_set_t used_fds;
-	for (unsigned int i = 0; i < num_glyphs; i++)
+	위해 (unsigned 정수 i = 0; i < num_glyphs; i++)
 	{
 	  hb_codepoint_t glyph;
-	  if (!plan->old_gid_for_new_gid (i, &glyph))
+	  만약 (!plan->old_gid_for_new_gid (i, &glyph))
 	    continue;
 	  const hb_ubytes_t str = (*acc.charStrings)[glyph];
-	  unsigned int fd = CFF::subset_get_fd (acc, glyph);
-	  if (unlikely (fd >= acc.fdCount))
-	    return false;
+	  unsigned 정수 fd = CFF::subset_get_fd (acc, glyph);
+	  만약 (unlikely (fd >= acc.fdCount))
+	    반환 false;
 	  used_fds.add (fd);
 
 	  cff2_cs_interp_env_t<blend_arg_t> env (str, acc, fd);
@@ -1152,41 +1152,41 @@ struct cff2_subset_plan
 	  cff2_usage_param_t param;
 	  param.instancing = &instancing;
 	  param.drop_hints = drop_hints;
-	  if (unlikely (!interp.interpret (param)))
-	    return false;
+	  만약 (unlikely (!interp.interpret (param)))
+	    반환 false;
 	}
-	for (unsigned fd : used_fds)
+	위해 (unsigned fd : used_fds)
 	{
 	  cff2_usage_param_t param;
 	  param.instancing = &instancing;
 	  unsigned count = acc.privateDicts[fd].get_count ();
-	  for (unsigned j = 0; j < count; j++)
+	  위해 (unsigned j = 0; j < count; j++)
 	  {
 	    const op_str_t &opstr = acc.privateDicts[fd][j];
-	    if (drop_hints && dict_opset_t::is_hint_op (opstr.op))
+	    만약 (drop_hints && dict_opset_t::is_hint_op (opstr.op))
 	      continue;
 	    cff2_priv_dict_interp_env_t env {hb_ubytes_t (opstr.ptr, opstr.length)};
 	    dict_interpreter_t<cff2_private_dict_usage_opset_t, cff2_usage_param_t, cff2_priv_dict_interp_env_t> interp (env);
-	    if (unlikely (!interp.interpret (param)))
-	      return false;
+	    만약 (unlikely (!interp.interpret (param)))
+	      반환 false;
 	  }
 	}
-	if (unlikely (!instancing.finalize ()))
-	  return false;
+	만약 (unlikely (!instancing.finalize ()))
+	  반환 false;
 
 	/* Pass 2: like subr_flattener_t, but blends stay symbolic (no coords
 	 * fed to the env) and get rewritten against the instanced store. */
-	if (!subset_charstrings.resize_exact (num_glyphs))
-	  return false;
-	for (unsigned int i = 0; i < num_glyphs; i++)
+	만약 (!subset_charstrings.resize_exact (num_glyphs))
+	  반환 false;
+	위해 (unsigned 정수 i = 0; i < num_glyphs; i++)
 	{
 	  hb_codepoint_t glyph;
-	  if (!plan->old_gid_for_new_gid (i, &glyph))
+	  만약 (!plan->old_gid_for_new_gid (i, &glyph))
 	    continue;
 	  const hb_ubytes_t str = (*acc.charStrings)[glyph];
-	  unsigned int fd = CFF::subset_get_fd (acc, glyph);
-	  if (unlikely (fd >= acc.fdCount))
-	    return false;
+	  unsigned 정수 fd = CFF::subset_get_fd (acc, glyph);
+	  만약 (unlikely (fd >= acc.fdCount))
+	    반환 false;
 
 	  cff2_cs_interp_env_t<blend_arg_t> env (str, acc, fd);
 	  cs_interpreter_t<cff2_cs_interp_env_t<blend_arg_t>, cff2_cs_opset_flatten_t, flatten_param_t> interp (env);
@@ -1196,62 +1196,62 @@ struct cff2_subset_plan
 	    plan
 	  };
 	  param.instancer = &instancing;
-	  if (unlikely (!interp.interpret (param)))
-	    return false;
+	  만약 (unlikely (!interp.interpret (param)))
+	    반환 false;
 	}
       }
-      else
+      아니면
       {
       /* Flatten global & local subrs */
       subr_flattener_t<const OT::cff2::accelerator_subset_t, cff2_cs_interp_env_t<blend_arg_t>, cff2_cs_opset_flatten_t>
 		    flattener(acc, plan);
 
       /* Enable command capture if requested (for specialization) */
-      if (capture_commands)
+      만약 (capture_commands)
       {
-	if (!charstring_commands.resize_exact (num_glyphs))
-	  return false;
+	만약 (!charstring_commands.resize_exact (num_glyphs))
+	  반환 false;
 
-	if (!flattener.flatten (subset_charstrings, &charstring_commands))
-	  return false;
+	만약 (!flattener.flatten (subset_charstrings, &charstring_commands))
+	  반환 false;
       }
-      else
+      아니면
       {
-	if (!flattener.flatten (subset_charstrings))
-	  return false;
+	만약 (!flattener.flatten (subset_charstrings))
+	  반환 false;
       }
       }
     }
-    else
+    아니면
     {
       cff2_subr_subsetter_t	subr_subsetter (acc, plan);
 
       /* Subset subrs: collect used subroutines, leaving all unused ones behind */
-      if (!subr_subsetter.subset ())
-	return false;
+      만약 (!subr_subsetter.subset ())
+	반환 false;
 
       /* encode charstrings, global subrs, local subrs with new subroutine numbers */
-      if (!subr_subsetter.encode_charstrings (subset_charstrings, !pinned))
-	return false;
+      만약 (!subr_subsetter.encode_charstrings (subset_charstrings, !pinned))
+	반환 false;
 
-      if (!subr_subsetter.encode_globalsubrs (subset_globalsubrs))
-	return false;
+      만약 (!subr_subsetter.encode_globalsubrs (subset_globalsubrs))
+	반환 false;
 
       /* local subrs */
-      if (!subset_localsubrs.resize (orig_fdcount))
-	return false;
-      for (unsigned int fd = 0; fd < orig_fdcount; fd++)
+      만약 (!subset_localsubrs.resize (orig_fdcount))
+	반환 false;
+      위해 (unsigned 정수 fd = 0; fd < orig_fdcount; fd++)
       {
 	subset_localsubrs[fd].init ();
-	if (!subr_subsetter.encode_localsubrs (fd, subset_localsubrs[fd]))
-	  return false;
+	만약 (!subr_subsetter.encode_localsubrs (fd, subset_localsubrs[fd]))
+	  반환 false;
       }
     }
 
     /* FDSelect */
-    if (acc.fdSelect != &Null (CFF2FDSelect))
+    만약 (acc.fdSelect != &Null (CFF2FDSelect))
     {
-      if (unlikely (!hb_plan_subset_cff_fdselect (plan,
+      만약 (unlikely (!hb_plan_subset_cff_fdselect (plan,
 						  orig_fdcount,
 						  *(const FDSelect *)acc.fdSelect,
 						  acc.num_glyphs,
@@ -1260,21 +1260,21 @@ struct cff2_subset_plan
 						  subset_fdselect_format,
 						  subset_fdselect_ranges,
 						  fdmap)))
-	return false;
+	반환 false;
     }
-    else
+    아니면
       fdmap.identity (1);
 
-    return true;
+    반환 true;
   }
 
   cff2_sub_table_info_t info;
 
-  unsigned int    num_glyphs;
-  unsigned int    orig_fdcount = 0;
-  unsigned int    subset_fdcount = 1;
-  unsigned int    subset_fdselect_size = 0;
-  unsigned int    subset_fdselect_format = 0;
+  unsigned 정수    num_glyphs;
+  unsigned 정수    orig_fdcount = 0;
+  unsigned 정수    subset_fdcount = 1;
+  unsigned 정수    subset_fdselect_size = 0;
+  unsigned 정수    subset_fdselect_format = 0;
   bool            pinned = false;
   hb_vector_t<code_pair_t>   subset_fdselect_ranges;
 
@@ -1293,9 +1293,9 @@ struct cff2_subset_plan
 
   unsigned  min_charstrings_off_size = 0;
 
-  hb_array_t<int> normalized_coords; // For instantiation
+  hb_array_t<정수> normalized_coords; // For instantiation
   head_maxp_info_t head_maxp_info;  // For FontBBox
-  const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *hmtx_map; // For widths
+  const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, 정수>> *hmtx_map; // For widths
 
   // Width optimization results (for CFF1 conversion)
   unsigned default_width = 0;
@@ -1327,84 +1327,84 @@ _serialize_cff1_charstrings (hb_serialize_context_t *c,
   // 1. Width at the beginning (if != defaultWidthX)
   // 2. endchar at the end
   str_buff_vec_t cff1_charstrings;
-  if (unlikely (!cff1_charstrings.resize (plan.subset_charstrings.length)))
+  만약 (unlikely (!cff1_charstrings.resize (plan.subset_charstrings.length)))
   {
     c->pop_discard ();
-    return false;
+    반환 false;
   }
 
-  for (unsigned i = 0; i < plan.subset_charstrings.length; i++)
+  위해 (unsigned i = 0; i < plan.subset_charstrings.length; i++)
   {
     // Get width for this glyph from hmtx_map
     unsigned width = 0;
-    if (plan.hmtx_map->has (i))
+    만약 (plan.hmtx_map->has (i))
       width = plan.hmtx_map->get (i).first;
 
     // Encode width if different from default
     str_encoder_t encoder (cff1_charstrings[i]);
-    if (width != default_width)
+    만약 (width != default_width)
     {
-      int delta = (int) width - (int) nominal_width;
+      정수 delta = (정수) width - (정수) nominal_width;
       encoder.encode_int (delta);
     }
 
     // Use specialized commands if available, otherwise use binary
-    if (plan.capture_commands && i < plan.charstring_commands.length &&
+    만약 (plan.capture_commands && i < plan.charstring_commands.length &&
         plan.charstring_commands[i].length > 0)
     {
       // Specialize and encode commands
       auto &commands = plan.charstring_commands[i];
       CFF::specialize_commands (commands, 48);  /* maxstack=48 for CFF1 */
-      if (unlikely (!CFF::encode_commands (commands, cff1_charstrings[i])))
+      만약 (unlikely (!CFF::encode_commands (commands, cff1_charstrings[i])))
       {
         c->pop_discard ();
-        return false;
+        반환 false;
       }
     }
-    else
+    아니면
     {
       // Use binary CharString
       const str_buff_t &cs = plan.subset_charstrings[i];
-      for (unsigned j = 0; j < cs.length; j++)
+      위해 (unsigned j = 0; j < cs.length; j++)
         cff1_charstrings[i].push (cs[j]);
     }
 
     // Check if it already ends with endchar (0x0e) or return (0x0b)
-    if (cff1_charstrings[i].length == 0 ||
+    만약 (cff1_charstrings[i].length == 0 ||
         (cff1_charstrings[i].tail () != 0x0e && cff1_charstrings[i].tail () != 0x0b))
     {
       // Append endchar operator
-      if (unlikely (!cff1_charstrings[i].push_or_fail (0x0e)))
+      만약 (unlikely (!cff1_charstrings[i].push_or_fail (0x0e)))
       {
         c->pop_discard ();
-        return false;
+        반환 false;
       }
     }
   }
 
   unsigned data_size = 0;
   unsigned total_size = CFF1CharStrings::total_size (cff1_charstrings, &data_size, plan.min_charstrings_off_size);
-  if (unlikely (!c->start_zerocopy (total_size)))
+  만약 (unlikely (!c->start_zerocopy (total_size)))
   {
     c->pop_discard ();
-    return false;
+    반환 false;
   }
 
   auto *cs = c->start_embed<CFF1CharStrings> ();
-  if (unlikely (!cs->serialize (c, cff1_charstrings, &data_size, plan.min_charstrings_off_size)))
+  만약 (unlikely (!cs->serialize (c, cff1_charstrings, &data_size, plan.min_charstrings_off_size)))
   {
     c->pop_discard ();
-    return false;
+    반환 false;
   }
 
   plan.info.char_strings_link = c->pop_pack (false);
-  return true;
+  반환 true;
 }
 
 /* Serialize CID Charset (format 2 range: gid 0-N -> cid 0-N) */
 static bool
 _serialize_cff1_charset (hb_serialize_context_t *c,
-                         unsigned int num_glyphs,
+                         unsigned 정수 num_glyphs,
                          objidx_t &charset_link)
 {
   // For CID fonts, create a simple identity charset
@@ -1412,15 +1412,15 @@ _serialize_cff1_charset (hb_serialize_context_t *c,
   c->push ();
 
   auto *charset = c->start_embed<Charset> ();
-  if (unlikely (!charset))
+  만약 (unlikely (!charset))
   {
     c->pop_discard ();
-    return false;
+    반환 false;
   }
 
   // Create a single range for CID 1 to num_glyphs-1
   hb_vector_t<code_pair_t> ranges;
-  if (num_glyphs > 1)
+  만약 (num_glyphs > 1)
   {
     code_pair_t range;
     range.code = 1;  // first CID
@@ -1428,14 +1428,14 @@ _serialize_cff1_charset (hb_serialize_context_t *c,
     ranges.push (range);
   }
 
-  if (unlikely (!charset->serialize (c, 2, num_glyphs, ranges)))
+  만약 (unlikely (!charset->serialize (c, 2, num_glyphs, ranges)))
   {
     c->pop_discard ();
-    return false;
+    반환 false;
   }
 
   charset_link = c->pop_pack ();
-  return true;
+  반환 true;
 }
 
 /* CFF2 to CFF1 serialization */
@@ -1469,10 +1469,10 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     hb_vector_t<unsigned> widths;
     widths.alloc (plan.num_glyphs);
 
-    for (unsigned gid = 0; gid < plan.num_glyphs; gid++)
+    위해 (unsigned gid = 0; gid < plan.num_glyphs; gid++)
     {
       unsigned width = 0;
-      if (plan.hmtx_map->has (gid))
+      만약 (plan.hmtx_map->has (gid))
         width = plan.hmtx_map->get (gid).first;
       widths.push (width);
     }
@@ -1482,26 +1482,26 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
   }
 
   // 1. CharStrings (with widths prepended)
-  if (!_serialize_cff1_charstrings (c, plan, plan.default_width, plan.nominal_width))
+  만약 (!_serialize_cff1_charstrings (c, plan, plan.default_width, plan.nominal_width))
     return_trace (false);
 
   // 2. Private DICs & Local Subrs (same as CFF2)
   hb_vector_t<table_info_t> private_dict_infos;
-  if (unlikely (!private_dict_infos.resize (plan.subset_fdcount)))
+  만약 (unlikely (!private_dict_infos.resize (plan.subset_fdcount)))
     return_trace (false);
 
-  for (int i = (int)acc.privateDicts.length; --i >= 0;)
+  위해 (정수 i = (정수)acc.privateDicts.length; --i >= 0;)
   {
-    if (plan.fdmap.has (i))
+    만약 (plan.fdmap.has (i))
     {
       objidx_t subrs_link = 0;
 
-      if (plan.subset_localsubrs[i].length > 0)
+      만약 (plan.subset_localsubrs[i].length > 0)
       {
         auto *dest = c->push<CFF1Subrs> ();
-        if (likely (dest->serialize (c, plan.subset_localsubrs[i])))
+        만약 (likely (dest->serialize (c, plan.subset_localsubrs[i])))
           subrs_link = c->pop_pack (false);
-        else
+        아니면
         {
           c->pop_discard ();
           return_trace (false);
@@ -1512,7 +1512,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
       // Use the CFF2 Private DICT serializer which instantiates blends when pinned=true
       cff2_private_dict_op_serializer_t privSzr (plan.desubroutinize, plan.drop_hints, plan.pinned,
                                                   acc.varStore, plan.normalized_coords);
-      if (likely (pd->serialize (c, acc.privateDicts[i], privSzr, subrs_link)))
+      만약 (likely (pd->serialize (c, acc.privateDicts[i], privSzr, subrs_link)))
       {
         // Add defaultWidthX and nominalWidthX for CFF1
         str_buff_t width_ops;
@@ -1522,19 +1522,19 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
         encoder.encode_int (plan.nominal_width);
         encoder.encode_op (OpCode_nominalWidthX);
 
-        if (!encoder.in_error () && c->embed (width_ops.as_bytes ().arrayZ, width_ops.length))
+        만약 (!encoder.in_error () && c->embed (width_ops.as_bytes ().arrayZ, width_ops.length))
         {
           unsigned fd = plan.fdmap[i];
           private_dict_infos[fd].size = c->length ();
           private_dict_infos[fd].link = c->pop_pack ();
         }
-        else
+        아니면
         {
           c->pop_discard ();
           return_trace (false);
         }
       }
-      else
+      아니면
       {
         c->pop_discard ();
         return_trace (false);
@@ -1549,14 +1549,14 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     auto it =
     + hb_zip (+ hb_iter (acc.fontDicts)
               | hb_filter ([&] (const cff2_font_dict_values_t &_)
-                { return plan.fdmap.has (&_ - &acc.fontDicts[0]); }),
+                { 반환 plan.fdmap.has (&_ - &acc.fontDicts[0]); }),
               hb_iter (private_dict_infos))
     ;
     // Explicitly specify template parameters: DICTVAL, INFO
     bool success = fda->serialize<cff2_font_dict_values_t, table_info_t> (c, it, fontSzr);
-    if (success)
+    만약 (success)
       plan.info.fd_array_link = c->pop_pack (false);
-    else
+    아니면
     {
       c->pop_discard ();
       return_trace (false);
@@ -1566,23 +1566,23 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
   // 4. FDSelect (required in CFF1 CID-keyed fonts)
   // CFF1 requires FDSelect for all CID-keyed fonts, even with just one FD
   // CFF2 makes it optional when there's only one FD
-  if (acc.fdSelect != &Null (CFF2FDSelect))
+  만약 (acc.fdSelect != &Null (CFF2FDSelect))
   {
     c->push ();
-    if (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs,
+    만약 (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs,
                                           *(const FDSelect *)acc.fdSelect,
                                           plan.orig_fdcount,
                                           plan.subset_fdselect_format,
                                           plan.subset_fdselect_size,
                                           plan.subset_fdselect_ranges)))
       plan.info.fd_select.link = c->pop_pack ();
-    else
+    아니면
     {
       c->pop_discard ();
       return_trace (false);
     }
   }
-  else
+  아니면
   {
     // Create a range-based FDSelect3 mapping all glyphs to FD 0
     // Format: format(1) + nRanges(2) + range(3) + sentinel(2) = 8 bytes
@@ -1591,7 +1591,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     // Format byte
     HBUINT8 format;
     format = 3;
-    if (unlikely (!c->embed (format)))
+    만약 (unlikely (!c->embed (format)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1600,7 +1600,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     // nRanges
     HBUINT16 nRanges;
     nRanges = 1;
-    if (unlikely (!c->embed (nRanges)))
+    만약 (unlikely (!c->embed (nRanges)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1610,7 +1610,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     FDSelect3_Range range;
     range.first = 0;
     range.fd = 0;
-    if (unlikely (!c->embed (range)))
+    만약 (unlikely (!c->embed (range)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1619,7 +1619,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     // Sentinel (number of glyphs)
     HBUINT16 sentinel;
     sentinel = plan.num_glyphs;
-    if (unlikely (!c->embed (sentinel)))
+    만약 (unlikely (!c->embed (sentinel)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1630,15 +1630,15 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
   // 5. Charset (CID charset for identity mapping)
   objidx_t charset_link;
-  if (!_serialize_cff1_charset (c, plan.num_glyphs, charset_link))
+  만약 (!_serialize_cff1_charset (c, plan.num_glyphs, charset_link))
     return_trace (false);
 
   // 6. Global Subrs
   {
     auto *dest = c->push<CFF1Subrs> ();
-    if (likely (dest->serialize (c, plan.subset_globalsubrs)))
+    만약 (likely (dest->serialize (c, plan.subset_globalsubrs)))
       c->pop_pack (false);
-    else
+    아니면
     {
       c->pop_discard ();
       return_trace (false);
@@ -1660,9 +1660,9 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
     // Serialize as CFF INDEX
     auto *dest = c->push<CFF1Index> ();
-    if (likely (dest->serialize (c, strings)))
+    만약 (likely (dest->serialize (c, strings)))
       c->pop_pack (false);
-    else
+    아니면
     {
       c->pop_discard ();
       return_trace (false);
@@ -1671,7 +1671,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
   // 8. CFF Header
   OT::cff1 *cff = c->allocate_min<OT::cff1> ();
-  if (unlikely (!cff)) return_trace (false);
+  만약 (unlikely (!cff)) return_trace (false);
 
   /* header */
   cff->version.major = 0x01;
@@ -1684,12 +1684,12 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     unsigned name_len = strlen (CFF1_DEFAULT_FONT_NAME);
 
     CFF1Index *idx = c->start_embed<CFF1Index> ();
-    if (unlikely (!idx)) return_trace (false);
+    만약 (unlikely (!idx)) return_trace (false);
 
-    if (unlikely (!idx->serialize_header (c, hb_iter (&name_len, 1), name_len)))
+    만약 (unlikely (!idx->serialize_header (c, hb_iter (&name_len, 1), name_len)))
       return_trace (false);
 
-    if (unlikely (!c->embed (CFF1_DEFAULT_FONT_NAME, name_len)))
+    만약 (unlikely (!c->embed (CFF1_DEFAULT_FONT_NAME, name_len)))
       return_trace (false);
   }
 
@@ -1700,7 +1700,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     cff1_from_cff2_top_dict_op_serializer_t topSzr;
 
     // Serialize ROS first
-    if (unlikely (!topSzr.serialize_ros (c)))
+    만약 (unlikely (!topSzr.serialize_ros (c)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1717,7 +1717,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
       encoder.encode_int (plan.head_maxp_info.yMax);
       encoder.encode_op (OpCode_FontBBox);
 
-      if (encoder.in_error () || !c->embed (bbox_buff.as_bytes ().arrayZ, bbox_buff.length))
+      만약 (encoder.in_error () || !c->embed (bbox_buff.as_bytes ().arrayZ, bbox_buff.length))
       {
         c->pop_discard ();
         return_trace (false);
@@ -1725,30 +1725,30 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     }
 
     // Serialize charset operator
-    if (charset_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_charset, charset_link, whence_t::Absolute)))
+    만약 (charset_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_charset, charset_link, whence_t::Absolute)))
     {
       c->pop_discard ();
       return_trace (false);
     }
 
     // Serialize FDSelect operator (required for CID-keyed CFF1 fonts)
-    if (plan.info.fd_select.link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDSelect, plan.info.fd_select.link, whence_t::Absolute)))
+    만약 (plan.info.fd_select.link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDSelect, plan.info.fd_select.link, whence_t::Absolute)))
     {
       c->pop_discard ();
       return_trace (false);
     }
 
     // Serialize FDArray operator (required for CID-keyed CFF1 fonts)
-    if (plan.info.fd_array_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDArray, plan.info.fd_array_link, whence_t::Absolute)))
+    만약 (plan.info.fd_array_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDArray, plan.info.fd_array_link, whence_t::Absolute)))
     {
       c->pop_discard ();
       return_trace (false);
     }
 
     // Serialize other operators from CFF2 TopDict
-    for (const auto &opstr : cff2_topDict.values)
+    위해 (const auto &opstr : cff2_topDict.values)
     {
-      if (unlikely (!topSzr.serialize (c, opstr, plan.info)))
+      만약 (unlikely (!topSzr.serialize (c, opstr, plan.info)))
       {
         c->pop_discard ();
         return_trace (false);
@@ -1760,7 +1760,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
     // Serialize INDEX header
     auto *dest = c->start_embed<CFF1Index> ();
-    if (unlikely (!dest->serialize_header (c, hb_iter (&top_size, 1), top_size)))
+    만약 (unlikely (!dest->serialize_header (c, hb_iter (&top_size, 1), top_size)))
       return_trace (false);
   }
 
@@ -1777,84 +1777,84 @@ static bool _serialize_cff2_charstrings (hb_serialize_context_t *c,
 
   unsigned data_size = 0;
   unsigned total_size = CFF2CharStrings::total_size (plan.subset_charstrings, &data_size, plan.min_charstrings_off_size);
-  if (unlikely (!c->start_zerocopy (total_size)))
-    return false;
+  만약 (unlikely (!c->start_zerocopy (total_size)))
+    반환 false;
 
   auto *cs = c->start_embed<CFF2CharStrings> ();
-  if (unlikely (!cs->serialize (c, plan.subset_charstrings, &data_size, plan.min_charstrings_off_size)))
+  만약 (unlikely (!cs->serialize (c, plan.subset_charstrings, &data_size, plan.min_charstrings_off_size)))
   {
     c->pop_discard ();
-    return false;
+    반환 false;
   }
 
   plan.info.char_strings_link = c->pop_pack (false);
-  return true;
+  반환 true;
 }
 
 bool
 OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
 					   struct cff2_subset_plan &plan,
-					   hb_array_t<int> normalized_coords) const
+					   hb_array_t<정수> normalized_coords) const
 {
   /* push charstrings onto the object stack first which will ensure it packs as the last
      object in the table. Keeping the chastrings last satisfies the requirements for patching
      via IFTB. If this ordering needs to be changed in the future, charstrings should be left
      at the end whenever HB_SUBSET_FLAGS_ITFB_REQUIREMENTS is enabled. */
-  if (!_serialize_cff2_charstrings(c, plan, *this))
-    return false;
+  만약 (!_serialize_cff2_charstrings(c, plan, *this))
+    반환 false;
 
   /* private dicts & local subrs */
   hb_vector_t<table_info_t>  private_dict_infos;
-  if (unlikely (!private_dict_infos.resize (plan.subset_fdcount))) return false;
+  만약 (unlikely (!private_dict_infos.resize (plan.subset_fdcount))) 반환 false;
 
-  for (int i = (int)privateDicts.length; --i >= 0 ;)
+  위해 (정수 i = (정수)privateDicts.length; --i >= 0 ;)
   {
-    if (plan.fdmap.has (i))
+    만약 (plan.fdmap.has (i))
     {
       objidx_t	subrs_link = 0;
 
-      if (plan.subset_localsubrs[i].length > 0)
+      만약 (plan.subset_localsubrs[i].length > 0)
       {
 	auto *dest = c->push <CFF2Subrs> ();
-	if (likely (dest->serialize (c, plan.subset_localsubrs[i])))
+	만약 (likely (dest->serialize (c, plan.subset_localsubrs[i])))
 	  subrs_link = c->pop_pack (false);
-	else
+	아니면
 	{
 	  c->pop_discard ();
-	  return false;
+	  반환 false;
 	}
       }
       auto *pd = c->push<PrivateDict> ();
       cff2_private_dict_op_serializer_t privSzr (plan.desubroutinize, plan.drop_hints, plan.pinned,
 						 varStore, normalized_coords,
 						 plan.partial_instancing ? &plan.instancing : nullptr);
-      if (likely (pd->serialize (c, privateDicts[i], privSzr, subrs_link)))
+      만약 (likely (pd->serialize (c, privateDicts[i], privSzr, subrs_link)))
       {
 	unsigned fd = plan.fdmap[i];
 	private_dict_infos[fd].size = c->length ();
 	private_dict_infos[fd].link = c->pop_pack ();
       }
-      else
+      아니면
       {
 	c->pop_discard ();
-	return false;
+	반환 false;
       }
     }
   }
 
   /* FDSelect */
-  if (fdSelect != &Null (CFF2FDSelect))
+  만약 (fdSelect != &Null (CFF2FDSelect))
   {
     c->push ();
-    if (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs, *(const FDSelect *)fdSelect,
+    만약 (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs, *(const FDSelect *)fdSelect,
 					   plan.orig_fdcount,
 					   plan.subset_fdselect_format, plan.subset_fdselect_size,
 					   plan.subset_fdselect_ranges)))
       plan.info.fd_select.link = c->pop_pack ();
-    else
+    아니면
     {
       c->pop_discard ();
-      return false;
+      반환 false;
     }
   }
 
@@ -1865,49 +1865,49 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
     auto it =
     + hb_zip (+ hb_iter (fontDicts)
 	      | hb_filter ([&] (const cff2_font_dict_values_t &_)
-		{ return plan.fdmap.has (&_ - &fontDicts[0]); }),
+		{ 반환 plan.fdmap.has (&_ - &fontDicts[0]); }),
 	      hb_iter (private_dict_infos))
     ;
-    if (unlikely (!fda->serialize (c, it, fontSzr)))
+    만약 (unlikely (!fda->serialize (c, it, fontSzr)))
     {
       c->pop_discard ();
-      return false;
+      반환 false;
     }
     plan.info.fd_array_link = c->pop_pack (false);
   }
 
   /* variation store */
-  if (varStore != &Null (CFF2ItemVariationStore) &&
+  만약 (varStore != &Null (CFF2ItemVariationStore) &&
       !plan.pinned)
   {
-    if (plan.partial_instancing)
+    만약 (plan.partial_instancing)
     {
-      if (plan.instancing.has_variations ())
+      만약 (plan.instancing.has_variations ())
       {
 	c->push ();
-	if (unlikely (!plan.instancing.serialize_var_store (c, *plan.axis_tags)))
+	만약 (unlikely (!plan.instancing.serialize_var_store (c, *plan.axis_tags)))
 	{
 	  c->pop_discard ();
-	  return false;
+	  반환 false;
 	}
 	plan.info.var_store_link = c->pop_pack (false);
       }
       /* else: the store emptied; the vstore op gets dropped along with it. */
     }
-    else
+    아니면
     {
       auto *dest = c->push<CFF2ItemVariationStore> ();
-      if (unlikely (!dest->serialize (c, varStore)))
+      만약 (unlikely (!dest->serialize (c, varStore)))
       {
 	c->pop_discard ();
-	return false;
+	반환 false;
       }
       plan.info.var_store_link = c->pop_pack (false);
     }
   }
 
   OT::cff2 *cff2 = c->allocate_min<OT::cff2> ();
-  if (unlikely (!cff2)) return false;
+  만약 (unlikely (!cff2)) 반환 false;
 
   /* header */
   cff2->version.major = 0x02;
@@ -1918,14 +1918,14 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
   {
     TopDict &dict = cff2 + cff2->topDict;
     cff2_top_dict_op_serializer_t topSzr;
-    if (unlikely (!dict.serialize (c, topDict, topSzr, plan.info))) return false;
+    만약 (unlikely (!dict.serialize (c, topDict, topSzr, plan.info))) 반환 false;
     cff2->topDictSize = c->head - (const char *)&dict;
   }
 
   /* global subrs */
   {
     auto *dest = c->start_embed <CFF2Subrs> ();
-    return dest->serialize (c, plan.subset_globalsubrs);
+    반환 dest->serialize (c, plan.subset_globalsubrs);
   }
 }
 
@@ -1934,40 +1934,40 @@ OT::cff2::accelerator_subset_t::subset (hb_subset_context_t *c) const
 {
   cff2_subset_plan cff2_plan;
 
-  if (unlikely (!cff2_plan.create (*this, c->plan))) return false;
+  만약 (unlikely (!cff2_plan.create (*this, c->plan))) 반환 false;
 
   // If instantiating (pinned) and downgrade flag is set, convert to CFF1
-  if (cff2_plan.pinned && (c->plan->flags & HB_SUBSET_FLAGS_DOWNGRADE_CFF2))
+  만약 (cff2_plan.pinned && (c->plan->flags & HB_SUBSET_FLAGS_DOWNGRADE_CFF2))
   {
     // Serialize CFF1 to the subsetter's serializer
     // If we run out of room, returning true will cause subsetter to retry with larger buffer
     bool result = CFF::serialize_cff2_to_cff1 (c->serializer, cff2_plan, topDict, *this);
 
-    if (c->serializer->ran_out_of_room ())
-      return true; // Subsetter will retry with larger buffer
+    만약 (c->serializer->ran_out_of_room ())
+      반환 true; // Subsetter will retry with larger buffer
 
-    if (result && !c->serializer->in_error ())
+    만약 (result && !c->serializer->in_error ())
     {
       // Success - end serialization to resolve links
       c->serializer->end_serialize ();
 
       // Copy the serialized CFF1 data and add as CFF table
       hb_blob_t *cff_blob = c->serializer->copy_blob ();
-      if (cff_blob)
+      만약 (cff_blob)
       {
         c->plan->add_table (HB_TAG('C','F','F',' '), cff_blob);
         hb_blob_destroy (cff_blob);
 
         // Return false to signal CFF2 table is not needed
-        return false;
+        반환 false;
       }
     }
 
     // Conversion failed - don't fall back, fail hard for debugging
-    return false;
+    반환 false;
   }
 
-  return serialize (c->serializer, cff2_plan,
+  반환 serialize (c->serializer, cff2_plan,
 		    c->plan->normalized_coords.as_array ());
 }
 

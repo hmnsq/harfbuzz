@@ -12,12 +12,12 @@ struct PosLookup : Lookup
 {
   using SubTable = PosLookupSubTable;
 
-  const SubTable& get_subtable (unsigned int i) const
-  { return Lookup::get_subtable<SubTable> (i); }
+  const SubTable& get_subtable (unsigned 정수 i) const
+  { 반환 Lookup::get_subtable<SubTable> (i); }
 
   bool is_reverse () const
   {
-    return false;
+    반환 false;
   }
 
   bool apply (hb_ot_apply_context_t *c) const
@@ -29,26 +29,26 @@ struct PosLookup : Lookup
   bool intersects (const hb_set_t *glyphs) const
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c);
+    반환 dispatch (&c);
   }
 
   hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { return dispatch (c); }
+  { 반환 dispatch (c); }
 
   hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
   {
-    if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+    만약 (c->is_lookup_visited (this_index))
+      반환 hb_closure_lookups_context_t::default_return_value ();
 
     c->set_lookup_visited (this_index);
-    if (!intersects (c->glyphs))
+    만약 (!intersects (c->glyphs))
     {
       c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      반환 hb_closure_lookups_context_t::default_return_value ();
     }
 
     hb_closure_lookups_context_t::return_t ret = dispatch (c);
-    return ret;
+    반환 ret;
   }
 
   template <typename set_t>
@@ -59,17 +59,17 @@ struct PosLookup : Lookup
   }
 
   template <typename context_t>
-  static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned 정수 lookup_index);
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
-  { return Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
+  { 반환 Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
 
   bool subset (hb_subset_context_t *c) const
-  { return Lookup::subset<SubTable> (c); }
+  { 반환 Lookup::subset<SubTable> (c); }
 
   bool sanitize (hb_sanitize_context_t *c) const
-  { return Lookup::sanitize<SubTable> (c); }
+  { 반환 Lookup::sanitize<SubTable> (c); }
 };
 
 }

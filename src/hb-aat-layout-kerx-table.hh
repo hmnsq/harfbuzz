@@ -44,19 +44,19 @@ namespace AAT {
 using namespace OT;
 
 
-static inline int
-kerxTupleKern (int value,
-	       unsigned int tupleCount,
+static inline 정수
+kerxTupleKern (정수 value,
+	       unsigned 정수 tupleCount,
 	       const void *base,
 	       hb_aat_apply_context_t *c)
 {
-  if (likely (!tupleCount || !c)) return value;
+  만약 (likely (!tupleCount || !c)) 반환 value;
 
-  unsigned int offset = value;
+  unsigned 정수 offset = value;
   const FWORD *pv = &StructAtOffset<FWORD> (base, offset);
-  if (unlikely (!c->sanitizer.check_array (pv, tupleCount))) return 0;
+  만약 (unlikely (!c->sanitizer.check_array (pv, tupleCount))) 반환 0;
   hb_barrier ();
-  return *pv;
+  반환 *pv;
 }
 
 
@@ -68,13 +68,13 @@ struct hb_glyph_pair_t
 
 struct KernPair
 {
-  int get_kerning () const { return value; }
+  정수 get_kerning () const { 반환 value; }
 
-  int cmp (const hb_glyph_pair_t &o) const
+  정수 cmp (const hb_glyph_pair_t &o) const
   {
-    int ret = left.cmp (o.left);
-    if (ret) return ret;
-    return right.cmp (o.right);
+    정수 ret = left.cmp (o.left);
+    만약 (ret) 반환 ret;
+    반환 right.cmp (o.right);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -94,22 +94,22 @@ struct KernPair
 template <typename KernSubTableHeader>
 struct KerxSubTableFormat0
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
+  정수 get_kerning (hb_codepoint_t left, hb_codepoint_t right,
 		   hb_aat_apply_context_t *c = nullptr) const
   {
     hb_glyph_pair_t pair = {left, right};
-    int v = pairs.bsearch (pair).get_kerning ();
-    return kerxTupleKern (v, header.tuple_count (), this, c);
+    정수 v = pairs.bsearch (pair).get_kerning ();
+    반환 kerxTupleKern (v, header.tuple_count (), this, c);
   }
 
   bool apply (hb_aat_apply_context_t *c) const
   {
     TRACE_APPLY (this);
 
-    if (!c->plan->requested_kerning)
+    만약 (!c->plan->requested_kerning)
       return_trace (false);
 
-    if (header.coverage & header.Backwards)
+    만약 (header.coverage & header.Backwards)
       return_trace (false);
 
     accelerator_t accel (*this, c);
@@ -122,7 +122,7 @@ struct KerxSubTableFormat0
   template <typename set_t>
   void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
   {
-    for (const KernPair& pair : pairs)
+    위해 (const KernPair& pair : pairs)
     {
       first_set.add (pair.left);
       second_set.add (pair.right);
@@ -138,10 +138,10 @@ struct KerxSubTableFormat0
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    정수 get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      만약 (!(*c->first_set)[left] || !(*c->second_set)[right]) 반환 0;
+      반환 table.get_kerning (left, right, c);
     }
   };
 
@@ -186,13 +186,13 @@ struct Format1Entry<true>
   };
 
   static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  { 반환 entry.flags & Push; }
 
   static bool performAction (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex != 0xFFFF; }
+  { 반환 entry.data.kernActionIndex != 0xFFFF; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex; }
+  static unsigned 정수 kernActionIndex (const Entry<EntryData> &entry)
+  { 반환 entry.data.kernActionIndex; }
 };
 template <>
 struct Format1Entry<false>
@@ -211,13 +211,13 @@ struct Format1Entry<false>
   typedef void EntryData;
 
   static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  { 반환 entry.flags & Push; }
 
   static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  { 반환 entry.flags & Offset; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  static unsigned 정수 kernActionIndex (const Entry<EntryData> &entry)
+  { 반환 entry.flags & Offset; }
 };
 
 template <typename KernSubTableHeader>
@@ -236,11 +236,11 @@ struct KerxSubTableFormat1
 
   bool is_action_initiable (const Entry<EntryData> &entry) const
   {
-    return Format1EntryT::initiateAction (entry);
+    반환 Format1EntryT::initiateAction (entry);
   }
   bool is_actionable (const Entry<EntryData> &entry) const
   {
-    return Format1EntryT::performAction (entry);
+    반환 Format1EntryT::performAction (entry);
   }
 
   struct driver_context_t
@@ -263,30 +263,30 @@ struct KerxSubTableFormat1
 		     StateTableDriver<Types, EntryData, Flags> *driver,
 		     const Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      unsigned 정수 flags = entry.flags;
 
-      if (flags & Format1EntryT::Reset)
+      만약 (flags & Format1EntryT::Reset)
 	depth = 0;
 
-      if (flags & Format1EntryT::Push)
+      만약 (flags & Format1EntryT::Push)
       {
-	if (likely (depth < ARRAY_LENGTH (stack)))
+	만약 (likely (depth < ARRAY_LENGTH (stack)))
 	  stack[depth++] = buffer->idx;
-	else
+	아니면
 	  depth = 0; /* Probably not what CoreText does, but better? */
       }
 
-      if (Format1EntryT::performAction (entry) && depth)
+      만약 (Format1EntryT::performAction (entry) && depth)
       {
-	unsigned int tuple_count = hb_max (1u, table->header.tuple_count ());
+	unsigned 정수 tuple_count = hb_max (1u, table->header.tuple_count ());
 
-	unsigned int kern_idx = Format1EntryT::kernActionIndex (entry);
+	unsigned 정수 kern_idx = Format1EntryT::kernActionIndex (entry);
 	kern_idx = Types::byteOffsetToIndex (kern_idx, &table->machine, kernAction.arrayZ);
 	const FWORD *actions = &kernAction[kern_idx];
-	if (!c->sanitizer.check_array (actions, depth, tuple_count))
+	만약 (!c->sanitizer.check_array (actions, depth, tuple_count))
 	{
 	  depth = 0;
-	  return;
+	  반환;
 	}
 	hb_barrier ();
 
@@ -296,12 +296,12 @@ struct KerxSubTableFormat1
 	 * "Each pops one glyph from the kerning stack and applies the kerning value to it.
 	 * The end of the list is marked by an odd value... */
 	bool last = false;
-	while (!last && depth)
+	동안 (!last && depth)
 	{
-	  unsigned int idx = stack[--depth];
-	  int v = *actions;
+	  unsigned 정수 idx = stack[--depth];
+	  정수 v = *actions;
 	  actions += tuple_count;
-	  if (idx >= buffer->len) continue;
+	  만약 (idx >= buffer->len) continue;
 
 	  /* "The end of the list is marked by an odd value..." */
 	  last = v & 1;
@@ -309,49 +309,49 @@ struct KerxSubTableFormat1
 
 	  hb_glyph_position_t &o = buffer->pos[idx];
 
-	  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+	  만약 (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
 	  {
-	    if (crossStream)
+	    만약 (crossStream)
 	    {
 	      /* The following flag is undocumented in the spec, but described
 	       * in the 'kern' table example. */
-	      if (v == -0x8000)
+	      만약 (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
 		o.y_offset = 0;
 	      }
-	      else if (o.attach_type())
+	      아니면 만약 (o.attach_type())
 	      {
 		o.y_offset = hb_saturate_add (o.y_offset, c->font->em_scale_y (v));
 		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    아니면 만약 (buffer->info[idx].mask & kern_mask)
 	    {
 	      auto scaled = c->font->em_scale_x (v);
 	      o.x_advance = hb_saturate_add (o.x_advance, scaled);
 	      o.x_offset = hb_saturate_add (o.x_offset, scaled);
 	    }
 	  }
-	  else
+	  아니면
 	  {
-	    if (crossStream)
+	    만약 (crossStream)
 	    {
 	      /* CoreText doesn't do crossStream kerning in vertical.  We do. */
-	      if (v == -0x8000)
+	      만약 (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
 		o.x_offset = 0;
 	      }
-	      else if (o.attach_type())
+	      아니면 만약 (o.attach_type())
 	      {
 		o.x_offset = hb_saturate_add (o.x_offset, c->font->em_scale_x (v));
 		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    아니면 만약 (buffer->info[idx].mask & kern_mask)
 	    {
 	      auto scaled = c->font->em_scale_y (v);
 	      o.y_advance = hb_saturate_add (o.y_advance, scaled);
@@ -367,8 +367,8 @@ struct KerxSubTableFormat1
     const KerxSubTableFormat1 *table;
     private:
     const UnsizedArrayOf<FWORD> &kernAction;
-    unsigned int stack[8];
-    unsigned int depth;
+    unsigned 정수 stack[8];
+    unsigned 정수 depth;
     bool crossStream;
   };
 
@@ -376,9 +376,9 @@ struct KerxSubTableFormat1
   {
     TRACE_APPLY (this);
 
-    if (!c->plan->requested_kerning &&
+    만약 (!c->plan->requested_kerning &&
 	!(header.coverage & header.CrossStream))
-      return false;
+      반환 false;
 
     driver_context_t dc (this, c);
 
@@ -418,31 +418,31 @@ struct KerxSubTableFormat2
   typedef typename KernSubTableHeader::Types Types;
   typedef typename Types::HBUINT HBUINT;
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
+  정수 get_kerning (hb_codepoint_t left, hb_codepoint_t right,
 		   hb_aat_apply_context_t *c) const
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    unsigned int l = (this+leftClassTable).get_class (left, num_glyphs, 0);
-    unsigned int r = (this+rightClassTable).get_class (right, num_glyphs, 0);
+    unsigned 정수 num_glyphs = c->sanitizer.get_num_glyphs ();
+    unsigned 정수 l = (this+leftClassTable).get_class (left, num_glyphs, 0);
+    unsigned 정수 r = (this+rightClassTable).get_class (right, num_glyphs, 0);
 
     const UnsizedArrayOf<FWORD> &arrayZ = this+array;
-    unsigned int kern_idx = l + r;
+    unsigned 정수 kern_idx = l + r;
     kern_idx = Types::offsetToIndex (kern_idx, this, arrayZ.arrayZ);
     const FWORD *v = &arrayZ[kern_idx];
-    if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+    만약 (unlikely (!v->sanitize (&c->sanitizer))) 반환 0;
     hb_barrier ();
 
-    return kerxTupleKern (*v, header.tuple_count (), this, c);
+    반환 kerxTupleKern (*v, header.tuple_count (), this, c);
   }
 
   bool apply (hb_aat_apply_context_t *c) const
   {
     TRACE_APPLY (this);
 
-    if (!c->plan->requested_kerning)
+    만약 (!c->plan->requested_kerning)
       return_trace (false);
 
-    if (header.coverage & header.Backwards)
+    만약 (header.coverage & header.Backwards)
       return_trace (false);
 
     accelerator_t accel (*this, c);
@@ -468,10 +468,10 @@ struct KerxSubTableFormat2
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    정수 get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      만약 (!(*c->first_set)[left] || !(*c->second_set)[right]) 반환 0;
+      반환 table.get_kerning (left, right, c);
     }
   };
 
@@ -524,11 +524,11 @@ struct KerxSubTableFormat4
 
   bool is_action_initiable (const Entry<EntryData> &entry) const
   {
-    return (entry.flags & Mark);
+    반환 (entry.flags & Mark);
   }
   bool is_actionable (const Entry<EntryData> &entry) const
   {
-    return entry.data.ankrActionIndex != 0xFFFF;
+    반환 entry.data.ankrActionIndex != 0xFFFF;
   }
 
   struct driver_context_t
@@ -557,7 +557,7 @@ struct KerxSubTableFormat4
 		     StateTableDriver<Types, EntryData, Flags> *driver,
 		     const Entry<EntryData> &entry)
     {
-      if (mark_set && entry.data.ankrActionIndex != 0xFFFF && buffer->idx < buffer->len)
+      만약 (mark_set && entry.data.ankrActionIndex != 0xFFFF && buffer->idx < buffer->len)
       {
 	hb_glyph_position_t &o = buffer->cur_pos();
 	switch (action_type)
@@ -568,15 +568,15 @@ struct KerxSubTableFormat4
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
 	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    만약 (!c->sanitizer.check_array (data, 2)) 반환;
 	    hb_barrier ();
-	    unsigned int markControlPoint = *data++;
-	    unsigned int currControlPoint = *data++;
+	    unsigned 정수 markControlPoint = *data++;
+	    unsigned 정수 currControlPoint = *data++;
 	    hb_position_t markX = 0;
 	    hb_position_t markY = 0;
 	    hb_position_t currX = 0;
 	    hb_position_t currY = 0;
-	    if (!c->font->get_glyph_contour_point_for_origin (c->buffer->info[mark].codepoint,
+	    만약 (!c->font->get_glyph_contour_point_for_origin (c->buffer->info[mark].codepoint,
 							      markControlPoint,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &markX, &markY) ||
@@ -584,7 +584,7 @@ struct KerxSubTableFormat4
 							      currControlPoint,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &currX, &currY))
-	      return;
+	      반환;
 
 	    o.x_offset = hb_saturate_sub (markX, currX);
 	    o.y_offset = hb_saturate_sub (markY, currY);
@@ -597,10 +597,10 @@ struct KerxSubTableFormat4
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
 	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    만약 (!c->sanitizer.check_array (data, 2)) 반환;
 	    hb_barrier ();
-	    unsigned int markAnchorPoint = *data++;
-	    unsigned int currAnchorPoint = *data++;
+	    unsigned 정수 markAnchorPoint = *data++;
+	    unsigned 정수 currAnchorPoint = *data++;
 	    const Anchor &markAnchor = c->ankr_table->get_anchor (c->buffer->info[mark].codepoint,
 								  markAnchorPoint,
 								  c->sanitizer.get_num_glyphs ());
@@ -620,12 +620,12 @@ struct KerxSubTableFormat4
 	    /* Each action contains four 16-bit fields, so we multiply the ankrActionIndex
 	       by 4 to get the correct offset for the given action. */
 	    const FWORD *data = (const FWORD *) &ankrData[entry.data.ankrActionIndex * 4];
-	    if (!c->sanitizer.check_array (data, 4)) return;
+	    만약 (!c->sanitizer.check_array (data, 4)) 반환;
 	    hb_barrier ();
-	    int markX = *data++;
-	    int markY = *data++;
-	    int currX = *data++;
-	    int currY = *data++;
+	    정수 markX = *data++;
+	    정수 markY = *data++;
+	    정수 currX = *data++;
+	    정수 currY = *data++;
 
 	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markX), c->font->em_scale_x (currX));
 	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markY), c->font->em_scale_y (currY));
@@ -633,13 +633,13 @@ struct KerxSubTableFormat4
 	  break;
 	}
 	o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_MARK;
-	o.attach_chain() = (int) mark - (int) buffer->idx;
-	if (c->buffer_is_reversed)
+	o.attach_chain() = (정수) mark - (정수) buffer->idx;
+	만약 (c->buffer_is_reversed)
 	  o.attach_chain() = -o.attach_chain();
 	buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
       }
 
-      if (entry.flags & Mark)
+      만약 (entry.flags & Mark)
       {
 	mark_set = true;
 	mark = buffer->idx;
@@ -650,10 +650,10 @@ struct KerxSubTableFormat4
     hb_aat_apply_context_t *c;
     const KerxSubTableFormat4 *table;
     private:
-    unsigned int action_type;
+    unsigned 정수 action_type;
     const HBUINT16 *ankrData;
     bool mark_set;
-    unsigned int mark;
+    unsigned 정수 mark;
   };
 
   bool apply (hb_aat_apply_context_t *c) const
@@ -700,35 +700,35 @@ struct KerxSubTableFormat6
     ValuesAreLong	= 0x00000001,
   };
 
-  bool is_long () const { return flags & ValuesAreLong; }
+  bool is_long () const { 반환 flags & ValuesAreLong; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
+  정수 get_kerning (hb_codepoint_t left, hb_codepoint_t right,
 		   hb_aat_apply_context_t *c) const
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    if (is_long ())
+    unsigned 정수 num_glyphs = c->sanitizer.get_num_glyphs ();
+    만약 (is_long ())
     {
       const auto &t = u.l;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      if (unlikely (offset < l)) return 0; /* Addition overflow. */
-      if (unlikely (hb_unsigned_mul_overflows (offset, sizeof (FWORD32)))) return 0;
+      unsigned 정수 l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
+      unsigned 정수 r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
+      unsigned 정수 offset = l + r;
+      만약 (unlikely (offset < l)) 반환 0; /* Addition overflow. */
+      만약 (unlikely (hb_unsigned_mul_overflows (offset, sizeof (FWORD32)))) 반환 0;
       const FWORD32 *v = &StructAtOffset<FWORD32> (&(this+t.array), offset * sizeof (FWORD32));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      만약 (unlikely (!v->sanitize (&c->sanitizer))) 반환 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      반환 kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
     }
-    else
+    아니면
     {
       const auto &t = u.s;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
+      unsigned 정수 l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
+      unsigned 정수 r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
+      unsigned 정수 offset = l + r;
       const FWORD *v = &StructAtOffset<FWORD> (&(this+t.array), offset * sizeof (FWORD));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      만약 (unlikely (!v->sanitize (&c->sanitizer))) 반환 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      반환 kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
     }
   }
 
@@ -736,10 +736,10 @@ struct KerxSubTableFormat6
   {
     TRACE_APPLY (this);
 
-    if (!c->plan->requested_kerning)
+    만약 (!c->plan->requested_kerning)
       return_trace (false);
 
-    if (header.coverage & header.Backwards)
+    만약 (header.coverage & header.Backwards)
       return_trace (false);
 
     accelerator_t accel (*this, c);
@@ -771,13 +771,13 @@ struct KerxSubTableFormat6
   template <typename set_t>
   void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
   {
-    if (is_long ())
+    만약 (is_long ())
     {
       const auto &t = u.l;
       (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
       (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
     }
-    else
+    아니면
     {
       const auto &t = u.s;
       (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
@@ -794,10 +794,10 @@ struct KerxSubTableFormat6
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    정수 get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      만약 (!(*c->first_set)[left] || !(*c->second_set)[right]) 반환 0;
+      반환 table.get_kerning (left, right, c);
     }
   };
 
@@ -831,8 +831,8 @@ struct KerxSubTableHeader
 {
   typedef ExtendedTypes Types;
 
-  unsigned   tuple_count () const { return tupleCount; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  unsigned   tuple_count () const { 반환 tupleCount; }
+  bool     is_horizontal () const { 반환 !(coverage & Vertical); }
 
   enum Coverage
   {
@@ -866,13 +866,13 @@ struct KerxSubTable
 {
   friend struct kerx;
 
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.coverage & u.header.SubtableType; }
+  size_t get_size () const { 반환 u.header.length; }
+  unsigned 정수 get_type () const { 반환 u.header.coverage & u.header.SubtableType; }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned 정수 subtable_type = get_type ();
     TRACE_DISPATCH (this, subtable_type);
     switch (subtable_type) {
     case 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
@@ -887,21 +887,21 @@ struct KerxSubTable
   template <typename set_t>
   void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned 정수 subtable_type = get_type ();
     switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, num_glyphs); return;
-    default:	return;
+    case 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, num_glyphs); 반환;
+    case 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, num_glyphs); 반환;
+    case 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, num_glyphs); 반환;
+    case 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, num_glyphs); 반환;
+    case 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, num_glyphs); 반환;
+    default:	반환;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!(u.header.sanitize (c) &&
+    만약 (!(u.header.sanitize (c) &&
 	  hb_barrier () &&
 	  u.header.length >= u.header.static_size &&
 	  c->check_range (this, u.header.length)))
@@ -945,24 +945,24 @@ template <typename T>
 struct KerxTable
 {
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const T* thiz () const { return static_cast<const T *> (this); }
+  const T* thiz () const { 반환 static_cast<const T *> (this); }
 
   bool has_state_machine () const
   {
     typedef typename T::SubTable SubTable;
 
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned 정수 count = thiz()->tableCount;
+    위해 (unsigned 정수 i = 0; i < count; i++)
     {
-      if (st->get_type () == 1)
-	return true;
+      만약 (st->get_type () == 1)
+	반환 true;
 
       // TODO: What about format 4? What's this API used for anyway?
 
       st = &StructAfter<SubTable> (*st);
     }
-    return false;
+    반환 false;
   }
 
   bool has_cross_stream () const
@@ -970,32 +970,32 @@ struct KerxTable
     typedef typename T::SubTable SubTable;
 
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned 정수 count = thiz()->tableCount;
+    위해 (unsigned 정수 i = 0; i < count; i++)
     {
-      if (st->u.header.coverage & st->u.header.CrossStream)
-	return true;
+      만약 (st->u.header.coverage & st->u.header.CrossStream)
+	반환 true;
       st = &StructAfter<SubTable> (*st);
     }
-    return false;
+    반환 false;
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  정수 get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
   {
     typedef typename T::SubTable SubTable;
 
-    int v = 0;
+    정수 v = 0;
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned 정수 count = thiz()->tableCount;
+    위해 (unsigned 정수 i = 0; i < count; i++)
     {
-      if ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
+      만약 ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
 	  !st->u.header.is_horizontal ())
 	continue;
       v += st->get_kerning (left, right);
       st = &StructAfter<SubTable> (*st);
     }
-    return v;
+    반환 v;
   }
 
   bool apply (AAT::hb_aat_apply_context_t *c,
@@ -1011,24 +1011,24 @@ struct KerxTable
     bool seenCrossStream = false;
     c->set_lookup_index (0);
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned 정수 count = thiz()->tableCount;
+    위해 (unsigned 정수 i = 0; i < count; i++)
     {
       bool reverse;
 
       auto &subtable_accel = accel_data.subtable_accels[i];
 
-      if (!T::Types::extended && (st->u.header.coverage & st->u.header.Variation))
+      만약 (!T::Types::extended && (st->u.header.coverage & st->u.header.Variation))
 	goto skip;
 
-      if (HB_DIRECTION_IS_HORIZONTAL (c->buffer->props.direction) != st->u.header.is_horizontal ())
+      만약 (HB_DIRECTION_IS_HORIZONTAL (c->buffer->props.direction) != st->u.header.is_horizontal ())
 	goto skip;
 
       c->first_set = &subtable_accel.first_set;
       c->second_set = &subtable_accel.second_set;
       c->machine_class_cache = &subtable_accel.class_cache;
 
-      if (!c->buffer_intersects_machine ())
+      만약 (!c->buffer_intersects_machine ())
       {
 	(void) c->buffer->message (c->font, "skipped subtable %u because no glyph matches", c->lookup_index);
 	goto skip;
@@ -1037,17 +1037,17 @@ struct KerxTable
       reverse = bool (st->u.header.coverage & st->u.header.Backwards) !=
 		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
 
-      if (!c->buffer->message (c->font, "start subtable %u", c->lookup_index))
+      만약 (!c->buffer->message (c->font, "start subtable %u", c->lookup_index))
 	goto skip;
 
-      if (!seenCrossStream &&
+      만약 (!seenCrossStream &&
 	  (st->u.header.coverage & st->u.header.CrossStream))
       {
 	/* Attach all glyphs into a chain. */
 	seenCrossStream = true;
 	hb_glyph_position_t *pos = c->buffer->pos;
-	unsigned int count = c->buffer->len;
-	for (unsigned int i = 0; i < count; i++)
+	unsigned 정수 count = c->buffer->len;
+	위해 (unsigned 정수 i = 0; i < count; i++)
 	{
 	  pos[i].attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_CURSIVE;
 	  pos[i].attach_chain() = HB_DIRECTION_IS_FORWARD (c->buffer->props.direction) ? -1 : +1;
@@ -1057,7 +1057,7 @@ struct KerxTable
 	}
       }
 
-      if (reverse != c->buffer_is_reversed)
+      만약 (reverse != c->buffer_is_reversed)
         c->reverse_buffer ();
 
       {
@@ -1072,16 +1072,16 @@ struct KerxTable
       st = &StructAfter<SubTable> (*st);
       c->set_lookup_index (c->lookup_index + 1);
     }
-    if (c->buffer_is_reversed)
+    만약 (c->buffer_is_reversed)
       c->reverse_buffer ();
 
-    return ret;
+    반환 ret;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(thiz()->version.sanitize (c) &&
+    만약 (unlikely (!(thiz()->version.sanitize (c) &&
 		    hb_barrier () &&
 		    (unsigned) thiz()->version >= (unsigned) T::minVersion &&
 		    thiz()->tableCount.sanitize (c))))
@@ -1090,10 +1090,10 @@ struct KerxTable
     typedef typename T::SubTable SubTable;
 
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned 정수 count = thiz()->tableCount;
+    위해 (unsigned 정수 i = 0; i < count; i++)
     {
-      if (unlikely (!st->u.header.sanitize (c)))
+      만약 (unlikely (!st->u.header.sanitize (c)))
 	return_trace (false);
       hb_barrier ();
       /* OpenType kern table has 2-byte subtable lengths.  That's limiting.
@@ -1105,19 +1105,19 @@ struct KerxTable
        * the length for the last subtable. */
       hb_sanitize_with_object_t with (c, i < count - 1 ? st : (const SubTable *) nullptr);
 
-      if (unlikely (!st->sanitize (c)))
+      만약 (unlikely (!st->sanitize (c)))
 	return_trace (false);
 
       st = &StructAfter<SubTable> (*st);
     }
 
     unsigned majorVersion = thiz()->version;
-    if (sizeof (thiz()->version) == 4)
+    만약 (sizeof (thiz()->version) == 4)
       majorVersion = majorVersion >> 16;
-    if (majorVersion >= 3)
+    만약 (majorVersion >= 3)
     {
       const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) st;
-      if (!coverage->sanitize (c, count))
+      만약 (!coverage->sanitize (c, count))
         return_trace (false);
     }
 
@@ -1131,12 +1131,12 @@ struct KerxTable
     typedef typename T::SubTable SubTable;
 
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned 정수 count = thiz()->tableCount;
+    위해 (unsigned 정수 i = 0; i < count; i++)
     {
       auto &subtable_accel = *accel_data.subtable_accels.push ();
-      if (unlikely (accel_data.subtable_accels.in_error ()))
-	  return accel_data;
+      만약 (unlikely (accel_data.subtable_accels.in_error ()))
+	  반환 accel_data;
 
       st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, num_glyphs);
       subtable_accel.class_cache.clear ();
@@ -1144,7 +1144,7 @@ struct KerxTable
       st = &StructAfter<SubTable> (*st);
     }
 
-    return accel_data;
+    반환 accel_data;
   }
 
   struct accelerator_t
@@ -1160,11 +1160,11 @@ struct KerxTable
       this->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () const { 반환 table.get_blob (); }
 
     bool apply (AAT::hb_aat_apply_context_t *c) const
     {
-      return table->apply (c, accel_data);
+      반환 table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<T> table;
@@ -1184,7 +1184,7 @@ struct kerx : KerxTable<kerx>
   typedef SubTableHeader::Types Types;
   typedef KerxSubTable SubTable;
 
-  bool has_data () const { return version; }
+  bool has_data () const { 반환 version; }
 
   protected:
   HBUINT16	version;	/* The version number of the extended kerning table

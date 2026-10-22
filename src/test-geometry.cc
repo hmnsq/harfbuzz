@@ -27,8 +27,8 @@
 #include "hb-geometry.hh"
 
 
-int
-main (int argc HB_UNUSED, char **argv HB_UNUSED)
+정수
+main (정수 argc HB_UNUSED, char **argv HB_UNUSED)
 {
   {
     hb_extents_t<> extents (-0x1p31f, 0.f, 427.f, 1.f);
@@ -55,5 +55,5 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
     hb_always_assert (extents.ymax == 7);
   }
 
-  return 0;
+  반환 0;
 }

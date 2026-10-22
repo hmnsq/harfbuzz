@@ -29,10 +29,10 @@ struct AlternateSubstFormat1_2
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { 반환 (this+coverage).intersects (glyphs); }
 
   bool may_have_non_1to1 () const
-  { return false; }
+  { 반환 false; }
 
   void depend (hb_depend_context_t *c) const
   {
@@ -61,7 +61,7 @@ struct AlternateSubstFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    만약 (unlikely (!(this+coverage).collect_coverage (c->input))) 반환;
     + hb_zip (this+coverage, alternateSet)
     | hb_map (hb_second)
     | hb_map (hb_add (this))
@@ -69,17 +69,17 @@ struct AlternateSubstFormat1_2
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { 반환 this+coverage; }
 
   bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  { 반환 c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
   unsigned
   get_glyph_alternates (hb_codepoint_t  gid,
                         unsigned        start_offset,
                         unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
                         hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
-  { return (this+alternateSet[(this+coverage).get_coverage (gid)])
+  { 반환 (this+alternateSet[(this+coverage).get_coverage (gid)])
            .get_alternates (start_offset, alternate_count, alternate_glyphs); }
 
   void
@@ -99,8 +99,8 @@ struct AlternateSubstFormat1_2
   {
     TRACE_APPLY (this);
 
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned 정수 index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    만약 (index == NOT_COVERED) return_trace (false);
 
     return_trace ((this+alternateSet[index]).apply (c));
   }
@@ -108,16 +108,16 @@ struct AlternateSubstFormat1_2
   template <typename GlyphID>
   bool serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> glyphs,
-                  hb_array_t<const unsigned int> alternate_len_list,
+                  hb_array_t<const unsigned 정수> alternate_len_list,
                   hb_array_t<GlyphID> alternate_glyphs_list)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!alternateSet.serialize (c, glyphs.length))) return_trace (false);
-    for (unsigned int i = 0; i < glyphs.length; i++)
+    만약 (unlikely (!c->extend_min (this))) return_trace (false);
+    만약 (unlikely (!alternateSet.serialize (c, glyphs.length))) return_trace (false);
+    위해 (unsigned 정수 i = 0; i < glyphs.length; i++)
     {
-      unsigned int alternate_len = alternate_len_list[i];
-      if (unlikely (!alternateSet[i]
+      unsigned 정수 alternate_len = alternate_len_list[i];
+      만약 (unlikely (!alternateSet[i]
                         .serialize_serialize (c, alternate_glyphs_list.sub_array (0, alternate_len))))
         return_trace (false);
       alternate_glyphs_list += alternate_len;
@@ -132,7 +132,7 @@ struct AlternateSubstFormat1_2
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    만약 (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;

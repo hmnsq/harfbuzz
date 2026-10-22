@@ -56,7 +56,7 @@ test_decompile_cvar ()
 
   hb_always_assert (result);
   hb_always_assert (tuple_variations.tuple_vars.length == 2);
-  for (unsigned i = 0; i < 2; i++)
+  위해 (unsigned i = 0; i < 2; i++)
   {
     hb_always_assert (tuple_variations.tuple_vars[i].axis_tuples.get_population () == 1);
     hb_always_assert (!tuple_variations.tuple_vars[i].deltas_y);
@@ -67,11 +67,11 @@ test_decompile_cvar ()
   hb_always_assert (tuple_variations.tuple_vars[1].axis_tuples.get (axis_tag) == Triple (0.0, 1.0, 1.0));
 
   hb_vector_t<float> deltas_1 {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -3.0, 1.0, 0.0, -1.0, 0.0, -3.0, 1.0, 0.0, -37.0, -37.0, -26.0, -26.0, 0.0, 0.0, 0.0, -3.0, 0.0, 0.0, 0.0, 0.0, 0.0, -3.0, 0.0, 2.0, -29.0, -29.0, -20.0, -20.0, 0.0, 0.0, 0.0, 1.0, -29.0, -29.0, -20.0, -20.0, 0.0, 0.0, 0.0, 1.0};
-  for (unsigned i = 0; i < 65; i++)
+  위해 (unsigned i = 0; i < 65; i++)
   {
-    if (i < 23)
+    만약 (i < 23)
       hb_always_assert (tuple_variations.tuple_vars[0].indices[i] == 0);
-    else
+    아니면
     {
       hb_always_assert (tuple_variations.tuple_vars[0].indices[i] == 1);
       hb_always_assert (tuple_variations.tuple_vars[0].deltas_x[i] == deltas_1[i]);
@@ -79,11 +79,11 @@ test_decompile_cvar ()
   }
 
   hb_vector_t<float> deltas_2 {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 5.0, -3.0, 0.0, 1.0, 0.0, 5.0, -3.0, 0.0, 97.0, 97.0, 68.0, 68.0, 0.0, 0.0, 0.0, 5.0, 0.0, 0.0, 1.0, -1.0, 1.0, 7.0, -1.0, -5.0, 73.0, 73.0, 53.0, 53.0, 0.0, 0.0, 0.0, -1.0, 73.0, 73.0, 53.0, 53.0, 0.0, 0.0, 0.0, -1.0};
-  for (unsigned i = 0 ; i < 65; i++)
+  위해 (unsigned i = 0 ; i < 65; i++)
   {
-    if (i < 23)
+    만약 (i < 23)
       hb_always_assert (tuple_variations.tuple_vars[1].indices[i] == 0);
-    else
+    아니면
     {
       hb_always_assert (tuple_variations.tuple_vars[1].indices[i] == 1);
       hb_always_assert (tuple_variations.tuple_vars[1].deltas_x[i] == deltas_2[i]);
@@ -111,14 +111,14 @@ test_decompile_cvar ()
 
   hb_vector_t<float> rounded_deltas_2 {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1, 0.0, 4, -2, 0.0, 1, 0.0, 4, -2, 0.0, 68, 68, 48, 48, 0.0, 0.0, 0.0, 4, 0.0, 0.0, 1, -1, 1, 5, -1, -4, 51, 51, 37, 37, 0.0, 0.0, 0.0, -1, 51, 51, 37, 37, 0.0, 0.0, 0.0, -1};
 
-  for (unsigned i = 0; i < 65; i++)
+  위해 (unsigned i = 0; i < 65; i++)
   {
-    if (i < 23)
+    만약 (i < 23)
     {
       hb_always_assert (tuple_variations.tuple_vars[0].indices[i] == 0);
       hb_always_assert (tuple_variations.tuple_vars[1].indices[i] == 0);
     }
-    else
+    아니면
     {
       hb_always_assert (tuple_variations.tuple_vars[0].indices[i] == 1);
       hb_always_assert (tuple_variations.tuple_vars[1].indices[i] == 1);
@@ -133,27 +133,27 @@ test_decompile_cvar ()
   hb_always_assert (res);
   hb_always_assert (tuple_variations.tuple_vars[0].compiled_tuple_header.length == 6);
   const unsigned char tuple_var_header_1[] = "\x0\x51\xa0\x0\xc0\x0";
-  for (unsigned i = 0; i < 6; i++)
+  위해 (unsigned i = 0; i < 6; i++)
     hb_always_assert(tuple_variations.tuple_vars[0].compiled_tuple_header.arrayZ[i] == tuple_var_header_1[i]);
 
   hb_always_assert (tuple_variations.tuple_vars[1].compiled_tuple_header.length == 6);
   const unsigned char tuple_var_header_2[] = "\x0\x54\xa0\x0\x40\x0";
-  for (unsigned i = 0; i < 6; i++)
+  위해 (unsigned i = 0; i < 6; i++)
     hb_always_assert(tuple_variations.tuple_vars[1].compiled_tuple_header.arrayZ[i] == tuple_var_header_2[i]);
 
   hb_always_assert (tuple_variations.tuple_vars[0].compiled_deltas.length == 37);
   hb_always_assert (tuple_variations.tuple_vars[1].compiled_deltas.length == 40);
   const unsigned char compiled_deltas_1[] = "\x0d\xff\x00\xfe\x01\x00\xff\x00\xfe\x01\x00\xed\xed\xf3\xf3\x82\x00\xfe\x84\x06\xfe\x00\x01\xf1\xf1\xf6\xf6\x82\x04\x01\xf1\xf1\xf6\xf6\x82\x00\x01";
-  for (unsigned i = 0; i < 37; i++)
+  위해 (unsigned i = 0; i < 37; i++)
     hb_always_assert (tuple_variations.tuple_vars[0].compiled_deltas.arrayZ[i] == compiled_deltas_1[i]);
 
   const unsigned char compiled_deltas_2[] = "\x0d\x01\x00\x04\xfe\x00\x01\x00\x04\xfe\x00\x44\x44\x30\x30\x82\x00\x04\x81\x09\x01\xff\x01\x05\xff\xfc\x33\x33\x25\x25\x82\x04\xff\x33\x33\x25\x25\x82\x00\xff";
-  for (unsigned i = 0; i < 40; i++)
+  위해 (unsigned i = 0; i < 40; i++)
     hb_always_assert (tuple_variations.tuple_vars[1].compiled_deltas.arrayZ[i] == compiled_deltas_2[i]);
 }
 
-int
-main (int argc, char **argv)
+정수
+main (정수 argc, char **argv)
 {
   test_decompile_cvar ();
 }

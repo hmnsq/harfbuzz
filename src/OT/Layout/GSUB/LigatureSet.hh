@@ -26,21 +26,21 @@ struct LigatureSet
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    return
+    반환
     + hb_iter (ligature)
     | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { return _.intersects (glyphs); })
+    | hb_map ([glyphs] (const Ligature<Types> &_) { 반환 _.intersects (glyphs); })
     | hb_any
     ;
   }
 
   bool intersects_lig_glyph (const hb_set_t *glyphs) const
   {
-    return
+    반환
     + hb_iter (ligature)
     | hb_map (hb_add (this))
     | hb_map ([glyphs] (const Ligature<Types> &_) { 
-      return _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
+      반환 _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
     })
     | hb_any
     ;
@@ -81,10 +81,10 @@ struct LigatureSet
 
   bool would_apply (hb_would_apply_context_t *c) const
   {
-    return
+    반환
     + hb_iter (ligature)
     | hb_map (hb_add (this))
-    | hb_map ([c] (const Ligature<Types> &_) { return _.would_apply (c); })
+    | hb_map ([c] (const Ligature<Types> &_) { 반환 _.would_apply (c); })
     | hb_any
     ;
   }
@@ -93,17 +93,17 @@ struct LigatureSet
   {
     TRACE_APPLY (this);
 
-    unsigned int num_ligs = ligature.len;
+    unsigned 정수 num_ligs = ligature.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_ligs <= 1)
+    만약 (HB_OPTIMIZE_SIZE_VAL || num_ligs <= 1)
 #endif
     {
     slow:
-      for (unsigned int i = 0; i < num_ligs; i++)
+      위해 (unsigned 정수 i = 0; i < num_ligs; i++)
       {
 	const auto &lig = this+ligature.arrayZ[i];
-	if (lig.apply (c)) return_trace (true);
+	만약 (lig.apply (c)) return_trace (true);
       }
       return_trace (false);
     }
@@ -120,44 +120,44 @@ struct LigatureSet
     unsigned unsafe_to;
     hb_codepoint_t second = (unsigned) -1;
     bool matched = skippy_iter.next (&unsafe_to);
-    if (likely (matched))
+    만약 (likely (matched))
     {
       second = c->buffer->info[skippy_iter.idx].codepoint;
       unsafe_to = skippy_iter.idx + 1;
 
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      만약 (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
         goto slow;
       }
     }
-    else
+    아니면
       goto slow;
 
-    if (seconds && !seconds->may_have (second))
+    만약 (seconds && !seconds->may_have (second))
     {
       c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
       return_trace (false);
     }
     bool unsafe_to_concat = false;
-    for (unsigned int i = 0; i < num_ligs; i++)
+    위해 (unsigned 정수 i = 0; i < num_ligs; i++)
     {
       const auto &lig = this+ligature.arrayZ[i];
-      if (unlikely (lig.component.lenP1 <= 1) ||
+      만약 (unlikely (lig.component.lenP1 <= 1) ||
 	  lig.component.arrayZ[0] == second)
       {
-	if (lig.apply (c))
+	만약 (lig.apply (c))
 	{
-	  if (unsafe_to_concat)
+	  만약 (unsafe_to_concat)
 	    c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 	  return_trace (true);
 	}
       }
-      else if (likely (lig.component.lenP1 > 1))
+      아니면 만약 (likely (lig.component.lenP1 > 1))
         unsafe_to_concat = true;
     }
-    if (likely (unsafe_to_concat))
+    만약 (likely (unsafe_to_concat))
       c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 
     return_trace (false);
@@ -166,16 +166,16 @@ struct LigatureSet
   template <typename GlyphID>
   bool serialize (hb_serialize_context_t *c,
                   hb_array_t<GlyphID> ligatures,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<const unsigned 정수> component_count_list,
                   hb_array_t<GlyphID> &component_list /* Starting from second for each ligature */)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!ligature.serialize (c, ligatures.length))) return_trace (false);
-    for (unsigned int i = 0; i < ligatures.length; i++)
+    만약 (unlikely (!c->extend_min (this))) return_trace (false);
+    만약 (unlikely (!ligature.serialize (c, ligatures.length))) return_trace (false);
+    위해 (unsigned 정수 i = 0; i < ligatures.length; i++)
     {
-      unsigned int component_count = (unsigned) hb_max ((int) component_count_list[i] - 1, 0);
-      if (unlikely (!ligature[i].serialize_serialize (c,
+      unsigned 정수 component_count = (unsigned) hb_max ((정수) component_count_list[i] - 1, 0);
+      만약 (unlikely (!ligature[i].serialize_serialize (c,
                                                       ligatures[i],
                                                       component_list.sub_array (0, component_count))))
         return_trace (false);
@@ -188,14 +188,14 @@ struct LigatureSet
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    만약 (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     + hb_iter (ligature)
     | hb_filter (subset_offset_array (c, out->ligature, this, coverage_idx))
     | hb_drain
     ;
 
-    if (bool (out->ligature))
+    만약 (bool (out->ligature))
       // Ensure Coverage table is always packed after this.
       c->serializer->add_virtual_link (coverage_idx);
 
