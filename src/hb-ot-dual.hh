@@ -93,17 +93,17 @@ struct hb_dual_accelerator_t
   bool has_data () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (upper.has_data ()) return true;
+    もし (upper.has_data ()) 戻る true;
 #endif
-    return lower.has_data ();
+    戻る lower.has_data ();
   }
 
   bool has_upper_data () const
   {
 #ifndef HB_NO_BEYOND_64K
-    return upper.has_data ();
-#else
-    return false;
+    戻る upper.has_data ();
+#否则
+    戻る false;
 #endif
   }
 
@@ -121,7 +121,7 @@ struct hb_table_accelerator_t
   {}
   ~hb_table_accelerator_t () { table.destroy (); }
 
-  bool has_data () const { return table->has_data (); }
+  bool has_data () const { 戻る table->has_data (); }
 
   hb_blob_ptr_t<Table> table;
 };
@@ -137,7 +137,7 @@ struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
 
 #ifndef HB_NO_BEYOND_64K
 #define HB_DUAL_GET(accel, expr) ((accel).upper.has_data () ? (accel).upper.expr : (accel).lower.expr)
-#else
+#否则
 #define HB_DUAL_GET(accel, expr) ((accel).lower.expr)
 #endif
 

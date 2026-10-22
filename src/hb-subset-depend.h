@@ -27,7 +27,7 @@
 #ifndef HB_SUBSET_DEPEND_H
 #define HB_SUBSET_DEPEND_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#もし !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-subset.h> instead."
 #endif
 
@@ -111,11 +111,11 @@ typedef struct {
 HB_EXTERN hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count, /* IN/OUT */
+                                unsigned 整数 start_offset,
+                                unsigned 整数 *entry_count, /* IN/OUT */
                                 hb_subset_depend_entry_t *entries /* OUT */);
 
 HB_EXTERN hb_bool_t

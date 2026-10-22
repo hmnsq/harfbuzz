@@ -49,7 +49,7 @@ struct hb_paint_bounded_context_t
 
   bool is_bounded ()
   {
-    return bounded;
+    戻る bounded;
   }
 
   void push_clip ()
@@ -59,7 +59,7 @@ struct hb_paint_bounded_context_t
 
   void pop_clip ()
   {
-    if (clips == 0) return;
+    もし (clips == 0) 戻る;
     clips--;
   }
 
@@ -76,7 +76,7 @@ struct hb_paint_bounded_context_t
     bool &backdrop_bounded = bounded;
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    switch ((整数) mode)
     {
       case HB_PAINT_COMPOSITE_MODE_CLEAR:
 	backdrop_bounded = true;
@@ -100,7 +100,7 @@ struct hb_paint_bounded_context_t
 
   void paint ()
   {
-    if (!clips)
+    もし (!clips)
       bounded = false;
   }
 

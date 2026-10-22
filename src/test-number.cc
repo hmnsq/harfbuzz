@@ -37,7 +37,7 @@ test_parse_int ()
     const char *pp = str;
     const char *end = str + 3;
 
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
@@ -50,7 +50,7 @@ test_parse_int ()
     const char *pp = str;
     const char *end = str + 4;
 
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == -123);
     hb_always_assert (pp - str == 4);
@@ -63,7 +63,7 @@ test_parse_int ()
     const char str[] = "   123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == end);
@@ -72,7 +72,7 @@ test_parse_int ()
     const char str[] = "\t123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == end);
@@ -81,7 +81,7 @@ test_parse_int ()
     const char str[] = "\n123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == end);
@@ -90,7 +90,7 @@ test_parse_int ()
     const char str[] = " -123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == -123);
     hb_always_assert (pp == end);
@@ -101,7 +101,7 @@ test_parse_int ()
     const char str[] = "+123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == end);
@@ -110,7 +110,7 @@ test_parse_int ()
     const char str[] = "+0";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == end);
@@ -121,7 +121,7 @@ test_parse_int ()
     const char str[] = "007";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 7);
     hb_always_assert (pp == end);
@@ -132,7 +132,7 @@ test_parse_int ()
     const char str[] = "-0";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == end);
@@ -143,7 +143,7 @@ test_parse_int ()
     const char str[] = "123abc";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == str + 3);
@@ -154,7 +154,7 @@ test_parse_int ()
     const char str[] = "2147483647";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 2147483647);
     hb_always_assert (pp == end);
@@ -163,7 +163,7 @@ test_parse_int ()
     const char str[] = "-2147483648";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == -2147483647 - 1);
     hb_always_assert (pp == end);
@@ -174,7 +174,7 @@ test_parse_int ()
     const char str[] = "   ";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -183,21 +183,21 @@ test_parse_int ()
     const char str[] = "+";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
   }
   {
     const char str[] = "-";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
   }
   {
     const char str[] = "abc";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
   }
 
@@ -206,28 +206,28 @@ test_parse_int ()
     const char str[] = "++1";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
   }
   {
     const char str[] = "--1";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
   }
   {
     const char str[] = "+-1";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
   }
   {
     const char str[] = "-+1";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
   }
 
@@ -237,7 +237,7 @@ test_parse_int ()
     const char str[] = " 123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv, true));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == end);
@@ -246,7 +246,7 @@ test_parse_int ()
     const char str[] = "123abc";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv, true));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -258,7 +258,7 @@ test_parse_int ()
     const char str[] = "9999999999";   /* 10 digits, > INT_MAX */
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -269,7 +269,7 @@ test_parse_int ()
     const char str[] = "2147483647";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 2147483647);
     hb_always_assert (pp == end);
@@ -278,7 +278,7 @@ test_parse_int ()
     const char str[] = "-2147483648";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
+    整数 pv;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == -2147483647 - 1);   /* not -2147483648, that's UB as an int literal */
     hb_always_assert (pp == end);
@@ -289,7 +289,7 @@ test_parse_int ()
     const char str[] = "2147483648";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -299,7 +299,7 @@ test_parse_int ()
     const char str[] = "-2147483649";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -310,7 +310,7 @@ test_parse_int ()
     const char str[] = "9999999999999999999999999999999999999999";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -321,7 +321,7 @@ test_parse_int ()
     const char str[] = "9999999999";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 42;
+    整数 pv = 42;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 42);
@@ -332,7 +332,7 @@ test_parse_int ()
     const char str[] = "- 123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -343,7 +343,7 @@ test_parse_int ()
     const char str[] = "+0";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == end);
@@ -354,7 +354,7 @@ test_parse_int ()
     const char str[] = "-   ";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
+    整数 pv = 99;
     hb_always_assert (!hb_parse_int (&pp, end, &pv));
     hb_always_assert (pv == 99);
   }
@@ -368,7 +368,7 @@ test_parse_uint ()
     const char *pp = str;
     const char *end = str + strlen (str);
 
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
@@ -381,7 +381,7 @@ test_parse_uint ()
     const char *pp = str;
     const char *end = str + 3;
 
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 0x12F);
     hb_always_assert (pp - str == 3);
@@ -394,7 +394,7 @@ test_parse_uint ()
     const char *pp = str;
     const char *end = str + 4;
 
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 16));
     hb_always_assert (pv == 0x12F);
@@ -409,7 +409,7 @@ test_parse_uint ()
     hb_always_assert (ARRAY_LENGTH (str) == 4);
     const char *end = str + ARRAY_LENGTH (str);
 
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
@@ -422,7 +422,7 @@ test_parse_uint ()
     hb_always_assert (ARRAY_LENGTH (str) == 5);
     const char *end = str + ARRAY_LENGTH (str);
 
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
@@ -435,7 +435,7 @@ test_parse_uint ()
     hb_always_assert (ARRAY_LENGTH (str) == 5);
     const char *end = str + ARRAY_LENGTH (str);
 
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
@@ -446,7 +446,7 @@ test_parse_uint ()
     const char str[] = "123abc";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv, true));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -457,7 +457,7 @@ test_parse_uint ()
     const char str[] = " 123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == end);
@@ -466,7 +466,7 @@ test_parse_uint ()
     const char str[] = "\t123";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == end);
@@ -477,7 +477,7 @@ test_parse_uint ()
     const char str[] = "007";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 7);
     hb_always_assert (pp == end);
@@ -486,7 +486,7 @@ test_parse_uint ()
     const char str[] = "000";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == end);
@@ -497,7 +497,7 @@ test_parse_uint ()
     const char str[] = "4294967295";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 4294967295u);
     hb_always_assert (pp == end);
@@ -508,7 +508,7 @@ test_parse_uint ()
     const char str[] = "-1";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 4294967295u);
     hb_always_assert (pp == end);
@@ -517,7 +517,7 @@ test_parse_uint ()
     const char str[] = "-0";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == end);
@@ -528,7 +528,7 @@ test_parse_uint ()
     const char str[] = "1010";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 2));
     hb_always_assert (pv == 10);
     hb_always_assert (pp == end);
@@ -537,7 +537,7 @@ test_parse_uint ()
     const char str[] = "11111111";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 2));
     hb_always_assert (pv == 255);
     hb_always_assert (pp == end);
@@ -546,7 +546,7 @@ test_parse_uint ()
     const char str[] = "12";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     /* '2' is not a base-2 digit; parse stops at index 1 */
     hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 2));
     hb_always_assert (pv == 1);
@@ -558,7 +558,7 @@ test_parse_uint ()
     const char str[] = "777";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 8));
     hb_always_assert (pv == 511);
     hb_always_assert (pp == end);
@@ -567,7 +567,7 @@ test_parse_uint ()
     const char str[] = "010";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 8));
     hb_always_assert (pv == 8);
     hb_always_assert (pp == end);
@@ -578,7 +578,7 @@ test_parse_uint ()
     const char str[] = "FF";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 255);
     hb_always_assert (pp == end);
@@ -587,7 +587,7 @@ test_parse_uint ()
     const char str[] = "ff";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 255);
     hb_always_assert (pp == end);
@@ -596,7 +596,7 @@ test_parse_uint ()
     const char str[] = "Ff";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 255);
     hb_always_assert (pp == end);
@@ -605,7 +605,7 @@ test_parse_uint ()
     const char str[] = "0xFF";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 255);
     hb_always_assert (pp == end);
@@ -614,7 +614,7 @@ test_parse_uint ()
     const char str[] = "0XFF";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 255);
     hb_always_assert (pp == end);
@@ -625,7 +625,7 @@ test_parse_uint ()
     const char str[] = "Z";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 36));
     hb_always_assert (pv == 35);
     hb_always_assert (pp == end);
@@ -634,7 +634,7 @@ test_parse_uint ()
     const char str[] = "z";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 36));
     hb_always_assert (pv == 35);
     hb_always_assert (pp == end);
@@ -643,7 +643,7 @@ test_parse_uint ()
     const char str[] = "10";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 36));
     hb_always_assert (pv == 36);
     hb_always_assert (pp == end);
@@ -654,7 +654,7 @@ test_parse_uint ()
     const char str[] = "abc";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     /* 'a' isn't a decimal digit; whole parse fails */
     hb_always_assert (!hb_parse_uint (&pp, end, &pv, false, 10));
     hb_always_assert (pp == str);
@@ -664,21 +664,21 @@ test_parse_uint ()
     const char str[] = "+";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
   }
   {
     const char str[] = "-";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
   }
   {
     const char str[] = "";
     const char *pp = str;
     const char *end = str;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
   }
 
@@ -686,7 +686,7 @@ test_parse_uint ()
     const char str[] = "0XFF";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 255);
     hb_always_assert (pp == end);
@@ -695,7 +695,7 @@ test_parse_uint ()
     const char str[] = "0xff";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 255);
     hb_always_assert (pp == end);
@@ -704,7 +704,7 @@ test_parse_uint ()
     const char str[] = "0x0";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == end);
@@ -714,7 +714,7 @@ test_parse_uint ()
     const char str[] = "0x";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 16));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == str + 1);
@@ -724,7 +724,7 @@ test_parse_uint ()
     const char str[] = "0xG";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 16));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == str + 1);
@@ -734,7 +734,7 @@ test_parse_uint ()
     const char str[] = "-0xFF";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == (unsigned) -255);
     hb_always_assert (pp == end);
@@ -744,7 +744,7 @@ test_parse_uint ()
     const char str[] = "0xFF";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 10));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == str + 1);
@@ -756,7 +756,7 @@ test_parse_uint ()
     const char str[] = "9999999999";   /* 10 digits, > UINT_MAX */
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -767,7 +767,7 @@ test_parse_uint ()
     const char str[] = "4294967295";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 4294967295u);
     hb_always_assert (pp == end);
@@ -777,7 +777,7 @@ test_parse_uint ()
     const char str[] = "4294967296";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -788,7 +788,7 @@ test_parse_uint ()
     const char str[] = "99999999999999999999";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -798,7 +798,7 @@ test_parse_uint ()
     const char str[] = "9999999999999999999999999999999999999999";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -809,7 +809,7 @@ test_parse_uint ()
     const char str[] = "0xFFFFFFFF";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 4294967295u);
     hb_always_assert (pp == end);
@@ -819,7 +819,7 @@ test_parse_uint ()
     const char str[] = "0x100000000";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -830,7 +830,7 @@ test_parse_uint ()
     const char str[] = "ZZZZZZZZZZZZZZ";   /* 14 Z's */
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv, true, 36));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -840,7 +840,7 @@ test_parse_uint ()
     const char str[] = "9999999999";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 42;
+    unsigned 整数 pv = 42;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 42);
@@ -851,7 +851,7 @@ test_parse_uint ()
     const char str[] = "-4294967296";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
@@ -862,7 +862,7 @@ test_parse_uint ()
     const char str[] = "-2147483648";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 2147483648u);
     hb_always_assert (pp == end);
@@ -873,7 +873,7 @@ test_parse_uint ()
     const char str[] = "Az";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 36));
     hb_always_assert (pv == 10 * 36 + 35);
     hb_always_assert (pp == end);
@@ -884,7 +884,7 @@ test_parse_uint ()
     const char str[] = "- 1";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    unsigned 整数 pv = 99;
     hb_always_assert (!hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 99);
   }
@@ -894,7 +894,7 @@ test_parse_uint ()
     const char str[] = "0X10";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
     hb_always_assert (pv == 16);
     hb_always_assert (pp == end);
@@ -905,7 +905,7 @@ test_parse_uint ()
     const char str[] = "0x0x10";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 16));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == str + 3);
@@ -916,7 +916,7 @@ test_parse_uint ()
     const char str[] = "12\0F";
     const char *pp = str;
     const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    unsigned 整数 pv;
     hb_always_assert (hb_parse_uint (&pp, end, &pv));
     hb_always_assert (pv == 12);
     hb_always_assert (pp == str + 2);
@@ -929,7 +929,7 @@ test_parse_uint ()
 static inline bool
 almost_equal (double a, double b)
 {
-  return fabs (a - b) <= fabs (a) * 2 * DBL_EPSILON;
+  戻る fabs (a - b) <= fabs (a) * 2 * DBL_EPSILON;
 }
 
 static void
@@ -942,7 +942,7 @@ test_parse_double (void)
 
     double pv;
     hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    hb_always_assert ((整数) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 4);
     hb_always_assert (end - pp == 1);
   }
@@ -954,7 +954,7 @@ test_parse_double (void)
 
     double pv;
     hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    hb_always_assert ((整数) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 5);
     hb_always_assert (end - pp == 0);
   }
@@ -966,7 +966,7 @@ test_parse_double (void)
 
     double pv;
     hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    hb_always_assert ((整数) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 7);
     hb_always_assert (end - pp == 0);
   }
@@ -978,7 +978,7 @@ test_parse_double (void)
 
     double pv;
     hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    hb_always_assert ((整数) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 6);
     hb_always_assert (end - pp == 0);
   }
@@ -990,7 +990,7 @@ test_parse_double (void)
 
     double pv;
     hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    hb_always_assert ((整数) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 10);
     hb_always_assert (end - pp == 0);
   }
@@ -1002,7 +1002,7 @@ test_parse_double (void)
 
     double pv;
     hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == -123);
+    hb_always_assert ((整数) roundf (pv * 1000.) == -123);
     hb_always_assert (pp - str == 13);
     hb_always_assert (end - pp == 0);
 
@@ -1015,7 +1015,7 @@ test_parse_double (void)
 
     double pv;
     hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == -123);
+    hb_always_assert ((整数) roundf (pv * 1000.) == -123);
     hb_always_assert (pp - str == 8);
     hb_always_assert (end - pp == 0);
   }
@@ -1620,12 +1620,12 @@ test_parse_double (void)
   }
 }
 
-int
-main (int argc, char **argv)
+整数
+メインページ (整数 argc, char **argv)
 {
   test_parse_double ();
   test_parse_int ();
   test_parse_uint ();
 
-  return 0;
+  戻る 0;
 }

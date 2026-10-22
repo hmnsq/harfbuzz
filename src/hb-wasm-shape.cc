@@ -80,15 +80,15 @@ _hb_wasm_module_reader (const char *module_name,
 
   *p_buffer = (uint8_t *) hb_malloc (length);
 
-  if (length && !p_buffer)
-    return false;
+  もし (length && !p_buffer)
+    戻る false;
 
   memcpy (*p_buffer, data, length);
   *p_size = length;
 
   hb_blob_destroy (blob);
 
-  return true;
+  戻る true;
 }
 
 static void HB_UNUSED
@@ -133,8 +133,8 @@ _hb_wasm_init ()
    */
 
   static bool initialized;
-  if (initialized)
-    return true;
+  もし (initialized)
+    戻る true;
 
   RuntimeInitArgs init_args;
   hb_memset (&init_args, 0, sizeof (RuntimeInitArgs));
@@ -149,10 +149,10 @@ _hb_wasm_init ()
   init_args.native_module_name = "env";
   init_args.native_symbols = _hb_wasm_native_symbols;
 
-  if (unlikely (!wasm_runtime_full_init (&init_args)))
+  もし (unlikely (!wasm_runtime_full_init (&init_args)))
   {
     DEBUG_MSG (WASM, nullptr, "Init runtime environment failed.");
-    return false;
+    戻る false;
   }
 
 #ifndef HB_WASM_NO_MODULES
@@ -161,7 +161,7 @@ _hb_wasm_init ()
 #endif
 
   initialized = true;
-  return true;
+  戻る true;
 }
 
 hb_wasm_face_data_t *
@@ -174,30 +174,30 @@ _hb_wasm_shaper_face_data_create (hb_face_t *face)
   hb_unique_ptr_t<hb_blob_t> wasm_blob (hb_face_reference_table (face, HB_WASM_TAG_WASM));
 
   unsigned length = hb_blob_get_length (wasm_blob);
-  if (!length)
-    return nullptr;
+  もし (!length)
+    戻る nullptr;
 
-  if (!_hb_wasm_init ())
-    return nullptr;
+  もし (!_hb_wasm_init ())
+    戻る nullptr;
 
   wasm_module = wasm_runtime_load ((uint8_t *) hb_blob_get_data_writable (wasm_blob, nullptr),
 				   length, error, sizeof (error));
-  if (unlikely (!wasm_module))
+  もし (unlikely (!wasm_module))
   {
     DEBUG_MSG (WASM, nullptr, "Load wasm module failed: %s", error);
-    return nullptr;
+    戻る nullptr;
   }
   auto module_guard = hb_make_scope_guard ([&]() { wasm_runtime_unload (wasm_module); });
 
   data = (hb_wasm_face_data_t *) hb_calloc (1, sizeof (hb_wasm_face_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  もし (unlikely (!data))
+    戻る nullptr;
 
   data->wasm_blob = wasm_blob.release ();
   data->wasm_module = wasm_module;
 
   module_guard.release ();
-  return data;
+  戻る data;
 }
 
 static hb_wasm_shape_plan_t *
@@ -208,8 +208,8 @@ acquire_shape_plan (hb_face_t *face,
 
   /* Fetch cached one if available. */
   hb_wasm_shape_plan_t *plan = face_data->plan.get_acquire ();
-  if (likely (plan && face_data->plan.cmpexch (plan, nullptr)))
-    return plan;
+  もし (likely (plan && face_data->plan.cmpexch (plan, nullptr)))
+    戻る plan;
 
   plan = (hb_wasm_shape_plan_t *) hb_calloc (1, sizeof (hb_wasm_shape_plan_t));
   auto plan_guard = hb_make_scope_guard ([&]() { hb_free (plan); });
@@ -218,31 +218,31 @@ acquire_shape_plan (hb_face_t *face,
 
   wasm_module_inst_t module_inst = plan->module_inst = wasm_runtime_instantiate (
       face_data->wasm_module, stack_size, heap_size, error, sizeof (error));
-  if (unlikely (!module_inst))
+  もし (unlikely (!module_inst))
   {
     DEBUG_MSG (WASM, face_data, "Create wasm module instance failed: %s", error);
-    return nullptr;
+    戻る nullptr;
   }
   auto module_guard = hb_make_scope_guard ([&]() { wasm_runtime_deinstantiate (module_inst); });
 
   wasm_exec_env_t exec_env = plan->exec_env = wasm_runtime_create_exec_env (module_inst, stack_size);
-  if (unlikely (!exec_env)) {
+  もし (unlikely (!exec_env)) {
     DEBUG_MSG (WASM, face_data, "Create wasm execution environment failed.");
-    return nullptr;
+    戻る nullptr;
   }
   auto exec_guard = hb_make_scope_guard ([&]() { wasm_runtime_destroy_exec_env (exec_env); });
 
   wasm_function_inst_t func = wasm_runtime_lookup_function (module_inst, "shape_plan_create");
-  if (func)
+  もし (func)
   {
     wasm_val_t results[1];
     wasm_val_t arguments[1];
 
     HB_OBJ2REF (face);
-    if (unlikely (!faceref))
+    もし (unlikely (!faceref))
     {
       DEBUG_MSG (WASM, face_data, "Failed to register face object.");
-      return nullptr;
+      戻る nullptr;
     }
 
     results[0].kind = WASM_I32;
@@ -252,11 +252,11 @@ acquire_shape_plan (hb_face_t *face,
 					 ARRAY_LENGTH (results), results,
 					 ARRAY_LENGTH (arguments), arguments);
 
-    if (unlikely (!ret))
+    もし (unlikely (!ret))
     {
       DEBUG_MSG (WASM, module_inst, "Calling shape_plan_create() failed: %s",
 		 wasm_runtime_get_exception (module_inst));
-      return nullptr;
+      戻る nullptr;
     }
     plan->wasm_shape_planptr = results[0].of.i32;
   }
@@ -264,7 +264,7 @@ acquire_shape_plan (hb_face_t *face,
   plan_guard.release ();
   module_guard.release ();
   exec_guard.release ();
-  return plan;
+  戻る plan;
 }
 
 static void
@@ -272,19 +272,19 @@ release_shape_plan (const hb_wasm_face_data_t *face_data,
 		    hb_wasm_shape_plan_t *plan,
 		    bool cache = false)
 {
-  if (cache && face_data->plan.cmpexch (nullptr, plan))
-    return;
+  もし (cache && face_data->plan.cmpexch (nullptr, plan))
+    戻る;
 
   auto *module_inst = plan->module_inst;
   auto *exec_env = plan->exec_env;
 
   /* Is there even any point to having a shape_plan_destroy function
    * and calling it? */
-  if (plan->wasm_shape_planptr)
+  もし (plan->wasm_shape_planptr)
   {
 
     auto *func = wasm_runtime_lookup_function (module_inst, "shape_plan_destroy");
-    if (func)
+    もし (func)
     {
       wasm_val_t arguments[1];
 
@@ -294,7 +294,7 @@ release_shape_plan (const hb_wasm_face_data_t *face_data,
 					   0, nullptr,
 					   ARRAY_LENGTH (arguments), arguments);
 
-      if (unlikely (!ret))
+      もし (unlikely (!ret))
       {
 	DEBUG_MSG (WASM, module_inst, "Calling shape_plan_destroy() failed: %s",
 		   wasm_runtime_get_exception (module_inst));
@@ -310,7 +310,7 @@ release_shape_plan (const hb_wasm_face_data_t *face_data,
 void
 _hb_wasm_shaper_face_data_destroy (hb_wasm_face_data_t *data)
 {
-  if (data->plan.get_relaxed ())
+  もし (data->plan.get_relaxed ())
     release_shape_plan (data, data->plan);
   wasm_runtime_unload (data->wasm_module);
   hb_blob_destroy (data->wasm_blob);
@@ -327,7 +327,7 @@ struct hb_wasm_font_data_t {};
 hb_wasm_font_data_t *
 _hb_wasm_shaper_font_data_create (hb_font_t *font HB_UNUSED)
 {
-  return (hb_wasm_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  戻る (hb_wasm_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
 void
@@ -345,17 +345,17 @@ _hb_wasm_shape (hb_shape_plan_t    *shape_plan,
 		hb_font_t          *font,
 		hb_buffer_t        *buffer,
 		const hb_feature_t *features,
-		unsigned int        num_features)
+		unsigned 整数        num_features)
 {
-  if (unlikely (buffer->in_error ()))
-    return false;
+  もし (unlikely (buffer->in_error ()))
+    戻る false;
 
   bool ret = true;
   hb_face_t *face = font->face;
   const hb_wasm_face_data_t *face_data = face->data.wasm;
 
   bool retried = false;
-  if (0)
+  もし (0)
   {
 retry:
     DEBUG_MSG (WASM, font, "Retrying...");
@@ -364,10 +364,10 @@ retry:
   wasm_function_inst_t func = nullptr;
 
   hb_wasm_shape_plan_t *plan = acquire_shape_plan (face, face_data);
-  if (unlikely (!plan))
+  もし (unlikely (!plan))
   {
     DEBUG_MSG (WASM, face_data, "Acquiring shape-plan failed.");
-    return false;
+    戻る false;
   }
 
   auto *module_inst = plan->module_inst;
@@ -375,14 +375,14 @@ retry:
 
   HB_OBJ2REF (font);
   HB_OBJ2REF (buffer);
-  if (unlikely (!fontref || !bufferref))
+  もし (unlikely (!fontref || !bufferref))
   {
     DEBUG_MSG (WASM, module_inst, "Failed to register objects.");
     goto fail;
   }
 
   func = wasm_runtime_lookup_function (module_inst, "shape");
-  if (unlikely (!func))
+  もし (unlikely (!func))
   {
     DEBUG_MSG (WASM, module_inst, "Shape function not found.");
     goto fail;
@@ -412,19 +412,19 @@ retry:
 				  ARRAY_LENGTH (results), results,
 				  ARRAY_LENGTH (arguments), arguments);
 
-  if (num_features)
+  もし (num_features)
     wasm_runtime_module_free (module_inst, featuresptr);
 
-  if (unlikely (!ret || !results[0].of.i32))
+  もし (unlikely (!ret || !results[0].of.i32))
   {
     DEBUG_MSG (WASM, module_inst, "Calling shape() failed: %s",
 	       wasm_runtime_get_exception (module_inst));
-    if (!buffer->ensure_unicode ())
+    もし (!buffer->ensure_unicode ())
     {
       DEBUG_MSG (WASM, font, "Shape failed but buffer is not in Unicode; failing...");
       goto fail;
     }
-    if (retried)
+    もし (retried)
     {
       DEBUG_MSG (WASM, font, "Giving up...");
       goto fail;
@@ -439,7 +439,7 @@ retry:
   /* TODO Regularize clusters according to direction & cluster level,
    * such that client doesn't crash with unmet expectations. */
 
-  if (!results[0].of.i32)
+  もし (!results[0].of.i32)
   {
 fail:
     ret = false;
@@ -447,13 +447,13 @@ fail:
 
   release_shape_plan (face_data, plan, ret);
 
-  if (ret)
+  もし (ret)
   {
     buffer->clear_glyph_flags ();
     buffer->unsafe_to_break ();
   }
 
-  return ret;
+  戻る ret;
 }
 
 #endif

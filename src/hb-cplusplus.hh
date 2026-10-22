@@ -32,8 +32,8 @@
 #include <functional>
 #include <utility>
 
-#if 0
-#if !(__cplusplus >= 201103L)
+#もし 0
+#もし !(__cplusplus >= 201103L)
 #error "HarfBuzz C++ helpers require C++11"
 #endif
 #endif
@@ -54,30 +54,30 @@ struct shared_ptr
   explicit shared_ptr (T *p = nullptr) : p (p) {}
   shared_ptr (const shared_ptr &o) : p (v::reference (o.p)) {}
   shared_ptr (shared_ptr &&o)  noexcept : p (o.p) { o.p = nullptr; }
-  shared_ptr& operator = (const shared_ptr &o) { if (p != o.p) { destroy (); p = o.p; reference (); } return *this; }
-  shared_ptr& operator = (shared_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; return *this; }
+  shared_ptr& operator = (const shared_ptr &o) { もし (p != o.p) { destroy (); p = o.p; reference (); } 戻る *this; }
+  shared_ptr& operator = (shared_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; 戻る *this; }
   ~shared_ptr () { v::destroy (p); p = nullptr; }
 
-  T* get() const { return p; }
+  T* get() const { 戻る p; }
 
   void swap (shared_ptr &o)  noexcept { std::swap (p, o.p); }
   friend void swap (shared_ptr &a, shared_ptr &b)  noexcept { std::swap (a.p, b.p); }
 
-  operator T * () const { return p; }
-  T& operator * () const { return *get (); }
-  T* operator -> () const { return get (); }
-  operator bool () const { return p; }
-  bool operator == (const shared_ptr &o) const { return p == o.p; }
-  bool operator != (const shared_ptr &o) const { return p != o.p; }
+  operator T * () const { 戻る p; }
+  T& operator * () const { 戻る *get (); }
+  T* operator -> () const { 戻る get (); }
+  operator bool () const { 戻る p; }
+  bool operator == (const shared_ptr &o) const { 戻る p == o.p; }
+  bool operator != (const shared_ptr &o) const { 戻る p != o.p; }
 
-  static T* get_empty() { return v::get_empty (); }
-  T* reference() { return v::reference (p); }
+  static T* get_empty() { 戻る v::get_empty (); }
+  T* reference() { 戻る v::reference (p); }
   void destroy() { v::destroy (p); }
   void set_user_data (hb_user_data_key_t *key,
 		      void *value,
 		      hb_destroy_func_t destroy,
 		      hb_bool_t replace) { v::set_user_data (p, key, value, destroy, replace); } 
-  void * get_user_data (hb_user_data_key_t *key) { return v::get_user_data (p, key); }
+  void * get_user_data (hb_user_data_key_t *key) { 戻る v::get_user_data (p, key); }
 
   private:
   T *p;
@@ -97,19 +97,19 @@ struct unique_ptr
   unique_ptr (const unique_ptr &o) = delete;
   unique_ptr (unique_ptr &&o)  noexcept : p (o.p) { o.p = nullptr; }
   unique_ptr& operator = (const unique_ptr &o) = delete;
-  unique_ptr& operator = (unique_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; return *this; }
+  unique_ptr& operator = (unique_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; 戻る *this; }
   ~unique_ptr () { v::destroy (p); p = nullptr; }
 
-  T* get() const { return p; }
-  T* release () { T* v = p; p = nullptr; return v; }
+  T* get() const { 戻る p; }
+  T* release () { T* v = p; p = nullptr; 戻る v; }
 
   void swap (unique_ptr &o)  noexcept { std::swap (p, o.p); }
   friend void swap (unique_ptr &a, unique_ptr &b)  noexcept { std::swap (a.p, b.p); }
 
-  operator T * () const { return p; }
-  T& operator * () const { return *get (); }
-  T* operator -> () const { return get (); }
-  operator bool () { return p; }
+  operator T * () const { 戻る p; }
+  T& operator * () const { 戻る *get (); }
+  T* operator -> () const { 戻る get (); }
+  operator bool () { 戻る p; }
 
   private:
   T *p;
@@ -210,7 +210,7 @@ struct hash<hb::shared_ptr<T>>
     std::size_t operator()(const hb::shared_ptr<T>& v) const noexcept
     {
         std::size_t h = std::hash<decltype (v.get ())>{}(v.get ());
-        return h;
+        戻る h;
     }
 };
 
@@ -220,7 +220,7 @@ struct hash<hb::unique_ptr<T>>
     std::size_t operator()(const hb::unique_ptr<T>& v) const noexcept
     {
         std::size_t h = std::hash<decltype (v.get ())>{}(v.get ());
-        return h;
+        戻る h;
     }
 };
 

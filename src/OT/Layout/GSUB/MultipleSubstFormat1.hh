@@ -29,10 +29,10 @@ struct MultipleSubstFormat1_2
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { 戻る (this+coverage).intersects (glyphs); }
 
   bool may_have_non_1to1 () const
-  { return true; }
+  { 戻る true; }
 
   void closure (hb_closure_context_t *c) const
   {
@@ -61,7 +61,7 @@ struct MultipleSubstFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    もし (unlikely (!(this+coverage).collect_coverage (c->input))) 戻る;
     + hb_zip (this+coverage, sequence)
     | hb_map (hb_second)
     | hb_map (hb_add (this))
@@ -69,17 +69,17 @@ struct MultipleSubstFormat1_2
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { 戻る this+coverage; }
 
   bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  { 戻る c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
 
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned 整数 index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    もし (index == NOT_COVERED) return_trace (false);
 
     return_trace ((this+sequence[index]).apply (c));
   }
@@ -98,13 +98,13 @@ struct MultipleSubstFormat1_2
       + it
       | hb_map_retains_sorting (hb_first)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    もし (unlikely (!c->extend_min (this))) return_trace (false);
 
-    if (unlikely (!sequence.serialize (c, sequences.length))) return_trace (false);
+    もし (unlikely (!sequence.serialize (c, sequences.length))) return_trace (false);
 
-    for (auto& pair : hb_zip (sequences, sequence))
+    ために (auto& pair : hb_zip (sequences, sequence))
     {
-      if (unlikely (!pair.second
+      もし (unlikely (!pair.second
 		    .serialize_serialize (c, pair.first)))
         return_trace (false);
     }
@@ -119,7 +119,7 @@ struct MultipleSubstFormat1_2
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    もし (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;

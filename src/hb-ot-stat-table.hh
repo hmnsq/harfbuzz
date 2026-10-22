@@ -60,20 +60,20 @@ enum
 static bool axis_value_is_outside_axis_range (hb_tag_t axis_tag, float axis_value,
                                               const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
 {
-  if (!user_axes_location->has (axis_tag))
-    return false;
+  もし (!user_axes_location->has (axis_tag))
+    戻る false;
 
   Triple axis_range = user_axes_location->get (axis_tag);
-  return (axis_value < axis_range.minimum || axis_value > axis_range.maximum);
+  戻る (axis_value < axis_range.minimum || axis_value > axis_range.maximum);
 }
 
 struct StatAxisRecord
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  整数 cmp (hb_tag_t key) const { 戻る tag.cmp (key); }
 
-  hb_ot_name_id_t get_name_id () const { return nameID; }
+  hb_ot_name_id_t get_name_id () const { 戻る nameID; }
 
-  hb_tag_t get_axis_tag () const { return tag; }
+  hb_tag_t get_axis_tag () const { 戻る tag; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -94,15 +94,15 @@ struct StatAxisRecord
 
 struct AxisValueFormat1
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned 整数 get_axis_index () const { 戻る axisIndex; }
+  float get_value ()             const { 戻る value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_value_name_id () const { 戻る valueNameID; }
 
   hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    戻る axis_records[axis_idx].get_axis_tag ();
   }
 
   bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
@@ -111,7 +111,7 @@ struct AxisValueFormat1
     hb_tag_t axis_tag = get_axis_tag (axis_records);
     float axis_value = get_value ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    戻る !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
   }
 
   bool subset (hb_subset_context_t *c,
@@ -120,7 +120,7 @@ struct AxisValueFormat1
     TRACE_SUBSET (this);
     const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
+    もし (keep_axis_value (axis_records, user_axes_location))
       return_trace (c->serializer->embed (this));
 
     return_trace (false);
@@ -149,15 +149,15 @@ struct AxisValueFormat1
 
 struct AxisValueFormat2
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return nominalValue.to_float (); }
+  unsigned 整数 get_axis_index () const { 戻る axisIndex; }
+  float get_value ()             const { 戻る nominalValue.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_value_name_id () const { 戻る valueNameID; }
 
   hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    戻る axis_records[axis_idx].get_axis_tag ();
   }
 
   bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
@@ -166,7 +166,7 @@ struct AxisValueFormat2
     hb_tag_t axis_tag = get_axis_tag (axis_records);
     float axis_value = get_value ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    戻る !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
   }
 
   bool subset (hb_subset_context_t *c,
@@ -175,7 +175,7 @@ struct AxisValueFormat2
     TRACE_SUBSET (this);
     const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
+    もし (keep_axis_value (axis_records, user_axes_location))
       return_trace (c->serializer->embed (this));
 
     return_trace (false);
@@ -208,15 +208,15 @@ struct AxisValueFormat2
 
 struct AxisValueFormat3
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned 整数 get_axis_index () const { 戻る axisIndex; }
+  float get_value ()             const { 戻る value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_value_name_id () const { 戻る valueNameID; }
 
   hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    戻る axis_records[axis_idx].get_axis_tag ();
   }
 
   bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
@@ -225,7 +225,7 @@ struct AxisValueFormat3
     hb_tag_t axis_tag = get_axis_tag (axis_records);
     float axis_value = get_value ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    戻る !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
   }
 
   bool subset (hb_subset_context_t *c,
@@ -234,7 +234,7 @@ struct AxisValueFormat3
     TRACE_SUBSET (this);
     const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
+    もし (keep_axis_value (axis_records, user_axes_location))
       return_trace (c->serializer->embed (this));
 
     return_trace (false);
@@ -265,8 +265,8 @@ struct AxisValueFormat3
 
 struct AxisValueRecord
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned 整数 get_axis_index () const { 戻る axisIndex; }
+  float get_value ()             const { 戻る value.to_float (); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -285,25 +285,25 @@ struct AxisValueRecord
 
 struct AxisValueFormat4
 {
-  const AxisValueRecord &get_axis_record (unsigned int axis_index) const
-  { return axisValues.as_array (axisCount)[axis_index]; }
+  const AxisValueRecord &get_axis_record (unsigned 整数 axis_index) const
+  { 戻る axisValues.as_array (axisCount)[axis_index]; }
 
   bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
                         const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
   {
     hb_array_t<const AxisValueRecord> axis_value_records = axisValues.as_array (axisCount);
 
-    for (const auto& rec : axis_value_records)
+    ために (const auto& rec : axis_value_records)
     {
       unsigned axis_idx = rec.get_axis_index ();
       float axis_value = rec.get_value ();
       hb_tag_t axis_tag = axis_records[axis_idx].get_axis_tag ();
 
-      if (axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location))
-        return false;
+      もし (axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location))
+        戻る false;
     }
 
-    return true;
+    戻る true;
   }
 
   bool subset (hb_subset_context_t *c,
@@ -311,17 +311,17 @@ struct AxisValueFormat4
   {
     TRACE_SUBSET (this);
     const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
-    if (!keep_axis_value (axis_records, user_axes_location))
+    もし (!keep_axis_value (axis_records, user_axes_location))
       return_trace (false);
 
     unsigned total_size = min_size + axisCount * AxisValueRecord::static_size;
     auto *out = c->serializer->allocate_size<AxisValueFormat4> (total_size);
-    if (unlikely (!out)) return_trace (false);
+    もし (unlikely (!out)) return_trace (false);
     hb_memcpy (out, this, total_size);
     return_trace (true);
   }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_value_name_id () const { 戻る valueNameID; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -349,27 +349,27 @@ struct AxisValueFormat4
 
 struct AxisValue
 {
-  float get_value (unsigned int axis_index) const
+  float get_value (unsigned 整数 axis_index) const
   {
     switch (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value ();
-    case 2: hb_barrier (); return u.format2.get_value ();
-    case 3: hb_barrier (); return u.format3.get_value ();
-    case 4: hb_barrier (); return u.format4.get_axis_record (axis_index).get_value ();
-    default:return 0.f;
+    case 1: hb_barrier (); 戻る u.format1.get_value ();
+    case 2: hb_barrier (); 戻る u.format2.get_value ();
+    case 3: hb_barrier (); 戻る u.format3.get_value ();
+    case 4: hb_barrier (); 戻る u.format4.get_axis_record (axis_index).get_value ();
+    default:戻る 0.f;
     }
   }
 
-  unsigned int get_axis_index () const
+  unsigned 整数 get_axis_index () const
   {
     switch (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_axis_index ();
-    case 2: hb_barrier (); return u.format2.get_axis_index ();
-    case 3: hb_barrier (); return u.format3.get_axis_index ();
+    case 1: hb_barrier (); 戻る u.format1.get_axis_index ();
+    case 2: hb_barrier (); 戻る u.format2.get_axis_index ();
+    case 3: hb_barrier (); 戻る u.format3.get_axis_index ();
     /* case 4: Makes more sense for variable fonts which are handled by fvar in hb-style */
-    default:return -1;
+    default:戻る -1;
     }
   }
 
@@ -377,18 +377,18 @@ struct AxisValue
   {
     switch (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value_name_id ();
-    case 2: hb_barrier (); return u.format2.get_value_name_id ();
-    case 3: hb_barrier (); return u.format3.get_value_name_id ();
-    case 4: hb_barrier (); return u.format4.get_value_name_id ();
-    default:return HB_OT_NAME_ID_INVALID;
+    case 1: hb_barrier (); 戻る u.format1.get_value_name_id ();
+    case 2: hb_barrier (); 戻る u.format2.get_value_name_id ();
+    case 3: hb_barrier (); 戻る u.format3.get_value_name_id ();
+    case 4: hb_barrier (); 戻る u.format4.get_value_name_id ();
+    default:戻る HB_OT_NAME_ID_INVALID;
     }
   }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    もし (unlikely (!c->may_dispatch (this, &u.format.v))) 戻る c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -404,18 +404,18 @@ struct AxisValue
   {
     switch (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.keep_axis_value (axis_records, user_axes_location);
-    case 2: hb_barrier (); return u.format2.keep_axis_value (axis_records, user_axes_location);
-    case 3: hb_barrier (); return u.format3.keep_axis_value (axis_records, user_axes_location);
-    case 4: hb_barrier (); return u.format4.keep_axis_value (axis_records, user_axes_location);
-    default:return false;
+    case 1: hb_barrier (); 戻る u.format1.keep_axis_value (axis_records, user_axes_location);
+    case 2: hb_barrier (); 戻る u.format2.keep_axis_value (axis_records, user_axes_location);
+    case 3: hb_barrier (); 戻る u.format3.keep_axis_value (axis_records, user_axes_location);
+    case 4: hb_barrier (); 戻る u.format4.keep_axis_value (axis_records, user_axes_location);
+    default:戻る false;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    もし (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
@@ -453,13 +453,13 @@ struct AxisValueOffsetArray: UnsizedArrayOf<Offset16To<AxisValue>>
 
     auto axisValueOffsets = as_array (axisValueCount);
     count = 0;
-    for (const auto& offset : axisValueOffsets)
+    ために (const auto& offset : axisValueOffsets)
     {
-      if (!offset) continue;
+      もし (!offset) continue;
       auto o_snap = c->serializer->snapshot ();
       auto *o = c->serializer->embed (offset);
-      if (!o) return_trace (false);
-      if (!o->serialize_subset (c, offset, this, axis_records))
+      もし (!o) return_trace (false);
+      もし (!o->serialize_subset (c, offset, this, axis_records))
       {
         c->serializer->revert (o_snap);
         continue;
@@ -475,49 +475,49 @@ struct STAT
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { 戻る version.to_int (); }
 
   bool get_value (hb_tag_t tag, float *value) const
   {
-    unsigned int axis_index;
-    if (!get_design_axes ().lfind (tag, &axis_index)) return false;
+    unsigned 整数 axis_index;
+    もし (!get_design_axes ().lfind (tag, &axis_index)) 戻る false;
 
     hb_array_t<const Offset16To<AxisValue>> axis_values = get_axis_value_offsets ();
-    for (unsigned int i = 0; i < axis_values.length; i++)
+    ために (unsigned 整数 i = 0; i < axis_values.length; i++)
     {
       const AxisValue& axis_value = this+offsetToAxisValueOffsets+axis_values[i];
-      if (axis_value.get_axis_index () == axis_index)
+      もし (axis_value.get_axis_index () == axis_index)
       {
-	if (value)
+	もし (value)
 	  *value = axis_value.get_value (axis_index);
-	return true;
+	戻る true;
       }
     }
-    return false;
+    戻る false;
   }
 
-  unsigned get_design_axis_count () const { return designAxisCount; }
+  unsigned get_design_axis_count () const { 戻る designAxisCount; }
 
   hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) const
   {
-    if (unlikely (axis_record_index >= designAxisCount)) return HB_OT_NAME_ID_INVALID;
+    もし (unlikely (axis_record_index >= designAxisCount)) 戻る HB_OT_NAME_ID_INVALID;
     const StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
-    return axis_record.get_name_id ();
+    戻る axis_record.get_name_id ();
   }
 
-  unsigned get_axis_value_count () const { return axisValueCount; }
+  unsigned get_axis_value_count () const { 戻る axisValueCount; }
 
   hb_ot_name_id_t get_axis_value_name_id (unsigned axis_value_index) const
   {
-    if (unlikely (axis_value_index >= axisValueCount)) return HB_OT_NAME_ID_INVALID;
+    もし (unlikely (axis_value_index >= axisValueCount)) 戻る HB_OT_NAME_ID_INVALID;
     const AxisValue &axis_value = (this + get_axis_value_offsets ()[axis_value_index]);
-    return axis_value.get_value_name_id ();
+    戻る axis_value.get_value_name_id ();
   }
 
   void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
                          hb_set_t *nameids_to_retain /* OUT */) const
   {
-    if (!has_data ()) return;
+    もし (!has_data ()) 戻る;
 
     + get_design_axes ()
     | hb_map (&StatAxisRecord::get_name_id)
@@ -529,7 +529,7 @@ struct STAT
     + get_axis_value_offsets ()
     | hb_map (hb_add (&(this + offsetToAxisValueOffsets)))
     | hb_filter ([&] (const AxisValue& _)
-                 { return _.keep_axis_value (designAxes, user_axes_location); })
+                 { 戻る _.keep_axis_value (designAxes, user_axes_location); })
     | hb_map (&AxisValue::get_value_name_id)
     | hb_sink (nameids_to_retain)
     ;
@@ -541,14 +541,14 @@ struct STAT
   {
     TRACE_SUBSET (this);
     STAT *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    もし (unlikely (!out)) return_trace (false);
 
     auto designAxes = get_design_axes ();
-    for (unsigned i = 0; i < (unsigned)designAxisCount; i++)
-      if (unlikely (!c->serializer->embed (designAxes[i])))
+    ために (unsigned i = 0; i < (unsigned)designAxisCount; i++)
+      もし (unlikely (!c->serializer->embed (designAxes[i])))
           return_trace (false);
 
-    if (designAxisCount)
+    もし (designAxisCount)
       c->serializer->check_assign (out->designAxesOffset, this->get_size (),
                                    HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
@@ -571,10 +571,10 @@ struct STAT
 
   protected:
   hb_array_t<const StatAxisRecord> const get_design_axes () const
-  { return (this+designAxesOffset).as_array (designAxisCount); }
+  { 戻る (this+designAxesOffset).as_array (designAxisCount); }
 
   hb_array_t<const Offset16To<AxisValue>> const get_axis_value_offsets () const
-  { return (this+offsetToAxisValueOffsets).as_array (axisValueCount); }
+  { 戻る (this+offsetToAxisValueOffsets).as_array (axisValueCount); }
 
 
   protected:

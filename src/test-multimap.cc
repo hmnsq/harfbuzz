@@ -25,8 +25,8 @@
 #include "hb.hh"
 #include "hb-multimap.hh"
 
-int
-main (int argc, char **argv)
+整数
+メインページ (整数 argc, char **argv)
 {
   hb_multimap_t m;
 
@@ -55,5 +55,5 @@ main (int argc, char **argv)
   hb_always_assert (m.get (11)[0] == 14);
   hb_always_assert (m.get (12)[0] == 0); // Array fallback value
 
-  return 0;
+  戻る 0;
 }

@@ -55,11 +55,11 @@ struct hb_free_pool_t
 
   T* alloc ()
   {
-    if (unlikely (!next))
+    もし (unlikely (!next))
     {
-      if (unlikely (!chunks.alloc (chunks.length + 1))) return nullptr;
+      もし (unlikely (!chunks.alloc (chunks.length + 1))) 戻る nullptr;
       chunk_t *chunk = (chunk_t *) hb_malloc (sizeof (chunk_t));
-      if (unlikely (!chunk)) return nullptr;
+      もし (unlikely (!chunk)) 戻る nullptr;
       chunks.push (chunk);
       next = chunk->thread ();
     }
@@ -69,7 +69,7 @@ struct hb_free_pool_t
 
     hb_memset (obj, 0, sizeof (T));
 
-    return obj;
+    戻る obj;
   }
 
   void release (T* obj)
@@ -88,12 +88,12 @@ struct hb_free_pool_t
   {
     T* thread ()
     {
-      for (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
+      ために (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
 	* (T**) &arrayZ[i] = &arrayZ[i + 1];
 
       * (T**) &arrayZ[ARRAY_LENGTH (arrayZ) - 1] = nullptr;
 
-      return arrayZ;
+      戻る arrayZ;
     }
 
     T arrayZ[ChunkLen];

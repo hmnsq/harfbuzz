@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#もし !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -112,7 +112,7 @@ typedef enum
  *
  * Since: 2.0.0
  **/
-typedef unsigned int hb_ot_name_id_t;
+typedef unsigned 整数 hb_ot_name_id_t;
 
 
 /**
@@ -134,28 +134,28 @@ typedef struct hb_ot_name_entry_t {
 
 HB_EXTERN const hb_ot_name_entry_t *
 hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */);
+		       unsigned 整数 *num_entries /* OUT */);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
+		     unsigned 整数    *text_size /* IN/OUT */,
 		     char            *text      /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      unsigned 整数    *text_size /* IN/OUT */,
 		      uint16_t        *text      /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      unsigned 整数    *text_size /* IN/OUT */,
 		      uint32_t        *text      /* OUT */);
 
 

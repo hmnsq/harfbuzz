@@ -58,7 +58,7 @@ static hb_bool_t
 hb_paint_color_glyph_nil (hb_paint_funcs_t *funcs, void *paint_data,
                           hb_codepoint_t glyph,
                           hb_font_t *font,
-                          void *user_data) { return false; }
+                          void *user_data) { 戻る false; }
 
 static void
 hb_paint_fill_glyph_nil (hb_paint_funcs_t *funcs, void *paint_data,
@@ -88,7 +88,7 @@ hb_paint_push_clip_rectangle_nil (hb_paint_funcs_t *funcs, void *paint_data,
 static hb_draw_funcs_t *
 hb_paint_push_clip_path_start_nil (hb_paint_funcs_t *funcs, void *paint_data,
                                    void **draw_data,
-                                   void *user_data) { if (draw_data) *draw_data = nullptr; return nullptr; }
+                                   void *user_data) { もし (draw_data) *draw_data = nullptr; 戻る nullptr; }
 
 static void
 hb_paint_push_clip_path_end_nil (hb_paint_funcs_t *funcs, void *paint_data,
@@ -107,12 +107,12 @@ hb_paint_color_nil (hb_paint_funcs_t *funcs, void *paint_data,
 static hb_bool_t
 hb_paint_image_nil (hb_paint_funcs_t *funcs, void *paint_data,
                     hb_blob_t *image,
-                    unsigned int width,
-                    unsigned int height,
+                    unsigned 整数 width,
+                    unsigned 整数 height,
                     hb_tag_t format,
                     float slant_xy_deprecated,
                     hb_glyph_extents_t *extents,
-                    void *user_data) { return false; }
+                    void *user_data) { 戻る false; }
 
 static void
 hb_paint_linear_gradient_nil (hb_paint_funcs_t *funcs, void *paint_data,
@@ -156,22 +156,22 @@ hb_paint_pop_group_nil (hb_paint_funcs_t *funcs, void *paint_data,
 
 static hb_bool_t
 hb_paint_custom_palette_color_nil (hb_paint_funcs_t *funcs, void *paint_data,
-                                   unsigned int color_index,
+                                   unsigned 整数 color_index,
                                    hb_color_t *color,
-                                   void *user_data) { return false; }
+                                   void *user_data) { 戻る false; }
 
 static hb_bool_t
 hb_paint_set_budget_nil (hb_paint_funcs_t *funcs HB_UNUSED, void *paint_data HB_UNUSED,
 			 int64_t budget HB_UNUSED,
-			 void *user_data HB_UNUSED) { return false; }
+			 void *user_data HB_UNUSED) { 戻る false; }
 
 static int64_t
 hb_paint_get_budget_nil (hb_paint_funcs_t *funcs HB_UNUSED, void *paint_data HB_UNUSED,
-			 void *user_data HB_UNUSED) { return HB_BUDGET_DEFAULT; }
+			 void *user_data HB_UNUSED) { 戻る HB_BUDGET_DEFAULT; }
 
 static int64_t *
 hb_paint_get_budget_remaining_nil (hb_paint_funcs_t *funcs HB_UNUSED, void *paint_data HB_UNUSED,
-				   void *user_data HB_UNUSED) { return nullptr; }
+				   void *user_data HB_UNUSED) { 戻る nullptr; }
 
 static bool
 _hb_paint_funcs_set_preamble (hb_paint_funcs_t  *funcs,
@@ -179,22 +179,22 @@ _hb_paint_funcs_set_preamble (hb_paint_funcs_t  *funcs,
                              void              **user_data,
                              hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (funcs))
+  もし (hb_object_is_immutable (funcs))
   {
-    if (*destroy)
+    もし (*destroy)
       (*destroy) (*user_data);
-    return false;
+    戻る false;
   }
 
-  if (func_is_null)
+  もし (func_is_null)
   {
-    if (*destroy)
+    もし (*destroy)
       (*destroy) (*user_data);
     *destroy = nullptr;
     *user_data = nullptr;
   }
 
-  return true;
+  戻る true;
 }
 
 static bool
@@ -203,24 +203,24 @@ _hb_paint_funcs_set_middle (hb_paint_funcs_t  *funcs,
                             hb_destroy_func_t  destroy)
 {
   auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+    もし (destroy) destroy (user_data);
   });
 
-  if (user_data && !funcs->user_data)
+  もし (user_data && !funcs->user_data)
   {
     funcs->user_data = (decltype (funcs->user_data)) hb_calloc (1, sizeof (*funcs->user_data));
-    if (unlikely (!funcs->user_data))
-      return false;
+    もし (unlikely (!funcs->user_data))
+      戻る false;
   }
-  if (destroy && !funcs->destroy)
+  もし (destroy && !funcs->destroy)
   {
     funcs->destroy = (decltype (funcs->destroy)) hb_calloc (1, sizeof (*funcs->destroy));
-    if (unlikely (!funcs->destroy))
-      return false;
+    もし (unlikely (!funcs->destroy))
+      戻る false;
   }
 
   destroy_guard.release ();
-  return true;
+  戻る true;
 }
 
 #define HB_PAINT_FUNC_IMPLEMENT(name)                                           \
@@ -231,23 +231,23 @@ hb_paint_funcs_set_##name##_func (hb_paint_funcs_t         *funcs,              
                                   void                     *user_data,          \
                                   hb_destroy_func_t         destroy)            \
 {                                                                               \
-  if (!_hb_paint_funcs_set_preamble (funcs, !func, &user_data, &destroy))       \
-      return;                                                                   \
+  もし (!_hb_paint_funcs_set_preamble (funcs, !func, &user_data, &destroy))       \
+      戻る;                                                                   \
                                                                                 \
-  if (funcs->destroy && funcs->destroy->name)                                   \
+  もし (funcs->destroy && funcs->destroy->name)                                   \
     funcs->destroy->name (!funcs->user_data ? nullptr : funcs->user_data->name);\
                                                                                 \
-  if (!_hb_paint_funcs_set_middle (funcs, user_data, destroy))                  \
-      return;                                                                   \
+  もし (!_hb_paint_funcs_set_middle (funcs, user_data, destroy))                  \
+      戻る;                                                                   \
                                                                                 \
-  if (func)                                                                     \
+  もし (func)                                                                     \
     funcs->func.name = func;                                                    \
-  else                                                                          \
+  否则                                                                          \
     funcs->func.name = hb_paint_##name##_nil;                                   \
                                                                                 \
-  if (funcs->user_data)                                                         \
+  もし (funcs->user_data)                                                         \
     funcs->user_data->name = user_data;                                         \
-  if (funcs->destroy)                                                           \
+  もし (funcs->destroy)                                                           \
     funcs->destroy->name = destroy;                                             \
 }
 
@@ -272,12 +272,12 @@ hb_paint_funcs_t *
 hb_paint_funcs_create ()
 {
   hb_paint_funcs_t *funcs;
-  if (unlikely (!(funcs = hb_object_create<hb_paint_funcs_t> ())))
-    return const_cast<hb_paint_funcs_t *> (&Null (hb_paint_funcs_t));
+  もし (unlikely (!(funcs = hb_object_create<hb_paint_funcs_t> ())))
+    戻る const_cast<hb_paint_funcs_t *> (&Null (hb_paint_funcs_t));
 
   funcs->func =  Null (hb_paint_funcs_t).func;
 
-  return funcs;
+  戻る funcs;
 }
 
 DEFINE_NULL_INSTANCE (hb_paint_funcs_t) =
@@ -303,7 +303,7 @@ DEFINE_NULL_INSTANCE (hb_paint_funcs_t) =
 hb_paint_funcs_t *
 hb_paint_funcs_get_empty ()
 {
-  return const_cast<hb_paint_funcs_t *> (&Null (hb_paint_funcs_t));
+  戻る const_cast<hb_paint_funcs_t *> (&Null (hb_paint_funcs_t));
 }
 
 /**
@@ -322,7 +322,7 @@ hb_paint_funcs_get_empty ()
 hb_paint_funcs_t *
 hb_paint_funcs_reference (hb_paint_funcs_t *funcs)
 {
-  return hb_object_reference (funcs);
+  戻る hb_object_reference (funcs);
 }
 
 /**
@@ -339,12 +339,12 @@ hb_paint_funcs_reference (hb_paint_funcs_t *funcs)
 void
 hb_paint_funcs_destroy (hb_paint_funcs_t *funcs)
 {
-  if (!hb_object_destroy (funcs)) return;
+  もし (!hb_object_destroy (funcs)) 戻る;
 
-  if (funcs->destroy)
+  もし (funcs->destroy)
   {
 #define HB_PAINT_FUNC_IMPLEMENT(name) \
-    if (funcs->destroy->name) funcs->destroy->name (!funcs->user_data ? nullptr : funcs->user_data->name);
+    もし (funcs->destroy->name) funcs->destroy->name (!funcs->user_data ? nullptr : funcs->user_data->name);
       HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   }
@@ -375,7 +375,7 @@ hb_paint_funcs_set_user_data (hb_paint_funcs_t *funcs,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (funcs, key, data, destroy, replace);
+  戻る hb_object_set_user_data (funcs, key, data, destroy, replace);
 }
 
 /**
@@ -394,7 +394,7 @@ void *
 hb_paint_funcs_get_user_data (const hb_paint_funcs_t *funcs,
 			     hb_user_data_key_t       *key)
 {
-  return hb_object_get_user_data (funcs, key);
+  戻る hb_object_get_user_data (funcs, key);
 }
 
 /**
@@ -411,8 +411,8 @@ hb_paint_funcs_get_user_data (const hb_paint_funcs_t *funcs,
 void
 hb_paint_funcs_make_immutable (hb_paint_funcs_t *funcs)
 {
-  if (hb_object_is_immutable (funcs))
-    return;
+  もし (hb_object_is_immutable (funcs))
+    戻る;
 
   hb_object_make_immutable (funcs);
 }
@@ -430,7 +430,7 @@ hb_paint_funcs_make_immutable (hb_paint_funcs_t *funcs)
 hb_bool_t
 hb_paint_funcs_is_immutable (hb_paint_funcs_t *funcs)
 {
-  return hb_object_is_immutable (funcs);
+  戻る hb_object_is_immutable (funcs);
 }
 
 /**
@@ -449,7 +449,7 @@ hb_paint_funcs_is_immutable (hb_paint_funcs_t *funcs)
 hb_bool_t
 hb_paint_set_budget (hb_paint_funcs_t *funcs, void *paint_data, int64_t budget)
 {
-  return funcs->set_budget (paint_data, budget);
+  戻る funcs->set_budget (paint_data, budget);
 }
 
 /**
@@ -466,7 +466,7 @@ hb_paint_set_budget (hb_paint_funcs_t *funcs, void *paint_data, int64_t budget)
 int64_t
 hb_paint_get_budget (hb_paint_funcs_t *funcs, void *paint_data)
 {
-  return funcs->get_budget (paint_data);
+  戻る funcs->get_budget (paint_data);
 }
 
 /**
@@ -487,11 +487,11 @@ int64_t
 hb_paint_get_budget_remaining (hb_paint_funcs_t *funcs, void *paint_data)
 {
   int64_t *remaining = funcs->get_budget_remaining_ptr (paint_data);
-  if (remaining)
-    return *remaining;
+  もし (remaining)
+    戻る *remaining;
 
   int64_t budget = funcs->get_budget (paint_data);
-  return budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
+  戻る budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
 }
 
 
@@ -513,13 +513,13 @@ hb_paint_get_budget_remaining (hb_paint_funcs_t *funcs, void *paint_data)
  *
  * Since: 7.0.0
  */
-unsigned int
+unsigned 整数
 hb_color_line_get_color_stops (hb_color_line_t *color_line,
-                               unsigned int start,
-                               unsigned int *count,
+                               unsigned 整数 start,
+                               unsigned 整数 *count,
                                hb_color_stop_t *color_stops)
 {
-  return color_line->get_color_stops (color_line,
+  戻る color_line->get_color_stops (color_line,
 				      color_line->data,
 				      start, count,
 				      color_stops,
@@ -539,7 +539,7 @@ hb_color_line_get_color_stops (hb_color_line_t *color_line,
 hb_paint_extend_t
 hb_color_line_get_extend (hb_color_line_t *color_line)
 {
-  return color_line->get_extend (color_line,
+  戻る color_line->get_extend (color_line,
 				 color_line->data,
 				 color_line->get_extend_user_data);
 }
@@ -636,7 +636,7 @@ hb_paint_color_glyph (hb_paint_funcs_t *funcs, void *paint_data,
                       hb_codepoint_t glyph,
                       hb_font_t *font)
 {
-  return funcs->color_glyph (paint_data, glyph, font);
+  戻る funcs->color_glyph (paint_data, glyph, font);
 }
 
 /**
@@ -745,8 +745,8 @@ hb_paint_push_clip_path_start (hb_paint_funcs_t  *funcs,
                                void             **draw_data)
 {
   void *scratch = nullptr;
-  if (!draw_data) draw_data = &scratch;
-  return funcs->push_clip_path_start (paint_data, draw_data);
+  もし (!draw_data) draw_data = &scratch;
+  戻る funcs->push_clip_path_start (paint_data, draw_data);
 }
 
 /**
@@ -819,8 +819,8 @@ hb_paint_color (hb_paint_funcs_t *funcs, void *paint_data,
 void
 hb_paint_image (hb_paint_funcs_t *funcs, void *paint_data,
                 hb_blob_t *image,
-                unsigned int width,
-                unsigned int height,
+                unsigned 整数 width,
+                unsigned 整数 height,
                 hb_tag_t format,
                 HB_UNUSED float slant,
                 hb_glyph_extents_t *extents)
@@ -968,10 +968,10 @@ hb_paint_pop_group (hb_paint_funcs_t *funcs, void *paint_data,
  */
 hb_bool_t
 hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, void *paint_data,
-                               unsigned int color_index,
+                               unsigned 整数 color_index,
                                hb_color_t *color)
 {
-  return funcs->custom_palette_color (paint_data, color_index, color);
+  戻る funcs->custom_palette_color (paint_data, color_index, color);
 }
 
 
@@ -1007,11 +1007,11 @@ hb_paint_reduce_linear_anchors (float x0, float y0,
 {
   float q2x = x2 - x0, q2y = y2 - y0;
   float s = q2x * q2x + q2y * q2y;
-  if (s < 1e-6f)
+  もし (s < 1e-6f)
   {
     *xx0 = x0; *yy0 = y0;
     *xx1 = x1; *yy1 = y1;
-    return;
+    戻る;
   }
   float q1x = x1 - x0, q1y = y1 - y0;
   float k = (q2x * q1x + q2y * q1y) / s;
@@ -1039,29 +1039,29 @@ hb_paint_reduce_linear_anchors (float x0, float y0,
  **/
 void
 hb_paint_normalize_color_line (hb_color_stop_t *stops,
-			       unsigned int     len,
+			       unsigned 整数     len,
 			       float           *min,
 			       float           *max)
 {
-  if (unlikely (!len))
+  もし (unlikely (!len))
   {
     *min = *max = 0.f;
-    return;
+    戻る;
   }
 
   hb_array_t<hb_color_stop_t> (stops, len)
     .qsort ([] (const hb_color_stop_t &a, const hb_color_stop_t &b) {
-      return (a.offset > b.offset) - (a.offset < b.offset);
+      戻る (a.offset > b.offset) - (a.offset < b.offset);
     });
 
   float mn = stops[0].offset, mx = stops[0].offset;
-  for (unsigned i = 1; i < len; i++)
+  ために (unsigned i = 1; i < len; i++)
   {
     mn = hb_min (mn, stops[i].offset);
     mx = hb_max (mx, stops[i].offset);
   }
-  if (mn != mx)
-    for (unsigned i = 0; i < len; i++)
+  もし (mn != mx)
+    ために (unsigned i = 0; i < len; i++)
       stops[i].offset = (stops[i].offset - mn) / (mx - mn);
 
   *min = mn;
@@ -1089,37 +1089,37 @@ hb_paint_normalize_color_line (hb_color_stop_t *stops,
  **/
 void
 hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
-			       unsigned int                         n_stops,
+			       unsigned 整数                         n_stops,
 			       hb_paint_extend_t                    extend,
 			       float                                start_angle,
 			       float                                end_angle,
 			       hb_paint_sweep_gradient_tile_func_t  emit_patch,
 			       void                                *user_data)
 {
-  if (!n_stops) return;
+  もし (!n_stops) 戻る;
 
-  if (start_angle == end_angle)
+  もし (start_angle == end_angle)
   {
-    if (extend == HB_PAINT_EXTEND_PAD)
+    もし (extend == HB_PAINT_EXTEND_PAD)
     {
-      if (start_angle > 0.f)
+      もし (start_angle > 0.f)
 	emit_patch (0.f, stops[0].color, start_angle, stops[0].color, user_data);
-      if (end_angle < HB_2_PI)
+      もし (end_angle < HB_2_PI)
 	emit_patch (end_angle, stops[n_stops - 1].color, HB_2_PI, stops[n_stops - 1].color, user_data);
     }
-    return;
+    戻る;
   }
 
-  if (end_angle < start_angle)
+  もし (end_angle < start_angle)
   {
     float tmp = start_angle; start_angle = end_angle; end_angle = tmp;
-    for (unsigned i = 0; i < n_stops - 1 - i; i++)
+    ために (unsigned i = 0; i < n_stops - 1 - i; i++)
     {
       hb_color_stop_t t = stops[i];
       stops[i] = stops[n_stops - 1 - i];
       stops[n_stops - 1 - i] = t;
     }
-    for (unsigned i = 0; i < n_stops; i++)
+    ために (unsigned i = 0; i < n_stops; i++)
       stops[i].offset = 1.f - stops[i].offset;
   }
 
@@ -1130,34 +1130,34 @@ hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
   hb_color_t *colors = colors_buf;
   bool dynamic = false;
 
-  if (n_stops > 16)
+  もし (n_stops > 16)
   {
     angles = (float *) hb_malloc (sizeof (float) * n_stops);
     colors = (hb_color_t *) hb_malloc (sizeof (hb_color_t) * n_stops);
-    if (!angles || !colors)
+    もし (!angles || !colors)
     {
       hb_free (angles);
       hb_free (colors);
-      return;
+      戻る;
     }
     dynamic = true;
   }
 
-  for (unsigned i = 0; i < n_stops; i++)
+  ために (unsigned i = 0; i < n_stops; i++)
   {
     angles[i] = start_angle + stops[i].offset * (end_angle - start_angle);
     colors[i] = stops[i].color;
   }
 
-  if (extend == HB_PAINT_EXTEND_PAD)
+  もし (extend == HB_PAINT_EXTEND_PAD)
   {
     unsigned pos;
     hb_color_t color0 = colors[0];
-    for (pos = 0; pos < n_stops; pos++)
+    ために (pos = 0; pos < n_stops; pos++)
     {
-      if (angles[pos] >= 0)
+      もし (angles[pos] >= 0)
       {
-	if (pos > 0)
+	もし (pos > 0)
 	{
 	  float f = (0.f - angles[pos - 1]) / (angles[pos] - angles[pos - 1]);
 	  color0 = hb_color_lerp (colors[pos - 1], colors[pos], f);
@@ -1165,18 +1165,18 @@ hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
 	break;
       }
     }
-    if (pos == n_stops)
+    もし (pos == n_stops)
     {
       color0 = colors[n_stops - 1];
       emit_patch (0.f, color0, HB_2_PI, color0, user_data);
       goto done;
     }
     emit_patch (0.f, color0, angles[pos], colors[pos], user_data);
-    for (pos++; pos < n_stops; pos++)
+    ために (pos++; pos < n_stops; pos++)
     {
-      if (angles[pos] <= HB_2_PI)
+      もし (angles[pos] <= HB_2_PI)
 	emit_patch (angles[pos - 1], colors[pos - 1], angles[pos], colors[pos], user_data);
-      else
+      否则
       {
 	float f = (HB_2_PI - angles[pos - 1]) / (angles[pos] - angles[pos - 1]);
 	hb_color_t color1 = hb_color_lerp (colors[pos - 1], colors[pos], f);
@@ -1184,28 +1184,28 @@ hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
 	break;
       }
     }
-    if (pos == n_stops)
+    もし (pos == n_stops)
     {
       color0 = colors[n_stops - 1];
       emit_patch (angles[n_stops - 1], color0, HB_2_PI, color0, user_data);
       goto done;
     }
   }
-  else
+  否则
   {
     float span = angles[n_stops - 1] - angles[0];
-    if (!(fabsf (span) >= 1e-6f)) /* Reversed to catch NaN. */
+    もし (!(fabsf (span) >= 1e-6f)) /* Reversed to catch NaN. */
       goto done;
 
     span = fabsf (span);
 
-    if (span < HB_2_PI / HB_PAINT_MAX_SWEEP_TILES)
+    もし (span < HB_2_PI / HB_PAINT_MAX_SWEEP_TILES)
     {
       /* The pattern repeats faster than the tile resolution; tiling
        * it would cost unbounded work for sub-visual detail.  Fill
        * the whole circle with the period-average color instead. */
       float r = 0.f, g = 0.f, b = 0.f, a = 0.f;
-      for (unsigned i = 1; i < n_stops; i++)
+      ために (unsigned i = 1; i < n_stops; i++)
       {
 	float w = (angles[i] - angles[i - 1]) / span * 0.5f;
 	r += w * (hb_color_get_red (colors[i - 1]) + hb_color_get_red (colors[i]));
@@ -1227,30 +1227,30 @@ hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
      * float ulp of the angles.  One repeat of slack absorbs rounding
      * differences; earlier repeats are fully clipped anyway. */
     double dk = floor (-(double) hb_max (angles[0], angles[n_stops - 1]) / (double) span) - 1.;
-    if (!(dk >= -1.e18 && dk <= 1.e18)) /* Non-finite angles. */
+    もし (!(dk >= -1.e18 && dk <= 1.e18)) /* Non-finite angles. */
       goto done;
 
     unsigned iterations = 0, tiles = 0;
-    for (int64_t l = (int64_t) dk; ; l++)
+    ために (int64_t l = (int64_t) dk; ; l++)
     {
-      for (unsigned i = 1; i < n_stops; i++)
+      ために (unsigned i = 1; i < n_stops; i++)
       {
 	/* Bounds clipped-away segments too; those stay negligible for
 	 * sorted stops but are unbounded if the sort contract is
 	 * violated. */
-	if (unlikely (iterations++ >= 256 * HB_PAINT_MAX_SWEEP_TILES))
+	もし (unlikely (iterations++ >= 256 * HB_PAINT_MAX_SWEEP_TILES))
 	  goto done;
 
 	float a0_l, a1_l;
 	hb_color_t col0, col1;
-	if ((l % 2 != 0) && (extend == HB_PAINT_EXTEND_REFLECT))
+	もし ((l % 2 != 0) && (extend == HB_PAINT_EXTEND_REFLECT))
 	{
 	  a0_l = angles[0] + angles[n_stops - 1] - angles[n_stops - i] + l * span;
 	  a1_l = angles[0] + angles[n_stops - 1] - angles[n_stops - 1 - i] + l * span;
 	  col0 = colors[n_stops - i];
 	  col1 = colors[n_stops - 1 - i];
 	}
-	else
+	否则
 	{
 	  a0_l = angles[i - 1] + l * span;
 	  a1_l = angles[i] + l * span;
@@ -1258,30 +1258,30 @@ hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
 	  col1 = colors[i];
 	}
 
-	if (a1_l < 0.f) continue;
-	if (unlikely (tiles++ >= HB_PAINT_MAX_SWEEP_TILES))
+	もし (a1_l < 0.f) continue;
+	もし (unlikely (tiles++ >= HB_PAINT_MAX_SWEEP_TILES))
 	  goto done;
-	if (a0_l < 0.f)
+	もし (a0_l < 0.f)
 	{
 	  float f = (0.f - a0_l) / (a1_l - a0_l);
 	  hb_color_t c = hb_color_lerp (col0, col1, f);
 	  emit_patch (0.f, c, a1_l, col1, user_data);
 	}
-	else if (a1_l >= HB_2_PI)
+	否则 もし (a1_l >= HB_2_PI)
 	{
 	  float f = (HB_2_PI - a0_l) / (a1_l - a0_l);
 	  hb_color_t c = hb_color_lerp (col0, col1, f);
 	  emit_patch (a0_l, col0, HB_2_PI, c, user_data);
 	  goto done;
 	}
-	else
+	否则
 	  emit_patch (a0_l, col0, a1_l, col1, user_data);
       }
     }
   }
 
 done:
-  if (dynamic)
+  もし (dynamic)
   {
     hb_free (angles);
     hb_free (colors);

@@ -50,15 +50,15 @@ enum thai_consonant_type_t
 static thai_consonant_type_t
 get_consonant_type (hb_codepoint_t u)
 {
-  if (u == 0x0E1Bu || u == 0x0E1Du || u == 0x0E1Fu/* || u == 0x0E2Cu*/)
-    return AC;
-  if (u == 0x0E0Du || u == 0x0E10u)
-    return RC;
-  if (u == 0x0E0Eu || u == 0x0E0Fu)
-    return DC;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E01u, 0x0E2Eu))
-    return NC;
-  return NOT_CONSONANT;
+  もし (u == 0x0E1Bu || u == 0x0E1Du || u == 0x0E1Fu/* || u == 0x0E2Cu*/)
+    戻る AC;
+  もし (u == 0x0E0Du || u == 0x0E10u)
+    戻る RC;
+  もし (u == 0x0E0Eu || u == 0x0E0Fu)
+    戻る DC;
+  もし (hb_in_range<hb_codepoint_t> (u, 0x0E01u, 0x0E2Eu))
+    戻る NC;
+  戻る NOT_CONSONANT;
 }
 
 
@@ -74,14 +74,14 @@ enum thai_mark_type_t
 static thai_mark_type_t
 get_mark_type (hb_codepoint_t u)
 {
-  if (u == 0x0E31u || hb_in_range<hb_codepoint_t> (u, 0x0E34u, 0x0E37u) ||
+  もし (u == 0x0E31u || hb_in_range<hb_codepoint_t> (u, 0x0E34u, 0x0E37u) ||
       u == 0x0E47u || hb_in_range<hb_codepoint_t> (u, 0x0E4Du, 0x0E4Eu))
-    return AV;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E38u, 0x0E3Au))
-    return BV;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E48u, 0x0E4Cu))
-    return T;
-  return NOT_MARK;
+    戻る AV;
+  もし (hb_in_range<hb_codepoint_t> (u, 0x0E38u, 0x0E3Au))
+    戻る BV;
+  もし (hb_in_range<hb_codepoint_t> (u, 0x0E48u, 0x0E4Cu))
+    戻る T;
+  戻る NOT_MARK;
 }
 
 
@@ -143,23 +143,23 @@ thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
   };
 
   switch (action) {
-    case NOP: return u;
+    case NOP: 戻る u;
     case SD:  pua_mappings = SD_mappings; break;
     case SDL: pua_mappings = SDL_mappings; break;
     case SL:  pua_mappings = SL_mappings; break;
     case RD:  pua_mappings = RD_mappings; break;
   }
-  for (; pua_mappings->u; pua_mappings++)
-    if (pua_mappings->u == u)
+  ために (; pua_mappings->u; pua_mappings++)
+    もし (pua_mappings->u == u)
     {
       hb_codepoint_t glyph;
-      if (hb_font_get_glyph (font, pua_mappings->win_pua, 0, &glyph))
-	return pua_mappings->win_pua;
-      if (hb_font_get_glyph (font, pua_mappings->mac_pua, 0, &glyph))
-	return pua_mappings->mac_pua;
+      もし (hb_font_get_glyph (font, pua_mappings->win_pua, 0, &glyph))
+	戻る pua_mappings->win_pua;
+      もし (hb_font_get_glyph (font, pua_mappings->mac_pua, 0, &glyph))
+	戻る pua_mappings->mac_pua;
       break;
     }
-  return u;
+  戻る u;
 }
 
 
@@ -223,20 +223,20 @@ do_thai_pua_shaping (const hb_ot_shape_plan_t *plan HB_UNUSED,
 		     hb_font_t                *font)
 {
 #ifdef HB_NO_OT_SHAPER_THAI_FALLBACK
-  return;
+  戻る;
 #endif
 
   thai_above_state_t above_state = thai_above_start_state[NOT_CONSONANT];
   thai_below_state_t below_state = thai_below_start_state[NOT_CONSONANT];
-  unsigned int base = 0;
+  unsigned 整数 base = 0;
 
   hb_glyph_info_t *info = buffer->info;
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned 整数 count = buffer->len;
+  ために (unsigned 整数 i = 0; i < count; i++)
   {
     thai_mark_type_t mt = get_mark_type (info[i].codepoint);
 
-    if (mt == NOT_MARK) {
+    もし (mt == NOT_MARK) {
       thai_consonant_type_t ct = get_consonant_type (info[i].codepoint);
       above_state = thai_above_start_state[ct];
       below_state = thai_below_start_state[ct];
@@ -253,9 +253,9 @@ do_thai_pua_shaping (const hb_ot_shape_plan_t *plan HB_UNUSED,
     thai_action_t action = above_edge.action != NOP ? above_edge.action : below_edge.action;
 
     buffer->unsafe_to_break (base, i);
-    if (action == RD)
+    もし (action == RD)
       info[base].codepoint = thai_pua_shape (info[base].codepoint, action, font);
-    else
+    否则
       info[i].codepoint = thai_pua_shape (info[i].codepoint, action, font);
   }
 }
@@ -322,31 +322,31 @@ preprocess_text_thai (const hb_ot_shape_plan_t *plan,
 #define IS_ABOVE_BASE_MARK(x) (hb_in_ranges<hb_codepoint_t> ((x) & ~0x0080u, 0x0E34u, 0x0E37u, 0x0E47u, 0x0E4Eu, 0x0E31u, 0x0E31u, 0x0E3Bu, 0x0E3Bu))
 
   buffer->clear_output ();
-  unsigned int count = buffer->len;
-  for (buffer->idx = 0; buffer->idx < count /* No need for: && buffer->successful */;)
+  unsigned 整数 count = buffer->len;
+  ために (buffer->idx = 0; buffer->idx < count /* No need for: && buffer->successful */;)
   {
     hb_codepoint_t u = buffer->cur().codepoint;
-    if (likely (!IS_SARA_AM (u)))
+    もし (likely (!IS_SARA_AM (u)))
     {
-      if (unlikely (!buffer->next_glyph ())) break;
+      もし (unlikely (!buffer->next_glyph ())) break;
       continue;
     }
 
     /* Is SARA AM. Decompose and reorder. */
     (void) buffer->output_glyph (NIKHAHIT_FROM_SARA_AM (u));
     _hb_glyph_info_set_continuation (&buffer->prev(), buffer);
-    if (unlikely (!buffer->replace_glyph (SARA_AA_FROM_SARA_AM (u)))) break;
+    もし (unlikely (!buffer->replace_glyph (SARA_AA_FROM_SARA_AM (u)))) break;
 
     /* Make Nikhahit be recognized as a ccc=0 mark when zeroing widths. */
-    unsigned int end = buffer->out_len;
+    unsigned 整数 end = buffer->out_len;
     _hb_glyph_info_set_general_category (&buffer->out_info[end - 2], HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK);
 
     /* Ok, let's see... */
-    unsigned int start = end - 2;
-    while (start > 0 && IS_ABOVE_BASE_MARK (buffer->out_info[start - 1].codepoint))
+    unsigned 整数 start = end - 2;
+    ながら (start > 0 && IS_ABOVE_BASE_MARK (buffer->out_info[start - 1].codepoint))
       start--;
 
-    if (start + 2 < end)
+    もし (start + 2 < end)
     {
       /* Move Nikhahit (end-2) to the beginning */
       buffer->merge_out_clusters (start, end);
@@ -359,13 +359,13 @@ preprocess_text_thai (const hb_ot_shape_plan_t *plan,
 
     /* Since we decomposed, and NIKHAHIT is combining, merge clusters with the
      * previous cluster. */
-    if (start)
+    もし (start)
       buffer->merge_out_grapheme_clusters (start - 1, end);
   }
   buffer->sync ();
 
   /* If font has Thai GSUB, we are done. */
-  if (plan->props.script == HB_SCRIPT_THAI && !plan->map.found_script[0])
+  もし (plan->props.script == HB_SCRIPT_THAI && !plan->map.found_script[0])
     do_thai_pua_shaping (plan, buffer, font);
 }
 

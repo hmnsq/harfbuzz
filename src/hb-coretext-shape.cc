@@ -40,19 +40,19 @@ _hb_coretext_shaper_face_data_create (hb_face_t *face)
 {
   CGFontRef cg_font = create_cg_font (face);
 
-  if (unlikely (!cg_font))
+  もし (unlikely (!cg_font))
   {
     DEBUG_MSG (CORETEXT, face, "CGFont creation failed..");
-    return nullptr;
+    戻る nullptr;
   }
 
-  return (hb_coretext_face_data_t *) cg_font;
+  戻る (hb_coretext_face_data_t *) cg_font;
 }
 
 void
 _hb_coretext_shaper_face_data_destroy (hb_coretext_face_data_t *data)
 {
-  if (data)
+  もし (data)
     CFRelease ((CGFontRef) data);
 }
 
@@ -62,19 +62,19 @@ _hb_coretext_shaper_font_data_create (hb_font_t *font)
 {
   hb_face_t *face = font->face;
   const hb_coretext_face_data_t *face_data = face->data.coretext;
-  if (unlikely (!face_data)) return nullptr;
+  もし (unlikely (!face_data)) 戻る nullptr;
   CGFontRef cg_font = (CGFontRef) (const void *) face->data.coretext;
 
   CGFloat font_size = (CGFloat) (font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE);
   hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, font_size));
 
-  if (unlikely (!ct_font))
+  もし (unlikely (!ct_font))
   {
     DEBUG_MSG (CORETEXT, font, "CGFont creation failed..");
-    return nullptr;
+    戻る nullptr;
   }
 
-  if (font->num_coords)
+  もし (font->num_coords)
   {
     hb_cf_ptr_t<CFMutableDictionaryRef> variations (
       CFDictionaryCreateMutable (kCFAllocatorDefault,
@@ -83,17 +83,17 @@ _hb_coretext_shaper_font_data_create (hb_font_t *font)
 				 &kCFTypeDictionaryValueCallBacks));
 
     unsigned count = font->num_coords;
-    for (unsigned i = 0; i < count; i++)
+    ために (unsigned i = 0; i < count; i++)
     {
       hb_ot_var_axis_info_t info;
-      unsigned int c = 1;
+      unsigned 整数 c = 1;
       hb_ot_var_get_axis_infos (font->face, i, &c, &info);
 
       float v = hb_clamp (font->design_coords[i], info.min_value, info.max_value);
 
       hb_cf_ptr_t<CFNumberRef> tag_number (CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &info.tag));
       hb_cf_ptr_t<CFNumberRef> value_number (CFNumberCreate (kCFAllocatorDefault, kCFNumberFloatType, &v));
-      if (variations && tag_number && value_number)
+      もし (variations && tag_number && value_number)
 	CFDictionarySetValue (variations, tag_number, value_number);
     }
 
@@ -109,17 +109,17 @@ _hb_coretext_shaper_font_data_create (hb_font_t *font)
 
     hb_cf_ptr_t<CTFontDescriptorRef> varDesc (attributes ? CTFontDescriptorCreateWithAttributes (attributes) : nullptr);
     hb_cf_ptr_t<CTFontRef> new_ct_font (varDesc ? CTFontCreateCopyWithAttributes (ct_font, 0, nullptr, varDesc) : nullptr);
-    if (new_ct_font)
+    もし (new_ct_font)
       ct_font = std::move (new_ct_font);
   }
 
-  return (hb_coretext_font_data_t *) ct_font.release ();
+  戻る (hb_coretext_font_data_t *) ct_font.release ();
 }
 
 void
 _hb_coretext_shaper_font_data_destroy (hb_coretext_font_data_t *data)
 {
-  if (data)
+  もし (data)
     CFRelease ((CTFontRef) data);
 }
 
@@ -128,36 +128,36 @@ _hb_coretext_shaper_font_data_destroy (hb_coretext_font_data_t *data)
  */
 
 struct feature_record_t {
-  unsigned int feature;
-  unsigned int setting;
+  unsigned 整数 feature;
+  unsigned 整数 setting;
 };
 
 struct active_feature_t {
   feature_record_t rec;
-  unsigned int order;
+  unsigned 整数 order;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
+  HB_INTERNAL static 整数 cmp (const void *pa, const void *pb) {
     const active_feature_t *a = (const active_feature_t *) pa;
     const active_feature_t *b = (const active_feature_t *) pb;
-    return a->rec.feature < b->rec.feature ? -1 : a->rec.feature > b->rec.feature ? 1 :
+    戻る a->rec.feature < b->rec.feature ? -1 : a->rec.feature > b->rec.feature ? 1 :
 	   a->order < b->order ? -1 : a->order > b->order ? 1 :
 	   a->rec.setting < b->rec.setting ? -1 : a->rec.setting > b->rec.setting ? 1 :
 	   0;
   }
   bool operator== (const active_feature_t& f) const {
-    return cmp (this, &f) == 0;
+    戻る cmp (this, &f) == 0;
   }
 };
 
 struct feature_event_t {
-  unsigned int index;
+  unsigned 整数 index;
   bool start;
   active_feature_t feature;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
+  HB_INTERNAL static 整数 cmp (const void *pa, const void *pb) {
     const feature_event_t *a = (const feature_event_t *) pa;
     const feature_event_t *b = (const feature_event_t *) pb;
-    return a->index < b->index ? -1 : a->index > b->index ? 1 :
+    戻る a->index < b->index ? -1 : a->index > b->index ? 1 :
 	   a->start < b->start ? -1 : a->start > b->start ? 1 :
 	   active_feature_t::cmp (&a->feature, &b->feature);
   }
@@ -165,8 +165,8 @@ struct feature_event_t {
 
 struct range_record_t {
   CTFontRef font;
-  unsigned int index_first; /* == start */
-  unsigned int index_last;  /* == end - 1 */
+  unsigned 整数 index_first; /* == start */
+  unsigned 整数 index_last;  /* == end - 1 */
 };
 
 
@@ -175,7 +175,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
 		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    unsigned 整数        num_features)
 {
   hb_face_t *face = font->face;
   CGFontRef cg_font = (CGFontRef) (const void *) face->data.coretext;
@@ -192,13 +192,13 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
    * B1 M1 B2 M2, and B1-B2 form a ligature, M2's cluster will
    * continue pointing to B2 even though B2 was merged into B1's
    * cluster... */
-  if (HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (buffer->cluster_level))
+  もし (HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (buffer->cluster_level))
   {
     hb_unicode_funcs_t *unicode = buffer->unicode;
-    unsigned int count = buffer->len;
+    unsigned 整数 count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 1; i < count; i++)
-      if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (unicode->general_category (info[i].codepoint)))
+    ために (unsigned 整数 i = 1; i < count; i++)
+      もし (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (unicode->general_category (info[i].codepoint)))
 	buffer->merge_grapheme_clusters (i - 1, i + 1);
   }
 
@@ -208,22 +208,22 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
    * Set up features.
    * (copied + modified from code from hb-uniscribe.cc)
    */
-  if (num_features)
+  もし (num_features)
   {
     /* Sort features by start/end events. */
     hb_vector_t<feature_event_t> feature_events;
-    for (unsigned int i = 0; i < num_features; i++)
+    ために (unsigned 整数 i = 0; i < num_features; i++)
     {
       active_feature_t feature;
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 101000
+#もし MAC_OS_X_VERSION_MIN_REQUIRED < 101000
       const hb_aat_feature_mapping_t * mapping = hb_aat_layout_find_feature_mapping (features[i].tag);
-      if (!mapping)
+      もし (!mapping)
 	continue;
 
       feature.rec.feature = mapping->aatFeatureType;
       feature.rec.setting = features[i].value ? mapping->selectorToEnable : mapping->selectorToDisable;
-#else
+#否则
       feature.rec.feature = features[i].tag;
       feature.rec.setting = features[i].value;
 #endif
@@ -257,25 +257,25 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 
     /* Scan events and save features for each range. */
     hb_vector_t<active_feature_t> active_features;
-    unsigned int last_index = 0;
-    for (unsigned int i = 0; i < feature_events.length; i++)
+    unsigned 整数 last_index = 0;
+    ために (unsigned 整数 i = 0; i < feature_events.length; i++)
     {
       feature_event_t *event = &feature_events[i];
 
-      if (event->index != last_index)
+      もし (event->index != last_index)
       {
 	/* Save a snapshot of active features and the range. */
 	range_record_t *range = range_records.push ();
 
-	if (active_features.length)
+	もし (active_features.length)
 	{
 	  CFMutableArrayRef features_array = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
 
 	  /* TODO sort and resolve conflicting features? */
 	  /* active_features.qsort (); */
-	  for (unsigned int j = 0; j < active_features.length; j++)
+	  ために (unsigned 整数 j = 0; j < active_features.length; j++)
 	  {
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 101000
+#もし MAC_OS_X_VERSION_MIN_REQUIRED < 101000
 	    CFStringRef keys[] = {
 	      kCTFontFeatureTypeIdentifierKey,
 	      kCTFontFeatureSelectorIdentifierKey
@@ -284,7 +284,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 	      CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &active_features[j].rec.feature),
 	      CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &active_features[j].rec.setting)
 	    };
-#else
+#否则
 	    char tag[5] = {HB_UNTAG (active_features[j].rec.feature)};
 	    CFTypeRef keys[] = {
 	      kCTFontOpenTypeFeatureTag,
@@ -302,7 +302,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 						       ARRAY_LENGTH (keys),
 						       &kCFTypeDictionaryKeyCallBacks,
 						       &kCFTypeDictionaryValueCallBacks);
-	    for (unsigned int i = 0; i < ARRAY_LENGTH (values); i++)
+	    ために (unsigned 整数 i = 0; i < ARRAY_LENGTH (values); i++)
 	      CFRelease (values[i]);
 
 	    CFArrayAppendValue (features_array, dict);
@@ -324,7 +324,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 	  range->font = CTFontCreateCopyWithAttributes (ct_font, 0.0, nullptr, font_desc);
 	  CFRelease (font_desc);
 	}
-	else
+	否则
 	{
 	  range->font = nullptr;
 	}
@@ -335,55 +335,55 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 	last_index = event->index;
       }
 
-      if (event->start)
+      もし (event->start)
       {
 	active_features.push (event->feature);
-      } else {
+      } 否则 {
 	active_feature_t *feature = active_features.lsearch (event->feature);
-	if (feature)
+	もし (feature)
 	  active_features.remove_ordered (feature - active_features.arrayZ);
       }
     }
   }
 
-  unsigned int scratch_size;
+  unsigned 整数 scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 
 #define ALLOCATE_ARRAY(Type, name, len, on_no_room) \
   Type *name = (Type *) scratch; \
   do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
-    if (unlikely (_consumed > scratch_size)) \
+    unsigned 整数 _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
+    もし (unlikely (_consumed > scratch_size)) \
     { \
       on_no_room; \
       assert (0); \
     } \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } ながら (0)
 
   ALLOCATE_ARRAY (UniChar, pchars, buffer->len * 2, ((void)nullptr) /*nothing*/);
-  unsigned int chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++) {
+  unsigned 整数 chars_len = 0;
+  ために (unsigned 整数 i = 0; i < buffer->len; i++) {
     hb_codepoint_t c = buffer->info[i].codepoint;
-    if (likely (c <= 0xFFFFu))
+    もし (likely (c <= 0xFFFFu))
       pchars[chars_len++] = c;
-    else if (unlikely (c > 0x10FFFFu))
+    否则 もし (unlikely (c > 0x10FFFFu))
       pchars[chars_len++] = 0xFFFDu;
-    else {
+    否则 {
       pchars[chars_len++] = 0xD800u + ((c - 0x10000u) >> 10);
       pchars[chars_len++] = 0xDC00u + ((c - 0x10000u) & ((1u << 10) - 1));
     }
   }
 
-  ALLOCATE_ARRAY (unsigned int, log_clusters, chars_len, ((void)nullptr) /*nothing*/);
+  ALLOCATE_ARRAY (unsigned 整数, log_clusters, chars_len, ((void)nullptr) /*nothing*/);
   chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  ために (unsigned 整数 i = 0; i < buffer->len; i++)
   {
     hb_codepoint_t c = buffer->info[i].codepoint;
-    unsigned int cluster = buffer->info[i].cluster;
+    unsigned 整数 cluster = buffer->info[i].cluster;
     log_clusters[chars_len++] = cluster;
-    if (hb_in_range (c, 0x10000u, 0x10FFFFu))
+    もし (hb_in_range (c, 0x10000u, 0x10FFFFu))
       log_clusters[chars_len++] = cluster; /* Surrogates. */
   }
 
@@ -398,7 +398,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
   CFStringRef string_ref = nullptr;
   CTLineRef line = nullptr;
 
-  if (false)
+  もし (false)
   {
 resize_and_retry:
     DEBUG_MSG (CORETEXT, buffer, "Buffer resize");
@@ -413,19 +413,19 @@ resize_and_retry:
 
     /* Get previous start-of-scratch-area, that we use later for readjusting
      * our existing scratch arrays. */
-    unsigned int old_scratch_used;
+    unsigned 整数 old_scratch_used;
     hb_buffer_t::scratch_buffer_t *old_scratch;
     old_scratch = buffer->get_scratch_buffer (&old_scratch_used);
     old_scratch_used = scratch - old_scratch;
 
-    if (unlikely (!buffer->ensure (buffer->allocated * 2)))
+    もし (unlikely (!buffer->ensure (buffer->allocated * 2)))
       FAIL ("Buffer resize failed");
 
     /* Adjust scratch, pchars, and log_cluster arrays.  This is ugly, but really the
      * cleanest way to do without completely restructuring the rest of this shaper. */
     scratch = buffer->get_scratch_buffer (&scratch_size);
     pchars = reinterpret_cast<UniChar *> (((char *) scratch + ((char *) pchars - (char *) old_scratch)));
-    log_clusters = reinterpret_cast<unsigned int *> (((char *) scratch + ((char *) log_clusters - (char *) old_scratch)));
+    log_clusters = reinterpret_cast<unsigned 整数 *> (((char *) scratch + ((char *) log_clusters - (char *) old_scratch)));
     scratch += old_scratch_used;
     scratch_size -= old_scratch_used;
   }
@@ -433,35 +433,35 @@ resize_and_retry:
     string_ref = CFStringCreateWithCharactersNoCopy (nullptr,
 						     pchars, chars_len,
 						     kCFAllocatorNull);
-    if (unlikely (!string_ref))
+    もし (unlikely (!string_ref))
       FAIL ("CFStringCreateWithCharactersNoCopy failed");
 
     /* Create an attributed string, populate it, and create a line from it, then release attributed string. */
     {
       CFMutableAttributedStringRef attr_string = CFAttributedStringCreateMutable (kCFAllocatorDefault,
 										  chars_len);
-      if (unlikely (!attr_string))
+      もし (unlikely (!attr_string))
 	FAIL ("CFAttributedStringCreateMutable failed");
       CFAttributedStringReplaceString (attr_string, CFRangeMake (0, 0), string_ref);
-      if (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
+      もし (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
       {
 	CFAttributedStringSetAttribute (attr_string, CFRangeMake (0, chars_len),
 					kCTVerticalFormsAttributeName, kCFBooleanTrue);
       }
 
-      if (buffer->props.language)
+      もし (buffer->props.language)
       {
 /* What's the iOS equivalent of this check?
  * The symbols was introduced in iOS 7.0.
  * At any rate, our fallback is safe and works fine. */
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1090
+#もし !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1090
 #  define kCTLanguageAttributeName CFSTR ("NSLanguage")
 #endif
 	CFStringRef lang = CFStringCreateWithCStringNoCopy (kCFAllocatorDefault,
 							    hb_language_to_string (buffer->props.language),
 							    kCFStringEncodingUTF8,
 							    kCFAllocatorNull);
-	if (unlikely (!lang))
+	もし (unlikely (!lang))
 	{
 	  CFRelease (attr_string);
 	  FAIL ("CFStringCreateWithCStringNoCopy failed");
@@ -473,20 +473,20 @@ resize_and_retry:
       CFAttributedStringSetAttribute (attr_string, CFRangeMake (0, chars_len),
 				      kCTFontAttributeName, ct_font);
 
-      if (num_features && range_records.length)
+      もし (num_features && range_records.length)
       {
-	unsigned int start = 0;
+	unsigned 整数 start = 0;
 	range_record_t *last_range = &range_records[0];
-	for (unsigned int k = 0; k < chars_len; k++)
+	ために (unsigned 整数 k = 0; k < chars_len; k++)
 	{
 	  range_record_t *range = last_range;
-	  while (log_clusters[k] < range->index_first)
+	  ながら (log_clusters[k] < range->index_first)
 	    range--;
-	  while (log_clusters[k] > range->index_last)
+	  ながら (log_clusters[k] > range->index_last)
 	    range++;
-	  if (range != last_range)
+	  もし (range != last_range)
 	  {
-	    if (last_range->font)
+	    もし (last_range->font)
 	      CFAttributedStringSetAttribute (attr_string, CFRangeMake (start, k - start),
 					      kCTFontAttributeName, last_range->font);
 
@@ -495,7 +495,7 @@ resize_and_retry:
 
 	  last_range = range;
 	}
-	if (start != chars_len && last_range->font)
+	もし (start != chars_len && last_range->font)
 	  CFAttributedStringSetAttribute (attr_string, CFRangeMake (start, chars_len - start),
 					  kCTFontAttributeName, last_range->font);
       }
@@ -503,30 +503,30 @@ resize_and_retry:
        *
        * Note: once kern is disabled, reenabling it doesn't currently seem to work in CoreText.
        */
-      if (num_features)
+      もし (num_features)
       {
-	unsigned int zeroint = 0;
+	unsigned 整数 zeroint = 0;
 	CFNumberRef zero = CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &zeroint);
-	for (unsigned int i = 0; i < num_features; i++)
+	ために (unsigned 整数 i = 0; i < num_features; i++)
 	{
 	  const hb_feature_t &feature = features[i];
-	  if (feature.tag == HB_TAG('k','e','r','n') &&
+	  もし (feature.tag == HB_TAG('k','e','r','n') &&
 	      feature.start < chars_len && feature.start < feature.end)
 	  {
 	    CFRange feature_range = CFRangeMake (feature.start,
 						 hb_min (feature.end, chars_len) - feature.start);
-	    if (feature.value)
+	    もし (feature.value)
 	      CFAttributedStringRemoveAttribute (attr_string, feature_range, kCTKernAttributeName);
-	    else
+	    否则
 	      CFAttributedStringSetAttribute (attr_string, feature_range, kCTKernAttributeName, zero);
 	  }
 	}
 	CFRelease (zero);
       }
 
-      int level = HB_DIRECTION_IS_FORWARD (buffer->props.direction) ? 0 : 1;
+      整数 level = HB_DIRECTION_IS_FORWARD (buffer->props.direction) ? 0 : 1;
       CFNumberRef level_number = CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &level);
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
+#もし !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
       extern const CFStringRef kCTTypesetterOptionForcedEmbeddingLevel;
 #endif
       CFDictionaryRef options = CFDictionaryCreate (kCFAllocatorDefault,
@@ -536,7 +536,7 @@ resize_and_retry:
 						    &kCFTypeDictionaryKeyCallBacks,
 						    &kCFTypeDictionaryValueCallBacks);
       CFRelease (level_number);
-      if (unlikely (!options))
+      もし (unlikely (!options))
       {
 	CFRelease (attr_string);
 	FAIL ("CFDictionaryCreate failed");
@@ -545,17 +545,17 @@ resize_and_retry:
       CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedStringAndOptions (attr_string, options);
       CFRelease (options);
       CFRelease (attr_string);
-      if (unlikely (!typesetter))
+      もし (unlikely (!typesetter))
 	FAIL ("CTTypesetterCreateWithAttributedStringAndOptions failed");
 
       line = CTTypesetterCreateLine (typesetter, CFRangeMake(0, 0));
       CFRelease (typesetter);
-      if (unlikely (!line))
+      もし (unlikely (!line))
 	FAIL ("CTTypesetterCreateLine failed");
     }
 
     CFArrayRef glyph_runs = CTLineGetGlyphRuns (line);
-    unsigned int num_runs = CFArrayGetCount (glyph_runs);
+    unsigned 整数 num_runs = CFArrayGetCount (glyph_runs);
     DEBUG_MSG (CORETEXT, nullptr, "Num runs: %u", num_runs);
 
     buffer->len = 0;
@@ -566,23 +566,23 @@ resize_and_retry:
      * to fix for that.  Test with any RTL string with trailing spaces.
      * https://crbug.com/469028
      */
-    if (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
+    もし (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
     {
       advances_so_far -= CTLineGetTrailingWhitespaceWidth (line);
-      if (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
+      もし (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
 	  advances_so_far = -advances_so_far;
     }
 
     const CFRange range_all = CFRangeMake (0, 0);
 
-    for (unsigned int i = 0; i < num_runs; i++)
+    ために (unsigned 整数 i = 0; i < num_runs; i++)
     {
       CTRunRef run = static_cast<CTRunRef>(CFArrayGetValueAtIndex (glyph_runs, i));
       CTRunStatus run_status = CTRunGetStatus (run);
       status_or  |= run_status;
       DEBUG_MSG (CORETEXT, run, "CTRunStatus: %x", run_status);
       CGFloat run_advance = CTRunGetTypographicBounds (run, range_all, nullptr, nullptr, nullptr);
-      if (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
+      もし (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
 	  run_advance = -run_advance;
       DEBUG_MSG (CORETEXT, run, "Run advance: %g", (double) run_advance);
 
@@ -594,7 +594,7 @@ resize_and_retry:
        */
       CFDictionaryRef attributes = CTRunGetAttributes (run);
       CTFontRef run_ct_font = static_cast<CTFontRef>(CFDictionaryGetValue (attributes, kCTFontAttributeName));
-      if (!CFEqual (run_ct_font, ct_font))
+      もし (!CFEqual (run_ct_font, ct_font))
       {
 	/* The run doesn't use our main font instance.  We have to figure out
 	 * whether font fallback happened, or this is just CoreText giving us
@@ -621,34 +621,34 @@ resize_and_retry:
 	 * Also see: https://bugs.chromium.org/p/chromium/issues/detail?id=597098
 	 */
 	bool matched = false;
-	for (unsigned int i = 0; i < range_records.length; i++)
-	  if (range_records[i].font && CFEqual (run_ct_font, range_records[i].font))
+	ために (unsigned 整数 i = 0; i < range_records.length; i++)
+	  もし (range_records[i].font && CFEqual (run_ct_font, range_records[i].font))
 	  {
 	    matched = true;
 	    break;
 	  }
-	if (!matched)
+	もし (!matched)
 	{
 	  hb_cf_ptr_t<CGFontRef> run_cg_font (CTFontCopyGraphicsFont (run_ct_font, nullptr));
-	  if (run_cg_font)
+	  もし (run_cg_font)
 	    matched = CFEqual (run_cg_font, cg_font);
 	}
-	if (!matched)
+	もし (!matched)
 	{
 	  hb_cf_ptr_t<CFStringRef> font_ps_name (CTFontCopyName (ct_font, kCTFontPostScriptNameKey));
 	  hb_cf_ptr_t<CFStringRef> run_ps_name (CTFontCopyName (run_ct_font, kCTFontPostScriptNameKey));
-	  if (font_ps_name && run_ps_name)
+	  もし (font_ps_name && run_ps_name)
 	  {
-	    if (CFStringCompare (run_ps_name, font_ps_name, 0) == kCFCompareEqualTo)
+	    もし (CFStringCompare (run_ps_name, font_ps_name, 0) == kCFCompareEqualTo)
 	      matched = true;
 	  }
 	}
-	if (!matched)
+	もし (!matched)
 	{
 	  CFRange range = CTRunGetStringRange (run);
 	  DEBUG_MSG (CORETEXT, run, "Run used fallback font: %ld..%ld",
 		     range.location, range.location + range.length);
-	  if (!buffer->ensure_inplace (buffer->len + range.length))
+	  もし (!buffer->ensure_inplace (buffer->len + range.length))
 	    goto resize_and_retry;
 	  hb_glyph_info_t *info = buffer->info + buffer->len;
 
@@ -661,19 +661,19 @@ resize_and_retry:
 	  x_offset = hb_saturate_neg (x_offset);
 	  y_offset = hb_saturate_neg (y_offset);
 
-	  unsigned int old_len = buffer->len;
-	  for (CFIndex j = range.location; j < range.location + range.length; j++)
+	  unsigned 整数 old_len = buffer->len;
+	  ために (CFIndex j = range.location; j < range.location + range.length; j++)
 	  {
 	      UniChar ch = CFStringGetCharacterAtIndex (string_ref, j);
-	      if (hb_in_range<UniChar> (ch, 0xDC00u, 0xDFFFu) && range.location < j)
+	      もし (hb_in_range<UniChar> (ch, 0xDC00u, 0xDFFFu) && range.location < j)
 	      {
 		ch = CFStringGetCharacterAtIndex (string_ref, j - 1);
-		if (hb_in_range<UniChar> (ch, 0xD800u, 0xDBFFu))
+		もし (hb_in_range<UniChar> (ch, 0xD800u, 0xDBFFu))
 		  /* This is the second of a surrogate pair.  Don't need .notdef
 		   * for this one. */
 		  continue;
 	      }
-	      if (buffer->unicode->is_default_ignorable (ch))
+	      もし (buffer->unicode->is_default_ignorable (ch))
 		continue;
 
 	      info->codepoint = notdef;
@@ -686,18 +686,18 @@ resize_and_retry:
 	      info++;
 	      buffer->len++;
 	  }
-	  if (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
+	  もし (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
 	    buffer->reverse_range (old_len, buffer->len);
 	  advances_so_far += run_advance;
 	  continue;
 	}
       }
 
-      unsigned int num_glyphs = CTRunGetGlyphCount (run);
-      if (num_glyphs == 0)
+      unsigned 整数 num_glyphs = CTRunGetGlyphCount (run);
+      もし (num_glyphs == 0)
 	continue;
 
-      if (!buffer->ensure_inplace (buffer->len + num_glyphs))
+      もし (!buffer->ensure_inplace (buffer->len + num_glyphs))
 	goto resize_and_retry;
 
       hb_glyph_info_t *run_info = buffer->info + buffer->len;
@@ -711,7 +711,7 @@ resize_and_retry:
 #define USE_PTR true
 
 #define SCRATCH_SAVE() \
-  unsigned int scratch_size_saved = scratch_size; \
+  unsigned 整数 scratch_size_saved = scratch_size; \
   hb_buffer_t::scratch_buffer_t *scratch_saved = scratch
 
 #define SCRATCH_RESTORE() \
@@ -721,19 +721,19 @@ resize_and_retry:
       { /* Setup glyphs */
 	SCRATCH_SAVE();
 	const CGGlyph* glyphs = USE_PTR ? CTRunGetGlyphsPtr (run) : nullptr;
-	if (!glyphs) {
+	もし (!glyphs) {
 	  ALLOCATE_ARRAY (CGGlyph, glyph_buf, num_glyphs, goto resize_and_retry);
 	  CTRunGetGlyphs (run, range_all, glyph_buf);
 	  glyphs = glyph_buf;
 	}
 	const CFIndex* string_indices = USE_PTR ? CTRunGetStringIndicesPtr (run) : nullptr;
-	if (!string_indices) {
+	もし (!string_indices) {
 	  ALLOCATE_ARRAY (CFIndex, index_buf, num_glyphs, goto resize_and_retry);
 	  CTRunGetStringIndices (run, range_all, index_buf);
 	  string_indices = index_buf;
 	}
 	hb_glyph_info_t *info = run_info;
-	for (unsigned int j = 0; j < num_glyphs; j++)
+	ために (unsigned 整数 j = 0; j < num_glyphs; j++)
 	{
 	  info->codepoint = glyphs[j];
 	  info->cluster = log_clusters[string_indices[j]];
@@ -749,22 +749,22 @@ resize_and_retry:
 	 * whatever is needed to make the whole run's advance add up. */
 	SCRATCH_SAVE();
 	const CGPoint* positions = USE_PTR ? CTRunGetPositionsPtr (run) : nullptr;
-	if (!positions) {
+	もし (!positions) {
 	  ALLOCATE_ARRAY (CGPoint, position_buf, num_glyphs, goto resize_and_retry);
 	  CTRunGetPositions (run, range_all, position_buf);
 	  positions = position_buf;
 	}
 	hb_glyph_info_t *info = run_info;
-	if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+	もし (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
 	{
 	  hb_position_t x_offset = hb_clamp_to<hb_position_t> (
 	      round ((positions[0].x - advances_so_far) * x_mult));
-	  for (unsigned int j = 0; j < num_glyphs; j++)
+	  ために (unsigned 整数 j = 0; j < num_glyphs; j++)
 	  {
 	    CGFloat advance;
-	    if (likely (j + 1 < num_glyphs))
+	    もし (likely (j + 1 < num_glyphs))
 	      advance = positions[j + 1].x - positions[j].x;
-	    else /* last glyph */
+	    否则 /* last glyph */
 	      advance = run_advance - (positions[j].x - positions[0].x);
 	    /* Signed cast necessary to pass through negative values. */
 	    info->mask = (hb_mask_t) hb_clamp_to<int32_t> (round (advance * x_mult));
@@ -773,16 +773,16 @@ resize_and_retry:
 	    info++;
 	  }
 	}
-	else
+	否则
 	{
 	  hb_position_t y_offset = hb_clamp_to<hb_position_t> (
 	      round ((positions[0].y - advances_so_far) * y_mult));
-	  for (unsigned int j = 0; j < num_glyphs; j++)
+	  ために (unsigned 整数 j = 0; j < num_glyphs; j++)
 	  {
 	    CGFloat advance;
-	    if (likely (j + 1 < num_glyphs))
+	    もし (likely (j + 1 < num_glyphs))
 	      advance = positions[j + 1].y - positions[j].y;
-	    else /* last glyph */
+	    否则 /* last glyph */
 	      advance = run_advance - (positions[j].y - positions[0].y);
 	    /* Signed cast necessary to pass through negative values. */
 	    info->mask = (hb_mask_t) hb_clamp_to<int32_t> (round (advance * y_mult));
@@ -804,11 +804,11 @@ resize_and_retry:
 
     buffer->clear_positions ();
 
-    unsigned int count = buffer->len;
+    unsigned 整数 count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-      for (unsigned int i = 0; i < count; i++)
+    もし (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+      ために (unsigned 整数 i = 0; i < count; i++)
       {
 	pos->x_advance = info->mask;
 	pos->x_offset = info->var1.i32;
@@ -816,8 +816,8 @@ resize_and_retry:
 
 	info++; pos++;
       }
-    else
-      for (unsigned int i = 0; i < count; i++)
+    否则
+      ために (unsigned 整数 i = 0; i < count; i++)
       {
 	pos->y_advance = info->mask;
 	pos->x_offset = info->var1.i32;
@@ -836,23 +836,23 @@ resize_and_retry:
      * This does *not* mean we'll form the same clusters as Uniscribe
      * or the native OT backend, only that the cluster indices will be
      * monotonic in the output buffer. */
-    if (count > 1 && (status_or & kCTRunStatusNonMonotonic) &&
+    もし (count > 1 && (status_or & kCTRunStatusNonMonotonic) &&
 	HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
     {
       hb_glyph_info_t *info = buffer->info;
-      if (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
+      もし (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
       {
-	unsigned int cluster = info[count - 1].cluster;
-	for (unsigned int i = count - 1; i > 0; i--)
+	unsigned 整数 cluster = info[count - 1].cluster;
+	ために (unsigned 整数 i = count - 1; i > 0; i--)
 	{
 	  cluster = hb_min (cluster, info[i - 1].cluster);
 	  info[i - 1].cluster = cluster;
 	}
       }
-      else
+      否则
       {
-	unsigned int cluster = info[0].cluster;
-	for (unsigned int i = 1; i < count; i++)
+	unsigned 整数 cluster = info[0].cluster;
+	ために (unsigned 整数 i = 1; i < count; i++)
 	{
 	  cluster = hb_min (cluster, info[i].cluster);
 	  info[i].cluster = cluster;
@@ -871,16 +871,16 @@ resize_and_retry:
 #undef FAIL
 
 fail:
-  if (string_ref)
+  もし (string_ref)
     CFRelease (string_ref);
-  if (line)
+  もし (line)
     CFRelease (line);
 
-  for (unsigned int i = 0; i < range_records.length; i++)
-    if (range_records[i].font)
+  ために (unsigned 整数 i = 0; i < range_records.length; i++)
+    もし (range_records[i].font)
       CFRelease (range_records[i].font);
 
-  return ret;
+  戻る ret;
 }
 
 

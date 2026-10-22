@@ -24,7 +24,7 @@
  * Igalia Author(s): Frédéric Wang
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#もし !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -298,32 +298,32 @@ hb_ot_math_get_glyph_kerning (hb_font_t *font,
 			      hb_ot_math_kern_t kern,
 			      hb_position_t correction_height);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_ot_math_get_glyph_kernings (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_ot_math_kern_t kern,
-			       unsigned int start_offset,
-			       unsigned int *entries_count, /* IN/OUT */
+			       unsigned 整数 start_offset,
+			       unsigned 整数 *entries_count, /* IN/OUT */
 			       hb_ot_math_kern_entry_t *kern_entries /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_ot_math_get_glyph_variants (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *variants_count, /* IN/OUT */
+			       unsigned 整数 start_offset,
+			       unsigned 整数 *variants_count, /* IN/OUT */
 			       hb_ot_math_glyph_variant_t *variants /* OUT */);
 
 HB_EXTERN hb_position_t
 hb_ot_math_get_min_connector_overlap (hb_font_t *font,
 				      hb_direction_t direction);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_ot_math_get_glyph_assembly (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *parts_count, /* IN/OUT */
+			       unsigned 整数 start_offset,
+			       unsigned 整数 *parts_count, /* IN/OUT */
 			       hb_ot_math_glyph_part_t *parts, /* OUT */
 			       hb_position_t *italics_correction /* OUT */);
 

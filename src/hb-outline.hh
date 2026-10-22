@@ -52,12 +52,12 @@ struct hb_outline_vector_t
   float normalize_len ()
   {
     float len = hypotf (x, y);
-    if (len)
+    もし (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    戻る len;
   }
 
   float x, y;

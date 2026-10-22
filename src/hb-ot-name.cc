@@ -57,46 +57,46 @@
  **/
 const hb_ot_name_entry_t *
 hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */)
+		       unsigned 整数 *num_entries /* OUT */)
 {
   const OT::name_accelerator_t &name = *face->table.name;
-  if (num_entries) *num_entries = name.names.length;
-  return (const hb_ot_name_entry_t *) name.names;
+  もし (num_entries) *num_entries = name.names.length;
+  戻る (const hb_ot_name_entry_t *) name.names;
 }
 
 template <typename utf_t>
-static inline unsigned int
+static inline unsigned 整数
 hb_ot_name_get_utf (hb_face_t       *face,
 		    hb_ot_name_id_t  name_id,
 		    hb_language_t    language,
-		    unsigned int    *text_size /* IN/OUT */,
+		    unsigned 整数    *text_size /* IN/OUT */,
 		    typename utf_t::codepoint_t *text /* OUT */)
 {
   const OT::name_accelerator_t &name = *face->table.name;
 
-  if (!language)
+  もし (!language)
     language = hb_language_from_string ("en", 2);
 
-  unsigned int width;
-  int idx = name.get_index (name_id, language, &width);
-  if (idx != -1)
+  unsigned 整数 width;
+  整数 idx = name.get_index (name_id, language, &width);
+  もし (idx != -1)
   {
     hb_bytes_t bytes = name.get_name (idx);
 
-    if (width == 2) /* UTF16-BE */
-      return OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (bytes, text_size, text);
+    もし (width == 2) /* UTF16-BE */
+      戻る OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (bytes, text_size, text);
 
-    if (width == 1) /* ASCII */
-      return OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (bytes, text_size, text);
+    もし (width == 1) /* ASCII */
+      戻る OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (bytes, text_size, text);
   }
 
-  if (text_size)
+  もし (text_size)
   {
-    if (*text_size)
+    もし (*text_size)
       *text = 0;
     *text_size = 0;
   }
-  return 0;
+  戻る 0;
 }
 
 /**
@@ -116,14 +116,14 @@ hb_ot_name_get_utf (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+unsigned 整数
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
+		     unsigned 整数    *text_size /* IN/OUT */,
 		     char            *text      /* OUT */)
 {
-  return hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, text_size,
+  戻る hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, text_size,
 					(hb_utf8_t::codepoint_t *) text);
 }
 
@@ -144,14 +144,14 @@ hb_ot_name_get_utf8 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+unsigned 整数
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      unsigned 整数    *text_size /* IN/OUT */,
 		      uint16_t        *text      /* OUT */)
 {
-  return hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, text_size, text);
+  戻る hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, text_size, text);
 }
 
 /**
@@ -171,14 +171,14 @@ hb_ot_name_get_utf16 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+unsigned 整数
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      unsigned 整数    *text_size /* IN/OUT */,
 		      uint32_t        *text      /* OUT */)
 {
-  return hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, text_size, text);
+  戻る hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, text_size, text);
 }
 
 #endif

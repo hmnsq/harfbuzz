@@ -11,48 +11,48 @@ namespace OT {
 
 struct coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<const 整数> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    もし (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (整数));
+    否则
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  整数& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    もし (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      戻る Crap(整数);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    もし (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      もし (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        ながら (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	戻る static_coords[idx];
       }
-      else
+      否则
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    もし (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      もし (unlikely (!dynamic_coords.resize (idx + 1)))
+	戻る Crap(整数);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    戻る dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<整数> get_coords ()
+  { 戻る length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
   private:
-  hb_vector_t<int> dynamic_coords;
+  hb_vector_t<整数> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  整数 static_coords[sizeof (void *) * 8];
 };
 
 

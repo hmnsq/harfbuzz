@@ -147,24 +147,24 @@ using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
 template <typename Types>
 struct JstfScript
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
+  unsigned 整数 get_lang_sys_count () const
+  { 戻る langSys.len; }
+  const Tag& get_lang_sys_tag (unsigned 整数 i) const
+  { 戻る langSys.get_tag (i); }
+  unsigned 整数 get_lang_sys_tags (unsigned 整数 start_offset,
+				  unsigned 整数 *lang_sys_count /* IN/OUT */,
 				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const JstfLangSys& get_lang_sys (unsigned int i) const
+  { 戻る langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
+  const JstfLangSys& get_lang_sys (unsigned 整数 i) const
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    もし (i == Index::NOT_FOUND_INDEX) 戻る get_default_lang_sys ();
+    戻る this+langSys[i].offset;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  bool find_lang_sys_index (hb_tag_t tag, unsigned 整数 *index) const
+  { 戻る langSys.find_index (tag, index); }
 
-  bool has_default_lang_sys () const               { return defaultLangSys != 0; }
-  const JstfLangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  bool has_default_lang_sys () const               { 戻る defaultLangSys != 0; }
+  const JstfLangSys& get_default_lang_sys () const { 戻る this+defaultLangSys; }
 
   bool sanitize (hb_sanitize_context_t *c,
 		 const Record_sanitize_closure_t * = nullptr) const
@@ -192,7 +192,7 @@ struct JstfScript
 template <typename Types>
 struct JstfScriptRecord
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  整数 cmp (hb_tag_t a) const { 戻る tag.cmp (a); }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -212,26 +212,26 @@ struct JstfScriptRecord
 template <typename Types>
 struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
 {
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
+  const Tag& get_tag (unsigned 整数 i) const
+  { 戻る (*this)[i].tag; }
+  unsigned 整数 get_tags (unsigned 整数 start_offset,
+			 unsigned 整数 *script_count /* IN/OUT */,
 			 hb_tag_t     *script_tags /* OUT */) const
   {
-    if (script_count)
+    もし (script_count)
     {
       + this->as_array ().sub_array (start_offset, script_count)
       | hb_map (&JstfScriptRecord<Types>::tag)
       | hb_sink (hb_array (script_tags, *script_count))
       ;
     }
-    return this->len;
+    戻る this->len;
   }
-  const JstfScript<Types>& get_script (const void *base, unsigned int i) const
-  { return base+(*this)[i].offset; }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  const JstfScript<Types>& get_script (const void *base, unsigned 整数 i) const
+  { 戻る base+(*this)[i].offset; }
+  bool find_index (hb_tag_t tag, unsigned 整数 *index) const
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    戻る this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
 };
 
@@ -245,50 +245,50 @@ struct JSTF
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
 
-  unsigned int get_script_count () const
+  unsigned 整数 get_script_count () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().len;
+    もし (has_script_list2 ()) 戻る get_script_list2 ().len;
 #endif
-    return scriptList.len;
+    戻る scriptList.len;
   }
-  const Tag& get_script_tag (unsigned int i) const
+  const Tag& get_script_tag (unsigned 整数 i) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().get_tag (i);
+    もし (has_script_list2 ()) 戻る get_script_list2 ().get_tag (i);
 #endif
-    return scriptList.get_tag (i);
+    戻る scriptList.get_tag (i);
   }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
+  unsigned 整数 get_script_tags (unsigned 整数 start_offset,
+				unsigned 整数 *script_count /* IN/OUT */,
 				hb_tag_t     *script_tags /* OUT */) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
+    もし (has_script_list2 ())
+      戻る get_script_list2 ().get_tags (start_offset, script_count, script_tags);
 #endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+    戻る scriptList.get_tags (start_offset, script_count, script_tags);
   }
   template <typename Types>
-  const JstfScript<Types>& get_script (unsigned int i) const;
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
+  const JstfScript<Types>& get_script (unsigned 整数 i) const;
+  bool find_script_index (hb_tag_t tag, unsigned 整数 *index) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().find_index (tag, index);
+    もし (has_script_list2 ()) 戻る get_script_list2 ().find_index (tag, index);
 #endif
-    return scriptList.find_index (tag, index);
+    戻る scriptList.find_index (tag, index);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    もし (unlikely (!version.sanitize (c) ||
 		  !hb_barrier () ||
 		  version.major != 1 ||
 		  !scriptList.sanitize (c, this)))
       return_trace (false);
 #ifndef HB_NO_BEYOND_64K
-    if (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
+    もし (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
       return_trace (false);
 #endif
     return_trace (true);
@@ -297,9 +297,9 @@ struct JSTF
   private:
 #ifndef HB_NO_BEYOND_64K
   bool has_script_list2 () const
-  { return version.minor >= 1 && get_script_list2 ().len; }
+  { 戻る version.minor >= 1 && get_script_list2 ().len; }
   const JstfScriptList<Layout::MediumTypes>& get_script_list2 () const
-  { return StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
+  { 戻る StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
 #endif
 
   protected:
@@ -320,14 +320,14 @@ struct JSTF
 
 template <>
 inline const JstfScript<Layout::SmallTypes>&
-JSTF::get_script<Layout::SmallTypes> (unsigned int i) const
-{ return scriptList.get_script (this, i); }
+JSTF::get_script<Layout::SmallTypes> (unsigned 整数 i) const
+{ 戻る scriptList.get_script (this, i); }
 
 #ifndef HB_NO_BEYOND_64K
 template <>
 inline const JstfScript<Layout::MediumTypes>&
-JSTF::get_script<Layout::MediumTypes> (unsigned int i) const
-{ return get_script_list2 ().get_script (this, i); }
+JSTF::get_script<Layout::MediumTypes> (unsigned 整数 i) const
+{ 戻る get_script_list2 ().get_script (this, i); }
 #endif
 
 

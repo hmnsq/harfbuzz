@@ -69,16 +69,16 @@ struct Encoding0 {
   {
     assert (glyph > 0);
     glyph--;
-    if (glyph < nCodes ())
+    もし (glyph < nCodes ())
     {
-      return (hb_codepoint_t)codes[glyph];
+      戻る (hb_codepoint_t)codes[glyph];
     }
-    else
-      return CFF_UNDEF_CODE;
+    否则
+      戻る CFF_UNDEF_CODE;
   }
 
-  HBUINT8 &nCodes () { return codes.len; }
-  HBUINT8 nCodes () const { return codes.len; }
+  HBUINT8 &nCodes () { 戻る codes.len; }
+  HBUINT8 nCodes () const { 戻る codes.len; }
 
   ArrayOf<HBUINT8, HBUINT8> codes;
 
@@ -110,20 +110,20 @@ struct Encoding1 {
     /* TODO: Add cache like get_sid. */
     assert (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; i < nRanges (); i++)
+    ために (unsigned 整数 i = 0; i < nRanges (); i++)
     {
-      if (glyph <= ranges[i].nLeft)
+      もし (glyph <= ranges[i].nLeft)
       {
 	hb_codepoint_t code = (hb_codepoint_t) ranges[i].first + glyph;
-	return (likely (code < 0x100) ? code: CFF_UNDEF_CODE);
+	戻る (likely (code < 0x100) ? code: CFF_UNDEF_CODE);
       }
       glyph -= (ranges[i].nLeft + 1);
     }
-    return CFF_UNDEF_CODE;
+    戻る CFF_UNDEF_CODE;
   }
 
-  HBUINT8 &nRanges () { return ranges.len; }
-  HBUINT8 nRanges () const { return ranges.len; }
+  HBUINT8 &nRanges () { 戻る ranges.len; }
+  HBUINT8 nRanges () const { 戻る ranges.len; }
 
   ArrayOf<Encoding1_Range, HBUINT8> ranges;
 
@@ -152,13 +152,13 @@ struct CFF1SuppEncData {
 
   void get_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
   {
-    for (unsigned int i = 0; i < nSups (); i++)
-      if (sid == supps[i].glyph)
+    ために (unsigned 整数 i = 0; i < nSups (); i++)
+      もし (sid == supps[i].glyph)
 	codes.push (supps[i].code);
   }
 
-  HBUINT8 &nSups () { return supps.len; }
-  HBUINT8 nSups () const { return supps.len; }
+  HBUINT8 &nSups () { 戻る supps.len; }
+  HBUINT8 nSups () const { 戻る supps.len; }
 
   ArrayOf<SuppEncoding, HBUINT8> supps;
 
@@ -177,27 +177,27 @@ struct Encoding
   /* serialize a subset Encoding */
   bool serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int enc_count,
+		  unsigned 整数 enc_count,
 		  const hb_vector_t<code_pair_t>& code_ranges,
 		  const hb_vector_t<code_pair_t>& supp_codes)
   {
     TRACE_SERIALIZE (this);
     Encoding *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
+    もし (unlikely (!dest)) return_trace (false);
     dest->format = format | ((supp_codes.length > 0) ? 0x80 : 0);
     switch (format) {
     case 0:
     {
       Encoding0 *fmt0 = c->allocate_size<Encoding0> (Encoding0::min_size + HBUINT8::static_size * enc_count);
-      if (unlikely (!fmt0)) return_trace (false);
+      もし (unlikely (!fmt0)) return_trace (false);
       fmt0->nCodes () = enc_count;
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      unsigned 整数 glyph = 0;
+      ために (unsigned 整数 i = 0; i < code_ranges.length; i++)
       {
 	hb_codepoint_t code = code_ranges[i].code;
-	for (int left = (int)code_ranges[i].glyph; left >= 0; left--)
+	ために (整数 left = (整数)code_ranges[i].glyph; left >= 0; left--)
 	  fmt0->codes[glyph++] = code++;
-	if (unlikely (!((glyph <= 0x100) && (code <= 0x100))))
+	もし (unlikely (!((glyph <= 0x100) && (code <= 0x100))))
 	  return_trace (false);
       }
     }
@@ -206,11 +206,11 @@ struct Encoding
     case 1:
     {
       Encoding1 *fmt1 = c->allocate_size<Encoding1> (Encoding1::min_size + Encoding1_Range::static_size * code_ranges.length);
-      if (unlikely (!fmt1)) return_trace (false);
+      もし (unlikely (!fmt1)) return_trace (false);
       fmt1->nRanges () = code_ranges.length;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      ために (unsigned 整数 i = 0; i < code_ranges.length; i++)
       {
-	if (unlikely (!((code_ranges[i].code <= 0xFF) && (code_ranges[i].glyph <= 0xFF))))
+	もし (unlikely (!((code_ranges[i].code <= 0xFF) && (code_ranges[i].glyph <= 0xFF))))
 	  return_trace (false);
 	fmt1->ranges[i].first = code_ranges[i].code;
 	fmt1->ranges[i].nLeft = code_ranges[i].glyph;
@@ -220,12 +220,12 @@ struct Encoding
 
     }
 
-    if (supp_codes.length)
+    もし (supp_codes.length)
     {
       CFF1SuppEncData *suppData = c->allocate_size<CFF1SuppEncData> (CFF1SuppEncData::min_size + SuppEncoding::static_size * supp_codes.length);
-      if (unlikely (!suppData)) return_trace (false);
+      もし (unlikely (!suppData)) return_trace (false);
       suppData->nSups () = supp_codes.length;
-      for (unsigned int i = 0; i < supp_codes.length; i++)
+      ために (unsigned 整数 i = 0; i < supp_codes.length; i++)
       {
 	suppData->supps[i].code = supp_codes[i].code;
 	suppData->supps[i].glyph = supp_codes[i].glyph; /* actually SID */
@@ -243,42 +243,42 @@ struct Encoding
     case 0: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format0.get_size ()); break;
     case 1: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format1.get_size ()); break;
     }
-    if (has_supplement ())
+    もし (has_supplement ())
       size = hb_unsigned_add_saturate (size, suppEncData ().get_size ());
-    return size;
+    戻る size;
   }
 
   hb_codepoint_t get_code (hb_codepoint_t glyph) const
   {
     switch (table_format ())
     {
-    case 0: hb_barrier (); return u.format0.get_code (glyph);
-    case 1: hb_barrier (); return u.format1.get_code (glyph);
-    default:return 0;
+    case 0: hb_barrier (); 戻る u.format0.get_code (glyph);
+    case 1: hb_barrier (); 戻る u.format1.get_code (glyph);
+    default:戻る 0;
     }
   }
 
-  uint8_t table_format () const { return format & 0x7F; }
-  bool  has_supplement () const { return format & 0x80; }
+  uint8_t table_format () const { 戻る format & 0x7F; }
+  bool  has_supplement () const { 戻る format & 0x80; }
 
   void get_supplement_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
   {
     codes.clear ();
-    if (has_supplement ())
+    もし (has_supplement ())
       suppEncData().get_codes (sid, codes);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    もし (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
     switch (table_format ())
     {
-    case 0: hb_barrier (); if (unlikely (!u.format0.sanitize (c))) { return_trace (false); } break;
-    case 1: hb_barrier (); if (unlikely (!u.format1.sanitize (c))) { return_trace (false); } break;
+    case 0: hb_barrier (); もし (unlikely (!u.format0.sanitize (c))) { return_trace (false); } break;
+    case 1: hb_barrier (); もし (unlikely (!u.format1.sanitize (c))) { return_trace (false); } break;
     default:return_trace (false);
     }
     return_trace (likely (!has_supplement () || suppEncData ().sanitize (c)));
@@ -289,9 +289,9 @@ struct Encoding
   {
     switch (table_format ())
     {
-    case 0: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format0.codes[u.format0.nCodes ()-1]);
-    case 1: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format1.ranges[u.format1.nRanges ()-1]);
-    default:return Null (CFF1SuppEncData);
+    case 0: hb_barrier (); 戻る StructAfter<CFF1SuppEncData> (u.format0.codes[u.format0.nCodes ()-1]);
+    case 1: hb_barrier (); 戻る StructAfter<CFF1SuppEncData> (u.format1.ranges[u.format1.nRanges ()-1]);
+    default:戻る Null (CFF1SuppEncData);
     }
   }
 
@@ -309,46 +309,46 @@ struct Encoding
 /* Charset */
 struct Charset0
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned 整数 num_glyphs, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
-    if (num_charset_entries) *num_charset_entries = num_glyphs;
+    もし (num_charset_entries) *num_charset_entries = num_glyphs;
     return_trace (sids.sanitize (c, num_glyphs - 1));
   }
 
   hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs) const
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
-    if (unlikely (glyph == 0))
-      return 0;
-    else
-      return sids[glyph - 1];
+    もし (unlikely (glyph >= num_glyphs)) 戻る 0;
+    もし (unlikely (glyph == 0))
+      戻る 0;
+    否则
+      戻る sids[glyph - 1];
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned 整数 num_glyphs) const
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
-    for (hb_codepoint_t gid = 1; gid < num_glyphs; gid++)
+    もし (!mapping->resize_dirty  (num_glyphs)) 戻る;
+    ために (hb_codepoint_t gid = 1; gid < num_glyphs; gid++)
       mapping->arrayZ[gid] = {sids[gid - 1], gid};
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned 整数 num_glyphs) const
   {
-    if (sid == 0)
-      return 0;
+    もし (sid == 0)
+      戻る 0;
 
-    for (unsigned int glyph = 1; glyph < num_glyphs; glyph++)
+    ために (unsigned 整数 glyph = 1; glyph < num_glyphs; glyph++)
     {
-      if (sids[glyph-1] == sid)
-	return glyph;
+      もし (sids[glyph-1] == sid)
+	戻る glyph;
     }
-    return 0;
+    戻る 0;
   }
 
-  static size_t get_size (unsigned int num_glyphs)
+  static size_t get_size (unsigned 整数 num_glyphs)
   {
     assert (num_glyphs > 0);
-    return UnsizedArrayOf<HBUINT16>::get_size (num_glyphs - 1);
+    戻る UnsizedArrayOf<HBUINT16>::get_size (num_glyphs - 1);
   }
 
   UnsizedArrayOf<HBUINT16> sids;
@@ -372,20 +372,20 @@ struct Charset_Range {
 
 template <typename TYPE>
 struct Charset1_2 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned 整数 num_glyphs, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
     num_glyphs--;
     unsigned i;
-    for (i = 0; num_glyphs > 0; i++)
+    ために (i = 0; num_glyphs > 0; i++)
     {
-      if (unlikely (!(ranges[i].sanitize (c) &&
+      もし (unlikely (!(ranges[i].sanitize (c) &&
 		      hb_barrier () &&
 		      (num_glyphs >= ranges[i].nLeft + 1))))
 	return_trace (false);
       num_glyphs -= (ranges[i].nLeft + 1);
     }
-    if (num_charset_entries)
+    もし (num_charset_entries)
       *num_charset_entries = i;
     return_trace (true);
   }
@@ -393,94 +393,94 @@ struct Charset1_2 {
   hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs,
 			  code_pair_t *cache = nullptr) const
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
+    もし (unlikely (glyph >= num_glyphs)) 戻る 0;
     unsigned i;
     hb_codepoint_t start_glyph;
-    if (cache && likely (cache->glyph <= glyph))
+    もし (cache && likely (cache->glyph <= glyph))
     {
       i = cache->code;
       start_glyph = cache->glyph;
     }
-    else
+    否则
     {
-      if (unlikely (glyph == 0)) return 0;
+      もし (unlikely (glyph == 0)) 戻る 0;
       i = 0;
       start_glyph = 1;
     }
     glyph -= start_glyph;
-    for (;; i++)
+    ために (;; i++)
     {
       unsigned count = ranges[i].nLeft;
-      if (glyph <= count)
+      もし (glyph <= count)
       {
-        if (cache)
+        もし (cache)
 	  *cache = {i, start_glyph};
-	return ranges[i].first + glyph;
+	戻る ranges[i].first + glyph;
       }
       count++;
       start_glyph += count;
       glyph -= count;
     }
 
-    return 0;
+    戻る 0;
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned 整数 num_glyphs) const
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
+    もし (!mapping->resize_dirty  (num_glyphs)) 戻る;
 
     hb_codepoint_t gid = 1;
-    if (gid >= num_glyphs)
-      return;
+    もし (gid >= num_glyphs)
+      戻る;
 
-    for (unsigned i = 0;; i++)
+    ために (unsigned i = 0;; i++)
     {
       hb_codepoint_t sid = ranges[i].first;
       unsigned count = ranges[i].nLeft + 1;
       unsigned last = gid + count;
-      for (unsigned j = 0; j < count; j++)
+      ために (unsigned j = 0; j < count; j++)
 	mapping->arrayZ[gid++] = {sid++, last - 1};
 
-      if (gid >= num_glyphs)
+      もし (gid >= num_glyphs)
         break;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned 整数 num_glyphs) const
   {
-    if (sid == 0) return 0;
+    もし (sid == 0) 戻る 0;
     hb_codepoint_t  glyph = 1;
-    for (unsigned int i = 0;; i++)
+    ために (unsigned 整数 i = 0;; i++)
     {
-      if (glyph >= num_glyphs)
-	return 0;
-      if ((ranges[i].first <= sid) && (sid <= ranges[i].first + ranges[i].nLeft))
-	return glyph + (sid - ranges[i].first);
+      もし (glyph >= num_glyphs)
+	戻る 0;
+      もし ((ranges[i].first <= sid) && (sid <= ranges[i].first + ranges[i].nLeft))
+	戻る glyph + (sid - ranges[i].first);
       glyph += (ranges[i].nLeft + 1);
     }
 
-    return 0;
+    戻る 0;
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned 整数 num_glyphs) const
   {
-    int glyph = (int) num_glyphs;
+    整数 glyph = (整数) num_glyphs;
     unsigned num_ranges = 0;
 
     assert (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; glyph > 0; i++)
+    ために (unsigned 整数 i = 0; glyph > 0; i++)
     {
       glyph -= (ranges[i].nLeft + 1);
       num_ranges++;
     }
 
-    return get_size_for_ranges (num_ranges);
+    戻る get_size_for_ranges (num_ranges);
   }
 
-  static size_t get_size_for_ranges (unsigned int num_ranges)
+  static size_t get_size_for_ranges (unsigned 整数 num_ranges)
   {
-    return UnsizedArrayOf<Charset_Range<TYPE> >::get_size (num_ranges);
+    戻る UnsizedArrayOf<Charset_Range<TYPE> >::get_size (num_ranges);
   }
 
   UnsizedArrayOf<Charset_Range<TYPE>> ranges;
@@ -496,7 +496,7 @@ typedef Charset_Range<HBUINT16> Charset2_Range;
 struct Charset
 {
   /* serialize a fullset Charset */
-  bool serialize (hb_serialize_context_t *c, const Charset &src, unsigned int num_glyphs)
+  bool serialize (hb_serialize_context_t *c, const Charset &src, unsigned 整数 num_glyphs)
   {
     TRACE_SERIALIZE (this);
     return_trace (c->embed ((const char *) &src, src.get_size (num_glyphs)));
@@ -505,24 +505,24 @@ struct Charset
   /* serialize a subset Charset */
   bool serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int num_glyphs,
+		  unsigned 整数 num_glyphs,
 		  const hb_vector_t<code_pair_t>& sid_ranges)
   {
     TRACE_SERIALIZE (this);
     Charset *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
+    もし (unlikely (!dest)) return_trace (false);
     dest->format = format;
     switch (format)
     {
     case 0:
     {
       Charset0 *fmt0 = c->allocate_size<Charset0> (Charset0::get_size (num_glyphs), false);
-      if (unlikely (!fmt0)) return_trace (false);
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      もし (unlikely (!fmt0)) return_trace (false);
+      unsigned 整数 glyph = 0;
+      ために (unsigned 整数 i = 0; i < sid_ranges.length; i++)
       {
 	hb_codepoint_t sid = sid_ranges.arrayZ[i].code;
-	for (int left = (int)sid_ranges.arrayZ[i].glyph; left >= 0; left--)
+	ために (整数 left = (整数)sid_ranges.arrayZ[i].glyph; left >= 0; left--)
 	  fmt0->sids[glyph++] = sid++;
       }
     }
@@ -531,16 +531,16 @@ struct Charset
     case 1:
     {
       Charset1 *fmt1 = c->allocate_size<Charset1> (Charset1::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt1)) return_trace (false);
+      もし (unlikely (!fmt1)) return_trace (false);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      ために (unsigned 整数 i = 0; i < sid_ranges.length; i++)
       {
         auto &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
 	fmt1->ranges[i].first = _.code;
 	fmt1->ranges[i].nLeft = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFF)))
+      もし (unlikely (!(all_glyphs <= 0xFF)))
 	return_trace (false);
     }
     break;
@@ -548,16 +548,16 @@ struct Charset
     case 2:
     {
       Charset2 *fmt2 = c->allocate_size<Charset2> (Charset2::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt2)) return_trace (false);
+      もし (unlikely (!fmt2)) return_trace (false);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      ために (unsigned 整数 i = 0; i < sid_ranges.length; i++)
       {
         auto &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
 	fmt2->ranges[i].first = _.code;
 	fmt2->ranges[i].nLeft = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFFFF)))
+      もし (unlikely (!(all_glyphs <= 0xFFFF)))
 	return_trace (false);
     }
     break;
@@ -566,55 +566,55 @@ struct Charset
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned 整数 num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format0.get_size (num_glyphs));
-    case 1: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format1.get_size (num_glyphs));
-    case 2: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format2.get_size (num_glyphs));
-    default:return 0;
+    case 0: hb_barrier (); 戻る hb_unsigned_add_saturate (min_size, u.format0.get_size (num_glyphs));
+    case 1: hb_barrier (); 戻る hb_unsigned_add_saturate (min_size, u.format1.get_size (num_glyphs));
+    case 2: hb_barrier (); 戻る hb_unsigned_add_saturate (min_size, u.format2.get_size (num_glyphs));
+    default:戻る 0;
     }
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned int num_glyphs,
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned 整数 num_glyphs,
 			  code_pair_t *cache = nullptr) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_sid (glyph, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_sid (glyph, num_glyphs, cache);
-    case 2: hb_barrier (); return u.format2.get_sid (glyph, num_glyphs, cache);
-    default:return 0;
+    case 0: hb_barrier (); 戻る u.format0.get_sid (glyph, num_glyphs);
+    case 1: hb_barrier (); 戻る u.format1.get_sid (glyph, num_glyphs, cache);
+    case 2: hb_barrier (); 戻る u.format2.get_sid (glyph, num_glyphs, cache);
+    default:戻る 0;
     }
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned 整数 num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); u.format0.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 1: hb_barrier (); u.format1.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 2: hb_barrier (); u.format2.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    default:return;
+    case 0: hb_barrier (); u.format0.collect_glyph_to_sid_map (mapping, num_glyphs); 戻る;
+    case 1: hb_barrier (); u.format1.collect_glyph_to_sid_map (mapping, num_glyphs); 戻る;
+    case 2: hb_barrier (); u.format2.collect_glyph_to_sid_map (mapping, num_glyphs); 戻る;
+    default:戻る;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned 整数 num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_glyph (sid, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_glyph (sid, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_glyph (sid, num_glyphs);
-    default:return 0;
+    case 0: hb_barrier (); 戻る u.format0.get_glyph (sid, num_glyphs);
+    case 1: hb_barrier (); 戻る u.format1.get_glyph (sid, num_glyphs);
+    case 2: hb_barrier (); 戻る u.format2.get_glyph (sid, num_glyphs);
+    default:戻る 0;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    もし (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
@@ -643,21 +643,21 @@ struct CFF1StringIndex : CFF1Index
 		  const hb_vector_t<unsigned> &sidmap)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely ((strings.count == 0) || (sidmap.length == 0)))
+    もし (unlikely ((strings.count == 0) || (sidmap.length == 0)))
     {
-      if (unlikely (!c->extend_min (this->count)))
+      もし (unlikely (!c->extend_min (this->count)))
 	return_trace (false);
       count = 0;
       return_trace (true);
     }
 
-    if (unlikely (sidmap.in_error ())) return_trace (false);
+    もし (unlikely (sidmap.in_error ())) return_trace (false);
 
     // Save this in a vector since serialize() iterates it twice.
     hb_vector_t<hb_ubytes_t> bytesArray (+ hb_iter (sidmap)
 					 | hb_map (strings));
 
-    if (unlikely (bytesArray.in_error ())) return_trace (false);
+    もし (unlikely (bytesArray.in_error ())) return_trace (false);
 
     bool result = CFF1Index::serialize (c, bytesArray);
     return_trace (result);
@@ -671,8 +671,8 @@ struct cff1_top_dict_interp_env_t : num_interp_env_t
   cff1_top_dict_interp_env_t (const hb_ubytes_t &bytes)
     : num_interp_env_t(bytes), prev_offset(0), last_offset(0) {}
 
-  unsigned int prev_offset;
-  unsigned int last_offset;
+  unsigned 整数 prev_offset;
+  unsigned 整数 last_offset;
 };
 
 struct name_dict_values_t
@@ -696,47 +696,47 @@ struct name_dict_values_t
 
   void init ()
   {
-    for (unsigned int i = 0; i < ValCount; i++)
+    ために (unsigned 整数 i = 0; i < ValCount; i++)
       values[i] = CFF_UNDEF_SID;
   }
 
-  unsigned int& operator[] (unsigned int i)
-  { assert (i < ValCount); return values[i]; }
+  unsigned 整数& operator[] (unsigned 整数 i)
+  { assert (i < ValCount); 戻る values[i]; }
 
-  unsigned int operator[] (unsigned int i) const
-  { assert (i < ValCount); return values[i]; }
+  unsigned 整数 operator[] (unsigned 整数 i) const
+  { assert (i < ValCount); 戻る values[i]; }
 
   static enum name_dict_val_index_t name_op_to_index (op_code_t op)
   {
     switch (op) {
       default: // can't happen - just make some compiler happy
       case OpCode_version:
-	return version;
+	戻る version;
       case OpCode_Notice:
-	return notice;
+	戻る notice;
       case OpCode_Copyright:
-	return copyright;
+	戻る copyright;
       case OpCode_FullName:
-	return fullName;
+	戻る fullName;
       case OpCode_FamilyName:
-	return familyName;
+	戻る familyName;
       case OpCode_Weight:
-	return weight;
+	戻る weight;
       case OpCode_PostScript:
-	return postscript;
+	戻る postscript;
       case OpCode_FontName:
-	return fontName;
+	戻る fontName;
       case OpCode_BaseFontName:
-	return baseFontName;
+	戻る baseFontName;
     }
   }
 
-  unsigned int  values[ValCount];
+  unsigned 整数  values[ValCount];
 };
 
 struct cff1_top_dict_val_t : op_str_t
 {
-  unsigned int  last_arg_offset;
+  unsigned 整数  last_arg_offset;
 };
 
 struct cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
@@ -756,16 +756,16 @@ struct cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
   void fini () { top_dict_values_t<cff1_top_dict_val_t>::fini (); }
 
   bool is_CID () const
-  { return nameSIDs[name_dict_values_t::registry] != CFF_UNDEF_SID; }
+  { 戻る nameSIDs[name_dict_values_t::registry] != CFF_UNDEF_SID; }
 
   name_dict_values_t  nameSIDs;
-  unsigned int    ros_supplement_offset;
-  unsigned int    ros_supplement;
-  unsigned int    cidCount;
+  unsigned 整数    ros_supplement_offset;
+  unsigned 整数    ros_supplement;
+  unsigned 整数    cidCount;
 
-  int             EncodingOffset;
-  int             CharsetOffset;
-  int             FDSelectOffset;
+  整数             EncodingOffset;
+  整数             CharsetOffset;
+  整数             FDSelectOffset;
   table_info_t    privateDictInfo;
 };
 
@@ -817,7 +817,7 @@ struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
 	dictval.nameSIDs[name_dict_values_t::ordering] = env.argStack.pop_uint ();
 	dictval.nameSIDs[name_dict_values_t::registry] = env.argStack.pop_uint ();
 	env.clear_args ();
-	if (unlikely (env.in_error ())) return;
+	もし (unlikely (env.in_error ())) 戻る;
 	assert (env.last_offset > dictval.opStart);
 	val.last_arg_offset = (env.last_offset - 1) - dictval.opStart;  /* offset to the last argument */
 	break;
@@ -825,13 +825,13 @@ struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
       case OpCode_Encoding:
 	dictval.EncodingOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	if (unlikely (dictval.EncodingOffset == 0)) return;
+	もし (unlikely (dictval.EncodingOffset == 0)) 戻る;
 	break;
 
       case OpCode_charset:
 	dictval.CharsetOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	if (unlikely (dictval.CharsetOffset == 0)) return;
+	もし (unlikely (dictval.CharsetOffset == 0)) 戻る;
 	break;
 
       case OpCode_FDSelect:
@@ -849,11 +849,11 @@ struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
 	env.last_offset = env.str_ref.get_offset ();
 	top_dict_opset_t<cff1_top_dict_val_t>::process_op (op, env, dictval);
 	/* Record this operand below if stack is empty, otherwise done */
-	if (!env.argStack.is_empty ()) return;
+	もし (!env.argStack.is_empty ()) 戻る;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    もし (unlikely (env.in_error ())) 戻る;
 
     dictval.add_op (op, env.str_ref, val);
   }
@@ -870,7 +870,7 @@ struct cff1_font_dict_values_t : dict_values_t<op_str_t>
   void fini () { dict_values_t<op_str_t>::fini (); }
 
   table_info_t       privateDictInfo;
-  unsigned int    fontName;
+  unsigned 整数    fontName;
 };
 
 struct cff1_font_dict_opset_t : dict_opset_t
@@ -894,11 +894,11 @@ struct cff1_font_dict_opset_t : dict_opset_t
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	もし (!env.argStack.is_empty ()) 戻る;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    もし (unlikely (env.in_error ())) 戻る;
 
     dictval.add_op (op, env.str_ref);
   }
@@ -915,7 +915,7 @@ struct cff1_private_dict_values_base_t : dict_values_t<VAL>
   }
   void fini () { dict_values_t<VAL>::fini (); }
 
-  int                 subrsOffset;
+  整数                 subrsOffset;
   const CFF1Subrs    *localSubrs;
 };
 
@@ -956,11 +956,11 @@ struct cff1_private_dict_opset_t : dict_opset_t
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	もし (!env.argStack.is_empty ()) 戻る;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    もし (unlikely (env.in_error ())) 戻る;
 
     dictval.add_op (op, env.str_ref, val);
   }
@@ -998,11 +998,11 @@ struct cff1_private_dict_opset_subset_t : dict_opset_t
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	もし (!env.argStack.is_empty ()) 戻る;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    もし (unlikely (env.in_error ())) 戻る;
 
     dictval.add_op (op, env.str_ref);
   }
@@ -1021,20 +1021,20 @@ struct cff1_font_dict_values_mod_t
   void init () { init ( &Null (cff1_font_dict_values_t), CFF_UNDEF_SID ); }
 
   void init (const cff1_font_dict_values_t *base_,
-	     unsigned int fontName_)
+	     unsigned 整数 fontName_)
   {
     base = base_;
     fontName = fontName_;
     privateDictInfo.init ();
   }
 
-  unsigned get_count () const { return base->get_count (); }
+  unsigned get_count () const { 戻る base->get_count (); }
 
-  const op_str_t &operator [] (unsigned int i) const { return (*base)[i]; }
+  const op_str_t &operator [] (unsigned 整数 i) const { 戻る (*base)[i]; }
 
   const cff1_font_dict_values_t    *base;
   table_info_t		   privateDictInfo;
-  unsigned int		fontName;
+  unsigned 整数		fontName;
 };
 
 struct CFF1FDArray : FDArray<HBUINT16>
@@ -1042,7 +1042,7 @@ struct CFF1FDArray : FDArray<HBUINT16>
   /* FDArray::serialize() requires this partial specialization to compile */
   template <typename ITER, typename OP_SERIALIZER>
   bool serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
-  { return FDArray<HBUINT16>::serialize<cff1_font_dict_values_mod_t, cff1_font_dict_values_mod_t> (c, it, opszr); }
+  { 戻る FDArray<HBUINT16>::serialize<cff1_font_dict_values_mod_t, cff1_font_dict_values_mod_t> (c, it, opszr); }
 };
 
 } /* namespace CFF */
@@ -1070,7 +1070,7 @@ struct cff1
 
     accelerator_templ_t (hb_face_t *face)
     {
-      if (!face) return;
+      もし (!face) 戻る;
 
       topDict.init ();
       fontDicts.init ();
@@ -1084,131 +1084,131 @@ struct cff1
 
       const OT::cff1 *cff = this->blob->template as<OT::cff1> ();
 
-      if (cff == &Null (OT::cff1))
+      もし (cff == &Null (OT::cff1))
         goto fail;
 
       nameIndex = &cff->nameIndex (cff);
-      if ((nameIndex == &Null (CFF1NameIndex)) || !nameIndex->sanitize (&sc))
+      もし ((nameIndex == &Null (CFF1NameIndex)) || !nameIndex->sanitize (&sc))
         goto fail;
       hb_barrier ();
 
       topDictIndex = &StructAtOffsetOrNull<CFF1TopDictIndex> (nameIndex, nameIndex->get_size (), sc);
-      if (topDictIndex == &Null (CFF1TopDictIndex) || (topDictIndex->count == 0))
+      もし (topDictIndex == &Null (CFF1TopDictIndex) || (topDictIndex->count == 0))
         goto fail;
       hb_barrier ();
 
       { /* parse top dict */
 	const hb_ubytes_t topDictStr = (*topDictIndex)[0];
-	if (unlikely (!topDictStr.sanitize (&sc)))   goto fail;
+	もし (unlikely (!topDictStr.sanitize (&sc)))   goto fail;
 	hb_barrier ();
 	cff1_top_dict_interp_env_t env (topDictStr);
 	cff1_top_dict_interpreter_t top_interp (env);
-	if (unlikely (!top_interp.interpret (topDict)))   goto fail;
+	もし (unlikely (!top_interp.interpret (topDict)))   goto fail;
       }
 
-      if (is_predef_charset ())
+      もし (is_predef_charset ())
 	charset = &Null (Charset);
-      else
+      否则
       {
 	charset = &StructAtOffsetOrNull<Charset> (cff, topDict.CharsetOffset, sc, &num_charset_entries);
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	もし (unlikely (charset == &Null (Charset)))   goto fail;
       }
 
       fdCount = 1;
-      if (is_CID ())
+      もし (is_CID ())
       {
 	fdArray = &StructAtOffsetOrNull<CFF1FDArray> (cff, topDict.FDArrayOffset, sc);
 	fdSelect = &StructAtOffsetOrNull<CFF1FDSelect> (cff, topDict.FDSelectOffset, sc, fdArray->count);
-	if (unlikely (fdArray == &Null (CFF1FDArray) ||
+	もし (unlikely (fdArray == &Null (CFF1FDArray) ||
 		      fdSelect == &Null (CFF1FDSelect)))
 	  goto fail;
 
 	fdCount = fdArray->count;
       }
-      else
+      否则
       {
 	fdArray = &Null (CFF1FDArray);
 	fdSelect = &Null (CFF1FDSelect);
       }
 
       encoding = &Null (Encoding);
-      if (is_CID ())
+      もし (is_CID ())
       {
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	もし (unlikely (charset == &Null (Charset)))   goto fail;
       }
-      else
+      否则
       {
-	if (!is_predef_encoding ())
+	もし (!is_predef_encoding ())
 	{
 	  encoding = &StructAtOffsetOrNull<Encoding> (cff, topDict.EncodingOffset, sc);
-	  if (unlikely (encoding == &Null (Encoding)))   goto fail;
+	  もし (unlikely (encoding == &Null (Encoding)))   goto fail;
 	}
       }
 
       stringIndex = &StructAtOffsetOrNull<CFF1StringIndex> (topDictIndex, topDictIndex->get_size (), sc);
-      if (stringIndex == &Null (CFF1StringIndex))
+      もし (stringIndex == &Null (CFF1StringIndex))
         goto fail;
 
       globalSubrs = &StructAtOffsetOrNull<CFF1Subrs> (stringIndex, stringIndex->get_size (), sc);
       charStrings = &StructAtOffsetOrNull<CFF1CharStrings> (cff, topDict.charStringsOffset, sc);
-      if (charStrings == &Null (CFF1CharStrings))
+      もし (charStrings == &Null (CFF1CharStrings))
         goto fail;
 
       num_glyphs = charStrings->count;
-      if (num_glyphs != sc.get_num_glyphs ())
+      もし (num_glyphs != sc.get_num_glyphs ())
         goto fail;
 
-      if (unlikely (!privateDicts.resize (fdCount)))
+      もし (unlikely (!privateDicts.resize (fdCount)))
         goto fail;
-      for (unsigned int i = 0; i < fdCount; i++)
+      ために (unsigned 整数 i = 0; i < fdCount; i++)
 	privateDicts[i].init ();
 
       // parse CID font dicts and gather private dicts
-      if (is_CID ())
+      もし (is_CID ())
       {
-	for (unsigned int i = 0; i < fdCount; i++)
+	ために (unsigned 整数 i = 0; i < fdCount; i++)
 	{
 	  hb_ubytes_t fontDictStr = (*fdArray)[i];
-	  if (unlikely (!fontDictStr.sanitize (&sc)))   goto fail;
+	  もし (unlikely (!fontDictStr.sanitize (&sc)))   goto fail;
 	  hb_barrier ();
 	  cff1_font_dict_values_t *font;
 	  cff1_top_dict_interp_env_t env (fontDictStr);
 	  cff1_font_dict_interpreter_t font_interp (env);
 	  font = fontDicts.push ();
-	  if (unlikely (fontDicts.in_error ()))   goto fail;
+	  もし (unlikely (fontDicts.in_error ()))   goto fail;
 
 	  font->init ();
-	  if (unlikely (!font_interp.interpret (*font)))   goto fail;
+	  もし (unlikely (!font_interp.interpret (*font)))   goto fail;
 	  PRIVDICTVAL *priv = &privateDicts[i];
 	  const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	  if (unlikely (font->privateDictInfo.size &&
+	  もし (unlikely (font->privateDictInfo.size &&
 			privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
 	  num_interp_env_t env2 (privDictStr);
 	  dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env2);
 	  priv->init ();
-	  if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	  もし (unlikely (!priv_interp.interpret (*priv)))   goto fail;
 
 	  priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
 	}
       }
-      else  /* non-CID */
+      否则  /* non-CID */
       {
 	cff1_top_dict_values_t *font = &topDict;
 	PRIVDICTVAL *priv = &privateDicts[0];
 
 	const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	if (font->privateDictInfo.size &&
+	もし (font->privateDictInfo.size &&
 	    unlikely (privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
 	num_interp_env_t env (privDictStr);
 	dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env);
 	priv->init ();
-	if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	もし (unlikely (!priv_interp.interpret (*priv)))   goto fail;
 
 	priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
 	hb_barrier ();
       }
 
-      return;
+      戻る;
 
       fail:
         _fini ();
@@ -1224,37 +1224,37 @@ struct cff1
       blob = nullptr;
     }
 
-    hb_blob_t *get_blob () const { return blob; }
+    hb_blob_t *get_blob () const { 戻る blob; }
 
-    bool is_valid () const { return blob; }
-    bool   is_CID () const { return topDict.is_CID (); }
+    bool is_valid () const { 戻る blob; }
+    bool   is_CID () const { 戻る topDict.is_CID (); }
 
-    bool is_predef_charset () const { return topDict.CharsetOffset <= ExpertSubsetCharset; }
+    bool is_predef_charset () const { 戻る topDict.CharsetOffset <= ExpertSubsetCharset; }
 
-    unsigned int std_code_to_glyph (hb_codepoint_t code) const
+    unsigned 整数 std_code_to_glyph (hb_codepoint_t code) const
     {
       hb_codepoint_t sid = lookup_standard_encoding_for_sid (code);
-      if (unlikely (sid == CFF_UNDEF_SID))
-	return 0;
+      もし (unlikely (sid == CFF_UNDEF_SID))
+	戻る 0;
 
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else if ((topDict.CharsetOffset == ISOAdobeCharset)
-	      && (code <= 228 /*zcaron*/)) return sid;
-      return 0;
+      もし (charset != &Null (Charset))
+	戻る charset->get_glyph (sid, num_glyphs);
+      否则 もし ((topDict.CharsetOffset == ISOAdobeCharset)
+	      && (code <= 228 /*zcaron*/)) 戻る sid;
+      戻る 0;
     }
 
-    bool is_predef_encoding () const { return topDict.EncodingOffset <= ExpertEncoding; }
+    bool is_predef_encoding () const { 戻る topDict.EncodingOffset <= ExpertEncoding; }
 
     hb_codepoint_t glyph_to_code (hb_codepoint_t glyph,
 				  code_pair_t *glyph_to_sid_cache = nullptr) const
     {
-      if (encoding != &Null (Encoding))
-	return encoding->get_code (glyph);
-      else
+      もし (encoding != &Null (Encoding))
+	戻る encoding->get_code (glyph);
+      否则
       {
 	hb_codepoint_t sid = glyph_to_sid (glyph, glyph_to_sid_cache);
-	if (sid == 0) return 0;
+	もし (sid == 0) 戻る 0;
 	hb_codepoint_t code = 0;
 	switch (topDict.EncodingOffset)
 	{
@@ -1267,37 +1267,37 @@ struct cff1
 	default:
 	  break;
 	}
-	return code;
+	戻る code;
       }
     }
 
     glyph_to_sid_map_t *create_glyph_to_sid_map () const
     {
-      if (charset != &Null (Charset))
+      もし (charset != &Null (Charset))
       {
 	auto *mapping = (glyph_to_sid_map_t *) hb_malloc (sizeof (glyph_to_sid_map_t));
-	if (unlikely (!mapping)) return nullptr;
+	もし (unlikely (!mapping)) 戻る nullptr;
 	mapping = new (mapping) glyph_to_sid_map_t ();
 	mapping->push (code_pair_t {0, 1});
 	charset->collect_glyph_to_sid_map (mapping, num_glyphs);
-	return mapping;
+	戻る mapping;
       }
-      else
-	return nullptr;
+      否则
+	戻る nullptr;
     }
 
     hb_codepoint_t glyph_to_sid (hb_codepoint_t glyph,
 				 code_pair_t *cache = nullptr) const
     {
-      if (charset != &Null (Charset))
-	return charset->get_sid (glyph, num_glyphs, cache);
-      else
+      もし (charset != &Null (Charset))
+	戻る charset->get_sid (glyph, num_glyphs, cache);
+      否则
       {
 	hb_codepoint_t sid = 0;
 	switch (topDict.CharsetOffset)
 	{
 	  case ISOAdobeCharset:
-	    if (glyph <= 228 /*zcaron*/) sid = glyph;
+	    もし (glyph <= 228 /*zcaron*/) sid = glyph;
 	    break;
 	  case ExpertCharset:
 	    sid = lookup_expert_charset_for_sid (glyph);
@@ -1308,21 +1308,21 @@ struct cff1
 	  default:
 	    break;
 	}
-	return sid;
+	戻る sid;
       }
     }
 
     hb_codepoint_t sid_to_glyph (hb_codepoint_t sid) const
     {
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else
+      もし (charset != &Null (Charset))
+	戻る charset->get_glyph (sid, num_glyphs);
+      否则
       {
 	hb_codepoint_t glyph = 0;
 	switch (topDict.CharsetOffset)
 	{
 	  case ISOAdobeCharset:
-	    if (sid <= 228 /*zcaron*/) glyph = sid;
+	    もし (sid <= 228 /*zcaron*/) glyph = sid;
 	    break;
 	  case ExpertCharset:
 	    glyph = lookup_expert_charset_for_glyph (sid);
@@ -1333,7 +1333,7 @@ struct cff1
 	  default:
 	    break;
 	}
-	return glyph;
+	戻る glyph;
       }
     }
 
@@ -1351,15 +1351,15 @@ struct cff1
     const CFF1CharStrings   *charStrings = nullptr;
     const CFF1FDArray       *fdArray = nullptr;
     const CFF1FDSelect      *fdSelect = nullptr;
-    unsigned int	     fdCount = 0;
+    unsigned 整数	     fdCount = 0;
 
     cff1_top_dict_values_t   topDict;
     hb_vector_t<cff1_font_dict_values_t>
 			     fontDicts;
     hb_vector_t<PRIVDICTVAL> privateDicts;
 
-    unsigned int	     num_glyphs = 0;
-    unsigned int	     num_charset_entries = 0;
+    unsigned 整数	     num_glyphs = 0;
+    unsigned 整数	     num_charset_entries = 0;
   };
 
   struct accelerator_t : accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t>
@@ -1368,13 +1368,13 @@ struct cff1
     {
       glyph_names.set_relaxed (nullptr);
 
-      if (!is_valid ()) return;
-      if (is_CID ()) return;
+      もし (!is_valid ()) 戻る;
+      もし (is_CID ()) 戻る;
     }
     ~accelerator_t ()
     {
       hb_sorted_vector_t<gname_t> *names = glyph_names.get_relaxed ();
-      if (names)
+      もし (names)
       {
 	names->fini ();
 	hb_free (names);
@@ -1382,75 +1382,75 @@ struct cff1
     }
 
     bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+			 char *buf, unsigned 整数 buf_len) const
     {
-      if (unlikely (glyph >= num_glyphs)) return false;
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (unlikely (!buf_len)) return true;
+      もし (unlikely (glyph >= num_glyphs)) 戻る false;
+      もし (unlikely (!is_valid ())) 戻る false;
+      もし (is_CID()) 戻る false;
+      もし (unlikely (!buf_len)) 戻る true;
       hb_codepoint_t sid = glyph_to_sid (glyph);
       const char *str;
       size_t str_len;
-      if (sid < cff1_std_strings_length)
+      もし (sid < cff1_std_strings_length)
       {
 	hb_bytes_t byte_str = cff1_std_strings (sid);
 	str = byte_str.arrayZ;
 	str_len = byte_str.length;
       }
-      else
+      否则
       {
 	hb_ubytes_t ubyte_str = (*stringIndex)[sid - cff1_std_strings_length];
 	str = (const char *)ubyte_str.arrayZ;
 	str_len = ubyte_str.length;
       }
-      if (!str_len) return false;
-      unsigned int len = hb_min (buf_len - 1, str_len);
+      もし (!str_len) 戻る false;
+      unsigned 整数 len = hb_min (buf_len - 1, str_len);
       strncpy (buf, (const char*)str, len);
       buf[len] = '\0';
-      return true;
+      戻る true;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
+    bool get_glyph_from_name (const char *name, 整数 len,
 			      hb_codepoint_t *glyph) const
     {
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (len < 0) len = strlen (name);
-      if (unlikely (!len)) return false;
+      もし (unlikely (!is_valid ())) 戻る false;
+      もし (is_CID()) 戻る false;
+      もし (len < 0) len = strlen (name);
+      もし (unlikely (!len)) 戻る false;
 
     retry:
       hb_sorted_vector_t<gname_t> *names = glyph_names.get_acquire ();
-      if (unlikely (!names))
+      もし (unlikely (!names))
       {
 	names = (hb_sorted_vector_t<gname_t> *) hb_calloc (1, sizeof (hb_sorted_vector_t<gname_t>));
-	if (likely (names))
+	もし (likely (names))
 	{
 	  names->init ();
 	  /* TODO */
 
 	  /* fill glyph names */
 	  code_pair_t glyph_to_sid_cache {0, HB_CODEPOINT_INVALID};
-	  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+	  ために (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
 	  {
 	    hb_codepoint_t	sid = glyph_to_sid (gid, &glyph_to_sid_cache);
 	    gname_t	gname;
 	    gname.sid = sid;
-	    if (sid < cff1_std_strings_length)
+	    もし (sid < cff1_std_strings_length)
 	      gname.name = cff1_std_strings (sid);
-	    else
+	    否则
 	    {
 	      hb_ubytes_t	ustr = (*stringIndex)[sid - cff1_std_strings_length];
 	      gname.name = hb_bytes_t ((const char*) ustr.arrayZ, ustr.length);
 	    }
-	    if (unlikely (!gname.name.arrayZ))
+	    もし (unlikely (!gname.name.arrayZ))
 	      gname.name = hb_bytes_t ("", 0); /* To avoid nullptr. */
 	    names->push (gname);
 	  }
 	  names->qsort ();
 	}
-	if (unlikely (!glyph_names.cmpexch (nullptr, names)))
+	もし (unlikely (!glyph_names.cmpexch (nullptr, names)))
 	{
-	  if (names)
+	  もし (names)
 	  {
 	    names->fini ();
 	    hb_free (names);
@@ -1461,11 +1461,11 @@ struct cff1
 
       gname_t key = { hb_bytes_t (name, len), 0 };
       const gname_t *gname = names ? names->bsearch (key) : nullptr;
-      if (!gname) return false;
+      もし (!gname) 戻る false;
       hb_codepoint_t gid = sid_to_glyph (gname->sid);
-      if (!gid && gname->sid) return false;
+      もし (!gid && gname->sid) 戻る false;
       *glyph = gid;
-      return true;
+      戻る true;
     }
 
     HB_INTERNAL bool get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget = nullptr) const;
@@ -1477,17 +1477,17 @@ struct cff1
       hb_bytes_t	name;
       uint16_t		sid;
 
-      static int cmp (const void *a_, const void *b_)
+      static 整数 cmp (const void *a_, const void *b_)
       {
 	const gname_t *a = (const gname_t *)a_;
 	const gname_t *b = (const gname_t *)b_;
 	unsigned minlen = hb_min (a->name.length, b->name.length);
-	int ret = strncmp (a->name.arrayZ, b->name.arrayZ, minlen);
-	if (ret) return ret;
-	return a->name.length - b->name.length;
+	整数 ret = strncmp (a->name.arrayZ, b->name.arrayZ, minlen);
+	もし (ret) 戻る ret;
+	戻る a->name.length - b->name.length;
       }
 
-      int cmp (const gname_t &a) const { return cmp (&a, this); }
+      整数 cmp (const gname_t &a) const { 戻る cmp (&a, this); }
     };
 
     mutable hb_atomic_t<hb_sorted_vector_t<gname_t> *> glyph_names;
@@ -1500,7 +1500,7 @@ struct cff1
     accelerator_subset_t (hb_face_t *face) : SUPER (face) {}
     ~accelerator_subset_t ()
     {
-      if (cff_accelerator)
+      もし (cff_accelerator)
 	cff_subset_accelerator_t::destroy (cff_accelerator);
     }
 
@@ -1541,11 +1541,11 @@ struct cff1_subset_accelerator_t : cff1::accelerator_subset_t {
 
   void depend (hb_depend_data_builder_t *builder) const
   {
-    if (!is_valid ()) return;
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+    もし (!is_valid ()) 戻る;
+    ために (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
     {
       hb_codepoint_t base_gid, accent_gid;
-      if (get_seac_components (gid, &base_gid, &accent_gid))
+      もし (get_seac_components (gid, &base_gid, &accent_gid))
       {
         builder->add_depend (gid, HB_TAG('C','F','F',' '), base_gid);
         builder->add_depend (gid, HB_TAG('C','F','F',' '), accent_gid);

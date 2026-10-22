@@ -7,7 +7,7 @@ static inline bool
 hb_blob_is_gzip (const char *data,
                  unsigned    data_len)
 {
-  return data_len >= 3 &&
+  戻る data_len >= 3 &&
          (unsigned char) data[0] == 0x1Fu &&
          (unsigned char) data[1] == 0x8Bu &&
          (unsigned char) data[2] == 0x08u;
@@ -18,16 +18,16 @@ hb_gzip_get_uncompressed_size (const char *data,
                                unsigned    data_len,
                                uint32_t   *size)
 {
-  if (data_len < 4)
-    return false;
+  もし (data_len < 4)
+    戻る false;
 
   const unsigned char *trailer = (const unsigned char *) data + data_len - 4;
-  if (size)
+  もし (size)
     *size = (uint32_t) trailer[0] |
             ((uint32_t) trailer[1] << 8) |
             ((uint32_t) trailer[2] << 16) |
             ((uint32_t) trailer[3] << 24);
-  return true;
+  戻る true;
 }
 
 HB_INTERNAL hb_blob_t *

@@ -41,17 +41,17 @@ struct SettingName
 {
   friend struct FeatureName;
 
-  int cmp (hb_aat_layout_feature_selector_t key) const
-  { return (int) key - (int) setting; }
+  整数 cmp (hb_aat_layout_feature_selector_t key) const
+  { 戻る (整数) key - (整数) setting; }
 
   hb_aat_layout_feature_selector_t get_selector () const
-  { return (hb_aat_layout_feature_selector_t) (unsigned) setting; }
+  { 戻る (hb_aat_layout_feature_selector_t) (unsigned) setting; }
 
   hb_aat_layout_feature_selector_info_t get_info (hb_aat_layout_feature_selector_t default_selector) const
   {
-    return {
+    戻る {
       nameIndex,
-      (hb_aat_layout_feature_selector_t) (unsigned int) setting,
+      (hb_aat_layout_feature_selector_t) (unsigned 整数) setting,
       default_selector == HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID
 	? (hb_aat_layout_feature_selector_t) (setting + 1)
 	: default_selector,
@@ -77,8 +77,8 @@ struct feat;
 
 struct FeatureName
 {
-  int cmp (hb_aat_layout_feature_type_t key) const
-  { return (int) key - (int) feature; }
+  整数 cmp (hb_aat_layout_feature_type_t key) const
+  { 戻る (整数) key - (整数) feature; }
 
   enum {
     Exclusive	= 0x8000,	/* If set, the feature settings are mutually exclusive. */
@@ -94,10 +94,10 @@ struct FeatureName
 				 * as the default. */
   };
 
-  unsigned int get_selector_infos (unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+  unsigned 整数 get_selector_infos (unsigned 整数                           start_offset,
+				   unsigned 整数                          *selectors_count, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
-				   unsigned int                          *pdefault_index,  /* OUT.     May be NULL. */
+				   unsigned 整数                          *pdefault_index,  /* OUT.     May be NULL. */
 				   const void *base) const
   {
     hb_array_t< const SettingName> settings_table = (base+settingTableZ).as_array (nSettings);
@@ -105,34 +105,34 @@ struct FeatureName
     static_assert (Index::NOT_FOUND_INDEX == HB_AAT_LAYOUT_NO_SELECTOR_INDEX, "");
 
     hb_aat_layout_feature_selector_t default_selector = HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID;
-    unsigned int default_index = Index::NOT_FOUND_INDEX;
-    if (featureFlags & Exclusive)
+    unsigned 整数 default_index = Index::NOT_FOUND_INDEX;
+    もし (featureFlags & Exclusive)
     {
       default_index = (featureFlags & NotDefault) ? featureFlags & IndexMask : 0;
       default_selector = settings_table[default_index].get_selector ();
     }
-    if (pdefault_index)
+    もし (pdefault_index)
       *pdefault_index = default_index;
 
-    if (selectors_count && selectors)
+    もし (selectors_count && selectors)
     {
       + settings_table.sub_array (start_offset, selectors_count)
-      | hb_map ([=] (const SettingName& setting) { return setting.get_info (default_selector); })
+      | hb_map ([=] (const SettingName& setting) { 戻る setting.get_info (default_selector); })
       | hb_sink (hb_array (selectors, *selectors_count))
       ;
     }
-    return settings_table.length;
+    戻る settings_table.length;
   }
 
   hb_aat_layout_feature_type_t get_feature_type () const
-  { return (hb_aat_layout_feature_type_t) (unsigned int) feature; }
+  { 戻る (hb_aat_layout_feature_type_t) (unsigned 整数) feature; }
 
-  hb_ot_name_id_t get_feature_name_id () const { return nameIndex; }
+  hb_ot_name_id_t get_feature_name_id () const { 戻る nameIndex; }
 
-  bool is_exclusive () const { return featureFlags & Exclusive; }
+  bool is_exclusive () const { 戻る featureFlags & Exclusive; }
 
   /* A FeatureName with no settings is meaningless */
-  bool has_data () const { return nSettings; }
+  bool has_data () const { 戻る nSettings; }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -162,38 +162,38 @@ struct feat
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_feat;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { 戻る version.to_int (); }
 
-  unsigned int get_feature_types (unsigned int                  start_offset,
-				  unsigned int                 *count,
+  unsigned 整数 get_feature_types (unsigned 整数                  start_offset,
+				  unsigned 整数                 *count,
 				  hb_aat_layout_feature_type_t *features) const
   {
-    if (count && features)
+    もし (count && features)
     {
       + namesZ.as_array (featureNameCount).sub_array (start_offset, count)
       | hb_map (&FeatureName::get_feature_type)
       | hb_sink (hb_array (features, *count))
       ;
     }
-    return featureNameCount;
+    戻る featureNameCount;
   }
 
   bool exposes_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return get_feature (feature_type).has_data (); }
+  { 戻る get_feature (feature_type).has_data (); }
 
   const FeatureName& get_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return namesZ.bsearch (featureNameCount, feature_type); }
+  { 戻る namesZ.bsearch (featureNameCount, feature_type); }
 
   hb_ot_name_id_t get_feature_name_id (hb_aat_layout_feature_type_t feature) const
-  { return get_feature (feature).get_feature_name_id (); }
+  { 戻る get_feature (feature).get_feature_name_id (); }
 
-  unsigned int get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
-				   unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+  unsigned 整数 get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
+				   unsigned 整数                           start_offset,
+				   unsigned 整数                          *selectors_count, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
-				   unsigned int                          *default_index    /* OUT.     May be NULL. */) const
+				   unsigned 整数                          *default_index    /* OUT.     May be NULL. */) const
   {
-    return get_feature (feature_type).get_selector_infos (start_offset, selectors_count, selectors,
+    戻る get_feature (feature_type).get_selector_infos (start_offset, selectors_count, selectors,
 							  default_index, this);
   }
 

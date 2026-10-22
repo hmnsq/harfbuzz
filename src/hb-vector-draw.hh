@@ -68,7 +68,7 @@ struct hb_vector_draw_t
 
   bool begin_path_command ()
   {
-    return likely (budget_remaining >= 0 && !path.in_error ());
+    戻る likely (budget_remaining >= 0 && !path.in_error ());
   }
 
   void end_path_command ()
@@ -76,7 +76,7 @@ struct hb_vector_draw_t
     /* The serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (unlikely (path.in_error ()))
+    もし (unlikely (path.in_error ()))
       budget_remaining = 0;
   }
 
@@ -88,7 +88,7 @@ struct hb_vector_draw_t
     path.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
+  unsigned get_precision () const { 戻る path.precision; }
   hb_blob_t *recycled_blob = nullptr;
 
   void new_path ()
@@ -98,7 +98,7 @@ struct hb_vector_draw_t
 
   void flush_path ()
   {
-    if (!path.length) return;
+    もし (!path.length) 戻る;
     switch (format)
     {
       case HB_VECTOR_FORMAT_PDF: flush_path_pdf (); break;
@@ -111,7 +111,7 @@ struct hb_vector_draw_t
   void flush_path_pdf ()
   {
     unsigned a = hb_color_get_alpha (foreground);
-    if (a < 255)
+    もし (a < 255)
     {
       unsigned gs_idx = pdf_extgstate_count++;
       body.append_str ("/GS");

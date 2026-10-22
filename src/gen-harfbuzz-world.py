@@ -11,7 +11,7 @@ placeholders that get replaced with #include lines for that group.
 
 import os, sys, shutil, pathlib
 
-if len(sys.argv) < 4:
+もし len(sys.argv) < 4:
     sys.exit(__doc__)
 
 OUTPUT = sys.argv[1]
@@ -21,8 +21,8 @@ TEMPLATE = sys.argv[3]
 # Parse --TAG file... groups
 groups = {}
 current_tag = None
-for arg in sys.argv[4:]:
-    if arg.startswith('--'):
+ために arg in sys.argv[4:]:
+    もし arg.startswith('--'):
         current_tag = arg[2:]
         groups[current_tag] = []
     elif current_tag is not None:
@@ -32,20 +32,20 @@ for arg in sys.argv[4:]:
 def make_includes(files):
     seen = set()
     lines = []
-    for f in sorted(files):
-        if not f.endswith('.cc'):
+    ために f in sorted(files):
+        もし not f.endswith('.cc'):
             continue
         rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
-        if rel not in seen:
+        もし rel not in seen:
             seen.add(rel)
             lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+    戻る '\n'.join(lines)
 
 # Read template and substitute
 with open(TEMPLATE, 'r') as f:
     content = f.read()
 
-for tag, files in groups.items():
+ために tag, files in groups.items():
     placeholder = '%%{}%%'.format(tag)
     content = content.replace(placeholder, make_includes(files))
 
@@ -56,7 +56,7 @@ with open(OUTPUT, 'w') as f:
 baseline = os.path.join(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
 try:
     with open(baseline, 'r') as b:
-        if b.read() == content:
+        もし b.read() == content:
             sys.exit(0)
 except FileNotFoundError:
     pass
@@ -65,5 +65,5 @@ try:
     shutil.copyfile(OUTPUT, baseline)
 except OSError:
     import filecmp
-    if os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
+    もし os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
         sys.exit('{} is out of date; regenerate with a writable source tree'.format(baseline))

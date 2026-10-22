@@ -37,12 +37,12 @@ struct MarkLigPosFormat1_2
                   markCoverage.sanitize (c, this) &&
                   ligatureCoverage.sanitize (c, this) &&
                   markArray.sanitize (c, this) &&
-                  ligatureArray.sanitize (c, this, (unsigned int) classCount));
+                  ligatureArray.sanitize (c, this, (unsigned 整数) classCount));
   }
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    return (this+markCoverage).intersects (glyphs) &&
+    戻る (this+markCoverage).intersects (glyphs) &&
            (this+ligatureCoverage).intersects (glyphs);
   }
 
@@ -61,14 +61,14 @@ struct MarkLigPosFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+ligatureCoverage).collect_coverage (c->input))) return;
+    もし (unlikely (!(this+markCoverage).collect_coverage (c->input))) 戻る;
+    もし (unlikely (!(this+ligatureCoverage).collect_coverage (c->input))) 戻る;
   }
 
   void collect_second_glyphs (hb_set_digest_t *digest) const
   { (this+ligatureCoverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+markCoverage; }
+  const Coverage &get_coverage () const { 戻る this+markCoverage; }
 
   static inline bool accept (hb_buffer_t *buffer, unsigned idx)
   {
@@ -77,7 +77,7 @@ struct MarkLigPosFormat1_2
      * case the mark should attach to that ligature.
      * https://github.com/harfbuzz/harfbuzz/issues/4969
      * Reject others... */
-    return !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
+    戻る !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
 	   0 == _hb_glyph_info_get_lig_comp (&buffer->info[idx]);
   }
 
@@ -85,38 +85,38 @@ struct MarkLigPosFormat1_2
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark_index == NOT_COVERED)) return_trace (false);
+    unsigned 整数 mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
+    もし (likely (mark_index == NOT_COVERED)) return_trace (false);
 
     /* Now we search backwards for a non-mark glyph */
 
     auto &skippy_iter = c->iter_input;
     skippy_iter.set_lookup_props (LookupFlag::IgnoreMarks);
 
-    if (c->last_base_until > buffer->idx)
+    もし (c->last_base_until > buffer->idx)
     {
       c->last_base_until = 0;
       c->last_base = -1;
     }
     unsigned j;
-    for (j = buffer->idx; j > c->last_base_until; j--)
+    ために (j = buffer->idx; j > c->last_base_until; j--)
     {
       auto match = skippy_iter.match (buffer->info[j - 1]);
-      if (match == skippy_iter.MATCH)
+      もし (match == skippy_iter.MATCH)
       {
         // https://github.com/harfbuzz/harfbuzz/issues/4124
-	if (!accept (buffer, j - 1) &&
+	もし (!accept (buffer, j - 1) &&
 	    NOT_COVERED == (this+ligatureCoverage).get_coverage  (buffer->info[j - 1].codepoint))
 	  match = skippy_iter.SKIP;
       }
-      if (match == skippy_iter.MATCH)
+      もし (match == skippy_iter.MATCH)
       {
 	c->last_base = (signed) j - 1;
 	break;
       }
     }
     c->last_base_until = buffer->idx;
-    if (c->last_base == -1)
+    もし (c->last_base == -1)
     {
       buffer->unsafe_to_concat_from_outbuffer (0, buffer->idx + 1);
       return_trace (false);
@@ -127,8 +127,8 @@ struct MarkLigPosFormat1_2
     /* Checking that matched glyph is actually a ligature by GDEF is too strong; disabled */
     //if (!_hb_glyph_info_is_ligature (&buffer->info[idx])) { return_trace (false); }
 
-    unsigned int lig_index = (this+ligatureCoverage).get_coverage  (buffer->info[idx].codepoint);
-    if (lig_index == NOT_COVERED)
+    unsigned 整数 lig_index = (this+ligatureCoverage).get_coverage  (buffer->info[idx].codepoint);
+    もし (lig_index == NOT_COVERED)
     {
       buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
       return_trace (false);
@@ -138,8 +138,8 @@ struct MarkLigPosFormat1_2
     const AnchorMatrix<Types, HBUINT16>& lig_attach = lig_array[lig_index];
 
     /* Find component to attach to */
-    unsigned int comp_count = lig_attach.rows;
-    if (unlikely (!comp_count))
+    unsigned 整数 comp_count = lig_attach.rows;
+    もし (unlikely (!comp_count))
     {
       buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
       return_trace (false);
@@ -149,13 +149,13 @@ struct MarkLigPosFormat1_2
      * is identical to the ligature ID of the found ligature.  If yes, we
      * can directly use the component index.  If not, we attach the mark
      * glyph to the last component of the ligature. */
-    unsigned int comp_index;
-    unsigned int lig_id = _hb_glyph_info_get_lig_id (&buffer->info[idx]);
-    unsigned int mark_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-    unsigned int mark_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
-    if (lig_id && lig_id == mark_id && mark_comp > 0)
+    unsigned 整数 comp_index;
+    unsigned 整数 lig_id = _hb_glyph_info_get_lig_id (&buffer->info[idx]);
+    unsigned 整数 mark_id = _hb_glyph_info_get_lig_id (&buffer->cur());
+    unsigned 整数 mark_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
+    もし (lig_id && lig_id == mark_id && mark_comp > 0)
       comp_index = hb_min (comp_count, _hb_glyph_info_get_lig_comp (&buffer->cur())) - 1;
-    else
+    否则
       comp_index = comp_count - 1;
 
     return_trace ((this+markArray).apply (c, mark_index, comp_index, lig_attach, classCount, idx));
@@ -168,13 +168,13 @@ struct MarkLigPosFormat1_2
     const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    もし (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
     hb_map_t klass_mapping;
     Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
+    もし (!klass_mapping.get_population ()) return_trace (false);
     out->classCount = klass_mapping.get_population ();
 
     auto mark_iter =
@@ -188,16 +188,16 @@ struct MarkLigPosFormat1_2
     | hb_map_retains_sorting (glyph_map)
     ;
 
-    if (!out->markCoverage.serialize_serialize (c->serializer, new_mark_coverage))
+    もし (!out->markCoverage.serialize_serialize (c->serializer, new_mark_coverage))
       return_trace (false);
 
-    if (unlikely (!out->markArray.serialize_subset (c, markArray, this,
+    もし (unlikely (!out->markArray.serialize_subset (c, markArray, this,
 						    (this+markCoverage).iter (),
 						    &klass_mapping)))
       return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_lig_coverage;
-    if (!out->ligatureArray.serialize_subset (c, ligatureArray, this,
+    もし (!out->ligatureArray.serialize_subset (c, ligatureArray, this,
 					      hb_iter (this+ligatureCoverage),
 					      classCount, &klass_mapping, new_lig_coverage))
       return_trace (false);

@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#もし !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -116,7 +116,7 @@ hb_set_add_range (hb_set_t       *set,
 HB_EXTERN void
 hb_set_add_sorted_array (hb_set_t             *set,
 		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints);
+		         unsigned 整数          num_codepoints);
 
 HB_EXTERN void
 hb_set_del (hb_set_t       *set,
@@ -135,7 +135,7 @@ HB_EXTERN hb_bool_t
 hb_set_intersects (const hb_set_t *set,
 		   const hb_set_t *other);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_set_hash (const hb_set_t *set);
 
 HB_EXTERN hb_bool_t
@@ -162,7 +162,7 @@ HB_EXTERN void
 hb_set_symmetric_difference (hb_set_t       *set,
 			     const hb_set_t *other);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_set_get_population (const hb_set_t *set);
 
 /* Returns HB_SET_VALUE_INVALID if set empty. */
@@ -196,11 +196,11 @@ hb_set_previous_range (const hb_set_t *set,
 		       hb_codepoint_t *last);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_set_next_many (const hb_set_t *set,
 		  hb_codepoint_t  codepoint,
 		  hb_codepoint_t *out,
-		  unsigned int    size);
+		  unsigned 整数    size);
 
 HB_END_DECLS
 

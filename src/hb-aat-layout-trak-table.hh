@@ -47,9 +47,9 @@ struct TrackTableEntry
 {
   friend struct TrackData;
 
-  float get_track_value () const { return track.to_float (); }
+  float get_track_value () const { 戻る track.to_float (); }
 
-  float interpolate_at (unsigned int idx,
+  float interpolate_at (unsigned 整数 idx,
 			float ptem,
 			const void *base,
 			hb_array_t<const F16DOT16> size_table) const
@@ -58,18 +58,18 @@ struct TrackTableEntry
 
     float s0 = size_table[idx].to_float ();
     float s1 = size_table[idx + 1].to_float ();
-    int v0 = values[idx];
-    int v1 = values[idx + 1];
+    整数 v0 = values[idx];
+    整数 v1 = values[idx + 1];
 
     // Deal with font bugs.
-    if (unlikely (s1 < s0))
+    もし (unlikely (s1 < s0))
     { hb_swap (s0, s1); hb_swap (v0, v1); }
-    if (unlikely (ptem < s0)) return v0;
-    if (unlikely (ptem > s1)) return v1;
-    if (unlikely (s0 == s1)) return (v0 + v1) * 0.5f;
+    もし (unlikely (ptem < s0)) 戻る v0;
+    もし (unlikely (ptem > s1)) 戻る v1;
+    もし (unlikely (s0 == s1)) 戻る (v0 + v1) * 0.5f;
 
     float t = (ptem - s0) / (s1 - s0);
-    return v0 + t * (v1 - v0);
+    戻る v0 + t * (v1 - v0);
   }
 
   float get_value (float ptem,
@@ -78,36 +78,36 @@ struct TrackTableEntry
   {
     const FWORD *values = (base+valuesZ).arrayZ;
 
-    unsigned int n_sizes = size_table.length;
+    unsigned 整数 n_sizes = size_table.length;
 
     /*
      * Choose size.
      */
-    if (!n_sizes) return 0.f;
-    if (n_sizes == 1) return values[0];
+    もし (!n_sizes) 戻る 0.f;
+    もし (n_sizes == 1) 戻る values[0];
 
     // At least two entries.
 
     unsigned i;
-    for (i = 0; i < n_sizes; i++)
-      if (size_table[i].to_float () >= ptem)
+    ために (i = 0; i < n_sizes; i++)
+      もし (size_table[i].to_float () >= ptem)
 	break;
 
     // Boundary conditions.
-    if (i == 0)       return values[0];
-    if (i == n_sizes) return values[n_sizes - 1];
+    もし (i == 0)       戻る values[0];
+    もし (i == n_sizes) 戻る values[n_sizes - 1];
 
     // Exact match.
-    if (size_table[i].to_float () == ptem) return values[i];
+    もし (size_table[i].to_float () == ptem) 戻る values[i];
 
     // Interpolate.
-    return interpolate_at (i - 1, ptem, base, size_table);
+    戻る interpolate_at (i - 1, ptem, base, size_table);
   }
 
   public:
   bool sanitize (hb_sanitize_context_t *c,
 		 const void *base,
-		 unsigned int n_sizes) const
+		 unsigned 整数 n_sizes) const
   {
     TRACE_SANITIZE (this);
     return_trace (likely (c->check_struct (this) &&
@@ -134,8 +134,8 @@ struct TrackData
     unsigned count = nTracks;
     hb_array_t<const F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
 
-    if (!count) return 0.f;
-    if (count == 1) return trackTable[0].get_value (ptem, base, size_table);
+    もし (!count) 戻る 0.f;
+    もし (count == 1) 戻る trackTable[0].get_value (ptem, base, size_table);
 
     // At least two entries.
 
@@ -143,13 +143,13 @@ struct TrackData
     unsigned j = count - 1;
 
     // Find the two entries that track is between.
-    while (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
+    ながら (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
       i++;
-    while (j > 0 && trackTable[j - 1].get_track_value () >= track)
+    ながら (j > 0 && trackTable[j - 1].get_track_value () >= track)
       j--;
 
     // Exact match.
-    if (i == j) return trackTable[i].get_value (ptem, base, size_table);
+    もし (i == j) 戻る trackTable[i].get_value (ptem, base, size_table);
 
     // Interpolate.
 
@@ -160,7 +160,7 @@ struct TrackData
 
     float a = trackTable[i].get_value (ptem, base, size_table);
     float b = trackTable[j].get_value (ptem, base, size_table);
-    return a + t * (b - a);
+    戻る a + t * (b - a);
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -189,28 +189,28 @@ struct trak
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_trak;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { 戻る version.to_int (); }
 
   hb_position_t get_h_tracking (hb_font_t *font, float track = 0.f) const
   {
     float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_x ((this+horizData).get_tracking (this, ptem, track));
+    戻る font->em_scalef_x ((this+horizData).get_tracking (this, ptem, track));
   }
   hb_position_t get_v_tracking (hb_font_t *font, float track = 0.f) const
   {
     float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_y ((this+vertData).get_tracking (this, ptem, track));
+    戻る font->em_scalef_y ((this+vertData).get_tracking (this, ptem, track));
   }
   hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, float track = 0.f) const
   {
 #ifndef HB_NO_STYLE
-    if (!font->face->table.STAT->has_data ())
-      return 0;
-    return HB_DIRECTION_IS_HORIZONTAL (dir) ?
+    もし (!font->face->table.STAT->has_data ())
+      戻る 0;
+    戻る HB_DIRECTION_IS_HORIZONTAL (dir) ?
       get_h_tracking (font, track) :
       get_v_tracking (font, track);
-#else
-    return 0;
+#否则
+    戻る 0;
 #endif
   }
 
@@ -219,20 +219,20 @@ struct trak
     TRACE_APPLY (this);
 
     float ptem = c->font->ptem;
-    if (unlikely (ptem <= 0.f))
+    もし (unlikely (ptem <= 0.f))
     {
       /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
       ptem = HB_CORETEXT_DEFAULT_FONT_SIZE;
     }
 
     hb_buffer_t *buffer = c->buffer;
-    if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    もし (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
     {
       hb_position_t advance_to_add = get_h_tracking (c->font, track);
       foreach_grapheme (buffer, start, end)
 	buffer->pos[start].x_advance = hb_saturate_add (buffer->pos[start].x_advance, advance_to_add);
     }
-    else
+    否则
     {
       hb_position_t advance_to_add = get_v_tracking (c->font, track);
       foreach_grapheme (buffer, start, end)

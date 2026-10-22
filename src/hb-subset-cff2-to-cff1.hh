@@ -97,10 +97,10 @@ struct cff1_subset_plan_from_cff2_t
 
     // Create a simple font name (CFF1 requires a Name INDEX)
     fontName.resize (strlen (CFF1_DEFAULT_FONT_NAME));
-    if (fontName.in_error ()) return false;
+    もし (fontName.in_error ()) 戻る false;
     memcpy (fontName.arrayZ, CFF1_DEFAULT_FONT_NAME, strlen (CFF1_DEFAULT_FONT_NAME));
 
-    return true;
+    戻る true;
   }
 };
 
@@ -155,7 +155,7 @@ struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
     encoder.encode_int (0);    // Supplement
     encoder.encode_op (OpCode_ROS);
 
-    if (encoder.in_error ())
+    もし (encoder.in_error ())
       return_trace (false);
 
     auto bytes = buff.as_bytes ();

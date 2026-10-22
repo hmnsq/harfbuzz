@@ -46,26 +46,26 @@ static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
   static hb_shaper_entry_t *create ()
   {
     char *env = getenv ("HB_SHAPER_LIST");
-    if (!env || !*env)
-      return nullptr;
+    もし (!env || !*env)
+      戻る nullptr;
 
     hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, sizeof (_hb_all_shapers));
-    if (unlikely (!shapers))
-      return nullptr;
+    もし (unlikely (!shapers))
+      戻る nullptr;
 
     hb_memcpy (shapers, _hb_all_shapers, sizeof (_hb_all_shapers));
 
      /* Reorder shaper list to prefer requested shapers. */
-    unsigned int i = 0;
+    unsigned 整数 i = 0;
     char *end, *p = env;
-    for (;;)
+    ために (;;)
     {
       end = strchr (p, ',');
-      if (!end)
+      もし (!end)
 	end = p + strlen (p);
 
-      for (unsigned int j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
-	if (end - p == (int) strlen (shapers[j].name) &&
+      ために (unsigned 整数 j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
+	もし (end - p == (整数) strlen (shapers[j].name) &&
 	    0 == strncmp (shapers[j].name, p, end - p))
 	{
 	  /* Reorder this shaper to position i */
@@ -75,18 +75,18 @@ static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
 	 i++;
 	}
 
-      if (!*end)
+      もし (!*end)
 	break;
-      else
+      否则
 	p = end + 1;
     }
 
     hb_atexit (free_static_shapers);
 
-    return shapers;
+    戻る shapers;
   }
   static void destroy (hb_shaper_entry_t *p) { hb_free (p); }
-  static const hb_shaper_entry_t *get_null ()      { return _hb_all_shapers; }
+  static const hb_shaper_entry_t *get_null ()      { 戻る _hb_all_shapers; }
 } static_shapers;
 
 static inline
@@ -98,5 +98,5 @@ void free_static_shapers ()
 const hb_shaper_entry_t *
 _hb_shapers_get ()
 {
-  return static_shapers.get_unconst ();
+  戻る static_shapers.get_unconst ();
 }

@@ -52,20 +52,20 @@ acc_emit (hb_gpu_draw_t *g,
 	  double p3x, double p3y)
 {
   int64_t *budget = g->get_budget_remaining ();
-  if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
-    return;
+  もし (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
+    戻る;
 
-  if (unlikely (g->num_curves >= HB_GPU_DRAW_MAX_CURVES))
+  もし (unlikely (g->num_curves >= HB_GPU_DRAW_MAX_CURVES))
   {
     g->success = false;
-    return;
+    戻る;
   }
 
   hb_gpu_curve_t c = {p1x, p1y, p2x, p2y, p3x, p3y, contour_start};
-  if (unlikely (!g->curves.push_or_fail (c)))
+  もし (unlikely (!g->curves.push_or_fail (c)))
   {
     g->success = false;
-    return;
+    戻る;
   }
 
   g->num_curves++;
@@ -82,11 +82,11 @@ acc_emit_conic (hb_gpu_draw_t *g,
 		double cx, double cy,
 		double x, double y)
 {
-  if (g->current_x == x && g->current_y == y)
-    return;
+  もし (g->current_x == x && g->current_y == y)
+    戻る;
 
   bool contour_start = g->need_moveto;
-  if (g->need_moveto) {
+  もし (g->need_moveto) {
     g->start_x = g->current_x;
     g->start_y = g->current_y;
     g->need_moveto = false;
@@ -99,8 +99,8 @@ acc_emit_conic (hb_gpu_draw_t *g,
 void
 hb_gpu_draw_t::acc_move_to (double x, double y)
 {
-  if (unlikely (!success))
-    return;
+  もし (unlikely (!success))
+    戻る;
 
   need_moveto = true;
   current_x = x;
@@ -110,8 +110,8 @@ hb_gpu_draw_t::acc_move_to (double x, double y)
 void
 hb_gpu_draw_t::acc_line_to (double x, double y)
 {
-  if (unlikely (!success))
-    return;
+  もし (unlikely (!success))
+    戻る;
 
   acc_emit_conic (this, current_x, current_y, x, y);
 }
@@ -119,8 +119,8 @@ hb_gpu_draw_t::acc_line_to (double x, double y)
 void
 hb_gpu_draw_t::acc_conic_to (double cx, double cy, double x, double y)
 {
-  if (unlikely (!success))
-    return;
+  もし (unlikely (!success))
+    戻る;
 
   acc_emit_conic (this, cx, cy, x, y);
 }
@@ -128,10 +128,10 @@ hb_gpu_draw_t::acc_conic_to (double cx, double cy, double x, double y)
 void
 hb_gpu_draw_t::acc_close_path ()
 {
-  if (unlikely (!success))
-    return;
+  もし (unlikely (!success))
+    戻る;
 
-  if (!need_moveto &&
+  もし (!need_moveto &&
       (current_x != start_x || current_y != start_y))
     acc_line_to (start_x, start_y);
 }
@@ -142,30 +142,30 @@ hb_gpu_draw_t::acc_cubic_to (double c1x, double c1y,
 			       double c2x, double c2y,
 			       double x, double y)
 {
-  if (unlikely (!success))
-    return;
+  もし (unlikely (!success))
+    戻る;
 
   double c0x = current_x, c0y = current_y;
 
-  if (c0x == x && c0y == y &&
+  もし (c0x == x && c0y == y &&
       c1x == x && c1y == y &&
       c2x == x && c2y == y)
-    return;
+    戻る;
 
   /* Degenerate cubic: all control points are collinear.
    * Emit as a line instead of running cu2qu subdivision. */
   double dx = x - c0x, dy = y - c0y;
   double len_sq = dx * dx + dy * dy;
-  if (len_sq > 0.)
+  もし (len_sq > 0.)
   {
     double inv = 1.0 / len_sq;
     double cross1 = (c1x - c0x) * dy - (c1y - c0y) * dx;
     double cross2 = (c2x - c0x) * dy - (c2y - c0y) * dx;
-    if (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
+    もし (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
 	cross2 * cross2 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE)
     {
       acc_line_to (x, y);
-      return;
+      戻る;
     }
   }
 
@@ -246,19 +246,19 @@ hb_gpu_draw_set_budget (hb_draw_funcs_t *, void *draw_data,
   auto *draw = (hb_gpu_draw_t *) draw_data;
   draw->budget = budget;
   draw->recharge_budget ();
-  return true;
+  戻る true;
 }
 
 static int64_t
 hb_gpu_draw_get_budget (hb_draw_funcs_t *, void *draw_data, void *)
 {
-  return ((hb_gpu_draw_t *) draw_data)->budget;
+  戻る ((hb_gpu_draw_t *) draw_data)->budget;
 }
 
 static int64_t *
 hb_gpu_draw_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
 {
-  return ((hb_gpu_draw_t *) draw_data)->get_budget_remaining ();
+  戻る ((hb_gpu_draw_t *) draw_data)->get_budget_remaining ();
 }
 
 static inline void free_static_gpu_draw_funcs ();
@@ -282,7 +282,7 @@ static struct hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_g
 
     hb_atexit (free_static_gpu_draw_funcs);
 
-    return funcs;
+    戻る funcs;
   }
 } static_gpu_draw_funcs;
 
@@ -303,7 +303,7 @@ struct hb_gpu_texel_t
 static hb_position_t
 clamp_to_hb_position (double v)
 {
-  return (hb_position_t) hb_clamp (v,
+  戻る (hb_position_t) hb_clamp (v,
 				   (double) hb_int_min (hb_position_t),
 				   (double) hb_int_max (hb_position_t));
 }
@@ -311,32 +311,32 @@ clamp_to_hb_position (double v)
 static inline int16_t
 quantize (double v)
 {
-  return (int16_t) round (v * HB_GPU_UNITS_PER_EM);
+  戻る (int16_t) round (v * HB_GPU_UNITS_PER_EM);
 }
 
 static inline int16_t
 quantize_down (double v)
 {
-  return (int16_t) floor (v * HB_GPU_UNITS_PER_EM);
+  戻る (int16_t) floor (v * HB_GPU_UNITS_PER_EM);
 }
 
 static inline int16_t
 quantize_up (double v)
 {
-  return (int16_t) ceil (v * HB_GPU_UNITS_PER_EM);
+  戻る (int16_t) ceil (v * HB_GPU_UNITS_PER_EM);
 }
 
 static inline double
-dequantize (int v)
+dequantize (整数 v)
 {
-  return (double) v / HB_GPU_UNITS_PER_EM;
+  戻る (double) v / HB_GPU_UNITS_PER_EM;
 }
 
 static inline bool
 quantize_down_fits_i16 (double v)
 {
   double q = floor (v * HB_GPU_UNITS_PER_EM);
-  return q >= INT16_MIN &&
+  戻る q >= INT16_MIN &&
 	 q <= INT16_MAX;
 }
 
@@ -344,14 +344,14 @@ static inline bool
 quantize_up_fits_i16 (double v)
 {
   double q = ceil (v * HB_GPU_UNITS_PER_EM);
-  return q >= INT16_MIN &&
+  戻る q >= INT16_MIN &&
 	 q <= INT16_MAX;
 }
 
 static inline int16_t
 encode_offset (unsigned offset)
 {
-  return (int16_t) (offset - 32768u);
+  戻る (int16_t) (offset - 32768u);
 }
 
 /* Note: the bounds are computed from the *quantized* control points,
@@ -365,8 +365,8 @@ encode_curve_info (const hb_gpu_curve_t *c)
 {
   hb_gpu_encode_curve_info_t info;
 
-  int p1x = quantize (c->p1x), p2x = quantize (c->p2x), p3x = quantize (c->p3x);
-  int p1y = quantize (c->p1y), p2y = quantize (c->p2y), p3y = quantize (c->p3y);
+  整数 p1x = quantize (c->p1x), p2x = quantize (c->p2x), p3x = quantize (c->p3x);
+  整数 p1y = quantize (c->p1y), p2y = quantize (c->p2y), p3y = quantize (c->p3y);
 
   info.min_x = dequantize (hb_min (hb_min (p1x, p2x), p3x));
   info.max_x = dequantize (hb_max (hb_max (p1x, p2x), p3x));
@@ -379,14 +379,14 @@ encode_curve_info (const hb_gpu_curve_t *c)
   info.vband_lo = 0;
   info.vband_hi = -1;
 
-  return info;
+  戻る info;
 }
 
 static void
 _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
 			  hb_glyph_extents_t *extents)
 {
-  if (unlikely (!draw->success) ||
+  もし (unlikely (!draw->success) ||
       draw->num_curves == 0 ||
       draw->ext_min_x == HUGE_VAL)
   {
@@ -394,7 +394,7 @@ _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
     extents->y_bearing = 0;
     extents->width = 0;
     extents->height = 0;
-    return;
+    戻る;
   }
 
   double min_x = floor (draw->ext_min_x);
@@ -402,7 +402,7 @@ _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
   double max_x = ceil  (draw->ext_max_x);
   double max_y = ceil  (draw->ext_max_y);
 
-  if (unlikely (!std::isfinite (min_x) ||
+  もし (unlikely (!std::isfinite (min_x) ||
 		!std::isfinite (min_y) ||
 		!std::isfinite (max_x) ||
 		!std::isfinite (max_y)))
@@ -411,7 +411,7 @@ _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
     extents->y_bearing = 0;
     extents->width = 0;
     extents->height = 0;
-    return;
+    戻る;
   }
 
   extents->x_bearing = clamp_to_hb_position (min_x);
@@ -452,18 +452,18 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
                     hb_glyph_extents_t *extents)
 {
   /* Capture computed extents before auto-clear wipes them. */
-  if (extents)
+  もし (extents)
     _hb_gpu_draw_get_extents (draw, extents);
   HB_SCOPE_GUARD (hb_gpu_draw_clear (draw));
 
-  if (unlikely (!draw->success))
-    return nullptr;
+  もし (unlikely (!draw->success))
+    戻る nullptr;
 
   const hb_gpu_curve_t *curves = draw->curves.arrayZ;
   unsigned num_curves = draw->curves.length;
 
-  if (num_curves == 0)
-    return hb_blob_get_empty ();
+  もし (num_curves == 0)
+    戻る hb_blob_get_empty ();
 
   hb_gpu_encode_scratch_t &s = draw->scratch;
 
@@ -481,18 +481,18 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   s.curve_texel_offset.reset_if_error ();
 
   /* Compute per-curve info and extents */
-  if (unlikely (!s.curve_infos.resize (num_curves)))
-    return nullptr;
+  もし (unlikely (!s.curve_infos.resize (num_curves)))
+    戻る nullptr;
 
   /* Validate the extents fit in i16 before quantizing: the casts in
    * quantize_down()/quantize_up() are undefined for out-of-range
    * values, and every later i16 conversion of a curve point is bounded
    * by these extents. */
-  if (!quantize_down_fits_i16 (draw->ext_min_x) ||
+  もし (!quantize_down_fits_i16 (draw->ext_min_x) ||
       !quantize_down_fits_i16 (draw->ext_min_y) ||
       !quantize_up_fits_i16 (draw->ext_max_x) ||
       !quantize_up_fits_i16 (draw->ext_max_y))
-    return nullptr;
+    戻る nullptr;
 
   int16_t min_x_q = quantize_down (draw->ext_min_x);
   int16_t min_y_q = quantize_down (draw->ext_min_y);
@@ -504,7 +504,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   double max_x = dequantize (max_x_q);
   double max_y = dequantize (max_y_q);
 
-  for (unsigned i = 0; i < num_curves; i++)
+  ために (unsigned i = 0; i < num_curves; i++)
     s.curve_infos.arrayZ[i] = encode_curve_info (&curves[i]);
 
   /* Choose number of bands (capped at 16 per Slug paper) */
@@ -516,8 +516,8 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   double height = max_y - min_y;
   double width  = max_x - min_x;
 
-  if (height <= 0) num_hbands = 1;
-  if (width  <= 0) num_vbands = 1;
+  もし (height <= 0) num_hbands = 1;
+  もし (width  <= 0) num_vbands = 1;
 
   double hband_size = height / num_hbands;
   double vband_size = width  / num_vbands;
@@ -527,43 +527,43 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
    * curve by a hair so the two cannot disagree at a band boundary. */
   static const double BAND_EPSILON = 1.0 / 1024;
 
-  if (unlikely (!s.hband_curve_counts.resize (num_hbands) ||
+  もし (unlikely (!s.hband_curve_counts.resize (num_hbands) ||
 		!s.vband_curve_counts.resize (num_vbands)))
-    return nullptr;
+    戻る nullptr;
 
-  for (unsigned b = 0; b < num_hbands; b++) s.hband_curve_counts.arrayZ[b] = 0;
-  for (unsigned b = 0; b < num_vbands; b++) s.vband_curve_counts.arrayZ[b] = 0;
+  ために (unsigned b = 0; b < num_hbands; b++) s.hband_curve_counts.arrayZ[b] = 0;
+  ために (unsigned b = 0; b < num_vbands; b++) s.vband_curve_counts.arrayZ[b] = 0;
 
-  for (unsigned i = 0; i < num_curves; i++)
+  ために (unsigned i = 0; i < num_curves; i++)
   {
     hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
 
-    if (!info.is_horizontal)
+    もし (!info.is_horizontal)
     {
-      if (height > 0) {
-	info.hband_lo = (int) floor ((info.min_y - min_y) / hband_size - BAND_EPSILON);
-	info.hband_hi = (int) floor ((info.max_y - min_y) / hband_size + BAND_EPSILON);
+      もし (height > 0) {
+	info.hband_lo = (整数) floor ((info.min_y - min_y) / hband_size - BAND_EPSILON);
+	info.hband_hi = (整数) floor ((info.max_y - min_y) / hband_size + BAND_EPSILON);
 	info.hband_lo = hb_max (info.hband_lo, 0);
-	info.hband_hi = hb_min (info.hband_hi, (int) num_hbands - 1);
-	for (int b = info.hband_lo; b <= info.hband_hi; b++)
+	info.hband_hi = hb_min (info.hband_hi, (整数) num_hbands - 1);
+	ために (整数 b = info.hband_lo; b <= info.hband_hi; b++)
 	  s.hband_curve_counts.arrayZ[b]++;
-      } else {
+      } 否则 {
 	info.hband_lo = 0;
 	info.hband_hi = 0;
 	s.hband_curve_counts.arrayZ[0]++;
       }
     }
 
-    if (!info.is_vertical)
+    もし (!info.is_vertical)
     {
-      if (width > 0) {
-	info.vband_lo = (int) floor ((info.min_x - min_x) / vband_size - BAND_EPSILON);
-	info.vband_hi = (int) floor ((info.max_x - min_x) / vband_size + BAND_EPSILON);
+      もし (width > 0) {
+	info.vband_lo = (整数) floor ((info.min_x - min_x) / vband_size - BAND_EPSILON);
+	info.vband_hi = (整数) floor ((info.max_x - min_x) / vband_size + BAND_EPSILON);
 	info.vband_lo = hb_max (info.vband_lo, 0);
-	info.vband_hi = hb_min (info.vband_hi, (int) num_vbands - 1);
-	for (int b = info.vband_lo; b <= info.vband_hi; b++)
+	info.vband_hi = hb_min (info.vband_hi, (整数) num_vbands - 1);
+	ために (整数 b = info.vband_lo; b <= info.vband_hi; b++)
 	  s.vband_curve_counts.arrayZ[b]++;
-      } else {
+      } 否则 {
 	info.vband_lo = 0;
 	info.vband_hi = 0;
 	s.vband_curve_counts.arrayZ[0]++;
@@ -571,52 +571,52 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     }
   }
 
-  if (unlikely (!s.hband_offsets.resize (num_hbands) ||
+  もし (unlikely (!s.hband_offsets.resize (num_hbands) ||
 		!s.vband_offsets.resize (num_vbands)))
-    return nullptr;
+    戻る nullptr;
 
   unsigned total_hband_indices = 0;
   unsigned total_vband_indices = 0;
 
-  for (unsigned b = 0; b < num_hbands; b++) {
+  ために (unsigned b = 0; b < num_hbands; b++) {
     s.hband_offsets.arrayZ[b] = total_hband_indices;
-    if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
+    もし (unlikely (hb_unsigned_add_overflows (total_hband_indices,
 					     s.hband_curve_counts.arrayZ[b],
 					     &total_hband_indices)))
-      return nullptr;
+      戻る nullptr;
   }
 
-  for (unsigned b = 0; b < num_vbands; b++) {
+  ために (unsigned b = 0; b < num_vbands; b++) {
     s.vband_offsets.arrayZ[b] = total_vband_indices;
-    if (unlikely (hb_unsigned_add_overflows (total_vband_indices,
+    もし (unlikely (hb_unsigned_add_overflows (total_vband_indices,
 					     s.vband_curve_counts.arrayZ[b],
 					     &total_vband_indices)))
-      return nullptr;
+      戻る nullptr;
   }
 
   /* Assign curves to bands */
-  if (unlikely (!s.hband_curves.resize (total_hband_indices) ||
+  もし (unlikely (!s.hband_curves.resize (total_hband_indices) ||
 		!s.hband_curves_asc.resize (total_hband_indices) ||
 		!s.vband_curves.resize (total_vband_indices) ||
 		!s.vband_curves_asc.resize (total_vband_indices) ||
 		!s.hband_cursors.resize (num_hbands) ||
 		!s.vband_cursors.resize (num_vbands)))
-    return nullptr;
+    戻る nullptr;
 
-  for (unsigned b = 0; b < num_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
-  for (unsigned b = 0; b < num_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
+  ために (unsigned b = 0; b < num_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
+  ために (unsigned b = 0; b < num_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
 
-  for (unsigned i = 0; i < num_curves; i++)
+  ために (unsigned i = 0; i < num_curves; i++)
   {
     const hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
 
-    for (int b = info.hband_lo; b <= info.hband_hi; b++) {
+    ために (整数 b = info.hband_lo; b <= info.hband_hi; b++) {
       unsigned idx = s.hband_cursors.arrayZ[b]++;
       s.hband_curves.arrayZ[idx] = i;
       s.hband_curves_asc.arrayZ[idx] = i;
     }
 
-    for (int b = info.vband_lo; b <= info.vband_hi; b++) {
+    ために (整数 b = info.vband_lo; b <= info.vband_hi; b++) {
       unsigned idx = s.vband_cursors.arrayZ[b]++;
       s.vband_curves.arrayZ[idx] = i;
       s.vband_curves_asc.arrayZ[idx] = i;
@@ -626,72 +626,72 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   /* Sort: descending by max, ascending by min */
   const hb_gpu_encode_curve_info_t *infos = s.curve_infos.arrayZ;
 
-  for (unsigned b = 0; b < num_hbands; b++)
+  ために (unsigned b = 0; b < num_hbands; b++)
   {
     unsigned off = s.hband_offsets.arrayZ[b];
     unsigned count = s.hband_curve_counts.arrayZ[b];
     s.hband_curves.as_array ().sub_array (off, count)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].max_x, bv = infos[b].max_x;
-	return (av < bv) - (av > bv);
+	戻る (av < bv) - (av > bv);
       });
     s.hband_curves_asc.as_array ().sub_array (off, count)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].min_x, bv = infos[b].min_x;
-	return (av > bv) - (av < bv);
+	戻る (av > bv) - (av < bv);
       });
   }
 
-  for (unsigned b = 0; b < num_vbands; b++)
+  ために (unsigned b = 0; b < num_vbands; b++)
   {
     unsigned off = s.vband_offsets.arrayZ[b];
     unsigned count = s.vband_curve_counts.arrayZ[b];
     s.vband_curves.as_array ().sub_array (off, count)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].max_y, bv = infos[b].max_y;
-	return (av < bv) - (av > bv);
+	戻る (av < bv) - (av > bv);
       });
     s.vband_curves_asc.as_array ().sub_array (off, count)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].min_y, bv = infos[b].min_y;
-	return (av > bv) - (av < bv);
+	戻る (av > bv) - (av < bv);
       });
   }
 
   /* Compute sizes */
   unsigned total_curve_indices;
-  if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
+  もし (unlikely (hb_unsigned_add_overflows (total_hband_indices,
 					   total_vband_indices,
 					   &total_curve_indices) ||
 		hb_unsigned_mul_overflows (total_curve_indices,
 					   2,
 					   &total_curve_indices)))
-    return nullptr;
+    戻る nullptr;
 
   unsigned header_len = 2;
 
   unsigned num_contour_breaks = 0;
-  for (unsigned i = 0; i + 1 < num_curves; i++)
-    if (curves[i + 1].contour_start)
+  ために (unsigned i = 0; i + 1 < num_curves; i++)
+    もし (curves[i + 1].contour_start)
       num_contour_breaks++;
 
   unsigned curve_data_len;
-  if (unlikely (hb_unsigned_add_overflows (num_curves,
+  もし (unlikely (hb_unsigned_add_overflows (num_curves,
 					   num_contour_breaks,
 					   &curve_data_len) ||
 		hb_unsigned_add_overflows (curve_data_len,
 					   1,
 					   &curve_data_len)))
-    return nullptr;
+    戻る nullptr;
 
   unsigned band_headers_len;
-  if (unlikely (hb_unsigned_add_overflows (num_hbands,
+  もし (unlikely (hb_unsigned_add_overflows (num_hbands,
 					   num_vbands,
 					   &band_headers_len)))
-    return nullptr;
+    戻る nullptr;
 
   unsigned total_len = header_len;
-  if (unlikely (hb_unsigned_add_overflows (total_len,
+  もし (unlikely (hb_unsigned_add_overflows (total_len,
 					   band_headers_len,
 					   &total_len) ||
 		hb_unsigned_add_overflows (total_len,
@@ -700,28 +700,28 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 		hb_unsigned_add_overflows (total_len,
 					   curve_data_len,
 					   &total_len)))
-    return nullptr;
+    戻る nullptr;
 
   /* Validate fits in uint16 offsets (stored as int16 with bias) */
-  if (total_len > (unsigned) UINT16_MAX + 1u)
-    return nullptr;
+  もし (total_len > (unsigned) UINT16_MAX + 1u)
+    戻る nullptr;
 
   /* Allocate or reuse encode buffer */
   unsigned needed_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (total_len,
+  もし (unlikely (hb_unsigned_mul_overflows (total_len,
 					   sizeof (hb_gpu_texel_t),
 					   &needed_bytes)))
-    return nullptr;
+    戻る nullptr;
   unsigned buf_capacity = 0;
   char *replaced_recycled_buf = nullptr;
   char *buf_raw = hb_blob_t::recycle_acquire (draw->recycled_blob, needed_bytes,
 					&buf_capacity, &replaced_recycled_buf);
-  if (unlikely (!buf_raw))
-    return nullptr;
+  もし (unlikely (!buf_raw))
+    戻る nullptr;
   hb_gpu_texel_t *buf = (hb_gpu_texel_t *) (void *) buf_raw;
 
   unsigned curve_data_offset = header_len;
-  if (unlikely (hb_unsigned_add_overflows (curve_data_offset,
+  もし (unlikely (hb_unsigned_add_overflows (curve_data_offset,
 					   band_headers_len,
 					   &curve_data_offset) ||
 		hb_unsigned_add_overflows (curve_data_offset,
@@ -729,7 +729,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 					   &curve_data_offset)))
   {
     hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
-    return nullptr;
+    戻る nullptr;
   }
 
   /* Pack header */
@@ -743,26 +743,26 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   buf[1].a = (int16_t) hb_clamp (draw->y_scale, -32768, 32767);
 
   /* Pack curve data with shared endpoints */
-  if (unlikely (!s.curve_texel_offset.resize (num_curves)))
+  もし (unlikely (!s.curve_texel_offset.resize (num_curves)))
   {
     hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
-    return nullptr;
+    戻る nullptr;
   }
 
   unsigned texel = curve_data_offset;
 
-  for (unsigned i = 0; i < num_curves; i++)
+  ために (unsigned i = 0; i < num_curves; i++)
   {
     bool contour_start = curves[i].contour_start;
 
-    if (contour_start) {
+    もし (contour_start) {
       s.curve_texel_offset.arrayZ[i] = texel;
       buf[texel].r = quantize (curves[i].p1x);
       buf[texel].g = quantize (curves[i].p1y);
       buf[texel].b = quantize (curves[i].p2x);
       buf[texel].a = quantize (curves[i].p2y);
       texel++;
-    } else {
+    } 否则 {
       s.curve_texel_offset.arrayZ[i] = texel - 1;
     }
 
@@ -771,10 +771,10 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 
     buf[texel].r = quantize (curves[i].p3x);
     buf[texel].g = quantize (curves[i].p3y);
-    if (has_next) {
+    もし (has_next) {
       buf[texel].b = quantize (curves[i + 1].p2x);
       buf[texel].a = quantize (curves[i + 1].p2y);
-    } else {
+    } 否则 {
       buf[texel].b = 0;
       buf[texel].a = 0;
     }
@@ -784,7 +784,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   /* Pack band headers and curve indices */
   unsigned index_offset = header_len + band_headers_len;
 
-  for (unsigned b = 0; b < num_hbands; b++)
+  ために (unsigned b = 0; b < num_hbands; b++)
   {
     int16_t hband_split;
     {
@@ -793,14 +793,14 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       unsigned best_worst = n;
       double best_split = (min_x + max_x) * 0.5;
       unsigned left_count = n;
-      for (unsigned ci = 0; ci < n; ci++) {
+      ために (unsigned ci = 0; ci < n; ci++) {
 	double split = s.curve_infos.arrayZ[s.hband_curves.arrayZ[off + ci]].max_x;
 	unsigned right_count = ci + 1;
-	while (left_count &&
+	ながら (left_count &&
 	       s.curve_infos.arrayZ[s.hband_curves_asc.arrayZ[off + left_count - 1]].min_x > split)
 	  left_count--;
 	unsigned worst = hb_max (right_count, left_count);
-	if (worst < best_worst) {
+	もし (worst < best_worst) {
 	  best_worst = worst;
 	  best_split = split;
 	}
@@ -810,7 +810,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     unsigned hdr = header_len + b;
     unsigned desc_off = index_offset;
 
-    for (unsigned ci = 0; ci < s.hband_curve_counts.arrayZ[b]; ci++) {
+    ために (unsigned ci = 0; ci < s.hband_curve_counts.arrayZ[b]; ci++) {
       buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.hband_curves.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
       buf[index_offset].g = 0;
       buf[index_offset].b = 0;
@@ -820,7 +820,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 
     unsigned asc_off = index_offset;
 
-    for (unsigned ci = 0; ci < s.hband_curve_counts.arrayZ[b]; ci++) {
+    ために (unsigned ci = 0; ci < s.hband_curve_counts.arrayZ[b]; ci++) {
       buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.hband_curves_asc.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
       buf[index_offset].g = 0;
       buf[index_offset].b = 0;
@@ -834,7 +834,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     buf[hdr].a = hband_split;
   }
 
-  for (unsigned b = 0; b < num_vbands; b++)
+  ために (unsigned b = 0; b < num_vbands; b++)
   {
     int16_t vband_split;
     {
@@ -843,14 +843,14 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       unsigned best_worst = n;
       double best_split = (min_y + max_y) * 0.5;
       unsigned left_count = n;
-      for (unsigned ci = 0; ci < n; ci++) {
+      ために (unsigned ci = 0; ci < n; ci++) {
 	double split = s.curve_infos.arrayZ[s.vband_curves.arrayZ[off + ci]].max_y;
 	unsigned right_count = ci + 1;
-	while (left_count &&
+	ながら (left_count &&
 	       s.curve_infos.arrayZ[s.vband_curves_asc.arrayZ[off + left_count - 1]].min_y > split)
 	  left_count--;
 	unsigned worst = hb_max (right_count, left_count);
-	if (worst < best_worst) {
+	もし (worst < best_worst) {
 	  best_worst = worst;
 	  best_split = split;
 	}
@@ -861,7 +861,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     unsigned hdr = header_len + num_hbands + b;
     unsigned desc_off = index_offset;
 
-    for (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
+    ために (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
       buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.vband_curves.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
       buf[index_offset].g = 0;
       buf[index_offset].b = 0;
@@ -871,7 +871,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 
     unsigned asc_off = index_offset;
 
-    for (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
+    ために (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
       buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.vband_curves_asc.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
       buf[index_offset].g = 0;
       buf[index_offset].b = 0;
@@ -887,7 +887,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 
   hb_blob_t *recycled = draw->recycled_blob;
   draw->recycled_blob = nullptr;
-  return hb_blob_t::recycle_finalize ((char *) buf, buf_capacity, needed_bytes,
+  戻る hb_blob_t::recycle_finalize ((char *) buf, buf_capacity, needed_bytes,
 				recycled, replaced_recycled_buf);
 }
 
@@ -907,7 +907,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 hb_gpu_draw_t *
 hb_gpu_draw_create_or_fail (void)
 {
-  return hb_object_create<hb_gpu_draw_t> ();
+  戻る hb_object_create<hb_gpu_draw_t> ();
 }
 
 /**
@@ -924,7 +924,7 @@ hb_gpu_draw_create_or_fail (void)
 hb_gpu_draw_t *
 hb_gpu_draw_reference (hb_gpu_draw_t *draw)
 {
-  return hb_object_reference (draw);
+  戻る hb_object_reference (draw);
 }
 
 /**
@@ -939,8 +939,8 @@ hb_gpu_draw_reference (hb_gpu_draw_t *draw)
 void
 hb_gpu_draw_destroy (hb_gpu_draw_t *draw)
 {
-  if (!hb_object_should_destroy (draw))
-    return;
+  もし (!hb_object_should_destroy (draw))
+    戻る;
 
   hb_blob_destroy (draw->recycled_blob);
 
@@ -969,7 +969,7 @@ hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (draw, key, data, destroy, replace);
+  戻る hb_object_set_user_data (draw, key, data, destroy, replace);
 }
 
 /**
@@ -988,7 +988,7 @@ void *
 hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
 			     hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (draw, key);
+  戻る hb_object_get_user_data (draw, key);
 }
 
 /**
@@ -1007,7 +1007,7 @@ hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
 hb_draw_funcs_t *
 hb_gpu_draw_get_funcs (const hb_gpu_draw_t *draw HB_UNUSED)
 {
-  return static_gpu_draw_funcs.get_unconst ();
+  戻る static_gpu_draw_funcs.get_unconst ();
 }
 
 /**
@@ -1024,8 +1024,8 @@ hb_gpu_draw_get_funcs (const hb_gpu_draw_t *draw HB_UNUSED)
  **/
 void
 hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
-		       int            x_scale,
-		       int            y_scale)
+		       整数            x_scale,
+		       整数            y_scale)
 {
   draw->x_scale = x_scale;
   draw->y_scale = y_scale;
@@ -1044,11 +1044,11 @@ hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
  **/
 void
 hb_gpu_draw_get_scale (const hb_gpu_draw_t *draw,
-		       int                 *x_scale,
-		       int                 *y_scale)
+		       整数                 *x_scale,
+		       整数                 *y_scale)
 {
-  if (x_scale) *x_scale = draw->x_scale;
-  if (y_scale) *y_scale = draw->y_scale;
+  もし (x_scale) *x_scale = draw->x_scale;
+  もし (y_scale) *y_scale = draw->y_scale;
 }
 
 /**
@@ -1075,11 +1075,11 @@ hb_gpu_draw_glyph_or_fail (hb_gpu_draw_t  *draw,
 			   hb_font_t      *font,
 			   hb_codepoint_t  glyph)
 {
-  int x_scale, y_scale;
+  整数 x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
   hb_gpu_draw_set_scale (draw, x_scale, y_scale);
 
-  return hb_font_draw_glyph_or_fail (font, glyph,
+  戻る hb_font_draw_glyph_or_fail (font, glyph,
 				     hb_gpu_draw_get_funcs (draw),
 				     draw);
 }
@@ -1208,23 +1208,23 @@ hb_gpu_draw_shader_source (hb_gpu_shader_stage_t stage,
   switch (stage) {
   case HB_GPU_SHADER_STAGE_FRAGMENT:
     switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_draw_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_draw_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_draw_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_draw_fragment_hlsl;
+    case HB_GPU_SHADER_LANG_GLSL: 戻る hb_gpu_draw_fragment_glsl;
+    case HB_GPU_SHADER_LANG_MSL:  戻る hb_gpu_draw_fragment_msl;
+    case HB_GPU_SHADER_LANG_WGSL: 戻る hb_gpu_draw_fragment_wgsl;
+    case HB_GPU_SHADER_LANG_HLSL: 戻る hb_gpu_draw_fragment_hlsl;
     case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+    default: 戻る nullptr;
     }
   case HB_GPU_SHADER_STAGE_VERTEX:
     switch (lang) {
     case HB_GPU_SHADER_LANG_GLSL:
     case HB_GPU_SHADER_LANG_MSL:
     case HB_GPU_SHADER_LANG_WGSL:
-    case HB_GPU_SHADER_LANG_HLSL: return "";
+    case HB_GPU_SHADER_LANG_HLSL: 戻る "";
     case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+    default: 戻る nullptr;
     }
   default:
-    return nullptr;
+    戻る nullptr;
   }
 }

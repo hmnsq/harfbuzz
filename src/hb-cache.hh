@@ -57,9 +57,9 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
+template <unsigned 整数 key_bits=16,
+	 unsigned 整数 value_bits=8 + 32 - key_bits,
+	 unsigned 整数 cache_bits=8,
 	 bool thread_safe=true>
 struct hb_cache_t
 {
@@ -68,12 +68,12 @@ struct hb_cache_t
 								     hb_atomic_t<unsigned char>,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
+											       hb_atomic_t<unsigned 整数>>::type>::type,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
 								     unsigned char,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned 整数>::type>::type
 					  >::type;
 
   static_assert ((key_bits >= cache_bits), "");
@@ -85,32 +85,32 @@ struct hb_cache_t
 
   void clear ()
   {
-    for (auto &v : values)
+    ために (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  bool get (unsigned 整数 key, unsigned 整数 *value) const
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned 整数 k = key & ((1u<<cache_bits)-1);
+    unsigned 整数 v = values[k];
+    constexpr unsigned 整数 empty = (1ULL << (8 * sizeof (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
+    もし ((key >> key_bits) |
 	((v >> value_bits) ^ (key >> cache_bits)) |
 	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
+      戻る false;
     *value = v & ((1u<<value_bits)-1);
-    return true;
+    戻る true;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  void set (unsigned 整数 key, unsigned 整数 value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    もし (unlikely ((key >> key_bits) || (value >> value_bits)))
+      戻る; /* Overflows */
+    unsigned 整数 k = key & ((1u<<cache_bits)-1);
+    unsigned 整数 v = ((key>>cache_bits)<<value_bits) | value;
     values[k] = v;
   }
 

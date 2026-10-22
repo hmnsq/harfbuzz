@@ -15,7 +15,7 @@ struct pair_value_record_context_t
   const ValueFormat   *newFormats;
   unsigned            len1; /* valueFormats[0].get_len() */
   const hb_map_t      *glyph_map;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map;
+  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 整数>> *layout_variation_idx_delta_map;
 
   void copy_values (hb_serialize_context_t *s, const Value *values) const
   {
@@ -42,8 +42,8 @@ struct PairValueRecord
   public:
   DEFINE_SIZE_ARRAY (Types::HBGlyphID::static_size, values);
 
-  int cmp (hb_codepoint_t k) const
-  { return secondGlyph.cmp (k); }
+  整数 cmp (hb_codepoint_t k) const
+  { 戻る secondGlyph.cmp (k); }
 
   bool subset (hb_subset_context_t *c,
                pair_value_record_context_t *closure) const
@@ -51,7 +51,7 @@ struct PairValueRecord
     TRACE_SERIALIZE (this);
     auto *s = c->serializer;
     auto *out = s->start_embed (*this);
-    if (unlikely (!s->extend_min (out))) return_trace (false);
+    もし (unlikely (!s->extend_min (out))) return_trace (false);
 
     out->secondGlyph = (*closure->glyph_map)[secondGlyph];
 
@@ -68,26 +68,26 @@ struct PairValueRecord
     unsigned record2_len = valueFormats[1].get_len ();
     const hb_array_t<const Value> values_array = values.as_array (record1_len + record2_len);
 
-    if (valueFormats[0].has_device ())
+    もし (valueFormats[0].has_device ())
       valueFormats[0].collect_variation_indices (c, base, values_array.sub_array (0, record1_len));
 
-    if (valueFormats[1].has_device ())
+    もし (valueFormats[1].has_device ())
       valueFormats[1].collect_variation_indices (c, base, values_array.sub_array (record1_len, record2_len));
   }
 
   bool intersects (const hb_set_t& glyphset) const
   {
-    return glyphset.has(secondGlyph);
+    戻る glyphset.has(secondGlyph);
   }
 
   const Value* get_values_1 () const
   {
-    return &values[0];
+    戻る &values[0];
   }
 
   const Value* get_values_2 (ValueFormat format1) const
   {
-    return &values[format1.get_len ()];
+    戻る &values[format1.get_len ()];
   }
 };
 

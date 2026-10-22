@@ -27,14 +27,14 @@ struct Ligature
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (component, glyphs); }
+  { 戻る hb_all (component, glyphs); }
 
   bool intersects_lig_glyph (const hb_set_t *glyphs) const
-  { return glyphs->has(ligGlyph); }
+  { 戻る glyphs->has(ligGlyph); }
 
   void closure (hb_closure_context_t *c) const
   {
-    if (!intersects (c->glyphs)) return;
+    もし (!intersects (c->glyphs)) 戻る;
     c->output->add (ligGlyph);
   }
 
@@ -44,17 +44,17 @@ struct Ligature
     hb_set_t complete_ligset;
     complete_ligset.add (first);
     + hb_iter (component) | hb_sink (complete_ligset);
-    if (unlikely (complete_ligset.in_error ()))
+    もし (unlikely (complete_ligset.in_error ()))
     {
       c->depend_data->fail ();
-      return;
+      戻る;
     }
 
     bool ligset_created;
     hb_codepoint_t ligset_idx = c->depend_data->find_or_create_set (complete_ligset,
                                                                     &ligset_created);
-    if (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
-      return;
+    もし (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
+      戻る;
 
     // Track whether any edge using this ligset_idx was actually added
     bool any_added = false;
@@ -62,13 +62,13 @@ struct Ligature
     // Now add one edge for each glyph in the complete, immutable set
     + hb_iter (complete_ligset)
     | hb_apply ([&] (hb_codepoint_t gid) {
-        if (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
+        もし (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
           any_added = true;
       })
     ;
 
     // If no edges were added, a newly allocated set is unused - free it for reuse
-    if (!any_added && ligset_created)
+    もし (!any_added && ligset_created)
       c->depend_data->discard_set (ligset_idx);
   }
 
@@ -81,40 +81,40 @@ struct Ligature
   template <typename set_t>
   void collect_second (set_t &s) const
   {
-    if (unlikely (!component.get_length ()))
+    もし (unlikely (!component.get_length ()))
     {
       // A ligature without any components. Anything matches.
       s = set_t::full ();
-      return;
+      戻る;
     }
     s.add (component.arrayZ[0]);
   }
 
   bool would_apply (hb_would_apply_context_t *c) const
   {
-    if (c->len != component.lenP1)
-      return false;
+    もし (c->len != component.lenP1)
+      戻る false;
 
-    for (unsigned int i = 1; i < c->len; i++)
-      if (likely (c->glyphs[i] != component[i]))
-        return false;
+    ために (unsigned 整数 i = 1; i < c->len; i++)
+      もし (likely (c->glyphs[i] != component[i]))
+        戻る false;
 
-    return true;
+    戻る true;
   }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
-    unsigned int count = component.lenP1;
+    unsigned 整数 count = component.lenP1;
 
-    if (unlikely (!count)) return_trace (false);
+    もし (unlikely (!count)) return_trace (false);
 
     /* Special-case to make it in-place and not consider this
      * as a "ligated" substitution. */
-    if (unlikely (count == 1))
+    もし (unlikely (count == 1))
     {
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      もし (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -124,7 +124,7 @@ struct Ligature
 
       c->replace_glyph (ligGlyph);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      もし (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "replaced glyph at %u (ligature substitution)",
@@ -134,12 +134,12 @@ struct Ligature
       return_trace (true);
     }
 
-    unsigned int total_component_count = 0;
+    unsigned 整数 total_component_count = 0;
 
-    if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return false;
-    unsigned int match_end = 0;
+    もし (unlikely (count > HB_MAX_CONTEXT_LENGTH)) 戻る false;
+    unsigned 整数 match_end = 0;
 
-    if (likely (!match_input (c, count,
+    もし (likely (!match_input (c, count,
                               &component[1],
                               match_glyph,
                               nullptr,
@@ -151,7 +151,7 @@ struct Ligature
     }
 
     unsigned pos = 0;
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    もし (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       unsigned delta = c->buffer->sync_so_far ();
 
@@ -161,10 +161,10 @@ struct Ligature
       char *p = buf;
 
       match_end += delta;
-      for (unsigned i = 0; i < count; i++)
+      ために (unsigned i = 0; i < count; i++)
       {
 	c->match_positions[i] += delta;
-	if (i)
+	もし (i)
 	  *p++ = ',';
 	snprintf (p, sizeof(buf) - (p - buf), "%u", c->match_positions[i]);
 	p += strlen(p);
@@ -181,7 +181,7 @@ struct Ligature
                   ligGlyph,
                   total_component_count);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    もし (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -199,9 +199,9 @@ struct Ligature
                   Iterator components /* Starting from second */)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    もし (unlikely (!c->extend_min (this))) return_trace (false);
     ligGlyph = ligature;
-    if (unlikely (!component.serialize (c, components))) return_trace (false);
+    もし (unlikely (!component.serialize (c, components))) return_trace (false);
     return_trace (true);
   }
 
@@ -211,7 +211,7 @@ struct Ligature
     const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (false);
+    もし (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (false);
     // Ensure Coverage table is always packed after this.
     c->serializer->add_virtual_link (coverage_idx);
 

@@ -39,7 +39,7 @@
 
 /* We need external help for these */
 
-#if defined(hb_mutex_impl_init) \
+#もし defined(hb_mutex_impl_init) \
  && defined(hb_mutex_impl_lock) \
  && defined(hb_mutex_impl_unlock) \
  && defined(hb_mutex_impl_finish)
@@ -60,9 +60,9 @@ typedef pthread_mutex_t hb_mutex_impl_t;
 #elif !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && defined(_WIN32)
 
 typedef CRITICAL_SECTION hb_mutex_impl_t;
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#もし !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
 #define hb_mutex_impl_init(M)	InitializeCriticalSectionEx (M, 0, 0)
-#else
+#否则
 #define hb_mutex_impl_init(M)	InitializeCriticalSection (M)
 #endif
 #define hb_mutex_impl_lock(M)	EnterCriticalSection (M)
@@ -80,9 +80,9 @@ typedef std::mutex              hb_mutex_impl_t;
 #define hb_mutex_impl_finish(M) HB_STMT_START { (M)->~hb_mutex_impl_t(); } HB_STMT_END
 
 
-#else /* defined(HB_NO_MT) */
+#否则 /* defined(HB_NO_MT) */
 
-typedef int hb_mutex_impl_t;
+typedef 整数 hb_mutex_impl_t;
 #define hb_mutex_impl_init(M)	HB_STMT_START {} HB_STMT_END
 #define hb_mutex_impl_lock(M)	HB_STMT_START {} HB_STMT_END
 #define hb_mutex_impl_unlock(M)	HB_STMT_START {} HB_STMT_END
@@ -114,8 +114,8 @@ struct hb_mutex_t
 struct hb_lock_t
 {
   hb_lock_t (hb_mutex_t &mutex_) : mutex (&mutex_) { mutex->lock (); }
-  hb_lock_t (hb_mutex_t *mutex_) : mutex (mutex_) { if (mutex) mutex->lock (); }
-  ~hb_lock_t () { if (mutex) mutex->unlock (); }
+  hb_lock_t (hb_mutex_t *mutex_) : mutex (mutex_) { もし (mutex) mutex->lock (); }
+  ~hb_lock_t () { もし (mutex) mutex->unlock (); }
 
   hb_lock_t (const hb_lock_t &) = delete;
   hb_lock_t &operator= (const hb_lock_t &) = delete;

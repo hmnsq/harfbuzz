@@ -120,17 +120,17 @@ HB_SUBSET_PLAN_MEMBER (hb_map_t, colr_palettes)
 //colrv1 varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, colrv1_varstore_inner_maps)
 //colrv1 retained varidx -> (new varidx, delta) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), colrv1_variation_idx_delta_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, 整数>)>), colrv1_variation_idx_delta_map)
 //colrv1 retained new delta set index -> new varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_map_t, colrv1_new_deltaset_idx_varidx_map)
 
 //Old layout item variation index -> (New varidx, delta) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), layout_variation_idx_delta_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, 整数>)>), layout_variation_idx_delta_map)
 
 //Layout condition -> (source variation index, default value)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, int>)>), layout_condition_values)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, 整数>)>), layout_condition_values)
 //Layout condition -> (private variation index, rescaled default value)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, int>)>), layout_condition_idx_value_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, 整数>)>), layout_condition_idx_value_map)
 
 //gdef varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, gdef_varstore_inner_maps)
@@ -139,7 +139,7 @@ HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, hb::unique_ptr<hb_blob_t>>), sa
 
 //normalized axes range map
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), axes_location)
-HB_SUBSET_PLAN_MEMBER (hb_vector_t<int>, normalized_coords)
+HB_SUBSET_PLAN_MEMBER (hb_vector_t<整数>, normalized_coords)
 
 //user specified axes range map
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), user_axes_location)
@@ -169,9 +169,9 @@ HB_SUBSET_PLAN_MEMBER (hb_map_t, axes_old_index_tag_map)
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_tag_t>, axis_tags)
 
 //hmtx metrics map: new gid->(advance, lsb)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, int>)>), hmtx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, 整数>)>), hmtx_map)
 //vmtx metrics map: new gid->(advance, lsb)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, int>)>), vmtx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, 整数>)>), vmtx_map)
 //boundsWidth map: new gid->boundsWidth, boundWidth=xMax - xMin
 HB_SUBSET_PLAN_MEMBER (mutable hb_vector_t<unsigned>, bounds_width_vec)
 //boundsHeight map: new gid->boundsHeight, boundsHeight=yMax - yMin
@@ -184,7 +184,7 @@ HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, contour_point_vec
 HB_SUBSET_PLAN_MEMBER (hb_set_t, composite_new_gids)
 
 //Old BASE item variation index -> (New varidx, 0) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), base_variation_idx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, 整数>)>), base_variation_idx_map)
 
 //BASE table varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, base_varstore_inner_maps)
