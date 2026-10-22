@@ -1,5 +1,5 @@
 #ifdef HB_FEATURES_H
-#include HB_FEATURES_H
+#अन्तर्भाव HB_FEATURES_H
 #endif
 
 #ifdef HB_HAS_CORETEXT
@@ -30,159 +30,159 @@
 
 
 /* Core library. */
-#include "OT/Var/VARC/VARC.cc"
-#include "hb-aat-layout.cc"
-#include "hb-aat-map.cc"
-#include "hb-blob.cc"
-#include "hb-buffer-serialize.cc"
-#include "hb-buffer-verify.cc"
-#include "hb-buffer.cc"
-#include "hb-common.cc"
-#include "hb-draw.cc"
-#include "hb-face-builder.cc"
-#include "hb-face.cc"
-#include "hb-fallback-shape.cc"
-#include "hb-font.cc"
-#include "hb-map.cc"
-#include "hb-number.cc"
-#include "hb-ot-cff1-table.cc"
-#include "hb-ot-cff2-table.cc"
-#include "hb-ot-color.cc"
-#include "hb-ot-face.cc"
-#include "hb-ot-fetch.cc"
-#include "hb-ot-font.cc"
-#include "hb-ot-layout.cc"
-#include "hb-ot-map.cc"
-#include "hb-ot-math.cc"
-#include "hb-ot-meta.cc"
-#include "hb-ot-metrics.cc"
-#include "hb-ot-name.cc"
-#include "hb-ot-shape-fallback.cc"
-#include "hb-ot-shape-normalize.cc"
-#include "hb-ot-shape.cc"
-#include "hb-ot-shaper-arabic.cc"
-#include "hb-ot-shaper-default.cc"
-#include "hb-ot-shaper-hangul.cc"
-#include "hb-ot-shaper-hebrew.cc"
-#include "hb-ot-shaper-indic-table.cc"
-#include "hb-ot-shaper-indic.cc"
-#include "hb-ot-shaper-khmer.cc"
-#include "hb-ot-shaper-myanmar.cc"
-#include "hb-ot-shaper-syllabic.cc"
-#include "hb-ot-shaper-thai.cc"
-#include "hb-ot-shaper-use.cc"
-#include "hb-ot-shaper-vowel-constraints.cc"
-#include "hb-ot-tag.cc"
-#include "hb-ot-var.cc"
-#include "hb-outline.cc"
-#include "hb-paint-bounded.cc"
-#include "hb-paint-extents.cc"
-#include "hb-paint.cc"
-#include "hb-set.cc"
-#include "hb-shape-plan.cc"
-#include "hb-shape.cc"
-#include "hb-shaper.cc"
-#include "hb-static.cc"
-#include "hb-style.cc"
-#include "hb-ucd.cc"
-#include "hb-unicode.cc"
+#अन्तर्भाव "OT/Var/VARC/VARC.cc"
+#अन्तर्भाव "hb-aat-layout.cc"
+#अन्तर्भाव "hb-aat-map.cc"
+#अन्तर्भाव "hb-blob.cc"
+#अन्तर्भाव "hb-buffer-serialize.cc"
+#अन्तर्भाव "hb-buffer-verify.cc"
+#अन्तर्भाव "hb-buffer.cc"
+#अन्तर्भाव "hb-common.cc"
+#अन्तर्भाव "hb-draw.cc"
+#अन्तर्भाव "hb-face-builder.cc"
+#अन्तर्भाव "hb-face.cc"
+#अन्तर्भाव "hb-fallback-shape.cc"
+#अन्तर्भाव "hb-font.cc"
+#अन्तर्भाव "hb-map.cc"
+#अन्तर्भाव "hb-number.cc"
+#अन्तर्भाव "hb-ot-cff1-table.cc"
+#अन्तर्भाव "hb-ot-cff2-table.cc"
+#अन्तर्भाव "hb-ot-color.cc"
+#अन्तर्भाव "hb-ot-face.cc"
+#अन्तर्भाव "hb-ot-fetch.cc"
+#अन्तर्भाव "hb-ot-font.cc"
+#अन्तर्भाव "hb-ot-layout.cc"
+#अन्तर्भाव "hb-ot-map.cc"
+#अन्तर्भाव "hb-ot-math.cc"
+#अन्तर्भाव "hb-ot-meta.cc"
+#अन्तर्भाव "hb-ot-metrics.cc"
+#अन्तर्भाव "hb-ot-name.cc"
+#अन्तर्भाव "hb-ot-shape-fallback.cc"
+#अन्तर्भाव "hb-ot-shape-normalize.cc"
+#अन्तर्भाव "hb-ot-shape.cc"
+#अन्तर्भाव "hb-ot-shaper-arabic.cc"
+#अन्तर्भाव "hb-ot-shaper-default.cc"
+#अन्तर्भाव "hb-ot-shaper-hangul.cc"
+#अन्तर्भाव "hb-ot-shaper-hebrew.cc"
+#अन्तर्भाव "hb-ot-shaper-indic-table.cc"
+#अन्तर्भाव "hb-ot-shaper-indic.cc"
+#अन्तर्भाव "hb-ot-shaper-khmer.cc"
+#अन्तर्भाव "hb-ot-shaper-myanmar.cc"
+#अन्तर्भाव "hb-ot-shaper-syllabic.cc"
+#अन्तर्भाव "hb-ot-shaper-thai.cc"
+#अन्तर्भाव "hb-ot-shaper-use.cc"
+#अन्तर्भाव "hb-ot-shaper-vowel-constraints.cc"
+#अन्तर्भाव "hb-ot-tag.cc"
+#अन्तर्भाव "hb-ot-var.cc"
+#अन्तर्भाव "hb-outline.cc"
+#अन्तर्भाव "hb-paint-bounded.cc"
+#अन्तर्भाव "hb-paint-extents.cc"
+#अन्तर्भाव "hb-paint.cc"
+#अन्तर्भाव "hb-set.cc"
+#अन्तर्भाव "hb-shape-plan.cc"
+#अन्तर्भाव "hb-shape.cc"
+#अन्तर्भाव "hb-shaper.cc"
+#अन्तर्भाव "hb-static.cc"
+#अन्तर्भाव "hb-style.cc"
+#अन्तर्भाव "hb-ucd.cc"
+#अन्तर्भाव "hb-unicode.cc"
 
 #ifdef HB_HAS_CAIRO
-#include "hb-cairo-utils.cc"
-#include "hb-cairo.cc"
-#include "hb-static.cc"
+#अन्तर्भाव "hb-cairo-utils.cc"
+#अन्तर्भाव "hb-cairo.cc"
+#अन्तर्भाव "hb-static.cc"
 #endif
 
 #ifdef HB_HAS_CORETEXT
-#include "hb-coretext-font.cc"
-#include "hb-coretext-shape.cc"
-#include "hb-coretext.cc"
+#अन्तर्भाव "hb-coretext-font.cc"
+#अन्तर्भाव "hb-coretext-shape.cc"
+#अन्तर्भाव "hb-coretext.cc"
 #endif
 
 #ifdef HB_HAS_DIRECTWRITE
-#include "hb-directwrite-font.cc"
-#include "hb-directwrite-shape.cc"
-#include "hb-directwrite.cc"
+#अन्तर्भाव "hb-directwrite-font.cc"
+#अन्तर्भाव "hb-directwrite-shape.cc"
+#अन्तर्भाव "hb-directwrite.cc"
 #endif
 
 #ifdef HB_HAS_FREETYPE
-#include "hb-ft.cc"
+#अन्तर्भाव "hb-ft.cc"
 #endif
 
 #ifdef HB_HAS_GDI
 #ifndef HAVE_GDI
-#include "hb-gdi.cc"
+#अन्तर्भाव "hb-gdi.cc"
 #endif
 #endif
 
 #ifdef HB_HAS_GLIB
-#include "hb-glib.cc"
+#अन्तर्भाव "hb-glib.cc"
 #endif
 
 #ifdef HB_HAS_GRAPHITE
-#include "hb-graphite2.cc"
+#अन्तर्भाव "hb-graphite2.cc"
 #endif
 
 #ifdef HB_HAS_GPU
-#include "hb-gpu-draw.cc"
-#include "hb-gpu-paint.cc"
-#include "hb-gpu.cc"
-#include "hb-static.cc"
+#अन्तर्भाव "hb-gpu-draw.cc"
+#अन्तर्भाव "hb-gpu-paint.cc"
+#अन्तर्भाव "hb-gpu.cc"
+#अन्तर्भाव "hb-static.cc"
 #endif
 
 #ifdef HB_HAS_ICU
-#include "hb-icu.cc"
+#अन्तर्भाव "hb-icu.cc"
 #endif
 
 #ifdef HB_HAS_RASTER
-#include "hb-raster-draw.cc"
-#include "hb-raster-image.cc"
-#include "hb-raster-paint.cc"
-#include "hb-static.cc"
+#अन्तर्भाव "hb-raster-draw.cc"
+#अन्तर्भाव "hb-raster-image.cc"
+#अन्तर्भाव "hb-raster-paint.cc"
+#अन्तर्भाव "hb-static.cc"
 #endif
 
 #ifdef HB_HAS_SUBSET
-#include "OT/Var/VARC/VARC.cc"
-#include "graph/gsubgpos-context.cc"
-#include "hb-depend.cc"
-#include "hb-number.cc"
-#include "hb-ot-cff1-table.cc"
-#include "hb-ot-cff2-table.cc"
-#include "hb-static.cc"
-#include "hb-subset-cff-common.cc"
-#include "hb-subset-cff1.cc"
-#include "hb-subset-cff2.cc"
-#include "hb-subset-input.cc"
-#include "hb-subset-instancer-iup.cc"
-#include "hb-subset-instancer-solver.cc"
-#include "hb-subset-plan-layout.cc"
-#include "hb-subset-plan-var.cc"
-#include "hb-subset-plan.cc"
-#include "hb-subset-serialize.cc"
-#include "hb-subset-table-cff.cc"
-#include "hb-subset-table-color.cc"
-#include "hb-subset-table-layout.cc"
-#include "hb-subset-table-other.cc"
-#include "hb-subset-table-var.cc"
-#include "hb-subset.cc"
+#अन्तर्भाव "OT/Var/VARC/VARC.cc"
+#अन्तर्भाव "graph/gsubgpos-context.cc"
+#अन्तर्भाव "hb-depend.cc"
+#अन्तर्भाव "hb-number.cc"
+#अन्तर्भाव "hb-ot-cff1-table.cc"
+#अन्तर्भाव "hb-ot-cff2-table.cc"
+#अन्तर्भाव "hb-static.cc"
+#अन्तर्भाव "hb-subset-cff-common.cc"
+#अन्तर्भाव "hb-subset-cff1.cc"
+#अन्तर्भाव "hb-subset-cff2.cc"
+#अन्तर्भाव "hb-subset-input.cc"
+#अन्तर्भाव "hb-subset-instancer-iup.cc"
+#अन्तर्भाव "hb-subset-instancer-solver.cc"
+#अन्तर्भाव "hb-subset-plan-layout.cc"
+#अन्तर्भाव "hb-subset-plan-var.cc"
+#अन्तर्भाव "hb-subset-plan.cc"
+#अन्तर्भाव "hb-subset-serialize.cc"
+#अन्तर्भाव "hb-subset-table-cff.cc"
+#अन्तर्भाव "hb-subset-table-color.cc"
+#अन्तर्भाव "hb-subset-table-layout.cc"
+#अन्तर्भाव "hb-subset-table-other.cc"
+#अन्तर्भाव "hb-subset-table-var.cc"
+#अन्तर्भाव "hb-subset.cc"
 #endif
 
 #ifdef HB_HAS_UNISCRIBE
-#include "hb-uniscribe.cc"
+#अन्तर्भाव "hb-uniscribe.cc"
 #endif
 
 #ifdef HB_HAS_VECTOR
-#include "hb-static.cc"
-#include "hb-vector-draw.cc"
-#include "hb-vector-paint-pdf.cc"
-#include "hb-vector-paint-svg.cc"
-#include "hb-vector-paint.cc"
-#include "hb-vector-path.cc"
-#include "hb-vector.cc"
-#include "hb-zlib.cc"
+#अन्तर्भाव "hb-static.cc"
+#अन्तर्भाव "hb-vector-draw.cc"
+#अन्तर्भाव "hb-vector-paint-pdf.cc"
+#अन्तर्भाव "hb-vector-paint-svg.cc"
+#अन्तर्भाव "hb-vector-paint.cc"
+#अन्तर्भाव "hb-vector-path.cc"
+#अन्तर्भाव "hb-vector.cc"
+#अन्तर्भाव "hb-zlib.cc"
 #endif
 
 #ifdef HB_HAS_WASM
-#include "hb-wasm-api.cc"
-#include "hb-wasm-shape.cc"
+#अन्तर्भाव "hb-wasm-api.cc"
+#अन्तर्भाव "hb-wasm-shape.cc"
 #endif
