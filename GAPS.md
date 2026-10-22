@@ -1,0 +1,620 @@
+# What is still missing
+
+76 languages. Each line says in how many languages it is missing.
+
+## Files in languages BURP cannot read yet
+
+- `.rs`: 6 files
+
+## Keywords with no word in a language's table
+
+- shraeni:get: 75
+- shraeni:clear: 75
+- shraeni:fail: 75
+- soochee:join: 75
+- soochee:replace: 75
+- shraeni:eof: 75
+- shraeni:dec: 75
+- soochee:args: 75
+- shraeni:flush: 75
+- soochee:update: 75
+- shraeni:good: 75
+- soochee:run: 75
+- shraeni:trunc: 75
+- shraeni:__FILE__: 75
+- soochee:paint: 75
+- soochee:start: 74
+- soochee:out: 74
+- shraeni:size_t: 71
+- shraeni:bsearch: 71
+- shraeni:fprintf: 71
+- shraeni:UINT_MAX: 71
+- shraeni:stderr: 71
+- shraeni:memmove: 71
+- shraeni:fabs: 71
+- shraeni:INT_MIN: 71
+- shraeni:floor: 71
+- shraeni:isfinite: 71
+- shraeni:wchar_t: 71
+- shraeni:strchr: 71
+- shraeni:memcmp: 71
+- shraeni:fwrite: 71
+- shraeni:HUGE_VAL: 71
+- shraeni:ceil: 71
+- shraeni:va_list: 71
+- guru:size_t: 71
+- shraeni:FILE: 71
+- shraeni:fopen: 71
+- shraeni:fclose: 71
+- shraeni:NAN: 71
+- shraeni:abort: 71
+- shraeni:strncpy: 71
+- shraeni:DBL_MAX: 71
+- shraeni:offsetof: 71
+- shraeni:errno: 71
+- shraeni:BUFSIZ: 71
+- shraeni:va_start: 71
+- shraeni:va_end: 71
+- shraeni:getenv: 71
+- shraeni:strtod: 71
+- shraeni:close: 71
+- shraeni:FLT_MAX: 71
+- shraeni:CHAR_BIT: 71
+- shraeni:strerror: 71
+- shraeni:fstat: 71
+- shraeni:vfprintf: 71
+- shraeni:NDEBUG: 71
+- shraeni:remove: 71
+- shraeni:setjmp: 71
+- shraeni:ptrdiff_t: 71
+- shraeni:strncat: 71
+- shraeni:realloc: 71
+- shraeni:fgets: 71
+- shraeni:stdin: 71
+- shraeni:stdout: 71
+- shraeni:DBL_MIN: 71
+- shraeni:fmod: 71
+- guru:realloc: 71
+- shraeni:asm: 71
+- shraeni:feof: 71
+- shraeni:fread: 71
+- shraeni:ferror: 71
+- shraeni:CHAR_MIN: 71
+- shraeni:SCHAR_MIN: 71
+- shraeni:SHRT_MIN: 71
+- shraeni:LONG_MIN: 71
+- shraeni:CHAR_MAX: 71
+- shraeni:SCHAR_MAX: 71
+- shraeni:UCHAR_MAX: 71
+- shraeni:SHRT_MAX: 71
+- shraeni:USHRT_MAX: 71
+- shraeni:LONG_MAX: 71
+- shraeni:ULONG_MAX: 71
+- shraeni:longjmp: 71
+- shraeni:atoi: 71
+- shraeni:lconv: 71
+- shraeni:localeconv: 71
+- shraeni:atexit: 71
+- shraeni:setlocale: 71
+- shraeni:fputs: 71
+- shraeni:strtol: 71
+- shraeni:DBL_EPSILON: 71
+- shraeni:qsort: 70
+- shraeni:strcmp: 70
+- shraeni:memset: 70
+- shraeni:open: 70
+- soochee:wait: 70
+- shraeni:strcpy: 70
+- shraeni:nullptr: 67
+- shraeni:typename: 67
+- soochee:print: 67
+- shraeni:using: 67
+- soochee:len: 67
+- soochee:def: 67
+- shraeni:mutable: 67
+- soochee:None: 67
+- soochee:with: 67
+- shraeni:explicit: 67
+- soochee:range: 67
+- soochee:del: 67
+- shraeni:exp: 67
+- soochee:is: 67
+- soochee:pass: 67
+- shraeni:cos: 67
+- shraeni:sin: 67
+- shraeni:#define: 66
+- shraeni:#endif: 66
+- shraeni:#ifndef: 66
+- shraeni:#ifdef: 66
+- shraeni:#undef: 66
+- shraeni:#line: 66
+- guru:#define: 66
+- shraeni:#pragma: 66
+- guru:#endif: 66
+- guru:#ifndef: 66
+- shraeni:right: 66
+- shraeni:left: 66
+- shraeni:delete: 66
+- guru:#error: 66
+- shraeni:#error: 66
+- guru:#ifdef: 66
+- guru:#undef: 66
+- shraeni:unsigned: 62
+- shraeni:auto: 62
+- shraeni:template: 62
+- shraeni:operator: 62
+- guru:unsigned: 62
+- shraeni:friend: 62
+- shraeni:long: 62
+- shraeni:malloc: 62
+- shraeni:printf: 62
+- shraeni:strncmp: 62
+- shraeni:strlen: 62
+- shraeni:signed: 62
+- shraeni:INT_MAX: 62
+- shraeni:short: 62
+- soochee:short: 62
+- shraeni:abs: 62
+- shraeni:exit: 62
+- shraeni:memcpy: 62
+- shraeni:calloc: 62
+- shraeni:strstr: 62
+- shraeni:isspace: 62
+- guru:malloc: 62
+- guru:calloc: 62
+- shraeni:sqrt: 62
+- shraeni:sscanf: 62
+- shraeni:main: 54
+- soochee:main: 54
+- shraeni:virtual: 40
+- shraeni:true: 38
+- shraeni:bool: 26
+- shraeni:false: 26
+- shraeni:namespace: 26
+- soochee:elif: 26
+- soochee:False: 26
+- soochee:or: 26
+- soochee:as: 26
+- soochee:assert: 26
+- soochee:True: 26
+- soochee:raise: 26
+- soochee:lambda: 26
+- shraeni:sync: 26
+- soochee:global: 26
+- soochee:except: 26
+- shraeni:const: 25
+- shraeni:void: 25
+- shraeni:this: 25
+- shraeni:static: 25
+- shraeni:float: 25
+- guru:void: 25
+- shraeni:public: 25
+- shraeni:continue: 25
+- shraeni:switch: 25
+- shraeni:default: 25
+- shraeni:typedef: 25
+- guru:const: 25
+- guru:float: 25
+- shraeni:private: 25
+- shraeni:assert: 25
+- guru:typedef: 25
+- shraeni:goto: 25
+- soochee:import: 25
+- shraeni:free: 25
+- soochee:continue: 25
+- shraeni:new: 25
+- shraeni:extern: 25
+- shraeni:do: 25
+- soochee:read: 25
+- shraeni:NULL: 25
+- soochee:write: 25
+
+## Names with no dictionary entry (the most common first)
+
+- `c`: 76
+- `i`: 76
+- `unlikely`: 76
+- `font`: 76
+- `hb_codepoint_t`: 76
+- `return_trace`: 76
+- `v`: 76
+- `plan`: 76
+- `hb_always_assert`: 76
+- `info`: 76
+- `u`: 76
+- `p`: 76
+- `arrayZ`: 76
+- `T`: 76
+- `len`: 76
+- `face`: 76
+- `glyph`: 76
+- `paint`: 76
+- `b`: 76
+- `f`: 76
+- `s`: 76
+- `sanitize`: 76
+- `j`: 76
+- `str`: 76
+- `HB_EXTERN`: 76
+- `OT`: 76
+- `hb_font_t`: 76
+- `env`: 76
+- `hb_barrier`: 76
+- `funcs`: 76
+- `format`: 76
+- `_`: 76
+- `extents`: 76
+- `o`: 76
+- `HB_STR`: 76
+- `HB_CODEPOINT_ENCODE3_11_7_14`: 76
+- `serializer`: 76
+- `pos`: 76
+- `glyphs`: 76
+- `hb_bool_t`: 76
+- `pp`: 76
+- `hb_position_t`: 76
+- `hb_face_t`: 76
+- `idx`: 76
+- `blob`: 76
+- `HBUINT16`: 76
+- `buf`: 76
+- `draw`: 76
+- `g`: 76
+- `r`: 76
+- `pv`: 76
+- `ret`: 76
+- `obj`: 76
+- `l`: 76
+- `it`: 76
+- `codepoint`: 76
+- `Types`: 76
+- `HB_CODEPOINT_ENCODE3`: 76
+- `hb_map_t`: 76
+- `hb_sanitize_context_t`: 76
+- `has`: 76
+- `t`: 76
+- `param`: 76
+- `hb_blob_t`: 76
+- `hb_serialize_context_t`: 76
+- `gid`: 76
+- `src`: 76
+- `coverage`: 76
+- `Ts`: 76
+- `TRACE_SANITIZE`: 76
+- `n`: 76
+- `likely`: 76
+- `coords`: 76
+- `hb_array_t`: 76
+- `scratch`: 76
+- `append_str`: 76
+- `hb_paint_funcs_t`: 76
+- `instancer`: 76
+- `cache`: 76
+- `language`: 76
+- `direction`: 76
+- `Triple`: 76
+- `hb_hashmap_t`: 76
+- `st`: 76
+- `klass`: 76
+- `unicode`: 76
+- `hb_min`: 76
+- `k`: 76
+- `ds`: 76
+- `hb_glyph_info_t`: 76
+- `dispatch`: 76
+- `serialize`: 76
+- `e`: 76
+- `defined`: 76
+- `hb_draw_funcs_t`: 76
+- `get_population`: 76
+- `check_struct`: 76
+- `x0`: 76
+- `budget`: 76
+- `subset`: 76
+- `lookup_context`: 76
+- `hb_free`: 76
+- `lang_str`: 76
+- `hb_subset_context_t`: 76
+- `hb_max`: 76
+- `as_array`: 76
+- `y0`: 76
+- `color`: 76
+- `m`: 76
+- `cluster`: 76
+- `hb_pair_t`: 76
+- `dfuncs`: 76
+- `func`: 76
+- `HBUINT8`: 76
+- `d`: 76
+- `hb_map`: 76
+- `major`: 76
+- `init`: 76
+- `iter`: 76
+- `delta`: 76
+- `body`: 76
+- `ft_face`: 76
+- `props`: 76
+- `Iterator`: 76
+- `HB_NO_BEYOND_64K`: 76
+- `cur`: 76
+- `feature`: 76
+- `type`: 76
+- `x1`: 76
+- `vertices_`: 76
+- `y_scale`: 76
+- `clip`: 76
+- `points`: 76
+- `sys`: 76
+- `y1`: 76
+- `accelerator_t`: 76
+- `range`: 76
+- `features`: 76
+- `glyph_id`: 76
+- `Layout`: 76
+- `TRACE_SUBSET`: 76
+- `argv`: 76
+- `hb_destroy_func_t`: 76
+- `hb_iter`: 76
+- `hb_color_t`: 76
+- `hb_filter`: 76
+- `Null`: 76
+- `StructAfter`: 76
+- `h`: 76
+- `format1`: 76
+- `x_scale`: 76
+- `stops`: 76
+- `TRY`: 76
+- `script`: 76
+- `hb`: 76
+- `dx`: 76
+- `dy`: 76
+- `fini`: 76
+- `link`: 76
+- `ot`: 76
+- `glyph_map`: 76
+- `context`: 76
+- `intersects`: 76
+- `V`: 76
+- `Err`: 76
+- `glyphset`: 76
+- `successful`: 76
+- `pt1`: 76
+- `append_c`: 76
+- `TRACE_SERIALIZE`: 76
+- `embed`: 76
+- `lookup`: 76
+- `collect_variation_indices`: 76
+- `format2`: 76
+- `hb_subset_plan_t`: 76
+- `accel`: 76
+- `ft_font`: 76
+- `varStore`: 76
+- `Ok`: 76
+- `copy`: 76
+- `alloc`: 76
+- `thiz`: 76
+- `cx`: 76
+- `extend_min`: 76
+- `HBUINT32`: 76
+- `Coverage`: 76
+- `extend`: 76
+- `hb_blob_destroy`: 76
+- `eval_arg`: 76
+- `transform`: 76
+- `tent`: 76
+- `cmp`: 76
+- `U`: 76
+- `x`: 76
+- `G`: 76
+- `val`: 76
+- `hb_unicode_funcs_t`: 76
+- `mapping`: 76
+- `return_t`: 76
+- `context_t`: 76
+- `HBINT16`: 76
+- `hb_ot_shape_plan_t`: 76
+- `objidx`: 76
+- `B`: 76
+- `Float`: 76
+- `iter_t`: 76
+- `lookahead`: 76
+- `fd`: 76
+- `stride`: 76
+- `hb_scalar_cache_t`: 76
+- `hb_memcpy`: 76
+- `new_gid`: 76
+- `skippy_iter`: 76
+- `acc`: 76
+- `cy`: 76
+- `res`: 76
+- `lookups`: 76
+- `hb_draw_state_t`: 76
+- `sc`: 76
+- `w`: 76
+- `hb_glyph_extents_t`: 76
+- `yy`: 76
+- `O`: 76
+- `advance`: 76
+- `name`: 76
+- `array`: 76
+- `px`: 76
+- `E`: 76
+- `xx`: 76
+- `get_coverage`: 76
+- `hb_direction_t`: 76
+- `unicodes`: 76
+- `yx`: 76
+- `hb_requires`: 76
+- `error`: 76
+- `success`: 76
+- `old_gid`: 76
+- `xy`: 76
+- `FWORD`: 76
+- `sub_array`: 76
+- `sid`: 76
+- `hb_raster_paint_t`: 76
+- `ufuncs`: 76
+- `cr`: 76
+- `hb_ot_apply_context_t`: 76
+- `x_advance`: 76
+- `component`: 76
+- `HB_NO_VAR`: 76
+- `axis_range`: 76
+- `format3`: 76
+- `serialize_subset`: 76
+- `HB_ALWAYS_INLINE`: 76
+- `HB_AUTO_RETURN`: 76
+- `defs`: 76
+- `ffuncs`: 76
+- `Iter`: 76
+- `max`: 76
+- `SmallTypes`: 76
+- `ClassDef`: 76
+- `flag`: 76
+- `conditions`: 76
+- `clusters`: 76
+- `digest`: 76
+- `real_links`: 76
+- `collect_glyphs`: 76
+- `lookup_indexes`: 76
+- `matched`: 76
+- `os`: 76
+- `str_ref`: 76
+- `y_bearing`: 76
+- `indices`: 76
+- `destroy`: 76
+- `opstr`: 76
+- `x_bearing`: 76
+- `F2DOT14`: 76
+- `backtrack`: 76
+- `shape_plan`: 76
+- `x2`: 76
+- `format4`: 76
+- `pt2`: 76
+- `ptr_d`: 76
+- `subtable`: 76
+- `contents`: 76
+- `ci`: 76
+- `hb_calloc`: 76
+- `glyph_stride`: 76
+- `min_x`: 76
+- `codepoint_t`: 76
+- `v2`: 76
+- `SUPER`: 76
+- `new_clip`: 76
+- `large_string`: 76
+- `user_axes_location`: 76
+- `min`: 76
+- `normalized_coords`: 76
+- `hb_zip`: 76
+- `shaper`: 76
+- `pt3`: 76
+- `hb_atomic_t`: 76
+- `HBUINT`: 76
+
+## Comments with no translation
+
+- IN/OUT: 76
+- Chinese, Traditional, Hong Kong SAR: 76
+- namespace OT: 76
+- Chinese, Traditional, Macao SAR: 76
+- Chinese, Traditional: 76
+- OUT.  May be NULL: 76
+- !/usr/bin/env python3: 76
+- Format identifier: 76
+- CFF, CFF2: 76
+- Chinese, Simplified: 76
+- OUT.     May be NULL.: 76
+- CFF: 76
+- Format identifier--format = 1: 76
+- < private >: 76
+- IN/OUT.  May be NULL.: 76
+- namespace CFF: 76
+- Immutable-safe.: 76
+- Including the first glyph (not matched): 76
+- Array of input values--start with second glyph: 76
+- CFF Top: 76
+- -1 means nul-terminated: 76
+- Format identifier--format = 2: 76
+- < skip >: 76
+- Embolden: 76
+- fallback_position: 76
+- INOUT: 76
+- namespace AAT: 76
+- gpos_tag: 76
+- postprocess_glyphs: 76
+- < flags >: 76
+- CFF Private, CFF2 Private: 76
+- Unicode-1.1 additions: 76
+- May be NULL.: 76
+- GSUB/GPOS: 76
+- decompose: 76
+- reorder_marks: 76
+- Set to 0.: 76
+- namespace glyf_impl: 76
+- format: 76
+- * shaper: 76
+- static: 76
+- OUT.  May be NULL.: 76
+- override_features: 76
+- first face: 76
+- * shaper face data: 76
+- * shaper font data: 76
+- Lao: 76
+- == Start of generated table ==: 76
+- == End of generated table ==: 76
+- preprocess_text: 76
+- compose: 76
+- Has interface.: 76
+- Might return false if array looks unsorted.
+   * Used for faster rejection of corrupt data.: 76
+- Format identifier--format = 3: 76
+- Pacify -Wunused-macros.: 76
+- deprecated: 76
+- Sink interface.: 76
+- ccw: 76
+- Hebrew: 76
+- Thai: 76
+- Tibetan: 76
+- buffer var allocations: 76
+- data_create: 76
+- data_destroy: 76
+- hint table, fallthrough: 76
+- X or Y value, in design units: 76
+- Offset to Coverage table--from
+                                         * beginning of Substitution : 76
+- Can't use the fast path if eg. the next char is a default-ignorable
+	 * or other skippable.: 76
+- Gujarati: 76
+- Khmer: 76
+- Just so we compile it; unused otherwise.: 76
+- whole buffer: 76
+- CFF Top (0): 76
+- Unicode-5.0 additions: 76
+- Unicode-9.0 additions: 76
+- namespace hb: 76
+- ssXX: 76
+- cvXX: 76
+- Romanian: 76
+- Armenian: 76
+- Telugu: 76
+- Syriac: 76
+- collect_features: 76
+- setup_masks: 76
+- TODO: 76
+- avar2 partial instancing: cull unreachable regions.: 76
+- Predicate.: 76
+- Offset to Coverage table--from
+                                         * beginning of subtable: 76
+- do not strip hints for VF: 76
+- Starting from second for each ligature: 76
+- Bengali: 76
+- Oriya: 76
+- Kannada: 76
+- The rest of array sanitizations are done at run-time.: 76
+- https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern: 76
+- Subtables.: 76
+- https://github.com/harfbuzz/harfbuzz/pull/4228: 76
+- "bithacks": 76
+- * Iterator implementation.: 76
+- TODO Unescape delimiters.: 76
