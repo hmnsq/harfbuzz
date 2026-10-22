@@ -178,12 +178,12 @@ struct RepeatedAddGlyphAction
 
 struct ActionSubrecord
 {
-  unsigned int get_length () const { return u.header.actionLength; }
+  unsigned số_nguyên get_length () const { trả_về u.header.actionLength; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    nếu (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
@@ -219,15 +219,15 @@ struct PostcompensationActionChain
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    nếu (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
-    unsigned int offset = min_size;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned số_nguyên offset = min_size;
+    cho (unsigned số_nguyên i = 0; i < count; i++)
     {
       const ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (this, offset);
-      if (unlikely (!subrecord.sanitize (c))) return_trace (false);
+      nếu (unlikely (!subrecord.sanitize (c))) return_trace (false);
       offset += subrecord.get_length ();
     }
 

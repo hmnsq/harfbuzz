@@ -56,7 +56,7 @@ using hb_aat_class_cache_t = hb_ot_layout_mapping_cache_t;
  * morx/kerx-heavy fonts, for about 16KB of code. */
 #ifndef HB_OPTIMIZE_SIZE
 #define HB_AAT_TRANSITION_INLINE HB_ALWAYS_INLINE
-#else
+#không_thì
 #define HB_AAT_TRANSITION_INLINE
 #endif
 
@@ -74,13 +74,13 @@ struct hb_aat_scratch_t
   {
     buffer_glyph_set.set_relaxed (o.buffer_glyph_set.get_relaxed ());
     o.buffer_glyph_set.set_relaxed (nullptr);
-    return *this;
+    trả_về *this;
   }
   ~hb_aat_scratch_t ()
   {
     auto *s = buffer_glyph_set.get_relaxed ();
-    if (unlikely (!s))
-      return;
+    nếu (unlikely (!s))
+      trả_về;
     s->fini ();
     hb_free (s);
   }
@@ -88,25 +88,25 @@ struct hb_aat_scratch_t
   hb_bit_set_t *create_buffer_glyph_set () const
   {
     hb_bit_set_t *s = buffer_glyph_set.get_acquire ();
-    if (s && buffer_glyph_set.cmpexch (s, nullptr))
+    nếu (s && buffer_glyph_set.cmpexch (s, nullptr))
     {
       s->clear ();
-      return s;
+      trả_về s;
     }
 
     s = (hb_bit_set_t *) hb_calloc (1, sizeof (hb_bit_set_t));
-    if (unlikely (!s))
-      return nullptr;
+    nếu (unlikely (!s))
+      trả_về nullptr;
     s->init ();
 
-    return s;
+    trả_về s;
   }
   void destroy_buffer_glyph_set (hb_bit_set_t *s) const
   {
-    if (unlikely (!s))
-      return;
-    if (buffer_glyph_set.cmpexch (nullptr, s))
-      return;
+    nếu (unlikely (!s))
+      trả_về;
+    nếu (buffer_glyph_set.cmpexch (nullptr, s))
+      trả_về;
     s->fini ();
     hb_free (s);
   }
@@ -121,12 +121,12 @@ enum { DELETED_GLYPH = 0xFFFF };
 struct hb_aat_apply_context_t :
        hb_dispatch_context_t<hb_aat_apply_context_t, bool, HB_DEBUG_APPLY>
 {
-  const char *get_name () { return "APPLY"; }
+  const char *get_name () { trả_về "APPLY"; }
   template <typename T, typename ...Ts>
   return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.apply (this, std::forward<Ts> (ds)...); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  { trả_về obj.apply (this, std::forward<Ts> (ds)...); }
+  static return_t default_return_value () { trả_về false; }
+  bool stop_sublookup_iteration (return_t r) const { trả_về r; }
 
   const hb_ot_shape_plan_t *plan;
   hb_font_t *font;
@@ -147,7 +147,7 @@ struct hb_aat_apply_context_t :
   hb_aat_class_cache_t *machine_class_cache = nullptr;
 
   /* Unused. For debug tracing only. */
-  unsigned int lookup_index;
+  unsigned số_nguyên lookup_index;
 
   HB_INTERNAL hb_aat_apply_context_t (const hb_ot_shape_plan_t *plan_,
 				      hb_font_t *font_,
@@ -158,7 +158,7 @@ struct hb_aat_apply_context_t :
 
   HB_INTERNAL void set_ankr_table (const AAT::ankr *ankr_table_);
 
-  void set_lookup_index (unsigned int i) { lookup_index = i; }
+  void set_lookup_index (unsigned số_nguyên i) { lookup_index = i; }
 
   void reverse_buffer ()
   {
@@ -170,92 +170,92 @@ struct hb_aat_apply_context_t :
   {
     using_buffer_glyph_set = buffer->len >= 4 && buffer_glyph_set;
 
-    if (likely (using_buffer_glyph_set))
+    nếu (likely (using_buffer_glyph_set))
       buffer->collect_codepoints (*buffer_glyph_set);
   }
   bool buffer_intersects_machine () const
   {
-    if (likely (using_buffer_glyph_set))
-      return buffer_glyph_set->intersects (*first_set);
+    nếu (likely (using_buffer_glyph_set))
+      trả_về buffer_glyph_set->intersects (*first_set);
 
     // Faster for shorter buffers.
-    for (unsigned i = 0; i < buffer->len; i++)
-      if (first_set->has (buffer->info[i].codepoint))
-	return true;
-    return false;
+    cho (unsigned i = 0; i < buffer->len; i++)
+      nếu (first_set->has (buffer->info[i].codepoint))
+	trả_về true;
+    trả_về false;
   }
 
   template <typename T>
-  HB_NODISCARD bool output_glyphs (unsigned int count,
+  HB_NODISCARD bool output_glyphs (unsigned số_nguyên count,
 				   const T *glyphs)
   {
-    if (likely (using_buffer_glyph_set))
+    nếu (likely (using_buffer_glyph_set))
       buffer_glyph_set->add_array (glyphs, count);
-    for (unsigned int i = 0; i < count; i++)
+    cho (unsigned số_nguyên i = 0; i < count; i++)
     {
       bool at_end_of_text = buffer->idx == buffer->len;
-      if (at_end_of_text)
-	if (unlikely (!buffer->output_glyph (glyphs[i]))) return false;
+      nếu (at_end_of_text)
+	nếu (unlikely (!buffer->output_glyph (glyphs[i]))) trả_về false;
 
       hb_glyph_info_t &info = at_end_of_text ? buffer->prev () : buffer->cur ();
-      if (glyphs[i] == DELETED_GLYPH)
+      nếu (glyphs[i] == DELETED_GLYPH)
       {
         buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
 	_hb_glyph_info_set_aat_deleted (&info);
       }
-      else
+      không_thì
       {
 #ifndef HB_NO_OT_LAYOUT
-	if (has_glyph_classes)
+	nếu (has_glyph_classes)
 	  _hb_glyph_info_set_glyph_props (&info,
 					  gdef.get_glyph_props (glyphs[i]));
 #endif
       }
-      if (!at_end_of_text)
-	if (unlikely (!buffer->output_glyph (glyphs[i]))) return false;
+      nếu (!at_end_of_text)
+	nếu (unlikely (!buffer->output_glyph (glyphs[i]))) trả_về false;
     }
-    return true;
+    trả_về true;
   }
 
   HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph)
   {
-    if (glyph == DELETED_GLYPH)
+    nếu (glyph == DELETED_GLYPH)
     {
       buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
       _hb_glyph_info_set_aat_deleted (&buffer->cur());
     }
 
-    if (likely (using_buffer_glyph_set))
+    nếu (likely (using_buffer_glyph_set))
       buffer_glyph_set->add (glyph);
 #ifndef HB_NO_OT_LAYOUT
-    if (has_glyph_classes)
+    nếu (has_glyph_classes)
       _hb_glyph_info_set_glyph_props (&buffer->cur(),
 				      gdef.get_glyph_props (glyph));
 #endif
-    return buffer->replace_glyph (glyph);
+    trả_về buffer->replace_glyph (glyph);
   }
 
   HB_NODISCARD bool delete_glyph ()
   {
     buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
     _hb_glyph_info_set_aat_deleted (&buffer->cur());
-    if (likely (using_buffer_glyph_set))
+    nếu (likely (using_buffer_glyph_set))
       buffer_glyph_set->add (DELETED_GLYPH);
-    return buffer->replace_glyph (DELETED_GLYPH);
+    trả_về buffer->replace_glyph (DELETED_GLYPH);
   }
 
   void replace_glyph_inplace (unsigned i, hb_codepoint_t glyph)
   {
     buffer->info[i].codepoint = glyph;
-    if (glyph == DELETED_GLYPH)
+    nếu (glyph == DELETED_GLYPH)
     {
       buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
       _hb_glyph_info_set_aat_deleted (&buffer->info[i]);
     }
-    if (likely (using_buffer_glyph_set))
+    nếu (likely (using_buffer_glyph_set))
       buffer_glyph_set->add (glyph);
 #ifndef HB_NO_OT_LAYOUT
-    if (has_glyph_classes)
+    nếu (has_glyph_classes)
       _hb_glyph_info_set_glyph_props (&buffer->info[i],
 				      gdef.get_glyph_props (glyph));
 #endif
@@ -275,10 +275,10 @@ struct LookupFormat0
   friend struct Lookup<T>;
 
   private:
-  const T* get_value (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  const T* get_value (hb_codepoint_t glyph_id, unsigned số_nguyên num_glyphs) const
   {
-    if (unlikely (glyph_id >= num_glyphs)) return nullptr;
-    return &arrayZ[glyph_id];
+    nếu (unlikely (glyph_id >= num_glyphs)) trả_về nullptr;
+    trả_về &arrayZ[glyph_id];
   }
 
   template <typename set_t>
@@ -289,8 +289,8 @@ struct LookupFormat0
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
   {
-    for (unsigned i = 0; i < num_glyphs; i++)
-      if (filter (arrayZ[i]))
+    cho (unsigned i = 0; i < num_glyphs; i++)
+      nếu (filter (arrayZ[i]))
 	glyphs.add (i);
   }
 
@@ -319,20 +319,20 @@ struct LookupSegmentSingle
 {
   static constexpr unsigned TerminationWordCount = 2u;
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1 ; }
+  số_nguyên cmp (hb_codepoint_t g) const
+  { trả_về g < first ? -1 : g <= last ? 0 : +1 ; }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    if (first == DELETED_GLYPH) return;
+    nếu (first == DELETED_GLYPH) trả_về;
     glyphs.add_range (first, last);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    if (first == DELETED_GLYPH) return;
-    if (!filter (value)) return;
+    nếu (first == DELETED_GLYPH) trả_về;
+    nếu (!filter (value)) trả_về;
     glyphs.add_range (first, last);
   }
 
@@ -363,21 +363,21 @@ struct LookupFormat2
   const T* get_value (hb_codepoint_t glyph_id) const
   {
     const LookupSegmentSingle<T> *v = segments.bsearch (glyph_id);
-    return v ? &v->value : nullptr;
+    trả_về v ? &v->value : nullptr;
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
     unsigned count = segments.get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    cho (unsigned số_nguyên i = 0; i < count; i++)
       segments[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
     unsigned count = segments.get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    cho (unsigned số_nguyên i = 0; i < count; i++)
       segments[i].collect_glyphs_filtered (glyphs, filter);
   }
 
@@ -409,27 +409,27 @@ struct LookupSegmentArray
 
   const T* get_value (hb_codepoint_t glyph_id, const void *base) const
   {
-    return first <= glyph_id && glyph_id <= last ? &(base+valuesZ)[glyph_id - first] : nullptr;
+    trả_về first <= glyph_id && glyph_id <= last ? &(base+valuesZ)[glyph_id - first] : nullptr;
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    if (first == DELETED_GLYPH) return;
+    nếu (first == DELETED_GLYPH) trả_về;
     glyphs.add_range (first, last);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const void *base, const filter_t &filter) const
   {
-    if (first == DELETED_GLYPH) return;
+    nếu (first == DELETED_GLYPH) trả_về;
     const auto &values = base+valuesZ;
-    for (hb_codepoint_t i = first; i <= last; i++)
-      if (filter (values[i - first]))
+    cho (hb_codepoint_t i = first; i <= last; i++)
+      nếu (filter (values[i - first]))
 	glyphs.add (i);
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  số_nguyên cmp (hb_codepoint_t g) const
+  { trả_về g < first ? -1 : g <= last ? 0 : +1; }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -467,21 +467,21 @@ struct LookupFormat4
   const T* get_value (hb_codepoint_t glyph_id) const
   {
     const LookupSegmentArray<T> *v = segments.bsearch (glyph_id);
-    return v ? v->get_value (glyph_id, this) : nullptr;
+    trả_về v ? v->get_value (glyph_id, this) : nullptr;
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
     unsigned count = segments.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    cho (unsigned i = 0; i < count; i++)
       segments[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
     unsigned count = segments.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    cho (unsigned i = 0; i < count; i++)
       segments[i].collect_glyphs_filtered (glyphs, this, filter);
   }
 
@@ -511,19 +511,19 @@ struct LookupSingle
 {
   static constexpr unsigned TerminationWordCount = 1u;
 
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  số_nguyên cmp (hb_codepoint_t g) const { trả_về glyph.cmp (g); }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    if (glyph == DELETED_GLYPH) return;
+    nếu (glyph == DELETED_GLYPH) trả_về;
     glyphs.add (glyph);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    if (glyph == DELETED_GLYPH) return;
-    if (!filter (value)) return;
+    nếu (glyph == DELETED_GLYPH) trả_về;
+    nếu (!filter (value)) trả_về;
     glyphs.add (glyph);
   }
 
@@ -553,21 +553,21 @@ struct LookupFormat6
   const T* get_value (hb_codepoint_t glyph_id) const
   {
     const LookupSingle<T> *v = entries.bsearch (glyph_id);
-    return v ? &v->value : nullptr;
+    trả_về v ? &v->value : nullptr;
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
     unsigned count = entries.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    cho (unsigned i = 0; i < count; i++)
       entries[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
     unsigned count = entries.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    cho (unsigned i = 0; i < count; i++)
       entries[i].collect_glyphs_filtered (glyphs, filter);
   }
 
@@ -598,25 +598,25 @@ struct LookupFormat8
   private:
   const T* get_value (hb_codepoint_t glyph_id) const
   {
-    return firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount ?
+    trả_về firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount ?
 	   &valueArrayZ[glyph_id - firstGlyph] : nullptr;
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
+    nếu (unlikely (!glyphCount)) trả_về;
+    nếu (firstGlyph == DELETED_GLYPH) trả_về;
     glyphs.add_range (firstGlyph, firstGlyph + glyphCount - 1);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
+    nếu (unlikely (!glyphCount)) trả_về;
+    nếu (firstGlyph == DELETED_GLYPH) trả_về;
     const T *p = valueArrayZ.arrayZ;
-    for (unsigned i = 0; i < glyphCount; i++)
-      if (filter (p[i]))
+    cho (unsigned i = 0; i < glyphCount; i++)
+      nếu (filter (p[i]))
 	glyphs.add (firstGlyph + i);
   }
 
@@ -651,40 +651,40 @@ struct LookupFormat10
   private:
   const typename T::type get_value_or_null (hb_codepoint_t glyph_id) const
   {
-    if (!(firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount))
-      return Null (T);
+    nếu (!(firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount))
+      trả_về Null (T);
 
     const HBUINT8 *p = &valueArrayZ[(glyph_id - firstGlyph) * valueSize];
 
-    unsigned int v = 0;
-    unsigned int count = valueSize;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned số_nguyên v = 0;
+    unsigned số_nguyên count = valueSize;
+    cho (unsigned số_nguyên i = 0; i < count; i++)
       v = (v << 8) | *p++;
 
-    return v;
+    trả_về v;
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
+    nếu (unlikely (!glyphCount)) trả_về;
+    nếu (firstGlyph == DELETED_GLYPH) trả_về;
     glyphs.add_range (firstGlyph, firstGlyph + glyphCount - 1);
   }
 
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
+    nếu (unlikely (!glyphCount)) trả_về;
+    nếu (firstGlyph == DELETED_GLYPH) trả_về;
     const HBUINT8 *p = valueArrayZ.arrayZ;
-    for (unsigned i = 0; i < glyphCount; i++)
+    cho (unsigned i = 0; i < glyphCount; i++)
     {
-      unsigned int v = 0;
-      unsigned int count = valueSize;
-      for (unsigned int j = 0; j < count; j++)
+      unsigned số_nguyên v = 0;
+      unsigned số_nguyên count = valueSize;
+      cho (unsigned số_nguyên j = 0; j < count; j++)
 	v = (v << 8) | *p++;
-      if (filter (v))
+      nếu (filter (v))
 	glyphs.add (firstGlyph + i);
     }
   }
@@ -714,68 +714,68 @@ struct LookupFormat10
 template <typename T>
 struct Lookup
 {
-  const T* get_value (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  const T* get_value (hb_codepoint_t glyph_id, unsigned số_nguyên num_glyphs) const
   {
     switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_value (glyph_id, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_value (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_value (glyph_id);
-    case 6: hb_barrier (); return u.format6.get_value (glyph_id);
-    case 8: hb_barrier (); return u.format8.get_value (glyph_id);
-    default:return nullptr;
+    case 0: hb_barrier (); trả_về u.format0.get_value (glyph_id, num_glyphs);
+    case 2: hb_barrier (); trả_về u.format2.get_value (glyph_id);
+    case 4: hb_barrier (); trả_về u.format4.get_value (glyph_id);
+    case 6: hb_barrier (); trả_về u.format6.get_value (glyph_id);
+    case 8: hb_barrier (); trả_về u.format8.get_value (glyph_id);
+    default:trả_về nullptr;
     }
   }
 
-  const typename T::type get_value_or_null (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  const typename T::type get_value_or_null (hb_codepoint_t glyph_id, unsigned số_nguyên num_glyphs) const
   {
     switch (u.format.v) {
       /* Format 10 cannot return a pointer. */
-      case 10: hb_barrier (); return u.format10.get_value_or_null (glyph_id);
+      case 10: hb_barrier (); trả_về u.format10.get_value_or_null (glyph_id);
       default:
       const T *v = get_value (glyph_id, num_glyphs);
-      return v ? *v : Null (T);
+      trả_về v ? *v : Null (T);
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned int num_glyphs) const
+  void collect_glyphs (set_t &glyphs, unsigned số_nguyên num_glyphs) const
   {
     switch (u.format.v) {
-    case 0: hb_barrier (); u.format0.collect_glyphs (glyphs, num_glyphs); return;
-    case 2: hb_barrier (); u.format2.collect_glyphs (glyphs); return;
-    case 4: hb_barrier (); u.format4.collect_glyphs (glyphs); return;
-    case 6: hb_barrier (); u.format6.collect_glyphs (glyphs); return;
-    case 8: hb_barrier (); u.format8.collect_glyphs (glyphs); return;
-    case 10: hb_barrier (); u.format10.collect_glyphs (glyphs); return;
-    default:return;
+    case 0: hb_barrier (); u.format0.collect_glyphs (glyphs, num_glyphs); trả_về;
+    case 2: hb_barrier (); u.format2.collect_glyphs (glyphs); trả_về;
+    case 4: hb_barrier (); u.format4.collect_glyphs (glyphs); trả_về;
+    case 6: hb_barrier (); u.format6.collect_glyphs (glyphs); trả_về;
+    case 8: hb_barrier (); u.format8.collect_glyphs (glyphs); trả_về;
+    case 10: hb_barrier (); u.format10.collect_glyphs (glyphs); trả_về;
+    default:trả_về;
     }
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
   {
     switch (u.format.v) {
-    case 0: hb_barrier (); u.format0.collect_glyphs_filtered (glyphs, num_glyphs, filter); return;
-    case 2: hb_barrier (); u.format2.collect_glyphs_filtered (glyphs, filter); return;
-    case 4: hb_barrier (); u.format4.collect_glyphs_filtered (glyphs, filter); return;
-    case 6: hb_barrier (); u.format6.collect_glyphs_filtered (glyphs, filter); return;
-    case 8: hb_barrier (); u.format8.collect_glyphs_filtered (glyphs, filter); return;
-    case 10: hb_barrier (); u.format10.collect_glyphs_filtered (glyphs, filter); return;
-    default:return;
+    case 0: hb_barrier (); u.format0.collect_glyphs_filtered (glyphs, num_glyphs, filter); trả_về;
+    case 2: hb_barrier (); u.format2.collect_glyphs_filtered (glyphs, filter); trả_về;
+    case 4: hb_barrier (); u.format4.collect_glyphs_filtered (glyphs, filter); trả_về;
+    case 6: hb_barrier (); u.format6.collect_glyphs_filtered (glyphs, filter); trả_về;
+    case 8: hb_barrier (); u.format8.collect_glyphs_filtered (glyphs, filter); trả_về;
+    case 10: hb_barrier (); u.format10.collect_glyphs_filtered (glyphs, filter); trả_về;
+    default:trả_về;
     }
   }
 
   typename T::type get_class (hb_codepoint_t glyph_id,
-			      unsigned int num_glyphs,
-			      unsigned int outOfRange) const
+			      unsigned số_nguyên num_glyphs,
+			      unsigned số_nguyên outOfRange) const
   {
     const T *v = get_value (glyph_id, num_glyphs);
-    return v ? *v : outOfRange;
+    trả_về v ? *v : outOfRange;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    nếu (!u.format.v.sanitize (c)) return_trace (false);
     hb_barrier ();
     switch (u.format.v) {
     case 0: hb_barrier (); return_trace (u.format0.sanitize (c));
@@ -790,7 +790,7 @@ struct Lookup
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
     TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    nếu (!u.format.v.sanitize (c)) return_trace (false);
     hb_barrier ();
     switch (u.format.v) {
     case 0: hb_barrier (); return_trace (u.format0.sanitize (c, base));
@@ -894,19 +894,19 @@ struct StateTable
   {
     unsigned num_classes = nClasses;
 
-    if (unlikely (num_classes > hb_bit_page_t::BITS))
+    nếu (unlikely (num_classes > hb_bit_page_t::BITS))
     {
       (this+classTable).collect_glyphs (glyphs, num_glyphs);
-      return;
+      trả_về;
     }
 
     // Collect all classes going out from the start state.
     hb_bit_page_t filter;
 
-    for (unsigned i = 0; i < num_classes; i++)
+    cho (unsigned i = 0; i < num_classes; i++)
     {
       const auto &entry = get_entry (STATE_START_OF_TEXT, i);
-      if (new_state (entry.newState) == STATE_START_OF_TEXT &&
+      nếu (new_state (entry.newState) == STATE_START_OF_TEXT &&
 	  !table.is_action_initiable (entry) && !table.is_actionable (entry))
 	continue;
 
@@ -915,50 +915,50 @@ struct StateTable
 
     // And glyphs in those classes.
 
-    if (filter (CLASS_DELETED_GLYPH))
+    nếu (filter (CLASS_DELETED_GLYPH))
       glyphs.add (DELETED_GLYPH);
 
     (this+classTable).collect_glyphs_filtered (glyphs, num_glyphs, filter);
   }
 
-  int new_state (unsigned int newState) const
-  { return Types::extended ? newState : ((int) newState - (int) stateArrayTable) / (int) nClasses; }
+  số_nguyên new_state (unsigned số_nguyên newState) const
+  { trả_về Types::extended ? newState : ((số_nguyên) newState - (số_nguyên) stateArrayTable) / (số_nguyên) nClasses; }
 
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  unsigned int num_glyphs,
+  unsigned số_nguyên get_class (hb_codepoint_t glyph_id,
+			  unsigned số_nguyên num_glyphs,
 			  hb_aat_class_cache_t *cache = nullptr) const
   {
     unsigned klass;
-    if (cache && cache->get (glyph_id, &klass)) return klass;
-    if (unlikely (glyph_id == DELETED_GLYPH)) return CLASS_DELETED_GLYPH;
+    nếu (cache && cache->get (glyph_id, &klass)) trả_về klass;
+    nếu (unlikely (glyph_id == DELETED_GLYPH)) trả_về CLASS_DELETED_GLYPH;
     klass = (this+classTable).get_class (glyph_id, num_glyphs, CLASS_OUT_OF_BOUNDS);
-    if (cache) cache->set (glyph_id, klass);
-    return klass;
+    nếu (cache) cache->set (glyph_id, klass);
+    trả_về klass;
   }
 
   const Entry<Extra> *get_entries () const
-  { return (this+entryTable).arrayZ; }
+  { trả_về (this+entryTable).arrayZ; }
 
-  const Entry<Extra> &get_entry (int state, unsigned int klass) const
+  const Entry<Extra> &get_entry (số_nguyên state, unsigned số_nguyên klass) const
   {
     unsigned n_classes = nClasses;
-    if (unlikely (klass >= n_classes))
+    nếu (unlikely (klass >= n_classes))
       klass = CLASS_OUT_OF_BOUNDS;
 
     const HBUSHORT *states = (this+stateArrayTable).arrayZ;
     const Entry<Extra> *entries = (this+entryTable).arrayZ;
 
-    unsigned int entry = states[state * n_classes + klass];
+    unsigned số_nguyên entry = states[state * n_classes + klass];
     DEBUG_MSG (APPLY, nullptr, "e%u", entry);
 
-    return entries[entry];
+    trả_về entries[entry];
   }
 
   bool sanitize (hb_sanitize_context_t *c,
-		 unsigned int *num_entries_out = nullptr) const
+		 unsigned số_nguyên *num_entries_out = nullptr) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    nếu (unlikely (!(c->check_struct (this) &&
 		    hb_barrier () &&
 		    nClasses >= 4 /* Ensure pre-defined classes fit.  */ &&
 		    classTable.sanitize (c, this)))) return_trace (false);
@@ -966,10 +966,10 @@ struct StateTable
     const HBUSHORT *states = (this+stateArrayTable).arrayZ;
     const Entry<Extra> *entries = (this+entryTable).arrayZ;
 
-    unsigned int num_classes = nClasses;
-    if (unlikely (hb_unsigned_mul_overflows (num_classes, states[0].static_size)))
+    unsigned số_nguyên num_classes = nClasses;
+    nếu (unlikely (hb_unsigned_mul_overflows (num_classes, states[0].static_size)))
       return_trace (false);
-    unsigned int row_stride = num_classes * states[0].static_size;
+    unsigned số_nguyên row_stride = num_classes * states[0].static_size;
 
     /* Apple 'kern' table has this peculiarity:
      *
@@ -985,66 +985,66 @@ struct StateTable
      * tables are not affected since those address states by index, not offset.
      */
 
-    int min_state = 0;
-    int max_state = 0;
-    unsigned int num_entries = 0;
+    số_nguyên min_state = 0;
+    số_nguyên max_state = 0;
+    unsigned số_nguyên num_entries = 0;
 
-    int state_pos = 0;
-    int state_neg = 0;
-    unsigned int entry = 0;
-    while (min_state < state_neg || state_pos <= max_state)
+    số_nguyên state_pos = 0;
+    số_nguyên state_neg = 0;
+    unsigned số_nguyên entry = 0;
+    trong_khi (min_state < state_neg || state_pos <= max_state)
     {
-      if (min_state < state_neg)
+      nếu (min_state < state_neg)
       {
 	/* Negative states. */
-	if (unlikely (hb_unsigned_mul_overflows (min_state, num_classes)))
+	nếu (unlikely (hb_unsigned_mul_overflows (min_state, num_classes)))
 	  return_trace (false);
-	if (unlikely (!c->check_range (&states[min_state * num_classes],
+	nếu (unlikely (!c->check_range (&states[min_state * num_classes],
 				       -min_state,
 				       row_stride)))
 	  return_trace (false);
-	if ((c->max_ops -= state_neg - min_state) <= 0)
+	nếu ((c->max_ops -= state_neg - min_state) <= 0)
 	  return_trace (false);
 	{ /* Sweep new states. */
 	  const HBUSHORT *stop = &states[min_state * num_classes];
-	  if (unlikely (stop > states))
+	  nếu (unlikely (stop > states))
 	    return_trace (false);
-	  for (const HBUSHORT *p = states; stop < p; p--)
+	  cho (const HBUSHORT *p = states; stop < p; p--)
 	    num_entries = hb_max (num_entries, *(p - 1) + 1u);
 	  state_neg = min_state;
 	}
       }
 
-      if (state_pos <= max_state)
+      nếu (state_pos <= max_state)
       {
 	/* Positive states. */
-	if (unlikely (!c->check_range (states,
+	nếu (unlikely (!c->check_range (states,
 				       max_state + 1,
 				       row_stride)))
 	  return_trace (false);
-	if ((c->max_ops -= max_state - state_pos + 1) <= 0)
+	nếu ((c->max_ops -= max_state - state_pos + 1) <= 0)
 	  return_trace (false);
 	{ /* Sweep new states. */
-	  if (unlikely (hb_unsigned_mul_overflows ((max_state + 1), num_classes)))
+	  nếu (unlikely (hb_unsigned_mul_overflows ((max_state + 1), num_classes)))
 	    return_trace (false);
 	  const HBUSHORT *stop = &states[(max_state + 1) * num_classes];
-	  if (unlikely (stop < states))
+	  nếu (unlikely (stop < states))
 	    return_trace (false);
-	  for (const HBUSHORT *p = &states[state_pos * num_classes]; p < stop; p++)
+	  cho (const HBUSHORT *p = &states[state_pos * num_classes]; p < stop; p++)
 	    num_entries = hb_max (num_entries, *p + 1u);
 	  state_pos = max_state + 1;
 	}
       }
 
-      if (unlikely (!c->check_array (entries, num_entries)))
+      nếu (unlikely (!c->check_array (entries, num_entries)))
 	return_trace (false);
-      if ((c->max_ops -= num_entries - entry) <= 0)
+      nếu ((c->max_ops -= num_entries - entry) <= 0)
 	return_trace (false);
       { /* Sweep new entries. */
 	const Entry<Extra> *stop = &entries[num_entries];
-	for (const Entry<Extra> *p = &entries[entry]; p < stop; p++)
+	cho (const Entry<Extra> *p = &entries[entry]; p < stop; p++)
 	{
-	  int newState = new_state (p->newState);
+	  số_nguyên newState = new_state (p->newState);
 	  min_state = hb_min (min_state, newState);
 	  max_state = hb_max (max_state, newState);
 	}
@@ -1052,7 +1052,7 @@ struct StateTable
       }
     }
 
-    if (num_entries_out)
+    nếu (num_entries_out)
       *num_entries_out = num_entries;
 
     return_trace (true);
@@ -1075,30 +1075,30 @@ struct StateTable
 template <typename HBUCHAR>
 struct ClassTable
 {
-  unsigned int get_class (hb_codepoint_t glyph_id, unsigned int outOfRange) const
+  unsigned số_nguyên get_class (hb_codepoint_t glyph_id, unsigned số_nguyên outOfRange) const
   {
-    unsigned int i = glyph_id - firstGlyph;
-    return i >= classArray.len ? outOfRange : classArray.arrayZ[i];
+    unsigned số_nguyên i = glyph_id - firstGlyph;
+    trả_về i >= classArray.len ? outOfRange : classArray.arrayZ[i];
   }
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  unsigned int num_glyphs HB_UNUSED,
-			  unsigned int outOfRange) const
+  unsigned số_nguyên get_class (hb_codepoint_t glyph_id,
+			  unsigned số_nguyên num_glyphs HB_UNUSED,
+			  unsigned số_nguyên outOfRange) const
   {
-    return get_class (glyph_id, outOfRange);
+    trả_về get_class (glyph_id, outOfRange);
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs, unsigned num_glyphs) const
   {
-    for (unsigned i = 0; i < classArray.len; i++)
-      if (classArray.arrayZ[i] != CLASS_OUT_OF_BOUNDS)
+    cho (unsigned i = 0; i < classArray.len; i++)
+      nếu (classArray.arrayZ[i] != CLASS_OUT_OF_BOUNDS)
 	glyphs.add (firstGlyph + i);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
   {
-    for (unsigned i = 0; i < classArray.len; i++)
-      if (filter (classArray.arrayZ[i]))
+    cho (unsigned i = 0; i < classArray.len; i++)
+      nếu (filter (classArray.arrayZ[i]))
 	glyphs.add (firstGlyph + i);
   }
 
@@ -1121,18 +1121,18 @@ struct SubtableGlyphCoverage
   {
     TRACE_SANITIZE (this);
 
-    if (unlikely (!c->check_array (&subtableOffsets, subtable_count)))
+    nếu (unlikely (!c->check_array (&subtableOffsets, subtable_count)))
       return_trace (false);
 
     unsigned bytes = (c->get_num_glyphs () + CHAR_BIT - 1) / CHAR_BIT;
-    for (unsigned i = 0; i < subtable_count; i++)
+    cho (unsigned i = 0; i < subtable_count; i++)
     {
       uint32_t offset = (uint32_t) subtableOffsets[i];
       // A font file called SFNSDisplay.ttf has value 0xFFFFFFFF in the offsets.
       // Just ignore it.
-      if (offset == 0 || offset == 0xFFFFFFFF)
+      nếu (offset == 0 || offset == 0xFFFFFFFF)
         continue;
-      if (unlikely (!subtableOffsets[i].sanitize (c, this, bytes)))
+      nếu (unlikely (!subtableOffsets[i].sanitize (c, this, bytes)))
         return_trace (false);
     }
 
@@ -1158,39 +1158,39 @@ struct ObsoleteTypes
   typedef ClassTable<HBUINT16> ClassTypeWide;
 
   template <typename T>
-  static int offsetToIndex (int64_t offset,
+  static số_nguyên offsetToIndex (int64_t offset,
 			    const void *base,
 			    const T *array)
   {
     int64_t array_offset = (const char *) array - (const char *) base;
-    int bad_index = INT_MAX / T::static_size;
+    số_nguyên bad_index = INT_MAX / T::static_size;
 
     /* https://github.com/harfbuzz/harfbuzz/issues/3483 */
     /* If offset is less than base, return an offset that would
      * result in an address half a 32bit address-space away,
      * to make sure sanitize fails even on 32bit builds. */
-    if (unlikely (offset < array_offset))
-      return bad_index;
+    nếu (unlikely (offset < array_offset))
+      trả_về bad_index;
 
     /* https://github.com/harfbuzz/harfbuzz/issues/2816 */
     int64_t index = (offset - array_offset) / T::static_size;
-    if (unlikely (index > bad_index))
-      return bad_index;
-    return index;
+    nếu (unlikely (index > bad_index))
+      trả_về bad_index;
+    trả_về index;
   }
   template <typename T>
-  static int byteOffsetToIndex (int64_t offset,
+  static số_nguyên byteOffsetToIndex (int64_t offset,
 				const void *base,
 				const T *array)
   {
-    return offsetToIndex (offset, base, array);
+    trả_về offsetToIndex (offset, base, array);
   }
   template <typename T>
-  static int wordOffsetToIndex (int64_t offset,
+  static số_nguyên wordOffsetToIndex (int64_t offset,
 				const void *base,
 				const T *array)
   {
-    return offsetToIndex (2 * offset, base, array);
+    trả_về offsetToIndex (2 * offset, base, array);
   }
 };
 struct ExtendedTypes
@@ -1202,25 +1202,25 @@ struct ExtendedTypes
   typedef Lookup<HBUINT16> ClassTypeWide;
 
   template <typename T>
-  static unsigned int offsetToIndex (unsigned int offset,
+  static unsigned số_nguyên offsetToIndex (unsigned số_nguyên offset,
 				     const void *base HB_UNUSED,
 				     const T *array HB_UNUSED)
   {
-    return offset;
+    trả_về offset;
   }
   template <typename T>
-  static unsigned int byteOffsetToIndex (unsigned int offset,
+  static unsigned số_nguyên byteOffsetToIndex (unsigned số_nguyên offset,
 					 const void *base HB_UNUSED,
 					 const T *array HB_UNUSED)
   {
-    return offset / 2;
+    trả_về offset / 2;
   }
   template <typename T>
-  static unsigned int wordOffsetToIndex (unsigned int offset,
+  static unsigned số_nguyên wordOffsetToIndex (unsigned số_nguyên offset,
 					 const void *base HB_UNUSED,
 					 const T *array HB_UNUSED)
   {
-    return offset;
+    trả_về offset;
   }
 };
 
@@ -1240,45 +1240,45 @@ struct StateTableDriver
   {
     hb_buffer_t *buffer = ac->buffer;
 
-    if (!c->in_place)
+    nếu (!c->in_place)
       buffer->clear_output ();
 
-    int state = StateTableT::STATE_START_OF_TEXT;
+    số_nguyên state = StateTableT::STATE_START_OF_TEXT;
     // If there's only one range, we already checked the flag.
     auto *last_range = ac->range_flags && (ac->range_flags->length > 1) ? &(*ac->range_flags)[0] : nullptr;
     const bool start_state_safe_to_break_eot =
       !c->table->is_actionable (machine.get_entry (StateTableT::STATE_START_OF_TEXT, CLASS_END_OF_TEXT));
-    for (buffer->idx = 0; buffer->successful;)
+    cho (buffer->idx = 0; buffer->successful;)
     {
-      unsigned int klass = likely (buffer->idx < buffer->len) ?
+      unsigned số_nguyên klass = likely (buffer->idx < buffer->len) ?
 			   machine.get_class (buffer->cur().codepoint, num_glyphs, ac->machine_class_cache) :
 			   (unsigned) CLASS_END_OF_TEXT;
     resume:
       DEBUG_MSG (APPLY, nullptr, "c%u at %u", klass, buffer->idx);
       const EntryT &entry = machine.get_entry (state, klass);
-      const int next_state = machine.new_state (entry.newState);
+      const số_nguyên next_state = machine.new_state (entry.newState);
 
       bool is_not_epsilon_transition = !(entry.flags & Flags::DontAdvance);
       bool is_not_actionable = !c->table->is_actionable (entry);
 
-      if (unlikely (last_range))
+      nếu (unlikely (last_range))
       {
 	/* This block is copied in NoncontextualSubtable::apply. Keep in sync. */
 	auto *range = last_range;
-	if (buffer->idx < buffer->len)
+	nếu (buffer->idx < buffer->len)
 	{
 	  unsigned cluster = buffer->cur().cluster;
-	  while (cluster < range->cluster_first)
+	  trong_khi (cluster < range->cluster_first)
 	    range--;
-	  while (cluster > range->cluster_last)
+	  trong_khi (cluster > range->cluster_last)
 	    range++;
 
 
 	  last_range = range;
 	}
-	if (!(range->flags & ac->subtable_flags))
+	nếu (!(range->flags & ac->subtable_flags))
 	{
-	  if (buffer->idx == buffer->len)
+	  nếu (buffer->idx == buffer->len)
 	    break;
 
 	  state = StateTableT::STATE_START_OF_TEXT;
@@ -1286,7 +1286,7 @@ struct StateTableDriver
 	  continue;
 	}
       }
-      else
+      không_thì
       {
 	// Fast path for when transitioning from start-state to start-state with
 	// no action and advancing. Do so as long as the class remains the same.
@@ -1298,14 +1298,14 @@ struct StateTableDriver
 				  is_not_actionable &&
 				  is_not_epsilon_transition;
 
-	if (is_null_transition)
+	nếu (is_null_transition)
 	{
 	  unsigned old_klass = klass;
 	  do
 	  {
 	    c->transition (buffer, this, entry);
 
-	    if (buffer->idx == buffer->len || !buffer->successful)
+	    nếu (buffer->idx == buffer->len || !buffer->successful)
 	      break;
 
 	    (void) buffer->next_glyph ();
@@ -1313,9 +1313,9 @@ struct StateTableDriver
 	    klass = likely (buffer->idx < buffer->len) ?
 		     machine.get_class (buffer->cur().codepoint, num_glyphs, ac->machine_class_cache) :
 		     (unsigned) CLASS_END_OF_TEXT;
-	  } while (klass == old_klass);
+	  } trong_khi (klass == old_klass);
 
-	  if (buffer->idx == buffer->len || !buffer->successful)
+	  nếu (buffer->idx == buffer->len || !buffer->successful)
 	    break;
 
 	  goto resume;
@@ -1379,7 +1379,7 @@ struct StateTableDriver
           !c->table->is_actionable (machine.get_entry (state, CLASS_END_OF_TEXT))
       );
 
-      if (!is_safe_to_break && buffer->backtrack_len () && buffer->idx < buffer->len)
+      nếu (!is_safe_to_break && buffer->backtrack_len () && buffer->idx < buffer->len)
 	buffer->unsafe_to_break_from_outbuffer (buffer->backtrack_len () - 1, buffer->idx + 1);
 
       c->transition (buffer, this, entry);
@@ -1387,20 +1387,20 @@ struct StateTableDriver
       state = next_state;
       DEBUG_MSG (APPLY, nullptr, "s%d", state);
 
-      if (buffer->idx == buffer->len)
+      nếu (buffer->idx == buffer->len)
 	break;
 
-      if (is_not_epsilon_transition || buffer->max_ops-- <= 0)
+      nếu (is_not_epsilon_transition || buffer->max_ops-- <= 0)
 	(void) buffer->next_glyph ();
     }
 
-    if (!c->in_place)
+    nếu (!c->in_place)
       buffer->sync ();
   }
 
   public:
   const StateTableT &machine;
-  unsigned int num_glyphs;
+  unsigned số_nguyên num_glyphs;
 };
 
 

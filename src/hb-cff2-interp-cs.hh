@@ -35,31 +35,31 @@ using namespace OT;
 
 struct blend_arg_t : number_t
 {
-  void set_int (int v) { reset_blends (); number_t::set_int (v); }
+  void set_int (số_nguyên v) { reset_blends (); number_t::set_int (v); }
   void set_fixed (int32_t v) { reset_blends (); number_t::set_fixed (v); }
   void set_real (double v) { reset_blends (); number_t::set_real (v); }
 
-  void set_blends (unsigned int numValues_, unsigned int valueIndex_,
+  void set_blends (unsigned số_nguyên numValues_, unsigned số_nguyên valueIndex_,
 		   hb_array_t<const blend_arg_t> blends_)
   {
     numValues = numValues_;
     valueIndex = valueIndex_;
     unsigned numBlends = blends_.length;
-    if (unlikely (!deltas.resize_exact (numBlends)))
-      return;
-    for (unsigned int i = 0; i < numBlends; i++)
+    nếu (unlikely (!deltas.resize_exact (numBlends)))
+      trả_về;
+    cho (unsigned số_nguyên i = 0; i < numBlends; i++)
       deltas.arrayZ[i] = blends_.arrayZ[i];
   }
 
-  bool blending () const { return deltas.length > 0; }
+  bool blending () const { trả_về deltas.length > 0; }
   void reset_blends ()
   {
     numValues = valueIndex = 0;
     deltas.clear ();
   }
 
-  unsigned int numValues;
-  unsigned int valueIndex;
+  unsigned số_nguyên numValues;
+  unsigned số_nguyên valueIndex;
   hb_vector_t<number_t> deltas;
 };
 
@@ -69,8 +69,8 @@ template <typename ELEM>
 struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 {
   template <typename ACC>
-  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned số_nguyên fd,
+			const số_nguyên *coords_=nullptr, unsigned số_nguyên num_coords_=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs),
       region_count (0), cached_scalars_vector (&acc.cached_scalars_vector)
   {
@@ -91,25 +91,25 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
   {
     hb_vector_t<float> *scalars = cached_scalars_vector->get_acquire ();
 
-    if (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
+    nếu (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
     {
       scalars = (hb_vector_t<float> *) hb_calloc (1, sizeof (hb_vector_t<float>));
-      if (unlikely (!scalars))
-	return nullptr;
+      nếu (unlikely (!scalars))
+	trả_về nullptr;
       scalars->init ();
     }
 
-    return scalars;
+    trả_về scalars;
   }
 
   void release_scalars_vector (hb_vector_t<float> *scalars) const
   {
-    if (!scalars)
-      return;
+    nếu (!scalars)
+      trả_về;
 
     scalars->clear ();
 
-    if (!cached_scalars_vector->cmpexch (nullptr, scalars))
+    nếu (!cached_scalars_vector->cmpexch (nullptr, scalars))
     {
       scalars->fini ();
       hb_free (scalars);
@@ -119,41 +119,41 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 
   op_code_t fetch_op ()
   {
-    if (this->str_ref.avail ())
-      return SUPER::fetch_op ();
+    nếu (this->str_ref.avail ())
+      trả_về SUPER::fetch_op ();
 
     /* make up return or endchar op */
-    if (this->callStack.is_empty ())
-      return OpCode_endchar;
-    else
-      return OpCode_return;
+    nếu (this->callStack.is_empty ())
+      trả_về OpCode_endchar;
+    không_thì
+      trả_về OpCode_return;
   }
 
-  const ELEM& eval_arg (unsigned int i)
+  const ELEM& eval_arg (unsigned số_nguyên i)
   {
-    return SUPER::argStack[i];
+    trả_về SUPER::argStack[i];
   }
 
   const ELEM& pop_arg ()
   {
-    return SUPER::argStack.pop ();
+    trả_về SUPER::argStack.pop ();
   }
 
   void process_blend ()
   {
-    if (!seen_blend)
+    nếu (!seen_blend)
     {
       scalars = acquire_scalars_vector ();
-      if (unlikely (!scalars))
+      nếu (unlikely (!scalars))
 	SUPER::set_error ();
-      else
+      không_thì
       {
 	region_count = varStore->varStore.get_region_index_count (get_ivs ());
-	if (do_blend)
+	nếu (do_blend)
 	{
-	  if (unlikely (!scalars->resize_exact (region_count)))
+	  nếu (unlikely (!scalars->resize_exact (region_count)))
 	    SUPER::set_error ();
-	  else
+	  không_thì
 	    varStore->varStore.get_region_scalars (get_ivs (), coords, num_coords,
 						   &(*scalars)[0], region_count);
 	}
@@ -164,50 +164,50 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 
   void process_vsindex ()
   {
-    unsigned int  index = SUPER::argStack.pop_uint ();
-    if (unlikely (seen_vsindex () || seen_blend))
+    unsigned số_nguyên  index = SUPER::argStack.pop_uint ();
+    nếu (unlikely (seen_vsindex () || seen_blend))
     {
      SUPER::set_error ();
     }
-    else
+    không_thì
     {
       set_ivs (index);
     }
     seen_vsindex_ = true;
   }
 
-  unsigned int get_region_count () const { return region_count; }
-  void	 set_region_count (unsigned int region_count_) { region_count = region_count_; }
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  unsigned số_nguyên get_region_count () const { trả_về region_count; }
+  void	 set_region_count (unsigned số_nguyên region_count_) { region_count = region_count_; }
+  unsigned số_nguyên get_ivs () const { trả_về ivs; }
+  void	 set_ivs (unsigned số_nguyên ivs_) { ivs = ivs_; }
   /* The FD's private-dict ivs, before any vsindex op in the charstring. */
-  unsigned int get_orig_ivs () const { return orig_ivs; }
-  bool	 seen_vsindex () const { return seen_vsindex_; }
+  unsigned số_nguyên get_orig_ivs () const { trả_về orig_ivs; }
+  bool	 seen_vsindex () const { trả_về seen_vsindex_; }
 
   double blend_deltas (hb_array_t<const ELEM> deltas) const
   {
     double v = 0;
-    if (do_blend)
+    nếu (do_blend)
     {
-      if (likely (scalars && scalars->length == deltas.length))
+      nếu (likely (scalars && scalars->length == deltas.length))
       {
         unsigned count = scalars->length;
-	for (unsigned i = 0; i < count; i++)
+	cho (unsigned i = 0; i < count; i++)
 	  v += (double) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
       }
     }
-    return v;
+    trả_về v;
   }
 
-  bool have_coords () const { return num_coords; }
+  bool have_coords () const { trả_về num_coords; }
 
   protected:
-  const int     *coords;
-  unsigned int  num_coords;
+  const số_nguyên     *coords;
+  unsigned số_nguyên  num_coords;
   const	 CFF2ItemVariationStore *varStore;
-  unsigned int  region_count;
-  unsigned int  ivs;
-  unsigned int  orig_ivs;
+  unsigned số_nguyên  region_count;
+  unsigned số_nguyên  ivs;
+  unsigned số_nguyên  orig_ivs;
   hb_vector_t<float>  *scalars = nullptr;
   hb_atomic_t<hb_vector_t<float> *> *cached_scalars_vector = nullptr;
   bool	  do_blend;
@@ -225,8 +225,8 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
       case OpCode_callsubr:
       case OpCode_callgsubr:
 	/* a subroutine number shouldn't be a blended value */
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+#nếu 0
+	nếu (unlikely (env.argStack.peek ().blending ()))
 	{
 	  env.set_error ();
 	  break;
@@ -240,8 +240,8 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
 	break;
 
       case OpCode_vsindexcs:
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+#nếu 0
+	nếu (unlikely (env.argStack.peek ().blending ()))
 	{
 	  env.set_error ();
 	  break;
@@ -262,22 +262,22 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
 				 const hb_array_t<const ELEM> blends,
 				 unsigned n, unsigned i)
   {
-    if (env.have_coords ())
+    nếu (env.have_coords ())
       arg.set_int (round (arg.to_real () + env.blend_deltas (blends)));
-    else if (unlikely (arg.blending ()))
+    không_thì nếu (unlikely (arg.blending ()))
     {
       /* A blend result used as an operand of a later blend: the value is
        * default + inner deltas + outer deltas, so accumulate the deltas. */
       hb_vector_t<number_t> inner = std::move (arg.deltas);
       arg.set_blends (n, i, blends);
-      if (likely (inner.length == arg.deltas.length))
-	for (unsigned j = 0; j < inner.length; j++)
+      nếu (likely (inner.length == arg.deltas.length))
+	cho (unsigned j = 0; j < inner.length; j++)
 	  arg.deltas.arrayZ[j].set_real (arg.deltas.arrayZ[j].to_real () +
 					 inner.arrayZ[j].to_real ());
-      else
+      không_thì
 	env.set_error ();
     }
-    else
+    không_thì
       arg.set_blends (n, i, blends);
   }
   template <typename T = ELEM,
@@ -292,26 +292,26 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
 
   static void process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    unsigned int n, k;
+    unsigned số_nguyên n, k;
 
     env.process_blend ();
     k = env.get_region_count ();
     n = env.argStack.pop_uint ();
     /* copy the blend values into blend array of the default values */
-    unsigned int count = env.argStack.get_count ();
-    unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    unsigned số_nguyên count = env.argStack.get_count ();
+    unsigned số_nguyên total;
+    nếu (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
     {
       env.set_error ();
-      return;
+      trả_về;
     }
-    if (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
+    nếu (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
     {
       env.set_error ();
-      return;
+      trả_về;
     }
-    unsigned int start = count - total;
-    for (unsigned int i = 0; i < n; i++)
+    unsigned số_nguyên start = count - total;
+    cho (unsigned số_nguyên i = 0; i < n; i++)
     {
       const hb_array_t<const ELEM> blends = env.argStack.sub_array (start + n + (i * k), k);
       process_arg_blend (env, env.argStack.arrayZ[start + i], blends, n, i);

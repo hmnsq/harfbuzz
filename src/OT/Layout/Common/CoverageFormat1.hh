@@ -34,7 +34,7 @@ namespace OT {
 namespace Layout {
 namespace Common {
 
-#define NOT_COVERED             ((unsigned int) -1)
+#define NOT_COVERED             ((unsigned số_nguyên) -1)
 
 template <typename Types>
 struct CoverageFormat1_3
@@ -55,16 +55,16 @@ struct CoverageFormat1_3
     return_trace (glyphArray.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned số_nguyên get_coverage (hb_codepoint_t glyph_id) const
   {
-    unsigned int i;
+    unsigned số_nguyên i;
     glyphArray.bfind (glyph_id, &i, HB_NOT_FOUND_STORE, NOT_COVERED);
-    return i;
+    trả_về i;
   }
 
   unsigned get_population () const
   {
-    return glyphArray.len;
+    trả_về glyphArray.len;
   }
 
   template <typename Iterator,
@@ -77,53 +77,53 @@ struct CoverageFormat1_3
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    if (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
+    nếu (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      cho (auto g : *glyphs)
+        nếu (get_coverage (g) != NOT_COVERED)
+	  trả_về true;
+      trả_về false;
     }
 
-    for (const auto& g : glyphArray.as_array ())
-      if (glyphs->has (g))
-        return true;
-    return false;
+    cho (const auto& g : glyphArray.as_array ())
+      nếu (glyphs->has (g))
+        trả_về true;
+    trả_về false;
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
-  { return glyphs->has (glyphArray[index]); }
+  bool intersects_coverage (const hb_set_t *glyphs, unsigned số_nguyên index) const
+  { trả_về glyphs->has (glyphArray[index]); }
 
   template <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
   void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
   {
     unsigned count = glyphArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphs.has (glyphArray[i]))
+    cho (unsigned i = 0; i < count; i++)
+      nếu (glyphs.has (glyphArray[i]))
         intersect_glyphs << glyphArray[i];
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
+  unsigned cost () const { trả_về hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
 
   template <typename set_t>
   bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_sorted_array (glyphArray.as_array ()); }
+  { trả_về glyphs->add_sorted_array (glyphArray.as_array ()); }
 
   public:
   /* Older compilers need this to be public. */
   struct iter_t
   {
     void init (const struct CoverageFormat1_3 &c_) { c = &c_; i = 0; }
-    bool __more__ () const { return i < c->glyphArray.len; }
+    bool __more__ () const { trả_về i < c->glyphArray.len; }
     void __next__ () { i++; }
-    hb_codepoint_t get_glyph () const { return c->glyphArray[i]; }
+    hb_codepoint_t get_glyph () const { trả_về c->glyphArray[i]; }
     bool operator != (const iter_t& o) const
-    { return i != o.i; }
-    iter_t __end__ () const { iter_t it; it.init (*c); it.i = c->glyphArray.len; return it; }
+    { trả_về i != o.i; }
+    iter_t __end__ () const { iter_t it; it.init (*c); it.i = c->glyphArray.len; trả_về it; }
 
     private:
     const struct CoverageFormat1_3 *c;
-    unsigned int i;
+    unsigned số_nguyên i;
   };
   private:
 };

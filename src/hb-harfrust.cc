@@ -51,7 +51,7 @@ _hb_harfrust_shaper_face_data_create_rs (hb_face_t *face);
 hb_harfrust_face_data_t *
 _hb_harfrust_shaper_face_data_create (hb_face_t *face)
 {
-  return (hb_harfrust_face_data_t *) _hb_harfrust_shaper_face_data_create_rs (face);
+  trả_về (hb_harfrust_face_data_t *) _hb_harfrust_shaper_face_data_create_rs (face);
 }
 
 extern "C" void
@@ -75,7 +75,7 @@ hb_harfrust_font_data_t *
 _hb_harfrust_shaper_font_data_create (hb_font_t *font)
 {
   const hb_harfrust_face_data_t *face_data = font->face->data.harfrust;
-  return (hb_harfrust_font_data_t *) _hb_harfrust_shaper_font_data_create_rs (font, face_data);
+  trả_về (hb_harfrust_font_data_t *) _hb_harfrust_shaper_font_data_create_rs (font, face_data);
 }
 
 extern "C" void
@@ -98,7 +98,7 @@ _hb_harfrust_shape_plan_create_rs (const void *font_data,
 				   hb_language_t language,
 				   hb_direction_t direction,
 				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   unsigned số_nguyên        num_features);
 
 extern "C" void
 _hb_harfrust_shape_plan_destroy_rs (void *data);
@@ -119,7 +119,7 @@ _hb_harfrust_shape_rs (const void         *font_data,
 		       const hb_codepoint_t *post_context,
 		       uint32_t            post_context_len,
 		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       unsigned số_nguyên        num_features);
 
 static hb_user_data_key_t hb_buffer_key = {0};
 
@@ -128,19 +128,19 @@ _hb_harfrust_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
 		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    unsigned số_nguyên        num_features)
 {
   const hb_harfrust_font_data_t *font_data = font->data.harfrust;
 
 retry_buffer:
   void *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_key);
-  if (unlikely (!hr_buffer))
+  nếu (unlikely (!hr_buffer))
   {
     hr_buffer = _hb_harfrust_buffer_create_rs ();
-    if (unlikely (!hr_buffer))
-      return false;
+    nếu (unlikely (!hr_buffer))
+      trả_về false;
 
-    if (!hb_buffer_set_user_data (buffer,
+    nếu (!hb_buffer_set_user_data (buffer,
 				  &hb_buffer_key,
 				  hr_buffer,
 				  _hb_harfrust_buffer_destroy_rs,
@@ -155,14 +155,14 @@ retry_buffer:
 
 retry_shape_plan:
   hr_shape_plan = shape_plan->harfrust_data.get_acquire ();
-  if (unlikely (!hr_shape_plan))
+  nếu (unlikely (!hr_shape_plan))
   {
     hr_shape_plan = _hb_harfrust_shape_plan_create_rs (font_data,
 						       shape_plan->key.props.script,
 						       shape_plan->key.props.language,
 						       shape_plan->key.props.direction,
 						       features, num_features);
-    if (hr_shape_plan &&
+    nếu (hr_shape_plan &&
 	!shape_plan->harfrust_data.cmpexch (nullptr, hr_shape_plan))
     {
       _hb_harfrust_shape_plan_destroy_rs (hr_shape_plan);
@@ -170,7 +170,7 @@ retry_shape_plan:
     }
   }
 
-  return _hb_harfrust_shape_rs (font_data,
+  trả_về _hb_harfrust_shape_rs (font_data,
 				hr_shape_plan,
 				hr_buffer,
 				font,

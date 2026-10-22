@@ -22,33 +22,33 @@ struct composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<Composi
 
   composite_iter_tmpl () : glyph (hb_bytes_t ()), current (nullptr), current_size (0), extended (false) {}
 
-  const CompositeGlyphRecord & __item__ () const { return *current; }
-  bool __more__ () const { return current; }
+  const CompositeGlyphRecord & __item__ () const { trả_về *current; }
+  bool __more__ () const { trả_về current; }
   void __next__ ()
   {
-    if (!current->has_more ()) { current = nullptr; return; }
+    nếu (!current->has_more ()) { current = nullptr; trả_về; }
 
     set_current (&StructAtOffset<CompositeGlyphRecord> (current, current_size));
   }
-  composite_iter_tmpl __end__ () const { return composite_iter_tmpl (); }
+  composite_iter_tmpl __end__ () const { trả_về composite_iter_tmpl (); }
   bool operator != (const composite_iter_tmpl& o) const
-  { return current != o.current; }
+  { trả_về current != o.current; }
 
 
   void set_current (__item_t__ current_)
   {
-    if (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
+    nếu (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
     {
       current = nullptr;
       current_size = 0;
-      return;
+      trả_về;
     }
     unsigned size = current_->get_size (extended);
-    if (!glyph.check_range (current_, size))
+    nếu (!glyph.check_range (current_, size))
     {
       current = nullptr;
       current_size = 0;
-      return;
+      trả_về;
     }
 
     current = current_;

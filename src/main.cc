@@ -42,18 +42,18 @@
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-#if !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
+#nếu !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
 #ifndef HB_NO_SVG
 static void
 svg_dump (hb_face_t *face, unsigned face_index)
 {
   unsigned glyph_count = hb_face_get_glyph_count (face);
 
-  for (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
+  cho (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
   {
     hb_blob_t *blob = hb_ot_color_glyph_reference_svg (face, glyph_id);
 
-    if (hb_blob_get_length (blob) == 0) continue;
+    nếu (hb_blob_get_length (blob) == 0) continue;
 
     unsigned length;
     const char *data = hb_blob_get_data (blob, &length);
@@ -85,31 +85,31 @@ png_dump (hb_face_t *face, unsigned face_index)
   /* scans the font for strikes */
   unsigned sample_glyph_id;
   /* we don't care about different strikes for different glyphs at this point */
-  for (sample_glyph_id = 0; sample_glyph_id < glyph_count; ++sample_glyph_id)
+  cho (sample_glyph_id = 0; sample_glyph_id < glyph_count; ++sample_glyph_id)
   {
     hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, sample_glyph_id);
     unsigned blob_length = hb_blob_get_length (blob);
     hb_blob_destroy (blob);
-    if (blob_length != 0)
+    nếu (blob_length != 0)
       break;
   }
 
   unsigned upem = hb_face_get_upem (face);
   unsigned blob_length = 0;
   unsigned strike = 0;
-  for (unsigned ppem = 1; ppem < upem; ++ppem)
+  cho (unsigned ppem = 1; ppem < upem; ++ppem)
   {
     hb_font_set_ppem (font, ppem, ppem);
     hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, sample_glyph_id);
     unsigned new_blob_length = hb_blob_get_length (blob);
     hb_blob_destroy (blob);
-    if (new_blob_length != blob_length)
+    nếu (new_blob_length != blob_length)
     {
-      for (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
+      cho (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
       {
 	hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, glyph_id);
 
-	if (hb_blob_get_length (blob) == 0) continue;
+	nếu (hb_blob_get_length (blob) == 0) continue;
 
 	unsigned length;
 	const char *data = hb_blob_get_data (blob, &length);
@@ -193,34 +193,34 @@ layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index
 {
   hb_face_t *face = hb_font_get_face (font);
   unsigned palette_count = hb_ot_color_palette_get_count (face);
-  for (unsigned palette = 0; palette < palette_count; ++palette)
+  cho (unsigned palette = 0; palette < palette_count; ++palette)
   {
     unsigned num_colors = hb_ot_color_palette_get_colors (face, palette, 0, nullptr, nullptr);
-    if (!num_colors) continue;
+    nếu (!num_colors) continue;
 
     hb_color_t *colors = (hb_color_t*) calloc (num_colors, sizeof (hb_color_t));
     hb_ot_color_palette_get_colors (face, palette, 0, &num_colors, colors);
-    if (!num_colors)
+    nếu (!num_colors)
     {
       free (colors);
       continue;
     }
 
     unsigned num_glyphs = hb_face_get_glyph_count (face);
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; ++gid)
+    cho (hb_codepoint_t gid = 0; gid < num_glyphs; ++gid)
     {
       unsigned num_layers = hb_ot_color_glyph_get_layers (face, gid, 0, nullptr, nullptr);
-      if (!num_layers) continue;
+      nếu (!num_layers) continue;
 
       hb_ot_color_layer_t *layers = (hb_ot_color_layer_t*) malloc (num_layers * sizeof (hb_ot_color_layer_t));
 
       hb_ot_color_glyph_get_layers (face, gid, 0, &num_layers, layers);
-      if (num_layers)
+      nếu (num_layers)
       {
 	hb_font_extents_t font_extents;
 	hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
 	hb_glyph_extents_t extents = {0, 0, 0, 0};
-	if (!hb_font_get_glyph_extents (font, gid, &extents))
+	nếu (!hb_font_get_glyph_extents (font, gid, &extents))
 	{
 	  printf ("Skip gid: %u\n", gid);
 	  continue;
@@ -238,14 +238,14 @@ layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index
 	draw_data.ascender = extents.y_bearing;
 	draw_data.f = f;
 
-	for (unsigned layer = 0; layer < num_layers; ++layer)
+	cho (unsigned layer = 0; layer < num_layers; ++layer)
 	{
 	  hb_color_t color = 0x000000FF;
-	  if (layers[layer].color_index != 0xFFFF)
+	  nếu (layers[layer].color_index != 0xFFFF)
 	    color = colors[layers[layer].color_index];
 	  fprintf (f, "<path fill=\"#%02X%02X%02X\" ",
 		   hb_color_get_red (color), hb_color_get_green (color), hb_color_get_green (color));
-	  if (hb_color_get_alpha (color) != 255)
+	  nếu (hb_color_get_alpha (color) != 255)
 	    fprintf (f, "fill-opacity=\"%.3f\"", (double) hb_color_get_alpha (color) / 255.);
 	  fprintf (f, "d=\"");
 	  hb_font_draw_glyph (font, layers[layer].glyph, funcs, &draw_data);
@@ -266,12 +266,12 @@ static void
 dump_glyphs (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index)
 {
   unsigned num_glyphs = hb_face_get_glyph_count (hb_font_get_face (font));
-  for (unsigned gid = 0; gid < num_glyphs; ++gid)
+  cho (unsigned gid = 0; gid < num_glyphs; ++gid)
   {
     hb_font_extents_t font_extents;
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
     hb_glyph_extents_t extents = {0, 0, 0, 0};
-    if (!hb_font_get_glyph_extents (font, gid, &extents))
+    nếu (!hb_font_get_glyph_extents (font, gid, &extents))
     {
       printf ("Skip gid: %u\n", gid);
       continue;
@@ -298,18 +298,18 @@ static void
 dump_glyphs (hb_blob_t *blob, const char *font_name)
 {
   FILE *font_name_file = fopen ("out/.dumped_font_name", "r");
-  if (font_name_file)
+  nếu (font_name_file)
   {
     fprintf (stderr, "Purge or rename ./out folder if you like to run a glyph dump,\n"
 		     "run it like `rm -rf out && mkdir out && src/main font-file.ttf`\n");
-    return;
+    trả_về;
   }
 
   font_name_file = fopen ("out/.dumped_font_name", "w");
-  if (!font_name_file)
+  nếu (!font_name_file)
   {
     fprintf (stderr, "./out is not accessible as a folder, create it please\n");
-    return;
+    trả_về;
   }
   fwrite (font_name, 1, strlen (font_name), font_name_file);
   fclose (font_name_file);
@@ -322,22 +322,22 @@ dump_glyphs (hb_blob_t *blob, const char *font_name)
   hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) close_path, nullptr, nullptr);
 
   unsigned num_faces = hb_face_count (blob);
-  for (unsigned face_index = 0; face_index < num_faces; ++face_index)
+  cho (unsigned face_index = 0; face_index < num_faces; ++face_index)
   {
     hb_face_t *face = hb_face_create (blob, face_index);
     hb_font_t *font = hb_font_create (face);
 
-    if (hb_ot_color_has_png (face))
+    nếu (hb_ot_color_has_png (face))
       printf ("Dumping png (CBDT/sbix)...\n");
     png_dump (face, face_index);
 
 #ifndef HB_NO_SVG
-    if (hb_ot_color_has_svg (face))
+    nếu (hb_ot_color_has_svg (face))
       printf ("Dumping svg (SVG )...\n");
     svg_dump (face, face_index);
 #endif
 
-    if (hb_ot_color_has_layers (face) && hb_ot_color_has_palettes (face))
+    nếu (hb_ot_color_has_layers (face) && hb_ot_color_has_palettes (face))
       printf ("Dumping layered color glyphs (COLR/CPAL)...\n");
     layered_glyph_dump (font, funcs, face_index);
 
@@ -366,7 +366,7 @@ print_layout_info_using_private_api (hb_blob_t *blob)
   const char *font_data = hb_blob_get_data (blob, nullptr);
   hb_blob_t *font_blob = hb_sanitize_context_t ().sanitize_blob<OpenTypeFontFile> (blob);
   const OpenTypeFontFile* sanitized = font_blob->as<OpenTypeFontFile> ();
-  if (!font_blob->data)
+  nếu (!font_blob->data)
   {
     printf ("Sanitization of the file wasn't successful. Exit");
     exit (1);
@@ -400,14 +400,14 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 
   unsigned num_faces = hb_face_count (blob);
   printf ("%u font(s) found in file\n", num_faces);
-  for (unsigned n_font = 0; n_font < num_faces; ++n_font)
+  cho (unsigned n_font = 0; n_font < num_faces; ++n_font)
   {
     const OpenTypeFontFace &font = ot.get_face (n_font);
     printf ("Font %u of %u:\n", n_font, num_faces);
 
     unsigned num_tables = font.get_table_count ();
     printf ("  %u table(s) found in font\n", num_tables);
-    for (unsigned n_table = 0; n_table < num_tables; ++n_table)
+    cho (unsigned n_table = 0; n_table < num_tables; ++n_table)
     {
       const OpenTypeTable &table = font.get_table (n_table);
       printf ("  Table %2u of %2u: %.4s (0x%08x+0x%08x)\n", n_table, num_tables,
@@ -426,35 +426,35 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 
 	unsigned num_scripts = g.get_script_count ();
 	printf ("    %u script(s) found in table\n", num_scripts);
-	for (unsigned n_script = 0; n_script < num_scripts; ++n_script)
+	cho (unsigned n_script = 0; n_script < num_scripts; ++n_script)
 	{
 	  const Script &script = g.get_script (n_script);
 	  printf ("    Script %2u of %2u: %.4s\n", n_script, num_scripts,
 		  (const char *) g.get_script_tag (n_script));
 
-	  if (!script.has_default_lang_sys ())
+	  nếu (!script.has_default_lang_sys ())
 	    printf ("      No default language system\n");
-	  int num_langsys = script.get_lang_sys_count ();
+	  số_nguyên num_langsys = script.get_lang_sys_count ();
 	  printf ("      %d language system(s) found in script\n", num_langsys);
-	  for (int n_langsys = script.has_default_lang_sys () ? -1 : 0; n_langsys < num_langsys; ++n_langsys)
+	  cho (số_nguyên n_langsys = script.has_default_lang_sys () ? -1 : 0; n_langsys < num_langsys; ++n_langsys)
 	  {
 	    const LangSys &langsys = n_langsys == -1
 				   ? script.get_default_lang_sys ()
 				   : script.get_lang_sys (n_langsys);
-	    if (n_langsys == -1)
+	    nếu (n_langsys == -1)
 	      printf ("      Default Language System\n");
-	    else
+	    không_thì
 	      printf ("      Language System %2d of %2d: %.4s\n", n_langsys, num_langsys,
 		      (const char *) script.get_lang_sys_tag (n_langsys));
-	    if (!langsys.has_required_feature ())
+	    nếu (!langsys.has_required_feature ())
 	      printf ("        No required feature\n");
-	    else
+	    không_thì
 	      printf ("        Required feature index: %u\n",
 		      langsys.get_required_feature_index ());
 
 	    unsigned num_features = langsys.get_feature_count ();
 	    printf ("        %u feature(s) found in language system\n", num_features);
-	    for (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
+	    cho (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
 	    {
 	      printf ("        Feature index %2u of %2u: %u\n", n_feature, num_features,
 		      langsys.get_feature_index (n_feature));
@@ -464,7 +464,7 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 
 	unsigned num_features = g.get_feature_count ();
 	printf ("    %u feature(s) found in table\n", num_features);
-	for (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
+	cho (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
 	{
 	  const Feature &feature = g.get_feature (n_feature);
 	  unsigned num_lookups = feature.get_lookup_count ();
@@ -472,7 +472,7 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 		  HB_UNTAG (g.get_feature_tag (n_feature)));
 
 	  printf ("        %u lookup(s) found in feature\n", num_lookups);
-	  for (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup) {
+	  cho (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup) {
 	    printf ("        Lookup index %2u of %2u: %u\n", n_lookup, num_lookups,
 		    feature.get_lookup_index (n_lookup));
 	  }
@@ -480,7 +480,7 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 
 	unsigned num_lookups = g.get_lookup_count ();
 	printf ("    %u lookup(s) found in table\n", num_lookups);
-	for (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup)
+	cho (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup)
 	{
 	  const Lookup &lookup = g.get_lookup (n_lookup);
 	  printf ("    Lookup %2u of %2u: type %u, props 0x%04X\n", n_lookup, num_lookups,
@@ -514,10 +514,10 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 /* end of private API use */
 #endif
 
-int
-main (int argc, char **argv)
+số_nguyên
+main (số_nguyên argc, char **argv)
 {
-  if (argc != 2)
+  nếu (argc != 2)
   {
     fprintf (stderr, "usage: %s font-file.ttf\n\n"
 		     "This tools is unsupported and crashes on bad data.\nDon't use it.\n", argv[0]);
@@ -530,10 +530,10 @@ main (int argc, char **argv)
 #ifndef MAIN_CC_NO_PRIVATE_API
   print_layout_info_using_private_api (blob);
 #endif
-#if !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
+#nếu !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
   dump_glyphs (blob, argv[1]);
 #endif
   hb_blob_destroy (blob);
 
-  return 0;
+  trả_về 0;
 }

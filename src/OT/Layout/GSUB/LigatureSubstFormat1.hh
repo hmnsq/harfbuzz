@@ -30,18 +30,18 @@ struct LigatureSubstFormat1_2
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    return
+    trả_về
     + hb_zip (this+coverage, ligatureSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
     | hb_map ([this, glyphs] (const typename Types::template OffsetTo<LigatureSet<Types>> &_)
-              { return (this+_).intersects (glyphs); })
+              { trả_về (this+_).intersects (glyphs); })
     | hb_any
     ;
   }
 
   bool may_have_non_1to1 () const
-  { return true; }
+  { trả_về true; }
 
   void depend (hb_depend_context_t *c) const
   {
@@ -70,7 +70,7 @@ struct LigatureSubstFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    nếu (unlikely (!(this+coverage).collect_coverage (c->input))) trả_về;
 
     + hb_zip (this+coverage, ligatureSet)
     | hb_map (hb_second)
@@ -87,15 +87,15 @@ struct LigatureSubstFormat1_2
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { trả_về this+coverage; }
 
   bool would_apply (hb_would_apply_context_t *c) const
   {
-    unsigned int index = (this+coverage).get_coverage (c->glyphs[0]);
-    if (likely (index == NOT_COVERED)) return false;
+    unsigned số_nguyên index = (this+coverage).get_coverage (c->glyphs[0]);
+    nếu (likely (index == NOT_COVERED)) trả_về false;
 
     const auto &lig_set = this+ligatureSet[index];
-    return lig_set.would_apply (c);
+    trả_về lig_set.would_apply (c);
   }
 
   struct external_cache_t
@@ -106,7 +106,7 @@ struct LigatureSubstFormat1_2
   void *external_cache_create () const
   {
     external_cache_t *cache = (external_cache_t *) hb_malloc (sizeof (external_cache_t));
-    if (likely (cache))
+    nếu (likely (cache))
     {
       cache->coverage.clear ();
 
@@ -116,7 +116,7 @@ struct LigatureSubstFormat1_2
       | hb_apply ([cache] (const LigatureSet<Types> &_) { _.collect_seconds (cache->seconds); })
       ;
     }
-    return cache;
+    trả_về cache;
   }
 
   bool apply (hb_ot_apply_context_t *c, void *external_cache) const
@@ -127,12 +127,12 @@ struct LigatureSubstFormat1_2
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
     const hb_set_digest_t *seconds = cache ? &cache->seconds : nullptr;
-    unsigned int index = (this+coverage).get_coverage (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
+    unsigned số_nguyên index = (this+coverage).get_coverage (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#không_thì
     const hb_set_digest_t *seconds = nullptr;
-    unsigned int index = (this+coverage).get_coverage (buffer->cur().codepoint);
+    unsigned số_nguyên index = (this+coverage).get_coverage (buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    nếu (index == NOT_COVERED) return_trace (false);
 
     const auto &lig_set = this+ligatureSet[index];
     return_trace (lig_set.apply (c, seconds));
@@ -141,18 +141,18 @@ struct LigatureSubstFormat1_2
   template <typename GlyphID>
   bool serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> first_glyphs,
-                  hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                  hb_array_t<const unsigned số_nguyên> ligature_per_first_glyph_count_list,
                   hb_array_t<GlyphID> ligatures_list,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<const unsigned số_nguyên> component_count_list,
                   hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!ligatureSet.serialize (c, first_glyphs.length))) return_trace (false);
-    for (unsigned int i = 0; i < first_glyphs.length; i++)
+    nếu (unlikely (!c->extend_min (this))) return_trace (false);
+    nếu (unlikely (!ligatureSet.serialize (c, first_glyphs.length))) return_trace (false);
+    cho (unsigned số_nguyên i = 0; i < first_glyphs.length; i++)
     {
-      unsigned int ligature_count = ligature_per_first_glyph_count_list[i];
-      if (unlikely (!ligatureSet[i]
+      unsigned số_nguyên ligature_count = ligature_per_first_glyph_count_list[i];
+      nếu (unlikely (!ligatureSet[i]
                         .serialize_serialize (c,
                                               ligatures_list.sub_array (0, ligature_count),
                                               component_count_list.sub_array (0, ligature_count),
@@ -170,7 +170,7 @@ struct LigatureSubstFormat1_2
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    nếu (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
     // Due to a bug in some older versions of windows 7 the Coverage table must be
@@ -180,12 +180,12 @@ struct LigatureSubstFormat1_2
     + hb_zip (this+coverage, hb_iter (ligatureSet) | hb_map (hb_add (this)))
     | hb_filter (glyphset, hb_first)
     | hb_filter ([&] (const LigatureSet<Types>& _) {
-      return _.intersects_lig_glyph (&glyphset);
+      trả_về _.intersects_lig_glyph (&glyphset);
     }, hb_second)
     | hb_map (hb_first)
     | hb_sink (new_coverage);
 
-    if (!c->serializer->push<Coverage> ()
+    nếu (!c->serializer->push<Coverage> ()
         ->serialize (c->serializer,
                      + new_coverage.iter () | hb_map_retains_sorting (glyph_map)))
     {

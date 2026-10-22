@@ -23,7 +23,7 @@ struct Sequence
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (substitute, glyphs); }
+  { trả_về hb_all (substitute, glyphs); }
 
   void closure (hb_closure_context_t *c) const
   { c->output->add_array (substitute.arrayZ, substitute.len); }
@@ -41,13 +41,13 @@ struct Sequence
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
-    unsigned int count = substitute.len;
+    unsigned số_nguyên count = substitute.len;
 
     /* Special-case to make it in-place and not consider this
      * as a "multiplied" substitution. */
-    if (unlikely (count == 1))
+    nếu (unlikely (count == 1))
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      nếu (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -57,7 +57,7 @@ struct Sequence
 
       c->replace_glyph (substitute.arrayZ[0]);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      nếu (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "replaced glyph at %u (multiple substitution)",
@@ -68,9 +68,9 @@ struct Sequence
     }
     /* Spec disallows this, but Uniscribe allows it.
      * https://github.com/harfbuzz/harfbuzz/issues/253 */
-    else if (unlikely (count == 0))
+    không_thì nếu (unlikely (count == 0))
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      nếu (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -80,7 +80,7 @@ struct Sequence
 
       c->buffer->delete_glyph ();
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      nếu (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -91,7 +91,7 @@ struct Sequence
       return_trace (true);
     }
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    nếu (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -99,30 +99,30 @@ struct Sequence
 			  c->buffer->idx);
     }
 
-    unsigned int klass = _hb_glyph_info_is_ligature (&c->buffer->cur()) ?
+    unsigned số_nguyên klass = _hb_glyph_info_is_ligature (&c->buffer->cur()) ?
                          HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH : 0;
     unsigned lig_id = _hb_glyph_info_get_lig_id (&c->buffer->cur());
 
-    for (unsigned int i = 0; i < count; i++)
+    cho (unsigned số_nguyên i = 0; i < count; i++)
     {
       /* If is attached to a ligature, don't disturb that.
        * https://github.com/harfbuzz/harfbuzz/issues/3069 */
-      if (!lig_id)
+      nếu (!lig_id)
         _hb_glyph_info_set_lig_props_for_component (&c->buffer->cur(), i);
       c->output_glyph_for_component (substitute.arrayZ[i], klass);
     }
     c->buffer->skip_glyph ();
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    nếu (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
 
       char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
       char *p = buf;
 
-      for (unsigned i = c->buffer->idx - count; i < c->buffer->idx; i++)
+      cho (unsigned i = c->buffer->idx - count; i < c->buffer->idx; i++)
       {
-	if (buf < p && sizeof(buf) - 1u > unsigned (p - buf))
+	nếu (buf < p && sizeof(buf) - 1u > unsigned (p - buf))
 	  *p++ = ',';
 	snprintf (p, sizeof(buf) - (p - buf), "%u", i);
 	p += strlen(p);
@@ -151,7 +151,7 @@ struct Sequence
     const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset)) return_trace (false);
+    nếu (!intersects (&glyphset)) return_trace (false);
 
     auto it =
     + hb_iter (substitute)

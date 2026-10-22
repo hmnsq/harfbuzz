@@ -33,7 +33,7 @@ struct PosLookupSubTable
   };
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, unsigned số_nguyên lookup_type, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, lookup_type);
     switch (lookup_type) {
@@ -50,10 +50,10 @@ struct PosLookupSubTable
     }
   }
 
-  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  bool intersects (const hb_set_t *glyphs, unsigned số_nguyên lookup_type) const
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c, lookup_type);
+    trả_về dispatch (&c, lookup_type);
   }
 
   protected:

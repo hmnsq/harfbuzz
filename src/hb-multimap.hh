@@ -39,20 +39,20 @@ struct hb_multimap_t
   void add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    nếu (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      trả_về;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    nếu (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      trả_về;
     }
 
     singulars.set (k, v);
@@ -61,24 +61,24 @@ struct hb_multimap_t
   hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
   {
     const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    nếu (singulars.has (k, &v))
+      trả_về hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    nếu (multiples.has (k, &m))
+      trả_về m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    trả_về hb_array_t<const hb_codepoint_t> ();
   }
 
   bool in_error () const
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    nếu (singulars.in_error () || multiples.in_error ())
+      trả_về true;
+    cho (const auto &m : multiples.values_ref ())
+      nếu (m.in_error ())
+        trả_về true;
+    trả_về false;
   }
 
   void alloc (unsigned size)

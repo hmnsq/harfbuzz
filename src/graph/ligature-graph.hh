@@ -43,14 +43,14 @@ struct LigatureSet : public OT::Layout::GSUB_impl::LigatureSet<SmallTypes>
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size)) return Err(SANITIZE_FAILURE);
+    nếu (unlikely (vertex_len < OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size)) trả_về Err(SANITIZE_FAILURE);
     hb_barrier ();
 
     size_t total_len = ligature.get_size() + OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size - ligature.len.get_size();
-    if (unlikely (vertex_len < total_len)) {
-      return Err(SANITIZE_FAILURE);
+    nếu (unlikely (vertex_len < total_len)) {
+      trả_về Err(SANITIZE_FAILURE);
     }
-    return Ok();
+    trả_về Ok();
   }
 };
 
@@ -60,20 +60,20 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
   {
     size_t vertex_len = vertex.table_size ();
     unsigned min_size = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    nếu (unlikely (vertex_len < min_size)) trả_về Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < min_size + ligatureSet.get_size() - ligatureSet.len.get_size()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    nếu (unlikely (vertex_len < min_size + ligatureSet.get_size() - ligatureSet.len.get_size()))
+      trả_về Err(SANITIZE_FAILURE);
+    trả_về Ok();
   }
 
   graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
                                                          unsigned this_index)
   {
     TRY_ASSIGN (auto split_points, compute_split_points(c, this_index));
-    if (!split_points)
-      return Ok(hb_vector_t<unsigned> ());
+    nếu (!split_points)
+      trả_về Ok(hb_vector_t<unsigned> ());
 
     TRY_ASSIGN (unsigned total_ligas, total_number_ligas(c, this_index));
     TRY_ASSIGN (hb_vector_t<unsigned> counts, liga_counts(c, this_index));
@@ -84,45 +84,45 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
       total_ligas,
       std::move (counts),
     };
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    trả_về actuate_subtable_split<split_context_t> (split_context, split_points);
   }
 
  private:
   graph_result_t<unsigned> total_number_ligas(gsubgpos_graph_context_t& c, unsigned this_index) const {
     unsigned total = 0;
-    for (unsigned i = 0; i < ligatureSet.len; i++)
+    cho (unsigned i = 0; i < ligatureSet.len; i++)
     {
       TRY_ASSIGN (auto liga_set, c.graph.as_table<LigatureSet>(this_index, &ligatureSet[i]));
       total += liga_set.table->ligature.len;
     }
-    return Ok(total);
+    trả_về Ok(total);
   }
 
   graph_result_t<hb_vector_t<unsigned>> liga_counts(gsubgpos_graph_context_t& c, unsigned this_index) const {
     hb_vector_t<unsigned> result;
-    for (unsigned i = 0; i < ligatureSet.len; i++)
+    cho (unsigned i = 0; i < ligatureSet.len; i++)
     {
       TRY_ASSIGN (auto liga_set, c.graph.as_table<LigatureSet>(this_index, &ligatureSet[i]));
       result.push(!liga_set.table ? 0 : liga_set.table->ligature.len);
     }
-    return graph_result_t<hb_vector_t<unsigned>>::from(std::move(result), ALLOCATION_FAILURE);
+    trả_về graph_result_t<hb_vector_t<unsigned>>::from(std::move(result), ALLOCATION_FAILURE);
   }
 
   template <graph_t::vertex_mutability_t mutability>
   graph_result_t<hb_vector_t<unsigned>> ligature_index_to_object_id(const graph_t::vertex_and_table_t<LigatureSet, mutability>& liga_set) const {
     hb_vector_t<unsigned> map;
-    if (!map.resize_exact(liga_set.table->ligature.len)) return Err(ALLOCATION_FAILURE);
+    nếu (!map.resize_exact(liga_set.table->ligature.len)) trả_về Err(ALLOCATION_FAILURE);
 
-    for (unsigned i = 0; i < map.length; i++) {
+    cho (unsigned i = 0; i < map.length; i++) {
       map[i] = HB_GRAPH_INVALID;
     }
 
-    for (const auto& l : liga_set.vertex->obj ().real_links) {
-      if (l.position < 2) continue;
+    cho (const auto& l : liga_set.vertex->obj ().real_links) {
+      nếu (l.position < 2) continue;
       unsigned array_index = (l.position - 2) / 2;
       map[array_index] = l.objidx;
     }
-    return map;
+    trả_về map;
   }
 
   graph_result_t<hb_vector_t<unsigned>> compute_split_points(gsubgpos_graph_context_t& c,
@@ -137,7 +137,7 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
 
     unsigned ligature_index = 0;
     hb_vector_t<unsigned> split_points;
-    for (unsigned i = 0; i < ligatureSet.len; i++)
+    cho (unsigned i = 0; i < ligatureSet.len; i++)
     {
       accumulated += OT::HBUINT16::static_size; // for ligature set offset
       accumulated += OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size; // for ligature set table
@@ -149,16 +149,16 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
       // all links
       TRY_ASSIGN (auto index_to_id, ligature_index_to_object_id (liga_set));
 
-      for (unsigned j = 0; j < liga_set.table->ligature.len; j++)
+      cho (unsigned j = 0; j < liga_set.table->ligature.len; j++)
       {
         const unsigned liga_id = index_to_id[j];
-        if (liga_id == HB_GRAPH_INVALID) continue; // no outgoing link, ignore
+        nếu (liga_id == HB_GRAPH_INVALID) continue; // no outgoing link, ignore
         const unsigned liga_size = c.graph.vertices_[liga_id].table_size ();
 
         accumulated += OT::HBUINT16::static_size; // for ligature offset
         accumulated += liga_size; // for the ligature table
 
-        if (accumulated >= (1 << 16))
+        nếu (accumulated >= (1 << 16))
         {
           split_points.push(ligature_index);
           // We're going to split such that the current ligature will be in the new sub table.
@@ -173,7 +173,7 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
       }
     }
 
-    return split_points;
+    trả_về split_points;
   }
 
   struct split_context_t
@@ -186,17 +186,17 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
 
     unsigned original_count ()
     {
-      return original_count_;
+      trả_về original_count_;
     }
 
     graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
     {
-      return thiz->clone_range (c, this_index, liga_counts, start, end);
+      trả_về thiz->clone_range (c, this_index, liga_counts, start, end);
     }
 
     graph_result_t<void> shrink (unsigned count)
     {
-      return thiz->shrink (c, this_index, original_count(), liga_counts, count);
+      trả_về thiz->shrink (c, this_index, original_count(), liga_counts, count);
     }
   };
 
@@ -208,13 +208,13 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
 
     LigatureSet* prime = (LigatureSet*) c.graph.object (prime_id).head;
     prime->ligature.len = count;
-    return Ok(hb_pair(prime_id, prime));
+    trả_về Ok(hb_pair(prime_id, prime));
   }
 
   void clear_virtual_links (gsubgpos_graph_context_t& c, unsigned node_index) const
   {
     auto& v  = c.graph.vertices_[node_index];
-    for (const auto& l : v.obj ().virtual_links)
+    cho (const auto& l : v.obj ().virtual_links)
     {
       auto& child = c.graph.vertices_[l.objidx];
       child.remove_parent(node_index);
@@ -223,10 +223,10 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
   }
 
   graph_result_t<void> add_virtual_link(gsubgpos_graph_context_t& c, unsigned from, unsigned to) const {
-    if (unlikely (from >= c.graph.vertices_.length || to >= c.graph.vertices_.length)) return Err(OUT_OF_BOUNDS);
+    nếu (unlikely (from >= c.graph.vertices_.length || to >= c.graph.vertices_.length)) trả_về Err(OUT_OF_BOUNDS);
     TRY(c.graph.vertices_[to].add_parent (from, true));
     TRY(c.graph.vertices_[from].add_virtual_link (to));
-    return Ok();
+    trả_về Ok();
   }
 
   hb_pair_t<unsigned, unsigned> current_liga_set_bounds (gsubgpos_graph_context_t& c,
@@ -237,26 +237,26 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
     // into account those that have been removed by processing.
     unsigned min_index = HB_GRAPH_INVALID;
     unsigned max_index = 0;
-    for (const auto& l : liga_set.real_links) {
-      if (l.position < 2) continue;
+    cho (const auto& l : liga_set.real_links) {
+      nếu (l.position < 2) continue;
 
       unsigned liga_index = (l.position - 2) / 2;
       min_index = hb_min(min_index, liga_index);
       max_index = hb_max(max_index, liga_index);
     }
-    return hb_pair(min_index, max_index + 1);
+    trả_về hb_pair(min_index, max_index + 1);
   }
 
   void compact_liga_set (gsubgpos_graph_context_t& c, LigatureSet* table, graph_t::vertex_t* v) const
   {
     const auto& obj = v->obj ();
-    if (table->ligature.len <= obj.real_links.length) return;
+    nếu (table->ligature.len <= obj.real_links.length) trả_về;
 
     // compact the remaining linked liga offsets into a continous array and shrink the node as needed.
     unsigned to_remove = table->ligature.len - obj.real_links.length;
     unsigned new_position = SmallTypes::size;
     v->sort_real_links (); // for this to work we need to process links in order of position.
-    for (auto& l : v->real_links_writer ())
+    cho (auto& l : v->real_links_writer ())
     {
       l.position = new_position;
       new_position += SmallTypes::size;
@@ -301,14 +301,14 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
     unsigned liga_set_count = 0;
     unsigned liga_set_start = HB_GRAPH_INVALID;
     unsigned liga_set_end = 0; // inclusive
-    for (unsigned i = 0; i < liga_counts.length; i++)
+    cho (unsigned i = 0; i < liga_counts.length; i++)
     {
       unsigned num_ligas = liga_counts[i];
 
       unsigned current_start = count;
       unsigned current_end = count + num_ligas;
 
-      if (current_start >= end || start >= current_end) {
+      nếu (current_start >= end || start >= current_end) {
         // No intersection, so just skip
         count += num_ligas;
         continue;
@@ -323,18 +323,18 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
       current_end = hb_min(count + liga_bounds.second, current_end);
 
       unsigned liga_set_prime_id;
-      if (current_start >= start && current_end <= end) {
+      nếu (current_start >= start && current_end <= end) {
         // This liga set is fully contined within [start, end)
         // We can move the entire ligaset to the new liga subset object.
         liga_set_end = i;
-        if (i < liga_set_start) liga_set_start = i;
+        nếu (i < liga_set_start) liga_set_start = i;
         TRY_ASSIGN (liga_set_prime_id, c.graph.move_child<> (this_index,
                               &ligatureSet[i],
                               liga_subst_prime_id,
                               &liga_subst_prime->ligatureSet[liga_set_count++]));
         compact_liga_set (c, liga_set.table, liga_set.vertex);
       }
-      else
+      không_thì
       {
         // This liga set partially overlaps [start, end). We'll need to create
         // a new liga set sub table and move the intersecting ligas to it.
@@ -352,7 +352,7 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
           2));
 
         liga_set_end = i;
-        if (i < liga_set_start) liga_set_start = i;
+        nếu (i < liga_set_start) liga_set_start = i;
         TRY (c.graph.add_link(&liga_subst_prime->ligatureSet[liga_set_count++], liga_subst_prime_id, liga_set_prime_id));
       }
 
@@ -360,7 +360,7 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
       const auto& liga_set_prime = c.graph.vertices_[liga_set_prime_id].obj ();
       clear_virtual_links(c, liga_set_prime_id);
       TRY(add_virtual_link(c, liga_set_prime_id, coverage_prime_id));
-      for (const auto& l : liga_set_prime.real_links) {
+      cho (const auto& l : liga_set_prime.real_links) {
         clear_virtual_links(c, l.objidx);
         TRY(add_virtual_link(c, l.objidx, coverage_prime_id));
       }
@@ -375,7 +375,7 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
                                     coverage_prime_id,
                                     liga_set_start, liga_set_end + 1));
 
-    return Ok(liga_subst_prime_id);
+    trả_về Ok(liga_subst_prime_id);
   }
 
   graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
@@ -388,12 +388,12 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
                "  Shrinking LigatureSubstFormat1 (%u) to [0, %u).",
                this_index,
                count);
-    if (count >= old_count)
-      return Ok();
+    nếu (count >= old_count)
+      trả_về Ok();
 
     hb_set_t retained_indices;
     unsigned new_liga_set_count = 0;
-    for (unsigned i = 0; i < liga_counts.length; i++)
+    cho (unsigned i = 0; i < liga_counts.length; i++)
     {
       TRY_ASSIGN (auto liga_set, c.graph.as_mutable_table<LigatureSet>(this_index, &ligatureSet[i]));
 
@@ -405,23 +405,23 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
 
       TRY_ASSIGN (auto index_to_id, ligature_index_to_object_id (liga_set));
 
-      for (unsigned i = 0; i < liga_set.table->ligature.len; i++) {
+      cho (unsigned i = 0; i < liga_set.table->ligature.len; i++) {
         unsigned liga_index = index_to_id[i];
-        if (liga_index != HB_GRAPH_INVALID) {
+        nếu (liga_index != HB_GRAPH_INVALID) {
           clear_virtual_links(c, liga_index);
           retained_indices.add(liga_index);
         }
       }
 
       unsigned num_ligas = liga_counts[i];
-      if (num_ligas >= count) {
+      nếu (num_ligas >= count) {
         // drop the trailing liga's from this set and all subsequent liga sets
         unsigned num_ligas_to_remove = num_ligas - count;
         new_liga_set_count = i + 1;
         c.graph.vertices_[liga_set.index].shrink_buffer (num_ligas_to_remove * SmallTypes::size);
         liga_set.table->ligature.len = count;
         break;
-      } else {
+      } không_thì {
         count -= num_ligas;
       }
     }
@@ -438,23 +438,23 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
     unsigned coverage_size = coverage_v.table_size ();
     const Coverage* coverage_table = (const Coverage*) coverage_v.obj ().head;
 
-    if (coverage_v.is_shared ())
+    nếu (coverage_v.is_shared ())
     {
       TRY_ASSIGN (coverage_idx, c.graph.remap_child (this_index, coverage_idx));
     }
 
-    for (unsigned i : retained_indices.iter())
+    cho (unsigned i : retained_indices.iter())
       TRY(add_virtual_link(c, i, coverage_idx));
 
     auto new_coverage =
         + hb_zip (coverage_table->iter (), hb_range ())
         | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second < new_liga_set_count;
+          trả_về p.second < new_liga_set_count;
         })
         | hb_map_retains_sorting (hb_first)
         ;
 
-    return Coverage::make_coverage (c, new_coverage, coverage_idx, coverage_size);
+    trả_về Coverage::make_coverage (c, new_coverage, coverage_idx, coverage_size);
   }
 };
 
@@ -467,32 +467,32 @@ struct LigatureSubst : public OT::Layout::GSUB_impl::LigatureSubst
     switch (u.format.v) {
     case 1:
       hb_barrier ();
-      return ((LigatureSubstFormat1*)(&u.format1))->split_subtables (c, this_index);
+      trả_về ((LigatureSubstFormat1*)(&u.format1))->split_subtables (c, this_index);
 #ifndef HB_NO_BEYOND_64K
     case 2: HB_FALLTHROUGH;
       // 24-bit LigatureSubst already has widened offsets; leave it unsplit.
 #endif
     default:
-      return Ok(hb_vector_t<unsigned> ());
+      trả_về Ok(hb_vector_t<unsigned> ());
     }
   }
 
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    nếu (unlikely (vertex_len < u.format.v.get_size ())) trả_về Err(SANITIZE_FAILURE);
     hb_barrier ();
 
     switch (u.format.v) {
     case 1:
       hb_barrier ();
-      return ((LigatureSubstFormat1*)(&u.format1))->sanitize (vertex);
+      trả_về ((LigatureSubstFormat1*)(&u.format1))->sanitize (vertex);
 #ifndef HB_NO_BEYOND_64K
     case 2:  HB_FALLTHROUGH;
 #endif
     default:
       // We don't handle format 2 here.
-      return Err(SANITIZE_FAILURE);
+      trả_về Err(SANITIZE_FAILURE);
     }
   }
 };

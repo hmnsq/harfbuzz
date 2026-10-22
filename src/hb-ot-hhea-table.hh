@@ -51,9 +51,9 @@ struct _hea
   using LongMetricCount = typename Types::HBLUINT;
 
   static constexpr unsigned long_metric_count_max ()
-  { return LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
+  { trả_về LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
 
-  bool has_data () const { return version.major; }
+  bool has_data () const { trả_về version.major; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {

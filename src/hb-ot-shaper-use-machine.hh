@@ -819,11 +819,11 @@ static const short _use_syllable_machine_eof_trans[] = {
 	136, 142, 143, 143, 143, 143, 40
 };
 
-static const int use_syllable_machine_start = 1;
-static const int use_syllable_machine_first_final = 1;
-static const int use_syllable_machine_error = -1;
+static const số_nguyên use_syllable_machine_start = 1;
+static const số_nguyên use_syllable_machine_first_final = 1;
+static const số_nguyên use_syllable_machine_error = -1;
 
-static const int use_syllable_machine_en_main = 1;
+static const số_nguyên use_syllable_machine_en_main = 1;
 
 
 #line 58 "hb-ot-shaper-use-machine.rl"
@@ -835,11 +835,11 @@ static const int use_syllable_machine_en_main = 1;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", (*ts).second.first, (*te).second.first, #syllable_type); \
-    for (unsigned i = (*ts).second.first; i < (*te).second.first; ++i) \
+    nếu (0) fprintf (stderr, "syllable %u..%u %s\n", (*ts).second.first, (*te).second.first, #syllable_type); \
+    cho (unsigned i = (*ts).second.first; i < (*te).second.first; ++i) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    nếu (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
 
@@ -856,9 +856,9 @@ struct machine_index_t :
   static constexpr bool is_random_access_iterator = Iter::is_random_access_iterator;
   static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
 
-  typename Iter::item_t __item__ () const { return *it; }
-  typename Iter::item_t __item_at__ (unsigned i) const { return it[i]; }
-  unsigned __len__ () const { return it.len (); }
+  typename Iter::item_t __item__ () const { trả_về *it; }
+  typename Iter::item_t __item_at__ (unsigned i) const { trả_về it[i]; }
+  unsigned __len__ () const { trả_về it.len (); }
   void __next__ () { ++it; }
   void __forward__ (unsigned n) { it += n; }
   void __prev__ () { --it; }
@@ -869,18 +869,18 @@ struct machine_index_t :
     assert (n == 0);
     is_null = true;
   }
-  explicit operator bool () { return !is_null; }
+  explicit operator bool () { trả_về !is_null; }
 
   void operator = (const machine_index_t& o)
   {
     is_null = o.is_null;
     unsigned index = (*it).first;
     unsigned n = (*o.it).first;
-    if (index < n) it += n - index; else if (index > n) it -= index - n;
+    nếu (index < n) it += n - index; không_thì nếu (index > n) it -= index - n;
   }
   bool operator == (const machine_index_t& o) const
-  { return is_null ? o.is_null : !o.is_null && (*it).first == (*o.it).first; }
-  bool operator != (const machine_index_t& o) const { return !(*this == o); }
+  { trả_về is_null ? o.is_null : !o.is_null && (*it).first == (*o.it).first; }
+  bool operator != (const machine_index_t& o) const { trả_về !(*this == o); }
 
   private:
   Iter it;
@@ -892,7 +892,7 @@ struct
 	    hb_requires (hb_is_iterable (Iter))>
   machine_index_t<hb_iter_type<Iter>>
   operator () (Iter&& it) const
-  { return machine_index_t<hb_iter_type<Iter>> (hb_iter (it)); }
+  { trả_về machine_index_t<hb_iter_type<Iter>> (hb_iter (it)); }
 }
 HB_FUNCOBJ (machine_index);
 
@@ -900,7 +900,7 @@ HB_FUNCOBJ (machine_index);
 
 static bool
 not_ccs_default_ignorable (const hb_glyph_info_t &i)
-{ return i.use_category() != USE(CGJ); }
+{ trả_về i.use_category() != USE(CGJ); }
 
 static inline void
 find_syllables_use (hb_buffer_t *buffer)
@@ -909,15 +909,15 @@ find_syllables_use (hb_buffer_t *buffer)
   auto p =
     + hb_iter (info, buffer->len)
     | hb_enumerate
-    | hb_filter ([] (const hb_glyph_info_t &i) { return not_ccs_default_ignorable (i); },
+    | hb_filter ([] (const hb_glyph_info_t &i) { trả_về not_ccs_default_ignorable (i); },
 		 hb_second)
     | hb_filter ([&] (const hb_pair_t<unsigned, const hb_glyph_info_t &> p)
 		 {
-		   if (p.second.use_category() == USE(ZWNJ))
-		     for (unsigned i = p.first + 1; i < buffer->len; ++i)
-		       if (not_ccs_default_ignorable (info[i]))
-			 return !_hb_glyph_info_is_unicode_mark (&info[i]);
-		   return true;
+		   nếu (p.second.use_category() == USE(ZWNJ))
+		     cho (unsigned i = p.first + 1; i < buffer->len; ++i)
+		       nếu (not_ccs_default_ignorable (info[i]))
+			 trả_về !_hb_glyph_info_is_unicode_mark (&info[i]);
+		   trả_về true;
 		 })
     | hb_enumerate
     | machine_index
@@ -926,8 +926,8 @@ find_syllables_use (hb_buffer_t *buffer)
   auto eof = +pe;
   auto ts = +p;
   auto te = +p;
-  unsigned int act HB_UNUSED;
-  int cs;
+  unsigned số_nguyên act HB_UNUSED;
+  số_nguyên cs;
   
 #line 922 "hb-ot-shaper-use-machine.hh"
 	{
@@ -940,15 +940,15 @@ find_syllables_use (hb_buffer_t *buffer)
 #line 286 "hb-ot-shaper-use-machine.rl"
 
 
-  unsigned int syllable_serial = 1;
+  unsigned số_nguyên syllable_serial = 1;
   
 #line 931 "hb-ot-shaper-use-machine.hh"
 	{
-	int _slen;
-	int _trans;
+	số_nguyên _slen;
+	số_nguyên _trans;
 	const unsigned char *_keys;
 	const unsigned char *_inds;
-	if ( p == pe )
+	nếu ( p == pe )
 		goto _test_eof;
 _resume:
 	switch ( _use_syllable_machine_from_state_actions[cs] ) {
@@ -970,7 +970,7 @@ _resume:
 _eof_trans:
 	cs = _use_syllable_machine_trans_targs[_trans];
 
-	if ( _use_syllable_machine_trans_actions[_trans] == 0 )
+	nếu ( _use_syllable_machine_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _use_syllable_machine_trans_actions[_trans] ) {
@@ -1090,12 +1090,12 @@ _again:
 #line 1046 "hb-ot-shaper-use-machine.hh"
 	}
 
-	if ( ++p != pe )
+	nếu ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
-	if ( p == eof )
+	nếu ( p == eof )
 	{
-	if ( _use_syllable_machine_eof_trans[cs] > 0 ) {
+	nếu ( _use_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _use_syllable_machine_eof_trans[cs] - 1;
 		goto _eof_trans;
 	}

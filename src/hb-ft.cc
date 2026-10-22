@@ -47,7 +47,7 @@
 #include FT_OUTLINE_H
 #include FT_TRUETYPE_TABLES_H
 #include FT_SYNTHESIS_H
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#nếu (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
 #include FT_COLOR_H
 #endif
 
@@ -92,7 +92,7 @@ static void _hb_ft_face_destroy_static (void *data);
 
 struct hb_ft_font_t
 {
-  int load_flags;
+  số_nguyên load_flags;
   bool symbol; /* Whether selected cmap is symbol cmap. */
   bool unref; /* Whether to destroy ft_face when done. */
   bool transform; /* Whether to apply FT_Face's transform. */
@@ -108,7 +108,7 @@ static hb_ft_font_t *
 _hb_ft_font_create (FT_Face ft_face, bool symbol, bool unref, bool static_library)
 {
   hb_ft_font_t *ft_font = (hb_ft_font_t *) hb_calloc (1, sizeof (hb_ft_font_t));
-  if (unlikely (!ft_font)) return nullptr;
+  nếu (unlikely (!ft_font)) trả_về nullptr;
 
   ft_font->lock.init ();
   ft_font->ft_face = ft_face;
@@ -121,7 +121,7 @@ _hb_ft_font_create (FT_Face ft_face, bool symbol, bool unref, bool static_librar
   ft_font->cached_serial = UINT_MAX;
   new (&ft_font->advance_cache) hb_ft_advance_cache_t;
 
-  return ft_font;
+  trả_về ft_font;
 }
 
 static void
@@ -135,9 +135,9 @@ _hb_ft_font_destroy (void *data)
 {
   hb_ft_font_t *ft_font = (hb_ft_font_t *) data;
 
-  if (ft_font->unref)
+  nếu (ft_font->unref)
   {
-    if (ft_font->static_library)
+    nếu (ft_font->static_library)
     {
       /* ft_font->ft_face->generic.data is the blob that hb_ft_font_set_funcs()
        * hooked up as this internal FT_Face's finalizer target (_release_blob).
@@ -151,7 +151,7 @@ _hb_ft_font_destroy (void *data)
       _hb_ft_face_destroy_static (ft_font->ft_face);
       hb_blob_destroy (blob);
     }
-    else
+    không_thì
       _hb_ft_face_destroy (ft_font->ft_face);
   }
 
@@ -164,20 +164,20 @@ _hb_ft_font_destroy (void *data)
 /* hb_font changed, update FT_Face. */
 static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  nếu (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    trả_về;
 
   hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
 
   float x_mult = 1.f, y_mult = 1.f;
 
-  if (font->x_scale < 0) x_mult = -x_mult;
-  if (font->y_scale < 0) y_mult = -y_mult;
+  nếu (font->x_scale < 0) x_mult = -x_mult;
+  nếu (font->y_scale < 0) y_mult = -y_mult;
 
-  if (FT_Set_Char_Size (ft_face,
+  nếu (FT_Set_Char_Size (ft_face,
 			abs (font->x_scale), abs (font->y_scale),
 			0, 0
-#if 0
+#nếu 0
 		    font->x_ppem * 72 * 64 / font->x_scale,
 		    font->y_ppem * 72 * 64 / font->y_scale
 #endif
@@ -186,8 +186,8 @@ static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 #ifdef HAVE_FT_GET_TRANSFORM
     /* Bitmap font, eg. bitmap color emoji. */
     /* Pick largest size? */
-    int x_scale  = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].x_ppem;
-    int y_scale = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].y_ppem;
+    số_nguyên x_scale  = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].x_ppem;
+    số_nguyên y_scale = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].y_ppem;
     FT_Set_Char_Size (ft_face,
 		      x_scale, y_scale,
 		      0, 0);
@@ -197,35 +197,35 @@ static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
     y_mult = (float) font->y_scale / y_scale;
 #endif
   }
-  else
+  không_thì
   { /* Shrug */ }
 
 
-  if (x_mult != 1.f || y_mult != 1.f)
+  nếu (x_mult != 1.f || y_mult != 1.f)
   {
-    FT_Matrix matrix = { (int) roundf (x_mult * (1<<16)), 0,
-			  0, (int) roundf (y_mult * (1<<16))};
+    FT_Matrix matrix = { (số_nguyên) roundf (x_mult * (1<<16)), 0,
+			  0, (số_nguyên) roundf (y_mult * (1<<16))};
     FT_Set_Transform (ft_face, &matrix, nullptr);
     ft_font->transform = true;
   }
-  else
+  không_thì
     FT_Set_Transform (ft_face, nullptr, nullptr);
 
-#if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
-  if (font->has_nonzero_coords)
+#nếu defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
+  nếu (font->has_nonzero_coords)
   {
-    unsigned int num_coords;
+    unsigned số_nguyên num_coords;
     const float *coords = hb_font_get_var_coords_design (font, &num_coords);
     FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (num_coords, sizeof (FT_Fixed));
-    if (ft_coords)
+    nếu (ft_coords)
     {
-      for (unsigned int i = 0; i < num_coords; i++)
+      cho (unsigned số_nguyên i = 0; i < num_coords; i++)
 	  ft_coords[i] = coords[i] * 65536.f;
       FT_Set_Var_Design_Coordinates (ft_face, num_coords, ft_coords);
       hb_free (ft_coords);
     }
   }
-  else if (font->num_coords)
+  không_thì nếu (font->num_coords)
   {
     // Some old versions of FreeType crash if we
     // call this function on non-variable fonts.
@@ -239,15 +239,15 @@ static inline bool
 _hb_ft_hb_font_check_changed (hb_font_t *font,
 			      const hb_ft_font_t *ft_font)
 {
-  if (font->serial != ft_font->cached_serial)
+  nếu (font->serial != ft_font->cached_serial)
   {
     hb_lock_t lock (ft_font->lock);
     _hb_ft_hb_font_changed (font, ft_font->ft_face);
     ft_font->advance_cache.clear ();
     ft_font->cached_serial.set_release (font->serial.get_acquire ());
-    return true;
+    trả_về true;
   }
-  return false;
+  trả_về false;
 }
 
 
@@ -267,13 +267,13 @@ _hb_ft_hb_font_check_changed (hb_font_t *font,
  * Since: 1.0.5
  **/
 void
-hb_ft_font_set_load_flags (hb_font_t *font, int load_flags)
+hb_ft_font_set_load_flags (hb_font_t *font, số_nguyên load_flags)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  nếu (hb_object_is_immutable (font))
+    trả_về;
 
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  nếu (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    trả_về;
 
   hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
 
@@ -296,15 +296,15 @@ hb_ft_font_set_load_flags (hb_font_t *font, int load_flags)
  *
  * Since: 1.0.5
  **/
-int
+số_nguyên
 hb_ft_font_get_load_flags (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return 0;
+  nếu (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    trả_về 0;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
 
-  return ft_font->load_flags;
+  trả_về ft_font->load_flags;
 }
 
 /**
@@ -324,12 +324,12 @@ hb_ft_font_get_load_flags (hb_font_t *font)
 FT_Face
 hb_ft_font_get_ft_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return nullptr;
+  nếu (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    trả_về nullptr;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
 
-  return ft_font->ft_face;
+  trả_về ft_font->ft_face;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -352,7 +352,7 @@ hb_ft_font_get_ft_face (hb_font_t *font)
 FT_Face
 hb_ft_font_get_face (hb_font_t *font)
 {
-  return hb_ft_font_get_ft_face (font);
+  trả_về hb_ft_font_get_ft_face (font);
 }
 
 #endif
@@ -375,14 +375,14 @@ hb_ft_font_get_face (hb_font_t *font)
 FT_Face
 hb_ft_font_lock_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return nullptr;
+  nếu (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    trả_về nullptr;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
 
   ft_font->lock.lock ();
 
-  return ft_font->ft_face;
+  trả_về ft_font->ft_face;
 }
 
 /**
@@ -396,8 +396,8 @@ hb_ft_font_lock_face (hb_font_t *font)
 void
 hb_ft_font_unlock_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  nếu (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    trả_về;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
 
@@ -414,15 +414,15 @@ hb_ft_get_nominal_glyph (hb_font_t *font,
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   hb_lock_t lock (ft_font->lock);
-  unsigned int g = FT_Get_Char_Index (ft_font->ft_face, unicode);
+  unsigned số_nguyên g = FT_Get_Char_Index (ft_font->ft_face, unicode);
 
-  if (unlikely (!g))
+  nếu (unlikely (!g))
   {
-    if (unlikely (ft_font->symbol))
+    nếu (unlikely (ft_font->symbol))
     {
       switch ((unsigned) font->face->table.OS2->get_font_page ()) {
       case OT::OS2::font_page_t::FONT_PAGE_NONE:
-	if (unicode <= 0x00FFu)
+	nếu (unicode <= 0x00FFu)
 	  /* For symbol-encoded OpenType fonts, we duplicate the
 	   * U+F000..F0FF range at U+0000..U+00FF.  That's what
 	   * Windows seems to do, and that's hinted about at:
@@ -441,31 +441,31 @@ hb_ft_get_nominal_glyph (hb_font_t *font,
       default:
 	break;
       }
-      if (!g)
-	return false;
+      nếu (!g)
+	trả_về false;
     }
-    else
-      return false;
+    không_thì
+      trả_về false;
   }
 
   *glyph = g;
-  return true;
+  trả_về true;
 }
 
-static unsigned int
+static unsigned số_nguyên
 hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
 			  void *font_data,
-			  unsigned int count,
+			  unsigned số_nguyên count,
 			  const hb_codepoint_t *first_unicode,
-			  unsigned int unicode_stride,
+			  unsigned số_nguyên unicode_stride,
 			  hb_codepoint_t *first_glyph,
-			  unsigned int glyph_stride,
+			  unsigned số_nguyên glyph_stride,
 			  void *user_data HB_UNUSED)
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   hb_lock_t lock (ft_font->lock);
-  unsigned int done;
-  for (done = 0;
+  unsigned số_nguyên done;
+  cho (done = 0;
        done < count && (*first_glyph = FT_Get_Char_Index (ft_font->ft_face, *first_unicode));
        done++)
   {
@@ -474,7 +474,7 @@ hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
   }
   /* We don't need to do ft_font->symbol dance here, since HB calls the singular
    * nominal_glyph() for what we don't handle here. */
-  return done;
+  trả_về done;
 }
 
 
@@ -488,13 +488,13 @@ hb_ft_get_variation_glyph (hb_font_t *font HB_UNUSED,
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   hb_lock_t lock (ft_font->lock);
-  unsigned int g = FT_Face_GetCharVariantIndex (ft_font->ft_face, unicode, variation_selector);
+  unsigned số_nguyên g = FT_Face_GetCharVariantIndex (ft_font->ft_face, unicode, variation_selector);
 
-  if (unlikely (!g))
-    return false;
+  nếu (unlikely (!g))
+    trả_về false;
 
   *glyph = g;
-  return true;
+  trả_về true;
 }
 
 static void
@@ -511,31 +511,31 @@ hb_ft_get_glyph_h_advances (hb_font_t* font, void* font_data,
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  int load_flags = ft_font->load_flags;
+  số_nguyên load_flags = ft_font->load_flags;
   float x_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  nếu (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
     x_mult = sqrtf ((float)matrix.xx * matrix.xx + (float)matrix.xy * matrix.xy) / 65536.f;
     x_mult *= font->x_scale < 0 ? -1 : +1;
   }
-  else
+  không_thì
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
   }
 
-  for (unsigned int i = 0; i < count; i++)
+  cho (unsigned số_nguyên i = 0; i < count; i++)
   {
     hb_position_t advance;
     hb_codepoint_t glyph = *first_glyph;
 
-    unsigned int cv;
-    if (ft_font->advance_cache.get (glyph, &cv))
+    unsigned số_nguyên cv;
+    nếu (ft_font->advance_cache.get (glyph, &cv))
       advance = (hb_position_t) cv;
-    else
+    không_thì
     {
       FT_Fixed v = 0;
       FT_Get_Advance (ft_face, glyph, load_flags, &v);
@@ -566,27 +566,27 @@ hb_ft_get_glyph_v_advance (hb_font_t *font,
   FT_Fixed v;
   float y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  nếu (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_font->ft_face, &matrix, nullptr);
     y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  không_thì
 #endif
   {
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Get_Advance (ft_font->ft_face, glyph, ft_font->load_flags | FT_LOAD_VERTICAL_LAYOUT, &v)))
-    return 0;
+  nếu (unlikely (FT_Get_Advance (ft_font->ft_face, glyph, ft_font->load_flags | FT_LOAD_VERTICAL_LAYOUT, &v)))
+    trả_về 0;
 
   /* Note: FreeType's vertical metrics grows downward while other FreeType coordinates
    * have a Y growing upward.  Hence the extra negation. */
   double advance = floor ((-(double) v + (1<<9)) / (1<<10));
 
-  return hb_clamp_to<hb_position_t> ((double) y_mult * advance);
+  trả_về hb_clamp_to<hb_position_t> ((double) y_mult * advance);
 }
 #endif
 
@@ -606,7 +606,7 @@ hb_ft_get_glyph_v_origin (hb_font_t *font,
   FT_Face ft_face = ft_font->ft_face;
   float x_mult, y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  nếu (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
@@ -615,15 +615,15 @@ hb_ft_get_glyph_v_origin (hb_font_t *font,
     y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  không_thì
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-    return false;
+  nếu (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+    trả_về false;
 
   /* Note: FreeType's vertical metrics grows downward while other FreeType coordinates
    * have a Y growing upward.  Hence the extra negation. */
@@ -634,7 +634,7 @@ hb_ft_get_glyph_v_origin (hb_font_t *font,
 				   ((double) ft_face->glyph->metrics.horiBearingY +
 				    ft_face->glyph->metrics.vertBearingY));
 
-  return true;
+  trả_về true;
 }
 #endif
 
@@ -653,10 +653,10 @@ hb_ft_get_glyph_h_kerning (hb_font_t *font,
   FT_Vector kerningv;
 
   FT_Kerning_Mode mode = font->x_ppem ? FT_KERNING_DEFAULT : FT_KERNING_UNFITTED;
-  if (FT_Get_Kerning (ft_font->ft_face, left_glyph, right_glyph, mode, &kerningv))
-    return 0;
+  nếu (FT_Get_Kerning (ft_font->ft_face, left_glyph, right_glyph, mode, &kerningv))
+    trả_về 0;
 
-  return hb_clamp_to<hb_position_t> ((int64_t) kerningv.x);
+  trả_về hb_clamp_to<hb_position_t> ((int64_t) kerningv.x);
 }
 #endif
 
@@ -666,33 +666,33 @@ hb_ft_is_colr_glyph (hb_font_t *font,
 		     hb_codepoint_t gid)
 {
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#nếu (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   FT_Face ft_face = ft_font->ft_face;
 
 
   /* COLRv1 */
   FT_OpaquePaint paint = {0};
-  if (FT_Get_Color_Glyph_Paint (ft_face, gid,
+  nếu (FT_Get_Color_Glyph_Paint (ft_face, gid,
 			        FT_COLOR_NO_ROOT_TRANSFORM,
 			        &paint))
-    return true;
+    trả_về true;
 
   /* COLRv0 */
   FT_LayerIterator  iterator;
   FT_UInt  layer_glyph_index;
   FT_UInt  layer_color_index;
   iterator.p  = NULL;
-  if (FT_Get_Color_Glyph_Layer (ft_face,
+  nếu (FT_Get_Color_Glyph_Layer (ft_face,
 				gid,
 				&layer_glyph_index,
 				&layer_color_index,
 				&iterator))
-    return true;
+    trả_về true;
 #endif
 #endif
 
-  return false;
+  trả_về false;
 }
 
 static hb_bool_t
@@ -703,8 +703,8 @@ hb_ft_get_glyph_extents (hb_font_t *font,
 			 void *user_data HB_UNUSED)
 {
   // FreeType doesn't return COLR glyph extents.
-  if (hb_ft_is_colr_glyph (font, font_data, glyph))
-    return false;
+  nếu (hb_ft_is_colr_glyph (font, font_data, glyph))
+    trả_về false;
 
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   _hb_ft_hb_font_check_changed (font, ft_font);
@@ -714,7 +714,7 @@ hb_ft_get_glyph_extents (hb_font_t *font,
   float x_mult, y_mult;
 
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  nếu (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
@@ -723,15 +723,15 @@ hb_ft_get_glyph_extents (hb_font_t *font,
     y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  không_thì
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-    return false;
+  nếu (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+    trả_về false;
 
   /* Copied from hb_font_t::scale_glyph_extents. */
 
@@ -750,14 +750,14 @@ hb_ft_get_glyph_extents (hb_font_t *font,
   extents->width = hb_clamp_to<hb_position_t> (rx2 - rx1);
   extents->height = hb_clamp_to<hb_position_t> (ry2 - ry1);
 
-  return true;
+  trả_về true;
 }
 
 static hb_bool_t
 hb_ft_get_glyph_contour_point (hb_font_t *font HB_UNUSED,
 			       void *font_data,
 			       hb_codepoint_t glyph,
-			       unsigned int point_index,
+			       unsigned số_nguyên point_index,
 			       hb_position_t *x,
 			       hb_position_t *y,
 			       void *user_data HB_UNUSED)
@@ -768,49 +768,49 @@ hb_ft_get_glyph_contour_point (hb_font_t *font HB_UNUSED,
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-      return false;
+  nếu (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+      trả_về false;
 
-  if (unlikely (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE))
-      return false;
+  nếu (unlikely (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE))
+      trả_về false;
 
-  if (unlikely (point_index >= (unsigned int) ft_face->glyph->outline.n_points))
-      return false;
+  nếu (unlikely (point_index >= (unsigned số_nguyên) ft_face->glyph->outline.n_points))
+      trả_về false;
 
   *x = ft_face->glyph->outline.points[point_index].x;
   *y = ft_face->glyph->outline.points[point_index].y;
 
-  return true;
+  trả_về true;
 }
 
 static hb_bool_t
 hb_ft_get_glyph_name (hb_font_t *font HB_UNUSED,
 		      void *font_data,
 		      hb_codepoint_t glyph,
-		      char *name, unsigned int size,
+		      char *name, unsigned số_nguyên size,
 		      void *user_data HB_UNUSED)
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (!size)
+  nếu (!size)
   {
     char buf[128];
-    return !FT_Get_Glyph_Name (ft_face, glyph, buf, sizeof (buf)) && *buf;
+    trả_về !FT_Get_Glyph_Name (ft_face, glyph, buf, sizeof (buf)) && *buf;
   }
 
   hb_bool_t ret = !FT_Get_Glyph_Name (ft_face, glyph, name, size);
-  if (ret && (size && !*name))
+  nếu (ret && (size && !*name))
     ret = false;
 
-  return ret;
+  trả_về ret;
 }
 
 static hb_bool_t
 hb_ft_get_glyph_from_name (hb_font_t *font HB_UNUSED,
 			   void *font_data,
-			   const char *name, int len, /* -1 means nul-terminated */
+			   const char *name, số_nguyên len, /* -1 means nul-terminated */
 			   hb_codepoint_t *glyph,
 			   void *user_data HB_UNUSED)
 {
@@ -818,27 +818,27 @@ hb_ft_get_glyph_from_name (hb_font_t *font HB_UNUSED,
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (len < 0)
+  nếu (len < 0)
     *glyph = FT_Get_Name_Index (ft_face, (FT_String *) name);
-  else {
+  không_thì {
     /* Make a nul-terminated version. */
     char buf[128];
-    len = hb_min (len, (int) sizeof (buf) - 1);
+    len = hb_min (len, (số_nguyên) sizeof (buf) - 1);
     strncpy (buf, name, len);
     buf[len] = '\0';
     *glyph = FT_Get_Name_Index (ft_face, buf);
   }
 
-  if (*glyph == 0)
+  nếu (*glyph == 0)
   {
     /* Check whether the given name was actually the name of glyph 0. */
     char buf[128];
-    if (!FT_Get_Glyph_Name(ft_face, 0, buf, sizeof (buf)) &&
+    nếu (!FT_Get_Glyph_Name(ft_face, 0, buf, sizeof (buf)) &&
 	len < 0 ? !strcmp (buf, name) : !strncmp (buf, name, len))
-      return true;
+      trả_về true;
   }
 
-  return *glyph != 0;
+  trả_về *glyph != 0;
 }
 
 static hb_bool_t
@@ -854,20 +854,20 @@ hb_ft_get_font_h_extents (hb_font_t *font HB_UNUSED,
   FT_Face ft_face = ft_font->ft_face;
   float y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  nếu (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
     y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  không_thì
 #endif
   {
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (ft_face->units_per_EM != 0)
+  nếu (ft_face->units_per_EM != 0)
   {
     double ascender = FT_MulFix(ft_face->ascender, ft_face->size->metrics.y_scale);
     double descender = FT_MulFix(ft_face->descender, ft_face->size->metrics.y_scale);
@@ -876,7 +876,7 @@ hb_ft_get_font_h_extents (hb_font_t *font HB_UNUSED,
     metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
     metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
   }
-  else
+  không_thì
   {
     /* Bitmap-only font, eg. color bitmap font. */
     double ascender = ft_face->size->metrics.ascender;
@@ -887,30 +887,30 @@ hb_ft_get_font_h_extents (hb_font_t *font HB_UNUSED,
     metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
   }
 
-  return true;
+  trả_về true;
 }
 
 #ifndef HB_NO_DRAW
 
-static int
+static số_nguyên
 _hb_ft_move_to (const FT_Vector *to,
 		void *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->move_to (to->x, to->y);
-  return FT_Err_Ok;
+  trả_về FT_Err_Ok;
 }
 
-static int
+static số_nguyên
 _hb_ft_line_to (const FT_Vector *to,
 		void *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->line_to (to->x, to->y);
-  return FT_Err_Ok;
+  trả_về FT_Err_Ok;
 }
 
-static int
+static số_nguyên
 _hb_ft_conic_to (const FT_Vector *control,
 		 const FT_Vector *to,
 		 void *arg)
@@ -918,10 +918,10 @@ _hb_ft_conic_to (const FT_Vector *control,
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->quadratic_to (control->x, control->y,
 			 to->x, to->y);
-  return FT_Err_Ok;
+  trả_về FT_Err_Ok;
 }
 
-static int
+static số_nguyên
 _hb_ft_cubic_to (const FT_Vector *control1,
 		 const FT_Vector *control2,
 		 const FT_Vector *to,
@@ -931,7 +931,7 @@ _hb_ft_cubic_to (const FT_Vector *control1,
   drawing->cubic_to (control1->x, control1->y,
 		     control2->x, control2->y,
 		     to->x, to->y);
-  return FT_Err_Ok;
+  trả_về FT_Err_Ok;
 }
 
 static hb_bool_t
@@ -947,12 +947,12 @@ hb_ft_draw_glyph_or_fail (hb_font_t *font,
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph,
+  nếu (unlikely (FT_Load_Glyph (ft_face, glyph,
 			       FT_LOAD_NO_BITMAP | ft_font->load_flags)))
-    return false;
+    trả_về false;
 
-  if (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
-    return false;
+  nếu (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
+    trả_về false;
 
   const FT_Outline_Funcs outline_funcs = {
     _hb_ft_move_to,
@@ -969,12 +969,12 @@ hb_ft_draw_glyph_or_fail (hb_font_t *font,
 			&outline_funcs,
 			&draw_session);
 
-  return true;
+  trả_về true;
 }
 #endif
 
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#nếu (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
 
 #include "hb-ft-colr.hh"
 
@@ -983,7 +983,7 @@ hb_ft_paint_glyph_or_fail (hb_font_t *font,
 			   void *font_data,
 			   hb_codepoint_t gid,
 			   hb_paint_funcs_t *paint_funcs, void *paint_data,
-			   unsigned int palette_index,
+			   unsigned số_nguyên palette_index,
 			   hb_color_t foreground,
 			   void *user_data)
 {
@@ -994,37 +994,37 @@ hb_ft_paint_glyph_or_fail (hb_font_t *font,
   FT_Face ft_face = ft_font->ft_face;
 
   FT_Long load_flags = ft_font->load_flags | FT_LOAD_COLOR;
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21301
+#nếu (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21301
   load_flags |= FT_LOAD_NO_SVG;
 #endif
 
   /* We release the lock before calling into glyph callbacks, such that
    * eg. draw API can call back into the face.*/
 
-  if (unlikely (FT_Load_Glyph (ft_face, gid, load_flags)))
-    return false;
+  nếu (unlikely (FT_Load_Glyph (ft_face, gid, load_flags)))
+    trả_về false;
 
-  if (ft_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
+  nếu (ft_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
   {
-    if (hb_ft_paint_glyph_colr (font, font_data, gid,
+    nếu (hb_ft_paint_glyph_colr (font, font_data, gid,
 				paint_funcs, paint_data,
 				palette_index, foreground,
 				user_data))
-      return true;
+      trả_về true;
 
     // Outline glyph
-    return false;
+    trả_về false;
   }
 
   auto *glyph = ft_face->glyph;
-  if (glyph->format == FT_GLYPH_FORMAT_BITMAP)
+  nếu (glyph->format == FT_GLYPH_FORMAT_BITMAP)
   {
     bool ret = false;
     auto &bitmap = glyph->bitmap;
-    if (bitmap.pixel_mode == FT_PIXEL_MODE_BGRA)
+    nếu (bitmap.pixel_mode == FT_PIXEL_MODE_BGRA)
     {
-      if (bitmap.pitch != (signed) bitmap.width * 4)
-        return ret;
+      nếu (bitmap.pitch != (signed) bitmap.width * 4)
+        trả_về ret;
 
       ft_font->lock.unlock ();
 
@@ -1034,10 +1034,10 @@ hb_ft_paint_glyph_or_fail (hb_font_t *font,
 					nullptr, nullptr);
 
       hb_glyph_extents_t extents;
-      if (!font->get_glyph_extents (gid, &extents, false))
+      nếu (!font->get_glyph_extents (gid, &extents, false))
 	goto out;
 
-      if (paint_funcs->image (paint_data,
+      nếu (paint_funcs->image (paint_data,
 			      blob,
 			      bitmap.width,
 			      bitmap.rows,
@@ -1051,9 +1051,9 @@ hb_ft_paint_glyph_or_fail (hb_font_t *font,
       ft_font->lock.lock ();
     }
 
-    return ret;
+    trả_về ret;
   }
-  return false;
+  trả_về false;
 }
 #endif
 #endif
@@ -1092,7 +1092,7 @@ static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft
 #endif
 
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#nếu (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
     hb_font_funcs_set_paint_glyph_or_fail_func (funcs, hb_ft_paint_glyph_or_fail, nullptr, nullptr);
 #endif
 #endif
@@ -1101,7 +1101,7 @@ static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft
 
     hb_atexit (free_static_ft_funcs);
 
-    return funcs;
+    trả_về funcs;
   }
 } static_ft_funcs;
 
@@ -1114,7 +1114,7 @@ void free_static_ft_funcs ()
 static hb_font_funcs_t *
 _hb_ft_get_font_funcs ()
 {
-  return static_ft_funcs.get_unconst ();
+  trả_về static_ft_funcs.get_unconst ();
 }
 
 static void
@@ -1124,7 +1124,7 @@ _hb_ft_font_set_funcs (hb_font_t *font, FT_Face ft_face, bool unref,
   bool symbol = ft_face->charmap && ft_face->charmap->encoding == FT_ENCODING_MS_SYMBOL;
 
   hb_ft_font_t *ft_font = _hb_ft_font_create (ft_face, symbol, unref, static_library);
-  if (unlikely (!ft_font)) return;
+  nếu (unlikely (!ft_font)) trả_về;
 
   hb_font_set_funcs (font,
 		     _hb_ft_get_font_funcs (),
@@ -1142,34 +1142,34 @@ _hb_ft_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data
   FT_Error error;
 
   /* In new FreeType, a tag value of 1 loads the SFNT table directory. Reject it. */
-  if (tag == 1)
-    return nullptr;
+  nếu (tag == 1)
+    trả_về nullptr;
 
   /* Note: FreeType like HarfBuzz uses the NONE tag for fetching the entire blob */
 
   error = FT_Load_Sfnt_Table (ft_face, tag, 0, nullptr, &length);
-  if (error)
-    return nullptr;
+  nếu (error)
+    trả_về nullptr;
 
   buffer = (FT_Byte *) hb_malloc (length);
-  if (!buffer)
-    return nullptr;
+  nếu (!buffer)
+    trả_về nullptr;
   auto buffer_guard = hb_make_scope_guard ([&]() { hb_free (buffer); });
 
   error = FT_Load_Sfnt_Table (ft_face, tag, 0, buffer, &length);
-  if (error)
-    return nullptr;
+  nếu (error)
+    trả_về nullptr;
 
   buffer_guard.release ();
-  return hb_blob_create ((const char *) buffer, length,
+  trả_về hb_blob_create ((const char *) buffer, length,
 			 HB_MEMORY_MODE_WRITABLE,
 			 buffer, hb_free);
 }
 
 static unsigned
 _hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
-		       unsigned int start_offset,
-		       unsigned int *table_count,
+		       unsigned số_nguyên start_offset,
+		       unsigned số_nguyên *table_count,
 		       hb_tag_t *table_tags,
 		       void *user_data)
 {
@@ -1181,33 +1181,33 @@ _hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
 		      nullptr,
                       &population);
 
-  if (!table_count)
-    return population;
+  nếu (!table_count)
+    trả_về population;
 
-  if (unlikely (start_offset >= population))
+  nếu (unlikely (start_offset >= population))
   {
     *table_count = 0;
-    return population;
+    trả_về population;
   }
 
   unsigned end_offset = start_offset + *table_count;
-  if (unlikely (end_offset < start_offset)) /* Overflow. */
+  nếu (unlikely (end_offset < start_offset)) /* Overflow. */
   {
     *table_count = 0;
-    return population;
+    trả_về population;
   }
   end_offset = hb_min (end_offset, (unsigned) population);
 
   *table_count = end_offset - start_offset;
-  if (table_tags)
-    for (unsigned i = start_offset; i < end_offset; i++)
+  nếu (table_tags)
+    cho (unsigned i = start_offset; i < end_offset; i++)
     {
       FT_ULong tag = 0, length;
       FT_Sfnt_Table_Info (ft_face, i, &tag, &length);
       table_tags[i - start_offset] = tag;
     }
 
-  return population;
+  trả_về population;
 }
 
 
@@ -1241,16 +1241,16 @@ hb_ft_face_create (FT_Face           ft_face,
 {
   hb_face_t *face;
 
-  if (!ft_face->stream->read) {
+  nếu (!ft_face->stream->read) {
     hb_blob_t *blob;
 
     blob = hb_blob_create ((const char *) ft_face->stream->base,
-			   (unsigned int) ft_face->stream->size,
+			   (unsigned số_nguyên) ft_face->stream->size,
 			   HB_MEMORY_MODE_READONLY,
 			   ft_face, destroy);
     face = hb_face_create (blob, ft_face->face_index);
     hb_blob_destroy (blob);
-  } else {
+  } không_thì {
     face = hb_face_create_for_tables (_hb_ft_reference_table, ft_face, destroy);
     hb_face_set_get_table_tags_func (face, _hb_ft_get_table_tags, ft_face, nullptr);
   }
@@ -1258,7 +1258,7 @@ hb_ft_face_create (FT_Face           ft_face,
   hb_face_set_index (face, ft_face->face_index);
   hb_face_set_upem (face, ft_face->units_per_EM);
 
-  return face;
+  trả_về face;
 }
 
 /**
@@ -1287,7 +1287,7 @@ hb_face_t *
 hb_ft_face_create_referenced (FT_Face ft_face)
 {
   FT_Reference_Face (ft_face);
-  return hb_ft_face_create (ft_face, _hb_ft_face_destroy);
+  trả_về hb_ft_face_create (ft_face, _hb_ft_face_destroy);
 }
 
 static void
@@ -1323,16 +1323,16 @@ hb_ft_face_finalize (void *arg)
 hb_face_t *
 hb_ft_face_create_cached (FT_Face ft_face)
 {
-  if (unlikely (!ft_face->generic.data || ft_face->generic.finalizer != hb_ft_face_finalize))
+  nếu (unlikely (!ft_face->generic.data || ft_face->generic.finalizer != hb_ft_face_finalize))
   {
-    if (ft_face->generic.finalizer)
+    nếu (ft_face->generic.finalizer)
       ft_face->generic.finalizer (ft_face);
 
     ft_face->generic.data = hb_ft_face_create (ft_face, nullptr);
     ft_face->generic.finalizer = hb_ft_face_finalize;
   }
 
-  return hb_face_reference ((hb_face_t *) ft_face->generic.data);
+  trả_về hb_face_reference ((hb_face_t *) ft_face->generic.data);
 }
 
 /**
@@ -1377,7 +1377,7 @@ hb_ft_font_create (FT_Face           ft_face,
   hb_face_destroy (face);
   _hb_ft_font_set_funcs (font, ft_face, false);
   hb_ft_font_changed (font);
-  return font;
+  trả_về font;
 }
 
 /**
@@ -1393,43 +1393,43 @@ hb_ft_font_create (FT_Face           ft_face,
 void
 hb_ft_font_changed (hb_font_t *font)
 {
-  if (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
-    return;
+  nếu (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
+    trả_về;
 
   hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
 
   FT_Face ft_face = ft_font->ft_face;
 
   hb_font_set_scale (font,
-		     (int) (((uint64_t) ft_face->size->metrics.x_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16),
-		     (int) (((uint64_t) ft_face->size->metrics.y_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16));
-#if 0 /* hb-ft works in no-hinting model */
+		     (số_nguyên) (((uint64_t) ft_face->size->metrics.x_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16),
+		     (số_nguyên) (((uint64_t) ft_face->size->metrics.y_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16));
+#nếu 0 /* hb-ft works in no-hinting model */
   hb_font_set_ppem (font,
 		    ft_face->size->metrics.x_ppem,
 		    ft_face->size->metrics.y_ppem);
 #endif
 
-#if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
+#nếu defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
   FT_MM_Var *mm_var = nullptr;
-  if (!FT_Get_MM_Var (ft_face, &mm_var))
+  nếu (!FT_Get_MM_Var (ft_face, &mm_var))
   {
     FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->num_axis, sizeof (FT_Fixed));
-    int *coords = (int *) hb_calloc (mm_var->num_axis, sizeof (int));
-    if (coords && ft_coords)
+    số_nguyên *coords = (số_nguyên *) hb_calloc (mm_var->num_axis, sizeof (số_nguyên));
+    nếu (coords && ft_coords)
     {
-      if (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->num_axis, ft_coords))
+      nếu (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->num_axis, ft_coords))
       {
 	bool nonzero = false;
 
-	for (unsigned int i = 0; i < mm_var->num_axis; ++i)
+	cho (unsigned số_nguyên i = 0; i < mm_var->num_axis; ++i)
 	 {
 	  coords[i] = (ft_coords[i] + 2) >> 2;
 	  nonzero = nonzero || coords[i];
 	 }
 
-	if (nonzero)
+	nếu (nonzero)
 	  hb_font_set_var_coords_normalized (font, coords, mm_var->num_axis);
-	else
+	không_thì
 	  hb_font_set_var_coords_normalized (font, nullptr, 0);
       }
     }
@@ -1437,7 +1437,7 @@ hb_ft_font_changed (hb_font_t *font)
     hb_free (ft_coords);
 #ifdef HAVE_FT_DONE_MM_VAR
     FT_Done_MM_Var (ft_face->glyph->library, mm_var);
-#else
+#không_thì
     hb_free (mm_var);
 #endif
   }
@@ -1468,12 +1468,12 @@ hb_ft_font_changed (hb_font_t *font)
 hb_bool_t
 hb_ft_hb_font_changed (hb_font_t *font)
 {
-  if (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
-    return false;
+  nếu (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
+    trả_về false;
 
   hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
 
-  return _hb_ft_hb_font_check_changed (font, ft_font);
+  trả_về _hb_ft_hb_font_check_changed (font, ft_font);
 }
 
 /**
@@ -1501,18 +1501,18 @@ hb_font_t *
 hb_ft_font_create_referenced (FT_Face ft_face)
 {
   FT_Reference_Face (ft_face);
-  return hb_ft_font_create (ft_face, _hb_ft_face_destroy);
+  trả_về hb_ft_font_create (ft_face, _hb_ft_face_destroy);
 }
 
 
 static void * _hb_ft_alloc (FT_Memory memory, long size)
-{ return hb_malloc (size); }
+{ trả_về hb_malloc (size); }
 
 static void _hb_ft_free (FT_Memory memory, void *block)
 { hb_free (block); }
 
 static void * _hb_ft_realloc (FT_Memory memory, long cur_size, long new_size, void *block)
-{ return hb_realloc (block, new_size); }
+{ trả_về hb_realloc (block, new_size); }
 
 static FT_MemoryRec_ m =
 {
@@ -1531,12 +1531,12 @@ static struct hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
   static hb_mutex_t *create ()
   {
     hb_mutex_t *lock = (hb_mutex_t *) hb_calloc (1, sizeof (hb_mutex_t));
-    if (unlikely (!lock))
-      return nullptr;
+    nếu (unlikely (!lock))
+      trả_về nullptr;
 
     lock = new (lock) hb_mutex_t;
     hb_atexit (free_static_ft_library_mutex);
-    return lock;
+    trả_về lock;
   }
   static void destroy (hb_mutex_t *lock)
   {
@@ -1545,7 +1545,7 @@ static struct hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
   }
   static hb_mutex_t *get_null ()
   {
-    return nullptr;
+    trả_về nullptr;
   }
 } static_ft_library_mutex;
 
@@ -1555,15 +1555,15 @@ static struct hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<F
   static FT_Library create ()
   {
     FT_Library l;
-    if (FT_New_Library (&m, &l))
-      return nullptr;
+    nếu (FT_New_Library (&m, &l))
+      trả_về nullptr;
 
     FT_Add_Default_Modules (l);
     FT_Set_Default_Properties (l);
 
     hb_atexit (free_static_ft_library);
 
-    return l;
+    trả_về l;
   }
   static void destroy (FT_Library l)
   {
@@ -1571,7 +1571,7 @@ static struct hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<F
   }
   static FT_Library get_null ()
   {
-    return nullptr;
+    trả_về nullptr;
   }
 } static_ft_library;
 
@@ -1592,16 +1592,16 @@ static FT_Library
 reference_ft_library ()
 {
   hb_mutex_t *mutex = static_ft_library_mutex.get_unconst ();
-  if (unlikely (!mutex))
-    return nullptr;
+  nếu (unlikely (!mutex))
+    trả_về nullptr;
   hb_lock_t lock (mutex);
   FT_Library l = static_ft_library.get_unconst ();
-  if (unlikely (FT_Reference_Library (l)))
+  nếu (unlikely (FT_Reference_Library (l)))
   {
     DEBUG_MSG (FT, l, "FT_Reference_Library() failed");
-    return nullptr;
+    trả_về nullptr;
   }
-  return l;
+  trả_về l;
 }
 
 static hb_user_data_key_t ft_library_key = {0};
@@ -1616,22 +1616,22 @@ _hb_ft_face_destroy_static (void *data)
 static FT_Error
 new_ft_face (FT_Library  ft_library,
 	     const char *file_name,
-	     unsigned int index,
+	     unsigned số_nguyên index,
 	     FT_Face     *ft_face)
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  return FT_New_Face (ft_library, file_name, index, ft_face);
+  trả_về FT_New_Face (ft_library, file_name, index, ft_face);
 }
 
 static FT_Error
 new_ft_memory_face (FT_Library    ft_library,
 		    const FT_Byte *blob_data,
-		    unsigned int   blob_size,
-		    unsigned int   index,
+		    unsigned số_nguyên   blob_size,
+		    unsigned số_nguyên   index,
 		    FT_Face       *ft_face)
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  return FT_New_Memory_Face (ft_library, blob_data, blob_size, index, ft_face);
+  trả_về FT_New_Memory_Face (ft_library, blob_data, blob_size, index, ft_face);
 }
 
 static void
@@ -1667,23 +1667,23 @@ destroy_ft_library (void *arg)
  */
 hb_face_t *
 hb_ft_face_create_from_file_or_fail (const char   *file_name,
-				     unsigned int  index)
+				     unsigned số_nguyên  index)
 {
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  nếu (unlikely (!ft_library))
   {
     DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
-    return nullptr;
+    trả_về nullptr;
   }
 
   FT_Face ft_face;
-  if (unlikely (new_ft_face (ft_library,
+  nếu (unlikely (new_ft_face (ft_library,
 			     file_name,
 			     index,
 			     &ft_face)))
   {
     destroy_ft_library (ft_library);
-    return nullptr;
+    trả_về nullptr;
   }
 
   FT_Reference_Face (ft_face);
@@ -1693,10 +1693,10 @@ hb_ft_face_create_from_file_or_fail (const char   *file_name,
   ft_face->generic.data = ft_library;
   ft_face->generic.finalizer = finalize_ft_library;
 
-  if (hb_face_is_immutable (face))
-    return nullptr;
+  nếu (hb_face_is_immutable (face))
+    trả_về nullptr;
 
-  return face;
+  trả_về face;
 }
 
 static hb_user_data_key_t ft_blob_key = {0};
@@ -1726,13 +1726,13 @@ _destroy_blob (void *p)
  */
 hb_face_t *
 hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
-				     unsigned int  index)
+				     unsigned số_nguyên  index)
 {
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  nếu (unlikely (!ft_library))
   {
     DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
-    return nullptr;
+    trả_về nullptr;
   }
 
   hb_blob_make_immutable (blob);
@@ -1740,14 +1740,14 @@ hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
   const char *blob_data = hb_blob_get_data (blob, &blob_size);
 
   FT_Face ft_face;
-  if (unlikely (new_ft_memory_face (ft_library,
+  nếu (unlikely (new_ft_memory_face (ft_library,
 				    (const FT_Byte *) blob_data,
 				    blob_size,
 				    index,
 				    &ft_face)))
   {
     destroy_ft_library (ft_library);
-    return nullptr;
+    trả_về nullptr;
   }
 
   FT_Reference_Face (ft_face);
@@ -1757,19 +1757,19 @@ hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
   ft_face->generic.data = ft_library;
   ft_face->generic.finalizer = finalize_ft_library;
 
-  if (hb_face_is_immutable (face))
-    return nullptr;
+  nếu (hb_face_is_immutable (face))
+    trả_về nullptr;
 
   // Hook the blob to the hb_face_t, since FT_Face still needs it.
   hb_blob_reference (blob);
-  if (!hb_face_set_user_data (face, &ft_blob_key, blob, _destroy_blob, true))
+  nếu (!hb_face_set_user_data (face, &ft_blob_key, blob, _destroy_blob, true))
   {
     hb_blob_destroy (blob);
     hb_face_destroy (face);
-    return nullptr;
+    trả_về nullptr;
   }
 
-  return face;
+  trả_về face;
 }
 
 static void
@@ -1808,8 +1808,8 @@ _release_blob (void *arg)
 void
 hb_ft_font_set_funcs (hb_font_t *font)
 {
-  int load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
-  if (font->destroy == (hb_destroy_func_t) _hb_ft_font_destroy && font->user_data)
+  số_nguyên load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
+  nếu (font->destroy == (hb_destroy_func_t) _hb_ft_font_destroy && font->user_data)
   {
     const hb_ft_font_t *existing_ft_font = (const hb_ft_font_t *) font->user_data;
     load_flags = existing_ft_font->load_flags;
@@ -1821,21 +1821,21 @@ hb_ft_font_set_funcs (hb_font_t *font)
 		     nullptr, nullptr);
 
   hb_blob_t *blob = hb_face_reference_blob (font->face);
-  unsigned int blob_length;
+  unsigned số_nguyên blob_length;
   const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
+  nếu (unlikely (!blob_length))
     DEBUG_MSG (FT, font, "Font face has empty blob");
 
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  nếu (unlikely (!ft_library))
   {
     hb_blob_destroy (blob);
     DEBUG_MSG (FT, font, "reference_ft_library failed");
-    return;
+    trả_về;
   }
 
   FT_Face ft_face = nullptr;
-  if (unlikely (new_ft_memory_face (ft_library,
+  nếu (unlikely (new_ft_memory_face (ft_library,
 				    (const FT_Byte *) blob_data,
 				    blob_length,
 				    hb_face_get_index (font->face),
@@ -1844,10 +1844,10 @@ hb_ft_font_set_funcs (hb_font_t *font)
     hb_blob_destroy (blob);
     destroy_ft_library (ft_library);
     DEBUG_MSG (FT, font, "FT_New_Memory_Face() failed");
-    return;
+    trả_về;
   }
 
-  if (FT_Select_Charmap (ft_face, FT_ENCODING_MS_SYMBOL))
+  nếu (FT_Select_Charmap (ft_face, FT_ENCODING_MS_SYMBOL))
     FT_Select_Charmap (ft_face, FT_ENCODING_UNICODE);
 
   // Hook the blob to the FT_Face
@@ -1855,12 +1855,12 @@ hb_ft_font_set_funcs (hb_font_t *font)
   ft_face->generic.finalizer = _release_blob;
 
   // And the FT_Library to the blob
-  if (unlikely (!hb_blob_set_user_data (blob, &ft_library_key, ft_library, destroy_ft_library, true)))
+  nếu (unlikely (!hb_blob_set_user_data (blob, &ft_library_key, ft_library, destroy_ft_library, true)))
   {
     DEBUG_MSG (FT, font, "hb_blob_set_user_data() failed");
     _hb_ft_face_destroy_static (ft_face);
     destroy_ft_library (ft_library);
-    return;
+    trả_về;
   }
 
   _hb_ft_font_set_funcs (font, ft_face, true, true);

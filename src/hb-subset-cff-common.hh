@@ -41,7 +41,7 @@ template <typename ACC>
 static inline unsigned
 subset_get_fd (const ACC &acc, hb_codepoint_t glyph)
 {
-  return likely (glyph < acc.num_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
+  trả_về likely (glyph < acc.num_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
 }
 
 /* Used for writing a temporary charstring */
@@ -54,36 +54,36 @@ struct str_encoder_t
 
   void encode_byte (unsigned char b)
   {
-    if (likely ((signed) buff.length < buff.allocated))
+    nếu (likely ((signed) buff.length < buff.allocated))
       buff.arrayZ[buff.length++] = b;
-    else
+    không_thì
       buff.push (b);
   }
 
-  void encode_int (int v)
+  void encode_int (số_nguyên v)
   {
-    if ((-1131 <= v) && (v <= 1131))
+    nếu ((-1131 <= v) && (v <= 1131))
     {
-      if ((-107 <= v) && (v <= 107))
+      nếu ((-107 <= v) && (v <= 107))
 	encode_byte (v + 139);
-      else if (v > 0)
+      không_thì nếu (v > 0)
       {
 	v -= 108;
 	encode_byte ((v >> 8) + OpCode_TwoBytePosInt0);
 	encode_byte (v & 0xFF);
       }
-      else
+      không_thì
       {
 	v = -v - 108;
 	encode_byte ((v >> 8) + OpCode_TwoByteNegInt0);
 	encode_byte (v & 0xFF);
       }
     }
-    else
+    không_thì
     {
-      if (unlikely (v < -32768))
+      nếu (unlikely (v < -32768))
 	v = -32768;
-      else if (unlikely (v > 32767))
+      không_thì nếu (unlikely (v > 32767))
 	v = 32767;
       encode_byte (OpCode_shortint);
       encode_byte ((v >> 8) & 0xFF);
@@ -94,11 +94,11 @@ struct str_encoder_t
   // Encode number for CharString
   void encode_num_cs (const number_t& n)
   {
-    if (n.in_int_range ())
+    nếu (n.in_int_range ())
     {
       encode_int (n.to_int ());
     }
-    else
+    không_thì
     {
       int32_t v = n.to_fixed ();
       encode_byte (OpCode_fixedcs);
@@ -112,12 +112,12 @@ struct str_encoder_t
   // Encode number for TopDict / Private
   void encode_num_tp (const number_t& n)
   {
-    if (n.in_int_range ())
+    nếu (n.in_int_range ())
     {
       // TODO longint
       encode_int (n.to_int ());
     }
-    else
+    không_thì
     {
       // Sigh. BCD
       // https://learn.microsoft.com/en-us/typography/opentype/spec/cff2#table-5-nibble-definitions
@@ -145,56 +145,56 @@ struct str_encoder_t
       char *s = buf;
       size_t len;
       char *comma = strchr (s, ',');
-      if (comma) // Comma for some European locales in case no uselocale available.
+      nếu (comma) // Comma for some European locales in case no uselocale available.
 	*comma = '.';
-      if (s[0] == '0' && s[1] == '.')
+      nếu (s[0] == '0' && s[1] == '.')
 	s++;
-      else if (s[0] == '-' && s[1] == '0' && s[2] == '.')
+      không_thì nếu (s[0] == '-' && s[1] == '0' && s[2] == '.')
       {
 	s[1] = '-';
 	s++;
       }
-      else if ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
+      không_thì nếu ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
       {
 	unsigned exponent = len - 3;
 	char *s2 = s + exponent - 1;
-	while (*s2 == '0' && exponent > 1)
+	trong_khi (*s2 == '0' && exponent > 1)
 	{
 	  s2--;
 	  exponent++;
 	}
 	snprintf (s2 + 1, sizeof (buf) - (s2 + 1 - buf), "E%u", exponent);
       }
-      else
+      không_thì
       {
 	char *dot = strchr (s, '.');
 	char *e = strchr (s, 'E');
-	if (dot && e)
+	nếu (dot && e)
 	{
 	  memmove (dot, dot + 1, e - (dot + 1));
-	  int exponent = atoi (e + 1);
-	  int new_exponent = exponent - (e - (dot + 1));
-	  if (new_exponent == 1)
+	  số_nguyên exponent = atoi (e + 1);
+	  số_nguyên new_exponent = exponent - (e - (dot + 1));
+	  nếu (new_exponent == 1)
 	  {
 	    e[-1] = '0';
 	    e[0] = '\0';
 	  }
-	  else
+	  không_thì
 	    snprintf (e - 1, sizeof (buf) - (e - 1 - buf), "E%d", new_exponent);
 	}
       }
-      if ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
+      nếu ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
       {
-	int sign = s[0] == '-';
+	số_nguyên sign = s[0] == '-';
 	char *s2 = s + sign + 1;
-	while (*s2 == '0')
+	trong_khi (*s2 == '0')
 	  s2++;
 	len = strlen (s2);
 	memmove (s + sign, s2, len);
 	snprintf (s + sign + len, sizeof (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
       }
       hb_vector_t<char> nibbles;
-      while (*s)
+      trong_khi (*s)
       {
 	char c = s[0];
 	s++;
@@ -204,16 +204,16 @@ struct str_encoder_t
 	  case 'E':
 	  {
 	    char c2 = *s;
-	    if (c2 == '-')
+	    nếu (c2 == '-')
 	    {
 	      s++;
 	      nibbles.push (0x0C); // E-
-	    } else {
-	      if (c2 == '+')
+	    } không_thì {
+	      nếu (c2 == '+')
 		s++;
 	      nibbles.push (0x0B); // E
 	    }
-	    if (*s == '0')
+	    nếu (*s == '0')
 	      s++;
 	    continue;
 	  }
@@ -230,23 +230,23 @@ struct str_encoder_t
 	nibbles.push (c - '0');
       }
       nibbles.push (0x0F);
-      if (nibbles.length % 2)
+      nếu (nibbles.length % 2)
 	nibbles.push (0x0F);
 
       unsigned count = nibbles.length;
-      for (unsigned i = 0; i < count; i += 2)
+      cho (unsigned i = 0; i < count; i += 2)
         encode_byte ((nibbles[i] << 4) | nibbles[i+1]);
     }
   }
 
   void encode_op (op_code_t op)
   {
-    if (Is_OpCode_ESC (op))
+    nếu (Is_OpCode_ESC (op))
     {
       encode_byte (OpCode_escape);
       encode_byte (Unmake_OpCode_ESC (op));
     }
-    else
+    không_thì
       encode_byte (op);
   }
 
@@ -257,7 +257,7 @@ struct str_encoder_t
     buff.length += length;
   }
 
-  bool in_error () const { return buff.in_error (); }
+  bool in_error () const { trả_về buff.in_error (); }
 
   protected:
 
@@ -312,18 +312,18 @@ struct cff_font_dict_op_serializer_t : op_serializer_t
   {
     TRACE_SERIALIZE (this);
 
-    if (opstr.op == OpCode_Private)
+    nếu (opstr.op == OpCode_Private)
     {
       /* serialize the private dict size & offset as 2-byte & 4-byte integers */
       return_trace (UnsizedByteStr::serialize_int2 (c, privateDictInfo.size) &&
 		    Dict::serialize_link4_op (c, opstr.op, privateDictInfo.link, whence_t::Absolute));
     }
-    else
+    không_thì
     {
       unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-      if (unlikely (!d)) return_trace (false);
+      nếu (unlikely (!d)) return_trace (false);
       /* Faster than hb_memcpy for small strings. */
-      for (unsigned i = 0; i < opstr.length; i++)
+      cho (unsigned i = 0; i < opstr.length; i++)
 	d[i] = opstr.ptr[i];
       //hb_memcpy (d, opstr.ptr, opstr.length);
     }
@@ -376,21 +376,21 @@ struct subr_flattener_t
                 hb_vector_t<hb_vector_t<cs_command_t>> *command_capture = nullptr)
   {
     unsigned count = plan->num_output_glyphs ();
-    if (!flat_charstrings.resize_exact (count))
-      return false;
-    for (unsigned int i = 0; i < count; i++)
+    nếu (!flat_charstrings.resize_exact (count))
+      trả_về false;
+    cho (unsigned số_nguyên i = 0; i < count; i++)
     {
       hb_codepoint_t  glyph;
-      if (!plan->old_gid_for_new_gid (i, &glyph))
+      nếu (!plan->old_gid_for_new_gid (i, &glyph))
       {
 	/* add an endchar only charstring for a missing glyph if CFF1 */
-	if (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
+	nếu (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
 	continue;
       }
       const hb_ubytes_t str = (*acc.charStrings)[glyph];
-      unsigned int fd = subset_get_fd (acc, glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
+      unsigned số_nguyên fd = subset_get_fd (acc, glyph);
+      nếu (unlikely (fd >= acc.fdCount))
+	trả_về false;
 
 
       ENV env (str, acc, fd,
@@ -402,10 +402,10 @@ struct subr_flattener_t
 	plan,
 	command_capture ? &(*command_capture)[i] : nullptr
       };
-      if (unlikely (!interp.interpret (param)))
-	return false;
+      nếu (unlikely (!interp.interpret (param)))
+	trả_về false;
     }
-    return true;
+    trả_về true;
   }
 
   const ACC &acc;
@@ -414,7 +414,7 @@ struct subr_flattener_t
 
 struct subr_closures_t
 {
-  subr_closures_t (unsigned int fd_count) : global_closure (), local_closures ()
+  subr_closures_t (unsigned số_nguyên fd_count) : global_closure (), local_closures ()
   {
     local_closures.resize_exact (fd_count);
   }
@@ -422,21 +422,21 @@ struct subr_closures_t
   void reset ()
   {
     global_closure.clear();
-    for (unsigned int i = 0; i < local_closures.length; i++)
+    cho (unsigned số_nguyên i = 0; i < local_closures.length; i++)
       local_closures[i].clear();
   }
 
-  bool in_error () const { return local_closures.in_error (); }
+  bool in_error () const { trả_về local_closures.in_error (); }
   hb_set_t  global_closure;
   hb_vector_t<hb_set_t> local_closures;
 };
 
 struct parsed_cs_op_t : op_str_t
 {
-  parsed_cs_op_t (unsigned int subr_num_ = 0) :
+  parsed_cs_op_t (unsigned số_nguyên subr_num_ = 0) :
     subr_num (subr_num_) {}
 
-  bool is_hinting () const { return hinting_flag; }
+  bool is_hinting () const { trả_về hinting_flag; }
   void set_hinting ()       { hinting_flag = true; }
 
   /* The layout of this struct is designed to fit within the
@@ -464,8 +464,8 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
   HB_ALWAYS_INLINE
   void add_op (op_code_t op, const byte_str_ref_t& str_ref)
   {
-    if (is_parsed ()) return;
-    if (coalescing_)
+    nếu (is_parsed ()) trả_về;
+    nếu (coalescing_)
     {
       /* Do not record individual tokens; only note their boundaries.
        * Bytes are flushed as verbatim segments at call sites and at
@@ -473,19 +473,19 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
        * is not needed later for hint analysis. */
       penultimate_end_ = last_end_;
       last_end_ = str_ref.get_offset ();
-      if (unlikely (op == OpCode_return || op == OpCode_endchar))
+      nếu (unlikely (op == OpCode_return || op == OpCode_endchar))
 	flush_segment (str_ref, last_end_);
-      return;
+      trả_về;
     }
     SUPER::add_op (op, str_ref);
   }
 
-  void add_call_op (op_code_t op, const byte_str_ref_t& str_ref, unsigned int subr_num)
+  void add_call_op (op_code_t op, const byte_str_ref_t& str_ref, unsigned số_nguyên subr_num)
   {
-    if (is_parsed ()) return;
+    nếu (is_parsed ()) trả_về;
     has_calls_ = true;
 
-    if (coalescing_)
+    nếu (coalescing_)
     {
       /* Flush bytes preceding the subroutine-number token, then skip
        * over the number: it is re-encoded with the new bias. */
@@ -493,7 +493,7 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
       opStart = last_end_;
       SUPER::add_op (op, str_ref, {subr_num});
       penultimate_end_ = last_end_ = str_ref.get_offset ();
-      return;
+      trả_về;
     }
 
     /* Pop the subroutine number. */
@@ -506,11 +506,11 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
   void flush_segment (const byte_str_ref_t& str_ref, unsigned end)
   {
     unsigned start = opStart;
-    if (end <= start) return;
-    while (start < end)
+    nếu (end <= start) trả_về;
+    trong_khi (start < end)
     {
       auto arr = str_ref.sub_array (start, hb_min (end - start, 255u));
-      if (unlikely (!arr.length)) break;
+      nếu (unlikely (!arr.length)) break;
       parsed_cs_op_t *val = values.push ();
       val->ptr = arr.arrayZ;
       val->length = arr.length;
@@ -524,12 +524,12 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
    * return/endchar op (CFF2). */
   void flush_coalesced (const byte_str_ref_t& str_ref)
   {
-    if (coalescing_ && !is_parsed ())
+    nếu (coalescing_ && !is_parsed ())
       flush_segment (str_ref, str_ref.get_offset ());
   }
 
   void enable_coalescing () { coalescing_ = true; }
-  bool is_coalescing () const { return coalescing_; }
+  bool is_coalescing () const { trả_về coalescing_; }
 
   void set_prefix (const number_t &num, op_code_t op = OpCode_Invalid)
   {
@@ -538,34 +538,34 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
     prefix_num_ = num;
   }
 
-  bool at_end (unsigned int pos) const
+  bool at_end (unsigned số_nguyên pos) const
   {
-    return ((pos + 1 >= values.length) /* CFF2 */
+    trả_về ((pos + 1 >= values.length) /* CFF2 */
 	|| (values[pos + 1].op == OpCode_return));
   }
 
-  bool is_parsed () const { return parsed; }
+  bool is_parsed () const { trả_về parsed; }
   void set_parsed ()      { parsed = true; }
 
-  bool is_hint_dropped () const { return hint_dropped; }
+  bool is_hint_dropped () const { trả_về hint_dropped; }
   void set_hint_dropped ()      { hint_dropped = true; }
 
-  bool is_vsindex_dropped () const { return vsindex_dropped; }
+  bool is_vsindex_dropped () const { trả_về vsindex_dropped; }
   void set_vsindex_dropped ()      { vsindex_dropped = true; }
 
-  bool has_prefix () const          { return has_prefix_; }
-  op_code_t prefix_op () const         { return prefix_op_; }
-  const number_t &prefix_num () const { return prefix_num_; }
+  bool has_prefix () const          { trả_về has_prefix_; }
+  op_code_t prefix_op () const         { trả_về prefix_op_; }
+  const number_t &prefix_num () const { trả_về prefix_num_; }
 
-  bool has_calls () const          { return has_calls_; }
+  bool has_calls () const          { trả_về has_calls_; }
 
   void compact ()
   {
     unsigned count = values.length;
-    if (!count) return;
+    nếu (!count) trả_về;
     auto &opstr = values.arrayZ;
     unsigned j = 0;
-    for (unsigned i = 1; i < count; i++)
+    cho (unsigned i = 1; i < count; i++)
     {
       /* See if we can combine op j and op i. */
       bool combine =
@@ -575,12 +575,12 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
         (opstr[j].ptr + opstr[j].length == opstr[i].ptr) &&
         (opstr[j].length + opstr[i].length <= 255);
 
-      if (combine)
+      nếu (combine)
       {
 	opstr[j].length += opstr[i].length;
 	opstr[j].op = OpCode_Invalid;
       }
-      else
+      không_thì
       {
 	opstr[++j] = opstr[i];
       }
@@ -623,16 +623,16 @@ struct cff_subset_accelerator_t
       const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
     cff_subset_accelerator_t* accel =
         (cff_subset_accelerator_t*) hb_malloc (sizeof(cff_subset_accelerator_t));
-    if (unlikely (!accel)) return nullptr;
+    nếu (unlikely (!accel)) trả_về nullptr;
     new (accel) cff_subset_accelerator_t (original_blob,
                                           parsed_charstrings,
                                           parsed_global_subrs,
                                           parsed_local_subrs);
-    return accel;
+    trả_về accel;
   }
 
   static void destroy (void* value) {
-    if (!value) return;
+    nếu (!value) trả_về;
 
     cff_subset_accelerator_t* accel = (cff_subset_accelerator_t*) value;
     accel->~cff_subset_accelerator_t ();
@@ -658,7 +658,7 @@ struct cff_subset_accelerator_t
   {
     hb_blob_destroy (original_blob);
     auto *mapping = glyph_to_sid_map.get_relaxed ();
-    if (mapping)
+    nếu (mapping)
     {
       mapping->~glyph_to_sid_map_t ();
       hb_free (mapping);
@@ -692,7 +692,7 @@ struct subr_subset_param_t
       drop_hints (drop_hints_),
       coalesce (coalesce_)
   {
-    if (coalesce) parsed_charstring->enable_coalescing ();
+    nếu (coalesce) parsed_charstring->enable_coalescing ();
   }
 
   parsed_cs_str_t *get_parsed_str_for_context (call_context_t &context)
@@ -700,41 +700,41 @@ struct subr_subset_param_t
     switch (context.type)
     {
       case CSType_CharString:
-	return parsed_charstring;
+	trả_về parsed_charstring;
 
       case CSType_LocalSubr:
-	if (likely (context.subr_num < parsed_local_subrs->length))
-	  return &(*parsed_local_subrs)[context.subr_num];
+	nếu (likely (context.subr_num < parsed_local_subrs->length))
+	  trả_về &(*parsed_local_subrs)[context.subr_num];
 	break;
 
       case CSType_GlobalSubr:
-	if (likely (context.subr_num < parsed_global_subrs->length))
-	  return &(*parsed_global_subrs)[context.subr_num];
+	nếu (likely (context.subr_num < parsed_global_subrs->length))
+	  trả_về &(*parsed_global_subrs)[context.subr_num];
 	break;
     }
-    return nullptr;
+    trả_về nullptr;
   }
 
   template <typename ENV>
   void set_current_str (ENV &env, bool calling)
   {
     parsed_cs_str_t *parsed_str = get_parsed_str_for_context (env.context);
-    if (unlikely (!parsed_str))
+    nếu (unlikely (!parsed_str))
     {
       env.set_error ();
-      return;
+      trả_về;
     }
     /* If the called subroutine is parsed partially but not completely yet,
      * it must be because we are calling it recursively.
      * Handle it as an error. */
-    if (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
+    nếu (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
       env.set_error ();
-    else
+    không_thì
     {
-      if (!parsed_str->is_parsed ())
+      nếu (!parsed_str->is_parsed ())
       {
         parsed_str->alloc (env.str_ref.total_size ());
-        if (coalesce) parsed_str->enable_coalescing ();
+        nếu (coalesce) parsed_str->enable_coalescing ();
       }
       current_parsed_str = parsed_str;
     }
@@ -760,43 +760,43 @@ struct subr_remap_t : hb_inc_bimap_t
      */
 
     alloc (closure->get_population ());
-    for (auto old_num : *closure)
+    cho (auto old_num : *closure)
       add (old_num);
 
-    if (get_population () < 1240)
+    nếu (get_population () < 1240)
       bias = 107;
-    else if (get_population () < 33900)
+    không_thì nếu (get_population () < 33900)
       bias = 1131;
-    else
+    không_thì
       bias = 32768;
   }
 
-  int biased_num (unsigned int old_num) const
+  số_nguyên biased_num (unsigned số_nguyên old_num) const
   {
     hb_codepoint_t new_num = get (old_num);
-    return (int)new_num - bias;
+    trả_về (số_nguyên)new_num - bias;
   }
 
   protected:
-  int bias;
+  số_nguyên bias;
 };
 
 struct subr_remaps_t
 {
-  subr_remaps_t (unsigned int fdCount)
+  subr_remaps_t (unsigned số_nguyên fdCount)
   {
     local_remaps.resize (fdCount);
   }
 
   bool in_error()
   {
-    return local_remaps.in_error ();
+    trả_về local_remaps.in_error ();
   }
 
   void create (subr_closures_t& closures)
   {
     global_remap.create (&closures.global_closure);
-    for (unsigned int i = 0; i < local_remaps.length; i++)
+    cho (unsigned số_nguyên i = 0; i < local_remaps.length; i++)
       local_remaps.arrayZ[i].create (&closures.local_closures[i]);
   }
 
@@ -830,40 +830,40 @@ struct subr_subsetter_t
   {
     unsigned fd_count = acc.fdCount;
     const cff_subset_accelerator_t* cff_accelerator = nullptr;
-    if (acc.cff_accelerator) {
+    nếu (acc.cff_accelerator) {
       cff_accelerator = acc.cff_accelerator;
       fd_count = cff_accelerator->parsed_local_subrs.length;
     }
 
-    if (cff_accelerator) {
+    nếu (cff_accelerator) {
       // If we are not dropping hinting then charstrings are not modified so we can
       // just use a reference to the cached copies.
       cached_charstrings.resize_exact (plan->num_output_glyphs ());
       parsed_global_subrs = &cff_accelerator->parsed_global_subrs;
       parsed_local_subrs = &cff_accelerator->parsed_local_subrs;
-    } else {
+    } không_thì {
       parsed_charstrings.resize_exact (plan->num_output_glyphs ());
       parsed_global_subrs_storage.resize_exact (acc.globalSubrs->count);
 
-      if (unlikely (!parsed_local_subrs_storage.resize (fd_count))) return false;
+      nếu (unlikely (!parsed_local_subrs_storage.resize (fd_count))) trả_về false;
 
-      for (unsigned int i = 0; i < acc.fdCount; i++)
+      cho (unsigned số_nguyên i = 0; i < acc.fdCount; i++)
       {
         unsigned count = acc.privateDicts[i].localSubrs->count;
         parsed_local_subrs_storage[i].resize (count);
-        if (unlikely (parsed_local_subrs_storage[i].in_error ())) return false;
+        nếu (unlikely (parsed_local_subrs_storage[i].in_error ())) trả_về false;
       }
 
       parsed_global_subrs = &parsed_global_subrs_storage;
       parsed_local_subrs = &parsed_local_subrs_storage;
     }
 
-    if (unlikely (remaps.in_error()
+    nếu (unlikely (remaps.in_error()
                   || cached_charstrings.in_error ()
                   || parsed_charstrings.in_error ()
                   || parsed_global_subrs->in_error ()
                   || closures.in_error ())) {
-      return false;
+      trả_về false;
     }
 
     /* When hints are not analyzed (not dropping hints, not populating
@@ -873,23 +873,23 @@ struct subr_subsetter_t
 		    !plan->inprogress_accelerator;
 
     /* phase 1 & 2 */
-    for (auto _ : plan->new_to_old_gid_list)
+    cho (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_glyph = _.first;
       hb_codepoint_t old_glyph = _.second;
 
       const hb_ubytes_t str = (*acc.charStrings)[old_glyph];
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      unsigned số_nguyên fd = subset_get_fd (acc, old_glyph);
+      nếu (unlikely (fd >= acc.fdCount))
+        trả_về false;
 
-      if (cff_accelerator)
+      nếu (cff_accelerator)
       {
         // parsed string already exists in accelerator, copy it and move
         // on.
-        if (cached_charstrings)
+        nếu (cached_charstrings)
           cached_charstrings[new_glyph] = &cff_accelerator->parsed_charstrings[old_glyph];
-        else
+        không_thì
           parsed_charstrings[new_glyph] = cff_accelerator->parsed_charstrings[old_glyph];
 
         continue;
@@ -907,14 +907,14 @@ struct subr_subsetter_t
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
                                   coalesce);
 
-      if (unlikely (!interp.interpret (param)))
-        return false;
+      nếu (unlikely (!interp.interpret (param)))
+        trả_về false;
 
       /* complete parsed string esp. copy CFF1 width or CFF2 vsindex to the parsed charstring for encoding */
       SUBSETTER::complete_parsed_str (interp.env, param, parsed_charstrings[new_glyph]);
 
       /* mark hint ops and arguments for drop */
-      if ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
+      nếu ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
       {
 	subr_subset_param_t  param (&parsed_charstrings[new_glyph],
 				    &parsed_global_subrs_storage,
@@ -924,10 +924,10 @@ struct subr_subsetter_t
 				    plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
 	drop_hints_param_t  drop;
-	if (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
+	nếu (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
 	{
 	  parsed_charstrings[new_glyph].set_hint_dropped ();
-	  if (drop.vsindex_dropped)
+	  nếu (drop.vsindex_dropped)
 	    parsed_charstrings[new_glyph].set_vsindex_dropped ();
 	}
       }
@@ -940,7 +940,7 @@ struct subr_subsetter_t
        *
        * Not needed when tokens were coalesced during parsing.
        */
-      if (!coalesce)
+      nếu (!coalesce)
 	parsed_charstrings[new_glyph].compact ();
     }
 
@@ -950,31 +950,31 @@ struct subr_subsetter_t
      *
      * Or if we are dropping hinting, redo closure to get actually used subrs.
      */
-    if ((cff_accelerator ||
+    nếu ((cff_accelerator ||
 	(!cff_accelerator && plan->flags & HB_SUBSET_FLAGS_NO_HINTING)) &&
         !closure_subroutines(*parsed_global_subrs,
                              *parsed_local_subrs))
-      return false;
+      trả_về false;
 
     remaps.create (closures);
 
     populate_subset_accelerator ();
-    return true;
+    trả_về true;
   }
 
   bool encode_charstrings (str_buff_vec_t &buffArray, bool encode_prefix = true) const
   {
     unsigned num_glyphs = plan->num_output_glyphs ();
-    if (unlikely (!buffArray.resize_exact (num_glyphs)))
-      return false;
+    nếu (unlikely (!buffArray.resize_exact (num_glyphs)))
+      trả_về false;
     hb_codepoint_t last = 0;
-    for (auto _ : plan->new_to_old_gid_list)
+    cho (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
       hb_codepoint_t old_glyph = _.second;
 
-      if (endchar_op != OpCode_Invalid)
-        for (; last < gid; last++)
+      nếu (endchar_op != OpCode_Invalid)
+        cho (; last < gid; last++)
 	{
 	  // Hack to point vector to static string.
 	  auto &b = buffArray.arrayZ[last];
@@ -982,48 +982,48 @@ struct subr_subsetter_t
 	}
 
       last++; // Skip over gid
-      unsigned int  fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
-      if (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
-	return false;
+      unsigned số_nguyên  fd = subset_get_fd (acc, old_glyph);
+      nếu (unlikely (fd >= acc.fdCount))
+	trả_về false;
+      nếu (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
+	trả_về false;
     }
-    if (endchar_op != OpCode_Invalid)
-      for (; last < num_glyphs; last++)
+    nếu (endchar_op != OpCode_Invalid)
+      cho (; last < num_glyphs; last++)
       {
 	// Hack to point vector to static string.
 	auto &b = buffArray.arrayZ[last];
 	b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
       }
 
-    return true;
+    trả_về true;
   }
 
-  bool encode_subrs (const parsed_cs_str_vec_t &subrs, const subr_remap_t& remap, unsigned int fd, str_buff_vec_t &buffArray) const
+  bool encode_subrs (const parsed_cs_str_vec_t &subrs, const subr_remap_t& remap, unsigned số_nguyên fd, str_buff_vec_t &buffArray) const
   {
-    unsigned int  count = remap.get_population ();
+    unsigned số_nguyên  count = remap.get_population ();
 
-    if (unlikely (!buffArray.resize_exact (count)))
-      return false;
-    for (unsigned int new_num = 0; new_num < count; new_num++)
+    nếu (unlikely (!buffArray.resize_exact (count)))
+      trả_về false;
+    cho (unsigned số_nguyên new_num = 0; new_num < count; new_num++)
     {
       hb_codepoint_t old_num = remap.backward (new_num);
       assert (old_num != CFF_UNDEF_CODE);
 
-      if (unlikely (!encode_str (subrs[old_num], fd, buffArray[new_num])))
-	return false;
+      nếu (unlikely (!encode_str (subrs[old_num], fd, buffArray[new_num])))
+	trả_về false;
     }
-    return true;
+    trả_về true;
   }
 
   bool encode_globalsubrs (str_buff_vec_t &buffArray)
   {
-    return encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
+    trả_về encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
   }
 
-  bool encode_localsubrs (unsigned int fd, str_buff_vec_t &buffArray) const
+  bool encode_localsubrs (unsigned số_nguyên fd, str_buff_vec_t &buffArray) const
   {
-    return encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
+    trả_về encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
   }
 
   protected:
@@ -1041,8 +1041,8 @@ struct subr_subsetter_t
     bool  vsindex_dropped;
   };
 
-  bool drop_hints_in_subr (parsed_cs_str_t &str, unsigned int pos,
-			   parsed_cs_str_vec_t &subrs, unsigned int subr_num,
+  bool drop_hints_in_subr (parsed_cs_str_t &str, unsigned số_nguyên pos,
+			   parsed_cs_str_vec_t &subrs, unsigned số_nguyên subr_num,
 			   const subr_subset_param_t &param, drop_hints_param_t &drop)
   {
     drop.ends_in_hint = false;
@@ -1050,20 +1050,20 @@ struct subr_subsetter_t
 
     /* if this subr ends with a stem hint (i.e., not a number; potential argument for moveto),
      * then this entire subroutine must be a hint. drop its call. */
-    if (drop.ends_in_hint)
+    nếu (drop.ends_in_hint)
     {
       str.values[pos].set_hinting ();
       /* if this subr call is at the end of the parent subr, propagate the flag
        * otherwise reset the flag */
-      if (!str.at_end (pos))
+      nếu (!str.at_end (pos))
 	drop.ends_in_hint = false;
     }
-    else if (drop.all_dropped)
+    không_thì nếu (drop.all_dropped)
     {
       str.values[pos].set_hinting ();
     }
 
-    return has_hint;
+    trả_về has_hint;
   }
 
   /* returns true if it sees a hint op before the first moveto */
@@ -1073,7 +1073,7 @@ struct subr_subsetter_t
 
     unsigned count = str.values.length;
     auto *values = str.values.arrayZ;
-    for (unsigned int pos = 0; pos < count; pos++)
+    cho (unsigned số_nguyên pos = 0; pos < count; pos++)
     {
       bool  has_hint = false;
       switch (values[pos].op)
@@ -1098,7 +1098,7 @@ struct subr_subsetter_t
 
 	case OpCode_hintmask:
 	case OpCode_cntrmask:
-	  if (drop.seen_moveto)
+	  nếu (drop.seen_moveto)
 	  {
 	    values[pos].set_hinting ();
 	    break;
@@ -1111,7 +1111,7 @@ struct subr_subsetter_t
 	case OpCode_vstem:
 	  has_hint = true;
 	  values[pos].set_hinting ();
-	  if (str.at_end (pos))
+	  nếu (str.at_end (pos))
 	    drop.ends_in_hint = true;
 	  break;
 
@@ -1123,15 +1123,15 @@ struct subr_subsetter_t
 	  /* NONE */
 	  break;
       }
-      if (has_hint)
+      nếu (has_hint)
       {
-	for (int i = pos - 1; i >= 0; i--)
+	cho (số_nguyên i = pos - 1; i >= 0; i--)
 	{
 	  parsed_cs_op_t  &csop = values[(unsigned)i];
-	  if (csop.is_hinting ())
+	  nếu (csop.is_hinting ())
 	    break;
 	  csop.set_hinting ();
-	  if (csop.op == OpCode_vsindexcs)
+	  nếu (csop.op == OpCode_vsindexcs)
 	    drop.vsindex_dropped = true;
 	}
 	seen_hint |= has_hint;
@@ -1143,32 +1143,32 @@ struct subr_subsetter_t
      * only (usually one) hintmask operator, then calls to this subr can be dropped.
      */
     drop.all_dropped = true;
-    for (unsigned int pos = 0; pos < count; pos++)
+    cho (unsigned số_nguyên pos = 0; pos < count; pos++)
     {
       parsed_cs_op_t  &csop = values[pos];
-      if (csop.op == OpCode_return)
+      nếu (csop.op == OpCode_return)
 	break;
-      if (!csop.is_hinting ())
+      nếu (!csop.is_hinting ())
       {
 	drop.all_dropped = false;
 	break;
       }
     }
 
-    return seen_hint;
+    trả_về seen_hint;
   }
 
   bool closure_subroutines (const parsed_cs_str_vec_t& global_subrs,
                             const hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
   {
     closures.reset ();
-    for (auto _ : plan->new_to_old_gid_list)
+    cho (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_glyph = _.first;
       hb_codepoint_t old_glyph = _.second;
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      unsigned số_nguyên fd = subset_get_fd (acc, old_glyph);
+      nếu (unlikely (fd >= acc.fdCount))
+        trả_về false;
 
       // Note: const cast is safe here because the collect_subr_refs_in_str only performs a
       //       closure and does not modify any of the charstrings.
@@ -1181,15 +1181,15 @@ struct subr_subsetter_t
       collect_subr_refs_in_str (get_parsed_charstring (new_glyph), param);
     }
 
-    return true;
+    trả_về true;
   }
 
-  void collect_subr_refs_in_subr (unsigned int subr_num, parsed_cs_str_vec_t &subrs,
+  void collect_subr_refs_in_subr (unsigned số_nguyên subr_num, parsed_cs_str_vec_t &subrs,
 				  hb_set_t *closure,
 				  const subr_subset_param_t &param)
   {
-    if (closure->has (subr_num))
-      return;
+    nếu (closure->has (subr_num))
+      trả_về;
     closure->add (subr_num);
     collect_subr_refs_in_str (subrs[subr_num], param);
   }
@@ -1197,12 +1197,12 @@ struct subr_subsetter_t
   void collect_subr_refs_in_str (const parsed_cs_str_t &str,
                                  const subr_subset_param_t &param)
   {
-    if (!str.has_calls ())
-      return;
+    nếu (!str.has_calls ())
+      trả_về;
 
-    for (auto &opstr : str.values)
+    cho (auto &opstr : str.values)
     {
-      if (!param.drop_hints || !opstr.is_hinting ())
+      nếu (!param.drop_hints || !opstr.is_hinting ())
       {
 	switch (opstr.op)
 	{
@@ -1222,33 +1222,33 @@ struct subr_subsetter_t
     }
   }
 
-  bool encode_str (const parsed_cs_str_t &str, const unsigned int fd, str_buff_t &buff, bool encode_prefix = true) const
+  bool encode_str (const parsed_cs_str_t &str, const unsigned số_nguyên fd, str_buff_t &buff, bool encode_prefix = true) const
   {
     str_encoder_t  encoder (buff);
     encoder.reset ();
     bool hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
     /* if a prefix (CFF1 width or CFF2 vsindex) has been removed along with hints,
      * re-insert it at the beginning of charstreing */
-    if (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
+    nếu (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
     {
       encoder.encode_num_cs (str.prefix_num ());
-      if (str.prefix_op () != OpCode_Invalid)
+      nếu (str.prefix_op () != OpCode_Invalid)
 	encoder.encode_op (str.prefix_op ());
     }
 
     unsigned size = 0;
-    for (auto &opstr : str.values)
+    cho (auto &opstr : str.values)
     {
       size += opstr.length;
-      if (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
+      nếu (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
         size += 3;
     }
-    if (!buff.alloc_exact (buff.length + size))
-      return false;
+    nếu (!buff.alloc_exact (buff.length + size))
+      trả_về false;
 
-    for (auto &opstr : str.values)
+    cho (auto &opstr : str.values)
     {
-      if (hinting || !opstr.is_hinting ())
+      nếu (hinting || !opstr.is_hinting ())
       {
 	switch (opstr.op)
 	{
@@ -1268,21 +1268,21 @@ struct subr_subsetter_t
 	}
       }
     }
-    return !encoder.in_error ();
+    trả_về !encoder.in_error ();
   }
 
   void compact_parsed_subrs () const
   {
-    for (auto &cs : parsed_global_subrs_storage)
+    cho (auto &cs : parsed_global_subrs_storage)
       cs.compact ();
-    for (auto &vec : parsed_local_subrs_storage)
-      for (auto &cs : vec)
+    cho (auto &vec : parsed_local_subrs_storage)
+      cho (auto &cs : vec)
 	cs.compact ();
   }
 
   void populate_subset_accelerator () const
   {
-    if (!plan->inprogress_accelerator) return;
+    nếu (!plan->inprogress_accelerator) trả_về;
 
     compact_parsed_subrs ();
 
@@ -1295,8 +1295,8 @@ struct subr_subsetter_t
 
   const parsed_cs_str_t& get_parsed_charstring (unsigned i) const
   {
-    if (cached_charstrings) return *(cached_charstrings[i]);
-    return parsed_charstrings[i];
+    nếu (cached_charstrings) trả_về *(cached_charstrings[i]);
+    trả_về parsed_charstrings[i];
   }
 
   protected:
@@ -1323,22 +1323,22 @@ struct subr_subsetter_t
 
 HB_INTERNAL bool
 hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			    unsigned int fdCount,
+			    unsigned số_nguyên fdCount,
 			    const CFF::FDSelect &src, /* IN */
-			    unsigned int src_num_glyphs,
-			    unsigned int &subset_fd_count /* OUT */,
-			    unsigned int &subset_fdselect_size /* OUT */,
-			    unsigned int &subset_fdselect_format /* OUT */,
+			    unsigned số_nguyên src_num_glyphs,
+			    unsigned số_nguyên &subset_fd_count /* OUT */,
+			    unsigned số_nguyên &subset_fdselect_size /* OUT */,
+			    unsigned số_nguyên &subset_fdselect_format /* OUT */,
 			    hb_vector_t<CFF::code_pair_t> &fdselect_ranges /* OUT */,
 			    hb_inc_bimap_t &fdmap /* OUT */);
 
 HB_INTERNAL bool
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			  unsigned int num_glyphs,
+			  unsigned số_nguyên num_glyphs,
 			  const CFF::FDSelect &src,
-			  unsigned int fd_count,
-			  unsigned int fdselect_format,
-			  unsigned int size,
+			  unsigned số_nguyên fd_count,
+			  unsigned số_nguyên fdselect_format,
+			  unsigned số_nguyên size,
 			  const hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
 
 #endif /* HB_SUBSET_CFF_COMMON_HH */

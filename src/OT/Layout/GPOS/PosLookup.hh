@@ -12,12 +12,12 @@ struct PosLookup : Lookup
 {
   using SubTable = PosLookupSubTable;
 
-  const SubTable& get_subtable (unsigned int i) const
-  { return Lookup::get_subtable<SubTable> (i); }
+  const SubTable& get_subtable (unsigned số_nguyên i) const
+  { trả_về Lookup::get_subtable<SubTable> (i); }
 
   bool is_reverse () const
   {
-    return false;
+    trả_về false;
   }
 
   bool apply (hb_ot_apply_context_t *c) const
@@ -29,26 +29,26 @@ struct PosLookup : Lookup
   bool intersects (const hb_set_t *glyphs) const
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c);
+    trả_về dispatch (&c);
   }
 
   hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { return dispatch (c); }
+  { trả_về dispatch (c); }
 
   hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
   {
-    if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+    nếu (c->is_lookup_visited (this_index))
+      trả_về hb_closure_lookups_context_t::default_return_value ();
 
     c->set_lookup_visited (this_index);
-    if (!intersects (c->glyphs))
+    nếu (!intersects (c->glyphs))
     {
       c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      trả_về hb_closure_lookups_context_t::default_return_value ();
     }
 
     hb_closure_lookups_context_t::return_t ret = dispatch (c);
-    return ret;
+    trả_về ret;
   }
 
   template <typename set_t>
@@ -59,17 +59,17 @@ struct PosLookup : Lookup
   }
 
   template <typename context_t>
-  static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned số_nguyên lookup_index);
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
-  { return Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
+  { trả_về Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
 
   bool subset (hb_subset_context_t *c) const
-  { return Lookup::subset<SubTable> (c); }
+  { trả_về Lookup::subset<SubTable> (c); }
 
   bool sanitize (hb_sanitize_context_t *c) const
-  { return Lookup::sanitize<SubTable> (c); }
+  { trả_về Lookup::sanitize<SubTable> (c); }
 };
 
 }

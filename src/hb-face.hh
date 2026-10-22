@@ -48,7 +48,7 @@ struct hb_face_t
 {
   hb_object_header_t header;
 
-  unsigned int index;			/* Face index in a collection, zero-based. */
+  unsigned số_nguyên index;			/* Face index in a collection, zero-based. */
   mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
   mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
 
@@ -77,37 +77,37 @@ struct hb_face_t
   {
     hb_blob_t *blob;
 
-    if (unlikely (!reference_table_func))
-      return hb_blob_get_empty ();
+    nếu (unlikely (!reference_table_func))
+      trả_về hb_blob_get_empty ();
 
     blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (this), tag, user_data);
-    if (unlikely (!blob))
-      return hb_blob_get_empty ();
+    nếu (unlikely (!blob))
+      trả_về hb_blob_get_empty ();
 
-    return blob;
+    trả_về blob;
   }
 
-  unsigned int get_upem () const
+  unsigned số_nguyên get_upem () const
   {
-    unsigned int ret = upem;
-    if (unlikely (!ret))
+    unsigned số_nguyên ret = upem;
+    nếu (unlikely (!ret))
     {
-      return load_upem ();
+      trả_về load_upem ();
     }
-    return ret;
+    trả_về ret;
   }
 
-  unsigned int get_num_glyphs () const
+  unsigned số_nguyên get_num_glyphs () const
   {
-    unsigned int ret = num_glyphs;
-    if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
-    return ret;
+    unsigned số_nguyên ret = num_glyphs;
+    nếu (unlikely (ret == UINT_MAX))
+      trả_về load_num_glyphs ();
+    trả_về ret;
   }
 
   private:
-  HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  HB_INTERNAL unsigned số_nguyên load_upem () const;
+  HB_INTERNAL unsigned số_nguyên load_num_glyphs () const;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 

@@ -10,13 +10,13 @@ with open(news_path, "r", encoding="utf-8") as news_file:
 
 start = None
 end = None
-for i, line in enumerate(lines):
+cho i, line in enumerate(lines):
     line = line.rstrip()
-    if line.startswith("Overview of changes leading to"):
-        if start is not None:  # Start of next release
+    nếu line.startswith("Overview of changes leading to"):
+        nếu start is not None:  # Start of next release
             end = i
             break
-        if line.endswith(release):  # Start of the release
+        nếu line.endswith(release):  # Start of the release
             start = i + 3  # Skip the header lines
 
 assert start and end and end > start

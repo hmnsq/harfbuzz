@@ -53,13 +53,13 @@ struct TTCHeader;
 
 typedef struct TableRecord
 {
-  int cmp (Tag t) const { return -t.cmp (tag); }
+  số_nguyên cmp (Tag t) const { trả_về -t.cmp (tag); }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL static số_nguyên cmp (const void *pa, const void *pb)
   {
     const TableRecord *a = (const TableRecord *) pa;
     const TableRecord *b = (const TableRecord *) pb;
-    return b->cmp (a->tag);
+    trả_về b->cmp (a->tag);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -81,39 +81,39 @@ typedef struct OpenTypeOffsetTable
 {
   friend struct OpenTypeFontFile;
 
-  unsigned int get_table_count () const { return tables.len; }
-  const TableRecord& get_table (unsigned int i) const
-  { return tables[i]; }
-  unsigned int get_table_tags (unsigned int  start_offset,
-			       unsigned int *table_count, /* IN/OUT */
+  unsigned số_nguyên get_table_count () const { trả_về tables.len; }
+  const TableRecord& get_table (unsigned số_nguyên i) const
+  { trả_về tables[i]; }
+  unsigned số_nguyên get_table_tags (unsigned số_nguyên  start_offset,
+			       unsigned số_nguyên *table_count, /* IN/OUT */
 			       hb_tag_t     *table_tags /* OUT */) const
   {
-    if (table_count && table_tags)
+    nếu (table_count && table_tags)
     {
       + tables.as_array ().sub_array (start_offset, table_count)
       | hb_map (&TableRecord::tag)
       | hb_sink (hb_array (table_tags, *table_count))
       ;
     }
-    return tables.len;
+    trả_về tables.len;
   }
-  bool find_table_index (hb_tag_t tag, unsigned int *table_index) const
+  bool find_table_index (hb_tag_t tag, unsigned số_nguyên *table_index) const
   {
     Tag t;
     t = tag;
     /* Use lfind for small fonts; there are fonts that have unsorted table entries;
      * those tend to work in other tools, so tolerate them.
      * https://github.com/harfbuzz/harfbuzz/issues/3065 */
-    if (tables.len < 16)
-      return tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
-    else
-      return tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    nếu (tables.len < 16)
+      trả_về tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    không_thì
+      trả_về tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
   const TableRecord& get_table_by_tag (hb_tag_t tag) const
   {
-    unsigned int table_index;
+    unsigned số_nguyên table_index;
     find_table_index (tag, &table_index);
-    return get_table (table_index);
+    trả_về get_table (table_index);
   }
 
   public:
@@ -126,45 +126,45 @@ typedef struct OpenTypeOffsetTable
   {
     TRACE_SERIALIZE (this);
     /* Alloc 12 for the OTHeader. */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    nếu (unlikely (!c->extend_min (this))) return_trace (false);
     /* Write sfntVersion (bytes 0..3). */
     sfnt_version = sfnt_tag;
     /* Take space for numTables, searchRange, entrySelector, RangeShift
      * and the TableRecords themselves.  */
     unsigned num_items = hb_len (it);
-    if (unlikely (!tables.serialize (c, num_items))) return_trace (false);
+    nếu (unlikely (!tables.serialize (c, num_items))) return_trace (false);
 
     const char *dir_end = (const char *) c->head;
     HBUINT32 *checksum_adjustment = nullptr;
 
     /* Write OffsetTables, alloc for and write actual table blobs. */
     unsigned i = 0;
-    for (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
+    cho (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
     {
       hb_blob_t *blob = entry.second;
       unsigned len = blob->length;
 
       /* Allocate room for the table and copy it. */
       char *start = (char *) c->allocate_size<void> (len, false);
-      if (unlikely (!start)) return false;
+      nếu (unlikely (!start)) trả_về false;
 
       TableRecord &rec = tables.arrayZ[i];
       rec.tag = entry.first;
       rec.length = len;
       rec.offset = 0;
-      if (unlikely (!c->check_assign (rec.offset,
+      nếu (unlikely (!c->check_assign (rec.offset,
 				      (unsigned) ((char *) start - (char *) this),
 				      HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)))
         return_trace (false);
 
-      if (likely (len))
+      nếu (likely (len))
 	hb_memcpy (start, blob->data, len);
 
       /* 4-byte alignment. */
       c->align (4);
       const char *end = (const char *) c->head;
 
-      if (entry.first == HB_OT_TAG_head &&
+      nếu (entry.first == HB_OT_TAG_head &&
 	  (unsigned) (end - start) >= head::static_size)
       {
 	head *h = (head *) start;
@@ -178,14 +178,14 @@ typedef struct OpenTypeOffsetTable
 
     tables.qsort ();
 
-    if (checksum_adjustment)
+    nếu (checksum_adjustment)
     {
       CheckSum checksum;
 
       /* The following line is a slower version of the following block. */
       //checksum.set_for_data (this, (const char *) c->head - (const char *) this);
       checksum.set_for_data (this, dir_end - (const char *) this);
-      for (unsigned int i = 0; i < num_items; i++)
+      cho (unsigned số_nguyên i = 0; i < num_items; i++)
       {
 	TableRecord &rec = tables.arrayZ[i];
 	checksum = checksum + rec.checkSum;
@@ -222,20 +222,20 @@ struct TTCHeaderVersion1
 
   using DirectoryList = Array32Of<Offset32To<OpenTypeOffsetTable>>;
 
-  unsigned int get_face_count () const { return get_directory_list ().len; }
-  const OpenTypeFontFace& get_face (unsigned int i) const
-  { return this+get_directory_list ()[i]; }
+  unsigned số_nguyên get_face_count () const { trả_về get_directory_list ().len; }
+  const OpenTypeFontFace& get_face (unsigned số_nguyên i) const
+  { trả_về this+get_directory_list ()[i]; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    nếu (version.minor >= 1)
     {
-      if (unlikely (!table.sanitize_shallow (c)))
+      nếu (unlikely (!table.sanitize_shallow (c)))
 	return_trace (false);
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      if (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
+      nếu (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
 	return_trace (false);
       const DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
 								   table.get_size () + extra_size);
@@ -249,13 +249,13 @@ struct TTCHeaderVersion1
   const DirectoryList& get_directory_list () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    nếu (version.minor >= 1)
     {
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      return StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
+      trả_về StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
     }
 #endif
-    return table;
+    trả_về table;
   }
 
   protected:
@@ -274,27 +274,27 @@ struct TTCHeader
 
   private:
 
-  unsigned int get_face_count () const
+  unsigned số_nguyên get_face_count () const
   {
     switch (u.header.version.major) {
     case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face_count ();
-    default:return 0;
+    case 1: hb_barrier (); trả_về u.version1.get_face_count ();
+    default:trả_về 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i) const
+  const OpenTypeFontFace& get_face (unsigned số_nguyên i) const
   {
     switch (u.header.version.major) {
     case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face (i);
-    default:return Null (OpenTypeFontFace);
+    case 1: hb_barrier (); trả_về u.version1.get_face (i);
+    default:trả_về Null (OpenTypeFontFace);
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!u.header.version.sanitize (c))) return_trace (false);
+    nếu (unlikely (!u.header.version.sanitize (c))) return_trace (false);
     hb_barrier ();
     switch (u.header.version.major) {
     case 2: /* version 2 is compatible with version 1 */
@@ -323,7 +323,7 @@ struct TTCHeader
 struct ResourceRecord
 {
   const OpenTypeFontFace & get_face (const void *data_base) const
-  { return * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
+  { trả_về * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
 
   bool sanitize (hb_sanitize_context_t *c,
 		 const void *data_base) const
@@ -352,14 +352,14 @@ struct ResourceRecord
 
 struct ResourceTypeRecord
 {
-  unsigned int get_resource_count () const
-  { return tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
+  unsigned số_nguyên get_resource_count () const
+  { trả_về tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
 
-  bool is_sfnt () const { return tag == HB_TAG_sfnt; }
+  bool is_sfnt () const { trả_về tag == HB_TAG_sfnt; }
 
-  const ResourceRecord& get_resource_record (unsigned int i,
+  const ResourceRecord& get_resource_record (unsigned số_nguyên i,
 					     const void *type_base) const
-  { return (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
+  { trả_về (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
 
   bool sanitize (hb_sanitize_context_t *c,
 		 const void *type_base,
@@ -385,31 +385,31 @@ struct ResourceTypeRecord
 
 struct ResourceMap
 {
-  unsigned int get_face_count () const
+  unsigned số_nguyên get_face_count () const
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned số_nguyên count = get_type_count ();
+    cho (unsigned số_nguyên i = 0; i < count; i++)
     {
       const ResourceTypeRecord& type = get_type_record (i);
-      if (type.is_sfnt ())
-	return type.get_resource_count ();
+      nếu (type.is_sfnt ())
+	trả_về type.get_resource_count ();
     }
-    return 0;
+    trả_về 0;
   }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
+  const OpenTypeFontFace& get_face (unsigned số_nguyên idx,
 				    const void *data_base) const
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned số_nguyên count = get_type_count ();
+    cho (unsigned số_nguyên i = 0; i < count; i++)
     {
       const ResourceTypeRecord& type = get_type_record (i);
       /* The check for idx < count is here because ResourceRecord is NOT null-safe.
        * Because an offset of 0 there does NOT mean null. */
-      if (type.is_sfnt () && idx < type.get_resource_count ())
-	return type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
+      nếu (type.is_sfnt () && idx < type.get_resource_count ())
+	trả_về type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
     }
-    return Null (OpenTypeFontFace);
+    trả_về Null (OpenTypeFontFace);
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *data_base) const
@@ -423,10 +423,10 @@ struct ResourceMap
   }
 
   private:
-  unsigned int get_type_count () const { return (this+typeList).lenM1 + 1; }
+  unsigned số_nguyên get_type_count () const { trả_về (this+typeList).lenM1 + 1; }
 
-  const ResourceTypeRecord& get_type_record (unsigned int i) const
-  { return (this+typeList)[i]; }
+  const ResourceTypeRecord& get_type_record (unsigned số_nguyên i) const
+  { trả_về (this+typeList)[i]; }
 
   protected:
   HBUINT8	reserved0[16];	/* Reserved for copy of resource header */
@@ -444,16 +444,16 @@ struct ResourceMap
 
 struct ResourceForkHeader
 {
-  unsigned int get_face_count () const
-  { return (this+map).get_face_count (); }
+  unsigned số_nguyên get_face_count () const
+  { trả_về (this+map).get_face_count (); }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    unsigned int *base_offset = nullptr) const
+  const OpenTypeFontFace& get_face (unsigned số_nguyên idx,
+				    unsigned số_nguyên *base_offset = nullptr) const
   {
     const OpenTypeFontFace &face = (this+map).get_face (idx, &(this+data));
-    if (base_offset)
+    nếu (base_offset)
       *base_offset = (const char *) &face - (const char *) this;
-    return face;
+    trả_về face;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -493,23 +493,23 @@ struct OpenTypeFontFile
     Typ1Tag		= HB_TAG ('t','y','p','1')  /* Obsolete Apple Type1 font in SFNT container */
   };
 
-  hb_tag_t get_tag () const { return u.tag.v; }
+  hb_tag_t get_tag () const { trả_về u.tag.v; }
 
-  unsigned int get_face_count () const
+  unsigned số_nguyên get_face_count () const
   {
     switch (u.tag.v) {
     case CFFTag:	/* All the non-collection tags */
     case TrueTag:
     case Typ1Tag:
-    case TrueTypeTag:	return 1;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_count ();
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_count ();
-    default:		return 0;
+    case TrueTypeTag:	trả_về 1;
+    case TTCTag:	hb_barrier (); trả_về u.ttcHeader.get_face_count ();
+    case DFontTag:	hb_barrier (); trả_về u.rfHeader.get_face_count ();
+    default:		trả_về 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i, unsigned int *base_offset = nullptr) const
+  const OpenTypeFontFace& get_face (unsigned số_nguyên i, unsigned số_nguyên *base_offset = nullptr) const
   {
-    if (base_offset)
+    nếu (base_offset)
       *base_offset = 0;
     switch (u.tag.v) {
     /* Note: for non-collection SFNT data we ignore index.  This is because
@@ -518,10 +518,10 @@ struct OpenTypeFontFile
     case CFFTag:	/* All the non-collection tags */
     case TrueTag:
     case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return u.fontFace;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face (i);
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face (i, base_offset);
-    default:		return Null (OpenTypeFontFace);
+    case TrueTypeTag:	hb_barrier (); trả_về u.fontFace;
+    case TTCTag:	hb_barrier (); trả_về u.ttcHeader.get_face (i);
+    case DFontTag:	hb_barrier (); trả_về u.rfHeader.get_face (i, base_offset);
+    default:		trả_về Null (OpenTypeFontFace);
     }
   }
 
@@ -533,14 +533,14 @@ struct OpenTypeFontFile
   {
     TRACE_SERIALIZE (this);
     assert (sfnt_tag != TTCTag);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    nếu (unlikely (!c->extend_min (this))) return_trace (false);
     return_trace (u.fontFace.serialize (c, sfnt_tag, items));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
+    nếu (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
     hb_barrier ();
     switch (u.tag.v) {
     case CFFTag:	/* All the non-collection tags */

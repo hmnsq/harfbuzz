@@ -82,8 +82,8 @@ struct hb_paint_funcs_t
                        float dx, float dy)
   {
     // Handle -0.f to avoid -0.f == 0.f in the transform matrix.
-    if (dx == -0.f) dx = 0.f;
-    if (dy == -0.f) dy = 0.f;
+    nếu (dx == -0.f) dx = 0.f;
+    nếu (dy == -0.f) dy = 0.f;
     func.push_transform (this, paint_data,
                          xx, yx, xy, yy, dx, dy,
                          !user_data ? nullptr : user_data->push_transform); }
@@ -93,7 +93,7 @@ struct hb_paint_funcs_t
   bool color_glyph (void *paint_data,
                     hb_codepoint_t glyph,
                     hb_font_t *font)
-  { return func.color_glyph (this, paint_data,
+  { trả_về func.color_glyph (this, paint_data,
                              glyph,
                              font,
                              !user_data ? nullptr : user_data->color_glyph); }
@@ -111,7 +111,7 @@ struct hb_paint_funcs_t
                               !user_data ? nullptr : user_data->push_clip_rectangle); }
   hb_draw_funcs_t *push_clip_path_start (void *paint_data,
                                          void **draw_data)
-  { return func.push_clip_path_start (this, paint_data, draw_data,
+  { trả_về func.push_clip_path_start (this, paint_data, draw_data,
                                       !user_data ? nullptr : user_data->push_clip_path_start); }
   void push_clip_path_end (void *paint_data)
   { func.push_clip_path_end (this, paint_data,
@@ -140,7 +140,7 @@ struct hb_paint_funcs_t
               hb_tag_t format,
               float slant,
               hb_glyph_extents_t *extents)
-  { return func.image (this, paint_data,
+  { trả_về func.image (this, paint_data,
                        image, width, height, format, slant, extents,
                        !user_data ? nullptr : user_data->image); }
   void linear_gradient (void *paint_data,
@@ -180,24 +180,24 @@ struct hb_paint_funcs_t
                     mode,
                     !user_data ? nullptr : user_data->pop_group); }
   bool custom_palette_color (void *paint_data,
-                             unsigned int color_index,
+                             unsigned số_nguyên color_index,
                              hb_color_t *color)
-  { return func.custom_palette_color (this, paint_data,
+  { trả_về func.custom_palette_color (this, paint_data,
                                       color_index,
                                       color,
                                       !user_data ? nullptr : user_data->custom_palette_color); }
   bool set_budget (void *paint_data, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    nếu (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, paint_data, budget,
+    trả_về func.set_budget (this, paint_data, budget,
 			    !user_data ? nullptr : user_data->set_budget);
   }
   int64_t get_budget (void *paint_data)
-  { return func.get_budget (this, paint_data,
+  { trả_về func.get_budget (this, paint_data,
 			    !user_data ? nullptr : user_data->get_budget); }
   int64_t *get_budget_remaining_ptr (void *paint_data)
-  { return func.get_budget_remaining (this, paint_data,
+  { trả_về func.get_budget_remaining (this, paint_data,
 				      !user_data ? nullptr : user_data->get_budget_remaining); }
 
 
@@ -207,7 +207,7 @@ struct hb_paint_funcs_t
                             const hb_font_t *font)
   {
     float upem = font->face->get_upem ();
-    int xscale = font->x_scale, yscale = font->y_scale;
+    số_nguyên xscale = font->x_scale, yscale = font->y_scale;
 
     push_transform (paint_data,
 		    xscale/upem, 0,
@@ -219,8 +219,8 @@ struct hb_paint_funcs_t
                                     const hb_font_t *font)
   {
     float upem = font->face->get_upem ();
-    int xscale = font->x_scale ? font->x_scale : upem;
-    int yscale = font->y_scale ? font->y_scale : upem;
+    số_nguyên xscale = font->x_scale ? font->x_scale : upem;
+    số_nguyên yscale = font->y_scale ? font->y_scale : upem;
 
     push_transform (paint_data,
 		    upem/xscale, 0,
@@ -297,11 +297,11 @@ hb_color_lerp (hb_color_t c0, hb_color_t c1, float t)
     float v = v0 + t * ((float) v1 - (float) v0) + 0.5f;
     /* t may be outside [0,1] (or NaN) for malformed gradients;
      * keep the float-to-unsigned conversion defined. */
-    if (!(v > 0.f)) return 0;
-    if (v > 255.f) return 255;
-    return (unsigned) v;
+    nếu (!(v > 0.f)) trả_về 0;
+    nếu (v > 255.f) trả_về 255;
+    trả_về (unsigned) v;
   };
-  return HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
+  trả_về HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
 }
 
 #endif /* HB_PAINT_HH */

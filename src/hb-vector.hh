@@ -33,9 +33,9 @@
 #include "hb-null.hh"
 
 // Change to 1 to force inline vector allocs, to see callsite in malloc-stats tool.
-#if 0
+#nếu 0
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS HB_ALWAYS_INLINE
-#else
+#không_thì
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS
 #endif
 
@@ -55,7 +55,7 @@ struct hb_vector_t
   hb_vector_t (std::initializer_list<Type> lst) : hb_vector_t ()
   {
     alloc (lst.size (), true);
-    for (auto&& item : lst)
+    cho (auto&& item : lst)
       push (item);
   }
   template <typename Iterable,
@@ -68,21 +68,21 @@ struct hb_vector_t
   hb_vector_t (const hb_vector_t &o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    nếu (unlikely (in_error ())) trả_về;
     copy_array (o.as_array ());
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    nếu (unlikely (in_error ())) trả_về;
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (c_array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    nếu (unlikely (in_error ())) trả_về;
     copy_array (o);
   }
   hb_vector_t (hb_vector_t &&o) noexcept
@@ -120,20 +120,20 @@ struct hb_vector_t
   void extend (const Iterable &o, bool exact=false)
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    nếu (iter.is_random_access_iterator || iter.has_fast_len)
     {
-      if (unlikely (!alloc (length + hb_len (iter), exact)))
-	return;
+      nếu (unlikely (!alloc (length + hb_len (iter), exact)))
+	trả_về;
       unsigned count = hb_len (iter);
-      for (unsigned i = 0; i < count; i++)
+      cho (unsigned i = 0; i < count; i++)
 	push_has_room (*iter++);
     }
-    while (iter)
+    trong_khi (iter)
     {
-      if (unlikely (!alloc (length + 1)))
-        return;
+      nếu (unlikely (!alloc (length + 1)))
+        trả_về;
       unsigned room = allocated - length;
-      for (unsigned i = 0; i < room && iter; i++)
+      cho (unsigned i = 0; i < room && iter; i++)
 	push_has_room (*iter++);
     }
   }
@@ -148,8 +148,8 @@ struct hb_vector_t
     bool aliased = o.length && in_storage (*o.arrayZ);
     unsigned offset = aliased ? o.arrayZ - arrayZ : 0;
     alloc (length + o.length, exact);
-    if (unlikely (in_error ())) return;
-    if (unlikely (aliased))
+    nếu (unlikely (in_error ())) trả_về;
+    nếu (unlikely (aliased))
       o = {arrayZ + offset, o.length};
     copy_array (o);
   }
@@ -158,8 +158,8 @@ struct hb_vector_t
   { extend (o.as_array (), exact); }
 
   public:
-  int allocated = 0; /* < 0 means allocation failed. */
-  unsigned int length = 0;
+  số_nguyên allocated = 0; /* < 0 means allocation failed. */
+  unsigned số_nguyên length = 0;
   public:
   Type *arrayZ = nullptr;
 
@@ -174,7 +174,7 @@ struct hb_vector_t
 
   void fini ()
   {
-    if (is_owned ())
+    nếu (is_owned ())
     {
       shrink_vector (0);
       hb_free (arrayZ);
@@ -185,41 +185,41 @@ struct hb_vector_t
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset ()
   {
-    if (unlikely (in_error ()))
+    nếu (unlikely (in_error ()))
       reset_error ();
     clear ();
-    return *this;
+    trả_về *this;
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset_if_error ()
   {
-    if (unlikely (in_error ()))
+    nếu (unlikely (in_error ()))
       reset ();
-    return *this;
+    trả_về *this;
   }
 
   /* Transfer ownership of the backing storage to caller.
    * Returns nullptr if storage is not owned by this vector. */
   Type *
-  steal (unsigned *len = nullptr, int *allocated_out = nullptr)
+  steal (unsigned *len = nullptr, số_nguyên *allocated_out = nullptr)
   {
-    if (!is_owned ())
-      return nullptr;
-    if (len)
+    nếu (!is_owned ())
+      trả_về nullptr;
+    nếu (len)
       *len = length;
-    if (allocated_out)
+    nếu (allocated_out)
       *allocated_out = allocated;
     Type *p = arrayZ;
     init ();
-    return p;
+    trả_về p;
   }
 
   /* Adopt a previously detached owned buffer. */
   void
   recycle_buffer (Type *buffer,
                   unsigned len,
-                  int allocated_len)
+                  số_nguyên allocated_len)
   {
     fini ();
     arrayZ = buffer;
@@ -236,121 +236,121 @@ struct hb_vector_t
 
   hb_vector_t& operator = (const hb_vector_t &o)
   {
-    if (this == &o) return *this;
+    nếu (this == &o) trả_về *this;
 
     reset ();
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return *this;
+    nếu (unlikely (in_error ())) trả_về *this;
 
     length = 0;
     copy_array (o.as_array ());
 
-    return *this;
+    trả_về *this;
   }
   hb_vector_t& operator = (hb_vector_t &&o) noexcept
   {
     hb_swap (*this, o);
-    return *this;
+    trả_về *this;
   }
 
   hb_bytes_t as_bytes () const
-  { return hb_bytes_t ((const char *) arrayZ, get_size ()); }
+  { trả_về hb_bytes_t ((const char *) arrayZ, get_size ()); }
 
-  bool operator == (const hb_vector_t &o) const { return as_array () == o.as_array (); }
-  bool operator != (const hb_vector_t &o) const { return !(*this == o); }
-  uint32_t hash () const { return as_array ().hash (); }
+  bool operator == (const hb_vector_t &o) const { trả_về as_array () == o.as_array (); }
+  bool operator != (const hb_vector_t &o) const { trả_về !(*this == o); }
+  uint32_t hash () const { trả_về as_array ().hash (); }
 
-  Type& operator [] (int i_)
+  Type& operator [] (số_nguyên i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Crap (Type);
-    return arrayZ[i];
+    unsigned số_nguyên i = (unsigned số_nguyên) i_;
+    nếu (unlikely (i >= length))
+      trả_về Crap (Type);
+    trả_về arrayZ[i];
   }
-  const Type& operator [] (int i_) const
+  const Type& operator [] (số_nguyên i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Null (Type);
-    return arrayZ[i];
+    unsigned số_nguyên i = (unsigned số_nguyên) i_;
+    nếu (unlikely (i >= length))
+      trả_về Null (Type);
+    trả_về arrayZ[i];
   }
 
-  Type& tail () { return (*this)[length - 1]; }
-  const Type& tail () const { return (*this)[length - 1]; }
+  Type& tail () { trả_về (*this)[length - 1]; }
+  const Type& tail () const { trả_về (*this)[length - 1]; }
 
-  explicit operator bool () const { return length; }
-  size_t get_size () const { return hb_unsigned_mul_saturate (length, item_size); }
+  explicit operator bool () const { trả_về length; }
+  size_t get_size () const { trả_về hb_unsigned_mul_saturate (length, item_size); }
 
   /* Sink interface. */
   template <typename T>
-  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); return *this; }
+  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); trả_về *this; }
 
-  array_t   as_array ()       { return hb_array (arrayZ, length); }
-  c_array_t as_array () const { return hb_array (arrayZ, length); }
+  array_t   as_array ()       { trả_về hb_array (arrayZ, length); }
+  c_array_t as_array () const { trả_về hb_array (arrayZ, length); }
 
   /* Iterator. */
   typedef c_array_t   iter_t;
   typedef array_t   writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+    iter_t   iter () const { trả_về as_array (); }
+  writer_t writer ()       { trả_về as_array (); }
+  operator   iter_t () const { trả_về   iter (); }
+  operator writer_t ()       { trả_về writer (); }
 
   /* Faster range-based for loop. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () const { trả_về arrayZ; }
+  Type *end () const { trả_về arrayZ + length; }
 
 
   hb_sorted_array_t<Type> as_sorted_array ()
-  { return hb_sorted_array (arrayZ, length); }
+  { trả_về hb_sorted_array (arrayZ, length); }
   hb_sorted_array_t<const Type> as_sorted_array () const
-  { return hb_sorted_array (arrayZ, length); }
+  { trả_về hb_sorted_array (arrayZ, length); }
 
-  template <typename T> explicit operator T * () { return arrayZ; }
-  template <typename T> explicit operator const T * () const { return arrayZ; }
+  template <typename T> explicit operator T * () { trả_về arrayZ; }
+  template <typename T> explicit operator const T * () const { trả_về arrayZ; }
 
-  Type * operator  + (unsigned int i) { return arrayZ + i; }
-  const Type * operator  + (unsigned int i) const { return arrayZ + i; }
+  Type * operator  + (unsigned số_nguyên i) { trả_về arrayZ + i; }
+  const Type * operator  + (unsigned số_nguyên i) const { trả_về arrayZ + i; }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push ()
   {
-    if (unlikely (!resize (length + 1)))
-      return std::addressof (Crap (Type));
-    return std::addressof (arrayZ[length - 1]);
+    nếu (unlikely (!resize (length + 1)))
+      trả_về std::addressof (Crap (Type));
+    trả_về std::addressof (arrayZ[length - 1]);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push (Args&&... args)
   {
-    if (unlikely ((int) length >= allocated))
+    nếu (unlikely ((số_nguyên) length >= allocated))
     {
-      if (unlikely (in_error ()))
-	return std::addressof (Crap (Type));
+      nếu (unlikely (in_error ()))
+	trả_về std::addressof (Crap (Type));
 
       /* An argument may live in our own storage, eg. v.push (v[i]).
        * alloc() frees that storage, so copy it out first. */
-      if (unlikely (in_storage (args...)))
+      nếu (unlikely (in_storage (args...)))
       {
 	Type copy (std::forward<Args> (args)...);
-	if (unlikely (!alloc (length + 1)))
-	  return std::addressof (Crap (Type));
-	return push_has_room (std::move (copy));
+	nếu (unlikely (!alloc (length + 1)))
+	  trả_về std::addressof (Crap (Type));
+	trả_về push_has_room (std::move (copy));
       }
-      if (unlikely (!alloc (length + 1)))
+      nếu (unlikely (!alloc (length + 1)))
 	// If push failed to allocate then don't copy v, since this may cause
 	// the created copy to leak memory since we won't have stored a
 	// reference to it.
-	return std::addressof (Crap (Type));
+	trả_về std::addressof (Crap (Type));
     }
 
-    return push_has_room (std::forward<Args> (args)...);
+    trả_về push_has_room (std::forward<Args> (args)...);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   bool push_or_fail (Args&&... args)
   {
-    return push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
+    trả_về push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
@@ -358,25 +358,25 @@ struct hb_vector_t
   {
     /* Emplace. */
     Type *p = std::addressof (arrayZ[length++]);
-    return new (p) Type (std::forward<Args> (args)...);
+    trả_về new (p) Type (std::forward<Args> (args)...);
   }
 
-  bool in_storage () const { return false; }
+  bool in_storage () const { trả_về false; }
   template <typename T, typename... Ts>
   bool in_storage (const T &v, const Ts &...vs) const
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return (arrayZ &&
+    trả_về (arrayZ &&
 	    (uintptr_t) arrayZ <= p && p < (uintptr_t) (arrayZ + length)) ||
 	   in_storage (vs...);
   }
 
   bool is_owned () const
   {
-    return allocated != 0 && allocated != -1;
+    trả_về allocated != 0 && allocated != -1;
   }
 
-  bool in_error () const { return allocated < 0; }
+  bool in_error () const { trả_về allocated < 0; }
   void set_error ()
   {
     assert (allocated >= 0);
@@ -389,53 +389,53 @@ struct hb_vector_t
   }
   void ensure_error ()
   {
-    if (!in_error ())
+    nếu (!in_error ())
       set_error ();
   }
 
   Type *
   _realloc (unsigned new_allocated)
   {
-    if (!new_allocated)
+    nếu (!new_allocated)
     {
-      if (is_owned ())
+      nếu (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      trả_về nullptr;
     }
-    if (!allocated && arrayZ)
+    nếu (!allocated && arrayZ)
     {
       /* If we have a non-null arrayZ but allocated is 0, then we are
        * reallocating from a foreign array. */
       Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-      if (unlikely (!new_array))
-	return nullptr;
+      nếu (unlikely (!new_array))
+	trả_về nullptr;
       hb_memcpy ((void *) new_array, (const void *) arrayZ, length * sizeof (Type));
-      return new_array;
+      trả_về new_array;
     }
-    return (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
+    trả_về (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
   }
   Type *
   _malloc_move (unsigned new_allocated)
   {
-    if (!new_allocated)
+    nếu (!new_allocated)
     {
-      if (is_owned ())
+      nếu (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      trả_về nullptr;
     }
     Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-    if (likely (new_array))
+    nếu (likely (new_array))
     {
-      for (unsigned i = 0; i < length; i++)
+      cho (unsigned i = 0; i < length; i++)
       {
 	new (std::addressof (new_array[i])) Type ();
 	new_array[i] = std::move (arrayZ[i]);
 	arrayZ[i].~Type ();
       }
-      if (is_owned ())
+      nếu (is_owned ())
 	hb_free (arrayZ);
     }
-    return new_array;
+    trả_về new_array;
   }
 
   template <typename T = Type,
@@ -443,14 +443,14 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _realloc (new_allocated);
+    trả_về _realloc (new_allocated);
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copy_assignable(T))>
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _malloc_move (new_allocated);
+    trả_về _malloc_move (new_allocated);
   }
   /* Specialization for types that can be moved using realloc(). */
   template <typename T = Type,
@@ -458,7 +458,7 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<1>)
   {
-    return _realloc (new_allocated);
+    trả_về _realloc (new_allocated);
   }
 
   template <typename T = Type,
@@ -474,7 +474,7 @@ struct hb_vector_t
   void
   grow_vector (unsigned size, hb_priority<0>)
   {
-    for (; length < size; length++)
+    cho (; length < size; length++)
       new (std::addressof (arrayZ[length])) Type ();
   }
   /* Specialization for hb_vector_t<hb_{vector,array}_t<U>> to speed up. */
@@ -510,7 +510,7 @@ struct hb_vector_t
   void
   copy_array (hb_array_t<const Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    cho (unsigned i = 0; i < other.length; i++)
       new (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
     length += other.length;
   }
@@ -522,7 +522,7 @@ struct hb_vector_t
   void
   copy_array (hb_array_t<const Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    cho (unsigned i = 0; i < other.length; i++)
     {
       new (std::addressof (arrayZ[length + i])) Type ();
       arrayZ[length + i] = other.arrayZ[i];
@@ -534,11 +534,11 @@ struct hb_vector_t
   shrink_vector (unsigned size)
   {
     assert (size <= length);
-    if (!hb_is_trivially_destructible(Type))
+    nếu (!hb_is_trivially_destructible(Type))
     {
       unsigned count = length - size;
       Type *p = arrayZ + length;
-      while (count--)
+      trong_khi (count--)
         (--p)->~Type ();
     }
     length = size;
@@ -547,71 +547,71 @@ struct hb_vector_t
   void
   shift_down_vector (unsigned i)
   {
-    for (; i < length; i++)
+    cho (; i < length; i++)
       arrayZ[i - 1] = std::move (arrayZ[i]);
   }
 
   /* Allocate for size but don't adjust length. */
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc (unsigned int size, bool exact=false)
+  bool alloc (unsigned số_nguyên size, bool exact=false)
   {
-    if (unlikely (in_error ()))
-      return false;
+    nếu (unlikely (in_error ()))
+      trả_về false;
 
-    unsigned int new_allocated;
-    if (exact)
+    unsigned số_nguyên new_allocated;
+    nếu (exact)
     {
       /* If exact was specified, we allow shrinking the storage. */
       size = hb_max (size, length);
-      if (size <= (unsigned) allocated &&
+      nếu (size <= (unsigned) allocated &&
 	  size >= (unsigned) allocated >> 2)
-	return true;
+	trả_về true;
 
       new_allocated = size;
     }
-    else
+    không_thì
     {
-      if (likely (size <= (unsigned) allocated))
-	return true;
+      nếu (likely (size <= (unsigned) allocated))
+	trả_về true;
 
       new_allocated = allocated;
-      while (size > new_allocated)
+      trong_khi (size > new_allocated)
 	new_allocated += (new_allocated >> 1) + 8;
     }
 
     /* Reallocate */
 
     bool overflows =
-      (int) in_error () ||
+      (số_nguyên) in_error () ||
       (new_allocated < size) ||
       hb_unsigned_mul_overflows (new_allocated, sizeof (Type));
 
-    if (unlikely (overflows))
+    nếu (unlikely (overflows))
     {
       set_error ();
-      return false;
+      trả_về false;
     }
 
     Type *new_array = realloc_vector (new_allocated, hb_prioritize);
 
-    if (unlikely (new_allocated && !new_array))
+    nếu (unlikely (new_allocated && !new_array))
     {
-      if (new_allocated <= (unsigned) allocated)
-        return true; // shrinking failed; it's okay; happens in our fuzzer
+      nếu (new_allocated <= (unsigned) allocated)
+        trả_về true; // shrinking failed; it's okay; happens in our fuzzer
 
       set_error ();
-      return false;
+      trả_về false;
     }
 
     arrayZ = new_array;
     allocated = new_allocated;
 
-    return true;
+    trả_về true;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc_exact (unsigned int size)
+  bool alloc_exact (unsigned số_nguyên size)
   {
-    return alloc (size, true);
+    trả_về alloc (size, true);
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
@@ -622,100 +622,100 @@ struct hb_vector_t
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned int initialize = true)
+  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned số_nguyên initialize = true)
   {
-    if (allocator)
+    nếu (allocator)
     {
       assert (!length && !allocated);
       arrayZ = (Type *) allocator->alloc (size * sizeof (Type), alignof (Type));
-      if (unlikely (!arrayZ))
+      nếu (unlikely (!arrayZ))
       {
 	set_error ();
-	return false;
+	trả_về false;
       }
-      if (initialize)
+      nếu (initialize)
 	grow_vector (size, hb_prioritize);
-      else
+      không_thì
 	length = size;
-      return true;
+      trả_về true;
     }
-    return resize_full ((int) size, initialize, true);
+    trả_về resize_full ((số_nguyên) size, initialize, true);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   bool duplicate_vector_from_pool (allocator_t *allocator, const hb_vector_t &other)
   {
-    if (unlikely (!allocate_from_pool (allocator, other.length, false)))
-      return false;
+    nếu (unlikely (!allocate_from_pool (allocator, other.length, false)))
+      trả_về false;
     length = 0;
     copy_array (other.as_array ());
-    return true;
+    trả_về true;
   }
 
   template <typename allocator_t>
-  void shrink_back_to_pool (allocator_t *allocator, int size)
+  void shrink_back_to_pool (allocator_t *allocator, số_nguyên size)
   {
     unsigned orig_length = length;
 
     shrink (size, false);
 
-    if (allocator && !is_owned ())
+    nếu (allocator && !is_owned ())
       allocator->discard (arrayZ + length, (orig_length - length) * sizeof (Type));
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_full (int size_, bool initialize, bool exact)
+  bool resize_full (số_nguyên size_, bool initialize, bool exact)
   {
-    if (unlikely (size_ < 0))
-      return false;
-    unsigned int size = (unsigned int) size_;
-    if (!alloc (size, exact))
-      return false;
+    nếu (unlikely (size_ < 0))
+      trả_về false;
+    unsigned số_nguyên size = (unsigned số_nguyên) size_;
+    nếu (!alloc (size, exact))
+      trả_về false;
 
-    if (size > length)
+    nếu (size > length)
     {
-      if (initialize)
+      nếu (initialize)
 	grow_vector (size, hb_prioritize);
     }
-    else if (size < length)
+    không_thì nếu (size < length)
     {
-      if (initialize)
+      nếu (initialize)
 	shrink_vector (size);
     }
 
     length = size;
-    return true;
+    trả_về true;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize (int size_)
+  bool resize (số_nguyên size_)
   {
-    return resize_full (size_, true, false);
+    trả_về resize_full (size_, true, false);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_dirty (int size_)
+  bool resize_dirty (số_nguyên size_)
   {
-    return resize_full (size_, false, false);
+    trả_về resize_full (size_, false, false);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_exact (int size_)
+  bool resize_exact (số_nguyên size_)
   {
-    return resize_full (size_, true, true);
+    trả_về resize_full (size_, true, true);
   }
 
   Type pop ()
   {
-    if (!length) return Null (Type);
+    nếu (!length) trả_về Null (Type);
     Type v (std::move (arrayZ[length - 1]));
     arrayZ[length - 1].~Type ();
     length--;
-    return v;
+    trả_về v;
   }
 
-  void remove_ordered (unsigned int i)
+  void remove_ordered (unsigned số_nguyên i)
   {
-    if (unlikely (i >= length))
-      return;
+    nếu (unlikely (i >= length))
+      trả_về;
     shift_down_vector (i + 1);
     arrayZ[length - 1].~Type ();
     length--;
@@ -723,25 +723,25 @@ struct hb_vector_t
 
   template <bool Sorted = sorted,
 	    hb_enable_if (!Sorted)>
-  void remove_unordered (unsigned int i)
+  void remove_unordered (unsigned số_nguyên i)
   {
-    if (unlikely (i >= length))
-      return;
-    if (i != length - 1)
+    nếu (unlikely (i >= length))
+      trả_về;
+    nếu (i != length - 1)
       arrayZ[i] = std::move (arrayZ[length - 1]);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  void shrink (int size_, bool shrink_memory = true)
+  void shrink (số_nguyên size_, bool shrink_memory = true)
   {
-    unsigned int size = size_ < 0 ? 0u : (unsigned int) size_;
-    if (size >= length)
-      return;
+    unsigned số_nguyên size = size_ < 0 ? 0u : (unsigned số_nguyên) size_;
+    nếu (size >= length)
+      trả_về;
 
     shrink_vector (size);
 
-    if (is_owned () && shrink_memory)
+    nếu (is_owned () && shrink_memory)
       alloc_exact (size); /* To force shrinking memory if needed. */
   }
 
@@ -756,29 +756,29 @@ struct hb_vector_t
   /* Unsorted search API. */
   template <typename T>
   Type *lsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().lsearch (x, not_found); }
+  { trả_về as_array ().lsearch (x, not_found); }
   template <typename T>
   const Type *lsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().lsearch (x, not_found); }
+  { trả_về as_array ().lsearch (x, not_found); }
   template <typename T>
   bool lfind (const T &x, unsigned *pos = nullptr) const
-  { return as_array ().lfind (x, pos); }
+  { trả_về as_array ().lfind (x, pos); }
 
   /* Sorted search API. */
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
   Type *bsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().bsearch (x, not_found); }
+  { trả_về as_array ().bsearch (x, not_found); }
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
   const Type *bsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().bsearch (x, not_found); }
+  { trả_về as_array ().bsearch (x, not_found); }
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  bool bfind (const T &x, unsigned số_nguyên *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned số_nguyên to_store = (unsigned số_nguyên) -1) const
+  { trả_về as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type>

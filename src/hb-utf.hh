@@ -49,61 +49,61 @@ struct hb_utf8_t
 
     hb_codepoint_t c = *text++;
 
-    if (c > 0x7Fu)
+    nếu (c > 0x7Fu)
     {
-      if (hb_in_range<hb_codepoint_t> (c, 0xC2u, 0xDFu)) /* Two-byte */
+      nếu (hb_in_range<hb_codepoint_t> (c, 0xC2u, 0xDFu)) /* Two-byte */
       {
-	unsigned int t1;
-	if (likely (text < end &&
+	unsigned số_nguyên t1;
+	nếu (likely (text < end &&
 		    (t1 = text[0] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0x1Fu)<<6) | t1;
 	  text++;
 	}
-	else
+	không_thì
 	  goto error;
       }
-      else if (hb_in_range<hb_codepoint_t> (c, 0xE0u, 0xEFu)) /* Three-byte */
+      không_thì nếu (hb_in_range<hb_codepoint_t> (c, 0xE0u, 0xEFu)) /* Three-byte */
       {
-	unsigned int t1, t2;
-	if (likely (1 < end - text &&
+	unsigned số_nguyên t1, t2;
+	nếu (likely (1 < end - text &&
 		    (t1 = text[0] - 0x80u) <= 0x3Fu &&
 		    (t2 = text[1] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0xFu)<<12) | (t1<<6) | t2;
-	  if (unlikely (c < 0x0800u || hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+	  nếu (unlikely (c < 0x0800u || hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
 	    goto error;
 	  text += 2;
 	}
-	else
+	không_thì
 	  goto error;
       }
-      else if (hb_in_range<hb_codepoint_t> (c, 0xF0u, 0xF4u)) /* Four-byte */
+      không_thì nếu (hb_in_range<hb_codepoint_t> (c, 0xF0u, 0xF4u)) /* Four-byte */
       {
-	unsigned int t1, t2, t3;
-	if (likely (2 < end - text &&
+	unsigned số_nguyên t1, t2, t3;
+	nếu (likely (2 < end - text &&
 		    (t1 = text[0] - 0x80u) <= 0x3Fu &&
 		    (t2 = text[1] - 0x80u) <= 0x3Fu &&
 		    (t3 = text[2] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0x7u)<<18) | (t1<<12) | (t2<<6) | t3;
-	  if (unlikely (!hb_in_range<hb_codepoint_t> (c, 0x10000u, 0x10FFFFu)))
+	  nếu (unlikely (!hb_in_range<hb_codepoint_t> (c, 0x10000u, 0x10FFFFu)))
 	    goto error;
 	  text += 3;
 	}
-	else
+	không_thì
 	  goto error;
       }
-      else
+      không_thì
 	goto error;
     }
 
     *unicode = c;
-    return text;
+    trả_về text;
 
   error:
     *unicode = replacement;
-    return text;
+    trả_về text;
   }
 
   static inline const codepoint_t *
@@ -113,28 +113,28 @@ struct hb_utf8_t
 	hb_codepoint_t replacement)
   {
     const codepoint_t *end = text--;
-    while (start < text && (*text & 0xc0) == 0x80 && end - text < 4)
+    trong_khi (start < text && (*text & 0xc0) == 0x80 && end - text < 4)
       text--;
 
-    if (likely (next (text, end, unicode, replacement) == end))
-      return text;
+    nếu (likely (next (text, end, unicode, replacement) == end))
+      trả_về text;
 
     *unicode = replacement;
-    return end - 1;
+    trả_về end - 1;
   }
 
-  static unsigned int
+  static unsigned số_nguyên
   strlen (const codepoint_t *text)
-  { return ::strlen ((const char *) text); }
+  { trả_về ::strlen ((const char *) text); }
 
-  static unsigned int
+  static unsigned số_nguyên
   encode_len (hb_codepoint_t unicode)
   {
-    if (unicode <   0x0080u) return 1;
-    if (unicode <   0x0800u) return 2;
-    if (unicode <  0x10000u) return 3;
-    if (unicode < 0x110000u) return 4;
-    return 3;
+    nếu (unicode <   0x0080u) trả_về 1;
+    nếu (unicode <   0x0800u) trả_về 2;
+    nếu (unicode <  0x10000u) trả_về 3;
+    nếu (unicode < 0x110000u) trả_về 4;
+    trả_về 3;
   }
 
   static codepoint_t *
@@ -142,30 +142,30 @@ struct hb_utf8_t
 	  const codepoint_t *end,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    nếu (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    if (unicode < 0x0080u)
+    nếu (unicode < 0x0080u)
      *text++ = unicode;
-    else if (unicode < 0x0800u)
+    không_thì nếu (unicode < 0x0800u)
     {
-      if (end - text >= 2)
+      nếu (end - text >= 2)
       {
 	*text++ =  0xC0u + (0x1Fu & (unicode >>  6));
 	*text++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    else if (unicode < 0x10000u)
+    không_thì nếu (unicode < 0x10000u)
     {
-      if (end - text >= 3)
+      nếu (end - text >= 3)
       {
 	*text++ =  0xE0u + (0x0Fu & (unicode >> 12));
 	*text++ =  0x80u + (0x3Fu & (unicode >>  6));
 	*text++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    else
+    không_thì
     {
-      if (end - text >= 4)
+      nếu (end - text >= 4)
       {
 	*text++ =  0xF0u + (0x07u & (unicode >> 18));
 	*text++ =  0x80u + (0x3Fu & (unicode >> 12));
@@ -173,7 +173,7 @@ struct hb_utf8_t
 	*text++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    return text;
+    trả_về text;
   }
 };
 
@@ -193,28 +193,28 @@ struct hb_utf16_xe_t
   {
     hb_codepoint_t c = *text++;
 
-    if (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+    nếu (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
     {
       *unicode = c;
-      return text;
+      trả_về text;
     }
 
-    if (likely (c <= 0xDBFFu && text < end))
+    nếu (likely (c <= 0xDBFFu && text < end))
     {
       /* High-surrogate in c */
       hb_codepoint_t l = *text;
-      if (likely (hb_in_range<hb_codepoint_t> (l, 0xDC00u, 0xDFFFu)))
+      nếu (likely (hb_in_range<hb_codepoint_t> (l, 0xDC00u, 0xDFFFu)))
       {
 	/* Low-surrogate in l */
 	*unicode = (c << 10) + l - ((0xD800u << 10) - 0x10000u + 0xDC00u);
 	 text++;
-	 return text;
+	 trả_về text;
       }
     }
 
     /* Lonely / out-of-order surrogate. */
     *unicode = replacement;
-    return text;
+    trả_về text;
   }
 
   static inline const codepoint_t *
@@ -225,43 +225,43 @@ struct hb_utf16_xe_t
   {
     hb_codepoint_t c = *--text;
 
-    if (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+    nếu (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
     {
       *unicode = c;
-      return text;
+      trả_về text;
     }
 
-    if (likely (c >= 0xDC00u && start < text))
+    nếu (likely (c >= 0xDC00u && start < text))
     {
       /* Low-surrogate in c */
       hb_codepoint_t h = text[-1];
-      if (likely (hb_in_range<hb_codepoint_t> (h, 0xD800u, 0xDBFFu)))
+      nếu (likely (hb_in_range<hb_codepoint_t> (h, 0xD800u, 0xDBFFu)))
       {
 	/* High-surrogate in h */
 	*unicode = (h << 10) + c - ((0xD800u << 10) - 0x10000u + 0xDC00u);
 	text--;
-	return text;
+	trả_về text;
       }
     }
 
     /* Lonely / out-of-order surrogate. */
     *unicode = replacement;
-    return text;
+    trả_về text;
   }
 
 
-  static unsigned int
+  static unsigned số_nguyên
   strlen (const codepoint_t *text)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    unsigned số_nguyên l = 0;
+    trong_khi (*text++) l++;
+    trả_về l;
   }
 
-  static unsigned int
+  static unsigned số_nguyên
   encode_len (hb_codepoint_t unicode)
   {
-    return unicode < 0x10000 ? 1 : 2;
+    trả_về unicode < 0x10000 ? 1 : 2;
   }
 
   static codepoint_t *
@@ -269,17 +269,17 @@ struct hb_utf16_xe_t
 	  const codepoint_t *end,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    nếu (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    if (unicode < 0x10000u)
+    nếu (unicode < 0x10000u)
      *text++ = unicode;
-    else if (end - text >= 2)
+    không_thì nếu (end - text >= 2)
     {
       unicode -= 0x10000u;
       *text++ =  0xD800u + (unicode >> 10);
       *text++ =  0xDC00u + (unicode & 0x03FFu);
     }
-    return text;
+    trả_về text;
   }
 };
 
@@ -301,9 +301,9 @@ struct hb_utf32_xe_t
 	hb_codepoint_t replacement)
   {
     hb_codepoint_t c = *unicode = *text++;
-    if (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
+    nếu (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
       *unicode = replacement;
-    return text;
+    trả_về text;
   }
 
   static inline const TCodepoint *
@@ -313,23 +313,23 @@ struct hb_utf32_xe_t
 	hb_codepoint_t replacement)
   {
     hb_codepoint_t c = *unicode = *--text;
-    if (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
+    nếu (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
       *unicode = replacement;
-    return text;
+    trả_về text;
   }
 
-  static unsigned int
+  static unsigned số_nguyên
   strlen (const TCodepoint *text)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    unsigned số_nguyên l = 0;
+    trong_khi (*text++) l++;
+    trả_về l;
   }
 
-  static unsigned int
+  static unsigned số_nguyên
   encode_len (hb_codepoint_t unicode HB_UNUSED)
   {
-    return 1;
+    trả_về 1;
   }
 
   static codepoint_t *
@@ -337,10 +337,10 @@ struct hb_utf32_xe_t
 	  const codepoint_t *end HB_UNUSED,
 	  hb_codepoint_t unicode)
   {
-    if (validate && unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    nếu (validate && unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
     *text++ = unicode;
-    return text;
+    trả_về text;
   }
 };
 
@@ -360,7 +360,7 @@ struct hb_latin1_t
 	hb_codepoint_t replacement HB_UNUSED)
   {
     *unicode = *text++;
-    return text;
+    trả_về text;
   }
 
   static inline const codepoint_t *
@@ -370,21 +370,21 @@ struct hb_latin1_t
 	hb_codepoint_t replacement HB_UNUSED)
   {
     *unicode = *--text;
-    return text;
+    trả_về text;
   }
 
-  static unsigned int
+  static unsigned số_nguyên
   strlen (const codepoint_t *text)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    unsigned số_nguyên l = 0;
+    trong_khi (*text++) l++;
+    trả_về l;
   }
 
-  static unsigned int
+  static unsigned số_nguyên
   encode_len (hb_codepoint_t unicode HB_UNUSED)
   {
-    return 1;
+    trả_về 1;
   }
 
   static codepoint_t *
@@ -392,10 +392,10 @@ struct hb_latin1_t
 	  const codepoint_t *end HB_UNUSED,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0x0100u))
+    nếu (unlikely (unicode >= 0x0100u))
       unicode = '?';
     *text++ = unicode;
-    return text;
+    trả_về text;
   }
 };
 
@@ -412,9 +412,9 @@ struct hb_ascii_t
 	hb_codepoint_t replacement)
   {
     *unicode = *text++;
-    if (*unicode >= 0x0080u)
+    nếu (*unicode >= 0x0080u)
       *unicode = replacement;
-    return text;
+    trả_về text;
   }
 
   static inline const codepoint_t *
@@ -424,23 +424,23 @@ struct hb_ascii_t
 	hb_codepoint_t replacement)
   {
     *unicode = *--text;
-    if (*unicode >= 0x0080u)
+    nếu (*unicode >= 0x0080u)
       *unicode = replacement;
-    return text;
+    trả_về text;
   }
 
-  static unsigned int
+  static unsigned số_nguyên
   strlen (const codepoint_t *text)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    unsigned số_nguyên l = 0;
+    trong_khi (*text++) l++;
+    trả_về l;
   }
 
-  static unsigned int
+  static unsigned số_nguyên
   encode_len (hb_codepoint_t unicode HB_UNUSED)
   {
-    return 1;
+    trả_về 1;
   }
 
   static codepoint_t *
@@ -448,10 +448,10 @@ struct hb_ascii_t
 	  const codepoint_t *end HB_UNUSED,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0x0080u))
+    nếu (unlikely (unicode >= 0x0080u))
       unicode = '?';
     *text++ = unicode;
-    return text;
+    trả_về text;
   }
 };
 
@@ -464,19 +464,19 @@ hb_utf_offset_to_pointer (const typename utf_t::codepoint_t *start,
 {
   hb_codepoint_t unicode;
 
-  while (offset-- > 0)
+  trong_khi (offset-- > 0)
     start = utf_t::next (start,
 			 text + text_len,
 			 &unicode,
 			 HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT);
 
-  while (offset++ < 0)
+  trong_khi (offset++ < 0)
     start = utf_t::prev (start,
 			 text,
 			 &unicode,
 			 HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT);
 
-  return start;
+  trả_về start;
 }
 
 

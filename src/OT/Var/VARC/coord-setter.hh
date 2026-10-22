@@ -11,48 +11,48 @@ namespace OT {
 
 struct coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<const số_nguyên> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    nếu (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (số_nguyên));
+    không_thì
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  số_nguyên& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    nếu (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      trả_về Crap(số_nguyên);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    nếu (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      nếu (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        trong_khi (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	trả_về static_coords[idx];
       }
-      else
+      không_thì
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    nếu (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      nếu (unlikely (!dynamic_coords.resize (idx + 1)))
+	trả_về Crap(số_nguyên);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    trả_về dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<số_nguyên> get_coords ()
+  { trả_về length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
   private:
-  hb_vector_t<int> dynamic_coords;
+  hb_vector_t<số_nguyên> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  số_nguyên static_coords[sizeof (void *) * 8];
 };
 
 

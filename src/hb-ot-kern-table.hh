@@ -45,30 +45,30 @@ namespace OT {
 template <typename KernSubTableHeader>
 struct KernSubTableFormat3
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  số_nguyên get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
   {
     hb_array_t<const FWORD> kernValue = kernValueZ.as_array (kernValueCount);
     hb_array_t<const HBUINT8> leftClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (kernValue).as_array (glyphCount);
     hb_array_t<const HBUINT8> rightClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (leftClass).as_array (glyphCount);
     hb_array_t<const HBUINT8> kernIndex = StructAfter<const UnsizedArrayOf<HBUINT8>> (rightClass).as_array (leftClassCount * rightClassCount);
 
-    unsigned int leftC = leftClass[left];
-    unsigned int rightC = rightClass[right];
-    if (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
-      return 0;
-    unsigned int i = leftC * rightClassCount + rightC;
-    return kernValue[kernIndex[i]];
+    unsigned số_nguyên leftC = leftClass[left];
+    unsigned số_nguyên rightC = rightClass[right];
+    nếu (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
+      trả_về 0;
+    unsigned số_nguyên i = leftC * rightClassCount + rightC;
+    trả_về kernValue[kernIndex[i]];
   }
 
   bool apply (AAT::hb_aat_apply_context_t *c) const
   {
     TRACE_APPLY (this);
 
-    if (!c->plan->requested_kerning)
-      return false;
+    nếu (!c->plan->requested_kerning)
+      trả_về false;
 
-    if (header.coverage & header.Backwards)
-      return false;
+    nếu (header.coverage & header.Backwards)
+      trả_về false;
 
     hb_kern_machine_t<KernSubTableFormat3> machine (*this, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
@@ -90,7 +90,7 @@ struct KernSubTableFormat3
   template <typename set_t>
   void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
   {
-    if (likely (glyphCount))
+    nếu (likely (glyphCount))
     {
       left_set.add_range (0, num_glyphs - 1);
       right_set.add_range (0, num_glyphs - 1);
@@ -108,7 +108,7 @@ struct KernSubTableFormat3
   UnsizedArrayOf<FWORD>
 		kernValueZ;	/* The kerning values.
 				 * Length kernValueCount. */
-#if 0
+#nếu 0
   UnsizedArrayOf<HBUINT8>
 		leftClass;	/* The left-hand classes.
 				 * Length glyphCount. */
@@ -126,22 +126,22 @@ struct KernSubTableFormat3
 template <typename KernSubTableHeader>
 struct KernSubTable
 {
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.format; }
+  size_t get_size () const { trả_về u.header.length; }
+  unsigned số_nguyên get_type () const { trả_về u.header.format; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  số_nguyên get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
   {
     switch (get_type ()) {
     /* This method hooks up to hb_font_t's get_h_kerning.  Only support Format0. */
-    case 0: hb_barrier (); return u.format0.get_kerning (left, right);
-    default:return 0;
+    case 0: hb_barrier (); trả_về u.format0.get_kerning (left, right);
+    default:trả_về 0;
     }
   }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned số_nguyên subtable_type = get_type ();
     TRACE_DISPATCH (this, subtable_type);
     switch (subtable_type) {
     case 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
@@ -159,24 +159,24 @@ struct KernSubTable
   template <typename set_t>
   void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned số_nguyên subtable_type = get_type ();
     switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); return;
+    case 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); trả_về;
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); return;
+    case 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); trả_về;
 #endif
-    case 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); return;
+    case 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); trả_về;
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); return;
+    case 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); trả_về;
 #endif
-    default:	return;
+    default:	trả_về;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(u.header.sanitize (c) &&
+    nếu (unlikely (!(u.header.sanitize (c) &&
 		    hb_barrier () &&
 		    u.header.length >= u.header.min_size &&
 		    c->check_range (this, u.header.length)))) return_trace (false);
@@ -206,8 +206,8 @@ struct KernOTSubTableHeader
   static constexpr bool apple = false;
   typedef AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return (coverage & Horizontal); }
+  unsigned   tuple_count () const { trả_về 0; }
+  bool     is_horizontal () const { trả_về (coverage & Horizontal); }
 
   enum Coverage
   {
@@ -261,8 +261,8 @@ struct KernAATSubTableHeader
   static constexpr bool apple = true;
   typedef AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  unsigned   tuple_count () const { trả_về 0; }
+  bool     is_horizontal () const { trả_về !(coverage & Vertical); }
 
   enum Coverage
   {
@@ -314,50 +314,50 @@ struct kern
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
 
-  bool     has_data () const { return u.version32.v; }
-  unsigned get_type () const { return u.major.v; }
+  bool     has_data () const { trả_về u.version32.v; }
+  unsigned get_type () const { trả_về u.major.v; }
 
   bool has_state_machine () const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_state_machine ();
+    case 0: hb_barrier (); trả_về u.ot.has_state_machine ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_state_machine ();
+    case 1: hb_barrier (); trả_về u.aat.has_state_machine ();
 #endif
-    default:return false;
+    default:trả_về false;
     }
   }
 
   bool has_cross_stream () const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_cross_stream ();
+    case 0: hb_barrier (); trả_về u.ot.has_cross_stream ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_cross_stream ();
+    case 1: hb_barrier (); trả_về u.aat.has_cross_stream ();
 #endif
-    default:return false;
+    default:trả_về false;
     }
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  số_nguyên get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.get_h_kerning (left, right);
+    case 0: hb_barrier (); trả_về u.ot.get_h_kerning (left, right);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.get_h_kerning (left, right);
+    case 1: hb_barrier (); trả_về u.aat.get_h_kerning (left, right);
 #endif
-    default:return 0;
+    default:trả_về 0;
     }
   }
 
   bool apply (AAT::hb_aat_apply_context_t *c,
 	      const AAT::kern_accelerator_data_t &accel_data) const
-  { return dispatch (c, accel_data); }
+  { trả_về dispatch (c, accel_data); }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned số_nguyên subtable_type = get_type ();
     TRACE_DISPATCH (this, subtable_type);
     switch (subtable_type) {
     case 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
@@ -371,7 +371,7 @@ struct kern
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!u.version32.v.sanitize (c)) return_trace (false);
+    nếu (!u.version32.v.sanitize (c)) return_trace (false);
     hb_barrier ();
     return_trace (dispatch (c));
   }
@@ -379,11 +379,11 @@ struct kern
   AAT::kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.create_accelerator_data (num_glyphs);
+    case 0: hb_barrier (); trả_về u.ot.create_accelerator_data (num_glyphs);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.create_accelerator_data (num_glyphs);
+    case 1: hb_barrier (); trả_về u.aat.create_accelerator_data (num_glyphs);
 #endif
-    default:return AAT::kern_accelerator_data_t ();
+    default:trả_về AAT::kern_accelerator_data_t ();
     }
   }
 
@@ -400,11 +400,11 @@ struct kern
       this->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () const { trả_về table.get_blob (); }
 
     bool apply (AAT::hb_aat_apply_context_t *c) const
     {
-      return table->apply (c, accel_data);
+      trả_về table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<kern> table;

@@ -14,8 +14,8 @@ namespace Layout {
 
 static void
 propagate_attachment_offsets (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned số_nguyên len,
+                              unsigned số_nguyên i,
                               hb_direction_t direction,
                               unsigned nesting_level = HB_MAX_NESTING_LEVEL);
 
@@ -30,8 +30,8 @@ struct GPOS : GSUBGPOS
 
   using Lookup = PosLookup;
 
-  const PosLookup& get_lookup (unsigned int i) const
-  { return static_cast<const PosLookup &> (GSUBGPOS::get_lookup (i)); }
+  const PosLookup& get_lookup (unsigned số_nguyên i) const
+  { trả_về static_cast<const PosLookup &> (GSUBGPOS::get_lookup (i)); }
 
   static inline void position_start (hb_font_t *font, hb_buffer_t *buffer);
   static inline void position_finish_advances (hb_font_t *font, hb_buffer_t *buffer);
@@ -40,7 +40,7 @@ struct GPOS : GSUBGPOS
   bool subset (hb_subset_context_t *c) const
   {
     hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<PosLookup> (&l);
+    trả_về GSUBGPOS::subset<PosLookup> (&l);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -54,9 +54,9 @@ struct GPOS : GSUBGPOS
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (unsigned i = 0; i < GSUBGPOS::get_lookup_count (); i++)
+    cho (unsigned i = 0; i < GSUBGPOS::get_lookup_count (); i++)
     {
-      if (!c->gpos_lookups->has (i)) continue;
+      nếu (!c->gpos_lookups->has (i)) continue;
       const PosLookup &l = get_lookup (i);
       l.dispatch (c);
     }
@@ -73,72 +73,72 @@ struct GPOS : GSUBGPOS
 
 static void
 propagate_attachment_offsets (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned số_nguyên len,
+                              unsigned số_nguyên i,
                               hb_direction_t direction,
                               unsigned nesting_level)
 {
   /* Adjusts offsets of attached glyphs (both cursive and mark) to accumulate
    * offset of glyph they are attached to. */
-  int chain = pos[i].attach_chain();
-  int type = pos[i].attach_type();
+  số_nguyên chain = pos[i].attach_chain();
+  số_nguyên type = pos[i].attach_type();
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  unsigned số_nguyên j = (số_nguyên) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  nếu (unlikely (j >= len))
+    trả_về;
 
-  if (unlikely (!nesting_level))
-    return;
+  nếu (unlikely (!nesting_level))
+    trả_về;
 
-  if (pos[j].attach_chain())
+  nếu (pos[j].attach_chain())
     propagate_attachment_offsets (pos, len, j, direction, nesting_level - 1);
 
   assert (!!(type & GPOS_impl::ATTACH_TYPE_MARK) ^ !!(type & GPOS_impl::ATTACH_TYPE_CURSIVE));
 
-  if (type & GPOS_impl::ATTACH_TYPE_CURSIVE)
+  nếu (type & GPOS_impl::ATTACH_TYPE_CURSIVE)
   {
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+    nếu (HB_DIRECTION_IS_HORIZONTAL (direction))
       pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[j].y_offset);
-    else
+    không_thì
       pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[j].x_offset);
   }
-  else /*if (type & GPOS_impl::ATTACH_TYPE_MARK)*/
+  không_thì /*if (type & GPOS_impl::ATTACH_TYPE_MARK)*/
   {
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+    nếu (HB_DIRECTION_IS_HORIZONTAL (direction))
       pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[j].x_offset);
-    else
+    không_thì
       pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[j].y_offset);
 
     // i is the position of the mark; j is the base.
-    if (j < i)
+    nếu (j < i)
     {
       /* This is the common case: mark follows base.
        * And currently the only way in OpenType. */
-      if (HB_DIRECTION_IS_FORWARD (direction))
-	for (unsigned int k = j; k < i; k++) {
+      nếu (HB_DIRECTION_IS_FORWARD (direction))
+	cho (unsigned số_nguyên k = j; k < i; k++) {
 	  pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, pos[k].y_advance);
 	}
-      else
-	for (unsigned int k = j + 1; k < i + 1; k++) {
+      không_thì
+	cho (unsigned số_nguyên k = j + 1; k < i + 1; k++) {
 	  pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[k].y_advance);
 	}
     }
-    else // j > i
+    không_thì // j > i
     {
       /* This can happen with `kerx`: a mark attaching
        * to a base after it in the logical order. */
-      if (HB_DIRECTION_IS_FORWARD (direction))
-	for (unsigned int k = i; k < j; k++) {
+      nếu (HB_DIRECTION_IS_FORWARD (direction))
+	cho (unsigned số_nguyên k = i; k < j; k++) {
 	  pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[k].y_advance);
 	}
-      else
-	for (unsigned int k = i + 1; k < j + 1; k++) {
+      không_thì
+	cho (unsigned số_nguyên k = i + 1; k < j + 1; k++) {
 	  pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, pos[k].y_advance);
 	}
@@ -149,8 +149,8 @@ propagate_attachment_offsets (hb_glyph_position_t *pos,
 void
 GPOS::position_start (hb_font_t *font HB_UNUSED, hb_buffer_t *buffer)
 {
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned số_nguyên count = buffer->len;
+  cho (unsigned số_nguyên i = 0; i < count; i++)
     buffer->pos[i].attach_chain() = buffer->pos[i].attach_type() = 0;
 }
 
@@ -165,34 +165,34 @@ GPOS::position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
 {
   _hb_buffer_assert_gsubgpos_vars (buffer);
 
-  unsigned int len;
+  unsigned số_nguyên len;
   hb_glyph_position_t *pos = hb_buffer_get_glyph_positions (buffer, &len);
   hb_direction_t direction = buffer->props.direction;
 
   /* Handle attachments */
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT)
+  nếu (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT)
   {
     auto *pos = buffer->pos;
     // https://github.com/harfbuzz/harfbuzz/issues/5514
-    if (HB_DIRECTION_IS_FORWARD (direction))
+    nếu (HB_DIRECTION_IS_FORWARD (direction))
     {
-      for (unsigned i = 0; i < len; i++)
-	if (pos[i].attach_chain())
+      cho (unsigned i = 0; i < len; i++)
+	nếu (pos[i].attach_chain())
 	  propagate_attachment_offsets (pos, len, i, direction);
-    } else {
-      for (unsigned i = len; i-- > 0; )
-	if (pos[i].attach_chain())
+    } không_thì {
+      cho (unsigned i = len; i-- > 0; )
+	nếu (pos[i].attach_chain())
 	  propagate_attachment_offsets (pos, len, i, direction);
     }
   }
 
-  if (unlikely (font->slant_xy) &&
+  nếu (unlikely (font->slant_xy) &&
       HB_DIRECTION_IS_HORIZONTAL (direction))
   {
     /* Slanting shaping results is only supported for horizontal text,
      * as it gets weird otherwise. */
-    for (unsigned i = 0; i < len; i++)
-      if (unlikely (pos[i].y_offset))
+    cho (unsigned i = 0; i < len; i++)
+      nếu (unlikely (pos[i].y_offset))
         pos[i].x_offset = hb_clamp_to<hb_position_t> ((double) pos[i].x_offset +
 						      (double) roundf (font->slant_xy * pos[i].y_offset));
   }

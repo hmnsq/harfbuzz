@@ -24,7 +24,7 @@ struct MultipleSubst
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    nếu (unlikely (!c->may_dispatch (this, &u.format.v))) trả_về c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -41,8 +41,8 @@ struct MultipleSubst
 		  Iterator it)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    nếu (unlikely (!c->extend_min (u.format.v))) return_trace (false);
+    unsigned số_nguyên format = 1;
     u.format.v = format;
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (u.format1.serialize (c, it));

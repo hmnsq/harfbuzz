@@ -14,12 +14,12 @@ void collect_ligature_variation_indices (hb_collect_variation_indices_context_t 
                                         unsigned class_count,
                                         const hb_map_t &klass_mapping)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  cho (const auto _ : hb_zip (coverage, hb_range (count)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
+    nếu (!c->glyph_set->has (_.first)) continue;
     hb_barrier ();
     unsigned offset = offsets[_.second];
-    if (!offset) continue;
+    nếu (!offset) continue;
 
     const void *matrix = &StructAtOffset<const HBUINT16> (base, offset);
     /* LigatureAttach always has a 16-bit component count; its anchor
@@ -44,12 +44,12 @@ struct LigatureArray :
   typedef typename Types::template OffsetTo<LigatureAttach> LigatureAttachOffset;
   typedef typename Types::template ArrayOf<LigatureAttachOffset> Super;
 
-  const LigatureAttach& operator [] (int i_) const
+  const LigatureAttach& operator [] (số_nguyên i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (LigatureAttach);
+    unsigned số_nguyên i = (unsigned số_nguyên) i_;
+    nếu (unlikely (i >= this->len)) trả_về Null (LigatureAttach);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    trả_về this+this->arrayZ[i];
   }
 
   template <typename ...Ts>
@@ -80,26 +80,26 @@ struct LigatureArray :
     const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
     auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    nếu (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
 
     bool ret = false;
-    for (const auto _ : + hb_zip (coverage, *this)
+    cho (const auto _ : + hb_zip (coverage, *this)
                         | hb_filter (glyph_map, hb_first))
     {
       const LigatureAttach& src = (this + _.second);
       bool non_empty = + hb_range (src.rows * class_count)
-                       | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
-                       | hb_map ([&] (const unsigned index) { return !src.offset_is_null (index / class_count, index % class_count, class_count); })
+                       | hb_filter ([=] (unsigned index) { trả_về klass_mapping->has (index % class_count); })
+                       | hb_map ([&] (const unsigned index) { trả_về !src.offset_is_null (index / class_count, index % class_count, class_count); })
                        | hb_any;
 
-      if (!non_empty) continue;
+      nếu (!non_empty) continue;
 
       auto *matrix = out->serialize_append (c->serializer);
-      if (unlikely (!matrix)) return_trace (false);
+      nếu (unlikely (!matrix)) return_trace (false);
 
       auto indexes =
           + hb_range (src.rows * class_count)
-          | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
+          | hb_filter ([=] (unsigned index) { trả_về klass_mapping->has (index % class_count); })
           ;
       ret |= matrix->serialize_subset (c,
 				       _.second,

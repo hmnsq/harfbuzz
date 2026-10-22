@@ -32,7 +32,7 @@ namespace CFF {
 
 using namespace OT;
 
-typedef unsigned int op_code_t;
+typedef unsigned số_nguyên op_code_t;
 
 
 /* === Dict operators === */
@@ -92,9 +92,9 @@ typedef unsigned int op_code_t;
 #define OpCode_ESC_Base		256
 #define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { trả_về (op_code_t)(op - OpCode_ESC_Base); }
+inline bool Is_OpCode_ESC (op_code_t op) { trả_về op >= OpCode_ESC_Base; }
+inline unsigned số_nguyên OpCode_Size (op_code_t op) { trả_về Is_OpCode_ESC (op) ? 2: 1; }
 
 #define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
 #define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
@@ -219,44 +219,44 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 
 struct number_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  void set_int (số_nguyên v)       { value = v; }
+  bool to_int (số_nguyên *v) const
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    nếu (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
     {
       *v = 0;
-      return false;
+      trả_về false;
     }
-    *v = (int) value;
-    return true;
+    *v = (số_nguyên) value;
+    trả_về true;
   }
-  int to_int () const
+  số_nguyên to_int () const
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    số_nguyên v;
+    nếu (likely (to_int (&v))) trả_về v;
+    trả_về value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
   }
 
   void set_fixed (int32_t v) { value = v / 65536.0; }
   int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  { trả_về (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
 
   void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  double to_real () const    { trả_về value; }
 
   bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  { trả_về value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  bool operator >  (const number_t &n) const { trả_về value > n.to_real (); }
+  bool operator <  (const number_t &n) const { trả_về n > *this; }
+  bool operator >= (const number_t &n) const { trả_về !(*this < n); }
+  bool operator <= (const number_t &n) const { trả_về !(*this > n); }
 
   const number_t &operator += (const number_t &n)
   {
     set_real (to_real () + n.to_real ());
 
-    return *this;
+    trả_về *this;
   }
 
   protected:
@@ -267,7 +267,7 @@ struct number_t
 struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 {
   hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  { trả_về hb_ubytes_t ((const unsigned char *) this, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
   template <typename T, typename V>
@@ -276,21 +276,21 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
     TRACE_SERIALIZE (this);
 
     HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    nếu (unlikely (!p)) return_trace (false);
     *p = intOp;
 
     T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
+    nếu (unlikely (!ip)) return_trace (false);
     return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   template <typename V>
   static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  { trả_về serialize_int<HBINT32> (c, OpCode_longintdict, value); }
 
   template <typename V>
   static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  { trả_về serialize_int<HBINT16> (c, OpCode_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
@@ -305,35 +305,35 @@ struct byte_str_ref_t
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  byte_str_ref_t (const hb_ubytes_t &str_, unsigned số_nguyên offset_ = 0)
     : str (str_) { set_offset (offset_); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  void reset (const hb_ubytes_t &str_, unsigned số_nguyên offset_ = 0)
   {
     str = str_;
     set_offset (offset_);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  const unsigned char& operator [] (số_nguyên i) {
+    nếu (unlikely ((unsigned số_nguyên) (get_offset () + i) >= str.length))
     {
       set_error ();
-      return Null (unsigned char);
+      trả_về Null (unsigned char);
     }
-    return str.arrayZ[get_offset () + i];
+    trả_về str.arrayZ[get_offset () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  unsigned char head_unchecked () const { trả_về str.arrayZ[get_offset ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  operator hb_ubytes_t () const { trả_về str.sub_array (get_offset ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (unsigned số_nguyên offset_, unsigned số_nguyên len_) const
+  { trả_về str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  bool avail (unsigned số_nguyên count=1) const
+  { trả_về get_offset () + count <= str.length; }
+  void inc (unsigned số_nguyên count=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
     set_offset (get_offset () + count);
@@ -342,99 +342,99 @@ struct byte_str_ref_t
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
+  unsigned get_offset () const { trả_về str.backwards_length; }
   void set_offset (unsigned offset) { str.backwards_length = offset; }
 
   void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  bool in_error () const { trả_về str.backwards_length > str.length; }
 
-  unsigned total_size () const { return str.length; }
+  unsigned total_size () const { trả_về str.length; }
 
   protected:
   hb_ubytes_t       str;
 };
 
 /* stack */
-template <typename ELEM, int LIMIT>
+template <typename ELEM, số_nguyên LIMIT>
 struct cff_stack_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& operator [] (unsigned số_nguyên i)
   {
-    if (unlikely (i >= length))
+    nếu (unlikely (i >= length))
     {
       set_error ();
-      return Crap (ELEM);
+      trả_về Crap (ELEM);
     }
-    return arrayZ[i];
+    trả_về arrayZ[i];
   }
 
   void push (const ELEM &v)
   {
-    if (likely (length < LIMIT))
+    nếu (likely (length < LIMIT))
       arrayZ[length++] = v;
-    else
+    không_thì
       set_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    nếu (likely (length < LIMIT))
+      trả_về arrayZ[length++];
+    không_thì
     {
       set_error ();
-      return Crap (ELEM);
+      trả_về Crap (ELEM);
     }
   }
 
   ELEM& pop ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    nếu (likely (length > 0))
+      trả_về arrayZ[--length];
+    không_thì
     {
       set_error ();
-      return Crap (ELEM);
+      trả_về Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  void pop (unsigned số_nguyên n)
   {
-    if (likely (length >= n))
+    nếu (likely (length >= n))
       length -= n;
-    else
+    không_thì
       set_error ();
   }
 
   const ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    nếu (unlikely (length == 0))
     {
       set_error ();
-      return Null (ELEM);
+      trả_về Null (ELEM);
     }
-    return arrayZ[length - 1];
+    trả_về arrayZ[length - 1];
   }
 
   void unpop ()
   {
-    if (likely (length < LIMIT))
+    nếu (likely (length < LIMIT))
       length++;
-    else
+    không_thì
       set_error ();
   }
 
   void clear () { length = 0; }
 
-  bool in_error () const { return (error); }
+  bool in_error () const { trả_về (error); }
   void set_error ()      { error = true; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  unsigned số_nguyên get_count () const { trả_về length; }
+  bool is_empty () const          { trả_về !length; }
 
   hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  { trả_về hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
 
   bool error = false;
-  unsigned int length = 0;
+  unsigned số_nguyên length = 0;
   ELEM arrayZ[LIMIT];
 };
 
@@ -442,7 +442,7 @@ struct cff_stack_t
 template <typename ARG=number_t>
 struct arg_stack_t : cff_stack_t<ARG, 513>
 {
-  void push_int (int v)
+  void push_int (số_nguyên v)
   {
     ARG &n = S::push ();
     n.set_int (v);
@@ -460,40 +460,40 @@ struct arg_stack_t : cff_stack_t<ARG, 513>
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& pop_num () { trả_về this->pop (); }
 
-  int pop_int ()
+  số_nguyên pop_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    số_nguyên v;
+    nếu (unlikely (!this->pop ().to_int (&v)))
       S::set_error ();
-    return v;
+    trả_về v;
   }
 
-  unsigned int pop_uint ()
+  unsigned số_nguyên pop_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    số_nguyên i = pop_int ();
+    nếu (unlikely (i < 0))
     {
       i = 0;
       S::set_error ();
     }
-    return (unsigned) i;
+    trả_về (unsigned) i;
   }
 
   void push_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    push_int ((số_nguyên) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
   bool push_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
+    nếu (unlikely (!str_ref.avail (4)))
+      trả_về false;
     push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    trả_về true;
   }
 
   private:
@@ -523,9 +523,9 @@ struct op_serializer_t
     TRACE_SERIALIZE (this);
 
     unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    nếu (unlikely (!d)) return_trace (false);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    cho (unsigned i = 0; i < opstr.length; i++)
       d[i] = opstr.ptr[i];
     return_trace (true);
   }
@@ -558,15 +558,15 @@ struct parsed_values_t
 
   bool has_op (op_code_t op) const
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    cho (const auto& v : values)
+      nếu (v.op == op) trả_về true;
+    trả_về false;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  unsigned get_count () const { trả_về values.length; }
+  const VAL &operator [] (unsigned số_nguyên i) const { trả_về values[i]; }
 
-  unsigned int       opStart;
+  unsigned số_nguyên       opStart;
   hb_vector_t<VAL>   values;
 };
 
@@ -579,30 +579,30 @@ struct interp_env_t
     str_ref.reset (str_);
   }
   bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  { trả_về str_ref.in_error () || argStack.in_error (); }
 
   void set_error () { str_ref.set_error (); }
 
   op_code_t fetch_op ()
   {
     op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
+    nếu (unlikely (!str_ref.avail ()))
+      trả_về OpCode_Invalid;
     op = (op_code_t) str_ref.head_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
+    nếu (op == OpCode_escape) {
+      nếu (unlikely (!str_ref.avail ()))
+	trả_về OpCode_Invalid;
       op = Make_OpCode_ESC (str_ref.head_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    trả_về op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  const ARG& eval_arg (unsigned số_nguyên i) { trả_về argStack[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& pop_arg () { trả_về argStack.pop (); }
+  void pop_n_args (unsigned số_nguyên n) { argStack.pop (n); }
 
   void clear_args () { pop_n_args (argStack.get_count ()); }
 
@@ -639,10 +639,10 @@ struct opset_t
 
       default:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	nếu (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.argStack.push_int ((số_nguyên)op - 139);
+	} không_thì {
 	  /* invalid unknown operator */
 	  env.clear_args ();
 	}

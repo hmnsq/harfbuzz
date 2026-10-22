@@ -25,7 +25,7 @@ hb_ucd_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			hb_codepoint_t unicode,
 			void *user_data HB_UNUSED)
 {
-  return (hb_unicode_combining_class_t) _hb_ucd_ccc (unicode);
+  trả_về (hb_unicode_combining_class_t) _hb_ucd_ccc (unicode);
 }
 
 static hb_unicode_general_category_t
@@ -33,7 +33,7 @@ hb_ucd_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			 hb_codepoint_t unicode,
 			 void *user_data HB_UNUSED)
 {
-  return (hb_unicode_general_category_t) _hb_ucd_gc (unicode);
+  trả_về (hb_unicode_general_category_t) _hb_ucd_gc (unicode);
 }
 
 static hb_codepoint_t
@@ -41,7 +41,7 @@ hb_ucd_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		  hb_codepoint_t unicode,
 		  void *user_data HB_UNUSED)
 {
-  return unicode + _hb_ucd_bmg (unicode);
+  trả_về unicode + _hb_ucd_bmg (unicode);
 }
 
 static hb_script_t
@@ -49,7 +49,7 @@ hb_ucd_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 	       hb_codepoint_t unicode,
 	       void *user_data HB_UNUSED)
 {
-  return _hb_ucd_sc_map[_hb_ucd_sc (unicode)];
+  trả_về _hb_ucd_sc_map[_hb_ucd_sc (unicode)];
 }
 
 
@@ -68,60 +68,60 @@ _hb_ucd_decompose_hangul (hb_codepoint_t ab, hb_codepoint_t *a, hb_codepoint_t *
 {
   unsigned si = ab - SBASE;
 
-  if (si >= SCOUNT)
-    return false;
+  nếu (si >= SCOUNT)
+    trả_về false;
 
-  if (si % TCOUNT)
+  nếu (si % TCOUNT)
   {
     /* LV,T */
     *a = SBASE + (si / TCOUNT) * TCOUNT;
     *b = TBASE + (si % TCOUNT);
-    return true;
-  } else {
+    trả_về true;
+  } không_thì {
     /* L,V */
     *a = LBASE + (si / NCOUNT);
     *b = VBASE + (si % NCOUNT) / TCOUNT;
-    return true;
+    trả_về true;
   }
 }
 
 static inline bool
 _hb_ucd_compose_hangul (hb_codepoint_t a, hb_codepoint_t b, hb_codepoint_t *ab)
 {
-  if (a >= SBASE && a < (SBASE + SCOUNT) && b > TBASE && b < (TBASE + TCOUNT) &&
+  nếu (a >= SBASE && a < (SBASE + SCOUNT) && b > TBASE && b < (TBASE + TCOUNT) &&
     !((a - SBASE) % TCOUNT))
   {
     /* LV,T */
     *ab = a + (b - TBASE);
-    return true;
+    trả_về true;
   }
-  else if (a >= LBASE && a < (LBASE + LCOUNT) && b >= VBASE && b < (VBASE + VCOUNT))
+  không_thì nếu (a >= LBASE && a < (LBASE + LCOUNT) && b >= VBASE && b < (VBASE + VCOUNT))
   {
     /* L,V */
-    int li = a - LBASE;
-    int vi = b - VBASE;
+    số_nguyên li = a - LBASE;
+    số_nguyên vi = b - VBASE;
     *ab = SBASE + li * NCOUNT + vi * TCOUNT;
-    return true;
+    trả_về true;
   }
-  else
-    return false;
+  không_thì
+    trả_về false;
 }
 
-static int
+static số_nguyên
 _cmp_pair (const void *_key, const void *_item)
 {
   uint64_t& a = * (uint64_t*) _key;
   uint64_t b = (* (uint64_t*) _item) & HB_CODEPOINT_ENCODE3(0x1FFFFFu, 0x1FFFFFu, 0);
 
-  return a < b ? -1 : a > b ? +1 : 0;
+  trả_về a < b ? -1 : a > b ? +1 : 0;
 }
-static int
+static số_nguyên
 _cmp_pair_11_7_14 (const void *_key, const void *_item)
 {
   uint32_t& a = * (uint32_t*) _key;
   uint32_t b = (* (uint32_t*) _item) & HB_CODEPOINT_ENCODE3_11_7_14(0x1FFFFFu, 0x1FFFFFu, 0);
 
-  return a < b ? -1 : a > b ? +1 : 0;
+  trả_về a < b ? -1 : a > b ? +1 : 0;
 }
 
 static hb_bool_t
@@ -130,11 +130,11 @@ hb_ucd_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		void *user_data HB_UNUSED)
 {
   // Hangul is handled algorithmically.
-  if (_hb_ucd_compose_hangul (a, b, ab)) return true;
+  nếu (_hb_ucd_compose_hangul (a, b, ab)) trả_về true;
 
   hb_codepoint_t u = 0;
 
-  if ((a & 0xFFFFF800u) == 0x0000u && (b & 0xFFFFFF80) == 0x0300u)
+  nếu ((a & 0xFFFFF800u) == 0x0000u && (b & 0xFFFFFF80) == 0x0300u)
   {
     /* If "a" is small enough and "b" is in the U+0300 range,
      * the composition data is encoded in a 32bit array sorted
@@ -145,10 +145,10 @@ hb_ucd_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				    ARRAY_LENGTH (_hb_ucd_dm2_u32_map),
 				    sizeof (*_hb_ucd_dm2_u32_map),
 				    _cmp_pair_11_7_14);
-    if (likely (!v)) return false;
+    nếu (likely (!v)) trả_về false;
     u = HB_CODEPOINT_DECODE3_11_7_14_3 (*v);
   }
-  else
+  không_thì
   {
     /* Otherwise it is stored in a 64bit array sorted by
      * "a,b" pair. */
@@ -158,13 +158,13 @@ hb_ucd_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				    ARRAY_LENGTH (_hb_ucd_dm2_u64_map),
 				    sizeof (*_hb_ucd_dm2_u64_map),
 				    _cmp_pair);
-    if (likely (!v)) return false;
+    nếu (likely (!v)) trả_về false;
     u = HB_CODEPOINT_DECODE3_3 (*v);
   }
 
-  if (unlikely (!u)) return false;
+  nếu (unlikely (!u)) trả_về false;
   *ab = u;
-  return true;
+  trả_về true;
 }
 
 static hb_bool_t
@@ -172,42 +172,42 @@ hb_ucd_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		  hb_codepoint_t ab, hb_codepoint_t *a, hb_codepoint_t *b,
 		  void *user_data HB_UNUSED)
 {
-  if (_hb_ucd_decompose_hangul (ab, a, b)) return true;
+  nếu (_hb_ucd_decompose_hangul (ab, a, b)) trả_về true;
 
   unsigned i = _hb_ucd_dm (ab);
 
   /* If no data, there's no decomposition. */
-  if (likely (!i)) return false;
+  nếu (likely (!i)) trả_về false;
   i--;
 
   /* Check if it's a single-character decomposition. */
-  if (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map))
+  nếu (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map))
   {
     /* Single-character decompositions currently are only in plane 0 or plane 2. */
-    if (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map))
+    nếu (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map))
     {
       /* Plane 0. */
       *a = _hb_ucd_dm1_p0_map[i];
     }
-    else
+    không_thì
     {
       /* Plane 2. */
       i -= ARRAY_LENGTH (_hb_ucd_dm1_p0_map);
       *a = 0x20000 | _hb_ucd_dm1_p2_map[i];
     }
     *b = 0;
-    return true;
+    trả_về true;
   }
   i -= ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map);
 
   /* Otherwise they are encoded either in a 32bit array or a 64bit array. */
-  if (i < ARRAY_LENGTH (_hb_ucd_dm2_u32_map))
+  nếu (i < ARRAY_LENGTH (_hb_ucd_dm2_u32_map))
   {
     /* 32bit array. */
     uint32_t v = _hb_ucd_dm2_u32_map[i];
     *a = HB_CODEPOINT_DECODE3_11_7_14_1 (v);
     *b = HB_CODEPOINT_DECODE3_11_7_14_2 (v);
-    return true;
+    trả_về true;
   }
   i -= ARRAY_LENGTH (_hb_ucd_dm2_u32_map);
 
@@ -215,7 +215,7 @@ hb_ucd_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
   uint64_t v = _hb_ucd_dm2_u64_map[i];
   *a = HB_CODEPOINT_DECODE3_1 (v);
   *b = HB_CODEPOINT_DECODE3_2 (v);
-  return true;
+  trả_về true;
 }
 
 
@@ -238,7 +238,7 @@ static struct hb_ucd_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_
 
     hb_atexit (free_static_ucd_funcs);
 
-    return funcs;
+    trả_về funcs;
   }
 } static_ucd_funcs;
 
@@ -252,7 +252,7 @@ hb_unicode_funcs_t *
 hb_ucd_get_unicode_funcs ()
 {
 #ifdef HB_NO_UCD
-  return hb_unicode_funcs_get_empty ();
+  trả_về hb_unicode_funcs_get_empty ();
 #endif
-  return static_ucd_funcs.get_unconst ();
+  trả_về static_ucd_funcs.get_unconst ();
 }

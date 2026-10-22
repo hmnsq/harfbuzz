@@ -49,40 +49,40 @@ hb_cairo_extend (hb_paint_extend_t extend)
 {
   switch (extend)
     {
-    case HB_PAINT_EXTEND_PAD: return CAIRO_EXTEND_PAD;
-    case HB_PAINT_EXTEND_REPEAT: return CAIRO_EXTEND_REPEAT;
-    case HB_PAINT_EXTEND_REFLECT: return CAIRO_EXTEND_REFLECT;
+    case HB_PAINT_EXTEND_PAD: trả_về CAIRO_EXTEND_PAD;
+    case HB_PAINT_EXTEND_REPEAT: trả_về CAIRO_EXTEND_REPEAT;
+    case HB_PAINT_EXTEND_REFLECT: trả_về CAIRO_EXTEND_REFLECT;
     default: break;
     }
 
-  return CAIRO_EXTEND_PAD;
+  trả_về CAIRO_EXTEND_PAD;
 }
 
 #ifdef CAIRO_HAS_PNG_FUNCTIONS
 typedef struct
 {
   hb_blob_t *blob;
-  unsigned int offset;
+  unsigned số_nguyên offset;
 } hb_cairo_read_blob_data_t;
 
 static cairo_status_t
 hb_cairo_read_blob (void *closure,
 		    unsigned char *data,
-		    unsigned int length)
+		    unsigned số_nguyên length)
 {
   hb_cairo_read_blob_data_t *r = (hb_cairo_read_blob_data_t *) closure;
   const char *d;
-  unsigned int size;
+  unsigned số_nguyên size;
 
   d = hb_blob_get_data (r->blob, &size);
 
-  if (r->offset + length > size)
-    return CAIRO_STATUS_READ_ERROR;
+  nếu (r->offset + length > size)
+    trả_về CAIRO_STATUS_READ_ERROR;
 
   hb_memcpy (data, d + r->offset, length);
   r->offset += length;
 
-  return CAIRO_STATUS_SUCCESS;
+  trả_về CAIRO_STATUS_SUCCESS;
 }
 #endif
 
@@ -101,18 +101,18 @@ _hb_cairo_set_source_color (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  if (use_foreground)
+  nếu (use_foreground)
   {
 #ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
     double r, g, b, a;
     cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-    if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+    nếu (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
       cairo_set_source_rgba (cr, r, g, b, a * hb_color_get_alpha (color) / 255.);
-    else
+    không_thì
 #endif
       cairo_set_source_rgba (cr, 0, 0, 0, hb_color_get_alpha (color) / 255.);
   }
-  else
+  không_thì
     cairo_set_source_rgba (cr,
 			   hb_color_get_red (color) / 255.,
 			   hb_color_get_green (color) / 255.,
@@ -131,13 +131,13 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  if (!extents) /* SVG currently. */
-    return false;
+  nếu (!extents) /* SVG currently. */
+    trả_về false;
 
   cairo_surface_t *surface = nullptr;
 
 #ifdef CAIRO_HAS_PNG_FUNCTIONS
-  if (format == HB_PAINT_IMAGE_FORMAT_PNG)
+  nếu (format == HB_PAINT_IMAGE_FORMAT_PNG)
   {
     hb_cairo_read_blob_data_t r;
     r.blob = blob;
@@ -149,25 +149,25 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
     width = cairo_image_surface_get_width (surface);
     height = cairo_image_surface_get_width (surface);
   }
-  else
+  không_thì
 #endif
-  if (format == HB_PAINT_IMAGE_FORMAT_BGRA)
+  nếu (format == HB_PAINT_IMAGE_FORMAT_BGRA)
   {
     /* Byte-endian conversion. */
     unsigned data_size = hb_blob_get_length (blob);
-    if (data_size < width * height * 4)
-      return false;
+    nếu (data_size < width * height * 4)
+      trả_về false;
 
     unsigned char *data;
 #ifdef __BYTE_ORDER
-    if (__BYTE_ORDER == __BIG_ENDIAN)
+    nếu (__BYTE_ORDER == __BIG_ENDIAN)
     {
       data = (unsigned char *) hb_blob_get_data_writable (blob, nullptr);
-      if (!data)
-        return false;
+      nếu (!data)
+        trả_về false;
 
       unsigned count = width * height * 4;
-      for (unsigned i = 0; i < count; i += 4)
+      cho (unsigned i = 0; i < count; i += 4)
       {
         unsigned char b;
 	b = data[i];
@@ -178,7 +178,7 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 	data[i+2] = b;
       }
     }
-    else
+    không_thì
 #endif
       data = (unsigned char *) hb_blob_get_data (blob, nullptr);
 
@@ -193,8 +193,8 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 				 _hb_cairo_destroy_blob);
   }
 
-  if (!surface)
-    return false;
+  nếu (!surface)
+    trả_về false;
 
   cairo_save (cr);
   /* this clip is here to work around recording surface limitations */
@@ -222,7 +222,7 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 
   cairo_restore (cr);
 
-  return true;
+  trả_về true;
 }
 
 static bool
@@ -233,41 +233,41 @@ _hb_cairo_get_color_stops (hb_cairo_context_t *c,
 {
   unsigned len = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
   bool allocated = false;
-  if (unlikely (!len))
-    return false;
-  if (len > *count)
+  nếu (unlikely (!len))
+    trả_về false;
+  nếu (len > *count)
   {
     *stops = (hb_color_stop_t *) hb_malloc2 (len, sizeof (hb_color_stop_t));
-    if (unlikely (!*stops))
-      return false;
+    nếu (unlikely (!*stops))
+      trả_về false;
     allocated = true;
   }
   hb_color_line_get_color_stops (color_line, 0, &len, *stops);
-  if (unlikely (!len))
+  nếu (unlikely (!len))
   {
-    if (allocated)
+    nếu (allocated)
     {
       hb_free (*stops);
       *stops = nullptr;
     }
-    return false;
+    trả_về false;
   }
-  for (unsigned i = 0; i < len; i++)
-    if ((*stops)[i].is_foreground)
+  cho (unsigned i = 0; i < len; i++)
+    nếu ((*stops)[i].is_foreground)
     {
 #ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
       double r, g, b, a;
       cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-      if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+      nếu (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
         (*stops)[i].color = HB_COLOR (round (b * 255.), round (g * 255.), round (r * 255.),
                                       round (a * hb_color_get_alpha ((*stops)[i].color)));
-      else
+      không_thì
 #endif
         (*stops)[i].color = HB_COLOR (0, 0, 0, hb_color_get_alpha ((*stops)[i].color));
     }
 
   *count = len;
-  return true;
+  trả_về true;
 }
 
 void
@@ -279,7 +279,7 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned số_nguyên len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   float xx0, yy0, xx1, yy1;
@@ -287,8 +287,8 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
   float min, max;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  nếu (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+    trả_về;
   hb_paint_normalize_color_line (stops, len, &min, &max);
 
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &xx0, &yy0, &xx1, &yy1);
@@ -300,7 +300,7 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
 
   pattern = cairo_pattern_create_linear ((double) xxx0, (double) yyy0, (double) xxx1, (double) yyy1);
   cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
-  for (unsigned int i = 0; i < len; i++)
+  cho (unsigned số_nguyên i = 0; i < len; i++)
     {
       double r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
@@ -315,7 +315,7 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  nếu (stops != stops_)
     hb_free (stops);
 }
 
@@ -327,7 +327,7 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned số_nguyên len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   float min, max;
@@ -335,8 +335,8 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   float rr0, rr1;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  nếu (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+    trả_về;
   hb_paint_normalize_color_line (stops, len, &min, &max);
 
   xx0 = x0 + min * (x1 - x0);
@@ -349,7 +349,7 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   pattern = cairo_pattern_create_radial ((double) xx0, (double) yy0, (double) rr0, (double) xx1, (double) yy1, (double) rr1);
   cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
 
-  for (unsigned int i = 0; i < len; i++)
+  cho (unsigned số_nguyên i = 0; i < len; i++)
     {
       double r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
@@ -364,7 +364,7 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  nếu (stops != stops_)
     hb_free (stops);
 }
 
@@ -375,7 +375,7 @@ typedef struct {
 static inline float
 _hb_cairo_interpolate (float f0, float f1, float f)
 {
-  return f0 + f * (f1 - f0);
+  trả_về f0 + f * (f1 - f0);
 }
 
 static inline void
@@ -389,7 +389,7 @@ _hb_cairo_premultiply (hb_cairo_color_t *c)
 static inline void
 _hb_cairo_unpremultiply (hb_cairo_color_t *c)
 {
-  if (c->a != 0.f)
+  nếu (c->a != 0.f)
   {
      c->r /= c->a;
      c->g /= c->a;
@@ -414,7 +414,7 @@ _hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, float 
 static inline float
 _hb_cairo_dot (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return p.x * q.x + p.y * q.y;
+  trả_về p.x * q.x + p.y * q.y;
 }
 
 static inline hb_cairo_point_t
@@ -422,25 +422,25 @@ _hb_cairo_normalize (hb_cairo_point_t p)
 {
   float len = sqrtf (_hb_cairo_dot (p, p));
 
-  return hb_cairo_point_t { p.x / len, p.y / len };
+  trả_về hb_cairo_point_t { p.x / len, p.y / len };
 }
 
 static inline hb_cairo_point_t
 _hb_cairo_sum (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return hb_cairo_point_t { p.x + q.x, p.y + q.y };
+  trả_về hb_cairo_point_t { p.x + q.x, p.y + q.y };
 }
 
 static inline hb_cairo_point_t
 _hb_cairo_difference (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return hb_cairo_point_t { p.x - q.x, p.y - q.y };
+  trả_về hb_cairo_point_t { p.x - q.x, p.y - q.y };
 }
 
 static inline hb_cairo_point_t
 _hb_cairo_scale (hb_cairo_point_t p, float f)
 {
-  return hb_cairo_point_t { p.x * f, p.y * f };
+  trả_về hb_cairo_point_t { p.x * f, p.y * f };
 }
 
 typedef struct {
@@ -491,7 +491,7 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
 				       cairo_pattern_t *pattern)
 {
   hb_cairo_point_t center = hb_cairo_point_t { cx, cy };
-  int num_splits;
+  số_nguyên num_splits;
   hb_cairo_point_t p0;
   hb_cairo_color_t color0, color1;
 
@@ -499,7 +499,7 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
   p0 = hb_cairo_point_t { cosf (a0), sinf (a0) };
   color0 = *c0;
 
-  for (int a = 0; a < num_splits; a++)
+  cho (số_nguyên a = 0; a < num_splits; a++)
     {
       float k = (a + 1.) / num_splits;
       float angle1;
@@ -536,7 +536,7 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
 static inline hb_cairo_color_t
 _hb_cairo_color_from_hb_color (hb_color_t c)
 {
-  return {
+  trả_về {
     hb_color_get_red   (c) / 255.f,
     hb_color_get_green (c) / 255.f,
     hb_color_get_blue  (c) / 255.f,
@@ -564,7 +564,7 @@ _hb_cairo_sweep_emit_patch (float a0, hb_color_t c0,
 
 static void
 _hb_cairo_add_sweep_gradient_patches (hb_color_stop_t *stops,
-				      unsigned int n_stops,
+				      unsigned số_nguyên n_stops,
 				      cairo_extend_t extend,
 				      float cx, float cy,
 				      float radius,
@@ -592,7 +592,7 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned số_nguyên len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   cairo_extend_t extend;
@@ -600,12 +600,12 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
   float max_x, max_y, radius;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  nếu (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+    trả_về;
 
   hb_array_t<hb_color_stop_t> (stops, len)
     .qsort ([] (const hb_color_stop_t &a, const hb_color_stop_t &b) {
-      return (a.offset > b.offset) - (a.offset < b.offset);
+      trả_về (a.offset > b.offset) - (a.offset < b.offset);
     });
 
   cairo_clip_extents (cr, &x1, &y1, &x2, &y2);
@@ -624,7 +624,7 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  nếu (stops != stops_)
     hb_free (stops);
 }
 

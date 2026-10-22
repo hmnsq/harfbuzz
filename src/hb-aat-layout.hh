@@ -42,8 +42,8 @@ struct hb_aat_feature_mapping_t
   hb_aat_layout_feature_selector_t selectorToEnable;
   hb_aat_layout_feature_selector_t selectorToDisable;
 
-  int cmp (hb_tag_t key) const
-  { return key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
+  số_nguyên cmp (hb_tag_t key) const
+  { trả_về key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
 };
 
 HB_INTERNAL const hb_aat_feature_mapping_t *

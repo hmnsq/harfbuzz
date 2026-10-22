@@ -99,15 +99,15 @@ hb_draw_close_path_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UN
 static hb_bool_t
 hb_draw_set_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
 			int64_t budget HB_UNUSED,
-			void *user_data HB_UNUSED) { return false; }
+			void *user_data HB_UNUSED) { trả_về false; }
 
 static int64_t
 hb_draw_get_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-			void *user_data HB_UNUSED) { return HB_BUDGET_DEFAULT; }
+			void *user_data HB_UNUSED) { trả_về HB_BUDGET_DEFAULT; }
 
 static int64_t *
 hb_draw_get_budget_remaining_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-				  void *user_data HB_UNUSED) { return nullptr; }
+				  void *user_data HB_UNUSED) { trả_về nullptr; }
 
 
 static bool
@@ -116,22 +116,22 @@ _hb_draw_funcs_set_preamble (hb_draw_funcs_t    *dfuncs,
 			     void              **user_data,
 			     hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (dfuncs))
+  nếu (hb_object_is_immutable (dfuncs))
   {
-    if (*destroy)
+    nếu (*destroy)
       (*destroy) (*user_data);
-    return false;
+    trả_về false;
   }
 
-  if (func_is_null)
+  nếu (func_is_null)
   {
-    if (*destroy)
+    nếu (*destroy)
       (*destroy) (*user_data);
     *destroy = nullptr;
     *user_data = nullptr;
   }
 
-  return true;
+  trả_về true;
 }
 
 static bool
@@ -140,24 +140,24 @@ _hb_draw_funcs_set_middle (hb_draw_funcs_t   *dfuncs,
 			   hb_destroy_func_t  destroy)
 {
   auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+    nếu (destroy) destroy (user_data);
   });
 
-  if (user_data && !dfuncs->user_data)
+  nếu (user_data && !dfuncs->user_data)
   {
     dfuncs->user_data = (decltype (dfuncs->user_data)) hb_calloc (1, sizeof (*dfuncs->user_data));
-    if (unlikely (!dfuncs->user_data))
-      return false;
+    nếu (unlikely (!dfuncs->user_data))
+      trả_về false;
   }
-  if (destroy && !dfuncs->destroy)
+  nếu (destroy && !dfuncs->destroy)
   {
     dfuncs->destroy = (decltype (dfuncs->destroy)) hb_calloc (1, sizeof (*dfuncs->destroy));
-    if (unlikely (!dfuncs->destroy))
-      return false;
+    nếu (unlikely (!dfuncs->destroy))
+      trả_về false;
   }
 
   destroy_guard.release ();
-  return true;
+  trả_về true;
 }
 
 #define HB_DRAW_FUNC_IMPLEMENT(name)						\
@@ -168,23 +168,23 @@ hb_draw_funcs_set_##name##_func (hb_draw_funcs_t	 *dfuncs,		\
 				 void			 *user_data,		\
 				 hb_destroy_func_t	  destroy)		\
 {										\
-  if (!_hb_draw_funcs_set_preamble (dfuncs, !func, &user_data, &destroy))\
-      return;                                                            \
+  nếu (!_hb_draw_funcs_set_preamble (dfuncs, !func, &user_data, &destroy))\
+      trả_về;                                                            \
 										\
-  if (dfuncs->destroy && dfuncs->destroy->name)					\
+  nếu (dfuncs->destroy && dfuncs->destroy->name)					\
     dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name); \
 									 \
-  if (!_hb_draw_funcs_set_middle (dfuncs, user_data, destroy))           \
-      return;                                                            \
+  nếu (!_hb_draw_funcs_set_middle (dfuncs, user_data, destroy))           \
+      trả_về;                                                            \
 									\
-  if (func)								\
+  nếu (func)								\
     dfuncs->func.name = func;						\
-  else									\
+  không_thì									\
     dfuncs->func.name = hb_draw_##name##_nil;				\
 									\
-  if (dfuncs->user_data)						\
+  nếu (dfuncs->user_data)						\
     dfuncs->user_data->name = user_data;				\
-  if (dfuncs->destroy)							\
+  nếu (dfuncs->destroy)							\
     dfuncs->destroy->name = destroy;					\
 }
 
@@ -209,12 +209,12 @@ hb_draw_funcs_t *
 hb_draw_funcs_create ()
 {
   hb_draw_funcs_t *dfuncs;
-  if (unlikely (!(dfuncs = hb_object_create<hb_draw_funcs_t> ())))
-    return const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
+  nếu (unlikely (!(dfuncs = hb_object_create<hb_draw_funcs_t> ())))
+    trả_về const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
 
   dfuncs->func =  Null (hb_draw_funcs_t).func;
 
-  return dfuncs;
+  trả_về dfuncs;
 }
 
 DEFINE_NULL_INSTANCE (hb_draw_funcs_t) =
@@ -240,7 +240,7 @@ DEFINE_NULL_INSTANCE (hb_draw_funcs_t) =
 hb_draw_funcs_t *
 hb_draw_funcs_get_empty ()
 {
-  return const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
+  trả_về const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
 }
 
 /**
@@ -260,7 +260,7 @@ hb_draw_funcs_get_empty ()
 hb_draw_funcs_t *
 hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs)
 {
-  return hb_object_reference (dfuncs);
+  trả_về hb_object_reference (dfuncs);
 }
 
 /**
@@ -276,12 +276,12 @@ hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs)
 void
 hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs)
 {
-  if (!hb_object_destroy (dfuncs)) return;
+  nếu (!hb_object_destroy (dfuncs)) trả_về;
 
-  if (dfuncs->destroy)
+  nếu (dfuncs->destroy)
   {
 #define HB_DRAW_FUNC_IMPLEMENT(name) \
-    if (dfuncs->destroy->name) dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name);
+    nếu (dfuncs->destroy->name) dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name);
       HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
   }
@@ -313,7 +313,7 @@ hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (dfuncs, key, data, destroy, replace);
+  trả_về hb_object_set_user_data (dfuncs, key, data, destroy, replace);
 }
 
 /**
@@ -332,7 +332,7 @@ void *
 hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
 			     hb_user_data_key_t       *key)
 {
-  return hb_object_get_user_data (dfuncs, key);
+  trả_về hb_object_get_user_data (dfuncs, key);
 }
 
 /**
@@ -346,8 +346,8 @@ hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
 void
 hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs)
 {
-  if (hb_object_is_immutable (dfuncs))
-    return;
+  nếu (hb_object_is_immutable (dfuncs))
+    trả_về;
 
   hb_object_make_immutable (dfuncs);
 }
@@ -365,7 +365,7 @@ hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs)
 hb_bool_t
 hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs)
 {
-  return hb_object_is_immutable (dfuncs);
+  trả_về hb_object_is_immutable (dfuncs);
 }
 
 /**
@@ -384,7 +384,7 @@ hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs)
 hb_bool_t
 hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data, int64_t budget)
 {
-  return dfuncs->set_budget (draw_data, budget);
+  trả_về dfuncs->set_budget (draw_data, budget);
 }
 
 /**
@@ -401,7 +401,7 @@ hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data, int64_t budget)
 int64_t
 hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data)
 {
-  return dfuncs->get_budget (draw_data);
+  trả_về dfuncs->get_budget (draw_data);
 }
 
 /**
@@ -422,11 +422,11 @@ int64_t
 hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data)
 {
   int64_t *remaining = dfuncs->get_budget_remaining_ptr (draw_data);
-  if (remaining)
-    return *remaining;
+  nếu (remaining)
+    trả_về *remaining;
 
   int64_t budget = dfuncs->get_budget (draw_data);
-  return budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
+  trả_về budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
 }
 
 
@@ -577,11 +577,11 @@ hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
 	      float x1, float y1, float w1,
 	      hb_draw_line_cap_t cap)
 {
-  if (std::isnan (w1)) w1 = w0;
+  nếu (std::isnan (w1)) w1 = w0;
   float dx = x1 - x0, dy = y1 - y0;
   float len = sqrtf (dx * dx + dy * dy);
-  if (len <= 0.f)
-    return;
+  nếu (len <= 0.f)
+    trả_về;
   /* Unit tangent and normal to the line direction. */
   float tx = dx / len;
   float ty = dy / len;
@@ -591,7 +591,7 @@ hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
   float h1 = 0.5f * w1;
   /* Square caps: extend each endpoint outward along the line
    * tangent by half its local stroke width. */
-  if (cap == HB_DRAW_LINE_CAP_SQUARE)
+  nếu (cap == HB_DRAW_LINE_CAP_SQUARE)
   {
     x0 -= tx * h0; y0 -= ty * h0;
     x1 += tx * h1; y1 += ty * h1;
@@ -619,13 +619,13 @@ _hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
 		       bool ccw)
 {
   hb_draw_move_to (dfuncs, draw_data, st, x, y);
-  if (ccw)
+  nếu (ccw)
   {
     hb_draw_line_to (dfuncs, draw_data, st, x + w, y);
     hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
     hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
   }
-  else
+  không_thì
   {
     hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
     hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
@@ -667,23 +667,23 @@ hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
 		   float w, float h,
 		   float stroke_width)
 {
-  if (std::isnan (stroke_width))
+  nếu (std::isnan (stroke_width))
   {
     /* Filled rectangle with zero area is nothing to draw. */
-    if (w == 0.f || h == 0.f)
-      return;
+    nếu (w == 0.f || h == 0.f)
+      trả_về;
     _hb_draw_rect_contour (dfuncs, draw_data, st, x, y, w, h, /*ccw*/ true);
-    return;
+    trả_về;
   }
 
-  if (stroke_width <= 0.f || !std::isfinite (stroke_width))
-    return;
+  nếu (stroke_width <= 0.f || !std::isfinite (stroke_width))
+    trả_về;
 
   /* Normalize to non-negative width/height so the stroke math
    * below (outer grows by sw, inner shrinks by sw) produces the
    * expected outer-contains-inner ring regardless of w/h signs. */
-  if (w < 0.f) { x += w; w = -w; }
-  if (h < 0.f) { y += h; h = -h; }
+  nếu (w < 0.f) { x += w; w = -w; }
+  nếu (h < 0.f) { y += h; h = -h; }
   /* w or h == 0 is still meaningful when stroking: a stroked
    * zero-height rect is a horizontal line of length w; zero
    * width is a vertical line.  Both degenerate to a single
@@ -700,7 +700,7 @@ hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
   /* Inner rectangle (CW = removes coverage for the hole). */
   float iw = w - stroke_width;
   float ih = h - stroke_width;
-  if (iw > 0.f && ih > 0.f)
+  nếu (iw > 0.f && ih > 0.f)
     _hb_draw_rect_contour (dfuncs, draw_data, st,
 			   x + s, y + s, iw, ih,
 			   /*ccw*/ false);
@@ -720,7 +720,7 @@ _hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
   float ck = r * k;
 
   hb_draw_move_to (dfuncs, draw_data, st, cx + r, cy);
-  if (ccw)
+  nếu (ccw)
   {
     hb_draw_cubic_to (dfuncs, draw_data, st,
 		      cx + r, cy + ck,
@@ -739,7 +739,7 @@ _hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
 		      cx + r,  cy - ck,
 		      cx + r,  cy);
   }
-  else
+  không_thì
   {
     hb_draw_cubic_to (dfuncs, draw_data, st,
 		      cx + r, cy - ck,
@@ -786,22 +786,22 @@ hb_draw_circle (hb_draw_funcs_t *dfuncs, void *draw_data,
 		float r,
 		float stroke_width)
 {
-  if (r <= 0.f)
-    return;
+  nếu (r <= 0.f)
+    trả_về;
 
-  if (std::isnan (stroke_width))
+  nếu (std::isnan (stroke_width))
   {
     _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r, /*ccw*/ true);
-    return;
+    trả_về;
   }
 
-  if (stroke_width <= 0.f || !std::isfinite (stroke_width))
-    return;
+  nếu (stroke_width <= 0.f || !std::isfinite (stroke_width))
+    trả_về;
 
   float s = 0.5f * stroke_width;
   _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r + s, /*ccw*/ true);
   float ir = r - s;
-  if (ir > 0.f)
+  nếu (ir > 0.f)
     _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, ir, /*ccw*/ false);
 }
 
@@ -877,7 +877,7 @@ static struct hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<
 
     hb_atexit (free_static_draw_extents_funcs);
 
-    return funcs;
+    trả_về funcs;
   }
 } static_draw_extents_funcs;
 
@@ -890,7 +890,7 @@ void free_static_draw_extents_funcs ()
 hb_draw_funcs_t *
 hb_draw_extents_get_funcs ()
 {
-  return static_draw_extents_funcs.get_unconst ();
+  trả_về static_draw_extents_funcs.get_unconst ();
 }
 
 

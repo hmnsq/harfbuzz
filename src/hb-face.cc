@@ -76,19 +76,19 @@
  *
  * Since: 1.7.7
  **/
-unsigned int
+unsigned số_nguyên
 hb_face_count (hb_blob_t *blob)
 {
-  if (unlikely (!blob))
-    return 0;
+  nếu (unlikely (!blob))
+    trả_về 0;
 
   hb_sanitize_context_t c (blob);
 
   auto *ot = blob->as<OT::OpenTypeFontFile> ();
-  if (unlikely (!ot->sanitize (&c)))
-    return 0;
+  nếu (unlikely (!ot->sanitize (&c)))
+    trả_về 0;
 
-  return ot->get_face_count ();
+  trả_về ot->get_face_count ();
 }
 
 /*
@@ -133,10 +133,10 @@ hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
 {
   hb_face_t *face;
 
-  if (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
-    if (destroy)
+  nếu (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
+    nếu (destroy)
       destroy (user_data);
-    return hb_face_get_empty ();
+    trả_về hb_face_get_empty ();
   }
 
   face->reference_table_func = reference_table_func;
@@ -148,7 +148,7 @@ hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
   face->data.init0 (face);
   face->table.init0 (face);
 
-  return face;
+  trả_về face;
 }
 
 
@@ -158,18 +158,18 @@ typedef struct hb_face_for_data_closure_t {
 } hb_face_for_data_closure_t;
 
 static hb_face_for_data_closure_t *
-_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned int index)
+_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned số_nguyên index)
 {
   hb_face_for_data_closure_t *closure;
 
   closure = (hb_face_for_data_closure_t *) hb_calloc (1, sizeof (hb_face_for_data_closure_t));
-  if (unlikely (!closure))
-    return nullptr;
+  nếu (unlikely (!closure))
+    trả_về nullptr;
 
   closure->blob = blob;
   closure->index = (uint16_t) (index & 0xFFFFu);
 
-  return closure;
+  trả_về closure;
 }
 
 static void
@@ -186,24 +186,24 @@ _hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void
 {
   hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
 
-  if (tag == HB_TAG_NONE)
-    return hb_blob_reference (data->blob);
+  nếu (tag == HB_TAG_NONE)
+    trả_về hb_blob_reference (data->blob);
 
   const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  unsigned int base_offset;
+  unsigned số_nguyên base_offset;
   const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
 
   const OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
 
   hb_blob_t *blob = hb_blob_create_sub_blob (data->blob, base_offset + table.offset, table.length);
 
-  return blob;
+  trả_về blob;
 }
 
 static unsigned
 _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
-				  unsigned int start_offset,
-				  unsigned int *table_count,
+				  unsigned số_nguyên start_offset,
+				  unsigned số_nguyên *table_count,
 				  hb_tag_t *table_tags,
 				  void *user_data)
 {
@@ -212,7 +212,7 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
   const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
   const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
 
-  return ot_face.get_table_tags (start_offset, table_count, table_tags);
+  trả_về ot_face.get_table_tags (start_offset, table_count, table_tags);
 }
 
 
@@ -242,21 +242,21 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
  **/
 hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index)
+		unsigned số_nguyên  index)
 {
   hb_face_t *face;
 
-  if (unlikely (!blob))
+  nếu (unlikely (!blob))
     blob = hb_blob_get_empty ();
 
   blob = hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (hb_blob_reference (blob));
 
   hb_face_for_data_closure_t *closure = _hb_face_for_data_closure_create (blob, index);
 
-  if (unlikely (!closure))
+  nếu (unlikely (!closure))
   {
     hb_blob_destroy (blob);
-    return hb_face_get_empty ();
+    trả_về hb_face_get_empty ();
   }
 
   face = hb_face_create_for_tables (_hb_face_for_data_reference_table,
@@ -269,7 +269,7 @@ hb_face_create (hb_blob_t    *blob,
 
   face->index = index;
 
-  return face;
+  trả_về face;
 }
 
 /**
@@ -287,17 +287,17 @@ hb_face_create (hb_blob_t    *blob,
  **/
 hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index)
+			unsigned số_nguyên  index)
 {
   unsigned num_faces = hb_face_count (blob);
-  if (index >= num_faces)
-    return nullptr;
+  nếu (index >= num_faces)
+    trả_về nullptr;
 
   hb_face_t *face = hb_face_create (blob, index);
-  if (hb_object_is_immutable (face))
-    return nullptr;
+  nếu (hb_object_is_immutable (face))
+    trả_về nullptr;
 
-  return face;
+  trả_về face;
 }
 
 #ifndef HB_NO_OPEN
@@ -316,16 +316,16 @@ hb_face_create_or_fail (hb_blob_t    *blob,
  **/
 HB_EXTERN hb_face_t *
 hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index)
+				  unsigned số_nguyên  index)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  nếu (unlikely (!blob))
+    trả_về nullptr;
 
   hb_face_t *face = hb_face_create_or_fail (blob, index);
   hb_blob_destroy (blob);
 
-  return face;
+  trả_về face;
 }
 
 static const struct supported_face_loaders_t {
@@ -337,7 +337,7 @@ static const struct supported_face_loaders_t {
   {"ot",
 #ifndef HB_NO_OPEN
    hb_face_create_from_file_or_fail,
-#else
+#không_thì
    nullptr,
 #endif
    hb_face_create_or_fail
@@ -366,15 +366,15 @@ static const char *get_default_loader_name ()
 {
   static hb_atomic_t<const char *> static_loader_name;
   const char *loader_name = static_loader_name.get_acquire ();
-  if (!loader_name)
+  nếu (!loader_name)
   {
     loader_name = getenv ("HB_FACE_LOADER");
-    if (!loader_name)
+    nếu (!loader_name)
       loader_name = "";
-    if (!static_loader_name.cmpexch (nullptr, loader_name))
+    nếu (!static_loader_name.cmpexch (nullptr, loader_name))
       loader_name = static_loader_name.get_acquire ();
   }
-  return loader_name;
+  trả_về loader_name;
 }
 
 /**
@@ -398,33 +398,33 @@ static const char *get_default_loader_name ()
  **/
 hb_face_t *
 hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
+					unsigned số_nguyên  index,
 					const char   *loader_name)
 {
   // Duplicated in hb_face_create_or_fail_using
   bool retry = false;
-  if (!loader_name || !*loader_name)
+  nếu (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
     retry = true;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  nếu (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  cho (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_file (file_name, index);
+    nếu (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
+      trả_về supported_face_loaders[i].from_file (file_name, index);
   }
 
-  if (retry)
+  nếu (retry)
   {
     retry = false;
     loader_name = nullptr;
     goto retry;
   }
 
-  return nullptr;
+  trả_về nullptr;
 }
 
 /**
@@ -448,33 +448,33 @@ retry:
  **/
 hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
+			      unsigned số_nguyên  index,
 			      const char   *loader_name)
 {
   // Duplicated in hb_face_create_from_file_or_fail_using
   bool retry = false;
-  if (!loader_name || !*loader_name)
+  nếu (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
     retry = true;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  nếu (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  cho (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_blob (blob, index);
+    nếu (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
+      trả_về supported_face_loaders[i].from_blob (blob, index);
   }
 
-  if (retry)
+  nếu (retry)
   {
     retry = false;
     loader_name = nullptr;
     goto retry;
   }
 
-  return nullptr;
+  trả_về nullptr;
 }
 
 static inline void free_static_face_loader_list ();
@@ -487,22 +487,22 @@ static struct hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<const char *,
   static const char ** create ()
   {
     const char **face_loader_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), sizeof (const char *));
-    if (unlikely (!face_loader_list))
-      return nullptr;
+    nếu (unlikely (!face_loader_list))
+      trả_về nullptr;
 
     unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+    cho (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
       face_loader_list[i] = supported_face_loaders[i].name;
     face_loader_list[i] = nullptr;
 
     hb_atexit (free_static_face_loader_list);
 
-    return face_loader_list;
+    trả_về face_loader_list;
   }
   static void destroy (const char **l)
   { hb_free (l); }
   static const char * const * get_null ()
-  { return nil_face_loader_list; }
+  { trả_về nil_face_loader_list; }
 } static_face_loader_list;
 
 static inline
@@ -526,7 +526,7 @@ void free_static_face_loader_list ()
 const char **
 hb_face_list_loaders ()
 {
-  return static_face_loader_list.get_unconst ();
+  trả_về static_face_loader_list.get_unconst ();
 }
 #endif
 
@@ -543,7 +543,7 @@ hb_face_list_loaders ()
 hb_face_t *
 hb_face_get_empty ()
 {
-  return const_cast<hb_face_t *> (&Null (hb_face_t));
+  trả_về const_cast<hb_face_t *> (&Null (hb_face_t));
 }
 
 
@@ -560,7 +560,7 @@ hb_face_get_empty ()
 hb_face_t *
 hb_face_reference (hb_face_t *face)
 {
-  return hb_object_reference (face);
+  trả_về hb_object_reference (face);
 }
 
 /**
@@ -576,10 +576,10 @@ hb_face_reference (hb_face_t *face)
 void
 hb_face_destroy (hb_face_t *face)
 {
-  if (!hb_object_destroy (face)) return;
+  nếu (!hb_object_destroy (face)) trả_về;
 
 #ifndef HB_NO_SHAPER
-  for (hb_face_t::plan_node_t *node = face->shape_plans; node; )
+  cho (hb_face_t::plan_node_t *node = face->shape_plans; node; )
   {
     hb_face_t::plan_node_t *next = node->next;
     hb_shape_plan_destroy (node->shape_plan);
@@ -591,10 +591,10 @@ hb_face_destroy (hb_face_t *face)
   face->data.fini ();
   face->table.fini ();
 
-  if (face->get_table_tags_destroy)
+  nếu (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
-  if (face->destroy)
+  nếu (face->destroy)
     face->destroy (face->user_data);
 
   hb_free (face);
@@ -621,7 +621,7 @@ hb_face_set_user_data (hb_face_t          *face,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (face, key, data, destroy, replace);
+  trả_về hb_object_set_user_data (face, key, data, destroy, replace);
 }
 
 /**
@@ -640,7 +640,7 @@ void *
 hb_face_get_user_data (const hb_face_t    *face,
 		       hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (face, key);
+  trả_về hb_object_get_user_data (face, key);
 }
 
 /**
@@ -654,8 +654,8 @@ hb_face_get_user_data (const hb_face_t    *face,
 void
 hb_face_make_immutable (hb_face_t *face)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  nếu (hb_object_is_immutable (face))
+    trả_về;
 
   hb_object_make_immutable (face);
 }
@@ -673,7 +673,7 @@ hb_face_make_immutable (hb_face_t *face)
 hb_bool_t
 hb_face_is_immutable (hb_face_t *face)
 {
-  return hb_object_is_immutable (face);
+  trả_về hb_object_is_immutable (face);
 }
 
 
@@ -694,10 +694,10 @@ hb_blob_t *
 hb_face_reference_table (const hb_face_t *face,
 			 hb_tag_t tag)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return hb_blob_get_empty ();
+  nếu (unlikely (tag == HB_TAG_NONE))
+    trả_về hb_blob_get_empty ();
 
-  return face->reference_table (tag);
+  trả_về face->reference_table (tag);
 }
 
 /**
@@ -718,26 +718,26 @@ hb_face_reference_blob (hb_face_t *face)
 {
   hb_blob_t *blob = face->reference_table (HB_TAG_NONE);
 
-  if (blob == hb_blob_get_empty ())
+  nếu (blob == hb_blob_get_empty ())
   {
     // If referencing the face blob is not possible (e.g. not implemented by the
     // font functions), use face builder to create a blob out of individual
     // table blobs.
     unsigned total_count = hb_face_get_table_tags (face, 0, nullptr, nullptr);
-    if (total_count)
+    nếu (total_count)
     {
       hb_tag_t tags[64];
       unsigned count = ARRAY_LENGTH (tags);
       hb_face_t* builder = hb_face_builder_create ();
 
-      for (unsigned offset = 0; offset < total_count; offset += count)
+      cho (unsigned offset = 0; offset < total_count; offset += count)
       {
         hb_face_get_table_tags (face, offset, &count, tags);
-	if (unlikely (!count))
+	nếu (unlikely (!count))
 	  break; // Allocation error
-        for (unsigned i = 0; i < count; i++)
+        cho (unsigned i = 0; i < count; i++)
         {
-	  if (unlikely (!tags[i]))
+	  nếu (unlikely (!tags[i]))
 	    continue;
 	  hb_blob_t *table = hb_face_reference_table (face, tags[i]);
 	  hb_face_builder_add_table (builder, tags[i], table);
@@ -750,7 +750,7 @@ hb_face_reference_blob (hb_face_t *face)
     }
   }
 
-  return blob;
+  trả_về blob;
 }
 
 /**
@@ -768,10 +768,10 @@ hb_face_reference_blob (hb_face_t *face)
  **/
 void
 hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index)
+		   unsigned số_nguyên  index)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  nếu (hb_object_is_immutable (face))
+    trả_về;
 
   face->index = index;
 }
@@ -788,10 +788,10 @@ hb_face_set_index (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned số_nguyên
 hb_face_get_index (const hb_face_t *face)
 {
-  return face->index;
+  trả_về face->index;
 }
 
 /**
@@ -807,10 +807,10 @@ hb_face_get_index (const hb_face_t *face)
  **/
 void
 hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem)
+		  unsigned số_nguyên  upem)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  nếu (hb_object_is_immutable (face))
+    trả_về;
 
   face->upem = upem;
 }
@@ -828,10 +828,10 @@ hb_face_set_upem (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned số_nguyên
 hb_face_get_upem (const hb_face_t *face)
 {
-  return face->get_upem ();
+  trả_về face->get_upem ();
 }
 
 /**
@@ -847,10 +847,10 @@ hb_face_get_upem (const hb_face_t *face)
  **/
 void
 hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count)
+			 unsigned số_nguyên  glyph_count)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  nếu (hb_object_is_immutable (face))
+    trả_về;
 
   face->num_glyphs = glyph_count;
 }
@@ -865,10 +865,10 @@ hb_face_set_glyph_count (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
+unsigned số_nguyên
 hb_face_get_glyph_count (const hb_face_t *face)
 {
-  return face->get_num_glyphs ();
+  trả_về face->get_num_glyphs ();
 }
 
 /**
@@ -888,14 +888,14 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
 				 void                    *user_data,
 				 hb_destroy_func_t        destroy)
 {
-  if (hb_object_is_immutable (face))
+  nếu (hb_object_is_immutable (face))
   {
-    if (destroy)
+    nếu (destroy)
       destroy (user_data);
-    return;
+    trả_về;
   }
 
-  if (face->get_table_tags_destroy)
+  nếu (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
   face->get_table_tags_func = func;
@@ -918,20 +918,20 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
  *
  * Since: 1.6.0
  **/
-unsigned int
+unsigned số_nguyên
 hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+			unsigned số_nguyên  start_offset,
+			unsigned số_nguyên *table_count, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */)
 {
-  if (!face->get_table_tags_func)
+  nếu (!face->get_table_tags_func)
   {
-    if (table_count)
+    nếu (table_count)
       *table_count = 0;
-    return 0;
+    trả_về 0;
   }
 
-  return face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
+  trả_về face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
 }
 
 
@@ -974,7 +974,7 @@ hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_set_t  *unicodes)
 {
   hb_set_t stack_unicodes;
-  if (!unicodes)
+  nếu (!unicodes)
     unicodes = &stack_unicodes;
   face->table.cmap->collect_mapping (unicodes, mapping, face->get_num_glyphs ());
 }

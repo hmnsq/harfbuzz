@@ -75,49 +75,49 @@ compose_hebrew (const hb_ot_shape_normalize_context_t *c,
   bool found = (bool) c->unicode->compose (a, b, ab);
 
 #ifdef HB_NO_OT_SHAPER_HEBREW_FALLBACK
-  return found;
+  trả_về found;
 #endif
 
-  if (!found && (c->plan && !c->plan->has_gpos_mark))
+  nếu (!found && (c->plan && !c->plan->has_gpos_mark))
   {
       /* Special-case Hebrew presentation forms that are excluded from
        * standard normalization, but wanted for old fonts. */
       switch (b) {
       case 0x05B4u: /* HIRIQ */
-	  if (a == 0x05D9u) { /* YOD */
+	  nếu (a == 0x05D9u) { /* YOD */
 	      *ab = 0xFB1Du;
 	      found = true;
 	  }
 	  break;
       case 0x05B7u: /* PATAH */
-	  if (a == 0x05F2u) { /* YIDDISH YOD YOD */
+	  nếu (a == 0x05F2u) { /* YIDDISH YOD YOD */
 	      *ab = 0xFB1Fu;
 	      found = true;
-	  } else if (a == 0x05D0u) { /* ALEF */
+	  } không_thì nếu (a == 0x05D0u) { /* ALEF */
 	      *ab = 0xFB2Eu;
 	      found = true;
 	  }
 	  break;
       case 0x05B8u: /* QAMATS */
-	  if (a == 0x05D0u) { /* ALEF */
+	  nếu (a == 0x05D0u) { /* ALEF */
 	      *ab = 0xFB2Fu;
 	      found = true;
 	  }
 	  break;
       case 0x05B9u: /* HOLAM */
-	  if (a == 0x05D5u) { /* VAV */
+	  nếu (a == 0x05D5u) { /* VAV */
 	      *ab = 0xFB4Bu;
 	      found = true;
 	  }
 	  break;
       case 0x05BCu: /* DAGESH */
-	  if (a >= 0x05D0u && a <= 0x05EAu) {
+	  nếu (a >= 0x05D0u && a <= 0x05EAu) {
 	      *ab = sDageshForms[a - 0x05D0u];
 	      found = (*ab != 0);
-	  } else if (a == 0xFB2Au) { /* SHIN WITH SHIN DOT */
+	  } không_thì nếu (a == 0xFB2Au) { /* SHIN WITH SHIN DOT */
 	      *ab = 0xFB2Cu;
 	      found = true;
-	  } else if (a == 0xFB2Bu) { /* SHIN WITH SIN DOT */
+	  } không_thì nếu (a == 0xFB2Bu) { /* SHIN WITH SIN DOT */
 	      *ab = 0xFB2Du;
 	      found = true;
 	  }
@@ -139,19 +139,19 @@ compose_hebrew (const hb_ot_shape_normalize_context_t *c,
 	  }
 	  break;
       case 0x05C1u: /* SHIN DOT */
-	  if (a == 0x05E9u) { /* SHIN */
+	  nếu (a == 0x05E9u) { /* SHIN */
 	      *ab = 0xFB2Au;
 	      found = true;
-	  } else if (a == 0xFB49u) { /* SHIN WITH DAGESH */
+	  } không_thì nếu (a == 0xFB49u) { /* SHIN WITH DAGESH */
 	      *ab = 0xFB2Cu;
 	      found = true;
 	  }
 	  break;
       case 0x05C2u: /* SIN DOT */
-	  if (a == 0x05E9u) { /* SHIN */
+	  nếu (a == 0x05E9u) { /* SHIN */
 	      *ab = 0xFB2Bu;
 	      found = true;
-	  } else if (a == 0xFB49u) { /* SHIN WITH DAGESH */
+	  } không_thì nếu (a == 0xFB49u) { /* SHIN WITH DAGESH */
 	      *ab = 0xFB2Du;
 	      found = true;
 	  }
@@ -159,24 +159,24 @@ compose_hebrew (const hb_ot_shape_normalize_context_t *c,
       }
   }
 
-  return found;
+  trả_về found;
 }
 
 static void
 reorder_marks_hebrew (const hb_ot_shape_plan_t *plan HB_UNUSED,
 		      hb_buffer_t              *buffer,
-		      unsigned int              start,
-		      unsigned int              end)
+		      unsigned số_nguyên              start,
+		      unsigned số_nguyên              end)
 {
   hb_glyph_info_t *info = buffer->info;
 
-  for (unsigned i = start + 2; i < end; i++)
+  cho (unsigned i = start + 2; i < end; i++)
   {
     unsigned c0 = info_cc (info[i - 2]);
     unsigned c1 = info_cc (info[i - 1]);
     unsigned c2 = info_cc (info[i - 0]);
 
-    if ((c0 == HB_MODIFIED_COMBINING_CLASS_CCC17 || c0 == HB_MODIFIED_COMBINING_CLASS_CCC18) /* patach or qamats */ &&
+    nếu ((c0 == HB_MODIFIED_COMBINING_CLASS_CCC17 || c0 == HB_MODIFIED_COMBINING_CLASS_CCC18) /* patach or qamats */ &&
 	(c1 == HB_MODIFIED_COMBINING_CLASS_CCC10 || c1 == HB_MODIFIED_COMBINING_CLASS_CCC14) /* sheva or hiriq */ &&
 	(c2 == HB_MODIFIED_COMBINING_CLASS_CCC22 || c2 == HB_UNICODE_COMBINING_CLASS_BELOW) /* meteg or below */)
     {

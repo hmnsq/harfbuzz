@@ -22,13 +22,13 @@ struct GSUB : GSUBGPOS
 
   static constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
 
-  const SubstLookup& get_lookup (unsigned int i) const
-  { return static_cast<const SubstLookup &> (GSUBGPOS::get_lookup (i)); }
+  const SubstLookup& get_lookup (unsigned số_nguyên i) const
+  { trả_về static_cast<const SubstLookup &> (GSUBGPOS::get_lookup (i)); }
 
   bool subset (hb_subset_context_t *c) const
   {
     hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<SubstLookup> (&l);
+    trả_về GSUBGPOS::subset<SubstLookup> (&l);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const

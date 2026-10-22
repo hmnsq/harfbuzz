@@ -51,7 +51,7 @@ struct gsubgpos_graph_context_t
 
   graph_result_t<void> add_buffer (char* buffer)
   {
-    return graph.add_buffer (buffer);
+    trả_về graph.add_buffer (buffer);
   }
 
  private:

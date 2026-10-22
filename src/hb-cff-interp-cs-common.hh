@@ -41,7 +41,7 @@ enum cs_type_t {
 
 struct call_context_t
 {
-  void init (const byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned int subr_num_=0)
+  void init (const byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned số_nguyên subr_num_=0)
   {
     str_ref = substr_;
     type = type_;
@@ -52,11 +52,11 @@ struct call_context_t
 
   byte_str_ref_t  str_ref;
   cs_type_t	  type;
-  unsigned int    subr_num;
+  unsigned số_nguyên    subr_num;
 };
 
 /* call stack */
-const unsigned int kMaxCallLimit = 10;
+const unsigned số_nguyên kMaxCallLimit = 10;
 struct call_stack_t : cff_stack_t<call_context_t, kMaxCallLimit> {};
 
 template <typename SUBRS>
@@ -65,36 +65,36 @@ struct biased_subrs_t
   void init (const SUBRS *subrs_)
   {
     subrs = subrs_;
-    unsigned int  nSubrs = get_count ();
-    if (nSubrs < 1240)
+    unsigned số_nguyên  nSubrs = get_count ();
+    nếu (nSubrs < 1240)
       bias = 107;
-    else if (nSubrs < 33900)
+    không_thì nếu (nSubrs < 33900)
       bias = 1131;
-    else
+    không_thì
       bias = 32768;
   }
 
   void fini () {}
 
-  unsigned int get_count () const { return subrs ? subrs->count : 0; }
-  unsigned int get_bias () const  { return bias; }
+  unsigned số_nguyên get_count () const { trả_về subrs ? subrs->count : 0; }
+  unsigned số_nguyên get_bias () const  { trả_về bias; }
 
-  hb_ubytes_t operator [] (unsigned int index) const
+  hb_ubytes_t operator [] (unsigned số_nguyên index) const
   {
-    if (unlikely (!subrs || index >= subrs->count))
-      return hb_ubytes_t ();
-    else
-      return (*subrs)[index];
+    nếu (unlikely (!subrs || index >= subrs->count))
+      trả_về hb_ubytes_t ();
+    không_thì
+      trả_về (*subrs)[index];
   }
 
   protected:
-  unsigned int  bias;
+  unsigned số_nguyên  bias;
   const SUBRS   *subrs;
 };
 
 struct point_t
 {
-  void set_int (int _x, int _y)
+  void set_int (số_nguyên _x, số_nguyên _y)
   {
     x.set_int (_x);
     y.set_int (_y);
@@ -134,30 +134,30 @@ struct cs_interp_env_t : interp_env_t<ARG>
 
   bool in_error () const
   {
-    return callStack.in_error () || SUPER::in_error ();
+    trả_về callStack.in_error () || SUPER::in_error ();
   }
 
-  bool pop_subr_num (const biased_subrs_t<SUBRS>& biasedSubrs, unsigned int &subr_num)
+  bool pop_subr_num (const biased_subrs_t<SUBRS>& biasedSubrs, unsigned số_nguyên &subr_num)
   {
     subr_num = 0;
-    int n = SUPER::argStack.pop_int ();
+    số_nguyên n = SUPER::argStack.pop_int ();
     n += biasedSubrs.get_bias ();
-    if (unlikely ((n < 0) || ((unsigned int)n >= biasedSubrs.get_count ())))
-      return false;
+    nếu (unlikely ((n < 0) || ((unsigned số_nguyên)n >= biasedSubrs.get_count ())))
+      trả_về false;
 
-    subr_num = (unsigned int)n;
-    return true;
+    subr_num = (unsigned số_nguyên)n;
+    trả_về true;
   }
 
   void call_subr (const biased_subrs_t<SUBRS>& biasedSubrs, cs_type_t type)
   {
-    unsigned int subr_num = 0;
+    unsigned số_nguyên subr_num = 0;
 
-    if (unlikely (!pop_subr_num (biasedSubrs, subr_num)
+    nếu (unlikely (!pop_subr_num (biasedSubrs, subr_num)
 		 || callStack.get_count () >= kMaxCallLimit))
     {
       SUPER::set_error ();
-      return;
+      trả_về;
     }
     context.str_ref = SUPER::str_ref;
     callStack.push (context);
@@ -168,7 +168,7 @@ struct cs_interp_env_t : interp_env_t<ARG>
 
   void return_from_subr ()
   {
-    if (unlikely (SUPER::str_ref.in_error ()))
+    nếu (unlikely (SUPER::str_ref.in_error ()))
       SUPER::set_error ();
     context = callStack.pop ();
     SUPER::str_ref = context.str_ref;
@@ -176,7 +176,7 @@ struct cs_interp_env_t : interp_env_t<ARG>
 
   void determine_hintmask_size ()
   {
-    if (!seen_hintmask)
+    nếu (!seen_hintmask)
     {
       vstem_count += SUPER::argStack.get_count() / 2;
       hintmask_size = (hstem_count + vstem_count + 7) >> 3;
@@ -185,16 +185,16 @@ struct cs_interp_env_t : interp_env_t<ARG>
   }
 
   void set_endchar (bool endchar_flag_) { endchar_flag = endchar_flag_; }
-  bool is_endchar () const { return endchar_flag; }
+  bool is_endchar () const { trả_về endchar_flag; }
 
   void set_budget (int64_t *budget_) { budget = budget_; }
-  int64_t *get_budget () const { return budget; }
-  bool spend_budget (unsigned int cost, unsigned int mult = 1)
-  { return !budget || hb_budget_spend (*budget, cost, mult); }
+  int64_t *get_budget () const { trả_về budget; }
+  bool spend_budget (unsigned số_nguyên cost, unsigned số_nguyên mult = 1)
+  { trả_về !budget || hb_budget_spend (*budget, cost, mult); }
 
-  const number_t &get_x () const { return pt.x; }
-  const number_t &get_y () const { return pt.y; }
-  const point_t &get_pt () const { return pt; }
+  const number_t &get_x () const { trả_về pt.x; }
+  const number_t &get_y () const { trả_về pt.y; }
+  const point_t &get_pt () const { trả_về pt; }
 
   void moveto (const point_t &pt_ ) { pt = pt_; }
 
@@ -204,9 +204,9 @@ struct cs_interp_env_t : interp_env_t<ARG>
   bool	  seen_moveto;
   bool	  seen_hintmask;
 
-  unsigned int  hstem_count;
-  unsigned int  vstem_count;
-  unsigned int  hintmask_size;
+  unsigned số_nguyên  hstem_count;
+  unsigned số_nguyên  vstem_count;
+  unsigned số_nguyên  hintmask_size;
   int64_t	*budget;
   call_stack_t	callStack;
   biased_subrs_t<SUBRS>   globalSubrs;
@@ -383,7 +383,7 @@ struct cs_opset_t : opset_t<ARG>
   static void process_hintmask (op_code_t op, ENV &env, PARAM& param)
   {
     env.determine_hintmask_size ();
-    if (likely (env.str_ref.avail (env.hintmask_size)))
+    nếu (likely (env.str_ref.avail (env.hintmask_size)))
     {
       OPSET::flush_hintmask (op, env, param);
       env.str_ref.inc (env.hintmask_size);
@@ -400,7 +400,7 @@ struct cs_opset_t : opset_t<ARG>
 
   static void process_post_move (op_code_t op, ENV &env, PARAM& param)
   {
-    if (!env.seen_moveto)
+    nếu (!env.seen_moveto)
     {
       env.determine_hintmask_size ();
       env.seen_moveto = true;
@@ -443,11 +443,11 @@ struct cs_opset_t : opset_t<ARG>
       case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
       case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
       case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	return true;
+	trả_về true;
 
       default:
 	/* 1-byte integer */
-	return (OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast);
+	trả_về (OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast);
     }
   }
 
@@ -483,7 +483,7 @@ struct path_procs_t
 
   static void rlineto (ENV &env, PARAM& param)
   {
-    for (unsigned int i = 0; i + 2 <= env.argStack.get_count (); i += 2)
+    cho (unsigned số_nguyên i = 0; i + 2 <= env.argStack.get_count (); i += 2)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -494,8 +494,8 @@ struct path_procs_t
   static void hlineto (ENV &env, PARAM& param)
   {
     point_t pt1;
-    unsigned int i = 0;
-    for (; i + 2 <= env.argStack.get_count (); i += 2)
+    unsigned số_nguyên i = 0;
+    cho (; i + 2 <= env.argStack.get_count (); i += 2)
     {
       pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
@@ -503,7 +503,7 @@ struct path_procs_t
       pt1.move_y (env.eval_arg (i+1));
       PATH::line (env, param, pt1);
     }
-    if (i < env.argStack.get_count ())
+    nếu (i < env.argStack.get_count ())
     {
       pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
@@ -514,8 +514,8 @@ struct path_procs_t
   static void vlineto (ENV &env, PARAM& param)
   {
     point_t pt1;
-    unsigned int i = 0;
-    for (; i + 2 <= env.argStack.get_count (); i += 2)
+    unsigned số_nguyên i = 0;
+    cho (; i + 2 <= env.argStack.get_count (); i += 2)
     {
       pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
@@ -523,7 +523,7 @@ struct path_procs_t
       pt1.move_x (env.eval_arg (i+1));
       PATH::line (env, param, pt1);
     }
-    if (i < env.argStack.get_count ())
+    nếu (i < env.argStack.get_count ())
     {
       pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
@@ -533,7 +533,7 @@ struct path_procs_t
 
   static void rrcurveto (ENV &env, PARAM& param)
   {
-    for (unsigned int i = 0; i + 6 <= env.argStack.get_count (); i += 6)
+    cho (unsigned số_nguyên i = 0; i + 6 <= env.argStack.get_count (); i += 6)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -547,13 +547,13 @@ struct path_procs_t
 
   static void rcurveline (ENV &env, PARAM& param)
   {
-    unsigned int arg_count = env.argStack.get_count ();
-    if (unlikely (arg_count < 8))
-      return;
+    unsigned số_nguyên arg_count = env.argStack.get_count ();
+    nếu (unlikely (arg_count < 8))
+      trả_về;
 
-    unsigned int i = 0;
-    unsigned int curve_limit = arg_count - 2;
-    for (; i + 6 <= curve_limit; i += 6)
+    unsigned số_nguyên i = 0;
+    unsigned số_nguyên curve_limit = arg_count - 2;
+    cho (; i + 6 <= curve_limit; i += 6)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -571,13 +571,13 @@ struct path_procs_t
 
   static void rlinecurve (ENV &env, PARAM& param)
   {
-    unsigned int arg_count = env.argStack.get_count ();
-    if (unlikely (arg_count < 8))
-      return;
+    unsigned số_nguyên arg_count = env.argStack.get_count ();
+    nếu (unlikely (arg_count < 8))
+      trả_về;
 
-    unsigned int i = 0;
-    unsigned int line_limit = arg_count - 6;
-    for (; i + 2 <= line_limit; i += 2)
+    unsigned số_nguyên i = 0;
+    unsigned số_nguyên line_limit = arg_count - 6;
+    cho (; i + 2 <= line_limit; i += 2)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -595,11 +595,11 @@ struct path_procs_t
 
   static void vvcurveto (ENV &env, PARAM& param)
   {
-    unsigned int i = 0;
+    unsigned số_nguyên i = 0;
     point_t pt1 = env.get_pt ();
-    if ((env.argStack.get_count () & 1) != 0)
+    nếu ((env.argStack.get_count () & 1) != 0)
       pt1.move_x (env.eval_arg (i++));
-    for (; i + 4 <= env.argStack.get_count (); i += 4)
+    cho (; i + 4 <= env.argStack.get_count (); i += 4)
     {
       pt1.move_y (env.eval_arg (i));
       point_t pt2 = pt1;
@@ -613,11 +613,11 @@ struct path_procs_t
 
   static void hhcurveto (ENV &env, PARAM& param)
   {
-    unsigned int i = 0;
+    unsigned số_nguyên i = 0;
     point_t pt1 = env.get_pt ();
-    if ((env.argStack.get_count () & 1) != 0)
+    nếu ((env.argStack.get_count () & 1) != 0)
       pt1.move_y (env.eval_arg (i++));
-    for (; i + 4 <= env.argStack.get_count (); i += 4)
+    cho (; i + 4 <= env.argStack.get_count (); i += 4)
     {
       pt1.move_x (env.eval_arg (i));
       point_t pt2 = pt1;
@@ -632,8 +632,8 @@ struct path_procs_t
   static void vhcurveto (ENV &env, PARAM& param)
   {
     point_t pt1, pt2, pt3;
-    unsigned int i = 0;
-    if ((env.argStack.get_count () % 8) >= 4)
+    unsigned số_nguyên i = 0;
+    nếu ((env.argStack.get_count () % 8) >= 4)
     {
       point_t pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
@@ -643,7 +643,7 @@ struct path_procs_t
       pt3.move_x (env.eval_arg (i+3));
       i += 4;
 
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      cho (; i + 8 <= env.argStack.get_count (); i += 8)
       {
 	PATH::curve (env, param, pt1, pt2, pt3);
 	pt1 = env.get_pt ();
@@ -661,13 +661,13 @@ struct path_procs_t
 	pt3 = pt2;
 	pt3.move_x (env.eval_arg (i+7));
       }
-      if (i < env.argStack.get_count ())
+      nếu (i < env.argStack.get_count ())
 	pt3.move_y (env.eval_arg (i));
       PATH::curve (env, param, pt1, pt2, pt3);
     }
-    else
+    không_thì
     {
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      cho (; i + 8 <= env.argStack.get_count (); i += 8)
       {
 	pt1 = env.get_pt ();
 	pt1.move_y (env.eval_arg (i));
@@ -683,7 +683,7 @@ struct path_procs_t
 	pt2.move (env.eval_arg (i+5), env.eval_arg (i+6));
 	pt3 = pt2;
 	pt3.move_y (env.eval_arg (i+7));
-	if ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
+	nếu ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
 	  pt3.move_x (env.eval_arg (i+8));
 	PATH::curve (env, param, pt1, pt2, pt3);
       }
@@ -693,8 +693,8 @@ struct path_procs_t
   static void hvcurveto (ENV &env, PARAM& param)
   {
     point_t pt1, pt2, pt3;
-    unsigned int i = 0;
-    if ((env.argStack.get_count () % 8) >= 4)
+    unsigned số_nguyên i = 0;
+    nếu ((env.argStack.get_count () % 8) >= 4)
     {
       point_t pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
@@ -704,7 +704,7 @@ struct path_procs_t
       pt3.move_y (env.eval_arg (i+3));
       i += 4;
 
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      cho (; i + 8 <= env.argStack.get_count (); i += 8)
       {
 	PATH::curve (env, param, pt1, pt2, pt3);
 	pt1 = env.get_pt ();
@@ -722,13 +722,13 @@ struct path_procs_t
 	pt3 = pt2;
 	pt3.move_y (env.eval_arg (i+7));
       }
-      if (i < env.argStack.get_count ())
+      nếu (i < env.argStack.get_count ())
 	pt3.move_x (env.eval_arg (i));
       PATH::curve (env, param, pt1, pt2, pt3);
     }
-    else
+    không_thì
     {
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      cho (; i + 8 <= env.argStack.get_count (); i += 8)
       {
 	pt1 = env.get_pt ();
 	pt1.move_x (env.eval_arg (i));
@@ -744,7 +744,7 @@ struct path_procs_t
 	pt2.move (env.eval_arg (i+5), env.eval_arg (i+6));
 	pt3 = pt2;
 	pt3.move_x (env.eval_arg (i+7));
-	if ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
+	nếu ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
 	  pt3.move_y (env.eval_arg (i+8));
 	PATH::curve (env, param, pt1, pt2, pt3);
       }
@@ -763,7 +763,7 @@ struct path_procs_t
 
   static void hflex (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 7))
+    nếu (likely (env.argStack.get_count () == 7))
     {
       point_t pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (0));
@@ -781,13 +781,13 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    không_thì
       env.set_error ();
   }
 
   static void flex (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 13))
+    nếu (likely (env.argStack.get_count () == 13))
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (0), env.eval_arg (1));
@@ -804,13 +804,13 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    không_thì
       env.set_error ();
   }
 
   static void hflex1 (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 9))
+    nếu (likely (env.argStack.get_count () == 9))
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (0), env.eval_arg (1));
@@ -828,16 +828,16 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    không_thì
       env.set_error ();
   }
 
   static void flex1 (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 11))
+    nếu (likely (env.argStack.get_count () == 11))
     {
       point_t d;
-      for (unsigned int i = 0; i < 10; i += 2)
+      cho (unsigned số_nguyên i = 0; i < 10; i += 2)
 	d.move (env.eval_arg (i), env.eval_arg (i+1));
 
       point_t pt1 = env.get_pt ();
@@ -852,12 +852,12 @@ struct path_procs_t
       pt5.move (env.eval_arg (8), env.eval_arg (9));
       point_t pt6 = pt5;
 
-      if (fabs (d.x.to_real ()) > fabs (d.y.to_real ()))
+      nếu (fabs (d.x.to_real ()) > fabs (d.y.to_real ()))
       {
 	pt6.move_x (env.eval_arg (10));
 	pt6.y = env.get_pt ().y;
       }
-      else
+      không_thì
       {
 	pt6.x = env.get_pt ().x;
 	pt6.move_y (env.eval_arg (10));
@@ -865,7 +865,7 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    không_thì
       env.set_error ();
   }
 
@@ -900,27 +900,27 @@ struct cs_interpreter_t : interpreter_t<ENV>
     unsigned start_ops = max_ops;
 
     bool ret = true;
-    if (likely (max_ops))
-      for (;;) {
+    nếu (likely (max_ops))
+      cho (;;) {
 	OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-	if (unlikely (SUPER::env.in_error () || !--max_ops))
+	nếu (unlikely (SUPER::env.in_error () || !--max_ops))
 	{
 	  SUPER::env.set_error ();
 	  ret = false;
 	  break;
 	}
-	if (SUPER::env.is_endchar ())
+	nếu (SUPER::env.is_endchar ())
 	  break;
       }
-    else
+    không_thì
     {
       SUPER::env.set_error ();
       ret = false;
     }
 
-    if (budget) *budget -= (int64_t) (start_ops - max_ops);
+    nếu (budget) *budget -= (int64_t) (start_ops - max_ops);
 
-    return ret;
+    trả_về ret;
   }
 
   private:

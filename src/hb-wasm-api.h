@@ -39,7 +39,7 @@ HB_END_DECLS
 # ifdef __cplusplus
 #  define HB_WASM_BEGIN_DECLS	extern "C" {
 #  define HB_WASM_END_DECLS	}
-# else /* !__cplusplus */
+# không_thì /* !__cplusplus */
 #  define HB_WASM_BEGIN_DECLS
 #  define HB_WASM_END_DECLS
 # endif /* !__cplusplus */
@@ -88,12 +88,12 @@ typedef enum {
   DIRECTION_TTB,
   DIRECTION_BTT
 } direction_t;
-#define DIRECTION_IS_VALID(dir)		((((unsigned int) (dir)) & ~3U) == 4)
-#define DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
-#define DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
-#define DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
-#define DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
-#define DIRECTION_REVERSE(dir)		((direction_t) (((unsigned int) (dir)) ^ 1))
+#define DIRECTION_IS_VALID(dir)		((((unsigned số_nguyên) (dir)) & ~3U) == 4)
+#define DIRECTION_IS_HORIZONTAL(dir)	((((unsigned số_nguyên) (dir)) & ~1U) == 4)
+#define DIRECTION_IS_VERTICAL(dir)	((((unsigned số_nguyên) (dir)) & ~1U) == 6)
+#define DIRECTION_IS_FORWARD(dir)	((((unsigned số_nguyên) (dir)) & ~2U) == 4)
+#define DIRECTION_IS_BACKWARD(dir)	((((unsigned số_nguyên) (dir)) & ~2U) == 5)
+#define DIRECTION_REVERSE(dir)		((direction_t) (((unsigned số_nguyên) (dir)) ^ 1))
 
 typedef tag_t script_t; /* ISO 15924 representation of Unicode scripts. */
 
@@ -179,7 +179,7 @@ typedef struct face_t face_t;
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int);
+					  unsigned số_nguyên);
 
 HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face),
@@ -238,8 +238,8 @@ HB_WASM_API (void, font_glyph_to_string) (HB_WASM_EXEC_ENV
 
 typedef struct
 {
-  unsigned int length;
-  ptr_t(int) coords;
+  unsigned số_nguyên length;
+  ptr_t(số_nguyên) coords;
 } coords_t;
 
 HB_WASM_API (bool_t, font_copy_coords) (HB_WASM_EXEC_ENV

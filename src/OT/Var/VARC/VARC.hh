@@ -93,7 +93,7 @@ struct VarComponent
   HB_INTERNAL hb_ubytes_t
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t parent_gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const số_nguyên> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache = nullptr) const;
@@ -111,12 +111,12 @@ struct VarCompositeGlyph
   static void
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const số_nguyên> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache)
   {
-    while (record)
+    trong_khi (record)
     {
       const VarComponent &comp = * (const VarComponent *) (record.arrayZ);
       record = comp.get_path_at (c,
@@ -139,7 +139,7 @@ struct VARC
   HB_INTERNAL bool
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const số_nguyên> coords,
 	       hb_transform_t<> transform = HB_TRANSFORM_IDENTITY,
 	       hb_codepoint_t parent_gid = HB_CODEPOINT_INVALID,
 	       hb_scalar_cache_t *parent_cache = nullptr) const;
@@ -164,7 +164,7 @@ struct VARC
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
+    trả_về get_path_at (c, gid,
 			hb_array (font->coords, font->num_coords));
   }
 
@@ -184,7 +184,7 @@ struct VARC
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
+    trả_về get_path_at (c, gid,
 			hb_array (font->coords, font->num_coords));
   }
 
@@ -212,7 +212,7 @@ struct VARC
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      nếu (scratch)
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -221,30 +221,30 @@ struct VARC
       table.destroy ();
     }
 
-    bool has_data () const { return table->has_data (); }
+    bool has_data () const { trả_về table->has_data (); }
 
     bool
     get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) const
     {
-      if (!table->has_data ()) return false;
+      nếu (!table->has_data ()) trả_về false;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      nếu (unlikely (!scratch)) trả_về true;
       bool ret = table->get_path (font, gid, draw_session, *scratch);
       release_scratch (scratch);
-      return ret;
+      trả_về ret;
     }
 
     bool closure_glyphs (hb_set_t *glyphset) const
     {
-      if (table->has_data ())
-	return table->closure_glyphs (glyphset);
-      return true;
+      nếu (table->has_data ())
+	trả_về table->closure_glyphs (glyphset);
+      trả_về true;
     }
 
     void depend (hb_depend_data_builder_t *depend_data) const
     {
-      if (table->has_data ())
+      nếu (table->has_data ())
 	table->depend (depend_data);
     }
 
@@ -254,21 +254,21 @@ struct VARC
 		 hb_glyph_extents_t *extents) const
     {
 #ifndef HB_NO_DRAW
-      if (!table->has_data ()) return false;
+      nếu (!table->has_data ()) trả_về false;
 
       hb_extents_t<> f_extents;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      nếu (unlikely (!scratch)) trả_về true;
       bool ret = table->get_extents (font, gid, &f_extents, *scratch);
       release_scratch (scratch);
 
-      if (ret)
+      nếu (ret)
 	*extents = f_extents.to_glyph_extents (font->x_scale < 0, font->y_scale < 0);
 
-      return ret;
-#else
-      return false;
+      trả_về ret;
+#không_thì
+      trả_về false;
 #endif
     }
 
@@ -278,18 +278,18 @@ struct VARC
     {
       hb_varc_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      nếu (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
 	scratch = (hb_varc_scratch_t *) hb_calloc (1, sizeof (hb_varc_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	nếu (unlikely (!scratch))
+	  trả_về nullptr;
       }
 
-      return scratch;
+      trả_về scratch;
     }
     void release_scratch (hb_varc_scratch_t *scratch) const
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      nếu (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -301,7 +301,7 @@ struct VARC
     mutable hb_atomic_t<hb_varc_scratch_t *> cached_scratch;
   };
 
-  bool has_data () const { return version.major != 0; }
+  bool has_data () const { trả_về version.major != 0; }
 
   protected:
   FixedVersion<> version; /* Version identifier */

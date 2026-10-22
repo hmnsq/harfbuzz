@@ -57,9 +57,9 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
+template <unsigned số_nguyên key_bits=16,
+	 unsigned số_nguyên value_bits=8 + 32 - key_bits,
+	 unsigned số_nguyên cache_bits=8,
 	 bool thread_safe=true>
 struct hb_cache_t
 {
@@ -68,12 +68,12 @@ struct hb_cache_t
 								     hb_atomic_t<unsigned char>,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
+											       hb_atomic_t<unsigned số_nguyên>>::type>::type,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
 								     unsigned char,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned số_nguyên>::type>::type
 					  >::type;
 
   static_assert ((key_bits >= cache_bits), "");
@@ -85,32 +85,32 @@ struct hb_cache_t
 
   void clear ()
   {
-    for (auto &v : values)
+    cho (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  bool get (unsigned số_nguyên key, unsigned số_nguyên *value) const
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned số_nguyên k = key & ((1u<<cache_bits)-1);
+    unsigned số_nguyên v = values[k];
+    constexpr unsigned số_nguyên empty = (1ULL << (8 * sizeof (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
+    nếu ((key >> key_bits) |
 	((v >> value_bits) ^ (key >> cache_bits)) |
 	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
+      trả_về false;
     *value = v & ((1u<<value_bits)-1);
-    return true;
+    trả_về true;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  void set (unsigned số_nguyên key, unsigned số_nguyên value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    nếu (unlikely ((key >> key_bits) || (value >> value_bits)))
+      trả_về; /* Overflows */
+    unsigned số_nguyên k = key & ((1u<<cache_bits)-1);
+    unsigned số_nguyên v = ((key>>cache_bits)<<value_bits) | value;
     values[k] = v;
   }
 
