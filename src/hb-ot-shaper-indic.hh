@@ -27,13 +27,13 @@
 #ifndef HB_OT_SHAPER_INDIC_HH
 #define HB_OT_SHAPER_INDIC_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-ot-shaper-syllabic.hh"
+#ضمن "hb-ot-shaper-syllabic.hh"
 
 
 /* Visual positions in a syllable from left to right. */
-enum ot_position_t {
+تعداد ot_position_t {
   POS_START = 0,
 
   POS_RA_TO_BECOME_REPH = 1,

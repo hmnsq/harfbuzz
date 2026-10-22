@@ -28,10 +28,10 @@
 #ifndef HB_AAT_LAYOUT_TRAK_TABLE_HH
 #define HB_AAT_LAYOUT_TRAK_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-stat-table.hh"
+#ضمن "hb-aat-layout-common.hh"
+#ضمن "hb-ot-layout.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-stat-table.hh"
 
 /*
  * trak -- Tracking
@@ -40,139 +40,139 @@
 #define HB_AAT_TAG_trak HB_TAG('t','r','a','k')
 
 
-namespace AAT {
+نطاق AAT {
 
 
-struct TrackTableEntry
+بنية TrackTableEntry
 {
-  friend struct TrackData;
+  friend بنية TrackData;
 
-  float get_track_value () const { return track.to_float (); }
+  عائم get_track_قدر () ثابت { أرجع track.to_float (); }
 
-  float interpolate_at (unsigned int idx,
-			float ptem,
-			const void *base,
-			hb_array_t<const F16DOT16> size_table) const
+  عائم interpolate_at (unsigned صحيح idx,
+			عائم ptem,
+			ثابت فراغ *base,
+			hb_array_t<ثابت F16DOT16> size_table) ثابت
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    ثابت FWORD *values = (base+اقدار_Z).arrayZ;
 
-    float s0 = size_table[idx].to_float ();
-    float s1 = size_table[idx + 1].to_float ();
-    int v0 = values[idx];
-    int v1 = values[idx + 1];
+    عائم s0 = size_table[idx].to_float ();
+    عائم s1 = size_table[idx + 1].to_float ();
+    صحيح v0 = values[idx];
+    صحيح v1 = values[idx + 1];
 
     // Deal with font bugs.
-    if (unlikely (s1 < s0))
+    إذا (unlikely (s1 < s0))
     { hb_swap (s0, s1); hb_swap (v0, v1); }
-    if (unlikely (ptem < s0)) return v0;
-    if (unlikely (ptem > s1)) return v1;
-    if (unlikely (s0 == s1)) return (v0 + v1) * 0.5f;
+    إذا (unlikely (ptem < s0)) أرجع v0;
+    إذا (unlikely (ptem > s1)) أرجع v1;
+    إذا (unlikely (s0 == s1)) أرجع (v0 + v1) * 0.5f;
 
-    float t = (ptem - s0) / (s1 - s0);
-    return v0 + t * (v1 - v0);
+    عائم t = (ptem - s0) / (s1 - s0);
+    أرجع v0 + t * (v1 - v0);
   }
 
-  float get_value (float ptem,
-		   const void *base,
-		   hb_array_t<const F16DOT16> size_table) const
+  عائم get_قدر (عائم ptem,
+		   ثابت فراغ *base,
+		   hb_array_t<ثابت F16DOT16> size_table) ثابت
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    ثابت FWORD *values = (base+اقدار_Z).arrayZ;
 
-    unsigned int n_sizes = size_table.length;
+    unsigned صحيح n_sizes = size_table.length;
 
     /*
      * Choose size.
      */
-    if (!n_sizes) return 0.f;
-    if (n_sizes == 1) return values[0];
+    إذا (!n_sizes) أرجع 0.f;
+    إذا (n_sizes == 1) أرجع values[0];
 
     // At least two entries.
 
     unsigned i;
-    for (i = 0; i < n_sizes; i++)
-      if (size_table[i].to_float () >= ptem)
-	break;
+    لكل (i = 0; i < n_sizes; i++)
+      إذا (size_table[i].to_float () >= ptem)
+	اكسر;
 
     // Boundary conditions.
-    if (i == 0)       return values[0];
-    if (i == n_sizes) return values[n_sizes - 1];
+    إذا (i == 0)       أرجع values[0];
+    إذا (i == n_sizes) أرجع values[n_sizes - 1];
 
     // Exact match.
-    if (size_table[i].to_float () == ptem) return values[i];
+    إذا (size_table[i].to_float () == ptem) أرجع values[i];
 
     // Interpolate.
-    return interpolate_at (i - 1, ptem, base, size_table);
+    أرجع interpolate_at (i - 1, ptem, base, size_table);
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base,
-		 unsigned int n_sizes) const
+  عام:
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت فراغ *base,
+		 unsigned صحيح n_sizes) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (valuesZ.sanitize (c, base, n_sizes))));
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
+			  (اقدار_Z.sanitize (c, base, n_sizes))));
   }
 
-  protected:
+  محمي:
   F16DOT16	track;		/* Track value for this record. */
   OT::NameID	trackNameID;	/* The 'name' table index for this track.
 				 * (a short word or phrase like "loose"
 				 * or "very tight") */
   NNOffset16To<UnsizedArrayOf<FWORD>>
-		valuesZ;	/* Offset from start of tracking table to
+		اقدار_Z;	/* Offset from start of tracking table to
 				 * per-size tracking values for this track. */
 
-  public:
+  عام:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct TrackData
+بنية TrackData
 {
-  float get_tracking (const void *base, float ptem, float track = 0.f) const
+  عائم get_tracking (ثابت فراغ *base, عائم ptem, عائم track = 0.f) ثابت
   {
-    unsigned count = nTracks;
-    hb_array_t<const F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
+    unsigned گنتی = nTracks;
+    hb_array_t<ثابت F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
 
-    if (!count) return 0.f;
-    if (count == 1) return trackTable[0].get_value (ptem, base, size_table);
+    إذا (!گنتی) أرجع 0.f;
+    إذا (گنتی == 1) أرجع trackTable[0].get_قدر (ptem, base, size_table);
 
     // At least two entries.
 
     unsigned i = 0;
-    unsigned j = count - 1;
+    unsigned j = گنتی - 1;
 
     // Find the two entries that track is between.
-    while (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
+    طالما (i + 1 < گنتی && trackTable[i + 1].get_track_قدر () <= track)
       i++;
-    while (j > 0 && trackTable[j - 1].get_track_value () >= track)
+    طالما (j > 0 && trackTable[j - 1].get_track_قدر () >= track)
       j--;
 
     // Exact match.
-    if (i == j) return trackTable[i].get_value (ptem, base, size_table);
+    إذا (i == j) أرجع trackTable[i].get_قدر (ptem, base, size_table);
 
     // Interpolate.
 
-    float t0 = trackTable[i].get_track_value ();
-    float t1 = trackTable[j].get_track_value ();
+    عائم t0 = trackTable[i].get_track_قدر ();
+    عائم t1 = trackTable[j].get_track_قدر ();
 
-    float t = (track - t0) / (t1 - t0);
+    عائم t = (track - t0) / (t1 - t0);
 
-    float a = trackTable[i].get_value (ptem, base, size_table);
-    float b = trackTable[j].get_value (ptem, base, size_table);
-    return a + t * (b - a);
+    عائم a = trackTable[i].get_قدر (ptem, base, size_table);
+    عائم b = trackTable[j].get_قدر (ptem, base, size_table);
+    أرجع a + t * (b - a);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
 			  sizeTable.sanitize (c, base, nSizes) &&
 			  trackTable.sanitize (c, nTracks, base, nSizes)));
   }
 
-  protected:
+  محمي:
   HBUINT16	nTracks;	/* Number of separate tracks included in this table. */
   HBUINT16	nSizes;		/* Number of point sizes included in this table. */
   NNOffset32To<UnsizedArrayOf<F16DOT16>>
@@ -181,58 +181,58 @@ struct TrackData
   UnsizedArrayOf<TrackTableEntry>
 		trackTable;	/* Array[nTracks] of TrackTableEntry records. */
 
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (8, trackTable);
 };
 
-struct trak
+بنية trak
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_trak;
+  ساكن constexpr hb_tag_t tableTag = HB_AAT_TAG_trak;
 
-  bool has_data () const { return version.to_int (); }
+  منطقي has_data () ثابت { أرجع version.to_int (); }
 
-  hb_position_t get_h_tracking (hb_font_t *font, float track = 0.f) const
+  hb_position_t get_h_tracking (hb_font_t *font, عائم track = 0.f) ثابت
   {
-    float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_x ((this+horizData).get_tracking (this, ptem, track));
+    عائم ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
+    أرجع font->em_scalef_x ((هذا+horizData).get_tracking (هذا, ptem, track));
   }
-  hb_position_t get_v_tracking (hb_font_t *font, float track = 0.f) const
+  hb_position_t get_v_tracking (hb_font_t *font, عائم track = 0.f) ثابت
   {
-    float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_y ((this+vertData).get_tracking (this, ptem, track));
+    عائم ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
+    أرجع font->em_scalef_y ((هذا+vertData).get_tracking (هذا, ptem, track));
   }
-  hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, float track = 0.f) const
+  hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, عائم track = 0.f) ثابت
   {
 #ifndef HB_NO_STYLE
-    if (!font->face->table.STAT->has_data ())
-      return 0;
-    return HB_DIRECTION_IS_HORIZONTAL (dir) ?
+    إذا (!font->face->table.STAT->has_data ())
+      أرجع 0;
+    أرجع HB_DIRECTION_IS_HORIZONTAL (dir) ?
       get_h_tracking (font, track) :
       get_v_tracking (font, track);
-#else
-    return 0;
+#وإلا
+    أرجع 0;
 #endif
   }
 
-  bool apply (hb_aat_apply_context_t *c, float track = 0.f) const
+  منطقي apply (hb_aat_apply_context_t *c, عائم track = 0.f) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    float ptem = c->font->ptem;
-    if (unlikely (ptem <= 0.f))
+    عائم ptem = c->font->ptem;
+    إذا (unlikely (ptem <= 0.f))
     {
       /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
       ptem = HB_CORETEXT_DEFAULT_FONT_SIZE;
     }
 
     hb_buffer_t *buffer = c->buffer;
-    if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    إذا (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
     {
       hb_position_t advance_to_add = get_h_tracking (c->font, track);
       foreach_grapheme (buffer, start, end)
 	buffer->pos[start].x_advance = hb_saturate_add (buffer->pos[start].x_advance, advance_to_add);
     }
-    else
+    وإلا
     {
       hb_position_t advance_to_add = get_v_tracking (c->font, track);
       foreach_grapheme (buffer, start, end)
@@ -242,18 +242,18 @@ struct trak
     return_trace (true);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  horizData.sanitize (c, هذا, هذا) &&
+			  vertData.sanitize (c, هذا, هذا)));
   }
 
-  protected:
+  محمي:
   FixedVersion<>version;	/* Version of the tracking table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the tracking table (set to 0). */
@@ -265,7 +265,7 @@ struct trak
 				 * for vertical text (or 0 if none). */
   HBUINT16	reserved;	/* Reserved. Set to 0. */
 
-  public:
+  عام:
   DEFINE_SIZE_STATIC (12);
 };
 
