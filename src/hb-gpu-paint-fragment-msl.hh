@@ -1,4 +1,4 @@
-static const char *hb_gpu_paint_fragment_msl =
+स्थिर ध्रुव वर्ण *hb_gpu_paint_fragment_msl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

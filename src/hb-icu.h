@@ -29,9 +29,9 @@
 #ifndef HB_ICU_H
 #define HB_ICU_H
 
-#include "hb.h"
+#अन्तर्भाव "hb.h"
 
-#include <unicode/uscript.h>
+#अन्तर्भाव <unicode/uscript.h>
 
 HB_BEGIN_DECLS
 
@@ -44,7 +44,7 @@ hb_icu_script_from_script (hb_script_t script);
 
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_icu_get_unicode_funcs (void);
+hb_icu_get_unicode_funcs (शून्य);
 
 
 HB_END_DECLS
