@@ -24,18 +24,18 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 #ifdef HAVE_CORETEXT
 
-#include "hb-coretext.hh"
-#include "hb-aat-layout-trak-table.hh"
+#অন্তর্ভাব "hb-coretext.hh"
+#অন্তর্ভাব "hb-aat-layout-trak-table.hh"
 
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#অন্তর্ভাব "hb-draw.hh"
+#অন্তর্ভাব "hb-font.hh"
+#অন্তর্ভাব "hb-machinery.hh"
 
-#if (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
+#যদি (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
     || (defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__ < 60000) \
     || (defined(__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__ < 90000)
 #  define kCTFontOrientationDefault kCTFontDefaultOrientation
@@ -45,417 +45,417 @@
 
 #define MAX_GLYPHS 256u
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_coretext_get_nominal_glyph (hb_font_t *font,
-			       void *font_data HB_UNUSED,
+			       শূন্য *font_তথ্য HB_UNUSED,
 			       hb_codepoint_t unicode,
 			       hb_codepoint_t *glyph,
-			       void *user_data HB_UNUSED)
+			       শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
   UniChar ch[2];
   CGGlyph cg_glyph[2];
-  unsigned count = 0;
+  unsigned গুনতি = 0;
 
-  if (unicode <= 0xFFFF)
+  যদি (unicode <= 0xFFFF)
   {
-    ch[count++] = unicode;
+    ch[গুনতি++] = unicode;
   }
-  else if (unicode <= 0x10FFFF)
+  অন্যথা যদি (unicode <= 0x10FFFF)
   {
-    ch[count++] = (unicode >> 10) + 0xD7C0;
-    ch[count++] = (unicode & 0x3FF) + 0xDC00;
+    ch[গুনতি++] = (unicode >> 10) + 0xD7C0;
+    ch[গুনতি++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  অন্যথা
+    ch[গুনতি++] = 0xFFFD;
 
-  if (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count))
+  যদি (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, গুনতি))
   {
     *glyph = cg_glyph[0];
-    return true;
+    ফেরত সত্য;
   }
-  return false;
+  ফেরত মিথ্যা;
 }
 
-static unsigned int
+স্থির unsigned পূর্ণসংখ্যা
 hb_coretext_get_nominal_glyphs (hb_font_t *font,
-				void *font_data,
-				unsigned int count,
-				const hb_codepoint_t *first_unicode,
-				unsigned int unicode_stride,
+				শূন্য *font_তথ্য,
+				unsigned পূর্ণসংখ্যা গুনতি,
+				ধ্রুবক hb_codepoint_t *first_unicode,
+				unsigned পূর্ণসংখ্যা unicode_stride,
 				hb_codepoint_t *first_glyph,
-				unsigned int glyph_stride,
-				void *user_data HB_UNUSED)
+				unsigned পূর্ণসংখ্যা glyph_stride,
+				শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
   // If any non-BMP codepoint is requested, use the slow path.
-  bool slow_path = false;
+  যৌক্তিক slow_path = মিথ্যা;
   auto *unicode = first_unicode;
-  for (unsigned i = 0; i < count; i++)
+  জন্য (unsigned i = 0; i < গুনতি; i++)
   {
-    if (*unicode > 0xFFFF)
+    যদি (*unicode > 0xFFFF)
     {
-      slow_path = true;
-      break;
+      slow_path = সত্য;
+      বিরতি;
     }
-    unicode = &StructAtOffset<const hb_codepoint_t> (unicode, unicode_stride);
+    unicode = &StructAtOffset<ধ্রুবক hb_codepoint_t> (unicode, unicode_stride);
   }
 
-  if (unlikely (slow_path))
+  যদি (unlikely (slow_path))
   {
-    for (unsigned i = 0; i < count; i++)
+    জন্য (unsigned i = 0; i < গুনতি; i++)
     {
-      if (!hb_coretext_get_nominal_glyph (font, font_data, *first_unicode, first_glyph, nullptr))
-	return i;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
+      যদি (!hb_coretext_get_nominal_glyph (font, font_তথ্য, *first_unicode, first_glyph, nullptr))
+	ফেরত i;
+      first_unicode = &StructAtOffset<ধ্রুবক hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return count;
+    ফেরত গুনতি;
   }
 
   UniChar ch[MAX_GLYPHS];
   CGGlyph cg_glyph[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  জন্য (unsigned i = 0; i < গুনতি; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((পূর্ণসংখ্যা) MAX_GLYPHS, (পূর্ণসংখ্যা) গুনতি - (পূর্ণসংখ্যা) i);
+    জন্য (unsigned j = 0; j < c; j++)
     {
       ch[j] = *first_unicode;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
+      first_unicode = &StructAtOffset<ধ্রুবক hb_codepoint_t> (first_unicode, unicode_stride);
     }
-    if (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
+    যদি (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
     {
       // Use slow path partially and return at first failure.
-      for (unsigned j = 0; j < c; j++)
+      জন্য (unsigned j = 0; j < c; j++)
       {
-	if (!hb_coretext_get_nominal_glyph (font, font_data, ch[j], first_glyph, nullptr))
-	  return i + j;
+	যদি (!hb_coretext_get_nominal_glyph (font, font_তথ্য, ch[j], first_glyph, nullptr))
+	  ফেরত i + j;
 	first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
       }
     }
-    for (unsigned j = 0; j < c; j++)
+    জন্য (unsigned j = 0; j < c; j++)
     {
       *first_glyph = cg_glyph[j];
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
   }
 
-  return count;
+  ফেরত গুনতি;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_coretext_get_variation_glyph (hb_font_t *font,
-				 void *font_data HB_UNUSED,
+				 শূন্য *font_তথ্য HB_UNUSED,
 				 hb_codepoint_t unicode,
 				 hb_codepoint_t variation_selector,
 				 hb_codepoint_t *glyph,
-				 void *user_data HB_UNUSED)
+				 শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
   UniChar ch[4];
   CGGlyph cg_glyph[4];
-  unsigned count = 0;
+  unsigned গুনতি = 0;
 
   // Add Unicode, then variation selector. Ugly, but works.
   //
-  if (unicode <= 0xFFFF)
-    ch[count++] = unicode;
-  else if (unicode <= 0x10FFFF)
+  যদি (unicode <= 0xFFFF)
+    ch[গুনতি++] = unicode;
+  অন্যথা যদি (unicode <= 0x10FFFF)
   {
-    ch[count++] = (unicode >> 10) + 0xD7C0;
-    ch[count++] = (unicode & 0x3FF) + 0xDC00;
+    ch[গুনতি++] = (unicode >> 10) + 0xD7C0;
+    ch[গুনতি++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  অন্যথা
+    ch[গুনতি++] = 0xFFFD;
 
-  if (variation_selector <= 0xFFFF)
-    ch[count++] = variation_selector;
-  else if (variation_selector <= 0x10FFFF)
+  যদি (variation_selector <= 0xFFFF)
+    ch[গুনতি++] = variation_selector;
+  অন্যথা যদি (variation_selector <= 0x10FFFF)
   {
-    ch[count++] = (variation_selector >> 10) + 0xD7C0;
-    ch[count++] = (variation_selector & 0x3FF) + 0xDC00;
+    ch[গুনতি++] = (variation_selector >> 10) + 0xD7C0;
+    ch[গুনতি++] = (variation_selector & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  অন্যথা
+    ch[গুনতি++] = 0xFFFD;
 
-  CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count);
+  CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, গুনতি);
 
   // All except for first should be zero if we succeeded
-  for (unsigned i = 1; i < count; i++)
-    if (cg_glyph[i])
-      return false;
+  জন্য (unsigned i = 1; i < গুনতি; i++)
+    যদি (cg_glyph[i])
+      ফেরত মিথ্যা;
 
   // Humm. CoreText falls back to the default glyph if the variation selector
   // is not supported.  We cannot truly detect that case. So, in essence,
   // we are always returning true here...
 
   *glyph = cg_glyph[0];
-  return true;
+  ফেরত সত্য;
 }
 
-static void
+স্থির শূন্য
 hb_coretext_get_glyph_h_advances (hb_font_t* font,
-				  void* font_data HB_UNUSED,
-				  unsigned count,
-				  const hb_codepoint_t *first_glyph,
+				  শূন্য* font_তথ্য HB_UNUSED,
+				  unsigned গুনতি,
+				  ধ্রুবক hb_codepoint_t *first_glyph,
 				  unsigned glyph_stride,
 				  hb_position_t *first_advance,
 				  unsigned advance_stride,
-				  void *user_data HB_UNUSED)
+				  শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
+  CGFloat ct_font_আকার = CTFont_Get_আকার (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_আকার;
   hb_position_t tracking = font->face->table.trak->get_tracking (font, HB_DIRECTION_LTR, 0.f);
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  জন্য (unsigned i = 0; i < গুনতি; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((পূর্ণসংখ্যা) MAX_GLYPHS, (পূর্ণসংখ্যা) গুনতি - (পূর্ণসংখ্যা) i);
+    জন্য (unsigned j = 0; j < c; j++)
     {
       cg_glyph[j] = *first_glyph;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      first_glyph = &StructAtOffset<ধ্রুবক hb_codepoint_t> (first_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationHorizontal, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    জন্য (unsigned j = 0; j < c; j++)
     {
       *first_advance = hb_clamp_to<hb_position_t> (
-	  round (advances[j].width * x_mult) - (double) tracking);
+	  round (advances[j].width * x_mult) - (দ্বিগুণ) tracking);
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
     }
   }
 }
 
 #ifndef HB_NO_VERTICAL
-static void
+স্থির শূন্য
 hb_coretext_get_glyph_v_advances (hb_font_t* font,
-				  void* font_data HB_UNUSED,
-				  unsigned count,
-				  const hb_codepoint_t *first_glyph,
+				  শূন্য* font_তথ্য HB_UNUSED,
+				  unsigned গুনতি,
+				  ধ্রুবক hb_codepoint_t *first_glyph,
 				  unsigned glyph_stride,
 				  hb_position_t *first_advance,
 				  unsigned advance_stride,
-				  void *user_data HB_UNUSED)
+				  শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_আকার = CTFont_Get_আকার (ct_font);
+  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_আকার;
   hb_position_t tracking = font->face->table.trak->get_tracking (font, HB_DIRECTION_TTB, 0.f);
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  জন্য (unsigned i = 0; i < গুনতি; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((পূর্ণসংখ্যা) MAX_GLYPHS, (পূর্ণসংখ্যা) গুনতি - (পূর্ণসংখ্যা) i);
+    জন্য (unsigned j = 0; j < c; j++)
     {
       cg_glyph[j] = *first_glyph;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      first_glyph = &StructAtOffset<ধ্রুবক hb_codepoint_t> (first_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationVertical, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    জন্য (unsigned j = 0; j < c; j++)
     {
       *first_advance = hb_clamp_to<hb_position_t> (
-	  round (advances[j].width * y_mult) - (double) tracking);
+	  round (advances[j].width * y_mult) - (দ্বিগুণ) tracking);
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
     }
   }
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_coretext_get_glyph_v_origin (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				শূন্য *font_তথ্য HB_UNUSED,
 				hb_codepoint_t glyph,
 				hb_position_t *x,
 				hb_position_t *y,
-				void *user_data HB_UNUSED)
+				শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = -(CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_আকার = CTFont_Get_আকার (ct_font);
+  CGFloat x_mult = -(CGFloat) font->x_scale / ct_font_আকার;
+  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_আকার;
 
-  const CGGlyph glyphs = glyph;
+  ধ্রুবক CGGlyph glyphs = glyph;
   CGSize origin;
   CTFontGetVerticalTranslationsForGlyphs (ct_font, &glyphs, &origin, 1);
 
   *x = hb_clamp_to<hb_position_t> (round (x_mult * origin.width));
   *y = hb_clamp_to<hb_position_t> (round (y_mult * origin.height));
 
-  return true;
+  ফেরত সত্য;
 }
 #endif
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_coretext_get_glyph_extents (hb_font_t *font,
-			       void *font_data HB_UNUSED,
+			       শূন্য *font_তথ্য HB_UNUSED,
 			       hb_codepoint_t glyph,
 			       hb_glyph_extents_t *extents,
-			       void *user_data HB_UNUSED)
+			       শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_আকার = CTFont_Get_আকার (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_আকার;
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_আকার;
 
   CGGlyph glyphs[1] = { glyph };
   CGRect bounds = ::CTFontGetBoundingRectsForGlyphs(ct_font,
-						    kCTFontOrientationDefault, glyphs, NULL, 1);
+						    kCTFontOrientationDefault, glyphs, ফাঁকা, 1);
 
-  double y_bearing = round ((bounds.origin.y + bounds.size.height) * y_mult);
+  দ্বিগুণ y_bearing = round ((bounds.origin.y + bounds.আকার_2.height) * y_mult);
 
   extents->x_bearing = hb_clamp_to<hb_position_t> (round (bounds.origin.x * x_mult));
   extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-  extents->width = hb_clamp_to<hb_position_t> (round (bounds.size.width * x_mult));
+  extents->width = hb_clamp_to<hb_position_t> (round (bounds.আকার_2.width * x_mult));
   extents->height = hb_clamp_to<hb_position_t> (round (bounds.origin.y * y_mult) - y_bearing);
 
-  return true;
+  ফেরত সত্য;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_coretext_get_font_h_extents (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				শূন্য *font_তথ্য HB_UNUSED,
 				hb_font_extents_t *metrics,
-				void *user_data HB_UNUSED)
+				শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_আকার = CTFont_Get_আকার (ct_font);
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_আকার;
 
   metrics->ascender = hb_clamp_to<hb_position_t> (round (CTFontGetAscent (ct_font) * y_mult));
   metrics->descender = hb_clamp_to<hb_position_t> (-round (CTFontGetDescent (ct_font) * y_mult));
-  metrics->line_gap = hb_clamp_to<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
+  metrics->সারি_gap = hb_clamp_to<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
 
-  return true;
+  ফেরত সত্য;
 }
 
 #ifndef HB_NO_DRAW
 
-static void
-ct_apply_func (void *info, const CGPathElement *element)
+স্থির শূন্য
+ct_apply_func (শূন্য *info, ধ্রুবক CGPathElement *element)
 {
   hb_draw_session_t *draws = (hb_draw_session_t *) info;
 
-  switch (element->type)
+  নির্বাচন (element->type)
   {
-  case kCGPathElementMoveToPoint:
+  ক্ষেত্র kCGPathElementMoveToPoint:
     draws->move_to (element->points[0].x, element->points[0].y);
-    break;
-  case kCGPathElementAddLineToPoint:
-    draws->line_to (element->points[0].x, element->points[0].y);
-    break;
-  case kCGPathElementAddQuadCurveToPoint:
+    বিরতি;
+  ক্ষেত্র k_CGPath_Element_Add_সারি_To_Point:
+    draws->সারি_to (element->points[0].x, element->points[0].y);
+    বিরতি;
+  ক্ষেত্র kCGPathElementAddQuadCurveToPoint:
     draws->quadratic_to (element->points[0].x, element->points[0].y,
 			 element->points[1].x, element->points[1].y);
-    break;
-  case kCGPathElementAddCurveToPoint:
+    বিরতি;
+  ক্ষেত্র kCGPathElementAddCurveToPoint:
     draws->cubic_to (element->points[0].x, element->points[0].y,
 		     element->points[1].x, element->points[1].y,
 		     element->points[2].x, element->points[2].y);
-    break;
-  case kCGPathElementCloseSubpath:
+    বিরতি;
+  ক্ষেত্র kCGPathElementCloseSubpath:
     draws->close_path ();
-    break;
+    বিরতি;
   }
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_coretext_draw_glyph_or_fail (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				শূন্য *font_তথ্য HB_UNUSED,
 				hb_codepoint_t glyph,
-				hb_draw_funcs_t *draw_funcs, void *draw_data,
-				void *user_data)
+				hb_draw_funcs_t *draw_funcs, শূন্য *draw_তথ্য,
+				শূন্য *user_তথ্য)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_আকার = CTFont_Get_আকার (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_আকার;
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_আকার;
 
   CGAffineTransform transform = CGAffineTransformIdentity;
   transform = CGAffineTransformScale (transform, x_mult, y_mult);
 
   hb_cf_ptr_t<CGPathRef> path (CTFontCreatePathForGlyph (ct_font, glyph, &transform));
-  if (!path)
-    return false;
+  যদি (!path)
+    ফেরত মিথ্যা;
 
-  hb_draw_session_t drawing {draw_funcs, draw_data};
+  hb_draw_session_t drawing {draw_funcs, draw_তথ্য};
 
   CGPathApply (path, &drawing, ct_apply_func);
 
-  return true;
+  ফেরত সত্য;
 }
 #endif
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_coretext_get_glyph_name (hb_font_t *font,
-			    void *font_data HB_UNUSED,
+			    শূন্য *font_তথ্য HB_UNUSED,
 			    hb_codepoint_t glyph,
-			    char *name, unsigned int size,
-			    void *user_data HB_UNUSED)
+			    অক্ষর *name, unsigned পূর্ণসংখ্যা আকার_2,
+			    শূন্য *user_তথ্য HB_UNUSED)
 {
-  CGFontRef cg_font = (CGFontRef) (const void *) font->face->data.coretext;
+  CGFontRef cg_font = (CGFontRef) (ধ্রুবক শূন্য *) font->face->তথ্য.coretext;
 
   CGGlyph cg_glyph = glyph;
   hb_cf_ptr_t<CFStringRef> cf_name (CGFontCopyGlyphNameForGlyph (cg_font, cg_glyph));
-  if (!cf_name)
-    return false;
+  যদি (!cf_name)
+    ফেরত মিথ্যা;
 
-  if (!size)
-    return true;
+  যদি (!আকার_2)
+    ফেরত সত্য;
 
-  CFIndex len = CFStringGetLength (cf_name);
-  if (len > (CFIndex)size - 1)
-    len = (CFIndex)size - 1;
+  CFIndex len = CFString_Get_দৈর্ঘ্য (cf_name);
+  যদি (len > (CFIndex)আকার_2 - 1)
+    len = (CFIndex)আকার_2 - 1;
 
   CFStringGetBytes (cf_name, CFRangeMake (0, len),
-		    kCFStringEncodingUTF8, 0, false,
-		    (UInt8 *) name, size, &len);
+		    kCFStringEncodingUTF8, 0, মিথ্যা,
+		    (UInt8 *) name, আকার_2, &len);
 
   name[len] = '\0';
 
-  return true;
+  ফেরত সত্য;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_coretext_get_glyph_from_name (hb_font_t *font,
-				 void *font_data HB_UNUSED,
-				 const char *name, int len,
+				 শূন্য *font_তথ্য HB_UNUSED,
+				 ধ্রুবক অক্ষর *name, পূর্ণসংখ্যা len,
 				 hb_codepoint_t *glyph,
-				 void *user_data HB_UNUSED)
+				 শূন্য *user_তথ্য HB_UNUSED)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ধ্রুবক শূন্য *) font->তথ্য.coretext;
 
-  if (len == -1)
+  যদি (len == -1)
     len = strlen (name);
 
   hb_cf_ptr_t<CFStringRef> cf_name (CFStringCreateWithBytes (kCFAllocatorDefault,
-							     (const UInt8 *) name, len,
-							     kCFStringEncodingUTF8, false));
+							     (ধ্রুবক UInt8 *) name, len,
+							     kCFStringEncodingUTF8, মিথ্যা));
   CGGlyph cg_glyph = CTFontGetGlyphWithName (ct_font, cf_name);
   *glyph = cg_glyph;
 
   // TODO Return true for .notdef; hb-ft does that.
 
-  return cg_glyph != 0;
+  ফেরত cg_glyph != 0;
 }
 
 
-static inline void free_static_coretext_funcs ();
+স্থির অন্তঃরেখ শূন্য free_static_coretext_funcs ();
 
-static struct hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_coretext_font_funcs_lazy_loader_t>
+স্থির কাঠামো hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_coretext_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  স্থির hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
@@ -486,20 +486,20 @@ static struct hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t
 
     hb_atexit (free_static_coretext_funcs);
 
-    return funcs;
+    ফেরত funcs;
   }
 } static_coretext_funcs;
 
-static inline
-void free_static_coretext_funcs ()
+স্থির অন্তঃরেখ
+শূন্য free_static_coretext_funcs ()
 {
   static_coretext_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+স্থির hb_font_funcs_t *
 _hb_coretext_get_font_funcs ()
 {
-  return static_coretext_funcs.get_unconst ();
+  ফেরত static_coretext_funcs.get_unconst ();
 }
 
 
@@ -521,16 +521,16 @@ _hb_coretext_get_font_funcs ()
  *
  * Since: 10.1.0
  **/
-void
+শূন্য
 hb_coretext_font_set_funcs (hb_font_t *font)
 {
   CTFontRef ct_font = hb_coretext_font_get_ct_font (font);
-  if (unlikely (!ct_font))
+  যদি (unlikely (!ct_font))
   {
     hb_font_set_funcs (font,
 		       hb_font_funcs_get_empty (),
 		       nullptr, nullptr);
-    return;
+    ফেরত;
   }
 
   hb_font_set_funcs (font,

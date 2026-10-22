@@ -28,471 +28,471 @@
 #ifndef GRAPH_LIGATURE_GRAPH_HH
 #define GRAPH_LIGATURE_GRAPH_HH
 
-#include "graph.hh"
-#include "../OT/Layout/GSUB/LigatureSubst.hh"
-#include "../OT/Layout/GSUB/LigatureSubstFormat1.hh"
-#include "../OT/Layout/GSUB/LigatureSet.hh"
-#include "../hb-ot-dual.hh"
-#include <algorithm>
-#include <utility>
+#অন্তর্ভাব "graph.hh"
+#অন্তর্ভাব "../OT/Layout/GSUB/LigatureSubst.hh"
+#অন্তর্ভাব "../OT/Layout/GSUB/LigatureSubstFormat1.hh"
+#অন্তর্ভাব "../OT/Layout/GSUB/LigatureSet.hh"
+#অন্তর্ভাব "../hb-ot-dual.hh"
+#অন্তর্ভাব <algorithm>
+#অন্তর্ভাব <utility>
 
-namespace graph {
+নামাকাশ graph {
 
-struct LigatureSet : public OT::Layout::GSUB_impl::LigatureSet<SmallTypes>
+কাঠামো LigatureSet : সর্বজনীন OT::Layout::GSUB_impl::LigatureSet<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_ফলাফল_t<শূন্য> sanitize (ধ্রুবক graph_t::vertex_t& vertex) ধ্রুবক
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size)) return Err(SANITIZE_FAILURE);
+    size_t vertex_len = vertex.table_আকার ();
+    যদি (unlikely (vertex_len < OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_আকার)) ফেরত Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    size_t total_len = ligature.get_size() + OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size - ligature.len.get_size();
-    if (unlikely (vertex_len < total_len)) {
-      return Err(SANITIZE_FAILURE);
+    size_t যোগ_len = ligature.get_আকার() + OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_আকার - ligature.len.get_আকার();
+    যদি (unlikely (vertex_len < যোগ_len)) {
+      ফেরত Err(SANITIZE_FAILURE);
     }
-    return Ok();
+    ফেরত Ok();
   }
 };
 
-struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>
+কাঠামো LigatureSubstFormat1 : সর্বজনীন OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_ফলাফল_t<শূন্য> sanitize (ধ্রুবক graph_t::vertex_t& vertex) ধ্রুবক
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t vertex_len = vertex.table_আকার ();
+    unsigned min_আকার = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_আকার;
+    যদি (unlikely (vertex_len < min_আকার)) ফেরত Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < min_size + ligatureSet.get_size() - ligatureSet.len.get_size()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    যদি (unlikely (vertex_len < min_আকার + ligatureSet.get_আকার() - ligatureSet.len.get_আকার()))
+      ফেরত Err(SANITIZE_FAILURE);
+    ফেরত Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  graph_ফলাফল_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
+                                                         unsigned this_সূচক)
   {
-    TRY_ASSIGN (auto split_points, compute_split_points(c, this_index));
-    if (!split_points)
-      return Ok(hb_vector_t<unsigned> ());
+    TRY_ASSIGN (auto split_points, compute_split_points(c, this_সূচক));
+    যদি (!split_points)
+      ফেরত Ok(hb_vector_t<unsigned> ());
 
-    TRY_ASSIGN (unsigned total_ligas, total_number_ligas(c, this_index));
-    TRY_ASSIGN (hb_vector_t<unsigned> counts, liga_counts(c, this_index));
+    TRY_ASSIGN (unsigned যোগ_ligas, যোগ_সংখ্যা_ligas(c, this_সূচক));
+    TRY_ASSIGN (hb_vector_t<unsigned> counts, liga_counts(c, this_সূচক));
     split_context_t split_context {
       c,
-      this,
-      this_index,
-      total_ligas,
+      এই,
+      this_সূচক,
+      যোগ_ligas,
       std::move (counts),
     };
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    ফেরত actuate_subtable_split<split_context_t> (split_context, split_points);
   }
 
- private:
-  graph_result_t<unsigned> total_number_ligas(gsubgpos_graph_context_t& c, unsigned this_index) const {
-    unsigned total = 0;
-    for (unsigned i = 0; i < ligatureSet.len; i++)
+ ব্যক্তিগত:
+  graph_ফলাফল_t<unsigned> যোগ_সংখ্যা_ligas(gsubgpos_graph_context_t& c, unsigned this_সূচক) ধ্রুবক {
+    unsigned যোগ = 0;
+    জন্য (unsigned i = 0; i < ligatureSet.len; i++)
     {
-      TRY_ASSIGN (auto liga_set, c.graph.as_table<LigatureSet>(this_index, &ligatureSet[i]));
-      total += liga_set.table->ligature.len;
+      TRY_ASSIGN (auto liga_set, c.graph.as_table<LigatureSet>(this_সূচক, &ligatureSet[i]));
+      যোগ += liga_set.table->ligature.len;
     }
-    return Ok(total);
+    ফেরত Ok(যোগ);
   }
 
-  graph_result_t<hb_vector_t<unsigned>> liga_counts(gsubgpos_graph_context_t& c, unsigned this_index) const {
-    hb_vector_t<unsigned> result;
-    for (unsigned i = 0; i < ligatureSet.len; i++)
+  graph_ফলাফল_t<hb_vector_t<unsigned>> liga_counts(gsubgpos_graph_context_t& c, unsigned this_সূচক) ধ্রুবক {
+    hb_vector_t<unsigned> ফলাফল;
+    জন্য (unsigned i = 0; i < ligatureSet.len; i++)
     {
-      TRY_ASSIGN (auto liga_set, c.graph.as_table<LigatureSet>(this_index, &ligatureSet[i]));
-      result.push(!liga_set.table ? 0 : liga_set.table->ligature.len);
+      TRY_ASSIGN (auto liga_set, c.graph.as_table<LigatureSet>(this_সূচক, &ligatureSet[i]));
+      ফলাফল.push(!liga_set.table ? 0 : liga_set.table->ligature.len);
     }
-    return graph_result_t<hb_vector_t<unsigned>>::from(std::move(result), ALLOCATION_FAILURE);
+    ফেরত graph_ফলাফল_t<hb_vector_t<unsigned>>::from(std::move(ফলাফল), ALLOCATION_FAILURE);
   }
 
   template <graph_t::vertex_mutability_t mutability>
-  graph_result_t<hb_vector_t<unsigned>> ligature_index_to_object_id(const graph_t::vertex_and_table_t<LigatureSet, mutability>& liga_set) const {
+  graph_ফলাফল_t<hb_vector_t<unsigned>> ligature_সূচক_to_object_id(ধ্রুবক graph_t::vertex_and_table_t<LigatureSet, mutability>& liga_set) ধ্রুবক {
     hb_vector_t<unsigned> map;
-    if (!map.resize_exact(liga_set.table->ligature.len)) return Err(ALLOCATION_FAILURE);
+    যদি (!map.resize_exact(liga_set.table->ligature.len)) ফেরত Err(ALLOCATION_FAILURE);
 
-    for (unsigned i = 0; i < map.length; i++) {
+    জন্য (unsigned i = 0; i < map.দৈর্ঘ্য; i++) {
       map[i] = HB_GRAPH_INVALID;
     }
 
-    for (const auto& l : liga_set.vertex->obj ().real_links) {
-      if (l.position < 2) continue;
-      unsigned array_index = (l.position - 2) / 2;
-      map[array_index] = l.objidx;
+    জন্য (ধ্রুবক auto& l : liga_set.vertex->obj ().real_links) {
+      যদি (l.position < 2) চালু;
+      unsigned array_সূচক = (l.position - 2) / 2;
+      map[array_সূচক] = l.objidx;
     }
-    return map;
+    ফেরত map;
   }
 
-  graph_result_t<hb_vector_t<unsigned>> compute_split_points(gsubgpos_graph_context_t& c,
-                                                             unsigned this_index) const
+  graph_ফলাফল_t<hb_vector_t<unsigned>> compute_split_points(gsubgpos_graph_context_t& c,
+                                                             unsigned this_সূচক) ধ্রুবক
   {
     // For ligature subst coverage is always packed last, and as a result is where an overflow
     // will happen if there is one, so we can check the estimate length of the
     // LigatureSubstFormat1 -> Coverage offset length which is the sum of all data in the
     // retained sub graph except for the coverage table itself.
-    const unsigned base_size = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_size;
-    unsigned accumulated = base_size;
+    ধ্রুবক unsigned base_আকার = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_আকার;
+    unsigned accumulated = base_আকার;
 
-    unsigned ligature_index = 0;
+    unsigned ligature_সূচক = 0;
     hb_vector_t<unsigned> split_points;
-    for (unsigned i = 0; i < ligatureSet.len; i++)
+    জন্য (unsigned i = 0; i < ligatureSet.len; i++)
     {
-      accumulated += OT::HBUINT16::static_size; // for ligature set offset
-      accumulated += OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size; // for ligature set table
+      accumulated += OT::HBUINT16::static_আকার; // for ligature set offset
+      accumulated += OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_আকার; // for ligature set table
 
-      TRY_ASSIGN (auto liga_set, c.graph.as_table<LigatureSet>(this_index, &ligatureSet[i]));
+      TRY_ASSIGN (auto liga_set, c.graph.as_table<LigatureSet>(this_সূচক, &ligatureSet[i]));
 
       // Finding the object id associated with an array index is O(n)
       // so to avoid O(n^2), precompute the mapping by scanning through
       // all links
-      TRY_ASSIGN (auto index_to_id, ligature_index_to_object_id (liga_set));
+      TRY_ASSIGN (auto সূচক_to_id, ligature_সূচক_to_object_id (liga_set));
 
-      for (unsigned j = 0; j < liga_set.table->ligature.len; j++)
+      জন্য (unsigned j = 0; j < liga_set.table->ligature.len; j++)
       {
-        const unsigned liga_id = index_to_id[j];
-        if (liga_id == HB_GRAPH_INVALID) continue; // no outgoing link, ignore
-        const unsigned liga_size = c.graph.vertices_[liga_id].table_size ();
+        ধ্রুবক unsigned liga_id = সূচক_to_id[j];
+        যদি (liga_id == HB_GRAPH_INVALID) চালু; // no outgoing link, ignore
+        ধ্রুবক unsigned liga_আকার = c.graph.vertices_[liga_id].table_আকার ();
 
-        accumulated += OT::HBUINT16::static_size; // for ligature offset
-        accumulated += liga_size; // for the ligature table
+        accumulated += OT::HBUINT16::static_আকার; // for ligature offset
+        accumulated += liga_আকার; // for the ligature table
 
-        if (accumulated >= (1 << 16))
+        যদি (accumulated >= (1 << 16))
         {
-          split_points.push(ligature_index);
+          split_points.push(ligature_সূচক);
           // We're going to split such that the current ligature will be in the new sub table.
           // That means we'll have one ligature subst (base_base), one ligature set, and one liga table
-          accumulated = base_size + // for liga subst subtable
-            (OT::HBUINT16::static_size * 2) + // for liga set and liga offset
-            OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size + // for liga set subtable
-            liga_size; // for liga sub table
+          accumulated = base_আকার + // for liga subst subtable
+            (OT::HBUINT16::static_আকার * 2) + // for liga set and liga offset
+            OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_আকার + // for liga set subtable
+            liga_আকার; // for liga sub table
         }
 
-        ligature_index++;
+        ligature_সূচক++;
       }
     }
 
-    return split_points;
+    ফেরত split_points;
   }
 
-  struct split_context_t
+  কাঠামো split_context_t
   {
     gsubgpos_graph_context_t& c;
     LigatureSubstFormat1* thiz;
-    unsigned this_index;
-    unsigned original_count_;
+    unsigned this_সূচক;
+    unsigned original_গুনতি;
     hb_vector_t<unsigned> liga_counts;
 
-    unsigned original_count ()
+    unsigned original_গুনতি_2 ()
     {
-      return original_count_;
+      ফেরত original_গুনতি;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    graph_ফলাফল_t<unsigned> clone_range (unsigned start, unsigned end)
     {
-      return thiz->clone_range (c, this_index, liga_counts, start, end);
+      ফেরত thiz->clone_range (c, this_সূচক, liga_counts, start, end);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    graph_ফলাফল_t<শূন্য> shrink (unsigned গুনতি)
     {
-      return thiz->shrink (c, this_index, original_count(), liga_counts, count);
+      ফেরত thiz->shrink (c, this_সূচক, original_গুনতি_2(), liga_counts, গুনতি);
     }
   };
 
-  graph_result_t<hb_pair_t<unsigned, LigatureSet*>> new_liga_set(gsubgpos_graph_context_t& c, unsigned count) const {
-    unsigned prime_size = OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size
-                          + count * SmallTypes::size;
+  graph_ফলাফল_t<hb_pair_t<unsigned, LigatureSet*>> new_liga_set(gsubgpos_graph_context_t& c, unsigned গুনতি) ধ্রুবক {
+    unsigned মৌলিক_আকার = OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_আকার
+                          + গুনতি * SmallTypes::আকার_2;
 
-    TRY_ASSIGN (unsigned prime_id, c.create_node (prime_size));
+    TRY_ASSIGN (unsigned মৌলিক_id, c.create_গ্রন্থি (মৌলিক_আকার));
 
-    LigatureSet* prime = (LigatureSet*) c.graph.object (prime_id).head;
-    prime->ligature.len = count;
-    return Ok(hb_pair(prime_id, prime));
+    LigatureSet* মৌলিক = (LigatureSet*) c.graph.object (মৌলিক_id).শীর্ষ_2;
+    মৌলিক->ligature.len = গুনতি;
+    ফেরত Ok(hb_pair(মৌলিক_id, মৌলিক));
   }
 
-  void clear_virtual_links (gsubgpos_graph_context_t& c, unsigned node_index) const
+  শূন্য clear_virtual_links (gsubgpos_graph_context_t& c, unsigned গ্রন্থি_সূচক) ধ্রুবক
   {
-    auto& v  = c.graph.vertices_[node_index];
-    for (const auto& l : v.obj ().virtual_links)
+    auto& v  = c.graph.vertices_[গ্রন্থি_সূচক];
+    জন্য (ধ্রুবক auto& l : v.obj ().virtual_links)
     {
       auto& child = c.graph.vertices_[l.objidx];
-      child.remove_parent(node_index);
+      child.remove_parent(গ্রন্থি_সূচক);
     }
     v.clear_virtual_links ();
   }
 
-  graph_result_t<void> add_virtual_link(gsubgpos_graph_context_t& c, unsigned from, unsigned to) const {
-    if (unlikely (from >= c.graph.vertices_.length || to >= c.graph.vertices_.length)) return Err(OUT_OF_BOUNDS);
-    TRY(c.graph.vertices_[to].add_parent (from, true));
+  graph_ফলাফল_t<শূন্য> add_virtual_link(gsubgpos_graph_context_t& c, unsigned from, unsigned to) ধ্রুবক {
+    যদি (unlikely (from >= c.graph.vertices_.দৈর্ঘ্য || to >= c.graph.vertices_.দৈর্ঘ্য)) ফেরত Err(OUT_OF_BOUNDS);
+    TRY(c.graph.vertices_[to].add_parent (from, সত্য));
     TRY(c.graph.vertices_[from].add_virtual_link (to));
-    return Ok();
+    ফেরত Ok();
   }
 
   hb_pair_t<unsigned, unsigned> current_liga_set_bounds (gsubgpos_graph_context_t& c,
-                                                         unsigned liga_set_index,
-                                                         const hb_serialize_context_t::object_t& liga_set) const
+                                                         unsigned liga_set_সূচক,
+                                                         ধ্রুবক hb_serialize_context_t::object_t& liga_set) ধ্রুবক
   {
     // Finds the actual liga indices present in the liga set currently. Takes
     // into account those that have been removed by processing.
-    unsigned min_index = HB_GRAPH_INVALID;
-    unsigned max_index = 0;
-    for (const auto& l : liga_set.real_links) {
-      if (l.position < 2) continue;
+    unsigned min_সূচক = HB_GRAPH_INVALID;
+    unsigned max_সূচক = 0;
+    জন্য (ধ্রুবক auto& l : liga_set.real_links) {
+      যদি (l.position < 2) চালু;
 
-      unsigned liga_index = (l.position - 2) / 2;
-      min_index = hb_min(min_index, liga_index);
-      max_index = hb_max(max_index, liga_index);
+      unsigned liga_সূচক = (l.position - 2) / 2;
+      min_সূচক = hb_min(min_সূচক, liga_সূচক);
+      max_সূচক = hb_max(max_সূচক, liga_সূচক);
     }
-    return hb_pair(min_index, max_index + 1);
+    ফেরত hb_pair(min_সূচক, max_সূচক + 1);
   }
 
-  void compact_liga_set (gsubgpos_graph_context_t& c, LigatureSet* table, graph_t::vertex_t* v) const
+  শূন্য compact_liga_set (gsubgpos_graph_context_t& c, LigatureSet* table, graph_t::vertex_t* v) ধ্রুবক
   {
-    const auto& obj = v->obj ();
-    if (table->ligature.len <= obj.real_links.length) return;
+    ধ্রুবক auto& obj = v->obj ();
+    যদি (table->ligature.len <= obj.real_links.দৈর্ঘ্য) ফেরত;
 
     // compact the remaining linked liga offsets into a continous array and shrink the node as needed.
-    unsigned to_remove = table->ligature.len - obj.real_links.length;
-    unsigned new_position = SmallTypes::size;
+    unsigned to_remove = table->ligature.len - obj.real_links.দৈর্ঘ্য;
+    unsigned new_position = SmallTypes::আকার_2;
     v->sort_real_links (); // for this to work we need to process links in order of position.
-    for (auto& l : v->real_links_writer ())
+    জন্য (auto& l : v->real_links_writer ())
     {
       l.position = new_position;
-      new_position += SmallTypes::size;
+      new_position += SmallTypes::আকার_2;
     }
 
-    table->ligature.len = obj.real_links.length;
-    v->shrink_buffer (to_remove * SmallTypes::size);
+    table->ligature.len = obj.real_links.দৈর্ঘ্য;
+    v->shrink_বাফার (to_remove * SmallTypes::আকার_2);
   }
 
-  graph_result_t<unsigned> clone_range (gsubgpos_graph_context_t& c,
-                                        unsigned this_index,
+  graph_ফলাফল_t<unsigned> clone_range (gsubgpos_graph_context_t& c,
+                                        unsigned this_সূচক,
                                         hb_vector_t<unsigned> liga_counts,
-                                        unsigned start, unsigned end) const
+                                        unsigned start, unsigned end) ধ্রুবক
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "  Cloning LigatureSubstFormat1 (%u) range [%u, %u).", this_index, start, end);
+    DEBUG_বার্তা (SUBSET_REPACK, nullptr,
+               "  Cloning LigatureSubstFormat1 (%u) range [%u, %u).", this_সূচক, start, end);
 
     // Create an oversized new liga subst, we'll adjust the size down later. We don't know
     // the final size until we process it but we also need it to exist while we're processing
     // so that nodes can be moved to it as needed.
-    unsigned prime_size = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_size
-                          + ligatureSet.get_size() - ligatureSet.len.get_size();
+    unsigned মৌলিক_আকার = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_আকার
+                          + ligatureSet.get_আকার() - ligatureSet.len.get_আকার();
 
-    TRY_ASSIGN (unsigned liga_subst_prime_id, c.create_node (prime_size));
+    TRY_ASSIGN (unsigned liga_subst_মৌলিক_id, c.create_গ্রন্থি (মৌলিক_আকার));
 
-    LigatureSubstFormat1* liga_subst_prime = (LigatureSubstFormat1*) c.graph.object (liga_subst_prime_id).head;
-    liga_subst_prime->format = this->format;
-    liga_subst_prime->ligatureSet.len = this->ligatureSet.len;
+    LigatureSubstFormat1* liga_subst_মৌলিক = (LigatureSubstFormat1*) c.graph.object (liga_subst_মৌলিক_id).শীর্ষ_2;
+    liga_subst_মৌলিক->format = এই->format;
+    liga_subst_মৌলিক->ligatureSet.len = এই->ligatureSet.len;
 
     // Create a place holder coverage prime id since we need to add virtual links to it while
     // generating liga and liga sets. Afterwards it will be updated to have the correct coverage.
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    TRY_ASSIGN (unsigned coverage_prime_id, c.graph.duplicate(coverage_id));
-    auto& coverage_prime_vertex = c.graph.vertices_[coverage_prime_id];
+    TRY_ASSIGN (unsigned coverage_id, c.graph.সূচক_for_offset (this_সূচক, &coverage));
+    TRY_ASSIGN (unsigned coverage_মৌলিক_id, c.graph.duplicate(coverage_id));
+    auto& coverage_মৌলিক_vertex = c.graph.vertices_[coverage_মৌলিক_id];
 
-    TRY(c.graph.vertices_[liga_subst_prime_id].add_real_link (SmallTypes::size, coverage_prime_id, 2));
-    TRY(coverage_prime_vertex.add_parent (liga_subst_prime_id, false));
+    TRY(c.graph.vertices_[liga_subst_মৌলিক_id].add_real_link (SmallTypes::আকার_2, coverage_মৌলিক_id, 2));
+    TRY(coverage_মৌলিক_vertex.add_parent (liga_subst_মৌলিক_id, মিথ্যা));
 
     // Locate all liga sets with ligas between start and end.
     // Clone or move them as needed.
-    unsigned count = 0;
-    unsigned liga_set_count = 0;
+    unsigned গুনতি = 0;
+    unsigned liga_set_গুনতি = 0;
     unsigned liga_set_start = HB_GRAPH_INVALID;
     unsigned liga_set_end = 0; // inclusive
-    for (unsigned i = 0; i < liga_counts.length; i++)
+    জন্য (unsigned i = 0; i < liga_counts.দৈর্ঘ্য; i++)
     {
-      unsigned num_ligas = liga_counts[i];
+      unsigned অঙ্ক_ligas = liga_counts[i];
 
-      unsigned current_start = count;
-      unsigned current_end = count + num_ligas;
+      unsigned current_start = গুনতি;
+      unsigned current_end = গুনতি + অঙ্ক_ligas;
 
-      if (current_start >= end || start >= current_end) {
+      যদি (current_start >= end || start >= current_end) {
         // No intersection, so just skip
-        count += num_ligas;
-        continue;
+        গুনতি += অঙ্ক_ligas;
+        চালু;
       }
 
-      TRY_ASSIGN (auto liga_set, c.graph.as_mutable_table<LigatureSet>(this_index, &ligatureSet[i]));
+      TRY_ASSIGN (auto liga_set, c.graph.as_mutable_table<LigatureSet>(this_সূচক, &ligatureSet[i]));
 
-      unsigned liga_set_index = liga_set.index;
+      unsigned liga_set_সূচক = liga_set.সূচক_2;
       // Bounds may need to be adjusted if some ligas have been previously removed.
-      hb_pair_t<unsigned, unsigned> liga_bounds = current_liga_set_bounds(c, liga_set_index, liga_set.vertex->obj ());
-      current_start = hb_max(count + liga_bounds.first, current_start);
-      current_end = hb_min(count + liga_bounds.second, current_end);
+      hb_pair_t<unsigned, unsigned> liga_bounds = current_liga_set_bounds(c, liga_set_সূচক, liga_set.vertex->obj ());
+      current_start = hb_max(গুনতি + liga_bounds.first, current_start);
+      current_end = hb_min(গুনতি + liga_bounds.second, current_end);
 
-      unsigned liga_set_prime_id;
-      if (current_start >= start && current_end <= end) {
+      unsigned liga_set_মৌলিক_id;
+      যদি (current_start >= start && current_end <= end) {
         // This liga set is fully contined within [start, end)
         // We can move the entire ligaset to the new liga subset object.
         liga_set_end = i;
-        if (i < liga_set_start) liga_set_start = i;
-        TRY_ASSIGN (liga_set_prime_id, c.graph.move_child<> (this_index,
+        যদি (i < liga_set_start) liga_set_start = i;
+        TRY_ASSIGN (liga_set_মৌলিক_id, c.graph.move_child<> (this_সূচক,
                               &ligatureSet[i],
-                              liga_subst_prime_id,
-                              &liga_subst_prime->ligatureSet[liga_set_count++]));
+                              liga_subst_মৌলিক_id,
+                              &liga_subst_মৌলিক->ligatureSet[liga_set_গুনতি++]));
         compact_liga_set (c, liga_set.table, liga_set.vertex);
       }
-      else
+      অন্যথা
       {
         // This liga set partially overlaps [start, end). We'll need to create
         // a new liga set sub table and move the intersecting ligas to it.
-        unsigned start_index = hb_max(start, current_start) - count;
-        unsigned end_index = hb_min(end, current_end) - count;
-        unsigned liga_count = end_index - start_index;
-        TRY_ASSIGN (auto result, new_liga_set(c, liga_count));
-        liga_set_prime_id = result.first;
+        unsigned start_সূচক = hb_max(start, current_start) - গুনতি;
+        unsigned end_সূচক = hb_min(end, current_end) - গুনতি;
+        unsigned liga_গুনতি = end_সূচক - start_সূচক;
+        TRY_ASSIGN (auto ফলাফল, new_liga_set(c, liga_গুনতি));
+        liga_set_মৌলিক_id = ফলাফল.first;
 
         TRY (c.graph.move_children<OT::Offset16>(
-          liga_set_index,
-          2 + start_index * 2,
-          2 + end_index * 2,
-          liga_set_prime_id,
+          liga_set_সূচক,
+          2 + start_সূচক * 2,
+          2 + end_সূচক * 2,
+          liga_set_মৌলিক_id,
           2));
 
         liga_set_end = i;
-        if (i < liga_set_start) liga_set_start = i;
-        TRY (c.graph.add_link(&liga_subst_prime->ligatureSet[liga_set_count++], liga_subst_prime_id, liga_set_prime_id));
+        যদি (i < liga_set_start) liga_set_start = i;
+        TRY (c.graph.add_link(&liga_subst_মৌলিক->ligatureSet[liga_set_গুনতি++], liga_subst_মৌলিক_id, liga_set_মৌলিক_id));
       }
 
       // The new liga and all children set needs to have a virtual link to the new coverage table:
-      const auto& liga_set_prime = c.graph.vertices_[liga_set_prime_id].obj ();
-      clear_virtual_links(c, liga_set_prime_id);
-      TRY(add_virtual_link(c, liga_set_prime_id, coverage_prime_id));
-      for (const auto& l : liga_set_prime.real_links) {
+      ধ্রুবক auto& liga_set_মৌলিক = c.graph.vertices_[liga_set_মৌলিক_id].obj ();
+      clear_virtual_links(c, liga_set_মৌলিক_id);
+      TRY(add_virtual_link(c, liga_set_মৌলিক_id, coverage_মৌলিক_id));
+      জন্য (ধ্রুবক auto& l : liga_set_মৌলিক.real_links) {
         clear_virtual_links(c, l.objidx);
-        TRY(add_virtual_link(c, l.objidx, coverage_prime_id));
+        TRY(add_virtual_link(c, l.objidx, coverage_মৌলিক_id));
       }
 
-      count += num_ligas;
+      গুনতি += অঙ্ক_ligas;
     }
 
-    c.graph.vertices_[liga_subst_prime_id].shrink_buffer ((liga_subst_prime->ligatureSet.len - liga_set_count) * SmallTypes::size);
-    liga_subst_prime->ligatureSet.len = liga_set_count;
+    c.graph.vertices_[liga_subst_মৌলিক_id].shrink_বাফার ((liga_subst_মৌলিক->ligatureSet.len - liga_set_গুনতি) * SmallTypes::আকার_2);
+    liga_subst_মৌলিক->ligatureSet.len = liga_set_গুনতি;
 
     TRY (Coverage::filter_coverage (c,
-                                    coverage_prime_id,
+                                    coverage_মৌলিক_id,
                                     liga_set_start, liga_set_end + 1));
 
-    return Ok(liga_subst_prime_id);
+    ফেরত Ok(liga_subst_মৌলিক_id);
   }
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               unsigned this_index,
-                               unsigned old_count,
+  graph_ফলাফল_t<শূন্য> shrink (gsubgpos_graph_context_t& c,
+                               unsigned this_সূচক,
+                               unsigned old_গুনতি,
                                hb_vector_t<unsigned> liga_counts,
-                               unsigned count)
+                               unsigned গুনতি)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_বার্তা (SUBSET_REPACK, nullptr,
                "  Shrinking LigatureSubstFormat1 (%u) to [0, %u).",
-               this_index,
-               count);
-    if (count >= old_count)
-      return Ok();
+               this_সূচক,
+               গুনতি);
+    যদি (গুনতি >= old_গুনতি)
+      ফেরত Ok();
 
     hb_set_t retained_indices;
-    unsigned new_liga_set_count = 0;
-    for (unsigned i = 0; i < liga_counts.length; i++)
+    unsigned new_liga_set_গুনতি = 0;
+    জন্য (unsigned i = 0; i < liga_counts.দৈর্ঘ্য; i++)
     {
-      TRY_ASSIGN (auto liga_set, c.graph.as_mutable_table<LigatureSet>(this_index, &ligatureSet[i]));
+      TRY_ASSIGN (auto liga_set, c.graph.as_mutable_table<LigatureSet>(this_সূচক, &ligatureSet[i]));
 
       // We need the virtual links to coverage removed from all descendants on this liga subst.
       // If any are left when we try to mutate the coverage table later it will be unnessecarily
       // duplicated. Code later on will re-add the virtual links as needed (via retained_indices).
-      clear_virtual_links(c, liga_set.index);
-      retained_indices.add(liga_set.index);
+      clear_virtual_links(c, liga_set.সূচক_2);
+      retained_indices.add(liga_set.সূচক_2);
 
-      TRY_ASSIGN (auto index_to_id, ligature_index_to_object_id (liga_set));
+      TRY_ASSIGN (auto সূচক_to_id, ligature_সূচক_to_object_id (liga_set));
 
-      for (unsigned i = 0; i < liga_set.table->ligature.len; i++) {
-        unsigned liga_index = index_to_id[i];
-        if (liga_index != HB_GRAPH_INVALID) {
-          clear_virtual_links(c, liga_index);
-          retained_indices.add(liga_index);
+      জন্য (unsigned i = 0; i < liga_set.table->ligature.len; i++) {
+        unsigned liga_সূচক = সূচক_to_id[i];
+        যদি (liga_সূচক != HB_GRAPH_INVALID) {
+          clear_virtual_links(c, liga_সূচক);
+          retained_indices.add(liga_সূচক);
         }
       }
 
-      unsigned num_ligas = liga_counts[i];
-      if (num_ligas >= count) {
+      unsigned অঙ্ক_ligas = liga_counts[i];
+      যদি (অঙ্ক_ligas >= গুনতি) {
         // drop the trailing liga's from this set and all subsequent liga sets
-        unsigned num_ligas_to_remove = num_ligas - count;
-        new_liga_set_count = i + 1;
-        c.graph.vertices_[liga_set.index].shrink_buffer (num_ligas_to_remove * SmallTypes::size);
-        liga_set.table->ligature.len = count;
-        break;
-      } else {
-        count -= num_ligas;
+        unsigned অঙ্ক_ligas_to_remove = অঙ্ক_ligas - গুনতি;
+        new_liga_set_গুনতি = i + 1;
+        c.graph.vertices_[liga_set.সূচক_2].shrink_বাফার (অঙ্ক_ligas_to_remove * SmallTypes::আকার_2);
+        liga_set.table->ligature.len = গুনতি;
+        বিরতি;
+      } অন্যথা {
+        গুনতি -= অঙ্ক_ligas;
       }
     }
 
     // Adjust liga set array
-    auto& this_vertex = c.graph.vertices_[this_index];
-    this_vertex.shrink_buffer ((ligatureSet.len - new_liga_set_count) * SmallTypes::size);
-    ligatureSet.len = new_liga_set_count;
+    auto& this_vertex = c.graph.vertices_[this_সূচক];
+    this_vertex.shrink_বাফার ((ligatureSet.len - new_liga_set_গুনতি) * SmallTypes::আকার_2);
+    ligatureSet.len = new_liga_set_গুনতি;
 
     // Coverage matches the number of liga sets so rebuild as needed
-    TRY_ASSIGN (unsigned coverage_idx, c.graph.index_for_offset (this_index, &this->coverage));
+    TRY_ASSIGN (unsigned coverage_idx, c.graph.সূচক_for_offset (this_সূচক, &এই->coverage));
 
     auto& coverage_v = c.graph.vertices_[coverage_idx];
-    unsigned coverage_size = coverage_v.table_size ();
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj ().head;
+    unsigned coverage_আকার = coverage_v.table_আকার ();
+    ধ্রুবক Coverage* coverage_table = (ধ্রুবক Coverage*) coverage_v.obj ().শীর্ষ_2;
 
-    if (coverage_v.is_shared ())
+    যদি (coverage_v.is_shared ())
     {
-      TRY_ASSIGN (coverage_idx, c.graph.remap_child (this_index, coverage_idx));
+      TRY_ASSIGN (coverage_idx, c.graph.remap_child (this_সূচক, coverage_idx));
     }
 
-    for (unsigned i : retained_indices.iter())
+    জন্য (unsigned i : retained_indices.iter())
       TRY(add_virtual_link(c, i, coverage_idx));
 
     auto new_coverage =
         + hb_zip (coverage_table->iter (), hb_range ())
         | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second < new_liga_set_count;
+          ফেরত p.second < new_liga_set_গুনতি;
         })
         | hb_map_retains_sorting (hb_first)
         ;
 
-    return Coverage::make_coverage (c, new_coverage, coverage_idx, coverage_size);
+    ফেরত Coverage::make_coverage (c, new_coverage, coverage_idx, coverage_আকার);
   }
 };
 
-struct LigatureSubst : public OT::Layout::GSUB_impl::LigatureSubst
+কাঠামো LigatureSubst : সর্বজনীন OT::Layout::GSUB_impl::LigatureSubst
 {
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  graph_ফলাফল_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
+                                                         unsigned this_সূচক)
   {
-    switch (u.format.v) {
-    case 1:
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1:
       hb_barrier ();
-      return ((LigatureSubstFormat1*)(&u.format1))->split_subtables (c, this_index);
+      ফেরত ((LigatureSubstFormat1*)(&u.format1))->split_subtables (c, this_সূচক);
 #ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
+    ক্ষেত্র 2: HB_FALLTHROUGH;
       // 24-bit LigatureSubst already has widened offsets; leave it unsplit.
 #endif
-    default:
-      return Ok(hb_vector_t<unsigned> ());
+    পূর্বনির্ধারিত:
+      ফেরত Ok(hb_vector_t<unsigned> ());
     }
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_ফলাফল_t<শূন্য> sanitize (ধ্রুবক graph_t::vertex_t& vertex) ধ্রুবক
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    size_t vertex_len = vertex.table_আকার ();
+    যদি (unlikely (vertex_len < u.format.v.get_আকার ())) ফেরত Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    switch (u.format.v) {
-    case 1:
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1:
       hb_barrier ();
-      return ((LigatureSubstFormat1*)(&u.format1))->sanitize (vertex);
+      ফেরত ((LigatureSubstFormat1*)(&u.format1))->sanitize (vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 2:  HB_FALLTHROUGH;
+    ক্ষেত্র 2:  HB_FALLTHROUGH;
 #endif
-    default:
+    পূর্বনির্ধারিত:
       // We don't handle format 2 here.
-      return Err(SANITIZE_FAILURE);
+      ফেরত Err(SANITIZE_FAILURE);
     }
   }
 };

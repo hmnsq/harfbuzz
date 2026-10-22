@@ -1,16 +1,16 @@
 #ifndef OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
 #define OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
 
-#include "Common.hh"
+#অন্তর্ভাব "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GSUB_impl {
 
 template <typename Types>
-struct SingleSubstFormat2_4
+কাঠামো SingleSubstFormat2_4
 {
-  protected:
+  সুরক্ষিত:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
@@ -19,62 +19,62 @@ struct SingleSubstFormat2_4
                 substitute;             /* Array of substitute
                                          * GlyphIDs--ordered by Coverage Index */
 
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, substitute);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (2 + Types::LOffset::static_আকার + Types::HBUINT::static_আকার, substitute);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && substitute.sanitize (c));
+    TRACE_SANITIZE (এই);
+    return_trace (coverage.sanitize (c, এই) && substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
+  { ফেরত (এই+coverage).intersects (glyphs); }
 
-  bool may_have_non_1to1 () const
-  { return false; }
+  যৌক্তিক may_have_non_1to1 () ধ্রুবক
+  { ফেরত মিথ্যা; }
 
-  void depend (hb_depend_context_t *c) const
+  শূন্য depend (hb_depend_context_t *c) ধ্রুবক
   {
-    auto &cov = this+coverage;
+    auto &cov = এই+coverage;
     auto &glyph_set = c->parent_active_glyphs ();
 
     // Filter by active glyphs like closure does
-    if (substitute.len > glyph_set.get_population () * 4)
+    যদি (substitute.len > glyph_set.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      জন্য (auto g : glyph_set)
       {
 	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
-	  continue;
-	c->depend_data->add_gsub_lookup (g, c->lookup_index, substitute.arrayZ[i]);
+	যদি (i == NOT_COVERED || i >= substitute.len)
+	  চালু;
+	c->depend_তথ্য->add_gsub_lookup (g, c->lookup_সূচক, substitute.arrayZ[i]);
       }
 
-      return;
+      ফেরত;
     }
 
     + hb_zip (cov, substitute)
     | hb_filter (glyph_set, hb_first)
-    | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup (_.first, c->lookup_index, _.second); })
+    | hb_apply ([&] (ধ্রুবক hb_codepoint_pair_t &_) { c->depend_তথ্য->add_gsub_lookup (_.first, c->lookup_সূচক, _.second); })
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  শূন্য closure (hb_closure_context_t *c) ধ্রুবক
   {
-    auto &cov = this+coverage;
+    auto &cov = এই+coverage;
     auto &glyph_set = c->parent_active_glyphs ();
 
-    if (substitute.len > glyph_set.get_population () * 4)
+    যদি (substitute.len > glyph_set.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      জন্য (auto g : glyph_set)
       {
 	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
-	  continue;
+	যদি (i == NOT_COVERED || i >= substitute.len)
+	  চালু;
 	c->output->add (substitute.arrayZ[i]);
       }
 
-      return;
+      ফেরত;
     }
 
     + hb_zip (cov, substitute)
@@ -84,93 +84,93 @@ struct SingleSubstFormat2_4
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    + hb_zip (this+coverage, substitute)
+    যদি (unlikely (!(এই+coverage).collect_coverage (c->প্রবেশ))) ফেরত;
+    + hb_zip (এই+coverage, substitute)
     | hb_map (hb_second)
     | hb_sink (c->output)
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক { ফেরত এই+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  যৌক্তিক would_apply (hb_would_apply_context_t *c) ধ্রুবক
+  { ফেরত c->len == 1 && (এই+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
   unsigned
   get_glyph_alternates (hb_codepoint_t  glyph_id,
                         unsigned        start_offset,
-                        unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
-                        hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
+                        unsigned       *alternate_গুনতি  /* IN/OUT.  May be NULL. */,
+                        hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) ধ্রুবক
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (likely (index == NOT_COVERED))
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage (glyph_id);
+    যদি (likely (সূচক_2 == NOT_COVERED))
     {
-      if (alternate_count)
-        *alternate_count = 0;
-      return 0;
+      যদি (alternate_গুনতি)
+        *alternate_গুনতি = 0;
+      ফেরত 0;
     }
 
-    if (alternate_count && *alternate_count && alternate_glyphs)
+    যদি (alternate_গুনতি && *alternate_গুনতি && alternate_glyphs)
     {
-      glyph_id = substitute[index];
+      glyph_id = substitute[সূচক_2];
 
       *alternate_glyphs = glyph_id;
-      *alternate_count = 1;
+      *alternate_গুনতি = 1;
     }
 
-    return 1;
+    ফেরত 1;
   }
 
-  void
-  collect_glyph_alternates (hb_map_t  *alternate_count /* IN/OUT */,
-			    hb_map_t  *alternate_glyphs /* IN/OUT */) const
+  শূন্য
+  collect_glyph_alternates (hb_map_t  *alternate_গুনতি /* IN/OUT */,
+			    hb_map_t  *alternate_glyphs /* IN/OUT */) ধ্রুবক
   {
-    + hb_zip (this+coverage, substitute)
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
+    + hb_zip (এই+coverage, substitute)
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> শূন্য
 		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+						    alternate_গুনতি, alternate_glyphs); })
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (এই);
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage (c->বাফার->cur().codepoint);
+    যদি (সূচক_2 == NOT_COVERED) return_trace (মিথ্যা);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    যদি (unlikely (সূচক_2 >= substitute.len)) return_trace (মিথ্যা);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->বাফার->sync_so_far ();
+      c->বাফার->message (c->font,
 			  "replacing glyph at %u (single substitution)",
-			  c->buffer->idx);
+			  c->বাফার->idx);
     }
 
-    c->replace_glyph (substitute[index]);
+    c->replace_glyph (substitute[সূচক_2]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
     {
-      c->buffer->message (c->font,
+      c->বাফার->message (c->font,
 			  "replaced glyph at %u (single substitution)",
-			  c->buffer->idx - 1u);
+			  c->বাফার->idx - 1u);
     }
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
   template<typename Iterator,
            hb_requires (hb_is_sorted_source_of (Iterator,
                                                 hb_codepoint_pair_t))>
-  bool serialize (hb_serialize_context_t *c,
+  যৌক্তিক serialize (hb_serialize_context_t *c,
                   Iterator it)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এই);
     auto substitutes =
       + it
       | hb_map (hb_second)
@@ -179,27 +179,27 @@ struct SingleSubstFormat2_4
       + it
       | hb_map_retains_sorting (hb_first)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!substitute.serialize (c, substitutes))) return_trace (false);
-    if (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (false);
-    return_trace (true);
+    যদি (unlikely (!c->extend_min (এই))) return_trace (মিথ্যা);
+    যদি (unlikely (!substitute.serialize (c, substitutes))) return_trace (মিথ্যা);
+    যদি (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (মিথ্যা);
+    return_trace (সত্য);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (এই);
+    ধ্রুবক hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ধ্রুবক hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto it =
-    + hb_zip (this+coverage, substitute)
+    + hb_zip (এই+coverage, substitute)
     | hb_filter (glyphset, hb_first)
     | hb_filter (glyphset, hb_second)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, ধ্রুবক typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
+                              { ফেরত hb_pair (glyph_map[p.first], glyph_map[p.second]); })
     ;
 
-    bool ret = bool (it);
+    যৌক্তিক ret = যৌক্তিক (it);
     SingleSubst_serialize (c->serializer, it);
     return_trace (ret);
   }

@@ -26,30 +26,30 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-map.hh"
-#include "hb-ot-shape.hh"
-#include "hb-ot-layout.hh"
+#অন্তর্ভাব "hb-ot-map.hh"
+#অন্তর্ভাব "hb-ot-shape.hh"
+#অন্তর্ভাব "hb-ot-layout.hh"
 
 
-void hb_ot_map_t::collect_lookups (unsigned int table_index, hb_set_t *lookups_out) const
+শূন্য hb_ot_map_t::collect_lookups (unsigned পূর্ণসংখ্যা table_সূচক, hb_set_t *lookups_out) ধ্রুবক
 {
-  for (unsigned int i = 0; i < lookups[table_index].length; i++)
-    lookups_out->add (lookups[table_index][i].index);
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < lookups[table_সূচক].দৈর্ঘ্য; i++)
+    lookups_out->add (lookups[table_সূচক][i].সূচক_2);
 }
 
 
 hb_ot_map_builder_t::hb_ot_map_builder_t (hb_face_t *face_,
-					  const hb_segment_properties_t &props_)
+					  ধ্রুবক hb_segment_properties_t &props_)
 {
-  hb_memset (this, 0, sizeof (*this));
+  hb_memset (এই, 0, আকার (*এই));
 
   feature_infos.init ();
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
-    stages[table_index].init ();
+  জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
+    stages[table_সূচক].init ();
 
   face = face_;
   props = props_;
@@ -57,132 +57,132 @@ hb_ot_map_builder_t::hb_ot_map_builder_t (hb_face_t *face_,
   /* Fetch script/language indices for GSUB/GPOS.  We need these later to skip
    * features not available in either table and not waste precious bits for them. */
 
-  unsigned int script_count = HB_OT_MAX_TAGS_PER_SCRIPT;
-  unsigned int language_count = HB_OT_MAX_TAGS_PER_LANGUAGE;
+  unsigned পূর্ণসংখ্যা script_গুনতি = HB_OT_MAX_TAGS_PER_SCRIPT;
+  unsigned পূর্ণসংখ্যা language_গুনতি = HB_OT_MAX_TAGS_PER_LANGUAGE;
   hb_tag_t script_tags[HB_OT_MAX_TAGS_PER_SCRIPT];
   hb_tag_t language_tags[HB_OT_MAX_TAGS_PER_LANGUAGE];
 
   hb_ot_tags_from_script_and_language (props.script,
 				       props.language,
-				       &script_count,
+				       &script_গুনতি,
 				       script_tags,
-				       &language_count,
+				       &language_গুনতি,
 				       language_tags);
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
   {
-    hb_tag_t table_tag = table_tags[table_index];
-    found_script[table_index] = (bool) hb_ot_layout_table_select_script (face,
+    hb_tag_t table_tag = table_tags[table_সূচক];
+    found_script[table_সূচক] = (যৌক্তিক) hb_ot_layout_table_select_script (face,
 									 table_tag,
-									 script_count,
+									 script_গুনতি,
 									 script_tags,
-									 &script_index[table_index],
-									 &chosen_script[table_index]);
+									 &script_সূচক[table_সূচক],
+									 &chosen_script[table_সূচক]);
     hb_ot_layout_script_select_language (face,
 					 table_tag,
-					 script_index[table_index],
-					 language_count,
+					 script_সূচক[table_সূচক],
+					 language_গুনতি,
 					 language_tags,
-					 &language_index[table_index]);
+					 &language_সূচক[table_সূচক]);
   }
 }
 
 hb_ot_map_builder_t::~hb_ot_map_builder_t ()
 {
   feature_infos.fini ();
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
-    stages[table_index].fini ();
+  জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
+    stages[table_সূচক].fini ();
 }
 
-void hb_ot_map_builder_t::add_feature (hb_tag_t tag,
+শূন্য hb_ot_map_builder_t::add_feature (hb_tag_t tag,
 				       hb_ot_map_feature_flags_t flags,
-				       unsigned int value)
+				       unsigned পূর্ণসংখ্যা value)
 {
-  if (unlikely (!tag)) return;
+  যদি (unlikely (!tag)) ফেরত;
   feature_info_t *info = feature_infos.push();
   info->tag = tag;
-  info->seq = feature_infos.length;
-  info->max_value = value;
+  info->seq = feature_infos.দৈর্ঘ্য;
+  info->max_মান = value;
   info->flags = flags;
-  info->default_value = (flags & F_GLOBAL) ? value : 0;
+  info->default_মান = (flags & F_GLOBAL) ? value : 0;
   info->stage[0] = current_stage[0];
   info->stage[1] = current_stage[1];
 }
 
-bool hb_ot_map_builder_t::has_feature (hb_tag_t tag)
+যৌক্তিক hb_ot_map_builder_t::has_feature (hb_tag_t tag)
 {
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
   {
-    if (hb_ot_layout_language_find_feature (face,
-					    table_tags[table_index],
-					    script_index[table_index],
-					    language_index[table_index],
+    যদি (hb_ot_layout_language_find_feature (face,
+					    table_tags[table_সূচক],
+					    script_সূচক[table_সূচক],
+					    language_সূচক[table_সূচক],
 					    tag,
 					    nullptr))
-      return true;
+      ফেরত সত্য;
   }
-  return false;
+  ফেরত মিথ্যা;
 }
 
-void
+শূন্য
 hb_ot_map_builder_t::add_lookups (hb_ot_map_t  &m,
-				  unsigned int  table_index,
-				  unsigned int  feature_index,
-				  const hb_ot_shape_plan_key_t &key,
+				  unsigned পূর্ণসংখ্যা  table_সূচক,
+				  unsigned পূর্ণসংখ্যা  feature_সূচক,
+				  ধ্রুবক hb_ot_shape_plan_চাবি_t &key,
 				  hb_mask_t     mask,
-				  bool          auto_zwnj,
-				  bool          auto_zwj,
-				  bool          random,
-				  bool          per_syllable,
+				  যৌক্তিক          auto_zwnj,
+				  যৌক্তিক          auto_zwj,
+				  যৌক্তিক          random,
+				  যৌক্তিক          per_syllable,
 				  hb_tag_t      feature_tag)
 {
-  unsigned int lookup_indices[32];
-  unsigned int offset, len;
-  unsigned int table_lookup_count;
+  unsigned পূর্ণসংখ্যা lookup_indices[32];
+  unsigned পূর্ণসংখ্যা offset, len;
+  unsigned পূর্ণসংখ্যা table_lookup_গুনতি;
 
-  table_lookup_count = hb_ot_layout_table_get_lookup_count (face, table_tags[table_index]);
+  table_lookup_গুনতি = hb_ot_layout_table_get_lookup_গুনতি (face, table_tags[table_সূচক]);
 
   hb_set_t varied_lookups;
-  if (key.get_lookup_variations (face, table_index, feature_index, &varied_lookups))
+  যদি (key.get_lookup_variations (face, table_সূচক, feature_সূচক, &varied_lookups))
   {
-    if (unlikely (varied_lookups.in_error ()))
+    যদি (unlikely (varied_lookups.in_error ()))
     {
-      m.lookups[table_index].ensure_error ();
-      return;
+      m.lookups[table_সূচক].ensure_error ();
+      ফেরত;
     }
-    for (unsigned int lookup_index : varied_lookups)
+    জন্য (unsigned পূর্ণসংখ্যা lookup_সূচক : varied_lookups)
     {
-      if (lookup_index >= table_lookup_count)
-	continue;
-      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_index].push ();
+      যদি (lookup_সূচক >= table_lookup_গুনতি)
+	চালু;
+      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_সূচক].push ();
       lookup->mask = mask;
-      lookup->index = lookup_index;
+      lookup->সূচক_2 = lookup_সূচক;
       lookup->auto_zwnj = auto_zwnj;
       lookup->auto_zwj = auto_zwj;
       lookup->random = random;
       lookup->per_syllable = per_syllable;
       lookup->feature_tag = feature_tag;
     }
-    return;
+    ফেরত;
   }
 
   offset = 0;
-  do {
-    len = ARRAY_LENGTH (lookup_indices);
+  করো {
+    len = ARRAY_দৈর্ঘ্য (lookup_indices);
     hb_ot_layout_feature_with_variations_get_lookups (face,
-					      table_tags[table_index],
-					      feature_index,
-					      key.variations_index[table_index],
+					      table_tags[table_সূচক],
+					      feature_সূচক,
+					      key.variations_সূচক[table_সূচক],
 						      offset, &len,
 						      lookup_indices);
 
-    for (unsigned int i = 0; i < len; i++)
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < len; i++)
     {
-      if (lookup_indices[i] >= table_lookup_count)
-	continue;
-      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_index].push ();
+      যদি (lookup_indices[i] >= table_lookup_গুনতি)
+	চালু;
+      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_সূচক].push ();
       lookup->mask = mask;
-      lookup->index = lookup_indices[i];
+      lookup->সূচক_2 = lookup_indices[i];
       lookup->auto_zwnj = auto_zwnj;
       lookup->auto_zwj = auto_zwj;
       lookup->random = random;
@@ -191,69 +191,69 @@ hb_ot_map_builder_t::add_lookups (hb_ot_map_t  &m,
     }
 
     offset += len;
-  } while (len == ARRAY_LENGTH (lookup_indices));
+  } যখন (len == ARRAY_দৈর্ঘ্য (lookup_indices));
 }
 
 
-void hb_ot_map_builder_t::add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func)
+শূন্য hb_ot_map_builder_t::add_pause (unsigned পূর্ণসংখ্যা table_সূচক, hb_ot_map_t::pause_func_t pause_func)
 {
-  stage_info_t *s = stages[table_index].push ();
-  s->index = current_stage[table_index];
+  stage_info_t *s = stages[table_সূচক].push ();
+  s->সূচক_2 = current_stage[table_সূচক];
   s->pause_func = pause_func;
 
-  current_stage[table_index]++;
+  current_stage[table_সূচক]++;
 }
 
-void
+শূন্য
 hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
-			      const hb_ot_shape_plan_key_t &key)
+			      ধ্রুবক hb_ot_shape_plan_চাবি_t &key)
 {
-  unsigned int global_bit_shift = 8 * sizeof (hb_mask_t) - 1;
-  unsigned int global_bit_mask = 1u << global_bit_shift;
+  unsigned পূর্ণসংখ্যা global_bit_shift = 8 * আকার (hb_mask_t) - 1;
+  unsigned পূর্ণসংখ্যা global_bit_mask = 1u << global_bit_shift;
 
   m.global_mask = global_bit_mask;
 
-  unsigned int required_feature_index[2];
+  unsigned পূর্ণসংখ্যা required_feature_সূচক[2];
   hb_tag_t required_feature_tag[2];
   /* We default to applying required feature in stage 0.  If the required
    * feature has a tag that is known to the shaper, we apply required feature
    * in the stage for that tag.
    */
-  unsigned int required_feature_stage[2] = {0, 0};
+  unsigned পূর্ণসংখ্যা required_feature_stage[2] = {0, 0};
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
   {
-    m.chosen_script[table_index] = chosen_script[table_index];
-    m.found_script[table_index] = found_script[table_index];
+    m.chosen_script[table_সূচক] = chosen_script[table_সূচক];
+    m.found_script[table_সূচক] = found_script[table_সূচক];
 
     hb_ot_layout_language_get_required_feature (face,
-						table_tags[table_index],
-						script_index[table_index],
-						language_index[table_index],
-						&required_feature_index[table_index],
-						&required_feature_tag[table_index]);
+						table_tags[table_সূচক],
+						script_সূচক[table_সূচক],
+						language_সূচক[table_সূচক],
+						&required_feature_সূচক[table_সূচক],
+						&required_feature_tag[table_সূচক]);
   }
 
   /* Sort features and merge duplicates */
-  if (feature_infos.length)
+  যদি (feature_infos.দৈর্ঘ্য)
   {
-    if (!is_simple)
+    যদি (!is_simple)
       feature_infos.qsort ();
     auto *f = feature_infos.arrayZ;
-    unsigned int j = 0;
-    unsigned count = feature_infos.length;
-    for (unsigned int i = 1; i < count; i++)
-      if (f[i].tag != f[j].tag)
+    unsigned পূর্ণসংখ্যা j = 0;
+    unsigned গুনতি = feature_infos.দৈর্ঘ্য;
+    জন্য (unsigned পূর্ণসংখ্যা i = 1; i < গুনতি; i++)
+      যদি (f[i].tag != f[j].tag)
 	f[++j] = f[i];
-      else {
-	if (f[i].flags & F_GLOBAL) {
+      অন্যথা {
+	যদি (f[i].flags & F_GLOBAL) {
 	  f[j].flags |= F_GLOBAL;
-	  f[j].max_value = f[i].max_value;
-	  f[j].default_value = f[i].default_value;
-	} else {
-	  if (f[j].flags & F_GLOBAL)
+	  f[j].max_মান = f[i].max_মান;
+	  f[j].default_মান = f[i].default_মান;
+	} অন্যথা {
+	  যদি (f[j].flags & F_GLOBAL)
 	    f[j].flags ^= F_GLOBAL;
-	  f[j].max_value = hb_max (f[j].max_value, f[i].max_value);
+	  f[j].max_মান = hb_max (f[j].max_মান, f[i].max_মান);
 	  /* Inherit default_value from j */
 	}
 	f[j].flags |= (f[i].flags & F_HAS_FALLBACK);
@@ -264,116 +264,116 @@ hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
   }
 
   hb_map_t feature_indices[2];
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
     hb_ot_layout_collect_features_map (face,
-				       table_tags[table_index],
-				       script_index[table_index],
-				       language_index[table_index],
-				       &feature_indices[table_index]);
+				       table_tags[table_সূচক],
+				       script_সূচক[table_সূচক],
+				       language_সূচক[table_সূচক],
+				       &feature_indices[table_সূচক]);
 
   /* Allocate bits now */
   static_assert ((!(HB_GLYPH_FLAG_DEFINED & (HB_GLYPH_FLAG_DEFINED + 1))), "");
-  unsigned int next_bit = hb_popcount (HB_GLYPH_FLAG_DEFINED) + 1;
+  unsigned পূর্ণসংখ্যা পরবর্তী_bit = hb_popcount (HB_GLYPH_FLAG_DEFINED) + 1;
 
-  unsigned count = feature_infos.length;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned গুনতি = feature_infos.দৈর্ঘ্য;
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
   {
-    const feature_info_t *info = &feature_infos[i];
+    ধ্রুবক feature_info_t *info = &feature_infos[i];
 
-    unsigned int bits_needed;
+    unsigned পূর্ণসংখ্যা bits_needed;
 
-    if ((info->flags & F_GLOBAL) && info->max_value == 1)
+    যদি ((info->flags & F_GLOBAL) && info->max_মান == 1)
       /* Uses the global bit */
       bits_needed = 0;
-    else
+    অন্যথা
       /* Limit bits per feature. */
-      bits_needed = hb_min (HB_OT_MAP_MAX_BITS, hb_bit_storage (info->max_value));
+      bits_needed = hb_min (HB_OT_MAP_MAX_BITS, hb_bit_storage (info->max_মান));
 
-    if (!info->max_value || next_bit + bits_needed >= global_bit_shift)
-      continue; /* Feature disabled, or not enough bits. */
+    যদি (!info->max_মান || পরবর্তী_bit + bits_needed >= global_bit_shift)
+      চালু; /* Feature disabled, or not enough bits. */
 
-    bool found = false;
-    unsigned int feature_index[2];
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    যৌক্তিক found = মিথ্যা;
+    unsigned পূর্ণসংখ্যা feature_সূচক[2];
+    জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
     {
-      if (required_feature_tag[table_index] == info->tag)
-	required_feature_stage[table_index] = info->stage[table_index];
+      যদি (required_feature_tag[table_সূচক] == info->tag)
+	required_feature_stage[table_সূচক] = info->stage[table_সূচক];
 
-      hb_codepoint_t *index;
-      if (feature_indices[table_index].has (info->tag, &index))
+      hb_codepoint_t *সূচক_2;
+      যদি (feature_indices[table_সূচক].has (info->tag, &সূচক_2))
       {
-        feature_index[table_index] = *index;
-        found = true;
+        feature_সূচক[table_সূচক] = *সূচক_2;
+        found = সত্য;
       }
-      else
-        feature_index[table_index] = HB_OT_LAYOUT_NO_FEATURE_INDEX;
+      অন্যথা
+        feature_সূচক[table_সূচক] = HB_OT_LAYOUT_NO_FEATURE_সূচক;
     }
-    if (!found && (info->flags & F_GLOBAL_SEARCH))
+    যদি (!found && (info->flags & F_GLOBAL_অনুসন্ধান))
     {
-      for (unsigned int table_index = 0; table_index < 2; table_index++)
+      জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
       {
-	found |= (bool) hb_ot_layout_table_find_feature (face,
-							 table_tags[table_index],
+	found |= (যৌক্তিক) hb_ot_layout_table_find_feature (face,
+							 table_tags[table_সূচক],
 							 info->tag,
-							 &feature_index[table_index]);
+							 &feature_সূচক[table_সূচক]);
       }
     }
-    if (!found && !(info->flags & F_HAS_FALLBACK))
-      continue;
+    যদি (!found && !(info->flags & F_HAS_FALLBACK))
+      চালু;
 
 
     hb_ot_map_t::feature_map_t *map = m.features.push ();
 
     map->tag = info->tag;
-    map->index[0] = feature_index[0];
-    map->index[1] = feature_index[1];
+    map->সূচক_2[0] = feature_সূচক[0];
+    map->সূচক_2[1] = feature_সূচক[1];
     map->stage[0] = info->stage[0];
     map->stage[1] = info->stage[1];
     map->auto_zwnj = !(info->flags & F_MANUAL_ZWNJ);
     map->auto_zwj = !(info->flags & F_MANUAL_ZWJ);
     map->random = !!(info->flags & F_RANDOM);
     map->per_syllable = !!(info->flags & F_PER_SYLLABLE);
-    if ((info->flags & F_GLOBAL) && info->max_value == 1) {
+    যদি ((info->flags & F_GLOBAL) && info->max_মান == 1) {
       /* Uses the global bit */
       map->shift = global_bit_shift;
       map->mask = global_bit_mask;
-    } else {
-      map->shift = next_bit;
-      map->mask = (1u << (next_bit + bits_needed)) - (1u << next_bit);
-      next_bit += bits_needed;
-      m.global_mask |= (info->default_value << map->shift) & map->mask;
+    } অন্যথা {
+      map->shift = পরবর্তী_bit;
+      map->mask = (1u << (পরবর্তী_bit + bits_needed)) - (1u << পরবর্তী_bit);
+      পরবর্তী_bit += bits_needed;
+      m.global_mask |= (info->default_মান << map->shift) & map->mask;
     }
     map->_1_mask = (1u << map->shift) & map->mask;
     map->needs_fallback = !found;
   }
   //feature_infos.shrink (0); /* Done with these */
-  if (is_simple)
+  যদি (is_simple)
     m.features.qsort ();
 
   add_gsub_pause (nullptr);
   add_gpos_pause (nullptr);
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  জন্য (unsigned পূর্ণসংখ্যা table_সূচক = 0; table_সূচক < 2; table_সূচক++)
   {
     /* Collect lookup indices for features */
-    auto &lookups = m.lookups[table_index];
+    auto &lookups = m.lookups[table_সূচক];
 
-    unsigned int stage_index = 0;
-    unsigned int last_num_lookups = 0;
-    for (unsigned stage = 0; stage < current_stage[table_index]; stage++)
+    unsigned পূর্ণসংখ্যা stage_সূচক = 0;
+    unsigned পূর্ণসংখ্যা last_অঙ্ক_lookups = 0;
+    জন্য (unsigned stage = 0; stage < current_stage[table_সূচক]; stage++)
     {
-      if (required_feature_index[table_index] != HB_OT_LAYOUT_NO_FEATURE_INDEX &&
-	  required_feature_stage[table_index] == stage)
-	add_lookups (m, table_index,
-		     required_feature_index[table_index],
+      যদি (required_feature_সূচক[table_সূচক] != HB_OT_LAYOUT_NO_FEATURE_সূচক &&
+	  required_feature_stage[table_সূচক] == stage)
+	add_lookups (m, table_সূচক,
+		     required_feature_সূচক[table_সূচক],
 		     key,
 		     global_bit_mask);
 
-      for (auto &feature : m.features)
+      জন্য (auto &feature : m.features)
       {
-	if (feature.stage[table_index] == stage)
-	  add_lookups (m, table_index,
-		       feature.index[table_index],
+	যদি (feature.stage[table_সূচক] == stage)
+	  add_lookups (m, table_সূচক,
+		       feature.সূচক_2[table_সূচক],
 		       key,
 		       feature.mask,
 		       feature.auto_zwnj,
@@ -384,15 +384,15 @@ hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
       }
 
       /* Sort lookups and merge duplicates */
-      if (last_num_lookups + 1 < lookups.length)
+      যদি (last_অঙ্ক_lookups + 1 < lookups.দৈর্ঘ্য)
       {
-	lookups.as_array ().sub_array (last_num_lookups, lookups.length - last_num_lookups).qsort ();
+	lookups.as_array ().sub_array (last_অঙ্ক_lookups, lookups.দৈর্ঘ্য - last_অঙ্ক_lookups).qsort ();
 
-	unsigned int j = last_num_lookups;
-	for (unsigned int i = j + 1; i < lookups.length; i++)
-	  if (lookups.arrayZ[i].index != lookups.arrayZ[j].index)
+	unsigned পূর্ণসংখ্যা j = last_অঙ্ক_lookups;
+	জন্য (unsigned পূর্ণসংখ্যা i = j + 1; i < lookups.দৈর্ঘ্য; i++)
+	  যদি (lookups.arrayZ[i].সূচক_2 != lookups.arrayZ[j].সূচক_2)
 	    lookups.arrayZ[++j] = lookups.arrayZ[i];
-	  else
+	  অন্যথা
 	  {
 	    lookups.arrayZ[j].mask |= lookups.arrayZ[i].mask;
 	    lookups.arrayZ[j].auto_zwnj &= lookups.arrayZ[i].auto_zwnj;
@@ -401,32 +401,32 @@ hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
 	lookups.shrink (j + 1);
       }
 
-      last_num_lookups = lookups.length;
+      last_অঙ্ক_lookups = lookups.দৈর্ঘ্য;
 
-      if (stage_index < stages[table_index].length && stages[table_index][stage_index].index == stage) {
-	hb_ot_map_t::stage_map_t *stage_map = m.stages[table_index].push ();
-	stage_map->last_lookup = last_num_lookups;
-	stage_map->pause_func = stages[table_index][stage_index].pause_func;
+      যদি (stage_সূচক < stages[table_সূচক].দৈর্ঘ্য && stages[table_সূচক][stage_সূচক].সূচক_2 == stage) {
+	hb_ot_map_t::stage_map_t *stage_map = m.stages[table_সূচক].push ();
+	stage_map->last_lookup = last_অঙ্ক_lookups;
+	stage_map->pause_func = stages[table_সূচক][stage_সূচক].pause_func;
 
-	stage_index++;
+	stage_সূচক++;
       }
     }
   }
 }
 
-unsigned int hb_ot_map_t::get_feature_tags (unsigned int start_offset, unsigned int *tag_count, hb_tag_t *tags) const
+unsigned পূর্ণসংখ্যা hb_ot_map_t::get_feature_tags (unsigned পূর্ণসংখ্যা start_offset, unsigned পূর্ণসংখ্যা *tag_গুনতি, hb_tag_t *tags) ধ্রুবক
 {
-  if (tag_count)
+  যদি (tag_গুনতি)
   {
-    auto sub_features = features.as_array ().sub_array (start_offset, tag_count);
-    if (tags)
+    auto sub_features = features.as_array ().sub_array (start_offset, tag_গুনতি);
+    যদি (tags)
     {
-      for (unsigned int i = 0; i < sub_features.length; i++)
+      জন্য (unsigned পূর্ণসংখ্যা i = 0; i < sub_features.দৈর্ঘ্য; i++)
         tags[i] = sub_features[i].tag;
     }
   }
 
-  return features.length;
+  ফেরত features.দৈর্ঘ্য;
 }
 
 #endif

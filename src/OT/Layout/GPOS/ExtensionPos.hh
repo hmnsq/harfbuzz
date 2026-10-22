@@ -1,13 +1,13 @@
 #ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 #define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+কাঠামো ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  প্রকারলেখ কাঠামো PosLookupSubTable SubTable;
 };
 
 }

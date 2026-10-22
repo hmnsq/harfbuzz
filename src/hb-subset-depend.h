@@ -27,11 +27,11 @@
 #ifndef HB_SUBSET_DEPEND_H
 #define HB_SUBSET_DEPEND_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#যদি !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-subset.h> instead."
 #endif
 
-#include "hb.h"
+#অন্তর্ভাব "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -62,7 +62,7 @@ HB_BEGIN_DECLS
  *
  * Since: 14.3.0
  */
-typedef enum { /*< flags >*/
+প্রকারলেখ গণনা { /*< flags >*/
   HB_SUBSET_DEPEND_EDGE_FLAG_NONE                   = 0x00u,
   HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
   HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
@@ -81,7 +81,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 14.3.0
  */
-typedef struct hb_subset_depend_t hb_subset_depend_t;
+প্রকারলেখ কাঠামো hb_subset_depend_t hb_subset_depend_t;
 
 /**
  * hb_subset_depend_entry_t:
@@ -99,31 +99,31 @@ typedef struct hb_subset_depend_t hb_subset_depend_t;
  *
  * Since: 14.3.0
  */
-typedef struct {
+প্রকারলেখ কাঠামো {
   hb_tag_t table_tag;
   hb_codepoint_t dependent;
   hb_tag_t layout_tag;
-  hb_codepoint_t ligature_set_index;
-  hb_codepoint_t context_set_index;
+  hb_codepoint_t ligature_set_সূচক;
+  hb_codepoint_t context_set_সূচক;
   hb_subset_depend_edge_flags_t flags;
 } hb_subset_depend_entry_t;
 
 HB_EXTERN hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned পূর্ণসংখ্যা
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count, /* IN/OUT */
+                                unsigned পূর্ণসংখ্যা start_offset,
+                                unsigned পূর্ণসংখ্যা *entry_গুনতি, /* IN/OUT */
                                 hb_subset_depend_entry_t *entries /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_subset_depend_lookup_set (hb_subset_depend_t *depend,
-                              hb_codepoint_t index,
+                              hb_codepoint_t সূচক_2,
                               hb_set_t *out /* OUT */);
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_subset_depend_destroy (hb_subset_depend_t *depend);
 
 #endif

@@ -9,9 +9,9 @@ Each --TAG starts a new group.  The template file has %%TAG%%
 placeholders that get replaced with #include lines for that group.
 """
 
-import os, sys, shutil, pathlib
+আমদানি os, sys, shutil, pathlib
 
-if len(sys.argv) < 4:
+যদি len(sys.argv) < 4:
     sys.exit(__doc__)
 
 OUTPUT = sys.argv[1]
@@ -21,49 +21,49 @@ TEMPLATE = sys.argv[3]
 # Parse --TAG file... groups
 groups = {}
 current_tag = None
-for arg in sys.argv[4:]:
-    if arg.startswith('--'):
+জন্য arg মধ্যে sys.argv[4:]:
+    যদি arg.startswith('--'):
         current_tag = arg[2:]
         groups[current_tag] = []
-    elif current_tag is not None:
+    নতুবা_যদি current_tag is নয় None:
         groups[current_tag].append(arg)
 
 # Build #include lines for each group
 def make_includes(files):
     seen = set()
-    lines = []
-    for f in sorted(files):
-        if not f.endswith('.cc'):
-            continue
+    সারিগুলি = []
+    জন্য f মধ্যে sorted(files):
+        যদি নয় f.endswith('.cc'):
+            চালু
         rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
-        if rel not in seen:
+        যদি rel নয় মধ্যে seen:
             seen.add(rel)
-            lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+            সারিগুলি.append('#include "{}"'.format(rel))
+    ফেরত '\n'.join(সারিগুলি)
 
 # Read template and substitute
-with open(TEMPLATE, 'r') as f:
-    content = f.read()
+with open(TEMPLATE, 'r') ইব f:
+    content = f.পঠ()
 
-for tag, files in groups.items():
+জন্য tag, files মধ্যে groups.বস্তুসমূহ():
     placeholder = '%%{}%%'.format(tag)
     content = content.replace(placeholder, make_includes(files))
 
-with open(OUTPUT, 'w') as f:
-    f.write(content)
+with open(OUTPUT, 'w') ইব f:
+    f.লিখ(content)
 
 # Copy back to source tree if changed
 baseline = os.path.join(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
-try:
-    with open(baseline, 'r') as b:
-        if b.read() == content:
+চেষ্টা:
+    with open(baseline, 'r') ইব b:
+        যদি b.পঠ() == content:
             sys.exit(0)
-except FileNotFoundError:
+ব্যতিক্রম FileNotFoundError:
     pass
 
-try:
+চেষ্টা:
     shutil.copyfile(OUTPUT, baseline)
-except OSError:
-    import filecmp
-    if os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
+ব্যতিক্রম OSError:
+    আমদানি filecmp
+    যদি os.path.exists(baseline) এবং নয় filecmp.cmp(OUTPUT, baseline, shallow=মিথ্যা):
         sys.exit('{} is out of date; regenerate with a writable source tree'.format(baseline))

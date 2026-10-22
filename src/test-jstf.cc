@@ -22,24 +22,24 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot-layout-jstf-table.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-ot-layout-jstf-table.hh"
 
-static hb_face_t *
-create_face (const char *data, unsigned length)
+স্থির hb_face_t *
+create_face (ধ্রুবক অক্ষর *তথ্য, unsigned দৈর্ঘ্য)
 {
   hb_face_t *face = hb_face_builder_create ();
-  hb_blob_t *blob = hb_blob_create (data, length, HB_MEMORY_MODE_READONLY,
+  hb_blob_t *blob = hb_blob_create (তথ্য, দৈর্ঘ্য, HB_MEMORY_MODE_READONLY,
 				    nullptr, nullptr);
   hb_always_assert (hb_face_builder_add_table (face, HB_OT_TAG_JSTF, blob));
   hb_blob_destroy (blob);
-  return face;
+  ফেরত face;
 }
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
-  static const char data[] = {
+  স্থির ধ্রুবক অক্ষর তথ্য[] = {
     0, 1, 0, 1,				/* version 1.1 */
     0, 0,				/* JstfScriptRecord count */
     0, 1,				/* JstfScriptRecord2 count */
@@ -50,31 +50,31 @@ main (int argc, char **argv)
     0, 1, 1, 0, 1,			/* ExtenderGlyph2 */
   };
 
-  hb_face_t *face = create_face (data, sizeof (data));
+  hb_face_t *face = create_face (তথ্য, আকার (তথ্য));
   hb_blob_ptr_t<OT::JSTF> jstf =
       hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
 #ifndef HB_NO_BEYOND_64K
-  hb_always_assert (jstf.get_length ());
-  hb_always_assert (jstf->get_script_count () == 1);
+  hb_always_assert (jstf.get_দৈর্ঘ্য ());
+  hb_always_assert (jstf->get_script_গুনতি () == 1);
   hb_always_assert (jstf->get_script_tag (0) == HB_TAG ('a','r','a','b'));
-  unsigned index;
-  hb_always_assert (jstf->find_script_index (HB_TAG ('a','r','a','b'), &index));
-  hb_always_assert (index == 0);
-  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_count ());
-#else
-  hb_always_assert (jstf.get_length ());
-  hb_always_assert (!jstf->get_script_count ());
+  unsigned সূচক_2;
+  hb_always_assert (jstf->find_script_সূচক (HB_TAG ('a','r','a','b'), &সূচক_2));
+  hb_always_assert (সূচক_2 == 0);
+  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_গুনতি ());
+#অন্যথা
+  hb_always_assert (jstf.get_দৈর্ঘ্য ());
+  hb_always_assert (!jstf->get_script_গুনতি ());
 #endif
   jstf.destroy ();
   hb_face_destroy (face);
 
 #ifndef HB_NO_BEYOND_64K
-  face = create_face (data, sizeof (data) - 1);
+  face = create_face (তথ্য, আকার (তথ্য) - 1);
   jstf = hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
-  hb_always_assert (!jstf.get_length ());
+  hb_always_assert (!jstf.get_দৈর্ঘ্য ());
   jstf.destroy ();
   hb_face_destroy (face);
 #endif
 
-  return 0;
+  ফেরত 0;
 }

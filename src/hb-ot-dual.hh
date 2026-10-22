@@ -29,23 +29,23 @@
 #ifndef HB_OT_DUAL_HH
 #define HB_OT_DUAL_HH
 
-#include "hb-open-type.hh"
+#অন্তর্ভাব "hb-open-type.hh"
 
 
-namespace OT {
-namespace Layout {
+নামাকাশ OT {
+নামাকাশ Layout {
 
-struct SmallTypes {
-  static constexpr unsigned size = 2;
+কাঠামো SmallTypes {
+  স্থির constexpr unsigned আকার_2 = 2;
   using large_int = uint32_t;
   using HBUINT = HBUINT16;
   using HBLUINT = HBUINT16;
   using HBGlyphID = HBGlyphID16;
   using Offset = Offset16;
   using LOffset = Offset16;
-  template <typename Type, typename BaseType=void, bool has_null=true>
+  template <typename Type, typename BaseType=শূন্য, যৌক্তিক has_null=সত্য>
   using OffsetTo = OT::Offset16To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
+  template <typename Type, typename BaseType=শূন্য, যৌক্তিক has_null=সত্য>
   using LOffsetTo = OT::Offset16To<Type, BaseType, has_null>;
   template <typename Type>
   using ArrayOf = OT::Array16Of<Type>;
@@ -53,8 +53,8 @@ struct SmallTypes {
   using SortedArrayOf = OT::SortedArray16Of<Type>;
 };
 
-struct MediumTypes {
-  static constexpr unsigned size = 3;
+কাঠামো MediumTypes {
+  স্থির constexpr unsigned আকার_2 = 3;
   using large_int = uint64_t;
   using HBUINT = HBUINT24;
   using HBLUINT = HBUINT32;
@@ -62,9 +62,9 @@ struct MediumTypes {
   using Offset = Offset24;
   /* Long offsets for large tables. */
   using LOffset = Offset32;
-  template <typename Type, typename BaseType=void, bool has_null=true>
+  template <typename Type, typename BaseType=শূন্য, যৌক্তিক has_null=সত্য>
   using OffsetTo = OT::Offset24To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
+  template <typename Type, typename BaseType=শূন্য, যৌক্তিক has_null=সত্য>
   using LOffsetTo = OT::Offset32To<Type, BaseType, has_null>;
   template <typename Type>
   using ArrayOf = OT::Array24Of<Type>;
@@ -77,7 +77,7 @@ struct MediumTypes {
 
 
 template <typename Lower, typename Upper>
-struct hb_dual_accelerator_t
+কাঠামো hb_dual_accelerator_t
 {
   hb_dual_accelerator_t (hb_face_t *face) :
 #ifndef HB_NO_BEYOND_64K
@@ -85,25 +85,25 @@ struct hb_dual_accelerator_t
 #endif
     lower (
 #ifndef HB_NO_BEYOND_64K
-	   upper.has_data () ? hb_face_get_empty () :
+	   upper.has_তথ্য () ? hb_face_get_empty () :
 #endif
 	   face)
   {}
 
-  bool has_data () const
+  যৌক্তিক has_তথ্য () ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    if (upper.has_data ()) return true;
+    যদি (upper.has_তথ্য ()) ফেরত সত্য;
 #endif
-    return lower.has_data ();
+    ফেরত lower.has_তথ্য ();
   }
 
-  bool has_upper_data () const
+  যৌক্তিক has_upper_তথ্য () ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    return upper.has_data ();
-#else
-    return false;
+    ফেরত upper.has_তথ্য ();
+#অন্যথা
+    ফেরত মিথ্যা;
 #endif
   }
 
@@ -114,20 +114,20 @@ struct hb_dual_accelerator_t
 };
 
 template <typename Table>
-struct hb_table_accelerator_t
+কাঠামো hb_table_accelerator_t
 {
   hb_table_accelerator_t (hb_face_t *face) :
     table (hb_sanitize_context_t ().reference_table<Table> (face))
   {}
   ~hb_table_accelerator_t () { table.destroy (); }
 
-  bool has_data () const { return table->has_data (); }
+  যৌক্তিক has_তথ্য () ধ্রুবক { ফেরত table->has_তথ্য (); }
 
   hb_blob_ptr_t<Table> table;
 };
 
 template <typename Lower, typename Upper>
-struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
+কাঠামো hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
 					       hb_table_accelerator_t<Upper>>
 {
   hb_dual_table_t (hb_face_t *face) :
@@ -136,9 +136,9 @@ struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
 };
 
 #ifndef HB_NO_BEYOND_64K
-#define HB_DUAL_GET(accel, expr) ((accel).upper.has_data () ? (accel).upper.expr : (accel).lower.expr)
-#else
-#define HB_DUAL_GET(accel, expr) ((accel).lower.expr)
+#define HB_DUAL_GET(accel, রাশিমালা) ((accel).upper.has_তথ্য () ? (accel).upper.রাশিমালা : (accel).lower.রাশিমালা)
+#অন্যথা
+#define HB_DUAL_GET(accel, রাশিমালা) ((accel).lower.রাশিমালা)
 #endif
 
 

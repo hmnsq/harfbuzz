@@ -24,485 +24,485 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_RESULT_HH
-#define HB_RESULT_HH
+#ifndef HB_ফলাফল_HH
+#define HB_ফলাফল_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 // Helper structs for Ok(...) and Err(...), not used directly
 // by users of hb_result_t.
 template <typename T>
-struct hb_result_ok_t
+কাঠামো hb_ফলাফল_ok_t
 {
   T value;
 };
 
 template <>
-struct hb_result_ok_t<void> {};
+কাঠামো hb_ফলাফল_ok_t<শূন্য> {};
 
 template <typename E>
-struct hb_result_err_t
+কাঠামো hb_ফলাফল_err_t
 {
   E error;
 
   template <typename OtherE>
-  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { return error == other.error; }
+  constexpr যৌক্তিক operator == (ধ্রুবক hb_ফলাফল_err_t<OtherE>& other) ধ্রুবক { ফেরত error == other.error; }
   template <typename OtherE>
-  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { return error != other.error; }
+  constexpr যৌক্তিক operator != (ধ্রুবক hb_ফলাফল_err_t<OtherE>& other) ধ্রুবক { ফেরত error != other.error; }
 };
 
-template <typename X> struct _hb_is_result_tag : hb_false_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
+template <typename X> কাঠামো hb_is_ফলাফল_tag : hb_false_type {};
+template <typename X> কাঠামো hb_is_ফলাফল_tag<hb_ফলাফল_ok_t<X>> : hb_true_type {};
+template <typename X> কাঠামো hb_is_ফলাফল_tag<hb_ফলাফল_err_t<X>> : hb_true_type {};
 
 template <typename T>
-static inline constexpr hb_result_ok_t<T&&> Ok (T&& v)
+স্থির অন্তঃরেখ constexpr hb_ফলাফল_ok_t<T&&> Ok (T&& v)
 {
-  return hb_result_ok_t<T&&>{std::forward<T> (v)};
+  ফেরত hb_ফলাফল_ok_t<T&&>{std::forward<T> (v)};
 }
 
-static inline constexpr hb_result_ok_t<void> Ok ()
+স্থির অন্তঃরেখ constexpr hb_ফলাফল_ok_t<শূন্য> Ok ()
 {
-  return hb_result_ok_t<void>{};
+  ফেরত hb_ফলাফল_ok_t<শূন্য>{};
 }
 
 template <typename E>
-static inline constexpr hb_result_err_t<E&&> Err (E&& e)
+স্থির অন্তঃরেখ constexpr hb_ফলাফল_err_t<E&&> Err (E&& e)
 {
-  return hb_result_err_t<E&&>{std::forward<E> (e)};
+  ফেরত hb_ফলাফল_err_t<E&&>{std::forward<E> (e)};
 }
 
 template <typename T, typename E>
-struct HB_NODISCARD_STRUCT hb_result_t
+কাঠামো HB_NODISCARD_STRUCT hb_ফলাফল_t
 {
-  private:
-  union
+  ব্যক্তিগত:
+  সংঘ
   {
     T val_;
     E err_;
   };
-  bool is_ok_;
+  যৌক্তিক is_ok_;
 
-  void destroy ()
+  শূন্য destroy ()
   {
-    if (is_ok_)
+    যদি (is_ok_)
       val_.~T ();
-    else
+    অন্যথা
       err_.~E ();
   }
 
-  void init(const hb_result_t& o) {
+  শূন্য init(ধ্রুবক hb_ফলাফল_t& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (o.val_);
-    else
-      new (std::addressof (err_)) E (o.err_);
+    যদি (is_ok_)
+      নতুন (std::addressof (val_)) T (o.val_);
+    অন্যথা
+      নতুন (std::addressof (err_)) E (o.err_);
   }
 
-  void init(hb_result_t&& o) {
+  শূন্য init(hb_ফলাফল_t&& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (std::move (o.val_));
-    else
-      new (std::addressof (err_)) E (std::move (o.err_));
+    যদি (is_ok_)
+      নতুন (std::addressof (val_)) T (std::move (o.val_));
+    অন্যথা
+      নতুন (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  public:
-  ~hb_result_t ()
+  সর্বজনীন:
+  ~hb_ফলাফল_t ()
   {
     destroy ();
   }
 
-  hb_result_t () = delete;
+  hb_ফলাফল_t () = delete;
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (false)
+  hb_ফলাফল_t (ধ্রুবক hb_ফলাফল_t& o) : is_ok_ (মিথ্যা)
   {
     init (o);
   }
 
-  hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
+  hb_ফলাফল_t (hb_ফলাফল_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
                                      std::is_nothrow_move_constructible<E>::value)
-      : is_ok_ (false)
+      : is_ok_ (মিথ্যা)
   {
     init (std::move (o));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_ফলাফল_t& operator = (ধ্রুবক hb_ফলাফল_t& o)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    যদি (এই == &o) ফেরত *এই;
+    যদি (is_ok_ && o.is_ok_)
     {
       val_ = o.val_;
     }
-    else if (!is_ok_ && !o.is_ok_)
+    অন্যথা যদি (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else
+    অন্যথা
     {
       destroy ();
       init (o);
     }
-    return *this;
+    ফেরত *এই;
   }
 
-  hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
+  hb_ফলাফল_t& operator = (hb_ফলাফল_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
                                                 std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    যদি (এই == &o) ফেরত *এই;
+    যদি (is_ok_ && o.is_ok_)
     {
       val_ = std::move (o.val_);
     }
-    else if (!is_ok_ && !o.is_ok_)
+    অন্যথা যদি (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else
+    অন্যথা
     {
       destroy ();
       init (std::move (o));
     }
-    return *this;
+    ফেরত *এই;
   }
 
   // Construct from Ok(...) tag
   template <typename U,
             hb_enable_if ((std::is_constructible<T, U>::value))>
-  hb_result_t (hb_result_ok_t<U>&& o) : is_ok_ (true)
+  hb_ফলাফল_t (hb_ফলাফল_ok_t<U>&& o) : is_ok_ (সত্য)
   {
-    new (std::addressof (val_)) T (std::move (o.value));
+    নতুন (std::addressof (val_)) T (std::move (o.value));
   }
 
   template <typename U,
-            hb_enable_if ((std::is_constructible<T, const U&>::value))>
-  hb_result_t (const hb_result_ok_t<U>& o) : is_ok_ (true)
+            hb_enable_if ((std::is_constructible<T, ধ্রুবক U&>::value))>
+  hb_ফলাফল_t (ধ্রুবক hb_ফলাফল_ok_t<U>& o) : is_ok_ (সত্য)
   {
-    new (std::addressof (val_)) T (o.value);
+    নতুন (std::addressof (val_)) T (o.value);
   }
 
   // Construct from Err(...) tag
   template <typename F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_ফলাফল_t (hb_ফলাফল_err_t<F>&& e) : is_ok_ (মিথ্যা)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    নতুন (std::addressof (err_)) E (std::move (e.error));
   }
 
   template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+            hb_enable_if ((std::is_constructible<E, ধ্রুবক F&>::value))>
+  hb_ফলাফল_t (ধ্রুবক hb_ফলাফল_err_t<F>& e) : is_ok_ (মিথ্যা)
   {
-    new (std::addressof (err_)) E (e.error);
+    নতুন (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E (when neither T or E are convertible into each other)
   template <typename F = E,
             hb_enable_if ((hb_is_same (F, E) &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (F e) : is_ok_ (false)
+  hb_ফলাফল_t (F e) : is_ok_ (মিথ্যা)
   {
-    new (std::addressof (err_)) E (std::move (e));
+    নতুন (std::addressof (err_)) E (std::move (e));
   }
 
   // Construct directly from value T (when neither T or E are convertible into each other)
   template <typename U = T,
             hb_enable_if ((std::is_constructible<T, U>::value &&
                            !hb_is_same (hb_decay<U>, E) &&
-                           !hb_is_same (hb_decay<U>, hb_result_t) &&
-                           !_hb_is_result_tag<hb_decay<U>>::value &&
+                           !hb_is_same (hb_decay<U>, hb_ফলাফল_t) &&
+                           !hb_is_ফলাফল_tag<hb_decay<U>>::value &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (U&& v) : is_ok_ (true)
+  hb_ফলাফল_t (U&& v) : is_ok_ (সত্য)
   {
-    new (std::addressof (val_)) T (std::forward<U> (v));
+    নতুন (std::addressof (val_)) T (std::forward<U> (v));
   }
 
   // Move fallible into a result if it's in_error() method returns false.
-  static hb_result_t from (T&& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  স্থির hb_ফলাফল_t from (T&& fallible, E error_মান) {
+    যদি (fallible.in_error()) {
+      ফেরত Err(error_মান);
     }
-    return Ok(fallible);
+    ফেরত Ok(fallible);
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  যৌক্তিক is_ok () ধ্রুবক { ফেরত is_ok_; }
+  যৌক্তিক is_err () ধ্রুবক { ফেরত !is_ok_; }
+  explicit operator যৌক্তিক () ধ্রুবক { ফেরত is_ok (); }
 
-  T& value () & { assert (is_ok_); return val_; }
-  const T& value () const & { assert (is_ok_); return val_; }
-  T value () && { assert (is_ok_); return std::move (val_); }
+  T& value () & { প্রতিজ্ঞা (is_ok_); ফেরত val_; }
+  ধ্রুবক T& value () ধ্রুবক & { প্রতিজ্ঞা (is_ok_); ফেরত val_; }
+  T value () && { প্রতিজ্ঞা (is_ok_); ফেরত std::move (val_); }
 
-  T& operator * () & { return value (); }
-  const T& operator * () const & { return value (); }
-  T operator * () && { return std::move (*this).value (); }
+  T& operator * () & { ফেরত value (); }
+  ধ্রুবক T& operator * () ধ্রুবক & { ফেরত value (); }
+  T operator * () && { ফেরত std::move (*এই).value (); }
 
-  T* operator -> () { return std::addressof (value ()); }
-  const T* operator -> () const { return std::addressof (value ()); }
+  T* operator -> () { ফেরত std::addressof (value ()); }
+  ধ্রুবক T* operator -> () ধ্রুবক { ফেরত std::addressof (value ()); }
 
   template <typename U>
-  T value_or (U&& default_value) const &
+  T মান_or (U&& default_মান) ধ্রুবক &
   {
-    if (is_ok_) return val_;
-    return std::forward<U> (default_value);
-  }
-
-  template <typename U>
-  T value_or (U&& default_value) &&
-  {
-    if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
-  }
-
-  T value_or_default () const &
-  {
-    if (is_ok_) return val_;
-    return T ();
-  }
-
-  T value_or_default () &&
-  {
-    if (is_ok_) return std::move (val_);
-    return T ();
-  }
-
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
-
-  bool operator == (const hb_result_t& o) const
-  {
-    if (is_ok_ != o.is_ok_) return false;
-    if (is_ok_) return val_ == o.val_;
-    return err_ == o.err_;
-  }
-
-  bool operator != (const hb_result_t& o) const
-  {
-    return !(*this == o);
+    যদি (is_ok_) ফেরত val_;
+    ফেরত std::forward<U> (default_মান);
   }
 
   template <typename U>
-  bool operator == (const hb_result_ok_t<U>& o) const
+  T মান_or (U&& default_মান) &&
   {
-    return is_ok_ && val_ == o.value;
+    যদি (is_ok_) ফেরত std::move (val_);
+    ফেরত std::forward<U> (default_মান);
+  }
+
+  T মান_or_default () ধ্রুবক &
+  {
+    যদি (is_ok_) ফেরত val_;
+    ফেরত T ();
+  }
+
+  T মান_or_default () &&
+  {
+    যদি (is_ok_) ফেরত std::move (val_);
+    ফেরত T ();
+  }
+
+  ধ্রুবক E& error () ধ্রুবক & { প্রতিজ্ঞা (!is_ok_); ফেরত err_; }
+  E& error () & { প্রতিজ্ঞা (!is_ok_); ফেরত err_; }
+  E error () && { প্রতিজ্ঞা (!is_ok_); ফেরত std::move (err_); }
+
+  যৌক্তিক operator == (ধ্রুবক hb_ফলাফল_t& o) ধ্রুবক
+  {
+    যদি (is_ok_ != o.is_ok_) ফেরত মিথ্যা;
+    যদি (is_ok_) ফেরত val_ == o.val_;
+    ফেরত err_ == o.err_;
+  }
+
+  যৌক্তিক operator != (ধ্রুবক hb_ফলাফল_t& o) ধ্রুবক
+  {
+    ফেরত !(*এই == o);
   }
 
   template <typename U>
-  bool operator != (const hb_result_ok_t<U>& o) const
+  যৌক্তিক operator == (ধ্রুবক hb_ফলাফল_ok_t<U>& o) ধ্রুবক
   {
-    return !(*this == o);
+    ফেরত is_ok_ && val_ == o.value;
+  }
+
+  template <typename U>
+  যৌক্তিক operator != (ধ্রুবক hb_ফলাফল_ok_t<U>& o) ধ্রুবক
+  {
+    ফেরত !(*এই == o);
   }
 
   template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  যৌক্তিক operator == (ধ্রুবক hb_ফলাফল_err_t<F>& e) ধ্রুবক
   {
-    return !is_ok_ && err_ == e.error;
+    ফেরত !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  যৌক্তিক operator != (ধ্রুবক hb_ফলাফল_err_t<F>& e) ধ্রুবক
   {
-    return !(*this == e);
+    ফেরত !(*এই == e);
   }
 
   template <typename U>
-  bool operator == (const U&) const = delete;
+  যৌক্তিক operator == (ধ্রুবক U&) ধ্রুবক = delete;
 
   template <typename U>
-  bool operator != (const U&) const = delete;
+  যৌক্তিক operator != (ধ্রুবক U&) ধ্রুবক = delete;
 };
 
 // Partial specialization for void
 template <typename E>
-struct HB_NODISCARD_STRUCT hb_result_t<void, E>
+কাঠামো HB_NODISCARD_STRUCT hb_ফলাফল_t<শূন্য, E>
 {
-  private:
-  union
+  ব্যক্তিগত:
+  সংঘ
   {
     E err_;
   };
-  bool is_ok_;
+  যৌক্তিক is_ok_;
 
-  template <typename, typename> friend struct hb_result_t;
+  template <typename, typename> friend কাঠামো hb_ফলাফল_t;
 
-  public:
-  ~hb_result_t ()
+  সর্বজনীন:
+  ~hb_ফলাফল_t ()
   {
-    if (!is_ok_)
+    যদি (!is_ok_)
       err_.~E ();
   }
 
-  hb_result_t () : is_ok_ (true) {}
-  hb_result_t (hb_result_ok_t<void>) : is_ok_ (true) {}
+  hb_ফলাফল_t () : is_ok_ (সত্য) {}
+  hb_ফলাফল_t (hb_ফলাফল_ok_t<শূন্য>) : is_ok_ (সত্য) {}
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (o.is_ok_)
+  hb_ফলাফল_t (ধ্রুবক hb_ফলাফল_t& o) : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (o.err_);
+    যদি (!is_ok_)
+      নতুন (std::addressof (err_)) E (o.err_);
   }
 
-  hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
+  hb_ফলাফল_t (hb_ফলাফল_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
       : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (std::move (o.err_));
+    যদি (!is_ok_)
+      নতুন (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_ফলাফল_t& operator = (ধ্রুবক hb_ফলাফল_t& o)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    যদি (এই == &o) ফেরত *এই;
+    যদি (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else if (!is_ok_ && o.is_ok_)
+    অন্যথা যদি (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = সত্য;
     }
-    else if (is_ok_ && !o.is_ok_)
+    অন্যথা যদি (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (o.err_);
-      is_ok_ = false;
+      নতুন (std::addressof (err_)) E (o.err_);
+      is_ok_ = মিথ্যা;
     }
-    return *this;
+    ফেরত *এই;
   }
 
-  hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
+  hb_ফলাফল_t& operator = (hb_ফলাফল_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    যদি (এই == &o) ফেরত *এই;
+    যদি (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else if (!is_ok_ && o.is_ok_)
+    অন্যথা যদি (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = সত্য;
     }
-    else if (is_ok_ && !o.is_ok_)
+    অন্যথা যদি (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (std::move (o.err_));
-      is_ok_ = false;
+      নতুন (std::addressof (err_)) E (std::move (o.err_));
+      is_ok_ = মিথ্যা;
     }
-    return *this;
+    ফেরত *এই;
   }
 
   template <typename F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_ফলাফল_t (hb_ফলাফল_err_t<F>&& e) : is_ok_ (মিথ্যা)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    নতুন (std::addressof (err_)) E (std::move (e.error));
   }
 
   template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+            hb_enable_if ((std::is_constructible<E, ধ্রুবক F&>::value))>
+  hb_ফলাফল_t (ধ্রুবক hb_ফলাফল_err_t<F>& e) : is_ok_ (মিথ্যা)
   {
-    new (std::addressof (err_)) E (e.error);
+    নতুন (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E
-  hb_result_t (E e) : is_ok_ (false)
+  hb_ফলাফল_t (E e) : is_ok_ (মিথ্যা)
   {
-    new (std::addressof (err_)) E (std::move(e));
+    নতুন (std::addressof (err_)) E (std::move(e));
   }
 
   // V is any class which has an in_error() method. This checks the result
   // of in_error() and returns either Ok() or Err(error_value).
   template<typename V>
-  static hb_result_t<void, E> from (const V& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  স্থির hb_ফলাফল_t<শূন্য, E> from (ধ্রুবক V& fallible, E error_মান) {
+    যদি (fallible.in_error()) {
+      ফেরত Err(error_মান);
     }
-    return Ok();
+    ফেরত Ok();
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  যৌক্তিক is_ok () ধ্রুবক { ফেরত is_ok_; }
+  যৌক্তিক is_err () ধ্রুবক { ফেরত !is_ok_; }
+  explicit operator যৌক্তিক () ধ্রুবক { ফেরত is_ok (); }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  ধ্রুবক E& error () ধ্রুবক & { প্রতিজ্ঞা (!is_ok_); ফেরত err_; }
+  E& error () & { প্রতিজ্ঞা (!is_ok_); ফেরত err_; }
+  E error () && { প্রতিজ্ঞা (!is_ok_); ফেরত std::move (err_); }
 
-  void operator * () & { return; }
-  void operator * () const & { return; }
-  void operator * () && { return; }
+  শূন্য operator * () & { ফেরত; }
+  শূন্য operator * () ধ্রুবক & { ফেরত; }
+  শূন্য operator * () && { ফেরত; }
 
-  bool operator == (const hb_result_t<void, E>& o) const
+  যৌক্তিক operator == (ধ্রুবক hb_ফলাফল_t<শূন্য, E>& o) ধ্রুবক
   {
-    return is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
+    ফেরত is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
   }
 
-  bool operator != (const hb_result_t<void, E>& o) const
+  যৌক্তিক operator != (ধ্রুবক hb_ফলাফল_t<শূন্য, E>& o) ধ্রুবক
   {
-    return !(*this == o);
+    ফেরত !(*এই == o);
   }
 
-  bool operator == (hb_result_ok_t<void>) const
+  যৌক্তিক operator == (hb_ফলাফল_ok_t<শূন্য>) ধ্রুবক
   {
-    return is_ok_;
+    ফেরত is_ok_;
   }
 
-  bool operator != (hb_result_ok_t<void>) const
+  যৌক্তিক operator != (hb_ফলাফল_ok_t<শূন্য>) ধ্রুবক
   {
-    return !is_ok_;
+    ফেরত !is_ok_;
   }
 
   template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  যৌক্তিক operator == (ধ্রুবক hb_ফলাফল_err_t<F>& e) ধ্রুবক
   {
-    return !is_ok_ && err_ == e.error;
+    ফেরত !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  যৌক্তিক operator != (ধ্রুবক hb_ফলাফল_err_t<F>& e) ধ্রুবক
   {
-    return !(*this == e);
+    ফেরত !(*এই == e);
   }
 
   template <typename U>
-  bool operator == (const U&) const = delete;
+  যৌক্তিক operator == (ধ্রুবক U&) ধ্রুবক = delete;
 
   template <typename U>
-  bool operator != (const U&) const = delete;
+  যৌক্তিক operator != (ধ্রুবক U&) ধ্রুবক = delete;
 };
 
 template <typename U, typename T, typename E>
-static inline bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+স্থির অন্তঃরেখ যৌক্তিক operator == (ধ্রুবক hb_ফলাফল_ok_t<U>& o, ধ্রুবক hb_ফলাফল_t<T, E>& r)
 {
-  return r == o;
+  ফেরত r == o;
 }
 template <typename U, typename T, typename E>
-static inline bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+স্থির অন্তঃরেখ যৌক্তিক operator != (ধ্রুবক hb_ফলাফল_ok_t<U>& o, ধ্রুবক hb_ফলাফল_t<T, E>& r)
 {
-  return r != o;
+  ফেরত r != o;
 }
 template <typename F, typename T, typename E>
-static inline bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+স্থির অন্তঃরেখ যৌক্তিক operator == (ধ্রুবক hb_ফলাফল_err_t<F>& e, ধ্রুবক hb_ফলাফল_t<T, E>& r)
 {
-  return r == e;
+  ফেরত r == e;
 }
 template <typename F, typename T, typename E>
-static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+স্থির অন্তঃরেখ যৌক্তিক operator != (ধ্রুবক hb_ফলাফল_err_t<F>& e, ধ্রুবক hb_ফলাফল_t<T, E>& r)
 {
-  return r != e;
+  ফেরত r != e;
 }
 
 #ifndef TRY
-#define TRY(expr)                                                             \
-  do {                                                                        \
-    auto _res = (expr);                                                       \
-    if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
-  } while (0)
+#define TRY(রাশিমালা)                                                             \
+  করো {                                                                        \
+    auto _res = (রাশিমালা);                                                       \
+    যদি (unlikely (!_res.is_ok())) ফেরত Err(std::move(_res).error());        \
+  } যখন (0)
 #endif
 
 #ifndef TRY_ASSIGN
 #define TRY_ASSIGN(var, ...)                                                  \
   auto HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
-  if (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) return Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
+  যদি (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) ফেরত Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
   var = *std::move(HB_PASTE(_res_, __LINE__))
 #endif
 

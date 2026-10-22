@@ -1,217 +1,217 @@
 #ifndef OT_LAYOUT_GSUB_LIGATURE_HH
 #define OT_LAYOUT_GSUB_LIGATURE_HH
 
-#include "Common.hh"
+#অন্তর্ভাব "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GSUB_impl {
 
 template <typename Types>
-struct Ligature
+কাঠামো Ligature
 {
-  public:
+  সর্বজনীন:
   typename Types::HBGlyphID
 		ligGlyph;               /* GlyphID of ligature to substitute */
   HeadlessArray16Of<typename Types::HBGlyphID>
 		component;              /* Array of component GlyphIDs--start
                                          * with the second  component--ordered
                                          * in writing direction */
-  public:
-  DEFINE_SIZE_ARRAY (Types::size + 2, component);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (Types::আকার_2 + 2, component);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এই);
     return_trace (ligGlyph.sanitize (c) && component.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (component, glyphs); }
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
+  { ফেরত hb_all (component, glyphs); }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
-  { return glyphs->has(ligGlyph); }
+  যৌক্তিক intersects_lig_glyph (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
+  { ফেরত glyphs->has(ligGlyph); }
 
-  void closure (hb_closure_context_t *c) const
+  শূন্য closure (hb_closure_context_t *c) ধ্রুবক
   {
-    if (!intersects (c->glyphs)) return;
+    যদি (!intersects (c->glyphs)) ফেরত;
     c->output->add (ligGlyph);
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  শূন্য depend (hb_depend_context_t *c, hb_codepoint_t first) ধ্রুবক
   {
     // Build the complete ligature set upfront before adding any edges
     hb_set_t complete_ligset;
     complete_ligset.add (first);
     + hb_iter (component) | hb_sink (complete_ligset);
-    if (unlikely (complete_ligset.in_error ()))
+    যদি (unlikely (complete_ligset.in_error ()))
     {
-      c->depend_data->fail ();
-      return;
+      c->depend_তথ্য->fail ();
+      ফেরত;
     }
 
-    bool ligset_created;
-    hb_codepoint_t ligset_idx = c->depend_data->find_or_create_set (complete_ligset,
+    যৌক্তিক ligset_created;
+    hb_codepoint_t ligset_idx = c->depend_তথ্য->find_or_create_set (complete_ligset,
                                                                     &ligset_created);
-    if (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
-      return;
+    যদি (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
+      ফেরত;
 
     // Track whether any edge using this ligset_idx was actually added
-    bool any_added = false;
+    যৌক্তিক any_added = মিথ্যা;
 
     // Now add one edge for each glyph in the complete, immutable set
     + hb_iter (complete_ligset)
     | hb_apply ([&] (hb_codepoint_t gid) {
-        if (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
-          any_added = true;
+        যদি (c->depend_তথ্য->add_gsub_lookup (gid, c->lookup_সূচক, ligGlyph, ligset_idx))
+          any_added = সত্য;
       })
     ;
 
     // If no edges were added, a newly allocated set is unused - free it for reuse
-    if (!any_added && ligset_created)
-      c->depend_data->discard_set (ligset_idx);
+    যদি (!any_added && ligset_created)
+      c->depend_তথ্য->discard_set (ligset_idx);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    c->input->add_array (component.arrayZ, component.get_length ());
+    c->প্রবেশ->add_array (component.arrayZ, component.get_দৈর্ঘ্য ());
     c->output->add (ligGlyph);
   }
 
   template <typename set_t>
-  void collect_second (set_t &s) const
+  শূন্য collect_second (set_t &s) ধ্রুবক
   {
-    if (unlikely (!component.get_length ()))
+    যদি (unlikely (!component.get_দৈর্ঘ্য ()))
     {
       // A ligature without any components. Anything matches.
       s = set_t::full ();
-      return;
+      ফেরত;
     }
     s.add (component.arrayZ[0]);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c) ধ্রুবক
   {
-    if (c->len != component.lenP1)
-      return false;
+    যদি (c->len != component.lenP1)
+      ফেরত মিথ্যা;
 
-    for (unsigned int i = 1; i < c->len; i++)
-      if (likely (c->glyphs[i] != component[i]))
-        return false;
+    জন্য (unsigned পূর্ণসংখ্যা i = 1; i < c->len; i++)
+      যদি (likely (c->glyphs[i] != component[i]))
+        ফেরত মিথ্যা;
 
-    return true;
+    ফেরত সত্য;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    unsigned int count = component.lenP1;
+    TRACE_APPLY (এই);
+    unsigned পূর্ণসংখ্যা গুনতি = component.lenP1;
 
-    if (unlikely (!count)) return_trace (false);
+    যদি (unlikely (!গুনতি)) return_trace (মিথ্যা);
 
     /* Special-case to make it in-place and not consider this
      * as a "ligated" substitution. */
-    if (unlikely (count == 1))
+    যদি (unlikely (গুনতি == 1))
     {
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->বাফার->sync_so_far ();
+	c->বাফার->message (c->font,
 			    "replacing glyph at %u (ligature substitution)",
-			    c->buffer->idx);
+			    c->বাফার->idx);
       }
 
       c->replace_glyph (ligGlyph);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
       {
-	c->buffer->message (c->font,
+	c->বাফার->message (c->font,
 			    "replaced glyph at %u (ligature substitution)",
-			    c->buffer->idx - 1u);
+			    c->বাফার->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (সত্য);
     }
 
-    unsigned int total_component_count = 0;
+    unsigned পূর্ণসংখ্যা যোগ_component_গুনতি = 0;
 
-    if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return false;
-    unsigned int match_end = 0;
+    যদি (unlikely (গুনতি > HB_MAX_CONTEXT_দৈর্ঘ্য)) ফেরত মিথ্যা;
+    unsigned পূর্ণসংখ্যা match_end = 0;
 
-    if (likely (!match_input (c, count,
+    যদি (likely (!match_প্রবেশ (c, গুনতি,
                               &component[1],
                               match_glyph,
                               nullptr,
                               &match_end,
-                              &total_component_count)))
+                              &যোগ_component_গুনতি)))
     {
-      c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-      return_trace (false);
+      c->বাফার->unsafe_to_concat (c->বাফার->idx, match_end);
+      return_trace (মিথ্যা);
     }
 
     unsigned pos = 0;
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
     {
-      unsigned delta = c->buffer->sync_so_far ();
+      unsigned delta = c->বাফার->sync_so_far ();
 
-      pos = c->buffer->idx;
+      pos = c->বাফার->idx;
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      অক্ষর buf[HB_MAX_CONTEXT_দৈর্ঘ্য * 16] = {0};
+      অক্ষর *p = buf;
 
       match_end += delta;
-      for (unsigned i = 0; i < count; i++)
+      জন্য (unsigned i = 0; i < গুনতি; i++)
       {
 	c->match_positions[i] += delta;
-	if (i)
+	যদি (i)
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", c->match_positions[i]);
+	snprintf (p, আকার(buf) - (p - buf), "%u", c->match_positions[i]);
 	p += strlen(p);
       }
 
-      c->buffer->message (c->font,
+      c->বাফার->message (c->font,
 			  "ligating glyphs at %s",
 			  buf);
     }
 
-    ligate_input (c,
-                  count,
+    ligate_প্রবেশ (c,
+                  গুনতি,
                   match_end,
                   ligGlyph,
-                  total_component_count);
+                  যোগ_component_গুনতি);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->বাফার->sync_so_far ();
+      c->বাফার->message (c->font,
 			  "ligated glyph at %u",
 			  pos);
     }
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
   template <typename Iterator,
             hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  যৌক্তিক serialize (hb_serialize_context_t *c,
                   hb_codepoint_t ligature,
                   Iterator components /* Starting from second */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (এই);
+    যদি (unlikely (!c->extend_min (এই))) return_trace (মিথ্যা);
     ligGlyph = ligature;
-    if (unlikely (!component.serialize (c, components))) return_trace (false);
-    return_trace (true);
+    যদি (unlikely (!component.serialize (c, components))) return_trace (মিথ্যা);
+    return_trace (সত্য);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  যৌক্তিক subset (hb_subset_context_t *c, unsigned coverage_idx) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (এই);
+    ধ্রুবক hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ধ্রুবক hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (false);
+    যদি (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (মিথ্যা);
     // Ensure Coverage table is always packed after this.
     c->serializer->add_virtual_link (coverage_idx);
 
@@ -220,7 +220,7 @@ struct Ligature
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
+    auto *out = c->serializer->start_embed (*এই);
     return_trace (out->serialize (c->serializer,
                                   glyph_map[ligGlyph],
                                   it));  }

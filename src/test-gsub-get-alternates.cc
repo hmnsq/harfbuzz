@@ -24,16 +24,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include <hb.h>
-#include <hb-ot.h>
+#অন্তর্ভাব <hb.h>
+#অন্তর্ভাব <hb-ot.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#অন্তর্ভাব <stdlib.h>
+#অন্তর্ভাব <stdio.h>
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
-  if (argc != 3) {
+  যদি (argc != 3) {
     fprintf (stderr, "usage: %s font-file text\n", argv[0]);
     exit (1);
   }
@@ -45,42 +45,42 @@ main (int argc, char **argv)
   blob = nullptr;
 
   hb_font_t *font = hb_font_create (face);
-  hb_buffer_t *buffer = hb_buffer_create ();
+  hb_বাফার_t *বাফার = hb_বাফার_create ();
 
-  hb_buffer_add_utf8 (buffer, argv[2], -1, 0, -1);
-  hb_buffer_guess_segment_properties (buffer);
-  hb_shape (font, buffer, NULL, 0);
+  hb_বাফার_add_utf8 (বাফার, argv[2], -1, 0, -1);
+  hb_বাফার_guess_segment_properties (বাফার);
+  hb_shape (font, বাফার, ফাঁকা, 0);
 
   hb_tag_t features[] = {HB_TAG('a','a','l','t'), HB_TAG_NONE};
   hb_set_t *lookup_indexes = hb_set_create ();
   hb_ot_layout_collect_lookups (face,
 				HB_OT_TAG_GSUB,
-				NULL, NULL,
+				ফাঁকা, ফাঁকা,
 				features,
 				lookup_indexes);
   printf ("lookups %u\n", hb_set_get_population (lookup_indexes));
 
-  unsigned count;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  unsigned গুনতি;
+  hb_glyph_info_t *info = hb_বাফার_get_glyph_infos (বাফার, &গুনতি);
+  জন্য (unsigned i = 0; i < গুনতি; i++)
   {
-    unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
-	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
-								 lookup_index,
+    unsigned alt_গুনতি = 0;
+    জন্য (hb_codepoint_t lookup_সূচক = HB_SET_মান_INVALID;
+	 hb_set_পরবর্তী (lookup_indexes, &lookup_সূচক);)
+      যদি ((alt_গুনতি = hb_ot_layout_lookup_get_glyph_alternates (face,
+								 lookup_সূচক,
 								 info[i].codepoint,
 								 0,
-								 NULL,
-								 NULL)))
-        break;
-    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
+								 ফাঁকা,
+								 ফাঁকা)))
+        বিরতি;
+    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_গুনতি);
   }
 
   hb_set_destroy (lookup_indexes);
-  hb_buffer_destroy (buffer);
+  hb_বাফার_destroy (বাফার);
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  ফেরত 0;
 }

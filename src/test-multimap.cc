@@ -22,38 +22,38 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-multimap.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-multimap.hh"
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
   hb_multimap_t m;
 
-  hb_always_assert (m.get (10).length == 0);
+  hb_always_assert (m.get (10).দৈর্ঘ্য == 0);
 
   m.add (10, 11);
-  hb_always_assert (m.get (10).length == 1);
+  hb_always_assert (m.get (10).দৈর্ঘ্য == 1);
 
   m.add (10, 12);
-  hb_always_assert (m.get (10).length == 2);
+  hb_always_assert (m.get (10).দৈর্ঘ্য == 2);
 
   m.add (10, 13);
-  hb_always_assert (m.get (10).length == 3);
+  hb_always_assert (m.get (10).দৈর্ঘ্য == 3);
   hb_always_assert (m.get (10)[0] == 11);
   hb_always_assert (m.get (10)[1] == 12);
   hb_always_assert (m.get (10)[2] == 13);
 
-  hb_always_assert (m.get (11).length == 0);
+  hb_always_assert (m.get (11).দৈর্ঘ্য == 0);
   m.add (11, 14);
-  hb_always_assert (m.get (10).length == 3);
-  hb_always_assert (m.get (11).length == 1);
-  hb_always_assert (m.get (12).length == 0);
+  hb_always_assert (m.get (10).দৈর্ঘ্য == 3);
+  hb_always_assert (m.get (11).দৈর্ঘ্য == 1);
+  hb_always_assert (m.get (12).দৈর্ঘ্য == 0);
   hb_always_assert (m.get (10)[0] == 11);
   hb_always_assert (m.get (10)[1] == 12);
   hb_always_assert (m.get (10)[2] == 13);
   hb_always_assert (m.get (11)[0] == 14);
   hb_always_assert (m.get (12)[0] == 0); // Array fallback value
 
-  return 0;
+  ফেরত 0;
 }

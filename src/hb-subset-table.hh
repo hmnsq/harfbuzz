@@ -28,140 +28,140 @@
 #define HB_SUBSET_TABLE_HH
 
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-subset.hh"
-#include "hb-repacker.hh"
+#অন্তর্ভাব "hb-subset.hh"
+#অন্তর্ভাব "hb-repacker.hh"
 
 
 template<typename TableType>
-static bool
-_hb_subset_table_try (const TableType *table,
-		      hb_vector_t<char>* buf,
+স্থির যৌক্তিক
+_hb_subset_table_try (ধ্রুবক TableType *table,
+		      hb_vector_t<অক্ষর>* buf,
 		      hb_subset_context_t* c /* OUT */)
 {
   c->serializer->start_serialize ();
-  if (c->serializer->in_error ()) return false;
+  যদি (c->serializer->in_error ()) ফেরত মিথ্যা;
 
-  bool needed = table->subset (c);
-  if (!c->serializer->ran_out_of_room ())
+  যৌক্তিক needed = table->subset (c);
+  যদি (!c->serializer->ran_out_of_room ())
   {
     c->serializer->end_serialize ();
-    return needed;
+    ফেরত needed;
   }
 
-  unsigned buf_size = buf->allocated;
-  buf_size = buf_size * 2 + 16;
+  unsigned buf_আকার = buf->allocated;
+  buf_আকার = buf_আকার * 2 + 16;
 
 
 
 
-  DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
-             HB_UNTAG (c->table_tag), buf_size);
+  DEBUG_বার্তা (SUBSET, nullptr, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
+             HB_UNTAG (c->table_tag), buf_আকার);
 
-  if (unlikely (buf_size > c->source_blob->length * 256 ||
-		!buf->alloc_exact (buf_size)))
+  যদি (unlikely (buf_আকার > c->source_blob->দৈর্ঘ্য * 256 ||
+		!buf->alloc_exact (buf_আকার)))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to reallocate %u bytes.",
-               HB_UNTAG (c->table_tag), buf_size);
-    return needed;
+    DEBUG_বার্তা (SUBSET, nullptr, "OT::%c%c%c%c failed to reallocate %u bytes.",
+               HB_UNTAG (c->table_tag), buf_আকার);
+    ফেরত needed;
   }
 
   c->serializer->reset (buf->arrayZ, buf->allocated);
-  return _hb_subset_table_try (table, buf, c);
+  ফেরত _hb_subset_table_try (table, buf, c);
 }
 
-static HB_UNUSED unsigned
-_hb_subset_estimate_table_size (hb_subset_plan_t *plan,
+স্থির HB_UNUSED unsigned
+hb_subset_estimate_table_আকার (hb_subset_plan_t *plan,
 				unsigned table_len,
 				hb_tag_t table_tag)
 {
-  unsigned src_glyphs = plan->source->get_num_glyphs ();
+  unsigned src_glyphs = plan->source->get_অঙ্ক_glyphs ();
   unsigned dst_glyphs = plan->glyphset ()->get_population ();
 
   unsigned bulk = 8192;
   /* Tables that we want to allocate same space as the source table. For GSUB/GPOS it's
    * because those are expensive to subset, so giving them more room is fine. */
-  bool same_size = table_tag == HB_TAG('G','S','U','B') ||
+  যৌক্তিক same_আকার = table_tag == HB_TAG('G','S','U','B') ||
 		   table_tag == HB_TAG('G','P','O','S') ||
 		   table_tag == HB_TAG('G','D','E','F') ||
 		   table_tag == HB_TAG('n','a','m','e');
 
-  if (plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS)
+  যদি (plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS)
   {
-    if (table_tag == HB_TAG('C','F','F',' '))
+    যদি (table_tag == HB_TAG('C','F','F',' '))
     {
       /* Add some extra room for the CFF charset. */
       bulk += src_glyphs * 16;
     }
-    else if (table_tag == HB_TAG('C','F','F','2'))
+    অন্যথা যদি (table_tag == HB_TAG('C','F','F','2'))
     {
       /* Just extra CharString offsets. */
       bulk += src_glyphs * 4;
     }
   }
 
-  if (unlikely (!src_glyphs) || same_size)
-    return bulk + table_len;
+  যদি (unlikely (!src_glyphs) || same_আকার)
+    ফেরত bulk + table_len;
 
-  return bulk + (unsigned) (table_len * sqrt ((double) dst_glyphs / src_glyphs));
+  ফেরত bulk + (unsigned) (table_len * sqrt ((দ্বিগুণ) dst_glyphs / src_glyphs));
 }
 
 /*
  * Repack the serialization buffer if any offset overflows exist.
  */
-static HB_UNUSED hb_blob_t*
-_hb_subset_repack (hb_tag_t tag, const hb_serialize_context_t& c)
+স্থির HB_UNUSED hb_blob_t*
+_hb_subset_repack (hb_tag_t tag, ধ্রুবক hb_serialize_context_t& c)
 {
-  if (!c.offset_overflow ())
-    return c.copy_blob ();
+  যদি (!c.offset_overflow ())
+    ফেরত c.copy_blob ();
 
-  hb_blob_t* result = hb_resolve_overflows (c.object_graph (), tag);
+  hb_blob_t* ফলাফল = hb_resolve_overflows (c.object_graph (), tag);
 
-  if (unlikely (!result))
+  যদি (unlikely (!ফলাফল))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c offset overflow resolution failed.",
+    DEBUG_বার্তা (SUBSET, nullptr, "OT::%c%c%c%c offset overflow resolution failed.",
                HB_UNTAG (tag));
-    return nullptr;
+    ফেরত nullptr;
   }
 
-  return result;
+  ফেরত ফলাফল;
 }
 
 template <typename T>
-static HB_UNUSED auto _hb_do_destroy (T &t, hb_priority<1>) HB_RETURN (void, t.destroy ())
+স্থির HB_UNUSED auto _hb_do_destroy (T &t, hb_priority<1>) HB_RETURN (শূন্য, t.destroy ())
 
 template <typename T>
-static HB_UNUSED void _hb_do_destroy (T &t, hb_priority<0>) {}
+স্থির HB_UNUSED শূন্য _hb_do_destroy (T &t, hb_priority<0>) {}
 
 template<typename TableType>
-static bool
-_hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
+স্থির যৌক্তিক
+_hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<অক্ষর> &buf)
 {
   auto &&source_blob = plan->source_table<TableType> ();
   auto *table = source_blob.get ();
 
   hb_tag_t tag = TableType::tableTag;
   hb_blob_t *blob = source_blob.get_blob();
-  if (unlikely (!blob || !blob->data))
+  যদি (unlikely (!blob || !blob->তথ্য))
   {
-    DEBUG_MSG (SUBSET, nullptr,
+    DEBUG_বার্তা (SUBSET, nullptr,
                "OT::%c%c%c%c::subset sanitize failed on source table.", HB_UNTAG (tag));
     _hb_do_destroy (source_blob, hb_prioritize);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  unsigned buf_size = _hb_subset_estimate_table_size (plan, blob->length, TableType::tableTag);
-  DEBUG_MSG (SUBSET, nullptr,
-             "OT::%c%c%c%c initial estimated table size: %u bytes.", HB_UNTAG (tag), buf_size);
-  if (unlikely (!buf.alloc (buf_size)))
+  unsigned buf_আকার = hb_subset_estimate_table_আকার (plan, blob->দৈর্ঘ্য, TableType::tableTag);
+  DEBUG_বার্তা (SUBSET, nullptr,
+             "OT::%c%c%c%c initial estimated table size: %u bytes.", HB_UNTAG (tag), buf_আকার);
+  যদি (unlikely (!buf.alloc (buf_আকার)))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (tag), buf_size);
+    DEBUG_বার্তা (SUBSET, nullptr, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (tag), buf_আকার);
     _hb_do_destroy (source_blob, hb_prioritize);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  bool needed = false;
+  যৌক্তিক needed = মিথ্যা;
   hb_serialize_context_t serializer (buf.arrayZ, buf.allocated);
   {
     hb_subset_context_t c (blob, plan, &serializer, tag);
@@ -169,49 +169,49 @@ _hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
   }
   _hb_do_destroy (source_blob, hb_prioritize);
 
-  if (serializer.in_error () && !serializer.only_offset_overflow ())
+  যদি (serializer.in_error () && !serializer.only_offset_overflow ())
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (tag));
-    return false;
+    DEBUG_বার্তা (SUBSET, nullptr, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (tag));
+    ফেরত মিথ্যা;
   }
 
-  if (!needed)
+  যদি (!needed)
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (tag));
-    return true;
+    DEBUG_বার্তা (SUBSET, nullptr, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (tag));
+    ফেরত সত্য;
   }
 
-  bool result = false;
+  যৌক্তিক ফলাফল = মিথ্যা;
   hb_blob_t *dest_blob = _hb_subset_repack (tag, serializer);
-  if (dest_blob)
+  যদি (dest_blob)
   {
-    DEBUG_MSG (SUBSET, nullptr,
+    DEBUG_বার্তা (SUBSET, nullptr,
                "OT::%c%c%c%c final subset table size: %u bytes.",
-               HB_UNTAG (tag), dest_blob->length);
-    result = plan->add_table (tag, dest_blob);
+               HB_UNTAG (tag), dest_blob->দৈর্ঘ্য);
+    ফলাফল = plan->add_table (tag, dest_blob);
     hb_blob_destroy (dest_blob);
   }
 
-  DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset %s",
-             HB_UNTAG (tag), result ? "success" : "FAILED!");
-  return result;
+  DEBUG_বার্তা (SUBSET, nullptr, "OT::%c%c%c%c::subset %s",
+             HB_UNTAG (tag), ফলাফল ? "success" : "FAILED!");
+  ফেরত ফলাফল;
 }
 
-static HB_UNUSED bool
+স্থির HB_UNUSED যৌক্তিক
 _hb_subset_table_passthrough (hb_subset_plan_t *plan, hb_tag_t tag)
 {
   hb_blob_t *source_table = hb_face_reference_table (plan->source, tag);
-  bool result = plan->add_table (tag, source_table);
+  যৌক্তিক ফলাফল = plan->add_table (tag, source_table);
   hb_blob_destroy (source_table);
-  return result;
+  ফেরত ফলাফল;
 }
 
 
-HB_INTERNAL bool _hb_subset_table_layout	(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_color		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
+HB_INTERNAL যৌক্তিক _hb_subset_table_layout	(hb_subset_plan_t *plan, hb_vector_t<অক্ষর> &buf, hb_tag_t tag, যৌক্তিক *success);
+HB_INTERNAL যৌক্তিক _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<অক্ষর> &buf, hb_tag_t tag, যৌক্তিক *success);
+HB_INTERNAL যৌক্তিক _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<অক্ষর> &buf, hb_tag_t tag, যৌক্তিক *success);
+HB_INTERNAL যৌক্তিক _hb_subset_table_color		(hb_subset_plan_t *plan, hb_vector_t<অক্ষর> &buf, hb_tag_t tag, যৌক্তিক *success);
+HB_INTERNAL যৌক্তিক _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<অক্ষর> &buf, hb_tag_t tag, যৌক্তিক *success);
 
 
 #endif /* HB_SUBSET_TABLE_HH */

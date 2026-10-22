@@ -29,14 +29,14 @@
 #ifndef HB_FONT_HH
 #define HB_FONT_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-face.hh"
-#include "hb-atomic.hh"
-#include "hb-draw.hh"
-#include "hb-paint-extents.hh"
-#include "hb-shaper.hh"
-#include "hb-outline.hh"
+#অন্তর্ভাব "hb-face.hh"
+#অন্তর্ভাব "hb-atomic.hh"
+#অন্তর্ভাব "hb-draw.hh"
+#অন্তর্ভাব "hb-paint-extents.hh"
+#অন্তর্ভাব "hb-shaper.hh"
+#অন্তর্ভাব "hb-outline.hh"
 
 
 /*
@@ -67,30 +67,30 @@
   HB_FONT_FUNC_IMPLEMENT (,paint_glyph_or_fail) \
   /* ^--- Add new callbacks here */
 
-struct hb_font_funcs_t
+কাঠামো hb_font_funcs_t
 {
   hb_object_header_t header;
 
-  struct {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) void *name;
+  কাঠামো {
+#define HB_FONT_FUNC_IMPLEMENT(get_,name) শূন্য *name;
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
-  } *user_data;
+  } *user_তথ্য;
 
-  struct {
+  কাঠামো {
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_destroy_func_t name;
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
   } *destroy;
 
   /* Don't access these directly.  Call font->get_*() instead. */
-  union get_t {
-    struct get_funcs_t {
+  সংঘ get_t {
+    কাঠামো get_funcs_t {
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_func_t name;
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
     } f;
-    void (*array[0
+    শূন্য (*array[0
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) +1
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
@@ -104,11 +104,11 @@ DECLARE_NULL_INSTANCE (hb_font_funcs_t);
  * hb_font_t
  */
 
-#define HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, font);
-#include "hb-shaper-list.hh"
+#define HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_তথ্য_INSTANTIATE_SHAPERS(shaper, font);
+#অন্তর্ভাব "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
 
-struct hb_font_t
+কাঠামো hb_font_t
 {
   hb_object_header_t header;
   hb_atomic_t<unsigned> serial;
@@ -120,90 +120,90 @@ struct hb_font_t
   int32_t x_scale;
   int32_t y_scale;
 
-  bool is_synthetic;
+  যৌক্তিক is_synthetic;
 
-  float x_embolden;
-  float y_embolden;
-  bool embolden_in_place;
+  দশমিক x_embolden;
+  দশমিক y_embolden;
+  যৌক্তিক embolden_in_place;
   int32_t x_strength; /* x_embolden, in scaled units. */
   int32_t y_strength; /* y_embolden, in scaled units. */
 
-  float slant;
-  float slant_xy;
+  দশমিক slant;
+  দশমিক slant_xy;
 
-  float x_multf;
-  float y_multf;
+  দশমিক x_multf;
+  দশমিক y_multf;
   int64_t x_mult;
   int64_t y_mult;
 
-  unsigned int x_ppem;
-  unsigned int y_ppem;
+  unsigned পূর্ণসংখ্যা x_ppem;
+  unsigned পূর্ণসংখ্যা y_ppem;
 
-  float ptem;
+  দশমিক ptem;
 
   /* Font variation coordinates. */
-  unsigned int instance_index;
-  bool has_nonzero_coords;
-  unsigned int num_coords;
-  int *coords;
-  float *design_coords;
+  unsigned পূর্ণসংখ্যা instance_সূচক;
+  যৌক্তিক has_nonzero_coords;
+  unsigned পূর্ণসংখ্যা অঙ্ক_coords;
+  পূর্ণসংখ্যা *coords;
+  দশমিক *design_coords;
 
   hb_font_funcs_t   *klass;
-  void              *user_data;
+  শূন্য              *user_তথ্য;
   hb_destroy_func_t  destroy;
 
-  hb_shaper_object_dataset_t<hb_font_t> data; /* Various shaper data. */
+  hb_shaper_object_dataset_t<hb_font_t> তথ্য; /* Various shaper data. */
 
 
   /* Convert from font-space to user-space */
   int64_t dir_mult (hb_direction_t direction)
-  { return HB_DIRECTION_IS_VERTICAL(direction) ? y_mult : x_mult; }
-  hb_position_t em_scale_x (int32_t v) { return em_mult (v, x_mult); }
-  hb_position_t em_scale_y (int32_t v) { return em_mult (v, y_mult); }
-  hb_position_t em_scalef_x (float v) { return em_multf (v, x_multf); }
-  hb_position_t em_scalef_y (float v) { return em_multf (v, y_multf); }
-  float em_fscale_x (int32_t v) { return em_fmult (v, x_multf); }
-  float em_fscale_y (int32_t v) { return em_fmult (v, y_multf); }
-  float em_fscalef_x (float v) { return em_fmultf (v, x_multf); }
-  float em_fscalef_y (float v) { return em_fmultf (v, y_multf); }
+  { ফেরত HB_DIRECTION_IS_VERTICAL(direction) ? y_mult : x_mult; }
+  hb_position_t em_scale_x (int32_t v) { ফেরত em_mult (v, x_mult); }
+  hb_position_t em_scale_y (int32_t v) { ফেরত em_mult (v, y_mult); }
+  hb_position_t em_scalef_x (দশমিক v) { ফেরত em_multf (v, x_multf); }
+  hb_position_t em_scalef_y (দশমিক v) { ফেরত em_multf (v, y_multf); }
+  দশমিক em_fscale_x (int32_t v) { ফেরত em_fmult (v, x_multf); }
+  দশমিক em_fscale_y (int32_t v) { ফেরত em_fmult (v, y_multf); }
+  দশমিক em_fscalef_x (দশমিক v) { ফেরত em_fmultf (v, x_multf); }
+  দশমিক em_fscalef_y (দশমিক v) { ফেরত em_fmultf (v, y_multf); }
   hb_position_t em_scale_dir (int16_t v, hb_direction_t direction)
-  { return em_mult (v, dir_mult (direction)); }
+  { ফেরত em_mult (v, dir_mult (direction)); }
 
   /* Convert from parent-font user-space to our user-space */
   hb_position_t parent_scale_x_distance (hb_position_t v)
   {
-    if (unlikely (parent && parent->x_scale && parent->x_scale != x_scale))
-      return (hb_position_t) (v * (int64_t) this->x_scale / this->parent->x_scale);
-    return v;
+    যদি (unlikely (parent && parent->x_scale && parent->x_scale != x_scale))
+      ফেরত (hb_position_t) (v * (int64_t) এই->x_scale / এই->parent->x_scale);
+    ফেরত v;
   }
   hb_position_t parent_scale_y_distance (hb_position_t v)
   {
-    if (unlikely (parent && parent->y_scale && parent->y_scale != y_scale))
-      return (hb_position_t) (v * (int64_t) this->y_scale / this->parent->y_scale);
-    return v;
+    যদি (unlikely (parent && parent->y_scale && parent->y_scale != y_scale))
+      ফেরত (hb_position_t) (v * (int64_t) এই->y_scale / এই->parent->y_scale);
+    ফেরত v;
   }
   hb_position_t parent_scale_x_position (hb_position_t v)
-  { return parent_scale_x_distance (v); }
+  { ফেরত parent_scale_x_distance (v); }
   hb_position_t parent_scale_y_position (hb_position_t v)
-  { return parent_scale_y_distance (v); }
+  { ফেরত parent_scale_y_distance (v); }
 
-  void parent_scale_distance (hb_position_t *x, hb_position_t *y)
+  শূন্য parent_scale_distance (hb_position_t *x, hb_position_t *y)
   {
     *x = parent_scale_x_distance (*x);
     *y = parent_scale_y_distance (*y);
   }
-  void parent_scale_position (hb_position_t *x, hb_position_t *y)
+  শূন্য parent_scale_position (hb_position_t *x, hb_position_t *y)
   {
     *x = parent_scale_x_position (*x);
     *y = parent_scale_y_position (*y);
   }
 
-  void scale_glyph_extents (hb_glyph_extents_t *extents)
+  শূন্য scale_glyph_extents (hb_glyph_extents_t *extents)
   {
-    float x1 = em_fscale_x (extents->x_bearing);
-    float y1 = em_fscale_y (extents->y_bearing);
-    float x2 = x1 + em_fscale_x (extents->width);
-    float y2 = y1 + em_fscale_y (extents->height);
+    দশমিক x1 = em_fscale_x (extents->x_bearing);
+    দশমিক y1 = em_fscale_y (extents->y_bearing);
+    দশমিক x2 = x1 + em_fscale_x (extents->width);
+    দশমিক y2 = y1 + em_fscale_y (extents->height);
 
     extents->x_bearing = floorf (x1);
     extents->y_bearing = floorf (y1);
@@ -211,10 +211,10 @@ struct hb_font_t
     extents->height = ceilf (y2) - extents->y_bearing;
   }
 
-  void synthetic_glyph_extents (hb_glyph_extents_t *extents)
+  শূন্য synthetic_glyph_extents (hb_glyph_extents_t *extents)
   {
     /* Slant. */
-    if (slant_xy)
+    যদি (slant_xy)
     {
       /* x_bearing/width and y_bearing/height are each clamped to the full
        * hb_position_t range independently by the extent producers, so their
@@ -230,18 +230,18 @@ struct hb_font_t
     }
 
     /* Embolden. */
-    if (x_strength || y_strength)
+    যদি (x_strength || y_strength)
     {
       /* Y */
-      int y_shift = y_strength;
-      if (y_scale < 0) y_shift = -y_shift;
+      পূর্ণসংখ্যা y_shift = y_strength;
+      যদি (y_scale < 0) y_shift = -y_shift;
       extents->y_bearing = hb_clamp_to<hb_position_t> ((int64_t) extents->y_bearing + y_shift);
       extents->height = hb_clamp_to<hb_position_t> ((int64_t) extents->height - y_shift);
 
       /* X */
-      int x_shift = x_strength;
-      if (x_scale < 0) x_shift = -x_shift;
-      if (embolden_in_place)
+      পূর্ণসংখ্যা x_shift = x_strength;
+      যদি (x_scale < 0) x_shift = -x_shift;
+      যদি (embolden_in_place)
 	extents->x_bearing = hb_clamp_to<hb_position_t> ((int64_t) extents->x_bearing - x_shift / 2);
       extents->width = hb_clamp_to<hb_position_t> ((int64_t) extents->width + x_shift);
     }
@@ -250,73 +250,73 @@ struct hb_font_t
 
   /* Public getters */
 
-  HB_INTERNAL bool has_func (unsigned int i);
-  HB_INTERNAL bool has_func_set (unsigned int i);
+  HB_INTERNAL যৌক্তিক has_func (unsigned পূর্ণসংখ্যা i);
+  HB_INTERNAL যৌক্তিক has_func_set (unsigned পূর্ণসংখ্যা i);
 
   /* has_* ... */
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) \
-  bool \
+  যৌক্তিক \
   has_##name##_func () \
   { \
-    hb_font_funcs_t *funcs = this->klass; \
-    unsigned int i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / sizeof (funcs->get.array[0]); \
-    return has_func (i); \
+    hb_font_funcs_t *funcs = এই->klass; \
+    unsigned পূর্ণসংখ্যা i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / আকার (funcs->get.array[0]); \
+    ফেরত has_func (i); \
   } \
-  bool \
+  যৌক্তিক \
   has_##name##_func_set () \
   { \
-    hb_font_funcs_t *funcs = this->klass; \
-    unsigned int i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / sizeof (funcs->get.array[0]); \
-    return has_func_set (i); \
+    hb_font_funcs_t *funcs = এই->klass; \
+    unsigned পূর্ণসংখ্যা i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / আকার (funcs->get.array[0]); \
+    ফেরত has_func_set (i); \
   }
   HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
 
   hb_bool_t get_font_h_extents (hb_font_extents_t *extents,
-				bool synthetic = true)
+				যৌক্তিক synthetic = সত্য)
   {
-    hb_memset (extents, 0, sizeof (*extents));
-    bool ret = klass->get.f.font_h_extents (this, user_data,
+    hb_memset (extents, 0, আকার (*extents));
+    যৌক্তিক ret = klass->get.f.font_h_extents (এই, user_তথ্য,
 					    extents,
-					    !klass->user_data ? nullptr : klass->user_data->font_h_extents);
+					    !klass->user_তথ্য ? nullptr : klass->user_তথ্য->font_h_extents);
 
-    if (synthetic && ret)
+    যদি (synthetic && ret)
     {
       /* Embolden */
-      int y_shift = y_scale < 0 ? -y_strength : y_strength;
+      পূর্ণসংখ্যা y_shift = y_scale < 0 ? -y_strength : y_strength;
       extents->ascender += y_shift;
     }
 
-    return ret;
+    ফেরত ret;
   }
   hb_bool_t get_font_v_extents (hb_font_extents_t *extents,
-				bool synthetic = true)
+				যৌক্তিক synthetic = সত্য)
   {
-    hb_memset (extents, 0, sizeof (*extents));
-    bool ret = klass->get.f.font_v_extents (this, user_data,
+    hb_memset (extents, 0, আকার (*extents));
+    যৌক্তিক ret = klass->get.f.font_v_extents (এই, user_তথ্য,
 					    extents,
-					    !klass->user_data ? nullptr : klass->user_data->font_v_extents);
+					    !klass->user_তথ্য ? nullptr : klass->user_তথ্য->font_v_extents);
 
-    if (synthetic && ret)
+    যদি (synthetic && ret)
     {
       /* Embolden */
-      int x_shift = x_scale < 0 ? -x_strength : x_strength;
-      if (embolden_in_place)
+      পূর্ণসংখ্যা x_shift = x_scale < 0 ? -x_strength : x_strength;
+      যদি (embolden_in_place)
       {
 	extents->ascender += x_shift / 2;
 	extents->descender -= x_shift - x_shift / 2;
       }
-      else
+      অন্যথা
 	extents->ascender += x_shift;
     }
 
-    return ret;
+    ফেরত ret;
   }
 
-  bool has_glyph (hb_codepoint_t unicode)
+  যৌক্তিক has_glyph (hb_codepoint_t unicode)
   {
     hb_codepoint_t glyph;
-    return get_nominal_glyph (unicode, &glyph);
+    ফেরত get_nominal_glyph (unicode, &glyph);
   }
 
   hb_bool_t get_nominal_glyph (hb_codepoint_t unicode,
@@ -324,21 +324,21 @@ struct hb_font_t
 			       hb_codepoint_t not_found = 0)
   {
     *glyph = not_found;
-    return klass->get.f.nominal_glyph (this, user_data,
+    ফেরত klass->get.f.nominal_glyph (এই, user_তথ্য,
 				       unicode, glyph,
-				       !klass->user_data ? nullptr : klass->user_data->nominal_glyph);
+				       !klass->user_তথ্য ? nullptr : klass->user_তথ্য->nominal_glyph);
   }
-  unsigned int get_nominal_glyphs (unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+  unsigned পূর্ণসংখ্যা get_nominal_glyphs (unsigned পূর্ণসংখ্যা গুনতি,
+				   ধ্রুবক hb_codepoint_t *first_unicode,
+				   unsigned পূর্ণসংখ্যা unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride)
+				   unsigned পূর্ণসংখ্যা glyph_stride)
   {
-    return klass->get.f.nominal_glyphs (this, user_data,
-					count,
+    ফেরত klass->get.f.nominal_glyphs (এই, user_তথ্য,
+					গুনতি,
 					first_unicode, unicode_stride,
 					first_glyph, glyph_stride,
-					!klass->user_data ? nullptr : klass->user_data->nominal_glyphs);
+					!klass->user_তথ্য ? nullptr : klass->user_তথ্য->nominal_glyphs);
   }
 
   hb_bool_t get_variation_glyph (hb_codepoint_t unicode, hb_codepoint_t variation_selector,
@@ -346,63 +346,63 @@ struct hb_font_t
 				 hb_codepoint_t not_found = 0)
   {
     *glyph = not_found;
-    return klass->get.f.variation_glyph (this, user_data,
+    ফেরত klass->get.f.variation_glyph (এই, user_তথ্য,
 					 unicode, variation_selector, glyph,
-					 !klass->user_data ? nullptr : klass->user_data->variation_glyph);
+					 !klass->user_তথ্য ? nullptr : klass->user_তথ্য->variation_glyph);
   }
 
   hb_position_t get_glyph_h_advance (hb_codepoint_t glyph,
-				     bool synthetic = true)
+				     যৌক্তিক synthetic = সত্য)
   {
-    hb_position_t advance = klass->get.f.glyph_h_advance (this, user_data,
+    hb_position_t advance = klass->get.f.glyph_h_advance (এই, user_তথ্য,
 							  glyph,
-							  !klass->user_data ? nullptr : klass->user_data->glyph_h_advance);
+							  !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_h_advance);
 
-    if (synthetic && x_strength && !embolden_in_place)
+    যদি (synthetic && x_strength && !embolden_in_place)
     {
       /* Embolden */
       hb_position_t strength = x_scale >= 0 ? x_strength : -x_strength;
       advance += advance ? strength : 0;
     }
 
-    return advance;
+    ফেরত advance;
   }
 
   hb_position_t get_glyph_v_advance (hb_codepoint_t glyph,
-				     bool synthetic = true)
+				     যৌক্তিক synthetic = সত্য)
   {
-    hb_position_t advance = klass->get.f.glyph_v_advance (this, user_data,
+    hb_position_t advance = klass->get.f.glyph_v_advance (এই, user_তথ্য,
 							  glyph,
-							  !klass->user_data ? nullptr : klass->user_data->glyph_v_advance);
+							  !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_v_advance);
 
-    if (synthetic && y_strength && !embolden_in_place)
+    যদি (synthetic && y_strength && !embolden_in_place)
     {
       /* Embolden */
       hb_position_t strength = y_scale >= 0 ? y_strength : -y_strength;
       advance += advance ? strength : 0;
     }
 
-    return advance;
+    ফেরত advance;
   }
 
-  void get_glyph_h_advances (unsigned int count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int glyph_stride,
+  শূন্য get_glyph_h_advances (unsigned পূর্ণসংখ্যা গুনতি,
+			     ধ্রুবক hb_codepoint_t *first_glyph,
+			     unsigned পূর্ণসংখ্যা glyph_stride,
 			     hb_position_t *first_advance,
-			     unsigned int advance_stride,
-			     bool synthetic = true)
+			     unsigned পূর্ণসংখ্যা advance_stride,
+			     যৌক্তিক synthetic = সত্য)
   {
-    klass->get.f.glyph_h_advances (this, user_data,
-				   count,
+    klass->get.f.glyph_h_advances (এই, user_তথ্য,
+				   গুনতি,
 				   first_glyph, glyph_stride,
 				   first_advance, advance_stride,
-				   !klass->user_data ? nullptr : klass->user_data->glyph_h_advances);
+				   !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_h_advances);
 
-    if (synthetic && x_strength && !embolden_in_place)
+    যদি (synthetic && x_strength && !embolden_in_place)
     {
       /* Embolden */
       hb_position_t strength = x_scale >= 0 ? x_strength : -x_strength;
-      for (unsigned int i = 0; i < count; i++)
+      জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
       {
 	*first_advance += *first_advance ? strength : 0;
 	first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -410,24 +410,24 @@ struct hb_font_t
     }
   }
 
-  void get_glyph_v_advances (unsigned int count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int glyph_stride,
+  শূন্য get_glyph_v_advances (unsigned পূর্ণসংখ্যা গুনতি,
+			     ধ্রুবক hb_codepoint_t *first_glyph,
+			     unsigned পূর্ণসংখ্যা glyph_stride,
 			     hb_position_t *first_advance,
-			     unsigned int advance_stride,
-			     bool synthetic = true)
+			     unsigned পূর্ণসংখ্যা advance_stride,
+			     যৌক্তিক synthetic = সত্য)
   {
-    klass->get.f.glyph_v_advances (this, user_data,
-				   count,
+    klass->get.f.glyph_v_advances (এই, user_তথ্য,
+				   গুনতি,
 				   first_glyph, glyph_stride,
 				   first_advance, advance_stride,
-				   !klass->user_data ? nullptr : klass->user_data->glyph_v_advances);
+				   !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_v_advances);
 
-    if (synthetic && y_strength && !embolden_in_place)
+    যদি (synthetic && y_strength && !embolden_in_place)
     {
       /* Embolden */
       hb_position_t strength = y_scale >= 0 ? y_strength : -y_strength;
-      for (unsigned int i = 0; i < count; i++)
+      জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
       {
 	*first_advance += *first_advance ? strength : 0;
 	first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -437,78 +437,78 @@ struct hb_font_t
 
   hb_bool_t get_glyph_h_origin (hb_codepoint_t glyph,
 				hb_position_t *x, hb_position_t *y,
-				bool synthetic = true)
+				যৌক্তিক synthetic = সত্য)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_h_origin (this, user_data,
+    যৌক্তিক ret = klass->get.f.glyph_h_origin (এই, user_তথ্য,
 					    glyph, x, y,
-					    !klass->user_data ? nullptr : klass->user_data->glyph_h_origin);
+					    !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_h_origin);
 
-    if (synthetic && ret)
+    যদি (synthetic && ret)
     {
       /* Slant is ignored as it does not affect glyph origin */
 
       /* Embolden */
-      if (!embolden_in_place)
+      যদি (!embolden_in_place)
       {
         *x += x_scale < 0 ? -x_strength : x_strength;
 	*y += y_scale < 0 ? -y_strength : y_strength;
       }
     }
 
-    return ret;
+    ফেরত ret;
   }
 
   hb_bool_t get_glyph_v_origin (hb_codepoint_t glyph,
 				hb_position_t *x, hb_position_t *y,
-				bool synthetic = true)
+				যৌক্তিক synthetic = সত্য)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_v_origin (this, user_data,
+    যৌক্তিক ret = klass->get.f.glyph_v_origin (এই, user_তথ্য,
 					    glyph, x, y,
-					    !klass->user_data ? nullptr : klass->user_data->glyph_v_origin);
+					    !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_v_origin);
 
-    if (synthetic && ret)
+    যদি (synthetic && ret)
     {
       /* Slant is ignored as it does not affect glyph origin */
 
       /* Embolden */
-      if (!embolden_in_place)
+      যদি (!embolden_in_place)
       {
         *x += x_scale < 0 ? -x_strength : x_strength;
 	*y += y_scale < 0 ? -y_strength : y_strength;
       }
     }
 
-    return ret;
+    ফেরত ret;
   }
 
-  hb_bool_t get_glyph_h_origins (unsigned int count,
-				 const hb_codepoint_t *first_glyph,
-				 unsigned int glyph_stride,
+  hb_bool_t get_glyph_h_origins (unsigned পূর্ণসংখ্যা গুনতি,
+				 ধ্রুবক hb_codepoint_t *first_glyph,
+				 unsigned পূর্ণসংখ্যা glyph_stride,
 				 hb_position_t *first_x,
-				 unsigned int x_stride,
+				 unsigned পূর্ণসংখ্যা x_stride,
 				 hb_position_t *first_y,
-				 unsigned int y_stride,
-				 bool synthetic = true)
+				 unsigned পূর্ণসংখ্যা y_stride,
+				 যৌক্তিক synthetic = সত্য)
 
   {
-    bool ret = klass->get.f.glyph_h_origins (this, user_data,
-					     count,
+    যৌক্তিক ret = klass->get.f.glyph_h_origins (এই, user_তথ্য,
+					     গুনতি,
 					     first_glyph, glyph_stride,
 					     first_x, x_stride, first_y, y_stride,
-					     !klass->user_data ? nullptr : klass->user_data->glyph_h_origins);
+					     !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_h_origins);
 
-    if (synthetic && ret)
+    যদি (synthetic && ret)
     {
       hb_position_t x_shift = x_scale < 0 ? -x_strength : x_strength;
       hb_position_t y_shift = y_scale < 0 ? -y_strength : y_strength;
-      for (unsigned i = 0; i < count; i++)
+      জন্য (unsigned i = 0; i < গুনতি; i++)
       {
 	/* Slant is ignored as it does not affect glyph origin */
 
 	/* Embolden */
-	if (!embolden_in_place)
+	যদি (!embolden_in_place)
 	{
 	  *first_x += x_shift;
 	  *first_y += y_shift;
@@ -518,35 +518,35 @@ struct hb_font_t
       }
     }
 
-    return ret;
+    ফেরত ret;
   }
 
-  hb_bool_t get_glyph_v_origins (unsigned int count,
-				 const hb_codepoint_t *first_glyph,
-				 unsigned int glyph_stride,
+  hb_bool_t get_glyph_v_origins (unsigned পূর্ণসংখ্যা গুনতি,
+				 ধ্রুবক hb_codepoint_t *first_glyph,
+				 unsigned পূর্ণসংখ্যা glyph_stride,
 				 hb_position_t *first_x,
-				 unsigned int x_stride,
+				 unsigned পূর্ণসংখ্যা x_stride,
 				 hb_position_t *first_y,
-				 unsigned int y_stride,
-				 bool synthetic = true)
+				 unsigned পূর্ণসংখ্যা y_stride,
+				 যৌক্তিক synthetic = সত্য)
 
   {
-    bool ret = klass->get.f.glyph_v_origins (this, user_data,
-					     count,
+    যৌক্তিক ret = klass->get.f.glyph_v_origins (এই, user_তথ্য,
+					     গুনতি,
 					     first_glyph, glyph_stride,
 					     first_x, x_stride, first_y, y_stride,
-					     !klass->user_data ? nullptr : klass->user_data->glyph_v_origins);
+					     !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_v_origins);
 
-    if (synthetic && is_synthetic && ret)
+    যদি (synthetic && is_synthetic && ret)
     {
       hb_position_t x_shift = x_scale < 0 ? -x_strength : x_strength;
       hb_position_t y_shift = y_scale < 0 ? -y_strength : y_strength;
-      for (unsigned i = 0; i < count; i++)
+      জন্য (unsigned i = 0; i < গুনতি; i++)
       {
 	/* Slant is ignored as it does not affect glyph origin */
 
 	/* Embolden */
-	if (!embolden_in_place)
+	যদি (!embolden_in_place)
 	{
 	  *first_x += x_shift;
 	  *first_y += y_shift;
@@ -556,306 +556,306 @@ struct hb_font_t
       }
     }
 
-    return ret;
+    ফেরত ret;
   }
 
-  hb_position_t get_glyph_h_kerning (hb_codepoint_t left_glyph,
-				     hb_codepoint_t right_glyph)
+  hb_position_t get_glyph_h_kerning (hb_codepoint_t বাম_glyph,
+				     hb_codepoint_t ডান_glyph)
   {
 #ifdef HB_DISABLE_DEPRECATED
-    return 0;
-#else
-    return klass->get.f.glyph_h_kerning (this, user_data,
-					 left_glyph, right_glyph,
-					 !klass->user_data ? nullptr : klass->user_data->glyph_h_kerning);
+    ফেরত 0;
+#অন্যথা
+    ফেরত klass->get.f.glyph_h_kerning (এই, user_তথ্য,
+					 বাম_glyph, ডান_glyph,
+					 !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_h_kerning);
 #endif
   }
 
-  hb_position_t get_glyph_v_kerning (hb_codepoint_t top_glyph,
+  hb_position_t get_glyph_v_kerning (hb_codepoint_t শীর্ষ_glyph,
 				     hb_codepoint_t bottom_glyph)
   {
 #ifdef HB_DISABLE_DEPRECATED
-    return 0;
-#else
-    return klass->get.f.glyph_v_kerning (this, user_data,
-					 top_glyph, bottom_glyph,
-					 !klass->user_data ? nullptr : klass->user_data->glyph_v_kerning);
+    ফেরত 0;
+#অন্যথা
+    ফেরত klass->get.f.glyph_v_kerning (এই, user_তথ্য,
+					 শীর্ষ_glyph, bottom_glyph,
+					 !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_v_kerning);
 #endif
   }
 
   hb_bool_t get_glyph_extents (hb_codepoint_t glyph,
 			       hb_glyph_extents_t *extents,
-			       bool synthetic = true)
+			       যৌক্তিক synthetic = সত্য)
   {
-    hb_memset (extents, 0, sizeof (*extents));
+    hb_memset (extents, 0, আকার (*extents));
 
     /* This is rather messy, but necessary. */
 
-    if (!synthetic)
+    যদি (!synthetic)
     {
-      return klass->get.f.glyph_extents (this, user_data,
+      ফেরত klass->get.f.glyph_extents (এই, user_তথ্য,
 					 glyph,
 					 extents,
-					 !klass->user_data ? nullptr : klass->user_data->glyph_extents);
+					 !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_extents);
     }
-    if (!is_synthetic &&
-	klass->get.f.glyph_extents (this, user_data,
+    যদি (!is_synthetic &&
+	klass->get.f.glyph_extents (এই, user_তথ্য,
 				    glyph,
 				    extents,
-				    !klass->user_data ? nullptr : klass->user_data->glyph_extents))
-      return true;
+				    !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_extents))
+      ফেরত সত্য;
 
     /* Try getting extents from paint(), then draw(), *then* get_extents()
      * and apply synthetic settings in the last case. */
 
 #ifndef HB_NO_PAINT
     hb_paint_extents_context_t paint_extents;
-    if (paint_glyph_or_fail (glyph,
+    যদি (paint_glyph_or_fail (glyph,
 			     hb_paint_extents_get_funcs (), &paint_extents,
 			     0, 0))
     {
       *extents = paint_extents.get_extents ().to_glyph_extents ();
-      return true;
+      ফেরত সত্য;
     }
 #endif
 
 #ifndef HB_NO_DRAW
     hb_extents_t<> draw_extents;
-    if (draw_glyph_or_fail (glyph,
+    যদি (draw_glyph_or_fail (glyph,
 			    hb_draw_extents_get_funcs (), &draw_extents))
     {
       *extents = draw_extents.to_glyph_extents ();
-      return true;
+      ফেরত সত্য;
     }
 #endif
 
-    bool ret = klass->get.f.glyph_extents (this, user_data,
+    যৌক্তিক ret = klass->get.f.glyph_extents (এই, user_তথ্য,
 					   glyph,
 					   extents,
-					   !klass->user_data ? nullptr : klass->user_data->glyph_extents);
-    if (ret)
+					   !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_extents);
+    যদি (ret)
       synthetic_glyph_extents (extents);
 
-    return ret;
+    ফেরত ret;
   }
 
-  hb_bool_t get_glyph_contour_point (hb_codepoint_t glyph, unsigned int point_index,
+  hb_bool_t get_glyph_contour_point (hb_codepoint_t glyph, unsigned পূর্ণসংখ্যা point_সূচক,
 				     hb_position_t *x, hb_position_t *y,
-				     bool synthetic = true)
+				     যৌক্তিক synthetic = সত্য)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_contour_point (this, user_data,
-						 glyph, point_index,
+    যৌক্তিক ret = klass->get.f.glyph_contour_point (এই, user_তথ্য,
+						 glyph, point_সূচক,
 						 x, y,
-						 !klass->user_data ? nullptr : klass->user_data->glyph_contour_point);
+						 !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_contour_point);
 
-    if (synthetic && ret)
+    যদি (synthetic && ret)
     {
       /* Slant */
-      if (slant_xy)
+      যদি (slant_xy)
         *x += roundf (*y * slant_xy);
 
       /* Embolden */
-      if (!embolden_in_place)
+      যদি (!embolden_in_place)
       {
-	int x_shift = x_scale < 0 ? -x_strength : x_strength;
+	পূর্ণসংখ্যা x_shift = x_scale < 0 ? -x_strength : x_strength;
 	*x += x_shift;
       }
     }
 
-    return ret;
+    ফেরত ret;
   }
 
   hb_bool_t get_glyph_name (hb_codepoint_t glyph,
-			    char *name, unsigned int size)
+			    অক্ষর *name, unsigned পূর্ণসংখ্যা আকার_2)
   {
-    if (size) *name = '\0';
-    return klass->get.f.glyph_name (this, user_data,
+    যদি (আকার_2) *name = '\0';
+    ফেরত klass->get.f.glyph_name (এই, user_তথ্য,
 				    glyph,
-				    name, size,
-				    !klass->user_data ? nullptr : klass->user_data->glyph_name);
+				    name, আকার_2,
+				    !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_name);
   }
 
-  hb_bool_t get_glyph_from_name (const char *name, int len, /* -1 means nul-terminated */
+  hb_bool_t get_glyph_from_name (ধ্রুবক অক্ষর *name, পূর্ণসংখ্যা len, /* -1 means nul-terminated */
 				 hb_codepoint_t *glyph)
   {
     *glyph = 0;
-    if (len == -1) len = strlen (name);
-    return klass->get.f.glyph_from_name (this, user_data,
+    যদি (len == -1) len = strlen (name);
+    ফেরত klass->get.f.glyph_from_name (এই, user_তথ্য,
 					 name, len,
 					 glyph,
-					 !klass->user_data ? nullptr : klass->user_data->glyph_from_name);
+					 !klass->user_তথ্য ? nullptr : klass->user_তথ্য->glyph_from_name);
   }
 
-  bool draw_glyph_or_fail (hb_codepoint_t glyph,
-			   hb_draw_funcs_t *draw_funcs, void *draw_data,
-			   bool synthetic = true)
+  যৌক্তিক draw_glyph_or_fail (hb_codepoint_t glyph,
+			   hb_draw_funcs_t *draw_funcs, শূন্য *draw_তথ্য,
+			   যৌক্তিক synthetic = সত্য)
   {
 #ifndef HB_NO_DRAW
 #ifndef HB_NO_OUTLINE
-    bool embolden = x_strength || y_strength;
-    bool slanted = slant_xy;
+    যৌক্তিক embolden = x_strength || y_strength;
+    যৌক্তিক slanted = slant_xy;
     synthetic = synthetic && (embolden || slanted);
-#else
-    synthetic = false;
+#অন্যথা
+    synthetic = মিথ্যা;
 #endif
 
-    if (!synthetic)
+    যদি (!synthetic)
     {
-      return klass->get.f.draw_glyph_or_fail (this, user_data,
+      ফেরত klass->get.f.draw_glyph_or_fail (এই, user_তথ্য,
 					      glyph,
-					      draw_funcs, draw_data,
-					      !klass->user_data ? nullptr : klass->user_data->draw_glyph_or_fail);
+					      draw_funcs, draw_তথ্য,
+					      !klass->user_তথ্য ? nullptr : klass->user_তথ্য->draw_glyph_or_fail);
     }
 
 #ifndef HB_NO_OUTLINE
 
     hb_outline_t outline;
-    outline.budget_remaining = draw_funcs->get_budget_remaining_ptr (draw_data);
-    if (!klass->get.f.draw_glyph_or_fail (this, user_data,
+    outline.budget_remaining = draw_funcs->get_budget_remaining_ptr (draw_তথ্য);
+    যদি (!klass->get.f.draw_glyph_or_fail (এই, user_তথ্য,
 					  glyph,
 					  hb_outline_recording_pen_get_funcs (), &outline,
-					  !klass->user_data ? nullptr : klass->user_data->draw_glyph_or_fail))
-      return false;
+					  !klass->user_তথ্য ? nullptr : klass->user_তথ্য->draw_glyph_or_fail))
+      ফেরত মিথ্যা;
 
     // Slant before embolden; produces nicer results.
 
-    if (slanted)
+    যদি (slanted)
     {
       hb_position_t xo = 0, yo = 0;
-      get_glyph_h_origin (glyph, &xo, &yo, false);
+      get_glyph_h_origin (glyph, &xo, &yo, মিথ্যা);
       outline.translate (-xo, -yo);
       outline.slant (slant_xy);
       outline.translate (xo, yo);
     }
 
-    if (embolden)
+    যদি (embolden)
     {
-      float x_shift = embolden_in_place ? 0 : (float) x_strength / 2;
-      float y_shift = (float) y_strength / 2;
-      if (x_scale < 0) x_shift = -x_shift;
-      if (y_scale < 0) y_shift = -y_shift;
+      দশমিক x_shift = embolden_in_place ? 0 : (দশমিক) x_strength / 2;
+      দশমিক y_shift = (দশমিক) y_strength / 2;
+      যদি (x_scale < 0) x_shift = -x_shift;
+      যদি (y_scale < 0) y_shift = -y_shift;
       outline.embolden (x_strength, y_strength, x_shift, y_shift);
     }
 
-    outline.replay (draw_funcs, draw_data);
+    outline.replay (draw_funcs, draw_তথ্য);
 
-    return true;
+    ফেরত সত্য;
 #endif
 #endif
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  bool paint_glyph_or_fail (hb_codepoint_t glyph,
-			    hb_paint_funcs_t *paint_funcs, void *paint_data,
-			    unsigned int palette,
+  যৌক্তিক paint_glyph_or_fail (hb_codepoint_t glyph,
+			    hb_paint_funcs_t *paint_funcs, শূন্য *paint_তথ্য,
+			    unsigned পূর্ণসংখ্যা palette,
 			    hb_color_t foreground,
-			    bool synthetic = true)
+			    যৌক্তিক synthetic = সত্য)
   {
 #ifndef HB_NO_PAINT
     /* Slant */
-    if (synthetic && slant_xy)
-      hb_paint_push_transform (paint_funcs, paint_data,
+    যদি (synthetic && slant_xy)
+      hb_paint_ঠেলো_transform (paint_funcs, paint_তথ্য,
 			       1.f, 0.f,
 			       slant_xy, 1.f,
 			       0.f, 0.f);
 
-    bool ret = klass->get.f.paint_glyph_or_fail (this, user_data,
+    যৌক্তিক ret = klass->get.f.paint_glyph_or_fail (এই, user_তথ্য,
 						 glyph,
-						 paint_funcs, paint_data,
+						 paint_funcs, paint_তথ্য,
 						 palette, foreground,
-						 !klass->user_data ? nullptr : klass->user_data->paint_glyph_or_fail);
+						 !klass->user_তথ্য ? nullptr : klass->user_তথ্য->paint_glyph_or_fail);
 
-    if (synthetic && slant_xy)
-      hb_paint_pop_transform (paint_funcs, paint_data);
+    যদি (synthetic && slant_xy)
+      hb_paint_বের_করো_transform (paint_funcs, paint_তথ্য);
 
-    return ret;
+    ফেরত ret;
 #endif
-    return false;
+    ফেরত মিথ্যা;
   }
 
   /* A bit higher-level, and with fallback */
 
   HB_INTERNAL
-  void paint_glyph (hb_codepoint_t glyph,
-		    hb_paint_funcs_t *paint_funcs, void *paint_data,
-		    unsigned int palette,
+  শূন্য paint_glyph (hb_codepoint_t glyph,
+		    hb_paint_funcs_t *paint_funcs, শূন্য *paint_তথ্য,
+		    unsigned পূর্ণসংখ্যা palette,
 		    hb_color_t foreground);
 
-  void get_h_extents_with_fallback (hb_font_extents_t *extents)
+  শূন্য get_h_extents_with_fallback (hb_font_extents_t *extents)
   {
-    if (!get_font_h_extents (extents))
+    যদি (!get_font_h_extents (extents))
     {
       extents->ascender = y_scale * .8;
       extents->descender = extents->ascender - y_scale;
-      extents->line_gap = 0;
+      extents->সারি_gap = 0;
     }
   }
-  void get_v_extents_with_fallback (hb_font_extents_t *extents)
+  শূন্য get_v_extents_with_fallback (hb_font_extents_t *extents)
   {
-    if (!get_font_v_extents (extents))
+    যদি (!get_font_v_extents (extents))
     {
       extents->ascender = x_scale / 2;
       extents->descender = extents->ascender - x_scale;
-      extents->line_gap = 0;
+      extents->সারি_gap = 0;
     }
   }
 
-  void get_extents_for_direction (hb_direction_t direction,
+  শূন্য get_extents_for_direction (hb_direction_t direction,
 				  hb_font_extents_t *extents)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    যদি (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       get_h_extents_with_fallback (extents);
-    else
+    অন্যথা
       get_v_extents_with_fallback (extents);
   }
 
-  void get_glyph_advance_for_direction (hb_codepoint_t glyph,
+  শূন্য get_glyph_advance_for_direction (hb_codepoint_t glyph,
 					hb_direction_t direction,
 					hb_position_t *x, hb_position_t *y)
   {
     *x = *y = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    যদি (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       *x = get_glyph_h_advance (glyph);
-    else
+    অন্যথা
       *y = get_glyph_v_advance (glyph);
   }
-  void get_glyph_advances_for_direction (hb_direction_t direction,
-					 unsigned int count,
-					 const hb_codepoint_t *first_glyph,
+  শূন্য get_glyph_advances_for_direction (hb_direction_t direction,
+					 unsigned পূর্ণসংখ্যা গুনতি,
+					 ধ্রুবক hb_codepoint_t *first_glyph,
 					 unsigned glyph_stride,
 					 hb_position_t *first_advance,
 					 unsigned advance_stride)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
-      get_glyph_h_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
-    else
-      get_glyph_v_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+    যদি (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+      get_glyph_h_advances (গুনতি, first_glyph, glyph_stride, first_advance, advance_stride);
+    অন্যথা
+      get_glyph_v_advances (গুনতি, first_glyph, glyph_stride, first_advance, advance_stride);
   }
 
-  void apply_offset (hb_position_t *x, hb_position_t *y,
+  শূন্য apply_offset (hb_position_t *x, hb_position_t *y,
 		     hb_position_t dx, hb_position_t dy,
 		     signed mult)
   {
-    assert (mult == -1 || mult == +1);
+    প্রতিজ্ঞা (mult == -1 || mult == +1);
 
     *x += dx * mult;
     *y += dy * mult;
   }
-  void add_offset (hb_position_t *x, hb_position_t *y,
+  শূন্য add_offset (hb_position_t *x, hb_position_t *y,
 		   hb_position_t dx, hb_position_t dy)
   {
     *x += dx;
     *y += dy;
   }
-  void subtract_offset (hb_position_t *x, hb_position_t *y,
+  শূন্য subtract_offset (hb_position_t *x, hb_position_t *y,
 			hb_position_t dx, hb_position_t dy)
   {
     *x -= dx;
     *y -= dy;
   }
 
-  void guess_v_origin_minus_h_origin (hb_codepoint_t glyph,
+  শূন্য guess_v_origin_minus_h_origin (hb_codepoint_t glyph,
 				      hb_position_t *x, hb_position_t *y)
   {
     *x = get_glyph_h_advance (glyph) / 2;
@@ -865,60 +865,60 @@ struct hb_font_t
     *y = extents.ascender;
   }
 
-  void apply_glyph_h_origins_with_fallback (hb_buffer_t *buf, int mult)
+  শূন্য apply_glyph_h_origins_with_fallback (hb_বাফার_t *buf, পূর্ণসংখ্যা mult)
   {
-    bool has_ascender = false;
+    যৌক্তিক has_ascender = মিথ্যা;
     hb_position_t ascender = 0;
 
-    struct { hb_position_t x, y; } origins[32];
+    কাঠামো { hb_position_t x, y; } origins[32];
 
-    unsigned int offset = 0;
-    unsigned int count = buf->len;
-    while (offset < count)
+    unsigned পূর্ণসংখ্যা offset = 0;
+    unsigned পূর্ণসংখ্যা গুনতি = buf->len;
+    যখন (offset < গুনতি)
     {
-      unsigned n = hb_min (count - offset, ARRAY_LENGTH (origins));
-      if (!get_glyph_h_origins (n,
-				&buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				&origins[0].x, sizeof (origins[0]),
-				&origins[0].y, sizeof (origins[0])))
+      unsigned n = hb_min (গুনতি - offset, ARRAY_দৈর্ঘ্য (origins));
+      যদি (!get_glyph_h_origins (n,
+				&buf->info[offset].codepoint, আকার (hb_glyph_info_t),
+				&origins[0].x, আকার (origins[0]),
+				&origins[0].y, আকার (origins[0])))
       {
-        if (get_glyph_v_origins (n,
-				  &buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				  &origins[0].x, sizeof (origins[0]),
-				  &origins[0].y, sizeof (origins[0])))
+        যদি (get_glyph_v_origins (n,
+				  &buf->info[offset].codepoint, আকার (hb_glyph_info_t),
+				  &origins[0].x, আকার (origins[0]),
+				  &origins[0].y, আকার (origins[0])))
 	{
-	  if (!has_ascender)
+	  যদি (!has_ascender)
 	  {
 	    hb_font_extents_t extents;
 	    get_h_extents_with_fallback (&extents);
 	    ascender = extents.ascender;
-	    has_ascender = true;
+	    has_ascender = সত্য;
 	  }
 
 	  /* We got the v_origins, adjust them to h_origins. */
-	  for (unsigned j = 0; j < n; j++)
+	  জন্য (unsigned j = 0; j < n; j++)
 	  {
 	    hb_codepoint_t glyph = buf->info[offset + j].codepoint;
 	    origins[j].x -= get_glyph_h_advance (glyph) / 2;
 	    origins[j].y -= ascender;
 	  }
 	}
-	else
+	অন্যথা
 	{
 	  mult = 0; /* Indicates all origins[].x and origins[].y values are 0, therefore we can skip adjusting offsets below */
 	}
       }
 
-      assert (mult == -1 || mult == +1 || mult == 0);
-      if (mult == +1)
-        for (unsigned j = 0; j < n; j++)
+      প্রতিজ্ঞা (mult == -1 || mult == +1 || mult == 0);
+      যদি (mult == +1)
+        জন্য (unsigned j = 0; j < n; j++)
 	{
 	  hb_glyph_position_t *pos = &buf->pos[offset + j];
 	  add_offset (&pos->x_offset, &pos->y_offset,
 		      origins[j].x, origins[j].y);
 	}
-      else if (mult == -1)
-	for (unsigned j = 0; j < n; j++)
+      অন্যথা যদি (mult == -1)
+	জন্য (unsigned j = 0; j < n; j++)
 	{
 	  hb_glyph_position_t *pos = &buf->pos[offset + j];
 	  subtract_offset (&pos->x_offset, &pos->y_offset,
@@ -929,60 +929,60 @@ struct hb_font_t
       offset += n;
     }
   }
-  void apply_glyph_v_origins_with_fallback (hb_buffer_t *buf, int mult)
+  শূন্য apply_glyph_v_origins_with_fallback (hb_বাফার_t *buf, পূর্ণসংখ্যা mult)
   {
-    bool has_ascender = false;
+    যৌক্তিক has_ascender = মিথ্যা;
     hb_position_t ascender = 0;
 
-    struct { hb_position_t x, y; } origins[32];
+    কাঠামো { hb_position_t x, y; } origins[32];
 
-    unsigned int offset = 0;
-    unsigned int count = buf->len;
-    while (offset < count)
+    unsigned পূর্ণসংখ্যা offset = 0;
+    unsigned পূর্ণসংখ্যা গুনতি = buf->len;
+    যখন (offset < গুনতি)
     {
-      unsigned n = hb_min (count - offset, ARRAY_LENGTH (origins));
-      if (!get_glyph_v_origins (n,
-				&buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				&origins[0].x, sizeof (origins[0]),
-				&origins[0].y, sizeof (origins[0])))
+      unsigned n = hb_min (গুনতি - offset, ARRAY_দৈর্ঘ্য (origins));
+      যদি (!get_glyph_v_origins (n,
+				&buf->info[offset].codepoint, আকার (hb_glyph_info_t),
+				&origins[0].x, আকার (origins[0]),
+				&origins[0].y, আকার (origins[0])))
       {
-	if (get_glyph_h_origins (n,
-				 &buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				 &origins[0].x, sizeof (origins[0]),
-				 &origins[0].y, sizeof (origins[0])))
+	যদি (get_glyph_h_origins (n,
+				 &buf->info[offset].codepoint, আকার (hb_glyph_info_t),
+				 &origins[0].x, আকার (origins[0]),
+				 &origins[0].y, আকার (origins[0])))
 	{
-	  if (!has_ascender)
+	  যদি (!has_ascender)
 	  {
 	    hb_font_extents_t extents;
 	    get_h_extents_with_fallback (&extents);
 	    ascender = extents.ascender;
-	    has_ascender = true;
+	    has_ascender = সত্য;
 	  }
 
 	  /* We got the h_origins, adjust them to v_origins. */
-	  for (unsigned j = 0; j < n; j++)
+	  জন্য (unsigned j = 0; j < n; j++)
 	  {
 	    hb_codepoint_t glyph = buf->info[offset + j].codepoint;
 	    origins[j].x += get_glyph_h_advance (glyph) / 2;
 	    origins[j].y += ascender;
 	  }
 	}
-	else
+	অন্যথা
 	{
 	  mult = 0; /* Indicates all origins[].x and origins[].y values are 0, therefore we can skip adjusting offsets below */
 	}
       }
 
-      assert (mult == -1 || mult == +1 || mult == 0);
-      if (mult == +1)
-        for (unsigned j = 0; j < n; j++)
+      প্রতিজ্ঞা (mult == -1 || mult == +1 || mult == 0);
+      যদি (mult == +1)
+        জন্য (unsigned j = 0; j < n; j++)
 	{
 	  hb_glyph_position_t *pos = &buf->pos[offset + j];
 	  add_offset (&pos->x_offset, &pos->y_offset,
 		      origins[j].x, origins[j].y);
 	}
-      else if (mult == -1)
-	for (unsigned j = 0; j < n; j++)
+      অন্যথা যদি (mult == -1)
+	জন্য (unsigned j = 0; j < n; j++)
 	{
 	  hb_glyph_position_t *pos = &buf->pos[offset + j];
 	  subtract_offset (&pos->x_offset, &pos->y_offset,
@@ -994,10 +994,10 @@ struct hb_font_t
     }
   }
 
-  void get_glyph_h_origin_with_fallback (hb_codepoint_t glyph,
+  শূন্য get_glyph_h_origin_with_fallback (hb_codepoint_t glyph,
 					 hb_position_t *x, hb_position_t *y)
   {
-    if (!get_glyph_h_origin (glyph, x, y) &&
+    যদি (!get_glyph_h_origin (glyph, x, y) &&
 	 get_glyph_v_origin (glyph, x, y))
     {
       hb_position_t dx, dy;
@@ -1005,10 +1005,10 @@ struct hb_font_t
       subtract_offset (x, y, dx, dy);
     }
   }
-  void get_glyph_v_origin_with_fallback (hb_codepoint_t glyph,
+  শূন্য get_glyph_v_origin_with_fallback (hb_codepoint_t glyph,
 					 hb_position_t *x, hb_position_t *y)
   {
-    if (!get_glyph_v_origin (glyph, x, y) &&
+    যদি (!get_glyph_v_origin (glyph, x, y) &&
 	 get_glyph_h_origin (glyph, x, y))
     {
       hb_position_t dx, dy;
@@ -1017,25 +1017,25 @@ struct hb_font_t
     }
   }
 
-  void get_glyph_origin_for_direction (hb_codepoint_t glyph,
+  শূন্য get_glyph_origin_for_direction (hb_codepoint_t glyph,
 				       hb_direction_t direction,
 				       hb_position_t *x, hb_position_t *y)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    যদি (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       get_glyph_h_origin_with_fallback (glyph, x, y);
-    else
+    অন্যথা
       get_glyph_v_origin_with_fallback (glyph, x, y);
   }
 
-  void add_glyph_h_origins (hb_buffer_t *buf)
+  শূন্য add_glyph_h_origins (hb_বাফার_t *buf)
   {
     apply_glyph_h_origins_with_fallback (buf, +1);
   }
-  void add_glyph_v_origins (hb_buffer_t *buf)
+  শূন্য add_glyph_v_origins (hb_বাফার_t *buf)
   {
     apply_glyph_v_origins_with_fallback (buf, +1);
   }
-  void add_glyph_origin_for_direction (hb_codepoint_t glyph,
+  শূন্য add_glyph_origin_for_direction (hb_codepoint_t glyph,
 				       hb_direction_t direction,
 				       hb_position_t *x, hb_position_t *y)
   {
@@ -1044,15 +1044,15 @@ struct hb_font_t
     add_offset (x, y, origin_x, origin_y);
   }
 
-  void subtract_glyph_h_origins (hb_buffer_t *buf)
+  শূন্য subtract_glyph_h_origins (hb_বাফার_t *buf)
   {
     apply_glyph_h_origins_with_fallback (buf, -1);
   }
-  void subtract_glyph_v_origins (hb_buffer_t *buf)
+  শূন্য subtract_glyph_v_origins (hb_বাফার_t *buf)
   {
     apply_glyph_v_origins_with_fallback (buf, -1);
   }
-  void subtract_glyph_origin_for_direction (hb_codepoint_t glyph,
+  শূন্য subtract_glyph_origin_for_direction (hb_codepoint_t glyph,
 					    hb_direction_t direction,
 					    hb_position_t *x, hb_position_t *y)
   {
@@ -1061,14 +1061,14 @@ struct hb_font_t
     subtract_offset (x, y, origin_x, origin_y);
   }
 
-  void get_glyph_kerning_for_direction (hb_codepoint_t first_glyph, hb_codepoint_t second_glyph,
+  শূন্য get_glyph_kerning_for_direction (hb_codepoint_t first_glyph, hb_codepoint_t second_glyph,
 					hb_direction_t direction,
 					hb_position_t *x, hb_position_t *y)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction))) {
+    যদি (likely (HB_DIRECTION_IS_HORIZONTAL (direction))) {
       *y = 0;
       *x = get_glyph_h_kerning (first_glyph, second_glyph);
-    } else {
+    } অন্যথা {
       *x = 0;
       *y = get_glyph_v_kerning (first_glyph, second_glyph);
     }
@@ -1080,69 +1080,69 @@ struct hb_font_t
   {
     hb_bool_t ret = get_glyph_extents (glyph, extents);
 
-    if (ret)
+    যদি (ret)
       subtract_glyph_origin_for_direction (glyph, direction, &extents->x_bearing, &extents->y_bearing);
 
-    return ret;
+    ফেরত ret;
   }
 
-  hb_bool_t get_glyph_contour_point_for_origin (hb_codepoint_t glyph, unsigned int point_index,
+  hb_bool_t get_glyph_contour_point_for_origin (hb_codepoint_t glyph, unsigned পূর্ণসংখ্যা point_সূচক,
 						hb_direction_t direction,
 						hb_position_t *x, hb_position_t *y)
   {
-    hb_bool_t ret = get_glyph_contour_point (glyph, point_index, x, y);
+    hb_bool_t ret = get_glyph_contour_point (glyph, point_সূচক, x, y);
 
-    if (ret)
+    যদি (ret)
       subtract_glyph_origin_for_direction (glyph, direction, x, y);
 
-    return ret;
+    ফেরত ret;
   }
 
   /* Generates gidDDD if glyph has no name. */
-  void
+  শূন্য
   glyph_to_string (hb_codepoint_t glyph,
-		   char *s, unsigned int size)
+		   অক্ষর *s, unsigned পূর্ণসংখ্যা আকার_2)
   {
-    if (get_glyph_name (glyph, s, size)) return;
+    যদি (get_glyph_name (glyph, s, আকার_2)) ফেরত;
 
-    if (size && snprintf (s, size, "gid%" PRIu32, glyph) < 0)
+    যদি (আকার_2 && snprintf (s, আকার_2, "gid%" PRIu32, glyph) < 0)
       *s = '\0';
   }
 
   /* Parses gidDDD and uniUUUU strings automatically. */
   hb_bool_t
-  glyph_from_string (const char *s, int len, /* -1 means nul-terminated */
+  glyph_from_string (ধ্রুবক অক্ষর *s, পূর্ণসংখ্যা len, /* -1 means nul-terminated */
 		     hb_codepoint_t *glyph)
   {
-    if (get_glyph_from_name (s, len, glyph)) return true;
+    যদি (get_glyph_from_name (s, len, glyph)) ফেরত সত্য;
 
-    if (len == -1) len = strlen (s);
+    যদি (len == -1) len = strlen (s);
 
     /* Straight glyph index. */
-    if (hb_codepoint_parse (s, len, 10, glyph))
-      return true;
+    যদি (hb_codepoint_parse (s, len, 10, glyph))
+      ফেরত সত্য;
 
-    if (len > 3)
+    যদি (len > 3)
     {
       /* gidDDD syntax for glyph indices. */
-      if (0 == strncmp (s, "gid", 3) &&
+      যদি (0 == strncmp (s, "gid", 3) &&
 	  hb_codepoint_parse (s + 3, len - 3, 10, glyph))
-	return true;
+	ফেরত সত্য;
 
       /* uniUUUU and other Unicode character indices. */
       hb_codepoint_t unichar;
-      if (0 == strncmp (s, "uni", 3) &&
+      যদি (0 == strncmp (s, "uni", 3) &&
 	  hb_codepoint_parse (s + 3, len - 3, 16, &unichar) &&
 	  get_nominal_glyph (unichar, glyph))
-	return true;
+	ফেরত সত্য;
     }
 
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  void changed ()
+  শূন্য changed ()
   {
-    float upem = face->get_upem ();
+    দশমিক upem = face->get_upem ();
 
     x_multf = x_scale / upem;
     y_multf = y_scale / upem;
@@ -1156,19 +1156,19 @@ struct hb_font_t
 
     slant_xy = y_scale ? slant * x_scale / y_scale : 0.f;
 
-    data.fini ();
+    তথ্য.fini ();
 
     serial++;
   }
 
   hb_position_t em_mult (int32_t v, int64_t mult)
-  { return (hb_position_t) ((v * mult + 32768) >> 16); }
-  hb_position_t em_multf (float v, float mult)
-  { return (hb_position_t) roundf (em_fmultf (v, mult)); }
-  float em_fmultf (float v, float mult)
-  { return v * mult; }
-  float em_fmult (int32_t v, float mult)
-  { return (float) v * mult; }
+  { ফেরত (hb_position_t) ((v * mult + 32768) >> 16); }
+  hb_position_t em_multf (দশমিক v, দশমিক mult)
+  { ফেরত (hb_position_t) roundf (em_fmultf (v, mult)); }
+  দশমিক em_fmultf (দশমিক v, দশমিক mult)
+  { ফেরত v * mult; }
+  দশমিক em_fmult (int32_t v, দশমিক mult)
+  { ফেরত (দশমিক) v * mult; }
 };
 DECLARE_NULL_INSTANCE (hb_font_t);
 

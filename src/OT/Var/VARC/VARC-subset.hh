@@ -1,19 +1,19 @@
 #ifndef OT_VAR_VARC_VARC_SUBSET_HH
 #define OT_VAR_VARC_VARC_SUBSET_HH
 
-#include "VARC.hh"
+#অন্তর্ভাব "VARC.hh"
 
-namespace OT {
+নামাকাশ OT {
 
-struct varc_subset_plan_t
+কাঠামো varc_subset_plan_t
 {
-  varc_subset_plan_t (const VARC &source_,
+  varc_subset_plan_t (ধ্রুবক VARC &source_,
 		      hb_subset_context_t *subset_context_,
-		      const Coverage &source_coverage_,
-		      const CFF2Index &source_records_,
-		      const ConditionList &source_conditions_,
-		      const CFF2Index &source_axis_indices_,
-		      const MultiItemVariationStore &source_var_store_) :
+		      ধ্রুবক Coverage &source_coverage_,
+		      ধ্রুবক CFF2_সূচক &source_records_,
+		      ধ্রুবক ConditionList &source_conditions_,
+		      ধ্রুবক CFF2_সূচক &source_axis_indices_,
+		      ধ্রুবক MultiItemVariationStore &source_var_store_) :
     source (source_),
     subset_context (subset_context_),
     source_coverage (source_coverage_),
@@ -23,186 +23,186 @@ struct varc_subset_plan_t
     source_var_store (source_var_store_)
   {}
 
-  bool collect_glyphs ()
+  যৌক্তিক collect_glyphs ()
   {
-    const hb_set_t &glyphset = subset_context->plan->_glyphset_varced;
-    for (auto _ : + hb_zip (source_coverage,
-			    hb_range ((unsigned) source_records.count)))
+    ধ্রুবক hb_set_t &glyphset = subset_context->plan->_glyphset_varced;
+    জন্য (auto _ : + hb_zip (source_coverage,
+			    hb_range ((unsigned) source_records.গুনতি)))
     {
       hb_codepoint_t old_gid = _.first;
-      unsigned index = _.second;
-      if (glyphset.has (old_gid))
+      unsigned সূচক_2 = _.second;
+      যদি (glyphset.has (old_gid))
       {
 	hb_codepoint_t new_gid;
-	if (unlikely (!subset_context->plan->new_gid_for_old_gid (old_gid,
+	যদি (unlikely (!subset_context->plan->new_gid_for_old_gid (old_gid,
 								 &new_gid)))
-	  return false;
-	old_indices.push (index);
+	  ফেরত মিথ্যা;
+	old_indices.push (সূচক_2);
 	new_gids.push (new_gid);
-	data_size = hb_unsigned_add_saturate (data_size,
-					      source_records[index].length);
+	তথ্য_আকার = hb_unsigned_add_saturate (তথ্য_আকার,
+					      source_records[সূচক_2].দৈর্ঘ্য);
       }
     }
 
-    return !old_indices.in_error () && !new_gids.in_error () &&
-	   data_size != UINT_MAX;
+    ফেরত !old_indices.in_error () && !new_gids.in_error () &&
+	   তথ্য_আকার != UINT_MAX;
   }
 
-  bool collect_indices ()
+  যৌক্তিক collect_indices ()
   {
-    for (unsigned old_index : old_indices)
+    জন্য (unsigned old_সূচক : old_indices)
     {
-      hb_ubytes_t remaining = source_records[old_index];
-      while (remaining)
+      hb_ubytes_t remaining = source_records[old_সূচক];
+      যখন (remaining)
       {
 	VarComponent::record_t component;
-	if (unlikely (!VarComponent::decompile_record (source, remaining,
+	যদি (unlikely (!VarComponent::decompile_record (source, remaining,
 						       nullptr, nullptr,
 						       &component)))
-	  return false;
+	  ফেরত মিথ্যা;
 
-	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
+	যদি (component.flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
 	{
-	  if (unlikely (component.condition_index >= source_conditions.get_count ()))
-	    return false;
-	  condition_indices.add (component.condition_index);
+	  যদি (unlikely (component.condition_সূচক >= source_conditions.get_গুনতি ()))
+	    ফেরত মিথ্যা;
+	  condition_indices.add (component.condition_সূচক);
 	}
-	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
+	যদি (component.flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
 	{
-	  if (unlikely (component.axis_indices_index >= source_axis_indices.count))
-	    return false;
-	  axis_indices.add (component.axis_indices_index);
+	  যদি (unlikely (component.axis_indices_সূচক >= source_axis_indices.গুনতি))
+	    ফেরত মিথ্যা;
+	  axis_indices.add (component.axis_indices_সূচক);
 	}
-	if ((component.flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION) &&
-	    component.axis_values_var_idx != VarIdx::NO_VARIATION)
-	  var_indices.add (component.axis_values_var_idx);
-	if ((component.flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
+	যদি ((component.flags & (unsigned) VarComponent::flags_t::AXIS_মানসমূহ_HAVE_VARIATION) &&
+	    component.axis_মানসমূহ_var_idx != VarIdx::NO_VARIATION)
+	  var_indices.add (component.axis_মানসমূহ_var_idx);
+	যদি ((component.flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
 	    component.transform_var_idx != VarIdx::NO_VARIATION)
 	  var_indices.add (component.transform_var_idx);
 
-	remaining = remaining.sub_array (component.size);
+	remaining = remaining.sub_array (component.আকার_2);
       }
     }
 
-    if (unlikely (condition_indices.in_error () || axis_indices.in_error () ||
+    যদি (unlikely (condition_indices.in_error () || axis_indices.in_error () ||
 		  var_indices.in_error ()))
-      return false;
+      ফেরত মিথ্যা;
 
-    for (hb_codepoint_t condition_index : condition_indices)
-      if (unlikely (!source_conditions[condition_index].collect_var_indices (&var_indices)))
-	return false;
+    জন্য (hb_codepoint_t condition_সূচক : condition_indices)
+      যদি (unlikely (!source_conditions[condition_সূচক].collect_var_indices (&var_indices)))
+	ফেরত মিথ্যা;
 
-    return true;
+    ফেরত সত্য;
   }
 
-  bool create_maps ()
+  যৌক্তিক create_maps ()
   {
-    const auto *plan = subset_context->plan;
-    if (!plan->user_axes_location.is_empty ())
+    ধ্রুবক auto *plan = subset_context->plan;
+    যদি (!plan->user_axes_location.is_empty ())
     {
       /* Instancing axes referenced by VARC is not supported. Keep this
        * restriction for avar2 as well; component coordinate overrides
        * and their variation data need special handling. */
-      axis_map = &axes_index_map;
-      for (auto _ : plan->axes_index_map)
-	if (!plan->user_axes_location.has (plan->axes_old_index_tag_map.get (_.first)))
-	  axes_index_map.set (_.first, _.second);
-      if (unlikely (axes_index_map.in_error ())) return false;
+      axis_map = &axes_সূচক_map;
+      জন্য (auto _ : plan->axes_সূচক_map)
+	যদি (!plan->user_axes_location.has (plan->axes_old_সূচক_tag_map.get (_.first)))
+	  axes_সূচক_map.set (_.first, _.second);
+      যদি (unlikely (axes_সূচক_map.in_error ())) ফেরত মিথ্যা;
     }
     condition_map.add_set (&condition_indices);
     axis_indices_map.add_set (&axis_indices);
-    return !condition_map.in_error () && !axis_indices_map.in_error () &&
+    ফেরত !condition_map.in_error () && !axis_indices_map.in_error () &&
 	   source_var_store.create_subset_plan (var_indices,
 						&var_inner_maps,
 						&varidx_map);
   }
 
-  bool compile_records ()
+  যৌক্তিক compile_records ()
   {
-    if (unlikely (!records.alloc_exact (old_indices.length)))
-      return false;
+    যদি (unlikely (!records.alloc_exact (old_indices.দৈর্ঘ্য)))
+      ফেরত মিথ্যা;
 
-    bool retain_gids = subset_context->plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
-    if (retain_gids && auxiliary_indices_unchanged ())
+    যৌক্তিক retain_gids = subset_context->plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
+    যদি (retain_gids && auxiliary_indices_unchanged ())
     {
       /* The records reference the same indices, so retain them byte-for-byte. */
-      for (unsigned old_index : old_indices)
-	records.push (source_records[old_index]);
+      জন্য (unsigned old_সূচক : old_indices)
+	records.push (source_records[old_সূচক]);
     }
-    else
+    অন্যথা
     {
       hb_vector_t<unsigned> record_offsets;
-      record_data.alloc (data_size);
-      if (unlikely (!record_offsets.alloc_exact (old_indices.length + 1)))
-	return false;
+      record_তথ্য.alloc (তথ্য_আকার);
+      যদি (unlikely (!record_offsets.alloc_exact (old_indices.দৈর্ঘ্য + 1)))
+	ফেরত মিথ্যা;
 
-      for (unsigned old_index : old_indices)
+      জন্য (unsigned old_সূচক : old_indices)
       {
-	record_offsets.push (record_data.length);
-	if (unlikely (!compile_record (source_records[old_index], retain_gids)))
-	  return false;
+	record_offsets.push (record_তথ্য.দৈর্ঘ্য);
+	যদি (unlikely (!compile_record (source_records[old_সূচক], retain_gids)))
+	  ফেরত মিথ্যা;
       }
-      record_offsets.push (record_data.length);
+      record_offsets.push (record_তথ্য.দৈর্ঘ্য);
 
-      if (unlikely (record_data.in_error () || record_offsets.in_error ()))
-	return false;
-      for (unsigned i = 0; i < old_indices.length; i++)
-	records.push (hb_ubytes_t (record_data.arrayZ + record_offsets[i],
+      যদি (unlikely (record_তথ্য.in_error () || record_offsets.in_error ()))
+	ফেরত মিথ্যা;
+      জন্য (unsigned i = 0; i < old_indices.দৈর্ঘ্য; i++)
+	records.push (hb_ubytes_t (record_তথ্য.arrayZ + record_offsets[i],
 				  record_offsets[i + 1] - record_offsets[i]));
-      data_size = record_data.length;
+      তথ্য_আকার = record_তথ্য.দৈর্ঘ্য;
     }
 
-    return !records.in_error ();
+    ফেরত !records.in_error ();
   }
 
-  bool select_axis_indices ()
+  যৌক্তিক select_axis_indices ()
   {
-    if (unlikely (!selected_axis_indices.alloc_exact (
+    যদি (unlikely (!selected_axis_indices.alloc_exact (
 					  axis_indices_map.get_population ()) ||
-		  (axis_map && !axis_indices_data.resize (
+		  (axis_map && !axis_indices_তথ্য.resize (
 					  axis_indices_map.get_population ()))))
-      return false;
-    for (unsigned i = 0; i < axis_indices_map.get_population (); i++)
+      ফেরত মিথ্যা;
+    জন্য (unsigned i = 0; i < axis_indices_map.get_population (); i++)
     {
       hb_ubytes_t bytes = source_axis_indices[axis_indices_map.backward (i)];
-      if (axis_map)
+      যদি (axis_map)
       {
-	hb_vector_t<int> indices;
-	const HBUINT8 *p = (const HBUINT8 *) bytes.arrayZ;
-	if (unlikely (!TupleValues::decompile (p, indices, p + bytes.length, true)))
-	  return false;
-	for (int &index : indices)
+	hb_vector_t<পূর্ণসংখ্যা> indices;
+	ধ্রুবক HBUINT8 *p = (ধ্রুবক HBUINT8 *) bytes.arrayZ;
+	যদি (unlikely (!Tuple_মানসমূহ::decompile (p, indices, p + bytes.দৈর্ঘ্য, সত্য)))
+	  ফেরত মিথ্যা;
+	জন্য (পূর্ণসংখ্যা &সূচক_2 : indices)
 	{
-	  if (unlikely (!axis_map->has (index))) return false;
-	  index = axis_map->get (index);
+	  যদি (unlikely (!axis_map->has (সূচক_2))) ফেরত মিথ্যা;
+	  সূচক_2 = axis_map->get (সূচক_2);
 	}
-	auto &data = axis_indices_data[i];
+	auto &তথ্য = axis_indices_তথ্য[i];
 	/* One control byte and at most four data bytes per value. */
-	unsigned size = hb_unsigned_mul_saturate (indices.length, 5u);
-	if (unlikely (size == UINT_MAX || !data.resize_dirty (size))) return false;
-	data.shrink (TupleValues::compile_unsafe (indices.as_array (), data.arrayZ));
-	bytes = data.as_array ();
+	unsigned আকার_2 = hb_unsigned_mul_saturate (indices.দৈর্ঘ্য, 5u);
+	যদি (unlikely (আকার_2 == UINT_MAX || !তথ্য.resize_dirty (আকার_2))) ফেরত মিথ্যা;
+	তথ্য.shrink (Tuple_মানসমূহ::compile_unsafe (indices.as_array (), তথ্য.arrayZ));
+	bytes = তথ্য.as_array ();
       }
-      axis_indices_data_size = hb_unsigned_add_saturate (axis_indices_data_size,
-							 bytes.length);
+      axis_indices_তথ্য_আকার = hb_unsigned_add_saturate (axis_indices_তথ্য_আকার,
+							 bytes.দৈর্ঘ্য);
       selected_axis_indices.push (bytes);
     }
 
-    return axis_indices_data_size != UINT_MAX &&
+    ফেরত axis_indices_তথ্য_আকার != UINT_MAX &&
 	   !selected_axis_indices.in_error ();
   }
 
-  const VARC &source;
+  ধ্রুবক VARC &source;
   hb_subset_context_t *subset_context;
-  const Coverage &source_coverage;
-  const CFF2Index &source_records;
-  const ConditionList &source_conditions;
-  const CFF2Index &source_axis_indices;
-  const MultiItemVariationStore &source_var_store;
+  ধ্রুবক Coverage &source_coverage;
+  ধ্রুবক CFF2_সূচক &source_records;
+  ধ্রুবক ConditionList &source_conditions;
+  ধ্রুবক CFF2_সূচক &source_axis_indices;
+  ধ্রুবক MultiItemVariationStore &source_var_store;
 
   hb_vector_t<unsigned> old_indices;
   hb_sorted_vector_t<hb_codepoint_t> new_gids;
-  unsigned data_size = 0;
+  unsigned তথ্য_আকার = 0;
 
   hb_set_t condition_indices;
   hb_set_t axis_indices;
@@ -212,191 +212,191 @@ struct varc_subset_plan_t
   hb_vector_t<hb_inc_bimap_t> var_inner_maps;
   hb_map_t varidx_map;
 
-  hb_vector_t<unsigned char> record_data;
+  hb_vector_t<unsigned অক্ষর> record_তথ্য;
   hb_vector_t<hb_ubytes_t> records;
 
   hb_vector_t<hb_ubytes_t> selected_axis_indices;
-  hb_vector_t<hb_vector_t<unsigned char>> axis_indices_data;
-  unsigned axis_indices_data_size = 0;
-  hb_map_t axes_index_map;
-  const hb_map_t *axis_map = nullptr;
+  hb_vector_t<hb_vector_t<unsigned অক্ষর>> axis_indices_তথ্য;
+  unsigned axis_indices_তথ্য_আকার = 0;
+  hb_map_t axes_সূচক_map;
+  ধ্রুবক hb_map_t *axis_map = nullptr;
 
-  private:
-  bool auxiliary_indices_unchanged () const
+  ব্যক্তিগত:
+  যৌক্তিক auxiliary_indices_unchanged () ধ্রুবক
   {
-    for (hb_codepoint_t old_index : condition_indices)
-      if (condition_map.get (old_index) != old_index)
-	return false;
-    for (hb_codepoint_t old_index : axis_indices)
-      if (axis_indices_map.get (old_index) != old_index)
-	return false;
-    for (hb_codepoint_t old_index : var_indices)
-      if (varidx_map.get (old_index) != old_index)
-	return false;
-    return true;
+    জন্য (hb_codepoint_t old_সূচক : condition_indices)
+      যদি (condition_map.get (old_সূচক) != old_সূচক)
+	ফেরত মিথ্যা;
+    জন্য (hb_codepoint_t old_সূচক : axis_indices)
+      যদি (axis_indices_map.get (old_সূচক) != old_সূচক)
+	ফেরত মিথ্যা;
+    জন্য (hb_codepoint_t old_সূচক : var_indices)
+      যদি (varidx_map.get (old_সূচক) != old_সূচক)
+	ফেরত মিথ্যা;
+    ফেরত সত্য;
   }
 
-  bool append_varint (uint32_t value)
+  যৌক্তিক append_varint (uint32_t value)
   {
-    unsigned size = HBUINT32VAR::get_size (value);
-    unsigned offset = record_data.length;
-    unsigned new_length = hb_unsigned_add_saturate (offset, size);
-    if (unlikely (new_length == UINT_MAX ||
-		  !record_data.resize_dirty (new_length)))
-      return false;
-    HBUINT32VAR::serialize_unsafe (record_data.arrayZ + offset, value);
-    return true;
+    unsigned আকার_2 = HBUINT32VAR::get_আকার (value);
+    unsigned offset = record_তথ্য.দৈর্ঘ্য;
+    unsigned new_দৈর্ঘ্য = hb_unsigned_add_saturate (offset, আকার_2);
+    যদি (unlikely (new_দৈর্ঘ্য == UINT_MAX ||
+		  !record_তথ্য.resize_dirty (new_দৈর্ঘ্য)))
+      ফেরত মিথ্যা;
+    HBUINT32VAR::serialize_unsafe (record_তথ্য.arrayZ + offset, value);
+    ফেরত সত্য;
   }
 
-  bool append_bytes (hb_ubytes_t record,
-		     unsigned component_size,
+  যৌক্তিক append_bytes (hb_ubytes_t record,
+		     unsigned component_আকার,
 		     unsigned start,
 		     unsigned end)
   {
-    if (unlikely (start > end || end > component_size)) return false;
-    unsigned offset = record_data.length;
-    unsigned size = end - start;
-    unsigned new_length = hb_unsigned_add_saturate (offset, size);
-    if (unlikely (new_length == UINT_MAX ||
-		  !record_data.resize_dirty (new_length)))
-      return false;
-    hb_memcpy (record_data.arrayZ + offset, record.arrayZ + start, size);
-    return true;
+    যদি (unlikely (start > end || end > component_আকার)) ফেরত মিথ্যা;
+    unsigned offset = record_তথ্য.দৈর্ঘ্য;
+    unsigned আকার_2 = end - start;
+    unsigned new_দৈর্ঘ্য = hb_unsigned_add_saturate (offset, আকার_2);
+    যদি (unlikely (new_দৈর্ঘ্য == UINT_MAX ||
+		  !record_তথ্য.resize_dirty (new_দৈর্ঘ্য)))
+      ফেরত মিথ্যা;
+    hb_memcpy (record_তথ্য.arrayZ + offset, record.arrayZ + start, আকার_2);
+    ফেরত সত্য;
   }
 
-  bool compile_record (hb_ubytes_t record, bool retain_gids)
+  যৌক্তিক compile_record (hb_ubytes_t record, যৌক্তিক retain_gids)
   {
     hb_ubytes_t remaining = record;
-    while (remaining)
+    যখন (remaining)
     {
       VarComponent::record_t component;
-      if (unlikely (!VarComponent::decompile_record (source, remaining,
+      যদি (unlikely (!VarComponent::decompile_record (source, remaining,
 						     nullptr, nullptr,
 						     &component) ||
 		    !compile_component (remaining, component, retain_gids)))
-	return false;
-      remaining = remaining.sub_array (component.size);
+	ফেরত মিথ্যা;
+      remaining = remaining.sub_array (component.আকার_2);
     }
-    return true;
+    ফেরত সত্য;
   }
 
-  bool compile_component (hb_ubytes_t record,
-			  const VarComponent::record_t &component,
-			  bool retain_gids)
+  যৌক্তিক compile_component (hb_ubytes_t record,
+			  ধ্রুবক VarComponent::record_t &component,
+			  যৌক্তিক retain_gids)
   {
     hb_codepoint_t new_gid = component.gid;
-    if (unlikely ((!retain_gids &&
+    যদি (unlikely ((!retain_gids &&
 		   !subset_context->plan->new_gid_for_old_gid (component.gid,
 								 &new_gid)) ||
 		  new_gid > 0xFFFFFFu))
-      return false;
+      ফেরত মিথ্যা;
 
     uint32_t flags = component.flags;
-    unsigned gid_size = component.gid_size;
-    if (new_gid > 0xFFFFu)
+    unsigned gid_আকার = component.gid_আকার;
+    যদি (new_gid > 0xFFFFu)
     {
       flags |= (unsigned) VarComponent::flags_t::GID_IS_24BIT;
-      gid_size = HBGlyphID24::static_size;
+      gid_আকার = HBGlyphID24::static_আকার;
     }
 
-    if (unlikely (!append_varint (flags))) return false;
-    unsigned gid_offset = record_data.length;
-    unsigned gid_end = hb_unsigned_add_saturate (gid_offset, gid_size);
-    if (unlikely (gid_end == UINT_MAX ||
-		  !record_data.resize_dirty (gid_end)))
-      return false;
-    unsigned char *out = record_data.arrayZ + gid_offset;
-    if (gid_size == HBGlyphID16::static_size)
+    যদি (unlikely (!append_varint (flags))) ফেরত মিথ্যা;
+    unsigned gid_offset = record_তথ্য.দৈর্ঘ্য;
+    unsigned gid_end = hb_unsigned_add_saturate (gid_offset, gid_আকার);
+    যদি (unlikely (gid_end == UINT_MAX ||
+		  !record_তথ্য.resize_dirty (gid_end)))
+      ফেরত মিথ্যা;
+    unsigned অক্ষর *out = record_তথ্য.arrayZ + gid_offset;
+    যদি (gid_আকার == HBGlyphID16::static_আকার)
       * (HBGlyphID16 *) out = new_gid;
-    else
+    অন্যথা
       * (HBGlyphID24 *) out = new_gid;
 
-    unsigned cursor = component.gid_offset + component.gid_size;
-    if (flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
+    unsigned cursor = component.gid_offset + component.gid_আকার;
+    যদি (flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
     {
-      if (unlikely (!condition_map.has (component.condition_index) ||
-		    !append_bytes (record, component.size,
+      যদি (unlikely (!condition_map.has (component.condition_সূচক) ||
+		    !append_bytes (record, component.আকার_2,
 				   cursor, component.condition_offset) ||
-		    !append_varint (condition_map.get (component.condition_index))))
-	return false;
-      cursor = component.condition_offset + component.condition_size;
+		    !append_varint (condition_map.get (component.condition_সূচক))))
+	ফেরত মিথ্যা;
+      cursor = component.condition_offset + component.condition_আকার;
     }
-    if (flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
+    যদি (flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
     {
-      if (unlikely (!axis_indices_map.has (component.axis_indices_index) ||
-		    !append_bytes (record, component.size,
+      যদি (unlikely (!axis_indices_map.has (component.axis_indices_সূচক) ||
+		    !append_bytes (record, component.আকার_2,
 				   cursor, component.axis_indices_offset) ||
-		    !append_varint (axis_indices_map.get (component.axis_indices_index))))
-	return false;
-      cursor = component.axis_indices_offset + component.axis_indices_size;
+		    !append_varint (axis_indices_map.get (component.axis_indices_সূচক))))
+	ফেরত মিথ্যা;
+      cursor = component.axis_indices_offset + component.axis_indices_আকার;
     }
-    if (flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION)
+    যদি (flags & (unsigned) VarComponent::flags_t::AXIS_মানসমূহ_HAVE_VARIATION)
     {
-      uint32_t var_idx = component.axis_values_var_idx;
-      if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
-		    !append_bytes (record, component.size,
-				   cursor, component.axis_values_var_offset) ||
+      uint32_t var_idx = component.axis_মানসমূহ_var_idx;
+      যদি (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
+		    !append_bytes (record, component.আকার_2,
+				   cursor, component.axis_মানসমূহ_var_offset) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
-	return false;
-      cursor = component.axis_values_var_offset + component.axis_values_var_size;
+	ফেরত মিথ্যা;
+      cursor = component.axis_মানসমূহ_var_offset + component.axis_মানসমূহ_var_আকার;
     }
-    if (flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
+    যদি (flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
     {
       uint32_t var_idx = component.transform_var_idx;
-      if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
-		    !append_bytes (record, component.size,
+      যদি (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
+		    !append_bytes (record, component.আকার_2,
 				   cursor, component.transform_var_offset) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
-	return false;
-      cursor = component.transform_var_offset + component.transform_var_size;
+	ফেরত মিথ্যা;
+      cursor = component.transform_var_offset + component.transform_var_আকার;
     }
 
-    return append_bytes (record, component.size, cursor, component.size);
+    ফেরত append_bytes (record, component.আকার_2, cursor, component.আকার_2);
   }
 };
 
-bool
-VARC::subset (hb_subset_context_t *c) const
+যৌক্তিক
+VARC::subset (hb_subset_context_t *c) ধ্রুবক
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (এই);
   auto fail = [&] ()
   {
     c->serializer->err (HB_SERIALIZE_ERROR_OTHER);
-    return false;
+    ফেরত মিথ্যা;
   };
 
-  const Coverage &source_coverage = this+coverage;
-  const CFF2Index &source_records = this+glyphRecords;
-  const ConditionList &source_conditions = this+conditionList;
-  const TupleList &source_axis_indices = this+axisIndicesList;
-  const CFF2Index &source_axis_indices_index = source_axis_indices;
-  const MultiItemVariationStore &source_var_store = this+varStore;
-  varc_subset_plan_t subset_plan (*this, c,
+  ধ্রুবক Coverage &source_coverage = এই+coverage;
+  ধ্রুবক CFF2_সূচক &source_records = এই+glyphRecords;
+  ধ্রুবক ConditionList &source_conditions = এই+conditionList;
+  ধ্রুবক TupleList &source_axis_indices = এই+axisIndicesList;
+  ধ্রুবক CFF2_সূচক &source_axis_indices_সূচক = source_axis_indices;
+  ধ্রুবক MultiItemVariationStore &source_var_store = এই+varStore;
+  varc_subset_plan_t subset_plan (*এই, c,
 				  source_coverage,
 				  source_records,
 				  source_conditions,
-				  source_axis_indices_index,
+				  source_axis_indices_সূচক,
 				  source_var_store);
-  if (unlikely (!subset_plan.collect_glyphs ()))
+  যদি (unlikely (!subset_plan.collect_glyphs ()))
     return_trace (fail ());
-  if (!subset_plan.old_indices)
-    return_trace (false);
-  if (unlikely (!subset_plan.collect_indices () ||
+  যদি (!subset_plan.old_indices)
+    return_trace (মিথ্যা);
+  যদি (unlikely (!subset_plan.collect_indices () ||
 		!subset_plan.create_maps () ||
 		!subset_plan.compile_records ()))
     return_trace (fail ());
 
   VARC *out = c->serializer->start_embed<VARC> ();
-  if (unlikely (!out || !c->serializer->extend_min (out)))
-    return_trace (false);
+  যদি (unlikely (!out || !c->serializer->extend_min (out)))
+    return_trace (মিথ্যা);
   out->version = version;
 
-  if (unlikely (!subset_plan.select_axis_indices ()))
+  যদি (unlikely (!subset_plan.select_axis_indices ()))
     return_trace (fail ());
 
-  if (unlikely (!out->coverage.serialize_serialize (c->serializer,
+  যদি (unlikely (!out->coverage.serialize_serialize (c->serializer,
 						     subset_plan.new_gids.iter ()) ||
 		(subset_plan.condition_map.get_population () &&
 		 !out->conditionList.serialize_serialize (c->serializer,
@@ -407,7 +407,7 @@ VARC::subset (hb_subset_context_t *c) const
 		(subset_plan.axis_indices_map.get_population () &&
 		 !out->axisIndicesList.serialize_serialize (c->serializer,
 							subset_plan.selected_axis_indices.iter (),
-							&subset_plan.axis_indices_data_size)) ||
+							&subset_plan.axis_indices_তথ্য_আকার)) ||
 		(subset_plan.var_indices.get_population () &&
 		 !out->varStore.serialize_serialize (c->serializer,
 						  &source_var_store,
@@ -415,10 +415,10 @@ VARC::subset (hb_subset_context_t *c) const
 						  subset_plan.axis_map)) ||
 		!out->glyphRecords.serialize_serialize (c->serializer,
 						 subset_plan.records.iter (),
-						 &subset_plan.data_size)))
-    return_trace (false);
+						 &subset_plan.তথ্য_আকার)))
+    return_trace (মিথ্যা);
 
-  return_trace (true);
+  return_trace (সত্য);
 }
 
 } /* namespace OT */

@@ -27,8 +27,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-buffer.hh"
-#include "hb-utf.hh"
+#অন্তর্ভাব "hb-buffer.hh"
+#অন্তর্ভাব "hb-utf.hh"
 
 
 /**
@@ -61,10 +61,10 @@
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_segment_properties_equal (const hb_segment_properties_t *a,
-			     const hb_segment_properties_t *b)
+hb_segment_properties_equal (ধ্রুবক hb_segment_properties_t *a,
+			     ধ্রুবক hb_segment_properties_t *b)
 {
-  return a->direction == b->direction &&
+  ফেরত a->direction == b->direction &&
 	 a->script    == b->script    &&
 	 a->language  == b->language  &&
 	 a->reserved1 == b->reserved1 &&
@@ -83,11 +83,11 @@ hb_segment_properties_equal (const hb_segment_properties_t *a,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_segment_properties_hash (const hb_segment_properties_t *p)
+unsigned পূর্ণসংখ্যা
+hb_segment_properties_hash (ধ্রুবক hb_segment_properties_t *p)
 {
-  return ((unsigned int) p->direction * 31 +
-	  (unsigned int) p->script) * 31 +
+  ফেরত ((unsigned পূর্ণসংখ্যা) p->direction * 31 +
+	  (unsigned পূর্ণসংখ্যা) p->script) * 31 +
 	 (intptr_t) (p->language);
 }
 
@@ -109,26 +109,26 @@ hb_segment_properties_hash (const hb_segment_properties_t *p)
  *
  * Since: 3.3.0
  **/
-void
+শূন্য
 hb_segment_properties_overlay (hb_segment_properties_t *p,
-			       const hb_segment_properties_t *src)
+			       ধ্রুবক hb_segment_properties_t *src)
 {
-  if (unlikely (!p || !src))
-    return;
+  যদি (unlikely (!p || !src))
+    ফেরত;
 
-  if (!p->direction)
+  যদি (!p->direction)
     p->direction = src->direction;
 
-  if (p->direction != src->direction)
-    return;
+  যদি (p->direction != src->direction)
+    ফেরত;
 
-  if (!p->script)
+  যদি (!p->script)
     p->script = src->script;
 
-  if (p->script != src->script)
-    return;
+  যদি (p->script != src->script)
+    ফেরত;
 
-  if (!p->language)
+  যদি (!p->language)
     p->language = src->language;
 }
 
@@ -155,87 +155,87 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
 
 /* Internal API */
 
-bool
-hb_buffer_t::enlarge (unsigned int size)
+যৌক্তিক
+hb_বাফার_t::enlarge (unsigned পূর্ণসংখ্যা আকার_2)
 {
-  if (unlikely (size > max_len))
+  যদি (unlikely (আকার_2 > max_len))
   {
-    successful = false;
-    return false;
+    successful = মিথ্যা;
+    ফেরত মিথ্যা;
   }
 
-  if (unlikely (!successful))
-    return false;
+  যদি (unlikely (!successful))
+    ফেরত মিথ্যা;
 
-  unsigned int new_allocated = allocated;
+  unsigned পূর্ণসংখ্যা new_allocated = allocated;
   hb_glyph_position_t *new_pos = nullptr;
   hb_glyph_info_t *new_info = nullptr;
-  bool separate_out = out_info != info;
+  যৌক্তিক separate_out = out_info != info;
 
-  if (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
-    goto done;
+  যদি (unlikely (hb_unsigned_mul_overflows (আকার_2, আকার (info[0]))))
+    যাও done;
 
-  while (size >= new_allocated)
+  যখন (আকার_2 >= new_allocated)
     new_allocated += (new_allocated >> 1) + 32;
 
   unsigned new_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
-    goto done;
+  যদি (unlikely (hb_unsigned_mul_overflows (new_allocated, আকার (info[0]), &new_bytes)))
+    যাও done;
 
-  static_assert (sizeof (info[0]) == sizeof (pos[0]), "");
+  static_assert (আকার (info[0]) == আকার (pos[0]), "");
   new_pos = (hb_glyph_position_t *) hb_realloc (pos, new_bytes);
   new_info = (hb_glyph_info_t *) hb_realloc (info, new_bytes);
 
 done:
-  if (unlikely (!new_pos || !new_info))
-    successful = false;
+  যদি (unlikely (!new_pos || !new_info))
+    successful = মিথ্যা;
 
-  if (likely (new_pos))
+  যদি (likely (new_pos))
     pos = new_pos;
 
-  if (likely (new_info))
+  যদি (likely (new_info))
     info = new_info;
 
   out_info = separate_out ? (hb_glyph_info_t *) pos : info;
-  if (likely (successful))
+  যদি (likely (successful))
     allocated = new_allocated;
 
-  return likely (successful);
+  ফেরত likely (successful);
 }
 
-bool
-hb_buffer_t::make_room_for (unsigned int num_in,
-			    unsigned int num_out)
+যৌক্তিক
+hb_বাফার_t::make_room_for (unsigned পূর্ণসংখ্যা অঙ্ক_in,
+			    unsigned পূর্ণসংখ্যা অঙ্ক_out)
 {
-  if (unlikely (!ensure (out_len + num_out))) return false;
+  যদি (unlikely (!ensure (out_len + অঙ্ক_out))) ফেরত মিথ্যা;
 
-  if (out_info == info &&
-      out_len + num_out > idx + num_in)
+  যদি (out_info == info &&
+      out_len + অঙ্ক_out > idx + অঙ্ক_in)
   {
-    assert (have_output);
+    প্রতিজ্ঞা (have_output);
 
     out_info = (hb_glyph_info_t *) pos;
-    hb_memcpy (out_info, info, out_len * sizeof (out_info[0]));
+    hb_memcpy (out_info, info, out_len * আকার (out_info[0]));
   }
 
-  return true;
+  ফেরত সত্য;
 }
 
-bool
-hb_buffer_t::shift_forward (unsigned int count)
+যৌক্তিক
+hb_বাফার_t::shift_forward (unsigned পূর্ণসংখ্যা গুনতি)
 {
-  assert (have_output);
-  if (unlikely (!ensure (len + count))) return false;
+  প্রতিজ্ঞা (have_output);
+  যদি (unlikely (!ensure (len + গুনতি))) ফেরত মিথ্যা;
 
   max_ops -= len - idx;
-  if (unlikely (max_ops < 0))
+  যদি (unlikely (max_ops < 0))
   {
-    successful = false;
-    return false;
+    successful = মিথ্যা;
+    ফেরত মিথ্যা;
   }
 
-  memmove (info + idx + count, info + idx, (len - idx) * sizeof (info[0]));
-  if (idx + count > len)
+  memmove (info + idx + গুনতি, info + idx, (len - idx) * আকার (info[0]));
+  যদি (idx + গুনতি > len)
   {
     /* Under memory failure we might expose this area.  At least
      * clean it up.  Oh well...
@@ -243,34 +243,34 @@ hb_buffer_t::shift_forward (unsigned int count)
      * Ideally, we should at least set Default_Ignorable bits on
      * these, as well as consistent cluster values.  But the former
      * is layering violation... */
-    hb_memset (info + len, 0, (idx + count - len) * sizeof (info[0]));
+    hb_memset (info + len, 0, (idx + গুনতি - len) * আকার (info[0]));
   }
-  len += count;
-  idx += count;
+  len += গুনতি;
+  idx += গুনতি;
 
-  return true;
+  ফেরত সত্য;
 }
 
-hb_buffer_t::scratch_buffer_t *
-hb_buffer_t::get_scratch_buffer (unsigned int *size)
+hb_বাফার_t::scratch_বাফার_t *
+hb_বাফার_t::get_scratch_বাফার (unsigned পূর্ণসংখ্যা *আকার_2)
 {
-  have_output = false;
-  have_positions = false;
+  have_output = মিথ্যা;
+  have_positions = মিথ্যা;
 
   out_len = 0;
   out_info = info;
 
-  assert ((uintptr_t) pos % sizeof (scratch_buffer_t) == 0);
-  *size = allocated * sizeof (pos[0]) / sizeof (scratch_buffer_t);
-  return (scratch_buffer_t *) (void *) pos;
+  প্রতিজ্ঞা ((uintptr_t) pos % আকার (scratch_বাফার_t) == 0);
+  *আকার_2 = allocated * আকার (pos[0]) / আকার (scratch_বাফার_t);
+  ফেরত (scratch_বাফার_t *) (শূন্য *) pos;
 }
 
 
 
 /* HarfBuzz-Internal API */
 
-void
-hb_buffer_t::similar (const hb_buffer_t &src)
+শূন্য
+hb_বাফার_t::similar (ধ্রুবক hb_বাফার_t &src)
 {
   hb_unicode_funcs_destroy (unicode);
   unicode = hb_unicode_funcs_reference (src.unicode);
@@ -282,14 +282,14 @@ hb_buffer_t::similar (const hb_buffer_t &src)
   not_found_variation_selector = src.not_found_variation_selector;
 }
 
-void
-hb_buffer_t::reset ()
+শূন্য
+hb_বাফার_t::reset ()
 {
   hb_unicode_funcs_destroy (unicode);
   unicode = hb_unicode_funcs_reference (hb_unicode_funcs_get_default ());
-  flags = HB_BUFFER_FLAG_DEFAULT;
-  cluster_level = HB_BUFFER_CLUSTER_LEVEL_DEFAULT;
-  replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
+  flags = HB_বাফার_FLAG_DEFAULT;
+  cluster_level = HB_বাফার_CLUSTER_LEVEL_DEFAULT;
+  replacement = HB_বাফার_REPLACEMENT_CODEPOINT_DEFAULT;
   invisible = 0;
   not_found = 0;
   not_found_variation_selector = HB_CODEPOINT_INVALID;
@@ -297,68 +297,68 @@ hb_buffer_t::reset ()
   clear ();
 }
 
-void
-hb_buffer_t::clear ()
+শূন্য
+hb_বাফার_t::clear ()
 {
-  content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
+  content_type = HB_বাফার_CONTENT_TYPE_INVALID;
   hb_segment_properties_t default_props = HB_SEGMENT_PROPERTIES_DEFAULT;
   props = default_props;
 
-  successful = true;
-  have_output = false;
-  have_positions = false;
+  successful = সত্য;
+  have_output = মিথ্যা;
+  have_positions = মিথ্যা;
 
   idx = 0;
   len = 0;
   out_len = 0;
   out_info = info;
 
-  hb_memset (context, 0, sizeof context);
-  hb_memset (context_len, 0, sizeof context_len);
+  hb_memset (context, 0, আকার context);
+  hb_memset (context_len, 0, আকার context_len);
 
   deallocate_var_all ();
   serial = 0;
   random_state = 1;
-  scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
+  scratch_flags = HB_বাফার_SCRATCH_FLAG_DEFAULT;
 }
 
-void
-hb_buffer_t::enter ()
+শূন্য
+hb_বাফার_t::enter ()
 {
   deallocate_var_all ();
   serial = 0;
-  scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
+  scratch_flags = HB_বাফার_SCRATCH_FLAG_DEFAULT;
   unsigned mul;
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
+  যদি (likely (!hb_unsigned_mul_overflows (len, HB_বাফার_MAX_LEN_FACTOR, &mul)))
   {
-    max_len = hb_max (mul, (unsigned) HB_BUFFER_MAX_LEN_MIN);
+    max_len = hb_max (mul, (unsigned) HB_বাফার_MAX_LEN_MIN);
   }
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
+  যদি (likely (!hb_unsigned_mul_overflows (len, HB_বাফার_MAX_OPS_FACTOR, &mul)))
   {
-    max_ops = hb_max (mul, (unsigned) HB_BUFFER_MAX_OPS_MIN);
+    max_ops = hb_max (mul, (unsigned) HB_বাফার_MAX_OPS_MIN);
   }
 }
-void
-hb_buffer_t::leave ()
+শূন্য
+hb_বাফার_t::leave ()
 {
-  max_len = HB_BUFFER_MAX_LEN_DEFAULT;
-  max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
+  max_len = HB_বাফার_MAX_LEN_DEFAULT;
+  max_ops = HB_বাফার_MAX_OPS_DEFAULT;
   deallocate_var_all ();
   serial = 0;
 }
 
 
-void
-hb_buffer_t::add (hb_codepoint_t  codepoint,
-		  unsigned int    cluster)
+শূন্য
+hb_বাফার_t::add (hb_codepoint_t  codepoint,
+		  unsigned পূর্ণসংখ্যা    cluster)
 {
   hb_glyph_info_t *glyph;
 
-  if (unlikely (!ensure (len + 1))) return;
+  যদি (unlikely (!ensure (len + 1))) ফেরত;
 
   glyph = &info[len];
 
-  hb_memset (glyph, 0, sizeof (*glyph));
+  hb_memset (glyph, 0, আকার (*glyph));
   glyph->codepoint = codepoint;
   glyph->mask = 0;
   glyph->cluster = cluster;
@@ -366,139 +366,139 @@ hb_buffer_t::add (hb_codepoint_t  codepoint,
   len++;
 }
 
-void
-hb_buffer_t::add_info (const hb_glyph_info_t &glyph_info)
+শূন্য
+hb_বাফার_t::add_info (ধ্রুবক hb_glyph_info_t &glyph_info)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  যদি (unlikely (!ensure (len + 1))) ফেরত;
 
   info[len] = glyph_info;
 
   len++;
 }
-void
-hb_buffer_t::add_info_and_pos (const hb_glyph_info_t &glyph_info,
-			       const hb_glyph_position_t &glyph_pos)
+শূন্য
+hb_বাফার_t::add_info_and_pos (ধ্রুবক hb_glyph_info_t &glyph_info,
+			       ধ্রুবক hb_glyph_position_t &glyph_pos)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  যদি (unlikely (!ensure (len + 1))) ফেরত;
 
   info[len] = glyph_info;
-  assert (have_positions);
+  প্রতিজ্ঞা (have_positions);
   pos[len] = glyph_pos;
 
   len++;
 }
 
 
-void
-hb_buffer_t::clear_output ()
+শূন্য
+hb_বাফার_t::clear_output ()
 {
-  have_output = true;
-  have_positions = false;
+  have_output = সত্য;
+  have_positions = মিথ্যা;
 
   idx = 0;
   out_len = 0;
   out_info = info;
 }
 
-void
-hb_buffer_t::clear_positions ()
+শূন্য
+hb_বাফার_t::clear_positions ()
 {
-  have_output = false;
-  have_positions = true;
+  have_output = মিথ্যা;
+  have_positions = সত্য;
 
   out_len = 0;
   out_info = info;
 
-  hb_memset (pos, 0, sizeof (pos[0]) * len);
+  hb_memset (pos, 0, আকার (pos[0]) * len);
 }
 
-bool
-hb_buffer_t::sync ()
+যৌক্তিক
+hb_বাফার_t::সমলয় ()
 {
-  bool ret = false;
+  যৌক্তিক ret = মিথ্যা;
 
-  assert (have_output);
+  প্রতিজ্ঞা (have_output);
 
-  assert (idx <= len);
+  প্রতিজ্ঞা (idx <= len);
 
-  if (unlikely (!successful || !next_glyphs (len - idx)))
-    goto reset;
+  যদি (unlikely (!successful || !পরবর্তী_glyphs (len - idx)))
+    যাও reset;
 
-  if (out_info != info)
+  যদি (out_info != info)
   {
     pos = (hb_glyph_position_t *) info;
     info = out_info;
   }
   len = out_len;
-  ret = true;
+  ret = সত্য;
 
 reset:
-  have_output = false;
+  have_output = মিথ্যা;
   out_len = 0;
   out_info = info;
   idx = 0;
 
-  return ret;
+  ফেরত ret;
 }
 
-int
-hb_buffer_t::sync_so_far ()
+পূর্ণসংখ্যা
+hb_বাফার_t::sync_so_far ()
 {
-  bool had_output = have_output;
+  যৌক্তিক had_output = have_output;
   unsigned out_i = out_len;
   unsigned i = idx;
   unsigned old_idx = idx;
 
-  if (sync ())
+  যদি (সমলয় ())
     idx = out_i;
-  else
+  অন্যথা
     idx = i;
 
-  if (had_output)
+  যদি (had_output)
   {
-    have_output = true;
+    have_output = সত্য;
     out_len = idx;
   }
 
-  assert (idx <= len);
+  প্রতিজ্ঞা (idx <= len);
 
-  return idx - old_idx;
+  ফেরত idx - old_idx;
 }
 
-bool
-hb_buffer_t::move_to (unsigned int i)
+যৌক্তিক
+hb_বাফার_t::move_to (unsigned পূর্ণসংখ্যা i)
 {
-  if (!have_output)
+  যদি (!have_output)
   {
-    assert (i <= len);
+    প্রতিজ্ঞা (i <= len);
     idx = i;
-    return true;
+    ফেরত সত্য;
   }
-  if (unlikely (!successful))
-    return false;
+  যদি (unlikely (!successful))
+    ফেরত মিথ্যা;
 
-  assert (i <= out_len + (len - idx));
+  প্রতিজ্ঞা (i <= out_len + (len - idx));
 
-  if (out_len < i)
+  যদি (out_len < i)
   {
-    unsigned int count = i - out_len;
-    if (unlikely (!make_room_for (count, count))) return false;
+    unsigned পূর্ণসংখ্যা গুনতি = i - out_len;
+    যদি (unlikely (!make_room_for (গুনতি, গুনতি))) ফেরত মিথ্যা;
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= গুনতি;
+    যদি (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = মিথ্যা;
+      ফেরত মিথ্যা;
     }
 
-    memmove (out_info + out_len, info + idx, count * sizeof (out_info[0]));
-    idx += count;
-    out_len += count;
+    memmove (out_info + out_len, info + idx, গুনতি * আকার (out_info[0]));
+    idx += গুনতি;
+    out_len += গুনতি;
   }
-  else if (out_len > i)
+  অন্যথা যদি (out_len > i)
   {
     /* Tricky part: rewinding... */
-    unsigned int count = out_len - i;
+    unsigned পূর্ণসংখ্যা গুনতি = out_len - i;
 
     /* This will blow in our face if memory allocation fails later
      * in this same lookup...
@@ -507,191 +507,191 @@ hb_buffer_t::move_to (unsigned int i)
      * But that would leave empty slots in the buffer in case of allocation
      * failures.  See comments in shift_forward().  This can cause O(N^2)
      * behavior more severely than adding 32 empty slots can... */
-    if (unlikely (idx < count && !shift_forward (count - idx))) return false;
+    যদি (unlikely (idx < গুনতি && !shift_forward (গুনতি - idx))) ফেরত মিথ্যা;
 
-    assert (idx >= count);
+    প্রতিজ্ঞা (idx >= গুনতি);
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= গুনতি;
+    যদি (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = মিথ্যা;
+      ফেরত মিথ্যা;
     }
 
-    idx -= count;
-    out_len -= count;
-    memmove (info + idx, out_info + out_len, count * sizeof (out_info[0]));
+    idx -= গুনতি;
+    out_len -= গুনতি;
+    memmove (info + idx, out_info + out_len, গুনতি * আকার (out_info[0]));
   }
 
-  return true;
+  ফেরত সত্য;
 }
 
 
-void
-hb_buffer_t::set_masks (hb_mask_t    value,
+শূন্য
+hb_বাফার_t::set_masks (hb_mask_t    value,
 			hb_mask_t    mask,
-			unsigned int cluster_start,
-			unsigned int cluster_end)
+			unsigned পূর্ণসংখ্যা cluster_start,
+			unsigned পূর্ণসংখ্যা cluster_end)
 {
-  if (!mask)
-    return;
+  যদি (!mask)
+    ফেরত;
 
   hb_mask_t not_mask = ~mask;
   value &= mask;
 
   max_ops -= len;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  যদি (unlikely (max_ops < 0))
+    successful = মিথ্যা;
 
-  unsigned int count = len;
+  unsigned পূর্ণসংখ্যা গুনতি = len;
 
-  if (cluster_start == 0 && cluster_end == (unsigned int) -1)
+  যদি (cluster_start == 0 && cluster_end == (unsigned পূর্ণসংখ্যা) -1)
   {
-    for (unsigned int i = 0; i < count; i++)
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
       info[i].mask = (info[i].mask & not_mask) | value;
-    return;
+    ফেরত;
   }
 
-  for (unsigned int i = 0; i < count; i++)
-    if (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
+    যদি (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
       info[i].mask = (info[i].mask & not_mask) | value;
 }
 
-void
-hb_buffer_t::merge_clusters_impl (unsigned int start,
-				  unsigned int end)
+শূন্য
+hb_বাফার_t::merge_clusters_impl (unsigned পূর্ণসংখ্যা start,
+				  unsigned পূর্ণসংখ্যা end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  যদি (unlikely (max_ops < 0))
+    successful = মিথ্যা;
 
-  unsigned int cluster = info[start].cluster;
+  unsigned পূর্ণসংখ্যা cluster = info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = start + 1; i < end; i++)
     cluster = hb_min (cluster, info[i].cluster);
 
   /* Extend end */
-  if (cluster != info[end - 1].cluster)
-    while (end < len && info[end - 1].cluster == info[end].cluster)
+  যদি (cluster != info[end - 1].cluster)
+    যখন (end < len && info[end - 1].cluster == info[end].cluster)
       end++;
 
   /* Extend start */
-  if (cluster != info[start].cluster)
-    while (idx < start && info[start - 1].cluster == info[start].cluster)
+  যদি (cluster != info[start].cluster)
+    যখন (idx < start && info[start - 1].cluster == info[start].cluster)
       start--;
 
   /* If we hit the start of buffer, continue in out-buffer. */
-  if (idx == start && info[start].cluster != cluster)
-    for (unsigned int i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
+  যদি (idx == start && info[start].cluster != cluster)
+    জন্য (unsigned পূর্ণসংখ্যা i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
       set_cluster (out_info[i - 1], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = start; i < end; i++)
     set_cluster (info[i], cluster);
 }
-void
-hb_buffer_t::merge_out_clusters_impl (unsigned int start,
-				      unsigned int end)
+শূন্য
+hb_বাফার_t::merge_out_clusters_impl (unsigned পূর্ণসংখ্যা start,
+				      unsigned পূর্ণসংখ্যা end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  যদি (unlikely (max_ops < 0))
+    successful = মিথ্যা;
 
-  unsigned int cluster = out_info[start].cluster;
+  unsigned পূর্ণসংখ্যা cluster = out_info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = start + 1; i < end; i++)
     cluster = hb_min (cluster, out_info[i].cluster);
 
   /* Extend start */
-  while (start && out_info[start - 1].cluster == out_info[start].cluster)
+  যখন (start && out_info[start - 1].cluster == out_info[start].cluster)
     start--;
 
   /* Extend end */
-  while (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
+  যখন (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
     end++;
 
   /* If we hit the end of out-buffer, continue in buffer. */
-  if (end == out_len)
-    for (unsigned int i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
+  যদি (end == out_len)
+    জন্য (unsigned পূর্ণসংখ্যা i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
       set_cluster (info[i], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = start; i < end; i++)
     set_cluster (out_info[i], cluster);
 }
-void
-hb_buffer_t::delete_glyph ()
+শূন্য
+hb_বাফার_t::delete_glyph ()
 {
   /* The logic here is duplicated in hb_ot_hide_default_ignorables(). */
 
-  unsigned int cluster = info[idx].cluster;
-  if ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
+  unsigned পূর্ণসংখ্যা cluster = info[idx].cluster;
+  যদি ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
       (out_len && cluster == out_info[out_len - 1].cluster))
   {
     /* Cluster survives; do nothing. */
-    goto done;
+    যাও done;
   }
 
-  if (out_len)
+  যদি (out_len)
   {
     /* Merge cluster backward. */
-    if (cluster < out_info[out_len - 1].cluster)
+    যদি (cluster < out_info[out_len - 1].cluster)
     {
-      unsigned int mask = info[idx].mask;
-      unsigned int old_cluster = out_info[out_len - 1].cluster;
-      for (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
+      unsigned পূর্ণসংখ্যা mask = info[idx].mask;
+      unsigned পূর্ণসংখ্যা old_cluster = out_info[out_len - 1].cluster;
+      জন্য (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
 	set_cluster (out_info[i - 1], cluster, mask);
     }
-    goto done;
+    যাও done;
   }
 
-  if (idx + 1 < len)
+  যদি (idx + 1 < len)
   {
     /* Merge cluster forward. */
     merge_clusters (idx, idx + 2);
-    goto done;
+    যাও done;
   }
 
 done:
   skip_glyph ();
 }
 
-void
-hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info))
+শূন্য
+hb_বাফার_t::delete_glyphs_inplace (যৌক্তিক (*filter) (ধ্রুবক hb_glyph_info_t *info))
 {
   /* Merge clusters and delete filtered glyphs.
    * NOTE! We can't use out-buffer as we have positioning data. */
-  unsigned int j = 0;
-  unsigned int count = len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned পূর্ণসংখ্যা j = 0;
+  unsigned পূর্ণসংখ্যা গুনতি = len;
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
   {
-    if (filter (&info[i]))
+    যদি (filter (&info[i]))
     {
       /* Merge clusters.
        * Same logic as delete_glyph(), but for in-place removal. */
 
-      unsigned int cluster = info[i].cluster;
-      if (i + 1 < count && cluster == info[i + 1].cluster)
-	continue; /* Cluster survives; do nothing. */
+      unsigned পূর্ণসংখ্যা cluster = info[i].cluster;
+      যদি (i + 1 < গুনতি && cluster == info[i + 1].cluster)
+	চালু; /* Cluster survives; do nothing. */
 
-      if (j)
+      যদি (j)
       {
 	/* Merge cluster backward. */
-	if (cluster < info[j - 1].cluster)
+	যদি (cluster < info[j - 1].cluster)
 	{
-	  unsigned int mask = info[i].mask;
-	  unsigned int old_cluster = info[j - 1].cluster;
-	  for (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
+	  unsigned পূর্ণসংখ্যা mask = info[i].mask;
+	  unsigned পূর্ণসংখ্যা old_cluster = info[j - 1].cluster;
+	  জন্য (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
 	    set_cluster (info[k - 1], cluster, mask);
 	}
-	continue;
+	চালু;
       }
 
-      if (i + 1 < count)
+      যদি (i + 1 < গুনতি)
 	merge_clusters (i, i + 2); /* Merge cluster forward. */
 
-      continue;
+      চালু;
     }
 
-    if (j != i)
+    যদি (j != i)
     {
       info[j] = info[i];
       pos[j] = pos[i];
@@ -701,33 +701,33 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
   len = j;
 }
 
-void
-hb_buffer_t::guess_segment_properties ()
+শূন্য
+hb_বাফার_t::guess_segment_properties ()
 {
   assert_unicode ();
 
   /* If script is set to INVALID, guess from buffer contents */
-  if (props.script == HB_SCRIPT_INVALID) {
-    for (unsigned int i = 0; i < len; i++) {
+  যদি (props.script == HB_SCRIPT_INVALID) {
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < len; i++) {
       hb_script_t script = unicode->script (info[i].codepoint);
-      if (likely (script != HB_SCRIPT_COMMON &&
+      যদি (likely (script != HB_SCRIPT_COMMON &&
 		  script != HB_SCRIPT_INHERITED &&
 		  script != HB_SCRIPT_UNKNOWN)) {
 	props.script = script;
-	break;
+	বিরতি;
       }
     }
   }
 
   /* If direction is set to INVALID, guess from script */
-  if (props.direction == HB_DIRECTION_INVALID) {
+  যদি (props.direction == HB_DIRECTION_INVALID) {
     props.direction = hb_script_get_horizontal_direction (props.script);
-    if (props.direction == HB_DIRECTION_INVALID)
+    যদি (props.direction == HB_DIRECTION_INVALID)
       props.direction = HB_DIRECTION_LTR;
   }
 
   /* If language is not set, use default language from locale */
-  if (props.language == HB_LANGUAGE_INVALID) {
+  যদি (props.language == HB_LANGUAGE_INVALID) {
     /* TODO get_default_for_script? using $LANGUAGE */
     props.language = hb_language_get_default ();
   }
@@ -736,25 +736,25 @@ hb_buffer_t::guess_segment_properties ()
 
 /* Public API */
 
-DEFINE_NULL_INSTANCE (hb_buffer_t) =
+DEFINE_NULL_INSTANCE (hb_বাফার_t) =
 {
   HB_OBJECT_HEADER_STATIC,
 
   const_cast<hb_unicode_funcs_t *> (&_hb_Null_hb_unicode_funcs_t),
-  HB_BUFFER_FLAG_DEFAULT,
-  HB_BUFFER_CLUSTER_LEVEL_DEFAULT,
-  HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT,
+  HB_বাফার_FLAG_DEFAULT,
+  HB_বাফার_CLUSTER_LEVEL_DEFAULT,
+  HB_বাফার_REPLACEMENT_CODEPOINT_DEFAULT,
   0, /* invisible */
   0, /* not_found */
   HB_CODEPOINT_INVALID, /* not_found_variation_selector */
 
 
-  HB_BUFFER_CONTENT_TYPE_INVALID,
+  HB_বাফার_CONTENT_TYPE_INVALID,
   HB_SEGMENT_PROPERTIES_DEFAULT,
 
-  false, /* successful */
-  false, /* have_output */
-  true  /* have_positions */
+  মিথ্যা, /* successful */
+  মিথ্যা, /* have_output */
+  সত্য  /* have_positions */
 
   /* Zero is good enough for everything else. */
 };
@@ -774,20 +774,20 @@ DEFINE_NULL_INSTANCE (hb_buffer_t) =
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_create ()
+hb_বাফার_t *
+hb_বাফার_create ()
 {
-  hb_buffer_t *buffer;
+  hb_বাফার_t *বাফার;
 
-  if (!(buffer = hb_object_create<hb_buffer_t> ()))
-    return hb_buffer_get_empty ();
+  যদি (!(বাফার = hb_object_create<hb_বাফার_t> ()))
+    ফেরত hb_বাফার_get_empty ();
 
-  buffer->max_len = HB_BUFFER_MAX_LEN_DEFAULT;
-  buffer->max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
+  বাফার->max_len = HB_বাফার_MAX_LEN_DEFAULT;
+  বাফার->max_ops = HB_বাফার_MAX_OPS_DEFAULT;
 
-  buffer->reset ();
+  বাফার->reset ();
 
-  return buffer;
+  ফেরত বাফার;
 }
 
 /**
@@ -802,14 +802,14 @@ hb_buffer_create ()
  *
  * Since: 3.3.0
  **/
-hb_buffer_t *
-hb_buffer_create_similar (const hb_buffer_t *src)
+hb_বাফার_t *
+hb_বাফার_create_similar (ধ্রুবক hb_বাফার_t *src)
 {
-  hb_buffer_t *buffer = hb_buffer_create ();
+  hb_বাফার_t *বাফার = hb_বাফার_create ();
 
-  buffer->similar (*src);
+  বাফার->similar (*src);
 
-  return buffer;
+  ফেরত বাফার;
 }
 
 /**
@@ -825,13 +825,13 @@ hb_buffer_create_similar (const hb_buffer_t *src)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reset (hb_buffer_t *buffer)
+শূন্য
+hb_বাফার_reset (hb_বাফার_t *বাফার)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->reset ();
+  বাফার->reset ();
 }
 
 /**
@@ -843,10 +843,10 @@ hb_buffer_reset (hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_get_empty ()
+hb_বাফার_t *
+hb_বাফার_get_empty ()
 {
-  return const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
+  ফেরত const_cast<hb_বাফার_t *> (&Null (hb_বাফার_t));
 }
 
 /**
@@ -861,10 +861,10 @@ hb_buffer_get_empty ()
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_reference (hb_buffer_t *buffer)
+hb_বাফার_t *
+hb_বাফার_reference (hb_বাফার_t *বাফার)
 {
-  return hb_object_reference (buffer);
+  ফেরত hb_object_reference (বাফার);
 }
 
 /**
@@ -877,21 +877,21 @@ hb_buffer_reference (hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_destroy (hb_buffer_t *buffer)
+শূন্য
+hb_বাফার_destroy (hb_বাফার_t *বাফার)
 {
-  if (!hb_object_destroy (buffer)) return;
+  যদি (!hb_object_destroy (বাফার)) ফেরত;
 
-  hb_unicode_funcs_destroy (buffer->unicode);
+  hb_unicode_funcs_destroy (বাফার->unicode);
 
-  hb_free (buffer->info);
-  hb_free (buffer->pos);
-#ifndef HB_NO_BUFFER_MESSAGE
-  if (buffer->message_destroy)
-    buffer->message_destroy (buffer->message_data);
+  hb_free (বাফার->info);
+  hb_free (বাফার->pos);
+#ifndef HB_NO_বাফার_MESSAGE
+  যদি (বাফার->message_destroy)
+    বাফার->message_destroy (বাফার->message_তথ্য);
 #endif
 
-  hb_free (buffer);
+  hb_free (বাফার);
 }
 
 /**
@@ -909,13 +909,13 @@ hb_buffer_destroy (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
-			 void *              data,
+hb_বাফার_set_user_তথ্য (hb_বাফার_t        *বাফার,
+			 hb_user_তথ্য_চাবি_t *key,
+			 শূন্য *              তথ্য,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace)
 {
-  return hb_object_set_user_data (buffer, key, data, destroy, replace);
+  ফেরত hb_object_set_user_তথ্য (বাফার, key, তথ্য, destroy, replace);
 }
 
 /**
@@ -930,11 +930,11 @@ hb_buffer_set_user_data (hb_buffer_t        *buffer,
  *
  * Since: 0.9.2
  **/
-void *
-hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key)
+শূন্য *
+hb_বাফার_get_user_তথ্য (ধ্রুবক hb_বাফার_t  *বাফার,
+			 hb_user_তথ্য_চাবি_t *key)
 {
-  return hb_object_get_user_data (buffer, key);
+  ফেরত hb_object_get_user_তথ্য (বাফার, key);
 }
 
 
@@ -974,14 +974,14 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * Since: 0.9.5
  **/
-void
-hb_buffer_set_content_type (hb_buffer_t              *buffer,
-			    hb_buffer_content_type_t  content_type)
+শূন্য
+hb_বাফার_set_content_type (hb_বাফার_t              *বাফার,
+			    hb_বাফার_content_type_t  content_type)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->content_type = content_type;
+  বাফার->content_type = content_type;
 }
 
 /**
@@ -996,10 +996,10 @@ hb_buffer_set_content_type (hb_buffer_t              *buffer,
  *
  * Since: 0.9.5
  **/
-hb_buffer_content_type_t
-hb_buffer_get_content_type (const hb_buffer_t *buffer)
+hb_বাফার_content_type_t
+hb_বাফার_get_content_type (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->content_type;
+  ফেরত বাফার->content_type;
 }
 
 
@@ -1013,19 +1013,19 @@ hb_buffer_get_content_type (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
+শূন্য
+hb_বাফার_set_unicode_funcs (hb_বাফার_t        *বাফার,
 			     hb_unicode_funcs_t *unicode_funcs)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  if (!unicode_funcs)
+  যদি (!unicode_funcs)
     unicode_funcs = hb_unicode_funcs_get_default ();
 
   hb_unicode_funcs_reference (unicode_funcs);
-  hb_unicode_funcs_destroy (buffer->unicode);
-  buffer->unicode = unicode_funcs;
+  hb_unicode_funcs_destroy (বাফার->unicode);
+  বাফার->unicode = unicode_funcs;
 }
 
 /**
@@ -1039,9 +1039,9 @@ hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
  * Since: 0.9.2
  **/
 hb_unicode_funcs_t *
-hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
+hb_বাফার_get_unicode_funcs (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->unicode;
+  ফেরত বাফার->unicode;
 }
 
 /**
@@ -1059,14 +1059,14 @@ hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_direction (hb_buffer_t    *buffer,
+শূন্য
+hb_বাফার_set_direction (hb_বাফার_t    *বাফার,
 			 hb_direction_t  direction)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->props.direction = direction;
+  বাফার->props.direction = direction;
 }
 
 /**
@@ -1081,9 +1081,9 @@ hb_buffer_set_direction (hb_buffer_t    *buffer,
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_buffer_get_direction (const hb_buffer_t *buffer)
+hb_বাফার_get_direction (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->props.direction;
+  ফেরত বাফার->props.direction;
 }
 
 /**
@@ -1103,14 +1103,14 @@ hb_buffer_get_direction (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_script (hb_buffer_t *buffer,
+শূন্য
+hb_বাফার_set_script (hb_বাফার_t *বাফার,
 		      hb_script_t  script)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->props.script = script;
+  বাফার->props.script = script;
 }
 
 /**
@@ -1125,9 +1125,9 @@ hb_buffer_set_script (hb_buffer_t *buffer,
  * Since: 0.9.2
  **/
 hb_script_t
-hb_buffer_get_script (const hb_buffer_t *buffer)
+hb_বাফার_get_script (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->props.script;
+  ফেরত বাফার->props.script;
 }
 
 /**
@@ -1147,14 +1147,14 @@ hb_buffer_get_script (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_language (hb_buffer_t   *buffer,
+শূন্য
+hb_বাফার_set_language (hb_বাফার_t   *বাফার,
 			hb_language_t  language)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->props.language = language;
+  বাফার->props.language = language;
 }
 
 /**
@@ -1169,9 +1169,9 @@ hb_buffer_set_language (hb_buffer_t   *buffer,
  * Since: 0.9.2
  **/
 hb_language_t
-hb_buffer_get_language (const hb_buffer_t *buffer)
+hb_বাফার_get_language (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->props.language;
+  ফেরত বাফার->props.language;
 }
 
 /**
@@ -1185,14 +1185,14 @@ hb_buffer_get_language (const hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_set_segment_properties (hb_buffer_t *buffer,
-				  const hb_segment_properties_t *props)
+শূন্য
+hb_বাফার_set_segment_properties (hb_বাফার_t *বাফার,
+				  ধ্রুবক hb_segment_properties_t *props)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->props = *props;
+  বাফার->props = *props;
 }
 
 /**
@@ -1204,11 +1204,11 @@ hb_buffer_set_segment_properties (hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
+শূন্য
+hb_বাফার_get_segment_properties (ধ্রুবক hb_বাফার_t *বাফার,
 				  hb_segment_properties_t *props)
 {
-  *props = buffer->props;
+  *props = বাফার->props;
 }
 
 
@@ -1221,14 +1221,14 @@ hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_set_flags (hb_buffer_t       *buffer,
-		     hb_buffer_flags_t  flags)
+শূন্য
+hb_বাফার_set_flags (hb_বাফার_t       *বাফার,
+		     hb_বাফার_flags_t  flags)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->flags = flags;
+  বাফার->flags = flags;
 }
 
 /**
@@ -1242,10 +1242,10 @@ hb_buffer_set_flags (hb_buffer_t       *buffer,
  *
  * Since: 0.9.7
  **/
-hb_buffer_flags_t
-hb_buffer_get_flags (const hb_buffer_t *buffer)
+hb_বাফার_flags_t
+hb_বাফার_get_flags (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->flags;
+  ফেরত বাফার->flags;
 }
 
 /**
@@ -1259,14 +1259,14 @@ hb_buffer_get_flags (const hb_buffer_t *buffer)
  *
  * Since: 0.9.42
  **/
-void
-hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
-			     hb_buffer_cluster_level_t  cluster_level)
+শূন্য
+hb_বাফার_set_cluster_level (hb_বাফার_t               *বাফার,
+			     hb_বাফার_cluster_level_t  cluster_level)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->cluster_level = cluster_level;
+  বাফার->cluster_level = cluster_level;
 }
 
 /**
@@ -1281,10 +1281,10 @@ hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
  *
  * Since: 0.9.42
  **/
-hb_buffer_cluster_level_t
-hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
+hb_বাফার_cluster_level_t
+hb_বাফার_get_cluster_level (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->cluster_level;
+  ফেরত বাফার->cluster_level;
 }
 
 
@@ -1300,14 +1300,14 @@ hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
  *
  * Since: 0.9.31
  **/
-void
-hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
+শূন্য
+hb_বাফার_set_replacement_codepoint (hb_বাফার_t    *বাফার,
 				     hb_codepoint_t  replacement)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->replacement = replacement;
+  বাফার->replacement = replacement;
 }
 
 /**
@@ -1323,9 +1323,9 @@ hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
  * Since: 0.9.31
  **/
 hb_codepoint_t
-hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
+hb_বাফার_get_replacement_codepoint (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->replacement;
+  ফেরত বাফার->replacement;
 }
 
 
@@ -1341,14 +1341,14 @@ hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
  *
  * Since: 2.0.0
  **/
-void
-hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
+শূন্য
+hb_বাফার_set_invisible_glyph (hb_বাফার_t    *বাফার,
 			       hb_codepoint_t  invisible)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->invisible = invisible;
+  বাফার->invisible = invisible;
 }
 
 /**
@@ -1363,9 +1363,9 @@ hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
  * Since: 2.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
+hb_বাফার_get_invisible_glyph (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->invisible;
+  ফেরত বাফার->invisible;
 }
 
 /**
@@ -1381,14 +1381,14 @@ hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
  *
  * Since: 3.1.0
  **/
-void
-hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
+শূন্য
+hb_বাফার_set_not_found_glyph (hb_বাফার_t    *বাফার,
 			       hb_codepoint_t  not_found)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->not_found = not_found;
+  বাফার->not_found = not_found;
 }
 
 /**
@@ -1403,9 +1403,9 @@ hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
  * Since: 3.1.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
+hb_বাফার_get_not_found_glyph (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->not_found;
+  ফেরত বাফার->not_found;
 }
 
 /**
@@ -1424,11 +1424,11 @@ hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
  *
  * Since: 10.0.0
  **/
-void
-hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
+শূন্য
+hb_বাফার_set_not_found_variation_selector_glyph (hb_বাফার_t    *বাফার,
 						  hb_codepoint_t  not_found_variation_selector)
 {
-  buffer->not_found_variation_selector = not_found_variation_selector;
+  বাফার->not_found_variation_selector = not_found_variation_selector;
 }
 
 /**
@@ -1443,9 +1443,9 @@ hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
  * Since: 10.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
+hb_বাফার_get_not_found_variation_selector_glyph (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->not_found_variation_selector;
+  ফেরত বাফার->not_found_variation_selector;
 }
 
 /**
@@ -1465,14 +1465,14 @@ hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
  *
  * Since: 8.4.0
  **/
-void
-hb_buffer_set_random_state (hb_buffer_t    *buffer,
+শূন্য
+hb_বাফার_set_random_state (hb_বাফার_t    *বাফার,
 			    unsigned        state)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->random_state = state;
+  বাফার->random_state = state;
 }
 
 /**
@@ -1487,9 +1487,9 @@ hb_buffer_set_random_state (hb_buffer_t    *buffer,
  * Since: 8.4.0
  **/
 unsigned
-hb_buffer_get_random_state (const hb_buffer_t *buffer)
+hb_বাফার_get_random_state (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->random_state;
+  ফেরত বাফার->random_state;
 }
 
 /**
@@ -1505,13 +1505,13 @@ hb_buffer_get_random_state (const hb_buffer_t *buffer)
  *
  * Since: 0.9.11
  **/
-void
-hb_buffer_clear_contents (hb_buffer_t *buffer)
+শূন্য
+hb_বাফার_clear_contents (hb_বাফার_t *বাফার)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  buffer->clear ();
+  বাফার->clear ();
 }
 
 /**
@@ -1527,9 +1527,9 @@ hb_buffer_clear_contents (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
+hb_বাফার_pre_allocate (hb_বাফার_t *বাফার, unsigned পূর্ণসংখ্যা আকার_2)
 {
-  return buffer->ensure (size);
+  ফেরত বাফার->ensure (আকার_2);
 }
 
 /**
@@ -1544,9 +1544,9 @@ hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_allocation_successful (hb_buffer_t  *buffer)
+hb_বাফার_allocation_successful (hb_বাফার_t  *বাফার)
 {
-  return buffer->successful;
+  ফেরত বাফার->successful;
 }
 
 /**
@@ -1566,13 +1566,13 @@ hb_buffer_allocation_successful (hb_buffer_t  *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_add (hb_buffer_t    *buffer,
+শূন্য
+hb_বাফার_add (hb_বাফার_t    *বাফার,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster)
+	       unsigned পূর্ণসংখ্যা    cluster)
 {
-  buffer->add (codepoint, cluster);
-  buffer->clear_context (1);
+  বাফার->add (codepoint, cluster);
+  বাফার->clear_context (1);
 }
 
 /**
@@ -1589,32 +1589,32 @@ hb_buffer_add (hb_buffer_t    *buffer,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length)
+hb_বাফার_set_দৈর্ঘ্য (hb_বাফার_t  *বাফার,
+		      unsigned পূর্ণসংখ্যা  দৈর্ঘ্য)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return length == 0;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত দৈর্ঘ্য == 0;
 
-  if (unlikely (!buffer->ensure (length)))
-    return false;
+  যদি (unlikely (!বাফার->ensure (দৈর্ঘ্য)))
+    ফেরত মিথ্যা;
 
   /* Wipe the new space */
-  if (length > buffer->len) {
-    hb_memset (buffer->info + buffer->len, 0, sizeof (buffer->info[0]) * (length - buffer->len));
-    if (buffer->have_positions)
-      hb_memset (buffer->pos + buffer->len, 0, sizeof (buffer->pos[0]) * (length - buffer->len));
+  যদি (দৈর্ঘ্য > বাফার->len) {
+    hb_memset (বাফার->info + বাফার->len, 0, আকার (বাফার->info[0]) * (দৈর্ঘ্য - বাফার->len));
+    যদি (বাফার->have_positions)
+      hb_memset (বাফার->pos + বাফার->len, 0, আকার (বাফার->pos[0]) * (দৈর্ঘ্য - বাফার->len));
   }
 
-  buffer->len = length;
+  বাফার->len = দৈর্ঘ্য;
 
-  if (!length)
+  যদি (!দৈর্ঘ্য)
   {
-    buffer->content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
-    buffer->clear_context (0);
+    বাফার->content_type = HB_বাফার_CONTENT_TYPE_INVALID;
+    বাফার->clear_context (0);
   }
-  buffer->clear_context (1);
+  বাফার->clear_context (1);
 
-  return true;
+  ফেরত সত্য;
 }
 
 /**
@@ -1629,10 +1629,10 @@ hb_buffer_set_length (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_buffer_get_length (const hb_buffer_t *buffer)
+unsigned পূর্ণসংখ্যা
+hb_বাফার_get_দৈর্ঘ্য (ধ্রুবক hb_বাফার_t *বাফার)
 {
-  return buffer->len;
+  ফেরত বাফার->len;
 }
 
 /**
@@ -1650,13 +1650,13 @@ hb_buffer_get_length (const hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_glyph_info_t *
-hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length)
+hb_বাফার_get_glyph_infos (hb_বাফার_t  *বাফার,
+			   unsigned পূর্ণসংখ্যা *দৈর্ঘ্য)
 {
-  if (length)
-    *length = buffer->len;
+  যদি (দৈর্ঘ্য)
+    *দৈর্ঘ্য = বাফার->len;
 
-  return (hb_glyph_info_t *) buffer->info;
+  ফেরত (hb_glyph_info_t *) বাফার->info;
 }
 
 /**
@@ -1679,21 +1679,21 @@ hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
  * Since: 0.9.2
  **/
 hb_glyph_position_t *
-hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length)
+hb_বাফার_get_glyph_positions (hb_বাফার_t  *বাফার,
+			       unsigned পূর্ণসংখ্যা *দৈর্ঘ্য)
 {
-  if (length)
-    *length = buffer->len;
+  যদি (দৈর্ঘ্য)
+    *দৈর্ঘ্য = বাফার->len;
 
-  if (!buffer->have_positions)
+  যদি (!বাফার->have_positions)
   {
-    if (unlikely (buffer->message_depth))
-      return nullptr;
+    যদি (unlikely (বাফার->message_depth))
+      ফেরত nullptr;
 
-    buffer->clear_positions ();
+    বাফার->clear_positions ();
   }
 
-  return (hb_glyph_position_t *) buffer->pos;
+  ফেরত (hb_glyph_position_t *) বাফার->pos;
 }
 
 /**
@@ -1710,9 +1710,9 @@ hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
  * Since: 2.7.3
  **/
 HB_EXTERN hb_bool_t
-hb_buffer_has_positions (hb_buffer_t  *buffer)
+hb_বাফার_has_positions (hb_বাফার_t  *বাফার)
 {
-  return buffer->have_positions;
+  ফেরত বাফার->have_positions;
 }
 
 /**
@@ -1727,9 +1727,9 @@ hb_buffer_has_positions (hb_buffer_t  *buffer)
  * Since: 1.5.0
  **/
 hb_glyph_flags_t
-(hb_glyph_info_get_glyph_flags) (const hb_glyph_info_t *info)
+(hb_glyph_info_get_glyph_flags) (ধ্রুবক hb_glyph_info_t *info)
 {
-  return hb_glyph_info_get_glyph_flags (info);
+  ফেরত hb_glyph_info_get_glyph_flags (info);
 }
 
 /**
@@ -1740,10 +1740,10 @@ hb_glyph_flags_t
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reverse (hb_buffer_t *buffer)
+শূন্য
+hb_বাফার_reverse (hb_বাফার_t *বাফার)
 {
-  buffer->reverse ();
+  বাফার->reverse ();
 }
 
 /**
@@ -1756,11 +1756,11 @@ hb_buffer_reverse (hb_buffer_t *buffer)
  *
  * Since: 0.9.41
  **/
-void
-hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end)
+শূন্য
+hb_বাফার_reverse_range (hb_বাফার_t *বাফার,
+			 unsigned পূর্ণসংখ্যা start, unsigned পূর্ণসংখ্যা end)
 {
-  buffer->reverse_range (start, end);
+  বাফার->reverse_range (start, end);
 }
 
 /**
@@ -1773,10 +1773,10 @@ hb_buffer_reverse_range (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reverse_clusters (hb_buffer_t *buffer)
+শূন্য
+hb_বাফার_reverse_clusters (hb_বাফার_t *বাফার)
 {
-  buffer->reverse_clusters ();
+  বাফার->reverse_clusters ();
 }
 
 /**
@@ -1807,41 +1807,41 @@ hb_buffer_reverse_clusters (hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_guess_segment_properties (hb_buffer_t *buffer)
+শূন্য
+hb_বাফার_guess_segment_properties (hb_বাফার_t *বাফার)
 {
-  buffer->guess_segment_properties ();
+  বাফার->guess_segment_properties ();
 }
 
 template <typename utf_t>
-static inline void
-hb_buffer_add_utf (hb_buffer_t  *buffer,
-		   const typename utf_t::codepoint_t *text,
-		   int           text_length,
-		   unsigned int  item_offset,
-		   int           item_length)
+স্থির অন্তঃরেখ শূন্য
+hb_বাফার_add_utf (hb_বাফার_t  *বাফার,
+		   ধ্রুবক typename utf_t::codepoint_t *text,
+		   পূর্ণসংখ্যা           text_দৈর্ঘ্য,
+		   unsigned পূর্ণসংখ্যা  item_offset,
+		   পূর্ণসংখ্যা           item_দৈর্ঘ্য)
 {
-  typedef typename utf_t::codepoint_t T;
-  const hb_codepoint_t replacement = buffer->replacement;
+  প্রকারলেখ typename utf_t::codepoint_t T;
+  ধ্রুবক hb_codepoint_t replacement = বাফার->replacement;
 
-  buffer->assert_unicode ();
+  বাফার->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  যদি (unlikely (hb_object_is_immutable (বাফার)))
+    ফেরত;
 
-  if (text_length == -1)
-    text_length = utf_t::strlen (text);
+  যদি (text_দৈর্ঘ্য == -1)
+    text_দৈর্ঘ্য = utf_t::strlen (text);
 
-  if (item_length == -1)
-    item_length = text_length - item_offset;
+  যদি (item_দৈর্ঘ্য == -1)
+    item_দৈর্ঘ্য = text_দৈর্ঘ্য - item_offset;
 
-  item_offset = hb_min (item_offset, (unsigned) text_length);
-  item_length = hb_clamp (item_length, 0, text_length - (int) item_offset);
+  item_offset = hb_min (item_offset, (unsigned) text_দৈর্ঘ্য);
+  item_দৈর্ঘ্য = hb_clamp (item_দৈর্ঘ্য, 0, text_দৈর্ঘ্য - (পূর্ণসংখ্যা) item_offset);
 
-  if (unlikely (item_length < 0 ||
-		item_length > INT_MAX / 8 ||
-		!buffer->ensure (buffer->len + item_length * sizeof (T) / 4)))
-    return;
+  যদি (unlikely (item_দৈর্ঘ্য < 0 ||
+		item_দৈর্ঘ্য > INT_MAX / 8 ||
+		!বাফার->ensure (বাফার->len + item_দৈর্ঘ্য * আকার (T) / 4)))
+    ফেরত;
 
   /* If buffer is empty and pre-context provided, install it.
    * This check is written this way, to make sure people can
@@ -1850,41 +1850,41 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
    *
    * https://bugzilla.mozilla.org/show_bug.cgi?id=801410#c13
    */
-  if (!buffer->len && item_offset > 0)
+  যদি (!বাফার->len && item_offset > 0)
   {
     /* Add pre-context */
-    buffer->clear_context (0);
-    const T *prev = text + item_offset;
-    const T *start = text;
-    while (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+    বাফার->clear_context (0);
+    ধ্রুবক T *prev = text + item_offset;
+    ধ্রুবক T *start = text;
+    যখন (start < prev && বাফার->context_len[0] < বাফার->CONTEXT_দৈর্ঘ্য)
     {
       hb_codepoint_t u;
       prev = utf_t::prev (prev, start, &u, replacement);
-      buffer->context[0][buffer->context_len[0]++] = u;
+      বাফার->context[0][বাফার->context_len[0]++] = u;
     }
   }
 
-  const T *next = text + item_offset;
-  const T *end = next + item_length;
-  while (next < end)
+  ধ্রুবক T *next = text + item_offset;
+  ধ্রুবক T *end = next + item_দৈর্ঘ্য;
+  যখন (next < end)
   {
     hb_codepoint_t u;
-    const T *old_next = next;
+    ধ্রুবক T *old_পরবর্তী = next;
     next = utf_t::next (next, end, &u, replacement);
-    buffer->add (u, old_next - (const T *) text);
+    বাফার->add (u, old_পরবর্তী - (ধ্রুবক T *) text);
   }
 
   /* Add post-context */
-  buffer->clear_context (1);
-  end = text + text_length;
-  while (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+  বাফার->clear_context (1);
+  end = text + text_দৈর্ঘ্য;
+  যখন (next < end && বাফার->context_len[1] < বাফার->CONTEXT_দৈর্ঘ্য)
   {
     hb_codepoint_t u;
     next = utf_t::next (next, end, &u, replacement);
-    buffer->context[1][buffer->context_len[1]++] = u;
+    বাফার->context[1][বাফার->context_len[1]++] = u;
   }
 
-  buffer->content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
+  বাফার->content_type = HB_বাফার_CONTENT_TYPE_UNICODE;
 }
 
 /**
@@ -1904,14 +1904,14 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length)
+শূন্য
+hb_বাফার_add_utf8 (hb_বাফার_t  *বাফার,
+		    ধ্রুবক অক্ষর   *text,
+		    পূর্ণসংখ্যা           text_দৈর্ঘ্য,
+		    unsigned পূর্ণসংখ্যা  item_offset,
+		    পূর্ণসংখ্যা           item_দৈর্ঘ্য)
 {
-  hb_buffer_add_utf<hb_utf8_t> (buffer, (const uint8_t *) text, text_length, item_offset, item_length);
+  hb_বাফার_add_utf<hb_utf8_t> (বাফার, (ধ্রুবক uint8_t *) text, text_দৈর্ঘ্য, item_offset, item_দৈর্ঘ্য);
 }
 
 /**
@@ -1930,14 +1930,14 @@ hb_buffer_add_utf8 (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf16 (hb_buffer_t    *buffer,
-		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+শূন্য
+hb_বাফার_add_utf16 (hb_বাফার_t    *বাফার,
+		     ধ্রুবক uint16_t *text,
+		     পূর্ণসংখ্যা             text_দৈর্ঘ্য,
+		     unsigned পূর্ণসংখ্যা    item_offset,
+		     পূর্ণসংখ্যা             item_দৈর্ঘ্য)
 {
-  hb_buffer_add_utf<hb_utf16_t> (buffer, text, text_length, item_offset, item_length);
+  hb_বাফার_add_utf<hb_utf16_t> (বাফার, text, text_দৈর্ঘ্য, item_offset, item_দৈর্ঘ্য);
 }
 
 /**
@@ -1956,14 +1956,14 @@ hb_buffer_add_utf16 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf32 (hb_buffer_t    *buffer,
-		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+শূন্য
+hb_বাফার_add_utf32 (hb_বাফার_t    *বাফার,
+		     ধ্রুবক uint32_t *text,
+		     পূর্ণসংখ্যা             text_দৈর্ঘ্য,
+		     unsigned পূর্ণসংখ্যা    item_offset,
+		     পূর্ণসংখ্যা             item_দৈর্ঘ্য)
 {
-  hb_buffer_add_utf<hb_utf32_t> (buffer, text, text_length, item_offset, item_length);
+  hb_বাফার_add_utf<hb_utf32_t> (বাফার, text, text_দৈর্ঘ্য, item_offset, item_দৈর্ঘ্য);
 }
 
 /**
@@ -1983,14 +1983,14 @@ hb_buffer_add_utf32 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.39
  **/
-void
-hb_buffer_add_latin1 (hb_buffer_t   *buffer,
-		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length)
+শূন্য
+hb_বাফার_add_latin1 (hb_বাফার_t   *বাফার,
+		      ধ্রুবক uint8_t *text,
+		      পূর্ণসংখ্যা            text_দৈর্ঘ্য,
+		      unsigned পূর্ণসংখ্যা   item_offset,
+		      পূর্ণসংখ্যা            item_দৈর্ঘ্য)
 {
-  hb_buffer_add_utf<hb_latin1_t> (buffer, text, text_length, item_offset, item_length);
+  hb_বাফার_add_utf<hb_latin1_t> (বাফার, text, text_দৈর্ঘ্য, item_offset, item_দৈর্ঘ্য);
 }
 
 /**
@@ -2019,14 +2019,14 @@ hb_buffer_add_latin1 (hb_buffer_t   *buffer,
  *
  * Since: 0.9.31
  **/
-void
-hb_buffer_add_codepoints (hb_buffer_t          *buffer,
-			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length)
+শূন্য
+hb_বাফার_add_codepoints (hb_বাফার_t          *বাফার,
+			  ধ্রুবক hb_codepoint_t *text,
+			  পূর্ণসংখ্যা                   text_দৈর্ঘ্য,
+			  unsigned পূর্ণসংখ্যা          item_offset,
+			  পূর্ণসংখ্যা                   item_দৈর্ঘ্য)
 {
-  hb_buffer_add_utf<hb_utf32_novalidate_t> (buffer, text, text_length, item_offset, item_length);
+  hb_বাফার_add_utf<hb_utf32_novalidate_t> (বাফার, text, text_দৈর্ঘ্য, item_offset, item_দৈর্ঘ্য);
 }
 
 
@@ -2041,96 +2041,96 @@ hb_buffer_add_codepoints (hb_buffer_t          *buffer,
  *
  * Since: 1.5.0
  **/
-HB_EXTERN void
-hb_buffer_append (hb_buffer_t *buffer,
-		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end)
+HB_EXTERN শূন্য
+hb_বাফার_append (hb_বাফার_t *বাফার,
+		  ধ্রুবক hb_বাফার_t *source,
+		  unsigned পূর্ণসংখ্যা start,
+		  unsigned পূর্ণসংখ্যা end)
 {
-  assert (!buffer->have_output && !source->have_output);
-  assert (buffer->have_positions == source->have_positions ||
-	  !buffer->len || !source->len);
-  assert (buffer->content_type == source->content_type ||
-	  !buffer->len || !source->len);
+  প্রতিজ্ঞা (!বাফার->have_output && !source->have_output);
+  প্রতিজ্ঞা (বাফার->have_positions == source->have_positions ||
+	  !বাফার->len || !source->len);
+  প্রতিজ্ঞা (বাফার->content_type == source->content_type ||
+	  !বাফার->len || !source->len);
 
-  if (end > source->len)
+  যদি (end > source->len)
     end = source->len;
-  if (start > end)
+  যদি (start > end)
     start = end;
-  if (start == end)
-    return;
+  যদি (start == end)
+    ফেরত;
 
-  if (buffer->len + (end - start) < buffer->len) /* Overflows. */
+  যদি (বাফার->len + (end - start) < বাফার->len) /* Overflows. */
   {
-    buffer->successful = false;
-    return;
+    বাফার->successful = মিথ্যা;
+    ফেরত;
   }
 
-  unsigned int orig_len = buffer->len;
-  hb_buffer_set_length (buffer, buffer->len + (end - start));
-  if (unlikely (!buffer->successful))
-    return;
+  unsigned পূর্ণসংখ্যা orig_len = বাফার->len;
+  hb_বাফার_set_দৈর্ঘ্য (বাফার, বাফার->len + (end - start));
+  যদি (unlikely (!বাফার->successful))
+    ফেরত;
 
-  if (!orig_len)
-    buffer->content_type = source->content_type;
-  if (!buffer->have_positions && source->have_positions)
-    buffer->clear_positions ();
+  যদি (!orig_len)
+    বাফার->content_type = source->content_type;
+  যদি (!বাফার->have_positions && source->have_positions)
+    বাফার->clear_positions ();
 
-  hb_segment_properties_overlay (&buffer->props, &source->props);
+  hb_segment_properties_overlay (&বাফার->props, &source->props);
 
-  hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * sizeof (buffer->info[0]));
-  if (buffer->have_positions)
-    hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * sizeof (buffer->pos[0]));
+  hb_memcpy (বাফার->info + orig_len, source->info + start, (end - start) * আকার (বাফার->info[0]));
+  যদি (বাফার->have_positions)
+    hb_memcpy (বাফার->pos + orig_len, source->pos + start, (end - start) * আকার (বাফার->pos[0]));
 
-  if (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  যদি (source->content_type == HB_বাফার_CONTENT_TYPE_UNICODE)
   {
     /* See similar logic in add_utf. */
 
     /* pre-context */
-    if (!orig_len && start + source->context_len[0] > 0)
+    যদি (!orig_len && start + source->context_len[0] > 0)
     {
-      buffer->clear_context (0);
-      while (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
-	buffer->context[0][buffer->context_len[0]++] = source->info[--start].codepoint;
-      for (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
-	buffer->context[0][buffer->context_len[0]++] = source->context[0][i];
+      বাফার->clear_context (0);
+      যখন (start > 0 && বাফার->context_len[0] < বাফার->CONTEXT_দৈর্ঘ্য)
+	বাফার->context[0][বাফার->context_len[0]++] = source->info[--start].codepoint;
+      জন্য (auto i = 0u; i < source->context_len[0] && বাফার->context_len[0] < বাফার->CONTEXT_দৈর্ঘ্য; i++)
+	বাফার->context[0][বাফার->context_len[0]++] = source->context[0][i];
     }
 
     /* post-context */
-    buffer->clear_context (1);
-    while (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
-      buffer->context[1][buffer->context_len[1]++] = source->info[end++].codepoint;
-    for (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
-      buffer->context[1][buffer->context_len[1]++] = source->context[1][i];
+    বাফার->clear_context (1);
+    যখন (end < source->len && বাফার->context_len[1] < বাফার->CONTEXT_দৈর্ঘ্য)
+      বাফার->context[1][বাফার->context_len[1]++] = source->info[end++].codepoint;
+    জন্য (auto i = 0u; i < source->context_len[1] && বাফার->context_len[1] < বাফার->CONTEXT_দৈর্ঘ্য; i++)
+      বাফার->context[1][বাফার->context_len[1]++] = source->context[1][i];
   }
 }
 
 
-static int
-compare_info_codepoint (const hb_glyph_info_t *pa,
-			const hb_glyph_info_t *pb)
+স্থির পূর্ণসংখ্যা
+compare_info_codepoint (ধ্রুবক hb_glyph_info_t *pa,
+			ধ্রুবক hb_glyph_info_t *pb)
 {
-  return (int) pb->codepoint - (int) pa->codepoint;
+  ফেরত (পূর্ণসংখ্যা) pb->codepoint - (পূর্ণসংখ্যা) pa->codepoint;
 }
 
-static inline void
-normalize_glyphs_cluster (hb_buffer_t *buffer,
-			  unsigned int start,
-			  unsigned int end,
-			  bool backward)
+স্থির অন্তঃরেখ শূন্য
+normalize_glyphs_cluster (hb_বাফার_t *বাফার,
+			  unsigned পূর্ণসংখ্যা start,
+			  unsigned পূর্ণসংখ্যা end,
+			  যৌক্তিক backward)
 {
-  hb_glyph_position_t *pos = buffer->pos;
+  hb_glyph_position_t *pos = বাফার->pos;
 
   /* Total cluster advance */
-  hb_position_t total_x_advance = 0, total_y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  hb_position_t যোগ_x_advance = 0, যোগ_y_advance = 0;
+  জন্য (unsigned পূর্ণসংখ্যা i = start; i < end; i++)
   {
-    total_x_advance = hb_saturate_add (total_x_advance, pos[i].x_advance);
-    total_y_advance = hb_saturate_add (total_y_advance, pos[i].y_advance);
+    যোগ_x_advance = hb_saturate_add (যোগ_x_advance, pos[i].x_advance);
+    যোগ_y_advance = hb_saturate_add (যোগ_y_advance, pos[i].y_advance);
   }
 
   hb_position_t x_advance = 0, y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = start; i < end; i++)
   {
     pos[i].x_offset = hb_saturate_add (pos[i].x_offset, x_advance);
     pos[i].y_offset = hb_saturate_add (pos[i].y_offset, y_advance);
@@ -2142,22 +2142,22 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
     pos[i].y_advance = 0;
   }
 
-  if (backward)
+  যদি (backward)
   {
     /* Transfer all cluster advance to the last glyph. */
-    pos[end - 1].x_advance = total_x_advance;
-    pos[end - 1].y_advance = total_y_advance;
+    pos[end - 1].x_advance = যোগ_x_advance;
+    pos[end - 1].y_advance = যোগ_y_advance;
 
-    hb_stable_sort (buffer->info + start, end - start - 1, compare_info_codepoint, buffer->pos + start);
-  } else {
+    hb_stable_sort (বাফার->info + start, end - start - 1, compare_info_codepoint, বাফার->pos + start);
+  } অন্যথা {
     /* Transfer all cluster advance to the first glyph. */
-    pos[start].x_advance = hb_saturate_add (pos[start].x_advance, total_x_advance);
-    pos[start].y_advance = hb_saturate_add (pos[start].y_advance, total_y_advance);
-    for (unsigned int i = start + 1; i < end; i++) {
-      pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, total_x_advance);
-      pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, total_y_advance);
+    pos[start].x_advance = hb_saturate_add (pos[start].x_advance, যোগ_x_advance);
+    pos[start].y_advance = hb_saturate_add (pos[start].y_advance, যোগ_y_advance);
+    জন্য (unsigned পূর্ণসংখ্যা i = start + 1; i < end; i++) {
+      pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, যোগ_x_advance);
+      pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, যোগ_y_advance);
     }
-    hb_stable_sort (buffer->info + start + 1, end - start - 1, compare_info_codepoint, buffer->pos + start + 1);
+    hb_stable_sort (বাফার->info + start + 1, end - start - 1, compare_info_codepoint, বাফার->pos + start + 1);
   }
 }
 
@@ -2172,35 +2172,35 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_normalize_glyphs (hb_buffer_t *buffer)
+শূন্য
+hb_বাফার_normalize_glyphs (hb_বাফার_t *বাফার)
 {
-  assert (buffer->have_positions);
+  প্রতিজ্ঞা (বাফার->have_positions);
 
-  buffer->assert_glyphs ();
+  বাফার->assert_glyphs ();
 
-  bool backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  যৌক্তিক backward = HB_DIRECTION_IS_BACKWARD (বাফার->props.direction);
 
-  foreach_cluster (buffer, start, end)
-    normalize_glyphs_cluster (buffer, start, end, backward);
+  foreach_cluster (বাফার, start, end)
+    normalize_glyphs_cluster (বাফার, start, end, backward);
 }
 
-void
-hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
+শূন্য
+hb_বাফার_t::sort (unsigned পূর্ণসংখ্যা start, unsigned পূর্ণসংখ্যা end, পূর্ণসংখ্যা(*compar)(ধ্রুবক hb_glyph_info_t *, ধ্রুবক hb_glyph_info_t *))
 {
-  assert (!have_positions);
-  for (unsigned int i = start + 1; i < end; i++)
+  প্রতিজ্ঞা (!have_positions);
+  জন্য (unsigned পূর্ণসংখ্যা i = start + 1; i < end; i++)
   {
-    unsigned int j = i;
-    while (j > start && compar (&info[j - 1], &info[i]) > 0)
+    unsigned পূর্ণসংখ্যা j = i;
+    যখন (j > start && compar (&info[j - 1], &info[i]) > 0)
       j--;
-    if (i == j)
-      continue;
+    যদি (i == j)
+      চালু;
     /* Move item i to occupy place for item j, shift what's in between. */
     merge_clusters (j, i + 1);
     {
       hb_glyph_info_t t = info[i];
-      memmove (&info[j + 1], &info[j], (i - j) * sizeof (hb_glyph_info_t));
+      memmove (&info[j + 1], &info[j], (i - j) * আকার (hb_glyph_info_t));
       info[j] = t;
     }
   }
@@ -2224,86 +2224,86 @@ hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_g
  *
  * Since: 1.5.0
  **/
-hb_buffer_diff_flags_t
-hb_buffer_diff (hb_buffer_t *buffer,
-		hb_buffer_t *reference,
+hb_বাফার_diff_flags_t
+hb_বাফার_diff (hb_বাফার_t *বাফার,
+		hb_বাফার_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz)
+		unsigned পূর্ণসংখ্যা position_fuzz)
 {
-  if (buffer->content_type != reference->content_type && buffer->len && reference->len)
-    return HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
+  যদি (বাফার->content_type != reference->content_type && বাফার->len && reference->len)
+    ফেরত HB_বাফার_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
 
-  hb_buffer_diff_flags_t result = HB_BUFFER_DIFF_FLAG_EQUAL;
-  bool contains = dottedcircle_glyph != (hb_codepoint_t) -1;
+  hb_বাফার_diff_flags_t ফলাফল = HB_বাফার_DIFF_FLAG_EQUAL;
+  যৌক্তিক contains = dottedcircle_glyph != (hb_codepoint_t) -1;
 
-  unsigned int count = reference->len;
+  unsigned পূর্ণসংখ্যা গুনতি = reference->len;
 
-  if (buffer->len != count)
+  যদি (বাফার->len != গুনতি)
   {
     /*
      * we can't compare glyph-by-glyph, but we do want to know if there
      * are .notdef or dottedcircle glyphs present in the reference buffer
      */
-    const hb_glyph_info_t *info = reference->info;
-    unsigned int i;
-    for (i = 0; i < count; i++)
+    ধ্রুবক hb_glyph_info_t *info = reference->info;
+    unsigned পূর্ণসংখ্যা i;
+    জন্য (i = 0; i < গুনতি; i++)
     {
-      if (contains && info[i].codepoint == dottedcircle_glyph)
-	result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-      if (contains && info[i].codepoint == 0)
-	result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
+      যদি (contains && info[i].codepoint == dottedcircle_glyph)
+	ফলাফল |= HB_বাফার_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
+      যদি (contains && info[i].codepoint == 0)
+	ফলাফল |= HB_বাফার_DIFF_FLAG_NOTDEF_PRESENT;
     }
-    result |= HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH;
-    return hb_buffer_diff_flags_t (result);
+    ফলাফল |= HB_বাফার_DIFF_FLAG_দৈর্ঘ্য_MISMATCH;
+    ফেরত hb_বাফার_diff_flags_t (ফলাফল);
   }
 
-  if (!count)
-    return hb_buffer_diff_flags_t (result);
+  যদি (!গুনতি)
+    ফেরত hb_বাফার_diff_flags_t (ফলাফল);
 
-  const hb_glyph_info_t *buf_info = buffer->info;
-  const hb_glyph_info_t *ref_info = reference->info;
-  for (unsigned int i = 0; i < count; i++)
+  ধ্রুবক hb_glyph_info_t *buf_info = বাফার->info;
+  ধ্রুবক hb_glyph_info_t *ref_info = reference->info;
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
   {
-    if (buf_info->codepoint != ref_info->codepoint)
-      result |= HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH;
-    if (buf_info->cluster != ref_info->cluster)
-      result |= HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH;
-    if ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
-      result |= HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
-    if (contains && ref_info->codepoint == dottedcircle_glyph)
-      result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-    if (contains && ref_info->codepoint == 0)
-      result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
+    যদি (buf_info->codepoint != ref_info->codepoint)
+      ফলাফল |= HB_বাফার_DIFF_FLAG_CODEPOINT_MISMATCH;
+    যদি (buf_info->cluster != ref_info->cluster)
+      ফলাফল |= HB_বাফার_DIFF_FLAG_CLUSTER_MISMATCH;
+    যদি ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
+      ফলাফল |= HB_বাফার_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
+    যদি (contains && ref_info->codepoint == dottedcircle_glyph)
+      ফলাফল |= HB_বাফার_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
+    যদি (contains && ref_info->codepoint == 0)
+      ফলাফল |= HB_বাফার_DIFF_FLAG_NOTDEF_PRESENT;
     buf_info++;
     ref_info++;
   }
 
-  if (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
+  যদি (বাফার->content_type == HB_বাফার_CONTENT_TYPE_GLYPHS)
   {
     auto position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
     {
       int64_t diff = (int64_t) a - b;
-      return diff < 0 ? -diff : diff;
+      ফেরত diff < 0 ? -diff : diff;
     };
-    assert (buffer->have_positions);
-    const hb_glyph_position_t *buf_pos = buffer->pos;
-    const hb_glyph_position_t *ref_pos = reference->pos;
-    for (unsigned int i = 0; i < count; i++)
+    প্রতিজ্ঞা (বাফার->have_positions);
+    ধ্রুবক hb_glyph_position_t *buf_pos = বাফার->pos;
+    ধ্রুবক hb_glyph_position_t *ref_pos = reference->pos;
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
     {
-      if (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
+      যদি (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
 	  position_diff (buf_pos->y_advance, ref_pos->y_advance) > position_fuzz ||
 	  position_diff (buf_pos->x_offset, ref_pos->x_offset) > position_fuzz ||
 	  position_diff (buf_pos->y_offset, ref_pos->y_offset) > position_fuzz)
       {
-	result |= HB_BUFFER_DIFF_FLAG_POSITION_MISMATCH;
-	break;
+	ফলাফল |= HB_বাফার_DIFF_FLAG_POSITION_MISMATCH;
+	বিরতি;
       }
       buf_pos++;
       ref_pos++;
     }
   }
 
-  return result;
+  ফেরত ফলাফল;
 }
 
 
@@ -2311,23 +2311,23 @@ hb_buffer_diff (hb_buffer_t *buffer,
  * Debugging.
  */
 
-void
-hb_buffer_t::changed ()
+শূন্য
+hb_বাফার_t::changed ()
 {
-#ifdef HB_NO_BUFFER_MESSAGE
-  return;
-#else
-  if (!message_depth)
-    return;
+#ifdef HB_NO_বাফার_MESSAGE
+  ফেরত;
+#অন্যথা
+  যদি (!message_depth)
+    ফেরত;
 
-  if (changed_func)
-    changed_func (this, changed_data);
-  else
+  যদি (changed_func)
+    changed_func (এই, changed_তথ্য);
+  অন্যথা
     update_digest ();
 #endif
 }
 
-#ifndef HB_NO_BUFFER_MESSAGE
+#ifndef HB_NO_বাফার_MESSAGE
 /**
  * hb_buffer_set_message_func:
  * @buffer: An #hb_buffer_t
@@ -2342,30 +2342,30 @@ hb_buffer_t::changed ()
  *
  * Since: 1.1.3
  **/
-void
-hb_buffer_set_message_func (hb_buffer_t *buffer,
-			    hb_buffer_message_func_t func,
-			    void *user_data, hb_destroy_func_t destroy)
+শূন্য
+hb_বাফার_set_message_func (hb_বাফার_t *বাফার,
+			    hb_বাফার_message_func_t func,
+			    শূন্য *user_তথ্য, hb_destroy_func_t destroy)
 {
-  if (unlikely (hb_object_is_immutable (buffer)) ||
-      unlikely (buffer->message_depth))
+  যদি (unlikely (hb_object_is_immutable (বাফার)) ||
+      unlikely (বাফার->message_depth))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    যদি (destroy)
+      destroy (user_তথ্য);
+    ফেরত;
   }
 
-  if (buffer->message_destroy)
-    buffer->message_destroy (buffer->message_data);
+  যদি (বাফার->message_destroy)
+    বাফার->message_destroy (বাফার->message_তথ্য);
 
-  if (func) {
-    buffer->message_func = func;
-    buffer->message_data = user_data;
-    buffer->message_destroy = destroy;
-  } else {
-    buffer->message_func = nullptr;
-    buffer->message_data = nullptr;
-    buffer->message_destroy = nullptr;
+  যদি (func) {
+    বাফার->message_func = func;
+    বাফার->message_তথ্য = user_তথ্য;
+    বাফার->message_destroy = destroy;
+  } অন্যথা {
+    বাফার->message_func = nullptr;
+    বাফার->message_তথ্য = nullptr;
+    বাফার->message_destroy = nullptr;
   }
 }
 /**
@@ -2379,25 +2379,25 @@ hb_buffer_set_message_func (hb_buffer_t *buffer,
  *
  * Since: 13.0.0
  **/
-void
-hb_buffer_changed (hb_buffer_t *buffer)
+শূন্য
+hb_বাফার_changed (hb_বাফার_t *বাফার)
 {
-  buffer->changed ();
+  বাফার->changed ();
 }
 
-bool
-hb_buffer_t::message_impl (hb_font_t *font, const char *fmt, va_list ap)
+যৌক্তিক
+hb_বাফার_t::message_impl (hb_font_t *font, ধ্রুবক অক্ষর *fmt, va_list ap)
 {
-  assert (!have_output || (out_info == info && out_len == idx));
+  প্রতিজ্ঞা (!have_output || (out_info == info && out_len == idx));
 
   message_depth++;
 
-  char buf[100];
-  vsnprintf (buf, sizeof (buf), fmt, ap);
-  bool ret = (bool) this->message_func (this, font, buf, this->message_data);
+  অক্ষর buf[100];
+  vsnprintf (buf, আকার (buf), fmt, ap);
+  যৌক্তিক ret = (যৌক্তিক) এই->message_func (এই, font, buf, এই->message_তথ্য);
 
   message_depth--;
 
-  return ret;
+  ফেরত ret;
 }
 #endif

@@ -26,13 +26,13 @@
 #ifndef HB_CFF_INTERP_COMMON_HH
 #define HB_CFF_INTERP_COMMON_HH
 
-extern HB_INTERNAL const unsigned char *endchar_str;
+বাহ্যিক HB_INTERNAL ধ্রুবক unsigned অক্ষর *endchar_str;
 
-namespace CFF {
+নামাকাশ CFF {
 
-using namespace OT;
+using নামাকাশ OT;
 
-typedef unsigned int op_code_t;
+প্রকারলেখ unsigned পূর্ণসংখ্যা op_code_t;
 
 
 /* === Dict operators === */
@@ -44,7 +44,7 @@ typedef unsigned int op_code_t;
 #define OpCode_FamilyName	  3 /* CFF Top */
 #define OpCode_Weight		  4 /* CFF Top */
 #define OpCode_FontBBox		  5 /* CFF Top */
-#define OpCode_BlueValues	  6 /* CFF Private, CFF2 Private */
+#define Op_Code_Blue_মানসমূহ	  6 /* CFF Private, CFF2 Private */
 #define OpCode_OtherBlues	  7 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyBlues	  8 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyOtherBlues	  9 /* CFF Private, CFF2 Private */
@@ -92,9 +92,9 @@ typedef unsigned int op_code_t;
 #define OpCode_ESC_Base		256
 #define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+অন্তঃরেখ op_code_t Unmake_OpCode_ESC (op_code_t op)  { ফেরত (op_code_t)(op - OpCode_ESC_Base); }
+অন্তঃরেখ যৌক্তিক Is_OpCode_ESC (op_code_t op) { ফেরত op >= OpCode_ESC_Base; }
+অন্তঃরেখ unsigned পূর্ণসংখ্যা Op_Code_আকার (op_code_t op) { ফেরত Is_OpCode_ESC (op) ? 2: 1; }
 
 #define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
 #define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
@@ -203,7 +203,7 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 #define OpCode_sqrt		Make_OpCode_ESC(26) /* CFF */
 #define OpCode_dup		Make_OpCode_ESC(27) /* CFF */
 #define OpCode_exch		Make_OpCode_ESC(28) /* CFF */
-#define OpCode_index		Make_OpCode_ESC(29) /* CFF */
+#define Op_Code_সূচক		Make_OpCode_ESC(29) /* CFF */
 #define OpCode_roll		Make_OpCode_ESC(30) /* CFF */
 #define OpCode_reservedESC31	Make_OpCode_ESC(31)
 #define OpCode_reservedESC32	Make_OpCode_ESC(32)
@@ -217,442 +217,442 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 #define OpCode_Invalid		0xFFFFu
 
 
-struct number_t
+কাঠামো সংখ্যা_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  শূন্য set_int (পূর্ণসংখ্যা v)       { value = v; }
+  যৌক্তিক to_int (পূর্ণসংখ্যা *v) ধ্রুবক
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    যদি (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
     {
       *v = 0;
-      return false;
+      ফেরত মিথ্যা;
     }
-    *v = (int) value;
-    return true;
+    *v = (পূর্ণসংখ্যা) value;
+    ফেরত সত্য;
   }
-  int to_int () const
+  পূর্ণসংখ্যা to_int () ধ্রুবক
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    পূর্ণসংখ্যা v;
+    যদি (likely (to_int (&v))) ফেরত v;
+    ফেরত value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
   }
 
-  void set_fixed (int32_t v) { value = v / 65536.0; }
-  int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  শূন্য set_fixed (int32_t v) { value = v / 65536.0; }
+  int32_t to_fixed () ধ্রুবক
+  { ফেরত (int32_t) hb_clamp (value * 65536.0, (দ্বিগুণ) INT32_MIN, (দ্বিগুণ) INT32_MAX); }
 
-  void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  শূন্য set_real (দ্বিগুণ v)   { value = v; }
+  দ্বিগুণ to_real () ধ্রুবক    { ফেরত value; }
 
-  bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  যৌক্তিক in_int_range () ধ্রুবক
+  { ফেরত value >= INT16_MIN && value <= INT16_MAX && (দ্বিগুণ) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  যৌক্তিক operator >  (ধ্রুবক সংখ্যা_t &n) ধ্রুবক { ফেরত value > n.to_real (); }
+  যৌক্তিক operator <  (ধ্রুবক সংখ্যা_t &n) ধ্রুবক { ফেরত n > *এই; }
+  যৌক্তিক operator >= (ধ্রুবক সংখ্যা_t &n) ধ্রুবক { ফেরত !(*এই < n); }
+  যৌক্তিক operator <= (ধ্রুবক সংখ্যা_t &n) ধ্রুবক { ফেরত !(*এই > n); }
 
-  const number_t &operator += (const number_t &n)
+  ধ্রুবক সংখ্যা_t &operator += (ধ্রুবক সংখ্যা_t &n)
   {
     set_real (to_real () + n.to_real ());
 
-    return *this;
+    ফেরত *এই;
   }
 
-  protected:
-  double value = 0.;
+  সুরক্ষিত:
+  দ্বিগুণ value = 0.;
 };
 
 /* byte string */
-struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
+কাঠামো UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 {
-  hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  hb_ubytes_t as_ubytes (unsigned l) ধ্রুবক
+  { ফেরত hb_ubytes_t ((ধ্রুবক unsigned অক্ষর *) এই, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
   template <typename T, typename V>
-  static bool serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
+  স্থির যৌক্তিক serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এই);
 
-    HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    HBUINT8 *p = c->allocate_আকার<HBUINT8> (1);
+    যদি (unlikely (!p)) return_trace (মিথ্যা);
     *p = intOp;
 
-    T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
+    T *ip = c->allocate_আকার<T> (T::static_আকার);
+    যদি (unlikely (!ip)) return_trace (মিথ্যা);
     return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   template <typename V>
-  static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  স্থির যৌক্তিক serialize_int4 (hb_serialize_context_t *c, V value)
+  { ফেরত serialize_int<HBINT32> (c, OpCode_longintdict, value); }
 
   template <typename V>
-  static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  স্থির যৌক্তিক serialize_int2 (hb_serialize_context_t *c, V value)
+  { ফেরত serialize_int<HBINT16> (c, OpCode_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
    * checked before access.
    */
-  DEFINE_SIZE_MIN(0);
+  DEFINE_আকার_MIN(0);
 };
 
 /* A byte string associated with the current offset and an error condition */
-struct byte_str_ref_t
+কাঠামো byte_str_ref_t
 {
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  byte_str_ref_t (ধ্রুবক hb_ubytes_t &str_, unsigned পূর্ণসংখ্যা offset_ = 0)
     : str (str_) { set_offset (offset_); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  শূন্য reset (ধ্রুবক hb_ubytes_t &str_, unsigned পূর্ণসংখ্যা offset_ = 0)
   {
     str = str_;
     set_offset (offset_);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  ধ্রুবক unsigned অক্ষর& operator [] (পূর্ণসংখ্যা i) {
+    যদি (unlikely ((unsigned পূর্ণসংখ্যা) (get_offset () + i) >= str.দৈর্ঘ্য))
     {
       set_error ();
-      return Null (unsigned char);
+      ফেরত Null (unsigned অক্ষর);
     }
-    return str.arrayZ[get_offset () + i];
+    ফেরত str.arrayZ[get_offset () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  unsigned অক্ষর শীর্ষ_unchecked () ধ্রুবক { ফেরত str.arrayZ[get_offset ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  operator hb_ubytes_t () ধ্রুবক { ফেরত str.sub_array (get_offset ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (unsigned পূর্ণসংখ্যা offset_, unsigned পূর্ণসংখ্যা len_) ধ্রুবক
+  { ফেরত str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  যৌক্তিক avail (unsigned পূর্ণসংখ্যা গুনতি=1) ধ্রুবক
+  { ফেরত get_offset () + গুনতি <= str.দৈর্ঘ্য; }
+  শূন্য inc (unsigned পূর্ণসংখ্যা গুনতি=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
-    set_offset (get_offset () + count);
+    set_offset (get_offset () + গুনতি);
   }
 
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
-  void set_offset (unsigned offset) { str.backwards_length = offset; }
+  unsigned get_offset () ধ্রুবক { ফেরত str.backwards_দৈর্ঘ্য; }
+  শূন্য set_offset (unsigned offset) { str.backwards_দৈর্ঘ্য = offset; }
 
-  void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  শূন্য set_error ()      { str.backwards_দৈর্ঘ্য = str.দৈর্ঘ্য + 1; }
+  যৌক্তিক in_error () ধ্রুবক { ফেরত str.backwards_দৈর্ঘ্য > str.দৈর্ঘ্য; }
 
-  unsigned total_size () const { return str.length; }
+  unsigned যোগ_আকার () ধ্রুবক { ফেরত str.দৈর্ঘ্য; }
 
-  protected:
+  সুরক্ষিত:
   hb_ubytes_t       str;
 };
 
-/* stack */
-template <typename ELEM, int LIMIT>
-struct cff_stack_t
+/*স্তূপ*/
+template <typename ELEM, পূর্ণসংখ্যা LIMIT>
+কাঠামো cff_স্তূপ_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& operator [] (unsigned পূর্ণসংখ্যা i)
   {
-    if (unlikely (i >= length))
+    যদি (unlikely (i >= দৈর্ঘ্য))
     {
       set_error ();
-      return Crap (ELEM);
+      ফেরত Crap (ELEM);
     }
-    return arrayZ[i];
+    ফেরত arrayZ[i];
   }
 
-  void push (const ELEM &v)
+  শূন্য push (ধ্রুবক ELEM &v)
   {
-    if (likely (length < LIMIT))
-      arrayZ[length++] = v;
-    else
+    যদি (likely (দৈর্ঘ্য < LIMIT))
+      arrayZ[দৈর্ঘ্য++] = v;
+    অন্যথা
       set_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    যদি (likely (দৈর্ঘ্য < LIMIT))
+      ফেরত arrayZ[দৈর্ঘ্য++];
+    অন্যথা
     {
       set_error ();
-      return Crap (ELEM);
+      ফেরত Crap (ELEM);
     }
   }
 
-  ELEM& pop ()
+  ELEM& বের_করো ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    যদি (likely (দৈর্ঘ্য > 0))
+      ফেরত arrayZ[--দৈর্ঘ্য];
+    অন্যথা
     {
       set_error ();
-      return Crap (ELEM);
+      ফেরত Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  শূন্য বের_করো (unsigned পূর্ণসংখ্যা n)
   {
-    if (likely (length >= n))
-      length -= n;
-    else
+    যদি (likely (দৈর্ঘ্য >= n))
+      দৈর্ঘ্য -= n;
+    অন্যথা
       set_error ();
   }
 
-  const ELEM& peek ()
+  ধ্রুবক ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    যদি (unlikely (দৈর্ঘ্য == 0))
     {
       set_error ();
-      return Null (ELEM);
+      ফেরত Null (ELEM);
     }
-    return arrayZ[length - 1];
+    ফেরত arrayZ[দৈর্ঘ্য - 1];
   }
 
-  void unpop ()
+  শূন্য unpop ()
   {
-    if (likely (length < LIMIT))
-      length++;
-    else
+    যদি (likely (দৈর্ঘ্য < LIMIT))
+      দৈর্ঘ্য++;
+    অন্যথা
       set_error ();
   }
 
-  void clear () { length = 0; }
+  শূন্য clear () { দৈর্ঘ্য = 0; }
 
-  bool in_error () const { return (error); }
-  void set_error ()      { error = true; }
+  যৌক্তিক in_error () ধ্রুবক { ফেরত (error); }
+  শূন্য set_error ()      { error = সত্য; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  unsigned পূর্ণসংখ্যা get_গুনতি () ধ্রুবক { ফেরত দৈর্ঘ্য; }
+  যৌক্তিক is_empty () ধ্রুবক          { ফেরত !দৈর্ঘ্য; }
 
-  hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  hb_array_t<ধ্রুবক ELEM> sub_array (unsigned start, unsigned দৈর্ঘ্য) ধ্রুবক
+  { ফেরত hb_array_t<ধ্রুবক ELEM> (arrayZ).sub_array (start, দৈর্ঘ্য); }
 
-  bool error = false;
-  unsigned int length = 0;
+  যৌক্তিক error = মিথ্যা;
+  unsigned পূর্ণসংখ্যা দৈর্ঘ্য = 0;
   ELEM arrayZ[LIMIT];
 };
 
 /* argument stack */
-template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+template <typename ARG=সংখ্যা_t>
+কাঠামো arg_স্তূপ_t : cff_স্তূপ_t<ARG, 513>
 {
-  void push_int (int v)
+  শূন্য ঠেলো_int (পূর্ণসংখ্যা v)
   {
     ARG &n = S::push ();
     n.set_int (v);
   }
 
-  void push_fixed (int32_t v)
+  শূন্য ঠেলো_fixed (int32_t v)
   {
     ARG &n = S::push ();
     n.set_fixed (v);
   }
 
-  void push_real (double v)
+  শূন্য ঠেলো_real (দ্বিগুণ v)
   {
     ARG &n = S::push ();
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& বের_করো_অঙ্ক () { ফেরত এই->বের_করো (); }
 
-  int pop_int ()
+  পূর্ণসংখ্যা বের_করো_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    পূর্ণসংখ্যা v;
+    যদি (unlikely (!এই->বের_করো ().to_int (&v)))
       S::set_error ();
-    return v;
+    ফেরত v;
   }
 
-  unsigned int pop_uint ()
+  unsigned পূর্ণসংখ্যা বের_করো_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    পূর্ণসংখ্যা i = বের_করো_int ();
+    যদি (unlikely (i < 0))
     {
       i = 0;
       S::set_error ();
     }
-    return (unsigned) i;
+    ফেরত (unsigned) i;
   }
 
-  void push_longint_from_substr (byte_str_ref_t& str_ref)
+  শূন্য ঠেলো_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    ঠেলো_int ((পূর্ণসংখ্যা) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
-  bool push_fixed_from_substr (byte_str_ref_t& str_ref)
+  যৌক্তিক ঠেলো_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
-    push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
+    যদি (unlikely (!str_ref.avail (4)))
+      ফেরত মিথ্যা;
+    ঠেলো_fixed ((int32_t)*(ধ্রুবক HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    ফেরত সত্য;
   }
 
-  private:
-  typedef cff_stack_t<ARG, 513> S;
+  ব্যক্তিগত:
+  প্রকারলেখ cff_স্তূপ_t<ARG, 513> S;
 };
 
 /* an operator prefixed by its operands in a byte string */
-struct op_str_t
+কাঠামো op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
    * in our parsed_cs_op_t subclass. */
 
-  const unsigned char *ptr = nullptr;
+  ধ্রুবক unsigned অক্ষর *ptr = nullptr;
 
   op_code_t  op = OpCode_Invalid;
 
-  uint8_t length = 0;
+  uint8_t দৈর্ঘ্য = 0;
 };
 
 /* base of OP_SERIALIZER */
-struct op_serializer_t
+কাঠামো op_serializer_t
 {
-  protected:
-  bool copy_opstr (hb_serialize_context_t *c, const op_str_t& opstr) const
+  সুরক্ষিত:
+  যৌক্তিক copy_opstr (hb_serialize_context_t *c, ধ্রুবক op_str_t& opstr) ধ্রুবক
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এই);
 
-    unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    unsigned অক্ষর *d = c->allocate_আকার<unsigned অক্ষর> (opstr.দৈর্ঘ্য);
+    যদি (unlikely (!d)) return_trace (মিথ্যা);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    জন্য (unsigned i = 0; i < opstr.দৈর্ঘ্য; i++)
       d[i] = opstr.ptr[i];
-    return_trace (true);
+    return_trace (সত্য);
   }
 };
 
 template <typename VAL>
-struct parsed_values_t
+কাঠামো parsed_মানসমূহ_t
 {
-  void init ()
+  শূন্য init ()
   {
     opStart = 0;
     values.init ();
   }
-  void fini () { values.fini (); }
+  শূন্য fini () { values.fini (); }
 
-  void alloc (unsigned n)
+  শূন্য alloc (unsigned n)
   {
     values.alloc_exact (n);
   }
 
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref = byte_str_ref_t (), const VAL &v = VAL ())
+  শূন্য add_op (op_code_t op, ধ্রুবক byte_str_ref_t& str_ref = byte_str_ref_t (), ধ্রুবক VAL &v = VAL ())
   {
     VAL *val = values.push (v);
     val->op = op;
     auto arr = str_ref.sub_array (opStart, str_ref.get_offset () - opStart);
     val->ptr = arr.arrayZ;
-    val->length = arr.length;
+    val->দৈর্ঘ্য = arr.দৈর্ঘ্য;
     opStart = str_ref.get_offset ();
   }
 
-  bool has_op (op_code_t op) const
+  যৌক্তিক has_op (op_code_t op) ধ্রুবক
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    জন্য (ধ্রুবক auto& v : values)
+      যদি (v.op == op) ফেরত সত্য;
+    ফেরত মিথ্যা;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  unsigned get_গুনতি () ধ্রুবক { ফেরত values.দৈর্ঘ্য; }
+  ধ্রুবক VAL &operator [] (unsigned পূর্ণসংখ্যা i) ধ্রুবক { ফেরত values[i]; }
 
-  unsigned int       opStart;
+  unsigned পূর্ণসংখ্যা       opStart;
   hb_vector_t<VAL>   values;
 };
 
-template <typename ARG=number_t>
-struct interp_env_t
+template <typename ARG=সংখ্যা_t>
+কাঠামো interp_env_t
 {
   interp_env_t () {}
-  interp_env_t (const hb_ubytes_t &str_)
+  interp_env_t (ধ্রুবক hb_ubytes_t &str_)
   {
     str_ref.reset (str_);
   }
-  bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  যৌক্তিক in_error () ধ্রুবক
+  { ফেরত str_ref.in_error () || arg_স্তূপ.in_error (); }
 
-  void set_error () { str_ref.set_error (); }
+  শূন্য set_error () { str_ref.set_error (); }
 
   op_code_t fetch_op ()
   {
     op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
-    op = (op_code_t) str_ref.head_unchecked ();
+    যদি (unlikely (!str_ref.avail ()))
+      ফেরত OpCode_Invalid;
+    op = (op_code_t) str_ref.শীর্ষ_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
-      op = Make_OpCode_ESC (str_ref.head_unchecked ());
+    যদি (op == OpCode_escape) {
+      যদি (unlikely (!str_ref.avail ()))
+	ফেরত OpCode_Invalid;
+      op = Make_OpCode_ESC (str_ref.শীর্ষ_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    ফেরত op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  ধ্রুবক ARG& eval_arg (unsigned পূর্ণসংখ্যা i) { ফেরত arg_স্তূপ[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& বের_করো_arg () { ফেরত arg_স্তূপ.বের_করো (); }
+  শূন্য বের_করো_n_args (unsigned পূর্ণসংখ্যা n) { arg_স্তূপ.বের_করো (n); }
 
-  void clear_args () { pop_n_args (argStack.get_count ()); }
+  শূন্য clear_args () { বের_করো_n_args (arg_স্তূপ.get_গুনতি ()); }
 
   byte_str_ref_t
 		str_ref;
-  arg_stack_t<ARG>
-		argStack;
+  arg_স্তূপ_t<ARG>
+		arg_স্তূপ;
 };
 
-using num_interp_env_t =  interp_env_t<>;
+using অঙ্ক_interp_env_t =  interp_env_t<>;
 
-template <typename ARG=number_t>
-struct opset_t
+template <typename ARG=সংখ্যা_t>
+কাঠামো opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<ARG>& env)
+  স্থির শূন্য process_op (op_code_t op, interp_env_t<ARG>& env)
   {
-    switch (op) {
-      case OpCode_shortint:
-	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
+    নির্বাচন (op) {
+      ক্ষেত্র OpCode_shortint:
+	env.arg_স্তূপ.ঠেলো_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
-	break;
+	বিরতি;
 
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
+      ক্ষেত্র OpCode_TwoBytePosInt0: ক্ষেত্র OpCode_TwoBytePosInt1:
+      ক্ষেত্র OpCode_TwoBytePosInt2: ক্ষেত্র OpCode_TwoBytePosInt3:
+	env.arg_স্তূপ.ঠেলো_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
-	break;
+	বিরতি;
 
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
+      ক্ষেত্র OpCode_TwoByteNegInt0: ক্ষেত্র OpCode_TwoByteNegInt1:
+      ক্ষেত্র OpCode_TwoByteNegInt2: ক্ষেত্র OpCode_TwoByteNegInt3:
+	env.arg_স্তূপ.ঠেলো_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
-	break;
+	বিরতি;
 
-      default:
+      পূর্বনির্ধারিত:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	যদি (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.arg_স্তূপ.ঠেলো_int ((পূর্ণসংখ্যা)op - 139);
+	} অন্যথা {
 	  /* invalid unknown operator */
 	  env.clear_args ();
 	}
-	break;
+	বিরতি;
     }
   }
 };
 
 template <typename ENV>
-struct interpreter_t
+কাঠামো interpreter_t
 {
   interpreter_t (ENV& env_) : env (env_) {}
   ENV& env;

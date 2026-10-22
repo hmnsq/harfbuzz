@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+কাঠামো hb_intp_lazy_loader_t : hb_lazy_loader_t<পূর্ণসংখ্যা, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  স্থির পূর্ণসংখ্যা* create () { ফেরত nullptr; }
+  স্থির শূন্য destroy (পূর্ণসংখ্যা* l) {}
+  স্থির পূর্ণসংখ্যা* get_null () { ফেরত nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+কাঠামো hb_void_lazy_loader_t : hb_lazy_loader_t<শূন্য, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  স্থির শূন্য* create () { ফেরত nullptr; }
+  স্থির শূন্য destroy (শূন্য* l) {}
+  স্থির শূন্য* get_null () { ফেরত nullptr; }
 };
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
-  return 0;
+  ফেরত 0;
 }

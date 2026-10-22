@@ -29,294 +29,294 @@
 #ifndef HB_OT_LAYOUT_GSUBGPOS_HH
 #define HB_OT_LAYOUT_GSUBGPOS_HH
 
-#include "hb.hh"
-#include "hb-buffer.hh"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-ot-map.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-depend-data.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-buffer.hh"
+#অন্তর্ভাব "hb-map.hh"
+#অন্তর্ভাব "hb-set.hh"
+#অন্তর্ভাব "hb-ot-map.hh"
+#অন্তর্ভাব "hb-ot-layout-common.hh"
+#অন্তর্ভাব "hb-ot-layout-gdef-table.hh"
+#অন্তর্ভাব "hb-depend-data.hh"
 
 
-namespace OT {
+নামাকাশ OT {
 
 
-struct hb_intersects_context_t :
-       hb_dispatch_context_t<hb_intersects_context_t, bool>
+কাঠামো hb_intersects_context_t :
+       hb_dispatch_context_t<hb_intersects_context_t, যৌক্তিক>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.intersects (this->glyphs); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (ধ্রুবক T &obj) { ফেরত obj.intersects (এই->glyphs); }
+  স্থির return_t default_return_মান () { ফেরত মিথ্যা; }
+  যৌক্তিক stop_sublookup_iteration (return_t r) ধ্রুবক { ফেরত r; }
 
-  const hb_set_t *glyphs;
+  ধ্রুবক hb_set_t *glyphs;
 
-  hb_intersects_context_t (const hb_set_t *glyphs_) :
+  hb_intersects_context_t (ধ্রুবক hb_set_t *glyphs_) :
                             glyphs (glyphs_) {}
 };
 
-struct hb_have_non_1to1_context_t :
-       hb_dispatch_context_t<hb_have_non_1to1_context_t, bool>
+কাঠামো hb_have_non_1to1_context_t :
+       hb_dispatch_context_t<hb_have_non_1to1_context_t, যৌক্তিক>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.may_have_non_1to1 (); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (ধ্রুবক T &obj) { ফেরত obj.may_have_non_1to1 (); }
+  স্থির return_t default_return_মান () { ফেরত মিথ্যা; }
+  যৌক্তিক stop_sublookup_iteration (return_t r) ধ্রুবক { ফেরত r; }
 };
 
-struct hb_closure_context_t :
+কাঠামো hb_closure_context_t :
        hb_dispatch_context_t<hb_closure_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index);
+  প্রকারলেখ return_t (*recurse_func_t) (hb_closure_context_t *c, unsigned lookup_সূচক, hb_set_t *covered_seq_indicies, unsigned seq_সূচক, unsigned end_সূচক);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.closure (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index)
+  return_t dispatch (ধ্রুবক T &obj) { obj.closure (এই); ফেরত hb_empty_t (); }
+  স্থির return_t default_return_মান () { ফেরত hb_empty_t (); }
+  শূন্য recurse (unsigned lookup_সূচক, hb_set_t *covered_seq_indicies, unsigned seq_সূচক, unsigned end_সূচক)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    যদি (unlikely (nesting_level_বাম == 0 || !recurse_func))
+      ফেরত;
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index, covered_seq_indicies, seq_index, end_index);
-    nesting_level_left++;
+    nesting_level_বাম--;
+    recurse_func (এই, lookup_সূচক, covered_seq_indicies, seq_সূচক, end_সূচক);
+    nesting_level_বাম++;
   }
 
-  void reset_lookup_visit_count ()
-  { lookup_count = 0; }
+  শূন্য reset_lookup_visit_গুনতি ()
+  { lookup_গুনতি = 0; }
 
-  bool lookup_limit_exceeded ()
-  { return lookup_count > HB_MAX_LOOKUP_VISIT_COUNT; }
+  যৌক্তিক lookup_limit_exceeded ()
+  { ফেরত lookup_গুনতি > HB_MAX_LOOKUP_VISIT_গুনতি; }
 
-  bool should_visit_lookup (unsigned int lookup_index)
+  যৌক্তিক should_visit_lookup (unsigned পূর্ণসংখ্যা lookup_সূচক)
   {
-    if (lookup_count++ > HB_MAX_LOOKUP_VISIT_COUNT)
-      return false;
+    যদি (lookup_গুনতি++ > HB_MAX_LOOKUP_VISIT_গুনতি)
+      ফেরত মিথ্যা;
 
-    if (is_lookup_done (lookup_index))
-      return false;
+    যদি (is_lookup_done (lookup_সূচক))
+      ফেরত মিথ্যা;
 
-    return true;
+    ফেরত সত্য;
   }
 
-  bool is_lookup_done (unsigned int lookup_index)
+  যৌক্তিক is_lookup_done (unsigned পূর্ণসংখ্যা lookup_সূচক)
   {
-    if (unlikely (done_lookups_glyph_count->in_error () ||
+    যদি (unlikely (done_lookups_glyph_গুনতি->in_error () ||
 		  done_lookups_glyph_set->in_error ()))
-      return true;
+      ফেরত সত্য;
 
     /* Have we visited this lookup with the current set of glyphs? */
-    unsigned pop = glyphs->get_population ();
-    if (unlikely (pop == HB_MAP_VALUE_INVALID)) // Avoid sentinel interference.
-      pop--;
-    if (done_lookups_glyph_count->get (lookup_index) != pop)
+    unsigned বের_করো = glyphs->get_population ();
+    যদি (unlikely (বের_করো == HB_MAP_মান_INVALID)) // Avoid sentinel interference.
+      বের_করো--;
+    যদি (done_lookups_glyph_গুনতি->get (lookup_সূচক) != বের_করো)
     {
-      done_lookups_glyph_count->set (lookup_index, pop);
+      done_lookups_glyph_গুনতি->set (lookup_সূচক, বের_করো);
 
-      if (!done_lookups_glyph_set->has (lookup_index))
+      যদি (!done_lookups_glyph_set->has (lookup_সূচক))
       {
-	if (unlikely (!done_lookups_glyph_set->set (lookup_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
-	  return true;
+	যদি (unlikely (!done_lookups_glyph_set->set (lookup_সূচক, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
+	  ফেরত সত্য;
       }
 
-      done_lookups_glyph_set->get (lookup_index)->clear ();
+      done_lookups_glyph_set->get (lookup_সূচক)->clear ();
     }
 
-    hb_set_t *covered_glyph_set = done_lookups_glyph_set->get (lookup_index);
-    if (unlikely (covered_glyph_set->in_error ()))
-      return true;
-    if (parent_active_glyphs ().is_subset (*covered_glyph_set))
-      return true;
+    hb_set_t *covered_glyph_set = done_lookups_glyph_set->get (lookup_সূচক);
+    যদি (unlikely (covered_glyph_set->in_error ()))
+      ফেরত সত্য;
+    যদি (parent_active_glyphs ().is_subset (*covered_glyph_set))
+      ফেরত সত্য;
 
     covered_glyph_set->union_ (parent_active_glyphs ());
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  const hb_set_t& previous_parent_active_glyphs () {
-    if (active_glyphs_stack.length <= 1)
-      return *glyphs;
+  ধ্রুবক hb_set_t& previous_parent_active_glyphs () {
+    যদি (active_glyphs_স্তূপ.দৈর্ঘ্য <= 1)
+      ফেরত *glyphs;
 
-    return active_glyphs_stack[active_glyphs_stack.length - 2];
+    ফেরত active_glyphs_স্তূপ[active_glyphs_স্তূপ.দৈর্ঘ্য - 2];
   }
 
-  const hb_set_t& parent_active_glyphs ()
+  ধ্রুবক hb_set_t& parent_active_glyphs ()
   {
-    if (!active_glyphs_stack)
-      return *glyphs;
+    যদি (!active_glyphs_স্তূপ)
+      ফেরত *glyphs;
 
-    return active_glyphs_stack.tail ();
+    ফেরত active_glyphs_স্তূপ.লেজ ();
   }
 
-  hb_set_t* push_cur_active_glyphs ()
+  hb_set_t* ঠেলো_cur_active_glyphs ()
   {
-    hb_set_t *s = active_glyphs_stack.push ();
-    if (unlikely (active_glyphs_stack.in_error ()))
-      return nullptr;
-    return s;
+    hb_set_t *s = active_glyphs_স্তূপ.push ();
+    যদি (unlikely (active_glyphs_স্তূপ.in_error ()))
+      ফেরত nullptr;
+    ফেরত s;
   }
 
-  bool pop_cur_done_glyphs ()
+  যৌক্তিক বের_করো_cur_done_glyphs ()
   {
-    if (!active_glyphs_stack)
-      return false;
+    যদি (!active_glyphs_স্তূপ)
+      ফেরত মিথ্যা;
 
-    active_glyphs_stack.pop ();
-    return true;
+    active_glyphs_স্তূপ.বের_করো ();
+    ফেরত সত্য;
   }
 
   hb_face_t *face;
   hb_set_t *glyphs;
   hb_set_t output[1];
-  hb_vector_t<hb_set_t> active_glyphs_stack;
+  hb_vector_t<hb_set_t> active_glyphs_স্তূপ;
   recurse_func_t recurse_func = nullptr;
-  unsigned int nesting_level_left;
+  unsigned পূর্ণসংখ্যা nesting_level_বাম;
 
   hb_closure_context_t (hb_face_t *face_,
 			hb_set_t *glyphs_,
-			hb_map_t *done_lookups_glyph_count_,
+			hb_map_t *done_lookups_glyph_গুনতি_2,
 			hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *done_lookups_glyph_set_,
-			unsigned int nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+			unsigned পূর্ণসংখ্যা nesting_level_বাম_2 = HB_MAX_NESTING_LEVEL) :
 			  face (face_),
 			  glyphs (glyphs_),
-			  nesting_level_left (nesting_level_left_),
-			  done_lookups_glyph_count (done_lookups_glyph_count_),
+			  nesting_level_বাম (nesting_level_বাম_2),
+			  done_lookups_glyph_গুনতি (done_lookups_glyph_গুনতি_2),
 			  done_lookups_glyph_set (done_lookups_glyph_set_)
   {}
 
   ~hb_closure_context_t () { flush (); }
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  শূন্য set_recurse_func (recurse_func_t func) { recurse_func = func; }
 
-  void flush ()
+  শূন্য flush ()
   {
-    output->del_range (face->get_num_glyphs (), HB_SET_VALUE_INVALID);	/* Remove invalid glyphs. */
+    output->del_range (face->get_অঙ্ক_glyphs (), HB_SET_মান_INVALID);	/* Remove invalid glyphs. */
     glyphs->union_ (*output);
     output->clear ();
-    active_glyphs_stack.pop ();
-    active_glyphs_stack.reset ();
+    active_glyphs_স্তূপ.বের_করো ();
+    active_glyphs_স্তূপ.reset ();
   }
 
-  private:
-  hb_map_t *done_lookups_glyph_count;
+  ব্যক্তিগত:
+  hb_map_t *done_lookups_glyph_গুনতি;
   hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *done_lookups_glyph_set;
-  unsigned int lookup_count = 0;
+  unsigned পূর্ণসংখ্যা lookup_গুনতি = 0;
 };
 
 
 
-struct hb_closure_lookups_context_t :
+কাঠামো hb_closure_lookups_context_t :
        hb_dispatch_context_t<hb_closure_lookups_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_closure_lookups_context_t *c, unsigned lookup_index);
+  প্রকারলেখ return_t (*recurse_func_t) (hb_closure_lookups_context_t *c, unsigned lookup_সূচক);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.closure_lookups (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned lookup_index)
+  return_t dispatch (ধ্রুবক T &obj) { obj.closure_lookups (এই); ফেরত hb_empty_t (); }
+  স্থির return_t default_return_মান () { ফেরত hb_empty_t (); }
+  শূন্য recurse (unsigned lookup_সূচক)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    যদি (unlikely (nesting_level_বাম == 0 || !recurse_func))
+      ফেরত;
 
     /* Return if new lookup was recursed to before. */
-    if (lookup_limit_exceeded ()
+    যদি (lookup_limit_exceeded ()
         || visited_lookups->in_error ()
-        || visited_lookups->has (lookup_index))
+        || visited_lookups->has (lookup_সূচক))
       // Don't increment lookup count here, that will be done in the call to closure_lookups()
       // made by recurse_func.
-      return;
+      ফেরত;
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index);
-    nesting_level_left++;
+    nesting_level_বাম--;
+    recurse_func (এই, lookup_সূচক);
+    nesting_level_বাম++;
   }
 
-  void set_lookup_visited (unsigned lookup_index)
-  { visited_lookups->add (lookup_index); }
+  শূন্য set_lookup_visited (unsigned lookup_সূচক)
+  { visited_lookups->add (lookup_সূচক); }
 
-  void set_lookup_inactive (unsigned lookup_index)
-  { inactive_lookups->add (lookup_index); }
+  শূন্য set_lookup_inactive (unsigned lookup_সূচক)
+  { inactive_lookups->add (lookup_সূচক); }
 
-  bool lookup_limit_exceeded ()
+  যৌক্তিক lookup_limit_exceeded ()
   {
-    bool ret = lookup_count > HB_MAX_LOOKUP_VISIT_COUNT;
-    if (ret)
-      DEBUG_MSG (SUBSET, nullptr, "lookup visit count limit exceeded in lookup closure!");
-    return ret; }
+    যৌক্তিক ret = lookup_গুনতি > HB_MAX_LOOKUP_VISIT_গুনতি;
+    যদি (ret)
+      DEBUG_বার্তা (SUBSET, nullptr, "lookup visit count limit exceeded in lookup closure!");
+    ফেরত ret; }
 
-  bool is_lookup_visited (unsigned lookup_index)
+  যৌক্তিক is_lookup_visited (unsigned lookup_সূচক)
   {
-    if (unlikely (lookup_count++ > HB_MAX_LOOKUP_VISIT_COUNT))
+    যদি (unlikely (lookup_গুনতি++ > HB_MAX_LOOKUP_VISIT_গুনতি))
     {
-      DEBUG_MSG (SUBSET, nullptr, "total visited lookup count %u exceeds max limit, lookup %u is dropped.",
-                 lookup_count, lookup_index);
-      return true;
+      DEBUG_বার্তা (SUBSET, nullptr, "total visited lookup count %u exceeds max limit, lookup %u is dropped.",
+                 lookup_গুনতি, lookup_সূচক);
+      ফেরত সত্য;
     }
 
-    if (unlikely (visited_lookups->in_error ()))
-      return true;
+    যদি (unlikely (visited_lookups->in_error ()))
+      ফেরত সত্য;
 
-    return visited_lookups->has (lookup_index);
+    ফেরত visited_lookups->has (lookup_সূচক);
   }
 
   hb_face_t *face;
-  const hb_set_t *glyphs;
+  ধ্রুবক hb_set_t *glyphs;
   recurse_func_t recurse_func;
-  unsigned int nesting_level_left;
+  unsigned পূর্ণসংখ্যা nesting_level_বাম;
 
   hb_closure_lookups_context_t (hb_face_t *face_,
-				const hb_set_t *glyphs_,
+				ধ্রুবক hb_set_t *glyphs_,
 				hb_set_t *visited_lookups_,
 				hb_set_t *inactive_lookups_,
-				unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+				unsigned nesting_level_বাম_2 = HB_MAX_NESTING_LEVEL) :
 				face (face_),
 				glyphs (glyphs_),
 				recurse_func (nullptr),
-				nesting_level_left (nesting_level_left_),
+				nesting_level_বাম (nesting_level_বাম_2),
 				visited_lookups (visited_lookups_),
 				inactive_lookups (inactive_lookups_),
-				lookup_count (0) {}
+				lookup_গুনতি (0) {}
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  শূন্য set_recurse_func (recurse_func_t func) { recurse_func = func; }
 
-  private:
+  ব্যক্তিগত:
   hb_set_t *visited_lookups;
   hb_set_t *inactive_lookups;
-  unsigned int lookup_count;
+  unsigned পূর্ণসংখ্যা lookup_গুনতি;
 };
 
-struct hb_would_apply_context_t :
-       hb_dispatch_context_t<hb_would_apply_context_t, bool>
+কাঠামো hb_would_apply_context_t :
+       hb_dispatch_context_t<hb_would_apply_context_t, যৌক্তিক>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.would_apply (this); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (ধ্রুবক T &obj) { ফেরত obj.would_apply (এই); }
+  স্থির return_t default_return_মান () { ফেরত মিথ্যা; }
+  যৌক্তিক stop_sublookup_iteration (return_t r) ধ্রুবক { ফেরত r; }
 
   hb_face_t *face;
-  const hb_codepoint_t *glyphs;
-  unsigned int len;
-  bool zero_context;
+  ধ্রুবক hb_codepoint_t *glyphs;
+  unsigned পূর্ণসংখ্যা len;
+  যৌক্তিক zero_context;
 
   hb_would_apply_context_t (hb_face_t *face_,
-			    const hb_codepoint_t *glyphs_,
-			    unsigned int len_,
-			    bool zero_context_) :
+			    ধ্রুবক hb_codepoint_t *glyphs_,
+			    unsigned পূর্ণসংখ্যা len_,
+			    যৌক্তিক zero_context_) :
 			      face (face_),
 			      glyphs (glyphs_),
 			      len (len_),
 			      zero_context (zero_context_) {}
 };
 
-struct hb_collect_glyphs_context_t :
+কাঠামো hb_collect_glyphs_context_t :
        hb_dispatch_context_t<hb_collect_glyphs_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_collect_glyphs_context_t *c, unsigned int lookup_index);
+  প্রকারলেখ return_t (*recurse_func_t) (hb_collect_glyphs_context_t *c, unsigned পূর্ণসংখ্যা lookup_সূচক);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.collect_glyphs (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned int lookup_index)
+  return_t dispatch (ধ্রুবক T &obj) { obj.collect_glyphs (এই); ফেরত hb_empty_t (); }
+  স্থির return_t default_return_মান () { ফেরত hb_empty_t (); }
+  শূন্য recurse (unsigned পূর্ণসংখ্যা lookup_সূচক)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    যদি (unlikely (nesting_level_বাম == 0 || !recurse_func))
+      ফেরত;
 
     /* Note that GPOS sets recurse_func to nullptr already, so it doesn't get
      * past the previous check.  For GSUB, we only want to collect the output
@@ -328,173 +328,173 @@ struct hb_collect_glyphs_context_t :
      * with all sets here if it proves to be an issue.
      */
 
-    if (output == hb_set_get_empty ())
-      return;
+    যদি (output == hb_set_get_empty ())
+      ফেরত;
 
     /* Return if new lookup was recursed to before. */
-    if (recursed_lookups->has (lookup_index))
-      return;
+    যদি (recursed_lookups->has (lookup_সূচক))
+      ফেরত;
 
     hb_set_t *old_before = before;
-    hb_set_t *old_input  = input;
+    hb_set_t *old_প্রবেশ  = প্রবেশ;
     hb_set_t *old_after  = after;
-    before = input = after = hb_set_get_empty ();
+    before = প্রবেশ = after = hb_set_get_empty ();
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index);
-    nesting_level_left++;
+    nesting_level_বাম--;
+    recurse_func (এই, lookup_সূচক);
+    nesting_level_বাম++;
 
     before = old_before;
-    input  = old_input;
+    প্রবেশ  = old_প্রবেশ;
     after  = old_after;
 
-    recursed_lookups->add (lookup_index);
+    recursed_lookups->add (lookup_সূচক);
   }
 
   hb_face_t *face;
   hb_set_t *before;
-  hb_set_t *input;
+  hb_set_t *প্রবেশ;
   hb_set_t *after;
   hb_set_t *output;
   recurse_func_t recurse_func;
   hb_set_t *recursed_lookups;
-  unsigned int nesting_level_left;
+  unsigned পূর্ণসংখ্যা nesting_level_বাম;
 
   hb_collect_glyphs_context_t (hb_face_t *face_,
 			       hb_set_t  *glyphs_before, /* OUT.  May be NULL */
-			       hb_set_t  *glyphs_input,  /* OUT.  May be NULL */
+			       hb_set_t  *glyphs_প্রবেশ,  /* OUT.  May be NULL */
 			       hb_set_t  *glyphs_after,  /* OUT.  May be NULL */
 			       hb_set_t  *glyphs_output, /* OUT.  May be NULL */
-			       unsigned int nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+			       unsigned পূর্ণসংখ্যা nesting_level_বাম_2 = HB_MAX_NESTING_LEVEL) :
 			      face (face_),
 			      before (glyphs_before ? glyphs_before : hb_set_get_empty ()),
-			      input  (glyphs_input  ? glyphs_input  : hb_set_get_empty ()),
+			      প্রবেশ  (glyphs_প্রবেশ  ? glyphs_প্রবেশ  : hb_set_get_empty ()),
 			      after  (glyphs_after  ? glyphs_after  : hb_set_get_empty ()),
 			      output (glyphs_output ? glyphs_output : hb_set_get_empty ()),
 			      recurse_func (nullptr),
 			      recursed_lookups (hb_set_create ()),
-			      nesting_level_left (nesting_level_left_) {}
+			      nesting_level_বাম (nesting_level_বাম_2) {}
   ~hb_collect_glyphs_context_t () { hb_set_destroy (recursed_lookups); }
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  শূন্য set_recurse_func (recurse_func_t func) { recurse_func = func; }
 };
 
-struct hb_depend_context_t :
+কাঠামো hb_depend_context_t :
        hb_dispatch_context_t<hb_depend_context_t>
 {
-  enum glyph_set_type_t
+  গণনা glyph_set_type_t
   {
     GLYPH_SET_CLASS,
     GLYPH_SET_COVERAGE,
     GLYPH_SET_SINGLE
   };
 
-  static constexpr hb_codepoint_t SINGLE_GLYPH_ACTIVE_FLAG = 0x80000000u;
+  স্থির constexpr hb_codepoint_t SINGLE_GLYPH_ACTIVE_FLAG = 0x80000000u;
 
-  struct glyph_set_cache_key_t
+  কাঠামো glyph_set_cache_চাবি_t
   {
-    glyph_set_cache_key_t () = default;
-    glyph_set_cache_key_t (const void *data_, unsigned value_, glyph_set_type_t type_)
-      : data (data_), value (value_), type (type_) {}
+    glyph_set_cache_চাবি_t () = পূর্বনির্ধারিত;
+    glyph_set_cache_চাবি_t (ধ্রুবক শূন্য *তথ্য_2, unsigned মান_3, glyph_set_type_t type_)
+      : তথ্য (তথ্য_2), value (মান_3), type (type_) {}
 
-    bool operator == (const glyph_set_cache_key_t &o) const
-    { return data == o.data && value == o.value && type == o.type; }
+    যৌক্তিক operator == (ধ্রুবক glyph_set_cache_চাবি_t &o) ধ্রুবক
+    { ফেরত তথ্য == o.তথ্য && value == o.value && type == o.type; }
 
-    uint32_t hash () const
+    uint32_t hash () ধ্রুবক
     {
-      uint32_t current = hb_hash ((uintptr_t) data);
+      uint32_t current = hb_hash ((uintptr_t) তথ্য);
       current = current * 31 + hb_hash (value);
-      return current * 31 + hb_hash ((unsigned) type);
+      ফেরত current * 31 + hb_hash ((unsigned) type);
     }
 
-    const void *data = nullptr;
+    ধ্রুবক শূন্য *তথ্য = nullptr;
     unsigned value = 0;
     glyph_set_type_t type = GLYPH_SET_CLASS;
   };
 
-  struct context_set_cache_key_t
+  কাঠামো context_set_cache_চাবি_t
   {
-    context_set_cache_key_t () = default;
-    context_set_cache_key_t (const void *rule_,
-			     const void *record_,
-			     const void *data_,
+    context_set_cache_চাবি_t () = পূর্বনির্ধারিত;
+    context_set_cache_চাবি_t (ধ্রুবক শূন্য *rule_,
+			     ধ্রুবক শূন্য *record_,
+			     ধ্রুবক শূন্য *তথ্য_2,
 			     hb_codepoint_t active_glyphs_,
-			     unsigned value_,
+			     unsigned মান_3,
 			     unsigned format_)
-      : rule (rule_), record (record_), data (data_), active_glyphs (active_glyphs_),
-	value (value_), format (format_) {}
+      : rule (rule_), record (record_), তথ্য (তথ্য_2), active_glyphs (active_glyphs_),
+	value (মান_3), format (format_) {}
 
-    bool operator == (const context_set_cache_key_t &o) const
+    যৌক্তিক operator == (ধ্রুবক context_set_cache_চাবি_t &o) ধ্রুবক
     {
-      return rule == o.rule &&
+      ফেরত rule == o.rule &&
 	     record == o.record &&
-	     data == o.data &&
+	     তথ্য == o.তথ্য &&
 	     active_glyphs == o.active_glyphs &&
 	     value == o.value &&
 	     format == o.format;
     }
 
-    uint32_t hash () const
+    uint32_t hash () ধ্রুবক
     {
       uint32_t current = hb_hash ((uintptr_t) rule);
       current = current * 31 + hb_hash ((uintptr_t) record);
-      current = current * 31 + hb_hash ((uintptr_t) data);
+      current = current * 31 + hb_hash ((uintptr_t) তথ্য);
       current = current * 31 + hb_hash (active_glyphs);
       current = current * 31 + hb_hash (value);
-      return current * 31 + hb_hash (format);
+      ফেরত current * 31 + hb_hash (format);
     }
 
-    const void *rule = nullptr;
-    const void *record = nullptr;
-    const void *data = nullptr;
+    ধ্রুবক শূন্য *rule = nullptr;
+    ধ্রুবক শূন্য *record = nullptr;
+    ধ্রুবক শূন্য *তথ্য = nullptr;
     hb_codepoint_t active_glyphs = HB_CODEPOINT_INVALID;
     unsigned value = 0;
     unsigned format = 0;
   };
 
-  struct recurse_key_t
+  কাঠামো recurse_চাবি_t
   {
-    recurse_key_t () = default;
-    recurse_key_t (unsigned lookup_index_,
+    recurse_চাবি_t () = পূর্বনির্ধারিত;
+    recurse_চাবি_t (unsigned lookup_সূচক_3,
                    hb_codepoint_t active_glyphs_,
                    hb_codepoint_t recurse_path_,
                    hb_codepoint_t context_set_)
-      : lookup_index (lookup_index_),
+      : lookup_সূচক (lookup_সূচক_3),
         active_glyphs (active_glyphs_),
         recurse_path (recurse_path_),
         context_set (context_set_) {}
 
-    bool operator == (const recurse_key_t &o) const
+    যৌক্তিক operator == (ধ্রুবক recurse_চাবি_t &o) ধ্রুবক
     {
-      return lookup_index == o.lookup_index &&
+      ফেরত lookup_সূচক == o.lookup_সূচক &&
              active_glyphs == o.active_glyphs &&
              recurse_path == o.recurse_path &&
              context_set == o.context_set;
     }
 
-    uint32_t hash () const
+    uint32_t hash () ধ্রুবক
     {
       uint32_t current = 0x84222325;
-      current = (current ^ hb_hash (lookup_index)) * 16777619;
+      current = (current ^ hb_hash (lookup_সূচক)) * 16777619;
       current = (current ^ hb_hash (active_glyphs)) * 16777619;
       current = (current ^ hb_hash (recurse_path)) * 16777619;
       current = (current ^ hb_hash (context_set)) * 16777619;
-      return current;
+      ফেরত current;
     }
 
-    unsigned lookup_index = 0;
+    unsigned lookup_সূচক = 0;
     hb_codepoint_t active_glyphs = 0;
     hb_codepoint_t recurse_path = 0;
     hb_codepoint_t context_set = HB_CODEPOINT_INVALID;
   };
 
-  typedef return_t (*recurse_func_t) (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  প্রকারলেখ return_t (*recurse_func_t) (hb_depend_context_t *c, unsigned lookup_সূচক, hb_bit_page_t *covered_seq_indices, unsigned seq_সূচক, unsigned end_সূচক);
   /* return_t is hb_empty_t — dispatch is purely for side-effects, like hb_closure_context_t. */
   template <typename T>
-  return_t dispatch (const T &obj) { obj.depend (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  return_t dispatch (ধ্রুবক T &obj) { obj.depend (এই); ফেরত hb_empty_t (); }
+  স্থির return_t default_return_মান () { ফেরত hb_empty_t (); }
 
-  void recurse (unsigned lookup_idx, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  শূন্য recurse (unsigned lookup_idx, hb_bit_page_t *covered_seq_indices, unsigned seq_সূচক, unsigned end_সূচক)
   {
     /* Cycle detection using call-stack semantics: block re-entry of a
      * lookup that is currently on the execution stack, but allow it again
@@ -513,122 +513,122 @@ struct hb_depend_context_t :
      * lookups_seen is pre-seeded with the top-level lookup index in
      * GSUB_accelerator_t::depend before the direct depend() call, so
      * that indirect cycles of the form A→B→A are also caught here. */
-    if (lookups_seen.has (lookup_idx)) return;
+    যদি (lookups_seen.has (lookup_idx)) ফেরত;
     lookups_seen.add (lookup_idx);
 
     /* Intern the ordered recursion path instead of copying and interning the
      * lookups_seen set.  Path identity is more specific than set identity but
      * never merges states with different cycle-detection behavior. */
     hb_codepoint_t parent_path = recurse_path;
-    uint64_t path_key = (uint64_t) parent_path << 32 | lookup_idx;
+    uint64_t path_চাবি = (uint64_t) parent_path << 32 | lookup_idx;
     hb_codepoint_t *path = nullptr;
-    hb_codepoint_t path_index;
-    if (!recurse_path_to_index.has (path_key, &path))
+    hb_codepoint_t path_সূচক;
+    যদি (!recurse_path_to_সূচক.has (path_চাবি, &path))
     {
-      path_index = recurse_path_to_index.get_population () + 1;
-      if (unlikely (!recurse_path_to_index.set (path_key, path_index)))
+      path_সূচক = recurse_path_to_সূচক.get_population () + 1;
+      যদি (unlikely (!recurse_path_to_সূচক.set (path_চাবি, path_সূচক)))
       {
-	depend_data->fail ();
+	depend_তথ্য->fail ();
 	lookups_seen.del (lookup_idx);
-	return;
+	ফেরত;
       }
     }
-    else
-      path_index = *path;
-    recurse_path = path_index;
-    recurse_func (this, lookup_idx, covered_seq_indices, seq_index, end_index);
+    অন্যথা
+      path_সূচক = *path;
+    recurse_path = path_সূচক;
+    recurse_func (এই, lookup_idx, covered_seq_indices, seq_সূচক, end_সূচক);
     recurse_path = parent_path;
     lookups_seen.del (lookup_idx);
   }
 
-  struct active_glyphs_frame_t
+  কাঠামো active_glyphs_frame_t
   {
     hb_set_t glyphs;
     hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-    bool use_root = false;
+    যৌক্তিক use_মূল = মিথ্যা;
   };
 
-  const hb_set_t& parent_active_glyphs ()
+  ধ্রুবক hb_set_t& parent_active_glyphs ()
   {
-    if (!active_glyphs_stack_depth)
-      return *glyphs;
+    যদি (!active_glyphs_স্তূপ_depth)
+      ফেরত *glyphs;
 
-    const active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth - 1];
-    return frame.use_root ? *glyphs : frame.glyphs;
+    ধ্রুবক active_glyphs_frame_t &frame = active_glyphs_স্তূপ[active_glyphs_স্তূপ_depth - 1];
+    ফেরত frame.use_মূল ? *glyphs : frame.glyphs;
   }
 
-  hb_set_t* push_cur_active_glyphs (hb_codepoint_t active_idx = HB_CODEPOINT_INVALID)
+  hb_set_t* ঠেলো_cur_active_glyphs (hb_codepoint_t active_idx = HB_CODEPOINT_INVALID)
   {
-    if (active_glyphs_stack_depth == active_glyphs_stack.length &&
-	unlikely (!active_glyphs_stack.push_or_fail ()))
-      return nullptr;
+    যদি (active_glyphs_স্তূপ_depth == active_glyphs_স্তূপ.দৈর্ঘ্য &&
+	unlikely (!active_glyphs_স্তূপ.ঠেলো_or_fail ()))
+      ফেরত nullptr;
 
-    active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth++];
+    active_glyphs_frame_t &frame = active_glyphs_স্তূপ[active_glyphs_স্তূপ_depth++];
     frame.glyphs.clear ();
     frame.active_idx = active_idx;
-    frame.use_root = false;
-    return &frame.glyphs;
+    frame.use_মূল = মিথ্যা;
+    ফেরত &frame.glyphs;
   }
 
-  bool push_root_active_glyphs ()
+  যৌক্তিক ঠেলো_মূল_active_glyphs ()
   {
-    if (active_glyphs_stack_depth == active_glyphs_stack.length &&
-	unlikely (!active_glyphs_stack.push_or_fail ()))
-      return false;
+    যদি (active_glyphs_স্তূপ_depth == active_glyphs_স্তূপ.দৈর্ঘ্য &&
+	unlikely (!active_glyphs_স্তূপ.ঠেলো_or_fail ()))
+      ফেরত মিথ্যা;
 
-    active_glyphs_stack[active_glyphs_stack_depth++].use_root = true;
-    return true;
+    active_glyphs_স্তূপ[active_glyphs_স্তূপ_depth++].use_মূল = সত্য;
+    ফেরত সত্য;
   }
 
-  bool pop_cur_done_glyphs ()
+  যৌক্তিক বের_করো_cur_done_glyphs ()
   {
-    if (!active_glyphs_stack_depth)
-      return false;
+    যদি (!active_glyphs_স্তূপ_depth)
+      ফেরত মিথ্যা;
 
-    active_glyphs_stack_depth--;
-    return true;
+    active_glyphs_স্তূপ_depth--;
+    ফেরত সত্য;
   }
 
-  bool get_parent_active_glyphs_index (hb_codepoint_t *active_idx)
+  যৌক্তিক get_parent_active_glyphs_সূচক (hb_codepoint_t *active_idx)
   {
-    if (!active_glyphs_stack_depth ||
-	active_glyphs_stack[active_glyphs_stack_depth - 1].use_root)
+    যদি (!active_glyphs_স্তূপ_depth ||
+	active_glyphs_স্তূপ[active_glyphs_স্তূপ_depth - 1].use_মূল)
     {
       *active_idx = HB_CODEPOINT_INVALID;
-      return true;
+      ফেরত সত্য;
     }
 
-    active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth - 1];
+    active_glyphs_frame_t &frame = active_glyphs_স্তূপ[active_glyphs_স্তূপ_depth - 1];
     *active_idx = frame.active_idx;
-    if (*active_idx != HB_CODEPOINT_INVALID)
-      return true;
+    যদি (*active_idx != HB_CODEPOINT_INVALID)
+      ফেরত সত্য;
 
     hb_codepoint_t glyph;
-    if (frame.glyphs.get_singleton (&glyph) &&
+    যদি (frame.glyphs.get_singleton (&glyph) &&
 	likely (glyph < SINGLE_GLYPH_ACTIVE_FLAG))
       *active_idx = glyph | SINGLE_GLYPH_ACTIVE_FLAG;
-    else if (!find_or_create_recurse_set (frame.glyphs, active_idx))
-      return false;
+    অন্যথা যদি (!find_or_create_recurse_set (frame.glyphs, active_idx))
+      ফেরত মিথ্যা;
 
     frame.active_idx = *active_idx;
-    return true;
+    ফেরত সত্য;
   }
 
-  bool get_context_set_cache_key (const void *rule,
-				  const void *record,
-				  const void *data,
+  যৌক্তিক get_context_set_cache_চাবি (ধ্রুবক শূন্য *rule,
+				  ধ্রুবক শূন্য *record,
+				  ধ্রুবক শূন্য *তথ্য,
 				  unsigned value,
 				  unsigned format,
-				  context_set_cache_key_t *key)
+				  context_set_cache_চাবি_t *key)
   {
     hb_codepoint_t active_idx;
-    if (!get_parent_active_glyphs_index (&active_idx))
-      return false;
-    *key = context_set_cache_key_t (rule, record, data, active_idx, value, format);
-    return true;
+    যদি (!get_parent_active_glyphs_সূচক (&active_idx))
+      ফেরত মিথ্যা;
+    *key = context_set_cache_চাবি_t (rule, record, তথ্য, active_idx, value, format);
+    ফেরত সত্য;
   }
 
-  bool get_recurse_key (unsigned lookup_idx, recurse_key_t *key)
+  যৌক্তিক get_recurse_চাবি (unsigned lookup_idx, recurse_চাবি_t *key)
   {
     /* The active glyphs and in-progress lookup set are part of the state.
      * Omitting the latter would make memoization incorrect for cyclic lookup
@@ -637,66 +637,66 @@ struct hb_depend_context_t :
      * edge identity, so revisiting with different flags can only find edges
      * that the deduplication table already contains. */
     hb_codepoint_t active_idx;
-    if (!get_parent_active_glyphs_index (&active_idx))
-      return false;
+    যদি (!get_parent_active_glyphs_সূচক (&active_idx))
+      ফেরত মিথ্যা;
 
-    *key = recurse_key_t (lookup_idx,
+    *key = recurse_চাবি_t (lookup_idx,
                           active_idx,
                           recurse_path,
-                          depend_data->current_context_set_index);
-    return !completed_recursions.has (*key);
+                          depend_তথ্য->current_context_set_সূচক);
+    ফেরত !completed_recursions.has (*key);
   }
 
-  void finish_recurse (const recurse_key_t &key)
-  { depend_data->check_success (completed_recursions.set (key, true)); }
+  শূন্য finish_recurse (ধ্রুবক recurse_চাবি_t &key)
+  { depend_তথ্য->check_success (completed_recursions.set (key, সত্য)); }
 
-  void reset_recurse_cache ()
+  শূন্য reset_recurse_cache ()
   {
     completed_recursions.clear ();
-    recurse_path_to_index.clear ();
+    recurse_path_to_সূচক.clear ();
     recurse_path = 0;
   }
 
-  bool find_or_create_recurse_set (const hb_set_t &set, hb_codepoint_t *index)
+  যৌক্তিক find_or_create_recurse_set (ধ্রুবক hb_set_t &set, hb_codepoint_t *সূচক_2)
   {
     hb_codepoint_t *existing = nullptr;
-    if (recurse_set_to_index.has (&set, &existing))
+    যদি (recurse_set_to_সূচক.has (&set, &existing))
     {
-      *index = *existing;
-      return true;
+      *সূচক_2 = *existing;
+      ফেরত সত্য;
     }
 
     hb_set_t *copy = hb_object_create<hb_set_t> ();
-    if (unlikely (!copy))
-      return depend_data->fail ();
+    যদি (unlikely (!copy))
+      ফেরত depend_তথ্য->fail ();
     copy->set (set);
-    if (unlikely (copy->in_error ()))
+    যদি (unlikely (copy->in_error ()))
     {
       hb_set_destroy (copy);
-      return depend_data->fail ();
+      ফেরত depend_তথ্য->fail ();
     }
 
-    *index = recurse_sets.length;
-    if (unlikely (*index & SINGLE_GLYPH_ACTIVE_FLAG))
+    *সূচক_2 = recurse_sets.দৈর্ঘ্য;
+    যদি (unlikely (*সূচক_2 & SINGLE_GLYPH_ACTIVE_FLAG))
     {
       hb_set_destroy (copy);
-      return depend_data->fail ();
+      ফেরত depend_তথ্য->fail ();
     }
-    if (unlikely (!recurse_sets.push_or_fail (hb::unique_ptr<hb_set_t> {copy})))
-      return depend_data->fail ();
-    if (unlikely (!recurse_set_to_index.set (recurse_sets[*index].get (), *index)))
-      return depend_data->fail ();
-    return true;
+    যদি (unlikely (!recurse_sets.ঠেলো_or_fail (hb::unique_ptr<hb_set_t> {copy})))
+      ফেরত depend_তথ্য->fail ();
+    যদি (unlikely (!recurse_set_to_সূচক.set (recurse_sets[*সূচক_2].get (), *সূচক_2)))
+      ফেরত depend_তথ্য->fail ();
+    ফেরত সত্য;
   }
 
-  const hb_set_t *find_or_create_glyph_set (const void *data,
+  ধ্রুবক hb_set_t *find_or_create_glyph_set (ধ্রুবক শূন্য *তথ্য,
                                              unsigned value,
                                              glyph_set_type_t type);
-  hb_codepoint_t find_or_create_cached_context_set (const hb_set_t *set);
+  hb_codepoint_t find_or_create_cached_context_set (ধ্রুবক hb_set_t *set);
 
-  struct depend_scratch_t
+  কাঠামো depend_scratch_t
   {
-    void clear ()
+    শূন্য clear ()
     {
       preliminary_context.clear ();
       position_scratch.clear ();
@@ -706,7 +706,7 @@ struct hb_depend_context_t :
       filtered_disjunctive_indices.clear ();
       backtrack_sets.clear ();
       lookahead_sets.clear ();
-      input_position_glyphs.clear ();
+      প্রবেশ_position_glyphs.clear ();
       cached_context_sets.clear ();
       compact_workspace.clear ();
     }
@@ -717,9 +717,9 @@ struct hb_depend_context_t :
     hb_set_t position_context;
     hb_set_t disjunctive_indices;
     hb_set_t filtered_disjunctive_indices;
-    hb_vector_t<const hb_set_t *> backtrack_sets;
-    hb_vector_t<const hb_set_t *> lookahead_sets;
-    hb_vector_t<const hb_set_t *> input_position_glyphs;
+    hb_vector_t<ধ্রুবক hb_set_t *> backtrack_sets;
+    hb_vector_t<ধ্রুবক hb_set_t *> lookahead_sets;
+    hb_vector_t<ধ্রুবক hb_set_t *> প্রবেশ_position_glyphs;
     hb_vector_t<hb_codepoint_t> cached_context_sets;
     hb_vector_t<unsigned> compact_workspace;
     depend_scratch_t *next = nullptr;
@@ -728,59 +728,59 @@ struct hb_depend_context_t :
   depend_scratch_t *acquire_depend_scratch ()
   {
     depend_scratch_t *scratch = depend_scratch_pool;
-    if (scratch)
+    যদি (scratch)
       depend_scratch_pool = scratch->next;
-    else
+    অন্যথা
     {
-      scratch = (depend_scratch_t *) hb_malloc (sizeof (depend_scratch_t));
-      if (unlikely (!scratch))
+      scratch = (depend_scratch_t *) hb_malloc (আকার (depend_scratch_t));
+      যদি (unlikely (!scratch))
       {
-        depend_data->fail ();
-        return nullptr;
+        depend_তথ্য->fail ();
+        ফেরত nullptr;
       }
-      new (scratch) depend_scratch_t ();
+      নতুন (scratch) depend_scratch_t ();
     }
 
     scratch->next = nullptr;
     scratch->clear ();
-    return scratch;
+    ফেরত scratch;
   }
 
-  void release_depend_scratch (depend_scratch_t *scratch)
+  শূন্য release_depend_scratch (depend_scratch_t *scratch)
   {
     scratch->next = depend_scratch_pool;
     depend_scratch_pool = scratch;
   }
 
-  hb_depend_data_builder_t *depend_data;
+  hb_depend_তথ্য_builder_t *depend_তথ্য;
   hb_face_t *face;
   hb_set_t *glyphs;
-  hb_vector_t<active_glyphs_frame_t> active_glyphs_stack;
-  unsigned active_glyphs_stack_depth = 0;
+  hb_vector_t<active_glyphs_frame_t> active_glyphs_স্তূপ;
+  unsigned active_glyphs_স্তূপ_depth = 0;
   recurse_func_t recurse_func;
-  hb_codepoint_t lookup_index = HB_CODEPOINT_INVALID;
+  hb_codepoint_t lookup_সূচক = HB_CODEPOINT_INVALID;
   hb_bit_set_t lookups_seen;
   hb_vector_t<hb::unique_ptr<hb_set_t>> recurse_sets;
-  hb_hashmap_t<const hb_set_t *, hb_codepoint_t> recurse_set_to_index;
-  hb_hashmap_t<uint64_t, hb_codepoint_t> recurse_path_to_index;
+  hb_hashmap_t<ধ্রুবক hb_set_t *, hb_codepoint_t> recurse_set_to_সূচক;
+  hb_hashmap_t<uint64_t, hb_codepoint_t> recurse_path_to_সূচক;
   hb_codepoint_t recurse_path = 0;
-  hb_hashmap_t<recurse_key_t, bool> completed_recursions;
+  hb_hashmap_t<recurse_চাবি_t, যৌক্তিক> completed_recursions;
   hb_vector_t<hb::unique_ptr<hb_set_t>> glyph_sets;
-  hb_hashmap_t<glyph_set_cache_key_t, hb_codepoint_t> glyph_set_to_index;
+  hb_hashmap_t<glyph_set_cache_চাবি_t, hb_codepoint_t> glyph_set_to_সূচক;
   hb_hashmap_t<uintptr_t, hb_codepoint_t> cached_context_set_indices;
-  hb_hashmap_t<context_set_cache_key_t, hb_codepoint_t> context_set_cache;
+  hb_hashmap_t<context_set_cache_চাবি_t, hb_codepoint_t> context_set_cache;
   depend_scratch_t *depend_scratch_pool = nullptr;
 
-  hb_depend_context_t (hb_depend_data_builder_t *depend_data_,
+  hb_depend_context_t (hb_depend_তথ্য_builder_t *depend_তথ্য_2,
                        hb_face_t *face_,
                        hb_set_t *glyphs_)
-                      : depend_data (depend_data_),
+                      : depend_তথ্য (depend_তথ্য_2),
                         face(face_),
                         glyphs (glyphs_),
                         recurse_func (nullptr) {}
   ~hb_depend_context_t ()
   {
-    while (depend_scratch_pool)
+    যখন (depend_scratch_pool)
     {
       depend_scratch_t *scratch = depend_scratch_pool;
       depend_scratch_pool = scratch->next;
@@ -788,21 +788,21 @@ struct hb_depend_context_t :
       hb_free (scratch);
     }
   }
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  শূন্য set_recurse_func (recurse_func_t func) { recurse_func = func; }
 };
 
 template <typename set_t>
-struct hb_collect_coverage_context_t :
-       hb_dispatch_context_t<hb_collect_coverage_context_t<set_t>, const Coverage &>
+কাঠামো hb_collect_coverage_context_t :
+       hb_dispatch_context_t<hb_collect_coverage_context_t<set_t>, ধ্রুবক Coverage &>
 {
-  typedef const Coverage &return_t; // Stoopid that we have to dupe this here.
+  প্রকারলেখ ধ্রুবক Coverage &return_t; // Stoopid that we have to dupe this here.
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.get_coverage (); }
-  static return_t default_return_value () { return Null (Coverage); }
-  bool stop_sublookup_iteration (return_t r) const
+  return_t dispatch (ধ্রুবক T &obj) { ফেরত obj.get_coverage (); }
+  স্থির return_t default_return_মান () { ফেরত Null (Coverage); }
+  যৌক্তিক stop_sublookup_iteration (return_t r) ধ্রুবক
   {
     r.collect_coverage (set);
-    return false;
+    ফেরত মিথ্যা;
   }
 
   hb_collect_coverage_context_t (set_t *set_) :
@@ -811,523 +811,523 @@ struct hb_collect_coverage_context_t :
   set_t *set;
 };
 
-struct matcher_t
+কাঠামো matcher_t
 {
-  typedef bool (*match_func_t) (hb_glyph_info_t &info, unsigned value, const void *data);
+  প্রকারলেখ যৌক্তিক (*match_func_t) (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য);
 
   template <typename context_t>
-  void init (const context_t *c, bool context_match = false)
+  শূন্য init (ধ্রুবক context_t *c, যৌক্তিক context_match = মিথ্যা)
   {
     set_match_func (nullptr, nullptr);
     lookup_props = c->lookup_props;
     /* Ignore ZWNJ if we are matching GPOS, or matching GSUB context and asked to. */
-    ignore_zwnj = c->table_index == 1 || (context_match && c->auto_zwnj);
+    ignore_zwnj = c->table_সূচক == 1 || (context_match && c->auto_zwnj);
     /* Ignore ZWJ if we are matching context, or asked to. */
     ignore_zwj = context_match || c->auto_zwj;
     /* Ignore hidden glyphs (like CGJ) during GPOS. */
-    ignore_hidden = c->table_index == 1;
+    ignore_hidden = c->table_সূচক == 1;
     mask = context_match ? -1 : c->lookup_mask;
     /* Per syllable matching is only for GSUB. */
-    per_syllable = c->table_index == 0 && c->per_syllable;
+    per_syllable = c->table_সূচক == 0 && c->per_syllable;
     syllable = 0;
   }
 
-  void set_match_func (match_func_t match_func_,
-		       const void *match_data_)
-  { match_func = match_func_; match_data = match_data_; }
+  শূন্য set_match_func (match_func_t match_func_,
+		       ধ্রুবক শূন্য *match_তথ্য)
+  { match_func = match_func_; match_তথ্য_2 = match_তথ্য; }
 
-  enum may_match_t {
+  গণনা may_match_t {
     MATCH_NO,
     MATCH_YES,
     MATCH_MAYBE
   };
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
   may_match_t may_match (hb_glyph_info_t &info,
-			 hb_codepoint_t glyph_data) const
+			 hb_codepoint_t glyph_তথ্য) ধ্রুবক
   {
-    if (!(info.mask & mask) ||
+    যদি (!(info.mask & mask) ||
 	(per_syllable && syllable && syllable != info.syllable ()))
-      return MATCH_NO;
+      ফেরত MATCH_NO;
 
-    if (match_func)
-      return match_func (info, glyph_data, match_data) ? MATCH_YES : MATCH_NO;
+    যদি (match_func)
+      ফেরত match_func (info, glyph_তথ্য, match_তথ্য_2) ? MATCH_YES : MATCH_NO;
 
-    return MATCH_MAYBE;
+    ফেরত MATCH_MAYBE;
   }
 
-  enum may_skip_t {
+  গণনা may_skip_t {
     SKIP_NO,
     SKIP_YES,
     SKIP_MAYBE
   };
 
   template <typename context_t>
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
-  may_skip_t may_skip (const context_t *c,
-		       const hb_glyph_info_t &info) const
+  may_skip_t may_skip (ধ্রুবক context_t *c,
+		       ধ্রুবক hb_glyph_info_t &info) ধ্রুবক
   {
-    if (!c->check_glyph_property (&info, lookup_props))
-      return SKIP_YES;
+    যদি (!c->check_glyph_property (&info, lookup_props))
+      ফেরত SKIP_YES;
 
-    if (unlikely (_hb_glyph_info_is_default_ignorable (&info) &&
+    যদি (unlikely (_hb_glyph_info_is_default_ignorable (&info) &&
 		  (ignore_zwnj || !_hb_glyph_info_is_zwnj (&info)) &&
 		  (ignore_zwj || !_hb_glyph_info_is_zwj (&info)) &&
 		  (ignore_hidden || !_hb_glyph_info_is_hidden (&info))))
-      return SKIP_MAYBE;
+      ফেরত SKIP_MAYBE;
 
-    return SKIP_NO;
+    ফেরত SKIP_NO;
   }
 
-  public:
-  unsigned int lookup_props = 0;
+  সর্বজনীন:
+  unsigned পূর্ণসংখ্যা lookup_props = 0;
   hb_mask_t mask = -1;
-  bool ignore_zwnj = false;
-  bool ignore_zwj = false;
-  bool ignore_hidden = false;
-  bool per_syllable = false;
+  যৌক্তিক ignore_zwnj = মিথ্যা;
+  যৌক্তিক ignore_zwj = মিথ্যা;
+  যৌক্তিক ignore_hidden = মিথ্যা;
+  যৌক্তিক per_syllable = মিথ্যা;
   uint8_t syllable = 0;
   match_func_t match_func = nullptr;
-  const void *match_data = nullptr;
+  ধ্রুবক শূন্য *match_তথ্য_2 = nullptr;
 };
 
 /* A view of 16- or 24-bit glyph IDs or coverage offsets. */
-struct glyph_data_t
+কাঠামো glyph_তথ্য_t
 {
   template <typename T>
-  glyph_data_t (const T *data_) : data (data_)
+  glyph_তথ্য_t (ধ্রুবক T *তথ্য_2) : তথ্য (তথ্য_2)
 #ifndef HB_NO_BEYOND_64K
-                              , wide (sizeof (T) == 3)
+                              , wide (আকার (T) == 3)
 #endif
   {
-    static_assert (sizeof (T) == 2 || sizeof (T) == 3, "invalid glyph data size");
+    static_assert (আকার (T) == 2 || আকার (T) == 3, "invalid glyph data size");
   }
 
-  unsigned operator [] (unsigned i) const
+  unsigned operator [] (unsigned i) ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    if (wide)
-      return ((const HBUINT24 *) data)[i];
+    যদি (wide)
+      ফেরত ((ধ্রুবক HBUINT24 *) তথ্য)[i];
 #endif
-    return ((const HBUINT16 *) data)[i];
+    ফেরত ((ধ্রুবক HBUINT16 *) তথ্য)[i];
   }
 
-  const void *data;
+  ধ্রুবক শূন্য *তথ্য;
 #ifndef HB_NO_BEYOND_64K
-  bool wide;
+  যৌক্তিক wide;
 #endif
 };
 
 template <typename context_t>
-struct skipping_iterator_t
+কাঠামো skipping_iterator_t
 {
-  void init (context_t *c_, bool context_match = false)
+  শূন্য init (context_t *c_, যৌক্তিক context_match = মিথ্যা)
   {
     c = c_;
-    end = c->buffer->len;
+    end = c->বাফার->len;
     match_glyph_data16 = nullptr;
 #ifndef HB_NO_BEYOND_64K
     match_glyph_data24 = nullptr;
 #endif
     matcher.init (c, context_match);
   }
-  void set_lookup_props (unsigned int lookup_props)
+  শূন্য set_lookup_props (unsigned পূর্ণসংখ্যা lookup_props)
   {
     matcher.lookup_props = lookup_props;
   }
-  void set_match_func (matcher_t::match_func_t match_func_,
-		       const void *match_data_)
+  শূন্য set_match_func (matcher_t::match_func_t match_func_,
+		       ধ্রুবক শূন্য *match_তথ্য)
   {
-    matcher.set_match_func (match_func_, match_data_);
+    matcher.set_match_func (match_func_, match_তথ্য);
   }
-  void set_glyph_data (glyph_data_t glyph_data)
+  শূন্য set_glyph_তথ্য (glyph_তথ্য_t glyph_তথ্য)
   {
 #ifndef HB_NO_BEYOND_64K
-    match_glyph_data16 = glyph_data.wide ? nullptr : (const HBUINT16 *) glyph_data.data;
-    match_glyph_data24 = glyph_data.wide ? (const HBUINT24 *) glyph_data.data : nullptr;
-#else
-    match_glyph_data16 = (const HBUINT16 *) glyph_data.data;
+    match_glyph_data16 = glyph_তথ্য.wide ? nullptr : (ধ্রুবক HBUINT16 *) glyph_তথ্য.তথ্য;
+    match_glyph_data24 = glyph_তথ্য.wide ? (ধ্রুবক HBUINT24 *) glyph_তথ্য.তথ্য : nullptr;
+#অন্যথা
+    match_glyph_data16 = (ধ্রুবক HBUINT16 *) glyph_তথ্য.তথ্য;
 #endif
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
-  void reset (unsigned int start_index_)
+  শূন্য reset (unsigned পূর্ণসংখ্যা start_সূচক_2)
   {
     // For GSUB forward iterator
-    idx = start_index_;
-    end = c->buffer->len;
-    matcher.syllable = c->buffer->cur().syllable();
+    idx = start_সূচক_2;
+    end = c->বাফার->len;
+    matcher.syllable = c->বাফার->cur().syllable();
   }
-  void reset_back (unsigned int start_index_, bool from_out_buffer = false)
+  শূন্য reset_back (unsigned পূর্ণসংখ্যা start_সূচক_2, যৌক্তিক from_out_বাফার = মিথ্যা)
   {
     // For GSUB backward iterator
-    idx = start_index_;
-    matcher.syllable = c->buffer->cur().syllable();
+    idx = start_সূচক_2;
+    matcher.syllable = c->বাফার->cur().syllable();
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
-  void reset_fast (unsigned int start_index_)
+  শূন্য reset_fast (unsigned পূর্ণসংখ্যা start_সূচক_2)
   {
     // Doesn't set end or syllable. Used by GPOS which doesn't care / change.
-    idx = start_index_;
+    idx = start_সূচক_2;
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
-  matcher_t::may_skip_t may_skip (const hb_glyph_info_t &info) const
-  { return matcher.may_skip (c, info); }
+  matcher_t::may_skip_t may_skip (ধ্রুবক hb_glyph_info_t &info) ধ্রুবক
+  { ফেরত matcher.may_skip (c, info); }
 
-  enum match_t {
+  গণনা match_t {
     MATCH,
     NOT_MATCH,
     SKIP
   };
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
   match_t match (hb_glyph_info_t &info)
   {
     matcher_t::may_skip_t skip = matcher.may_skip (c, info);
-    if (unlikely (skip == matcher_t::SKIP_YES))
-      return SKIP;
+    যদি (unlikely (skip == matcher_t::SKIP_YES))
+      ফেরত SKIP;
 
-    matcher_t::may_match_t match = matcher.may_match (info, get_glyph_data ());
-    if (match == matcher_t::MATCH_YES ||
+    matcher_t::may_match_t match = matcher.may_match (info, get_glyph_তথ্য ());
+    যদি (match == matcher_t::MATCH_YES ||
 	(match == matcher_t::MATCH_MAYBE &&
 	 skip == matcher_t::SKIP_NO))
-      return MATCH;
+      ফেরত MATCH;
 
-    if (skip == matcher_t::SKIP_NO)
-      return NOT_MATCH;
+    যদি (skip == matcher_t::SKIP_NO)
+      ফেরত NOT_MATCH;
 
-    return SKIP;
+    ফেরত SKIP;
   }
 
-  bool next (unsigned *unsafe_to = nullptr)
+  যৌক্তিক next (unsigned *unsafe_to = nullptr)
   {
-    auto *info = c->buffer->info;
-    const signed stop = (signed) end - 1;
-    while ((signed) idx < stop)
+    auto *info = c->বাফার->info;
+    ধ্রুবক signed stop = (signed) end - 1;
+    যখন ((signed) idx < stop)
     {
       idx++;
-      switch (match (info[idx]))
+      নির্বাচন (match (info[idx]))
       {
-	case MATCH:
+	ক্ষেত্র MATCH:
 	{
-	  advance_glyph_data ();
-	  return true;
+	  advance_glyph_তথ্য ();
+	  ফেরত সত্য;
 	}
-	case NOT_MATCH:
+	ক্ষেত্র NOT_MATCH:
 	{
-	  if (unsafe_to)
+	  যদি (unsafe_to)
 	    *unsafe_to = idx + 1;
-	  return false;
+	  ফেরত মিথ্যা;
 	}
-	case SKIP:
-	  continue;
+	ক্ষেত্র SKIP:
+	  চালু;
       }
     }
-    if (unsafe_to)
+    যদি (unsafe_to)
       *unsafe_to = end;
-    return false;
+    ফেরত মিথ্যা;
   }
-  bool prev (unsigned *unsafe_from = nullptr)
+  যৌক্তিক prev (unsigned *unsafe_from = nullptr)
   {
-    auto *out_info = c->buffer->out_info;
-    const unsigned stop = 0;
-    while (idx > stop)
+    auto *out_info = c->বাফার->out_info;
+    ধ্রুবক unsigned stop = 0;
+    যখন (idx > stop)
     {
       idx--;
-      switch (match (out_info[idx]))
+      নির্বাচন (match (out_info[idx]))
       {
-	case MATCH:
+	ক্ষেত্র MATCH:
 	{
-	  advance_glyph_data ();
-	  return true;
+	  advance_glyph_তথ্য ();
+	  ফেরত সত্য;
 	}
-	case NOT_MATCH:
+	ক্ষেত্র NOT_MATCH:
 	{
-	  if (unsafe_from)
+	  যদি (unsafe_from)
 	    *unsafe_from = hb_max (1u, idx) - 1u;
-	  return false;
+	  ফেরত মিথ্যা;
 	}
-	case SKIP:
-	  continue;
+	ক্ষেত্র SKIP:
+	  চালু;
       }
     }
-    if (unsafe_from)
+    যদি (unsafe_from)
       *unsafe_from = 0;
-    return false;
+    ফেরত মিথ্যা;
   }
 
   HB_ALWAYS_INLINE
   hb_codepoint_t
-  get_glyph_data ()
+  get_glyph_তথ্য ()
   {
-    if (match_glyph_data16) return *match_glyph_data16;
+    যদি (match_glyph_data16) ফেরত *match_glyph_data16;
 #ifndef HB_NO_BEYOND_64K
-    else
-    if (match_glyph_data24) return *match_glyph_data24;
+    অন্যথা
+    যদি (match_glyph_data24) ফেরত *match_glyph_data24;
 #endif
-    return 0;
+    ফেরত 0;
   }
   HB_ALWAYS_INLINE
-  void
-  advance_glyph_data ()
+  শূন্য
+  advance_glyph_তথ্য ()
   {
-    if (match_glyph_data16) match_glyph_data16++;
+    যদি (match_glyph_data16) match_glyph_data16++;
 #ifndef HB_NO_BEYOND_64K
-    else
-    if (match_glyph_data24) match_glyph_data24++;
+    অন্যথা
+    যদি (match_glyph_data24) match_glyph_data24++;
 #endif
   }
 
-  unsigned int idx;
-  protected:
+  unsigned পূর্ণসংখ্যা idx;
+  সুরক্ষিত:
   context_t *c;
   matcher_t matcher;
-  const HBUINT16 *match_glyph_data16;
+  ধ্রুবক HBUINT16 *match_glyph_data16;
 #ifndef HB_NO_BEYOND_64K
-  const HBUINT24 *match_glyph_data24;
+  ধ্রুবক HBUINT24 *match_glyph_data24;
 #endif
 
-  unsigned int end;
+  unsigned পূর্ণসংখ্যা end;
 };
 
-struct hb_ot_apply_context_t :
-       hb_dispatch_context_t<hb_ot_apply_context_t, bool, HB_DEBUG_APPLY>
+কাঠামো hb_ot_apply_context_t :
+       hb_dispatch_context_t<hb_ot_apply_context_t, যৌক্তিক, HB_DEBUG_APPLY>
 {
-  const char *get_name () { return "APPLY"; }
-  typedef return_t (*recurse_func_t) (hb_ot_apply_context_t *c, unsigned int lookup_index);
+  ধ্রুবক অক্ষর *get_name () { ফেরত "APPLY"; }
+  প্রকারলেখ return_t (*recurse_func_t) (hb_ot_apply_context_t *c, unsigned পূর্ণসংখ্যা lookup_সূচক);
 
   template <typename T>
-  static inline auto apply_ (const T &obj, hb_ot_apply_context_t *c, hb_priority<1>) HB_RETURN (return_t, obj.apply (c, nullptr) )
+  স্থির অন্তঃরেখ auto apply_ (ধ্রুবক T &obj, hb_ot_apply_context_t *c, hb_priority<1>) HB_RETURN (return_t, obj.apply (c, nullptr) )
   template <typename T>
-  static inline auto apply_ (const T &obj, hb_ot_apply_context_t *c, hb_priority<0>) HB_RETURN (return_t, obj.apply (c) )
+  স্থির অন্তঃরেখ auto apply_ (ধ্রুবক T &obj, hb_ot_apply_context_t *c, hb_priority<0>) HB_RETURN (return_t, obj.apply (c) )
   template <typename T>
-  return_t dispatch (const T &obj) { return apply_(obj, this, hb_prioritize); }
+  return_t dispatch (ধ্রুবক T &obj) { ফেরত apply_(obj, এই, hb_prioritize); }
 
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
-  return_t recurse (unsigned int sub_lookup_index)
+  স্থির return_t default_return_মান () { ফেরত মিথ্যা; }
+  যৌক্তিক stop_sublookup_iteration (return_t r) ধ্রুবক { ফেরত r; }
+  return_t recurse (unsigned পূর্ণসংখ্যা sub_lookup_সূচক)
   {
-    assert (recurse_func);
-    if (unlikely (nesting_level_left == 0))
+    প্রতিজ্ঞা (recurse_func);
+    যদি (unlikely (nesting_level_বাম == 0))
     {
-      buffer->successful = false;
-      return default_return_value ();
+      বাফার->successful = মিথ্যা;
+      ফেরত default_return_মান ();
     }
 
-    buffer->max_ops--;
-    if (unlikely (buffer->max_ops < 0))
+    বাফার->max_ops--;
+    যদি (unlikely (বাফার->max_ops < 0))
     {
-      buffer->successful = false;
-      return default_return_value ();
+      বাফার->successful = মিথ্যা;
+      ফেরত default_return_মান ();
     }
 
-    nesting_level_left--;
-    bool ret = recurse_func (this, sub_lookup_index);
-    nesting_level_left++;
-    return ret;
+    nesting_level_বাম--;
+    যৌক্তিক ret = recurse_func (এই, sub_lookup_সূচক);
+    nesting_level_বাম++;
+    ফেরত ret;
   }
 
-  skipping_iterator_t<hb_ot_apply_context_t> iter_input, iter_context;
+  skipping_iterator_t<hb_ot_apply_context_t> iter_প্রবেশ, iter_context;
 
-  unsigned int table_index; /* GSUB/GPOS */
+  unsigned পূর্ণসংখ্যা table_সূচক; /* GSUB/GPOS */
   hb_font_t *font;
   hb_face_t *face;
-  hb_buffer_t *buffer;
+  hb_বাফার_t *বাফার;
   hb_sanitize_context_t sanitizer;
   recurse_func_t recurse_func = nullptr;
-  const GDEF &gdef;
-  const GDEF::accelerator_t &gdef_accel;
-  const ItemVariationStore &var_store;
+  ধ্রুবক GDEF &gdef;
+  ধ্রুবক GDEF::accelerator_t &gdef_accel;
+  ধ্রুবক ItemVariationStore &var_store;
   hb_scalar_cache_t *var_store_cache;
 
   hb_direction_t direction;
   hb_mask_t lookup_mask = 1;
-  unsigned int lookup_index = (unsigned) -1;
-  unsigned int lookup_props = 0;
-  unsigned int nesting_level_left = HB_MAX_NESTING_LEVEL;
+  unsigned পূর্ণসংখ্যা lookup_সূচক = (unsigned) -1;
+  unsigned পূর্ণসংখ্যা lookup_props = 0;
+  unsigned পূর্ণসংখ্যা nesting_level_বাম = HB_MAX_NESTING_LEVEL;
 
-  bool has_glyph_classes;
-  bool auto_zwnj = true;
-  bool auto_zwj = true;
-  bool per_syllable = false;
-  bool random = false;
+  যৌক্তিক has_glyph_classes;
+  যৌক্তিক auto_zwnj = সত্য;
+  যৌক্তিক auto_zwj = সত্য;
+  যৌক্তিক per_syllable = মিথ্যা;
+  যৌক্তিক random = মিথ্যা;
   unsigned new_syllables = (unsigned) -1;
 
   signed last_base = -1; // GPOS uses
   unsigned last_base_until = 0; // GPOS uses
 
   hb_vector_t<uint32_t> match_positions;
-  uint32_t stack_match_positions[8];
-#ifndef HB_NO_BUFFER_MESSAGE
-  hb_buffer_t::changed_func_t orig_changed_func = nullptr;
-  void *orig_changed_data = nullptr;
+  uint32_t স্তূপ_match_positions[8];
+#ifndef HB_NO_বাফার_MESSAGE
+  hb_বাফার_t::changed_func_t orig_changed_func = nullptr;
+  শূন্য *orig_changed_তথ্য = nullptr;
 #endif
 
-  hb_ot_apply_context_t (unsigned int table_index_,
+  hb_ot_apply_context_t (unsigned পূর্ণসংখ্যা table_সূচক_2,
 			 hb_font_t *font_,
-			 hb_buffer_t *buffer_,
+			 hb_বাফার_t *বাফার_2,
 			 hb_blob_t *table_blob_,
 			 hb_scalar_cache_t *var_store_cache_ = nullptr) :
-			table_index (table_index_),
-			font (font_), face (font->face), buffer (buffer_),
+			table_সূচক (table_সূচক_2),
+			font (font_), face (font->face), বাফার (বাফার_2),
 			sanitizer (table_blob_),
 			gdef (
 #ifndef HB_NO_OT_LAYOUT
 			      *face->table.GDEF->table
-#else
+#অন্যথা
 			      Null (GDEF)
 #endif
 			     ),
 			gdef_accel (
 #ifndef HB_NO_OT_LAYOUT
 			      *face->table.GDEF
-#else
+#অন্যথা
 			      Null (GDEF::accelerator_t)
 #endif
 			     ),
 			var_store (gdef.get_var_store ()),
 			var_store_cache (var_store_cache_),
-			direction (buffer_->props.direction),
+			direction (বাফার_2->props.direction),
 			has_glyph_classes (gdef.has_glyph_classes ())
   {
     init_iters ();
-    match_positions.set_storage (stack_match_positions);
+    match_positions.set_storage (স্তূপ_match_positions);
 
-#ifndef HB_NO_BUFFER_MESSAGE
-    if (buffer->messaging ())
+#ifndef HB_NO_বাফার_MESSAGE
+    যদি (বাফার->messaging ())
     {
-      assert (buffer->changed_func == nullptr ||
-	      buffer->changed_func == buffer_changed_trampoline);
-      orig_changed_func = buffer->changed_func;
-      orig_changed_data = buffer->changed_data;
-      buffer->changed_func = buffer_changed_trampoline;
-      buffer->changed_data = this;
+      প্রতিজ্ঞা (বাফার->changed_func == nullptr ||
+	      বাফার->changed_func == বাফার_changed_trampoline);
+      orig_changed_func = বাফার->changed_func;
+      orig_changed_তথ্য = বাফার->changed_তথ্য;
+      বাফার->changed_func = বাফার_changed_trampoline;
+      বাফার->changed_তথ্য = এই;
     }
 #endif
   }
   ~hb_ot_apply_context_t ()
   {
-#ifndef HB_NO_BUFFER_MESSAGE
-    if (buffer->messaging ())
+#ifndef HB_NO_বাফার_MESSAGE
+    যদি (বাফার->messaging ())
     {
-      assert (buffer->changed_func == buffer_changed_trampoline);
-      assert (buffer->changed_data == this);
-      buffer->changed_func = orig_changed_func;
-      buffer->changed_data = orig_changed_data;
+      প্রতিজ্ঞা (বাফার->changed_func == বাফার_changed_trampoline);
+      প্রতিজ্ঞা (বাফার->changed_তথ্য == এই);
+      বাফার->changed_func = orig_changed_func;
+      বাফার->changed_তথ্য = orig_changed_তথ্য;
     }
 #endif
   }
 
-  void init_iters ()
+  শূন্য init_iters ()
   {
-    iter_input.init (this, false);
-    iter_context.init (this, true);
+    iter_প্রবেশ.init (এই, মিথ্যা);
+    iter_context.init (এই, সত্য);
   }
 
-  void set_lookup_mask (hb_mask_t mask, bool init = true) { lookup_mask = mask; last_base = -1; last_base_until = 0; if (init) init_iters (); }
-  void set_auto_zwj (bool auto_zwj_, bool init = true) { auto_zwj = auto_zwj_; if (init) init_iters (); }
-  void set_auto_zwnj (bool auto_zwnj_, bool init = true) { auto_zwnj = auto_zwnj_; if (init) init_iters (); }
-  void set_per_syllable (bool per_syllable_, bool init = true) { per_syllable = per_syllable_; if (init) init_iters (); }
-  void set_random (bool random_) { random = random_; }
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
-  void set_lookup_index (unsigned int lookup_index_) { lookup_index = lookup_index_; }
-  void set_lookup_props (unsigned int lookup_props_)
+  শূন্য set_lookup_mask (hb_mask_t mask, যৌক্তিক init = সত্য) { lookup_mask = mask; last_base = -1; last_base_until = 0; যদি (init) init_iters (); }
+  শূন্য set_auto_zwj (যৌক্তিক auto_zwj_, যৌক্তিক init = সত্য) { auto_zwj = auto_zwj_; যদি (init) init_iters (); }
+  শূন্য set_auto_zwnj (যৌক্তিক auto_zwnj_, যৌক্তিক init = সত্য) { auto_zwnj = auto_zwnj_; যদি (init) init_iters (); }
+  শূন্য set_per_syllable (যৌক্তিক per_syllable_, যৌক্তিক init = সত্য) { per_syllable = per_syllable_; যদি (init) init_iters (); }
+  শূন্য set_random (যৌক্তিক random_) { random = random_; }
+  শূন্য set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  শূন্য set_lookup_সূচক (unsigned পূর্ণসংখ্যা lookup_সূচক_3) { lookup_সূচক = lookup_সূচক_3; }
+  শূন্য set_lookup_props (unsigned পূর্ণসংখ্যা lookup_props_)
   {
     lookup_props = gdef_accel.sanitize_lookup_props (lookup_props_);
     init_iters ();
   }
 
-  uint32_t random_number ()
+  uint32_t random_সংখ্যা ()
   {
     /* http://www.cplusplus.com/reference/random/minstd_rand/ */
-    buffer->random_state = buffer->random_state * 48271 % 2147483647;
-    return buffer->random_state;
+    বাফার->random_state = বাফার->random_state * 48271 % 2147483647;
+    ফেরত বাফার->random_state;
   }
 
-  static void buffer_changed_trampoline (hb_buffer_t *buffer HB_UNUSED, void *user_data)
+  স্থির শূন্য বাফার_changed_trampoline (hb_বাফার_t *বাফার HB_UNUSED, শূন্য *user_তথ্য)
   {
-    ((hb_ot_apply_context_t *) user_data)->buffer_changed ();
+    ((hb_ot_apply_context_t *) user_তথ্য)->বাফার_changed ();
   }
-  void buffer_changed ()
+  শূন্য বাফার_changed ()
   {
-    buffer->update_digest ();
-    if (likely (has_glyph_classes))
-      for (unsigned i = 0; i < buffer->len; i++)
-	_set_glyph_class_props (buffer->info[i]);
+    বাফার->update_digest ();
+    যদি (likely (has_glyph_classes))
+      জন্য (unsigned i = 0; i < বাফার->len; i++)
+	_set_glyph_class_props (বাফার->info[i]);
   }
 
   HB_ALWAYS_INLINE
   HB_HOT
-  bool match_properties_mark (const hb_glyph_info_t *info,
-			      unsigned int    glyph_props,
-			      unsigned int    match_props) const
+  যৌক্তিক match_properties_mark (ধ্রুবক hb_glyph_info_t *info,
+			      unsigned পূর্ণসংখ্যা    glyph_props,
+			      unsigned পূর্ণসংখ্যা    match_props) ধ্রুবক
   {
     /* If using mark filtering sets, the high short of
      * match_props has the set index.
      */
-    if (match_props & LookupFlag::UseMarkFilteringSet)
+    যদি (match_props & LookupFlag::UseMarkFilteringSet)
     {
-      unsigned set_index = match_props >> 16;
-      return gdef_accel.mark_set_covers (set_index, info->codepoint);
+      unsigned set_সূচক = match_props >> 16;
+      ফেরত gdef_accel.mark_set_covers (set_সূচক, info->codepoint);
     }
 
     /* The second byte of match_props has the meaning
      * "ignore marks of attachment type different than
      * the attachment type specified."
      */
-    if (match_props & LookupFlag::MarkAttachmentType)
-      return (match_props & LookupFlag::MarkAttachmentType) == (glyph_props & LookupFlag::MarkAttachmentType);
+    যদি (match_props & LookupFlag::MarkAttachmentType)
+      ফেরত (match_props & LookupFlag::MarkAttachmentType) == (glyph_props & LookupFlag::MarkAttachmentType);
 
-    return true;
+    ফেরত সত্য;
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
-  bool check_glyph_property (const hb_glyph_info_t *info,
-			     unsigned match_props) const
+  যৌক্তিক check_glyph_property (ধ্রুবক hb_glyph_info_t *info,
+			     unsigned match_props) ধ্রুবক
   {
-    unsigned int glyph_props = _hb_glyph_info_get_glyph_props (info);
+    unsigned পূর্ণসংখ্যা glyph_props = _hb_glyph_info_get_glyph_props (info);
 
     /* Not covered, if, for example, glyph class is ligature and
      * match_props includes LookupFlags::IgnoreLigatures
      */
-    if (glyph_props & match_props & LookupFlag::IgnoreFlags)
-      return false;
+    যদি (glyph_props & match_props & LookupFlag::IgnoreFlags)
+      ফেরত মিথ্যা;
 
-    if (glyph_props & HB_OT_LAYOUT_GLYPH_PROPS_MARK)
-      return match_properties_mark (info, glyph_props, match_props);
+    যদি (glyph_props & HB_OT_LAYOUT_GLYPH_PROPS_MARK)
+      ফেরত match_properties_mark (info, glyph_props, match_props);
 
-    return true;
+    ফেরত সত্য;
   }
 
-  void _set_glyph_class (hb_codepoint_t glyph_index,
-			  unsigned int class_guess = 0,
-			  bool ligature = false,
-			  bool component = false)
+  শূন্য _set_glyph_class (hb_codepoint_t glyph_সূচক,
+			  unsigned পূর্ণসংখ্যা class_guess = 0,
+			  যৌক্তিক ligature = মিথ্যা,
+			  যৌক্তিক component = মিথ্যা)
   {
-    buffer->digest.add (glyph_index);
+    বাফার->digest.add (glyph_সূচক);
 
-    if (new_syllables != (unsigned) -1)
-      buffer->cur().syllable() = new_syllables;
+    যদি (new_syllables != (unsigned) -1)
+      বাফার->cur().syllable() = new_syllables;
 
-    unsigned int props = _hb_glyph_info_get_glyph_props (&buffer->cur());
+    unsigned পূর্ণসংখ্যা props = _hb_glyph_info_get_glyph_props (&বাফার->cur());
     props |= HB_OT_LAYOUT_GLYPH_PROPS_SUBSTITUTED;
-    if (ligature)
+    যদি (ligature)
     {
       props |= HB_OT_LAYOUT_GLYPH_PROPS_LIGATED;
       /* In the only place that the MULTIPLIED bit is used, Uniscribe
@@ -1338,133 +1338,133 @@ struct hb_ot_apply_context_t :
        */
       props &= ~HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED;
     }
-    if (component)
+    যদি (component)
       props |= HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED;
-    if (likely (has_glyph_classes))
+    যদি (likely (has_glyph_classes))
     {
-      _set_glyph_class_props (buffer->cur(), props, glyph_index);
+      _set_glyph_class_props (বাফার->cur(), props, glyph_সূচক);
     }
-    else if (class_guess)
+    অন্যথা যদি (class_guess)
     {
       props &= HB_OT_LAYOUT_GLYPH_PROPS_PRESERVE;
-      _hb_glyph_info_set_glyph_props (&buffer->cur(), props | class_guess);
+      _hb_glyph_info_set_glyph_props (&বাফার->cur(), props | class_guess);
     }
-    else
-      _hb_glyph_info_set_glyph_props (&buffer->cur(), props);
+    অন্যথা
+      _hb_glyph_info_set_glyph_props (&বাফার->cur(), props);
   }
-  void _set_glyph_class_props (hb_glyph_info_t &info,
-			       unsigned int props,
-			       hb_codepoint_t glyph_index)
+  শূন্য _set_glyph_class_props (hb_glyph_info_t &info,
+			       unsigned পূর্ণসংখ্যা props,
+			       hb_codepoint_t glyph_সূচক)
   {
     props &= HB_OT_LAYOUT_GLYPH_PROPS_PRESERVE;
-    _hb_glyph_info_set_glyph_props (&info, props | gdef_accel.get_glyph_props (glyph_index));
+    _hb_glyph_info_set_glyph_props (&info, props | gdef_accel.get_glyph_props (glyph_সূচক));
   }
-  void _set_glyph_class_props (hb_glyph_info_t &info)
+  শূন্য _set_glyph_class_props (hb_glyph_info_t &info)
   {
     _set_glyph_class_props (info,
 			    _hb_glyph_info_get_glyph_props (&info),
 			    info.codepoint);
   }
 
-  void replace_glyph (hb_codepoint_t glyph_index)
+  শূন্য replace_glyph (hb_codepoint_t glyph_সূচক)
   {
-    _set_glyph_class (glyph_index);
-    (void) buffer->replace_glyph (glyph_index);
+    _set_glyph_class (glyph_সূচক);
+    (শূন্য) বাফার->replace_glyph (glyph_সূচক);
   }
-  void replace_glyph_inplace (hb_codepoint_t glyph_index)
+  শূন্য replace_glyph_inplace (hb_codepoint_t glyph_সূচক)
   {
-    _set_glyph_class (glyph_index);
-    buffer->cur().codepoint = glyph_index;
+    _set_glyph_class (glyph_সূচক);
+    বাফার->cur().codepoint = glyph_সূচক;
   }
-  void replace_glyph_with_ligature (hb_codepoint_t glyph_index,
-				    unsigned int class_guess)
+  শূন্য replace_glyph_with_ligature (hb_codepoint_t glyph_সূচক,
+				    unsigned পূর্ণসংখ্যা class_guess)
   {
-    _set_glyph_class (glyph_index, class_guess, true);
-    (void) buffer->replace_glyph (glyph_index);
+    _set_glyph_class (glyph_সূচক, class_guess, সত্য);
+    (শূন্য) বাফার->replace_glyph (glyph_সূচক);
   }
-  void output_glyph_for_component (hb_codepoint_t glyph_index,
-				   unsigned int class_guess)
+  শূন্য output_glyph_for_component (hb_codepoint_t glyph_সূচক,
+				   unsigned পূর্ণসংখ্যা class_guess)
   {
-    _set_glyph_class (glyph_index, class_guess, false, true);
-    (void) buffer->output_glyph (glyph_index);
+    _set_glyph_class (glyph_সূচক, class_guess, মিথ্যা, সত্য);
+    (শূন্য) বাফার->output_glyph (glyph_সূচক);
   }
 };
 
-enum class hb_ot_subtable_cache_op_t
+গণনা শ্রেণী hb_ot_subtable_cache_op_t
 {
   ENTER,
   LEAVE,
 };
 
-struct hb_accelerate_subtables_context_t :
+কাঠামো hb_accelerate_subtables_context_t :
        hb_dispatch_context_t<hb_accelerate_subtables_context_t>
 {
   template <typename T>
-  static inline auto collect_second_glyphs_ (const T &obj,
+  স্থির অন্তঃরেখ auto collect_second_glyphs_ (ধ্রুবক T &obj,
 					     hb_set_digest_t *digest,
-					     hb_priority<1>) HB_RETURN (void, obj.collect_second_glyphs (digest) )
+					     hb_priority<1>) HB_RETURN (শূন্য, obj.collect_second_glyphs (digest) )
   template <typename T>
-  static inline void collect_second_glyphs_ (const T &obj HB_UNUSED,
+  স্থির অন্তঃরেখ শূন্য collect_second_glyphs_ (ধ্রুবক T &obj HB_UNUSED,
 					     hb_set_digest_t *digest,
 					     hb_priority<0>)
   { *digest = hb_set_digest_t::full (); }
 
   template <typename T>
-  static inline auto apply_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<1>) HB_RETURN (bool, obj->apply (c, external_cache) )
+  স্থির অন্তঃরেখ auto apply_ (ধ্রুবক T *obj, hb_ot_apply_context_t *c, শূন্য *external_cache, hb_priority<1>) HB_RETURN (যৌক্তিক, obj->apply (c, external_cache) )
   template <typename T>
-  static inline auto apply_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<0>) HB_RETURN (bool, obj->apply (c) )
+  স্থির অন্তঃরেখ auto apply_ (ধ্রুবক T *obj, hb_ot_apply_context_t *c, শূন্য *external_cache, hb_priority<0>) HB_RETURN (যৌক্তিক, obj->apply (c) )
   template <typename T>
-  static inline bool apply_to (const void *obj, hb_ot_apply_context_t *c, void *external_cache)
+  স্থির অন্তঃরেখ যৌক্তিক apply_to (ধ্রুবক শূন্য *obj, hb_ot_apply_context_t *c, শূন্য *external_cache)
   {
-    const T *typed_obj = (const T *) obj;
-    return apply_ (typed_obj, c, external_cache, hb_prioritize);
+    ধ্রুবক T *typed_obj = (ধ্রুবক T *) obj;
+    ফেরত apply_ (typed_obj, c, external_cache, hb_prioritize);
   }
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<2>) HB_RETURN (bool, obj->apply_cached (c, external_cache) )
+  স্থির অন্তঃরেখ auto apply_cached_ (ধ্রুবক T *obj, hb_ot_apply_context_t *c, শূন্য *external_cache, hb_priority<2>) HB_RETURN (যৌক্তিক, obj->apply_cached (c, external_cache) )
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<1>) HB_RETURN (bool, obj->apply (c, external_cache) )
+  স্থির অন্তঃরেখ auto apply_cached_ (ধ্রুবক T *obj, hb_ot_apply_context_t *c, শূন্য *external_cache, hb_priority<1>) HB_RETURN (যৌক্তিক, obj->apply (c, external_cache) )
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<0>) HB_RETURN (bool, obj->apply (c) )
+  স্থির অন্তঃরেখ auto apply_cached_ (ধ্রুবক T *obj, hb_ot_apply_context_t *c, শূন্য *external_cache, hb_priority<0>) HB_RETURN (যৌক্তিক, obj->apply (c) )
   template <typename T>
-  static inline bool apply_cached_to (const void *obj, hb_ot_apply_context_t *c, void *external_cache)
+  স্থির অন্তঃরেখ যৌক্তিক apply_cached_to (ধ্রুবক শূন্য *obj, hb_ot_apply_context_t *c, শূন্য *external_cache)
   {
-    const T *typed_obj = (const T *) obj;
-    return apply_cached_ (typed_obj, c, external_cache, hb_prioritize);
+    ধ্রুবক T *typed_obj = (ধ্রুবক T *) obj;
+    ফেরত apply_cached_ (typed_obj, c, external_cache, hb_prioritize);
   }
 
   template <typename T>
-  static inline auto cache_func_ (hb_ot_apply_context_t *c,
+  স্থির অন্তঃরেখ auto cache_func_ (hb_ot_apply_context_t *c,
 				  hb_ot_subtable_cache_op_t op,
-				  hb_priority<1>) HB_RETURN (bool, T::cache_func (c, op) )
-  template <typename T=void>
-  static inline bool cache_func_ (hb_ot_apply_context_t *c,
+				  hb_priority<1>) HB_RETURN (যৌক্তিক, T::cache_func (c, op) )
+  template <typename T=শূন্য>
+  স্থির অন্তঃরেখ যৌক্তিক cache_func_ (hb_ot_apply_context_t *c,
 				  hb_ot_subtable_cache_op_t op HB_UNUSED,
-				  hb_priority<0>) { return false; }
+				  hb_priority<0>) { ফেরত মিথ্যা; }
   template <typename Type>
-  static inline bool cache_func_to (hb_ot_apply_context_t *c,
+  স্থির অন্তঃরেখ যৌক্তিক cache_func_to (hb_ot_apply_context_t *c,
 				    hb_ot_subtable_cache_op_t op)
   {
-    return cache_func_<Type> (c, op, hb_prioritize);
+    ফেরত cache_func_<Type> (c, op, hb_prioritize);
   }
 #endif
 
-  typedef bool (*hb_apply_func_t) (const void *obj, hb_ot_apply_context_t *c, void *external_cache);
-  typedef bool (*hb_cache_func_t) (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op);
+  প্রকারলেখ যৌক্তিক (*hb_apply_func_t) (ধ্রুবক শূন্য *obj, hb_ot_apply_context_t *c, শূন্য *external_cache);
+  প্রকারলেখ যৌক্তিক (*hb_cache_func_t) (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op);
 
-  struct hb_applicable_t
+  কাঠামো hb_applicable_t
   {
-    friend struct hb_accelerate_subtables_context_t;
-    friend struct hb_ot_layout_lookup_accelerator_t;
+    friend কাঠামো hb_accelerate_subtables_context_t;
+    friend কাঠামো hb_ot_layout_lookup_accelerator_t;
 
     template <typename T>
-    void init (const T &obj_,
+    শূন্য init (ধ্রুবক T &obj_,
 	       hb_apply_func_t apply_func_
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
 	       , hb_apply_func_t apply_cached_func_
 	       , hb_cache_func_t cache_func_
-	       , void *external_cache_
+	       , শূন্য *external_cache_
 #endif
 		)
     {
@@ -1480,74 +1480,74 @@ struct hb_accelerate_subtables_context_t :
     }
 
 #ifdef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    bool apply (hb_ot_apply_context_t *c) const
+    যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
     {
-      return digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, nullptr);
+      ফেরত digest.may_have (c->বাফার->cur().codepoint) && apply_func (obj, c, nullptr);
     }
-    bool apply_no_digest (hb_ot_apply_context_t *c) const
+    যৌক্তিক apply_no_digest (hb_ot_apply_context_t *c) ধ্রুবক
     {
-      return apply_func (obj, c, nullptr);
+      ফেরত apply_func (obj, c, nullptr);
     }
-#else
-    bool apply (hb_ot_apply_context_t *c) const
+#অন্যথা
+    যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
     {
-      return digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, external_cache);
+      ফেরত digest.may_have (c->বাফার->cur().codepoint) && apply_func (obj, c, external_cache);
     }
-    bool apply_cached (hb_ot_apply_context_t *c) const
+    যৌক্তিক apply_cached (hb_ot_apply_context_t *c) ধ্রুবক
     {
-      return digest.may_have (c->buffer->cur().codepoint) &&  apply_cached_func (obj, c, external_cache);
+      ফেরত digest.may_have (c->বাফার->cur().codepoint) &&  apply_cached_func (obj, c, external_cache);
     }
-    bool apply_no_digest (hb_ot_apply_context_t *c) const
+    যৌক্তিক apply_no_digest (hb_ot_apply_context_t *c) ধ্রুবক
     {
-      return apply_func (obj, c, external_cache);
+      ফেরত apply_func (obj, c, external_cache);
     }
-    bool apply_cached_no_digest (hb_ot_apply_context_t *c) const
+    যৌক্তিক apply_cached_no_digest (hb_ot_apply_context_t *c) ধ্রুবক
     {
-      return apply_cached_func (obj, c, external_cache);
+      ফেরত apply_cached_func (obj, c, external_cache);
     }
 
-    bool cache_enter (hb_ot_apply_context_t *c) const
+    যৌক্তিক cache_enter (hb_ot_apply_context_t *c) ধ্রুবক
     {
-      return cache_func (c, hb_ot_subtable_cache_op_t::ENTER);
+      ফেরত cache_func (c, hb_ot_subtable_cache_op_t::ENTER);
     }
-    void cache_leave (hb_ot_apply_context_t *c) const
+    শূন্য cache_leave (hb_ot_apply_context_t *c) ধ্রুবক
     {
       cache_func (c, hb_ot_subtable_cache_op_t::LEAVE);
     }
 #endif
 
-    private:
-    const void *obj;
+    ব্যক্তিগত:
+    ধ্রুবক শূন্য *obj;
     hb_apply_func_t apply_func;
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     hb_apply_func_t apply_cached_func;
     hb_cache_func_t cache_func;
-    void *external_cache;
+    শূন্য *external_cache;
 #endif
     hb_set_digest_t digest;
   };
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   template <typename T>
-  auto cache_cost (const T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.cache_cost () )
+  auto cache_cost (ধ্রুবক T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.cache_cost () )
   template <typename T>
-  auto cache_cost (const T &obj, hb_priority<0>) HB_AUTO_RETURN ( 0u )
+  auto cache_cost (ধ্রুবক T &obj, hb_priority<0>) HB_AUTO_RETURN ( 0u )
 
   template <typename T>
-  auto external_cache_create (const T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.external_cache_create () )
+  auto external_cache_create (ধ্রুবক T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.external_cache_create () )
   template <typename T>
-  auto external_cache_create (const T &obj, hb_priority<0>) HB_AUTO_RETURN ( nullptr )
+  auto external_cache_create (ধ্রুবক T &obj, hb_priority<0>) HB_AUTO_RETURN ( nullptr )
 #endif
 
   /* Dispatch interface. */
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (ধ্রুবক T &obj)
   {
     collect_second_glyphs_ (obj, &digest_second, hb_prioritize);
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    void *external_cache = nullptr;
-    if (i < 8)
+    শূন্য *external_cache = nullptr;
+    যদি (i < 8)
       external_cache = external_cache_create (obj, hb_prioritize);
 #endif
 
@@ -1572,16 +1572,16 @@ struct hb_accelerate_subtables_context_t :
      * and we allocate the cache opportunity to the costliest subtable.
      */
     unsigned cost = cache_cost (obj, hb_prioritize);
-    if (cost > subtable_cache_user_cost)
+    যদি (cost > subtable_cache_user_cost)
     {
       subtable_cache_user_idx = i - 1;
       subtable_cache_user_cost = cost;
     }
 #endif
 
-    return hb_empty_t ();
+    ফেরত hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  স্থির return_t default_return_মান () { ফেরত hb_empty_t (); }
 
   hb_accelerate_subtables_context_t (hb_applicable_t *array_) :
 				     array (array_) {}
@@ -1597,88 +1597,88 @@ struct hb_accelerate_subtables_context_t :
 };
 
 
-typedef bool (*intersects_func_t) (const hb_set_t *glyphs, unsigned value, const void *data, void *cache);
-typedef void (*intersected_glyphs_func_t) (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, void *cache);
-typedef void (*collect_glyphs_func_t) (hb_set_t *glyphs, unsigned value, const void *data);
-typedef bool (*match_func_t) (hb_glyph_info_t &info, unsigned value, const void *data);
-typedef unsigned (*get_value_func_t) (hb_glyph_info_t &info, const void *data);
+প্রকারলেখ যৌক্তিক (*intersects_func_t) (ধ্রুবক hb_set_t *glyphs, unsigned value, ধ্রুবক শূন্য *তথ্য, শূন্য *cache);
+প্রকারলেখ শূন্য (*intersected_glyphs_func_t) (ধ্রুবক hb_set_t *glyphs, ধ্রুবক শূন্য *তথ্য, unsigned value, hb_set_t *intersected_glyphs, শূন্য *cache);
+প্রকারলেখ শূন্য (*collect_glyphs_func_t) (hb_set_t *glyphs, unsigned value, ধ্রুবক শূন্য *তথ্য);
+প্রকারলেখ যৌক্তিক (*match_func_t) (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য);
+প্রকারলেখ unsigned (*get_মান_func_t) (hb_glyph_info_t &info, ধ্রুবক শূন্য *তথ্য);
 
 /* One word per RuleSet, summarizing the classes accepted at the first
  * input position after the current glyph.  Collisions only cause extra work. */
-struct hb_ot_layout_ruleset_digest_t
+কাঠামো hb_ot_layout_ruleset_digest_t
 {
-  void init () { mask = 0; }
-  void set_full () { mask = (uint64_t) -1; }
-  void add (unsigned value) { mask |= (uint64_t) 1 << (value & 63); }
-  bool may_have (unsigned value) const { return mask & ((uint64_t) 1 << (value & 63)); }
+  শূন্য init () { mask = 0; }
+  শূন্য set_full () { mask = (uint64_t) -1; }
+  শূন্য add (unsigned value) { mask |= (uint64_t) 1 << (value & 63); }
+  যৌক্তিক may_have (unsigned value) ধ্রুবক { ফেরত mask & ((uint64_t) 1 << (value & 63)); }
 
   uint64_t mask;
 };
 
-struct ContextClosureFuncs
+কাঠামো ContextClosureFuncs
 {
   intersects_func_t intersects;
   intersected_glyphs_func_t intersected_glyphs;
 };
-struct ContextCollectGlyphsFuncs
+কাঠামো ContextCollectGlyphsFuncs
 {
   collect_glyphs_func_t collect;
 };
-struct ContextApplyFuncs
+কাঠামো ContextApplyFuncs
 {
   match_func_t match;
 };
-struct ChainContextApplyFuncs
+কাঠামো ChainContextApplyFuncs
 {
   match_func_t match[3];
 };
 
 
-static inline bool intersects_glyph (const hb_set_t *glyphs, unsigned value, const void *data HB_UNUSED, void *cache HB_UNUSED)
+স্থির অন্তঃরেখ যৌক্তিক intersects_glyph (ধ্রুবক hb_set_t *glyphs, unsigned value, ধ্রুবক শূন্য *তথ্য HB_UNUSED, শূন্য *cache HB_UNUSED)
 {
-  return glyphs->has (value);
+  ফেরত glyphs->has (value);
 }
-static inline bool intersects_class (const hb_set_t *glyphs, unsigned value, const void *data, void *cache)
+স্থির অন্তঃরেখ যৌক্তিক intersects_class (ধ্রুবক hb_set_t *glyphs, unsigned value, ধ্রুবক শূন্য *তথ্য, শূন্য *cache)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *>(তথ্য);
   hb_map_t *map = (hb_map_t *) cache;
 
   hb_codepoint_t *cached_v;
-  if (map->has (value, &cached_v))
-    return *cached_v;
+  যদি (map->has (value, &cached_v))
+    ফেরত *cached_v;
 
-  bool v = class_def.intersects_class (glyphs, value);
+  যৌক্তিক v = class_def.intersects_class (glyphs, value);
   map->set (value, v);
 
-  return v;
+  ফেরত v;
 }
-static inline bool intersects_coverage (const hb_set_t *glyphs, unsigned value, const void *data, void *cache HB_UNUSED)
+স্থির অন্তঃরেখ যৌক্তিক intersects_coverage (ধ্রুবক hb_set_t *glyphs, unsigned value, ধ্রুবক শূন্য *তথ্য, শূন্য *cache HB_UNUSED)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
-  return (data+coverage).intersects (glyphs);
+  ফেরত (তথ্য+coverage).intersects (glyphs);
 }
 
 
-static inline void intersected_glyph (const hb_set_t *glyphs HB_UNUSED, const void *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED void *cache)
+স্থির অন্তঃরেখ শূন্য intersected_glyph (ধ্রুবক hb_set_t *glyphs HB_UNUSED, ধ্রুবক শূন্য *তথ্য, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED শূন্য *cache)
 {
-  unsigned g = reinterpret_cast<const HBUINT16 *>(data)[value];
+  unsigned g = reinterpret_cast<ধ্রুবক HBUINT16 *>(তথ্য)[value];
   intersected_glyphs->add (g);
 }
 
 using intersected_class_cache_t = hb_hashmap_t<unsigned, hb_set_t>;
 
-static inline void intersected_class_glyphs (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, void *cache)
+স্থির অন্তঃরেখ শূন্য intersected_class_glyphs (ধ্রুবক hb_set_t *glyphs, ধ্রুবক শূন্য *তথ্য, unsigned value, hb_set_t *intersected_glyphs, শূন্য *cache)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *>(তথ্য);
 
   intersected_class_cache_t *map = (intersected_class_cache_t *) cache;
 
   hb_set_t *cached_v;
-  if (map->has (value, &cached_v))
+  যদি (map->has (value, &cached_v))
   {
     intersected_glyphs->union_ (*cached_v);
-    return;
+    ফেরত;
   }
 
   hb_set_t v;
@@ -1689,263 +1689,263 @@ static inline void intersected_class_glyphs (const hb_set_t *glyphs, const void 
   map->set (value, std::move (v));
 }
 
-static inline void intersected_coverage_glyphs (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED void *cache)
+স্থির অন্তঃরেখ শূন্য intersected_coverage_glyphs (ধ্রুবক hb_set_t *glyphs, ধ্রুবক শূন্য *তথ্য, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED শূন্য *cache)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
-  (data+coverage).intersect_set (*glyphs, *intersected_glyphs);
+  (তথ্য+coverage).intersect_set (*glyphs, *intersected_glyphs);
 }
 
 
-static inline bool array_is_subset_of (const hb_set_t *glyphs,
-				       unsigned int count,
-				       glyph_data_t values,
+স্থির অন্তঃরেখ যৌক্তিক array_is_subset_of (ধ্রুবক hb_set_t *glyphs,
+				       unsigned পূর্ণসংখ্যা গুনতি,
+				       glyph_তথ্য_t values,
 				       intersects_func_t intersects_func,
-				       const void *intersects_data,
-				       void *cache)
+				       ধ্রুবক শূন্য *intersects_তথ্য,
+				       শূন্য *cache)
 {
-  for (unsigned i = 0; i < count; i++)
-    if (!intersects_func (glyphs, values[i], intersects_data, cache)) return false;
-  return true;
+  জন্য (unsigned i = 0; i < গুনতি; i++)
+    যদি (!intersects_func (glyphs, values[i], intersects_তথ্য, cache)) ফেরত মিথ্যা;
+  ফেরত সত্য;
 }
 
 
-static inline void collect_glyph (hb_set_t *glyphs, unsigned value, const void *data HB_UNUSED)
+স্থির অন্তঃরেখ শূন্য collect_glyph (hb_set_t *glyphs, unsigned value, ধ্রুবক শূন্য *তথ্য HB_UNUSED)
 {
   glyphs->add (value);
 }
-static inline void collect_class (hb_set_t *glyphs, unsigned value, const void *data)
+স্থির অন্তঃরেখ শূন্য collect_class (hb_set_t *glyphs, unsigned value, ধ্রুবক শূন্য *তথ্য)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *>(তথ্য);
   class_def.collect_class (glyphs, value);
 }
-static inline void collect_coverage (hb_set_t *glyphs, unsigned value, const void *data)
+স্থির অন্তঃরেখ শূন্য collect_coverage (hb_set_t *glyphs, unsigned value, ধ্রুবক শূন্য *তথ্য)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
-  (data+coverage).collect_coverage (glyphs);
+  (তথ্য+coverage).collect_coverage (glyphs);
 }
 
-inline const hb_set_t *
-hb_depend_context_t::find_or_create_glyph_set (const void *data,
+অন্তঃরেখ ধ্রুবক hb_set_t *
+hb_depend_context_t::find_or_create_glyph_set (ধ্রুবক শূন্য *তথ্য,
                                                 unsigned value,
                                                 glyph_set_type_t type)
 {
   /* Class definitions and coverages are immutable for the lifetime of the
    * context, so their expanded glyph sets can be shared across traversals. */
-  glyph_set_cache_key_t key (data, value, type);
+  glyph_set_cache_চাবি_t key (তথ্য, value, type);
   hb_codepoint_t *existing = nullptr;
-  if (glyph_set_to_index.has (key, &existing))
-    return glyph_sets[*existing].get ();
+  যদি (glyph_set_to_সূচক.has (key, &existing))
+    ফেরত glyph_sets[*existing].get ();
 
   hb_set_t *set = hb_object_create<hb_set_t> ();
-  if (unlikely (!set))
+  যদি (unlikely (!set))
   {
-    depend_data->fail ();
-    return nullptr;
+    depend_তথ্য->fail ();
+    ফেরত nullptr;
   }
 
-  if (type == GLYPH_SET_COVERAGE)
-    collect_coverage (set, value, data);
-  else if (type == GLYPH_SET_CLASS)
-    collect_class (set, value, data);
-  else
+  যদি (type == GLYPH_SET_COVERAGE)
+    collect_coverage (set, value, তথ্য);
+  অন্যথা যদি (type == GLYPH_SET_CLASS)
+    collect_class (set, value, তথ্য);
+  অন্যথা
     set->add (value);
-  if (unlikely (set->in_error ()))
+  যদি (unlikely (set->in_error ()))
   {
     hb_set_destroy (set);
-    depend_data->fail ();
-    return nullptr;
+    depend_তথ্য->fail ();
+    ফেরত nullptr;
   }
 
-  hb_codepoint_t index = glyph_sets.length;
-  if (unlikely (!glyph_sets.push_or_fail (hb::unique_ptr<hb_set_t> {set})))
+  hb_codepoint_t সূচক_2 = glyph_sets.দৈর্ঘ্য;
+  যদি (unlikely (!glyph_sets.ঠেলো_or_fail (hb::unique_ptr<hb_set_t> {set})))
   {
-    depend_data->fail ();
-    return nullptr;
+    depend_তথ্য->fail ();
+    ফেরত nullptr;
   }
-  if (unlikely (!glyph_set_to_index.set (key, index)))
+  যদি (unlikely (!glyph_set_to_সূচক.set (key, সূচক_2)))
   {
-    depend_data->fail ();
-    return nullptr;
+    depend_তথ্য->fail ();
+    ফেরত nullptr;
   }
-  return glyph_sets[index].get ();
+  ফেরত glyph_sets[সূচক_2].get ();
 }
 
-inline hb_codepoint_t
-hb_depend_context_t::find_or_create_cached_context_set (const hb_set_t *set)
+অন্তঃরেখ hb_codepoint_t
+hb_depend_context_t::find_or_create_cached_context_set (ধ্রুবক hb_set_t *set)
 {
   uintptr_t key = (uintptr_t) set;
   hb_codepoint_t *existing = nullptr;
-  if (cached_context_set_indices.has (key, &existing))
-    return *existing;
+  যদি (cached_context_set_indices.has (key, &existing))
+    ফেরত *existing;
 
-  hb_codepoint_t index = depend_data->find_or_create_context_set (*set);
-  if (unlikely (index == HB_CODEPOINT_INVALID))
-    return HB_CODEPOINT_INVALID;
-  if (unlikely (!cached_context_set_indices.set (key, index)))
-    return depend_data->fail_invalid ();
-  return index;
+  hb_codepoint_t সূচক_2 = depend_তথ্য->find_or_create_context_set (*set);
+  যদি (unlikely (সূচক_2 == HB_CODEPOINT_INVALID))
+    ফেরত HB_CODEPOINT_INVALID;
+  যদি (unlikely (!cached_context_set_indices.set (key, সূচক_2)))
+    ফেরত depend_তথ্য->fail_invalid ();
+  ফেরত সূচক_2;
 }
 
-static inline void collect_array (hb_collect_glyphs_context_t *c HB_UNUSED,
+স্থির অন্তঃরেখ শূন্য collect_array (hb_collect_glyphs_context_t *c HB_UNUSED,
 				  hb_set_t *glyphs,
-				  unsigned int count,
-				  glyph_data_t values,
+				  unsigned পূর্ণসংখ্যা গুনতি,
+				  glyph_তথ্য_t values,
 				  collect_glyphs_func_t collect_func,
-				  const void *collect_data)
+				  ধ্রুবক শূন্য *collect_তথ্য)
 {
-  for (unsigned i = 0; i < count; i++)
-    collect_func (glyphs, values[i], collect_data);
+  জন্য (unsigned i = 0; i < গুনতি; i++)
+    collect_func (glyphs, values[i], collect_তথ্য);
 }
 
 
-static inline bool match_always (hb_glyph_info_t &info HB_UNUSED, unsigned value HB_UNUSED, const void *data HB_UNUSED)
+স্থির অন্তঃরেখ যৌক্তিক match_always (hb_glyph_info_t &info HB_UNUSED, unsigned value HB_UNUSED, ধ্রুবক শূন্য *তথ্য HB_UNUSED)
 {
-  return true;
+  ফেরত সত্য;
 }
-static inline bool match_glyph (hb_glyph_info_t &info, unsigned value, const void *data HB_UNUSED)
+স্থির অন্তঃরেখ যৌক্তিক match_glyph (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য HB_UNUSED)
 {
-  return info.codepoint == value;
+  ফেরত info.codepoint == value;
 }
-static inline bool match_class (hb_glyph_info_t &info, unsigned value, const void *data)
+স্থির অন্তঃরেখ যৌক্তিক match_class (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return class_def.get_class (info.codepoint) == value;
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *>(তথ্য);
+  ফেরত class_def.get_class (info.codepoint) == value;
 }
-static inline unsigned get_class_value (hb_glyph_info_t &info, const void *data)
+স্থির অন্তঃরেখ unsigned get_class_মান (hb_glyph_info_t &info, ধ্রুবক শূন্য *তথ্য)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return class_def.get_class (info.codepoint);
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *> (তথ্য);
+  ফেরত class_def.get_class (info.codepoint);
 }
-struct match_class_cache_data_t
+কাঠামো match_class_cache_তথ্য_t
 {
-  const ClassDef *class_def;
+  ধ্রুবক ClassDef *class_def;
   hb_ot_layout_mapping_cache_t *cache;
 };
-static inline bool match_class_cache (hb_glyph_info_t &info, unsigned value, const void *data)
+স্থির অন্তঃরেখ যৌক্তিক match_class_cache (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য)
 {
-  const auto &cache_data = *reinterpret_cast<const match_class_cache_data_t *> (data);
-  return cache_data.class_def->get_class (info.codepoint, cache_data.cache) == value;
+  ধ্রুবক auto &cache_তথ্য = *reinterpret_cast<ধ্রুবক match_class_cache_তথ্য_t *> (তথ্য);
+  ফেরত cache_তথ্য.class_def->get_class (info.codepoint, cache_তথ্য.cache) == value;
 }
-static inline unsigned get_class_cache_value (hb_glyph_info_t &info, const void *data)
+স্থির অন্তঃরেখ unsigned get_class_cache_মান (hb_glyph_info_t &info, ধ্রুবক শূন্য *তথ্য)
 {
-  const auto &cache_data = *reinterpret_cast<const match_class_cache_data_t *> (data);
-  return cache_data.class_def->get_class (info.codepoint, cache_data.cache);
+  ধ্রুবক auto &cache_তথ্য = *reinterpret_cast<ধ্রুবক match_class_cache_তথ্য_t *> (তথ্য);
+  ফেরত cache_তথ্য.class_def->get_class (info.codepoint, cache_তথ্য.cache);
 }
-static inline unsigned get_class_cached (const ClassDef &class_def, hb_glyph_info_t &info)
+স্থির অন্তঃরেখ unsigned get_class_cached (ধ্রুবক ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = info.syllable();
-  if (klass < 255)
-    return klass;
+  যদি (klass < 255)
+    ফেরত klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 255))
+  যদি (likely (klass < 255))
     info.syllable() = klass;
-  return klass;
+  ফেরত klass;
 }
-static inline bool match_class_cached (hb_glyph_info_t &info, unsigned value, const void *data)
+স্থির অন্তঃরেখ যৌক্তিক match_class_cached (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached (class_def, info) == value;
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *>(তথ্য);
+  ফেরত get_class_cached (class_def, info) == value;
 }
-static inline unsigned get_class_cached_value (hb_glyph_info_t &info, const void *data)
+স্থির অন্তঃরেখ unsigned get_class_cached_মান (hb_glyph_info_t &info, ধ্রুবক শূন্য *তথ্য)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return get_class_cached (class_def, info);
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *> (তথ্য);
+  ফেরত get_class_cached (class_def, info);
 }
-static inline unsigned get_class_cached1 (const ClassDef &class_def, hb_glyph_info_t &info)
+স্থির অন্তঃরেখ unsigned get_class_cached1 (ধ্রুবক ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = info.syllable() & 0x0F;
-  if (klass < 15)
-    return klass;
+  যদি (klass < 15)
+    ফেরত klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 15))
+  যদি (likely (klass < 15))
     info.syllable() = (info.syllable() & 0xF0) | klass;
-  return klass;
+  ফেরত klass;
 }
-static inline bool match_class_cached1 (hb_glyph_info_t &info, unsigned value, const void *data)
+স্থির অন্তঃরেখ যৌক্তিক match_class_cached1 (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached1 (class_def, info) == value;
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *>(তথ্য);
+  ফেরত get_class_cached1 (class_def, info) == value;
 }
-static inline unsigned get_class_cached2 (const ClassDef &class_def, hb_glyph_info_t &info)
+স্থির অন্তঃরেখ unsigned get_class_cached2 (ধ্রুবক ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = (info.syllable() & 0xF0) >> 4;
-  if (klass < 15)
-    return klass;
+  যদি (klass < 15)
+    ফেরত klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 15))
+  যদি (likely (klass < 15))
     info.syllable() = (info.syllable() & 0x0F) | (klass << 4);
-  return klass;
+  ফেরত klass;
 }
-static inline bool match_class_cached2 (hb_glyph_info_t &info, unsigned value, const void *data)
+স্থির অন্তঃরেখ যৌক্তিক match_class_cached2 (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached2 (class_def, info) == value;
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *>(তথ্য);
+  ফেরত get_class_cached2 (class_def, info) == value;
 }
-static inline unsigned get_class_cached2_value (hb_glyph_info_t &info, const void *data)
+স্থির অন্তঃরেখ unsigned get_class_cached2_মান (hb_glyph_info_t &info, ধ্রুবক শূন্য *তথ্য)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return get_class_cached2 (class_def, info);
+  ধ্রুবক ClassDef &class_def = *reinterpret_cast<ধ্রুবক ClassDef *> (তথ্য);
+  ফেরত get_class_cached2 (class_def, info);
 }
-static inline bool match_coverage (hb_glyph_info_t &info, unsigned value, const void *data)
+স্থির অন্তঃরেখ যৌক্তিক match_coverage (hb_glyph_info_t &info, unsigned value, ধ্রুবক শূন্য *তথ্য)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
-  return (data+coverage).get_coverage (info.codepoint) != NOT_COVERED;
+  ফেরত (তথ্য+coverage).get_coverage (info.codepoint) != NOT_COVERED;
 }
 
-static inline bool would_match_input (hb_would_apply_context_t *c,
-				      unsigned int count, /* Including the first glyph (not matched) */
-				      glyph_data_t input, /* Array of input values--start with second glyph */
+স্থির অন্তঃরেখ যৌক্তিক would_match_প্রবেশ (hb_would_apply_context_t *c,
+				      unsigned পূর্ণসংখ্যা গুনতি, /* Including the first glyph (not matched) */
+				      glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
 				      match_func_t match_func,
-				      const void *match_data)
+				      ধ্রুবক শূন্য *match_তথ্য_2)
 {
-  if (count != c->len)
-    return false;
+  যদি (গুনতি != c->len)
+    ফেরত মিথ্যা;
 
-  for (unsigned int i = 1; i < count; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = 1; i < গুনতি; i++)
   {
     hb_glyph_info_t info;
     info.codepoint = c->glyphs[i];
-    if (likely (!match_func (info, input[i - 1], match_data)))
-      return false;
+    যদি (likely (!match_func (info, প্রবেশ[i - 1], match_তথ্য_2)))
+      ফেরত মিথ্যা;
   }
 
-  return true;
+  ফেরত সত্য;
 }
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
 HB_ALWAYS_INLINE
-#else
-inline
+#অন্যথা
+অন্তঃরেখ
 #endif
-static bool match_input (hb_ot_apply_context_t *c,
-			 unsigned int count, /* Including the first glyph (not matched) */
-			 glyph_data_t input, /* Array of input values--start with second glyph */
+স্থির যৌক্তিক match_প্রবেশ (hb_ot_apply_context_t *c,
+			 unsigned পূর্ণসংখ্যা গুনতি, /* Including the first glyph (not matched) */
+			 glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
 			 match_func_t match_func,
-			 const void *match_data,
-			 unsigned int *end_position,
-			 unsigned int *p_total_component_count = nullptr)
+			 ধ্রুবক শূন্য *match_তথ্য_2,
+			 unsigned পূর্ণসংখ্যা *end_position,
+			 unsigned পূর্ণসংখ্যা *p_যোগ_component_গুনতি = nullptr)
 {
   TRACE_APPLY (nullptr);
 
-  hb_buffer_t *buffer = c->buffer;
+  hb_বাফার_t *বাফার = c->বাফার;
 
-  if (count == 1)
+  যদি (গুনতি == 1)
   {
-    *end_position = buffer->idx + 1;
-    c->match_positions[0] = buffer->idx;
-    if (p_total_component_count)
-      *p_total_component_count = _hb_glyph_info_get_lig_num_comps (&buffer->cur());
-    return_trace (true);
+    *end_position = বাফার->idx + 1;
+    c->match_positions[0] = বাফার->idx;
+    যদি (p_যোগ_component_গুনতি)
+      *p_যোগ_component_গুনতি = hb_glyph_info_get_lig_অঙ্ক_comps (&বাফার->cur());
+    return_trace (সত্য);
   }
 
-  if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return_trace (false);
+  যদি (unlikely (গুনতি > HB_MAX_CONTEXT_দৈর্ঘ্য)) return_trace (মিথ্যা);
 
-  auto &skippy_iter = c->iter_input;
-  skippy_iter.reset (buffer->idx);
-  skippy_iter.set_match_func (match_func, match_data);
-  skippy_iter.set_glyph_data (input);
+  auto &skippy_iter = c->iter_প্রবেশ;
+  skippy_iter.reset (বাফার->idx);
+  skippy_iter.set_match_func (match_func, match_তথ্য_2);
+  skippy_iter.set_glyph_তথ্য (প্রবেশ);
 
   /*
    * This is perhaps the trickiest part of OpenType...  Remarks:
@@ -1971,104 +1971,104 @@ static bool match_input (hb_ot_apply_context_t *c,
    *     https://github.com/harfbuzz/harfbuzz/issues/545
    */
 
-  unsigned int total_component_count = 0;
+  unsigned পূর্ণসংখ্যা যোগ_component_গুনতি = 0;
 
-  unsigned int first_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-  unsigned int first_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
+  unsigned পূর্ণসংখ্যা first_lig_id = _hb_glyph_info_get_lig_id (&বাফার->cur());
+  unsigned পূর্ণসংখ্যা first_lig_comp = _hb_glyph_info_get_lig_comp (&বাফার->cur());
 
-  enum {
+  গণনা {
     LIGBASE_NOT_CHECKED,
     LIGBASE_MAY_NOT_SKIP,
     LIGBASE_MAY_SKIP
   } ligbase = LIGBASE_NOT_CHECKED;
 
-  for (unsigned int i = 1; i < count; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = 1; i < গুনতি; i++)
   {
     unsigned unsafe_to;
-    if (!skippy_iter.next (&unsafe_to))
+    যদি (!skippy_iter.next (&unsafe_to))
     {
       *end_position = unsafe_to;
-      return_trace (false);
+      return_trace (মিথ্যা);
     }
 
-    if (unlikely (i + 1 > c->match_positions.length &&
+    যদি (unlikely (i + 1 > c->match_positions.দৈর্ঘ্য &&
 		  !c->match_positions.resize_dirty  (i + 1)))
-      return_trace (false);
+      return_trace (মিথ্যা);
     c->match_positions.arrayZ[i] = skippy_iter.idx;
 
-    unsigned int this_lig_id = _hb_glyph_info_get_lig_id (&buffer->info[skippy_iter.idx]);
-    unsigned int this_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->info[skippy_iter.idx]);
+    unsigned পূর্ণসংখ্যা this_lig_id = _hb_glyph_info_get_lig_id (&বাফার->info[skippy_iter.idx]);
+    unsigned পূর্ণসংখ্যা this_lig_comp = _hb_glyph_info_get_lig_comp (&বাফার->info[skippy_iter.idx]);
 
-    if (first_lig_id && first_lig_comp)
+    যদি (first_lig_id && first_lig_comp)
     {
       /* If first component was attached to a previous ligature component,
        * all subsequent components should be attached to the same ligature
        * component, otherwise we shouldn't ligate them... */
-      if (first_lig_id != this_lig_id || first_lig_comp != this_lig_comp)
+      যদি (first_lig_id != this_lig_id || first_lig_comp != this_lig_comp)
       {
 	/* ...unless, we are attached to a base ligature and that base
 	 * ligature is ignorable. */
-	if (ligbase == LIGBASE_NOT_CHECKED)
+	যদি (ligbase == LIGBASE_NOT_CHECKED)
 	{
-	  bool found = false;
-	  const auto *out = buffer->out_info;
-	  unsigned int j = buffer->out_len;
-	  while (j && _hb_glyph_info_get_lig_id (&out[j - 1]) == first_lig_id)
+	  যৌক্তিক found = মিথ্যা;
+	  ধ্রুবক auto *out = বাফার->out_info;
+	  unsigned পূর্ণসংখ্যা j = বাফার->out_len;
+	  যখন (j && _hb_glyph_info_get_lig_id (&out[j - 1]) == first_lig_id)
 	  {
-	    if (_hb_glyph_info_get_lig_comp (&out[j - 1]) == 0)
+	    যদি (_hb_glyph_info_get_lig_comp (&out[j - 1]) == 0)
 	    {
 	      j--;
-	      found = true;
-	      break;
+	      found = সত্য;
+	      বিরতি;
 	    }
 	    j--;
 	  }
 
-	  if (found && skippy_iter.may_skip (out[j]) == matcher_t::SKIP_YES)
+	  যদি (found && skippy_iter.may_skip (out[j]) == matcher_t::SKIP_YES)
 	    ligbase = LIGBASE_MAY_SKIP;
-	  else
+	  অন্যথা
 	    ligbase = LIGBASE_MAY_NOT_SKIP;
 	}
 
-	if (ligbase == LIGBASE_MAY_NOT_SKIP)
-	  return_trace (false);
+	যদি (ligbase == LIGBASE_MAY_NOT_SKIP)
+	  return_trace (মিথ্যা);
       }
     }
-    else
+    অন্যথা
     {
       /* If first component was NOT attached to a previous ligature component,
        * all subsequent components should also NOT be attached to any ligature
        * component, unless they are attached to the first component itself! */
-      if (this_lig_id && this_lig_comp && (this_lig_id != first_lig_id))
-	return_trace (false);
+      যদি (this_lig_id && this_lig_comp && (this_lig_id != first_lig_id))
+	return_trace (মিথ্যা);
     }
 
-    total_component_count += _hb_glyph_info_get_lig_num_comps_in_ligation (&buffer->info[skippy_iter.idx]);
+    যোগ_component_গুনতি += hb_glyph_info_get_lig_অঙ্ক_comps_in_ligation (&বাফার->info[skippy_iter.idx]);
   }
 
   *end_position = skippy_iter.idx + 1;
 
-  if (p_total_component_count)
+  যদি (p_যোগ_component_গুনতি)
   {
-    total_component_count += _hb_glyph_info_get_lig_num_comps (&buffer->cur());
-    *p_total_component_count = total_component_count;
+    যোগ_component_গুনতি += hb_glyph_info_get_lig_অঙ্ক_comps (&বাফার->cur());
+    *p_যোগ_component_গুনতি = যোগ_component_গুনতি;
   }
 
-  c->match_positions.arrayZ[0] = buffer->idx;
+  c->match_positions.arrayZ[0] = বাফার->idx;
 
-  return_trace (true);
+  return_trace (সত্য);
 }
-static inline bool ligate_input (hb_ot_apply_context_t *c,
-				 unsigned int count, /* Including the first glyph */
-				 unsigned int match_end,
+স্থির অন্তঃরেখ যৌক্তিক ligate_প্রবেশ (hb_ot_apply_context_t *c,
+				 unsigned পূর্ণসংখ্যা গুনতি, /* Including the first glyph */
+				 unsigned পূর্ণসংখ্যা match_end,
 				 hb_codepoint_t lig_glyph,
-				 unsigned int total_component_count)
+				 unsigned পূর্ণসংখ্যা যোগ_component_গুনতি)
 {
   TRACE_APPLY (nullptr);
 
-  hb_buffer_t *buffer = c->buffer;
+  hb_বাফার_t *বাফার = c->বাফার;
 
-  buffer->merge_clusters (buffer->idx, match_end);
+  বাফার->merge_clusters (বাফার->idx, match_end);
 
   /* - If a base and one or more marks ligate, consider that as a base, NOT
    *   ligature, such that all following marks can still attach to it.
@@ -2102,366 +2102,366 @@ static inline bool ligate_input (hb_ot_apply_context_t *c,
    *   https://bugzilla.gnome.org/show_bug.cgi?id=437633
    */
 
-  bool is_base_ligature = _hb_glyph_info_is_base_glyph (&buffer->info[c->match_positions.arrayZ[0]]);
-  bool is_mark_ligature = _hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[0]]);
-  for (unsigned int i = 1; i < count; i++)
-    if (!_hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[i]]))
+  যৌক্তিক is_base_ligature = _hb_glyph_info_is_base_glyph (&বাফার->info[c->match_positions.arrayZ[0]]);
+  যৌক্তিক is_mark_ligature = _hb_glyph_info_is_mark (&বাফার->info[c->match_positions.arrayZ[0]]);
+  জন্য (unsigned পূর্ণসংখ্যা i = 1; i < গুনতি; i++)
+    যদি (!_hb_glyph_info_is_mark (&বাফার->info[c->match_positions.arrayZ[i]]))
     {
-      is_base_ligature = false;
-      is_mark_ligature = false;
-      break;
+      is_base_ligature = মিথ্যা;
+      is_mark_ligature = মিথ্যা;
+      বিরতি;
     }
-  bool is_ligature = !is_base_ligature && !is_mark_ligature;
+  যৌক্তিক is_ligature = !is_base_ligature && !is_mark_ligature;
 
-  unsigned int klass = is_ligature ? HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE : 0;
-  unsigned int lig_id = is_ligature ? _hb_allocate_lig_id (buffer) : 0;
-  unsigned int last_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-  unsigned int last_num_components = _hb_glyph_info_get_lig_num_comps (&buffer->cur());
-  unsigned int components_so_far = last_num_components;
+  unsigned পূর্ণসংখ্যা klass = is_ligature ? HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE : 0;
+  unsigned পূর্ণসংখ্যা lig_id = is_ligature ? _hb_allocate_lig_id (বাফার) : 0;
+  unsigned পূর্ণসংখ্যা last_lig_id = _hb_glyph_info_get_lig_id (&বাফার->cur());
+  unsigned পূর্ণসংখ্যা last_অঙ্ক_components = hb_glyph_info_get_lig_অঙ্ক_comps (&বাফার->cur());
+  unsigned পূর্ণসংখ্যা components_so_far = last_অঙ্ক_components;
 
-  if (is_ligature)
+  যদি (is_ligature)
   {
-    _hb_glyph_info_set_lig_props_for_ligature (&buffer->cur(), lig_id, total_component_count);
-    if (_hb_glyph_info_get_general_category (&buffer->cur()) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
+    _hb_glyph_info_set_lig_props_for_ligature (&বাফার->cur(), lig_id, যোগ_component_গুনতি);
+    যদি (_hb_glyph_info_get_general_category (&বাফার->cur()) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
     {
-      _hb_glyph_info_set_general_category (&buffer->cur(), HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER);
+      _hb_glyph_info_set_general_category (&বাফার->cur(), HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER);
     }
   }
   c->replace_glyph_with_ligature (lig_glyph, klass);
 
-  for (unsigned int i = 1; i < count; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = 1; i < গুনতি; i++)
   {
-    while (buffer->idx < c->match_positions.arrayZ[i] && buffer->successful)
+    যখন (বাফার->idx < c->match_positions.arrayZ[i] && বাফার->successful)
     {
-      if (is_ligature)
+      যদি (is_ligature)
       {
-	unsigned int this_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
-	if (this_comp == 0)
-	  this_comp = last_num_components;
-	assert (components_so_far >= last_num_components);
-	unsigned int new_lig_comp = components_so_far - last_num_components +
-				    hb_min (this_comp, last_num_components);
-	  _hb_glyph_info_set_lig_props_for_mark (&buffer->cur(), lig_id, new_lig_comp);
+	unsigned পূর্ণসংখ্যা this_comp = _hb_glyph_info_get_lig_comp (&বাফার->cur());
+	যদি (this_comp == 0)
+	  this_comp = last_অঙ্ক_components;
+	প্রতিজ্ঞা (components_so_far >= last_অঙ্ক_components);
+	unsigned পূর্ণসংখ্যা new_lig_comp = components_so_far - last_অঙ্ক_components +
+				    hb_min (this_comp, last_অঙ্ক_components);
+	  _hb_glyph_info_set_lig_props_for_mark (&বাফার->cur(), lig_id, new_lig_comp);
       }
-      (void) buffer->next_glyph ();
+      (শূন্য) বাফার->পরবর্তী_glyph ();
     }
 
-    last_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-    last_num_components = _hb_glyph_info_get_lig_num_comps_in_ligation (&buffer->cur());
-    components_so_far += last_num_components;
+    last_lig_id = _hb_glyph_info_get_lig_id (&বাফার->cur());
+    last_অঙ্ক_components = hb_glyph_info_get_lig_অঙ্ক_comps_in_ligation (&বাফার->cur());
+    components_so_far += last_অঙ্ক_components;
 
     /* Skip the base glyph */
-    buffer->idx++;
+    বাফার->idx++;
   }
 
-  if (!is_mark_ligature && last_lig_id)
+  যদি (!is_mark_ligature && last_lig_id)
   {
     /* Re-adjust components for any marks following. */
-    for (unsigned i = buffer->idx; i < buffer->len; ++i)
+    জন্য (unsigned i = বাফার->idx; i < বাফার->len; ++i)
     {
-      if (last_lig_id != _hb_glyph_info_get_lig_id (&buffer->info[i])) break;
+      যদি (last_lig_id != _hb_glyph_info_get_lig_id (&বাফার->info[i])) বিরতি;
 
-      unsigned this_comp = _hb_glyph_info_get_lig_comp (&buffer->info[i]);
-      if (!this_comp) break;
+      unsigned this_comp = _hb_glyph_info_get_lig_comp (&বাফার->info[i]);
+      যদি (!this_comp) বিরতি;
 
-      assert (components_so_far >= last_num_components);
-      unsigned new_lig_comp = components_so_far - last_num_components +
-			      hb_min (this_comp, last_num_components);
-      _hb_glyph_info_set_lig_props_for_mark (&buffer->info[i], lig_id, new_lig_comp);
+      প্রতিজ্ঞা (components_so_far >= last_অঙ্ক_components);
+      unsigned new_lig_comp = components_so_far - last_অঙ্ক_components +
+			      hb_min (this_comp, last_অঙ্ক_components);
+      _hb_glyph_info_set_lig_props_for_mark (&বাফার->info[i], lig_id, new_lig_comp);
     }
   }
-  return_trace (true);
+  return_trace (সত্য);
 }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
 HB_ALWAYS_INLINE
-#else
-inline
+#অন্যথা
+অন্তঃরেখ
 #endif
-static bool match_backtrack (hb_ot_apply_context_t *c,
-			     unsigned int count,
-			     glyph_data_t backtrack,
+স্থির যৌক্তিক match_backtrack (hb_ot_apply_context_t *c,
+			     unsigned পূর্ণসংখ্যা গুনতি,
+			     glyph_তথ্য_t backtrack,
 			     match_func_t match_func,
-			     const void *match_data,
-			     unsigned int *match_start)
+			     ধ্রুবক শূন্য *match_তথ্য_2,
+			     unsigned পূর্ণসংখ্যা *match_start)
 {
   TRACE_APPLY (nullptr);
 
-  if (!count)
+  যদি (!গুনতি)
   {
-    *match_start = c->buffer->backtrack_len ();
-    return_trace (true);
+    *match_start = c->বাফার->backtrack_len ();
+    return_trace (সত্য);
   }
 
   auto &skippy_iter = c->iter_context;
-  skippy_iter.reset_back (c->buffer->backtrack_len ());
-  skippy_iter.set_match_func (match_func, match_data);
-  skippy_iter.set_glyph_data (backtrack);
+  skippy_iter.reset_back (c->বাফার->backtrack_len ());
+  skippy_iter.set_match_func (match_func, match_তথ্য_2);
+  skippy_iter.set_glyph_তথ্য (backtrack);
 
-  for (unsigned int i = 0; i < count; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
   {
     unsigned unsafe_from;
-    if (!skippy_iter.prev (&unsafe_from))
+    যদি (!skippy_iter.prev (&unsafe_from))
     {
       *match_start = unsafe_from;
-      return_trace (false);
+      return_trace (মিথ্যা);
     }
   }
 
   *match_start = skippy_iter.idx;
-  return_trace (true);
+  return_trace (সত্য);
 }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
 HB_ALWAYS_INLINE
-#else
-inline
+#অন্যথা
+অন্তঃরেখ
 #endif
-static bool match_lookahead (hb_ot_apply_context_t *c,
-			     unsigned int count,
-			     glyph_data_t lookahead,
+স্থির যৌক্তিক match_lookahead (hb_ot_apply_context_t *c,
+			     unsigned পূর্ণসংখ্যা গুনতি,
+			     glyph_তথ্য_t lookahead,
 			     match_func_t match_func,
-			     const void *match_data,
-			     unsigned int start_index,
-			     unsigned int *end_index)
+			     ধ্রুবক শূন্য *match_তথ্য_2,
+			     unsigned পূর্ণসংখ্যা start_সূচক,
+			     unsigned পূর্ণসংখ্যা *end_সূচক)
 {
   TRACE_APPLY (nullptr);
 
-  if (!count)
+  যদি (!গুনতি)
   {
-    *end_index = start_index;
-    return_trace (true);
+    *end_সূচক = start_সূচক;
+    return_trace (সত্য);
   }
 
   auto &skippy_iter = c->iter_context;
-  assert (start_index >= 1);
-  skippy_iter.reset (start_index - 1);
-  skippy_iter.set_match_func (match_func, match_data);
-  skippy_iter.set_glyph_data (lookahead);
+  প্রতিজ্ঞা (start_সূচক >= 1);
+  skippy_iter.reset (start_সূচক - 1);
+  skippy_iter.set_match_func (match_func, match_তথ্য_2);
+  skippy_iter.set_glyph_তথ্য (lookahead);
 
-  for (unsigned int i = 0; i < count; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
   {
     unsigned unsafe_to;
-    if (!skippy_iter.next (&unsafe_to))
+    যদি (!skippy_iter.next (&unsafe_to))
     {
-      *end_index = unsafe_to;
-      return_trace (false);
+      *end_সূচক = unsafe_to;
+      return_trace (মিথ্যা);
     }
   }
 
-  *end_index = skippy_iter.idx + 1;
-  return_trace (true);
+  *end_সূচক = skippy_iter.idx + 1;
+  return_trace (সত্য);
 }
 
 
 
-struct LookupRecord
+কাঠামো LookupRecord
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t         *lookup_map) const
+  যৌক্তিক serialize (hb_serialize_context_t *c,
+		  ধ্রুবক hb_map_t         *lookup_map) ধ্রুবক
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (এই);
+    auto *out = c->embed (*এই);
+    যদি (unlikely (!out)) return_trace (মিথ্যা);
 
-    return_trace (c->check_assign (out->lookupListIndex, lookup_map->get (lookupListIndex), HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->check_assign (out->lookup_List_সূচক, lookup_map->get (lookup_List_সূচক), HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
-  HBUINT16	sequenceIndex;		/* Index into current glyph
+  HBUINT16	sequence_সূচক;		/* Index into current glyph
 					 * sequence--first glyph = 0 */
-  HBUINT16	lookupListIndex;	/* Lookup to apply to that
+  HBUINT16	lookup_List_সূচক;	/* Lookup to apply to that
 					 * position--zero--based */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (4);
 };
 
-static inline unsigned serialize_lookuprecord_array (hb_serialize_context_t *c,
-						     const hb_array_t<const LookupRecord> lookupRecords,
-						     const hb_map_t *lookup_map)
+স্থির অন্তঃরেখ unsigned serialize_lookuprecord_array (hb_serialize_context_t *c,
+						     ধ্রুবক hb_array_t<ধ্রুবক LookupRecord> lookupRecords,
+						     ধ্রুবক hb_map_t *lookup_map)
 {
-  unsigned count = 0;
-  for (const LookupRecord& r : lookupRecords)
+  unsigned গুনতি = 0;
+  জন্য (ধ্রুবক LookupRecord& r : lookupRecords)
   {
-    if (!lookup_map->has (r.lookupListIndex))
-      continue;
+    যদি (!lookup_map->has (r.lookup_List_সূচক))
+      চালু;
 
-    if (!r.serialize (c, lookup_map))
-      return 0;
+    যদি (!r.serialize (c, lookup_map))
+      ফেরত 0;
 
-    count++;
+    গুনতি++;
   }
-  return count;
+  ফেরত গুনতি;
 }
 
-enum ContextFormat { SimpleContext = 1, ClassBasedContext = 2, CoverageBasedContext = 3 };
+গণনা ContextFormat { SimpleContext = 1, ClassBasedContext = 2, CoverageBasedContext = 3 };
 
-static inline const hb_set_t *
+স্থির অন্তঃরেখ ধ্রুবক hb_set_t *
 depend_position_glyphs (hb_depend_context_t *c,
 			ContextFormat context_format,
-			const void *data,
+			ধ্রুবক শূন্য *তথ্য,
 			unsigned value,
-			bool filter_class_by_parent,
+			যৌক্তিক filter_class_by_parent,
 			hb_set_t *scratch,
 			hb_vector_t<unsigned> *compact_workspace = nullptr)
 {
-  switch (context_format)
+  নির্বাচন (context_format)
   {
-    case ContextFormat::SimpleContext:
-      return c->find_or_create_glyph_set (nullptr, value,
+    ক্ষেত্র ContextFormat::SimpleContext:
+      ফেরত c->find_or_create_glyph_set (nullptr, value,
                                            hb_depend_context_t::GLYPH_SET_SINGLE);
-    case ContextFormat::ClassBasedContext:
+    ক্ষেত্র ContextFormat::ClassBasedContext:
     {
-      const hb_set_t *class_set = c->find_or_create_glyph_set (
-        data, value, hb_depend_context_t::GLYPH_SET_CLASS);
-      if (unlikely (!class_set))
-	return nullptr;
-      if (!filter_class_by_parent)
-	return class_set;
+      ধ্রুবক hb_set_t *class_set = c->find_or_create_glyph_set (
+        তথ্য, value, hb_depend_context_t::GLYPH_SET_CLASS);
+      যদি (unlikely (!class_set))
+	ফেরত nullptr;
+      যদি (!filter_class_by_parent)
+	ফেরত class_set;
       scratch->set (*class_set);
       scratch->intersect (c->parent_active_glyphs (), compact_workspace);
-      break;
+      বিরতি;
     }
-    case ContextFormat::CoverageBasedContext:
-      return c->find_or_create_glyph_set (
-        data, value, hb_depend_context_t::GLYPH_SET_COVERAGE);
+    ক্ষেত্র ContextFormat::CoverageBasedContext:
+      ফেরত c->find_or_create_glyph_set (
+        তথ্য, value, hb_depend_context_t::GLYPH_SET_COVERAGE);
   }
 
-  if (unlikely (scratch->in_error ()))
+  যদি (unlikely (scratch->in_error ()))
   {
-    c->depend_data->fail ();
-    return nullptr;
+    c->depend_তথ্য->fail ();
+    ফেরত nullptr;
   }
-  return scratch;
+  ফেরত scratch;
 }
 
-static inline void context_closure_recurse_lookups (hb_closure_context_t *c,
-					     unsigned inputCount, glyph_data_t input,
-					     unsigned lookupCount,
-					     const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
+স্থির অন্তঃরেখ শূন্য context_closure_recurse_lookups (hb_closure_context_t *c,
+					     unsigned প্রবেশ_গুনতি, glyph_তথ্য_t প্রবেশ,
+					     unsigned lookup_গুনতি_2,
+					     ধ্রুবক LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
 					     unsigned value,
 					     ContextFormat context_format,
-					     const void *data,
+					     ধ্রুবক শূন্য *তথ্য,
 					     intersected_glyphs_func_t intersected_glyphs_func,
-					     void *cache)
+					     শূন্য *cache)
 {
   hb_set_t covered_seq_indicies;
   hb_set_t pos_glyphs;
-  for (unsigned int i = 0; i < lookupCount; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < lookup_গুনতি_2; i++)
   {
-    unsigned seqIndex = lookupRecord[i].sequenceIndex;
-    if (seqIndex >= inputCount) continue;
+    unsigned seq_সূচক_2 = lookupRecord[i].sequence_সূচক;
+    যদি (seq_সূচক_2 >= প্রবেশ_গুনতি) চালু;
 
-    bool has_pos_glyphs = false;
+    যৌক্তিক has_pos_glyphs = মিথ্যা;
 
-    if (!covered_seq_indicies.has (seqIndex))
+    যদি (!covered_seq_indicies.has (seq_সূচক_2))
     {
-      has_pos_glyphs = true;
+      has_pos_glyphs = সত্য;
       pos_glyphs.clear ();
-      if (seqIndex == 0)
+      যদি (seq_সূচক_2 == 0)
       {
-        switch (context_format) {
-        case ContextFormat::SimpleContext:
+        নির্বাচন (context_format) {
+        ক্ষেত্র ContextFormat::SimpleContext:
           pos_glyphs.add (value);
-          break;
-        case ContextFormat::ClassBasedContext:
-          intersected_glyphs_func (&c->parent_active_glyphs (), data, value, &pos_glyphs, cache);
-          break;
-        case ContextFormat::CoverageBasedContext:
+          বিরতি;
+        ক্ষেত্র ContextFormat::ClassBasedContext:
+          intersected_glyphs_func (&c->parent_active_glyphs (), তথ্য, value, &pos_glyphs, cache);
+          বিরতি;
+        ক্ষেত্র ContextFormat::CoverageBasedContext:
           pos_glyphs.set (c->parent_active_glyphs ());
-          break;
+          বিরতি;
         }
       }
-      else
+      অন্যথা
       {
-        const void *input_data = input.data;
-        unsigned input_value = seqIndex - 1;
-        if (context_format != ContextFormat::SimpleContext)
+        ধ্রুবক শূন্য *প্রবেশ_তথ্য = প্রবেশ.তথ্য;
+        unsigned প্রবেশ_মান = seq_সূচক_2 - 1;
+        যদি (context_format != ContextFormat::SimpleContext)
         {
-          input_data = data;
-          input_value = input[seqIndex - 1];
+          প্রবেশ_তথ্য = তথ্য;
+          প্রবেশ_মান = প্রবেশ[seq_সূচক_2 - 1];
         }
 
-        intersected_glyphs_func (c->glyphs, input_data, input_value, &pos_glyphs, cache);
+        intersected_glyphs_func (c->glyphs, প্রবেশ_তথ্য, প্রবেশ_মান, &pos_glyphs, cache);
       }
     }
 
-    covered_seq_indicies.add (seqIndex);
-    hb_set_t *cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
-    if (has_pos_glyphs) {
+    covered_seq_indicies.add (seq_সূচক_2);
+    hb_set_t *cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs))
+      ফেরত;
+    যদি (has_pos_glyphs) {
       *cur_active_glyphs = std::move (pos_glyphs);
-    } else {
+    } অন্যথা {
       *cur_active_glyphs = *c->glyphs;
     }
 
-    unsigned endIndex = inputCount;
-    if (context_format == ContextFormat::CoverageBasedContext)
-      endIndex += 1;
+    unsigned end_সূচক_2 = প্রবেশ_গুনতি;
+    যদি (context_format == ContextFormat::CoverageBasedContext)
+      end_সূচক_2 += 1;
 
-    c->recurse (lookupRecord[i].lookupListIndex, &covered_seq_indicies, seqIndex, endIndex);
+    c->recurse (lookupRecord[i].lookup_List_সূচক, &covered_seq_indicies, seq_সূচক_2, end_সূচক_2);
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 }
 
-static bool
+স্থির যৌক্তিক
 context_depend_sets_are_cached (hb_depend_context_t *c,
-				unsigned input_count,
-				unsigned lookup_count,
-				const LookupRecord lookup_records[],
-				const void *rule,
+				unsigned প্রবেশ_গুনতি_2,
+				unsigned lookup_গুনতি,
+				ধ্রুবক LookupRecord lookup_records[],
+				ধ্রুবক শূন্য *rule,
 				unsigned value,
 				ContextFormat context_format,
-				const void *data,
+				ধ্রুবক শূন্য *তথ্য,
 				hb_vector_t<hb_codepoint_t> *cached_context_sets)
 {
   hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-  bool have_active_idx = false;
-  for (unsigned i = 0; i < lookup_count; i++)
+  যৌক্তিক have_active_idx = মিথ্যা;
+  জন্য (unsigned i = 0; i < lookup_গুনতি; i++)
   {
-    if (lookup_records[i].sequenceIndex >= input_count)
-      continue;
+    যদি (lookup_records[i].sequence_সূচক >= প্রবেশ_গুনতি_2)
+      চালু;
 
-    if (!have_active_idx)
+    যদি (!have_active_idx)
     {
-      if (unlikely (!c->get_parent_active_glyphs_index (&active_idx)))
-	return false;
-      have_active_idx = true;
+      যদি (unlikely (!c->get_parent_active_glyphs_সূচক (&active_idx)))
+	ফেরত মিথ্যা;
+      have_active_idx = সত্য;
     }
 
-    hb_depend_context_t::context_set_cache_key_t key (
-      rule, &lookup_records[i], data, active_idx, value, context_format);
+    hb_depend_context_t::context_set_cache_চাবি_t key (
+      rule, &lookup_records[i], তথ্য, active_idx, value, context_format);
     hb_codepoint_t *cached_context_set = nullptr;
-    if (!c->context_set_cache.has (key, &cached_context_set))
-      return false;
-    if (unlikely (!cached_context_sets->push_or_fail (*cached_context_set)))
-      return c->depend_data->fail ();
+    যদি (!c->context_set_cache.has (key, &cached_context_set))
+      ফেরত মিথ্যা;
+    যদি (unlikely (!cached_context_sets->ঠেলো_or_fail (*cached_context_set)))
+      ফেরত c->depend_তথ্য->fail ();
   }
   /* A rule with no valid records has no cache entries, and its preparation
    * can still allocate dependency sets in an observable order. */
-  return have_active_idx;
+  ফেরত have_active_idx;
 }
 
-static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
-					     unsigned inputCount, glyph_data_t input,
-					     unsigned lookupCount,
-					     const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
-					     const void *rule,
+স্থির অন্তঃরেখ শূন্য context_depend_recurse_lookups (hb_depend_context_t *c,
+					     unsigned প্রবেশ_গুনতি, glyph_তথ্য_t প্রবেশ,
+					     unsigned lookup_গুনতি_2,
+					     ধ্রুবক LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
+					     ধ্রুবক শূন্য *rule,
 					     unsigned value,
 					     ContextFormat context_format,
-					     const void *data,
+					     ধ্রুবক শূন্য *তথ্য,
 					     intersected_glyphs_func_t intersected_glyphs_func,
-					     void *cache,
-					     const hb_set_t &preliminary_context,
-					     const hb_vector_t<const hb_set_t *> *input_position_glyphs,
-					     const hb_vector_t<hb_codepoint_t> *cached_context_sets,
+					     শূন্য *cache,
+					     ধ্রুবক hb_set_t &preliminary_context,
+					     ধ্রুবক hb_vector_t<ধ্রুবক hb_set_t *> *প্রবেশ_position_glyphs,
+					     ধ্রুবক hb_vector_t<hb_codepoint_t> *cached_context_sets,
 					     hb_depend_context_t::depend_scratch_t *scratch)
 {
   /* For depend graph extraction, we filter active glyphs by InputCoverage constraints
@@ -2476,38 +2476,38 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
    * A rule longer than HB_MAX_CONTEXT_LENGTH never applies during shaping
    * (the apply path rejects it), so skip it here instead of running past
    * the fixed page in add_range(). */
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH))
-    return;
+  যদি (unlikely (প্রবেশ_গুনতি > HB_MAX_CONTEXT_দৈর্ঘ্য))
+    ফেরত;
 
   hb_bit_page_t covered_seq_indices;
   hb_set_t &pos_glyphs = scratch->pos_glyphs;
   hb_set_t &position_context = scratch->position_context;
   hb_set_t &disjunctive_indices = scratch->disjunctive_indices;
   hb_set_t &filtered_disjunctive_indices = scratch->filtered_disjunctive_indices;
-  unsigned cached_context_index = 0;
-  for (unsigned int i = 0; i < lookupCount; i++)
+  unsigned cached_context_সূচক = 0;
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < lookup_গুনতি_2; i++)
   {
-    unsigned seqIndex = lookupRecord[i].sequenceIndex;
-    if (seqIndex >= inputCount)
-      continue;
+    unsigned seq_সূচক_2 = lookupRecord[i].sequence_সূচক;
+    যদি (seq_সূচক_2 >= প্রবেশ_গুনতি)
+      চালু;
 
-    hb_depend_context_t::context_set_cache_key_t context_cache_key;
-    if (unlikely (!c->get_context_set_cache_key (rule, &lookupRecord[i], data, value,
-						 context_format, &context_cache_key)))
-      return;
+    hb_depend_context_t::context_set_cache_চাবি_t context_cache_চাবি;
+    যদি (unlikely (!c->get_context_set_cache_চাবি (rule, &lookupRecord[i], তথ্য, value,
+						 context_format, &context_cache_চাবি)))
+      ফেরত;
 
     hb_codepoint_t context_set_idx;
     hb_codepoint_t *cached_context_set_idx;
-    if (cached_context_sets)
-      context_set_idx = (*cached_context_sets)[cached_context_index++];
-    else if (c->context_set_cache.has (context_cache_key, &cached_context_set_idx))
+    যদি (cached_context_sets)
+      context_set_idx = (*cached_context_sets)[cached_context_সূচক++];
+    অন্যথা যদি (c->context_set_cache.has (context_cache_চাবি, &cached_context_set_idx))
       context_set_idx = *cached_context_set_idx;
-    else
+    অন্যথা
     {
-      if (unlikely (!input_position_glyphs))
+      যদি (unlikely (!প্রবেশ_position_glyphs))
       {
-	c->depend_data->fail ();
-	return;
+	c->depend_তথ্য->fail ();
+	ফেরত;
       }
 
       /* Build position-specific context_set for this lookup. */
@@ -2516,34 +2516,34 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
       filtered_disjunctive_indices.clear ();
 
       /* Process preliminary_context in one pass. */
-      hb_codepoint_t elem = HB_SET_VALUE_INVALID;
-      while (preliminary_context.next (&elem)) {
-	if (!(elem & HB_DEPEND_CONTEXT_SET_FLAG)) {
+      hb_codepoint_t elem = HB_SET_মান_INVALID;
+      যখন (preliminary_context.next (&elem)) {
+	যদি (!(elem & HB_DEPEND_CONTEXT_SET_FLAG)) {
 	  /* Direct glyph */
 	  position_context.add (elem);
-	} else {
+	} অন্যথা {
 	  /* Encoded set reference - defer processing until we have all direct requirements */
 	  disjunctive_indices.add (elem);
 	}
       }
 
       /* Add singleton glyphs from OTHER input positions. */
-      for (unsigned j = 0; j < input_position_glyphs->length; j++) {
-	if (j != seqIndex && (*input_position_glyphs)[j]->get_population () == 1) {
-	  position_context.add ((*input_position_glyphs)[j]->get_min ());
+      জন্য (unsigned j = 0; j < প্রবেশ_position_glyphs->দৈর্ঘ্য; j++) {
+	যদি (j != seq_সূচক_2 && (*প্রবেশ_position_glyphs)[j]->get_population () == 1) {
+	  position_context.add ((*প্রবেশ_position_glyphs)[j]->get_min ());
 	}
       }
 
       /* Now position_context has all direct requirements.
        * Process deferred encoded sets and filter them. */
-      elem = HB_SET_VALUE_INVALID;
-      while (disjunctive_indices.next (&elem)) {
+      elem = HB_SET_মান_INVALID;
+      যখন (disjunctive_indices.next (&elem)) {
 	hb_codepoint_t set_idx = elem & 0x7FFFFFFF;
-	const hb_set_t *original_set = c->depend_data->get_set_from_index (set_idx);
-	if (unlikely (!original_set)) continue;
+	ধ্রুবক hb_set_t *original_set = c->depend_তথ্য->get_set_from_সূচক (set_idx);
+	যদি (unlikely (!original_set)) চালু;
 
 	/* Dependency context sets are never inverted. */
-	if (!original_set->intersects (position_context)) {
+	যদি (!original_set->intersects (position_context)) {
 	  /* No overlap with position_context - add full requirement */
 	  filtered_disjunctive_indices.add (elem);
 	}
@@ -2554,18 +2554,18 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
       }
 
       /* Process non-singleton input positions. */
-      for (unsigned j = 0; j < input_position_glyphs->length; j++) {
-	if (j != seqIndex && (*input_position_glyphs)[j]->get_population () > 1) {
+      জন্য (unsigned j = 0; j < প্রবেশ_position_glyphs->দৈর্ঘ্য; j++) {
+	যদি (j != seq_সূচক_2 && (*প্রবেশ_position_glyphs)[j]->get_population () > 1) {
 	  /* Input-position sets are also never inverted. */
-	  if (!(*input_position_glyphs)[j]->intersects (position_context)) {
+	  যদি (!(*প্রবেশ_position_glyphs)[j]->intersects (position_context)) {
 	    /* No overlap with position_context - add full requirement */
-	    bool cached_set = context_format == ContextFormat::CoverageBasedContext ||
+	    যৌক্তিক cached_set = context_format == ContextFormat::CoverageBasedContext ||
 			      (context_format == ContextFormat::ClassBasedContext && j != 0);
 	    hb_codepoint_t idx = cached_set
-	      ? c->find_or_create_cached_context_set ((*input_position_glyphs)[j])
-	      : c->depend_data->find_or_create_context_set (*(*input_position_glyphs)[j]);
-	    if (unlikely (idx == HB_CODEPOINT_INVALID))
-	      return;
+	      ? c->find_or_create_cached_context_set ((*প্রবেশ_position_glyphs)[j])
+	      : c->depend_তথ্য->find_or_create_context_set (*(*প্রবেশ_position_glyphs)[j]);
+	    যদি (unlikely (idx == HB_CODEPOINT_INVALID))
+	      ফেরত;
 	    filtered_disjunctive_indices.add (HB_DEPEND_CONTEXT_SET_FLAG | idx);
 	  }
 	  /* Otherwise: position_context intersects, requirement satisfied */
@@ -2574,40 +2574,40 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
 
       /* Combine direct + disjunctive. */
       position_context.union_ (filtered_disjunctive_indices);
-      if (unlikely (position_context.in_error () ||
+      যদি (unlikely (position_context.in_error () ||
 		    filtered_disjunctive_indices.in_error ()))
       {
-	c->depend_data->fail ();
-	return;
+	c->depend_তথ্য->fail ();
+	ফেরত;
       }
 
       context_set_idx = position_context.is_empty ()
 	? HB_CODEPOINT_INVALID
-	: c->depend_data->find_or_create_context_set (position_context);
-      if (unlikely (!position_context.is_empty () &&
+	: c->depend_তথ্য->find_or_create_context_set (position_context);
+      যদি (unlikely (!position_context.is_empty () &&
 		    context_set_idx == HB_CODEPOINT_INVALID))
-	return;
+	ফেরত;
 
-      if (unlikely (!c->context_set_cache.set (context_cache_key, context_set_idx)))
+      যদি (unlikely (!c->context_set_cache.set (context_cache_চাবি, context_set_idx)))
       {
-	c->depend_data->fail ();
-	return;
+	c->depend_তথ্য->fail ();
+	ফেরত;
       }
     }
 
     /* Save outer context to restore after this lookup. When a contextual lookup
      * calls another contextual lookup, we want each lookup in this rule to see
      * the same outer context, not context from a sibling lookup. */
-    hb_codepoint_t saved_context_set_index = c->depend_data->current_context_set_index;
-    hb_subset_depend_edge_flags_t saved_edge_flags = c->depend_data->current_edge_flags;
+    hb_codepoint_t saved_context_set_সূচক = c->depend_তথ্য->current_context_set_সূচক;
+    hb_subset_depend_edge_flags_t saved_edge_flags = c->depend_তথ্য->current_edge_flags;
 
     /* Detect nested contextual: if we already have a context set, we're inside
      * an outer contextual rule that called this one. The outer context will be
      * lost, so edges created here may over-approximate. */
-    bool nested_contextual = (saved_context_set_index != HB_CODEPOINT_INVALID);
+    যৌক্তিক nested_contextual = (saved_context_set_সূচক != HB_CODEPOINT_INVALID);
 
     /* Set for this position's edges */
-    c->depend_data->current_context_set_index = context_set_idx;
+    c->depend_তথ্য->current_context_set_সূচক = context_set_idx;
 
     /* Mark edges from multi-position rules (inputCount > 1) as potentially
      * over-approximate. Depend extraction records edges based on what glyphs
@@ -2617,165 +2617,165 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
      * lookups at the same position may interact (one produces a glyph, another
      * immediately consumes it as an "intermediate"). So a glyph matching the
      * coverage might not persist at that position when closure traverses. */
-    c->depend_data->current_edge_flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE;
-    if (inputCount > 1) {
-      c->depend_data->current_edge_flags |= HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION;
+    c->depend_তথ্য->current_edge_flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE;
+    যদি (প্রবেশ_গুনতি > 1) {
+      c->depend_তথ্য->current_edge_flags |= HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION;
     }
-    if (nested_contextual) {
-      c->depend_data->current_edge_flags |= HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT;
+    যদি (nested_contextual) {
+      c->depend_তথ্য->current_edge_flags |= HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT;
     }
 
-    bool has_pos_glyphs = false;
+    যৌক্তিক has_pos_glyphs = মিথ্যা;
 
-    if (!covered_seq_indices.has (seqIndex))
+    যদি (!covered_seq_indices.has (seq_সূচক_2))
     {
-      has_pos_glyphs = true;
+      has_pos_glyphs = সত্য;
       pos_glyphs.clear ();
-      if (seqIndex == 0)
+      যদি (seq_সূচক_2 == 0)
       {
-        switch (context_format) {
-        case ContextFormat::SimpleContext:
+        নির্বাচন (context_format) {
+        ক্ষেত্র ContextFormat::SimpleContext:
           pos_glyphs.add (value);
-          break;
-        case ContextFormat::ClassBasedContext:
-          intersected_glyphs_func (&c->parent_active_glyphs (), data, value, &pos_glyphs, cache);
-          break;
-        case ContextFormat::CoverageBasedContext:
+          বিরতি;
+        ক্ষেত্র ContextFormat::ClassBasedContext:
+          intersected_glyphs_func (&c->parent_active_glyphs (), তথ্য, value, &pos_glyphs, cache);
+          বিরতি;
+        ক্ষেত্র ContextFormat::CoverageBasedContext:
           pos_glyphs.set (c->parent_active_glyphs ());
-          break;
+          বিরতি;
         }
       }
-      else
+      অন্যথা
       {
-        const void *input_data = input.data;
-        unsigned input_value = seqIndex - 1;
-        if (context_format != ContextFormat::SimpleContext)
+        ধ্রুবক শূন্য *প্রবেশ_তথ্য = প্রবেশ.তথ্য;
+        unsigned প্রবেশ_মান = seq_সূচক_2 - 1;
+        যদি (context_format != ContextFormat::SimpleContext)
         {
-          input_data = data;
-          input_value = input[seqIndex - 1];
+          প্রবেশ_তথ্য = তথ্য;
+          প্রবেশ_মান = প্রবেশ[seq_সূচক_2 - 1];
         }
 
-        intersected_glyphs_func (c->glyphs, input_data, input_value, &pos_glyphs, cache);
+        intersected_glyphs_func (c->glyphs, প্রবেশ_তথ্য, প্রবেশ_মান, &pos_glyphs, cache);
       }
     }
 
-    covered_seq_indices.add (seqIndex);
-    if (has_pos_glyphs)
+    covered_seq_indices.add (seq_সূচক_2);
+    যদি (has_pos_glyphs)
     {
       hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-      if (context_format == ContextFormat::SimpleContext)
+      যদি (context_format == ContextFormat::SimpleContext)
       {
-	hb_codepoint_t glyph = seqIndex ? pos_glyphs.get_min () : value;
-	if (likely (glyph < hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG))
+	hb_codepoint_t glyph = seq_সূচক_2 ? pos_glyphs.get_min () : value;
+	যদি (likely (glyph < hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG))
 	  active_idx = glyph | hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG;
       }
-      hb_set_t *cur_active_glyphs = c->push_cur_active_glyphs (active_idx);
-      if (unlikely (!cur_active_glyphs))
+      hb_set_t *cur_active_glyphs = c->ঠেলো_cur_active_glyphs (active_idx);
+      যদি (unlikely (!cur_active_glyphs))
       {
-	c->depend_data->current_context_set_index = saved_context_set_index;
-	c->depend_data->current_edge_flags = saved_edge_flags;
-	return;
+	c->depend_তথ্য->current_context_set_সূচক = saved_context_set_সূচক;
+	c->depend_তথ্য->current_edge_flags = saved_edge_flags;
+	ফেরত;
       }
       *cur_active_glyphs = std::move (pos_glyphs);
     }
-    else if (unlikely (!c->push_root_active_glyphs ()))
+    অন্যথা যদি (unlikely (!c->ঠেলো_মূল_active_glyphs ()))
     {
-      c->depend_data->current_context_set_index = saved_context_set_index;
-      c->depend_data->current_edge_flags = saved_edge_flags;
-      return;
+      c->depend_তথ্য->current_context_set_সূচক = saved_context_set_সূচক;
+      c->depend_তথ্য->current_edge_flags = saved_edge_flags;
+      ফেরত;
     }
 
-    unsigned endIndex = inputCount;
-    if (context_format == ContextFormat::CoverageBasedContext)
-      endIndex += 1;
+    unsigned end_সূচক_2 = প্রবেশ_গুনতি;
+    যদি (context_format == ContextFormat::CoverageBasedContext)
+      end_সূচক_2 += 1;
 
-    c->recurse (lookupRecord[i].lookupListIndex, &covered_seq_indices, seqIndex, endIndex);
-    c->pop_cur_done_glyphs ();
+    c->recurse (lookupRecord[i].lookup_List_সূচক, &covered_seq_indices, seq_সূচক_2, end_সূচক_2);
+    c->বের_করো_cur_done_glyphs ();
 
     /* Restore outer context after this lookup, so subsequent lookups in this
      * rule see the original context rather than this lookup's context. */
-    c->depend_data->current_context_set_index = saved_context_set_index;
-    c->depend_data->current_edge_flags = saved_edge_flags;
+    c->depend_তথ্য->current_context_set_সূচক = saved_context_set_সূচক;
+    c->depend_তথ্য->current_edge_flags = saved_edge_flags;
   }
 }
 
 template <typename context_t>
-static inline void recurse_lookups (context_t *c,
-                                    unsigned int lookupCount,
-                                    const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */)
+স্থির অন্তঃরেখ শূন্য recurse_lookups (context_t *c,
+                                    unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+                                    ধ্রুবক LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */)
 {
-  for (unsigned int i = 0; i < lookupCount; i++)
-    c->recurse (lookupRecord[i].lookupListIndex);
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < lookup_গুনতি_2; i++)
+    c->recurse (lookupRecord[i].lookup_List_সূচক);
 }
 
-static inline void apply_lookup (hb_ot_apply_context_t *c,
-				 unsigned int count, /* Including the first glyph */
-				 unsigned int lookupCount,
-				 const LookupRecord lookupRecord[], /* Array of LookupRecords--in design order */
-				 unsigned int match_end)
+স্থির অন্তঃরেখ শূন্য apply_lookup (hb_ot_apply_context_t *c,
+				 unsigned পূর্ণসংখ্যা গুনতি, /* Including the first glyph */
+				 unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+				 ধ্রুবক LookupRecord lookupRecord[], /* Array of LookupRecords--in design order */
+				 unsigned পূর্ণসংখ্যা match_end)
 {
-  hb_buffer_t *buffer = c->buffer;
-  int end;
+  hb_বাফার_t *বাফার = c->বাফার;
+  পূর্ণসংখ্যা end;
 
   /* All positions are distance from beginning of *output* buffer.
    * Adjust. */
   {
-    unsigned int bl = buffer->backtrack_len ();
-    end = bl + match_end - buffer->idx;
+    unsigned পূর্ণসংখ্যা bl = বাফার->backtrack_len ();
+    end = bl + match_end - বাফার->idx;
 
-    int delta = bl - buffer->idx;
+    পূর্ণসংখ্যা delta = bl - বাফার->idx;
     /* Convert positions to new indexing. */
-    for (unsigned int j = 0; j < count; j++)
+    জন্য (unsigned পূর্ণসংখ্যা j = 0; j < গুনতি; j++)
       c->match_positions.arrayZ[j] += delta;
   }
 
-  for (unsigned int i = 0; i < lookupCount && buffer->successful; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < lookup_গুনতি_2 && বাফার->successful; i++)
   {
-    unsigned int idx = lookupRecord[i].sequenceIndex;
-    if (idx >= count)
-      continue;
+    unsigned পূর্ণসংখ্যা idx = lookupRecord[i].sequence_সূচক;
+    যদি (idx >= গুনতি)
+      চালু;
 
-    unsigned int orig_len = buffer->backtrack_len () + buffer->lookahead_len ();
+    unsigned পূর্ণসংখ্যা orig_len = বাফার->backtrack_len () + বাফার->lookahead_len ();
 
     /* This can happen if earlier recursed lookups deleted many entries. */
-    if (unlikely (c->match_positions.arrayZ[idx] >= orig_len))
-      continue;
+    যদি (unlikely (c->match_positions.arrayZ[idx] >= orig_len))
+      চালু;
 
-    if (unlikely (!buffer->move_to (c->match_positions.arrayZ[idx])))
-      break;
+    যদি (unlikely (!বাফার->move_to (c->match_positions.arrayZ[idx])))
+      বিরতি;
 
-    if (unlikely (buffer->max_ops <= 0))
-      break;
+    যদি (unlikely (বাফার->max_ops <= 0))
+      বিরতি;
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
     {
-      if (buffer->have_output)
-        c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      যদি (বাফার->have_output)
+        c->বাফার->sync_so_far ();
+      c->বাফার->message (c->font,
 			  "start recursing to lookup %u at %u",
-			  (unsigned) lookupRecord[i].lookupListIndex,
-			  buffer->idx);
+			  (unsigned) lookupRecord[i].lookup_List_সূচক,
+			  বাফার->idx);
     }
 
-    bool ret = c->recurse (lookupRecord[i].lookupListIndex);
+    যৌক্তিক ret = c->recurse (lookupRecord[i].lookup_List_সূচক);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
     {
-      if (buffer->have_output)
-        c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      যদি (বাফার->have_output)
+        c->বাফার->sync_so_far ();
+      c->বাফার->message (c->font,
 			  "end recursing to lookup %u",
-			  (unsigned) lookupRecord[i].lookupListIndex);
+			  (unsigned) lookupRecord[i].lookup_List_সূচক);
     }
 
-    if (!ret)
-      continue;
+    যদি (!ret)
+      চালু;
 
-    unsigned int new_len = buffer->backtrack_len () + buffer->lookahead_len ();
-    int delta = new_len - orig_len;
+    unsigned পূর্ণসংখ্যা new_len = বাফার->backtrack_len () + বাফার->lookahead_len ();
+    পূর্ণসংখ্যা delta = new_len - orig_len;
 
-    if (!delta)
-      continue;
+    যদি (!delta)
+      চালু;
 
     /* Recursed lookup changed buffer len.  Adjust.
      *
@@ -2802,7 +2802,7 @@ static inline void apply_lookup (hb_ot_apply_context_t *c,
      */
 
     end += delta;
-    if (end < int (c->match_positions.arrayZ[idx]))
+    যদি (end < পূর্ণসংখ্যা (c->match_positions.arrayZ[idx]))
     {
       /* End might end up being smaller than match_positions.arrayZ[idx] if the recursed
        * lookup ended up removing many items.
@@ -2816,530 +2816,530 @@ static inline void apply_lookup (hb_ot_apply_context_t *c,
       end = c->match_positions.arrayZ[idx];
     }
 
-    unsigned int next = idx + 1; /* next now is the position after the recursed lookup. */
+    unsigned পূর্ণসংখ্যা next = idx + 1; /* next now is the position after the recursed lookup. */
 
-    if (delta > 0)
+    যদি (delta > 0)
     {
-      if (unlikely (delta + count > HB_MAX_CONTEXT_LENGTH))
-	break;
-      if (unlikely (count + delta > c->match_positions.length &&
-		    !c->match_positions.resize_dirty  (count + delta)))
-        return;
+      যদি (unlikely (delta + গুনতি > HB_MAX_CONTEXT_দৈর্ঘ্য))
+	বিরতি;
+      যদি (unlikely (গুনতি + delta > c->match_positions.দৈর্ঘ্য &&
+		    !c->match_positions.resize_dirty  (গুনতি + delta)))
+        ফেরত;
     }
-    else
+    অন্যথা
     {
       /* NOTE: delta is non-positive. */
-      delta = hb_max (delta, (int) next - (int) count);
+      delta = hb_max (delta, (পূর্ণসংখ্যা) next - (পূর্ণসংখ্যা) গুনতি);
       next -= delta;
     }
 
     /* Shift! */
     memmove (c->match_positions + next + delta, c->match_positions + next,
-	     (count - next) * sizeof (c->match_positions.arrayZ[0]));
+	     (গুনতি - next) * আকার (c->match_positions.arrayZ[0]));
     next += delta;
-    count += delta;
+    গুনতি += delta;
 
     /* Fill in new entries. */
-    for (unsigned int j = idx + 1; j < next; j++)
+    জন্য (unsigned পূর্ণসংখ্যা j = idx + 1; j < next; j++)
       c->match_positions.arrayZ[j] = c->match_positions.arrayZ[j - 1] + 1;
 
     /* And fixup the rest. */
-    for (; next < count; next++)
+    জন্য (; next < গুনতি; next++)
       c->match_positions.arrayZ[next] += delta;
   }
 
-  assert (end >= 0);
-  (void) buffer->move_to (end);
+  প্রতিজ্ঞা (end >= 0);
+  (শূন্য) বাফার->move_to (end);
 }
 
 
 
 /* Contextual lookups */
 
-struct ContextClosureLookupContext
+কাঠামো ContextClosureLookupContext
 {
   ContextClosureFuncs funcs;
   ContextFormat context_format;
-  const void *intersects_data;
-  void *intersects_cache;
-  void *intersected_glyphs_cache;
+  ধ্রুবক শূন্য *intersects_তথ্য;
+  শূন্য *intersects_cache;
+  শূন্য *intersected_glyphs_cache;
 };
 
-typedef ContextClosureLookupContext ContextDependLookupContext;
+প্রকারলেখ ContextClosureLookupContext ContextDependLookupContext;
 
-struct ContextCollectGlyphsLookupContext
+কাঠামো ContextCollectGlyphsLookupContext
 {
   ContextCollectGlyphsFuncs funcs;
-  const void *collect_data;
+  ধ্রুবক শূন্য *collect_তথ্য;
 };
 
-struct ContextApplyLookupContext
+কাঠামো ContextApplyLookupContext
 {
   ContextApplyFuncs funcs;
-  const void *match_data;
-  get_value_func_t get_value;
+  ধ্রুবক শূন্য *match_তথ্য_2;
+  get_মান_func_t get_মান;
 };
 
-static inline bool context_intersects (const hb_set_t *glyphs,
-				       unsigned int inputCount, /* Including the first glyph (not matched) */
-				       glyph_data_t input, /* Array of input values--start with second glyph */
+স্থির অন্তঃরেখ যৌক্তিক context_intersects (ধ্রুবক hb_set_t *glyphs,
+				       unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+				       glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
 				       ContextClosureLookupContext &lookup_context)
 {
-  return array_is_subset_of (glyphs,
-			     inputCount ? inputCount - 1 : 0, input,
+  ফেরত array_is_subset_of (glyphs,
+			     প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0, প্রবেশ,
 			     lookup_context.funcs.intersects,
-			     lookup_context.intersects_data,
+			     lookup_context.intersects_তথ্য,
 			     lookup_context.intersects_cache);
 }
 
-static inline void context_closure_lookup (hb_closure_context_t *c,
-					   unsigned int inputCount, /* Including the first glyph (not matched) */
-					   glyph_data_t input, /* Array of input values--start with second glyph */
-					   unsigned int lookupCount,
-					   const LookupRecord lookupRecord[],
+স্থির অন্তঃরেখ শূন্য context_closure_lookup (hb_closure_context_t *c,
+					   unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+					   glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+					   unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+					   ধ্রুবক LookupRecord lookupRecord[],
 					   unsigned value, /* Index of first glyph in Coverage or Class value in ClassDef table */
 					   ContextClosureLookupContext &lookup_context)
 {
-  if (context_intersects (c->glyphs,
-			  inputCount, input,
+  যদি (context_intersects (c->glyphs,
+			  প্রবেশ_গুনতি, প্রবেশ,
 			  lookup_context))
     context_closure_recurse_lookups (c,
-				     inputCount, input,
-				     lookupCount, lookupRecord,
+				     প্রবেশ_গুনতি, প্রবেশ,
+				     lookup_গুনতি_2, lookupRecord,
 				     value,
 				     lookup_context.context_format,
-				     lookup_context.intersects_data,
+				     lookup_context.intersects_তথ্য,
 				     lookup_context.funcs.intersected_glyphs,
 				     lookup_context.intersected_glyphs_cache);
 }
 
-static inline void context_depend_lookup (hb_depend_context_t *c,
-					  unsigned int inputCount, /* Including the first glyph (not matched) */
-					  glyph_data_t input, /* Array of input values--start with second glyph */
-					  unsigned int lookupCount,
-					  const LookupRecord lookupRecord[],
-					  const void *rule,
+স্থির অন্তঃরেখ শূন্য context_depend_lookup (hb_depend_context_t *c,
+					  unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+					  glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+					  unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+					  ধ্রুবক LookupRecord lookupRecord[],
+					  ধ্রুবক শূন্য *rule,
 					  unsigned value, /* Index of first glyph in Coverage or Class value in ClassDef table */
 					  ContextDependLookupContext &lookup_context)
 {
-  if (!context_intersects (c->glyphs,
-			   inputCount, input,
+  যদি (!context_intersects (c->glyphs,
+			   প্রবেশ_গুনতি, প্রবেশ,
 			   lookup_context))
-    return;
+    ফেরত;
 
   hb_depend_context_t::depend_scratch_t *scratch = c->acquire_depend_scratch ();
-  if (unlikely (!scratch))
-    return;
+  যদি (unlikely (!scratch))
+    ফেরত;
   HB_SCOPE_GUARD (c->release_depend_scratch (scratch));
 
-  bool context_sets_cached = context_depend_sets_are_cached (
-    c, inputCount, lookupCount, lookupRecord, rule, value,
-    lookup_context.context_format, lookup_context.intersects_data,
+  যৌক্তিক context_sets_cached = context_depend_sets_are_cached (
+    c, প্রবেশ_গুনতি, lookup_গুনতি_2, lookupRecord, rule, value,
+    lookup_context.context_format, lookup_context.intersects_তথ্য,
     &scratch->cached_context_sets);
-  if (unlikely (!c->depend_data->successful))
-    return;
+  যদি (unlikely (!c->depend_তথ্য->successful))
+    ফেরত;
 
   /* Build preliminary_context (empty for ContextSubst - no backtrack/lookahead) */
   hb_set_t &preliminary_context = scratch->preliminary_context;
 
   /* Build glyph sets for ALL input positions */
   hb_set_t &position_scratch = scratch->position_scratch;
-  hb_vector_t<const hb_set_t *> &input_position_glyphs = scratch->input_position_glyphs;
+  hb_vector_t<ধ্রুবক hb_set_t *> &প্রবেশ_position_glyphs = scratch->প্রবেশ_position_glyphs;
 
   /* Cached labels no longer need the expanded input-position sets. */
-  if (!context_sets_cached)
+  যদি (!context_sets_cached)
   {
     /* Position 0 (Coverage glyph) — must be in both the class AND the
      * coverage, so intersect with parent_active_glyphs (= coverage ∩ glyphs
      * set by the ContextFormat2/3 caller). */
-    const hb_set_t *pos0_glyphs = depend_position_glyphs (
-      c, lookup_context.context_format, lookup_context.intersects_data, value,
-      true, &position_scratch, &scratch->compact_workspace);
-    if (unlikely (!pos0_glyphs ||
-		  !input_position_glyphs.push_or_fail (pos0_glyphs)))
+    ধ্রুবক hb_set_t *pos0_glyphs = depend_position_glyphs (
+      c, lookup_context.context_format, lookup_context.intersects_তথ্য, value,
+      সত্য, &position_scratch, &scratch->compact_workspace);
+    যদি (unlikely (!pos0_glyphs ||
+		  !প্রবেশ_position_glyphs.ঠেলো_or_fail (pos0_glyphs)))
     {
-      c->depend_data->fail ();
-      return;
+      c->depend_তথ্য->fail ();
+      ফেরত;
     }
 
     /* Positions 1+ (Input array) */
-    for (unsigned i = 0; i + 1 < inputCount; i++)
+    জন্য (unsigned i = 0; i + 1 < প্রবেশ_গুনতি; i++)
     {
-      const hb_set_t *pos_glyphs = depend_position_glyphs (
-	c, lookup_context.context_format, lookup_context.intersects_data,
-	input[i], false, &position_scratch);
-      if (unlikely (!pos_glyphs ||
-		    !input_position_glyphs.push_or_fail (pos_glyphs)))
+      ধ্রুবক hb_set_t *pos_glyphs = depend_position_glyphs (
+	c, lookup_context.context_format, lookup_context.intersects_তথ্য,
+	প্রবেশ[i], মিথ্যা, &position_scratch);
+      যদি (unlikely (!pos_glyphs ||
+		    !প্রবেশ_position_glyphs.ঠেলো_or_fail (pos_glyphs)))
       {
-	c->depend_data->fail ();
-	return;
+	c->depend_তথ্য->fail ();
+	ফেরত;
       }
     }
   }
 
   context_depend_recurse_lookups (c,
-				  inputCount, input,
-				  lookupCount, lookupRecord,
+				  প্রবেশ_গুনতি, প্রবেশ,
+				  lookup_গুনতি_2, lookupRecord,
 				  rule,
 				  value,
 				  lookup_context.context_format,
-				  lookup_context.intersects_data,
+				  lookup_context.intersects_তথ্য,
 				  lookup_context.funcs.intersected_glyphs,
 				  lookup_context.intersected_glyphs_cache,
 				  preliminary_context,
-				  context_sets_cached ? nullptr : &input_position_glyphs,
+				  context_sets_cached ? nullptr : &প্রবেশ_position_glyphs,
 				  context_sets_cached ? &scratch->cached_context_sets : nullptr,
 				  scratch);
 }
 
-static inline void context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
-						  unsigned int inputCount, /* Including the first glyph (not matched) */
-						  glyph_data_t input, /* Array of input values--start with second glyph */
-						  unsigned int lookupCount,
-						  const LookupRecord lookupRecord[],
+স্থির অন্তঃরেখ শূন্য context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
+						  unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+						  glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+						  unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+						  ধ্রুবক LookupRecord lookupRecord[],
 						  ContextCollectGlyphsLookupContext &lookup_context)
 {
-  collect_array (c, c->input,
-		 inputCount ? inputCount - 1 : 0, input,
-		 lookup_context.funcs.collect, lookup_context.collect_data);
+  collect_array (c, c->প্রবেশ,
+		 প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0, প্রবেশ,
+		 lookup_context.funcs.collect, lookup_context.collect_তথ্য);
   recurse_lookups (c,
-		   lookupCount, lookupRecord);
+		   lookup_গুনতি_2, lookupRecord);
 }
 
-static inline bool context_would_apply_lookup (hb_would_apply_context_t *c,
-					       unsigned int inputCount, /* Including the first glyph (not matched) */
-					       glyph_data_t input, /* Array of input values--start with second glyph */
-					       unsigned int lookupCount HB_UNUSED,
-					       const LookupRecord lookupRecord[] HB_UNUSED,
-					       const ContextApplyLookupContext &lookup_context)
+স্থির অন্তঃরেখ যৌক্তিক context_would_apply_lookup (hb_would_apply_context_t *c,
+					       unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+					       glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+					       unsigned পূর্ণসংখ্যা lookup_গুনতি_2 HB_UNUSED,
+					       ধ্রুবক LookupRecord lookupRecord[] HB_UNUSED,
+					       ধ্রুবক ContextApplyLookupContext &lookup_context)
 {
-  return would_match_input (c,
-			    inputCount, input,
-			    lookup_context.funcs.match, lookup_context.match_data);
+  ফেরত would_match_প্রবেশ (c,
+			    প্রবেশ_গুনতি, প্রবেশ,
+			    lookup_context.funcs.match, lookup_context.match_তথ্য_2);
 }
 
-static inline bool context_apply_lookup (hb_ot_apply_context_t *c,
-					 unsigned int inputCount, /* Including the first glyph (not matched) */
-					 glyph_data_t input, /* Array of input values--start with second glyph */
-					 unsigned int lookupCount,
-					 const LookupRecord lookupRecord[],
-					 const ContextApplyLookupContext &lookup_context)
+স্থির অন্তঃরেখ যৌক্তিক context_apply_lookup (hb_ot_apply_context_t *c,
+					 unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+					 glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+					 unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+					 ধ্রুবক LookupRecord lookupRecord[],
+					 ধ্রুবক ContextApplyLookupContext &lookup_context)
 {
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH)) return false;
+  যদি (unlikely (প্রবেশ_গুনতি > HB_MAX_CONTEXT_দৈর্ঘ্য)) ফেরত মিথ্যা;
 
   unsigned match_end = 0;
-  bool ret = false;
-  if (match_input (c,
-		   inputCount, input,
-		   lookup_context.funcs.match, lookup_context.match_data,
+  যৌক্তিক ret = মিথ্যা;
+  যদি (match_প্রবেশ (c,
+		   প্রবেশ_গুনতি, প্রবেশ,
+		   lookup_context.funcs.match, lookup_context.match_তথ্য_2,
 		   &match_end))
   {
-    c->buffer->unsafe_to_break (c->buffer->idx, match_end);
+    c->বাফার->unsafe_to_break (c->বাফার->idx, match_end);
     apply_lookup (c,
-		  inputCount,
-		  lookupCount, lookupRecord,
+		  প্রবেশ_গুনতি,
+		  lookup_গুনতি_2, lookupRecord,
 		  match_end);
-    ret = true;
+    ret = সত্য;
   }
-  else
+  অন্যথা
   {
-    c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-    ret = false;
+    c->বাফার->unsafe_to_concat (c->বাফার->idx, match_end);
+    ret = মিথ্যা;
   }
 
-  return ret;
+  ফেরত ret;
 }
 
-static inline bool context_cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+স্থির অন্তঃরেখ যৌক্তিক context_cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
 {
-  switch (op)
+  নির্বাচন (op)
   {
-    case hb_ot_subtable_cache_op_t::ENTER:
+    ক্ষেত্র hb_ot_subtable_cache_op_t::ENTER:
     {
-      if (!HB_BUFFER_TRY_ALLOCATE_VAR (c->buffer, syllable))
-	return false;
-      auto &info = c->buffer->info;
-      unsigned count = c->buffer->len;
-      for (unsigned i = 0; i < count; i++)
+      যদি (!HB_বাফার_TRY_ALLOCATE_VAR (c->বাফার, syllable))
+	ফেরত মিথ্যা;
+      auto &info = c->বাফার->info;
+      unsigned গুনতি = c->বাফার->len;
+      জন্য (unsigned i = 0; i < গুনতি; i++)
 	info[i].syllable() = 255;
       c->new_syllables = 255;
-      return true;
+      ফেরত সত্য;
     }
-    case hb_ot_subtable_cache_op_t::LEAVE:
+    ক্ষেত্র hb_ot_subtable_cache_op_t::LEAVE:
     {
       c->new_syllables = (unsigned) -1;
-      HB_BUFFER_DEALLOCATE_VAR (c->buffer, syllable);
-      break;
+      HB_বাফার_DEALLOCATE_VAR (c->বাফার, syllable);
+      বিরতি;
     }
   }
-  return false;
+  ফেরত মিথ্যা;
 }
 
 template <typename Types>
-struct Rule
+কাঠামো Rule
 {
   template <typename SetTypes, typename RuleType>
-  friend struct RuleSetOf;
+  friend কাঠামো RuleSetOf;
 
-  bool intersects (const hb_set_t *glyphs, ContextClosureLookupContext &lookup_context) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs, ContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    return context_intersects (glyphs,
-			       inputCount, inputZ.arrayZ,
+    ফেরত context_intersects (glyphs,
+			       প্রবেশ_গুনতি, প্রবেশ_Z.arrayZ,
 			       lookup_context);
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) const
+  শূন্য depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) ধ্রুবক
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    ধ্রুবক auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (প্রবেশ_Z.as_array ((প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0)));
     context_depend_lookup (c,
-			   inputCount, inputZ.arrayZ,
-			   lookupCount, lookupRecord.arrayZ,
-			   this,
+			   প্রবেশ_গুনতি, প্রবেশ_Z.arrayZ,
+			   lookup_গুনতি_2, lookupRecord.arrayZ,
+			   এই,
 			   value, lookup_context);
   }
 
-  void closure (hb_closure_context_t *c, unsigned value, ContextClosureLookupContext &lookup_context) const
+  শূন্য closure (hb_closure_context_t *c, unsigned value, ContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    যদি (unlikely (c->lookup_limit_exceeded ())) ফেরত;
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    ধ্রুবক auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (প্রবেশ_Z.as_array ((প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0)));
     context_closure_lookup (c,
-			    inputCount, inputZ.arrayZ,
-			    lookupCount, lookupRecord.arrayZ,
+			    প্রবেশ_গুনতি, প্রবেশ_Z.arrayZ,
+			    lookup_গুনতি_2, lookupRecord.arrayZ,
 			    value, lookup_context);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ContextClosureLookupContext &lookup_context) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c,
+                        ContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-    if (!intersects (c->glyphs, lookup_context)) return;
+    যদি (unlikely (c->lookup_limit_exceeded ())) ফেরত;
+    যদি (!intersects (c->glyphs, lookup_context)) ফেরত;
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    recurse_lookups (c, lookupCount, lookupRecord.arrayZ);
+    ধ্রুবক auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (প্রবেশ_Z.as_array (প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0));
+    recurse_lookups (c, lookup_গুনতি_2, lookupRecord.arrayZ);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ContextCollectGlyphsLookupContext &lookup_context) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ContextCollectGlyphsLookupContext &lookup_context) ধ্রুবক
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
+    ধ্রুবক auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (প্রবেশ_Z.as_array (প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0));
     context_collect_glyphs_lookup (c,
-				   inputCount, inputZ.arrayZ,
-				   lookupCount, lookupRecord.arrayZ,
+				   প্রবেশ_গুনতি, প্রবেশ_Z.arrayZ,
+				   lookup_গুনতি_2, lookupRecord.arrayZ,
 				   lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *class_def = nullptr) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest,
+			      ধ্রুবক ClassDef *class_def = nullptr) ধ্রুবক
   {
-    if (inputCount <= 1)
+    যদি (প্রবেশ_গুনতি <= 1)
     {
       *digest = hb_set_digest_t::full ();
-      return;
+      ফেরত;
     }
 
-    unsigned second = inputZ.arrayZ[0];
-    if (!class_def)
+    unsigned second = প্রবেশ_Z.arrayZ[0];
+    যদি (!class_def)
       digest->add (second);
-    else if (!second)
+    অন্যথা যদি (!second)
       *digest = hb_set_digest_t::full ();
-    else
+    অন্যথা
       class_def->collect_class (digest, second);
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ContextApplyLookupContext &lookup_context) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c,
+		    ধ্রুবক ContextApplyLookupContext &lookup_context) ধ্রুবক
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    return context_would_apply_lookup (c,
-				       inputCount, inputZ.arrayZ,
-				       lookupCount, lookupRecord.arrayZ,
+    ধ্রুবক auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (প্রবেশ_Z.as_array (প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0));
+    ফেরত context_would_apply_lookup (c,
+				       প্রবেশ_গুনতি, প্রবেশ_Z.arrayZ,
+				       lookup_গুনতি_2, lookupRecord.arrayZ,
 				       lookup_context);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ContextApplyLookupContext &lookup_context) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c,
+	      ধ্রুবক ContextApplyLookupContext &lookup_context) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    return_trace (context_apply_lookup (c, inputCount, inputZ.arrayZ, lookupCount, lookupRecord.arrayZ, lookup_context));
+    TRACE_APPLY (এই);
+    ধ্রুবক auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (প্রবেশ_Z.as_array (প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0));
+    return_trace (context_apply_lookup (c, প্রবেশ_গুনতি, প্রবেশ_Z.arrayZ, lookup_গুনতি_2, lookupRecord.arrayZ, lookup_context));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t *input_mapping, /* old->new glyphid or class mapping */
-		  const hb_map_t *lookup_map) const
+  যৌক্তিক serialize (hb_serialize_context_t *c,
+		  ধ্রুবক hb_map_t *প্রবেশ_mapping, /* old->new glyphid or class mapping */
+		  ধ্রুবক hb_map_t *lookup_map) ধ্রুবক
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (false);
+    TRACE_SERIALIZE (এই);
+    auto *out = c->start_embed (এই);
+    যদি (unlikely (!c->extend_min (out))) return_trace (মিথ্যা);
 
-    out->inputCount = inputCount;
-    const auto input = inputZ.as_array (inputCount - 1);
-    for (const auto org : input)
+    out->প্রবেশ_গুনতি = প্রবেশ_গুনতি;
+    ধ্রুবক auto প্রবেশ = প্রবেশ_Z.as_array (প্রবেশ_গুনতি - 1);
+    জন্য (ধ্রুবক auto org : প্রবেশ)
     {
       typename Types::HBUINT d;
-      d = input_mapping->get (org);
+      d = প্রবেশ_mapping->get (org);
       c->copy (d);
     }
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    ধ্রুবক auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (প্রবেশ_Z.as_array ((প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0)));
 
-    unsigned count = serialize_lookuprecord_array (c, lookupRecord.as_array (lookupCount), lookup_map);
-    return_trace (c->check_assign (out->lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned গুনতি = serialize_lookuprecord_array (c, lookupRecord.as_array (lookup_গুনতি_2), lookup_map);
+    return_trace (c->check_assign (out->lookup_গুনতি_2, গুনতি, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *klass_map = nullptr) const
+  যৌক্তিক subset (hb_subset_context_t *c,
+	       ধ্রুবক hb_map_t *lookup_map,
+	       ধ্রুবক hb_map_t *klass_map = nullptr) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    if (unlikely (!inputCount)) return_trace (false);
-    const auto input = inputZ.as_array (inputCount - 1);
+    TRACE_SUBSET (এই);
+    যদি (unlikely (!প্রবেশ_গুনতি)) return_trace (মিথ্যা);
+    ধ্রুবক auto প্রবেশ = প্রবেশ_Z.as_array (প্রবেশ_গুনতি - 1);
 
-    const hb_map_t *mapping = klass_map == nullptr ? c->plan->glyph_map : klass_map;
-    if (!hb_all (input, mapping)) return_trace (false);
+    ধ্রুবক hb_map_t *mapping = klass_map == nullptr ? c->plan->glyph_map : klass_map;
+    যদি (!hb_all (প্রবেশ, mapping)) return_trace (মিথ্যা);
     return_trace (serialize (c->serializer, mapping, lookup_map));
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  সর্বজনীন:
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই) &&
 		  hb_barrier () &&
-		  c->check_range (inputZ.arrayZ,
-				  inputZ.item_size * (inputCount ? inputCount - 1 : 0) +
-				  LookupRecord::static_size * lookupCount));
+		  c->check_range (প্রবেশ_Z.arrayZ,
+				  প্রবেশ_Z.item_আকার * (প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0) +
+				  LookupRecord::static_আকার * lookup_গুনতি_2));
   }
 
-  protected:
-  HBUINT16	inputCount;		/* Total number of glyphs in input
+  সুরক্ষিত:
+  HBUINT16	প্রবেশ_গুনতি;		/* Total number of glyphs in input
 					 * glyph sequence--includes the first
 					 * glyph */
-  HBUINT16	lookupCount;		/* Number of LookupRecords */
+  HBUINT16	lookup_গুনতি_2;		/* Number of LookupRecords */
   UnsizedArrayOf<typename Types::HBUINT>
-		inputZ;			/* Array of match inputs--start with
+		প্রবেশ_Z;			/* Array of match inputs--start with
 					 * second glyph */
 /*UnsizedArrayOf<LookupRecord>
 		lookupRecordX;*/	/* Array of LookupRecords--in
 					 * design order */
-  public:
-  DEFINE_SIZE_ARRAY (4, inputZ);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (4, প্রবেশ_Z);
 };
 
 template <typename Types, typename RuleType>
-struct RuleSetOf
+কাঠামো RuleSetOf
 {
-  bool intersects (const hb_set_t *glyphs,
-		   ContextClosureLookupContext &lookup_context) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs,
+		   ContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    return
+    ফেরত
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleType &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_map ([&] (ধ্রুবক RuleType &_) { ফেরত _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  void collect_first_input_classes (hb_ot_layout_ruleset_digest_t *digest) const
+  শূন্য collect_first_প্রবেশ_classes (hb_ot_layout_ruleset_digest_t *digest) ধ্রুবক
   {
     digest->init ();
-    for (unsigned i = 0; i < rule.len; i++)
+    জন্য (unsigned i = 0; i < rule.len; i++)
     {
-      const RuleType &r = this+rule.arrayZ[i];
-      if (r.inputCount <= 1)
+      ধ্রুবক RuleType &r = এই+rule.arrayZ[i];
+      যদি (r.প্রবেশ_গুনতি <= 1)
       {
 	digest->set_full ();
-	return;
+	ফেরত;
       }
-      digest->add (r.inputZ.arrayZ[0]);
+      digest->add (r.প্রবেশ_Z.arrayZ[0]);
     }
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) const
+  শূন্য depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) ধ্রুবক
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.depend (c, value, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক RuleType &_) { _.depend (c, value, lookup_context); })
     ;
   }
 
-  void closure (hb_closure_context_t *c, unsigned value,
-		ContextClosureLookupContext &lookup_context) const
+  শূন্য closure (hb_closure_context_t *c, unsigned value,
+		ContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    যদি (unlikely (c->lookup_limit_exceeded ())) ফেরত;
 
-    return
+    ফেরত
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.closure (c, value, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক RuleType &_) { _.closure (c, value, lookup_context); })
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ContextClosureLookupContext &lookup_context) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c,
+                        ContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    যদি (unlikely (c->lookup_limit_exceeded ())) ফেরত;
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক RuleType &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ContextCollectGlyphsLookupContext &lookup_context) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ContextCollectGlyphsLookupContext &lookup_context) ধ্রুবক
   {
-    return
+    ফেরত
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক RuleType &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *class_def = nullptr) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest,
+			      ধ্রুবক ClassDef *class_def = nullptr) ধ্রুবক
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const RuleType &_) { _.collect_second_glyphs (digest, class_def); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([=] (ধ্রুবক RuleType &_) { _.collect_second_glyphs (digest, class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ContextApplyLookupContext &lookup_context) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c,
+		    ধ্রুবক ContextApplyLookupContext &lookup_context) ধ্রুবক
   {
-    return
+    ফেরত
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleType &_) { return _.would_apply (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_map ([&] (ধ্রুবক RuleType &_) { ফেরত _.would_apply (c, lookup_context); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ContextApplyLookupContext &lookup_context,
-	      const hb_ot_layout_ruleset_digest_t *digest = nullptr) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c,
+	      ধ্রুবক ContextApplyLookupContext &lookup_context,
+	      ধ্রুবক hb_ot_layout_ruleset_digest_t *digest = nullptr) ধ্রুবক
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (এই);
 
-    unsigned num_rules = rule.len;
+    unsigned অঙ্ক_rules = rule.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_rules <= 4)
+    যদি (HB_OPTIMIZE_আকার_VAL || অঙ্ক_rules <= 4)
 #endif
     {
     slow:
       return_trace (
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const RuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map (hb_add (এই))
+      | hb_map ([&] (ধ্রুবক RuleType &_) { ফেরত _.apply (c, lookup_context); })
       | hb_any
       )
       ;
@@ -3356,194 +3356,194 @@ struct RuleSetOf
      * Related: https://github.com/harfbuzz/harfbuzz/issues/4813
      */
     auto &skippy_iter = c->iter_context;
-    skippy_iter.reset (c->buffer->idx);
+    skippy_iter.reset (c->বাফার->idx);
     skippy_iter.set_match_func (match_always, nullptr);
-    skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
+    skippy_iter.set_glyph_তথ্য ((HBUINT16 *) nullptr);
     unsigned unsafe_to = (unsigned) -1, unsafe_to1, unsafe_to2 = 0;
     hb_glyph_info_t *first = nullptr, *second = nullptr;
-    bool matched = skippy_iter.next (&unsafe_to1);
-    if (likely (matched))
+    যৌক্তিক matched = skippy_iter.next (&unsafe_to1);
+    যদি (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      যদি (skippy_iter.may_skip (c->বাফার->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        যাও slow;
       }
 
-      first = &c->buffer->info[skippy_iter.idx];
+      first = &c->বাফার->info[skippy_iter.idx];
       unsafe_to1 = skippy_iter.idx + 1;
 
-      if (digest && lookup_context.get_value &&
-	  !digest->may_have (lookup_context.get_value (*first, lookup_context.match_data)))
+      যদি (digest && lookup_context.get_মান &&
+	  !digest->may_have (lookup_context.get_মান (*first, lookup_context.match_তথ্য_2)))
 	{
-	  c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
-	  return_trace (false);
+	  c->বাফার->unsafe_to_concat (c->বাফার->idx, unsafe_to1);
+	  return_trace (মিথ্যা);
 	}
     }
-    else
+    অন্যথা
     {
-      bool unsafe_to_concat = false;
-      bool ret =
+      যৌক্তিক unsafe_to_concat = মিথ্যা;
+      যৌক্তিক ret =
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_filter ([&] (const RuleType &_)
+      | hb_map (hb_add (এই))
+      | hb_filter ([&] (ধ্রুবক RuleType &_)
 		   {
-		     if (_.inputCount <= 1) return true;
-		     unsafe_to_concat = true;
-		     return false;
+		     যদি (_.প্রবেশ_গুনতি <= 1) ফেরত সত্য;
+		     unsafe_to_concat = সত্য;
+		     ফেরত মিথ্যা;
 		   })
-      | hb_map ([&] (const RuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map ([&] (ধ্রুবক RuleType &_) { ফেরত _.apply (c, lookup_context); })
       | hb_any
       ;
-      if (unsafe_to_concat)
-	c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
+      যদি (unsafe_to_concat)
+	c->বাফার->unsafe_to_concat (c->বাফার->idx, unsafe_to1);
       return_trace (ret);
     }
     matched = skippy_iter.next ();
-    if (likely (matched))
+    যদি (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      যদি (skippy_iter.may_skip (c->বাফার->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        যাও slow;
       }
 
-      second = &c->buffer->info[skippy_iter.idx];
+      second = &c->বাফার->info[skippy_iter.idx];
       unsafe_to2 = skippy_iter.idx + 1;
     }
 
-    auto match_input = lookup_context.funcs.match;
-    auto *input_data = lookup_context.match_data;
-    for (unsigned int i = 0; i < num_rules; i++)
+    auto match_প্রবেশ = lookup_context.funcs.match;
+    auto *প্রবেশ_তথ্য = lookup_context.match_তথ্য_2;
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < অঙ্ক_rules; i++)
     {
-      const auto &r = this+rule.arrayZ[i];
+      ধ্রুবক auto &r = এই+rule.arrayZ[i];
 
-      const auto &input = r.inputZ;
+      ধ্রুবক auto &প্রবেশ = r.প্রবেশ_Z;
 
-      if (r.inputCount <= 1 ||
-	  (!match_input ||
-	   match_input (*first, input.arrayZ[0], input_data)))
+      যদি (r.প্রবেশ_গুনতি <= 1 ||
+	  (!match_প্রবেশ ||
+	   match_প্রবেশ (*first, প্রবেশ.arrayZ[0], প্রবেশ_তথ্য)))
       {
-        if (!second ||
-	    (r.inputCount <= 2 ||
-	     (!match_input ||
-	      match_input (*second, input.arrayZ[1], input_data)))
+        যদি (!second ||
+	    (r.প্রবেশ_গুনতি <= 2 ||
+	     (!match_প্রবেশ ||
+	      match_প্রবেশ (*second, প্রবেশ.arrayZ[1], প্রবেশ_তথ্য)))
 	   )
 	{
-	  if (r.apply (c, lookup_context))
+	  যদি (r.apply (c, lookup_context))
 	  {
-	    if (unsafe_to != (unsigned) -1)
-	      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-	    return_trace (true);
+	    যদি (unsafe_to != (unsigned) -1)
+	      c->বাফার->unsafe_to_concat (c->বাফার->idx, unsafe_to);
+	    return_trace (সত্য);
 	  }
 	}
-	else
+	অন্যথা
 	  unsafe_to = unsafe_to2;
       }
-      else
+      অন্যথা
       {
-	if (unsafe_to == (unsigned) -1)
+	যদি (unsafe_to == (unsigned) -1)
 	  unsafe_to = unsafe_to1;
 
 	// Skip ahead to next possible first glyph match.
-	for (; i + 1 < num_rules; i++)
+	জন্য (; i + 1 < অঙ্ক_rules; i++)
 	{
-	  const auto &r2 = this+rule.arrayZ[i + 1];
-	  const auto &input2 = r2.inputZ;
-	  if (r2.inputCount <= 1 || input2.arrayZ[0] != input.arrayZ[0])
-	    break;
+	  ধ্রুবক auto &r2 = এই+rule.arrayZ[i + 1];
+	  ধ্রুবক auto &input2 = r2.প্রবেশ_Z;
+	  যদি (r2.প্রবেশ_গুনতি <= 1 || input2.arrayZ[0] != প্রবেশ.arrayZ[0])
+	    বিরতি;
 	}
       }
     }
-    if (likely (unsafe_to != (unsigned) -1))
-      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
+    যদি (likely (unsafe_to != (unsigned) -1))
+      c->বাফার->unsafe_to_concat (c->বাফার->idx, unsafe_to);
 
-    return_trace (false);
+    return_trace (মিথ্যা);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *klass_map = nullptr) const
+  যৌক্তিক subset (hb_subset_context_t *c,
+	       ধ্রুবক hb_map_t *lookup_map,
+	       ধ্রুবক hb_map_t *klass_map = nullptr) ধ্রুবক
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এই);
 
     auto snap = c->serializer->snapshot ();
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
 
-    for (const auto& _ : rule)
+    জন্য (ধ্রুবক auto& _ : rule)
     {
-      if (!_) continue;
+      যদি (!_) চালু;
       auto o_snap = c->serializer->snapshot ();
       auto *o = out->rule.serialize_append (c->serializer);
-      if (unlikely (!o)) continue;
+      যদি (unlikely (!o)) চালু;
 
-      if (!o->serialize_subset (c, _, this, lookup_map, klass_map))
+      যদি (!o->serialize_subset (c, _, এই, lookup_map, klass_map))
       {
-	out->rule.pop ();
+	out->rule.বের_করো ();
 	c->serializer->revert (o_snap);
       }
     }
 
-    bool ret = bool (out->rule);
-    if (!ret) c->serializer->revert (snap);
+    যৌক্তিক ret = যৌক্তিক (out->rule);
+    যদি (!ret) c->serializer->revert (snap);
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (rule.sanitize (c, this));
+    TRACE_SANITIZE (এই);
+    return_trace (rule.sanitize (c, এই));
   }
 
-  protected:
+  সুরক্ষিত:
   Array16Of<typename Types::template OffsetTo<RuleType>>
 		rule;			/* Array of Rule tables
 					 * ordered by preference */
-  public:
-  DEFINE_SIZE_ARRAY (2, rule);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (2, rule);
 };
 
 template <typename Types>
-struct RuleSet : RuleSetOf<SmallTypes, Rule<Types>> {};
+কাঠামো RuleSet : RuleSetOf<SmallTypes, Rule<Types>> {};
 
 template <typename Types>
-struct ClassRuleSet : RuleSetOf<Types, Rule<SmallTypes>> {};
+কাঠামো ClassRuleSet : RuleSetOf<Types, Rule<SmallTypes>> {};
 
 
 template <typename Types>
-struct ContextFormat1_4
+কাঠামো ContextFormat1_4
 {
   using RuleSet = OT::RuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
   {
-    struct ContextClosureLookupContext lookup_context = {
+    কাঠামো ContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    return
-    + hb_zip (this+coverage, ruleSet)
+    ফেরত
+    + hb_zip (এই+coverage, ruleSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleSet &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_map ([&] (ধ্রুবক RuleSet &_) { ফেরত _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  যৌক্তিক may_have_non_1to1 () ধ্রুবক
+  { ফেরত সত্য; }
 
-  void depend (hb_depend_context_t *c) const
+  শূন্য depend (hb_depend_context_t *c) ধ্রুবক
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
     ContextDependLookupContext lookup_context = {
@@ -3554,139 +3554,139 @@ struct ContextFormat1_4
       nullptr   /* intersected_glyphs_cache */
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (এই+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->parent_active_glyphs ().has (_);
+      ফেরত c->parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const RuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const RuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
+    | hb_map ([&](ধ্রুবক hb_pair_t<hb_codepoint_t, unsigned> _) { ফেরত hb_pair_t<unsigned, ধ্রুবক RuleSet&> (_.first, এই+ruleSet[_.second]); })
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক RuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  শূন্য closure (hb_closure_context_t *c) ধ্রুবক
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (), *cur_active_glyphs);
 
-    struct ContextClosureLookupContext lookup_context = {
+    কাঠামো ContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (এই+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->previous_parent_active_glyphs ().has (_);
+      ফেরত c->previous_parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const RuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const RuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
+    | hb_map ([&](ধ্রুবক hb_pair_t<hb_codepoint_t, unsigned> _) { ফেরত hb_pair_t<unsigned, ধ্রুবক RuleSet&> (_.first, এই+ruleSet[_.second]); })
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক RuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক
   {
-    struct ContextClosureLookupContext lookup_context = {
+    কাঠামো ContextClosureLookupContext lookup_context = {
       {intersects_glyph, nullptr},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (এই+coverage, ruleSet)
     | hb_filter (*c->glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক RuleSet &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    (this+coverage).collect_coverage (c->input);
+    (এই+coverage).collect_coverage (c->প্রবেশ);
 
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    কাঠামো ContextCollectGlyphsLookupContext lookup_context = {
       {collect_glyph},
       nullptr
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক RuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest) ধ্রুবক
   {
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest] (const RuleSet &_) { _.collect_second_glyphs (digest); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([digest] (ধ্রুবক RuleSet &_) { _.collect_second_glyphs (digest); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c) ধ্রুবক
   {
-    const RuleSet &rule_set = this+ruleSet[(this+coverage).get_coverage (c->glyphs[0])];
-    struct ContextApplyLookupContext lookup_context = {
+    ধ্রুবক RuleSet &rule_set = এই+ruleSet[(এই+coverage).get_coverage (c->glyphs[0])];
+    কাঠামো ContextApplyLookupContext lookup_context = {
       {match_glyph},
       nullptr
     };
-    return rule_set.would_apply (c, lookup_context);
+    ফেরত rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক { ফেরত এই+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (likely (index == NOT_COVERED))
-      return_trace (false);
+    TRACE_APPLY (এই);
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage (c->বাফার->cur().codepoint);
+    যদি (likely (সূচক_2 == NOT_COVERED))
+      return_trace (মিথ্যা);
 
-    const RuleSet &rule_set = this+ruleSet[index];
-    struct ContextApplyLookupContext lookup_context = {
+    ধ্রুবক RuleSet &rule_set = এই+ruleSet[সূচক_2];
+    কাঠামো ContextApplyLookupContext lookup_context = {
       {match_glyph},
       nullptr
     };
     return_trace (rule_set.apply (c, lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (এই);
+    ধ্রুবক hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ধ্রুবক hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
     out->format = format;
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    ধ্রুবক hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (এই+coverage, ruleSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ruleSet, this, lookup_map), hb_second)
+    | hb_filter (subset_offset_array (c, out->ruleSet, এই, lookup_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    return_trace (যৌক্তিক (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (এই);
+    return_trace (coverage.sanitize (c, এই) && ruleSet.sanitize (c, এই));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	format;			/* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -3694,25 +3694,25 @@ struct ContextFormat1_4
   typename Types::template ArrayOf<typename Types::template OffsetTo<RuleSet>>
 		ruleSet;		/* Array of RuleSet tables
 					 * ordered by Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (2 + Types::LOffset::static_আকার + Types::HBUINT::static_আকার, ruleSet);
 };
 
 
 template <typename Types>
-struct ContextFormat2_5
+কাঠামো ContextFormat2_5
 {
   using RuleSet = OT::ClassRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    যদি (!(এই+coverage).intersects (glyphs))
+      ফেরত মিথ্যা;
 
-    const ClassDef &class_def = this+classDef;
+    ধ্রুবক ClassDef &class_def = এই+classDef;
 
     hb_map_t cache;
-    struct ContextClosureLookupContext lookup_context = {
+    কাঠামো ContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3720,37 +3720,37 @@ struct ContextFormat2_5
     };
 
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
+    (এই+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
     class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
 
-    return
+    ফেরত
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (এই))
     | hb_enumerate
-    | hb_map ([&] (const hb_pair_t<unsigned, const RuleSet &> p)
-	      { return class_def.intersects_class (glyphs, p.first) &&
+    | hb_map ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক RuleSet &> p)
+	      { ফেরত class_def.intersects_class (glyphs, p.first) &&
 		       coverage_glyph_classes.has (p.first) &&
 		       p.second.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  যৌক্তিক may_have_non_1to1 () ধ্রুবক
+  { ফেরত সত্য; }
 
-  void depend (hb_depend_context_t *c) const
+  শূন্য depend (hb_depend_context_t *c) ধ্রুবক
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    যদি (!(এই+coverage).intersects (c->glyphs))
+      ফেরত;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const ClassDef &class_def = this+classDef;
+    ধ্রুবক ClassDef &class_def = এই+classDef;
 
     hb_map_t cache;
     intersected_class_cache_t intersected_cache;
@@ -3764,33 +3764,33 @@ struct ContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { ফেরত class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<RuleSet>&> _)
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক typename Types::template OffsetTo<RuleSet>&> _)
                 {
-                  const RuleSet& rule_set = this+_.second;
+                  ধ্রুবক RuleSet& rule_set = এই+_.second;
                   rule_set.depend (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  শূন্য closure (hb_closure_context_t *c) ধ্রুবক
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    যদি (!(এই+coverage).intersects (c->glyphs))
+      ফেরত;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const ClassDef &class_def = this+classDef;
+    ধ্রুবক ClassDef &class_def = এই+classDef;
 
     hb_map_t cache;
     intersected_class_cache_t intersected_cache;
-    struct ContextClosureLookupContext lookup_context = {
+    কাঠামো ContextClosureLookupContext lookup_context = {
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3800,27 +3800,27 @@ struct ContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { ফেরত class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<RuleSet>&> _)
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক typename Types::template OffsetTo<RuleSet>&> _)
                 {
-                  const RuleSet& rule_set = this+_.second;
+                  ধ্রুবক RuleSet& rule_set = এই+_.second;
                   rule_set.closure (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    যদি (!(এই+coverage).intersects (c->glyphs))
+      ফেরত;
 
-    const ClassDef &class_def = this+classDef;
+    ধ্রুবক ClassDef &class_def = এই+classDef;
 
     hb_map_t cache;
-    struct ContextClosureLookupContext lookup_context = {
+    কাঠামো ContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3828,179 +3828,179 @@ struct ContextFormat2_5
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (এই))
     | hb_enumerate
-    | hb_filter ([&] (const hb_pair_t<unsigned, const RuleSet &> p)
-    { return class_def.intersects_class (c->glyphs, p.first); })
+    | hb_filter ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক RuleSet &> p)
+    { ফেরত class_def.intersects_class (c->glyphs, p.first); })
     | hb_map (hb_second)
-    | hb_apply ([&] (const RuleSet & _)
+    | hb_apply ([&] (ধ্রুবক RuleSet & _)
     { _.closure_lookups (c, lookup_context); });
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    (this+coverage).collect_coverage (c->input);
+    (এই+coverage).collect_coverage (c->প্রবেশ);
 
-    const ClassDef &class_def = this+classDef;
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    ধ্রুবক ClassDef &class_def = এই+classDef;
+    কাঠামো ContextCollectGlyphsLookupContext lookup_context = {
       {collect_class},
       &class_def
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক RuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest) ধ্রুবক
   {
-    const ClassDef &class_def = this+classDef;
+    ধ্রুবক ClassDef &class_def = এই+classDef;
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([=, &class_def] (const RuleSet &_) { _.collect_second_glyphs (digest, &class_def); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([=, &class_def] (ধ্রুবক RuleSet &_) { _.collect_second_glyphs (digest, &class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c) ধ্রুবক
   {
-    const ClassDef &class_def = this+classDef;
-    unsigned int index = class_def.get_class (c->glyphs[0]);
-    const RuleSet &rule_set = this+ruleSet[index];
-    struct ContextApplyLookupContext lookup_context = {
+    ধ্রুবক ClassDef &class_def = এই+classDef;
+    unsigned পূর্ণসংখ্যা সূচক_2 = class_def.get_class (c->glyphs[0]);
+    ধ্রুবক RuleSet &rule_set = এই+ruleSet[সূচক_2];
+    কাঠামো ContextApplyLookupContext lookup_context = {
       {match_class},
       &class_def
     };
-    return rule_set.would_apply (c, lookup_context);
+    ফেরত rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক { ফেরত এই+coverage; }
 
-  unsigned cache_cost () const
+  unsigned cache_cost () ধ্রুবক
   {
-    return (this+classDef).cost ();
+    ফেরত (এই+classDef).cost ();
   }
-  static bool cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+  স্থির যৌক্তিক cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
   {
-    return context_cache_func (c, op);
+    ফেরত context_cache_func (c, op);
   }
 
-  struct external_cache_t
+  কাঠামো external_cache_t
   {
-    hb_ot_layout_binary_cache_t coverage;
+    hb_ot_layout_দ্বিমিক_cache_t coverage;
     hb_ot_layout_ruleset_digest_t rule_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  শূন্য *external_cache_create () ধ্রুবক
   {
-    unsigned count = ruleSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_ot_layout_ruleset_digest_t) +
-		    count * sizeof (hb_ot_layout_ruleset_digest_t);
-    external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    unsigned গুনতি = ruleSet.len;
+    unsigned আকার_2 = আকার (external_cache_t) -
+		    HB_VAR_ARRAY * আকার (hb_ot_layout_ruleset_digest_t) +
+		    গুনতি * আকার (hb_ot_layout_ruleset_digest_t);
+    external_cache_t *cache = (external_cache_t *) hb_malloc (আকার_2);
+    যদি (likely (cache))
     {
       cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
-	(this+ruleSet[i]).collect_first_input_classes (&cache->rule_sets[i]);
+      জন্য (unsigned i = 0; i < গুনতি; i++)
+	(এই+ruleSet[i]).collect_first_প্রবেশ_classes (&cache->rule_sets[i]);
     }
-    return cache;
+    ফেরত cache;
   }
-  bool apply_cached (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, true, external_cache); }
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, false, external_cache); }
-  bool _apply (hb_ot_apply_context_t *c, bool cached, void *external_cache) const
+  যৌক্তিক apply_cached (hb_ot_apply_context_t *c, শূন্য *external_cache) ধ্রুবক { ফেরত _apply (c, সত্য, external_cache); }
+  যৌক্তিক apply (hb_ot_apply_context_t *c, শূন্য *external_cache) ধ্রুবক { ফেরত _apply (c, মিথ্যা, external_cache); }
+  যৌক্তিক _apply (hb_ot_apply_context_t *c, যৌক্তিক cached, শূন্য *external_cache) ধ্রুবক
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (এই);
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage_binary (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage_দ্বিমিক (c->বাফার->cur().codepoint, cache ? &cache->coverage : nullptr);
+#অন্যথা
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage (c->বাফার->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    যদি (সূচক_2 == NOT_COVERED) return_trace (মিথ্যা);
 
-    const ClassDef &class_def = this+classDef;
+    ধ্রুবক ClassDef &class_def = এই+classDef;
 
-    struct ContextApplyLookupContext lookup_context = {
+    কাঠামো ContextApplyLookupContext lookup_context = {
       {cached ? match_class_cached : match_class},
       &class_def,
-      cached ? get_class_cached_value : get_class_value
+      cached ? get_class_cached_মান : get_class_মান
     };
 
-    index = cached ? get_class_cached (class_def, c->buffer->cur()) : class_def.get_class (c->buffer->cur().codepoint);
-    const RuleSet &rule_set = this+ruleSet[index];
+    সূচক_2 = cached ? get_class_cached (class_def, c->বাফার->cur()) : class_def.get_class (c->বাফার->cur().codepoint);
+    ধ্রুবক RuleSet &rule_set = এই+ruleSet[সূচক_2];
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    const hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
-#else
-    const hb_ot_layout_ruleset_digest_t *digest = nullptr;
+    ধ্রুবক hb_ot_layout_ruleset_digest_t *digest = cache && সূচক_2 < ruleSet.len ? &cache->rule_sets[সূচক_2] : nullptr;
+#অন্যথা
+    ধ্রুবক hb_ot_layout_ruleset_digest_t *digest = nullptr;
 #endif
     return_trace (rule_set.apply (c, lookup_context, digest));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (এই);
+    auto *out = c->serializer->start_embed (*এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
     out->format = format;
-    if (unlikely (!out->coverage.serialize_subset (c, coverage, this)))
-      return_trace (false);
+    যদি (unlikely (!out->coverage.serialize_subset (c, coverage, এই)))
+      return_trace (মিথ্যা);
 
     hb_map_t klass_map;
-    out->classDef.serialize_subset (c, classDef, this, &klass_map);
+    out->classDef.serialize_subset (c, classDef, এই, &klass_map);
 
-    const hb_set_t* glyphset = c->plan->glyphset_gsub ();
+    ধ্রুবক hb_set_t* glyphset = c->plan->glyphset_gsub ();
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
+    (এই+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    (this+classDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    (এই+classDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
-    bool ret = true;
-    int non_zero_index = -1, index = 0;
+    ধ্রুবক hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    যৌক্তিক ret = সত্য;
+    পূর্ণসংখ্যা non_zero_সূচক = -1, সূচক_2 = 0;
     auto snapshot = c->serializer->snapshot();
-    for (const auto& _ : + hb_enumerate (ruleSet)
+    জন্য (ধ্রুবক auto& _ : + hb_enumerate (ruleSet)
 			 | hb_filter (klass_map, hb_first))
     {
       auto *o = out->ruleSet.serialize_append (c->serializer);
-      if (unlikely (!o))
+      যদি (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = মিথ্যা;
+	বিরতি;
       }
 
-      if (coverage_glyph_classes.has (_.first) &&
-	  o->serialize_subset (c, _.second, this, lookup_map, &klass_map)) {
-	non_zero_index = index;
+      যদি (coverage_glyph_classes.has (_.first) &&
+	  o->serialize_subset (c, _.second, এই, lookup_map, &klass_map)) {
+	non_zero_সূচক = সূচক_2;
         snapshot = c->serializer->snapshot();
       }
 
-      index++;
+      সূচক_2++;
     }
 
-    if (!ret || non_zero_index == -1) return_trace (false);
+    যদি (!ret || non_zero_সূচক == -1) return_trace (মিথ্যা);
 
     //prune empty trailing ruleSets
-    --index;
-    while (index > non_zero_index)
+    --সূচক_2;
+    যখন (সূচক_2 > non_zero_সূচক)
     {
-      out->ruleSet.pop ();
-      index--;
+      out->ruleSet.বের_করো ();
+      সূচক_2--;
     }
     c->serializer->revert (snapshot);
 
-    return_trace (bool (out->ruleSet));
+    return_trace (যৌক্তিক (out->ruleSet));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && classDef.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (এই);
+    return_trace (coverage.sanitize (c, এই) && classDef.sanitize (c, এই) && ruleSet.sanitize (c, এই));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	format;			/* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -4011,230 +4011,230 @@ struct ContextFormat2_5
   typename Types::template ArrayOf<typename Types::template OffsetTo<RuleSet>>
 		ruleSet;		/* Array of RuleSet tables
 					 * ordered by class */
-  public:
-  DEFINE_SIZE_ARRAY (2 + 2 * Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (2 + 2 * Types::LOffset::static_আকার + Types::HBUINT::static_আকার, ruleSet);
 };
 
 
 template <typename Types>
-struct ContextFormat3_6
+কাঠামো ContextFormat3_6
 {
   using RuleSet = OT::RuleSet<SmallTypes>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
   {
-    if (!(this+coverageZ[0]).intersects (glyphs))
-      return false;
+    যদি (!(এই+coverageZ[0]).intersects (glyphs))
+      ফেরত মিথ্যা;
 
-    struct ContextClosureLookupContext lookup_context = {
+    কাঠামো ContextClosureLookupContext lookup_context = {
       {intersects_coverage, nullptr},
       ContextFormat::CoverageBasedContext,
-      this
+      এই
     };
-    return context_intersects (glyphs,
-			       glyphCount, coverageZ.arrayZ + 1,
+    ফেরত context_intersects (glyphs,
+			       glyph_গুনতি_2, coverageZ.arrayZ + 1,
 			       lookup_context);
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  যৌক্তিক may_have_non_1to1 () ধ্রুবক
+  { ফেরত সত্য; }
 
-  void depend (hb_depend_context_t *c) const
+  শূন্য depend (hb_depend_context_t *c) ধ্রুবক
   {
-    if (!(this+coverageZ[0]).intersects (c->glyphs))
-      return;
+    যদি (!(এই+coverageZ[0]).intersects (c->glyphs))
+      ফেরত;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
+    ধ্রুবক LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_গুনতি_2));
     ContextDependLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      this,
+      এই,
       nullptr,  /* intersects_cache */
       nullptr   /* intersected_glyphs_cache */
     };
     context_depend_lookup (c,
-			   glyphCount, (const HBUINT16 *) (coverageZ.arrayZ + 1),
-			   lookupCount, lookupRecord,
-			   this,
+			   glyph_গুনতি_2, (ধ্রুবক HBUINT16 *) (coverageZ.arrayZ + 1),
+			   lookup_গুনতি_2, lookupRecord,
+			   এই,
 			   coverageZ[0], lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  শূন্য closure (hb_closure_context_t *c) ধ্রুবক
   {
-    if (!(this+coverageZ[0]).intersects (c->glyphs))
-      return;
+    যদি (!(এই+coverageZ[0]).intersects (c->glyphs))
+      ফেরত;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextClosureLookupContext lookup_context = {
+    ধ্রুবক LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_গুনতি_2));
+    কাঠামো ContextClosureLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      this
+      এই
     };
     context_closure_lookup (c,
-			    glyphCount, coverageZ.arrayZ + 1,
-			    lookupCount, lookupRecord,
+			    glyph_গুনতি_2, coverageZ.arrayZ + 1,
+			    lookup_গুনতি_2, lookupRecord,
 			    0, lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক
   {
-    if (!intersects (c->glyphs))
-      return;
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    recurse_lookups (c, lookupCount, lookupRecord);
+    যদি (!intersects (c->glyphs))
+      ফেরত;
+    ধ্রুবক LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_গুনতি_2));
+    recurse_lookups (c, lookup_গুনতি_2, lookupRecord);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    (this+coverageZ[0]).collect_coverage (c->input);
+    (এই+coverageZ[0]).collect_coverage (c->প্রবেশ);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    ধ্রুবক LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_গুনতি_2));
+    কাঠামো ContextCollectGlyphsLookupContext lookup_context = {
       {collect_coverage},
-      this
+      এই
     };
 
     context_collect_glyphs_lookup (c,
-				   glyphCount, coverageZ.arrayZ + 1,
-				   lookupCount, lookupRecord,
+				   glyph_গুনতি_2, coverageZ.arrayZ + 1,
+				   lookup_গুনতি_2, lookupRecord,
 				   lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest) ধ্রুবক
   {
-    if (glyphCount <= 1)
+    যদি (glyph_গুনতি_2 <= 1)
       *digest = hb_set_digest_t::full ();
-    else
-      (this+coverageZ[1]).collect_coverage (digest);
+    অন্যথা
+      (এই+coverageZ[1]).collect_coverage (digest);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c) ধ্রুবক
   {
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextApplyLookupContext lookup_context = {
+    ধ্রুবক LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_গুনতি_2));
+    কাঠামো ContextApplyLookupContext lookup_context = {
       {match_coverage},
-      this
+      এই
     };
-    return context_would_apply_lookup (c,
-				       glyphCount, coverageZ.arrayZ + 1,
-				       lookupCount, lookupRecord,
+    ফেরত context_would_apply_lookup (c,
+				       glyph_গুনতি_2, coverageZ.arrayZ + 1,
+				       lookup_গুনতি_2, lookupRecord,
 				       lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverageZ[0]; }
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক { ফেরত এই+coverageZ[0]; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverageZ[0]).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (এই);
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverageZ[0]).get_coverage (c->বাফার->cur().codepoint);
+    যদি (সূচক_2 == NOT_COVERED) return_trace (মিথ্যা);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextApplyLookupContext lookup_context = {
+    ধ্রুবক LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_গুনতি_2));
+    কাঠামো ContextApplyLookupContext lookup_context = {
       {match_coverage},
-      this
+      এই
     };
     return_trace (context_apply_lookup (c,
-					glyphCount,
+					glyph_গুনতি_2,
 					coverageZ.arrayZ + 1,
-					lookupCount, lookupRecord,
+					lookup_গুনতি_2, lookupRecord,
 					lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (এই);
+    auto *out = c->serializer->start_embed (এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
 
     out->format = format;
-    out->glyphCount = glyphCount;
+    out->glyph_গুনতি_2 = glyph_গুনতি_2;
 
-    auto coverages = coverageZ.as_array (glyphCount);
+    auto coverages = coverageZ.as_array (glyph_গুনতি_2);
 
-    for (const auto& offset : coverages)
+    জন্য (ধ্রুবক auto& offset : coverages)
     {
       /* TODO(subset) This looks like should not be necessary to write this way. */
-      auto *o = c->serializer->allocate_size<typename Types::template OffsetTo<Coverage>> (Types::Offset::static_size);
-      if (unlikely (!o)) return_trace (false);
-      if (!o->serialize_subset (c, offset, this)) return_trace (false);
+      auto *o = c->serializer->allocate_আকার<typename Types::template OffsetTo<Coverage>> (Types::Offset::static_আকার);
+      যদি (unlikely (!o)) return_trace (মিথ্যা);
+      যদি (!o->serialize_subset (c, offset, এই)) return_trace (মিথ্যা);
     }
 
-    const auto& lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>> (coverageZ.as_array (glyphCount));
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    ধ্রুবক auto& lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>> (coverageZ.as_array (glyph_গুনতি_2));
+    ধ্রুবক hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
 
 
-    unsigned count = serialize_lookuprecord_array (c->serializer, lookupRecord.as_array (lookupCount), lookup_map);
-    return_trace (c->serializer->check_assign (out->lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned গুনতি = serialize_lookuprecord_array (c->serializer, lookupRecord.as_array (lookup_গুনতি_2), lookup_map);
+    return_trace (c->serializer->check_assign (out->lookup_গুনতি_2, গুনতি, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (এই);
+    যদি (unlikely (!c->check_struct (এই))) return_trace (মিথ্যা);
     hb_barrier ();
-    unsigned int count = glyphCount;
-    if (unlikely (!count)) return_trace (false); /* We want to access coverageZ[0] freely. */
-    if (unlikely (!c->check_array (coverageZ.arrayZ, count))) return_trace (false);
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!coverageZ[i].sanitize (c, this))) return_trace (false);
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    return_trace (likely (c->check_array (lookupRecord, lookupCount)));
+    unsigned পূর্ণসংখ্যা গুনতি = glyph_গুনতি_2;
+    যদি (unlikely (!গুনতি)) return_trace (মিথ্যা); /* We want to access coverageZ[0] freely. */
+    যদি (unlikely (!c->check_array (coverageZ.arrayZ, গুনতি))) return_trace (মিথ্যা);
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
+      যদি (unlikely (!coverageZ[i].sanitize (c, এই))) return_trace (মিথ্যা);
+    ধ্রুবক LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_গুনতি_2));
+    return_trace (likely (c->check_array (lookupRecord, lookup_গুনতি_2)));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	format;			/* Format identifier--format = 3 */
-  HBUINT16	glyphCount;		/* Number of glyphs in the input glyph
+  HBUINT16	glyph_গুনতি_2;		/* Number of glyphs in the input glyph
 					 * sequence */
-  HBUINT16	lookupCount;		/* Number of LookupRecords */
+  HBUINT16	lookup_গুনতি_2;		/* Number of LookupRecords */
   UnsizedArrayOf<typename Types::template OffsetTo<Coverage>>
 		coverageZ;		/* Array of offsets to Coverage
 					 * table in glyph sequence order */
 /*UnsizedArrayOf<LookupRecord>
 		lookupRecordX;*/	/* Array of LookupRecords--in
 					 * design order */
-  public:
-  DEFINE_SIZE_ARRAY (6, coverageZ);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (6, coverageZ);
 };
 
-struct Context
+কাঠামো Context
 {
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ধ্রুবক
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    যদি (unlikely (!c->may_dispatch (এই, &u.format.v))) ফেরত c->no_dispatch_return_মান ();
+    TRACE_DISPATCH (এই, u.format.v);
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ক্ষেত্র 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    ক্ষেত্র 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
-    case 6: hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
+    ক্ষেত্র 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    ক্ষেত্র 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    ক্ষেত্র 6: hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    পূর্বনির্ধারিত:return_trace (c->default_return_মান ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  সুরক্ষিত:
+  সংঘ {
+  কাঠামো { HBUINT16 v; }	format;		/* Format identifier */
   ContextFormat1_4<SmallTypes>	format1;
   ContextFormat2_5<SmallTypes>	format2;
   ContextFormat3_6<SmallTypes>	format3;
@@ -4249,489 +4249,489 @@ struct Context
 
 /* Chaining Contextual lookups */
 
-struct ChainContextClosureLookupContext
+কাঠামো ChainContextClosureLookupContext
 {
   ContextClosureFuncs funcs;
   ContextFormat context_format;
-  const void *intersects_data[3];
-  void *intersects_cache[3];
-  void *intersected_glyphs_cache;
+  ধ্রুবক শূন্য *intersects_তথ্য[3];
+  শূন্য *intersects_cache[3];
+  শূন্য *intersected_glyphs_cache;
 };
 
-typedef ChainContextClosureLookupContext ChainContextDependLookupContext;
+প্রকারলেখ ChainContextClosureLookupContext ChainContextDependLookupContext;
 
-struct ChainContextCollectGlyphsLookupContext
+কাঠামো ChainContextCollectGlyphsLookupContext
 {
   ContextCollectGlyphsFuncs funcs;
-  const void *collect_data[3];
+  ধ্রুবক শূন্য *collect_তথ্য[3];
 };
 
-struct ChainContextApplyLookupContext
+কাঠামো ChainContextApplyLookupContext
 {
   ChainContextApplyFuncs funcs;
-  const void *match_data[3];
-  get_value_func_t get_input_value;
+  ধ্রুবক শূন্য *match_তথ্য_2[3];
+  get_মান_func_t get_প্রবেশ_মান;
 };
 
-static inline bool chain_context_intersects (const hb_set_t *glyphs,
-					     unsigned int backtrackCount,
-					     glyph_data_t backtrack,
-					     unsigned int inputCount, /* Including the first glyph (not matched) */
-					     glyph_data_t input, /* Array of input values--start with second glyph */
-					     unsigned int lookaheadCount,
-					     glyph_data_t lookahead,
+স্থির অন্তঃরেখ যৌক্তিক chain_context_intersects (ধ্রুবক hb_set_t *glyphs,
+					     unsigned পূর্ণসংখ্যা backtrack_গুনতি,
+					     glyph_তথ্য_t backtrack,
+					     unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+					     glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+					     unsigned পূর্ণসংখ্যা lookahead_গুনতি,
+					     glyph_তথ্য_t lookahead,
 					     ChainContextClosureLookupContext &lookup_context)
 {
-  bool bt_ok = array_is_subset_of (glyphs,
-			     backtrackCount, backtrack,
+  যৌক্তিক bt_ok = array_is_subset_of (glyphs,
+			     backtrack_গুনতি, backtrack,
 			     lookup_context.funcs.intersects,
-			     lookup_context.intersects_data[0],
+			     lookup_context.intersects_তথ্য[0],
 			     lookup_context.intersects_cache[0]);
-  bool in_ok = array_is_subset_of (glyphs,
-			     inputCount ? inputCount - 1 : 0, input,
+  যৌক্তিক in_ok = array_is_subset_of (glyphs,
+			     প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0, প্রবেশ,
 			     lookup_context.funcs.intersects,
-			     lookup_context.intersects_data[1],
+			     lookup_context.intersects_তথ্য[1],
 			     lookup_context.intersects_cache[1]);
-  bool la_ok = array_is_subset_of (glyphs,
-			     lookaheadCount, lookahead,
+  যৌক্তিক la_ok = array_is_subset_of (glyphs,
+			     lookahead_গুনতি, lookahead,
 			     lookup_context.funcs.intersects,
-			     lookup_context.intersects_data[2],
+			     lookup_context.intersects_তথ্য[2],
 			     lookup_context.intersects_cache[2]);
 
-  return bt_ok && in_ok && la_ok;
+  ফেরত bt_ok && in_ok && la_ok;
 }
 
-static inline void chain_context_closure_lookup (hb_closure_context_t *c,
-						 unsigned int backtrackCount,
-						 glyph_data_t backtrack,
-						 unsigned int inputCount, /* Including the first glyph (not matched) */
-						 glyph_data_t input, /* Array of input values--start with second glyph */
-						 unsigned int lookaheadCount,
-						 glyph_data_t lookahead,
-						 unsigned int lookupCount,
-						 const LookupRecord lookupRecord[],
+স্থির অন্তঃরেখ শূন্য chain_context_closure_lookup (hb_closure_context_t *c,
+						 unsigned পূর্ণসংখ্যা backtrack_গুনতি,
+						 glyph_তথ্য_t backtrack,
+						 unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+						 glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+						 unsigned পূর্ণসংখ্যা lookahead_গুনতি,
+						 glyph_তথ্য_t lookahead,
+						 unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+						 ধ্রুবক LookupRecord lookupRecord[],
 						 unsigned value,
 						 ChainContextClosureLookupContext &lookup_context)
 {
-  if (chain_context_intersects (c->glyphs,
-				backtrackCount, backtrack,
-				inputCount, input,
-				lookaheadCount, lookahead,
+  যদি (chain_context_intersects (c->glyphs,
+				backtrack_গুনতি, backtrack,
+				প্রবেশ_গুনতি, প্রবেশ,
+				lookahead_গুনতি, lookahead,
 				lookup_context))
     context_closure_recurse_lookups (c,
-		     inputCount, input,
-		     lookupCount, lookupRecord,
+		     প্রবেশ_গুনতি, প্রবেশ,
+		     lookup_গুনতি_2, lookupRecord,
 		     value,
 		     lookup_context.context_format,
-		     lookup_context.intersects_data[1],
+		     lookup_context.intersects_তথ্য[1],
 		     lookup_context.funcs.intersected_glyphs,
 		     lookup_context.intersected_glyphs_cache);
 }
 
-static inline void chain_context_depend_lookup (hb_depend_context_t *c,
-						unsigned int backtrackCount,
-						glyph_data_t backtrack,
-						unsigned int inputCount, /* Including the first glyph (not matched) */
-						glyph_data_t input, /* Array of input values--start with second glyph */
-						unsigned int lookaheadCount,
-						glyph_data_t lookahead,
-						unsigned int lookupCount,
-						const LookupRecord lookupRecord[],
-						const void *rule,
+স্থির অন্তঃরেখ শূন্য chain_context_depend_lookup (hb_depend_context_t *c,
+						unsigned পূর্ণসংখ্যা backtrack_গুনতি,
+						glyph_তথ্য_t backtrack,
+						unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+						glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+						unsigned পূর্ণসংখ্যা lookahead_গুনতি,
+						glyph_তথ্য_t lookahead,
+						unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+						ধ্রুবক LookupRecord lookupRecord[],
+						ধ্রুবক শূন্য *rule,
 						unsigned value,
 						ChainContextDependLookupContext &lookup_context)
 {
-  if (!chain_context_intersects (c->glyphs,
-				 backtrackCount, backtrack,
-				 inputCount, input,
-				 lookaheadCount, lookahead,
+  যদি (!chain_context_intersects (c->glyphs,
+				 backtrack_গুনতি, backtrack,
+				 প্রবেশ_গুনতি, প্রবেশ,
+				 lookahead_গুনতি, lookahead,
 				 lookup_context))
-    return;
+    ফেরত;
 
   hb_depend_context_t::depend_scratch_t *scratch = c->acquire_depend_scratch ();
-  if (unlikely (!scratch))
-    return;
+  যদি (unlikely (!scratch))
+    ফেরত;
   HB_SCOPE_GUARD (c->release_depend_scratch (scratch));
 
-  bool context_sets_cached = context_depend_sets_are_cached (
-    c, inputCount, lookupCount, lookupRecord, rule, value,
-    lookup_context.context_format, lookup_context.intersects_data[1],
+  যৌক্তিক context_sets_cached = context_depend_sets_are_cached (
+    c, প্রবেশ_গুনতি, lookup_গুনতি_2, lookupRecord, rule, value,
+    lookup_context.context_format, lookup_context.intersects_তথ্য[1],
     &scratch->cached_context_sets);
-  if (unlikely (!c->depend_data->successful))
-    return;
-  if (context_sets_cached)
+  যদি (unlikely (!c->depend_তথ্য->successful))
+    ফেরত;
+  যদি (context_sets_cached)
   {
     context_depend_recurse_lookups (c,
-				    inputCount, input,
-				    lookupCount, lookupRecord,
+				    প্রবেশ_গুনতি, প্রবেশ,
+				    lookup_গুনতি_2, lookupRecord,
 				    rule,
 				    value,
 				    lookup_context.context_format,
-				    lookup_context.intersects_data[1],
+				    lookup_context.intersects_তথ্য[1],
 				    lookup_context.funcs.intersected_glyphs,
 				    lookup_context.intersected_glyphs_cache,
 				    scratch->preliminary_context,
 				    nullptr,
 				    &scratch->cached_context_sets,
 				    scratch);
-    return;
+    ফেরত;
   }
 
   /* Cache misses and rules without valid records still perform the original
    * dependency-set interning in its observable order. */
   hb_set_t &position_scratch = scratch->position_scratch;
-  hb_vector_t<const hb_set_t *> &backtrack_sets = scratch->backtrack_sets;
-  hb_vector_t<const hb_set_t *> &lookahead_sets = scratch->lookahead_sets;
+  hb_vector_t<ধ্রুবক hb_set_t *> &backtrack_sets = scratch->backtrack_sets;
+  hb_vector_t<ধ্রুবক hb_set_t *> &lookahead_sets = scratch->lookahead_sets;
 
   /* Extract backtrack glyphs */
-  for (unsigned i = 0; i < backtrackCount; i++)
+  জন্য (unsigned i = 0; i < backtrack_গুনতি; i++)
   {
-    const hb_set_t *pos_glyphs = depend_position_glyphs (
-      c, lookup_context.context_format, lookup_context.intersects_data[0],
-      backtrack[i], false, &position_scratch);
-    if (unlikely (!pos_glyphs))
-      return;
-    if (!pos_glyphs->is_empty ())
+    ধ্রুবক hb_set_t *pos_glyphs = depend_position_glyphs (
+      c, lookup_context.context_format, lookup_context.intersects_তথ্য[0],
+      backtrack[i], মিথ্যা, &position_scratch);
+    যদি (unlikely (!pos_glyphs))
+      ফেরত;
+    যদি (!pos_glyphs->is_empty ())
     {
-      if (unlikely (!backtrack_sets.push_or_fail (pos_glyphs)))
+      যদি (unlikely (!backtrack_sets.ঠেলো_or_fail (pos_glyphs)))
       {
-        c->depend_data->fail ();
-        return;
+        c->depend_তথ্য->fail ();
+        ফেরত;
       }
     }
   }
 
   /* Extract lookahead glyphs */
-  for (unsigned i = 0; i < lookaheadCount; i++)
+  জন্য (unsigned i = 0; i < lookahead_গুনতি; i++)
   {
-    const hb_set_t *pos_glyphs = depend_position_glyphs (
-      c, lookup_context.context_format, lookup_context.intersects_data[2],
-      lookahead[i], false, &position_scratch);
-    if (unlikely (!pos_glyphs))
-      return;
-    if (!pos_glyphs->is_empty ())
+    ধ্রুবক hb_set_t *pos_glyphs = depend_position_glyphs (
+      c, lookup_context.context_format, lookup_context.intersects_তথ্য[2],
+      lookahead[i], মিথ্যা, &position_scratch);
+    যদি (unlikely (!pos_glyphs))
+      ফেরত;
+    যদি (!pos_glyphs->is_empty ())
     {
-      if (unlikely (!lookahead_sets.push_or_fail (pos_glyphs)))
+      যদি (unlikely (!lookahead_sets.ঠেলো_or_fail (pos_glyphs)))
       {
-        c->depend_data->fail ();
-        return;
+        c->depend_তথ্য->fail ();
+        ফেরত;
       }
     }
   }
 
   /* Build preliminary_context with backtrack + lookahead encoded */
   hb_set_t &preliminary_context = scratch->preliminary_context;
-  for (const hb_set_t *back_set : backtrack_sets)
+  জন্য (ধ্রুবক hb_set_t *back_set : backtrack_sets)
   {
-    if (back_set->get_population () == 1) {
+    যদি (back_set->get_population () == 1) {
       preliminary_context.add (back_set->get_min ());  // Direct glyph
-    } else if (back_set->get_population () > 1) {
+    } অন্যথা যদি (back_set->get_population () > 1) {
       hb_codepoint_t set_idx = lookup_context.context_format == ContextFormat::SimpleContext
-        ? c->depend_data->find_or_create_context_set (*back_set)
+        ? c->depend_তথ্য->find_or_create_context_set (*back_set)
         : c->find_or_create_cached_context_set (back_set);
-      if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-        return;
+      যদি (unlikely (set_idx == HB_CODEPOINT_INVALID))
+        ফেরত;
       preliminary_context.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);  // Encoded set reference
     }
   }
-  for (const hb_set_t *look_set : lookahead_sets)
+  জন্য (ধ্রুবক hb_set_t *look_set : lookahead_sets)
   {
-    if (look_set->get_population () == 1) {
+    যদি (look_set->get_population () == 1) {
       preliminary_context.add (look_set->get_min ());  // Direct glyph
-    } else if (look_set->get_population () > 1) {
+    } অন্যথা যদি (look_set->get_population () > 1) {
       hb_codepoint_t set_idx = lookup_context.context_format == ContextFormat::SimpleContext
-        ? c->depend_data->find_or_create_context_set (*look_set)
+        ? c->depend_তথ্য->find_or_create_context_set (*look_set)
         : c->find_or_create_cached_context_set (look_set);
-      if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-        return;
+      যদি (unlikely (set_idx == HB_CODEPOINT_INVALID))
+        ফেরত;
       preliminary_context.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);  // Encoded set reference
     }
   }
-  if (unlikely (preliminary_context.in_error ()))
+  যদি (unlikely (preliminary_context.in_error ()))
   {
-    c->depend_data->fail ();
-    return;
+    c->depend_তথ্য->fail ();
+    ফেরত;
   }
 
   /* Build glyph sets for ALL input positions */
-  hb_vector_t<const hb_set_t *> &input_position_glyphs = scratch->input_position_glyphs;
+  hb_vector_t<ধ্রুবক hb_set_t *> &প্রবেশ_position_glyphs = scratch->প্রবেশ_position_glyphs;
 
-  if (!context_sets_cached)
+  যদি (!context_sets_cached)
   {
     /* Position 0 (first input coverage/class/glyph) — must be in both the
      * class AND the coverage, so intersect with parent_active_glyphs. */
-    const hb_set_t *pos0_glyphs = depend_position_glyphs (
-      c, lookup_context.context_format, lookup_context.intersects_data[1], value,
-      true, &position_scratch, &scratch->compact_workspace);
-    if (unlikely (!pos0_glyphs ||
-		  !input_position_glyphs.push_or_fail (pos0_glyphs)))
+    ধ্রুবক hb_set_t *pos0_glyphs = depend_position_glyphs (
+      c, lookup_context.context_format, lookup_context.intersects_তথ্য[1], value,
+      সত্য, &position_scratch, &scratch->compact_workspace);
+    যদি (unlikely (!pos0_glyphs ||
+		  !প্রবেশ_position_glyphs.ঠেলো_or_fail (pos0_glyphs)))
     {
-      c->depend_data->fail ();
-      return;
+      c->depend_তথ্য->fail ();
+      ফেরত;
     }
 
     /* Positions 1+ (Input array) */
-    for (unsigned i = 0; i + 1 < inputCount; i++)
+    জন্য (unsigned i = 0; i + 1 < প্রবেশ_গুনতি; i++)
     {
-      const hb_set_t *pos_glyphs = depend_position_glyphs (
-	c, lookup_context.context_format, lookup_context.intersects_data[1],
-	input[i], false, &position_scratch);
-      if (unlikely (!pos_glyphs ||
-		    !input_position_glyphs.push_or_fail (pos_glyphs)))
+      ধ্রুবক hb_set_t *pos_glyphs = depend_position_glyphs (
+	c, lookup_context.context_format, lookup_context.intersects_তথ্য[1],
+	প্রবেশ[i], মিথ্যা, &position_scratch);
+      যদি (unlikely (!pos_glyphs ||
+		    !প্রবেশ_position_glyphs.ঠেলো_or_fail (pos_glyphs)))
       {
-	c->depend_data->fail ();
-	return;
+	c->depend_তথ্য->fail ();
+	ফেরত;
       }
     }
   }
 
   context_depend_recurse_lookups (c,
-				  inputCount, input,
-				  lookupCount, lookupRecord,
+				  প্রবেশ_গুনতি, প্রবেশ,
+				  lookup_গুনতি_2, lookupRecord,
 				  rule,
 				  value,
 				  lookup_context.context_format,
-				  lookup_context.intersects_data[1],
+				  lookup_context.intersects_তথ্য[1],
 				  lookup_context.funcs.intersected_glyphs,
 				  lookup_context.intersected_glyphs_cache,
 				  preliminary_context,
-				  context_sets_cached ? nullptr : &input_position_glyphs,
+				  context_sets_cached ? nullptr : &প্রবেশ_position_glyphs,
 				  context_sets_cached ? &scratch->cached_context_sets : nullptr,
 				  scratch);
 }
 
-static inline void chain_context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
-							unsigned int backtrackCount,
-							glyph_data_t backtrack,
-							unsigned int inputCount, /* Including the first glyph (not matched) */
-							glyph_data_t input, /* Array of input values--start with second glyph */
-							unsigned int lookaheadCount,
-							glyph_data_t lookahead,
-							unsigned int lookupCount,
-							const LookupRecord lookupRecord[],
+স্থির অন্তঃরেখ শূন্য chain_context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
+							unsigned পূর্ণসংখ্যা backtrack_গুনতি,
+							glyph_তথ্য_t backtrack,
+							unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+							glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+							unsigned পূর্ণসংখ্যা lookahead_গুনতি,
+							glyph_তথ্য_t lookahead,
+							unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+							ধ্রুবক LookupRecord lookupRecord[],
 							ChainContextCollectGlyphsLookupContext &lookup_context)
 {
   collect_array (c, c->before,
-		 backtrackCount, backtrack,
-		 lookup_context.funcs.collect, lookup_context.collect_data[0]);
-  collect_array (c, c->input,
-		 inputCount ? inputCount - 1 : 0, input,
-		 lookup_context.funcs.collect, lookup_context.collect_data[1]);
+		 backtrack_গুনতি, backtrack,
+		 lookup_context.funcs.collect, lookup_context.collect_তথ্য[0]);
+  collect_array (c, c->প্রবেশ,
+		 প্রবেশ_গুনতি ? প্রবেশ_গুনতি - 1 : 0, প্রবেশ,
+		 lookup_context.funcs.collect, lookup_context.collect_তথ্য[1]);
   collect_array (c, c->after,
-		 lookaheadCount, lookahead,
-		 lookup_context.funcs.collect, lookup_context.collect_data[2]);
+		 lookahead_গুনতি, lookahead,
+		 lookup_context.funcs.collect, lookup_context.collect_তথ্য[2]);
   recurse_lookups (c,
-		   lookupCount, lookupRecord);
+		   lookup_গুনতি_2, lookupRecord);
 }
 
-static inline bool chain_context_would_apply_lookup (hb_would_apply_context_t *c,
-						     unsigned int backtrackCount,
-						     glyph_data_t backtrack HB_UNUSED,
-						     unsigned int inputCount, /* Including the first glyph (not matched) */
-						     glyph_data_t input, /* Array of input values--start with second glyph */
-						     unsigned int lookaheadCount,
-						     glyph_data_t lookahead HB_UNUSED,
-						     unsigned int lookupCount HB_UNUSED,
-						     const LookupRecord lookupRecord[] HB_UNUSED,
-						     const ChainContextApplyLookupContext &lookup_context)
+স্থির অন্তঃরেখ যৌক্তিক chain_context_would_apply_lookup (hb_would_apply_context_t *c,
+						     unsigned পূর্ণসংখ্যা backtrack_গুনতি,
+						     glyph_তথ্য_t backtrack HB_UNUSED,
+						     unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+						     glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+						     unsigned পূর্ণসংখ্যা lookahead_গুনতি,
+						     glyph_তথ্য_t lookahead HB_UNUSED,
+						     unsigned পূর্ণসংখ্যা lookup_গুনতি_2 HB_UNUSED,
+						     ধ্রুবক LookupRecord lookupRecord[] HB_UNUSED,
+						     ধ্রুবক ChainContextApplyLookupContext &lookup_context)
 {
-  return (c->zero_context ? !backtrackCount && !lookaheadCount : true)
-      && would_match_input (c,
-			    inputCount, input,
-			    lookup_context.funcs.match[1], lookup_context.match_data[1]);
+  ফেরত (c->zero_context ? !backtrack_গুনতি && !lookahead_গুনতি : সত্য)
+      && would_match_প্রবেশ (c,
+			    প্রবেশ_গুনতি, প্রবেশ,
+			    lookup_context.funcs.match[1], lookup_context.match_তথ্য_2[1]);
 }
 
-static inline bool chain_context_apply_lookup (hb_ot_apply_context_t *c,
-					       unsigned int backtrackCount,
-					       glyph_data_t backtrack,
-					       unsigned int inputCount, /* Including the first glyph (not matched) */
-					       glyph_data_t input, /* Array of input values--start with second glyph */
-					       unsigned int lookaheadCount,
-					       glyph_data_t lookahead,
-					       unsigned int lookupCount,
-					       const LookupRecord lookupRecord[],
-					       const ChainContextApplyLookupContext &lookup_context)
+স্থির অন্তঃরেখ যৌক্তিক chain_context_apply_lookup (hb_ot_apply_context_t *c,
+					       unsigned পূর্ণসংখ্যা backtrack_গুনতি,
+					       glyph_তথ্য_t backtrack,
+					       unsigned পূর্ণসংখ্যা প্রবেশ_গুনতি, /* Including the first glyph (not matched) */
+					       glyph_তথ্য_t প্রবেশ, /* Array of input values--start with second glyph */
+					       unsigned পূর্ণসংখ্যা lookahead_গুনতি,
+					       glyph_তথ্য_t lookahead,
+					       unsigned পূর্ণসংখ্যা lookup_গুনতি_2,
+					       ধ্রুবক LookupRecord lookupRecord[],
+					       ধ্রুবক ChainContextApplyLookupContext &lookup_context)
 {
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH)) return false;
+  যদি (unlikely (প্রবেশ_গুনতি > HB_MAX_CONTEXT_দৈর্ঘ্য)) ফেরত মিথ্যা;
 
-  unsigned start_index = c->buffer->out_len;
-  unsigned end_index = c->buffer->idx;
+  unsigned start_সূচক = c->বাফার->out_len;
+  unsigned end_সূচক = c->বাফার->idx;
   unsigned match_end = 0;
-  bool ret = true;
-  if (!(match_input (c,
-		     inputCount, input,
-		     lookup_context.funcs.match[1], lookup_context.match_data[1],
-		     &match_end) && (end_index = match_end)
+  যৌক্তিক ret = সত্য;
+  যদি (!(match_প্রবেশ (c,
+		     প্রবেশ_গুনতি, প্রবেশ,
+		     lookup_context.funcs.match[1], lookup_context.match_তথ্য_2[1],
+		     &match_end) && (end_সূচক = match_end)
        && match_lookahead (c,
-			   lookaheadCount, lookahead,
-			   lookup_context.funcs.match[2], lookup_context.match_data[2],
-			   match_end, &end_index)))
+			   lookahead_গুনতি, lookahead,
+			   lookup_context.funcs.match[2], lookup_context.match_তথ্য_2[2],
+			   match_end, &end_সূচক)))
   {
-    c->buffer->unsafe_to_concat (c->buffer->idx, end_index);
-    return false;
+    c->বাফার->unsafe_to_concat (c->বাফার->idx, end_সূচক);
+    ফেরত মিথ্যা;
   }
 
-  if (!match_backtrack (c,
-			backtrackCount, backtrack,
-			lookup_context.funcs.match[0], lookup_context.match_data[0],
-			&start_index))
+  যদি (!match_backtrack (c,
+			backtrack_গুনতি, backtrack,
+			lookup_context.funcs.match[0], lookup_context.match_তথ্য_2[0],
+			&start_সূচক))
   {
-    c->buffer->unsafe_to_concat_from_outbuffer (start_index, end_index);
-    return false;
+    c->বাফার->unsafe_to_concat_from_outbuffer (start_সূচক, end_সূচক);
+    ফেরত মিথ্যা;
   }
 
-  c->buffer->unsafe_to_break_from_outbuffer (start_index, end_index);
+  c->বাফার->unsafe_to_break_from_outbuffer (start_সূচক, end_সূচক);
   apply_lookup (c,
-		inputCount,
-		lookupCount, lookupRecord,
+		প্রবেশ_গুনতি,
+		lookup_গুনতি_2, lookupRecord,
 		match_end);
 
-  return ret;
+  ফেরত ret;
 }
 
 template <typename Types>
-struct ChainRule
+কাঠামো ChainRule
 {
   template <typename SetTypes, typename ChainRuleType>
-  friend struct ChainRuleSetOf;
+  friend কাঠামো ChainRuleSetOf;
 
-  bool intersects (const hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    return chain_context_intersects (glyphs,
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ফেরত chain_context_intersects (glyphs,
 				     backtrack.len, backtrack.arrayZ,
-				     input.lenP1, input.arrayZ,
+				     প্রবেশ.lenP1, প্রবেশ.arrayZ,
 				     lookahead.len, lookahead.arrayZ,
 				     lookup_context);
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) const
+  শূন্য depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_depend_lookup (c,
 				 backtrack.len, backtrack.arrayZ,
-				 input.lenP1, input.arrayZ,
+				 প্রবেশ.lenP1, প্রবেশ.arrayZ,
 				 lookahead.len, lookahead.arrayZ,
 				 lookup.len, lookup.arrayZ,
-				 this,
+				 এই,
 				 value,
 				 lookup_context);
   }
 
-  void closure (hb_closure_context_t *c, unsigned value,
-		ChainContextClosureLookupContext &lookup_context) const
+  শূন্য closure (hb_closure_context_t *c, unsigned value,
+		ChainContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    যদি (unlikely (c->lookup_limit_exceeded ())) ফেরত;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_closure_lookup (c,
 				  backtrack.len, backtrack.arrayZ,
-				  input.lenP1, input.arrayZ,
+				  প্রবেশ.lenP1, প্রবেশ.arrayZ,
 				  lookahead.len, lookahead.arrayZ,
 				  lookup.len, lookup.arrayZ,
 				  value,
 				  lookup_context);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ChainContextClosureLookupContext &lookup_context) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c,
+                        ChainContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-    if (!intersects (c->glyphs, lookup_context)) return;
+    যদি (unlikely (c->lookup_limit_exceeded ())) ফেরত;
+    যদি (!intersects (c->glyphs, lookup_context)) ফেরত;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     recurse_lookups (c, lookup.len, lookup.arrayZ);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ChainContextCollectGlyphsLookupContext &lookup_context) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ChainContextCollectGlyphsLookupContext &lookup_context) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_collect_glyphs_lookup (c,
 					 backtrack.len, backtrack.arrayZ,
-					 input.lenP1, input.arrayZ,
+					 প্রবেশ.lenP1, প্রবেশ.arrayZ,
 					 lookahead.len, lookahead.arrayZ,
 					 lookup.len, lookup.arrayZ,
 					 lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *input_class_def = nullptr,
-			      const ClassDef *lookahead_class_def = nullptr) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest,
+			      ধ্রুবক ClassDef *প্রবেশ_class_def = nullptr,
+			      ধ্রুবক ClassDef *lookahead_class_def = nullptr) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
 
     unsigned second;
-    const ClassDef *class_def;
-    if (input.lenP1 > 1)
+    ধ্রুবক ClassDef *class_def;
+    যদি (প্রবেশ.lenP1 > 1)
     {
-      second = input.arrayZ[0];
-      class_def = input_class_def;
+      second = প্রবেশ.arrayZ[0];
+      class_def = প্রবেশ_class_def;
     }
-    else if (lookahead.len)
+    অন্যথা যদি (lookahead.len)
     {
       second = lookahead.arrayZ[0];
       class_def = lookahead_class_def;
     }
-    else
+    অন্যথা
     {
       *digest = hb_set_digest_t::full ();
-      return;
+      ফেরত;
     }
 
-    if (!class_def)
+    যদি (!class_def)
       digest->add (second);
-    else if (!second)
+    অন্যথা যদি (!second)
       *digest = hb_set_digest_t::full ();
-    else
+    অন্যথা
       class_def->collect_class (digest, second);
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ChainContextApplyLookupContext &lookup_context) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c,
+		    ধ্রুবক ChainContextApplyLookupContext &lookup_context) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    return chain_context_would_apply_lookup (c,
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ফেরত chain_context_would_apply_lookup (c,
 					     backtrack.len, backtrack.arrayZ,
-					     input.lenP1, input.arrayZ,
+					     প্রবেশ.lenP1, প্রবেশ.arrayZ,
 					     lookahead.len, lookahead.arrayZ, lookup.len,
 					     lookup.arrayZ, lookup_context);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ChainContextApplyLookupContext &lookup_context) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c,
+	      ধ্রুবক ChainContextApplyLookupContext &lookup_context) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    TRACE_APPLY (এই);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (chain_context_apply_lookup (c,
 					      backtrack.len, backtrack.arrayZ,
-					      input.lenP1, input.arrayZ,
+					      প্রবেশ.lenP1, প্রবেশ.arrayZ,
 					      lookahead.len, lookahead.arrayZ, lookup.len,
 					      lookup.arrayZ, lookup_context));
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize_array (hb_serialize_context_t *c,
+  শূন্য serialize_array (hb_serialize_context_t *c,
 			HBUINT16 len,
-			Iterator it) const
+			Iterator it) ধ্রুবক
   {
     c->copy (len);
-    for (const auto g : it)
+    জন্য (ধ্রুবক auto g : it)
     {
       typename Types::HBUINT d;
       d = g;
@@ -4739,94 +4739,94 @@ struct ChainRule
     }
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t *lookup_map,
-		  const hb_map_t *backtrack_map,
-		  const hb_map_t *input_map = nullptr,
-		  const hb_map_t *lookahead_map = nullptr) const
+  যৌক্তিক serialize (hb_serialize_context_t *c,
+		  ধ্রুবক hb_map_t *lookup_map,
+		  ধ্রুবক hb_map_t *backtrack_map,
+		  ধ্রুবক hb_map_t *প্রবেশ_map = nullptr,
+		  ধ্রুবক hb_map_t *lookahead_map = nullptr) ধ্রুবক
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এই);
 
-    const hb_map_t *mapping = backtrack_map;
+    ধ্রুবক hb_map_t *mapping = backtrack_map;
     serialize_array (c, backtrack.len, + backtrack.iter ()
 				       | hb_map (mapping));
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (input_map) mapping = input_map;
-    serialize_array (c, input.lenP1, + input.iter ()
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    যদি (প্রবেশ_map) mapping = প্রবেশ_map;
+    serialize_array (c, প্রবেশ.lenP1, + প্রবেশ.iter ()
 				     | hb_map (mapping));
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (lookahead_map) mapping = lookahead_map;
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    যদি (lookahead_map) mapping = lookahead_map;
     serialize_array (c, lookahead.len, + lookahead.iter ()
 				       | hb_map (mapping));
 
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
 
-    HBUINT16* lookupCount = c->embed (&(lookup.len));
-    if (!lookupCount) return_trace (false);
+    HBUINT16* lookup_গুনতি_2 = c->embed (&(lookup.len));
+    যদি (!lookup_গুনতি_2) return_trace (মিথ্যা);
 
-    unsigned count = serialize_lookuprecord_array (c, lookup.as_array (), lookup_map);
-    return_trace (c->check_assign (*lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned গুনতি = serialize_lookuprecord_array (c, lookup.as_array (), lookup_map);
+    return_trace (c->check_assign (*lookup_গুনতি_2, গুনতি, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *backtrack_map = nullptr,
-	       const hb_map_t *input_map = nullptr,
-	       const hb_map_t *lookahead_map = nullptr) const
+  যৌক্তিক subset (hb_subset_context_t *c,
+	       ধ্রুবক hb_map_t *lookup_map,
+	       ধ্রুবক hb_map_t *backtrack_map = nullptr,
+	       ধ্রুবক hb_map_t *প্রবেশ_map = nullptr,
+	       ধ্রুবক hb_map_t *lookahead_map = nullptr) ধ্রুবক
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এই);
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
 
-    if (!backtrack_map)
+    যদি (!backtrack_map)
     {
-      const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-      if (!hb_all (backtrack, glyphset) ||
-	  !hb_all (input, glyphset) ||
+      ধ্রুবক hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+      যদি (!hb_all (backtrack, glyphset) ||
+	  !hb_all (প্রবেশ, glyphset) ||
 	  !hb_all (lookahead, glyphset))
-	return_trace (false);
+	return_trace (মিথ্যা);
 
       serialize (c->serializer, lookup_map, c->plan->glyph_map);
     }
-    else
+    অন্যথা
     {
-      if (!hb_all (backtrack, backtrack_map) ||
-	  !hb_all (input, input_map) ||
+      যদি (!hb_all (backtrack, backtrack_map) ||
+	  !hb_all (প্রবেশ, প্রবেশ_map) ||
 	  !hb_all (lookahead, lookahead_map))
-	return_trace (false);
+	return_trace (মিথ্যা);
 
-      serialize (c->serializer, lookup_map, backtrack_map, input_map, lookahead_map);
+      serialize (c->serializer, lookup_map, backtrack_map, প্রবেশ_map, lookahead_map);
     }
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এই);
     /* Hyper-optimized sanitized because this is really hot. */
-    if (unlikely (!backtrack.len.sanitize (c))) return_trace (false);
+    যদি (unlikely (!backtrack.len.sanitize (c))) return_trace (মিথ্যা);
     hb_barrier ();
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (unlikely (!input.lenP1.sanitize (c))) return_trace (false);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    যদি (unlikely (!প্রবেশ.lenP1.sanitize (c))) return_trace (মিথ্যা);
     hb_barrier ();
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (unlikely (!lookahead.len.sanitize (c))) return_trace (false);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    যদি (unlikely (!lookahead.len.sanitize (c))) return_trace (মিথ্যা);
     hb_barrier ();
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (likely (lookup.sanitize (c)));
   }
 
-  protected:
+  সুরক্ষিত:
   Array16Of<typename Types::HBUINT>
 		backtrack;		/* Array of backtracking values
 					 * (to be matched before the input
 					 * sequence) */
   HeadlessArray16Of<typename Types::HBUINT>
-		inputX;			/* Array of input values (start with
+		প্রবেশ_X;			/* Array of input values (start with
 					 * second glyph) */
   Array16Of<typename Types::HBUINT>
 		lookaheadX;		/* Array of lookahead values's (to be
@@ -4834,115 +4834,115 @@ struct ChainRule
   Array16Of<LookupRecord>
 		lookupX;		/* Array of LookupRecords--in
 					 * design order) */
-  public:
-  DEFINE_SIZE_MIN (8);
+  সর্বজনীন:
+  DEFINE_আকার_MIN (8);
 };
 
 template <typename Types, typename ChainRuleType>
-struct ChainRuleSetOf
+কাঠামো ChainRuleSetOf
 {
-  bool intersects (const hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    return
+    ফেরত
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleType &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_map ([&] (ধ্রুবক ChainRuleType &_) { ফেরত _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  void collect_first_input_classes (hb_ot_layout_ruleset_digest_t *digest) const
+  শূন্য collect_first_প্রবেশ_classes (hb_ot_layout_ruleset_digest_t *digest) ধ্রুবক
   {
     digest->init ();
-    for (unsigned i = 0; i < rule.len; i++)
+    জন্য (unsigned i = 0; i < rule.len; i++)
     {
-      const ChainRuleType &r = this+rule.arrayZ[i];
-      const auto &input = StructAfter<decltype (r.inputX)> (r.backtrack);
-      if (input.lenP1 <= 1)
+      ধ্রুবক ChainRuleType &r = এই+rule.arrayZ[i];
+      ধ্রুবক auto &প্রবেশ = StructAfter<decltype (r.প্রবেশ_X)> (r.backtrack);
+      যদি (প্রবেশ.lenP1 <= 1)
       {
 	digest->set_full ();
-	return;
+	ফেরত;
       }
-      digest->add (input.arrayZ[0]);
+      digest->add (প্রবেশ.arrayZ[0]);
     }
   }
-  void depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) const
+  শূন্য depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) ধ্রুবক
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.depend (c, value, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক ChainRuleType &_) { _.depend (c, value, lookup_context); })
     ;
   }
-  void closure (hb_closure_context_t *c, unsigned value, ChainContextClosureLookupContext &lookup_context) const
+  শূন্য closure (hb_closure_context_t *c, unsigned value, ChainContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    যদি (unlikely (c->lookup_limit_exceeded ())) ফেরত;
 
-    return
+    ফেরত
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.closure (c, value, lookup_context); })
-    ;
-  }
-
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ChainContextClosureLookupContext &lookup_context) const
-  {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-
-    + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক ChainRuleType &_) { _.closure (c, value, lookup_context); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c, ChainContextCollectGlyphsLookupContext &lookup_context) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c,
+                        ChainContextClosureLookupContext &lookup_context) ধ্রুবক
   {
-    return
+    যদি (unlikely (c->lookup_limit_exceeded ())) ফেরত;
+
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক ChainRuleType &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *input_class_def = nullptr,
-			      const ClassDef *lookahead_class_def = nullptr) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c, ChainContextCollectGlyphsLookupContext &lookup_context) ধ্রুবক
   {
+    ফেরত
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const ChainRuleType &_)
-		{ _.collect_second_glyphs (digest, input_class_def, lookahead_class_def); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক ChainRuleType &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ChainContextApplyLookupContext &lookup_context) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest,
+			      ধ্রুবক ClassDef *প্রবেশ_class_def = nullptr,
+			      ধ্রুবক ClassDef *lookahead_class_def = nullptr) ধ্রুবক
   {
-    return
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleType &_) { return _.would_apply (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([=] (ধ্রুবক ChainRuleType &_)
+		{ _.collect_second_glyphs (digest, প্রবেশ_class_def, lookahead_class_def); })
+    ;
+  }
+
+  যৌক্তিক would_apply (hb_would_apply_context_t *c,
+		    ধ্রুবক ChainContextApplyLookupContext &lookup_context) ধ্রুবক
+  {
+    ফেরত
+    + hb_iter (rule)
+    | hb_map (hb_add (এই))
+    | hb_map ([&] (ধ্রুবক ChainRuleType &_) { ফেরত _.would_apply (c, lookup_context); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ChainContextApplyLookupContext &lookup_context,
-	      const hb_ot_layout_ruleset_digest_t *digest = nullptr) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c,
+	      ধ্রুবক ChainContextApplyLookupContext &lookup_context,
+	      ধ্রুবক hb_ot_layout_ruleset_digest_t *digest = nullptr) ধ্রুবক
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (এই);
 
-    unsigned num_rules = rule.len;
+    unsigned অঙ্ক_rules = rule.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_rules <= 4)
+    যদি (HB_OPTIMIZE_আকার_VAL || অঙ্ক_rules <= 4)
 #endif
     {
     slow:
       return_trace (
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const ChainRuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map (hb_add (এই))
+      | hb_map ([&] (ধ্রুবক ChainRuleType &_) { ফেরত _.apply (c, lookup_context); })
       | hb_any
       )
       ;
@@ -4959,217 +4959,217 @@ struct ChainRuleSetOf
      * Related: https://github.com/harfbuzz/harfbuzz/issues/4813
      */
     auto &skippy_iter = c->iter_context;
-    skippy_iter.reset (c->buffer->idx);
+    skippy_iter.reset (c->বাফার->idx);
     skippy_iter.set_match_func (match_always, nullptr);
-    skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
+    skippy_iter.set_glyph_তথ্য ((HBUINT16 *) nullptr);
     unsigned unsafe_to = (unsigned) -1, unsafe_to1, unsafe_to2 = 0;
     hb_glyph_info_t *first = nullptr, *second = nullptr;
-    bool matched = skippy_iter.next (&unsafe_to1);
-    if (likely (matched))
+    যৌক্তিক matched = skippy_iter.next (&unsafe_to1);
+    যদি (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      যদি (skippy_iter.may_skip (c->বাফার->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        যাও slow;
       }
 
-      first = &c->buffer->info[skippy_iter.idx];
+      first = &c->বাফার->info[skippy_iter.idx];
       unsafe_to1 = skippy_iter.idx + 1;
 
-      if (digest && lookup_context.get_input_value &&
-	  !digest->may_have (lookup_context.get_input_value (*first, lookup_context.match_data[1])))
+      যদি (digest && lookup_context.get_প্রবেশ_মান &&
+	  !digest->may_have (lookup_context.get_প্রবেশ_মান (*first, lookup_context.match_তথ্য_2[1])))
 	{
-	  c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
-	  return_trace (false);
+	  c->বাফার->unsafe_to_concat (c->বাফার->idx, unsafe_to1);
+	  return_trace (মিথ্যা);
 	}
     }
-    else
+    অন্যথা
     {
-      bool unsafe_to_concat = false;
-      bool ret =
+      যৌক্তিক unsafe_to_concat = মিথ্যা;
+      যৌক্তিক ret =
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_filter ([&] (const ChainRuleType &_)
+      | hb_map (hb_add (এই))
+      | hb_filter ([&] (ধ্রুবক ChainRuleType &_)
 		   {
-		     const auto &input = StructAfter<decltype (_.inputX)> (_.backtrack);
-		     const auto &lookahead = StructAfter<decltype (_.lookaheadX)> (input);
-		     if (input.lenP1 <= 1 && lookahead.len == 0) return true;
-		     unsafe_to_concat = true;
-		     return false;
+		     ধ্রুবক auto &প্রবেশ = StructAfter<decltype (_.প্রবেশ_X)> (_.backtrack);
+		     ধ্রুবক auto &lookahead = StructAfter<decltype (_.lookaheadX)> (প্রবেশ);
+		     যদি (প্রবেশ.lenP1 <= 1 && lookahead.len == 0) ফেরত সত্য;
+		     unsafe_to_concat = সত্য;
+		     ফেরত মিথ্যা;
 		   })
-      | hb_map ([&] (const ChainRuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map ([&] (ধ্রুবক ChainRuleType &_) { ফেরত _.apply (c, lookup_context); })
       | hb_any
       ;
-      if (unsafe_to_concat)
-	c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
+      যদি (unsafe_to_concat)
+	c->বাফার->unsafe_to_concat (c->বাফার->idx, unsafe_to1);
       return_trace (ret);
     }
     matched = skippy_iter.next ();
-    if (likely (matched))
+    যদি (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      যদি (skippy_iter.may_skip (c->বাফার->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        যাও slow;
       }
 
-      second = &c->buffer->info[skippy_iter.idx];
+      second = &c->বাফার->info[skippy_iter.idx];
       unsafe_to2 = skippy_iter.idx + 1;
     }
 
-    auto match_input = lookup_context.funcs.match[1];
+    auto match_প্রবেশ = lookup_context.funcs.match[1];
     auto match_lookahead = lookup_context.funcs.match[2];
-    auto *input_data = lookup_context.match_data[1];
-    auto *lookahead_data = lookup_context.match_data[2];
-    for (unsigned int i = 0; i < num_rules; i++)
+    auto *প্রবেশ_তথ্য = lookup_context.match_তথ্য_2[1];
+    auto *lookahead_তথ্য = lookup_context.match_তথ্য_2[2];
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < অঙ্ক_rules; i++)
     {
-      const auto &r = this+rule.arrayZ[i];
+      ধ্রুবক auto &r = এই+rule.arrayZ[i];
 
-      const auto &input = StructAfter<decltype (r.inputX)> (r.backtrack);
-      const auto &lookahead = StructAfter<decltype (r.lookaheadX)> (input);
+      ধ্রুবক auto &প্রবেশ = StructAfter<decltype (r.প্রবেশ_X)> (r.backtrack);
+      ধ্রুবক auto &lookahead = StructAfter<decltype (r.lookaheadX)> (প্রবেশ);
 
-      unsigned lenP1 = input.lenP1;
-      if (lenP1 > 1 ?
-	   (!match_input ||
-	    match_input (*first, input.arrayZ[0], input_data))
+      unsigned lenP1 = প্রবেশ.lenP1;
+      যদি (lenP1 > 1 ?
+	   (!match_প্রবেশ ||
+	    match_প্রবেশ (*first, প্রবেশ.arrayZ[0], প্রবেশ_তথ্য))
 	  :
 	   (!lookahead.len || !match_lookahead ||
-	    match_lookahead (*first, lookahead.arrayZ[0], lookahead_data)))
+	    match_lookahead (*first, lookahead.arrayZ[0], lookahead_তথ্য)))
       {
 	lenP1 = hb_max (lenP1, 1u);
-        if (!second ||
+        যদি (!second ||
 	    (lenP1 > 2 ?
-	     (!match_input ||
-	      match_input (*second, input.arrayZ[1], input_data))
+	     (!match_প্রবেশ ||
+	      match_প্রবেশ (*second, প্রবেশ.arrayZ[1], প্রবেশ_তথ্য))
 	     :
 	     (lookahead.len <= 2 - lenP1 || !match_lookahead ||
-	      match_lookahead (*second, lookahead.arrayZ[2 - lenP1], lookahead_data))))
+	      match_lookahead (*second, lookahead.arrayZ[2 - lenP1], lookahead_তথ্য))))
 	{
-	  if (r.apply (c, lookup_context))
+	  যদি (r.apply (c, lookup_context))
 	  {
-	    if (unsafe_to != (unsigned) -1)
-	      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-	    return_trace (true);
+	    যদি (unsafe_to != (unsigned) -1)
+	      c->বাফার->unsafe_to_concat (c->বাফার->idx, unsafe_to);
+	    return_trace (সত্য);
 	  }
 	}
-	else
+	অন্যথা
 	  unsafe_to = unsafe_to2;
       }
-      else
+      অন্যথা
       {
-	if (unsafe_to == (unsigned) -1)
+	যদি (unsafe_to == (unsigned) -1)
 	  unsafe_to = unsafe_to1;
 
-	if (lenP1 > 1)
+	যদি (lenP1 > 1)
 	{
 	  // Skip ahead to next possible first glyph match.
-	  for (; i + 1 < num_rules; i++)
+	  জন্য (; i + 1 < অঙ্ক_rules; i++)
 	  {
-	    const auto &r2 = this+rule.arrayZ[i + 1];
-	    const auto &input2 = StructAfter<decltype (r2.inputX)> (r2.backtrack);
-	    if (input2.lenP1 <= 1 || input2.arrayZ[0] != input.arrayZ[0])
-	      break;
+	    ধ্রুবক auto &r2 = এই+rule.arrayZ[i + 1];
+	    ধ্রুবক auto &input2 = StructAfter<decltype (r2.প্রবেশ_X)> (r2.backtrack);
+	    যদি (input2.lenP1 <= 1 || input2.arrayZ[0] != প্রবেশ.arrayZ[0])
+	      বিরতি;
 	  }
 	}
       }
     }
-    if (likely (unsafe_to != (unsigned) -1))
-      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
+    যদি (likely (unsafe_to != (unsigned) -1))
+      c->বাফার->unsafe_to_concat (c->বাফার->idx, unsafe_to);
 
-    return_trace (false);
+    return_trace (মিথ্যা);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *backtrack_klass_map = nullptr,
-	       const hb_map_t *input_klass_map = nullptr,
-	       const hb_map_t *lookahead_klass_map = nullptr) const
+  যৌক্তিক subset (hb_subset_context_t *c,
+	       ধ্রুবক hb_map_t *lookup_map,
+	       ধ্রুবক hb_map_t *backtrack_klass_map = nullptr,
+	       ধ্রুবক hb_map_t *প্রবেশ_klass_map = nullptr,
+	       ধ্রুবক hb_map_t *lookahead_klass_map = nullptr) ধ্রুবক
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এই);
 
     auto snap = c->serializer->snapshot ();
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
 
-    for (const auto& _ : rule)
+    জন্য (ধ্রুবক auto& _ : rule)
     {
-      if (!_) continue;
+      যদি (!_) চালু;
       auto o_snap = c->serializer->snapshot ();
       auto *o = out->rule.serialize_append (c->serializer);
-      if (unlikely (!o)) continue;
+      যদি (unlikely (!o)) চালু;
 
-      if (!o->serialize_subset (c, _, this,
+      যদি (!o->serialize_subset (c, _, এই,
 				lookup_map,
 				backtrack_klass_map,
-				input_klass_map,
+				প্রবেশ_klass_map,
 				lookahead_klass_map))
       {
-	out->rule.pop ();
+	out->rule.বের_করো ();
 	c->serializer->revert (o_snap);
       }
     }
 
-    bool ret = bool (out->rule);
-    if (!ret) c->serializer->revert (snap);
+    যৌক্তিক ret = যৌক্তিক (out->rule);
+    যদি (!ret) c->serializer->revert (snap);
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (rule.sanitize (c, this));
+    TRACE_SANITIZE (এই);
+    return_trace (rule.sanitize (c, এই));
   }
 
-  protected:
+  সুরক্ষিত:
   Array16Of<typename Types::template OffsetTo<ChainRuleType>>
 		rule;			/* Array of ChainRule tables
 					 * ordered by preference */
-  public:
-  DEFINE_SIZE_ARRAY (2, rule);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (2, rule);
 };
 
 template <typename Types>
-struct ChainRuleSet : ChainRuleSetOf<Types, ChainRule<Types>> {};
+কাঠামো ChainRuleSet : ChainRuleSetOf<Types, ChainRule<Types>> {};
 
-static_assert (sizeof (ChainRuleSet<MediumTypes>) ==
-	       HBUINT16::static_size + Offset24::static_size, "");
-
-template <typename Types>
-struct ChainClassRuleSet : ChainRuleSetOf<Types, ChainRule<SmallTypes>> {};
+static_assert (আকার (ChainRuleSet<MediumTypes>) ==
+	       HBUINT16::static_আকার + Offset24::static_আকার, "");
 
 template <typename Types>
-struct ChainContextFormat1_4
+কাঠামো ChainClassRuleSet : ChainRuleSetOf<Types, ChainRule<SmallTypes>> {};
+
+template <typename Types>
+কাঠামো ChainContextFormat1_4
 {
   using ChainRuleSet = OT::ChainRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
   {
-    struct ChainContextClosureLookupContext lookup_context = {
+    কাঠামো ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    return
-    + hb_zip (this+coverage, ruleSet)
+    ফেরত
+    + hb_zip (এই+coverage, ruleSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleSet &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_map ([&] (ধ্রুবক ChainRuleSet &_) { ফেরত _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  যৌক্তিক may_have_non_1to1 () ধ্রুবক
+  { ফেরত সত্য; }
 
-  void depend (hb_depend_context_t *c) const
+  শূন্য depend (hb_depend_context_t *c) ধ্রুবক
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
     ChainContextDependLookupContext lookup_context = {
@@ -5180,139 +5180,139 @@ struct ChainContextFormat1_4
       nullptr                        /* intersected_glyphs_cache */
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (এই+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->parent_active_glyphs ().has (_);
+      ফেরত c->parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const ChainRuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const ChainRuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
+    | hb_map ([&](ধ্রুবক hb_pair_t<hb_codepoint_t, unsigned> _) { ফেরত hb_pair_t<unsigned, ধ্রুবক ChainRuleSet&> (_.first, এই+ruleSet[_.second]); })
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক ChainRuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  শূন্য closure (hb_closure_context_t *c) ধ্রুবক
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    struct ChainContextClosureLookupContext lookup_context = {
+    কাঠামো ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (এই+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->previous_parent_active_glyphs ().has (_);
+      ফেরত c->previous_parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const ChainRuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const ChainRuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
+    | hb_map ([&](ধ্রুবক hb_pair_t<hb_codepoint_t, unsigned> _) { ফেরত hb_pair_t<unsigned, ধ্রুবক ChainRuleSet&> (_.first, এই+ruleSet[_.second]); })
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক ChainRuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক
   {
-    struct ChainContextClosureLookupContext lookup_context = {
+    কাঠামো ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, nullptr},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (এই+coverage, ruleSet)
     | hb_filter (*c->glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক ChainRuleSet &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    (this+coverage).collect_coverage (c->input);
+    (এই+coverage).collect_coverage (c->প্রবেশ);
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    কাঠামো ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_glyph},
       {nullptr, nullptr, nullptr}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest) ধ্রুবক
   {
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest] (const ChainRuleSet &_) { _.collect_second_glyphs (digest); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([digest] (ধ্রুবক ChainRuleSet &_) { _.collect_second_glyphs (digest); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c) ধ্রুবক
   {
-    const ChainRuleSet &rule_set = this+ruleSet[(this+coverage).get_coverage (c->glyphs[0])];
-    struct ChainContextApplyLookupContext lookup_context = {
+    ধ্রুবক ChainRuleSet &rule_set = এই+ruleSet[(এই+coverage).get_coverage (c->glyphs[0])];
+    কাঠামো ChainContextApplyLookupContext lookup_context = {
       {{match_glyph, match_glyph, match_glyph}},
       {nullptr, nullptr, nullptr}
     };
-    return rule_set.would_apply (c, lookup_context);
+    ফেরত rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক { ফেরত এই+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (এই);
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage (c->বাফার->cur().codepoint);
+    যদি (সূচক_2 == NOT_COVERED) return_trace (মিথ্যা);
 
-    const ChainRuleSet &rule_set = this+ruleSet[index];
-    struct ChainContextApplyLookupContext lookup_context = {
+    ধ্রুবক ChainRuleSet &rule_set = এই+ruleSet[সূচক_2];
+    কাঠামো ChainContextApplyLookupContext lookup_context = {
       {{match_glyph, match_glyph, match_glyph}},
       {nullptr, nullptr, nullptr}
     };
     return_trace (rule_set.apply (c, lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (এই);
+    ধ্রুবক hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ধ্রুবক hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
     out->format = format;
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    ধ্রুবক hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (এই+coverage, ruleSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ruleSet, this, lookup_map), hb_second)
+    | hb_filter (subset_offset_array (c, out->ruleSet, এই, lookup_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    return_trace (যৌক্তিক (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (এই);
+    return_trace (coverage.sanitize (c, এই) && ruleSet.sanitize (c, এই));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	format;			/* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -5320,67 +5320,67 @@ struct ChainContextFormat1_4
   typename Types::template ArrayOf<typename Types::template OffsetTo<ChainRuleSet>>
 		ruleSet;		/* Array of ChainRuleSet tables
 					 * ordered by Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (2 + Types::LOffset::static_আকার + Types::HBUINT::static_আকার, ruleSet);
 };
 
 template <typename Types>
-struct ChainContextFormat2_5
+কাঠামো ChainContextFormat2_5
 {
   using ChainRuleSet = OT::ChainClassRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    যদি (!(এই+coverage).intersects (glyphs))
+      ফেরত মিথ্যা;
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ধ্রুবক ClassDef &backtrack_class_def = এই+backtrackClassDef;
+    ধ্রুবক ClassDef &প্রবেশ_class_def = এই+প্রবেশ_Class_Def;
+    ধ্রুবক ClassDef &lookahead_class_def = এই+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
-    struct ChainContextClosureLookupContext lookup_context = {
+    কাঠামো ChainContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &প্রবেশ_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]}
     };
 
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
+    (এই+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    input_class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    প্রবেশ_class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    return
+    ফেরত
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (এই))
     | hb_enumerate
-    | hb_map ([&] (const hb_pair_t<unsigned, const ChainRuleSet &> p)
-	      { return input_class_def.intersects_class (glyphs, p.first) &&
+    | hb_map ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক ChainRuleSet &> p)
+	      { ফেরত প্রবেশ_class_def.intersects_class (glyphs, p.first) &&
 		       coverage_glyph_classes.has (p.first) &&
 		       p.second.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  যৌক্তিক may_have_non_1to1 () ধ্রুবক
+  { ফেরত সত্য; }
 
-  void depend (hb_depend_context_t *c) const
+  শূন্য depend (hb_depend_context_t *c) ধ্রুবক
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    যদি (!(এই+coverage).intersects (c->glyphs))
+      ফেরত;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ধ্রুবক ClassDef &backtrack_class_def = এই+backtrackClassDef;
+    ধ্রুবক ClassDef &প্রবেশ_class_def = এই+প্রবেশ_Class_Def;
+    ধ্রুবক ClassDef &lookahead_class_def = এই+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
     intersected_class_cache_t intersected_cache;
@@ -5388,7 +5388,7 @@ struct ChainContextFormat2_5
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &প্রবেশ_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]},
       &intersected_cache
@@ -5396,39 +5396,39 @@ struct ChainContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return input_class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { ফেরত প্রবেশ_class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<ChainRuleSet>&> _)
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক typename Types::template OffsetTo<ChainRuleSet>&> _)
                 {
-                  const ChainRuleSet& chainrule_set = this+_.second;
+                  ধ্রুবক ChainRuleSet& chainrule_set = এই+_.second;
                   chainrule_set.depend (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  শূন্য closure (hb_closure_context_t *c) ধ্রুবক
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    যদি (!(এই+coverage).intersects (c->glyphs))
+      ফেরত;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs)) ফেরত;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ধ্রুবক ClassDef &backtrack_class_def = এই+backtrackClassDef;
+    ধ্রুবক ClassDef &প্রবেশ_class_def = এই+প্রবেশ_Class_Def;
+    ধ্রুবক ClassDef &lookahead_class_def = এই+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
     intersected_class_cache_t intersected_cache;
-    struct ChainContextClosureLookupContext lookup_context = {
+    কাঠামো ChainContextClosureLookupContext lookup_context = {
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &প্রবেশ_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]},
       &intersected_cache
@@ -5436,292 +5436,292 @@ struct ChainContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return input_class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { ফেরত প্রবেশ_class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<ChainRuleSet>&> _)
+    | hb_apply ([&] (ধ্রুবক hb_pair_t<unsigned, ধ্রুবক typename Types::template OffsetTo<ChainRuleSet>&> _)
                 {
-                  const ChainRuleSet& chainrule_set = this+_.second;
+                  ধ্রুবক ChainRuleSet& chainrule_set = এই+_.second;
                   chainrule_set.closure (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    যদি (!(এই+coverage).intersects (c->glyphs))
+      ফেরত;
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ধ্রুবক ClassDef &backtrack_class_def = এই+backtrackClassDef;
+    ধ্রুবক ClassDef &প্রবেশ_class_def = এই+প্রবেশ_Class_Def;
+    ধ্রুবক ClassDef &lookahead_class_def = এই+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
-    struct ChainContextClosureLookupContext lookup_context = {
+    কাঠামো ChainContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &প্রবেশ_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (এই))
     | hb_enumerate
     | hb_filter([&] (unsigned klass)
-    { return input_class_def.intersects_class (c->glyphs, klass); }, hb_first)
+    { ফেরত প্রবেশ_class_def.intersects_class (c->glyphs, klass); }, hb_first)
     | hb_map (hb_second)
-    | hb_apply ([&] (const ChainRuleSet &_)
+    | hb_apply ([&] (ধ্রুবক ChainRuleSet &_)
     { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    (this+coverage).collect_coverage (c->input);
+    (এই+coverage).collect_coverage (c->প্রবেশ);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ধ্রুবক ClassDef &backtrack_class_def = এই+backtrackClassDef;
+    ধ্রুবক ClassDef &প্রবেশ_class_def = এই+প্রবেশ_Class_Def;
+    ধ্রুবক ClassDef &lookahead_class_def = এই+lookaheadClassDef;
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    কাঠামো ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_class},
       {&backtrack_class_def,
-       &input_class_def,
+       &প্রবেশ_class_def,
        &lookahead_class_def}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest) ধ্রুবক
   {
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ধ্রুবক ClassDef &প্রবেশ_class_def = এই+প্রবেশ_Class_Def;
+    ধ্রুবক ClassDef &lookahead_class_def = এই+lookaheadClassDef;
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest, &input_class_def, &lookahead_class_def] (const ChainRuleSet &_)
-		{ _.collect_second_glyphs (digest, &input_class_def, &lookahead_class_def); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([digest, &প্রবেশ_class_def, &lookahead_class_def] (ধ্রুবক ChainRuleSet &_)
+		{ _.collect_second_glyphs (digest, &প্রবেশ_class_def, &lookahead_class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c) ধ্রুবক
   {
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ধ্রুবক ClassDef &backtrack_class_def = এই+backtrackClassDef;
+    ধ্রুবক ClassDef &প্রবেশ_class_def = এই+প্রবেশ_Class_Def;
+    ধ্রুবক ClassDef &lookahead_class_def = এই+lookaheadClassDef;
 
-    unsigned int index = input_class_def.get_class (c->glyphs[0]);
-    const ChainRuleSet &rule_set = this+ruleSet[index];
-    struct ChainContextApplyLookupContext lookup_context = {
+    unsigned পূর্ণসংখ্যা সূচক_2 = প্রবেশ_class_def.get_class (c->glyphs[0]);
+    ধ্রুবক ChainRuleSet &rule_set = এই+ruleSet[সূচক_2];
+    কাঠামো ChainContextApplyLookupContext lookup_context = {
       {{match_class, match_class, match_class}},
       {&backtrack_class_def,
-       &input_class_def,
+       &প্রবেশ_class_def,
        &lookahead_class_def}
     };
-    return rule_set.would_apply (c, lookup_context);
+    ফেরত rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক { ফেরত এই+coverage; }
 
-  unsigned cache_cost () const
+  unsigned cache_cost () ধ্রুবক
   {
-    return (this+inputClassDef).cost () + (this+lookaheadClassDef).cost ();
+    ফেরত (এই+প্রবেশ_Class_Def).cost () + (এই+lookaheadClassDef).cost ();
   }
-  static bool cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+  স্থির যৌক্তিক cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
   {
-    return context_cache_func (c, op);
+    ফেরত context_cache_func (c, op);
   }
 
-  struct external_cache_t
+  কাঠামো external_cache_t
   {
-    hb_ot_layout_binary_cache_t coverage;
-    hb_ot_layout_mapping_cache_t input_class;
+    hb_ot_layout_দ্বিমিক_cache_t coverage;
+    hb_ot_layout_mapping_cache_t প্রবেশ_class;
     hb_ot_layout_mapping_cache_t lookahead_class;
     hb_ot_layout_ruleset_digest_t rule_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  শূন্য *external_cache_create () ধ্রুবক
   {
-    unsigned count = ruleSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_ot_layout_ruleset_digest_t) +
-		    count * sizeof (hb_ot_layout_ruleset_digest_t);
-    external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    unsigned গুনতি = ruleSet.len;
+    unsigned আকার_2 = আকার (external_cache_t) -
+		    HB_VAR_ARRAY * আকার (hb_ot_layout_ruleset_digest_t) +
+		    গুনতি * আকার (hb_ot_layout_ruleset_digest_t);
+    external_cache_t *cache = (external_cache_t *) hb_malloc (আকার_2);
+    যদি (likely (cache))
     {
       cache->coverage.clear ();
-      cache->input_class.clear ();
+      cache->প্রবেশ_class.clear ();
       cache->lookahead_class.clear ();
-      for (unsigned i = 0; i < count; i++)
-	(this+ruleSet[i]).collect_first_input_classes (&cache->rule_sets[i]);
+      জন্য (unsigned i = 0; i < গুনতি; i++)
+	(এই+ruleSet[i]).collect_first_প্রবেশ_classes (&cache->rule_sets[i]);
     }
-    return cache;
+    ফেরত cache;
   }
-  bool apply_cached (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, true, external_cache); }
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, false, external_cache); }
-  bool _apply (hb_ot_apply_context_t *c, bool cached, void *external_cache) const
+  যৌক্তিক apply_cached (hb_ot_apply_context_t *c, শূন্য *external_cache) ধ্রুবক { ফেরত _apply (c, সত্য, external_cache); }
+  যৌক্তিক apply (hb_ot_apply_context_t *c, শূন্য *external_cache) ধ্রুবক { ফেরত _apply (c, মিথ্যা, external_cache); }
+  যৌক্তিক _apply (hb_ot_apply_context_t *c, যৌক্তিক cached, শূন্য *external_cache) ধ্রুবক
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (এই);
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage_binary (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage_দ্বিমিক (c->বাফার->cur().codepoint, cache ? &cache->coverage : nullptr);
+#অন্যথা
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage (c->বাফার->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    যদি (সূচক_2 == NOT_COVERED) return_trace (মিথ্যা);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ধ্রুবক ClassDef &backtrack_class_def = এই+backtrackClassDef;
+    ধ্রুবক ClassDef &প্রবেশ_class_def = এই+প্রবেশ_Class_Def;
+    ধ্রুবক ClassDef &lookahead_class_def = এই+lookaheadClassDef;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    match_class_cache_data_t input_cache_data = {
-      &input_class_def,
-      cache ? &cache->input_class : nullptr
+    match_class_cache_তথ্য_t প্রবেশ_cache_তথ্য = {
+      &প্রবেশ_class_def,
+      cache ? &cache->প্রবেশ_class : nullptr
     };
-    match_class_cache_data_t lookahead_cache_data = {
+    match_class_cache_তথ্য_t lookahead_cache_তথ্য = {
       &lookahead_class_def,
       cache ? &cache->lookahead_class : nullptr
     };
-    const void *input_match_data = cached
-      ? static_cast<const void *> (&input_class_def)
-      : static_cast<const void *> (&input_cache_data);
-    const void *lookahead_match_data = cached
-      ? static_cast<const void *> (&lookahead_class_def)
-      : static_cast<const void *> (&lookahead_cache_data);
-    bool backtrack_uses_lookahead_cache =
+    ধ্রুবক শূন্য *প্রবেশ_match_তথ্য = cached
+      ? static_cast<ধ্রুবক শূন্য *> (&প্রবেশ_class_def)
+      : static_cast<ধ্রুবক শূন্য *> (&প্রবেশ_cache_তথ্য);
+    ধ্রুবক শূন্য *lookahead_match_তথ্য = cached
+      ? static_cast<ধ্রুবক শূন্য *> (&lookahead_class_def)
+      : static_cast<ধ্রুবক শূন্য *> (&lookahead_cache_তথ্য);
+    যৌক্তিক backtrack_uses_lookahead_cache =
       !cached && &backtrack_class_def == &lookahead_class_def;
-    const void *backtrack_match_data = backtrack_uses_lookahead_cache
-      ? static_cast<const void *> (&lookahead_cache_data)
-      : static_cast<const void *> (&backtrack_class_def);
+    ধ্রুবক শূন্য *backtrack_match_তথ্য = backtrack_uses_lookahead_cache
+      ? static_cast<ধ্রুবক শূন্য *> (&lookahead_cache_তথ্য)
+      : static_cast<ধ্রুবক শূন্য *> (&backtrack_class_def);
 #endif
 
     /* match_class_caches1 is slightly faster. Use it for lookahead,
      * which is typically longer. */
-    struct ChainContextApplyLookupContext lookup_context = {
+    কাঠামো ChainContextApplyLookupContext lookup_context = {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
       {{cached && &backtrack_class_def == &lookahead_class_def ? match_class_cached1 :
         backtrack_uses_lookahead_cache ? match_class_cache : match_class,
         cached ? match_class_cached2 : match_class_cache,
         cached ? match_class_cached1 : match_class_cache}},
-      {backtrack_match_data,
-       input_match_data,
-       lookahead_match_data},
-      cached ? get_class_cached2_value : get_class_cache_value
-#else
+      {backtrack_match_তথ্য,
+       প্রবেশ_match_তথ্য,
+       lookahead_match_তথ্য},
+      cached ? get_class_cached2_মান : get_class_cache_মান
+#অন্যথা
       {{cached && &backtrack_class_def == &lookahead_class_def ? match_class_cached1 : match_class,
         cached ? match_class_cached2 : match_class,
         cached ? match_class_cached1 : match_class}},
       {&backtrack_class_def,
-       &input_class_def,
+       &প্রবেশ_class_def,
        &lookahead_class_def},
-      cached ? get_class_cached2_value : get_class_value
+      cached ? get_class_cached2_মান : get_class_মান
 #endif
     };
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    index = cached
-         ? get_class_cached2 (input_class_def, c->buffer->cur())
-         : input_class_def.get_class (c->buffer->cur().codepoint, input_cache_data.cache);
-#else
-    index = cached
-         ? get_class_cached2 (input_class_def, c->buffer->cur())
-          : input_class_def.get_class (c->buffer->cur().codepoint);
+    সূচক_2 = cached
+         ? get_class_cached2 (প্রবেশ_class_def, c->বাফার->cur())
+         : প্রবেশ_class_def.get_class (c->বাফার->cur().codepoint, প্রবেশ_cache_তথ্য.cache);
+#অন্যথা
+    সূচক_2 = cached
+         ? get_class_cached2 (প্রবেশ_class_def, c->বাফার->cur())
+          : প্রবেশ_class_def.get_class (c->বাফার->cur().codepoint);
 #endif
-    const ChainRuleSet &rule_set = this+ruleSet[index];
+    ধ্রুবক ChainRuleSet &rule_set = এই+ruleSet[সূচক_2];
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    const hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
-#else
-    const hb_ot_layout_ruleset_digest_t *digest = nullptr;
+    ধ্রুবক hb_ot_layout_ruleset_digest_t *digest = cache && সূচক_2 < ruleSet.len ? &cache->rule_sets[সূচক_2] : nullptr;
+#অন্যথা
+    ধ্রুবক hb_ot_layout_ruleset_digest_t *digest = nullptr;
 #endif
     return_trace (rule_set.apply (c, lookup_context, digest));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (এই);
+    auto *out = c->serializer->start_embed (*এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
     out->format = format;
-    out->coverage.serialize_subset (c, coverage, this);
+    out->coverage.serialize_subset (c, coverage, এই);
 
     hb_map_t backtrack_klass_map;
-    hb_map_t input_klass_map;
+    hb_map_t প্রবেশ_klass_map;
     hb_map_t lookahead_klass_map;
 
-    out->backtrackClassDef.serialize_subset (c, backtrackClassDef, this, &backtrack_klass_map);
+    out->backtrackClassDef.serialize_subset (c, backtrackClassDef, এই, &backtrack_klass_map);
     // TODO: subset inputClassDef based on glyphs survived in Coverage subsetting
-    out->inputClassDef.serialize_subset (c, inputClassDef, this, &input_klass_map);
-    out->lookaheadClassDef.serialize_subset (c, lookaheadClassDef, this, &lookahead_klass_map);
+    out->প্রবেশ_Class_Def.serialize_subset (c, প্রবেশ_Class_Def, এই, &প্রবেশ_klass_map);
+    out->lookaheadClassDef.serialize_subset (c, lookaheadClassDef, এই, &lookahead_klass_map);
 
-    if (unlikely (!c->serializer->propagate_error (backtrack_klass_map,
-						   input_klass_map,
+    যদি (unlikely (!c->serializer->propagate_error (backtrack_klass_map,
+						   প্রবেশ_klass_map,
 						   lookahead_klass_map)))
-      return_trace (false);
+      return_trace (মিথ্যা);
 
-    const hb_set_t* glyphset = c->plan->glyphset_gsub ();
+    ধ্রুবক hb_set_t* glyphset = c->plan->glyphset_gsub ();
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
+    (এই+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    (this+inputClassDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    (এই+প্রবেশ_Class_Def).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    int non_zero_index = -1, index = 0;
-    bool ret = true;
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    পূর্ণসংখ্যা non_zero_সূচক = -1, সূচক_2 = 0;
+    যৌক্তিক ret = সত্য;
+    ধ্রুবক hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     auto last_non_zero = c->serializer->snapshot ();
-    for (const auto& _ : + hb_enumerate (ruleSet)
-			 | hb_filter (input_klass_map, hb_first))
+    জন্য (ধ্রুবক auto& _ : + hb_enumerate (ruleSet)
+			 | hb_filter (প্রবেশ_klass_map, hb_first))
     {
       auto *o = out->ruleSet.serialize_append (c->serializer);
-      if (unlikely (!o))
+      যদি (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = মিথ্যা;
+	বিরতি;
       }
-      if (coverage_glyph_classes.has (_.first) &&
-          o->serialize_subset (c, _.second, this,
+      যদি (coverage_glyph_classes.has (_.first) &&
+          o->serialize_subset (c, _.second, এই,
 			       lookup_map,
 			       &backtrack_klass_map,
-			       &input_klass_map,
+			       &প্রবেশ_klass_map,
 			       &lookahead_klass_map))
       {
         last_non_zero = c->serializer->snapshot ();
-	non_zero_index = index;
+	non_zero_সূচক = সূচক_2;
       }
 
-      index++;
+      সূচক_2++;
     }
 
-    if (!ret || non_zero_index == -1) return_trace (false);
+    যদি (!ret || non_zero_সূচক == -1) return_trace (মিথ্যা);
 
     // prune empty trailing ruleSets
-    if (index > non_zero_index) {
+    যদি (সূচক_2 > non_zero_সূচক) {
       c->serializer->revert (last_non_zero);
-      out->ruleSet.len = non_zero_index + 1;
+      out->ruleSet.len = non_zero_সূচক + 1;
     }
 
-    return_trace (bool (out->ruleSet));
+    return_trace (যৌক্তিক (out->ruleSet));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) &&
-		  backtrackClassDef.sanitize (c, this) &&
-		  inputClassDef.sanitize (c, this) &&
-		  lookaheadClassDef.sanitize (c, this) &&
-		  ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (এই);
+    return_trace (coverage.sanitize (c, এই) &&
+		  backtrackClassDef.sanitize (c, এই) &&
+		  প্রবেশ_Class_Def.sanitize (c, এই) &&
+		  lookaheadClassDef.sanitize (c, এই) &&
+		  ruleSet.sanitize (c, এই));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	format;			/* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -5731,7 +5731,7 @@ struct ChainContextFormat2_5
 					 * containing backtrack sequence
 					 * data--from beginning of table */
   typename Types::template LOffsetTo<ClassDef>
-		inputClassDef;		/* Offset to glyph ClassDef
+		প্রবেশ_Class_Def;		/* Offset to glyph ClassDef
 					 * table containing input sequence
 					 * data--from beginning of table */
   typename Types::template LOffsetTo<ClassDef>
@@ -5741,257 +5741,257 @@ struct ChainContextFormat2_5
   Array16Of<typename Types::template OffsetTo<ChainRuleSet>>
 		ruleSet;		/* Array of ChainRuleSet tables
 					 * ordered by class */
-  public:
-  DEFINE_SIZE_ARRAY (4 + 4 * Types::LOffset::static_size, ruleSet);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (4 + 4 * Types::LOffset::static_আকার, ruleSet);
 };
 
 template <typename Types>
-struct ChainContextFormat3
+কাঠামো ChainContextFormat3
 {
   using RuleSet = OT::RuleSet<SmallTypes>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (glyphs))
-      return false;
+    যদি (!(এই+প্রবেশ[0]).intersects (glyphs))
+      ফেরত মিথ্যা;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    struct ChainContextClosureLookupContext lookup_context = {
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    কাঠামো ChainContextClosureLookupContext lookup_context = {
       {intersects_coverage, nullptr},
       ContextFormat::CoverageBasedContext,
-      {this, this, this}
+      {এই, এই, এই}
     };
-    return chain_context_intersects (glyphs,
+    ফেরত chain_context_intersects (glyphs,
 				     backtrack.len, backtrack.arrayZ,
-				     input.len, input.arrayZ + 1,
+				     প্রবেশ.len, প্রবেশ.arrayZ + 1,
 				     lookahead.len, lookahead.arrayZ,
 				     lookup_context);
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  যৌক্তিক may_have_non_1to1 () ধ্রুবক
+  { ফেরত সত্য; }
 
-  void depend (hb_depend_context_t *c) const
+  শূন্য depend (hb_depend_context_t *c) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (c->glyphs))
-      return;
+    যদি (!(এই+প্রবেশ[0]).intersects (c->glyphs))
+      ফেরত;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs))
+      ফেরত;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     ChainContextDependLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      {this, this, this},
+      {এই, এই, এই},
       {nullptr, nullptr, nullptr},  /* intersects_cache */
       nullptr                        /* intersected_glyphs_cache */
     };
     chain_context_depend_lookup (c,
-				 backtrack.len, (const HBUINT16 *) backtrack.arrayZ,
-				 input.len, (const HBUINT16 *) input.arrayZ + 1,
-				 lookahead.len, (const HBUINT16 *) lookahead.arrayZ,
+				 backtrack.len, (ধ্রুবক HBUINT16 *) backtrack.arrayZ,
+				 প্রবেশ.len, (ধ্রুবক HBUINT16 *) প্রবেশ.arrayZ + 1,
+				 lookahead.len, (ধ্রুবক HBUINT16 *) lookahead.arrayZ,
 				 lookup.len, lookup.arrayZ,
-				 this,
-				 input[0], lookup_context);
+				 এই,
+				 প্রবেশ[0], lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  শূন্য closure (hb_closure_context_t *c) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (c->glyphs))
-      return;
+    যদি (!(এই+প্রবেশ[0]).intersects (c->glyphs))
+      ফেরত;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
+    hb_set_t* cur_active_glyphs = c->ঠেলো_cur_active_glyphs ();
+    যদি (unlikely (!cur_active_glyphs))
+      ফেরত;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextClosureLookupContext lookup_context = {
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    কাঠামো ChainContextClosureLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      {this, this, this}
+      {এই, এই, এই}
     };
     chain_context_closure_lookup (c,
 				  backtrack.len, backtrack.arrayZ,
-				  input.len, input.arrayZ + 1,
+				  প্রবেশ.len, প্রবেশ.arrayZ + 1,
 				  lookahead.len, lookahead.arrayZ,
 				  lookup.len, lookup.arrayZ,
 				  0, lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->বের_করো_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক
   {
-    if (!intersects (c->glyphs))
-      return;
+    যদি (!intersects (c->glyphs))
+      ফেরত;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     recurse_lookups (c, lookup.len, lookup.arrayZ);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
 
-    (this+input[0]).collect_coverage (c->input);
+    (এই+প্রবেশ[0]).collect_coverage (c->প্রবেশ);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    কাঠামো ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_coverage},
-      {this, this, this}
+      {এই, এই, এই}
     };
     chain_context_collect_glyphs_lookup (c,
 					 backtrack.len, backtrack.arrayZ,
-					 input.len, input.arrayZ + 1,
+					 প্রবেশ.len, প্রবেশ.arrayZ + 1,
 					 lookahead.len, lookahead.arrayZ,
 					 lookup.len, lookup.arrayZ,
 					 lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (input.len > 1)
-      (this+input[1]).collect_coverage (digest);
-    else if (lookahead.len)
-      (this+lookahead[0]).collect_coverage (digest);
-    else
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    যদি (প্রবেশ.len > 1)
+      (এই+প্রবেশ[1]).collect_coverage (digest);
+    অন্যথা যদি (lookahead.len)
+      (এই+lookahead[0]).collect_coverage (digest);
+    অন্যথা
       *digest = hb_set_digest_t::full ();
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  যৌক্তিক would_apply (hb_would_apply_context_t *c) ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextApplyLookupContext lookup_context = {
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    কাঠামো ChainContextApplyLookupContext lookup_context = {
       {{match_coverage, match_coverage, match_coverage}},
-      {this, this, this}
+      {এই, এই, এই}
     };
-    return chain_context_would_apply_lookup (c,
+    ফেরত chain_context_would_apply_lookup (c,
 					     backtrack.len, backtrack.arrayZ,
-					     input.len, input.arrayZ + 1,
+					     প্রবেশ.len, প্রবেশ.arrayZ + 1,
 					     lookahead.len, lookahead.arrayZ,
 					     lookup.len, lookup.arrayZ, lookup_context);
   }
 
-  const Coverage &get_coverage () const
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    return this+input[0];
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    ফেরত এই+প্রবেশ[0];
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    TRACE_APPLY (এই);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
 
-    unsigned int index = (this+input[0]).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+প্রবেশ[0]).get_coverage (c->বাফার->cur().codepoint);
+    যদি (সূচক_2 == NOT_COVERED) return_trace (মিথ্যা);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextApplyLookupContext lookup_context = {
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    কাঠামো ChainContextApplyLookupContext lookup_context = {
       {{match_coverage, match_coverage, match_coverage}},
-      {this, this, this}
+      {এই, এই, এই}
     };
     return_trace (chain_context_apply_lookup (c,
 					      backtrack.len, backtrack.arrayZ,
-					      input.len, input.arrayZ + 1,
+					      প্রবেশ.len, প্রবেশ.arrayZ + 1,
 					      lookahead.len, lookahead.arrayZ,
 					      lookup.len, lookup.arrayZ, lookup_context));
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_coverage_offsets (hb_subset_context_t *c, Iterator it, const void* base) const
+  যৌক্তিক serialize_coverage_offsets (hb_subset_context_t *c, Iterator it, ধ্রুবক শূন্য* base) ধ্রুবক
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এই);
     auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    যদি (unlikely (!out->serialize (c->serializer, 0u))) return_trace (মিথ্যা);
 
-    for (auto& offset : it) {
+    জন্য (auto& offset : it) {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, base))
-        return_trace (false);
+      যদি (unlikely (!o) || !o->serialize_subset (c, offset, base))
+        return_trace (মিথ্যা);
     }
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এই);
 
-    if (unlikely (!c->serializer->embed (this->format))) return_trace (false);
+    যদি (unlikely (!c->serializer->embed (এই->format))) return_trace (মিথ্যা);
 
-    if (!serialize_coverage_offsets (c, backtrack.iter (), this))
-      return_trace (false);
+    যদি (!serialize_coverage_offsets (c, backtrack.iter (), এই))
+      return_trace (মিথ্যা);
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (!serialize_coverage_offsets (c, input.iter (), this))
-      return_trace (false);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    যদি (!serialize_coverage_offsets (c, প্রবেশ.iter (), এই))
+      return_trace (মিথ্যা);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (!serialize_coverage_offsets (c, lookahead.iter (), this))
-      return_trace (false);
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    যদি (!serialize_coverage_offsets (c, lookahead.iter (), এই))
+      return_trace (মিথ্যা);
 
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
 
-    HBUINT16 *lookupCount = c->serializer->copy<HBUINT16> (lookup.len);
-    if (!lookupCount) return_trace (false);
+    HBUINT16 *lookup_গুনতি_2 = c->serializer->copy<HBUINT16> (lookup.len);
+    যদি (!lookup_গুনতি_2) return_trace (মিথ্যা);
 
-    unsigned count = serialize_lookuprecord_array (c->serializer, lookup.as_array (), lookup_map);
-    return_trace (c->serializer->check_assign (*lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned গুনতি = serialize_lookuprecord_array (c->serializer, lookup.as_array (), lookup_map);
+    return_trace (c->serializer->check_assign (*lookup_গুনতি_2, গুনতি, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!backtrack.sanitize (c, this))) return_trace (false);
+    TRACE_SANITIZE (এই);
+    যদি (unlikely (!backtrack.sanitize (c, এই))) return_trace (মিথ্যা);
     hb_barrier ();
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (unlikely (!input.sanitize (c, this))) return_trace (false);
+    ধ্রুবক auto &প্রবেশ = StructAfter<decltype (প্রবেশ_X)> (backtrack);
+    যদি (unlikely (!প্রবেশ.sanitize (c, এই))) return_trace (মিথ্যা);
     hb_barrier ();
-    if (unlikely (!input.len)) return_trace (false); /* To be consistent with Context. */
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (unlikely (!lookahead.sanitize (c, this))) return_trace (false);
+    যদি (unlikely (!প্রবেশ.len)) return_trace (মিথ্যা); /* To be consistent with Context. */
+    ধ্রুবক auto &lookahead = StructAfter<decltype (lookaheadX)> (প্রবেশ);
+    যদি (unlikely (!lookahead.sanitize (c, এই))) return_trace (মিথ্যা);
     hb_barrier ();
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ধ্রুবক auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (likely (lookup.sanitize (c)));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	format;			/* Format identifier--format = 3 */
   Array16Of<typename Types::template OffsetTo<Coverage>>
 		backtrack;		/* Array of coverage tables
 					 * in backtracking sequence, in  glyph
 					 * sequence order */
   Array16Of<typename Types::template OffsetTo<Coverage>>
-		inputX		;	/* Array of coverage
+		প্রবেশ_X		;	/* Array of coverage
 					 * tables in input sequence, in glyph
 					 * sequence order */
   Array16Of<typename Types::template OffsetTo<Coverage>>
@@ -6001,32 +6001,32 @@ struct ChainContextFormat3
   Array16Of<LookupRecord>
 		lookupX;		/* Array of LookupRecords--in
 					 * design order) */
-  public:
-  DEFINE_SIZE_MIN (10);
+  সর্বজনীন:
+  DEFINE_আকার_MIN (10);
 };
 
-struct ChainContext
+কাঠামো ChainContext
 {
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ধ্রুবক
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    যদি (unlikely (!c->may_dispatch (এই, &u.format.v))) ফেরত c->no_dispatch_return_মান ();
+    TRACE_DISPATCH (এই, u.format.v);
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ক্ষেত্র 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    ক্ষেত্র 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    ক্ষেত্র 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    ক্ষেত্র 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    পূর্বনির্ধারিত:return_trace (c->default_return_মান ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;	/* Format identifier */
+  সুরক্ষিত:
+  সংঘ {
+  কাঠামো { HBUINT16 v; }		format;	/* Format identifier */
   ChainContextFormat1_4<SmallTypes>	format1;
   ChainContextFormat2_5<SmallTypes>	format2;
   ChainContextFormat3<SmallTypes>	format3;
@@ -6041,79 +6041,79 @@ struct ChainContext
 
 
 template <typename T>
-struct ExtensionFormat1
+কাঠামো ExtensionFormat1
 {
-  unsigned int get_type () const { return extensionLookupType; }
+  unsigned পূর্ণসংখ্যা get_type () ধ্রুবক { ফেরত extensionLookupType; }
 
   template <typename X>
-  const X& get_subtable () const
-  { return this + reinterpret_cast<const Offset32To<typename T::SubTable> &> (extensionOffset); }
+  ধ্রুবক X& get_subtable () ধ্রুবক
+  { ফেরত এই + reinterpret_cast<ধ্রুবক Offset32To<typename T::SubTable> &> (extensionOffset); }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ধ্রুবক
   {
-    if (unlikely (!c->may_dispatch (this, this))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, format);
+    যদি (unlikely (!c->may_dispatch (এই, এই))) ফেরত c->no_dispatch_return_মান ();
+    TRACE_DISPATCH (এই, format);
     return_trace (get_subtable<typename T::SubTable> ().dispatch (c, get_type (), std::forward<Ts> (ds)...));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক
   { dispatch (c); }
 
   /* This is called from may_dispatch() above with hb_sanitize_context_t. */
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই) &&
 		  hb_barrier () &&
 		  extensionLookupType != T::SubTable::Extension);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এই);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
 
     out->format = format;
     out->extensionLookupType = extensionLookupType;
 
-    const auto& src_offset =
-        reinterpret_cast<const Offset32To<typename T::SubTable> &> (extensionOffset);
+    ধ্রুবক auto& src_offset =
+        reinterpret_cast<ধ্রুবক Offset32To<typename T::SubTable> &> (extensionOffset);
     auto& dest_offset =
         reinterpret_cast<Offset32To<typename T::SubTable> &> (out->extensionOffset);
 
-    return_trace (dest_offset.serialize_subset (c, src_offset, this, get_type ()));
+    return_trace (dest_offset.serialize_subset (c, src_offset, এই, get_type ()));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	format;			/* Format identifier. Set to 1. */
   HBUINT16	extensionLookupType;	/* Lookup type of subtable referenced
 					 * by ExtensionOffset (i.e. the
 					 * extension subtable). */
   Offset32	extensionOffset;	/* Offset to the extension subtable,
 					 * of lookup type subtable. */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (8);
 };
 
 template <typename T>
-struct Extension
+কাঠামো Extension
 {
-  unsigned int get_type () const
+  unsigned পূর্ণসংখ্যা get_type () ধ্রুবক
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_type ();
-    default:return 0;
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); ফেরত u.format1.get_type ();
+    পূর্বনির্ধারিত:ফেরত 0;
     }
   }
   template <typename X>
-  const X& get_subtable () const
+  ধ্রুবক X& get_subtable () ধ্রুবক
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.template get_subtable<typename T::SubTable> ();
-    default:return Null (typename T::SubTable);
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); ফেরত u.format1.template get_subtable<typename T::SubTable> ();
+    পূর্বনির্ধারিত:ফেরত Null (typename T::SubTable);
     }
   }
 
@@ -6121,28 +6121,28 @@ struct Extension
   // dispatches to the sub table this points too, but for subset
   // we need to run subset on this subtable too.
   template <typename ...Ts>
-  typename hb_subset_context_t::return_t dispatch (hb_subset_context_t *c, Ts&&... ds) const
+  typename hb_subset_context_t::return_t dispatch (hb_subset_context_t *c, Ts&&... ds) ধ্রুবক
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.subset (c);
-    default: return c->default_return_value ();
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); ফেরত u.format1.subset (c);
+    পূর্বনির্ধারিত: ফেরত c->default_return_মান ();
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ধ্রুবক
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.dispatch (c, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    যদি (unlikely (!c->may_dispatch (এই, &u.format.v))) ফেরত c->no_dispatch_return_মান ();
+    TRACE_DISPATCH (এই, u.format.v);
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); return_trace (u.format1.dispatch (c, std::forward<Ts> (ds)...));
+    পূর্বনির্ধারিত:return_trace (c->default_return_মান ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  সুরক্ষিত:
+  সংঘ {
+  কাঠামো { HBUINT16 v; }	format;		/* Format identifier */
   ExtensionFormat1<T>	format1;
   } u;
 };
@@ -6152,25 +6152,25 @@ struct Extension
  * GSUB/GPOS Common
  */
 
-struct hb_ot_layout_lookup_accelerator_t
+কাঠামো hb_ot_layout_lookup_accelerator_t
 {
   template <typename TLookup>
-  static hb_ot_layout_lookup_accelerator_t *create (const TLookup &lookup)
+  স্থির hb_ot_layout_lookup_accelerator_t *create (ধ্রুবক TLookup &lookup)
   {
-    unsigned count = lookup.get_subtable_count ();
+    unsigned গুনতি = lookup.get_subtable_গুনতি ();
 
-    unsigned size = sizeof (hb_ot_layout_lookup_accelerator_t) -
-		    HB_VAR_ARRAY * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t) +
-		    count * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t);
+    unsigned আকার_2 = আকার (hb_ot_layout_lookup_accelerator_t) -
+		    HB_VAR_ARRAY * আকার (hb_accelerate_subtables_context_t::hb_applicable_t) +
+		    গুনতি * আকার (hb_accelerate_subtables_context_t::hb_applicable_t);
 
     /* The following is a calloc because when we are collecting subtables,
      * some of them might be invalid and hence not collect; as a result,
      * we might not fill in all the count entries of the subtables array.
      * Zeroing it allows the set digest to gatekeep it without having to
      * initialize it further. */
-    auto *thiz = (hb_ot_layout_lookup_accelerator_t *) hb_calloc (1, size);
-    if (unlikely (!thiz))
-      return nullptr;
+    auto *thiz = (hb_ot_layout_lookup_accelerator_t *) hb_calloc (1, আকার_2);
+    যদি (unlikely (!thiz))
+      ফেরত nullptr;
 
     hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables);
     lookup.dispatch (&c_accelerate_subtables);
@@ -6178,44 +6178,44 @@ struct hb_ot_layout_lookup_accelerator_t
     /* Invalid subtables do not collect and leave zeroed tail entries
      * (see the calloc note above); trim them so the apply paths never
      * see a null apply func. */
-    while (count && !thiz->subtables[count - 1].apply_func)
-      count--;
+    যখন (গুনতি && !thiz->subtables[গুনতি - 1].apply_func)
+      গুনতি--;
 
     thiz->digest.init ();
-    for (auto& subtable : hb_iter (thiz->subtables, count))
+    জন্য (auto& subtable : hb_iter (thiz->subtables, গুনতি))
       thiz->digest.union_ (subtable.digest);
     thiz->digest_second = c_accelerate_subtables.digest_second;
 
-    thiz->count = count;
+    thiz->গুনতি = গুনতি;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     thiz->subtable_cache_user_idx = c_accelerate_subtables.subtable_cache_user_idx;
 
-    for (unsigned i = 0; i < count; i++)
-      if (i != thiz->subtable_cache_user_idx)
+    জন্য (unsigned i = 0; i < গুনতি; i++)
+      যদি (i != thiz->subtable_cache_user_idx)
        thiz->subtables[i].apply_cached_func = thiz->subtables[i].apply_func;
 #endif
 
-    return thiz;
+    ফেরত thiz;
   }
 
-  void fini ()
+  শূন্য fini ()
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    for (unsigned i = 0; i < count; i++)
+    জন্য (unsigned i = 0; i < গুনতি; i++)
       hb_free (subtables[i].external_cache);
 #endif
   }
 
-  bool may_have (hb_codepoint_t g) const
-  { return digest.may_have (g); }
+  যৌক্তিক may_have (hb_codepoint_t g) ধ্রুবক
+  { ফেরত digest.may_have (g); }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
-  bool apply (hb_ot_apply_context_t *c, bool use_cache) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c, যৌক্তিক use_cache) ধ্রুবক
   {
-    if (count == 1)
+    যদি (গুনতি == 1)
     {
       /* The accelerator digest is the union of the subtable digests, so
        * for a single subtable it equals that subtable's digest, which the
@@ -6223,42 +6223,42 @@ struct hb_ot_layout_lookup_accelerator_t
        * invalid entries were trimmed at create time, so the subtable is
        * always valid here. */
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-      if (use_cache)
-	return subtables[0].apply_cached_no_digest (c);
+      যদি (use_cache)
+	ফেরত subtables[0].apply_cached_no_digest (c);
 #endif
-      return subtables[0].apply_no_digest (c);
+      ফেরত subtables[0].apply_no_digest (c);
     }
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    if (use_cache)
+    যদি (use_cache)
     {
-      return
-      + hb_iter (hb_iter (subtables, count))
-      | hb_map ([&c] (const hb_accelerate_subtables_context_t::hb_applicable_t &_) { return _.apply_cached (c); })
+      ফেরত
+      + hb_iter (hb_iter (subtables, গুনতি))
+      | hb_map ([&c] (ধ্রুবক hb_accelerate_subtables_context_t::hb_applicable_t &_) { ফেরত _.apply_cached (c); })
       | hb_any
       ;
     }
-    else
+    অন্যথা
 #endif
     {
-      return
-      + hb_iter (hb_iter (subtables, count))
-      | hb_map ([&c] (const hb_accelerate_subtables_context_t::hb_applicable_t &_) { return _.apply (c); })
+      ফেরত
+      + hb_iter (hb_iter (subtables, গুনতি))
+      | hb_map ([&c] (ধ্রুবক hb_accelerate_subtables_context_t::hb_applicable_t &_) { ফেরত _.apply (c); })
       | hb_any
       ;
     }
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  bool cache_enter (hb_ot_apply_context_t *c) const
+  যৌক্তিক cache_enter (hb_ot_apply_context_t *c) ধ্রুবক
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    return subtable_cache_user_idx != (unsigned) -1 &&
+    ফেরত subtable_cache_user_idx != (unsigned) -1 &&
 	   subtables[subtable_cache_user_idx].cache_enter (c);
-#else
-    return false;
+#অন্যথা
+    ফেরত মিথ্যা;
 #endif
   }
-  void cache_leave (hb_ot_apply_context_t *c) const
+  শূন্য cache_leave (hb_ot_apply_context_t *c) ধ্রুবক
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     subtables[subtable_cache_user_idx].cache_leave (c);
@@ -6268,15 +6268,15 @@ struct hb_ot_layout_lookup_accelerator_t
 
   hb_set_digest_t digest;
   hb_set_digest_t digest_second;
-  private:
-  unsigned count = 0; /* Number of subtables in the array. */
+  ব্যক্তিগত:
+  unsigned গুনতি = 0; /* Number of subtables in the array. */
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   unsigned subtable_cache_user_idx = (unsigned) -1;
 #endif
   hb_accelerate_subtables_context_t::hb_applicable_t subtables[HB_VAR_ARRAY];
 };
 
-struct GSUBGPOS
+কাঠামো GSUBGPOS
 {
   using LookupListT = LookupList<SmallTypes>;
   using LookupList2T = LookupList<MediumTypes>;
@@ -6289,149 +6289,149 @@ struct GSUBGPOS
   template <typename TLookup>
   using TLookupOffsetList2 = LookupOffsetList<TLookup, typename MediumTypes::HBLUINT>;
 
-  size_t get_size () const
+  size_t get_আকার () ধ্রুবক
   {
-    if (version.major != 1) return version.static_size;
+    যদি (version.major != 1) ফেরত version.static_আকার;
 
-    return min_size +
-	   (version.to_int () >= 0x00010001u ? featureVars.static_size : 0) +
+    ফেরত min_আকার +
+	   (version.to_int () >= 0x00010001u ? featureVars.static_আকার : 0) +
 #ifndef HB_NO_BEYOND_64K
-	   (version.to_int () >= 0x00010002u ? 3 * Offset32::static_size : 0)
-#else
+	   (version.to_int () >= 0x00010002u ? 3 * Offset32::static_আকার : 0)
+#অন্যথা
 	   0
 #endif
 	   ;
   }
 
-  const ScriptList &get_script_list () const
+  ধ্রুবক ScriptList &get_script_list () ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && scriptList2) return this + scriptList2;
+    যদি (version.to_int () >= 0x00010002u && scriptList2) ফেরত এই + scriptList2;
 #endif
-    return this + scriptList;
+    ফেরত এই + scriptList;
   }
-  const FeatureList &get_feature_list () const
+  ধ্রুবক FeatureList &get_feature_list () ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && featureList2) return this + featureList2;
+    যদি (version.to_int () >= 0x00010002u && featureList2) ফেরত এই + featureList2;
 #endif
-    return this + featureList;
+    ফেরত এই + featureList;
   }
   template <typename TLookup>
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (এই);
+    যদি (unlikely (!version.sanitize (c) ||
 		  version.major != 1 ||
-		  !c->check_range (this, get_size ())))
-      return_trace (false);
+		  !c->check_range (এই, get_আকার ())))
+      return_trace (মিথ্যা);
     hb_barrier ();
 
-    bool script_list_ok = scriptList.sanitize (c, this);
-    bool feature_list_ok = featureList.sanitize (c, this);
-    bool lookup_list_ok = typed_lookup_list_offset<TLookup> ().sanitize (c, this);
+    যৌক্তিক script_list_ok = scriptList.sanitize (c, এই);
+    যৌক্তিক feature_list_ok = featureList.sanitize (c, এই);
+    যৌক্তিক lookup_list_ok = typed_lookup_list_offset<TLookup> ().sanitize (c, এই);
 
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u)
+    যদি (version.to_int () >= 0x00010002u)
     {
-      if (scriptList2) script_list_ok = scriptList2.sanitize (c, this);
-      if (featureList2) feature_list_ok = featureList2.sanitize (c, this);
-      if (lookupList2) lookup_list_ok = typed_lookup_list2_offset<TLookup> ().sanitize (c, this);
+      যদি (scriptList2) script_list_ok = scriptList2.sanitize (c, এই);
+      যদি (featureList2) feature_list_ok = featureList2.sanitize (c, এই);
+      যদি (lookupList2) lookup_list_ok = typed_lookup_list2_offset<TLookup> ().sanitize (c, এই);
     }
 #endif
 
-    if (unlikely (!(script_list_ok && feature_list_ok && lookup_list_ok)))
-      return_trace (false);
+    যদি (unlikely (!(script_list_ok && feature_list_ok && lookup_list_ok)))
+      return_trace (মিথ্যা);
 
 #ifndef HB_NO_VAR
-    if (unlikely (!(version.to_int () < 0x00010001u ||
-		    featureVars.sanitize (c, this, &get_feature_list ()))))
-      return_trace (false);
+    যদি (unlikely (!(version.to_int () < 0x00010001u ||
+		    featureVars.sanitize (c, এই, &get_feature_list ()))))
+      return_trace (মিথ্যা);
 #endif
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
   template <typename TLookup>
-  bool subset (hb_subset_layout_context_t *c) const
+  যৌক্তিক subset (hb_subset_layout_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    if (version.major != 1) return_trace (false);
+    TRACE_SUBSET (এই);
+    যদি (version.major != 1) return_trace (মিথ্যা);
 
-    auto *out = c->subset_context->serializer->start_embed (this);
-    if (unlikely (!c->subset_context->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->subset_context->serializer->start_embed (এই);
+    যদি (unlikely (!c->subset_context->serializer->extend_min (out))) return_trace (মিথ্যা);
 
     out->version = version;
 
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u)
+    যদি (version.to_int () >= 0x00010002u)
     {
-      if (unlikely (!c->subset_context->serializer->extend_size (out, get_size ())))
-        return_trace (false);
+      যদি (unlikely (!c->subset_context->serializer->extend_আকার (out, get_আকার ())))
+        return_trace (মিথ্যা);
 
       out->scriptList = 0;
       out->featureList = 0;
       out->lookupList = 0;
 
-      if (lookupList2)
+      যদি (lookupList2)
 	serialize_subset_offset (c->subset_context, out->lookupList2,
 				 subset_lookup_list2_offset<TLookup> (),
-				 this, c);
-      else
+				 এই, c);
+      অন্যথা
 	serialize_subset_offset (c->subset_context, out->lookupList2,
 				 subset_lookup_list_offset<TLookup> (),
-				 this, c);
+				 এই, c);
 
-      if (featureList2)
+      যদি (featureList2)
 	serialize_subset_offset (c->subset_context, out->featureList2,
 				 subset_feature_list2_offset (),
-				 this, c);
-      else
+				 এই, c);
+      অন্যথা
 	serialize_subset_offset (c->subset_context, out->featureList2,
 				 subset_feature_list_offset (),
-				 this, c);
+				 এই, c);
 
-      if (scriptList2)
-	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList2, this, c);
-      else
-	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList, this, c);
+      যদি (scriptList2)
+	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList2, এই, c);
+      অন্যথা
+	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList, এই, c);
     }
-    else
+    অন্যথা
 #endif
     {
       out->subset_lookup_list_offset<TLookup> ()
 	  .serialize_subset (c->subset_context,
 			     subset_lookup_list_offset<TLookup> (),
-			     this,
+			     এই,
 			     c);
 
       out->subset_feature_list_offset ()
 	  .serialize_subset (c->subset_context,
 			     subset_feature_list_offset (),
-			     this,
+			     এই,
 			     c);
 
       out->scriptList.serialize_subset (c->subset_context,
 					scriptList,
-					this,
+					এই,
 					c);
     }
 
 #ifndef HB_NO_VAR
-    if (version.to_int () >= 0x00010001u)
+    যদি (version.to_int () >= 0x00010001u)
     {
       auto snapshot = c->subset_context->serializer->snapshot ();
-      if (version.to_int () < 0x00010002u &&
+      যদি (version.to_int () < 0x00010002u &&
 	  !c->subset_context->serializer->extend_min (&out->featureVars))
-        return_trace (false);
+        return_trace (মিথ্যা);
 
       // if all axes are pinned all feature vars are dropped.
-      bool ret = !c->subset_context->plan->all_axes_pinned
-                 && out->featureVars.serialize_subset (c->subset_context, featureVars, this, c);
-      if (!ret)
+      যৌক্তিক ret = !c->subset_context->plan->all_axes_pinned
+                 && out->featureVars.serialize_subset (c->subset_context, featureVars, এই, c);
+      যদি (!ret)
       {
         out->featureVars = 0;
-	if (version.to_int () < 0x00010002u)
+	যদি (version.to_int () < 0x00010002u)
 	{
 	  c->subset_context->serializer->revert (snapshot);
 	  out->version.major = 1;
@@ -6441,125 +6441,125 @@ struct GSUBGPOS
     }
 #endif
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  unsigned int get_lookup_count () const
+  unsigned পূর্ণসংখ্যা get_lookup_গুনতি () ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return (this + lookupList2).len;
+    যদি (version.to_int () >= 0x00010002u && lookupList2)
+      ফেরত (এই + lookupList2).len;
 #endif
-    return (this + lookupList).len;
+    ফেরত (এই + lookupList).len;
   }
-  const Lookup& get_lookup (unsigned int i) const
+  ধ্রুবক Lookup& get_lookup (unsigned পূর্ণসংখ্যা i) ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return (this + lookupList2)[i];
+    যদি (version.to_int () >= 0x00010002u && lookupList2)
+      ফেরত (এই + lookupList2)[i];
 #endif
-    return (this + lookupList)[i];
+    ফেরত (এই + lookupList)[i];
   }
-  const FeatureVariations &get_feature_variations () const
+  ধ্রুবক FeatureVariations &get_feature_variations () ধ্রুবক
   {
-    return (version.to_int () >= 0x00010001u && hb_barrier ()) ? this+featureVars : Null (FeatureVariations);
+    ফেরত (version.to_int () >= 0x00010001u && hb_barrier ()) ? এই+featureVars : Null (FeatureVariations);
   }
 
-  bool has_data () const { return version.to_int (); }
-  unsigned int get_script_count () const
-  { return get_script_list ().len; }
-  const Tag& get_script_tag (unsigned int i) const
-  { return get_script_list ().get_tag (i); }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
-  { return get_script_list ().get_tags (start_offset, script_count, script_tags); }
-  const Script& get_script (unsigned int i) const
-  { return get_script_list ()[i]; }
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
-  { return get_script_list ().find_index (tag, index); }
+  যৌক্তিক has_তথ্য () ধ্রুবক { ফেরত version.to_int (); }
+  unsigned পূর্ণসংখ্যা get_script_গুনতি () ধ্রুবক
+  { ফেরত get_script_list ().len; }
+  ধ্রুবক Tag& get_script_tag (unsigned পূর্ণসংখ্যা i) ধ্রুবক
+  { ফেরত get_script_list ().get_tag (i); }
+  unsigned পূর্ণসংখ্যা get_script_tags (unsigned পূর্ণসংখ্যা start_offset,
+				unsigned পূর্ণসংখ্যা *script_গুনতি /* IN/OUT */,
+				hb_tag_t     *script_tags /* OUT */) ধ্রুবক
+  { ফেরত get_script_list ().get_tags (start_offset, script_গুনতি, script_tags); }
+  ধ্রুবক Script& get_script (unsigned পূর্ণসংখ্যা i) ধ্রুবক
+  { ফেরত get_script_list ()[i]; }
+  যৌক্তিক find_script_সূচক (hb_tag_t tag, unsigned পূর্ণসংখ্যা *সূচক_2) ধ্রুবক
+  { ফেরত get_script_list ().find_সূচক (tag, সূচক_2); }
 
-  unsigned int get_feature_count () const
-  { return get_feature_list ().len; }
-  hb_tag_t get_feature_tag (unsigned int i) const
-  { return i == Index::NOT_FOUND_INDEX ? HB_TAG_NONE : get_feature_list ().get_tag (i); }
-  unsigned int get_feature_tags (unsigned int start_offset,
-				 unsigned int *feature_count /* IN/OUT */,
-				 hb_tag_t     *feature_tags /* OUT */) const
-  { return get_feature_list ().get_tags (start_offset, feature_count, feature_tags); }
-  const Feature& get_feature (unsigned int i) const
-  { return get_feature_list ()[i]; }
-  bool find_feature_index (hb_tag_t tag, unsigned int *index) const
-  { return get_feature_list ().find_index (tag, index); }
+  unsigned পূর্ণসংখ্যা get_feature_গুনতি () ধ্রুবক
+  { ফেরত get_feature_list ().len; }
+  hb_tag_t get_feature_tag (unsigned পূর্ণসংখ্যা i) ধ্রুবক
+  { ফেরত i == সূচক::NOT_FOUND_সূচক ? HB_TAG_NONE : get_feature_list ().get_tag (i); }
+  unsigned পূর্ণসংখ্যা get_feature_tags (unsigned পূর্ণসংখ্যা start_offset,
+				 unsigned পূর্ণসংখ্যা *feature_গুনতি_2 /* IN/OUT */,
+				 hb_tag_t     *feature_tags /* OUT */) ধ্রুবক
+  { ফেরত get_feature_list ().get_tags (start_offset, feature_গুনতি_2, feature_tags); }
+  ধ্রুবক Feature& get_feature (unsigned পূর্ণসংখ্যা i) ধ্রুবক
+  { ফেরত get_feature_list ()[i]; }
+  যৌক্তিক find_feature_সূচক (hb_tag_t tag, unsigned পূর্ণসংখ্যা *সূচক_2) ধ্রুবক
+  { ফেরত get_feature_list ().find_সূচক (tag, সূচক_2); }
 
-  bool find_variations_index (const int *coords, unsigned int num_coords,
-			      unsigned int *index,
-			      ItemVarStoreInstancer *instancer) const
+  যৌক্তিক find_variations_সূচক (ধ্রুবক পূর্ণসংখ্যা *coords, unsigned পূর্ণসংখ্যা অঙ্ক_coords,
+			      unsigned পূর্ণসংখ্যা *সূচক_2,
+			      ItemVarStoreInstancer *instancer) ধ্রুবক
   {
 #ifdef HB_NO_VAR
-    *index = FeatureVariations::NOT_FOUND_INDEX;
-    return false;
+    *সূচক_2 = FeatureVariations::NOT_FOUND_সূচক;
+    ফেরত মিথ্যা;
 #endif
-    return get_feature_variations ().find_index (coords, num_coords, index, instancer);
+    ফেরত get_feature_variations ().find_সূচক (coords, অঙ্ক_coords, সূচক_2, instancer);
   }
-  bool get_feature_variations_state (const int *coords,
-				     unsigned int num_coords,
-				     unsigned int *index,
+  যৌক্তিক get_feature_variations_state (ধ্রুবক পূর্ণসংখ্যা *coords,
+				     unsigned পূর্ণসংখ্যা অঙ্ক_coords,
+				     unsigned পূর্ণসংখ্যা *সূচক_2,
 				     ItemVarStoreInstancer *instancer,
-				     hb_vector_t<unsigned> *lookup_conditions) const
+				     hb_vector_t<unsigned> *lookup_conditions) ধ্রুবক
   {
     lookup_conditions->reset ();
 #ifdef HB_NO_VAR
-    *index = FeatureVariations::NOT_FOUND_INDEX;
-    return true;
-#else
-    find_variations_index (coords, num_coords, index, instancer);
-    return get_feature_variations ().collect_lookup_conditions (
+    *সূচক_2 = FeatureVariations::NOT_FOUND_সূচক;
+    ফেরত সত্য;
+#অন্যথা
+    find_variations_সূচক (coords, অঙ্ক_coords, সূচক_2, instancer);
+    ফেরত get_feature_variations ().collect_lookup_conditions (
 	coords,
-	num_coords,
+	অঙ্ক_coords,
 	instancer,
 	lookup_conditions);
 #endif
   }
-  bool get_lookup_variations (unsigned feature_index,
-                              unsigned variations_index,
-                              hb_sorted_array_t<const unsigned> conditions,
-                              hb_set_t *lookup_indexes) const
+  যৌক্তিক get_lookup_variations (unsigned feature_সূচক,
+                              unsigned variations_সূচক,
+                              hb_sorted_array_t<ধ্রুবক unsigned> conditions,
+                              hb_set_t *lookup_indexes) ধ্রুবক
   {
 #ifdef HB_NO_VAR
-    return false;
-#else
-    return get_feature_variations ().get_lookup_variations (
-	feature_index, get_feature_variation (feature_index, variations_index),
+    ফেরত মিথ্যা;
+#অন্যথা
+    ফেরত get_feature_variations ().get_lookup_variations (
+	feature_সূচক, get_feature_variation (feature_সূচক, variations_সূচক),
 	conditions, lookup_indexes);
 #endif
   }
-  const Feature& get_feature_variation (unsigned int feature_index,
-					unsigned int variations_index) const
+  ধ্রুবক Feature& get_feature_variation (unsigned পূর্ণসংখ্যা feature_সূচক,
+					unsigned পূর্ণসংখ্যা variations_সূচক) ধ্রুবক
   {
 #ifndef HB_NO_VAR
-    if (FeatureVariations::NOT_FOUND_INDEX != variations_index &&
+    যদি (FeatureVariations::NOT_FOUND_সূচক != variations_সূচক &&
 	version.to_int () >= 0x00010001u)
     {
-      const Feature *feature = get_feature_variations ().find_substitute (variations_index,
-									  feature_index);
-      if (feature)
-	return *feature;
+      ধ্রুবক Feature *feature = get_feature_variations ().find_substitute (variations_সূচক,
+									  feature_সূচক);
+      যদি (feature)
+	ফেরত *feature;
     }
 #endif
-    return get_feature (feature_index);
+    ফেরত get_feature (feature_সূচক);
   }
 
-  void feature_variation_collect_lookups (const hb_set_t *feature_indexes,
-					  const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-					  hb_set_t       *lookup_indexes /* OUT */) const
+  শূন্য feature_variation_collect_lookups (ধ্রুবক hb_set_t *feature_indexes,
+					  ধ্রুবক hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
+					  hb_set_t       *lookup_indexes /* OUT */) ধ্রুবক
   {
 #ifndef HB_NO_VAR
     get_feature_variations ().collect_lookups (feature_indexes, feature_record_cond_idx_map, lookup_indexes);
 #endif
   }
 
-  void collect_feature_variation_indices (hb_collect_variation_indices_context_t *c) const
+  শূন্য collect_feature_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক
   {
 #ifndef HB_NO_VAR
     get_feature_variations ().collect_variation_indices (c);
@@ -6567,48 +6567,48 @@ struct GSUBGPOS
   }
 
 #ifndef HB_NO_VAR
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  শূন্য collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) ধ্রুবক
   { get_feature_variations ().collect_feature_substitutes_with_variations (c); }
 #endif
 
   template <typename TLookup>
-  void closure_lookups (hb_face_t      *face,
-			const hb_set_t *glyphs,
-			hb_set_t       *lookup_indexes /* IN/OUT */) const
+  শূন্য closure_lookups (hb_face_t      *face,
+			ধ্রুবক hb_set_t *glyphs,
+			hb_set_t       *lookup_indexes /* IN/OUT */) ধ্রুবক
   {
     hb_set_t visited_lookups, inactive_lookups;
     hb_closure_lookups_context_t c (face, glyphs, &visited_lookups, &inactive_lookups);
 
     c.set_recurse_func (TLookup::template dispatch_recurse_func<hb_closure_lookups_context_t>);
 
-    for (unsigned lookup_index : *lookup_indexes)
-      reinterpret_cast<const TLookup &> (get_lookup (lookup_index)).closure_lookups (&c, lookup_index);
+    জন্য (unsigned lookup_সূচক : *lookup_indexes)
+      reinterpret_cast<ধ্রুবক TLookup &> (get_lookup (lookup_সূচক)).closure_lookups (&c, lookup_সূচক);
 
     hb_set_union (lookup_indexes, &visited_lookups);
     hb_set_subtract (lookup_indexes, &inactive_lookups);
   }
 
-  void prune_langsys (const hb_map_t *duplicate_feature_map,
-                      const hb_set_t *layout_scripts,
+  শূন্য prune_langsys (ধ্রুবক hb_map_t *duplicate_feature_map,
+                      ধ্রুবক hb_set_t *layout_scripts,
                       hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map,
-                      hb_set_t       *new_feature_indexes /* OUT */) const
+                      hb_set_t       *new_feature_indexes /* OUT */) ধ্রুবক
   {
-    hb_prune_langsys_context_t c (this, script_langsys_map, duplicate_feature_map, new_feature_indexes);
+    hb_prune_langsys_context_t c (এই, script_langsys_map, duplicate_feature_map, new_feature_indexes);
 
-    unsigned count = get_script_count ();
-    for (unsigned script_index = 0; script_index < count; script_index++)
+    unsigned গুনতি = get_script_গুনতি ();
+    জন্য (unsigned script_সূচক = 0; script_সূচক < গুনতি; script_সূচক++)
     {
-      const Tag& tag = get_script_tag (script_index);
-      if (!layout_scripts->has (tag)) continue;
-      const Script& s = get_script (script_index);
-      s.prune_langsys (&c, script_index);
+      ধ্রুবক Tag& tag = get_script_tag (script_সূচক);
+      যদি (!layout_scripts->has (tag)) চালু;
+      ধ্রুবক Script& s = get_script (script_সূচক);
+      s.prune_langsys (&c, script_সূচক);
     }
   }
 
-  void prune_features (const hb_map_t *lookup_indices, /* IN */
-		       const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map, /* IN */
-		       const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map, /* IN */
-		       hb_set_t       *feature_indices /* IN/OUT */) const
+  শূন্য prune_features (ধ্রুবক hb_map_t *lookup_indices, /* IN */
+		       ধ্রুবক hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map, /* IN */
+		       ধ্রুবক hb_hashmap_t<unsigned, ধ্রুবক Feature*> *feature_substitutes_map, /* IN */
+		       hb_set_t       *feature_indices /* IN/OUT */) ধ্রুবক
   {
 #ifndef HB_NO_VAR
     // This is the set of feature indices which have alternate versions defined
@@ -6616,34 +6616,34 @@ struct GSUBGPOS
     // set of lookup indices.
     hb_set_t alternate_feature_indices;
     get_feature_variations ().closure_features (lookup_indices, feature_record_cond_idx_map, &alternate_feature_indices);
-    if (unlikely (alternate_feature_indices.in_error()))
+    যদি (unlikely (alternate_feature_indices.in_error()))
     {
       feature_indices->err ();
-      return;
+      ফেরত;
     }
 #endif
 
-    for (unsigned i : hb_iter (feature_indices))
+    জন্য (unsigned i : hb_iter (feature_indices))
     {
       hb_tag_t tag =  get_feature_tag (i);
-      if (tag == HB_TAG ('p', 'r', 'e', 'f'))
+      যদি (tag == HB_TAG ('p', 'r', 'e', 'f'))
         // Note: Never ever drop feature 'pref', even if it's empty.
         // HarfBuzz chooses shaper for Khmer based on presence of this
         // feature.	See thread at:
 	// http://lists.freedesktop.org/archives/harfbuzz/2012-November/002660.html
-        continue;
+        চালু;
 
 
-      const Feature *f = &(get_feature (i));
-      const Feature** p = nullptr;
-      if (feature_substitutes_map->has (i, &p))
+      ধ্রুবক Feature *f = &(get_feature (i));
+      ধ্রুবক Feature** p = nullptr;
+      যদি (feature_substitutes_map->has (i, &p))
         f = *p;
 
-      if (!f->featureParams.is_null () &&
+      যদি (!f->featureParams.is_null () &&
           tag == HB_TAG ('s', 'i', 'z', 'e'))
-        continue;
+        চালু;
 
-      if (!f->intersects_lookup_indexes (lookup_indices)
+      যদি (!f->intersects_lookup_indexes (lookup_indices)
 #ifndef HB_NO_VAR
           && !alternate_feature_indices.has (i)
 #endif
@@ -6652,162 +6652,162 @@ struct GSUBGPOS
     }
   }
 
-  void collect_name_ids (const hb_map_t *feature_index_map,
+  শূন্য collect_name_ids (ধ্রুবক hb_map_t *feature_সূচক_map,
                          hb_set_t *nameids_to_retain, /* OUT */
-                         const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map,
-                         const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map HB_UNUSED,
-                         const hb_set_t *catch_all_features,
-                         bool all_axes_pinned HB_UNUSED) const
+                         ধ্রুবক hb_hashmap_t<unsigned, ধ্রুবক Feature*> *feature_substitutes_map,
+                         ধ্রুবক hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map HB_UNUSED,
+                         ধ্রুবক hb_set_t *catch_all_features,
+                         যৌক্তিক all_axes_pinned HB_UNUSED) ধ্রুবক
   {
-    unsigned count = get_feature_count ();
-    for (unsigned i = 0 ; i < count; i++)
+    unsigned গুনতি = get_feature_গুনতি ();
+    জন্য (unsigned i = 0 ; i < গুনতি; i++)
     {
-      if (!feature_index_map->has (i)) continue;
+      যদি (!feature_সূচক_map->has (i)) চালু;
       hb_tag_t tag = get_feature_tag (i);
-      const Feature *feature = &get_feature (i);
-      const Feature **substitute;
-      if (feature_substitutes_map->has (i, &substitute))
+      ধ্রুবক Feature *feature = &get_feature (i);
+      ধ্রুবক Feature **substitute;
+      যদি (feature_substitutes_map->has (i, &substitute))
       {
         feature = *substitute;
-        if (catch_all_features->has (i))
+        যদি (catch_all_features->has (i))
           get_feature (i).collect_name_ids (tag, nameids_to_retain);
       }
       feature->collect_name_ids (tag, nameids_to_retain);
     }
 #ifndef HB_NO_VAR
-    if (!all_axes_pinned)
-      get_feature_variations ().collect_name_ids (feature_index_map, feature_record_cond_idx_map,
-                                                  [this] (unsigned i) { return get_feature_tag (i); },
+    যদি (!all_axes_pinned)
+      get_feature_variations ().collect_name_ids (feature_সূচক_map, feature_record_cond_idx_map,
+                                                  [এই] (unsigned i) { ফেরত get_feature_tag (i); },
                                                   nameids_to_retain);
 #endif
   }
 
   template <typename T>
-  struct accelerator_t
+  কাঠামো accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      sc.lazy_some_gpos = true;
-      this->table = sc.reference_table<T> (face);
+      sc.lazy_some_gpos = সত্য;
+      এই->table = sc.reference_table<T> (face);
 
-      if (unlikely (this->table->is_blocklisted (this->table.get_blob (), face)))
+      যদি (unlikely (এই->table->is_blocklisted (এই->table.get_blob (), face)))
       {
-	hb_blob_destroy (this->table.get_blob ());
-	this->table = hb_blob_get_empty ();
+	hb_blob_destroy (এই->table.get_blob ());
+	এই->table = hb_blob_get_empty ();
       }
 
-      this->lookup_count = table->get_lookup_count ();
+      এই->lookup_গুনতি = table->get_lookup_গুনতি ();
 
-      this->accels = (hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *) hb_calloc (this->lookup_count, sizeof (*accels));
-      if (unlikely (!this->accels))
+      এই->accels = (hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *) hb_calloc (এই->lookup_গুনতি, আকার (*accels));
+      যদি (unlikely (!এই->accels))
       {
-	this->lookup_count = 0;
-	this->table.destroy ();
-	this->table = hb_blob_get_empty ();
+	এই->lookup_গুনতি = 0;
+	এই->table.destroy ();
+	এই->table = hb_blob_get_empty ();
       }
     }
     ~accelerator_t ()
     {
-      for (unsigned int i = 0; i < this->lookup_count; i++)
+      জন্য (unsigned পূর্ণসংখ্যা i = 0; i < এই->lookup_গুনতি; i++)
       {
-	auto *accel = this->accels[i].get_relaxed ();
-	if (accel)
+	auto *accel = এই->accels[i].get_relaxed ();
+	যদি (accel)
 	  accel->fini ();
 	hb_free (accel);
       }
-      hb_free (this->accels);
-      this->table.destroy ();
+      hb_free (এই->accels);
+      এই->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () ধ্রুবক { ফেরত table.get_blob (); }
 
-    hb_ot_layout_lookup_accelerator_t *get_accel (unsigned lookup_index) const
+    hb_ot_layout_lookup_accelerator_t *get_accel (unsigned lookup_সূচক) ধ্রুবক
     {
-      if (unlikely (lookup_index >= lookup_count)) return nullptr;
+      যদি (unlikely (lookup_সূচক >= lookup_গুনতি)) ফেরত nullptr;
 
     retry:
-      auto *accel = accels[lookup_index].get_acquire ();
-      if (unlikely (!accel))
+      auto *accel = accels[lookup_সূচক].get_acquire ();
+      যদি (unlikely (!accel))
       {
-	accel = hb_ot_layout_lookup_accelerator_t::create (table->get_lookup (lookup_index));
-	if (unlikely (!accel))
-	  return nullptr;
+	accel = hb_ot_layout_lookup_accelerator_t::create (table->get_lookup (lookup_সূচক));
+	যদি (unlikely (!accel))
+	  ফেরত nullptr;
 
-	if (unlikely (!accels[lookup_index].cmpexch (nullptr, accel)))
+	যদি (unlikely (!accels[lookup_সূচক].cmpexch (nullptr, accel)))
 	{
 	  accel->fini ();
 	  hb_free (accel);
-	  goto retry;
+	  যাও retry;
 	}
       }
 
-      return accel;
+      ফেরত accel;
     }
 
     hb_blob_ptr_t<T> table;
-    unsigned int lookup_count;
+    unsigned পূর্ণসংখ্যা lookup_গুনতি;
     hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *accels;
   };
 
-  protected:
+  সুরক্ষিত:
   template <typename TLookup>
-  const Offset16To<TLookupList<TLookup>>& typed_lookup_list_offset () const
-  { return reinterpret_cast<const Offset16To<TLookupList<TLookup>>&> (lookupList); }
+  ধ্রুবক Offset16To<TLookupList<TLookup>>& typed_lookup_list_offset () ধ্রুবক
+  { ফেরত reinterpret_cast<ধ্রুবক Offset16To<TLookupList<TLookup>>&> (lookupList); }
 
 #ifndef HB_NO_BEYOND_64K
   template <typename TLookup>
-  const Offset32To<TLookupList2<TLookup>>& typed_lookup_list2_offset () const
-  { return reinterpret_cast<const Offset32To<TLookupList2<TLookup>>&> (lookupList2); }
+  ধ্রুবক Offset32To<TLookupList2<TLookup>>& typed_lookup_list2_offset () ধ্রুবক
+  { ফেরত reinterpret_cast<ধ্রুবক Offset32To<TLookupList2<TLookup>>&> (lookupList2); }
 #endif
 
   template <typename TLookup>
-  const Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset () const
-  { return reinterpret_cast<const Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
+  ধ্রুবক Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset () ধ্রুবক
+  { ফেরত reinterpret_cast<ধ্রুবক Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
   template <typename TLookup>
   Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset ()
-  { return reinterpret_cast<Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
+  { ফেরত reinterpret_cast<Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
 
 #ifndef HB_NO_BEYOND_64K
   template <typename TLookup>
-  const Offset32To<TLookupOffsetList2<TLookup>>& subset_lookup_list2_offset () const
-  { return reinterpret_cast<const Offset32To<TLookupOffsetList2<TLookup>>&> (lookupList2); }
+  ধ্রুবক Offset32To<TLookupOffsetList2<TLookup>>& subset_lookup_list2_offset () ধ্রুবক
+  { ফেরত reinterpret_cast<ধ্রুবক Offset32To<TLookupOffsetList2<TLookup>>&> (lookupList2); }
 #endif
 
-  const Offset16To<RecordListOfFeature>& subset_feature_list_offset () const
-  { return reinterpret_cast<const Offset16To<RecordListOfFeature>&> (featureList); }
+  ধ্রুবক Offset16To<RecordListOfFeature>& subset_feature_list_offset () ধ্রুবক
+  { ফেরত reinterpret_cast<ধ্রুবক Offset16To<RecordListOfFeature>&> (featureList); }
   Offset16To<RecordListOfFeature>& subset_feature_list_offset ()
-  { return reinterpret_cast<Offset16To<RecordListOfFeature>&> (featureList); }
+  { ফেরত reinterpret_cast<Offset16To<RecordListOfFeature>&> (featureList); }
 
 #ifndef HB_NO_BEYOND_64K
-  const Offset32To<RecordListOfFeature>& subset_feature_list2_offset () const
-  { return reinterpret_cast<const Offset32To<RecordListOfFeature>&> (featureList2); }
+  ধ্রুবক Offset32To<RecordListOfFeature>& subset_feature_list2_offset () ধ্রুবক
+  { ফেরত reinterpret_cast<ধ্রুবক Offset32To<RecordListOfFeature>&> (featureList2); }
 #endif
 
-  const void* get_lookup_list_field_offset () const
+  ধ্রুবক শূন্য* get_lookup_list_field_offset () ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2) return &lookupList2;
+    যদি (version.to_int () >= 0x00010002u && lookupList2) ফেরত &lookupList2;
 #endif
-    return &lookupList;
+    ফেরত &lookupList;
   }
 
   template <typename OffsetOut, typename OffsetIn, typename Base, typename ...Ts>
-  static bool serialize_subset_offset (hb_subset_context_t *c,
+  স্থির যৌক্তিক serialize_subset_offset (hb_subset_context_t *c,
 				       OffsetOut& out,
-				       const OffsetIn& in,
-				       const Base *base,
+				       ধ্রুবক OffsetIn& in,
+				       ধ্রুবক Base *base,
 				       Ts&&... ds)
   {
     out = 0;
-    if (in.is_null ()) return false;
+    যদি (in.is_null ()) ফেরত মিথ্যা;
 
     auto *s = c->serializer;
     s->push ();
-    bool ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
-    if (ret) s->add_link (out, s->pop_pack ());
-    else s->pop_discard ();
-    return ret;
+    যৌক্তিক ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
+    যদি (ret) s->add_link (out, s->বের_করো_pack ());
+    অন্যথা s->বের_করো_discard ();
+    ফেরত ret;
   }
 
   FixedVersion<>version;	/* Version of the GSUB/GPOS table--initially set
@@ -6833,8 +6833,8 @@ struct GSUBGPOS
 		lookupList2;	/* 32-bit offset to LookupList2 table.
 				 * Introduced in version 0x00010002. */
 #endif
-  public:
-  DEFINE_SIZE_MIN (10);
+  সর্বজনীন:
+  DEFINE_আকার_MIN (10);
 };
 
 

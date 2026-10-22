@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_PARSER_HH
-#define HB_NUMBER_PARSER_HH
+#ifndef HB_সংখ্যা_PARSER_HH
+#define HB_সংখ্যা_PARSER_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 // Handles 0..308; anything larger overflows double and returns HUGE_VAL.
-static inline double
+স্থির অন্তঃরেখ দ্বিগুণ
 _pow10 (unsigned exponent)
 {
   // DBL_MAX is between 10^308 and 10^309
-  if (unlikely (exponent > 308)) return HUGE_VAL;
+  যদি (unlikely (exponent > 308)) ফেরত HUGE_VAL;
 
-  static const double _powers_of_10[] =
+  স্থির ধ্রুবক দ্বিগুণ _powers_of_10[] =
   {
     1.0e+256,
     1.0e+128,
@@ -47,43 +47,43 @@ _pow10 (unsigned exponent)
     100.,
     10.
   };
-  unsigned mask = 1 << (ARRAY_LENGTH (_powers_of_10) - 1);
-  double result = 1;
-  for (const double *power = _powers_of_10; mask; ++power, mask >>= 1)
-    if (exponent & mask) result *= *power;
-  return result;
+  unsigned mask = 1 << (ARRAY_দৈর্ঘ্য (_powers_of_10) - 1);
+  দ্বিগুণ ফলাফল = 1;
+  জন্য (ধ্রুবক দ্বিগুণ *power = _powers_of_10; mask; ++power, mask >>= 1)
+    যদি (exponent & mask) ফলাফল *= *power;
+  ফেরত ফলাফল;
 }
 
-struct _hb_fraction
+কাঠামো _hb_fraction
 {
-  void add (int digit)
+  শূন্য add (পূর্ণসংখ্যা digit)
   {
-    if (likely (fraction <= MAX_FRACT / 10))
+    যদি (likely (fraction <= MAX_FRACT / 10))
     {
       fraction = fraction * 10. + digit;
-      ++count;
+      ++গুনতি;
     }
-    else if (drop < 0) drop = digit;
-    else if (digit != 0) sticky = true;
+    অন্যথা যদি (drop < 0) drop = digit;
+    অন্যথা যদি (digit != 0) sticky = সত্য;
   }
 
-  double get_value () const
+  দ্বিগুণ get_মান () ধ্রুবক
   {
-    double result = fraction;
+    দ্বিগুণ ফলাফল = fraction;
     // Round-to-nearest-even using the recorded tail
-    if (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
-      result += 1;
-    return result / _pow10 (count);
+    যদি (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
+      ফলাফল += 1;
+    ফেরত ফলাফল / _pow10 (গুনতি);
   }
 
-  bool is_empty () const { return !count; }
+  যৌক্তিক is_empty () ধ্রুবক { ফেরত !গুনতি; }
 
-private:
-  unsigned count = 0;
-  double fraction = 0;
-  int drop = -1; // drop is the first digit we couldn't accumulate
-  bool sticky = false; // sticky is set when any later digit was nonzero.
-  static constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
+ব্যক্তিগত:
+  unsigned গুনতি = 0;
+  দ্বিগুণ fraction = 0;
+  পূর্ণসংখ্যা drop = -1; // drop is the first digit we couldn't accumulate
+  যৌক্তিক sticky = মিথ্যা; // sticky is set when any later digit was nonzero.
+  স্থির constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
 };
 
 // A variant of strtod that also gets end of buffer in its second argument.
@@ -99,103 +99,103 @@ private:
 // On success, *end_ptr is set just past the longest well-formed prefix.
 // On no match, *end_ptr is left at the original p (matching strtod's
 // "no conversion performed" behavior, so the caller's pointer is unchanged).
-static inline double
-hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
+স্থির অন্তঃরেখ দ্বিগুণ
+hb_strtod (ধ্রুবক অক্ষর *p, ধ্রুবক অক্ষর **end_ptr /* IN/OUT */)
 {
-  const char *p_original = p;
-  const char *pe = *end_ptr;
+  ধ্রুবক অক্ষর *p_original = p;
+  ধ্রুবক অক্ষর *pe = *end_ptr;
 
   // Skip leading whitespace
-  while (p < pe && ISSPACE (*p))
+  যখন (p < pe && ISSPACE (*p))
     p++;
 
   // Sign
-  bool neg = false;
-  if (p < pe && (*p == '+' || *p == '-'))
+  যৌক্তিক neg = মিথ্যা;
+  যদি (p < pe && (*p == '+' || *p == '-'))
   {
     neg = (*p == '-');
     p++;
   }
 
-  double value = 0;
+  দ্বিগুণ value = 0;
 
   // Integer and fraction
   {
-    const char *int_start = p;
-    while (p < pe && '0' <= *p && *p <= '9')
+    ধ্রুবক অক্ষর *int_start = p;
+    যখন (p < pe && '0' <= *p && *p <= '9')
     {
       value = value * 10. + (*p - '0');
       p++;
     }
-    bool has_int = p > int_start;
+    যৌক্তিক has_int = p > int_start;
 
     _hb_fraction frac;
-    if (p < pe && *p == '.')
+    যদি (p < pe && *p == '.')
     {
       p++;
-      while (p < pe && '0' <= *p && *p <= '9')
+      যখন (p < pe && '0' <= *p && *p <= '9')
       {
 	frac.add (*p - '0');
 	p++;
       }
     }
 
-    if (!frac.is_empty ()) value += frac.get_value ();
-    else if (!has_int)
+    যদি (!frac.is_empty ()) value += frac.get_মান ();
+    অন্যথা যদি (!has_int)
     {
       // Nothing could be parsed
       *end_ptr = p_original;
-      return .0;
+      ফেরত .0;
     }
   }
 
   // Exponent
   unsigned exp = 0;
-  bool exp_neg = false, exp_overflow = false;
-  if (p < pe && (*p == 'e' || *p == 'E'))
+  যৌক্তিক exp_neg = মিথ্যা, exp_overflow = মিথ্যা;
+  যদি (p < pe && (*p == 'e' || *p == 'E'))
   {
     constexpr unsigned MAX_EXP = 0x7FFu; /* 2^11-1 */
-    const char *before_exponent = p;
+    ধ্রুবক অক্ষর *before_exponent = p;
     p++;
-    if (p < pe && (*p == '+' || *p == '-'))
+    যদি (p < pe && (*p == '+' || *p == '-'))
     {
       exp_neg = (*p == '-');
       p++;
     }
 
-    if (p < pe && '0' <= *p && *p <= '9')
-      do
+    যদি (p < pe && '0' <= *p && *p <= '9')
+      করো
       {
-	if (likely (exp * 10 + (*p - '0') <= MAX_EXP))
+	যদি (likely (exp * 10 + (*p - '0') <= MAX_EXP))
 	  exp = exp * 10 + (*p - '0');
-	else
-	  exp_overflow = true;
+	অন্যথা
+	  exp_overflow = সত্য;
 	p++;
-      } while (p < pe && '0' <= *p && *p <= '9');
-    else
+      } যখন (p < pe && '0' <= *p && *p <= '9');
+    অন্যথা
       p = before_exponent; // rewind
   }
   *end_ptr = p;
 
-  if (neg) value *= -1.;
+  যদি (neg) value *= -1.;
 
-  if (unlikely (exp_overflow))
+  যদি (unlikely (exp_overflow))
   {
-    if (value == 0) return value;
-    if (exp_neg)    return neg ? -.0 : .0;
-    else            return neg ? -DBL_MAX : DBL_MAX;
+    যদি (value == 0) ফেরত value;
+    যদি (exp_neg)    ফেরত neg ? -.0 : .0;
+    অন্যথা            ফেরত neg ? -DBL_MAX : DBL_MAX;
   }
 
-  if (exp)
+  যদি (exp)
   {
-    if (exp_neg)
+    যদি (exp_neg)
     {
       // 10^308 is the largest finite power of ten, so two reductions of 308 suffice.
-      if (unlikely (exp > 308))
+      যদি (unlikely (exp > 308))
       {
 	value /= 1e308;
 	exp -= 308;
-	if (unlikely (exp > 308))
+	যদি (unlikely (exp > 308))
 	{
 	  value /= 1e308;
 	  exp -= 308;
@@ -203,11 +203,11 @@ hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
       }
       value /= _pow10 (exp);
     }
-    else
+    অন্যথা
       value *= _pow10 (exp);
   }
 
-  return value;
+  ফেরত value;
 }
 
 #endif /* HB_NUMBER_PARSER_HH */

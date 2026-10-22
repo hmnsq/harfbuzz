@@ -27,174 +27,174 @@
 #ifndef GRAPH_SERIALIZE_HH
 #define GRAPH_SERIALIZE_HH
 
-#include "graph-result.hh"
+#অন্তর্ভাব "graph-result.hh"
 
-namespace graph {
+নামাকাশ graph {
 
-struct overflow_record_t
+কাঠামো overflow_record_t
 {
   unsigned parent;
   unsigned child;
 
-  bool operator != (const overflow_record_t o) const
-  { return !(*this == o); }
+  যৌক্তিক operator != (ধ্রুবক overflow_record_t o) ধ্রুবক
+  { ফেরত !(*এই == o); }
 
-  inline bool operator == (const overflow_record_t& o) const
+  অন্তঃরেখ যৌক্তিক operator == (ধ্রুবক overflow_record_t& o) ধ্রুবক
   {
-    return parent == o.parent &&
+    ফেরত parent == o.parent &&
         child == o.child;
   }
 
-  inline uint32_t hash () const
+  অন্তঃরেখ uint32_t hash () ধ্রুবক
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (parent);
     current = current * 31 + hb_hash (child);
-    return current;
+    ফেরত current;
   }
 };
 
-inline
+অন্তঃরেখ
 int64_t compute_offset (
-    const graph_t& graph,
+    ধ্রুবক graph_t& graph,
     unsigned parent_idx,
-    const hb_serialize_context_t::object_t::link_t& link)
+    ধ্রুবক hb_serialize_context_t::object_t::link_t& link)
 {
-  const auto& parent = graph.vertices_[parent_idx];
-  const auto& child = graph.vertices_[link.objidx];
+  ধ্রুবক auto& parent = graph.vertices_[parent_idx];
+  ধ্রুবক auto& child = graph.vertices_[link.objidx];
   int64_t offset = 0;
-  switch ((hb_serialize_context_t::whence_t) link.whence) {
-    case hb_serialize_context_t::whence_t::Head:
-      offset = child.start - parent.start; break;
-    case hb_serialize_context_t::whence_t::Tail:
-      offset = child.start - parent.end; break;
-    case hb_serialize_context_t::whence_t::Absolute:
-      offset = child.start; break;
+  নির্বাচন ((hb_serialize_context_t::whence_t) link.whence) {
+    ক্ষেত্র hb_serialize_context_t::whence_t::শীর্ষ:
+      offset = child.start - parent.start; বিরতি;
+    ক্ষেত্র hb_serialize_context_t::whence_t::লেজ_2:
+      offset = child.start - parent.end; বিরতি;
+    ক্ষেত্র hb_serialize_context_t::whence_t::Absolute:
+      offset = child.start; বিরতি;
   }
 
-  assert (offset >= link.bias);
+  প্রতিজ্ঞা (offset >= link.bias);
   offset -= link.bias;
-  return offset;
+  ফেরত offset;
 }
 
-inline
-bool is_valid_offset (int64_t offset,
-                      const hb_serialize_context_t::object_t::link_t& link)
+অন্তঃরেখ
+যৌক্তিক is_valid_offset (int64_t offset,
+                      ধ্রুবক hb_serialize_context_t::object_t::link_t& link)
 {
-  if (unlikely (!link.width))
+  যদি (unlikely (!link.width))
     // Virtual links can't overflow.
-    return link.is_signed || offset >= 0;
+    ফেরত link.is_signed || offset >= 0;
 
-  if (link.is_signed)
+  যদি (link.is_signed)
   {
-    if (link.width == 4)
-      return offset >= -((int64_t) 1 << 31) && offset < ((int64_t) 1 << 31);
-    else
-      return offset >= -(1 << 15) && offset < (1 << 15);
+    যদি (link.width == 4)
+      ফেরত offset >= -((int64_t) 1 << 31) && offset < ((int64_t) 1 << 31);
+    অন্যথা
+      ফেরত offset >= -(1 << 15) && offset < (1 << 15);
   }
-  else
+  অন্যথা
   {
-    if (link.width == 4)
-      return offset >= 0 && offset < ((int64_t) 1 << 32);
-    else if (link.width == 3)
-      return offset >= 0 && offset < ((int32_t) 1 << 24);
-    else
-      return offset >= 0 && offset < (1 << 16);
+    যদি (link.width == 4)
+      ফেরত offset >= 0 && offset < ((int64_t) 1 << 32);
+    অন্যথা যদি (link.width == 3)
+      ফেরত offset >= 0 && offset < ((int32_t) 1 << 24);
+    অন্যথা
+      ফেরত offset >= 0 && offset < (1 << 16);
   }
 }
 
 /*
  * Will any offsets overflow on graph when it's serialized?
  */
-inline graph_result_t<bool>
+অন্তঃরেখ graph_ফলাফল_t<যৌক্তিক>
 will_overflow (graph_t& graph,
                hb_vector_t<overflow_record_t>* overflows = nullptr)
 {
-  if (overflows) overflows->clear ();
+  যদি (overflows) overflows->clear ();
   graph.update_positions ();
 
-  hb_hashmap_t<overflow_record_t, bool> record_set;
-  const auto& vertices = graph.vertices_;
-  for (unsigned parent_idx : graph.ordering_)
+  hb_hashmap_t<overflow_record_t, যৌক্তিক> record_set;
+  ধ্রুবক auto& vertices = graph.vertices_;
+  জন্য (unsigned parent_idx : graph.ordering_)
   {
     // Don't need to check virtual links for overflow
-    for (const auto& link : vertices.arrayZ[parent_idx].obj ().real_links)
+    জন্য (ধ্রুবক auto& link : vertices.arrayZ[parent_idx].obj ().real_links)
     {
       int64_t offset = compute_offset (graph, parent_idx, link);
-      if (likely (is_valid_offset (offset, link)))
-        continue;
+      যদি (likely (is_valid_offset (offset, link)))
+        চালু;
 
-      if (!overflows) return Ok(true);
+      যদি (!overflows) ফেরত Ok(সত্য);
 
       overflow_record_t r;
       r.parent = parent_idx;
       r.child = link.objidx;
-      if (record_set.has(r)) continue; // don't keep duplicate overflows.
+      যদি (record_set.has(r)) চালু; // don't keep duplicate overflows.
 
       overflows->push (r);
-      record_set.set (r, true);
+      record_set.set (r, সত্য);
     }
   }
 
-  TRY (graph_result_t<void>::from (record_set, ALLOCATION_FAILURE));
-  if (overflows)
-    TRY (graph_result_t<void>::from (*overflows, ALLOCATION_FAILURE));
+  TRY (graph_ফলাফল_t<শূন্য>::from (record_set, ALLOCATION_FAILURE));
+  যদি (overflows)
+    TRY (graph_ফলাফল_t<শূন্য>::from (*overflows, ALLOCATION_FAILURE));
 
-  return Ok((bool) (overflows && overflows->length));
+  ফেরত Ok((যৌক্তিক) (overflows && overflows->দৈর্ঘ্য));
 }
 
-inline
-void print_overflows (graph_t& graph,
-                      const hb_vector_t<overflow_record_t>& overflows)
+অন্তঃরেখ
+শূন্য print_overflows (graph_t& graph,
+                      ধ্রুবক hb_vector_t<overflow_record_t>& overflows)
 {
-  if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
+  যদি (!DEBUG_ENABLED(SUBSET_REPACK)) ফেরত;
 
   auto r = graph.update_parents ();
-  if (r.is_err()) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to print overflows due to error updating parent links: %s",
+  যদি (r.is_err()) {
+    DEBUG_বার্তা (SUBSET_REPACK, nullptr, "Unable to print overflows due to error updating parent links: %s",
       to_string(r.error()));
-    return;
+    ফেরত;
   }
 
-  int limit = 10;
-  for (const auto& o : overflows)
+  পূর্ণসংখ্যা limit = 10;
+  জন্য (ধ্রুবক auto& o : overflows)
   {
-    if (!limit--) break;
-    const auto& parent = graph.vertices_[o.parent];
-    const auto& child = graph.vertices_[o.child];
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    যদি (!limit--) বিরতি;
+    ধ্রুবক auto& parent = graph.vertices_[o.parent];
+    ধ্রুবক auto& child = graph.vertices_[o.child];
+    DEBUG_বার্তা (SUBSET_REPACK, nullptr,
                "  overflow from "
                "%4u (%4u in, %4u out, space %2u) => "
                "%4u (%4u in, %4u out, space %2u)",
                o.parent,
                parent.incoming_edges (),
-               parent.obj ().real_links.length + parent.obj ().virtual_links.length,
+               parent.obj ().real_links.দৈর্ঘ্য + parent.obj ().virtual_links.দৈর্ঘ্য,
                graph.space_for (o.parent),
                o.child,
                child.incoming_edges (),
-               child.obj ().real_links.length + child.obj ().virtual_links.length,
+               child.obj ().real_links.দৈর্ঘ্য + child.obj ().virtual_links.দৈর্ঘ্য,
                graph.space_for (o.child));
   }
-  if (overflows.length > 10) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  ... plus %u more overflows.", overflows.length - 10);
+  যদি (overflows.দৈর্ঘ্য > 10) {
+    DEBUG_বার্তা (SUBSET_REPACK, nullptr, "  ... plus %u more overflows.", overflows.দৈর্ঘ্য - 10);
   }
 }
 
-template <typename O> inline void
-serialize_link_of_type (const hb_serialize_context_t::object_t::link_t& link,
-                        char* head,
-                        unsigned size,
-                        const hb_vector_t<unsigned>& id_map,
+template <typename O> অন্তঃরেখ শূন্য
+serialize_link_of_type (ধ্রুবক hb_serialize_context_t::object_t::link_t& link,
+                        অক্ষর* শীর্ষ_2,
+                        unsigned আকার_2,
+                        ধ্রুবক hb_vector_t<unsigned>& id_map,
                         hb_serialize_context_t* c)
 {
   // A link must never write outside the bounds of its parent object.
-  if (unlikely (link.position + link.width > size))
+  যদি (unlikely (link.position + link.width > আকার_2))
   {
     c->err (HB_SERIALIZE_ERROR_OTHER);
-    return;
+    ফেরত;
   }
 
-  OT::Offset<O>* offset = reinterpret_cast<OT::Offset<O>*> (head + link.position);
+  OT::Offset<O>* offset = reinterpret_cast<OT::Offset<O>*> (শীর্ষ_2 + link.position);
   *offset = 0;
   c->add_link (*offset,
                id_map[link.objidx],
@@ -202,109 +202,109 @@ serialize_link_of_type (const hb_serialize_context_t::object_t::link_t& link,
                link.bias);
 }
 
-inline
-void serialize_link (const hb_serialize_context_t::object_t::link_t& link,
-                     char* head,
-                     unsigned size,
-                     const hb_vector_t<unsigned>& id_map,
+অন্তঃরেখ
+শূন্য serialize_link (ধ্রুবক hb_serialize_context_t::object_t::link_t& link,
+                     অক্ষর* শীর্ষ_2,
+                     unsigned আকার_2,
+                     ধ্রুবক hb_vector_t<unsigned>& id_map,
                      hb_serialize_context_t* c)
 {
-  switch (link.width)
+  নির্বাচন (link.width)
   {
-    case 0:
+    ক্ষেত্র 0:
       // Virtual links aren't serialized.
-      return;
-    case 4:
-      if (link.is_signed)
+      ফেরত;
+    ক্ষেত্র 4:
+      যদি (link.is_signed)
       {
-        serialize_link_of_type<OT::HBINT32> (link, head, size, id_map, c);
-      } else {
-        serialize_link_of_type<OT::HBUINT32> (link, head, size, id_map, c);
+        serialize_link_of_type<OT::HBINT32> (link, শীর্ষ_2, আকার_2, id_map, c);
+      } অন্যথা {
+        serialize_link_of_type<OT::HBUINT32> (link, শীর্ষ_2, আকার_2, id_map, c);
       }
-      return;
-    case 2:
-      if (link.is_signed)
+      ফেরত;
+    ক্ষেত্র 2:
+      যদি (link.is_signed)
       {
-        serialize_link_of_type<OT::HBINT16> (link, head, size, id_map, c);
-      } else {
-        serialize_link_of_type<OT::HBUINT16> (link, head, size, id_map, c);
+        serialize_link_of_type<OT::HBINT16> (link, শীর্ষ_2, আকার_2, id_map, c);
+      } অন্যথা {
+        serialize_link_of_type<OT::HBUINT16> (link, শীর্ষ_2, আকার_2, id_map, c);
       }
-      return;
-    case 3:
-      serialize_link_of_type<OT::HBUINT24> (link, head, size, id_map, c);
-      return;
-    default:
+      ফেরত;
+    ক্ষেত্র 3:
+      serialize_link_of_type<OT::HBUINT24> (link, শীর্ষ_2, আকার_2, id_map, c);
+      ফেরত;
+    পূর্বনির্ধারিত:
       // Unexpected link width.
-      assert (0);
+      প্রতিজ্ঞা (0);
   }
 }
 
 /*
  * serialize graph into the provided serialization buffer.
  */
-inline graph_result_t<hb_blob_t*> serialize (const graph_t& graph)
+অন্তঃরেখ graph_ফলাফল_t<hb_blob_t*> serialize (ধ্রুবক graph_t& graph)
 {
-  hb_vector_t<char> buffer;
-  size_t size = graph.total_size_in_bytes ();
+  hb_vector_t<অক্ষর> বাফার;
+  size_t আকার_2 = graph.যোগ_আকার_in_bytes ();
 
-  if (!size) return Ok(hb_blob_get_empty ());
+  যদি (!আকার_2) ফেরত Ok(hb_blob_get_empty ());
 
-  if (unlikely (!buffer.alloc (size))) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to allocate output buffer.");
-    return Err(ALLOCATION_FAILURE);
+  যদি (unlikely (!বাফার.alloc (আকার_2))) {
+    DEBUG_বার্তা (SUBSET_REPACK, nullptr, "Unable to allocate output buffer.");
+    ফেরত Err(ALLOCATION_FAILURE);
   }
-  hb_serialize_context_t c((void *) buffer, size);
+  hb_serialize_context_t c((শূন্য *) বাফার, আকার_2);
 
-  c.start_serialize<void> ();
-  const auto& vertices = graph.vertices_;
+  c.start_serialize<শূন্য> ();
+  ধ্রুবক auto& vertices = graph.vertices_;
 
   // Objects are placed in the serializer in reverse order since children need
   // to be inserted before their parents.
 
   // Maps from our obj id's to the id's used during this serialization.
   hb_vector_t<unsigned> id_map;
-  if (unlikely (!id_map.resize(graph.ordering_.length))) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to allocate id_map buffer.");
-    return Err(ALLOCATION_FAILURE);
+  যদি (unlikely (!id_map.resize(graph.ordering_.দৈর্ঘ্য))) {
+    DEBUG_বার্তা (SUBSET_REPACK, nullptr, "Unable to allocate id_map buffer.");
+    ফেরত Err(ALLOCATION_FAILURE);
   }
 
-  for (int pos = graph.ordering_.length - 1; pos >= 0; pos--) {
+  জন্য (পূর্ণসংখ্যা pos = graph.ordering_.দৈর্ঘ্য - 1; pos >= 0; pos--) {
     unsigned i = graph.ordering_[pos];
     c.push ();
 
     auto& v = vertices[i];
 
-    size_t size = v.table_size ();
+    size_t আকার_2 = v.table_আকার ();
 
-    char* start = c.allocate_size <char> (size);
-    if (unlikely (!start)) {
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Buffer out of space.");
-      return Err(ALLOCATION_FAILURE);
+    অক্ষর* start = c.allocate_আকার <অক্ষর> (আকার_2);
+    যদি (unlikely (!start)) {
+      DEBUG_বার্তা (SUBSET_REPACK, nullptr, "Buffer out of space.");
+      ফেরত Err(ALLOCATION_FAILURE);
     }
 
-    hb_memcpy (start, v.obj ().head, size);
+    hb_memcpy (start, v.obj ().শীর্ষ_2, আকার_2);
 
     // Only real links needs to be serialized.
-    for (const auto& link : v.obj ().real_links)
-      serialize_link (link, start, size, id_map, &c);
+    জন্য (ধ্রুবক auto& link : v.obj ().real_links)
+      serialize_link (link, start, আকার_2, id_map, &c);
 
     // All duplications are already encoded in the graph, so don't
     // enable sharing during packing.
-    id_map[i] = c.pop_pack (false);
+    id_map[i] = c.বের_করো_pack (মিথ্যা);
   }
   c.end_serialize ();
 
-  if (unlikely (c.in_error ())) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Error during serialization. Err flag: %d",
+  যদি (unlikely (c.in_error ())) {
+    DEBUG_বার্তা (SUBSET_REPACK, nullptr, "Error during serialization. Err flag: %d",
                c.errors);
-    if (c.errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)
-      return Err(OVERFLOW_RESOLUTION_FAILED);
-    return Err(ALLOCATION_FAILURE);
+    যদি (c.errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)
+      ফেরত Err(OVERFLOW_RESOLUTION_FAILED);
+    ফেরত Err(ALLOCATION_FAILURE);
   }
 
   auto* blob = c.copy_blob ();
-  if (unlikely (!blob)) return Err(ALLOCATION_FAILURE);
-  return Ok(blob);
+  যদি (unlikely (!blob)) ফেরত Err(ALLOCATION_FAILURE);
+  ফেরত Ok(blob);
 }
 
 } // namespace graph

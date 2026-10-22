@@ -29,52 +29,52 @@
 #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
 #define OT_LAYOUT_COMMON_RANGERECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ Common {
 
-template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+template <typename Types, typename মান = HBUINT16>
+কাঠামো RangeRecord
 {
   typename Types::HBGlyphID     first;          /* First GlyphID in the range */
   typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  মান                         value;          /*মান*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_আকার_STATIC (2 * Types::আকার_2 + মান::static_আকার);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  পূর্ণসংখ্যা cmp (hb_codepoint_t g) ধ্রুবক
+  { ফেরত g < first ? -1 : g <= last ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
-    const RangeRecord *a = (const RangeRecord *) pa;
-    const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+  HB_INTERNAL স্থির পূর্ণসংখ্যা cmp_range (ধ্রুবক শূন্য *pa, ধ্রুবক শূন্য *pb) {
+    ধ্রুবক RangeRecord *a = (ধ্রুবক RangeRecord *) pa;
+    ধ্রুবক RangeRecord *b = (ধ্রুবক RangeRecord *) pb;
+    যদি (a->first < b->first) ফেরত -1;
+    যদি (a->first > b->first) ফেরত +1;
+    যদি (a->last < b->last) ফেরত -1;
+    যদি (a->last > b->last) ফেরত +1;
+    যদি (a->value < b->value) ফেরত -1;
+    যদি (a->value > b->value) ফেরত +1;
+    ফেরত 0;
   }
 
-  unsigned get_population () const
+  unsigned get_population () ধ্রুবক
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    যদি (unlikely (last < first)) ফেরত 0;
+    ফেরত (last - first + 1);
   }
 
-  bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  যৌক্তিক intersects (ধ্রুবক hb_set_t &glyphs) ধ্রুবক
+  { ফেরত glyphs.intersects (first, last); }
 
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  যৌক্তিক collect_coverage (set_t *glyphs) ধ্রুবক
+  { ফেরত glyphs->add_range (first, last); }
 };
 
 }
@@ -85,11 +85,11 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+বাহ্যিক HB_INTERNAL ধ্রুবক unsigned অক্ষর _hb_Null_OT_RangeRecord[9];
+template <typename Spec, typename মান>
+কাঠামো Null<OT::Layout::Common::RangeRecord<Spec, মান>> {
+  স্থির OT::Layout::Common::RangeRecord<Spec, মান> ধ্রুবক & get_null () {
+    ফেরত *reinterpret_cast<ধ্রুবক OT::Layout::Common::RangeRecord<Spec, মান> *> (_hb_Null_OT_RangeRecord);
   }
 };
 

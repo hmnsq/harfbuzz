@@ -2,122 +2,122 @@
 #define OT_GLYF_GLYF_HELPERS_HH
 
 
-#include "../../hb-open-type.hh"
-#include "../../hb-subset-plan.hh"
+#অন্তর্ভাব "../../hb-open-type.hh"
+#অন্তর্ভাব "../../hb-subset-plan.hh"
 
-#include "loca.hh"
+#অন্তর্ভাব "loca.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+নামাকাশ OT {
+নামাকাশ glyf_impl {
 
 
 template<typename IteratorIn, typename TypeOut,
-	 hb_requires (hb_is_source_of (IteratorIn, unsigned int))>
-static void
+	 hb_requires (hb_is_source_of (IteratorIn, unsigned পূর্ণসংখ্যা))>
+স্থির শূন্য
 _write_loca (IteratorIn&& it,
-	     const hb_sorted_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-	     bool short_offsets,
+	     ধ্রুবক hb_sorted_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
+	     যৌক্তিক short_offsets,
 	     TypeOut *dest,
-	     unsigned num_offsets)
+	     unsigned অঙ্ক_offsets)
 {
-  unsigned right_shift = short_offsets ? 1 : 0;
+  unsigned ডান_shift = short_offsets ? 1 : 0;
   unsigned offset = 0;
   TypeOut value;
   value = 0;
   *dest++ = value;
   hb_codepoint_t last = 0;
-  for (auto _ : new_to_old_gid_list)
+  জন্য (auto _ : new_to_old_gid_list)
   {
     hb_codepoint_t gid = _.first;
-    for (; last < gid; last++)
+    জন্য (; last < gid; last++)
     {
-      DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+      DEBUG_বার্তা (SUBSET, nullptr, "loca entry empty offset %u", offset);
       *dest++ = value;
     }
 
-    unsigned padded_size = *it++;
-    offset += padded_size;
-    DEBUG_MSG (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_size);
-    value = offset >> right_shift;
+    unsigned padded_আকার = *it++;
+    offset += padded_আকার;
+    DEBUG_বার্তা (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_আকার);
+    value = offset >> ডান_shift;
     *dest++ = value;
 
     last++; // Skip over gid
   }
-  unsigned num_glyphs = num_offsets - 1;
-  for (; last < num_glyphs; last++)
+  unsigned অঙ্ক_glyphs = অঙ্ক_offsets - 1;
+  জন্য (; last < অঙ্ক_glyphs; last++)
   {
-    DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+    DEBUG_বার্তা (SUBSET, nullptr, "loca entry empty offset %u", offset);
     *dest++ = value;
   }
 }
 
-static bool
-_add_head_and_set_loca_version (hb_subset_plan_t *plan, bool use_short_loca)
+স্থির যৌক্তিক
+add_শীর্ষ_and_set_loca_version (hb_subset_plan_t *plan, যৌক্তিক use_short_loca)
 {
-  hb_blob_t *head_blob = hb_sanitize_context_t ().reference_table<head> (plan->source);
-  hb_blob_t *head_prime_blob = hb_blob_copy_writable_or_fail (head_blob);
-  hb_blob_destroy (head_blob);
+  hb_blob_t *শীর্ষ_blob = hb_sanitize_context_t ().reference_table<শীর্ষ_2> (plan->source);
+  hb_blob_t *শীর্ষ_মৌলিক_blob = hb_blob_copy_writable_or_fail (শীর্ষ_blob);
+  hb_blob_destroy (শীর্ষ_blob);
 
-  if (unlikely (!head_prime_blob))
-    return false;
+  যদি (unlikely (!শীর্ষ_মৌলিক_blob))
+    ফেরত মিথ্যা;
 
-  head *head_prime = (head *) hb_blob_get_data_writable (head_prime_blob, nullptr);
-  head_prime->indexToLocFormat = use_short_loca ? 0 : 1;
-  if (plan->normalized_coords)
+  শীর্ষ_2 *শীর্ষ_মৌলিক = (শীর্ষ_2 *) hb_blob_get_তথ্য_writable (শীর্ষ_মৌলিক_blob, nullptr);
+  শীর্ষ_মৌলিক->সূচক_To_Loc_Format = use_short_loca ? 0 : 1;
+  যদি (plan->normalized_coords)
   {
-    head_prime->xMin = plan->head_maxp_info.xMin;
-    head_prime->xMax = plan->head_maxp_info.xMax;
-    head_prime->yMin = plan->head_maxp_info.yMin;
-    head_prime->yMax = plan->head_maxp_info.yMax;
+    শীর্ষ_মৌলিক->xMin = plan->শীর্ষ_maxp_info.xMin;
+    শীর্ষ_মৌলিক->xMax = plan->শীর্ষ_maxp_info.xMax;
+    শীর্ষ_মৌলিক->yMin = plan->শীর্ষ_maxp_info.yMin;
+    শীর্ষ_মৌলিক->yMax = plan->শীর্ষ_maxp_info.yMax;
 
-    unsigned orig_flag = head_prime->flags;
-    if (plan->head_maxp_info.allXMinIsLsb)
+    unsigned orig_flag = শীর্ষ_মৌলিক->flags;
+    যদি (plan->শীর্ষ_maxp_info.allXMinIsLsb)
       orig_flag |= 1 << 1;
-    else
+    অন্যথা
       orig_flag &= ~(1 << 1);
-    head_prime->flags = orig_flag;
+    শীর্ষ_মৌলিক->flags = orig_flag;
   }
-  bool success = plan->add_table (HB_OT_TAG_head, head_prime_blob);
+  যৌক্তিক success = plan->add_table (HB_OT_TAG_শীর্ষ, শীর্ষ_মৌলিক_blob);
 
-  hb_blob_destroy (head_prime_blob);
-  return success;
+  hb_blob_destroy (শীর্ষ_মৌলিক_blob);
+  ফেরত success;
 }
 
 template<typename Iterator,
-	 hb_requires (hb_is_source_of (Iterator, unsigned int))>
-static bool
-_add_loca_and_head (hb_subset_context_t *c,
+	 hb_requires (hb_is_source_of (Iterator, unsigned পূর্ণসংখ্যা))>
+স্থির যৌক্তিক
+add_loca_and_শীর্ষ (hb_subset_context_t *c,
 		    Iterator padded_offsets,
-		    bool use_short_loca,
-		    bool extended)
+		    যৌক্তিক use_short_loca,
+		    যৌক্তিক extended)
 {
-  unsigned num_offsets = c->plan->num_output_glyphs () + 1;
-  unsigned entry_size = use_short_loca ? 2 : 4;
+  unsigned অঙ্ক_offsets = c->plan->অঙ্ক_output_glyphs () + 1;
+  unsigned entry_আকার = use_short_loca ? 2 : 4;
 
-  char *loca_prime_data = (char *) hb_malloc2 (num_offsets, entry_size);
+  অক্ষর *loca_মৌলিক_তথ্য = (অক্ষর *) hb_malloc2 (অঙ্ক_offsets, entry_আকার);
 
-  if (unlikely (!loca_prime_data)) return false;
+  যদি (unlikely (!loca_মৌলিক_তথ্য)) ফেরত মিথ্যা;
 
-  DEBUG_MSG (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
-	     entry_size, num_offsets, entry_size * num_offsets);
+  DEBUG_বার্তা (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
+	     entry_আকার, অঙ্ক_offsets, entry_আকার * অঙ্ক_offsets);
 
-  if (use_short_loca)
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, true, (HBUINT16 *) loca_prime_data, num_offsets);
-  else
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, false, (HBUINT32 *) loca_prime_data, num_offsets);
+  যদি (use_short_loca)
+    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, সত্য, (HBUINT16 *) loca_মৌলিক_তথ্য, অঙ্ক_offsets);
+  অন্যথা
+    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, মিথ্যা, (HBUINT32 *) loca_মৌলিক_তথ্য, অঙ্ক_offsets);
 
-  hb_blob_t *loca_blob = hb_blob_create (loca_prime_data,
-					 entry_size * num_offsets,
+  hb_blob_t *loca_blob = hb_blob_create (loca_মৌলিক_তথ্য,
+					 entry_আকার * অঙ্ক_offsets,
 					 HB_MEMORY_MODE_WRITABLE,
-					 loca_prime_data,
+					 loca_মৌলিক_তথ্য,
 					 hb_free);
 
-  bool result = c->plan->add_table (extended ? HB_OT_TAG_LOCA : HB_OT_TAG_loca, loca_blob)
-	     && _add_head_and_set_loca_version (c->plan, use_short_loca);
+  যৌক্তিক ফলাফল = c->plan->add_table (extended ? HB_OT_TAG_LOCA : HB_OT_TAG_loca, loca_blob)
+	     && add_শীর্ষ_and_set_loca_version (c->plan, use_short_loca);
 
   hb_blob_destroy (loca_blob);
-  return result;
+  ফেরত ফলাফল;
 }
 
 

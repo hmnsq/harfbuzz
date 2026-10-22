@@ -29,30 +29,30 @@
 #ifndef HB_DISPATCH_HH
 #define HB_DISPATCH_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 /*
  * Dispatch
  */
 
-template <typename Context, typename Return=hb_empty_t, unsigned int MaxDebugDepth=0>
-struct hb_dispatch_context_t
+template <typename Context, typename Return=hb_empty_t, unsigned পূর্ণসংখ্যা MaxDebugDepth=0>
+কাঠামো hb_dispatch_context_t
 {
-  private:
+  ব্যক্তিগত:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const Context* thiz () const { return static_cast<const Context *> (this); }
-	Context* thiz ()       { return static_cast<      Context *> (this); }
-  public:
-  const char *get_name () { return "UNKNOWN"; }
-  static constexpr unsigned max_debug_depth = MaxDebugDepth;
-  typedef Return return_t;
+  ধ্রুবক Context* thiz () ধ্রুবক { ফেরত static_cast<ধ্রুবক Context *> (এই); }
+	Context* thiz ()       { ফেরত static_cast<      Context *> (এই); }
+  সর্বজনীন:
+  ধ্রুবক অক্ষর *get_name () { ফেরত "UNKNOWN"; }
+  স্থির constexpr unsigned max_debug_depth = MaxDebugDepth;
+  প্রকারলেখ Return return_t;
   template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format HB_UNUSED) { return true; }
+  যৌক্তিক may_dispatch (ধ্রুবক T *obj HB_UNUSED, ধ্রুবক F *format HB_UNUSED) { ফেরত সত্য; }
   template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
-  static return_t no_dispatch_return_value () { return Context::default_return_value (); }
-  static bool stop_sublookup_iteration (const return_t r HB_UNUSED) { return false; }
+  return_t dispatch (ধ্রুবক T &obj, Ts&&... ds)
+  { ফেরত obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
+  স্থির return_t no_dispatch_return_মান () { ফেরত Context::default_return_মান (); }
+  স্থির যৌক্তিক stop_sublookup_iteration (ধ্রুবক return_t r HB_UNUSED) { ফেরত মিথ্যা; }
   unsigned debug_depth = 0;
 };
 

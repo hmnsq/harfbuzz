@@ -24,41 +24,41 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#অন্তর্ভাব "graph.hh"
+#অন্তর্ভাব "../hb-ot-layout-gsubgpos.hh"
 
 #ifndef GRAPH_GSUBGPOS_CONTEXT_HH
 #define GRAPH_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+নামাকাশ graph {
 
-struct Lookup;
+কাঠামো Lookup;
 
-struct gsubgpos_graph_context_t
+কাঠামো gsubgpos_graph_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
+  HB_INTERNAL স্থির graph_ফলাফল_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
                                                                       graph_t& graph_);
 
   hb_tag_t table_tag;
   graph_t& graph;
-  unsigned lookup_list_index;
+  unsigned lookup_list_সূচক;
   hb_hashmap_t<unsigned, graph::Lookup*> lookups;
   hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
   hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_INTERNAL graph_ফলাফল_t<unsigned> create_গ্রন্থি (unsigned আকার_2);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_ফলাফল_t<শূন্য> add_বাফার (অক্ষর* বাফার)
   {
-    return graph.add_buffer (buffer);
+    ফেরত graph.add_বাফার (বাফার);
   }
 
- private:
+ ব্যক্তিগত:
   HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                         graph_t& graph_);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_INTERNAL unsigned অঙ্ক_non_ext_subtables ();
 };
 
 }

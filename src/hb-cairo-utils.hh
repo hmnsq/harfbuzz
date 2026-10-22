@@ -27,38 +27,38 @@
 #ifndef HB_CAIRO_UTILS_H
 #define HB_CAIRO_UTILS_H
 
-#include "hb.hh"
-#include "hb-cairo.h"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-cairo.h"
 
 
-struct hb_cairo_budget_t
+কাঠামো hb_cairo_budget_t
 {
   /* Cairo serializes glyph-cache population for a scaled font.  Keeping the
    * owner there lets recursive color-glyph callbacks share one session. */
   int64_t budget = HB_BUDGET_DEFAULT;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
-  unsigned int active = 0;
+  unsigned পূর্ণসংখ্যা active = 0;
 
-  void enter ()
+  শূন্য enter ()
   {
-    if (!active++)
+    যদি (!active++)
       recharge ();
   }
 
-  void leave ()
+  শূন্য leave ()
   {
-    assert (active);
+    প্রতিজ্ঞা (active);
     active--;
   }
 
-  void recharge ()
+  শূন্য recharge ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 };
 
-struct hb_cairo_context_t
+কাঠামো hb_cairo_context_t
 {
   hb_cairo_context_t (cairo_scaled_font_t *scaled_font_,
 		      cairo_t *cr_,
@@ -75,18 +75,18 @@ struct hb_cairo_context_t
     budget->leave ();
   }
 
-  bool set_budget (int64_t value)
+  যৌক্তিক set_budget (int64_t value)
   {
     budget->budget = value;
     budget->recharge ();
-    return true;
+    ফেরত সত্য;
   }
 
-  int64_t get_budget () const { return budget->budget; }
-  int64_t *get_budget_remaining () { return &budget->budget_remaining; }
+  int64_t get_budget () ধ্রুবক { ফেরত budget->budget; }
+  int64_t *get_budget_remaining () { ফেরত &budget->budget_remaining; }
 
-  bool spend (unsigned int cost, unsigned int mult = 1)
-  { return hb_budget_spend (budget->budget_remaining, cost, mult); }
+  যৌক্তিক spend (unsigned পূর্ণসংখ্যা cost, unsigned পূর্ণসংখ্যা mult = 1)
+  { ফেরত hb_budget_spend (budget->budget_remaining, cost, mult); }
 
   cairo_scaled_font_t *scaled_font;
   cairo_t *cr;
@@ -94,44 +94,44 @@ struct hb_cairo_context_t
   hb_cairo_budget_t *budget;
 };
 
-static inline cairo_operator_t
+স্থির অন্তঃরেখ cairo_operator_t
 _hb_paint_composite_mode_to_cairo (hb_paint_composite_mode_t mode)
 {
-  switch (mode)
+  নির্বাচন (mode)
     {
-    case HB_PAINT_COMPOSITE_MODE_CLEAR: return CAIRO_OPERATOR_CLEAR;
-    case HB_PAINT_COMPOSITE_MODE_SRC: return CAIRO_OPERATOR_SOURCE;
-    case HB_PAINT_COMPOSITE_MODE_DEST: return CAIRO_OPERATOR_DEST;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return CAIRO_OPERATOR_OVER;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER: return CAIRO_OPERATOR_DEST_OVER;
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN: return CAIRO_OPERATOR_IN;
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN: return CAIRO_OPERATOR_DEST_IN;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT: return CAIRO_OPERATOR_OUT;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT: return CAIRO_OPERATOR_DEST_OUT;
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP: return CAIRO_OPERATOR_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP: return CAIRO_OPERATOR_DEST_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_XOR: return CAIRO_OPERATOR_XOR;
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return CAIRO_OPERATOR_ADD;
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return CAIRO_OPERATOR_SCREEN;
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return CAIRO_OPERATOR_OVERLAY;
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return CAIRO_OPERATOR_DARKEN;
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return CAIRO_OPERATOR_LIGHTEN;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return CAIRO_OPERATOR_COLOR_DODGE;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return CAIRO_OPERATOR_COLOR_BURN;
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return CAIRO_OPERATOR_HARD_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return CAIRO_OPERATOR_SOFT_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return CAIRO_OPERATOR_DIFFERENCE;
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return CAIRO_OPERATOR_EXCLUSION;
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return CAIRO_OPERATOR_MULTIPLY;
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return CAIRO_OPERATOR_HSL_HUE;
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return CAIRO_OPERATOR_HSL_SATURATION;
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return CAIRO_OPERATOR_HSL_COLOR;
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return CAIRO_OPERATOR_HSL_LUMINOSITY;
-    default: return CAIRO_OPERATOR_CLEAR;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_CLEAR: ফেরত CAIRO_OPERATOR_CLEAR;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC: ফেরত CAIRO_OPERATOR_SOURCE;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST: ফেরত CAIRO_OPERATOR_DEST;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_OVER: ফেরত CAIRO_OPERATOR_OVER;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_OVER: ফেরত CAIRO_OPERATOR_DEST_OVER;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_IN: ফেরত CAIRO_OPERATOR_IN;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_IN: ফেরত CAIRO_OPERATOR_DEST_IN;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_OUT: ফেরত CAIRO_OPERATOR_OUT;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_OUT: ফেরত CAIRO_OPERATOR_DEST_OUT;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_ATOP: ফেরত CAIRO_OPERATOR_ATOP;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_ATOP: ফেরত CAIRO_OPERATOR_DEST_ATOP;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_XOR: ফেরত CAIRO_OPERATOR_XOR;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_PLUS: ফেরত CAIRO_OPERATOR_ADD;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SCREEN: ফেরত CAIRO_OPERATOR_SCREEN;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_OVERLAY: ফেরত CAIRO_OPERATOR_OVERLAY;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DARKEN: ফেরত CAIRO_OPERATOR_DARKEN;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_LIGHTEN: ফেরত CAIRO_OPERATOR_LIGHTEN;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: ফেরত CAIRO_OPERATOR_COLOR_DODGE;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_COLOR_BURN: ফেরত CAIRO_OPERATOR_COLOR_BURN;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: ফেরত CAIRO_OPERATOR_HARD_LIGHT;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: ফেরত CAIRO_OPERATOR_SOFT_LIGHT;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DIFFERENCE: ফেরত CAIRO_OPERATOR_DIFFERENCE;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_EXCLUSION: ফেরত CAIRO_OPERATOR_EXCLUSION;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_MULTIPLY: ফেরত CAIRO_OPERATOR_MULTIPLY;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HSL_HUE: ফেরত CAIRO_OPERATOR_HSL_HUE;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: ফেরত CAIRO_OPERATOR_HSL_SATURATION;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HSL_COLOR: ফেরত CAIRO_OPERATOR_HSL_COLOR;
+    ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: ফেরত CAIRO_OPERATOR_HSL_LUMINOSITY;
+    পূর্বনির্ধারিত: ফেরত CAIRO_OPERATOR_CLEAR;
     }
 }
 
-HB_INTERNAL void
+HB_INTERNAL শূন্য
 _hb_cairo_set_source_color (hb_cairo_context_t *c,
 			    hb_bool_t use_foreground,
 			    hb_color_t color);
@@ -142,27 +142,27 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 			     unsigned width,
 			     unsigned height,
 			     hb_tag_t format,
-			     float slant,
+			     দশমিক slant,
 			     hb_glyph_extents_t *extents);
 
-HB_INTERNAL void
+HB_INTERNAL শূন্য
 _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0,
-				 float x1, float y1,
-				 float x2, float y2);
+				 hb_color_সারি_t *color_সারি,
+				 দশমিক x0, দশমিক y0,
+				 দশমিক x1, দশমিক y1,
+				 দশমিক x2, দশমিক y2);
 
-HB_INTERNAL void
+HB_INTERNAL শূন্য
 _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0, float r0,
-				 float x1, float y1, float r1);
+				 hb_color_সারি_t *color_সারি,
+				 দশমিক x0, দশমিক y0, দশমিক r0,
+				 দশমিক x1, দশমিক y1, দশমিক r1);
 
-HB_INTERNAL void
+HB_INTERNAL শূন্য
 _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
-				hb_color_line_t *color_line,
-				float x0, float y0,
-				float start_angle, float end_angle);
+				hb_color_সারি_t *color_সারি,
+				দশমিক x0, দশমিক y0,
+				দশমিক start_angle, দশমিক end_angle);
 
 
 #endif /* HB_CAIRO_UTILS_H */

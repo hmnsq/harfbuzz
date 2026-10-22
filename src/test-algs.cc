@@ -24,24 +24,24 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-set.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-algs.hh"
+#অন্তর্ভাব "hb-set.hh"
 
 
-static char *
-test_func (int a, char **b)
+স্থির অক্ষর *
+test_func (পূর্ণসংখ্যা a, অক্ষর **b)
 {
-  return b ? b[a] : nullptr;
+  ফেরত b ? b[a] : nullptr;
 }
 
-struct A
+কাঠামো A
 {
-  void a () {}
+  শূন্য a () {}
 };
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
   hb_always_assert (roundf (0.5f) == 1.f);
   hb_always_assert (roundf (-0.5f) == 0.f);
@@ -56,13 +56,13 @@ main (int argc, char **argv)
   hb_always_assert (roundf (8388609.f) == 8388609.f);
   hb_always_assert (roundf (-8388609.f) == -8388609.f);
 
-  int i = 1;
+  পূর্ণসংখ্যা i = 1;
   auto p = hb_pair (1, i);
 
   p.second = 2;
   hb_always_assert (i == 2);
 
-  const int c = 3;
+  ধ্রুবক পূর্ণসংখ্যা c = 3;
   auto pc = hb_pair (1, c);
   hb_always_assert (pc.second == 3);
 
@@ -79,17 +79,17 @@ main (int argc, char **argv)
   hb_always_assert (1 == hb_min (8, 1));
   hb_always_assert (8 == hb_max (8, 1));
 
-  int x = 1, y = 2;
+  পূর্ণসংখ্যা x = 1, y = 2;
   hb_min (x, 3);
   hb_min (3, x);
   hb_min (x, 4 + 3);
-  int &z = hb_min (x, y);
+  পূর্ণসংখ্যা &z = hb_min (x, y);
   z = 3;
   hb_always_assert (x == 3);
 
-  hb_pair_t<const int*, int> xp = hb_pair_t<int *, long> (nullptr, 0);
-  xp = hb_pair_t<int *, double> (nullptr, 1);
-  xp = hb_pair_t<const int*, int> (nullptr, 1);
+  hb_pair_t<ধ্রুবক পূর্ণসংখ্যা*, পূর্ণসংখ্যা> xp = hb_pair_t<পূর্ণসংখ্যা *, long> (nullptr, 0);
+  xp = hb_pair_t<পূর্ণসংখ্যা *, দ্বিগুণ> (nullptr, 1);
+  xp = hb_pair_t<ধ্রুবক পূর্ণসংখ্যা*, পূর্ণসংখ্যা> (nullptr, 1);
 
   hb_always_assert (3 == hb_partial (hb_min, 3) (4));
   hb_always_assert (3 == hb_partial<1> (hb_min, 4) (3));
@@ -112,12 +112,12 @@ main (int argc, char **argv)
   hb_always_assert (hb_saturate_neg (2) == -2);
   hb_always_assert (hb_saturate_neg (-2) == 2);
   hb_always_assert (hb_saturate_neg (INT_MIN) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> (1.) == 1);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MAX + 1.) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MIN - 1.) == INT_MIN);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) 1) == 1);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MAX + 1) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MIN - 1) == INT_MIN);
+  hb_always_assert (hb_clamp_to<পূর্ণসংখ্যা> (1.) == 1);
+  hb_always_assert (hb_clamp_to<পূর্ণসংখ্যা> ((দ্বিগুণ) INT_MAX + 1.) == INT_MAX);
+  hb_always_assert (hb_clamp_to<পূর্ণসংখ্যা> ((দ্বিগুণ) INT_MIN - 1.) == INT_MIN);
+  hb_always_assert (hb_clamp_to<পূর্ণসংখ্যা> ((int64_t) 1) == 1);
+  hb_always_assert (hb_clamp_to<পূর্ণসংখ্যা> ((int64_t) INT_MAX + 1) == INT_MAX);
+  hb_always_assert (hb_clamp_to<পূর্ণসংখ্যা> ((int64_t) INT_MIN - 1) == INT_MIN);
 
   int64_t budget = 10;
   hb_always_assert (hb_budget_spend (budget, 4, 2));
@@ -154,5 +154,5 @@ main (int argc, char **argv)
   hb_always_assert (hb_hash (set1) == hb_hash (hb::shared_ptr<hb_set_t> {hb_set_reference (&set1)}));
   hb_always_assert (hb_hash (set1) == hb_hash (hb::unique_ptr<hb_set_t> {hb_set_reference (&set1)}));
 
-  return 0;
+  ফেরত 0;
 }

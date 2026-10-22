@@ -8,17 +8,17 @@ Input files:
 * https://unicode.org/Public/UCD/latest/ucd/Blocks.txt
 """
 
-import sys
+আমদানি sys
 
-import packTab
+আমদানি packTab
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
+যদি len(sys.argv) > 1 এবং sys.argv[1] == "--rust":
 	del sys.argv[1]
 	language = packTab.languages["rust"]
-else:
+অন্যথা:
 	language = packTab.languages["c"]
 
-if len (sys.argv) != 4:
+যদি len (sys.argv) != 4:
 	sys.exit (__doc__)
 
 ALLOWED_SINGLES = [0x00A0, 0x25CC]
@@ -45,45 +45,45 @@ ALLOWED_BLOCKS = [
 	'Myanmar Extended-C',
 ]
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') জন্য x মধ্যে sys.argv[1:]]
 
-headers = [[f.readline () for i in range (2)] for f in files]
+headers = [[f.readline () জন্য i মধ্যে range (2)] জন্য f মধ্যে files]
 
-unicode_data = [{} for _ in files]
-for i, f in enumerate (files):
-	for line in f:
+unicode_তথ্য = [{} জন্য _ মধ্যে files]
+জন্য i, f মধ্যে enumerate (files):
+	জন্য সারি মধ্যে f:
 
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
+		j = সারি.find ('#')
+		যদি j >= 0:
+			সারি = সারি[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () জন্য x মধ্যে সারি.split (';')]
+		যদি len (fields) == 1:
+			চালু
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = পূর্ণসংখ্যা (uu[0], 16)
+		যদি len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		অন্যথা:
+			end = পূর্ণসংখ্যা (uu[1], 16)
 
 		t = fields[1]
 
-		for u in range (start, end + 1):
-			unicode_data[i][u] = t
+		জন্য u মধ্যে range (start, end + 1):
+			unicode_তথ্য[i][u] = t
 
 # Merge data into one dict:
 defaults = ('Other', 'Not_Applicable', 'No_Block')
 combined = {}
-for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
-		if i == 2 and not u in combined:
-			continue
-		if not u in combined:
+জন্য i,d মধ্যে enumerate (unicode_তথ্য):
+	জন্য u,v মধ্যে d.বস্তুসমূহ ():
+		যদি i == 2 এবং নয় u মধ্যে combined:
+			চালু
+		যদি নয় u মধ্যে combined:
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k:v for k,v in combined.items() if k in ALLOWED_SINGLES or v[2] in ALLOWED_BLOCKS}
+combined = {k:v জন্য k,v মধ্যে combined.বস্তুসমূহ() যদি k মধ্যে ALLOWED_SINGLES অথবা v[2] মধ্যে ALLOWED_BLOCKS}
 
 
 # Convert categories & positions types
@@ -388,75 +388,75 @@ position_overrides = {
   0x0B01: 'BEFORE_SUB', # Oriya Bindu is BeforeSub in the spec.
 }
 
-def matra_pos_left(u, block):
-  return "PRE_M"
-def matra_pos_right(u, block):
-  if block == 'Devanagari':	return  'AFTER_SUB'
-  if block == 'Bengali':	return  'AFTER_POST'
-  if block == 'Gurmukhi':	return  'AFTER_POST'
-  if block == 'Gujarati':	return  'AFTER_POST'
-  if block == 'Oriya':		return  'AFTER_POST'
-  if block == 'Tamil':		return  'AFTER_POST'
-  if block == 'Telugu':		return  'BEFORE_SUB' if u <= 0x0C42 else 'AFTER_SUB'
-  if block == 'Kannada':	return  'BEFORE_SUB' if u < 0x0CC3 or u > 0x0CD6 else 'AFTER_SUB'
-  if block == 'Malayalam':	return  'AFTER_POST'
-  return 'AFTER_SUB'
-def matra_pos_top(u, block):
+def matra_pos_বাম(u, block):
+  ফেরত "PRE_M"
+def matra_pos_ডান(u, block):
+  যদি block == 'Devanagari':	ফেরত  'AFTER_SUB'
+  যদি block == 'Bengali':	ফেরত  'AFTER_POST'
+  যদি block == 'Gurmukhi':	ফেরত  'AFTER_POST'
+  যদি block == 'Gujarati':	ফেরত  'AFTER_POST'
+  যদি block == 'Oriya':		ফেরত  'AFTER_POST'
+  যদি block == 'Tamil':		ফেরত  'AFTER_POST'
+  যদি block == 'Telugu':		ফেরত  'BEFORE_SUB' যদি u <= 0x0C42 অন্যথা 'AFTER_SUB'
+  যদি block == 'Kannada':	ফেরত  'BEFORE_SUB' যদি u < 0x0CC3 অথবা u > 0x0CD6 অন্যথা 'AFTER_SUB'
+  যদি block == 'Malayalam':	ফেরত  'AFTER_POST'
+  ফেরত 'AFTER_SUB'
+def matra_pos_শীর্ষ(u, block):
   # BENG and MLYM don't have top matras.
-  if block == 'Devanagari':	return  'AFTER_SUB'
-  if block == 'Gurmukhi':	return  'AFTER_POST' # Deviate from spec
-  if block == 'Gujarati':	return  'AFTER_SUB'
-  if block == 'Oriya':		return  'AFTER_MAIN'
-  if block == 'Tamil':		return  'AFTER_SUB'
-  if block == 'Telugu':		return  'BEFORE_SUB'
-  if block == 'Kannada':	return  'BEFORE_SUB'
-  return 'AFTER_SUB'
+  যদি block == 'Devanagari':	ফেরত  'AFTER_SUB'
+  যদি block == 'Gurmukhi':	ফেরত  'AFTER_POST' # Deviate from spec
+  যদি block == 'Gujarati':	ফেরত  'AFTER_SUB'
+  যদি block == 'Oriya':		ফেরত  'AFTER_MAIN'
+  যদি block == 'Tamil':		ফেরত  'AFTER_SUB'
+  যদি block == 'Telugu':		ফেরত  'BEFORE_SUB'
+  যদি block == 'Kannada':	ফেরত  'BEFORE_SUB'
+  ফেরত 'AFTER_SUB'
 def matra_pos_bottom(u, block):
-  if block == 'Devanagari':	return  'AFTER_SUB'
-  if block == 'Bengali':	return  'AFTER_SUB'
-  if block == 'Gurmukhi':	return  'AFTER_POST'
-  if block == 'Gujarati':	return  'AFTER_POST'
-  if block == 'Oriya':		return  'AFTER_SUB'
-  if block == 'Tamil':		return  'AFTER_POST'
-  if block == 'Telugu':		return  'BEFORE_SUB'
-  if block == 'Kannada':	return  'BEFORE_SUB'
-  if block == 'Malayalam':	return  'AFTER_POST'
-  return "AFTER_SUB"
+  যদি block == 'Devanagari':	ফেরত  'AFTER_SUB'
+  যদি block == 'Bengali':	ফেরত  'AFTER_SUB'
+  যদি block == 'Gurmukhi':	ফেরত  'AFTER_POST'
+  যদি block == 'Gujarati':	ফেরত  'AFTER_POST'
+  যদি block == 'Oriya':		ফেরত  'AFTER_SUB'
+  যদি block == 'Tamil':		ফেরত  'AFTER_POST'
+  যদি block == 'Telugu':		ফেরত  'BEFORE_SUB'
+  যদি block == 'Kannada':	ফেরত  'BEFORE_SUB'
+  যদি block == 'Malayalam':	ফেরত  'AFTER_POST'
+  ফেরত "AFTER_SUB"
 def indic_matra_position(u, pos, block): # Reposition matra
-  if pos == 'PRE_C':	return matra_pos_left(u, block)
-  if pos == 'POST_C':	return matra_pos_right(u, block)
-  if pos == 'ABOVE_C':	return matra_pos_top(u, block)
-  if pos == 'BELOW_C':	return matra_pos_bottom(u, block)
-  assert (False)
+  যদি pos == 'PRE_C':	ফেরত matra_pos_বাম(u, block)
+  যদি pos == 'POST_C':	ফেরত matra_pos_ডান(u, block)
+  যদি pos == 'ABOVE_C':	ফেরত matra_pos_শীর্ষ(u, block)
+  যদি pos == 'BELOW_C':	ফেরত matra_pos_bottom(u, block)
+  প্রতিজ্ঞা (মিথ্যা)
 
 def position_to_category(pos):
-  if pos == 'PRE_C':	return 'VPre'
-  if pos == 'ABOVE_C':	return 'VAbv'
-  if pos == 'BELOW_C':	return 'VBlw'
-  if pos == 'POST_C':	return 'VPst'
-  assert(False)
+  যদি pos == 'PRE_C':	ফেরত 'VPre'
+  যদি pos == 'ABOVE_C':	ফেরত 'VAbv'
+  যদি pos == 'BELOW_C':	ফেরত 'VBlw'
+  যদি pos == 'POST_C':	ফেরত 'VPst'
+  প্রতিজ্ঞা(মিথ্যা)
 
 
 defaults = (category_map[defaults[0]], position_map[defaults[1]], defaults[2])
 
-indic_data = {}
-for k, (cat, pos, block) in combined.items():
+indic_তথ্য = {}
+জন্য k, (cat, pos, block) মধ্যে combined.বস্তুসমূহ():
   cat = category_map[cat]
-  if cat == 'SM' and pos == 'Not_Applicable':
+  যদি cat == 'SM' এবং pos == 'Not_Applicable':
     cat = 'SMPst'
   pos = position_map[pos]
-  indic_data[k] = (cat, pos, block)
+  indic_তথ্য[k] = (cat, pos, block)
 
-for k,new_cat in category_overrides.items():
-  (cat, pos, _) = indic_data.get(k, defaults)
-  indic_data[k] = (new_cat, pos, unicode_data[2][k])
+জন্য k,new_cat মধ্যে category_overrides.বস্তুসমূহ():
+  (cat, pos, _) = indic_তথ্য.get(k, defaults)
+  indic_তথ্য[k] = (new_cat, pos, unicode_তথ্য[2][k])
 
 # We only expect position for certain types
 positioned_categories = ('CM', 'SM', 'RS', 'H', 'M', 'MPst')
-for k, (cat, pos, block) in indic_data.items():
-  if cat not in positioned_categories:
+জন্য k, (cat, pos, block) মধ্যে indic_তথ্য.বস্তুসমূহ():
+  যদি cat নয় মধ্যে positioned_categories:
     pos = 'END'
-    indic_data[k] = (cat, pos, block)
+    indic_তথ্য[k] = (cat, pos, block)
 
 # Position overrides are more complicated
 
@@ -464,52 +464,52 @@ for k, (cat, pos, block) in indic_data.items():
 consonant_categories = ('C', 'CS', 'Ra','CM', 'V', 'PLACEHOLDER', 'DOTTEDCIRCLE')
 matra_categories = ('M', 'MPst')
 smvd_categories = ('SM', 'SMPst', 'VD', 'A', 'Symbol')
-for k, (cat, pos, block) in indic_data.items():
-  if cat in consonant_categories:
+জন্য k, (cat, pos, block) মধ্যে indic_তথ্য.বস্তুসমূহ():
+  যদি cat মধ্যে consonant_categories:
     pos = 'BASE_C'
-  elif cat in matra_categories:
-    if block.startswith('Khmer') or block.startswith('Myanmar'):
+  নতুবা_যদি cat মধ্যে matra_categories:
+    যদি block.startswith('Khmer') অথবা block.startswith('Myanmar'):
       cat = position_to_category(pos)
-    else:
+    অন্যথা:
       pos = indic_matra_position(k, pos, block)
-  elif cat in smvd_categories:
+  নতুবা_যদি cat মধ্যে smvd_categories:
     pos = 'SMVD';
-  indic_data[k] = (cat, pos, block)
+  indic_তথ্য[k] = (cat, pos, block)
 
-for k,new_pos in position_overrides.items():
-  (cat, pos, _) = indic_data.get(k, defaults)
-  indic_data[k] = (cat, new_pos, unicode_data[2][k])
+জন্য k,new_pos মধ্যে position_overrides.বস্তুসমূহ():
+  (cat, pos, _) = indic_তথ্য.get(k, defaults)
+  indic_তথ্য[k] = (cat, new_pos, unicode_তথ্য[2][k])
 
 
-values = [{_: 1} for _ in defaults]
-for vv in indic_data.values():
-  for i,v in enumerate(vv):
-    values[i][v] = values[i].get (v, 0) + 1
+মানসমূহ = [{_: 1} জন্য _ মধ্যে defaults]
+জন্য vv মধ্যে indic_তথ্য.মানসমূহ():
+  জন্য i,v মধ্যে enumerate(vv):
+    মানসমূহ[i][v] = মানসমূহ[i].get (v, 0) + 1
 
 
 
 
 # Move the outliers NO-BREAK SPACE and DOTTED CIRCLE out
 singles = {}
-for u in ALLOWED_SINGLES:
-	singles[u] = indic_data[u]
-	del indic_data[u]
+জন্য u মধ্যে ALLOWED_SINGLES:
+	singles[u] = indic_তথ্য[u]
+	del indic_তথ্য[u]
 
 print ("/* == Start of generated table == */")
 print ("/*")
 print (" * The following table is generated by running:")
 print (" *")
 print (" *   ./gen-indic-table.py %sIndicSyllabicCategory.txt IndicPositionalCategory.txt Blocks.txt" %
-		("--rust " if language.name == "rust" else ""))
+		("--rust " যদি language.name == "rust" অন্যথা ""))
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+জন্য h মধ্যে headers:
+	জন্য l মধ্যে h:
 		print (" * %s" % (l.strip()))
 print (" */")
 print ()
-if language.name == "c":
+যদি language.name == "c":
 	print ('#include "hb.hh"')
 	print ()
 	print ('#ifndef HB_NO_OT_SHAPE')
@@ -520,21 +520,21 @@ if language.name == "c":
 	print ('#pragma GCC diagnostic ignored "-Wunused-macros"')
 	print ()
 
-	for shaper in categories:
+	জন্য shaper মধ্যে categories:
 	  print ('#include "hb-ot-shaper-%s-machine.hh"' % shaper)
 	print ()
 	done = {}
-	for shaper, shaper_cats in categories.items():
+	জন্য shaper, shaper_cats মধ্যে categories.বস্তুসমূহ():
 	  print ('/* %s */' % shaper)
-	  for cat in shaper_cats:
+	  জন্য cat মধ্যে shaper_cats:
 	    v = shaper[0].upper()
-	    if cat not in done:
+	    যদি cat নয় মধ্যে done:
 	      print ("#define OT_%s %s_Cat(%s)" % (cat, v, cat))
 	      done[cat] = v
-	    else:
+	    অন্যথা:
 	      print ('static_assert (OT_%s == %s_Cat(%s), "");' % (cat, v, cat))
 	print ()
-elif language.name == "rust":
+নতুবা_যদি language.name == "rust":
 	print ("#![allow(unused_parens)]")
 	print ("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
 	print ("#![allow(non_camel_case_types)]")
@@ -543,8 +543,8 @@ elif language.name == "rust":
 	print ('use super::ot_shaper_indic::ot_category_t::*;')
 	print ('use super::ot_shaper_indic::ot_position_t::*;')
 	print ()
-else:
-	assert False, "Unknown language: %s" % language.name
+অন্যথা:
+	প্রতিজ্ঞা মিথ্যা, "Unknown language: %s" % language.name
 
 # Shorten values
 short = [{
@@ -576,41 +576,41 @@ all_shorts = [{},{}]
 
 # Add some of the values, to make them more readable, and to avoid duplicates
 
-for i in range (2):
-	for v,s in short[i].items ():
+জন্য i মধ্যে range (2):
+	জন্য v,s মধ্যে short[i].বস্তুসমূহ ():
 		all_shorts[i][s] = v
 
 what = ["OT", "POS"]
 what_short = ["_OT", "_POS"]
 cat_defs = []
-for i in range (2):
-	vv = sorted (values[i].keys ())
-	for v in vv:
+জন্য i মধ্যে range (2):
+	vv = sorted (মানসমূহ[i].চাবিগুলি ())
+	জন্য v মধ্যে vv:
 		v_no_and = v.replace ('_And_', '_')
-		if v in short[i]:
+		যদি v মধ্যে short[i]:
 			s = short[i][v]
-		else:
-			s = ''.join ([c for c in v_no_and if ord ('A') <= ord (c) <= ord ('Z')])
-			if s in all_shorts[i]:
-				raise Exception ("Duplicate short value alias", v, all_shorts[i][s])
+		অন্যথা:
+			s = ''.join ([c জন্য c মধ্যে v_no_and যদি ord ('A') <= ord (c) <= ord ('Z')])
+			যদি s মধ্যে all_shorts[i]:
+				তোলো Exception ("Duplicate short value alias", v, all_shorts[i][s])
 			all_shorts[i][s] = v
 			short[i][v] = s
-		cat_defs.append ((what_short[i] + '_' + s, what[i] + '_' + (v.upper () if i else v), str (values[i][v]), v))
+		cat_defs.append ((what_short[i] + '_' + s, what[i] + '_' + (v.upper () যদি i অন্যথা v), str (মানসমূহ[i][v]), v))
 
-maxlen_s = max ([len (c[0]) for c in cat_defs])
-maxlen_l = max ([len (c[1]) for c in cat_defs])
-maxlen_n = max ([len (c[2]) for c in cat_defs])
-for s in what_short:
+maxlen_s = max ([len (c[0]) জন্য c মধ্যে cat_defs])
+maxlen_l = max ([len (c[1]) জন্য c মধ্যে cat_defs])
+maxlen_n = max ([len (c[2]) জন্য c মধ্যে cat_defs])
+জন্য s মধ্যে what_short:
 	print ()
-	for c in [c for c in cat_defs if s in c[0]]:
-		if language.name == "c":
+	জন্য c মধ্যে [c জন্য c মধ্যে cat_defs যদি s মধ্যে c[0]]:
+		যদি language.name == "c":
 			print ("#define %s %s /* %s chars; %s */" %
 				(c[0].ljust (maxlen_s), c[1].ljust (maxlen_l), c[2].rjust (maxlen_n), c[3]))
-		else:
+		অন্যথা:
 			print ("use %s as %s /* %s chars; %s */" %
 				(c[1].ljust (maxlen_s), (c[0] + ";").ljust (maxlen_l), c[2].rjust (maxlen_n), c[3]))
 print ()
-if language.name == "c":
+যদি language.name == "c":
 	print ('#pragma GCC diagnostic pop')
 	print ()
 	print ("#define INDIC_COMBINE_CATEGORIES(S,M) ((S) | ((M) << 8))")
@@ -618,7 +618,7 @@ if language.name == "c":
 	print ("#define _(S,M) INDIC_COMBINE_CATEGORIES (%s_##S, %s_##M)" % tuple(what_short))
 	print ()
 	print ()
-else:
+অন্যথা:
 	print ("const fn indic_combine_categories (s: u8, m: u8) -> u16")
 	print ("{")
 	print ("  (s as u16) | ((m as u16) << 8)")
@@ -626,59 +626,59 @@ else:
 	print ()
 	print ()
 
-if language.name == "c":
-	default_value = "_(%s,%s)" % (short[0][defaults[0]], short[1][defaults[1]])
-	pack_data = {
+যদি language.name == "c":
+	default_মান = "_(%s,%s)" % (short[0][defaults[0]], short[1][defaults[1]])
+	pack_তথ্য = {
 		u: "_(%s,%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in indic_data.items ()
+		জন্য u, d মধ্যে indic_তথ্য.বস্তুসমূহ ()
 	}
-	pack_data.update ({
+	pack_তথ্য.update ({
 		u: "_(%s,%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in singles.items ()
+		জন্য u, d মধ্যে singles.বস্তুসমূহ ()
 	})
-else:
-	default_value = "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][defaults[0]], short[1][defaults[1]])
-	pack_data = {
+অন্যথা:
+	default_মান = "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][defaults[0]], short[1][defaults[1]])
+	pack_তথ্য = {
 		u: "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in indic_data.items ()
+		জন্য u, d মধ্যে indic_তথ্য.বস্তুসমূহ ()
 	}
-	pack_data.update ({
+	pack_তথ্য.update ({
 		u: "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in singles.items ()
+		জন্য u, d মধ্যে singles.বস্তুসমূহ ()
 	})
 
-unique_values = sorted (set (pack_data.values ()) | {default_value})
-mapping = {v: i for i, v in enumerate (unique_values)}
+unique_মানসমূহ = sorted (set (pack_তথ্য.মানসমূহ ()) | {default_মান})
+mapping = {v: i জন্য i, v মধ্যে enumerate (unique_মানসমূহ)}
 
 code = packTab.Code ('_hb_indic')
-value_type = 'uint16_t' if language.name == "c" else language.type_name ("u16")
-indic_values, _ = code.addArray (value_type, 'values', unique_values)
-sol = packTab.pack_table (pack_data, default=default_value, mapping=mapping, compression=9)
-sol.genCode (code, 'get_categories_index', language=language, private=language.name == "c")
-code.print_code (language=language, private=language.name == "c")
+মান_type = 'uint16_t' যদি language.name == "c" অন্যথা language.type_name ("u16")
+indic_মানসমূহ, _ = code.addArray (মান_type, 'values', unique_মানসমূহ)
+sol = packTab.pack_table (pack_তথ্য, পূর্বনির্ধারিত=default_মান, mapping=mapping, compression=9)
+sol.genCode (code, 'get_categories_index', language=language, ব্যক্তিগত=language.name == "c")
+code.print_code (language=language, ব্যক্তিগত=language.name == "c")
 print ()
-if language.name == "c":
+যদি language.name == "c":
 	print ("uint16_t")
 	print ("hb_indic_get_categories (hb_codepoint_t u)")
 	print ("{")
-	print ("  return %s[_hb_indic_get_categories_index (u)];" % indic_values)
+	print ("  return %s[_hb_indic_get_categories_index (u)];" % indic_মানসমূহ)
 	print ("}")
 	print ()
 	print ("#undef _")
 	print ("#undef INDIC_COMBINE_CATEGORIES")
-	for i in range (2):
+	জন্য i মধ্যে range (2):
 		print ()
-		vv = sorted (values[i].keys ())
-		for v in vv:
+		vv = sorted (মানসমূহ[i].চাবিগুলি ())
+		জন্য v মধ্যে vv:
 			print ("#undef %s_%s" %
 				(what_short[i], short[i][v]))
 	print ()
 	print ('#endif')
-else:
+অন্যথা:
 	print ("#[inline]")
 	print ("pub(crate) fn get_categories (u: u32) -> (u8, u8)")
 	print ("{")
-	print ("  let v = %s[_hb_indic_get_categories_index (u as usize) as usize];" % indic_values)
+	print ("  let v = %s[_hb_indic_get_categories_index (u as usize) as usize];" % indic_মানসমূহ)
 	print ("  ((v & 0xFF) as u8, (v >> 8) as u8)")
 	print ("}")
 print ()

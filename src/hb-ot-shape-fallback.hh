@@ -27,28 +27,28 @@
 #ifndef HB_OT_SHAPE_FALLBACK_HH
 #define HB_OT_SHAPE_FALLBACK_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-ot-shape.hh"
+#অন্তর্ভাব "hb-ot-shape.hh"
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL শূন্য _hb_ot_shape_fallback_mark_position (ধ্রুবক hb_ot_shape_plan_t *plan,
 						      hb_font_t *font,
-						      hb_buffer_t  *buffer,
-						      bool adjust_offsets_when_zeroing);
+						      hb_বাফার_t  *বাফার,
+						      যৌক্তিক adjust_offsets_when_zeroing);
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL শূন্য _hb_ot_shape_fallback_mark_position_recategorize_marks (ধ্রুবক hb_ot_shape_plan_t *plan,
 									 hb_font_t *font,
-									 hb_buffer_t  *buffer);
+									 hb_বাফার_t  *বাফার);
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_kern (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL শূন্য _hb_ot_shape_fallback_kern (ধ্রুবক hb_ot_shape_plan_t *plan,
 					     hb_font_t *font,
-					     hb_buffer_t  *buffer);
+					     hb_বাফার_t  *বাফার);
 
-HB_INTERNAL void _hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL শূন্য _hb_ot_shape_fallback_spaces (ধ্রুবক hb_ot_shape_plan_t *plan,
 					       hb_font_t *font,
-					       hb_buffer_t  *buffer);
+					       hb_বাফার_t  *বাফার);
 
 
 #endif /* HB_OT_SHAPE_FALLBACK_HH */

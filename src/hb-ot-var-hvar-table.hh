@@ -27,280 +27,280 @@
 #ifndef HB_OT_VAR_HVAR_TABLE_HH
 #define HB_OT_VAR_HVAR_TABLE_HH
 
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-var-common.hh"
+#অন্তর্ভাব "hb-ot-layout-common.hh"
+#অন্তর্ভাব "hb-ot-var-common.hh"
 
-namespace OT {
+নামাকাশ OT {
 
 
-struct index_map_subset_plan_t
+কাঠামো সূচক_map_subset_plan_t
 {
-  enum index_map_index_t {
-    ADV_INDEX,
-    LSB_INDEX,	/* dual as TSB */
-    RSB_INDEX,	/* dual as BSB */
-    VORG_INDEX
+  গণনা সূচক_map_সূচক_t {
+    ADV_সূচক,
+    LSB_সূচক,	/* dual as TSB */
+    RSB_সূচক,	/* dual as BSB */
+    VORG_সূচক
   };
 
-  void init (const DeltaSetIndexMap  *index_map,
+  শূন্য init (ধ্রুবক Delta_Set_সূচক_Map  *সূচক_map,
 	     hb_inc_bimap_t	     &outer_map,
 	     hb_vector_t<hb_set_t *> &inner_sets,
-	     const hb_subset_plan_t  *plan,
-	     bool bypass_empty = true)
+	     ধ্রুবক hb_subset_plan_t  *plan,
+	     যৌক্তিক bypass_empty = সত্য)
   {
-    map_count = 0;
-    full_map_count = plan->new_to_old_gid_list.length ?
-		     plan->new_to_old_gid_list.tail ().first + 1 : 0;
+    map_গুনতি = 0;
+    full_map_গুনতি = plan->new_to_old_gid_list.দৈর্ঘ্য ?
+		     plan->new_to_old_gid_list.লেজ ().first + 1 : 0;
     /* Only the advance mapping may be dropped in favor of implicit
      * glyph-id indexing (for the others a null offset means no deltas),
      * and only when the source was map-less too, preserving its form. */
-    can_drop_to_implicit = !bypass_empty && !index_map;
+    can_drop_to_implicit = !bypass_empty && !সূচক_map;
     max_inners.init ();
     output_map.init ();
 
-    if (bypass_empty && (!index_map || !index_map->get_map_count ())) return;
+    যদি (bypass_empty && (!সূচক_map || !সূচক_map->get_map_গুনতি ())) ফেরত;
 
-    unsigned int	last_val = (unsigned int)-1;
+    unsigned পূর্ণসংখ্যা	last_val = (unsigned পূর্ণসংখ্যা)-1;
     hb_codepoint_t	last_gid = HB_CODEPOINT_INVALID;
 
-    max_inners.resize (inner_sets.length);
-    for (unsigned i = 0; i < inner_sets.length; i++) max_inners[i] = 0;
+    max_inners.resize (inner_sets.দৈর্ঘ্য);
+    জন্য (unsigned i = 0; i < inner_sets.দৈর্ঘ্য; i++) max_inners[i] = 0;
 
     /* Search backwards for a map value different from the last map value */
     auto &new_to_old_gid_list = plan->new_to_old_gid_list;
-    unsigned count = new_to_old_gid_list.length;
-    if (!index_map)
+    unsigned গুনতি = new_to_old_gid_list.দৈর্ঘ্য;
+    যদি (!সূচক_map)
     {
-      map_count = new_to_old_gid_list.tail ().first + 1;
+      map_গুনতি = new_to_old_gid_list.লেজ ().first + 1;
     }
-    else
+    অন্যথা
     {
-      for (unsigned j = count; j; j--)
+      জন্য (unsigned j = গুনতি; j; j--)
       {
         hb_codepoint_t gid = new_to_old_gid_list.arrayZ[j - 1].first;
         hb_codepoint_t old_gid = new_to_old_gid_list.arrayZ[j - 1].second;
   
-        unsigned int v = index_map->map (old_gid);
-        if (last_gid == HB_CODEPOINT_INVALID)
+        unsigned পূর্ণসংখ্যা v = সূচক_map->map (old_gid);
+        যদি (last_gid == HB_CODEPOINT_INVALID)
         {
   	last_val = v;
   	last_gid = gid;
-  	continue;
+  	চালু;
         }
-        if (v != last_val)
-  	break;
+        যদি (v != last_val)
+  	বিরতি;
   
         last_gid = gid;
       }
   
-      if (unlikely (last_gid == (hb_codepoint_t)-1)) return;
-      map_count = last_gid + 1;
+      যদি (unlikely (last_gid == (hb_codepoint_t)-1)) ফেরত;
+      map_গুনতি = last_gid + 1;
     }
 
-    for (auto _ : plan->new_to_old_gid_list)
+    জন্য (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
-      if (gid >= map_count) break;
+      যদি (gid >= map_গুনতি) বিরতি;
 
       hb_codepoint_t old_gid = _.second;
-      unsigned int v = index_map ? index_map->map (old_gid): old_gid;
-      unsigned int outer = v >> 16;
-      unsigned int inner = v & 0xFFFF;
+      unsigned পূর্ণসংখ্যা v = সূচক_map ? সূচক_map->map (old_gid): old_gid;
+      unsigned পূর্ণসংখ্যা outer = v >> 16;
+      unsigned পূর্ণসংখ্যা inner = v & 0xFFFF;
       outer_map.add (outer);
-      if (inner > max_inners[outer]) max_inners[outer] = inner;
-      if (outer >= inner_sets.length) return;
+      যদি (inner > max_inners[outer]) max_inners[outer] = inner;
+      যদি (outer >= inner_sets.দৈর্ঘ্য) ফেরত;
       inner_sets[outer]->add (inner);
     }
   }
 
-  void fini ()
+  শূন্য fini ()
   {
     max_inners.fini ();
     output_map.fini ();
   }
 
-  void remap (const DeltaSetIndexMap *input_map,
-	      const hb_inc_bimap_t &outer_map,
-	      const hb_vector_t<hb_inc_bimap_t> &inner_maps,
-	      const hb_subset_plan_t *plan)
+  শূন্য remap (ধ্রুবক Delta_Set_সূচক_Map *প্রবেশ_map,
+	      ধ্রুবক hb_inc_bimap_t &outer_map,
+	      ধ্রুবক hb_vector_t<hb_inc_bimap_t> &inner_maps,
+	      ধ্রুবক hb_subset_plan_t *plan)
   {
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_গুনতি = 1;
+    inner_bit_গুনতি = 1;
 
-    for (unsigned int i = 0; i < max_inners.length; i++)
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < max_inners.দৈর্ঘ্য; i++)
     {
-      if (inner_maps[i].get_population () == 0) continue;
-      unsigned int bit_count = (max_inners[i]==0)? 1: hb_bit_storage (inner_maps[i][max_inners[i]]);
-      if (bit_count > inner_bit_count) inner_bit_count = bit_count;
+      যদি (inner_maps[i].get_population () == 0) চালু;
+      unsigned পূর্ণসংখ্যা bit_গুনতি = (max_inners[i]==0)? 1: hb_bit_storage (inner_maps[i][max_inners[i]]);
+      যদি (bit_গুনতি > inner_bit_গুনতি) inner_bit_গুনতি = bit_গুনতি;
     }
 
-    if (unlikely (!output_map.resize (map_count))) return;
-    for (const auto &_ : plan->new_to_old_gid_list)
+    যদি (unlikely (!output_map.resize (map_গুনতি))) ফেরত;
+    জন্য (ধ্রুবক auto &_ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_gid = _.first;
       hb_codepoint_t old_gid = _.second;
 
-      if (unlikely (new_gid >= map_count)) break;
+      যদি (unlikely (new_gid >= map_গুনতি)) বিরতি;
 
-      uint32_t v = input_map? input_map->map (old_gid) : old_gid;
+      uint32_t v = প্রবেশ_map? প্রবেশ_map->map (old_gid) : old_gid;
       unsigned outer = v >> 16;
       unsigned new_outer = outer_map[outer];
-      unsigned bit_count = (new_outer == 0) ? 1 : hb_bit_storage (new_outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      unsigned bit_গুনতি = (new_outer == 0) ? 1 : hb_bit_storage (new_outer);
+      outer_bit_গুনতি = hb_max (bit_গুনতি, outer_bit_গুনতি);
 
       output_map.arrayZ[new_gid] = (new_outer << 16) | (inner_maps[outer][v & 0xFFFF]);
     }
   }
 
-  bool remap_after_instantiation (const hb_subset_plan_t *plan,
-                                  const hb_map_t& varidx_map)
+  যৌক্তিক remap_after_instantiation (ধ্রুবক hb_subset_plan_t *plan,
+                                  ধ্রুবক hb_map_t& varidx_map)
   {
     /* recalculate bit_count after remapping */
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_গুনতি = 1;
+    inner_bit_গুনতি = 1;
 
-    for (const auto &_ : plan->new_to_old_gid_list)
+    জন্য (ধ্রুবক auto &_ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_gid = _.first;
-      if (unlikely (new_gid >= map_count)) break;
+      যদি (unlikely (new_gid >= map_গুনতি)) বিরতি;
 
       uint32_t v = output_map.arrayZ[new_gid];
       uint32_t *new_varidx;
-      if (!varidx_map.has (v, &new_varidx))
-        return false;
+      যদি (!varidx_map.has (v, &new_varidx))
+        ফেরত মিথ্যা;
 
       output_map.arrayZ[new_gid] = *new_varidx;
 
       unsigned outer = (*new_varidx) >> 16;
-      unsigned bit_count = (outer == 0) ? 1 : hb_bit_storage (outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      unsigned bit_গুনতি = (outer == 0) ? 1 : hb_bit_storage (outer);
+      outer_bit_গুনতি = hb_max (bit_গুনতি, outer_bit_গুনতি);
 
       unsigned inner = (*new_varidx) & 0xFFFF;
-      bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
-      inner_bit_count = hb_max (bit_count, inner_bit_count);
+      bit_গুনতি = (inner == 0) ? 1 : hb_bit_storage (inner);
+      inner_bit_গুনতি = hb_max (bit_গুনতি, inner_bit_গুনতি);
     }
-    return true;
+    ফেরত সত্য;
   }
 
-  unsigned int get_inner_bit_count () const { return inner_bit_count; }
-  unsigned int get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
-  unsigned int get_map_count ()       const { return map_count; }
+  unsigned পূর্ণসংখ্যা get_inner_bit_গুনতি () ধ্রুবক { ফেরত inner_bit_গুনতি; }
+  unsigned পূর্ণসংখ্যা get_width ()           ধ্রুবক { ফেরত ((outer_bit_গুনতি + inner_bit_গুনতি + 7) / 8); }
+  unsigned পূর্ণসংখ্যা get_map_গুনতি ()       ধ্রুবক { ফেরত map_গুনতি; }
 
-  size_t get_size () const
+  size_t get_আকার () ধ্রুবক
   {
-    if (!map_count) return 0;
-    return hb_unsigned_mul_add_saturate (get_width (), map_count,
-					 DeltaSetIndexMap::min_size);
+    যদি (!map_গুনতি) ফেরত 0;
+    ফেরত hb_unsigned_mul_add_saturate (get_width (), map_গুনতি,
+					 Delta_Set_সূচক_Map::min_আকার);
   }
 
-  bool is_identity () const
+  যৌক্তিক is_identity () ধ্রুবক
   {
-    if (!output_map) return true;
+    যদি (!output_map) ফেরত সত্য;
     /* An advance map whose entries are the identity over every output
      * glyph is equivalent to implicit glyph-id indexing; drop it.  A
      * truncated map doesn't qualify: glyphs past its end share its last
      * value, not their own ids. */
-    if (!can_drop_to_implicit || map_count != full_map_count) return false;
-    for (unsigned i = 0; i < map_count; i++)
-      if (output_map.arrayZ[i] != i) return false;
-    return true;
+    যদি (!can_drop_to_implicit || map_গুনতি != full_map_গুনতি) ফেরত মিথ্যা;
+    জন্য (unsigned i = 0; i < map_গুনতি; i++)
+      যদি (output_map.arrayZ[i] != i) ফেরত মিথ্যা;
+    ফেরত সত্য;
   }
-  hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+  hb_array_t<ধ্রুবক uint32_t> get_output_map () ধ্রুবক { ফেরত output_map.as_array (); }
 
-  protected:
-  unsigned int map_count;
-  unsigned int full_map_count;
-  bool can_drop_to_implicit;
-  hb_vector_t<unsigned int> max_inners;
-  unsigned int outer_bit_count;
-  unsigned int inner_bit_count;
+  সুরক্ষিত:
+  unsigned পূর্ণসংখ্যা map_গুনতি;
+  unsigned পূর্ণসংখ্যা full_map_গুনতি;
+  যৌক্তিক can_drop_to_implicit;
+  hb_vector_t<unsigned পূর্ণসংখ্যা> max_inners;
+  unsigned পূর্ণসংখ্যা outer_bit_গুনতি;
+  unsigned পূর্ণসংখ্যা inner_bit_গুনতি;
   hb_vector_t<uint32_t> output_map;
 };
 
-struct hvarvvar_subset_plan_t
+কাঠামো hvarvvar_subset_plan_t
 {
-  hvarvvar_subset_plan_t() : inner_maps (), index_map_plans () {}
+  hvarvvar_subset_plan_t() : inner_maps (), সূচক_map_plans () {}
   ~hvarvvar_subset_plan_t() { fini (); }
 
-  void init (const hb_array_t<const DeltaSetIndexMap *> &index_maps,
-	     const ItemVariationStore &_var_store,
-	     const hb_subset_plan_t *plan)
+  শূন্য init (ধ্রুবক hb_array_t<ধ্রুবক Delta_Set_সূচক_Map *> &সূচক_maps,
+	     ধ্রুবক ItemVariationStore &_var_store,
+	     ধ্রুবক hb_subset_plan_t *plan)
   {
-    index_map_plans.resize (index_maps.length);
+    সূচক_map_plans.resize (সূচক_maps.দৈর্ঘ্য);
 
     var_store = &_var_store;
-    inner_sets.resize (var_store->get_sub_table_count ());
-    for (unsigned int i = 0; i < inner_sets.length; i++)
+    inner_sets.resize (var_store->get_sub_table_গুনতি ());
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < inner_sets.দৈর্ঘ্য; i++)
       inner_sets[i] = hb_set_create ();
     adv_set = hb_set_create ();
 
-    inner_maps.resize (var_store->get_sub_table_count ());
+    inner_maps.resize (var_store->get_sub_table_গুনতি ());
 
-    if (unlikely (!index_map_plans.length || !inner_sets.length || !inner_maps.length)) return;
+    যদি (unlikely (!সূচক_map_plans.দৈর্ঘ্য || !inner_sets.দৈর্ঘ্য || !inner_maps.দৈর্ঘ্য)) ফেরত;
 
-    bool retain_adv_map = false;
-    index_map_plans[0].init (index_maps[0], outer_map, inner_sets, plan, false);
-    if (!index_maps[0])
+    যৌক্তিক retain_adv_map = মিথ্যা;
+    সূচক_map_plans[0].init (সূচক_maps[0], outer_map, inner_sets, plan, মিথ্যা);
+    যদি (!সূচক_maps[0])
     {
       retain_adv_map = plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
       outer_map.add (0);
-      for (hb_codepoint_t old_gid : plan->glyphset()->iter())
+      জন্য (hb_codepoint_t old_gid : plan->glyphset()->iter())
         inner_sets[0]->add (old_gid);
       hb_set_union (adv_set, inner_sets[0]);
     }
 
-    for (unsigned int i = 1; i < index_maps.length; i++)
-      index_map_plans[i].init (index_maps[i], outer_map, inner_sets, plan);
+    জন্য (unsigned পূর্ণসংখ্যা i = 1; i < সূচক_maps.দৈর্ঘ্য; i++)
+      সূচক_map_plans[i].init (সূচক_maps[i], outer_map, inner_sets, plan);
 
     outer_map.sort ();
 
-    if (retain_adv_map)
+    যদি (retain_adv_map)
     {
-      for (const auto &_ : plan->new_to_old_gid_list)
+      জন্য (ধ্রুবক auto &_ : plan->new_to_old_gid_list)
       {
         hb_codepoint_t old_gid = _.second;
 	inner_maps[0].add (old_gid);
       }
     }
-    else
+    অন্যথা
     {
       inner_maps[0].add_set (adv_set);
       hb_set_subtract (inner_sets[0], adv_set);
       inner_maps[0].add_set (inner_sets[0]);
     }
 
-    for (unsigned int i = 1; i < inner_maps.length; i++)
+    জন্য (unsigned পূর্ণসংখ্যা i = 1; i < inner_maps.দৈর্ঘ্য; i++)
       inner_maps[i].add_set (inner_sets[i]);
 
-    for (unsigned int i = 0; i < index_maps.length; i++)
-      index_map_plans[i].remap (index_maps[i], outer_map, inner_maps, plan);
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < সূচক_maps.দৈর্ঘ্য; i++)
+      সূচক_map_plans[i].remap (সূচক_maps[i], outer_map, inner_maps, plan);
   }
 
   /* remap */
-  bool remap_index_map_plans (const hb_subset_plan_t *plan,
-                              const hb_map_t& varidx_map)
+  যৌক্তিক remap_সূচক_map_plans (ধ্রুবক hb_subset_plan_t *plan,
+                              ধ্রুবক hb_map_t& varidx_map)
   {
-    for (unsigned i = 0; i < index_map_plans.length; i++)
-      if (!index_map_plans[i].remap_after_instantiation (plan, varidx_map))
-        return false;
-    return true;
+    জন্য (unsigned i = 0; i < সূচক_map_plans.দৈর্ঘ্য; i++)
+      যদি (!সূচক_map_plans[i].remap_after_instantiation (plan, varidx_map))
+        ফেরত মিথ্যা;
+    ফেরত সত্য;
   }
 
-  void fini ()
+  শূন্য fini ()
   {
-    for (unsigned int i = 0; i < inner_sets.length; i++)
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < inner_sets.দৈর্ঘ্য; i++)
       hb_set_destroy (inner_sets[i]);
     hb_set_destroy (adv_set);
     inner_maps.fini ();
-    index_map_plans.fini ();
+    সূচক_map_plans.fini ();
   }
 
   hb_inc_bimap_t outer_map;
   hb_vector_t<hb_inc_bimap_t> inner_maps;
-  hb_vector_t<index_map_subset_plan_t> index_map_plans;
-  const ItemVariationStore *var_store;
+  hb_vector_t<সূচক_map_subset_plan_t> সূচক_map_plans;
+  ধ্রুবক ItemVariationStore *var_store;
 
-  protected:
+  সুরক্ষিত:
   hb_vector_t<hb_set_t *> inner_sets;
   hb_set_t *adv_set;
 };
@@ -314,209 +314,209 @@ struct hvarvvar_subset_plan_t
 #define HB_OT_TAG_HVAR HB_TAG('H','V','A','R')
 #define HB_OT_TAG_VVAR HB_TAG('V','V','A','R')
 
-struct HVARVVAR
+কাঠামো HVARVVAR
 {
-  static constexpr hb_tag_t HVARTag = HB_OT_TAG_HVAR;
-  static constexpr hb_tag_t VVARTag = HB_OT_TAG_VVAR;
+  স্থির constexpr hb_tag_t HVARTag = HB_OT_TAG_HVAR;
+  স্থির constexpr hb_tag_t VVARTag = HB_OT_TAG_VVAR;
 
-  bool has_data () const { return version.major != 0; }
+  যৌক্তিক has_তথ্য () ধ্রুবক { ফেরত version.major != 0; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এই);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  varStore.sanitize (c, this) &&
-		  advMap.sanitize (c, this) &&
-		  lsbMap.sanitize (c, this) &&
-		  rsbMap.sanitize (c, this));
+		  varStore.sanitize (c, এই) &&
+		  advMap.sanitize (c, এই) &&
+		  lsbMap.sanitize (c, এই) &&
+		  rsbMap.sanitize (c, এই));
   }
 
-  const ItemVariationStore& get_var_store () const
-  { return this+varStore; }
+  ধ্রুবক ItemVariationStore& get_var_store () ধ্রুবক
+  { ফেরত এই+varStore; }
 
-  void listup_index_maps (hb_vector_t<const DeltaSetIndexMap *> &index_maps) const
+  শূন্য listup_সূচক_maps (hb_vector_t<ধ্রুবক Delta_Set_সূচক_Map *> &সূচক_maps) ধ্রুবক
   {
-    if (advMap) index_maps.push (&(this+advMap));
-    else index_maps.push (nullptr);
+    যদি (advMap) সূচক_maps.push (&(এই+advMap));
+    অন্যথা সূচক_maps.push (nullptr);
 
-    if (lsbMap) index_maps.push (&(this+lsbMap));
-    else index_maps.push (nullptr);
+    যদি (lsbMap) সূচক_maps.push (&(এই+lsbMap));
+    অন্যথা সূচক_maps.push (nullptr);
 
-    if (rsbMap) index_maps.push (&(this+rsbMap));
-    else index_maps.push (nullptr);
+    যদি (rsbMap) সূচক_maps.push (&(এই+rsbMap));
+    অন্যথা সূচক_maps.push (nullptr);
   }
 
-  bool serialize_index_maps (hb_serialize_context_t *c,
-			     const hb_array_t<index_map_subset_plan_t> &im_plans)
+  যৌক্তিক serialize_সূচক_maps (hb_serialize_context_t *c,
+			     ধ্রুবক hb_array_t<সূচক_map_subset_plan_t> &im_plans)
   {
-    TRACE_SERIALIZE (this);
-    if (im_plans[index_map_subset_plan_t::ADV_INDEX].is_identity ())
+    TRACE_SERIALIZE (এই);
+    যদি (im_plans[সূচক_map_subset_plan_t::ADV_সূচক].is_identity ())
       advMap = 0;
-    else if (unlikely (!advMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::ADV_INDEX])))
-      return_trace (false);
-    if (im_plans[index_map_subset_plan_t::LSB_INDEX].is_identity ())
+    অন্যথা যদি (unlikely (!advMap.serialize_serialize (c, im_plans[সূচক_map_subset_plan_t::ADV_সূচক])))
+      return_trace (মিথ্যা);
+    যদি (im_plans[সূচক_map_subset_plan_t::LSB_সূচক].is_identity ())
       lsbMap = 0;
-    else if (unlikely (!lsbMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::LSB_INDEX])))
-      return_trace (false);
-    if (im_plans[index_map_subset_plan_t::RSB_INDEX].is_identity ())
+    অন্যথা যদি (unlikely (!lsbMap.serialize_serialize (c, im_plans[সূচক_map_subset_plan_t::LSB_সূচক])))
+      return_trace (মিথ্যা);
+    যদি (im_plans[সূচক_map_subset_plan_t::RSB_সূচক].is_identity ())
       rsbMap = 0;
-    else if (unlikely (!rsbMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::RSB_INDEX])))
-      return_trace (false);
+    অন্যথা যদি (unlikely (!rsbMap.serialize_serialize (c, im_plans[সূচক_map_subset_plan_t::RSB_সূচক])))
+      return_trace (মিথ্যা);
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
   template <typename T>
-  bool _subset (hb_subset_context_t *c) const
+  যৌক্তিক _subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    TRACE_SUBSET (এই);
+    যদি (c->plan->all_axes_pinned)
+      return_trace (মিথ্যা);
 
     hvarvvar_subset_plan_t	hvar_plan;
-    hb_vector_t<const DeltaSetIndexMap *>
-				index_maps;
+    hb_vector_t<ধ্রুবক Delta_Set_সূচক_Map *>
+				সূচক_maps;
 
-    ((T*)this)->listup_index_maps (index_maps);
-    hvar_plan.init (index_maps.as_array (), this+varStore, c->plan);
+    ((T*)এই)->listup_সূচক_maps (সূচক_maps);
+    hvar_plan.init (সূচক_maps.as_array (), এই+varStore, c->plan);
 
     T *out = c->serializer->allocate_min<T> ();
-    if (unlikely (!out)) return_trace (false);
+    যদি (unlikely (!out)) return_trace (মিথ্যা);
 
     out->version.major = 1;
     out->version.minor = 0;
 
-    if (c->plan->normalized_coords)
+    যদি (c->plan->normalized_coords)
     {
       item_variations_t item_vars;
-      if (!item_vars.instantiate (this+varStore, c->plan,
-                                  advMap == 0 ? false : true,
-                                  false, /* use_no_variation_idx = false */
+      যদি (!item_vars.instantiate (এই+varStore, c->plan,
+                                  advMap == 0 ? মিথ্যা : সত্য,
+                                  মিথ্যা, /* use_no_variation_idx = false */
                                   hvar_plan.inner_maps.as_array ()))
-        return_trace (false);
+        return_trace (মিথ্যা);
 
-      if (!out->varStore.serialize_serialize (c->serializer,
+      যদি (!out->varStore.serialize_serialize (c->serializer,
                                               item_vars.has_long_word (),
                                               c->plan->axis_tags,
                                               item_vars.get_region_list (),
                                               item_vars.get_vardata_encodings ()))
-        return_trace (false);
+        return_trace (মিথ্যা);
 
       /* if varstore is optimized, remap output_map */
-      if (advMap)
+      যদি (advMap)
       {
-        if (!hvar_plan.remap_index_map_plans (c->plan, item_vars.get_varidx_map ()))
-          return_trace (false);
+        যদি (!hvar_plan.remap_সূচক_map_plans (c->plan, item_vars.get_varidx_map ()))
+          return_trace (মিথ্যা);
       }
     }
-    else
+    অন্যথা
     {
       /* avar2 partial instancing: cull unreachable regions. */
       hb_set_t dead_regions;
-      if (c->plan->has_avar2)
-	hvar_plan.var_store->collect_dead_regions (c->plan->axes_old_index_tag_map,
+      যদি (c->plan->has_avar2)
+	hvar_plan.var_store->collect_dead_regions (c->plan->axes_old_সূচক_tag_map,
 						   c->plan->avar2_reachable_ranges,
 						   dead_regions);
 
-      if (unlikely (!out->varStore
+      যদি (unlikely (!out->varStore
 		    .serialize_serialize (c->serializer,
 					  hvar_plan.var_store,
 					  hvar_plan.inner_maps.as_array (),
 					  dead_regions.get_population () ? &dead_regions : nullptr)))
-      return_trace (false);
+      return_trace (মিথ্যা);
     }
 
-    return_trace (out->T::serialize_index_maps (c->serializer,
-						hvar_plan.index_map_plans.as_array ()));
+    return_trace (out->T::serialize_সূচক_maps (c->serializer,
+						hvar_plan.সূচক_map_plans.as_array ()));
   }
 
   HB_ALWAYS_INLINE
-  float get_advance_delta_unscaled (hb_codepoint_t  glyph,
-				    const int *coords, unsigned int coord_count,
-				    hb_scalar_cache_t *store_cache = nullptr) const
+  দশমিক get_advance_delta_unscaled (hb_codepoint_t  glyph,
+				    ধ্রুবক পূর্ণসংখ্যা *coords, unsigned পূর্ণসংখ্যা coord_গুনতি,
+				    hb_scalar_cache_t *store_cache = nullptr) ধ্রুবক
   {
     /* Implicit mapping uses outer index zero and the glyph id as the
      * inner index. An oversized glyph id must not select another table. */
-    if (!advMap && glyph > 0xFFFFu) return 0.f;
-    uint32_t varidx = (this+advMap).map (glyph);
-    return (this+varStore).get_delta (varidx,
-				      coords, coord_count,
+    যদি (!advMap && glyph > 0xFFFFu) ফেরত 0.f;
+    uint32_t varidx = (এই+advMap).map (glyph);
+    ফেরত (এই+varStore).get_delta (varidx,
+				      coords, coord_গুনতি,
 				      store_cache);
   }
 
-  public:
+  সর্বজনীন:
   FixedVersion<>version;	/* Version of the metrics variation table
 				 * initially set to 0x00010000u */
   Offset32To<ItemVariationStore>
 		varStore;	/* Offset to item variation store table. */
-  Offset32To<DeltaSetIndexMap>
+  Offset32To<Delta_Set_সূচক_Map>
 		advMap;		/* Offset to advance var-idx mapping. */
-  Offset32To<DeltaSetIndexMap>
+  Offset32To<Delta_Set_সূচক_Map>
 		lsbMap;		/* Offset to lsb/tsb var-idx mapping. */
-  Offset32To<DeltaSetIndexMap>
+  Offset32To<Delta_Set_সূচক_Map>
 		rsbMap;		/* Offset to rsb/bsb var-idx mapping. */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (20);
 };
 
-struct HVAR : HVARVVAR {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HVAR;
-  bool subset (hb_subset_context_t *c) const { return HVARVVAR::_subset<HVAR> (c); }
+কাঠামো HVAR : HVARVVAR {
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_HVAR;
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক { ফেরত HVARVVAR::_subset<HVAR> (c); }
 };
-struct VVAR : HVARVVAR {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VVAR;
+কাঠামো VVAR : HVARVVAR {
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_VVAR;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (static_cast<const HVARVVAR *> (this)->sanitize (c) &&
-		  vorgMap.sanitize (c, this));
+    TRACE_SANITIZE (এই);
+    return_trace (static_cast<ধ্রুবক HVARVVAR *> (এই)->sanitize (c) &&
+		  vorgMap.sanitize (c, এই));
   }
 
-  void listup_index_maps (hb_vector_t<const DeltaSetIndexMap *> &index_maps) const
+  শূন্য listup_সূচক_maps (hb_vector_t<ধ্রুবক Delta_Set_সূচক_Map *> &সূচক_maps) ধ্রুবক
   {
-    HVARVVAR::listup_index_maps (index_maps);
-    if (vorgMap) index_maps.push (&(this+vorgMap));
-    else index_maps.push (nullptr);
+    HVARVVAR::listup_সূচক_maps (সূচক_maps);
+    যদি (vorgMap) সূচক_maps.push (&(এই+vorgMap));
+    অন্যথা সূচক_maps.push (nullptr);
   }
 
-  bool serialize_index_maps (hb_serialize_context_t *c,
-			     const hb_array_t<index_map_subset_plan_t> &im_plans)
+  যৌক্তিক serialize_সূচক_maps (hb_serialize_context_t *c,
+			     ধ্রুবক hb_array_t<সূচক_map_subset_plan_t> &im_plans)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!HVARVVAR::serialize_index_maps (c, im_plans)))
-      return_trace (false);
-    if (!im_plans[index_map_subset_plan_t::VORG_INDEX].get_map_count ())
+    TRACE_SERIALIZE (এই);
+    যদি (unlikely (!HVARVVAR::serialize_সূচক_maps (c, im_plans)))
+      return_trace (মিথ্যা);
+    যদি (!im_plans[সূচক_map_subset_plan_t::VORG_সূচক].get_map_গুনতি ())
       vorgMap = 0;
-    else if (unlikely (!vorgMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::VORG_INDEX])))
-      return_trace (false);
+    অন্যথা যদি (unlikely (!vorgMap.serialize_serialize (c, im_plans[সূচক_map_subset_plan_t::VORG_সূচক])))
+      return_trace (মিথ্যা);
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  bool subset (hb_subset_context_t *c) const { return HVARVVAR::_subset<VVAR> (c); }
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক { ফেরত HVARVVAR::_subset<VVAR> (c); }
 
   HB_ALWAYS_INLINE
-  float get_vorg_delta_unscaled (hb_codepoint_t glyph,
-				 const int *coords, unsigned int coord_count,
-				 hb_scalar_cache_t *store_cache = nullptr) const
+  দশমিক get_vorg_delta_unscaled (hb_codepoint_t glyph,
+				 ধ্রুবক পূর্ণসংখ্যা *coords, unsigned পূর্ণসংখ্যা coord_গুনতি,
+				 hb_scalar_cache_t *store_cache = nullptr) ধ্রুবক
   {
-    if (!vorgMap) return 0.f;
-    uint32_t varidx = (this+vorgMap).map (glyph);
-    return (this+varStore).get_delta (varidx,
-				      coords, coord_count,
+    যদি (!vorgMap) ফেরত 0.f;
+    uint32_t varidx = (এই+vorgMap).map (glyph);
+    ফেরত (এই+varStore).get_delta (varidx,
+				      coords, coord_গুনতি,
 				      store_cache);
   }
 
-  protected:
-  Offset32To<DeltaSetIndexMap>
+  সুরক্ষিত:
+  Offset32To<Delta_Set_সূচক_Map>
 		vorgMap;	/* Offset to vertical-origin var-idx mapping. */
 
-  public:
-  DEFINE_SIZE_STATIC (24);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (24);
 };
 
 } /* namespace OT */

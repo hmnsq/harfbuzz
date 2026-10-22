@@ -25,17 +25,17 @@
 #ifndef HB_PAINT_EXTENTS_HH
 #define HB_PAINT_EXTENTS_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-paint.h"
 
-#include "hb-geometry.hh"
+#অন্তর্ভাব "hb-geometry.hh"
 
 
-typedef struct  hb_paint_extents_context_t hb_paint_extents_context_t;
+প্রকারলেখ কাঠামো  hb_paint_extents_context_t hb_paint_extents_context_t;
 
-struct hb_paint_extents_context_t
+কাঠামো hb_paint_extents_context_t
 {
-  void clear ()
+  শূন্য clear ()
   {
     transforms.clear ();
     clips.clear ();
@@ -43,10 +43,10 @@ struct hb_paint_extents_context_t
     /* COLR scratch storage is zero-allocated and reused without running
      * constructors.  Distinguish that state from an explicitly requested
      * zero budget. */
-    if (unlikely (!budget_initialized))
+    যদি (unlikely (!budget_initialized))
     {
       budget = HB_BUDGET_DEFAULT;
-      budget_initialized = true;
+      budget_initialized = সত্য;
     }
     recharge_budget ();
 
@@ -62,80 +62,80 @@ struct hb_paint_extents_context_t
 
   hb_extents_t<> get_extents ()
   {
-    return groups.tail().extents;
+    ফেরত groups.লেজ().extents;
   }
 
-  bool is_bounded ()
+  যৌক্তিক is_bounded ()
   {
-    return groups.tail().status != hb_bounds_t<>::UNBOUNDED;
+    ফেরত groups.লেজ().status != hb_bounds_t<>::UNBOUNDED;
   }
 
-  void push_transform (const hb_transform_t<> &trans)
+  শূন্য ঠেলো_transform (ধ্রুবক hb_transform_t<> &trans)
   {
-    hb_transform_t<> t = transforms.tail ();
+    hb_transform_t<> t = transforms.লেজ ();
     t.multiply (trans);
     transforms.push (t);
   }
 
-  void pop_transform ()
+  শূন্য বের_করো_transform ()
   {
-    transforms.pop ();
+    transforms.বের_করো ();
   }
 
-  void push_clip (hb_extents_t<> extents)
+  শূন্য ঠেলো_clip (hb_extents_t<> extents)
   {
     /* Transform extents and push a new clip. */
-    const hb_transform_t<> &t = transforms.tail ();
+    ধ্রুবক hb_transform_t<> &t = transforms.লেজ ();
     t.transform_extents (extents);
 
     auto bounds = hb_bounds_t<> {extents};
-    bounds.intersect (clips.tail ());
+    bounds.intersect (clips.লেজ ());
 
     clips.push (bounds);
   }
 
-  void pop_clip ()
+  শূন্য বের_করো_clip ()
   {
-    clips.pop ();
+    clips.বের_করো ();
   }
 
-  void push_group ()
+  শূন্য ঠেলো_group ()
   {
     groups.push (hb_bounds_t<> {hb_bounds_t<>::EMPTY});
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  শূন্য বের_করো_group (hb_paint_composite_mode_t mode)
   {
-    const hb_bounds_t<> src_bounds = groups.pop ();
-    hb_bounds_t<> &backdrop_bounds = groups.tail ();
+    ধ্রুবক hb_bounds_t<> src_bounds = groups.বের_করো ();
+    hb_bounds_t<> &backdrop_bounds = groups.লেজ ();
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    নির্বাচন ((পূর্ণসংখ্যা) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
+      ক্ষেত্র HB_PAINT_COMPOSITE_MODE_CLEAR:
 	backdrop_bounds.status = hb_bounds_t<>::EMPTY;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+	বিরতি;
+      ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC:
+      ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_OUT:
 	backdrop_bounds = src_bounds;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	বিরতি;
+      ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST:
+      ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+	বিরতি;
+      ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_IN:
 	backdrop_bounds.intersect (src_bounds);
-	break;
-      default:
+	বিরতি;
+      পূর্বনির্ধারিত:
 	backdrop_bounds.union_ (src_bounds);
-	break;
+	বিরতি;
      }
   }
 
-  void paint ()
+  শূন্য paint ()
   {
-    const hb_bounds_t<> &clip = clips.tail ();
-    hb_bounds_t<> &group = groups.tail ();
+    ধ্রুবক hb_bounds_t<> &clip = clips.লেজ ();
+    hb_bounds_t<> &group = groups.লেজ ();
 
     group.union_ (clip);
   }
@@ -144,16 +144,16 @@ struct hb_paint_extents_context_t
    * Outline traversal and consumed segments charge the same live
    * counter. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  bool budget_initialized = true;
+  যৌক্তিক budget_initialized = সত্য;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  শূন্য recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  protected:
+  সুরক্ষিত:
   hb_vector_t<hb_transform_t<>> transforms;
   hb_vector_t<hb_bounds_t<>> clips;
   hb_vector_t<hb_bounds_t<>> groups;

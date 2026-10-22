@@ -27,7 +27,7 @@
 #ifndef HB_OT_VAR_FVAR_TABLE_HH
 #define HB_OT_VAR_FVAR_TABLE_HH
 
-#include "hb-open-type.hh"
+#অন্তর্ভাব "hb-open-type.hh"
 
 /*
  * fvar -- Font Variations
@@ -37,106 +37,106 @@
 #define HB_OT_TAG_fvar HB_TAG('f','v','a','r')
 
 
-namespace OT {
+নামাকাশ OT {
 
-static bool axis_coord_pinned_or_within_axis_range (const hb_array_t<const F16DOT16> coords,
-                                                    unsigned axis_index,
+স্থির যৌক্তিক axis_coord_pinned_or_within_axis_range (ধ্রুবক hb_array_t<ধ্রুবক F16DOT16> coords,
+                                                    unsigned axis_সূচক,
                                                     Triple axis_limit)
 {
-  float axis_coord = coords[axis_index].to_float ();
-  if (axis_limit.is_point ())
+  দশমিক axis_coord = coords[axis_সূচক].to_float ();
+  যদি (axis_limit.is_point ())
   {
-    if (axis_limit.minimum != axis_coord)
-      return false;
+    যদি (axis_limit.minimum != axis_coord)
+      ফেরত মিথ্যা;
   }
-  else
+  অন্যথা
   {
-    if (axis_coord < axis_limit.minimum ||
+    যদি (axis_coord < axis_limit.minimum ||
         axis_coord > axis_limit.maximum)
-      return false;
+      ফেরত মিথ্যা;
   }
-  return true;
+  ফেরত সত্য;
 }
 
-struct InstanceRecord
+কাঠামো InstanceRecord
 {
-  friend struct fvar;
+  friend কাঠামো fvar;
 
-  hb_array_t<const F16DOT16> get_coordinates (unsigned int axis_count) const
-  { return coordinatesZ.as_array (axis_count); }
+  hb_array_t<ধ্রুবক F16DOT16> get_coordinates (unsigned পূর্ণসংখ্যা axis_গুনতি) ধ্রুবক
+  { ফেরত coordinatesZ.as_array (axis_গুনতি); }
 
-  bool keep_instance (unsigned axis_count,
-                      const hb_map_t *axes_index_tag_map,
-                      const hb_hashmap_t<hb_tag_t, Triple> *axes_location) const
+  যৌক্তিক keep_instance (unsigned axis_গুনতি,
+                      ধ্রুবক hb_map_t *axes_সূচক_tag_map,
+                      ধ্রুবক hb_hashmap_t<hb_tag_t, Triple> *axes_location) ধ্রুবক
   {
-    if (axes_location->is_empty ()) return true;
-    const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    for (unsigned i = 0 ; i < axis_count; i++)
+    যদি (axes_location->is_empty ()) ফেরত সত্য;
+    ধ্রুবক hb_array_t<ধ্রুবক F16DOT16> coords = get_coordinates (axis_গুনতি);
+    জন্য (unsigned i = 0 ; i < axis_গুনতি; i++)
     {
       uint32_t *axis_tag;
-      if (!axes_index_tag_map->has (i, &axis_tag))
-        return false;
-      if (!axes_location->has (*axis_tag))
-        continue;
+      যদি (!axes_সূচক_tag_map->has (i, &axis_tag))
+        ফেরত মিথ্যা;
+      যদি (!axes_location->has (*axis_tag))
+        চালু;
 
       Triple axis_limit = axes_location->get (*axis_tag);
-      if (!axis_coord_pinned_or_within_axis_range (coords, i, axis_limit))
-        return false;
+      যদি (!axis_coord_pinned_or_within_axis_range (coords, i, axis_limit))
+        ফেরত মিথ্যা;
     }
-    return true;
+    ফেরত সত্য;
   }
 
-  bool subset (hb_subset_context_t *c,
-               unsigned axis_count,
-               bool has_postscript_nameid) const
+  যৌক্তিক subset (hb_subset_context_t *c,
+               unsigned axis_গুনতি,
+               যৌক্তিক has_postscript_nameid) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    if (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (false);
-    if (unlikely (!c->serializer->embed (flags))) return_trace (false);
+    TRACE_SUBSET (এই);
+    যদি (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (মিথ্যা);
+    যদি (unlikely (!c->serializer->embed (flags))) return_trace (মিথ্যা);
 
-    const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    const hb_hashmap_t<hb_tag_t, Triple> *axes_location = &c->plan->user_axes_location;
-    for (unsigned i = 0 ; i < axis_count; i++)
+    ধ্রুবক hb_array_t<ধ্রুবক F16DOT16> coords = get_coordinates (axis_গুনতি);
+    ধ্রুবক hb_hashmap_t<hb_tag_t, Triple> *axes_location = &c->plan->user_axes_location;
+    জন্য (unsigned i = 0 ; i < axis_গুনতি; i++)
     {
       uint32_t *axis_tag;
       Triple *axis_limit;
       // only keep instances whose coordinates == pinned axis location
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag)) return_trace (false);
-      if (axes_location->has (*axis_tag, &axis_limit))
+      যদি (!c->plan->axes_old_সূচক_tag_map.has (i, &axis_tag)) return_trace (মিথ্যা);
+      যদি (axes_location->has (*axis_tag, &axis_limit))
       {
-        if (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_limit))
-          return_trace (false);
+        যদি (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_limit))
+          return_trace (মিথ্যা);
 
         //skip axes dropped from fvar (pinned; or self-contained under avar2,
         //where other pinned axes stay in fvar as hidden)
-        if (axis_limit->is_point () && !c->plan->axes_index_map.has (i))
-          continue;
+        যদি (axis_limit->is_point () && !c->plan->axes_সূচক_map.has (i))
+          চালু;
       }
 
-      if (!c->serializer->embed (coords[i]))
-        return_trace (false);
+      যদি (!c->serializer->embed (coords[i]))
+        return_trace (মিথ্যা);
     }
 
-    if (has_postscript_nameid)
+    যদি (has_postscript_nameid)
     {
       NameID name_id;
       name_id = StructAfter<NameID> (coords);
-      if (!c->serializer->embed (name_id))
-        return_trace (false);
+      যদি (!c->serializer->embed (name_id))
+        return_trace (মিথ্যা);
     }
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int axis_count) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c, unsigned পূর্ণসংখ্যা axis_গুনতি) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই) &&
 		  hb_barrier () &&
-		  c->check_array (coordinatesZ.arrayZ, axis_count));
+		  c->check_array (coordinatesZ.arrayZ, axis_গুনতি));
   }
 
-  protected:
+  সুরক্ষিত:
   NameID	subfamilyNameID;/* The name ID for entries in the 'name' table
 				 * that provide subfamily names for this instance. */
   HBUINT16	flags;		/* Reserved for future use — set to 0. */
@@ -146,352 +146,352 @@ struct InstanceRecord
   //				  * table that provide PostScript names for this
   //				  * instance. */
 
-  public:
-  DEFINE_SIZE_UNBOUNDED (4);
+  সর্বজনীন:
+  DEFINE_আকার_UNBOUNDED (4);
 };
 
-struct AxisRecord
+কাঠামো AxisRecord
 {
-  int cmp (hb_tag_t key) const { return axisTag.cmp (key); }
+  পূর্ণসংখ্যা cmp (hb_tag_t key) ধ্রুবক { ফেরত axisTag.cmp (key); }
 
-  enum
+  গণনা
   {
     AXIS_FLAG_HIDDEN	= 0x0001,
   };
 
 #ifndef HB_DISABLE_DEPRECATED
-  void get_axis_deprecated (hb_ot_var_axis_t *info) const
+  শূন্য get_axis_deprecated (hb_ot_var_axis_t *info) ধ্রুবক
   {
     info->tag = axisTag;
     info->name_id = axisNameID;
-    get_coordinates (info->min_value, info->default_value, info->max_value);
+    get_coordinates (info->min_মান, info->default_মান, info->max_মান);
   }
 #endif
 
-  void get_axis_info (unsigned axis_index, hb_ot_var_axis_info_t *info) const
+  শূন্য get_axis_info (unsigned axis_সূচক, hb_ot_var_axis_info_t *info) ধ্রুবক
   {
-    info->axis_index = axis_index;
+    info->axis_সূচক = axis_সূচক;
     info->tag = axisTag;
     info->name_id = axisNameID;
-    info->flags = (hb_ot_var_axis_flags_t) (unsigned int) flags;
-    get_coordinates (info->min_value, info->default_value, info->max_value);
+    info->flags = (hb_ot_var_axis_flags_t) (unsigned পূর্ণসংখ্যা) flags;
+    get_coordinates (info->min_মান, info->default_মান, info->max_মান);
     info->reserved = 0;
   }
 
-  hb_tag_t get_axis_tag () const { return axisTag; }
+  hb_tag_t get_axis_tag () ধ্রুবক { ফেরত axisTag; }
 
-  bool is_hidden () const { return flags & AXIS_FLAG_HIDDEN; }
+  যৌক্তিক is_hidden () ধ্রুবক { ফেরত flags & AXIS_FLAG_HIDDEN; }
 
-  float normalize_axis_value (float v) const
+  দশমিক normalize_axis_মান (দশমিক v) ধ্রুবক
   {
-    float min_value, default_value, max_value;
-    get_coordinates (min_value, default_value, max_value);
+    দশমিক min_মান, default_মান, max_মান;
+    get_coordinates (min_মান, default_মান, max_মান);
 
-    v = hb_clamp (v, min_value, max_value);
+    v = hb_clamp (v, min_মান, max_মান);
 
-    if (v == default_value)
-      return 0;
-    else if (v < default_value)
-      return (v - default_value) / (default_value - min_value);
-    else
-      return (v - default_value) / (max_value - default_value);
+    যদি (v == default_মান)
+      ফেরত 0;
+    অন্যথা যদি (v < default_মান)
+      ফেরত (v - default_মান) / (default_মান - min_মান);
+    অন্যথা
+      ফেরত (v - default_মান) / (max_মান - default_মান);
   }
 
-  hb_ot_name_id_t get_name_id () const { return axisNameID; }
+  hb_ot_name_id_t get_name_id () ধ্রুবক { ফেরত axisNameID; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
-  void get_coordinates (float &min, float &default_, float &max) const
+  শূন্য get_coordinates (দশমিক &min, দশমিক &default_, দশমিক &max) ধ্রুবক
   {
-    default_ = defaultValue.to_float ();
+    default_ = default_মান_2.to_float ();
     /* Ensure order, to simplify client math. */
-    min = hb_min (default_, minValue.to_float ());
-    max = hb_max (default_, maxValue.to_float ());
+    min = hb_min (default_, min_মান_2.to_float ());
+    max = hb_max (default_, max_মান_2.to_float ());
   }
 
-  float get_default () const
+  দশমিক get_default () ধ্রুবক
   {
-    return defaultValue.to_float ();
+    ফেরত default_মান_2.to_float ();
   }
 
-  TripleDistances get_triple_distances () const
+  TripleDistances get_triple_distances () ধ্রুবক
   {
-    float min, default_, max;
+    দশমিক min, default_, max;
     get_coordinates (min, default_, max);
-    return TripleDistances (min, default_, max);
+    ফেরত TripleDistances (min, default_, max);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এই);
+    auto *out = c->serializer->embed (এই);
+    যদি (unlikely (!out)) return_trace (মিথ্যা);
 
-    const hb_hashmap_t<hb_tag_t, Triple>& user_axes_location = c->plan->user_axes_location;
+    ধ্রুবক hb_hashmap_t<hb_tag_t, Triple>& user_axes_location = c->plan->user_axes_location;
     Triple *axis_limit;
-    if (user_axes_location.has (axisTag, &axis_limit))
+    যদি (user_axes_location.has (axisTag, &axis_limit))
     {
-      if (c->plan->has_avar2 && axis_limit->is_point ())
+      যদি (c->plan->has_avar2 && axis_limit->is_point ())
       {
         /* Pinned axis in avar2 mode: keep in fvar as hidden with
          * min=default=max=pinned_value. */
-        out->minValue.set_float (axis_limit->middle);
-        out->defaultValue.set_float (axis_limit->middle);
-        out->maxValue.set_float (axis_limit->middle);
+        out->min_মান_2.set_float (axis_limit->মধ্য);
+        out->default_মান_2.set_float (axis_limit->মধ্য);
+        out->max_মান_2.set_float (axis_limit->মধ্য);
         out->flags = out->flags | (HBUINT16) AXIS_FLAG_HIDDEN;
       }
-      else
+      অন্যথা
       {
-        out->minValue.set_float (axis_limit->minimum);
-        out->defaultValue.set_float (axis_limit->middle);
-        out->maxValue.set_float (axis_limit->maximum);
+        out->min_মান_2.set_float (axis_limit->minimum);
+        out->default_মান_2.set_float (axis_limit->মধ্য);
+        out->max_মান_2.set_float (axis_limit->maximum);
       }
     }
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  public:
+  সর্বজনীন:
   Tag		axisTag;	/* Tag identifying the design variation for the axis. */
-  protected:
-  F16DOT16	minValue;	/* The minimum coordinate value for the axis. */
-  F16DOT16	defaultValue;	/* The default coordinate value for the axis. */
-  F16DOT16	maxValue;	/* The maximum coordinate value for the axis. */
-  public:
+  সুরক্ষিত:
+  F16DOT16	min_মান_2;	/* The minimum coordinate value for the axis. */
+  F16DOT16	default_মান_2;	/* The default coordinate value for the axis. */
+  F16DOT16	max_মান_2;	/* The maximum coordinate value for the axis. */
+  সর্বজনীন:
   HBUINT16	flags;		/* Axis flags. */
   NameID	axisNameID;	/* The name ID for entries in the 'name' table that
 				 * provide a display name for this axis. */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (20);
 };
 
-struct fvar
+কাঠামো fvar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_fvar;
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_fvar;
 
-  bool has_data () const { return version.to_int (); }
+  যৌক্তিক has_তথ্য () ধ্রুবক { ফেরত version.to_int (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এই);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  c->check_struct (এই) &&
 		  hb_barrier () &&
-		  axisSize == 20 && /* Assumed in our code. */
-		  instanceSize >= axisCount * 4 + 4 &&
+		  axis_আকার == 20 && /* Assumed in our code. */
+		  instance_আকার >= axis_গুনতি_2 * 4 + 4 &&
 		  get_axes ().sanitize (c) &&
 		  c->check_range (&StructAfter<InstanceRecord> (get_axes ()),
-				  instanceCount, instanceSize));
+				  instance_গুনতি, instance_আকার));
   }
 
-  unsigned int get_axis_count () const { return axisCount; }
+  unsigned পূর্ণসংখ্যা get_axis_গুনতি () ধ্রুবক { ফেরত axis_গুনতি_2; }
 
 #ifndef HB_DISABLE_DEPRECATED
-  unsigned int get_axes_deprecated (unsigned int      start_offset,
-				    unsigned int     *axes_count /* IN/OUT */,
-				    hb_ot_var_axis_t *axes_array /* OUT */) const
+  unsigned পূর্ণসংখ্যা get_axes_deprecated (unsigned পূর্ণসংখ্যা      start_offset,
+				    unsigned পূর্ণসংখ্যা     *axes_গুনতি /* IN/OUT */,
+				    hb_ot_var_axis_t *axes_array /* OUT */) ধ্রুবক
   {
-    if (axes_count && axes_array)
+    যদি (axes_গুনতি && axes_array)
     {
-      hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
+      hb_array_t<ধ্রুবক AxisRecord> arr = get_axes ().sub_array (start_offset, axes_গুনতি);
+      জন্য (unsigned i = 0; i < arr.দৈর্ঘ্য; ++i)
 	arr[i].get_axis_deprecated (&axes_array[i]);
     }
-    return axisCount;
+    ফেরত axis_গুনতি_2;
   }
 #endif
 
-  unsigned int get_axis_infos (unsigned int           start_offset,
-			       unsigned int          *axes_count /* IN/OUT */,
-			       hb_ot_var_axis_info_t *axes_array /* OUT */) const
+  unsigned পূর্ণসংখ্যা get_axis_infos (unsigned পূর্ণসংখ্যা           start_offset,
+			       unsigned পূর্ণসংখ্যা          *axes_গুনতি /* IN/OUT */,
+			       hb_ot_var_axis_info_t *axes_array /* OUT */) ধ্রুবক
   {
-    if (axes_count && axes_array)
+    যদি (axes_গুনতি && axes_array)
     {
-      hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
+      hb_array_t<ধ্রুবক AxisRecord> arr = get_axes ().sub_array (start_offset, axes_গুনতি);
+      জন্য (unsigned i = 0; i < arr.দৈর্ঘ্য; ++i)
 	arr[i].get_axis_info (start_offset + i, &axes_array[i]);
     }
-    return axisCount;
+    ফেরত axis_গুনতি_2;
   }
 
 #ifndef HB_DISABLE_DEPRECATED
-  bool
-  find_axis_deprecated (hb_tag_t tag, unsigned *axis_index, hb_ot_var_axis_t *info) const
+  যৌক্তিক
+  find_axis_deprecated (hb_tag_t tag, unsigned *axis_সূচক, hb_ot_var_axis_t *info) ধ্রুবক
   {
     unsigned i;
-    if (!axis_index) axis_index = &i;
-    *axis_index = HB_OT_VAR_NO_AXIS_INDEX;
+    যদি (!axis_সূচক) axis_সূচক = &i;
+    *axis_সূচক = HB_OT_VAR_NO_AXIS_সূচক;
     auto axes = get_axes ();
-    return axes.lfind (tag, axis_index) && ((void) axes[*axis_index].get_axis_deprecated (info), true);
+    ফেরত axes.lfind (tag, axis_সূচক) && ((শূন্য) axes[*axis_সূচক].get_axis_deprecated (info), সত্য);
   }
 #endif
-  bool
-  find_axis_info (hb_tag_t tag, hb_ot_var_axis_info_t *info) const
+  যৌক্তিক
+  find_axis_info (hb_tag_t tag, hb_ot_var_axis_info_t *info) ধ্রুবক
   {
     unsigned i;
     auto axes = get_axes ();
-    return axes.lfind (tag, &i) && ((void) axes[i].get_axis_info (i, info), true);
+    ফেরত axes.lfind (tag, &i) && ((শূন্য) axes[i].get_axis_info (i, info), সত্য);
   }
 
-  float normalize_axis_value (unsigned int axis_index, float v) const
-  { return get_axes ()[axis_index].normalize_axis_value (v); }
+  দশমিক normalize_axis_মান (unsigned পূর্ণসংখ্যা axis_সূচক, দশমিক v) ধ্রুবক
+  { ফেরত get_axes ()[axis_সূচক].normalize_axis_মান (v); }
 
-  unsigned int get_instance_count () const { return instanceCount; }
+  unsigned পূর্ণসংখ্যা get_instance_গুনতি () ধ্রুবক { ফেরত instance_গুনতি; }
 
-  hb_ot_name_id_t get_instance_subfamily_name_id (unsigned int instance_index) const
+  hb_ot_name_id_t get_instance_subfamily_name_id (unsigned পূর্ণসংখ্যা instance_সূচক) ধ্রুবক
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    return instance->subfamilyNameID;
+    ধ্রুবক InstanceRecord *instance = get_instance (instance_সূচক);
+    যদি (unlikely (!instance)) ফেরত HB_OT_NAME_ID_INVALID;
+    ফেরত instance->subfamilyNameID;
   }
 
-  hb_ot_name_id_t get_instance_postscript_name_id (unsigned int instance_index) const
+  hb_ot_name_id_t get_instance_postscript_name_id (unsigned পূর্ণসংখ্যা instance_সূচক) ধ্রুবক
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    if (instanceSize >= axisCount * 4 + 6)
-      return StructAfter<NameID> (instance->get_coordinates (axisCount));
-    return HB_OT_NAME_ID_INVALID;
+    ধ্রুবক InstanceRecord *instance = get_instance (instance_সূচক);
+    যদি (unlikely (!instance)) ফেরত HB_OT_NAME_ID_INVALID;
+    যদি (instance_আকার >= axis_গুনতি_2 * 4 + 6)
+      ফেরত StructAfter<NameID> (instance->get_coordinates (axis_গুনতি_2));
+    ফেরত HB_OT_NAME_ID_INVALID;
   }
 
-  unsigned int get_instance_coords (unsigned int  instance_index,
-				    unsigned int *coords_length, /* IN/OUT */
-				    float        *coords         /* OUT */) const
+  unsigned পূর্ণসংখ্যা get_instance_coords (unsigned পূর্ণসংখ্যা  instance_সূচক,
+				    unsigned পূর্ণসংখ্যা *coords_দৈর্ঘ্য, /* IN/OUT */
+				    দশমিক        *coords         /* OUT */) ধ্রুবক
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance))
+    ধ্রুবক InstanceRecord *instance = get_instance (instance_সূচক);
+    যদি (unlikely (!instance))
     {
-      if (coords_length)
-	*coords_length = 0;
-      return 0;
+      যদি (coords_দৈর্ঘ্য)
+	*coords_দৈর্ঘ্য = 0;
+      ফেরত 0;
     }
 
-    if (coords_length && *coords_length && coords)
+    যদি (coords_দৈর্ঘ্য && *coords_দৈর্ঘ্য && coords)
     {
-      hb_array_t<const F16DOT16> instanceCoords = instance->get_coordinates (axisCount)
-							 .sub_array (0, coords_length);
-      for (unsigned int i = 0; i < instanceCoords.length; i++)
+      hb_array_t<ধ্রুবক F16DOT16> instanceCoords = instance->get_coordinates (axis_গুনতি_2)
+							 .sub_array (0, coords_দৈর্ঘ্য);
+      জন্য (unsigned পূর্ণসংখ্যা i = 0; i < instanceCoords.দৈর্ঘ্য; i++)
 	coords[i] = instanceCoords.arrayZ[i].to_float ();
     }
-    return axisCount;
+    ফেরত axis_গুনতি_2;
   }
 
-  void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
-			 hb_map_t *axes_old_index_tag_map,
-			 hb_set_t *nameids  /* IN/OUT */) const
+  শূন্য collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
+			 hb_map_t *axes_old_সূচক_tag_map,
+			 hb_set_t *nameids  /* IN/OUT */) ধ্রুবক
   {
-    if (!has_data ()) return;
+    যদি (!has_তথ্য ()) ফেরত;
 
     auto axis_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
+    জন্য (unsigned i = 0 ; i < (unsigned)axis_গুনতি_2; i++)
     {
       hb_tag_t axis_tag = axis_records[i].get_axis_tag ();
-      if (user_axes_location->has (axis_tag) &&
+      যদি (user_axes_location->has (axis_tag) &&
           user_axes_location->get (axis_tag).is_point ())
-        continue;
+        চালু;
 
       nameids->add (axis_records[i].get_name_id ());
     }
 
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    জন্য (unsigned i = 0 ; i < (unsigned)instance_গুনতি; i++)
     {
-      const InstanceRecord *instance = get_instance (i);
+      ধ্রুবক InstanceRecord *instance = get_instance (i);
 
-      if (!instance->keep_instance (axisCount, axes_old_index_tag_map, user_axes_location))
-        continue;
+      যদি (!instance->keep_instance (axis_গুনতি_2, axes_old_সূচক_tag_map, user_axes_location))
+        চালু;
 
       nameids->add (instance->subfamilyNameID);
 
-      if (instanceSize >= axisCount * 4 + 6)
+      যদি (instance_আকার >= axis_গুনতি_2 * 4 + 6)
       {
-        unsigned post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axisCount));
-        if (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->add (post_script_name_id);
+        unsigned post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axis_গুনতি_2));
+        যদি (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->add (post_script_name_id);
       }
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    unsigned retained_axis_count = c->plan->axes_index_map.get_population ();
-    if (!retained_axis_count) //all axes are pinned
-      return_trace (false);
+    TRACE_SUBSET (এই);
+    unsigned retained_axis_গুনতি = c->plan->axes_সূচক_map.get_population ();
+    যদি (!retained_axis_গুনতি) //all axes are pinned
+      return_trace (মিথ্যা);
 
-    fvar *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    fvar *out = c->serializer->embed (এই);
+    যদি (unlikely (!out)) return_trace (মিথ্যা);
 
-    if (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    যদি (!c->serializer->check_assign (out->axis_গুনতি_2, retained_axis_গুনতি, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (মিথ্যা);
 
-    bool has_postscript_nameid = false;
-    if (instanceSize >= axisCount * 4 + 6)
-      has_postscript_nameid = true;
+    যৌক্তিক has_postscript_nameid = মিথ্যা;
+    যদি (instance_আকার >= axis_গুনতি_2 * 4 + 6)
+      has_postscript_nameid = সত্য;
 
-    if (!c->serializer->check_assign (out->instanceSize, retained_axis_count * 4 + (has_postscript_nameid ? 6 : 4),
+    যদি (!c->serializer->check_assign (out->instance_আকার, retained_axis_গুনতি * 4 + (has_postscript_nameid ? 6 : 4),
                                       HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+      return_trace (মিথ্যা);
 
     auto axes_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
+    জন্য (unsigned i = 0 ; i < (unsigned)axis_গুনতি_2; i++)
     {
-      if (!c->plan->axes_index_map.has (i)) continue;
-      if (unlikely (!axes_records[i].subset (c)))
-        return_trace (false);
+      যদি (!c->plan->axes_সূচক_map.has (i)) চালু;
+      যদি (unlikely (!axes_records[i].subset (c)))
+        return_trace (মিথ্যা);
     }
 
-    if (!c->serializer->check_assign (out->firstAxis, get_size (), HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    যদি (!c->serializer->check_assign (out->firstAxis, get_আকার (), HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (মিথ্যা);
 
-    unsigned num_retained_instances = 0;
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    unsigned অঙ্ক_retained_instances = 0;
+    জন্য (unsigned i = 0 ; i < (unsigned)instance_গুনতি; i++)
     {
-      const InstanceRecord *instance = get_instance (i);
+      ধ্রুবক InstanceRecord *instance = get_instance (i);
       auto snap = c->serializer->snapshot ();
-      if (!instance->subset (c, axisCount, has_postscript_nameid))
+      যদি (!instance->subset (c, axis_গুনতি_2, has_postscript_nameid))
         c->serializer->revert (snap);
-      else
-        num_retained_instances++;
+      অন্যথা
+        অঙ্ক_retained_instances++;
     }
 
-    return_trace (c->serializer->check_assign (out->instanceCount, num_retained_instances, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_assign (out->instance_গুনতি, অঙ্ক_retained_instances, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  public:
-  hb_array_t<const AxisRecord> get_axes () const
-  { return hb_array (&(this+firstAxis), axisCount); }
+  সর্বজনীন:
+  hb_array_t<ধ্রুবক AxisRecord> get_axes () ধ্রুবক
+  { ফেরত hb_array (&(এই+firstAxis), axis_গুনতি_2); }
 
-  const InstanceRecord *get_instance (unsigned int i) const
+  ধ্রুবক InstanceRecord *get_instance (unsigned পূর্ণসংখ্যা i) ধ্রুবক
   {
-    if (unlikely (i >= instanceCount)) return nullptr;
-   return &StructAtOffset<InstanceRecord> (&StructAfter<InstanceRecord> (get_axes ()),
-					   i * instanceSize);
+    যদি (unlikely (i >= instance_গুনতি)) ফেরত nullptr;
+   ফেরত &StructAtOffset<InstanceRecord> (&StructAfter<InstanceRecord> (get_axes ()),
+					   i * instance_আকার);
   }
 
-  protected:
+  সুরক্ষিত:
   FixedVersion<>version;	/* Version of the fvar table
 				 * initially set to 0x00010000u */
   Offset16To<AxisRecord>
 		firstAxis;	/* Offset in bytes from the beginning of the table
 				 * to the start of the AxisRecord array. */
   HBUINT16	reserved;	/* This field is permanently reserved. Set to 2. */
-  HBUINT16	axisCount;	/* The number of variation axes in the font (the
+  HBUINT16	axis_গুনতি_2;	/* The number of variation axes in the font (the
 				 * number of records in the axes array). */
-  HBUINT16	axisSize;	/* The size in bytes of each VariationAxisRecord —
+  HBUINT16	axis_আকার;	/* The size in bytes of each VariationAxisRecord —
 				 * set to 20 (0x0014) for this version. */
-  HBUINT16	instanceCount;	/* The number of named instances defined in the font
+  HBUINT16	instance_গুনতি;	/* The number of named instances defined in the font
 				 * (the number of records in the instances array). */
-  HBUINT16	instanceSize;	/* The size in bytes of each InstanceRecord — set
+  HBUINT16	instance_আকার;	/* The size in bytes of each InstanceRecord — set
 				 * to either axisCount * sizeof(F16DOT16) + 4, or to
 				 * axisCount * sizeof(F16DOT16) + 6. */
 
-  public:
-  DEFINE_SIZE_STATIC (16);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (16);
 };
 
 } /* namespace OT */

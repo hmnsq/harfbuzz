@@ -32,12 +32,12 @@
 #ifndef HB_ATOMIC_HH
 #define HB_ATOMIC_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-meta.hh"
 
 
 #ifndef HB_NO_MT
-#include <atomic>
+#অন্তর্ভাব <atomic>
 #endif
 
 
@@ -47,13 +47,13 @@
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
 #ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
-static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
-#elif !defined(_MSC_VER)
-#include <atomic>
+#যদি defined(__ATOMIC_ACQUIRE) // gcc-like
+স্থির অন্তঃরেখ শূন্য _hb_compiler_memory_r_barrier () { asm অস্থির("": : :"memory"); }
+#নতুবা_যদি !defined(_MSC_VER)
+#অন্তর্ভাব <atomic>
 #define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
-static inline void _hb_compiler_memory_r_barrier () {}
+#অন্যথা
+স্থির অন্তঃরেখ শূন্য _hb_compiler_memory_r_barrier () {}
 #endif
 #endif
 
@@ -61,33 +61,33 @@ static inline void _hb_compiler_memory_r_barrier () {}
 #ifndef HB_NO_MT
 
 template <typename T>
-struct hb_atomic_t
+কাঠামো hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = পূর্বনির্ধারিত;
   constexpr hb_atomic_t (T v) : v (v) {}
-  constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
+  constexpr hb_atomic_t (ধ্রুবক hb_atomic_t& o) : v (o.get_relaxed ()) {}
   hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (ধ্রুবক hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); ফেরত *এই; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); ফেরত *এই; }
   hb_atomic_t &operator= (T v_)
   {
     set_relaxed (v_);
-    return *this;
+    ফেরত *এই;
   }
-  operator T () const { return get_relaxed (); }
+  operator T () ধ্রুবক { ফেরত get_relaxed (); }
 
-  void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
-  void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  শূন্য set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
+  শূন্য set_release (T v_) { v.store (v_, std::memory_order_release); }
+  T get_relaxed () ধ্রুবক { ফেরত v.load (std::memory_order_relaxed); }
+  T get_acquire () ধ্রুবক { ফেরত v.load (std::memory_order_acquire); }
+  T inc () { ফেরত v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { ফেরত v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  পূর্ণসংখ্যা operator++ (পূর্ণসংখ্যা) { ফেরত inc (); }
+  পূর্ণসংখ্যা operator-- (পূর্ণসংখ্যা) { ফেরত dec (); }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  friend শূন্য swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T v = a.get_acquire ();
     a.set_relaxed (b.get_acquire ());
@@ -98,30 +98,30 @@ struct hb_atomic_t
 };
 
 template <typename T>
-struct hb_atomic_t<T *>
+কাঠামো hb_atomic_t<T *>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = পূর্বনির্ধারিত;
   constexpr hb_atomic_t (T *v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (ধ্রুবক hb_atomic_t &other) = delete;
 
-  void init (T *v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  শূন্য init (T *v_ = nullptr) { set_relaxed (v_); }
+  শূন্য set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
+  T *get_relaxed () ধ্রুবক { ফেরত v.load (std::memory_order_relaxed); }
+  T *get_acquire () ধ্রুবক { ফেরত v.load (std::memory_order_acquire); }
+  যৌক্তিক cmpexch (T *old, T *new_) { ফেরত v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (ধ্রুবক hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); ফেরত *এই; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); ফেরত *এই; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
+  operator যৌক্তিক () ধ্রুবক { ফেরত get_acquire () != nullptr; }
+  T *operator->() ধ্রুবক { ফেরত get_acquire (); }
   template <typename C>
-  operator C * () const
+  operator C * () ধ্রুবক
   {
-    return get_acquire ();
+    ফেরত get_acquire ();
   }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  friend শূন্য swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T *p = a.get_acquire ();
     a.set_relaxed (b.get_acquire ());
@@ -131,51 +131,51 @@ struct hb_atomic_t<T *>
   std::atomic<T *> v {nullptr};
 };
 
-#else /* defined(HB_NO_MT) */
+#অন্যথা /* defined(HB_NO_MT) */
 
 template <typename T>
-struct hb_atomic_t
+কাঠামো hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = পূর্বনির্ধারিত;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& operator = (T v_) { set_relaxed (v_); ফেরত *এই; }
+  operator T () ধ্রুবক { ফেরত get_relaxed (); }
 
-  void set_relaxed (T v_) { v = v_; }
-  void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  শূন্য set_relaxed (T v_) { v = v_; }
+  শূন্য set_release (T v_) { v = v_; }
+  T get_relaxed () ধ্রুবক { ফেরত v; }
+  T get_acquire () ধ্রুবক { ফেরত v; }
+  T inc () { ফেরত v++; }
+  T dec () { ফেরত v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  পূর্ণসংখ্যা operator ++ (পূর্ণসংখ্যা) { ফেরত inc (); }
+  পূর্ণসংখ্যা operator -- (পূর্ণসংখ্যা) { ফেরত dec (); }
 
   T v = 0;
 };
 
 template <typename T>
-struct hb_atomic_t<T*>
+কাঠামো hb_atomic_t<T*>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = পূর্বনির্ধারিত;
   constexpr hb_atomic_t (T* v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (ধ্রুবক hb_atomic_t &other) = delete;
 
-  void init (T* v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
-  bool cmpexch (T *old, T *new_)
+  শূন্য init (T* v_ = nullptr) { set_relaxed (v_); }
+  শূন্য set_relaxed (T* v_) { v = v_; }
+  T *get_relaxed () ধ্রুবক { ফেরত v; }
+  T *get_acquire () ধ্রুবক { ফেরত v; }
+  যৌক্তিক cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    যদি (v != old) ফেরত মিথ্যা;
     v = new_;
-    return true;
+    ফেরত সত্য;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  operator যৌক্তিক () ধ্রুবক { ফেরত get_acquire () != nullptr; }
+  T * operator -> () ধ্রুবক                    { ফেরত get_acquire (); }
+  template <typename C> operator C * () ধ্রুবক { ফেরত get_acquire (); }
 
   T *v = nullptr;
 };
@@ -183,10 +183,10 @@ struct hb_atomic_t<T*>
 #endif
 
 
-static inline bool hb_barrier ()
+স্থির অন্তঃরেখ যৌক্তিক hb_barrier ()
 {
   _hb_compiler_memory_r_barrier ();
-  return true;
+  ফেরত সত্য;
 }
 
 

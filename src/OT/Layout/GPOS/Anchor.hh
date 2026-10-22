@@ -1,80 +1,80 @@
 #ifndef OT_LAYOUT_GPOS_ANCHOR_HH
 #define OT_LAYOUT_GPOS_ANCHOR_HH
 
-#include "AnchorFormat1.hh"
-#include "AnchorFormat2.hh"
-#include "AnchorFormat3.hh"
+#অন্তর্ভাব "AnchorFormat1.hh"
+#অন্তর্ভাব "AnchorFormat2.hh"
+#অন্তর্ভাব "AnchorFormat3.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-struct Anchor
+কাঠামো Anchor
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  সুরক্ষিত:
+  সংঘ {
+  কাঠামো { HBUINT16 v; } format;        /* Format identifier */
   AnchorFormat1         format1;
   AnchorFormat2         format2;
   AnchorFormat3         format3;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  সর্বজনীন:
+  DEFINE_আকার_UNION (2, format.v);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (এই);
+    যদি (!u.format.v.sanitize (c)) return_trace (মিথ্যা);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    ক্ষেত্র 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    ক্ষেত্র 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    পূর্বনির্ধারিত:return_trace (সত্য);
     }
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  শূন্য get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   দশমিক *x, দশমিক *y) ধ্রুবক
   {
     *x = *y = 0;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); return;
-    case 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); return;
-    case 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); return;
-    default:                                          return;
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); ফেরত;
+    ক্ষেত্র 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); ফেরত;
+    ক্ষেত্র 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); ফেরত;
+    পূর্বনির্ধারিত:                                          ফেরত;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
-    case 2:
+    TRACE_SUBSET (এই);
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: hb_barrier (); return_trace (যৌক্তিক (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+    ক্ষেত্র 2:
       hb_barrier ();
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      যদি (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       {
         // AnchorFormat 2 just containins extra hinting information, so
         // if hints are being dropped convert to format 1.
-        return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+        return_trace (যৌক্তিক (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
       }
-      return_trace (bool (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
-    case 3: hb_barrier (); return_trace (u.format3.subset (c));
-    default:return_trace (false);
+      return_trace (যৌক্তিক (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
+    ক্ষেত্র 3: hb_barrier (); return_trace (u.format3.subset (c));
+    পূর্বনির্ধারিত:return_trace (মিথ্যা);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক
   {
-    switch (u.format.v) {
-    case 1: case 2:
-      return;
-    case 3:
+    নির্বাচন (u.format.v) {
+    ক্ষেত্র 1: ক্ষেত্র 2:
+      ফেরত;
+    ক্ষেত্র 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      ফেরত;
+    পূর্বনির্ধারিত: ফেরত;
     }
   }
 };

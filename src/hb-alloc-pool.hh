@@ -25,7 +25,7 @@
 #ifndef HB_ALLOC_POOL_HH
 #define HB_ALLOC_POOL_HH
 
-#include "hb-vector.hh"
+#অন্তর্ভাব "hb-vector.hh"
 
 /* Memory pool for persistent small- to medium-sized allocations.
  *
@@ -38,67 +38,67 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-struct hb_alloc_pool_t
+কাঠামো hb_alloc_pool_t
 {
-  unsigned ChunkSize = 65536 - 2 * sizeof (void *);
+  unsigned Chunk_আকার = 65536 - 2 * আকার (শূন্য *);
 
-  void *alloc (size_t size, unsigned alignment = 2 * sizeof (void *))
+  শূন্য *alloc (size_t আকার_2, unsigned alignment = 2 * আকার (শূন্য *))
   {
-    if (unlikely (chunks.in_error ())) return nullptr;
+    যদি (unlikely (chunks.in_error ())) ফেরত nullptr;
 
-    assert (alignment > 0);
-    assert (alignment <= 2 * sizeof (void *));
-    assert ((alignment & (alignment - 1)) == 0); /* power of two */
+    প্রতিজ্ঞা (alignment > 0);
+    প্রতিজ্ঞা (alignment <= 2 * আকার (শূন্য *));
+    প্রতিজ্ঞা ((alignment & (alignment - 1)) == 0); /* power of two */
 
-    if (size > (ChunkSize) / 4)
+    যদি (আকার_2 > (Chunk_আকার) / 4)
     {
       /* Big chunk, allocate separately.  */
-      hb_vector_t<char> chunk;
-      if (unlikely (!chunk.resize (size))) return nullptr;
-      void *ret = chunk.arrayZ;
+      hb_vector_t<অক্ষর> chunk;
+      যদি (unlikely (!chunk.resize (আকার_2))) ফেরত nullptr;
+      শূন্য *ret = chunk.arrayZ;
       chunks.push (std::move (chunk));
-      if (chunks.in_error ()) return nullptr;
-      if (chunks.length > 1)
+      যদি (chunks.in_error ()) ফেরত nullptr;
+      যদি (chunks.দৈর্ঘ্য > 1)
       {
         // Bring back the previous last chunk to the end, so that
 	// we can continue to allocate from it.
-	hb_swap (chunks.arrayZ[chunks.length - 1], chunks.arrayZ[chunks.length - 2]);
+	hb_swap (chunks.arrayZ[chunks.দৈর্ঘ্য - 1], chunks.arrayZ[chunks.দৈর্ঘ্য - 2]);
       }
-      return ret;
+      ফেরত ret;
     }
 
     unsigned pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
 
     // Small chunk, allocate from the last chunk.
-    if (current_chunk.length < pad + size)
+    যদি (current_chunk.দৈর্ঘ্য < pad + আকার_2)
     {
       chunks.push ();
-      if (unlikely (chunks.in_error ())) return nullptr;
-      hb_vector_t<char> &chunk = chunks.arrayZ[chunks.length - 1];
-      if (unlikely (!chunk.resize (ChunkSize))) return nullptr;
+      যদি (unlikely (chunks.in_error ())) ফেরত nullptr;
+      hb_vector_t<অক্ষর> &chunk = chunks.arrayZ[chunks.দৈর্ঘ্য - 1];
+      যদি (unlikely (!chunk.resize (Chunk_আকার))) ফেরত nullptr;
       current_chunk = chunk;
       pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
     }
 
     current_chunk += pad;
 
-    assert (current_chunk.length >= size);
-    void *ret = current_chunk.arrayZ;
-    current_chunk += size;
-    return ret;
+    প্রতিজ্ঞা (current_chunk.দৈর্ঘ্য >= আকার_2);
+    শূন্য *ret = current_chunk.arrayZ;
+    current_chunk += আকার_2;
+    ফেরত ret;
   }
 
-  void discard (void *p_, size_t size)
+  শূন্য discard (শূন্য *p_, size_t আকার_2)
   {
     // Reclaim memory if we can.
-    char *p = (char *) p_;
-    if (current_chunk.arrayZ == p + size && current_chunk.backwards_length >= size)
-      current_chunk -= size;
+    অক্ষর *p = (অক্ষর *) p_;
+    যদি (current_chunk.arrayZ == p + আকার_2 && current_chunk.backwards_দৈর্ঘ্য >= আকার_2)
+      current_chunk -= আকার_2;
   }
 
-  private:
-  hb_vector_t<hb_vector_t<char>> chunks;
-  hb_array_t<char> current_chunk;
+  ব্যক্তিগত:
+  hb_vector_t<hb_vector_t<অক্ষর>> chunks;
+  hb_array_t<অক্ষর> current_chunk;
 };
 
 

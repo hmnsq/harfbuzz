@@ -25,28 +25,28 @@
 #ifndef HB_PAINT_HH
 #define HB_PAINT_HH
 
-#include "hb.hh"
-#include "hb-face.hh"
-#include "hb-font.hh"
-#include "hb-geometry.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-face.hh"
+#অন্তর্ভাব "hb-font.hh"
+#অন্তর্ভাব "hb-geometry.hh"
 
 #define HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS \
-  HB_PAINT_FUNC_IMPLEMENT (push_transform) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_transform) \
+  HB_PAINT_FUNC_IMPLEMENT (ঠেলো_transform) \
+  HB_PAINT_FUNC_IMPLEMENT (বের_করো_transform) \
   HB_PAINT_FUNC_IMPLEMENT (color_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_rectangle) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_start) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_end) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_clip) \
+  HB_PAINT_FUNC_IMPLEMENT (ঠেলো_clip_glyph) \
+  HB_PAINT_FUNC_IMPLEMENT (ঠেলো_clip_rectangle) \
+  HB_PAINT_FUNC_IMPLEMENT (ঠেলো_clip_path_start) \
+  HB_PAINT_FUNC_IMPLEMENT (ঠেলো_clip_path_end) \
+  HB_PAINT_FUNC_IMPLEMENT (বের_করো_clip) \
   HB_PAINT_FUNC_IMPLEMENT (color) \
   HB_PAINT_FUNC_IMPLEMENT (image) \
   HB_PAINT_FUNC_IMPLEMENT (linear_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (radial_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (sweep_gradient) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group_for) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_group) \
+  HB_PAINT_FUNC_IMPLEMENT (ঠেলো_group) \
+  HB_PAINT_FUNC_IMPLEMENT (ঠেলো_group_for) \
+  HB_PAINT_FUNC_IMPLEMENT (বের_করো_group) \
   HB_PAINT_FUNC_IMPLEMENT (custom_palette_color) \
   HB_PAINT_FUNC_IMPLEMENT (fill_glyph) \
   HB_PAINT_FUNC_IMPLEMENT (set_budget) \
@@ -54,233 +54,233 @@
   HB_PAINT_FUNC_IMPLEMENT (get_budget_remaining) \
   /* ^--- Add new callbacks here */
 
-struct hb_paint_funcs_t
+কাঠামো hb_paint_funcs_t
 {
   hb_object_header_t header;
 
-  struct {
+  কাঠামো {
 #define HB_PAINT_FUNC_IMPLEMENT(name) hb_paint_##name##_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) void *name;
+  কাঠামো {
+#define HB_PAINT_FUNC_IMPLEMENT(name) শূন্য *name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
-  } *user_data;
+  } *user_তথ্য;
 
-  struct {
+  কাঠামো {
 #define HB_PAINT_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   } *destroy;
 
-  void push_transform (void *paint_data,
-                       float xx, float yx,
-                       float xy, float yy,
-                       float dx, float dy)
+  শূন্য ঠেলো_transform (শূন্য *paint_তথ্য,
+                       দশমিক xx, দশমিক yx,
+                       দশমিক xy, দশমিক yy,
+                       দশমিক dx, দশমিক dy)
   {
     // Handle -0.f to avoid -0.f == 0.f in the transform matrix.
-    if (dx == -0.f) dx = 0.f;
-    if (dy == -0.f) dy = 0.f;
-    func.push_transform (this, paint_data,
+    যদি (dx == -0.f) dx = 0.f;
+    যদি (dy == -0.f) dy = 0.f;
+    func.ঠেলো_transform (এই, paint_তথ্য,
                          xx, yx, xy, yy, dx, dy,
-                         !user_data ? nullptr : user_data->push_transform); }
-  void pop_transform (void *paint_data)
-  { func.pop_transform (this, paint_data,
-                        !user_data ? nullptr : user_data->pop_transform); }
-  bool color_glyph (void *paint_data,
+                         !user_তথ্য ? nullptr : user_তথ্য->ঠেলো_transform); }
+  শূন্য বের_করো_transform (শূন্য *paint_তথ্য)
+  { func.বের_করো_transform (এই, paint_তথ্য,
+                        !user_তথ্য ? nullptr : user_তথ্য->বের_করো_transform); }
+  যৌক্তিক color_glyph (শূন্য *paint_তথ্য,
                     hb_codepoint_t glyph,
                     hb_font_t *font)
-  { return func.color_glyph (this, paint_data,
+  { ফেরত func.color_glyph (এই, paint_তথ্য,
                              glyph,
                              font,
-                             !user_data ? nullptr : user_data->color_glyph); }
-  void push_clip_glyph (void *paint_data,
+                             !user_তথ্য ? nullptr : user_তথ্য->color_glyph); }
+  শূন্য ঠেলো_clip_glyph (শূন্য *paint_তথ্য,
                         hb_codepoint_t glyph,
                         hb_font_t *font)
-  { func.push_clip_glyph (this, paint_data,
+  { func.ঠেলো_clip_glyph (এই, paint_তথ্য,
                           glyph,
                           font,
-                          !user_data ? nullptr : user_data->push_clip_glyph); }
-  void push_clip_rectangle (void *paint_data,
-                           float xmin, float ymin, float xmax, float ymax)
-  { func.push_clip_rectangle (this, paint_data,
+                          !user_তথ্য ? nullptr : user_তথ্য->ঠেলো_clip_glyph); }
+  শূন্য ঠেলো_clip_rectangle (শূন্য *paint_তথ্য,
+                           দশমিক xmin, দশমিক ymin, দশমিক xmax, দশমিক ymax)
+  { func.ঠেলো_clip_rectangle (এই, paint_তথ্য,
                               xmin, ymin, xmax, ymax,
-                              !user_data ? nullptr : user_data->push_clip_rectangle); }
-  hb_draw_funcs_t *push_clip_path_start (void *paint_data,
-                                         void **draw_data)
-  { return func.push_clip_path_start (this, paint_data, draw_data,
-                                      !user_data ? nullptr : user_data->push_clip_path_start); }
-  void push_clip_path_end (void *paint_data)
-  { func.push_clip_path_end (this, paint_data,
-                             !user_data ? nullptr : user_data->push_clip_path_end); }
-  void pop_clip (void *paint_data)
-  { func.pop_clip (this, paint_data,
-                   !user_data ? nullptr : user_data->pop_clip); }
-  void color (void *paint_data,
+                              !user_তথ্য ? nullptr : user_তথ্য->ঠেলো_clip_rectangle); }
+  hb_draw_funcs_t *ঠেলো_clip_path_start (শূন্য *paint_তথ্য,
+                                         শূন্য **draw_তথ্য)
+  { ফেরত func.ঠেলো_clip_path_start (এই, paint_তথ্য, draw_তথ্য,
+                                      !user_তথ্য ? nullptr : user_তথ্য->ঠেলো_clip_path_start); }
+  শূন্য ঠেলো_clip_path_end (শূন্য *paint_তথ্য)
+  { func.ঠেলো_clip_path_end (এই, paint_তথ্য,
+                             !user_তথ্য ? nullptr : user_তথ্য->ঠেলো_clip_path_end); }
+  শূন্য বের_করো_clip (শূন্য *paint_তথ্য)
+  { func.বের_করো_clip (এই, paint_তথ্য,
+                   !user_তথ্য ? nullptr : user_তথ্য->বের_করো_clip); }
+  শূন্য color (শূন্য *paint_তথ্য,
               hb_bool_t is_foreground,
               hb_color_t color)
-  { func.color (this, paint_data,
+  { func.color (এই, paint_তথ্য,
                 is_foreground, color,
-                !user_data ? nullptr : user_data->color); }
-  void fill_glyph (void *paint_data,
+                !user_তথ্য ? nullptr : user_তথ্য->color); }
+  শূন্য fill_glyph (শূন্য *paint_তথ্য,
                    hb_codepoint_t glyph,
                    hb_font_t *font,
                    hb_bool_t is_foreground,
                    hb_color_t color)
-  { func.fill_glyph (this, paint_data,
+  { func.fill_glyph (এই, paint_তথ্য,
                      glyph, font,
                      is_foreground, color,
-                     !user_data ? nullptr : user_data->fill_glyph); }
-  bool image (void *paint_data,
+                     !user_তথ্য ? nullptr : user_তথ্য->fill_glyph); }
+  যৌক্তিক image (শূন্য *paint_তথ্য,
               hb_blob_t *image,
               unsigned width, unsigned height,
               hb_tag_t format,
-              float slant,
+              দশমিক slant,
               hb_glyph_extents_t *extents)
-  { return func.image (this, paint_data,
+  { ফেরত func.image (এই, paint_তথ্য,
                        image, width, height, format, slant, extents,
-                       !user_data ? nullptr : user_data->image); }
-  void linear_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0,
-                        float x1, float y1,
-                        float x2, float y2)
-  { func.linear_gradient (this, paint_data,
-                          color_line, x0, y0, x1, y1, x2, y2,
-                          !user_data ? nullptr : user_data->linear_gradient); }
-  void radial_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0, float r0,
-                        float x1, float y1, float r1)
-  { func.radial_gradient (this, paint_data,
-                          color_line, x0, y0, r0, x1, y1, r1,
-                          !user_data ? nullptr : user_data->radial_gradient); }
-  void sweep_gradient (void *paint_data,
-                       hb_color_line_t *color_line,
-                       float x0, float y0,
-                       float start_angle,
-                       float end_angle)
-  { func.sweep_gradient (this, paint_data,
-                         color_line, x0, y0, start_angle, end_angle,
-                         !user_data ? nullptr : user_data->sweep_gradient); }
-  void push_group (void *paint_data)
-  { func.push_group (this, paint_data,
-                     !user_data ? nullptr : user_data->push_group); }
-  void push_group_for (void *paint_data,
+                       !user_তথ্য ? nullptr : user_তথ্য->image); }
+  শূন্য linear_gradient (শূন্য *paint_তথ্য,
+                        hb_color_সারি_t *color_সারি,
+                        দশমিক x0, দশমিক y0,
+                        দশমিক x1, দশমিক y1,
+                        দশমিক x2, দশমিক y2)
+  { func.linear_gradient (এই, paint_তথ্য,
+                          color_সারি, x0, y0, x1, y1, x2, y2,
+                          !user_তথ্য ? nullptr : user_তথ্য->linear_gradient); }
+  শূন্য radial_gradient (শূন্য *paint_তথ্য,
+                        hb_color_সারি_t *color_সারি,
+                        দশমিক x0, দশমিক y0, দশমিক r0,
+                        দশমিক x1, দশমিক y1, দশমিক r1)
+  { func.radial_gradient (এই, paint_তথ্য,
+                          color_সারি, x0, y0, r0, x1, y1, r1,
+                          !user_তথ্য ? nullptr : user_তথ্য->radial_gradient); }
+  শূন্য sweep_gradient (শূন্য *paint_তথ্য,
+                       hb_color_সারি_t *color_সারি,
+                       দশমিক x0, দশমিক y0,
+                       দশমিক start_angle,
+                       দশমিক end_angle)
+  { func.sweep_gradient (এই, paint_তথ্য,
+                         color_সারি, x0, y0, start_angle, end_angle,
+                         !user_তথ্য ? nullptr : user_তথ্য->sweep_gradient); }
+  শূন্য ঠেলো_group (শূন্য *paint_তথ্য)
+  { func.ঠেলো_group (এই, paint_তথ্য,
+                     !user_তথ্য ? nullptr : user_তথ্য->ঠেলো_group); }
+  শূন্য ঠেলো_group_for (শূন্য *paint_তথ্য,
                        hb_paint_composite_mode_t mode)
-  { func.push_group_for (this, paint_data,
+  { func.ঠেলো_group_for (এই, paint_তথ্য,
                          mode,
-                         !user_data ? nullptr : user_data->push_group_for); }
-  void pop_group (void *paint_data,
+                         !user_তথ্য ? nullptr : user_তথ্য->ঠেলো_group_for); }
+  শূন্য বের_করো_group (শূন্য *paint_তথ্য,
                   hb_paint_composite_mode_t mode)
-  { func.pop_group (this, paint_data,
+  { func.বের_করো_group (এই, paint_তথ্য,
                     mode,
-                    !user_data ? nullptr : user_data->pop_group); }
-  bool custom_palette_color (void *paint_data,
-                             unsigned int color_index,
+                    !user_তথ্য ? nullptr : user_তথ্য->বের_করো_group); }
+  যৌক্তিক custom_palette_color (শূন্য *paint_তথ্য,
+                             unsigned পূর্ণসংখ্যা color_সূচক,
                              hb_color_t *color)
-  { return func.custom_palette_color (this, paint_data,
-                                      color_index,
+  { ফেরত func.custom_palette_color (এই, paint_তথ্য,
+                                      color_সূচক,
                                       color,
-                                      !user_data ? nullptr : user_data->custom_palette_color); }
-  bool set_budget (void *paint_data, int64_t budget)
+                                      !user_তথ্য ? nullptr : user_তথ্য->custom_palette_color); }
+  যৌক্তিক set_budget (শূন্য *paint_তথ্য, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    যদি (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, paint_data, budget,
-			    !user_data ? nullptr : user_data->set_budget);
+    ফেরত func.set_budget (এই, paint_তথ্য, budget,
+			    !user_তথ্য ? nullptr : user_তথ্য->set_budget);
   }
-  int64_t get_budget (void *paint_data)
-  { return func.get_budget (this, paint_data,
-			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *paint_data)
-  { return func.get_budget_remaining (this, paint_data,
-				      !user_data ? nullptr : user_data->get_budget_remaining); }
+  int64_t get_budget (শূন্য *paint_তথ্য)
+  { ফেরত func.get_budget (এই, paint_তথ্য,
+			    !user_তথ্য ? nullptr : user_তথ্য->get_budget); }
+  int64_t *get_budget_remaining_ptr (শূন্য *paint_তথ্য)
+  { ফেরত func.get_budget_remaining (এই, paint_তথ্য,
+				      !user_তথ্য ? nullptr : user_তথ্য->get_budget_remaining); }
 
 
   /* Internal specializations. */
 
-  void push_font_transform (void *paint_data,
-                            const hb_font_t *font)
+  শূন্য ঠেলো_font_transform (শূন্য *paint_তথ্য,
+                            ধ্রুবক hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale, yscale = font->y_scale;
+    দশমিক upem = font->face->get_upem ();
+    পূর্ণসংখ্যা xscale = font->x_scale, yscale = font->y_scale;
 
-    push_transform (paint_data,
+    ঠেলো_transform (paint_তথ্য,
 		    xscale/upem, 0,
 		    0, yscale/upem,
 		    0, 0);
   }
 
-  void push_inverse_font_transform (void *paint_data,
-                                    const hb_font_t *font)
+  শূন্য ঠেলো_inverse_font_transform (শূন্য *paint_তথ্য,
+                                    ধ্রুবক hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale ? font->x_scale : upem;
-    int yscale = font->y_scale ? font->y_scale : upem;
+    দশমিক upem = font->face->get_upem ();
+    পূর্ণসংখ্যা xscale = font->x_scale ? font->x_scale : upem;
+    পূর্ণসংখ্যা yscale = font->y_scale ? font->y_scale : upem;
 
-    push_transform (paint_data,
+    ঠেলো_transform (paint_তথ্য,
 		    upem/xscale, 0,
 		    0, upem/yscale,
 		    0, 0);
   }
 
-  void push_transform (void *paint_data, hb_transform_t<float> t)
+  শূন্য ঠেলো_transform (শূন্য *paint_তথ্য, hb_transform_t<দশমিক> t)
   {
-    push_transform (paint_data, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+    ঠেলো_transform (paint_তথ্য, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
   }
 
-  void push_translate (void *paint_data,
-                       float dx, float dy)
+  শূন্য ঠেলো_translate (শূন্য *paint_তথ্য,
+                       দশমিক dx, দশমিক dy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::translation (dx, dy));
+    ঠেলো_transform (paint_তথ্য,
+		    hb_transform_t<দশমিক>::translation (dx, dy));
   }
 
-  void push_scale (void *paint_data,
-                   float sx, float sy)
+  শূন্য ঠেলো_scale (শূন্য *paint_তথ্য,
+                   দশমিক sx, দশমিক sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling (sx, sy));
+    ঠেলো_transform (paint_তথ্য,
+		    hb_transform_t<দশমিক>::scaling (sx, sy));
   }
-  void push_scale_around_center (void *paint_data,
-				 float sx, float sy,
-				 float cx, float cy)
+  শূন্য ঠেলো_scale_around_center (শূন্য *paint_তথ্য,
+				 দশমিক sx, দশমিক sy,
+				 দশমিক cx, দশমিক cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling_around_center (sx, sy, cx, cy));
-  }
-
-  void push_rotate (void *paint_data,
-                    float a)
-  {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation (a * HB_PI));
+    ঠেলো_transform (paint_তথ্য,
+		    hb_transform_t<দশমিক>::scaling_around_center (sx, sy, cx, cy));
   }
 
-  void push_rotate_around_center (void *paint_data,
-				  float a,
-				  float cx, float cy)
+  শূন্য ঠেলো_rotate (শূন্য *paint_তথ্য,
+                    দশমিক a)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation_around_center (a * HB_PI, cx, cy));
+    ঠেলো_transform (paint_তথ্য,
+		    hb_transform_t<দশমিক>::rotation (a * HB_PI));
   }
 
-  void push_skew (void *paint_data,
-                  float sx, float sy)
+  শূন্য ঠেলো_rotate_around_center (শূন্য *paint_তথ্য,
+				  দশমিক a,
+				  দশমিক cx, দশমিক cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing (-sx * HB_PI, sy * HB_PI));
+    ঠেলো_transform (paint_তথ্য,
+		    hb_transform_t<দশমিক>::rotation_around_center (a * HB_PI, cx, cy));
   }
-  void push_skew_around_center (void *paint_data,
-				float sx, float sy,
-				float cx, float cy)
+
+  শূন্য ঠেলো_skew (শূন্য *paint_তথ্য,
+                  দশমিক sx, দশমিক sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
+    ঠেলো_transform (paint_তথ্য,
+		    hb_transform_t<দশমিক>::skewing (-sx * HB_PI, sy * HB_PI));
+  }
+  শূন্য ঠেলো_skew_around_center (শূন্য *paint_তথ্য,
+				দশমিক sx, দশমিক sy,
+				দশমিক cx, দশমিক cy)
+  {
+    ঠেলো_transform (paint_তথ্য,
+		    hb_transform_t<দশমিক>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
   }
 };
 DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
@@ -288,20 +288,20 @@ DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
 
 /* Linearly interpolate between two hb_color_t values, component-wise,
  * in byte-channel space with rounding. */
-static inline hb_color_t
-hb_color_lerp (hb_color_t c0, hb_color_t c1, float t)
+স্থির অন্তঃরেখ hb_color_t
+hb_color_lerp (hb_color_t c0, hb_color_t c1, দশমিক t)
 {
   auto lerp = [&] (unsigned shift) -> unsigned {
     unsigned v0 = (c0 >> shift) & 0xFF;
     unsigned v1 = (c1 >> shift) & 0xFF;
-    float v = v0 + t * ((float) v1 - (float) v0) + 0.5f;
+    দশমিক v = v0 + t * ((দশমিক) v1 - (দশমিক) v0) + 0.5f;
     /* t may be outside [0,1] (or NaN) for malformed gradients;
      * keep the float-to-unsigned conversion defined. */
-    if (!(v > 0.f)) return 0;
-    if (v > 255.f) return 255;
-    return (unsigned) v;
+    যদি (!(v > 0.f)) ফেরত 0;
+    যদি (v > 255.f) ফেরত 255;
+    ফেরত (unsigned) v;
   };
-  return HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
+  ফেরত HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
 }
 
 #endif /* HB_PAINT_HH */

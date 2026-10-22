@@ -27,8 +27,8 @@
 #ifndef HB_SET_DIGEST_HH
 #define HB_SET_DIGEST_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-machinery.hh"
 
 /*
  * The set-digests implement "filters" that support "approximate
@@ -63,110 +63,110 @@
  * check is done using four bitwise operations only.
  */
 
-static constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
+স্থির constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
 
-struct hb_set_digest_t
+কাঠামো hb_set_digest_t
 {
   // No science in these. Intuition and testing only.
   using mask_t = uint64_t;
 
-  static constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
-  static constexpr unsigned mask_bytes = sizeof (mask_t);
-  static constexpr unsigned mask_bits = sizeof (mask_t) * 8;
-  static constexpr hb_codepoint_t mb1 = mask_bits - 1;
-  static constexpr mask_t one = 1;
-  static constexpr mask_t all = (mask_t) -1;
+  স্থির constexpr unsigned n = ARRAY_দৈর্ঘ্য_CONST (hb_set_digest_shifts);
+  স্থির constexpr unsigned mask_bytes = আকার (mask_t);
+  স্থির constexpr unsigned mask_bits = আকার (mask_t) * 8;
+  স্থির constexpr hb_codepoint_t mb1 = mask_bits - 1;
+  স্থির constexpr mask_t one = 1;
+  স্থির constexpr mask_t all = (mask_t) -1;
 
-  void init ()
-  { for (unsigned i = 0; i < n; i++) masks[i] = 0; }
+  শূন্য init ()
+  { জন্য (unsigned i = 0; i < n; i++) masks[i] = 0; }
 
-  void clear () { init (); }
+  শূন্য clear () { init (); }
 
-  static hb_set_digest_t full ()
+  স্থির hb_set_digest_t full ()
   {
     hb_set_digest_t d;
-    for (unsigned i = 0; i < n; i++) d.masks[i] = all;
-    return d;
+    জন্য (unsigned i = 0; i < n; i++) d.masks[i] = all;
+    ফেরত d;
   }
 
-  void union_ (const hb_set_digest_t &o)
-  { for (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
+  শূন্য union_ (ধ্রুবক hb_set_digest_t &o)
+  { জন্য (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
 
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  যৌক্তিক add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    bool ret;
+    যৌক্তিক ret;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
-      if (masks[i] != all)
-	ret = true;
-    if (!ret) return false;
+    ret = মিথ্যা;
+    জন্য (unsigned i = 0; i < n; i++)
+      যদি (masks[i] != all)
+	ret = সত্য;
+    যদি (!ret) ফেরত মিথ্যা;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
+    ret = মিথ্যা;
+    জন্য (unsigned i = 0; i < n; i++)
     {
       mask_t shift = hb_set_digest_shifts[i];
-      if ((b >> shift) - (a >> shift) >= mb1)
+      যদি ((b >> shift) - (a >> shift) >= mb1)
 	masks[i] = all;
-      else
+      অন্যথা
       {
 	mask_t ma = one << ((a >> shift) & mb1);
 	mask_t mb = one << ((b >> shift) & mb1);
 	masks[i] |= mb + (mb - ma) - (mb < ma);
-	ret = true;
+	ret = সত্য;
       }
     }
-    return ret;
+    ফেরত ret;
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  শূন্য add_array (ধ্রুবক T *array, unsigned পূর্ণসংখ্যা গুনতি, unsigned পূর্ণসংখ্যা stride=আকার(T))
   {
-    for (unsigned int i = 0; i < count; i++)
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
     {
       add (*array);
-      array = &StructAtOffsetUnaligned<T> ((const void *) array, stride);
+      array = &StructAtOffsetUnaligned<T> ((ধ্রুবক শূন্য *) array, stride);
     }
   }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  শূন্য add_array (ধ্রুবক hb_array_t<ধ্রুবক T>& arr) { add_array (&arr, arr.len ()); }
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  যৌক্তিক add_sorted_array (ধ্রুবক T *array, unsigned পূর্ণসংখ্যা গুনতি, unsigned পূর্ণসংখ্যা stride=আকার(T))
   {
-    add_array (array, count, stride);
-    return true;
+    add_array (array, গুনতি, stride);
+    ফেরত সত্য;
   }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  যৌক্তিক add_sorted_array (ধ্রুবক hb_sorted_array_t<ধ্রুবক T>& arr) { ফেরত add_sorted_array (&arr, arr.len ()); }
 
-  bool operator [] (hb_codepoint_t g) const
-  { return may_have (g); }
+  যৌক্তিক operator [] (hb_codepoint_t g) ধ্রুবক
+  { ফেরত may_have (g); }
 
 
-  void add (hb_codepoint_t g)
+  শূন্য add (hb_codepoint_t g)
   {
-    for (unsigned i = 0; i < n; i++)
+    জন্য (unsigned i = 0; i < n; i++)
       masks[i] |= one << ((g >> hb_set_digest_shifts[i]) & mb1);
   }
 
   HB_ALWAYS_INLINE
-  bool may_have (hb_codepoint_t g) const
+  যৌক্তিক may_have (hb_codepoint_t g) ধ্রুবক
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
-	return false;
-    return true;
+    জন্য (unsigned i = 0; i < n; i++)
+      যদি (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
+	ফেরত মিথ্যা;
+    ফেরত সত্য;
   }
 
-  bool may_intersect (const hb_set_digest_t &o) const
+  যৌক্তিক may_intersect (ধ্রুবক hb_set_digest_t &o) ধ্রুবক
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & o.masks[i]))
-	return false;
-    return true;
+    জন্য (unsigned i = 0; i < n; i++)
+      যদি (!(masks[i] & o.masks[i]))
+	ফেরত মিথ্যা;
+    ফেরত সত্য;
   }
 
-  private:
+  ব্যক্তিগত:
 
   mask_t masks[n] = {};
 };

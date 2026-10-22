@@ -27,76 +27,76 @@
 #ifndef HB_KERN_HH
 #define HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#অন্তর্ভাব "hb-open-type.hh"
+#অন্তর্ভাব "hb-aat-layout-common.hh"
+#অন্তর্ভাব "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+নামাকাশ OT {
 
 
 template <typename Driver>
-struct hb_kern_machine_t
+কাঠামো hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
-		     bool crossStream_ = false) :
+  hb_kern_machine_t (ধ্রুবক Driver &driver_,
+		     যৌক্তিক crossStream_ = মিথ্যা) :
 		       driver (driver_),
 		       crossStream (crossStream_) {}
 
-  void kern (hb_font_t   *font,
-	     hb_buffer_t *buffer,
+  শূন্য kern (hb_font_t   *font,
+	     hb_বাফার_t *বাফার,
 	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+	     যৌক্তিক         scale = সত্য) ধ্রুবক
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    যদি (!বাফার->message (font, "start kern"))
+      ফেরত;
 
-    buffer->unsafe_to_concat ();
-    OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
+    বাফার->unsafe_to_concat ();
+    OT::hb_ot_apply_context_t c (1, font, বাফার, hb_blob_get_empty ());
     c.set_lookup_mask (kern_mask);
     c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    auto &skippy_iter = c.iter_প্রবেশ;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    যৌক্তিক horizontal = HB_DIRECTION_IS_HORIZONTAL (বাফার->props.direction);
+    unsigned পূর্ণসংখ্যা গুনতি = বাফার->len;
+    hb_glyph_info_t *info = বাফার->info;
+    hb_glyph_position_t *pos = বাফার->pos;
+    জন্য (unsigned পূর্ণসংখ্যা idx = 0; idx < গুনতি;)
     {
-      if (!(info[idx].mask & kern_mask))
+      যদি (!(info[idx].mask & kern_mask))
       {
 	idx++;
-	continue;
+	চালু;
       }
 
       skippy_iter.reset_fast (idx);
       unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      যদি (unlikely (!skippy_iter.next (&unsafe_to)))
       {
 	idx = unsafe_to;
-	continue;
+	চালু;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      unsigned পূর্ণসংখ্যা i = idx;
+      unsigned পূর্ণসংখ্যা j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      যদি (likely (!kern))
+	যাও skip;
 
-      if (horizontal)
+      যদি (horizontal)
       {
-	if (scale)
+	যদি (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	যদি (crossStream)
 	{
 	  pos[j].y_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  বাফার->scratch_flags |= HB_বাফার_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	অন্যথা
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -105,16 +105,16 @@ struct hb_kern_machine_t
 	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
 	}
       }
-      else
+      অন্যথা
       {
-	if (scale)
+	যদি (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	যদি (crossStream)
 	{
 	  pos[j].x_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  বাফার->scratch_flags |= HB_বাফার_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	অন্যথা
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -124,17 +124,17 @@ struct hb_kern_machine_t
 	}
       }
 
-      buffer->unsafe_to_break (i, j + 1);
+      বাফার->unsafe_to_break (i, j + 1);
 
     skip:
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (শূন্য) বাফার->message (font, "end kern");
   }
 
-  const Driver &driver;
-  bool crossStream;
+  ধ্রুবক Driver &driver;
+  যৌক্তিক crossStream;
 };
 
 

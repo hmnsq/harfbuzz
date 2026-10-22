@@ -24,58 +24,58 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-graph.hh"
+#অন্তর্ভাব "gsubgpos-graph.hh"
 
-namespace graph {
+নামাকাশ graph {
 
-graph_result_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
+graph_ফলাফল_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
                                                                            graph_t& graph_)
 {
   gsubgpos_graph_context_t context (table_tag_, graph_);
 
-  if (unlikely (table_tag_ != HB_OT_TAG_GPOS
+  যদি (unlikely (table_tag_ != HB_OT_TAG_GPOS
                 && table_tag_ != HB_OT_TAG_GSUB))
-    return Err(INVALID_ARGUMENT);
+    ফেরত Err(INVALID_ARGUMENT);
 
-  TRY_ASSIGN (const GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
+  TRY_ASSIGN (ধ্রুবক GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
   TRY(gstar->find_lookups (context.graph, context.lookups));
-  TRY_ASSIGN (context.lookup_list_index, gstar->get_lookup_list_index (context.graph));
+  TRY_ASSIGN (context.lookup_list_সূচক, gstar->get_lookup_list_সূচক (context.graph));
 
-  return context;
+  ফেরত context;
 }
 
 gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                                     graph_t& graph_)
     : table_tag (table_tag_),
       graph (graph_),
-      lookup_list_index (0),
+      lookup_list_সূচক (0),
       lookups ()
 {}
 
-graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
+graph_ফলাফল_t<unsigned> gsubgpos_graph_context_t::create_গ্রন্থি (unsigned আকার_2)
 {
-  char* buffer = (char*) hb_calloc (1, size);
-  if (unlikely (!buffer))
-    return Err(ALLOCATION_FAILURE);
+  অক্ষর* বাফার = (অক্ষর*) hb_calloc (1, আকার_2);
+  যদি (unlikely (!বাফার))
+    ফেরত Err(ALLOCATION_FAILURE);
 
-  auto res = add_buffer (buffer);
-  if (unlikely (!res.is_ok ())) {
+  auto res = add_বাফার (বাফার);
+  যদি (unlikely (!res.is_ok ())) {
     // Allocation did not get stored for freeing later.
-    hb_free (buffer);
-    return Err(res.error ());
+    hb_free (বাফার);
+    ফেরত Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  ফেরত graph.new_গ্রন্থি (বাফার, বাফার + আকার_2);
 }
 
-unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
-  unsigned count = 0;
-  for (auto l : lookups.values ())
+unsigned gsubgpos_graph_context_t::অঙ্ক_non_ext_subtables ()  {
+  unsigned গুনতি = 0;
+  জন্য (auto l : lookups.values ())
   {
-    if (l->is_extension (table_tag)) continue;
-    count += l->number_of_subtables ();
+    যদি (l->is_extension (table_tag)) চালু;
+    গুনতি += l->সংখ্যা_of_subtables ();
   }
-  return count;
+  ফেরত গুনতি;
 }
 
 }

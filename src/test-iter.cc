@@ -24,61 +24,61 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-iter.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-iter.hh"
 
-#include "hb-array.hh"
-#include "hb-set.hh"
-#include "hb-ot-layout-common.hh"
+#অন্তর্ভাব "hb-array.hh"
+#অন্তর্ভাব "hb-set.hh"
+#অন্তর্ভাব "hb-ot-layout-common.hh"
 
 template <typename T>
-struct array_iter_t : hb_iter_with_fallback_t<array_iter_t<T>, T&>
+কাঠামো array_iter_t : hb_iter_with_fallback_t<array_iter_t<T>, T&>
 {
   array_iter_t (hb_array_t<T> arr_) : arr (arr_) {}
 
-  typedef T& __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  T& __item_at__ (unsigned i) const { return arr[i]; }
-  void __forward__ (unsigned n) { arr += n; }
-  void __rewind__ (unsigned n) { arr -= n; }
-  unsigned __len__ () const { return arr.length; }
-  bool operator != (const array_iter_t& o) { return arr != o.arr; }
+  প্রকারলেখ T& __item_t__;
+  স্থির constexpr যৌক্তিক is_random_access_iterator = সত্য;
+  T& __item_at__ (unsigned i) ধ্রুবক { ফেরত arr[i]; }
+  শূন্য __forward__ (unsigned n) { arr += n; }
+  শূন্য __rewind__ (unsigned n) { arr -= n; }
+  unsigned __len__ () ধ্রুবক { ফেরত arr.দৈর্ঘ্য; }
+  যৌক্তিক operator != (ধ্রুবক array_iter_t& o) { ফেরত arr != o.arr; }
 
-  private:
+  ব্যক্তিগত:
   hb_array_t<T> arr;
 };
 
 template <typename T>
-struct some_array_t
+কাঠামো some_array_t
 {
   some_array_t (hb_array_t<T> arr_) : arr (arr_) {}
 
-  typedef array_iter_t<T> iter_t;
-  array_iter_t<T> iter () { return array_iter_t<T> (arr); }
-  operator array_iter_t<T> () { return iter (); }
-  operator hb_iter_t<array_iter_t<T>> () { return iter (); }
+  প্রকারলেখ array_iter_t<T> iter_t;
+  array_iter_t<T> iter () { ফেরত array_iter_t<T> (arr); }
+  operator array_iter_t<T> () { ফেরত iter (); }
+  operator hb_iter_t<array_iter_t<T>> () { ফেরত iter (); }
 
-  private:
+  ব্যক্তিগত:
   hb_array_t<T> arr;
 };
 
 
 template <typename Iter,
 	  hb_requires (hb_is_iterator (Iter))>
-static void
+স্থির শূন্য
 test_iterator_non_default_constructable (Iter it)
 {
   /* Iterate over a copy of it. */
-  for (auto c = it.iter (); c; c++)
+  জন্য (auto c = it.iter (); c; c++)
     *c;
 
   /* Same. */
-  for (auto c = +it; c; c++)
+  জন্য (auto c = +it; c; c++)
     *c;
 
   /* Range-based for over a copy. */
-  for (auto _ : +it)
-    (void) _;
+  জন্য (auto _ : +it)
+    (শূন্য) _;
 
   it += it.len ();
   it = it + 10;
@@ -86,13 +86,13 @@ test_iterator_non_default_constructable (Iter it)
 
   hb_always_assert (*it == it[0]);
 
-  static_assert (true || it.is_random_access_iterator, "");
-  static_assert (true || it.is_sorted_iterator, "");
+  static_assert (সত্য || it.is_random_access_iterator, "");
+  static_assert (সত্য || it.is_sorted_iterator, "");
 }
 
 template <typename Iter,
 	  hb_requires (hb_is_iterator (Iter))>
-static void
+স্থির শূন্য
 test_iterator (Iter it)
 {
   Iter default_constructed;
@@ -103,32 +103,32 @@ test_iterator (Iter it)
 
 template <typename Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static void
-test_iterable (const Iterable &lst = Null (Iterable))
+স্থির শূন্য
+test_iterable (ধ্রুবক Iterable &lst = Null (Iterable))
 {
-  for (auto _ : lst)
-    (void) _;
+  জন্য (auto _ : lst)
+    (শূন্য) _;
 
   // Test that can take iterator from.
   test_iterator (lst.iter ());
 }
 
 template <typename It>
-static void check_sequential (It it)
+স্থির শূন্য check_sequential (It it)
 {
-  int i = 1;
-  for (int v : +it) {
+  পূর্ণসংখ্যা i = 1;
+  জন্য (পূর্ণসংখ্যা v : +it) {
     hb_always_assert (v == i++);
   }
 }
 
-static void test_concat ()
+স্থির শূন্য test_concat ()
 {
-  hb_vector_t<int> a = {1, 2, 3};
-  hb_vector_t<int> b = {4, 5};
+  hb_vector_t<পূর্ণসংখ্যা> a = {1, 2, 3};
+  hb_vector_t<পূর্ণসংখ্যা> b = {4, 5};
 
-  hb_vector_t<int> c = {};
-  hb_vector_t<int> d = {1, 2, 3, 4, 5};
+  hb_vector_t<পূর্ণসংখ্যা> c = {};
+  hb_vector_t<পূর্ণসংখ্যা> d = {1, 2, 3, 4, 5};
 
   auto it1 = hb_concat (a, b);
   hb_always_assert (it1.len () == 5);
@@ -137,7 +137,7 @@ static void test_concat ()
   hb_always_assert (it2.len () == 5);
   auto it3 = hb_concat (d, c);
   hb_always_assert (it3.len () == 5);
-  for (int i = 0; i < 5; i++) {
+  জন্য (পূর্ণসংখ্যা i = 0; i < 5; i++) {
     hb_always_assert(it1[i] == i + 1);
     hb_always_assert(it2[i] == i + 1);
     hb_always_assert(it3[i] == i + 1);
@@ -185,11 +185,11 @@ static void test_concat ()
   hb_always_assert (it6.len () == 2);
 }
 
-static void
+স্থির শূন্য
 test_backward_filter ()
 {
-  hb_vector_t<int> V = {2, 4, 5, 7, 8, 9, 10};
-  auto it = hb_iter (V) | hb_filter ([] (int x) { return x % 2 != 0; });
+  hb_vector_t<পূর্ণসংখ্যা> V = {2, 4, 5, 7, 8, 9, 10};
+  auto it = hb_iter (V) | hb_filter ([] (পূর্ণসংখ্যা x) { ফেরত x % 2 != 0; });
   it += 2;
   hb_always_assert (*it == 9);
   --it;
@@ -200,20 +200,20 @@ test_backward_filter ()
   hb_always_assert (*it == 5);
 }
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
-  const int src[10] = {};
-  int dst[20];
-  hb_vector_t<int> v;
+  ধ্রুবক পূর্ণসংখ্যা src[10] = {};
+  পূর্ণসংখ্যা dst[20];
+  hb_vector_t<পূর্ণসংখ্যা> v;
 
-  array_iter_t<const int> s (src); /* Implicit conversion from static array. */
-  array_iter_t<const int> s2 (v); /* Implicit conversion from vector. */
-  array_iter_t<int> t (dst);
+  array_iter_t<ধ্রুবক পূর্ণসংখ্যা> s (src); /* Implicit conversion from static array. */
+  array_iter_t<ধ্রুবক পূর্ণসংখ্যা> s2 (v); /* Implicit conversion from vector. */
+  array_iter_t<পূর্ণসংখ্যা> t (dst);
 
-  static_assert (array_iter_t<int>::is_random_access_iterator, "");
+  static_assert (array_iter_t<পূর্ণসংখ্যা>::is_random_access_iterator, "");
 
-  some_array_t<const int> a (src);
+  some_array_t<ধ্রুবক পূর্ণসংখ্যা> a (src);
 
   s2 = s;
 
@@ -228,17 +228,17 @@ main (int argc, char **argv)
   hb_set_t st;
   st << 1 << 15 << 43;
   test_iterable (st);
-  hb_sorted_array_t<int> sa;
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, hb_sorted_array_t<int>::item_t>&> (sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, hb_sorted_array_t<int>::__item_t__>&> (sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, int&>&>(sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>>&>(sa);
-  (void) static_cast<hb_iter_t<hb_array_t<int>, int&>&> (sa);
+  hb_sorted_array_t<পূর্ণসংখ্যা> sa;
+  (শূন্য) static_cast<hb_iter_t<hb_sorted_array_t<পূর্ণসংখ্যা>, hb_sorted_array_t<পূর্ণসংখ্যা>::item_t>&> (sa);
+  (শূন্য) static_cast<hb_iter_t<hb_sorted_array_t<পূর্ণসংখ্যা>, hb_sorted_array_t<পূর্ণসংখ্যা>::__item_t__>&> (sa);
+  (শূন্য) static_cast<hb_iter_t<hb_sorted_array_t<পূর্ণসংখ্যা>, পূর্ণসংখ্যা&>&>(sa);
+  (শূন্য) static_cast<hb_iter_t<hb_sorted_array_t<পূর্ণসংখ্যা>>&>(sa);
+  (শূন্য) static_cast<hb_iter_t<hb_array_t<পূর্ণসংখ্যা>, পূর্ণসংখ্যা&>&> (sa);
   test_iterable (sa);
 
-  test_iterable<hb_array_t<int>> ();
-  test_iterable<hb_sorted_array_t<const int>> ();
-  test_iterable<hb_vector_t<float>> ();
+  test_iterable<hb_array_t<পূর্ণসংখ্যা>> ();
+  test_iterable<hb_sorted_array_t<ধ্রুবক পূর্ণসংখ্যা>> ();
+  test_iterable<hb_vector_t<দশমিক>> ();
   test_iterable<hb_set_t> ();
   test_iterable<OT::Array16Of<OT::HBUINT16>> ();
 
@@ -250,18 +250,18 @@ main (int argc, char **argv)
   test_iterator_non_default_constructable (hb_iter (st) | hb_filter ());
   test_iterator_non_default_constructable (hb_iter (st) | hb_map (hb_lidentity));
 
-  hb_always_assert (true == hb_all (st));
-  hb_always_assert (false == hb_all (st, 42u));
-  hb_always_assert (true == hb_any (st));
-  hb_always_assert (false == hb_any (st, 14u));
-  hb_always_assert (true == hb_any (st, 14u, [] (unsigned _) { return _ - 1u; }));
-  hb_always_assert (true == hb_any (st, [] (unsigned _) { return _ == 15u; }));
-  hb_always_assert (true == hb_any (st, 15u));
-  hb_always_assert (false == hb_none (st));
-  hb_always_assert (false == hb_none (st, 15u));
-  hb_always_assert (true == hb_none (st, 17u));
+  hb_always_assert (সত্য == hb_all (st));
+  hb_always_assert (মিথ্যা == hb_all (st, 42u));
+  hb_always_assert (সত্য == hb_any (st));
+  hb_always_assert (মিথ্যা == hb_any (st, 14u));
+  hb_always_assert (সত্য == hb_any (st, 14u, [] (unsigned _) { ফেরত _ - 1u; }));
+  hb_always_assert (সত্য == hb_any (st, [] (unsigned _) { ফেরত _ == 15u; }));
+  hb_always_assert (সত্য == hb_any (st, 15u));
+  hb_always_assert (মিথ্যা == hb_none (st));
+  hb_always_assert (মিথ্যা == hb_none (st, 15u));
+  hb_always_assert (সত্য == hb_none (st, 17u));
 
-  hb_array_t<hb_vector_t<int>> pa;
+  hb_array_t<hb_vector_t<পূর্ণসংখ্যা>> pa;
   pa->as_array ();
 
   hb_map_t m;
@@ -289,80 +289,80 @@ main (int argc, char **argv)
   ;
 
   + hb_iter (src)
-  | hb_map ([] (int i) { return 1; })
-  | hb_reduce ([=] (int acc, int value) { return acc; }, 2)
+  | hb_map ([] (পূর্ণসংখ্যা i) { ফেরত 1; })
+  | hb_reduce ([=] (পূর্ণসংখ্যা acc, পূর্ণসংখ্যা value) { ফেরত acc; }, 2)
   ;
 
   using map_pair_t = hb_item_type<hb_map_t>;
   + hb_iter (m)
-  | hb_map ([] (map_pair_t p) { return p.first * p.second; })
+  | hb_map ([] (map_pair_t p) { ফেরত p.first * p.second; })
   ;
 
-  m.keys ();
-  using map_key_t = decltype (*m.keys());
-  + hb_iter (m.keys ())
-  | hb_filter ([] (map_key_t k) { return k < 42; })
+  m.চাবিগুলি ();
+  using map_চাবি_t = decltype (*m.চাবিগুলি());
+  + hb_iter (m.চাবিগুলি ())
+  | hb_filter ([] (map_চাবি_t k) { ফেরত k < 42; })
   | hb_drain
   ;
 
   m.values ();
-  using map_value_t = decltype (*m.values());
+  using map_মান_t = decltype (*m.values());
   + hb_iter (m.values ())
-  | hb_filter ([] (map_value_t k) { return k < 42; })
+  | hb_filter ([] (map_মান_t k) { ফেরত k < 42; })
   | hb_drain
   ;
 
-  unsigned int temp1 = 10;
-  unsigned int temp2 = 0;
-  hb_map_t *result =
+  unsigned পূর্ণসংখ্যা temp1 = 10;
+  unsigned পূর্ণসংখ্যা temp2 = 0;
+  hb_map_t *ফলাফল =
   + hb_iter (src)
-  | hb_map ([&] (int i) -> hb_set_t *
+  | hb_map ([&] (পূর্ণসংখ্যা i) -> hb_set_t *
 	    {
 	      hb_set_t *set = hb_set_create ();
-	      for (unsigned int i = 0; i < temp1; ++i)
+	      জন্য (unsigned পূর্ণসংখ্যা i = 0; i < temp1; ++i)
 		hb_set_add (set, i);
 	      temp1++;
-	      return set;
+	      ফেরত set;
 	    })
   | hb_reduce ([&] (hb_map_t *acc, hb_set_t *value) -> hb_map_t *
 	       {
 		 hb_map_set (acc, temp2++, hb_set_get_population (value));
 		 /* This is not a memory managed language, take care! */
 		 hb_set_destroy (value);
-		 return acc;
+		 ফেরত acc;
 	       }, hb_map_create ())
   ;
   /* The result should be something like 0->10, 1->11, ..., 9->19 */
-  hb_always_assert (hb_map_get (result, 9) == 19);
-  hb_map_destroy (result);
+  hb_always_assert (hb_map_get (ফলাফল, 9) == 19);
+  hb_map_destroy (ফলাফল);
 
   /* Like above, but passing hb_set_t instead of hb_set_t * */
   temp1 = 10;
   temp2 = 0;
-  result =
+  ফলাফল =
   + hb_iter (src)
-  | hb_map ([&] (int i) -> hb_set_t
+  | hb_map ([&] (পূর্ণসংখ্যা i) -> hb_set_t
 	    {
 	      hb_set_t set;
-	      for (unsigned int i = 0; i < temp1; ++i)
+	      জন্য (unsigned পূর্ণসংখ্যা i = 0; i < temp1; ++i)
 		hb_set_add (&set, i);
 	      temp1++;
-	      return set;
+	      ফেরত set;
 	    })
   | hb_reduce ([&] (hb_map_t *acc, hb_set_t value) -> hb_map_t *
 	       {
 		 hb_map_set (acc, temp2++, hb_set_get_population (&value));
-		 return acc;
+		 ফেরত acc;
 	       }, hb_map_create ())
   ;
   /* The result should be something like 0->10, 1->11, ..., 9->19 */
-  hb_always_assert (hb_map_get (result, 9) == 19);
-  hb_map_destroy (result);
+  hb_always_assert (hb_map_get (ফলাফল, 9) == 19);
+  hb_map_destroy (ফলাফল);
 
-  unsigned int temp3 = 0;
+  unsigned পূর্ণসংখ্যা temp3 = 0;
   + hb_iter(src)
-  | hb_map([&] (int i) { return ++temp3; })
-  | hb_reduce([&] (float acc, int value) { return acc + value; }, 0)
+  | hb_map([&] (পূর্ণসংখ্যা i) { ফেরত ++temp3; })
+  | hb_reduce([&] (দশমিক acc, পূর্ণসংখ্যা value) { ফেরত acc + value; }, 0)
   ;
 
   + hb_iter (src)
@@ -394,5 +394,5 @@ main (int argc, char **argv)
   test_concat ();
   test_backward_filter ();
 
-  return 0;
+  ফেরত 0;
 }

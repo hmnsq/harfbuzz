@@ -23,124 +23,124 @@
  *
  */
 
-#ifndef HB_NUMBER_CC
-#define HB_NUMBER_CC
-#ifdef HB_NUMBER_CC /* Pacify -Wunused-macros. */
+#ifndef HB_সংখ্যা_CC
+#define HB_সংখ্যা_CC
+#ifdef HB_সংখ্যা_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
-#include "hb-number.hh"
-#include "hb-number-parser.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-number.hh"
+#অন্তর্ভাব "hb-number-parser.hh"
 
-bool
-hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer)
+যৌক্তিক
+hb_parse_double (ধ্রুবক অক্ষর **pp, ধ্রুবক অক্ষর *end, দ্বিগুণ *pv, যৌক্তিক whole_বাফার)
 {
-  const char *pend = end;
-  double value = hb_strtod (*pp, &pend);
-  if (unlikely (*pp == pend)) return false;
-  if (unlikely (whole_buffer && end != pend)) return false;
+  ধ্রুবক অক্ষর *pend = end;
+  দ্বিগুণ value = hb_strtod (*pp, &pend);
+  যদি (unlikely (*pp == pend)) ফেরত মিথ্যা;
+  যদি (unlikely (whole_বাফার && end != pend)) ফেরত মিথ্যা;
   *pv = value;
   *pp = pend;
-  return true;
+  ফেরত সত্য;
 }
 
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
-static int
-_hb_digit_value (char c, int base)
+স্থির পূর্ণসংখ্যা
+hb_digit_মান (অক্ষর c, পূর্ণসংখ্যা base)
 {
-  int d;
-  if ('0' <= c && c <= '9')      d = c - '0';
-  else if ('a' <= c && c <= 'z') d = c - 'a' + 10;
-  else if ('A' <= c && c <= 'Z') d = c - 'A' + 10;
-  else return -1;
-  return d < base ? d : -1;
+  পূর্ণসংখ্যা d;
+  যদি ('0' <= c && c <= '9')      d = c - '0';
+  অন্যথা যদি ('a' <= c && c <= 'z') d = c - 'a' + 10;
+  অন্যথা যদি ('A' <= c && c <= 'Z') d = c - 'A' + 10;
+  অন্যথা ফেরত -1;
+  ফেরত d < base ? d : -1;
 }
 
 /* Consumes digits in [p, pe) into *value (magnitude).  Sets *overflow
  * if the value would exceed UINT64_MAX.  Sets *any_digits if at least
  * one digit was consumed.  Returns the position past the last digit. */
-static const char *
-_hb_scan_digits (const char *p, const char *pe, int base,
-                 uint64_t *value, bool *overflow, bool *any_digits)
+স্থির ধ্রুবক অক্ষর *
+_hb_scan_digits (ধ্রুবক অক্ষর *p, ধ্রুবক অক্ষর *pe, পূর্ণসংখ্যা base,
+                 uint64_t *value, যৌক্তিক *overflow, যৌক্তিক *any_digits)
 {
-  const uint64_t cutoff = UINT64_MAX / (unsigned) base;
-  const uint64_t cutlim = UINT64_MAX % (unsigned) base;
+  ধ্রুবক uint64_t cutoff = UINT64_MAX / (unsigned) base;
+  ধ্রুবক uint64_t cutlim = UINT64_MAX % (unsigned) base;
   uint64_t v = 0;
-  bool ov = false, any = false;
+  যৌক্তিক ov = মিথ্যা, any = মিথ্যা;
 
-  for (; p < pe; p++)
+  জন্য (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
-    if (d < 0) break;
-    any = true;
-    if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
-      ov = true;
-    else
+    পূর্ণসংখ্যা d = hb_digit_মান (*p, base);
+    যদি (d < 0) বিরতি;
+    any = সত্য;
+    যদি (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
+      ov = সত্য;
+    অন্যথা
       v = v * (unsigned) base + (uint64_t) d;
   }
 
   *value = v;
   *overflow = ov;
   *any_digits = any;
-  return p;
+  ফেরত p;
 }
 
 template<typename T, typename Postprocess>
-static bool
-_parse_number (const char **pp, const char *end, T *pv,
-               bool whole_buffer, int base, Postprocess post)
+স্থির যৌক্তিক
+parse_সংখ্যা (ধ্রুবক অক্ষর **pp, ধ্রুবক অক্ষর *end, T *pv,
+               যৌক্তিক whole_বাফার, পূর্ণসংখ্যা base, Postprocess post)
 {
-  const char *pend = end;
-  const char *p = *pp;
-  bool neg = false, any = false, overflow = false;
+  ধ্রুবক অক্ষর *pend = end;
+  ধ্রুবক অক্ষর *p = *pp;
+  যৌক্তিক neg = মিথ্যা, any = মিথ্যা, overflow = মিথ্যা;
 
-  while (p < pend && ISSPACE (*p)) p++;
-  if (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
+  যখন (p < pend && ISSPACE (*p)) p++;
+  যদি (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
 
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
-  if (base == 16 && p + 2 < pend && p[0] == '0' &&
-      (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
+  যদি (base == 16 && p + 2 < pend && p[0] == '0' &&
+      (p[1] == 'x' || p[1] == 'X') && hb_digit_মান (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
   p = _hb_scan_digits (p, pend, base, &v, &overflow, &any);
-  if (unlikely (!any || overflow)) return false;
+  যদি (unlikely (!any || overflow)) ফেরত মিথ্যা;
 
   T out;
-  if (unlikely (!post (v, neg, &out))) return false;
-  if (unlikely (whole_buffer && p != pend)) return false;
+  যদি (unlikely (!post (v, neg, &out))) ফেরত মিথ্যা;
+  যদি (unlikely (whole_বাফার && p != pend)) ফেরত মিথ্যা;
 
   *pv = out;
   *pp = p;
-  return true;
+  ফেরত সত্য;
 }
 
-bool
-hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
+যৌক্তিক
+hb_parse_int (ধ্রুবক অক্ষর **pp, ধ্রুবক অক্ষর *end, পূর্ণসংখ্যা *pv, যৌক্তিক whole_বাফার)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
-                        [] (uint64_t v, bool neg, int *out) {
+  ফেরত parse_সংখ্যা (pp, end, pv, whole_বাফার, 10,
+                        [] (uint64_t v, যৌক্তিক neg, পূর্ণসংখ্যা *out) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
     uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
-    if (unlikely (v > limit)) return false;
-    *out = (int) (neg ? -(int64_t) v : (int64_t) v);
-    return true;
+    যদি (unlikely (v > limit)) ফেরত মিথ্যা;
+    *out = (পূর্ণসংখ্যা) (neg ? -(int64_t) v : (int64_t) v);
+    ফেরত সত্য;
   });
 }
 
-bool
-hb_parse_uint (const char **pp, const char *end, unsigned *pv,
-               bool whole_buffer, int base)
+যৌক্তিক
+hb_parse_uint (ধ্রুবক অক্ষর **pp, ধ্রুবক অক্ষর *end, unsigned *pv,
+               যৌক্তিক whole_বাফার, পূর্ণসংখ্যা base)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
-                        [] (uint64_t v, bool neg, unsigned *out) {
-    if (unlikely (v > UINT_MAX)) return false;
+  ফেরত parse_সংখ্যা (pp, end, pv, whole_বাফার, base,
+                        [] (uint64_t v, যৌক্তিক neg, unsigned *out) {
+    যদি (unlikely (v > UINT_MAX)) ফেরত মিথ্যা;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul
      * truncated to unsigned. */
     unsigned u = (unsigned) v;
     *out = neg ? (unsigned) (0u - u) : u;
-    return true;
+    ফেরত সত্য;
   });
 }
 

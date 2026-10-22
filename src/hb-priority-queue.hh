@@ -27,8 +27,8 @@
 #ifndef HB_PRIORITY_QUEUE_HH
 #define HB_PRIORITY_QUEUE_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-vector.hh"
 
 /*
  * hb_priority_queue_t
@@ -43,140 +43,140 @@
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
 template <typename K>
-struct hb_priority_queue_t
+কাঠামো hb_priority_queue_t
 {
- public:
-  typedef hb_pair_t<K, unsigned> item_t;
+ সর্বজনীন:
+  প্রকারলেখ hb_pair_t<K, unsigned> item_t;
 
- private:
+ ব্যক্তিগত:
   hb_vector_t<item_t> heap;
 
- public:
+ সর্বজনীন:
 
-  hb_priority_queue_t () = default;
+  hb_priority_queue_t () = পূর্বনির্ধারিত;
   hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
+    জন্য (পূর্ণসংখ্যা i = (heap.দৈর্ঘ্য / 2) - 1; i >= 0; i--)
       bubble_down (i);
   }
 
-  void reset () { heap.clear (); }
+  শূন্য reset () { heap.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  যৌক্তিক in_error () ধ্রুবক { ফেরত heap.in_error (); }
 
-  bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  যৌক্তিক alloc (unsigned আকার_2)
+  { ফেরত heap.alloc (আকার_2); }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
-  void insert (K priority, unsigned value)
+  শূন্য insert (K priority, unsigned value)
   {
     heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
-    bubble_up (heap.length - 1);
+    যদি (unlikely (heap.in_error ())) ফেরত;
+    bubble_up (heap.দৈর্ঘ্য - 1);
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
   HB_ALWAYS_INLINE
 #endif
-  item_t pop_minimum ()
+  item_t বের_করো_minimum ()
   {
-    assert (!is_empty ());
+    প্রতিজ্ঞা (!is_empty ());
 
-    item_t result = heap.arrayZ[0];
+    item_t ফলাফল = heap.arrayZ[0];
 
-    heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
-    heap.resize (heap.length - 1);
+    heap.arrayZ[0] = heap.arrayZ[heap.দৈর্ঘ্য - 1];
+    heap.resize (heap.দৈর্ঘ্য - 1);
 
-    if (!is_empty ())
+    যদি (!is_empty ())
       bubble_down (0);
 
-    return result;
+    ফেরত ফলাফল;
   }
 
-  const item_t& minimum ()
+  ধ্রুবক item_t& minimum ()
   {
-    return heap[0];
+    ফেরত heap[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  যৌক্তিক is_empty () ধ্রুবক { ফেরত heap.দৈর্ঘ্য == 0; }
+  explicit operator যৌক্তিক () ধ্রুবক { ফেরত !is_empty (); }
+  unsigned পূর্ণসংখ্যা get_population () ধ্রুবক { ফেরত heap.দৈর্ঘ্য; }
 
   /* Sink interface. */
   hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  { insert (item.first, item.second); ফেরত *এই; }
 
- private:
+ ব্যক্তিগত:
 
-  static constexpr unsigned parent (unsigned index)
+  স্থির constexpr unsigned parent (unsigned সূচক_2)
   {
-    return (index - 1) / 2;
+    ফেরত (সূচক_2 - 1) / 2;
   }
 
-  static constexpr unsigned left_child (unsigned index)
+  স্থির constexpr unsigned বাম_child (unsigned সূচক_2)
   {
-    return 2 * index + 1;
+    ফেরত 2 * সূচক_2 + 1;
   }
 
-  static constexpr unsigned right_child (unsigned index)
+  স্থির constexpr unsigned ডান_child (unsigned সূচক_2)
   {
-    return 2 * index + 2;
+    ফেরত 2 * সূচক_2 + 2;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_down (unsigned index)
+  শূন্য bubble_down (unsigned সূচক_2)
   {
     repeat:
-    assert (index < heap.length);
+    প্রতিজ্ঞা (সূচক_2 < heap.দৈর্ঘ্য);
 
-    unsigned left = left_child (index);
-    unsigned right = right_child (index);
+    unsigned left = বাম_child (সূচক_2);
+    unsigned ডান = ডান_child (সূচক_2);
 
-    bool has_left = left < heap.length;
-    if (!has_left)
+    যৌক্তিক has_বাম = left < heap.দৈর্ঘ্য;
+    যদি (!has_বাম)
       // If there's no left, then there's also no right.
-      return;
+      ফেরত;
 
-    bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
-        && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+    যৌক্তিক has_ডান = ডান < heap.দৈর্ঘ্য;
+    যদি (heap.arrayZ[সূচক_2].first <= heap.arrayZ[left].first
+        && (!has_ডান || heap.arrayZ[সূচক_2].first <= heap.arrayZ[ডান].first))
+      ফেরত;
 
     unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    যদি (!has_ডান || heap.arrayZ[left].first < heap.arrayZ[ডান].first)
       child = left;
-    else
-      child = right;
+    অন্যথা
+      child = ডান;
 
-    swap (index, child);
-    index = child;
-    goto repeat;
+    swap (সূচক_2, child);
+    সূচক_2 = child;
+    যাও repeat;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_up (unsigned index)
+  শূন্য bubble_up (unsigned সূচক_2)
   {
     repeat:
-    assert (index < heap.length);
+    প্রতিজ্ঞা (সূচক_2 < heap.দৈর্ঘ্য);
 
-    if (index == 0) return;
+    যদি (সূচক_2 == 0) ফেরত;
 
-    unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    unsigned parent_সূচক = parent (সূচক_2);
+    যদি (heap.arrayZ[parent_সূচক].first <= heap.arrayZ[সূচক_2].first)
+      ফেরত;
 
-    swap (index, parent_index);
-    index = parent_index;
-    goto repeat;
+    swap (সূচক_2, parent_সূচক);
+    সূচক_2 = parent_সূচক;
+    যাও repeat;
   }
 
-  void swap (unsigned a, unsigned b) noexcept
+  শূন্য swap (unsigned a, unsigned b) noexcept
   {
-    assert (a < heap.length);
-    assert (b < heap.length);
+    প্রতিজ্ঞা (a < heap.দৈর্ঘ্য);
+    প্রতিজ্ঞা (b < heap.দৈর্ঘ্য);
     hb_swap (heap.arrayZ[a], heap.arrayZ[b]);
   }
 };

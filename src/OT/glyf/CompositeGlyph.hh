@@ -2,21 +2,21 @@
 #define OT_GLYF_COMPOSITEGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
-#include "composite-iter.hh"
+#অন্তর্ভাব "../../hb-open-type.hh"
+#অন্তর্ভাব "composite-iter.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+নামাকাশ OT {
+নামাকাশ glyf_impl {
 
 
-struct CompositeGlyphRecord
+কাঠামো CompositeGlyphRecord
 {
-  protected:
-  enum composite_glyph_flag_t
+  সুরক্ষিত:
+  গণনা composite_glyph_flag_t
   {
-    ARG_1_AND_2_ARE_WORDS	= 0x0001,
-    ARGS_ARE_XY_VALUES		= 0x0002,
+    ARG_1_AND_2_ARE_শব্দগুলি	= 0x0001,
+    ARGS_ARE_XY_মানসমূহ		= 0x0002,
     ROUND_XY_TO_GRID		= 0x0004,
     WE_HAVE_A_SCALE		= 0x0008,
     MORE_COMPONENTS		= 0x0020,
@@ -32,381 +32,381 @@ struct CompositeGlyphRecord
 #endif
   };
 
-  public:
-  size_t get_size (bool extended) const
+  সর্বজনীন:
+  size_t get_আকার (যৌক্তিক extended) ধ্রুবক
   {
-    unsigned int size = min_size;
+    unsigned পূর্ণসংখ্যা আকার_2 = min_আকার;
     /* glyphIndex is 24bit instead of 16bit */
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT)) size += HBGlyphID24::static_size - HBGlyphID16::static_size;
+    যদি (extended && (flags & GID_IS_24BIT)) আকার_2 += HBGlyphID24::static_আকার - HBGlyphID16::static_আকার;
 #endif
     /* arg1 and 2 are int16 */
-    if (flags & ARG_1_AND_2_ARE_WORDS) size += 4;
+    যদি (flags & ARG_1_AND_2_ARE_শব্দগুলি) আকার_2 += 4;
     /* arg1 and 2 are int8 */
-    else size += 2;
+    অন্যথা আকার_2 += 2;
 
     /* One x 16 bit (scale) */
-    if (flags & WE_HAVE_A_SCALE) size += 2;
+    যদি (flags & WE_HAVE_A_SCALE) আকার_2 += 2;
     /* Two x 16 bit (xscale, yscale) */
-    else if (flags & WE_HAVE_AN_X_AND_Y_SCALE) size += 4;
+    অন্যথা যদি (flags & WE_HAVE_AN_X_AND_Y_SCALE) আকার_2 += 4;
     /* Four x 16 bit (xscale, scale01, scale10, yscale) */
-    else if (flags & WE_HAVE_A_TWO_BY_TWO) size += 8;
+    অন্যথা যদি (flags & WE_HAVE_A_TWO_BY_TWO) আকার_2 += 8;
 
-    return size;
+    ফেরত আকার_2;
   }
 
-  void drop_instructions_flag ()  { flags = (uint16_t) flags & ~WE_HAVE_INSTRUCTIONS; }
-  void set_overlaps_flag ()
+  শূন্য drop_instructions_flag ()  { flags = (uint16_t) flags & ~WE_HAVE_INSTRUCTIONS; }
+  শূন্য set_overlaps_flag ()
   {
     flags = (uint16_t) flags | OVERLAP_COMPOUND;
   }
 
-  bool has_instructions ()  const { return   flags & WE_HAVE_INSTRUCTIONS; }
+  যৌক্তিক has_instructions ()  ধ্রুবক { ফেরত   flags & WE_HAVE_INSTRUCTIONS; }
 
-  bool has_more ()          const { return   flags & MORE_COMPONENTS; }
-  bool is_use_my_metrics () const { return   flags & USE_MY_METRICS; }
-  bool is_anchored ()       const { return !(flags & ARGS_ARE_XY_VALUES); }
-  void get_anchor_points (unsigned int &point1, unsigned int &point2, bool extended) const
+  যৌক্তিক has_more ()          ধ্রুবক { ফেরত   flags & MORE_COMPONENTS; }
+  যৌক্তিক is_use_my_metrics () ধ্রুবক { ফেরত   flags & USE_MY_METRICS; }
+  যৌক্তিক is_anchored ()       ধ্রুবক { ফেরত !(flags & ARGS_ARE_XY_মানসমূহ); }
+  শূন্য get_anchor_points (unsigned পূর্ণসংখ্যা &point1, unsigned পূর্ণসংখ্যা &point2, যৌক্তিক extended) ধ্রুবক
   {
-    const auto *p = &StructAfter<const HBUINT8> (flags);
+    ধ্রুবক auto *p = &StructAfter<ধ্রুবক HBUINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      p += HBGlyphID24::static_size;
-    else
+    যদি (extended && (flags & GID_IS_24BIT))
+      p += HBGlyphID24::static_আকার;
+    অন্যথা
 #endif
-      p += HBGlyphID16::static_size;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+      p += HBGlyphID16::static_আকার;
+    যদি (flags & ARG_1_AND_2_ARE_শব্দগুলি)
     {
-      point1 = ((const HBUINT16 *) p)[0];
-      point2 = ((const HBUINT16 *) p)[1];
+      point1 = ((ধ্রুবক HBUINT16 *) p)[0];
+      point2 = ((ধ্রুবক HBUINT16 *) p)[1];
     }
-    else
+    অন্যথা
     {
       point1 = p[0];
       point2 = p[1];
     }
   }
 
-  static void transform (const float (&matrix)[4],
+  স্থির শূন্য transform (ধ্রুবক দশমিক (&matrix)[4],
 			 hb_array_t<contour_point_t> points)
   {
-    if (matrix[0] != 1.f || matrix[1] != 0.f ||
+    যদি (matrix[0] != 1.f || matrix[1] != 0.f ||
 	matrix[2] != 0.f || matrix[3] != 1.f)
-      for (auto &point : points)
+      জন্য (auto &point : points)
         point.transform (matrix);
   }
 
-  static void translate (const contour_point_t &trans,
+  স্থির শূন্য translate (ধ্রুবক contour_point_t &trans,
 			 hb_array_t<contour_point_t> points)
   {
-    if (HB_OPTIMIZE_SIZE_VAL)
+    যদি (HB_OPTIMIZE_আকার_VAL)
     {
-      if (trans.x != 0.f || trans.y != 0.f)
-        for (auto &point : points)
+      যদি (trans.x != 0.f || trans.y != 0.f)
+        জন্য (auto &point : points)
 	  point.translate (trans);
     }
-    else
+    অন্যথা
     {
-      if (trans.x != 0.f && trans.y != 0.f)
-        for (auto &point : points)
+      যদি (trans.x != 0.f && trans.y != 0.f)
+        জন্য (auto &point : points)
 	  point.translate (trans);
-      else
+      অন্যথা
       {
-	if (trans.x != 0.f)
-	  for (auto &point : points)
+	যদি (trans.x != 0.f)
+	  জন্য (auto &point : points)
 	    point.x += trans.x;
-	else if (trans.y != 0.f)
-	  for (auto &point : points)
+	অন্যথা যদি (trans.y != 0.f)
+	  জন্য (auto &point : points)
 	    point.y += trans.y;
       }
     }
   }
 
-  void transform_points (hb_array_t<contour_point_t> points,
-			 const float (&matrix)[4],
-			 const contour_point_t &trans) const
+  শূন্য transform_points (hb_array_t<contour_point_t> points,
+			 ধ্রুবক দশমিক (&matrix)[4],
+			 ধ্রুবক contour_point_t &trans) ধ্রুবক
   {
-    if (scaled_offsets ())
+    যদি (scaled_offsets ())
     {
       translate (trans, points);
       transform (matrix, points);
     }
-    else
+    অন্যথা
     {
       transform (matrix, points);
       translate (trans, points);
     }
   }
 
-  bool get_points (contour_point_vector_t &points, bool extended) const
+  যৌক্তিক get_points (contour_point_vector_t &points, যৌক্তিক extended) ধ্রুবক
   {
-    float matrix[4];
+    দশমিক matrix[4];
     contour_point_t trans;
     get_transformation (matrix, trans, extended);
-    if (unlikely (!points.alloc (points.length + 1 + 4))) return false; // For phantom points
+    যদি (unlikely (!points.alloc (points.দৈর্ঘ্য + 1 + 4))) ফেরত মিথ্যা; // For phantom points
     points.push (trans);
-    return true;
+    ফেরত সত্য;
   }
 
-  unsigned compile_with_point (const contour_point_t &point,
-                               char *out,
-			       bool extended) const
+  unsigned compile_with_point (ধ্রুবক contour_point_t &point,
+                               অক্ষর *out,
+			       যৌক্তিক extended) ধ্রুবক
   {
-    const HBINT8 *p = &StructAfter<const HBINT8> (flags);
+    ধ্রুবক HBINT8 *p = &StructAfter<ধ্রুবক HBINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      p += HBGlyphID24::static_size;
-    else
+    যদি (extended && (flags & GID_IS_24BIT))
+      p += HBGlyphID24::static_আকার;
+    অন্যথা
 #endif
-      p += HBGlyphID16::static_size;
+      p += HBGlyphID16::static_আকার;
 
-    unsigned len = get_size (extended);
-    unsigned len_before_val = (const char *)p - (const char *)this;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    unsigned len = get_আকার (extended);
+    unsigned len_before_val = (ধ্রুবক অক্ষর *)p - (ধ্রুবক অক্ষর *)এই;
+    যদি (flags & ARG_1_AND_2_ARE_শব্দগুলি)
     {
       // no overflow, copy value
-      hb_memcpy (out, this, len);
+      hb_memcpy (out, এই, len);
 
       HBINT16 *o = reinterpret_cast<HBINT16 *> (out + len_before_val);
       o[0] = roundf (point.x);
       o[1] = roundf (point.y);
     }
-    else
+    অন্যথা
     {
-      int new_x = roundf (point.x);
-      int new_y = roundf (point.y);
-      if (new_x <= 127 && new_x >= -128 &&
+      পূর্ণসংখ্যা new_x = roundf (point.x);
+      পূর্ণসংখ্যা new_y = roundf (point.y);
+      যদি (new_x <= 127 && new_x >= -128 &&
           new_y <= 127 && new_y >= -128)
       {
-        hb_memcpy (out, this, len);
+        hb_memcpy (out, এই, len);
         HBINT8 *o = reinterpret_cast<HBINT8 *> (out + len_before_val);
         o[0] = new_x;
         o[1] = new_y;
       }
-      else
+      অন্যথা
       {
         // new point value has an int8 overflow
-        hb_memcpy (out, this, len_before_val);
+        hb_memcpy (out, এই, len_before_val);
         
         //update flags
         CompositeGlyphRecord *o = reinterpret_cast<CompositeGlyphRecord *> (out);
-        o->flags = flags | ARG_1_AND_2_ARE_WORDS;
+        o->flags = flags | ARG_1_AND_2_ARE_শব্দগুলি;
         out += len_before_val;
 
-        HBINT16 new_value;
-        new_value = new_x;
-        hb_memcpy (out, &new_value, HBINT16::static_size);
-        out += HBINT16::static_size;
+        HBINT16 new_মান;
+        new_মান = new_x;
+        hb_memcpy (out, &new_মান, HBINT16::static_আকার);
+        out += HBINT16::static_আকার;
 
-        new_value = new_y;
-        hb_memcpy (out, &new_value, HBINT16::static_size);
-        out += HBINT16::static_size;
+        new_মান = new_y;
+        hb_memcpy (out, &new_মান, HBINT16::static_আকার);
+        out += HBINT16::static_আকার;
 
         hb_memcpy (out, p+2, len - len_before_val - 2);
         len += 2;
       }
     }
-    return len;
+    ফেরত len;
   }
 
-  protected:
-  bool scaled_offsets () const
-  { return (flags & (SCALED_COMPONENT_OFFSET | UNSCALED_COMPONENT_OFFSET)) == SCALED_COMPONENT_OFFSET; }
+  সুরক্ষিত:
+  যৌক্তিক scaled_offsets () ধ্রুবক
+  { ফেরত (flags & (SCALED_COMPONENT_OFFSET | UNSCALED_COMPONENT_OFFSET)) == SCALED_COMPONENT_OFFSET; }
 
-  public:
-  bool get_transformation (float (&matrix)[4], contour_point_t &trans, bool extended) const
+  সর্বজনীন:
+  যৌক্তিক get_transformation (দশমিক (&matrix)[4], contour_point_t &trans, যৌক্তিক extended) ধ্রুবক
   {
     matrix[0] = matrix[3] = 1.f;
     matrix[1] = matrix[2] = 0.f;
 
-    const auto *p = &StructAfter<const HBINT8> (flags);
+    ধ্রুবক auto *p = &StructAfter<ধ্রুবক HBINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      p += HBGlyphID24::static_size;
-    else
+    যদি (extended && (flags & GID_IS_24BIT))
+      p += HBGlyphID24::static_আকার;
+    অন্যথা
 #endif
-      p += HBGlyphID16::static_size;
-    int tx, ty;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+      p += HBGlyphID16::static_আকার;
+    পূর্ণসংখ্যা tx, ty;
+    যদি (flags & ARG_1_AND_2_ARE_শব্দগুলি)
     {
-      tx = *(const HBINT16 *) p;
-      p += HBINT16::static_size;
-      ty = *(const HBINT16 *) p;
-      p += HBINT16::static_size;
+      tx = *(ধ্রুবক HBINT16 *) p;
+      p += HBINT16::static_আকার;
+      ty = *(ধ্রুবক HBINT16 *) p;
+      p += HBINT16::static_আকার;
     }
-    else
+    অন্যথা
     {
       tx = *p++;
       ty = *p++;
     }
-    if (is_anchored ()) tx = ty = 0;
+    যদি (is_anchored ()) tx = ty = 0;
 
     /* set is_end_point flag to true, used by IUP delta optimization */
-    trans.init ((float) tx, (float) ty, true);
+    trans.init ((দশমিক) tx, (দশমিক) ty, সত্য);
 
     {
-      const F2DOT14 *points = (const F2DOT14 *) p;
-      if (flags & WE_HAVE_A_SCALE)
+      ধ্রুবক F2DOT14 *points = (ধ্রুবক F2DOT14 *) p;
+      যদি (flags & WE_HAVE_A_SCALE)
       {
 	matrix[0] = matrix[3] = points[0].to_float ();
-	return true;
+	ফেরত সত্য;
       }
-      else if (flags & WE_HAVE_AN_X_AND_Y_SCALE)
+      অন্যথা যদি (flags & WE_HAVE_AN_X_AND_Y_SCALE)
       {
 	matrix[0] = points[0].to_float ();
 	matrix[3] = points[1].to_float ();
-	return true;
+	ফেরত সত্য;
       }
-      else if (flags & WE_HAVE_A_TWO_BY_TWO)
+      অন্যথা যদি (flags & WE_HAVE_A_TWO_BY_TWO)
       {
 	matrix[0] = points[0].to_float ();
 	matrix[1] = points[1].to_float ();
 	matrix[2] = points[2].to_float ();
 	matrix[3] = points[3].to_float ();
-	return true;
+	ফেরত সত্য;
       }
     }
-    return tx || ty;
+    ফেরত tx || ty;
   }
 
-  hb_codepoint_t get_gid (bool extended) const
+  hb_codepoint_t get_gid (যৌক্তিক extended) ধ্রুবক
   {
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      return StructAfter<const HBGlyphID24> (flags);
-    else
+    যদি (extended && (flags & GID_IS_24BIT))
+      ফেরত StructAfter<ধ্রুবক HBGlyphID24> (flags);
+    অন্যথা
 #endif
-      return StructAfter<const HBGlyphID16> (flags);
+      ফেরত StructAfter<ধ্রুবক HBGlyphID16> (flags);
   }
-  void set_gid (hb_codepoint_t gid, bool extended)
+  শূন্য set_gid (hb_codepoint_t gid, যৌক্তিক extended)
   {
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    যদি (extended && (flags & GID_IS_24BIT))
       StructAfter<HBGlyphID24> (flags) = gid;
-    else
+    অন্যথা
 #endif
       /* TODO assert? */
       StructAfter<HBGlyphID16> (flags) = gid;
   }
 
 #ifndef HB_NO_BEYOND_64K
-  void lower_gid_24_to_16 ()
+  শূন্য lower_gid_24_to_16 ()
   {
-    hb_codepoint_t gid = get_gid (true);
-    if (!(flags & GID_IS_24BIT) || gid > 0xFFFFu)
-      return;
+    hb_codepoint_t gid = get_gid (সত্য);
+    যদি (!(flags & GID_IS_24BIT) || gid > 0xFFFFu)
+      ফেরত;
 
     /* Lower the flag and move the rest of the struct down. */
 
-    unsigned size = get_size (true);
-    char *end = (char *) this + size;
-    char *p = &StructAfter<char> (flags);
-    p += HBGlyphID24::static_size;
+    unsigned আকার_2 = get_আকার (সত্য);
+    অক্ষর *end = (অক্ষর *) এই + আকার_2;
+    অক্ষর *p = &StructAfter<অক্ষর> (flags);
+    p += HBGlyphID24::static_আকার;
 
     flags = flags & ~GID_IS_24BIT;
-    set_gid (gid, true);
+    set_gid (gid, সত্য);
 
-    memmove (p - HBGlyphID24::static_size + HBGlyphID16::static_size, p, end - p);
+    memmove (p - HBGlyphID24::static_আকার + HBGlyphID16::static_আকার, p, end - p);
   }
 #endif
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	flags;
   HBUINT24	pad;
-  public:
-  DEFINE_SIZE_MIN (4);
+  সর্বজনীন:
+  DEFINE_আকার_MIN (4);
 };
 
 using composite_iter_t = composite_iter_tmpl<CompositeGlyphRecord>;
 
-struct CompositeGlyph
+কাঠামো CompositeGlyph
 {
-  const GlyphHeader &header;
+  ধ্রুবক GlyphHeader &header;
   hb_bytes_t bytes;
-  bool extended;
-  CompositeGlyph (const GlyphHeader &header_, hb_bytes_t bytes_, bool extended_) :
+  যৌক্তিক extended;
+  CompositeGlyph (ধ্রুবক GlyphHeader &header_, hb_bytes_t bytes_, যৌক্তিক extended_) :
     header (header_), bytes (bytes_), extended (extended_) {}
 
-  composite_iter_t iter () const
-  { return composite_iter_t (bytes, &StructAfter<CompositeGlyphRecord, GlyphHeader> (header), extended); }
+  composite_iter_t iter () ধ্রুবক
+  { ফেরত composite_iter_t (bytes, &StructAfter<CompositeGlyphRecord, GlyphHeader> (header), extended); }
 
-  unsigned int instructions_length (hb_bytes_t bytes) const
+  unsigned পূর্ণসংখ্যা instructions_দৈর্ঘ্য (hb_bytes_t bytes) ধ্রুবক
   {
-    unsigned int start = bytes.length;
-    unsigned int end = bytes.length;
-    const CompositeGlyphRecord *last = nullptr;
-    for (auto &item : iter ())
+    unsigned পূর্ণসংখ্যা start = bytes.দৈর্ঘ্য;
+    unsigned পূর্ণসংখ্যা end = bytes.দৈর্ঘ্য;
+    ধ্রুবক CompositeGlyphRecord *last = nullptr;
+    জন্য (auto &item : iter ())
       last = &item;
-    if (unlikely (!last)) return 0;
+    যদি (unlikely (!last)) ফেরত 0;
 
-    if (last->has_instructions ())
-      start = (char *) last - &bytes + last->get_size (extended);
-    if (unlikely (start > end)) return 0;
-    return end - start;
+    যদি (last->has_instructions ())
+      start = (অক্ষর *) last - &bytes + last->get_আকার (extended);
+    যদি (unlikely (start > end)) ফেরত 0;
+    ফেরত end - start;
   }
 
   /* Trimming for composites not implemented.
    * If removing hints it falls out of that. */
-  const hb_bytes_t trim_padding () const { return bytes; }
+  ধ্রুবক hb_bytes_t trim_padding () ধ্রুবক { ফেরত bytes; }
 
-  void drop_hints ()
+  শূন্য drop_hints ()
   {
-    for (const auto &_ : iter ())
+    জন্য (ধ্রুবক auto &_ : iter ())
       const_cast<CompositeGlyphRecord &> (_).drop_instructions_flag ();
   }
 
   /* Chop instructions off the end */
-  void drop_hints_bytes (hb_bytes_t &dest_start) const
-  { dest_start = bytes.sub_array (0, bytes.length - instructions_length (bytes)); }
+  শূন্য drop_hints_bytes (hb_bytes_t &dest_start) ধ্রুবক
+  { dest_start = bytes.sub_array (0, bytes.দৈর্ঘ্য - instructions_দৈর্ঘ্য (bytes)); }
 
-  void set_overlaps_flag ()
+  শূন্য set_overlaps_flag ()
   {
     CompositeGlyphRecord& glyph_chain = const_cast<CompositeGlyphRecord &> (
 	StructAfter<CompositeGlyphRecord, GlyphHeader> (header));
-    if (!bytes.check_range(&glyph_chain, CompositeGlyphRecord::min_size))
-      return;
+    যদি (!bytes.check_range(&glyph_chain, CompositeGlyphRecord::min_আকার))
+      ফেরত;
     glyph_chain.set_overlaps_flag ();
   }
 
-  bool compile_bytes_with_deltas (const hb_bytes_t &source_bytes,
-                                  const contour_point_vector_t &points_with_deltas,
+  যৌক্তিক compile_bytes_with_deltas (ধ্রুবক hb_bytes_t &source_bytes,
+                                  ধ্রুবক contour_point_vector_t &points_with_deltas,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (source_bytes.length <= GlyphHeader::static_size ||
-        header.numberOfContours != -1)
+    যদি (source_bytes.দৈর্ঘ্য <= GlyphHeader::static_আকার ||
+        header.সংখ্যা_Of_Contours != -1)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      ফেরত সত্য;
     }
 
-    unsigned source_len = source_bytes.length - GlyphHeader::static_size;
+    unsigned source_len = source_bytes.দৈর্ঘ্য - GlyphHeader::static_আকার;
 
     /* try to allocate more memories than source glyph bytes
      * in case that there might be an overflow for int8 value
      * and we would need to use int16 instead */
-    char *o = (char *) hb_calloc (source_len * 2, sizeof (char));
-    if (unlikely (!o)) return false;
+    অক্ষর *o = (অক্ষর *) hb_calloc (source_len * 2, আকার (অক্ষর));
+    যদি (unlikely (!o)) ফেরত মিথ্যা;
 
-    const CompositeGlyphRecord *c = reinterpret_cast<const CompositeGlyphRecord *> (source_bytes.arrayZ + GlyphHeader::static_size);
-    auto it = composite_iter_t (hb_bytes_t ((const char *)c, source_len), c, extended);
+    ধ্রুবক CompositeGlyphRecord *c = reinterpret_cast<ধ্রুবক CompositeGlyphRecord *> (source_bytes.arrayZ + GlyphHeader::static_আকার);
+    auto it = composite_iter_t (hb_bytes_t ((ধ্রুবক অক্ষর *)c, source_len), c, extended);
 
-    char *p = o;
+    অক্ষর *p = o;
     unsigned i = 0, source_comp_len = 0;
-    for (const auto &component : it)
+    জন্য (ধ্রুবক auto &component : it)
     {
       /* last 4 points in points_with_deltas are phantom points and should not be included */
-      if (i >= points_with_deltas.length - 4) {
+      যদি (i >= points_with_deltas.দৈর্ঘ্য - 4) {
         hb_free (o);
-        return false;
+        ফেরত মিথ্যা;
       }
 
-      unsigned comp_len = component.get_size (extended);
-      if (component.is_anchored ())
+      unsigned comp_len = component.get_আকার (extended);
+      যদি (component.is_anchored ())
       {
         hb_memcpy (p, &component, comp_len);
         p += comp_len;
       }
-      else
+      অন্যথা
       {
         unsigned new_len = component.compile_with_point (points_with_deltas[i], p, extended);
         p += new_len;
@@ -416,16 +416,16 @@ struct CompositeGlyph
     }
 
     //copy instructions if any
-    if (source_len > source_comp_len)
+    যদি (source_len > source_comp_len)
     {
       unsigned instr_len = source_len - source_comp_len;
-      hb_memcpy (p, (const char *)c + source_comp_len, instr_len);
+      hb_memcpy (p, (ধ্রুবক অক্ষর *)c + source_comp_len, instr_len);
       p += instr_len;
     }
 
     unsigned len = p - o;
     dest_bytes = hb_bytes_t (o, len);
-    return true;
+    ফেরত সত্য;
   }
 };
 

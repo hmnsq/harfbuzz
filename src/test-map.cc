@@ -22,13 +22,13 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include <string>
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-map.hh"
+#অন্তর্ভাব "hb-set.hh"
+#অন্তর্ভাব <string>
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
 
   /* Test copy constructor. */
@@ -93,7 +93,7 @@ main (int argc, char **argv)
   /* Test call fini() twice. */
   {
     hb_map_t s;
-    for (int i = 0; i < 16; i++)
+    জন্য (পূর্ণসংখ্যা i = 0; i < 16; i++)
       s.set(i, i+1);
     s.fini();
   }
@@ -122,8 +122,8 @@ main (int argc, char **argv)
 
   /* Test class key / value types. */
   {
-    hb_hashmap_t<hb_bytes_t, int> m1;
-    hb_hashmap_t<int, hb_bytes_t> m2;
+    hb_hashmap_t<hb_bytes_t, পূর্ণসংখ্যা> m1;
+    hb_hashmap_t<পূর্ণসংখ্যা, hb_bytes_t> m2;
     hb_hashmap_t<hb_bytes_t, hb_bytes_t> m3;
     hb_always_assert (m1.get_population () == 0);
     hb_always_assert (m2.get_population () == 0);
@@ -131,13 +131,13 @@ main (int argc, char **argv)
   }
 
   {
-    hb_hashmap_t<int, int> m0;
-    hb_hashmap_t<std::string, int> m1;
-    hb_hashmap_t<int, std::string> m2;
+    hb_hashmap_t<পূর্ণসংখ্যা, পূর্ণসংখ্যা> m0;
+    hb_hashmap_t<std::string, পূর্ণসংখ্যা> m1;
+    hb_hashmap_t<পূর্ণসংখ্যা, std::string> m2;
     hb_hashmap_t<std::string, std::string> m3;
 
     std::string s;
-    for (unsigned i = 1; i < 1000; i++)
+    জন্য (unsigned i = 1; i < 1000; i++)
     {
       s += "x";
       m0.set (i, i);
@@ -194,20 +194,20 @@ main (int argc, char **argv)
 
     hb_hashmap_t<vector_t, vector_t> m1;
     vector_t v {3};
-    hb_always_assert (v.length == 1);
+    hb_always_assert (v.দৈর্ঘ্য == 1);
     m1 << hb_pair_t<vector_t, vector_t> {vector_t {3}, v};
-    hb_always_assert (v.length == 1);
+    hb_always_assert (v.দৈর্ঘ্য == 1);
     m1 << hb_pair_t<vector_t, vector_t&&> {vector_t {4}, std::move (v)};
-    hb_always_assert (v.length == 0);
+    hb_always_assert (v.দৈর্ঘ্য == 0);
     m1 << hb_pair_t<vector_t&&, vector_t> {vector_t {4}, vector_t {5}};
     m1 << hb_pair_t<vector_t&&, vector_t&&> {vector_t {4}, vector_t {5}};
 
     hb_hashmap_t<vector_t, vector_t> m2;
     vector_t v2 {3};
     m2.set (vector_t {4}, v2);
-    hb_always_assert (v2.length == 1);
+    hb_always_assert (v2.দৈর্ঘ্য == 1);
     m2.set (vector_t {5}, std::move (v2));
-    hb_always_assert (v2.length == 0);
+    hb_always_assert (v2.দৈর্ঘ্য == 0);
   }
 
   /* Test hb::shared_ptr. */
@@ -218,11 +218,11 @@ main (int argc, char **argv)
 	   hb::shared_ptr<hb_set_t> (hb_set_get_empty ()));
     m.get (hb::shared_ptr<hb_set_t> (hb_set_get_empty ()));
     m.iter ();
-    m.keys ();
+    m.চাবিগুলি ();
     m.values ();
     m.iter_ref ();
-    m.keys_ref ();
-    m.values_ref ();
+    m.চাবিগুলি_ref ();
+    m.মানসমূহ_ref ();
   }
   /* Test hb::unique_ptr. */
   {
@@ -234,8 +234,8 @@ main (int argc, char **argv)
     hb::unique_ptr<hb_set_t> *v;
     m.has (hb::unique_ptr<hb_set_t> (hb_set_get_empty ()), &v);
     m.iter_ref ();
-    m.keys_ref ();
-    m.values_ref ();
+    m.চাবিগুলি_ref ();
+    m.মানসমূহ_ref ();
   }
   /* Test hashmap with complex shared_ptrs as keys. */
   {
@@ -257,8 +257,8 @@ main (int argc, char **argv)
   }
   /* Test value type with hb_bytes_t. */
   {
-    hb_hashmap_t<int, hb_bytes_t> m;
-    char c_str[] = "Test";
+    hb_hashmap_t<পূর্ণসংখ্যা, hb_bytes_t> m;
+    অক্ষর c_str[] = "Test";
     hb_bytes_t bytes (c_str);
 
     m.set (1, bytes);
@@ -288,7 +288,7 @@ main (int argc, char **argv)
   }
   /* Test reset. */
   {
-    hb_hashmap_t<int, hb_set_t> m;
+    hb_hashmap_t<পূর্ণসংখ্যা, hb_set_t> m;
     m.set (1, hb_set_t {1, 2, 3});
     m.reset ();
   }
@@ -304,20 +304,20 @@ main (int argc, char **argv)
 
     hb_codepoint_t k;
     hb_codepoint_t v;
-    unsigned pop = 0;
-    for (signed i = -1;
+    unsigned বের_করো = 0;
+    জন্য (signed i = -1;
 	 m.next (&i, &k, &v);)
     {
-      pop++;
-           if (k == 1) hb_always_assert (v == 1);
-      else if (k == 2) hb_always_assert (v == 1);
-      else if (k == 3) hb_always_assert (v == 2);
-      else if (k == 4) hb_always_assert (v == 3);
-      else if (k == 5) hb_always_assert (v == 5);
-      else if (k == 6) hb_always_assert (v == 8);
-      else hb_always_assert (false);
+      বের_করো++;
+           যদি (k == 1) hb_always_assert (v == 1);
+      অন্যথা যদি (k == 2) hb_always_assert (v == 1);
+      অন্যথা যদি (k == 3) hb_always_assert (v == 2);
+      অন্যথা যদি (k == 4) hb_always_assert (v == 3);
+      অন্যথা যদি (k == 5) hb_always_assert (v == 5);
+      অন্যথা যদি (k == 6) hb_always_assert (v == 8);
+      অন্যথা hb_always_assert (মিথ্যা);
     }
-    hb_always_assert (pop == m.get_population ());
+    hb_always_assert (বের_করো == m.get_population ());
   }
   /* Test update */
   {
@@ -341,16 +341,16 @@ main (int argc, char **argv)
     m.set (3, 2);
     m.set (6, 8);
 
-    hb_set_t keys;
+    hb_set_t চাবিগুলি;
     hb_set_t values;
 
-    hb_copy (m.keys (), keys);
+    hb_copy (m.চাবিগুলি (), চাবিগুলি);
     hb_copy (m.values (), values);
 
-    hb_always_assert (keys.is_equal (hb_set_t ({1, 2, 3, 4, 5, 6})));
+    hb_always_assert (চাবিগুলি.is_equal (hb_set_t ({1, 2, 3, 4, 5, 6})));
     hb_always_assert (values.is_equal (hb_set_t ({1, 1, 2, 3, 5, 8})));
 
-    hb_always_assert (keys.is_equal (hb_set_t (m.keys ())));
+    hb_always_assert (চাবিগুলি.is_equal (hb_set_t (m.চাবিগুলি ())));
     hb_always_assert (values.is_equal (hb_set_t (m.values ())));
   }
   /* Test setting a key or value that lives in the map's own storage
@@ -358,14 +358,14 @@ main (int argc, char **argv)
   {
     hb_map_t m;
     m.set (1, 2);
-    for (unsigned i = 0; i < 1000; i++)
+    জন্য (unsigned i = 0; i < 1000; i++)
     {
       m.set (1000 + i, m.get (1));
       hb_always_assert (m.get (1000 + i) == 2);
     }
     hb_map_t m2;
     m2.set (1, 5000);
-    for (unsigned i = 0; i < 1000; i++)
+    জন্য (unsigned i = 0; i < 1000; i++)
     {
       m2.set (m2.get (1), i);
       m2.set (1, 5001 + i);
@@ -373,10 +373,10 @@ main (int argc, char **argv)
     }
     hb_hashmap_t<unsigned, hb_vector_t<unsigned>> v;
     v.set (1, hb_vector_t<unsigned> {1, 2, 3});
-    for (unsigned i = 0; i < 1000; i++)
+    জন্য (unsigned i = 0; i < 1000; i++)
     {
       v.set (1000 + i, v.get (1));
-      hb_always_assert (v.get (1000 + i).length == 3);
+      hb_always_assert (v.get (1000 + i).দৈর্ঘ্য == 3);
     }
   }
   /* Test allocation bounds and overflow protection. */
@@ -394,5 +394,5 @@ main (int argc, char **argv)
     hb_always_assert (m3.in_error ());
   }
 
-  return 0;
+  ফেরত 0;
 }

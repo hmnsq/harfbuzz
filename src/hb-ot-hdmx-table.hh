@@ -27,7 +27,7 @@
 #ifndef HB_OT_HDMX_TABLE_HH
 #define HB_OT_HDMX_TABLE_HH
 
-#include "hb-open-type.hh"
+#অন্তর্ভাব "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
@@ -36,139 +36,139 @@
 #define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
 
 
-namespace OT {
+নামাকাশ OT {
 
 
-struct DeviceRecord
+কাঠামো DeviceRecord
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  স্থির size_t get_আকার (unsigned গুনতি)
+  { ফেরত hb_ceil_to_4 (hb_unsigned_mul_add_saturate (গুনতি, HBUINT8::static_আকার, min_আকার)); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned pixelSize,
+  যৌক্তিক serialize (hb_serialize_context_t *c,
+		  unsigned pixel_আকার,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  ধ্রুবক hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned অঙ্ক_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এই);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    যদি (unlikely (!c->extend (এই, অঙ্ক_glyphs)))  return_trace (মিথ্যা);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    এই->pixel_আকার = pixel_আকার;
+    এই->maxWidth =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
+    জন্য (auto &_ : new_to_old_gid_list)
       widthsZ[_.first] = *it++;
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c, unsigned আকার_Device_Record) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (এই);
+    return_trace (likely (c->check_struct (এই) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (এই, আকার_Device_Record)));
   }
 
-  HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
+  HBUINT8			pixel_আকার;	/* Pixel size for following widths (as ppem). */
   HBUINT8			maxWidth;	/* Maximum width. */
   UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
-  DEFINE_SIZE_UNBOUNDED (2);
+  সর্বজনীন:
+  DEFINE_আকার_UNBOUNDED (2);
 };
 
 
-struct hdmx
+কাঠামো hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_আকার () ধ্রুবক
+  { ফেরত hb_unsigned_mul_add_saturate (অঙ্ক_Records, আকার_Device_Record, min_আকার); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  যৌক্তিক serialize (hb_serialize_context_t *c,
 		  unsigned version,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<ধ্রুবক hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned অঙ্ক_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এই);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    যদি (unlikely (!c->extend_min ((*এই))))  return_trace (মিথ্যা);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    এই->version = version;
+    এই->অঙ্ক_Records = it.len ();
+    এই->আকার_Device_Record = DeviceRecord::get_আকার (অঙ্ক_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    জন্য (ধ্রুবক hb_item_type<Iterator>& _ : +it)
+      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, অঙ্ক_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এই);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    auto *hdmx_মৌলিক = c->serializer->start_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
+    unsigned অঙ্ক_প্রবেশ_glyphs = get_অঙ্ক_glyphs ();
     auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    + hb_range ((unsigned) অঙ্ক_Records)
+    | hb_map ([c, অঙ্ক_প্রবেশ_glyphs, এই] (unsigned _)
 	{
-	  const DeviceRecord *device_record =
+	  ধ্রুবক DeviceRecord *device_record =
 	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
-					   _ * sizeDeviceRecord);
+					   _ * আকার_Device_Record);
 	  auto row =
 	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	    | hb_map ([অঙ্ক_প্রবেশ_glyphs, device_record] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			ফেরত device_record->widthsZ.as_array (অঙ্ক_প্রবেশ_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  ফেরত hb_pair ((unsigned) device_record->pixel_আকার, +row);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
+    hdmx_মৌলিক->serialize (c->serializer, version, it,
 			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
-    return_trace (true);
+			   c->plan->অঙ্ক_output_glyphs ());
+    return_trace (সত্য);
   }
 
-  unsigned get_num_glyphs () const
+  unsigned get_অঙ্ক_glyphs () ধ্রুবক
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    ফেরত আকার_Device_Record - DeviceRecord::min_আকার;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
-		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  !hb_unsigned_mul_overflows (অঙ্ক_Records, আকার_Device_Record) &&
+                  min_আকার + অঙ্ক_Records * আকার_Device_Record > অঙ্ক_Records * আকার_Device_Record &&
+		  আকার_Device_Record >= DeviceRecord::min_আকার &&
+		  c->check_range (এই, get_আকার ()));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
-  HBUINT32	sizeDeviceRecord;
+  HBUINT16	অঙ্ক_Records;	/* Number of device records. */
+  HBUINT32	আকার_Device_Record;
 				/* Size of a device record, 32-bit aligned. */
   DeviceRecord	firstDeviceRecord;
 				/* Array of device records. */
-  public:
-  DEFINE_SIZE_MIN (8);
+  সর্বজনীন:
+  DEFINE_আকার_MIN (8);
 };
 
 } /* namespace OT */

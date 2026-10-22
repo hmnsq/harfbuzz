@@ -26,12 +26,12 @@
 #ifndef HB_DIRECTWRITE_HH
 #define HB_DIRECTWRITE_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-directwrite.h"
+#অন্তর্ভাব "hb-directwrite.h"
 
-#include "hb-mutex.hh"
-#include "hb-map.hh"
+#অন্তর্ভাব "hb-mutex.hh"
+#অন্তর্ভাব "hb-map.hh"
 
 /*
  * DirectWrite font stream helpers
@@ -41,198 +41,198 @@
 
 
 /* Declare object creator for dynamic support of DWRITE */
-typedef HRESULT (WINAPI *t_DWriteCreateFactory)(
+প্রকারলেখ HRESULT (WINAPI *t_DWriteCreateFactory)(
   DWRITE_FACTORY_TYPE factoryType,
   REFIID              iid,
   IUnknown            **factory
 );
 
 template <typename Type, typename ...Ts>
-static Type *
+স্থির Type *
 hb_directwrite_object_create (Ts&&... args)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
-  if (unlikely (!obj))
-    return nullptr;
+  Type *obj = (Type *) hb_calloc (1, আকার (Type));
+  যদি (unlikely (!obj))
+    ফেরত nullptr;
 
-  return new (obj) Type (std::forward<Ts> (args)...);
+  ফেরত নতুন (obj) Type (std::forward<Ts> (args)...);
 }
 
 template <typename Type>
-static void
+স্থির শূন্য
 hb_directwrite_object_destroy (Type *obj)
 {
-  if (!obj)
-    return;
+  যদি (!obj)
+    ফেরত;
 
   obj->~Type ();
   hb_free (obj);
 }
 
-class DWriteFontFileLoader final : public IDWriteFontFileLoader
+শ্রেণী DWriteFontFileLoader final : সর্বজনীন IDWriteFontFileLoader
 {
-private:
-  hb_reference_count_t mRefCount;
+ব্যক্তিগত:
+  hb_reference_গুনতি_t m_Ref_গুনতি;
   hb_mutex_t mutex;
   hb_hashmap_t<uint64_t, IDWriteFontFileStream *> mFontStreams;
-  uint64_t mNextFontFileKey = 0;
-public:
+  uint64_t m_পরবর্তী_Font_File_চাবি = 0;
+সর্বজনীন:
   DWriteFontFileLoader ()
   {
-    mRefCount.init ();
+    m_Ref_গুনতি.init ();
   }
 
   uint64_t RegisterFontFileStream (IDWriteFontFileStream *fontFileStream)
   {
     fontFileStream->AddRef ();
     hb_lock_t lock {mutex};
-    mFontStreams.set (mNextFontFileKey, fontFileStream);
-    return mNextFontFileKey++;
+    mFontStreams.set (m_পরবর্তী_Font_File_চাবি, fontFileStream);
+    ফেরত m_পরবর্তী_Font_File_চাবি++;
   }
-  void UnregisterFontFileStream (uint64_t fontFileKey)
+  শূন্য UnregisterFontFileStream (uint64_t font_File_চাবি)
   {
     hb_lock_t lock {mutex};
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (stream)
+    IDWriteFontFileStream *stream = mFontStreams.get (font_File_চাবি);
+    যদি (stream)
     {
-      mFontStreams.del (fontFileKey);
+      mFontStreams.del (font_File_চাবি);
       stream->Release ();
     }
   }
 
   // IUnknown interface
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
+  IFACEMETHOD (QueryInterface) (IID ধ্রুবক& iid, OUT শূন্য** ppObject)
+  { ফেরত S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    ফেরত m_Ref_গুনতি.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    hb_directwrite_object_destroy (this);
-    return 0;
+    signed ref_গুনতি = m_Ref_গুনতি.dec () - 1;
+    প্রতিজ্ঞা (ref_গুনতি >= 0);
+    যদি (ref_গুনতি)
+      ফেরত ref_গুনতি;
+    hb_directwrite_object_destroy (এই);
+    ফেরত 0;
   }
 
   // IDWriteFontFileLoader methods
-  virtual HRESULT STDMETHODCALLTYPE
-  CreateStreamFromKey (void const* fontFileReferenceKey,
-		       uint32_t fontFileReferenceKeySize,
+  আভাসী HRESULT STDMETHODCALLTYPE
+  Create_Stream_From_চাবি (শূন্য ধ্রুবক* font_File_Reference_চাবি,
+		       uint32_t font_File_Reference_চাবি_আকার,
 		       OUT IDWriteFontFileStream** fontFileStream)
   {
-    if (fontFileReferenceKeySize != sizeof (uint64_t))
-      return E_INVALIDARG;
-    uint64_t fontFileKey = * (uint64_t *) fontFileReferenceKey;
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (!stream)
-      return E_FAIL;
+    যদি (font_File_Reference_চাবি_আকার != আকার (uint64_t))
+      ফেরত E_INVALIDARG;
+    uint64_t font_File_চাবি = * (uint64_t *) font_File_Reference_চাবি;
+    IDWriteFontFileStream *stream = mFontStreams.get (font_File_চাবি);
+    যদি (!stream)
+      ফেরত E_FAIL;
     stream->AddRef ();
     *fontFileStream = stream;
-    return S_OK;
+    ফেরত S_OK;
   }
 
   ~DWriteFontFileLoader()
   {
-    for (auto v : mFontStreams.values ())
+    জন্য (auto v : mFontStreams.values ())
       v->Release ();
   }
 };
 
-class DWriteFontFileStream final : public IDWriteFontFileStream
+শ্রেণী DWriteFontFileStream final : সর্বজনীন IDWriteFontFileStream
 {
-private:
-  hb_reference_count_t mRefCount;
+ব্যক্তিগত:
+  hb_reference_গুনতি_t m_Ref_গুনতি;
   hb_blob_t *mBlob;
-  uint8_t *mData;
-  unsigned mSize;
+  uint8_t *m_তথ্য;
+  unsigned m_আকার;
   DWriteFontFileLoader *mLoader;
-public:
-  uint64_t fontFileKey;
-public:
+সর্বজনীন:
+  uint64_t font_File_চাবি;
+সর্বজনীন:
   DWriteFontFileStream (hb_blob_t *blob);
 
   // IUnknown interface
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
+  IFACEMETHOD (QueryInterface) (IID ধ্রুবক& iid, OUT শূন্য** ppObject)
+  { ফেরত S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    ফেরত m_Ref_গুনতি.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    hb_directwrite_object_destroy (this);
-    return 0;
+    signed ref_গুনতি = m_Ref_গুনতি.dec () - 1;
+    প্রতিজ্ঞা (ref_গুনতি >= 0);
+    যদি (ref_গুনতি)
+      ফেরত ref_গুনতি;
+    hb_directwrite_object_destroy (এই);
+    ফেরত 0;
   }
 
   // IDWriteFontFileStream methods
-  virtual HRESULT STDMETHODCALLTYPE
-  ReadFileFragment (void const** fragmentStart,
+  আভাসী HRESULT STDMETHODCALLTYPE
+  ReadFileFragment (শূন্য ধ্রুবক** fragmentStart,
 		    UINT64 fileOffset,
-		    UINT64 fragmentSize,
-		    OUT void** fragmentContext)
+		    UINT64 fragment_আকার,
+		    OUT শূন্য** fragmentContext)
   {
     // We are required to do bounds checking.
-    if (fileOffset + fragmentSize > mSize) return E_FAIL;
+    যদি (fileOffset + fragment_আকার > m_আকার) ফেরত E_FAIL;
 
     // truncate the 64 bit fileOffset to size_t sized index into mData
-    size_t index = static_cast<size_t> (fileOffset);
+    size_t সূচক_2 = static_cast<size_t> (fileOffset);
 
     // We should be alive for the duration of this.
-    *fragmentStart = &mData[index];
+    *fragmentStart = &m_তথ্য[সূচক_2];
     *fragmentContext = nullptr;
-    return S_OK;
+    ফেরত S_OK;
   }
 
-  virtual void STDMETHODCALLTYPE
-  ReleaseFileFragment (void* fragmentContext) {}
+  আভাসী শূন্য STDMETHODCALLTYPE
+  ReleaseFileFragment (শূন্য* fragmentContext) {}
 
-  virtual HRESULT STDMETHODCALLTYPE
-  GetFileSize (OUT UINT64* fileSize)
+  আভাসী HRESULT STDMETHODCALLTYPE
+  Get_File_আকার (OUT UINT64* file_আকার_2)
   {
-    *fileSize = mSize;
-    return S_OK;
+    *file_আকার_2 = m_আকার;
+    ফেরত S_OK;
   }
 
-  virtual HRESULT STDMETHODCALLTYPE
-  GetLastWriteTime (OUT UINT64* lastWriteTime) { return E_NOTIMPL; }
+  আভাসী HRESULT STDMETHODCALLTYPE
+  GetLastWriteTime (OUT UINT64* lastWriteTime) { ফেরত E_NOTIMPL; }
 
   ~DWriteFontFileStream();
 };
 
-struct hb_directwrite_global_t
+কাঠামো hb_directwrite_global_t
 {
   hb_directwrite_global_t ()
   {
     HRESULT hr = DWriteCreateFactory (DWRITE_FACTORY_TYPE_SHARED, __uuidof (IDWriteFactory),
 				      (IUnknown**) &dwriteFactory);
 
-    if (unlikely (hr != S_OK))
-      return;
+    যদি (unlikely (hr != S_OK))
+      ফেরত;
 
     fontFileLoader = hb_directwrite_object_create<DWriteFontFileLoader> ();
-    if (unlikely (!fontFileLoader))
-      return;
-    if (unlikely (FAILED (dwriteFactory->RegisterFontFileLoader (fontFileLoader))))
-      return;
+    যদি (unlikely (!fontFileLoader))
+      ফেরত;
+    যদি (unlikely (FAILED (dwriteFactory->RegisterFontFileLoader (fontFileLoader))))
+      ফেরত;
 
-    success = true;
+    success = সত্য;
   }
   ~hb_directwrite_global_t ()
   {
-    if (fontFileLoader)
+    যদি (fontFileLoader)
       fontFileLoader->Release ();
-    if (dwriteFactory)
+    যদি (dwriteFactory)
       dwriteFactory->Release ();
   }
 
-  bool success = false;
+  যৌক্তিক success = মিথ্যা;
   IDWriteFactory *dwriteFactory = nullptr;
   DWriteFontFileLoader *fontFileLoader = nullptr;
 };
@@ -242,7 +242,7 @@ HB_INTERNAL hb_directwrite_global_t *
 get_directwrite_global ();
 
 HB_INTERNAL IDWriteFontFace *
-dw_face_create (hb_blob_t *blob, unsigned index);
+dw_face_create (hb_blob_t *blob, unsigned সূচক_2);
 
 
 #endif /* HB_DIRECTWRITE_HH */

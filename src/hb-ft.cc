@@ -27,28 +27,28 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 #ifdef HAVE_FREETYPE
 
-#include "hb-ft.h"
+#অন্তর্ভাব "hb-ft.h"
 
-#include "hb-cache.hh"
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-shaper-arabic-pua.hh"
-#include "hb-paint.hh"
+#অন্তর্ভাব "hb-cache.hh"
+#অন্তর্ভাব "hb-draw.hh"
+#অন্তর্ভাব "hb-font.hh"
+#অন্তর্ভাব "hb-machinery.hh"
+#অন্তর্ভাব "hb-ot-os2-table.hh"
+#অন্তর্ভাব "hb-ot-shaper-arabic-pua.hh"
+#অন্তর্ভাব "hb-paint.hh"
 
-#include FT_MODULE_H
-#include FT_ADVANCES_H
-#include FT_MULTIPLE_MASTERS_H
-#include FT_OUTLINE_H
-#include FT_TRUETYPE_TABLES_H
-#include FT_SYNTHESIS_H
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
-#include FT_COLOR_H
+#অন্তর্ভাব FT_MODULE_H
+#অন্তর্ভাব FT_ADVANCES_H
+#অন্তর্ভাব FT_MULTIPLE_MASTERS_H
+#অন্তর্ভাব FT_OUTLINE_H
+#অন্তর্ভাব FT_TRUETYPE_TABLES_H
+#অন্তর্ভাব FT_SYNTHESIS_H
+#যদি (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#অন্তর্ভাব FT_COLOR_H
 #endif
 
 
@@ -86,17 +86,17 @@
  */
 
 
-using hb_ft_advance_cache_t = hb_cache_t<16, 24, 8, false>;
+using hb_ft_advance_cache_t = hb_cache_t<16, 24, 8, মিথ্যা>;
 
-static void _hb_ft_face_destroy_static (void *data);
+স্থির শূন্য _hb_ft_face_destroy_static (শূন্য *তথ্য);
 
-struct hb_ft_font_t
+কাঠামো hb_ft_font_t
 {
-  int load_flags;
-  bool symbol; /* Whether selected cmap is symbol cmap. */
-  bool unref; /* Whether to destroy ft_face when done. */
-  bool transform; /* Whether to apply FT_Face's transform. */
-  bool static_library; /* Whether ft_face uses static_ft_library. */
+  পূর্ণসংখ্যা load_flags;
+  যৌক্তিক প্রতীক; /* Whether selected cmap is symbol cmap. */
+  যৌক্তিক unref; /* Whether to destroy ft_face when done. */
+  যৌক্তিক transform; /* Whether to apply FT_Face's transform. */
+  যৌক্তিক static_library; /* Whether ft_face uses static_ft_library. */
 
   mutable hb_mutex_t lock; /* Protects members below. */
   FT_Face ft_face;
@@ -104,40 +104,40 @@ struct hb_ft_font_t
   mutable hb_ft_advance_cache_t advance_cache;
 };
 
-static hb_ft_font_t *
-_hb_ft_font_create (FT_Face ft_face, bool symbol, bool unref, bool static_library)
+স্থির hb_ft_font_t *
+_hb_ft_font_create (FT_Face ft_face, যৌক্তিক প্রতীক, যৌক্তিক unref, যৌক্তিক static_library)
 {
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) hb_calloc (1, sizeof (hb_ft_font_t));
-  if (unlikely (!ft_font)) return nullptr;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) hb_calloc (1, আকার (hb_ft_font_t));
+  যদি (unlikely (!ft_font)) ফেরত nullptr;
 
   ft_font->lock.init ();
   ft_font->ft_face = ft_face;
-  ft_font->symbol = symbol;
+  ft_font->প্রতীক = প্রতীক;
   ft_font->unref = unref;
   ft_font->static_library = static_library;
 
   ft_font->load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
 
   ft_font->cached_serial = UINT_MAX;
-  new (&ft_font->advance_cache) hb_ft_advance_cache_t;
+  নতুন (&ft_font->advance_cache) hb_ft_advance_cache_t;
 
-  return ft_font;
+  ফেরত ft_font;
 }
 
-static void
-_hb_ft_face_destroy (void *data)
+স্থির শূন্য
+_hb_ft_face_destroy (শূন্য *তথ্য)
 {
-  FT_Done_Face ((FT_Face) data);
+  FT_Done_Face ((FT_Face) তথ্য);
 }
 
-static void
-_hb_ft_font_destroy (void *data)
+স্থির শূন্য
+_hb_ft_font_destroy (শূন্য *তথ্য)
 {
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) তথ্য;
 
-  if (ft_font->unref)
+  যদি (ft_font->unref)
   {
-    if (ft_font->static_library)
+    যদি (ft_font->static_library)
     {
       /* ft_font->ft_face->generic.data is the blob that hb_ft_font_set_funcs()
        * hooked up as this internal FT_Face's finalizer target (_release_blob).
@@ -147,11 +147,11 @@ _hb_ft_font_destroy (void *data)
        * to re-lock the same non-recursive mutex and self-deadlock. Hold an
        * extra reference across the locked call so the blob (and thus that
        * callback) can only be freed after the lock is released. */
-      hb_blob_t *blob = hb_blob_reference ((hb_blob_t *) ft_font->ft_face->generic.data);
+      hb_blob_t *blob = hb_blob_reference ((hb_blob_t *) ft_font->ft_face->generic.তথ্য);
       _hb_ft_face_destroy_static (ft_font->ft_face);
       hb_blob_destroy (blob);
     }
-    else
+    অন্যথা
       _hb_ft_face_destroy (ft_font->ft_face);
   }
 
@@ -162,70 +162,70 @@ _hb_ft_font_destroy (void *data)
 
 
 /* hb_font changed, update FT_Face. */
-static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
+স্থির শূন্য _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  যদি (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ফেরত;
 
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_তথ্য;
 
-  float x_mult = 1.f, y_mult = 1.f;
+  দশমিক x_mult = 1.f, y_mult = 1.f;
 
-  if (font->x_scale < 0) x_mult = -x_mult;
-  if (font->y_scale < 0) y_mult = -y_mult;
+  যদি (font->x_scale < 0) x_mult = -x_mult;
+  যদি (font->y_scale < 0) y_mult = -y_mult;
 
-  if (FT_Set_Char_Size (ft_face,
+  যদি (FT_Set_Char_আকার (ft_face,
 			abs (font->x_scale), abs (font->y_scale),
 			0, 0
-#if 0
+#যদি 0
 		    font->x_ppem * 72 * 64 / font->x_scale,
 		    font->y_ppem * 72 * 64 / font->y_scale
 #endif
-     ) && ft_face->num_fixed_sizes)
+     ) && ft_face->অঙ্ক_fixed_sizes)
   {
 #ifdef HAVE_FT_GET_TRANSFORM
     /* Bitmap font, eg. bitmap color emoji. */
     /* Pick largest size? */
-    int x_scale  = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].x_ppem;
-    int y_scale = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].y_ppem;
-    FT_Set_Char_Size (ft_face,
+    পূর্ণসংখ্যা x_scale  = ft_face->available_sizes[ft_face->অঙ্ক_fixed_sizes - 1].x_ppem;
+    পূর্ণসংখ্যা y_scale = ft_face->available_sizes[ft_face->অঙ্ক_fixed_sizes - 1].y_ppem;
+    FT_Set_Char_আকার (ft_face,
 		      x_scale, y_scale,
 		      0, 0);
 
     /* This contains the sign that was previously in x_mult/y_mult. */
-    x_mult = (float) font->x_scale / x_scale;
-    y_mult = (float) font->y_scale / y_scale;
+    x_mult = (দশমিক) font->x_scale / x_scale;
+    y_mult = (দশমিক) font->y_scale / y_scale;
 #endif
   }
-  else
+  অন্যথা
   { /* Shrug */ }
 
 
-  if (x_mult != 1.f || y_mult != 1.f)
+  যদি (x_mult != 1.f || y_mult != 1.f)
   {
-    FT_Matrix matrix = { (int) roundf (x_mult * (1<<16)), 0,
-			  0, (int) roundf (y_mult * (1<<16))};
+    FT_Matrix matrix = { (পূর্ণসংখ্যা) roundf (x_mult * (1<<16)), 0,
+			  0, (পূর্ণসংখ্যা) roundf (y_mult * (1<<16))};
     FT_Set_Transform (ft_face, &matrix, nullptr);
-    ft_font->transform = true;
+    ft_font->transform = সত্য;
   }
-  else
+  অন্যথা
     FT_Set_Transform (ft_face, nullptr, nullptr);
 
-#if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
-  if (font->has_nonzero_coords)
+#যদি defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
+  যদি (font->has_nonzero_coords)
   {
-    unsigned int num_coords;
-    const float *coords = hb_font_get_var_coords_design (font, &num_coords);
-    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (num_coords, sizeof (FT_Fixed));
-    if (ft_coords)
+    unsigned পূর্ণসংখ্যা অঙ্ক_coords;
+    ধ্রুবক দশমিক *coords = hb_font_get_var_coords_design (font, &অঙ্ক_coords);
+    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (অঙ্ক_coords, আকার (FT_Fixed));
+    যদি (ft_coords)
     {
-      for (unsigned int i = 0; i < num_coords; i++)
+      জন্য (unsigned পূর্ণসংখ্যা i = 0; i < অঙ্ক_coords; i++)
 	  ft_coords[i] = coords[i] * 65536.f;
-      FT_Set_Var_Design_Coordinates (ft_face, num_coords, ft_coords);
+      FT_Set_Var_Design_Coordinates (ft_face, অঙ্ক_coords, ft_coords);
       hb_free (ft_coords);
     }
   }
-  else if (font->num_coords)
+  অন্যথা যদি (font->অঙ্ক_coords)
   {
     // Some old versions of FreeType crash if we
     // call this function on non-variable fonts.
@@ -235,19 +235,19 @@ static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 }
 
 /* Check if hb_font changed, update FT_Face. */
-static inline bool
+স্থির অন্তঃরেখ যৌক্তিক
 _hb_ft_hb_font_check_changed (hb_font_t *font,
-			      const hb_ft_font_t *ft_font)
+			      ধ্রুবক hb_ft_font_t *ft_font)
 {
-  if (font->serial != ft_font->cached_serial)
+  যদি (font->serial != ft_font->cached_serial)
   {
     hb_lock_t lock (ft_font->lock);
     _hb_ft_hb_font_changed (font, ft_font->ft_face);
     ft_font->advance_cache.clear ();
     ft_font->cached_serial.set_release (font->serial.get_acquire ());
-    return true;
+    ফেরত সত্য;
   }
-  return false;
+  ফেরত মিথ্যা;
 }
 
 
@@ -266,16 +266,16 @@ _hb_ft_hb_font_check_changed (hb_font_t *font,
  *
  * Since: 1.0.5
  **/
-void
-hb_ft_font_set_load_flags (hb_font_t *font, int load_flags)
+শূন্য
+hb_ft_font_set_load_flags (hb_font_t *font, পূর্ণসংখ্যা load_flags)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  যদি (hb_object_is_immutable (font))
+    ফেরত;
 
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  যদি (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ফেরত;
 
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_তথ্য;
 
   ft_font->load_flags = load_flags;
 }
@@ -296,15 +296,15 @@ hb_ft_font_set_load_flags (hb_font_t *font, int load_flags)
  *
  * Since: 1.0.5
  **/
-int
+পূর্ণসংখ্যা
 hb_ft_font_get_load_flags (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return 0;
+  যদি (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ফেরত 0;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font->user_তথ্য;
 
-  return ft_font->load_flags;
+  ফেরত ft_font->load_flags;
 }
 
 /**
@@ -324,12 +324,12 @@ hb_ft_font_get_load_flags (hb_font_t *font)
 FT_Face
 hb_ft_font_get_ft_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return nullptr;
+  যদি (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ফেরত nullptr;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font->user_তথ্য;
 
-  return ft_font->ft_face;
+  ফেরত ft_font->ft_face;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -352,7 +352,7 @@ hb_ft_font_get_ft_face (hb_font_t *font)
 FT_Face
 hb_ft_font_get_face (hb_font_t *font)
 {
-  return hb_ft_font_get_ft_face (font);
+  ফেরত hb_ft_font_get_ft_face (font);
 }
 
 #endif
@@ -375,14 +375,14 @@ hb_ft_font_get_face (hb_font_t *font)
 FT_Face
 hb_ft_font_lock_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return nullptr;
+  যদি (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ফেরত nullptr;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font->user_তথ্য;
 
   ft_font->lock.lock ();
 
-  return ft_font->ft_face;
+  ফেরত ft_font->ft_face;
 }
 
 /**
@@ -393,80 +393,80 @@ hb_ft_font_lock_face (hb_font_t *font)
  *
  * Since: 2.6.5
  **/
-void
+শূন্য
 hb_ft_font_unlock_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  যদি (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    ফেরত;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font->user_তথ্য;
 
   ft_font->lock.unlock ();
 }
 
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_get_nominal_glyph (hb_font_t *font,
-			 void *font_data,
+			 শূন্য *font_তথ্য,
 			 hb_codepoint_t unicode,
 			 hb_codepoint_t *glyph,
-			 void *user_data HB_UNUSED)
+			 শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   hb_lock_t lock (ft_font->lock);
-  unsigned int g = FT_Get_Char_Index (ft_font->ft_face, unicode);
+  unsigned পূর্ণসংখ্যা g = FT_Get_Char_সূচক (ft_font->ft_face, unicode);
 
-  if (unlikely (!g))
+  যদি (unlikely (!g))
   {
-    if (unlikely (ft_font->symbol))
+    যদি (unlikely (ft_font->প্রতীক))
     {
-      switch ((unsigned) font->face->table.OS2->get_font_page ()) {
-      case OT::OS2::font_page_t::FONT_PAGE_NONE:
-	if (unicode <= 0x00FFu)
+      নির্বাচন ((unsigned) font->face->table.OS2->get_font_page ()) {
+      ক্ষেত্র OT::OS2::font_page_t::FONT_PAGE_NONE:
+	যদি (unicode <= 0x00FFu)
 	  /* For symbol-encoded OpenType fonts, we duplicate the
 	   * U+F000..F0FF range at U+0000..U+00FF.  That's what
 	   * Windows seems to do, and that's hinted about at:
 	   * https://docs.microsoft.com/en-us/typography/opentype/spec/recom
 	   * under "Non-Standard (Symbol) Fonts". */
-	  g = FT_Get_Char_Index (ft_font->ft_face, 0xF000u + unicode);
-	break;
+	  g = FT_Get_Char_সূচক (ft_font->ft_face, 0xF000u + unicode);
+	বিরতি;
 #ifndef HB_NO_OT_SHAPER_ARABIC_FALLBACK
-      case OT::OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
-	g = FT_Get_Char_Index (ft_font->ft_face, _hb_arabic_pua_simp_map (unicode));
-	break;
-      case OT::OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
-	g = FT_Get_Char_Index (ft_font->ft_face, _hb_arabic_pua_trad_map (unicode));
-	break;
+      ক্ষেত্র OT::OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
+	g = FT_Get_Char_সূচক (ft_font->ft_face, _hb_arabic_pua_simp_map (unicode));
+	বিরতি;
+      ক্ষেত্র OT::OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
+	g = FT_Get_Char_সূচক (ft_font->ft_face, _hb_arabic_pua_trad_map (unicode));
+	বিরতি;
 #endif
-      default:
-	break;
+      পূর্বনির্ধারিত:
+	বিরতি;
       }
-      if (!g)
-	return false;
+      যদি (!g)
+	ফেরত মিথ্যা;
     }
-    else
-      return false;
+    অন্যথা
+      ফেরত মিথ্যা;
   }
 
   *glyph = g;
-  return true;
+  ফেরত সত্য;
 }
 
-static unsigned int
+স্থির unsigned পূর্ণসংখ্যা
 hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
-			  void *font_data,
-			  unsigned int count,
-			  const hb_codepoint_t *first_unicode,
-			  unsigned int unicode_stride,
+			  শূন্য *font_তথ্য,
+			  unsigned পূর্ণসংখ্যা গুনতি,
+			  ধ্রুবক hb_codepoint_t *first_unicode,
+			  unsigned পূর্ণসংখ্যা unicode_stride,
 			  hb_codepoint_t *first_glyph,
-			  unsigned int glyph_stride,
-			  void *user_data HB_UNUSED)
+			  unsigned পূর্ণসংখ্যা glyph_stride,
+			  শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   hb_lock_t lock (ft_font->lock);
-  unsigned int done;
-  for (done = 0;
-       done < count && (*first_glyph = FT_Get_Char_Index (ft_font->ft_face, *first_unicode));
+  unsigned পূর্ণসংখ্যা done;
+  জন্য (done = 0;
+       done < গুনতি && (*first_glyph = FT_Get_Char_সূচক (ft_font->ft_face, *first_unicode));
        done++)
   {
     first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
@@ -474,74 +474,74 @@ hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
   }
   /* We don't need to do ft_font->symbol dance here, since HB calls the singular
    * nominal_glyph() for what we don't handle here. */
-  return done;
+  ফেরত done;
 }
 
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_get_variation_glyph (hb_font_t *font HB_UNUSED,
-			   void *font_data,
+			   শূন্য *font_তথ্য,
 			   hb_codepoint_t unicode,
 			   hb_codepoint_t variation_selector,
 			   hb_codepoint_t *glyph,
-			   void *user_data HB_UNUSED)
+			   শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   hb_lock_t lock (ft_font->lock);
-  unsigned int g = FT_Face_GetCharVariantIndex (ft_font->ft_face, unicode, variation_selector);
+  unsigned পূর্ণসংখ্যা g = FT_Face_Get_Char_Variant_সূচক (ft_font->ft_face, unicode, variation_selector);
 
-  if (unlikely (!g))
-    return false;
+  যদি (unlikely (!g))
+    ফেরত মিথ্যা;
 
   *glyph = g;
-  return true;
+  ফেরত সত্য;
 }
 
-static void
-hb_ft_get_glyph_h_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
-			    const hb_codepoint_t *first_glyph,
+স্থির শূন্য
+hb_ft_get_glyph_h_advances (hb_font_t* font, শূন্য* font_তথ্য,
+			    unsigned গুনতি,
+			    ধ্রুবক hb_codepoint_t *first_glyph,
 			    unsigned glyph_stride,
 			    hb_position_t *first_advance,
 			    unsigned advance_stride,
-			    void *user_data HB_UNUSED)
+			    শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  int load_flags = ft_font->load_flags;
-  float x_mult;
+  পূর্ণসংখ্যা load_flags = ft_font->load_flags;
+  দশমিক x_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  যদি (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
-    x_mult = sqrtf ((float)matrix.xx * matrix.xx + (float)matrix.xy * matrix.xy) / 65536.f;
+    x_mult = sqrtf ((দশমিক)matrix.xx * matrix.xx + (দশমিক)matrix.xy * matrix.xy) / 65536.f;
     x_mult *= font->x_scale < 0 ? -1 : +1;
   }
-  else
+  অন্যথা
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
   }
 
-  for (unsigned int i = 0; i < count; i++)
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
   {
     hb_position_t advance;
     hb_codepoint_t glyph = *first_glyph;
 
-    unsigned int cv;
-    if (ft_font->advance_cache.get (glyph, &cv))
+    unsigned পূর্ণসংখ্যা cv;
+    যদি (ft_font->advance_cache.get (glyph, &cv))
       advance = (hb_position_t) cv;
-    else
+    অন্যথা
     {
       FT_Fixed v = 0;
       FT_Get_Advance (ft_face, glyph, load_flags, &v);
       /* Work around bug that FreeType seems to return negative advance
        * for variable-set fonts if x_scale is negative! */
-      double scaled = trunc (fabs ((double) v) * (double) x_mult + (1<<9)) / (1<<10);
+      দ্বিগুণ scaled = trunc (fabs ((দ্বিগুণ) v) * (দ্বিগুণ) x_mult + (1<<9)) / (1<<10);
       advance = hb_clamp_to<hb_position_t> (floor (scaled));
       ft_font->advance_cache.set (glyph, advance);
     }
@@ -553,517 +553,517 @@ hb_ft_get_glyph_h_advances (hb_font_t* font, void* font_data,
 }
 
 #ifndef HB_NO_VERTICAL
-static hb_position_t
+স্থির hb_position_t
 hb_ft_get_glyph_v_advance (hb_font_t *font,
-			   void *font_data,
+			   শূন্য *font_তথ্য,
 			   hb_codepoint_t glyph,
-			   void *user_data HB_UNUSED)
+			   শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Fixed v;
-  float y_mult;
+  দশমিক y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  যদি (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_font->ft_face, &matrix, nullptr);
-    y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
+    y_mult = sqrtf ((দশমিক)matrix.yx * matrix.yx + (দশমিক)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  অন্যথা
 #endif
   {
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Get_Advance (ft_font->ft_face, glyph, ft_font->load_flags | FT_LOAD_VERTICAL_LAYOUT, &v)))
-    return 0;
+  যদি (unlikely (FT_Get_Advance (ft_font->ft_face, glyph, ft_font->load_flags | FT_LOAD_VERTICAL_LAYOUT, &v)))
+    ফেরত 0;
 
   /* Note: FreeType's vertical metrics grows downward while other FreeType coordinates
    * have a Y growing upward.  Hence the extra negation. */
-  double advance = floor ((-(double) v + (1<<9)) / (1<<10));
+  দ্বিগুণ advance = floor ((-(দ্বিগুণ) v + (1<<9)) / (1<<10));
 
-  return hb_clamp_to<hb_position_t> ((double) y_mult * advance);
+  ফেরত hb_clamp_to<hb_position_t> ((দ্বিগুণ) y_mult * advance);
 }
 #endif
 
 #ifndef HB_NO_VERTICAL
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_get_glyph_v_origin (hb_font_t *font,
-			  void *font_data,
+			  শূন্য *font_তথ্য,
 			  hb_codepoint_t glyph,
 			  hb_position_t *x,
 			  hb_position_t *y,
-			  void *user_data HB_UNUSED)
+			  শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  float x_mult, y_mult;
+  দশমিক x_mult, y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  যদি (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
-    x_mult = sqrtf ((float)matrix.xx * matrix.xx + (float)matrix.xy * matrix.xy) / 65536.f;
+    x_mult = sqrtf ((দশমিক)matrix.xx * matrix.xx + (দশমিক)matrix.xy * matrix.xy) / 65536.f;
     x_mult *= font->x_scale < 0 ? -1 : +1;
-    y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
+    y_mult = sqrtf ((দশমিক)matrix.yx * matrix.yx + (দশমিক)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  অন্যথা
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-    return false;
+  যদি (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+    ফেরত মিথ্যা;
 
   /* Note: FreeType's vertical metrics grows downward while other FreeType coordinates
    * have a Y growing upward.  Hence the extra negation. */
-  *x = hb_clamp_to<hb_position_t> ((double) x_mult *
-				   ((double) ft_face->glyph->metrics.horiBearingX -
+  *x = hb_clamp_to<hb_position_t> ((দ্বিগুণ) x_mult *
+				   ((দ্বিগুণ) ft_face->glyph->metrics.horiBearingX -
 				    ft_face->glyph->metrics.vertBearingX));
-  *y = hb_clamp_to<hb_position_t> ((double) y_mult *
-				   ((double) ft_face->glyph->metrics.horiBearingY +
+  *y = hb_clamp_to<hb_position_t> ((দ্বিগুণ) y_mult *
+				   ((দ্বিগুণ) ft_face->glyph->metrics.horiBearingY +
 				    ft_face->glyph->metrics.vertBearingY));
 
-  return true;
+  ফেরত সত্য;
 }
 #endif
 
 #ifndef HB_NO_OT_SHAPE_FALLBACK
-static hb_position_t
+স্থির hb_position_t
 hb_ft_get_glyph_h_kerning (hb_font_t *font,
-			   void *font_data,
-			   hb_codepoint_t left_glyph,
-			   hb_codepoint_t right_glyph,
-			   void *user_data HB_UNUSED)
+			   শূন্য *font_তথ্য,
+			   hb_codepoint_t বাম_glyph,
+			   hb_codepoint_t ডান_glyph,
+			   শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Vector kerningv;
 
   FT_Kerning_Mode mode = font->x_ppem ? FT_KERNING_DEFAULT : FT_KERNING_UNFITTED;
-  if (FT_Get_Kerning (ft_font->ft_face, left_glyph, right_glyph, mode, &kerningv))
-    return 0;
+  যদি (FT_Get_Kerning (ft_font->ft_face, বাম_glyph, ডান_glyph, mode, &kerningv))
+    ফেরত 0;
 
-  return hb_clamp_to<hb_position_t> ((int64_t) kerningv.x);
+  ফেরত hb_clamp_to<hb_position_t> ((int64_t) kerningv.x);
 }
 #endif
 
-static bool
+স্থির যৌক্তিক
 hb_ft_is_colr_glyph (hb_font_t *font,
-		     void *font_data,
+		     শূন্য *font_তথ্য,
 		     hb_codepoint_t gid)
 {
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+#যদি (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   FT_Face ft_face = ft_font->ft_face;
 
 
   /* COLRv1 */
   FT_OpaquePaint paint = {0};
-  if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-			        FT_COLOR_NO_ROOT_TRANSFORM,
+  যদি (FT_Get_Color_Glyph_Paint (ft_face, gid,
+			        FT_COLOR_NO_মূল_TRANSFORM,
 			        &paint))
-    return true;
+    ফেরত সত্য;
 
   /* COLRv0 */
   FT_LayerIterator  iterator;
-  FT_UInt  layer_glyph_index;
-  FT_UInt  layer_color_index;
-  iterator.p  = NULL;
-  if (FT_Get_Color_Glyph_Layer (ft_face,
+  FT_UInt  layer_glyph_সূচক;
+  FT_UInt  layer_color_সূচক;
+  iterator.p  = ফাঁকা;
+  যদি (FT_Get_Color_Glyph_Layer (ft_face,
 				gid,
-				&layer_glyph_index,
-				&layer_color_index,
+				&layer_glyph_সূচক,
+				&layer_color_সূচক,
 				&iterator))
-    return true;
+    ফেরত সত্য;
 #endif
 #endif
 
-  return false;
+  ফেরত মিথ্যা;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_get_glyph_extents (hb_font_t *font,
-			 void *font_data,
+			 শূন্য *font_তথ্য,
 			 hb_codepoint_t glyph,
 			 hb_glyph_extents_t *extents,
-			 void *user_data HB_UNUSED)
+			 শূন্য *user_তথ্য HB_UNUSED)
 {
   // FreeType doesn't return COLR glyph extents.
-  if (hb_ft_is_colr_glyph (font, font_data, glyph))
-    return false;
+  যদি (hb_ft_is_colr_glyph (font, font_তথ্য, glyph))
+    ফেরত মিথ্যা;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  float x_mult, y_mult;
+  দশমিক x_mult, y_mult;
 
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  যদি (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
-    x_mult = sqrtf ((float)matrix.xx * matrix.xx + (float)matrix.xy * matrix.xy) / 65536.f;
+    x_mult = sqrtf ((দশমিক)matrix.xx * matrix.xx + (দশমিক)matrix.xy * matrix.xy) / 65536.f;
     x_mult *= font->x_scale < 0 ? -1 : +1;
-    y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
+    y_mult = sqrtf ((দশমিক)matrix.yx * matrix.yx + (দশমিক)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  অন্যথা
 #endif
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-    return false;
+  যদি (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+    ফেরত মিথ্যা;
 
   /* Copied from hb_font_t::scale_glyph_extents. */
 
-  float x1 = x_mult * ft_face->glyph->metrics.horiBearingX;
-  float y1 = y_mult * ft_face->glyph->metrics.horiBearingY;
-  float x2 = x1 + x_mult *  ft_face->glyph->metrics.width;
-  float y2 = y1 + y_mult * -ft_face->glyph->metrics.height;
+  দশমিক x1 = x_mult * ft_face->glyph->metrics.horiBearingX;
+  দশমিক y1 = y_mult * ft_face->glyph->metrics.horiBearingY;
+  দশমিক x2 = x1 + x_mult *  ft_face->glyph->metrics.width;
+  দশমিক y2 = y1 + y_mult * -ft_face->glyph->metrics.height;
 
-  double rx1 = (double) roundf (x1);
-  double ry1 = (double) roundf (y1);
-  double rx2 = (double) roundf (x2);
-  double ry2 = (double) roundf (y2);
+  দ্বিগুণ rx1 = (দ্বিগুণ) roundf (x1);
+  দ্বিগুণ ry1 = (দ্বিগুণ) roundf (y1);
+  দ্বিগুণ rx2 = (দ্বিগুণ) roundf (x2);
+  দ্বিগুণ ry2 = (দ্বিগুণ) roundf (y2);
 
   extents->x_bearing = hb_clamp_to<hb_position_t> (rx1);
   extents->y_bearing = hb_clamp_to<hb_position_t> (ry1);
   extents->width = hb_clamp_to<hb_position_t> (rx2 - rx1);
   extents->height = hb_clamp_to<hb_position_t> (ry2 - ry1);
 
-  return true;
+  ফেরত সত্য;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_get_glyph_contour_point (hb_font_t *font HB_UNUSED,
-			       void *font_data,
+			       শূন্য *font_তথ্য,
 			       hb_codepoint_t glyph,
-			       unsigned int point_index,
+			       unsigned পূর্ণসংখ্যা point_সূচক,
 			       hb_position_t *x,
 			       hb_position_t *y,
-			       void *user_data HB_UNUSED)
+			       শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-      return false;
+  যদি (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
+      ফেরত মিথ্যা;
 
-  if (unlikely (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE))
-      return false;
+  যদি (unlikely (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE))
+      ফেরত মিথ্যা;
 
-  if (unlikely (point_index >= (unsigned int) ft_face->glyph->outline.n_points))
-      return false;
+  যদি (unlikely (point_সূচক >= (unsigned পূর্ণসংখ্যা) ft_face->glyph->outline.n_points))
+      ফেরত মিথ্যা;
 
-  *x = ft_face->glyph->outline.points[point_index].x;
-  *y = ft_face->glyph->outline.points[point_index].y;
+  *x = ft_face->glyph->outline.points[point_সূচক].x;
+  *y = ft_face->glyph->outline.points[point_সূচক].y;
 
-  return true;
+  ফেরত সত্য;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_get_glyph_name (hb_font_t *font HB_UNUSED,
-		      void *font_data,
+		      শূন্য *font_তথ্য,
 		      hb_codepoint_t glyph,
-		      char *name, unsigned int size,
-		      void *user_data HB_UNUSED)
+		      অক্ষর *name, unsigned পূর্ণসংখ্যা আকার_2,
+		      শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (!size)
+  যদি (!আকার_2)
   {
-    char buf[128];
-    return !FT_Get_Glyph_Name (ft_face, glyph, buf, sizeof (buf)) && *buf;
+    অক্ষর buf[128];
+    ফেরত !FT_Get_Glyph_Name (ft_face, glyph, buf, আকার (buf)) && *buf;
   }
 
-  hb_bool_t ret = !FT_Get_Glyph_Name (ft_face, glyph, name, size);
-  if (ret && (size && !*name))
-    ret = false;
+  hb_bool_t ret = !FT_Get_Glyph_Name (ft_face, glyph, name, আকার_2);
+  যদি (ret && (আকার_2 && !*name))
+    ret = মিথ্যা;
 
-  return ret;
+  ফেরত ret;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_get_glyph_from_name (hb_font_t *font HB_UNUSED,
-			   void *font_data,
-			   const char *name, int len, /* -1 means nul-terminated */
+			   শূন্য *font_তথ্য,
+			   ধ্রুবক অক্ষর *name, পূর্ণসংখ্যা len, /* -1 means nul-terminated */
 			   hb_codepoint_t *glyph,
-			   void *user_data HB_UNUSED)
+			   শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (len < 0)
-    *glyph = FT_Get_Name_Index (ft_face, (FT_String *) name);
-  else {
+  যদি (len < 0)
+    *glyph = FT_Get_Name_সূচক (ft_face, (FT_String *) name);
+  অন্যথা {
     /* Make a nul-terminated version. */
-    char buf[128];
-    len = hb_min (len, (int) sizeof (buf) - 1);
+    অক্ষর buf[128];
+    len = hb_min (len, (পূর্ণসংখ্যা) আকার (buf) - 1);
     strncpy (buf, name, len);
     buf[len] = '\0';
-    *glyph = FT_Get_Name_Index (ft_face, buf);
+    *glyph = FT_Get_Name_সূচক (ft_face, buf);
   }
 
-  if (*glyph == 0)
+  যদি (*glyph == 0)
   {
     /* Check whether the given name was actually the name of glyph 0. */
-    char buf[128];
-    if (!FT_Get_Glyph_Name(ft_face, 0, buf, sizeof (buf)) &&
+    অক্ষর buf[128];
+    যদি (!FT_Get_Glyph_Name(ft_face, 0, buf, আকার (buf)) &&
 	len < 0 ? !strcmp (buf, name) : !strncmp (buf, name, len))
-      return true;
+      ফেরত সত্য;
   }
 
-  return *glyph != 0;
+  ফেরত *glyph != 0;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_get_font_h_extents (hb_font_t *font HB_UNUSED,
-			  void *font_data,
+			  শূন্য *font_তথ্য,
 			  hb_font_extents_t *metrics,
-			  void *user_data HB_UNUSED)
+			  শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  float y_mult;
+  দশমিক y_mult;
 #ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  যদি (ft_font->transform)
   {
     FT_Matrix matrix;
     FT_Get_Transform (ft_face, &matrix, nullptr);
-    y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
+    y_mult = sqrtf ((দশমিক)matrix.yx * matrix.yx + (দশমিক)matrix.yy * matrix.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
+  অন্যথা
 #endif
   {
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (ft_face->units_per_EM != 0)
+  যদি (ft_face->units_per_EM != 0)
   {
-    double ascender = FT_MulFix(ft_face->ascender, ft_face->size->metrics.y_scale);
-    double descender = FT_MulFix(ft_face->descender, ft_face->size->metrics.y_scale);
-    double height = FT_MulFix( ft_face->height, ft_face->size->metrics.y_scale );
-    metrics->ascender = hb_clamp_to<hb_position_t> ((double) y_mult * ascender);
-    metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
-    metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
+    দ্বিগুণ ascender = FT_MulFix(ft_face->ascender, ft_face->আকার_2->metrics.y_scale);
+    দ্বিগুণ descender = FT_MulFix(ft_face->descender, ft_face->আকার_2->metrics.y_scale);
+    দ্বিগুণ height = FT_MulFix( ft_face->height, ft_face->আকার_2->metrics.y_scale );
+    metrics->ascender = hb_clamp_to<hb_position_t> ((দ্বিগুণ) y_mult * ascender);
+    metrics->descender = hb_clamp_to<hb_position_t> ((দ্বিগুণ) y_mult * descender);
+    metrics->সারি_gap = hb_clamp_to<hb_position_t> ((দ্বিগুণ) y_mult * (height - (ascender - descender)));
   }
-  else
+  অন্যথা
   {
     /* Bitmap-only font, eg. color bitmap font. */
-    double ascender = ft_face->size->metrics.ascender;
-    double descender = ft_face->size->metrics.descender;
-    double height = ft_face->size->metrics.height;
-    metrics->ascender = hb_clamp_to<hb_position_t> ((double) y_mult * ascender);
-    metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
-    metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
+    দ্বিগুণ ascender = ft_face->আকার_2->metrics.ascender;
+    দ্বিগুণ descender = ft_face->আকার_2->metrics.descender;
+    দ্বিগুণ height = ft_face->আকার_2->metrics.height;
+    metrics->ascender = hb_clamp_to<hb_position_t> ((দ্বিগুণ) y_mult * ascender);
+    metrics->descender = hb_clamp_to<hb_position_t> ((দ্বিগুণ) y_mult * descender);
+    metrics->সারি_gap = hb_clamp_to<hb_position_t> ((দ্বিগুণ) y_mult * (height - (ascender - descender)));
   }
 
-  return true;
+  ফেরত সত্য;
 }
 
 #ifndef HB_NO_DRAW
 
-static int
-_hb_ft_move_to (const FT_Vector *to,
-		void *arg)
+স্থির পূর্ণসংখ্যা
+_hb_ft_move_to (ধ্রুবক FT_Vector *to,
+		শূন্য *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->move_to (to->x, to->y);
-  return FT_Err_Ok;
+  ফেরত FT_Err_Ok;
 }
 
-static int
-_hb_ft_line_to (const FT_Vector *to,
-		void *arg)
+স্থির পূর্ণসংখ্যা
+hb_ft_সারি_to (ধ্রুবক FT_Vector *to,
+		শূন্য *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
-  drawing->line_to (to->x, to->y);
-  return FT_Err_Ok;
+  drawing->সারি_to (to->x, to->y);
+  ফেরত FT_Err_Ok;
 }
 
-static int
-_hb_ft_conic_to (const FT_Vector *control,
-		 const FT_Vector *to,
-		 void *arg)
+স্থির পূর্ণসংখ্যা
+_hb_ft_conic_to (ধ্রুবক FT_Vector *control,
+		 ধ্রুবক FT_Vector *to,
+		 শূন্য *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->quadratic_to (control->x, control->y,
 			 to->x, to->y);
-  return FT_Err_Ok;
+  ফেরত FT_Err_Ok;
 }
 
-static int
-_hb_ft_cubic_to (const FT_Vector *control1,
-		 const FT_Vector *control2,
-		 const FT_Vector *to,
-		 void *arg)
+স্থির পূর্ণসংখ্যা
+_hb_ft_cubic_to (ধ্রুবক FT_Vector *control1,
+		 ধ্রুবক FT_Vector *control2,
+		 ধ্রুবক FT_Vector *to,
+		 শূন্য *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
   drawing->cubic_to (control1->x, control1->y,
 		     control2->x, control2->y,
 		     to->x, to->y);
-  return FT_Err_Ok;
+  ফেরত FT_Err_Ok;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_draw_glyph_or_fail (hb_font_t *font,
-			  void *font_data,
+			  শূন্য *font_তথ্য,
 			  hb_codepoint_t glyph,
-			  hb_draw_funcs_t *draw_funcs, void *draw_data,
-			  void *user_data HB_UNUSED)
+			  hb_draw_funcs_t *draw_funcs, শূন্য *draw_তথ্য,
+			  শূন্য *user_তথ্য HB_UNUSED)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph,
+  যদি (unlikely (FT_Load_Glyph (ft_face, glyph,
 			       FT_LOAD_NO_BITMAP | ft_font->load_flags)))
-    return false;
+    ফেরত মিথ্যা;
 
-  if (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
-    return false;
+  যদি (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
+    ফেরত মিথ্যা;
 
-  const FT_Outline_Funcs outline_funcs = {
+  ধ্রুবক FT_Outline_Funcs outline_funcs = {
     _hb_ft_move_to,
-    _hb_ft_line_to,
+    hb_ft_সারি_to,
     _hb_ft_conic_to,
     _hb_ft_cubic_to,
     0, /* shift */
     0, /* delta */
   };
 
-  hb_draw_session_t draw_session {draw_funcs, draw_data};
+  hb_draw_session_t draw_session {draw_funcs, draw_তথ্য};
 
   FT_Outline_Decompose (&ft_face->glyph->outline,
 			&outline_funcs,
 			&draw_session);
 
-  return true;
+  ফেরত সত্য;
 }
 #endif
 
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#যদি (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
 
-#include "hb-ft-colr.hh"
+#অন্তর্ভাব "hb-ft-colr.hh"
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_ft_paint_glyph_or_fail (hb_font_t *font,
-			   void *font_data,
+			   শূন্য *font_তথ্য,
 			   hb_codepoint_t gid,
-			   hb_paint_funcs_t *paint_funcs, void *paint_data,
-			   unsigned int palette_index,
+			   hb_paint_funcs_t *paint_funcs, শূন্য *paint_তথ্য,
+			   unsigned পূর্ণসংখ্যা palette_সূচক,
 			   hb_color_t foreground,
-			   void *user_data)
+			   শূন্য *user_তথ্য)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   _hb_ft_hb_font_check_changed (font, ft_font);
 
   hb_lock_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
   FT_Long load_flags = ft_font->load_flags | FT_LOAD_COLOR;
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21301
+#যদি (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21301
   load_flags |= FT_LOAD_NO_SVG;
 #endif
 
   /* We release the lock before calling into glyph callbacks, such that
    * eg. draw API can call back into the face.*/
 
-  if (unlikely (FT_Load_Glyph (ft_face, gid, load_flags)))
-    return false;
+  যদি (unlikely (FT_Load_Glyph (ft_face, gid, load_flags)))
+    ফেরত মিথ্যা;
 
-  if (ft_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
+  যদি (ft_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
   {
-    if (hb_ft_paint_glyph_colr (font, font_data, gid,
-				paint_funcs, paint_data,
-				palette_index, foreground,
-				user_data))
-      return true;
+    যদি (hb_ft_paint_glyph_colr (font, font_তথ্য, gid,
+				paint_funcs, paint_তথ্য,
+				palette_সূচক, foreground,
+				user_তথ্য))
+      ফেরত সত্য;
 
     // Outline glyph
-    return false;
+    ফেরত মিথ্যা;
   }
 
   auto *glyph = ft_face->glyph;
-  if (glyph->format == FT_GLYPH_FORMAT_BITMAP)
+  যদি (glyph->format == FT_GLYPH_FORMAT_BITMAP)
   {
-    bool ret = false;
+    যৌক্তিক ret = মিথ্যা;
     auto &bitmap = glyph->bitmap;
-    if (bitmap.pixel_mode == FT_PIXEL_MODE_BGRA)
+    যদি (bitmap.pixel_mode == FT_PIXEL_MODE_BGRA)
     {
-      if (bitmap.pitch != (signed) bitmap.width * 4)
-        return ret;
+      যদি (bitmap.pitch != (signed) bitmap.width * 4)
+        ফেরত ret;
 
       ft_font->lock.unlock ();
 
-      hb_blob_t *blob = hb_blob_create ((const char *) bitmap.buffer,
+      hb_blob_t *blob = hb_blob_create ((ধ্রুবক অক্ষর *) bitmap.বাফার,
 					bitmap.pitch * bitmap.rows,
 					HB_MEMORY_MODE_DUPLICATE,
 					nullptr, nullptr);
 
       hb_glyph_extents_t extents;
-      if (!font->get_glyph_extents (gid, &extents, false))
-	goto out;
+      যদি (!font->get_glyph_extents (gid, &extents, মিথ্যা))
+	যাও out;
 
-      if (paint_funcs->image (paint_data,
+      যদি (paint_funcs->image (paint_তথ্য,
 			      blob,
 			      bitmap.width,
 			      bitmap.rows,
 			      HB_PAINT_IMAGE_FORMAT_BGRA,
 			      0.f,
 			      &extents))
-        ret = true;
+        ret = সত্য;
 
     out:
       hb_blob_destroy (blob);
       ft_font->lock.lock ();
     }
 
-    return ret;
+    ফেরত ret;
   }
-  return false;
+  ফেরত মিথ্যা;
 }
 #endif
 #endif
 
 
-static inline void free_static_ft_funcs ();
+স্থির অন্তঃরেখ শূন্য free_static_ft_funcs ();
 
-static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft_font_funcs_lazy_loader_t>
+স্থির কাঠামো hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  স্থির hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
@@ -1092,7 +1092,7 @@ static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft
 #endif
 
 #ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#যদি (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
     hb_font_funcs_set_paint_glyph_or_fail_func (funcs, hb_ft_paint_glyph_or_fail, nullptr, nullptr);
 #endif
 #endif
@@ -1101,30 +1101,30 @@ static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft
 
     hb_atexit (free_static_ft_funcs);
 
-    return funcs;
+    ফেরত funcs;
   }
 } static_ft_funcs;
 
-static inline
-void free_static_ft_funcs ()
+স্থির অন্তঃরেখ
+শূন্য free_static_ft_funcs ()
 {
   static_ft_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+স্থির hb_font_funcs_t *
 _hb_ft_get_font_funcs ()
 {
-  return static_ft_funcs.get_unconst ();
+  ফেরত static_ft_funcs.get_unconst ();
 }
 
-static void
-_hb_ft_font_set_funcs (hb_font_t *font, FT_Face ft_face, bool unref,
-		       bool static_library = false)
+স্থির শূন্য
+_hb_ft_font_set_funcs (hb_font_t *font, FT_Face ft_face, যৌক্তিক unref,
+		       যৌক্তিক static_library = মিথ্যা)
 {
-  bool symbol = ft_face->charmap && ft_face->charmap->encoding == FT_ENCODING_MS_SYMBOL;
+  যৌক্তিক প্রতীক = ft_face->charmap && ft_face->charmap->encoding == FT_ENCODING_MS_প্রতীক;
 
-  hb_ft_font_t *ft_font = _hb_ft_font_create (ft_face, symbol, unref, static_library);
-  if (unlikely (!ft_font)) return;
+  hb_ft_font_t *ft_font = _hb_ft_font_create (ft_face, প্রতীক, unref, static_library);
+  যদি (unlikely (!ft_font)) ফেরত;
 
   hb_font_set_funcs (font,
 		     _hb_ft_get_font_funcs (),
@@ -1133,47 +1133,47 @@ _hb_ft_font_set_funcs (hb_font_t *font, FT_Face ft_face, bool unref,
 }
 
 
-static hb_blob_t *
-_hb_ft_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+স্থির hb_blob_t *
+_hb_ft_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, শূন্য *user_তথ্য)
 {
-  FT_Face ft_face = (FT_Face) user_data;
-  FT_Byte *buffer;
-  FT_ULong  length = 0;
+  FT_Face ft_face = (FT_Face) user_তথ্য;
+  FT_Byte *বাফার;
+  FT_ULong  দৈর্ঘ্য = 0;
   FT_Error error;
 
   /* In new FreeType, a tag value of 1 loads the SFNT table directory. Reject it. */
-  if (tag == 1)
-    return nullptr;
+  যদি (tag == 1)
+    ফেরত nullptr;
 
   /* Note: FreeType like HarfBuzz uses the NONE tag for fetching the entire blob */
 
-  error = FT_Load_Sfnt_Table (ft_face, tag, 0, nullptr, &length);
-  if (error)
-    return nullptr;
+  error = FT_Load_Sfnt_Table (ft_face, tag, 0, nullptr, &দৈর্ঘ্য);
+  যদি (error)
+    ফেরত nullptr;
 
-  buffer = (FT_Byte *) hb_malloc (length);
-  if (!buffer)
-    return nullptr;
-  auto buffer_guard = hb_make_scope_guard ([&]() { hb_free (buffer); });
+  বাফার = (FT_Byte *) hb_malloc (দৈর্ঘ্য);
+  যদি (!বাফার)
+    ফেরত nullptr;
+  auto বাফার_guard = hb_make_scope_guard ([&]() { hb_free (বাফার); });
 
-  error = FT_Load_Sfnt_Table (ft_face, tag, 0, buffer, &length);
-  if (error)
-    return nullptr;
+  error = FT_Load_Sfnt_Table (ft_face, tag, 0, বাফার, &দৈর্ঘ্য);
+  যদি (error)
+    ফেরত nullptr;
 
-  buffer_guard.release ();
-  return hb_blob_create ((const char *) buffer, length,
+  বাফার_guard.release ();
+  ফেরত hb_blob_create ((ধ্রুবক অক্ষর *) বাফার, দৈর্ঘ্য,
 			 HB_MEMORY_MODE_WRITABLE,
-			 buffer, hb_free);
+			 বাফার, hb_free);
 }
 
-static unsigned
-_hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
-		       unsigned int start_offset,
-		       unsigned int *table_count,
+স্থির unsigned
+_hb_ft_get_table_tags (ধ্রুবক hb_face_t *face HB_UNUSED,
+		       unsigned পূর্ণসংখ্যা start_offset,
+		       unsigned পূর্ণসংখ্যা *table_গুনতি_2,
 		       hb_tag_t *table_tags,
-		       void *user_data)
+		       শূন্য *user_তথ্য)
 {
-  FT_Face ft_face = (FT_Face) user_data;
+  FT_Face ft_face = (FT_Face) user_তথ্য;
 
   FT_ULong population = 0;
   FT_Sfnt_Table_Info (ft_face,
@@ -1181,33 +1181,33 @@ _hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
 		      nullptr,
                       &population);
 
-  if (!table_count)
-    return population;
+  যদি (!table_গুনতি_2)
+    ফেরত population;
 
-  if (unlikely (start_offset >= population))
+  যদি (unlikely (start_offset >= population))
   {
-    *table_count = 0;
-    return population;
+    *table_গুনতি_2 = 0;
+    ফেরত population;
   }
 
-  unsigned end_offset = start_offset + *table_count;
-  if (unlikely (end_offset < start_offset)) /* Overflow. */
+  unsigned end_offset = start_offset + *table_গুনতি_2;
+  যদি (unlikely (end_offset < start_offset)) /* Overflow. */
   {
-    *table_count = 0;
-    return population;
+    *table_গুনতি_2 = 0;
+    ফেরত population;
   }
   end_offset = hb_min (end_offset, (unsigned) population);
 
-  *table_count = end_offset - start_offset;
-  if (table_tags)
-    for (unsigned i = start_offset; i < end_offset; i++)
+  *table_গুনতি_2 = end_offset - start_offset;
+  যদি (table_tags)
+    জন্য (unsigned i = start_offset; i < end_offset; i++)
     {
-      FT_ULong tag = 0, length;
-      FT_Sfnt_Table_Info (ft_face, i, &tag, &length);
+      FT_ULong tag = 0, দৈর্ঘ্য;
+      FT_Sfnt_Table_Info (ft_face, i, &tag, &দৈর্ঘ্য);
       table_tags[i - start_offset] = tag;
     }
 
-  return population;
+  ফেরত population;
 }
 
 
@@ -1241,24 +1241,24 @@ hb_ft_face_create (FT_Face           ft_face,
 {
   hb_face_t *face;
 
-  if (!ft_face->stream->read) {
+  যদি (!ft_face->stream->পঠ) {
     hb_blob_t *blob;
 
-    blob = hb_blob_create ((const char *) ft_face->stream->base,
-			   (unsigned int) ft_face->stream->size,
+    blob = hb_blob_create ((ধ্রুবক অক্ষর *) ft_face->stream->base,
+			   (unsigned পূর্ণসংখ্যা) ft_face->stream->আকার_2,
 			   HB_MEMORY_MODE_READONLY,
 			   ft_face, destroy);
-    face = hb_face_create (blob, ft_face->face_index);
+    face = hb_face_create (blob, ft_face->face_সূচক);
     hb_blob_destroy (blob);
-  } else {
+  } অন্যথা {
     face = hb_face_create_for_tables (_hb_ft_reference_table, ft_face, destroy);
     hb_face_set_get_table_tags_func (face, _hb_ft_get_table_tags, ft_face, nullptr);
   }
 
-  hb_face_set_index (face, ft_face->face_index);
+  hb_face_set_সূচক (face, ft_face->face_সূচক);
   hb_face_set_upem (face, ft_face->units_per_EM);
 
-  return face;
+  ফেরত face;
 }
 
 /**
@@ -1287,14 +1287,14 @@ hb_face_t *
 hb_ft_face_create_referenced (FT_Face ft_face)
 {
   FT_Reference_Face (ft_face);
-  return hb_ft_face_create (ft_face, _hb_ft_face_destroy);
+  ফেরত hb_ft_face_create (ft_face, _hb_ft_face_destroy);
 }
 
-static void
-hb_ft_face_finalize (void *arg)
+স্থির শূন্য
+hb_ft_face_finalize (শূন্য *arg)
 {
   FT_Face ft_face = (FT_Face) arg;
-  hb_face_destroy ((hb_face_t *) ft_face->generic.data);
+  hb_face_destroy ((hb_face_t *) ft_face->generic.তথ্য);
 }
 
 /**
@@ -1323,16 +1323,16 @@ hb_ft_face_finalize (void *arg)
 hb_face_t *
 hb_ft_face_create_cached (FT_Face ft_face)
 {
-  if (unlikely (!ft_face->generic.data || ft_face->generic.finalizer != hb_ft_face_finalize))
+  যদি (unlikely (!ft_face->generic.তথ্য || ft_face->generic.finalizer != hb_ft_face_finalize))
   {
-    if (ft_face->generic.finalizer)
+    যদি (ft_face->generic.finalizer)
       ft_face->generic.finalizer (ft_face);
 
-    ft_face->generic.data = hb_ft_face_create (ft_face, nullptr);
+    ft_face->generic.তথ্য = hb_ft_face_create (ft_face, nullptr);
     ft_face->generic.finalizer = hb_ft_face_finalize;
   }
 
-  return hb_face_reference ((hb_face_t *) ft_face->generic.data);
+  ফেরত hb_face_reference ((hb_face_t *) ft_face->generic.তথ্য);
 }
 
 /**
@@ -1375,9 +1375,9 @@ hb_ft_font_create (FT_Face           ft_face,
   face = hb_ft_face_create (ft_face, destroy);
   font = hb_font_create (face);
   hb_face_destroy (face);
-  _hb_ft_font_set_funcs (font, ft_face, false);
+  _hb_ft_font_set_funcs (font, ft_face, মিথ্যা);
   hb_ft_font_changed (font);
-  return font;
+  ফেরত font;
 }
 
 /**
@@ -1390,46 +1390,46 @@ hb_ft_font_create (FT_Face           ft_face,
  *
  * Since: 1.0.5
  **/
-void
+শূন্য
 hb_ft_font_changed (hb_font_t *font)
 {
-  if (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
-    return;
+  যদি (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
+    ফেরত;
 
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_তথ্য;
 
   FT_Face ft_face = ft_font->ft_face;
 
   hb_font_set_scale (font,
-		     (int) (((uint64_t) ft_face->size->metrics.x_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16),
-		     (int) (((uint64_t) ft_face->size->metrics.y_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16));
-#if 0 /* hb-ft works in no-hinting model */
+		     (পূর্ণসংখ্যা) (((uint64_t) ft_face->আকার_2->metrics.x_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16),
+		     (পূর্ণসংখ্যা) (((uint64_t) ft_face->আকার_2->metrics.y_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16));
+#যদি 0 /* hb-ft works in no-hinting model */
   hb_font_set_ppem (font,
-		    ft_face->size->metrics.x_ppem,
-		    ft_face->size->metrics.y_ppem);
+		    ft_face->আকার_2->metrics.x_ppem,
+		    ft_face->আকার_2->metrics.y_ppem);
 #endif
 
-#if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
+#যদি defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
   FT_MM_Var *mm_var = nullptr;
-  if (!FT_Get_MM_Var (ft_face, &mm_var))
+  যদি (!FT_Get_MM_Var (ft_face, &mm_var))
   {
-    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->num_axis, sizeof (FT_Fixed));
-    int *coords = (int *) hb_calloc (mm_var->num_axis, sizeof (int));
-    if (coords && ft_coords)
+    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->অঙ্ক_axis, আকার (FT_Fixed));
+    পূর্ণসংখ্যা *coords = (পূর্ণসংখ্যা *) hb_calloc (mm_var->অঙ্ক_axis, আকার (পূর্ণসংখ্যা));
+    যদি (coords && ft_coords)
     {
-      if (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->num_axis, ft_coords))
+      যদি (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->অঙ্ক_axis, ft_coords))
       {
-	bool nonzero = false;
+	যৌক্তিক nonzero = মিথ্যা;
 
-	for (unsigned int i = 0; i < mm_var->num_axis; ++i)
+	জন্য (unsigned পূর্ণসংখ্যা i = 0; i < mm_var->অঙ্ক_axis; ++i)
 	 {
 	  coords[i] = (ft_coords[i] + 2) >> 2;
 	  nonzero = nonzero || coords[i];
 	 }
 
-	if (nonzero)
-	  hb_font_set_var_coords_normalized (font, coords, mm_var->num_axis);
-	else
+	যদি (nonzero)
+	  hb_font_set_var_coords_normalized (font, coords, mm_var->অঙ্ক_axis);
+	অন্যথা
 	  hb_font_set_var_coords_normalized (font, nullptr, 0);
       }
     }
@@ -1437,7 +1437,7 @@ hb_ft_font_changed (hb_font_t *font)
     hb_free (ft_coords);
 #ifdef HAVE_FT_DONE_MM_VAR
     FT_Done_MM_Var (ft_face->glyph->library, mm_var);
-#else
+#অন্যথা
     hb_free (mm_var);
 #endif
   }
@@ -1468,12 +1468,12 @@ hb_ft_font_changed (hb_font_t *font)
 hb_bool_t
 hb_ft_hb_font_changed (hb_font_t *font)
 {
-  if (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
-    return false;
+  যদি (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
+    ফেরত মিথ্যা;
 
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_তথ্য;
 
-  return _hb_ft_hb_font_check_changed (font, ft_font);
+  ফেরত _hb_ft_hb_font_check_changed (font, ft_font);
 }
 
 /**
@@ -1501,20 +1501,20 @@ hb_font_t *
 hb_ft_font_create_referenced (FT_Face ft_face)
 {
   FT_Reference_Face (ft_face);
-  return hb_ft_font_create (ft_face, _hb_ft_face_destroy);
+  ফেরত hb_ft_font_create (ft_face, _hb_ft_face_destroy);
 }
 
 
-static void * _hb_ft_alloc (FT_Memory memory, long size)
-{ return hb_malloc (size); }
+স্থির শূন্য * _hb_ft_alloc (FT_Memory memory, long আকার_2)
+{ ফেরত hb_malloc (আকার_2); }
 
-static void _hb_ft_free (FT_Memory memory, void *block)
+স্থির শূন্য _hb_ft_free (FT_Memory memory, শূন্য *block)
 { hb_free (block); }
 
-static void * _hb_ft_realloc (FT_Memory memory, long cur_size, long new_size, void *block)
-{ return hb_realloc (block, new_size); }
+স্থির শূন্য * _hb_ft_realloc (FT_Memory memory, long cur_আকার, long new_আকার, শূন্য *block)
+{ ফেরত hb_realloc (block, new_আকার); }
 
-static FT_MemoryRec_ m =
+স্থির FT_MemoryRec_ m =
 {
   nullptr,
   _hb_ft_alloc,
@@ -1522,127 +1522,127 @@ static FT_MemoryRec_ m =
   _hb_ft_realloc
 };
 
-static inline void free_static_ft_library ();
-static inline void free_static_ft_library_mutex ();
+স্থির অন্তঃরেখ শূন্য free_static_ft_library ();
+স্থির অন্তঃরেখ শূন্য free_static_ft_library_mutex ();
 
-static struct hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
+স্থির কাঠামো hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
 								   hb_ft_library_mutex_lazy_loader_t>
 {
-  static hb_mutex_t *create ()
+  স্থির hb_mutex_t *create ()
   {
-    hb_mutex_t *lock = (hb_mutex_t *) hb_calloc (1, sizeof (hb_mutex_t));
-    if (unlikely (!lock))
-      return nullptr;
+    hb_mutex_t *lock = (hb_mutex_t *) hb_calloc (1, আকার (hb_mutex_t));
+    যদি (unlikely (!lock))
+      ফেরত nullptr;
 
-    lock = new (lock) hb_mutex_t;
+    lock = নতুন (lock) hb_mutex_t;
     hb_atexit (free_static_ft_library_mutex);
-    return lock;
+    ফেরত lock;
   }
-  static void destroy (hb_mutex_t *lock)
+  স্থির শূন্য destroy (hb_mutex_t *lock)
   {
     lock->~hb_mutex_t ();
     hb_free (lock);
   }
-  static hb_mutex_t *get_null ()
+  স্থির hb_mutex_t *get_null ()
   {
-    return nullptr;
+    ফেরত nullptr;
   }
 } static_ft_library_mutex;
 
-static struct hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<FT_Library>,
+স্থির কাঠামো hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<FT_Library>,
 							     hb_ft_library_lazy_loader_t>
 {
-  static FT_Library create ()
+  স্থির FT_Library create ()
   {
     FT_Library l;
-    if (FT_New_Library (&m, &l))
-      return nullptr;
+    যদি (FT_New_Library (&m, &l))
+      ফেরত nullptr;
 
     FT_Add_Default_Modules (l);
     FT_Set_Default_Properties (l);
 
     hb_atexit (free_static_ft_library);
 
-    return l;
+    ফেরত l;
   }
-  static void destroy (FT_Library l)
+  স্থির শূন্য destroy (FT_Library l)
   {
     FT_Done_Library (l);
   }
-  static FT_Library get_null ()
+  স্থির FT_Library get_null ()
   {
-    return nullptr;
+    ফেরত nullptr;
   }
 } static_ft_library;
 
-static inline
-void free_static_ft_library_mutex ()
+স্থির অন্তঃরেখ
+শূন্য free_static_ft_library_mutex ()
 {
   static_ft_library_mutex.free_instance ();
 }
 
-static inline
-void free_static_ft_library ()
+স্থির অন্তঃরেখ
+শূন্য free_static_ft_library ()
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
   static_ft_library.free_instance ();
 }
 
-static FT_Library
+স্থির FT_Library
 reference_ft_library ()
 {
   hb_mutex_t *mutex = static_ft_library_mutex.get_unconst ();
-  if (unlikely (!mutex))
-    return nullptr;
+  যদি (unlikely (!mutex))
+    ফেরত nullptr;
   hb_lock_t lock (mutex);
   FT_Library l = static_ft_library.get_unconst ();
-  if (unlikely (FT_Reference_Library (l)))
+  যদি (unlikely (FT_Reference_Library (l)))
   {
-    DEBUG_MSG (FT, l, "FT_Reference_Library() failed");
-    return nullptr;
+    DEBUG_বার্তা (FT, l, "FT_Reference_Library() failed");
+    ফেরত nullptr;
   }
-  return l;
+  ফেরত l;
 }
 
-static hb_user_data_key_t ft_library_key = {0};
+স্থির hb_user_তথ্য_চাবি_t ft_library_চাবি = {0};
 
-static void
-_hb_ft_face_destroy_static (void *data)
+স্থির শূন্য
+_hb_ft_face_destroy_static (শূন্য *তথ্য)
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  FT_Done_Face ((FT_Face) data);
+  FT_Done_Face ((FT_Face) তথ্য);
 }
 
-static FT_Error
+স্থির FT_Error
 new_ft_face (FT_Library  ft_library,
-	     const char *file_name,
-	     unsigned int index,
+	     ধ্রুবক অক্ষর *file_name,
+	     unsigned পূর্ণসংখ্যা সূচক_2,
 	     FT_Face     *ft_face)
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  return FT_New_Face (ft_library, file_name, index, ft_face);
+  ফেরত FT_New_Face (ft_library, file_name, সূচক_2, ft_face);
 }
 
-static FT_Error
+স্থির FT_Error
 new_ft_memory_face (FT_Library    ft_library,
-		    const FT_Byte *blob_data,
-		    unsigned int   blob_size,
-		    unsigned int   index,
+		    ধ্রুবক FT_Byte *blob_তথ্য,
+		    unsigned পূর্ণসংখ্যা   blob_আকার,
+		    unsigned পূর্ণসংখ্যা   সূচক_2,
 		    FT_Face       *ft_face)
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  return FT_New_Memory_Face (ft_library, blob_data, blob_size, index, ft_face);
+  ফেরত FT_New_Memory_Face (ft_library, blob_তথ্য, blob_আকার, সূচক_2, ft_face);
 }
 
-static void
-finalize_ft_library (void *arg)
+স্থির শূন্য
+finalize_ft_library (শূন্য *arg)
 {
   FT_Face ft_face = (FT_Face) arg;
-  FT_Done_Library ((FT_Library) ft_face->generic.data);
+  FT_Done_Library ((FT_Library) ft_face->generic.তথ্য);
 }
 
-static void
-destroy_ft_library (void *arg)
+স্থির শূন্য
+destroy_ft_library (শূন্য *arg)
 {
   hb_lock_t lock (static_ft_library_mutex.get_unconst ());
   FT_Done_Library ((FT_Library) arg);
@@ -1666,43 +1666,43 @@ destroy_ft_library (void *arg)
  * Since: 10.1.0
  */
 hb_face_t *
-hb_ft_face_create_from_file_or_fail (const char   *file_name,
-				     unsigned int  index)
+hb_ft_face_create_from_file_or_fail (ধ্রুবক অক্ষর   *file_name,
+				     unsigned পূর্ণসংখ্যা  সূচক_2)
 {
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  যদি (unlikely (!ft_library))
   {
-    DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
-    return nullptr;
+    DEBUG_বার্তা (FT, ft_library, "reference_ft_library failed");
+    ফেরত nullptr;
   }
 
   FT_Face ft_face;
-  if (unlikely (new_ft_face (ft_library,
+  যদি (unlikely (new_ft_face (ft_library,
 			     file_name,
-			     index,
+			     সূচক_2,
 			     &ft_face)))
   {
     destroy_ft_library (ft_library);
-    return nullptr;
+    ফেরত nullptr;
   }
 
   FT_Reference_Face (ft_face);
   hb_face_t *face = hb_ft_face_create (ft_face, _hb_ft_face_destroy_static);
   _hb_ft_face_destroy_static (ft_face);
 
-  ft_face->generic.data = ft_library;
+  ft_face->generic.তথ্য = ft_library;
   ft_face->generic.finalizer = finalize_ft_library;
 
-  if (hb_face_is_immutable (face))
-    return nullptr;
+  যদি (hb_face_is_immutable (face))
+    ফেরত nullptr;
 
-  return face;
+  ফেরত face;
 }
 
-static hb_user_data_key_t ft_blob_key = {0};
+স্থির hb_user_তথ্য_চাবি_t ft_blob_চাবি = {0};
 
-static void
-_destroy_blob (void *p)
+স্থির শূন্য
+_destroy_blob (শূন্য *p)
 {
   hb_blob_destroy ((hb_blob_t *) p);
 }
@@ -1726,57 +1726,57 @@ _destroy_blob (void *p)
  */
 hb_face_t *
 hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
-				     unsigned int  index)
+				     unsigned পূর্ণসংখ্যা  সূচক_2)
 {
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  যদি (unlikely (!ft_library))
   {
-    DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
-    return nullptr;
+    DEBUG_বার্তা (FT, ft_library, "reference_ft_library failed");
+    ফেরত nullptr;
   }
 
   hb_blob_make_immutable (blob);
-  unsigned blob_size;
-  const char *blob_data = hb_blob_get_data (blob, &blob_size);
+  unsigned blob_আকার;
+  ধ্রুবক অক্ষর *blob_তথ্য = hb_blob_get_তথ্য (blob, &blob_আকার);
 
   FT_Face ft_face;
-  if (unlikely (new_ft_memory_face (ft_library,
-				    (const FT_Byte *) blob_data,
-				    blob_size,
-				    index,
+  যদি (unlikely (new_ft_memory_face (ft_library,
+				    (ধ্রুবক FT_Byte *) blob_তথ্য,
+				    blob_আকার,
+				    সূচক_2,
 				    &ft_face)))
   {
     destroy_ft_library (ft_library);
-    return nullptr;
+    ফেরত nullptr;
   }
 
   FT_Reference_Face (ft_face);
   hb_face_t *face = hb_ft_face_create (ft_face, _hb_ft_face_destroy_static);
   _hb_ft_face_destroy_static (ft_face);
 
-  ft_face->generic.data = ft_library;
+  ft_face->generic.তথ্য = ft_library;
   ft_face->generic.finalizer = finalize_ft_library;
 
-  if (hb_face_is_immutable (face))
-    return nullptr;
+  যদি (hb_face_is_immutable (face))
+    ফেরত nullptr;
 
   // Hook the blob to the hb_face_t, since FT_Face still needs it.
   hb_blob_reference (blob);
-  if (!hb_face_set_user_data (face, &ft_blob_key, blob, _destroy_blob, true))
+  যদি (!hb_face_set_user_তথ্য (face, &ft_blob_চাবি, blob, _destroy_blob, সত্য))
   {
     hb_blob_destroy (blob);
     hb_face_destroy (face);
-    return nullptr;
+    ফেরত nullptr;
   }
 
-  return face;
+  ফেরত face;
 }
 
-static void
-_release_blob (void *arg)
+স্থির শূন্য
+_release_blob (শূন্য *arg)
 {
   FT_Face ft_face = (FT_Face) arg;
-  hb_blob_destroy ((hb_blob_t *) ft_face->generic.data);
+  hb_blob_destroy ((hb_blob_t *) ft_face->generic.তথ্য);
 }
 
 /**
@@ -1805,13 +1805,13 @@ _release_blob (void *arg)
  *
  * Since: 1.0.5
  **/
-void
+শূন্য
 hb_ft_font_set_funcs (hb_font_t *font)
 {
-  int load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
-  if (font->destroy == (hb_destroy_func_t) _hb_ft_font_destroy && font->user_data)
+  পূর্ণসংখ্যা load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
+  যদি (font->destroy == (hb_destroy_func_t) _hb_ft_font_destroy && font->user_তথ্য)
   {
-    const hb_ft_font_t *existing_ft_font = (const hb_ft_font_t *) font->user_data;
+    ধ্রুবক hb_ft_font_t *existing_ft_font = (ধ্রুবক hb_ft_font_t *) font->user_তথ্য;
     load_flags = existing_ft_font->load_flags;
   }
 
@@ -1821,49 +1821,49 @@ hb_ft_font_set_funcs (hb_font_t *font)
 		     nullptr, nullptr);
 
   hb_blob_t *blob = hb_face_reference_blob (font->face);
-  unsigned int blob_length;
-  const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
-    DEBUG_MSG (FT, font, "Font face has empty blob");
+  unsigned পূর্ণসংখ্যা blob_দৈর্ঘ্য;
+  ধ্রুবক অক্ষর *blob_তথ্য = hb_blob_get_তথ্য (blob, &blob_দৈর্ঘ্য);
+  যদি (unlikely (!blob_দৈর্ঘ্য))
+    DEBUG_বার্তা (FT, font, "Font face has empty blob");
 
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  যদি (unlikely (!ft_library))
   {
     hb_blob_destroy (blob);
-    DEBUG_MSG (FT, font, "reference_ft_library failed");
-    return;
+    DEBUG_বার্তা (FT, font, "reference_ft_library failed");
+    ফেরত;
   }
 
   FT_Face ft_face = nullptr;
-  if (unlikely (new_ft_memory_face (ft_library,
-				    (const FT_Byte *) blob_data,
-				    blob_length,
-				    hb_face_get_index (font->face),
+  যদি (unlikely (new_ft_memory_face (ft_library,
+				    (ধ্রুবক FT_Byte *) blob_তথ্য,
+				    blob_দৈর্ঘ্য,
+				    hb_face_get_সূচক (font->face),
 				    &ft_face)))
   {
     hb_blob_destroy (blob);
     destroy_ft_library (ft_library);
-    DEBUG_MSG (FT, font, "FT_New_Memory_Face() failed");
-    return;
+    DEBUG_বার্তা (FT, font, "FT_New_Memory_Face() failed");
+    ফেরত;
   }
 
-  if (FT_Select_Charmap (ft_face, FT_ENCODING_MS_SYMBOL))
+  যদি (FT_Select_Charmap (ft_face, FT_ENCODING_MS_প্রতীক))
     FT_Select_Charmap (ft_face, FT_ENCODING_UNICODE);
 
   // Hook the blob to the FT_Face
-  ft_face->generic.data = blob;
+  ft_face->generic.তথ্য = blob;
   ft_face->generic.finalizer = _release_blob;
 
   // And the FT_Library to the blob
-  if (unlikely (!hb_blob_set_user_data (blob, &ft_library_key, ft_library, destroy_ft_library, true)))
+  যদি (unlikely (!hb_blob_set_user_তথ্য (blob, &ft_library_চাবি, ft_library, destroy_ft_library, সত্য)))
   {
-    DEBUG_MSG (FT, font, "hb_blob_set_user_data() failed");
+    DEBUG_বার্তা (FT, font, "hb_blob_set_user_data() failed");
     _hb_ft_face_destroy_static (ft_face);
     destroy_ft_library (ft_library);
-    return;
+    ফেরত;
   }
 
-  _hb_ft_font_set_funcs (font, ft_face, true, true);
+  _hb_ft_font_set_funcs (font, ft_face, সত্য, সত্য);
   hb_ft_font_set_load_flags (font, load_flags);
 
   _hb_ft_hb_font_changed (font, ft_face);

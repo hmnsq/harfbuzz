@@ -25,11 +25,11 @@
 #ifndef HB_AAT_LAYOUT_JUST_TABLE_HH
 #define HB_AAT_LAYOUT_JUST_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
+#অন্তর্ভাব "hb-aat-layout-common.hh"
+#অন্তর্ভাব "hb-ot-layout.hh"
+#অন্তর্ভাব "hb-open-type.hh"
 
-#include "hb-aat-layout-morx-table.hh"
+#অন্তর্ভাব "hb-aat-layout-morx-table.hh"
 
 /*
  * just -- Justification
@@ -38,34 +38,34 @@
 #define HB_AAT_TAG_just HB_TAG('j','u','s','t')
 
 
-namespace AAT {
+নামাকাশ AAT {
 
-using namespace OT;
+using নামাকাশ OT;
 
 
-struct ActionSubrecordHeader
+কাঠামো ActionSubrecordHeader
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
   HBUINT16	actionClass;	/* The JustClass value associated with this
 				 * ActionSubrecord. */
   HBUINT16	actionType;	/* The type of postcompensation action. */
-  HBUINT16	actionLength;	/* Length of this ActionSubrecord record, which
+  HBUINT16	action_দৈর্ঘ্য;	/* Length of this ActionSubrecord record, which
 				 * must be a multiple of 4. */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (6);
 };
 
-struct DecompositionAction
+কাঠামো DecompositionAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
   ActionSubrecordHeader
@@ -85,37 +85,37 @@ struct DecompositionAction
 				 * the ligature will be decomposed into these glyphs.
 				 *
 				 * Array of decomposed glyphs. */
-  public:
-  DEFINE_SIZE_ARRAY (18, decomposedglyphs);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (18, decomposedglyphs);
 };
 
-struct UnconditionalAddGlyphAction
+কাঠামো UnconditionalAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
-  protected:
+  সুরক্ষিত:
   ActionSubrecordHeader
 		header;
   HBGlyphID16	addGlyph;	/* Glyph that should be added if the distance factor
 				 * is growing. */
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (8);
 };
 
-struct ConditionalAddGlyphAction
+কাঠামো ConditionalAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
-  protected:
+  সুরক্ষিত:
   ActionSubrecordHeader
 		header;
   F16DOT16	substThreshold; /* Distance growth factor (in ems) at which
@@ -128,19 +128,19 @@ struct ConditionalAddGlyphAction
   HBGlyphID16	substGlyph;	/* Glyph to be substituted for this glyph if the
 				 * growth factor equals or exceeds the value of
 				 * substThreshold. */
-  public:
-  DEFINE_SIZE_STATIC (14);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (14);
 };
 
-struct DuctileGlyphAction
+কাঠামো DuctileGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
-  protected:
+  সুরক্ষিত:
   ActionSubrecordHeader
 		header;
   HBUINT32	variationAxis;	/* The 4-byte tag identifying the ductile axis.
@@ -149,58 +149,58 @@ struct DuctileGlyphAction
   F16DOT16	minimumLimit;	/* The lowest value for the ductility axis that
 				 * still yields an acceptable appearance. Normally
 				 * this will be 1.0. */
-  F16DOT16	noStretchValue; /* This is the default value that corresponds to
+  F16DOT16	no_Stretch_মান; /* This is the default value that corresponds to
 				 * no change in appearance. Normally, this will
 				 * be 1.0. */
   F16DOT16	maximumLimit;	/* The highest value for the ductility axis that
 				 * still yields an acceptable appearance. */
-  public:
-  DEFINE_SIZE_STATIC (22);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (22);
 };
 
-struct RepeatedAddGlyphAction
+কাঠামো RepeatedAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
-  protected:
+  সুরক্ষিত:
   ActionSubrecordHeader
 		header;
   HBUINT16	flags;		/* Currently unused; set to 0. */
   HBGlyphID16	glyph;		/* Glyph that should be added if the distance factor
 				 * is growing. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (10);
 };
 
-struct ActionSubrecord
+কাঠামো ActionSubrecord
 {
-  unsigned int get_length () const { return u.header.actionLength; }
+  unsigned পূর্ণসংখ্যা get_দৈর্ঘ্য () ধ্রুবক { ফেরত u.header.action_দৈর্ঘ্য; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (এই);
+    যদি (unlikely (!c->check_struct (এই)))
+      return_trace (মিথ্যা);
     hb_barrier ();
 
-    switch (u.header.actionType)
+    নির্বাচন (u.header.actionType)
     {
-    case 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
-    case 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
+    ক্ষেত্র 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    ক্ষেত্র 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
+    ক্ষেত্র 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
     // case 3: hb_barrier (); return_trace (u.stretchGlyphAction.sanitize (c));
-    case 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    default: return_trace (true);
+    ক্ষেত্র 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    ক্ষেত্র 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    পূর্বনির্ধারিত: return_trace (সত্য);
     }
   }
 
-  protected:
-  union	{
+  সুরক্ষিত:
+  সংঘ	{
   ActionSubrecordHeader		header;
   DecompositionAction		decompositionAction;
   UnconditionalAddGlyphAction	unconditionalAddGlyphAction;
@@ -210,40 +210,40 @@ struct ActionSubrecord
   RepeatedAddGlyphAction	repeatedAddGlyphAction;
   } u;				/* Data. The format of this data depends on
 				 * the value of the actionType field. */
-  public:
-  DEFINE_SIZE_UNION (6, header);
+  সর্বজনীন:
+  DEFINE_আকার_UNION (6, header);
 };
 
-struct PostcompensationActionChain
+কাঠামো PostcompensationActionChain
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (এই);
+    যদি (unlikely (!c->check_struct (এই)))
+      return_trace (মিথ্যা);
     hb_barrier ();
 
-    unsigned int offset = min_size;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned পূর্ণসংখ্যা offset = min_আকার;
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
     {
-      const ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (this, offset);
-      if (unlikely (!subrecord.sanitize (c))) return_trace (false);
-      offset += subrecord.get_length ();
+      ধ্রুবক ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (এই, offset);
+      যদি (unlikely (!subrecord.sanitize (c))) return_trace (মিথ্যা);
+      offset += subrecord.get_দৈর্ঘ্য ();
     }
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  protected:
-  HBUINT32	count;
+  সুরক্ষিত:
+  HBUINT32	গুনতি;
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (4);
 };
 
-struct JustWidthDeltaEntry
+কাঠামো JustWidthDeltaEntry
 {
-  enum Flags
+  গণনা Flags
   {
     Reserved1		=0xE000,/* Reserved. You should set these bits to zero. */
     UnlimiteGap		=0x1000,/* The glyph can take unlimited gap. When this
@@ -254,7 +254,7 @@ struct JustWidthDeltaEntry
     Priority		=0x000F /* The justification priority of the glyph. */
   };
 
-  enum Priority
+  গণনা Priority
   {
     Kashida		= 0,	/* Kashida priority. This is the highest priority
 				 * during justification. */
@@ -272,7 +272,7 @@ struct JustWidthDeltaEntry
 				 * you may instead assign it to the null priority. */
   };
 
-  protected:
+  সুরক্ষিত:
   F16DOT16	beforeGrowLimit;/* The ratio by which the advance width of the
 				 * glyph is permitted to grow on the left or top side. */
   F16DOT16	beforeShrinkLimit;
@@ -287,19 +287,19 @@ struct JustWidthDeltaEntry
   HBUINT16	growFlags;	/* Flags controlling the grow case. */
   HBUINT16	shrinkFlags;	/* Flags controlling the shrink case. */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (20);
 };
 
-struct WidthDeltaPair
+কাঠামো WidthDeltaPair
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই));
   }
 
-  protected:
+  সুরক্ষিত:
   HBUINT32	justClass;	/* The justification category associated
 				 * with the wdRecord field. Only 7 bits of
 				 * this field are used. (The other bits are
@@ -308,17 +308,17 @@ struct WidthDeltaPair
   JustWidthDeltaEntry
 		wdRecord;	/* The actual width delta record. */
 
-  public:
-  DEFINE_SIZE_STATIC (24);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (24);
 };
 
-typedef OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
+প্রকারলেখ OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
 
-struct JustificationCategory
+কাঠামো JustificationCategory
 {
-  typedef void EntryData;
+  প্রকারলেখ শূন্য Entry_তথ্য;
 
-  enum Flags
+  গণনা Flags
   {
     SetMark		=0x8000,/* If set, make the current glyph the marked
 				 * glyph. */
@@ -330,36 +330,36 @@ struct JustificationCategory
 				 * glyph if nonzero. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c, ধ্রুবক শূন্য *base) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (এই);
+    return_trace (likely (c->check_struct (এই) &&
 			  morphHeader.sanitize (c) &&
 			  stHeader.sanitize (c)));
   }
 
-  protected:
+  সুরক্ষিত:
   ChainSubtable<ObsoleteTypes>
 		morphHeader;	/* Metamorphosis-style subtable header. */
-  StateTable<ObsoleteTypes, EntryData>
+  StateTable<ObsoleteTypes, Entry_তথ্য>
 		stHeader;	/* The justification insertion state table header */
-  public:
-  DEFINE_SIZE_STATIC (30);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (30);
 };
 
-struct JustificationHeader
+কাঠামো JustificationHeader
 {
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c, ধ্রুবক শূন্য *base) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (এই);
+    return_trace (likely (c->check_struct (এই) &&
 			  justClassTable.sanitize (c, base, base) &&
 			  wdcTable.sanitize (c, base) &&
 			  pcTable.sanitize (c, base) &&
 			  lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  সুরক্ষিত:
   Offset16To<JustificationCategory>
 		justClassTable;	/* Offset to the justification category state table. */
   Offset16To<WidthDeltaCluster>
@@ -378,40 +378,40 @@ struct JustificationHeader
 				 * clusters. See the description of Width Delta Clusters
 				 * table for details on how to interpret the lookup values. */
 
-  public:
-  DEFINE_SIZE_MIN (8);
+  সর্বজনীন:
+  DEFINE_আকার_MIN (8);
 };
 
-struct just
+কাঠামো just
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
+  স্থির constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এই);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (এই) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  horiz_তথ্য.sanitize (c, এই, এই) &&
+			  vert_তথ্য.sanitize (c, এই, এই)));
   }
 
-  protected:
+  সুরক্ষিত:
   FixedVersion<>version;	/* Version of the justification table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the justification table (set to 0). */
   Offset16To<JustificationHeader>
-		horizData;	/* Byte offset from the start of the justification table
+		horiz_তথ্য;	/* Byte offset from the start of the justification table
 				 * to the header for tables that contain justification
 				 * information for horizontal text.
 				 * If you are not including this information,
 				 * store 0. */
   Offset16To<JustificationHeader>
-		vertData;	/* ditto, vertical */
+		vert_তথ্য;	/* ditto, vertical */
 
-  public:
-  DEFINE_SIZE_STATIC (10);
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (10);
 };
 
 } /* namespace AAT */

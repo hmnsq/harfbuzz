@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  */
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-hvar-table.hh"
+#অন্তর্ভাব "hb-ot-var-common.hh"
+#অন্তর্ভাব "hb-ot-var-hvar-table.hh"
 // HVAR table data from SourceSerif4Variable-Roman_subset.otf
-const char hvar_data[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
+ধ্রুবক অক্ষর hvar_তথ্য[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
 
-static void
+স্থির শূন্য
 test_scalar_cache_precision ()
 {
-  const float scalars[] = {
+  ধ্রুবক দশমিক scalars[] = {
     0.f,
     1.f,
     1.f / 3.f,
@@ -38,35 +38,35 @@ test_scalar_cache_precision ()
      * fixed-point precision. */
     1.f / (16384.f * 16384.f * 16384.f),
   };
-  const unsigned counts[] = {4, 129};
+  ধ্রুবক unsigned counts[] = {4, 129};
   OT::hb_scalar_cache_t scratch_cache;
-  for (unsigned count : counts)
+  জন্য (unsigned গুনতি : counts)
   {
-    auto *cache = OT::hb_scalar_cache_t::create (count, &scratch_cache);
-    hb_always_assert (cache->length == count);
-    for (unsigned i = 0; i < count; i++)
+    auto *cache = OT::hb_scalar_cache_t::create (গুনতি, &scratch_cache);
+    hb_always_assert (cache->দৈর্ঘ্য == গুনতি);
+    জন্য (unsigned i = 0; i < গুনতি; i++)
     {
-      float value;
-      float scalar = scalars[i % ARRAY_LENGTH (scalars)];
+      দশমিক value;
+      দশমিক scalar = scalars[i % ARRAY_দৈর্ঘ্য (scalars)];
       hb_always_assert (!cache->get (i, &value));
       cache->set (i, scalar);
       hb_always_assert (cache->get (i, &value));
       hb_always_assert (value == scalar);
     }
     cache->clear ();
-    for (unsigned i = 0; i < count; i++)
+    জন্য (unsigned i = 0; i < গুনতি; i++)
     {
-      float value;
+      দশমিক value;
       hb_always_assert (!cache->get (i, &value));
     }
     OT::hb_scalar_cache_t::destroy (cache, &scratch_cache);
   }
 }
 
-static void
+স্থির শূন্য
 test_item_variations ()
 {
-  const OT::HVAR* hvar_table = reinterpret_cast<const OT::HVAR*> (hvar_data);
+  ধ্রুবক OT::HVAR* hvar_table = reinterpret_cast<ধ্রুবক OT::HVAR*> (hvar_তথ্য);
 
   hb_tag_t axis_tag = HB_TAG ('w', 'g', 'h', 't');
   hb_map_t axis_idx_tag_map;
@@ -76,10 +76,10 @@ test_item_variations ()
   axis_idx_tag_map.set (1, axis_tag);
 
   OT::item_variations_t item_vars;
-  const OT::ItemVariationStore& src_var_store = hvar_table+(hvar_table->varStore);
-  bool result = item_vars.create_from_item_varstore (src_var_store, axis_idx_tag_map);
+  ধ্রুবক OT::ItemVariationStore& src_var_store = hvar_table+(hvar_table->varStore);
+  যৌক্তিক ফলাফল = item_vars.create_from_item_varstore (src_var_store, axis_idx_tag_map);
       
-  hb_always_assert (result);
+  hb_always_assert (ফলাফল);
 
   /* partial instancing wght=300:800 */
   hb_hashmap_t<hb_tag_t, Triple> normalized_axes_location;
@@ -88,37 +88,37 @@ test_item_variations ()
   hb_hashmap_t<hb_tag_t, TripleDistances> axes_triple_distances;
   axes_triple_distances.set (axis_tag, TripleDistances (200.0, 500.0));
 
-  result = item_vars.instantiate_tuple_vars (normalized_axes_location, axes_triple_distances);
-  hb_always_assert (result);
-  result = item_vars.as_item_varstore (false);
-  hb_always_assert (result);
-  hb_always_assert (item_vars.get_region_list().length == 8);
+  ফলাফল = item_vars.instantiate_tuple_vars (normalized_axes_location, axes_triple_distances);
+  hb_always_assert (ফলাফল);
+  ফলাফল = item_vars.as_item_varstore (মিথ্যা);
+  hb_always_assert (ফলাফল);
+  hb_always_assert (item_vars.get_region_list().দৈর্ঘ্য == 8);
 }
 
-static void
+স্থির শূন্য
 test_implicit_advance_mapping ()
 {
-  char data[sizeof (hvar_data)];
-  hb_memcpy (data, hvar_data, sizeof (data));
-  auto *hvar = reinterpret_cast<OT::HVAR *> (data);
-  const auto &store = hvar + hvar->varStore;
-  const int locations[] = {-16384, 0, 16384};
-  bool exercised_outer_one = false;
+  অক্ষর তথ্য[আকার (hvar_তথ্য)];
+  hb_memcpy (তথ্য, hvar_তথ্য, আকার (তথ্য));
+  auto *hvar = reinterpret_cast<OT::HVAR *> (তথ্য);
+  ধ্রুবক auto &store = hvar + hvar->varStore;
+  ধ্রুবক পূর্ণসংখ্যা locations[] = {-16384, 0, 16384};
+  যৌক্তিক exercised_outer_one = মিথ্যা;
 
-  for (int weight : locations)
-    for (int size : locations)
+  জন্য (পূর্ণসংখ্যা weight : locations)
+    জন্য (পূর্ণসংখ্যা আকার_2 : locations)
     {
-      int coords[] = {weight, size};
+      পূর্ণসংখ্যা coords[] = {weight, আকার_2};
       unsigned mapped = (hvar + hvar->advMap).map (0x10000u);
       hb_always_assert (hvar->get_advance_delta_unscaled (0x10000u, coords, 2) ==
                         store.get_delta (mapped, coords, 2));
     }
 
   hvar->advMap = 0;
-  for (int weight : locations)
-    for (int size : locations)
+  জন্য (পূর্ণসংখ্যা weight : locations)
+    জন্য (পূর্ণসংখ্যা আকার_2 : locations)
     {
-      int coords[] = {weight, size};
+      পূর্ণসংখ্যা coords[] = {weight, আকার_2};
       exercised_outer_one |= store.get_delta (0x10000u, coords, 2) != 0;
       hb_always_assert (hvar->get_advance_delta_unscaled (0, coords, 2) ==
                         store.get_delta (0, coords, 2));
@@ -129,36 +129,36 @@ test_implicit_advance_mapping ()
   hb_always_assert (exercised_outer_one);
 }
 
-static void
+স্থির শূন্য
 test_item_variations_overflow ()
 {
-  hb_vector_t<hb_vector_t<int>> row_storage;
-  hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
+  hb_vector_t<hb_vector_t<পূর্ণসংখ্যা>> row_storage;
+  hb_hashmap_t<unsigned, ধ্রুবক hb_vector_t<পূর্ণসংখ্যা>*> front_mapping;
   OT::item_variations_t item_vars;
   unsigned old_varidx = 0;
-  const unsigned total_count = 0xFFFFu * 2u;
+  ধ্রুবক unsigned যোগ_গুনতি = 0xFFFFu * 2u;
 
-  const unsigned counts[] = {
+  ধ্রুবক unsigned counts[] = {
     128u,                 /* 0..127: 1-byte deltas */
     32768u - 128u,        /* 128..32767: 2-byte deltas */
     0xFFFFu * 2u - 32768u /* 32768..131069: 4-byte deltas */
   };
-  const int starts[] = {
+  ধ্রুবক পূর্ণসংখ্যা starts[] = {
     0,
     128,
     32768
   };
 
-  hb_always_assert (row_storage.alloc (total_count));
+  hb_always_assert (row_storage.alloc (যোগ_গুনতি));
 
-  for (unsigned bucket = 0; bucket < 3; bucket++)
+  জন্য (unsigned bucket = 0; bucket < 3; bucket++)
   {
-    hb_vector_t<const hb_vector_t<int>*> rows;
+    hb_vector_t<ধ্রুবক hb_vector_t<পূর্ণসংখ্যা>*> rows;
     hb_always_assert (rows.alloc (counts[bucket]));
 
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    জন্য (unsigned i = 0; i < counts[bucket]; i++)
     {
-      hb_vector_t<int> row;
+      hb_vector_t<পূর্ণসংখ্যা> row;
       hb_always_assert (row.resize (1));
       row[0] = starts[bucket] + i;
       row_storage.push (std::move (row));
@@ -166,10 +166,10 @@ test_item_variations_overflow ()
 
     hb_always_assert (!row_storage.in_error ());
 
-    unsigned base = row_storage.length - counts[bucket];
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    unsigned base = row_storage.দৈর্ঘ্য - counts[bucket];
+    জন্য (unsigned i = 0; i < counts[bucket]; i++)
     {
-      const hb_vector_t<int> *row = &row_storage.arrayZ[base + i];
+      ধ্রুবক hb_vector_t<পূর্ণসংখ্যা> *row = &row_storage.arrayZ[base + i];
       rows.push (row);
       front_mapping.set (old_varidx++, row);
     }
@@ -181,14 +181,14 @@ test_item_variations_overflow ()
   hb_always_assert (!front_mapping.in_error ());
   hb_always_assert (item_vars.compile_varidx_map_for_testing (front_mapping));
 
-  const auto& encodings = item_vars.get_vardata_encodings ();
-  hb_always_assert (encodings.length == 4);
-  hb_always_assert (encodings[0].items.length == 128u);
-  hb_always_assert (encodings[1].items.length == 32768u - 128u);
-  hb_always_assert (encodings[2].items.length == 0xFFFFu);
-  hb_always_assert (encodings[3].items.length == 32767u);
+  ধ্রুবক auto& encodings = item_vars.get_vardata_encodings ();
+  hb_always_assert (encodings.দৈর্ঘ্য == 4);
+  hb_always_assert (encodings[0].বস্তুসমূহ.দৈর্ঘ্য == 128u);
+  hb_always_assert (encodings[1].বস্তুসমূহ.দৈর্ঘ্য == 32768u - 128u);
+  hb_always_assert (encodings[2].বস্তুসমূহ.দৈর্ঘ্য == 0xFFFFu);
+  hb_always_assert (encodings[3].বস্তুসমূহ.দৈর্ঘ্য == 32767u);
 
-  const hb_map_t& varidx_map = item_vars.get_varidx_map ();
+  ধ্রুবক hb_map_t& varidx_map = item_vars.get_varidx_map ();
   hb_always_assert (varidx_map.get (0) == 0);
   hb_always_assert (varidx_map.get (127) == 127);
   hb_always_assert (varidx_map.get (128) == 0x00010000u);
@@ -199,10 +199,10 @@ test_item_variations_overflow ()
   hb_always_assert (varidx_map.get (131069) == 0x00037FFEu);
 }
 
-static void
+স্থির শূন্য
 test_signed_delta_widths ()
 {
-  const int deltas[] = {32767, 32768, 65535, 65536,
+  ধ্রুবক পূর্ণসংখ্যা deltas[] = {32767, 32768, 65535, 65536,
                        -32768, -32769, -65536, -65537};
   hb_tag_t axis = HB_TAG ('T', 'E', 'S', 'T');
   hb_vector_t<hb_tag_t> axes;
@@ -211,39 +211,39 @@ test_signed_delta_widths ()
   axis_map.set (0, axis);
   hb_hashmap_t<hb_tag_t, Triple> region;
   region.set (axis, Triple (0, 1, 1));
-  hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
+  hb_vector_t<ধ্রুবক hb_hashmap_t<hb_tag_t, Triple> *> regions;
   regions.push (&region);
 
-  for (int delta : deltas)
+  জন্য (পূর্ণসংখ্যা delta : deltas)
   {
-    hb_vector_t<int> row;
+    hb_vector_t<পূর্ণসংখ্যা> row;
     row.push (delta);
-    hb_vector_t<const hb_vector_t<int> *> rows;
+    hb_vector_t<ধ্রুবক hb_vector_t<পূর্ণসংখ্যা> *> rows;
     rows.push (&row);
     hb_vector_t<OT::delta_row_encoding_t> encodings;
     encodings.push (OT::delta_row_encoding_t (std::move (rows), 1));
 
-    char buf[128];
-    hb_serialize_context_t s (buf, sizeof (buf));
+    অক্ষর buf[128];
+    hb_serialize_context_t s (buf, আকার (buf));
     auto *out = s.start_serialize<OT::ItemVariationStore> ();
-    hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
+    hb_always_assert (out->serialize (&s, সত্য, axes, regions, encodings));
     s.end_serialize ();
     hb_bytes_t bytes = s.copy_bytes ();
-    const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-    const auto &data = store.get_sub_table (0);
-    hb_always_assert (data.get_item_delta (0, 0) == delta);
+    ধ্রুবক auto &store = *reinterpret_cast<ধ্রুবক OT::ItemVariationStore *> (bytes.arrayZ);
+    ধ্রুবক auto &তথ্য = store.get_sub_table (0);
+    hb_always_assert (তথ্য.get_item_delta (0, 0) == delta);
 
     hb_inc_bimap_t inner_map, region_map;
     inner_map.add (0);
     region_map.add (0);
-    char subset_buf[32];
-    hb_serialize_context_t subset_s (subset_buf, sizeof (subset_buf));
-    auto *subset = subset_s.start_serialize<OT::VarData> ();
-    hb_always_assert (subset->serialize (&subset_s, &data, inner_map, region_map));
+    অক্ষর subset_buf[32];
+    hb_serialize_context_t subset_s (subset_buf, আকার (subset_buf));
+    auto *subset = subset_s.start_serialize<OT::Var_তথ্য> ();
+    hb_always_assert (subset->serialize (&subset_s, &তথ্য, inner_map, region_map));
     subset_s.end_serialize ();
     hb_bytes_t subset_bytes = subset_s.copy_bytes ();
-    const auto &subset_data = *reinterpret_cast<const OT::VarData *> (subset_bytes.arrayZ);
-    hb_always_assert (subset_data.get_item_delta (0, 0) == delta);
+    ধ্রুবক auto &subset_তথ্য = *reinterpret_cast<ধ্রুবক OT::Var_তথ্য *> (subset_bytes.arrayZ);
+    hb_always_assert (subset_তথ্য.get_item_delta (0, 0) == delta);
 
     OT::item_variations_t item_vars;
     hb_always_assert (item_vars.create_from_item_varstore (store, axis_map));
@@ -258,70 +258,70 @@ test_signed_delta_widths ()
   }
 }
 
-static void
+স্থির শূন্য
 test_accumulated_delta_widths ()
 {
-  const int deltas[] = {20000, -20000, 1073741824};
-  for (int delta : deltas)
+  ধ্রুবক পূর্ণসংখ্যা deltas[] = {20000, -20000, 1073741824};
+  জন্য (পূর্ণসংখ্যা delta : deltas)
   {
     OT::item_variations_t item_vars;
     unsigned outer = item_vars.add_vardata (1);
     item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
     item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
     hb_always_assert (item_vars.build_region_list ());
-    if (delta == 1073741824)
+    যদি (delta == 1073741824)
       hb_always_assert (!item_vars.as_item_varstore ());
-    else
+    অন্যথা
     {
       hb_always_assert (item_vars.as_item_varstore ());
       hb_always_assert (item_vars.has_long_word ());
-      hb_always_assert ((*item_vars.get_vardata_encodings ()[0].items[0])[0] == 2 * delta);
+      hb_always_assert ((*item_vars.get_vardata_encodings ()[0].বস্তুসমূহ[0])[0] == 2 * delta);
     }
   }
 }
 
-static void
+স্থির শূন্য
 test_condition_delta_precision ()
 {
   hb_vector_t<hb_tag_t> axes;
   axes.push (HB_TAG ('T','E','S','T'));
   hb_hashmap_t<hb_tag_t, Triple> neutral, region;
   region.set (axes[0], Triple (0, 1, 1));
-  hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
+  hb_vector_t<ধ্রুবক hb_hashmap_t<hb_tag_t, Triple> *> regions;
   regions.push (&neutral);
   regions.push (&region);
-  hb_vector_t<int> row;
+  hb_vector_t<পূর্ণসংখ্যা> row;
   row.push (16777217);
   row.push (-16777216);
-  hb_vector_t<const hb_vector_t<int> *> rows;
+  hb_vector_t<ধ্রুবক hb_vector_t<পূর্ণসংখ্যা> *> rows;
   rows.push (&row);
   hb_vector_t<OT::delta_row_encoding_t> encodings;
   encodings.push (OT::delta_row_encoding_t (std::move (rows), 2));
-  char buf[128];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  অক্ষর buf[128];
+  hb_serialize_context_t s (buf, আকার (buf));
   auto *out = s.start_serialize<OT::ItemVariationStore> ();
-  hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
+  hb_always_assert (out->serialize (&s, সত্য, axes, regions, encodings));
   s.end_serialize ();
   hb_bytes_t bytes = s.copy_bytes ();
-  const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-  int coords[] = {16384};
+  ধ্রুবক auto &store = *reinterpret_cast<ধ্রুবক OT::ItemVariationStore *> (bytes.arrayZ);
+  পূর্ণসংখ্যা coords[] = {16384};
   OT::ItemVarStoreInstancer instancer (&store, nullptr, hb_array (coords));
   // Positioning keeps float arithmetic, but conditions must retain the unit
   // left after cancellation of two deltas exceeding float's integer range.
   hb_always_assert (instancer[0] == 0.f);
   hb_always_assert (instancer.get_condition_delta (0) == 1.);
-  const char condition_data[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
-  const auto &condition = *reinterpret_cast<const OT::Condition *> (condition_data);
+  ধ্রুবক অক্ষর condition_তথ্য[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
+  ধ্রুবক auto &condition = *reinterpret_cast<ধ্রুবক OT::Condition *> (condition_তথ্য);
   hb_always_assert (condition.evaluate (coords, 1, &instancer));
   bytes.fini ();
 }
 
-static void
+স্থির শূন্য
 test_failed_encoding ()
 {
-  hb_vector_t<int> row;
+  hb_vector_t<পূর্ণসংখ্যা> row;
   row.push (1);
-  hb_vector_t<const hb_vector_t<int> *> rows;
+  hb_vector_t<ধ্রুবক hb_vector_t<পূর্ণসংখ্যা> *> rows;
   rows.push (&row);
   OT::item_variations_t item_vars;
   hb_always_assert (item_vars.add_vardata_encoding_for_testing (std::move (rows), 1));
@@ -330,13 +330,13 @@ test_failed_encoding ()
   encoding.chars.clear ();
   encoding.chars.set_error ();
   hb_always_assert (encoding.in_error ());
-  hb_hashmap_t<unsigned, const hb_vector_t<int> *> front_mapping;
+  hb_hashmap_t<unsigned, ধ্রুবক hb_vector_t<পূর্ণসংখ্যা> *> front_mapping;
   front_mapping.set (0, &row);
   hb_always_assert (!item_vars.compile_varidx_map_for_testing (front_mapping));
 }
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
   test_scalar_cache_precision ();
   test_item_variations ();

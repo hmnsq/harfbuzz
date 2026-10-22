@@ -24,14 +24,14 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#যদি !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_VAR_H
 #define HB_OT_VAR_H
 
-#include "hb.h"
+#অন্তর্ভাব "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -48,7 +48,7 @@ HB_BEGIN_DECLS
  * Registered tag for the optical-size axis.
  * <note>Note: The optical-size axis supersedes the OpenType `size` feature.</note>
  */
-#define HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE	HB_TAG('o','p','s','z')
+#define HB_OT_TAG_VAR_AXIS_OPTICAL_আকার	HB_TAG('o','p','s','z')
 
 /**
  * HB_OT_TAG_VAR_AXIS_SLANT:
@@ -77,7 +77,7 @@ HB_BEGIN_DECLS
  */
 
 HB_EXTERN hb_bool_t
-hb_ot_var_has_data (hb_face_t *face);
+hb_ot_var_has_তথ্য (hb_face_t *face);
 
 
 /*
@@ -85,8 +85,8 @@ hb_ot_var_has_data (hb_face_t *face);
  */
 
 
-HB_EXTERN unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face);
+HB_EXTERN unsigned পূর্ণসংখ্যা
+hb_ot_var_get_axis_গুনতি (hb_face_t *face);
 
 /**
  * hb_ot_var_axis_flags_t:
@@ -96,11 +96,11 @@ hb_ot_var_get_axis_count (hb_face_t *face);
  *
  * Since: 2.2.0
  */
-typedef enum { /*< flags >*/
+প্রকারলেখ গণনা { /*< flags >*/
   HB_OT_VAR_AXIS_FLAG_HIDDEN	= 0x00000001u,
 
   /*< private >*/
-  _HB_OT_VAR_AXIS_FLAG_MAX_VALUE= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_VAR_AXIS_FLAG_MAX_মান= HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_var_axis_flags_t;
 
 /**
@@ -122,22 +122,22 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.2.0
  */
-typedef struct hb_ot_var_axis_info_t {
-  unsigned int			axis_index;
+প্রকারলেখ কাঠামো hb_ot_var_axis_info_t {
+  unsigned পূর্ণসংখ্যা			axis_সূচক;
   hb_tag_t			tag;
   hb_ot_name_id_t		name_id;
   hb_ot_var_axis_flags_t	flags;
-  float				min_value;
-  float				default_value;
-  float				max_value;
+  দশমিক				min_মান;
+  দশমিক				default_মান;
+  দশমিক				max_মান;
   /*< private >*/
-  unsigned int			reserved;
+  unsigned পূর্ণসংখ্যা			reserved;
 } hb_ot_var_axis_info_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned পূর্ণসংখ্যা
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
+			  unsigned পূর্ণসংখ্যা           start_offset,
+			  unsigned পূর্ণসংখ্যা          *axes_গুনতি /* IN/OUT */,
 			  hb_ot_var_axis_info_t *axes_array /* OUT */);
 
 HB_EXTERN hb_bool_t
@@ -150,40 +150,40 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  * Named instances.
  */
 
-HB_EXTERN unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face);
+HB_EXTERN unsigned পূর্ণসংখ্যা
+hb_ot_var_get_named_instance_গুনতি (hb_face_t *face);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index);
+						unsigned পূর্ণসংখ্যা instance_সূচক);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index);
+						unsigned পূর্ণসংখ্যা instance_সূচক);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned পূর্ণসংখ্যা
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */);
+					    unsigned পূর্ণসংখ্যা  instance_সূচক,
+					    unsigned পূর্ণসংখ্যা *coords_দৈর্ঘ্য, /* IN/OUT */
+					    দশমিক        *coords         /* OUT */);
 
 
 /*
  * Conversions.
  */
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length);
+				ধ্রুবক hb_variation_t *variations, /* IN */
+				unsigned পূর্ণসংখ্যা          variations_দৈর্ঘ্য,
+				পূর্ণসংখ্যা                  *coords, /* OUT */
+				unsigned পূর্ণসংখ্যা          coords_দৈর্ঘ্য);
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */);
+			    unsigned পূর্ণসংখ্যা coords_দৈর্ঘ্য,
+			    ধ্রুবক দশমিক *design_coords, /* IN */
+			    পূর্ণসংখ্যা *normalized_coords /* OUT */);
 
 
 HB_END_DECLS

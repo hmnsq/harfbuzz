@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#যদি !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_STYLE_H
 #define HB_STYLE_H
 
-#include "hb.h"
+#অন্তর্ভাব "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -59,22 +59,22 @@ HB_BEGIN_DECLS
  *
  * Since: 3.0.0
  **/
-typedef enum
+প্রকারলেখ গণনা
 {
   HB_STYLE_TAG_ITALIC		= HB_TAG ('i','t','a','l'),
-  HB_STYLE_TAG_OPTICAL_SIZE	= HB_TAG ('o','p','s','z'),
+  HB_STYLE_TAG_OPTICAL_আকার	= HB_TAG ('o','p','s','z'),
   HB_STYLE_TAG_SLANT_ANGLE	= HB_TAG ('s','l','n','t'),
   HB_STYLE_TAG_SLANT_RATIO	= HB_TAG ('S','l','n','t'),
   HB_STYLE_TAG_WIDTH		= HB_TAG ('w','d','t','h'),
   HB_STYLE_TAG_WEIGHT		= HB_TAG ('w','g','h','t'),
 
   /*< private >*/
-  _HB_STYLE_TAG_MAX_VALUE	= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_STYLE_TAG_MAX_মান	= HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_style_tag_t;
 
 
-HB_EXTERN float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag);
+HB_EXTERN দশমিক
+hb_style_get_মান (hb_font_t *font, hb_style_tag_t style_tag);
 
 HB_END_DECLS
 

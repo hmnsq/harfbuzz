@@ -24,11 +24,11 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-raster-image.hh"
+#অন্তর্ভাব "hb-raster-image.hh"
 
-#include <math.h>
+#অন্তর্ভাব <math.h>
 
 /**
  * SECTION:hb-raster
@@ -81,113 +81,113 @@
  **/
 
 #ifdef HAVE_PNG
-#include <png.h>
+#অন্তর্ভাব <png.h>
 #endif
 
 #ifdef HAVE_PNG
-struct hb_raster_png_read_blob_t
+কাঠামো hb_raster_png_read_blob_t
 {
-  const uint8_t *data = nullptr;
-  size_t size = 0;
+  ধ্রুবক uint8_t *তথ্য = nullptr;
+  size_t আকার_2 = 0;
   size_t offset = 0;
   uint8_t *rgba = nullptr;
   png_bytep *rows = nullptr;
 };
 
-static void
+স্থির শূন্য
 hb_raster_png_error (png_structp png,
-		     png_const_charp msg HB_UNUSED)
+		     png_const_charp বার্তা HB_UNUSED)
 {
 #ifdef PNG_SETJMP_SUPPORTED
   longjmp (png_jmpbuf (png), 1);
 #endif
 }
 
-static void
+স্থির শূন্য
 hb_raster_png_warning (png_structp png HB_UNUSED,
-		       png_const_charp msg HB_UNUSED)
+		       png_const_charp বার্তা HB_UNUSED)
 {}
 
-static void
-hb_raster_png_read_blob (png_structp png, png_bytep out, png_size_t length)
+স্থির শূন্য
+hb_raster_png_read_blob (png_structp png, png_bytep out, png_আকার_t দৈর্ঘ্য)
 {
   hb_raster_png_read_blob_t *r = (hb_raster_png_read_blob_t *) png_get_io_ptr (png);
 
-  if (!r || !r->data || length > r->size - r->offset)
+  যদি (!r || !r->তথ্য || দৈর্ঘ্য > r->আকার_2 - r->offset)
     png_error (png, "read error");
 
-  hb_memcpy (out, r->data + r->offset, length);
-  r->offset += length;
+  hb_memcpy (out, r->তথ্য + r->offset, দৈর্ঘ্য);
+  r->offset += দৈর্ঘ্য;
 }
 
-static void
+স্থির শূন্য
 hb_raster_png_read_blob_fini (hb_raster_png_read_blob_t *r)
 {
-  if (!r)
-    return;
+  যদি (!r)
+    ফেরত;
 
   hb_free (r->rgba);
   hb_free (r->rows);
   hb_free (r);
 }
 
-struct hb_raster_png_write_blob_t
+কাঠামো hb_raster_png_write_blob_t
 {
-  char *data = nullptr;
-  size_t length = 0;
+  অক্ষর *তথ্য = nullptr;
+  size_t দৈর্ঘ্য = 0;
   size_t allocated = 0;
   uint8_t *rgba = nullptr;
   png_bytep *rows = nullptr;
 };
 
-static void
-hb_raster_png_write_blob (png_structp png, png_bytep in, png_size_t length)
+স্থির শূন্য
+hb_raster_png_write_blob (png_structp png, png_bytep in, png_আকার_t দৈর্ঘ্য)
 {
   hb_raster_png_write_blob_t *w = (hb_raster_png_write_blob_t *) png_get_io_ptr (png);
-  if (!w)
+  যদি (!w)
     png_error (png, "write error");
 
-  size_t old_length = w->length;
-  if ((size_t) length > (size_t) -1 - old_length)
+  size_t old_দৈর্ঘ্য = w->দৈর্ঘ্য;
+  যদি ((size_t) দৈর্ঘ্য > (size_t) -1 - old_দৈর্ঘ্য)
     png_error (png, "write error");
 
-  size_t new_length = old_length + length;
-  if (new_length > w->allocated)
+  size_t new_দৈর্ঘ্য = old_দৈর্ঘ্য + দৈর্ঘ্য;
+  যদি (new_দৈর্ঘ্য > w->allocated)
   {
     size_t new_allocated = w->allocated ? w->allocated : 4096;
-    while (new_allocated < new_length)
+    যখন (new_allocated < new_দৈর্ঘ্য)
     {
       size_t next = new_allocated * 2;
-      if (next <= new_allocated)
+      যদি (next <= new_allocated)
       {
-	new_allocated = new_length;
-	break;
+	new_allocated = new_দৈর্ঘ্য;
+	বিরতি;
       }
       new_allocated = next;
     }
 
-    char *data = (char *) hb_realloc (w->data, new_allocated);
-    if (!data)
+    অক্ষর *তথ্য = (অক্ষর *) hb_realloc (w->তথ্য, new_allocated);
+    যদি (!তথ্য)
       png_error (png, "write error");
-    w->data = data;
+    w->তথ্য = তথ্য;
     w->allocated = new_allocated;
   }
 
-  hb_memcpy (w->data + old_length, in, length);
-  w->length = new_length;
+  hb_memcpy (w->তথ্য + old_দৈর্ঘ্য, in, দৈর্ঘ্য);
+  w->দৈর্ঘ্য = new_দৈর্ঘ্য;
 }
 
-static void
+স্থির শূন্য
 hb_raster_png_flush_blob (png_structp png HB_UNUSED)
 {}
 
-static void
+স্থির শূন্য
 hb_raster_png_write_blob_fini (hb_raster_png_write_blob_t *w)
 {
-  if (!w)
-    return;
+  যদি (!w)
+    ফেরত;
 
-  hb_free (w->data);
+  hb_free (w->তথ্য);
   hb_free (w->rgba);
   hb_free (w->rows);
   hb_free (w);
@@ -200,8 +200,8 @@ hb_raster_png_write_blob_fini (hb_raster_png_write_blob_t *w)
  */
 
 /* Unpack premultiplied pixel to float RGBA [0,1]. */
-static inline void
-unpack_to_float (uint32_t px, float &r, float &g, float &b, float &a)
+স্থির অন্তঃরেখ শূন্য
+unpack_to_float (uint32_t px, দশমিক &r, দশমিক &g, দশমিক &b, দশমিক &a)
 {
   b = (px & 0xFF) / 255.f;
   g = ((px >> 8) & 0xFF) / 255.f;
@@ -210,231 +210,231 @@ unpack_to_float (uint32_t px, float &r, float &g, float &b, float &a)
 }
 
 /* Pack float RGBA [0,1] premultiplied back to uint32_t. */
-static inline uint32_t
-pack_from_float (float r, float g, float b, float a)
+স্থির অন্তঃরেখ uint32_t
+pack_from_float (দশমিক r, দশমিক g, দশমিক b, দশমিক a)
 {
-  return hb_raster_pack_pixel ((uint8_t) (hb_clamp (b, 0.f, 1.f) * 255.f + 0.5f),
+  ফেরত hb_raster_pack_pixel ((uint8_t) (hb_clamp (b, 0.f, 1.f) * 255.f + 0.5f),
 			       (uint8_t) (hb_clamp (g, 0.f, 1.f) * 255.f + 0.5f),
 			       (uint8_t) (hb_clamp (r, 0.f, 1.f) * 255.f + 0.5f),
 			       (uint8_t) (hb_clamp (a, 0.f, 1.f) * 255.f + 0.5f));
 }
 
 /* Separable blend mode functions: operate on unpremultiplied [0,1] channels. */
-static inline float
-blend_multiply (float sc, float dc) { return sc * dc; }
-static inline float
-blend_screen (float sc, float dc) { return sc + dc - sc * dc; }
-static inline float
-blend_overlay (float sc, float dc)
-{ return dc <= 0.5f ? 2.f * sc * dc : 1.f - 2.f * (1.f - sc) * (1.f - dc); }
-static inline float
-blend_darken (float sc, float dc) { return hb_min (sc, dc); }
-static inline float
-blend_lighten (float sc, float dc) { return hb_max (sc, dc); }
-static inline float
-blend_color_dodge (float sc, float dc)
+স্থির অন্তঃরেখ দশমিক
+blend_multiply (দশমিক sc, দশমিক dc) { ফেরত sc * dc; }
+স্থির অন্তঃরেখ দশমিক
+blend_screen (দশমিক sc, দশমিক dc) { ফেরত sc + dc - sc * dc; }
+স্থির অন্তঃরেখ দশমিক
+blend_overlay (দশমিক sc, দশমিক dc)
+{ ফেরত dc <= 0.5f ? 2.f * sc * dc : 1.f - 2.f * (1.f - sc) * (1.f - dc); }
+স্থির অন্তঃরেখ দশমিক
+blend_darken (দশমিক sc, দশমিক dc) { ফেরত hb_min (sc, dc); }
+স্থির অন্তঃরেখ দশমিক
+blend_lighten (দশমিক sc, দশমিক dc) { ফেরত hb_max (sc, dc); }
+স্থির অন্তঃরেখ দশমিক
+blend_color_dodge (দশমিক sc, দশমিক dc)
 {
-  if (dc <= 0.f) return 0.f;
-  if (sc >= 1.f) return 1.f;
-  return hb_min (1.f, dc / (1.f - sc));
+  যদি (dc <= 0.f) ফেরত 0.f;
+  যদি (sc >= 1.f) ফেরত 1.f;
+  ফেরত hb_min (1.f, dc / (1.f - sc));
 }
-static inline float
-blend_color_burn (float sc, float dc)
+স্থির অন্তঃরেখ দশমিক
+blend_color_burn (দশমিক sc, দশমিক dc)
 {
-  if (dc >= 1.f) return 1.f;
-  if (sc <= 0.f) return 0.f;
-  return 1.f - hb_min (1.f, (1.f - dc) / sc);
+  যদি (dc >= 1.f) ফেরত 1.f;
+  যদি (sc <= 0.f) ফেরত 0.f;
+  ফেরত 1.f - hb_min (1.f, (1.f - dc) / sc);
 }
-static inline float
-blend_hard_light (float sc, float dc)
-{ return sc <= 0.5f ? 2.f * sc * dc : 1.f - 2.f * (1.f - sc) * (1.f - dc); }
-static inline float
-blend_soft_light (float sc, float dc)
+স্থির অন্তঃরেখ দশমিক
+blend_hard_light (দশমিক sc, দশমিক dc)
+{ ফেরত sc <= 0.5f ? 2.f * sc * dc : 1.f - 2.f * (1.f - sc) * (1.f - dc); }
+স্থির অন্তঃরেখ দশমিক
+blend_soft_light (দশমিক sc, দশমিক dc)
 {
-  if (sc <= 0.5f)
-    return dc - (1.f - 2.f * sc) * dc * (1.f - dc);
-  float d = (dc <= 0.25f) ? ((16.f * dc - 12.f) * dc + 4.f) * dc
+  যদি (sc <= 0.5f)
+    ফেরত dc - (1.f - 2.f * sc) * dc * (1.f - dc);
+  দশমিক d = (dc <= 0.25f) ? ((16.f * dc - 12.f) * dc + 4.f) * dc
 			   : sqrtf (dc);
-  return dc + (2.f * sc - 1.f) * (d - dc);
+  ফেরত dc + (2.f * sc - 1.f) * (d - dc);
 }
-static inline float
-blend_difference (float sc, float dc) { return fabsf (sc - dc); }
-static inline float
-blend_exclusion (float sc, float dc) { return sc + dc - 2.f * sc * dc; }
+স্থির অন্তঃরেখ দশমিক
+blend_difference (দশমিক sc, দশমিক dc) { ফেরত fabsf (sc - dc); }
+স্থির অন্তঃরেখ দশমিক
+blend_exclusion (দশমিক sc, দশমিক dc) { ফেরত sc + dc - 2.f * sc * dc; }
 
 /* Apply a separable blend mode per-pixel.
  * Both src and dst are premultiplied BGRA32. */
-static inline uint32_t
+স্থির অন্তঃরেখ uint32_t
 apply_separable_blend (uint32_t src, uint32_t dst,
-		       float (*blend_fn)(float, float))
+		       দশমিক (*blend_fn)(দশমিক, দশমিক))
 {
-  float sr, sg, sb, sa;
-  float dr, dg, db, da;
+  দশমিক sr, sg, sb, sa;
+  দশমিক dr, dg, db, da;
   unpack_to_float (src, sr, sg, sb, sa);
   unpack_to_float (dst, dr, dg, db, da);
 
-  float usr = sa > 0.f ? sr / sa : 0.f;
-  float usg = sa > 0.f ? sg / sa : 0.f;
-  float usb = sa > 0.f ? sb / sa : 0.f;
-  float udr = da > 0.f ? dr / da : 0.f;
-  float udg = da > 0.f ? dg / da : 0.f;
-  float udb = da > 0.f ? db / da : 0.f;
+  দশমিক usr = sa > 0.f ? sr / sa : 0.f;
+  দশমিক usg = sa > 0.f ? sg / sa : 0.f;
+  দশমিক usb = sa > 0.f ? sb / sa : 0.f;
+  দশমিক udr = da > 0.f ? dr / da : 0.f;
+  দশমিক udg = da > 0.f ? dg / da : 0.f;
+  দশমিক udb = da > 0.f ? db / da : 0.f;
 
-  float br = blend_fn (usr, udr);
-  float bg = blend_fn (usg, udg);
-  float bb = blend_fn (usb, udb);
+  দশমিক br = blend_fn (usr, udr);
+  দশমিক bg = blend_fn (usg, udg);
+  দশমিক bb = blend_fn (usb, udb);
 
-  float ra = sa + da - sa * da;
-  float rr = sa * da * br + sa * (1.f - da) * usr + (1.f - sa) * da * udr;
-  float rg = sa * da * bg + sa * (1.f - da) * usg + (1.f - sa) * da * udg;
-  float rb = sa * da * bb + sa * (1.f - da) * usb + (1.f - sa) * da * udb;
+  দশমিক ra = sa + da - sa * da;
+  দশমিক rr = sa * da * br + sa * (1.f - da) * usr + (1.f - sa) * da * udr;
+  দশমিক rg = sa * da * bg + sa * (1.f - da) * usg + (1.f - sa) * da * udg;
+  দশমিক rb = sa * da * bb + sa * (1.f - da) * usb + (1.f - sa) * da * udb;
 
-  return pack_from_float (rr, rg, rb, ra);
+  ফেরত pack_from_float (rr, rg, rb, ra);
 }
 
 /* HSL helpers */
-static inline float
-hsl_luminosity (float r, float g, float b)
-{ return 0.299f * r + 0.587f * g + 0.114f * b; }
+স্থির অন্তঃরেখ দশমিক
+hsl_luminosity (দশমিক r, দশমিক g, দশমিক b)
+{ ফেরত 0.299f * r + 0.587f * g + 0.114f * b; }
 
-static inline float
-hsl_saturation (float r, float g, float b)
-{ return hb_max (hb_max (r, g), b) - hb_min (hb_min (r, g), b); }
+স্থির অন্তঃরেখ দশমিক
+hsl_saturation (দশমিক r, দশমিক g, দশমিক b)
+{ ফেরত hb_max (hb_max (r, g), b) - hb_min (hb_min (r, g), b); }
 
-static inline void
-hsl_clip_color (float &r, float &g, float &b)
+স্থির অন্তঃরেখ শূন্য
+hsl_clip_color (দশমিক &r, দশমিক &g, দশমিক &b)
 {
-  float l = hsl_luminosity (r, g, b);
-  float mn = hb_min (hb_min (r, g), b);
-  float mx = hb_max (hb_max (r, g), b);
-  if (mn < 0.f)
+  দশমিক l = hsl_luminosity (r, g, b);
+  দশমিক mn = hb_min (hb_min (r, g), b);
+  দশমিক mx = hb_max (hb_max (r, g), b);
+  যদি (mn < 0.f)
   {
-    float d = l - mn;
-    if (d > 0.f) { r = l + (r - l) * l / d; g = l + (g - l) * l / d; b = l + (b - l) * l / d; }
+    দশমিক d = l - mn;
+    যদি (d > 0.f) { r = l + (r - l) * l / d; g = l + (g - l) * l / d; b = l + (b - l) * l / d; }
   }
-  if (mx > 1.f)
+  যদি (mx > 1.f)
   {
-    float d = mx - l;
-    if (d > 0.f) { r = l + (r - l) * (1.f - l) / d; g = l + (g - l) * (1.f - l) / d; b = l + (b - l) * (1.f - l) / d; }
+    দশমিক d = mx - l;
+    যদি (d > 0.f) { r = l + (r - l) * (1.f - l) / d; g = l + (g - l) * (1.f - l) / d; b = l + (b - l) * (1.f - l) / d; }
   }
 }
 
-static inline void
-hsl_set_luminosity (float &r, float &g, float &b, float l)
+স্থির অন্তঃরেখ শূন্য
+hsl_set_luminosity (দশমিক &r, দশমিক &g, দশমিক &b, দশমিক l)
 {
-  float d = l - hsl_luminosity (r, g, b);
+  দশমিক d = l - hsl_luminosity (r, g, b);
   r += d; g += d; b += d;
   hsl_clip_color (r, g, b);
 }
 
-static inline void
-hsl_set_saturation_inner (float &mn, float &mid, float &mx, float s)
+স্থির অন্তঃরেখ শূন্য
+hsl_set_saturation_inner (দশমিক &mn, দশমিক &mid, দশমিক &mx, দশমিক s)
 {
-  if (mx > mn)
+  যদি (mx > mn)
   {
     mid = (mid - mn) * s / (mx - mn);
     mx = s;
   }
-  else
+  অন্যথা
     mid = mx = 0.f;
   mn = 0.f;
 }
 
-static inline void
-hsl_set_saturation (float &r, float &g, float &b, float s)
+স্থির অন্তঃরেখ শূন্য
+hsl_set_saturation (দশমিক &r, দশমিক &g, দশমিক &b, দশমিক s)
 {
-  if (r <= g)
+  যদি (r <= g)
   {
-    if (g <= b)      hsl_set_saturation_inner (r, g, b, s);
-    else if (r <= b) hsl_set_saturation_inner (r, b, g, s);
-    else             hsl_set_saturation_inner (b, r, g, s);
+    যদি (g <= b)      hsl_set_saturation_inner (r, g, b, s);
+    অন্যথা যদি (r <= b) hsl_set_saturation_inner (r, b, g, s);
+    অন্যথা             hsl_set_saturation_inner (b, r, g, s);
   }
-  else
+  অন্যথা
   {
-    if (r <= b)      hsl_set_saturation_inner (g, r, b, s);
-    else if (g <= b) hsl_set_saturation_inner (g, b, r, s);
-    else             hsl_set_saturation_inner (b, g, r, s);
+    যদি (r <= b)      hsl_set_saturation_inner (g, r, b, s);
+    অন্যথা যদি (g <= b) hsl_set_saturation_inner (g, b, r, s);
+    অন্যথা             hsl_set_saturation_inner (b, g, r, s);
   }
 }
 
-static inline uint32_t
+স্থির অন্তঃরেখ uint32_t
 apply_hsl_blend (uint32_t src, uint32_t dst,
 		 hb_paint_composite_mode_t mode)
 {
-  float sr, sg, sb, sa;
-  float dr, dg, db, da;
+  দশমিক sr, sg, sb, sa;
+  দশমিক dr, dg, db, da;
   unpack_to_float (src, sr, sg, sb, sa);
   unpack_to_float (dst, dr, dg, db, da);
 
-  float usr = sa > 0.f ? sr / sa : 0.f;
-  float usg = sa > 0.f ? sg / sa : 0.f;
-  float usb = sa > 0.f ? sb / sa : 0.f;
-  float udr = da > 0.f ? dr / da : 0.f;
-  float udg = da > 0.f ? dg / da : 0.f;
-  float udb = da > 0.f ? db / da : 0.f;
+  দশমিক usr = sa > 0.f ? sr / sa : 0.f;
+  দশমিক usg = sa > 0.f ? sg / sa : 0.f;
+  দশমিক usb = sa > 0.f ? sb / sa : 0.f;
+  দশমিক udr = da > 0.f ? dr / da : 0.f;
+  দশমিক udg = da > 0.f ? dg / da : 0.f;
+  দশমিক udb = da > 0.f ? db / da : 0.f;
 
-  float br = udr, bg = udg, bb = udb;
+  দশমিক br = udr, bg = udg, bb = udb;
 
-  if (mode == HB_PAINT_COMPOSITE_MODE_HSL_HUE)
+  যদি (mode == HB_PAINT_COMPOSITE_MODE_HSL_HUE)
   {
     br = usr; bg = usg; bb = usb;
     hsl_set_saturation (br, bg, bb, hsl_saturation (udr, udg, udb));
     hsl_set_luminosity (br, bg, bb, hsl_luminosity (udr, udg, udb));
   }
-  else if (mode == HB_PAINT_COMPOSITE_MODE_HSL_SATURATION)
+  অন্যথা যদি (mode == HB_PAINT_COMPOSITE_MODE_HSL_SATURATION)
   {
     br = udr; bg = udg; bb = udb;
     hsl_set_saturation (br, bg, bb, hsl_saturation (usr, usg, usb));
     hsl_set_luminosity (br, bg, bb, hsl_luminosity (udr, udg, udb));
   }
-  else if (mode == HB_PAINT_COMPOSITE_MODE_HSL_COLOR)
+  অন্যথা যদি (mode == HB_PAINT_COMPOSITE_MODE_HSL_COLOR)
   {
     br = usr; bg = usg; bb = usb;
     hsl_set_luminosity (br, bg, bb, hsl_luminosity (udr, udg, udb));
   }
-  else /* HSL_LUMINOSITY */
+  অন্যথা /* HSL_LUMINOSITY */
   {
     br = udr; bg = udg; bb = udb;
     hsl_set_luminosity (br, bg, bb, hsl_luminosity (usr, usg, usb));
   }
 
-  float ra = sa + da - sa * da;
-  float rr = sa * da * br + sa * (1.f - da) * usr + (1.f - sa) * da * udr;
-  float rg = sa * da * bg + sa * (1.f - da) * usg + (1.f - sa) * da * udg;
-  float rb = sa * da * bb + sa * (1.f - da) * usb + (1.f - sa) * da * udb;
+  দশমিক ra = sa + da - sa * da;
+  দশমিক rr = sa * da * br + sa * (1.f - da) * usr + (1.f - sa) * da * udr;
+  দশমিক rg = sa * da * bg + sa * (1.f - da) * usg + (1.f - sa) * da * udg;
+  দশমিক rb = sa * da * bb + sa * (1.f - da) * usb + (1.f - sa) * da * udb;
 
-  return pack_from_float (rr, rg, rb, ra);
+  ফেরত pack_from_float (rr, rg, rb, ra);
 }
 
 /* Composite per-pixel with full blend mode support. */
-static inline uint32_t
+স্থির অন্তঃরেখ uint32_t
 composite_pixel (uint32_t src, uint32_t dst,
 		 hb_paint_composite_mode_t mode)
 {
   uint8_t sa = (uint8_t) (src >> 24);
   uint8_t da = (uint8_t) (dst >> 24);
 
-  switch (mode)
+  নির্বাচন (mode)
   {
-  case HB_PAINT_COMPOSITE_MODE_CLEAR:
-    return 0;
-  case HB_PAINT_COMPOSITE_MODE_SRC:
-    return src;
-  case HB_PAINT_COMPOSITE_MODE_DEST:
-    return dst;
-  case HB_PAINT_COMPOSITE_MODE_SRC_OVER:
-    return hb_raster_src_over (src, dst);
-  case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-    return hb_raster_src_over (dst, src);
-  case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-    return hb_raster_alpha_mul (src, da);
-  case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-    return hb_raster_alpha_mul (dst, sa);
-  case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-    return hb_raster_alpha_mul (src, 255 - da);
-  case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-    return hb_raster_alpha_mul (dst, 255 - sa);
-  case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_CLEAR:
+    ফেরত 0;
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC:
+    ফেরত src;
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST:
+    ফেরত dst;
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_OVER:
+    ফেরত hb_raster_src_over (src, dst);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_OVER:
+    ফেরত hb_raster_src_over (dst, src);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_IN:
+    ফেরত hb_raster_alpha_mul (src, da);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_IN:
+    ফেরত hb_raster_alpha_mul (dst, sa);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+    ফেরত hb_raster_alpha_mul (src, 255 - da);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+    ফেরত hb_raster_alpha_mul (dst, 255 - sa);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
   {
     /* Fa=Da, Fb=1-Sa */
     uint32_t a = hb_raster_alpha_mul (src, da);
@@ -443,9 +443,9 @@ composite_pixel (uint32_t src, uint32_t dst,
     uint8_t rg = (uint8_t) hb_min (255u, (unsigned) ((a >> 8) & 0xFF) + ((b >> 8) & 0xFF));
     uint8_t rr = (uint8_t) hb_min (255u, (unsigned) ((a >> 16) & 0xFF) + ((b >> 16) & 0xFF));
     uint8_t ra = (uint8_t) hb_min (255u, (unsigned) (a >> 24) + (b >> 24));
-    return hb_raster_pack_pixel (rb, rg, rr, ra);
+    ফেরত hb_raster_pack_pixel (rb, rg, rr, ra);
   }
-  case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
   {
     uint32_t a = hb_raster_alpha_mul (dst, sa);
     uint32_t b = hb_raster_alpha_mul (src, 255 - da);
@@ -453,9 +453,9 @@ composite_pixel (uint32_t src, uint32_t dst,
     uint8_t rg = (uint8_t) hb_min (255u, (unsigned) ((a >> 8) & 0xFF) + ((b >> 8) & 0xFF));
     uint8_t rr = (uint8_t) hb_min (255u, (unsigned) ((a >> 16) & 0xFF) + ((b >> 16) & 0xFF));
     uint8_t ra = (uint8_t) hb_min (255u, (unsigned) (a >> 24) + (b >> 24));
-    return hb_raster_pack_pixel (rb, rg, rr, ra);
+    ফেরত hb_raster_pack_pixel (rb, rg, rr, ra);
   }
-  case HB_PAINT_COMPOSITE_MODE_XOR:
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_XOR:
   {
     uint32_t a = hb_raster_alpha_mul (src, 255 - da);
     uint32_t b = hb_raster_alpha_mul (dst, 255 - sa);
@@ -463,37 +463,37 @@ composite_pixel (uint32_t src, uint32_t dst,
     uint8_t rg = (uint8_t) hb_min (255u, (unsigned) ((a >> 8) & 0xFF) + ((b >> 8) & 0xFF));
     uint8_t rr = (uint8_t) hb_min (255u, (unsigned) ((a >> 16) & 0xFF) + ((b >> 16) & 0xFF));
     uint8_t ra = (uint8_t) hb_min (255u, (unsigned) (a >> 24) + (b >> 24));
-    return hb_raster_pack_pixel (rb, rg, rr, ra);
+    ফেরত hb_raster_pack_pixel (rb, rg, rr, ra);
   }
-  case HB_PAINT_COMPOSITE_MODE_PLUS:
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_PLUS:
   {
     uint8_t rb = (uint8_t) hb_min (255u, (unsigned) (src & 0xFF) + (dst & 0xFF));
     uint8_t rg = (uint8_t) hb_min (255u, (unsigned) ((src >> 8) & 0xFF) + ((dst >> 8) & 0xFF));
     uint8_t rr = (uint8_t) hb_min (255u, (unsigned) ((src >> 16) & 0xFF) + ((dst >> 16) & 0xFF));
     uint8_t ra = (uint8_t) hb_min (255u, (unsigned) (src >> 24) + (dst >> 24));
-    return hb_raster_pack_pixel (rb, rg, rr, ra);
+    ফেরত hb_raster_pack_pixel (rb, rg, rr, ra);
   }
 
-  case HB_PAINT_COMPOSITE_MODE_MULTIPLY:  return apply_separable_blend (src, dst, blend_multiply);
-  case HB_PAINT_COMPOSITE_MODE_SCREEN:    return apply_separable_blend (src, dst, blend_screen);
-  case HB_PAINT_COMPOSITE_MODE_OVERLAY:   return apply_separable_blend (src, dst, blend_overlay);
-  case HB_PAINT_COMPOSITE_MODE_DARKEN:    return apply_separable_blend (src, dst, blend_darken);
-  case HB_PAINT_COMPOSITE_MODE_LIGHTEN:   return apply_separable_blend (src, dst, blend_lighten);
-  case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return apply_separable_blend (src, dst, blend_color_dodge);
-  case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:  return apply_separable_blend (src, dst, blend_color_burn);
-  case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:  return apply_separable_blend (src, dst, blend_hard_light);
-  case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:  return apply_separable_blend (src, dst, blend_soft_light);
-  case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:  return apply_separable_blend (src, dst, blend_difference);
-  case HB_PAINT_COMPOSITE_MODE_EXCLUSION:   return apply_separable_blend (src, dst, blend_exclusion);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_MULTIPLY:  ফেরত apply_separable_blend (src, dst, blend_multiply);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SCREEN:    ফেরত apply_separable_blend (src, dst, blend_screen);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_OVERLAY:   ফেরত apply_separable_blend (src, dst, blend_overlay);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DARKEN:    ফেরত apply_separable_blend (src, dst, blend_darken);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_LIGHTEN:   ফেরত apply_separable_blend (src, dst, blend_lighten);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: ফেরত apply_separable_blend (src, dst, blend_color_dodge);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_COLOR_BURN:  ফেরত apply_separable_blend (src, dst, blend_color_burn);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:  ফেরত apply_separable_blend (src, dst, blend_hard_light);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:  ফেরত apply_separable_blend (src, dst, blend_soft_light);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_DIFFERENCE:  ফেরত apply_separable_blend (src, dst, blend_difference);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_EXCLUSION:   ফেরত apply_separable_blend (src, dst, blend_exclusion);
 
-  case HB_PAINT_COMPOSITE_MODE_HSL_HUE:
-  case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
-  case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
-  case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
-    return apply_hsl_blend (src, dst, mode);
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HSL_HUE:
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
+  ক্ষেত্র HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
+    ফেরত apply_hsl_blend (src, dst, mode);
 
-  default:
-    return hb_raster_src_over (src, dst);
+  পূর্বনির্ধারিত:
+    ফেরত hb_raster_src_over (src, dst);
   }
 }
 
@@ -502,166 +502,166 @@ composite_pixel (uint32_t src, uint32_t dst,
 unsigned
 hb_raster_image_t::bytes_per_pixel (hb_raster_format_t format)
 {
-  return format == HB_RASTER_FORMAT_BGRA32 ? 4u : 1u;
+  ফেরত format == HB_RASTER_FORMAT_BGRA32 ? 4u : 1u;
 }
 
-bool
+যৌক্তিক
 hb_raster_image_t::configure (hb_raster_format_t format,
 			      hb_raster_extents_t extents)
 {
-  if (format != HB_RASTER_FORMAT_A8 &&
+  যদি (format != HB_RASTER_FORMAT_A8 &&
       format != HB_RASTER_FORMAT_BGRA32)
     format = HB_RASTER_FORMAT_A8;
 
   unsigned bpp = bytes_per_pixel (format);
-  if (extents.width > UINT_MAX / bpp)
-    return false;
+  যদি (extents.width > UINT_MAX / bpp)
+    ফেরত মিথ্যা;
 
   unsigned min_stride = extents.width * bpp;
-  if (extents.stride == 0 || extents.stride < min_stride)
+  যদি (extents.stride == 0 || extents.stride < min_stride)
     extents.stride = min_stride;
 
-  if (extents.height && extents.stride > (size_t) -1 / extents.height)
-    return false;
+  যদি (extents.height && extents.stride > (size_t) -1 / extents.height)
+    ফেরত মিথ্যা;
 
-  size_t buf_size = (size_t) extents.stride * extents.height;
-  if (buf_size > HB_RASTER_MAX_BUFFER_SIZE)
-    return false;
-  if (unlikely (!buffer.resize_dirty (buf_size)))
-    return false;
+  size_t buf_আকার = (size_t) extents.stride * extents.height;
+  যদি (buf_আকার > HB_RASTER_MAX_বাফার_আকার)
+    ফেরত মিথ্যা;
+  যদি (unlikely (!বাফার.resize_dirty (buf_আকার)))
+    ফেরত মিথ্যা;
 
-  this->format = format;
-  this->extents = extents;
-  return true;
+  এই->format = format;
+  এই->extents = extents;
+  ফেরত সত্য;
 }
 
-bool
+যৌক্তিক
 hb_raster_image_t::deserialize_from_png (hb_blob_t *blob)
 {
 #ifndef HAVE_PNG
-  return false;
-#else
-  if (!blob)
-    return false;
+  ফেরত মিথ্যা;
+#অন্যথা
+  যদি (!blob)
+    ফেরত মিথ্যা;
 
   unsigned blob_len = 0;
-  const uint8_t *blob_data = (const uint8_t *) hb_blob_get_data (blob, &blob_len);
-  if (!blob_data || !blob_len)
-    return false;
+  ধ্রুবক uint8_t *blob_তথ্য = (ধ্রুবক uint8_t *) hb_blob_get_তথ্য (blob, &blob_len);
+  যদি (!blob_তথ্য || !blob_len)
+    ফেরত মিথ্যা;
 
   png_structp png = png_create_read_struct (PNG_LIBPNG_VER_STRING, nullptr,
 					    hb_raster_png_error,
 					    hb_raster_png_warning);
-  if (!png)
-    return false;
+  যদি (!png)
+    ফেরত মিথ্যা;
 
   png_infop info = png_create_info_struct (png);
-  if (!info)
+  যদি (!info)
   {
     png_destroy_read_struct (&png, nullptr, nullptr);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  hb_raster_png_read_blob_t *reader = (hb_raster_png_read_blob_t *) hb_calloc (1, sizeof (*reader));
-  if (!reader)
+  hb_raster_png_read_blob_t *reader = (hb_raster_png_read_blob_t *) hb_calloc (1, আকার (*reader));
+  যদি (!reader)
   {
     png_destroy_read_struct (&png, &info, nullptr);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  reader->data = blob_data;
-  reader->size = (size_t) blob_len;
+  reader->তথ্য = blob_তথ্য;
+  reader->আকার_2 = (size_t) blob_len;
   png_set_read_fn (png, reader, hb_raster_png_read_blob);
-  if (setjmp (png_jmpbuf (png)))
+  যদি (setjmp (png_jmpbuf (png)))
   {
     png_destroy_read_struct (&png, &info, nullptr);
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
   png_read_info (png, info);
 
   png_uint_32 w = 0, h = 0;
-  int bit_depth = 0, color_type = 0;
-  int interlace_type = 0, compression_type = 0, filter_method = 0;
+  পূর্ণসংখ্যা bit_depth = 0, color_type = 0;
+  পূর্ণসংখ্যা interlace_type = 0, compression_type = 0, filter_method = 0;
   png_get_IHDR (png, info, &w, &h, &bit_depth, &color_type,
 		&interlace_type, &compression_type, &filter_method);
 
-  if (!w || !h || w > (png_uint_32) INT_MAX || h > (png_uint_32) INT_MAX)
+  যদি (!w || !h || w > (png_uint_32) INT_MAX || h > (png_uint_32) INT_MAX)
   {
     png_destroy_read_struct (&png, &info, nullptr);
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  bool has_trns = png_get_valid (png, info, PNG_INFO_tRNS);
+  যৌক্তিক has_trns = png_get_valid (png, info, PNG_INFO_tRNS);
 
-  if (bit_depth == 16)
+  যদি (bit_depth == 16)
     png_set_strip_16 (png);
-  if (color_type == PNG_COLOR_TYPE_PALETTE)
+  যদি (color_type == PNG_COLOR_TYPE_PALETTE)
     png_set_palette_to_rgb (png);
-  if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
+  যদি (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
     png_set_expand_gray_1_2_4_to_8 (png);
-  if (has_trns)
+  যদি (has_trns)
     png_set_tRNS_to_alpha (png);
-  if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
+  যদি (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
     png_set_gray_to_rgb (png);
-  if (!(color_type & PNG_COLOR_MASK_ALPHA) && !has_trns)
+  যদি (!(color_type & PNG_COLOR_MASK_ALPHA) && !has_trns)
     png_set_add_alpha (png, 0xff, PNG_FILLER_AFTER);
-  if (interlace_type != PNG_INTERLACE_NONE)
+  যদি (interlace_type != PNG_INTERLACE_NONE)
     png_set_interlace_handling (png);
 
   png_read_update_info (png, info);
 
-  if (png_get_bit_depth (png, info) != 8 || png_get_channels (png, info) != 4)
+  যদি (png_get_bit_depth (png, info) != 8 || png_get_channels (png, info) != 4)
   {
     png_destroy_read_struct (&png, &info, nullptr);
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  png_size_t rowbytes = png_get_rowbytes (png, info);
-  if (rowbytes < (png_size_t) w * 4u)
+  png_আকার_t rowbytes = png_get_rowbytes (png, info);
+  যদি (rowbytes < (png_আকার_t) w * 4u)
   {
     png_destroy_read_struct (&png, &info, nullptr);
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  size_t rgba_size = (size_t) rowbytes * (size_t) h;
-  if ((h && rgba_size / (size_t) h != (size_t) rowbytes) ||
-      rgba_size > HB_RASTER_MAX_BUFFER_SIZE)
+  size_t rgba_আকার = (size_t) rowbytes * (size_t) h;
+  যদি ((h && rgba_আকার / (size_t) h != (size_t) rowbytes) ||
+      rgba_আকার > HB_RASTER_MAX_বাফার_আকার)
   {
     png_destroy_read_struct (&png, &info, nullptr);
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  reader->rgba = (uint8_t *) hb_malloc (rgba_size);
-  if (!reader->rgba)
+  reader->rgba = (uint8_t *) hb_malloc (rgba_আকার);
+  যদি (!reader->rgba)
   {
     png_destroy_read_struct (&png, &info, nullptr);
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  size_t rows_size = (size_t) h * sizeof (png_bytep);
-  if (h && rows_size / (size_t) h != sizeof (png_bytep))
+  size_t rows_আকার = (size_t) h * আকার (png_bytep);
+  যদি (h && rows_আকার / (size_t) h != আকার (png_bytep))
   {
     png_destroy_read_struct (&png, &info, nullptr);
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  reader->rows = (png_bytep *) hb_malloc (rows_size);
-  if (!reader->rows)
+  reader->rows = (png_bytep *) hb_malloc (rows_আকার);
+  যদি (!reader->rows)
   {
     png_destroy_read_struct (&png, &info, nullptr);
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  for (unsigned y = 0; y < (unsigned) h; y++)
+  জন্য (unsigned y = 0; y < (unsigned) h; y++)
     reader->rows[y] = (png_bytep) (reader->rgba + (size_t) y * (size_t) rowbytes);
 
   png_read_image (png, reader->rows);
@@ -670,17 +670,17 @@ hb_raster_image_t::deserialize_from_png (hb_blob_t *blob)
 
   hb_raster_image_t decoded;
   hb_raster_extents_t decoded_extents = {0, 0, (unsigned) w, (unsigned) h, 0};
-  if (!decoded.configure (HB_RASTER_FORMAT_BGRA32, decoded_extents))
+  যদি (!decoded.configure (HB_RASTER_FORMAT_BGRA32, decoded_extents))
   {
     hb_raster_png_read_blob_fini (reader);
-    return false;
+    ফেরত মিথ্যা;
   }
 
-  for (unsigned y = 0; y < (unsigned) h; y++)
+  জন্য (unsigned y = 0; y < (unsigned) h; y++)
   {
-    hb_packed_t<uint32_t> *dst = (hb_packed_t<uint32_t> *) (decoded.buffer.arrayZ + (size_t) ((unsigned) h - 1 - y) * decoded.extents.stride);
-    const uint8_t *src = reader->rgba + (size_t) y * (size_t) rowbytes;
-    for (unsigned x = 0; x < (unsigned) w; x++)
+    hb_packed_t<uint32_t> *dst = (hb_packed_t<uint32_t> *) (decoded.বাফার.arrayZ + (size_t) ((unsigned) h - 1 - y) * decoded.extents.stride);
+    ধ্রুবক uint8_t *src = reader->rgba + (size_t) y * (size_t) rowbytes;
+    জন্য (unsigned x = 0; x < (unsigned) w; x++)
     {
       uint8_t r = src[4 * x + 0];
       uint8_t g = src[4 * x + 1];
@@ -693,49 +693,49 @@ hb_raster_image_t::deserialize_from_png (hb_blob_t *blob)
     }
   }
 
-  hb_swap (buffer, decoded.buffer);
-  hb_swap (this->extents, decoded.extents);
+  hb_swap (বাফার, decoded.বাফার);
+  hb_swap (এই->extents, decoded.extents);
   hb_swap (format, decoded.format);
   hb_raster_png_read_blob_fini (reader);
-  return true;
+  ফেরত সত্য;
 #endif
 }
 
 hb_blob_t *
-hb_raster_image_t::serialize_to_png_or_fail () const
+hb_raster_image_t::serialize_to_png_or_fail () ধ্রুবক
 {
 #ifndef HAVE_PNG
-  return nullptr;
-#else
-  if (format != HB_RASTER_FORMAT_BGRA32 || !extents.width || !extents.height)
-    return nullptr;
+  ফেরত nullptr;
+#অন্যথা
+  যদি (format != HB_RASTER_FORMAT_BGRA32 || !extents.width || !extents.height)
+    ফেরত nullptr;
 
   png_structp png = png_create_write_struct (PNG_LIBPNG_VER_STRING, nullptr,
 					     hb_raster_png_error,
 					     hb_raster_png_warning);
-  if (!png)
-    return nullptr;
+  যদি (!png)
+    ফেরত nullptr;
 
   png_infop info = png_create_info_struct (png);
-  if (!info)
+  যদি (!info)
   {
     png_destroy_write_struct (&png, nullptr);
-    return nullptr;
+    ফেরত nullptr;
   }
 
-  hb_raster_png_write_blob_t *writer = (hb_raster_png_write_blob_t *) hb_calloc (1, sizeof (*writer));
-  if (!writer)
+  hb_raster_png_write_blob_t *writer = (hb_raster_png_write_blob_t *) hb_calloc (1, আকার (*writer));
+  যদি (!writer)
   {
     png_destroy_write_struct (&png, &info);
-    return nullptr;
+    ফেরত nullptr;
   }
 
   png_set_write_fn (png, writer, hb_raster_png_write_blob, hb_raster_png_flush_blob);
-  if (setjmp (png_jmpbuf (png)))
+  যদি (setjmp (png_jmpbuf (png)))
   {
     png_destroy_write_struct (&png, &info);
     hb_raster_png_write_blob_fini (writer);
-    return nullptr;
+    ফেরত nullptr;
   }
 
   png_set_IHDR (png, info,
@@ -747,44 +747,44 @@ hb_raster_image_t::serialize_to_png_or_fail () const
   png_write_info (png, info);
 
   size_t rowbytes = (size_t) extents.width * 4u;
-  size_t rgba_size = rowbytes * (size_t) extents.height;
-  if (extents.height && rgba_size / (size_t) extents.height != rowbytes)
+  size_t rgba_আকার = rowbytes * (size_t) extents.height;
+  যদি (extents.height && rgba_আকার / (size_t) extents.height != rowbytes)
   {
     png_destroy_write_struct (&png, &info);
     hb_raster_png_write_blob_fini (writer);
-    return nullptr;
+    ফেরত nullptr;
   }
 
-  writer->rgba = (uint8_t *) hb_malloc (rgba_size);
-  if (!writer->rgba)
+  writer->rgba = (uint8_t *) hb_malloc (rgba_আকার);
+  যদি (!writer->rgba)
   {
     png_destroy_write_struct (&png, &info);
     hb_raster_png_write_blob_fini (writer);
-    return nullptr;
+    ফেরত nullptr;
   }
 
-  size_t rows_size = (size_t) extents.height * sizeof (png_bytep);
-  if (extents.height && rows_size / (size_t) extents.height != sizeof (png_bytep))
+  size_t rows_আকার = (size_t) extents.height * আকার (png_bytep);
+  যদি (extents.height && rows_আকার / (size_t) extents.height != আকার (png_bytep))
   {
     png_destroy_write_struct (&png, &info);
     hb_raster_png_write_blob_fini (writer);
-    return nullptr;
+    ফেরত nullptr;
   }
 
-  writer->rows = (png_bytep *) hb_malloc (rows_size);
-  if (!writer->rows)
+  writer->rows = (png_bytep *) hb_malloc (rows_আকার);
+  যদি (!writer->rows)
   {
     png_destroy_write_struct (&png, &info);
     hb_raster_png_write_blob_fini (writer);
-    return nullptr;
+    ফেরত nullptr;
   }
 
-  for (unsigned y = 0; y < extents.height; y++)
+  জন্য (unsigned y = 0; y < extents.height; y++)
   {
     uint8_t *dst = writer->rgba + (size_t) y * rowbytes;
-    const uint8_t *src = buffer.arrayZ + (size_t) (extents.height - 1 - y) * extents.stride;
+    ধ্রুবক uint8_t *src = বাফার.arrayZ + (size_t) (extents.height - 1 - y) * extents.stride;
 
-    for (unsigned x = 0; x < extents.width; x++)
+    জন্য (unsigned x = 0; x < extents.width; x++)
     {
       uint32_t px;
       hb_memcpy (&px, src + x * 4, 4);
@@ -794,13 +794,13 @@ hb_raster_image_t::serialize_to_png_or_fail () const
       uint8_t a = (uint8_t) (px >> 24);
 
       dst[4 * x + 3] = a;
-      if (a)
+      যদি (a)
       {
 	dst[4 * x + 0] = (uint8_t) hb_min (255u, ((unsigned) r * 255u + a / 2u) / a);
 	dst[4 * x + 1] = (uint8_t) hb_min (255u, ((unsigned) g * 255u + a / 2u) / a);
 	dst[4 * x + 2] = (uint8_t) hb_min (255u, ((unsigned) b * 255u + a / 2u) / a);
       }
-      else
+      অন্যথা
 	dst[4 * x + 0] = dst[4 * x + 1] = dst[4 * x + 2] = 0;
     }
 
@@ -811,63 +811,63 @@ hb_raster_image_t::serialize_to_png_or_fail () const
   png_write_end (png, info);
   png_destroy_write_struct (&png, &info);
 
-  if (writer->length > (size_t) (unsigned) -1)
+  যদি (writer->দৈর্ঘ্য > (size_t) (unsigned) -1)
   {
     hb_raster_png_write_blob_fini (writer);
-    return nullptr;
+    ফেরত nullptr;
   }
 
-  unsigned length = (unsigned) writer->length;
-  char *data = writer->data;
-  writer->data = nullptr;
+  unsigned দৈর্ঘ্য = (unsigned) writer->দৈর্ঘ্য;
+  অক্ষর *তথ্য = writer->তথ্য;
+  writer->তথ্য = nullptr;
   hb_raster_png_write_blob_fini (writer);
-  if (!data && length)
-    return nullptr;
+  যদি (!তথ্য && দৈর্ঘ্য)
+    ফেরত nullptr;
 
-  hb_blob_t *blob = hb_blob_create_or_fail (data, length,
+  hb_blob_t *blob = hb_blob_create_or_fail (তথ্য, দৈর্ঘ্য,
 					    HB_MEMORY_MODE_WRITABLE,
-					    data, hb_free);
-  if (!blob)
-    hb_free (data);
-  return blob;
+					    তথ্য, hb_free);
+  যদি (!blob)
+    hb_free (তথ্য);
+  ফেরত blob;
 #endif
 }
 
-void
+শূন্য
 hb_raster_image_t::clear ()
 {
-  size_t buf_size = (size_t) extents.stride * extents.height;
-  hb_memset (buffer.arrayZ, 0, buf_size);
+  size_t buf_আকার = (size_t) extents.stride * extents.height;
+  hb_memset (বাফার.arrayZ, 0, buf_আকার);
 }
 
-const uint8_t *
-hb_raster_image_t::get_buffer () const
+ধ্রুবক uint8_t *
+hb_raster_image_t::get_বাফার () ধ্রুবক
 {
-  return buffer.arrayZ;
+  ফেরত বাফার.arrayZ;
 }
 
-void
-hb_raster_image_t::composite_from (const hb_raster_image_t *src,
+শূন্য
+hb_raster_image_t::composite_from (ধ্রুবক hb_raster_image_t *src,
 				   hb_paint_composite_mode_t mode)
 {
   unsigned w = extents.width;
   unsigned h = extents.height;
   unsigned stride = extents.stride;
 
-  for (unsigned y = 0; y < h; y++)
+  জন্য (unsigned y = 0; y < h; y++)
   {
-    hb_packed_t<uint32_t> *dp = (hb_packed_t<uint32_t> *) (buffer.arrayZ + y * stride);
-    const hb_packed_t<uint32_t> *sp = (const hb_packed_t<uint32_t> *) (src->buffer.arrayZ + y * stride);
-    for (unsigned x = 0; x < w; x++)
+    hb_packed_t<uint32_t> *dp = (hb_packed_t<uint32_t> *) (বাফার.arrayZ + y * stride);
+    ধ্রুবক hb_packed_t<uint32_t> *sp = (ধ্রুবক hb_packed_t<uint32_t> *) (src->বাফার.arrayZ + y * stride);
+    জন্য (unsigned x = 0; x < w; x++)
       dp[x] = hb_packed_t<uint32_t> (composite_pixel ((uint32_t) sp[x], (uint32_t) dp[x], mode));
   }
 }
 
 /* Composite src image onto dst image.
  * Both images must have the same extents and BGRA32 format. */
-void
+শূন্য
 hb_raster_image_composite (hb_raster_image_t *dst,
-			   const hb_raster_image_t *src,
+			   ধ্রুবক hb_raster_image_t *src,
 			   hb_paint_composite_mode_t mode)
 {
   dst->composite_from (src, mode);
@@ -889,9 +889,9 @@ hb_raster_image_composite (hb_raster_image_t *dst,
  * Since: 13.0.0
  **/
 hb_raster_image_t *
-hb_raster_image_create_or_fail (void)
+hb_raster_image_create_or_fail (শূন্য)
 {
-  return hb_object_create<hb_raster_image_t> ();
+  ফেরত hb_object_create<hb_raster_image_t> ();
 }
 
 /**
@@ -911,7 +911,7 @@ hb_raster_image_create_or_fail (void)
 hb_raster_image_t *
 hb_raster_image_reference (hb_raster_image_t *image)
 {
-  return hb_object_reference (image);
+  ফেরত hb_object_reference (image);
 }
 
 /**
@@ -924,10 +924,10 @@ hb_raster_image_reference (hb_raster_image_t *image)
  *
  * Since: 13.0.0
  **/
-void
+শূন্য
 hb_raster_image_destroy (hb_raster_image_t *image)
 {
-  if (!hb_object_destroy (image)) return;
+  যদি (!hb_object_destroy (image)) ফেরত;
   hb_free (image);
 }
 
@@ -946,13 +946,13 @@ hb_raster_image_destroy (hb_raster_image_t *image)
  * Since: 13.0.0
  **/
 hb_bool_t
-hb_raster_image_set_user_data (hb_raster_image_t  *image,
-			       hb_user_data_key_t *key,
-			       void               *data,
+hb_raster_image_set_user_তথ্য (hb_raster_image_t  *image,
+			       hb_user_তথ্য_চাবি_t *key,
+			       শূন্য               *তথ্য,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (image, key, data, destroy, replace);
+  ফেরত hb_object_set_user_তথ্য (image, key, তথ্য, destroy, replace);
 }
 
 /**
@@ -968,11 +968,11 @@ hb_raster_image_set_user_data (hb_raster_image_t  *image,
  *
  * Since: 13.0.0
  **/
-void *
-hb_raster_image_get_user_data (const hb_raster_image_t  *image,
-			       hb_user_data_key_t *key)
+শূন্য *
+hb_raster_image_get_user_তথ্য (ধ্রুবক hb_raster_image_t  *image,
+			       hb_user_তথ্য_চাবি_t *key)
 {
-  return hb_object_get_user_data (image, key);
+  ফেরত hb_object_get_user_তথ্য (image, key);
 }
 
 /**
@@ -995,15 +995,15 @@ hb_raster_image_get_user_data (const hb_raster_image_t  *image,
 hb_bool_t
 hb_raster_image_configure (hb_raster_image_t         *image,
 			   hb_raster_format_t        format,
-			   const hb_raster_extents_t *extents)
+			   ধ্রুবক hb_raster_extents_t *extents)
 {
-  if (unlikely (!extents))
+  যদি (unlikely (!extents))
   {
     image->extents = {};
-    image->buffer.resize_exact (0);
-    return true;
+    image->বাফার.resize_exact (0);
+    ফেরত সত্য;
   }
-  return image->configure (format, *extents);
+  ফেরত image->configure (format, *extents);
 }
 
 /**
@@ -1014,7 +1014,7 @@ hb_raster_image_configure (hb_raster_image_t         *image,
  *
  * Since: 13.0.0
  **/
-void
+শূন্য
 hb_raster_image_clear (hb_raster_image_t *image)
 {
   image->clear ();
@@ -1034,10 +1034,10 @@ hb_raster_image_clear (hb_raster_image_t *image)
  *
  * Since: 13.0.0
  **/
-const uint8_t *
-hb_raster_image_get_buffer (const hb_raster_image_t *image)
+ধ্রুবক uint8_t *
+hb_raster_image_get_বাফার (ধ্রুবক hb_raster_image_t *image)
 {
-  return image->get_buffer ();
+  ফেরত image->get_বাফার ();
 }
 
 /**
@@ -1049,11 +1049,11 @@ hb_raster_image_get_buffer (const hb_raster_image_t *image)
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_image_get_extents (const hb_raster_image_t   *image,
+শূন্য
+hb_raster_image_get_extents (ধ্রুবক hb_raster_image_t   *image,
 			     hb_raster_extents_t *extents)
 {
-  if (extents)
+  যদি (extents)
     *extents = image->extents;
 }
 
@@ -1069,9 +1069,9 @@ hb_raster_image_get_extents (const hb_raster_image_t   *image,
  * Since: 13.0.0
  **/
 hb_raster_format_t
-hb_raster_image_get_format (const hb_raster_image_t *image)
+hb_raster_image_get_format (ধ্রুবক hb_raster_image_t *image)
 {
-  return image->format;
+  ফেরত image->format;
 }
 
 /**
@@ -1094,7 +1094,7 @@ hb_bool_t
 hb_raster_image_deserialize_from_png_or_fail (hb_raster_image_t *image,
 					      hb_blob_t         *png)
 {
-  return image->deserialize_from_png (png);
+  ফেরত image->deserialize_from_png (png);
 }
 
 /**
@@ -1111,7 +1111,7 @@ hb_raster_image_deserialize_from_png_or_fail (hb_raster_image_t *image,
  * Since: 13.1.0
  **/
 hb_blob_t *
-hb_raster_image_serialize_to_png_or_fail (const hb_raster_image_t *image)
+hb_raster_image_serialize_to_png_or_fail (ধ্রুবক hb_raster_image_t *image)
 {
-  return image->serialize_to_png_or_fail ();
+  ফেরত image->serialize_to_png_or_fail ();
 }

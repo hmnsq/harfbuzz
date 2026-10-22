@@ -32,10 +32,10 @@
 #ifndef HB_OBJECT_HH
 #define HB_OBJECT_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-mutex.hh"
-#include "hb-vector.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-atomic.hh"
+#অন্তর্ভাব "hb-mutex.hh"
+#অন্তর্ভাব "hb-vector.hh"
 
 
 /*
@@ -43,93 +43,93 @@
  */
 
 template <typename item_t, typename lock_t>
-struct hb_lockable_set_t
+কাঠামো hb_lockable_set_t
 {
-  hb_vector_t<item_t> items;
+  hb_vector_t<item_t> বস্তুসমূহ;
 
-  void init () { items.init (); }
+  শূন্য init () { বস্তুসমূহ.init (); }
 
   template <typename T>
-  item_t *replace_or_insert (T v, lock_t &l, bool replace)
+  item_t *replace_or_ঢোকাও (T v, lock_t &l, যৌক্তিক replace)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
+    item_t *item = বস্তুসমূহ.lsearch (v);
+    যদি (item) {
+      যদি (replace) {
 	item_t old = *item;
 	*item = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
+      অন্যথা {
 	item = nullptr;
 	l.unlock ();
       }
-    } else {
-      item = items.push (v);
+    } অন্যথা {
+      item = বস্তুসমূহ.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    ফেরত বস্তুসমূহ.in_error () ? nullptr : item;
   }
 
   template <typename T>
-  void remove (T v, lock_t &l)
+  শূন্য remove (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    item_t *item = বস্তুসমূহ.lsearch (v);
+    যদি (item)
     {
       item_t old = *item;
-      *item = std::move (items.tail ());
-      items.pop ();
+      *item = std::move (বস্তুসমূহ.লেজ ());
+      বস্তুসমূহ.বের_করো ();
       l.unlock ();
       old.fini ();
-    } else {
+    } অন্যথা {
       l.unlock ();
     }
   }
 
   template <typename T>
-  bool find (T v, item_t *i, lock_t &l)
+  যৌক্তিক find (T v, item_t *i, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    item_t *item = বস্তুসমূহ.lsearch (v);
+    যদি (item)
       *i = *item;
     l.unlock ();
-    return !!item;
+    ফেরত !!item;
   }
 
   template <typename T>
-  item_t *find_or_insert (T v, lock_t &l)
+  item_t *find_or_ঢোকাও (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.find (v);
-    if (!item) {
-      item = items.push (v);
+    item_t *item = বস্তুসমূহ.find (v);
+    যদি (!item) {
+      item = বস্তুসমূহ.push (v);
     }
     l.unlock ();
-    return item;
+    ফেরত item;
   }
 
-  void fini (lock_t &l)
+  শূন্য fini (lock_t &l)
   {
-    if (!items.length)
+    যদি (!বস্তুসমূহ.দৈর্ঘ্য)
     {
       /* No need to lock. */
-      items.fini ();
-      return;
+      বস্তুসমূহ.fini ();
+      ফেরত;
     }
     l.lock ();
-    while (items.length)
+    যখন (বস্তুসমূহ.দৈর্ঘ্য)
     {
-      item_t old = items.tail ();
-      items.pop ();
+      item_t old = বস্তুসমূহ.লেজ ();
+      বস্তুসমূহ.বের_করো ();
       l.unlock ();
       old.fini ();
       l.lock ();
     }
-    items.fini ();
+    বস্তুসমূহ.fini ();
     l.unlock ();
   }
 
@@ -140,68 +140,68 @@ struct hb_lockable_set_t
  * Reference-count.
  */
 
-struct hb_reference_count_t
+কাঠামো hb_reference_গুনতি_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  mutable hb_atomic_t<পূর্ণসংখ্যা> ref_গুনতি_2;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
-  void fini () { ref_count = -0x0000DEAD; }
+  শূন্য init (পূর্ণসংখ্যা v = 1) { ref_গুনতি_2 = v; }
+  পূর্ণসংখ্যা get_relaxed () ধ্রুবক { ফেরত ref_গুনতি_2; }
+  পূর্ণসংখ্যা inc () ধ্রুবক { ফেরত ref_গুনতি_2.inc (); }
+  পূর্ণসংখ্যা dec () ধ্রুবক { ফেরত ref_গুনতি_2.dec (); }
+  শূন্য fini () { ref_গুনতি_2 = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  যৌক্তিক is_inert () ধ্রুবক { ফেরত !ref_গুনতি_2; }
+  যৌক্তিক is_valid () ধ্রুবক { ফেরত ref_গুনতি_2 > 0; }
 };
 
 
 /* user_data */
 
-struct hb_user_data_array_t
+কাঠামো hb_user_তথ্য_array_t
 {
-  struct hb_user_data_item_t {
-    hb_user_data_key_t *key;
-    void *data;
+  কাঠামো hb_user_তথ্য_item_t {
+    hb_user_তথ্য_চাবি_t *key;
+    শূন্য *তথ্য;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    যৌক্তিক operator == (ধ্রুবক hb_user_তথ্য_চাবি_t *other_চাবি) ধ্রুবক { ফেরত key == other_চাবি; }
+    যৌক্তিক operator == (ধ্রুবক hb_user_তথ্য_item_t &other) ধ্রুবক { ফেরত key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    শূন্য fini () { যদি (destroy) destroy (তথ্য); }
   };
 
   hb_mutex_t lock;
-  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> items;
+  hb_lockable_set_t<hb_user_তথ্য_item_t, hb_mutex_t> বস্তুসমূহ;
 
-  void init () { lock.init (); items.init (); }
+  শূন্য init () { lock.init (); বস্তুসমূহ.init (); }
 
-  void fini () { items.fini (lock); lock.fini (); }
+  শূন্য fini () { বস্তুসমূহ.fini (lock); lock.fini (); }
 
-  bool set (hb_user_data_key_t *key,
-	    void *              data,
+  যৌক্তিক set (hb_user_তথ্য_চাবি_t *key,
+	    শূন্য *              তথ্য,
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    যদি (!key)
+      ফেরত মিথ্যা;
 
-    if (replace) {
-      if (!data && !destroy) {
-	items.remove (key, lock);
-	return true;
+    যদি (replace) {
+      যদি (!তথ্য && !destroy) {
+	বস্তুসমূহ.remove (key, lock);
+	ফেরত সত্য;
       }
     }
-    hb_user_data_item_t item = {key, data, destroy};
-    bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
+    hb_user_তথ্য_item_t item = {key, তথ্য, destroy};
+    যৌক্তিক ret = !!বস্তুসমূহ.replace_or_ঢোকাও (item, lock, (যৌক্তিক) replace);
 
-    return ret;
+    ফেরত ret;
   }
 
-  void *get (hb_user_data_key_t *key)
+  শূন্য *get (hb_user_তথ্য_চাবি_t *key)
   {
-    hb_user_data_item_t item = {nullptr, nullptr, nullptr};
+    hb_user_তথ্য_item_t item = {nullptr, nullptr, nullptr};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    ফেরত বস্তুসমূহ.find (key, &item, lock) ? item.তথ্য : nullptr;
   }
 };
 
@@ -210,13 +210,13 @@ struct hb_user_data_array_t
  * Object header
  */
 
-struct hb_object_header_t
+কাঠামো hb_object_header_t
 {
-  hb_reference_count_t ref_count;
-  mutable hb_atomic_t<bool> writable = false;
-  hb_atomic_t<hb_user_data_array_t *> user_data;
+  hb_reference_গুনতি_t ref_গুনতি_2;
+  mutable hb_atomic_t<যৌক্তিক> writable = মিথ্যা;
+  hb_atomic_t<hb_user_তথ্য_array_t *> user_তথ্য;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  যৌক্তিক is_inert () ধ্রুবক { ফেরত !ref_গুনতি_2.get_relaxed (); }
 };
 #define HB_OBJECT_HEADER_STATIC {}
 
@@ -226,146 +226,146 @@ struct hb_object_header_t
  */
 
 template <typename Type>
-static inline void hb_object_trace (const Type *obj, const char *function)
+স্থির অন্তঃরেখ শূন্য hb_object_trace (ধ্রুবক Type *obj, ধ্রুবক অক্ষর *function)
 {
-  DEBUG_MSG (OBJECT, (void *) obj,
+  DEBUG_বার্তা (OBJECT, (শূন্য *) obj,
 	     "%s refcount=%d",
 	     function,
-	     obj ? obj->header.ref_count.get_relaxed () : 0);
+	     obj ? obj->header.ref_গুনতি_2.get_relaxed () : 0);
 }
 
 template <typename Type, typename ...Ts>
-static inline Type *hb_object_create (Ts... ds)
+স্থির অন্তঃরেখ Type *hb_object_create (Ts... ds)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
+  Type *obj = (Type *) hb_calloc (1, আকার (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  যদি (unlikely (!obj))
+    ফেরত obj;
 
-  new (obj) Type (std::forward<Ts> (ds)...);
+  নতুন (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  ফেরত obj;
 }
 template <typename Type>
-static inline void hb_object_init (Type *obj)
+স্থির অন্তঃরেখ শূন্য hb_object_init (Type *obj)
 {
-  obj->header.ref_count.init ();
-  obj->header.writable = true;
-  obj->header.user_data.init ();
+  obj->header.ref_গুনতি_2.init ();
+  obj->header.writable = সত্য;
+  obj->header.user_তথ্য.init ();
 }
 template <typename Type>
-static inline bool hb_object_is_valid (const Type *obj)
+স্থির অন্তঃরেখ যৌক্তিক hb_object_is_valid (ধ্রুবক Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  ফেরত likely (obj->header.ref_গুনতি_2.is_valid ());
 }
 template <typename Type>
-static inline bool hb_object_is_immutable (const Type *obj)
+স্থির অন্তঃরেখ যৌক্তিক hb_object_is_immutable (ধ্রুবক Type *obj)
 {
-  return !obj->header.writable;
+  ফেরত !obj->header.writable;
 }
 template <typename Type>
-static inline void hb_object_make_immutable (const Type *obj)
+স্থির অন্তঃরেখ শূন্য hb_object_make_immutable (ধ্রুবক Type *obj)
 {
-  obj->header.writable = false;
+  obj->header.writable = মিথ্যা;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj);
+স্থির অন্তঃরেখ শূন্য hb_object_fini (Type *obj);
 template <typename Type>
-static inline Type *hb_object_reference (Type *obj)
-{
-  hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
-  assert (hb_object_is_valid (obj));
-  obj->header.ref_count.inc ();
-  return obj;
-}
-template <typename Type>
-static inline bool hb_object_should_destroy (Type *obj)
+স্থির অন্তঃরেখ Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  যদি (unlikely (!obj || obj->header.is_inert ()))
+    ফেরত obj;
+  প্রতিজ্ঞা (hb_object_is_valid (obj));
+  obj->header.ref_গুনতি_2.inc ();
+  ফেরত obj;
+}
+template <typename Type>
+স্থির অন্তঃরেখ যৌক্তিক hb_object_should_destroy (Type *obj)
+{
+  hb_object_trace (obj, HB_FUNC);
+  যদি (unlikely (!obj || obj->header.is_inert ()))
+    ফেরত মিথ্যা;
+  প্রতিজ্ঞা (hb_object_is_valid (obj));
+  যদি (obj->header.ref_গুনতি_2.dec () != 1)
+    ফেরত মিথ্যা;
+  ফেরত সত্য;
 }
 
 template <typename Type>
-static inline void hb_object_actually_destroy (Type *obj)
+স্থির অন্তঃরেখ শূন্য hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  যদি (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
 template <typename Type>
-static inline bool hb_object_destroy (Type *obj)
+স্থির অন্তঃরেখ যৌক্তিক hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  যদি (!hb_object_should_destroy (obj))
+    ফেরত মিথ্যা;
 
   hb_object_actually_destroy (obj);
-  return true;
+  ফেরত সত্য;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj)
+স্থির অন্তঃরেখ শূন্য hb_object_fini (Type *obj)
 {
-  obj->header.ref_count.fini (); /* Do this before user_data */
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  obj->header.ref_গুনতি_2.fini (); /* Do this before user_data */
+  hb_user_তথ্য_array_t *user_তথ্য = obj->header.user_তথ্য.get_acquire ();
+  যদি (user_তথ্য)
   {
-    user_data->fini ();
-    hb_free (user_data);
-    obj->header.user_data.set_relaxed (nullptr);
+    user_তথ্য->fini ();
+    hb_free (user_তথ্য);
+    obj->header.user_তথ্য.set_relaxed (nullptr);
   }
 }
 template <typename Type>
-static inline bool hb_object_set_user_data (Type               *obj,
-					    hb_user_data_key_t *key,
-					    void *              data,
+স্থির অন্তঃরেখ যৌক্তিক hb_object_set_user_তথ্য (Type               *obj,
+					    hb_user_তথ্য_চাবি_t *key,
+					    শূন্য *              তথ্য,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
+  যদি (unlikely (!obj || obj->header.is_inert ()))
+    ফেরত মিথ্যা;
+  প্রতিজ্ঞা (hb_object_is_valid (obj));
 
 retry:
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  hb_user_তথ্য_array_t *user_তথ্য = obj->header.user_তথ্য.get_acquire ();
+  যদি (unlikely (!user_তথ্য))
   {
-    user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
-    user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    user_তথ্য = (hb_user_তথ্য_array_t *) hb_calloc (1, আকার (hb_user_তথ্য_array_t));
+    যদি (unlikely (!user_তথ্য))
+      ফেরত মিথ্যা;
+    user_তথ্য->init ();
+    যদি (unlikely (!obj->header.user_তথ্য.cmpexch (nullptr, user_তথ্য)))
     {
-      user_data->fini ();
-      hb_free (user_data);
-      goto retry;
+      user_তথ্য->fini ();
+      hb_free (user_তথ্য);
+      যাও retry;
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  ফেরত user_তথ্য->set (key, তথ্য, destroy, replace);
 }
 
 template <typename Type>
-static inline void *hb_object_get_user_data (Type               *obj,
-					     hb_user_data_key_t *key)
+স্থির অন্তঃরেখ শূন্য *hb_object_get_user_তথ্য (Type               *obj,
+					     hb_user_তথ্য_চাবি_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
-  assert (hb_object_is_valid (obj));
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  যদি (unlikely (!obj || obj->header.is_inert ()))
+    ফেরত nullptr;
+  প্রতিজ্ঞা (hb_object_is_valid (obj));
+  hb_user_তথ্য_array_t *user_তথ্য = obj->header.user_তথ্য.get_acquire ();
+  যদি (!user_তথ্য)
+    ফেরত nullptr;
+  ফেরত user_তথ্য->get (key);
 }
 
 

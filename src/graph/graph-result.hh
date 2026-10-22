@@ -24,14 +24,14 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_GRAPH_RESULT_HH
-#define GRAPH_GRAPH_RESULT_HH
+#ifndef GRAPH_GRAPH_ফলাফল_HH
+#define GRAPH_GRAPH_ফলাফল_HH
 
-#include "../hb-result.hh"
+#অন্তর্ভাব "../hb-result.hh"
 
-namespace graph {
+নামাকাশ graph {
 
-enum graph_error_t {
+গণনা graph_error_t {
   ALLOCATION_FAILURE,
   LIMIT_EXCEEDED,
   INVALID_ARGUMENT,
@@ -43,24 +43,24 @@ enum graph_error_t {
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+স্থির অন্তঃরেখ ধ্রুবক অক্ষর* to_string(graph_error_t e) {
+  নির্বাচন (e) {
+    ক্ষেত্র ALLOCATION_FAILURE: ফেরত "Memory Allocation Failed";
+    ক্ষেত্র LIMIT_EXCEEDED: ফেরত "Limit Exceeded";
+    ক্ষেত্র INVALID_ARGUMENT: ফেরত "Invalid Argument";
+    ক্ষেত্র CYCLE_DETECTED: ফেরত "Cycle in Graph";
+    ক্ষেত্র SANITIZE_FAILURE: ফেরত "Failed Sanitization";
+    ক্ষেত্র OUT_OF_BOUNDS: ফেরত "Out of Bounds";
+    ক্ষেত্র ORPHANED_NODES: ফেরত "Graph is not fully connected";
+    ক্ষেত্র OVERFLOW_RESOLUTION_FAILED: ফেরত "Overflows are not able to be resolved";
+    ক্ষেত্র UNKNOWN:
+    পূর্বনির্ধারিত:
+      ফেরত "Unknown Error";
   }
 }
 
 template<typename T>
-using graph_result_t = hb_result_t<T, graph_error_t>;
+using graph_ফলাফল_t = hb_ফলাফল_t<T, graph_error_t>;
 
 } // namespace graph
 

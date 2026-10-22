@@ -24,44 +24,44 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#অন্তর্ভাব "hb.h"
+#অন্তর্ভাব "hb-ot.h"
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#অন্তর্ভাব "hb-ft.h"
 #endif
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+পূর্ণসংখ্যা
+প্রধান (পূর্ণসংখ্যা argc, অক্ষর **argv)
 {
-  bool ret = true;
+  যৌক্তিক ret = সত্য;
 
-#ifndef HB_NO_BUFFER_SERIALIZE
+#ifndef HB_NO_বাফার_SERIALIZE
 
-  hb_buffer_serialize_format_t format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
-  if (argc > 1)
+  hb_বাফার_serialize_format_t format = HB_বাফার_SERIALIZE_FORMAT_TEXT;
+  যদি (argc > 1)
   {
-    if (!strcmp (argv[1], "--json"))
+    যদি (!strcmp (argv[1], "--json"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_JSON;
+      format = HB_বাফার_SERIALIZE_FORMAT_JSON;
       argc--;
       argv++;
     }
-    else if (!strcmp (argv[1], "--text"))
+    অন্যথা যদি (!strcmp (argv[1], "--text"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
+      format = HB_বাফার_SERIALIZE_FORMAT_TEXT;
       argc--;
       argv++;
     }
   }
 
-  if (argc < 2)
-    argv[1] = (char *) "/dev/null";
+  যদি (argc < 2)
+    argv[1] = (অক্ষর *) "/dev/null";
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
@@ -69,67 +69,67 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int upem = hb_face_get_upem (face);
+  unsigned পূর্ণসংখ্যা upem = hb_face_get_upem (face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
   hb_font_set_scale (font, upem, upem);
 
-  hb_buffer_t *buf;
-  buf = hb_buffer_create ();
+  hb_বাফার_t *buf;
+  buf = hb_বাফার_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  অক্ষর সারি[BUFSIZ], out[BUFSIZ];
+  যখন (fgets (সারি, আকার(সারি), stdin))
   {
-    hb_buffer_clear_contents (buf);
+    hb_বাফার_clear_contents (buf);
 
-    while (true)
+    যখন (সত্য)
     {
-      const char *p = line;
-      const char *end = p + strlen (p);
-      if (p < end && *(end - 1) == '\n')
+      ধ্রুবক অক্ষর *p = সারি;
+      ধ্রুবক অক্ষর *end = p + strlen (p);
+      যদি (p < end && *(end - 1) == '\n')
 	  end--;
-      if (!hb_buffer_deserialize_glyphs (buf,
+      যদি (!hb_বাফার_deserialize_glyphs (buf,
 					 p, end - p, &p,
 					 font,
 					 format))
       {
-        ret = false;
-        break;
+        ret = মিথ্যা;
+        বিরতি;
       }
 
-      if (*p == '\n')
-        break;
-      if (p == line)
+      যদি (*p == '\n')
+        বিরতি;
+      যদি (p == সারি)
       {
-	ret = false;
-	break;
+	ret = মিথ্যা;
+	বিরতি;
       }
 
       unsigned len = strlen (p);
-      memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
-        line[len] = '\0';
+      memmove (সারি, p, len);
+      যদি (!fgets (সারি + len, আকার(সারি) - len, stdin))
+        সারি[len] = '\0';
     }
 
-    unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    unsigned গুনতি = hb_বাফার_get_দৈর্ঘ্য (buf);
+    জন্য (unsigned offset = 0; offset < গুনতি;)
     {
       unsigned len;
-      offset += hb_buffer_serialize_glyphs (buf, offset, count,
-					    out, sizeof (out), &len,
+      offset += hb_বাফার_serialize_glyphs (buf, offset, গুনতি,
+					    out, আকার (out), &len,
 					    font,
 					    format,
-					    HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS);
+					    HB_বাফার_SERIALIZE_FLAG_GLYPH_FLAGS);
       fwrite (out, 1, len, stdout);
     }
     fputs ("\n", stdout);
   }
 
-  hb_buffer_destroy (buf);
+  hb_বাফার_destroy (buf);
 
   hb_font_destroy (font);
 
 #endif
 
-  return !ret;
+  ফেরত !ret;
 }

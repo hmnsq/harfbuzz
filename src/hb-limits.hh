@@ -25,27 +25,27 @@
 #ifndef HB_LIMITS_HH
 #define HB_LIMITS_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 
-#ifndef HB_BUFFER_MAX_LEN_FACTOR
-#define HB_BUFFER_MAX_LEN_FACTOR 256
+#ifndef HB_বাফার_MAX_LEN_FACTOR
+#define HB_বাফার_MAX_LEN_FACTOR 256
 #endif
-#ifndef HB_BUFFER_MAX_LEN_MIN
-#define HB_BUFFER_MAX_LEN_MIN 65536
+#ifndef HB_বাফার_MAX_LEN_MIN
+#define HB_বাফার_MAX_LEN_MIN 65536
 #endif
-#ifndef HB_BUFFER_MAX_LEN_DEFAULT
-#define HB_BUFFER_MAX_LEN_DEFAULT 0x3FFFFFFF /* Shaping more than a billion chars? Let us know! */
+#ifndef HB_বাফার_MAX_LEN_DEFAULT
+#define HB_বাফার_MAX_LEN_DEFAULT 0x3FFFFFFF /* Shaping more than a billion chars? Let us know! */
 #endif
 
-#ifndef HB_BUFFER_MAX_OPS_FACTOR
-#define HB_BUFFER_MAX_OPS_FACTOR 4096
+#ifndef HB_বাফার_MAX_OPS_FACTOR
+#define HB_বাফার_MAX_OPS_FACTOR 4096
 #endif
-#ifndef HB_BUFFER_MAX_OPS_MIN
-#define HB_BUFFER_MAX_OPS_MIN 65536
+#ifndef HB_বাফার_MAX_OPS_MIN
+#define HB_বাফার_MAX_OPS_MIN 65536
 #endif
-#ifndef HB_BUFFER_MAX_OPS_DEFAULT
-#define HB_BUFFER_MAX_OPS_DEFAULT 0x1FFFFFFF /* Shaping more than a billion operations? Let us know! */
+#ifndef HB_বাফার_MAX_OPS_DEFAULT
+#define HB_বাফার_MAX_OPS_DEFAULT 0x1FFFFFFF /* Shaping more than a billion operations? Let us know! */
 #endif
 
 
@@ -54,12 +54,12 @@
 #endif
 
 
-#ifndef HB_MAX_CONTEXT_LENGTH
-#define HB_MAX_CONTEXT_LENGTH 64
+#ifndef HB_MAX_CONTEXT_দৈর্ঘ্য
+#define HB_MAX_CONTEXT_দৈর্ঘ্য 64
 #endif
 
-#ifndef HB_MAX_SYLLABLE_LENGTH
-#define HB_MAX_SYLLABLE_LENGTH 64
+#ifndef HB_MAX_SYLLABLE_দৈর্ঘ্য
+#define HB_MAX_SYLLABLE_দৈর্ঘ্য 64
 #endif
 
 #ifndef HB_CLOSURE_MAX_STAGES
@@ -80,20 +80,20 @@
 #define HB_MAX_LANGSYS 2000
 #endif
 
-#ifndef HB_MAX_LANGSYS_FEATURE_COUNT
-#define HB_MAX_LANGSYS_FEATURE_COUNT 50000
+#ifndef HB_MAX_LANGSYS_FEATURE_গুনতি
+#define HB_MAX_LANGSYS_FEATURE_গুনতি 50000
 #endif
 
 #ifndef HB_MAX_FEATURE_INDICES
 #define HB_MAX_FEATURE_INDICES 8000
 #endif
 
-#ifndef HB_MAX_LOOKUP_VISIT_COUNT
-#define HB_MAX_LOOKUP_VISIT_COUNT 35000
+#ifndef HB_MAX_LOOKUP_VISIT_গুনতি
+#define HB_MAX_LOOKUP_VISIT_গুনতি 35000
 #endif
 
-#ifndef HB_MAX_GRAPH_EDGE_COUNT
-#define HB_MAX_GRAPH_EDGE_COUNT 16384
+#ifndef HB_MAX_GRAPH_EDGE_গুনতি
+#define HB_MAX_GRAPH_EDGE_গুনতি 16384
 #endif
 
 #ifndef HB_VAR_COMPOSITE_MAX_AXES
@@ -135,8 +135,8 @@
 #define HB_PAINT_MAX_SWEEP_TILES 4096
 #endif
 
-#ifndef HB_SVG_MAX_DOCUMENT_SIZE
-#define HB_SVG_MAX_DOCUMENT_SIZE ((size_t) 16 << 20)
+#ifndef HB_SVG_MAX_DOCUMENT_আকার
+#define HB_SVG_MAX_DOCUMENT_আকার ((size_t) 16 << 20)
 #endif
 
 /* Maximum size of one serialized vector document (SVG or PDF) produced by
@@ -145,12 +145,12 @@
  * which the outline work budget cannot see.  vector is one glyph per
  * context, so a flat cap suffices.  Unsigned (not size_t like the SVG-table
  * limit above) to match hb_vector_buf_t's unsigned length arithmetic. */
-#ifndef HB_VECTOR_MAX_DOCUMENT_SIZE
-#define HB_VECTOR_MAX_DOCUMENT_SIZE ((unsigned) 16 << 20)
+#ifndef HB_VECTOR_MAX_DOCUMENT_আকার
+#define HB_VECTOR_MAX_DOCUMENT_আকার ((unsigned) 16 << 20)
 #endif
 
-#ifndef HB_RASTER_MAX_BUFFER_SIZE
-#define HB_RASTER_MAX_BUFFER_SIZE ((size_t) 1 << 30)
+#ifndef HB_RASTER_MAX_বাফার_আকার
+#define HB_RASTER_MAX_বাফার_আকার ((size_t) 1 << 30)
 #endif
 
 /* Maximum surface dimension (pixels per side) when extents are derived
@@ -197,11 +197,11 @@
 
 /* Precharge COST * MULT.  Callers bound COST and MULT structurally, and live
  * budgets are concrete non-negative values when a session starts. */
-static HB_ALWAYS_INLINE bool
-hb_budget_spend (int64_t &budget, unsigned int cost, unsigned int mult = 1)
+স্থির HB_ALWAYS_INLINE যৌক্তিক
+hb_budget_spend (int64_t &budget, unsigned পূর্ণসংখ্যা cost, unsigned পূর্ণসংখ্যা mult = 1)
 {
   budget -= (int64_t) cost * mult;
-  return budget >= 0;
+  ফেরত budget >= 0;
 }
 
 /* The flat pixel-work floor for one raster paint session.  Pixel and

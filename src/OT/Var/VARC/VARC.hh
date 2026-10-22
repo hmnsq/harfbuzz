@@ -1,18 +1,18 @@
 #ifndef OT_VAR_VARC_VARC_HH
 #define OT_VAR_VARC_VARC_HH
 
-#include "../../../hb-decycler.hh"
-#include "../../../hb-geometry.hh"
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-glyf-table.hh"
-#include "../../../hb-ot-cff2-table.hh"
-#include "../../../hb-ot-cff1-table.hh"
+#অন্তর্ভাব "../../../hb-decycler.hh"
+#অন্তর্ভাব "../../../hb-geometry.hh"
+#অন্তর্ভাব "../../../hb-ot-layout-common.hh"
+#অন্তর্ভাব "../../../hb-ot-glyf-table.hh"
+#অন্তর্ভাব "../../../hb-ot-cff2-table.hh"
+#অন্তর্ভাব "../../../hb-ot-cff1-table.hh"
 
-#include "coord-setter.hh"
+#অন্তর্ভাব "coord-setter.hh"
 
-struct hb_depend_data_builder_t;
+কাঠামো hb_depend_তথ্য_builder_t;
 
-namespace OT {
+নামাকাশ OT {
 
 //namespace Var {
 
@@ -23,36 +23,36 @@ namespace OT {
 
 #ifndef HB_NO_VAR_COMPOSITES
 
-struct hb_varc_scratch_t
+কাঠামো hb_varc_scratch_t
 {
   hb_vector_t<unsigned> axisIndices;
-  hb_vector_t<double> axisValues;
+  hb_vector_t<দ্বিগুণ> axis_মানসমূহ_2;
   hb_glyf_scratch_t glyf_scratch;
 };
 
-struct hb_varc_context_t
+কাঠামো hb_varc_context_t
 {
   hb_font_t *font;
   hb_draw_session_t *draw_session;
   hb_extents_t<> *extents;
   mutable hb_decycler_t decycler;
-  mutable signed edges_left;
-  mutable signed depth_left;
+  mutable signed edges_বাম;
+  mutable signed depth_বাম;
   /* Renderer-owned live budget, shared by VARC record processing and
    * every leaf loaded from glyf/CFF/CFF2. */
   int64_t &budget;
   hb_varc_scratch_t &scratch;
 };
 
-struct VARC;
+কাঠামো VARC;
 
-struct VarComponent
+কাঠামো VarComponent
 {
-  enum class flags_t : uint32_t
+  গণনা শ্রেণী flags_t : uint32_t
   {
     RESET_UNSPECIFIED_AXES	= 1u << 0,
     HAVE_AXES			= 1u << 1,
-    AXIS_VALUES_HAVE_VARIATION	= 1u << 2,
+    AXIS_মানসমূহ_HAVE_VARIATION	= 1u << 2,
     TRANSFORM_HAS_VARIATION	= 1u << 3,
     HAVE_TRANSLATE_X		= 1u << 4,
     HAVE_TRANSLATE_Y		= 1u << 5,
@@ -68,57 +68,57 @@ struct VarComponent
     RESERVED_MASK		= ~((1u << 15) - 1),
   };
 
-  struct record_t
+  কাঠামো record_t
   {
     uint32_t flags;
     hb_codepoint_t gid;
     unsigned gid_offset;
-    unsigned gid_size;
-    unsigned condition_index;
+    unsigned gid_আকার;
+    unsigned condition_সূচক;
     unsigned condition_offset;
-    unsigned condition_size;
-    unsigned axis_indices_index;
+    unsigned condition_আকার;
+    unsigned axis_indices_সূচক;
     unsigned axis_indices_offset;
-    unsigned axis_indices_size;
-    uint32_t axis_values_var_idx;
-    unsigned axis_values_var_offset;
-    unsigned axis_values_var_size;
+    unsigned axis_indices_আকার;
+    uint32_t axis_মানসমূহ_var_idx;
+    unsigned axis_মানসমূহ_var_offset;
+    unsigned axis_মানসমূহ_var_আকার;
     uint32_t transform_var_idx;
     unsigned transform_var_offset;
-    unsigned transform_var_size;
+    unsigned transform_var_আকার;
     hb_transform_decomposed_t<> transform;
-    unsigned size;
+    unsigned আকার_2;
   };
 
   HB_INTERNAL hb_ubytes_t
-  get_path_at (const hb_varc_context_t &c,
+  get_path_at (ধ্রুবক hb_varc_context_t &c,
 	       hb_codepoint_t parent_gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<ধ্রুবক পূর্ণসংখ্যা> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
-	       hb_scalar_cache_t *cache = nullptr) const;
+	       hb_scalar_cache_t *cache = nullptr) ধ্রুবক;
 
-  HB_INTERNAL static bool decompile_record (const VARC &varc,
+  HB_INTERNAL স্থির যৌক্তিক decompile_record (ধ্রুবক VARC &varc,
 					    hb_ubytes_t record,
 					    hb_vector_t<unsigned> *axis_indices,
-					    hb_vector_t<double> *axis_values,
+					    hb_vector_t<দ্বিগুণ> *axis_মানসমূহ,
 					    record_t *decoded /* OUT */,
 					    int64_t *budget = nullptr);
 };
 
-struct VarCompositeGlyph
+কাঠামো VarCompositeGlyph
 {
-  static void
-  get_path_at (const hb_varc_context_t &c,
+  স্থির শূন্য
+  get_path_at (ধ্রুবক hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<ধ্রুবক পূর্ণসংখ্যা> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache)
   {
-    while (record)
+    যখন (record)
     {
-      const VarComponent &comp = * (const VarComponent *) (record.arrayZ);
+      ধ্রুবক VarComponent &comp = * (ধ্রুবক VarComponent *) (record.arrayZ);
       record = comp.get_path_at (c,
 				 gid,
 				 coords, transform,
@@ -130,80 +130,80 @@ struct VarCompositeGlyph
 
 HB_MARK_AS_FLAG_T (VarComponent::flags_t);
 
-struct VARC
+কাঠামো VARC
 {
-  friend struct VarComponent;
+  friend কাঠামো VarComponent;
 
-  static constexpr hb_tag_t tableTag = HB_TAG ('V', 'A', 'R', 'C');
+  স্থির constexpr hb_tag_t tableTag = HB_TAG ('V', 'A', 'R', 'C');
 
-  HB_INTERNAL bool
-  get_path_at (const hb_varc_context_t &c,
+  HB_INTERNAL যৌক্তিক
+  get_path_at (ধ্রুবক hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<ধ্রুবক পূর্ণসংখ্যা> coords,
 	       hb_transform_t<> transform = HB_TRANSFORM_IDENTITY,
 	       hb_codepoint_t parent_gid = HB_CODEPOINT_INVALID,
-	       hb_scalar_cache_t *parent_cache = nullptr) const;
+	       hb_scalar_cache_t *parent_cache = nullptr) ধ্রুবক;
 
-  HB_INTERNAL bool closure_glyphs (hb_set_t *glyphset) const;
-  HB_INTERNAL void depend (hb_depend_data_builder_t *depend_data) const;
-  HB_INTERNAL bool subset (hb_subset_context_t *c) const;
+  HB_INTERNAL যৌক্তিক closure_glyphs (hb_set_t *glyphset) ধ্রুবক;
+  HB_INTERNAL শূন্য depend (hb_depend_তথ্য_builder_t *depend_তথ্য) ধ্রুবক;
+  HB_INTERNAL যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক;
 
-  bool
+  যৌক্তিক
   get_path (hb_font_t *font,
 	    hb_codepoint_t gid,
 	    hb_draw_session_t &draw_session,
-	    hb_varc_scratch_t &scratch) const
+	    hb_varc_scratch_t &scratch) ধ্রুবক
   {
     int64_t &budget = draw_session.get_budget ();
     hb_varc_context_t c {font,
 			 &draw_session,
 			 nullptr,
 			 hb_decycler_t {},
-			 HB_MAX_GRAPH_EDGE_COUNT,
+			 HB_MAX_GRAPH_EDGE_গুনতি,
 			 HB_MAX_NESTING_LEVEL,
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
-			hb_array (font->coords, font->num_coords));
+    ফেরত get_path_at (c, gid,
+			hb_array (font->coords, font->অঙ্ক_coords));
   }
 
-  bool
+  যৌক্তিক
   get_extents (hb_font_t *font,
 	       hb_codepoint_t gid,
 	       hb_extents_t<> *extents,
-	       hb_varc_scratch_t &scratch) const
+	       hb_varc_scratch_t &scratch) ধ্রুবক
   {
     int64_t budget = HB_BUDGET_GLYPH;
     hb_varc_context_t c {font,
 			 nullptr,
 			 extents,
 			 hb_decycler_t {},
-			 HB_MAX_GRAPH_EDGE_COUNT,
+			 HB_MAX_GRAPH_EDGE_গুনতি,
 			 HB_MAX_NESTING_LEVEL,
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
-			hb_array (font->coords, font->num_coords));
+    ফেরত get_path_at (c, gid,
+			hb_array (font->coords, font->অঙ্ক_coords));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এই);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  version.major == 1 &&
-		  coverage.sanitize (c, this) &&
-		  varStore.sanitize (c, this) &&
-		  conditionList.sanitize (c, this) &&
-		  axisIndicesList.sanitize (c, this) &&
-		  glyphRecords.sanitize (c, this));
+		  coverage.sanitize (c, এই) &&
+		  varStore.sanitize (c, এই) &&
+		  conditionList.sanitize (c, এই) &&
+		  axisIndicesList.sanitize (c, এই) &&
+		  glyphRecords.sanitize (c, এই));
   }
 
-  struct accelerator_t
+  কাঠামো accelerator_t
   {
-    friend struct VarComponent;
+    friend কাঠামো VarComponent;
 
     accelerator_t (hb_face_t *face)
     {
@@ -212,7 +212,7 @@ struct VARC
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      যদি (scratch)
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -221,100 +221,100 @@ struct VARC
       table.destroy ();
     }
 
-    bool has_data () const { return table->has_data (); }
+    যৌক্তিক has_তথ্য () ধ্রুবক { ফেরত table->has_তথ্য (); }
 
-    bool
-    get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) const
+    যৌক্তিক
+    get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) ধ্রুবক
     {
-      if (!table->has_data ()) return false;
+      যদি (!table->has_তথ্য ()) ফেরত মিথ্যা;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = table->get_path (font, gid, draw_session, *scratch);
+      যদি (unlikely (!scratch)) ফেরত সত্য;
+      যৌক্তিক ret = table->get_path (font, gid, draw_session, *scratch);
       release_scratch (scratch);
-      return ret;
+      ফেরত ret;
     }
 
-    bool closure_glyphs (hb_set_t *glyphset) const
+    যৌক্তিক closure_glyphs (hb_set_t *glyphset) ধ্রুবক
     {
-      if (table->has_data ())
-	return table->closure_glyphs (glyphset);
-      return true;
+      যদি (table->has_তথ্য ())
+	ফেরত table->closure_glyphs (glyphset);
+      ফেরত সত্য;
     }
 
-    void depend (hb_depend_data_builder_t *depend_data) const
+    শূন্য depend (hb_depend_তথ্য_builder_t *depend_তথ্য) ধ্রুবক
     {
-      if (table->has_data ())
-	table->depend (depend_data);
+      যদি (table->has_তথ্য ())
+	table->depend (depend_তথ্য);
     }
 
-    bool
+    যৌক্তিক
     get_extents (hb_font_t *font,
 		 hb_codepoint_t gid,
-		 hb_glyph_extents_t *extents) const
+		 hb_glyph_extents_t *extents) ধ্রুবক
     {
 #ifndef HB_NO_DRAW
-      if (!table->has_data ()) return false;
+      যদি (!table->has_তথ্য ()) ফেরত মিথ্যা;
 
       hb_extents_t<> f_extents;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = table->get_extents (font, gid, &f_extents, *scratch);
+      যদি (unlikely (!scratch)) ফেরত সত্য;
+      যৌক্তিক ret = table->get_extents (font, gid, &f_extents, *scratch);
       release_scratch (scratch);
 
-      if (ret)
+      যদি (ret)
 	*extents = f_extents.to_glyph_extents (font->x_scale < 0, font->y_scale < 0);
 
-      return ret;
-#else
-      return false;
+      ফেরত ret;
+#অন্যথা
+      ফেরত মিথ্যা;
 #endif
     }
 
-    private:
+    ব্যক্তিগত:
 
-    hb_varc_scratch_t *acquire_scratch () const
+    hb_varc_scratch_t *acquire_scratch () ধ্রুবক
     {
       hb_varc_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      যদি (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
-	scratch = (hb_varc_scratch_t *) hb_calloc (1, sizeof (hb_varc_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_varc_scratch_t *) hb_calloc (1, আকার (hb_varc_scratch_t));
+	যদি (unlikely (!scratch))
+	  ফেরত nullptr;
       }
 
-      return scratch;
+      ফেরত scratch;
     }
-    void release_scratch (hb_varc_scratch_t *scratch) const
+    শূন্য release_scratch (hb_varc_scratch_t *scratch) ধ্রুবক
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      যদি (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
       }
     }
 
-    private:
+    ব্যক্তিগত:
     hb_blob_ptr_t<VARC> table;
     mutable hb_atomic_t<hb_varc_scratch_t *> cached_scratch;
   };
 
-  bool has_data () const { return version.major != 0; }
+  যৌক্তিক has_তথ্য () ধ্রুবক { ফেরত version.major != 0; }
 
-  protected:
+  সুরক্ষিত:
   FixedVersion<> version; /* Version identifier */
   Offset32To<Coverage> coverage;
   Offset32To<MultiItemVariationStore> varStore;
   Offset32To<ConditionList> conditionList;
   Offset32To<TupleList> axisIndicesList;
-  Offset32To<CFF2Index/*Of<VarCompositeGlyph>*/> glyphRecords;
-  public:
-  DEFINE_SIZE_STATIC (24);
+  Offset32To<CFF2_সূচক/*Of<VarCompositeGlyph>*/> glyphRecords;
+  সর্বজনীন:
+  DEFINE_আকার_STATIC (24);
 };
 
-struct VARC_accelerator_t : VARC::accelerator_t {
+কাঠামো VARC_accelerator_t : VARC::accelerator_t {
   VARC_accelerator_t (hb_face_t *face) : VARC::accelerator_t (face) {}
 };
 

@@ -25,54 +25,54 @@
 #ifndef HB_OUTLINE_HH
 #define HB_OUTLINE_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-draw.hh"
+#অন্তর্ভাব "hb-draw.hh"
 
 
-struct hb_outline_point_t
+কাঠামো hb_outline_point_t
 {
-  enum class type_t
+  গণনা শ্রেণী type_t
   {
     MOVE_TO,
-    LINE_TO,
+    সারি_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (দশমিক x, দশমিক y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  দশমিক x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+কাঠামো hb_outline_vector_t
 {
-  float normalize_len ()
+  দশমিক normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    দশমিক len = hypotf (x, y);
+    যদি (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    ফেরত len;
   }
 
-  float x, y;
+  দশমিক x, y;
 };
 
-struct hb_outline_t
+কাঠামো hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  শূন্য reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL শূন্য replay (hb_draw_funcs_t *pen, শূন্য *pen_তথ্য) ধ্রুবক;
+  HB_INTERNAL দশমিক control_area () ধ্রুবক;
+  HB_INTERNAL শূন্য translate (দশমিক dx, দশমিক dy);
+  HB_INTERNAL শূন্য slant (দশমিক slant_xy);
+  HB_INTERNAL শূন্য embolden (দশমিক x_strength, দশমিক y_strength,
+			     দশমিক x_shift, দশমিক y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
   hb_vector_t<unsigned> contours;

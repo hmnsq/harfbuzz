@@ -26,9 +26,9 @@
 #define HB_AAT_H
 #define HB_AAT_H_IN
 
-#include "hb.h"
+#অন্তর্ভাব "hb.h"
 
-#include "hb-aat-layout.h"
+#অন্তর্ভাব "hb-aat-layout.h"
 
 HB_BEGIN_DECLS
 

@@ -21,11 +21,11 @@
 #ifndef HB_UNICODE_EMOJI_TABLE_HH
 #define HB_UNICODE_EMOJI_TABLE_HH
 
-#include "hb-unicode.hh"
+#অন্তর্ভাব "hb-unicode.hh"
 
-#include <stdint.h>
+#অন্তর্ভাব <stdint.h>
 
-static const uint8_t _hb_emoji_u8[624]=
+স্থির ধ্রুবক uint8_t _hb_emoji_u8[624]=
 {
     1,  0,  0,  0, 50,  4,  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -68,18 +68,18 @@ static const uint8_t _hb_emoji_u8[624]=
   191,255,255,255,255,255,255,255,  0,  0,  0,255,  0,192,255,255,
 };
 
-static inline uint8_t _hb_emoji_b4 (const uint8_t* a, unsigned i)
+স্থির অন্তঃরেখ uint8_t _hb_emoji_b4 (ধ্রুবক uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  ফেরত (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_emoji_b1 (const uint8_t* a, unsigned i)
+স্থির অন্তঃরেখ uint8_t _hb_emoji_b1 (ধ্রুবক uint8_t* a, unsigned i)
 {
-  return (a[i>>3]>>((i&7)<<0))&1;
+  ফেরত (a[i>>3]>>((i&7)<<0))&1;
 }
-static inline uint8_t _hb_emoji_is_Extended_Pictographic (unsigned u)
+স্থির অন্তঃরেখ uint8_t _hb_emoji_is_Extended_Pictographic (unsigned u)
 {
   /* packtab: [2^4,2^4,2^6] */
-  return u<131070u ? (uint8_t)(_hb_emoji_b1(_hb_emoji_u8+224u,((_hb_emoji_u8[64u+((_hb_emoji_b4(_hb_emoji_u8,((((u)>>6))>>4)))<<4)+((((u)>>6))&15)])<<6)+((u)&63))) : 0;
+  ফেরত u<131070u ? (uint8_t)(_hb_emoji_b1(_hb_emoji_u8+224u,((_hb_emoji_u8[64u+((_hb_emoji_b4(_hb_emoji_u8,((((u)>>6))>>4)))<<4)+((((u)>>6))&15)])<<6)+((u)&63))) : 0;
 }
 
 

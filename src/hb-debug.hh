@@ -27,9 +27,9 @@
 #ifndef HB_DEBUG_HH
 #define HB_DEBUG_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-algs.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-atomic.hh"
+#অন্তর্ভাব "hb-algs.hh"
 
 
 #ifndef HB_DEBUG
@@ -41,76 +41,76 @@
  * Debug output (needs enabling at compile time.)
  */
 
-static inline bool
-_hb_debug (unsigned int level,
-	   unsigned int max_level)
+স্থির অন্তঃরেখ যৌক্তিক
+_hb_debug (unsigned পূর্ণসংখ্যা level,
+	   unsigned পূর্ণসংখ্যা max_level)
 {
-  return level < max_level;
+  ফেরত level < max_level;
 }
 
 #define DEBUG_LEVEL_ENABLED(WHAT, LEVEL) (_hb_debug ((LEVEL), HB_DEBUG_##WHAT))
 #define DEBUG_ENABLED(WHAT) (DEBUG_LEVEL_ENABLED (WHAT, 0))
 
-static inline void
-_hb_print_func (const char *func)
+স্থির অন্তঃরেখ শূন্য
+_hb_print_func (ধ্রুবক অক্ষর *func)
 {
-  if (func)
+  যদি (func)
   {
-    unsigned int func_len = strlen (func);
+    unsigned পূর্ণসংখ্যা func_len = strlen (func);
     /* Skip "static" */
-    if (0 == strncmp (func, "static ", 7))
+    যদি (0 == strncmp (func, "static ", 7))
       func += 7;
     /* Skip "typename" */
-    if (0 == strncmp (func, "typename ", 9))
+    যদি (0 == strncmp (func, "typename ", 9))
       func += 9;
     /* Skip return type */
-    const char *space = strchr (func, ' ');
-    if (space)
+    ধ্রুবক অক্ষর *space = strchr (func, ' ');
+    যদি (space)
       func = space + 1;
     /* Skip parameter list */
-    const char *paren = strchr (func, '(');
-    if (paren)
+    ধ্রুবক অক্ষর *paren = strchr (func, '(');
+    যদি (paren)
       func_len = paren - func;
-    fprintf (stderr, "%.*s", (int) func_len, func);
+    fprintf (stderr, "%.*s", (পূর্ণসংখ্যা) func_len, func);
   }
 }
 
-template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
-		  const void *obj,
-		  const char *func,
-		  bool indented,
-		  unsigned int level,
-		  int level_dir,
-		  const char *message,
+template <পূর্ণসংখ্যা max_level> স্থির অন্তঃরেখ শূন্য
+hb_debug_বার্তা_va (ধ্রুবক অক্ষর *what,
+		  ধ্রুবক শূন্য *obj,
+		  ধ্রুবক অক্ষর *func,
+		  যৌক্তিক indented,
+		  unsigned পূর্ণসংখ্যা level,
+		  পূর্ণসংখ্যা level_dir,
+		  ধ্রুবক অক্ষর *message,
 		  va_list ap) HB_PRINTF_FUNC(7, 0);
-template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
-		  const void *obj,
-		  const char *func,
-		  bool indented,
-		  unsigned int level,
-		  int level_dir,
-		  const char *message,
+template <পূর্ণসংখ্যা max_level> স্থির অন্তঃরেখ শূন্য
+hb_debug_বার্তা_va (ধ্রুবক অক্ষর *what,
+		  ধ্রুবক শূন্য *obj,
+		  ধ্রুবক অক্ষর *func,
+		  যৌক্তিক indented,
+		  unsigned পূর্ণসংখ্যা level,
+		  পূর্ণসংখ্যা level_dir,
+		  ধ্রুবক অক্ষর *message,
 		  va_list ap)
 {
-  if (!_hb_debug (level, max_level))
-    return;
+  যদি (!_hb_debug (level, max_level))
+    ফেরত;
 
   fprintf (stderr, "%-10s", what ? what : "");
 
-  if (obj)
-    fprintf (stderr, "(%*p) ", (int) (2 * sizeof (void *)), obj);
-  else
-    fprintf (stderr, " %*s  ", (int) (2 * sizeof (void *)), "");
+  যদি (obj)
+    fprintf (stderr, "(%*p) ", (পূর্ণসংখ্যা) (2 * আকার (শূন্য *)), obj);
+  অন্যথা
+    fprintf (stderr, " %*s  ", (পূর্ণসংখ্যা) (2 * আকার (শূন্য *)), "");
 
-  if (indented) {
+  যদি (indented) {
 #define VBAR	"\342\224\202"	/* U+2502 BOX DRAWINGS LIGHT VERTICAL */
 #define VRBAR	"\342\224\234"	/* U+251C BOX DRAWINGS LIGHT VERTICAL AND RIGHT */
 #define DLBAR	"\342\225\256"	/* U+256E BOX DRAWINGS LIGHT ARC DOWN AND LEFT */
 #define ULBAR	"\342\225\257"	/* U+256F BOX DRAWINGS LIGHT ARC UP AND LEFT */
 #define LBAR	"\342\225\264"	/* U+2574 BOX DRAWINGS LIGHT LEFT */
-    static const char bars[] =
+    স্থির ধ্রুবক অক্ষর bars[] =
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
@@ -118,14 +118,14 @@ _hb_debug_msg_va (const char *what,
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR;
     fprintf (stderr, "%2u %s" VRBAR "%s",
 	     level,
-	     bars + sizeof (bars) - 1 - hb_min ((unsigned int) sizeof (bars) - 1, (unsigned int) (sizeof (VBAR) - 1) * level),
+	     bars + আকার (bars) - 1 - hb_min ((unsigned পূর্ণসংখ্যা) আকার (bars) - 1, (unsigned পূর্ণসংখ্যা) (আকার (VBAR) - 1) * level),
 	     level_dir ? (level_dir > 0 ? DLBAR : ULBAR) : LBAR);
-  } else
+  } অন্যথা
     fprintf (stderr, "   " VRBAR LBAR);
 
   _hb_print_func (func);
 
-  if (message)
+  যদি (message)
   {
     fprintf (stderr, ": ");
     vfprintf (stderr, message, ap);
@@ -133,62 +133,62 @@ _hb_debug_msg_va (const char *what,
 
   fprintf (stderr, "\n");
 }
-template <> inline void HB_PRINTF_FUNC(7, 0)
-_hb_debug_msg_va<0> (const char *what HB_UNUSED,
-		     const void *obj HB_UNUSED,
-		     const char *func HB_UNUSED,
-		     bool indented HB_UNUSED,
-		     unsigned int level HB_UNUSED,
-		     int level_dir HB_UNUSED,
-		     const char *message HB_UNUSED,
+template <> অন্তঃরেখ শূন্য HB_PRINTF_FUNC(7, 0)
+hb_debug_বার্তা_va<0> (ধ্রুবক অক্ষর *what HB_UNUSED,
+		     ধ্রুবক শূন্য *obj HB_UNUSED,
+		     ধ্রুবক অক্ষর *func HB_UNUSED,
+		     যৌক্তিক indented HB_UNUSED,
+		     unsigned পূর্ণসংখ্যা level HB_UNUSED,
+		     পূর্ণসংখ্যা level_dir HB_UNUSED,
+		     ধ্রুবক অক্ষর *message HB_UNUSED,
 		     va_list ap HB_UNUSED) {}
 
-template <int max_level> static inline void
-_hb_debug_msg (const char *what,
-	       const void *obj,
-	       const char *func,
-	       bool indented,
-	       unsigned int level,
-	       int level_dir,
-	       const char *message,
+template <পূর্ণসংখ্যা max_level> স্থির অন্তঃরেখ শূন্য
+hb_debug_বার্তা (ধ্রুবক অক্ষর *what,
+	       ধ্রুবক শূন্য *obj,
+	       ধ্রুবক অক্ষর *func,
+	       যৌক্তিক indented,
+	       unsigned পূর্ণসংখ্যা level,
+	       পূর্ণসংখ্যা level_dir,
+	       ধ্রুবক অক্ষর *message,
 	       ...) HB_PRINTF_FUNC(7, 8);
-template <int max_level> static inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg (const char *what,
-	       const void *obj,
-	       const char *func,
-	       bool indented,
-	       unsigned int level,
-	       int level_dir,
-	       const char *message,
+template <পূর্ণসংখ্যা max_level> স্থির অন্তঃরেখ শূন্য HB_PRINTF_FUNC(7, 8)
+hb_debug_বার্তা (ধ্রুবক অক্ষর *what,
+	       ধ্রুবক শূন্য *obj,
+	       ধ্রুবক অক্ষর *func,
+	       যৌক্তিক indented,
+	       unsigned পূর্ণসংখ্যা level,
+	       পূর্ণসংখ্যা level_dir,
+	       ধ্রুবক অক্ষর *message,
 	       ...)
 {
   va_list ap;
   va_start (ap, message);
-  _hb_debug_msg_va<max_level> (what, obj, func, indented, level, level_dir, message, ap);
+  hb_debug_বার্তা_va<max_level> (what, obj, func, indented, level, level_dir, message, ap);
   va_end (ap);
 }
-template <> inline void
-_hb_debug_msg<0> (const char *what HB_UNUSED,
-		  const void *obj HB_UNUSED,
-		  const char *func HB_UNUSED,
-		  bool indented HB_UNUSED,
-		  unsigned int level HB_UNUSED,
-		  int level_dir HB_UNUSED,
-		  const char *message HB_UNUSED,
+template <> অন্তঃরেখ শূন্য
+hb_debug_বার্তা<0> (ধ্রুবক অক্ষর *what HB_UNUSED,
+		  ধ্রুবক শূন্য *obj HB_UNUSED,
+		  ধ্রুবক অক্ষর *func HB_UNUSED,
+		  যৌক্তিক indented HB_UNUSED,
+		  unsigned পূর্ণসংখ্যা level HB_UNUSED,
+		  পূর্ণসংখ্যা level_dir HB_UNUSED,
+		  ধ্রুবক অক্ষর *message HB_UNUSED,
 		  ...) HB_PRINTF_FUNC(7, 8);
-template <> inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg<0> (const char *what HB_UNUSED,
-		  const void *obj HB_UNUSED,
-		  const char *func HB_UNUSED,
-		  bool indented HB_UNUSED,
-		  unsigned int level HB_UNUSED,
-		  int level_dir HB_UNUSED,
-		  const char *message HB_UNUSED,
+template <> অন্তঃরেখ শূন্য HB_PRINTF_FUNC(7, 8)
+hb_debug_বার্তা<0> (ধ্রুবক অক্ষর *what HB_UNUSED,
+		  ধ্রুবক শূন্য *obj HB_UNUSED,
+		  ধ্রুবক অক্ষর *func HB_UNUSED,
+		  যৌক্তিক indented HB_UNUSED,
+		  unsigned পূর্ণসংখ্যা level HB_UNUSED,
+		  পূর্ণসংখ্যা level_dir HB_UNUSED,
+		  ধ্রুবক অক্ষর *message HB_UNUSED,
 		  ...) {}
 
-#define DEBUG_MSG_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    true, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
-#define DEBUG_MSG(WHAT, OBJ, ...)				_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    false, 0, 0, __VA_ARGS__)
-#define DEBUG_MSG_FUNC(WHAT, OBJ, ...)				_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), HB_FUNC, false, 0, 0, __VA_ARGS__)
+#define DEBUG_বার্তা_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	hb_debug_বার্তা<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    সত্য, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
+#define DEBUG_বার্তা(WHAT, OBJ, ...)				hb_debug_বার্তা<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    মিথ্যা, 0, 0, __VA_ARGS__)
+#define DEBUG_বার্তা_FUNC(WHAT, OBJ, ...)				hb_debug_বার্তা<HB_DEBUG_##WHAT> (#WHAT, (OBJ), HB_FUNC, মিথ্যা, 0, 0, __VA_ARGS__)
 
 
 /*
@@ -196,18 +196,18 @@ _hb_debug_msg<0> (const char *what HB_UNUSED,
  */
 
 template <typename T>
-struct hb_printer_t {
-  const char *print (const T&) { return "something"; }
+কাঠামো hb_printer_t {
+  ধ্রুবক অক্ষর *print (ধ্রুবক T&) { ফেরত "something"; }
 };
 
 template <>
-struct hb_printer_t<bool> {
-  const char *print (bool v) { return v ? "true" : "false"; }
+কাঠামো hb_printer_t<যৌক্তিক> {
+  ধ্রুবক অক্ষর *print (যৌক্তিক v) { ফেরত v ? "true" : "false"; }
 };
 
 template <>
-struct hb_printer_t<hb_empty_t> {
-  const char *print (hb_empty_t) { return ""; }
+কাঠামো hb_printer_t<hb_empty_t> {
+  ধ্রুবক অক্ষর *print (hb_empty_t) { ফেরত ""; }
 };
 
 
@@ -216,96 +216,96 @@ struct hb_printer_t<hb_empty_t> {
  */
 
 template <typename T>
-static inline void _hb_warn_no_return (bool returned)
+স্থির অন্তঃরেখ শূন্য _hb_warn_no_return (যৌক্তিক returned)
 {
-  if (unlikely (!returned)) {
+  যদি (unlikely (!returned)) {
     fprintf (stderr, "OUCH, returned with no call to return_trace().  This is a bug, please report.\n");
   }
 }
 template <>
-/*static*/ inline void _hb_warn_no_return<hb_empty_t> (bool returned HB_UNUSED) {}
+/*static*/ অন্তঃরেখ শূন্য _hb_warn_no_return<hb_empty_t> (যৌক্তিক returned HB_UNUSED) {}
 template <>
-/*static*/ inline void _hb_warn_no_return<void> (bool returned HB_UNUSED) {}
+/*static*/ অন্তঃরেখ শূন্য _hb_warn_no_return<শূন্য> (যৌক্তিক returned HB_UNUSED) {}
 
-template <int max_level, typename ret_t>
-struct hb_auto_trace_t
+template <পূর্ণসংখ্যা max_level, typename ret_t>
+কাঠামো hb_auto_trace_t
 {
-  explicit inline hb_auto_trace_t (unsigned int *plevel_,
-				   const char *what_,
-				   const void *obj_,
-				   const char *func,
-				   const char *message,
+  explicit অন্তঃরেখ hb_auto_trace_t (unsigned পূর্ণসংখ্যা *plevel_,
+				   ধ্রুবক অক্ষর *what_,
+				   ধ্রুবক শূন্য *obj_,
+				   ধ্রুবক অক্ষর *func,
+				   ধ্রুবক অক্ষর *message,
 				   ...) HB_PRINTF_FUNC(6, 7)
-				   : plevel (plevel_), what (what_), obj (obj_), returned (false)
+				   : plevel (plevel_), what (what_), obj (obj_), returned (মিথ্যা)
   {
-    if (plevel) ++*plevel;
+    যদি (plevel) ++*plevel;
 
     va_list ap;
     va_start (ap, message);
-    _hb_debug_msg_va<max_level> (what, obj, func, true, plevel ? *plevel : 0, +1, message, ap);
+    hb_debug_বার্তা_va<max_level> (what, obj, func, সত্য, plevel ? *plevel : 0, +1, message, ap);
     va_end (ap);
   }
   ~hb_auto_trace_t ()
   {
     _hb_warn_no_return<ret_t> (returned);
-    if (!returned) {
-      _hb_debug_msg<max_level> (what, obj, nullptr, true, plevel ? *plevel : 1, -1, " ");
+    যদি (!returned) {
+      hb_debug_বার্তা<max_level> (what, obj, nullptr, সত্য, plevel ? *plevel : 1, -1, " ");
     }
-    if (plevel) --*plevel;
+    যদি (plevel) --*plevel;
   }
 
   template <typename T>
   T ret (T&& v,
-	 const char *func = "",
-	 unsigned int line = 0)
+	 ধ্রুবক অক্ষর *func = "",
+	 unsigned পূর্ণসংখ্যা সারি = 0)
   {
-    if (unlikely (returned)) {
+    যদি (unlikely (returned)) {
       fprintf (stderr, "OUCH, double calls to return_trace().  This is a bug, please report.\n");
-      return std::forward<T> (v);
+      ফেরত std::forward<T> (v);
     }
 
-    _hb_debug_msg<max_level> (what, obj, func, true, plevel ? *plevel : 1, -1,
+    hb_debug_বার্তা<max_level> (what, obj, func, সত্য, plevel ? *plevel : 1, -1,
 			      "return %s (line %u)",
-			      hb_printer_t<hb_decay<decltype (v)>>().print (v), line);
-    if (plevel) --*plevel;
+			      hb_printer_t<hb_decay<decltype (v)>>().print (v), সারি);
+    যদি (plevel) --*plevel;
     plevel = nullptr;
-    returned = true;
-    return std::forward<T> (v);
+    returned = সত্য;
+    ফেরত std::forward<T> (v);
   }
 
-  private:
-  unsigned int *plevel;
-  const char *what;
-  const void *obj;
-  bool returned;
+  ব্যক্তিগত:
+  unsigned পূর্ণসংখ্যা *plevel;
+  ধ্রুবক অক্ষর *what;
+  ধ্রুবক শূন্য *obj;
+  যৌক্তিক returned;
 };
 template <typename ret_t> /* Make sure we don't use hb_auto_trace_t when not tracing. */
-struct hb_auto_trace_t<0, ret_t>
+কাঠামো hb_auto_trace_t<0, ret_t>
 {
-  explicit inline hb_auto_trace_t (unsigned int *plevel_,
-				   const char *what_,
-				   const void *obj_,
-				   const char *func,
-				   const char *message,
+  explicit অন্তঃরেখ hb_auto_trace_t (unsigned পূর্ণসংখ্যা *plevel_,
+				   ধ্রুবক অক্ষর *what_,
+				   ধ্রুবক শূন্য *obj_,
+				   ধ্রুবক অক্ষর *func,
+				   ধ্রুবক অক্ষর *message,
 				   ...) HB_PRINTF_FUNC(6, 7) {}
 
   template <typename T>
   T ret (T&& v,
-	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 ধ্রুবক অক্ষর *func HB_UNUSED = nullptr,
+	 unsigned পূর্ণসংখ্যা সারি HB_UNUSED = 0) { ফেরত std::forward<T> (v); }
 };
 
 /* For disabled tracing; optimize out everything.
  * https://github.com/harfbuzz/harfbuzz/pull/605 */
 template <typename ret_t>
-struct hb_no_trace_t {
+কাঠামো hb_no_trace_t {
   template <typename T>
   T ret (T&& v,
-	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 ধ্রুবক অক্ষর *func HB_UNUSED = nullptr,
+	 unsigned পূর্ণসংখ্যা সারি HB_UNUSED = 0) { ফেরত std::forward<T> (v); }
 };
 
-#define return_trace(RET) return trace.ret (RET, HB_FUNC, __LINE__)
+#define return_trace(RET) ফেরত trace.ret (RET, HB_FUNC, __LINE__)
 
 
 /*
@@ -367,50 +367,50 @@ struct hb_no_trace_t {
 #ifndef HB_DEBUG_APPLY
 #define HB_DEBUG_APPLY (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_APPLY
-#define TRACE_APPLY(this) \
-	hb_auto_trace_t<HB_DEBUG_APPLY, bool> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#যদি HB_DEBUG_APPLY
+#define TRACE_APPLY(এই) \
+	hb_auto_trace_t<HB_DEBUG_APPLY, যৌক্তিক> trace \
+	(&c->debug_depth, c->get_name (), এই, HB_FUNC, \
 	 "idx %u gid %u lookup %d", \
-	 c->buffer->idx, c->buffer->cur().codepoint, (int) c->lookup_index)
-#else
-#define TRACE_APPLY(this) hb_no_trace_t<bool> trace
+	 c->বাফার->idx, c->বাফার->cur().codepoint, (পূর্ণসংখ্যা) c->lookup_সূচক)
+#অন্যথা
+#define TRACE_APPLY(এই) hb_no_trace_t<যৌক্তিক> trace
 #endif
 
 #ifndef HB_DEBUG_SANITIZE
 #define HB_DEBUG_SANITIZE (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SANITIZE
-#define TRACE_SANITIZE(this) \
-	hb_auto_trace_t<HB_DEBUG_SANITIZE, bool> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#যদি HB_DEBUG_SANITIZE
+#define TRACE_SANITIZE(এই) \
+	hb_auto_trace_t<HB_DEBUG_SANITIZE, যৌক্তিক> trace \
+	(&c->debug_depth, c->get_name (), এই, HB_FUNC, \
 	 " ")
-#else
-#define TRACE_SANITIZE(this) hb_no_trace_t<bool> trace
+#অন্যথা
+#define TRACE_SANITIZE(এই) hb_no_trace_t<যৌক্তিক> trace
 #endif
 
 #ifndef HB_DEBUG_SERIALIZE
 #define HB_DEBUG_SERIALIZE (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SERIALIZE
-#define TRACE_SERIALIZE(this) \
-	hb_auto_trace_t<HB_DEBUG_SERIALIZE, bool> trace \
+#যদি HB_DEBUG_SERIALIZE
+#define TRACE_SERIALIZE(এই) \
+	hb_auto_trace_t<HB_DEBUG_SERIALIZE, যৌক্তিক> trace \
 	(&c->debug_depth, "SERIALIZE", c, HB_FUNC, \
 	 " ")
-#else
-#define TRACE_SERIALIZE(this) hb_no_trace_t<bool> trace
+#অন্যথা
+#define TRACE_SERIALIZE(এই) hb_no_trace_t<যৌক্তিক> trace
 #endif
 
 #ifndef HB_DEBUG_SUBSET
 #define HB_DEBUG_SUBSET (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SUBSET
-#define TRACE_SUBSET(this) \
-  hb_auto_trace_t<HB_DEBUG_SUBSET, bool> trace \
-  (&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#যদি HB_DEBUG_SUBSET
+#define TRACE_SUBSET(এই) \
+  hb_auto_trace_t<HB_DEBUG_SUBSET, যৌক্তিক> trace \
+  (&c->debug_depth, c->get_name (), এই, HB_FUNC, \
    " ")
-#else
-#define TRACE_SUBSET(this) hb_no_trace_t<bool> trace
+#অন্যথা
+#define TRACE_SUBSET(এই) hb_no_trace_t<যৌক্তিক> trace
 #endif
 
 #ifndef HB_DEBUG_SUBSET_REPACK
@@ -420,13 +420,13 @@ struct hb_no_trace_t {
 #ifndef HB_DEBUG_PAINT
 #define HB_DEBUG_PAINT (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_PAINT
-#define TRACE_PAINT(this) \
-  HB_UNUSED hb_auto_trace_t<HB_DEBUG_PAINT, void> trace \
-  (&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#যদি HB_DEBUG_PAINT
+#define TRACE_PAINT(এই) \
+  HB_UNUSED hb_auto_trace_t<HB_DEBUG_PAINT, শূন্য> trace \
+  (&c->debug_depth, c->get_name (), এই, HB_FUNC, \
    " ")
-#else
-#define TRACE_PAINT(this) HB_UNUSED hb_no_trace_t<void> trace
+#অন্যথা
+#define TRACE_PAINT(এই) HB_UNUSED hb_no_trace_t<শূন্য> trace
 #endif
 
 
@@ -439,18 +439,18 @@ struct hb_no_trace_t {
 	HB_DEBUG_PAINT + \
 	0)
 #endif
-#if HB_DEBUG_DISPATCH
-#define TRACE_DISPATCH(this, format) \
+#যদি HB_DEBUG_DISPATCH
+#define TRACE_DISPATCH(এই, format) \
 	hb_auto_trace_t<context_t::max_debug_depth, typename context_t::return_t> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
+	(&c->debug_depth, c->get_name (), এই, HB_FUNC, \
 	 "format %u", (unsigned) format)
-#else
-#define TRACE_DISPATCH(this, format) hb_no_trace_t<typename context_t::return_t> trace
+#অন্যথা
+#define TRACE_DISPATCH(এই, format) hb_no_trace_t<typename context_t::return_t> trace
 #endif
 
 
-#ifndef HB_BUFFER_MESSAGE_MORE
-#define HB_BUFFER_MESSAGE_MORE (HB_DEBUG+0)
+#ifndef HB_বাফার_MESSAGE_MORE
+#define HB_বাফার_MESSAGE_MORE (HB_DEBUG+0)
 #endif
 
 

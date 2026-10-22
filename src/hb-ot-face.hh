@@ -29,9 +29,9 @@
 #ifndef HB_OT_FACE_HH
 #define HB_OT_FACE_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-machinery.hh"
+#অন্তর্ভাব "hb-machinery.hh"
 
 
 /*
@@ -39,24 +39,24 @@
  */
 
 /* Declare tables. */
-#define HB_OT_TABLE(Namespace, Type) namespace Namespace { struct Type; }
+#define HB_OT_TABLE(Namespace, Type) নামাকাশ Namespace { কাঠামো Type; }
 #define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type##_accelerator_t)
-#include "hb-ot-face-table-list.hh"
+#অন্তর্ভাব "hb-ot-face-table-list.hh"
 #undef HB_OT_ACCELERATOR
 #undef HB_OT_TABLE
 
-struct hb_ot_face_t
+কাঠামো hb_ot_face_t
 {
-  HB_INTERNAL void init0 (hb_face_t *face);
-  HB_INTERNAL void fini ();
+  HB_INTERNAL শূন্য init0 (hb_face_t *face);
+  HB_INTERNAL শূন্য fini ();
 
 #define HB_OT_TABLE_ORDER(Namespace, Type) \
     HB_PASTE (ORDER_, HB_PASTE (Namespace, HB_PASTE (_, Type)))
-  enum order_t
+  গণনা order_t
   {
     ORDER_ZERO,
 #define HB_OT_TABLE(Namespace, Type) HB_OT_TABLE_ORDER (Namespace, Type),
-#include "hb-ot-face-table-list.hh"
+#অন্তর্ভাব "hb-ot-face-table-list.hh"
 #undef HB_OT_TABLE
   };
 
@@ -65,7 +65,7 @@ struct hb_ot_face_t
   hb_table_lazy_loader_t<Namespace::Type, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
 #define HB_OT_ACCELERATOR(Namespace, Type) \
   hb_face_lazy_loader_t<Namespace::Type##_accelerator_t, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#include "hb-ot-face-table-list.hh"
+#অন্তর্ভাব "hb-ot-face-table-list.hh"
 #undef HB_OT_ACCELERATOR
 #undef HB_OT_TABLE
 };

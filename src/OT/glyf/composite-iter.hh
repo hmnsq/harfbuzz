@@ -2,64 +2,64 @@
 #define OT_GLYF_COMPOSITE_ITER_HH
 
 
-#include "../../hb.hh"
+#অন্তর্ভাব "../../hb.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+নামাকাশ OT {
+নামাকাশ glyf_impl {
 
 
 template <typename CompositeGlyphRecord>
-struct composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<CompositeGlyphRecord>,
-						     const CompositeGlyphRecord &>
+কাঠামো composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<CompositeGlyphRecord>,
+						     ধ্রুবক CompositeGlyphRecord &>
 {
-  typedef const CompositeGlyphRecord *__item_t__;
-  composite_iter_tmpl (hb_bytes_t glyph_, __item_t__ current_, bool extended_) :
-      glyph (glyph_), current (nullptr), current_size (0), extended (extended_)
+  প্রকারলেখ ধ্রুবক CompositeGlyphRecord *__item_t__;
+  composite_iter_tmpl (hb_bytes_t glyph_, __item_t__ current_, যৌক্তিক extended_) :
+      glyph (glyph_), current (nullptr), current_আকার (0), extended (extended_)
   {
     set_current (current_);
   }
 
-  composite_iter_tmpl () : glyph (hb_bytes_t ()), current (nullptr), current_size (0), extended (false) {}
+  composite_iter_tmpl () : glyph (hb_bytes_t ()), current (nullptr), current_আকার (0), extended (মিথ্যা) {}
 
-  const CompositeGlyphRecord & __item__ () const { return *current; }
-  bool __more__ () const { return current; }
-  void __next__ ()
+  ধ্রুবক CompositeGlyphRecord & __item__ () ধ্রুবক { ফেরত *current; }
+  যৌক্তিক __more__ () ধ্রুবক { ফেরত current; }
+  শূন্য __next__ ()
   {
-    if (!current->has_more ()) { current = nullptr; return; }
+    যদি (!current->has_more ()) { current = nullptr; ফেরত; }
 
-    set_current (&StructAtOffset<CompositeGlyphRecord> (current, current_size));
+    set_current (&StructAtOffset<CompositeGlyphRecord> (current, current_আকার));
   }
-  composite_iter_tmpl __end__ () const { return composite_iter_tmpl (); }
-  bool operator != (const composite_iter_tmpl& o) const
-  { return current != o.current; }
+  composite_iter_tmpl __end__ () ধ্রুবক { ফেরত composite_iter_tmpl (); }
+  যৌক্তিক operator != (ধ্রুবক composite_iter_tmpl& o) ধ্রুবক
+  { ফেরত current != o.current; }
 
 
-  void set_current (__item_t__ current_)
+  শূন্য set_current (__item_t__ current_)
   {
-    if (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
+    যদি (!glyph.check_range (current_, CompositeGlyphRecord::min_আকার))
     {
       current = nullptr;
-      current_size = 0;
-      return;
+      current_আকার = 0;
+      ফেরত;
     }
-    unsigned size = current_->get_size (extended);
-    if (!glyph.check_range (current_, size))
+    unsigned আকার_2 = current_->get_আকার (extended);
+    যদি (!glyph.check_range (current_, আকার_2))
     {
       current = nullptr;
-      current_size = 0;
-      return;
+      current_আকার = 0;
+      ফেরত;
     }
 
     current = current_;
-    current_size = size;
+    current_আকার = আকার_2;
   }
 
-  private:
+  ব্যক্তিগত:
   hb_bytes_t glyph;
   __item_t__ current;
-  unsigned current_size;
-  bool extended;
+  unsigned current_আকার;
+  যৌক্তিক extended;
 };
 
 

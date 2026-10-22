@@ -1,22 +1,22 @@
-#include "hb-subset-table.hh"
+#অন্তর্ভাব "hb-subset-table.hh"
 
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-layout-base-table.hh"
-#include "hb-ot-math-table.hh"
+#অন্তর্ভাব "hb-ot-layout-gdef-table.hh"
+#অন্তর্ভাব "hb-ot-layout-gsub-table.hh"
+#অন্তর্ভাব "hb-ot-layout-gpos-table.hh"
+#অন্তর্ভাব "hb-ot-layout-base-table.hh"
+#অন্তর্ভাব "hb-ot-math-table.hh"
 
-bool _hb_subset_table_layout		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+যৌক্তিক _hb_subset_table_layout		(hb_subset_plan_t *plan, hb_vector_t<অক্ষর> &buf, hb_tag_t tag, যৌক্তিক *success)
 {
 #ifndef HB_NO_SUBSET_LAYOUT
-  switch (tag)
+  নির্বাচন (tag)
   {
-  case HB_TAG('G','D','E','F'): *success = _hb_subset_table<const OT::GDEF> (plan, buf); return true;
-  case HB_TAG('G','S','U','B'): *success = _hb_subset_table<const OT::Layout::GSUB> (plan, buf); return true;
-  case HB_TAG('G','P','O','S'): *success = _hb_subset_table<const OT::Layout::GPOS> (plan, buf); return true;
-  case HB_TAG('B','A','S','E'): *success = _hb_subset_table<const OT::BASE> (plan, buf); return true;
-  case HB_TAG('M','A','T','H'): *success = _hb_subset_table<const OT::MATH> (plan, buf); return true;
+  ক্ষেত্র HB_TAG('G','D','E','F'): *success = _hb_subset_table<ধ্রুবক OT::GDEF> (plan, buf); ফেরত সত্য;
+  ক্ষেত্র HB_TAG('G','S','U','B'): *success = _hb_subset_table<ধ্রুবক OT::Layout::GSUB> (plan, buf); ফেরত সত্য;
+  ক্ষেত্র HB_TAG('G','P','O','S'): *success = _hb_subset_table<ধ্রুবক OT::Layout::GPOS> (plan, buf); ফেরত সত্য;
+  ক্ষেত্র HB_TAG('B','A','S','E'): *success = _hb_subset_table<ধ্রুবক OT::BASE> (plan, buf); ফেরত সত্য;
+  ক্ষেত্র HB_TAG('M','A','T','H'): *success = _hb_subset_table<ধ্রুবক OT::MATH> (plan, buf); ফেরত সত্য;
   }
 #endif
-  return false;
+  ফেরত মিথ্যা;
 }

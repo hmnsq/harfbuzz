@@ -27,12 +27,12 @@
 #ifndef HB_CONFIG_HH
 #define HB_CONFIG_HH
 
-#if 0 /* Make test happy. */
-#include "hb.hh"
+#যদি 0 /* Make test happy. */
+#অন্তর্ভাব "hb.hh"
 #endif
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#অন্তর্ভাব "config.h"
 #endif
 
 #ifndef HB_EXPERIMENTAL_API
@@ -45,8 +45,8 @@
 #define HB_LEAN
 #define HB_MINI
 #define HB_NO_SVG
-#define HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE_MORE
+#define HB_OPTIMIZE_আকার
+#define HB_OPTIMIZE_আকার_MORE
 #define HB_MINIMIZE_MEMORY_USAGE
 #define HB_NO_MT
 #define HB_NO_UCD_UNASSIGNED
@@ -58,9 +58,9 @@
 #ifdef HB_LEAN
 #define HB_DISABLE_DEPRECATED
 #define HB_NO_ATEXIT
-#define HB_NO_BUFFER_MESSAGE
-#define HB_NO_BUFFER_SERIALIZE
-#define HB_NO_BUFFER_VERIFY
+#define HB_NO_বাফার_MESSAGE
+#define HB_NO_বাফার_SERIALIZE
+#define HB_NO_বাফার_VERIFY
 #define HB_NO_BITMAP
 #define HB_NO_ERRNO
 #define HB_NO_FACE_COLLECT_UNICODES
@@ -84,7 +84,7 @@
 #define HB_NO_VERTICAL
 #define HB_NO_VAR
 
-#if !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
+#যদি !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
 #define HB_NO_COLOR
 #define HB_NO_DRAW
 #define HB_NO_PAINT
@@ -100,16 +100,16 @@
 #endif
 
 #ifdef __OPTIMIZE_SIZE__
-#ifndef HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE
+#ifndef HB_OPTIMIZE_আকার
+#define HB_OPTIMIZE_আকার
 #endif
 #endif
 
-#if defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
+#যদি defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
 #ifndef HB_CONFIG_OVERRIDE_H
 #define HB_CONFIG_OVERRIDE_H "config-override.h"
 #endif
-#include HB_CONFIG_OVERRIDE_H
+#অন্তর্ভাব HB_CONFIG_OVERRIDE_H
 #endif
 
 /* Closure of options. */
@@ -120,7 +120,7 @@
 
 #ifdef HB_DISABLE_DEPRECATED
 #define HB_IF_NOT_DEPRECATED(x)
-#else
+#অন্যথা
 #define HB_IF_NOT_DEPRECATED(x) x
 #endif
 
@@ -181,7 +181,7 @@
 #define HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
 #endif
 
-#ifdef HB_OPTIMIZE_SIZE_MORE
+#ifdef HB_OPTIMIZE_আকার_MORE
 #define HB_NO_OT_RULESETS_FAST_PATH
 #endif
 
@@ -191,22 +191,22 @@
 #define HB_NO_OT_FONT_CMAP_CACHE
 #endif
 
-#if defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
+#যদি defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
 #ifndef HB_CONFIG_OVERRIDE_LAST_H
 #define HB_CONFIG_OVERRIDE_LAST_H "config-override-last.h"
 #endif
-#include HB_CONFIG_OVERRIDE_LAST_H
+#অন্তর্ভাব HB_CONFIG_OVERRIDE_LAST_H
 #endif
 
-#ifdef HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE_VAL 1
-#else
-#define HB_OPTIMIZE_SIZE_VAL 0
+#ifdef HB_OPTIMIZE_আকার
+#define HB_OPTIMIZE_আকার_VAL 1
+#অন্যথা
+#define HB_OPTIMIZE_আকার_VAL 0
 #endif
 
 #ifdef HB_MINIMIZE_MEMORY_USAGE
 #define HB_MINIMIZE_MEMORY_USAGE_VAL 1
-#else
+#অন্যথা
 #define HB_MINIMIZE_MEMORY_USAGE_VAL 0
 #endif
 

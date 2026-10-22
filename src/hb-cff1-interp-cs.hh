@@ -26,130 +26,130 @@
 #ifndef HB_CFF1_INTERP_CS_HH
 #define HB_CFF1_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+নামাকাশ CFF {
 
-using namespace OT;
+using নামাকাশ OT;
 
-typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
+প্রকারলেখ biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+কাঠামো cff1_cs_interp_env_t : cs_interp_env_t<সংখ্যা_t, CFF1Subrs>
 {
   template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff1_cs_interp_env_t (ধ্রুবক hb_ubytes_t &str, ACC &acc, unsigned পূর্ণসংখ্যা fd,
+			ধ্রুবক পূর্ণসংখ্যা *coords_=nullptr, unsigned পূর্ণসংখ্যা অঙ্ক_coords_2=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
   {
-    processed_width = false;
-    has_width = false;
+    processed_width = মিথ্যা;
+    has_width = মিথ্যা;
     arg_start = 0;
-    in_seac = false;
+    in_seac = মিথ্যা;
   }
 
-  void set_width (bool has_width_)
+  শূন্য set_width (যৌক্তিক has_width_)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    যদি (likely (!processed_width && (SUPER::arg_স্তূপ.get_গুনতি () > 0)))
     {
-      if (has_width_)
+      যদি (has_width_)
       {
-	width = SUPER::argStack[0];
-	has_width = true;
+	width = SUPER::arg_স্তূপ[0];
+	has_width = সত্য;
 	arg_start = 1;
       }
     }
-    processed_width = true;
+    processed_width = সত্য;
   }
 
-  void clear_args ()
+  শূন্য clear_args ()
   {
     arg_start = 0;
     SUPER::clear_args ();
   }
 
-  void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
+  শূন্য set_in_seac (যৌক্তিক _in_seac) { in_seac = _in_seac; }
 
-  bool	  processed_width;
-  bool	  has_width;
-  unsigned int  arg_start;
-  number_t	width;
-  bool	  in_seac;
+  যৌক্তিক	  processed_width;
+  যৌক্তিক	  has_width;
+  unsigned পূর্ণসংখ্যা  arg_start;
+  সংখ্যা_t	width;
+  যৌক্তিক	  in_seac;
 
-  private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  ব্যক্তিগত:
+  প্রকারলেখ cs_interp_env_t<সংখ্যা_t, CFF1Subrs> SUPER;
 };
 
 template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+কাঠামো cff1_cs_opset_t : cs_opset_t<সংখ্যা_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  স্থির শূন্য process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_dotsection:
+    নির্বাচন (op) {
+      ক্ষেত্র OpCode_dotsection:
 	SUPER::flush_args_and_op (op, env, param);
-	break;
+	বিরতি;
 
-      case OpCode_endchar:
+      ক্ষেত্র OpCode_endchar:
 	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+	যদি (env.arg_স্তূপ.get_গুনতি () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
 	OPSET::flush_args_and_op (op, env, param);
-	env.set_endchar (true);
-	break;
+	env.set_endchar (সত্য);
+	বিরতি;
 
-      default:
+      পূর্বনির্ধারিত:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  স্থির শূন্য check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    যদি (!env.processed_width)
     {
-      bool  has_width = false;
-      switch (op)
+      যৌক্তিক  has_width = মিথ্যা;
+      নির্বাচন (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
-	  break;
-	default:
-	  return;
+	ক্ষেত্র OpCode_endchar:
+	ক্ষেত্র OpCode_hstem:
+	ক্ষেত্র OpCode_hstemhm:
+	ক্ষেত্র OpCode_vstem:
+	ক্ষেত্র OpCode_vstemhm:
+	ক্ষেত্র OpCode_hintmask:
+	ক্ষেত্র OpCode_cntrmask:
+	  has_width = ((env.arg_স্তূপ.get_গুনতি () & 1) != 0);
+	  বিরতি;
+	ক্ষেত্র OpCode_hmoveto:
+	ক্ষেত্র OpCode_vmoveto:
+	  has_width = (env.arg_স্তূপ.get_গুনতি () > 1);
+	  বিরতি;
+	ক্ষেত্র OpCode_rmoveto:
+	  has_width = (env.arg_স্তূপ.get_গুনতি () > 2);
+	  বিরতি;
+	পূর্বনির্ধারিত:
+	  ফেরত;
       }
       env.set_width (has_width);
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  স্থির শূন্য process_seac (cff1_cs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  স্থির শূন্য flush_args (cff1_cs_interp_env_t &env, PARAM& param)
   {
     SUPER::flush_args (env, param);
     env.clear_args ();  /* pop off width */
   }
 
-  private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  ব্যক্তিগত:
+  প্রকারলেখ cs_opset_t<সংখ্যা_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
 };
 
 template <typename OPSET, typename PARAM>

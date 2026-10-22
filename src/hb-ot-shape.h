@@ -24,34 +24,34 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#যদি !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_SHAPE_H
 #define HB_OT_SHAPE_H
 
-#include "hb.h"
+#অন্তর্ভাব "hb.h"
 
 HB_BEGIN_DECLS
 
 /* TODO port to shape-plan / set. */
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_ot_shape_glyphs_closure (hb_font_t          *font,
-			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
+			    hb_বাফার_t        *বাফার,
+			    ধ্রুবক hb_feature_t *features,
+			    unsigned পূর্ণসংখ্যা        অঙ্ক_features,
 			    hb_set_t           *glyphs);
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
 				  hb_tag_t         table_tag,
 				  hb_set_t        *lookup_indexes /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned পূর্ণসংখ্যা
 hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
+				   unsigned পূর্ণসংখ্যা     start_offset,
+				   unsigned পূর্ণসংখ্যা    *tag_গুনতি, /* IN/OUT */
 				   hb_tag_t        *tags /* OUT */);
 
 /**
@@ -64,10 +64,10 @@ hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
  *
  * Since: 13.2.0
  */
-#define HB_OT_SHAPE_BUFFER_FORMAT_SERIAL 1
+#define HB_OT_SHAPE_বাফার_FORMAT_SERIAL 1
 
-HB_EXTERN unsigned int
-hb_ot_shape_get_buffer_format_serial (void);
+HB_EXTERN unsigned পূর্ণসংখ্যা
+hb_ot_shape_get_বাফার_format_serial (শূন্য);
 
 HB_END_DECLS
 

@@ -27,7 +27,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 #ifdef HAVE_ICU
 
@@ -36,18 +36,18 @@
 // https://github.com/harfbuzz/harfbuzz/issues/4915
 #pragma GCC diagnostic ignored "-Wredundant-decls"
 
-#include "hb-icu.h"
+#অন্তর্ভাব "hb-icu.h"
 
-#include "hb-machinery.hh"
+#অন্তর্ভাব "hb-machinery.hh"
 
-#include <unicode/uchar.h>
-#include <unicode/unorm2.h>
-#include <unicode/ustring.h>
-#include <unicode/utf16.h>
-#include <unicode/uversion.h>
+#অন্তর্ভাব <unicode/uchar.h>
+#অন্তর্ভাব <unicode/unorm2.h>
+#অন্তর্ভাব <unicode/ustring.h>
+#অন্তর্ভাব <unicode/utf16.h>
+#অন্তর্ভাব <unicode/uversion.h>
 
 /* ICU extra semicolon, fixed since 65, https://github.com/unicode-org/icu/commit/480bec3 */
-#if U_ICU_VERSION_MAJOR_NUM < 65 && (defined(__GNUC__) || defined(__clang__))
+#যদি U_ICU_VERSION_MAJOR_অঙ্ক < 65 && (defined(__GNUC__) || defined(__clang__))
 #define HB_ICU_EXTRA_SEMI_IGNORED
 #pragma GCC diagnostic ignored "-Wextra-semi-stmt"
 #endif
@@ -78,10 +78,10 @@
 hb_script_t
 hb_icu_script_to_script (UScriptCode script)
 {
-  if (unlikely (script == USCRIPT_INVALID_CODE))
-    return HB_SCRIPT_INVALID;
+  যদি (unlikely (script == USCRIPT_INVALID_CODE))
+    ফেরত HB_SCRIPT_INVALID;
 
-  return hb_script_from_string (uscript_getShortName (script), -1);
+  ফেরত hb_script_from_string (uscript_getShortName (script), -1);
 }
 
 /**
@@ -99,155 +99,155 @@ hb_icu_script_from_script (hb_script_t script)
 {
   UScriptCode out = USCRIPT_INVALID_CODE;
 
-  if (unlikely (script == HB_SCRIPT_INVALID))
-    return out;
+  যদি (unlikely (script == HB_SCRIPT_INVALID))
+    ফেরত out;
 
   UErrorCode icu_err = U_ZERO_ERROR;
-  const unsigned char buf[5] = {HB_UNTAG (script), 0};
-  uscript_getCode ((const char *) buf, &out, 1, &icu_err);
+  ধ্রুবক unsigned অক্ষর buf[5] = {HB_UNTAG (script), 0};
+  uscript_getCode ((ধ্রুবক অক্ষর *) buf, &out, 1, &icu_err);
 
-  return out;
+  ফেরত out;
 }
 
 
-static hb_unicode_combining_class_t
+স্থির hb_unicode_combining_class_t
 hb_icu_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				hb_codepoint_t      unicode,
-				void               *user_data HB_UNUSED)
+				শূন্য               *user_তথ্য HB_UNUSED)
 
 {
-  return (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
+  ফেরত (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
 }
 
-static hb_unicode_general_category_t
+স্থির hb_unicode_general_category_t
 hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 শূন্য               *user_তথ্য HB_UNUSED)
 {
-  switch (u_getIntPropertyValue(unicode, UCHAR_GENERAL_CATEGORY))
+  নির্বাচন (u_get_Int_Property_মান(unicode, UCHAR_GENERAL_CATEGORY))
   {
-  case U_UNASSIGNED:			return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  ক্ষেত্র U_UNASSIGNED:			ফেরত HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 
-  case U_UPPERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
-  case U_LOWERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
-  case U_TITLECASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
-  case U_MODIFIER_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
-  case U_OTHER_LETTER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
+  ক্ষেত্র U_UPPERCASE_LETTER:		ফেরত HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
+  ক্ষেত্র U_LOWERCASE_LETTER:		ফেরত HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
+  ক্ষেত্র U_TITLECASE_LETTER:		ফেরত HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
+  ক্ষেত্র U_MODIFIER_LETTER:		ফেরত HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
+  ক্ষেত্র U_OTHER_LETTER:			ফেরত HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
 
-  case U_NON_SPACING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
-  case U_ENCLOSING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
-  case U_COMBINING_SPACING_MARK:	return HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
+  ক্ষেত্র U_NON_SPACING_MARK:		ফেরত HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
+  ক্ষেত্র U_ENCLOSING_MARK:		ফেরত HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
+  ক্ষেত্র U_COMBINING_SPACING_MARK:	ফেরত HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
 
-  case U_DECIMAL_DIGIT_NUMBER:		return HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER;
-  case U_LETTER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER;
-  case U_OTHER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER;
+  ক্ষেত্র U_DECIMAL_DIGIT_সংখ্যা:		ফেরত HB_UNICODE_GENERAL_CATEGORY_DECIMAL_সংখ্যা;
+  ক্ষেত্র U_LETTER_সংখ্যা:			ফেরত HB_UNICODE_GENERAL_CATEGORY_LETTER_সংখ্যা;
+  ক্ষেত্র U_OTHER_সংখ্যা:			ফেরত HB_UNICODE_GENERAL_CATEGORY_OTHER_সংখ্যা;
 
-  case U_SPACE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
-  case U_LINE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR;
-  case U_PARAGRAPH_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
+  ক্ষেত্র U_SPACE_SEPARATOR:		ফেরত HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
+  ক্ষেত্র U_সারি_SEPARATOR:		ফেরত HB_UNICODE_GENERAL_CATEGORY_সারি_SEPARATOR;
+  ক্ষেত্র U_PARAGRAPH_SEPARATOR:		ফেরত HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
 
-  case U_CONTROL_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_CONTROL;
-  case U_FORMAT_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_FORMAT;
-  case U_PRIVATE_USE_CHAR:		return HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
-  case U_SURROGATE:			return HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
+  ক্ষেত্র U_CONTROL_CHAR:			ফেরত HB_UNICODE_GENERAL_CATEGORY_CONTROL;
+  ক্ষেত্র U_FORMAT_CHAR:			ফেরত HB_UNICODE_GENERAL_CATEGORY_FORMAT;
+  ক্ষেত্র U_PRIVATE_USE_CHAR:		ফেরত HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
+  ক্ষেত্র U_SURROGATE:			ফেরত HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
 
 
-  case U_DASH_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
-  case U_START_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
-  case U_END_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
-  case U_CONNECTOR_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
-  case U_OTHER_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
+  ক্ষেত্র U_DASH_PUNCTUATION:		ফেরত HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
+  ক্ষেত্র U_START_PUNCTUATION:		ফেরত HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
+  ক্ষেত্র U_END_PUNCTUATION:		ফেরত HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
+  ক্ষেত্র U_CONNECTOR_PUNCTUATION:		ফেরত HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
+  ক্ষেত্র U_OTHER_PUNCTUATION:		ফেরত HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
 
-  case U_MATH_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL;
-  case U_CURRENCY_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL;
-  case U_MODIFIER_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL;
-  case U_OTHER_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL;
+  ক্ষেত্র U_MATH_প্রতীক:			ফেরত HB_UNICODE_GENERAL_CATEGORY_MATH_প্রতীক;
+  ক্ষেত্র U_CURRENCY_প্রতীক:		ফেরত HB_UNICODE_GENERAL_CATEGORY_CURRENCY_প্রতীক;
+  ক্ষেত্র U_MODIFIER_প্রতীক:		ফেরত HB_UNICODE_GENERAL_CATEGORY_MODIFIER_প্রতীক;
+  ক্ষেত্র U_OTHER_প্রতীক:			ফেরত HB_UNICODE_GENERAL_CATEGORY_OTHER_প্রতীক;
 
-  case U_INITIAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
-  case U_FINAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
+  ক্ষেত্র U_INITIAL_PUNCTUATION:		ফেরত HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
+  ক্ষেত্র U_FINAL_PUNCTUATION:		ফেরত HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
   }
 
-  return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  ফেরত HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 }
 
-static hb_codepoint_t
+স্থির hb_codepoint_t
 hb_icu_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			  hb_codepoint_t      unicode,
-			  void               *user_data HB_UNUSED)
+			  শূন্য               *user_তথ্য HB_UNUSED)
 {
-  return u_charMirror(unicode);
+  ফেরত u_charMirror(unicode);
 }
 
-static hb_script_t
+স্থির hb_script_t
 hb_icu_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		       hb_codepoint_t      unicode,
-		       void               *user_data HB_UNUSED)
+		       শূন্য               *user_তথ্য HB_UNUSED)
 {
   UErrorCode status = U_ZERO_ERROR;
   UScriptCode scriptCode = uscript_getScript(unicode, &status);
 
-  if (unlikely (U_FAILURE (status)))
-    return HB_SCRIPT_UNKNOWN;
+  যদি (unlikely (U_FAILURE (status)))
+    ফেরত HB_SCRIPT_UNKNOWN;
 
-  return hb_icu_script_to_script (scriptCode);
+  ফেরত hb_icu_script_to_script (scriptCode);
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_icu_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			hb_codepoint_t      a,
 			hb_codepoint_t      b,
 			hb_codepoint_t     *ab,
-			void               *user_data)
+			শূন্য               *user_তথ্য)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  ধ্রুবক UNormalizer2 *normalizer = (ধ্রুবক UNormalizer2 *) user_তথ্য;
   UChar32 ret = unorm2_composePair (normalizer, a, b);
-  if (ret < 0) return false;
+  যদি (ret < 0) ফেরত মিথ্যা;
   *ab = ret;
-  return true;
+  ফেরত সত্য;
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			  hb_codepoint_t      ab,
 			  hb_codepoint_t     *a,
 			  hb_codepoint_t     *b,
-			  void               *user_data)
+			  শূন্য               *user_তথ্য)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  ধ্রুবক UNormalizer2 *normalizer = (ধ্রুবক UNormalizer2 *) user_তথ্য;
   UChar decomposed[4];
-  int len;
+  পূর্ণসংখ্যা len;
   UErrorCode icu_err = U_ZERO_ERROR;
   len = unorm2_getRawDecomposition (normalizer, ab, decomposed,
-				    ARRAY_LENGTH (decomposed), &icu_err);
-  if (U_FAILURE (icu_err) || len < 0) return false;
+				    ARRAY_দৈর্ঘ্য (decomposed), &icu_err);
+  যদি (U_FAILURE (icu_err) || len < 0) ফেরত মিথ্যা;
 
-  len = u_countChar32 (decomposed, len);
-  if (len == 1)
+  len = u_গুনতি_Char32 (decomposed, len);
+  যদি (len == 1)
   {
     U16_GET_UNSAFE (decomposed, 0, *a);
     *b = 0;
-    return *a != ab;
+    ফেরত *a != ab;
   }
-  else if (len == 2)
+  অন্যথা যদি (len == 2)
   {
     len = 0;
-    U16_NEXT_UNSAFE (decomposed, len, *a);
-    U16_NEXT_UNSAFE (decomposed, len, *b);
+    U16_পরবর্তী_UNSAFE (decomposed, len, *a);
+    U16_পরবর্তী_UNSAFE (decomposed, len, *b);
   }
-  return true;
+  ফেরত সত্য;
 }
 
 
-static inline void free_static_icu_funcs ();
+স্থির অন্তঃরেখ শূন্য free_static_icu_funcs ();
 
-static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
+স্থির কাঠামো hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  স্থির hb_unicode_funcs_t *create ()
   {
-    void *user_data = nullptr;
+    শূন্য *user_তথ্য = nullptr;
     UErrorCode icu_err = U_ZERO_ERROR;
-    user_data = (void *) unorm2_getNFCInstance (&icu_err);
-    assert (user_data);
+    user_তথ্য = (শূন্য *) unorm2_getNFCInstance (&icu_err);
+    প্রতিজ্ঞা (user_তথ্য);
 
     hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
 
@@ -255,19 +255,19 @@ static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_
     hb_unicode_funcs_set_general_category_func (funcs, hb_icu_unicode_general_category, nullptr, nullptr);
     hb_unicode_funcs_set_mirroring_func (funcs, hb_icu_unicode_mirroring, nullptr, nullptr);
     hb_unicode_funcs_set_script_func (funcs, hb_icu_unicode_script, nullptr, nullptr);
-    hb_unicode_funcs_set_compose_func (funcs, hb_icu_unicode_compose, user_data, nullptr);
-    hb_unicode_funcs_set_decompose_func (funcs, hb_icu_unicode_decompose, user_data, nullptr);
+    hb_unicode_funcs_set_compose_func (funcs, hb_icu_unicode_compose, user_তথ্য, nullptr);
+    hb_unicode_funcs_set_decompose_func (funcs, hb_icu_unicode_decompose, user_তথ্য, nullptr);
 
     hb_unicode_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_icu_funcs);
 
-    return funcs;
+    ফেরত funcs;
   }
 } static_icu_funcs;
 
-static inline
-void free_static_icu_funcs ()
+স্থির অন্তঃরেখ
+শূন্য free_static_icu_funcs ()
 {
   static_icu_funcs.free_instance ();
 }
@@ -285,9 +285,9 @@ void free_static_icu_funcs ()
 hb_unicode_funcs_t *
 hb_icu_get_unicode_funcs ()
 {
-  return static_icu_funcs.get_unconst ();
+  ফেরত static_icu_funcs.get_unconst ();
 }
 
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic বের_করো
 
 #endif

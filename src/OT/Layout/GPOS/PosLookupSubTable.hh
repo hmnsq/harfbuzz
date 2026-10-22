@@ -1,26 +1,26 @@
 #ifndef OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
 #define OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
 
-#include "SinglePos.hh"
-#include "PairPos.hh"
-#include "CursivePos.hh"
-#include "MarkBasePos.hh"
-#include "MarkLigPos.hh"
-#include "MarkMarkPos.hh"
-#include "ContextPos.hh"
-#include "ChainContextPos.hh"
-#include "ExtensionPos.hh"
+#অন্তর্ভাব "SinglePos.hh"
+#অন্তর্ভাব "PairPos.hh"
+#অন্তর্ভাব "CursivePos.hh"
+#অন্তর্ভাব "MarkBasePos.hh"
+#অন্তর্ভাব "MarkLigPos.hh"
+#অন্তর্ভাব "MarkMarkPos.hh"
+#অন্তর্ভাব "ContextPos.hh"
+#অন্তর্ভাব "ChainContextPos.hh"
+#অন্তর্ভাব "ExtensionPos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-struct PosLookupSubTable
+কাঠামো PosLookupSubTable
 {
-  friend struct ::OT::Lookup;
-  friend struct PosLookup;
+  friend কাঠামো ::OT::Lookup;
+  friend কাঠামো PosLookup;
 
-  enum Type {
+  গণনা Type {
     Single              = 1,
     Pair                = 2,
     Cursive             = 3,
@@ -33,31 +33,31 @@ struct PosLookupSubTable
   };
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, unsigned পূর্ণসংখ্যা lookup_type, Ts&&... ds) ধ্রুবক
   {
-    TRACE_DISPATCH (this, lookup_type);
-    switch (lookup_type) {
-    case Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
-    case Pair:                  hb_barrier (); return_trace (u.pair.dispatch (c, std::forward<Ts> (ds)...));
-    case Cursive:               hb_barrier (); return_trace (u.cursive.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkBase:              hb_barrier (); return_trace (u.markBase.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkLig:               hb_barrier (); return_trace (u.markLig.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkMark:              hb_barrier (); return_trace (u.markMark.dispatch (c, std::forward<Ts> (ds)...));
-    case Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
-    case ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
-    case Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
-    default:                    return_trace (c->default_return_value ());
+    TRACE_DISPATCH (এই, lookup_type);
+    নির্বাচন (lookup_type) {
+    ক্ষেত্র Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
+    ক্ষেত্র Pair:                  hb_barrier (); return_trace (u.pair.dispatch (c, std::forward<Ts> (ds)...));
+    ক্ষেত্র Cursive:               hb_barrier (); return_trace (u.cursive.dispatch (c, std::forward<Ts> (ds)...));
+    ক্ষেত্র MarkBase:              hb_barrier (); return_trace (u.markBase.dispatch (c, std::forward<Ts> (ds)...));
+    ক্ষেত্র MarkLig:               hb_barrier (); return_trace (u.markLig.dispatch (c, std::forward<Ts> (ds)...));
+    ক্ষেত্র MarkMark:              hb_barrier (); return_trace (u.markMark.dispatch (c, std::forward<Ts> (ds)...));
+    ক্ষেত্র Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
+    ক্ষেত্র ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
+    ক্ষেত্র Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
+    পূর্বনির্ধারিত:                    return_trace (c->default_return_মান ());
     }
   }
 
-  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs, unsigned পূর্ণসংখ্যা lookup_type) ধ্রুবক
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c, lookup_type);
+    ফেরত dispatch (&c, lookup_type);
   }
 
-  protected:
-  union {
+  সুরক্ষিত:
+  সংঘ {
   SinglePos             single;
   PairPos               pair;
   CursivePos            cursive;
@@ -68,8 +68,8 @@ struct PosLookupSubTable
   ChainContextPos       chainContext;
   ExtensionPos          extension;
   } u;
-  public:
-  DEFINE_SIZE_MIN (0);
+  সর্বজনীন:
+  DEFINE_আকার_MIN (0);
 };
 
 }

@@ -1,34 +1,34 @@
 #ifndef OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
 
-#include "Common.hh"
-#include "ValueFormat.hh"
+#অন্তর্ভাব "Common.hh"
+#অন্তর্ভাব "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
 template <typename Types>
-struct SinglePosFormat1_3 : ValueBase
+কাঠামো SinglePosFormat1_3 : মান_Base
 {
-  protected:
+  সুরক্ষিত:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat;            /* Defines the types of data in the
+  মান_Format   মান_Format_2;            /* Defines the types of data in the
                                          * ValueRecord */
-  ValueRecord   values;                 /* Defines positioning
+  মান_Record   values;                 /* Defines positioning
                                          * value(s)--applied to all glyphs in
                                          * the Coverage table */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + ValueFormat::static_size, values);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (2 + Types::LOffset::static_আকার + মান_Format::static_আকার, values);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  coverage.sanitize (c, this) &&
+    TRACE_SANITIZE (এই);
+    return_trace (c->check_struct (এই) &&
+                  coverage.sanitize (c, এই) &&
 		  hb_barrier () &&
                   /* The coverage  table may use a range to represent a set
                    * of glyphs, which means a small number of bytes can
@@ -36,95 +36,95 @@ struct SinglePosFormat1_3 : ValueBase
                    * sanitizer max ops to take this into account.
                    *
                    * Note: This check *must* be right after coverage sanitize. */
-                  c->check_ops ((this + coverage).get_population () >> 1) &&
-                  valueFormat.sanitize_value (c, this, values));
+                  c->check_ops ((এই + coverage).get_population () >> 1) &&
+                  মান_Format_2.sanitize_মান (c, এই, values));
 
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
+  { ফেরত (এই+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক {}
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক
   {
-    if (!valueFormat.has_device ()) return;
+    যদি (!মান_Format_2.has_device ()) ফেরত;
 
     hb_set_t intersection;
-    (this+coverage).intersect_set (*c->glyph_set, intersection);
-    if (!intersection) return;
+    (এই+coverage).intersect_set (*c->glyph_set, intersection);
+    যদি (!intersection) ফেরত;
 
-    valueFormat.collect_variation_indices (c, this, values.as_array (valueFormat.get_len ()));
+    মান_Format_2.collect_variation_indices (c, এই, values.as_array (মান_Format_2.get_len ()));
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
+  { যদি (unlikely (!(এই+coverage).collect_coverage (c->প্রবেশ))) ফেরত; }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক { ফেরত এই+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  মান_Format get_মান_format () ধ্রুবক { ফেরত মান_Format_2; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c) ধ্রুবক
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (এই);
+    hb_বাফার_t *বাফার = c->বাফার;
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage  (বাফার->cur().codepoint);
+    যদি (সূচক_2 == NOT_COVERED) return_trace (মিথ্যা);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
     {
-      c->buffer->message (c->font,
+      c->বাফার->message (c->font,
 			  "positioning glyph at %u",
-			  c->buffer->idx);
+			  c->বাফার->idx);
     }
 
-    valueFormat.apply_value (c, this, values, buffer->cur_pos());
+    মান_Format_2.apply_মান (c, এই, values, বাফার->cur_pos());
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    যদি (HB_বাফার_MESSAGE_MORE && c->বাফার->messaging ())
     {
-      c->buffer->message (c->font,
+      c->বাফার->message (c->font,
 			  "positioned glyph at %u",
-			  c->buffer->idx);
+			  c->বাফার->idx);
     }
 
-    buffer->idx++;
-    return_trace (true);
+    বাফার->idx++;
+    return_trace (সত্য);
   }
 
-  bool
+  যৌক্তিক
   position_single (hb_font_t           *font,
 		   hb_blob_t           *table_blob,
 		   hb_direction_t       direction,
 		   hb_codepoint_t       gid,
-		   hb_glyph_position_t &pos) const
+		   hb_glyph_position_t &pos) ধ্রুবক
   {
-    unsigned int index = (this+coverage).get_coverage  (gid);
-    if (likely (index == NOT_COVERED)) return false;
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage  (gid);
+    যদি (likely (সূচক_2 == NOT_COVERED)) ফেরত মিথ্যা;
 
-    valueFormat.position_single (font, table_blob, direction, this,
+    মান_Format_2.position_single (font, table_blob, direction, এই,
                                  values, pos);
-    return true;
+    ফেরত সত্য;
   }
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
-                  const ValueBase *src,
-                  ValueFormat src_format,
+  শূন্য serialize (hb_serialize_context_t *c,
+                  ধ্রুবক মান_Base *src,
+                  মান_Format src_format,
                   Iterator it,
-                  ValueFormat newFormat,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
+                  মান_Format newFormat,
+                  ধ্রুবক hb_hashmap_t<unsigned, hb_pair_t<unsigned, পূর্ণসংখ্যা>> *layout_variation_idx_delta_map)
   {
-    if (unlikely (!c->extend_min (this))) return;
-    if (unlikely (!c->check_assign (valueFormat,
+    যদি (unlikely (!c->extend_min (এই))) ফেরত;
+    যদি (unlikely (!c->check_assign (মান_Format_2,
                                     newFormat,
-                                    HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
+                                    HB_SERIALIZE_ERROR_INT_OVERFLOW))) ফেরত;
 
-    for (const hb_array_t<const Value>& _ : + it | hb_map (hb_second))
+    জন্য (ধ্রুবক hb_array_t<ধ্রুবক মান>& _ : + it | hb_map (hb_second))
     {
-      src_format.copy_values (c, newFormat, src,  &_, layout_variation_idx_delta_map);
+      src_format.copy_মানসমূহ (c, newFormat, src,  &_, layout_variation_idx_delta_map);
       // Only serialize the first entry in the iterator, the rest are assumed to
       // be the same.
-      break;
+      বিরতি;
     }
 
     auto glyphs =
@@ -135,47 +135,47 @@ struct SinglePosFormat1_3 : ValueBase
     coverage.serialize_serialize (c, glyphs);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (এই);
+    ধ্রুবক hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ধ্রুবক hb_map_t &glyph_map = *c->plan->glyph_map;
 
     hb_set_t intersection;
-    (this+coverage).intersect_set (glyphset, intersection);
+    (এই+coverage).intersect_set (glyphset, intersection);
 
-    unsigned new_format = valueFormat;
+    unsigned new_format = মান_Format_2;
 
-    if (c->plan->normalized_coords)
+    যদি (c->plan->normalized_coords)
     {
-      new_format = valueFormat.get_effective_format (values.arrayZ, false, false, this, &c->plan->layout_variation_idx_delta_map);
+      new_format = মান_Format_2.get_effective_format (values.arrayZ, মিথ্যা, মিথ্যা, এই, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    অন্যথা যদি (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      যৌক্তিক has_fvar = (blob != hb_blob_get_empty ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      যৌক্তিক strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      new_format = valueFormat.get_effective_format (values.arrayZ,
+      যদি (has_fvar && !c->plan->has_gdef_varstore)
+        strip = সত্য;
+      new_format = মান_Format_2.get_effective_format (values.arrayZ,
                                                      strip, /* strip hints */
-                                                     true, /* strip empty */
-                                                     this, nullptr);
+                                                     সত্য, /* strip empty */
+                                                     এই, nullptr);
     }
 
     auto it =
     + hb_iter (intersection)
     | hb_map_retains_sorting (glyph_map)
-    | hb_zip (hb_repeat (values.as_array (valueFormat.get_len ())))
+    | hb_zip (hb_repeat (values.as_array (মান_Format_2.get_len ())))
     ;
 
-    bool ret = bool (it);
-    SinglePos_serialize (c->serializer, this, valueFormat, it, &c->plan->layout_variation_idx_delta_map, new_format);
+    যৌক্তিক ret = যৌক্তিক (it);
+    SinglePos_serialize (c->serializer, এই, মান_Format_2, it, &c->plan->layout_variation_idx_delta_map, new_format);
     return_trace (ret);
   }
 };

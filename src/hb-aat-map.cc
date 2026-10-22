@@ -26,50 +26,50 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 #ifndef HB_NO_AAT_SHAPE
 
-#include "hb-aat-map.hh"
+#অন্তর্ভাব "hb-aat-map.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-aat-layout-feat-table.hh"
+#অন্তর্ভাব "hb-aat-layout.hh"
+#অন্তর্ভাব "hb-aat-layout-feat-table.hh"
 
 
-void hb_aat_map_builder_t::add_feature (const hb_feature_t &feature)
+শূন্য hb_aat_map_builder_t::add_feature (ধ্রুবক hb_feature_t &feature)
 {
-  if (!face->table.feat->has_data ()) return;
+  যদি (!face->table.feat->has_তথ্য ()) ফেরত;
 
-  if (feature.tag == HB_TAG ('a','a','l','t'))
+  যদি (feature.tag == HB_TAG ('a','a','l','t'))
   {
-    if (!face->table.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
-      return;
+    যদি (!face->table.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
+      ফেরত;
     feature_range_t *range = features.push();
     range->start = feature.start;
     range->end = feature.end;
     range->info.type = HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES;
     range->info.setting = (hb_aat_layout_feature_selector_t) feature.value;
-    range->info.seq = features.length;
-    range->info.is_exclusive = true;
-    return;
+    range->info.seq = features.দৈর্ঘ্য;
+    range->info.is_exclusive = সত্য;
+    ফেরত;
   }
 
-  const hb_aat_feature_mapping_t *mapping = hb_aat_layout_find_feature_mapping (feature.tag);
-  if (!mapping) return;
+  ধ্রুবক hb_aat_feature_mapping_t *mapping = hb_aat_layout_find_feature_mapping (feature.tag);
+  যদি (!mapping) ফেরত;
 
-  const AAT::FeatureName* feature_name = &face->table.feat->get_feature (mapping->aatFeatureType);
-  if (!feature_name->has_data ())
+  ধ্রুবক AAT::FeatureName* feature_name = &face->table.feat->get_feature (mapping->aatFeatureType);
+  যদি (!feature_name->has_তথ্য ())
   {
     /* Special case: Chain::compile_flags will fall back to the deprecated version of
      * small-caps if necessary, so we need to check for that possibility.
      * https://github.com/harfbuzz/harfbuzz/issues/2307 */
-    if (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE &&
+    যদি (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE &&
 	mapping->selectorToEnable == HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS)
     {
       feature_name = &face->table.feat->get_feature (HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE);
-      if (!feature_name->has_data ()) return;
+      যদি (!feature_name->has_তথ্য ()) ফেরত;
     }
-    else return;
+    অন্যথা ফেরত;
   }
 
   feature_range_t *range = features.push();
@@ -77,75 +77,75 @@ void hb_aat_map_builder_t::add_feature (const hb_feature_t &feature)
   range->end = feature.end;
   range->info.type = mapping->aatFeatureType;
   range->info.setting = feature.value ? mapping->selectorToEnable : mapping->selectorToDisable;
-  range->info.seq = features.length;
+  range->info.seq = features.দৈর্ঘ্য;
   range->info.is_exclusive = feature_name->is_exclusive ();
 }
 
-void
+শূন্য
 hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 {
   /* Compute active features per range, and compile each. */
-  if (!features.length)
+  যদি (!features.দৈর্ঘ্য)
   {
-    hb_aat_layout_compile_map (this, &m);
-    return;
+    hb_aat_layout_compile_map (এই, &m);
+    ফেরত;
   }
 
   /* Sort features by start/end events. */
   hb_vector_t<feature_event_t> feature_events;
-  feature_events.alloc_exact (features.length * 2 + 1);
-  for (unsigned int i = 0; i < features.length; i++)
+  feature_events.alloc_exact (features.দৈর্ঘ্য * 2 + 1);
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < features.দৈর্ঘ্য; i++)
   {
     auto &feature = features.arrayZ[i];
 
-    if (feature.start == feature.end)
-      continue;
+    যদি (feature.start == feature.end)
+      চালু;
 
     feature_event_t *event;
 
     event = feature_events.push ();
-    event->index = feature.start;
-    event->start = true;
+    event->সূচক_2 = feature.start;
+    event->start = সত্য;
     event->feature = feature.info;
 
     event = feature_events.push ();
-    event->index = feature.end;
-    event->start = false;
+    event->সূচক_2 = feature.end;
+    event->start = মিথ্যা;
     event->feature = feature.info;
   }
   feature_events.qsort ();
   /* Add a strategic final event. */
   {
     feature_info_t feature;
-    feature.seq = features.length + 1;
+    feature.seq = features.দৈর্ঘ্য + 1;
 
     feature_event_t *event = feature_events.push ();
-    event->index = -1; /* This value does magic. */
-    event->start = false;
+    event->সূচক_2 = -1; /* This value does magic. */
+    event->start = মিথ্যা;
     event->feature = feature;
   }
 
   /* Scan events and save features for each range. */
   hb_sorted_vector_t<feature_info_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  unsigned পূর্ণসংখ্যা last_সূচক = 0;
+  জন্য (unsigned পূর্ণসংখ্যা i = 0; i < feature_events.দৈর্ঘ্য; i++)
   {
     feature_event_t *event = &feature_events[i];
 
-    if (event->index != last_index)
+    যদি (event->সূচক_2 != last_সূচক)
     {
       /* Save a snapshot of active features and the range. */
 
       /* Sort features and merge duplicates */
       current_features = active_features;
-      range_first = last_index;
-      range_last = event->index - 1;
-      if (current_features.length)
+      range_first = last_সূচক;
+      range_last = event->সূচক_2 - 1;
+      যদি (current_features.দৈর্ঘ্য)
       {
 	current_features.qsort ();
-	unsigned int j = 0;
-	for (unsigned int i = 1; i < current_features.length; i++)
-	  if (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
+	unsigned পূর্ণসংখ্যা j = 0;
+	জন্য (unsigned পূর্ণসংখ্যা i = 1; i < current_features.দৈর্ঘ্য; i++)
+	  যদি (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
 	      /* Nonexclusive feature selectors come in even/odd pairs to turn a setting on/off
 	       * respectively, so we mask out the low-order bit when checking for "duplicates"
 	       * (selectors referring to the same feature setting) here. */
@@ -154,24 +154,24 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 	current_features.shrink (j + 1);
       }
 
-      hb_aat_layout_compile_map (this, &m);
+      hb_aat_layout_compile_map (এই, &m);
 
-      last_index = event->index;
+      last_সূচক = event->সূচক_2;
     }
 
-    if (event->start)
+    যদি (event->start)
     {
       active_features.push (event->feature);
-    } else {
+    } অন্যথা {
       feature_info_t *feature = active_features.lsearch (event->feature);
-      if (feature)
+      যদি (feature)
 	active_features.remove_ordered (feature - active_features.arrayZ);
     }
   }
 
-  for (auto &chain_flags : m.chain_flags)
+  জন্য (auto &chain_flags : m.chain_flags)
     // With our above setup this value is one less than desired; adjust it.
-    chain_flags.tail().cluster_last = HB_FEATURE_GLOBAL_END;
+    chain_flags.লেজ().cluster_last = HB_FEATURE_GLOBAL_END;
 }
 
 

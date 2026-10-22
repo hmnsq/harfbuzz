@@ -27,7 +27,7 @@
 #ifndef HB_CACHE_HH
 #define HB_CACHE_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,64 +57,64 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+template <unsigned পূর্ণসংখ্যা চাবি_bits=16,
+	 unsigned পূর্ণসংখ্যা মান_bits=8 + 32 - চাবি_bits,
+	 unsigned পূর্ণসংখ্যা cache_bits=8,
+	 যৌক্তিক thread_safe=সত্য>
+কাঠামো hb_cache_t
 {
   using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
+					   typename std::conditional<চাবি_bits + মান_bits - cache_bits <= 8,
+								     hb_atomic_t<unsigned অক্ষর>,
+								     typename std::conditional<চাবি_bits + মান_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
+											       hb_atomic_t<unsigned পূর্ণসংখ্যা>>::type>::type,
+					   typename std::conditional<চাবি_bits + মান_bits - cache_bits <= 8,
+								     unsigned অক্ষর,
+								     typename std::conditional<চাবি_bits + মান_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned পূর্ণসংখ্যা>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((চাবি_bits >= cache_bits), "");
+  static_assert ((চাবি_bits + মান_bits <= cache_bits + 8 * আকার (item_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  স্থির constexpr unsigned MAX_মান = (1u << মান_bits) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  শূন্য clear ()
   {
-    for (auto &v : values)
+    জন্য (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  যৌক্তিক get (unsigned পূর্ণসংখ্যা key, unsigned পূর্ণসংখ্যা *value) ধ্রুবক
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned পূর্ণসংখ্যা k = key & ((1u<<cache_bits)-1);
+    unsigned পূর্ণসংখ্যা v = values[k];
+    constexpr unsigned পূর্ণসংখ্যা empty = (1ULL << (8 * আকার (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    যদি ((key >> চাবি_bits) |
+	((v >> মান_bits) ^ (key >> cache_bits)) |
+	((চাবি_bits + মান_bits - cache_bits == 8 * আকার (item_t)) && (v == empty)))
+      ফেরত মিথ্যা;
+    *value = v & ((1u<<মান_bits)-1);
+    ফেরত সত্য;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  শূন্য set (unsigned পূর্ণসংখ্যা key, unsigned পূর্ণসংখ্যা value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    যদি (unlikely ((key >> চাবি_bits) || (value >> মান_bits)))
+      ফেরত; /* Overflows */
+    unsigned পূর্ণসংখ্যা k = key & ((1u<<cache_bits)-1);
+    unsigned পূর্ণসংখ্যা v = ((key>>cache_bits)<<মান_bits) | value;
     values[k] = v;
   }
 
-  private:
+  ব্যক্তিগত:
   item_t values[1u<<cache_bits];
 };
 

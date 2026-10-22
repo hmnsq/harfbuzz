@@ -13,46 +13,46 @@ Input file:
 * https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
 """
 
-import collections
-import os
-def write (s):
+আমদানি collections
+আমদানি os
+def লিখ (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
-import sys
+	sys.stdout.বাফার.লিখ (s.encode ('utf-8'))
+আমদানি sys
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
+যদি len (sys.argv) > 1 এবং sys.argv[1] == '--rust':
 	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+	output_rust = সত্য
+অন্যথা:
+	output_rust = মিথ্যা
 
-if len (sys.argv) != 3:
+যদি len (sys.argv) != 3:
 	sys.exit (__doc__)
 
-with open (sys.argv[2], encoding='utf-8') as f:
-	scripts_header = [f.readline () for i in range (2)]
+with open (sys.argv[2], encoding='utf-8') ইব f:
+	scripts_header = [f.readline () জন্য i মধ্যে range (2)]
 	scripts = {}
 	script_order = {}
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+	জন্য সারি মধ্যে f:
+		j = সারি.find ('#')
+		যদি j >= 0:
+			সারি = সারি[:j]
+		fields = [x.strip () জন্য x মধ্যে সারি.split (';')]
+		যদি len (fields) == 1:
+			চালু
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = পূর্ণসংখ্যা (uu[0], 16)
+		যদি len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		অন্যথা:
+			end = পূর্ণসংখ্যা (uu[1], 16)
 		script = fields[1]
-		for u in range (start, end + 1):
+		জন্য u মধ্যে range (start, end + 1):
 			scripts[u] = script
-		if script not in script_order:
+		যদি script নয় মধ্যে script_order:
 			script_order[script] = start
 
-class ConstraintSet (object):
+শ্রেণী ConstraintSet (object):
 	"""A set of prohibited code point sequences.
 
 	Args:
@@ -70,131 +70,131 @@ class ConstraintSet (object):
 
 	def add (self, constraint):
 		"""Add a constraint to this set."""
-		if not constraint:
-			return
+		যদি নয় constraint:
+			ফেরত
 		first = constraint[0]
 		rest = constraint[1:]
-		if isinstance (self._c, list):
-			if constraint == self._c[:len (constraint)]:
+		যদি isinstance (self._c, list):
+			যদি constraint == self._c[:len (constraint)]:
 				self._c = constraint
-			elif self._c != constraint[:len (self._c)]:
+			নতুবা_যদি self._c != constraint[:len (self._c)]:
 				self._c = {self._c[0]: ConstraintSet (self._c[1:])}
-		if isinstance (self._c, dict):
-			if first in self._c:
+		যদি isinstance (self._c, dict):
+			যদি first মধ্যে self._c:
 				self._c[first].add (rest)
-			else:
+			অন্যথা:
 				self._c[first] = ConstraintSet (rest)
 
 	@staticmethod
 	def _indent (depth):
-		return ('  ' * depth).replace ('        ', '\t')
+		ফেরত ('  ' * depth).replace ('        ', '\t')
 
-	def __str__ (self, index=0, depth=4):
+	def __str__ (self, সূচক_2=0, depth=4):
 		s = []
 		indent = self._indent (depth)
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		যদি isinstance (self._c, list):
+			যদি len (self._c) == 0:
+				প্রতিজ্ঞা সূচক_2 == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('{}matched = true;\n'.format (indent))
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index or ''))
-			else:
-				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index or ''))
-				if index:
-					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (depth + 2), index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+			নতুবা_যদি len (self._c) == 1:
+				প্রতিজ্ঞা সূচক_2 == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, পরবর্তী (iter (self._c)), সূচক_2 অথবা ''))
+			অন্যথা:
+				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], সূচক_2 অথবা ''))
+				যদি সূচক_2:
+					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (depth + 2), সূচক_2 + 1))
+				জন্য i, cp মধ্যে enumerate (self._c[1:], start=1):
 					s.append ('{}0x{:04X}u == buffer->cur ({}).codepoint{}\n'.format (
-						self._indent (depth + 2), cp, index + i, ')' if i == len (self._c) - 1 else ' &&'))
+						self._indent (depth + 2), cp, সূচক_2 + i, ')' যদি i == len (self._c) - 1 অন্যথা ' &&'))
 				s.append ('{}{{\n'.format (indent))
-				for i in range (index):
+				জন্য i মধ্যে range (সূচক_2):
 					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (depth + 1)))
 				s.append ('{}matched = true;\n'.format (self._indent (depth + 1)))
 				s.append ('{}}}\n'.format (indent))
-		else:
-			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index or ''))
+		অন্যথা:
+			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, সূচক_2 অথবা ''))
 			s.append ('{}{{\n'.format (indent))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
-				cases[rest.__str__ (index + 1, depth + 2)].add (first)
-			for body, labels in sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
-				for i, cp in enumerate (sorted (labels)):
-					if i % 4 == 0:
+			জন্য first, rest মধ্যে sorted (self._c.বস্তুসমূহ ()):
+				cases[rest.__str__ (সূচক_2 + 1, depth + 2)].add (first)
+			জন্য body, labels মধ্যে sorted (cases.বস্তুসমূহ (), চাবি_2=অনামা b_ls: sorted (b_ls[1])[0]):
+				জন্য i, cp মধ্যে enumerate (sorted (labels)):
+					যদি i % 4 == 0:
 						s.append (self._indent (depth + 1))
-					else:
+					অন্যথা:
 						s.append (' ')
-					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' if i % 4 == 3 else ''))
-				if len (labels) % 4 != 0:
+					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' যদি i % 4 == 3 অন্যথা ''))
+				যদি len (labels) % 4 != 0:
 					s.append ('\n')
 				s.append (body)
 				s.append ('{}break;\n'.format (self._indent (depth + 2)))
 			s.append ('{}}}\n'.format (indent))
-		return ''.join (s)
+		ফেরত ''.join (s)
 
-	def rust_str (self, index=0):
+	def rust_str (self, সূচক_2=0):
 		s = []
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		যদি isinstance (self._c, list):
+			যদি len (self._c) == 0:
+				প্রতিজ্ঞা সূচক_2 == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = true;\n')
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (next (iter (self._c)), index))
-			else:
-				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], index))
-				if index:
-					s.append ('buffer.idx + {} < buffer.len &&\n'.format (index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+			নতুবা_যদি len (self._c) == 1:
+				প্রতিজ্ঞা সূচক_2 == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (পরবর্তী (iter (self._c)), সূচক_2))
+			অন্যথা:
+				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], সূচক_2))
+				যদি সূচক_2:
+					s.append ('buffer.idx + {} < buffer.len &&\n'.format (সূচক_2 + 1))
+				জন্য i, cp মধ্যে enumerate (self._c[1:], start=1):
 					s.append ('0x{:04X} == buffer.cur({}).glyph_id{}\n'.format (
-						cp, index + i, '' if i == len (self._c) - 1 else ' &&'))
+						cp, সূচক_2 + i, '' যদি i == len (self._c) - 1 অন্যথা ' &&'))
 				s.append ('{\n')
-				for i in range (index + 1):
+				জন্য i মধ্যে range (সূচক_2 + 1):
 					s.append ('buffer.next_glyph();\n')
 				s.append ('output_dotted_circle(buffer);\n')
 				s.append ('}\n')
-		else:
-			s.append ('match buffer.cur({}).glyph_id {{\n'.format (index))
+		অন্যথা:
+			s.append ('match buffer.cur({}).glyph_id {{\n'.format (সূচক_2))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
-				cases[rest.rust_str (index + 1)].add (first)
-			items = sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0])
-			for ii, (body, labels) in enumerate (items):
-				for i, cp in enumerate (sorted (labels)):
-					if i == len (labels) - 1:
-						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' if i % 4 == 3 else ''))
-					else:
-						s.append (' 0x{:04X} | {}'.format (cp, '\n' if i % 4 == 3 else ''))
+			জন্য first, rest মধ্যে sorted (self._c.বস্তুসমূহ ()):
+				cases[rest.rust_str (সূচক_2 + 1)].add (first)
+			বস্তুসমূহ = sorted (cases.বস্তুসমূহ (), চাবি_2=অনামা b_ls: sorted (b_ls[1])[0])
+			জন্য ii, (body, labels) মধ্যে enumerate (বস্তুসমূহ):
+				জন্য i, cp মধ্যে enumerate (sorted (labels)):
+					যদি i == len (labels) - 1:
+						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' যদি i % 4 == 3 অন্যথা ''))
+					অন্যথা:
+						s.append (' 0x{:04X} | {}'.format (cp, '\n' যদি i % 4 == 3 অন্যথা ''))
 				s.append (body)
 				s.append ('}')
-				if ii == len (items) - 1:
+				যদি ii == len (বস্তুসমূহ) - 1:
 					s.append ('_ => {}')
 			s.append ('}\n')
-		return ''.join (s)
+		ফেরত ''.join (s)
 
 constraints = {}
-with open (sys.argv[1], encoding='utf-8') as f:
+with open (sys.argv[1], encoding='utf-8') ইব f:
 	constraints_header = []
-	while True:
-		line = f.readline ().strip ()
-		if line == '#':
-			break
-		constraints_header.append(line)
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		constraint = [int (cp, 16) for cp in line.split (';')[0].split ()]
-		if not constraint: continue
-		assert 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
+	যখন সত্য:
+		সারি = f.readline ().strip ()
+		যদি সারি == '#':
+			বিরতি
+		constraints_header.append(সারি)
+	জন্য সারি মধ্যে f:
+		j = সারি.find ('#')
+		যদি j >= 0:
+			সারি = সারি[:j]
+		constraint = [পূর্ণসংখ্যা (cp, 16) জন্য cp মধ্যে সারি.split (';')[0].split ()]
+		যদি নয় constraint: চালু
+		প্রতিজ্ঞা 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
 		script = scripts[constraint[0]]
-		if script in constraints:
+		যদি script মধ্যে constraints:
 			constraints[script].add (constraint)
-		else:
+		অন্যথা:
 			constraints[script] = ConstraintSet (constraint)
-		assert constraints, 'No constraints found'
+		প্রতিজ্ঞা constraints, 'No constraints found'
 
 print ('/* == Start of generated functions == */')
-if output_rust:
+যদি output_rust:
 	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
 	print ()
 	print ('#![allow(clippy::single_match)]')
@@ -229,13 +229,13 @@ if output_rust:
 	print ('    buffer.clear_output();')
 	print ('    match buffer.script {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	জন্য script, constraints মধ্যে sorted (constraints.বস্তুসমূহ (), চাবি_2=অনামা s_c: script_order[s_c[0]]):
 		print ('        Some(script::{}) => {{'.format (script.upper ()))
 		print ('            buffer.idx = 0;')
 		print ('            while buffer.idx + 1 < buffer.len {')
 		print ('                #[allow(unused_mut)]')
 		print ('                let mut matched = false;')
-		write (constraints.rust_str ())
+		লিখ (constraints.rust_str ())
 		print ('                buffer.next_glyph();')
 		print ('                if matched { output_with_dotted_circle(buffer); }')
 		print ('            }')
@@ -246,7 +246,7 @@ if output_rust:
 	print ('    }')
 	print ('    buffer.sync();')
 	print ('}')
-else:
+অন্যথা:
 	print ('/*')
 	print (' * The following functions are generated by running:')
 	print (' *')
@@ -254,11 +254,11 @@ else:
 	print (' *')
 	print (' * on files with these headers:')
 	print (' *')
-	for line in constraints_header:
-		print (' * %s' % line.strip ())
+	জন্য সারি মধ্যে constraints_header:
+		print (' * %s' % সারি.strip ())
 	print (' *')
-	for line in scripts_header:
-		print (' * %s' % line.strip ())
+	জন্য সারি মধ্যে scripts_header:
+		print (' * %s' % সারি.strip ())
 	print (' */')
 	print ()
 	print ('#include "hb.hh"')
@@ -303,12 +303,12 @@ else:
 	print ('  switch ((unsigned) buffer->props.script)')
 	print ('  {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	জন্য script, constraints মধ্যে sorted (constraints.বস্তুসমূহ (), চাবি_2=অনামা s_c: script_order[s_c[0]]):
 		print ('    case HB_SCRIPT_{}:'.format (script.upper ()))
 		print ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
 		print ('      {')
 		print ('\tbool matched = false;')
-		write (str (constraints))
+		লিখ (str (constraints))
 		print ('\t(void) buffer->next_glyph ();')
 		print ('\tif (matched) _output_with_dotted_circle (buffer);')
 		print ('      }')

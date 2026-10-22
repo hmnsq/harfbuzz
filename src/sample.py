@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-import sys
-import array
-import gi
+আমদানি sys
+আমদানি array
+আমদানি gi
 gi.require_version('HarfBuzz', '0.0')
-from gi.repository import HarfBuzz as hb
-from gi.repository import GLib
+তঃ gi.repository আমদানি HarfBuzz ইব hb
+তঃ gi.repository আমদানি GLib
 
-fontdata = open (sys.argv[1], 'rb').read ()
+fontdata = open (sys.argv[1], 'rb').পঠ ()
 text = sys.argv[2]
 # Need to create GLib.Bytes explicitly until this bug is fixed:
 # https://bugzilla.gnome.org/show_bug.cgi?id=729541
-blob = hb.glib_blob_create (GLib.Bytes.new (fontdata))
+blob = hb.glib_blob_create (GLib.Bytes.নতুন (fontdata))
 face = hb.face_create (blob, 0)
 del blob
 font = hb.font_create (face)
@@ -21,13 +21,13 @@ hb.font_set_scale (font, upem, upem)
 #hb.ft_font_set_funcs (font)
 hb.ot_font_set_funcs (font)
 
-buf = hb.buffer_create ()
-class Debugger (object):
-	def message (self, buf, font, msg, data, _x_what_is_this):
-		print (msg)
-		return True
+buf = hb.বাফার_create ()
+শ্রেণী Debugger (object):
+	def message (self, buf, font, বার্তা, তথ্য, _x_what_is_this):
+		print (বার্তা)
+		ফেরত সত্য
 debugger = Debugger ()
-hb.buffer_set_message_func (buf, debugger.message, 1, 0)
+hb.বাফার_set_message_func (buf, debugger.message, 1, 0)
 
 ##
 ## Add text to buffer
@@ -41,21 +41,21 @@ hb.buffer_set_message_func (buf, debugger.message, 1, 0)
 # hb.buffer_add_utf8 (buf, text.encode('utf-8'), 0, -1)
 # Otherwise, then following handles both narrow and wide
 # Python builds (the first item in the array is BOM, so we skip it):
-if sys.maxunicode == 0x10FFFF:
-	hb.buffer_add_utf32 (buf, array.array ('I', text.encode ('utf-32'))[1:], 0, -1)
-else:
-	hb.buffer_add_utf16 (buf, array.array ('H', text.encode ('utf-16'))[1:], 0, -1)
+যদি sys.maxunicode == 0x10FFFF:
+	hb.বাফার_add_utf32 (buf, array.array ('I', text.encode ('utf-32'))[1:], 0, -1)
+অন্যথা:
+	hb.বাফার_add_utf16 (buf, array.array ('H', text.encode ('utf-16'))[1:], 0, -1)
 
 
-hb.buffer_guess_segment_properties (buf)
+hb.বাফার_guess_segment_properties (buf)
 
 hb.shape (font, buf, [])
 del font
 
-infos = hb.buffer_get_glyph_infos (buf)
-positions = hb.buffer_get_glyph_positions (buf)
+infos = hb.বাফার_get_glyph_infos (buf)
+positions = hb.বাফার_get_glyph_positions (buf)
 
-for info, pos in zip (infos, positions):
+জন্য info, pos মধ্যে zip (infos, positions):
 	gid = info.codepoint
 	cluster = info.cluster
 	x_advance = pos.x_advance

@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-shape-plan.hh"
-#include "hb-buffer.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#অন্তর্ভাব "hb-shaper.hh"
+#অন্তর্ভাব "hb-shape-plan.hh"
+#অন্তর্ভাব "hb-buffer.hh"
+#অন্তর্ভাব "hb-font.hh"
+#অন্তর্ভাব "hb-machinery.hh"
 
 
 #ifndef HB_NO_SHAPER
@@ -50,37 +50,37 @@
  **/
 
 
-static inline void free_static_shaper_list ();
+স্থির অন্তঃরেখ শূন্য free_static_shaper_list ();
 
-static const char * const nil_shaper_list[] = {nullptr};
+স্থির ধ্রুবক অক্ষর * ধ্রুবক nil_shaper_list[] = {nullptr};
 
-static struct hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+স্থির কাঠামো hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<ধ্রুবক অক্ষর *,
 							      hb_shaper_list_lazy_loader_t>
 {
-  static const char ** create ()
+  স্থির ধ্রুবক অক্ষর ** create ()
   {
-    const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_COUNT, sizeof (const char *));
-    if (unlikely (!shaper_list))
-      return nullptr;
+    ধ্রুবক অক্ষর **shaper_list = (ধ্রুবক অক্ষর **) hb_calloc (1 + HB_SHAPERS_গুনতি, আকার (ধ্রুবক অক্ষর *));
+    যদি (unlikely (!shaper_list))
+      ফেরত nullptr;
 
-    const hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    unsigned int i;
-    for (i = 0; i < HB_SHAPERS_COUNT; i++)
+    ধ্রুবক hb_shaper_entry_t *shapers = _hb_shapers_get ();
+    unsigned পূর্ণসংখ্যা i;
+    জন্য (i = 0; i < HB_SHAPERS_গুনতি; i++)
       shaper_list[i] = shapers[i].name;
     shaper_list[i] = nullptr;
 
     hb_atexit (free_static_shaper_list);
 
-    return shaper_list;
+    ফেরত shaper_list;
   }
-  static void destroy (const char **l)
+  স্থির শূন্য destroy (ধ্রুবক অক্ষর **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_shaper_list; }
+  স্থির ধ্রুবক অক্ষর * ধ্রুবক * get_null ()
+  { ফেরত nil_shaper_list; }
 } static_shaper_list;
 
-static inline
-void free_static_shaper_list ()
+স্থির অন্তঃরেখ
+শূন্য free_static_shaper_list ()
 {
   static_shaper_list.free_instance ();
 }
@@ -98,10 +98,10 @@ void free_static_shaper_list ()
  *
  * Since: 0.9.2
  **/
-const char **
+ধ্রুবক অক্ষর **
 hb_shape_list_shapers ()
 {
-  return static_shaper_list.get_unconst ();
+  ফেরত static_shaper_list.get_unconst ();
 }
 
 
@@ -125,48 +125,48 @@ hb_shape_list_shapers ()
  **/
 hb_bool_t
 hb_shape_full (hb_font_t          *font,
-	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list)
+	       hb_বাফার_t        *বাফার,
+	       ধ্রুবক hb_feature_t *features,
+	       unsigned পূর্ণসংখ্যা        অঙ্ক_features,
+	       ধ্রুবক অক্ষর * ধ্রুবক *shaper_list)
 {
-  if (unlikely (!buffer->len))
-    return true;
+  যদি (unlikely (!বাফার->len))
+    ফেরত সত্য;
 
-  buffer->enter ();
+  বাফার->enter ();
 
-  hb_buffer_t *text_buffer = nullptr;
-  if (buffer->flags & HB_BUFFER_FLAG_VERIFY)
+  hb_বাফার_t *text_বাফার = nullptr;
+  যদি (বাফার->flags & HB_বাফার_FLAG_VERIFY)
   {
-    text_buffer = hb_buffer_create ();
-    hb_buffer_append (text_buffer, buffer, 0, -1);
+    text_বাফার = hb_বাফার_create ();
+    hb_বাফার_append (text_বাফার, বাফার, 0, -1);
   }
 
-  hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached2 (font->face, &buffer->props,
-							      features, num_features,
-							      font->coords, font->has_nonzero_coords ? font->num_coords : 0,
+  hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached2 (font->face, &বাফার->props,
+							      features, অঙ্ক_features,
+							      font->coords, font->has_nonzero_coords ? font->অঙ্ক_coords : 0,
 							      shaper_list);
 
-  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, num_features);
+  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, বাফার, features, অঙ্ক_features);
 
   hb_shape_plan_destroy (shape_plan);
 
-  if (text_buffer)
+  যদি (text_বাফার)
   {
-    if (res && buffer->successful
-	    && text_buffer->successful
-	    && !buffer->verify (text_buffer,
+    যদি (res && বাফার->successful
+	    && text_বাফার->successful
+	    && !বাফার->verify (text_বাফার,
 				font,
 				features,
-				num_features,
+				অঙ্ক_features,
 				shaper_list))
-      res = false;
-    hb_buffer_destroy (text_buffer);
+      res = মিথ্যা;
+    hb_বাফার_destroy (text_বাফার);
   }
 
-  buffer->leave ();
+  বাফার->leave ();
 
-  return res;
+  ফেরত res;
 }
 
 /**
@@ -185,43 +185,43 @@ hb_shape_full (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void
+শূন্য
 hb_shape (hb_font_t           *font,
-	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features)
+	  hb_বাফার_t         *বাফার,
+	  ধ্রুবক hb_feature_t  *features,
+	  unsigned পূর্ণসংখ্যা         অঙ্ক_features)
 {
-  hb_shape_full (font, buffer, features, num_features, nullptr);
+  hb_shape_full (font, বাফার, features, অঙ্ক_features, nullptr);
 }
 
 
 #ifdef HB_EXPERIMENTAL_API
 #ifndef HB_NO_VAR
 
-static float
-buffer_advance (hb_buffer_t *buffer)
+স্থির দশমিক
+বাফার_advance (hb_বাফার_t *বাফার)
 {
-  float a = 0;
-  auto *pos = buffer->pos;
-  unsigned count = buffer->len;
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    for (unsigned i = 0; i < count; i++)
+  দশমিক a = 0;
+  auto *pos = বাফার->pos;
+  unsigned গুনতি = বাফার->len;
+  যদি (HB_DIRECTION_IS_HORIZONTAL (বাফার->props.direction))
+    জন্য (unsigned i = 0; i < গুনতি; i++)
       a += pos[i].x_advance;
-  else
-    for (unsigned i = 0; i < count; i++)
+  অন্যথা
+    জন্য (unsigned i = 0; i < গুনতি; i++)
       a += pos[i].y_advance;
-  return a;
+  ফেরত a;
 }
 
-static void
-reset_buffer (hb_buffer_t *buffer,
-	      hb_array_t<const hb_glyph_info_t> text)
+স্থির শূন্য
+reset_বাফার (hb_বাফার_t *বাফার,
+	      hb_array_t<ধ্রুবক hb_glyph_info_t> text)
 {
-  assert (buffer->ensure (text.length));
-  buffer->have_positions = false;
-  buffer->len = text.length;
-  hb_memcpy (buffer->info, text.arrayZ, text.length * sizeof (buffer->info[0]));
-  hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
+  প্রতিজ্ঞা (বাফার->ensure (text.দৈর্ঘ্য));
+  বাফার->have_positions = মিথ্যা;
+  বাফার->len = text.দৈর্ঘ্য;
+  hb_memcpy (বাফার->info, text.arrayZ, text.দৈর্ঘ্য * আকার (বাফার->info[0]));
+  hb_বাফার_set_content_type (বাফার, HB_বাফার_CONTENT_TYPE_UNICODE);
 }
 
 /**
@@ -257,25 +257,25 @@ reset_buffer (hb_buffer_t *buffer,
  **/
 hb_bool_t
 hb_shape_justify (hb_font_t          *font,
-		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  hb_বাফার_t        *বাফার,
+		  ধ্রুবক hb_feature_t *features,
+		  unsigned পূর্ণসংখ্যা        অঙ্ক_features,
+		  ধ্রুবক অক্ষর * ধ্রুবক *shaper_list,
+		  দশমিক               min_target_advance,
+		  দশমিক               max_target_advance,
+		  দশমিক              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */)
+		  দশমিক              *var_মান /* OUT */)
 {
   // TODO Negative font scales?
 
   /* If default advance already matches target, nothing to do. Shape and return. */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  যদি (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return hb_shape_full (font, buffer,
-			  features, num_features,
+    *var_মান = 0.0f;
+    ফেরত hb_shape_full (font, বাফার,
+			  features, অঙ্ক_features,
 			  shaper_list);
   }
 
@@ -291,151 +291,151 @@ hb_shape_justify (hb_font_t          *font,
     HB_TAG ('j','s','t','f'),
     HB_TAG ('w','d','t','h'),
   };
-  for (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
-    if (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
+  জন্য (unsigned i = 0; i < ARRAY_দৈর্ঘ্য (tags); i++)
+    যদি (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
     {
       tag = *var_tag = tags[i];
-      break;
+      বিরতি;
     }
 
   /* If no suitable variation axis found, can't justify.  Just shape and return. */
-  if (!tag)
+  যদি (!tag)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    if (hb_shape_full (font, buffer,
-		       features, num_features,
+    *var_মান = 0.0f;
+    যদি (hb_shape_full (font, বাফার,
+		       features, অঙ্ক_features,
 		       shaper_list))
     {
-      *advance = buffer_advance (buffer);
-      return true;
+      *advance = বাফার_advance (বাফার);
+      ফেরত সত্য;
     }
-    else
-      return false;
+    অন্যথা
+      ফেরত মিথ্যা;
   }
 
   /* Copy buffer text as we need it so we can shape multiple times. */
-  unsigned text_len = buffer->len;
-  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, sizeof (buffer->info[0]));
-  if (unlikely (text_len && !text_info))
-    return false;
+  unsigned text_len = বাফার->len;
+  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, আকার (বাফার->info[0]));
+  যদি (unlikely (text_len && !text_info))
+    ফেরত মিথ্যা;
   HB_SCOPE_GUARD (hb_free (text_info));
-  hb_memcpy (text_info, buffer->info, text_len * sizeof (buffer->info[0]));
-  auto text = hb_array<const hb_glyph_info_t> (text_info, text_len);
+  hb_memcpy (text_info, বাফার->info, text_len * আকার (বাফার->info[0]));
+  auto text = hb_array<ধ্রুবক hb_glyph_info_t> (text_info, text_len);
 
   /* If default advance was not provided to us, calculate it. */
-  if (!*advance)
+  যদি (!*advance)
   {
-    hb_font_set_variation (font, tag, axis_info.default_value);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_set_variation (font, tag, axis_info.default_মান);
+    যদি (!hb_shape_full (font, বাফার,
+			features, অঙ্ক_features,
 			shaper_list))
-      return false;
-    *advance = buffer_advance (buffer);
+      ফেরত মিথ্যা;
+    *advance = বাফার_advance (বাফার);
   }
 
   /* If default advance already matches target, nothing to do. Shape and return.
    * Do this again, in case advance was just calculated.
    */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  যদি (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return true;
+    *var_মান = 0.0f;
+    ফেরত সত্য;
   }
 
   /* Prepare for running the solver. */
-  double a, b, ya, yb;
-  if (*advance < min_target_advance)
+  দ্বিগুণ a, b, ya, yb;
+  যদি (*advance < min_target_advance)
   {
     /* Need to expand. */
-    ya = (double) *advance;
-    a = (double) axis_info.default_value;
-    b = (double) axis_info.max_value;
+    ya = (দ্বিগুণ) *advance;
+    a = (দ্বিগুণ) axis_info.default_মান;
+    b = (দ্বিগুণ) axis_info.max_মান;
 
     /* Shape buffer for maximum expansion to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) b);
-    reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_set_variation (font, tag, (দশমিক) b);
+    reset_বাফার (বাফার, text);
+    যদি (!hb_shape_full (font, বাফার,
+			features, অঙ্ক_features,
 			shaper_list))
-      return false;
-    yb = (double) buffer_advance (buffer);
+      ফেরত মিথ্যা;
+    yb = (দ্বিগুণ) বাফার_advance (বাফার);
     /* If the maximum expansion is less than max target,
      * there's nothing to solve for. Just return it. */
-    if (yb <= (double) max_target_advance)
+    যদি (yb <= (দ্বিগুণ) max_target_advance)
     {
-      *var_value = (float) b;
-      *advance = (float) yb;
-      return true;
+      *var_মান = (দশমিক) b;
+      *advance = (দশমিক) yb;
+      ফেরত সত্য;
     }
   }
-  else
+  অন্যথা
   {
     /* Need to shrink. */
-    yb = (double) *advance;
-    a = (double) axis_info.min_value;
-    b = (double) axis_info.default_value;
+    yb = (দ্বিগুণ) *advance;
+    a = (দ্বিগুণ) axis_info.min_মান;
+    b = (দ্বিগুণ) axis_info.default_মান;
 
     /* Shape buffer for maximum shrinkate to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) a);
-    reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_set_variation (font, tag, (দশমিক) a);
+    reset_বাফার (বাফার, text);
+    যদি (!hb_shape_full (font, বাফার,
+			features, অঙ্ক_features,
 			shaper_list))
-      return false;
-    ya = (double) buffer_advance (buffer);
+      ফেরত মিথ্যা;
+    ya = (দ্বিগুণ) বাফার_advance (বাফার);
     /* If the maximum shrinkate is more than min target,
      * there's nothing to solve for. Just return it. */
-    if (ya >= (double) min_target_advance)
+    যদি (ya >= (দ্বিগুণ) min_target_advance)
     {
-      *var_value = (float) a;
-      *advance = (float) ya;
-      return true;
+      *var_মান = (দশমিক) a;
+      *advance = (দশমিক) ya;
+      ফেরত সত্য;
     }
   }
 
   /* Run the solver to find a var axis value that hits
    * the desired width. */
 
-  double epsilon = (b - a) / (1<<14);
-  bool failed = false;
+  দ্বিগুণ epsilon = (b - a) / (1<<14);
+  যৌক্তিক failed = মিথ্যা;
 
-  auto f = [&] (double x)
+  auto f = [&] (দ্বিগুণ x)
   {
-    hb_font_set_variation (font, tag, (float) x);
-    reset_buffer (buffer, text);
-    if (unlikely (!hb_shape_full (font, buffer,
-				  features, num_features,
+    hb_font_set_variation (font, tag, (দশমিক) x);
+    reset_বাফার (বাফার, text);
+    যদি (unlikely (!hb_shape_full (font, বাফার,
+				  features, অঙ্ক_features,
 				  shaper_list)))
     {
-      failed = true;
-      return (double) min_target_advance;
+      failed = সত্য;
+      ফেরত (দ্বিগুণ) min_target_advance;
     }
 
-    double w = (double) buffer_advance (buffer);
-    DEBUG_MSG (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
+    দ্বিগুণ w = (দ্বিগুণ) বাফার_advance (বাফার);
+    DEBUG_বার্তা (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
 	       HB_UNTAG (tag), x, w,
-	       (double) min_target_advance, (double) max_target_advance);
-    return w;
+	       (দ্বিগুণ) min_target_advance, (দ্বিগুণ) max_target_advance);
+    ফেরত w;
   };
 
-  double y = 0;
-  double itp = solve_itp (f,
+  দ্বিগুণ y = 0;
+  দ্বিগুণ itp = solve_itp (f,
 			  a, b,
 			  epsilon,
-			  (double) min_target_advance, (double) max_target_advance,
+			  (দ্বিগুণ) min_target_advance, (দ্বিগুণ) max_target_advance,
 			  ya, yb, y);
 
-  if (failed)
-    return false;
+  যদি (failed)
+    ফেরত মিথ্যা;
 
-  *var_value = (float) itp;
-  *advance = (float) y;
+  *var_মান = (দশমিক) itp;
+  *advance = (দশমিক) y;
 
-  return true;
+  ফেরত সত্য;
 }
 #endif
 #endif

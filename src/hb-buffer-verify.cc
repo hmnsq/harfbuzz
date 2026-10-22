@@ -24,33 +24,33 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#ifndef HB_NO_BUFFER_VERIFY
+#ifndef HB_NO_বাফার_VERIFY
 
-#include "hb-buffer.hh"
+#অন্তর্ভাব "hb-buffer.hh"
 
 
-#define BUFFER_VERIFY_ERROR "buffer verify error: "
-static inline void
-buffer_verify_error (hb_buffer_t *buffer,
+#define বাফার_VERIFY_ERROR "buffer verify error: "
+স্থির অন্তঃরেখ শূন্য
+বাফার_verify_error (hb_বাফার_t *বাফার,
 		     hb_font_t *font,
-		     const char *fmt,
+		     ধ্রুবক অক্ষর *fmt,
 		     ...) HB_PRINTF_FUNC(3, 4);
 
-static inline void
-buffer_verify_error (hb_buffer_t *buffer,
+স্থির অন্তঃরেখ শূন্য
+বাফার_verify_error (hb_বাফার_t *বাফার,
 		     hb_font_t *font,
-		     const char *fmt,
+		     ধ্রুবক অক্ষর *fmt,
 		     ...)
 {
   va_list ap;
   va_start (ap, fmt);
-  if (buffer->messaging ())
+  যদি (বাফার->messaging ())
   {
-    buffer->message_impl (font, fmt, ap);
+    বাফার->message_impl (font, fmt, ap);
   }
-  else
+  অন্যথা
   {
     fprintf (stderr, "harfbuzz ");
     vfprintf (stderr, fmt, ap);
@@ -59,155 +59,155 @@ buffer_verify_error (hb_buffer_t *buffer,
   va_end (ap);
 }
 
-static bool
-buffer_verify_monotone (hb_buffer_t *buffer,
+স্থির যৌক্তিক
+বাফার_verify_monotone (hb_বাফার_t *বাফার,
 			hb_font_t   *font)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  যদি (!HB_বাফার_CLUSTER_LEVEL_IS_MONOTONE (বাফার->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    ফেরত সত্য;
   }
 
-  bool is_forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
+  যৌক্তিক is_forward = HB_DIRECTION_IS_FORWARD (hb_বাফার_get_direction (বাফার));
 
-  unsigned int num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned পূর্ণসংখ্যা অঙ্ক_glyphs;
+  hb_glyph_info_t *info = hb_বাফার_get_glyph_infos (বাফার, &অঙ্ক_glyphs);
 
-  for (unsigned int i = 1; i < num_glyphs; i++)
-    if (info[i-1].cluster != info[i].cluster &&
+  জন্য (unsigned পূর্ণসংখ্যা i = 1; i < অঙ্ক_glyphs; i++)
+    যদি (info[i-1].cluster != info[i].cluster &&
 	(info[i-1].cluster < info[i].cluster) != is_forward)
     {
-      buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "clusters are not monotone.");
-      return false;
+      বাফার_verify_error (বাফার, font, বাফার_VERIFY_ERROR "clusters are not monotone.");
+      ফেরত মিথ্যা;
     }
 
-  return true;
+  ফেরত সত্য;
 }
 
-static bool
-buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
-			       hb_buffer_t  *text_buffer,
+স্থির যৌক্তিক
+বাফার_verify_unsafe_to_break (hb_বাফার_t  *বাফার,
+			       hb_বাফার_t  *text_বাফার,
 			       hb_font_t          *font,
-			       const hb_feature_t *features,
-			       unsigned int        num_features,
-			       const char * const *shapers)
+			       ধ্রুবক hb_feature_t *features,
+			       unsigned পূর্ণসংখ্যা        অঙ্ক_features,
+			       ধ্রুবক অক্ষর * ধ্রুবক *shapers)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  যদি (!HB_বাফার_CLUSTER_LEVEL_IS_MONOTONE (বাফার->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    ফেরত সত্য;
   }
 
   /* Check that breaking up shaping at safe-to-break is indeed safe. */
 
-  hb_unique_ptr_t<hb_buffer_t> fragment (hb_buffer_create_similar (buffer));
-  hb_buffer_set_flags (fragment, (hb_buffer_flags_t (hb_buffer_get_flags (fragment) & ~HB_BUFFER_FLAG_VERIFY)));
-  hb_unique_ptr_t<hb_buffer_t> reconstruction (hb_buffer_create_similar (buffer));
-  hb_buffer_set_flags (reconstruction, (hb_buffer_flags_t (hb_buffer_get_flags (reconstruction) & ~HB_BUFFER_FLAG_VERIFY)));
+  hb_unique_ptr_t<hb_বাফার_t> fragment (hb_বাফার_create_similar (বাফার));
+  hb_বাফার_set_flags (fragment, (hb_বাফার_flags_t (hb_বাফার_get_flags (fragment) & ~HB_বাফার_FLAG_VERIFY)));
+  hb_unique_ptr_t<hb_বাফার_t> reconstruction (hb_বাফার_create_similar (বাফার));
+  hb_বাফার_set_flags (reconstruction, (hb_বাফার_flags_t (hb_বাফার_get_flags (reconstruction) & ~HB_বাফার_FLAG_VERIFY)));
 
-  unsigned int num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned পূর্ণসংখ্যা অঙ্ক_glyphs;
+  hb_glyph_info_t *info = hb_বাফার_get_glyph_infos (বাফার, &অঙ্ক_glyphs);
 
-  unsigned int num_chars;
-  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &num_chars);
+  unsigned পূর্ণসংখ্যা অঙ্ক_chars;
+  hb_glyph_info_t *text = hb_বাফার_get_glyph_infos (text_বাফার, &অঙ্ক_chars);
 
   /* Chop text and shape fragments. */
-  bool forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
-  unsigned int start = 0;
-  unsigned int text_start = forward ? 0 : num_chars;
-  unsigned int text_end = text_start;
-  for (unsigned int end = 1; end < num_glyphs + 1; end++)
+  যৌক্তিক forward = HB_DIRECTION_IS_FORWARD (hb_বাফার_get_direction (বাফার));
+  unsigned পূর্ণসংখ্যা start = 0;
+  unsigned পূর্ণসংখ্যা text_start = forward ? 0 : অঙ্ক_chars;
+  unsigned পূর্ণসংখ্যা text_end = text_start;
+  জন্য (unsigned পূর্ণসংখ্যা end = 1; end < অঙ্ক_glyphs + 1; end++)
   {
-    if (end < num_glyphs &&
+    যদি (end < অঙ্ক_glyphs &&
 	(info[end].cluster == info[end-1].cluster ||
 	 info[end-(forward?0:1)].mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK))
-	continue;
+	চালু;
 
     /* Shape segment corresponding to glyphs start..end. */
-    if (end == num_glyphs)
+    যদি (end == অঙ্ক_glyphs)
     {
-      if (forward)
-	text_end = num_chars;
-      else
+      যদি (forward)
+	text_end = অঙ্ক_chars;
+      অন্যথা
 	text_start = 0;
     }
-    else
+    অন্যথা
     {
-      if (forward)
+      যদি (forward)
       {
-	unsigned int cluster = info[end].cluster;
-	while (text_end < num_chars && text[text_end].cluster < cluster)
+	unsigned পূর্ণসংখ্যা cluster = info[end].cluster;
+	যখন (text_end < অঙ্ক_chars && text[text_end].cluster < cluster)
 	  text_end++;
       }
-      else
+      অন্যথা
       {
-	unsigned int cluster = info[end - 1].cluster;
-	while (text_start && text[text_start - 1].cluster >= cluster)
+	unsigned পূর্ণসংখ্যা cluster = info[end - 1].cluster;
+	যখন (text_start && text[text_start - 1].cluster >= cluster)
 	  text_start--;
       }
     }
-    if (unlikely (text_start >= text_end))
+    যদি (unlikely (text_start >= text_end))
     {
-      buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-break text range is invalid.");
-      return false;
+      বাফার_verify_error (বাফার, font, বাফার_VERIFY_ERROR "unsafe-to-break text range is invalid.");
+      ফেরত মিথ্যা;
     }
 
-    if (false)
+    যদি (মিথ্যা)
       printf("start %u end %u text start %u end %u\n", start, end, text_start, text_end);
 
-    hb_buffer_clear_contents (fragment);
+    hb_বাফার_clear_contents (fragment);
 
-    hb_buffer_flags_t flags = hb_buffer_get_flags (fragment);
-    if (0 < text_start)
-      flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_BOT);
-    if (text_end < num_chars)
-      flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_EOT);
-    hb_buffer_set_flags (fragment, flags);
+    hb_বাফার_flags_t flags = hb_বাফার_get_flags (fragment);
+    যদি (0 < text_start)
+      flags = (hb_বাফার_flags_t) (flags & ~HB_বাফার_FLAG_BOT);
+    যদি (text_end < অঙ্ক_chars)
+      flags = (hb_বাফার_flags_t) (flags & ~HB_বাফার_FLAG_EOT);
+    hb_বাফার_set_flags (fragment, flags);
 
-    hb_buffer_append (fragment, text_buffer, text_start, text_end);
-    if (!hb_shape_full (font, fragment, features, num_features, shapers) ||
+    hb_বাফার_append (fragment, text_বাফার, text_start, text_end);
+    যদি (!hb_shape_full (font, fragment, features, অঙ্ক_features, shapers) ||
 	!fragment->successful)
-      return true;
-    hb_buffer_append (reconstruction, fragment, 0, -1);
+      ফেরত সত্য;
+    hb_বাফার_append (reconstruction, fragment, 0, -1);
 
     start = end;
-    if (forward)
+    যদি (forward)
       text_start = text_end;
-    else
+    অন্যথা
       text_end = text_start;
   }
 
-  bool ret = true;
-  if (likely (reconstruction->successful))
+  যৌক্তিক ret = সত্য;
+  যদি (likely (reconstruction->successful))
   {
-    hb_buffer_diff_flags_t diff = hb_buffer_diff (reconstruction, buffer, (hb_codepoint_t) -1, 0);
-    if (diff & ~HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
+    hb_বাফার_diff_flags_t diff = hb_বাফার_diff (reconstruction, বাফার, (hb_codepoint_t) -1, 0);
+    যদি (diff & ~HB_বাফার_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
     {
-      buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-break test failed.");
-      ret = false;
+      বাফার_verify_error (বাফার, font, বাফার_VERIFY_ERROR "unsafe-to-break test failed.");
+      ret = মিথ্যা;
 
       /* Return the reconstructed result instead so it can be inspected. */
-      hb_buffer_set_length (buffer, 0);
-      hb_buffer_append (buffer, reconstruction, 0, -1);
+      hb_বাফার_set_দৈর্ঘ্য (বাফার, 0);
+      hb_বাফার_append (বাফার, reconstruction, 0, -1);
     }
   }
 
-  return ret;
+  ফেরত ret;
 }
 
-static bool
-buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
-				hb_buffer_t        *text_buffer,
+স্থির যৌক্তিক
+বাফার_verify_unsafe_to_concat (hb_বাফার_t        *বাফার,
+				hb_বাফার_t        *text_বাফার,
 				hb_font_t          *font,
-				const hb_feature_t *features,
-				unsigned int        num_features,
-				const char * const *shapers)
+				ধ্রুবক hb_feature_t *features,
+				unsigned পূর্ণসংখ্যা        অঙ্ক_features,
+				ধ্রুবক অক্ষর * ধ্রুবক *shapers)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  যদি (!HB_বাফার_CLUSTER_LEVEL_IS_MONOTONE (বাফার->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    ফেরত সত্য;
   }
 
   /* Check that shuffling up text before shaping at safe-to-concat points
@@ -235,30 +235,30 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
    *    the one from original buffer in step 1.
    */
 
-  hb_unique_ptr_t<hb_buffer_t> fragments[2] {
-    hb_unique_ptr_t<hb_buffer_t> (hb_buffer_create_similar (buffer)),
-    hb_unique_ptr_t<hb_buffer_t> (hb_buffer_create_similar (buffer)),
+  hb_unique_ptr_t<hb_বাফার_t> fragments[2] {
+    hb_unique_ptr_t<hb_বাফার_t> (hb_বাফার_create_similar (বাফার)),
+    hb_unique_ptr_t<hb_বাফার_t> (hb_বাফার_create_similar (বাফার)),
   };
-  hb_buffer_set_flags (fragments[0], (hb_buffer_flags_t (hb_buffer_get_flags (fragments[0]) & ~HB_BUFFER_FLAG_VERIFY)));
-  hb_buffer_set_flags (fragments[1], (hb_buffer_flags_t (hb_buffer_get_flags (fragments[1]) & ~HB_BUFFER_FLAG_VERIFY)));
-  hb_unique_ptr_t<hb_buffer_t> reconstruction (hb_buffer_create_similar (buffer));
-  hb_buffer_set_flags (reconstruction, (hb_buffer_flags_t (hb_buffer_get_flags (reconstruction) & ~HB_BUFFER_FLAG_VERIFY)));
+  hb_বাফার_set_flags (fragments[0], (hb_বাফার_flags_t (hb_বাফার_get_flags (fragments[0]) & ~HB_বাফার_FLAG_VERIFY)));
+  hb_বাফার_set_flags (fragments[1], (hb_বাফার_flags_t (hb_বাফার_get_flags (fragments[1]) & ~HB_বাফার_FLAG_VERIFY)));
+  hb_unique_ptr_t<hb_বাফার_t> reconstruction (hb_বাফার_create_similar (বাফার));
+  hb_বাফার_set_flags (reconstruction, (hb_বাফার_flags_t (hb_বাফার_get_flags (reconstruction) & ~HB_বাফার_FLAG_VERIFY)));
   hb_segment_properties_t props;
-  hb_buffer_get_segment_properties (buffer, &props);
-  hb_buffer_set_segment_properties (fragments[0], &props);
-  hb_buffer_set_segment_properties (fragments[1], &props);
-  hb_buffer_set_segment_properties (reconstruction, &props);
+  hb_বাফার_get_segment_properties (বাফার, &props);
+  hb_বাফার_set_segment_properties (fragments[0], &props);
+  hb_বাফার_set_segment_properties (fragments[1], &props);
+  hb_বাফার_set_segment_properties (reconstruction, &props);
 
-  unsigned num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned অঙ্ক_glyphs;
+  hb_glyph_info_t *info = hb_বাফার_get_glyph_infos (বাফার, &অঙ্ক_glyphs);
 
-  unsigned num_chars;
-  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &num_chars);
+  unsigned অঙ্ক_chars;
+  hb_glyph_info_t *text = hb_বাফার_get_glyph_infos (text_বাফার, &অঙ্ক_chars);
 
-  bool forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
+  যৌক্তিক forward = HB_DIRECTION_IS_FORWARD (hb_বাফার_get_direction (বাফার));
 
-  if (!forward)
-    hb_buffer_reverse (buffer);
+  যদি (!forward)
+    hb_বাফার_reverse (বাফার);
 
   /*
    * Split text into segments and collect into to fragment streams.
@@ -268,37 +268,37 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
     unsigned start = 0;
     unsigned text_start = 0;
     unsigned text_end = 0;
-    for (unsigned end = 1; end < num_glyphs + 1; end++)
+    জন্য (unsigned end = 1; end < অঙ্ক_glyphs + 1; end++)
     {
-      if (end < num_glyphs &&
+      যদি (end < অঙ্ক_glyphs &&
 	  (info[end].cluster == info[end-1].cluster ||
 	   info[end].mask & HB_GLYPH_FLAG_UNSAFE_TO_CONCAT))
-	  continue;
+	  চালু;
 
       /* Accumulate segment corresponding to glyphs start..end. */
-      if (end == num_glyphs)
-	text_end = num_chars;
-      else
+      যদি (end == অঙ্ক_glyphs)
+	text_end = অঙ্ক_chars;
+      অন্যথা
       {
 	unsigned cluster = info[end].cluster;
-	while (text_end < num_chars && text[text_end].cluster < cluster)
+	যখন (text_end < অঙ্ক_chars && text[text_end].cluster < cluster)
 	  text_end++;
       }
-      assert (text_start < text_end);
+      প্রতিজ্ঞা (text_start < text_end);
 
-      if (false)
+      যদি (মিথ্যা)
 	printf("start %u end %u text start %u end %u\n", start, end, text_start, text_end);
 
-#if 0
-      hb_buffer_flags_t flags = hb_buffer_get_flags (fragment);
-      if (0 < text_start)
-	flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_BOT);
-      if (text_end < num_chars)
-	flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_EOT);
-      hb_buffer_set_flags (fragment, flags);
+#যদি 0
+      hb_বাফার_flags_t flags = hb_বাফার_get_flags (fragment);
+      যদি (0 < text_start)
+	flags = (hb_বাফার_flags_t) (flags & ~HB_বাফার_FLAG_BOT);
+      যদি (text_end < অঙ্ক_chars)
+	flags = (hb_বাফার_flags_t) (flags & ~HB_বাফার_FLAG_EOT);
+      hb_বাফার_set_flags (fragment, flags);
 #endif
 
-      hb_buffer_append (fragments[fragment_idx], text_buffer, text_start, text_end);
+      hb_বাফার_append (fragments[fragment_idx], text_বাফার, text_start, text_end);
 
       start = end;
       text_start = text_end;
@@ -306,22 +306,22 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
     }
   }
 
-  bool ret = true;
+  যৌক্তিক ret = সত্য;
   /*
    * Shape the two fragment streams.
    */
-  if (!hb_shape_full (font, fragments[0], features, num_features, shapers) ||
+  যদি (!hb_shape_full (font, fragments[0], features, অঙ্ক_features, shapers) ||
       !fragments[0]->successful)
-    return ret;
+    ফেরত ret;
 
-  if (!hb_shape_full (font, fragments[1], features, num_features, shapers) ||
+  যদি (!hb_shape_full (font, fragments[1], features, অঙ্ক_features, shapers) ||
       !fragments[1]->successful)
-    return ret;
+    ফেরত ret;
 
-  if (!forward)
+  যদি (!forward)
   {
-    hb_buffer_reverse (fragments[0]);
-    hb_buffer_reverse (fragments[1]);
+    hb_বাফার_reverse (fragments[0]);
+    hb_বাফার_reverse (fragments[1]);
   }
 
   /*
@@ -330,88 +330,88 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
   {
     unsigned fragment_idx = 0;
     unsigned fragment_start[2] {0, 0};
-    unsigned fragment_num_glyphs[2];
+    unsigned fragment_অঙ্ক_glyphs[2];
     hb_glyph_info_t *fragment_info[2];
-    for (unsigned i = 0; i < 2; i++)
-      fragment_info[i] = hb_buffer_get_glyph_infos (fragments[i], &fragment_num_glyphs[i]);
-    while (fragment_start[0] < fragment_num_glyphs[0] ||
-	   fragment_start[1] < fragment_num_glyphs[1])
+    জন্য (unsigned i = 0; i < 2; i++)
+      fragment_info[i] = hb_বাফার_get_glyph_infos (fragments[i], &fragment_অঙ্ক_glyphs[i]);
+    যখন (fragment_start[0] < fragment_অঙ্ক_glyphs[0] ||
+	   fragment_start[1] < fragment_অঙ্ক_glyphs[1])
     {
       unsigned fragment_end = fragment_start[fragment_idx] + 1;
-      while (fragment_end < fragment_num_glyphs[fragment_idx] &&
+      যখন (fragment_end < fragment_অঙ্ক_glyphs[fragment_idx] &&
 	     (fragment_info[fragment_idx][fragment_end].cluster == fragment_info[fragment_idx][fragment_end - 1].cluster ||
 	      fragment_info[fragment_idx][fragment_end].mask & HB_GLYPH_FLAG_UNSAFE_TO_CONCAT))
 	fragment_end++;
 
-      hb_buffer_append (reconstruction, fragments[fragment_idx], fragment_start[fragment_idx], fragment_end);
+      hb_বাফার_append (reconstruction, fragments[fragment_idx], fragment_start[fragment_idx], fragment_end);
 
       fragment_start[fragment_idx] = fragment_end;
       fragment_idx = 1 - fragment_idx;
     }
   }
 
-  if (!forward)
+  যদি (!forward)
   {
-    hb_buffer_reverse (buffer);
-    hb_buffer_reverse (reconstruction);
+    hb_বাফার_reverse (বাফার);
+    hb_বাফার_reverse (reconstruction);
   }
 
-  if (likely (reconstruction->successful))
+  যদি (likely (reconstruction->successful))
   {
     /*
      * Diff results.
      */
-    hb_buffer_diff_flags_t diff = hb_buffer_diff (reconstruction, buffer, (hb_codepoint_t) -1, 0);
-    if (diff & ~HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
+    hb_বাফার_diff_flags_t diff = hb_বাফার_diff (reconstruction, বাফার, (hb_codepoint_t) -1, 0);
+    যদি (diff & ~HB_বাফার_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
     {
-      buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-concat test failed.");
-      ret = false;
+      বাফার_verify_error (বাফার, font, বাফার_VERIFY_ERROR "unsafe-to-concat test failed.");
+      ret = মিথ্যা;
 
       /* Return the reconstructed result instead so it can be inspected. */
-      hb_buffer_set_length (buffer, 0);
-      hb_buffer_append (buffer, reconstruction, 0, -1);
+      hb_বাফার_set_দৈর্ঘ্য (বাফার, 0);
+      hb_বাফার_append (বাফার, reconstruction, 0, -1);
     }
   }
 
-  return ret;
+  ফেরত ret;
 }
 
-bool
-hb_buffer_t::verify (hb_buffer_t        *text_buffer,
+যৌক্তিক
+hb_বাফার_t::verify (hb_বাফার_t        *text_বাফার,
 		     hb_font_t          *font,
-		     const hb_feature_t *features,
-		     unsigned int        num_features,
-		     const char * const *shapers)
+		     ধ্রুবক hb_feature_t *features,
+		     unsigned পূর্ণসংখ্যা        অঙ্ক_features,
+		     ধ্রুবক অক্ষর * ধ্রুবক *shapers)
 {
-  bool ret = true;
-  bool monotone = buffer_verify_monotone (this, font);
-  if (!monotone)
-    ret = false;
-  if (monotone &&
-      !buffer_verify_unsafe_to_break (this, text_buffer, font, features, num_features, shapers))
-    ret = false;
-  if (monotone &&
-      (flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) != 0 &&
-      !buffer_verify_unsafe_to_concat (this, text_buffer, font, features, num_features, shapers))
-    ret = false;
-  if (!ret)
+  যৌক্তিক ret = সত্য;
+  যৌক্তিক monotone = বাফার_verify_monotone (এই, font);
+  যদি (!monotone)
+    ret = মিথ্যা;
+  যদি (monotone &&
+      !বাফার_verify_unsafe_to_break (এই, text_বাফার, font, features, অঙ্ক_features, shapers))
+    ret = মিথ্যা;
+  যদি (monotone &&
+      (flags & HB_বাফার_FLAG_PRODUCE_UNSAFE_TO_CONCAT) != 0 &&
+      !বাফার_verify_unsafe_to_concat (এই, text_বাফার, font, features, অঙ্ক_features, shapers))
+    ret = মিথ্যা;
+  যদি (!ret)
   {
-#ifndef HB_NO_BUFFER_SERIALIZE
-    unsigned len = text_buffer->len;
-    hb_vector_t<char> bytes;
-    if (likely (bytes.resize (len * 10 + 16)))
+#ifndef HB_NO_বাফার_SERIALIZE
+    unsigned len = text_বাফার->len;
+    hb_vector_t<অক্ষর> bytes;
+    যদি (likely (bytes.resize (len * 10 + 16)))
     {
-      hb_buffer_serialize_unicode (text_buffer,
+      hb_বাফার_serialize_unicode (text_বাফার,
 				   0, len,
-				   bytes.arrayZ, bytes.length,
+				   bytes.arrayZ, bytes.দৈর্ঘ্য,
 				   &len,
-				   HB_BUFFER_SERIALIZE_FORMAT_TEXT,
-				   HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS);
-      buffer_verify_error (this, font, BUFFER_VERIFY_ERROR "text was: %s.", bytes.arrayZ ? bytes.arrayZ : "");
+				   HB_বাফার_SERIALIZE_FORMAT_TEXT,
+				   HB_বাফার_SERIALIZE_FLAG_NO_CLUSTERS);
+      বাফার_verify_error (এই, font, বাফার_VERIFY_ERROR "text was: %s.", bytes.arrayZ ? bytes.arrayZ : "");
     }
 #endif
   }
-  return ret;
+  ফেরত ret;
 }
 
 

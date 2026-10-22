@@ -25,103 +25,103 @@
 #ifndef HB_FT_COLR_HH
 #define HB_FT_COLR_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-decycler.hh"
-#include "hb-paint-bounded.hh"
+#অন্তর্ভাব "hb-decycler.hh"
+#অন্তর্ভাব "hb-paint-bounded.hh"
 
-#include FT_COLOR_H
+#অন্তর্ভাব FT_COLOR_H
 
 
-static hb_paint_composite_mode_t
+স্থির hb_paint_composite_mode_t
 _hb_ft_paint_composite_mode (FT_Composite_Mode mode)
 {
-  switch (mode)
+  নির্বাচন (mode)
   {
-    case FT_COLR_COMPOSITE_CLEAR:          return HB_PAINT_COMPOSITE_MODE_CLEAR;
-    case FT_COLR_COMPOSITE_SRC:            return HB_PAINT_COMPOSITE_MODE_SRC;
-    case FT_COLR_COMPOSITE_DEST:           return HB_PAINT_COMPOSITE_MODE_DEST;
-    case FT_COLR_COMPOSITE_SRC_OVER:       return HB_PAINT_COMPOSITE_MODE_SRC_OVER;
-    case FT_COLR_COMPOSITE_DEST_OVER:      return HB_PAINT_COMPOSITE_MODE_DEST_OVER;
-    case FT_COLR_COMPOSITE_SRC_IN:         return HB_PAINT_COMPOSITE_MODE_SRC_IN;
-    case FT_COLR_COMPOSITE_DEST_IN:        return HB_PAINT_COMPOSITE_MODE_DEST_IN;
-    case FT_COLR_COMPOSITE_SRC_OUT:        return HB_PAINT_COMPOSITE_MODE_SRC_OUT;
-    case FT_COLR_COMPOSITE_DEST_OUT:       return HB_PAINT_COMPOSITE_MODE_DEST_OUT;
-    case FT_COLR_COMPOSITE_SRC_ATOP:       return HB_PAINT_COMPOSITE_MODE_SRC_ATOP;
-    case FT_COLR_COMPOSITE_DEST_ATOP:      return HB_PAINT_COMPOSITE_MODE_DEST_ATOP;
-    case FT_COLR_COMPOSITE_XOR:            return HB_PAINT_COMPOSITE_MODE_XOR;
-    case FT_COLR_COMPOSITE_PLUS:           return HB_PAINT_COMPOSITE_MODE_PLUS;
-    case FT_COLR_COMPOSITE_SCREEN:         return HB_PAINT_COMPOSITE_MODE_SCREEN;
-    case FT_COLR_COMPOSITE_OVERLAY:        return HB_PAINT_COMPOSITE_MODE_OVERLAY;
-    case FT_COLR_COMPOSITE_DARKEN:         return HB_PAINT_COMPOSITE_MODE_DARKEN;
-    case FT_COLR_COMPOSITE_LIGHTEN:        return HB_PAINT_COMPOSITE_MODE_LIGHTEN;
-    case FT_COLR_COMPOSITE_COLOR_DODGE:    return HB_PAINT_COMPOSITE_MODE_COLOR_DODGE;
-    case FT_COLR_COMPOSITE_COLOR_BURN:     return HB_PAINT_COMPOSITE_MODE_COLOR_BURN;
-    case FT_COLR_COMPOSITE_HARD_LIGHT:     return HB_PAINT_COMPOSITE_MODE_HARD_LIGHT;
-    case FT_COLR_COMPOSITE_SOFT_LIGHT:     return HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT;
-    case FT_COLR_COMPOSITE_DIFFERENCE:     return HB_PAINT_COMPOSITE_MODE_DIFFERENCE;
-    case FT_COLR_COMPOSITE_EXCLUSION:      return HB_PAINT_COMPOSITE_MODE_EXCLUSION;
-    case FT_COLR_COMPOSITE_MULTIPLY:       return HB_PAINT_COMPOSITE_MODE_MULTIPLY;
-    case FT_COLR_COMPOSITE_HSL_HUE:        return HB_PAINT_COMPOSITE_MODE_HSL_HUE;
-    case FT_COLR_COMPOSITE_HSL_SATURATION: return HB_PAINT_COMPOSITE_MODE_HSL_SATURATION;
-    case FT_COLR_COMPOSITE_HSL_COLOR:      return HB_PAINT_COMPOSITE_MODE_HSL_COLOR;
-    case FT_COLR_COMPOSITE_HSL_LUMINOSITY: return HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY;
+    ক্ষেত্র FT_COLR_COMPOSITE_CLEAR:          ফেরত HB_PAINT_COMPOSITE_MODE_CLEAR;
+    ক্ষেত্র FT_COLR_COMPOSITE_SRC:            ফেরত HB_PAINT_COMPOSITE_MODE_SRC;
+    ক্ষেত্র FT_COLR_COMPOSITE_DEST:           ফেরত HB_PAINT_COMPOSITE_MODE_DEST;
+    ক্ষেত্র FT_COLR_COMPOSITE_SRC_OVER:       ফেরত HB_PAINT_COMPOSITE_MODE_SRC_OVER;
+    ক্ষেত্র FT_COLR_COMPOSITE_DEST_OVER:      ফেরত HB_PAINT_COMPOSITE_MODE_DEST_OVER;
+    ক্ষেত্র FT_COLR_COMPOSITE_SRC_IN:         ফেরত HB_PAINT_COMPOSITE_MODE_SRC_IN;
+    ক্ষেত্র FT_COLR_COMPOSITE_DEST_IN:        ফেরত HB_PAINT_COMPOSITE_MODE_DEST_IN;
+    ক্ষেত্র FT_COLR_COMPOSITE_SRC_OUT:        ফেরত HB_PAINT_COMPOSITE_MODE_SRC_OUT;
+    ক্ষেত্র FT_COLR_COMPOSITE_DEST_OUT:       ফেরত HB_PAINT_COMPOSITE_MODE_DEST_OUT;
+    ক্ষেত্র FT_COLR_COMPOSITE_SRC_ATOP:       ফেরত HB_PAINT_COMPOSITE_MODE_SRC_ATOP;
+    ক্ষেত্র FT_COLR_COMPOSITE_DEST_ATOP:      ফেরত HB_PAINT_COMPOSITE_MODE_DEST_ATOP;
+    ক্ষেত্র FT_COLR_COMPOSITE_XOR:            ফেরত HB_PAINT_COMPOSITE_MODE_XOR;
+    ক্ষেত্র FT_COLR_COMPOSITE_PLUS:           ফেরত HB_PAINT_COMPOSITE_MODE_PLUS;
+    ক্ষেত্র FT_COLR_COMPOSITE_SCREEN:         ফেরত HB_PAINT_COMPOSITE_MODE_SCREEN;
+    ক্ষেত্র FT_COLR_COMPOSITE_OVERLAY:        ফেরত HB_PAINT_COMPOSITE_MODE_OVERLAY;
+    ক্ষেত্র FT_COLR_COMPOSITE_DARKEN:         ফেরত HB_PAINT_COMPOSITE_MODE_DARKEN;
+    ক্ষেত্র FT_COLR_COMPOSITE_LIGHTEN:        ফেরত HB_PAINT_COMPOSITE_MODE_LIGHTEN;
+    ক্ষেত্র FT_COLR_COMPOSITE_COLOR_DODGE:    ফেরত HB_PAINT_COMPOSITE_MODE_COLOR_DODGE;
+    ক্ষেত্র FT_COLR_COMPOSITE_COLOR_BURN:     ফেরত HB_PAINT_COMPOSITE_MODE_COLOR_BURN;
+    ক্ষেত্র FT_COLR_COMPOSITE_HARD_LIGHT:     ফেরত HB_PAINT_COMPOSITE_MODE_HARD_LIGHT;
+    ক্ষেত্র FT_COLR_COMPOSITE_SOFT_LIGHT:     ফেরত HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT;
+    ক্ষেত্র FT_COLR_COMPOSITE_DIFFERENCE:     ফেরত HB_PAINT_COMPOSITE_MODE_DIFFERENCE;
+    ক্ষেত্র FT_COLR_COMPOSITE_EXCLUSION:      ফেরত HB_PAINT_COMPOSITE_MODE_EXCLUSION;
+    ক্ষেত্র FT_COLR_COMPOSITE_MULTIPLY:       ফেরত HB_PAINT_COMPOSITE_MODE_MULTIPLY;
+    ক্ষেত্র FT_COLR_COMPOSITE_HSL_HUE:        ফেরত HB_PAINT_COMPOSITE_MODE_HSL_HUE;
+    ক্ষেত্র FT_COLR_COMPOSITE_HSL_SATURATION: ফেরত HB_PAINT_COMPOSITE_MODE_HSL_SATURATION;
+    ক্ষেত্র FT_COLR_COMPOSITE_HSL_COLOR:      ফেরত HB_PAINT_COMPOSITE_MODE_HSL_COLOR;
+    ক্ষেত্র FT_COLR_COMPOSITE_HSL_LUMINOSITY: ফেরত HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY;
 
-    case FT_COLR_COMPOSITE_MAX:            HB_FALLTHROUGH;
-    default:                               return HB_PAINT_COMPOSITE_MODE_CLEAR;
+    ক্ষেত্র FT_COLR_COMPOSITE_MAX:            HB_FALLTHROUGH;
+    পূর্বনির্ধারিত:                               ফেরত HB_PAINT_COMPOSITE_MODE_CLEAR;
   }
 }
 
-typedef struct hb_ft_paint_context_t hb_ft_paint_context_t;
+প্রকারলেখ কাঠামো hb_ft_paint_context_t hb_ft_paint_context_t;
 
-static void
+স্থির শূন্য
 _hb_ft_paint (hb_ft_paint_context_t *c,
 	      FT_OpaquePaint opaque_paint);
 
-static void
+স্থির শূন্য
 _hb_ft_unscale_clip_box (hb_font_t *font,
-			 const FT_ClipBox *clip_box,
-			 float *xmin, float *ymin,
-			 float *xmax, float *ymax)
+			 ধ্রুবক FT_ClipBox *clip_box,
+			 দশমিক *xmin, দশমিক *ymin,
+			 দশমিক *xmax, দশমিক *ymax)
 {
   /* The FreeType ClipBox is in scaled coordinates. Convert it back to
    * font units before pushing it under the font transform.
    */
-  float upem = font->face->get_upem ();
-  float xscale = upem / (font->x_scale ? font->x_scale : upem);
-  float yscale = upem / (font->y_scale ? font->y_scale : upem);
+  দশমিক upem = font->face->get_upem ();
+  দশমিক xscale = upem / (font->x_scale ? font->x_scale : upem);
+  দশমিক yscale = upem / (font->y_scale ? font->y_scale : upem);
 
-  *xmin = clip_box->bottom_left.x * xscale;
-  *ymin = clip_box->bottom_left.y * yscale;
-  *xmax = clip_box->top_right.x * xscale;
-  *ymax = clip_box->top_right.y * yscale;
+  *xmin = clip_box->bottom_বাম.x * xscale;
+  *ymin = clip_box->bottom_বাম.y * yscale;
+  *xmax = clip_box->শীর্ষ_ডান.x * xscale;
+  *ymax = clip_box->শীর্ষ_ডান.y * yscale;
 }
 
-static unsigned
+স্থির unsigned
 _hb_ft_color_alpha (unsigned alpha, unsigned alpha_mult)
 {
-  return (alpha * alpha_mult + (1 << 13)) >> 14;
+  ফেরত (alpha * alpha_mult + (1 << 13)) >> 14;
 }
 
-struct hb_ft_paint_context_t
+কাঠামো hb_ft_paint_context_t
 {
-  hb_ft_paint_context_t (const hb_ft_font_t *ft_font_,
+  hb_ft_paint_context_t (ধ্রুবক hb_ft_font_t *ft_font_,
 			 hb_font_t *font_,
-			 hb_paint_funcs_t *paint_funcs, void *paint_data,
-			 hb_array_t<const FT_Color> palette,
-			 unsigned palette_index,
+			 hb_paint_funcs_t *paint_funcs, শূন্য *paint_তথ্য,
+			 hb_array_t<ধ্রুবক FT_Color> palette,
+			 unsigned palette_সূচক,
 			 hb_color_t foreground) :
     ft_font (ft_font_), font (font_),
-    funcs (paint_funcs), data (paint_data),
-    palette (palette), palette_index (palette_index), foreground (foreground)
+    funcs (paint_funcs), তথ্য (paint_তথ্য),
+    palette (palette), palette_সূচক (palette_সূচক), foreground (foreground)
   {
-    if (font->is_synthetic)
+    যদি (font->is_synthetic)
     {
       font = hb_font_create_sub_font (font);
-      hb_font_set_synthetic_bold (font, 0, 0, true);
+      hb_font_set_synthetic_bold (font, 0, 0, সত্য);
       hb_font_set_synthetic_slant (font, 0);
     }
-    else
+    অন্যথা
       hb_font_reference (font);
   }
 
@@ -130,54 +130,54 @@ struct hb_ft_paint_context_t
     hb_font_destroy (font);
   }
 
-  void recurse (FT_OpaquePaint paint)
+  শূন্য recurse (FT_OpaquePaint paint)
   {
-    if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
-    depth_left--;
-    edge_count--;
-    _hb_ft_paint (this, paint);
-    depth_left++;
+    যদি (unlikely (depth_বাম <= 0 || edge_গুনতি <= 0)) ফেরত;
+    depth_বাম--;
+    edge_গুনতি--;
+    _hb_ft_paint (এই, paint);
+    depth_বাম++;
   }
 
-  const hb_ft_font_t *ft_font;
+  ধ্রুবক hb_ft_font_t *ft_font;
   hb_font_t *font;
   hb_paint_funcs_t *funcs;
-  void *data;
-  hb_array_t<const FT_Color> palette;
-  unsigned palette_index;
+  শূন্য *তথ্য;
+  hb_array_t<ধ্রুবক FT_Color> palette;
+  unsigned palette_সূচক;
   hb_color_t foreground;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  পূর্ণসংখ্যা depth_বাম = HB_MAX_NESTING_LEVEL;
+  পূর্ণসংখ্যা edge_গুনতি = HB_MAX_GRAPH_EDGE_গুনতি;
 };
 
-static unsigned
-_hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
-				   void *color_line_data,
-				   unsigned int start,
-				   unsigned int *count,
+স্থির unsigned
+hb_ft_color_সারি_get_color_stops (hb_color_সারি_t *color_সারি,
+				   শূন্য *color_সারি_তথ্য,
+				   unsigned পূর্ণসংখ্যা start,
+				   unsigned পূর্ণসংখ্যা *গুনতি,
 				   hb_color_stop_t *color_stops,
-				   void *user_data)
+				   শূন্য *user_তথ্য)
 {
-  FT_ColorLine *cl = (FT_ColorLine *) color_line_data;
-  hb_ft_paint_context_t *c = (hb_ft_paint_context_t *) user_data;
+  FT_Color_সারি *cl = (FT_Color_সারি *) color_সারি_তথ্য;
+  hb_ft_paint_context_t *c = (hb_ft_paint_context_t *) user_তথ্য;
 
-  if (count && color_stops)
+  যদি (গুনতি && color_stops)
   {
     FT_ColorStop stop;
     unsigned wrote = 0;
     FT_ColorStopIterator iter = cl->color_stop_iterator;
 
-    if (start >= cl->color_stop_iterator.num_color_stops)
+    যদি (start >= cl->color_stop_iterator.অঙ্ক_color_stops)
     {
-      *count = 0;
-      return cl->color_stop_iterator.num_color_stops;
+      *গুনতি = 0;
+      ফেরত cl->color_stop_iterator.অঙ্ক_color_stops;
     }
 
-    while (cl->color_stop_iterator.current_color_stop < start)
+    যখন (cl->color_stop_iterator.current_color_stop < start)
     {
-      if (!FT_Get_Colorline_Stops(c->ft_font->ft_face,
+      যদি (!FT_Get_Colorline_Stops(c->ft_font->ft_face,
 			     &stop,
 			     &cl->color_stop_iterator))
       {
@@ -187,32 +187,32 @@ _hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
          //
          // reset the iterator for next time
         cl->color_stop_iterator = iter;
-        return cl->color_stop_iterator.num_color_stops;
+        ফেরত cl->color_stop_iterator.অঙ্ক_color_stops;
       }
     }
 
-    while (wrote < *count &&
+    যখন (wrote < *গুনতি &&
 	   FT_Get_Colorline_Stops(c->ft_font->ft_face,
 				  &stop,
 				  &cl->color_stop_iterator))
     {
       // https://github.com/harfbuzz/harfbuzz/issues/4013
-      if (sizeof stop.stop_offset == 2)
+      যদি (আকার stop.stop_offset == 2)
 	color_stops->offset = stop.stop_offset / 16384.f;
-      else
+      অন্যথা
 	color_stops->offset = stop.stop_offset / 65536.f;
 
-      color_stops->is_foreground = stop.color.palette_index == 0xFFFF;
-      if (color_stops->is_foreground)
+      color_stops->is_foreground = stop.color.palette_সূচক == 0xFFFF;
+      যদি (color_stops->is_foreground)
 	color_stops->color = HB_COLOR (hb_color_get_blue (c->foreground),
 				       hb_color_get_green (c->foreground),
 				       hb_color_get_red (c->foreground),
 				       _hb_ft_color_alpha (hb_color_get_alpha (c->foreground),
 							   stop.color.alpha));
-      else
+      অন্যথা
       {
 	hb_color_t color;
-        if (c->funcs->custom_palette_color (c->data, stop.color.palette_index, &color))
+        যদি (c->funcs->custom_palette_color (c->তথ্য, stop.color.palette_সূচক, &color))
 	{
 	  color_stops->color = HB_COLOR (hb_color_get_blue (color),
 					 hb_color_get_green (color),
@@ -220,16 +220,16 @@ _hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
 					 _hb_ft_color_alpha (hb_color_get_alpha (color),
 							     stop.color.alpha));
 	}
-	else if (c->palette)
+	অন্যথা যদি (c->palette)
 	{
-	  FT_Color ft_color = c->palette[stop.color.palette_index];
+	  FT_Color ft_color = c->palette[stop.color.palette_সূচক];
 	  color_stops->color = HB_COLOR (ft_color.blue,
 					 ft_color.green,
 					 ft_color.red,
 					 _hb_ft_color_alpha (ft_color.alpha,
 							     stop.color.alpha));
 	}
-	else
+	অন্যথা
 	  color_stops->color = HB_COLOR (0, 0, 0, 0);
       }
 
@@ -237,110 +237,110 @@ _hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
       wrote++;
     }
 
-    *count = wrote;
+    *গুনতি = wrote;
     // reset the iterator for next time
     cl->color_stop_iterator = iter;
   }
 
-  return cl->color_stop_iterator.num_color_stops;
+  ফেরত cl->color_stop_iterator.অঙ্ক_color_stops;
 }
 
-static hb_paint_extend_t
-_hb_ft_color_line_get_extend (hb_color_line_t *color_line,
-			      void *color_line_data,
-			      void *user_data)
+স্থির hb_paint_extend_t
+hb_ft_color_সারি_get_extend (hb_color_সারি_t *color_সারি,
+			      শূন্য *color_সারি_তথ্য,
+			      শূন্য *user_তথ্য)
 {
-  FT_ColorLine *c = (FT_ColorLine *) color_line_data;
-  switch (c->extend)
+  FT_Color_সারি *c = (FT_Color_সারি *) color_সারি_তথ্য;
+  নির্বাচন (c->extend)
   {
-    default:
-    case FT_COLR_PAINT_EXTEND_PAD:     return HB_PAINT_EXTEND_PAD;
-    case FT_COLR_PAINT_EXTEND_REPEAT:  return HB_PAINT_EXTEND_REPEAT;
-    case FT_COLR_PAINT_EXTEND_REFLECT: return HB_PAINT_EXTEND_REFLECT;
+    পূর্বনির্ধারিত:
+    ক্ষেত্র FT_COLR_PAINT_EXTEND_PAD:     ফেরত HB_PAINT_EXTEND_PAD;
+    ক্ষেত্র FT_COLR_PAINT_EXTEND_REPEAT:  ফেরত HB_PAINT_EXTEND_REPEAT;
+    ক্ষেত্র FT_COLR_PAINT_EXTEND_REFLECT: ফেরত HB_PAINT_EXTEND_REFLECT;
   }
 }
 
-static void
+স্থির শূন্য
 _hb_ft_get_solid_color (hb_ft_paint_context_t *c,
-			const FT_ColorIndex &color_index,
+			ধ্রুবক FT_Color_সূচক &color_সূচক,
 			hb_bool_t *is_foreground,
 			hb_color_t *color)
 {
-  *is_foreground = color_index.palette_index == 0xFFFF;
+  *is_foreground = color_সূচক.palette_সূচক == 0xFFFF;
 
-  if (*is_foreground)
+  যদি (*is_foreground)
   {
     *color = HB_COLOR (hb_color_get_blue (c->foreground),
 		       hb_color_get_green (c->foreground),
 		       hb_color_get_red (c->foreground),
 		       _hb_ft_color_alpha (hb_color_get_alpha (c->foreground),
-					   color_index.alpha));
-    return;
+					   color_সূচক.alpha));
+    ফেরত;
   }
 
-  if (c->funcs->custom_palette_color (c->data, color_index.palette_index, color))
+  যদি (c->funcs->custom_palette_color (c->তথ্য, color_সূচক.palette_সূচক, color))
   {
     *color = HB_COLOR (hb_color_get_blue (*color),
 		       hb_color_get_green (*color),
 		       hb_color_get_red (*color),
 		       _hb_ft_color_alpha (hb_color_get_alpha (*color),
-					   color_index.alpha));
-    return;
+					   color_সূচক.alpha));
+    ফেরত;
   }
 
-  FT_Color ft_color = c->palette[color_index.palette_index];
+  FT_Color ft_color = c->palette[color_সূচক.palette_সূচক];
   *color = HB_COLOR (ft_color.blue,
 		     ft_color.green,
 		     ft_color.red,
 		     _hb_ft_color_alpha (ft_color.alpha,
-					 color_index.alpha));
+					 color_সূচক.alpha));
 }
 
-void
+শূন্য
 _hb_ft_paint (hb_ft_paint_context_t *c,
 	      FT_OpaquePaint opaque_paint)
 {
   FT_Face ft_face = c->ft_font->ft_face;
   FT_COLR_Paint paint;
-  if (!FT_Get_Paint (ft_face, opaque_paint, &paint))
-    return;
+  যদি (!FT_Get_Paint (ft_face, opaque_paint, &paint))
+    ফেরত;
 
-  switch (paint.format)
+  নির্বাচন (paint.format)
   {
-    case FT_COLR_PAINTFORMAT_COLR_LAYERS:
+    ক্ষেত্র FT_COLR_PAINTFORMAT_COLR_LAYERS:
     {
       FT_OpaquePaint other_paint = {0};
-      hb_decycler_node_t node (c->layers_decycler);
-      while (FT_Get_Paint_Layers (ft_face,
+      hb_decycler_গ্রন্থি_t node (c->layers_decycler);
+      যখন (FT_Get_Paint_Layers (ft_face,
 				  &paint.u.colr_layers.layer_iterator,
 				  &other_paint))
       {
 	// FreeType doesn't provide a way to get the layer index, so we use the pointer
 	// for cycle detection.
-	if (unlikely (!node.visit ((uintptr_t) other_paint.p)))
-	  continue;
+	যদি (unlikely (!node.visit ((uintptr_t) other_paint.p)))
+	  চালু;
 
 	c->recurse (other_paint);
       }
     }
-    break;
-    case FT_COLR_PAINTFORMAT_SOLID:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_SOLID:
     {
       hb_bool_t is_foreground;
       hb_color_t color;
       _hb_ft_get_solid_color (c, paint.u.solid.color, &is_foreground, &color);
-      c->funcs->color (c->data, is_foreground, color);
+      c->funcs->color (c->তথ্য, is_foreground, color);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_LINEAR_GRADIENT:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_LINEAR_GRADIENT:
     {
-      hb_color_line_t cl = {
+      hb_color_সারি_t cl = {
 	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+	hb_ft_color_সারি_get_color_stops, c,
+	hb_ft_color_সারি_get_extend, nullptr
       };
 
-      c->funcs->linear_gradient (c->data, &cl,
+      c->funcs->linear_gradient (c->তথ্য, &cl,
 				 paint.u.linear_gradient.p0.x / 65536.f,
 				 paint.u.linear_gradient.p0.y / 65536.f,
 				 paint.u.linear_gradient.p1.x / 65536.f,
@@ -348,16 +348,16 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 				 paint.u.linear_gradient.p2.x / 65536.f,
 				 paint.u.linear_gradient.p2.y / 65536.f);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_RADIAL_GRADIENT:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_RADIAL_GRADIENT:
     {
-      hb_color_line_t cl = {
+      hb_color_সারি_t cl = {
 	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+	hb_ft_color_সারি_get_color_stops, c,
+	hb_ft_color_সারি_get_extend, nullptr
       };
 
-      c->funcs->radial_gradient (c->data, &cl,
+      c->funcs->radial_gradient (c->তথ্য, &cl,
 				 paint.u.radial_gradient.c0.x / 65536.f,
 				 paint.u.radial_gradient.c0.y / 65536.f,
 				 paint.u.radial_gradient.r0 / 65536.f,
@@ -365,27 +365,27 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 				 paint.u.radial_gradient.c1.y / 65536.f,
 				 paint.u.radial_gradient.r1 / 65536.f);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_SWEEP_GRADIENT:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_SWEEP_GRADIENT:
     {
-      hb_color_line_t cl = {
+      hb_color_সারি_t cl = {
 	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+	hb_ft_color_সারি_get_color_stops, c,
+	hb_ft_color_সারি_get_extend, nullptr
       };
 
-      c->funcs->sweep_gradient (c->data, &cl,
+      c->funcs->sweep_gradient (c->তথ্য, &cl,
 				paint.u.sweep_gradient.center.x / 65536.f,
 				paint.u.sweep_gradient.center.y / 65536.f,
 				(paint.u.sweep_gradient.start_angle / 65536.f + 1) * HB_PI,
 				(paint.u.sweep_gradient.end_angle / 65536.f + 1) * HB_PI);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_GLYPH:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_GLYPH:
     {
       /* Optimize cases that can use a simple fill-glyph operation. */
       FT_COLR_Paint fill;
-      if (likely (c->depth_left > 0 && c->edge_count > 0) &&
+      যদি (likely (c->depth_বাম > 0 && c->edge_গুনতি > 0) &&
 	  FT_Get_Paint (ft_face, paint.u.glyph.paint, &fill) &&
 	  fill.format == FT_COLR_PAINTFORMAT_SOLID)
       {
@@ -393,73 +393,73 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 	hb_color_t color;
 	_hb_ft_get_solid_color (c, fill.u.solid.color, &is_foreground, &color);
 
-	c->edge_count--;
-	c->funcs->push_inverse_font_transform (c->data, c->font);
+	c->edge_গুনতি--;
+	c->funcs->ঠেলো_inverse_font_transform (c->তথ্য, c->font);
 	c->ft_font->lock.unlock ();
-	c->funcs->fill_glyph (c->data, paint.u.glyph.glyphID, c->font,
+	c->funcs->fill_glyph (c->তথ্য, paint.u.glyph.glyphID, c->font,
 			      is_foreground, color);
 	c->ft_font->lock.lock ();
-	c->funcs->pop_transform (c->data);
-	break;
+	c->funcs->বের_করো_transform (c->তথ্য);
+	বিরতি;
       }
 
-      c->funcs->push_inverse_font_transform (c->data, c->font);
+      c->funcs->ঠেলো_inverse_font_transform (c->তথ্য, c->font);
       c->ft_font->lock.unlock ();
-      c->funcs->push_clip_glyph (c->data, paint.u.glyph.glyphID, c->font);
+      c->funcs->ঠেলো_clip_glyph (c->তথ্য, paint.u.glyph.glyphID, c->font);
       c->ft_font->lock.lock ();
-      c->funcs->push_font_transform (c->data, c->font);
+      c->funcs->ঠেলো_font_transform (c->তথ্য, c->font);
       c->recurse (paint.u.glyph.paint);
-      c->funcs->pop_transform (c->data);
-      c->funcs->pop_clip (c->data);
-      c->funcs->pop_transform (c->data);
+      c->funcs->বের_করো_transform (c->তথ্য);
+      c->funcs->বের_করো_clip (c->তথ্য);
+      c->funcs->বের_করো_transform (c->তথ্য);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_COLR_GLYPH:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_COLR_GLYPH:
     {
       hb_codepoint_t gid = paint.u.colr_glyph.glyphID;
 
-      hb_decycler_node_t node (c->glyphs_decycler);
-      if (unlikely (!node.visit (gid)))
-	return;
+      hb_decycler_গ্রন্থি_t node (c->glyphs_decycler);
+      যদি (unlikely (!node.visit (gid)))
+	ফেরত;
 
-      c->funcs->push_inverse_font_transform (c->data, c->font);
+      c->funcs->ঠেলো_inverse_font_transform (c->তথ্য, c->font);
       c->ft_font->lock.unlock ();
-      if (c->funcs->color_glyph (c->data, gid, c->font))
+      যদি (c->funcs->color_glyph (c->তথ্য, gid, c->font))
       {
 	c->ft_font->lock.lock ();
-	c->funcs->pop_transform (c->data);
-	return;
+	c->funcs->বের_করো_transform (c->তথ্য);
+	ফেরত;
       }
       c->ft_font->lock.lock ();
-      c->funcs->pop_transform (c->data);
+      c->funcs->বের_করো_transform (c->তথ্য);
 
       FT_OpaquePaint other_paint = {0};
-      if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-				    FT_COLOR_NO_ROOT_TRANSFORM,
+      যদি (FT_Get_Color_Glyph_Paint (ft_face, gid,
+				    FT_COLOR_NO_মূল_TRANSFORM,
 				    &other_paint))
       {
-        bool has_clip_box;
+        যৌক্তিক has_clip_box;
         FT_ClipBox clip_box;
         has_clip_box = FT_Get_Color_Glyph_ClipBox (ft_face, paint.u.colr_glyph.glyphID, &clip_box);
 
-        if (has_clip_box)
+        যদি (has_clip_box)
 	{
-	  float xmin, ymin, xmax, ymax;
+	  দশমিক xmin, ymin, xmax, ymax;
 	  _hb_ft_unscale_clip_box (c->font, &clip_box,
 				   &xmin, &ymin, &xmax, &ymax);
-	  c->funcs->push_clip_rectangle (c->data, xmin, ymin, xmax, ymax);
+	  c->funcs->ঠেলো_clip_rectangle (c->তথ্য, xmin, ymin, xmax, ymax);
 	}
 
 	c->recurse (other_paint);
 
-        if (has_clip_box)
-          c->funcs->pop_clip (c->data);
+        যদি (has_clip_box)
+          c->funcs->বের_করো_clip (c->তথ্য);
       }
     }
-    break;
-    case FT_COLR_PAINTFORMAT_TRANSFORM:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_TRANSFORM:
     {
-      c->funcs->push_transform (c->data,
+      c->funcs->ঠেলো_transform (c->তথ্য,
 				paint.u.transform.affine.xx / 65536.f,
 				paint.u.transform.affine.yx / 65536.f,
 				paint.u.transform.affine.xy / 65536.f,
@@ -467,192 +467,192 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 				paint.u.transform.affine.dx / 65536.f,
 				paint.u.transform.affine.dy / 65536.f);
       c->recurse (paint.u.transform.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->বের_করো_transform (c->তথ্য);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_TRANSLATE:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_TRANSLATE:
     {
-      float dx = paint.u.translate.dx / 65536.f;
-      float dy = paint.u.translate.dy / 65536.f;
+      দশমিক dx = paint.u.translate.dx / 65536.f;
+      দশমিক dy = paint.u.translate.dy / 65536.f;
 
-      c->funcs->push_translate (c->data, dx, dy);
+      c->funcs->ঠেলো_translate (c->তথ্য, dx, dy);
       c->recurse (paint.u.translate.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->বের_করো_transform (c->তথ্য);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_SCALE:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_SCALE:
     {
-      float dx = paint.u.scale.center_x / 65536.f;
-      float dy = paint.u.scale.center_y / 65536.f;
-      float sx = paint.u.scale.scale_x / 65536.f;
-      float sy = paint.u.scale.scale_y / 65536.f;
+      দশমিক dx = paint.u.scale.center_x / 65536.f;
+      দশমিক dy = paint.u.scale.center_y / 65536.f;
+      দশমিক sx = paint.u.scale.scale_x / 65536.f;
+      দশমিক sy = paint.u.scale.scale_y / 65536.f;
 
-      c->funcs->push_scale_around_center (c->data, sx, sy, dx, dy);
+      c->funcs->ঠেলো_scale_around_center (c->তথ্য, sx, sy, dx, dy);
       c->recurse (paint.u.scale.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->বের_করো_transform (c->তথ্য);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_ROTATE:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_ROTATE:
     {
-      float dx = paint.u.rotate.center_x / 65536.f;
-      float dy = paint.u.rotate.center_y / 65536.f;
-      float a = paint.u.rotate.angle / 65536.f;
+      দশমিক dx = paint.u.rotate.center_x / 65536.f;
+      দশমিক dy = paint.u.rotate.center_y / 65536.f;
+      দশমিক a = paint.u.rotate.angle / 65536.f;
 
-      c->funcs->push_rotate_around_center (c->data, a, dx, dy);
+      c->funcs->ঠেলো_rotate_around_center (c->তথ্য, a, dx, dy);
       c->recurse (paint.u.rotate.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->বের_করো_transform (c->তথ্য);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_SKEW:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_SKEW:
     {
-      float dx = paint.u.skew.center_x / 65536.f;
-      float dy = paint.u.skew.center_y / 65536.f;
-      float sx = paint.u.skew.x_skew_angle / 65536.f;
-      float sy = paint.u.skew.y_skew_angle / 65536.f;
+      দশমিক dx = paint.u.skew.center_x / 65536.f;
+      দশমিক dy = paint.u.skew.center_y / 65536.f;
+      দশমিক sx = paint.u.skew.x_skew_angle / 65536.f;
+      দশমিক sy = paint.u.skew.y_skew_angle / 65536.f;
 
-      c->funcs->push_skew_around_center (c->data, sx, sy, dx, dy);
+      c->funcs->ঠেলো_skew_around_center (c->তথ্য, sx, sy, dx, dy);
       c->recurse (paint.u.skew.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->বের_করো_transform (c->তথ্য);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_COMPOSITE:
+    বিরতি;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_COMPOSITE:
     {
-      c->funcs->push_group (c->data);
+      c->funcs->ঠেলো_group (c->তথ্য);
       c->recurse (paint.u.composite.backdrop_paint);
-      c->funcs->push_group (c->data);
+      c->funcs->ঠেলো_group (c->তথ্য);
       c->recurse (paint.u.composite.source_paint);
-      c->funcs->pop_group (c->data, _hb_ft_paint_composite_mode (paint.u.composite.composite_mode));
-      c->funcs->pop_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+      c->funcs->বের_করো_group (c->তথ্য, _hb_ft_paint_composite_mode (paint.u.composite.composite_mode));
+      c->funcs->বের_করো_group (c->তথ্য, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
     }
-    break;
+    বিরতি;
 
-    case FT_COLR_PAINT_FORMAT_MAX: break;
-    default: HB_FALLTHROUGH;
-    case FT_COLR_PAINTFORMAT_UNSUPPORTED: break;
+    ক্ষেত্র FT_COLR_PAINT_FORMAT_MAX: বিরতি;
+    পূর্বনির্ধারিত: HB_FALLTHROUGH;
+    ক্ষেত্র FT_COLR_PAINTFORMAT_UNSUPPORTED: বিরতি;
   }
 }
 
 
-static bool
+স্থির যৌক্তিক
 hb_ft_paint_glyph_colr (hb_font_t *font,
-			void *font_data,
+			শূন্য *font_তথ্য,
 			hb_codepoint_t gid,
-			hb_paint_funcs_t *paint_funcs, void *paint_data,
-			unsigned int palette_index,
+			hb_paint_funcs_t *paint_funcs, শূন্য *paint_তথ্য,
+			unsigned পূর্ণসংখ্যা palette_সূচক,
 			hb_color_t foreground,
-			void *user_data)
+			শূন্য *user_তথ্য)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ধ্রুবক hb_ft_font_t *ft_font = (ধ্রুবক hb_ft_font_t *) font_তথ্য;
   FT_Face ft_face = ft_font->ft_face;
 
   /* Face is locked. */
 
-  FT_Palette_Data   palette_data = {};
-  FT_Color*         palette = NULL;
+  FT_Palette_তথ্য   palette_তথ্য = {};
+  FT_Color*         palette = ফাঁকা;
   FT_LayerIterator  iterator;
 
   FT_Bool  have_layers;
-  FT_UInt  layer_glyph_index;
-  FT_UInt  layer_color_index;
+  FT_UInt  layer_glyph_সূচক;
+  FT_UInt  layer_color_সূচক;
 
-  (void) FT_Palette_Data_Get(ft_face, &palette_data);
-  (void) FT_Palette_Select(ft_face, palette_index, &palette);
-  if (!palette)
+  (শূন্য) FT_Palette_তথ্য_Get(ft_face, &palette_তথ্য);
+  (শূন্য) FT_Palette_Select(ft_face, palette_সূচক, &palette);
+  যদি (!palette)
   {
     // https://github.com/harfbuzz/harfbuzz/issues/5116
-    (void) FT_Palette_Select(ft_face, 0, &palette);
+    (শূন্য) FT_Palette_Select(ft_face, 0, &palette);
   }
 
-  auto palette_array = hb_array ((const FT_Color *) palette,
-				 palette ? palette_data.num_palette_entries : 0);
+  auto palette_array = hb_array ((ধ্রুবক FT_Color *) palette,
+				 palette ? palette_তথ্য.অঙ্ক_palette_entries : 0);
 
   /* COLRv1 */
   FT_OpaquePaint paint = {0};
-  if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-			        FT_COLOR_NO_ROOT_TRANSFORM,
+  যদি (FT_Get_Color_Glyph_Paint (ft_face, gid,
+			        FT_COLOR_NO_মূল_TRANSFORM,
 			        &paint))
   {
     hb_ft_paint_context_t c (ft_font, font,
-			     paint_funcs, paint_data,
-			     palette_array, palette_index, foreground);
-    hb_decycler_node_t node (c.glyphs_decycler);
+			     paint_funcs, paint_তথ্য,
+			     palette_array, palette_সূচক, foreground);
+    hb_decycler_গ্রন্থি_t node (c.glyphs_decycler);
     node.visit (gid);
 
     FT_ClipBox clip_box;
-    bool clip = FT_Get_Color_Glyph_ClipBox (ft_face, gid, &clip_box);
-    bool is_bounded = clip;
-    if (!is_bounded)
+    যৌক্তিক clip = FT_Get_Color_Glyph_ClipBox (ft_face, gid, &clip_box);
+    যৌক্তিক is_bounded = clip;
+    যদি (!is_bounded)
     {
       auto *bounded_funcs = hb_paint_bounded_get_funcs ();
-      hb_paint_bounded_context_t bounded_data;
+      hb_paint_bounded_context_t bounded_তথ্য;
       hb_ft_paint_context_t ce (ft_font, font,
-			        bounded_funcs, &bounded_data,
-			        palette_array, palette_index, foreground);
-      hb_decycler_node_t node2 (ce.glyphs_decycler);
+			        bounded_funcs, &bounded_তথ্য,
+			        palette_array, palette_সূচক, foreground);
+      hb_decycler_গ্রন্থি_t node2 (ce.glyphs_decycler);
       node2.visit (gid);
       ce.recurse (paint);
-      is_bounded = bounded_data.is_bounded ();
+      is_bounded = bounded_তথ্য.is_bounded ();
     }
 
-    c.funcs->push_font_transform (c.data, font);
+    c.funcs->ঠেলো_font_transform (c.তথ্য, font);
 
-    if (clip)
+    যদি (clip)
     {
-      float xmin, ymin, xmax, ymax;
+      দশমিক xmin, ymin, xmax, ymax;
       _hb_ft_unscale_clip_box (font, &clip_box,
 			       &xmin, &ymin, &xmax, &ymax);
-      c.funcs->push_clip_rectangle (c.data, xmin, ymin, xmax, ymax);
+      c.funcs->ঠেলো_clip_rectangle (c.তথ্য, xmin, ymin, xmax, ymax);
     }
 
-    if (is_bounded)
+    যদি (is_bounded)
       c.recurse (paint);
 
-    if (clip)
-      c.funcs->pop_clip (c.data);
+    যদি (clip)
+      c.funcs->বের_করো_clip (c.তথ্য);
 
-    c.funcs->pop_transform (c.data);
+    c.funcs->বের_করো_transform (c.তথ্য);
 
-    return true;
+    ফেরত সত্য;
   }
 
   /* COLRv0 */
-  iterator.p  = NULL;
+  iterator.p  = ফাঁকা;
   have_layers = FT_Get_Color_Glyph_Layer(ft_face,
 					 gid,
-					 &layer_glyph_index,
-					 &layer_color_index,
+					 &layer_glyph_সূচক,
+					 &layer_color_সূচক,
 					 &iterator);
 
-  if (palette && have_layers)
+  যদি (palette && have_layers)
   {
-    do
+    করো
     {
-      hb_bool_t is_foreground = true;
+      hb_bool_t is_foreground = সত্য;
       hb_color_t color = foreground;
 
-      if ( layer_color_index != 0xFFFF )
+      যদি ( layer_color_সূচক != 0xFFFF )
       {
-	FT_Color layer_color = palette[layer_color_index];
+	FT_Color layer_color = palette[layer_color_সূচক];
 	color = HB_COLOR (layer_color.blue,
 			  layer_color.green,
 			  layer_color.red,
 			  layer_color.alpha);
-	is_foreground = false;
+	is_foreground = মিথ্যা;
       }
 
       ft_font->lock.unlock ();
-      paint_funcs->fill_glyph (paint_data, layer_glyph_index, font, is_foreground, color);
+      paint_funcs->fill_glyph (paint_তথ্য, layer_glyph_সূচক, font, is_foreground, color);
       ft_font->lock.lock ();
 
-    } while (FT_Get_Color_Glyph_Layer(ft_face,
+    } যখন (FT_Get_Color_Glyph_Layer(ft_face,
 				      gid,
-				      &layer_glyph_index,
-				      &layer_color_index,
+				      &layer_glyph_সূচক,
+				      &layer_color_সূচক,
 				      &iterator));
-    return true;
+    ফেরত সত্য;
   }
 
-  return false;
+  ফেরত মিথ্যা;
 }
 
 

@@ -1,25 +1,25 @@
 #ifndef OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
 
-#include "PairSet.hh"
+#অন্তর্ভাব "PairSet.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
 
 template <typename Types>
-struct PairPosFormat1_3
+কাঠামো PairPosFormat1_3
 {
   using PairSet = GPOS_impl::PairSet<Types>;
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  using Pair_মান_Record = GPOS_impl::Pair_মান_Record<Types>;
 
-  protected:
+  সুরক্ষিত:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat[2];         /* [0] Defines the types of data in
+  মান_Format   মান_Format_2[2];         /* [0] Defines the types of data in
                                          * ValueRecord1--for the first glyph
                                          * in the pair--may be zero (0) */
                                         /* [1] Defines the types of data in
@@ -28,202 +28,202 @@ struct PairPosFormat1_3
   typename Types::template ArrayOf<typename Types::template OffsetTo<PairSet>>
                 pairSet;                /* Array of PairSet tables ordered by
                                          * Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + 2 * ValueFormat::static_size + Types::HBUINT::static_size, pairSet);
+  সর্বজনীন:
+  DEFINE_আকার_ARRAY (2 + Types::LOffset::static_আকার + 2 * মান_Format::static_আকার + Types::HBUINT::static_আকার, pairSet);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  যৌক্তিক sanitize (hb_sanitize_context_t *c) ধ্রুবক
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এই);
 
-    if (!c->check_struct (this)) return_trace (false);
+    যদি (!c->check_struct (এই)) return_trace (মিথ্যা);
     hb_barrier ();
 
-    unsigned int len1 = valueFormat[0].get_len ();
-    unsigned int len2 = valueFormat[1].get_len ();
+    unsigned পূর্ণসংখ্যা len1 = মান_Format_2[0].get_len ();
+    unsigned পূর্ণসংখ্যা len2 = মান_Format_2[1].get_len ();
     typename PairSet::sanitize_closure_t closure =
     {
-      valueFormat,
+      মান_Format_2,
       len1,
-      PairSet::get_size (len1, len2)
+      PairSet::get_আকার (len1, len2)
     };
 
-    return_trace (coverage.sanitize (c, this) && pairSet.sanitize (c, this, &closure));
+    return_trace (coverage.sanitize (c, এই) && pairSet.sanitize (c, এই, &closure));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  যৌক্তিক intersects (ধ্রুবক hb_set_t *glyphs) ধ্রুবক
   {
-    auto &cov = this+coverage;
+    auto &cov = এই+coverage;
 
-    if (pairSet.len > glyphs->get_population () * hb_bit_storage ((unsigned) pairSet.len))
+    যদি (pairSet.len > glyphs->get_population () * hb_bit_storage ((unsigned) pairSet.len))
     {
-      for (hb_codepoint_t g : glyphs->iter ())
+      জন্য (hb_codepoint_t g : glyphs->iter ())
       {
 	unsigned i = cov.get_coverage (g);
-	if ((this+pairSet[i]).intersects (glyphs, valueFormat))
-	  return true;
+	যদি ((এই+pairSet[i]).intersects (glyphs, মান_Format_2))
+	  ফেরত সত্য;
       }
-      return false;
+      ফেরত মিথ্যা;
     }
 
-    return
+    ফেরত
     + hb_zip (cov, pairSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map ([glyphs, this] (const typename Types::template OffsetTo<PairSet> &_)
-              { return (this+_).intersects (glyphs, valueFormat); })
+    | hb_map ([glyphs, এই] (ধ্রুবক typename Types::template OffsetTo<PairSet> &_)
+              { ফেরত (এই+_).intersects (glyphs, মান_Format_2); })
     | hb_any
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  শূন্য closure_lookups (hb_closure_lookups_context_t *c) ধ্রুবক {}
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুবক
   {
-    if ((!valueFormat[0].has_device ()) && (!valueFormat[1].has_device ())) return;
+    যদি ((!মান_Format_2[0].has_device ()) && (!মান_Format_2[1].has_device ())) ফেরত;
 
     auto it =
-    + hb_zip (this+coverage, pairSet)
+    + hb_zip (এই+coverage, pairSet)
     | hb_filter (c->glyph_set, hb_first)
     | hb_map (hb_second)
     ;
 
-    if (!it) return;
+    যদি (!it) ফেরত;
     + it
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const PairSet& _) { _.collect_variation_indices (c, valueFormat); })
+    | hb_map (hb_add (এই))
+    | hb_apply ([&] (ধ্রুবক PairSet& _) { _.collect_variation_indices (c, মান_Format_2); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c) ধ্রুবক
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    unsigned int count = pairSet.len;
-    for (unsigned int i = 0; i < count; i++)
-      (this+pairSet[i]).collect_glyphs (c, valueFormat);
+    যদি (unlikely (!(এই+coverage).collect_coverage (c->প্রবেশ))) ফেরত;
+    unsigned পূর্ণসংখ্যা গুনতি = pairSet.len;
+    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < গুনতি; i++)
+      (এই+pairSet[i]).collect_glyphs (c, মান_Format_2);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  শূন্য collect_second_glyphs (hb_set_digest_t *digest) ধ্রুবক
   {
-    unsigned count = pairSet.len;
-    for (unsigned i = 0; i < count; i++)
-      (this+pairSet[i]).collect_second_glyphs (digest, valueFormat);
+    unsigned গুনতি = pairSet.len;
+    জন্য (unsigned i = 0; i < গুনতি; i++)
+      (এই+pairSet[i]).collect_second_glyphs (digest, মান_Format_2);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ধ্রুবক Coverage &get_coverage () ধ্রুবক { ফেরত এই+coverage; }
 
-  struct external_cache_t
+  কাঠামো external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
     hb_set_digest_t pair_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  শূন্য *external_cache_create () ধ্রুবক
   {
-    unsigned count = pairSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_set_digest_t) +
-		    count * sizeof (hb_set_digest_t);
-    external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    unsigned গুনতি = pairSet.len;
+    unsigned আকার_2 = আকার (external_cache_t) -
+		    HB_VAR_ARRAY * আকার (hb_set_digest_t) +
+		    গুনতি * আকার (hb_set_digest_t);
+    external_cache_t *cache = (external_cache_t *) hb_malloc (আকার_2);
+    যদি (likely (cache))
     {
       cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
+      জন্য (unsigned i = 0; i < গুনতি; i++)
       {
 	cache->pair_sets[i].init ();
-	(this+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], valueFormat);
+	(এই+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], মান_Format_2);
       }
     }
-    return cache;
+    ফেরত cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  যৌক্তিক apply (hb_ot_apply_context_t *c, শূন্য *external_cache) ধ্রুবক
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (এই);
 
-    hb_buffer_t *buffer = c->buffer;
+    hb_বাফার_t *বাফার = c->বাফার;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage  (বাফার->cur().codepoint, cache ? &cache->coverage : nullptr);
+#অন্যথা
+    unsigned পূর্ণসংখ্যা সূচক_2 = (এই+coverage).get_coverage  (বাফার->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    যদি (সূচক_2 == NOT_COVERED) return_trace (মিথ্যা);
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.reset_fast (buffer->idx);
+    auto &skippy_iter = c->iter_প্রবেশ;
+    skippy_iter.reset_fast (বাফার->idx);
     unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    যদি (unlikely (!skippy_iter.next (&unsafe_to)))
     {
-      buffer->unsafe_to_concat (buffer->idx, unsafe_to);
-      return_trace (false);
+      বাফার->unsafe_to_concat (বাফার->idx, unsafe_to);
+      return_trace (মিথ্যা);
     }
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    if (cache &&
-	index < pairSet.len &&
-	!cache->pair_sets[index].may_have (buffer->info[skippy_iter.idx].codepoint))
+    যদি (cache &&
+	সূচক_2 < pairSet.len &&
+	!cache->pair_sets[সূচক_2].may_have (বাফার->info[skippy_iter.idx].codepoint))
     {
-      buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
-      return_trace (false);
+      বাফার->unsafe_to_concat (বাফার->idx, skippy_iter.idx + 1);
+      return_trace (মিথ্যা);
     }
 #endif
 
-    return_trace ((this+pairSet[index]).apply (c, valueFormat, skippy_iter.idx));
+    return_trace ((এই+pairSet[সূচক_2]).apply (c, মান_Format_2, skippy_iter.idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  যৌক্তিক subset (hb_subset_context_t *c) ধ্রুবক
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এই);
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ধ্রুবক hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ধ্রুবক hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*এই);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিথ্যা);
     out->format = format;
 
-    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat[0], valueFormat[1]);
+    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (মান_Format_2[0], মান_Format_2[1]);
 
-    if (c->plan->normalized_coords)
+    যদি (c->plan->normalized_coords)
     {
       /* all device flags will be dropped when full instancing, no need to strip
        * hints, also do not strip emtpy cause we don't compute the new default
        * value during stripping */
-      newFormats = compute_effective_value_formats (glyphset, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = compute_effective_মান_formats (glyphset, মিথ্যা, মিথ্যা, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    অন্যথা যদি (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      যৌক্তিক has_fvar = (blob != hb_blob_get_empty ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      যৌক্তিক strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      newFormats = compute_effective_value_formats (glyphset, strip, true);
+      যদি (has_fvar && !c->plan->has_gdef_varstore)
+        strip = সত্য;
+      newFormats = compute_effective_মান_formats (glyphset, strip, সত্য);
     }
 
-    out->valueFormat[0] = newFormats.first;
-    out->valueFormat[1] = newFormats.second;
+    out->মান_Format_2[0] = newFormats.first;
+    out->মান_Format_2[1] = newFormats.second;
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
 
-    + hb_zip (this+coverage, pairSet)
+    + hb_zip (এই+coverage, pairSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter ([this, c, out] (const typename Types::template OffsetTo<PairSet>& _)
+    | hb_filter ([এই, c, out] (ধ্রুবক typename Types::template OffsetTo<PairSet>& _)
                  {
                    auto snap = c->serializer->snapshot ();
                    auto *o = out->pairSet.serialize_append (c->serializer);
-                   if (unlikely (!o)) return false;
-                   bool ret = o->serialize_subset (c, _, this, valueFormat, out->valueFormat);
-                   if (!ret)
+                   যদি (unlikely (!o)) ফেরত মিথ্যা;
+                   যৌক্তিক ret = o->serialize_subset (c, _, এই, মান_Format_2, out->মান_Format_2);
+                   যদি (!ret)
                    {
-                     out->pairSet.pop ();
+                     out->pairSet.বের_করো ();
                      c->serializer->revert (snap);
                    }
-                   return ret;
+                   ফেরত ret;
                  },
                  hb_second)
     | hb_map (hb_first)
@@ -233,34 +233,34 @@ struct PairPosFormat1_3
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
 
-    return_trace (bool (new_coverage));
+    return_trace (যৌক্তিক (new_coverage));
   }
 
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_set_t& glyphset,
-                                                                 bool strip_hints, bool strip_empty,
-                                                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+  hb_pair_t<unsigned, unsigned> compute_effective_মান_formats (ধ্রুবক hb_set_t& glyphset,
+                                                                 যৌক্তিক strip_hints, যৌক্তিক strip_empty,
+                                                                 ধ্রুবক hb_hashmap_t<unsigned, hb_pair_t<unsigned, পূর্ণসংখ্যা>> *varidx_delta_map = nullptr) ধ্রুবক
   {
     unsigned format1 = 0;
     unsigned format2 = 0;
-    for (const auto & _ :
-	  + hb_zip (this+coverage, pairSet)
+    জন্য (ধ্রুবক auto & _ :
+	  + hb_zip (এই+coverage, pairSet)
 	  | hb_filter (glyphset, hb_first)
 	  | hb_map (hb_second)
 	)
     {
-      const PairSet& set = (this + _);
-      auto formats = set.get_values_view (valueFormat).compute_effective_value_formats (
-          glyphset, valueFormat, strip_hints, strip_empty, varidx_delta_map);
+      ধ্রুবক PairSet& set = (এই + _);
+      auto formats = set.get_মানসমূহ_view (মান_Format_2).compute_effective_মান_formats (
+          glyphset, মান_Format_2, strip_hints, strip_empty, varidx_delta_map);
       format1 |= formats.first;
       format2 |= formats.second;
 
-      if (!varidx_delta_map &&
-          format1 == valueFormat[0] && format2 == valueFormat[1])
-        break;
+      যদি (!varidx_delta_map &&
+          format1 == মান_Format_2[0] && format2 == মান_Format_2[1])
+        বিরতি;
     }
 
-    return hb_pair (format1, format2);
+    ফেরত hb_pair (format1, format2);
   }
 };
 
