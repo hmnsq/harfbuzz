@@ -2,57 +2,57 @@
 #define OT_VAR_VARC_COORD_SETTER_HH
 
 
-#include "../../../hb.hh"
+#ضمن "../../../hb.hh"
 
 
-namespace OT {
+نطاق OT {
 //namespace Var {
 
 
-struct coord_setter_t
+بنية coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<ثابت صحيح> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    إذا (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * حجم (صحيح));
+    وإلا
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  صحيح& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    إذا (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      أرجع Crap(صحيح);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    إذا (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      إذا (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        طالما (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	أرجع static_coords[idx];
       }
-      else
+      وإلا
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    إذا (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      إذا (unlikely (!dynamic_coords.resize (idx + 1)))
+	أرجع Crap(صحيح);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    أرجع dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<صحيح> get_coords ()
+  { أرجع length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
-  private:
-  hb_vector_t<int> dynamic_coords;
+  خاص:
+  hb_vector_t<صحيح> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  صحيح static_coords[حجم (فراغ *) * 8];
 };
 
 

@@ -27,82 +27,82 @@
 #ifndef HB_MAP_HH
 #define HB_MAP_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-set.hh"
+#ضمن "hb-set.hh"
 
 
 /*
  * hb_hashmap_t
  */
 
-extern HB_INTERNAL const hb_codepoint_t minus_1;
+خارجي HB_INTERNAL ثابت hb_codepoint_t minus_1;
 
 template <typename K, typename V,
-	  bool minus_one = false>
-struct hb_hashmap_t
+	  منطقي minus_one = خطأ>
+بنية hb_hashmap_t
 {
-  static constexpr bool realloc_move = true;
+  ساكن constexpr منطقي realloc_move = true;
 
   hb_hashmap_t ()  { init (); }
   ~hb_hashmap_t () { fini (); }
 
-  void _copy (const hb_hashmap_t& o)
+  فراغ _copy (ثابت hb_hashmap_t& o)
   {
-    if (unlikely (!o.successful))
+    إذا (unlikely (!o.successful))
     {
-      successful = false;
-      return;
+      successful = خطأ;
+      أرجع;
     }
-    if (unlikely (!o.mask)) return;
+    إذا (unlikely (!o.mask)) أرجع;
 
-    if (hb_is_trivially_copy_assignable (item_t))
+    إذا (hb_is_trivially_copy_assignable (item_t))
     {
-      items = (item_t *) hb_malloc2 ((o.mask + 1), sizeof (item_t));
-      if (unlikely (!items))
+      کاڵاکان = (item_t *) hb_malloc2 ((o.mask + 1), حجم (item_t));
+      إذا (unlikely (!کاڵاکان))
       {
-	successful = false;
-	return;
+	successful = خطأ;
+	أرجع;
       }
       population = o.population;
       occupancy = o.occupancy;
       mask = o.mask;
-      prime = o.prime;
+      سەرەتایی = o.سەرەتایی;
       max_chain_length = o.max_chain_length;
-      memcpy (items, o.items, sizeof (item_t) * (mask + 1));
-      return;
+      memcpy (کاڵاکان, o.کاڵاکان, حجم (item_t) * (mask + 1));
+      أرجع;
     }
 
-    alloc (o.population); hb_copy (o, *this);
+    alloc (o.population); hb_copy (o, *هذا);
   }
 
-  hb_hashmap_t (const hb_hashmap_t& o) : hb_hashmap_t () { _copy (o); }
-  hb_hashmap_t& operator= (const hb_hashmap_t& o)
+  hb_hashmap_t (ثابت hb_hashmap_t& o) : hb_hashmap_t () { _copy (o); }
+  hb_hashmap_t& operator= (ثابت hb_hashmap_t& o)
   {
     reset ();
-    if (!items) { _copy (o); return *this; }
-    alloc (o.population); hb_copy (o, *this); return *this;
+    إذا (!کاڵاکان) { _copy (o); أرجع *هذا; }
+    alloc (o.population); hb_copy (o, *هذا); أرجع *هذا;
   }
 
-  hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*this, o); }
-  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*this, o); return *this; }
+  hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*هذا, o); }
+  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*هذا, o); أرجع *هذا; }
 
   hb_hashmap_t (std::initializer_list<hb_pair_t<K, V>> lst) : hb_hashmap_t ()
   {
-    for (auto&& item : lst)
+    لكل (auto&& item : lst)
       set (item.first, item.second);
   }
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_hashmap_t (const Iterable &o) : hb_hashmap_t ()
+  hb_hashmap_t (ثابت Iterable &o) : hb_hashmap_t ()
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    إذا (iter.is_random_access_iterator || iter.has_fast_len)
       alloc (hb_len (iter));
-    hb_copy (iter, *this);
+    hb_copy (iter, *هذا);
   }
 
-  struct item_t
+  بنية item_t
   {
     K key;
     uint32_t is_real_ : 1;
@@ -111,83 +111,83 @@ struct hb_hashmap_t
     V value;
 
     item_t () : key (),
-		is_real_ (false), is_used_ (false),
+		is_real_ (خطأ), is_used_ (خطأ),
 		hash (0),
 		value () {}
 
     // Needed for https://github.com/harfbuzz/harfbuzz/issues/4138
-    K& get_key () { return key; }
-    V& get_value () { return value; }
+    K& get_کلیل () { أرجع key; }
+    V& get_بەها () { أرجع value; }
 
-    bool is_used () const { return is_used_; }
-    void set_used (bool is_used) { is_used_ = is_used; }
-    void set_real (bool is_real) { is_real_ = is_real; }
-    bool is_real () const { return is_real_; }
+    منطقي is_used () ثابت { أرجع is_used_; }
+    فراغ set_used (منطقي is_used) { is_used_ = is_used; }
+    فراغ set_real (منطقي is_real) { is_real_ = is_real; }
+    منطقي is_real () ثابت { أرجع is_real_; }
 
-    template <bool v = minus_one,
-	      hb_enable_if (v == false)>
-    static inline const V& default_value () { return Null(V); };
-    template <bool v = minus_one,
+    template <منطقي v = minus_one,
+	      hb_enable_if (v == خطأ)>
+    ساكن مضمن ثابت V& default_بەها () { أرجع Null(V); };
+    template <منطقي v = minus_one,
 	      hb_enable_if (v == true)>
-    static inline const V& default_value ()
+    ساكن مضمن ثابت V& default_بەها ()
     {
       static_assert (hb_is_same (V, hb_codepoint_t), "");
-      return minus_1;
+      أرجع minus_1;
     };
 
-    bool operator == (const K &o) const { return hb_deref (key) == hb_deref (o); }
-    bool operator == (const item_t &o) const { return *this == o.key; }
-    hb_pair_t<K, V> get_pair() const { return hb_pair_t<K, V> (key, value); }
-    hb_pair_t<const K &, V &> get_pair_ref() { return hb_pair_t<const K &, V &> (key, value); }
+    منطقي operator == (ثابت K &o) ثابت { أرجع hb_deref (key) == hb_deref (o); }
+    منطقي operator == (ثابت item_t &o) ثابت { أرجع *هذا == o.key; }
+    hb_pair_t<K, V> get_pair() ثابت { أرجع hb_pair_t<K, V> (key, value); }
+    hb_pair_t<ثابت K &, V &> get_pair_ref() { أرجع hb_pair_t<ثابت K &, V &> (key, value); }
 
-    uint32_t total_hash () const
-    { return (hash * 31u) + hb_hash (value); }
+    uint32_t total_hash () ثابت
+    { أرجع (hash * 31u) + hb_hash (value); }
 
-    static constexpr bool is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
+    ساكن constexpr منطقي is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
   };
 
   hb_object_header_t header;
-  bool successful; /* Allocations successful */
+  منطقي successful; /* Allocations successful */
   unsigned short max_chain_length;
-  unsigned int population; /* Not including tombstones. */
-  unsigned int occupancy; /* Including tombstones. */
-  unsigned int mask;
-  unsigned int prime;
-  item_t *items;
+  unsigned صحيح population; /* Not including tombstones. */
+  unsigned صحيح occupancy; /* Including tombstones. */
+  unsigned صحيح mask;
+  unsigned صحيح سەرەتایی;
+  item_t *کاڵاکان;
 
-  friend void swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
+  friend فراغ swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
   {
-    if (unlikely (!a.successful || !b.successful))
-      return;
+    إذا (unlikely (!a.successful || !b.successful))
+      أرجع;
     hb_swap (a.max_chain_length, b.max_chain_length);
     hb_swap (a.population, b.population);
     hb_swap (a.occupancy, b.occupancy);
     hb_swap (a.mask, b.mask);
-    hb_swap (a.prime, b.prime);
-    hb_swap (a.items, b.items);
+    hb_swap (a.سەرەتایی, b.سەرەتایی);
+    hb_swap (a.کاڵاکان, b.کاڵاکان);
   }
-  void init ()
+  فراغ init ()
   {
-    hb_object_init (this);
+    hb_object_init (هذا);
 
     successful = true;
     max_chain_length = 0;
     population = occupancy = 0;
     mask = 0;
-    prime = 0;
-    items = nullptr;
+    سەرەتایی = 0;
+    کاڵاکان = nullptr;
   }
-  void fini ()
+  فراغ fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (هذا);
 
-    if (likely (items))
+    إذا (likely (کاڵاکان))
     {
       unsigned size = mask + 1;
-      for (unsigned i = 0; i < size; i++)
-	items[i].~item_t ();
-      hb_free (items);
-      items = nullptr;
+      لكل (unsigned i = 0; i < size; i++)
+	کاڵاکان[i].~item_t ();
+      hb_free (کاڵاکان);
+      کاڵاکان = nullptr;
     }
     population = occupancy = 0;
   }
@@ -196,118 +196,118 @@ struct hb_hashmap_t
   {
     successful = true;
     clear ();
-    return *this;
+    أرجع *هذا;
   }
 
-  bool in_error () const { return !successful; }
+  منطقي in_error () ثابت { أرجع !successful; }
 
-  bool alloc (unsigned new_population = 0)
+  منطقي alloc (unsigned new_population = 0)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
+    إذا (unlikely (!successful)) أرجع خطأ;
+    إذا (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
     {
       // Population sizes >0x3FFFFFFF will result in power
       // being larger than 31, which in turn leads to a new size
       // that overflows u32.
-      successful = false;
-      return false;
+      successful = خطأ;
+      أرجع خطأ;
     }
 
-    if (new_population != 0 && (new_population + new_population / 2) < mask) return true;
+    إذا (new_population != 0 && (new_population + new_population / 2) < mask) أرجع true;
 
-    unsigned int power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
-    unsigned int new_size = 1u << power;
-    item_t *new_items = (item_t *) hb_malloc2 ((size_t) new_size, sizeof (item_t));
-    if (unlikely (!new_items))
+    unsigned صحيح power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
+    unsigned صحيح new_size = 1u << power;
+    item_t *new_کاڵاکان = (item_t *) hb_malloc2 ((size_t) new_size, حجم (item_t));
+    إذا (unlikely (!new_کاڵاکان))
     {
-      successful = false;
-      return false;
+      successful = خطأ;
+      أرجع خطأ;
     }
-    if (!item_t::is_trivially_constructible)
-      for (auto &_ : hb_iter (new_items, new_size))
-	new (&_) item_t ();
-    else
-      hb_memset (new_items, 0, (size_t) new_size * sizeof (item_t));
+    إذا (!item_t::is_trivially_constructible)
+      لكل (auto &_ : hb_iter (new_کاڵاکان, new_size))
+	جديد (&_) item_t ();
+    وإلا
+      hb_memset (new_کاڵاکان, 0, (size_t) new_size * حجم (item_t));
 
-    unsigned int old_size = size ();
-    item_t *old_items = items;
+    unsigned صحيح old_size = size ();
+    item_t *old_کاڵاکان = کاڵاکان;
 
     /* Switch to new, empty, array. */
     population = occupancy = 0;
     mask = new_size - 1;
-    prime = prime_for (power);
+    سەرەتایی = سەرەتایی_for (power);
     max_chain_length = power * 2;
-    items = new_items;
+    کاڵاکان = new_کاڵاکان;
 
     /* Insert back old items. */
-    for (unsigned int i = 0; i < old_size; i++)
+    لكل (unsigned صحيح i = 0; i < old_size; i++)
     {
-      if (old_items[i].is_real ())
+      إذا (old_کاڵاکان[i].is_real ())
       {
-	set_with_hash (std::move (old_items[i].key),
-		       old_items[i].hash,
-		       std::move (old_items[i].value));
+	set_with_hash (std::move (old_کاڵاکان[i].key),
+		       old_کاڵاکان[i].hash,
+		       std::move (old_کاڵاکان[i].value));
       }
     }
-    for (unsigned int i = 0; i < old_size; i++)
-      old_items[i].~item_t ();
+    لكل (unsigned صحيح i = 0; i < old_size; i++)
+      old_کاڵاکان[i].~item_t ();
 
-    hb_free (old_items);
+    hb_free (old_کاڵاکان);
 
-    return true;
+    أرجع true;
   }
 
   template <typename T>
-  bool in_storage (const T &v) const
+  منطقي in_storage (ثابت T &v) ثابت
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return items &&
-	   (uintptr_t) items <= p && p < (uintptr_t) (items + size ());
+    أرجع کاڵاکان &&
+	   (uintptr_t) کاڵاکان <= p && p < (uintptr_t) (کاڵاکان + size ());
   }
 
   template <typename KK, typename VV>
-  bool set_with_hash (KK&& key, uint32_t hash, VV&& value, bool overwrite = true)
+  منطقي set_with_hash (KK&& key, uint32_t hash, VV&& value, منطقي overwrite = true)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely ((occupancy + occupancy / 2) >= mask))
+    إذا (unlikely (!successful)) أرجع خطأ;
+    إذا (unlikely ((occupancy + occupancy / 2) >= mask))
     {
       /* key or value may live in our own storage, eg. m.set (k, m.get (j)).
        * alloc() frees that storage, so copy them out first. */
-      if (unlikely (in_storage (key) || in_storage (value)))
+      إذا (unlikely (in_storage (key) || in_storage (value)))
       {
-	K key_copy;
-	key_copy = std::forward<KK> (key);
-	V value_copy;
-	value_copy = std::forward<VV> (value);
-	return set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
+	K کلیل_copy;
+	کلیل_copy = std::forward<KK> (key);
+	V بەها_copy;
+	بەها_copy = std::forward<VV> (value);
+	أرجع set_with_hash (std::move (کلیل_copy), hash, std::move (بەها_copy), overwrite);
       }
-      if (unlikely (!alloc ())) return false;
+      إذا (unlikely (!alloc ())) أرجع خطأ;
     }
 
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int tombstone = (unsigned int) -1;
-    unsigned int i = hash % prime;
+    unsigned صحيح tombstone = (unsigned صحيح) -1;
+    unsigned صحيح i = hash % سەرەتایی;
     unsigned length = 0;
     unsigned step = 0;
-    while (items[i].is_used ())
+    طالما (کاڵاکان[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      إذا ((std::is_integral<K>::value || کاڵاکان[i].hash == hash) &&
+	  کاڵاکان[i] == key)
       {
-        if (!overwrite)
-	  return false;
-        else
-	  break;
+        إذا (!overwrite)
+	  أرجع خطأ;
+        وإلا
+	  اكسر;
       }
-      if (!items[i].is_real () && tombstone == (unsigned) -1)
+      إذا (!کاڵاکان[i].is_real () && tombstone == (unsigned) -1)
         tombstone = i;
       i = (i + ++step) & mask;
       length++;
     }
 
-    item_t &item = items[tombstone == (unsigned) -1 ? i : tombstone];
+    item_t &item = کاڵاکان[tombstone == (unsigned) -1 ? i : tombstone];
 
-    if (item.is_used ())
+    إذا (item.is_used ())
     {
       occupancy--;
       population -= item.is_real ();
@@ -322,228 +322,228 @@ struct hb_hashmap_t
     occupancy++;
     population++;
 
-    if (unlikely (length > max_chain_length) && occupancy > mask / 8)
+    إذا (unlikely (length > max_chain_length) && occupancy > mask / 8)
       alloc (mask - 8); // This ensures we jump to next larger size
 
-    return true;
+    أرجع true;
   }
 
   template <typename VV>
-  bool set (const K &key, VV&& value, bool overwrite = true) { return set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
+  منطقي set (ثابت K &key, VV&& value, منطقي overwrite = true) { أرجع set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
   template <typename VV>
-  bool set (K &&key, VV&& value, bool overwrite = true)
+  منطقي set (K &&key, VV&& value, منطقي overwrite = true)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
+    أرجع set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
   }
-  bool add (const K &key)
+  منطقي add (ثابت K &key)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (key, hash, item_t::default_value ());
+    أرجع set_with_hash (key, hash, item_t::default_بەها ());
   }
 
-  const V& get_with_hash (const K &key, uint32_t hash) const
+  ثابت V& get_with_hash (ثابت K &key, uint32_t hash) ثابت
   {
-    if (!items) return item_t::default_value ();
+    إذا (!کاڵاکان) أرجع item_t::default_بەها ();
     auto *item = fetch_item (key, hash);
-    if (item)
-      return item->value;
-    return item_t::default_value ();
+    إذا (item)
+      أرجع item->value;
+    أرجع item_t::default_بەها ();
   }
-  const V& get (const K &key) const
+  ثابت V& get (ثابت K &key) ثابت
   {
-    if (!items) return item_t::default_value ();
-    return get_with_hash (key, hb_hash (key));
+    إذا (!کاڵاکان) أرجع item_t::default_بەها ();
+    أرجع get_with_hash (key, hb_hash (key));
   }
 
-  void del (const K &key)
+  فراغ del (ثابت K &key)
   {
-    if (!items) return;
+    إذا (!کاڵاکان) أرجع;
     auto *item = fetch_item (key, hb_hash (key));
-    if (item)
+    إذا (item)
     {
-      item->set_real (false);
+      item->set_real (خطأ);
       population--;
     }
   }
 
   /* Has interface. */
-  const V& operator [] (K k) const { return get (k); }
+  ثابت V& operator [] (K k) ثابت { أرجع get (k); }
   template <typename VV=V>
-  bool has (const K &key, VV **vp = nullptr) const
+  منطقي has (ثابت K &key, VV **vp = nullptr) ثابت
   {
-    if (!items) return false;
-    return has_with_hash (key, hb_hash (key), vp);
+    إذا (!کاڵاکان) أرجع خطأ;
+    أرجع has_with_hash (key, hb_hash (key), vp);
   }
   template <typename VV=V>
-  bool has_with_hash (const K &key, uint32_t hash, VV **vp = nullptr) const
+  منطقي has_with_hash (ثابت K &key, uint32_t hash, VV **vp = nullptr) ثابت
   {
-    if (!items) return false;
+    إذا (!کاڵاکان) أرجع خطأ;
     auto *item = fetch_item (key, hash);
-    if (item)
+    إذا (item)
     {
-      if (vp) *vp = std::addressof (item->value);
-      return true;
+      إذا (vp) *vp = std::addressof (item->value);
+      أرجع true;
     }
-    return false;
+    أرجع خطأ;
   }
-  item_t *fetch_item (const K &key, uint32_t hash) const
+  item_t *fetch_item (ثابت K &key, uint32_t hash) ثابت
   {
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int i = hash % prime;
+    unsigned صحيح i = hash % سەرەتایی;
     unsigned step = 0;
-    while (items[i].is_used ())
+    طالما (کاڵاکان[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      إذا ((std::is_integral<K>::value || کاڵاکان[i].hash == hash) &&
+	  کاڵاکان[i] == key)
       {
-	if (items[i].is_real ())
-	  return &items[i];
-	else
-	  return nullptr;
+	إذا (کاڵاکان[i].is_real ())
+	  أرجع &کاڵاکان[i];
+	وإلا
+	  أرجع nullptr;
       }
       i = (i + ++step) & mask;
     }
-    return nullptr;
+    أرجع nullptr;
   }
   /* Projection. */
-  const V& operator () (K k) const { return get (k); }
+  ثابت V& operator () (K k) ثابت { أرجع get (k); }
 
-  unsigned size () const { return mask ? mask + 1 : 0; }
+  unsigned size () ثابت { أرجع mask ? mask + 1 : 0; }
 
-  void clear ()
+  فراغ clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (zero-initialized) from any writes.  Any non-empty hashmap
      * is a real heap instance with writable items, so clearing
      * under !successful is safe. */
-    if (!population && !occupancy) return;
+    إذا (!population && !occupancy) أرجع;
 
-    for (auto &_ : hb_iter (items, size ()))
+    لكل (auto &_ : hb_iter (کاڵاکان, size ()))
     {
       /* Reconstruct items. */
       _.~item_t ();
-      new (&_) item_t ();
+      جديد (&_) item_t ();
     }
 
     population = occupancy = 0;
   }
 
-  bool is_empty () const { return population == 0; }
-  explicit operator bool () const { return !is_empty (); }
+  منطقي is_empty () ثابت { أرجع population == 0; }
+  explicit operator منطقي () ثابت { أرجع !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
-    return
-    + iter_items ()
-    | hb_reduce ([] (uint32_t h, const item_t &_) { return h ^ _.total_hash (); }, (uint32_t) 0u)
+    أرجع
+    + iter_کاڵاکان ()
+    | hb_reduce ([] (uint32_t h, ثابت item_t &_) { أرجع h ^ _.total_hash (); }, (uint32_t) 0u)
     ;
   }
 
-  bool is_equal (const hb_hashmap_t &other) const
+  منطقي is_equal (ثابت hb_hashmap_t &other) ثابت
   {
-    if (population != other.population) return false;
+    إذا (population != other.population) أرجع خطأ;
 
-    for (auto pair : iter ())
-      if (other.get (pair.first) != pair.second)
-        return false;
+    لكل (auto pair : iter ())
+      إذا (other.get (pair.first) != pair.second)
+        أرجع خطأ;
 
-    return true;
+    أرجع true;
   }
-  bool operator == (const hb_hashmap_t &other) const { return is_equal (other); }
-  bool operator != (const hb_hashmap_t &other) const { return !is_equal (other); }
+  منطقي operator == (ثابت hb_hashmap_t &other) ثابت { أرجع is_equal (other); }
+  منطقي operator != (ثابت hb_hashmap_t &other) ثابت { أرجع !is_equal (other); }
 
-  unsigned int get_population () const { return population; }
+  unsigned صحيح get_population () ثابت { أرجع population; }
 
-  void update (const hb_hashmap_t &other)
+  فراغ update (ثابت hb_hashmap_t &other)
   {
-    if (unlikely (!successful)) return;
+    إذا (unlikely (!successful)) أرجع;
 
-    hb_copy (other, *this);
+    hb_copy (other, *هذا);
   }
 
   /*
    * Iterator
    */
 
-  auto iter_items () const HB_AUTO_RETURN
+  auto iter_کاڵاکان () ثابت HB_AUTO_RETURN
   (
-    + hb_iter (items, this->size ())
+    + hb_iter (کاڵاکان, هذا->size ())
     | hb_filter (&item_t::is_real)
   )
-  auto iter_ref () const HB_AUTO_RETURN
+  auto iter_ref () ثابت HB_AUTO_RETURN
   (
-    + this->iter_items ()
+    + هذا->iter_کاڵاکان ()
     | hb_map (&item_t::get_pair_ref)
   )
-  auto iter () const HB_AUTO_RETURN
+  auto iter () ثابت HB_AUTO_RETURN
   (
-    + this->iter_items ()
+    + هذا->iter_کاڵاکان ()
     | hb_map (&item_t::get_pair)
   )
-  auto keys_ref () const HB_AUTO_RETURN
+  auto کلیلەکان_ref () ثابت HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_key)
+    + هذا->iter_کاڵاکان ()
+    | hb_map (&item_t::get_کلیل)
   )
-  auto keys () const HB_AUTO_RETURN
+  auto کلیلەکان () ثابت HB_AUTO_RETURN
   (
-    + this->keys_ref ()
+    + هذا->کلیلەکان_ref ()
     | hb_map (hb_ridentity)
   )
-  auto values_ref () const HB_AUTO_RETURN
+  auto بەهاکان_ref () ثابت HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_value)
+    + هذا->iter_کاڵاکان ()
+    | hb_map (&item_t::get_بەها)
   )
-  auto values () const HB_AUTO_RETURN
+  auto values () ثابت HB_AUTO_RETURN
   (
-    + this->values_ref ()
+    + هذا->بەهاکان_ref ()
     | hb_map (hb_ridentity)
   )
 
   /* C iterator. */
-  bool next (int *idx,
+  منطقي next (صحيح *idx,
 	     K *key,
-	     V *value) const
+	     V *value) ثابت
   {
     unsigned i = (unsigned) (*idx + 1);
 
-    unsigned count = size ();
-    while (i < count && !items[i].is_real ())
+    unsigned ژماردن = size ();
+    طالما (i < ژماردن && !کاڵاکان[i].is_real ())
       i++;
 
-    if (i >= count)
+    إذا (i >= ژماردن)
     {
       *idx = -1;
-      return false;
+      أرجع خطأ;
     }
 
-    *key = items[i].key;
-    *value = items[i].value;
+    *key = کاڵاکان[i].key;
+    *value = کاڵاکان[i].value;
 
     *idx = (signed) i;
-    return true;
+    أرجع true;
   }
 
   /* Sink interface. */
-  hb_hashmap_t& operator << (const hb_pair_t<K, V>& v)
-  { set (v.first, v.second); return *this; }
+  hb_hashmap_t& operator << (ثابت hb_pair_t<K, V>& v)
+  { set (v.first, v.second); أرجع *هذا; }
   template <typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (V2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K, V&&>& v)
-  { set (v.first, std::move (v.second)); return *this; }
+  hb_hashmap_t& operator << (ثابت hb_pair_t<K, V&&>& v)
+  { set (v.first, std::move (v.second)); أرجع *هذا; }
   template <typename K2 = K,
 	    hb_enable_if (!hb_is_trivially_copyable (K2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K&&, V>& v)
-  { set (std::move (v.first), v.second); return *this; }
+  hb_hashmap_t& operator << (ثابت hb_pair_t<K&&, V>& v)
+  { set (std::move (v.first), v.second); أرجع *هذا; }
   template <typename K2 = K, typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (K2) &&
 			  !hb_is_trivially_copyable (V2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K&&, V&&>& v)
-  { set (std::move (v.first), std::move (v.second)); return *this; }
+  hb_hashmap_t& operator << (ثابت hb_pair_t<K&&, V&&>& v)
+  { set (std::move (v.first), std::move (v.second)); أرجع *هذا; }
 
-  static unsigned int prime_for (unsigned int shift)
+  ساكن unsigned صحيح سەرەتایی_for (unsigned صحيح shift)
   {
     /* Following comment and table copied from glib. */
     /* Each table size has an associated prime modulo (the first prime
@@ -552,7 +552,7 @@ struct hb_hashmap_t
      * good distribution with poor hash functions.
      */
     /* Not declaring static to make all kinds of compilers happy... */
-    /*static*/ const unsigned int prime_mod [32] =
+    /*static*/ ثابت unsigned صحيح سەرەتایی_mod [32] =
     {
       1,          /* For 1 << 0 */
       2,
@@ -588,10 +588,10 @@ struct hb_hashmap_t
       2147483647  /* For 1 << 31 */
     };
 
-    if (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
-      return prime_mod[ARRAY_LENGTH (prime_mod) - 1];
+    إذا (unlikely (shift >= ARRAY_LENGTH (سەرەتایی_mod)))
+      أرجع سەرەتایی_mod[ARRAY_LENGTH (سەرەتایی_mod) - 1];
 
-    return prime_mod[shift];
+    أرجع سەرەتایی_mod[shift];
   }
 };
 
@@ -599,7 +599,7 @@ struct hb_hashmap_t
  * hb_map_t
  */
 
-struct hb_map_t : hb_hashmap_t<hb_codepoint_t,
+بنية hb_map_t : hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
 			       true>
 {
@@ -607,16 +607,16 @@ struct hb_map_t : hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
 			       true>;
 
-  ~hb_map_t () = default;
+  ~hb_map_t () = افتراضي;
   hb_map_t () : hashmap () {}
-  hb_map_t (const hb_map_t &o) : hashmap ((hashmap &) o) {}
+  hb_map_t (ثابت hb_map_t &o) : hashmap ((hashmap &) o) {}
   hb_map_t (hb_map_t &&o)  noexcept : hashmap (std::move ((hashmap &) o)) {}
-  hb_map_t& operator= (const hb_map_t&) = default;
-  hb_map_t& operator= (hb_map_t&&) = default;
+  hb_map_t& operator= (ثابت hb_map_t&) = افتراضي;
+  hb_map_t& operator= (hb_map_t&&) = افتراضي;
   hb_map_t (std::initializer_list<hb_codepoint_pair_t> lst) : hashmap (lst) {}
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_map_t (const Iterable &o) : hashmap (o) {}
+  hb_map_t (ثابت Iterable &o) : hashmap (o) {}
 };
 
 

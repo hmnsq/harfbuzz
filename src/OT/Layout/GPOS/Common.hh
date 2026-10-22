@@ -1,11 +1,11 @@
 #ifndef OT_LAYOUT_GPOS_COMMON_HH
 #define OT_LAYOUT_GPOS_COMMON_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-enum attach_type_t {
+تعداد attach_type_t {
   ATTACH_TYPE_NONE      = 0X00,
 
   /* Each attachment should be either a mark or a cursive; can't be both. */
@@ -18,15 +18,15 @@ enum attach_type_t {
 #define attach_type() var.u8[2] /* attachment type */
 /* Note! if attach_chain() is zero, the value of attach_type() is irrelevant. */
 
-struct ValueBase;
-struct ValueFormat;
+بنية بەها_Base;
+بنية بەها_Format;
 
 template<typename Iterator>
-static void SinglePos_serialize (hb_serialize_context_t *c,
-                                 const ValueBase *src,
-                                 ValueFormat src_format,
+ساكن فراغ SinglePos_serialize (hb_serialize_context_t *c,
+                                 ثابت بەها_Base *src,
+                                 بەها_Format src_format,
                                  Iterator it,
-                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
+                                 ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحيح>> *layout_variation_idx_delta_map,
                                  unsigned new_format);
 
 
