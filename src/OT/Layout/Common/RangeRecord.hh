@@ -34,7 +34,7 @@ namespace Layout {
 namespace Common {
 
 template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+sa_nracanaa RangeRecord
 {
   typename Types::HBGlyphID     first;          /* First GlyphID in the range */
   typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
@@ -48,33 +48,33 @@ struct RangeRecord
     return_trace (c->check_struct (this));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  පූර්ණ_සංඛ්‍යා cmp (hb_codepoint_t g) const
+  { ආපසු g < first ? -1 : g <= last ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
+  HB_INTERNAL static පූර්ණ_සංඛ්‍යා cmp_range (const void *pa, const void *pb) {
     const RangeRecord *a = (const RangeRecord *) pa;
     const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+    නම් (a->first < b->first) ආපසු -1;
+    නම් (a->first > b->first) ආපසු +1;
+    නම් (a->last < b->last) ආපසු -1;
+    නම් (a->last > b->last) ආපසු +1;
+    නම් (a->value < b->value) ආපසු -1;
+    නම් (a->value > b->value) ආපසු +1;
+    ආපසු 0;
   }
 
   unsigned get_population () const
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    නම් (unlikely (last < first)) ආපසු 0;
+    ආපසු (last - first + 1);
   }
 
   bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  { ආපසු glyphs.intersects (first, last); }
 
   template <typename set_t>
   bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  { ආපසු glyphs->add_range (first, last); }
 };
 
 }
@@ -85,11 +85,11 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
+extern HB_INTERNAL const unsigned var_na _hb_Null_OT_RangeRecord[9];
 template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
+sa_nracanaa Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
   static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+    ආපසු *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
   }
 };
 

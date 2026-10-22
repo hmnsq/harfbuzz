@@ -33,10 +33,10 @@
 HB_INTERNAL bool
 hb_syllabic_insert_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category = -1,
-				   int dottedcircle_position = -1);
+				   unsigned පූර්ණ_සංඛ්‍යා broken_syllable_type,
+				   unsigned පූර්ණ_සංඛ්‍යා dottedcircle_category,
+				   පූර්ණ_සංඛ්‍යා repha_category = -1,
+				   පූර්ණ_සංඛ්‍යා dottedcircle_position = -1);
 
 HB_INTERNAL bool
 hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,

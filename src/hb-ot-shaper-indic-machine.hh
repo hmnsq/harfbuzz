@@ -43,7 +43,7 @@ using indic_position_t = ot_position_t;
 
 #define I_Cat(Cat) indic_syllable_machine_ex_##Cat
 
-enum indic_syllable_type_t {
+ga_nanaa indic_syllable_type_t {
   indic_consonant_syllable,
   indic_vowel_syllable,
   indic_standalone_cluster,
@@ -78,7 +78,7 @@ enum indic_syllable_type_t {
 
 
 #line 76 "hb-ot-shaper-indic-machine.hh"
-static const unsigned char _indic_syllable_machine_trans_keys[] = {
+static const unsigned var_na _indic_syllable_machine_trans_keys[] = {
 	8u, 57u, 4u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 
 	8u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 4u, 57u, 
 	8u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 8u, 57u, 
@@ -99,7 +99,7 @@ static const unsigned char _indic_syllable_machine_trans_keys[] = {
 	5u, 9u, 1u, 15u, 0
 };
 
-static const char _indic_syllable_machine_key_spans[] = {
+static const var_na _indic_syllable_machine_key_spans[] = {
 	50, 54, 53, 53, 1, 54, 54, 54, 
 	50, 53, 53, 1, 54, 54, 54, 54, 
 	50, 53, 53, 1, 54, 54, 54, 50, 
@@ -141,7 +141,7 @@ static const short _indic_syllable_machine_index_offsets[] = {
 	6737, 6743
 };
 
-static const unsigned char _indic_syllable_machine_indicies[] = {
+static const unsigned var_na _indic_syllable_machine_indicies[] = {
 	1, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -989,7 +989,7 @@ static const unsigned char _indic_syllable_machine_indicies[] = {
 	49, 118, 118, 118, 118, 42, 118, 0
 };
 
-static const unsigned char _indic_syllable_machine_trans_targs[] = {
+static const unsigned var_na _indic_syllable_machine_trans_targs[] = {
 	31, 37, 42, 2, 43, 46, 4, 50, 
 	51, 31, 60, 9, 66, 69, 61, 11, 
 	74, 75, 78, 31, 83, 17, 89, 92, 
@@ -1011,7 +1011,7 @@ static const unsigned char _indic_syllable_machine_trans_targs[] = {
 	29, 130, 31, 133, 30, 135, 136
 };
 
-static const char _indic_syllable_machine_trans_actions[] = {
+static const var_na _indic_syllable_machine_trans_actions[] = {
 	1, 0, 2, 0, 2, 0, 0, 2, 
 	2, 3, 2, 0, 2, 0, 0, 0, 
 	2, 2, 2, 4, 2, 0, 5, 5, 
@@ -1033,7 +1033,7 @@ static const char _indic_syllable_machine_trans_actions[] = {
 	0, 0, 20, 2, 0, 0, 0
 };
 
-static const char _indic_syllable_machine_to_state_actions[] = {
+static const var_na _indic_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1054,7 +1054,7 @@ static const char _indic_syllable_machine_to_state_actions[] = {
 	0, 0
 };
 
-static const char _indic_syllable_machine_from_state_actions[] = {
+static const var_na _indic_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1096,11 +1096,11 @@ static const short _indic_syllable_machine_eof_trans[] = {
 	147, 119
 };
 
-static const int indic_syllable_machine_start = 31;
-static const int indic_syllable_machine_first_final = 31;
-static const int indic_syllable_machine_error = -1;
+static const පූර්ණ_සංඛ්‍යා indic_syllable_machine_start = 31;
+static const පූර්ණ_සංඛ්‍යා indic_syllable_machine_first_final = 31;
+static const පූර්ණ_සංඛ්‍යා indic_syllable_machine_error = -1;
 
-static const int indic_syllable_machine_en_main = 31;
+static const පූර්ණ_සංඛ්‍යා indic_syllable_machine_en_main = 31;
 
 
 #line 58 "hb-ot-shaper-indic-machine.rl"
@@ -1112,18 +1112,18 @@ static const int indic_syllable_machine_en_main = 31;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+    නම් (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    නම් (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
-inline void
+anta_hstha void
 find_syllables_indic (hb_buffer_t *buffer)
 {
-  unsigned int p, pe, eof, ts, te, act;
-  int cs;
+  unsigned පූර්ණ_සංඛ්‍යා p, pe, eof, ts, te, act;
+  පූර්ණ_සංඛ්‍යා cs;
   hb_glyph_info_t *info = buffer->info;
   
 #line 1119 "hb-ot-shaper-indic-machine.hh"
@@ -1140,22 +1140,22 @@ find_syllables_indic (hb_buffer_t *buffer)
   p = 0;
   pe = eof = buffer->len;
 
-  unsigned int syllable_serial = 1;
+  unsigned පූර්ණ_සංඛ්‍යා syllable_serial = 1;
   
 #line 1131 "hb-ot-shaper-indic-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const unsigned char *_inds;
-	if ( p == pe )
+	පූර්ණ_සංඛ්‍යා _slen;
+	පූර්ණ_සංඛ්‍යා _trans;
+	const unsigned var_na *_keys;
+	const unsigned var_na *_inds;
+	නම් ( p == pe )
 		goto _test_eof;
 _resume:
 	switch ( _indic_syllable_machine_from_state_actions[cs] ) {
-	case 10:
+	pak_sa 10:
 #line 1 "NONE"
 	{ts = p;}
-	break;
+	bha_nga;
 #line 1143 "hb-ot-shaper-indic-machine.hh"
 	}
 
@@ -1170,122 +1170,122 @@ _resume:
 _eof_trans:
 	cs = _indic_syllable_machine_trans_targs[_trans];
 
-	if ( _indic_syllable_machine_trans_actions[_trans] == 0 )
+	නම් ( _indic_syllable_machine_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _indic_syllable_machine_trans_actions[_trans] ) {
-	case 2:
+	pak_sa 2:
 #line 1 "NONE"
 	{te = p+1;}
-	break;
-	case 11:
+	bha_nga;
+	pak_sa 11:
 #line 117 "hb-ot-shaper-indic-machine.rl"
 	{te = p+1;{ found_syllable (indic_non_indic_cluster); }}
-	break;
-	case 14:
+	bha_nga;
+	pak_sa 14:
 #line 111 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_consonant_syllable); }}
-	break;
-	case 15:
+	bha_nga;
+	pak_sa 15:
 #line 112 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_vowel_syllable); }}
-	break;
-	case 18:
+	bha_nga;
+	pak_sa 18:
 #line 113 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_standalone_cluster); }}
-	break;
-	case 20:
+	bha_nga;
+	pak_sa 20:
 #line 114 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_symbol_cluster); }}
-	break;
-	case 16:
+	bha_nga;
+	pak_sa 16:
 #line 116 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 17:
+	bha_nga;
+	pak_sa 17:
 #line 117 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_non_indic_cluster); }}
-	break;
-	case 1:
+	bha_nga;
+	pak_sa 1:
 #line 111 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_consonant_syllable); }}
-	break;
-	case 3:
+	bha_nga;
+	pak_sa 3:
 #line 112 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_vowel_syllable); }}
-	break;
-	case 7:
+	bha_nga;
+	pak_sa 7:
 #line 113 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_standalone_cluster); }}
-	break;
-	case 8:
+	bha_nga;
+	pak_sa 8:
 #line 114 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_symbol_cluster); }}
-	break;
-	case 4:
+	bha_nga;
+	pak_sa 4:
 #line 116 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 6:
+	bha_nga;
+	pak_sa 6:
 #line 1 "NONE"
 	{	switch( act ) {
-	case 1:
+	pak_sa 1:
 	{{p = ((te))-1;} found_syllable (indic_consonant_syllable); }
-	break;
-	case 5:
+	bha_nga;
+	pak_sa 5:
 	{{p = ((te))-1;} found_syllable (indic_non_indic_cluster); }
-	break;
-	case 6:
+	bha_nga;
+	pak_sa 6:
 	{{p = ((te))-1;} found_syllable (indic_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
-	case 7:
+	bha_nga;
+	pak_sa 7:
 	{{p = ((te))-1;} found_syllable (indic_non_indic_cluster); }
-	break;
+	bha_nga;
 	}
 	}
-	break;
-	case 19:
+	bha_nga;
+	pak_sa 19:
 #line 1 "NONE"
 	{te = p+1;}
 #line 111 "hb-ot-shaper-indic-machine.rl"
 	{act = 1;}
-	break;
-	case 13:
+	bha_nga;
+	pak_sa 13:
 #line 1 "NONE"
 	{te = p+1;}
 #line 115 "hb-ot-shaper-indic-machine.rl"
 	{act = 5;}
-	break;
-	case 5:
+	bha_nga;
+	pak_sa 5:
 #line 1 "NONE"
 	{te = p+1;}
 #line 116 "hb-ot-shaper-indic-machine.rl"
 	{act = 6;}
-	break;
-	case 12:
+	bha_nga;
+	pak_sa 12:
 #line 1 "NONE"
 	{te = p+1;}
 #line 117 "hb-ot-shaper-indic-machine.rl"
 	{act = 7;}
-	break;
+	bha_nga;
 #line 1232 "hb-ot-shaper-indic-machine.hh"
 	}
 
 _again:
 	switch ( _indic_syllable_machine_to_state_actions[cs] ) {
-	case 9:
+	pak_sa 9:
 #line 1 "NONE"
 	{ts = 0;}
-	break;
+	bha_nga;
 #line 1239 "hb-ot-shaper-indic-machine.hh"
 	}
 
-	if ( ++p != pe )
+	නම් ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
-	if ( p == eof )
+	නම් ( p == eof )
 	{
-	if ( _indic_syllable_machine_eof_trans[cs] > 0 ) {
+	නම් ( _indic_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _indic_syllable_machine_eof_trans[cs] - 1;
 		goto _eof_trans;
 	}

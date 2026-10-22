@@ -38,12 +38,12 @@
 
 void hb_aat_map_builder_t::add_feature (const hb_feature_t &feature)
 {
-  if (!face->table.feat->has_data ()) return;
+  නම් (!face->table.feat->has_data ()) ආපසු;
 
-  if (feature.tag == HB_TAG ('a','a','l','t'))
+  නම් (feature.tag == HB_TAG ('a','a','l','t'))
   {
-    if (!face->table.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
-      return;
+    නම් (!face->table.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
+      ආපසු;
     feature_range_t *range = features.push();
     range->start = feature.start;
     range->end = feature.end;
@@ -51,25 +51,25 @@ void hb_aat_map_builder_t::add_feature (const hb_feature_t &feature)
     range->info.setting = (hb_aat_layout_feature_selector_t) feature.value;
     range->info.seq = features.length;
     range->info.is_exclusive = true;
-    return;
+    ආපසු;
   }
 
   const hb_aat_feature_mapping_t *mapping = hb_aat_layout_find_feature_mapping (feature.tag);
-  if (!mapping) return;
+  නම් (!mapping) ආපසු;
 
   const AAT::FeatureName* feature_name = &face->table.feat->get_feature (mapping->aatFeatureType);
-  if (!feature_name->has_data ())
+  නම් (!feature_name->has_data ())
   {
     /* Special case: Chain::compile_flags will fall back to the deprecated version of
      * small-caps if necessary, so we need to check for that possibility.
      * https://github.com/harfbuzz/harfbuzz/issues/2307 */
-    if (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE &&
+    නම් (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE &&
 	mapping->selectorToEnable == HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS)
     {
       feature_name = &face->table.feat->get_feature (HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE);
-      if (!feature_name->has_data ()) return;
+      නම් (!feature_name->has_data ()) ආපසු;
     }
-    else return;
+    නැතහොත් ආපසු;
   }
 
   feature_range_t *range = features.push();
@@ -85,20 +85,20 @@ void
 hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 {
   /* Compute active features per range, and compile each. */
-  if (!features.length)
+  නම් (!features.length)
   {
     hb_aat_layout_compile_map (this, &m);
-    return;
+    ආපසු;
   }
 
   /* Sort features by start/end events. */
   hb_vector_t<feature_event_t> feature_events;
   feature_events.alloc_exact (features.length * 2 + 1);
-  for (unsigned int i = 0; i < features.length; i++)
+  සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < features.length; i++)
   {
     auto &feature = features.arrayZ[i];
 
-    if (feature.start == feature.end)
+    නම් (feature.start == feature.end)
       continue;
 
     feature_event_t *event;
@@ -127,12 +127,12 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 
   /* Scan events and save features for each range. */
   hb_sorted_vector_t<feature_info_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  unsigned පූර්ණ_සංඛ්‍යා last_index = 0;
+  සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < feature_events.length; i++)
   {
     feature_event_t *event = &feature_events[i];
 
-    if (event->index != last_index)
+    නම් (event->index != last_index)
     {
       /* Save a snapshot of active features and the range. */
 
@@ -140,12 +140,12 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
       current_features = active_features;
       range_first = last_index;
       range_last = event->index - 1;
-      if (current_features.length)
+      නම් (current_features.length)
       {
 	current_features.qsort ();
-	unsigned int j = 0;
-	for (unsigned int i = 1; i < current_features.length; i++)
-	  if (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
+	unsigned පූර්ණ_සංඛ්‍යා j = 0;
+	සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 1; i < current_features.length; i++)
+	  නම් (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
 	      /* Nonexclusive feature selectors come in even/odd pairs to turn a setting on/off
 	       * respectively, so we mask out the low-order bit when checking for "duplicates"
 	       * (selectors referring to the same feature setting) here. */
@@ -159,17 +159,17 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
       last_index = event->index;
     }
 
-    if (event->start)
+    නම් (event->start)
     {
       active_features.push (event->feature);
-    } else {
+    } නැතහොත් {
       feature_info_t *feature = active_features.lsearch (event->feature);
-      if (feature)
+      නම් (feature)
 	active_features.remove_ordered (feature - active_features.arrayZ);
     }
   }
 
-  for (auto &chain_flags : m.chain_flags)
+  සඳහා (auto &chain_flags : m.chain_flags)
     // With our above setup this value is one less than desired; adjust it.
     chain_flags.tail().cluster_last = HB_FEATURE_GLOBAL_END;
 }

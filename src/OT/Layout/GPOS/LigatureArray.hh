@@ -5,7 +5,7 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_ligature_variation_indices (hb_collect_variation_indices_context_t *c,
                                         const Coverage &coverage,
                                         const void *base,
@@ -14,19 +14,19 @@ void collect_ligature_variation_indices (hb_collect_variation_indices_context_t 
                                         unsigned class_count,
                                         const hb_map_t &klass_mapping)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  සඳහා (const auto _ : hb_zip (coverage, hb_range (count)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
+    නම් (!c->glyph_set->has (_.first)) continue;
     hb_barrier ();
     unsigned offset = offsets[_.second];
-    if (!offset) continue;
+    නම් (!offset) continue;
 
     const void *matrix = &StructAtOffset<const HBUINT16> (base, offset);
     /* LigatureAttach always has a 16-bit component count; its anchor
      * offsets have the same width as the LigatureArray offsets. */
     unsigned rows = *static_cast<const HBUINT16 *> (matrix);
     glyph_data_t anchors = offsets;
-    anchors.data = (const char *) matrix + HBUINT16::static_size;
+    anchors.data = (const var_na *) matrix + HBUINT16::static_size;
 
     hb_sorted_vector_t<unsigned> indexes;
     collect_ligature_anchor_indexes (rows, class_count, klass_mapping, indexes);
@@ -37,19 +37,19 @@ void collect_ligature_variation_indices (hb_collect_variation_indices_context_t 
 
 /* Array of LigatureAttach tables ordered by LigatureCoverage Index */
 template <typename Types>
-struct LigatureArray :
+sa_nracanaa LigatureArray :
   Types::template ArrayOf<typename Types::template OffsetTo<AnchorMatrix<Types, HBUINT16>>>
 {
   typedef AnchorMatrix<Types, HBUINT16> LigatureAttach;
   typedef typename Types::template OffsetTo<LigatureAttach> LigatureAttachOffset;
   typedef typename Types::template ArrayOf<LigatureAttachOffset> Super;
 
-  const LigatureAttach& operator [] (int i_) const
+  const LigatureAttach& operator [] (පූර්ණ_සංඛ්‍යා i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (LigatureAttach);
+    unsigned පූර්ණ_සංඛ්‍යා i = (unsigned පූර්ණ_සංඛ්‍යා) i_;
+    නම් (unlikely (i >= this->len)) ආපසු Null (LigatureAttach);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    ආපසු this+this->arrayZ[i];
   }
 
   template <typename ...Ts>
@@ -80,26 +80,26 @@ struct LigatureArray :
     const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
     auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    නම් (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
 
     bool ret = false;
-    for (const auto _ : + hb_zip (coverage, *this)
+    සඳහා (const auto _ : + hb_zip (coverage, *this)
                         | hb_filter (glyph_map, hb_first))
     {
       const LigatureAttach& src = (this + _.second);
       bool non_empty = + hb_range (src.rows * class_count)
-                       | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
-                       | hb_map ([&] (const unsigned index) { return !src.offset_is_null (index / class_count, index % class_count, class_count); })
+                       | hb_filter ([=] (unsigned index) { ආපසු klass_mapping->has (index % class_count); })
+                       | hb_map ([&] (const unsigned index) { ආපසු !src.offset_is_null (index / class_count, index % class_count, class_count); })
                        | hb_any;
 
-      if (!non_empty) continue;
+      නම් (!non_empty) continue;
 
       auto *matrix = out->serialize_append (c->serializer);
-      if (unlikely (!matrix)) return_trace (false);
+      නම් (unlikely (!matrix)) return_trace (false);
 
       auto indexes =
           + hb_range (src.rows * class_count)
-          | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
+          | hb_filter ([=] (unsigned index) { ආපසු klass_mapping->has (index % class_count); })
           ;
       ret |= matrix->serialize_subset (c,
 				       _.second,

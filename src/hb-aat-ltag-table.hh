@@ -39,9 +39,9 @@ namespace AAT {
 using namespace OT;
 
 
-struct FTStringRange
+sa_nracanaa FTStringRange
 {
-  friend struct ltag;
+  friend sa_nracanaa ltag;
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -51,7 +51,7 @@ struct FTStringRange
 		  (base+tag).sanitize (c, length));
   }
 
-  protected:
+  rak_sita:
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		tag;		/* Offset from the start of the table to
 				 * the beginning of the string */
@@ -60,14 +60,14 @@ struct FTStringRange
   DEFINE_SIZE_STATIC (4);
 };
 
-struct ltag
+sa_nracanaa ltag
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
 
-  hb_language_t get_language (unsigned int i) const
+  hb_language_t get_language (unsigned පූර්ණ_සංඛ්‍යා i) const
   {
     const FTStringRange &range = tagRanges[i];
-    return hb_language_from_string ((const char *) (this+range.tag).arrayZ,
+    ආපසු hb_language_from_string ((const var_na *) (this+range.tag).arrayZ,
 				    range.length);
   }
 
@@ -80,7 +80,7 @@ struct ltag
 			  tagRanges.sanitize (c, this)));
   }
 
-  protected:
+  rak_sita:
   HBUINT32	version;	/* Table version; currently 1 */
   HBUINT32	flags;		/* Table flags; currently none defined */
   Array32Of<FTStringRange>

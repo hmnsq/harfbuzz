@@ -43,23 +43,23 @@
   HB_DRAW_FUNC_IMPLEMENT (get_budget_remaining) \
   /* ^--- Add new callbacks here */
 
-struct hb_draw_funcs_t
+sa_nracanaa hb_draw_funcs_t
 {
   hb_object_header_t header;
 
-  struct {
+  sa_nracanaa {
 #define HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
   } func;
 
-  struct {
+  sa_nracanaa {
 #define HB_DRAW_FUNC_IMPLEMENT(name) void *name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
   } *user_data;
 
-  struct {
+  sa_nracanaa {
 #define HB_DRAW_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
@@ -97,16 +97,16 @@ struct hb_draw_funcs_t
 
   bool set_budget (void *draw_data, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    නම් (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, draw_data, budget,
+    ආපසු func.set_budget (this, draw_data, budget,
 			    !user_data ? nullptr : user_data->set_budget);
   }
   int64_t get_budget (void *draw_data)
-  { return func.get_budget (this, draw_data,
+  { ආපසු func.get_budget (this, draw_data,
 			    !user_data ? nullptr : user_data->get_budget); }
   int64_t *get_budget_remaining_ptr (void *draw_data)
-  { return func.get_budget_remaining (this, draw_data,
+  { ආපසු func.get_budget_remaining (this, draw_data,
 				      !user_data ? nullptr : user_data->get_budget_remaining); }
 
 
@@ -115,7 +115,7 @@ struct hb_draw_funcs_t
   move_to (void *draw_data, hb_draw_state_t &st,
 	   float to_x, float to_y)
   {
-    if (unlikely (st.path_open)) close_path (draw_data, st);
+    නම් (unlikely (st.path_open)) close_path (draw_data, st);
 
     st.current_x = to_x;
     st.current_y = to_y;
@@ -126,7 +126,7 @@ struct hb_draw_funcs_t
   line_to (void *draw_data, hb_draw_state_t &st,
 	   float to_x, float to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    නම් (unlikely (!st.path_open)) start_path (draw_data, st);
 
     emit_line_to (draw_data, st, to_x, to_y);
 
@@ -140,7 +140,7 @@ struct hb_draw_funcs_t
 		float control_x, float control_y,
 		float to_x, float to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    නම් (unlikely (!st.path_open)) start_path (draw_data, st);
 
     emit_quadratic_to (draw_data, st, control_x, control_y, to_x, to_y);
 
@@ -155,7 +155,7 @@ struct hb_draw_funcs_t
 	    float control2_x, float control2_y,
 	    float to_x, float to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    නම් (unlikely (!st.path_open)) start_path (draw_data, st);
 
     emit_cubic_to (draw_data, st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
 
@@ -167,9 +167,9 @@ struct hb_draw_funcs_t
   HB_ALWAYS_INLINE
   close_path (void *draw_data, hb_draw_state_t &st)
   {
-    if (likely (st.path_open))
+    නම් (likely (st.path_open))
     {
-      if ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
+      නම් ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
 	emit_line_to (draw_data, st, st.path_start_x, st.path_start_y);
       emit_close_path (draw_data, st);
     }
@@ -177,7 +177,7 @@ struct hb_draw_funcs_t
     st.path_start_x = st.current_x = st.path_start_y = st.current_y = 0;
   }
 
-  protected:
+  rak_sita:
 
   void start_path (void *draw_data, hb_draw_state_t &st)
   {
@@ -190,13 +190,13 @@ struct hb_draw_funcs_t
 };
 DECLARE_NULL_INSTANCE (hb_draw_funcs_t);
 
-struct hb_draw_session_t
+sa_nracanaa hb_draw_session_t
 {
   hb_draw_session_t (hb_draw_funcs_t *funcs_, void *draw_data_)
     : funcs {funcs_}, draw_data {draw_data_}, st HB_DRAW_STATE_DEFAULT,
       local_budget {HB_BUDGET_GLYPH}, budget {funcs->get_budget_remaining_ptr (draw_data)}
   {
-    if (!budget)
+    නම් (!budget)
       budget = &local_budget;
   }
 
@@ -240,7 +240,7 @@ struct hb_draw_session_t
     funcs->close_path (draw_data, st);
   }
 
-  int64_t &get_budget () { return *budget; }
+  int64_t &get_budget () { ආපසු *budget; }
 
   public:
   hb_draw_funcs_t *funcs;

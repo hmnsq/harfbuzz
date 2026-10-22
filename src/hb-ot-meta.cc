@@ -50,13 +50,13 @@
  *
  * Since: 2.6.0
  **/
-unsigned int
+unsigned පූර්ණ_සංඛ්‍යා
 hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
+			   unsigned පූර්ණ_සංඛ්‍යා      start_offset,
+			   unsigned පූර්ණ_සංඛ්‍යා     *entries_count, /* IN/OUT.  May be NULL. */
 			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */)
 {
-  return face->table.meta->get_entries (start_offset, entries_count, entries);
+  ආපසු face->table.meta->get_entries (start_offset, entries_count, entries);
 }
 
 /**
@@ -73,7 +73,7 @@ hb_ot_meta_get_entry_tags (hb_face_t        *face,
 hb_blob_t *
 hb_ot_meta_reference_entry (hb_face_t *face, hb_ot_meta_tag_t meta_tag)
 {
-  return face->table.meta->reference_entry (meta_tag);
+  ආපසු face->table.meta->reference_entry (meta_tag);
 }
 
 #endif

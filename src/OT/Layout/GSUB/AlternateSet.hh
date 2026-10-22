@@ -8,9 +8,9 @@ namespace Layout {
 namespace GSUB_impl {
 
 template <typename Types>
-struct AlternateSet
+sa_nracanaa AlternateSet
 {
-  protected:
+  rak_sita:
   Array16Of<typename Types::HBGlyphID>
                 alternates;             /* Array of alternate GlyphIDs--in
                                          * arbitrary order */
@@ -24,7 +24,7 @@ struct AlternateSet
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return hb_any (alternates, glyphs); }
+  { ආපසු hb_any (alternates, glyphs); }
 
   void closure (hb_closure_context_t *c) const
   { c->output->add_array (alternates.arrayZ, alternates.len); }
@@ -42,19 +42,19 @@ struct AlternateSet
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
-    unsigned int count = alternates.len;
+    unsigned පූර්ණ_සංඛ්‍යා count = alternates.len;
 
-    if (unlikely (!count)) return_trace (false);
+    නම් (unlikely (!count)) return_trace (false);
 
     hb_mask_t glyph_mask = c->buffer->cur().mask;
     hb_mask_t lookup_mask = c->lookup_mask;
 
     /* Note: This breaks badly if two features enabled this lookup together. */
-    unsigned int shift = hb_ctz (lookup_mask);
-    unsigned int alt_index = ((lookup_mask & glyph_mask) >> shift);
+    unsigned පූර්ණ_සංඛ්‍යා shift = hb_ctz (lookup_mask);
+    unsigned පූර්ණ_සංඛ්‍යා alt_index = ((lookup_mask & glyph_mask) >> shift);
 
     /* If alt_index is MAX_VALUE, randomize feature if it is the rand feature. */
-    if (alt_index == HB_OT_MAP_MAX_VALUE && c->random)
+    නම් (alt_index == HB_OT_MAP_MAX_VALUE && c->random)
     {
       /* Maybe we can do better than unsafe-to-break all; but since we are
        * changing random state, it would be hard to track that.  Good 'nough. */
@@ -62,9 +62,9 @@ struct AlternateSet
       alt_index = c->random_number () % count + 1;
     }
 
-    if (unlikely (alt_index > count || alt_index == 0)) return_trace (false);
+    නම් (unlikely (alt_index > count || alt_index == 0)) return_trace (false);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    නම් (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -74,7 +74,7 @@ struct AlternateSet
 
     c->replace_glyph (alternates[alt_index - 1]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    නම් (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "replaced glyph at %u (alternate substitution)",
@@ -89,13 +89,13 @@ struct AlternateSet
                   unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
                   hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
   {
-    if (alternates.len && alternate_count && alternate_glyphs)
+    නම් (alternates.len && alternate_count && alternate_glyphs)
     {
       + alternates.as_array ().sub_array (start_offset, alternate_count)
       | hb_sink (hb_array (alternate_glyphs, *alternate_count))
       ;
     }
-    return alternates.len;
+    ආපසු alternates.len;
   }
 
   void
@@ -104,7 +104,7 @@ struct AlternateSet
 		      hb_map_t  *alternate_glyphs /* IN/OUT */) const
   {
     + hb_enumerate (alternates)
-    | hb_map ([gid] (hb_pair_t<unsigned, hb_codepoint_t> _) { return hb_pair (gid + (_.first << 24), _.second); })
+    | hb_map ([gid] (hb_pair_t<unsigned, hb_codepoint_t> _) { ආපසු hb_pair (gid + (_.first << 24), _.second); })
     | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
 		{ _hb_collect_glyph_alternates_add (p.first, p.second,
 						    alternate_count, alternate_glyphs); })

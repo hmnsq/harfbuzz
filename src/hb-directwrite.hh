@@ -51,19 +51,19 @@ template <typename Type, typename ...Ts>
 static Type *
 hb_directwrite_object_create (Ts&&... args)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
-  if (unlikely (!obj))
-    return nullptr;
+  Type *obj = (Type *) hb_calloc (1, parimaa_na (Type));
+  නම් (unlikely (!obj))
+    ආපසු nullptr;
 
-  return new (obj) Type (std::forward<Ts> (args)...);
+  ආපසු new (obj) Type (std::forward<Ts> (args)...);
 }
 
 template <typename Type>
 static void
 hb_directwrite_object_destroy (Type *obj)
 {
-  if (!obj)
-    return;
+  නම් (!obj)
+    ආපසු;
 
   obj->~Type ();
   hb_free (obj);
@@ -87,13 +87,13 @@ public:
     fontFileStream->AddRef ();
     hb_lock_t lock {mutex};
     mFontStreams.set (mNextFontFileKey, fontFileStream);
-    return mNextFontFileKey++;
+    ආපසු mNextFontFileKey++;
   }
   void UnregisterFontFileStream (uint64_t fontFileKey)
   {
     hb_lock_t lock {mutex};
     IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (stream)
+    නම් (stream)
     {
       mFontStreams.del (fontFileKey);
       stream->Release ();
@@ -102,19 +102,19 @@ public:
 
   // IUnknown interface
   IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
+  { ආපසු S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    ආපසු mRefCount.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
     signed refCount = mRefCount.dec () - 1;
     assert (refCount >= 0);
-    if (refCount)
-      return refCount;
+    නම් (refCount)
+      ආපසු refCount;
     hb_directwrite_object_destroy (this);
-    return 0;
+    ආපසු 0;
   }
 
   // IDWriteFontFileLoader methods
@@ -123,20 +123,20 @@ public:
 		       uint32_t fontFileReferenceKeySize,
 		       OUT IDWriteFontFileStream** fontFileStream)
   {
-    if (fontFileReferenceKeySize != sizeof (uint64_t))
-      return E_INVALIDARG;
+    නම් (fontFileReferenceKeySize != parimaa_na (uint64_t))
+      ආපසු E_INVALIDARG;
     uint64_t fontFileKey = * (uint64_t *) fontFileReferenceKey;
     IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (!stream)
-      return E_FAIL;
+    නම් (!stream)
+      ආපසු E_FAIL;
     stream->AddRef ();
     *fontFileStream = stream;
-    return S_OK;
+    ආපසු S_OK;
   }
 
   ~DWriteFontFileLoader()
   {
-    for (auto v : mFontStreams.values ())
+    සඳහා (auto v : mFontStreams.values ())
       v->Release ();
   }
 };
@@ -156,19 +156,19 @@ public:
 
   // IUnknown interface
   IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
+  { ආපසු S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    ආපසු mRefCount.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
     signed refCount = mRefCount.dec () - 1;
     assert (refCount >= 0);
-    if (refCount)
-      return refCount;
+    නම් (refCount)
+      ආපසු refCount;
     hb_directwrite_object_destroy (this);
-    return 0;
+    ආපසු 0;
   }
 
   // IDWriteFontFileStream methods
@@ -179,7 +179,7 @@ public:
 		    OUT void** fragmentContext)
   {
     // We are required to do bounds checking.
-    if (fileOffset + fragmentSize > mSize) return E_FAIL;
+    නම් (fileOffset + fragmentSize > mSize) ආපසු E_FAIL;
 
     // truncate the 64 bit fileOffset to size_t sized index into mData
     size_t index = static_cast<size_t> (fileOffset);
@@ -187,7 +187,7 @@ public:
     // We should be alive for the duration of this.
     *fragmentStart = &mData[index];
     *fragmentContext = nullptr;
-    return S_OK;
+    ආපසු S_OK;
   }
 
   virtual void STDMETHODCALLTYPE
@@ -197,38 +197,38 @@ public:
   GetFileSize (OUT UINT64* fileSize)
   {
     *fileSize = mSize;
-    return S_OK;
+    ආපසු S_OK;
   }
 
   virtual HRESULT STDMETHODCALLTYPE
-  GetLastWriteTime (OUT UINT64* lastWriteTime) { return E_NOTIMPL; }
+  GetLastWriteTime (OUT UINT64* lastWriteTime) { ආපසු E_NOTIMPL; }
 
   ~DWriteFontFileStream();
 };
 
-struct hb_directwrite_global_t
+sa_nracanaa hb_directwrite_global_t
 {
   hb_directwrite_global_t ()
   {
     HRESULT hr = DWriteCreateFactory (DWRITE_FACTORY_TYPE_SHARED, __uuidof (IDWriteFactory),
 				      (IUnknown**) &dwriteFactory);
 
-    if (unlikely (hr != S_OK))
-      return;
+    නම් (unlikely (hr != S_OK))
+      ආපසු;
 
     fontFileLoader = hb_directwrite_object_create<DWriteFontFileLoader> ();
-    if (unlikely (!fontFileLoader))
-      return;
-    if (unlikely (FAILED (dwriteFactory->RegisterFontFileLoader (fontFileLoader))))
-      return;
+    නම් (unlikely (!fontFileLoader))
+      ආපසු;
+    නම් (unlikely (FAILED (dwriteFactory->RegisterFontFileLoader (fontFileLoader))))
+      ආපසු;
 
     success = true;
   }
   ~hb_directwrite_global_t ()
   {
-    if (fontFileLoader)
+    නම් (fontFileLoader)
       fontFileLoader->Release ();
-    if (dwriteFactory)
+    නම් (dwriteFactory)
       dwriteFactory->Release ();
   }
 

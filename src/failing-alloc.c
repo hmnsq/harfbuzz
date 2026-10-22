@@ -29,35 +29,35 @@
 extern "C" {
 #endif
 
-int alloc_state = 0;
+පූර්ණ_සංඛ්‍යා alloc_state = 0;
 
 __attribute__((no_sanitize("integer")))
-static int fastrand ()
+static පූර්ණ_සංඛ්‍යා fastrand ()
 {
-  if (!alloc_state) return 1;
+  නම් (!alloc_state) ආපසු 1;
   /* Based on https://software.intel.com/content/www/us/en/develop/articles/fast-random-number-generator-on-the-intel-pentiumr-4-processor.html */
   alloc_state = (214013 * alloc_state + 2531011);
-  return (alloc_state >> 16) & 0x7FFF;
+  ආපසු (alloc_state >> 16) & 0x7FFF;
 }
 
 void* hb_malloc_impl (size_t size)
 {
-  return (fastrand () % 16) ? malloc (size) : NULL;
+  ආපසු (fastrand () % 16) ? malloc (size) : NULL;
 }
 
 void* hb_calloc_impl (size_t nmemb, size_t size)
 {
-  return (fastrand () % 16) ? calloc (nmemb, size) : NULL;
+  ආපසු (fastrand () % 16) ? calloc (nmemb, size) : NULL;
 }
 
 void* hb_realloc_impl (void *ptr, size_t size)
 {
-  return (fastrand () % 16) ? realloc (ptr, size) : NULL;
+  ආපසු (fastrand () % 16) ? realloc (ptr, size) : NULL;
 }
 
 void  hb_free_impl (void *ptr)
 {
-  return free (ptr);
+  ආපසු free (ptr);
 }
 
 #ifdef __cplusplus

@@ -32,35 +32,35 @@
 #include "hb-number-parser.hh"
 
 bool
-hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer)
+hb_parse_double (const var_na **pp, const var_na *end, dviguu_na *pv, bool whole_buffer)
 {
-  const char *pend = end;
-  double value = hb_strtod (*pp, &pend);
-  if (unlikely (*pp == pend)) return false;
-  if (unlikely (whole_buffer && end != pend)) return false;
+  const var_na *pend = end;
+  dviguu_na value = hb_strtod (*pp, &pend);
+  නම් (unlikely (*pp == pend)) ආපසු false;
+  නම් (unlikely (whole_buffer && end != pend)) ආපසු false;
   *pv = value;
   *pp = pend;
-  return true;
+  ආපසු true;
 }
 
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
-static int
-_hb_digit_value (char c, int base)
+static පූර්ණ_සංඛ්‍යා
+_hb_digit_value (var_na c, පූර්ණ_සංඛ්‍යා base)
 {
-  int d;
-  if ('0' <= c && c <= '9')      d = c - '0';
-  else if ('a' <= c && c <= 'z') d = c - 'a' + 10;
-  else if ('A' <= c && c <= 'Z') d = c - 'A' + 10;
-  else return -1;
-  return d < base ? d : -1;
+  පූර්ණ_සංඛ්‍යා d;
+  නම් ('0' <= c && c <= '9')      d = c - '0';
+  නැතහොත් නම් ('a' <= c && c <= 'z') d = c - 'a' + 10;
+  නැතහොත් නම් ('A' <= c && c <= 'Z') d = c - 'A' + 10;
+  නැතහොත් ආපසු -1;
+  ආපසු d < base ? d : -1;
 }
 
 /* Consumes digits in [p, pe) into *value (magnitude).  Sets *overflow
  * if the value would exceed UINT64_MAX.  Sets *any_digits if at least
  * one digit was consumed.  Returns the position past the last digit. */
-static const char *
-_hb_scan_digits (const char *p, const char *pe, int base,
+static const var_na *
+_hb_scan_digits (const var_na *p, const var_na *pe, පූර්ණ_සංඛ්‍යා base,
                  uint64_t *value, bool *overflow, bool *any_digits)
 {
   const uint64_t cutoff = UINT64_MAX / (unsigned) base;
@@ -68,79 +68,79 @@ _hb_scan_digits (const char *p, const char *pe, int base,
   uint64_t v = 0;
   bool ov = false, any = false;
 
-  for (; p < pe; p++)
+  සඳහා (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
-    if (d < 0) break;
+    පූර්ණ_සංඛ්‍යා d = _hb_digit_value (*p, base);
+    නම් (d < 0) bha_nga;
     any = true;
-    if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
+    නම් (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
       ov = true;
-    else
+    නැතහොත්
       v = v * (unsigned) base + (uint64_t) d;
   }
 
   *value = v;
   *overflow = ov;
   *any_digits = any;
-  return p;
+  ආපසු p;
 }
 
 template<typename T, typename Postprocess>
 static bool
-_parse_number (const char **pp, const char *end, T *pv,
-               bool whole_buffer, int base, Postprocess post)
+_parse_number (const var_na **pp, const var_na *end, T *pv,
+               bool whole_buffer, පූර්ණ_සංඛ්‍යා base, Postprocess post)
 {
-  const char *pend = end;
-  const char *p = *pp;
+  const var_na *pend = end;
+  const var_na *p = *pp;
   bool neg = false, any = false, overflow = false;
 
-  while (p < pend && ISSPACE (*p)) p++;
-  if (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
+  අතරතුර (p < pend && ISSPACE (*p)) p++;
+  නම් (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
 
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
-  if (base == 16 && p + 2 < pend && p[0] == '0' &&
+  නම් (base == 16 && p + 2 < pend && p[0] == '0' &&
       (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
   p = _hb_scan_digits (p, pend, base, &v, &overflow, &any);
-  if (unlikely (!any || overflow)) return false;
+  නම් (unlikely (!any || overflow)) ආපසු false;
 
   T out;
-  if (unlikely (!post (v, neg, &out))) return false;
-  if (unlikely (whole_buffer && p != pend)) return false;
+  නම් (unlikely (!post (v, neg, &out))) ආපසු false;
+  නම් (unlikely (whole_buffer && p != pend)) ආපසු false;
 
   *pv = out;
   *pp = p;
-  return true;
+  ආපසු true;
 }
 
 bool
-hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
+hb_parse_int (const var_na **pp, const var_na *end, පූර්ණ_සංඛ්‍යා *pv, bool whole_buffer)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
-                        [] (uint64_t v, bool neg, int *out) {
+  ආපසු _parse_number (pp, end, pv, whole_buffer, 10,
+                        [] (uint64_t v, bool neg, පූර්ණ_සංඛ්‍යා *out) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
     uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
-    if (unlikely (v > limit)) return false;
-    *out = (int) (neg ? -(int64_t) v : (int64_t) v);
-    return true;
+    නම් (unlikely (v > limit)) ආපසු false;
+    *out = (පූර්ණ_සංඛ්‍යා) (neg ? -(int64_t) v : (int64_t) v);
+    ආපසු true;
   });
 }
 
 bool
-hb_parse_uint (const char **pp, const char *end, unsigned *pv,
-               bool whole_buffer, int base)
+hb_parse_uint (const var_na **pp, const var_na *end, unsigned *pv,
+               bool whole_buffer, පූර්ණ_සංඛ්‍යා base)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
+  ආපසු _parse_number (pp, end, pv, whole_buffer, base,
                         [] (uint64_t v, bool neg, unsigned *out) {
-    if (unlikely (v > UINT_MAX)) return false;
+    නම් (unlikely (v > UINT_MAX)) ආපසු false;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul
      * truncated to unsigned. */
     unsigned u = (unsigned) v;
     *out = neg ? (unsigned) (0u - u) : u;
-    return true;
+    ආපසු true;
   });
 }
 

@@ -49,16 +49,16 @@ namespace CFF {
 
 #define CFF_UNDEF_SID   CFF_UNDEF_CODE
 
-enum EncodingID { StandardEncoding = 0, ExpertEncoding = 1 };
-enum CharsetID { ISOAdobeCharset = 0, ExpertCharset = 1, ExpertSubsetCharset = 2 };
+ga_nanaa EncodingID { StandardEncoding = 0, ExpertEncoding = 1 };
+ga_nanaa CharsetID { ISOAdobeCharset = 0, ExpertCharset = 1, ExpertSubsetCharset = 2 };
 
 typedef CFF1Index          CFF1CharStrings;
 typedef Subrs<HBUINT16>    CFF1Subrs;
 
-struct CFF1FDSelect : FDSelect {};
+sa_nracanaa CFF1FDSelect : FDSelect {};
 
 /* Encoding */
-struct Encoding0 {
+sa_nracanaa Encoding0 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
@@ -69,23 +69,23 @@ struct Encoding0 {
   {
     assert (glyph > 0);
     glyph--;
-    if (glyph < nCodes ())
+    නම් (glyph < nCodes ())
     {
-      return (hb_codepoint_t)codes[glyph];
+      ආපසු (hb_codepoint_t)codes[glyph];
     }
-    else
-      return CFF_UNDEF_CODE;
+    නැතහොත්
+      ආපසු CFF_UNDEF_CODE;
   }
 
-  HBUINT8 &nCodes () { return codes.len; }
-  HBUINT8 nCodes () const { return codes.len; }
+  HBUINT8 &nCodes () { ආපසු codes.len; }
+  HBUINT8 nCodes () const { ආපසු codes.len; }
 
   ArrayOf<HBUINT8, HBUINT8> codes;
 
   DEFINE_SIZE_ARRAY_SIZED (1, codes);
 };
 
-struct Encoding1_Range {
+sa_nracanaa Encoding1_Range {
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
@@ -98,7 +98,7 @@ struct Encoding1_Range {
   DEFINE_SIZE_STATIC (2);
 };
 
-struct Encoding1 {
+sa_nracanaa Encoding1 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
@@ -110,27 +110,27 @@ struct Encoding1 {
     /* TODO: Add cache like get_sid. */
     assert (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; i < nRanges (); i++)
+    සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < nRanges (); i++)
     {
-      if (glyph <= ranges[i].nLeft)
+      නම් (glyph <= ranges[i].nLeft)
       {
 	hb_codepoint_t code = (hb_codepoint_t) ranges[i].first + glyph;
-	return (likely (code < 0x100) ? code: CFF_UNDEF_CODE);
+	ආපසු (likely (code < 0x100) ? code: CFF_UNDEF_CODE);
       }
       glyph -= (ranges[i].nLeft + 1);
     }
-    return CFF_UNDEF_CODE;
+    ආපසු CFF_UNDEF_CODE;
   }
 
-  HBUINT8 &nRanges () { return ranges.len; }
-  HBUINT8 nRanges () const { return ranges.len; }
+  HBUINT8 &nRanges () { ආපසු ranges.len; }
+  HBUINT8 nRanges () const { ආපසු ranges.len; }
 
   ArrayOf<Encoding1_Range, HBUINT8> ranges;
 
   DEFINE_SIZE_ARRAY_SIZED (1, ranges);
 };
 
-struct SuppEncoding {
+sa_nracanaa SuppEncoding {
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
@@ -143,7 +143,7 @@ struct SuppEncoding {
   DEFINE_SIZE_STATIC (3);
 };
 
-struct CFF1SuppEncData {
+sa_nracanaa CFF1SuppEncData {
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
@@ -152,20 +152,20 @@ struct CFF1SuppEncData {
 
   void get_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
   {
-    for (unsigned int i = 0; i < nSups (); i++)
-      if (sid == supps[i].glyph)
+    සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < nSups (); i++)
+      නම් (sid == supps[i].glyph)
 	codes.push (supps[i].code);
   }
 
-  HBUINT8 &nSups () { return supps.len; }
-  HBUINT8 nSups () const { return supps.len; }
+  HBUINT8 &nSups () { ආපසු supps.len; }
+  HBUINT8 nSups () const { ආපසු supps.len; }
 
   ArrayOf<SuppEncoding, HBUINT8> supps;
 
   DEFINE_SIZE_ARRAY_SIZED (1, supps);
 };
 
-struct Encoding
+sa_nracanaa Encoding
 {
   /* serialize a fullset Encoding */
   bool serialize (hb_serialize_context_t *c, const Encoding &src)
@@ -177,55 +177,55 @@ struct Encoding
   /* serialize a subset Encoding */
   bool serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int enc_count,
+		  unsigned පූර්ණ_සංඛ්‍යා enc_count,
 		  const hb_vector_t<code_pair_t>& code_ranges,
 		  const hb_vector_t<code_pair_t>& supp_codes)
   {
     TRACE_SERIALIZE (this);
     Encoding *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
+    නම් (unlikely (!dest)) return_trace (false);
     dest->format = format | ((supp_codes.length > 0) ? 0x80 : 0);
     switch (format) {
-    case 0:
+    pak_sa 0:
     {
       Encoding0 *fmt0 = c->allocate_size<Encoding0> (Encoding0::min_size + HBUINT8::static_size * enc_count);
-      if (unlikely (!fmt0)) return_trace (false);
+      නම් (unlikely (!fmt0)) return_trace (false);
       fmt0->nCodes () = enc_count;
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      unsigned පූර්ණ_සංඛ්‍යා glyph = 0;
+      සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < code_ranges.length; i++)
       {
 	hb_codepoint_t code = code_ranges[i].code;
-	for (int left = (int)code_ranges[i].glyph; left >= 0; left--)
+	සඳහා (පූර්ණ_සංඛ්‍යා left = (පූර්ණ_සංඛ්‍යා)code_ranges[i].glyph; left >= 0; left--)
 	  fmt0->codes[glyph++] = code++;
-	if (unlikely (!((glyph <= 0x100) && (code <= 0x100))))
+	නම් (unlikely (!((glyph <= 0x100) && (code <= 0x100))))
 	  return_trace (false);
       }
     }
-    break;
+    bha_nga;
 
-    case 1:
+    pak_sa 1:
     {
       Encoding1 *fmt1 = c->allocate_size<Encoding1> (Encoding1::min_size + Encoding1_Range::static_size * code_ranges.length);
-      if (unlikely (!fmt1)) return_trace (false);
+      නම් (unlikely (!fmt1)) return_trace (false);
       fmt1->nRanges () = code_ranges.length;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < code_ranges.length; i++)
       {
-	if (unlikely (!((code_ranges[i].code <= 0xFF) && (code_ranges[i].glyph <= 0xFF))))
+	නම් (unlikely (!((code_ranges[i].code <= 0xFF) && (code_ranges[i].glyph <= 0xFF))))
 	  return_trace (false);
 	fmt1->ranges[i].first = code_ranges[i].code;
 	fmt1->ranges[i].nLeft = code_ranges[i].glyph;
       }
     }
-    break;
+    bha_nga;
 
     }
 
-    if (supp_codes.length)
+    නම් (supp_codes.length)
     {
       CFF1SuppEncData *suppData = c->allocate_size<CFF1SuppEncData> (CFF1SuppEncData::min_size + SuppEncoding::static_size * supp_codes.length);
-      if (unlikely (!suppData)) return_trace (false);
+      නම් (unlikely (!suppData)) return_trace (false);
       suppData->nSups () = supp_codes.length;
-      for (unsigned int i = 0; i < supp_codes.length; i++)
+      සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < supp_codes.length; i++)
       {
 	suppData->supps[i].code = supp_codes[i].code;
 	suppData->supps[i].glyph = supp_codes[i].glyph; /* actually SID */
@@ -240,64 +240,64 @@ struct Encoding
     size_t size = min_size;
     switch (table_format ())
     {
-    case 0: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format0.get_size ()); break;
-    case 1: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format1.get_size ()); break;
+    pak_sa 0: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format0.get_size ()); bha_nga;
+    pak_sa 1: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format1.get_size ()); bha_nga;
     }
-    if (has_supplement ())
+    නම් (has_supplement ())
       size = hb_unsigned_add_saturate (size, suppEncData ().get_size ());
-    return size;
+    ආපසු size;
   }
 
   hb_codepoint_t get_code (hb_codepoint_t glyph) const
   {
     switch (table_format ())
     {
-    case 0: hb_barrier (); return u.format0.get_code (glyph);
-    case 1: hb_barrier (); return u.format1.get_code (glyph);
-    default:return 0;
+    pak_sa 0: hb_barrier (); ආපසු u.format0.get_code (glyph);
+    pak_sa 1: hb_barrier (); ආපසු u.format1.get_code (glyph);
+    default:ආපසු 0;
     }
   }
 
-  uint8_t table_format () const { return format & 0x7F; }
-  bool  has_supplement () const { return format & 0x80; }
+  uint8_t table_format () const { ආපසු format & 0x7F; }
+  bool  has_supplement () const { ආපසු format & 0x80; }
 
   void get_supplement_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
   {
     codes.clear ();
-    if (has_supplement ())
+    නම් (has_supplement ())
       suppEncData().get_codes (sid, codes);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    නම් (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
     switch (table_format ())
     {
-    case 0: hb_barrier (); if (unlikely (!u.format0.sanitize (c))) { return_trace (false); } break;
-    case 1: hb_barrier (); if (unlikely (!u.format1.sanitize (c))) { return_trace (false); } break;
+    pak_sa 0: hb_barrier (); නම් (unlikely (!u.format0.sanitize (c))) { return_trace (false); } bha_nga;
+    pak_sa 1: hb_barrier (); නම් (unlikely (!u.format1.sanitize (c))) { return_trace (false); } bha_nga;
     default:return_trace (false);
     }
     return_trace (likely (!has_supplement () || suppEncData ().sanitize (c)));
   }
 
-  protected:
+  rak_sita:
   const CFF1SuppEncData &suppEncData () const
   {
     switch (table_format ())
     {
-    case 0: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format0.codes[u.format0.nCodes ()-1]);
-    case 1: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format1.ranges[u.format1.nRanges ()-1]);
-    default:return Null (CFF1SuppEncData);
+    pak_sa 0: hb_barrier (); ආපසු StructAfter<CFF1SuppEncData> (u.format0.codes[u.format0.nCodes ()-1]);
+    pak_sa 1: hb_barrier (); ආපසු StructAfter<CFF1SuppEncData> (u.format1.ranges[u.format1.nRanges ()-1]);
+    default:ආපසු Null (CFF1SuppEncData);
     }
   }
 
   public:
   HBUINT8	format;
-  union {
+  sa_ngha {
   Encoding0	format0;
   Encoding1	format1;
   } u;
@@ -307,48 +307,48 @@ struct Encoding
 };
 
 /* Charset */
-struct Charset0
+sa_nracanaa Charset0
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned පූර්ණ_සංඛ්‍යා num_glyphs, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
-    if (num_charset_entries) *num_charset_entries = num_glyphs;
+    නම් (num_charset_entries) *num_charset_entries = num_glyphs;
     return_trace (sids.sanitize (c, num_glyphs - 1));
   }
 
   hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs) const
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
-    if (unlikely (glyph == 0))
-      return 0;
-    else
-      return sids[glyph - 1];
+    නම් (unlikely (glyph >= num_glyphs)) ආපසු 0;
+    නම් (unlikely (glyph == 0))
+      ආපසු 0;
+    නැතහොත්
+      ආපසු sids[glyph - 1];
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned පූර්ණ_සංඛ්‍යා num_glyphs) const
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
-    for (hb_codepoint_t gid = 1; gid < num_glyphs; gid++)
+    නම් (!mapping->resize_dirty  (num_glyphs)) ආපසු;
+    සඳහා (hb_codepoint_t gid = 1; gid < num_glyphs; gid++)
       mapping->arrayZ[gid] = {sids[gid - 1], gid};
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned පූර්ණ_සංඛ්‍යා num_glyphs) const
   {
-    if (sid == 0)
-      return 0;
+    නම් (sid == 0)
+      ආපසු 0;
 
-    for (unsigned int glyph = 1; glyph < num_glyphs; glyph++)
+    සඳහා (unsigned පූර්ණ_සංඛ්‍යා glyph = 1; glyph < num_glyphs; glyph++)
     {
-      if (sids[glyph-1] == sid)
-	return glyph;
+      නම් (sids[glyph-1] == sid)
+	ආපසු glyph;
     }
-    return 0;
+    ආපසු 0;
   }
 
-  static size_t get_size (unsigned int num_glyphs)
+  static size_t get_size (unsigned පූර්ණ_සංඛ්‍යා num_glyphs)
   {
     assert (num_glyphs > 0);
-    return UnsizedArrayOf<HBUINT16>::get_size (num_glyphs - 1);
+    ආපසු UnsizedArrayOf<HBUINT16>::get_size (num_glyphs - 1);
   }
 
   UnsizedArrayOf<HBUINT16> sids;
@@ -357,7 +357,7 @@ struct Charset0
 };
 
 template <typename TYPE>
-struct Charset_Range {
+sa_nracanaa Charset_Range {
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
@@ -371,21 +371,21 @@ struct Charset_Range {
 };
 
 template <typename TYPE>
-struct Charset1_2 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+sa_nracanaa Charset1_2 {
+  bool sanitize (hb_sanitize_context_t *c, unsigned පූර්ණ_සංඛ්‍යා num_glyphs, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
     num_glyphs--;
     unsigned i;
-    for (i = 0; num_glyphs > 0; i++)
+    සඳහා (i = 0; num_glyphs > 0; i++)
     {
-      if (unlikely (!(ranges[i].sanitize (c) &&
+      නම් (unlikely (!(ranges[i].sanitize (c) &&
 		      hb_barrier () &&
 		      (num_glyphs >= ranges[i].nLeft + 1))))
 	return_trace (false);
       num_glyphs -= (ranges[i].nLeft + 1);
     }
-    if (num_charset_entries)
+    නම් (num_charset_entries)
       *num_charset_entries = i;
     return_trace (true);
   }
@@ -393,94 +393,94 @@ struct Charset1_2 {
   hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs,
 			  code_pair_t *cache = nullptr) const
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
+    නම් (unlikely (glyph >= num_glyphs)) ආපසු 0;
     unsigned i;
     hb_codepoint_t start_glyph;
-    if (cache && likely (cache->glyph <= glyph))
+    නම් (cache && likely (cache->glyph <= glyph))
     {
       i = cache->code;
       start_glyph = cache->glyph;
     }
-    else
+    නැතහොත්
     {
-      if (unlikely (glyph == 0)) return 0;
+      නම් (unlikely (glyph == 0)) ආපසු 0;
       i = 0;
       start_glyph = 1;
     }
     glyph -= start_glyph;
-    for (;; i++)
+    සඳහා (;; i++)
     {
       unsigned count = ranges[i].nLeft;
-      if (glyph <= count)
+      නම් (glyph <= count)
       {
-        if (cache)
+        නම් (cache)
 	  *cache = {i, start_glyph};
-	return ranges[i].first + glyph;
+	ආපසු ranges[i].first + glyph;
       }
       count++;
       start_glyph += count;
       glyph -= count;
     }
 
-    return 0;
+    ආපසු 0;
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned පූර්ණ_සංඛ්‍යා num_glyphs) const
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
+    නම් (!mapping->resize_dirty  (num_glyphs)) ආපසු;
 
     hb_codepoint_t gid = 1;
-    if (gid >= num_glyphs)
-      return;
+    නම් (gid >= num_glyphs)
+      ආපසු;
 
-    for (unsigned i = 0;; i++)
+    සඳහා (unsigned i = 0;; i++)
     {
       hb_codepoint_t sid = ranges[i].first;
       unsigned count = ranges[i].nLeft + 1;
       unsigned last = gid + count;
-      for (unsigned j = 0; j < count; j++)
+      සඳහා (unsigned j = 0; j < count; j++)
 	mapping->arrayZ[gid++] = {sid++, last - 1};
 
-      if (gid >= num_glyphs)
-        break;
+      නම් (gid >= num_glyphs)
+        bha_nga;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned පූර්ණ_සංඛ්‍යා num_glyphs) const
   {
-    if (sid == 0) return 0;
+    නම් (sid == 0) ආපසු 0;
     hb_codepoint_t  glyph = 1;
-    for (unsigned int i = 0;; i++)
+    සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0;; i++)
     {
-      if (glyph >= num_glyphs)
-	return 0;
-      if ((ranges[i].first <= sid) && (sid <= ranges[i].first + ranges[i].nLeft))
-	return glyph + (sid - ranges[i].first);
+      නම් (glyph >= num_glyphs)
+	ආපසු 0;
+      නම් ((ranges[i].first <= sid) && (sid <= ranges[i].first + ranges[i].nLeft))
+	ආපසු glyph + (sid - ranges[i].first);
       glyph += (ranges[i].nLeft + 1);
     }
 
-    return 0;
+    ආපසු 0;
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned පූර්ණ_සංඛ්‍යා num_glyphs) const
   {
-    int glyph = (int) num_glyphs;
+    පූර්ණ_සංඛ්‍යා glyph = (පූර්ණ_සංඛ්‍යා) num_glyphs;
     unsigned num_ranges = 0;
 
     assert (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; glyph > 0; i++)
+    සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; glyph > 0; i++)
     {
       glyph -= (ranges[i].nLeft + 1);
       num_ranges++;
     }
 
-    return get_size_for_ranges (num_ranges);
+    ආපසු get_size_for_ranges (num_ranges);
   }
 
-  static size_t get_size_for_ranges (unsigned int num_ranges)
+  static size_t get_size_for_ranges (unsigned පූර්ණ_සංඛ්‍යා num_ranges)
   {
-    return UnsizedArrayOf<Charset_Range<TYPE> >::get_size (num_ranges);
+    ආපසු UnsizedArrayOf<Charset_Range<TYPE> >::get_size (num_ranges);
   }
 
   UnsizedArrayOf<Charset_Range<TYPE>> ranges;
@@ -493,142 +493,142 @@ typedef Charset1_2<HBUINT16>    Charset2;
 typedef Charset_Range<HBUINT8>  Charset1_Range;
 typedef Charset_Range<HBUINT16> Charset2_Range;
 
-struct Charset
+sa_nracanaa Charset
 {
   /* serialize a fullset Charset */
-  bool serialize (hb_serialize_context_t *c, const Charset &src, unsigned int num_glyphs)
+  bool serialize (hb_serialize_context_t *c, const Charset &src, unsigned පූර්ණ_සංඛ්‍යා num_glyphs)
   {
     TRACE_SERIALIZE (this);
-    return_trace (c->embed ((const char *) &src, src.get_size (num_glyphs)));
+    return_trace (c->embed ((const var_na *) &src, src.get_size (num_glyphs)));
   }
 
   /* serialize a subset Charset */
   bool serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int num_glyphs,
+		  unsigned පූර්ණ_සංඛ්‍යා num_glyphs,
 		  const hb_vector_t<code_pair_t>& sid_ranges)
   {
     TRACE_SERIALIZE (this);
     Charset *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
+    නම් (unlikely (!dest)) return_trace (false);
     dest->format = format;
     switch (format)
     {
-    case 0:
+    pak_sa 0:
     {
       Charset0 *fmt0 = c->allocate_size<Charset0> (Charset0::get_size (num_glyphs), false);
-      if (unlikely (!fmt0)) return_trace (false);
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      නම් (unlikely (!fmt0)) return_trace (false);
+      unsigned පූර්ණ_සංඛ්‍යා glyph = 0;
+      සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < sid_ranges.length; i++)
       {
 	hb_codepoint_t sid = sid_ranges.arrayZ[i].code;
-	for (int left = (int)sid_ranges.arrayZ[i].glyph; left >= 0; left--)
+	සඳහා (පූර්ණ_සංඛ්‍යා left = (පූර්ණ_සංඛ්‍යා)sid_ranges.arrayZ[i].glyph; left >= 0; left--)
 	  fmt0->sids[glyph++] = sid++;
       }
     }
-    break;
+    bha_nga;
 
-    case 1:
+    pak_sa 1:
     {
       Charset1 *fmt1 = c->allocate_size<Charset1> (Charset1::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt1)) return_trace (false);
+      නම් (unlikely (!fmt1)) return_trace (false);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < sid_ranges.length; i++)
       {
         auto &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
 	fmt1->ranges[i].first = _.code;
 	fmt1->ranges[i].nLeft = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFF)))
+      නම් (unlikely (!(all_glyphs <= 0xFF)))
 	return_trace (false);
     }
-    break;
+    bha_nga;
 
-    case 2:
+    pak_sa 2:
     {
       Charset2 *fmt2 = c->allocate_size<Charset2> (Charset2::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt2)) return_trace (false);
+      නම් (unlikely (!fmt2)) return_trace (false);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < sid_ranges.length; i++)
       {
         auto &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
 	fmt2->ranges[i].first = _.code;
 	fmt2->ranges[i].nLeft = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFFFF)))
+      නම් (unlikely (!(all_glyphs <= 0xFFFF)))
 	return_trace (false);
     }
-    break;
+    bha_nga;
 
     }
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned පූර්ණ_සංඛ්‍යා num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format0.get_size (num_glyphs));
-    case 1: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format1.get_size (num_glyphs));
-    case 2: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format2.get_size (num_glyphs));
-    default:return 0;
+    pak_sa 0: hb_barrier (); ආපසු hb_unsigned_add_saturate (min_size, u.format0.get_size (num_glyphs));
+    pak_sa 1: hb_barrier (); ආපසු hb_unsigned_add_saturate (min_size, u.format1.get_size (num_glyphs));
+    pak_sa 2: hb_barrier (); ආපසු hb_unsigned_add_saturate (min_size, u.format2.get_size (num_glyphs));
+    default:ආපසු 0;
     }
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned int num_glyphs,
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned පූර්ණ_සංඛ්‍යා num_glyphs,
 			  code_pair_t *cache = nullptr) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_sid (glyph, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_sid (glyph, num_glyphs, cache);
-    case 2: hb_barrier (); return u.format2.get_sid (glyph, num_glyphs, cache);
-    default:return 0;
+    pak_sa 0: hb_barrier (); ආපසු u.format0.get_sid (glyph, num_glyphs);
+    pak_sa 1: hb_barrier (); ආපසු u.format1.get_sid (glyph, num_glyphs, cache);
+    pak_sa 2: hb_barrier (); ආපසු u.format2.get_sid (glyph, num_glyphs, cache);
+    default:ආපසු 0;
     }
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned පූර්ණ_සංඛ්‍යා num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); u.format0.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 1: hb_barrier (); u.format1.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 2: hb_barrier (); u.format2.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    default:return;
+    pak_sa 0: hb_barrier (); u.format0.collect_glyph_to_sid_map (mapping, num_glyphs); ආපසු;
+    pak_sa 1: hb_barrier (); u.format1.collect_glyph_to_sid_map (mapping, num_glyphs); ආපසු;
+    pak_sa 2: hb_barrier (); u.format2.collect_glyph_to_sid_map (mapping, num_glyphs); ආපසු;
+    default:ආපසු;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned පූර්ණ_සංඛ්‍යා num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_glyph (sid, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_glyph (sid, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_glyph (sid, num_glyphs);
-    default:return 0;
+    pak_sa 0: hb_barrier (); ආපසු u.format0.get_glyph (sid, num_glyphs);
+    pak_sa 1: hb_barrier (); ආපසු u.format1.get_glyph (sid, num_glyphs);
+    pak_sa 2: hb_barrier (); ආපසු u.format2.get_glyph (sid, num_glyphs);
+    default:ආපසු 0;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    නම් (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
     switch (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, c->get_num_glyphs (), num_charset_entries));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, c->get_num_glyphs (), num_charset_entries));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c, c->get_num_glyphs (), num_charset_entries));
+    pak_sa 0: hb_barrier (); return_trace (u.format0.sanitize (c, c->get_num_glyphs (), num_charset_entries));
+    pak_sa 1: hb_barrier (); return_trace (u.format1.sanitize (c, c->get_num_glyphs (), num_charset_entries));
+    pak_sa 2: hb_barrier (); return_trace (u.format2.sanitize (c, c->get_num_glyphs (), num_charset_entries));
     default:return_trace (false);
     }
   }
 
   HBUINT8       format;
-  union {
+  sa_ngha {
     Charset0    format0;
     Charset1    format1;
     Charset2    format2;
@@ -637,47 +637,47 @@ struct Charset
   DEFINE_SIZE_MIN (1);
 };
 
-struct CFF1StringIndex : CFF1Index
+sa_nracanaa CFF1StringIndex : CFF1Index
 {
   bool serialize (hb_serialize_context_t *c, const CFF1StringIndex &strings,
 		  const hb_vector_t<unsigned> &sidmap)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely ((strings.count == 0) || (sidmap.length == 0)))
+    නම් (unlikely ((strings.count == 0) || (sidmap.length == 0)))
     {
-      if (unlikely (!c->extend_min (this->count)))
+      නම් (unlikely (!c->extend_min (this->count)))
 	return_trace (false);
       count = 0;
       return_trace (true);
     }
 
-    if (unlikely (sidmap.in_error ())) return_trace (false);
+    නම් (unlikely (sidmap.in_error ())) return_trace (false);
 
     // Save this in a vector since serialize() iterates it twice.
     hb_vector_t<hb_ubytes_t> bytesArray (+ hb_iter (sidmap)
 					 | hb_map (strings));
 
-    if (unlikely (bytesArray.in_error ())) return_trace (false);
+    නම් (unlikely (bytesArray.in_error ())) return_trace (false);
 
     bool result = CFF1Index::serialize (c, bytesArray);
     return_trace (result);
   }
 };
 
-struct cff1_top_dict_interp_env_t : num_interp_env_t
+sa_nracanaa cff1_top_dict_interp_env_t : num_interp_env_t
 {
   cff1_top_dict_interp_env_t ()
     : num_interp_env_t(), prev_offset(0), last_offset(0) {}
   cff1_top_dict_interp_env_t (const hb_ubytes_t &bytes)
     : num_interp_env_t(bytes), prev_offset(0), last_offset(0) {}
 
-  unsigned int prev_offset;
-  unsigned int last_offset;
+  unsigned පූර්ණ_සංඛ්‍යා prev_offset;
+  unsigned පූර්ණ_සංඛ්‍යා last_offset;
 };
 
-struct name_dict_values_t
+sa_nracanaa name_dict_values_t
 {
-  enum name_dict_val_index_t
+  ga_nanaa name_dict_val_index_t
   {
       version,
       notice,
@@ -696,50 +696,50 @@ struct name_dict_values_t
 
   void init ()
   {
-    for (unsigned int i = 0; i < ValCount; i++)
+    සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < ValCount; i++)
       values[i] = CFF_UNDEF_SID;
   }
 
-  unsigned int& operator[] (unsigned int i)
-  { assert (i < ValCount); return values[i]; }
+  unsigned පූර්ණ_සංඛ්‍යා& operator[] (unsigned පූර්ණ_සංඛ්‍යා i)
+  { assert (i < ValCount); ආපසු values[i]; }
 
-  unsigned int operator[] (unsigned int i) const
-  { assert (i < ValCount); return values[i]; }
+  unsigned පූර්ණ_සංඛ්‍යා operator[] (unsigned පූර්ණ_සංඛ්‍යා i) const
+  { assert (i < ValCount); ආපසු values[i]; }
 
-  static enum name_dict_val_index_t name_op_to_index (op_code_t op)
+  static ga_nanaa name_dict_val_index_t name_op_to_index (op_code_t op)
   {
     switch (op) {
       default: // can't happen - just make some compiler happy
-      case OpCode_version:
-	return version;
-      case OpCode_Notice:
-	return notice;
-      case OpCode_Copyright:
-	return copyright;
-      case OpCode_FullName:
-	return fullName;
-      case OpCode_FamilyName:
-	return familyName;
-      case OpCode_Weight:
-	return weight;
-      case OpCode_PostScript:
-	return postscript;
-      case OpCode_FontName:
-	return fontName;
-      case OpCode_BaseFontName:
-	return baseFontName;
+      pak_sa OpCode_version:
+	ආපසු version;
+      pak_sa OpCode_Notice:
+	ආපසු notice;
+      pak_sa OpCode_Copyright:
+	ආපසු copyright;
+      pak_sa OpCode_FullName:
+	ආපසු fullName;
+      pak_sa OpCode_FamilyName:
+	ආපසු familyName;
+      pak_sa OpCode_Weight:
+	ආපසු weight;
+      pak_sa OpCode_PostScript:
+	ආපසු postscript;
+      pak_sa OpCode_FontName:
+	ආපසු fontName;
+      pak_sa OpCode_BaseFontName:
+	ආපසු baseFontName;
     }
   }
 
-  unsigned int  values[ValCount];
+  unsigned පූර්ණ_සංඛ්‍යා  values[ValCount];
 };
 
-struct cff1_top_dict_val_t : op_str_t
+sa_nracanaa cff1_top_dict_val_t : op_str_t
 {
-  unsigned int  last_arg_offset;
+  unsigned පූර්ණ_සංඛ්‍යා  last_arg_offset;
 };
 
-struct cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
+sa_nracanaa cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
 {
   void init ()
   {
@@ -756,110 +756,110 @@ struct cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
   void fini () { top_dict_values_t<cff1_top_dict_val_t>::fini (); }
 
   bool is_CID () const
-  { return nameSIDs[name_dict_values_t::registry] != CFF_UNDEF_SID; }
+  { ආපසු nameSIDs[name_dict_values_t::registry] != CFF_UNDEF_SID; }
 
   name_dict_values_t  nameSIDs;
-  unsigned int    ros_supplement_offset;
-  unsigned int    ros_supplement;
-  unsigned int    cidCount;
+  unsigned පූර්ණ_සංඛ්‍යා    ros_supplement_offset;
+  unsigned පූර්ණ_සංඛ්‍යා    ros_supplement;
+  unsigned පූර්ණ_සංඛ්‍යා    cidCount;
 
-  int             EncodingOffset;
-  int             CharsetOffset;
-  int             FDSelectOffset;
+  පූර්ණ_සංඛ්‍යා             EncodingOffset;
+  පූර්ණ_සංඛ්‍යා             CharsetOffset;
+  පූර්ණ_සංඛ්‍යා             FDSelectOffset;
   table_info_t    privateDictInfo;
 };
 
-struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
+sa_nracanaa cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
 {
   static void process_op (op_code_t op, cff1_top_dict_interp_env_t& env, cff1_top_dict_values_t& dictval)
   {
     cff1_top_dict_val_t  val {};
 
     switch (op) {
-      case OpCode_version:
-      case OpCode_Notice:
-      case OpCode_Copyright:
-      case OpCode_FullName:
-      case OpCode_FontName:
-      case OpCode_FamilyName:
-      case OpCode_Weight:
-      case OpCode_PostScript:
-      case OpCode_BaseFontName:
+      pak_sa OpCode_version:
+      pak_sa OpCode_Notice:
+      pak_sa OpCode_Copyright:
+      pak_sa OpCode_FullName:
+      pak_sa OpCode_FontName:
+      pak_sa OpCode_FamilyName:
+      pak_sa OpCode_Weight:
+      pak_sa OpCode_PostScript:
+      pak_sa OpCode_BaseFontName:
 	dictval.nameSIDs[name_dict_values_t::name_op_to_index (op)] = env.argStack.pop_uint ();
 	env.clear_args ();
-	break;
-      case OpCode_isFixedPitch:
-      case OpCode_ItalicAngle:
-      case OpCode_UnderlinePosition:
-      case OpCode_UnderlineThickness:
-      case OpCode_PaintType:
-      case OpCode_CharstringType:
-      case OpCode_UniqueID:
-      case OpCode_StrokeWidth:
-      case OpCode_SyntheticBase:
-      case OpCode_CIDFontVersion:
-      case OpCode_CIDFontRevision:
-      case OpCode_CIDFontType:
-      case OpCode_UIDBase:
-      case OpCode_FontBBox:
-      case OpCode_XUID:
-      case OpCode_BaseFontBlend:
+	bha_nga;
+      pak_sa OpCode_isFixedPitch:
+      pak_sa OpCode_ItalicAngle:
+      pak_sa OpCode_UnderlinePosition:
+      pak_sa OpCode_UnderlineThickness:
+      pak_sa OpCode_PaintType:
+      pak_sa OpCode_CharstringType:
+      pak_sa OpCode_UniqueID:
+      pak_sa OpCode_StrokeWidth:
+      pak_sa OpCode_SyntheticBase:
+      pak_sa OpCode_CIDFontVersion:
+      pak_sa OpCode_CIDFontRevision:
+      pak_sa OpCode_CIDFontType:
+      pak_sa OpCode_UIDBase:
+      pak_sa OpCode_FontBBox:
+      pak_sa OpCode_XUID:
+      pak_sa OpCode_BaseFontBlend:
 	env.clear_args ();
-	break;
+	bha_nga;
 
-      case OpCode_CIDCount:
+      pak_sa OpCode_CIDCount:
 	dictval.cidCount = env.argStack.pop_uint ();
 	env.clear_args ();
-	break;
+	bha_nga;
 
-      case OpCode_ROS:
+      pak_sa OpCode_ROS:
 	dictval.ros_supplement = env.argStack.pop_uint ();
 	dictval.nameSIDs[name_dict_values_t::ordering] = env.argStack.pop_uint ();
 	dictval.nameSIDs[name_dict_values_t::registry] = env.argStack.pop_uint ();
 	env.clear_args ();
-	if (unlikely (env.in_error ())) return;
+	නම් (unlikely (env.in_error ())) ආපසු;
 	assert (env.last_offset > dictval.opStart);
 	val.last_arg_offset = (env.last_offset - 1) - dictval.opStart;  /* offset to the last argument */
-	break;
+	bha_nga;
 
-      case OpCode_Encoding:
+      pak_sa OpCode_Encoding:
 	dictval.EncodingOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	if (unlikely (dictval.EncodingOffset == 0)) return;
-	break;
+	නම් (unlikely (dictval.EncodingOffset == 0)) ආපසු;
+	bha_nga;
 
-      case OpCode_charset:
+      pak_sa OpCode_charset:
 	dictval.CharsetOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	if (unlikely (dictval.CharsetOffset == 0)) return;
-	break;
+	නම් (unlikely (dictval.CharsetOffset == 0)) ආපසු;
+	bha_nga;
 
-      case OpCode_FDSelect:
+      pak_sa OpCode_FDSelect:
 	dictval.FDSelectOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	break;
+	bha_nga;
 
-      case OpCode_Private:
+      pak_sa OpCode_Private:
 	dictval.privateDictInfo.offset = env.argStack.pop_int ();
 	dictval.privateDictInfo.size = env.argStack.pop_uint ();
 	env.clear_args ();
-	break;
+	bha_nga;
 
       default:
 	env.last_offset = env.str_ref.get_offset ();
 	top_dict_opset_t<cff1_top_dict_val_t>::process_op (op, env, dictval);
 	/* Record this operand below if stack is empty, otherwise done */
-	if (!env.argStack.is_empty ()) return;
-	break;
+	නම් (!env.argStack.is_empty ()) ආපසු;
+	bha_nga;
     }
 
-    if (unlikely (env.in_error ())) return;
+    නම් (unlikely (env.in_error ())) ආපසු;
 
     dictval.add_op (op, env.str_ref, val);
   }
 };
 
-struct cff1_font_dict_values_t : dict_values_t<op_str_t>
+sa_nracanaa cff1_font_dict_values_t : dict_values_t<op_str_t>
 {
   void init ()
   {
@@ -870,42 +870,42 @@ struct cff1_font_dict_values_t : dict_values_t<op_str_t>
   void fini () { dict_values_t<op_str_t>::fini (); }
 
   table_info_t       privateDictInfo;
-  unsigned int    fontName;
+  unsigned පූර්ණ_සංඛ්‍යා    fontName;
 };
 
-struct cff1_font_dict_opset_t : dict_opset_t
+sa_nracanaa cff1_font_dict_opset_t : dict_opset_t
 {
   static void process_op (op_code_t op, num_interp_env_t& env, cff1_font_dict_values_t& dictval)
   {
     switch (op) {
-      case OpCode_FontName:
+      pak_sa OpCode_FontName:
 	dictval.fontName = env.argStack.pop_uint ();
 	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
-      case OpCode_PaintType:
+	bha_nga;
+      pak_sa OpCode_FontMatrix:
+      pak_sa OpCode_PaintType:
 	env.clear_args ();
-	break;
-      case OpCode_Private:
+	bha_nga;
+      pak_sa OpCode_Private:
 	dictval.privateDictInfo.offset = env.argStack.pop_uint ();
 	dictval.privateDictInfo.size = env.argStack.pop_uint ();
 	env.clear_args ();
-	break;
+	bha_nga;
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	නම් (!env.argStack.is_empty ()) ආපසු;
+	bha_nga;
     }
 
-    if (unlikely (env.in_error ())) return;
+    නම් (unlikely (env.in_error ())) ආපසු;
 
     dictval.add_op (op, env.str_ref);
   }
 };
 
 template <typename VAL>
-struct cff1_private_dict_values_base_t : dict_values_t<VAL>
+sa_nracanaa cff1_private_dict_values_base_t : dict_values_t<VAL>
 {
   void init ()
   {
@@ -915,14 +915,14 @@ struct cff1_private_dict_values_base_t : dict_values_t<VAL>
   }
   void fini () { dict_values_t<VAL>::fini (); }
 
-  int                 subrsOffset;
+  පූර්ණ_සංඛ්‍යා                 subrsOffset;
   const CFF1Subrs    *localSubrs;
 };
 
 typedef cff1_private_dict_values_base_t<op_str_t> cff1_private_dict_values_subset_t;
 typedef cff1_private_dict_values_base_t<num_dict_val_t> cff1_private_dict_values_t;
 
-struct cff1_private_dict_opset_t : dict_opset_t
+sa_nracanaa cff1_private_dict_opset_t : dict_opset_t
 {
   static void process_op (op_code_t op, num_interp_env_t& env, cff1_private_dict_values_t& dictval)
   {
@@ -930,79 +930,79 @@ struct cff1_private_dict_opset_t : dict_opset_t
     val.init ();
 
     switch (op) {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-      case OpCode_initialRandomSeed:
-      case OpCode_defaultWidthX:
-      case OpCode_nominalWidthX:
+      pak_sa OpCode_BlueValues:
+      pak_sa OpCode_OtherBlues:
+      pak_sa OpCode_FamilyBlues:
+      pak_sa OpCode_FamilyOtherBlues:
+      pak_sa OpCode_StemSnapH:
+      pak_sa OpCode_StemSnapV:
+      pak_sa OpCode_StdHW:
+      pak_sa OpCode_StdVW:
+      pak_sa OpCode_BlueScale:
+      pak_sa OpCode_BlueShift:
+      pak_sa OpCode_BlueFuzz:
+      pak_sa OpCode_ForceBold:
+      pak_sa OpCode_LanguageGroup:
+      pak_sa OpCode_ExpansionFactor:
+      pak_sa OpCode_initialRandomSeed:
+      pak_sa OpCode_defaultWidthX:
+      pak_sa OpCode_nominalWidthX:
 	env.clear_args ();
-	break;
-      case OpCode_Subrs:
+	bha_nga;
+      pak_sa OpCode_Subrs:
 	dictval.subrsOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	break;
+	bha_nga;
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	නම් (!env.argStack.is_empty ()) ආපසු;
+	bha_nga;
     }
 
-    if (unlikely (env.in_error ())) return;
+    නම් (unlikely (env.in_error ())) ආපසු;
 
     dictval.add_op (op, env.str_ref, val);
   }
 };
 
-struct cff1_private_dict_opset_subset_t : dict_opset_t
+sa_nracanaa cff1_private_dict_opset_subset_t : dict_opset_t
 {
   static void process_op (op_code_t op, num_interp_env_t& env, cff1_private_dict_values_subset_t& dictval)
   {
     switch (op) {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-      case OpCode_initialRandomSeed:
-      case OpCode_defaultWidthX:
-      case OpCode_nominalWidthX:
+      pak_sa OpCode_BlueValues:
+      pak_sa OpCode_OtherBlues:
+      pak_sa OpCode_FamilyBlues:
+      pak_sa OpCode_FamilyOtherBlues:
+      pak_sa OpCode_StemSnapH:
+      pak_sa OpCode_StemSnapV:
+      pak_sa OpCode_StdHW:
+      pak_sa OpCode_StdVW:
+      pak_sa OpCode_BlueScale:
+      pak_sa OpCode_BlueShift:
+      pak_sa OpCode_BlueFuzz:
+      pak_sa OpCode_ForceBold:
+      pak_sa OpCode_LanguageGroup:
+      pak_sa OpCode_ExpansionFactor:
+      pak_sa OpCode_initialRandomSeed:
+      pak_sa OpCode_defaultWidthX:
+      pak_sa OpCode_nominalWidthX:
 	env.clear_args ();
-	break;
+	bha_nga;
 
-      case OpCode_Subrs:
+      pak_sa OpCode_Subrs:
 	dictval.subrsOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	break;
+	bha_nga;
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	නම් (!env.argStack.is_empty ()) ආපසු;
+	bha_nga;
     }
 
-    if (unlikely (env.in_error ())) return;
+    නම් (unlikely (env.in_error ())) ආපසු;
 
     dictval.add_op (op, env.str_ref);
   }
@@ -1014,35 +1014,35 @@ typedef dict_interpreter_t<cff1_font_dict_opset_t, cff1_font_dict_values_t> cff1
 typedef CFF1Index CFF1NameIndex;
 typedef CFF1Index CFF1TopDictIndex;
 
-struct cff1_font_dict_values_mod_t
+sa_nracanaa cff1_font_dict_values_mod_t
 {
   cff1_font_dict_values_mod_t() { init (); }
 
   void init () { init ( &Null (cff1_font_dict_values_t), CFF_UNDEF_SID ); }
 
   void init (const cff1_font_dict_values_t *base_,
-	     unsigned int fontName_)
+	     unsigned පූර්ණ_සංඛ්‍යා fontName_)
   {
     base = base_;
     fontName = fontName_;
     privateDictInfo.init ();
   }
 
-  unsigned get_count () const { return base->get_count (); }
+  unsigned get_count () const { ආපසු base->get_count (); }
 
-  const op_str_t &operator [] (unsigned int i) const { return (*base)[i]; }
+  const op_str_t &operator [] (unsigned පූර්ණ_සංඛ්‍යා i) const { ආපසු (*base)[i]; }
 
   const cff1_font_dict_values_t    *base;
   table_info_t		   privateDictInfo;
-  unsigned int		fontName;
+  unsigned පූර්ණ_සංඛ්‍යා		fontName;
 };
 
-struct CFF1FDArray : FDArray<HBUINT16>
+sa_nracanaa CFF1FDArray : FDArray<HBUINT16>
 {
   /* FDArray::serialize() requires this partial specialization to compile */
   template <typename ITER, typename OP_SERIALIZER>
   bool serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
-  { return FDArray<HBUINT16>::serialize<cff1_font_dict_values_mod_t, cff1_font_dict_values_mod_t> (c, it, opszr); }
+  { ආපසු FDArray<HBUINT16>::serialize<cff1_font_dict_values_mod_t, cff1_font_dict_values_mod_t> (c, it, opszr); }
 };
 
 } /* namespace CFF */
@@ -1051,7 +1051,7 @@ namespace OT {
 
 using namespace CFF;
 
-struct cff1
+sa_nracanaa cff1
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_CFF1;
 
@@ -1064,13 +1064,13 @@ struct cff1
   }
 
   template <typename PRIVOPSET, typename PRIVDICTVAL>
-  struct accelerator_templ_t
+  sa_nracanaa accelerator_templ_t
   {
     static constexpr hb_tag_t tableTag = cff1::tableTag;
 
     accelerator_templ_t (hb_face_t *face)
     {
-      if (!face) return;
+      නම් (!face) ආපසු;
 
       topDict.init ();
       fontDicts.init ();
@@ -1084,131 +1084,131 @@ struct cff1
 
       const OT::cff1 *cff = this->blob->template as<OT::cff1> ();
 
-      if (cff == &Null (OT::cff1))
+      නම් (cff == &Null (OT::cff1))
         goto fail;
 
       nameIndex = &cff->nameIndex (cff);
-      if ((nameIndex == &Null (CFF1NameIndex)) || !nameIndex->sanitize (&sc))
+      නම් ((nameIndex == &Null (CFF1NameIndex)) || !nameIndex->sanitize (&sc))
         goto fail;
       hb_barrier ();
 
       topDictIndex = &StructAtOffsetOrNull<CFF1TopDictIndex> (nameIndex, nameIndex->get_size (), sc);
-      if (topDictIndex == &Null (CFF1TopDictIndex) || (topDictIndex->count == 0))
+      නම් (topDictIndex == &Null (CFF1TopDictIndex) || (topDictIndex->count == 0))
         goto fail;
       hb_barrier ();
 
       { /* parse top dict */
 	const hb_ubytes_t topDictStr = (*topDictIndex)[0];
-	if (unlikely (!topDictStr.sanitize (&sc)))   goto fail;
+	නම් (unlikely (!topDictStr.sanitize (&sc)))   goto fail;
 	hb_barrier ();
 	cff1_top_dict_interp_env_t env (topDictStr);
 	cff1_top_dict_interpreter_t top_interp (env);
-	if (unlikely (!top_interp.interpret (topDict)))   goto fail;
+	නම් (unlikely (!top_interp.interpret (topDict)))   goto fail;
       }
 
-      if (is_predef_charset ())
+      නම් (is_predef_charset ())
 	charset = &Null (Charset);
-      else
+      නැතහොත්
       {
 	charset = &StructAtOffsetOrNull<Charset> (cff, topDict.CharsetOffset, sc, &num_charset_entries);
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	නම් (unlikely (charset == &Null (Charset)))   goto fail;
       }
 
       fdCount = 1;
-      if (is_CID ())
+      නම් (is_CID ())
       {
 	fdArray = &StructAtOffsetOrNull<CFF1FDArray> (cff, topDict.FDArrayOffset, sc);
 	fdSelect = &StructAtOffsetOrNull<CFF1FDSelect> (cff, topDict.FDSelectOffset, sc, fdArray->count);
-	if (unlikely (fdArray == &Null (CFF1FDArray) ||
+	නම් (unlikely (fdArray == &Null (CFF1FDArray) ||
 		      fdSelect == &Null (CFF1FDSelect)))
 	  goto fail;
 
 	fdCount = fdArray->count;
       }
-      else
+      නැතහොත්
       {
 	fdArray = &Null (CFF1FDArray);
 	fdSelect = &Null (CFF1FDSelect);
       }
 
       encoding = &Null (Encoding);
-      if (is_CID ())
+      නම් (is_CID ())
       {
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	නම් (unlikely (charset == &Null (Charset)))   goto fail;
       }
-      else
+      නැතහොත්
       {
-	if (!is_predef_encoding ())
+	නම් (!is_predef_encoding ())
 	{
 	  encoding = &StructAtOffsetOrNull<Encoding> (cff, topDict.EncodingOffset, sc);
-	  if (unlikely (encoding == &Null (Encoding)))   goto fail;
+	  නම් (unlikely (encoding == &Null (Encoding)))   goto fail;
 	}
       }
 
       stringIndex = &StructAtOffsetOrNull<CFF1StringIndex> (topDictIndex, topDictIndex->get_size (), sc);
-      if (stringIndex == &Null (CFF1StringIndex))
+      නම් (stringIndex == &Null (CFF1StringIndex))
         goto fail;
 
       globalSubrs = &StructAtOffsetOrNull<CFF1Subrs> (stringIndex, stringIndex->get_size (), sc);
       charStrings = &StructAtOffsetOrNull<CFF1CharStrings> (cff, topDict.charStringsOffset, sc);
-      if (charStrings == &Null (CFF1CharStrings))
+      නම් (charStrings == &Null (CFF1CharStrings))
         goto fail;
 
       num_glyphs = charStrings->count;
-      if (num_glyphs != sc.get_num_glyphs ())
+      නම් (num_glyphs != sc.get_num_glyphs ())
         goto fail;
 
-      if (unlikely (!privateDicts.resize (fdCount)))
+      නම් (unlikely (!privateDicts.resize (fdCount)))
         goto fail;
-      for (unsigned int i = 0; i < fdCount; i++)
+      සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < fdCount; i++)
 	privateDicts[i].init ();
 
       // parse CID font dicts and gather private dicts
-      if (is_CID ())
+      නම් (is_CID ())
       {
-	for (unsigned int i = 0; i < fdCount; i++)
+	සඳහා (unsigned පූර්ණ_සංඛ්‍යා i = 0; i < fdCount; i++)
 	{
 	  hb_ubytes_t fontDictStr = (*fdArray)[i];
-	  if (unlikely (!fontDictStr.sanitize (&sc)))   goto fail;
+	  නම් (unlikely (!fontDictStr.sanitize (&sc)))   goto fail;
 	  hb_barrier ();
 	  cff1_font_dict_values_t *font;
 	  cff1_top_dict_interp_env_t env (fontDictStr);
 	  cff1_font_dict_interpreter_t font_interp (env);
 	  font = fontDicts.push ();
-	  if (unlikely (fontDicts.in_error ()))   goto fail;
+	  නම් (unlikely (fontDicts.in_error ()))   goto fail;
 
 	  font->init ();
-	  if (unlikely (!font_interp.interpret (*font)))   goto fail;
+	  නම් (unlikely (!font_interp.interpret (*font)))   goto fail;
 	  PRIVDICTVAL *priv = &privateDicts[i];
 	  const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	  if (unlikely (font->privateDictInfo.size &&
-			privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
+	  නම් (unlikely (font->privateDictInfo.size &&
+			privDictStr == (const unsigned var_na *) &Null (UnsizedByteStr))) goto fail;
 	  num_interp_env_t env2 (privDictStr);
 	  dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env2);
 	  priv->init ();
-	  if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	  නම් (unlikely (!priv_interp.interpret (*priv)))   goto fail;
 
 	  priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
 	}
       }
-      else  /* non-CID */
+      නැතහොත්  /* non-CID */
       {
 	cff1_top_dict_values_t *font = &topDict;
 	PRIVDICTVAL *priv = &privateDicts[0];
 
 	const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	if (font->privateDictInfo.size &&
-	    unlikely (privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
+	නම් (font->privateDictInfo.size &&
+	    unlikely (privDictStr == (const unsigned var_na *) &Null (UnsizedByteStr))) goto fail;
 	num_interp_env_t env (privDictStr);
 	dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env);
 	priv->init ();
-	if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	නම් (unlikely (!priv_interp.interpret (*priv)))   goto fail;
 
 	priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
 	hb_barrier ();
       }
 
-      return;
+      ආපසු;
 
       fail:
         _fini ();
@@ -1224,120 +1224,120 @@ struct cff1
       blob = nullptr;
     }
 
-    hb_blob_t *get_blob () const { return blob; }
+    hb_blob_t *get_blob () const { ආපසු blob; }
 
-    bool is_valid () const { return blob; }
-    bool   is_CID () const { return topDict.is_CID (); }
+    bool is_valid () const { ආපසු blob; }
+    bool   is_CID () const { ආපසු topDict.is_CID (); }
 
-    bool is_predef_charset () const { return topDict.CharsetOffset <= ExpertSubsetCharset; }
+    bool is_predef_charset () const { ආපසු topDict.CharsetOffset <= ExpertSubsetCharset; }
 
-    unsigned int std_code_to_glyph (hb_codepoint_t code) const
+    unsigned පූර්ණ_සංඛ්‍යා std_code_to_glyph (hb_codepoint_t code) const
     {
       hb_codepoint_t sid = lookup_standard_encoding_for_sid (code);
-      if (unlikely (sid == CFF_UNDEF_SID))
-	return 0;
+      නම් (unlikely (sid == CFF_UNDEF_SID))
+	ආපසු 0;
 
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else if ((topDict.CharsetOffset == ISOAdobeCharset)
-	      && (code <= 228 /*zcaron*/)) return sid;
-      return 0;
+      නම් (charset != &Null (Charset))
+	ආපසු charset->get_glyph (sid, num_glyphs);
+      නැතහොත් නම් ((topDict.CharsetOffset == ISOAdobeCharset)
+	      && (code <= 228 /*zcaron*/)) ආපසු sid;
+      ආපසු 0;
     }
 
-    bool is_predef_encoding () const { return topDict.EncodingOffset <= ExpertEncoding; }
+    bool is_predef_encoding () const { ආපසු topDict.EncodingOffset <= ExpertEncoding; }
 
     hb_codepoint_t glyph_to_code (hb_codepoint_t glyph,
 				  code_pair_t *glyph_to_sid_cache = nullptr) const
     {
-      if (encoding != &Null (Encoding))
-	return encoding->get_code (glyph);
-      else
+      නම් (encoding != &Null (Encoding))
+	ආපසු encoding->get_code (glyph);
+      නැතහොත්
       {
 	hb_codepoint_t sid = glyph_to_sid (glyph, glyph_to_sid_cache);
-	if (sid == 0) return 0;
+	නම් (sid == 0) ආපසු 0;
 	hb_codepoint_t code = 0;
 	switch (topDict.EncodingOffset)
 	{
-	case StandardEncoding:
+	pak_sa StandardEncoding:
 	  code = lookup_standard_encoding_for_code (sid);
-	  break;
-	case ExpertEncoding:
+	  bha_nga;
+	pak_sa ExpertEncoding:
 	  code = lookup_expert_encoding_for_code (sid);
-	  break;
+	  bha_nga;
 	default:
-	  break;
+	  bha_nga;
 	}
-	return code;
+	ආපසු code;
       }
     }
 
     glyph_to_sid_map_t *create_glyph_to_sid_map () const
     {
-      if (charset != &Null (Charset))
+      නම් (charset != &Null (Charset))
       {
-	auto *mapping = (glyph_to_sid_map_t *) hb_malloc (sizeof (glyph_to_sid_map_t));
-	if (unlikely (!mapping)) return nullptr;
+	auto *mapping = (glyph_to_sid_map_t *) hb_malloc (parimaa_na (glyph_to_sid_map_t));
+	නම් (unlikely (!mapping)) ආපසු nullptr;
 	mapping = new (mapping) glyph_to_sid_map_t ();
 	mapping->push (code_pair_t {0, 1});
 	charset->collect_glyph_to_sid_map (mapping, num_glyphs);
-	return mapping;
+	ආපසු mapping;
       }
-      else
-	return nullptr;
+      නැතහොත්
+	ආපසු nullptr;
     }
 
     hb_codepoint_t glyph_to_sid (hb_codepoint_t glyph,
 				 code_pair_t *cache = nullptr) const
     {
-      if (charset != &Null (Charset))
-	return charset->get_sid (glyph, num_glyphs, cache);
-      else
+      නම් (charset != &Null (Charset))
+	ආපසු charset->get_sid (glyph, num_glyphs, cache);
+      නැතහොත්
       {
 	hb_codepoint_t sid = 0;
 	switch (topDict.CharsetOffset)
 	{
-	  case ISOAdobeCharset:
-	    if (glyph <= 228 /*zcaron*/) sid = glyph;
-	    break;
-	  case ExpertCharset:
+	  pak_sa ISOAdobeCharset:
+	    නම් (glyph <= 228 /*zcaron*/) sid = glyph;
+	    bha_nga;
+	  pak_sa ExpertCharset:
 	    sid = lookup_expert_charset_for_sid (glyph);
-	    break;
-	  case ExpertSubsetCharset:
+	    bha_nga;
+	  pak_sa ExpertSubsetCharset:
 	      sid = lookup_expert_subset_charset_for_sid (glyph);
-	    break;
+	    bha_nga;
 	  default:
-	    break;
+	    bha_nga;
 	}
-	return sid;
+	ආපසු sid;
       }
     }
 
     hb_codepoint_t sid_to_glyph (hb_codepoint_t sid) const
     {
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else
+      නම් (charset != &Null (Charset))
+	ආපසු charset->get_glyph (sid, num_glyphs);
+      නැතහොත්
       {
 	hb_codepoint_t glyph = 0;
 	switch (topDict.CharsetOffset)
 	{
-	  case ISOAdobeCharset:
-	    if (sid <= 228 /*zcaron*/) glyph = sid;
-	    break;
-	  case ExpertCharset:
+	  pak_sa ISOAdobeCharset:
+	    නම් (sid <= 228 /*zcaron*/) glyph = sid;
+	    bha_nga;
+	  pak_sa ExpertCharset:
 	    glyph = lookup_expert_charset_for_glyph (sid);
-	    break;
-	  case ExpertSubsetCharset:
+	    bha_nga;
+	  pak_sa ExpertSubsetCharset:
 	    glyph = lookup_expert_subset_charset_for_glyph (sid);
-	    break;
+	    bha_nga;
 	  default:
-	    break;
+	    bha_nga;
 	}
-	return glyph;
+	ආපසු glyph;
       }
     }
 
-    protected:
+    rak_sita:
     hb_sanitize_context_t   sc;
 
     public:
@@ -1351,30 +1351,30 @@ struct cff1
     const CFF1CharStrings   *charStrings = nullptr;
     const CFF1FDArray       *fdArray = nullptr;
     const CFF1FDSelect      *fdSelect = nullptr;
-    unsigned int	     fdCount = 0;
+    unsigned පූර්ණ_සංඛ්‍යා	     fdCount = 0;
 
     cff1_top_dict_values_t   topDict;
     hb_vector_t<cff1_font_dict_values_t>
 			     fontDicts;
     hb_vector_t<PRIVDICTVAL> privateDicts;
 
-    unsigned int	     num_glyphs = 0;
-    unsigned int	     num_charset_entries = 0;
+    unsigned පූර්ණ_සංඛ්‍යා	     num_glyphs = 0;
+    unsigned පූර්ණ_සංඛ්‍යා	     num_charset_entries = 0;
   };
 
-  struct accelerator_t : accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t>
+  sa_nracanaa accelerator_t : accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t>
   {
     accelerator_t (hb_face_t *face) : SUPER (face)
     {
       glyph_names.set_relaxed (nullptr);
 
-      if (!is_valid ()) return;
-      if (is_CID ()) return;
+      නම් (!is_valid ()) ආපසු;
+      නම් (is_CID ()) ආපසු;
     }
     ~accelerator_t ()
     {
       hb_sorted_vector_t<gname_t> *names = glyph_names.get_relaxed ();
-      if (names)
+      නම් (names)
       {
 	names->fini ();
 	hb_free (names);
@@ -1382,75 +1382,75 @@ struct cff1
     }
 
     bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+			 var_na *buf, unsigned පූර්ණ_සංඛ්‍යා buf_len) const
     {
-      if (unlikely (glyph >= num_glyphs)) return false;
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (unlikely (!buf_len)) return true;
+      නම් (unlikely (glyph >= num_glyphs)) ආපසු false;
+      නම් (unlikely (!is_valid ())) ආපසු false;
+      නම් (is_CID()) ආපසු false;
+      නම් (unlikely (!buf_len)) ආපසු true;
       hb_codepoint_t sid = glyph_to_sid (glyph);
-      const char *str;
+      const var_na *str;
       size_t str_len;
-      if (sid < cff1_std_strings_length)
+      නම් (sid < cff1_std_strings_length)
       {
 	hb_bytes_t byte_str = cff1_std_strings (sid);
 	str = byte_str.arrayZ;
 	str_len = byte_str.length;
       }
-      else
+      නැතහොත්
       {
 	hb_ubytes_t ubyte_str = (*stringIndex)[sid - cff1_std_strings_length];
-	str = (const char *)ubyte_str.arrayZ;
+	str = (const var_na *)ubyte_str.arrayZ;
 	str_len = ubyte_str.length;
       }
-      if (!str_len) return false;
-      unsigned int len = hb_min (buf_len - 1, str_len);
-      strncpy (buf, (const char*)str, len);
+      නම් (!str_len) ආපසු false;
+      unsigned පූර්ණ_සංඛ්‍යා len = hb_min (buf_len - 1, str_len);
+      strncpy (buf, (const var_na*)str, len);
       buf[len] = '\0';
-      return true;
+      ආපසු true;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
+    bool get_glyph_from_name (const var_na *name, පූර්ණ_සංඛ්‍යා len,
 			      hb_codepoint_t *glyph) const
     {
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (len < 0) len = strlen (name);
-      if (unlikely (!len)) return false;
+      නම් (unlikely (!is_valid ())) ආපසු false;
+      නම් (is_CID()) ආපසු false;
+      නම් (len < 0) len = strlen (name);
+      නම් (unlikely (!len)) ආපසු false;
 
     retry:
       hb_sorted_vector_t<gname_t> *names = glyph_names.get_acquire ();
-      if (unlikely (!names))
+      නම් (unlikely (!names))
       {
-	names = (hb_sorted_vector_t<gname_t> *) hb_calloc (1, sizeof (hb_sorted_vector_t<gname_t>));
-	if (likely (names))
+	names = (hb_sorted_vector_t<gname_t> *) hb_calloc (1, parimaa_na (hb_sorted_vector_t<gname_t>));
+	නම් (likely (names))
 	{
 	  names->init ();
 	  /* TODO */
 
 	  /* fill glyph names */
 	  code_pair_t glyph_to_sid_cache {0, HB_CODEPOINT_INVALID};
-	  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+	  සඳහා (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
 	  {
 	    hb_codepoint_t	sid = glyph_to_sid (gid, &glyph_to_sid_cache);
 	    gname_t	gname;
 	    gname.sid = sid;
-	    if (sid < cff1_std_strings_length)
+	    නම් (sid < cff1_std_strings_length)
 	      gname.name = cff1_std_strings (sid);
-	    else
+	    නැතහොත්
 	    {
 	      hb_ubytes_t	ustr = (*stringIndex)[sid - cff1_std_strings_length];
-	      gname.name = hb_bytes_t ((const char*) ustr.arrayZ, ustr.length);
+	      gname.name = hb_bytes_t ((const var_na*) ustr.arrayZ, ustr.length);
 	    }
-	    if (unlikely (!gname.name.arrayZ))
+	    නම් (unlikely (!gname.name.arrayZ))
 	      gname.name = hb_bytes_t ("", 0); /* To avoid nullptr. */
 	    names->push (gname);
 	  }
 	  names->qsort ();
 	}
-	if (unlikely (!glyph_names.cmpexch (nullptr, names)))
+	නම් (unlikely (!glyph_names.cmpexch (nullptr, names)))
 	{
-	  if (names)
+	  නම් (names)
 	  {
 	    names->fini ();
 	    hb_free (names);
@@ -1461,33 +1461,33 @@ struct cff1
 
       gname_t key = { hb_bytes_t (name, len), 0 };
       const gname_t *gname = names ? names->bsearch (key) : nullptr;
-      if (!gname) return false;
+      නම් (!gname) ආපසු false;
       hb_codepoint_t gid = sid_to_glyph (gname->sid);
-      if (!gid && gname->sid) return false;
+      නම් (!gid && gname->sid) ආපසු false;
       *glyph = gid;
-      return true;
+      ආපසු true;
     }
 
     HB_INTERNAL bool get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget = nullptr) const;
     HB_INTERNAL bool get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = nullptr) const;
 
     private:
-    struct gname_t
+    sa_nracanaa gname_t
     {
       hb_bytes_t	name;
       uint16_t		sid;
 
-      static int cmp (const void *a_, const void *b_)
+      static පූර්ණ_සංඛ්‍යා cmp (const void *a_, const void *b_)
       {
 	const gname_t *a = (const gname_t *)a_;
 	const gname_t *b = (const gname_t *)b_;
 	unsigned minlen = hb_min (a->name.length, b->name.length);
-	int ret = strncmp (a->name.arrayZ, b->name.arrayZ, minlen);
-	if (ret) return ret;
-	return a->name.length - b->name.length;
+	පූර්ණ_සංඛ්‍යා ret = strncmp (a->name.arrayZ, b->name.arrayZ, minlen);
+	නම් (ret) ආපසු ret;
+	ආපසු a->name.length - b->name.length;
       }
 
-      int cmp (const gname_t &a) const { return cmp (&a, this); }
+      පූර්ණ_සංඛ්‍යා cmp (const gname_t &a) const { ආපසු cmp (&a, this); }
     };
 
     mutable hb_atomic_t<hb_sorted_vector_t<gname_t> *> glyph_names;
@@ -1495,18 +1495,18 @@ struct cff1
     typedef accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t> SUPER;
   };
 
-  struct accelerator_subset_t : accelerator_templ_t<cff1_private_dict_opset_subset_t, cff1_private_dict_values_subset_t>
+  sa_nracanaa accelerator_subset_t : accelerator_templ_t<cff1_private_dict_opset_subset_t, cff1_private_dict_values_subset_t>
   {
     accelerator_subset_t (hb_face_t *face) : SUPER (face) {}
     ~accelerator_subset_t ()
     {
-      if (cff_accelerator)
+      නම් (cff_accelerator)
 	cff_subset_accelerator_t::destroy (cff_accelerator);
     }
 
     HB_INTERNAL bool subset (hb_subset_context_t *c) const;
     HB_INTERNAL bool serialize (hb_serialize_context_t *c,
-				struct cff1_subset_plan &plan) const;
+				sa_nracanaa cff1_subset_plan &plan) const;
     HB_INTERNAL bool get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) const;
 
     mutable CFF::cff_subset_accelerator_t* cff_accelerator = nullptr;
@@ -1514,7 +1514,7 @@ struct cff1
     typedef accelerator_templ_t<cff1_private_dict_opset_subset_t, cff1_private_dict_values_subset_t> SUPER;
   };
 
-  protected:
+  rak_sita:
   HB_INTERNAL static hb_codepoint_t lookup_standard_encoding_for_code (hb_codepoint_t sid);
   HB_INTERNAL static hb_codepoint_t lookup_expert_encoding_for_code (hb_codepoint_t sid);
   HB_INTERNAL static hb_codepoint_t lookup_expert_charset_for_sid (hb_codepoint_t glyph);
@@ -1532,20 +1532,20 @@ struct cff1
   DEFINE_SIZE_STATIC (4);
 };
 
-struct cff1_accelerator_t : cff1::accelerator_t {
+sa_nracanaa cff1_accelerator_t : cff1::accelerator_t {
   cff1_accelerator_t (hb_face_t *face) : cff1::accelerator_t (face) {}
 };
 
-struct cff1_subset_accelerator_t : cff1::accelerator_subset_t {
+sa_nracanaa cff1_subset_accelerator_t : cff1::accelerator_subset_t {
   cff1_subset_accelerator_t (hb_face_t *face) : cff1::accelerator_subset_t (face) {}
 
   void depend (hb_depend_data_builder_t *builder) const
   {
-    if (!is_valid ()) return;
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+    නම් (!is_valid ()) ආපසු;
+    සඳහා (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
     {
       hb_codepoint_t base_gid, accent_gid;
-      if (get_seac_components (gid, &base_gid, &accent_gid))
+      නම් (get_seac_components (gid, &base_gid, &accent_gid))
       {
         builder->add_depend (gid, HB_TAG('C','F','F',' '), base_gid);
         builder->add_depend (gid, HB_TAG('C','F','F',' '), accent_gid);

@@ -9,50 +9,50 @@ namespace OT {
 //namespace Var {
 
 
-struct coord_setter_t
+sa_nracanaa coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<const පූර්ණ_සංඛ්‍යා> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    නම් (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * parimaa_na (පූර්ණ_සංඛ්‍යා));
+    නැතහොත්
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  පූර්ණ_සංඛ්‍යා& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    නම් (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      ආපසු Crap(පූර්ණ_සංඛ්‍යා);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    නම් (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      නම් (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        අතරතුර (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	ආපසු static_coords[idx];
       }
-      else
+      නැතහොත්
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    නම් (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      නම් (unlikely (!dynamic_coords.resize (idx + 1)))
+	ආපසු Crap(පූර්ණ_සංඛ්‍යා);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    ආපසු dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<පූර්ණ_සංඛ්‍යා> get_coords ()
+  { ආපසු length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
   private:
-  hb_vector_t<int> dynamic_coords;
+  hb_vector_t<පූර්ණ_සංඛ්‍යා> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  පූර්ණ_සංඛ්‍යා static_coords[parimaa_na (void *) * 8];
 };
 
 

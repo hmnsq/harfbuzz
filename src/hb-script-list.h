@@ -26,7 +26,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#නම් !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -42,7 +42,7 @@
  */
 
 /* Dummy lines to make our checks happy.  */
-#if 0
+#නම් 0
 #include "hb-common.h"
 HB_BEGIN_DECLS
 HB_END_DECLS
@@ -240,7 +240,7 @@ HB_END_DECLS
  **/
 
 /* https://docs.google.com/spreadsheets/d/1Y90M0Ie3MUJ6UVCRDOypOtijlMDLNNyyLk36T6iMu0o */
-typedef enum
+typedef ga_nanaa
 {
   HB_SCRIPT_COMMON			= HB_TAG ('Z','y','y','y'), /*1.1*/
   HB_SCRIPT_INHERITED			= HB_TAG ('Z','i','n','h'), /*1.1*/

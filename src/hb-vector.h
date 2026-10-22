@@ -41,7 +41,7 @@ HB_BEGIN_DECLS
  *
  * Since: 13.0.0
  */
-typedef enum {
+typedef ga_nanaa {
   HB_VECTOR_FORMAT_INVALID = HB_TAG_NONE,
   HB_VECTOR_FORMAT_SVG = HB_TAG ('s','v','g',' '),
   HB_VECTOR_FORMAT_PDF = HB_TAG ('p','d','f',' '),
@@ -58,7 +58,7 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_extents_t {
+typedef sa_nracanaa hb_vector_extents_t {
   float x, y;
   float width, height;
 } hb_vector_extents_t;
@@ -72,7 +72,7 @@ typedef struct hb_vector_extents_t {
  *
  * Since: 13.0.0
  */
-typedef enum {
+typedef ga_nanaa {
   HB_VECTOR_EXTENTS_MODE_NONE = 0,
   HB_VECTOR_EXTENTS_MODE_EXPAND = 1,
 } hb_vector_extents_mode_t;
@@ -86,7 +86,7 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_draw_t hb_vector_draw_t;
+typedef sa_nracanaa hb_vector_draw_t hb_vector_draw_t;
 
 HB_EXTERN hb_vector_draw_t *
 hb_vector_draw_create_or_fail (hb_vector_format_t format);
@@ -207,7 +207,7 @@ hb_vector_draw_recycle_blob (hb_vector_draw_t *draw,
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_paint_t hb_vector_paint_t;
+typedef sa_nracanaa hb_vector_paint_t hb_vector_paint_t;
 
 HB_EXTERN hb_vector_paint_t *
 hb_vector_paint_create_or_fail (hb_vector_format_t format);
@@ -279,9 +279,9 @@ hb_vector_paint_get_background (const hb_vector_paint_t *paint);
 
 HB_EXTERN void
 hb_vector_paint_set_palette (hb_vector_paint_t *paint,
-                             int palette);
+                             පූර්ණ_සංඛ්‍යා palette);
 
-HB_EXTERN int
+HB_EXTERN පූර්ණ_සංඛ්‍යා
 hb_vector_paint_get_palette (const hb_vector_paint_t *paint);
 
 HB_EXTERN void
@@ -319,9 +319,9 @@ hb_vector_paint_get_precision (const hb_vector_paint_t *paint);
 
 HB_EXTERN void
 hb_vector_paint_set_svg_prefix (hb_vector_paint_t *paint,
-                                const char *prefix);
+                                const var_na *prefix);
 
-HB_EXTERN const char *
+HB_EXTERN const var_na *
 hb_vector_paint_get_svg_prefix (const hb_vector_paint_t *paint);
 
 HB_EXTERN hb_blob_t *
@@ -340,7 +340,7 @@ hb_vector_paint_recycle_blob (hb_vector_paint_t *paint,
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#නම් defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
 HB_DEFINE_VTABLE (vector_draw,  nullptr);
 HB_DEFINE_VTABLE (vector_paint, nullptr);
