@@ -26,8 +26,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-machinery.hh"
 
 
 /**
@@ -57,22 +57,22 @@
  * Since: 0.9.2
  **/
 hb_tag_t
-hb_tag_from_string (const char *str, int len)
+hb_tag_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len)
 {
-  char tag[4];
-  unsigned int i;
+  वर्ण tag[4];
+  unsigned पूर्णाङ्क i;
 
-  if (!str || !len || !*str)
-    return HB_TAG_NONE;
+  यदि (!str || !len || !*str)
+    प्रत्यागम HB_TAG_NONE;
 
-  if (len < 0 || len > 4)
+  यदि (len < 0 || len > 4)
     len = 4;
-  for (i = 0; i < (unsigned) len && str[i]; i++)
+  प्रति (i = 0; i < (unsigned) len && str[i]; i++)
     tag[i] = str[i];
-  for (; i < 4; i++)
+  प्रति (; i < 4; i++)
     tag[i] = ' ';
 
-  return HB_TAG (tag[0], tag[1], tag[2], tag[3]);
+  प्रत्यागम HB_TAG (tag[0], tag[1], tag[2], tag[3]);
 }
 
 /**
@@ -85,19 +85,19 @@ hb_tag_from_string (const char *str, int len)
  *
  * Since: 0.9.5
  **/
-void
-hb_tag_to_string (hb_tag_t tag, char *buf)
+शून्य
+hb_tag_to_string (hb_tag_t tag, वर्ण *buf)
 {
-  buf[0] = (char) (uint8_t) (tag >> 24);
-  buf[1] = (char) (uint8_t) (tag >> 16);
-  buf[2] = (char) (uint8_t) (tag >>  8);
-  buf[3] = (char) (uint8_t) (tag >>  0);
+  buf[0] = (वर्ण) (uint8_t) (tag >> 24);
+  buf[1] = (वर्ण) (uint8_t) (tag >> 16);
+  buf[2] = (वर्ण) (uint8_t) (tag >>  8);
+  buf[3] = (वर्ण) (uint8_t) (tag >>  0);
 }
 
 
 /* hb_direction_t */
 
-static const char direction_strings[][4] = {
+स्थिर ध्रुव वर्ण direction_strings[][4] = {
   "ltr",
   "rtl",
   "ttb",
@@ -121,20 +121,20 @@ static const char direction_strings[][4] = {
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_direction_from_string (const char *str, int len)
+hb_direction_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len)
 {
-  if (unlikely (!str || !len || !*str))
-    return HB_DIRECTION_INVALID;
+  यदि (unlikely (!str || !len || !*str))
+    प्रत्यागम HB_DIRECTION_INVALID;
 
   /* Lets match loosely: just match the first letter, such that
    * all of "ltr", "left-to-right", etc work!
    */
-  char c = TOLOWER (str[0]);
-  for (unsigned int i = 0; i < ARRAY_LENGTH (direction_strings); i++)
-    if (c == direction_strings[i][0])
-      return (hb_direction_t) (HB_DIRECTION_LTR + i);
+  वर्ण c = TOLOWER (str[0]);
+  प्रति (unsigned पूर्णाङ्क i = 0; i < ARRAY_LENGTH (direction_strings); i++)
+    यदि (c == direction_strings[i][0])
+      प्रत्यागम (hb_direction_t) (HB_DIRECTION_LTR + i);
 
-  return HB_DIRECTION_INVALID;
+  प्रत्यागम HB_DIRECTION_INVALID;
 }
 
 /**
@@ -147,24 +147,24 @@ hb_direction_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-const char *
+ध्रुव वर्ण *
 hb_direction_to_string (hb_direction_t direction)
 {
-  if (likely ((unsigned int) (direction - HB_DIRECTION_LTR)
+  यदि (likely ((unsigned पूर्णाङ्क) (direction - HB_DIRECTION_LTR)
 	      < ARRAY_LENGTH (direction_strings)))
-    return direction_strings[direction - HB_DIRECTION_LTR];
+    प्रत्यागम direction_strings[direction - HB_DIRECTION_LTR];
 
-  return "invalid";
+  प्रत्यागम "invalid";
 }
 
 
 /* hb_language_t */
 
-struct hb_language_impl_t {
-  const char s[1];
+संरचना hb_language_impl_t {
+  ध्रुव वर्ण s[1];
 };
 
-static const char canon_map[256] = {
+स्थिर ध्रुव वर्ण canon_map[256] = {
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,   0,   0,
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,   0,   0,
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,  '-',  0,   0,
@@ -175,78 +175,78 @@ static const char canon_map[256] = {
   'p', 'q', 'r', 's', 't', 'u', 'v', 'w',  'x', 'y', 'z',  0,   0,   0,   0,   0
 };
 
-static bool
+स्थिर तार्किक
 lang_equal (hb_language_t  v1,
-	    const void    *v2)
+	    ध्रुव शून्य    *v2)
 {
-  const unsigned char *p1 = (const unsigned char *) v1;
-  const unsigned char *p2 = (const unsigned char *) v2;
+  ध्रुव unsigned वर्ण *p1 = (ध्रुव unsigned वर्ण *) v1;
+  ध्रुव unsigned वर्ण *p2 = (ध्रुव unsigned वर्ण *) v2;
 
-  while (*p1 && *p1 == canon_map[*p2]) {
+  यावत् (*p1 && *p1 == canon_map[*p2]) {
     p1++;
     p2++;
   }
 
-  return *p1 == canon_map[*p2];
+  प्रत्यागम *p1 == canon_map[*p2];
 }
 
-#if 0
-static unsigned int
-lang_hash (const void *key)
+#यदि 0
+स्थिर unsigned पूर्णाङ्क
+lang_hash (ध्रुव शून्य *key)
 {
-  const unsigned char *p = key;
-  unsigned int h = 0;
-  while (canon_map[*p])
+  ध्रुव unsigned वर्ण *p = key;
+  unsigned पूर्णाङ्क h = 0;
+  यावत् (canon_map[*p])
     {
       h = (h << 5) - h + canon_map[*p];
       p++;
     }
 
-  return h;
+  प्रत्यागम h;
 }
 #endif
 
 
-struct hb_language_item_t {
+संरचना hb_language_item_t {
 
-  struct hb_language_item_t *next;
+  संरचना hb_language_item_t *next;
   hb_language_t lang;
 
-  bool operator == (const char *s) const
-  { return lang_equal (lang, s); }
+  तार्किक operator == (ध्रुव वर्ण *s) ध्रुव
+  { प्रत्यागम lang_equal (lang, s); }
 
-  hb_language_item_t & operator = (const char *s)
+  hb_language_item_t & operator = (ध्रुव वर्ण *s)
   {
     /* We can't call strdup(), because we allow custom allocators. */
     size_t len = strlen(s) + 1;
     lang = (hb_language_t) hb_malloc(len);
-    if (likely (lang))
+    यदि (likely (lang))
     {
-      hb_memcpy((unsigned char *) lang, s, len);
-      for (unsigned char *p = (unsigned char *) lang; *p; p++)
+      hb_memcpy((unsigned वर्ण *) lang, s, len);
+      प्रति (unsigned वर्ण *p = (unsigned वर्ण *) lang; *p; p++)
 	*p = canon_map[*p];
     }
 
-    return *this;
+    प्रत्यागम *एतत्;
   }
 
-  void fini () { hb_free ((void *) lang); }
+  शून्य fini () { hb_free ((शून्य *) lang); }
 };
 
 
 /* Thread-safe lockfree language list */
 
-static hb_atomic_t<hb_language_item_t *> langs;
+स्थिर hb_atomic_t<hb_language_item_t *> langs;
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 free_langs ()
 {
 retry:
   hb_language_item_t *first_lang = langs;
-  if (unlikely (!langs.cmpexch (first_lang, nullptr)))
-    goto retry;
+  यदि (unlikely (!langs.cmpexch (first_lang, nullptr)))
+    गच्छ retry;
 
-  while (first_lang) {
+  यावत् (first_lang) {
     hb_language_item_t *next = first_lang->next;
     first_lang->fini ();
     hb_free (first_lang);
@@ -254,39 +254,39 @@ retry:
   }
 }
 
-static hb_language_item_t *
-lang_find_or_insert (const char *key)
+स्थिर hb_language_item_t *
+lang_find_or_जोड़ो (ध्रुव वर्ण *key)
 {
 retry:
   hb_language_item_t *first_lang = langs;
 
-  for (hb_language_item_t *lang = first_lang; lang; lang = lang->next)
-    if (*lang == key)
-      return lang;
+  प्रति (hb_language_item_t *lang = first_lang; lang; lang = lang->next)
+    यदि (*lang == key)
+      प्रत्यागम lang;
 
   /* Not found; allocate one. */
-  hb_language_item_t *lang = (hb_language_item_t *) hb_calloc (1, sizeof (hb_language_item_t));
-  if (unlikely (!lang))
-    return nullptr;
+  hb_language_item_t *lang = (hb_language_item_t *) hb_calloc (1, परिमाण (hb_language_item_t));
+  यदि (unlikely (!lang))
+    प्रत्यागम nullptr;
   lang->next = first_lang;
   *lang = key;
-  if (unlikely (!lang->lang))
+  यदि (unlikely (!lang->lang))
   {
     hb_free (lang);
-    return nullptr;
+    प्रत्यागम nullptr;
   }
 
-  if (unlikely (!langs.cmpexch (first_lang, lang)))
+  यदि (unlikely (!langs.cmpexch (first_lang, lang)))
   {
     lang->fini ();
     hb_free (lang);
-    goto retry;
+    गच्छ retry;
   }
 
-  if (!first_lang)
+  यदि (!first_lang)
     hb_atexit (free_langs); /* First person registers atexit() callback. */
 
-  return lang;
+  प्रत्यागम lang;
 }
 
 
@@ -305,25 +305,25 @@ retry:
  * Since: 0.9.2
  **/
 hb_language_t
-hb_language_from_string (const char *str, int len)
+hb_language_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len)
 {
-  if (!str || !len || !*str)
-    return HB_LANGUAGE_INVALID;
+  यदि (!str || !len || !*str)
+    प्रत्यागम HB_LANGUAGE_INVALID;
 
   hb_language_item_t *item = nullptr;
-  if (len >= 0)
+  यदि (len >= 0)
   {
     /* NUL-terminate it. */
-    char strbuf[64];
-    len = hb_min (len, (int) sizeof (strbuf) - 1);
+    वर्ण strbuf[64];
+    len = hb_min (len, (पूर्णाङ्क) परिमाण (strbuf) - 1);
     hb_memcpy (strbuf, str, len);
     strbuf[len] = '\0';
-    item = lang_find_or_insert (strbuf);
+    item = lang_find_or_जोड़ो (strbuf);
   }
-  else
-    item = lang_find_or_insert (str);
+  अन्यथा
+    item = lang_find_or_जोड़ो (str);
 
-  return likely (item) ? item->lang : HB_LANGUAGE_INVALID;
+  प्रत्यागम likely (item) ? item->lang : HB_LANGUAGE_INVALID;
 }
 
 /**
@@ -338,12 +338,12 @@ hb_language_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-const char *
+ध्रुव वर्ण *
 hb_language_to_string (hb_language_t language)
 {
-  if (unlikely (!language)) return nullptr;
+  यदि (unlikely (!language)) प्रत्यागम nullptr;
 
-  return language->s;
+  प्रत्यागम language->s;
 }
 
 /**
@@ -366,16 +366,16 @@ hb_language_to_string (hb_language_t language)
 hb_language_t
 hb_language_get_default ()
 {
-  static hb_atomic_t<hb_language_t> default_language;
+  स्थिर hb_atomic_t<hb_language_t> default_language;
 
   hb_language_t language = default_language;
-  if (unlikely (language == HB_LANGUAGE_INVALID))
+  यदि (unlikely (language == HB_LANGUAGE_INVALID))
   {
     language = hb_language_from_string (hb_setlocale (LC_CTYPE, nullptr), -1);
-    (void) default_language.cmpexch (HB_LANGUAGE_INVALID, language);
+    (शून्य) default_language.cmpexch (HB_LANGUAGE_INVALID, language);
   }
 
-  return language;
+  प्रत्यागम language;
 }
 
 /**
@@ -395,18 +395,18 @@ hb_bool_t
 hb_language_matches (hb_language_t language,
 		     hb_language_t specific)
 {
-  if (language == specific) return true;
-  if (!language || !specific) return false;
+  यदि (language == specific) प्रत्यागम सत्य;
+  यदि (!language || !specific) प्रत्यागम असत्य;
 
-  const char *l = language->s;
-  const char *s = specific->s;
+  ध्रुव वर्ण *l = language->s;
+  ध्रुव वर्ण *s = specific->s;
   unsigned ll = strlen (l);
   unsigned sl = strlen (s);
 
-  if (ll > sl)
-    return false;
+  यदि (ll > sl)
+    प्रत्यागम असत्य;
 
-  return strncmp (l, s, ll) == 0 &&
+  प्रत्यागम strncmp (l, s, ll) == 0 &&
 	 (s[ll] == '\0' || s[ll] == '-');
 }
 
@@ -427,34 +427,34 @@ hb_language_matches (hb_language_t language,
 hb_script_t
 hb_script_from_iso15924_tag (hb_tag_t tag)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return HB_SCRIPT_INVALID;
+  यदि (unlikely (tag == HB_TAG_NONE))
+    प्रत्यागम HB_SCRIPT_INVALID;
 
   /* Be lenient, adjust case (one capital letter followed by three small letters) */
   tag = (tag & 0xDFDFDFDFu) | 0x00202020u;
 
-  switch (tag)
+  विकल्प (tag)
   {
     /* Script variants from https://unicode.org/iso15924/ */
-    case HB_TAG('A','r','a','n'): return HB_SCRIPT_ARABIC;
-    case HB_TAG('C','y','r','s'): return HB_SCRIPT_CYRILLIC;
-    case HB_TAG('G','e','o','k'): return HB_SCRIPT_GEORGIAN;
-    case HB_TAG('H','a','n','s'): return HB_SCRIPT_HAN;
-    case HB_TAG('H','a','n','t'): return HB_SCRIPT_HAN;
-    case HB_TAG('J','a','m','o'): return HB_SCRIPT_HANGUL;
-    case HB_TAG('L','a','t','f'): return HB_SCRIPT_LATIN;
-    case HB_TAG('L','a','t','g'): return HB_SCRIPT_LATIN;
-    case HB_TAG('S','y','r','e'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','j'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','n'): return HB_SCRIPT_SYRIAC;
+    पक्ष HB_TAG('A','r','a','n'): प्रत्यागम HB_SCRIPT_ARABIC;
+    पक्ष HB_TAG('C','y','r','s'): प्रत्यागम HB_SCRIPT_CYRILLIC;
+    पक्ष HB_TAG('G','e','o','k'): प्रत्यागम HB_SCRIPT_GEORGIAN;
+    पक्ष HB_TAG('H','a','n','s'): प्रत्यागम HB_SCRIPT_HAN;
+    पक्ष HB_TAG('H','a','n','t'): प्रत्यागम HB_SCRIPT_HAN;
+    पक्ष HB_TAG('J','a','m','o'): प्रत्यागम HB_SCRIPT_HANGUL;
+    पक्ष HB_TAG('L','a','t','f'): प्रत्यागम HB_SCRIPT_LATIN;
+    पक्ष HB_TAG('L','a','t','g'): प्रत्यागम HB_SCRIPT_LATIN;
+    पक्ष HB_TAG('S','y','r','e'): प्रत्यागम HB_SCRIPT_SYRIAC;
+    पक्ष HB_TAG('S','y','r','j'): प्रत्यागम HB_SCRIPT_SYRIAC;
+    पक्ष HB_TAG('S','y','r','n'): प्रत्यागम HB_SCRIPT_SYRIAC;
   }
 
   /* If it looks right, just use the tag as a script */
-  if (((uint32_t) tag & 0xE0E0E0E0u) == 0x40606060u)
-    return (hb_script_t) tag;
+  यदि (((uint32_t) tag & 0xE0E0E0E0u) == 0x40606060u)
+    प्रत्यागम (hb_script_t) tag;
 
   /* Otherwise, return unknown */
-  return HB_SCRIPT_UNKNOWN;
+  प्रत्यागम HB_SCRIPT_UNKNOWN;
 }
 
 /**
@@ -473,9 +473,9 @@ hb_script_from_iso15924_tag (hb_tag_t tag)
  * Since: 0.9.2
  **/
 hb_script_t
-hb_script_from_string (const char *str, int len)
+hb_script_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len)
 {
-  return hb_script_from_iso15924_tag (hb_tag_from_string (str, len));
+  प्रत्यागम hb_script_from_iso15924_tag (hb_tag_from_string (str, len));
 }
 
 /**
@@ -492,7 +492,7 @@ hb_script_from_string (const char *str, int len)
 hb_tag_t
 hb_script_to_iso15924_tag (hb_script_t script)
 {
-  return (hb_tag_t) script;
+  प्रत्यागम (hb_tag_t) script;
 }
 
 /**
@@ -517,93 +517,93 @@ hb_direction_t
 hb_script_get_horizontal_direction (hb_script_t script)
 {
   /* https://docs.google.com/spreadsheets/d/1Y90M0Ie3MUJ6UVCRDOypOtijlMDLNNyyLk36T6iMu0o */
-  switch ((hb_tag_t) script)
+  विकल्प ((hb_tag_t) script)
   {
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_ARABIC:
-    case HB_SCRIPT_HEBREW:
+    पक्ष HB_SCRIPT_ARABIC:
+    पक्ष HB_SCRIPT_HEBREW:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_SYRIAC:
-    case HB_SCRIPT_THAANA:
+    पक्ष HB_SCRIPT_SYRIAC:
+    पक्ष HB_SCRIPT_THAANA:
 
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_CYPRIOT:
+    पक्ष HB_SCRIPT_CYPRIOT:
 
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_KHAROSHTHI:
+    पक्ष HB_SCRIPT_KHAROSHTHI:
 
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_PHOENICIAN:
-    case HB_SCRIPT_NKO:
+    पक्ष HB_SCRIPT_PHOENICIAN:
+    पक्ष HB_SCRIPT_NKO:
 
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_LYDIAN:
+    पक्ष HB_SCRIPT_LYDIAN:
 
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_AVESTAN:
-    case HB_SCRIPT_IMPERIAL_ARAMAIC:
-    case HB_SCRIPT_INSCRIPTIONAL_PAHLAVI:
-    case HB_SCRIPT_INSCRIPTIONAL_PARTHIAN:
-    case HB_SCRIPT_OLD_SOUTH_ARABIAN:
-    case HB_SCRIPT_OLD_TURKIC:
-    case HB_SCRIPT_SAMARITAN:
+    पक्ष HB_SCRIPT_AVESTAN:
+    पक्ष HB_SCRIPT_IMPERIAL_ARAMAIC:
+    पक्ष HB_SCRIPT_INSCRIPTIONAL_PAHLAVI:
+    पक्ष HB_SCRIPT_INSCRIPTIONAL_PARTHIAN:
+    पक्ष HB_SCRIPT_OLD_SOUTH_ARABIAN:
+    पक्ष HB_SCRIPT_OLD_TURKIC:
+    पक्ष HB_SCRIPT_SAMARITAN:
 
     /* Unicode-6.0 additions */
-    case HB_SCRIPT_MANDAIC:
+    पक्ष HB_SCRIPT_MANDAIC:
 
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_MEROITIC_CURSIVE:
-    case HB_SCRIPT_MEROITIC_HIEROGLYPHS:
+    पक्ष HB_SCRIPT_MEROITIC_CURSIVE:
+    पक्ष HB_SCRIPT_MEROITIC_HIEROGLYPHS:
 
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MENDE_KIKAKUI:
-    case HB_SCRIPT_NABATAEAN:
-    case HB_SCRIPT_OLD_NORTH_ARABIAN:
-    case HB_SCRIPT_PALMYRENE:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
+    पक्ष HB_SCRIPT_MANICHAEAN:
+    पक्ष HB_SCRIPT_MENDE_KIKAKUI:
+    पक्ष HB_SCRIPT_NABATAEAN:
+    पक्ष HB_SCRIPT_OLD_NORTH_ARABIAN:
+    पक्ष HB_SCRIPT_PALMYRENE:
+    पक्ष HB_SCRIPT_PSALTER_PAHLAVI:
 
     /* Unicode-8.0 additions */
-    case HB_SCRIPT_HATRAN:
+    पक्ष HB_SCRIPT_HATRAN:
 
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_ADLAM:
+    पक्ष HB_SCRIPT_ADLAM:
 
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_OLD_SOGDIAN:
-    case HB_SCRIPT_SOGDIAN:
+    पक्ष HB_SCRIPT_HANIFI_ROHINGYA:
+    पक्ष HB_SCRIPT_OLD_SOGDIAN:
+    पक्ष HB_SCRIPT_SOGDIAN:
 
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_ELYMAIC:
+    पक्ष HB_SCRIPT_ELYMAIC:
 
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_YEZIDI:
+    पक्ष HB_SCRIPT_CHORASMIAN:
+    पक्ष HB_SCRIPT_YEZIDI:
 
     /* Unicode-14.0 additions */
-    case HB_SCRIPT_OLD_UYGHUR:
+    पक्ष HB_SCRIPT_OLD_UYGHUR:
 
     /* Unicode-16.0 additions */
-    case HB_SCRIPT_GARAY:
+    पक्ष HB_SCRIPT_GARAY:
 
     /* Unicode-17.0 additions */
-    case HB_SCRIPT_SIDETIC:
+    पक्ष HB_SCRIPT_SIDETIC:
 
-      return HB_DIRECTION_RTL;
+      प्रत्यागम HB_DIRECTION_RTL;
 
 
     /* https://github.com/harfbuzz/harfbuzz/issues/1000 */
-    case HB_SCRIPT_OLD_HUNGARIAN:
-    case HB_SCRIPT_OLD_ITALIC:
-    case HB_SCRIPT_RUNIC:
-    case HB_SCRIPT_TIFINAGH:
+    पक्ष HB_SCRIPT_OLD_HUNGARIAN:
+    पक्ष HB_SCRIPT_OLD_ITALIC:
+    पक्ष HB_SCRIPT_RUNIC:
+    पक्ष HB_SCRIPT_TIFINAGH:
 
-      return HB_DIRECTION_INVALID;
+      प्रत्यागम HB_DIRECTION_INVALID;
   }
 
-  return HB_DIRECTION_LTR;
+  प्रत्यागम HB_DIRECTION_LTR;
 }
 
 
@@ -632,10 +632,10 @@ hb_script_get_horizontal_direction (hb_script_t script)
  *
  * Since: 0.9.2
  **/
-void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro)
+शून्य
+hb_version (unsigned पूर्णाङ्क *major,
+	    unsigned पूर्णाङ्क *minor,
+	    unsigned पूर्णाङ्क *micro)
 {
   *major = HB_VERSION_MAJOR;
   *minor = HB_VERSION_MINOR;
@@ -651,10 +651,10 @@ hb_version (unsigned int *major,
  *
  * Since: 0.9.2
  **/
-const char *
+ध्रुव वर्ण *
 hb_version_string ()
 {
-  return HB_VERSION_STRING;
+  प्रत्यागम HB_VERSION_STRING;
 }
 
 /**
@@ -672,181 +672,181 @@ hb_version_string ()
  * Since: 0.9.30
  **/
 hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro)
+hb_version_atleast (unsigned पूर्णाङ्क major,
+		    unsigned पूर्णाङ्क minor,
+		    unsigned पूर्णाङ्क micro)
 {
-  return HB_VERSION_ATLEAST (major, minor, micro);
+  प्रत्यागम HB_VERSION_ATLEAST (major, minor, micro);
 }
 
 
 
 /* hb_feature_t and hb_variation_t */
 
-static bool
-parse_space (const char **pp, const char *end)
+स्थिर तार्किक
+parse_space (ध्रुव वर्ण **pp, ध्रुव वर्ण *end)
 {
-  while (*pp < end && ISSPACE (**pp))
+  यावत् (*pp < end && ISSPACE (**pp))
     (*pp)++;
-  return true;
+  प्रत्यागम सत्य;
 }
 
-static bool
-parse_char (const char **pp, const char *end, char c)
+स्थिर तार्किक
+parse_char (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, वर्ण c)
 {
   parse_space (pp, end);
 
-  if (*pp == end || **pp != c)
-    return false;
+  यदि (*pp == end || **pp != c)
+    प्रत्यागम असत्य;
 
   (*pp)++;
-  return true;
+  प्रत्यागम सत्य;
 }
 
-static bool
-parse_uint (const char **pp, const char *end, unsigned int *pv)
+स्थिर तार्किक
+parse_uint (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, unsigned पूर्णाङ्क *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  पूर्णाङ्क v;
+  यदि (unlikely (!hb_parse_int (pp, end, &v))) प्रत्यागम असत्य;
 
   *pv = v;
-  return true;
+  प्रत्यागम सत्य;
 }
 
-static bool
-parse_uint32 (const char **pp, const char *end, uint32_t *pv)
+स्थिर तार्किक
+parse_uint32 (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, uint32_t *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  पूर्णाङ्क v;
+  यदि (unlikely (!hb_parse_int (pp, end, &v))) प्रत्यागम असत्य;
 
   *pv = v;
-  return true;
+  प्रत्यागम सत्य;
 }
 
-static bool
-parse_bool (const char **pp, const char *end, uint32_t *pv)
+स्थिर तार्किक
+parse_bool (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, uint32_t *pv)
 {
   parse_space (pp, end);
 
-  const char *p = *pp;
-  while (*pp < end && ISALPHA(**pp))
+  ध्रुव वर्ण *p = *pp;
+  यावत् (*pp < end && ISALPHA(**pp))
     (*pp)++;
 
   /* CSS allows on/off as aliases 1/0. */
-  if (*pp - p == 2
+  यदि (*pp - p == 2
       && TOLOWER (p[0]) == 'o'
       && TOLOWER (p[1]) == 'n')
     *pv = 1;
-  else if (*pp - p == 3
+  अन्यथा यदि (*pp - p == 3
 	   && TOLOWER (p[0]) == 'o'
 	   && TOLOWER (p[1]) == 'f'
 	   && TOLOWER (p[2]) == 'f')
     *pv = 0;
-  else
-    return false;
+  अन्यथा
+    प्रत्यागम असत्य;
 
-  return true;
+  प्रत्यागम सत्य;
 }
 
 /* hb_feature_t */
 
-static bool
-parse_feature_value_prefix (const char **pp, const char *end, hb_feature_t *feature)
+स्थिर तार्किक
+parse_feature_मूल्य_prefix (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, hb_feature_t *feature)
 {
-  if (parse_char (pp, end, '-'))
+  यदि (parse_char (pp, end, '-'))
     feature->value = 0;
-  else {
+  अन्यथा {
     parse_char (pp, end, '+');
     feature->value = 1;
   }
 
-  return true;
+  प्रत्यागम सत्य;
 }
 
-static bool
-parse_tag (const char **pp, const char *end, hb_tag_t *tag)
+स्थिर तार्किक
+parse_tag (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, hb_tag_t *tag)
 {
   parse_space (pp, end);
 
-  char quote = 0;
+  वर्ण quote = 0;
 
-  if (*pp < end && (**pp == '\'' || **pp == '"'))
+  यदि (*pp < end && (**pp == '\'' || **pp == '"'))
   {
     quote = **pp;
     (*pp)++;
   }
 
-  const char *p = *pp;
-  while (*pp < end && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
+  ध्रुव वर्ण *p = *pp;
+  यावत् (*pp < end && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
     (*pp)++;
 
-  if (p == *pp || *pp - p > 4)
-    return false;
+  यदि (p == *pp || *pp - p > 4)
+    प्रत्यागम असत्य;
 
   *tag = hb_tag_from_string (p, *pp - p);
 
-  if (quote)
+  यदि (quote)
   {
     /* CSS expects exactly four bytes.  And we only allow quotations for
      * CSS compatibility.  So, enforce the length. */
-     if (*pp - p != 4)
-       return false;
-    if (*pp == end || **pp != quote)
-      return false;
+     यदि (*pp - p != 4)
+       प्रत्यागम असत्य;
+    यदि (*pp == end || **pp != quote)
+      प्रत्यागम असत्य;
     (*pp)++;
   }
 
-  return true;
+  प्रत्यागम सत्य;
 }
 
-static bool
-parse_feature_indices (const char **pp, const char *end, hb_feature_t *feature)
+स्थिर तार्किक
+parse_feature_indices (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, hb_feature_t *feature)
 {
   parse_space (pp, end);
 
-  bool has_start;
+  तार्किक has_start;
 
   feature->start = HB_FEATURE_GLOBAL_START;
   feature->end = HB_FEATURE_GLOBAL_END;
 
-  if (!parse_char (pp, end, '['))
-    return true;
+  यदि (!parse_char (pp, end, '['))
+    प्रत्यागम सत्य;
 
   has_start = parse_uint (pp, end, &feature->start);
 
-  if (parse_char (pp, end, ':') || parse_char (pp, end, ';')) {
+  यदि (parse_char (pp, end, ':') || parse_char (pp, end, ';')) {
     parse_uint (pp, end, &feature->end);
-  } else {
-    if (has_start)
+  } अन्यथा {
+    यदि (has_start)
       feature->end = feature->start + 1;
   }
 
-  return parse_char (pp, end, ']');
+  प्रत्यागम parse_char (pp, end, ']');
 }
 
-static bool
-parse_feature_value_postfix (const char **pp, const char *end, hb_feature_t *feature)
+स्थिर तार्किक
+parse_feature_मूल्य_postfix (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, hb_feature_t *feature)
 {
-  bool had_equal = parse_char (pp, end, '=');
-  bool had_value = parse_uint32 (pp, end, &feature->value) ||
+  तार्किक had_equal = parse_char (pp, end, '=');
+  तार्किक had_मूल्य = parse_uint32 (pp, end, &feature->value) ||
 		   parse_bool (pp, end, &feature->value);
   /* CSS doesn't use equal-sign between tag and value.
    * If there was an equal-sign, then there *must* be a value.
    * A value without an equal-sign is ok, but not required. */
-  return !had_equal || had_value;
+  प्रत्यागम !had_equal || had_मूल्य;
 }
 
-static bool
-parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
+स्थिर तार्किक
+parse_one_feature (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, hb_feature_t *feature)
 {
-  return parse_feature_value_prefix (pp, end, feature) &&
+  प्रत्यागम parse_feature_मूल्य_prefix (pp, end, feature) &&
 	 parse_tag (pp, end, &feature->tag) &&
 	 parse_feature_indices (pp, end, feature) &&
-	 parse_feature_value_postfix (pp, end, feature) &&
+	 parse_feature_मूल्य_postfix (pp, end, feature) &&
 	 parse_space (pp, end) &&
 	 *pp == end;
 }
@@ -901,24 +901,24 @@ parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
  * Since: 0.9.5
  **/
 hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len,
 			hb_feature_t *feature)
 {
   hb_feature_t feat;
 
-  if (len < 0)
+  यदि (len < 0)
     len = strlen (str);
 
-  if (likely (parse_one_feature (&str, str + len, &feat)))
+  यदि (likely (parse_one_feature (&str, str + len, &feat)))
   {
-    if (feature)
+    यदि (feature)
       *feature = feat;
-    return true;
+    प्रत्यागम सत्य;
   }
 
-  if (feature)
-    hb_memset (feature, 0, sizeof (*feature));
-  return false;
+  यदि (feature)
+    hb_memset (feature, 0, परिमाण (*feature));
+  प्रत्यागम असत्य;
 }
 
 /**
@@ -936,38 +936,38 @@ hb_feature_from_string (const char *str, int len,
  *
  * Since: 0.9.5
  **/
-void
+शून्य
 hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size)
+		      वर्ण *buf, unsigned पूर्णाङ्क size)
 {
-  if (unlikely (!size)) return;
+  यदि (unlikely (!size)) प्रत्यागम;
 
-  char s[128];
-  unsigned int len = 0;
-  if (feature->value == 0)
+  वर्ण s[128];
+  unsigned पूर्णाङ्क len = 0;
+  यदि (feature->value == 0)
     s[len++] = '-';
   hb_tag_to_string (feature->tag, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  यावत् (len && s[len - 1] == ' ')
     len--;
-  if (feature->start != HB_FEATURE_GLOBAL_START || feature->end != HB_FEATURE_GLOBAL_END)
+  यदि (feature->start != HB_FEATURE_GLOBAL_START || feature->end != HB_FEATURE_GLOBAL_END)
   {
     s[len++] = '[';
-    if (feature->start)
+    यदि (feature->start)
       len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->start));
-    if (feature->end != feature->start + 1) {
+    यदि (feature->end != feature->start + 1) {
       s[len++] = ':';
-      if (feature->end != HB_FEATURE_GLOBAL_END)
+      यदि (feature->end != HB_FEATURE_GLOBAL_END)
 	len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->end));
     }
     s[len++] = ']';
   }
-  if (feature->value > 1)
+  यदि (feature->value > 1)
   {
     s[len++] = '=';
     len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%" PRIu32, feature->value));
   }
-  assert (len < ARRAY_LENGTH (s));
+  प्रतिज्ञा (len < ARRAY_LENGTH (s));
   len = hb_min (len, size - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
@@ -975,22 +975,22 @@ hb_feature_to_string (hb_feature_t *feature,
 
 /* hb_variation_t */
 
-static bool
-parse_variation_value (const char **pp, const char *end, hb_variation_t *variation)
+स्थिर तार्किक
+parse_variation_मूल्य (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, hb_variation_t *variation)
 {
   parse_char (pp, end, '='); /* Optional. */
-  double v;
-  if (unlikely (!hb_parse_double (pp, end, &v))) return false;
+  द्विगुण v;
+  यदि (unlikely (!hb_parse_double (pp, end, &v))) प्रत्यागम असत्य;
 
   variation->value = v;
-  return true;
+  प्रत्यागम सत्य;
 }
 
-static bool
-parse_one_variation (const char **pp, const char *end, hb_variation_t *variation)
+स्थिर तार्किक
+parse_one_variation (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, hb_variation_t *variation)
 {
-  return parse_tag (pp, end, &variation->tag) &&
-	 parse_variation_value (pp, end, variation) &&
+  प्रत्यागम parse_tag (pp, end, &variation->tag) &&
+	 parse_variation_मूल्य (pp, end, variation) &&
 	 parse_space (pp, end) &&
 	 *pp == end;
 }
@@ -1016,63 +1016,63 @@ parse_one_variation (const char **pp, const char *end, hb_variation_t *variation
  * Since: 1.4.2
  */
 hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len,
 			  hb_variation_t *variation)
 {
   hb_variation_t var;
 
-  if (len < 0)
+  यदि (len < 0)
     len = strlen (str);
 
-  if (likely (parse_one_variation (&str, str + len, &var)))
+  यदि (likely (parse_one_variation (&str, str + len, &var)))
   {
-    if (variation)
+    यदि (variation)
       *variation = var;
-    return true;
+    प्रत्यागम सत्य;
   }
 
-  if (variation)
-    hb_memset (variation, 0, sizeof (*variation));
-  return false;
+  यदि (variation)
+    hb_memset (variation, 0, परिमाण (*variation));
+  प्रत्यागम असत्य;
 }
 
 #ifndef HB_NO_SETLOCALE
 
-static inline void free_static_C_locale ();
+स्थिर अन्तःस्थ शून्य free_static_C_locale ();
 
-static struct hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_locale_t>,
+स्थिर संरचना hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_locale_t>,
 							   hb_C_locale_lazy_loader_t>
 {
-  static hb_locale_t create ()
+  स्थिर hb_locale_t create ()
   {
-    hb_locale_t l = newlocale (LC_ALL_MASK, "C", NULL);
-    if (!l)
-      return l;
+    hb_locale_t l = newlocale (LC_ALL_MASK, "C", रिक्त);
+    यदि (!l)
+      प्रत्यागम l;
 
     hb_atexit (free_static_C_locale);
 
-    return l;
+    प्रत्यागम l;
   }
-  static void destroy (hb_locale_t l)
+  स्थिर शून्य destroy (hb_locale_t l)
   {
     freelocale (l);
   }
-  static hb_locale_t get_null ()
+  स्थिर hb_locale_t get_null ()
   {
-    return (hb_locale_t) 0;
+    प्रत्यागम (hb_locale_t) 0;
   }
 } static_C_locale;
 
-static inline
-void free_static_C_locale ()
+स्थिर अन्तःस्थ
+शून्य free_static_C_locale ()
 {
   static_C_locale.free_instance ();
 }
 
-static hb_locale_t
+स्थिर hb_locale_t
 get_C_locale ()
 {
-  return static_C_locale.get_unconst ();
+  प्रत्यागम static_C_locale.get_unconst ();
 }
 
 #endif
@@ -1091,26 +1091,26 @@ get_C_locale ()
  *
  * Since: 1.4.2
  */
-void
+शून्य
 hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size)
+			वर्ण *buf, unsigned पूर्णाङ्क size)
 {
-  if (unlikely (!size)) return;
+  यदि (unlikely (!size)) प्रत्यागम;
 
-  char s[128];
-  unsigned int len = 0;
+  वर्ण s[128];
+  unsigned पूर्णाङ्क len = 0;
   hb_tag_to_string (variation->tag, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  यावत् (len && s[len - 1] == ' ')
     len--;
   s[len++] = '=';
 
   hb_locale_t oldlocale HB_UNUSED;
   oldlocale = hb_uselocale (get_C_locale ());
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) variation->value));
-  (void) hb_uselocale (oldlocale);
+  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (द्विगुण) variation->value));
+  (शून्य) hb_uselocale (oldlocale);
 
-  assert (len < ARRAY_LENGTH (s));
+  प्रतिज्ञा (len < ARRAY_LENGTH (s));
   len = hb_min (len, size - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
@@ -1129,7 +1129,7 @@ hb_variation_to_string (hb_variation_t *variation,
 uint8_t
 (hb_color_get_alpha) (hb_color_t color)
 {
-  return hb_color_get_alpha (color);
+  प्रत्यागम hb_color_get_alpha (color);
 }
 
 /**
@@ -1145,7 +1145,7 @@ uint8_t
 uint8_t
 (hb_color_get_red) (hb_color_t color)
 {
-  return hb_color_get_red (color);
+  प्रत्यागम hb_color_get_red (color);
 }
 
 /**
@@ -1161,7 +1161,7 @@ uint8_t
 uint8_t
 (hb_color_get_green) (hb_color_t color)
 {
-  return hb_color_get_green (color);
+  प्रत्यागम hb_color_get_green (color);
 }
 
 /**
@@ -1177,7 +1177,7 @@ uint8_t
 uint8_t
 (hb_color_get_blue) (hb_color_t color)
 {
-  return hb_color_get_blue (color);
+  प्रत्यागम hb_color_get_blue (color);
 }
 
 /**
@@ -1191,7 +1191,7 @@ uint8_t
  *
  * Since: 11.0.0
  **/
-void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
+शून्य* hb_malloc(size_t size) { प्रत्यागम hb_malloc_impl (size); }
 
 /**
  * hb_calloc:
@@ -1205,7 +1205,7 @@ void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
  *
  * Since: 11.0.0
  **/
-void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size); }
+शून्य* hb_calloc(size_t nmemb, size_t size) { प्रत्यागम hb_calloc_impl (nmemb, size); }
 
 /**
  * hb_realloc:
@@ -1219,7 +1219,7 @@ void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size)
  *
  * Since: 11.0.0
  **/
-void* hb_realloc(void *ptr, size_t size) { return hb_realloc_impl (ptr, size); }
+शून्य* hb_realloc(शून्य *ptr, size_t size) { प्रत्यागम hb_realloc_impl (ptr, size); }
 
 /**
  * hb_free:
@@ -1230,7 +1230,7 @@ void* hb_realloc(void *ptr, size_t size) { return hb_realloc_impl (ptr, size); }
  *
  * Since: 11.0.0
  **/
-void  hb_free(void *ptr) { hb_free_impl (ptr); }
+शून्य  hb_free(शून्य *ptr) { hb_free_impl (ptr); }
 
 
 /* If there is no visibility control, then hb-static.cc will NOT
@@ -1238,6 +1238,6 @@ void  hb_free(void *ptr) { hb_free_impl (ptr); }
  * only, so only libharfbuzz.so defines them, not other libs. */
 #ifdef HB_NO_VISIBILITY
 #undef HB_NO_VISIBILITY
-#include "hb-static.cc"
+#अन्तर्भाव "hb-static.cc"
 #define HB_NO_VISIBILITY 1
 #endif
