@@ -24,33 +24,33 @@ Input files:
 * https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
 """
 
-import collections
-import html
-from html.parser import HTMLParser
-import itertools
-import os
-import re
-import sys
-import unicodedata
+আনযন collections
+আনযন html
+তঃ html.parser আনযন HTMLParser
+আনযন itertools
+আনযন os
+আনযন re
+আনযন sys
+আনযন unicodedata
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
+যদি len (sys.argv) > 1 আৰু sys.argv[1] == '--rust':
 	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+	output_rust = সঁচা
+অন্যথা:
+	output_rust = মিছা
 
-if len (sys.argv) != 3:
+যদি len (sys.argv) != 3:
 	sys.exit (__doc__)
 
 def expect (condition, message=None):
-	if not condition:
-		if message is None:
-			raise AssertionError
-		raise AssertionError (message)
+	যদি নহয় condition:
+		যদি message is None:
+			উত্থাপয AssertionError
+		উত্থাপয AssertionError (message)
 
-def write (s):
+def লিখ (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
+	sys.stdout.buffer.লিখ (s.encode ('utf-8'))
 
 _ALLOWED_COMMENT_PUNCT = set (" -—–.,;:’'ʼ()[]/!=>_+")
 
@@ -59,52 +59,52 @@ def sanitize_comment (s):
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string for comment, got %s" % type (s).__name__)
+	যদি নহয় isinstance (s, str):
+		উত্থাপয TypeError ("Expected string for comment, got %s" % type (s).__name__)
 	s = s.strip ()
-	if not s:
-		return ''
-	for ch in s:
+	যদি নহয় s:
+		ঘূৰাই ''
+	বাবে ch অন্তঃ s:
 		cat = unicodedata.category (ch)
-		if not (cat.startswith (('L', 'M', 'N', 'Z')) or ch in _ALLOWED_COMMENT_PUNCT):
-			raise ValueError ("Disallowed character %r (U+%04X) in comment: %r" % (ch, ord (ch), s))
-	return s
+		যদি নহয় (cat.startswith (('L', 'M', 'N', 'Z')) বা ch অন্তঃ _ALLOWED_COMMENT_PUNCT):
+			উত্থাপয মান_Error ("Disallowed character %r (U+%04X) in comment: %r" % (ch, ord (ch), s))
+	ঘূৰাই s
 
 def sanitize_header (s):
 	"""Validate that a header string contains only safe characters and return the stripped string.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string for header, got %s" % type (s).__name__)
+	যদি নহয় isinstance (s, str):
+		উত্থাপয TypeError ("Expected string for header, got %s" % type (s).__name__)
 	s = s.strip ()
-	if not re.fullmatch (r'[a-zA-Z0-9 <>=/:\-_."]{1,200}', s):
-		raise ValueError ("Invalid header line %r: contains disallowed characters" % s)
-	return s
+	যদি নহয় re.fullmatch (r'[a-zA-Z0-9 <>=/:\-_."]{1,200}', s):
+		উত্থাপয মান_Error ("Invalid header line %r: contains disallowed characters" % s)
+	ঘূৰাই s
 
 def sanitize_bcp47_tag (s):
 	"""Validate that a BCP-47 tag or subtag contains only alphanumeric characters and hyphens.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string, got %s" % type (s).__name__)
-	if not re.fullmatch (r'[a-zA-Z0-9-]+', s):
-		raise ValueError ("Invalid BCP-47 tag or subtag literal %r: must contain only alphanumeric characters and hyphens" % s)
-	return s
+	যদি নহয় isinstance (s, str):
+		উত্থাপয TypeError ("Expected string, got %s" % type (s).__name__)
+	যদি নহয় re.fullmatch (r'[a-zA-Z0-9-]+', s):
+		উত্থাপয মান_Error ("Invalid BCP-47 tag or subtag literal %r: must contain only alphanumeric characters and hyphens" % s)
+	ঘূৰাই s
 
 def sanitize_tag (tag):
 	"""Validate that an OpenType tag contains only 1-4 alphanumeric characters or spaces.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (tag, str):
-		raise TypeError ("Expected string for tag, got %s" % type (tag).__name__)
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
-		return ''
-	if not re.fullmatch (r'[a-zA-Z0-9 ]{1,4}', tag):
-		raise ValueError ("Invalid tag %r: must contain only 1-4 alphanumeric characters or spaces" % tag)
-	return tag
+	যদি নহয় isinstance (tag, str):
+		উত্থাপয TypeError ("Expected string for tag, got %s" % type (tag).__name__)
+	যদি tag == DEFAULT_LANGUAGE_SYSTEM:
+		ঘূৰাই ''
+	যদি নহয় re.fullmatch (r'[a-zA-Z0-9 ]{1,4}', tag):
+		উত্থাপয মান_Error ("Invalid tag %r: must contain only 1-4 alphanumeric characters or spaces" % tag)
+	ঘূৰাই tag
 
 DEFAULT_LANGUAGE_SYSTEM = ''
 
@@ -297,7 +297,7 @@ ISO_639_3_TO_1 = {
 	'zul': 'zu',
 }
 
-class LanguageTag (object):
+শ্ৰেণী LanguageTag (object):
 	"""A BCP 47 language tag.
 
 	Attributes:
@@ -315,32 +315,32 @@ class LanguageTag (object):
 
 	"""
 	def __init__ (self, tag):
-		global bcp_47
+		ৱৈশ্ৱিক bcp_47
 		self.subtags = tag.lower ().split ('-')
-		self.grandfathered = tag.lower () in bcp_47.grandfathered
-		if self.grandfathered:
+		self.grandfathered = tag.lower () অন্তঃ bcp_47.grandfathered
+		যদি self.grandfathered:
 			self.language = tag.lower ()
 			self.script = ''
 			self.region = ''
 			self.variant = ''
-		else:
+		অন্যথা:
 			self.language = self.subtags[0]
-			self.script = self._find_first (lambda s: len (s) == 4 and s[0] > '9', self.subtags)
-			self.region = self._find_first (lambda s: len (s) == 2 and s[0] > '9' or len (s) == 3 and s[0] <= '9', self.subtags[1:])
-			self.variant = self._find_first (lambda s: len (s) > 4 or len (s) == 4 and s[0] <= '9', self.subtags)
+			self.script = self._find_first (অনামন্ s: len (s) == 4 আৰু s[0] > '9', self.subtags)
+			self.region = self._find_first (অনামন্ s: len (s) == 2 আৰু s[0] > '9' বা len (s) == 3 আৰু s[0] <= '9', self.subtags[1:])
+			self.variant = self._find_first (অনামন্ s: len (s) > 4 বা len (s) == 4 আৰু s[0] <= '9', self.subtags)
 
 	def __str__(self):
-		return '-'.join(self.subtags)
+		ঘূৰাই '-'.join(self.subtags)
 
 	def __repr__ (self):
-		return 'LanguageTag(%r)' % str(self)
+		ঘূৰাই 'LanguageTag(%r)' % str(self)
 
 	@staticmethod
 	def _find_first (function, sequence):
-		try:
-			return next (iter (filter (function, sequence)))
-		except StopIteration:
-			return None
+		যত্ন:
+			ঘূৰাই next (iter (filter (function, sequence)))
+		অপৱাদ StopIteration:
+			ঘূৰাই None
 
 	def is_complex (self):
 		"""Return whether this tag is too complex to represent as a
@@ -352,10 +352,10 @@ class LanguageTag (object):
 		Returns:
 			Whether this tag is complex.
 		"""
-		return not (len (self.subtags) == 1
-			or self.grandfathered
-			and len (self.subtags[1]) != 3
-			and ot.from_bcp_47[self.subtags[0]] == ot.from_bcp_47[self.language])
+		ঘূৰাই নহয় (len (self.subtags) == 1
+			বা self.grandfathered
+			আৰু len (self.subtags[1]) != 3
+			আৰু ot.from_bcp_47[self.subtags[0]] == ot.from_bcp_47[self.language])
 
 	def get_group (self):
 		"""Return the group into which this tag should be categorized in
@@ -368,12 +368,12 @@ class LanguageTag (object):
 		Returns:
 			This tag's group.
 		"""
-		return ('und'
-			if (self.language == 'und'
-				or self.variant in bcp_47.prefixes and len (bcp_47.prefixes[self.variant]) == 1)
-			else self.language[0])
+		ঘূৰাই ('und'
+			যদি (self.language == 'und'
+				বা self.variant অন্তঃ bcp_47.prefixes আৰু len (bcp_47.prefixes[self.variant]) == 1)
+			অন্যথা self.language[0])
 
-class OpenTypeRegistryParser (HTMLParser):
+শ্ৰেণী OpenTypeRegistryParser (HTMLParser):
 	"""A parser for the OpenType language system tag registry.
 
 	Attributes:
@@ -400,60 +400,60 @@ class OpenTypeRegistryParser (HTMLParser):
 		HTMLParser.__init__ (self)
 		self.header = ''
 		self.names = {}
-		self.ranks = collections.defaultdict (int)
+		self.ranks = collections.defaultdict (পূর্ণাঙ্ক)
 		self.to_bcp_47 = collections.defaultdict (set)
 		self.from_bcp_47 = collections.defaultdict (set)
 		self.from_bcp_47_uninherited = None
 		# Whether the parser is in a <td> element
-		self._td = False
+		self._td = মিছা
 		# Whether the parser ignores the rest of the current <td> element
-		self._disengaged = False
+		self._disengaged = মিছা
 		# The text of the <td> elements of the current <tr> element.
 		self._current_tr = []
 
 	def handle_starttag (self, tag, attrs):
-		if tag == 'a':
-			if self._current_tr and not self._disengaged:
+		যদি tag == 'a':
+			যদি self._current_tr আৰু নহয় self._disengaged:
 				self._current_tr[-1] = ''
-				self._disengaged = True
-		elif tag == 'br':
-			self._disengaged = True
-		elif tag == 'meta':
-			for attr, value in attrs:
-				if attr == 'name' and value == 'updated_at':
+				self._disengaged = সঁচা
+		নোচেদ্যদি tag == 'br':
+			self._disengaged = সঁচা
+		নোচেদ্যদি tag == 'meta':
+			বাবে attr, মান_2 অন্তঃ attrs:
+				যদি attr == 'name' আৰু মান_2 == 'updated_at':
 					self.header = self.get_starttag_text ()
-					break
-		elif tag == 'td':
-			self._td = True
+					ভঙ্গ
+		নোচেদ্যদি tag == 'td':
+			self._td = সঁচা
 			self._current_tr.append ('')
-		elif tag == 'tr':
-			self._disengaged = False
+		নোচেদ্যদি tag == 'tr':
+			self._disengaged = মিছা
 			self._current_tr = []
 
 	def handle_endtag (self, tag):
-		if tag == 'td':
-			self._td = False
-			self._disengaged = False
-		elif tag == 'tr' and self._current_tr:
+		যদি tag == 'td':
+			self._td = মিছা
+			self._disengaged = মিছা
+		নোচেদ্যদি tag == 'tr' আৰু self._current_tr:
 			expect (2 <= len (self._current_tr) <= 3)
 			name = self._current_tr[0].strip ()
 			tag = self._current_tr[1].strip ("\t\n\v\f\r '")
 			rank = 0
-			if len (tag) > 4:
+			যদি len (tag) > 4:
 				expect (tag.endswith (' (deprecated)'), 'ill-formed OpenType tag: %s' % tag)
 				name += ' (deprecated)'
 				tag = tag.split (' ')[0]
 				rank = 1
 			self.names[tag] = re.sub (' languages$', '', name)
-			if not self._current_tr[2]:
-				return
+			যদি নহয় self._current_tr[2]:
+				ঘূৰাই
 			iso_codes = self._current_tr[2].strip ()
-			self.to_bcp_47[tag].update (ISO_639_3_TO_1.get (code, code) for code in iso_codes.replace (' ', '').split (','))
+			self.to_bcp_47[tag].update (ISO_639_3_TO_1.get (code, code) বাবে code অন্তঃ iso_codes.replace (' ', '').split (','))
 			rank += 2 * len (self.to_bcp_47[tag])
 			self.ranks[tag] = rank
 
 	def handle_data (self, data):
-		if self._td and not self._disengaged:
+		যদি self._td আৰু নহয় self._disengaged:
 			self._current_tr[-1] += data
 
 	def handle_charref (self, name):
@@ -468,11 +468,11 @@ class OpenTypeRegistryParser (HTMLParser):
 		Args:
 			filename (str): The file name of the registry.
 		"""
-		with open (filename, encoding='utf-8') as f:
-			self.feed (f.read ())
+		with open (filename, encoding='utf-8') ইৱ f:
+			self.feed (f.পঠ ())
 		expect (self.header)
-		for tag, iso_codes in self.to_bcp_47.items ():
-			for iso_code in iso_codes:
+		বাবে tag, iso_codes অন্তঃ self.to_bcp_47.বস্তুসমূহ ():
+			বাবে iso_code অন্তঃ iso_codes:
 				self.from_bcp_47[iso_code].add (tag)
 
 	def add_language (self, bcp_47_tag, ot_tag):
@@ -486,26 +486,26 @@ class OpenTypeRegistryParser (HTMLParser):
 				remainder of the tag appended.
 			ot_tag (str): An OpenType language system tag.
 		"""
-		global bcp_47
+		ৱৈশ্ৱিক bcp_47
 		self.to_bcp_47[ot_tag].add (bcp_47_tag)
 		self.from_bcp_47[bcp_47_tag].add (ot_tag)
-		if bcp_47_tag.lower () not in bcp_47.grandfathered:
-			try:
+		যদি bcp_47_tag.lower () নহয় অন্তঃ bcp_47.grandfathered:
+			যত্ন:
 				[macrolanguage, suffix] = bcp_47_tag.split ('-', 1)
-				if macrolanguage in bcp_47.macrolanguages:
+				যদি macrolanguage অন্তঃ bcp_47.macrolanguages:
 					s = set ()
-					for language in bcp_47.macrolanguages[macrolanguage]:
-						if language.lower () not in bcp_47.grandfathered:
+					বাবে language অন্তঃ bcp_47.macrolanguages[macrolanguage]:
+						যদি language.lower () নহয় অন্তঃ bcp_47.grandfathered:
 							s.add ('%s-%s' % (language, suffix))
 					bcp_47.macrolanguages['%s-%s' % (macrolanguage, suffix)] = s
-			except ValueError:
+			অপৱাদ মান_Error:
 				pass
 
 	@staticmethod
 	def _remove_language (tag_1, dict_1, dict_2):
-		for tag_2 in dict_1.pop (tag_1):
+		বাবে tag_2 অন্তঃ dict_1.বেৰ_কৰো (tag_1):
 			dict_2[tag_2].remove (tag_1)
-			if not dict_2[tag_2]:
+			যদি নহয় dict_2[tag_2]:
 				del dict_2[tag_2]
 
 	def remove_language_ot (self, ot_tag):
@@ -545,55 +545,55 @@ class OpenTypeRegistryParser (HTMLParser):
 		some of its individual languages do, their mappings are copied
 		to the macrolanguage.
 		"""
-		global bcp_47
+		ৱৈশ্ৱিক bcp_47
 		first_time = self.from_bcp_47_uninherited is None
-		if first_time:
+		যদি first_time:
 			self.from_bcp_47_uninherited = dict (self.from_bcp_47)
-		for macrolanguage, languages in dict (bcp_47.macrolanguages).items ():
+		বাবে macrolanguage, languages অন্তঃ dict (bcp_47.macrolanguages).বস্তুসমূহ ():
 			ot_macrolanguages = {
-				ot_macrolanguage for ot_macrolanguage in self.from_bcp_47_uninherited.get (macrolanguage, set ())
+				ot_macrolanguage বাবে ot_macrolanguage অন্তঃ self.from_bcp_47_uninherited.get (macrolanguage, set ())
 			}
 			blocked_ot_macrolanguages = set ()
-			if 'retired code' not in bcp_47.scopes.get (macrolanguage, ''):
-				for ot_macrolanguage in ot_macrolanguages:
+			যদি 'retired code' নহয় অন্তঃ bcp_47.scopes.get (macrolanguage, ''):
+				বাবে ot_macrolanguage অন্তঃ ot_macrolanguages:
 					round_trip_macrolanguages = {
-						l for l in self.to_bcp_47[ot_macrolanguage]
-						if 'retired code' not in bcp_47.scopes.get (l, '')
+						l বাবে l অন্তঃ self.to_bcp_47[ot_macrolanguage]
+						যদি 'retired code' নহয় অন্তঃ bcp_47.scopes.get (l, '')
 					}
 					round_trip_languages = {
-						l for l in languages
-						if 'retired code' not in bcp_47.scopes.get (l, '')
+						l বাবে l অন্তঃ languages
+						যদি 'retired code' নহয় অন্তঃ bcp_47.scopes.get (l, '')
 					}
 					intersection = round_trip_macrolanguages & round_trip_languages
-					if intersection and intersection != round_trip_languages:
+					যদি intersection আৰু intersection != round_trip_languages:
 						blocked_ot_macrolanguages.add (ot_macrolanguage)
-			if ot_macrolanguages:
-				for ot_macrolanguage in ot_macrolanguages:
-					if ot_macrolanguage not in blocked_ot_macrolanguages:
-						for language in languages:
+			যদি ot_macrolanguages:
+				বাবে ot_macrolanguage অন্তঃ ot_macrolanguages:
+					যদি ot_macrolanguage নহয় অন্তঃ blocked_ot_macrolanguages:
+						বাবে language অন্তঃ languages:
 							self.add_language (language, ot_macrolanguage)
-							if not blocked_ot_macrolanguages:
+							যদি নহয় blocked_ot_macrolanguages:
 								self.ranks[ot_macrolanguage] += 1
-			elif first_time:
-				for language in languages:
-					if language in self.from_bcp_47_uninherited:
+			নোচেদ্যদি first_time:
+				বাবে language অন্তঃ languages:
+					যদি language অন্তঃ self.from_bcp_47_uninherited:
 						ot_macrolanguages |= self.from_bcp_47_uninherited[language]
-					else:
+					অন্যথা:
 						ot_macrolanguages.clear ()
-					if not ot_macrolanguages:
-						break
-				for ot_macrolanguage in ot_macrolanguages:
+					যদি নহয় ot_macrolanguages:
+						ভঙ্গ
+				বাবে ot_macrolanguage অন্তঃ ot_macrolanguages:
 					self.add_language (macrolanguage, ot_macrolanguage)
 
 	def sort_languages (self):
 		"""Sort the values of ``from_bcp_47`` in ascending rank order."""
-		for language, tags in self.from_bcp_47.items ():
+		বাবে language, tags অন্তঃ self.from_bcp_47.বস্তুসমূহ ():
 			self.from_bcp_47[language] = sorted (tags,
-					key=lambda t: (self.ranks[t] + rank_delta (language, t), t))
+					চাবি_2=অনামন্ t: (self.ranks[t] + rank_delta (language, t), t))
 
 ot = OpenTypeRegistryParser ()
 
-class BCP47Parser (object):
+শ্ৰেণী BCP47Parser (object):
 	"""A parser for the BCP 47 subtag registry.
 
 	Attributes:
@@ -628,94 +628,94 @@ class BCP47Parser (object):
 		Args:
 			filename (str): The file name of the registry.
 		"""
-		with open (filename, encoding='utf-8') as f:
+		with open (filename, encoding='utf-8') ইৱ f:
 			subtag_type = None
 			subtag = None
-			deprecated = False
-			has_preferred_value = False
-			line_buffer = ''
-			for line in itertools.chain (f, ['']):
-				line = line.rstrip ()
-				if line.startswith (' '):
-					line_buffer += line[1:]
-					continue
-				line, line_buffer = line_buffer, line
-				if line.startswith ('Type: '):
-					subtag_type = line.split (' ')[1]
-					deprecated = False
-					has_preferred_value = False
-				elif line.startswith ('Subtag: ') or line.startswith ('Tag: '):
-					subtag = line.split (' ')[1]
-					if subtag_type == 'grandfathered':
+			deprecated = মিছা
+			has_preferred_মান = মিছা
+			সাৰি_buffer = ''
+			বাবে সাৰি অন্তঃ itertools.chain (f, ['']):
+				সাৰি = সাৰি.rstrip ()
+				যদি সাৰি.startswith (' '):
+					সাৰি_buffer += সাৰি[1:]
+					অনুৱর্ত
+				সাৰি, সাৰি_buffer = সাৰি_buffer, সাৰি
+				যদি সাৰি.startswith ('Type: '):
+					subtag_type = সাৰি.split (' ')[1]
+					deprecated = মিছা
+					has_preferred_মান = মিছা
+				নোচেদ্যদি সাৰি.startswith ('Subtag: ') বা সাৰি.startswith ('Tag: '):
+					subtag = সাৰি.split (' ')[1]
+					যদি subtag_type == 'grandfathered':
 						self.grandfathered.add (subtag.lower ())
-				elif line.startswith ('Description: '):
-					description = line.split (' ', 1)[1].replace (' (individual language)', '')
+				নোচেদ্যদি সাৰি.startswith ('Description: '):
+					description = সাৰি.split (' ', 1)[1].replace (' (individual language)', '')
 					description = re.sub (r' (\(family\)|\((individual |macro)language\)|languages)$', '',
 							description)
-					if subtag in self.names:
+					যদি subtag অন্তঃ self.names:
 						self.names[subtag] += '\n' + description
-					else:
+					অন্যথা:
 						self.names[subtag] = description
-				elif subtag_type == 'language' or subtag_type == 'grandfathered':
-					if line.startswith ('Scope: '):
-						scope = line.split (' ')[1]
-						if scope == 'macrolanguage':
+				নোচেদ্যদি subtag_type == 'language' বা subtag_type == 'grandfathered':
+					যদি সাৰি.startswith ('Scope: '):
+						scope = সাৰি.split (' ')[1]
+						যদি scope == 'macrolanguage':
 							scope = ' [macrolanguage]'
-						elif scope == 'collection':
+						নোচেদ্যদি scope == 'collection':
 							scope = ' [collection]'
-						else:
-							continue
+						অন্যথা:
+							অনুৱর্ত
 						self.scopes[subtag] = scope
-					elif line.startswith ('Deprecated: '):
+					নোচেদ্যদি সাৰি.startswith ('Deprecated: '):
 						self.scopes[subtag] = ' (retired code)' + self.scopes.get (subtag, '')
-						deprecated = True
-					elif deprecated and line.startswith ('Comments: see '):
+						deprecated = সঁচা
+					নোচেদ্যদি deprecated আৰু সাৰি.startswith ('Comments: see '):
 						# If a subtag is split into multiple replacement subtags,
 						# it essentially represents a macrolanguage.
-						for language in line.replace (',', '').split (' ')[2:]:
+						বাবে language অন্তঃ সাৰি.replace (',', '').split (' ')[2:]:
 							self._add_macrolanguage (subtag, language)
-					elif line.startswith ('Preferred-Value: '):
+					নোচেদ্যদি সাৰি.startswith ('Preferred-Value: '):
 						# If a subtag is deprecated in favor of a single replacement subtag,
 						# it is either a dialect or synonym of the preferred subtag. Either
 						# way, it is close enough to the truth to consider the replacement
 						# the macrolanguage of the deprecated language.
-						has_preferred_value = True
-						macrolanguage = line.split (' ')[1]
+						has_preferred_মান = সঁচা
+						macrolanguage = সাৰি.split (' ')[1]
 						self._add_macrolanguage (macrolanguage, subtag)
-					elif not has_preferred_value and line.startswith ('Macrolanguage: '):
-						self._add_macrolanguage (line.split (' ')[1], subtag)
-				elif subtag_type == 'variant':
-					if line.startswith ('Deprecated: '):
+					নোচেদ্যদি নহয় has_preferred_মান আৰু সাৰি.startswith ('Macrolanguage: '):
+						self._add_macrolanguage (সাৰি.split (' ')[1], subtag)
+				নোচেদ্যদি subtag_type == 'variant':
+					যদি সাৰি.startswith ('Deprecated: '):
 						self.scopes[subtag] = ' (retired code)' + self.scopes.get (subtag, '')
-					elif line.startswith ('Prefix: '):
-						self.prefixes[subtag].add (line.split (' ')[1])
-				elif line.startswith ('File-Date: '):
-					self.header = line
+					নোচেদ্যদি সাৰি.startswith ('Prefix: '):
+						self.prefixes[subtag].add (সাৰি.split (' ')[1])
+				নোচেদ্যদি সাৰি.startswith ('File-Date: '):
+					self.header = সাৰি
 		expect (self.header)
 
 	def _add_macrolanguage (self, macrolanguage, language):
-		global ot
-		if language not in ot.from_bcp_47:
-			for l in self.macrolanguages.get (language, set ()):
+		ৱৈশ্ৱিক ot
+		যদি language নহয় অন্তঃ ot.from_bcp_47:
+			বাবে l অন্তঃ self.macrolanguages.get (language, set ()):
 				self._add_macrolanguage (macrolanguage, l)
-		if macrolanguage not in ot.from_bcp_47:
-			for ls in list (self.macrolanguages.values ()):
-				if macrolanguage in ls:
+		যদি macrolanguage নহয় অন্তঃ ot.from_bcp_47:
+			বাবে ls অন্তঃ list (self.macrolanguages.মানসমূহ ()):
+				যদি macrolanguage অন্তঃ ls:
 					ls.add (language)
-					return
+					ঘূৰাই
 		self.macrolanguages[macrolanguage].add (language)
 
 	def remove_extra_macrolanguages (self):
 		"""Make every language have at most one macrolanguage."""
 		inverted = collections.defaultdict (list)
-		for macrolanguage, languages in self.macrolanguages.items ():
-			for language in languages:
+		বাবে macrolanguage, languages অন্তঃ self.macrolanguages.বস্তুসমূহ ():
+			বাবে language অন্তঃ languages:
 				inverted[language].append (macrolanguage)
-		for language, macrolanguages in inverted.items ():
-			if len (macrolanguages) > 1:
-				macrolanguages.sort (key=lambda ml: len (self.macrolanguages[ml]))
-				biggest_macrolanguage = macrolanguages.pop ()
-				for macrolanguage in macrolanguages:
+		বাবে language, macrolanguages অন্তঃ inverted.বস্তুসমূহ ():
+			যদি len (macrolanguages) > 1:
+				macrolanguages.sort (চাবি_2=অনামন্ ml: len (self.macrolanguages[ml]))
+				biggest_macrolanguage = macrolanguages.বেৰ_কৰো ()
+				বাবে macrolanguage অন্তঃ macrolanguages:
 					self._add_macrolanguage (biggest_macrolanguage, macrolanguage)
 
 	def _get_name_piece (self, subtag):
@@ -727,7 +727,7 @@ class BCP47Parser (object):
 		Returns:
 			The name form of ``subtag``.
 		"""
-		return self.names[subtag].split ('\n')[0] + self.scopes.get (subtag, '')
+		ঘূৰাই self.names[subtag].split ('\n')[0] + self.scopes.get (subtag, '')
 
 	def get_name (self, lt):
 		"""Return the names of the subtags in a language tag.
@@ -739,13 +739,13 @@ class BCP47Parser (object):
 			The name form of ``lt``.
 		"""
 		name = self._get_name_piece (lt.language)
-		if lt.script:
+		যদি lt.script:
 			name += '; ' + self._get_name_piece (lt.script.title ())
-		if lt.region:
+		যদি lt.region:
 			name += '; ' + self._get_name_piece (lt.region.upper ())
-		if lt.variant:
+		যদি lt.variant:
 			name += '; ' + self._get_name_piece (lt.variant)
-		return name
+		ঘূৰাই name
 
 bcp_47 = BCP47Parser ()
 
@@ -884,11 +884,11 @@ def rank_delta (bcp_47, ot):
 		A number to add to ``ot``'s rank when sorting ``bcp_47``'s
 		OpenType equivalents.
 	"""
-	if bcp_47 == 'ak' and ot == 'AKA':
-		return -1
-	if bcp_47 == 'tw' and ot == 'TWI':
-		return -1
-	return 0
+	যদি bcp_47 == 'ak' আৰু ot == 'AKA':
+		ঘূৰাই -1
+	যদি bcp_47 == 'tw' আৰু ot == 'TWI':
+		ঘূৰাই -1
+	ঘূৰাই 0
 
 disambiguation = {
 	'ALT': 'alt',
@@ -930,35 +930,35 @@ ot.inherit_from_macrolanguages ()
 bcp_47.remove_extra_macrolanguages ()
 ot.inherit_from_macrolanguages ()
 ot.names[DEFAULT_LANGUAGE_SYSTEM] = ''
-ot.ranks[DEFAULT_LANGUAGE_SYSTEM] = max (ot.ranks.values ()) + 1
-for tricky_ot_tag in filter (lambda tag: re.match ('[A-Z]{3}$', tag), ot.names):
+ot.ranks[DEFAULT_LANGUAGE_SYSTEM] = max (ot.ranks.মানসমূহ ()) + 1
+বাবে tricky_ot_tag অন্তঃ filter (অনামন্ tag: re.match ('[A-Z]{3}$', tag), ot.names):
 	possible_bcp_47_tag = tricky_ot_tag.lower ()
-	if possible_bcp_47_tag in bcp_47.names and not ot.from_bcp_47[possible_bcp_47_tag]:
+	যদি possible_bcp_47_tag অন্তঃ bcp_47.names আৰু নহয় ot.from_bcp_47[possible_bcp_47_tag]:
 		ot.add_language (possible_bcp_47_tag, DEFAULT_LANGUAGE_SYSTEM)
 		bcp_47.macrolanguages[possible_bcp_47_tag] = set ()
 ot.sort_languages ()
 
-if output_rust:
+যদি output_rust:
 	def hb_tag_rust (tag):
-		if tag == DEFAULT_LANGUAGE_SYSTEM:
-			return 'Tag::new(&[0; 4])'
+		যদি tag == DEFAULT_LANGUAGE_SYSTEM:
+			ঘূৰাই 'Tag::new(&[0; 4])'
 		sanitize_tag (tag)
-		return 'Tag::new(b"%s%s%s%s")' % tuple (('%-4s' % tag)[:4])
+		ঘূৰাই 'Tag::new(b"%s%s%s%s")' % tuple (('%-4s' % tag)[:4])
 
 	def get_variant_set_rust (name):
-		return set (unicodedata.normalize (
+		ঘূৰাই set (unicodedata.normalize (
 					'NFD',
 					n.replace ('\u02BC', "'").replace ('\u2019', "'"),
 				)
 				.encode ('ASCII', 'ignore')
 				.strip ()
-				for n in re.split ('[\n(),]', name) if n)
+				বাবে n অন্তঃ re.split ('[\n(),]', name) যদি n)
 
 	def language_name_intersection_rust (a, b):
-		return get_variant_set_rust (a).intersection (get_variant_set_rust (b))
+		ঘূৰাই get_variant_set_rust (a).intersection (get_variant_set_rust (b))
 
 	def get_matching_language_name_rust (intersection, candidates):
-		return next (iter (c for c in candidates if not intersection.isdisjoint (get_variant_set_rust (c))))
+		ঘূৰাই next (iter (c বাবে c অন্তঃ candidates যদি নহয় intersection.isdisjoint (get_variant_set_rust (c))))
 
 	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-tag-table.py --rust')
 	print ()
@@ -986,27 +986,27 @@ if output_rust:
 	print ('#[rustfmt::skip]')
 	print ('pub(crate) static OPEN_TYPE_LANGUAGES: &[LangTag] = &[')
 
-	for language, tags in sorted (ot.from_bcp_47.items ()):
-		if language == '' or '-' in language:
-			continue
-		commented_out = len (language) == 3 and len (tags) == 1 and language == tags[0].lower ()
-		for tag in tags:
-			print ('%sLangTag { language: lang(b"%s"), \ttag: %s },' % ('//  ' if commented_out else '    ', sanitize_bcp47_tag (language), hb_tag_rust (tag)), end='')
+	বাবে language, tags অন্তঃ sorted (ot.from_bcp_47.বস্তুসমূহ ()):
+		যদি language == '' বা '-' অন্তঃ language:
+			অনুৱর্ত
+		commented_out = len (language) == 3 আৰু len (tags) == 1 আৰু language == tags[0].lower ()
+		বাবে tag অন্তঃ tags:
+			print ('%sLangTag { language: lang(b"%s"), \ttag: %s },' % ('//  ' যদি commented_out অন্যথা '    ', sanitize_bcp47_tag (language), hb_tag_rust (tag)), end='')
 			print (' // ', end='')
 			bcp_47_name = bcp_47.names.get (language, '')
 			bcp_47_name_candidates = bcp_47_name.split ('\n')
 			ot_name = ot.names[tag]
 			scope = bcp_47.scopes.get (language, '')
-			if tag == DEFAULT_LANGUAGE_SYSTEM:
+			যদি tag == DEFAULT_LANGUAGE_SYSTEM:
 				comment = f'{bcp_47_name_candidates[0]}{scope} != {ot.names[language.upper ()]}'
-			else:
+			অন্যথা:
 				intersection = language_name_intersection_rust (bcp_47_name, ot_name)
-				if not intersection:
+				যদি নহয় intersection:
 					comment = '%s%s -> %s' % (bcp_47_name_candidates[0], scope, ot_name)
-				else:
+				অন্যথা:
 					name = get_matching_language_name_rust (intersection, bcp_47_name_candidates)
 					bcp_47.names[language] = name
-					comment = '%s%s' % (name if len (name) > len (ot_name) else ot_name, scope)
+					comment = '%s%s' % (name যদি len (name) > len (ot_name) অন্যথা ot_name, scope)
 			print (sanitize_comment (comment))
 
 	print ('];')
@@ -1014,41 +1014,41 @@ if output_rust:
 	print ('/// Converts a multi-subtag BCP 47 language tag to language tags.')
 	print ('pub fn tags_from_complex_language(language: &str, tags: &mut smallvec::SmallVec<[Tag; 3]>) -> bool {')
 
-	def print_subtag_matches_rust (subtag, new_line):
-		if subtag:
-			if new_line:
+	def print_subtag_matches_rust (subtag, new_সাৰি):
+		যদি subtag:
+			যদি new_সাৰি:
 				print (' && ', end='')
 			print ('subtag_matches(language, "-%s")' % sanitize_bcp47_tag (subtag), end='')
 
 	complex_tags = collections.defaultdict (list)
-	for initial, group in itertools.groupby ((lt_tags for lt_tags in [
+	বাবে initial, group অন্তঃ itertools.groupby ((lt_tags বাবে lt_tags অন্তঃ [
 				(LanguageTag (language), tags)
-				for language, tags in sorted (ot.from_bcp_47.items (),
-					key=lambda i: (-len (i[0]), i[0]))
-			] if lt_tags[0].is_complex ()),
-			key=lambda lt_tags: lt_tags[0].get_group ()):
+				বাবে language, tags অন্তঃ sorted (ot.from_bcp_47.বস্তুসমূহ (),
+					চাবি_2=অনামন্ i: (-len (i[0]), i[0]))
+			] যদি lt_tags[0].is_complex ()),
+			চাবি_2=অনামন্ lt_tags: lt_tags[0].get_group ()):
 		complex_tags[initial] += group
 
-	for initial, items in sorted (complex_tags.items ()):
-		if initial != 'und':
-			continue
-		for lt, tags in items:
-			if not tags:
-				continue
-			if lt.variant in bcp_47.prefixes:
+	বাবে initial, বস্তুসমূহ অন্তঃ sorted (complex_tags.বস্তুসমূহ ()):
+		যদি initial != 'und':
+			অনুৱর্ত
+		বাবে lt, tags অন্তঃ বস্তুসমূহ:
+			যদি নহয় tags:
+				অনুৱর্ত
+			যদি lt.variant অন্তঃ bcp_47.prefixes:
 				expect (next (iter (bcp_47.prefixes[lt.variant])) == lt.language,
 						'%s is not a valid prefix of %s' % (lt.language, lt.variant))
 			print ('    if ', end='')
-			print_subtag_matches_rust (lt.script, False)
-			print_subtag_matches_rust (lt.region, False)
-			print_subtag_matches_rust (lt.variant, False)
+			print_subtag_matches_rust (lt.script, মিছা)
+			print_subtag_matches_rust (lt.region, মিছা)
+			print_subtag_matches_rust (lt.variant, মিছা)
 			print (' {')
 			print ('        // %s' % sanitize_comment (bcp_47.get_name (lt)))
-			if len (tags) == 1:
+			যদি len (tags) == 1:
 				print ('        tags.push(%s); // %s' % (hb_tag_rust (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			else:
+			অন্যথা:
 				print ('        let possible_tags = &[')
-				for tag in tags:
+				বাবে tag অন্তঃ tags:
 					print ('            %s, // %s' % (hb_tag_rust (tag), sanitize_comment (ot.names[tag])))
 				print ('        ];')
 				print ('        tags.extend_from_slice(possible_tags);')
@@ -1056,40 +1056,40 @@ if output_rust:
 			print ('    }')
 
 	print ('    match language.as_bytes()[0] {')
-	for initial, items in sorted (complex_tags.items ()):
-		if initial == 'und':
-			continue
+	বাবে initial, বস্তুসমূহ অন্তঃ sorted (complex_tags.বস্তুসমূহ ()):
+		যদি initial == 'und':
+			অনুৱর্ত
 		print ("        b'%s' => {" % sanitize_bcp47_tag (initial))
-		for lt, tags in items:
-			if not tags:
-				continue
+		বাবে lt, tags অন্তঃ বস্তুসমূহ:
+			যদি নহয় tags:
+				অনুৱর্ত
 			print ('            if ', end='')
 			script = lt.script
 			region = lt.region
-			if lt.grandfathered:
+			যদি lt.grandfathered:
 				print ('&language[1..] == "%s"' % sanitize_bcp47_tag (lt.language[1:]), end='')
-			else:
+			অন্যথা:
 				string_literal = lt.language[1:] + '-'
-				if script:
+				যদি script:
 					string_literal += script
 					script = None
-					if region:
+					যদি region:
 						string_literal += '-' + region
 						region = None
-				if string_literal[-1] == '-':
+				যদি string_literal[-1] == '-':
 					print ('strncmp(&language[1..], "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-				else:
+				অন্যথা:
 					print ('lang_matches(&language[1..], "%s")' % sanitize_bcp47_tag (string_literal), end='')
-			print_subtag_matches_rust (script, True)
-			print_subtag_matches_rust (region, True)
-			print_subtag_matches_rust (lt.variant, True)
+			print_subtag_matches_rust (script, সঁচা)
+			print_subtag_matches_rust (region, সঁচা)
+			print_subtag_matches_rust (lt.variant, সঁচা)
 			print (' {')
 			print ('                // %s' % sanitize_comment (bcp_47.get_name (lt)))
-			if len (tags) == 1:
+			যদি len (tags) == 1:
 				print ('                tags.push(%s); // %s' % (hb_tag_rust (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			else:
+			অন্যথা:
 				print ('                let possible_tags = &[')
-				for tag in tags:
+				বাবে tag অন্তঃ tags:
 					print ('                    %s, // %s' % (hb_tag_rust (tag), sanitize_comment (ot.names[tag])))
 				print ('                ];')
 				print ('                tags.extend_from_slice(possible_tags);')
@@ -1127,10 +1127,10 @@ def hb_tag (tag):
 	Returns:
 		A snippet of C++ representing ``tag``.
 	"""
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
-		return 'HB_TAG_NONE\t       '
+	যদি tag == DEFAULT_LANGUAGE_SYSTEM:
+		ঘূৰাই 'HB_TAG_NONE\t       '
 	sanitize_tag (tag)
-	return "HB_TAG('%s','%s','%s','%s')" % tuple (('%-4s' % tag)[:4])
+	ঘূৰাই "HB_TAG('%s','%s','%s','%s')" % tuple (('%-4s' % tag)[:4])
 
 def get_variant_set (name):
 	"""Return a set of variant language names from a name.
@@ -1142,13 +1142,13 @@ def get_variant_set (name):
 	Returns:
 		A set of normalized language names.
 	"""
-	return set (unicodedata.normalize (
+	ঘূৰাই set (unicodedata.normalize (
 				'NFD',
 				n.replace ('\u02BC', "'").replace ('\u2019', "'"),
 			)
 			.encode ('ASCII', 'ignore')
 			.strip ()
-			for n in re.split ('[\n(),]', name) if n)
+			বাবে n অন্তঃ re.split ('[\n(),]', name) যদি n)
 
 def language_name_intersection (a, b):
 	"""Return the names in common between two language names.
@@ -1162,36 +1162,36 @@ def language_name_intersection (a, b):
 	Returns:
 		The normalized language names shared by ``a`` and ``b``.
 	"""
-	return get_variant_set (a).intersection (get_variant_set (b))
+	ঘূৰাই get_variant_set (a).intersection (get_variant_set (b))
 
 def get_matching_language_name (intersection, candidates):
-	return next (iter (c for c in candidates if not intersection.isdisjoint (get_variant_set (c))))
+	ঘূৰাই next (iter (c বাবে c অন্তঃ candidates যদি নহয় intersection.isdisjoint (get_variant_set (c))))
 
 def same_tag (bcp_47_tag, ot_tags):
-	return len (bcp_47_tag) == 3 and len (ot_tags) == 1 and bcp_47_tag == ot_tags[0].lower ()
+	ঘূৰাই len (bcp_47_tag) == 3 আৰু len (ot_tags) == 1 আৰু bcp_47_tag == ot_tags[0].lower ()
 
 def format_language_comment (language, tag):
 	bcp_47_name = bcp_47.names.get (language, '')
 	bcp_47_name_candidates = bcp_47_name.split ('\n')
 	ot_name = ot.names[tag]
 	scope = bcp_47.scopes.get (language, '')
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
+	যদি tag == DEFAULT_LANGUAGE_SYSTEM:
 		comment = f'{bcp_47_name_candidates[0]}{scope} != {ot.names[language.upper ()]}'
-	else:
+	অন্যথা:
 		intersection = language_name_intersection (bcp_47_name, ot_name)
-		if not intersection:
+		যদি নহয় intersection:
 			comment = '%s%s -> %s' % (bcp_47_name_candidates[0], scope, ot_name)
-		else:
+		অন্যথা:
 			name = get_matching_language_name (intersection, bcp_47_name_candidates)
 			bcp_47.names[language] = name
-			comment = '%s%s' % (name if len (name) > len (ot_name) else ot_name, scope)
-	return sanitize_comment (comment)
+			comment = '%s%s' % (name যদি len (name) > len (ot_name) অন্যথা ot_name, scope)
+	ঘূৰাই sanitize_comment (comment)
 
 print ('static const LangTag ot_languages2[] = {')
-for language, tags in sorted (ot.from_bcp_47.items ()):
-	if language == '' or '-' in language or len (language) != 2:
-		continue
-	for tag in tags:
+বাবে language, tags অন্তঃ sorted (ot.from_bcp_47.বস্তুসমূহ ()):
+	যদি language == '' বা '-' অন্তঃ language বা len (language) != 2:
+		অনুৱর্ত
+	বাবে tag অন্তঃ tags:
 		print ('  {%s,\t%s},\t/* %s */' % (
 			hb_tag (language),
 			hb_tag (tag),
@@ -1204,30 +1204,30 @@ print ('#ifndef HB_NO_LANGUAGE_LONG')
 languages3_blocked = []
 languages3_singles = []
 languages3_multi_ranges = []
-languages3_multi_values = []
-for language, tags in sorted (ot.from_bcp_47.items ()):
-	if language == '' or '-' in language or len (language) != 3:
-		continue
-	if same_tag (language, tags):
-		continue
-	if tags == [DEFAULT_LANGUAGE_SYSTEM]:
+languages3_multi_মানসমূহ = []
+বাবে language, tags অন্তঃ sorted (ot.from_bcp_47.বস্তুসমূহ ()):
+	যদি language == '' বা '-' অন্তঃ language বা len (language) != 3:
+		অনুৱর্ত
+	যদি same_tag (language, tags):
+		অনুৱর্ত
+	যদি tags == [DEFAULT_LANGUAGE_SYSTEM]:
 		languages3_blocked.append ((language, tags[0]))
-		continue
-	if len (tags) == 1:
+		অনুৱর্ত
+	যদি len (tags) == 1:
 		languages3_singles.append ((language, tags[0]))
-		continue
-	offset = len (languages3_multi_values)
-	languages3_multi_values.extend ((language, tag) for tag in tags)
+		অনুৱর্ত
+	offset = len (languages3_multi_মানসমূহ)
+	languages3_multi_মানসমূহ.extend ((language, tag) বাবে tag অন্তঃ tags)
 	languages3_multi_ranges.append ((language, offset, len (tags), tags[0]))
 
 print ('static const hb_tag_t ot_languages3_blocked[] = {')
-for language, tag in languages3_blocked:
+বাবে language, tag অন্তঃ languages3_blocked:
 	print ('  %s,\t/* %s */' % (hb_tag (language), format_language_comment (language, tag)))
 print ('};')
 print ()
 
 print ('static const LangTag ot_languages3[] = {')
-for language, tag in languages3_singles:
+বাবে language, tag অন্তঃ languages3_singles:
 	print ('  {%s,\t%s},\t/* %s */' % (
 		hb_tag (language),
 		hb_tag (tag),
@@ -1236,17 +1236,17 @@ print ('};')
 print ()
 
 print ('static const hb_tag_t ot_languages3_multi_values[] = {')
-for language, tag in languages3_multi_values:
+বাবে language, tag অন্তঃ languages3_multi_মানসমূহ:
 	print ('  %s,\t/* %s */' % (hb_tag (tag), format_language_comment (language, tag)))
 print ('};')
 print ()
 
 print ('static const LangTagRange ot_languages3_multi[] = {')
-for language, offset, count, first_tag in languages3_multi_ranges:
+বাবে language, offset, গুনতি, first_tag অন্তঃ languages3_multi_ranges:
 	print ('  {%s,\t%u,\t%u},\t/* %s */' % (
 		hb_tag (language),
-		int(offset),
-		int(count),
+		পূর্ণাঙ্ক(offset),
+		পূর্ণাঙ্ক(গুনতি),
 		format_language_comment (language, first_tag)))
 print ('};')
 print ('#endif')
@@ -1273,65 +1273,65 @@ print ('\t\t\t\t  unsigned int *count /* IN/OUT */,')
 print ('\t\t\t\t  hb_tag_t     *tags /* OUT */)')
 print ('{')
 
-def print_subtag_matches (subtag, string, new_line):
-	if subtag:
-		if new_line:
+def print_subtag_matches (subtag, string, new_সাৰি):
+	যদি subtag:
+		যদি new_সাৰি:
 			print ()
 			print ('\t&& ', end='')
 		print ('subtag_matches (%s, limit, "-%s", %i)' % (string, sanitize_bcp47_tag (subtag), 1 + len (subtag)), end='')
 
 complex_tags = collections.defaultdict (list)
-for initial, group in itertools.groupby ((lt_tags for lt_tags in [
+বাবে initial, group অন্তঃ itertools.groupby ((lt_tags বাবে lt_tags অন্তঃ [
 			(LanguageTag (language), tags)
-			for language, tags in sorted (ot.from_bcp_47.items (),
-				key=lambda i: (-len (i[0]), i[0]))
-		] if lt_tags[0].is_complex ()),
-		key=lambda lt_tags: lt_tags[0].get_group ()):
+			বাবে language, tags অন্তঃ sorted (ot.from_bcp_47.বস্তুসমূহ (),
+				চাবি_2=অনামন্ i: (-len (i[0]), i[0]))
+		] যদি lt_tags[0].is_complex ()),
+		চাবি_2=অনামন্ lt_tags: lt_tags[0].get_group ()):
 	complex_tags[initial] += group
 
 # Calculate the min length of the subtags outside the switch
 min_subtag_len = 100
-for initial, items in sorted (complex_tags.items ()):
-	if initial != 'und':
-		continue
-	for lt, tags in items:
-		if not tags:
-			continue
+বাবে initial, বস্তুসমূহ অন্তঃ sorted (complex_tags.বস্তুসমূহ ()):
+	যদি initial != 'und':
+		অনুৱর্ত
+	বাবে lt, tags অন্তঃ বস্তুসমূহ:
+		যদি নহয় tags:
+			অনুৱর্ত
 		subtag_len = 0
-		subtag_len += 1 + len (lt.script) if lt.script is not None else 0
-		subtag_len += 1 + len (lt.region) if lt.region is not None else 0
-		subtag_len += 1 + len (lt.variant) if lt.variant is not None else 0
+		subtag_len += 1 + len (lt.script) যদি lt.script is নহয় None অন্যথা 0
+		subtag_len += 1 + len (lt.region) যদি lt.region is নহয় None অন্যথা 0
+		subtag_len += 1 + len (lt.variant) যদি lt.variant is নহয় None অন্যথা 0
 		min_subtag_len = min(subtag_len, min_subtag_len)
 
 print ('  if (limit - lang_str >= %d)' % (min_subtag_len + 2))
 print ('  {')
 print ("    const char *p = strchr (lang_str, '-');")
 print ("    if (!p || p >= limit || limit - p < %i) goto out;" % min_subtag_len)
-for initial, items in sorted (complex_tags.items ()):
-	if initial != 'und':
-		continue
-	for lt, tags in items:
-		if not tags:
-			continue
-		if lt.variant in bcp_47.prefixes:
+বাবে initial, বস্তুসমূহ অন্তঃ sorted (complex_tags.বস্তুসমূহ ()):
+	যদি initial != 'und':
+		অনুৱর্ত
+	বাবে lt, tags অন্তঃ বস্তুসমূহ:
+		যদি নহয় tags:
+			অনুৱর্ত
+		যদি lt.variant অন্তঃ bcp_47.prefixes:
 			expect (next (iter (bcp_47.prefixes[lt.variant])) == lt.language,
 					'%s is not a valid prefix of %s' % (lt.language, lt.variant))
 		print ('    if (', end='')
-		print_subtag_matches (lt.script, 'p', False)
-		print_subtag_matches (lt.region, 'p', False)
-		print_subtag_matches (lt.variant, 'p', False)
+		print_subtag_matches (lt.script, 'p', মিছা)
+		print_subtag_matches (lt.region, 'p', মিছা)
+		print_subtag_matches (lt.variant, 'p', মিছা)
 		print (')')
 		print ('    {')
-		write ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
+		লিখ ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
 		print ()
-		if len (tags) == 1:
-			write ('      tags[0] = %s;  /* %s */' % (hb_tag (tags[0]), sanitize_comment (ot.names[tags[0]])))
+		যদি len (tags) == 1:
+			লিখ ('      tags[0] = %s;  /* %s */' % (hb_tag (tags[0]), sanitize_comment (ot.names[tags[0]])))
 			print ()
 			print ('      *count = 1;')
-		else:
+		অন্যথা:
 			print ('    hb_tag_t possible_tags[] = {')
-			for tag in tags:
-				write ('      %s,  /* %s */' % (hb_tag (tag), sanitize_comment (ot.names[tag])))
+			বাবে tag অন্তঃ tags:
+				লিখ ('      %s,  /* %s */' % (hb_tag (tag), sanitize_comment (ot.names[tag])))
 				print ()
 			print ('      };')
 			print ('      for (i = 0; i < %s && i < *count; i++)' % len (tags))
@@ -1344,46 +1344,46 @@ print ('out:')
 
 print ('  switch (lang_str[0])')
 print ('  {')
-for initial, items in sorted (complex_tags.items ()):
-	if initial == 'und':
-		continue
+বাবে initial, বস্তুসমূহ অন্তঃ sorted (complex_tags.বস্তুসমূহ ()):
+	যদি initial == 'und':
+		অনুৱর্ত
 	print ("  case '%s':" % sanitize_bcp47_tag (initial))
-	for lt, tags in items:
-		if not tags:
-			continue
+	বাবে lt, tags অন্তঃ বস্তুসমূহ:
+		যদি নহয় tags:
+			অনুৱর্ত
 		print ('    if (', end='')
 		script = lt.script
 		region = lt.region
-		if lt.grandfathered:
+		যদি lt.grandfathered:
 			print ('0 == strcmp (&lang_str[1], "%s")' % sanitize_bcp47_tag (lt.language[1:]), end='')
-		else:
+		অন্যথা:
 			string_literal = lt.language[1:] + '-'
-			if script:
+			যদি script:
 				string_literal += script
 				script = None
-				if region:
+				যদি region:
 					string_literal += '-' + region
 					region = None
-			if string_literal[-1] == '-':
+			যদি string_literal[-1] == '-':
 				print ('0 == strncmp (&lang_str[1], "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-			else:
+			অন্যথা:
 				print ('lang_matches (&lang_str[1], limit, "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-		print_subtag_matches (script, 'lang_str', True)
-		print_subtag_matches (region, 'lang_str', True)
-		print_subtag_matches (lt.variant, 'lang_str', True)
+		print_subtag_matches (script, 'lang_str', সঁচা)
+		print_subtag_matches (region, 'lang_str', সঁচা)
+		print_subtag_matches (lt.variant, 'lang_str', সঁচা)
 		print (')')
 		print ('    {')
-		write ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
+		লিখ ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
 		print ()
-		if len (tags) == 1:
-			write ('      tags[0] = %s;  /* %s */' % (hb_tag (tags[0]), sanitize_comment (ot.names[tags[0]])))
+		যদি len (tags) == 1:
+			লিখ ('      tags[0] = %s;  /* %s */' % (hb_tag (tags[0]), sanitize_comment (ot.names[tags[0]])))
 			print ()
 			print ('      *count = 1;')
-		else:
+		অন্যথা:
 			print ('      unsigned int i;')
 			print ('      hb_tag_t possible_tags[] = {')
-			for tag in tags:
-				write ('\t%s,  /* %s */' % (hb_tag (tag), sanitize_comment (ot.names[tag])))
+			বাবে tag অন্তঃ tags:
+				লিখ ('\t%s,  /* %s */' % (hb_tag (tag), sanitize_comment (ot.names[tag])))
 				print ()
 			print ('      };')
 			print ('      for (i = 0; i < %s && i < *count; i++)' % len (tags))
@@ -1433,58 +1433,58 @@ def verify_disambiguation_dict ():
 	Raises:
 		AssertionError: Verification failed.
 	"""
-	global bcp_47
-	global disambiguation
-	global ot
-	for ot_tag, bcp_47_tags in ot.to_bcp_47.items ():
-		if ot_tag == DEFAULT_LANGUAGE_SYSTEM:
+	ৱৈশ্ৱিক bcp_47
+	ৱৈশ্ৱিক disambiguation
+	ৱৈশ্ৱিক ot
+	বাবে ot_tag, bcp_47_tags অন্তঃ ot.to_bcp_47.বস্তুসমূহ ():
+		যদি ot_tag == DEFAULT_LANGUAGE_SYSTEM:
 			primary_tags = []
-		else:
-			primary_tags = list (t for t in bcp_47_tags if t not in bcp_47.grandfathered and ot.from_bcp_47.get (t)[0] == ot_tag)
-		if len (primary_tags) == 1:
-			expect (ot_tag not in disambiguation, 'unnecessary disambiguation for OT tag: %s' % ot_tag)
-			if '-' in primary_tags[0]:
+		অন্যথা:
+			primary_tags = list (t বাবে t অন্তঃ bcp_47_tags যদি t নহয় অন্তঃ bcp_47.grandfathered আৰু ot.from_bcp_47.get (t)[0] == ot_tag)
+		যদি len (primary_tags) == 1:
+			expect (ot_tag নহয় অন্তঃ disambiguation, 'unnecessary disambiguation for OT tag: %s' % ot_tag)
+			যদি '-' অন্তঃ primary_tags[0]:
 				disambiguation[ot_tag] = primary_tags[0]
-			else:
-				first_tag = sorted ((t for t in bcp_47_tags if t not in bcp_47.grandfathered and ot_tag in ot.from_bcp_47.get (t)),
-						key=lambda t: (len (t), t))[0]
-				if primary_tags[0] != first_tag:
+			অন্যথা:
+				first_tag = sorted ((t বাবে t অন্তঃ bcp_47_tags যদি t নহয় অন্তঃ bcp_47.grandfathered আৰু ot_tag অন্তঃ ot.from_bcp_47.get (t)),
+						চাবি_2=অনামন্ t: (len (t), t))[0]
+				যদি primary_tags[0] != first_tag:
 					disambiguation[ot_tag] = primary_tags[0]
-		elif len (primary_tags) == 0:
-			expect (ot_tag not in disambiguation, 'There is no possible valid disambiguation for %s' % ot_tag)
-		else:
-			original_languages = [t for t in primary_tags if t in ot.from_bcp_47_uninherited and 'retired code' not in bcp_47.scopes.get (t, '')]
-			if len (original_languages) == 1:
+		নোচেদ্যদি len (primary_tags) == 0:
+			expect (ot_tag নহয় অন্তঃ disambiguation, 'There is no possible valid disambiguation for %s' % ot_tag)
+		অন্যথা:
+			original_languages = [t বাবে t অন্তঃ primary_tags যদি t অন্তঃ ot.from_bcp_47_uninherited আৰু 'retired code' নহয় অন্তঃ bcp_47.scopes.get (t, '')]
+			যদি len (original_languages) == 1:
 				macrolanguages = original_languages
-			else:
-				macrolanguages = [t for t in primary_tags if bcp_47.scopes.get (t) == ' [macrolanguage]']
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if bcp_47.scopes.get (t) == ' [collection]')
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if 'retired code' not in bcp_47.scopes.get (t, ''))
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if t.lower () == ISO_639_3_TO_1.get (ot_tag.lower (), ot_tag.lower ()))
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if '-' not in t)
-			if len (macrolanguages) != 1:
-				expect (ot_tag in disambiguation, 'ambiguous OT tag: %s %s' % (ot_tag, sorted (primary_tags)))
-				expect (disambiguation[ot_tag] in bcp_47_tags,
+			অন্যথা:
+				macrolanguages = [t বাবে t অন্তঃ primary_tags যদি bcp_47.scopes.get (t) == ' [macrolanguage]']
+			যদি len (macrolanguages) != 1:
+				macrolanguages = list (t বাবে t অন্তঃ primary_tags যদি bcp_47.scopes.get (t) == ' [collection]')
+			যদি len (macrolanguages) != 1:
+				macrolanguages = list (t বাবে t অন্তঃ primary_tags যদি 'retired code' নহয় অন্তঃ bcp_47.scopes.get (t, ''))
+			যদি len (macrolanguages) != 1:
+				macrolanguages = list (t বাবে t অন্তঃ primary_tags যদি t.lower () == ISO_639_3_TO_1.get (ot_tag.lower (), ot_tag.lower ()))
+			যদি len (macrolanguages) != 1:
+				macrolanguages = list (t বাবে t অন্তঃ primary_tags যদি '-' নহয় অন্তঃ t)
+			যদি len (macrolanguages) != 1:
+				expect (ot_tag অন্তঃ disambiguation, 'ambiguous OT tag: %s %s' % (ot_tag, sorted (primary_tags)))
+				expect (disambiguation[ot_tag] অন্তঃ bcp_47_tags,
 						'%s is not a valid disambiguation for %s' % (disambiguation[ot_tag], ot_tag))
-			elif ot_tag not in disambiguation:
+			নোচেদ্যদি ot_tag নহয় অন্তঃ disambiguation:
 				disambiguation[ot_tag] = macrolanguages[0]
-			if '-' not in disambiguation[ot_tag]:
-				different_bcp_47_tags = sorted ((t for t in bcp_47_tags if not same_tag (t, ot.from_bcp_47.get (t))),
-						key=lambda t: (len (t), t))
-				if different_bcp_47_tags and disambiguation[ot_tag] == different_bcp_47_tags[0]:
+			যদি '-' নহয় অন্তঃ disambiguation[ot_tag]:
+				different_bcp_47_tags = sorted ((t বাবে t অন্তঃ bcp_47_tags যদি নহয় same_tag (t, ot.from_bcp_47.get (t))),
+						চাবি_2=অনামন্ t: (len (t), t))
+				যদি different_bcp_47_tags আৰু disambiguation[ot_tag] == different_bcp_47_tags[0]:
 					del disambiguation[ot_tag]
-	for ot_tag in disambiguation.keys ():
-		expect (ot_tag in ot.to_bcp_47, 'unknown OT tag: %s' % ot_tag)
+	বাবে ot_tag অন্তঃ disambiguation.চাবিগুলি ():
+		expect (ot_tag অন্তঃ ot.to_bcp_47, 'unknown OT tag: %s' % ot_tag)
 
 verify_disambiguation_dict ()
-for ot_tag, bcp_47_tag in sorted (disambiguation.items ()):
-	write ('  case %s:  /* %s */' % (hb_tag (ot_tag), sanitize_comment (ot.names[ot_tag])))
+বাবে ot_tag, bcp_47_tag অন্তঃ sorted (disambiguation.বস্তুসমূহ ()):
+	লিখ ('  case %s:  /* %s */' % (hb_tag (ot_tag), sanitize_comment (ot.names[ot_tag])))
 	print ()
-	write ('    return hb_language_from_string (\"%s\", -1);  /* %s */' % (sanitize_bcp47_tag (bcp_47_tag), sanitize_comment (bcp_47.get_name (LanguageTag (bcp_47_tag)))))
+	লিখ ('    return hb_language_from_string (\"%s\", -1);  /* %s */' % (sanitize_bcp47_tag (bcp_47_tag), sanitize_comment (bcp_47.get_name (LanguageTag (bcp_47_tag)))))
 	print ()
 
 print ('  default:')

@@ -25,7 +25,7 @@
 #ifndef HB_AAT_LAYOUT_BSLN_TABLE_HH
 #define HB_AAT_LAYOUT_BSLN_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
+#অন্তর্ভাৱ "hb-aat-layout-common.hh"
 
 /*
  * bsln -- Baseline
@@ -34,54 +34,54 @@
 #define HB_AAT_TAG_bsln HB_TAG('b','s','l','n')
 
 
-namespace AAT {
+নামাকাশ AAT {
 
 
-struct BaselineTableFormat0Part
+সংরচনা BaselineTableFormat0Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  protected:
+  রক্ষিত:
   // Roman, Ideographic centered, Ideographic low, Hanging and Math
   // are the default defined ones, but any other maybe accessed also.
   HBINT16	deltas[32];	/* These are the FUnit distance deltas from
 				 * the font's natural baseline to the other
 				 * baselines used in the font. */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (64);
 };
 
-struct BaselineTableFormat1Part
+সংরচনা BaselineTableFormat1Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    return_trace (likely (c->check_struct (এতত্) &&
 			  lookupTable.sanitize (c)));
   }
 
-  protected:
+  রক্ষিত:
   HBINT16	deltas[32];	/* ditto */
   Lookup<HBUINT16>
 		lookupTable;	/* Lookup table that maps glyphs to their
 				 * baseline values. */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (66);
 };
 
-struct BaselineTableFormat2Part
+সংরচনা BaselineTableFormat2Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  protected:
+  রক্ষিত:
   HBGlyphID16	stdGlyph;	/* The specific glyph index number in this
 				 * font that is used to set the baseline values.
 				 * This is the standard glyph.
@@ -92,56 +92,56 @@ struct BaselineTableFormat2Part
 				 * associated with the standard glyph.
 				 * A value of 0xFFFF means there is no corresponding
 				 * control point in the standard glyph. */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (66);
 };
 
-struct BaselineTableFormat3Part
+সংরচনা BaselineTableFormat3Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c)));
+    TRACE_SANITIZE (এতত্);
+    return_trace (likely (c->check_struct (এতত্) && lookupTable.sanitize (c)));
   }
 
-  protected:
+  রক্ষিত:
   HBGlyphID16	stdGlyph;	/* ditto */
   HBUINT16	ctlPoints[32];	/* ditto */
   Lookup<HBUINT16>
 		lookupTable;	/* Lookup table that maps glyphs to their
 				 * baseline values. */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (68);
 };
 
-struct bsln
+সংরচনা bsln
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_bsln;
+  স্থির constexpr hb_tag_t tableTag = HB_AAT_TAG_bsln;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) && defaultBaseline < 32)))
-      return_trace (false);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!(c->check_struct (এতত্) && defaultBaseline < 32)))
+      return_trace (মিছা);
     hb_barrier ();
 
-    switch (format)
+    ৱিকল্প (format)
     {
-    case 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
-    case 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
-    default:return_trace (true);
+    পক্ষ 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
+    পক্ষ 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
+    পক্ষ 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
+    পক্ষ 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
+    স্ৱভাৱ:return_trace (সঁচা);
     }
   }
 
-  protected:
+  রক্ষিত:
   FixedVersion<>version;	/* Version number of the Baseline table. */
   HBUINT16	format;		/* Format of the baseline table. Only one baseline
 				 * format may be selected for the font. */
   HBUINT16	defaultBaseline;/* Default baseline value for all glyphs.
 				 * This value can be from 0 through 31. */
-  union {
+  সঙ্ঘ {
   // Distance-Based Formats
   BaselineTableFormat0Part	format0;
   BaselineTableFormat1Part	format1;
@@ -149,7 +149,7 @@ struct bsln
   BaselineTableFormat2Part	format2;
   BaselineTableFormat3Part	format3;
   } parts;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (8);
 };
 

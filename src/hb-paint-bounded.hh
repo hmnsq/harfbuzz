@@ -25,20 +25,20 @@
 #ifndef HB_PAINT_BOUNDED_HH
 #define HB_PAINT_BOUNDED_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#অন্তর্ভাৱ "hb.hh"
+#অন্তর্ভাৱ "hb-paint.h"
 
-#include "hb-geometry.hh"
+#অন্তর্ভাৱ "hb-geometry.hh"
 
 
-typedef struct  hb_paint_bounded_context_t hb_paint_bounded_context_t;
+প্রকারনির্দেশ সংরচনা  hb_paint_bounded_context_t hb_paint_bounded_context_t;
 
-struct hb_paint_bounded_context_t
+সংরচনা hb_paint_bounded_context_t
 {
-  void clear ()
+  শূন্য clear ()
   {
     clips = 0;
-    bounded = true;
+    bounded = সঁচা;
     groups.clear ();
   }
 
@@ -47,67 +47,67 @@ struct hb_paint_bounded_context_t
     clear ();
   }
 
-  bool is_bounded ()
+  তার্কিক is_bounded ()
   {
-    return bounded;
+    ঘূৰাই bounded;
   }
 
-  void push_clip ()
+  শূন্য ঠেলো_clip ()
   {
     clips++;
   }
 
-  void pop_clip ()
+  শূন্য বেৰ_কৰো_clip ()
   {
-    if (clips == 0) return;
+    যদি (clips == 0) ঘূৰাই;
     clips--;
   }
 
-  void push_group ()
+  শূন্য ঠেলো_group ()
   {
     groups.push (bounded);
-    bounded = true;
+    bounded = সঁচা;
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  শূন্য বেৰ_কৰো_group (hb_paint_composite_mode_t mode)
   {
-    const bool src_bounded = bounded;
-    bounded = groups.pop ();
-    bool &backdrop_bounded = bounded;
+    ধ্রুৱ তার্কিক src_bounded = bounded;
+    bounded = groups.বেৰ_কৰো ();
+    তার্কিক &backdrop_bounded = bounded;
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    ৱিকল্প ((পূর্ণাঙ্ক) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-	backdrop_bounded = true;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_CLEAR:
+	backdrop_bounded = সঁচা;
+	ভঙ্গ;
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SRC:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SRC_OUT:
 	backdrop_bounded = src_bounded;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	ভঙ্গ;
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DEST:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+	ভঙ্গ;
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DEST_IN:
 	backdrop_bounded = backdrop_bounded && src_bounded;
-	break;
-      default:
+	ভঙ্গ;
+      স্ৱভাৱ:
 	backdrop_bounded = backdrop_bounded || src_bounded;
-	break;
+	ভঙ্গ;
      }
   }
 
-  void paint ()
+  শূন্য paint ()
   {
-    if (!clips)
-      bounded = false;
+    যদি (!clips)
+      bounded = মিছা;
   }
 
-  protected:
-  bool bounded; // true if current drawing bounded
+  রক্ষিত:
+  তার্কিক bounded; // true if current drawing bounded
   unsigned clips; // number of active clips
-  hb_vector_t<bool> groups; // true if group bounded
+  hb_vector_t<তার্কিক> groups; // true if group bounded
 };
 
 HB_INTERNAL hb_paint_funcs_t *

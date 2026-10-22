@@ -1,27 +1,27 @@
 #ifndef OT_LAYOUT_GSUB_SUBSTLOOKUPSUBTABLE_HH
 #define OT_LAYOUT_GSUB_SUBSTLOOKUPSUBTABLE_HH
 
-#include "Common.hh"
-#include "SingleSubst.hh"
-#include "MultipleSubst.hh"
-#include "AlternateSubst.hh"
-#include "LigatureSubst.hh"
-#include "ContextSubst.hh"
-#include "ChainContextSubst.hh"
-#include "ExtensionSubst.hh"
-#include "ReverseChainSingleSubst.hh"
+#অন্তর্ভাৱ "Common.hh"
+#অন্তর্ভাৱ "SingleSubst.hh"
+#অন্তর্ভাৱ "MultipleSubst.hh"
+#অন্তর্ভাৱ "AlternateSubst.hh"
+#অন্তর্ভাৱ "LigatureSubst.hh"
+#অন্তর্ভাৱ "ContextSubst.hh"
+#অন্তর্ভাৱ "ChainContextSubst.hh"
+#অন্তর্ভাৱ "ExtensionSubst.hh"
+#অন্তর্ভাৱ "ReverseChainSingleSubst.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GSUB_impl {
 
-struct SubstLookupSubTable
+সংরচনা SubstLookupSubTable
 {
-  friend struct ::OT::Lookup;
-  friend struct SubstLookup;
+  friend সংরচনা ::OT::Lookup;
+  friend সংরচনা SubstLookup;
 
-  protected:
-  union {
+  রক্ষিত:
+  সঙ্ঘ {
   SingleSubst                   single;
   MultipleSubst                 multiple;
   AlternateSubst                alternate;
@@ -31,10 +31,10 @@ struct SubstLookupSubTable
   ExtensionSubst                extension;
   ReverseChainSingleSubst       reverseChainContextSingle;
   } u;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (0);
 
-  enum Type {
+  গণনা Type {
     Single              = 1,
     Multiple            = 2,
     Alternate           = 3,
@@ -46,26 +46,26 @@ struct SubstLookupSubTable
   };
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, unsigned পূর্ণাঙ্ক lookup_type, Ts&&... ds) ধ্রুৱ
   {
-    TRACE_DISPATCH (this, lookup_type);
-    switch (lookup_type) {
-    case Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
-    case Multiple:              hb_barrier (); return_trace (u.multiple.dispatch (c, std::forward<Ts> (ds)...));
-    case Alternate:             hb_barrier (); return_trace (u.alternate.dispatch (c, std::forward<Ts> (ds)...));
-    case Ligature:              hb_barrier (); return_trace (u.ligature.dispatch (c, std::forward<Ts> (ds)...));
-    case Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
-    case ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
-    case Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
-    case ReverseChainSingle:    hb_barrier (); return_trace (u.reverseChainContextSingle.dispatch (c, std::forward<Ts> (ds)...));
-    default:                    return_trace (c->default_return_value ());
+    TRACE_DISPATCH (এতত্, lookup_type);
+    ৱিকল্প (lookup_type) {
+    পক্ষ Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
+    পক্ষ Multiple:              hb_barrier (); return_trace (u.multiple.dispatch (c, std::forward<Ts> (ds)...));
+    পক্ষ Alternate:             hb_barrier (); return_trace (u.alternate.dispatch (c, std::forward<Ts> (ds)...));
+    পক্ষ Ligature:              hb_barrier (); return_trace (u.ligature.dispatch (c, std::forward<Ts> (ds)...));
+    পক্ষ Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
+    পক্ষ ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
+    পক্ষ Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
+    পক্ষ ReverseChainSingle:    hb_barrier (); return_trace (u.reverseChainContextSingle.dispatch (c, std::forward<Ts> (ds)...));
+    স্ৱভাৱ:                    return_trace (c->default_return_মান ());
     }
   }
 
-  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  তার্কিক intersects (ধ্রুৱ hb_set_t *glyphs, unsigned পূর্ণাঙ্ক lookup_type) ধ্রুৱ
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c, lookup_type);
+    ঘূৰাই dispatch (&c, lookup_type);
   }
 };
 

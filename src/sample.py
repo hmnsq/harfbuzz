@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-import sys
-import array
-import gi
+আনযন sys
+আনযন array
+আনযন gi
 gi.require_version('HarfBuzz', '0.0')
-from gi.repository import HarfBuzz as hb
-from gi.repository import GLib
+তঃ gi.repository আনযন HarfBuzz ইৱ hb
+তঃ gi.repository আনযন GLib
 
-fontdata = open (sys.argv[1], 'rb').read ()
+fontdata = open (sys.argv[1], 'rb').পঠ ()
 text = sys.argv[2]
 # Need to create GLib.Bytes explicitly until this bug is fixed:
 # https://bugzilla.gnome.org/show_bug.cgi?id=729541
-blob = hb.glib_blob_create (GLib.Bytes.new (fontdata))
+blob = hb.glib_blob_create (GLib.Bytes.নূতন (fontdata))
 face = hb.face_create (blob, 0)
 del blob
 font = hb.font_create (face)
@@ -22,10 +22,10 @@ hb.font_set_scale (font, upem, upem)
 hb.ot_font_set_funcs (font)
 
 buf = hb.buffer_create ()
-class Debugger (object):
-	def message (self, buf, font, msg, data, _x_what_is_this):
-		print (msg)
-		return True
+শ্ৰেণী Debugger (object):
+	def message (self, buf, font, বাৰ্তা, data, _x_what_is_this):
+		print (বাৰ্তা)
+		ঘূৰাই সঁচা
 debugger = Debugger ()
 hb.buffer_set_message_func (buf, debugger.message, 1, 0)
 
@@ -41,9 +41,9 @@ hb.buffer_set_message_func (buf, debugger.message, 1, 0)
 # hb.buffer_add_utf8 (buf, text.encode('utf-8'), 0, -1)
 # Otherwise, then following handles both narrow and wide
 # Python builds (the first item in the array is BOM, so we skip it):
-if sys.maxunicode == 0x10FFFF:
+যদি sys.maxunicode == 0x10FFFF:
 	hb.buffer_add_utf32 (buf, array.array ('I', text.encode ('utf-32'))[1:], 0, -1)
-else:
+অন্যথা:
 	hb.buffer_add_utf16 (buf, array.array ('H', text.encode ('utf-16'))[1:], 0, -1)
 
 
@@ -55,7 +55,7 @@ del font
 infos = hb.buffer_get_glyph_infos (buf)
 positions = hb.buffer_get_glyph_positions (buf)
 
-for info, pos in zip (infos, positions):
+বাবে info, pos অন্তঃ zip (infos, positions):
 	gid = info.codepoint
 	cluster = info.cluster
 	x_advance = pos.x_advance

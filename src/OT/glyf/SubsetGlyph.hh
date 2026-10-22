@@ -2,71 +2,71 @@
 #define OT_GLYF_SUBSETGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#অন্তর্ভাৱ "../../hb-open-type.hh"
 
 
-namespace OT {
+নামাকাশ OT {
 
-struct glyf_accelerator_t;
+সংরচনা glyf_accelerator_t;
 
-namespace glyf_impl {
+নামাকাশ glyf_impl {
 
 
-struct SubsetGlyph
+সংরচনা SubsetGlyph
 {
   hb_codepoint_t old_gid;
   Glyph source_glyph;
   hb_bytes_t dest_start;  /* region of source_glyph to copy first */
   hb_bytes_t dest_end;    /* region of source_glyph to copy second */
-  bool allocated;
+  তার্কিক allocated;
 
-  bool serialize (hb_serialize_context_t *c,
-		  bool use_short_loca,
-		  const hb_subset_plan_t *plan) const
+  তার্কিক serialize (hb_serialize_context_t *c,
+		  তার্কিক use_short_loca,
+		  ধ্রুৱ hb_subset_plan_t *plan) ধ্রুৱ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
 
     hb_bytes_t dest_glyph = dest_start.copy (c);
     hb_bytes_t end_copy = dest_end.copy (c);
-    if (!end_copy.arrayZ || !dest_glyph.arrayZ) {
-      return false;
+    যদি (!end_copy.arrayZ || !dest_glyph.arrayZ) {
+      ঘূৰাই মিছা;
     }
 
     dest_glyph = hb_bytes_t (&dest_glyph, dest_glyph.length + end_copy.length);
-    unsigned int pad_length = use_short_loca ? padding () : 0;
-    DEBUG_MSG (SUBSET, nullptr, "serialize %u byte glyph, width %u pad %u", dest_glyph.length, dest_glyph.length + pad_length, pad_length);
+    unsigned পূর্ণাঙ্ক pad_length = use_short_loca ? padding () : 0;
+    DEBUG_বাৰ্তা (SUBSET, nullptr, "serialize %u byte glyph, width %u pad %u", dest_glyph.length, dest_glyph.length + pad_length, pad_length);
 
     HBUINT8 pad;
     pad = 0;
-    while (pad_length > 0)
+    যেতিয়ালৈ (pad_length > 0)
     {
-      (void) c->embed (pad);
+      (শূন্য) c->embed (pad);
       pad_length--;
     }
 
-    if (unlikely (!dest_glyph.length)) return_trace (true);
+    যদি (unlikely (!dest_glyph.length)) return_trace (সঁচা);
 
-    bool extended = source_glyph.is_extended ();
+    তার্কিক extended = source_glyph.is_extended ();
 
     /* update components gids. */
-    for (auto &_ : Glyph (dest_glyph, old_gid, extended).get_composite_iterator ())
+    বাবে (auto &_ : Glyph (dest_glyph, old_gid, extended).get_composite_iterator ())
     {
       hb_codepoint_t new_gid;
-      if (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
+      যদি (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
 	const_cast<CompositeGlyphRecord &> (_).set_gid (new_gid, extended);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (extended)
+    যদি (extended)
     {
       auto it = Glyph (dest_glyph, old_gid, extended).get_composite_iterator ();
-      if (it)
+      যদি (it)
       {
 	/* lower GID24 to GID16 in components if possible. */
-	char *p = it ? (char *) &*it : nullptr;
-	char *q = p;
-	const char *end = dest_glyph.arrayZ + dest_glyph.length;
-	while (it)
+	ৱর্ণ *p = it ? (ৱর্ণ *) &*it : nullptr;
+	ৱর্ণ *q = p;
+	ধ্রুৱ ৱর্ণ *end = dest_glyph.arrayZ + dest_glyph.length;
+	যেতিয়ালৈ (it)
 	{
 	  auto &rec = const_cast<CompositeGlyphRecord &> (*it);
 	  ++it;
@@ -95,7 +95,7 @@ struct SubsetGlyph
 
 	hb_memset (p, 0x7A /* TrueType instruction ROFF; harmless */, end - p);
 	p += end - p;
-	dest_glyph = hb_bytes_t (dest_glyph.arrayZ, p - (char *) dest_glyph.arrayZ);
+	dest_glyph = hb_bytes_t (dest_glyph.arrayZ, p - (ৱর্ণ *) dest_glyph.arrayZ);
 
 	// TODO: Padding; & trim serialized bytes.
 	// TODO: Update length in loca. Ugh.
@@ -103,39 +103,39 @@ struct SubsetGlyph
     }
 #endif
 
-    if (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    যদি (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       Glyph (dest_glyph, old_gid, extended).drop_hints ();
 
-    if (plan->flags & HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG)
+    যদি (plan->flags & HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG)
       Glyph (dest_glyph, old_gid, extended).set_overlaps_flag ();
 
-    return_trace (true);
+    return_trace (সঁচা);
   }
 
-  bool compile_bytes_with_deltas (const hb_subset_plan_t *plan,
+  তার্কিক compile_bytes_with_deltas (ধ্রুৱ hb_subset_plan_t *plan,
                                   hb_font_t *font,
-                                  const glyf_accelerator_t &glyf)
+                                  ধ্রুৱ glyf_accelerator_t &glyf)
   {
     allocated = source_glyph.compile_bytes_with_deltas (plan, font, glyf, dest_start, dest_end);
-    return allocated;
+    ঘূৰাই allocated;
   }
 
-  void free_compiled_bytes ()
+  শূন্য free_compiled_bytes ()
   {
-    if (likely (allocated)) {
-      allocated = false;
+    যদি (likely (allocated)) {
+      allocated = মিছা;
       dest_start.fini ();
       dest_end.fini ();
     }
   }
 
-  void drop_hints_bytes ()
+  শূন্য drop_hints_bytes ()
   { source_glyph.drop_hints_bytes (dest_start, dest_end); }
 
-  unsigned int      length () const { return dest_start.length + dest_end.length; }
+  unsigned পূর্ণাঙ্ক      length () ধ্রুৱ { ঘূৰাই dest_start.length + dest_end.length; }
   /* pad to 2 to ensure 2-byte loca will be ok */
-  unsigned int     padding () const { return length () % 2; }
-  unsigned int padded_size () const { return length () + padding (); }
+  unsigned পূর্ণাঙ্ক     padding () ধ্রুৱ { ঘূৰাই length () % 2; }
+  unsigned পূর্ণাঙ্ক padded_size () ধ্রুৱ { ঘূৰাই length () + padding (); }
 };
 
 

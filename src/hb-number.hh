@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_HH
-#define HB_NUMBER_HH
+#ifndef HB_সংখ্যা_HH
+#define HB_সংখ্যা_HH
 
-HB_INTERNAL bool
-hb_parse_int (const char **pp, const char *end, int *pv,
-	      bool whole_buffer = false);
+HB_INTERNAL তার্কিক
+hb_parse_int (ধ্রুৱ ৱর্ণ **pp, ধ্রুৱ ৱর্ণ *end, পূর্ণাঙ্ক *pv,
+	      তার্কিক whole_buffer = মিছা);
 
-HB_INTERNAL bool
-hb_parse_uint (const char **pp, const char *end, unsigned int *pv,
-	       bool whole_buffer = false, int base = 10);
+HB_INTERNAL তার্কিক
+hb_parse_uint (ধ্রুৱ ৱর্ণ **pp, ধ্রুৱ ৱর্ণ *end, unsigned পূর্ণাঙ্ক *pv,
+	       তার্কিক whole_buffer = মিছা, পূর্ণাঙ্ক base = 10);
 
-HB_INTERNAL bool
-hb_parse_double (const char **pp, const char *end, double *pv,
-		 bool whole_buffer = false);
+HB_INTERNAL তার্কিক
+hb_parse_double (ধ্রুৱ ৱর্ণ **pp, ধ্রুৱ ৱর্ণ *end, দ্ৱিগুণ *pv,
+		 তার্কিক whole_buffer = মিছা);
 
 #endif /* HB_NUMBER_HH */

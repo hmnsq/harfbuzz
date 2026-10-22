@@ -27,9 +27,9 @@
 #ifndef HB_CAIRO_H
 #define HB_CAIRO_H
 
-#include "hb.h"
+#অন্তর্ভাৱ "hb.h"
 
-#include <cairo.h>
+#অন্তর্ভাৱ <cairo.h>
 
 HB_BEGIN_DECLS
 
@@ -59,39 +59,39 @@ hb_cairo_font_face_get_face (cairo_font_face_t *font_face);
  *
  * Since: 7.0.0
  */
-typedef hb_font_t * (*hb_cairo_font_init_func_t) (hb_font_t *font,
+প্রকারনির্দেশ hb_font_t * (*hb_cairo_font_init_func_t) (hb_font_t *font,
 						  cairo_scaled_font_t *scaled_font,
-						  void *user_data);
+						  শূন্য *user_data);
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_cairo_font_face_set_font_init_func (cairo_font_face_t *font_face,
 				       hb_cairo_font_init_func_t func,
-				       void *user_data,
+				       শূন্য *user_data,
 				       hb_destroy_func_t destroy);
 
 HB_EXTERN hb_font_t *
 hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font);
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
-				     unsigned int scale_factor);
+				     unsigned পূর্ণাঙ্ক scale_factor);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned পূর্ণাঙ্ক
 hb_cairo_font_face_get_scale_factor (cairo_font_face_t *font_face);
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
 			     hb_bool_t utf8_clusters,
-			     double x_scale_factor,
-			     double y_scale_factor,
-			     double x,
-			     double y,
-			     const char *utf8,
-			     int utf8_len,
+			     দ্ৱিগুণ x_scale_factor,
+			     দ্ৱিগুণ y_scale_factor,
+			     দ্ৱিগুণ x,
+			     দ্ৱিগুণ y,
+			     ধ্রুৱ ৱর্ণ *utf8,
+			     পূর্ণাঙ্ক utf8_len,
 			     cairo_glyph_t **glyphs,
-			     unsigned int *num_glyphs,
+			     unsigned পূর্ণাঙ্ক *অঙ্ক_glyphs,
 			     cairo_text_cluster_t **clusters,
-			     unsigned int *num_clusters,
+			     unsigned পূর্ণাঙ্ক *অঙ্ক_clusters,
 			     cairo_text_cluster_flags_t *cluster_flags);
 
 HB_END_DECLS

@@ -1,12 +1,12 @@
-#include "hb-ot-shaper-use-table.hh"
+#অন্তর্ভাৱ "hb-ot-shaper-use-table.hh"
 
-int main (int argc, char **argv)
+পূর্ণাঙ্ক main (পূর্ণাঙ্ক argc, ৱর্ণ **argv)
 {
-  if (argc != 2)
+  যদি (argc != 2)
   {
-    for (unsigned u = 0; u < 0x10FFFFu; u++)
+    বাবে (unsigned u = 0; u < 0x10FFFFu; u++)
       printf ("U+%04X %d\n", u, hb_use_get_category (u));
-    return 0;
+    ঘূৰাই 0;
   }
 
   hb_codepoint_t u;
@@ -14,5 +14,5 @@ int main (int argc, char **argv)
 
   printf ("%d\n", hb_use_get_category (u));
 
-  return 0;
+  ঘূৰাই 0;
 }

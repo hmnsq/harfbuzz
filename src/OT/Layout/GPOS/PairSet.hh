@@ -1,213 +1,213 @@
 #ifndef OT_LAYOUT_GPOS_PAIRSET_HH
 #define OT_LAYOUT_GPOS_PAIRSET_HH
 
-#include "PairValueRecord.hh"
+#অন্তর্ভাৱ "PairValueRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
 
 /* Pair records vary in glyph width; their value traversal need not. */
-struct pair_set_values_t
+সংরচনা pair_set_মানসমূহ_t
 {
-  const ValueBase *base;
+  ধ্রুৱ মান_Base *base;
   glyph_data_t glyphs;
-  const Value *values;
-  unsigned count;
+  ধ্রুৱ মান *values;
+  unsigned গুনতি;
   unsigned record_size;
 
-  unsigned get_glyph (unsigned i) const
+  unsigned get_glyph (unsigned i) ধ্রুৱ
   {
     glyph_data_t glyph = glyphs;
-    glyph.data = (const char *) glyph.data + i * record_size;
-    return glyph[0];
+    glyph.data = (ধ্রুৱ ৱর্ণ *) glyph.data + i * record_size;
+    ঘূৰাই glyph[0];
   }
 
-  const Value *get_values (unsigned i) const
-  { return reinterpret_cast<const Value *> ((const char *) values + i * record_size); }
+  ধ্রুৱ মান *get_মানসমূহ (unsigned i) ধ্রুৱ
+  { ঘূৰাই reinterpret_cast<ধ্রুৱ মান *> ((ধ্রুৱ ৱর্ণ *) values + i * record_size); }
 
   hb_pair_t<unsigned, unsigned>
-  compute_effective_value_formats (const hb_set_t &glyphset,
-                                   const ValueFormat valueFormats[2],
-                                   bool strip_hints, bool strip_empty,
-                                   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  compute_effective_মান_formats (ধ্রুৱ hb_set_t &glyphset,
+                                   ধ্রুৱ মান_Format মান_Formats[2],
+                                   তার্কিক strip_hints, তার্কিক strip_empty,
+                                   ধ্রুৱ hb_hashmap_t<unsigned, hb_pair_t<unsigned, পূর্ণাঙ্ক>> *varidx_delta_map) ধ্রুৱ
   {
-    unsigned len1 = valueFormats[0].get_len ();
+    unsigned len1 = মান_Formats[0].get_len ();
     unsigned format1 = 0, format2 = 0;
-    for (unsigned i = 0; i < count; i++)
+    বাবে (unsigned i = 0; i < গুনতি; i++)
     {
-      if (!glyphset.has (get_glyph (i))) continue;
-      const Value *v = get_values (i);
-      format1 |= valueFormats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
-      format2 |= valueFormats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
+      যদি (!glyphset.has (get_glyph (i))) অনুৱর্ত;
+      ধ্রুৱ মান *v = get_মানসমূহ (i);
+      format1 |= মান_Formats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
+      format2 |= মান_Formats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
     }
-    return hb_pair (format1, format2);
+    ঘূৰাই hb_pair (format1, format2);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat valueFormats[2]) const
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ধ্রুৱ মান_Format মান_Formats[2]) ধ্রুৱ
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned len1 = মান_Formats[0].get_len ();
+    unsigned len2 = মান_Formats[1].get_len ();
+    বাবে (unsigned i = 0; i < গুনতি; i++)
     {
-      if (!c->glyph_set->has (get_glyph (i))) continue;
-      const hb_array_t<const Value> v = hb_array (get_values (i), len1 + len2);
-      if (valueFormats[0].has_device ())
-        valueFormats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
-      if (valueFormats[1].has_device ())
-        valueFormats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
+      যদি (!c->glyph_set->has (get_glyph (i))) অনুৱর্ত;
+      ধ্রুৱ hb_array_t<ধ্রুৱ মান> v = hb_array (get_মানসমূহ (i), len1 + len2);
+      যদি (মান_Formats[0].has_device ())
+        মান_Formats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
+      যদি (মান_Formats[1].has_device ())
+        মান_Formats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
     }
   }
 };
 
 template <typename Types>
-struct PairSet : ValueBase
+সংরচনা PairSet : মান_Base
 {
   template <typename Types2>
-  friend struct PairPosFormat1_3;
+  friend সংরচনা PairPosFormat1_3;
 
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  using Pair_মান_Record = GPOS_impl::Pair_মান_Record<Types>;
 
-  protected:
+  রক্ষিত:
   typename Types::HBUINT
                         len;    /* Number of PairValueRecords */
-  PairValueRecord       firstPairValueRecord;
+  Pair_মান_Record       first_Pair_মান_Record;
                                 /* Array of PairValueRecords--ordered
                                  * by GlyphID of the second glyph */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (Types::HBUINT::static_size);
 
-  static size_t get_size (unsigned len1, unsigned len2)
+  স্থির size_t get_size (unsigned len1, unsigned len2)
   {
-    return Types::HBGlyphID::static_size + Value::static_size * (len1 + len2);
+    ঘূৰাই Types::HBGlyphID::static_size + মান::static_size * (len1 + len2);
   }
-  static size_t get_size (const ValueFormat valueFormats[2])
+  স্থির size_t get_size (ধ্রুৱ মান_Format মান_Formats[2])
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    return get_size (len1, len2);
+    unsigned len1 = মান_Formats[0].get_len ();
+    unsigned len2 = মান_Formats[1].get_len ();
+    ঘূৰাই get_size (len1, len2);
   }
 
-  struct sanitize_closure_t
+  সংরচনা sanitize_closure_t
   {
-    const ValueFormat *valueFormats;
-    unsigned int len1; /* valueFormats[0].get_len() */
+    ধ্রুৱ মান_Format *মান_Formats;
+    unsigned পূর্ণাঙ্ক len1; /* valueFormats[0].get_len() */
     size_t stride; /* bytes */
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const sanitize_closure_t *closure) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, ধ্রুৱ sanitize_closure_t *closure) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    যদি (!(c->check_struct (এতত্) &&
 	  hb_barrier () &&
-          c->check_range (&firstPairValueRecord,
+          c->check_range (&first_Pair_মান_Record,
                           len,
-                          closure->stride))) return_trace (false);
+                          closure->stride))) return_trace (মিছা);
     hb_barrier ();
 
-    unsigned int count = len;
-    const PairValueRecord *record = &firstPairValueRecord;
+    unsigned পূর্ণাঙ্ক গুনতি = len;
+    ধ্রুৱ Pair_মান_Record *record = &first_Pair_মান_Record;
     return_trace (c->lazy_some_gpos ||
-		  (closure->valueFormats[0].sanitize_values_stride_unsafe (c, this, &record->values[0], count, closure->stride) &&
-                   closure->valueFormats[1].sanitize_values_stride_unsafe (c, this, &record->values[closure->len1], count, closure->stride)));
+		  (closure->মান_Formats[0].sanitize_মানসমূহ_stride_unsafe (c, এতত্, &record->values[0], গুনতি, closure->stride) &&
+                   closure->মান_Formats[1].sanitize_মানসমূহ_stride_unsafe (c, এতত্, &record->values[closure->len1], গুনতি, closure->stride)));
   }
 
-  bool intersects (const hb_set_t *glyphs,
-                   const ValueFormat *valueFormats) const
+  তার্কিক intersects (ধ্রুৱ hb_set_t *glyphs,
+                   ধ্রুৱ মান_Format *মান_Formats) ধ্রুৱ
   {
-    unsigned record_size = get_size (valueFormats);
+    unsigned record_size = get_size (মান_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    ধ্রুৱ Pair_মান_Record *record = &first_Pair_মান_Record;
+    unsigned পূর্ণাঙ্ক গুনতি = len;
+    বাবে (unsigned পূর্ণাঙ্ক i = 0; i < গুনতি; i++)
     {
-      if (glyphs->has (record->secondGlyph))
-        return true;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      যদি (glyphs->has (record->secondGlyph))
+        ঘূৰাই সঁচা;
+      record = &StructAtOffset<ধ্রুৱ Pair_মান_Record> (record, record_size);
     }
-    return false;
+    ঘূৰাই মিছা;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-                       const ValueFormat *valueFormats) const
+  শূন্য collect_glyphs (hb_collect_glyphs_context_t *c,
+                       ধ্রুৱ মান_Format *মান_Formats) ধ্রুৱ
   {
-    unsigned record_size = get_size (valueFormats);
+    unsigned record_size = get_size (মান_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    c->input->add_array (&record->secondGlyph, len, record_size);
+    ধ্রুৱ Pair_মান_Record *record = &first_Pair_মান_Record;
+    c->প্ৰবেশ->add_array (&record->secondGlyph, len, record_size);
   }
 
   template <typename set_t>
-  void collect_second_glyphs (set_t *glyphs,
-			      const ValueFormat *valueFormats) const
+  শূন্য collect_second_glyphs (set_t *glyphs,
+			      ধ্রুৱ মান_Format *মান_Formats) ধ্রুৱ
   {
-    unsigned record_size = get_size (valueFormats);
-    const PairValueRecord *record = &firstPairValueRecord;
+    unsigned record_size = get_size (মান_Formats);
+    ধ্রুৱ Pair_মান_Record *record = &first_Pair_মান_Record;
     glyphs->add_array (&record->secondGlyph, len, record_size);
   }
 
-  pair_set_values_t get_values_view (const ValueFormat valueFormats[2]) const
+  pair_set_মানসমূহ_t get_মানসমূহ_view (ধ্রুৱ মান_Format মান_Formats[2]) ধ্রুৱ
   {
-    return {this, &firstPairValueRecord.secondGlyph, &firstPairValueRecord.values[0],
-            (unsigned) len, (unsigned) get_size (valueFormats)};
+    ঘূৰাই {এতত্, &first_Pair_মান_Record.secondGlyph, &first_Pair_মান_Record.values[0],
+            (unsigned) len, (unsigned) get_size (মান_Formats)};
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats) const
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ধ্রুৱ মান_Format *মান_Formats) ধ্রুৱ
   {
-    get_values_view (valueFormats).collect_variation_indices (c, valueFormats);
+    get_মানসমূহ_view (মান_Formats).collect_variation_indices (c, মান_Formats);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-              const ValueFormat *valueFormats,
-              unsigned int pos) const
+  তার্কিক apply (hb_ot_apply_context_t *c,
+              ধ্রুৱ মান_Format *মান_Formats,
+              unsigned পূর্ণাঙ্ক pos) ধ্রুৱ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (এতত্);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int len1 = valueFormats[0].get_len ();
-    unsigned int len2 = valueFormats[1].get_len ();
+    unsigned পূর্ণাঙ্ক len1 = মান_Formats[0].get_len ();
+    unsigned পূর্ণাঙ্ক len2 = মান_Formats[1].get_len ();
     unsigned record_size = get_size (len1, len2);
 
-    const PairValueRecord *record = hb_bsearch (buffer->info[pos].codepoint,
-                                                &firstPairValueRecord,
+    ধ্রুৱ Pair_মান_Record *record = hb_bsearch (buffer->info[pos].codepoint,
+                                                &first_Pair_মান_Record,
                                                 (unsigned) len,
                                                 record_size);
-    if (record)
+    যদি (record)
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      যদি (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "try kerning glyphs at %u,%u",
 			    c->buffer->idx, pos);
       }
 
-      bool applied_first = len1 && valueFormats[0].apply_value (c, this, &record->values[0], buffer->cur_pos());
-      bool applied_second = len2 && valueFormats[1].apply_value (c, this, &record->values[len1], buffer->pos[pos]);
+      তার্কিক applied_first = len1 && মান_Formats[0].apply_মান (c, এতত্, &record->values[0], buffer->cur_pos());
+      তার্কিক applied_second = len2 && মান_Formats[1].apply_মান (c, এতত্, &record->values[len1], buffer->pos[pos]);
 
-      if (applied_first || applied_second)
-	if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      যদি (applied_first || applied_second)
+	যদি (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
 	{
 	  c->buffer->message (c->font,
 			      "kerned glyphs at %u,%u",
 			      c->buffer->idx, pos);
 	}
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      যদি (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "tried kerning glyphs at %u,%u",
 			    c->buffer->idx, pos);
       }
 
-      if (applied_first || applied_second)
+      যদি (applied_first || applied_second)
         buffer->unsafe_to_break (buffer->idx, pos + 1);
-      else
+      অন্যথা
         /* Even a zero-valued pair record is a concat hazard. */
         buffer->unsafe_to_concat (buffer->idx, pos + 1);
 
-      if (len2)
+      যদি (len2)
       {
 	pos++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
@@ -216,52 +216,52 @@ struct PairSet : ValueBase
       }
 
       buffer->idx = pos;
-      return_trace (true);
+      return_trace (সঁচা);
     }
     buffer->unsafe_to_concat (buffer->idx, pos + 1);
-    return_trace (false);
+    return_trace (মিছা);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ValueFormat valueFormats[2],
-               const ValueFormat newFormats[2]) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ মান_Format মান_Formats[2],
+               ধ্রুৱ মান_Format newFormats[2]) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এতত্);
     auto snap = c->serializer->snapshot ();
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*এতত্);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিছা);
     out->len = 0;
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ধ্রুৱ hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ধ্রুৱ hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
+    unsigned len1 = মান_Formats[0].get_len ();
+    unsigned len2 = মান_Formats[1].get_len ();
     unsigned record_size = get_size (len1, len2);
 
-    pair_value_record_context_t context =
+    pair_মান_record_context_t context =
     {
-      this,
-      valueFormats,
+      এতত্,
+      মান_Formats,
       newFormats,
       len1,
       &glyph_map,
       &c->plan->layout_variation_idx_delta_map
     };
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned count = len, num = 0;
-    for (unsigned i = 0; i < count; i++)
+    ধ্রুৱ Pair_মান_Record *record = &first_Pair_মান_Record;
+    unsigned গুনতি = len, অঙ্ক = 0;
+    বাবে (unsigned i = 0; i < গুনতি; i++)
     {
-      if (glyphset.has (record->secondGlyph)
-         && record->subset (c, &context)) num++;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      যদি (glyphset.has (record->secondGlyph)
+         && record->subset (c, &context)) অঙ্ক++;
+      record = &StructAtOffset<ধ্রুৱ Pair_মান_Record> (record, record_size);
     }
 
-    out->len = num;
-    if (!num) c->serializer->revert (snap);
-    return_trace (num);
+    out->len = অঙ্ক;
+    যদি (!অঙ্ক) c->serializer->revert (snap);
+    return_trace (অঙ্ক);
   }
 };
 

@@ -27,58 +27,58 @@
 #ifndef HB_SHAPE_PLAN_HH
 #define HB_SHAPE_PLAN_HH
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-ot-shape.hh"
+#অন্তর্ভাৱ "hb.hh"
+#অন্তর্ভাৱ "hb-shaper.hh"
+#অন্তর্ভাৱ "hb-ot-shape.hh"
 
-struct hb_shape_plan_key_t
+সংরচনা hb_shape_plan_চাবি_t
 {
   hb_segment_properties_t  props;
 
-  const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  ধ্রুৱ hb_feature_t      *user_features;
+  unsigned পূর্ণাঙ্ক             অঙ্ক_user_features;
 
 #ifndef HB_NO_OT_SHAPE
-  hb_ot_shape_plan_key_t   ot;
+  hb_ot_shape_plan_চাবি_t   ot;
 #endif
 
   hb_shape_func_t         *shaper_func;
-  const char              *shaper_name;
+  ধ্রুৱ ৱর্ণ              *shaper_name;
 
-  HB_INTERNAL bool init (bool                           copy,
+  HB_INTERNAL তার্কিক init (তার্কিক                           copy,
 			 hb_face_t                     *face,
-			 const hb_segment_properties_t *props,
-			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
-			 const int                     *coords,
-			 unsigned int                   num_coords,
-			 const char * const            *shaper_list);
+			 ধ্রুৱ hb_segment_properties_t *props,
+			 ধ্রুৱ hb_feature_t            *user_features,
+			 unsigned পূর্ণাঙ্ক                   অঙ্ক_user_features,
+			 ধ্রুৱ পূর্ণাঙ্ক                     *coords,
+			 unsigned পূর্ণাঙ্ক                   অঙ্ক_coords,
+			 ধ্রুৱ ৱর্ণ * ধ্রুৱ            *shaper_list);
 
-  HB_INTERNAL void fini ()
+  HB_INTERNAL শূন্য fini ()
   {
-    hb_free ((void *) user_features);
+    hb_free ((শূন্য *) user_features);
     user_features = nullptr;
 #ifndef HB_NO_OT_SHAPE
     ot.fini ();
 #endif
   }
 
-  HB_INTERNAL bool user_features_match (const hb_shape_plan_key_t *other);
+  HB_INTERNAL তার্কিক user_features_match (ধ্রুৱ hb_shape_plan_চাবি_t *other);
 
-  HB_INTERNAL bool equal (const hb_shape_plan_key_t *other);
+  HB_INTERNAL তার্কিক equal (ধ্রুৱ hb_shape_plan_চাবি_t *other);
 };
 
-struct hb_shape_plan_t
+সংরচনা hb_shape_plan_t
 {
   HB_INTERNAL ~hb_shape_plan_t ();
   hb_object_header_t header;
   hb_face_t *face_unsafe; /* We don't carry a reference to face. */
-  hb_shape_plan_key_t key;
+  hb_shape_plan_চাবি_t key;
 #ifndef HB_NO_OT_SHAPE
   hb_ot_shape_plan_t ot;
 #endif
 #ifdef HAVE_HARFRUST
-  hb_atomic_t<void *> harfrust_data;
+  hb_atomic_t<শূন্য *> harfrust_data;
 #endif
 };
 

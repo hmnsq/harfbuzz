@@ -1,15 +1,15 @@
 #ifndef OT_LAYOUT_GSUB_COMMON_HH
 #define OT_LAYOUT_GSUB_COMMON_HH
 
-#include "../../../hb-serialize.hh"
-#include "../../../hb-ot-layout-gsubgpos.hh"
+#অন্তর্ভাৱ "../../../hb-serialize.hh"
+#অন্তর্ভাৱ "../../../hb-ot-layout-gsubgpos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GSUB_impl {
 
 template<typename Iterator>
-static void SingleSubst_serialize (hb_serialize_context_t *c,
+স্থির শূন্য SingleSubst_serialize (hb_serialize_context_t *c,
                                    Iterator it);
 
 }

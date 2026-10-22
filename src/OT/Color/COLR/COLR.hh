@@ -28,17 +28,17 @@
 #ifndef OT_COLOR_COLR_COLR_HH
 #define OT_COLOR_COLR_COLR_HH
 
-#include "../../../hb.hh"
-#include "../../../hb-decycler.hh"
-#include "../../../hb-open-type.hh"
-#include "../../../hb-ot-var-common.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-paint-bounded.hh"
-#include "../../../hb-paint-extents.hh"
-#include "../../../hb-depend-data.hh"
+#অন্তর্ভাৱ "../../../hb.hh"
+#অন্তর্ভাৱ "../../../hb-decycler.hh"
+#অন্তর্ভাৱ "../../../hb-open-type.hh"
+#অন্তর্ভাৱ "../../../hb-ot-var-common.hh"
+#অন্তর্ভাৱ "../../../hb-paint.hh"
+#অন্তর্ভাৱ "../../../hb-paint-bounded.hh"
+#অন্তর্ভাৱ "../../../hb-paint-extents.hh"
+#অন্তর্ভাৱ "../../../hb-depend-data.hh"
 
-#include "../../../hb-ot-dual.hh"
-#include "../CPAL/CPAL.hh"
+#অন্তর্ভাৱ "../../../hb-ot-dual.hh"
+#অন্তর্ভাৱ "../CPAL/CPAL.hh"
 
 /*
  * COLR -- Color
@@ -46,51 +46,51 @@
  */
 #define HB_OT_TAG_COLR HB_TAG('C','O','L','R')
 
-namespace OT {
-struct hb_paint_context_t;
+নামাকাশ OT {
+সংরচনা hb_paint_context_t;
 }
 
-struct hb_colr_scratch_t
+সংরচনা hb_colr_scratch_t
 {
   hb_paint_bounded_context_t paint_bounded;
   hb_paint_extents_context_t paint_extents;
 };
 
-namespace OT {
+নামাকাশ OT {
 
-struct COLR;
+সংরচনা COLR;
 
-struct Paint;
+সংরচনা Paint;
 
-struct hb_paint_context_t :
+সংরচনা hb_paint_context_t :
        hb_dispatch_context_t<hb_paint_context_t>
 {
-  const char *get_name () { return "PAINT"; }
+  ধ্রুৱ ৱর্ণ *get_name () { ঘূৰাই "PAINT"; }
   template <typename T>
-  return_t dispatch (const T &obj) { obj.paint_glyph (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  return_t dispatch (ধ্রুৱ T &obj) { obj.paint_glyph (এতত্); ঘূৰাই hb_empty_t (); }
+  স্থির return_t default_return_মান () { ঘূৰাই hb_empty_t (); }
 
-  const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  ধ্রুৱ COLR* get_colr_table () ধ্রুৱ
+  { ঘূৰাই reinterpret_cast<ধ্রুৱ COLR *> (base); }
 
-public:
-  const void *base;
+সার্ৱজনিক:
+  ধ্রুৱ শূন্য *base;
   hb_paint_funcs_t *funcs;
-  void *data;
+  শূন্য *data;
   hb_font_t *font;
-  hb_array_t<const BGRAColor> palette;
+  hb_array_t<ধ্রুৱ BGRAColor> palette;
   hb_color_t foreground;
   ItemVarStoreInstancer &instancer;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  পূর্ণাঙ্ক depth_বাম = HB_MAX_NESTING_LEVEL;
+  পূর্ণাঙ্ক edge_গুনতি = HB_MAX_GRAPH_EDGE_গুনতি;
 
-  hb_paint_context_t (const void *base_,
+  hb_paint_context_t (ধ্রুৱ শূন্য *base_,
 		      hb_paint_funcs_t *funcs_,
-		      void *data_,
+		      শূন্য *data_,
                       hb_font_t *font_,
-                      unsigned int palette_,
+                      unsigned পূর্ণাঙ্ক palette_,
                       hb_color_t foreground_,
 		      ItemVarStoreInstancer &instancer_) :
     base (base_),
@@ -100,19 +100,19 @@ public:
     palette (
 #ifndef HB_NO_COLOR
 	     // https://github.com/harfbuzz/harfbuzz/issues/5116
-	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_count () ? palette_ : 0)
+	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_গুনতি () ? palette_ : 0)
 #endif
     ),
     foreground (foreground_),
     instancer (instancer_)
   {
-    if (font->is_synthetic)
+    যদি (font->is_synthetic)
     {
       font = hb_font_create_sub_font (font);
-      hb_font_set_synthetic_bold (font, 0, 0, true);
+      hb_font_set_synthetic_bold (font, 0, 0, সঁচা);
       hb_font_set_synthetic_slant (font, 0);
     }
-    else
+    অন্যথা
       hb_font_reference (font);
   }
 
@@ -121,177 +121,177 @@ public:
     hb_font_destroy (font);
   }
 
-  static unsigned
-  color_alpha (hb_color_t color, float alpha)
+  স্থির unsigned
+  color_alpha (hb_color_t color, ভিন্ন alpha)
   {
     /* Font-supplied alpha is F2DOT14 plus variation deltas, so it can be
      * negative or greater than one; converting that to unsigned is UB. */
-    return roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
+    ঘূৰাই roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
   }
 
-  hb_color_t get_color (unsigned int color_index, float alpha, hb_bool_t *is_foreground)
+  hb_color_t get_color (unsigned পূর্ণাঙ্ক color_index, ভিন্ন alpha, hb_bool_t *is_foreground)
   {
     hb_color_t color = foreground;
 
-    *is_foreground = true;
+    *is_foreground = সঁচা;
 
-    if (color_index != 0xffff)
+    যদি (color_index != 0xffff)
     {
-      if (!funcs->custom_palette_color (data, color_index, &color))
+      যদি (!funcs->custom_palette_color (data, color_index, &color))
         color = palette[color_index];
 
-      *is_foreground = false;
+      *is_foreground = মিছা;
     }
 
-    return HB_COLOR (hb_color_get_blue (color),
+    ঘূৰাই HB_COLOR (hb_color_get_blue (color),
                      hb_color_get_green (color),
                      hb_color_get_red (color),
                      color_alpha (color, alpha));
   }
 
-  inline void recurse (const Paint &paint);
+  অন্তঃস্থ শূন্য recurse (ধ্রুৱ Paint &paint);
 };
 
-struct hb_colrv1_closure_context_t :
+সংরচনা hb_colrv1_closure_context_t :
        hb_dispatch_context_t<hb_colrv1_closure_context_t>
 {
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (ধ্রুৱ T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    যদি (unlikely (nesting_level_বাম == 0))
+      ঘূৰাই hb_empty_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    যদি (paint_visited (&obj))
+      ঘূৰাই hb_empty_t ();
 
-    nesting_level_left--;
-    obj.closurev1 (this);
-    nesting_level_left++;
-    return hb_empty_t ();
+    nesting_level_বাম--;
+    obj.closurev1 (এতত্);
+    nesting_level_বাম++;
+    ঘূৰাই hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  স্থির return_t default_return_মান () { ঘূৰাই hb_empty_t (); }
 
-  bool paint_visited (const void *paint)
+  তার্কিক paint_visited (ধ্রুৱ শূন্য *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) base);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    যদি (visited_paint.in_error() || visited_paint.has (delta))
+      ঘূৰাই সঁচা;
 
     visited_paint.add (delta);
-    return false;
+    ঘূৰাই মিছা;
   }
 
-  const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  ধ্রুৱ COLR* get_colr_table () ধ্রুৱ
+  { ঘূৰাই reinterpret_cast<ধ্রুৱ COLR *> (base); }
 
-  void add_glyph (unsigned glyph_id)
+  শূন্য add_glyph (unsigned glyph_id)
   { glyphs->add (glyph_id); }
 
-  void add_layer_indices (unsigned first_layer_index, unsigned num_of_layers)
+  শূন্য add_layer_indices (unsigned first_layer_index, unsigned অঙ্ক_of_layers)
   {
-    if (num_of_layers == 0) return;
-    layer_indices->add_range (first_layer_index, first_layer_index + num_of_layers - 1);
+    যদি (অঙ্ক_of_layers == 0) ঘূৰাই;
+    layer_indices->add_range (first_layer_index, first_layer_index + অঙ্ক_of_layers - 1);
   }
 
-  void add_palette_index (unsigned palette_index)
+  শূন্য add_palette_index (unsigned palette_index)
   { palette_indices->add (palette_index); }
 
-  void add_var_idxes (unsigned first_var_idx, unsigned num_idxes)
+  শূন্য add_var_idxes (unsigned first_var_idx, unsigned অঙ্ক_idxes)
   {
-    if (!num_idxes || first_var_idx == VarIdx::NO_VARIATION) return;
-    variation_indices->add_range (first_var_idx, first_var_idx + num_idxes - 1);
+    যদি (!অঙ্ক_idxes || first_var_idx == VarIdx::NO_VARIATION) ঘূৰাই;
+    variation_indices->add_range (first_var_idx, first_var_idx + অঙ্ক_idxes - 1);
   }
 
-  public:
-  const void *base;
+  সার্ৱজনিক:
+  ধ্রুৱ শূন্য *base;
   hb_set_t visited_paint;
   hb_set_t *glyphs;
   hb_set_t *layer_indices;
   hb_set_t *palette_indices;
   hb_set_t *variation_indices;
-  unsigned num_var_idxes;
-  unsigned nesting_level_left;
+  unsigned অঙ্ক_var_idxes;
+  unsigned nesting_level_বাম;
 
-  hb_colrv1_closure_context_t (const void *base_,
+  hb_colrv1_closure_context_t (ধ্রুৱ শূন্য *base_,
                                hb_set_t *glyphs_,
                                hb_set_t *layer_indices_,
                                hb_set_t *palette_indices_,
                                hb_set_t *variation_indices_,
-                               unsigned num_var_idxes_ = 1,
-                               unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+                               unsigned অঙ্ক_var_idxes_2 = 1,
+                               unsigned nesting_level_বাম_2 = HB_MAX_NESTING_LEVEL) :
                           base (base_),
                           glyphs (glyphs_),
                           layer_indices (layer_indices_),
                           palette_indices (palette_indices_),
                           variation_indices (variation_indices_),
-                          num_var_idxes (num_var_idxes_),
-                          nesting_level_left (nesting_level_left_)
+                          অঙ্ক_var_idxes (অঙ্ক_var_idxes_2),
+                          nesting_level_বাম (nesting_level_বাম_2)
   {}
 };
 
 
-struct hb_colrv1_depend_context_t :
+সংরচনা hb_colrv1_depend_context_t :
        hb_dispatch_context_t<hb_colrv1_depend_context_t>
 {
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (ধ্রুৱ T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    যদি (unlikely (nesting_level_বাম == 0))
+      ঘূৰাই hb_empty_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    যদি (paint_visited (&obj))
+      ঘূৰাই hb_empty_t ();
 
-    nesting_level_left--;
-    obj.dependv1 (this);
-    nesting_level_left++;
-    return hb_empty_t ();
+    nesting_level_বাম--;
+    obj.dependv1 (এতত্);
+    nesting_level_বাম++;
+    ঘূৰাই hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  স্থির return_t default_return_মান () { ঘূৰাই hb_empty_t (); }
 
-  bool paint_visited (const void *paint)
+  তার্কিক paint_visited (ধ্রুৱ শূন্য *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) colr);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    যদি (visited_paint.in_error() || visited_paint.has (delta))
+      ঘূৰাই সঁচা;
 
     visited_paint.add (delta);
-    if (unlikely (visited_paint.in_error ()))
+    যদি (unlikely (visited_paint.in_error ()))
       depend_data->fail ();
-    return false;
+    ঘূৰাই মিছা;
   }
 
-  const COLR* get_colr_table () const
-  { return colr; }
+  ধ্রুৱ COLR* get_colr_table () ধ্রুৱ
+  { ঘূৰাই colr; }
 
-  public:
-  const COLR *colr;
+  সার্ৱজনিক:
+  ধ্রুৱ COLR *colr;
   hb_depend_data_builder_t *depend_data;
   hb_set_t visited_paint;
-  unsigned nesting_level_left;
+  unsigned nesting_level_বাম;
   hb_codepoint_t source_gid;
 
-  hb_colrv1_depend_context_t (const COLR *colr_,
+  hb_colrv1_depend_context_t (ধ্রুৱ COLR *colr_,
                               hb_depend_data_builder_t *depend_data_,
-                              unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+                              unsigned nesting_level_বাম_2 = HB_MAX_NESTING_LEVEL) :
                           colr (colr_),
                           depend_data (depend_data_),
-                          nesting_level_left (nesting_level_left_),
+                          nesting_level_বাম (nesting_level_বাম_2),
                           source_gid (0)
   {}
 };
 
-struct LayerRecord
+সংরচনা LayerRecord
 {
-  operator hb_ot_color_layer_t () const { return {glyphId, colorIdx}; }
+  operator hb_ot_color_layer_t () ধ্রুৱ { ঘূৰাই {glyphId, colorIdx}; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  public:
+  সার্ৱজনিক:
   HBGlyphID16	glyphId;	/* Glyph ID of layer glyph */
   Index		colorIdx;	/* Index value to use with a
 				 * selected color palette.
@@ -303,73 +303,73 @@ struct LayerRecord
 				 * be used and shall not be
 				 * treated as actual index
 				 * into CPAL ColorRecord array. */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct BaseGlyphRecord
+সংরচনা BaseGlyphRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  পূর্ণাঙ্ক cmp (hb_codepoint_t g) ধ্রুৱ
+  { ঘূৰাই g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  public:
+  সার্ৱজনিক:
   HBGlyphID16	glyphId;	/* Glyph ID of reference glyph */
   HBUINT16	firstLayerIdx;	/* Index (from beginning of
 				 * the Layer Records) to the
 				 * layer record. There will be
 				 * numLayers consecutive entries
 				 * for this base glyph. */
-  HBUINT16	numLayers;	/* Number of color layers
+  HBUINT16	অঙ্ক_Layers;	/* Number of color layers
 				 * associated with this glyph */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (6);
 };
 
 template <typename T>
-struct Variable
+সংরচনা Variable
 {
-  static constexpr bool is_variable = true;
+  স্থির constexpr তার্কিক is_variable = সঁচা;
 
-  const T& get_value () const { return value; }
+  ধ্রুৱ T& get_মান () ধ্রুৱ { ঘূৰাই value; }
 
-  Variable<T>* copy (hb_serialize_context_t *c) const
+  Variable<T>* copy (hb_serialize_context_t *c) ধ্রুৱ
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (এতত্);
+    return_trace (c->embed (এতত্));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const
+  শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ
   { value.dependv1 (c); }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   {
-    c->num_var_idxes = 0;
+    c->অঙ্ক_var_idxes = 0;
     // update c->num_var_idxes during value closure
     value.closurev1 (c);
-    c->add_var_idxes (varIdxBase, c->num_var_idxes);
+    c->add_var_idxes (varIdxBase, c->অঙ্ক_var_idxes);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    if (!value.subset (c, instancer, varIdxBase)) return_trace (false);
-    if (c->plan->all_axes_pinned)
-      return_trace (true);
+    TRACE_SUBSET (এতত্);
+    যদি (!value.subset (c, instancer, varIdxBase)) return_trace (মিছা);
+    যদি (c->plan->all_axes_pinned)
+      return_trace (সঁচা);
 
     VarIdx new_varidx;
     new_varidx = varIdxBase;
-    if (varIdxBase != VarIdx::NO_VARIATION)
+    যদি (varIdxBase != VarIdx::NO_VARIATION)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<unsigned, পূর্ণাঙ্ক> *new_varidx_delta;
+      যদি (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
+        return_trace (মিছা);
 
       new_varidx = hb_first (*new_varidx_delta);
     }
@@ -377,139 +377,139 @@ struct Variable
     return_trace (c->serializer->embed (new_varidx));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && value.sanitize (c));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  শূন্য paint_glyph (hb_paint_context_t *c) ধ্রুৱ
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (এতত্);
     value.paint_glyph (c, varIdxBase);
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  শূন্য get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *stop,
-		       const ItemVarStoreInstancer &instancer) const
+		       ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
     value.get_color_stop (c, stop, varIdxBase, instancer);
   }
 
-  void get_solid_color (hb_paint_context_t *c,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  শূন্য get_solid_color (hb_paint_context_t *c,
+                        hb_bool_t *is_foreground, hb_color_t *color) ধ্রুৱ
   {
     value.get_solid_color (c, varIdxBase, is_foreground, color);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ধ্রুৱ
   {
-    return value.get_extend ();
+    ঘূৰাই value.get_extend ();
   }
 
-  protected:
+  রক্ষিত:
   T      value;
-  public:
+  সার্ৱজনিক:
   VarIdx varIdxBase;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (VarIdx::static_size + T::min_size);
 };
 
 template <typename T>
-struct NoVariable
+সংরচনা NoVariable
 {
-  static constexpr bool is_variable = false;
+  স্থির constexpr তার্কিক is_variable = মিছা;
 
-  const T& get_value () const { return value; }
+  ধ্রুৱ T& get_মান () ধ্রুৱ { ঘূৰাই value; }
 
-  static constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
+  স্থির constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
 
-  NoVariable<T>* copy (hb_serialize_context_t *c) const
+  NoVariable<T>* copy (hb_serialize_context_t *c) ধ্রুৱ
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (এতত্);
+    return_trace (c->embed (এতত্));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const
+  শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ
   { value.dependv1 (c); }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   { value.closurev1 (c); }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এতত্);
     return_trace (value.subset (c, instancer, varIdxBase));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && value.sanitize (c));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  শূন্য paint_glyph (hb_paint_context_t *c) ধ্রুৱ
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (এতত্);
     value.paint_glyph (c, varIdxBase);
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  শূন্য get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *stop,
-		       const ItemVarStoreInstancer &instancer) const
+		       ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
     value.get_color_stop (c, stop, VarIdx::NO_VARIATION, instancer);
   }
 
-  void get_solid_color (hb_paint_context_t *c,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  শূন্য get_solid_color (hb_paint_context_t *c,
+                        hb_bool_t *is_foreground, hb_color_t *color) ধ্রুৱ
   {
     value.get_solid_color (c, VarIdx::NO_VARIATION, is_foreground, color);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ধ্রুৱ
   {
-    return value.get_extend ();
+    ঘূৰাই value.get_extend ();
   }
 
   T      value;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (T::min_size);
 };
 
 // Color structures
 
 template <typename Type, unsigned fraction_bits>
-static void
-set_fixed_clamped (HBFixed<Type, fraction_bits> &out, float value)
+স্থির শূন্য
+set_fixed_clamped (HBFixed<Type, fraction_bits> &out, ভিন্ন value)
 {
   // Variation deltas are unbounded; clamp before the implicit integer cast.
   out.set_int (hb_clamp_to<typename Type::type> (roundf ((value / HBFixed<Type, fraction_bits>::mult))));
 }
 
-struct ColorStop
+সংরচনা ColorStop
 {
-  void dependv1 (hb_colrv1_depend_context_t * c) const {}
+  শূন্য dependv1 (hb_colrv1_depend_context_t * c) ধ্রুৱ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   {
     c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 2;
+    c->অঙ্ক_var_idxes = 2;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (*এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->stopOffset, stopOffset.to_float(instancer (varIdxBase, 0)));
-      float a = alpha.to_float (instancer (varIdxBase, 1));
+      ভিন্ন a = alpha.to_float (instancer (varIdxBase, 1));
       /* Partial instances must keep the unclamped base: retained axes can
        * bring the alpha back into range. Clamp before narrowing a full
        * instance so overflow cannot wrap an opaque alpha to transparent. */
@@ -520,16 +520,16 @@ struct ColorStop
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  শূন্য get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *out,
 		       uint32_t varIdx,
-		       const ItemVarStoreInstancer &instancer) const
+		       ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
     out->offset = stopOffset.to_float(instancer (varIdx, 0));
     out->color = c->get_color (paletteIndex,
@@ -540,111 +540,111 @@ struct ColorStop
   F2DOT14	stopOffset;
   HBUINT16	paletteIndex;
   F2DOT14	alpha;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (2 + 2 * F2DOT14::static_size);
 };
 
-struct Extend : HBUINT8
+সংরচনা Extend : HBUINT8
 {
-  enum {
+  গণনা {
     EXTEND_PAD     = 0,
     EXTEND_REPEAT  = 1,
     EXTEND_REFLECT = 2,
   };
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (1);
 };
 
-template <template<typename> class Var>
-struct ColorLine
+template <template<typename> শ্ৰেণী Var>
+সংরচনা Color_সাৰি
 {
-  void dependv1 (hb_colrv1_depend_context_t * c) const {}
+  শূন্য dependv1 (hb_colrv1_depend_context_t * c) ধ্রুৱ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   {
-    for (const auto &stop : stops.iter ())
+    বাবে (ধ্রুৱ auto &stop : stops.iter ())
       stop.closurev1 (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->start_embed (এতত্);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিছা);
 
-    if (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    if (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (false);
+    যদি (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (মিছা);
+    যদি (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (মিছা);
 
-    for (const auto& stop : stops.iter ())
+    বাবে (ধ্রুৱ auto& stop : stops.iter ())
     {
-      if (!stop.subset (c, instancer)) return_trace (false);
+      যদি (!stop.subset (c, instancer)) return_trace (মিছা);
     }
-    return_trace (true);
+    return_trace (সঁচা);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) &&
                   stops.sanitize (c));
   }
 
   /* get up to count stops from start */
-  unsigned int
+  unsigned পূর্ণাঙ্ক
   get_color_stops (hb_paint_context_t *c,
-                   unsigned int start,
-		   unsigned int *count,
+                   unsigned পূর্ণাঙ্ক start,
+		   unsigned পূর্ণাঙ্ক *গুনতি,
 		   hb_color_stop_t *color_stops,
-		   const ItemVarStoreInstancer &instancer) const
+		   ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    unsigned int len = stops.len;
+    unsigned পূর্ণাঙ্ক len = stops.len;
 
-    if (count && color_stops)
+    যদি (গুনতি && color_stops)
     {
-      unsigned int i;
-      for (i = 0; i < *count && start + i < len; i++)
+      unsigned পূর্ণাঙ্ক i;
+      বাবে (i = 0; i < *গুনতি && start + i < len; i++)
         stops[start + i].get_color_stop (c, &color_stops[i], instancer);
-      *count = i;
+      *গুনতি = i;
     }
 
-    return len;
+    ঘূৰাই len;
   }
 
-  HB_INTERNAL static unsigned int static_get_color_stops (hb_color_line_t *color_line,
-							  void *color_line_data,
-							  unsigned int start,
-							  unsigned int *count,
+  HB_INTERNAL স্থির unsigned পূর্ণাঙ্ক static_get_color_stops (hb_color_সাৰি_t *color_সাৰি,
+							  শূন্য *color_সাৰি_data,
+							  unsigned পূর্ণাঙ্ক start,
+							  unsigned পূর্ণাঙ্ক *গুনতি,
 							  hb_color_stop_t *color_stops,
-							  void *user_data)
+							  শূন্য *user_data)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
+    ধ্রুৱ Color_সাৰি *thiz = (ধ্রুৱ Color_সাৰি *) color_সাৰি_data;
     hb_paint_context_t *c = (hb_paint_context_t *) user_data;
-    return thiz->get_color_stops (c, start, count, color_stops, c->instancer);
+    ঘূৰাই thiz->get_color_stops (c, start, গুনতি, color_stops, c->instancer);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ধ্রুৱ
   {
-    switch ((unsigned int) extend)
+    ৱিকল্প ((unsigned পূর্ণাঙ্ক) extend)
     {
-      case Extend::EXTEND_REPEAT:  return HB_PAINT_EXTEND_REPEAT;
-      case Extend::EXTEND_REFLECT: return HB_PAINT_EXTEND_REFLECT;
-      case Extend::EXTEND_PAD:
-      default:                     return HB_PAINT_EXTEND_PAD;
+      পক্ষ Extend::EXTEND_REPEAT:  ঘূৰাই HB_PAINT_EXTEND_REPEAT;
+      পক্ষ Extend::EXTEND_REFLECT: ঘূৰাই HB_PAINT_EXTEND_REFLECT;
+      পক্ষ Extend::EXTEND_PAD:
+      স্ৱভাৱ:                     ঘূৰাই HB_PAINT_EXTEND_PAD;
     }
   }
 
-  HB_INTERNAL static hb_paint_extend_t static_get_extend (hb_color_line_t *color_line,
-							  void *color_line_data,
-							  void *user_data)
+  HB_INTERNAL স্থির hb_paint_extend_t static_get_extend (hb_color_সাৰি_t *color_সাৰি,
+							  শূন্য *color_সাৰি_data,
+							  শূন্য *user_data)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
-    return thiz->get_extend ();
+    ধ্রুৱ Color_সাৰি *thiz = (ধ্রুৱ Color_সাৰি *) color_সাৰি_data;
+    ঘূৰাই thiz->get_extend ();
   }
 
   Extend	extend;
   Array16Of<Var<ColorStop>>	stops;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_ARRAY_SIZED (3, stops);
 };
 
@@ -653,38 +653,38 @@ struct ColorLine
 // Compositing modes are taken from https://www.w3.org/TR/compositing-1/
 // NOTE: a brief audit of major implementations suggests most support most
 // or all of the specified modes.
-struct CompositeMode : HBUINT8
+সংরচনা CompositeMode : HBUINT8
 {
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (1);
 };
 
-struct Affine2x3
+সংরচনা Affine2x3
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
-  { c->num_var_idxes = 6; }
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
+  { c->অঙ্ক_var_idxes = 6; }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (*এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       auto fold = [&] (F16DOT16 &target, F16DOT16 source, unsigned offset) {
         // Keep the stored integer precise while applying the float delta.
-        target.set_int (hb_clamp_to<int32_t> (roundf ((double) source.to_int () +
-                                                    (double) instancer (varIdxBase, offset))));
+        target.set_int (hb_clamp_to<int32_t> (roundf ((দ্ৱিগুণ) source.to_int () +
+                                                    (দ্ৱিগুণ) instancer (varIdxBase, offset))));
       };
       fold (out->xx, xx, 0);
       fold (out->yx, yx, 1);
@@ -693,13 +693,13 @@ struct Affine2x3
       fold (out->dx, dx, 4);
       fold (out->dy, dy, 5);
     }
-    return_trace (true);
+    return_trace (সঁচা);
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    c->funcs->push_transform (c->data,
+    TRACE_PAINT (এতত্);
+    c->funcs->ঠেলো_transform (c->data,
 			      xx.to_float (c->instancer (varIdxBase, 0)),
 			      yx.to_float (c->instancer (varIdxBase, 1)),
                               xy.to_float (c->instancer (varIdxBase, 2)),
@@ -714,89 +714,89 @@ struct Affine2x3
   F16DOT16 yy;
   F16DOT16 dx;
   F16DOT16 dy;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (6 * F16DOT16::static_size);
 };
 
-struct PaintColrLayers
+সংরচনা PaintColrLayers
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer HB_UNUSED) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    uint32_t first_layer_index = numLayers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
+    uint32_t first_layer_index = অঙ্ক_Layers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
     return_trace (c->serializer->check_assign (out->firstLayerIndex, first_layer_index,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  অন্তঃস্থ শূন্য paint_glyph (hb_paint_context_t *c) ধ্রুৱ;
 
   HBUINT8	format; /* format = 1 */
-  HBUINT8	numLayers;
+  HBUINT8	অঙ্ক_Layers;
   HBUINT32	firstLayerIndex;  /* index into COLRv1::layerList */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct PaintSolid
+সংরচনা PaintSolid
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ {}
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   {
     c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 1;
+    c->অঙ্ক_var_idxes = 1;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (*এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float a = alpha.to_float (instancer (varIdxBase, 0));
+      ভিন্ন a = alpha.to_float (instancer (varIdxBase, 0));
       set_fixed_clamped (out->alpha, c->plan->all_axes_pinned ? hb_clamp (a, 0.f, 1.f) : a);
     }
 
-    if (format == 3 && c->plan->all_axes_pinned)
+    যদি (format == 3 && c->plan->all_axes_pinned)
         out->format = 2;
 
     return_trace (c->serializer->check_assign (out->paletteIndex, c->plan->colr_palettes.get (paletteIndex),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  void get_solid_color (hb_paint_context_t *c, uint32_t varIdxBase,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  শূন্য get_solid_color (hb_paint_context_t *c, uint32_t varIdxBase,
+                        hb_bool_t *is_foreground, hb_color_t *color) ধ্রুৱ
   {
     *color = c->get_color (paletteIndex,
                            alpha.to_float (c->instancer (varIdxBase, 0)),
                            is_foreground);
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (এতত্);
     hb_bool_t is_foreground;
     hb_color_t color;
 
@@ -807,58 +807,58 @@ struct PaintSolid
   HBUINT8	format; /* format = 2(noVar) or 3(Var)*/
   HBUINT16	paletteIndex;
   F2DOT14	alpha;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (3 + F2DOT14::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintLinearGradient
+template <template<typename> শ্ৰেণী Var>
+সংরচনা PaintLinearGradient
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (এতত্+color_সাৰি_2).closurev1 (c);
+    c->অঙ্ক_var_idxes = 6;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
-      out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
-      out->x1 = hb_clamp_to<int16_t> ((double) x1 + (double) roundf (instancer (varIdxBase, 2)));
-      out->y1 = hb_clamp_to<int16_t> ((double) y1 + (double) roundf (instancer (varIdxBase, 3)));
-      out->x2 = hb_clamp_to<int16_t> ((double) x2 + (double) roundf (instancer (varIdxBase, 4)));
-      out->y2 = hb_clamp_to<int16_t> ((double) y2 + (double) roundf (instancer (varIdxBase, 5)));
+      out->x0 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) x0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 0)));
+      out->y0 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) y0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 1)));
+      out->x1 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) x1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 2)));
+      out->y1 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) y1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 3)));
+      out->x2 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) x2 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 4)));
+      out->y2 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) y2 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 5)));
     }
 
-    if (format == 5 && c->plan->all_axes_pinned)
+    যদি (format == 5 && c->plan->all_axes_pinned)
         out->format = 4;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_সাৰি_2.serialize_subset (c, color_সাৰি_2, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && color_সাৰি_2.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (এতত্);
+    hb_color_সাৰি_t cl = {
+      (শূন্য *) &(এতত্+color_সাৰি_2),
+      (এতত্+color_সাৰি_2).static_get_color_stops, c,
+      (এতত্+color_সাৰি_2).static_get_extend, nullptr
     };
 
     c->funcs->linear_gradient (c->data, &cl,
@@ -871,7 +871,7 @@ struct PaintLinearGradient
   }
 
   HBUINT8			format; /* format = 4(noVar) or 5 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintLinearGradient
+  Offset24To<Color_সাৰি<Var>>	color_সাৰি_2; /* Offset (from beginning of PaintLinearGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -879,217 +879,217 @@ struct PaintLinearGradient
   FWORD			y1;
   FWORD			x2;
   FWORD			y2;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + 6 * FWORD::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintRadialGradient
+template <template<typename> শ্ৰেণী Var>
+সংরচনা PaintRadialGradient
 {
-  bool constant_after_pinning (hb_subset_context_t *c,
-                               const ItemVarStoreInstancer &instancer) const
+  তার্কিক constant_after_pinning (hb_subset_context_t *c,
+                               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    if (c->plan->has_avar2) return false;
-    const auto &regions = instancer.varStore->get_region_list ();
-    for (unsigned i = 0; i < regions.regionCount; i++)
+    যদি (c->plan->has_avar2) ঘূৰাই মিছা;
+    ধ্রুৱ auto &regions = instancer.varStore->get_region_list ();
+    বাবে (unsigned i = 0; i < regions.region_গুনতি; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axes;
-      if (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
+      যদি (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
       {
         c->serializer->err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-        return false;
+        ঘূৰাই মিছা;
       }
-      for (auto axis : axes)
+      বাবে (auto axis : axes)
       {
         Triple *limit;
-        if (!c->plan->user_axes_location.has (axis.first, &limit) ||
+        যদি (!c->plan->user_axes_location.has (axis.first, &limit) ||
             limit->minimum != limit->maximum)
-          return false;
+          ঘূৰাই মিছা;
       }
     }
-    return true;
+    ঘূৰাই সঁচা;
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (এতত্+color_সাৰি_2).closurev1 (c);
+    c->অঙ্ক_var_idxes = 6;
   }
 
-  bool subset_nonnegative (hb_subset_context_t *c,
-                           const ItemVarStoreInstancer &instancer,
-                           uint32_t varIdxBase) const
+  তার্কিক subset_nonnegative (hb_subset_context_t *c,
+                           ধ্রুৱ ItemVarStoreInstancer &instancer,
+                           uint32_t varIdxBase) ধ্রুৱ
   {
-    double source[6] = {
-      x0 + (double) roundf (instancer (varIdxBase, 0)),
-      y0 + (double) roundf (instancer (varIdxBase, 1)),
-      radius0 + (double) roundf (instancer (varIdxBase, 2)),
-      x1 + (double) roundf (instancer (varIdxBase, 3)),
-      y1 + (double) roundf (instancer (varIdxBase, 4)),
-      radius1 + (double) roundf (instancer (varIdxBase, 5))
+    দ্ৱিগুণ source[6] = {
+      x0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 0)),
+      y0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 1)),
+      radius0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 2)),
+      x1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 3)),
+      y1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 4)),
+      radius1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 5))
     };
     auto transparent = [&] {
       auto *out = c->serializer->allocate_size<PaintSolid> (5);
-      if (!out) return false;
+      যদি (!out) ঘূৰাই মিছা;
       out->format = 2; out->paletteIndex = 0xFFFF; out->alpha.set_float (0);
-      return true;
+      ঘূৰাই সঁচা;
     };
-    const auto &line = this+colorLine;
-    if (source[2] == source[5] || !line.stops.len) return transparent ();
-    struct stop_t { double offset, alpha; unsigned palette, order; };
+    ধ্রুৱ auto &সাৰি = এতত্+color_সাৰি_2;
+    যদি (source[2] == source[5] || !সাৰি.stops.len) ঘূৰাই transparent ();
+    সংরচনা stop_t { দ্ৱিগুণ offset, alpha; unsigned palette, order; };
     hb_vector_t<stop_t> stops;
-    if (!stops.alloc (line.stops.len)) return false;
+    যদি (!stops.alloc (সাৰি.stops.len)) ঘূৰাই মিছা;
     unsigned order = 0;
-    for (const auto &entry : line.stops.iter ())
+    বাবে (ধ্রুৱ auto &entry : সাৰি.stops.iter ())
     {
-      const auto &stop = entry.get_value ();
-      stops.push (stop_t {(double) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
-                   (double) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
+      ধ্রুৱ auto &stop = entry.get_মান ();
+      stops.push (stop_t {(দ্ৱিগুণ) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
+                   (দ্ৱিগুণ) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
                    stop.paletteIndex, order++});
     }
-    if (stops.in_error ()) return false;
-    stops.qsort ([] (const stop_t &a, const stop_t &b) {
-      return a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
+    যদি (stops.in_error ()) ঘূৰাই মিছা;
+    stops.qsort ([] (ধ্রুৱ stop_t &a, ধ্রুৱ stop_t &b) {
+      ঘূৰাই a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
              a.order < b.order ? -1 : a.order > b.order ? 1 : 0;
     });
-    double dr = source[5] - source[2];
+    দ্ৱিগুণ dr = source[5] - source[2];
     // Fractional shifts must preserve both integer circles and F2Dot14 stops.
     unsigned lattice = 16384;
-    for (unsigned j = 0; j < 3; j++)
+    বাবে (unsigned j = 0; j < 3; j++)
     {
-      double remainder = fmod (fabs (source[j + 3] - source[j]), 16384.);
-      if (!(remainder >= 0 && remainder < 16384))
+      দ্ৱিগুণ remainder = fmod (fabs (source[j + 3] - source[j]), 16384.);
+      যদি (!(remainder >= 0 && remainder < 16384))
       {
         c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-        return false;
+        ঘূৰাই মিছা;
       }
-      unsigned right = (unsigned) remainder;
-      while (right) { unsigned r = lattice % right; lattice = right; right = r; }
+      unsigned ডান = (unsigned) remainder;
+      যেতিয়ালৈ (ডান) { unsigned r = lattice % ডান; lattice = ডান; ডান = r; }
     }
-    for (unsigned shift = 0; shift < 16; shift++)
+    বাবে (unsigned shift = 0; shift < 16; shift++)
     {
-      double b = 1u << shift;
-      double coarse = dr > 0 ? ceil (-source[2] / dr) : floor (source[2] / -dr) - b;
-      double fine = dr > 0 ? ceil (-source[2] / dr * lattice) / lattice :
+      দ্ৱিগুণ b = 1u << shift;
+      দ্ৱিগুণ coarse = dr > 0 ? ceil (-source[2] / dr) : floor (source[2] / -dr) - b;
+      দ্ৱিগুণ fine = dr > 0 ? ceil (-source[2] / dr * lattice) / lattice :
                             floor (source[2] / -dr * lattice) / lattice - b;
-      double candidates[] = {coarse, fine};
-      for (double a : candidates)
+      দ্ৱিগুণ candidates[] = {coarse, fine};
+      বাবে (দ্ৱিগুণ a : candidates)
       {
         // omega = a + b*q. Positive b preserves the largest valid root.
-        double geometry[6];
-        bool fits = true;
-        for (unsigned j = 0; j < 3; j++)
+        দ্ৱিগুণ geometry[6];
+        তার্কিক fits = সঁচা;
+        বাবে (unsigned j = 0; j < 3; j++)
         {
-          double difference = source[j + 3] - source[j];
+          দ্ৱিগুণ difference = source[j + 3] - source[j];
           geometry[j] = source[j] + a * difference;
           geometry[j + 3] = source[j] + (a + b) * difference;
-          double low = j == 2 ? 0 : -32768, high = j == 2 ? 65535 : 32767;
-          fits &= geometry[j] >= low && geometry[j] <= high &&
-                  geometry[j + 3] >= low && geometry[j + 3] <= high;
+          দ্ৱিগুণ নিচেৰ = j == 2 ? 0 : -32768, উপৰেৰ = j == 2 ? 65535 : 32767;
+          fits &= geometry[j] >= নিচেৰ && geometry[j] <= উপৰেৰ &&
+                  geometry[j + 3] >= নিচেৰ && geometry[j + 3] <= উপৰেৰ;
         }
-        if (!fits) continue;
-        unsigned first = 0, count = stops.length;
-        double min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
-        double bias = 0;
-        bool constant = false;
-        if (line.extend == Extend::EXTEND_PAD)
+        যদি (!fits) অনুৱর্ত;
+        unsigned first = 0, গুনতি = stops.length;
+        দ্ৱিগুণ min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
+        দ্ৱিগুণ bias = 0;
+        তার্কিক constant = মিছা;
+        যদি (সাৰি.extend == Extend::EXTEND_PAD)
         {
-          double tip = -geometry[2] / (b * dr);
-          if ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
+          দ্ৱিগুণ tip = -geometry[2] / (b * dr);
+          যদি ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
           {
             first = dr > 0 ? stops.length - 1 : 0;
-            count = 1; constant = true;
+            গুনতি = 1; constant = সঁচা;
           }
         }
-        else
+        অন্যথা
         {
-          double period = max - min;
-          if (line.extend == Extend::EXTEND_REFLECT) period *= 2;
-          if (period <= 0) return transparent ();
-          double n = ceil ((-2 - min) / period);
-          if (n > floor ((32767. / 16384. - max) / period)) continue;
+          দ্ৱিগুণ period = max - min;
+          যদি (সাৰি.extend == Extend::EXTEND_REFLECT) period *= 2;
+          যদি (period <= 0) ঘূৰাই transparent ();
+          দ্ৱিগুণ n = ceil ((-2 - min) / period);
+          যদি (n > floor ((32767. / 16384. - max) / period)) অনুৱর্ত;
           bias = n * period;
         }
-        for (unsigned j = 0; j < count; j++)
+        বাবে (unsigned j = 0; j < গুনতি; j++)
         {
-          double bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
+          দ্ৱিগুণ bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
           fits &= bits >= -32768 && bits <= 32767 && bits == round (bits);
         }
-        if (!fits) continue;
+        যদি (!fits) অনুৱর্ত;
         auto *out = c->serializer->allocate_size<PaintRadialGradient<NoVariable>> (16);
-        if (!out) return false;
+        যদি (!out) ঘূৰাই মিছা;
         out->format = 6;
-        out->x0 = (int) geometry[0]; out->y0 = (int) geometry[1]; out->radius0 = (unsigned) geometry[2];
-        out->x1 = (int) geometry[3]; out->y1 = (int) geometry[4]; out->radius1 = (unsigned) geometry[5];
+        out->x0 = (পূর্ণাঙ্ক) geometry[0]; out->y0 = (পূর্ণাঙ্ক) geometry[1]; out->radius0 = (unsigned) geometry[2];
+        out->x1 = (পূর্ণাঙ্ক) geometry[3]; out->y1 = (পূর্ণাঙ্ক) geometry[4]; out->radius1 = (unsigned) geometry[5];
         c->serializer->push ();
-        auto *out_line = c->serializer->allocate_size<ColorLine<NoVariable>> (3 + count * ColorStop::static_size);
-        if (!out_line) { c->serializer->pop_discard (); return false; }
-        out_line->extend = line.extend;
-        out_line->stops.len = count;
-        for (unsigned j = 0; j < count; j++)
+        auto *out_সাৰি = c->serializer->allocate_size<Color_সাৰি<NoVariable>> (3 + গুনতি * ColorStop::static_size);
+        যদি (!out_সাৰি) { c->serializer->বেৰ_কৰো_discard (); ঘূৰাই মিছা; }
+        out_সাৰি->extend = সাৰি.extend;
+        out_সাৰি->stops.len = গুনতি;
+        বাবে (unsigned j = 0; j < গুনতি; j++)
         {
-          const auto &stop = stops[first + j];
-          auto &out_stop = out_line->stops[j].value;
-          out_stop.stopOffset.set_float ((float) (constant ? 0 : (stop.offset - a) / b + bias));
-          out_stop.alpha.set_float ((float) stop.alpha);
-          if (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
+          ধ্রুৱ auto &stop = stops[first + j];
+          auto &out_stop = out_সাৰি->stops[j].value;
+          out_stop.stopOffset.set_float ((ভিন্ন) (constant ? 0 : (stop.offset - a) / b + bias));
+          out_stop.alpha.set_float ((ভিন্ন) stop.alpha);
+          যদি (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
                                             HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          { c->serializer->pop_discard (); return false; }
+          { c->serializer->বেৰ_কৰো_discard (); ঘূৰাই মিছা; }
         }
-        c->serializer->add_link (out->colorLine, c->serializer->pop_pack ());
-        return !c->serializer->in_error ();
+        c->serializer->add_link (out->color_সাৰি_2, c->serializer->বেৰ_কৰো_pack ());
+        ঘূৰাই !c->serializer->in_error ();
       }
     }
     // Reject an unrepresentable static result instead of changing its colors.
     c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-    return false;
+    ঘূৰাই মিছা;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    if (instancer && !c->plan->pinned_at_default &&
+    TRACE_SUBSET (এতত্);
+    যদি (instancer && !c->plan->pinned_at_default &&
         (c->plan->all_axes_pinned || constant_after_pinning (c, instancer)) &&
         varIdxBase != VarIdx::NO_VARIATION &&
-        (radius0 + (double) roundf (instancer (varIdxBase, 2)) < 0 ||
-         radius1 + (double) roundf (instancer (varIdxBase, 5)) < 0))
+        (radius0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 2)) < 0 ||
+         radius1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 5)) < 0))
       return_trace (subset_nonnegative (c, instancer, varIdxBase));
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
-      out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
-      out->radius0 = hb_clamp_to<uint16_t> ((double) radius0 + (double) roundf (instancer (varIdxBase, 2)));
-      out->x1 = hb_clamp_to<int16_t> ((double) x1 + (double) roundf (instancer (varIdxBase, 3)));
-      out->y1 = hb_clamp_to<int16_t> ((double) y1 + (double) roundf (instancer (varIdxBase, 4)));
-      out->radius1 = hb_clamp_to<uint16_t> ((double) radius1 + (double) roundf (instancer (varIdxBase, 5)));
+      out->x0 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) x0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 0)));
+      out->y0 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) y0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 1)));
+      out->radius0 = hb_clamp_to<uint16_t> ((দ্ৱিগুণ) radius0 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 2)));
+      out->x1 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) x1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 3)));
+      out->y1 = hb_clamp_to<int16_t> ((দ্ৱিগুণ) y1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 4)));
+      out->radius1 = hb_clamp_to<uint16_t> ((দ্ৱিগুণ) radius1 + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 5)));
     }
 
-    if (format == 7 && c->plan->all_axes_pinned)
+    যদি (format == 7 && c->plan->all_axes_pinned)
         out->format = 6;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_সাৰি_2.serialize_subset (c, color_সাৰি_2, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && color_সাৰি_2.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (এতত্);
+    hb_color_সাৰি_t cl = {
+      (শূন্য *) &(এতত্+color_সাৰি_2),
+      (এতত্+color_সাৰি_2).static_get_color_stops, c,
+      (এতত্+color_সাৰি_2).static_get_extend, nullptr
     };
 
     c->funcs->radial_gradient (c->data, &cl,
@@ -1102,7 +1102,7 @@ struct PaintRadialGradient
   }
 
   HBUINT8			format; /* format = 6(noVar) or 7 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintRadialGradient
+  Offset24To<Color_সাৰি<Var>>	color_সাৰি_2; /* Offset (from beginning of PaintRadialGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -1110,56 +1110,56 @@ struct PaintRadialGradient
   FWORD			x1;
   FWORD			y1;
   UFWORD		radius1;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + 6 * FWORD::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintSweepGradient
+template <template<typename> শ্ৰেণী Var>
+সংরচনা PaintSweepGradient
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 4;
+    (এতত্+color_সাৰি_2).closurev1 (c);
+    c->অঙ্ক_var_idxes = 4;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 0)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 1)));
+      out->centerX = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerX + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 0)));
+      out->centerY = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerY + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 1)));
       set_fixed_clamped (out->startAngle, startAngle.to_float (instancer (varIdxBase, 2)));
       set_fixed_clamped (out->endAngle, endAngle.to_float (instancer (varIdxBase, 3)));
     }
 
-    if (format == 9 && c->plan->all_axes_pinned)
+    যদি (format == 9 && c->plan->all_axes_pinned)
         out->format = 8;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_সাৰি_2.serialize_subset (c, color_সাৰি_2, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && color_সাৰি_2.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (এতত্);
+    hb_color_সাৰি_t cl = {
+      (শূন্য *) &(এতত্+color_সাৰি_2),
+      (এতত্+color_সাৰি_2).static_get_color_stops, c,
+      (এতত্+color_সাৰি_2).static_get_extend, nullptr
     };
 
     c->funcs->sweep_gradient (c->data, &cl,
@@ -1170,190 +1170,190 @@ struct PaintSweepGradient
   }
 
   HBUINT8			format; /* format = 8(noVar) or 9 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintSweepGradient
+  Offset24To<Color_সাৰি<Var>>	color_সাৰি_2; /* Offset (from beginning of PaintSweepGradient
                                             * table) to ColorLine subtable. */
   FWORD			centerX;
   FWORD			centerY;
   F2DOT14		startAngle;
   F2DOT14		endAngle;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + 2 * FWORD::static_size + 2 * F2DOT14::static_size);
 };
 
 // Paint a non-COLR glyph, filled as indicated by paint.
 template <typename Types>
-struct PaintGlyph
+সংরচনা PaintGlyph
 {
   using HBGlyphID = typename Types::HBGlyphID;
 
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
+    যদি (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
                                        HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+      return_trace (মিছা);
 
-    return_trace (out->paint.serialize_subset (c, paint, this, instancer));
+    return_trace (out->paint.serialize_subset (c, paint, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && paint.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && paint.sanitize (c, এতত্));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  অন্তঃস্থ শূন্য paint_glyph (hb_paint_context_t *c) ধ্রুৱ;
 
   HBUINT8		format; /* format = 10 or 33 */
   Offset24To<Paint>	paint;  /* Offset (from beginning of PaintGlyph table) to Paint subtable. */
   HBGlyphID		gid;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + HBGlyphID::static_size);
 };
 
-struct PaintColrGlyph
+সংরচনা PaintColrGlyph
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer HB_UNUSED) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
     return_trace (c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  অন্তঃস্থ শূন্য paint_glyph (hb_paint_context_t *c) ধ্রুৱ;
 
   HBUINT8	format; /* format = 11 */
   HBUINT16	gid;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (3);
 };
 
-template <template<typename> class Var>
-struct PaintTransform
+template <template<typename> শ্ৰেণী Var>
+সংরচনা PaintTransform
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!out->transform.serialize_subset (c, transform, this, instancer)) return_trace (false);
-    if (format == 13 && c->plan->all_axes_pinned)
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
+    যদি (!out->transform.serialize_subset (c, transform, এতত্, instancer)) return_trace (মিছা);
+    যদি (format == 13 && c->plan->all_axes_pinned)
       out->format = 12;
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  src.sanitize (c, this) &&
-                  transform.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) &&
+                  src.sanitize (c, এতত্) &&
+                  transform.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  শূন্য paint_glyph (hb_paint_context_t *c) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    (this+transform).paint_glyph (c); // This does a push_transform()
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    TRACE_PAINT (এতত্);
+    (এতত্+transform).paint_glyph (c); // This does a push_transform()
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8			format; /* format = 12(noVar) or 13 (Var) */
   Offset24To<Paint>		src; /* Offset (from beginning of PaintTransform table) to Paint subtable. */
   Offset24To<Var<Affine2x3>>	transform;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (7);
 };
 
-struct PaintTranslate
+সংরচনা PaintTranslate
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->dx = hb_clamp_to<int16_t> ((double) dx + (double) roundf (instancer (varIdxBase, 0)));
-      out->dy = hb_clamp_to<int16_t> ((double) dy + (double) roundf (instancer (varIdxBase, 1)));
+      out->dx = hb_clamp_to<int16_t> ((দ্ৱিগুণ) dx + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 0)));
+      out->dy = hb_clamp_to<int16_t> ((দ্ৱিগুণ) dy + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 1)));
     }
 
-    if (format == 15 && c->plan->all_axes_pinned)
+    যদি (format == 15 && c->plan->all_axes_pinned)
         out->format = 14;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float ddx = dx + c->instancer (varIdxBase, 0);
-    float ddy = dy + c->instancer (varIdxBase, 1);
+    TRACE_PAINT (এতত্);
+    ভিন্ন ddx = dx + c->instancer (varIdxBase, 0);
+    ভিন্ন ddy = dy + c->instancer (varIdxBase, 1);
 
-    c->funcs->push_translate (c->data, ddx, ddy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_translate (c->data, ddx, ddy);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 14(noVar) or 15 (Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintTranslate table) to Paint subtable. */
   FWORD		dx;
   FWORD		dy;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + 2 * FWORD::static_size);
 };
 
 template <typename Source>
-static bool serialize_scale_transform (hb_subset_context_t *c,
-                                       float sx, float sy, float dx, float dy,
-                                       const Source &source)
+স্থির তার্কিক serialize_scale_transform (hb_subset_context_t *c,
+                                       ভিন্ন sx, ভিন্ন sy, ভিন্ন dx, ভিন্ন dy,
+                                       ধ্রুৱ Source &source)
 {
   auto *out = c->serializer->allocate_size<PaintTransform<NoVariable>> (7);
-  if (unlikely (!out)) return false;
+  যদি (unlikely (!out)) ঘূৰাই মিছা;
   out->format = 12;
 
   c->serializer->push ();
   auto *transform = c->serializer->allocate_size<Affine2x3> (Affine2x3::static_size);
-  if (unlikely (!transform))
+  যদি (unlikely (!transform))
   {
-    c->serializer->pop_discard ();
-    return false;
+    c->serializer->বেৰ_কৰো_discard ();
+    ঘূৰাই মিছা;
   }
   set_fixed_clamped (transform->xx, sx);
   transform->yx.set_float (0);
@@ -1361,161 +1361,161 @@ static bool serialize_scale_transform (hb_subset_context_t *c,
   set_fixed_clamped (transform->yy, sy);
   set_fixed_clamped (transform->dx, dx);
   set_fixed_clamped (transform->dy, dy);
-  c->serializer->add_link (out->transform, c->serializer->pop_pack ());
+  c->serializer->add_link (out->transform, c->serializer->বেৰ_কৰো_pack ());
 
   c->serializer->push ();
-  bool ret = source ();
-  if (ret)
-    c->serializer->add_link (out->src, c->serializer->pop_pack ());
-  else
-    c->serializer->pop_discard ();
-  return ret;
+  তার্কিক ret = source ();
+  যদি (ret)
+    c->serializer->add_link (out->src, c->serializer->বেৰ_কৰো_pack ());
+  অন্যথা
+    c->serializer->বেৰ_কৰো_discard ();
+  ঘূৰাই ret;
 }
 
 template <typename Base>
-static bool subset_scale_as_transform (hb_subset_context_t *c,
-                                      const Base *base,
-                                      const Offset24To<Paint> &src,
-                                      const ItemVarStoreInstancer &instancer,
-                                      float sx, float sy,
-                                      float cx = 0, float cy = 0)
+স্থির তার্কিক subset_scale_as_transform (hb_subset_context_t *c,
+                                      ধ্রুৱ Base *base,
+                                      ধ্রুৱ Offset24To<Paint> &src,
+                                      ধ্রুৱ ItemVarStoreInstancer &instancer,
+                                      ভিন্ন sx, ভিন্ন sy,
+                                      ভিন্ন cx = 0, ভিন্ন cy = 0)
 {
-  if (src.is_null ()) return false;
-  auto source = [&] { return c->dispatch (base+src, instancer); };
-  float dx = cx * (1 - sx), dy = cy * (1 - sy);
-  if (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
-    return serialize_scale_transform (c, sx, sy, dx, dy, source);
+  যদি (src.is_null ()) ঘূৰাই মিছা;
+  auto source = [&] { ঘূৰাই c->dispatch (base+src, instancer); };
+  ভিন্ন dx = cx * (1 - sx), dy = cy * (1 - sy);
+  যদি (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
+    ঘূৰাই serialize_scale_transform (c, sx, sy, dx, dy, source);
 
   // Preserve the center as separate translations when the combined matrix
   // exceeds Fixed. Splitting also makes the inverse of -32768 representable.
   auto inner = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
+    ঘূৰাই serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
   };
   auto inverse = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
+    ঘূৰাই serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
   };
   auto scale = [&] {
-    return serialize_scale_transform (c, sx, sy, 0, 0, inverse);
+    ঘূৰাই serialize_scale_transform (c, sx, sy, 0, 0, inverse);
   };
   auto outer = [&] {
-    return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
+    ঘূৰাই serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
   };
-  return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
+  ঘূৰাই serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
 }
 
-struct PaintScale
+সংরচনা PaintScale
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (এতত্);
+    যদি (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
-        return_trace (subset_scale_as_transform (c, this, src, instancer, sx, sy));
+      ভিন্ন sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      ভিন্ন sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
+      যদি (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+        return_trace (subset_scale_as_transform (c, এতত্, src, instancer, sx, sy));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
     }
 
-    if (format == 17 && c->plan->all_axes_pinned)
+    যদি (format == 17 && c->plan->all_axes_pinned)
         out->format = 16;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
-    float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
+    TRACE_PAINT (এতত্);
+    ভিন্ন sx = scaleX.to_float (c->instancer (varIdxBase, 0));
+    ভিন্ন sy = scaleY.to_float (c->instancer (varIdxBase, 1));
 
-    c->funcs->push_scale (c->data, sx, sy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_scale (c->data, sx, sy);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 16 (noVar) or 17(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintScale table) to Paint subtable. */
   F2DOT14		scaleX;
   F2DOT14		scaleY;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size);
 };
 
-struct PaintScaleAroundCenter
+সংরচনা PaintScaleAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (এতত্);
+    যদি (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+      ভিন্ন sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      ভিন্ন sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
+      যদি (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
         return_trace (subset_scale_as_transform (
-            c, this, src, instancer, sx, sy,
+            c, এতত্, src, instancer, sx, sy,
             centerX + roundf (instancer (varIdxBase, 2)),
             centerY + roundf (instancer (varIdxBase, 3))));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 2)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
+      out->centerX = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerX + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 2)));
+      out->centerY = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerY + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 19 && c->plan->all_axes_pinned)
+    যদি (format == 19 && c->plan->all_axes_pinned)
         out->format = 18;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
-    float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
-    float tCenterX = centerX + c->instancer (varIdxBase, 2);
-    float tCenterY = centerY + c->instancer (varIdxBase, 3);
+    TRACE_PAINT (এতত্);
+    ভিন্ন sx = scaleX.to_float (c->instancer (varIdxBase, 0));
+    ভিন্ন sy = scaleY.to_float (c->instancer (varIdxBase, 1));
+    ভিন্ন tCenterX = centerX + c->instancer (varIdxBase, 2);
+    ভিন্ন tCenterY = centerY + c->instancer (varIdxBase, 3);
 
-    c->funcs->push_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 18 (noVar) or 19(Var) */
@@ -1524,114 +1524,114 @@ struct PaintScaleAroundCenter
   F2DOT14	scaleY;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintScaleUniform
+সংরচনা PaintScaleUniform
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (এতত্);
+    যদি (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
-        return_trace (subset_scale_as_transform (c, this, src, instancer, s, s));
+      ভিন্ন s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      যদি (s < -2 || s >= 2)
+        return_trace (subset_scale_as_transform (c, এতত্, src, instancer, s, s));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
       set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
 
-    if (format == 21 && c->plan->all_axes_pinned)
+    যদি (format == 21 && c->plan->all_axes_pinned)
         out->format = 20;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float s = scale.to_float (c->instancer (varIdxBase, 0));
+    TRACE_PAINT (এতত্);
+    ভিন্ন s = scale.to_float (c->instancer (varIdxBase, 0));
 
-    c->funcs->push_scale (c->data, s, s);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_scale (c->data, s, s);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 20 (noVar) or 21(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintScaleUniform table) to Paint subtable. */
   F2DOT14		scale;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size);
 };
 
-struct PaintScaleUniformAroundCenter
+সংরচনা PaintScaleUniformAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (এতত্);
+    যদি (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
+      ভিন্ন s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      যদি (s < -2 || s >= 2)
         return_trace (subset_scale_as_transform (
-            c, this, src, instancer, s, s,
+            c, এতত্, src, instancer, s, s,
             centerX + roundf (instancer (varIdxBase, 1)),
             centerY + roundf (instancer (varIdxBase, 2))));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
+      out->centerX = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerX + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 1)));
+      out->centerY = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerY + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 2)));
     }
 
-    if (format == 23 && c->plan->all_axes_pinned)
+    যদি (format == 23 && c->plan->all_axes_pinned)
         out->format = 22;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float s = scale.to_float (c->instancer (varIdxBase, 0));
-    float tCenterX = centerX + c->instancer (varIdxBase, 1);
-    float tCenterY = centerY + c->instancer (varIdxBase, 2);
+    TRACE_PAINT (এতত্);
+    ভিন্ন s = scale.to_float (c->instancer (varIdxBase, 0));
+    ভিন্ন tCenterX = centerX + c->instancer (varIdxBase, 1);
+    ভিন্ন tCenterY = centerY + c->instancer (varIdxBase, 2);
 
-    c->funcs->push_scale_around_center (c->data, s, s, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_scale_around_center (c->data, s, s, tCenterX, tCenterY);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 22 (noVar) or 23(Var) */
@@ -1639,97 +1639,97 @@ struct PaintScaleUniformAroundCenter
   F2DOT14	scale;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintRotate
+সংরচনা PaintRotate
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
       set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
 
-    if (format == 25 && c->plan->all_axes_pinned)
+    যদি (format == 25 && c->plan->all_axes_pinned)
       out->format = 24;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float a = angle.to_float (c->instancer (varIdxBase, 0));
+    TRACE_PAINT (এতত্);
+    ভিন্ন a = angle.to_float (c->instancer (varIdxBase, 0));
 
-    c->funcs->push_rotate (c->data, a);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_rotate (c->data, a);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 24 (noVar) or 25(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintRotate table) to Paint subtable. */
   F2DOT14		angle;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size);
 };
 
-struct PaintRotateAroundCenter
+সংরচনা PaintRotateAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
+      out->centerX = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerX + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 1)));
+      out->centerY = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerY + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 2)));
     }
 
-    if (format ==27 && c->plan->all_axes_pinned)
+    যদি (format ==27 && c->plan->all_axes_pinned)
         out->format = 26;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float a = angle.to_float (c->instancer (varIdxBase, 0));
-    float tCenterX = centerX + c->instancer (varIdxBase, 1);
-    float tCenterY = centerY + c->instancer (varIdxBase, 2);
+    TRACE_PAINT (এতত্);
+    ভিন্ন a = angle.to_float (c->instancer (varIdxBase, 0));
+    ভিন্ন tCenterX = centerX + c->instancer (varIdxBase, 1);
+    ভিন্ন tCenterY = centerY + c->instancer (varIdxBase, 2);
 
-    c->funcs->push_rotate_around_center (c->data, a, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_rotate_around_center (c->data, a, tCenterX, tCenterY);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 26 (noVar) or 27(Var) */
@@ -1737,104 +1737,104 @@ struct PaintRotateAroundCenter
   F2DOT14	angle;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintSkew
+সংরচনা PaintSkew
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
     }
 
-    if (format == 29 && c->plan->all_axes_pinned)
+    যদি (format == 29 && c->plan->all_axes_pinned)
         out->format = 28;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
-    float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
+    TRACE_PAINT (এতত্);
+    ভিন্ন sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
+    ভিন্ন sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
 
-    c->funcs->push_skew (c->data, sx, sy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_skew (c->data, sx, sy);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 28(noVar) or 29 (Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintSkew table) to Paint subtable. */
   F2DOT14		xSkewAngle;
   F2DOT14		ySkewAngle;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size);
 };
 
-struct PaintSkewAroundCenter
+সংরচনা PaintSkewAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 2)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
+      out->centerX = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerX + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 2)));
+      out->centerY = hb_clamp_to<int16_t> ((দ্ৱিগুণ) centerY + (দ্ৱিগুণ) roundf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 31 && c->plan->all_axes_pinned)
+    যদি (format == 31 && c->plan->all_axes_pinned)
         out->format = 30;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, এতত্, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && src.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  শূন্য paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_PAINT (this);
-    float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
-    float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
-    float tCenterX = centerX + c->instancer (varIdxBase, 2);
-    float tCenterY = centerY + c->instancer (varIdxBase, 3);
+    TRACE_PAINT (এতত্);
+    ভিন্ন sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
+    ভিন্ন sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
+    ভিন্ন tCenterX = centerX + c->instancer (varIdxBase, 2);
+    ভিন্ন tCenterY = centerY + c->instancer (varIdxBase, 3);
 
-    c->funcs->push_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ঠেলো_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_transform (c->data);
   }
 
   HBUINT8		format; /* format = 30(noVar) or 31 (Var) */
@@ -1843,108 +1843,108 @@ struct PaintSkewAroundCenter
   F2DOT14	ySkewAngle;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintComposite
+সংরচনা PaintComposite
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL শূন্য dependv1 (hb_colrv1_depend_context_t* c) ধ্রুৱ;
+  HB_INTERNAL শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    bool ret = false;
-    ret |= out->src.serialize_subset (c, src, this, instancer);
-    ret |= out->backdrop.serialize_subset (c, backdrop, this, instancer);
+    তার্কিক ret = মিছা;
+    ret |= out->src.serialize_subset (c, src, এতত্, instancer);
+    ret |= out->backdrop.serialize_subset (c, backdrop, এতত্, instancer);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  c->check_ops (this->min_size) && // PainComposite can get exponential
-                  src.sanitize (c, this) &&
-                  backdrop.sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) &&
+		  c->check_ops (এতত্->min_size) && // PainComposite can get exponential
+                  src.sanitize (c, এতত্) &&
+                  backdrop.sanitize (c, এতত্));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  শূন্য paint_glyph (hb_paint_context_t *c) ধ্রুৱ
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (এতত্);
     hb_paint_composite_mode_t composite_mode;
-    switch ((unsigned int) mode)
+    ৱিকল্প ((unsigned পূর্ণাঙ্ক) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OVER:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-      case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-      case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-      case HB_PAINT_COMPOSITE_MODE_XOR:
-      case HB_PAINT_COMPOSITE_MODE_PLUS:
-      case HB_PAINT_COMPOSITE_MODE_SCREEN:
-      case HB_PAINT_COMPOSITE_MODE_OVERLAY:
-      case HB_PAINT_COMPOSITE_MODE_DARKEN:
-      case HB_PAINT_COMPOSITE_MODE_LIGHTEN:
-      case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:
-      case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:
-      case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:
-      case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:
-      case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:
-      case HB_PAINT_COMPOSITE_MODE_EXCLUSION:
-      case HB_PAINT_COMPOSITE_MODE_MULTIPLY:
-      case HB_PAINT_COMPOSITE_MODE_HSL_HUE:
-      case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
-      case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
-      case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
-	composite_mode = (hb_paint_composite_mode_t) (unsigned int) mode;
-	break;
-      default:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_CLEAR:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SRC:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DEST:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SRC_OVER:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DEST_OVER:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DEST_IN:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_XOR:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_PLUS:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SCREEN:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_OVERLAY:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DARKEN:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_LIGHTEN:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_COLOR_BURN:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_DIFFERENCE:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_EXCLUSION:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_MULTIPLY:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_HSL_HUE:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
+      পক্ষ HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
+	composite_mode = (hb_paint_composite_mode_t) (unsigned পূর্ণাঙ্ক) mode;
+	ভঙ্গ;
+      স্ৱভাৱ:
 	composite_mode = HB_PAINT_COMPOSITE_MODE_CLEAR;
-	break;
+	ভঙ্গ;
     }
 
-    c->funcs->push_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
-    c->recurse (this+backdrop);
-    c->funcs->push_group_for (c->data, composite_mode);
-    c->recurse (this+src);
-    c->funcs->pop_group (c->data, composite_mode);
-    c->funcs->pop_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->funcs->ঠেলো_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->recurse (এতত্+backdrop);
+    c->funcs->ঠেলো_group_for (c->data, composite_mode);
+    c->recurse (এতত্+src);
+    c->funcs->বেৰ_কৰো_group (c->data, composite_mode);
+    c->funcs->বেৰ_কৰো_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
   }
 
   HBUINT8		format; /* format = 32 */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintComposite table) to source Paint subtable. */
   CompositeMode		mode;   /* If mode is unrecognized use COMPOSITE_CLEAR */
   Offset24To<Paint>	backdrop; /* Offset (from beginning of PaintComposite table) to backdrop Paint subtable. */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ClipBoxData
+সংরচনা ClipBoxData
 {
-  int xMin, yMin, xMax, yMax;
+  পূর্ণাঙ্ক xMin, yMin, xMax, yMax;
 };
 
-struct ClipBoxFormat1
+সংরচনা ClipBoxFormat1
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  শূন্য get_clip_box (ClipBoxData &clip_box, ধ্রুৱ ItemVarStoreInstancer &instancer HB_UNUSED) ধ্রুৱ
   {
     clip_box.xMin = xMin;
     clip_box.yMin = yMin;
@@ -1952,193 +1952,193 @@ struct ClipBoxFormat1
     clip_box.yMax = yMax;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (*এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    যদি (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->xMin = hb_clamp_to<int16_t> ((double) xMin + (double) floorf (instancer (varIdxBase, 0)));
-      out->yMin = hb_clamp_to<int16_t> ((double) yMin + (double) floorf (instancer (varIdxBase, 1)));
-      out->xMax = hb_clamp_to<int16_t> ((double) xMax + (double) ceilf (instancer (varIdxBase, 2)));
-      out->yMax = hb_clamp_to<int16_t> ((double) yMax + (double) ceilf (instancer (varIdxBase, 3)));
+      out->xMin = hb_clamp_to<int16_t> ((দ্ৱিগুণ) xMin + (দ্ৱিগুণ) floorf (instancer (varIdxBase, 0)));
+      out->yMin = hb_clamp_to<int16_t> ((দ্ৱিগুণ) yMin + (দ্ৱিগুণ) floorf (instancer (varIdxBase, 1)));
+      out->xMax = hb_clamp_to<int16_t> ((দ্ৱিগুণ) xMax + (দ্ৱিগুণ) ceilf (instancer (varIdxBase, 2)));
+      out->yMax = hb_clamp_to<int16_t> ((দ্ৱিগুণ) yMax + (দ্ৱিগুণ) ceilf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 2 && c->plan->all_axes_pinned)
+    যদি (format == 2 && c->plan->all_axes_pinned)
         out->format = 1;
 
-    return_trace (true);
+    return_trace (সঁচা);
   }
 
-  public:
+  সার্ৱজনিক:
   HBUINT8	format; /* format = 1(noVar) or 2(Var)*/
   FWORD		xMin;
   FWORD		yMin;
   FWORD		xMax;
   FWORD		yMax;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (1 + 4 * FWORD::static_size);
 };
 
-struct ClipBoxFormat2 : Variable<ClipBoxFormat1>
+সংরচনা ClipBoxFormat2 : Variable<ClipBoxFormat1>
 {
-  void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer) const
+  শূন্য get_clip_box (ClipBoxData &clip_box, ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
     value.get_clip_box(clip_box, instancer);
-    if (instancer)
+    যদি (instancer)
     {
-      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 0))));
-      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 1))));
-      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 2))));
-      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 3))));
+      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<পূর্ণাঙ্ক> (floorf (instancer (varIdxBase, 0))));
+      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<পূর্ণাঙ্ক> (floorf (instancer (varIdxBase, 1))));
+      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<পূর্ণাঙ্ক> (ceilf (instancer (varIdxBase, 2))));
+      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<পূর্ণাঙ্ক> (ceilf (instancer (varIdxBase, 3))));
     }
   }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   { c->variation_indices->add_range (varIdxBase, varIdxBase + 3); }
 };
 
-struct ClipBox
+সংরচনা ClipBox
 {
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
-    case 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
-    default:return_trace (c->default_return_value ());
+    TRACE_SUBSET (এতত্);
+    ৱিকল্প (u.format.v) {
+    পক্ষ 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
+    পক্ষ 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
+    স্ৱভাৱ:return_trace (c->default_return_মান ());
     }
   }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c) ধ্রুৱ
   {
-    switch (u.format.v) {
-    case 2: hb_barrier (); u.format2.closurev1 (c); return;
-    default:return;
+    ৱিকল্প (u.format.v) {
+    পক্ষ 2: hb_barrier (); u.format2.closurev1 (c); ঘূৰাই;
+    স্ৱভাৱ:ঘূৰাই;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ধ্রুৱ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    যদি (unlikely (!c->may_dispatch (এতত্, &u.format.v))) ঘূৰাই c->no_dispatch_return_মান ();
+    TRACE_DISPATCH (এতত্, u.format.v);
+    ৱিকল্প (u.format.v) {
+    পক্ষ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    পক্ষ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    স্ৱভাৱ:return_trace (c->default_return_মান ());
     }
   }
 
-  bool get_extents (hb_glyph_extents_t *extents,
-                    const ItemVarStoreInstancer &instancer) const
+  তার্কিক get_extents (hb_glyph_extents_t *extents,
+                    ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
     ClipBoxData clip_box;
-    switch (u.format.v) {
-    case 1:
+    ৱিকল্প (u.format.v) {
+    পক্ষ 1:
       hb_barrier ();
       u.format1.get_clip_box (clip_box, instancer);
-      break;
-    case 2:
+      ভঙ্গ;
+    পক্ষ 2:
       hb_barrier ();
       u.format2.get_clip_box (clip_box, instancer);
-      break;
-    default:
-      return false;
+      ভঙ্গ;
+    স্ৱভাৱ:
+      ঘূৰাই মিছা;
     }
 
     extents->x_bearing = clip_box.xMin;
     extents->y_bearing = clip_box.yMax;
     extents->width = hb_saturate_sub (clip_box.xMax, clip_box.xMin);
     extents->height = hb_saturate_sub (clip_box.yMin, clip_box.yMax);
-    return true;
+    ঘূৰাই সঁচা;
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }	format;         /* Format identifier */
+  রক্ষিত:
+  সঙ্ঘ {
+  সংরচনা { HBUINT8 v; }	format;         /* Format identifier */
   ClipBoxFormat1	format1;
   ClipBoxFormat2	format2;
   } u;
 };
 
-struct ClipRecord
+সংরচনা ClipRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
+  পূর্ণাঙ্ক cmp (hb_codepoint_t g) ধ্রুৱ
+  { ঘূৰাই g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
 
-  void closurev1 (hb_colrv1_closure_context_t* c, const void *base) const
+  শূন্য closurev1 (hb_colrv1_closure_context_t* c, ধ্রুৱ শূন্য *base) ধ্রুৱ
   {
-    if (!c->glyphs->intersects (startGlyphID, endGlyphID)) return;
+    যদি (!c->glyphs->intersects (startGlyphID, endGlyphID)) ঘূৰাই;
     (base+clipBox).closurev1 (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ শূন্য *base,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (*এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
     return_trace (out->clipBox.serialize_subset (c, clipBox, base, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, ধ্রুৱ শূন্য *base) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && clipBox.sanitize (c, base));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && clipBox.sanitize (c, base));
   }
 
-  bool get_extents (hb_glyph_extents_t *extents,
-		    const void *base,
-		    const ItemVarStoreInstancer &instancer) const
+  তার্কিক get_extents (hb_glyph_extents_t *extents,
+		    ধ্রুৱ শূন্য *base,
+		    ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    return (base+clipBox).get_extents (extents, instancer);
+    ঘূৰাই (base+clipBox).get_extents (extents, instancer);
   }
 
-  public:
+  সার্ৱজনিক:
   HBUINT16		startGlyphID;  // first gid clip applies to
   HBUINT16		endGlyphID;    // last gid clip applies to, inclusive
   Offset24To<ClipBox>	clipBox;   // Box or VarBox
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (7);
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, ClipRecord);
 
-struct ClipList
+সংরচনা ClipList
 {
   unsigned serialize_clip_records (hb_subset_context_t *c,
-                                   const ItemVarStoreInstancer &instancer,
-                                   const hb_set_t& gids,
-                                   const hb_map_t& gid_offset_map) const
+                                   ধ্রুৱ ItemVarStoreInstancer &instancer,
+                                   ধ্রুৱ hb_set_t& gids,
+                                   ধ্রুৱ hb_map_t& gid_offset_map) ধ্রুৱ
   {
-    TRACE_SERIALIZE (this);
-    if (gids.is_empty () ||
+    TRACE_SERIALIZE (এতত্);
+    যদি (gids.is_empty () ||
         gid_offset_map.get_population () != gids.get_population ())
       return_trace (0);
 
-    unsigned count  = 0;
+    unsigned গুনতি  = 0;
 
     hb_codepoint_t start_gid= gids.get_min ();
     hb_codepoint_t prev_gid = start_gid;
 
     unsigned offset = gid_offset_map.get (start_gid);
     unsigned prev_offset = offset;
-    for (const hb_codepoint_t _ : gids.iter ())
+    বাবে (ধ্রুৱ hb_codepoint_t _ : gids.iter ())
     {
-      if (_ == start_gid) continue;
+      যদি (_ == start_gid) অনুৱর্ত;
 
       offset = gid_offset_map.get (_);
-      if (_ == prev_gid + 1 &&  offset == prev_offset)
+      যদি (_ == prev_gid + 1 &&  offset == prev_offset)
       {
         prev_gid = _;
-        continue;
+        অনুৱর্ত;
       }
 
       ClipRecord record;
@@ -2146,8 +2146,8 @@ struct ClipList
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
 
-      if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      যদি (!record.subset (c, এতত্, instancer)) return_trace (0);
+      গুনতি++;
 
       start_gid = _;
       prev_gid = _;
@@ -2160,139 +2160,139 @@ struct ClipList
       record.startGlyphID = start_gid;
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
-      if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      যদি (!record.subset (c, এতত্, instancer)) return_trace (0);
+      গুনতি++;
     }
-    return_trace (count);
+    return_trace (গুনতি);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->start_embed (*এতত্);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (মিছা);
+    যদি (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (মিছা);
 
-    const hb_set_t& glyphset = c->plan->_glyphset_colred;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ধ্রুৱ hb_set_t& glyphset = c->plan->_glyphset_colred;
+    ধ্রুৱ hb_map_t &glyph_map = *c->plan->glyph_map;
 
     hb_map_t new_gid_offset_map;
     hb_set_t new_gids;
-    for (const ClipRecord& record : clips.iter ())
+    বাবে (ধ্রুৱ ClipRecord& record : clips.iter ())
     {
       unsigned start_gid = record.startGlyphID;
       unsigned end_gid = record.endGlyphID;
-      for (unsigned gid = start_gid; gid <= end_gid; gid++)
+      বাবে (unsigned gid = start_gid; gid <= end_gid; gid++)
       {
-        if (!glyphset.has (gid) || !glyph_map.has (gid)) continue;
+        যদি (!glyphset.has (gid) || !glyph_map.has (gid)) অনুৱর্ত;
         unsigned new_gid = glyph_map.get (gid);
         new_gid_offset_map.set (new_gid, record.clipBox);
         new_gids.add (new_gid);
       }
     }
 
-    unsigned count = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
-    if (!count) return_trace (false);
-    return_trace (c->serializer->check_assign (out->clips.len, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned গুনতি = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
+    যদি (!গুনতি) return_trace (মিছা);
+    return_trace (c->serializer->check_assign (out->clips.len, গুনতি, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     // TODO Make a formatted struct!
-    return_trace (c->check_struct (this) && clips.sanitize (c, this));
+    return_trace (c->check_struct (এতত্) && clips.sanitize (c, এতত্));
   }
 
-  bool
+  তার্কিক
   get_extents (hb_codepoint_t gid,
 	       hb_glyph_extents_t *extents,
-	       const ItemVarStoreInstancer &instancer) const
+	       ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
     auto *rec = clips.as_array ().bsearch (gid);
-    if (rec)
-      return rec->get_extents (extents, this, instancer);
-    return false;
+    যদি (rec)
+      ঘূৰাই rec->get_extents (extents, এতত্, instancer);
+    ঘূৰাই মিছা;
   }
 
   HBUINT8			format;  // Set to 1.
   SortedArray32Of<ClipRecord>	clips;  // Clip records, sorted by startGlyphID
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_ARRAY_SIZED (5, clips);
 };
 
-struct Paint
+সংরচনা Paint
 {
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, Ts&&... ds) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
 
-    if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+    যদি (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
+      return_trace (c->no_dispatch_return_মান ());
 
-    return_trace (c->end_recursion (this->dispatch (c, std::forward<Ts> (ds)...)));
+    return_trace (c->end_recursion (এতত্->dispatch (c, std::forward<Ts> (ds)...)));
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ধ্রুৱ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.paintformat2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.paintformat3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.paintformat4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.paintformat5, std::forward<Ts> (ds)...));
-    case 6: hb_barrier (); return_trace (c->dispatch (u.paintformat6, std::forward<Ts> (ds)...));
-    case 7: hb_barrier (); return_trace (c->dispatch (u.paintformat7, std::forward<Ts> (ds)...));
-    case 8: hb_barrier (); return_trace (c->dispatch (u.paintformat8, std::forward<Ts> (ds)...));
-    case 9: hb_barrier (); return_trace (c->dispatch (u.paintformat9, std::forward<Ts> (ds)...));
-    case 10: hb_barrier (); return_trace (c->dispatch (u.paintformat10, std::forward<Ts> (ds)...));
-    case 11: hb_barrier (); return_trace (c->dispatch (u.paintformat11, std::forward<Ts> (ds)...));
-    case 12: hb_barrier (); return_trace (c->dispatch (u.paintformat12, std::forward<Ts> (ds)...));
-    case 13: hb_barrier (); return_trace (c->dispatch (u.paintformat13, std::forward<Ts> (ds)...));
-    case 14: hb_barrier (); return_trace (c->dispatch (u.paintformat14, std::forward<Ts> (ds)...));
-    case 15: hb_barrier (); return_trace (c->dispatch (u.paintformat15, std::forward<Ts> (ds)...));
-    case 16: hb_barrier (); return_trace (c->dispatch (u.paintformat16, std::forward<Ts> (ds)...));
-    case 17: hb_barrier (); return_trace (c->dispatch (u.paintformat17, std::forward<Ts> (ds)...));
-    case 18: hb_barrier (); return_trace (c->dispatch (u.paintformat18, std::forward<Ts> (ds)...));
-    case 19: hb_barrier (); return_trace (c->dispatch (u.paintformat19, std::forward<Ts> (ds)...));
-    case 20: hb_barrier (); return_trace (c->dispatch (u.paintformat20, std::forward<Ts> (ds)...));
-    case 21: hb_barrier (); return_trace (c->dispatch (u.paintformat21, std::forward<Ts> (ds)...));
-    case 22: hb_barrier (); return_trace (c->dispatch (u.paintformat22, std::forward<Ts> (ds)...));
-    case 23: hb_barrier (); return_trace (c->dispatch (u.paintformat23, std::forward<Ts> (ds)...));
-    case 24: hb_barrier (); return_trace (c->dispatch (u.paintformat24, std::forward<Ts> (ds)...));
-    case 25: hb_barrier (); return_trace (c->dispatch (u.paintformat25, std::forward<Ts> (ds)...));
-    case 26: hb_barrier (); return_trace (c->dispatch (u.paintformat26, std::forward<Ts> (ds)...));
-    case 27: hb_barrier (); return_trace (c->dispatch (u.paintformat27, std::forward<Ts> (ds)...));
-    case 28: hb_barrier (); return_trace (c->dispatch (u.paintformat28, std::forward<Ts> (ds)...));
-    case 29: hb_barrier (); return_trace (c->dispatch (u.paintformat29, std::forward<Ts> (ds)...));
-    case 30: hb_barrier (); return_trace (c->dispatch (u.paintformat30, std::forward<Ts> (ds)...));
-    case 31: hb_barrier (); return_trace (c->dispatch (u.paintformat31, std::forward<Ts> (ds)...));
-    case 32: hb_barrier (); return_trace (c->dispatch (u.paintformat32, std::forward<Ts> (ds)...));
+    যদি (unlikely (!c->may_dispatch (এতত্, &u.format.v))) ঘূৰাই c->no_dispatch_return_মান ();
+    TRACE_DISPATCH (এতত্, u.format.v);
+    ৱিকল্প (u.format.v) {
+    পক্ষ 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
+    পক্ষ 2: hb_barrier (); return_trace (c->dispatch (u.paintformat2, std::forward<Ts> (ds)...));
+    পক্ষ 3: hb_barrier (); return_trace (c->dispatch (u.paintformat3, std::forward<Ts> (ds)...));
+    পক্ষ 4: hb_barrier (); return_trace (c->dispatch (u.paintformat4, std::forward<Ts> (ds)...));
+    পক্ষ 5: hb_barrier (); return_trace (c->dispatch (u.paintformat5, std::forward<Ts> (ds)...));
+    পক্ষ 6: hb_barrier (); return_trace (c->dispatch (u.paintformat6, std::forward<Ts> (ds)...));
+    পক্ষ 7: hb_barrier (); return_trace (c->dispatch (u.paintformat7, std::forward<Ts> (ds)...));
+    পক্ষ 8: hb_barrier (); return_trace (c->dispatch (u.paintformat8, std::forward<Ts> (ds)...));
+    পক্ষ 9: hb_barrier (); return_trace (c->dispatch (u.paintformat9, std::forward<Ts> (ds)...));
+    পক্ষ 10: hb_barrier (); return_trace (c->dispatch (u.paintformat10, std::forward<Ts> (ds)...));
+    পক্ষ 11: hb_barrier (); return_trace (c->dispatch (u.paintformat11, std::forward<Ts> (ds)...));
+    পক্ষ 12: hb_barrier (); return_trace (c->dispatch (u.paintformat12, std::forward<Ts> (ds)...));
+    পক্ষ 13: hb_barrier (); return_trace (c->dispatch (u.paintformat13, std::forward<Ts> (ds)...));
+    পক্ষ 14: hb_barrier (); return_trace (c->dispatch (u.paintformat14, std::forward<Ts> (ds)...));
+    পক্ষ 15: hb_barrier (); return_trace (c->dispatch (u.paintformat15, std::forward<Ts> (ds)...));
+    পক্ষ 16: hb_barrier (); return_trace (c->dispatch (u.paintformat16, std::forward<Ts> (ds)...));
+    পক্ষ 17: hb_barrier (); return_trace (c->dispatch (u.paintformat17, std::forward<Ts> (ds)...));
+    পক্ষ 18: hb_barrier (); return_trace (c->dispatch (u.paintformat18, std::forward<Ts> (ds)...));
+    পক্ষ 19: hb_barrier (); return_trace (c->dispatch (u.paintformat19, std::forward<Ts> (ds)...));
+    পক্ষ 20: hb_barrier (); return_trace (c->dispatch (u.paintformat20, std::forward<Ts> (ds)...));
+    পক্ষ 21: hb_barrier (); return_trace (c->dispatch (u.paintformat21, std::forward<Ts> (ds)...));
+    পক্ষ 22: hb_barrier (); return_trace (c->dispatch (u.paintformat22, std::forward<Ts> (ds)...));
+    পক্ষ 23: hb_barrier (); return_trace (c->dispatch (u.paintformat23, std::forward<Ts> (ds)...));
+    পক্ষ 24: hb_barrier (); return_trace (c->dispatch (u.paintformat24, std::forward<Ts> (ds)...));
+    পক্ষ 25: hb_barrier (); return_trace (c->dispatch (u.paintformat25, std::forward<Ts> (ds)...));
+    পক্ষ 26: hb_barrier (); return_trace (c->dispatch (u.paintformat26, std::forward<Ts> (ds)...));
+    পক্ষ 27: hb_barrier (); return_trace (c->dispatch (u.paintformat27, std::forward<Ts> (ds)...));
+    পক্ষ 28: hb_barrier (); return_trace (c->dispatch (u.paintformat28, std::forward<Ts> (ds)...));
+    পক্ষ 29: hb_barrier (); return_trace (c->dispatch (u.paintformat29, std::forward<Ts> (ds)...));
+    পক্ষ 30: hb_barrier (); return_trace (c->dispatch (u.paintformat30, std::forward<Ts> (ds)...));
+    পক্ষ 31: hb_barrier (); return_trace (c->dispatch (u.paintformat31, std::forward<Ts> (ds)...));
+    পক্ষ 32: hb_barrier (); return_trace (c->dispatch (u.paintformat32, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
+    পক্ষ 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    স্ৱভাৱ:return_trace (c->default_return_মান ());
     }
   }
 
-  bool get_solid_color (hb_paint_context_t *c,
-			hb_bool_t *is_foreground, hb_color_t *color) const
+  তার্কিক get_solid_color (hb_paint_context_t *c,
+			hb_bool_t *is_foreground, hb_color_t *color) ধ্রুৱ
   {
-    switch (u.format.v) {
-    case 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); return true;
-    case 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); return true;
-    default: return false;
+    ৱিকল্প (u.format.v) {
+    পক্ষ 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); ঘূৰাই সঁচা;
+    পক্ষ 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); ঘূৰাই সঁচা;
+    স্ৱভাৱ: ঘূৰাই মিছা;
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }				format;
+  রক্ষিত:
+  সঙ্ঘ {
+  সংরচনা { HBUINT8 v; }				format;
   PaintColrLayers				paintformat1;
   NoVariable<PaintSolid>			paintformat2;
   Variable<PaintSolid>				paintformat3;
@@ -2329,209 +2329,209 @@ struct Paint
   PaintGlyph<Layout::MediumTypes>		paintformat33;
 #endif
   } u;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (2);
 };
 
-struct BaseGlyphPaintRecord
+সংরচনা BaseGlyphPaintRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  পূর্ণাঙ্ক cmp (hb_codepoint_t g) ধ্রুৱ
+  { ঘূৰাই g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
-  bool serialize (hb_serialize_context_t *s, const hb_map_t* glyph_map,
-                  const void* src_base, hb_subset_context_t *c,
-                  const ItemVarStoreInstancer &instancer) const
+  তার্কিক serialize (hb_serialize_context_t *s, ধ্রুৱ hb_map_t* glyph_map,
+                  ধ্রুৱ শূন্য* src_base, hb_subset_context_t *c,
+                  ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SERIALIZE (this);
-    auto *out = s->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
+    TRACE_SERIALIZE (এতত্);
+    auto *out = s->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
+    যদি (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+      return_trace (মিছা);
 
     return_trace (out->paint.serialize_subset (c, paint, src_base, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, ধ্রুৱ শূন্য *base) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && paint.sanitize (c, base)));
+    TRACE_SANITIZE (এতত্);
+    return_trace (likely (c->check_struct (এতত্) && paint.sanitize (c, base)));
   }
 
-  public:
+  সার্ৱজনিক:
   HBGlyphID16		glyphId;    /* Glyph ID of reference glyph */
   Offset32To<Paint>	paint;      /* Offset (from beginning of BaseGlyphPaintRecord array) to Paint,
                                      * Typically PaintColrLayers */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
+সংরচনা BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
 {
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
-    const hb_set_t* glyphset = &c->plan->_glyphset_colred;
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->start_embed (এতত্);
+    যদি (unlikely (!c->serializer->extend_min (out)))  return_trace (মিছা);
+    ধ্রুৱ hb_set_t* glyphset = &c->plan->_glyphset_colred;
 
-    for (const auto& _ : as_array ())
+    বাবে (ধ্রুৱ auto& _ : as_array ())
     {
       unsigned gid = _.glyphId;
-      if (!glyphset->has (gid)) continue;
+      যদি (!glyphset->has (gid)) অনুৱর্ত;
 
-      if (_.serialize (c->serializer, c->plan->glyph_map, this, c, instancer)) out->len++;
-      else return_trace (false);
+      যদি (_.serialize (c->serializer, c->plan->glyph_map, এতত্, c, instancer)) out->len++;
+      অন্যথা return_trace (মিছা);
     }
 
     return_trace (out->len != 0);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (SortedArray32Of<BaseGlyphPaintRecord>::sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (SortedArray32Of<BaseGlyphPaintRecord>::sanitize (c, এতত্));
   }
 };
 
-struct LayerList : Array32OfOffset32To<Paint>
+সংরচনা LayerList : Array32OfOffset32To<Paint>
 {
-  const Paint& get_paint (unsigned i) const
-  { return this+(*this)[i]; }
+  ধ্রুৱ Paint& get_paint (unsigned i) ধ্রুৱ
+  { ঘূৰাই এতত্+(*এতত্)[i]; }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  তার্কিক subset (hb_subset_context_t *c,
+               ধ্রুৱ ItemVarStoreInstancer &instancer) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->start_embed (এতত্);
+    যদি (unlikely (!c->serializer->extend_min (out)))  return_trace (মিছা);
 
-    bool ret = false;
-    for (const auto& _ : + hb_enumerate (*this)
+    তার্কিক ret = মিছা;
+    বাবে (ধ্রুৱ auto& _ : + hb_enumerate (*এতত্)
                          | hb_filter (c->plan->colrv1_layers, hb_first))
 
     {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
-      ret |= o->serialize_subset (c, _.second, this, instancer);
+      যদি (unlikely (!o)) return_trace (মিছা);
+      ret |= o->serialize_subset (c, _.second, এতত্, instancer);
     }
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (Array32OfOffset32To<Paint>::sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (Array32OfOffset32To<Paint>::sanitize (c, এতত্));
   }
 };
 
-struct delta_set_index_map_subset_plan_t
+সংরচনা delta_set_index_map_subset_plan_t
 {
-  unsigned get_inner_bit_count () const { return inner_bit_count; }
-  unsigned get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
-  hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+  unsigned get_inner_bit_গুনতি () ধ্রুৱ { ঘূৰাই inner_bit_গুনতি; }
+  unsigned get_width ()           ধ্রুৱ { ঘূৰাই ((outer_bit_গুনতি + inner_bit_গুনতি + 7) / 8); }
+  hb_array_t<ধ্রুৱ uint32_t> get_output_map () ধ্রুৱ { ঘূৰাই output_map.as_array (); }
 
-  delta_set_index_map_subset_plan_t (const hb_map_t &new_deltaset_idx_varidx_map)
+  delta_set_index_map_subset_plan_t (ধ্রুৱ hb_map_t &new_deltaset_idx_varidx_map)
   {
-    map_count = 0;
-    outer_bit_count = 0;
-    inner_bit_count = 1;
+    map_গুনতি = 0;
+    outer_bit_গুনতি = 0;
+    inner_bit_গুনতি = 1;
     output_map.init ();
 
     /* search backwards */
-    unsigned count = new_deltaset_idx_varidx_map.get_population ();
-    if (!count) return;
+    unsigned গুনতি = new_deltaset_idx_varidx_map.get_population ();
+    যদি (!গুনতি) ঘূৰাই;
 
     unsigned last_idx = (unsigned)-1;
     unsigned last_varidx = (unsigned)-1;
 
-    for (unsigned i = count; i; i--)
+    বাবে (unsigned i = গুনতি; i; i--)
     {
       unsigned delta_set_idx = i - 1;
       unsigned var_idx = new_deltaset_idx_varidx_map.get (delta_set_idx);
-      if (i == count)
+      যদি (i == গুনতি)
       {
         last_idx = delta_set_idx;
         last_varidx = var_idx;
-        continue;
+        অনুৱর্ত;
       }
-      if (var_idx != last_varidx)
-        break;
+      যদি (var_idx != last_varidx)
+        ভঙ্গ;
       last_idx = delta_set_idx;
     }
 
-    map_count = last_idx + 1;
+    map_গুনতি = last_idx + 1;
   }
 
-  bool remap (const hb_map_t &new_deltaset_idx_varidx_map)
+  তার্কিক remap (ধ্রুৱ hb_map_t &new_deltaset_idx_varidx_map)
   {
     /* recalculate bit_count */
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_গুনতি = 1;
+    inner_bit_গুনতি = 1;
 
-    if (unlikely (!output_map.resize_dirty (map_count))) return false;
+    যদি (unlikely (!output_map.resize_dirty (map_গুনতি))) ঘূৰাই মিছা;
 
-    for (unsigned idx = 0; idx < map_count; idx++)
+    বাবে (unsigned idx = 0; idx < map_গুনতি; idx++)
     {
       uint32_t *var_idx;
-      if (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) return false;
+      যদি (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) ঘূৰাই মিছা;
       output_map.arrayZ[idx] = *var_idx;
 
       unsigned outer = (*var_idx) >> 16;
-      unsigned bit_count = (outer == 0) ? 1 : hb_bit_storage (outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      unsigned bit_গুনতি = (outer == 0) ? 1 : hb_bit_storage (outer);
+      outer_bit_গুনতি = hb_max (bit_গুনতি, outer_bit_গুনতি);
 
       unsigned inner = (*var_idx) & 0xFFFF;
-      bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
-      inner_bit_count = hb_max (bit_count, inner_bit_count);
+      bit_গুনতি = (inner == 0) ? 1 : hb_bit_storage (inner);
+      inner_bit_গুনতি = hb_max (bit_গুনতি, inner_bit_গুনতি);
     }
-    return true;
+    ঘূৰাই সঁচা;
   }
 
-  private:
-  unsigned map_count;
-  unsigned outer_bit_count;
-  unsigned inner_bit_count;
+  গুপ্ত:
+  unsigned map_গুনতি;
+  unsigned outer_bit_গুনতি;
+  unsigned inner_bit_গুনতি;
   hb_vector_t<uint32_t> output_map;
 };
 
-struct COLR
+সংরচনা COLR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_COLR;
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_COLR;
 
-  bool has_data () const { return has_v0_data () || version; }
+  তার্কিক has_data () ধ্রুৱ { ঘূৰাই has_v0_data () || version; }
 
-  bool has_v0_data () const { return numBaseGlyphs; }
-  bool has_v1_data () const
+  তার্কিক has_v0_data () ধ্রুৱ { ঘূৰাই অঙ্ক_Base_Glyphs; }
+  তার্কিক has_v1_data () ধ্রুৱ
   {
-    if (version < 1)
-      return false;
+    যদি (version < 1)
+      ঘূৰাই মিছা;
     hb_barrier ();
 
-    return (this+baseGlyphList).len > 0;
+    ঘূৰাই (এতত্+baseGlyphList).len > 0;
   }
 
-  unsigned int get_glyph_layers (hb_codepoint_t       glyph,
-				 unsigned int         start_offset,
-				 unsigned int        *count, /* IN/OUT.  May be NULL. */
-				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) const
+  unsigned পূর্ণাঙ্ক get_glyph_layers (hb_codepoint_t       glyph,
+				 unsigned পূর্ণাঙ্ক         start_offset,
+				 unsigned পূর্ণাঙ্ক        *গুনতি, /* IN/OUT.  May be NULL. */
+				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) ধ্রুৱ
   {
-    const BaseGlyphRecord &record = (this+baseGlyphsZ).bsearch (numBaseGlyphs, glyph);
+    ধ্রুৱ BaseGlyphRecord &record = (এতত্+baseGlyphsZ).bsearch (অঙ্ক_Base_Glyphs, glyph);
 
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
-    hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-								       record.numLayers);
-    if (count && layers)
+    hb_array_t<ধ্রুৱ LayerRecord> all_layers = (এতত্+layersZ).as_array (অঙ্ক_Layers);
+    hb_array_t<ধ্রুৱ LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
+								       record.অঙ্ক_Layers);
+    যদি (গুনতি && layers)
     {
-      + glyph_layers.sub_array (start_offset, count)
-      | hb_sink (hb_array (layers, *count))
+      + glyph_layers.sub_array (start_offset, গুনতি)
+      | hb_sink (hb_array (layers, *গুনতি))
       ;
     }
-    return glyph_layers.length;
+    ঘূৰাই glyph_layers.length;
   }
 
-  struct accelerator_t
+  সংরচনা accelerator_t
   {
     accelerator_t (hb_face_t *face)
     { colr = hb_sanitize_context_t ().reference_table<COLR> (face); }
@@ -2539,7 +2539,7 @@ struct COLR
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      যদি (scratch)
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
@@ -2549,613 +2549,613 @@ struct COLR
     }
 
 
-    bool has_data () const { return colr->has_data (); }
+    তার্কিক has_data () ধ্রুৱ { ঘূৰাই colr->has_data (); }
 
 #ifndef HB_NO_PAINT
-    bool
+    তার্কিক
     get_extents (hb_font_t *font,
 		 hb_codepoint_t glyph,
-		 hb_glyph_extents_t *extents) const
+		 hb_glyph_extents_t *extents) ধ্রুৱ
     {
-      if (unlikely (!has_data ())) return false;
+      যদি (unlikely (!has_data ())) ঘূৰাই মিছা;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = colr->get_extents (font, glyph, extents, *scratch);
+      যদি (unlikely (!scratch)) ঘূৰাই সঁচা;
+      তার্কিক ret = colr->get_extents (font, glyph, extents, *scratch);
       release_scratch (scratch);
-      return ret;
+      ঘূৰাই ret;
     }
 
-    bool paint_glyph (hb_font_t *font,
+    তার্কিক paint_glyph (hb_font_t *font,
 		      hb_codepoint_t glyph,
-		      hb_paint_funcs_t *funcs, void *data,
-		      unsigned int palette_index,
+		      hb_paint_funcs_t *funcs, শূন্য *data,
+		      unsigned পূর্ণাঙ্ক palette_index,
 		      hb_color_t foreground,
-		      bool clip = true) const
+		      তার্কিক clip = সঁচা) ধ্রুৱ
     {
-      if (unlikely (!has_data ())) return false;
+      যদি (unlikely (!has_data ())) ঘূৰাই মিছা;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = colr->paint_glyph (font, glyph, funcs, data, palette_index, foreground, clip, *scratch);
+      যদি (unlikely (!scratch)) ঘূৰাই সঁচা;
+      তার্কিক ret = colr->paint_glyph (font, glyph, funcs, data, palette_index, foreground, clip, *scratch);
       release_scratch (scratch);
-      return ret;
+      ঘূৰাই ret;
     }
 #endif
 
-    bool is_valid () { return colr.get_blob ()->length; }
+    তার্কিক is_valid () { ঘূৰাই colr.get_blob ()->length; }
 
-    void depend (hb_depend_data_builder_t *depend_data) const
+    শূন্য depend (hb_depend_data_builder_t *depend_data) ধ্রুৱ
     {
-      if (!has_data ()) return;
+      যদি (!has_data ()) ঘূৰাই;
       colr->depend (depend_data);
     }
 
-    void closure_glyphs (hb_codepoint_t glyph,
-			 hb_set_t *related_ids /* OUT */) const
+    শূন্য closure_glyphs (hb_codepoint_t glyph,
+			 hb_set_t *related_ids /* OUT */) ধ্রুৱ
     { colr->closure_glyphs (glyph, related_ids); }
 
-    void closure_V0palette_indices (const hb_set_t *glyphs,
-				    hb_set_t *palettes /* OUT */) const
+    শূন্য closure_V0palette_indices (ধ্রুৱ hb_set_t *glyphs,
+				    hb_set_t *palettes /* OUT */) ধ্রুৱ
     { colr->closure_V0palette_indices (glyphs, palettes); }
 
-    void closure_forV1 (hb_set_t *glyphset,
+    শূন্য closure_forV1 (hb_set_t *glyphset,
                         hb_set_t *layer_indices,
                         hb_set_t *palette_indices,
                         hb_set_t *variation_indices,
-                        hb_set_t *delta_set_indices) const
+                        hb_set_t *delta_set_indices) ধ্রুৱ
     { colr->closure_forV1 (glyphset, layer_indices, palette_indices, variation_indices, delta_set_indices); }
 
-    bool has_var_store () const
-    { return colr->has_var_store (); }
+    তার্কিক has_var_store () ধ্রুৱ
+    { ঘূৰাই colr->has_var_store (); }
 
-    const ItemVariationStore &get_var_store () const
-    { return colr->get_var_store (); }
-    const ItemVariationStore *get_var_store_ptr () const
-    { return colr->get_var_store_ptr (); }
+    ধ্রুৱ ItemVariationStore &get_var_store () ধ্রুৱ
+    { ঘূৰাই colr->get_var_store (); }
+    ধ্রুৱ ItemVariationStore *get_var_store_ptr () ধ্রুৱ
+    { ঘূৰাই colr->get_var_store_ptr (); }
 
-    bool has_delta_set_index_map () const
-    { return colr->has_delta_set_index_map (); }
+    তার্কিক has_delta_set_index_map () ধ্রুৱ
+    { ঘূৰাই colr->has_delta_set_index_map (); }
 
-    const DeltaSetIndexMap &get_delta_set_index_map () const
-    { return colr->get_delta_set_index_map (); }
-    const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-    { return colr->get_delta_set_index_map_ptr (); }
+    ধ্রুৱ DeltaSetIndexMap &get_delta_set_index_map () ধ্রুৱ
+    { ঘূৰাই colr->get_delta_set_index_map (); }
+    ধ্রুৱ DeltaSetIndexMap *get_delta_set_index_map_ptr () ধ্রুৱ
+    { ঘূৰাই colr->get_delta_set_index_map_ptr (); }
 
-    private:
+    গুপ্ত:
 
-    hb_colr_scratch_t *acquire_scratch () const
+    hb_colr_scratch_t *acquire_scratch () ধ্রুৱ
     {
       hb_colr_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      যদি (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
-	scratch = (hb_colr_scratch_t *) hb_calloc (1, sizeof (hb_colr_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_colr_scratch_t *) hb_calloc (1, পরিমাণ (hb_colr_scratch_t));
+	যদি (unlikely (!scratch))
+	  ঘূৰাই nullptr;
       }
 
-      return scratch;
+      ঘূৰাই scratch;
     }
-    void release_scratch (hb_colr_scratch_t *scratch) const
+    শূন্য release_scratch (hb_colr_scratch_t *scratch) ধ্রুৱ
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      যদি (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
       }
     }
 
-    public:
+    সার্ৱজনিক:
     hb_blob_ptr_t<COLR> colr;
-    private:
+    গুপ্ত:
     mutable hb_atomic_t<hb_colr_scratch_t *> cached_scratch;
   };
 
-  void depend (hb_depend_data_builder_t *depend_data) const
+  শূন্য depend (hb_depend_data_builder_t *depend_data) ধ্রুৱ
   {
     // v0
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    for (const BaseGlyphRecord &record : baseGlyphs)
+    hb_array_t<ধ্রুৱ BaseGlyphRecord> baseGlyphs = (এতত্+baseGlyphsZ).as_array (অঙ্ক_Base_Glyphs);
+    বাবে (ধ্রুৱ BaseGlyphRecord &record : baseGlyphs)
     {
-      auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record.firstLayerIdx,
-                                                                         record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
+      auto glyph_layers = (এতত্+layersZ).as_array (অঙ্ক_Layers).sub_array (record.firstLayerIdx,
+                                                                         record.অঙ্ক_Layers);
+      বাবে (ধ্রুৱ LayerRecord layer : glyph_layers)
         depend_data->add_depend(record.glyphId, HB_OT_TAG_COLR, layer.glyphId);
     }
 
-    if (!has_v1_data())
-      return;
+    যদি (!has_v1_data())
+      ঘূৰাই;
 
     // v1
-    hb_colrv1_depend_context_t c (this, depend_data);
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
+    hb_colrv1_depend_context_t c (এতত্, depend_data);
+    ধ্রুৱ BaseGlyphList &baseglyph_paintrecords = এতত্+baseGlyphList;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    বাবে (ধ্রুৱ BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
       c.source_gid = baseglyph_paintrecord.glyphId;
       c.visited_paint.clear ();
 
-      const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
+      ধ্রুৱ Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
     }
   }
 
-  void closure_glyphs (hb_codepoint_t glyph,
-		       hb_set_t *related_ids /* OUT */) const
+  শূন্য closure_glyphs (hb_codepoint_t glyph,
+		       hb_set_t *related_ids /* OUT */) ধ্রুৱ
   {
-    const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (!record) return;
+    ধ্রুৱ BaseGlyphRecord *record = get_base_glyph_record (glyph);
+    যদি (!record) ঘূৰাই;
 
-    auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record->firstLayerIdx,
-								       record->numLayers);
-    if (!glyph_layers.length) return;
+    auto glyph_layers = (এতত্+layersZ).as_array (অঙ্ক_Layers).sub_array (record->firstLayerIdx,
+								       record->অঙ্ক_Layers);
+    যদি (!glyph_layers.length) ঘূৰাই;
     related_ids->add_array (&glyph_layers[0].glyphId, glyph_layers.length, LayerRecord::min_size);
   }
 
-  void closure_V0palette_indices (const hb_set_t *glyphs,
-				  hb_set_t *palettes /* OUT */) const
+  শূন্য closure_V0palette_indices (ধ্রুৱ hb_set_t *glyphs,
+				  hb_set_t *palettes /* OUT */) ধ্রুৱ
   {
-    if (!numBaseGlyphs || !numLayers) return;
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
+    যদি (!অঙ্ক_Base_Glyphs || !অঙ্ক_Layers) ঘূৰাই;
+    hb_array_t<ধ্রুৱ BaseGlyphRecord> baseGlyphs = (এতত্+baseGlyphsZ).as_array (অঙ্ক_Base_Glyphs);
+    hb_array_t<ধ্রুৱ LayerRecord> all_layers = (এতত্+layersZ).as_array (অঙ্ক_Layers);
 
-    for (const BaseGlyphRecord record : baseGlyphs)
+    বাবে (ধ্রুৱ BaseGlyphRecord record : baseGlyphs)
     {
-      if (!glyphs->has (record.glyphId)) continue;
-      hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-                                                                   record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
+      যদি (!glyphs->has (record.glyphId)) অনুৱর্ত;
+      hb_array_t<ধ্রুৱ LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
+                                                                   record.অঙ্ক_Layers);
+      বাবে (ধ্রুৱ LayerRecord layer : glyph_layers)
         palettes->add (layer.colorIdx);
     }
   }
 
-  void closure_forV1 (hb_set_t *glyphset,
+  শূন্য closure_forV1 (hb_set_t *glyphset,
                       hb_set_t *layer_indices,
                       hb_set_t *palette_indices,
                       hb_set_t *variation_indices,
-                      hb_set_t *delta_set_indices) const
+                      hb_set_t *delta_set_indices) ধ্রুৱ
   {
-    if (version < 1) return;
+    যদি (version < 1) ঘূৰাই;
     hb_barrier ();
 
     hb_set_t visited_glyphs;
 
-    hb_colrv1_closure_context_t c (this, &visited_glyphs, layer_indices, palette_indices, variation_indices);
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
+    hb_colrv1_closure_context_t c (এতত্, &visited_glyphs, layer_indices, palette_indices, variation_indices);
+    ধ্রুৱ BaseGlyphList &baseglyph_paintrecords = এতত্+baseGlyphList;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    বাবে (ধ্রুৱ BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
       unsigned gid = baseglyph_paintrecord.glyphId;
-      if (!glyphset->has (gid)) continue;
+      যদি (!glyphset->has (gid)) অনুৱর্ত;
 
-      const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
+      ধ্রুৱ Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
     }
     hb_set_union (glyphset, &visited_glyphs);
 
-    const ClipList &cliplist = this+clipList;
+    ধ্রুৱ ClipList &cliplist = এতত্+clipList;
     c.glyphs = glyphset;
-    for (const ClipRecord &clip_record : cliplist.clips.iter())
+    বাবে (ধ্রুৱ ClipRecord &clip_record : cliplist.clips.iter())
       clip_record.closurev1 (&c, &cliplist);
 
     // if a DeltaSetIndexMap is included, collected variation indices are
     // actually delta set indices, we need to map them into variation indices
-    if (has_delta_set_index_map ())
+    যদি (has_delta_set_index_map ())
     {
-      const DeltaSetIndexMap &var_idx_map = this+varIdxMap;
+      ধ্রুৱ DeltaSetIndexMap &var_idx_map = এতত্+varIdxMap;
       delta_set_indices->set (*variation_indices);
       variation_indices->clear ();
-      for (unsigned delta_set_idx : *delta_set_indices)
+      বাবে (unsigned delta_set_idx : *delta_set_indices)
         variation_indices->add (var_idx_map.map (delta_set_idx));
     }
   }
 
-  const LayerList& get_layerList () const
-  { return (this+layerList); }
+  ধ্রুৱ LayerList& get_layerList () ধ্রুৱ
+  { ঘূৰাই (এতত্+layerList); }
 
-  const BaseGlyphList& get_baseglyphList () const
-  { return (this+baseGlyphList); }
+  ধ্রুৱ BaseGlyphList& get_baseglyphList () ধ্রুৱ
+  { ঘূৰাই (এতত্+baseGlyphList); }
 
-  bool has_var_store () const
-  { return version >= 1 && hb_barrier () && varStore != 0; }
+  তার্কিক has_var_store () ধ্রুৱ
+  { ঘূৰাই version >= 1 && hb_barrier () && varStore != 0; }
 
-  bool has_delta_set_index_map () const
-  { return version >= 1 && hb_barrier () && varIdxMap != 0; }
+  তার্কিক has_delta_set_index_map () ধ্রুৱ
+  { ঘূৰাই version >= 1 && hb_barrier () && varIdxMap != 0; }
 
-  bool has_clip_list () const
-  { return version >= 1 && hb_barrier () && clipList != 0; }
+  তার্কিক has_clip_list () ধ্রুৱ
+  { ঘূৰাই version >= 1 && hb_barrier () && clipList != 0; }
 
-  const DeltaSetIndexMap &get_delta_set_index_map () const
-  { return has_delta_set_index_map () && hb_barrier () ? this+varIdxMap : Null (DeltaSetIndexMap); }
-  const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-  { return has_delta_set_index_map () && hb_barrier () ? &(this+varIdxMap) : nullptr; }
+  ধ্রুৱ DeltaSetIndexMap &get_delta_set_index_map () ধ্রুৱ
+  { ঘূৰাই has_delta_set_index_map () && hb_barrier () ? এতত্+varIdxMap : Null (DeltaSetIndexMap); }
+  ধ্রুৱ DeltaSetIndexMap *get_delta_set_index_map_ptr () ধ্রুৱ
+  { ঘূৰাই has_delta_set_index_map () && hb_barrier () ? &(এতত্+varIdxMap) : nullptr; }
 
-  const ItemVariationStore &get_var_store () const
-  { return has_var_store () && hb_barrier () ? this+varStore : Null (ItemVariationStore); }
-  const ItemVariationStore *get_var_store_ptr () const
-  { return has_var_store () && hb_barrier () ? &(this+varStore) : nullptr; }
+  ধ্রুৱ ItemVariationStore &get_var_store () ধ্রুৱ
+  { ঘূৰাই has_var_store () && hb_barrier () ? এতত্+varStore : Null (ItemVariationStore); }
+  ধ্রুৱ ItemVariationStore *get_var_store_ptr () ধ্রুৱ
+  { ঘূৰাই has_var_store () && hb_barrier () ? &(এতত্+varStore) : nullptr; }
 
-  const ClipList &get_clip_list () const
-  { return has_clip_list () && hb_barrier () ? this+clipList : Null (ClipList); }
+  ধ্রুৱ ClipList &get_clip_list () ধ্রুৱ
+  { ঘূৰাই has_clip_list () && hb_barrier () ? এতত্+clipList : Null (ClipList); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) &&
 		  hb_barrier () &&
-                  (this+baseGlyphsZ).sanitize (c, numBaseGlyphs) &&
-                  (this+layersZ).sanitize (c, numLayers) &&
+                  (এতত্+baseGlyphsZ).sanitize (c, অঙ্ক_Base_Glyphs) &&
+                  (এতত্+layersZ).sanitize (c, অঙ্ক_Layers) &&
                   (version == 0 ||
 		   (hb_barrier () &&
-		    baseGlyphList.sanitize (c, this) &&
-		    layerList.sanitize (c, this) &&
-		    clipList.sanitize (c, this) &&
-		    varIdxMap.sanitize (c, this) &&
-		    varStore.sanitize (c, this))));
+		    baseGlyphList.sanitize (c, এতত্) &&
+		    layerList.sanitize (c, এতত্) &&
+		    clipList.sanitize (c, এতত্) &&
+		    varIdxMap.sanitize (c, এতত্) &&
+		    varStore.sanitize (c, এতত্))));
   }
 
   template<typename BaseIterator, typename LayerIterator,
 	   hb_requires (hb_is_iterator (BaseIterator)),
 	   hb_requires (hb_is_iterator (LayerIterator))>
-  bool serialize_V0 (hb_serialize_context_t *c,
+  তার্কিক serialize_V0 (hb_serialize_context_t *c,
 		     unsigned version,
 		     BaseIterator base_it,
 		     LayerIterator layer_it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (base_it.len () != layer_it.len ()))
-      return_trace (false);
+    TRACE_SERIALIZE (এতত্);
+    যদি (unlikely (base_it.len () != layer_it.len ()))
+      return_trace (মিছা);
 
-    this->version = version;
-    numLayers = 0;
-    numBaseGlyphs = base_it.len ();
-    if (numBaseGlyphs == 0)
+    এতত্->version = version;
+    অঙ্ক_Layers = 0;
+    অঙ্ক_Base_Glyphs = base_it.len ();
+    যদি (অঙ্ক_Base_Glyphs == 0)
     {
       baseGlyphsZ = 0;
       layersZ = 0;
-      return_trace (true);
+      return_trace (সঁচা);
     }
 
     c->push ();
-    for (const hb_item_type<BaseIterator> _ : + base_it.iter ())
+    বাবে (ধ্রুৱ hb_item_type<BaseIterator> _ : + base_it.iter ())
     {
       auto* record = c->embed (_);
-      if (unlikely (!record)) return_trace (false);
-      record->firstLayerIdx = numLayers;
-      numLayers += record->numLayers;
+      যদি (unlikely (!record)) return_trace (মিছা);
+      record->firstLayerIdx = অঙ্ক_Layers;
+      অঙ্ক_Layers += record->অঙ্ক_Layers;
     }
-    c->add_link (baseGlyphsZ, c->pop_pack ());
+    c->add_link (baseGlyphsZ, c->বেৰ_কৰো_pack ());
 
     c->push ();
-    for (const hb_item_type<LayerIterator>& _ : + layer_it.iter ())
+    বাবে (ধ্রুৱ hb_item_type<LayerIterator>& _ : + layer_it.iter ())
       _.as_array ().copy (c);
 
-    c->add_link (layersZ, c->pop_pack ());
+    c->add_link (layersZ, c->বেৰ_কৰো_pack ());
 
-    return_trace (true);
+    return_trace (সঁচা);
   }
 
-  const BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) const
+  ধ্রুৱ BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) ধ্রুৱ
   {
-    const BaseGlyphRecord* record = &(this+baseGlyphsZ).bsearch (numBaseGlyphs, (unsigned int) gid);
-    if (record == &Null (BaseGlyphRecord) ||
+    ধ্রুৱ BaseGlyphRecord* record = &(এতত্+baseGlyphsZ).bsearch (অঙ্ক_Base_Glyphs, (unsigned পূর্ণাঙ্ক) gid);
+    যদি (record == &Null (BaseGlyphRecord) ||
         (record && (hb_codepoint_t) record->glyphId != gid))
       record = nullptr;
-    return record;
+    ঘূৰাই record;
   }
 
-  const BaseGlyphPaintRecord* get_base_glyph_paintrecord (hb_codepoint_t gid) const
+  ধ্রুৱ BaseGlyphPaintRecord* get_base_glyph_paintrecord (hb_codepoint_t gid) ধ্রুৱ
   {
-    const BaseGlyphList &list = this+baseGlyphList;
-    unsigned int i;
-    if (!list.bfind ((unsigned) gid, &i))
-      return nullptr;
-    return &list[i];
+    ধ্রুৱ BaseGlyphList &list = এতত্+baseGlyphList;
+    unsigned পূর্ণাঙ্ক i;
+    যদি (!list.bfind ((unsigned) gid, &i))
+      ঘূৰাই nullptr;
+    ঘূৰাই &list[i];
   }
 
-  bool downgrade_to_V0 (const hb_set_t &glyphset) const
+  তার্কিক downgrade_to_V0 (ধ্রুৱ hb_set_t &glyphset) ধ্রুৱ
   {
     //no more COLRv1 glyphs, downgrade to version 0
-    for (const BaseGlyphPaintRecord& _ : get_baseglyphList ())
-      if (glyphset.has (_.glyphId))
-        return false;
+    বাবে (ধ্রুৱ BaseGlyphPaintRecord& _ : get_baseglyphList ())
+      যদি (glyphset.has (_.glyphId))
+        ঘূৰাই মিছা;
 
-    return true;
+    ঘূৰাই সঁচা;
   }
 
-  bool subset_varstore (hb_subset_context_t *c,
-                        COLR* out /* OUT */) const
+  তার্কিক subset_varstore (hb_subset_context_t *c,
+                        COLR* out /* OUT */) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    if (!varStore || c->plan->all_axes_pinned ||
+    TRACE_SUBSET (এতত্);
+    যদি (!varStore || c->plan->all_axes_pinned ||
         !c->plan->colrv1_variation_idx_delta_map)
-      return_trace (true);
+      return_trace (সঁচা);
 
-    const ItemVariationStore& var_store = this+varStore;
-    if (c->plan->normalized_coords)
+    ধ্রুৱ ItemVariationStore& var_store = এতত্+varStore;
+    যদি (c->plan->normalized_coords)
     {
       item_variations_t item_vars;
       /* turn off varstore optimization when varIdxMap is null, so we maintain
        * original var_idx sequence */
-      bool optimize = (varIdxMap != 0) ? true : false;
-      if (!item_vars.instantiate (var_store, c->plan,
+      তার্কিক optimize = (varIdxMap != 0) ? সঁচা : মিছা;
+      যদি (!item_vars.instantiate (var_store, c->plan,
                                   optimize, /* optimization */
                                   optimize, /* use_no_variation_idx = false */
                                   c->plan->colrv1_varstore_inner_maps.as_array ()))
-        return_trace (false);
+        return_trace (মিছা);
 
       /* do not serialize varStore if there's no variation data after
        * instancing: region_list or var_data is empty */
-      if (item_vars.get_region_list () &&
+      যদি (item_vars.get_region_list () &&
           item_vars.get_vardata_encodings () &&
           !out->varStore.serialize_serialize (c->serializer,
                                               item_vars.has_long_word (),
                                               c->plan->axis_tags,
                                               item_vars.get_region_list (),
                                               item_vars.get_vardata_encodings ()))
-        return_trace (false);
+        return_trace (মিছা);
 
       /* if varstore is optimized, update colrv1_new_deltaset_idx_varidx_map in
        * subset plan.
        * If varstore is empty after instancing, varidx_map would be empty and
        * all var_idxes will be updated to VarIdx::NO_VARIATION */
-      if (optimize)
+      যদি (optimize)
       {
-        const hb_map_t &varidx_map = item_vars.get_varidx_map ();
-        for (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
+        ধ্রুৱ hb_map_t &varidx_map = item_vars.get_varidx_map ();
+        বাবে (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
         {
           uint32_t varidx = _.second;
           uint32_t *new_varidx;
-          if (varidx_map.has (varidx, &new_varidx))
+          যদি (varidx_map.has (varidx, &new_varidx))
             _.second = *new_varidx;
-          else
+          অন্যথা
             _.second = VarIdx::NO_VARIATION;
         }
       }
     }
-    else
+    অন্যথা
     {
       /* avar2 partial instancing: cull unreachable regions. */
       hb_set_t dead_regions;
-      if (c->plan->has_avar2)
+      যদি (c->plan->has_avar2)
         var_store.collect_dead_regions (c->plan->axes_old_index_tag_map,
                                         c->plan->avar2_reachable_ranges,
                                         dead_regions);
 
-      if (unlikely (!out->varStore.serialize_serialize (c->serializer,
+      যদি (unlikely (!out->varStore.serialize_serialize (c->serializer,
                                                         &var_store,
                                                         c->plan->colrv1_varstore_inner_maps.as_array (),
                                                         dead_regions.get_population () ? &dead_regions : nullptr)))
-        return_trace (false);
+        return_trace (মিছা);
     }
 
-    return_trace (true);
+    return_trace (সঁচা);
   }
 
-  bool subset_delta_set_index_map (hb_subset_context_t *c,
-                                   COLR* out /* OUT */) const
+  তার্কিক subset_delta_set_index_map (hb_subset_context_t *c,
+                                   COLR* out /* OUT */) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    if (!varIdxMap || c->plan->all_axes_pinned ||
+    TRACE_SUBSET (এতত্);
+    যদি (!varIdxMap || c->plan->all_axes_pinned ||
         !c->plan->colrv1_new_deltaset_idx_varidx_map)
-      return_trace (true);
+      return_trace (সঁচা);
 
-    const hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
+    ধ্রুৱ hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
     delta_set_index_map_subset_plan_t index_map_plan (deltaset_idx_varidx_map);
 
-    if (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
-      return_trace (false);
+    যদি (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
+      return_trace (মিছা);
 
     return_trace (out->varIdxMap.serialize_serialize (c->serializer, index_map_plan));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  তার্কিক subset (hb_subset_context_t *c) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-    const hb_set_t& glyphset = c->plan->_glyphset_colred;
+    TRACE_SUBSET (এতত্);
+    ধ্রুৱ hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
+    ধ্রুৱ hb_set_t& glyphset = c->plan->_glyphset_colred;
 
     auto base_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    + hb_range (c->plan->অঙ্ক_output_glyphs ())
     | hb_filter ([&](hb_codepoint_t new_gid)
 		 {
 		    hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
-		    if (glyphset.has (old_gid)) return true;
-		    return false;
+		    যদি (glyphset.has (old_gid)) ঘূৰাই সঁচা;
+		    ঘূৰাই মিছা;
 		 })
     | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
 			      {
 				hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
 
-				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
-				if (unlikely (!old_record))
-				  return hb_pair_t<bool, BaseGlyphRecord> (false, Null (BaseGlyphRecord));
+				ধ্রুৱ BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
+				যদি (unlikely (!old_record))
+				  ঘূৰাই hb_pair_t<তার্কিক, BaseGlyphRecord> (মিছা, Null (BaseGlyphRecord));
 				BaseGlyphRecord new_record = {};
 				new_record.glyphId = new_gid;
-				new_record.numLayers = old_record->numLayers;
-				return hb_pair_t<bool, BaseGlyphRecord> (true, new_record);
+				new_record.অঙ্ক_Layers = old_record->অঙ্ক_Layers;
+				ঘূৰাই hb_pair_t<তার্কিক, BaseGlyphRecord> (সঁচা, new_record);
 			      })
     | hb_filter (hb_first)
     | hb_map_retains_sorting (hb_second)
     ;
 
     auto layer_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    + hb_range (c->plan->অঙ্ক_output_glyphs ())
     | hb_map (reverse_glyph_map)
     | hb_filter (glyphset)
     | hb_map_retains_sorting ([&](hb_codepoint_t old_gid)
 			      {
-				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
+				ধ্রুৱ BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
 				hb_vector_t<LayerRecord> out_layers;
 
-				if (unlikely (!old_record ||
-					      old_record->firstLayerIdx >= numLayers ||
-					      old_record->firstLayerIdx + old_record->numLayers > numLayers))
-				  return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				যদি (unlikely (!old_record ||
+					      old_record->firstLayerIdx >= অঙ্ক_Layers ||
+					      old_record->firstLayerIdx + old_record->অঙ্ক_Layers > অঙ্ক_Layers))
+				  ঘূৰাই hb_pair_t<তার্কিক, hb_vector_t<LayerRecord>> (মিছা, out_layers);
 
-				auto layers = (this+layersZ).as_array (numLayers).sub_array (old_record->firstLayerIdx,
-											     old_record->numLayers);
+				auto layers = (এতত্+layersZ).as_array (অঙ্ক_Layers).sub_array (old_record->firstLayerIdx,
+											     old_record->অঙ্ক_Layers);
 				out_layers.resize (layers.length);
-				for (unsigned int i = 0; i < layers.length; i++) {
+				বাবে (unsigned পূর্ণাঙ্ক i = 0; i < layers.length; i++) {
 				  out_layers[i] = layers[i];
 				  hb_codepoint_t new_gid = 0;
-				  if (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
-				    return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				  যদি (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
+				    ঘূৰাই hb_pair_t<তার্কিক, hb_vector_t<LayerRecord>> (মিছা, out_layers);
 				  out_layers[i].glyphId = new_gid;
 				  out_layers[i].colorIdx = c->plan->colr_palettes.get (layers[i].colorIdx);
 				}
 
-				return hb_pair_t<bool, hb_vector_t<LayerRecord>> (true, out_layers);
+				ঘূৰাই hb_pair_t<তার্কিক, hb_vector_t<LayerRecord>> (সঁচা, out_layers);
 			      })
     | hb_filter (hb_first)
     | hb_map_retains_sorting (hb_second)
     ;
 
-    if (version == 0 && (!base_it || !layer_it))
-      return_trace (false);
+    যদি (version == 0 && (!base_it || !layer_it))
+      return_trace (মিছা);
 
-    auto *colr_prime = c->serializer->start_embed<COLR> ();
-    if (unlikely (!c->serializer->extend_min (colr_prime)))  return_trace (false);
+    auto *colr_মৌলিক = c->serializer->start_embed<COLR> ();
+    যদি (unlikely (!c->serializer->extend_min (colr_মৌলিক)))  return_trace (মিছা);
 
-    if (version == 0 || downgrade_to_V0 (glyphset))
-      return_trace (colr_prime->serialize_V0 (c->serializer, 0, base_it, layer_it));
+    যদি (version == 0 || downgrade_to_V0 (glyphset))
+      return_trace (colr_মৌলিক->serialize_V0 (c->serializer, 0, base_it, layer_it));
 
     hb_barrier ();
 
     //start version 1
-    if (!c->serializer->allocate_size<void> (5 * HBUINT32::static_size)) return_trace (false);
-    if (!colr_prime->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (false);
+    যদি (!c->serializer->allocate_size<শূন্য> (5 * HBUINT32::static_size)) return_trace (মিছা);
+    যদি (!colr_মৌলিক->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (মিছা);
 
     /* subset ItemVariationStore first, cause varidx_map needs to be updated
      * after instancing */
-    if (!subset_varstore (c, colr_prime)) return_trace (false);
+    যদি (!subset_varstore (c, colr_মৌলিক)) return_trace (মিছা);
 
     ItemVarStoreInstancer instancer (c->plan->normalized_coords ? get_var_store_ptr () : nullptr,
 				     c->plan->normalized_coords ? get_delta_set_index_map_ptr () : nullptr,
 				     c->plan->normalized_coords.as_array ());
 
-    if (!colr_prime->baseGlyphList.serialize_subset (c, baseGlyphList, this, instancer))
-      return_trace (false);
+    যদি (!colr_মৌলিক->baseGlyphList.serialize_subset (c, baseGlyphList, এতত্, instancer))
+      return_trace (মিছা);
 
-    colr_prime->layerList.serialize_subset (c, layerList, this, instancer);
-    colr_prime->clipList.serialize_subset (c, clipList, this, instancer);
+    colr_মৌলিক->layerList.serialize_subset (c, layerList, এতত্, instancer);
+    colr_মৌলিক->clipList.serialize_subset (c, clipList, এতত্, instancer);
 
-    return_trace (subset_delta_set_index_map (c, colr_prime));
+    return_trace (subset_delta_set_index_map (c, colr_মৌলিক));
   }
 
-  const Paint *get_base_glyph_paint (hb_codepoint_t glyph) const
+  ধ্রুৱ Paint *get_base_glyph_paint (hb_codepoint_t glyph) ধ্রুৱ
   {
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
-    const BaseGlyphPaintRecord* record = get_base_glyph_paintrecord (glyph);
-    if (record)
+    ধ্রুৱ BaseGlyphList &baseglyph_paintrecords = এতত্+baseGlyphList;
+    ধ্রুৱ BaseGlyphPaintRecord* record = get_base_glyph_paintrecord (glyph);
+    যদি (record)
     {
-      const Paint &paint = &baseglyph_paintrecords+record->paint;
-      return &paint;
+      ধ্রুৱ Paint &paint = &baseglyph_paintrecords+record->paint;
+      ঘূৰাই &paint;
     }
-    else
-      return nullptr;
+    অন্যথা
+      ঘূৰাই nullptr;
   }
 
 #ifndef HB_NO_PAINT
-  bool
+  তার্কিক
   get_extents (hb_font_t *font,
 	       hb_codepoint_t glyph,
 	       hb_glyph_extents_t *extents,
-	       hb_colr_scratch_t &scratch) const
+	       hb_colr_scratch_t &scratch) ধ্রুৱ
   {
 
     ItemVarStoreInstancer instancer (get_var_store_ptr (),
                                      get_delta_set_index_map_ptr (),
-                                     hb_array (font->coords, font->num_coords));
+                                     hb_array (font->coords, font->অঙ্ক_coords));
 
-    if (get_clip (glyph, extents, instancer))
+    যদি (get_clip (glyph, extents, instancer))
     {
       font->scale_glyph_extents (extents);
-      return true;
+      ঘূৰাই সঁচা;
     }
 
     auto *extents_funcs = hb_paint_extents_get_funcs ();
     scratch.paint_extents.clear ();
-    bool ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), true, scratch);
+    তার্কিক ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), সঁচা, scratch);
 
     auto e = scratch.paint_extents.get_extents ();
-    if (e.is_void ())
+    যদি (e.is_void ())
     {
       extents->x_bearing = 0;
       extents->y_bearing = 0;
       extents->width = 0;
       extents->height = 0;
     }
-    else
+    অন্যথা
       *extents = e.to_glyph_extents ();
 
-    return ret;
+    ঘূৰাই ret;
   }
 #endif
 
-  bool
-  has_paint_for_glyph (hb_codepoint_t glyph) const
+  তার্কিক
+  has_paint_for_glyph (hb_codepoint_t glyph) ধ্রুৱ
   {
-    if (version >= 1)
+    যদি (version >= 1)
     {
       hb_barrier ();
 
-      const Paint *paint = get_base_glyph_paint (glyph);
+      ধ্রুৱ Paint *paint = get_base_glyph_paint (glyph);
 
-      return paint != nullptr;
+      ঘূৰাই paint != nullptr;
     }
 
-    return false;
+    ঘূৰাই মিছা;
   }
 
-  bool get_clip (hb_codepoint_t glyph,
+  তার্কিক get_clip (hb_codepoint_t glyph,
 		 hb_glyph_extents_t *extents,
-		 const ItemVarStoreInstancer instancer) const
+		 ধ্রুৱ ItemVarStoreInstancer instancer) ধ্রুৱ
   {
-    return get_clip_list ().get_extents (glyph,
+    ঘূৰাই get_clip_list ().get_extents (glyph,
 					extents,
 					instancer);
   }
 
 #ifndef HB_NO_PAINT
-  bool
+  তার্কিক
   paint_glyph (hb_font_t *font,
 	       hb_codepoint_t glyph,
-	       hb_paint_funcs_t *funcs, void *data,
-	       unsigned int palette_index, hb_color_t foreground,
-	       bool clip,
-	       hb_colr_scratch_t &scratch) const
+	       hb_paint_funcs_t *funcs, শূন্য *data,
+	       unsigned পূর্ণাঙ্ক palette_index, hb_color_t foreground,
+	       তার্কিক clip,
+	       hb_colr_scratch_t &scratch) ধ্রুৱ
   {
     ItemVarStoreInstancer instancer (get_var_store_ptr (),
 				     get_delta_set_index_map_ptr (),
 				     hb_array (font->coords,
-					       font->has_nonzero_coords ? font->num_coords : 0));
-    hb_paint_context_t c (this, funcs, data, font, palette_index, foreground, instancer);
+					       font->has_nonzero_coords ? font->অঙ্ক_coords : 0));
+    hb_paint_context_t c (এতত্, funcs, data, font, palette_index, foreground, instancer);
 
-    hb_decycler_node_t node (c.glyphs_decycler);
+    hb_decycler_গ্ৰন্থি_t node (c.glyphs_decycler);
     node.visit (glyph);
 
-    if (version >= 1)
+    যদি (version >= 1)
     {
       hb_barrier ();
 
-      const Paint *paint = get_base_glyph_paint (glyph);
-      if (paint)
+      ধ্রুৱ Paint *paint = get_base_glyph_paint (glyph);
+      যদি (paint)
       {
         // COLRv1 glyph
 
-	bool is_bounded = true;
+	তার্কিক is_bounded = সঁচা;
 	hb_glyph_extents_t extents = {};
-	if (clip)
+	যদি (clip)
 	{
-	  if (!get_clip (glyph, &extents, instancer))
+	  যদি (!get_clip (glyph, &extents, instancer))
 	  {
-	    clip = false;
-	    is_bounded = false;
+	    clip = মিছা;
+	    is_bounded = মিছা;
 	  }
 
-	  if (!is_bounded)
+	  যদি (!is_bounded)
 	  {
 	    auto *bounded_funcs = hb_paint_bounded_get_funcs ();
 	    scratch.paint_bounded.clear ();
@@ -3163,161 +3163,161 @@ struct COLR
 	    paint_glyph (font, glyph,
 			 bounded_funcs, &scratch.paint_bounded,
 			 palette_index, foreground,
-			 false,
+			 মিছা,
 			 scratch);
 
 	    is_bounded = scratch.paint_bounded.is_bounded ();
 	  }
 	}
 
-	c.funcs->push_font_transform (c.data, font);
+	c.funcs->ঠেলো_font_transform (c.data, font);
 
-	if (clip)
-	  c.funcs->push_clip_rectangle (c.data,
-					(float) extents.x_bearing,
-					(float) extents.y_bearing + extents.height,
-					(float) extents.x_bearing + extents.width,
-					(float) extents.y_bearing);
+	যদি (clip)
+	  c.funcs->ঠেলো_clip_rectangle (c.data,
+					(ভিন্ন) extents.x_bearing,
+					(ভিন্ন) extents.y_bearing + extents.height,
+					(ভিন্ন) extents.x_bearing + extents.width,
+					(ভিন্ন) extents.y_bearing);
 
-	if (is_bounded)
+	যদি (is_bounded)
 	  c.recurse (*paint);
 
-	if (clip)
-	  c.funcs->pop_clip (c.data);
+	যদি (clip)
+	  c.funcs->বেৰ_কৰো_clip (c.data);
 
-	c.funcs->pop_transform (c.data);
+	c.funcs->বেৰ_কৰো_transform (c.data);
 
-        return true;
+        ঘূৰাই সঁচা;
       }
     }
 
-    const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (record && ((hb_codepoint_t) record->glyphId == glyph))
+    ধ্রুৱ BaseGlyphRecord *record = get_base_glyph_record (glyph);
+    যদি (record && ((hb_codepoint_t) record->glyphId == glyph))
     {
       // COLRv0 glyph
-      for (const auto &r : (this+layersZ).as_array (numLayers)
-			   .sub_array (record->firstLayerIdx, record->numLayers))
+      বাবে (ধ্রুৱ auto &r : (এতত্+layersZ).as_array (অঙ্ক_Layers)
+			   .sub_array (record->firstLayerIdx, record->অঙ্ক_Layers))
       {
         hb_bool_t is_foreground;
         hb_color_t color = c.get_color (r.colorIdx, 1., &is_foreground);
         c.funcs->fill_glyph (c.data, r.glyphId, c.font, is_foreground, color);
       }
 
-      return true;
+      ঘূৰাই সঁচা;
     }
 
-    return false;
+    ঘূৰাই মিছা;
   }
 #endif
 
-  protected:
+  রক্ষিত:
   HBUINT16	version;	/* Table version number (starts at 0). */
-  HBUINT16	numBaseGlyphs;	/* Number of Base Glyph Records. */
+  HBUINT16	অঙ্ক_Base_Glyphs;	/* Number of Base Glyph Records. */
   NNOffset32To<SortedUnsizedArrayOf<BaseGlyphRecord>>
 		baseGlyphsZ;	/* Offset to Base Glyph records. */
   NNOffset32To<UnsizedArrayOf<LayerRecord>>
 		layersZ;	/* Offset to Layer Records. */
-  HBUINT16	numLayers;	/* Number of Layer Records. */
+  HBUINT16	অঙ্ক_Layers;	/* Number of Layer Records. */
   // Version-1 additions
   Offset32To<BaseGlyphList>		baseGlyphList;
   Offset32To<LayerList>			layerList;
   Offset32To<ClipList>			clipList;   // Offset to ClipList table (may be NULL)
   Offset32To<DeltaSetIndexMap>		varIdxMap;  // Offset to DeltaSetIndexMap table (may be NULL)
   Offset32To<ItemVariationStore>	varStore;
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_MIN (14);
 };
 
-struct COLR_accelerator_t : COLR::accelerator_t {
+সংরচনা COLR_accelerator_t : COLR::accelerator_t {
   COLR_accelerator_t (hb_face_t *face) : COLR::accelerator_t (face) {}
 };
 
-void
-hb_paint_context_t::recurse (const Paint &paint)
+শূন্য
+hb_paint_context_t::recurse (ধ্রুৱ Paint &paint)
 {
-  if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
-  depth_left--;
-  edge_count--;
-  paint.dispatch (this);
-  depth_left++;
+  যদি (unlikely (depth_বাম <= 0 || edge_গুনতি <= 0)) ঘূৰাই;
+  depth_বাম--;
+  edge_গুনতি--;
+  paint.dispatch (এতত্);
+  depth_বাম++;
 }
 
 template <typename Types>
-void PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) const
+শূন্য PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) ধ্রুৱ
 {
-  TRACE_PAINT (this);
+  TRACE_PAINT (এতত্);
 
   hb_bool_t is_foreground;
   hb_color_t color;
   /* Optimize cases that can use a simple fill-glyph operation. */
-  if (likely (c->depth_left > 0 && c->edge_count > 0) &&
-      (this+paint).get_solid_color (c, &is_foreground, &color))
+  যদি (likely (c->depth_বাম > 0 && c->edge_গুনতি > 0) &&
+      (এতত্+paint).get_solid_color (c, &is_foreground, &color))
   {
-    c->edge_count--;
-    c->funcs->push_inverse_font_transform (c->data, c->font);
+    c->edge_গুনতি--;
+    c->funcs->ঠেলো_inverse_font_transform (c->data, c->font);
     c->funcs->fill_glyph (c->data, gid, c->font, is_foreground, color);
-    c->funcs->pop_transform (c->data);
-    return;
+    c->funcs->বেৰ_কৰো_transform (c->data);
+    ঘূৰাই;
   }
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  c->funcs->push_clip_glyph (c->data, gid, c->font);
-  c->funcs->push_font_transform (c->data, c->font);
-  c->recurse (this+paint);
-  c->funcs->pop_transform (c->data);
-  c->funcs->pop_clip (c->data);
-  c->funcs->pop_transform (c->data);
+  c->funcs->ঠেলো_inverse_font_transform (c->data, c->font);
+  c->funcs->ঠেলো_clip_glyph (c->data, gid, c->font);
+  c->funcs->ঠেলো_font_transform (c->data, c->font);
+  c->recurse (এতত্+paint);
+  c->funcs->বেৰ_কৰো_transform (c->data);
+  c->funcs->বেৰ_কৰো_clip (c->data);
+  c->funcs->বেৰ_কৰো_transform (c->data);
 }
 
-void PaintColrLayers::paint_glyph (hb_paint_context_t *c) const
+শূন্য PaintColrLayers::paint_glyph (hb_paint_context_t *c) ধ্রুৱ
 {
-  TRACE_PAINT (this);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  hb_decycler_node_t node (c->layers_decycler);
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  TRACE_PAINT (এতত্);
+  ধ্রুৱ LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
+  hb_decycler_গ্ৰন্থি_t node (c->layers_decycler);
+  বাবে (unsigned i = firstLayerIndex; i < firstLayerIndex + অঙ্ক_Layers; i++)
   {
-    if (unlikely (!node.visit (i)))
-      return;
+    যদি (unlikely (!node.visit (i)))
+      ঘূৰাই;
 
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    ধ্রুৱ Paint &paint = paint_offset_lists.get_paint (i);
     c->recurse (paint);
   }
 }
 
-void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
+শূন্য PaintColrGlyph::paint_glyph (hb_paint_context_t *c) ধ্রুৱ
 {
-  TRACE_PAINT (this);
+  TRACE_PAINT (এতত্);
 
-  hb_decycler_node_t node (c->glyphs_decycler);
-  if (unlikely (!node.visit (gid)))
-    return;
+  hb_decycler_গ্ৰন্থি_t node (c->glyphs_decycler);
+  যদি (unlikely (!node.visit (gid)))
+    ঘূৰাই;
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  if (c->funcs->color_glyph (c->data, gid, c->font))
+  c->funcs->ঠেলো_inverse_font_transform (c->data, c->font);
+  যদি (c->funcs->color_glyph (c->data, gid, c->font))
   {
-    c->funcs->pop_transform (c->data);
-    return;
+    c->funcs->বেৰ_কৰো_transform (c->data);
+    ঘূৰাই;
   }
-  c->funcs->pop_transform (c->data);
+  c->funcs->বেৰ_কৰো_transform (c->data);
 
-  const COLR *colr_table = c->get_colr_table ();
-  const Paint *paint = colr_table->get_base_glyph_paint (gid);
+  ধ্রুৱ COLR *colr_table = c->get_colr_table ();
+  ধ্রুৱ Paint *paint = colr_table->get_base_glyph_paint (gid);
 
   hb_glyph_extents_t extents = {0};
-  bool has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
+  তার্কিক has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
 
-  if (has_clip_box)
-    c->funcs->push_clip_rectangle (c->data,
-				   (float) extents.x_bearing,
-				   (float) extents.y_bearing + extents.height,
-				   (float) extents.x_bearing + extents.width,
-				   (float) extents.y_bearing);
+  যদি (has_clip_box)
+    c->funcs->ঠেলো_clip_rectangle (c->data,
+				   (ভিন্ন) extents.x_bearing,
+				   (ভিন্ন) extents.y_bearing + extents.height,
+				   (ভিন্ন) extents.x_bearing + extents.width,
+				   (ভিন্ন) extents.y_bearing);
 
-  if (paint)
+  যদি (paint)
     c->recurse (*paint);
 
-  if (has_clip_box)
-    c->funcs->pop_clip (c->data);
+  যদি (has_clip_box)
+    c->funcs->বেৰ_কৰো_clip (c->data);
 }
 
 } /* namespace OT */

@@ -27,38 +27,38 @@
 #ifndef HB_VECTOR_PAINT_HH
 #define HB_VECTOR_PAINT_HH
 
-#include "hb.hh"
+#অন্তর্ভাৱ "hb.hh"
 
-#include "hb-vector.h"
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
-#include "hb-map.hh"
-#include "hb-vector-path.hh"
-#include "hb-vector-buf.hh"
-#include "hb-vector-internal.hh"
+#অন্তর্ভাৱ "hb-vector.h"
+#অন্তর্ভাৱ "hb-geometry.hh"
+#অন্তর্ভাৱ "hb-machinery.hh"
+#অন্তর্ভাৱ "hb-map.hh"
+#অন্তর্ভাৱ "hb-vector-path.hh"
+#অন্তর্ভাৱ "hb-vector-buf.hh"
+#অন্তর্ভাৱ "hb-vector-internal.hh"
 
 
-struct hb_vector_paint_t
+সংরচনা hb_vector_paint_t
 {
   hb_object_header_t header;
 
   hb_vector_format_t format = HB_VECTOR_FORMAT_INVALID;
   hb_transform_t<> transform = {1, 0, 0, 1, 0, 0};
-  float x_scale_factor = 1.f;
-  float y_scale_factor = 1.f;
+  ভিন্ন x_scale_factor = 1.f;
+  ভিন্ন y_scale_factor = 1.f;
   hb_vector_extents_t extents = {0, 0, 0, 0};
-  bool has_extents = false;
+  তার্কিক has_extents = মিছা;
 
   hb_color_t foreground = HB_COLOR (0, 0, 0, 255);
   hb_color_t background = HB_COLOR (0, 0, 0, 0);
-  int palette = 0;
+  পূর্ণাঙ্ক palette = 0;
   hb_hashmap_t<unsigned, hb_color_t> custom_palette_colors;
-  char *id_prefix = nullptr;
+  ৱর্ণ *id_prefix = nullptr;
   unsigned id_prefix_length = 0;
 
   hb_vector_buf_t defs;
   hb_vector_buf_t path;
-  hb_vector_t<hb_vector_buf_t> group_stack;
+  hb_vector_t<hb_vector_buf_t> group_স্তূপ;
   uint64_t transform_group_open_mask = 0;
   unsigned transform_group_depth = 0;
   unsigned transform_group_overflow_depth = 0;
@@ -76,82 +76,82 @@ struct hb_vector_paint_t
   hb_vector_path_sink_t clip_path_sink = {nullptr, 0, 1.f, 1.f, nullptr};
   unsigned gradient_counter = 0;
   unsigned color_glyph_depth = 0;
-  unsigned path_def_count = 0;
+  unsigned path_def_গুনতি = 0;
   hb_set_t *active_color_glyphs = nullptr;
   hb_vector_t<hb_color_stop_t> color_stops_scratch;
   hb_vector_buf_t captured_scratch;
   hb_blob_t *recycled_blob = nullptr;
 
-  hb_vector_buf_t &current_body () { return group_stack.tail (); }
+  hb_vector_buf_t &current_body () { ঘূৰাই group_স্তূপ.tail (); }
 
-  void recharge_budget ()
+  শূন্য recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  float sx (float v) const { return v / x_scale_factor; }
-  float sy (float v) const { return v / y_scale_factor; }
+  ভিন্ন sx (ভিন্ন v) ধ্রুৱ { ঘূৰাই v / x_scale_factor; }
+  ভিন্ন sy (ভিন্ন v) ধ্রুৱ { ঘূৰাই v / y_scale_factor; }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  তার্কিক fetch_color_stops (hb_color_সাৰি_t *color_সাৰি)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    unsigned গুনতি = hb_color_সাৰি_get_color_stops (color_সাৰি, 0, nullptr, nullptr);
+    যদি (unlikely (!গুনতি || !color_stops_scratch.resize (গুনতি)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      ঘূৰাই মিছা;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    hb_color_সাৰি_get_color_stops (color_সাৰি, 0, &গুনতি, color_stops_scratch.arrayZ);
+    ঘূৰাই সঁচা;
   }
 
-  void set_precision (unsigned p)
+  শূন্য set_precision (unsigned p)
   {
     p = hb_min (p, 12u);
     defs.precision = p;
     path.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
+  unsigned get_precision () ধ্রুৱ { ঘূৰাই path.precision; }
 
-  bool ensure_initialized ()
+  তার্কিক ensure_initialized ()
   {
-    if (group_stack.length)
-      return !group_stack.in_error () &&
-             !group_stack.tail ().in_error ();
-    if (unlikely (!group_stack.push_or_fail ()))
-      return false;
-    group_stack.tail ().alloc (4096);
-    if (unlikely (group_stack.tail ().in_error ()))
+    যদি (group_স্তূপ.length)
+      ঘূৰাই !group_স্তূপ.in_error () &&
+             !group_স্তূপ.tail ().in_error ();
+    যদি (unlikely (!group_স্তূপ.ঠেলো_or_fail ()))
+      ঘূৰাই মিছা;
+    group_স্তূপ.tail ().alloc (4096);
+    যদি (unlikely (group_স্তূপ.tail ().in_error ()))
     {
-      group_stack.pop ();
-      return false;
+      group_স্তূপ.বেৰ_কৰো ();
+      ঘূৰাই মিছা;
     }
-    return true;
+    ঘূৰাই সঁচা;
   }
 };
 
-static inline hb_bool_t
-hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, void *paint_data,
-				     int64_t budget, void *)
+স্থির অন্তঃস্থ hb_bool_t
+hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, শূন্য *paint_data,
+				     int64_t budget, শূন্য *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  ঘূৰাই সঁচা;
 }
 
-static inline int64_t
-hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, void *paint_data, void *)
+স্থির অন্তঃস্থ int64_t
+hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, শূন্য *paint_data, শূন্য *)
 {
-  return ((hb_vector_paint_t *) paint_data)->budget;
+  ঘূৰাই ((hb_vector_paint_t *) paint_data)->budget;
 }
 
-static inline int64_t *
+স্থির অন্তঃস্থ int64_t *
 hb_vector_paint_get_budget_remaining_callback (hb_paint_funcs_t *,
-					       void *paint_data, void *)
+					       শূন্য *paint_data, শূন্য *)
 {
-  return &((hb_vector_paint_t *) paint_data)->budget_remaining;
+  ঘূৰাই &((hb_vector_paint_t *) paint_data)->budget_remaining;
 }
 
 /* Implemented in hb-vector-paint-svg.cc */
@@ -161,6 +161,6 @@ HB_INTERNAL hb_blob_t * hb_vector_paint_render_svg (hb_vector_paint_t *paint);
 /* Implemented in hb-vector-paint-pdf.cc */
 HB_INTERNAL hb_paint_funcs_t * hb_vector_paint_pdf_funcs_get ();
 HB_INTERNAL hb_blob_t * hb_vector_paint_render_pdf (hb_vector_paint_t *paint);
-HB_INTERNAL void hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint);
+HB_INTERNAL শূন্য hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint);
 
 #endif /* HB_VECTOR_PAINT_HH */

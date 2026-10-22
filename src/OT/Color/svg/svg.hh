@@ -25,14 +25,14 @@
 #ifndef OT_COLOR_SVG_SVG_HH
 #define OT_COLOR_SVG_SVG_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-blob.hh"
-#include "../../../hb-limits.hh"
-#include "../../../hb-map.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-zlib.hh"
-#include <ctype.h>
-#include <string.h>
+#অন্তর্ভাৱ "../../../hb-open-type.hh"
+#অন্তর্ভাৱ "../../../hb-blob.hh"
+#অন্তর্ভাৱ "../../../hb-limits.hh"
+#অন্তর্ভাৱ "../../../hb-map.hh"
+#অন্তর্ভাৱ "../../../hb-paint.hh"
+#অন্তর্ভাৱ "../../../hb-zlib.hh"
+#অন্তর্ভাৱ <ctype.h>
+#অন্তর্ভাৱ <string.h>
 
 /*
  * SVG -- SVG (Scalable Vector Graphics)
@@ -42,80 +42,80 @@
 #define HB_OT_TAG_SVG HB_TAG('S','V','G',' ')
 
 
-namespace OT {
+নামাকাশ OT {
 
-static inline hb_blob_t *
+স্থির অন্তঃস্থ hb_blob_t *
 hb_ot_svg_reference_normalized_blob (hb_blob_t *image,
-                                     const char **svg,
+                                     ধ্রুৱ ৱর্ণ **svg,
                                      unsigned *len)
 {
   hb_blob_t *blob = hb_blob_reference (image);
   unsigned data_len = 0;
-  const char *data = hb_blob_get_data (blob, &data_len);
+  ধ্রুৱ ৱর্ণ *data = hb_blob_get_data (blob, &data_len);
 
-  if (!data || !data_len)
-    goto fail;
+  যদি (!data || !data_len)
+    গচ্ছ fail;
 
-  if (hb_blob_is_gzip (data, data_len))
+  যদি (hb_blob_is_gzip (data, data_len))
   {
     uint32_t expected_size = 0;
-    if (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
+    যদি (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
         unlikely ((size_t) expected_size > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-      goto fail;
+      গচ্ছ fail;
 
     hb_blob_t *uncompressed = hb_blob_decompress_gzip (blob,
                                                        HB_SVG_MAX_DOCUMENT_SIZE);
-    if (!uncompressed)
-      goto fail;
+    যদি (!uncompressed)
+      গচ্ছ fail;
 
     hb_blob_destroy (blob);
     blob = uncompressed;
     data = hb_blob_get_data (blob, &data_len);
-    if (!data || !data_len)
-      goto fail;
+    যদি (!data || !data_len)
+      গচ্ছ fail;
   }
 
-  if (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-    goto fail;
+  যদি (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
+    গচ্ছ fail;
 
-  if (svg) *svg = data;
-  if (len) *len = data_len;
-  return blob;
+  যদি (svg) *svg = data;
+  যদি (len) *len = data_len;
+  ঘূৰাই blob;
 
 fail:
   hb_blob_destroy (blob);
-  if (svg) *svg = nullptr;
-  if (len) *len = 0;
-  return nullptr;
+  যদি (svg) *svg = nullptr;
+  যদি (len) *len = 0;
+  ঘূৰাই nullptr;
 }
 
-struct SVGDocumentIndexEntry
+সংরচনা SVGDocumentIndexEntry
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
+  পূর্ণাঙ্ক cmp (hb_codepoint_t g) ধ্রুৱ
+  { ঘূৰাই g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
 
-  hb_codepoint_t get_start_glyph () const
-  { return startGlyphID; }
+  hb_codepoint_t get_start_glyph () ধ্রুৱ
+  { ঘূৰাই startGlyphID; }
 
-  hb_codepoint_t get_end_glyph () const
-  { return endGlyphID; }
+  hb_codepoint_t get_end_glyph () ধ্রুৱ
+  { ঘূৰাই endGlyphID; }
 
-  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned int index_offset) const
+  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned পূর্ণাঙ্ক index_offset) ধ্রুৱ
   {
-    return hb_blob_create_sub_blob (svg_blob,
-				    index_offset + (unsigned int) svgDoc,
+    ঘূৰাই hb_blob_create_sub_blob (svg_blob,
+				    index_offset + (unsigned পূর্ণাঙ্ক) svgDoc,
 				    svgDocLength);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, ধ্রুৱ শূন্য *base) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) &&
 		  hb_barrier () &&
 		  svgDoc.sanitize (c, base, svgDocLength));
   }
 
-  protected:
+  রক্ষিত:
   HBUINT16	startGlyphID;	/* The first glyph ID in the range described by
 				 * this index entry. */
   HBUINT16	endGlyphID;	/* The last glyph ID in the range described by
@@ -125,44 +125,44 @@ struct SVGDocumentIndexEntry
 				 * to an SVG document. Must be non-zero. */
   HBUINT32	svgDocLength;	/* Length of the SVG document.
 				 * Must be non-zero. */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct SVG
+সংরচনা SVG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
 
-  struct svg_id_span_t
+  সংরচনা svg_id_span_t
   {
-    const char *p;
+    ধ্রুৱ ৱর্ণ *p;
     unsigned len;
 
-    bool operator == (const svg_id_span_t &o) const
+    তার্কিক operator == (ধ্রুৱ svg_id_span_t &o) ধ্রুৱ
     {
-      return len == o.len && !memcmp (p, o.p, len);
+      ঘূৰাই len == o.len && !memcmp (p, o.p, len);
     }
 
-    uint32_t hash () const
+    uint32_t hash () ধ্রুৱ
     {
       uint32_t h = hb_hash (len);
-      for (unsigned i = 0; i < len; i++)
-        h = h * 33u + (unsigned char) p[i];
-      return h;
+      বাবে (unsigned i = 0; i < len; i++)
+        h = h * 33u + (unsigned ৱর্ণ) p[i];
+      ঘূৰাই h;
     }
   };
 
-  struct svg_defs_entry_t
+  সংরচনা svg_defs_entry_t
   {
     svg_id_span_t id;
     unsigned start;
     unsigned end;
   };
 
-  struct svg_doc_cache_t
+  সংরচনা svg_doc_cache_t
   {
     hb_blob_t *blob = nullptr;
-    const char *svg = nullptr;
+    ধ্রুৱ ৱর্ণ *svg = nullptr;
     unsigned len = 0;
     hb_vector_t<svg_defs_entry_t> defs_entries;
     hb_codepoint_t start_glyph = HB_CODEPOINT_INVALID;
@@ -171,76 +171,76 @@ struct SVG
     hb_hashmap_t<svg_id_span_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
   };
 
-  bool has_data () const { return svgDocEntries; }
+  তার্কিক has_data () ধ্রুৱ { ঘূৰাই svgDocEntries; }
 
-  struct accelerator_t
+  সংরচনা accelerator_t
   {
     accelerator_t (hb_face_t *face);
     ~accelerator_t ();
 
-    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) const
+    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) ধ্রুৱ
     {
-      return table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
+      ঘূৰাই table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
 							       table->svgDocEntries);
     }
 
-    unsigned get_document_count () const
-    { return table->get_document_count (); }
+    unsigned get_document_গুনতি () ধ্রুৱ
+    { ঘূৰাই table->get_document_গুনতি (); }
 
-    bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
-    { return table->get_glyph_document_index (glyph_id, index); }
+    তার্কিক get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) ধ্রুৱ
+    { ঘূৰাই table->get_glyph_document_index (glyph_id, index); }
 
-    bool get_document_glyph_range (unsigned index,
+    তার্কিক get_document_glyph_range (unsigned index,
                                    hb_codepoint_t *start_glyph,
-                                   hb_codepoint_t *end_glyph) const
-    { return table->get_document_glyph_range (index, start_glyph, end_glyph); }
+                                   hb_codepoint_t *end_glyph) ধ্রুৱ
+    { ঘূৰাই table->get_document_glyph_range (index, start_glyph, end_glyph); }
 
-    bool has_data () const { return table->has_data (); }
+    তার্কিক has_data () ধ্রুৱ { ঘূৰাই table->has_data (); }
 
-    const svg_doc_cache_t *
+    ধ্রুৱ svg_doc_cache_t *
     get_or_create_doc_cache (hb_blob_t *image,
-                             const char *svg,
+                             ধ্রুৱ ৱর্ণ *svg,
                              unsigned len,
                              unsigned doc_index,
                              hb_codepoint_t start_glyph,
-                             hb_codepoint_t end_glyph) const;
+                             hb_codepoint_t end_glyph) ধ্রুৱ;
 
-    const char *
-    doc_cache_get_svg (const svg_doc_cache_t *doc,
-                       unsigned *len) const;
+    ধ্রুৱ ৱর্ণ *
+    doc_cache_get_svg (ধ্রুৱ svg_doc_cache_t *doc,
+                       unsigned *len) ধ্রুৱ;
 
-    const hb_vector_t<svg_defs_entry_t> *
-    doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const;
+    ধ্রুৱ hb_vector_t<svg_defs_entry_t> *
+    doc_cache_get_defs_entries (ধ্রুৱ svg_doc_cache_t *doc) ধ্রুৱ;
 
-    bool
-    doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+    তার্কিক
+    doc_cache_get_glyph_span (ধ্রুৱ svg_doc_cache_t *doc,
                               hb_codepoint_t glyph,
                               unsigned *start,
-                              unsigned *end) const;
+                              unsigned *end) ধ্রুৱ;
 
-    bool
-    doc_cache_find_id_span (const svg_doc_cache_t *doc,
+    তার্কিক
+    doc_cache_find_id_span (ধ্রুৱ svg_doc_cache_t *doc,
                             svg_id_span_t id,
                             unsigned *start,
-                            unsigned *end) const;
+                            unsigned *end) ধ্রুৱ;
 
-    bool
-    doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                            const char *id,
+    তার্কিক
+    doc_cache_find_id_cstr (ধ্রুৱ svg_doc_cache_t *doc,
+                            ধ্রুৱ ৱর্ণ *id,
                             unsigned *start,
-                            unsigned *end) const;
+                            unsigned *end) ধ্রুৱ;
 
-    bool paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    তার্কিক paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, শূন্য *data) ধ্রুৱ
     {
-      if (!has_data ())
-        return false;
+      যদি (!has_data ())
+        ঘূৰাই মিছা;
 
       hb_blob_t *blob = reference_blob_for_glyph (glyph);
 
-      if (blob == hb_blob_get_empty ())
-        return false;
+      যদি (blob == hb_blob_get_empty ())
+        ঘূৰাই মিছা;
 
-      bool ret = funcs->image (data,
+      তার্কিক ret = funcs->image (data,
 			       blob,
 			       0, 0,
 			       HB_PAINT_IMAGE_FORMAT_SVG,
@@ -249,282 +249,282 @@ struct SVG
 
       hb_blob_destroy (blob);
 
-      return ret;
+      ঘূৰাই ret;
     }
 
-    private:
+    গুপ্ত:
     svg_doc_cache_t *
     make_doc_cache (hb_blob_t *image,
-                    const char *svg,
+                    ধ্রুৱ ৱর্ণ *svg,
                     unsigned len,
                     hb_codepoint_t start_glyph,
-                    hb_codepoint_t end_glyph) const;
+                    hb_codepoint_t end_glyph) ধ্রুৱ;
 
-    static void destroy_doc_cache (svg_doc_cache_t *doc);
+    স্থির শূন্য destroy_doc_cache (svg_doc_cache_t *doc);
 
     hb_blob_ptr_t<SVG> table;
     mutable hb_vector_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
-    public:
-    DEFINE_SIZE_STATIC (sizeof (hb_blob_ptr_t<SVG>) +
-                        sizeof (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
+    সার্ৱজনিক:
+    DEFINE_SIZE_STATIC (পরিমাণ (hb_blob_ptr_t<SVG>) +
+                        পরিমাণ (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
   };
 
-  const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
-  { return (this+svgDocEntries).bsearch (glyph_id); }
+  ধ্রুৱ SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) ধ্রুৱ
+  { ঘূৰাই (এতত্+svgDocEntries).bsearch (glyph_id); }
 
-  unsigned get_document_count () const
+  unsigned get_document_গুনতি () ধ্রুৱ
   {
-    if (!has_data ())
-      return 0;
-    return (this + svgDocEntries).len;
+    যদি (!has_data ())
+      ঘূৰাই 0;
+    ঘূৰাই (এতত্ + svgDocEntries).len;
   }
 
-  bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
+  তার্কিক get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) ধ্রুৱ
   {
-    if (!has_data ())
-      return false;
-    return (this + svgDocEntries).bfind (glyph_id, index);
+    যদি (!has_data ())
+      ঘূৰাই মিছা;
+    ঘূৰাই (এতত্ + svgDocEntries).bfind (glyph_id, index);
   }
 
-  bool get_document_glyph_range (unsigned index,
+  তার্কিক get_document_glyph_range (unsigned index,
                                  hb_codepoint_t *start_glyph,
-                                 hb_codepoint_t *end_glyph) const
+                                 hb_codepoint_t *end_glyph) ধ্রুৱ
   {
-    if (!has_data ())
-      return false;
+    যদি (!has_data ())
+      ঘূৰাই মিছা;
 
-    const auto &entries = this + svgDocEntries;
-    if (index >= entries.len)
-      return false;
+    ধ্রুৱ auto &entries = এতত্ + svgDocEntries;
+    যদি (index >= entries.len)
+      ঘূৰাই মিছা;
 
-    const auto &entry = entries.arrayZ[index];
-    if (start_glyph) *start_glyph = entry.get_start_glyph ();
-    if (end_glyph) *end_glyph = entry.get_end_glyph ();
-    return true;
+    ধ্রুৱ auto &entry = entries.arrayZ[index];
+    যদি (start_glyph) *start_glyph = entry.get_start_glyph ();
+    যদি (end_glyph) *end_glyph = entry.get_end_glyph ();
+    ঘূৰাই সঁচা;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (this+svgDocEntries).sanitize_shallow (c)));
+    TRACE_SANITIZE (এতত্);
+    return_trace (likely (c->check_struct (এতত্) &&
+			  (এতত্+svgDocEntries).sanitize_shallow (c)));
   }
 
-  protected:
+  রক্ষিত:
   HBUINT16	version;	/* Table version (starting at 0). */
   Offset32To<SortedArray16Of<SVGDocumentIndexEntry>>
 		svgDocEntries;	/* Offset (relative to the start of the SVG table) to the
 				 * SVG Documents Index. Must be non-zero. */
 				/* Array of SVG Document Index Entries. */
   HBUINT32	reserved;	/* Set to 0. */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (10);
 };
 
-namespace _hb_svg_cache_impl {
+নামাকাশ _hb_svg_cache_impl {
 
-struct glyph_entry_t
+সংরচনা glyph_entry_t
 {
   hb_codepoint_t glyph;
   uint32_t start;
   uint32_t end;
 };
 
-struct id_entry_t
+সংরচনা id_entry_t
 {
   SVG::svg_id_span_t id;
   uint32_t start;
   uint32_t end;
 };
 
-struct open_elem_t
+সংরচনা open_elem_t
 {
   unsigned start;
   SVG::svg_id_span_t id;
-  bool in_defs_content;
-  bool is_defs;
+  তার্কিক in_defs_content;
+  তার্কিক is_defs;
 };
 
-static const unsigned MAX_DEPTH = 128;
+স্থির ধ্রুৱ unsigned MAX_DEPTH = 128;
 
-static inline int
-find_substr (const char *s,
+স্থির অন্তঃস্থ পূর্ণাঙ্ক
+find_substr (ধ্রুৱ ৱর্ণ *s,
              unsigned n,
              unsigned from,
-             const char *needle,
+             ধ্রুৱ ৱর্ণ *needle,
              unsigned needle_len)
 {
-  if (!needle_len || from >= n || needle_len > n)
-    return -1;
-  for (unsigned i = from; i + needle_len <= n; i++)
-    if (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
-      return (int) i;
-  return -1;
+  যদি (!needle_len || from >= n || needle_len > n)
+    ঘূৰাই -1;
+  বাবে (unsigned i = from; i + needle_len <= n; i++)
+    যদি (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
+      ঘূৰাই (পূর্ণাঙ্ক) i;
+  ঘূৰাই -1;
 }
 
-static inline bool
-parse_id_in_start_tag (const char *svg,
+স্থির অন্তঃস্থ তার্কিক
+parse_id_in_start_tag (ধ্রুৱ ৱর্ণ *svg,
                        unsigned tag_start,
                        unsigned tag_end,
                        SVG::svg_id_span_t *id)
 {
   unsigned p = tag_start;
-  while (p + 4 <= tag_end)
+  যেতিয়ালৈ (p + 4 <= tag_end)
   {
-    if (!memcmp (svg + p, "id=\"", 4))
+    যদি (!memcmp (svg + p, "id=\"", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '"') e++;
-      if (e <= tag_end && e > b)
+      যেতিয়ালৈ (e < tag_end && svg[e] != '"') e++;
+      যদি (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        ঘূৰাই সঁচা;
       }
     }
-    if (!memcmp (svg + p, "id='", 4))
+    যদি (!memcmp (svg + p, "id='", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '\'') e++;
-      if (e <= tag_end && e > b)
+      যেতিয়ালৈ (e < tag_end && svg[e] != '\'') e++;
+      যদি (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        ঘূৰাই সঁচা;
       }
     }
     p++;
   }
-  return false;
+  ঘূৰাই মিছা;
 }
 
-static inline bool
-parse_glyph_id_span (const SVG::svg_id_span_t &id,
+স্থির অন্তঃস্থ তার্কিক
+parse_glyph_id_span (ধ্রুৱ SVG::svg_id_span_t &id,
                      hb_codepoint_t *glyph)
 {
-  if (id.len <= 5 || memcmp (id.p, "glyph", 5))
-    return false;
+  যদি (id.len <= 5 || memcmp (id.p, "glyph", 5))
+    ঘূৰাই মিছা;
 
   hb_codepoint_t gid = 0;
-  for (unsigned i = 5; i < id.len; i++)
+  বাবে (unsigned i = 5; i < id.len; i++)
   {
-    unsigned char c = (unsigned char) id.p[i];
-    if (c < '0' || c > '9')
-      return false;
+    unsigned ৱর্ণ c = (unsigned ৱর্ণ) id.p[i];
+    যদি (c < '0' || c > '9')
+      ঘূৰাই মিছা;
     hb_codepoint_t digit = (hb_codepoint_t) (c - '0');
-    if (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
+    যদি (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
                   (gid == HB_CODEPOINT_INVALID / 10 &&
                    digit > HB_CODEPOINT_INVALID % 10)))
-      return false;
+      ঘূৰাই মিছা;
     gid = (hb_codepoint_t) (gid * 10 + digit);
   }
 
   *glyph = gid;
-  return true;
+  ঘূৰাই সঁচা;
 }
 
-static inline bool
-parse_cache_entries_linear (const char *svg,
+স্থির অন্তঃস্থ তার্কিক
+parse_cache_entries_linear (ধ্রুৱ ৱর্ণ *svg,
                             unsigned len,
                             hb_vector_t<SVG::svg_defs_entry_t> *defs_entries,
                             hb_vector_t<glyph_entry_t> *glyph_spans,
                             hb_vector_t<id_entry_t> *id_entries)
 {
-  open_elem_t stack[MAX_DEPTH] = {};
+  open_elem_t স্তূপ[MAX_DEPTH] = {};
   unsigned depth = 0;
-  if (unlikely (!defs_entries->alloc (256) ||
+  যদি (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
                 !id_entries->alloc (256)))
-    return false;
+    ঘূৰাই মিছা;
 
   unsigned defs_depth = 0;
   unsigned i = 0;
-  while (i < len)
+  যেতিয়ালৈ (i < len)
   {
-    if (svg[i] != '<')
+    যদি (svg[i] != '<')
     {
       i++;
-      continue;
+      অনুৱর্ত;
     }
 
-    if (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
+    যদি (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
     {
-      int cend = find_substr (svg, len, i + 4, "-->", 3);
-      if (cend < 0) return false;
+      পূর্ণাঙ্ক cend = find_substr (svg, len, i + 4, "-->", 3);
+      যদি (cend < 0) ঘূৰাই মিছা;
       i = (unsigned) cend + 3;
-      continue;
+      অনুৱর্ত;
     }
-    if (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
+    যদি (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
     {
-      int cend = find_substr (svg, len, i + 9, "]]>", 3);
-      if (cend < 0) return false;
+      পূর্ণাঙ্ক cend = find_substr (svg, len, i + 9, "]]>", 3);
+      যদি (cend < 0) ঘূৰাই মিছা;
       i = (unsigned) cend + 3;
-      continue;
+      অনুৱর্ত;
     }
 
-    bool closing = (i + 1 < len && svg[i + 1] == '/');
-    bool special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
+    তার্কিক closing = (i + 1 < len && svg[i + 1] == '/');
+    তার্কিক special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
 
     unsigned gt = i + 1;
-    char quote = 0;
-    while (gt < len)
+    ৱর্ণ quote = 0;
+    যেতিয়ালৈ (gt < len)
     {
-      char c = svg[gt];
-      if (quote)
+      ৱর্ণ c = svg[gt];
+      যদি (quote)
       {
-        if (c == quote) quote = 0;
+        যদি (c == quote) quote = 0;
       }
-      else
+      অন্যথা
       {
-        if (c == '"' || c == '\'')
+        যদি (c == '"' || c == '\'')
           quote = c;
-        else if (c == '>')
-          break;
+        অন্যথা যদি (c == '>')
+          ভঙ্গ;
       }
       gt++;
     }
-    if (gt >= len)
-      return false;
+    যদি (gt >= len)
+      ঘূৰাই মিছা;
 
-    if (special)
+    যদি (special)
     {
       i = gt + 1;
-      continue;
+      অনুৱর্ত;
     }
 
     unsigned p = i + (closing ? 2 : 1);
-    while (p < gt && isspace ((unsigned char) svg[p])) p++;
-    const char *name = svg + p;
+    যেতিয়ালৈ (p < gt && isspace ((unsigned ৱর্ণ) svg[p])) p++;
+    ধ্রুৱ ৱর্ণ *name = svg + p;
     unsigned name_len = 0;
-    while (p + name_len < gt)
+    যেতিয়ালৈ (p + name_len < gt)
     {
-      unsigned char c = (unsigned char) name[name_len];
-      if (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
-        break;
+      unsigned ৱর্ণ c = (unsigned ৱর্ণ) name[name_len];
+      যদি (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
+        ভঙ্গ;
       name_len++;
     }
-    bool is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
+    তার্কিক is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
 
-    if (closing)
+    যদি (closing)
     {
-      if (!depth)
+      যদি (!depth)
       {
         i = gt + 1;
-        continue;
+        অনুৱর্ত;
       }
 
-      open_elem_t e = stack[--depth];
+      open_elem_t e = স্তূপ[--depth];
       unsigned end = gt + 1;
 
-      if (e.id.len)
+      যদি (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        যদি (unlikely (!id_entries->ঠেলো_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          ঘূৰাই মিছা;
 
-        if (e.in_defs_content)
+        যদি (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          যদি (unlikely (!defs_entries->ঠেলো_or_fail ()))
+            ঘূৰাই মিছা;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -532,26 +532,26 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        যদি (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          যদি (unlikely (!glyph_spans->ঠেলো_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            ঘূৰাই মিছা;
         }
       }
 
-      if (e.is_defs && defs_depth)
+      যদি (e.is_defs && defs_depth)
         defs_depth--;
 
       i = end;
-      continue;
+      অনুৱর্ত;
     }
 
     SVG::svg_id_span_t id = {};
     parse_id_in_start_tag (svg, i, gt, &id);
 
     unsigned r = gt;
-    while (r > i && isspace ((unsigned char) svg[r - 1])) r--;
-    bool self_closing = (r > i && svg[r - 1] == '/');
+    যেতিয়ালৈ (r > i && isspace ((unsigned ৱর্ণ) svg[r - 1])) r--;
+    তার্কিক self_closing = (r > i && svg[r - 1] == '/');
 
     open_elem_t e = {};
     e.start = i;
@@ -559,18 +559,18 @@ parse_cache_entries_linear (const char *svg,
     e.in_defs_content = defs_depth > 0;
     e.is_defs = is_defs;
 
-    if (self_closing)
+    যদি (self_closing)
     {
       unsigned end = gt + 1;
-      if (e.id.len)
+      যদি (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        যদি (unlikely (!id_entries->ঠেলো_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          ঘূৰাই মিছা;
 
-        if (e.in_defs_content)
+        যদি (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          যদি (unlikely (!defs_entries->ঠেলো_or_fail ()))
+            ঘূৰাই মিছা;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -578,56 +578,56 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        যদি (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          যদি (unlikely (!glyph_spans->ঠেলো_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            ঘূৰাই মিছা;
         }
       }
     }
-    else
+    অন্যথা
     {
-      if (unlikely (depth >= MAX_DEPTH))
-        return false;
-      stack[depth++] = e;
-      if (is_defs)
+      যদি (unlikely (depth >= MAX_DEPTH))
+        ঘূৰাই মিছা;
+      স্তূপ[depth++] = e;
+      যদি (is_defs)
         defs_depth++;
     }
 
     i = gt + 1;
   }
 
-  return true;
+  ঘূৰাই সঁচা;
 }
 
 } /* namespace _hb_svg_cache_impl */
 
-inline
+অন্তঃস্থ
 SVG::accelerator_t::accelerator_t (hb_face_t *face)
 {
   table = hb_sanitize_context_t ().reference_table<SVG> (face);
   doc_caches.init ();
-  unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  unsigned doc_গুনতি = table->get_document_গুনতি ();
+  যদি (doc_গুনতি && unlikely (!doc_caches.resize (doc_গুনতি)))
     doc_caches.clear ();
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  বাবে (unsigned i = 0; i < doc_caches.length; i++)
     doc_caches.arrayZ[i].set_relaxed (nullptr);
 }
 
-inline
+অন্তঃস্থ
 SVG::accelerator_t::~accelerator_t ()
 {
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  বাবে (unsigned i = 0; i < doc_caches.length; i++)
     destroy_doc_cache (doc_caches.arrayZ[i].get_relaxed ());
   doc_caches.fini ();
   table.destroy ();
 }
 
-inline void
+অন্তঃস্থ শূন্য
 SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
 {
-  if (!doc)
-    return;
+  যদি (!doc)
+    ঘূৰাই;
   doc->glyph_spans.fini ();
   doc->defs_entries.fini ();
   doc->id_spans.fini ();
@@ -635,18 +635,18 @@ SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
   hb_free (doc);
 }
 
-inline SVG::svg_doc_cache_t *
+অন্তঃস্থ SVG::svg_doc_cache_t *
 SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
-                                    const char *svg,
+                                    ধ্রুৱ ৱর্ণ *svg,
                                     unsigned len,
                                     hb_codepoint_t start_glyph,
-                                    hb_codepoint_t end_glyph) const
+                                    hb_codepoint_t end_glyph) ধ্রুৱ
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  স্থির ধ্রুৱ uint32_t INVALID_SPAN = 0xFFFFFFFFu;
 
-  auto *doc = (svg_doc_cache_t *) hb_malloc (sizeof (svg_doc_cache_t));
-  if (!doc)
-    return nullptr;
+  auto *doc = (svg_doc_cache_t *) hb_malloc (পরিমাণ (svg_doc_cache_t));
+  যদি (!doc)
+    ঘূৰাই nullptr;
 
   doc->blob = nullptr;
   doc->svg = nullptr;
@@ -663,26 +663,26 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   doc->start_glyph = start_glyph;
   doc->end_glyph = end_glyph;
 
-  if (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
+  যদি (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    ঘূৰাই nullptr;
   }
 
-  unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  unsigned glyph_গুনতি = end_glyph - start_glyph + 1;
+  যদি (!doc->glyph_spans.resize ((পূর্ণাঙ্ক) glyph_গুনতি))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    ঘূৰাই nullptr;
   }
-  for (unsigned i = 0; i < glyph_count; i++)
+  বাবে (unsigned i = 0; i < glyph_গুনতি; i++)
     doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
 
   hb_vector_t<_hb_svg_cache_impl::glyph_entry_t> glyph_spans;
   glyph_spans.init ();
   hb_vector_t<_hb_svg_cache_impl::id_entry_t> id_entries;
   id_entries.init ();
-  if (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
+  যদি (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
                                                        &doc->defs_entries,
                                                        &glyph_spans,
                                                        &id_entries))
@@ -690,136 +690,136 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     id_entries.fini ();
     glyph_spans.fini ();
     destroy_doc_cache (doc);
-    return nullptr;
+    ঘূৰাই nullptr;
   }
 
-  for (unsigned i = 0; i < glyph_spans.length; i++)
+  বাবে (unsigned i = 0; i < glyph_spans.length; i++)
   {
-    const auto &span = glyph_spans.arrayZ[i];
-    if (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
-      continue;
+    ধ্রুৱ auto &span = glyph_spans.arrayZ[i];
+    যদি (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
+      অনুৱর্ত;
     doc->glyph_spans.arrayZ[span.glyph - start_glyph] = hb_pair_t<uint32_t, uint32_t> (span.start, span.end);
   }
 
-  for (unsigned i = 0; i < id_entries.length; i++)
+  বাবে (unsigned i = 0; i < id_entries.length; i++)
   {
-    const auto &e = id_entries.arrayZ[i];
+    ধ্রুৱ auto &e = id_entries.arrayZ[i];
     hb_pair_t<uint32_t, uint32_t> *out = nullptr;
-    if (doc->id_spans.has (e.id, &out))
-      continue;
-    if (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
+    যদি (doc->id_spans.has (e.id, &out))
+      অনুৱর্ত;
+    যদি (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
     {
       id_entries.fini ();
       glyph_spans.fini ();
       destroy_doc_cache (doc);
-      return nullptr;
+      ঘূৰাই nullptr;
     }
   }
 
   id_entries.fini ();
   glyph_spans.fini ();
-  return doc;
+  ঘূৰাই doc;
 }
 
-inline const SVG::svg_doc_cache_t *
+অন্তঃস্থ ধ্রুৱ SVG::svg_doc_cache_t *
 SVG::accelerator_t::get_or_create_doc_cache (hb_blob_t *image,
-                                              const char *svg,
+                                              ধ্রুৱ ৱর্ণ *svg,
                                               unsigned len,
                                               unsigned doc_index,
                                               hb_codepoint_t start_glyph,
-                                              hb_codepoint_t end_glyph) const
+                                              hb_codepoint_t end_glyph) ধ্রুৱ
 {
-  if (doc_index >= doc_caches.length)
-    return nullptr;
+  যদি (doc_index >= doc_caches.length)
+    ঘূৰাই nullptr;
 
   auto &slot = doc_caches.arrayZ[doc_index];
   auto *doc = slot.get_acquire ();
-  if (doc)
-    return doc;
+  যদি (doc)
+    ঘূৰাই doc;
 
   auto *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
-  if (!fresh)
-    return nullptr;
+  যদি (!fresh)
+    ঘূৰাই nullptr;
 
   auto *expected = (svg_doc_cache_t *) nullptr;
-  if (slot.cmpexch (expected, fresh))
-    return fresh;
+  যদি (slot.cmpexch (expected, fresh))
+    ঘূৰাই fresh;
 
   destroy_doc_cache (fresh);
-  return expected;
+  ঘূৰাই expected;
 }
 
-inline const char *
-SVG::accelerator_t::doc_cache_get_svg (const svg_doc_cache_t *doc,
-                                       unsigned *len) const
+অন্তঃস্থ ধ্রুৱ ৱর্ণ *
+SVG::accelerator_t::doc_cache_get_svg (ধ্রুৱ svg_doc_cache_t *doc,
+                                       unsigned *len) ধ্রুৱ
 {
-  if (!doc)
+  যদি (!doc)
   {
-    if (len) *len = 0;
-    return nullptr;
+    যদি (len) *len = 0;
+    ঘূৰাই nullptr;
   }
-  if (len) *len = doc->len;
-  return doc->svg;
+  যদি (len) *len = doc->len;
+  ঘূৰাই doc->svg;
 }
 
-inline const hb_vector_t<SVG::svg_defs_entry_t> *
-SVG::accelerator_t::doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const
+অন্তঃস্থ ধ্রুৱ hb_vector_t<SVG::svg_defs_entry_t> *
+SVG::accelerator_t::doc_cache_get_defs_entries (ধ্রুৱ svg_doc_cache_t *doc) ধ্রুৱ
 {
-  return doc ? &doc->defs_entries : nullptr;
+  ঘূৰাই doc ? &doc->defs_entries : nullptr;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+অন্তঃস্থ তার্কিক
+SVG::accelerator_t::doc_cache_get_glyph_span (ধ্রুৱ svg_doc_cache_t *doc,
                                               hb_codepoint_t glyph,
                                               unsigned *start,
-                                              unsigned *end) const
+                                              unsigned *end) ধ্রুৱ
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
-  if (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
+  স্থির ধ্রুৱ uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  যদি (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
       glyph < doc->start_glyph || glyph > doc->end_glyph)
-    return false;
+    ঘূৰাই মিছা;
 
-  const auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
-  if (span.first == INVALID_SPAN)
-    return false;
-  if (unlikely (span.first > span.second || span.second > doc->len))
-    return false;
+  ধ্রুৱ auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
+  যদি (span.first == INVALID_SPAN)
+    ঘূৰাই মিছা;
+  যদি (unlikely (span.first > span.second || span.second > doc->len))
+    ঘূৰাই মিছা;
 
-  if (start) *start = span.first;
-  if (end) *end = span.second;
-  return true;
+  যদি (start) *start = span.first;
+  যদি (end) *end = span.second;
+  ঘূৰাই সঁচা;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_span (const svg_doc_cache_t *doc,
+অন্তঃস্থ তার্কিক
+SVG::accelerator_t::doc_cache_find_id_span (ধ্রুৱ svg_doc_cache_t *doc,
                                             svg_id_span_t id,
                                             unsigned *start,
-                                            unsigned *end) const
+                                            unsigned *end) ধ্রুৱ
 {
-  if (!doc || !id.p || !id.len)
-    return false;
+  যদি (!doc || !id.p || !id.len)
+    ঘূৰাই মিছা;
   hb_pair_t<uint32_t, uint32_t> *span = nullptr;
-  if (!doc->id_spans.has (id, &span))
-    return false;
-  if (unlikely (span->first > span->second || span->second > doc->len))
-    return false;
-  if (start) *start = span->first;
-  if (end) *end = span->second;
-  return true;
+  যদি (!doc->id_spans.has (id, &span))
+    ঘূৰাই মিছা;
+  যদি (unlikely (span->first > span->second || span->second > doc->len))
+    ঘূৰাই মিছা;
+  যদি (start) *start = span->first;
+  যদি (end) *end = span->second;
+  ঘূৰাই সঁচা;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                                            const char *id,
+অন্তঃস্থ তার্কিক
+SVG::accelerator_t::doc_cache_find_id_cstr (ধ্রুৱ svg_doc_cache_t *doc,
+                                            ধ্রুৱ ৱর্ণ *id,
                                             unsigned *start,
-                                            unsigned *end) const
+                                            unsigned *end) ধ্রুৱ
 {
-  if (!id) return false;
+  যদি (!id) ঘূৰাই মিছা;
   svg_id_span_t key = {id, (unsigned) strlen (id)};
-  return doc_cache_find_id_span (doc, key, start, end);
+  ঘূৰাই doc_cache_find_id_span (doc, key, start, end);
 }
 
-struct SVG_accelerator_t : SVG::accelerator_t {
+সংরচনা SVG_accelerator_t : SVG::accelerator_t {
   SVG_accelerator_t (hb_face_t *face) : SVG::accelerator_t (face) {}
 };
 

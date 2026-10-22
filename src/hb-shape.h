@@ -26,49 +26,49 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#যদি !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_SHAPE_H
 #define HB_SHAPE_H
 
-#include "hb-common.h"
-#include "hb-buffer.h"
-#include "hb-font.h"
+#অন্তর্ভাৱ "hb-common.h"
+#অন্তর্ভাৱ "hb-buffer.h"
+#অন্তর্ভাৱ "hb-font.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  ধ্রুৱ hb_feature_t  *features,
+	  unsigned পূর্ণাঙ্ক         অঙ্ক_features);
 
 HB_EXTERN hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+	       ধ্রুৱ hb_feature_t *features,
+	       unsigned পূর্ণাঙ্ক        অঙ্ক_features,
+	       ধ্রুৱ ৱর্ণ * ধ্রুৱ *shaper_list);
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  ধ্রুৱ hb_feature_t *features,
+		  unsigned পূর্ণাঙ্ক        অঙ্ক_features,
+		  ধ্রুৱ ৱর্ণ * ধ্রুৱ *shaper_list,
+		  ভিন্ন               min_target_advance,
+		  ভিন্ন               max_target_advance,
+		  ভিন্ন              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */);
+		  ভিন্ন              *var_মান /* OUT */);
 #endif
 
-HB_EXTERN const char **
-hb_shape_list_shapers (void);
+HB_EXTERN ধ্রুৱ ৱর্ণ **
+hb_shape_list_shapers (শূন্য);
 
 
 HB_END_DECLS

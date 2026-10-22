@@ -11,18 +11,18 @@
 #ifndef HB_CFF_SPECIALIZER_HH
 #define HB_CFF_SPECIALIZER_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#অন্তর্ভাৱ "hb.hh"
+#অন্তর্ভাৱ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+নামাকাশ CFF {
 
 /* CharString command representation - forward declared in hb-subset-cff-common.hh */
 
 /* Specialization must preserve nonzero fractional displacements. */
-static inline bool
-is_zero (const number_t &n)
+স্থির অন্তঃস্থ তার্কিক
+is_zero (ধ্রুৱ সংখ্যা_t &n)
 {
-  return n.to_real () == 0.;
+  ঘূৰাই n.to_real () == 0.;
 }
 
 /* Generalize CharString commands to canonical form
@@ -33,75 +33,75 @@ is_zero (const number_t &n)
  *
  * Based on fontTools.cffLib.specializer.generalizeCommands
  */
-static void
+স্থির শূন্য
 generalize_commands (hb_vector_t<cs_command_t> &commands)
 {
   hb_vector_t<cs_command_t> result;
   result.alloc (commands.length * 2);  /* Estimate: might expand */
 
-  for (unsigned i = 0; i < commands.length; i++)
+  বাবে (unsigned i = 0; i < commands.length; i++)
   {
     auto &cmd = commands[i];
 
-    switch (cmd.op)
+    ৱিকল্প (cmd.op)
     {
-      case OpCode_hmoveto:
-      case OpCode_vmoveto:
+      পক্ষ OpCode_hmoveto:
+      পক্ষ OpCode_vmoveto:
       {
         /* Convert to rmoveto with explicit dx,dy */
         cs_command_t gen (OpCode_rmoveto);
         gen.args.alloc (2);
 
-        if (cmd.op == OpCode_hmoveto && cmd.args.length >= 1)
+        যদি (cmd.op == OpCode_hmoveto && cmd.args.length >= 1)
         {
           gen.args.push (cmd.args[0]);  /* dx */
-          number_t zero; zero.set_int (0);
+          সংখ্যা_t zero; zero.set_int (0);
           gen.args.push (zero);          /* dy = 0 */
         }
-        else if (cmd.op == OpCode_vmoveto && cmd.args.length >= 1)
+        অন্যথা যদি (cmd.op == OpCode_vmoveto && cmd.args.length >= 1)
         {
-          number_t zero; zero.set_int (0);
+          সংখ্যা_t zero; zero.set_int (0);
           gen.args.push (zero);          /* dx = 0 */
           gen.args.push (cmd.args[0]);  /* dy */
         }
         result.push (gen);
-        break;
+        ভঙ্গ;
       }
 
-      case OpCode_hlineto:
-      case OpCode_vlineto:
+      পক্ষ OpCode_hlineto:
+      পক্ষ OpCode_vlineto:
       {
         /* Convert h/v lineto to rlineto, breaking into single segments
          * hlineto alternates: dx1 (→ dx1,0) dy1 (→ 0,dy1) dx2 (→ dx2,0) ...
          * vlineto alternates: dy1 (→ 0,dy1) dx1 (→ dx1,0) dy2 (→ 0,dy2) ... */
-        bool is_h = (cmd.op == OpCode_hlineto);
-        number_t zero; zero.set_int (0);
+        তার্কিক is_h = (cmd.op == OpCode_hlineto);
+        সংখ্যা_t zero; zero.set_int (0);
 
-        for (unsigned j = 0; j < cmd.args.length; j++)
+        বাবে (unsigned j = 0; j < cmd.args.length; j++)
         {
           cs_command_t seg (OpCode_rlineto);
           seg.args.alloc (2);
 
-          bool is_horizontal = is_h ? (j % 2 == 0) : (j % 2 == 1);
-          if (is_horizontal)
+          তার্কিক is_horizontal = is_h ? (j % 2 == 0) : (j % 2 == 1);
+          যদি (is_horizontal)
           {
             seg.args.push (cmd.args[j]);  /* dx */
             seg.args.push (zero);          /* dy = 0 */
           }
-          else
+          অন্যথা
           {
             seg.args.push (zero);          /* dx = 0 */
             seg.args.push (cmd.args[j]);  /* dy */
           }
           result.push (seg);
         }
-        break;
+        ভঙ্গ;
       }
 
-      case OpCode_rlineto:
+      পক্ষ OpCode_rlineto:
       {
         /* Break into single segments (dx,dy pairs) */
-        for (unsigned j = 0; j + 1 < cmd.args.length; j += 2)
+        বাবে (unsigned j = 0; j + 1 < cmd.args.length; j += 2)
         {
           cs_command_t seg (OpCode_rlineto);
           seg.args.alloc (2);
@@ -109,33 +109,33 @@ generalize_commands (hb_vector_t<cs_command_t> &commands)
           seg.args.push (cmd.args[j + 1]);
           result.push (seg);
         }
-        break;
+        ভঙ্গ;
       }
 
-      case OpCode_rrcurveto:
+      পক্ষ OpCode_rrcurveto:
       {
         /* Break into single segments (6 args each) */
-        for (unsigned j = 0; j + 5 < cmd.args.length; j += 6)
+        বাবে (unsigned j = 0; j + 5 < cmd.args.length; j += 6)
         {
           cs_command_t seg (OpCode_rrcurveto);
           seg.args.alloc (6);
-          for (unsigned k = 0; k < 6; k++)
+          বাবে (unsigned k = 0; k < 6; k++)
             seg.args.push (cmd.args[j + k]);
           result.push (seg);
         }
-        break;
+        ভঙ্গ;
       }
 
-      default:
+      স্ৱভাৱ:
         /* Keep other operators as-is */
         result.push (cmd);
-        break;
+        ভঙ্গ;
     }
   }
 
   /* Replace commands with generalized result */
   commands.clear ();
-  for (unsigned i = 0; i < result.length; i++)
+  বাবে (unsigned i = 0; i < result.length; i++)
     commands.push (result[i]);
 }
 
@@ -149,27 +149,27 @@ generalize_commands (hb_vector_t<cs_command_t> &commands)
  *
  * This ensures we never exceed stack depth while optimizing bytecode.
  */
-static void
+স্থির শূন্য
 specialize_commands (hb_vector_t<cs_command_t> &commands,
                      unsigned maxstack = 48)
 {
-  if (commands.length == 0) return;
+  যদি (commands.length == 0) ঘূৰাই;
 
   /* Pass 0: Generalize to canonical form (fontTools does this first) */
   generalize_commands (commands);
 
   /* Pass 1: Specialize rmoveto/rlineto into h/v variants */
-  for (unsigned i = 0; i < commands.length; i++)
+  বাবে (unsigned i = 0; i < commands.length; i++)
   {
     auto &cmd = commands[i];
 
-    if ((cmd.op == OpCode_rmoveto || cmd.op == OpCode_rlineto) &&
+    যদি ((cmd.op == OpCode_rmoveto || cmd.op == OpCode_rlineto) &&
         cmd.args.length == 2)
     {
-      bool dx_zero = is_zero (cmd.args[0]);
-      bool dy_zero = is_zero (cmd.args[1]);
+      তার্কিক dx_zero = is_zero (cmd.args[0]);
+      তার্কিক dy_zero = is_zero (cmd.args[1]);
 
-      if (dx_zero && !dy_zero)
+      যদি (dx_zero && !dy_zero)
       {
         /* Vertical movement (dx=0): keep only dy */
         cmd.op = (cmd.op == OpCode_rmoveto) ? OpCode_vmoveto : OpCode_vlineto;
@@ -177,7 +177,7 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
         cmd.args[0] = cmd.args[1];
         cmd.args.resize (1);
       }
-      else if (!dx_zero && dy_zero)
+      অন্যথা যদি (!dx_zero && dy_zero)
       {
         /* Horizontal movement (dy=0): keep only dx */
         cmd.op = (cmd.op == OpCode_rmoveto) ? OpCode_hmoveto : OpCode_hlineto;
@@ -190,23 +190,23 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
   /* Pass 2: Combine adjacent hlineto/vlineto operators
    * hlineto can take multiple args alternating with vlineto
    * This saves operator bytes */
-  for (int i = (int)commands.length - 1; i > 0; i--)
+  বাবে (পূর্ণাঙ্ক i = (পূর্ণাঙ্ক)commands.length - 1; i > 0; i--)
   {
     auto &cmd = commands[i];
     auto &prev = commands[i-1];
 
     /* Different starting directions can combine only after an odd number
      * of alternating arguments in the preceding command. */
-    if (((prev.op == OpCode_hlineto && cmd.op == OpCode_vlineto) ||
+    যদি (((prev.op == OpCode_hlineto && cmd.op == OpCode_vlineto) ||
          (prev.op == OpCode_vlineto && cmd.op == OpCode_hlineto)) &&
         (prev.args.length & 1))
     {
       /* Check stack depth */
       unsigned combined_args = prev.args.length + cmd.args.length;
-      if (combined_args < maxstack)
+      যদি (combined_args < maxstack)
       {
         /* Merge into first command, keep its operator */
-        for (unsigned j = 0; j < cmd.args.length; j++)
+        বাবে (unsigned j = 0; j < cmd.args.length; j++)
           prev.args.push (cmd.args[j]);
         commands.remove_ordered (i);
         i++;  /* Adjust for removed element */
@@ -215,24 +215,24 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
   }
 
   /* Pass 3: Combine adjacent identical operators */
-  for (int i = (int)commands.length - 1; i > 0; i--)
+  বাবে (পূর্ণাঙ্ক i = (পূর্ণাঙ্ক)commands.length - 1; i > 0; i--)
   {
     auto &cmd = commands[i];
     auto &prev = commands[i-1];
 
     /* Same-direction h/v commands can combine only after an even number
      * of alternating arguments. Other repeatable operators concatenate. */
-    if (prev.op == cmd.op &&
+    যদি (prev.op == cmd.op &&
         (cmd.op == OpCode_rlineto || cmd.op == OpCode_rrcurveto ||
          ((cmd.op == OpCode_hlineto || cmd.op == OpCode_vlineto) &&
           !(prev.args.length & 1))))
     {
       /* Check stack depth */
       unsigned combined_args = prev.args.length + cmd.args.length;
-      if (combined_args < maxstack)
+      যদি (combined_args < maxstack)
       {
         /* Merge args */
-        for (unsigned j = 0; j < cmd.args.length; j++)
+        বাবে (unsigned j = 0; j < cmd.args.length; j++)
           prev.args.push (cmd.args[j]);
         commands.remove_ordered (i);
         i++;  /* Adjust for removed element */
@@ -242,34 +242,34 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
 }
 
 /* Encode commands back to binary CharString */
-static bool
-encode_commands (const hb_vector_t<cs_command_t> &commands,
+স্থির তার্কিক
+encode_commands (ধ্রুৱ hb_vector_t<cs_command_t> &commands,
                  str_buff_t &output)
 {
-  for (const auto &cmd : commands)
+  বাবে (ধ্রুৱ auto &cmd : commands)
   {
     str_encoder_t encoder (output);
 
     /* Encode arguments */
-    for (const auto &arg : cmd.args)
-      encoder.encode_num_cs (arg);
+    বাবে (ধ্রুৱ auto &arg : cmd.args)
+      encoder.encode_অঙ্ক_cs (arg);
 
     /* Encode operator */
-    if (cmd.op != OpCode_Invalid)
+    যদি (cmd.op != OpCode_Invalid)
       encoder.encode_op (cmd.op);
 
     /* hintmask/cntrmask are followed by raw mask bytes. */
-    if (cmd.op == OpCode_hintmask || cmd.op == OpCode_cntrmask)
+    যদি (cmd.op == OpCode_hintmask || cmd.op == OpCode_cntrmask)
     {
-      for (const auto &byte : cmd.mask_bytes)
+      বাবে (ধ্রুৱ auto &byte : cmd.mask_bytes)
         encoder.encode_byte (byte);
     }
 
-    if (encoder.in_error ())
-      return false;
+    যদি (encoder.in_error ())
+      ঘূৰাই মিছা;
   }
 
-  return true;
+  ঘূৰাই সঁচা;
 }
 
 } /* namespace CFF */

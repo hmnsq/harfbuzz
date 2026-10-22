@@ -24,19 +24,19 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাৱ "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#অন্তর্ভাৱ "hb.h"
+#অন্তর্ভাৱ "hb-ot.h"
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+পূর্ণাঙ্ক
+main (পূর্ণাঙ্ক argc, ৱর্ণ **argv)
 {
-  if (argc != 2) {
+  যদি (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -48,15 +48,15 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  bool ret = true;
+  তার্কিক ret = সঁচা;
 
 #ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  unsigned int p[5];
+  unsigned পূর্ণাঙ্ক p[5];
   ret = hb_ot_layout_get_size_params (face, p, p+1, (p+2), p+3, p+4);
   printf ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
 #endif
 
   hb_face_destroy (face);
 
-  return !ret;
+  ঘূৰাই !ret;
 }

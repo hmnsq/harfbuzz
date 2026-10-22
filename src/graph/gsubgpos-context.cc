@@ -24,24 +24,24 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-graph.hh"
+#অন্তর্ভাৱ "gsubgpos-graph.hh"
 
-namespace graph {
+নামাকাশ graph {
 
 graph_result_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
                                                                            graph_t& graph_)
 {
   gsubgpos_graph_context_t context (table_tag_, graph_);
 
-  if (unlikely (table_tag_ != HB_OT_TAG_GPOS
+  যদি (unlikely (table_tag_ != HB_OT_TAG_GPOS
                 && table_tag_ != HB_OT_TAG_GSUB))
-    return Err(INVALID_ARGUMENT);
+    ঘূৰাই Err(INVALID_ARGUMENT);
 
-  TRY_ASSIGN (const GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
+  TRY_ASSIGN (ধ্রুৱ GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
   TRY(gstar->find_lookups (context.graph, context.lookups));
   TRY_ASSIGN (context.lookup_list_index, gstar->get_lookup_list_index (context.graph));
 
-  return context;
+  ঘূৰাই context;
 }
 
 gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
@@ -52,30 +52,30 @@ gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
       lookups ()
 {}
 
-graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
+graph_result_t<unsigned> gsubgpos_graph_context_t::create_গ্ৰন্থি (unsigned size)
 {
-  char* buffer = (char*) hb_calloc (1, size);
-  if (unlikely (!buffer))
-    return Err(ALLOCATION_FAILURE);
+  ৱর্ণ* buffer = (ৱর্ণ*) hb_calloc (1, size);
+  যদি (unlikely (!buffer))
+    ঘূৰাই Err(ALLOCATION_FAILURE);
 
   auto res = add_buffer (buffer);
-  if (unlikely (!res.is_ok ())) {
+  যদি (unlikely (!res.is_ok ())) {
     // Allocation did not get stored for freeing later.
     hb_free (buffer);
-    return Err(res.error ());
+    ঘূৰাই Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  ঘূৰাই graph.new_গ্ৰন্থি (buffer, buffer + size);
 }
 
-unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
-  unsigned count = 0;
-  for (auto l : lookups.values ())
+unsigned gsubgpos_graph_context_t::অঙ্ক_non_ext_subtables ()  {
+  unsigned গুনতি = 0;
+  বাবে (auto l : lookups.values ())
   {
-    if (l->is_extension (table_tag)) continue;
-    count += l->number_of_subtables ();
+    যদি (l->is_extension (table_tag)) অনুৱর্ত;
+    গুনতি += l->সংখ্যা_of_subtables ();
   }
-  return count;
+  ঘূৰাই গুনতি;
 }
 
 }

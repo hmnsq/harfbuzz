@@ -1,46 +1,46 @@
 #ifndef OT_LAYOUT_GPOS_MARKRECORD_HH
 #define OT_LAYOUT_GPOS_MARKRECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-template <typename Types> struct MarkArray;
+template <typename Types> সংরচনা MarkArray;
 
 template <typename Types>
-struct MarkRecord
+সংরচনা MarkRecord
 {
-  friend struct MarkArray<Types>;
+  friend সংরচনা MarkArray<Types>;
 
-  public:
+  সার্ৱজনিক:
   HBUINT16      klass;                  /* Class defined for this mark */
   typename Types::template OffsetTo<Anchor, MarkArray<Types>>
                 markAnchor;             /* Offset to Anchor table--from
                                          * beginning of MarkArray table */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (2 + Types::size);
 
-  unsigned get_class () const { return (unsigned) klass; }
-  bool sanitize (hb_sanitize_context_t *c, const MarkArray<Types> *base) const
+  unsigned get_class () ধ্রুৱ { ঘূৰাই (unsigned) klass; }
+  তার্কিক sanitize (hb_sanitize_context_t *c, ধ্রুৱ MarkArray<Types> *base) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && markAnchor.sanitize (c, base));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) && markAnchor.sanitize (c, base));
   }
 
-  bool subset (hb_subset_context_t    *c,
-	       const MarkArray<Types> *src_base,
-	       const hb_map_t         *klass_mapping) const
+  তার্কিক subset (hb_subset_context_t    *c,
+	       ধ্রুৱ MarkArray<Types> *src_base,
+	       ধ্রুৱ hb_map_t         *klass_mapping) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (মিছা);
 
     out->klass = klass_mapping->get (klass);
     return_trace (out->markAnchor.serialize_subset (c, markAnchor, src_base));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const MarkArray<Types> *src_base) const
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ধ্রুৱ MarkArray<Types> *src_base) ধ্রুৱ
   {
     (src_base+markAnchor).collect_variation_indices (c);
   }

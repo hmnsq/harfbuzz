@@ -27,10 +27,10 @@
 #ifndef HB_OT_MAXP_TABLE_HH
 #define HB_OT_MAXP_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#অন্তর্ভাৱ "hb-open-type.hh"
+#অন্তর্ভাৱ "hb-ot-dual.hh"
 
-namespace OT {
+নামাকাশ OT {
 
 
 /*
@@ -41,12 +41,12 @@ namespace OT {
 #define HB_OT_TAG_maxp HB_TAG('m','a','x','p')
 #define HB_OT_TAG_MAXP HB_TAG('M','A','X','P')
 
-struct maxpV1Tail
+সংরচনা maxpV1Tail
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
   HBUINT16 maxPoints;		  /* Maximum points in a non-composite glyph. */
@@ -60,67 +60,67 @@ struct maxpV1Tail
   HBUINT16 maxStorage;		  /* Number of Storage Area locations. */
   HBUINT16 maxFunctionDefs;	  /* Number of FDEFs, equal to the highest function number + 1. */
   HBUINT16 maxInstructionDefs;	  /* Number of IDEFs. */
-  HBUINT16 maxStackElements;	  /* Maximum stack depth. (This includes Font and CVT
+  HBUINT16 max_স্তূপ_Elements;	  /* Maximum stack depth. (This includes Font and CVT
 				   * Programs, as well as the instructions for each glyph.) */
   HBUINT16 maxSizeOfInstructions; /* Maximum byte count for glyph instructions. */
   HBUINT16 maxComponentElements;  /* Maximum number of components referenced at
 				   * "top level" for any composite glyph. */
   HBUINT16 maxComponentDepth;	  /* Maximum levels of recursion; 1 for simple components. */
- public:
+ সার্ৱজনিক:
   DEFINE_SIZE_STATIC (26);
 };
 
 
 template <typename Types>
-struct maxp_MAXP
+সংরচনা maxp_MAXP
 {
-  unsigned int get_num_glyphs () const { return numGlyphs; }
+  unsigned পূর্ণাঙ্ক get_অঙ্ক_glyphs () ধ্রুৱ { ঘূৰাই অঙ্ক_Glyphs; }
 
-  void set_num_glyphs (unsigned int count)
+  শূন্য set_অঙ্ক_glyphs (unsigned পূর্ণাঙ্ক গুনতি)
   {
-    numGlyphs = count;
+    অঙ্ক_Glyphs = গুনতি;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুৱ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!c->check_struct (এতত্)))
+      return_trace (মিছা);
     hb_barrier ();
-    if (version.major == 1)
+    যদি (version.major == 1)
     {
-      const maxpV1Tail &v1 = StructAfter<maxpV1Tail> (*this);
+      ধ্রুৱ maxpV1Tail &v1 = StructAfter<maxpV1Tail> (*এতত্);
       return_trace (v1.sanitize (c));
     }
     return_trace (likely (version.major == 0 && version.minor == 0x5000u));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  তার্কিক subset (hb_subset_context_t *c) ধ্রুৱ
   {
-    TRACE_SUBSET (this);
-    maxp_MAXP *maxp_prime = c->serializer->embed (this);
-    if (unlikely (!maxp_prime)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    maxp_MAXP *maxp_মৌলিক = c->serializer->embed (এতত্);
+    যদি (unlikely (!maxp_মৌলিক)) return_trace (মিছা);
 
-    maxp_prime->numGlyphs = hb_min (c->plan->num_output_glyphs (),
+    maxp_মৌলিক->অঙ্ক_Glyphs = hb_min (c->plan->অঙ্ক_output_glyphs (),
 				    (1u << (8 * Types::size)) - 1);
-    if (maxp_prime->version.major == 1)
+    যদি (maxp_মৌলিক->version.major == 1)
     {
       hb_barrier ();
-      const maxpV1Tail *src_v1 = &StructAfter<maxpV1Tail> (*this);
+      ধ্রুৱ maxpV1Tail *src_v1 = &StructAfter<maxpV1Tail> (*এতত্);
       maxpV1Tail *dest_v1 = c->serializer->embed<maxpV1Tail> (src_v1);
-      if (unlikely (!dest_v1)) return_trace (false);
+      যদি (unlikely (!dest_v1)) return_trace (মিছা);
 
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      যদি (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
 	drop_hint_fields (dest_v1);
 
-      if (c->plan->normalized_coords)
+      যদি (c->plan->normalized_coords)
         instancing_update_fields (c->plan->head_maxp_info, dest_v1);
     }
 
-    return_trace (true);
+    return_trace (সঁচা);
   }
 
-  void instancing_update_fields (head_maxp_info_t& maxp_info, maxpV1Tail* dest_v1) const
+  শূন্য instancing_update_fields (head_maxp_info_t& maxp_info, maxpV1Tail* dest_v1) ধ্রুৱ
   {
     dest_v1->maxPoints = maxp_info.maxPoints;
     dest_v1->maxContours = maxp_info.maxContours;
@@ -130,51 +130,51 @@ struct maxp_MAXP
     dest_v1->maxComponentDepth = maxp_info.maxComponentDepth;
   }
 
-  static void drop_hint_fields (maxpV1Tail* dest_v1)
+  স্থির শূন্য drop_hint_fields (maxpV1Tail* dest_v1)
   {
     dest_v1->maxZones = 1;
     dest_v1->maxTwilightPoints = 0;
     dest_v1->maxStorage = 0;
     dest_v1->maxFunctionDefs = 0;
     dest_v1->maxInstructionDefs = 0;
-    dest_v1->maxStackElements = 0;
+    dest_v1->max_স্তূপ_Elements = 0;
     dest_v1->maxSizeOfInstructions = 0;
   }
 
-  protected:
+  রক্ষিত:
   FixedVersion<>version;/* Version of the maxp table (0.5 or 1.0),
 			 * 0x00005000u or 0x00010000u. */
   typename Types::HBUINT
-		numGlyphs;
+		অঙ্ক_Glyphs;
 			/* The number of glyphs in the font. */
 /*maxpV1Tail	v1Tail[HB_VAR_ARRAY]; */
-  public:
+  সার্ৱজনিক:
   DEFINE_SIZE_STATIC (4 + Types::HBUINT::static_size);
 };
 
-struct maxp : maxp_MAXP<Layout::SmallTypes>
+সংরচনা maxp : maxp_MAXP<Layout::SmallTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_maxp;
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_maxp;
 };
 
-struct MAXP : maxp_MAXP<Layout::MediumTypes>
+সংরচনা MAXP : maxp_MAXP<Layout::MediumTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MAXP;
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_MAXP;
 };
 
-struct maxp_accelerator_t
+সংরচনা maxp_accelerator_t
 {
   maxp_accelerator_t ()
   {
     blob = hb_blob_get_empty ();
-    numGlyphs = 0;
+    অঙ্ক_Glyphs = 0;
   }
 
   maxp_accelerator_t (hb_face_t *face) : maxp_accelerator_t ()
   {
 #ifndef HB_NO_BEYOND_64K
-    if (init_table<MAXP> (face))
-      return;
+    যদি (init_table<MAXP> (face))
+      ঘূৰাই;
 #endif
 
     init_table<maxp> (face);
@@ -182,28 +182,28 @@ struct maxp_accelerator_t
 
   ~maxp_accelerator_t () { hb_blob_destroy (blob); }
 
-  unsigned int get_num_glyphs () const { return numGlyphs; }
-  hb_blob_t *get_blob () const { return blob; }
+  unsigned পূর্ণাঙ্ক get_অঙ্ক_glyphs () ধ্রুৱ { ঘূৰাই অঙ্ক_Glyphs; }
+  hb_blob_t *get_blob () ধ্রুৱ { ঘূৰাই blob; }
 
-  private:
+  গুপ্ত:
   template <typename Table>
-  bool init_table (hb_face_t *face)
+  তার্কিক init_table (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    c.set_num_glyphs (0);
+    c.set_অঙ্ক_glyphs (0);
     hb_blob_ptr_t<Table> table = c.reference_table<Table> (face);
-    bool ret = table.get_length ();
-    if (ret)
+    তার্কিক ret = table.get_length ();
+    যদি (ret)
     {
       blob = hb_blob_reference (table.get_blob ());
-      numGlyphs = table->get_num_glyphs ();
+      অঙ্ক_Glyphs = table->get_অঙ্ক_glyphs ();
     }
     table.destroy ();
-    return ret;
+    ঘূৰাই ret;
   }
 
   hb_blob_t *blob;
-  unsigned int numGlyphs;
+  unsigned পূর্ণাঙ্ক অঙ্ক_Glyphs;
 };
 
 

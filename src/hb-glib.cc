@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাৱ "hb.hh"
 
 #ifdef HAVE_GLIB
 
-#include "hb-glib.h"
+#অন্তর্ভাৱ "hb-glib.h"
 
-#include "hb-machinery.hh"
+#অন্তর্ভাৱ "hb-machinery.hh"
 
 
 /**
@@ -63,7 +63,7 @@
 hb_script_t
 hb_glib_script_to_script (GUnicodeScript script)
 {
-  return (hb_script_t) g_unicode_script_to_iso15924 (script);
+  ঘূৰাই (hb_script_t) g_unicode_script_to_iso15924 (script);
 }
 
 /**
@@ -80,72 +80,72 @@ hb_glib_script_to_script (GUnicodeScript script)
 GUnicodeScript
 hb_glib_script_from_script (hb_script_t script)
 {
-  return g_unicode_script_from_iso15924 (script);
+  ঘূৰাই g_unicode_script_from_iso15924 (script);
 }
 
 
-static hb_unicode_combining_class_t
+স্থির hb_unicode_combining_class_t
 hb_glib_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 শূন্য               *user_data HB_UNUSED)
 
 {
-  return (hb_unicode_combining_class_t) g_unichar_combining_class (unicode);
+  ঘূৰাই (hb_unicode_combining_class_t) g_unichar_combining_class (unicode);
 }
 
-static hb_unicode_general_category_t
+স্থির hb_unicode_general_category_t
 hb_glib_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				  hb_codepoint_t      unicode,
-				  void               *user_data HB_UNUSED)
+				  শূন্য               *user_data HB_UNUSED)
 
 {
   /* hb_unicode_general_category_t and GUnicodeType are identical */
-  return (hb_unicode_general_category_t) g_unichar_type (unicode);
+  ঘূৰাই (hb_unicode_general_category_t) g_unichar_type (unicode);
 }
 
-static hb_codepoint_t
+স্থির hb_codepoint_t
 hb_glib_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			   hb_codepoint_t      unicode,
-			   void               *user_data HB_UNUSED)
+			   শূন্য               *user_data HB_UNUSED)
 {
   g_unichar_get_mirror_char (unicode, &unicode);
-  return unicode;
+  ঘূৰাই unicode;
 }
 
-static hb_script_t
+স্থির hb_script_t
 hb_glib_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			hb_codepoint_t      unicode,
-			void               *user_data HB_UNUSED)
+			শূন্য               *user_data HB_UNUSED)
 {
-  return hb_glib_script_to_script (g_unichar_get_script (unicode));
+  ঘূৰাই hb_glib_script_to_script (g_unichar_get_script (unicode));
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_glib_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			 hb_codepoint_t      a,
 			 hb_codepoint_t      b,
 			 hb_codepoint_t     *ab,
-			 void               *user_data HB_UNUSED)
+			 শূন্য               *user_data HB_UNUSED)
 {
-  return g_unichar_compose (a, b, ab);
+  ঘূৰাই g_unichar_compose (a, b, ab);
 }
 
-static hb_bool_t
+স্থির hb_bool_t
 hb_glib_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			   hb_codepoint_t      ab,
 			   hb_codepoint_t     *a,
 			   hb_codepoint_t     *b,
-			   void               *user_data HB_UNUSED)
+			   শূন্য               *user_data HB_UNUSED)
 {
-  return g_unichar_decompose (ab, a, b);
+  ঘূৰাই g_unichar_decompose (ab, a, b);
 }
 
 
-static inline void free_static_glib_funcs ();
+স্থির অন্তঃস্থ শূন্য free_static_glib_funcs ();
 
-static struct hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_glib_unicode_funcs_lazy_loader_t>
+স্থির সংরচনা hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_glib_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  স্থির hb_unicode_funcs_t *create ()
   {
     hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
 
@@ -160,12 +160,12 @@ static struct hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader
 
     hb_atexit (free_static_glib_funcs);
 
-    return funcs;
+    ঘূৰাই funcs;
   }
 } static_glib_funcs;
 
-static inline
-void free_static_glib_funcs ()
+স্থির অন্তঃস্থ
+শূন্য free_static_glib_funcs ()
 {
   static_glib_funcs.free_instance ();
 }
@@ -183,15 +183,15 @@ void free_static_glib_funcs ()
 hb_unicode_funcs_t *
 hb_glib_get_unicode_funcs ()
 {
-  return static_glib_funcs.get_unconst ();
+  ঘূৰাই static_glib_funcs.get_unconst ();
 }
 
 
 
-#if GLIB_CHECK_VERSION(2,31,10)
+#যদি GLIB_CHECK_VERSION(2,31,10)
 
-static void
-_hb_g_bytes_unref (void *data)
+স্থির শূন্য
+_hb_g_bytes_unref (শূন্য *data)
 {
   g_bytes_unref ((GBytes *) data);
 }
@@ -212,7 +212,7 @@ hb_glib_blob_create (GBytes *gbytes)
 {
   gsize size = 0;
   gconstpointer data = g_bytes_get_data (gbytes, &size);
-  return hb_blob_create ((const char *) data,
+  ঘূৰাই hb_blob_create ((ধ্রুৱ ৱর্ণ *) data,
 			 size,
 			 HB_MEMORY_MODE_READONLY,
 			 g_bytes_ref (gbytes),

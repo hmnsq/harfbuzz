@@ -24,11 +24,11 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb.hh"
-#include "hb-priority-queue.hh"
+#অন্তর্ভাৱ "hb.hh"
+#অন্তর্ভাৱ "hb-priority-queue.hh"
 
-static void
-test_insert ()
+স্থির শূন্য
+test_ঢোকাও ()
 {
   hb_priority_queue_t<int64_t> queue;
   hb_always_assert (queue.is_empty ());
@@ -50,7 +50,7 @@ test_insert ()
   hb_always_assert (queue.minimum () == hb_pair (1, 4));
 }
 
-static void
+স্থির শূন্য
 test_extract ()
 {
   hb_priority_queue_t<int32_t> queue;
@@ -63,19 +63,19 @@ test_extract ()
   queue.insert (70, 7);
   queue.insert (10, 1);
 
-  for (int i = 0; i < 8; i++)
+  বাবে (পূর্ণাঙ্ক i = 0; i < 8; i++)
   {
     hb_always_assert (!queue.is_empty ());
     hb_always_assert (queue.minimum () == hb_pair (i * 10, i));
-    hb_always_assert (queue.pop_minimum () == hb_pair (i * 10, i));
+    hb_always_assert (queue.বেৰ_কৰো_minimum () == hb_pair (i * 10, i));
   }
 
   hb_always_assert (queue.is_empty ());
 }
 
-int
-main (int argc, char **argv)
+পূর্ণাঙ্ক
+main (পূর্ণাঙ্ক argc, ৱর্ণ **argv)
 {
-  test_insert ();
+  test_ঢোকাও ();
   test_extract ();
 }

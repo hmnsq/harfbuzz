@@ -24,51 +24,51 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb.hh"
-#include "hb-array.hh"
+#অন্তর্ভাৱ "hb.hh"
+#অন্তর্ভাৱ "hb-array.hh"
 
-static void
+স্থির শূন্য
 test_reverse ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  পূর্ণাঙ্ক values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<পূর্ণাঙ্ক> a (values, 9);
   a.reverse();
 
-  int expected_values[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
-  hb_array_t<int> expected (expected_values, 9);
+  পূর্ণাঙ্ক expected_মানসমূহ[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+  hb_array_t<পূর্ণাঙ্ক> expected (expected_মানসমূহ, 9);
   hb_always_assert (a == expected);
 }
 
-static void
+স্থির শূন্য
 test_reverse_range ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  পূর্ণাঙ্ক values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<পূর্ণাঙ্ক> a (values, 9);
   a.reverse(2, 6);
 
-  int expected_values[] = {1, 2, 6, 5, 4, 3, 7, 8, 9};
-  hb_array_t<int> expected (expected_values, 9);
+  পূর্ণাঙ্ক expected_মানসমূহ[] = {1, 2, 6, 5, 4, 3, 7, 8, 9};
+  hb_array_t<পূর্ণাঙ্ক> expected (expected_মানসমূহ, 9);
   hb_always_assert (a == expected);
 }
 
-static void
+স্থির শূন্য
 test_reverse_invalid ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  পূর্ণাঙ্ক values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<পূর্ণাঙ্ক> a (values, 9);
 
   a.reverse(4, 3);
   a.reverse(2, 3);
   a.reverse(5, 5);
   a.reverse(12, 15);
 
-  int expected_values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> expected (expected_values, 9);
+  পূর্ণাঙ্ক expected_মানসমূহ[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<পূর্ণাঙ্ক> expected (expected_মানসমূহ, 9);
   hb_always_assert (a == expected);
 }
 
-int
-main (int argc, char **argv)
+পূর্ণাঙ্ক
+main (পূর্ণাঙ্ক argc, ৱর্ণ **argv)
 {
   /* The following fails on MSVC. */
   // hb_always_assert (sizeof (hb_array_t<int>) == sizeof (hb_sorted_array_t<int>));

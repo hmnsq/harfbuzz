@@ -1,4 +1,4 @@
-static const char *hb_gpu_draw_fragment_msl =
+স্থির ধ্রুৱ ৱর্ণ *hb_gpu_draw_fragment_msl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

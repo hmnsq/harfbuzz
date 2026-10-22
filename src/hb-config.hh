@@ -27,12 +27,12 @@
 #ifndef HB_CONFIG_HH
 #define HB_CONFIG_HH
 
-#if 0 /* Make test happy. */
-#include "hb.hh"
+#যদি 0 /* Make test happy. */
+#অন্তর্ভাৱ "hb.hh"
 #endif
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#অন্তর্ভাৱ "config.h"
 #endif
 
 #ifndef HB_EXPERIMENTAL_API
@@ -84,7 +84,7 @@
 #define HB_NO_VERTICAL
 #define HB_NO_VAR
 
-#if !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
+#যদি !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
 #define HB_NO_COLOR
 #define HB_NO_DRAW
 #define HB_NO_PAINT
@@ -105,11 +105,11 @@
 #endif
 #endif
 
-#if defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
+#যদি defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
 #ifndef HB_CONFIG_OVERRIDE_H
 #define HB_CONFIG_OVERRIDE_H "config-override.h"
 #endif
-#include HB_CONFIG_OVERRIDE_H
+#অন্তর্ভাৱ HB_CONFIG_OVERRIDE_H
 #endif
 
 /* Closure of options. */
@@ -120,7 +120,7 @@
 
 #ifdef HB_DISABLE_DEPRECATED
 #define HB_IF_NOT_DEPRECATED(x)
-#else
+#অন্যথা
 #define HB_IF_NOT_DEPRECATED(x) x
 #endif
 
@@ -191,22 +191,22 @@
 #define HB_NO_OT_FONT_CMAP_CACHE
 #endif
 
-#if defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
+#যদি defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
 #ifndef HB_CONFIG_OVERRIDE_LAST_H
 #define HB_CONFIG_OVERRIDE_LAST_H "config-override-last.h"
 #endif
-#include HB_CONFIG_OVERRIDE_LAST_H
+#অন্তর্ভাৱ HB_CONFIG_OVERRIDE_LAST_H
 #endif
 
 #ifdef HB_OPTIMIZE_SIZE
 #define HB_OPTIMIZE_SIZE_VAL 1
-#else
+#অন্যথা
 #define HB_OPTIMIZE_SIZE_VAL 0
 #endif
 
 #ifdef HB_MINIMIZE_MEMORY_USAGE
 #define HB_MINIMIZE_MEMORY_USAGE_VAL 1
-#else
+#অন্যথা
 #define HB_MINIMIZE_MEMORY_USAGE_VAL 0
 #endif
 
