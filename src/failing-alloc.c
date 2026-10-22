@@ -22,44 +22,44 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#ضمن <stdlib.h>
+#ضمن <stdio.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#که_تعریف_شوی __cplusplus
+خارجي "C" {
+#د_که_پای
 
-int alloc_state = 0;
+صحيح alloc_state = 0;
 
 __attribute__((no_sanitize("integer")))
-static int fastrand ()
+ساكن صحيح fastrand ()
 {
-  if (!alloc_state) return 1;
+  إذا (!alloc_state) أرجع 1;
   /* Based on https://software.intel.com/content/www/us/en/develop/articles/fast-random-number-generator-on-the-intel-pentiumr-4-processor.html */
   alloc_state = (214013 * alloc_state + 2531011);
-  return (alloc_state >> 16) & 0x7FFF;
+  أرجع (alloc_state >> 16) & 0x7FFF;
 }
 
-void* hb_malloc_impl (size_t size)
+فراغ* hb_malloc_impl (size_t اندازه)
 {
-  return (fastrand () % 16) ? malloc (size) : NULL;
+  أرجع (fastrand () % 16) ? حافظه_ورکړه (اندازه) : عدم;
 }
 
-void* hb_calloc_impl (size_t nmemb, size_t size)
+فراغ* hb_calloc_impl (size_t nmemb, size_t اندازه)
 {
-  return (fastrand () % 16) ? calloc (nmemb, size) : NULL;
+  أرجع (fastrand () % 16) ? حافظه_صفر_ورکړه (nmemb, اندازه) : عدم;
 }
 
-void* hb_realloc_impl (void *ptr, size_t size)
+فراغ* hb_realloc_impl (فراغ *ptr, size_t اندازه)
 {
-  return (fastrand () % 16) ? realloc (ptr, size) : NULL;
+  أرجع (fastrand () % 16) ? realloc (ptr, اندازه) : عدم;
 }
 
-void  hb_free_impl (void *ptr)
+فراغ  hb_free_impl (فراغ *ptr)
 {
-  return free (ptr);
+  أرجع حرر (ptr);
 }
 
-#ifdef __cplusplus
+#که_تعریف_شوی __cplusplus
 }
-#endif
+#د_که_پای

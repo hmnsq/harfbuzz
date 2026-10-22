@@ -24,186 +24,186 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPE_HH
-#define HB_OT_SHAPE_HH
+#که_نه_تعریف_شوی HB_OT_SHAPE_HH
+#تعریف_کړه HB_OT_SHAPE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-ot-map.hh"
-#include "hb-aat-map.hh"
+#ضمن "hb-ot-map.hh"
+#ضمن "hb-aat-map.hh"
 
 
-HB_INTERNAL bool
-_hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
-						   hb_tag_t               table_tag,
-						   const int             *coords,
-						   unsigned int           num_coords,
-						   unsigned int          *variations_index,
-						   hb_vector_t<unsigned> *lookup_conditions);
+HB_دننی منطقي
+hb_ot_layout_جدول_get_feature_variations_state (hb_face_t             *face,
+						   hb_نښان_t               جدول_نښان_2,
+						   ثابت صحيح             *coords,
+						   بینښه صحيح           عدد_coords,
+						   بینښه صحيح          *variations_شاخص,
+						   hb_ویکټور_t<بینښه> *lookup_conditions);
 
-HB_INTERNAL bool
+HB_دننی منطقي
 _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
-                                             hb_tag_t table_tag,
-                                             unsigned feature_index,
-                                             unsigned variations_index,
-                                             hb_sorted_array_t<const unsigned> conditions,
-                                             hb_set_t *lookup_indexes);
+                                             hb_نښان_t جدول_نښان_2,
+                                             بینښه feature_شاخص,
+                                             بینښه variations_شاخص,
+                                             hb_sorted_array_t<ثابت بینښه> conditions,
+                                             hb_سېټ_t *lookup_indexes);
 
-struct hb_ot_shape_plan_key_t
+بنية hb_ot_shape_plan_کلی_t
 {
-  unsigned int variations_index[2];
+  بینښه صحيح variations_شاخص[2];
   /* Sorted offsets of distinct true conditions within FeatureVariations.
    * Different outcomes may conservatively separate equivalent lookup sets. */
-  hb_vector_t<unsigned> lookup_conditions[2];
+  hb_ویکټور_t<بینښه> lookup_conditions[2];
 
-  bool init (hb_face_t *face,
-	     const int *coords,
-	     unsigned   num_coords)
+  منطقي init (hb_face_t *face,
+	     ثابت صحيح *coords,
+	     بینښه   عدد_coords)
   {
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
-      if (unlikely (!_hb_ot_layout_table_get_feature_variations_state (
+    لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
+      إذا (unlikely (!hb_ot_layout_جدول_get_feature_variations_state (
 			face,
-			table_tags[table_index],
+			جدول_نښانونه[جدول_شاخص],
 			coords,
-			num_coords,
-			&variations_index[table_index],
-			&lookup_conditions[table_index])))
+			عدد_coords,
+			&variations_شاخص[جدول_شاخص],
+			&lookup_conditions[جدول_شاخص])))
       {
-	for (auto &v : lookup_conditions)
+	لكل (خپلکاری &v : lookup_conditions)
 	  v.fini ();
-	return false;
+	أرجع خطأ;
       }
-    return true;
+    أرجع ریښتیا;
   }
 
-  void fini ()
+  فراغ fini ()
   {
-    for (auto &v : lookup_conditions)
+    لكل (خپلکاری &v : lookup_conditions)
       v.fini ();
   }
 
-  bool get_lookup_variations (hb_face_t *face,
-                              unsigned int table_index,
-			      unsigned int feature_index,
-			      hb_set_t *lookups) const
+  منطقي get_lookup_variations (hb_face_t *face,
+                              بینښه صحيح جدول_شاخص,
+			      بینښه صحيح feature_شاخص,
+			      hb_سېټ_t *lookups) ثابت
   {
-    return _hb_ot_layout_feature_get_lookup_variations (
-	face, table_tags[table_index], feature_index, variations_index[table_index],
-	lookup_conditions[table_index].as_sorted_array (), lookups);
+    أرجع _hb_ot_layout_feature_get_lookup_variations (
+	face, جدول_نښانونه[جدول_شاخص], feature_شاخص, variations_شاخص[جدول_شاخص],
+	lookup_conditions[جدول_شاخص].as_sorted_array (), lookups);
   }
 
-  bool equal (const hb_ot_shape_plan_key_t *other)
+  منطقي equal (ثابت hb_ot_shape_plan_کلی_t *other)
   {
-    return variations_index[0] == other->variations_index[0] &&
-	   variations_index[1] == other->variations_index[1] &&
+    أرجع variations_شاخص[0] == other->variations_شاخص[0] &&
+	   variations_شاخص[1] == other->variations_شاخص[1] &&
 	   lookup_conditions[0] == other->lookup_conditions[0] &&
 	   lookup_conditions[1] == other->lookup_conditions[1];
   }
 };
 
 
-struct hb_shape_plan_key_t;
+بنية hb_shape_plan_کلی_t;
 
-struct hb_ot_shape_plan_t
+بنية hb_ot_shape_plan_t
 {
   ~hb_ot_shape_plan_t () { fini (); }
 
   hb_segment_properties_t props;
-  const struct hb_ot_shaper_t *shaper;
+  ثابت بنية hb_ot_shaper_t *shaper;
   hb_ot_map_t map;
   hb_aat_map_t aat_map;
-  const void *data;
-#ifndef HB_NO_OT_SHAPE_FRACTIONS
-  hb_mask_t frac_mask, numr_mask, dnom_mask;
-#else
-  static constexpr hb_mask_t frac_mask = 0;
-  static constexpr hb_mask_t numr_mask = 0;
-  static constexpr hb_mask_t dnom_mask = 0;
-#endif
-  hb_mask_t rtlm_mask;
-#ifndef HB_NO_OT_KERN
-  hb_mask_t kern_mask;
-#else
-  static constexpr hb_mask_t kern_mask = 0;
-#endif
+  ثابت فراغ *معلومات;
+#که_نه_تعریف_شوی HB_NO_OT_SHAPE_FRACTIONS
+  hb_ماسک_t frac_ماسک, numr_ماسک, dnom_ماسک;
+#وإلا
+  ساكن constexpr hb_ماسک_t frac_ماسک = 0;
+  ساكن constexpr hb_ماسک_t numr_ماسک = 0;
+  ساكن constexpr hb_ماسک_t dnom_ماسک = 0;
+#د_که_پای
+  hb_ماسک_t rtlm_ماسک;
+#که_نه_تعریف_شوی HB_NO_OT_KERN
+  hb_ماسک_t kern_ماسک;
+#وإلا
+  ساكن constexpr hb_ماسک_t kern_ماسک = 0;
+#د_که_پای
 
-#ifndef HB_NO_OT_KERN
-  bool requested_kerning : 1;
-#else
-  static constexpr bool requested_kerning = false;
-#endif
-#ifndef HB_NO_OT_SHAPE_FRACTIONS
-  bool has_frac : 1;
-#else
-  static constexpr bool has_frac = false;
-#endif
-  bool has_vert : 1;
-  bool has_gpos_mark : 1;
-  bool zero_marks : 1;
-  bool fallback_glyph_classes : 1;
-  bool fallback_mark_positioning : 1;
-  bool adjust_mark_positioning_when_zeroing : 1;
+#که_نه_تعریف_شوی HB_NO_OT_KERN
+  منطقي requested_kerning : 1;
+#وإلا
+  ساكن constexpr منطقي requested_kerning = خطأ;
+#د_که_پای
+#که_نه_تعریف_شوی HB_NO_OT_SHAPE_FRACTIONS
+  منطقي has_frac : 1;
+#وإلا
+  ساكن constexpr منطقي has_frac = خطأ;
+#د_که_پای
+  منطقي has_vert : 1;
+  منطقي has_gpos_mark : 1;
+  منطقي zero_marks : 1;
+  منطقي fallback_glyph_classes : 1;
+  منطقي fallback_mark_positioning : 1;
+  منطقي adjust_mark_positioning_when_zeroing : 1;
 
-  bool apply_gpos : 1;
-#ifndef HB_NO_OT_KERN
-  bool apply_kern : 1;
-#else
-  static constexpr bool apply_kern = false;
-#endif
-  bool apply_fallback_kern : 1;
-#ifndef HB_NO_AAT_SHAPE
-  bool apply_kerx : 1;
-  bool apply_morx : 1;
-  bool apply_trak : 1;
-#else
-  static constexpr bool apply_kerx = false;
-  static constexpr bool apply_morx = false;
-  static constexpr bool apply_trak = false;
-#endif
+  منطقي apply_gpos : 1;
+#که_نه_تعریف_شوی HB_NO_OT_KERN
+  منطقي apply_kern : 1;
+#وإلا
+  ساكن constexpr منطقي apply_kern = خطأ;
+#د_که_پای
+  منطقي apply_fallback_kern : 1;
+#که_نه_تعریف_شوی HB_NO_AAT_SHAPE
+  منطقي apply_kerx : 1;
+  منطقي apply_morx : 1;
+  منطقي apply_trak : 1;
+#وإلا
+  ساكن constexpr منطقي apply_kerx = خطأ;
+  ساكن constexpr منطقي apply_morx = خطأ;
+  ساكن constexpr منطقي apply_trak = خطأ;
+#د_که_پای
 
-  void collect_lookups (hb_tag_t table_tag, hb_set_t *lookups) const
+  فراغ collect_lookups (hb_نښان_t جدول_نښان_2, hb_سېټ_t *lookups) ثابت
   {
-    unsigned int table_index;
-    switch (table_tag) {
-      case HB_OT_TAG_GSUB: table_index = 0; break;
-      case HB_OT_TAG_GPOS: table_index = 1; break;
-      default: return;
+    بینښه صحيح جدول_شاخص;
+    بدل (جدول_نښان_2) {
+      حالة HB_OT_نښان_GSUB: جدول_شاخص = 0; اكسر;
+      حالة HB_OT_نښان_GPOS: جدول_شاخص = 1; اكسر;
+      افتراضي: أرجع;
     }
-    map.collect_lookups (table_index, lookups);
+    map.collect_lookups (جدول_شاخص, lookups);
   }
 
-  HB_INTERNAL bool init0 (hb_face_t                     *face,
-			  const hb_shape_plan_key_t     *key);
-  HB_INTERNAL void fini ();
+  HB_دننی منطقي init0 (hb_face_t                     *face,
+			  ثابت hb_shape_plan_کلی_t     *key);
+  HB_دننی فراغ fini ();
 
-  HB_INTERNAL void substitute (hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void position (hb_font_t *font, hb_buffer_t *buffer) const;
+  HB_دننی فراغ substitute (hb_font_t *font, hb_بفر_t *بفر) ثابت;
+  HB_دننی فراغ position (hb_font_t *font, hb_بفر_t *بفر) ثابت;
 };
 
-struct hb_shape_plan_t;
+بنية hb_shape_plan_t;
 
-struct hb_ot_shape_planner_t
+بنية hb_ot_shape_planner_t
 {
   /* In the order that they are filled in. */
   hb_face_t *face;
   hb_segment_properties_t props;
   hb_ot_map_builder_t map;
-#ifndef HB_NO_AAT_SHAPE
+#که_نه_تعریف_شوی HB_NO_AAT_SHAPE
   hb_aat_map_builder_t aat_map;
-  bool apply_morx : 1;
-#else
-  static constexpr bool apply_morx = false;
-#endif
-  bool script_zero_marks : 1;
-  bool script_fallback_position : 1;
-  const struct hb_ot_shaper_t *shaper;
+  منطقي apply_morx : 1;
+#وإلا
+  ساكن constexpr منطقي apply_morx = خطأ;
+#د_که_پای
+  منطقي script_zero_marks : 1;
+  منطقي script_fallback_position : 1;
+  ثابت بنية hb_ot_shaper_t *shaper;
 
-  HB_INTERNAL hb_ot_shape_planner_t (hb_face_t                     *face,
-				     const hb_segment_properties_t &props);
+  HB_دننی hb_ot_shape_planner_t (hb_face_t                     *face,
+				     ثابت hb_segment_properties_t &props);
 
-  HB_INTERNAL void compile (hb_ot_shape_plan_t           &plan,
-			    const hb_ot_shape_plan_key_t &key);
+  HB_دننی فراغ compile (hb_ot_shape_plan_t           &plan,
+			    ثابت hb_ot_shape_plan_کلی_t &key);
 };
 
 
-#endif /* HB_OT_SHAPE_HH */
+#د_که_پای /* HB_OT_SHAPE_HH */

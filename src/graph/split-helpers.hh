@@ -24,38 +24,38 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SPLIT_HELPERS_HH
-#define GRAPH_SPLIT_HELPERS_HH
+#که_نه_تعریف_شوی ګراف_وېشل_HELPERS_HH
+#تعریف_کړه ګراف_وېشل_HELPERS_HH
 
-#include "graph-result.hh"
+#ضمن "graph-result.hh"
 
-namespace graph {
+نطاق ګراف {
 
-template<typename Context>
-HB_INTERNAL
-graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+کينډۍ<ډول_نوم Context>
+HB_دننی
+ګراف_پایله_t<hb_ویکټور_t<بینښه>> actuate_subtable_وېشل (Context& وېشل_context,
+                                                              ثابت hb_ویکټور_t<بینښه>& وېشل_points)
 {
-  hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  hb_ویکټور_t<بینښه> new_objects;
+  إذا (!وېشل_points)
+    أرجع Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  لكل (بینښه i = 0; i < وېشل_points.اوږدتیا; i++)
   {
-    unsigned start = split_points[i];
-    unsigned end = (i < split_points.length - 1)
-                   ? split_points[i + 1]
-                   : split_context.original_count ();
-    TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
+    بینښه پیل = وېشل_points[i];
+    بینښه پای_ټکی = (i < وېشل_points.اوږدتیا - 1)
+                   ? وېشل_points[i + 1]
+                   : وېشل_context.original_شمېر_2 ();
+    TRY_ټاکل (بینښه id, وېشل_context.clone_range (پیل, پای_ټکی));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (ګراف_پایله_t<فراغ>::from (new_objects, ویش_FAILURE));
   }
 
-  TRY (split_context.shrink (split_points[0]));
+  TRY (وېشل_context.shrink (وېشل_points[0]));
 
-  return Ok(new_objects);
+  أرجع Ok(new_objects);
 }
 
 }
 
-#endif  // GRAPH_SPLIT_HELPERS_HH
+#د_که_پای  // GRAPH_SPLIT_HELPERS_HH

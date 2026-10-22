@@ -24,11 +24,11 @@
  * Igalia Author(s): Frédéric Wang
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_MATH
+#که_نه_تعریف_شوی HB_NO_MATH
 
-#include "hb-ot-math-table.hh"
+#ضمن "hb-ot-math-table.hh"
 
 
 /**
@@ -61,9 +61,9 @@
  * Since: 1.3.3
  **/
 hb_bool_t
-hb_ot_math_has_data (hb_face_t *face)
+hb_ot_math_has_معلومات (hb_face_t *face)
 {
-  return face->table.MATH->has_data ();
+  أرجع face->جدول.MATH->has_معلومات ();
 }
 
 /**
@@ -92,16 +92,16 @@ hb_ot_math_get_constant (hb_font_t *font,
    * apparently Microsoft implementation swaps displayOperatorMinHeight and
    * delimitedSubFormulaMinHeight, so we do the same if we detect Cambria Math
    * with the swapped values. */
-  if ((constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT ||
-       constant == HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT) &&
-      font->face->table.MATH->is_bad_cambria (font))
+  إذا ((constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_لوړوالی ||
+       constant == HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_لوړوالی) &&
+      font->face->جدول.MATH->is_bad_cambria (font))
   {
-    if (constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT)
-      constant = HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT;
-    else
-      constant = HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT;
+    إذا (constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_لوړوالی)
+      constant = HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_لوړوالی;
+    وإلا
+      constant = HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_لوړوالی;
   }
-  return font->face->table.MATH->get_constant(constant, font);
+  أرجع font->face->جدول.MATH->get_constant(constant, font);
 }
 
 /**
@@ -120,7 +120,7 @@ hb_position_t
 hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
 					 hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_italics_correction (glyph, font);
+  أرجع font->face->جدول.MATH->get_glyph_info().get_italics_correction (glyph, font);
 }
 
 /**
@@ -143,10 +143,10 @@ hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
  * Since: 1.3.3
  **/
 hb_position_t
-hb_ot_math_get_glyph_top_accent_attachment (hb_font_t *font,
+hb_ot_math_get_glyph_سر_accent_attachment (hb_font_t *font,
 					    hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_top_accent_attachment (glyph, font);
+  أرجع font->face->جدول.MATH->get_glyph_info().get_سر_accent_attachment (glyph, font);
 }
 
 /**
@@ -164,7 +164,7 @@ hb_bool_t
 hb_ot_math_is_glyph_extended_shape (hb_face_t *face,
 				    hb_codepoint_t glyph)
 {
-  return face->table.MATH->get_glyph_info().is_extended_shape (glyph);
+  أرجع face->جدول.MATH->get_glyph_info().is_extended_shape (glyph);
 }
 
 /**
@@ -190,11 +190,11 @@ hb_position_t
 hb_ot_math_get_glyph_kerning (hb_font_t *font,
 			      hb_codepoint_t glyph,
 			      hb_ot_math_kern_t kern,
-			      hb_position_t correction_height)
+			      hb_position_t correction_لوړوالی)
 {
-  return font->face->table.MATH->get_glyph_info().get_kerning (glyph,
+  أرجع font->face->جدول.MATH->get_glyph_info().get_kerning (glyph,
 							       kern,
-							       correction_height,
+							       correction_لوړوالی,
 							       font);
 }
 
@@ -227,18 +227,18 @@ hb_ot_math_get_glyph_kerning (hb_font_t *font,
  *
  * Since: 3.4.0
  **/
-unsigned int
+بینښه صحيح
 hb_ot_math_get_glyph_kernings (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_ot_math_kern_t kern,
-			       unsigned int start_offset,
-			       unsigned int *entries_count, /* IN/OUT */
-			       hb_ot_math_kern_entry_t *kern_entries /* OUT */)
+			       بینښه صحيح پیل_دننه_واټن,
+			       بینښه صحيح *entries_شمېر, /* IN/OUT */
+			       hb_ot_math_kern_ثبت_t *kern_entries /*بهر*/)
 {
-  return font->face->table.MATH->get_glyph_info().get_kernings (glyph,
+  أرجع font->face->جدول.MATH->get_glyph_info().get_kernings (glyph,
 								kern,
-								start_offset,
-								entries_count,
+								پیل_دننه_واټن,
+								entries_شمېر,
 								kern_entries,
 								font);
 }
@@ -266,17 +266,17 @@ hb_ot_math_get_glyph_kernings (hb_font_t *font,
  *
  * Since: 1.3.3
  **/
-unsigned int
+بینښه صحيح
 hb_ot_math_get_glyph_variants (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *variants_count, /* IN/OUT */
-			       hb_ot_math_glyph_variant_t *variants /* OUT */)
+			       بینښه صحيح پیل_دننه_واټن,
+			       بینښه صحيح *variants_شمېر, /* IN/OUT */
+			       hb_ot_math_glyph_variant_t *variants /*بهر*/)
 {
-  return font->face->table.MATH->get_variants().get_glyph_variants (glyph, direction, font,
-								    start_offset,
-								    variants_count,
+  أرجع font->face->جدول.MATH->get_variants().get_glyph_variants (glyph, direction, font,
+								    پیل_دننه_واټن,
+								    variants_شمېر,
 								    variants);
 }
 
@@ -302,7 +302,7 @@ hb_position_t
 hb_ot_math_get_min_connector_overlap (hb_font_t *font,
 				      hb_direction_t direction)
 {
-  return font->face->table.MATH->get_variants().get_min_connector_overlap (direction, font);
+  أرجع font->face->جدول.MATH->get_variants().get_min_connector_overlap (direction, font);
 }
 
 /**
@@ -330,23 +330,23 @@ hb_ot_math_get_min_connector_overlap (hb_font_t *font,
  *
  * Since: 1.3.3
  **/
-unsigned int
+بینښه صحيح
 hb_ot_math_get_glyph_assembly (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *parts_count, /* IN/OUT */
-			       hb_ot_math_glyph_part_t *parts, /* OUT */
-			       hb_position_t *italics_correction /* OUT */)
+			       بینښه صحيح پیل_دننه_واټن,
+			       بینښه صحيح *parts_شمېر, /* IN/OUT */
+			       hb_ot_math_glyph_part_t *parts, /*بهر*/
+			       hb_position_t *italics_correction /*بهر*/)
 {
-  return font->face->table.MATH->get_variants().get_glyph_parts (glyph,
+  أرجع font->face->جدول.MATH->get_variants().get_glyph_parts (glyph,
 								 direction,
 								 font,
-								 start_offset,
-								 parts_count,
+								 پیل_دننه_واټن,
+								 parts_شمېر,
 								 parts,
 								 italics_correction);
 }
 
 
-#endif
+#د_که_پای

@@ -26,90 +26,90 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FACE_HH
-#define HB_FACE_HH
+#که_نه_تعریف_شوی HB_FACE_HH
+#تعریف_کړه HB_FACE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-shape-plan.hh"
-#include "hb-ot-face.hh"
+#ضمن "hb-shaper.hh"
+#ضمن "hb-shape-plan.hh"
+#ضمن "hb-ot-face.hh"
 
 
 /*
  * hb_face_t
  */
 
-#define HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, face);
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#تعریف_کړه HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_معلومات_INSTANTIATE_SHAPERS(shaper, face);
+#ضمن "hb-shaper-list.hh"
+#تعریف_لغوه HB_SHAPER_IMPLEMENT
 
-struct hb_face_t
+بنية hb_face_t
 {
-  hb_object_header_t header;
+  hb_object_سرلیک_t سرلیک;
 
-  unsigned int index;			/* Face index in a collection, zero-based. */
-  mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
-  mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
+  بینښه صحيح شاخص_2;			/* Face index in a collection, zero-based. */
+  بدلیدونکی hb_atomic_t<بینښه> upem;	/* Units-per-EM. */
+  بدلیدونکی hb_atomic_t<بینښه> عدد_glyphs;/* Number of glyphs. */
 
-  hb_reference_table_func_t  reference_table_func;
-  void                      *user_data;
+  hb_reference_جدول_func_t  reference_جدول_func;
+  فراغ                      *user_معلومات;
   hb_destroy_func_t          destroy;
 
-  hb_get_table_tags_func_t   get_table_tags_func;
-  void                      *get_table_tags_user_data;
-  hb_destroy_func_t          get_table_tags_destroy;
+  hb_get_جدول_نښانونه_func_t   get_جدول_نښانونه_func;
+  فراغ                      *get_جدول_نښانونه_user_معلومات;
+  hb_destroy_func_t          get_جدول_نښانونه_destroy;
 
-  hb_shaper_object_dataset_t<hb_face_t> data;/* Various shaper data. */
-  hb_ot_face_t table;			/* All the face's tables. */
+  hb_shaper_object_dataset_t<hb_face_t> معلومات;/* Various shaper data. */
+  hb_ot_face_t جدول;			/* All the face's tables. */
 
   /* Cache */
-  struct plan_node_t
+  بنية plan_غوټه_t
   {
     hb_shape_plan_t *shape_plan;
-    plan_node_t *next;
+    plan_غوټه_t *next;
   };
-#ifndef HB_NO_SHAPER
-  hb_atomic_t<plan_node_t *> shape_plans;
-#endif
+#که_نه_تعریف_شوی HB_NO_SHAPER
+  hb_atomic_t<plan_غوټه_t *> shape_plans;
+#د_که_پای
 
-  hb_blob_t *reference_table (hb_tag_t tag) const
+  hb_blob_t *reference_جدول (hb_نښان_t نښان_2) ثابت
   {
     hb_blob_t *blob;
 
-    if (unlikely (!reference_table_func))
-      return hb_blob_get_empty ();
+    إذا (unlikely (!reference_جدول_func))
+      أرجع hb_blob_get_تشه ();
 
-    blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (this), tag, user_data);
-    if (unlikely (!blob))
-      return hb_blob_get_empty ();
+    blob = reference_جدول_func (/*Oh, well.*/const_cast<hb_face_t *> (هذا), نښان_2, user_معلومات);
+    إذا (unlikely (!blob))
+      أرجع hb_blob_get_تشه ();
 
-    return blob;
+    أرجع blob;
   }
 
-  unsigned int get_upem () const
+  بینښه صحيح get_upem () ثابت
   {
-    unsigned int ret = upem;
-    if (unlikely (!ret))
+    بینښه صحيح ret = upem;
+    إذا (unlikely (!ret))
     {
-      return load_upem ();
+      أرجع بارول_upem ();
     }
-    return ret;
+    أرجع ret;
   }
 
-  unsigned int get_num_glyphs () const
+  بینښه صحيح get_عدد_glyphs () ثابت
   {
-    unsigned int ret = num_glyphs;
-    if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
-    return ret;
+    بینښه صحيح ret = عدد_glyphs;
+    إذا (unlikely (ret == UINT_MAX))
+      أرجع بارول_عدد_glyphs ();
+    أرجع ret;
   }
 
-  private:
-  HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  خاص:
+  HB_دننی بینښه صحيح بارول_upem () ثابت;
+  HB_دننی بینښه صحيح بارول_عدد_glyphs () ثابت;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 
 
-#endif /* HB_FACE_HH */
+#د_که_پای /* HB_FACE_HH */

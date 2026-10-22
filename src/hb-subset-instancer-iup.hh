@@ -22,31 +22,31 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_SUBSET_INSTANCER_IUP_HH
-#define HB_SUBSET_INSTANCER_IUP_HH
+#که_نه_تعریف_شوی HB_SUBSET_INSTANCER_IUP_HH
+#تعریف_کړه HB_SUBSET_INSTANCER_IUP_HH
 
-#include "hb-subset-plan.hh"
+#ضمن "hb-subset-plan.hh"
 
-struct iup_scratch_t
+بنية iup_scratch_t
 {
-  hb_vector_t<unsigned> end_points;
-  hb_vector_t<double> interp_x_deltas;
-  hb_vector_t<double> interp_y_deltas;
-  hb_vector_t<unsigned> costs;
-  hb_vector_t<int> chain;
-  hb_vector_t<bool> rot_indices;
-  hb_vector_t<int> rot_x_deltas;
-  hb_vector_t<int> rot_y_deltas;
-  contour_point_vector_t rot_points;
+  hb_ویکټور_t<بینښه> پای_ټکی_points;
+  hb_ویکټور_t<مزدوج> interp_x_deltas;
+  hb_ویکټور_t<مزدوج> interp_y_deltas;
+  hb_ویکټور_t<بینښه> costs;
+  hb_ویکټور_t<صحيح> chain;
+  hb_ویکټور_t<منطقي> rot_indices;
+  hb_ویکټور_t<صحيح> rot_x_deltas;
+  hb_ویکټور_t<صحيح> rot_y_deltas;
+  contour_ټکی_ویکټور_t rot_points;
 };
 
 /* given contour points and deltas, optimize a set of referenced points within error
  * tolerance. Returns optimized referenced point indices */
-HB_INTERNAL bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                                     const hb_vector_t<int>& x_deltas,
-                                     const hb_vector_t<int>& y_deltas,
-                                     hb_vector_t<bool>& opt_indices, /* OUT */
+HB_دننی منطقي iup_delta_optimize (ثابت contour_ټکی_ویکټور_t& contour_points,
+                                     ثابت hb_ویکټور_t<صحيح>& x_deltas,
+                                     ثابت hb_ویکټور_t<صحيح>& y_deltas,
+                                     hb_ویکټور_t<منطقي>& opt_indices, /*بهر*/
 				     iup_scratch_t &scratch,
-                                     double tolerance = 0.0);
+                                     مزدوج tolerance = 0.0);
 
-#endif /* HB_SUBSET_INSTANCER_IUP_HH */
+#د_که_پای /* HB_SUBSET_INSTANCER_IUP_HH */

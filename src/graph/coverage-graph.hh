@@ -24,165 +24,165 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../OT/Layout/Common/Coverage.hh"
+#ضمن "graph.hh"
+#ضمن "../OT/Layout/Common/Coverage.hh"
 
-#ifndef GRAPH_COVERAGE_GRAPH_HH
-#define GRAPH_COVERAGE_GRAPH_HH
+#که_نه_تعریف_شوی ګراف_COVERAGE_ګراف_HH
+#تعریف_کړه ګراف_COVERAGE_ګراف_HH
 
-namespace graph {
+نطاق ګراف {
 
-template <typename Types>
-static graph_result_t<void> sanitize (
-  const OT::Layout::Common::CoverageFormat1_3<Types>* thiz,
-  const graph_t::vertex_t& vertex
+کينډۍ <ډول_نوم Types>
+ساكن ګراف_پایله_t<فراغ> sanitize (
+  ثابت OT::Layout::Common::CoverageFormat1_3<Types>* thiz,
+  ثابت ګراف_t::راس_t& راس
 ) {
-  size_t vertex_len = vertex.table_size();
-  constexpr unsigned min_size = OT::Layout::Common::CoverageFormat1_3<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  size_t راس_len = راس.جدول_اندازه();
+  constexpr بینښه min_اندازه = OT::Layout::Common::CoverageFormat1_3<Types>::min_اندازه;
+  إذا (unlikely (راس_len < min_اندازه)) أرجع Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->glyphArray.get_size () - thiz->glyphArray.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  إذا (unlikely (راس_len < min_اندازه + thiz->glyphArray.get_اندازه () - thiz->glyphArray.len.get_اندازه ()))
+    أرجع Err(SANITIZE_FAILURE);
+  أرجع Ok();
 }
 
-template <typename Types>
-static graph_result_t<void> sanitize (
-  const OT::Layout::Common::CoverageFormat2_4<Types>* thiz,
-  const graph_t::vertex_t& vertex
+کينډۍ <ډول_نوم Types>
+ساكن ګراف_پایله_t<فراغ> sanitize (
+  ثابت OT::Layout::Common::CoverageFormat2_4<Types>* thiz,
+  ثابت ګراف_t::راس_t& راس
 ) {
-  size_t vertex_len = vertex.table_size();
-  constexpr unsigned min_size = OT::Layout::Common::CoverageFormat2_4<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  size_t راس_len = راس.جدول_اندازه();
+  constexpr بینښه min_اندازه = OT::Layout::Common::CoverageFormat2_4<Types>::min_اندازه;
+  إذا (unlikely (راس_len < min_اندازه)) أرجع Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->rangeRecord.get_size () - thiz->rangeRecord.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  إذا (unlikely (راس_len < min_اندازه + thiz->range_ریکارډ.get_اندازه () - thiz->range_ریکارډ.len.get_اندازه ()))
+    أرجع Err(SANITIZE_FAILURE);
+  أرجع Ok();
 }
 
-struct Coverage : public OT::Layout::Common::Coverage
+بنية Coverage : عام OT::Layout::Common::Coverage
 {
-  static graph_result_t<void> clone_coverage (gsubgpos_graph_context_t& c,
-                                              unsigned coverage_id,
-                                              unsigned new_parent_id,
-                                              unsigned link_position,
-                                              unsigned start, unsigned end)
+  ساكن ګراف_پایله_t<فراغ> clone_coverage (gsubgpos_ګراف_context_t& c,
+                                              بینښه coverage_id,
+                                              بینښه new_پلار_id,
+                                              بینښه link_position,
+                                              بینښه پیل, بینښه پای_ټکی)
 
   {
-    unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
-    auto& coverage_v = c.graph.vertices_[coverage_id];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
+    بینښه coverage_اندازه = c.ګراف.vertices_[coverage_id].جدول_اندازه ();
+    خپلکاری& coverage_v = c.ګراف.vertices_[coverage_id];
+    ثابت Coverage* coverage_جدول = (ثابت Coverage*) coverage_v.obj().سر_2;
+    إذا (unlikely (!coverage_جدول))
+      أرجع Err(INVALID_دلیل);
+    TRY (coverage_جدول->sanitize (coverage_v));
 
-    auto new_coverage =
-        + hb_zip (coverage_table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+    خپلکاری new_coverage =
+        + hb_zip (coverage_جدول->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<بینښه, بینښه> p) {
+          أرجع p.second >= پیل && p.second < پای_ټکی;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_ترتیبونه (hb_لومړی)
         ;
 
-    return add_coverage (c, new_parent_id, link_position, new_coverage, coverage_size);
+    أرجع جمع_کړه_coverage (c, new_پلار_id, link_position, new_coverage, coverage_اندازه);
   }
 
-  template<typename It>
-  static graph_result_t<void> add_coverage (gsubgpos_graph_context_t& c,
-                                            unsigned parent_id,
-                                            unsigned link_position,
+  کينډۍ<ډول_نوم It>
+  ساكن ګراف_پایله_t<فراغ> جمع_کړه_coverage (gsubgpos_ګراف_context_t& c,
+                                            بینښه پلار_id,
+                                            بینښه link_position,
                                             It glyphs,
-                                            unsigned max_size)
+                                            بینښه max_size)
   {
-    TRY_ASSIGN (unsigned coverage_prime_id, c.graph.new_node (nullptr, nullptr));
-    auto& coverage_prime_vertex = c.graph.vertices_[coverage_prime_id];
-    TRY (make_coverage (c, glyphs, coverage_prime_id, max_size));
+    TRY_ټاکل (بینښه coverage_اولي_id, c.ګراف.new_غوټه (تش_اشاره, تش_اشاره));
+    خپلکاری& coverage_اولي_راس = c.ګراف.vertices_[coverage_اولي_id];
+    TRY (make_coverage (c, glyphs, coverage_اولي_id, max_size));
 
-    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, coverage_prime_id, link_position));
-    TRY(coverage_prime_vertex.add_parent (parent_id, false));
+    TRY(c.ګراف.vertices_[پلار_id].جمع_کړه_real_link (SmallTypes::اندازه, coverage_اولي_id, link_position));
+    TRY(coverage_اولي_راس.جمع_کړه_پلار (پلار_id, خطأ));
 
-    return Ok();
+    أرجع Ok();
   }
 
   // Filter an existing coverage table to glyphs at indices [start, end) and replace it with the filtered version.
-  static graph_result_t<void> filter_coverage (gsubgpos_graph_context_t& c,
-                                                unsigned existing_coverage,
-                                                unsigned start, unsigned end) {
-    unsigned coverage_size = c.graph.vertices_[existing_coverage].table_size ();
-    auto& coverage_v = c.graph.vertices_[existing_coverage];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
+  ساكن ګراف_پایله_t<فراغ> filter_coverage (gsubgpos_ګراف_context_t& c,
+                                                بینښه existing_coverage,
+                                                بینښه پیل, بینښه پای_ټکی) {
+    بینښه coverage_اندازه = c.ګراف.vertices_[existing_coverage].جدول_اندازه ();
+    خپلکاری& coverage_v = c.ګراف.vertices_[existing_coverage];
+    ثابت Coverage* coverage_جدول = (ثابت Coverage*) coverage_v.obj().سر_2;
+    إذا (unlikely (!coverage_جدول))
+      أرجع Err(INVALID_دلیل);
+    TRY (coverage_جدول->sanitize (coverage_v));
 
-    auto new_coverage =
-        + hb_zip (coverage_table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+    خپلکاری new_coverage =
+        + hb_zip (coverage_جدول->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<بینښه, بینښه> p) {
+          أرجع p.second >= پیل && p.second < پای_ټکی;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_ترتیبونه (hb_لومړی)
         ;
 
-    return make_coverage (c, new_coverage, existing_coverage, coverage_size * 2 + 100);
+    أرجع make_coverage (c, new_coverage, existing_coverage, coverage_اندازه * 2 + 100);
   }
 
   // Replace the coverage table at dest obj with one covering 'glyphs'.
-  template<typename It>
-  static graph_result_t<void> make_coverage (gsubgpos_graph_context_t& c,
+  کينډۍ<ډول_نوم It>
+  ساكن ګراف_پایله_t<فراغ> make_coverage (gsubgpos_ګراف_context_t& c,
                                              It glyphs,
-                                             unsigned dest_obj,
-                                             unsigned max_size)
+                                             بینښه dest_obj,
+                                             بینښه max_size)
   {
-    char* buffer = (char*) hb_calloc (1, max_size);
-    if (unlikely (!buffer))
-      return Err(ALLOCATION_FAILURE);
+    حرف* بفر = (حرف*) hb_calloc (1, max_size);
+    إذا (unlikely (!بفر))
+      أرجع Err(ویش_FAILURE);
 
-    hb_serialize_context_t serializer (buffer, max_size);
+    hb_serialize_context_t serializer (بفر, max_size);
     OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
-    serializer.end_serialize ();
-    if (unlikely (serializer.in_error ()))
+    serializer.پای_ټکی_serialize ();
+    إذا (unlikely (serializer.دننه_error ()))
     {
-      hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      hb_free (بفر);
+      أرجع Err(ویش_FAILURE);
     }
 
-    hb_bytes_t coverage_copy = serializer.copy_bytes ();
-    if (unlikely (!coverage_copy.arrayZ)) {
-      hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+    hb_بایټونه_t coverage_copy = serializer.copy_بایټونه ();
+    إذا (unlikely (!coverage_copy.arrayZ)) {
+      hb_free (بفر);
+      أرجع Err(ویش_FAILURE);
     }
 
     // Give ownership to the context, it will cleanup the buffer.
-    auto res = c.add_buffer ((char *) coverage_copy.arrayZ);
-    if (unlikely (!res.is_ok ()))
+    خپلکاری res = c.جمع_کړه_بفر ((حرف *) coverage_copy.arrayZ);
+    إذا (unlikely (!res.is_ok ()))
     {
-      hb_free (buffer);
-      hb_free ((char *) coverage_copy.arrayZ);
-      return res;
+      hb_free (بفر);
+      hb_free ((حرف *) coverage_copy.arrayZ);
+      أرجع res;
     }
 
-    auto& v = c.graph.vertices_[dest_obj];
-    char* head = (char *) coverage_copy.arrayZ;
-    v.set_buffer (head, head + coverage_copy.length);
+    خپلکاری& v = c.ګراف.vertices_[dest_obj];
+    حرف* سر_2 = (حرف *) coverage_copy.arrayZ;
+    v.سېټ_بفر (سر_2, سر_2 + coverage_copy.اوږدتیا);
 
-    hb_free (buffer);
-    return Ok();
+    hb_free (بفر);
+    أرجع Ok();
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ګراف_پایله_t<فراغ> sanitize (ثابت ګراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Layout::Common::Coverage::min_size)) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_اندازه ();
+    إذا (unlikely (راس_len < OT::Layout::Common::Coverage::min_اندازه)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
-    switch (u.format.v)
+    بدل (u.format.v)
     {
-    case 1: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) this, vertex);
-    case 2: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) this, vertex);
-#ifndef HB_NO_BEYOND_64K
-    case 3: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) this, vertex);
-    case 4: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) this, vertex);
-#endif
-    default: return Err(SANITIZE_FAILURE);
+    حالة 1: أرجع ګراف::sanitize ((ثابت OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) هذا, راس);
+    حالة 2: أرجع ګراف::sanitize ((ثابت OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) هذا, راس);
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+    حالة 3: أرجع ګراف::sanitize ((ثابت OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) هذا, راس);
+    حالة 4: أرجع ګراف::sanitize ((ثابت OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) هذا, راس);
+#د_که_پای
+    افتراضي: أرجع Err(SANITIZE_FAILURE);
     }
   }
 };
@@ -190,4 +190,4 @@ struct Coverage : public OT::Layout::Common::Coverage
 
 }
 
-#endif  // GRAPH_COVERAGE_GRAPH_HH
+#د_که_پای  // GRAPH_COVERAGE_GRAPH_HH

@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_FETCH
+#که_نه_تعریف_شوی HB_NO_OT_FETCH
 
-#include "hb-ot.h"
+#ضمن "hb-ot.h"
 
-#include "hb-ot-head-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-post-table.hh"
+#ضمن "hb-ot-head-table.hh"
+#ضمن "hb-ot-os2-table.hh"
+#ضمن "hb-ot-post-table.hh"
 
 /**
  * SECTION:hb-ot-fetch
@@ -58,22 +58,22 @@
  * Since: 14.3.0
  **/
 uint32_t
-hb_ot_fetch_bits (hb_face_t        *face,
-		hb_ot_bits_tag_t  tag)
+hb_ot_fetch_بټونه (hb_face_t        *face,
+		hb_ot_بټونه_نښان_t  نښان_2)
 {
-  switch ((unsigned) tag)
+  بدل ((بینښه) نښان_2)
   {
-  case HB_OT_BITS_TAG_FS_TYPE:		 return face->table.OS2->fsType;
-  case HB_OT_BITS_TAG_FS_SELECTION:	 return face->table.OS2->fsSelection;
-  case HB_OT_BITS_TAG_MAC_STYLE:	 return face->table.head->get_mac_style ();
-  case HB_OT_BITS_TAG_IS_FIXED_PITCH:	 return face->table.post->table->isFixedPitch;
-  case HB_OT_BITS_TAG_UNICODE_RANGE_1:	 return face->table.OS2->ulUnicodeRange[0];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_2:	 return face->table.OS2->ulUnicodeRange[1];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_3:	 return face->table.OS2->ulUnicodeRange[2];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_4:	 return face->table.OS2->ulUnicodeRange[3];
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: return face->table.OS2->v1 ().ulCodePageRange1;
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: return face->table.OS2->v1 ().ulCodePageRange2;
-  default:				 return 0;
+  حالة HB_OT_بټونه_نښان_FS_TYPE:		 أرجع face->جدول.OS2->fsType;
+  حالة HB_OT_بټونه_نښان_FS_SELECTION:	 أرجع face->جدول.OS2->fsSelection;
+  حالة HB_OT_بټونه_نښان_MAC_STYLE:	 أرجع face->جدول.سر_2->get_mac_style ();
+  حالة HB_OT_بټونه_نښان_IS_FIXED_PITCH:	 أرجع face->جدول.post->جدول->isFixedPitch;
+  حالة HB_OT_بټونه_نښان_UNICODE_RANGE_1:	 أرجع face->جدول.OS2->ulUnicodeRange[0];
+  حالة HB_OT_بټونه_نښان_UNICODE_RANGE_2:	 أرجع face->جدول.OS2->ulUnicodeRange[1];
+  حالة HB_OT_بټونه_نښان_UNICODE_RANGE_3:	 أرجع face->جدول.OS2->ulUnicodeRange[2];
+  حالة HB_OT_بټونه_نښان_UNICODE_RANGE_4:	 أرجع face->جدول.OS2->ulUnicodeRange[3];
+  حالة HB_OT_بټونه_نښان_کوډ_پاڼه_RANGE_1: أرجع face->جدول.OS2->v1 ().ul_کوډ_پاڼه_Range1;
+  حالة HB_OT_بټونه_نښان_کوډ_پاڼه_RANGE_2: أرجع face->جدول.OS2->v1 ().ul_کوډ_پاڼه_Range2;
+  افتراضي:				 أرجع 0;
   }
 }
 
@@ -89,17 +89,17 @@ hb_ot_fetch_bits (hb_face_t        *face,
  * Since: 14.3.0
  **/
 int32_t
-hb_ot_fetch_number (hb_face_t          *face,
-		  hb_ot_number_tag_t  tag)
+hb_ot_fetch_شمېره (hb_face_t          *face,
+		  hb_ot_شمېره_نښان_t  نښان_2)
 {
-  switch ((unsigned) tag)
+  بدل ((بینښه) نښان_2)
   {
-  case HB_OT_NUMBER_TAG_FONT_X_MIN: return face->table.head->xMin;
-  case HB_OT_NUMBER_TAG_FONT_Y_MIN: return face->table.head->yMin;
-  case HB_OT_NUMBER_TAG_FONT_X_MAX: return face->table.head->xMax;
-  case HB_OT_NUMBER_TAG_FONT_Y_MAX: return face->table.head->yMax;
-  default:		       return 0;
+  حالة HB_OT_شمېره_نښان_FONT_X_MIN: أرجع face->جدول.سر_2->xMin;
+  حالة HB_OT_شمېره_نښان_FONT_Y_MIN: أرجع face->جدول.سر_2->yMin;
+  حالة HB_OT_شمېره_نښان_FONT_X_MAX: أرجع face->جدول.سر_2->xMax;
+  حالة HB_OT_شمېره_نښان_FONT_Y_MAX: أرجع face->جدول.سر_2->yMax;
+  افتراضي:		       أرجع 0;
   }
 }
 
-#endif
+#د_که_پای

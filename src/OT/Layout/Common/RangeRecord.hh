@@ -26,55 +26,55 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
-#define OT_LAYOUT_COMMON_RANGERECORD_HH
+#که_نه_تعریف_شوی OT_LAYOUT_COMMON_RANGERECORD_HH
+#تعریف_کړه OT_LAYOUT_COMMON_RANGERECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+نطاق OT {
+نطاق Layout {
+نطاق Common {
 
-template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+کينډۍ <ډول_نوم Types, ډول_نوم ارزښت = HBUINT16>
+بنية Range_ریکارډ
 {
-  typename Types::HBGlyphID     first;          /* First GlyphID in the range */
-  typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  ډول_نوم Types::HBGlyphID     لومړی;          /* First GlyphID in the range */
+  ډول_نوم Types::HBGlyphID     وروستی;           /* Last GlyphID in the range */
+  ارزښت                         value;          /*ارزښت*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_اندازه_STATIC (2 * Types::اندازه + ارزښت::static_اندازه);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  صحيح cmp (hb_codepoint_t g) ثابت
+  { أرجع g < لومړی ? -1 : g <= وروستی ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
-    const RangeRecord *a = (const RangeRecord *) pa;
-    const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+  HB_دننی ساكن صحيح cmp_range (ثابت فراغ *pa, ثابت فراغ *pb) {
+    ثابت Range_ریکارډ *a = (ثابت Range_ریکارډ *) pa;
+    ثابت Range_ریکارډ *b = (ثابت Range_ریکارډ *) pb;
+    إذا (a->لومړی < b->لومړی) أرجع -1;
+    إذا (a->لومړی > b->لومړی) أرجع +1;
+    إذا (a->وروستی < b->وروستی) أرجع -1;
+    إذا (a->وروستی > b->وروستی) أرجع +1;
+    إذا (a->value < b->value) أرجع -1;
+    إذا (a->value > b->value) أرجع +1;
+    أرجع 0;
   }
 
-  unsigned get_population () const
+  بینښه get_population () ثابت
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    إذا (unlikely (وروستی < لومړی)) أرجع 0;
+    أرجع (وروستی - لومړی + 1);
   }
 
-  bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  منطقي intersects (ثابت hb_سېټ_t &glyphs) ثابت
+  { أرجع glyphs.intersects (لومړی, وروستی); }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  کينډۍ <ډول_نوم سېټ_t>
+  منطقي collect_coverage (سېټ_t *glyphs) ثابت
+  { أرجع glyphs->جمع_کړه_range (لومړی, وروستی); }
 };
 
 }
@@ -85,13 +85,13 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+خارجي HB_دننی ثابت بینښه حرف hb_Null_OT_Range_ریکارډ[9];
+کينډۍ <ډول_نوم Spec, ډول_نوم ارزښت>
+بنية Null<OT::Layout::Common::Range_ریکارډ<Spec, ارزښت>> {
+  ساكن OT::Layout::Common::Range_ریکارډ<Spec, ارزښت> ثابت & get_null () {
+    أرجع *reinterpret_cast<ثابت OT::Layout::Common::Range_ریکارډ<Spec, ارزښت> *> (hb_Null_OT_Range_ریکارډ);
   }
 };
 
 
-#endif  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
+#د_که_پای  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH

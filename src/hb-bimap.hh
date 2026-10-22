@@ -24,182 +24,182 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_BIMAP_HH
-#define HB_BIMAP_HH
+#که_نه_تعریف_شوی HB_BIMAP_HH
+#تعریف_کړه HB_BIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
+#ضمن "hb.hh"
+#ضمن "hb-map.hh"
 
 /* Bi-directional map */
-struct hb_bimap_t
+بنية hb_bimap_t
 {
-  void reset ()
+  فراغ reset ()
   {
     forw_map.reset ();
-    back_map.reset ();
+    شا_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  فراغ alloc (بینښه راوباسه)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (راوباسه);
+    شا_map.alloc (راوباسه);
   }
 
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  منطقي دننه_error () ثابت { أرجع forw_map.دننه_error () || شا_map.دننه_error (); }
 
-  void set (hb_codepoint_t lhs, hb_codepoint_t rhs)
+  فراغ سېټ (hb_codepoint_t lhs, hb_codepoint_t rhs)
   {
-    if (in_error ()) return;
-    if (unlikely (lhs == HB_MAP_VALUE_INVALID)) return;
-    if (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); return; }
+    إذا (دننه_error ()) أرجع;
+    إذا (unlikely (lhs == HB_MAP_ارزښت_INVALID)) أرجع;
+    إذا (unlikely (rhs == HB_MAP_ارزښت_INVALID)) { del (lhs); أرجع; }
 
-    forw_map.set (lhs, rhs);
-    if (unlikely (in_error ())) return;
+    forw_map.سېټ (lhs, rhs);
+    إذا (unlikely (دننه_error ())) أرجع;
 
-    back_map.set (rhs, lhs);
-    if (unlikely (in_error ())) forw_map.del (lhs);
+    شا_map.سېټ (rhs, lhs);
+    إذا (unlikely (دننه_error ())) forw_map.del (lhs);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map.get (rhs); }
+  hb_codepoint_t get (hb_codepoint_t lhs) ثابت { أرجع forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) ثابت { أرجع شا_map.get (rhs); }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t چلوونکی [] (hb_codepoint_t lhs) ثابت { أرجع get (lhs); }
+  منطقي has (hb_codepoint_t lhs) ثابت { أرجع forw_map.has (lhs); }
 
 
-  void del (hb_codepoint_t lhs)
+  فراغ del (hb_codepoint_t lhs)
   {
-    back_map.del (get (lhs));
+    شا_map.del (get (lhs));
     forw_map.del (lhs);
   }
 
-  void clear ()
+  فراغ clear ()
   {
     forw_map.clear ();
-    back_map.clear ();
+    شا_map.clear ();
   }
 
-  bool is_empty () const { return forw_map.is_empty (); }
+  منطقي is_empty () ثابت { أرجع forw_map.is_empty (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  بینښه صحيح get_population () ثابت { أرجع forw_map.get_population (); }
 
-  protected:
+  محمي:
   hb_map_t  forw_map;
-  hb_map_t  back_map;
+  hb_map_t  شا_map;
 
-  public:
-  auto keys () const HB_AUTO_RETURN (+ forw_map.keys())
-  auto values () const HB_AUTO_RETURN (+ forw_map.values())
-  auto iter () const HB_AUTO_RETURN (+ forw_map.iter())
+  عام:
+  خپلکاری کلیګانې () ثابت HB_AUTO_RETURN (+ forw_map.کلیګانې())
+  خپلکاری values () ثابت HB_AUTO_RETURN (+ forw_map.values())
+  خپلکاری iter () ثابت HB_AUTO_RETURN (+ forw_map.iter())
 };
 
 /* Incremental bimap: only lhs is given, rhs is incrementally assigned */
-struct hb_inc_bimap_t
+بنية hb_inc_bimap_t
 {
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  منطقي دننه_error () ثابت { أرجع forw_map.دننه_error () || شا_map.دننه_error (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  بینښه صحيح get_population () ثابت { أرجع forw_map.get_population (); }
 
-  void reset ()
+  فراغ reset ()
   {
     forw_map.reset ();
-    back_map.reset ();
+    شا_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  فراغ alloc (بینښه راوباسه)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (راوباسه);
+    شا_map.alloc (راوباسه);
   }
 
-  void clear ()
+  فراغ clear ()
   {
     forw_map.clear ();
-    back_map.clear ();
+    شا_map.clear ();
   }
 
   /* Add a mapping from lhs to rhs with a unique value if lhs is unknown.
    * Return the rhs value as the result.
    */
-  hb_codepoint_t add (hb_codepoint_t lhs)
+  hb_codepoint_t جمع_کړه (hb_codepoint_t lhs)
   {
     hb_codepoint_t  rhs = forw_map[lhs];
-    if (rhs == HB_MAP_VALUE_INVALID)
+    إذا (rhs == HB_MAP_ارزښت_INVALID)
     {
-      rhs = back_map.length;
-      forw_map.set (lhs, rhs);
-      back_map.push (lhs);
+      rhs = شا_map.اوږدتیا;
+      forw_map.سېټ (lhs, rhs);
+      شا_map.push (lhs);
     }
-    return rhs;
+    أرجع rhs;
   }
 
   hb_codepoint_t skip ()
   {
-    hb_codepoint_t start = back_map.length;
-    back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    hb_codepoint_t پیل = شا_map.اوږدتیا;
+    شا_map.push (HB_MAP_ارزښت_INVALID);
+    أرجع پیل;
   }
 
-  hb_codepoint_t skip (unsigned count)
+  hb_codepoint_t skip (بینښه شمېر)
   {
-    hb_codepoint_t start = back_map.length;
-    back_map.alloc (back_map.length + count);
-    for (unsigned i = 0; i < count; i++)
-      back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    hb_codepoint_t پیل = شا_map.اوږدتیا;
+    شا_map.alloc (شا_map.اوږدتیا + شمېر);
+    لكل (بینښه i = 0; i < شمېر; i++)
+      شا_map.push (HB_MAP_ارزښت_INVALID);
+    أرجع پیل;
   }
 
-  hb_codepoint_t get_next_value () const
-  { return back_map.length; }
+  hb_codepoint_t get_بل_ارزښت () ثابت
+  { أرجع شا_map.اوږدتیا; }
 
-  void add_set (const hb_set_t *set)
+  فراغ جمع_کړه_سېټ (ثابت hb_سېټ_t *سېټ)
   {
-    for (auto i : *set) add (i);
+    لكل (خپلکاری i : *سېټ) جمع_کړه (i);
   }
 
   /* Create an identity map. */
-  bool identity (unsigned int size)
+  منطقي بې_اغېزه_عنصر (بینښه صحيح اندازه)
   {
     clear ();
-    for (hb_codepoint_t i = 0; i < size; i++) add (i);
-    return !in_error ();
+    لكل (hb_codepoint_t i = 0; i < اندازه; i++) جمع_کړه (i);
+    أرجع !دننه_error ();
   }
 
-  protected:
-  static int cmp_id (const void* a, const void* b)
-  { return (int)*(const hb_codepoint_t *)a - (int)*(const hb_codepoint_t *)b; }
+  محمي:
+  ساكن صحيح cmp_id (ثابت فراغ* a, ثابت فراغ* b)
+  { أرجع (صحيح)*(ثابت hb_codepoint_t *)a - (صحيح)*(ثابت hb_codepoint_t *)b; }
 
-  public:
+  عام:
   /* Optional: after finished adding all mappings in a random order,
    * reassign rhs to lhs so that they are in the same order. */
-  void sort ()
+  فراغ sort ()
   {
-    hb_codepoint_t  count = get_population ();
-    hb_vector_t <hb_codepoint_t> work;
-    if (unlikely (!work.resize_dirty  (count))) return;
+    hb_codepoint_t  شمېر = get_population ();
+    hb_ویکټور_t <hb_codepoint_t> work;
+    إذا (unlikely (!work.resize_dirty  (شمېر))) أرجع;
 
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
-      work.arrayZ[rhs] = back_map[rhs];
+    لكل (hb_codepoint_t rhs = 0; rhs < شمېر; rhs++)
+      work.arrayZ[rhs] = شا_map[rhs];
 
     work.qsort (cmp_id);
 
     clear ();
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
-      add (work.arrayZ[rhs]);
+    لكل (hb_codepoint_t rhs = 0; rhs < شمېر; rhs++)
+      جمع_کړه (work.arrayZ[rhs]);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map[rhs]; }
+  hb_codepoint_t get (hb_codepoint_t lhs) ثابت { أرجع forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) ثابت { أرجع شا_map[rhs]; }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t چلوونکی [] (hb_codepoint_t lhs) ثابت { أرجع get (lhs); }
+  منطقي has (hb_codepoint_t lhs) ثابت { أرجع forw_map.has (lhs); }
 
-  protected:
+  محمي:
   hb_map_t forw_map;
-  hb_vector_t<hb_codepoint_t> back_map;
+  hb_ویکټور_t<hb_codepoint_t> شا_map;
 
-  public:
-  auto keys () const HB_AUTO_RETURN (+ back_map.iter())
+  عام:
+  خپلکاری کلیګانې () ثابت HB_AUTO_RETURN (+ شا_map.iter())
 };
 
-#endif /* HB_BIMAP_HH */
+#د_که_پای /* HB_BIMAP_HH */

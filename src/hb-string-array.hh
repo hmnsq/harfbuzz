@@ -24,62 +24,62 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_STRING_ARRAY_HH
-#if 0 /* Make checks happy. */
-#define HB_STRING_ARRAY_HH
-#endif
+#که_نه_تعریف_شوی HB_STRING_ARRAY_HH
+#إذا 0 /* Make checks happy. */
+#تعریف_کړه HB_STRING_ARRAY_HH
+#د_که_پای
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 /* Based on Bruno Haible's code in Appendix B of Ulrich Drepper's dsohowto.pdf:
  * https://software.intel.com/sites/default/files/m/a/1/e/dsohowto.pdf */
 
-#define HB_STRING_ARRAY_TYPE_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgstr_t)
-#define HB_STRING_ARRAY_POOL_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgstr)
-#define HB_STRING_ARRAY_OFFS_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgidx)
-#define HB_STRING_ARRAY_LENG_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _length)
+#تعریف_کړه HB_STRING_ARRAY_TYPE_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgstr_t)
+#تعریف_کړه HB_STRING_ARRAY_POOL_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgstr)
+#تعریف_کړه HB_STRING_ARRAY_OFFS_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgidx)
+#تعریف_کړه HB_STRING_ARRAY_LENG_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, اوږدتیا_4)
 
-static const union HB_STRING_ARRAY_TYPE_NAME {
-  struct {
+ساكن ثابت اتحاد HB_STRING_ARRAY_TYPE_NAME {
+  بنية {
 /* I like to avoid storing the nul-termination byte since we don't need it,
  * but C++ does not allow that.
  * https://stackoverflow.com/q/28433862
  */
-#define HB_STR(s) char HB_PASTE (str, __LINE__)[sizeof (s)];
-#include HB_STRING_ARRAY_LIST
-#undef HB_STR
+#تعریف_کړه HB_STR(s) حرف HB_PASTE (str, __LINE__)[حجم (s)];
+#ضمن HB_STRING_ARRAY_LIST
+#تعریف_لغوه HB_STR
   } st;
-  char str[HB_VAR_ARRAY];
+  حرف str[HB_VAR_ARRAY];
 }
 HB_STRING_ARRAY_POOL_NAME =
 {
   {
-#define HB_STR(s) s,
-#include HB_STRING_ARRAY_LIST
-#undef HB_STR
+#تعریف_کړه HB_STR(s) s,
+#ضمن HB_STRING_ARRAY_LIST
+#تعریف_لغوه HB_STR
   }
 };
-static const unsigned int HB_STRING_ARRAY_OFFS_NAME[] =
+ساكن ثابت بینښه صحيح HB_STRING_ARRAY_OFFS_NAME[] =
 {
-#define HB_STR(s) offsetof (union HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
-#include HB_STRING_ARRAY_LIST
-#undef HB_STR
-  sizeof (HB_STRING_ARRAY_TYPE_NAME)
+#تعریف_کړه HB_STR(s) offsetof (اتحاد HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
+#ضمن HB_STRING_ARRAY_LIST
+#تعریف_لغوه HB_STR
+  حجم (HB_STRING_ARRAY_TYPE_NAME)
 };
 
-static const unsigned int HB_STRING_ARRAY_LENG_NAME = ARRAY_LENGTH_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
+ساكن ثابت بینښه صحيح HB_STRING_ARRAY_LENG_NAME = ARRAY_اوږدتیا_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
 
-static inline hb_bytes_t
-HB_STRING_ARRAY_NAME (unsigned int i)
+ساكن مضمن hb_بایټونه_t
+HB_STRING_ARRAY_NAME (بینښه صحيح i)
 {
-  assert (i < ARRAY_LENGTH (HB_STRING_ARRAY_OFFS_NAME) - 1);
-  return hb_bytes_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
+  أكد (i < ARRAY_اوږدتیا (HB_STRING_ARRAY_OFFS_NAME) - 1);
+  أرجع hb_بایټونه_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
 		     HB_STRING_ARRAY_OFFS_NAME[i + 1] - HB_STRING_ARRAY_OFFS_NAME[i] - 1);
 }
 
-#undef HB_STRING_ARRAY_TYPE_NAME
-#undef HB_STRING_ARRAY_POOL_NAME
-#undef HB_STRING_ARRAY_OFFS_NAME
-#undef HB_STRING_ARRAY_LENG_NAME
+#تعریف_لغوه HB_STRING_ARRAY_TYPE_NAME
+#تعریف_لغوه HB_STRING_ARRAY_POOL_NAME
+#تعریف_لغوه HB_STRING_ARRAY_OFFS_NAME
+#تعریف_لغوه HB_STRING_ARRAY_LENG_NAME
 
-#endif /* HB_STRING_ARRAY_HH */
+#د_که_پای /* HB_STRING_ARRAY_HH */

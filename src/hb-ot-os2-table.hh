@@ -25,105 +25,105 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_OS2_TABLE_HH
-#define HB_OT_OS2_TABLE_HH
+#که_نه_تعریف_شوی HB_OT_OS2_جدول_HH
+#تعریف_کړه HB_OT_OS2_جدول_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-os2-unicode-ranges.hh"
-#include "hb-ot-var-mvar-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-os2-unicode-ranges.hh"
+#ضمن "hb-ot-var-mvar-table.hh"
 
-#include "hb-set.hh"
+#ضمن "hb-set.hh"
 
 /*
  * OS/2 and Windows Metrics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/os2
  */
-#define HB_OT_TAG_OS2 HB_TAG('O','S','/','2')
+#تعریف_کړه HB_OT_نښان_OS2 HB_نښان('O','S','/','2')
 
 
-namespace OT {
+نطاق OT {
 
-struct OS2V1Tail
+بنية OS2_V1_لکۍ
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
-  HBUINT32	ulCodePageRange1;
-  HBUINT32	ulCodePageRange2;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عام:
+  HBUINT32	ul_کوډ_پاڼه_Range1;
+  HBUINT32	ul_کوډ_پاڼه_Range2;
+  عام:
+  DEFINE_اندازه_STATIC (8);
 };
 
-struct OS2V2Tail
+بنية OS2_V2_لکۍ
 {
-  bool has_data () const { return sxHeight || sCapHeight; }
+  منطقي has_معلومات () ثابت { أرجع sx_لوړوالی || s_Cap_لوړوالی; }
 
-  const OS2V2Tail * operator -> () const { return this; }
-  OS2V2Tail * operator -> () { return this; }
+  ثابت OS2_V2_لکۍ * چلوونکی -> () ثابت { أرجع هذا; }
+  OS2_V2_لکۍ * چلوونکی -> () { أرجع هذا; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
-  HBINT16	sxHeight;
-  HBINT16	sCapHeight;
+  عام:
+  HBINT16	sx_لوړوالی;
+  HBINT16	s_Cap_لوړوالی;
   HBUINT16	usDefaultChar;
   HBUINT16	usBreakChar;
   HBUINT16	usMaxContext;
-  public:
-  DEFINE_SIZE_STATIC (10);
+  عام:
+  DEFINE_اندازه_STATIC (10);
 };
 
-struct OS2V5Tail
+بنية OS2_V5_لکۍ
 {
-  inline bool get_optical_size (unsigned int *lower, unsigned int *upper) const
+  مضمن منطقي get_optical_اندازه (بینښه صحيح *ښکتنی, بینښه صحيح *پاسنی) ثابت
   {
-    unsigned int lower_optical_size = usLowerOpticalPointSize;
-    unsigned int upper_optical_size = usUpperOpticalPointSize;
+    بینښه صحيح ښکتنی_optical_اندازه = us_ښکتنی_Optical_ټکی_اندازه;
+    بینښه صحيح پاسنی_optical_اندازه = us_پاسنی_Optical_ټکی_اندازه;
 
     /* Per https://docs.microsoft.com/en-us/typography/opentype/spec/os2#lps */
-    if (lower_optical_size < upper_optical_size &&
-	lower_optical_size >= 1 && lower_optical_size <= 0xFFFE &&
-	upper_optical_size >= 2 && upper_optical_size <= 0xFFFF)
+    إذا (ښکتنی_optical_اندازه < پاسنی_optical_اندازه &&
+	ښکتنی_optical_اندازه >= 1 && ښکتنی_optical_اندازه <= 0xFFFE &&
+	پاسنی_optical_اندازه >= 2 && پاسنی_optical_اندازه <= 0xFFFF)
     {
-      *lower = lower_optical_size;
-      *upper = upper_optical_size;
-      return true;
+      *ښکتنی = ښکتنی_optical_اندازه;
+      *پاسنی = پاسنی_optical_اندازه;
+      أرجع ریښتیا;
     }
-    return false;
+    أرجع خطأ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
-  HBUINT16	usLowerOpticalPointSize;
-  HBUINT16	usUpperOpticalPointSize;
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عام:
+  HBUINT16	us_ښکتنی_Optical_ټکی_اندازه;
+  HBUINT16	us_پاسنی_Optical_ټکی_اندازه;
+  عام:
+  DEFINE_اندازه_STATIC (4);
 };
 
-struct OS2
+بنية OS2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_OS2;
+  ساكن constexpr hb_نښان_t جدول_نښان = HB_OT_نښان_OS2;
 
-  bool has_data () const { return usWeightClass || usWidthClass || usFirstCharIndex || usLastCharIndex; }
+  منطقي has_معلومات () ثابت { أرجع us_وزن_Class || us_پلنوالی_Class || us_لومړی_Char_شاخص || us_وروستی_Char_شاخص; }
 
-  const OS2V1Tail &v1 () const { return version >= 1 ? v1X : Null (OS2V1Tail); }
-  const OS2V2Tail &v2 () const { return version >= 2 ? v2X : Null (OS2V2Tail); }
-  const OS2V5Tail &v5 () const { return version >= 5 ? v5X : Null (OS2V5Tail); }
+  ثابت OS2_V1_لکۍ &v1 () ثابت { أرجع نسخه >= 1 ? v1X : Null (OS2_V1_لکۍ); }
+  ثابت OS2_V2_لکۍ &v2 () ثابت { أرجع نسخه >= 2 ? v2X : Null (OS2_V2_لکۍ); }
+  ثابت OS2_V5_لکۍ &v5 () ثابت { أرجع نسخه >= 5 ? v5X : Null (OS2_V5_لکۍ); }
 
-  enum selection_flag_t {
+  تعداد selection_flag_t {
     ITALIC		= 1u<<0,
     UNDERSCORE		= 1u<<1,
     NEGATIVE		= 1u<<2,
@@ -136,239 +136,239 @@ struct OS2
     OBLIQUE		= 1u<<9
   };
 
-  bool        is_italic () const { return fsSelection & ITALIC; }
-  bool       is_oblique () const { return fsSelection & OBLIQUE; }
-  bool use_typo_metrics () const { return fsSelection & USE_TYPO_METRICS; }
+  منطقي        is_italic () ثابت { أرجع fsSelection & ITALIC; }
+  منطقي       is_oblique () ثابت { أرجع fsSelection & OBLIQUE; }
+  منطقي use_typo_metrics () ثابت { أرجع fsSelection & USE_TYPO_METRICS; }
 
-  enum width_class_t {
+  تعداد پلنوالی_class_t {
     FWIDTH_ULTRA_CONDENSED	= 1, /* 50% */
     FWIDTH_EXTRA_CONDENSED	= 2, /* 62.5% */
     FWIDTH_CONDENSED		= 3, /* 75% */
     FWIDTH_SEMI_CONDENSED	= 4, /* 87.5% */
-    FWIDTH_NORMAL		= 5, /* 100% */
+    FWIDTH_نورمال		= 5, /* 100% */
     FWIDTH_SEMI_EXPANDED	= 6, /* 112.5% */
     FWIDTH_EXPANDED		= 7, /* 125% */
     FWIDTH_EXTRA_EXPANDED	= 8, /* 150% */
     FWIDTH_ULTRA_EXPANDED	= 9  /* 200% */
   };
 
-  float get_width () const
+  عائم get_پلنوالی () ثابت
   {
-    switch (usWidthClass) {
-    case FWIDTH_ULTRA_CONDENSED:return 50.f;
-    case FWIDTH_EXTRA_CONDENSED:return 62.5f;
-    case FWIDTH_CONDENSED:	return 75.f;
-    case FWIDTH_SEMI_CONDENSED:	return 87.5f;
-    default:
-    case FWIDTH_NORMAL:		return 100.f;
-    case FWIDTH_SEMI_EXPANDED:	return 112.5f;
-    case FWIDTH_EXPANDED:	return 125.f;
-    case FWIDTH_EXTRA_EXPANDED:	return 150.f;
-    case FWIDTH_ULTRA_EXPANDED:	return 200.f;
+    بدل (us_پلنوالی_Class) {
+    حالة FWIDTH_ULTRA_CONDENSED:أرجع 50.f;
+    حالة FWIDTH_EXTRA_CONDENSED:أرجع 62.5f;
+    حالة FWIDTH_CONDENSED:	أرجع 75.f;
+    حالة FWIDTH_SEMI_CONDENSED:	أرجع 87.5f;
+    افتراضي:
+    حالة FWIDTH_نورمال:		أرجع 100.f;
+    حالة FWIDTH_SEMI_EXPANDED:	أرجع 112.5f;
+    حالة FWIDTH_EXPANDED:	أرجع 125.f;
+    حالة FWIDTH_EXTRA_EXPANDED:	أرجع 150.f;
+    حالة FWIDTH_ULTRA_EXPANDED:	أرجع 200.f;
     }
   }
 
-  float map_wdth_to_widthclass(float width) const
+  عائم map_wdth_منزل_widthclass(عائم پلنوالی) ثابت
   {
-    if (width < 50) return 1.0f;
-    if (width > 200) return 9.0f;
+    إذا (پلنوالی < 50) أرجع 1.0f;
+    إذا (پلنوالی > 200) أرجع 9.0f;
 
-    float ratio = (width - 50) / 12.5f;
-    int a = (int) floorf (ratio);
-    int b = (int) ceilf (ratio);
+    عائم نسبت = (پلنوالی - 50) / 12.5f;
+    صحيح a = (صحيح) floorf (نسبت);
+    صحيح b = (صحيح) ceilf (نسبت);
 
     /* follow this maping:
      * https://docs.microsoft.com/en-us/typography/opentype/spec/os2#uswidthclass
      */
-    if (b <= 6) // 50-125
+    إذا (b <= 6) // 50-125
     {
-      if (a == b) return a + 1.0f;
+      إذا (a == b) أرجع a + 1.0f;
     }
-    else if (b == 7) // no mapping for 137.5
+    وإلا إذا (b == 7) // no mapping for 137.5
     {
       a = 6;
       b = 8;
     }
-    else if (b == 8)
+    وإلا إذا (b == 8)
     {
-      if (a == b) return 8.0f; // 150
+      إذا (a == b) أرجع 8.0f; // 150
       a = 6;
     }
-    else
+    وإلا
     {
-      if (a == b && a == 12) return 9.0f; //200
+      إذا (a == b && a == 12) أرجع 9.0f; //200
       b = 12;
       a = 8;
     }
 
-    float va = 50 + a * 12.5f;
-    float vb = 50 + b * 12.5f;
+    عائم va = 50 + a * 12.5f;
+    عائم vb = 50 + b * 12.5f;
 
-    float ret =  a + (width - va) / (vb - va);
-    if (a <= 6) ret += 1.0f;
-    return ret;
+    عائم ret =  a + (پلنوالی - va) / (vb - va);
+    إذا (a <= 6) ret += 1.0f;
+    أرجع ret;
   }
 
-  static unsigned calc_avg_char_width (const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>>& hmtx_map)
+  ساكن بینښه calc_avg_char_پلنوالی (ثابت hb_hashmap_t<hb_codepoint_t, hb_pair_t<بینښه, صحيح>>& hmtx_map)
   {
-    unsigned num = 0;
-    unsigned total_width = 0;
-    for (const auto& _ : hmtx_map.values_ref ())
+    بینښه عدد = 0;
+    بینښه ټول_پلنوالی = 0;
+    لكل (ثابت خپلکاری& _ : hmtx_map.ارزښتونه_ref ())
     {
-      unsigned width = _.first;
-      if (width)
+      بینښه پلنوالی = _.لومړی;
+      إذا (پلنوالی)
       {
-        total_width += width;
-        num++;
+        ټول_پلنوالی += پلنوالی;
+        عدد++;
       }
     }
 
-    return num ? (unsigned) roundf ((double) total_width / (double) num) : 0;
+    أرجع عدد ? (بینښه) roundf ((مزدوج) ټول_پلنوالی / (مزدوج) عدد) : 0;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    OS2 *os2_prime = c->serializer->embed (this);
-    if (unlikely (!os2_prime)) return_trace (false);
+    TRACE_SUBSET (هذا);
+    OS2 *os2_اولي = c->serializer->embed (هذا);
+    إذا (unlikely (!os2_اولي)) return_trace (خطأ);
 
-#ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+#که_نه_تعریف_شوی HB_NO_VAR
+    إذا (c->plan->normalized_coords)
     {
-      auto &MVAR = *c->plan->source->table.MVAR;
-      auto *table = os2_prime;
+      خپلکاری &MVAR = *c->plan->سرچینه->جدول.MVAR;
+      خپلکاری *جدول = os2_اولي;
 
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,         sTypoAscender);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER,        sTypoDescender);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP,         sTypoLineGap);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT,  usWinAscent);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT, usWinDescent);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE,         ySubscriptXSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE,         ySubscriptYSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET,       ySubscriptXOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET,       ySubscriptYOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE,       ySuperscriptXSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE,       ySuperscriptYSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET,     ySuperscriptXOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET,     ySuperscriptYOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_STRIKEOUT_SIZE,              yStrikeoutSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_STRIKEOUT_OFFSET,            yStrikeoutPosition);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_HORIZONTAL_ASCENDER,         sTypoAscender);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_HORIZONTAL_DESCENDER,        sTypoDescender);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_HORIZONTAL_کرښه_GAP,         s_Typo_کرښه_Gap);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_HORIZONTAL_CLIPPING_ASCENT,  usWinAscent);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_HORIZONTAL_CLIPPING_DESCENT, usWinDescent);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_SUBSCRIPT_EM_X_اندازه,         ySubscriptXSize);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_SUBSCRIPT_EM_Y_اندازه,         ySubscriptYSize);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_SUBSCRIPT_EM_X_دننه_واټن,       ySubscriptXOffset);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_SUBSCRIPT_EM_Y_دننه_واټن,       ySubscriptYOffset);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_SUPERSCRIPT_EM_X_اندازه,       ySuperscriptXSize);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_SUPERSCRIPT_EM_Y_اندازه,       ySuperscriptYSize);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_SUPERSCRIPT_EM_X_دننه_واټن,     ySuperscriptXOffset);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_SUPERSCRIPT_EM_Y_دننه_واټن,     ySuperscriptYOffset);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_STRIKEOUT_اندازه,              y_Strikeout_اندازه);
+      HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_STRIKEOUT_دننه_واټن,            yStrikeoutPosition);
 
-      if (os2_prime->version >= 2)
+      إذا (os2_اولي->نسخه >= 2)
       {
         hb_barrier ();
-        auto *table = & const_cast<OS2V2Tail &> (os2_prime->v2 ());
-        HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_X_HEIGHT,                   sxHeight);
-        HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_CAP_HEIGHT,                 sCapHeight);
+        خپلکاری *جدول = & const_cast<OS2_V2_لکۍ &> (os2_اولي->v2 ());
+        HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_X_لوړوالی,                   sx_لوړوالی);
+        HB_جمع_کړه_MVAR_VAR (HB_OT_METRICS_نښان_CAP_لوړوالی,                 s_Cap_لوړوالی);
       }
 
-      unsigned avg_char_width = calc_avg_char_width (c->plan->hmtx_map);
-      if (!c->serializer->check_assign (os2_prime->xAvgCharWidth, avg_char_width,
-                                        HB_SERIALIZE_ERROR_INT_OVERFLOW))
-        return_trace (false);
+      بینښه avg_char_پلنوالی = calc_avg_char_پلنوالی (c->plan->hmtx_map);
+      إذا (!c->serializer->check_ټاکل (os2_اولي->x_Avg_Char_پلنوالی, avg_char_پلنوالی,
+                                        HB_SERIALIZE_ERROR_INT_ډکېدنه))
+        return_trace (خطأ);
     }
-#endif
+#د_که_پای
 
     Triple *axis_range;
-    if (c->plan->user_axes_location.has (HB_TAG ('w','g','h','t'), &axis_range))
+    إذا (c->plan->user_axes_location.has (HB_نښان ('w','g','h','t'), &axis_range))
     {
-      unsigned weight_class = static_cast<unsigned> (roundf (hb_clamp (axis_range->middle, 1.0f, 1000.0f)));
-      if (os2_prime->usWeightClass != weight_class)
-        os2_prime->usWeightClass = weight_class;
+      بینښه وزن_class = static_cast<بینښه> (roundf (hb_clamp (axis_range->منځ, 1.0f, 1000.0f)));
+      إذا (os2_اولي->us_وزن_Class != وزن_class)
+        os2_اولي->us_وزن_Class = وزن_class;
     }
 
-    if (c->plan->user_axes_location.has (HB_TAG ('w','d','t','h'), &axis_range))
+    إذا (c->plan->user_axes_location.has (HB_نښان ('w','d','t','h'), &axis_range))
     {
-      unsigned width_class = static_cast<unsigned> (roundf (map_wdth_to_widthclass (axis_range->middle)));
-      if (os2_prime->usWidthClass != width_class)
-        os2_prime->usWidthClass = width_class;
+      بینښه پلنوالی_class = static_cast<بینښه> (roundf (map_wdth_منزل_widthclass (axis_range->منځ)));
+      إذا (os2_اولي->us_پلنوالی_Class != پلنوالی_class)
+        os2_اولي->us_پلنوالی_Class = پلنوالی_class;
     }
 
-    os2_prime->usFirstCharIndex = hb_min (0xFFFFu, c->plan->os2_info.min_cmap_codepoint);
-    os2_prime->usLastCharIndex  = hb_min (0xFFFFu, c->plan->os2_info.max_cmap_codepoint);
+    os2_اولي->us_لومړی_Char_شاخص = hb_min (0xFFFFu, c->plan->os2_info.min_cmap_codepoint);
+    os2_اولي->us_وروستی_Char_شاخص  = hb_min (0xFFFFu, c->plan->os2_info.max_cmap_codepoint);
 
-    if (c->plan->flags & HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES)
-      return_trace (true);
+    إذا (c->plan->flags & HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES)
+      return_trace (ریښتیا);
 
-    _update_unicode_ranges (&c->plan->unicodes, os2_prime->ulUnicodeRange);
+    _update_unicode_ranges (&c->plan->unicodes, os2_اولي->ulUnicodeRange);
 
-    return_trace (true);
+    return_trace (ریښتیا);
   }
 
-  void _update_unicode_ranges (const hb_set_t *codepoints,
-			       HBUINT32 ulUnicodeRange[4]) const
+  فراغ _update_unicode_ranges (ثابت hb_سېټ_t *codepoints,
+			       HBUINT32 ulUnicodeRange[4]) ثابت
   {
-    HBUINT32 newBits[4];
-    for (unsigned int i = 0; i < 4; i++)
-      newBits[i] = 0;
+    HBUINT32 new_بټونه[4];
+    لكل (بینښه صحيح i = 0; i < 4; i++)
+      new_بټونه[i] = 0;
 
     /* This block doesn't show up in profiles. If it ever did,
      * we can rewrite it to iterate over OS/2 ranges and use
      * set iteration to check if the range matches. */
-    for (auto cp : *codepoints)
+    لكل (خپلکاری cp : *codepoints)
     {
-      unsigned int bit = _hb_ot_os2_get_unicode_range_bit (cp);
-      if (bit < 128)
+      بینښه صحيح bit = hb_ot_os2_get_unicode_range_بټ (cp);
+      إذا (bit < 128)
       {
-	unsigned int block = bit / 32;
-	unsigned int bit_in_block = bit % 32;
-	unsigned int mask = 1 << bit_in_block;
-	newBits[block] = newBits[block] | mask;
+	بینښه صحيح بلاک = bit / 32;
+	بینښه صحيح بټ_دننه_بلاک = bit % 32;
+	بینښه صحيح ماسک = 1 << بټ_دننه_بلاک;
+	new_بټونه[بلاک] = new_بټونه[بلاک] | ماسک;
       }
-      if (cp >= 0x10000 && cp <= 0x110000)
+      إذا (cp >= 0x10000 && cp <= 0x110000)
       {
 	/* the spec says that bit 57 ("Non Plane 0") implies that there's
 	   at least one codepoint beyond the BMP; so I also include all
 	   the non-BMP codepoints here */
-	newBits[1] = newBits[1] | (1 << 25);
+	new_بټونه[1] = new_بټونه[1] | (1 << 25);
       }
     }
 
-    for (unsigned int i = 0; i < 4; i++)
-      ulUnicodeRange[i] = ulUnicodeRange[i] & newBits[i]; // set bits only if set in the original
+    لكل (بینښه صحيح i = 0; i < 4; i++)
+      ulUnicodeRange[i] = ulUnicodeRange[i] & new_بټونه[i]; // set bits only if set in the original
   }
 
   /* https://github.com/Microsoft/Font-Validator/blob/520aaae/OTFontFileVal/val_OS2.cs#L644-L681
    * https://docs.microsoft.com/en-us/typography/legacy/legacy_arabic_fonts */
-  enum font_page_t
+  تعداد font_پاڼه_t
   {
-    FONT_PAGE_NONE		= 0,
-    FONT_PAGE_HEBREW		= 0xB100, /* Hebrew Windows 3.1 font page */
-    FONT_PAGE_SIMP_ARABIC	= 0xB200, /* Simplified Arabic Windows 3.1 font page */
-    FONT_PAGE_TRAD_ARABIC	= 0xB300, /* Traditional Arabic Windows 3.1 font page */
-    FONT_PAGE_OEM_ARABIC	= 0xB400, /* OEM Arabic Windows 3.1 font page */
-    FONT_PAGE_SIMP_FARSI	= 0xBA00, /* Simplified Farsi Windows 3.1 font page */
-    FONT_PAGE_TRAD_FARSI	= 0xBB00, /* Traditional Farsi Windows 3.1 font page */
-    FONT_PAGE_THAI		= 0xDE00  /* Thai Windows 3.1 font page */
+    FONT_پاڼه_NONE		= 0,
+    FONT_پاڼه_HEBREW		= 0xB100, /* Hebrew Windows 3.1 font page */
+    FONT_پاڼه_SIMP_ARABIC	= 0xB200, /* Simplified Arabic Windows 3.1 font page */
+    FONT_پاڼه_TRAD_ARABIC	= 0xB300, /* Traditional Arabic Windows 3.1 font page */
+    FONT_پاڼه_OEM_ARABIC	= 0xB400, /* OEM Arabic Windows 3.1 font page */
+    FONT_پاڼه_SIMP_FARSI	= 0xBA00, /* Simplified Farsi Windows 3.1 font page */
+    FONT_پاڼه_TRAD_FARSI	= 0xBB00, /* Traditional Farsi Windows 3.1 font page */
+    FONT_پاڼه_THAI		= 0xDE00  /* Thai Windows 3.1 font page */
   };
-  font_page_t get_font_page () const
-  { return (font_page_t) (version == 0 ? fsSelection & 0xFF00 : 0); }
+  font_پاڼه_t get_font_پاڼه () ثابت
+  { أرجع (font_پاڼه_t) (نسخه == 0 ? fsSelection & 0xFF00 : 0); }
 
-  size_t get_size () const
+  size_t get_اندازه () ثابت
   {
-    size_t result = min_size;
-    if (version >= 1) result = hb_unsigned_add_saturate (result, v1X.get_size ());
-    if (version >= 2) result = hb_unsigned_add_saturate (result, v2X.get_size ());
-    if (version >= 5) result = hb_unsigned_add_saturate (result, v5X.get_size ());
-    return result;
+    size_t پایله = min_اندازه;
+    إذا (نسخه >= 1) پایله = hb_unsigned_جمع_کړه_saturate (پایله, v1X.get_اندازه ());
+    إذا (نسخه >= 2) پایله = hb_unsigned_جمع_کړه_saturate (پایله, v2X.get_اندازه ());
+    إذا (نسخه >= 5) پایله = hb_unsigned_جمع_کړه_saturate (پایله, v5X.get_اندازه ());
+    أرجع پایله;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!c->check_struct (هذا))) return_trace (خطأ);
     hb_barrier ();
-    if (unlikely (version >= 1 && !v1X.sanitize (c))) return_trace (false);
-    if (unlikely (version >= 2 && !v2X.sanitize (c))) return_trace (false);
-    if (unlikely (version >= 5 && !v5X.sanitize (c))) return_trace (false);
-    return_trace (true);
+    إذا (unlikely (نسخه >= 1 && !v1X.sanitize (c))) return_trace (خطأ);
+    إذا (unlikely (نسخه >= 2 && !v2X.sanitize (c))) return_trace (خطأ);
+    إذا (unlikely (نسخه >= 5 && !v5X.sanitize (c))) return_trace (خطأ);
+    return_trace (ریښتیا);
   }
 
-  public:
-  HBUINT16	version;
-  HBINT16	xAvgCharWidth;
-  HBUINT16	usWeightClass;
-  HBUINT16	usWidthClass;
+  عام:
+  HBUINT16	نسخه;
+  HBINT16	x_Avg_Char_پلنوالی;
+  HBUINT16	us_وزن_Class;
+  HBUINT16	us_پلنوالی_Class;
   HBUINT16	fsType;
   HBINT16	ySubscriptXSize;
   HBINT16	ySubscriptYSize;
@@ -378,28 +378,28 @@ struct OS2
   HBINT16	ySuperscriptYSize;
   HBINT16	ySuperscriptXOffset;
   HBINT16	ySuperscriptYOffset;
-  HBINT16	yStrikeoutSize;
+  HBINT16	y_Strikeout_اندازه;
   HBINT16	yStrikeoutPosition;
   HBINT16	sFamilyClass;
   HBUINT8	panose[10];
   HBUINT32	ulUnicodeRange[4];
-  Tag		achVendID;
+  نښان		achVendID;
   HBUINT16	fsSelection;
-  HBUINT16	usFirstCharIndex;
-  HBUINT16	usLastCharIndex;
+  HBUINT16	us_لومړی_Char_شاخص;
+  HBUINT16	us_وروستی_Char_شاخص;
   HBINT16	sTypoAscender;
   HBINT16	sTypoDescender;
-  HBINT16	sTypoLineGap;
+  HBINT16	s_Typo_کرښه_Gap;
   HBUINT16	usWinAscent;
   HBUINT16	usWinDescent;
-  OS2V1Tail	v1X;
-  OS2V2Tail	v2X;
-  OS2V5Tail	v5X;
-  public:
-  DEFINE_SIZE_MIN (78);
+  OS2_V1_لکۍ	v1X;
+  OS2_V2_لکۍ	v2X;
+  OS2_V5_لکۍ	v5X;
+  عام:
+  DEFINE_اندازه_MIN (78);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_OS2_TABLE_HH */
+#د_که_پای /* HB_OT_OS2_TABLE_HH */

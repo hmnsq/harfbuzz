@@ -24,16 +24,16 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#إذا !defined(HB_OT_H_دننه) && !defined(HB_NO_SINGLE_سرلیک_ERROR)
+#تېروتنه "Include <hb-ot.h> instead."
+#د_که_پای
 
-#ifndef HB_OT_LAYOUT_H
-#define HB_OT_LAYOUT_H
+#که_نه_تعریف_شوی HB_OT_LAYOUT_H
+#تعریف_کړه HB_OT_LAYOUT_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#include "hb-ot-name.h"
+#ضمن "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -43,31 +43,31 @@ HB_BEGIN_DECLS
  *
  * OpenType [Baseline Table](https://docs.microsoft.com/en-us/typography/opentype/spec/base).
  */
-#define HB_OT_TAG_BASE HB_TAG('B','A','S','E')
+#تعریف_کړه HB_OT_نښان_بنسټ HB_نښان('B','A','S','E')
 /**
  * HB_OT_TAG_GDEF:
  *
  * OpenType [Glyph Definition Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gdef).
  */
-#define HB_OT_TAG_GDEF HB_TAG('G','D','E','F')
+#تعریف_کړه HB_OT_نښان_GDEF HB_نښان('G','D','E','F')
 /**
  * HB_OT_TAG_GSUB:
  *
  * OpenType [Glyph Substitution Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gsub).
  */
-#define HB_OT_TAG_GSUB HB_TAG('G','S','U','B')
+#تعریف_کړه HB_OT_نښان_GSUB HB_نښان('G','S','U','B')
 /**
  * HB_OT_TAG_GPOS:
  *
  * OpenType [Glyph Positioning Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gpos).
  */
-#define HB_OT_TAG_GPOS HB_TAG('G','P','O','S')
+#تعریف_کړه HB_OT_نښان_GPOS HB_نښان('G','P','O','S')
 /**
  * HB_OT_TAG_JSTF:
  *
  * OpenType [Justification Table](https://docs.microsoft.com/en-us/typography/opentype/spec/jstf).
  */
-#define HB_OT_TAG_JSTF HB_TAG('J','S','T','F')
+#تعریف_کړه HB_OT_نښان_JSTF HB_نښان('J','S','T','F')
 
 
 /*
@@ -80,14 +80,14 @@ HB_BEGIN_DECLS
  * OpenType script tag, `DFLT`, for features that are not script-specific.
  *
  */
-#define HB_OT_TAG_DEFAULT_SCRIPT	HB_TAG ('D', 'F', 'L', 'T')
+#تعریف_کړه HB_OT_نښان_DEFAULT_SCRIPT	HB_نښان ('D', 'F', 'L', 'T')
 /**
  * HB_OT_TAG_DEFAULT_LANGUAGE:
  *
  * OpenType language tag, `dflt`. Not a valid language tag, but some fonts
  * mistakenly use it.
  */
-#define HB_OT_TAG_DEFAULT_LANGUAGE	HB_TAG ('d', 'f', 'l', 't')
+#تعریف_کړه HB_OT_نښان_DEFAULT_LANGUAGE	HB_نښان ('d', 'f', 'l', 't')
 
 /**
  * HB_OT_MAX_TAGS_PER_SCRIPT:
@@ -96,7 +96,7 @@ HB_BEGIN_DECLS
  *
  * Since: 2.0.0
  **/
-#define HB_OT_MAX_TAGS_PER_SCRIPT	3u
+#تعریف_کړه HB_OT_MAX_نښانونه_فی_SCRIPT	3u
 /**
  * HB_OT_MAX_TAGS_PER_LANGUAGE:
  *
@@ -104,27 +104,27 @@ HB_BEGIN_DECLS
  *
  * Since: 2.0.0
  **/
-#define HB_OT_MAX_TAGS_PER_LANGUAGE	3u
+#تعریف_کړه HB_OT_MAX_نښانونه_فی_LANGUAGE	3u
 
-HB_EXTERN void
-hb_ot_tags_from_script_and_language (hb_script_t   script,
+HB_EXTERN فراغ
+hb_ot_نښانونه_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
-				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
-				     hb_tag_t     *language_tags /* OUT */);
+				     بینښه صحيح *script_شمېر /* IN/OUT */,
+				     hb_نښان_t     *script_نښانونه /*بهر*/,
+				     بینښه صحيح *language_شمېر /* IN/OUT */,
+				     hb_نښان_t     *language_نښانونه /*بهر*/);
 
 HB_EXTERN hb_script_t
-hb_ot_tag_to_script (hb_tag_t tag);
+hb_ot_نښان_منزل_script (hb_نښان_t نښان_2);
 
 HB_EXTERN hb_language_t
-hb_ot_tag_to_language (hb_tag_t tag);
+hb_ot_نښان_منزل_language (hb_نښان_t نښان_2);
 
-HB_EXTERN void
-hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
-				   hb_tag_t       language_tag,
-				   hb_script_t   *script /* OUT */,
-				   hb_language_t *language /* OUT */);
+HB_EXTERN فراغ
+hb_ot_نښانونه_منزل_script_and_language (hb_نښان_t       script_نښان,
+				   hb_نښان_t       language_نښان,
+				   hb_script_t   *script /*بهر*/,
+				   hb_language_t *language /*بهر*/);
 
 
 /*
@@ -145,9 +145,9 @@ hb_ot_layout_has_glyph_classes (hb_face_t *face);
  * The GDEF classes defined for glyphs.
  *
  **/
-typedef enum {
+تعريفنوع تعداد {
   HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED	= 0,
-  HB_OT_LAYOUT_GLYPH_CLASS_BASE_GLYPH	= 1,
+  HB_OT_LAYOUT_GLYPH_CLASS_بنسټ_GLYPH	= 1,
   HB_OT_LAYOUT_GLYPH_CLASS_LIGATURE	= 2,
   HB_OT_LAYOUT_GLYPH_CLASS_MARK		= 3,
   HB_OT_LAYOUT_GLYPH_CLASS_COMPONENT	= 4
@@ -157,28 +157,28 @@ HB_EXTERN hb_ot_layout_glyph_class_t
 hb_ot_layout_get_glyph_class (hb_face_t      *face,
 			      hb_codepoint_t  glyph);
 
-HB_EXTERN void
-hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
+HB_EXTERN فراغ
+hb_ot_layout_get_glyphs_دننه_class (hb_face_t                  *face,
 				  hb_ot_layout_glyph_class_t  klass,
-				  hb_set_t                   *glyphs /* OUT */);
+				  hb_سېټ_t                   *glyphs /*بهر*/);
 
 /* Not that useful.  Provides list of attach points for a glyph that a
  * client may want to cache */
-HB_EXTERN unsigned int
+HB_EXTERN بینښه صحيح
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
-				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
-				unsigned int   *point_array /* OUT */);
+				بینښه صحيح    پیل_دننه_واټن,
+				بینښه صحيح   *ټکی_شمېر /* IN/OUT */,
+				بینښه صحيح   *ټکی_array /*بهر*/);
 
 /* Ligature caret positions */
-HB_EXTERN unsigned int
+HB_EXTERN بینښه صحيح
 hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
-				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
-				  hb_position_t  *caret_array /* OUT */);
+				  بینښه صحيح    پیل_دننه_واټن,
+				  بینښه صحيح   *caret_شمېر /* IN/OUT */,
+				  hb_position_t  *caret_array /*بهر*/);
 
 
 /*
@@ -190,182 +190,182 @@ hb_ot_layout_get_ligature_carets (hb_font_t      *font,
  *
  * Special value for script index indicating unsupported script.
  */
-#define HB_OT_LAYOUT_NO_SCRIPT_INDEX		0xFFFFu
+#تعریف_کړه HB_OT_LAYOUT_NO_SCRIPT_شاخص		0xFFFFu
 /**
  * HB_OT_LAYOUT_NO_FEATURE_INDEX:
  *
  * Special value for feature index indicating unsupported feature.
  */
-#define HB_OT_LAYOUT_NO_FEATURE_INDEX		0xFFFFu
+#تعریف_کړه HB_OT_LAYOUT_NO_FEATURE_شاخص		0xFFFFu
 /**
  * HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX:
  *
  * Special value for language index indicating default or unsupported language.
  */
-#define HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX	0xFFFFu
+#تعریف_کړه HB_OT_LAYOUT_DEFAULT_LANGUAGE_شاخص	0xFFFFu
 /**
  * HB_OT_LAYOUT_NO_VARIATIONS_INDEX:
  *
  * Special value for variations index indicating unsupported variation.
  */
-#define HB_OT_LAYOUT_NO_VARIATIONS_INDEX	0xFFFFFFFFu
+#تعریف_کړه HB_OT_LAYOUT_NO_VARIATIONS_شاخص	0xFFFFFFFFu
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_script_tags (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
-				    hb_tag_t     *script_tags /* OUT */);
-
-HB_EXTERN hb_bool_t
-hb_ot_layout_table_find_script (hb_face_t    *face,
-				hb_tag_t      table_tag,
-				hb_tag_t      script_tag,
-				unsigned int *script_index /* OUT */);
+HB_EXTERN بینښه صحيح
+hb_ot_layout_جدول_get_script_نښانونه (hb_face_t    *face,
+				    hb_نښان_t      جدول_نښان_2,
+				    بینښه صحيح  پیل_دننه_واټن,
+				    بینښه صحيح *script_شمېر /* IN/OUT */,
+				    hb_نښان_t     *script_نښانونه /*بهر*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_table_select_script (hb_face_t      *face,
-				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index /* OUT */,
-				  hb_tag_t       *chosen_script /* OUT */);
+hb_ot_layout_جدول_پیدا_کړه_script (hb_face_t    *face,
+				hb_نښان_t      جدول_نښان_2,
+				hb_نښان_t      script_نښان,
+				بینښه صحيح *script_شاخص /*بهر*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
-				     hb_tag_t      table_tag,
-				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
-				     hb_tag_t     *feature_tags /* OUT */);
+HB_EXTERN hb_bool_t
+hb_ot_layout_جدول_select_script (hb_face_t      *face,
+				  hb_نښان_t        جدول_نښان_2,
+				  بینښه صحيح    script_شمېر,
+				  ثابت hb_نښان_t *script_نښانونه,
+				  بینښه صحيح   *script_شاخص /*بهر*/,
+				  hb_نښان_t       *chosen_script /*بهر*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_script_get_language_tags (hb_face_t    *face,
-				       hb_tag_t      table_tag,
-				       unsigned int  script_index,
-				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
-				       hb_tag_t     *language_tags /* OUT */);
+HB_EXTERN بینښه صحيح
+hb_ot_layout_جدول_get_feature_نښانونه (hb_face_t    *face,
+				     hb_نښان_t      جدول_نښان_2,
+				     بینښه صحيح  پیل_دننه_واټن,
+				     بینښه صحيح *feature_شمېر_2 /* IN/OUT */,
+				     hb_نښان_t     *feature_نښانونه /*بهر*/);
+
+HB_EXTERN بینښه صحيح
+hb_ot_layout_script_get_language_نښانونه (hb_face_t    *face,
+				       hb_نښان_t      جدول_نښان_2,
+				       بینښه صحيح  script_شاخص,
+				       بینښه صحيح  پیل_دننه_واټن,
+				       بینښه صحيح *language_شمېر /* IN/OUT */,
+				       hb_نښان_t     *language_نښانونه /*بهر*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */);
+				     hb_نښان_t        جدول_نښان_2,
+				     بینښه صحيح    script_شاخص,
+				     بینښه صحيح    language_شمېر,
+				     ثابت hb_نښان_t *language_نښانونه,
+				     بینښه صحيح   *language_شاخص /*بهر*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */,
-				     hb_tag_t       *chosen_language /* OUT */);
+				     hb_نښان_t        جدول_نښان_2,
+				     بینښه صحيح    script_شاخص,
+				     بینښه صحيح    language_شمېر,
+				     ثابت hb_نښان_t *language_نښانونه,
+				     بینښه صحيح   *language_شاخص /*بهر*/,
+				     hb_نښان_t       *chosen_language /*بهر*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
-						  hb_tag_t      table_tag,
-						  unsigned int  script_index,
-						  unsigned int  language_index,
-						  unsigned int *feature_index /* OUT */);
+hb_ot_layout_language_get_required_feature_شاخص (hb_face_t    *face,
+						  hb_نښان_t      جدول_نښان_2,
+						  بینښه صحيح  script_شاخص,
+						  بینښه صحيح  language_شاخص,
+						  بینښه صحيح *feature_شاخص /*بهر*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_get_required_feature (hb_face_t    *face,
-					    hb_tag_t      table_tag,
-					    unsigned int  script_index,
-					    unsigned int  language_index,
-					    unsigned int *feature_index /* OUT */,
-					    hb_tag_t     *feature_tag /* OUT */);
+					    hb_نښان_t      جدول_نښان_2,
+					    بینښه صحيح  script_شاخص,
+					    بینښه صحيح  language_شاخص,
+					    بینښه صحيح *feature_شاخص /*بهر*/,
+					    hb_نښان_t     *feature_نښان /*بهر*/);
 
-HB_EXTERN unsigned int
+HB_EXTERN بینښه صحيح
 hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
-					   hb_tag_t      table_tag,
-					   unsigned int  script_index,
-					   unsigned int  language_index,
-					   unsigned int  start_offset,
-					   unsigned int *feature_count /* IN/OUT */,
-					   unsigned int *feature_indexes /* OUT */);
+					   hb_نښان_t      جدول_نښان_2,
+					   بینښه صحيح  script_شاخص,
+					   بینښه صحيح  language_شاخص,
+					   بینښه صحيح  پیل_دننه_واټن,
+					   بینښه صحيح *feature_شمېر_2 /* IN/OUT */,
+					   بینښه صحيح *feature_indexes /*بهر*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
-					hb_tag_t      table_tag,
-					unsigned int  script_index,
-					unsigned int  language_index,
-					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
-					hb_tag_t     *feature_tags /* OUT */);
+HB_EXTERN بینښه صحيح
+hb_ot_layout_language_get_feature_نښانونه (hb_face_t    *face,
+					hb_نښان_t      جدول_نښان_2,
+					بینښه صحيح  script_شاخص,
+					بینښه صحيح  language_شاخص,
+					بینښه صحيح  پیل_دننه_واټن,
+					بینښه صحيح *feature_شمېر_2 /* IN/OUT */,
+					hb_نښان_t     *feature_نښانونه /*بهر*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_language_find_feature (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  script_index,
-				    unsigned int  language_index,
-				    hb_tag_t      feature_tag,
-				    unsigned int *feature_index /* OUT */);
+hb_ot_layout_language_پیدا_کړه_feature (hb_face_t    *face,
+				    hb_نښان_t      جدول_نښان_2,
+				    بینښه صحيح  script_شاخص,
+				    بینښه صحيح  language_شاخص,
+				    hb_نښان_t      feature_نښان,
+				    بینښه صحيح *feature_شاخص /*بهر*/);
 
-HB_EXTERN unsigned int
+HB_EXTERN بینښه صحيح
 hb_ot_layout_feature_get_lookups (hb_face_t    *face,
-				  hb_tag_t      table_tag,
-				  unsigned int  feature_index,
-				  unsigned int  start_offset,
-				  unsigned int *lookup_count /* IN/OUT */,
-				  unsigned int *lookup_indexes /* OUT */);
+				  hb_نښان_t      جدول_نښان_2,
+				  بینښه صحيح  feature_شاخص,
+				  بینښه صحيح  پیل_دننه_واټن,
+				  بینښه صحيح *lookup_شمېر /* IN/OUT */,
+				  بینښه صحيح *lookup_indexes /*بهر*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
-				     hb_tag_t      table_tag);
+HB_EXTERN بینښه صحيح
+hb_ot_layout_جدول_get_lookup_شمېر (hb_face_t    *face,
+				     hb_نښان_t      جدول_نښان_2);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_layout_collect_features (hb_face_t      *face,
-			       hb_tag_t        table_tag,
-			       const hb_tag_t *scripts,
-			       const hb_tag_t *languages,
-			       const hb_tag_t *features,
-			       hb_set_t       *feature_indexes /* OUT */);
+			       hb_نښان_t        جدول_نښان_2,
+			       ثابت hb_نښان_t *scripts,
+			       ثابت hb_نښان_t *languages,
+			       ثابت hb_نښان_t *features,
+			       hb_سېټ_t       *feature_indexes /*بهر*/);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_layout_collect_features_map (hb_face_t      *face,
-				   hb_tag_t        table_tag,
-				   unsigned        script_index,
-				   unsigned        language_index,
-				   hb_map_t       *feature_map /* OUT */);
+				   hb_نښان_t        جدول_نښان_2,
+				   بینښه        script_شاخص,
+				   بینښه        language_شاخص,
+				   hb_map_t       *feature_map /*بهر*/);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_layout_collect_lookups (hb_face_t      *face,
-			      hb_tag_t        table_tag,
-			      const hb_tag_t *scripts,
-			      const hb_tag_t *languages,
-			      const hb_tag_t *features,
-			      hb_set_t       *lookup_indexes /* OUT */);
+			      hb_نښان_t        جدول_نښان_2,
+			      ثابت hb_نښان_t *scripts,
+			      ثابت hb_نښان_t *languages,
+			      ثابت hb_نښان_t *features,
+			      hb_سېټ_t       *lookup_indexes /*بهر*/);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  lookup_index,
-				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_output  /* OUT.  May be NULL */);
+				    hb_نښان_t      جدول_نښان_2,
+				    بینښه صحيح  lookup_شاخص,
+				    hb_سېټ_t     *glyphs_before, /* OUT.  May be NULL */
+				    hb_سېټ_t     *glyphs_ننوت,  /* OUT.  May be NULL */
+				    hb_سېټ_t     *glyphs_after,  /* OUT.  May be NULL */
+				    hb_سېټ_t     *glyphs_output  /* OUT.  May be NULL */);
 
 
 /* Variations support */
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
-					    hb_tag_t      table_tag,
-					    const int    *coords,
-					    unsigned int  num_coords,
-					    unsigned int *variations_index /* out */);
+hb_ot_layout_جدول_پیدا_کړه_feature_variations (hb_face_t    *face,
+					    hb_نښان_t      جدول_نښان_2,
+					    ثابت صحيح    *coords,
+					    بینښه صحيح  عدد_coords,
+					    بینښه صحيح *variations_شاخص /* out */);
 
-HB_EXTERN unsigned int
+HB_EXTERN بینښه صحيح
 hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
-						  hb_tag_t      table_tag,
-						  unsigned int  feature_index,
-						  unsigned int  variations_index,
-						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
-						  unsigned int *lookup_indexes /* OUT */);
+						  hb_نښان_t      جدول_نښان_2,
+						  بینښه صحيح  feature_شاخص,
+						  بینښه صحيح  variations_شاخص,
+						  بینښه صحيح  پیل_دننه_واټن,
+						  بینښه صحيح *lookup_شمېر /* IN/OUT */,
+						  بینښه صحيح *lookup_indexes /*بهر*/);
 
 
 /*
@@ -375,37 +375,37 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_has_substitution (hb_face_t *face);
 
-HB_EXTERN unsigned
+HB_EXTERN بینښه
 hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
-					  unsigned        lookup_index,
+					  بینښه        lookup_شاخص,
 					  hb_codepoint_t  glyph,
-					  unsigned        start_offset,
-					  unsigned       *alternate_count /* IN/OUT */,
-					  hb_codepoint_t *alternate_glyphs /* OUT */);
+					  بینښه        پیل_دننه_واټن,
+					  بینښه       *alternate_شمېر /* IN/OUT */,
+					  hb_codepoint_t *alternate_glyphs /*بهر*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
-					      unsigned   lookup_index,
-					      hb_map_t  *alternate_count /* IN/OUT */,
+					      بینښه   lookup_شاخص,
+					      hb_map_t  *alternate_شمېر /* IN/OUT */,
 					      hb_map_t  *alternate_glyphs /* IN/OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
-				      unsigned int          lookup_index,
-				      const hb_codepoint_t *glyphs,
-				      unsigned int          glyphs_length,
+				      بینښه صحيح          lookup_شاخص,
+				      ثابت hb_codepoint_t *glyphs,
+				      بینښه صحيح          glyphs_اوږدتیا,
 				      hb_bool_t             zero_context);
 
-HB_EXTERN void
-hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
-					unsigned int  lookup_index,
-					hb_set_t     *glyphs
+HB_EXTERN فراغ
+hb_ot_layout_lookup_substitute_تړون (hb_face_t    *face,
+					بینښه صحيح  lookup_شاخص,
+					hb_سېټ_t     *glyphs
 					/*TODO , hb_bool_t  inclusive */);
 
-HB_EXTERN void
-hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
-					 const hb_set_t *lookups,
-					 hb_set_t       *glyphs);
+HB_EXTERN فراغ
+hb_ot_layout_lookups_substitute_تړون (hb_face_t      *face,
+					 ثابت hb_سېټ_t *lookups,
+					 hb_سېټ_t       *glyphs);
 
 
 /*
@@ -418,16 +418,16 @@ hb_ot_layout_has_positioning (hb_face_t *face);
 /* Optical 'size' feature info.  Returns true if found.
  * https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size */
 HB_EXTERN hb_bool_t
-hb_ot_layout_get_size_params (hb_face_t       *face,
-			      unsigned int    *design_size,       /* OUT.  May be NULL */
-			      unsigned int    *subfamily_id,      /* OUT.  May be NULL */
+hb_ot_layout_get_اندازه_params (hb_face_t       *face,
+			      بینښه صحيح    *design_اندازه_2,       /* OUT.  May be NULL */
+			      بینښه صحيح    *subfamily_id,      /* OUT.  May be NULL */
 			      hb_ot_name_id_t *subfamily_name_id, /* OUT.  May be NULL */
-			      unsigned int    *range_start,       /* OUT.  May be NULL */
-			      unsigned int    *range_end          /* OUT.  May be NULL */);
+			      بینښه صحيح    *range_پیل_2,       /* OUT.  May be NULL */
+			      بینښه صحيح    *range_پای_ټکی_2          /* OUT.  May be NULL */);
 
 HB_EXTERN hb_position_t
 hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
-				       unsigned        lookup_index,
+				       بینښه        lookup_شاخص,
 				       hb_direction_t  direction,
 				       hb_codepoint_t  glyph);
 
@@ -438,21 +438,21 @@ hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
-				   hb_tag_t         table_tag,
-				   unsigned int     feature_index,
+				   hb_نښان_t         جدول_نښان_2,
+				   بینښه صحيح     feature_شاخص,
 				   hb_ot_name_id_t *label_id             /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *tooltip_id           /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *sample_id            /* OUT.  May be NULL */,
-				   unsigned int    *num_named_parameters /* OUT.  May be NULL */,
-				   hb_ot_name_id_t *first_param_id       /* OUT.  May be NULL */);
+				   بینښه صحيح    *عدد_named_parameters /* OUT.  May be NULL */,
+				   hb_ot_name_id_t *لومړی_param_id       /* OUT.  May be NULL */);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN بینښه صحيح
 hb_ot_layout_feature_get_characters (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    feature_index,
-				     unsigned int    start_offset,
-				     unsigned int   *char_count    /* IN/OUT.  May be NULL */,
+				     hb_نښان_t        جدول_نښان_2,
+				     بینښه صحيح    feature_شاخص,
+				     بینښه صحيح    پیل_دننه_واټن,
+				     بینښه صحيح   *char_شمېر    /* IN/OUT.  May be NULL */,
 				     hb_codepoint_t *characters    /* OUT.     May be NULL */);
 
 
@@ -463,8 +463,8 @@ hb_ot_layout_feature_get_characters (hb_face_t      *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_font_extents (hb_font_t         *font,
 			       hb_direction_t     direction,
-			       hb_tag_t           script_tag,
-			       hb_tag_t           language_tag,
+			       hb_نښان_t           script_نښان,
+			       hb_نښان_t           language_نښان,
 			       hb_font_extents_t *extents);
 
 HB_EXTERN hb_bool_t
@@ -500,56 +500,56 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
  *
  * Since: 2.6.0
  */
-typedef enum {
-  HB_OT_LAYOUT_BASELINE_TAG_ROMAN			= HB_TAG ('r','o','m','n'),
-  HB_OT_LAYOUT_BASELINE_TAG_HANGING			= HB_TAG ('h','a','n','g'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT	= HB_TAG ('i','c','f','b'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT	= HB_TAG ('i','c','f','t'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL		= HB_TAG ('I','c','f','c'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT	= HB_TAG ('i','d','e','o'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT	= HB_TAG ('i','d','t','p'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL		= HB_TAG ('I','d','c','e'),
-  HB_OT_LAYOUT_BASELINE_TAG_MATH			= HB_TAG ('m','a','t','h'),
+تعريفنوع تعداد {
+  HB_OT_LAYOUT_BASELINE_نښان_ROMAN			= HB_نښان ('r','o','m','n'),
+  HB_OT_LAYOUT_BASELINE_نښان_HANGING			= HB_نښان ('h','a','n','g'),
+  HB_OT_LAYOUT_BASELINE_نښان_IDEO_FACE_BOTTOM_OR_کیڼ	= HB_نښان ('i','c','f','b'),
+  HB_OT_LAYOUT_BASELINE_نښان_IDEO_FACE_سر_OR_ښی	= HB_نښان ('i','c','f','t'),
+  HB_OT_LAYOUT_BASELINE_نښان_IDEO_FACE_CENTRAL		= HB_نښان ('I','c','f','c'),
+  HB_OT_LAYOUT_BASELINE_نښان_IDEO_EMBOX_BOTTOM_OR_کیڼ	= HB_نښان ('i','d','e','o'),
+  HB_OT_LAYOUT_BASELINE_نښان_IDEO_EMBOX_سر_OR_ښی	= HB_نښان ('i','d','t','p'),
+  HB_OT_LAYOUT_BASELINE_نښان_IDEO_EMBOX_CENTRAL		= HB_نښان ('I','d','c','e'),
+  HB_OT_LAYOUT_BASELINE_نښان_MATH			= HB_نښان ('m','a','t','h'),
 
   /*< private >*/
-  _HB_OT_LAYOUT_BASELINE_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_layout_baseline_tag_t;
+  HB_OT_LAYOUT_BASELINE_نښان_MAX_ارزښت = HB_نښان_MAX_SIGNED /*< skip >*/
+} hb_ot_layout_baseline_نښان_t;
 
-HB_EXTERN hb_ot_layout_baseline_tag_t
-hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script);
+HB_EXTERN hb_ot_layout_baseline_نښان_t
+hb_ot_layout_get_horizontal_baseline_نښان_for_script (hb_script_t script);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_baseline (hb_font_t                   *font,
-			   hb_ot_layout_baseline_tag_t  baseline_tag,
+			   hb_ot_layout_baseline_نښان_t  baseline_نښان,
 			   hb_direction_t               direction,
-			   hb_tag_t                     script_tag,
-			   hb_tag_t                     language_tag,
+			   hb_نښان_t                     script_نښان,
+			   hb_نښان_t                     language_نښان,
 			   hb_position_t               *coord        /* OUT.  May be NULL. */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_baseline2 (hb_font_t                   *font,
-			    hb_ot_layout_baseline_tag_t  baseline_tag,
+			    hb_ot_layout_baseline_نښان_t  baseline_نښان,
 			    hb_direction_t               direction,
 			    hb_script_t                  script,
 			    hb_language_t                language,
 			    hb_position_t               *coord        /* OUT.  May be NULL. */);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
-					 hb_ot_layout_baseline_tag_t  baseline_tag,
+					 hb_ot_layout_baseline_نښان_t  baseline_نښان,
 					 hb_direction_t               direction,
-					 hb_tag_t                     script_tag,
-					 hb_tag_t                     language_tag,
-					 hb_position_t               *coord        /* OUT */);
+					 hb_نښان_t                     script_نښان,
+					 hb_نښان_t                     language_نښان,
+					 hb_position_t               *coord        /*بهر*/);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
-					  hb_ot_layout_baseline_tag_t  baseline_tag,
+					  hb_ot_layout_baseline_نښان_t  baseline_نښان,
 					  hb_direction_t               direction,
 					  hb_script_t                  script,
 					  hb_language_t                language,
-					  hb_position_t               *coord        /* OUT */);
+					  hb_position_t               *coord        /*بهر*/);
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
-#endif /* HB_OT_LAYOUT_H */
+#د_که_پای /* HB_OT_LAYOUT_H */

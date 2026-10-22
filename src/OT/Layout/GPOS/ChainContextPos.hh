@@ -1,14 +1,14 @@
-#ifndef OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
-#define OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
+#که_نه_تعریف_شوی OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
+#تعریف_کړه OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-struct ChainContextPos : ChainContext {};
+بنية ChainContextPos : ChainContext {};
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH */
+#د_که_پای /* OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH */

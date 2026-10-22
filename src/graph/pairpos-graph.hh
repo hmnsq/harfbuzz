@@ -24,632 +24,632 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_PAIRPOS_GRAPH_HH
-#define GRAPH_PAIRPOS_GRAPH_HH
+#که_نه_تعریف_شوی ګراف_PAIRPOS_ګراف_HH
+#تعریف_کړه ګراف_PAIRPOS_ګراف_HH
 
-#include "split-helpers.hh"
-#include "coverage-graph.hh"
-#include "classdef-graph.hh"
-#include "../OT/Layout/GPOS/PairPos.hh"
-#include "../OT/Layout/GPOS/PosLookupSubTable.hh"
+#ضمن "split-helpers.hh"
+#ضمن "coverage-graph.hh"
+#ضمن "classdef-graph.hh"
+#ضمن "../OT/Layout/GPOS/PairPos.hh"
+#ضمن "../OT/Layout/GPOS/PosLookupSubTable.hh"
 
-namespace graph {
+نطاق ګراف {
 
-struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>
+بنية PairPosFormat1 : عام OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ګراف_پایله_t<فراغ> sanitize (ثابت ګراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_اندازه ();
+    بینښه min_اندازه = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_اندازه;
+    إذا (unlikely (راس_len < min_اندازه)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < min_size + pairSet.get_size () - pairSet.len.get_size()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    إذا (unlikely (راس_len < min_اندازه + pair_سېټ.get_اندازه () - pair_سېټ.len.get_اندازه()))
+      أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  ګراف_پایله_t<hb_ویکټور_t<بینښه>> وېشل_subtables (gsubgpos_ګراف_context_t& c,
+                                                         بینښه this_شاخص)
   {
-    hb_set_t visited;
+    hb_سېټ_t لیدل_شوی;
 
-    TRY_ASSIGN (const unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    const unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
-    const unsigned base_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
+    TRY_ټاکل (ثابت بینښه coverage_id, c.ګراف.شاخص_for_دننه_واټن (this_شاخص, &coverage));
+    ثابت بینښه coverage_اندازه = c.ګراف.vertices_[coverage_id].جدول_اندازه ();
+    ثابت بینښه بنسټ_اندازه = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_اندازه;
 
-    unsigned partial_coverage_size = 4;
-    unsigned accumulated = base_size;
-    hb_vector_t<unsigned> split_points;
-    for (unsigned i = 0; i < pairSet.len; i++)
+    بینښه partial_coverage_اندازه = 4;
+    بینښه accumulated = بنسټ_اندازه;
+    hb_ویکټور_t<بینښه> وېشل_points;
+    لكل (بینښه i = 0; i < pair_سېټ.len; i++)
     {
-      TRY_ASSIGN (unsigned pair_set_index, pair_set_graph_index (c, this_index, i));
-      unsigned accumulated_delta =
-          c.graph.find_subgraph_size (pair_set_index, visited).value_or (0) +
-          SmallTypes::size; // for PairSet offset.
-      partial_coverage_size += OT::HBUINT16::static_size;
+      TRY_ټاکل (بینښه pair_سېټ_شاخص, pair_سېټ_ګراف_شاخص (c, this_شاخص, i));
+      بینښه accumulated_delta =
+          c.ګراف.پیدا_کړه_subgraph_اندازه (pair_سېټ_شاخص, لیدل_شوی).ارزښت_or (0) +
+          SmallTypes::اندازه; // for PairSet offset.
+      partial_coverage_اندازه += OT::HBUINT16::static_اندازه;
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated + hb_min (partial_coverage_size, coverage_size);
+      بینښه ټول = accumulated + hb_min (partial_coverage_اندازه, coverage_اندازه);
 
-      if (total >= (1 << 16))
+      إذا (ټول >= (1 << 16))
       {
-        split_points.push (i);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
-        accumulated = base_size + accumulated_delta;
-        partial_coverage_size = 6;
-        visited.clear (); // node sharing isn't allowed between splits.
+        وېشل_points.push (i);
+        TRY (ګراف_پایله_t<فراغ>::from (وېشل_points, ویش_FAILURE));
+        accumulated = بنسټ_اندازه + accumulated_delta;
+        partial_coverage_اندازه = 6;
+        لیدل_شوی.clear (); // node sharing isn't allowed between splits.
       }
     }
 
-    split_context_t split_context {
+    وېشل_context_t وېشل_context {
       c,
-      this,
-      this_index,
+      هذا,
+      this_شاخص,
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    أرجع actuate_subtable_وېشل<وېشل_context_t> (وېشل_context, وېشل_points);
   }
 
- private:
+ خاص:
 
-  struct split_context_t {
-    gsubgpos_graph_context_t& c;
+  بنية وېشل_context_t {
+    gsubgpos_ګراف_context_t& c;
     PairPosFormat1* thiz;
-    unsigned this_index;
+    بینښه this_شاخص;
 
-    unsigned original_count ()
+    بینښه original_شمېر_2 ()
     {
-      return thiz->pairSet.len;
+      أرجع thiz->pair_سېټ.len;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    ګراف_پایله_t<بینښه> clone_range (بینښه پیل, بینښه پای_ټکی)
     {
-      return thiz->clone_range (this->c, this->this_index, start, end);
+      أرجع thiz->clone_range (هذا->c, هذا->this_شاخص, پیل, پای_ټکی);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    ګراف_پایله_t<فراغ> shrink (بینښه شمېر)
     {
-      return thiz->shrink (this->c, this->this_index, count);
+      أرجع thiz->shrink (هذا->c, هذا->this_شاخص, شمېر);
     }
   };
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               unsigned this_index,
-                               unsigned count)
+  ګراف_پایله_t<فراغ> shrink (gsubgpos_ګراف_context_t& c,
+                               بینښه this_شاخص,
+                               بینښه شمېر)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره,
                "  Shrinking PairPosFormat1 (%u) to [0, %u).",
-               this_index,
-               count);
-    unsigned old_count = pairSet.len;
-    if (count >= old_count)
-      return Ok();
+               this_شاخص,
+               شمېر);
+    بینښه old_شمېر = pair_سېټ.len;
+    إذا (شمېر >= old_شمېر)
+      أرجع Ok();
 
-    pairSet.len = count;
-    c.graph.vertices_[this_index].shrink_buffer ((old_count - count) * SmallTypes::size);
+    pair_سېټ.len = شمېر;
+    c.ګراف.vertices_[this_شاخص].shrink_بفر ((old_شمېر - شمېر) * SmallTypes::اندازه);
 
-    TRY_ASSIGN (auto coverage, c.graph.as_mutable_table<Coverage> (this_index, &this->coverage));
+    TRY_ټاکل (خپلکاری coverage, c.ګراف.as_mutable_جدول<Coverage> (this_شاخص, &هذا->coverage));
 
-    unsigned coverage_size = coverage.vertex->table_size ();
-    auto new_coverage =
-        + hb_zip (coverage.table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second < count;
+    بینښه coverage_اندازه = coverage.راس->جدول_اندازه ();
+    خپلکاری new_coverage =
+        + hb_zip (coverage.جدول->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<بینښه, بینښه> p) {
+          أرجع p.second < شمېر;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_ترتیبونه (hb_لومړی)
         ;
 
-    return Coverage::make_coverage (c, new_coverage, coverage.index, coverage_size);
+    أرجع Coverage::make_coverage (c, new_coverage, coverage.شاخص_2, coverage_اندازه);
   }
 
   // Create a new PairPos including PairSet's from start (inclusive) to end (exclusive).
   // Returns object id of the new object.
-  graph_result_t<unsigned> clone_range (gsubgpos_graph_context_t& c,
-                                        unsigned this_index,
-                                        unsigned start, unsigned end) const
+  ګراف_پایله_t<بینښه> clone_range (gsubgpos_ګراف_context_t& c,
+                                        بینښه this_شاخص,
+                                        بینښه پیل, بینښه پای_ټکی) ثابت
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "  Cloning PairPosFormat1 (%u) range [%u, %u).", this_index, start, end);
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره,
+               "  Cloning PairPosFormat1 (%u) range [%u, %u).", this_شاخص, پیل, پای_ټکی);
 
-    unsigned num_pair_sets = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size
-                          + num_pair_sets * SmallTypes::size;
+    بینښه عدد_pair_sets = پای_ټکی - پیل;
+    بینښه اولي_اندازه = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_اندازه
+                          + عدد_pair_sets * SmallTypes::اندازه;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, c.create_node (prime_size));
+    TRY_ټاکل (بینښه pair_pos_اولي_id, c.create_غوټه (اولي_اندازه));
 
-    PairPosFormat1* pair_pos_prime = (PairPosFormat1*) c.graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat[0] = this->valueFormat[0];
-    pair_pos_prime->valueFormat[1] = this->valueFormat[1];
-    pair_pos_prime->pairSet.len = num_pair_sets;
+    PairPosFormat1* pair_pos_اولي = (PairPosFormat1*) c.ګراف.object (pair_pos_اولي_id).سر_2;
+    pair_pos_اولي->format = هذا->format;
+    pair_pos_اولي->ارزښت_Format_2[0] = هذا->ارزښت_Format_2[0];
+    pair_pos_اولي->ارزښت_Format_2[1] = هذا->ارزښت_Format_2[1];
+    pair_pos_اولي->pair_سېټ.len = عدد_pair_sets;
 
-    for (unsigned i = start; i < end; i++)
+    لكل (بینښه i = پیل; i < پای_ټکی; i++)
     {
-      TRY (c.graph.move_child<> (this_index,
-                                 &pairSet[i],
-                                 pair_pos_prime_id,
-                                 &pair_pos_prime->pairSet[i - start]));
+      TRY (c.ګراف.move_ماشوم<> (this_شاخص,
+                                 &pair_سېټ[i],
+                                 pair_pos_اولي_id,
+                                 &pair_pos_اولي->pair_سېټ[i - پیل]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
-    c.graph.vertices_[this_index].sort_real_links ();
+    c.ګراف.vertices_[this_شاخص].ترتیبول_real_links ();
 
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
+    TRY_ټاکل (بینښه coverage_id, c.ګراف.شاخص_for_دننه_واټن (this_شاخص, &coverage));
     TRY (Coverage::clone_coverage (c,
                                    coverage_id,
-                                   pair_pos_prime_id,
+                                   pair_pos_اولي_id,
                                    2,
-                                   start, end));
+                                   پیل, پای_ټکی));
 
-    return Ok(pair_pos_prime_id);
+    أرجع Ok(pair_pos_اولي_id);
   }
 
 
 
-  graph_result_t<unsigned> pair_set_graph_index (gsubgpos_graph_context_t& c, unsigned this_index, unsigned i) const
+  ګراف_پایله_t<بینښه> pair_سېټ_ګراف_شاخص (gsubgpos_ګراف_context_t& c, بینښه this_شاخص, بینښه i) ثابت
   {
-    return c.graph.index_for_offset (this_index, &pairSet[i]);
+    أرجع c.ګراف.شاخص_for_دننه_واټن (this_شاخص, &pair_سېټ[i]);
   }
 };
 
-struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>
+بنية PairPosFormat2 : عام OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ګراف_پایله_t<فراغ> sanitize (ثابت ګراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_اندازه ();
+    بینښه min_اندازه = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_اندازه;
+    إذا (unlikely (راس_len < min_اندازه)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    const unsigned class1_count = class1Count;
-    if (unlikely (vertex_len < min_size + class1_count * get_class1_record_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    ثابت بینښه class1_شمېر = class1_شمېر_2;
+    إذا (unlikely (راس_len < min_اندازه + class1_شمېر * get_class1_ریکارډ_اندازه ()))
+      أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  ګراف_پایله_t<hb_ویکټور_t<بینښه>> وېشل_subtables (gsubgpos_ګراف_context_t& c,
+                                                         بینښه this_شاخص)
   {
-    const unsigned base_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
-    TRY_ASSIGN (const unsigned class_def_2_size, size_of (c, this_index, &classDef2));
-    TRY_ASSIGN (const Coverage* coverage, get_coverage (c, this_index));
-    TRY_ASSIGN (const ClassDef* class_def_1, get_class_def_1 (c, this_index));
-    auto gid_and_class =
+    ثابت بینښه بنسټ_اندازه = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_اندازه;
+    TRY_ټاکل (ثابت بینښه class_def_2_اندازه, اندازه_د (c, this_شاخص, &classDef2));
+    TRY_ټاکل (ثابت Coverage* coverage, get_coverage (c, this_شاخص));
+    TRY_ټاکل (ثابت ClassDef* class_def_1, get_class_def_1 (c, this_شاخص));
+    خپلکاری gid_and_class =
         + coverage->iter ()
-        | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-          return hb_codepoint_pair_t (gid, class_def_1->get_class (gid));
+        | hb_map_retains_ترتیبونه ([&] (hb_codepoint_t gid) {
+          أرجع hb_codepoint_pair_t (gid, class_def_1->get_class (gid));
         })
         ;
-    TRY_ASSIGN (class_def_size_estimator_t estimator, class_def_size_estimator_t::create (gid_and_class));
+    TRY_ټاکل (class_def_اندازه_estimator_t estimator, class_def_اندازه_estimator_t::create (gid_and_class));
 
-    const unsigned class1_count = class1Count;
-    const unsigned class2_count = class2Count;
-    const unsigned class1_record_size = get_class1_record_size ();
+    ثابت بینښه class1_شمېر = class1_شمېر_2;
+    ثابت بینښه class2_شمېر = class2_شمېر_2;
+    ثابت بینښه class1_ریکارډ_اندازه = get_class1_ریکارډ_اندازه ();
 
-    const unsigned value_1_len = valueFormat1.get_len ();
-    const unsigned value_2_len = valueFormat2.get_len ();
-    const unsigned total_value_len = value_1_len + value_2_len;
+    ثابت بینښه ارزښت_1_len = ارزښت_Format1.get_len ();
+    ثابت بینښه ارزښت_2_len = ارزښت_Format2.get_len ();
+    ثابت بینښه ټول_ارزښت_len = ارزښت_1_len + ارزښت_2_len;
 
-    unsigned accumulated = base_size;
-    unsigned coverage_size = 4;
-    unsigned class_def_1_size = 4;
-    unsigned max_coverage_size = coverage_size;
-    unsigned max_class_def_1_size = class_def_1_size;
+    بینښه accumulated = بنسټ_اندازه;
+    بینښه coverage_اندازه = 4;
+    بینښه class_def_1_اندازه = 4;
+    بینښه max_coverage_اندازه = coverage_اندازه;
+    بینښه max_class_def_1_اندازه = class_def_1_اندازه;
 
-    hb_vector_t<unsigned> split_points;
+    hb_ویکټور_t<بینښه> وېشل_points;
 
-    TRY_ASSIGN (auto device_tables, get_all_device_tables (c, this_index));
-    hb_vector_t<unsigned> format1_device_table_indices = valueFormat1.get_device_table_indices ();
-    hb_vector_t<unsigned> format2_device_table_indices = valueFormat2.get_device_table_indices ();
-    bool has_device_tables = bool(format1_device_table_indices) || bool(format2_device_table_indices);
+    TRY_ټاکل (خپلکاری device_tables, get_all_device_tables (c, this_شاخص));
+    hb_ویکټور_t<بینښه> format1_device_جدول_indices = ارزښت_Format1.get_device_جدول_indices ();
+    hb_ویکټور_t<بینښه> format2_device_جدول_indices = ارزښت_Format2.get_device_جدول_indices ();
+    منطقي has_device_tables = منطقي(format1_device_جدول_indices) || منطقي(format2_device_جدول_indices);
 
-    hb_set_t visited;
-    for (unsigned i = 0; i < class1_count; i++)
+    hb_سېټ_t لیدل_شوی;
+    لكل (بینښه i = 0; i < class1_شمېر; i++)
     {
-      unsigned accumulated_delta = class1_record_size;
-      class_def_1_size = estimator.add_class_def_size (i);
-      coverage_size = estimator.coverage_size ();
-      max_coverage_size = hb_max (max_coverage_size, coverage_size);
-      max_class_def_1_size = hb_max (max_class_def_1_size, class_def_1_size);
+      بینښه accumulated_delta = class1_ریکارډ_اندازه;
+      class_def_1_اندازه = estimator.جمع_کړه_class_def_اندازه (i);
+      coverage_اندازه = estimator.coverage_اندازه ();
+      max_coverage_اندازه = hb_max (max_coverage_اندازه, coverage_اندازه);
+      max_class_def_1_اندازه = hb_max (max_class_def_1_اندازه, class_def_1_اندازه);
 
-      if (has_device_tables) {
-        for (unsigned j = 0; j < class2_count; j++)
+      إذا (has_device_tables) {
+        لكل (بینښه j = 0; j < class2_شمېر; j++)
         {
-          unsigned value1_index = total_value_len * (class2_count * i + j);
-          unsigned value2_index = value1_index + value_1_len;
-          accumulated_delta += size_of_value_record_children (c,
+          بینښه value1_شاخص = ټول_ارزښت_len * (class2_شمېر * i + j);
+          بینښه value2_شاخص = value1_شاخص + ارزښت_1_len;
+          accumulated_delta += اندازه_د_ارزښت_ریکارډ_children (c,
                                                         device_tables,
-                                                        format1_device_table_indices,
-                                                        value1_index,
-                                                        visited);
-          accumulated_delta += size_of_value_record_children (c,
+                                                        format1_device_جدول_indices,
+                                                        value1_شاخص,
+                                                        لیدل_شوی);
+          accumulated_delta += اندازه_د_ارزښت_ریکارډ_children (c,
                                                         device_tables,
-                                                        format2_device_table_indices,
-                                                        value2_index,
-                                                        visited);
+                                                        format2_device_جدول_indices,
+                                                        value2_شاخص,
+                                                        لیدل_شوی);
         }
       }
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated
-                       + coverage_size + class_def_1_size + class_def_2_size
+      بینښه ټول = accumulated
+                       + coverage_اندازه + class_def_1_اندازه + class_def_2_اندازه
                        // The largest object will pack last and can exceed the size limit.
-                       - hb_max (hb_max (coverage_size, class_def_1_size), class_def_2_size);
-      if (total >= (1 << 16))
+                       - hb_max (hb_max (coverage_اندازه, class_def_1_اندازه), class_def_2_اندازه);
+      إذا (ټول >= (1 << 16))
       {
-        split_points.push (i);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
+        وېشل_points.push (i);
+        TRY (ګراف_پایله_t<فراغ>::from (وېشل_points, ویش_FAILURE));
         // split does not include i, so add the size for i when we reset the size counters.
-        accumulated = base_size + accumulated_delta;
+        accumulated = بنسټ_اندازه + accumulated_delta;
 
         estimator.reset();
-        class_def_1_size = estimator.add_class_def_size(i);
-        coverage_size = estimator.coverage_size();
-        visited.clear (); // node sharing isn't allowed between splits.
+        class_def_1_اندازه = estimator.جمع_کړه_class_def_اندازه(i);
+        coverage_اندازه = estimator.coverage_اندازه();
+        لیدل_شوی.clear (); // node sharing isn't allowed between splits.
       }
     }
 
-    split_context_t split_context {
+    وېشل_context_t وېشل_context {
       c,
-      this,
-      this_index,
-      class1_record_size,
-      total_value_len,
-      value_1_len,
-      value_2_len,
-      max_coverage_size,
-      max_class_def_1_size,
+      هذا,
+      this_شاخص,
+      class1_ریکارډ_اندازه,
+      ټول_ارزښت_len,
+      ارزښت_1_len,
+      ارزښت_2_len,
+      max_coverage_اندازه,
+      max_class_def_1_اندازه,
       device_tables,
-      format1_device_table_indices,
-      format2_device_table_indices
+      format1_device_جدول_indices,
+      format2_device_جدول_indices
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    أرجع actuate_subtable_وېشل<وېشل_context_t> (وېشل_context, وېشل_points);
   }
- private:
+ خاص:
 
-  struct split_context_t
+  بنية وېشل_context_t
   {
-    gsubgpos_graph_context_t& c;
+    gsubgpos_ګراف_context_t& c;
     PairPosFormat2* thiz;
-    unsigned this_index;
-    unsigned class1_record_size;
-    unsigned value_record_len;
-    unsigned value1_record_len;
-    unsigned value2_record_len;
-    unsigned max_coverage_size;
-    unsigned max_class_def_size;
+    بینښه this_شاخص;
+    بینښه class1_ریکارډ_اندازه;
+    بینښه ارزښت_ریکارډ_len;
+    بینښه value1_ریکارډ_len;
+    بینښه value2_ریکارډ_len;
+    بینښه max_coverage_اندازه;
+    بینښه max_class_def_اندازه;
 
-    const hb_hashmap_t<unsigned, unsigned>& device_tables;
-    const hb_vector_t<unsigned>& format1_device_table_indices;
-    const hb_vector_t<unsigned>& format2_device_table_indices;
+    ثابت hb_hashmap_t<بینښه, بینښه>& device_tables;
+    ثابت hb_ویکټور_t<بینښه>& format1_device_جدول_indices;
+    ثابت hb_ویکټور_t<بینښه>& format2_device_جدول_indices;
 
-    unsigned original_count ()
+    بینښه original_شمېر_2 ()
     {
-      return thiz->class1Count;
+      أرجع thiz->class1_شمېر_2;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    ګراف_پایله_t<بینښه> clone_range (بینښه پیل, بینښه پای_ټکی)
     {
-      return thiz->clone_range (*this, start, end);
+      أرجع thiz->clone_range (*هذا, پیل, پای_ټکی);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    ګراف_پایله_t<فراغ> shrink (بینښه شمېر)
     {
-      return thiz->shrink (*this, count);
+      أرجع thiz->shrink (*هذا, شمېر);
     }
   };
 
-  size_t get_class1_record_size () const
+  size_t get_class1_ریکارډ_اندازه () ثابت
   {
-    const size_t class2_count = class2Count;
-    return
-        class2_count * (valueFormat1.get_size () + valueFormat2.get_size ());
+    ثابت size_t class2_شمېر = class2_شمېر_2;
+    أرجع
+        class2_شمېر * (ارزښت_Format1.get_اندازه () + ارزښت_Format2.get_اندازه ());
   }
 
-  graph_result_t<unsigned> clone_range (split_context_t& split_context,
-                                        unsigned start, unsigned end) const
+  ګراف_پایله_t<بینښه> clone_range (وېشل_context_t& وېشل_context,
+                                        بینښه پیل, بینښه پای_ټکی) ثابت
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "  Cloning PairPosFormat2 (%u) range [%u, %u).", split_context.this_index, start, end);
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره,
+               "  Cloning PairPosFormat2 (%u) range [%u, %u).", وېشل_context.this_شاخص, پیل, پای_ټکی);
 
-    graph_t& graph = split_context.c.graph;
+    ګراف_t& ګراف = وېشل_context.c.ګراف;
 
-    unsigned num_records = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size
-                          + num_records * split_context.class1_record_size;
+    بینښه عدد_ریکارډونه = پای_ټکی - پیل;
+    بینښه اولي_اندازه = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_اندازه
+                          + عدد_ریکارډونه * وېشل_context.class1_ریکارډ_اندازه;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, split_context.c.create_node (prime_size));
+    TRY_ټاکل (بینښه pair_pos_اولي_id, وېشل_context.c.create_غوټه (اولي_اندازه));
 
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat1 = this->valueFormat1;
-    pair_pos_prime->valueFormat2 = this->valueFormat2;
-    pair_pos_prime->class1Count = num_records;
-    pair_pos_prime->class2Count = this->class2Count;
-    TRY (clone_class1_records (split_context,
-                               pair_pos_prime_id,
-                               start,
-                               end));
+    PairPosFormat2* pair_pos_اولي =
+        (PairPosFormat2*) ګراف.object (pair_pos_اولي_id).سر_2;
+    pair_pos_اولي->format = هذا->format;
+    pair_pos_اولي->ارزښت_Format1 = هذا->ارزښت_Format1;
+    pair_pos_اولي->ارزښت_Format2 = هذا->ارزښت_Format2;
+    pair_pos_اولي->class1_شمېر_2 = عدد_ریکارډونه;
+    pair_pos_اولي->class2_شمېر_2 = هذا->class2_شمېر_2;
+    TRY (clone_class1_ریکارډونه (وېشل_context,
+                               pair_pos_اولي_id,
+                               پیل,
+                               پای_ټکی));
 
-    TRY_ASSIGN (unsigned coverage_id,
-         graph.index_for_offset (split_context.this_index, &coverage));
-    TRY_ASSIGN (unsigned class_def_1_id,
-         graph.index_for_offset (split_context.this_index, &classDef1));
+    TRY_ټاکل (بینښه coverage_id,
+         ګراف.شاخص_for_دننه_واټن (وېشل_context.this_شاخص, &coverage));
+    TRY_ټاکل (بینښه class_def_1_id,
+         ګراف.شاخص_for_دننه_واټن (وېشل_context.this_شاخص, &classDef1));
 
-    auto& coverage_v = graph.vertices_[coverage_id];
-    auto& class_def_1_v = graph.vertices_[class_def_1_id];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    const ClassDef* class_def_1_table = (const ClassDef*) class_def_1_v.obj().head;
-    if (unlikely (!coverage_table || !class_def_1_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
-    TRY (class_def_1_table->sanitize (class_def_1_v));
+    خپلکاری& coverage_v = ګراف.vertices_[coverage_id];
+    خپلکاری& class_def_1_v = ګراف.vertices_[class_def_1_id];
+    ثابت Coverage* coverage_جدول = (ثابت Coverage*) coverage_v.obj().سر_2;
+    ثابت ClassDef* class_def_1_جدول = (ثابت ClassDef*) class_def_1_v.obj().سر_2;
+    إذا (unlikely (!coverage_جدول || !class_def_1_جدول))
+      أرجع Err(INVALID_دلیل);
+    TRY (coverage_جدول->sanitize (coverage_v));
+    TRY (class_def_1_جدول->sanitize (class_def_1_v));
 
-    auto klass_map =
-    + coverage_table->iter ()
-    | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-      return hb_codepoint_pair_t (gid, class_def_1_table->get_class (gid));
+    خپلکاری klass_map =
+    + coverage_جدول->iter ()
+    | hb_map_retains_ترتیبونه ([&] (hb_codepoint_t gid) {
+      أرجع hb_codepoint_pair_t (gid, class_def_1_جدول->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass >= start && klass < end;
-    }, hb_second)
-    | hb_map_retains_sorting ([&] (hb_codepoint_pair_t gid_and_class) {
+      أرجع klass >= پیل && klass < پای_ټکی;
+    }, hb_دوهم)
+    | hb_map_retains_ترتیبونه ([&] (hb_codepoint_pair_t gid_and_class) {
       // Classes must be from 0...N so subtract start
-      return hb_codepoint_pair_t (gid_and_class.first, gid_and_class.second - start);
+      أرجع hb_codepoint_pair_t (gid_and_class.لومړی, gid_and_class.second - پیل);
     })
     ;
 
-    TRY (Coverage::add_coverage (split_context.c,
-                                 pair_pos_prime_id,
+    TRY (Coverage::جمع_کړه_coverage (وېشل_context.c,
+                                 pair_pos_اولي_id,
                                  2,
-                                 + klass_map | hb_map_retains_sorting (hb_first),
-                                 split_context.max_coverage_size));
+                                 + klass_map | hb_map_retains_ترتیبونه (hb_لومړی),
+                                 وېشل_context.max_coverage_اندازه));
 
     // classDef1
-    TRY (ClassDef::add_class_def (split_context.c,
-                                  pair_pos_prime_id,
+    TRY (ClassDef::جمع_کړه_class_def (وېشل_context.c,
+                                  pair_pos_اولي_id,
                                   8,
                                   + klass_map,
-                                  split_context.max_class_def_size));
+                                  وېشل_context.max_class_def_اندازه));
 
     // classDef2
-    TRY_ASSIGN (unsigned class_def_2_id,
-         graph.index_for_offset (split_context.this_index, &classDef2));
+    TRY_ټاکل (بینښه class_def_2_id,
+         ګراف.شاخص_for_دننه_واټن (وېشل_context.this_شاخص, &classDef2));
 
-    TRY(graph.vertices_[pair_pos_prime_id].add_real_link (SmallTypes::size, class_def_2_id, 10));
-    TRY(graph.vertices_[class_def_2_id].add_parent (pair_pos_prime_id, false));
+    TRY(ګراف.vertices_[pair_pos_اولي_id].جمع_کړه_real_link (SmallTypes::اندازه, class_def_2_id, 10));
+    TRY(ګراف.vertices_[class_def_2_id].جمع_کړه_پلار (pair_pos_اولي_id, خطأ));
 
-    return Ok(pair_pos_prime_id);
+    أرجع Ok(pair_pos_اولي_id);
   }
 
-  graph_result_t<void> clone_class1_records (split_context_t& split_context,
-                                             unsigned pair_pos_prime_id,
-                                             unsigned start, unsigned end) const
+  ګراف_پایله_t<فراغ> clone_class1_ریکارډونه (وېشل_context_t& وېشل_context,
+                                             بینښه pair_pos_اولي_id,
+                                             بینښه پیل, بینښه پای_ټکی) ثابت
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_اولي =
+        (PairPosFormat2*) وېشل_context.c.ګراف.object (pair_pos_اولي_id).سر_2;
 
-    char* start_addr = ((char*)&values[0]) + start * split_context.class1_record_size;
-    unsigned num_records = end - start;
-    hb_memcpy (&pair_pos_prime->values[0],
-            start_addr,
-            num_records * split_context.class1_record_size);
+    حرف* پیل_addr = ((حرف*)&values[0]) + پیل * وېشل_context.class1_ریکارډ_اندازه;
+    بینښه عدد_ریکارډونه = پای_ټکی - پیل;
+    hb_memcpy (&pair_pos_اولي->values[0],
+            پیل_addr,
+            عدد_ریکارډونه * وېشل_context.class1_ریکارډ_اندازه);
 
-    if (!split_context.format1_device_table_indices
-        && !split_context.format2_device_table_indices)
+    إذا (!وېشل_context.format1_device_جدول_indices
+        && !وېشل_context.format2_device_جدول_indices)
       // No device tables to move over.
-      return Ok();
+      أرجع Ok();
 
-    unsigned class2_count = class2Count;
-    for (unsigned i = start; i < end; i++)
+    بینښه class2_شمېر = class2_شمېر_2;
+    لكل (بینښه i = پیل; i < پای_ټکی; i++)
     {
-      for (unsigned j = 0; j < class2_count; j++)
+      لكل (بینښه j = 0; j < class2_شمېر; j++)
       {
-        unsigned value1_index = split_context.value_record_len * (class2_count * i + j);
-        unsigned value2_index = value1_index + split_context.value1_record_len;
+        بینښه value1_شاخص = وېشل_context.ارزښت_ریکارډ_len * (class2_شمېر * i + j);
+        بینښه value2_شاخص = value1_شاخص + وېشل_context.value1_ریکارډ_len;
 
-        unsigned new_value1_index = split_context.value_record_len * (class2_count * (i - start) + j);
-        unsigned new_value2_index = new_value1_index + split_context.value1_record_len;
+        بینښه new_value1_شاخص = وېشل_context.ارزښت_ریکارډ_len * (class2_شمېر * (i - پیل) + j);
+        بینښه new_value2_شاخص = new_value1_شاخص + وېشل_context.value1_ریکارډ_len;
 
-        TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
-                                     split_context.format1_device_table_indices,
-                                     value1_index,
-                                     new_value1_index));
+        TRY (transfer_device_tables (وېشل_context,
+                                     pair_pos_اولي_id,
+                                     وېشل_context.format1_device_جدول_indices,
+                                     value1_شاخص,
+                                     new_value1_شاخص));
 
-        TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
-                                     split_context.format2_device_table_indices,
-                                     value2_index,
-                                     new_value2_index));
+        TRY (transfer_device_tables (وېشل_context,
+                                     pair_pos_اولي_id,
+                                     وېشل_context.format2_device_جدول_indices,
+                                     value2_شاخص,
+                                     new_value2_شاخص));
       }
     }
-    return Ok();
+    أرجع Ok();
   }
 
-  graph_result_t<void> transfer_device_tables (split_context_t& split_context,
-                                               unsigned pair_pos_prime_id,
-                                               const hb_vector_t<unsigned>& device_table_indices,
-                                               unsigned old_value_record_index,
-                                               unsigned new_value_record_index) const
+  ګراف_پایله_t<فراغ> transfer_device_tables (وېشل_context_t& وېشل_context,
+                                               بینښه pair_pos_اولي_id,
+                                               ثابت hb_ویکټور_t<بینښه>& device_جدول_indices,
+                                               بینښه old_ارزښت_ریکارډ_شاخص,
+                                               بینښه new_ارزښت_ریکارډ_شاخص) ثابت
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_اولي =
+        (PairPosFormat2*) وېشل_context.c.ګراف.object (pair_pos_اولي_id).سر_2;
 
-    for (unsigned i : device_table_indices)
+    لكل (بینښه i : device_جدول_indices)
     {
-      OT::Offset16* record = (OT::Offset16*) &values[old_value_record_index + i];
-      unsigned record_position = ((char*) record) - ((char*) this);
-      if (!split_context.device_tables.has (record_position)) continue;
+      OT::Offset16* ریکارډ = (OT::Offset16*) &values[old_ارزښت_ریکارډ_شاخص + i];
+      بینښه ریکارډ_position = ((حرف*) ریکارډ) - ((حرف*) هذا);
+      إذا (!وېشل_context.device_tables.has (ریکارډ_position)) استمر;
 
-      TRY (split_context.c.graph.move_child (
-          split_context.this_index,
-          record,
-          pair_pos_prime_id,
-          (OT::Offset16*) &pair_pos_prime->values[new_value_record_index + i]));
+      TRY (وېشل_context.c.ګراف.move_ماشوم (
+          وېشل_context.this_شاخص,
+          ریکارډ,
+          pair_pos_اولي_id,
+          (OT::Offset16*) &pair_pos_اولي->values[new_ارزښت_ریکارډ_شاخص + i]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
-    split_context.c.graph.vertices_[split_context.this_index].sort_real_links ();
+    وېشل_context.c.ګراف.vertices_[وېشل_context.this_شاخص].ترتیبول_real_links ();
 
-    return Ok();
+    أرجع Ok();
   }
 
-  graph_result_t<void> shrink (split_context_t& split_context,
-                               unsigned count)
+  ګراف_پایله_t<فراغ> shrink (وېشل_context_t& وېشل_context,
+                               بینښه شمېر)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره,
                "  Shrinking PairPosFormat2 (%u) to [0, %u).",
-               split_context.this_index,
-               count);
-    unsigned old_count = class1Count;
-    if (count >= old_count)
-      return Ok();
+               وېشل_context.this_شاخص,
+               شمېر);
+    بینښه old_شمېر = class1_شمېر_2;
+    إذا (شمېر >= old_شمېر)
+      أرجع Ok();
 
-    graph_t& graph = split_context.c.graph;
-    class1Count = count;
-    graph.vertices_[split_context.this_index].shrink_buffer(
-        (old_count - count) * split_context.class1_record_size);
+    ګراف_t& ګراف = وېشل_context.c.ګراف;
+    class1_شمېر_2 = شمېر;
+    ګراف.vertices_[وېشل_context.this_شاخص].shrink_بفر(
+        (old_شمېر - شمېر) * وېشل_context.class1_ریکارډ_اندازه);
 
-    TRY_ASSIGN (auto coverage,
-         graph.as_mutable_table<Coverage> (split_context.this_index, &this->coverage));
+    TRY_ټاکل (خپلکاری coverage,
+         ګراف.as_mutable_جدول<Coverage> (وېشل_context.this_شاخص, &هذا->coverage));
 
-    TRY_ASSIGN (auto class_def_1,
-         graph.as_mutable_table<ClassDef> (split_context.this_index, &classDef1));
+    TRY_ټاکل (خپلکاری class_def_1,
+         ګراف.as_mutable_جدول<ClassDef> (وېشل_context.this_شاخص, &classDef1));
 
-    auto klass_map =
-    + coverage.table->iter ()
-    | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-      return hb_codepoint_pair_t (gid, class_def_1.table->get_class (gid));
+    خپلکاری klass_map =
+    + coverage.جدول->iter ()
+    | hb_map_retains_ترتیبونه ([&] (hb_codepoint_t gid) {
+      أرجع hb_codepoint_pair_t (gid, class_def_1.جدول->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass < count;
-    }, hb_second)
+      أرجع klass < شمېر;
+    }, hb_دوهم)
     ;
 
-    auto new_coverage = + klass_map | hb_map_retains_sorting (hb_first);
-    TRY (Coverage::make_coverage (split_context.c,
+    خپلکاری new_coverage = + klass_map | hb_map_retains_ترتیبونه (hb_لومړی);
+    TRY (Coverage::make_coverage (وېشل_context.c,
                                   + new_coverage,
-                                  coverage.index,
+                                  coverage.شاخص_2,
                                   // existing ranges my not be kept, worst case size is a format 1
                                   // coverage table.
                                   4 + new_coverage.len() * 2));
 
-    return ClassDef::make_class_def (split_context.c,
+    أرجع ClassDef::make_class_def (وېشل_context.c,
                                      + klass_map,
-                                     class_def_1.index,
-                                     class_def_1.vertex->table_size ());
+                                     class_def_1.شاخص_2,
+                                     class_def_1.راس->جدول_اندازه ());
   }
 
-  graph_result_t<hb_hashmap_t<unsigned, unsigned>>
-  get_all_device_tables (gsubgpos_graph_context_t& c,
-                         unsigned this_index) const
+  ګراف_پایله_t<hb_hashmap_t<بینښه, بینښه>>
+  get_all_device_tables (gsubgpos_ګراف_context_t& c,
+                         بینښه this_شاخص) ثابت
   {
-    const auto& v = c.graph.vertices_[this_index];
-    return v.position_to_index_map ();
+    ثابت خپلکاری& v = c.ګراف.vertices_[this_شاخص];
+    أرجع v.position_منزل_شاخص_map ();
   }
 
-  graph_result_t<const Coverage*> get_coverage (gsubgpos_graph_context_t& c,
-                                                unsigned this_index) const
+  ګراف_پایله_t<ثابت Coverage*> get_coverage (gsubgpos_ګراف_context_t& c,
+                                                بینښه this_شاخص) ثابت
   {
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    auto& coverage_v = c.graph.vertices_[coverage_id];
+    TRY_ټاکل (بینښه coverage_id, c.ګراف.شاخص_for_دننه_واټن (this_شاخص, &coverage));
+    خپلکاری& coverage_v = c.ګراف.vertices_[coverage_id];
 
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table)) return Err(INVALID_ARGUMENT);
-    TRY(coverage_table->sanitize (coverage_v));
+    ثابت Coverage* coverage_جدول = (ثابت Coverage*) coverage_v.obj().سر_2;
+    إذا (unlikely (!coverage_جدول)) أرجع Err(INVALID_دلیل);
+    TRY(coverage_جدول->sanitize (coverage_v));
 
-    return coverage_table;
+    أرجع coverage_جدول;
   }
 
-  graph_result_t<const ClassDef*> get_class_def_1 (gsubgpos_graph_context_t& c,
-                                                   unsigned this_index) const
+  ګراف_پایله_t<ثابت ClassDef*> get_class_def_1 (gsubgpos_ګراف_context_t& c,
+                                                   بینښه this_شاخص) ثابت
   {
-    TRY_ASSIGN (unsigned class_def_1_id, c.graph.index_for_offset (this_index, &classDef1));
-    auto& class_def_1_v = c.graph.vertices_[class_def_1_id];
+    TRY_ټاکل (بینښه class_def_1_id, c.ګراف.شاخص_for_دننه_واټن (this_شاخص, &classDef1));
+    خپلکاری& class_def_1_v = c.ګراف.vertices_[class_def_1_id];
 
-    const ClassDef* class_def_1_table = (const ClassDef*) class_def_1_v.obj().head;
-    if (unlikely (!class_def_1_table)) return Err(INVALID_ARGUMENT);
-    TRY(class_def_1_table->sanitize (class_def_1_v));
-    return class_def_1_table;
+    ثابت ClassDef* class_def_1_جدول = (ثابت ClassDef*) class_def_1_v.obj().سر_2;
+    إذا (unlikely (!class_def_1_جدول)) أرجع Err(INVALID_دلیل);
+    TRY(class_def_1_جدول->sanitize (class_def_1_v));
+    أرجع class_def_1_جدول;
   }
 
-  unsigned size_of_value_record_children (gsubgpos_graph_context_t& c,
-                                          const hb_hashmap_t<unsigned, unsigned>& device_tables,
-                                          const hb_vector_t<unsigned> device_table_indices,
-                                          unsigned value_record_index,
-                                          hb_set_t& visited)
+  بینښه اندازه_د_ارزښت_ریکارډ_children (gsubgpos_ګراف_context_t& c,
+                                          ثابت hb_hashmap_t<بینښه, بینښه>& device_tables,
+                                          ثابت hb_ویکټور_t<بینښه> device_جدول_indices,
+                                          بینښه ارزښت_ریکارډ_شاخص,
+                                          hb_سېټ_t& لیدل_شوی)
   {
-    unsigned size = 0;
-    for (unsigned i : device_table_indices)
+    بینښه اندازه = 0;
+    لكل (بینښه i : device_جدول_indices)
     {
-      OT::Layout::GPOS_impl::Value* record = &values[value_record_index + i];
-      unsigned record_position = ((char*) record) - ((char*) this);
-      unsigned* obj_idx;
-      if (!device_tables.has (record_position, &obj_idx)) continue;
-      size += c.graph.find_subgraph_size (*obj_idx, visited).value_or (0);
+      OT::Layout::GPOS_impl::ارزښت* ریکارډ = &values[ارزښت_ریکارډ_شاخص + i];
+      بینښه ریکارډ_position = ((حرف*) ریکارډ) - ((حرف*) هذا);
+      بینښه* obj_idx;
+      إذا (!device_tables.has (ریکارډ_position, &obj_idx)) استمر;
+      اندازه += c.ګراف.پیدا_کړه_subgraph_اندازه (*obj_idx, لیدل_شوی).ارزښت_or (0);
     }
-    return size;
+    أرجع اندازه;
   }
 
-  graph_result_t<unsigned> size_of (gsubgpos_graph_context_t& c,
-                                    unsigned this_index,
-                                    const void* offset) const
+  ګراف_پایله_t<بینښه> اندازه_د (gsubgpos_ګراف_context_t& c,
+                                    بینښه this_شاخص,
+                                    ثابت فراغ* دننه_واټن) ثابت
   {
-    TRY_ASSIGN (const unsigned id, c.graph.index_for_offset (this_index, offset));
-    return Ok(c.graph.vertices_[id].table_size ());
+    TRY_ټاکل (ثابت بینښه id, c.ګراف.شاخص_for_دننه_واټن (this_شاخص, دننه_واټن));
+    أرجع Ok(c.ګراف.vertices_[id].جدول_اندازه ());
   }
 };
 
-struct PairPos : public OT::Layout::GPOS_impl::PairPos
+بنية PairPos : عام OT::Layout::GPOS_impl::PairPos
 {
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  ګراف_پایله_t<hb_ویکټور_t<بینښه>> وېشل_subtables (gsubgpos_ګراف_context_t& c,
+                                                         بینښه this_شاخص)
   {
-    switch (u.format.v) {
-    case 1:
+    بدل (u.format.v) {
+    حالة 1:
       hb_barrier ();
-      return ((PairPosFormat1*)(&u.format1))->split_subtables (c, this_index);
-    case 2:
+      أرجع ((PairPosFormat1*)(&u.format1))->وېشل_subtables (c, this_شاخص);
+    حالة 2:
       hb_barrier ();
-      return ((PairPosFormat2*)(&u.format2))->split_subtables (c, this_index);
-#ifndef HB_NO_BEYOND_64K
-    case 3: HB_FALLTHROUGH;
-    case 4: HB_FALLTHROUGH;
+      أرجع ((PairPosFormat2*)(&u.format2))->وېشل_subtables (c, this_شاخص);
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+    حالة 3: HB_FALLTHROUGH;
+    حالة 4: HB_FALLTHROUGH;
       // 24-bit PairPos formats already have widened offsets; leave them unsplit.
-#endif
-    default:
-      return Ok(hb_vector_t<unsigned> ());
+#د_که_پای
+    افتراضي:
+      أرجع Ok(hb_ویکټور_t<بینښه> ());
     }
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ګراف_پایله_t<فراغ> sanitize (ثابت ګراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_اندازه();
+    إذا (unlikely (راس_len < u.format.v.get_اندازه ())) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    switch (u.format.v) {
-    case 1:
+    بدل (u.format.v) {
+    حالة 1:
       hb_barrier ();
-      return ((PairPosFormat1*)(&u.format1))->sanitize (vertex);
-    case 2:
+      أرجع ((PairPosFormat1*)(&u.format1))->sanitize (راس);
+    حالة 2:
       hb_barrier ();
-      return ((PairPosFormat2*)(&u.format2))->sanitize (vertex);
-#ifndef HB_NO_BEYOND_64K
-    case 3: HB_FALLTHROUGH;
-    case 4: HB_FALLTHROUGH;
-#endif
-    default:
+      أرجع ((PairPosFormat2*)(&u.format2))->sanitize (راس);
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+    حالة 3: HB_FALLTHROUGH;
+    حالة 4: HB_FALLTHROUGH;
+#د_که_پای
+    افتراضي:
       // We don't handle format 3 and 4 here.
-      return Err(SANITIZE_FAILURE);
+      أرجع Err(SANITIZE_FAILURE);
     }
   }
 };
 
 }
 
-#endif  // GRAPH_PAIRPOS_GRAPH_HH
+#د_که_پای  // GRAPH_PAIRPOS_GRAPH_HH

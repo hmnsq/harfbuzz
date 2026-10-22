@@ -25,425 +25,425 @@
  * Google Author(s): Calder Kitagawa
  */
 
-#ifndef OT_COLOR_SBIX_SBIX_HH
-#define OT_COLOR_SBIX_SBIX_HH
+#که_نه_تعریف_شوی OT_COLOR_SBIX_SBIX_HH
+#تعریف_کړه OT_COLOR_SBIX_SBIX_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-paint.hh"
+#ضمن "../../../hb-open-type.hh"
+#ضمن "../../../hb-paint.hh"
 
 /*
  * sbix -- Standard Bitmap Graphics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/sbix
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6sbix.html
  */
-#define HB_OT_TAG_sbix HB_TAG('s','b','i','x')
+#تعریف_کړه HB_OT_نښان_sbix HB_نښان('s','b','i','x')
 
 
-namespace OT {
+نطاق OT {
 
 
-struct SBIXGlyph
+بنية SBIXGlyph
 {
-  SBIXGlyph* copy (hb_serialize_context_t *c, unsigned int data_length) const
+  SBIXGlyph* copy (hb_serialize_context_t *c, بینښه صحيح معلومات_اوږدتیا) ثابت
   {
-    TRACE_SERIALIZE (this);
-    SBIXGlyph* new_glyph = c->start_embed<SBIXGlyph> ();
-    if (unlikely (!c->extend_min (new_glyph))) return_trace (nullptr);
+    TRACE_SERIALIZE (هذا);
+    SBIXGlyph* new_glyph = c->پیل_embed<SBIXGlyph> ();
+    إذا (unlikely (!c->extend_min (new_glyph))) return_trace (تش_اشاره);
 
-    new_glyph->xOffset = xOffset;
-    new_glyph->yOffset = yOffset;
+    new_glyph->x_دننه_واټن = x_دننه_واټن;
+    new_glyph->y_دننه_واټن = y_دننه_واټن;
     new_glyph->graphicType = graphicType;
-    data.copy (c, data_length);
+    معلومات.copy (c, معلومات_اوږدتیا);
     return_trace (new_glyph);
   }
 
-  HBINT16	xOffset;	/* The horizontal (x-axis) offset from the left
+  HBINT16	x_دننه_واټن;	/* The horizontal (x-axis) offset from the left
 				 * edge of the graphic to the glyph’s origin.
 				 * That is, the x-coordinate of the point on the
 				 * baseline at the left edge of the glyph. */
-  HBINT16	yOffset;	/* The vertical (y-axis) offset from the bottom
+  HBINT16	y_دننه_واټن;	/* The vertical (y-axis) offset from the bottom
 				 * edge of the graphic to the glyph’s origin.
 				 * That is, the y-coordinate of the point on the
 				 * baseline at the left edge of the glyph. */
-  Tag		graphicType;	/* Indicates the format of the embedded graphic
+  نښان		graphicType;	/* Indicates the format of the embedded graphic
 				 * data: one of 'jpg ', 'png ' or 'tiff', or the
 				 * special format 'dupe'. */
-  UnsizedArrayOf<HBUINT8>
-		data;		/* The actual embedded graphic data. The total
+  Unsized_Array_د<HBUINT8>
+		معلومات;		/* The actual embedded graphic data. The total
 				 * length is inferred from sequential entries in
 				 * the glyphDataOffsets array and the fixed size
 				 * (8 bytes) of the preceding fields. */
-  public:
-  DEFINE_SIZE_ARRAY (8, data);
+  عام:
+  DEFINE_اندازه_ARRAY (8, معلومات);
 };
 
-struct SBIXStrike
+بنية SBIXStrike
 {
-  static size_t get_size (unsigned num_glyphs)
-  { return min_size + num_glyphs * HBUINT32::static_size; }
+  ساكن size_t get_اندازه (بینښه عدد_glyphs)
+  { أرجع min_اندازه + عدد_glyphs * HBUINT32::static_اندازه; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  imageOffsetsZ.sanitize_shallow (c, c->get_num_glyphs () + 1));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
+		  imageOffsetsZ.sanitize_shallow (c, c->get_عدد_glyphs () + 1));
   }
 
-  hb_blob_t *get_glyph_blob (unsigned int  glyph_id,
+  hb_blob_t *get_glyph_blob (بینښه صحيح  glyph_id,
 			     hb_blob_t    *sbix_blob,
-			     hb_tag_t      file_type,
-			     int          *x_offset,
-			     int          *y_offset,
-			     unsigned int  num_glyphs,
-			     unsigned int *strike_ppem) const
+			     hb_نښان_t      file_type,
+			     صحيح          *x_دننه_واټن_2,
+			     صحيح          *y_دننه_واټن_2,
+			     بینښه صحيح  عدد_glyphs,
+			     بینښه صحيح *strike_ppem) ثابت
   {
-    if (unlikely (!ppem)) return hb_blob_get_empty (); /* To get Null() object out of the way. */
+    إذا (unlikely (!ppem)) أرجع hb_blob_get_تشه (); /* To get Null() object out of the way. */
 
-    unsigned int retry_count = 8;
-    unsigned int sbix_len = sbix_blob->length;
-    unsigned int strike_offset = (const char *) this - (const char *) sbix_blob->data;
-    assert (strike_offset < sbix_len);
+    بینښه صحيح retry_شمېر = 8;
+    بینښه صحيح sbix_len = sbix_blob->اوږدتیا;
+    بینښه صحيح strike_دننه_واټن = (ثابت حرف *) هذا - (ثابت حرف *) sbix_blob->معلومات;
+    أكد (strike_دننه_واټن < sbix_len);
 
   retry:
-    if (unlikely (glyph_id >= num_glyphs ||
+    إذا (unlikely (glyph_id >= عدد_glyphs ||
 		  imageOffsetsZ[glyph_id + 1] <= imageOffsetsZ[glyph_id] ||
-		  imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] <= SBIXGlyph::min_size ||
-		  (unsigned int) imageOffsetsZ[glyph_id + 1] > sbix_len - strike_offset))
-      return hb_blob_get_empty ();
+		  imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] <= SBIXGlyph::min_اندازه ||
+		  (بینښه صحيح) imageOffsetsZ[glyph_id + 1] > sbix_len - strike_دننه_واټن))
+      أرجع hb_blob_get_تشه ();
 
-    unsigned int glyph_offset = strike_offset + (unsigned int) imageOffsetsZ[glyph_id] + SBIXGlyph::min_size;
-    unsigned int glyph_length = imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] - SBIXGlyph::min_size;
+    بینښه صحيح glyph_دننه_واټن = strike_دننه_واټن + (بینښه صحيح) imageOffsetsZ[glyph_id] + SBIXGlyph::min_اندازه;
+    بینښه صحيح glyph_اوږدتیا = imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] - SBIXGlyph::min_اندازه;
 
-    const SBIXGlyph *glyph = &(this+imageOffsetsZ[glyph_id]);
+    ثابت SBIXGlyph *glyph = &(هذا+imageOffsetsZ[glyph_id]);
 
-    if (glyph->graphicType == HB_TAG ('d','u','p','e'))
+    إذا (glyph->graphicType == HB_نښان ('d','u','p','e'))
     {
-      if (glyph_length >= 2)
+      إذا (glyph_اوږدتیا >= 2)
       {
-	glyph_id = *((HBUINT16 *) &glyph->data);
-	if (retry_count--)
-	  goto retry;
+	glyph_id = *((HBUINT16 *) &glyph->معلومات);
+	إذا (retry_شمېر--)
+	  اذهب retry;
       }
-      return hb_blob_get_empty ();
+      أرجع hb_blob_get_تشه ();
     }
 
-    if (unlikely (file_type != glyph->graphicType))
-      return hb_blob_get_empty ();
+    إذا (unlikely (file_type != glyph->graphicType))
+      أرجع hb_blob_get_تشه ();
 
-    if (strike_ppem) *strike_ppem = ppem;
-    if (x_offset) *x_offset = glyph->xOffset;
-    if (y_offset) *y_offset = glyph->yOffset;
-    return hb_blob_create_sub_blob (sbix_blob, glyph_offset, glyph_length);
+    إذا (strike_ppem) *strike_ppem = ppem;
+    إذا (x_دننه_واټن_2) *x_دننه_واټن_2 = glyph->x_دننه_واټن;
+    إذا (y_دننه_واټن_2) *y_دننه_واټن_2 = glyph->y_دننه_واټن;
+    أرجع hb_blob_create_sub_blob (sbix_blob, glyph_دننه_واټن, glyph_اوږدتیا);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned int available_len) const
+  منطقي subset (hb_subset_context_t *c, بینښه صحيح شته_len) ثابت
   {
-    TRACE_SUBSET (this);
-    unsigned int num_output_glyphs = c->plan->num_output_glyphs ();
+    TRACE_SUBSET (هذا);
+    بینښه صحيح عدد_output_glyphs = c->plan->عدد_output_glyphs ();
 
-    auto* out = c->serializer->start_embed<SBIXStrike> ();
-    auto snap = c->serializer->snapshot ();
-    if (unlikely (!c->serializer->extend (out, num_output_glyphs + 1))) return_trace (false);
-    out->ppem = ppem;
-    out->resolution = resolution;
-    HBUINT32 head;
-    head = get_size (num_output_glyphs + 1);
+    خپلکاری* بهر = c->serializer->پیل_embed<SBIXStrike> ();
+    خپلکاری snap = c->serializer->snapshot ();
+    إذا (unlikely (!c->serializer->extend (بهر, عدد_output_glyphs + 1))) return_trace (خطأ);
+    بهر->ppem = ppem;
+    بهر->resolution = resolution;
+    HBUINT32 سر_2;
+    سر_2 = get_اندازه (عدد_output_glyphs + 1);
 
-    bool has_glyphs = false;
-    for (unsigned new_gid = 0; new_gid < num_output_glyphs; new_gid++)
+    منطقي has_glyphs = خطأ;
+    لكل (بینښه new_gid = 0; new_gid < عدد_output_glyphs; new_gid++)
     {
       hb_codepoint_t old_gid;
-      if (!c->plan->old_gid_for_new_gid (new_gid, &old_gid) ||
+      إذا (!c->plan->old_gid_for_new_gid (new_gid, &old_gid) ||
 	  unlikely (imageOffsetsZ[old_gid].is_null () ||
 		    imageOffsetsZ[old_gid + 1].is_null () ||
 		    imageOffsetsZ[old_gid + 1] <= imageOffsetsZ[old_gid] ||
-		    imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid] <= SBIXGlyph::min_size) ||
-		    (unsigned int) imageOffsetsZ[old_gid + 1] > available_len)
+		    imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid] <= SBIXGlyph::min_اندازه) ||
+		    (بینښه صحيح) imageOffsetsZ[old_gid + 1] > شته_len)
       {
-	out->imageOffsetsZ[new_gid] = head;
-	continue;
+	بهر->imageOffsetsZ[new_gid] = سر_2;
+	استمر;
       }
-      has_glyphs = true;
-      unsigned int delta = imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid];
-      unsigned int glyph_data_length = delta - SBIXGlyph::min_size;
-      if (!(this+imageOffsetsZ[old_gid]).copy (c->serializer, glyph_data_length))
-	return_trace (false);
-      out->imageOffsetsZ[new_gid] = head;
-      head += delta;
+      has_glyphs = ریښتیا;
+      بینښه صحيح delta = imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid];
+      بینښه صحيح glyph_معلومات_اوږدتیا = delta - SBIXGlyph::min_اندازه;
+      إذا (!(هذا+imageOffsetsZ[old_gid]).copy (c->serializer, glyph_معلومات_اوږدتیا))
+	return_trace (خطأ);
+      بهر->imageOffsetsZ[new_gid] = سر_2;
+      سر_2 += delta;
     }
-    if (has_glyphs)
-      out->imageOffsetsZ[num_output_glyphs] = head;
-    else
+    إذا (has_glyphs)
+      بهر->imageOffsetsZ[عدد_output_glyphs] = سر_2;
+    وإلا
       c->serializer->revert (snap);
     return_trace (has_glyphs);
   }
 
-  public:
+  عام:
   HBUINT16	ppem;		/* The PPEM size for which this strike was designed. */
   HBUINT16	resolution;	/* The device pixel density (in PPI) for which this
 				 * strike was designed. (E.g., 96 PPI, 192 PPI.) */
-  protected:
-  UnsizedArrayOf<Offset32To<SBIXGlyph>>
+  محمي:
+  Unsized_Array_د<Offset32_منزل<SBIXGlyph>>
 		imageOffsetsZ;	/* Offset from the beginning of the strike data header
 				 * to bitmap data for an individual glyph ID. */
-  public:
-  DEFINE_SIZE_ARRAY (4, imageOffsetsZ);
+  عام:
+  DEFINE_اندازه_ARRAY (4, imageOffsetsZ);
 };
 
-struct sbix
+بنية sbix
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_sbix;
+  ساكن constexpr hb_نښان_t جدول_نښان = HB_OT_نښان_sbix;
 
-  bool has_data () const { return version; }
+  منطقي has_معلومات () ثابت { أرجع نسخه; }
 
-  const SBIXStrike &get_strike (unsigned int i) const { return this+strikes[i]; }
+  ثابت SBIXStrike &get_strike (بینښه صحيح i) ثابت { أرجع هذا+strikes[i]; }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<sbix> (face);
-      num_glyphs = face->get_num_glyphs ();
+      جدول = hb_sanitize_context_t ().reference_جدول<sbix> (face);
+      عدد_glyphs = face->get_عدد_glyphs ();
     }
-    ~accelerator_t () { table.destroy (); }
+    ~accelerator_t () { جدول.destroy (); }
 
-    bool has_data () const { return table->has_data (); }
+    منطقي has_معلومات () ثابت { أرجع جدول->has_معلومات (); }
 
-    bool get_extents (hb_font_t          *font,
+    منطقي get_extents (hb_font_t          *font,
 		      hb_codepoint_t      glyph,
 		      hb_glyph_extents_t *extents,
-		      bool                scale = true) const
+		      منطقي                scale = ریښتیا) ثابت
     {
       /* We only support PNG right now, and following function checks type. */
-      return get_png_extents (font, glyph, extents, scale);
+      أرجع get_png_extents (font, glyph, extents, scale);
     }
 
     hb_blob_t *reference_png (hb_font_t      *font,
 			      hb_codepoint_t  glyph_id,
-			      int            *x_offset,
-			      int            *y_offset,
-			      unsigned int   *available_ppem) const
+			      صحيح            *x_دننه_واټن_2,
+			      صحيح            *y_دننه_واټن_2,
+			      بینښه صحيح   *شته_ppem) ثابت
     {
-      return choose_strike (font).get_glyph_blob (glyph_id, table.get_blob (),
-						  HB_TAG ('p','n','g',' '),
-						  x_offset, y_offset,
-						  num_glyphs, available_ppem);
+      أرجع ټاکنه_strike (font).get_glyph_blob (glyph_id, جدول.get_blob (),
+						  HB_نښان ('p','n','g',' '),
+						  x_دننه_واټن_2, y_دننه_واټن_2,
+						  عدد_glyphs, شته_ppem);
     }
 
-    bool paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    منطقي paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, فراغ *معلومات) ثابت
     {
-      if (!has_data ())
-        return false;
+      إذا (!has_معلومات ())
+        أرجع خطأ;
 
-      int x_offset = 0, y_offset = 0;
-      unsigned int strike_ppem = 0;
+      صحيح x_دننه_واټن_2 = 0, y_دننه_واټن_2 = 0;
+      بینښه صحيح strike_ppem = 0;
       hb_glyph_extents_t extents;
       hb_glyph_extents_t pixel_extents;
 
-      if (!font->get_glyph_extents (glyph, &extents, false))
-        return false;
+      إذا (!font->get_glyph_extents (glyph, &extents, خطأ))
+        أرجع خطأ;
 
-      if (unlikely (!get_extents (font, glyph, &pixel_extents, false)))
-        return false;
+      إذا (unlikely (!get_extents (font, glyph, &pixel_extents, خطأ)))
+        أرجع خطأ;
 
-      hb_blob_t *blob = reference_png (font, glyph, &x_offset, &y_offset, &strike_ppem);
-      if (hb_blob_is_immutable (blob))
-        return false;
+      hb_blob_t *blob = reference_png (font, glyph, &x_دننه_واټن_2, &y_دننه_واټن_2, &strike_ppem);
+      إذا (hb_blob_is_immutable (blob))
+        أرجع خطأ;
 
-      bool ret = funcs->image (data,
+      منطقي ret = funcs->image (معلومات,
 			       blob,
-			       pixel_extents.width, -pixel_extents.height,
+			       pixel_extents.پلنوالی, -pixel_extents.لوړوالی,
 			       HB_PAINT_IMAGE_FORMAT_PNG,
 			       0.f,
 			       &extents);
 
       hb_blob_destroy (blob);
 
-      return ret;
+      أرجع ret;
     }
 
-    private:
+    خاص:
 
-    const SBIXStrike &choose_strike (hb_font_t *font) const
+    ثابت SBIXStrike &ټاکنه_strike (hb_font_t *font) ثابت
     {
-      unsigned count = table->strikes.len;
-      if (unlikely (!count))
-	return Null (SBIXStrike);
+      بینښه شمېر = جدول->strikes.len;
+      إذا (unlikely (!شمېر))
+	أرجع Null (SBIXStrike);
 
-      unsigned int requested_ppem = hb_max (font->x_ppem, font->y_ppem);
-      if (!requested_ppem)
+      بینښه صحيح requested_ppem = hb_max (font->x_ppem, font->y_ppem);
+      إذا (!requested_ppem)
 	requested_ppem = 1<<30; /* Choose largest strike. */
       /* TODO Add DPI sensitivity as well? */
-      unsigned int best_i = 0;
-      unsigned int best_ppem = table->get_strike (0).ppem;
+      بینښه صحيح غوره_i = 0;
+      بینښه صحيح غوره_ppem = جدول->get_strike (0).ppem;
 
-      for (unsigned int i = 1; i < count; i++)
+      لكل (بینښه صحيح i = 1; i < شمېر; i++)
       {
-	unsigned int ppem = (table->get_strike (i)).ppem;
-	if ((requested_ppem <= ppem && ppem < best_ppem) ||
-	    (requested_ppem > best_ppem && ppem > best_ppem))
+	بینښه صحيح ppem = (جدول->get_strike (i)).ppem;
+	إذا ((requested_ppem <= ppem && ppem < غوره_ppem) ||
+	    (requested_ppem > غوره_ppem && ppem > غوره_ppem))
 	{
-	  best_i = i;
-	  best_ppem = ppem;
+	  غوره_i = i;
+	  غوره_ppem = ppem;
 	}
       }
 
-      return table->get_strike (best_i);
+      أرجع جدول->get_strike (غوره_i);
     }
 
-    struct PNGHeader
+    بنية PNGHeader
     {
       HBUINT8	signature[8];
-      struct
+      بنية
       {
-	struct
+	بنية
 	{
-	  HBUINT32	length;
-	  Tag		type;
-	}		header;
-	HBUINT32	width;
-	HBUINT32	height;
-	HBUINT8		bitDepth;
+	  HBUINT32	اوږدتیا;
+	  نښان		type;
+	}		سرلیک;
+	HBUINT32	پلنوالی;
+	HBUINT32	لوړوالی;
+	HBUINT8		بټ_ژوروالی;
 	HBUINT8		colorType;
-	HBUINT8		compressionMethod;
-	HBUINT8		filterMethod;
-	HBUINT8		interlaceMethod;
+	HBUINT8		compression_لاره;
+	HBUINT8		filter_لاره;
+	HBUINT8		interlace_لاره;
       } IHDR;
 
-      public:
-      DEFINE_SIZE_STATIC (29);
+      عام:
+      DEFINE_اندازه_STATIC (29);
     };
 
-    bool get_png_extents (hb_font_t          *font,
+    منطقي get_png_extents (hb_font_t          *font,
 			  hb_codepoint_t      glyph,
 			  hb_glyph_extents_t *extents,
-			  bool                scale = true) const
+			  منطقي                scale = ریښتیا) ثابت
     {
       /* Following code is safe to call even without data.
        * But faster to short-circuit. */
-      if (!has_data ())
-	return false;
+      إذا (!has_معلومات ())
+	أرجع خطأ;
 
-      int x_offset = 0, y_offset = 0;
-      unsigned int strike_ppem = 0;
-      hb_blob_t *blob = reference_png (font, glyph, &x_offset, &y_offset, &strike_ppem);
+      صحيح x_دننه_واټن_2 = 0, y_دننه_واټن_2 = 0;
+      بینښه صحيح strike_ppem = 0;
+      hb_blob_t *blob = reference_png (font, glyph, &x_دننه_واټن_2, &y_دننه_واټن_2, &strike_ppem);
 
-      const PNGHeader &png = *blob->as<PNGHeader>();
+      ثابت PNGHeader &png = *blob->as<PNGHeader>();
 
-      if (png.IHDR.height >= 65536 || png.IHDR.width >= 65536)
+      إذا (png.IHDR.لوړوالی >= 65536 || png.IHDR.پلنوالی >= 65536)
       {
 	hb_blob_destroy (blob);
-	return false;
+	أرجع خطأ;
       }
 
-      extents->x_bearing = x_offset;
-      extents->y_bearing = hb_clamp_to<hb_position_t> ((int64_t) (unsigned int) png.IHDR.height + y_offset);
-      extents->width     = (hb_position_t) (unsigned int) png.IHDR.width;
-      extents->height    = -(hb_position_t) (unsigned int) png.IHDR.height;
+      extents->x_bearing = x_دننه_واټن_2;
+      extents->y_bearing = hb_clamp_منزل<hb_position_t> ((int64_t) (بینښه صحيح) png.IHDR.لوړوالی + y_دننه_واټن_2);
+      extents->پلنوالی     = (hb_position_t) (بینښه صحيح) png.IHDR.پلنوالی;
+      extents->لوړوالی    = -(hb_position_t) (بینښه صحيح) png.IHDR.لوړوالی;
 
       /* Convert to font units. */
-      if (strike_ppem && scale)
+      إذا (strike_ppem && scale)
       {
-	float scale = font->face->get_upem () / (float) strike_ppem;
-	extents->x_bearing = hb_clamp_to<hb_position_t> (roundf (extents->x_bearing * scale));
-	extents->y_bearing = hb_clamp_to<hb_position_t> (roundf (extents->y_bearing * scale));
-	extents->width = hb_clamp_to<hb_position_t> (roundf (extents->width * scale));
-	extents->height = hb_clamp_to<hb_position_t> (roundf (extents->height * scale));
+	عائم scale = font->face->get_upem () / (عائم) strike_ppem;
+	extents->x_bearing = hb_clamp_منزل<hb_position_t> (roundf (extents->x_bearing * scale));
+	extents->y_bearing = hb_clamp_منزل<hb_position_t> (roundf (extents->y_bearing * scale));
+	extents->پلنوالی = hb_clamp_منزل<hb_position_t> (roundf (extents->پلنوالی * scale));
+	extents->لوړوالی = hb_clamp_منزل<hb_position_t> (roundf (extents->لوړوالی * scale));
       }
 
-      if (scale)
+      إذا (scale)
 	font->scale_glyph_extents (extents);
 
       hb_blob_destroy (blob);
 
-      return strike_ppem;
+      أرجع strike_ppem;
     }
 
-    private:
-    hb_blob_ptr_t<sbix> table;
+    خاص:
+    hb_blob_ptr_t<sbix> جدول;
 
-    unsigned int num_glyphs;
+    بینښه صحيح عدد_glyphs;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  version >= 1 &&
-			  strikes.sanitize (c, this)));
+			  نسخه >= 1 &&
+			  strikes.sanitize (c, هذا)));
   }
 
-  bool
-  add_strike (hb_subset_context_t *c, unsigned i) const
+  منطقي
+  جمع_کړه_strike (hb_subset_context_t *c, بینښه i) ثابت
   {
-    if (strikes[i].is_null () || c->source_blob->length < (unsigned) strikes[i])
-      return false;
+    إذا (strikes[i].is_null () || c->سرچینه_blob->اوږدتیا < (بینښه) strikes[i])
+      أرجع خطأ;
 
-    return (this+strikes[i]).subset (c, c->source_blob->length - (unsigned) strikes[i]);
+    أرجع (هذا+strikes[i]).subset (c, c->سرچینه_blob->اوږدتیا - (بینښه) strikes[i]);
   }
 
-  bool serialize_strike_offsets (hb_subset_context_t *c) const
+  منطقي serialize_strike_offsets (hb_subset_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    auto *out = c->serializer->start_embed<Array32OfOffset32To<SBIXStrike>> ();
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    خپلکاری *بهر = c->serializer->پیل_embed<Array32_د_Offset32_منزل<SBIXStrike>> ();
+    إذا (unlikely (!c->serializer->extend_min (بهر))) return_trace (خطأ);
 
-    hb_vector_t<Offset32To<SBIXStrike>*> new_strikes;
-    hb_vector_t<hb_serialize_context_t::objidx_t> objidxs;
-    for (int i = strikes.len - 1; i >= 0; --i)
+    hb_ویکټور_t<Offset32_منزل<SBIXStrike>*> new_strikes;
+    hb_ویکټور_t<hb_serialize_context_t::objidx_t> objidxs;
+    لكل (صحيح i = strikes.len - 1; i >= 0; --i)
     {
-      auto* o = out->serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
+      خپلکاری* o = بهر->serialize_append (c->serializer);
+      إذا (unlikely (!o)) return_trace (خطأ);
       *o = 0;
-      auto snap = c->serializer->snapshot ();
+      خپلکاری snap = c->serializer->snapshot ();
       c->serializer->push ();
-      bool ret = add_strike (c, i);
-      if (!ret)
+      منطقي ret = جمع_کړه_strike (c, i);
+      إذا (!ret)
       {
-	c->serializer->pop_discard ();
-	out->pop ();
+	c->serializer->راوباسه_discard ();
+	بهر->راوباسه ();
 	c->serializer->revert (snap);
       }
-      else
+      وإلا
       {
-	objidxs.push (c->serializer->pop_pack ());
+	objidxs.push (c->serializer->راوباسه_pack ());
 	new_strikes.push (o);
       }
     }
-    for (unsigned int i = 0; i < new_strikes.length; ++i)
-      c->serializer->add_link (*new_strikes[i], objidxs[new_strikes.length - 1 - i]);
+    لكل (بینښه صحيح i = 0; i < new_strikes.اوږدتیا; ++i)
+      c->serializer->جمع_کړه_link (*new_strikes[i], objidxs[new_strikes.اوږدتیا - 1 - i]);
 
-    return_trace (true);
+    return_trace (ریښتیا);
   }
 
-  bool subset (hb_subset_context_t* c) const
+  منطقي subset (hb_subset_context_t* c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    if (unlikely (!c->serializer->embed (this->version))) return_trace (false);
-    if (unlikely (!c->serializer->embed (this->flags))) return_trace (false);
+    إذا (unlikely (!c->serializer->embed (هذا->نسخه))) return_trace (خطأ);
+    إذا (unlikely (!c->serializer->embed (هذا->flags))) return_trace (خطأ);
 
     return_trace (serialize_strike_offsets (c));
   }
 
-  protected:
-  HBUINT16	version;	/* Table version number — set to 1 */
+  محمي:
+  HBUINT16	نسخه;	/* Table version number — set to 1 */
   HBUINT16	flags;		/* Bit 0: Set to 1. Bit 1: Draw outlines.
 				 * Bits 2 to 15: reserved (set to 0). */
-  Array32OfOffset32To<SBIXStrike>
+  Array32_د_Offset32_منزل<SBIXStrike>
 		strikes;	/* Offsets from the beginning of the 'sbix'
 				 * table to data for each individual bitmap strike. */
-  public:
-  DEFINE_SIZE_ARRAY (8, strikes);
+  عام:
+  DEFINE_اندازه_ARRAY (8, strikes);
 };
 
-struct sbix_accelerator_t : sbix::accelerator_t {
+بنية sbix_accelerator_t : sbix::accelerator_t {
   sbix_accelerator_t (hb_face_t *face) : sbix::accelerator_t (face) {}
 };
 
 
 } /* namespace OT */
 
-#endif /* OT_COLOR_SBIX_SBIX_HH */
+#د_که_پای /* OT_COLOR_SBIX_SBIX_HH */

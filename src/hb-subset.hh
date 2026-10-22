@@ -24,50 +24,50 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_HH
-#define HB_SUBSET_HH
+#که_نه_تعریف_شوی HB_SUBSET_HH
+#تعریف_کړه HB_SUBSET_HH
 
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-subset.h"
+#ضمن "hb-subset.h"
 
-#include "hb-machinery.hh"
-#include "hb-serialize.hh"
-#include "hb-subset-input.hh"
-#include "hb-subset-plan.hh"
+#ضمن "hb-machinery.hh"
+#ضمن "hb-serialize.hh"
+#ضمن "hb-subset-input.hh"
+#ضمن "hb-subset-plan.hh"
 
-struct hb_subset_context_t :
-       hb_dispatch_context_t<hb_subset_context_t, bool, HB_DEBUG_SUBSET>
+بنية hb_subset_context_t :
+       hb_dispatch_context_t<hb_subset_context_t, منطقي, HB_DEBUG_SUBSET>
 {
-  const char *get_name () { return "SUBSET"; }
-  static return_t default_return_value () { return true; }
+  ثابت حرف *get_name () { أرجع "SUBSET"; }
+  ساكن return_t default_return_ارزښت () { أرجع ریښتیا; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.subset (this, std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  خاص:
+  کينډۍ <ډول_نوم T, ډول_نوم ...Ts> خپلکاری
+  _dispatch (ثابت T &obj, hb_لومړیتوب<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.subset (هذا, std::forward<Ts> (ds)...) )
+  کينډۍ <ډول_نوم T, ډول_نوم ...Ts> خپلکاری
+  _dispatch (ثابت T &obj, hb_لومړیتوب<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (هذا, std::forward<Ts> (ds)...) )
+  عام:
+  کينډۍ <ډول_نوم T, ډول_نوم ...Ts> خپلکاری
+  dispatch (ثابت T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
-  hb_blob_t *source_blob;
+  hb_blob_t *سرچینه_blob;
   hb_subset_plan_t *plan;
   hb_serialize_context_t *serializer;
-  hb_tag_t table_tag;
+  hb_نښان_t جدول_نښان_2;
 
-  hb_subset_context_t (hb_blob_t *source_blob_,
+  hb_subset_context_t (hb_blob_t *سرچینه_blob_2,
 		       hb_subset_plan_t *plan_,
 		       hb_serialize_context_t *serializer_,
-		       hb_tag_t table_tag_) :
-		        source_blob (source_blob_),
+		       hb_نښان_t جدول_نښان_3) :
+		        سرچینه_blob (سرچینه_blob_2),
 			plan (plan_),
 			serializer (serializer_),
-			table_tag (table_tag_) {}
+			جدول_نښان_2 (جدول_نښان_3) {}
 };
 
-#endif /* HB_SUBSET_HH */
+#د_که_پای /* HB_SUBSET_HH */

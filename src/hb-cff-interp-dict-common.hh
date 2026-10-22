@@ -23,179 +23,179 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF_INTERP_DICT_COMMON_HH
-#define HB_CFF_INTERP_DICT_COMMON_HH
+#که_نه_تعریف_شوی HB_CFF_INTERP_DICT_COMMON_HH
+#تعریف_کړه HB_CFF_INTERP_DICT_COMMON_HH
 
-#include "hb-cff-interp-common.hh"
+#ضمن "hb-cff-interp-common.hh"
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+کارول نطاق OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+بنية dict_val_t : op_str_t
 {
-  void init () {}
-  void fini () {}
+  فراغ init () {}
+  فراغ fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+تعريفنوع dict_val_t عدد_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+کينډۍ <ډول_نوم VAL> بنية dict_ارزښتونه_t : parsed_ارزښتونه_t<VAL> {};
 
-template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+کينډۍ <ډول_نوم OPSTR=op_str_t>
+بنية سر_dict_ارزښتونه_t : dict_ارزښتونه_t<OPSTR>
 {
-  void init ()
+  فراغ init ()
   {
-    dict_values_t<OPSTR>::init ();
-    charStringsOffset = 0;
-    FDArrayOffset = 0;
+    dict_ارزښتونه_t<OPSTR>::init ();
+    char_مزي_ګانې_دننه_واټن = 0;
+    FDArray_دننه_واټن = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  فراغ fini () { dict_ارزښتونه_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  صحيح  char_مزي_ګانې_دننه_واټن;
+  صحيح  FDArray_دننه_واټن;
 };
 
-struct dict_opset_t : opset_t<number_t>
+بنية dict_opset_t : opset_t<شمېره_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  ساكن فراغ process_op (op_کوډ_t op, interp_env_t<شمېره_t>& env)
   {
-    switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+    بدل (op) {
+      حالة Op_کوډ_longintdict:  /* 5-byte integer */
+	env.arg_ډېری.ټېل_longint_from_substr (env.str_ref);
+	اكسر;
 
-      case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+      حالة Op_کوډ_BCD:  /* real number */
+	env.arg_ډېری.ټېل_real (parse_bcd (env.str_ref));
+	اكسر;
 
-      default:
-	opset_t<number_t>::process_op (op, env);
-	break;
+      افتراضي:
+	opset_t<شمېره_t>::process_op (op, env);
+	اكسر;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  ساكن مزدوج parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    إذا (unlikely (str_ref.دننه_error ())) أرجع .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    تعداد Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, پای_ټکی_2 };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    حرف buf[32] = {0};
+    بینښه حرف byte = 0;
+    لكل (بینښه i = 0, شمېر = 0; شمېر < ARRAY_اوږدتیا (buf); ++i, ++شمېر)
     {
-      unsigned nibble;
-      if (!(i & 1))
+      بینښه nibble;
+      إذا (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	إذا (unlikely (!str_ref.avail ())) اكسر;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      وإلا
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      إذا (unlikely (nibble == RESERVED)) اكسر;
+      وإلا إذا (nibble == پای_ټکی_2)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	ثابت حرف *p = buf;
+	مزدوج pv;
+	إذا (unlikely (!hb_parse_double (&p, p + شمېر, &pv, ریښتیا/* whole buffer */)))
+	  اكسر;
+	أرجع pv;
       }
-      else
+      وإلا
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	buf[شمېر] = "0123456789.EE?-?"[nibble];
+	إذا (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++شمېر;
+	  إذا (unlikely (شمېر == ARRAY_اوږدتیا (buf))) اكسر;
+	  buf[شمېر] = '-';
 	}
       }
     }
 
-    str_ref.set_error ();
-    return .0;
+    str_ref.سېټ_error ();
+    أرجع .0;
   }
 
-  static bool is_hint_op (op_code_t op)
+  ساكن منطقي is_hint_op (op_کوډ_t op)
   {
-    switch (op)
+    بدل (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
-      default:
-	return false;
+      حالة Op_کوډ_Blue_ارزښتونه:
+      حالة Op_کوډ_Other_Blues:
+      حالة Op_کوډ_Family_Blues:
+      حالة Op_کوډ_Family_Other_Blues:
+      حالة Op_کوډ_Stem_Snap_H:
+      حالة Op_کوډ_Stem_Snap_V:
+      حالة Op_کوډ_Std_HW:
+      حالة Op_کوډ_Std_VW:
+      حالة Op_کوډ_Blue_Scale:
+      حالة Op_کوډ_Blue_ښويدنه:
+      حالة Op_کوډ_Blue_Fuzz:
+      حالة Op_کوډ_Force_Bold:
+      حالة Op_کوډ_Language_ډله:
+      حالة Op_کوډ_Expansion_ضریب:
+	أرجع ریښتیا;
+      افتراضي:
+	أرجع خطأ;
     }
   }
 };
 
-template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+کينډۍ <ډول_نوم VAL=op_str_t>
+بنية سر_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  ساكن فراغ process_op (op_کوډ_t op, interp_env_t<شمېره_t>& env, سر_dict_ارزښتونه_t<VAL> & dictval)
   {
-    switch (op) {
-      case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
-      case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
-	env.clear_args ();
-	break;
-      default:
+    بدل (op) {
+      حالة Op_کوډ_Char_مزي_ګانې:
+	dictval.char_مزي_ګانې_دننه_واټن = env.arg_ډېری.راوباسه_int ();
+	env.clear_دلیلونه ();
+	اكسر;
+      حالة Op_کوډ_FDArray:
+	dictval.FDArray_دننه_واټن = env.arg_ډېری.راوباسه_int ();
+	env.clear_دلیلونه ();
+	اكسر;
+      حالة Op_کوډ_Font_ماتریکس:
+	env.clear_دلیلونه ();
+	اكسر;
+      افتراضي:
 	dict_opset_t::process_op (op, env);
-	break;
+	اكسر;
     }
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+کينډۍ <ډول_نوم OPSET, ډول_نوم PARAM, ډول_نوم ENV=عدد_interp_env_t>
+بنية dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param)
+  منطقي interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    طالما (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      إذا (unlikely (SUPER::env.دننه_error ()))
+	أرجع خطأ;
     }
 
-    return true;
+    أرجع ریښتیا;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  خاص:
+  تعريفنوع interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_INTERP_DICT_COMMON_HH */
+#د_که_پای /* HB_CFF_INTERP_DICT_COMMON_HH */

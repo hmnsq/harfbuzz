@@ -24,243 +24,243 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_INTERNAL_HH
-#define HB_VECTOR_INTERNAL_HH
+#که_نه_تعریف_شوی HB_ویکټور_دننی_HH
+#تعریف_کړه HB_ویکټور_دننی_HH
 
-#include "hb-vector.h"
+#ضمن "hb-vector.h"
 
-struct hb_vector_blob_meta_t
+بنية hb_ویکټور_blob_meta_t
 {
-  char *data;
-  int allocated;
-  bool transferred;
-  bool in_replace;
+  حرف *معلومات;
+  صحيح allocated;
+  منطقي transferred;
+  منطقي دننه_replace;
 };
 
-static hb_user_data_key_t hb_vector_blob_meta_user_data_key;
+ساكن hb_user_معلومات_کلی_t hb_ویکټور_blob_meta_user_معلومات_کلی;
 
-static inline void
-hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
-				char *data,
-				int allocated)
+ساكن مضمن فراغ
+hb_ویکټور_blob_meta_سېټ_بفر (hb_ویکټور_blob_meta_t *meta,
+				حرف *معلومات,
+				صحيح allocated)
 {
-  meta->data = data;
+  meta->معلومات = معلومات;
   meta->allocated = allocated;
-  meta->transferred = false;
+  meta->transferred = خطأ;
 }
 
-static inline void
-hb_vector_blob_meta_release_buffer (hb_vector_blob_meta_t *meta)
+ساكن مضمن فراغ
+hb_ویکټور_blob_meta_release_بفر (hb_ویکټور_blob_meta_t *meta)
 {
-  if (!meta)
-    return;
-  if (!meta->transferred && meta->data)
-    hb_free (meta->data);
-  meta->data = nullptr;
+  إذا (!meta)
+    أرجع;
+  إذا (!meta->transferred && meta->معلومات)
+    hb_free (meta->معلومات);
+  meta->معلومات = تش_اشاره;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = ریښتیا;
 }
 
-static inline void
-hb_vector_blob_meta_destroy (void *data)
+ساكن مضمن فراغ
+hb_ویکټور_blob_meta_destroy (فراغ *معلومات)
 {
-  auto *meta = (hb_vector_blob_meta_t *) data;
-  hb_vector_blob_meta_release_buffer (meta);
-  if (meta->in_replace)
+  خپلکاری *meta = (hb_ویکټور_blob_meta_t *) معلومات;
+  hb_ویکټور_blob_meta_release_بفر (meta);
+  إذا (meta->دننه_replace)
   {
-    meta->in_replace = false;
-    return;
+    meta->دننه_replace = خطأ;
+    أرجع;
   }
   hb_free (meta);
 }
 
-static inline hb_blob_t *
+ساكن مضمن hb_blob_t *
 hb_buf_blob_from (hb_blob_t **recycled_blob,
-		  hb_vector_buf_t *buf)
+		  hb_ویکټور_buf_t *buf)
 {
-  unsigned len = 0;
-  int allocated = 0;
-  char *data = buf->steal (&len, &allocated);
-  if (!data)
-    return nullptr;
+  بینښه len = 0;
+  صحيح allocated = 0;
+  حرف *معلومات = buf->steal (&len, &allocated);
+  إذا (!معلومات)
+    أرجع تش_اشاره;
 
-  hb_blob_t *blob = nullptr;
-  if (*recycled_blob)
+  hb_blob_t *blob = تش_اشاره;
+  إذا (*recycled_blob)
     blob = *recycled_blob;
-  bool reused_blob = blob && blob != hb_blob_get_empty ();
-  bool new_meta = false;
-  auto *meta = reused_blob
-             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key)
-             : nullptr;
-  if (!meta)
+  منطقي reused_blob = blob && blob != hb_blob_get_تشه ();
+  منطقي new_meta = خطأ;
+  خپلکاری *meta = reused_blob
+             ? (hb_ویکټور_blob_meta_t *) hb_blob_get_user_معلومات (blob, &hb_ویکټور_blob_meta_user_معلومات_کلی)
+             : تش_اشاره;
+  إذا (!meta)
   {
-    meta = (hb_vector_blob_meta_t *) hb_malloc (sizeof (hb_vector_blob_meta_t));
-    if (!meta)
+    meta = (hb_ویکټور_blob_meta_t *) hb_malloc (حجم (hb_ویکټور_blob_meta_t));
+    إذا (!meta)
     {
-      hb_free (data);
-      return nullptr;
+      hb_free (معلومات);
+      أرجع تش_اشاره;
     }
-    meta->data = nullptr;
+    meta->معلومات = تش_اشاره;
     meta->allocated = 0;
-    meta->transferred = true;
-    meta->in_replace = false;
-    new_meta = true;
+    meta->transferred = ریښتیا;
+    meta->دننه_replace = خطأ;
+    new_meta = ریښتیا;
   }
 
-  if (reused_blob)
+  إذا (reused_blob)
   {
-    meta->in_replace = true;
-    blob->replace_buffer (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    hb_vector_blob_meta_set_buffer (meta, data, allocated);
+    meta->دننه_replace = ریښتیا;
+    blob->replace_بفر (معلومات, len, HB_حافظه_ډېرپېښ_WRITABLE, meta, hb_ویکټور_blob_meta_destroy);
+    hb_ویکټور_blob_meta_سېټ_بفر (meta, معلومات, allocated);
   }
-  else
+  وإلا
   {
-    hb_vector_blob_meta_set_buffer (meta, data, allocated);
-    blob = hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    if (unlikely (!blob))
-      return nullptr;
+    hb_ویکټور_blob_meta_سېټ_بفر (meta, معلومات, allocated);
+    blob = hb_blob_create_or_fail (معلومات, len, HB_حافظه_ډېرپېښ_WRITABLE, meta, hb_ویکټور_blob_meta_destroy);
+    إذا (unlikely (!blob))
+      أرجع تش_اشاره;
   }
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  إذا (unlikely (blob == hb_blob_get_تشه ()))
   {
-    if (new_meta)
+    إذا (new_meta)
       hb_free (meta);
-    hb_free (data);
-    return nullptr;
+    hb_free (معلومات);
+    أرجع تش_اشاره;
   }
 
-  if (new_meta &&
-      !hb_blob_set_user_data (blob,
-                              &hb_vector_blob_meta_user_data_key,
+  إذا (new_meta &&
+      !hb_blob_سېټ_user_معلومات (blob,
+                              &hb_ویکټور_blob_meta_user_معلومات_کلی,
                               meta,
-                              nullptr,
-                              true))
+                              تش_اشاره,
+                              ریښتیا))
   {
-    if (!reused_blob)
+    إذا (!reused_blob)
       hb_blob_destroy (blob);
-    return nullptr;
+    أرجع تش_اشاره;
   }
 
-  if (*recycled_blob)
-    *recycled_blob = nullptr;
+  إذا (*recycled_blob)
+    *recycled_blob = تش_اشاره;
 
-  return blob;
+  أرجع blob;
 }
 
-static inline void
+ساكن مضمن فراغ
 hb_buf_recover_recycled (hb_blob_t *blob,
-			 hb_vector_buf_t *buf)
+			 hb_ویکټور_buf_t *buf)
 {
-  if (!blob)
-    return;
+  إذا (!blob)
+    أرجع;
 
-  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key);
-  if (!meta || meta->transferred || !meta->data)
-    return;
+  خپلکاری *meta = (hb_ویکټور_blob_meta_t *) hb_blob_get_user_معلومات (blob, &hb_ویکټور_blob_meta_user_معلومات_کلی);
+  إذا (!meta || meta->transferred || !meta->معلومات)
+    أرجع;
 
-  buf->recycle_buffer (meta->data, 0, meta->allocated);
-  meta->data = nullptr;
+  buf->recycle_بفر (meta->معلومات, 0, meta->allocated);
+  meta->معلومات = تش_اشاره;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = ریښتیا;
 }
 
-static inline void
-hb_vector_transform_point (const hb_transform_t<> &t,
-			   float x_scale_factor,
-			   float y_scale_factor,
-			   float x, float y,
-			   float *tx, float *ty)
+ساكن مضمن فراغ
+hb_ویکټور_transform_ټکی (ثابت hb_transform_t<> &t,
+			   عائم x_scale_ضریب,
+			   عائم y_scale_ضریب,
+			   عائم x, عائم y,
+			   عائم *tx, عائم *ty)
 {
-  float xx = x, yy = y;
-  t.transform_point (xx, yy);
+  عائم xx = x, yy = y;
+  t.transform_ټکی (xx, yy);
   /* Setters force scale factors > 0; trust them here. */
-  *tx = xx / x_scale_factor;
-  *ty = yy / y_scale_factor;
+  *tx = xx / x_scale_ضریب;
+  *ty = yy / y_scale_ضریب;
 }
 
-static inline hb_bool_t
-hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
-				    float x_scale_factor,
-				    float y_scale_factor,
-				    const hb_glyph_extents_t *glyph_extents,
-				    hb_vector_extents_t *extents,
+ساكن مضمن hb_bool_t
+hb_ویکټور_سېټ_glyph_extents_common (ثابت hb_transform_t<> &transform,
+				    عائم x_scale_ضریب,
+				    عائم y_scale_ضریب,
+				    ثابت hb_glyph_extents_t *glyph_extents,
+				    hb_ویکټور_extents_t *extents,
 				    hb_bool_t *has_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = x0 + glyph_extents->width;
-  float y1 = y0 + glyph_extents->height;
+  عائم x0 = (عائم) glyph_extents->x_bearing;
+  عائم y0 = (عائم) glyph_extents->y_bearing;
+  عائم x1 = x0 + glyph_extents->پلنوالی;
+  عائم y1 = y0 + glyph_extents->لوړوالی;
 
-  float px[4] = {x0, x0, x1, x1};
-  float py[4] = {y0, y1, y0, y1};
+  عائم px[4] = {x0, x0, x1, x1};
+  عائم py[4] = {y0, y1, y0, y1};
 
-  float tx, ty;
-  hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[0], py[0], &tx, &ty);
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  عائم tx, ty;
+  hb_ویکټور_transform_ټکی (transform, x_scale_ضریب, y_scale_ضریب, px[0], py[0], &tx, &ty);
+  عائم tx_min = tx, tx_max = tx;
+  عائم ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  لكل (بینښه i = 1; i < 4; i++)
   {
-    hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[i], py[i], &tx, &ty);
+    hb_ویکټور_transform_ټکی (transform, x_scale_ضریب, y_scale_ضریب, px[i], py[i], &tx, &ty);
     tx_min = hb_min (tx_min, tx);
     tx_max = hb_max (tx_max, tx);
     ty_min = hb_min (ty_min, ty);
     ty_max = hb_max (ty_max, ty);
   }
 
-  if (tx_max <= tx_min || ty_max <= ty_min)
-    return false;
+  إذا (tx_max <= tx_min || ty_max <= ty_min)
+    أرجع خطأ;
 
-  if (*has_extents)
+  إذا (*has_extents)
   {
-    float x0 = hb_min (extents->x, tx_min);
-    float y0 = hb_min (extents->y, ty_min);
-    float x1 = hb_max (extents->x + extents->width, tx_max);
-    float y1 = hb_max (extents->y + extents->height, ty_max);
+    عائم x0 = hb_min (extents->x, tx_min);
+    عائم y0 = hb_min (extents->y, ty_min);
+    عائم x1 = hb_max (extents->x + extents->پلنوالی, tx_max);
+    عائم y1 = hb_max (extents->y + extents->لوړوالی, ty_max);
     *extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  وإلا
   {
     *extents = {tx_min, ty_min, tx_max - tx_min, ty_max - ty_min};
-    *has_extents = true;
+    *has_extents = ریښتیا;
   }
-  return true;
+  أرجع ریښتیا;
 }
 
-static inline void
-hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
-					 unsigned precision,
-					 float x_scale_factor,
-					 float y_scale_factor,
-					 float xx, float yx,
-					 float xy, float yy,
-					 float tx, float ty)
+ساكن مضمن فراغ
+hb_ویکټور_svg_append_instance_transform (hb_ویکټور_buf_t *بهر,
+					 بینښه precision,
+					 عائم x_scale_ضریب,
+					 عائم y_scale_ضریب,
+					 عائم xx, عائم yx,
+					 عائم xy, عائم yy,
+					 عائم tx, عائم ty)
 {
-  if (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
+  إذا (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
   {
-    out->append_str ("translate(");
-    out->append_num (tx / x_scale_factor, precision);
-    out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
-    out->append_str (") scale(1,-1)");
+    بهر->append_str ("translate(");
+    بهر->append_عدد (tx / x_scale_ضریب, precision);
+    بهر->append_c (',');
+    بهر->append_عدد (-ty / y_scale_ضریب, precision);
+    بهر->append_str (") scale(1,-1)");
   }
-  else
+  وإلا
   {
-    unsigned sprec = out->scale_precision ();
-    out->append_str ("matrix(");
-    out->append_num (xx, sprec);
-    out->append_c (',');
-    out->append_num (yx, sprec);
-    out->append_c (',');
-    out->append_num (-xy, sprec);
-    out->append_c (',');
-    out->append_num (-yy, sprec);
-    out->append_c (',');
-    out->append_num (tx / x_scale_factor, precision);
-    out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
-    out->append_c (')');
+    بینښه sprec = بهر->scale_precision ();
+    بهر->append_str ("matrix(");
+    بهر->append_عدد (xx, sprec);
+    بهر->append_c (',');
+    بهر->append_عدد (yx, sprec);
+    بهر->append_c (',');
+    بهر->append_عدد (-xy, sprec);
+    بهر->append_c (',');
+    بهر->append_عدد (-yy, sprec);
+    بهر->append_c (',');
+    بهر->append_عدد (tx / x_scale_ضریب, precision);
+    بهر->append_c (',');
+    بهر->append_عدد (-ty / y_scale_ضریب, precision);
+    بهر->append_c (')');
   }
 }
 
-#endif /* HB_VECTOR_INTERNAL_HH */
+#د_که_پای /* HB_VECTOR_INTERNAL_HH */

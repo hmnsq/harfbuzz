@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#که_نه_تعریف_شوی HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#ضمن "hb-ot-shaper.hh"
 
 
-static bool
-compose_hebrew (const hb_ot_shape_normalize_context_t *c,
+ساكن منطقي
+compose_hebrew (ثابت hb_ot_shape_normalize_context_t *c,
 		hb_codepoint_t  a,
 		hb_codepoint_t  b,
 		hb_codepoint_t *ab)
@@ -42,7 +42,7 @@ compose_hebrew (const hb_ot_shape_normalize_context_t *c,
    * Hebrew presentation forms with dagesh, for characters U+05D0..05EA;
    * Note that some letters do not have a dagesh presForm encoded.
    */
-  static const hb_codepoint_t sDageshForms[0x05EAu - 0x05D0u + 1] = {
+  ساكن ثابت hb_codepoint_t sDageshForms[0x05EAu - 0x05D0u + 1] = {
     0xFB30u, /* ALEF */
     0xFB31u, /* BET */
     0xFB32u, /* GIMEL */
@@ -72,140 +72,140 @@ compose_hebrew (const hb_ot_shape_normalize_context_t *c,
     0xFB4Au /* TAV */
   };
 
-  bool found = (bool) c->unicode->compose (a, b, ab);
+  منطقي وموندل = (منطقي) c->unicode->compose (a, b, ab);
 
-#ifdef HB_NO_OT_SHAPER_HEBREW_FALLBACK
-  return found;
-#endif
+#که_تعریف_شوی HB_NO_OT_SHAPER_HEBREW_FALLBACK
+  أرجع وموندل;
+#د_که_پای
 
-  if (!found && (c->plan && !c->plan->has_gpos_mark))
+  إذا (!وموندل && (c->plan && !c->plan->has_gpos_mark))
   {
       /* Special-case Hebrew presentation forms that are excluded from
        * standard normalization, but wanted for old fonts. */
-      switch (b) {
-      case 0x05B4u: /* HIRIQ */
-	  if (a == 0x05D9u) { /* YOD */
+      بدل (b) {
+      حالة 0x05B4u: /* HIRIQ */
+	  إذا (a == 0x05D9u) { /* YOD */
 	      *ab = 0xFB1Du;
-	      found = true;
+	      وموندل = ریښتیا;
 	  }
-	  break;
-      case 0x05B7u: /* PATAH */
-	  if (a == 0x05F2u) { /* YIDDISH YOD YOD */
+	  اكسر;
+      حالة 0x05B7u: /* PATAH */
+	  إذا (a == 0x05F2u) { /* YIDDISH YOD YOD */
 	      *ab = 0xFB1Fu;
-	      found = true;
-	  } else if (a == 0x05D0u) { /* ALEF */
+	      وموندل = ریښتیا;
+	  } وإلا إذا (a == 0x05D0u) { /* ALEF */
 	      *ab = 0xFB2Eu;
-	      found = true;
+	      وموندل = ریښتیا;
 	  }
-	  break;
-      case 0x05B8u: /* QAMATS */
-	  if (a == 0x05D0u) { /* ALEF */
+	  اكسر;
+      حالة 0x05B8u: /* QAMATS */
+	  إذا (a == 0x05D0u) { /* ALEF */
 	      *ab = 0xFB2Fu;
-	      found = true;
+	      وموندل = ریښتیا;
 	  }
-	  break;
-      case 0x05B9u: /* HOLAM */
-	  if (a == 0x05D5u) { /* VAV */
+	  اكسر;
+      حالة 0x05B9u: /* HOLAM */
+	  إذا (a == 0x05D5u) { /* VAV */
 	      *ab = 0xFB4Bu;
-	      found = true;
+	      وموندل = ریښتیا;
 	  }
-	  break;
-      case 0x05BCu: /* DAGESH */
-	  if (a >= 0x05D0u && a <= 0x05EAu) {
+	  اكسر;
+      حالة 0x05BCu: /* DAGESH */
+	  إذا (a >= 0x05D0u && a <= 0x05EAu) {
 	      *ab = sDageshForms[a - 0x05D0u];
-	      found = (*ab != 0);
-	  } else if (a == 0xFB2Au) { /* SHIN WITH SHIN DOT */
+	      وموندل = (*ab != 0);
+	  } وإلا إذا (a == 0xFB2Au) { /* SHIN WITH SHIN DOT */
 	      *ab = 0xFB2Cu;
-	      found = true;
-	  } else if (a == 0xFB2Bu) { /* SHIN WITH SIN DOT */
+	      وموندل = ریښتیا;
+	  } وإلا إذا (a == 0xFB2Bu) { /* SHIN WITH SIN DOT */
 	      *ab = 0xFB2Du;
-	      found = true;
+	      وموندل = ریښتیا;
 	  }
-	  break;
-      case 0x05BFu: /* RAFE */
-	  switch (a) {
-	  case 0x05D1u: /* BET */
+	  اكسر;
+      حالة 0x05BFu: /* RAFE */
+	  بدل (a) {
+	  حالة 0x05D1u: /* BET */
 	      *ab = 0xFB4Cu;
-	      found = true;
-	      break;
-	  case 0x05DBu: /* KAF */
+	      وموندل = ریښتیا;
+	      اكسر;
+	  حالة 0x05DBu: /* KAF */
 	      *ab = 0xFB4Du;
-	      found = true;
-	      break;
-	  case 0x05E4u: /* PE */
+	      وموندل = ریښتیا;
+	      اكسر;
+	  حالة 0x05E4u: /* PE */
 	      *ab = 0xFB4Eu;
-	      found = true;
-	      break;
+	      وموندل = ریښتیا;
+	      اكسر;
 	  }
-	  break;
-      case 0x05C1u: /* SHIN DOT */
-	  if (a == 0x05E9u) { /* SHIN */
+	  اكسر;
+      حالة 0x05C1u: /* SHIN DOT */
+	  إذا (a == 0x05E9u) { /* SHIN */
 	      *ab = 0xFB2Au;
-	      found = true;
-	  } else if (a == 0xFB49u) { /* SHIN WITH DAGESH */
+	      وموندل = ریښتیا;
+	  } وإلا إذا (a == 0xFB49u) { /* SHIN WITH DAGESH */
 	      *ab = 0xFB2Cu;
-	      found = true;
+	      وموندل = ریښتیا;
 	  }
-	  break;
-      case 0x05C2u: /* SIN DOT */
-	  if (a == 0x05E9u) { /* SHIN */
+	  اكسر;
+      حالة 0x05C2u: /* SIN DOT */
+	  إذا (a == 0x05E9u) { /* SHIN */
 	      *ab = 0xFB2Bu;
-	      found = true;
-	  } else if (a == 0xFB49u) { /* SHIN WITH DAGESH */
+	      وموندل = ریښتیا;
+	  } وإلا إذا (a == 0xFB49u) { /* SHIN WITH DAGESH */
 	      *ab = 0xFB2Du;
-	      found = true;
+	      وموندل = ریښتیا;
 	  }
-	  break;
+	  اكسر;
       }
   }
 
-  return found;
+  أرجع وموندل;
 }
 
-static void
-reorder_marks_hebrew (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		      hb_buffer_t              *buffer,
-		      unsigned int              start,
-		      unsigned int              end)
+ساكن فراغ
+reorder_marks_hebrew (ثابت hb_ot_shape_plan_t *plan HB_ناکارول_شوی,
+		      hb_بفر_t              *بفر,
+		      بینښه صحيح              پیل,
+		      بینښه صحيح              پای_ټکی)
 {
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = بفر->info;
 
-  for (unsigned i = start + 2; i < end; i++)
+  لكل (بینښه i = پیل + 2; i < پای_ټکی; i++)
   {
-    unsigned c0 = info_cc (info[i - 2]);
-    unsigned c1 = info_cc (info[i - 1]);
-    unsigned c2 = info_cc (info[i - 0]);
+    بینښه c0 = info_cc (info[i - 2]);
+    بینښه c1 = info_cc (info[i - 1]);
+    بینښه c2 = info_cc (info[i - 0]);
 
-    if ((c0 == HB_MODIFIED_COMBINING_CLASS_CCC17 || c0 == HB_MODIFIED_COMBINING_CLASS_CCC18) /* patach or qamats */ &&
+    إذا ((c0 == HB_MODIFIED_COMBINING_CLASS_CCC17 || c0 == HB_MODIFIED_COMBINING_CLASS_CCC18) /* patach or qamats */ &&
 	(c1 == HB_MODIFIED_COMBINING_CLASS_CCC10 || c1 == HB_MODIFIED_COMBINING_CLASS_CCC14) /* sheva or hiriq */ &&
-	(c2 == HB_MODIFIED_COMBINING_CLASS_CCC22 || c2 == HB_UNICODE_COMBINING_CLASS_BELOW) /* meteg or below */)
+	(c2 == HB_MODIFIED_COMBINING_CLASS_CCC22 || c2 == HB_UNICODE_COMBINING_CLASS_لاندې) /* meteg or below */)
     {
-      buffer->merge_clusters (i - 1, i + 1);
-      hb_swap (info[i - 1], info[i]);
-      break;
+      بفر->یوځای_clusters (i - 1, i + 1);
+      hb_بدلون (info[i - 1], info[i]);
+      اكسر;
     }
   }
 
 
 }
 
-const hb_ot_shaper_t _hb_ot_shaper_hebrew =
+ثابت hb_ot_shaper_t _hb_ot_shaper_hebrew =
 {
-  nullptr, /* collect_features */
-  nullptr, /* override_features */
-  nullptr, /* data_create */
-  nullptr, /* data_destroy */
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
+  تش_اشاره, /* collect_features */
+  تش_اشاره, /* override_features */
+  تش_اشاره, /* data_create */
+  تش_اشاره, /* data_destroy */
+  تش_اشاره, /* preprocess_text */
+  تش_اشاره, /* postprocess_glyphs */
+  تش_اشاره, /* decompose */
   compose_hebrew,
-  nullptr, /* setup_masks */
+  تش_اشاره, /* setup_masks */
   reorder_marks_hebrew,
-  HB_TAG ('h','e','b','r'), /* gpos_tag. https://github.com/harfbuzz/harfbuzz/issues/347#issuecomment-267838368 */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE,
-  true, /* fallback_position */
+  HB_نښان ('h','e','b','r'), /* gpos_tag. https://github.com/harfbuzz/harfbuzz/issues/347#issuecomment-267838368 */
+  HB_OT_SHAPE_NORMALIZATION_ډېرپېښ_DEFAULT,
+  HB_OT_SHAPE_ZERO_پلنوالی_MARKS_BY_GDEF_LATE,
+  ریښتیا, /* fallback_position */
 };
 
 
-#endif
+#د_که_پای

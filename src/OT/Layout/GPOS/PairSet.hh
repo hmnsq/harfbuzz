@@ -1,267 +1,267 @@
-#ifndef OT_LAYOUT_GPOS_PAIRSET_HH
-#define OT_LAYOUT_GPOS_PAIRSET_HH
+#که_نه_تعریف_شوی OT_LAYOUT_GPOS_PAIRSET_HH
+#تعریف_کړه OT_LAYOUT_GPOS_PAIRSET_HH
 
-#include "PairValueRecord.hh"
+#ضمن "PairValueRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
 
 /* Pair records vary in glyph width; their value traversal need not. */
-struct pair_set_values_t
+بنية pair_سېټ_ارزښتونه_t
 {
-  const ValueBase *base;
-  glyph_data_t glyphs;
-  const Value *values;
-  unsigned count;
-  unsigned record_size;
+  ثابت ارزښت_بنسټ *بنسټ;
+  glyph_معلومات_t glyphs;
+  ثابت ارزښت *values;
+  بینښه شمېر;
+  بینښه ریکارډ_اندازه;
 
-  unsigned get_glyph (unsigned i) const
+  بینښه get_glyph (بینښه i) ثابت
   {
-    glyph_data_t glyph = glyphs;
-    glyph.data = (const char *) glyph.data + i * record_size;
-    return glyph[0];
+    glyph_معلومات_t glyph = glyphs;
+    glyph.معلومات = (ثابت حرف *) glyph.معلومات + i * ریکارډ_اندازه;
+    أرجع glyph[0];
   }
 
-  const Value *get_values (unsigned i) const
-  { return reinterpret_cast<const Value *> ((const char *) values + i * record_size); }
+  ثابت ارزښت *get_ارزښتونه (بینښه i) ثابت
+  { أرجع reinterpret_cast<ثابت ارزښت *> ((ثابت حرف *) values + i * ریکارډ_اندازه); }
 
-  hb_pair_t<unsigned, unsigned>
-  compute_effective_value_formats (const hb_set_t &glyphset,
-                                   const ValueFormat valueFormats[2],
-                                   bool strip_hints, bool strip_empty,
-                                   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  hb_pair_t<بینښه, بینښه>
+  compute_effective_ارزښت_formats (ثابت hb_سېټ_t &glyphset,
+                                   ثابت ارزښت_Format ارزښت_Formats[2],
+                                   منطقي strip_hints, منطقي strip_تشه,
+                                   ثابت hb_hashmap_t<بینښه, hb_pair_t<بینښه, صحيح>> *varidx_delta_map) ثابت
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned format1 = 0, format2 = 0;
-    for (unsigned i = 0; i < count; i++)
+    بینښه len1 = ارزښت_Formats[0].get_len ();
+    بینښه format1 = 0, format2 = 0;
+    لكل (بینښه i = 0; i < شمېر; i++)
     {
-      if (!glyphset.has (get_glyph (i))) continue;
-      const Value *v = get_values (i);
-      format1 |= valueFormats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
-      format2 |= valueFormats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
+      إذا (!glyphset.has (get_glyph (i))) استمر;
+      ثابت ارزښت *v = get_ارزښتونه (i);
+      format1 |= ارزښت_Formats[0].get_effective_format (v, strip_hints, strip_تشه, بنسټ, varidx_delta_map);
+      format2 |= ارزښت_Formats[1].get_effective_format (v + len1, strip_hints, strip_تشه, بنسټ, varidx_delta_map);
     }
-    return hb_pair (format1, format2);
+    أرجع hb_pair (format1, format2);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat valueFormats[2]) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت ارزښت_Format ارزښت_Formats[2]) ثابت
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    for (unsigned i = 0; i < count; i++)
+    بینښه len1 = ارزښت_Formats[0].get_len ();
+    بینښه len2 = ارزښت_Formats[1].get_len ();
+    لكل (بینښه i = 0; i < شمېر; i++)
     {
-      if (!c->glyph_set->has (get_glyph (i))) continue;
-      const hb_array_t<const Value> v = hb_array (get_values (i), len1 + len2);
-      if (valueFormats[0].has_device ())
-        valueFormats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
-      if (valueFormats[1].has_device ())
-        valueFormats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
+      إذا (!c->glyph_سېټ->has (get_glyph (i))) استمر;
+      ثابت hb_array_t<ثابت ارزښت> v = hb_array (get_ارزښتونه (i), len1 + len2);
+      إذا (ارزښت_Formats[0].has_device ())
+        ارزښت_Formats[0].collect_variation_indices (c, بنسټ, v.sub_array (0, len1));
+      إذا (ارزښت_Formats[1].has_device ())
+        ارزښت_Formats[1].collect_variation_indices (c, بنسټ, v.sub_array (len1, len2));
     }
   }
 };
 
-template <typename Types>
-struct PairSet : ValueBase
+کينډۍ <ډول_نوم Types>
+بنية Pair_سېټ : ارزښت_بنسټ
 {
-  template <typename Types2>
-  friend struct PairPosFormat1_3;
+  کينډۍ <ډول_نوم Types2>
+  ملګری بنية PairPosFormat1_3;
 
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  کارول Pair_ارزښت_ریکارډ = GPOS_impl::Pair_ارزښت_ریکارډ<Types>;
 
-  protected:
-  typename Types::HBUINT
+  محمي:
+  ډول_نوم Types::HBUINT
                         len;    /* Number of PairValueRecords */
-  PairValueRecord       firstPairValueRecord;
+  Pair_ارزښت_ریکارډ       لومړی_Pair_ارزښت_ریکارډ;
                                 /* Array of PairValueRecords--ordered
                                  * by GlyphID of the second glyph */
-  public:
-  DEFINE_SIZE_MIN (Types::HBUINT::static_size);
+  عام:
+  DEFINE_اندازه_MIN (Types::HBUINT::static_اندازه);
 
-  static size_t get_size (unsigned len1, unsigned len2)
+  ساكن size_t get_اندازه (بینښه len1, بینښه len2)
   {
-    return Types::HBGlyphID::static_size + Value::static_size * (len1 + len2);
+    أرجع Types::HBGlyphID::static_اندازه + ارزښت::static_اندازه * (len1 + len2);
   }
-  static size_t get_size (const ValueFormat valueFormats[2])
+  ساكن size_t get_اندازه (ثابت ارزښت_Format ارزښت_Formats[2])
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    return get_size (len1, len2);
+    بینښه len1 = ارزښت_Formats[0].get_len ();
+    بینښه len2 = ارزښت_Formats[1].get_len ();
+    أرجع get_اندازه (len1, len2);
   }
 
-  struct sanitize_closure_t
+  بنية sanitize_تړون_t
   {
-    const ValueFormat *valueFormats;
-    unsigned int len1; /* valueFormats[0].get_len() */
-    size_t stride; /* bytes */
+    ثابت ارزښت_Format *ارزښت_Formats;
+    بینښه صحيح len1; /* valueFormats[0].get_len() */
+    size_t stride; /*بایټونه*/
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const sanitize_closure_t *closure) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت sanitize_تړون_t *تړون) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    إذا (!(c->check_struct (هذا) &&
 	  hb_barrier () &&
-          c->check_range (&firstPairValueRecord,
+          c->check_range (&لومړی_Pair_ارزښت_ریکارډ,
                           len,
-                          closure->stride))) return_trace (false);
+                          تړون->stride))) return_trace (خطأ);
     hb_barrier ();
 
-    unsigned int count = len;
-    const PairValueRecord *record = &firstPairValueRecord;
+    بینښه صحيح شمېر = len;
+    ثابت Pair_ارزښت_ریکارډ *ریکارډ = &لومړی_Pair_ارزښت_ریکارډ;
     return_trace (c->lazy_some_gpos ||
-		  (closure->valueFormats[0].sanitize_values_stride_unsafe (c, this, &record->values[0], count, closure->stride) &&
-                   closure->valueFormats[1].sanitize_values_stride_unsafe (c, this, &record->values[closure->len1], count, closure->stride)));
+		  (تړون->ارزښت_Formats[0].sanitize_ارزښتونه_stride_unsafe (c, هذا, &ریکارډ->values[0], شمېر, تړون->stride) &&
+                   تړون->ارزښت_Formats[1].sanitize_ارزښتونه_stride_unsafe (c, هذا, &ریکارډ->values[تړون->len1], شمېر, تړون->stride)));
   }
 
-  bool intersects (const hb_set_t *glyphs,
-                   const ValueFormat *valueFormats) const
+  منطقي intersects (ثابت hb_سېټ_t *glyphs,
+                   ثابت ارزښت_Format *ارزښت_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
+    بینښه ریکارډ_اندازه = get_اندازه (ارزښت_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Pair_ارزښت_ریکارډ *ریکارډ = &لومړی_Pair_ارزښت_ریکارډ;
+    بینښه صحيح شمېر = len;
+    لكل (بینښه صحيح i = 0; i < شمېر; i++)
     {
-      if (glyphs->has (record->secondGlyph))
-        return true;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      إذا (glyphs->has (ریکارډ->دوهم_Glyph))
+        أرجع ریښتیا;
+      ریکارډ = &Struct_At_دننه_واټن<ثابت Pair_ارزښت_ریکارډ> (ریکارډ, ریکارډ_اندازه);
     }
-    return false;
+    أرجع خطأ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-                       const ValueFormat *valueFormats) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c,
+                       ثابت ارزښت_Format *ارزښت_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
+    بینښه ریکارډ_اندازه = get_اندازه (ارزښت_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    c->input->add_array (&record->secondGlyph, len, record_size);
+    ثابت Pair_ارزښت_ریکارډ *ریکارډ = &لومړی_Pair_ارزښت_ریکارډ;
+    c->ننوت->جمع_کړه_array (&ریکارډ->دوهم_Glyph, len, ریکارډ_اندازه);
   }
 
-  template <typename set_t>
-  void collect_second_glyphs (set_t *glyphs,
-			      const ValueFormat *valueFormats) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_دوهم_glyphs (سېټ_t *glyphs,
+			      ثابت ارزښت_Format *ارزښت_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
-    const PairValueRecord *record = &firstPairValueRecord;
-    glyphs->add_array (&record->secondGlyph, len, record_size);
+    بینښه ریکارډ_اندازه = get_اندازه (ارزښت_Formats);
+    ثابت Pair_ارزښت_ریکارډ *ریکارډ = &لومړی_Pair_ارزښت_ریکارډ;
+    glyphs->جمع_کړه_array (&ریکارډ->دوهم_Glyph, len, ریکارډ_اندازه);
   }
 
-  pair_set_values_t get_values_view (const ValueFormat valueFormats[2]) const
+  pair_سېټ_ارزښتونه_t get_ارزښتونه_view (ثابت ارزښت_Format ارزښت_Formats[2]) ثابت
   {
-    return {this, &firstPairValueRecord.secondGlyph, &firstPairValueRecord.values[0],
-            (unsigned) len, (unsigned) get_size (valueFormats)};
+    أرجع {هذا, &لومړی_Pair_ارزښت_ریکارډ.دوهم_Glyph, &لومړی_Pair_ارزښت_ریکارډ.values[0],
+            (بینښه) len, (بینښه) get_اندازه (ارزښت_Formats)};
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت ارزښت_Format *ارزښت_Formats) ثابت
   {
-    get_values_view (valueFormats).collect_variation_indices (c, valueFormats);
+    get_ارزښتونه_view (ارزښت_Formats).collect_variation_indices (c, ارزښت_Formats);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-              const ValueFormat *valueFormats,
-              unsigned int pos) const
+  منطقي apply (hb_ot_apply_context_t *c,
+              ثابت ارزښت_Format *ارزښت_Formats,
+              بینښه صحيح pos) ثابت
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int len1 = valueFormats[0].get_len ();
-    unsigned int len2 = valueFormats[1].get_len ();
-    unsigned record_size = get_size (len1, len2);
+    TRACE_APPLY (هذا);
+    hb_بفر_t *بفر = c->بفر;
+    بینښه صحيح len1 = ارزښت_Formats[0].get_len ();
+    بینښه صحيح len2 = ارزښت_Formats[1].get_len ();
+    بینښه ریکارډ_اندازه = get_اندازه (len1, len2);
 
-    const PairValueRecord *record = hb_bsearch (buffer->info[pos].codepoint,
-                                                &firstPairValueRecord,
-                                                (unsigned) len,
-                                                record_size);
-    if (record)
+    ثابت Pair_ارزښت_ریکارډ *ریکارډ = hb_bsearch (بفر->info[pos].codepoint,
+                                                &لومړی_Pair_ارزښت_ریکارډ,
+                                                (بینښه) len,
+                                                ریکارډ_اندازه);
+    إذا (ریکارډ)
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (HB_بفر_پیغام_نور && c->بفر->messaging ())
       {
-	c->buffer->message (c->font,
+	c->بفر->پیغام (c->font,
 			    "try kerning glyphs at %u,%u",
-			    c->buffer->idx, pos);
+			    c->بفر->idx, pos);
       }
 
-      bool applied_first = len1 && valueFormats[0].apply_value (c, this, &record->values[0], buffer->cur_pos());
-      bool applied_second = len2 && valueFormats[1].apply_value (c, this, &record->values[len1], buffer->pos[pos]);
+      منطقي applied_لومړی = len1 && ارزښت_Formats[0].apply_ارزښت (c, هذا, &ریکارډ->values[0], بفر->cur_pos());
+      منطقي applied_دوهم = len2 && ارزښت_Formats[1].apply_ارزښت (c, هذا, &ریکارډ->values[len1], بفر->pos[pos]);
 
-      if (applied_first || applied_second)
-	if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (applied_لومړی || applied_دوهم)
+	إذا (HB_بفر_پیغام_نور && c->بفر->messaging ())
 	{
-	  c->buffer->message (c->font,
+	  c->بفر->پیغام (c->font,
 			      "kerned glyphs at %u,%u",
-			      c->buffer->idx, pos);
+			      c->بفر->idx, pos);
 	}
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (HB_بفر_پیغام_نور && c->بفر->messaging ())
       {
-	c->buffer->message (c->font,
+	c->بفر->پیغام (c->font,
 			    "tried kerning glyphs at %u,%u",
-			    c->buffer->idx, pos);
+			    c->بفر->idx, pos);
       }
 
-      if (applied_first || applied_second)
-        buffer->unsafe_to_break (buffer->idx, pos + 1);
-      else
+      إذا (applied_لومړی || applied_دوهم)
+        بفر->unsafe_منزل_break (بفر->idx, pos + 1);
+      وإلا
         /* Even a zero-valued pair record is a concat hazard. */
-        buffer->unsafe_to_concat (buffer->idx, pos + 1);
+        بفر->unsafe_منزل_concat (بفر->idx, pos + 1);
 
-      if (len2)
+      إذا (len2)
       {
 	pos++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
       // https://github.com/harfbuzz/harfbuzz/issues/3888#issuecomment-1326781116
-      buffer->unsafe_to_break (buffer->idx, pos + 1);
+      بفر->unsafe_منزل_break (بفر->idx, pos + 1);
       }
 
-      buffer->idx = pos;
-      return_trace (true);
+      بفر->idx = pos;
+      return_trace (ریښتیا);
     }
-    buffer->unsafe_to_concat (buffer->idx, pos + 1);
-    return_trace (false);
+    بفر->unsafe_منزل_concat (بفر->idx, pos + 1);
+    return_trace (خطأ);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ValueFormat valueFormats[2],
-               const ValueFormat newFormats[2]) const
+  منطقي subset (hb_subset_context_t *c,
+               ثابت ارزښت_Format ارزښت_Formats[2],
+               ثابت ارزښت_Format newFormats[2]) ثابت
   {
-    TRACE_SUBSET (this);
-    auto snap = c->serializer->snapshot ();
+    TRACE_SUBSET (هذا);
+    خپلکاری snap = c->serializer->snapshot ();
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->len = 0;
+    خپلکاری *بهر = c->serializer->پیل_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (بهر))) return_trace (خطأ);
+    بهر->len = 0;
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ثابت hb_سېټ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    unsigned record_size = get_size (len1, len2);
+    بینښه len1 = ارزښت_Formats[0].get_len ();
+    بینښه len2 = ارزښت_Formats[1].get_len ();
+    بینښه ریکارډ_اندازه = get_اندازه (len1, len2);
 
-    pair_value_record_context_t context =
+    pair_ارزښت_ریکارډ_context_t context =
     {
-      this,
-      valueFormats,
+      هذا,
+      ارزښت_Formats,
       newFormats,
       len1,
       &glyph_map,
       &c->plan->layout_variation_idx_delta_map
     };
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned count = len, num = 0;
-    for (unsigned i = 0; i < count; i++)
+    ثابت Pair_ارزښت_ریکارډ *ریکارډ = &لومړی_Pair_ارزښت_ریکارډ;
+    بینښه شمېر = len, عدد = 0;
+    لكل (بینښه i = 0; i < شمېر; i++)
     {
-      if (glyphset.has (record->secondGlyph)
-         && record->subset (c, &context)) num++;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      إذا (glyphset.has (ریکارډ->دوهم_Glyph)
+         && ریکارډ->subset (c, &context)) عدد++;
+      ریکارډ = &Struct_At_دننه_واټن<ثابت Pair_ارزښت_ریکارډ> (ریکارډ, ریکارډ_اندازه);
     }
 
-    out->len = num;
-    if (!num) c->serializer->revert (snap);
-    return_trace (num);
+    بهر->len = عدد;
+    إذا (!عدد) c->serializer->revert (snap);
+    return_trace (عدد);
   }
 };
 
@@ -270,4 +270,4 @@ struct PairSet : ValueBase
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRSET_HH
+#د_که_پای  // OT_LAYOUT_GPOS_PAIRSET_HH

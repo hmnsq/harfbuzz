@@ -26,30 +26,30 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#که_نه_تعریف_شوی HB_NO_OT_SHAPE
 
-#include "hb-ot-map.hh"
-#include "hb-ot-shape.hh"
-#include "hb-ot-layout.hh"
+#ضمن "hb-ot-map.hh"
+#ضمن "hb-ot-shape.hh"
+#ضمن "hb-ot-layout.hh"
 
 
-void hb_ot_map_t::collect_lookups (unsigned int table_index, hb_set_t *lookups_out) const
+فراغ hb_ot_map_t::collect_lookups (بینښه صحيح جدول_شاخص, hb_سېټ_t *lookups_بهر) ثابت
 {
-  for (unsigned int i = 0; i < lookups[table_index].length; i++)
-    lookups_out->add (lookups[table_index][i].index);
+  لكل (بینښه صحيح i = 0; i < lookups[جدول_شاخص].اوږدتیا; i++)
+    lookups_بهر->جمع_کړه (lookups[جدول_شاخص][i].شاخص_2);
 }
 
 
 hb_ot_map_builder_t::hb_ot_map_builder_t (hb_face_t *face_,
-					  const hb_segment_properties_t &props_)
+					  ثابت hb_segment_properties_t &props_)
 {
-  hb_memset (this, 0, sizeof (*this));
+  hb_memset (هذا, 0, حجم (*هذا));
 
   feature_infos.init ();
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
-    stages[table_index].init ();
+  لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
+    stages[جدول_شاخص].init ();
 
   face = face_;
   props = props_;
@@ -57,203 +57,203 @@ hb_ot_map_builder_t::hb_ot_map_builder_t (hb_face_t *face_,
   /* Fetch script/language indices for GSUB/GPOS.  We need these later to skip
    * features not available in either table and not waste precious bits for them. */
 
-  unsigned int script_count = HB_OT_MAX_TAGS_PER_SCRIPT;
-  unsigned int language_count = HB_OT_MAX_TAGS_PER_LANGUAGE;
-  hb_tag_t script_tags[HB_OT_MAX_TAGS_PER_SCRIPT];
-  hb_tag_t language_tags[HB_OT_MAX_TAGS_PER_LANGUAGE];
+  بینښه صحيح script_شمېر = HB_OT_MAX_نښانونه_فی_SCRIPT;
+  بینښه صحيح language_شمېر = HB_OT_MAX_نښانونه_فی_LANGUAGE;
+  hb_نښان_t script_نښانونه[HB_OT_MAX_نښانونه_فی_SCRIPT];
+  hb_نښان_t language_نښانونه[HB_OT_MAX_نښانونه_فی_LANGUAGE];
 
-  hb_ot_tags_from_script_and_language (props.script,
+  hb_ot_نښانونه_from_script_and_language (props.script,
 				       props.language,
-				       &script_count,
-				       script_tags,
-				       &language_count,
-				       language_tags);
+				       &script_شمېر,
+				       script_نښانونه,
+				       &language_شمېر,
+				       language_نښانونه);
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
   {
-    hb_tag_t table_tag = table_tags[table_index];
-    found_script[table_index] = (bool) hb_ot_layout_table_select_script (face,
-									 table_tag,
-									 script_count,
-									 script_tags,
-									 &script_index[table_index],
-									 &chosen_script[table_index]);
+    hb_نښان_t جدول_نښان_2 = جدول_نښانونه[جدول_شاخص];
+    وموندل_script[جدول_شاخص] = (منطقي) hb_ot_layout_جدول_select_script (face,
+									 جدول_نښان_2,
+									 script_شمېر,
+									 script_نښانونه,
+									 &script_شاخص[جدول_شاخص],
+									 &chosen_script[جدول_شاخص]);
     hb_ot_layout_script_select_language (face,
-					 table_tag,
-					 script_index[table_index],
-					 language_count,
-					 language_tags,
-					 &language_index[table_index]);
+					 جدول_نښان_2,
+					 script_شاخص[جدول_شاخص],
+					 language_شمېر,
+					 language_نښانونه,
+					 &language_شاخص[جدول_شاخص]);
   }
 }
 
 hb_ot_map_builder_t::~hb_ot_map_builder_t ()
 {
   feature_infos.fini ();
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
-    stages[table_index].fini ();
+  لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
+    stages[جدول_شاخص].fini ();
 }
 
-void hb_ot_map_builder_t::add_feature (hb_tag_t tag,
+فراغ hb_ot_map_builder_t::جمع_کړه_feature (hb_نښان_t نښان_2,
 				       hb_ot_map_feature_flags_t flags,
-				       unsigned int value)
+				       بینښه صحيح value)
 {
-  if (unlikely (!tag)) return;
+  إذا (unlikely (!نښان_2)) أرجع;
   feature_info_t *info = feature_infos.push();
-  info->tag = tag;
-  info->seq = feature_infos.length;
-  info->max_value = value;
+  info->نښان_2 = نښان_2;
+  info->seq = feature_infos.اوږدتیا;
+  info->max_ارزښت = value;
   info->flags = flags;
-  info->default_value = (flags & F_GLOBAL) ? value : 0;
+  info->default_ارزښت = (flags & F_GLOBAL) ? value : 0;
   info->stage[0] = current_stage[0];
   info->stage[1] = current_stage[1];
 }
 
-bool hb_ot_map_builder_t::has_feature (hb_tag_t tag)
+منطقي hb_ot_map_builder_t::has_feature (hb_نښان_t نښان_2)
 {
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
   {
-    if (hb_ot_layout_language_find_feature (face,
-					    table_tags[table_index],
-					    script_index[table_index],
-					    language_index[table_index],
-					    tag,
-					    nullptr))
-      return true;
+    إذا (hb_ot_layout_language_پیدا_کړه_feature (face,
+					    جدول_نښانونه[جدول_شاخص],
+					    script_شاخص[جدول_شاخص],
+					    language_شاخص[جدول_شاخص],
+					    نښان_2,
+					    تش_اشاره))
+      أرجع ریښتیا;
   }
-  return false;
+  أرجع خطأ;
 }
 
-void
-hb_ot_map_builder_t::add_lookups (hb_ot_map_t  &m,
-				  unsigned int  table_index,
-				  unsigned int  feature_index,
-				  const hb_ot_shape_plan_key_t &key,
-				  hb_mask_t     mask,
-				  bool          auto_zwnj,
-				  bool          auto_zwj,
-				  bool          random,
-				  bool          per_syllable,
-				  hb_tag_t      feature_tag)
+فراغ
+hb_ot_map_builder_t::جمع_کړه_lookups (hb_ot_map_t  &m,
+				  بینښه صحيح  جدول_شاخص,
+				  بینښه صحيح  feature_شاخص,
+				  ثابت hb_ot_shape_plan_کلی_t &key,
+				  hb_ماسک_t     ماسک,
+				  منطقي          auto_zwnj,
+				  منطقي          auto_zwj,
+				  منطقي          random,
+				  منطقي          فی_syllable,
+				  hb_نښان_t      feature_نښان)
 {
-  unsigned int lookup_indices[32];
-  unsigned int offset, len;
-  unsigned int table_lookup_count;
+  بینښه صحيح lookup_indices[32];
+  بینښه صحيح دننه_واټن, len;
+  بینښه صحيح جدول_lookup_شمېر;
 
-  table_lookup_count = hb_ot_layout_table_get_lookup_count (face, table_tags[table_index]);
+  جدول_lookup_شمېر = hb_ot_layout_جدول_get_lookup_شمېر (face, جدول_نښانونه[جدول_شاخص]);
 
-  hb_set_t varied_lookups;
-  if (key.get_lookup_variations (face, table_index, feature_index, &varied_lookups))
+  hb_سېټ_t varied_lookups;
+  إذا (key.get_lookup_variations (face, جدول_شاخص, feature_شاخص, &varied_lookups))
   {
-    if (unlikely (varied_lookups.in_error ()))
+    إذا (unlikely (varied_lookups.دننه_error ()))
     {
-      m.lookups[table_index].ensure_error ();
-      return;
+      m.lookups[جدول_شاخص].ensure_error ();
+      أرجع;
     }
-    for (unsigned int lookup_index : varied_lookups)
+    لكل (بینښه صحيح lookup_شاخص : varied_lookups)
     {
-      if (lookup_index >= table_lookup_count)
-	continue;
-      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_index].push ();
-      lookup->mask = mask;
-      lookup->index = lookup_index;
+      إذا (lookup_شاخص >= جدول_lookup_شمېر)
+	استمر;
+      hb_ot_map_t::lookup_map_t *lookup = m.lookups[جدول_شاخص].push ();
+      lookup->ماسک = ماسک;
+      lookup->شاخص_2 = lookup_شاخص;
       lookup->auto_zwnj = auto_zwnj;
       lookup->auto_zwj = auto_zwj;
       lookup->random = random;
-      lookup->per_syllable = per_syllable;
-      lookup->feature_tag = feature_tag;
+      lookup->فی_syllable = فی_syllable;
+      lookup->feature_نښان = feature_نښان;
     }
-    return;
+    أرجع;
   }
 
-  offset = 0;
-  do {
-    len = ARRAY_LENGTH (lookup_indices);
+  دننه_واټن = 0;
+  افعل {
+    len = ARRAY_اوږدتیا (lookup_indices);
     hb_ot_layout_feature_with_variations_get_lookups (face,
-					      table_tags[table_index],
-					      feature_index,
-					      key.variations_index[table_index],
-						      offset, &len,
+					      جدول_نښانونه[جدول_شاخص],
+					      feature_شاخص,
+					      key.variations_شاخص[جدول_شاخص],
+						      دننه_واټن, &len,
 						      lookup_indices);
 
-    for (unsigned int i = 0; i < len; i++)
+    لكل (بینښه صحيح i = 0; i < len; i++)
     {
-      if (lookup_indices[i] >= table_lookup_count)
-	continue;
-      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_index].push ();
-      lookup->mask = mask;
-      lookup->index = lookup_indices[i];
+      إذا (lookup_indices[i] >= جدول_lookup_شمېر)
+	استمر;
+      hb_ot_map_t::lookup_map_t *lookup = m.lookups[جدول_شاخص].push ();
+      lookup->ماسک = ماسک;
+      lookup->شاخص_2 = lookup_indices[i];
       lookup->auto_zwnj = auto_zwnj;
       lookup->auto_zwj = auto_zwj;
       lookup->random = random;
-      lookup->per_syllable = per_syllable;
-      lookup->feature_tag = feature_tag;
+      lookup->فی_syllable = فی_syllable;
+      lookup->feature_نښان = feature_نښان;
     }
 
-    offset += len;
-  } while (len == ARRAY_LENGTH (lookup_indices));
+    دننه_واټن += len;
+  } طالما (len == ARRAY_اوږدتیا (lookup_indices));
 }
 
 
-void hb_ot_map_builder_t::add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func)
+فراغ hb_ot_map_builder_t::جمع_کړه_pause (بینښه صحيح جدول_شاخص, hb_ot_map_t::pause_func_t pause_func)
 {
-  stage_info_t *s = stages[table_index].push ();
-  s->index = current_stage[table_index];
+  stage_info_t *s = stages[جدول_شاخص].push ();
+  s->شاخص_2 = current_stage[جدول_شاخص];
   s->pause_func = pause_func;
 
-  current_stage[table_index]++;
+  current_stage[جدول_شاخص]++;
 }
 
-void
+فراغ
 hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
-			      const hb_ot_shape_plan_key_t &key)
+			      ثابت hb_ot_shape_plan_کلی_t &key)
 {
-  unsigned int global_bit_shift = 8 * sizeof (hb_mask_t) - 1;
-  unsigned int global_bit_mask = 1u << global_bit_shift;
+  بینښه صحيح global_بټ_ښويدنه = 8 * حجم (hb_ماسک_t) - 1;
+  بینښه صحيح global_بټ_ماسک = 1u << global_بټ_ښويدنه;
 
-  m.global_mask = global_bit_mask;
+  m.global_ماسک = global_بټ_ماسک;
 
-  unsigned int required_feature_index[2];
-  hb_tag_t required_feature_tag[2];
+  بینښه صحيح required_feature_شاخص[2];
+  hb_نښان_t required_feature_نښان[2];
   /* We default to applying required feature in stage 0.  If the required
    * feature has a tag that is known to the shaper, we apply required feature
    * in the stage for that tag.
    */
-  unsigned int required_feature_stage[2] = {0, 0};
+  بینښه صحيح required_feature_stage[2] = {0, 0};
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
   {
-    m.chosen_script[table_index] = chosen_script[table_index];
-    m.found_script[table_index] = found_script[table_index];
+    m.chosen_script[جدول_شاخص] = chosen_script[جدول_شاخص];
+    m.وموندل_script[جدول_شاخص] = وموندل_script[جدول_شاخص];
 
     hb_ot_layout_language_get_required_feature (face,
-						table_tags[table_index],
-						script_index[table_index],
-						language_index[table_index],
-						&required_feature_index[table_index],
-						&required_feature_tag[table_index]);
+						جدول_نښانونه[جدول_شاخص],
+						script_شاخص[جدول_شاخص],
+						language_شاخص[جدول_شاخص],
+						&required_feature_شاخص[جدول_شاخص],
+						&required_feature_نښان[جدول_شاخص]);
   }
 
   /* Sort features and merge duplicates */
-  if (feature_infos.length)
+  إذا (feature_infos.اوږدتیا)
   {
-    if (!is_simple)
+    إذا (!is_simple)
       feature_infos.qsort ();
-    auto *f = feature_infos.arrayZ;
-    unsigned int j = 0;
-    unsigned count = feature_infos.length;
-    for (unsigned int i = 1; i < count; i++)
-      if (f[i].tag != f[j].tag)
+    خپلکاری *f = feature_infos.arrayZ;
+    بینښه صحيح j = 0;
+    بینښه شمېر = feature_infos.اوږدتیا;
+    لكل (بینښه صحيح i = 1; i < شمېر; i++)
+      إذا (f[i].نښان_2 != f[j].نښان_2)
 	f[++j] = f[i];
-      else {
-	if (f[i].flags & F_GLOBAL) {
+      وإلا {
+	إذا (f[i].flags & F_GLOBAL) {
 	  f[j].flags |= F_GLOBAL;
-	  f[j].max_value = f[i].max_value;
-	  f[j].default_value = f[i].default_value;
-	} else {
-	  if (f[j].flags & F_GLOBAL)
+	  f[j].max_ارزښت = f[i].max_ارزښت;
+	  f[j].default_ارزښت = f[i].default_ارزښت;
+	} وإلا {
+	  إذا (f[j].flags & F_GLOBAL)
 	    f[j].flags ^= F_GLOBAL;
-	  f[j].max_value = hb_max (f[j].max_value, f[i].max_value);
+	  f[j].max_ارزښت = hb_max (f[j].max_ارزښت, f[i].max_ارزښت);
 	  /* Inherit default_value from j */
 	}
 	f[j].flags |= (f[i].flags & F_HAS_FALLBACK);
@@ -264,169 +264,169 @@ hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
   }
 
   hb_map_t feature_indices[2];
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
     hb_ot_layout_collect_features_map (face,
-				       table_tags[table_index],
-				       script_index[table_index],
-				       language_index[table_index],
-				       &feature_indices[table_index]);
+				       جدول_نښانونه[جدول_شاخص],
+				       script_شاخص[جدول_شاخص],
+				       language_شاخص[جدول_شاخص],
+				       &feature_indices[جدول_شاخص]);
 
   /* Allocate bits now */
   static_assert ((!(HB_GLYPH_FLAG_DEFINED & (HB_GLYPH_FLAG_DEFINED + 1))), "");
-  unsigned int next_bit = hb_popcount (HB_GLYPH_FLAG_DEFINED) + 1;
+  بینښه صحيح بل_بټ = hb_popcount (HB_GLYPH_FLAG_DEFINED) + 1;
 
-  unsigned count = feature_infos.length;
-  for (unsigned int i = 0; i < count; i++)
+  بینښه شمېر = feature_infos.اوږدتیا;
+  لكل (بینښه صحيح i = 0; i < شمېر; i++)
   {
-    const feature_info_t *info = &feature_infos[i];
+    ثابت feature_info_t *info = &feature_infos[i];
 
-    unsigned int bits_needed;
+    بینښه صحيح بټونه_needed;
 
-    if ((info->flags & F_GLOBAL) && info->max_value == 1)
+    إذا ((info->flags & F_GLOBAL) && info->max_ارزښت == 1)
       /* Uses the global bit */
-      bits_needed = 0;
-    else
+      بټونه_needed = 0;
+    وإلا
       /* Limit bits per feature. */
-      bits_needed = hb_min (HB_OT_MAP_MAX_BITS, hb_bit_storage (info->max_value));
+      بټونه_needed = hb_min (HB_OT_MAP_MAX_بټونه, hb_بټ_storage (info->max_ارزښت));
 
-    if (!info->max_value || next_bit + bits_needed >= global_bit_shift)
-      continue; /* Feature disabled, or not enough bits. */
+    إذا (!info->max_ارزښت || بل_بټ + بټونه_needed >= global_بټ_ښويدنه)
+      استمر; /* Feature disabled, or not enough bits. */
 
-    bool found = false;
-    unsigned int feature_index[2];
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    منطقي وموندل = خطأ;
+    بینښه صحيح feature_شاخص[2];
+    لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
     {
-      if (required_feature_tag[table_index] == info->tag)
-	required_feature_stage[table_index] = info->stage[table_index];
+      إذا (required_feature_نښان[جدول_شاخص] == info->نښان_2)
+	required_feature_stage[جدول_شاخص] = info->stage[جدول_شاخص];
 
-      hb_codepoint_t *index;
-      if (feature_indices[table_index].has (info->tag, &index))
+      hb_codepoint_t *شاخص_2;
+      إذا (feature_indices[جدول_شاخص].has (info->نښان_2, &شاخص_2))
       {
-        feature_index[table_index] = *index;
-        found = true;
+        feature_شاخص[جدول_شاخص] = *شاخص_2;
+        وموندل = ریښتیا;
       }
-      else
-        feature_index[table_index] = HB_OT_LAYOUT_NO_FEATURE_INDEX;
+      وإلا
+        feature_شاخص[جدول_شاخص] = HB_OT_LAYOUT_NO_FEATURE_شاخص;
     }
-    if (!found && (info->flags & F_GLOBAL_SEARCH))
+    إذا (!وموندل && (info->flags & F_GLOBAL_پلټنه))
     {
-      for (unsigned int table_index = 0; table_index < 2; table_index++)
+      لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
       {
-	found |= (bool) hb_ot_layout_table_find_feature (face,
-							 table_tags[table_index],
-							 info->tag,
-							 &feature_index[table_index]);
+	وموندل |= (منطقي) hb_ot_layout_جدول_پیدا_کړه_feature (face,
+							 جدول_نښانونه[جدول_شاخص],
+							 info->نښان_2,
+							 &feature_شاخص[جدول_شاخص]);
       }
     }
-    if (!found && !(info->flags & F_HAS_FALLBACK))
-      continue;
+    إذا (!وموندل && !(info->flags & F_HAS_FALLBACK))
+      استمر;
 
 
     hb_ot_map_t::feature_map_t *map = m.features.push ();
 
-    map->tag = info->tag;
-    map->index[0] = feature_index[0];
-    map->index[1] = feature_index[1];
+    map->نښان_2 = info->نښان_2;
+    map->شاخص_2[0] = feature_شاخص[0];
+    map->شاخص_2[1] = feature_شاخص[1];
     map->stage[0] = info->stage[0];
     map->stage[1] = info->stage[1];
     map->auto_zwnj = !(info->flags & F_MANUAL_ZWNJ);
     map->auto_zwj = !(info->flags & F_MANUAL_ZWJ);
     map->random = !!(info->flags & F_RANDOM);
-    map->per_syllable = !!(info->flags & F_PER_SYLLABLE);
-    if ((info->flags & F_GLOBAL) && info->max_value == 1) {
+    map->فی_syllable = !!(info->flags & F_فی_SYLLABLE);
+    إذا ((info->flags & F_GLOBAL) && info->max_ارزښت == 1) {
       /* Uses the global bit */
-      map->shift = global_bit_shift;
-      map->mask = global_bit_mask;
-    } else {
-      map->shift = next_bit;
-      map->mask = (1u << (next_bit + bits_needed)) - (1u << next_bit);
-      next_bit += bits_needed;
-      m.global_mask |= (info->default_value << map->shift) & map->mask;
+      map->ښويدنه = global_بټ_ښويدنه;
+      map->ماسک = global_بټ_ماسک;
+    } وإلا {
+      map->ښويدنه = بل_بټ;
+      map->ماسک = (1u << (بل_بټ + بټونه_needed)) - (1u << بل_بټ);
+      بل_بټ += بټونه_needed;
+      m.global_ماسک |= (info->default_ارزښت << map->ښويدنه) & map->ماسک;
     }
-    map->_1_mask = (1u << map->shift) & map->mask;
-    map->needs_fallback = !found;
+    map->_1_mask = (1u << map->ښويدنه) & map->ماسک;
+    map->needs_fallback = !وموندل;
   }
   //feature_infos.shrink (0); /* Done with these */
-  if (is_simple)
+  إذا (is_simple)
     m.features.qsort ();
 
-  add_gsub_pause (nullptr);
-  add_gpos_pause (nullptr);
+  جمع_کړه_gsub_pause (تش_اشاره);
+  جمع_کړه_gpos_pause (تش_اشاره);
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
   {
     /* Collect lookup indices for features */
-    auto &lookups = m.lookups[table_index];
+    خپلکاری &lookups = m.lookups[جدول_شاخص];
 
-    unsigned int stage_index = 0;
-    unsigned int last_num_lookups = 0;
-    for (unsigned stage = 0; stage < current_stage[table_index]; stage++)
+    بینښه صحيح stage_شاخص = 0;
+    بینښه صحيح وروستی_عدد_lookups = 0;
+    لكل (بینښه stage = 0; stage < current_stage[جدول_شاخص]; stage++)
     {
-      if (required_feature_index[table_index] != HB_OT_LAYOUT_NO_FEATURE_INDEX &&
-	  required_feature_stage[table_index] == stage)
-	add_lookups (m, table_index,
-		     required_feature_index[table_index],
+      إذا (required_feature_شاخص[جدول_شاخص] != HB_OT_LAYOUT_NO_FEATURE_شاخص &&
+	  required_feature_stage[جدول_شاخص] == stage)
+	جمع_کړه_lookups (m, جدول_شاخص,
+		     required_feature_شاخص[جدول_شاخص],
 		     key,
-		     global_bit_mask);
+		     global_بټ_ماسک);
 
-      for (auto &feature : m.features)
+      لكل (خپلکاری &feature : m.features)
       {
-	if (feature.stage[table_index] == stage)
-	  add_lookups (m, table_index,
-		       feature.index[table_index],
+	إذا (feature.stage[جدول_شاخص] == stage)
+	  جمع_کړه_lookups (m, جدول_شاخص,
+		       feature.شاخص_2[جدول_شاخص],
 		       key,
-		       feature.mask,
+		       feature.ماسک,
 		       feature.auto_zwnj,
 		       feature.auto_zwj,
 		       feature.random,
-		       feature.per_syllable,
-		       feature.tag);
+		       feature.فی_syllable,
+		       feature.نښان_2);
       }
 
       /* Sort lookups and merge duplicates */
-      if (last_num_lookups + 1 < lookups.length)
+      إذا (وروستی_عدد_lookups + 1 < lookups.اوږدتیا)
       {
-	lookups.as_array ().sub_array (last_num_lookups, lookups.length - last_num_lookups).qsort ();
+	lookups.as_array ().sub_array (وروستی_عدد_lookups, lookups.اوږدتیا - وروستی_عدد_lookups).qsort ();
 
-	unsigned int j = last_num_lookups;
-	for (unsigned int i = j + 1; i < lookups.length; i++)
-	  if (lookups.arrayZ[i].index != lookups.arrayZ[j].index)
+	بینښه صحيح j = وروستی_عدد_lookups;
+	لكل (بینښه صحيح i = j + 1; i < lookups.اوږدتیا; i++)
+	  إذا (lookups.arrayZ[i].شاخص_2 != lookups.arrayZ[j].شاخص_2)
 	    lookups.arrayZ[++j] = lookups.arrayZ[i];
-	  else
+	  وإلا
 	  {
-	    lookups.arrayZ[j].mask |= lookups.arrayZ[i].mask;
+	    lookups.arrayZ[j].ماسک |= lookups.arrayZ[i].ماسک;
 	    lookups.arrayZ[j].auto_zwnj &= lookups.arrayZ[i].auto_zwnj;
 	    lookups.arrayZ[j].auto_zwj &= lookups.arrayZ[i].auto_zwj;
 	  }
 	lookups.shrink (j + 1);
       }
 
-      last_num_lookups = lookups.length;
+      وروستی_عدد_lookups = lookups.اوږدتیا;
 
-      if (stage_index < stages[table_index].length && stages[table_index][stage_index].index == stage) {
-	hb_ot_map_t::stage_map_t *stage_map = m.stages[table_index].push ();
-	stage_map->last_lookup = last_num_lookups;
-	stage_map->pause_func = stages[table_index][stage_index].pause_func;
+      إذا (stage_شاخص < stages[جدول_شاخص].اوږدتیا && stages[جدول_شاخص][stage_شاخص].شاخص_2 == stage) {
+	hb_ot_map_t::stage_map_t *stage_map = m.stages[جدول_شاخص].push ();
+	stage_map->وروستی_lookup = وروستی_عدد_lookups;
+	stage_map->pause_func = stages[جدول_شاخص][stage_شاخص].pause_func;
 
-	stage_index++;
+	stage_شاخص++;
       }
     }
   }
 }
 
-unsigned int hb_ot_map_t::get_feature_tags (unsigned int start_offset, unsigned int *tag_count, hb_tag_t *tags) const
+بینښه صحيح hb_ot_map_t::get_feature_نښانونه (بینښه صحيح پیل_دننه_واټن, بینښه صحيح *نښان_شمېر, hb_نښان_t *نښانونه) ثابت
 {
-  if (tag_count)
+  إذا (نښان_شمېر)
   {
-    auto sub_features = features.as_array ().sub_array (start_offset, tag_count);
-    if (tags)
+    خپلکاری sub_features = features.as_array ().sub_array (پیل_دننه_واټن, نښان_شمېر);
+    إذا (نښانونه)
     {
-      for (unsigned int i = 0; i < sub_features.length; i++)
-        tags[i] = sub_features[i].tag;
+      لكل (بینښه صحيح i = 0; i < sub_features.اوږدتیا; i++)
+        نښانونه[i] = sub_features[i].نښان_2;
     }
   }
 
-  return features.length;
+  أرجع features.اوږدتیا;
 }
 
-#endif
+#د_که_پای

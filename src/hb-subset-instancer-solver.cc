@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-subset-instancer-solver.hh"
+#ضمن "hb-subset-instancer-solver.hh"
 
 /* This file is a straight port of the following:
  *
@@ -32,56 +32,56 @@
  * This should be safe.
  */
 
-constexpr static float EPSILON = 1.f / (1 << 14);
-constexpr static float MAX_F2DOT14 = float (0x7FFF) / (1 << 14);
+constexpr ساكن عائم EPSILON = 1.f / (1 << 14);
+constexpr ساكن عائم MAX_F2DOT14 = عائم (0x7FFF) / (1 << 14);
 
-static inline Triple _reverse_negate(const Triple &v)
-{ return {-v.maximum, -v.middle, -v.minimum}; }
+ساكن مضمن Triple سرچپه_negate(ثابت Triple &v)
+{ أرجع {-v.اعظمي, -v.منځ, -v.minimum}; }
 
 
-static inline float supportScalar (float coord, const Triple &tent)
+ساكن مضمن عائم supportScalar (عائم coord, ثابت Triple &tent)
 {
   /* Copied from VarRegionAxis::evaluate() */
-  float start = tent.minimum, peak = tent.middle, end = tent.maximum;
+  عائم پیل = tent.minimum, peak = tent.منځ, پای_ټکی = tent.اعظمي;
 
-  if (unlikely (start > peak || peak > end))
-    return 1.f;
-  if (unlikely (start < 0 && end > 0 && peak != 0))
-    return 1.f;
+  إذا (unlikely (پیل > peak || peak > پای_ټکی))
+    أرجع 1.f;
+  إذا (unlikely (پیل < 0 && پای_ټکی > 0 && peak != 0))
+    أرجع 1.f;
 
-  if (peak == 0 || coord == peak)
-    return 1.f;
+  إذا (peak == 0 || coord == peak)
+    أرجع 1.f;
 
-  if (coord <= start || end <= coord)
-    return 0.f;
+  إذا (coord <= پیل || پای_ټکی <= coord)
+    أرجع 0.f;
 
   /* Interpolate */
-  if (coord < peak)
-    return (coord - start) / (peak - start);
-  else
-    return  (end - coord) / (end - peak);
+  إذا (coord < peak)
+    أرجع (coord - پیل) / (peak - پیل);
+  وإلا
+    أرجع  (پای_ټکی - coord) / (پای_ټکی - peak);
 }
 
-static inline void
-_solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative = false)
+ساكن مضمن فراغ
+_solve (Triple tent, Triple axis_حد_2, rebase_tent_پایله_t &بهر, منطقي negative = خطأ)
 {
-  out.reset();
-  float axisMin = axisLimit.minimum;
-  float axisDef = axisLimit.middle;
-  float axisMax = axisLimit.maximum;
-  float lower = tent.minimum;
-  float peak  = tent.middle;
-  float upper = tent.maximum;
+  بهر.reset();
+  عائم axisMin = axis_حد_2.minimum;
+  عائم axisDef = axis_حد_2.منځ;
+  عائم axisMax = axis_حد_2.اعظمي;
+  عائم ښکتنی = tent.minimum;
+  عائم peak  = tent.منځ;
+  عائم پاسنی = tent.اعظمي;
 
   // Mirror the problem such that axisDef <= peak
-  if (axisDef > peak)
+  إذا (axisDef > peak)
   {
-    _solve (_reverse_negate (tent), _reverse_negate (axisLimit), out, !negative);
+    _solve (سرچپه_negate (tent), سرچپه_negate (axis_حد_2), بهر, !negative);
 
-    for (auto &p : out)
-      p = hb_pair (p.first, _reverse_negate (p.second));
+    لكل (خپلکاری &p : بهر)
+      p = hb_pair (p.لومړی, سرچپه_negate (p.second));
 
-    return;
+    أرجع;
   }
   // axisDef <= peak
 
@@ -96,8 +96,8 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *  0---|-----------|----------|-------- o         o----1
    *    axisMin     axisDef    axisMax   lower     upper
    */
-  if (axisMax <= lower && axisMax < peak)
-      return;  // No overlap
+  إذا (axisMax <= ښکتنی && axisMax < peak)
+      أرجع;  // No overlap
 
   /* case 2: Only the peak and outermost bound fall outside the new limit;
    * we keep the deltaset, update peak and outermost bound and scale deltas
@@ -127,28 +127,28 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                                  |
    *                                axisMax
    */
-  if (axisMax < peak)
+  إذا (axisMax < peak)
   {
-    float mult = supportScalar (axisMax, tent);
-    tent = Triple{lower, axisMax, axisMax};
+    عائم mult = supportScalar (axisMax, tent);
+    tent = Triple{ښکتنی, axisMax, axisMax};
 
-    _solve (tent, axisLimit, out);
+    _solve (tent, axis_حد_2, بهر);
 
-    for (auto &p : out)
-      p = hb_pair (p.first * mult, p.second);
+    لكل (خپلکاری &p : بهر)
+      p = hb_pair (p.لومړی * mult, p.second);
 
-    return;
+    أرجع;
   }
 
   // lower <= axisDef <= peak <= axisMax
 
-  float gain = supportScalar (axisDef, tent);
-  out.push(hb_pair (gain, Triple{}));
+  عائم gain = supportScalar (axisDef, tent);
+  بهر.push(hb_pair (gain, Triple{}));
 
   // First, the positive side
 
   // outGain is the scalar of axisMax at the tent.
-  float outGain = supportScalar (axisMax, tent);
+  عائم بهر_Gain = supportScalar (axisMax, tent);
 
   /* Case 3a: Gain is more than outGain. The tent down-slope crosses
    * the axis into negative. We have to split it into multiples.
@@ -167,18 +167,18 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                           |
    *                      crossing
    */
-  if (gain >= outGain)
+  إذا (gain >= بهر_Gain)
   {
     // Note that this is the branch taken if both gain and outGain are 0.
 
     // Crossing point on the axis.
-    float crossing = peak + (1 - gain) * (upper - peak);
+    عائم تېرېدنه = peak + (1 - gain) * (پاسنی - peak);
 
-    Triple loc{hb_max (lower, axisDef), peak, crossing};
-    float scalar = 1.f;
+    Triple loc{hb_max (ښکتنی, axisDef), peak, تېرېدنه};
+    عائم scalar = 1.f;
 
     // The part before the crossing point.
-    out.push (hb_pair (scalar - gain, loc));
+    بهر.push (hb_pair (scalar - gain, loc));
 
     /* The part after the crossing point may use one or two tents,
      * depending on whether upper is before axisMax or not, in one
@@ -187,12 +187,12 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      * Case 3a1, similar to case 1neg; just one tent needed, as in
      * the drawing above.
      */
-    if (upper >= axisMax)
+    إذا (پاسنی >= axisMax)
     {
-      Triple loc {crossing, axisMax, axisMax};
-      float scalar = outGain;
+      Triple loc {تېرېدنه, axisMax, axisMax};
+      عائم scalar = بهر_Gain;
 
-      out.push (hb_pair (scalar - gain, loc));
+      بهر.push (hb_pair (scalar - gain, loc));
     }
 
     /* Case 3a2: Similar to case 2neg; two tents needed, to keep
@@ -212,30 +212,30 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      *                           |
      *                      crossing
      */
-    else
+    وإلا
     {
       // A tent's peak cannot fall on axis default. Nudge it.
-      if (upper == axisDef)
-	upper += EPSILON;
+      إذا (پاسنی == axisDef)
+	پاسنی += EPSILON;
 
       // Downslope.
-      Triple loc1 {crossing, upper, axisMax};
-      float scalar1 = 0.f;
+      Triple loc1 {تېرېدنه, پاسنی, axisMax};
+      عائم scalar1 = 0.f;
 
       // Eternity justify.
-      Triple loc2 {upper, axisMax, axisMax};
-      float scalar2 = 0.f;
+      Triple loc2 {پاسنی, axisMax, axisMax};
+      عائم scalar2 = 0.f;
 
-      out.push (hb_pair (scalar1 - gain, loc1));
-      out.push (hb_pair (scalar2 - gain, loc2));
+      بهر.push (hb_pair (scalar1 - gain, loc1));
+      بهر.push (hb_pair (scalar2 - gain, loc2));
     }
   }
 
-  else
+  وإلا
   {
     // Special-case if peak is at axisMax.
-    if (axisMax == peak)
-	upper = peak;
+    إذا (axisMax == peak)
+	پاسنی = peak;
 
     /* Case 3:
      * we keep deltas as is and only scale the axis upper to achieve
@@ -253,25 +253,25 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      *                    |      |  newUpper
      *              axisDef      axisMax
      */
-    float newUpper = peak + (1 - gain) * (upper - peak);
-    assert (axisMax <= newUpper);  // Because outGain > gain
+    عائم new_پاسنی = peak + (1 - gain) * (پاسنی - peak);
+    أكد (axisMax <= new_پاسنی);  // Because outGain > gain
     /* Disabled because ots doesn't like us:
      * https://github.com/fonttools/fonttools/issues/3350 */
 
-    if (false && (newUpper <= axisDef + (axisMax - axisDef) * 2))
+    إذا (خطأ && (new_پاسنی <= axisDef + (axisMax - axisDef) * 2))
     {
-      upper = newUpper;
-      if (!negative && axisDef + (axisMax - axisDef) * MAX_F2DOT14 < upper)
+      پاسنی = new_پاسنی;
+      إذا (!negative && axisDef + (axisMax - axisDef) * MAX_F2DOT14 < پاسنی)
       {
 	// we clamp +2.0 to the max F2Dot14 (~1.99994) for convenience
-	upper = axisDef + (axisMax - axisDef) * MAX_F2DOT14;
-	assert (peak < upper);
+	پاسنی = axisDef + (axisMax - axisDef) * MAX_F2DOT14;
+	أكد (peak < پاسنی);
       }
 
-      Triple loc {hb_max (axisDef, lower), peak, upper};
-      float scalar = 1.f;
+      Triple loc {hb_max (axisDef, ښکتنی), peak, پاسنی};
+      عائم scalar = 1.f;
 
-      out.push (hb_pair (scalar - gain, loc));
+      بهر.push (hb_pair (scalar - gain, loc));
     }
 
     /* Case 4: New limit doesn't fit; we need to chop into two tents,
@@ -290,18 +290,18 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      *            |        |
      *          axisDef  axisMax
      */
-    else
+    وإلا
     {
-      Triple loc1 {hb_max (axisDef, lower), peak, axisMax};
-      float scalar1 = 1.f;
+      Triple loc1 {hb_max (axisDef, ښکتنی), peak, axisMax};
+      عائم scalar1 = 1.f;
 
       Triple loc2 {peak, axisMax, axisMax};
-      float scalar2 = outGain;
+      عائم scalar2 = بهر_Gain;
 
-      out.push (hb_pair (scalar1 - gain, loc1));
+      بهر.push (hb_pair (scalar1 - gain, loc1));
       // Don't add a dirac delta!
-      if (peak < axisMax)
-	out.push (hb_pair (scalar2 - gain, loc2));
+      إذا (peak < axisMax)
+	بهر.push (hb_pair (scalar2 - gain, loc2));
     }
   }
 
@@ -321,12 +321,12 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                     |   |
    *               axisMin   axisDef
    */
-  if (lower <= axisMin)
+  إذا (ښکتنی <= axisMin)
   {
     Triple loc {axisMin, axisMin, axisDef};
-    float scalar = supportScalar (axisMin, tent);
+    عائم scalar = supportScalar (axisMin, tent);
 
-    out.push (hb_pair (scalar - gain, loc));
+    بهر.push (hb_pair (scalar - gain, loc));
   }
 
   /* Case 2neg: Lower is betwen axisMin and axisDef: we add two
@@ -344,112 +344,112 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                      |
    *                    axisDef
    */
-  else
+  وإلا
   {
     // A tent's peak cannot fall on axis default. Nudge it.
-    if (lower == axisDef)
-      lower -= EPSILON;
+    إذا (ښکتنی == axisDef)
+      ښکتنی -= EPSILON;
 
     // Downslope.
-    Triple loc1 {axisMin, lower, axisDef};
-    float scalar1 = 0.f;
+    Triple loc1 {axisMin, ښکتنی, axisDef};
+    عائم scalar1 = 0.f;
 
     // Eternity justify.
-    Triple loc2 {axisMin, axisMin, lower};
-    float scalar2 = 0.f;
+    Triple loc2 {axisMin, axisMin, ښکتنی};
+    عائم scalar2 = 0.f;
 
-    out.push (hb_pair (scalar1 - gain, loc1));
-    out.push (hb_pair (scalar2 - gain, loc2));
+    بهر.push (hb_pair (scalar1 - gain, loc1));
+    بهر.push (hb_pair (scalar2 - gain, loc2));
   }
 }
 
-static inline TripleDistances _reverse_triple_distances (const TripleDistances &v)
-{ return TripleDistances (v.positive, v.negative); }
+ساكن مضمن TripleDistances سرچپه_triple_distances (ثابت TripleDistances &v)
+{ أرجع TripleDistances (v.positive, v.negative); }
 
-float renormalizeValue (float v, const Triple &triple,
-                         const TripleDistances &triple_distances, bool extrapolate)
+عائم renormalize_ارزښت (عائم v, ثابت Triple &triple,
+                         ثابت TripleDistances &triple_distances, منطقي extrapolate)
 {
-  float lower = triple.minimum, def = triple.middle, upper = triple.maximum;
-  if (unlikely (!(lower <= def && def <= upper)))
-    return hb_clamp (v, -1.f, +1.f);
+  عائم ښکتنی = triple.minimum, def = triple.منځ, پاسنی = triple.اعظمي;
+  إذا (unlikely (!(ښکتنی <= def && def <= پاسنی)))
+    أرجع hb_clamp (v, -1.f, +1.f);
 
-  if (!extrapolate)
-    v = hb_clamp (v, lower, upper);
+  إذا (!extrapolate)
+    v = hb_clamp (v, ښکتنی, پاسنی);
 
-  if (v == def)
-    return 0.f;
+  إذا (v == def)
+    أرجع 0.f;
 
-  if (def < 0.f)
-    return -renormalizeValue (-v, _reverse_negate (triple),
-                              _reverse_triple_distances (triple_distances), extrapolate);
+  إذا (def < 0.f)
+    أرجع -renormalize_ارزښت (-v, سرچپه_negate (triple),
+                              سرچپه_triple_distances (triple_distances), extrapolate);
 
   /* default >= 0 and v != default */
-  if (v > def)
+  إذا (v > def)
   {
-    float positive_range = upper - def;
-    if (unlikely (!positive_range))
-      return +1.f;
-    return (v - def) / positive_range;
+    عائم مثبت_range = پاسنی - def;
+    إذا (unlikely (!مثبت_range))
+      أرجع +1.f;
+    أرجع (v - def) / مثبت_range;
   }
 
   /* v < def */
-  if (lower >= 0.f)
+  إذا (ښکتنی >= 0.f)
   {
-    float negative_range = def - lower;
-    if (unlikely (!negative_range))
-      return -1.f;
-    return (v - def) / negative_range;
+    عائم negative_range = def - ښکتنی;
+    إذا (unlikely (!negative_range))
+      أرجع -1.f;
+    أرجع (v - def) / negative_range;
   }
 
   /* lower < 0 and v < default */
-  float total_distance = triple_distances.negative * (-lower) + triple_distances.positive * def;
-  if (unlikely (!total_distance))
-    return 0.f;
+  عائم ټول_واټن = triple_distances.negative * (-ښکتنی) + triple_distances.positive * def;
+  إذا (unlikely (!ټول_واټن))
+    أرجع 0.f;
 
-  float v_distance;
-  if (v >= 0.f)
-    v_distance = (def - v) * triple_distances.positive;
-  else
-    v_distance = (-v) * triple_distances.negative + triple_distances.positive * def;
+  عائم v_واټن;
+  إذا (v >= 0.f)
+    v_واټن = (def - v) * triple_distances.positive;
+  وإلا
+    v_واټن = (-v) * triple_distances.negative + triple_distances.positive * def;
 
-  return (-v_distance) /total_distance;
+  أرجع (-v_واټن) /ټول_واټن;
 }
 
-void
-rebase_tent (Triple tent, Triple axisLimit, TripleDistances axis_triple_distances,
-	     rebase_tent_result_t &out,
-	     rebase_tent_result_t &scratch)
+فراغ
+rebase_tent (Triple tent, Triple axis_حد_2, TripleDistances axis_triple_distances,
+	     rebase_tent_پایله_t &بهر,
+	     rebase_tent_پایله_t &scratch)
 {
-  if (unlikely (!(-1.f <= axisLimit.minimum &&
-                  axisLimit.minimum <= axisLimit.middle &&
-                  axisLimit.middle <= axisLimit.maximum &&
-                  axisLimit.maximum <= +1.f) ||
+  إذا (unlikely (!(-1.f <= axis_حد_2.minimum &&
+                  axis_حد_2.minimum <= axis_حد_2.منځ &&
+                  axis_حد_2.منځ <= axis_حد_2.اعظمي &&
+                  axis_حد_2.اعظمي <= +1.f) ||
                 !(-2.f <= tent.minimum &&
-                  tent.minimum <= tent.middle &&
-                  tent.middle <= tent.maximum &&
-                  tent.maximum <= +2.f) ||
-                tent.middle == 0.f))
+                  tent.minimum <= tent.منځ &&
+                  tent.منځ <= tent.اعظمي &&
+                  tent.اعظمي <= +2.f) ||
+                tent.منځ == 0.f))
   {
-    out.reset ();
-    return;
+    بهر.reset ();
+    أرجع;
   }
 
-  rebase_tent_result_t &sols = scratch;
-  _solve (tent, axisLimit, sols);
+  rebase_tent_پایله_t &sols = scratch;
+  _solve (tent, axis_حد_2, sols);
 
-  auto n = [&axisLimit, &axis_triple_distances] (float v) { return renormalizeValue (v, axisLimit, axis_triple_distances); };
+  خپلکاری n = [&axis_حد_2, &axis_triple_distances] (عائم v) { أرجع renormalize_ارزښت (v, axis_حد_2, axis_triple_distances); };
 
-  out.reset();
-  for (auto &p : sols)
+  بهر.reset();
+  لكل (خپلکاری &p : sols)
   {
-    if (!p.first) continue;
-    if (p.second == Triple{})
+    إذا (!p.لومړی) استمر;
+    إذا (p.second == Triple{})
     {
-      out.push (p);
-      continue;
+      بهر.push (p);
+      استمر;
     }
     Triple t = p.second;
-    out.push (hb_pair (p.first,
-		       Triple{n (t.minimum), n (t.middle), n (t.maximum)}));
+    بهر.push (hb_pair (p.لومړی,
+		       Triple{n (t.minimum), n (t.منځ), n (t.اعظمي)}));
   }
 }

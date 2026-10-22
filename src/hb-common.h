@@ -26,62 +26,62 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_دننه) && !defined(HB_NO_SINGLE_سرلیک_ERROR)
+#تېروتنه "Include <hb.h> instead."
+#د_که_پای
 
-#ifndef HB_COMMON_H
-#define HB_COMMON_H
+#که_نه_تعریف_شوی HB_COMMON_H
+#تعریف_کړه HB_COMMON_H
 
-#ifndef HB_EXTERN
-#define HB_EXTERN extern
-#endif
+#که_نه_تعریف_شوی HB_EXTERN
+#تعریف_کړه HB_EXTERN خارجي
+#د_که_پای
 
-#ifndef HB_BEGIN_DECLS
+#که_نه_تعریف_شوی HB_BEGIN_DECLS
 # ifdef __cplusplus
-#  define HB_BEGIN_DECLS	extern "C" {
-#  define HB_END_DECLS		}
-# else /* !__cplusplus */
+#  define HB_BEGIN_DECLS	خارجي "C" {
+#  define HB_پای_ټکی_DECLS		}
+# وإلا /* !__cplusplus */
 #  define HB_BEGIN_DECLS
-#  define HB_END_DECLS
+#  define HB_پای_ټکی_DECLS
 # endif /* !__cplusplus */
-#endif
+#د_که_پای
 
-#if defined (_AIX)
+#إذا defined (_AIX)
 #  include <sys/inttypes.h>
-#elif defined (_MSC_VER) && _MSC_VER < 1600
+#وإلاإذا defined (_MSC_VER) && _MSC_VER < 1600
 /* VS 2010 (_MSC_VER 1600) has stdint.h   */
-typedef __int8 int8_t;
-typedef unsigned __int8 uint8_t;
-typedef __int16 int16_t;
-typedef unsigned __int16 uint16_t;
-typedef __int32 int32_t;
-typedef unsigned __int32 uint32_t;
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
-#elif defined (_MSC_VER) && _MSC_VER < 1800
+تعريفنوع __int8 int8_t;
+تعريفنوع بینښه __int8 uint8_t;
+تعريفنوع __int16 int16_t;
+تعريفنوع بینښه __int16 uint16_t;
+تعريفنوع __int32 int32_t;
+تعريفنوع بینښه __int32 uint32_t;
+تعريفنوع __int64 int64_t;
+تعريفنوع بینښه __int64 uint64_t;
+#وإلاإذا defined (_MSC_VER) && _MSC_VER < 1800
 /* VS 2013 (_MSC_VER 1800) has inttypes.h */
 #  include <stdint.h>
-#else
+#وإلا
 #  include <inttypes.h>
-#endif
-#include <stddef.h>
+#د_که_پای
+#ضمن <stddef.h>
 
-#if defined(__GNUC__) && ((__GNUC__ > 3) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
-#define HB_DEPRECATED __attribute__((__deprecated__))
-#elif defined(_MSC_VER) && (_MSC_VER >= 1300)
-#define HB_DEPRECATED __declspec(deprecated)
-#else
-#define HB_DEPRECATED
-#endif
+#إذا defined(__GNUC__) && ((__GNUC__ > 3) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
+#تعریف_کړه HB_DEPRECATED __attribute__((__deprecated__))
+#وإلاإذا defined(_MSC_VER) && (_MSC_VER >= 1300)
+#تعریف_کړه HB_DEPRECATED __declspec(deprecated)
+#وإلا
+#تعریف_کړه HB_DEPRECATED
+#د_که_پای
 
-#if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
-#define HB_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
-#elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
-#define HB_DEPRECATED_FOR(f) __declspec(deprecated("is deprecated. Use '" #f "' instead"))
-#else
-#define HB_DEPRECATED_FOR(f) HB_DEPRECATED
-#endif
+#إذا defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
+#تعریف_کړه HB_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+#وإلاإذا defined(MSC_ډک_VER) && (MSC_ډک_VER > 140050320)
+#تعریف_کړه HB_DEPRECATED_FOR(f) __declspec(deprecated("is deprecated. Use '" #f "' instead"))
+#وإلا
+#تعریف_کړه HB_DEPRECATED_FOR(f) HB_DEPRECATED
+#د_که_پای
 
 
 HB_BEGIN_DECLS
@@ -92,7 +92,7 @@ HB_BEGIN_DECLS
  * Data type for booleans.
  *
  **/
-typedef int hb_bool_t;
+تعريفنوع صحيح hb_bool_t;
 
 /**
  * HB_BUDGET_DEFAULT:
@@ -101,7 +101,7 @@ typedef int hb_bool_t;
  *
  * Since: 14.5.0
  **/
-#define HB_BUDGET_DEFAULT ((int64_t) (-0x7FFFFFFFFFFFFFFF - 1))
+#تعریف_کړه HB_BUDGET_DEFAULT ((int64_t) (-0x7FFFFFFFFFFFFFFF - 1))
 
 /**
  * HB_BUDGET_UNLIMITED:
@@ -111,7 +111,7 @@ typedef int hb_bool_t;
  *
  * Since: 14.5.0
  **/
-#define HB_BUDGET_UNLIMITED ((int64_t) 0x7FFFFFFFFFFFFFFF)
+#تعریف_کړه HB_BUDGET_UNLIMITED ((int64_t) 0x7FFFFFFFFFFFFFFF)
 
 /**
  * hb_codepoint_t:
@@ -120,7 +120,7 @@ typedef int hb_bool_t;
  * used to hold glyph IDs.
  *
  **/
-typedef uint32_t hb_codepoint_t;
+تعريفنوع uint32_t hb_codepoint_t;
 
 /**
  * HB_CODEPOINT_INVALID:
@@ -129,7 +129,7 @@ typedef uint32_t hb_codepoint_t;
  *
  * Since: 8.0.0
  */
-#define HB_CODEPOINT_INVALID ((hb_codepoint_t) -1)
+#تعریف_کړه HB_CODEPOINT_INVALID ((hb_codepoint_t) -1)
 
 /**
  * hb_position_t:
@@ -139,16 +139,16 @@ typedef uint32_t hb_codepoint_t;
  * stored as tuples of #hb_position_t's.
  *
  **/
-typedef int32_t hb_position_t;
+تعريفنوع int32_t hb_position_t;
 /**
  * hb_mask_t:
  * 
  * Data type for bitmasks.
  *
  **/
-typedef uint32_t hb_mask_t;
+تعريفنوع uint32_t hb_ماسک_t;
 
-typedef union _hb_var_int_t {
+تعريفنوع اتحاد _hb_var_int_t {
   uint32_t u32;
   int32_t i32;
   uint16_t u16[2];
@@ -157,15 +157,15 @@ typedef union _hb_var_int_t {
   int8_t i8[4];
 } hb_var_int_t;
 
-typedef union _hb_var_num_t {
-  float f;
+تعريفنوع اتحاد hb_var_عدد_t {
+  عائم f;
   uint32_t u32;
   int32_t i32;
   uint16_t u16[2];
   int16_t i16[2];
   uint8_t u8[4];
   int8_t i8[4];
-} hb_var_num_t;
+} hb_var_عدد_t_2;
 
 
 /* hb_tag_t */
@@ -181,7 +181,7 @@ typedef union _hb_var_num_t {
  * human-readable names.
  *
  **/
-typedef uint32_t hb_tag_t;
+تعريفنوع uint32_t hb_نښان_t;
 
 /**
  * HB_TAG:
@@ -193,7 +193,7 @@ typedef uint32_t hb_tag_t;
  * Constructs an #hb_tag_t from four character literals.
  *
  **/
-#define HB_TAG(c1,c2,c3,c4) ((hb_tag_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
+#تعریف_کړه HB_نښان(c1,c2,c3,c4) ((hb_نښان_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
 
 /**
  * HB_UNTAG:
@@ -204,14 +204,14 @@ typedef uint32_t hb_tag_t;
  * Since: 0.6.0
  *
  **/
-#define HB_UNTAG(tag)   (uint8_t)(((tag)>>24)&0xFF), (uint8_t)(((tag)>>16)&0xFF), (uint8_t)(((tag)>>8)&0xFF), (uint8_t)((tag)&0xFF)
+#تعریف_کړه HB_UNTAG(نښان_2)   (uint8_t)(((نښان_2)>>24)&0xFF), (uint8_t)(((نښان_2)>>16)&0xFF), (uint8_t)(((نښان_2)>>8)&0xFF), (uint8_t)((نښان_2)&0xFF)
 
 /**
  * HB_TAG_NONE:
  *
  * Unset #hb_tag_t.
  */
-#define HB_TAG_NONE HB_TAG(0,0,0,0)
+#تعریف_کړه HB_نښان_NONE HB_نښان(0,0,0,0)
 /**
  * HB_TAG_MAX:
  *
@@ -219,7 +219,7 @@ typedef uint32_t hb_tag_t;
  *
  * Since: 0.9.26
  */
-#define HB_TAG_MAX HB_TAG(0xff,0xff,0xff,0xff)
+#تعریف_کړه HB_نښان_MAX HB_نښان(0xff,0xff,0xff,0xff)
 /**
  * HB_TAG_MAX_SIGNED:
  *
@@ -227,15 +227,15 @@ typedef uint32_t hb_tag_t;
  *
  * Since: 0.9.33
  */
-#define HB_TAG_MAX_SIGNED HB_TAG(0x7f,0xff,0xff,0xff)
+#تعریف_کړه HB_نښان_MAX_SIGNED HB_نښان(0x7f,0xff,0xff,0xff)
 
 /* len=-1 means str is NUL-terminated. */
-HB_EXTERN hb_tag_t
-hb_tag_from_string (const char *str, int len);
+HB_EXTERN hb_نښان_t
+hb_نښان_from_string (ثابت حرف *str, صحيح len);
 
 /* buf should have 4 bytes. */
-HB_EXTERN void
-hb_tag_to_string (hb_tag_t tag, char *buf);
+HB_EXTERN فراغ
+hb_نښان_منزل_string (hb_نښان_t نښان_2, حرف *buf);
 
 
 /**
@@ -253,7 +253,7 @@ hb_tag_to_string (hb_tag_t tag, char *buf);
  * HB_DIRECTION_IS_HORIZONTAL() or HB_DIRECTION_IS_VERTICAL().
  *
  */
-typedef enum {
+تعريفنوع تعداد {
   HB_DIRECTION_INVALID = 0,
   HB_DIRECTION_LTR = 4,
   HB_DIRECTION_RTL,
@@ -263,10 +263,10 @@ typedef enum {
 
 /* len=-1 means str is NUL-terminated */
 HB_EXTERN hb_direction_t
-hb_direction_from_string (const char *str, int len);
+hb_direction_from_string (ثابت حرف *str, صحيح len);
 
-HB_EXTERN const char *
-hb_direction_to_string (hb_direction_t direction);
+HB_EXTERN ثابت حرف *
+hb_direction_منزل_string (hb_direction_t direction);
 
 /**
  * HB_DIRECTION_IS_VALID:
@@ -275,7 +275,7 @@ hb_direction_to_string (hb_direction_t direction);
  * Tests whether a text direction is valid.
  *
  **/
-#define HB_DIRECTION_IS_VALID(dir)	((((unsigned int) (dir)) & ~3U) == 4)
+#تعریف_کړه HB_DIRECTION_IS_VALID(dir)	((((بینښه صحيح) (dir)) & ~3U) == 4)
 /* Direction must be valid for the following */
 /**
  * HB_DIRECTION_IS_HORIZONTAL:
@@ -285,7 +285,7 @@ hb_direction_to_string (hb_direction_t direction);
  * that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
+#تعریف_کړه HB_DIRECTION_IS_HORIZONTAL(dir)	((((بینښه صحيح) (dir)) & ~1U) == 4)
 /**
  * HB_DIRECTION_IS_VERTICAL:
  * @dir: #hb_direction_t to test
@@ -294,7 +294,7 @@ hb_direction_to_string (hb_direction_t direction);
  * that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
+#تعریف_کړه HB_DIRECTION_IS_VERTICAL(dir)	((((بینښه صحيح) (dir)) & ~1U) == 6)
 /**
  * HB_DIRECTION_IS_FORWARD:
  * @dir: #hb_direction_t to test
@@ -303,7 +303,7 @@ hb_direction_to_string (hb_direction_t direction);
  * top to bottom). Requires that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
+#تعریف_کړه HB_DIRECTION_IS_FORWARD(dir)	((((بینښه صحيح) (dir)) & ~2U) == 4)
 /**
  * HB_DIRECTION_IS_BACKWARD:
  * @dir: #hb_direction_t to test
@@ -312,7 +312,7 @@ hb_direction_to_string (hb_direction_t direction);
  * bottom to top). Requires that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
+#تعریف_کړه HB_DIRECTION_IS_BACKWARD(dir)	((((بینښه صحيح) (dir)) & ~2U) == 5)
 /**
  * HB_DIRECTION_REVERSE:
  * @dir: #hb_direction_t to reverse
@@ -321,7 +321,7 @@ hb_direction_to_string (hb_direction_t direction);
  * be valid.
  *
  **/
-#define HB_DIRECTION_REVERSE(dir)	((hb_direction_t) (((unsigned int) (dir)) ^ 1))
+#تعریف_کړه HB_DIRECTION_سرچپه(dir)	((hb_direction_t) (((بینښه صحيح) (dir)) ^ 1))
 
 
 /* hb_language_t */
@@ -333,13 +333,13 @@ hb_direction_to_string (hb_direction_t direction);
  * language tag.
  *
  */
-typedef const struct hb_language_impl_t *hb_language_t;
+تعريفنوع ثابت بنية hb_language_impl_t *hb_language_t;
 
 HB_EXTERN hb_language_t
-hb_language_from_string (const char *str, int len);
+hb_language_from_string (ثابت حرف *str, صحيح len);
 
-HB_EXTERN const char *
-hb_language_to_string (hb_language_t language);
+HB_EXTERN ثابت حرف *
+hb_language_منزل_string (hb_language_t language);
 
 /**
  * HB_LANGUAGE_INVALID:
@@ -348,27 +348,27 @@ hb_language_to_string (hb_language_t language);
  *
  * Since: 0.6.0
  */
-#define HB_LANGUAGE_INVALID ((hb_language_t) 0)
+#تعریف_کړه HB_LANGUAGE_INVALID ((hb_language_t) 0)
 
 HB_EXTERN hb_language_t
-hb_language_get_default (void);
+hb_language_get_default (فراغ);
 
 HB_EXTERN hb_bool_t
 hb_language_matches (hb_language_t language,
 		     hb_language_t specific);
 
-#include "hb-script-list.h"
+#ضمن "hb-script-list.h"
 
 /* Script functions */
 
 HB_EXTERN hb_script_t
-hb_script_from_iso15924_tag (hb_tag_t tag);
+hb_script_from_iso15924_نښان (hb_نښان_t نښان_2);
 
 HB_EXTERN hb_script_t
-hb_script_from_string (const char *str, int len);
+hb_script_from_string (ثابت حرف *str, صحيح len);
 
-HB_EXTERN hb_tag_t
-hb_script_to_iso15924_tag (hb_script_t script);
+HB_EXTERN hb_نښان_t
+hb_script_منزل_iso15924_نښان (hb_script_t script);
 
 HB_EXTERN hb_direction_t
 hb_script_get_horizontal_direction (hb_script_t script);
@@ -382,10 +382,10 @@ hb_script_get_horizontal_direction (hb_script_t script);
  * Data structure for holding user-data keys.
  *
  **/
-typedef struct hb_user_data_key_t {
+تعريفنوع بنية hb_user_معلومات_کلی_t {
   /*< private >*/
-  char unused;
-} hb_user_data_key_t;
+  حرف ناکارول_شوی_2;
+} hb_user_معلومات_کلی_t;
 
 /**
  * hb_destroy_func_t:
@@ -394,7 +394,7 @@ typedef struct hb_user_data_key_t {
  * A virtual method for destroy user-data callbacks.
  *
  */
-typedef void (*hb_destroy_func_t) (void *user_data);
+تعريفنوع فراغ (*hb_destroy_func_t) (فراغ *user_معلومات);
 
 
 /* Font features and variations. */
@@ -407,7 +407,7 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  *
  * Since: 2.0.0
  */
-#define HB_FEATURE_GLOBAL_START	0
+#تعریف_کړه HB_FEATURE_GLOBAL_پیل	0
 
 /**
  * HB_FEATURE_GLOBAL_END:
@@ -417,7 +417,7 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  *
  * Since: 2.0.0
  */
-#define HB_FEATURE_GLOBAL_END	((unsigned int) -1)
+#تعریف_کړه HB_FEATURE_GLOBAL_پای_ټکی	((بینښه صحيح) -1)
 
 /**
  * hb_feature_t:
@@ -434,20 +434,20 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  * Setting start to #HB_FEATURE_GLOBAL_START and end to #HB_FEATURE_GLOBAL_END
  * specifies that the feature always applies to the entire buffer.
  */
-typedef struct hb_feature_t {
-  hb_tag_t      tag;
-  uint32_t      value;
-  unsigned int  start;
-  unsigned int  end;
+تعريفنوع بنية hb_feature_t {
+  hb_نښان_t      نښان_2;
+  uint32_t      ارزښت_2;
+  بینښه صحيح  پیل;
+  بینښه صحيح  پای_ټکی;
 } hb_feature_t;
 
 HB_EXTERN hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (ثابت حرف *str, صحيح len,
 			hb_feature_t *feature);
 
-HB_EXTERN void
-hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size);
+HB_EXTERN فراغ
+hb_feature_منزل_string (hb_feature_t *feature,
+		      حرف *buf, بینښه صحيح اندازه);
 
 /**
  * hb_variation_t:
@@ -460,18 +460,18 @@ hb_feature_to_string (hb_feature_t *feature,
  * 
  * Since: 1.4.2
  */
-typedef struct hb_variation_t {
-  hb_tag_t tag;
-  float    value;
+تعريفنوع بنية hb_variation_t {
+  hb_نښان_t نښان_2;
+  عائم    ارزښت_2;
 } hb_variation_t;
 
 HB_EXTERN hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (ثابت حرف *str, صحيح len,
 			  hb_variation_t *variation);
 
-HB_EXTERN void
-hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size);
+HB_EXTERN فراغ
+hb_variation_منزل_string (hb_variation_t *variation,
+			حرف *buf, بینښه صحيح اندازه);
 
 /**
  * hb_color_t:
@@ -481,7 +481,7 @@ hb_variation_to_string (hb_variation_t *variation,
  *
  * Since: 2.1.0
  */
-typedef uint32_t hb_color_t;
+تعريفنوع uint32_t hb_color_t;
 
 /**
  * HB_COLOR:
@@ -494,23 +494,23 @@ typedef uint32_t hb_color_t;
  *
  * Since: 2.1.0
  */
-#define HB_COLOR(b,g,r,a) ((hb_color_t) HB_TAG ((b),(g),(r),(a)))
+#تعریف_کړه HB_COLOR(b,g,r,a) ((hb_color_t) HB_نښان ((b),(g),(r),(a)))
 
 HB_EXTERN uint8_t
 hb_color_get_alpha (hb_color_t color);
-#define hb_color_get_alpha(color)	((color) & 0xFF)
+#تعریف_کړه hb_color_get_alpha(color)	((color) & 0xFF)
 
 HB_EXTERN uint8_t
 hb_color_get_red (hb_color_t color);
-#define hb_color_get_red(color)		(((color) >> 8) & 0xFF)
+#تعریف_کړه hb_color_get_red(color)		(((color) >> 8) & 0xFF)
 
 HB_EXTERN uint8_t
 hb_color_get_green (hb_color_t color);
-#define hb_color_get_green(color)	(((color) >> 16) & 0xFF)
+#تعریف_کړه hb_color_get_green(color)	(((color) >> 16) & 0xFF)
 
 HB_EXTERN uint8_t
 hb_color_get_blue (hb_color_t color);
-#define hb_color_get_blue(color)	(((color) >> 24) & 0xFF)
+#تعریف_کړه hb_color_get_blue(color)	(((color) >> 24) & 0xFF)
 
 /**
  * hb_glyph_extents_t:
@@ -523,11 +523,11 @@ hb_color_get_blue (hb_color_t color);
  *
  * Note that @height is negative, in coordinate systems that grow up.
  **/
-typedef struct hb_glyph_extents_t {
+تعريفنوع بنية hb_glyph_extents_t {
   hb_position_t x_bearing;
   hb_position_t y_bearing;
-  hb_position_t width;
-  hb_position_t height;
+  hb_position_t پلنوالی;
+  hb_position_t لوړوالی;
 } hb_glyph_extents_t;
 
 /**
@@ -536,18 +536,18 @@ typedef struct hb_glyph_extents_t {
  * Data type for holding fonts.
  *
  */
-typedef struct hb_font_t hb_font_t;
+تعريفنوع بنية hb_font_t hb_font_t;
 
 /* Not of much use to clients. */
-HB_EXTERN void*
-hb_malloc (size_t size);
-HB_EXTERN void*
-hb_calloc (size_t nmemb, size_t size);
-HB_EXTERN void*
-hb_realloc (void *ptr, size_t size);
-HB_EXTERN void
-hb_free (void *ptr);
+HB_EXTERN فراغ*
+hb_malloc (size_t اندازه);
+HB_EXTERN فراغ*
+hb_calloc (size_t nmemb, size_t اندازه);
+HB_EXTERN فراغ*
+hb_realloc (فراغ *ptr, size_t اندازه);
+HB_EXTERN فراغ
+hb_free (فراغ *ptr);
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
-#endif /* HB_COMMON_H */
+#د_که_پای /* HB_COMMON_H */

@@ -24,58 +24,58 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb.hh"
-#include "hb-priority-queue.hh"
+#ضمن "hb.hh"
+#ضمن "hb-priority-queue.hh"
 
-static void
-test_insert ()
+ساكن فراغ
+test_ورننباسه ()
 {
-  hb_priority_queue_t<int64_t> queue;
-  hb_always_assert (queue.is_empty ());
+  hb_لومړیتوب_کتار_t<int64_t> کتار;
+  hb_always_assert (کتار.is_empty ());
 
-  queue.insert (10, 0);
-  hb_always_assert (!queue.is_empty ());
-  hb_always_assert (queue.minimum () == hb_pair (10, 0));
+  کتار.insert (10, 0);
+  hb_always_assert (!کتار.is_empty ());
+  hb_always_assert (کتار.minimum () == hb_pair (10, 0));
 
-  queue.insert (20, 1);
-  hb_always_assert (queue.minimum () == hb_pair (10, 0));
+  کتار.insert (20, 1);
+  hb_always_assert (کتار.minimum () == hb_pair (10, 0));
 
-  queue.insert (5, 2);
-  hb_always_assert (queue.minimum () == hb_pair (5, 2));
+  کتار.insert (5, 2);
+  hb_always_assert (کتار.minimum () == hb_pair (5, 2));
 
-  queue.insert (15, 3);
-  hb_always_assert (queue.minimum () == hb_pair (5, 2));
+  کتار.insert (15, 3);
+  hb_always_assert (کتار.minimum () == hb_pair (5, 2));
 
-  queue.insert (1, 4);
-  hb_always_assert (queue.minimum () == hb_pair (1, 4));
+  کتار.insert (1, 4);
+  hb_always_assert (کتار.minimum () == hb_pair (1, 4));
 }
 
-static void
-test_extract ()
+ساكن فراغ
+test_ایستل ()
 {
-  hb_priority_queue_t<int32_t> queue;
-  queue.insert (0, 0);
-  queue.insert (60, 6);
-  queue.insert (30, 3);
-  queue.insert (40 ,4);
-  queue.insert (20, 2);
-  queue.insert (50, 5);
-  queue.insert (70, 7);
-  queue.insert (10, 1);
+  hb_لومړیتوب_کتار_t<int32_t> کتار;
+  کتار.insert (0, 0);
+  کتار.insert (60, 6);
+  کتار.insert (30, 3);
+  کتار.insert (40 ,4);
+  کتار.insert (20, 2);
+  کتار.insert (50, 5);
+  کتار.insert (70, 7);
+  کتار.insert (10, 1);
 
-  for (int i = 0; i < 8; i++)
+  لكل (صحيح i = 0; i < 8; i++)
   {
-    hb_always_assert (!queue.is_empty ());
-    hb_always_assert (queue.minimum () == hb_pair (i * 10, i));
-    hb_always_assert (queue.pop_minimum () == hb_pair (i * 10, i));
+    hb_always_assert (!کتار.is_empty ());
+    hb_always_assert (کتار.minimum () == hb_pair (i * 10, i));
+    hb_always_assert (کتار.راوباسه_minimum () == hb_pair (i * 10, i));
   }
 
-  hb_always_assert (queue.is_empty ());
+  hb_always_assert (کتار.is_empty ());
 }
 
-int
-main (int argc, char **argv)
+صحيح
+اصلي (صحيح argc, حرف **argv)
 {
-  test_insert ();
-  test_extract ();
+  test_ورننباسه ();
+  test_ایستل ();
 }

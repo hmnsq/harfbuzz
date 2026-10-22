@@ -26,126 +26,126 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_AAT_SHAPE
+#که_نه_تعریف_شوی HB_NO_AAT_SHAPE
 
-#include "hb-aat-map.hh"
+#ضمن "hb-aat-map.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-aat-layout-feat-table.hh"
+#ضمن "hb-aat-layout.hh"
+#ضمن "hb-aat-layout-feat-table.hh"
 
 
-void hb_aat_map_builder_t::add_feature (const hb_feature_t &feature)
+فراغ hb_aat_map_builder_t::جمع_کړه_feature (ثابت hb_feature_t &feature)
 {
-  if (!face->table.feat->has_data ()) return;
+  إذا (!face->جدول.feat->has_معلومات ()) أرجع;
 
-  if (feature.tag == HB_TAG ('a','a','l','t'))
+  إذا (feature.نښان_2 == HB_نښان ('a','a','l','t'))
   {
-    if (!face->table.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
-      return;
+    إذا (!face->جدول.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
+      أرجع;
     feature_range_t *range = features.push();
-    range->start = feature.start;
-    range->end = feature.end;
+    range->پیل = feature.پیل;
+    range->پای_ټکی = feature.پای_ټکی;
     range->info.type = HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES;
     range->info.setting = (hb_aat_layout_feature_selector_t) feature.value;
-    range->info.seq = features.length;
-    range->info.is_exclusive = true;
-    return;
+    range->info.seq = features.اوږدتیا;
+    range->info.is_exclusive = ریښتیا;
+    أرجع;
   }
 
-  const hb_aat_feature_mapping_t *mapping = hb_aat_layout_find_feature_mapping (feature.tag);
-  if (!mapping) return;
+  ثابت hb_aat_feature_mapping_t *mapping = hb_aat_layout_پیدا_کړه_feature_mapping (feature.نښان_2);
+  إذا (!mapping) أرجع;
 
-  const AAT::FeatureName* feature_name = &face->table.feat->get_feature (mapping->aatFeatureType);
-  if (!feature_name->has_data ())
+  ثابت AAT::FeatureName* feature_name = &face->جدول.feat->get_feature (mapping->aatFeatureType);
+  إذا (!feature_name->has_معلومات ())
   {
     /* Special case: Chain::compile_flags will fall back to the deprecated version of
      * small-caps if necessary, so we need to check for that possibility.
      * https://github.com/harfbuzz/harfbuzz/issues/2307 */
-    if (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE &&
-	mapping->selectorToEnable == HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS)
+    إذا (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_ښکتنی_CASE &&
+	mapping->selector_منزل_Enable == HB_AAT_LAYOUT_FEATURE_SELECTOR_ښکتنی_CASE_SMALL_CAPS)
     {
-      feature_name = &face->table.feat->get_feature (HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE);
-      if (!feature_name->has_data ()) return;
+      feature_name = &face->جدول.feat->get_feature (HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE);
+      إذا (!feature_name->has_معلومات ()) أرجع;
     }
-    else return;
+    وإلا أرجع;
   }
 
   feature_range_t *range = features.push();
-  range->start = feature.start;
-  range->end = feature.end;
+  range->پیل = feature.پیل;
+  range->پای_ټکی = feature.پای_ټکی;
   range->info.type = mapping->aatFeatureType;
-  range->info.setting = feature.value ? mapping->selectorToEnable : mapping->selectorToDisable;
-  range->info.seq = features.length;
+  range->info.setting = feature.value ? mapping->selector_منزل_Enable : mapping->selector_منزل_Disable;
+  range->info.seq = features.اوږدتیا;
   range->info.is_exclusive = feature_name->is_exclusive ();
 }
 
-void
+فراغ
 hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 {
   /* Compute active features per range, and compile each. */
-  if (!features.length)
+  إذا (!features.اوږدتیا)
   {
-    hb_aat_layout_compile_map (this, &m);
-    return;
+    hb_aat_layout_compile_map (هذا, &m);
+    أرجع;
   }
 
   /* Sort features by start/end events. */
-  hb_vector_t<feature_event_t> feature_events;
-  feature_events.alloc_exact (features.length * 2 + 1);
-  for (unsigned int i = 0; i < features.length; i++)
+  hb_ویکټور_t<feature_event_t> feature_events;
+  feature_events.alloc_exact (features.اوږدتیا * 2 + 1);
+  لكل (بینښه صحيح i = 0; i < features.اوږدتیا; i++)
   {
-    auto &feature = features.arrayZ[i];
+    خپلکاری &feature = features.arrayZ[i];
 
-    if (feature.start == feature.end)
-      continue;
+    إذا (feature.پیل == feature.پای_ټکی)
+      استمر;
 
     feature_event_t *event;
 
     event = feature_events.push ();
-    event->index = feature.start;
-    event->start = true;
+    event->شاخص_2 = feature.پیل;
+    event->پیل = ریښتیا;
     event->feature = feature.info;
 
     event = feature_events.push ();
-    event->index = feature.end;
-    event->start = false;
+    event->شاخص_2 = feature.پای_ټکی;
+    event->پیل = خطأ;
     event->feature = feature.info;
   }
   feature_events.qsort ();
   /* Add a strategic final event. */
   {
     feature_info_t feature;
-    feature.seq = features.length + 1;
+    feature.seq = features.اوږدتیا + 1;
 
     feature_event_t *event = feature_events.push ();
-    event->index = -1; /* This value does magic. */
-    event->start = false;
+    event->شاخص_2 = -1; /* This value does magic. */
+    event->پیل = خطأ;
     event->feature = feature;
   }
 
   /* Scan events and save features for each range. */
-  hb_sorted_vector_t<feature_info_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  hb_sorted_ویکټور_t<feature_info_t> فعال_features;
+  بینښه صحيح وروستی_شاخص = 0;
+  لكل (بینښه صحيح i = 0; i < feature_events.اوږدتیا; i++)
   {
     feature_event_t *event = &feature_events[i];
 
-    if (event->index != last_index)
+    إذا (event->شاخص_2 != وروستی_شاخص)
     {
       /* Save a snapshot of active features and the range. */
 
       /* Sort features and merge duplicates */
-      current_features = active_features;
-      range_first = last_index;
-      range_last = event->index - 1;
-      if (current_features.length)
+      current_features = فعال_features;
+      range_لومړی = وروستی_شاخص;
+      range_وروستی = event->شاخص_2 - 1;
+      إذا (current_features.اوږدتیا)
       {
 	current_features.qsort ();
-	unsigned int j = 0;
-	for (unsigned int i = 1; i < current_features.length; i++)
-	  if (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
+	بینښه صحيح j = 0;
+	لكل (بینښه صحيح i = 1; i < current_features.اوږدتیا; i++)
+	  إذا (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
 	      /* Nonexclusive feature selectors come in even/odd pairs to turn a setting on/off
 	       * respectively, so we mask out the low-order bit when checking for "duplicates"
 	       * (selectors referring to the same feature setting) here. */
@@ -154,25 +154,25 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 	current_features.shrink (j + 1);
       }
 
-      hb_aat_layout_compile_map (this, &m);
+      hb_aat_layout_compile_map (هذا, &m);
 
-      last_index = event->index;
+      وروستی_شاخص = event->شاخص_2;
     }
 
-    if (event->start)
+    إذا (event->پیل)
     {
-      active_features.push (event->feature);
-    } else {
-      feature_info_t *feature = active_features.lsearch (event->feature);
-      if (feature)
-	active_features.remove_ordered (feature - active_features.arrayZ);
+      فعال_features.push (event->feature);
+    } وإلا {
+      feature_info_t *feature = فعال_features.lsearch (event->feature);
+      إذا (feature)
+	فعال_features.remove_ordered (feature - فعال_features.arrayZ);
     }
   }
 
-  for (auto &chain_flags : m.chain_flags)
+  لكل (خپلکاری &chain_flags : m.chain_flags)
     // With our above setup this value is one less than desired; adjust it.
-    chain_flags.tail().cluster_last = HB_FEATURE_GLOBAL_END;
+    chain_flags.لکۍ().cluster_وروستی = HB_FEATURE_GLOBAL_پای_ټکی;
 }
 
 
-#endif
+#د_که_پای

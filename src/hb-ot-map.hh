@@ -26,164 +26,164 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_MAP_HH
-#define HB_OT_MAP_HH
+#که_نه_تعریف_شوی HB_OT_MAP_HH
+#تعریف_کړه HB_OT_MAP_HH
 
-#include "hb-buffer.hh"
+#ضمن "hb-buffer.hh"
 
 
-#define HB_OT_MAP_MAX_BITS 8u
-#define HB_OT_MAP_MAX_VALUE ((1u << HB_OT_MAP_MAX_BITS) - 1u)
+#تعریف_کړه HB_OT_MAP_MAX_بټونه 8u
+#تعریف_کړه HB_OT_MAP_MAX_ارزښت ((1u << HB_OT_MAP_MAX_بټونه) - 1u)
 
-struct hb_ot_shape_plan_t;
+بنية hb_ot_shape_plan_t;
 
-static const hb_tag_t table_tags[2] = {HB_OT_TAG_GSUB, HB_OT_TAG_GPOS};
+ساكن ثابت hb_نښان_t جدول_نښانونه[2] = {HB_OT_نښان_GSUB, HB_OT_نښان_GPOS};
 
-struct hb_ot_map_t
+بنية hb_ot_map_t
 {
-  friend struct hb_ot_map_builder_t;
+  ملګری بنية hb_ot_map_builder_t;
 
-  public:
+  عام:
 
-  struct feature_map_t {
-    hb_tag_t tag; /* should be first for our bsearch to work */
-    unsigned int index[2]; /* GSUB/GPOS */
-    unsigned int stage[2]; /* GSUB/GPOS */
-    unsigned int shift;
-    hb_mask_t mask;
-    hb_mask_t _1_mask; /* mask for value=1, for quick access */
-    unsigned int needs_fallback : 1;
-    unsigned int auto_zwnj : 1;
-    unsigned int auto_zwj : 1;
-    unsigned int random : 1;
-    unsigned int per_syllable : 1;
+  بنية feature_map_t {
+    hb_نښان_t نښان_2; /* should be first for our bsearch to work */
+    بینښه صحيح شاخص_2[2]; /* GSUB/GPOS */
+    بینښه صحيح stage[2]; /* GSUB/GPOS */
+    بینښه صحيح ښويدنه;
+    hb_ماسک_t ماسک;
+    hb_ماسک_t _1_mask; /* mask for value=1, for quick access */
+    بینښه صحيح needs_fallback : 1;
+    بینښه صحيح auto_zwnj : 1;
+    بینښه صحيح auto_zwj : 1;
+    بینښه صحيح random : 1;
+    بینښه صحيح فی_syllable : 1;
 
-    int cmp (const hb_tag_t tag_) const
-    { return tag_ < tag ? -1 : tag_ > tag ? 1 : 0; }
+    صحيح cmp (ثابت hb_نښان_t نښان_4) ثابت
+    { أرجع نښان_4 < نښان_2 ? -1 : نښان_4 > نښان_2 ? 1 : 0; }
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_دننی ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
     {
-      const feature_map_t *a = (const feature_map_t *) pa;
-      const feature_map_t *b = (const feature_map_t *) pb;
-      return a->tag < b->tag ? -1 : a->tag > b->tag ? 1 : 0;
+      ثابت feature_map_t *a = (ثابت feature_map_t *) pa;
+      ثابت feature_map_t *b = (ثابت feature_map_t *) pb;
+      أرجع a->نښان_2 < b->نښان_2 ? -1 : a->نښان_2 > b->نښان_2 ? 1 : 0;
     }
   };
 
-  struct lookup_map_t {
-    unsigned short index;
-    unsigned short auto_zwnj : 1;
-    unsigned short auto_zwj : 1;
-    unsigned short random : 1;
-    unsigned short per_syllable : 1;
-    hb_mask_t mask;
-    hb_tag_t feature_tag;
+  بنية lookup_map_t {
+    بینښه لنډ شاخص_2;
+    بینښه لنډ auto_zwnj : 1;
+    بینښه لنډ auto_zwj : 1;
+    بینښه لنډ random : 1;
+    بینښه لنډ فی_syllable : 1;
+    hb_ماسک_t ماسک;
+    hb_نښان_t feature_نښان;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_دننی ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
     {
-      const lookup_map_t *a = (const lookup_map_t *) pa;
-      const lookup_map_t *b = (const lookup_map_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 : 0;
+      ثابت lookup_map_t *a = (ثابت lookup_map_t *) pa;
+      ثابت lookup_map_t *b = (ثابت lookup_map_t *) pb;
+      أرجع a->شاخص_2 < b->شاخص_2 ? -1 : a->شاخص_2 > b->شاخص_2 ? 1 : 0;
     }
   };
 
   /* Pause functions return true if new glyph indices might have been
    * added to the buffer.  This is used to update buffer digest. */
-  typedef bool (*pause_func_t) (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer);
+  تعريفنوع منطقي (*pause_func_t) (ثابت بنية hb_ot_shape_plan_t *plan, hb_font_t *font, hb_بفر_t *بفر);
 
-  struct stage_map_t {
-    unsigned int last_lookup; /* Cumulative */
+  بنية stage_map_t {
+    بینښه صحيح وروستی_lookup; /* Cumulative */
     pause_func_t pause_func;
   };
 
-  void init ()
+  فراغ init ()
   {
-    hb_memset (this, 0, sizeof (*this));
+    hb_memset (هذا, 0, حجم (*هذا));
 
     features.init0 ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
     {
-      lookups[table_index].init0 ();
-      stages[table_index].init0 ();
+      lookups[جدول_شاخص].init0 ();
+      stages[جدول_شاخص].init0 ();
     }
   }
-  void fini ()
+  فراغ fini ()
   {
     features.fini ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    لكل (بینښه صحيح جدول_شاخص = 0; جدول_شاخص < 2; جدول_شاخص++)
     {
-      lookups[table_index].fini ();
-      stages[table_index].fini ();
+      lookups[جدول_شاخص].fini ();
+      stages[جدول_شاخص].fini ();
     }
   }
 
-  hb_mask_t get_global_mask () const { return global_mask; }
+  hb_ماسک_t get_global_ماسک () ثابت { أرجع global_ماسک; }
 
-  hb_mask_t get_mask (hb_tag_t feature_tag, unsigned int *shift = nullptr) const
+  hb_ماسک_t get_ماسک (hb_نښان_t feature_نښان, بینښه صحيح *ښويدنه = تش_اشاره) ثابت
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    if (shift) *shift = map ? map->shift : 0;
-    return map ? map->mask : 0;
+    ثابت feature_map_t *map = features.bsearch (feature_نښان);
+    إذا (ښويدنه) *ښويدنه = map ? map->ښويدنه : 0;
+    أرجع map ? map->ماسک : 0;
   }
 
-  bool needs_fallback (hb_tag_t feature_tag) const
+  منطقي needs_fallback (hb_نښان_t feature_نښان) ثابت
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->needs_fallback : false;
+    ثابت feature_map_t *map = features.bsearch (feature_نښان);
+    أرجع map ? map->needs_fallback : خطأ;
   }
 
-  hb_mask_t get_1_mask (hb_tag_t feature_tag) const
+  hb_ماسک_t get_1_ماسک (hb_نښان_t feature_نښان) ثابت
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->_1_mask : 0;
+    ثابت feature_map_t *map = features.bsearch (feature_نښان);
+    أرجع map ? map->_1_mask : 0;
   }
 
-  unsigned int get_feature_index (unsigned int table_index, hb_tag_t feature_tag) const
+  بینښه صحيح get_feature_شاخص (بینښه صحيح جدول_شاخص, hb_نښان_t feature_نښان) ثابت
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->index[table_index] : HB_OT_LAYOUT_NO_FEATURE_INDEX;
+    ثابت feature_map_t *map = features.bsearch (feature_نښان);
+    أرجع map ? map->شاخص_2[جدول_شاخص] : HB_OT_LAYOUT_NO_FEATURE_شاخص;
   }
 
-  unsigned int get_feature_stage (unsigned int table_index, hb_tag_t feature_tag) const
+  بینښه صحيح get_feature_stage (بینښه صحيح جدول_شاخص, hb_نښان_t feature_نښان) ثابت
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->stage[table_index] : UINT_MAX;
+    ثابت feature_map_t *map = features.bsearch (feature_نښان);
+    أرجع map ? map->stage[جدول_شاخص] : UINT_MAX;
   }
 
-  hb_array_t<const hb_ot_map_t::lookup_map_t>
-  get_stage_lookups (unsigned int table_index, unsigned int stage) const
+  hb_array_t<ثابت hb_ot_map_t::lookup_map_t>
+  get_stage_lookups (بینښه صحيح جدول_شاخص, بینښه صحيح stage) ثابت
   {
-    if (unlikely (stage > stages[table_index].length))
-      return hb_array<const hb_ot_map_t::lookup_map_t> (nullptr, 0);
+    إذا (unlikely (stage > stages[جدول_شاخص].اوږدتیا))
+      أرجع hb_array<ثابت hb_ot_map_t::lookup_map_t> (تش_اشاره, 0);
 
-    unsigned int start = stage ? stages[table_index][stage - 1].last_lookup : 0;
-    unsigned int end   = stage < stages[table_index].length ? stages[table_index][stage].last_lookup : lookups[table_index].length;
-    return lookups[table_index].as_array ().sub_array (start, end - start);
+    بینښه صحيح پیل = stage ? stages[جدول_شاخص][stage - 1].وروستی_lookup : 0;
+    بینښه صحيح پای_ټکی   = stage < stages[جدول_شاخص].اوږدتیا ? stages[جدول_شاخص][stage].وروستی_lookup : lookups[جدول_شاخص].اوږدتیا;
+    أرجع lookups[جدول_شاخص].as_array ().sub_array (پیل, پای_ټکی - پیل);
   }
 
-  HB_INTERNAL void collect_lookups (unsigned int table_index, hb_set_t *lookups) const;
-  template <typename Proxy>
-  HB_INTERNAL void apply (const Proxy &proxy,
-			  const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void substitute (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void position (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL unsigned int get_feature_tags (unsigned int  start_offset,
-					     unsigned int *tag_count, /* IN/OUT */
-					     hb_tag_t     *tags /* OUT */) const;
+  HB_دننی فراغ collect_lookups (بینښه صحيح جدول_شاخص, hb_سېټ_t *lookups) ثابت;
+  کينډۍ <ډول_نوم Proxy>
+  HB_دننی فراغ apply (ثابت Proxy &proxy,
+			  ثابت بنية hb_ot_shape_plan_t *plan, hb_font_t *font, hb_بفر_t *بفر) ثابت;
+  HB_دننی فراغ substitute (ثابت بنية hb_ot_shape_plan_t *plan, hb_font_t *font, hb_بفر_t *بفر) ثابت;
+  HB_دننی فراغ position (ثابت بنية hb_ot_shape_plan_t *plan, hb_font_t *font, hb_بفر_t *بفر) ثابت;
+  HB_دننی بینښه صحيح get_feature_نښانونه (بینښه صحيح  پیل_دننه_واټن,
+					     بینښه صحيح *نښان_شمېر, /* IN/OUT */
+					     hb_نښان_t     *نښانونه /*بهر*/) ثابت;
 
-  public:
-  hb_tag_t chosen_script[2];
-  bool found_script[2];
+  عام:
+  hb_نښان_t chosen_script[2];
+  منطقي وموندل_script[2];
 
-  private:
+  خاص:
 
-  hb_mask_t global_mask = 0;
+  hb_ماسک_t global_ماسک = 0;
 
-  hb_sorted_vector_t<feature_map_t> features;
-  hb_vector_t<lookup_map_t> lookups[2]; /* GSUB/GPOS */
-  hb_vector_t<stage_map_t> stages[2]; /* GSUB/GPOS */
+  hb_sorted_ویکټور_t<feature_map_t> features;
+  hb_ویکټور_t<lookup_map_t> lookups[2]; /* GSUB/GPOS */
+  hb_ویکټور_t<stage_map_t> stages[2]; /* GSUB/GPOS */
 };
 
-enum hb_ot_map_feature_flags_t
+تعداد hb_ot_map_feature_flags_t
 {
   F_NONE		= 0x0000u,
   F_GLOBAL		= 0x0001u, /* Feature applies to all characters; results in no mask allocated for it. */
@@ -193,109 +193,109 @@ enum hb_ot_map_feature_flags_t
   F_MANUAL_JOINERS	= F_MANUAL_ZWNJ | F_MANUAL_ZWJ,
   F_GLOBAL_MANUAL_JOINERS= F_GLOBAL | F_MANUAL_JOINERS,
   F_GLOBAL_HAS_FALLBACK = F_GLOBAL | F_HAS_FALLBACK,
-  F_GLOBAL_SEARCH	= 0x0010u, /* If feature not found in LangSys, look for it in global feature list and pick one. */
+  F_GLOBAL_پلټنه	= 0x0010u, /* If feature not found in LangSys, look for it in global feature list and pick one. */
   F_RANDOM		= 0x0020u, /* Randomly select a glyph from an AlternateSubstFormat1 subtable. */
-  F_PER_SYLLABLE	= 0x0040u  /* Contain lookup application to within syllable. */
+  F_فی_SYLLABLE	= 0x0040u  /* Contain lookup application to within syllable. */
 };
 HB_MARK_AS_FLAG_T (hb_ot_map_feature_flags_t);
 
 
-struct hb_ot_map_feature_t
+بنية hb_ot_map_feature_t
 {
-  hb_tag_t tag;
+  hb_نښان_t نښان_2;
   hb_ot_map_feature_flags_t flags;
 };
 
-struct hb_ot_shape_plan_key_t;
+بنية hb_ot_shape_plan_کلی_t;
 
-struct hb_ot_map_builder_t
+بنية hb_ot_map_builder_t
 {
-  public:
+  عام:
 
-  HB_INTERNAL hb_ot_map_builder_t (hb_face_t *face_,
-				   const hb_segment_properties_t &props_);
+  HB_دننی hb_ot_map_builder_t (hb_face_t *face_,
+				   ثابت hb_segment_properties_t &props_);
 
-  HB_INTERNAL ~hb_ot_map_builder_t ();
+  HB_دننی ~hb_ot_map_builder_t ();
 
-  HB_INTERNAL void add_feature (hb_tag_t tag,
+  HB_دننی فراغ جمع_کړه_feature (hb_نښان_t نښان_2,
 				hb_ot_map_feature_flags_t flags=F_NONE,
-				unsigned int value=1);
+				بینښه صحيح value=1);
 
-  HB_INTERNAL bool has_feature (hb_tag_t tag);
+  HB_دننی منطقي has_feature (hb_نښان_t نښان_2);
 
-  void add_feature (const hb_ot_map_feature_t &feat)
-  { add_feature (feat.tag, feat.flags); }
+  فراغ جمع_کړه_feature (ثابت hb_ot_map_feature_t &feat)
+  { جمع_کړه_feature (feat.نښان_2, feat.flags); }
 
-  void enable_feature (hb_tag_t tag,
+  فراغ enable_feature (hb_نښان_t نښان_2,
 		       hb_ot_map_feature_flags_t flags=F_NONE,
-		       unsigned int value=1)
-  { add_feature (tag, F_GLOBAL | flags, value); }
+		       بینښه صحيح value=1)
+  { جمع_کړه_feature (نښان_2, F_GLOBAL | flags, value); }
 
-  void disable_feature (hb_tag_t tag)
-  { add_feature (tag, F_GLOBAL, 0); }
+  فراغ disable_feature (hb_نښان_t نښان_2)
+  { جمع_کړه_feature (نښان_2, F_GLOBAL, 0); }
 
-  void add_gsub_pause (hb_ot_map_t::pause_func_t pause_func)
-  { add_pause (0, pause_func); }
-  void add_gpos_pause (hb_ot_map_t::pause_func_t pause_func)
-  { add_pause (1, pause_func); }
+  فراغ جمع_کړه_gsub_pause (hb_ot_map_t::pause_func_t pause_func)
+  { جمع_کړه_pause (0, pause_func); }
+  فراغ جمع_کړه_gpos_pause (hb_ot_map_t::pause_func_t pause_func)
+  { جمع_کړه_pause (1, pause_func); }
 
-  HB_INTERNAL void compile (hb_ot_map_t                  &m,
-			    const hb_ot_shape_plan_key_t &key);
+  HB_دننی فراغ compile (hb_ot_map_t                  &m,
+			    ثابت hb_ot_shape_plan_کلی_t &key);
 
-  private:
+  خاص:
 
-  HB_INTERNAL void add_lookups (hb_ot_map_t  &m,
-				unsigned int  table_index,
-				unsigned int  feature_index,
-				const hb_ot_shape_plan_key_t &key,
-				hb_mask_t     mask,
-				bool          auto_zwnj = true,
-				bool          auto_zwj = true,
-				bool          random = false,
-				bool          per_syllable = false,
-				hb_tag_t      feature_tag = HB_TAG(' ',' ',' ',' '));
+  HB_دننی فراغ جمع_کړه_lookups (hb_ot_map_t  &m,
+				بینښه صحيح  جدول_شاخص,
+				بینښه صحيح  feature_شاخص,
+				ثابت hb_ot_shape_plan_کلی_t &key,
+				hb_ماسک_t     ماسک,
+				منطقي          auto_zwnj = ریښتیا,
+				منطقي          auto_zwj = ریښتیا,
+				منطقي          random = خطأ,
+				منطقي          فی_syllable = خطأ,
+				hb_نښان_t      feature_نښان = HB_نښان(' ',' ',' ',' '));
 
-  struct feature_info_t {
-    hb_tag_t tag;
-    unsigned int seq; /* sequence#, used for stable sorting only */
-    unsigned int max_value;
+  بنية feature_info_t {
+    hb_نښان_t نښان_2;
+    بینښه صحيح seq; /* sequence#, used for stable sorting only */
+    بینښه صحيح max_ارزښت;
     hb_ot_map_feature_flags_t flags;
-    unsigned int default_value; /* for non-global features, what should the unset glyphs take */
-    unsigned int stage[2]; /* GSUB/GPOS */
+    بینښه صحيح default_ارزښت; /* for non-global features, what should the unset glyphs take */
+    بینښه صحيح stage[2]; /* GSUB/GPOS */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_دننی ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
     {
-      const feature_info_t *a = (const feature_info_t *) pa;
-      const feature_info_t *b = (const feature_info_t *) pb;
-      return (a->tag != b->tag) ?  (a->tag < b->tag ? -1 : 1) :
+      ثابت feature_info_t *a = (ثابت feature_info_t *) pa;
+      ثابت feature_info_t *b = (ثابت feature_info_t *) pb;
+      أرجع (a->نښان_2 != b->نښان_2) ?  (a->نښان_2 < b->نښان_2 ? -1 : 1) :
 	     (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
   };
 
-  struct stage_info_t {
-    unsigned int index;
+  بنية stage_info_t {
+    بینښه صحيح شاخص_2;
     hb_ot_map_t::pause_func_t pause_func;
   };
 
-  HB_INTERNAL void add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func);
+  HB_دننی فراغ جمع_کړه_pause (بینښه صحيح جدول_شاخص, hb_ot_map_t::pause_func_t pause_func);
 
-  public:
+  عام:
 
   hb_face_t *face;
   hb_segment_properties_t props;
-  bool is_simple;
+  منطقي is_simple;
 
-  hb_tag_t chosen_script[2];
-  bool found_script[2];
-  unsigned int script_index[2], language_index[2];
+  hb_نښان_t chosen_script[2];
+  منطقي وموندل_script[2];
+  بینښه صحيح script_شاخص[2], language_شاخص[2];
 
-  private:
+  خاص:
 
-  unsigned int current_stage[2]; /* GSUB/GPOS */
-  hb_vector_t<feature_info_t> feature_infos;
-  hb_vector_t<stage_info_t> stages[2]; /* GSUB/GPOS */
+  بینښه صحيح current_stage[2]; /* GSUB/GPOS */
+  hb_ویکټور_t<feature_info_t> feature_infos;
+  hb_ویکټور_t<stage_info_t> stages[2]; /* GSUB/GPOS */
 };
 
 
 
-#endif /* HB_OT_MAP_HH */
+#د_که_پای /* HB_OT_MAP_HH */

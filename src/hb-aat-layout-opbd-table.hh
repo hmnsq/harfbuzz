@@ -22,153 +22,153 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_OPBD_TABLE_HH
-#define HB_AAT_LAYOUT_OPBD_TABLE_HH
+#که_نه_تعریف_شوی HB_AAT_LAYOUT_OPBD_جدول_HH
+#تعریف_کړه HB_AAT_LAYOUT_OPBD_جدول_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-open-type.hh"
+#ضمن "hb-aat-layout-common.hh"
+#ضمن "hb-open-type.hh"
 
 /*
  * opbd -- Optical Bounds
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6opbd.html
  */
-#define HB_AAT_TAG_opbd HB_TAG('o','p','b','d')
+#تعریف_کړه HB_AAT_نښان_opbd HB_نښان('o','p','b','d')
 
 
-namespace AAT {
+نطاق AAT {
 
-struct OpticalBounds
+بنية OpticalBounds
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  FWORD		leftSide;
-  FWORD		topSide;
-  FWORD		rightSide;
+  FWORD		کیڼ_Side;
+  FWORD		سر_Side;
+  FWORD		ښی_Side;
   FWORD		bottomSide;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عام:
+  DEFINE_اندازه_STATIC (8);
 };
 
-struct opbdFormat0
+بنية opbdFormat0
 {
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents, const void *base) const
+  منطقي get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents, ثابت فراغ *بنسټ) ثابت
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
-    const OpticalBounds &bounds = base+*bounds_offset;
+    ثابت Offset16_منزل<OpticalBounds> *bounds_دننه_واټن = lookup_جدول.get_ارزښت (glyph_id, font->face->get_عدد_glyphs ());
+    إذا (!bounds_دننه_واټن) أرجع خطأ;
+    ثابت OpticalBounds &bounds = بنسټ+*bounds_دننه_واټن;
 
-    if (extents)
+    إذا (extents)
       *extents = {
-	font->em_scale_x (bounds.leftSide),
-	font->em_scale_y (bounds.topSide),
-	font->em_scale_x (bounds.rightSide),
+	font->em_scale_x (bounds.کیڼ_Side),
+	font->em_scale_y (bounds.سر_Side),
+	font->em_scale_x (bounds.ښی_Side),
 	font->em_scale_y (bounds.bottomSide)
       };
-    return true;
+    أرجع ریښتیا;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) && lookup_جدول.sanitize (c, بنسټ)));
   }
 
-  protected:
-  Lookup<Offset16To<OpticalBounds>>
-		lookupTable;	/* Lookup table associating glyphs with the four
+  محمي:
+  Lookup<Offset16_منزل<OpticalBounds>>
+		lookup_جدول;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
 				 * right-side, and bottom-side optical bounds. */
-  public:
-  DEFINE_SIZE_MIN (2);
+  عام:
+  DEFINE_اندازه_MIN (2);
 };
 
-struct opbdFormat1
+بنية opbdFormat1
 {
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents, const void *base) const
+  منطقي get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents, ثابت فراغ *بنسټ) ثابت
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
-    const OpticalBounds &bounds = base+*bounds_offset;
+    ثابت Offset16_منزل<OpticalBounds> *bounds_دننه_واټن = lookup_جدول.get_ارزښت (glyph_id, font->face->get_عدد_glyphs ());
+    إذا (!bounds_دننه_واټن) أرجع خطأ;
+    ثابت OpticalBounds &bounds = بنسټ+*bounds_دننه_واټن;
 
-    hb_position_t left = 0, top = 0, right = 0, bottom = 0, ignore;
-    if (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
-	font->get_glyph_contour_point (glyph_id, bounds.topSide, &ignore, &top) ||
-	font->get_glyph_contour_point (glyph_id, bounds.rightSide, &right, &ignore) ||
-	font->get_glyph_contour_point (glyph_id, bounds.bottomSide, &ignore, &bottom))
+    hb_position_t کیڼ = 0, سر_4 = 0, ښی = 0, bottom = 0, ignore;
+    إذا (font->get_glyph_contour_ټکی (glyph_id, bounds.کیڼ_Side, &کیڼ, &ignore) ||
+	font->get_glyph_contour_ټکی (glyph_id, bounds.سر_Side, &ignore, &سر_4) ||
+	font->get_glyph_contour_ټکی (glyph_id, bounds.ښی_Side, &ښی, &ignore) ||
+	font->get_glyph_contour_ټکی (glyph_id, bounds.bottomSide, &ignore, &bottom))
     {
-      if (extents)
-	*extents = {left, top, right, bottom};
-      return true;
+      إذا (extents)
+	*extents = {کیڼ, سر_4, ښی, bottom};
+      أرجع ریښتیا;
     }
-    return false;
+    أرجع خطأ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) && lookup_جدول.sanitize (c, بنسټ)));
   }
 
-  protected:
-  Lookup<Offset16To<OpticalBounds>>
-		lookupTable;	/* Lookup table associating glyphs with the four
+  محمي:
+  Lookup<Offset16_منزل<OpticalBounds>>
+		lookup_جدول;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
 				 * right-side, and bottom-side optical bounds. */
-  public:
-  DEFINE_SIZE_MIN (2);
+  عام:
+  DEFINE_اندازه_MIN (2);
 };
 
-struct opbd
+بنية opbd
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_opbd;
+  ساكن constexpr hb_نښان_t جدول_نښان = HB_AAT_نښان_opbd;
 
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents) const
+  منطقي get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents) ثابت
   {
-    switch (format)
+    بدل (format)
     {
-    case 0: hb_barrier (); return u.format0.get_bounds (font, glyph_id, extents, this);
-    case 1: hb_barrier (); return u.format1.get_bounds (font, glyph_id, extents, this);
-    default:return false;
+    حالة 0: hb_barrier (); أرجع u.format0.get_bounds (font, glyph_id, extents, هذا);
+    حالة 1: hb_barrier (); أرجع u.format1.get_bounds (font, glyph_id, extents, هذا);
+    افتراضي:أرجع خطأ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this) || version.major != 1))
-      return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!c->check_struct (هذا) || نسخه.major != 1))
+      return_trace (خطأ);
     hb_barrier ();
 
-    switch (format)
+    بدل (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, this));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, this));
-    default:return_trace (true);
+    حالة 0: hb_barrier (); return_trace (u.format0.sanitize (c, هذا));
+    حالة 1: hb_barrier (); return_trace (u.format1.sanitize (c, هذا));
+    افتراضي:return_trace (ریښتیا);
     }
   }
 
-  protected:
-  FixedVersion<>version;	/* Version number of the optical bounds
+  محمي:
+  Fixed_نسخه<>نسخه;	/* Version number of the optical bounds
 				 * table (0x00010000 for the current version). */
   HBUINT16	format;		/* Format of the optical bounds table.
 				 * Format 0 indicates distance and Format 1 indicates
 				 * control point. */
-  union {
+  اتحاد {
   opbdFormat0	format0;
   opbdFormat1	format1;
   } u;
-  public:
-  DEFINE_SIZE_MIN (8);
+  عام:
+  DEFINE_اندازه_MIN (8);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_OPBD_TABLE_HH */
+#د_که_پای /* HB_AAT_LAYOUT_OPBD_TABLE_HH */

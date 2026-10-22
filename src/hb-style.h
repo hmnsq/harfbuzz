@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_دننه) && !defined(HB_NO_SINGLE_سرلیک_ERROR)
+#تېروتنه "Include <hb.h> instead."
+#د_که_پای
 
-#ifndef HB_STYLE_H
-#define HB_STYLE_H
+#که_نه_تعریف_شوی HB_STYLE_H
+#تعریف_کړه HB_STYLE_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -59,23 +59,23 @@ HB_BEGIN_DECLS
  *
  * Since: 3.0.0
  **/
-typedef enum
+تعريفنوع تعداد
 {
-  HB_STYLE_TAG_ITALIC		= HB_TAG ('i','t','a','l'),
-  HB_STYLE_TAG_OPTICAL_SIZE	= HB_TAG ('o','p','s','z'),
-  HB_STYLE_TAG_SLANT_ANGLE	= HB_TAG ('s','l','n','t'),
-  HB_STYLE_TAG_SLANT_RATIO	= HB_TAG ('S','l','n','t'),
-  HB_STYLE_TAG_WIDTH		= HB_TAG ('w','d','t','h'),
-  HB_STYLE_TAG_WEIGHT		= HB_TAG ('w','g','h','t'),
+  HB_STYLE_نښان_ITALIC		= HB_نښان ('i','t','a','l'),
+  HB_STYLE_نښان_OPTICAL_اندازه	= HB_نښان ('o','p','s','z'),
+  HB_STYLE_نښان_SLANT_ANGLE	= HB_نښان ('s','l','n','t'),
+  HB_STYLE_نښان_SLANT_نسبت	= HB_نښان ('S','l','n','t'),
+  HB_STYLE_نښان_پلنوالی		= HB_نښان ('w','d','t','h'),
+  HB_STYLE_نښان_وزن		= HB_نښان ('w','g','h','t'),
 
   /*< private >*/
-  _HB_STYLE_TAG_MAX_VALUE	= HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_style_tag_t;
+  HB_STYLE_نښان_MAX_ارزښت	= HB_نښان_MAX_SIGNED /*< skip >*/
+} hb_style_نښان_t;
 
 
-HB_EXTERN float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag);
+HB_EXTERN عائم
+hb_style_get_ارزښت (hb_font_t *font, hb_style_نښان_t style_نښان);
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
-#endif /* HB_STYLE_H */
+#د_که_پای /* HB_STYLE_H */

@@ -22,10 +22,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FONTATIONS_H
-#define HB_FONTATIONS_H
+#که_نه_تعریف_شوی HB_FONTATIONS_H
+#تعریف_کړه HB_FONTATIONS_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 /**
  * SECTION: hb-fontations
@@ -48,9 +48,9 @@ HB_BEGIN_DECLS
  *
  * Since: 11.0.0
  **/
-HB_EXTERN void
-hb_fontations_font_set_funcs (hb_font_t *font);
+HB_EXTERN فراغ
+hb_fontations_font_سېټ_funcs (hb_font_t *font);
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
-#endif /* HB_FONTATIONS_H */
+#د_که_پای /* HB_FONTATIONS_H */

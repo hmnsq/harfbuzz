@@ -26,239 +26,239 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
-#define OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#که_نه_تعریف_شوی OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#تعریف_کړه OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
 
-#include "RangeRecord.hh"
+#ضمن "RangeRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+نطاق OT {
+نطاق Layout {
+نطاق Common {
 
-template <typename Types>
-struct CoverageFormat2_4
+کينډۍ <ډول_نوم Types>
+بنية CoverageFormat2_4
 {
-  friend struct Coverage;
-  using CoverageRangeRecord = RangeRecord<Types, typename Types::HBUINT>;
+  ملګری بنية Coverage;
+  کارول Coverage_Range_ریکارډ = Range_ریکارډ<Types, ډول_نوم Types::HBUINT>;
 
-  public:
+  عام:
   HBUINT16      coverageFormat; /* Format identifier--format = 2 */
-  typename Types::template SortedArrayOf<CoverageRangeRecord>
-                rangeRecord;    /* Array of glyph ranges--ordered by
+  ډول_نوم Types::کينډۍ Sorted_Array_د<Coverage_Range_ریکارډ>
+                range_ریکارډ;    /* Array of glyph ranges--ordered by
                                  * Start GlyphID. rangeCount entries
                                  * long */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, rangeRecord);
+  عام:
+  DEFINE_اندازه_ARRAY (2 + Types::HBUINT::static_اندازه, range_ریکارډ);
 
-  private:
+  خاص:
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (rangeRecord.sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (range_ریکارډ.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  بینښه صحيح get_coverage (hb_codepoint_t glyph_id) ثابت
   {
-    const CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
-    return likely (range.first <= range.last)
-         ? (unsigned int) range.value + (glyph_id - range.first)
+    ثابت Coverage_Range_ریکارډ &range = range_ریکارډ.bsearch (glyph_id);
+    أرجع likely (range.لومړی <= range.وروستی)
+         ? (بینښه صحيح) range.value + (glyph_id - range.لومړی)
          : NOT_COVERED;
   }
 
-  unsigned get_population () const
+  بینښه get_population () ثابت
   {
-    typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    ډول_نوم Types::large_int ret = 0;
+    لكل (ثابت خپلکاری &r : range_ریکارډ)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    أرجع ret > UINT_MAX ? UINT_MAX : (بینښه) ret;
   }
 
-  template <typename Iterator,
-      hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  کينډۍ <ډول_نوم Iterator,
+      hb_requires (hb_is_sorted_سرچینه_د (Iterator, hb_codepoint_t))>
+  منطقي serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
 
-    unsigned num_ranges = 0;
-    hb_codepoint_t last = (hb_codepoint_t) -2;
-    for (auto g: glyphs)
+    بینښه عدد_ranges = 0;
+    hb_codepoint_t وروستی = (hb_codepoint_t) -2;
+    لكل (خپلکاری g: glyphs)
     {
-      if (last + 1 != g)
-        num_ranges++;
-      last = g;
+      إذا (وروستی + 1 != g)
+        عدد_ranges++;
+      وروستی = g;
     }
 
-    if (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
-    if (!num_ranges) return_trace (true);
+    إذا (unlikely (!range_ریکارډ.serialize (c, عدد_ranges))) return_trace (خطأ);
+    إذا (!عدد_ranges) return_trace (ریښتیا);
 
-    unsigned count = 0;
-    unsigned range = (unsigned) -1;
-    last = (hb_codepoint_t) -2;
-    unsigned unsorted = false;
-    for (auto g: glyphs)
+    بینښه شمېر = 0;
+    بینښه range = (بینښه) -1;
+    وروستی = (hb_codepoint_t) -2;
+    بینښه unsorted = خطأ;
+    لكل (خپلکاری g: glyphs)
     {
-      if (last + 1 != g)
+      إذا (وروستی + 1 != g)
       {
-	if (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
-	  unsorted = true;
+	إذا (unlikely (وروستی != (hb_codepoint_t) -2 && وروستی + 1 > g))
+	  unsorted = ریښتیا;
 
         range++;
-        rangeRecord.arrayZ[range].first = g;
-        rangeRecord.arrayZ[range].value = count;
+        range_ریکارډ.arrayZ[range].لومړی = g;
+        range_ریکارډ.arrayZ[range].value = شمېر;
       }
-      rangeRecord.arrayZ[range].last = g;
-      last = g;
-      count++;
+      range_ریکارډ.arrayZ[range].وروستی = g;
+      وروستی = g;
+      شمېر++;
     }
 
-    if (unlikely (unsorted))
-      rangeRecord.as_array ().qsort (CoverageRangeRecord::cmp_range);
+    إذا (unlikely (unsorted))
+      range_ریکارډ.as_array ().qsort (Coverage_Range_ریکارډ::cmp_range);
 
-    return_trace (true);
+    return_trace (ریښتیا);
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_سېټ_t *glyphs) ثابت
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    إذا (range_ریکارډ.len > glyphs->get_population () * hb_بټ_storage ((بینښه) range_ریکارډ.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      لكل (خپلکاری g : *glyphs)
+        إذا (get_coverage (g) != NOT_COVERED)
+	  أرجع ریښتیا;
+      أرجع خطأ;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { return range.intersects (*glyphs); }));
+    أرجع hb_any (+ hb_iter (range_ریکارډ)
+                   | hb_map ([glyphs] (ثابت Coverage_Range_ریکارډ &range) { أرجع range.intersects (*glyphs); }));
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  منطقي intersects_coverage (ثابت hb_سېټ_t *glyphs, بینښه صحيح شاخص_2) ثابت
   {
-    auto *range = rangeRecord.as_array ().bsearch (index);
-    if (range)
-      return range->intersects (*glyphs);
-    return false;
+    خپلکاری *range = range_ریکارډ.as_array ().bsearch (شاخص_2);
+    إذا (range)
+      أرجع range->intersects (*glyphs);
+    أرجع خطأ;
   }
 
-  static void add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
-  { set.add_bits (base, bits); }
+  ساكن فراغ جمع_کړه_intersected_بټونه (hb_سېټ_t &سېټ, hb_codepoint_t بنسټ, uint64_t بټونه)
+  { سېټ.جمع_کړه_بټونه (بنسټ, بټونه); }
 
-  template <typename IterableOut>
-  static void add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
+  کينډۍ <ډول_نوم Iterable_بهر>
+  ساكن فراغ جمع_کړه_intersected_بټونه (Iterable_بهر&& بهر, hb_codepoint_t بنسټ, uint64_t بټونه)
   {
-    while (bits)
+    طالما (بټونه)
     {
-      out << base + hb_ctz (bits);
-      bits &= bits - 1;
+      بهر << بنسټ + hb_ctz (بټونه);
+      بټونه &= بټونه - 1;
     }
   }
 
-  template <typename IterableOut,
-	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  کينډۍ <ډول_نوم Iterable_بهر,
+	    hb_requires (hb_is_sink_د (Iterable_بهر, hb_codepoint_t))>
+  فراغ intersect_سېټ (ثابت hb_سېټ_t &glyphs, Iterable_بهر&& intersect_glyphs) ثابت
   {
     /* Break out of loop for overlapping, broken, tables,
      * to avoid fuzzer timouts. */
-    hb_codepoint_t last = 0;
-    for (const auto& range : rangeRecord)
+    hb_codepoint_t وروستی = 0;
+    لكل (ثابت خپلکاری& range : range_ریکارډ)
     {
-      if (unlikely (range.first < last))
-        break;
-      last = range.last;
-      hb_codepoint_t cursor = range.first & ~hb_bit_page_t::ELT_MASK;
-      cursor = cursor ? cursor - 1 : HB_SET_VALUE_INVALID;
-      uint64_t bits;
-      while (glyphs.next_bits (&cursor, &bits) && cursor <= last)
+      إذا (unlikely (range.لومړی < وروستی))
+        اكسر;
+      وروستی = range.وروستی;
+      hb_codepoint_t cursor = range.لومړی & ~hb_بټ_پاڼه_t::ELT_ماسک;
+      cursor = cursor ? cursor - 1 : HB_سېټ_ارزښت_INVALID;
+      uint64_t بټونه;
+      طالما (glyphs.بل_بټونه (&cursor, &بټونه) && cursor <= وروستی)
       {
-	if (range.first > cursor)
-	  bits &= UINT64_MAX << (range.first - cursor);
-	unsigned int end = last - cursor;
-	if (end < hb_bit_page_t::ELT_BITS - 1)
-	  bits &= (uint64_t (1) << (end + 1)) - 1;
-	add_intersected_bits (intersect_glyphs, cursor, bits);
+	إذا (range.لومړی > cursor)
+	  بټونه &= UINT64_MAX << (range.لومړی - cursor);
+	بینښه صحيح پای_ټکی = وروستی - cursor;
+	إذا (پای_ټکی < hb_بټ_پاڼه_t::ELT_بټونه - 1)
+	  بټونه &= (uint64_t (1) << (پای_ټکی + 1)) - 1;
+	جمع_کړه_intersected_بټونه (intersect_glyphs, cursor, بټونه);
       }
     }
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  بینښه لګښت () ثابت { أرجع hb_بټ_storage ((بینښه) range_ریکارډ.len); /* bsearch cost */ }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  منطقي collect_coverage (سېټ_t *glyphs) ثابت
   {
-    for (const auto& range: rangeRecord)
-      if (unlikely (!range.collect_coverage (glyphs)))
-        return false;
-    return true;
+    لكل (ثابت خپلکاری& range: range_ریکارډ)
+      إذا (unlikely (!range.collect_coverage (glyphs)))
+        أرجع خطأ;
+    أرجع ریښتیا;
   }
 
-  public:
+  عام:
   /* Older compilers need this to be public. */
-  struct iter_t
+  بنية iter_t
   {
-    void init (const CoverageFormat2_4 &c_)
+    فراغ init (ثابت CoverageFormat2_4 &c_)
     {
       c = &c_;
       coverage = 0;
       i = 0;
-      j = c->rangeRecord.len ? c->rangeRecord[0].first : 0;
-      if (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
+      j = c->range_ریکارډ.len ? c->range_ریکارډ[0].لومړی : 0;
+      إذا (unlikely (c->range_ریکارډ[0].لومړی > c->range_ریکارډ[0].وروستی))
       {
         /* Broken table. Skip. */
-        i = c->rangeRecord.len;
+        i = c->range_ریکارډ.len;
         j = 0;
       }
     }
-    bool __more__ () const { return i < c->rangeRecord.len; }
-    void __next__ ()
+    منطقي __more__ () ثابت { أرجع i < c->range_ریکارډ.len; }
+    فراغ __next__ ()
     {
-      if (j >= c->rangeRecord[i].last)
+      إذا (j >= c->range_ریکارډ[i].وروستی)
       {
         i++;
-        if (__more__ ())
+        إذا (__more__ ())
         {
-          unsigned int old = coverage;
-          j = c->rangeRecord.arrayZ[i].first;
-          coverage = c->rangeRecord.arrayZ[i].value;
-          if (unlikely (coverage != old + 1))
+          بینښه صحيح old = coverage;
+          j = c->range_ریکارډ.arrayZ[i].لومړی;
+          coverage = c->range_ریکارډ.arrayZ[i].value;
+          إذا (unlikely (coverage != old + 1))
           {
             /* Broken table. Skip. Important to avoid DoS.
              * Also, our callers depend on coverage being
              * consecutive and monotonically increasing,
              * ie. iota(). */
-           i = c->rangeRecord.len;
+           i = c->range_ریکارډ.len;
            j = 0;
-           return;
+           أرجع;
           }
         }
-        else
+        وإلا
           j = 0;
-        return;
+        أرجع;
       }
       coverage++;
       j++;
     }
-    hb_codepoint_t get_glyph () const { return j; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i || j != o.j; }
-    iter_t __end__ () const
+    hb_codepoint_t get_glyph () ثابت { أرجع j; }
+    منطقي چلوونکی != (ثابت iter_t& o) ثابت
+    { أرجع i != o.i || j != o.j; }
+    iter_t __end__ () ثابت
     {
       iter_t it;
       it.init (*c);
-      it.i = c->rangeRecord.len;
+      it.i = c->range_ریکارډ.len;
       it.j = 0;
-      return it;
+      أرجع it;
     }
 
-    private:
-    const struct CoverageFormat2_4 *c;
-    unsigned int i, coverage;
+    خاص:
+    ثابت بنية CoverageFormat2_4 *c;
+    بینښه صحيح i, coverage;
     hb_codepoint_t j;
   };
-  private:
+  خاص:
 };
 
 }
 }
 }
 
-#endif  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#د_که_پای  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH

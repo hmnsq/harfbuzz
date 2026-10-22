@@ -24,23 +24,23 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_دننه) && !defined(HB_NO_SINGLE_سرلیک_ERROR)
+#تېروتنه "Include <hb.h> instead."
+#د_که_پای
 
-#ifndef HB_FACE_H
-#define HB_FACE_H
+#که_نه_تعریف_شوی HB_FACE_H
+#تعریف_کړه HB_FACE_H
 
-#include "hb-common.h"
-#include "hb-blob.h"
-#include "hb-map.h"
-#include "hb-set.h"
+#ضمن "hb-common.h"
+#ضمن "hb-blob.h"
+#ضمن "hb-map.h"
+#ضمن "hb-set.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN unsigned int
-hb_face_count (hb_blob_t *blob);
+HB_EXTERN بینښه صحيح
+hb_face_شمېر (hb_blob_t *blob);
 
 
 /*
@@ -53,32 +53,32 @@ hb_face_count (hb_blob_t *blob);
  * Data type for holding font faces.
  *
  **/
-typedef struct hb_face_t hb_face_t;
+تعريفنوع بنية hb_face_t hb_face_t;
 
 HB_EXTERN hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index);
+		بینښه صحيح  شاخص_2);
 
 HB_EXTERN hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index);
+			بینښه صحيح  شاخص_2);
 
 HB_EXTERN hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
-			      const char   *loader_name);
+			      بینښه صحيح  شاخص_2,
+			      ثابت حرف   *loader_name);
 
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index);
+hb_face_create_from_file_or_fail (ثابت حرف   *file_name,
+				  بینښه صحيح  شاخص_2);
 
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
-					const char   *loader_name);
+hb_face_create_from_file_or_fail_using (ثابت حرف   *file_name,
+					بینښه صحيح  شاخص_2,
+					ثابت حرف   *loader_name);
 
-HB_EXTERN const char **
-hb_face_list_loaders (void);
+HB_EXTERN ثابت حرف **
+hb_face_list_loaders (فراغ);
 
 
 /**
@@ -99,35 +99,35 @@ hb_face_list_loaders (void);
  * Since: 0.9.2
  */
 
-typedef hb_blob_t * (*hb_reference_table_func_t)  (hb_face_t *face, hb_tag_t tag, void *user_data);
+تعريفنوع hb_blob_t * (*hb_reference_جدول_func_t)  (hb_face_t *face, hb_نښان_t نښان_2, فراغ *user_معلومات);
 
 /* calls destroy() when not needing user_data anymore */
 HB_EXTERN hb_face_t *
-hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
-			   void                      *user_data,
+hb_face_create_for_tables (hb_reference_جدول_func_t  reference_جدول_func,
+			   فراغ                      *user_معلومات,
 			   hb_destroy_func_t          destroy);
 
 HB_EXTERN hb_face_t *
-hb_face_get_empty (void);
+hb_face_get_تشه (فراغ);
 
 HB_EXTERN hb_face_t *
 hb_face_reference (hb_face_t *face);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_face_destroy (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
-hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_face_سېټ_user_معلومات (hb_face_t          *face,
+		       hb_user_معلومات_کلی_t *کلی_2,
+		       فراغ *              معلومات,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_face_get_user_معلومات (ثابت hb_face_t    *face,
+		       hb_user_معلومات_کلی_t *کلی_2);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_face_make_immutable (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
@@ -135,32 +135,32 @@ hb_face_is_immutable (hb_face_t *face);
 
 
 HB_EXTERN hb_blob_t *
-hb_face_reference_table (const hb_face_t *face,
-			 hb_tag_t tag);
+hb_face_reference_جدول (ثابت hb_face_t *face,
+			 hb_نښان_t نښان_2);
 
 HB_EXTERN hb_blob_t *
 hb_face_reference_blob (hb_face_t *face);
 
-HB_EXTERN void
-hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index);
+HB_EXTERN فراغ
+hb_face_سېټ_شاخص (hb_face_t    *face,
+		   بینښه صحيح  شاخص_2);
 
-HB_EXTERN unsigned int
-hb_face_get_index (const hb_face_t *face);
+HB_EXTERN بینښه صحيح
+hb_face_get_شاخص (ثابت hb_face_t *face);
 
-HB_EXTERN void
-hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem);
+HB_EXTERN فراغ
+hb_face_سېټ_upem (hb_face_t    *face,
+		  بینښه صحيح  upem);
 
-HB_EXTERN unsigned int
-hb_face_get_upem (const hb_face_t *face);
+HB_EXTERN بینښه صحيح
+hb_face_get_upem (ثابت hb_face_t *face);
 
-HB_EXTERN void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count);
+HB_EXTERN فراغ
+hb_face_سېټ_glyph_شمېر (hb_face_t    *face,
+			 بینښه صحيح  glyph_شمېر);
 
-HB_EXTERN unsigned int
-hb_face_get_glyph_count (const hb_face_t *face);
+HB_EXTERN بینښه صحيح
+hb_face_get_glyph_شمېر (ثابت hb_face_t *face);
 
 
 /**
@@ -178,46 +178,46 @@ hb_face_get_glyph_count (const hb_face_t *face);
  *
  * Since: 10.0.0
  */
-typedef unsigned int (*hb_get_table_tags_func_t) (const hb_face_t *face,
-						  unsigned int  start_offset,
-						  unsigned int *table_count, /* IN/OUT */
-						  hb_tag_t     *table_tags /* OUT */,
-						  void         *user_data);
+تعريفنوع بینښه صحيح (*hb_get_جدول_نښانونه_func_t) (ثابت hb_face_t *face,
+						  بینښه صحيح  پیل_دننه_واټن,
+						  بینښه صحيح *جدول_شمېر_2, /* IN/OUT */
+						  hb_نښان_t     *جدول_نښانونه /*بهر*/,
+						  فراغ         *user_معلومات);
 
-HB_EXTERN void
-hb_face_set_get_table_tags_func (hb_face_t *face,
-				 hb_get_table_tags_func_t func,
-				 void                    *user_data,
+HB_EXTERN فراغ
+hb_face_سېټ_get_جدول_نښانونه_func (hb_face_t *face,
+				 hb_get_جدول_نښانونه_func_t func,
+				 فراغ                    *user_معلومات,
 				 hb_destroy_func_t        destroy);
 
-HB_EXTERN unsigned int
-hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
-			hb_tag_t     *table_tags /* OUT */);
+HB_EXTERN بینښه صحيح
+hb_face_get_جدول_نښانونه (ثابت hb_face_t *face,
+			بینښه صحيح  پیل_دننه_واټن,
+			بینښه صحيح *جدول_شمېر_2, /* IN/OUT */
+			hb_نښان_t     *جدول_نښانونه /*بهر*/);
 
 
 /*
  * Character set.
  */
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_face_collect_unicodes (hb_face_t *face,
-			  hb_set_t  *out);
+			  hb_سېټ_t  *بهر);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
-				       hb_set_t  *unicodes);
+				       hb_سېټ_t  *unicodes);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_face_collect_variation_selectors (hb_face_t *face,
-				     hb_set_t  *out);
+				     hb_سېټ_t  *بهر);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_face_collect_variation_unicodes (hb_face_t *face,
 				    hb_codepoint_t variation_selector,
-				    hb_set_t  *out);
+				    hb_سېټ_t  *بهر);
 
 
 /*
@@ -225,18 +225,18 @@ hb_face_collect_variation_unicodes (hb_face_t *face,
  */
 
 HB_EXTERN hb_face_t *
-hb_face_builder_create (void);
+hb_face_builder_create (فراغ);
 
 HB_EXTERN hb_bool_t
-hb_face_builder_add_table (hb_face_t *face,
-			   hb_tag_t   tag,
+hb_face_builder_جمع_کړه_جدول (hb_face_t *face,
+			   hb_نښان_t   نښان_2,
 			   hb_blob_t *blob);
 
-HB_EXTERN void
-hb_face_builder_sort_tables (hb_face_t *face,
-                             const hb_tag_t  *tags);
+HB_EXTERN فراغ
+hb_face_builder_ترتیبول_tables (hb_face_t *face,
+                             ثابت hb_نښان_t  *نښانونه);
 
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
-#endif /* HB_FACE_H */
+#د_که_پای /* HB_FACE_H */

@@ -24,51 +24,51 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_PATH_HH
-#define HB_VECTOR_PATH_HH
+#که_نه_تعریف_شوی HB_ویکټور_لار_HH
+#تعریف_کړه HB_ویکټور_لار_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
-#include "hb-vector.h"
-#include "hb-draw.h"
-#include "hb-vector-buf.hh"
+#ضمن "hb.hh"
+#ضمن "hb-vector.hh"
+#ضمن "hb-vector.h"
+#ضمن "hb-draw.h"
+#ضمن "hb-vector-buf.hh"
 
 /* Lightweight path sink: serializes hb_draw_* calls into an
  * external char buffer as either SVG path-data or PDF path
  * operators, depending on format.  Used by the vector paint
  * backends to accumulate arbitrary clip paths (and by the
  * SVG backend to emit glyph outlines into defs). */
-struct hb_vector_path_sink_t
+بنية hb_ویکټور_لار_sink_t
 {
-  hb_vector_buf_t *path;
-  unsigned precision;
-  float x_scale;
-  float y_scale;
+  hb_ویکټور_buf_t *لار;
+  بینښه precision;
+  عائم x_scale;
+  عائم y_scale;
   int64_t *budget;
 
-  bool begin_command ()
+  منطقي begin_command ()
   {
-    return likely (!path->in_error () && !(budget && *budget < 0));
+    أرجع likely (!لار->دننه_error () && !(budget && *budget < 0));
   }
 
-  void end_command ()
+  فراغ پای_ټکی_command ()
   {
     /* Serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (!budget) return;
-    if (unlikely (path->in_error ()))
+    إذا (!budget) أرجع;
+    إذا (unlikely (لار->دننه_error ()))
       *budget = 0;
   }
 };
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_svg_path_draw_funcs_get ();
+HB_دننی hb_draw_funcs_t *
+hb_ویکټور_svg_لار_draw_funcs_get ();
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_pdf_path_draw_funcs_get ();
+HB_دننی hb_draw_funcs_t *
+hb_ویکټور_pdf_لار_draw_funcs_get ();
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_path_draw_funcs_get (hb_vector_format_t format);
+HB_دننی hb_draw_funcs_t *
+hb_ویکټور_لار_draw_funcs_get (hb_ویکټور_format_t format);
 
-#endif /* HB_VECTOR_PATH_HH */
+#د_که_پای /* HB_VECTOR_PATH_HH */

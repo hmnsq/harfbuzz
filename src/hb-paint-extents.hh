@@ -22,20 +22,20 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_PAINT_EXTENTS_HH
-#define HB_PAINT_EXTENTS_HH
+#که_نه_تعریف_شوی HB_PAINT_EXTENTS_HH
+#تعریف_کړه HB_PAINT_EXTENTS_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#ضمن "hb.hh"
+#ضمن "hb-paint.h"
 
-#include "hb-geometry.hh"
+#ضمن "hb-geometry.hh"
 
 
-typedef struct  hb_paint_extents_context_t hb_paint_extents_context_t;
+تعريفنوع بنية  hb_paint_extents_context_t hb_paint_extents_context_t;
 
-struct hb_paint_extents_context_t
+بنية hb_paint_extents_context_t
 {
-  void clear ()
+  فراغ clear ()
   {
     transforms.clear ();
     clips.clear ();
@@ -43,16 +43,16 @@ struct hb_paint_extents_context_t
     /* COLR scratch storage is zero-allocated and reused without running
      * constructors.  Distinguish that state from an explicitly requested
      * zero budget. */
-    if (unlikely (!budget_initialized))
+    إذا (unlikely (!budget_initialized))
     {
       budget = HB_BUDGET_DEFAULT;
-      budget_initialized = true;
+      budget_initialized = ریښتیا;
     }
     recharge_budget ();
 
     transforms.push (hb_transform_t<>{});
     clips.push (hb_bounds_t<>{hb_bounds_t<>::UNBOUNDED});
-    groups.push (hb_bounds_t<>{hb_bounds_t<>::EMPTY});
+    groups.push (hb_bounds_t<>{hb_bounds_t<>::تشه});
   }
 
   hb_paint_extents_context_t ()
@@ -62,105 +62,105 @@ struct hb_paint_extents_context_t
 
   hb_extents_t<> get_extents ()
   {
-    return groups.tail().extents;
+    أرجع groups.لکۍ().extents;
   }
 
-  bool is_bounded ()
+  منطقي is_bounded ()
   {
-    return groups.tail().status != hb_bounds_t<>::UNBOUNDED;
+    أرجع groups.لکۍ().حالت != hb_bounds_t<>::UNBOUNDED;
   }
 
-  void push_transform (const hb_transform_t<> &trans)
+  فراغ ټېل_transform (ثابت hb_transform_t<> &trans)
   {
-    hb_transform_t<> t = transforms.tail ();
+    hb_transform_t<> t = transforms.لکۍ ();
     t.multiply (trans);
     transforms.push (t);
   }
 
-  void pop_transform ()
+  فراغ راوباسه_transform ()
   {
-    transforms.pop ();
+    transforms.راوباسه ();
   }
 
-  void push_clip (hb_extents_t<> extents)
+  فراغ ټېل_clip (hb_extents_t<> extents)
   {
     /* Transform extents and push a new clip. */
-    const hb_transform_t<> &t = transforms.tail ();
+    ثابت hb_transform_t<> &t = transforms.لکۍ ();
     t.transform_extents (extents);
 
-    auto bounds = hb_bounds_t<> {extents};
-    bounds.intersect (clips.tail ());
+    خپلکاری bounds = hb_bounds_t<> {extents};
+    bounds.intersect (clips.لکۍ ());
 
     clips.push (bounds);
   }
 
-  void pop_clip ()
+  فراغ راوباسه_clip ()
   {
-    clips.pop ();
+    clips.راوباسه ();
   }
 
-  void push_group ()
+  فراغ ټېل_ډله ()
   {
-    groups.push (hb_bounds_t<> {hb_bounds_t<>::EMPTY});
+    groups.push (hb_bounds_t<> {hb_bounds_t<>::تشه});
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  فراغ راوباسه_ډله (hb_paint_مرکب_ډېرپېښ_t ډېرپېښ)
   {
-    const hb_bounds_t<> src_bounds = groups.pop ();
-    hb_bounds_t<> &backdrop_bounds = groups.tail ();
+    ثابت hb_bounds_t<> src_bounds = groups.راوباسه ();
+    hb_bounds_t<> &backdrop_bounds = groups.لکۍ ();
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    بدل ((صحيح) ډېرپېښ)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-	backdrop_bounds.status = hb_bounds_t<>::EMPTY;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      حالة HB_PAINT_مرکب_ډېرپېښ_CLEAR:
+	backdrop_bounds.حالت = hb_bounds_t<>::تشه;
+	اكسر;
+      حالة HB_PAINT_مرکب_ډېرپېښ_SRC:
+      حالة HB_PAINT_مرکب_ډېرپېښ_SRC_بهر:
 	backdrop_bounds = src_bounds;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	اكسر;
+      حالة HB_PAINT_مرکب_ډېرپېښ_DEST:
+      حالة HB_PAINT_مرکب_ډېرپېښ_DEST_بهر:
+	اكسر;
+      حالة HB_PAINT_مرکب_ډېرپېښ_SRC_دننه:
+      حالة HB_PAINT_مرکب_ډېرپېښ_DEST_دننه:
 	backdrop_bounds.intersect (src_bounds);
-	break;
-      default:
+	اكسر;
+      افتراضي:
 	backdrop_bounds.union_ (src_bounds);
-	break;
+	اكسر;
      }
   }
 
-  void paint ()
+  فراغ paint ()
   {
-    const hb_bounds_t<> &clip = clips.tail ();
-    hb_bounds_t<> &group = groups.tail ();
+    ثابت hb_bounds_t<> &clip = clips.لکۍ ();
+    hb_bounds_t<> &ډله = groups.لکۍ ();
 
-    group.union_ (clip);
+    ډله.union_ (clip);
   }
 
   /* Cumulative work budget for the current session; reset by clear().
    * Outline traversal and consumed segments charge the same live
    * counter. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  bool budget_initialized = true;
-  int64_t budget_remaining = HB_BUDGET_GLYPH;
+  منطقي budget_initialized = ریښتیا;
+  int64_t budget_پاتې_شوی = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  فراغ recharge_budget ()
   {
-    budget_remaining = budget == HB_BUDGET_DEFAULT ?
+    budget_پاتې_شوی = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  protected:
-  hb_vector_t<hb_transform_t<>> transforms;
-  hb_vector_t<hb_bounds_t<>> clips;
-  hb_vector_t<hb_bounds_t<>> groups;
+  محمي:
+  hb_ویکټور_t<hb_transform_t<>> transforms;
+  hb_ویکټور_t<hb_bounds_t<>> clips;
+  hb_ویکټور_t<hb_bounds_t<>> groups;
 };
 
-HB_INTERNAL hb_paint_funcs_t *
+HB_دننی hb_paint_funcs_t *
 hb_paint_extents_get_funcs ();
 
 
-#endif /* HB_PAINT_EXTENTS_HH */
+#د_که_پای /* HB_PAINT_EXTENTS_HH */

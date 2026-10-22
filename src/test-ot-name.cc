@@ -24,51 +24,51 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#ضمن "hb.hh"
+#ضمن "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#که_تعریف_شوی HB_NO_OPEN
+#تعریف_کړه hb_blob_create_from_file_or_fail(x)  hb_blob_get_تشه ()
+#د_که_پای
 
-int
-main (int argc, char **argv)
+صحيح
+اصلي (صحيح argc, حرف **argv)
 {
-  if (argc != 2) {
+  إذا (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    وتل (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = تش_اشاره;
 
-  unsigned int count = 0;
+  بینښه صحيح شمېر = 0;
 
-#ifndef HB_NO_NAME
-  const hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &count);
+#که_نه_تعریف_شوی HB_NO_NAME
+  ثابت hb_ot_name_ثبت_t *entries = hb_ot_name_list_نومونه (face, &شمېر);
 
-  for (unsigned int i = 0; i < count; i++)
+  لكل (بینښه صحيح i = 0; i < شمېر; i++)
   {
-    printf ("%u	%s	",
+    چاپ_کړه ("%u	%s	",
 	    entries[i].name_id,
-	    hb_language_to_string (entries[i].language));
+	    hb_language_منزل_string (entries[i].language));
 
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
+    حرف buf[64];
+    بینښه صحيح buf_اندازه = حجم (buf);
     hb_ot_name_get_utf8 (face,
 			 entries[i].name_id,
 			 entries[i].language,
-			 &buf_size,
+			 &buf_اندازه,
 			 buf);
 
-    printf ("%s\n", buf);
+    چاپ_کړه ("%s\n", buf);
   }
-#endif
+#د_که_پای
 
   hb_face_destroy (face);
 
-  return count ? 0 : 1;
+  أرجع شمېر ? 0 : 1;
 }

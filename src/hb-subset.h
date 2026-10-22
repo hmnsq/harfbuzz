@@ -24,17 +24,17 @@
  * Google Author(s): Rod Sheeter
  */
 
-#ifndef HB_SUBSET_H
-#define HB_SUBSET_H
-#define HB_SUBSET_H_IN
+#که_نه_تعریف_شوی HB_SUBSET_H
+#تعریف_کړه HB_SUBSET_H
+#تعریف_کړه HB_SUBSET_H_دننه
 
-#include "hb.h"
-#include "hb-ot.h"
-#include "hb-subset-serialize.h"
-#include "hb-subset-depend.h"
-#include "hb-subset-serialize.h"
+#ضمن "hb.h"
+#ضمن "hb-ot.h"
+#ضمن "hb-subset-serialize.h"
+#ضمن "hb-subset-depend.h"
+#ضمن "hb-subset-serialize.h"
 
-#undef HB_SUBSET_H_IN
+#تعریف_لغوه HB_SUBSET_H_دننه
 
 HB_BEGIN_DECLS
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  * Things that change based on the input. Characters to keep, etc.
  */
 
-typedef struct hb_subset_input_t hb_subset_input_t;
+تعريفنوع بنية hb_subset_ننوت_t hb_subset_ننوت_t;
 
 /**
  * hb_subset_plan_t:
@@ -53,7 +53,7 @@ typedef struct hb_subset_input_t hb_subset_input_t;
  * Such as mappings from the old glyph ids to the new ones in the subset.
  */
 
-typedef struct hb_subset_plan_t hb_subset_plan_t;
+تعريفنوع بنية hb_subset_plan_t hb_subset_plan_t;
 
 /**
  * hb_subset_flags_t:
@@ -101,26 +101,26 @@ typedef struct hb_subset_plan_t hb_subset_plan_t;
  *
  * Since: 2.9.0
  **/
-typedef enum { /*< flags >*/
+تعريفنوع تعداد { /*< flags >*/
   HB_SUBSET_FLAGS_DEFAULT =		     0x00000000u,
   HB_SUBSET_FLAGS_NO_HINTING =		     0x00000001u,
   HB_SUBSET_FLAGS_RETAIN_GIDS =		     0x00000002u,
   HB_SUBSET_FLAGS_DESUBROUTINIZE =	     0x00000004u,
   HB_SUBSET_FLAGS_NAME_LEGACY =		     0x00000008u,
-  HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG =	     0x00000010u,
+  HB_SUBSET_FLAGS_سېټ_OVERLAPS_FLAG =	     0x00000010u,
   HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED = 0x00000020u,
   HB_SUBSET_FLAGS_NOTDEF_OUTLINE =	     0x00000040u,
-  HB_SUBSET_FLAGS_GLYPH_NAMES =		     0x00000080u,
+  HB_SUBSET_FLAGS_GLYPH_نومونه =		     0x00000080u,
   HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES =  0x00000100u,
-  HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE =        0x00000200u,
+  HB_SUBSET_FLAGS_NO_LAYOUT_تړون =        0x00000200u,
   HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS	  =  0x00000400u,
-  HB_SUBSET_FLAGS_NO_BIDI_CLOSURE         =  0x00000800u,
-#ifdef HB_EXPERIMENTAL_API
+  HB_SUBSET_FLAGS_NO_BIDI_تړون         =  0x00000800u,
+#که_تعریف_شوی HB_EXPERIMENTAL_API
   HB_SUBSET_FLAGS_IFTB_REQUIREMENTS       =  0x00001000u,
-  HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS  =  0x00002000u,
-#endif
+  HB_SUBSET_FLAGS_RETAIN_عدد_GLYPHS  =  0x00002000u,
+#د_که_پای
   HB_SUBSET_FLAGS_DOWNGRADE_CFF2          =  0x00004000u,
-  HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET    =  0x00008000u,
+  HB_SUBSET_FLAGS_CFF_بې_اغېزه_عنصر_CHARSET    =  0x00008000u,
 } hb_subset_flags_t;
 
 /**
@@ -142,113 +142,113 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.9.1
  **/
-typedef enum {
-  HB_SUBSET_SETS_GLYPH_INDEX = 0,
+تعريفنوع تعداد {
+  HB_SUBSET_SETS_GLYPH_شاخص = 0,
   HB_SUBSET_SETS_UNICODE,
-  HB_SUBSET_SETS_NO_SUBSET_TABLE_TAG,
-  HB_SUBSET_SETS_DROP_TABLE_TAG,
+  HB_SUBSET_SETS_NO_SUBSET_جدول_نښان,
+  HB_SUBSET_SETS_DROP_جدول_نښان,
   HB_SUBSET_SETS_NAME_ID,
   HB_SUBSET_SETS_NAME_LANG_ID,
-  HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
-  HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG,
+  HB_SUBSET_SETS_LAYOUT_FEATURE_نښان,
+  HB_SUBSET_SETS_LAYOUT_SCRIPT_نښان,
 } hb_subset_sets_t;
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_create_or_fail (void);
+HB_EXTERN hb_subset_ننوت_t *
+hb_subset_ننوت_create_or_fail (فراغ);
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input);
+HB_EXTERN hb_subset_ننوت_t *
+hb_subset_ننوت_reference (hb_subset_ننوت_t *ننوت);
 
-HB_EXTERN void
-hb_subset_input_destroy (hb_subset_input_t *input);
+HB_EXTERN فراغ
+hb_subset_ننوت_destroy (hb_subset_ننوت_t *ننوت);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
+hb_subset_ننوت_سېټ_user_معلومات (hb_subset_ننوت_t  *ننوت,
+			       hb_user_معلومات_کلی_t *کلی_2,
+			       فراغ *		   معلومات,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace);
 
-HB_EXTERN void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t      *key);
+HB_EXTERN فراغ *
+hb_subset_ننوت_get_user_معلومات (ثابت hb_subset_ننوت_t *ننوت,
+			       hb_user_معلومات_کلی_t      *کلی_2);
 
-HB_EXTERN void
-hb_subset_input_keep_everything (hb_subset_input_t *input);
+HB_EXTERN فراغ
+hb_subset_ننوت_keep_everything (hb_subset_ننوت_t *ننوت);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input);
+HB_EXTERN hb_سېټ_t *
+hb_subset_ننوت_unicode_سېټ (hb_subset_ننوت_t *ننوت);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input);
+HB_EXTERN hb_سېټ_t *
+hb_subset_ننوت_glyph_سېټ (hb_subset_ننوت_t *ننوت);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type);
+HB_EXTERN hb_سېټ_t *
+hb_subset_ننوت_سېټ (hb_subset_ننوت_t *ننوت, hb_subset_sets_t سېټ_type);
 
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input);
+hb_subset_ننوت_old_منزل_new_glyph_mapping (hb_subset_ننوت_t *ننوت);
 
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input);
+hb_subset_ننوت_get_flags (hb_subset_ننوت_t *ننوت);
 
-HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
-			   unsigned value);
+HB_EXTERN فراغ
+hb_subset_ننوت_سېټ_flags (hb_subset_ننوت_t *ننوت,
+			   بینښه ارزښت_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_ننوت_pin_all_axes_منزل_default (hb_subset_ننوت_t  *ننوت,
 					 hb_face_t          *face);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_ننوت_pin_axis_منزل_default (hb_subset_ننوت_t  *ننوت,
 				     hb_face_t          *face,
-				     hb_tag_t            axis_tag);
+				     hb_نښان_t            axis_نښان_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_ننوت_pin_axis_location (hb_subset_ننوت_t  *ننوت,
 				   hb_face_t          *face,
-				   hb_tag_t            axis_tag,
-				   float               axis_value);
+				   hb_نښان_t            axis_نښان_2,
+				   عائم               axis_ارزښت);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
-				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value);
+hb_subset_ننوت_get_axis_range (hb_subset_ننوت_t  *ننوت,
+				hb_نښان_t            axis_نښان_2,
+				عائم              *axis_min_ارزښت,
+				عائم              *axis_max_ارزښت,
+				عائم              *axis_def_ارزښت);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_ننوت_سېټ_axis_range (hb_subset_ننوت_t  *ننوت,
 				hb_face_t          *face,
-				hb_tag_t            axis_tag,
-				float               axis_min_value,
-				float               axis_max_value,
-				float               axis_def_value);
+				hb_نښان_t            axis_نښان_2,
+				عائم               axis_min_ارزښت,
+				عائم               axis_max_ارزښت,
+				عائم               axis_def_ارزښت);
 
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
-				  float *axis_min_value,
-				  float *axis_max_value,
-				  float *axis_def_value);
+hb_subset_axis_range_from_string (ثابت حرف *str, صحيح len,
+				  عائم *axis_min_ارزښت,
+				  عائم *axis_max_ارزښت,
+				  عائم *axis_def_ارزښت);
 
-HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
-				hb_tag_t axis_tag,
-				char *buf,
-				unsigned size);
+HB_EXTERN فراغ
+hb_subset_axis_range_منزل_string (hb_subset_ننوت_t *ننوت,
+				hb_نښان_t axis_نښان_2,
+				حرف *buf,
+				بینښه اندازه);
 
-#ifdef HB_EXPERIMENTAL_API
+#که_تعریف_شوی HB_EXPERIMENTAL_API
 HB_EXTERN hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input);
+hb_subset_ننوت_منزل_string_or_fail (hb_subset_ننوت_t *ننوت);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_ننوت_override_name_جدول (hb_subset_ننوت_t  *ننوت,
 				     hb_ot_name_id_t     name_id,
-				     unsigned            platform_id,
-				     unsigned            encoding_id,
-				     unsigned            language_id,
-				     const char         *name_str,
-				     int                 str_len);
+				     بینښه            platform_id,
+				     بینښه            encoding_id,
+				     بینښه            language_id,
+				     ثابت حرف         *name_str,
+				     صحيح                 str_len);
 
 
 /*
@@ -256,67 +256,67 @@ hb_subset_input_override_name_table (hb_subset_input_t  *input,
 */
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff_get_charstring_data (hb_face_t* face, hb_codepoint_t glyph);
+hb_subset_cff_get_charstring_معلومات (hb_face_t* face, hb_codepoint_t glyph);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff_get_charstrings_index (hb_face_t* face);
+hb_subset_cff_get_charstrings_شاخص (hb_face_t* face);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff2_get_charstring_data (hb_face_t* face, hb_codepoint_t glyph);
+hb_subset_cff2_get_charstring_معلومات (hb_face_t* face, hb_codepoint_t glyph);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff2_get_charstrings_index (hb_face_t* face);
-#endif
+hb_subset_cff2_get_charstrings_شاخص (hb_face_t* face);
+#د_که_پای
 
 HB_EXTERN hb_face_t *
-hb_subset_preprocess (hb_face_t *source);
+hb_subset_preprocess (hb_face_t *سرچینه);
 
 HB_EXTERN hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input);
+hb_subset_or_fail (hb_face_t *سرچینه, ثابت hb_subset_ننوت_t *ننوت);
 
 HB_EXTERN hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t                 *face,
-                               const hb_subset_input_t   *input);
+                               ثابت hb_subset_ننوت_t   *ننوت);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_subset_plan_destroy (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_old_منزل_new_glyph_mapping (ثابت hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_new_منزل_old_glyph_mapping (ثابت hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_unicode_منزل_old_glyph_mapping (ثابت hb_subset_plan_t *plan);
 
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_reference (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_bool_t
-hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_subset_plan_سېټ_user_معلومات (hb_subset_plan_t   *plan,
+                              hb_user_معلومات_کلی_t *کلی_2,
+                              فراغ               *معلومات,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace);
 
-HB_EXTERN void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key);
+HB_EXTERN فراغ *
+hb_subset_plan_get_user_معلومات (ثابت hb_subset_plan_t *plan,
+                              hb_user_معلومات_کلی_t     *کلی_2);
 
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#إذا defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (subset_input, nullptr);
+HB_DEFINE_VTABLE (subset_ننوت, nullptr);
 HB_DEFINE_VTABLE (subset_plan,  nullptr);
 } // namespace hb
-#endif
+#د_که_پای
 
-#endif /* HB_SUBSET_H */
+#د_که_پای /* HB_SUBSET_H */

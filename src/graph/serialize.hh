@@ -24,289 +24,289 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SERIALIZE_HH
-#define GRAPH_SERIALIZE_HH
+#که_نه_تعریف_شوی ګراف_SERIALIZE_HH
+#تعریف_کړه ګراف_SERIALIZE_HH
 
-#include "graph-result.hh"
+#ضمن "graph-result.hh"
 
-namespace graph {
+نطاق ګراف {
 
-struct overflow_record_t
+بنية ډکېدنه_ریکارډ_t
 {
-  unsigned parent;
-  unsigned child;
+  بینښه پلار;
+  بینښه ماشوم;
 
-  bool operator != (const overflow_record_t o) const
-  { return !(*this == o); }
+  منطقي چلوونکی != (ثابت ډکېدنه_ریکارډ_t o) ثابت
+  { أرجع !(*هذا == o); }
 
-  inline bool operator == (const overflow_record_t& o) const
+  مضمن منطقي چلوونکی == (ثابت ډکېدنه_ریکارډ_t& o) ثابت
   {
-    return parent == o.parent &&
-        child == o.child;
+    أرجع پلار == o.پلار &&
+        ماشوم == o.ماشوم;
   }
 
-  inline uint32_t hash () const
+  مضمن uint32_t hash () ثابت
   {
     uint32_t current = 0;
-    current = current * 31 + hb_hash (parent);
-    current = current * 31 + hb_hash (child);
-    return current;
+    current = current * 31 + hb_hash (پلار);
+    current = current * 31 + hb_hash (ماشوم);
+    أرجع current;
   }
 };
 
-inline
-int64_t compute_offset (
-    const graph_t& graph,
-    unsigned parent_idx,
-    const hb_serialize_context_t::object_t::link_t& link)
+مضمن
+int64_t compute_دننه_واټن (
+    ثابت ګراف_t& ګراف,
+    بینښه پلار_idx,
+    ثابت hb_serialize_context_t::object_t::link_t& link)
 {
-  const auto& parent = graph.vertices_[parent_idx];
-  const auto& child = graph.vertices_[link.objidx];
-  int64_t offset = 0;
-  switch ((hb_serialize_context_t::whence_t) link.whence) {
-    case hb_serialize_context_t::whence_t::Head:
-      offset = child.start - parent.start; break;
-    case hb_serialize_context_t::whence_t::Tail:
-      offset = child.start - parent.end; break;
-    case hb_serialize_context_t::whence_t::Absolute:
-      offset = child.start; break;
+  ثابت خپلکاری& پلار = ګراف.vertices_[پلار_idx];
+  ثابت خپلکاری& ماشوم = ګراف.vertices_[link.objidx];
+  int64_t دننه_واټن = 0;
+  بدل ((hb_serialize_context_t::whence_t) link.whence) {
+    حالة hb_serialize_context_t::whence_t::سر:
+      دننه_واټن = ماشوم.پیل - پلار.پیل; اكسر;
+    حالة hb_serialize_context_t::whence_t::لکۍ_2:
+      دننه_واټن = ماشوم.پیل - پلار.پای_ټکی; اكسر;
+    حالة hb_serialize_context_t::whence_t::Absolute:
+      دننه_واټن = ماشوم.پیل; اكسر;
   }
 
-  assert (offset >= link.bias);
-  offset -= link.bias;
-  return offset;
+  أكد (دننه_واټن >= link.bias);
+  دننه_واټن -= link.bias;
+  أرجع دننه_واټن;
 }
 
-inline
-bool is_valid_offset (int64_t offset,
-                      const hb_serialize_context_t::object_t::link_t& link)
+مضمن
+منطقي is_valid_دننه_واټن (int64_t دننه_واټن,
+                      ثابت hb_serialize_context_t::object_t::link_t& link)
 {
-  if (unlikely (!link.width))
+  إذا (unlikely (!link.پلنوالی))
     // Virtual links can't overflow.
-    return link.is_signed || offset >= 0;
+    أرجع link.is_signed || دننه_واټن >= 0;
 
-  if (link.is_signed)
+  إذا (link.is_signed)
   {
-    if (link.width == 4)
-      return offset >= -((int64_t) 1 << 31) && offset < ((int64_t) 1 << 31);
-    else
-      return offset >= -(1 << 15) && offset < (1 << 15);
+    إذا (link.پلنوالی == 4)
+      أرجع دننه_واټن >= -((int64_t) 1 << 31) && دننه_واټن < ((int64_t) 1 << 31);
+    وإلا
+      أرجع دننه_واټن >= -(1 << 15) && دننه_واټن < (1 << 15);
   }
-  else
+  وإلا
   {
-    if (link.width == 4)
-      return offset >= 0 && offset < ((int64_t) 1 << 32);
-    else if (link.width == 3)
-      return offset >= 0 && offset < ((int32_t) 1 << 24);
-    else
-      return offset >= 0 && offset < (1 << 16);
+    إذا (link.پلنوالی == 4)
+      أرجع دننه_واټن >= 0 && دننه_واټن < ((int64_t) 1 << 32);
+    وإلا إذا (link.پلنوالی == 3)
+      أرجع دننه_واټن >= 0 && دننه_واټن < ((int32_t) 1 << 24);
+    وإلا
+      أرجع دننه_واټن >= 0 && دننه_واټن < (1 << 16);
   }
 }
 
 /*
  * Will any offsets overflow on graph when it's serialized?
  */
-inline graph_result_t<bool>
-will_overflow (graph_t& graph,
-               hb_vector_t<overflow_record_t>* overflows = nullptr)
+مضمن ګراف_پایله_t<منطقي>
+will_ډکېدنه (ګراف_t& ګراف,
+               hb_ویکټور_t<ډکېدنه_ریکارډ_t>* overflows = تش_اشاره)
 {
-  if (overflows) overflows->clear ();
-  graph.update_positions ();
+  إذا (overflows) overflows->clear ();
+  ګراف.update_positions ();
 
-  hb_hashmap_t<overflow_record_t, bool> record_set;
-  const auto& vertices = graph.vertices_;
-  for (unsigned parent_idx : graph.ordering_)
+  hb_hashmap_t<ډکېدنه_ریکارډ_t, منطقي> ریکارډ_سېټ;
+  ثابت خپلکاری& vertices = ګراف.vertices_;
+  لكل (بینښه پلار_idx : ګراف.ordering_)
   {
     // Don't need to check virtual links for overflow
-    for (const auto& link : vertices.arrayZ[parent_idx].obj ().real_links)
+    لكل (ثابت خپلکاری& link : vertices.arrayZ[پلار_idx].obj ().real_links)
     {
-      int64_t offset = compute_offset (graph, parent_idx, link);
-      if (likely (is_valid_offset (offset, link)))
-        continue;
+      int64_t دننه_واټن = compute_دننه_واټن (ګراف, پلار_idx, link);
+      إذا (likely (is_valid_دننه_واټن (دننه_واټن, link)))
+        استمر;
 
-      if (!overflows) return Ok(true);
+      إذا (!overflows) أرجع Ok(ریښتیا);
 
-      overflow_record_t r;
-      r.parent = parent_idx;
-      r.child = link.objidx;
-      if (record_set.has(r)) continue; // don't keep duplicate overflows.
+      ډکېدنه_ریکارډ_t r;
+      r.پلار = پلار_idx;
+      r.ماشوم = link.objidx;
+      إذا (ریکارډ_سېټ.has(r)) استمر; // don't keep duplicate overflows.
 
       overflows->push (r);
-      record_set.set (r, true);
+      ریکارډ_سېټ.سېټ (r, ریښتیا);
     }
   }
 
-  TRY (graph_result_t<void>::from (record_set, ALLOCATION_FAILURE));
-  if (overflows)
-    TRY (graph_result_t<void>::from (*overflows, ALLOCATION_FAILURE));
+  TRY (ګراف_پایله_t<فراغ>::from (ریکارډ_سېټ, ویش_FAILURE));
+  إذا (overflows)
+    TRY (ګراف_پایله_t<فراغ>::from (*overflows, ویش_FAILURE));
 
-  return Ok((bool) (overflows && overflows->length));
+  أرجع Ok((منطقي) (overflows && overflows->اوږدتیا));
 }
 
-inline
-void print_overflows (graph_t& graph,
-                      const hb_vector_t<overflow_record_t>& overflows)
+مضمن
+فراغ print_overflows (ګراف_t& ګراف,
+                      ثابت hb_ویکټور_t<ډکېدنه_ریکارډ_t>& overflows)
 {
-  if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
+  إذا (!DEBUG_ENABLED(SUBSET_REPACK)) أرجع;
 
-  auto r = graph.update_parents ();
-  if (r.is_err()) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to print overflows due to error updating parent links: %s",
+  خپلکاری r = ګراف.update_parents ();
+  إذا (r.is_err()) {
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره, "Unable to print overflows due to error updating parent links: %s",
       to_string(r.error()));
-    return;
+    أرجع;
   }
 
-  int limit = 10;
-  for (const auto& o : overflows)
+  صحيح حد = 10;
+  لكل (ثابت خپلکاری& o : overflows)
   {
-    if (!limit--) break;
-    const auto& parent = graph.vertices_[o.parent];
-    const auto& child = graph.vertices_[o.child];
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    إذا (!حد--) اكسر;
+    ثابت خپلکاری& پلار = ګراف.vertices_[o.پلار];
+    ثابت خپلکاری& ماشوم = ګراف.vertices_[o.ماشوم];
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره,
                "  overflow from "
                "%4u (%4u in, %4u out, space %2u) => "
                "%4u (%4u in, %4u out, space %2u)",
-               o.parent,
-               parent.incoming_edges (),
-               parent.obj ().real_links.length + parent.obj ().virtual_links.length,
-               graph.space_for (o.parent),
-               o.child,
-               child.incoming_edges (),
-               child.obj ().real_links.length + child.obj ().virtual_links.length,
-               graph.space_for (o.child));
+               o.پلار,
+               پلار.incoming_څنډې_2 (),
+               پلار.obj ().real_links.اوږدتیا + پلار.obj ().virtual_links.اوږدتیا,
+               ګراف.space_for (o.پلار),
+               o.ماشوم,
+               ماشوم.incoming_څنډې_2 (),
+               ماشوم.obj ().real_links.اوږدتیا + ماشوم.obj ().virtual_links.اوږدتیا,
+               ګراف.space_for (o.ماشوم));
   }
-  if (overflows.length > 10) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  ... plus %u more overflows.", overflows.length - 10);
+  إذا (overflows.اوږدتیا > 10) {
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره, "  ... plus %u more overflows.", overflows.اوږدتیا - 10);
   }
 }
 
-template <typename O> inline void
-serialize_link_of_type (const hb_serialize_context_t::object_t::link_t& link,
-                        char* head,
-                        unsigned size,
-                        const hb_vector_t<unsigned>& id_map,
+کينډۍ <ډول_نوم O> مضمن فراغ
+serialize_link_د_type (ثابت hb_serialize_context_t::object_t::link_t& link,
+                        حرف* سر_2,
+                        بینښه اندازه,
+                        ثابت hb_ویکټور_t<بینښه>& id_map,
                         hb_serialize_context_t* c)
 {
   // A link must never write outside the bounds of its parent object.
-  if (unlikely (link.position + link.width > size))
+  إذا (unlikely (link.position + link.پلنوالی > اندازه))
   {
     c->err (HB_SERIALIZE_ERROR_OTHER);
-    return;
+    أرجع;
   }
 
-  OT::Offset<O>* offset = reinterpret_cast<OT::Offset<O>*> (head + link.position);
-  *offset = 0;
-  c->add_link (*offset,
+  OT::دننه_واټن_2<O>* دننه_واټن = reinterpret_cast<OT::دننه_واټن_2<O>*> (سر_2 + link.position);
+  *دننه_واټن = 0;
+  c->جمع_کړه_link (*دننه_واټن,
                id_map[link.objidx],
                (hb_serialize_context_t::whence_t) link.whence,
                link.bias);
 }
 
-inline
-void serialize_link (const hb_serialize_context_t::object_t::link_t& link,
-                     char* head,
-                     unsigned size,
-                     const hb_vector_t<unsigned>& id_map,
+مضمن
+فراغ serialize_link (ثابت hb_serialize_context_t::object_t::link_t& link,
+                     حرف* سر_2,
+                     بینښه اندازه,
+                     ثابت hb_ویکټور_t<بینښه>& id_map,
                      hb_serialize_context_t* c)
 {
-  switch (link.width)
+  بدل (link.پلنوالی)
   {
-    case 0:
+    حالة 0:
       // Virtual links aren't serialized.
-      return;
-    case 4:
-      if (link.is_signed)
+      أرجع;
+    حالة 4:
+      إذا (link.is_signed)
       {
-        serialize_link_of_type<OT::HBINT32> (link, head, size, id_map, c);
-      } else {
-        serialize_link_of_type<OT::HBUINT32> (link, head, size, id_map, c);
+        serialize_link_د_type<OT::HBINT32> (link, سر_2, اندازه, id_map, c);
+      } وإلا {
+        serialize_link_د_type<OT::HBUINT32> (link, سر_2, اندازه, id_map, c);
       }
-      return;
-    case 2:
-      if (link.is_signed)
+      أرجع;
+    حالة 2:
+      إذا (link.is_signed)
       {
-        serialize_link_of_type<OT::HBINT16> (link, head, size, id_map, c);
-      } else {
-        serialize_link_of_type<OT::HBUINT16> (link, head, size, id_map, c);
+        serialize_link_د_type<OT::HBINT16> (link, سر_2, اندازه, id_map, c);
+      } وإلا {
+        serialize_link_د_type<OT::HBUINT16> (link, سر_2, اندازه, id_map, c);
       }
-      return;
-    case 3:
-      serialize_link_of_type<OT::HBUINT24> (link, head, size, id_map, c);
-      return;
-    default:
+      أرجع;
+    حالة 3:
+      serialize_link_د_type<OT::HBUINT24> (link, سر_2, اندازه, id_map, c);
+      أرجع;
+    افتراضي:
       // Unexpected link width.
-      assert (0);
+      أكد (0);
   }
 }
 
 /*
  * serialize graph into the provided serialization buffer.
  */
-inline graph_result_t<hb_blob_t*> serialize (const graph_t& graph)
+مضمن ګراف_پایله_t<hb_blob_t*> serialize (ثابت ګراف_t& ګراف)
 {
-  hb_vector_t<char> buffer;
-  size_t size = graph.total_size_in_bytes ();
+  hb_ویکټور_t<حرف> بفر;
+  size_t اندازه = ګراف.ټول_اندازه_دننه_بایټونه ();
 
-  if (!size) return Ok(hb_blob_get_empty ());
+  إذا (!اندازه) أرجع Ok(hb_blob_get_تشه ());
 
-  if (unlikely (!buffer.alloc (size))) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to allocate output buffer.");
-    return Err(ALLOCATION_FAILURE);
+  إذا (unlikely (!بفر.alloc (اندازه))) {
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره, "Unable to allocate output buffer.");
+    أرجع Err(ویش_FAILURE);
   }
-  hb_serialize_context_t c((void *) buffer, size);
+  hb_serialize_context_t c((فراغ *) بفر, اندازه);
 
-  c.start_serialize<void> ();
-  const auto& vertices = graph.vertices_;
+  c.پیل_serialize<فراغ> ();
+  ثابت خپلکاری& vertices = ګراف.vertices_;
 
   // Objects are placed in the serializer in reverse order since children need
   // to be inserted before their parents.
 
   // Maps from our obj id's to the id's used during this serialization.
-  hb_vector_t<unsigned> id_map;
-  if (unlikely (!id_map.resize(graph.ordering_.length))) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to allocate id_map buffer.");
-    return Err(ALLOCATION_FAILURE);
+  hb_ویکټور_t<بینښه> id_map;
+  إذا (unlikely (!id_map.resize(ګراف.ordering_.اوږدتیا))) {
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره, "Unable to allocate id_map buffer.");
+    أرجع Err(ویش_FAILURE);
   }
 
-  for (int pos = graph.ordering_.length - 1; pos >= 0; pos--) {
-    unsigned i = graph.ordering_[pos];
+  لكل (صحيح pos = ګراف.ordering_.اوږدتیا - 1; pos >= 0; pos--) {
+    بینښه i = ګراف.ordering_[pos];
     c.push ();
 
-    auto& v = vertices[i];
+    خپلکاری& v = vertices[i];
 
-    size_t size = v.table_size ();
+    size_t اندازه = v.جدول_اندازه ();
 
-    char* start = c.allocate_size <char> (size);
-    if (unlikely (!start)) {
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Buffer out of space.");
-      return Err(ALLOCATION_FAILURE);
+    حرف* پیل = c.allocate_اندازه <حرف> (اندازه);
+    إذا (unlikely (!پیل)) {
+      DEBUG_پیغام (SUBSET_REPACK, تش_اشاره, "Buffer out of space.");
+      أرجع Err(ویش_FAILURE);
     }
 
-    hb_memcpy (start, v.obj ().head, size);
+    hb_memcpy (پیل, v.obj ().سر_2, اندازه);
 
     // Only real links needs to be serialized.
-    for (const auto& link : v.obj ().real_links)
-      serialize_link (link, start, size, id_map, &c);
+    لكل (ثابت خپلکاری& link : v.obj ().real_links)
+      serialize_link (link, پیل, اندازه, id_map, &c);
 
     // All duplications are already encoded in the graph, so don't
     // enable sharing during packing.
-    id_map[i] = c.pop_pack (false);
+    id_map[i] = c.راوباسه_pack (خطأ);
   }
-  c.end_serialize ();
+  c.پای_ټکی_serialize ();
 
-  if (unlikely (c.in_error ())) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Error during serialization. Err flag: %d",
+  إذا (unlikely (c.دننه_error ())) {
+    DEBUG_پیغام (SUBSET_REPACK, تش_اشاره, "Error during serialization. Err flag: %d",
                c.errors);
-    if (c.errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)
-      return Err(OVERFLOW_RESOLUTION_FAILED);
-    return Err(ALLOCATION_FAILURE);
+    إذا (c.errors & HB_SERIALIZE_ERROR_دننه_واټن_ډکېدنه)
+      أرجع Err(ډکېدنه_RESOLUTION_FAILED);
+    أرجع Err(ویش_FAILURE);
   }
 
-  auto* blob = c.copy_blob ();
-  if (unlikely (!blob)) return Err(ALLOCATION_FAILURE);
-  return Ok(blob);
+  خپلکاری* blob = c.copy_blob ();
+  إذا (unlikely (!blob)) أرجع Err(ویش_FAILURE);
+  أرجع Ok(blob);
 }
 
 } // namespace graph
 
-#endif // GRAPH_SERIALIZE_HH
+#د_که_پای // GRAPH_SERIALIZE_HH

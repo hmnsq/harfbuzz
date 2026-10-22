@@ -22,68 +22,68 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-cache.hh"
+#ضمن "hb-cache.hh"
 
-template <unsigned key_bits, unsigned value_bits, unsigned cache_bits, bool thread_safe>
-static void
+کينډۍ <بینښه کلی_بټونه, بینښه ارزښت_بټونه, بینښه cache_بټونه, منطقي thread_خوندي>
+ساكن فراغ
 test_cache ()
 {
-  hb_cache_t<key_bits, value_bits, cache_bits, thread_safe> cache;
-  unsigned key_max = (1u << key_bits) - 1;
-  unsigned value = 42;
-  unsigned keys[] = {0, 1, 255, 256, key_max};
-  unsigned overflow_keys[] = {key_max + 1, 32512, 32767, 65535, UINT_MAX};
+  hb_cache_t<کلی_بټونه, ارزښت_بټونه, cache_بټونه, thread_خوندي> cache;
+  بینښه کلی_max = (1u << کلی_بټونه) - 1;
+  بینښه value = 42;
+  بینښه کلیګانې[] = {0, 1, 255, 256, کلی_max};
+  بینښه ډکېدنه_کلیګانې[] = {کلی_max + 1, 32512, 32767, 65535, UINT_MAX};
 
-  for (unsigned key : keys)
+  لكل (بینښه key : کلیګانې)
     hb_always_assert (!cache.get (key, &value));
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  لكل (بینښه key : ډکېدنه_کلیګانې)
+    إذا (key > کلی_max)
     {
       hb_always_assert (!cache.get (key, &value));
       hb_always_assert (value == 42);
     }
 
-  for (unsigned key : keys)
+  لكل (بینښه key : کلیګانې)
   {
-    cache.set (key, 0);
+    cache.سېټ (key, 0);
     hb_always_assert (cache.get (key, &value) && value == 0);
   }
 
-  cache.set (42, cache.MAX_VALUE);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.سېټ (42, cache.MAX_ارزښت);
+  hb_always_assert (cache.get (42, &value) && value == cache.MAX_ارزښت);
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  لكل (بینښه key : ډکېدنه_کلیګانې)
+    إذا (key > کلی_max)
     {
-      cache.set (key, 0);
+      cache.سېټ (key, 0);
       hb_always_assert (!cache.get (key, &value));
     }
 
-  cache.set (42, cache.MAX_VALUE + 1);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.سېټ (42, cache.MAX_ارزښت + 1);
+  hb_always_assert (cache.get (42, &value) && value == cache.MAX_ارزښت);
 
   cache.clear ();
-  for (unsigned key : keys)
+  لكل (بینښه key : کلیګانې)
     hb_always_assert (!cache.get (key, &value));
 }
 
-template <bool thread_safe>
-static void
+کينډۍ <منطقي thread_خوندي>
+ساكن فراغ
 test_caches ()
 {
   /* Entries with spare bits, and entries that fill the storage type. */
-  test_cache<14, 1, 8, thread_safe> ();
-  test_cache<14, 1, 7, thread_safe> ();
-  test_cache<14, 8, 8, thread_safe> ();
-  test_cache<16, 8, 8, thread_safe> ();
-  test_cache<24, 8, 8, thread_safe> ();
-  test_cache<24, 16, 8, thread_safe> ();
+  test_cache<14, 1, 8, thread_خوندي> ();
+  test_cache<14, 1, 7, thread_خوندي> ();
+  test_cache<14, 8, 8, thread_خوندي> ();
+  test_cache<16, 8, 8, thread_خوندي> ();
+  test_cache<24, 8, 8, thread_خوندي> ();
+  test_cache<24, 16, 8, thread_خوندي> ();
 }
 
-int
-main (int argc, char **argv)
+صحيح
+اصلي (صحيح argc, حرف **argv)
 {
-  test_caches<true> ();
-  test_caches<false> ();
+  test_caches<ریښتیا> ();
+  test_caches<خطأ> ();
 }

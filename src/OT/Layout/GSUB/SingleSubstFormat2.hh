@@ -1,205 +1,205 @@
-#ifndef OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
-#define OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
+#که_نه_تعریف_شوی OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
+#تعریف_کړه OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
 
-#include "Common.hh"
+#ضمن "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GSUB_impl {
 
-template <typename Types>
-struct SingleSubstFormat2_4
+کينډۍ <ډول_نوم Types>
+بنية SingleSubstFormat2_4
 {
-  protected:
+  محمي:
   HBUINT16      format;                 /* Format identifier--format = 2 */
-  typename Types::template LOffsetTo<Coverage>
+  ډول_نوم Types::کينډۍ LOffset_منزل<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of Substitution table */
-  typename Types::template ArrayOf<typename Types::HBGlyphID>
+  ډول_نوم Types::کينډۍ Array_د<ډول_نوم Types::HBGlyphID>
                 substitute;             /* Array of substitute
                                          * GlyphIDs--ordered by Coverage Index */
 
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, substitute);
+  عام:
+  DEFINE_اندازه_ARRAY (2 + Types::LOffset::static_اندازه + Types::HBUINT::static_اندازه, substitute);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && substitute.sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (coverage.sanitize (c, هذا) && substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  منطقي intersects (ثابت hb_سېټ_t *glyphs) ثابت
+  { أرجع (هذا+coverage).intersects (glyphs); }
 
-  bool may_have_non_1to1 () const
-  { return false; }
+  منطقي may_have_non_1to1 () ثابت
+  { أرجع خطأ; }
 
-  void depend (hb_depend_context_t *c) const
+  فراغ depend (hb_depend_context_t *c) ثابت
   {
-    auto &cov = this+coverage;
-    auto &glyph_set = c->parent_active_glyphs ();
+    خپلکاری &cov = هذا+coverage;
+    خپلکاری &glyph_سېټ = c->پلار_فعال_glyphs ();
 
     // Filter by active glyphs like closure does
-    if (substitute.len > glyph_set.get_population () * 4)
+    إذا (substitute.len > glyph_سېټ.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      لكل (خپلکاری g : glyph_سېټ)
       {
-	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
-	  continue;
-	c->depend_data->add_gsub_lookup (g, c->lookup_index, substitute.arrayZ[i]);
+	بینښه i = cov.get_coverage (g);
+	إذا (i == NOT_COVERED || i >= substitute.len)
+	  استمر;
+	c->depend_معلومات->جمع_کړه_gsub_lookup (g, c->lookup_شاخص, substitute.arrayZ[i]);
       }
 
-      return;
+      أرجع;
     }
 
     + hb_zip (cov, substitute)
-    | hb_filter (glyph_set, hb_first)
-    | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup (_.first, c->lookup_index, _.second); })
+    | hb_filter (glyph_سېټ, hb_لومړی)
+    | hb_apply ([&] (ثابت hb_codepoint_pair_t &_) { c->depend_معلومات->جمع_کړه_gsub_lookup (_.لومړی, c->lookup_شاخص, _.second); })
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ تړون (hb_تړون_context_t *c) ثابت
   {
-    auto &cov = this+coverage;
-    auto &glyph_set = c->parent_active_glyphs ();
+    خپلکاری &cov = هذا+coverage;
+    خپلکاری &glyph_سېټ = c->پلار_فعال_glyphs ();
 
-    if (substitute.len > glyph_set.get_population () * 4)
+    إذا (substitute.len > glyph_سېټ.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      لكل (خپلکاری g : glyph_سېټ)
       {
-	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
-	  continue;
-	c->output->add (substitute.arrayZ[i]);
+	بینښه i = cov.get_coverage (g);
+	إذا (i == NOT_COVERED || i >= substitute.len)
+	  استمر;
+	c->output->جمع_کړه (substitute.arrayZ[i]);
       }
 
-      return;
+      أرجع;
     }
 
     + hb_zip (cov, substitute)
-    | hb_filter (glyph_set, hb_first)
-    | hb_map (hb_second)
+    | hb_filter (glyph_سېټ, hb_لومړی)
+    | hb_map (hb_دوهم)
     | hb_sink (c->output)
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  فراغ تړون_lookups (hb_تړون_lookups_context_t *c) ثابت {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    + hb_zip (this+coverage, substitute)
-    | hb_map (hb_second)
+    إذا (unlikely (!(هذا+coverage).collect_coverage (c->ننوت))) أرجع;
+    + hb_zip (هذا+coverage, substitute)
+    | hb_map (hb_دوهم)
     | hb_sink (c->output)
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { أرجع هذا+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
+  { أرجع c->len == 1 && (هذا+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
-  unsigned
+  بینښه
   get_glyph_alternates (hb_codepoint_t  glyph_id,
-                        unsigned        start_offset,
-                        unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
-                        hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
+                        بینښه        پیل_دننه_واټن,
+                        بینښه       *alternate_شمېر  /* IN/OUT.  May be NULL. */,
+                        hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) ثابت
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (likely (index == NOT_COVERED))
+    بینښه صحيح شاخص_2 = (هذا+coverage).get_coverage (glyph_id);
+    إذا (likely (شاخص_2 == NOT_COVERED))
     {
-      if (alternate_count)
-        *alternate_count = 0;
-      return 0;
+      إذا (alternate_شمېر)
+        *alternate_شمېر = 0;
+      أرجع 0;
     }
 
-    if (alternate_count && *alternate_count && alternate_glyphs)
+    إذا (alternate_شمېر && *alternate_شمېر && alternate_glyphs)
     {
-      glyph_id = substitute[index];
+      glyph_id = substitute[شاخص_2];
 
       *alternate_glyphs = glyph_id;
-      *alternate_count = 1;
+      *alternate_شمېر = 1;
     }
 
-    return 1;
+    أرجع 1;
   }
 
-  void
-  collect_glyph_alternates (hb_map_t  *alternate_count /* IN/OUT */,
-			    hb_map_t  *alternate_glyphs /* IN/OUT */) const
+  فراغ
+  collect_glyph_alternates (hb_map_t  *alternate_شمېر /* IN/OUT */,
+			    hb_map_t  *alternate_glyphs /* IN/OUT */) ثابت
   {
-    + hb_zip (this+coverage, substitute)
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
-		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+    + hb_zip (هذا+coverage, substitute)
+    | hb_apply ([&] (ثابت hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> فراغ
+		{ hb_collect_glyph_alternates_جمع_کړه (p.لومړی, p.second,
+						    alternate_شمېر, alternate_glyphs); })
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (هذا);
+    بینښه صحيح شاخص_2 = (هذا+coverage).get_coverage (c->بفر->cur().codepoint);
+    إذا (شاخص_2 == NOT_COVERED) return_trace (خطأ);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    إذا (unlikely (شاخص_2 >= substitute.len)) return_trace (خطأ);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    إذا (HB_بفر_پیغام_نور && c->بفر->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->بفر->sync_so_far ();
+      c->بفر->پیغام (c->font,
 			  "replacing glyph at %u (single substitution)",
-			  c->buffer->idx);
+			  c->بفر->idx);
     }
 
-    c->replace_glyph (substitute[index]);
+    c->replace_glyph (substitute[شاخص_2]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    إذا (HB_بفر_پیغام_نور && c->بفر->messaging ())
     {
-      c->buffer->message (c->font,
+      c->بفر->پیغام (c->font,
 			  "replaced glyph at %u (single substitution)",
-			  c->buffer->idx - 1u);
+			  c->بفر->idx - 1u);
     }
 
-    return_trace (true);
+    return_trace (ریښتیا);
   }
 
-  template<typename Iterator,
-           hb_requires (hb_is_sorted_source_of (Iterator,
+  کينډۍ<ډول_نوم Iterator,
+           hb_requires (hb_is_sorted_سرچینه_د (Iterator,
                                                 hb_codepoint_pair_t))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقي serialize (hb_serialize_context_t *c,
                   Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    auto substitutes =
+    TRACE_SERIALIZE (هذا);
+    خپلکاری substitutes =
       + it
-      | hb_map (hb_second)
+      | hb_map (hb_دوهم)
       ;
-    auto glyphs =
+    خپلکاری glyphs =
       + it
-      | hb_map_retains_sorting (hb_first)
+      | hb_map_retains_ترتیبونه (hb_لومړی)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!substitute.serialize (c, substitutes))) return_trace (false);
-    if (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (false);
-    return_trace (true);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
+    إذا (unlikely (!substitute.serialize (c, substitutes))) return_trace (خطأ);
+    إذا (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (خطأ);
+    return_trace (ریښتیا);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (هذا);
+    ثابت hb_سېټ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto it =
-    + hb_zip (this+coverage, substitute)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (glyphset, hb_second)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+    خپلکاری it =
+    + hb_zip (هذا+coverage, substitute)
+    | hb_filter (glyphset, hb_لومړی)
+    | hb_filter (glyphset, hb_دوهم)
+    | hb_map_retains_ترتیبونه ([&] (hb_pair_t<hb_codepoint_t, ثابت ډول_نوم Types::HBGlyphID &> p) -> hb_codepoint_pair_t
+                              { أرجع hb_pair (glyph_map[p.لومړی], glyph_map[p.second]); })
     ;
 
-    bool ret = bool (it);
+    منطقي ret = منطقي (it);
     SingleSubst_serialize (c->serializer, it);
     return_trace (ret);
   }
@@ -209,4 +209,4 @@ struct SingleSubstFormat2_4
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH */
+#د_که_پای /* OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH */

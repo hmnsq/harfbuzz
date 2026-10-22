@@ -23,15 +23,15 @@
  *
  */
 
-#ifndef HB_SUBSET_SERIALIZE_H
-#define HB_SUBSET_SERIALIZE_H
+#که_نه_تعریف_شوی HB_SUBSET_SERIALIZE_H
+#تعریف_کړه HB_SUBSET_SERIALIZE_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#إذا !defined(HB_SUBSET_H_دننه) && !defined(HB_NO_SINGLE_سرلیک_ERROR)
 // Disabled to not break pre-existing users.
 //#error "Include <hb-subset.h> instead."
-#endif
+#د_که_پای
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -47,10 +47,10 @@ HB_BEGIN_DECLS
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_link_t {
-  unsigned int width;
-  unsigned int position;
-  unsigned int objidx;
+تعريفنوع بنية hb_subset_serialize_link_t {
+  بینښه صحيح پلنوالی;
+  بینښه صحيح position;
+  بینښه صحيح objidx;
 } hb_subset_serialize_link_t;
 
 /**
@@ -68,21 +68,21 @@ typedef struct hb_subset_serialize_link_t {
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_object_t {
-  char *head;
-  char *tail;
-  unsigned int num_real_links;
+تعريفنوع بنية hb_subset_serialize_object_t {
+  حرف *سر_2;
+  حرف *لکۍ;
+  بینښه صحيح عدد_real_links;
   hb_subset_serialize_link_t *real_links;
-  unsigned int num_virtual_links;
+  بینښه صحيح عدد_virtual_links;
   hb_subset_serialize_link_t *virtual_links;
 } hb_subset_serialize_object_t;
 
 HB_EXTERN hb_blob_t *
-hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
+hb_subset_serialize_or_fail (hb_نښان_t                      جدول_نښان_2,
                              hb_subset_serialize_object_t *hb_objects,
-                             unsigned                      num_hb_objs);
+                             بینښه                      عدد_hb_objs);
 
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
-#endif /* HB_SUBSET_SERIALIZE_H */
+#د_که_پای /* HB_SUBSET_SERIALIZE_H */

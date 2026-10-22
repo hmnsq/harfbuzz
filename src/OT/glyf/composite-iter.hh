@@ -1,69 +1,69 @@
-#ifndef OT_GLYF_COMPOSITE_ITER_HH
-#define OT_GLYF_COMPOSITE_ITER_HH
+#که_نه_تعریف_شوی OT_GLYF_مرکب_ITER_HH
+#تعریف_کړه OT_GLYF_مرکب_ITER_HH
 
 
-#include "../../hb.hh"
+#ضمن "../../hb.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+نطاق OT {
+نطاق glyf_impl {
 
 
-template <typename CompositeGlyphRecord>
-struct composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<CompositeGlyphRecord>,
-						     const CompositeGlyphRecord &>
+کينډۍ <ډول_نوم مرکب_Glyph_ریکارډ>
+بنية مرکب_iter_tmpl : hb_iter_with_fallback_t<مرکب_iter_tmpl<مرکب_Glyph_ریکارډ>,
+						     ثابت مرکب_Glyph_ریکارډ &>
 {
-  typedef const CompositeGlyphRecord *__item_t__;
-  composite_iter_tmpl (hb_bytes_t glyph_, __item_t__ current_, bool extended_) :
-      glyph (glyph_), current (nullptr), current_size (0), extended (extended_)
+  تعريفنوع ثابت مرکب_Glyph_ریکارډ *__item_t__;
+  مرکب_iter_tmpl (hb_بایټونه_t glyph_, __item_t__ current_, منطقي extended_) :
+      glyph (glyph_), current (تش_اشاره), current_اندازه (0), extended (extended_)
   {
-    set_current (current_);
+    سېټ_current (current_);
   }
 
-  composite_iter_tmpl () : glyph (hb_bytes_t ()), current (nullptr), current_size (0), extended (false) {}
+  مرکب_iter_tmpl () : glyph (hb_بایټونه_t ()), current (تش_اشاره), current_اندازه (0), extended (خطأ) {}
 
-  const CompositeGlyphRecord & __item__ () const { return *current; }
-  bool __more__ () const { return current; }
-  void __next__ ()
+  ثابت مرکب_Glyph_ریکارډ & __item__ () ثابت { أرجع *current; }
+  منطقي __more__ () ثابت { أرجع current; }
+  فراغ __next__ ()
   {
-    if (!current->has_more ()) { current = nullptr; return; }
+    إذا (!current->has_نور ()) { current = تش_اشاره; أرجع; }
 
-    set_current (&StructAtOffset<CompositeGlyphRecord> (current, current_size));
+    سېټ_current (&Struct_At_دننه_واټن<مرکب_Glyph_ریکارډ> (current, current_اندازه));
   }
-  composite_iter_tmpl __end__ () const { return composite_iter_tmpl (); }
-  bool operator != (const composite_iter_tmpl& o) const
-  { return current != o.current; }
+  مرکب_iter_tmpl __end__ () ثابت { أرجع مرکب_iter_tmpl (); }
+  منطقي چلوونکی != (ثابت مرکب_iter_tmpl& o) ثابت
+  { أرجع current != o.current; }
 
 
-  void set_current (__item_t__ current_)
+  فراغ سېټ_current (__item_t__ current_)
   {
-    if (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
+    إذا (!glyph.check_range (current_, مرکب_Glyph_ریکارډ::min_اندازه))
     {
-      current = nullptr;
-      current_size = 0;
-      return;
+      current = تش_اشاره;
+      current_اندازه = 0;
+      أرجع;
     }
-    unsigned size = current_->get_size (extended);
-    if (!glyph.check_range (current_, size))
+    بینښه اندازه = current_->get_اندازه (extended);
+    إذا (!glyph.check_range (current_, اندازه))
     {
-      current = nullptr;
-      current_size = 0;
-      return;
+      current = تش_اشاره;
+      current_اندازه = 0;
+      أرجع;
     }
 
     current = current_;
-    current_size = size;
+    current_اندازه = اندازه;
   }
 
-  private:
-  hb_bytes_t glyph;
+  خاص:
+  hb_بایټونه_t glyph;
   __item_t__ current;
-  unsigned current_size;
-  bool extended;
+  بینښه current_اندازه;
+  منطقي extended;
 };
 
 
 } /* namespace glyf_impl */
 } /* namespace OT */
 
-#endif /* OT_GLYF_COMPOSITE_ITER_HH */
+#د_که_پای /* OT_GLYF_COMPOSITE_ITER_HH */

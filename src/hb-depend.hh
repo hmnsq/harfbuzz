@@ -24,13 +24,13 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#ifndef HB_DEPEND_HH
-#define HB_DEPEND_HH
+#که_نه_تعریف_شوی HB_DEPEND_HH
+#تعریف_کړه HB_DEPEND_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-subset-depend.h"
-#include "hb-depend-data.hh"
+#ضمن "hb-subset-depend.h"
+#ضمن "hb-depend-data.hh"
 
 
 /**
@@ -42,23 +42,23 @@
  * graph once via hb_depend_data_builder_t::compile(). The graph remains
  * immutable for the lifetime of the object.
  */
-struct hb_subset_depend_t
+بنية hb_subset_depend_t
 {
-  HB_INTERNAL hb_subset_depend_t (hb_face_t *face);
+  HB_دننی hb_subset_depend_t (hb_face_t *face);
 
-  hb_object_header_t header;
+  hb_object_سرلیک_t سرلیک;
 
-  bool successful;
+  منطقي successful;
 
-  bool in_error () const { return !successful; }
+  منطقي دننه_error () ثابت { أرجع !successful; }
 
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
+  ثابت hb_سېټ_t *get_سېټ_from_شاخص (hb_codepoint_t شاخص_2)
   {
-    return data.get_set_from_index (index);
+    أرجع معلومات.get_سېټ_from_شاخص (شاخص_2);
   }
 
-  hb_depend_data_t data;
+  hb_depend_معلومات_t معلومات;
 };
 
 
-#endif /* HB_DEPEND_HH */
+#د_که_پای /* HB_DEPEND_HH */

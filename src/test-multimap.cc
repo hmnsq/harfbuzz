@@ -22,38 +22,38 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-multimap.hh"
+#ضمن "hb.hh"
+#ضمن "hb-multimap.hh"
 
-int
-main (int argc, char **argv)
+صحيح
+اصلي (صحيح argc, حرف **argv)
 {
   hb_multimap_t m;
 
-  hb_always_assert (m.get (10).length == 0);
+  hb_always_assert (m.get (10).اوږدتیا == 0);
 
-  m.add (10, 11);
-  hb_always_assert (m.get (10).length == 1);
+  m.جمع_کړه (10, 11);
+  hb_always_assert (m.get (10).اوږدتیا == 1);
 
-  m.add (10, 12);
-  hb_always_assert (m.get (10).length == 2);
+  m.جمع_کړه (10, 12);
+  hb_always_assert (m.get (10).اوږدتیا == 2);
 
-  m.add (10, 13);
-  hb_always_assert (m.get (10).length == 3);
+  m.جمع_کړه (10, 13);
+  hb_always_assert (m.get (10).اوږدتیا == 3);
   hb_always_assert (m.get (10)[0] == 11);
   hb_always_assert (m.get (10)[1] == 12);
   hb_always_assert (m.get (10)[2] == 13);
 
-  hb_always_assert (m.get (11).length == 0);
-  m.add (11, 14);
-  hb_always_assert (m.get (10).length == 3);
-  hb_always_assert (m.get (11).length == 1);
-  hb_always_assert (m.get (12).length == 0);
+  hb_always_assert (m.get (11).اوږدتیا == 0);
+  m.جمع_کړه (11, 14);
+  hb_always_assert (m.get (10).اوږدتیا == 3);
+  hb_always_assert (m.get (11).اوږدتیا == 1);
+  hb_always_assert (m.get (12).اوږدتیا == 0);
   hb_always_assert (m.get (10)[0] == 11);
   hb_always_assert (m.get (10)[1] == 12);
   hb_always_assert (m.get (10)[2] == 13);
   hb_always_assert (m.get (11)[0] == 14);
   hb_always_assert (m.get (12)[0] == 0); // Array fallback value
 
-  return 0;
+  أرجع 0;
 }

@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifdef HAVE_GLIB
+#که_تعریف_شوی HAVE_GLIB
 
-#include "hb-glib.h"
+#ضمن "hb-glib.h"
 
-#include "hb-machinery.hh"
+#ضمن "hb-machinery.hh"
 
 
 /**
@@ -61,9 +61,9 @@
  * Since: 0.9.38
  **/
 hb_script_t
-hb_glib_script_to_script (GUnicodeScript script)
+hb_glib_script_منزل_script (GUnicodeScript script)
 {
-  return (hb_script_t) g_unicode_script_to_iso15924 (script);
+  أرجع (hb_script_t) g_unicode_script_منزل_iso15924 (script);
 }
 
 /**
@@ -80,92 +80,92 @@ hb_glib_script_to_script (GUnicodeScript script)
 GUnicodeScript
 hb_glib_script_from_script (hb_script_t script)
 {
-  return g_unicode_script_from_iso15924 (script);
+  أرجع g_unicode_script_from_iso15924 (script);
 }
 
 
-static hb_unicode_combining_class_t
-hb_glib_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساكن hb_unicode_combining_class_t
+hb_glib_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_ناکارول_شوی,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 فراغ               *user_معلومات HB_ناکارول_شوی)
 
 {
-  return (hb_unicode_combining_class_t) g_unichar_combining_class (unicode);
+  أرجع (hb_unicode_combining_class_t) g_unichar_combining_class (unicode);
 }
 
-static hb_unicode_general_category_t
-hb_glib_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساكن hb_unicode_general_category_t
+hb_glib_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_ناکارول_شوی,
 				  hb_codepoint_t      unicode,
-				  void               *user_data HB_UNUSED)
+				  فراغ               *user_معلومات HB_ناکارول_شوی)
 
 {
   /* hb_unicode_general_category_t and GUnicodeType are identical */
-  return (hb_unicode_general_category_t) g_unichar_type (unicode);
+  أرجع (hb_unicode_general_category_t) g_unichar_type (unicode);
 }
 
-static hb_codepoint_t
-hb_glib_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساكن hb_codepoint_t
+hb_glib_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_ناکارول_شوی,
 			   hb_codepoint_t      unicode,
-			   void               *user_data HB_UNUSED)
+			   فراغ               *user_معلومات HB_ناکارول_شوی)
 {
   g_unichar_get_mirror_char (unicode, &unicode);
-  return unicode;
+  أرجع unicode;
 }
 
-static hb_script_t
-hb_glib_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساكن hb_script_t
+hb_glib_unicode_script (hb_unicode_funcs_t *ufuncs HB_ناکارول_شوی,
 			hb_codepoint_t      unicode,
-			void               *user_data HB_UNUSED)
+			فراغ               *user_معلومات HB_ناکارول_شوی)
 {
-  return hb_glib_script_to_script (g_unichar_get_script (unicode));
+  أرجع hb_glib_script_منزل_script (g_unichar_get_script (unicode));
 }
 
-static hb_bool_t
-hb_glib_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساكن hb_bool_t
+hb_glib_unicode_compose (hb_unicode_funcs_t *ufuncs HB_ناکارول_شوی,
 			 hb_codepoint_t      a,
 			 hb_codepoint_t      b,
 			 hb_codepoint_t     *ab,
-			 void               *user_data HB_UNUSED)
+			 فراغ               *user_معلومات HB_ناکارول_شوی)
 {
-  return g_unichar_compose (a, b, ab);
+  أرجع g_unichar_compose (a, b, ab);
 }
 
-static hb_bool_t
-hb_glib_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساكن hb_bool_t
+hb_glib_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_ناکارول_شوی,
 			   hb_codepoint_t      ab,
 			   hb_codepoint_t     *a,
 			   hb_codepoint_t     *b,
-			   void               *user_data HB_UNUSED)
+			   فراغ               *user_معلومات HB_ناکارول_شوی)
 {
-  return g_unichar_decompose (ab, a, b);
+  أرجع g_unichar_decompose (ab, a, b);
 }
 
 
-static inline void free_static_glib_funcs ();
+ساكن مضمن فراغ free_static_glib_funcs ();
 
-static struct hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_glib_unicode_funcs_lazy_loader_t>
+ساكن بنية hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_glib_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  ساكن hb_unicode_funcs_t *create ()
   {
-    hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
+    hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (تش_اشاره);
 
-    hb_unicode_funcs_set_combining_class_func (funcs, hb_glib_unicode_combining_class, nullptr, nullptr);
-    hb_unicode_funcs_set_general_category_func (funcs, hb_glib_unicode_general_category, nullptr, nullptr);
-    hb_unicode_funcs_set_mirroring_func (funcs, hb_glib_unicode_mirroring, nullptr, nullptr);
-    hb_unicode_funcs_set_script_func (funcs, hb_glib_unicode_script, nullptr, nullptr);
-    hb_unicode_funcs_set_compose_func (funcs, hb_glib_unicode_compose, nullptr, nullptr);
-    hb_unicode_funcs_set_decompose_func (funcs, hb_glib_unicode_decompose, nullptr, nullptr);
+    hb_unicode_funcs_سېټ_combining_class_func (funcs, hb_glib_unicode_combining_class, تش_اشاره, تش_اشاره);
+    hb_unicode_funcs_سېټ_general_category_func (funcs, hb_glib_unicode_general_category, تش_اشاره, تش_اشاره);
+    hb_unicode_funcs_سېټ_mirroring_func (funcs, hb_glib_unicode_mirroring, تش_اشاره, تش_اشاره);
+    hb_unicode_funcs_سېټ_script_func (funcs, hb_glib_unicode_script, تش_اشاره, تش_اشاره);
+    hb_unicode_funcs_سېټ_compose_func (funcs, hb_glib_unicode_compose, تش_اشاره, تش_اشاره);
+    hb_unicode_funcs_سېټ_decompose_func (funcs, hb_glib_unicode_decompose, تش_اشاره, تش_اشاره);
 
     hb_unicode_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_glib_funcs);
 
-    return funcs;
+    أرجع funcs;
   }
 } static_glib_funcs;
 
-static inline
-void free_static_glib_funcs ()
+ساكن مضمن
+فراغ free_static_glib_funcs ()
 {
   static_glib_funcs.free_instance ();
 }
@@ -183,17 +183,17 @@ void free_static_glib_funcs ()
 hb_unicode_funcs_t *
 hb_glib_get_unicode_funcs ()
 {
-  return static_glib_funcs.get_unconst ();
+  أرجع static_glib_funcs.get_unconst ();
 }
 
 
 
-#if GLIB_CHECK_VERSION(2,31,10)
+#إذا GLIB_CHECK_نسخه(2,31,10)
 
-static void
-_hb_g_bytes_unref (void *data)
+ساكن فراغ
+hb_g_بایټونه_unref (فراغ *معلومات)
 {
-  g_bytes_unref ((GBytes *) data);
+  g_بایټونه_unref ((GBytes *) معلومات);
 }
 
 /**
@@ -210,15 +210,15 @@ _hb_g_bytes_unref (void *data)
 hb_blob_t *
 hb_glib_blob_create (GBytes *gbytes)
 {
-  gsize size = 0;
-  gconstpointer data = g_bytes_get_data (gbytes, &size);
-  return hb_blob_create ((const char *) data,
-			 size,
-			 HB_MEMORY_MODE_READONLY,
-			 g_bytes_ref (gbytes),
-			 _hb_g_bytes_unref);
+  gsize اندازه = 0;
+  gconstpointer معلومات = g_بایټونه_get_معلومات (gbytes, &اندازه);
+  أرجع hb_blob_create ((ثابت حرف *) معلومات,
+			 اندازه,
+			 HB_حافظه_ډېرپېښ_READONLY,
+			 g_بایټونه_ref (gbytes),
+			 hb_g_بایټونه_unref);
 }
-#endif
+#د_که_پای
 
 
-#endif
+#د_که_پای

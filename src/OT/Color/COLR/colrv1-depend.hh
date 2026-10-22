@@ -23,111 +23,111 @@
  *
  */
 
-#ifndef OT_COLOR_COLR_COLRV1_DEPEND_HH
-#define OT_COLOR_COLR_COLRV1_DEPEND_HH
+#که_نه_تعریف_شوی OT_COLOR_COLR_COLRV1_DEPEND_HH
+#تعریف_کړه OT_COLOR_COLR_COLRV1_DEPEND_HH
 
-#include "../../../hb-open-type.hh"
-#include "COLR.hh"
+#ضمن "../../../hb-open-type.hh"
+#ضمن "COLR.hh"
 
 /*
  * COLR -- Color
  * https://docs.microsoft.com/en-us/typography/opentype/spec/colr
  */
-namespace OT {
+نطاق OT {
 
 
-HB_INTERNAL void PaintColrLayers::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintColrLayers::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  ثابت LayerList &paint_دننه_واټن_lists = c->get_colr_جدول ()->get_layerList ();
+  لكل (بینښه i = لومړی_Layer_شاخص; i < لومړی_Layer_شاخص + عدد_Layers; i++)
   {
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    ثابت Paint &paint = paint_دننه_واټن_lists.get_paint (i);
     paint.dispatch (c);
   }
 }
 
-template <typename Types>
-HB_INTERNAL void PaintGlyph<Types>::dependv1 (hb_colrv1_depend_context_t* c) const
+کينډۍ <ډول_نوم Types>
+HB_دننی فراغ PaintGlyph<Types>::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
   // PaintGlyph (Format 10) references glyph outlines (from glyf/CFF), not paint graphs.
   // Self-reference is valid per OpenType spec: a base glyph can reference its own
   // outline as geometry to fill. This is not a dependency in the traditional sense
   // since the outline is part of the same glyph data, so we skip it.
-  if (gid != c->source_gid)
-    c->depend_data->add_depend(c->source_gid, HB_OT_TAG_COLR, gid);
-  (this+paint).dispatch (c);
+  إذا (gid != c->سرچینه_gid)
+    c->depend_معلومات->جمع_کړه_depend(c->سرچینه_gid, HB_OT_نښان_COLR, gid);
+  (هذا+paint).dispatch (c);
 }
 
-HB_INTERNAL void PaintColrGlyph::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintColrGlyph::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  const COLR *colr_table = c->get_colr_table ();
-  const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
-  c->depend_data->add_depend(c->source_gid, HB_OT_TAG_COLR, gid);
+  ثابت COLR *colr_جدول = c->get_colr_جدول ();
+  ثابت بنسټ_Glyph_Paint_ریکارډ* baseglyph_paintrecord = colr_جدول->get_بنسټ_glyph_paintrecord (gid);
+  إذا (!baseglyph_paintrecord) أرجع;
+  c->depend_معلومات->جمع_کړه_depend(c->سرچینه_gid, HB_OT_نښان_COLR, gid);
 
-  const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
+  ثابت بنسټ_Glyph_List &baseglyph_list = colr_جدول->get_baseglyphList ();
   (&baseglyph_list+baseglyph_paintrecord->paint).dispatch (c);
 }
 
-template <template<typename> class Var>
-HB_INTERNAL void PaintTransform<Var>::dependv1 (hb_colrv1_depend_context_t* c) const
+کينډۍ <کينډۍ<ډول_نوم> صنف Var>
+HB_دننی فراغ PaintTransform<Var>::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintTranslate::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintTranslate::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintScale::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintScale::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintScaleAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintScaleAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintScaleUniform::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ Paint_Scale_یوشان::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintScaleUniformAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ Paint_Scale_یوشان_Around_Center::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintRotate::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintRotate::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintRotateAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintRotateAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintSkew::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintSkew::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintSkewAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ PaintSkewAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
+  (هذا+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintComposite::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_دننی فراغ Paint_مرکب::dependv1 (hb_colrv1_depend_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  (this+backdrop).dispatch (c);
+  (هذا+src).dispatch (c);
+  (هذا+backdrop).dispatch (c);
 }
 
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_COLR_COLRV1_DEPEND_HH */
+#د_که_پای /* OT_COLOR_COLR_COLRV1_DEPEND_HH */

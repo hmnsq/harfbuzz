@@ -24,40 +24,40 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_RASTER_IMAGE_HH
-#define HB_RASTER_IMAGE_HH
+#که_نه_تعریف_شوی HB_RASTER_IMAGE_HH
+#تعریف_کړه HB_RASTER_IMAGE_HH
 
-#include "hb.hh"
-#include "hb-raster.hh"
-#include "hb-raster.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#ضمن "hb.hh"
+#ضمن "hb-raster.hh"
+#ضمن "hb-raster.h"
+#ضمن "hb-object.hh"
+#ضمن "hb-vector.hh"
 
 
 /* hb_raster_image_t — pixel artifact */
-struct hb_raster_image_t
+بنية hb_raster_image_t
 {
-  hb_object_header_t  header;
+  hb_object_سرلیک_t  سرلیک;
 
-  hb_vector_t<uint8_t> buffer;
+  hb_ویکټور_t<uint8_t> بفر;
   hb_raster_extents_t  extents     = {};
   hb_raster_format_t   format      = HB_RASTER_FORMAT_A8;
 
-  HB_INTERNAL static unsigned bytes_per_pixel (hb_raster_format_t format);
-  HB_INTERNAL bool configure (hb_raster_format_t format, hb_raster_extents_t extents);
-  HB_INTERNAL bool deserialize_from_png (hb_blob_t *png);
-  HB_INTERNAL hb_blob_t *serialize_to_png_or_fail () const;
-  HB_INTERNAL void clear ();
-  HB_INTERNAL const uint8_t *get_buffer () const;
-  HB_INTERNAL void composite_from (const hb_raster_image_t *src,
-				   hb_paint_composite_mode_t mode);
+  HB_دننی ساكن بینښه بایټونه_فی_pixel (hb_raster_format_t format);
+  HB_دننی منطقي configure (hb_raster_format_t format, hb_raster_extents_t extents);
+  HB_دننی منطقي deserialize_from_png (hb_blob_t *png);
+  HB_دننی hb_blob_t *serialize_منزل_png_or_fail () ثابت;
+  HB_دننی فراغ clear ();
+  HB_دننی ثابت uint8_t *get_بفر () ثابت;
+  HB_دننی فراغ مرکب_from (ثابت hb_raster_image_t *src,
+				   hb_paint_مرکب_ډېرپېښ_t ډېرپېښ);
 };
 
 /* Composite src image onto dst. */
-HB_INTERNAL void
-hb_raster_image_composite (hb_raster_image_t *dst,
-			   const hb_raster_image_t *src,
-			   hb_paint_composite_mode_t mode);
+HB_دننی فراغ
+hb_raster_image_مرکب (hb_raster_image_t *dst,
+			   ثابت hb_raster_image_t *src,
+			   hb_paint_مرکب_ډېرپېښ_t ډېرپېښ);
 
 
-#endif /* HB_RASTER_IMAGE_HH */
+#د_که_پای /* HB_RASTER_IMAGE_HH */

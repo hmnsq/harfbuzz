@@ -24,44 +24,44 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_GRAPH_RESULT_HH
-#define GRAPH_GRAPH_RESULT_HH
+#که_نه_تعریف_شوی ګراف_ګراف_پایله_HH
+#تعریف_کړه ګراف_ګراف_پایله_HH
 
-#include "../hb-result.hh"
+#ضمن "../hb-result.hh"
 
-namespace graph {
+نطاق ګراف {
 
-enum graph_error_t {
-  ALLOCATION_FAILURE,
-  LIMIT_EXCEEDED,
-  INVALID_ARGUMENT,
-  CYCLE_DETECTED,
+تعداد ګراف_error_t {
+  ویش_FAILURE,
+  حد_EXCEEDED,
+  INVALID_دلیل,
+  دوره_DETECTED,
   SANITIZE_FAILURE,
-  OUT_OF_BOUNDS,
+  بهر_د_BOUNDS,
   ORPHANED_NODES,
-  OVERFLOW_RESOLUTION_FAILED,
+  ډکېدنه_RESOLUTION_FAILED,
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+ساكن مضمن ثابت حرف* to_string(ګراف_error_t e) {
+  بدل (e) {
+    حالة ویش_FAILURE: أرجع "Memory Allocation Failed";
+    حالة حد_EXCEEDED: أرجع "Limit Exceeded";
+    حالة INVALID_دلیل: أرجع "Invalid Argument";
+    حالة دوره_DETECTED: أرجع "Cycle in Graph";
+    حالة SANITIZE_FAILURE: أرجع "Failed Sanitization";
+    حالة بهر_د_BOUNDS: أرجع "Out of Bounds";
+    حالة ORPHANED_NODES: أرجع "Graph is not fully connected";
+    حالة ډکېدنه_RESOLUTION_FAILED: أرجع "Overflows are not able to be resolved";
+    حالة UNKNOWN:
+    افتراضي:
+      أرجع "Unknown Error";
   }
 }
 
-template<typename T>
-using graph_result_t = hb_result_t<T, graph_error_t>;
+کينډۍ<ډول_نوم T>
+کارول ګراف_پایله_t = hb_پایله_t<T, ګراف_error_t>;
 
 } // namespace graph
 
-#endif /* GRAPH_GRAPH_RESULT_HH */
+#د_که_پای /* GRAPH_GRAPH_RESULT_HH */

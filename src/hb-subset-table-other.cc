@@ -1,43 +1,43 @@
-#include "hb-subset-table.hh"
+#ضمن "hb-subset-table.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-hdmx-table.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-name-table.hh"
-#include "hb-ot-post-table.hh"
+#ضمن "hb-ot-cmap-table.hh"
+#ضمن "hb-ot-glyf-table.hh"
+#ضمن "hb-ot-hdmx-table.hh"
+#ضمن "hb-ot-hhea-table.hh"
+#ضمن "hb-ot-hmtx-table.hh"
+#ضمن "hb-ot-maxp-table.hh"
+#ضمن "hb-ot-os2-table.hh"
+#ضمن "hb-ot-name-table.hh"
+#ضمن "hb-ot-post-table.hh"
 
-bool _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+منطقي hb_subset_جدول_other		(hb_subset_plan_t *plan, hb_ویکټور_t<حرف> &buf, hb_نښان_t نښان_2, منطقي *success)
 {
-  switch (tag)
+  بدل (نښان_2)
   {
-  case HB_TAG('g','l','y','f'): *success = _hb_subset_table<const OT::glyf> (plan, buf); return true;
-  case HB_TAG('h','d','m','x'): *success = _hb_subset_table<const OT::hdmx> (plan, buf); return true;
-  case HB_TAG('n','a','m','e'): *success = _hb_subset_table<const OT::name> (plan, buf); return true;
-  case HB_TAG('h','h','e','a'): *success = true; return true; /* skip hhea, handled by hmtx */
-  case HB_TAG('h','m','t','x'): *success = _hb_subset_table<const OT::hmtx> (plan, buf); return true;
-  case HB_TAG('v','h','e','a'): *success = true; return true; /* skip vhea, handled by vmtx */
-  case HB_TAG('v','m','t','x'): *success = _hb_subset_table<const OT::vmtx> (plan, buf); return true;
-  case HB_TAG('m','a','x','p'): *success = _hb_subset_table<const OT::maxp> (plan, buf); return true;
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','L','Y','F'): *success = _hb_subset_table<const OT::GLYF> (plan, buf); return true;
-  case HB_TAG('H','H','E','A'): *success = true; return true; /* skip HHEA, handled by HMTX */
-  case HB_TAG('H','M','T','X'): *success = _hb_subset_table<const OT::HMTX> (plan, buf); return true;
-  case HB_TAG('V','H','E','A'): *success = true; return true; /* skip VHEA, handled by VMTX */
-  case HB_TAG('V','M','T','X'): *success = _hb_subset_table<const OT::VMTX> (plan, buf); return true;
-  case HB_TAG('M','A','X','P'): *success = _hb_subset_table<const OT::MAXP> (plan, buf); return true;
-#endif
-  case HB_TAG('l','o','c','a'): *success = true; return true; /* skip loca, handled by glyf */
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('L','O','C','A'): *success = true; return true; /* skip LOCA, handled by GLYF */
-#endif
-  case HB_TAG('c','m','a','p'): *success = _hb_subset_table<const OT::cmap> (plan, buf); return true;
-  case HB_TAG('D','M','A','P'): *success = _hb_subset_table<const OT::DMAP> (plan, buf); return true;
-  case HB_TAG('O','S','/','2'): *success = _hb_subset_table<const OT::OS2 > (plan, buf); return true;
-  case HB_TAG('p','o','s','t'): *success = _hb_subset_table<const OT::post> (plan, buf); return true;
+  حالة HB_نښان('g','l','y','f'): *success = hb_subset_جدول<ثابت OT::glyf> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('h','d','m','x'): *success = hb_subset_جدول<ثابت OT::hdmx> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('n','a','m','e'): *success = hb_subset_جدول<ثابت OT::name> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('h','h','e','a'): *success = ریښتیا; أرجع ریښتیا; /* skip hhea, handled by hmtx */
+  حالة HB_نښان('h','m','t','x'): *success = hb_subset_جدول<ثابت OT::hmtx> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('v','h','e','a'): *success = ریښتیا; أرجع ریښتیا; /* skip vhea, handled by vmtx */
+  حالة HB_نښان('v','m','t','x'): *success = hb_subset_جدول<ثابت OT::vmtx> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('m','a','x','p'): *success = hb_subset_جدول<ثابت OT::maxp> (plan, buf); أرجع ریښتیا;
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+  حالة HB_نښان('G','L','Y','F'): *success = hb_subset_جدول<ثابت OT::GLYF> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('H','H','E','A'): *success = ریښتیا; أرجع ریښتیا; /* skip HHEA, handled by HMTX */
+  حالة HB_نښان('H','M','T','X'): *success = hb_subset_جدول<ثابت OT::HMTX> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('V','H','E','A'): *success = ریښتیا; أرجع ریښتیا; /* skip VHEA, handled by VMTX */
+  حالة HB_نښان('V','M','T','X'): *success = hb_subset_جدول<ثابت OT::VMTX> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('M','A','X','P'): *success = hb_subset_جدول<ثابت OT::MAXP> (plan, buf); أرجع ریښتیا;
+#د_که_پای
+  حالة HB_نښان('l','o','c','a'): *success = ریښتیا; أرجع ریښتیا; /* skip loca, handled by glyf */
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+  حالة HB_نښان('L','O','C','A'): *success = ریښتیا; أرجع ریښتیا; /* skip LOCA, handled by GLYF */
+#د_که_پای
+  حالة HB_نښان('c','m','a','p'): *success = hb_subset_جدول<ثابت OT::cmap> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('D','M','A','P'): *success = hb_subset_جدول<ثابت OT::DMAP> (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('O','S','/','2'): *success = hb_subset_جدول<ثابت OT::OS2 > (plan, buf); أرجع ریښتیا;
+  حالة HB_نښان('p','o','s','t'): *success = hb_subset_جدول<ثابت OT::post> (plan, buf); أرجع ریښتیا;
   }
-  return false;
+  أرجع خطأ;
 }

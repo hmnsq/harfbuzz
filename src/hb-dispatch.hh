@@ -26,35 +26,35 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_DISPATCH_HH
-#define HB_DISPATCH_HH
+#که_نه_تعریف_شوی HB_DISPATCH_HH
+#تعریف_کړه HB_DISPATCH_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 /*
  * Dispatch
  */
 
-template <typename Context, typename Return=hb_empty_t, unsigned int MaxDebugDepth=0>
-struct hb_dispatch_context_t
+کينډۍ <ډول_نوم Context, ډول_نوم Return=hb_تشه_t, بینښه صحيح Max_Debug_ژوروالی=0>
+بنية hb_dispatch_context_t
 {
-  private:
+  خاص:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const Context* thiz () const { return static_cast<const Context *> (this); }
-	Context* thiz ()       { return static_cast<      Context *> (this); }
-  public:
-  const char *get_name () { return "UNKNOWN"; }
-  static constexpr unsigned max_debug_depth = MaxDebugDepth;
-  typedef Return return_t;
-  template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format HB_UNUSED) { return true; }
-  template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
-  static return_t no_dispatch_return_value () { return Context::default_return_value (); }
-  static bool stop_sublookup_iteration (const return_t r HB_UNUSED) { return false; }
-  unsigned debug_depth = 0;
+  ثابت Context* thiz () ثابت { أرجع static_cast<ثابت Context *> (هذا); }
+	Context* thiz ()       { أرجع static_cast<      Context *> (هذا); }
+  عام:
+  ثابت حرف *get_name () { أرجع "UNKNOWN"; }
+  ساكن constexpr بینښه max_debug_ژوروالی = Max_Debug_ژوروالی;
+  تعريفنوع Return return_t;
+  کينډۍ <ډول_نوم T, ډول_نوم F>
+  منطقي may_dispatch (ثابت T *obj HB_ناکارول_شوی, ثابت F *format HB_ناکارول_شوی) { أرجع ریښتیا; }
+  کينډۍ <ډول_نوم T, ډول_نوم ...Ts>
+  return_t dispatch (ثابت T &obj, Ts&&... ds)
+  { أرجع obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
+  ساكن return_t no_dispatch_return_ارزښت () { أرجع Context::default_return_ارزښت (); }
+  ساكن منطقي stop_sublookup_iteration (ثابت return_t r HB_ناکارول_شوی) { أرجع خطأ; }
+  بینښه debug_ژوروالی = 0;
 };
 
 
-#endif /* HB_DISPATCH_HH */
+#د_که_پای /* HB_DISPATCH_HH */

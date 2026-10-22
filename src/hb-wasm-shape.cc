@@ -24,12 +24,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#undef HB_DEBUG_WASM
-#define HB_DEBUG_WASM 1
+#تعریف_لغوه HB_DEBUG_WASM
+#تعریف_کړه HB_DEBUG_WASM 1
 
-#include "hb-shaper-impl.hh"
+#ضمن "hb-shaper-impl.hh"
 
-#ifdef HAVE_WASM
+#که_تعریف_شوی HAVE_WASM
 
 /* Compile wasm-micro-runtime with:
  *
@@ -56,67 +56,67 @@
  * requires support from the host that seems to be missing from wasm-micro-runtime?
  */
 
-#include "hb-wasm-api.hh"
-#include "hb-wasm-api-list.hh"
+#ضمن "hb-wasm-api.hh"
+#ضمن "hb-wasm-api-list.hh"
 
-#ifndef HB_WASM_NO_MODULES
-#define HB_WASM_NO_MODULES
-#endif
+#که_نه_تعریف_شوی HB_WASM_NO_MODULES
+#تعریف_کړه HB_WASM_NO_MODULES
+#د_که_پای
 
 
-#ifndef HB_WASM_NO_MODULES
-static bool HB_UNUSED
-_hb_wasm_module_reader (const char *module_name,
-		       uint8_t **p_buffer, uint32_t *p_size)
+#که_نه_تعریف_شوی HB_WASM_NO_MODULES
+ساكن منطقي HB_ناکارول_شوی
+_hb_wasm_module_reader (ثابت حرف *module_name,
+		       uint8_t **p_بفر, uint32_t *p_اندازه)
 {
-  char path[sizeof (HB_WASM_MODULE_DIR) + 64] = HB_WASM_MODULE_DIR "/";
-  strncat (path, module_name, sizeof (path) - sizeof (HB_WASM_MODULE_DIR) - 16);
-  strncat (path, ".wasm", 6);
+  حرف لار[حجم (HB_WASM_MODULE_DIR) + 64] = HB_WASM_MODULE_DIR "/";
+  strncat (لار, module_name, حجم (لار) - حجم (HB_WASM_MODULE_DIR) - 16);
+  strncat (لار, ".wasm", 6);
 
-  auto *blob = hb_blob_create_from_file (path);
+  خپلکاری *blob = hb_blob_create_from_file (لار);
 
-  unsigned length;
-  auto *data = hb_blob_get_data (blob, &length);
+  بینښه اوږدتیا;
+  خپلکاری *معلومات = hb_blob_get_معلومات (blob, &اوږدتیا);
 
-  *p_buffer = (uint8_t *) hb_malloc (length);
+  *p_بفر = (uint8_t *) hb_malloc (اوږدتیا);
 
-  if (length && !p_buffer)
-    return false;
+  إذا (اوږدتیا && !p_بفر)
+    أرجع خطأ;
 
-  memcpy (*p_buffer, data, length);
-  *p_size = length;
+  حافظه_نقل (*p_بفر, معلومات, اوږدتیا);
+  *p_اندازه = اوږدتیا;
 
   hb_blob_destroy (blob);
 
-  return true;
+  أرجع ریښتیا;
 }
 
-static void HB_UNUSED
-_hb_wasm_module_destroyer (uint8_t *buffer, uint32_t size)
+ساكن فراغ HB_ناکارول_شوی
+_hb_wasm_module_destroyer (uint8_t *بفر, uint32_t اندازه)
 {
-  hb_free (buffer);
+  hb_free (بفر);
 }
-#endif
+#د_که_پای
 
 /*
  * shaper face data
  */
 
-#define HB_WASM_TAG_WASM HB_TAG('W','a','s','m')
+#تعریف_کړه HB_WASM_نښان_WASM HB_نښان('W','a','s','m')
 
-struct hb_wasm_shape_plan_t {
+بنية hb_wasm_shape_plan_t {
   wasm_module_inst_t module_inst;
   wasm_exec_env_t exec_env;
-  ptr_d(void, wasm_shape_plan);
+  ptr_d(فراغ, wasm_shape_plan);
 };
 
-struct hb_wasm_face_data_t {
+بنية hb_wasm_face_معلومات_t {
   hb_blob_t *wasm_blob;
   wasm_module_t wasm_module;
-  mutable hb_atomic_t<hb_wasm_shape_plan_t *> plan;
+  بدلیدونکی hb_atomic_t<hb_wasm_shape_plan_t *> plan;
 };
 
-static bool
+ساكن منطقي
 _hb_wasm_init ()
 {
   /* XXX
@@ -132,131 +132,131 @@ _hb_wasm_init ()
    * If nothing else, around HB_REF2OBJ().
    */
 
-  static bool initialized;
-  if (initialized)
-    return true;
+  ساكن منطقي initialized;
+  إذا (initialized)
+    أرجع ریښتیا;
 
-  RuntimeInitArgs init_args;
-  hb_memset (&init_args, 0, sizeof (RuntimeInitArgs));
+  Runtime_Init_دلیلونه init_دلیلونه;
+  hb_memset (&init_دلیلونه, 0, حجم (Runtime_Init_دلیلونه));
 
-  init_args.mem_alloc_type = Alloc_With_Allocator;
-  init_args.mem_alloc_option.allocator.malloc_func = (void *) hb_malloc;
-  init_args.mem_alloc_option.allocator.realloc_func = (void *) hb_realloc;
-  init_args.mem_alloc_option.allocator.free_func = (void *) hb_free;
+  init_دلیلونه.mem_alloc_type = Alloc_With_Allocator;
+  init_دلیلونه.mem_alloc_option.allocator.malloc_func = (فراغ *) hb_malloc;
+  init_دلیلونه.mem_alloc_option.allocator.realloc_func = (فراغ *) hb_realloc;
+  init_دلیلونه.mem_alloc_option.allocator.free_func = (فراغ *) hb_free;
 
   // Native symbols need below registration phase
-  init_args.n_native_symbols = ARRAY_LENGTH (_hb_wasm_native_symbols);
-  init_args.native_module_name = "env";
-  init_args.native_symbols = _hb_wasm_native_symbols;
+  init_دلیلونه.n_native_symbols = ARRAY_اوږدتیا (_hb_wasm_native_symbols);
+  init_دلیلونه.native_module_name = "env";
+  init_دلیلونه.native_symbols = _hb_wasm_native_symbols;
 
-  if (unlikely (!wasm_runtime_full_init (&init_args)))
+  إذا (unlikely (!wasm_runtime_ډک_init (&init_دلیلونه)))
   {
-    DEBUG_MSG (WASM, nullptr, "Init runtime environment failed.");
-    return false;
+    DEBUG_پیغام (WASM, تش_اشاره, "Init runtime environment failed.");
+    أرجع خطأ;
   }
 
-#ifndef HB_WASM_NO_MODULES
-  wasm_runtime_set_module_reader (_hb_wasm_module_reader,
+#که_نه_تعریف_شوی HB_WASM_NO_MODULES
+  wasm_runtime_سېټ_module_reader (_hb_wasm_module_reader,
 				  _hb_wasm_module_destroyer);
-#endif
+#د_که_پای
 
-  initialized = true;
-  return true;
+  initialized = ریښتیا;
+  أرجع ریښتیا;
 }
 
-hb_wasm_face_data_t *
-_hb_wasm_shaper_face_data_create (hb_face_t *face)
+hb_wasm_face_معلومات_t *
+hb_wasm_shaper_face_معلومات_create (hb_face_t *face)
 {
-  char error[128];
-  hb_wasm_face_data_t *data = nullptr;
-  wasm_module_t wasm_module = nullptr;
+  حرف error[128];
+  hb_wasm_face_معلومات_t *معلومات = تش_اشاره;
+  wasm_module_t wasm_module = تش_اشاره;
 
-  hb_unique_ptr_t<hb_blob_t> wasm_blob (hb_face_reference_table (face, HB_WASM_TAG_WASM));
+  hb_unique_ptr_t<hb_blob_t> wasm_blob (hb_face_reference_جدول (face, HB_WASM_نښان_WASM));
 
-  unsigned length = hb_blob_get_length (wasm_blob);
-  if (!length)
-    return nullptr;
+  بینښه اوږدتیا = hb_blob_get_اوږدتیا (wasm_blob);
+  إذا (!اوږدتیا)
+    أرجع تش_اشاره;
 
-  if (!_hb_wasm_init ())
-    return nullptr;
+  إذا (!_hb_wasm_init ())
+    أرجع تش_اشاره;
 
-  wasm_module = wasm_runtime_load ((uint8_t *) hb_blob_get_data_writable (wasm_blob, nullptr),
-				   length, error, sizeof (error));
-  if (unlikely (!wasm_module))
+  wasm_module = wasm_runtime_بارول ((uint8_t *) hb_blob_get_معلومات_writable (wasm_blob, تش_اشاره),
+				   اوږدتیا, error, حجم (error));
+  إذا (unlikely (!wasm_module))
   {
-    DEBUG_MSG (WASM, nullptr, "Load wasm module failed: %s", error);
-    return nullptr;
+    DEBUG_پیغام (WASM, تش_اشاره, "Load wasm module failed: %s", error);
+    أرجع تش_اشاره;
   }
-  auto module_guard = hb_make_scope_guard ([&]() { wasm_runtime_unload (wasm_module); });
+  خپلکاری module_guard = hb_make_scope_guard ([&]() { wasm_runtime_unload (wasm_module); });
 
-  data = (hb_wasm_face_data_t *) hb_calloc (1, sizeof (hb_wasm_face_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  معلومات = (hb_wasm_face_معلومات_t *) hb_calloc (1, حجم (hb_wasm_face_معلومات_t));
+  إذا (unlikely (!معلومات))
+    أرجع تش_اشاره;
 
-  data->wasm_blob = wasm_blob.release ();
-  data->wasm_module = wasm_module;
+  معلومات->wasm_blob = wasm_blob.release ();
+  معلومات->wasm_module = wasm_module;
 
   module_guard.release ();
-  return data;
+  أرجع معلومات;
 }
 
-static hb_wasm_shape_plan_t *
+ساكن hb_wasm_shape_plan_t *
 acquire_shape_plan (hb_face_t *face,
-		    const hb_wasm_face_data_t *face_data)
+		    ثابت hb_wasm_face_معلومات_t *face_معلومات)
 {
-  char error[128];
+  حرف error[128];
 
   /* Fetch cached one if available. */
-  hb_wasm_shape_plan_t *plan = face_data->plan.get_acquire ();
-  if (likely (plan && face_data->plan.cmpexch (plan, nullptr)))
-    return plan;
+  hb_wasm_shape_plan_t *plan = face_معلومات->plan.get_acquire ();
+  إذا (likely (plan && face_معلومات->plan.cmpexch (plan, تش_اشاره)))
+    أرجع plan;
 
-  plan = (hb_wasm_shape_plan_t *) hb_calloc (1, sizeof (hb_wasm_shape_plan_t));
-  auto plan_guard = hb_make_scope_guard ([&]() { hb_free (plan); });
+  plan = (hb_wasm_shape_plan_t *) hb_calloc (1, حجم (hb_wasm_shape_plan_t));
+  خپلکاری plan_guard = hb_make_scope_guard ([&]() { hb_free (plan); });
 
-  constexpr uint32_t stack_size = 32 * 1024, heap_size = 2 * 1024 * 1024;
+  constexpr uint32_t ډېری_اندازه = 32 * 1024, ډېرۍ_اندازه = 2 * 1024 * 1024;
 
   wasm_module_inst_t module_inst = plan->module_inst = wasm_runtime_instantiate (
-      face_data->wasm_module, stack_size, heap_size, error, sizeof (error));
-  if (unlikely (!module_inst))
+      face_معلومات->wasm_module, ډېری_اندازه, ډېرۍ_اندازه, error, حجم (error));
+  إذا (unlikely (!module_inst))
   {
-    DEBUG_MSG (WASM, face_data, "Create wasm module instance failed: %s", error);
-    return nullptr;
+    DEBUG_پیغام (WASM, face_معلومات, "Create wasm module instance failed: %s", error);
+    أرجع تش_اشاره;
   }
-  auto module_guard = hb_make_scope_guard ([&]() { wasm_runtime_deinstantiate (module_inst); });
+  خپلکاری module_guard = hb_make_scope_guard ([&]() { wasm_runtime_deinstantiate (module_inst); });
 
-  wasm_exec_env_t exec_env = plan->exec_env = wasm_runtime_create_exec_env (module_inst, stack_size);
-  if (unlikely (!exec_env)) {
-    DEBUG_MSG (WASM, face_data, "Create wasm execution environment failed.");
-    return nullptr;
+  wasm_exec_env_t exec_env = plan->exec_env = wasm_runtime_create_exec_env (module_inst, ډېری_اندازه);
+  إذا (unlikely (!exec_env)) {
+    DEBUG_پیغام (WASM, face_معلومات, "Create wasm execution environment failed.");
+    أرجع تش_اشاره;
   }
-  auto exec_guard = hb_make_scope_guard ([&]() { wasm_runtime_destroy_exec_env (exec_env); });
+  خپلکاری exec_guard = hb_make_scope_guard ([&]() { wasm_runtime_destroy_exec_env (exec_env); });
 
   wasm_function_inst_t func = wasm_runtime_lookup_function (module_inst, "shape_plan_create");
-  if (func)
+  إذا (func)
   {
     wasm_val_t results[1];
     wasm_val_t arguments[1];
 
     HB_OBJ2REF (face);
-    if (unlikely (!faceref))
+    إذا (unlikely (!faceref))
     {
-      DEBUG_MSG (WASM, face_data, "Failed to register face object.");
-      return nullptr;
+      DEBUG_پیغام (WASM, face_معلومات, "Failed to register face object.");
+      أرجع تش_اشاره;
     }
 
-    results[0].kind = WASM_I32;
-    arguments[0].kind = WASM_I32;
+    results[0].ډول = WASM_I32;
+    arguments[0].ډول = WASM_I32;
     arguments[0].of.i32 = faceref;
-    bool ret = wasm_runtime_call_wasm_a (exec_env, func,
-					 ARRAY_LENGTH (results), results,
-					 ARRAY_LENGTH (arguments), arguments);
+    منطقي ret = wasm_runtime_call_wasm_a (exec_env, func,
+					 ARRAY_اوږدتیا (results), results,
+					 ARRAY_اوږدتیا (arguments), arguments);
 
-    if (unlikely (!ret))
+    إذا (unlikely (!ret))
     {
-      DEBUG_MSG (WASM, module_inst, "Calling shape_plan_create() failed: %s",
+      DEBUG_پیغام (WASM, module_inst, "Calling shape_plan_create() failed: %s",
 		 wasm_runtime_get_exception (module_inst));
-      return nullptr;
+      أرجع تش_اشاره;
     }
     plan->wasm_shape_planptr = results[0].of.i32;
   }
@@ -264,39 +264,39 @@ acquire_shape_plan (hb_face_t *face,
   plan_guard.release ();
   module_guard.release ();
   exec_guard.release ();
-  return plan;
+  أرجع plan;
 }
 
-static void
-release_shape_plan (const hb_wasm_face_data_t *face_data,
+ساكن فراغ
+release_shape_plan (ثابت hb_wasm_face_معلومات_t *face_معلومات,
 		    hb_wasm_shape_plan_t *plan,
-		    bool cache = false)
+		    منطقي cache = خطأ)
 {
-  if (cache && face_data->plan.cmpexch (nullptr, plan))
-    return;
+  إذا (cache && face_معلومات->plan.cmpexch (تش_اشاره, plan))
+    أرجع;
 
-  auto *module_inst = plan->module_inst;
-  auto *exec_env = plan->exec_env;
+  خپلکاری *module_inst = plan->module_inst;
+  خپلکاری *exec_env = plan->exec_env;
 
   /* Is there even any point to having a shape_plan_destroy function
    * and calling it? */
-  if (plan->wasm_shape_planptr)
+  إذا (plan->wasm_shape_planptr)
   {
 
-    auto *func = wasm_runtime_lookup_function (module_inst, "shape_plan_destroy");
-    if (func)
+    خپلکاری *func = wasm_runtime_lookup_function (module_inst, "shape_plan_destroy");
+    إذا (func)
     {
       wasm_val_t arguments[1];
 
-      arguments[0].kind = WASM_I32;
+      arguments[0].ډول = WASM_I32;
       arguments[0].of.i32 = plan->wasm_shape_planptr;
-      bool ret = wasm_runtime_call_wasm_a (exec_env, func,
-					   0, nullptr,
-					   ARRAY_LENGTH (arguments), arguments);
+      منطقي ret = wasm_runtime_call_wasm_a (exec_env, func,
+					   0, تش_اشاره,
+					   ARRAY_اوږدتیا (arguments), arguments);
 
-      if (unlikely (!ret))
+      إذا (unlikely (!ret))
       {
-	DEBUG_MSG (WASM, module_inst, "Calling shape_plan_destroy() failed: %s",
+	DEBUG_پیغام (WASM, module_inst, "Calling shape_plan_destroy() failed: %s",
 		   wasm_runtime_get_exception (module_inst));
       }
     }
@@ -307,14 +307,14 @@ release_shape_plan (const hb_wasm_face_data_t *face_data,
   hb_free (plan);
 }
 
-void
-_hb_wasm_shaper_face_data_destroy (hb_wasm_face_data_t *data)
+فراغ
+hb_wasm_shaper_face_معلومات_destroy (hb_wasm_face_معلومات_t *معلومات)
 {
-  if (data->plan.get_relaxed ())
-    release_shape_plan (data, data->plan);
-  wasm_runtime_unload (data->wasm_module);
-  hb_blob_destroy (data->wasm_blob);
-  hb_free (data);
+  إذا (معلومات->plan.get_relaxed ())
+    release_shape_plan (معلومات, معلومات->plan);
+  wasm_runtime_unload (معلومات->wasm_module);
+  hb_blob_destroy (معلومات->wasm_blob);
+  hb_free (معلومات);
 }
 
 
@@ -322,16 +322,16 @@ _hb_wasm_shaper_face_data_destroy (hb_wasm_face_data_t *data)
  * shaper font data
  */
 
-struct hb_wasm_font_data_t {};
+بنية hb_wasm_font_معلومات_t {};
 
-hb_wasm_font_data_t *
-_hb_wasm_shaper_font_data_create (hb_font_t *font HB_UNUSED)
+hb_wasm_font_معلومات_t *
+hb_wasm_shaper_font_معلومات_create (hb_font_t *font HB_ناکارول_شوی)
 {
-  return (hb_wasm_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  أرجع (hb_wasm_font_معلومات_t *) HB_SHAPER_معلومات_SUCCEEDED;
 }
 
-void
-_hb_wasm_shaper_font_data_destroy (hb_wasm_font_data_t *data HB_UNUSED)
+فراغ
+hb_wasm_shaper_font_معلومات_destroy (hb_wasm_font_معلومات_t *معلومات HB_ناکارول_شوی)
 {
 }
 
@@ -343,117 +343,117 @@ _hb_wasm_shaper_font_data_destroy (hb_wasm_font_data_t *data HB_UNUSED)
 hb_bool_t
 _hb_wasm_shape (hb_shape_plan_t    *shape_plan,
 		hb_font_t          *font,
-		hb_buffer_t        *buffer,
-		const hb_feature_t *features,
-		unsigned int        num_features)
+		hb_بفر_t        *بفر,
+		ثابت hb_feature_t *features,
+		بینښه صحيح        عدد_features)
 {
-  if (unlikely (buffer->in_error ()))
-    return false;
+  إذا (unlikely (بفر->دننه_error ()))
+    أرجع خطأ;
 
-  bool ret = true;
+  منطقي ret = ریښتیا;
   hb_face_t *face = font->face;
-  const hb_wasm_face_data_t *face_data = face->data.wasm;
+  ثابت hb_wasm_face_معلومات_t *face_معلومات = face->معلومات.wasm;
 
-  bool retried = false;
-  if (0)
+  منطقي retried = خطأ;
+  إذا (0)
   {
 retry:
-    DEBUG_MSG (WASM, font, "Retrying...");
+    DEBUG_پیغام (WASM, font, "Retrying...");
   }
 
-  wasm_function_inst_t func = nullptr;
+  wasm_function_inst_t func = تش_اشاره;
 
-  hb_wasm_shape_plan_t *plan = acquire_shape_plan (face, face_data);
-  if (unlikely (!plan))
+  hb_wasm_shape_plan_t *plan = acquire_shape_plan (face, face_معلومات);
+  إذا (unlikely (!plan))
   {
-    DEBUG_MSG (WASM, face_data, "Acquiring shape-plan failed.");
-    return false;
+    DEBUG_پیغام (WASM, face_معلومات, "Acquiring shape-plan failed.");
+    أرجع خطأ;
   }
 
-  auto *module_inst = plan->module_inst;
-  auto *exec_env = plan->exec_env;
+  خپلکاری *module_inst = plan->module_inst;
+  خپلکاری *exec_env = plan->exec_env;
 
   HB_OBJ2REF (font);
-  HB_OBJ2REF (buffer);
-  if (unlikely (!fontref || !bufferref))
+  HB_OBJ2REF (بفر);
+  إذا (unlikely (!fontref || !bufferref))
   {
-    DEBUG_MSG (WASM, module_inst, "Failed to register objects.");
-    goto fail;
+    DEBUG_پیغام (WASM, module_inst, "Failed to register objects.");
+    اذهب fail;
   }
 
   func = wasm_runtime_lookup_function (module_inst, "shape");
-  if (unlikely (!func))
+  إذا (unlikely (!func))
   {
-    DEBUG_MSG (WASM, module_inst, "Shape function not found.");
-    goto fail;
+    DEBUG_پیغام (WASM, module_inst, "Shape function not found.");
+    اذهب fail;
   }
 
   wasm_val_t results[1];
   wasm_val_t arguments[5];
 
   uint32_t featuresptr;
-  featuresptr = num_features ? wasm_runtime_module_dup_data (module_inst,
-							     (const char *) features,
-							     num_features * sizeof (features[0])) : 0;
+  featuresptr = عدد_features ? wasm_runtime_module_dup_معلومات (module_inst,
+							     (ثابت حرف *) features,
+							     عدد_features * حجم (features[0])) : 0;
 
-  results[0].kind = WASM_I32;
-  arguments[0].kind = WASM_I32;
+  results[0].ډول = WASM_I32;
+  arguments[0].ډول = WASM_I32;
   arguments[0].of.i32 = plan->wasm_shape_planptr;
-  arguments[1].kind = WASM_I32;
+  arguments[1].ډول = WASM_I32;
   arguments[1].of.i32 = fontref;
-  arguments[2].kind = WASM_I32;
+  arguments[2].ډول = WASM_I32;
   arguments[2].of.i32 = bufferref;
-  arguments[3].kind = WASM_I32;
+  arguments[3].ډول = WASM_I32;
   arguments[3].of.i32 = featuresptr;
-  arguments[4].kind = WASM_I32;
-  arguments[4].of.i32 = num_features;
+  arguments[4].ډول = WASM_I32;
+  arguments[4].of.i32 = عدد_features;
 
   ret = wasm_runtime_call_wasm_a (exec_env, func,
-				  ARRAY_LENGTH (results), results,
-				  ARRAY_LENGTH (arguments), arguments);
+				  ARRAY_اوږدتیا (results), results,
+				  ARRAY_اوږدتیا (arguments), arguments);
 
-  if (num_features)
+  إذا (عدد_features)
     wasm_runtime_module_free (module_inst, featuresptr);
 
-  if (unlikely (!ret || !results[0].of.i32))
+  إذا (unlikely (!ret || !results[0].of.i32))
   {
-    DEBUG_MSG (WASM, module_inst, "Calling shape() failed: %s",
+    DEBUG_پیغام (WASM, module_inst, "Calling shape() failed: %s",
 	       wasm_runtime_get_exception (module_inst));
-    if (!buffer->ensure_unicode ())
+    إذا (!بفر->ensure_unicode ())
     {
-      DEBUG_MSG (WASM, font, "Shape failed but buffer is not in Unicode; failing...");
-      goto fail;
+      DEBUG_پیغام (WASM, font, "Shape failed but buffer is not in Unicode; failing...");
+      اذهب fail;
     }
-    if (retried)
+    إذا (retried)
     {
-      DEBUG_MSG (WASM, font, "Giving up...");
-      goto fail;
+      DEBUG_پیغام (WASM, font, "Giving up...");
+      اذهب fail;
     }
-    buffer->successful = true;
-    retried = true;
-    release_shape_plan (face_data, plan);
-    plan = nullptr;
-    goto retry;
+    بفر->successful = ریښتیا;
+    retried = ریښتیا;
+    release_shape_plan (face_معلومات, plan);
+    plan = تش_اشاره;
+    اذهب retry;
   }
 
   /* TODO Regularize clusters according to direction & cluster level,
    * such that client doesn't crash with unmet expectations. */
 
-  if (!results[0].of.i32)
+  إذا (!results[0].of.i32)
   {
 fail:
-    ret = false;
+    ret = خطأ;
   }
 
-  release_shape_plan (face_data, plan, ret);
+  release_shape_plan (face_معلومات, plan, ret);
 
-  if (ret)
+  إذا (ret)
   {
-    buffer->clear_glyph_flags ();
-    buffer->unsafe_to_break ();
+    بفر->clear_glyph_flags ();
+    بفر->unsafe_منزل_break ();
   }
 
-  return ret;
+  أرجع ret;
 }
 
-#endif
+#د_که_پای

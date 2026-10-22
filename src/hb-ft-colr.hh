@@ -22,106 +22,106 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_FT_COLR_HH
-#define HB_FT_COLR_HH
+#که_نه_تعریف_شوی HB_FT_COLR_HH
+#تعریف_کړه HB_FT_COLR_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-decycler.hh"
-#include "hb-paint-bounded.hh"
+#ضمن "hb-decycler.hh"
+#ضمن "hb-paint-bounded.hh"
 
-#include FT_COLOR_H
+#ضمن FT_COLOR_H
 
 
-static hb_paint_composite_mode_t
-_hb_ft_paint_composite_mode (FT_Composite_Mode mode)
+ساكن hb_paint_مرکب_ډېرپېښ_t
+hb_ft_paint_مرکب_ډېرپېښ (FT_مرکب_ډېرپېښ ډېرپېښ)
 {
-  switch (mode)
+  بدل (ډېرپېښ)
   {
-    case FT_COLR_COMPOSITE_CLEAR:          return HB_PAINT_COMPOSITE_MODE_CLEAR;
-    case FT_COLR_COMPOSITE_SRC:            return HB_PAINT_COMPOSITE_MODE_SRC;
-    case FT_COLR_COMPOSITE_DEST:           return HB_PAINT_COMPOSITE_MODE_DEST;
-    case FT_COLR_COMPOSITE_SRC_OVER:       return HB_PAINT_COMPOSITE_MODE_SRC_OVER;
-    case FT_COLR_COMPOSITE_DEST_OVER:      return HB_PAINT_COMPOSITE_MODE_DEST_OVER;
-    case FT_COLR_COMPOSITE_SRC_IN:         return HB_PAINT_COMPOSITE_MODE_SRC_IN;
-    case FT_COLR_COMPOSITE_DEST_IN:        return HB_PAINT_COMPOSITE_MODE_DEST_IN;
-    case FT_COLR_COMPOSITE_SRC_OUT:        return HB_PAINT_COMPOSITE_MODE_SRC_OUT;
-    case FT_COLR_COMPOSITE_DEST_OUT:       return HB_PAINT_COMPOSITE_MODE_DEST_OUT;
-    case FT_COLR_COMPOSITE_SRC_ATOP:       return HB_PAINT_COMPOSITE_MODE_SRC_ATOP;
-    case FT_COLR_COMPOSITE_DEST_ATOP:      return HB_PAINT_COMPOSITE_MODE_DEST_ATOP;
-    case FT_COLR_COMPOSITE_XOR:            return HB_PAINT_COMPOSITE_MODE_XOR;
-    case FT_COLR_COMPOSITE_PLUS:           return HB_PAINT_COMPOSITE_MODE_PLUS;
-    case FT_COLR_COMPOSITE_SCREEN:         return HB_PAINT_COMPOSITE_MODE_SCREEN;
-    case FT_COLR_COMPOSITE_OVERLAY:        return HB_PAINT_COMPOSITE_MODE_OVERLAY;
-    case FT_COLR_COMPOSITE_DARKEN:         return HB_PAINT_COMPOSITE_MODE_DARKEN;
-    case FT_COLR_COMPOSITE_LIGHTEN:        return HB_PAINT_COMPOSITE_MODE_LIGHTEN;
-    case FT_COLR_COMPOSITE_COLOR_DODGE:    return HB_PAINT_COMPOSITE_MODE_COLOR_DODGE;
-    case FT_COLR_COMPOSITE_COLOR_BURN:     return HB_PAINT_COMPOSITE_MODE_COLOR_BURN;
-    case FT_COLR_COMPOSITE_HARD_LIGHT:     return HB_PAINT_COMPOSITE_MODE_HARD_LIGHT;
-    case FT_COLR_COMPOSITE_SOFT_LIGHT:     return HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT;
-    case FT_COLR_COMPOSITE_DIFFERENCE:     return HB_PAINT_COMPOSITE_MODE_DIFFERENCE;
-    case FT_COLR_COMPOSITE_EXCLUSION:      return HB_PAINT_COMPOSITE_MODE_EXCLUSION;
-    case FT_COLR_COMPOSITE_MULTIPLY:       return HB_PAINT_COMPOSITE_MODE_MULTIPLY;
-    case FT_COLR_COMPOSITE_HSL_HUE:        return HB_PAINT_COMPOSITE_MODE_HSL_HUE;
-    case FT_COLR_COMPOSITE_HSL_SATURATION: return HB_PAINT_COMPOSITE_MODE_HSL_SATURATION;
-    case FT_COLR_COMPOSITE_HSL_COLOR:      return HB_PAINT_COMPOSITE_MODE_HSL_COLOR;
-    case FT_COLR_COMPOSITE_HSL_LUMINOSITY: return HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY;
+    حالة FT_COLR_مرکب_CLEAR:          أرجع HB_PAINT_مرکب_ډېرپېښ_CLEAR;
+    حالة FT_COLR_مرکب_SRC:            أرجع HB_PAINT_مرکب_ډېرپېښ_SRC;
+    حالة FT_COLR_مرکب_DEST:           أرجع HB_PAINT_مرکب_ډېرپېښ_DEST;
+    حالة FT_COLR_مرکب_SRC_OVER:       أرجع HB_PAINT_مرکب_ډېرپېښ_SRC_OVER;
+    حالة FT_COLR_مرکب_DEST_OVER:      أرجع HB_PAINT_مرکب_ډېرپېښ_DEST_OVER;
+    حالة FT_COLR_مرکب_SRC_دننه:         أرجع HB_PAINT_مرکب_ډېرپېښ_SRC_دننه;
+    حالة FT_COLR_مرکب_DEST_دننه:        أرجع HB_PAINT_مرکب_ډېرپېښ_DEST_دننه;
+    حالة FT_COLR_مرکب_SRC_بهر:        أرجع HB_PAINT_مرکب_ډېرپېښ_SRC_بهر;
+    حالة FT_COLR_مرکب_DEST_بهر:       أرجع HB_PAINT_مرکب_ډېرپېښ_DEST_بهر;
+    حالة FT_COLR_مرکب_SRC_ATOP:       أرجع HB_PAINT_مرکب_ډېرپېښ_SRC_ATOP;
+    حالة FT_COLR_مرکب_DEST_ATOP:      أرجع HB_PAINT_مرکب_ډېرپېښ_DEST_ATOP;
+    حالة FT_COLR_مرکب_XOR:            أرجع HB_PAINT_مرکب_ډېرپېښ_XOR;
+    حالة FT_COLR_مرکب_PLUS:           أرجع HB_PAINT_مرکب_ډېرپېښ_PLUS;
+    حالة FT_COLR_مرکب_SCREEN:         أرجع HB_PAINT_مرکب_ډېرپېښ_SCREEN;
+    حالة FT_COLR_مرکب_OVERLAY:        أرجع HB_PAINT_مرکب_ډېرپېښ_OVERLAY;
+    حالة FT_COLR_مرکب_DARKEN:         أرجع HB_PAINT_مرکب_ډېرپېښ_DARKEN;
+    حالة FT_COLR_مرکب_LIGHTEN:        أرجع HB_PAINT_مرکب_ډېرپېښ_LIGHTEN;
+    حالة FT_COLR_مرکب_COLOR_DODGE:    أرجع HB_PAINT_مرکب_ډېرپېښ_COLOR_DODGE;
+    حالة FT_COLR_مرکب_COLOR_BURN:     أرجع HB_PAINT_مرکب_ډېرپېښ_COLOR_BURN;
+    حالة FT_COLR_مرکب_HARD_LIGHT:     أرجع HB_PAINT_مرکب_ډېرپېښ_HARD_LIGHT;
+    حالة FT_COLR_مرکب_SOFT_LIGHT:     أرجع HB_PAINT_مرکب_ډېرپېښ_SOFT_LIGHT;
+    حالة FT_COLR_مرکب_DIFFERENCE:     أرجع HB_PAINT_مرکب_ډېرپېښ_DIFFERENCE;
+    حالة FT_COLR_مرکب_EXCLUSION:      أرجع HB_PAINT_مرکب_ډېرپېښ_EXCLUSION;
+    حالة FT_COLR_مرکب_MULTIPLY:       أرجع HB_PAINT_مرکب_ډېرپېښ_MULTIPLY;
+    حالة FT_COLR_مرکب_HSL_HUE:        أرجع HB_PAINT_مرکب_ډېرپېښ_HSL_HUE;
+    حالة FT_COLR_مرکب_HSL_SATURATION: أرجع HB_PAINT_مرکب_ډېرپېښ_HSL_SATURATION;
+    حالة FT_COLR_مرکب_HSL_COLOR:      أرجع HB_PAINT_مرکب_ډېرپېښ_HSL_COLOR;
+    حالة FT_COLR_مرکب_HSL_LUMINOSITY: أرجع HB_PAINT_مرکب_ډېرپېښ_HSL_LUMINOSITY;
 
-    case FT_COLR_COMPOSITE_MAX:            HB_FALLTHROUGH;
-    default:                               return HB_PAINT_COMPOSITE_MODE_CLEAR;
+    حالة FT_COLR_مرکب_MAX:            HB_FALLTHROUGH;
+    افتراضي:                               أرجع HB_PAINT_مرکب_ډېرپېښ_CLEAR;
   }
 }
 
-typedef struct hb_ft_paint_context_t hb_ft_paint_context_t;
+تعريفنوع بنية hb_ft_paint_context_t hb_ft_paint_context_t;
 
-static void
+ساكن فراغ
 _hb_ft_paint (hb_ft_paint_context_t *c,
 	      FT_OpaquePaint opaque_paint);
 
-static void
+ساكن فراغ
 _hb_ft_unscale_clip_box (hb_font_t *font,
-			 const FT_ClipBox *clip_box,
-			 float *xmin, float *ymin,
-			 float *xmax, float *ymax)
+			 ثابت FT_ClipBox *clip_box,
+			 عائم *xmin, عائم *ymin,
+			 عائم *xmax, عائم *ymax)
 {
   /* The FreeType ClipBox is in scaled coordinates. Convert it back to
    * font units before pushing it under the font transform.
    */
-  float upem = font->face->get_upem ();
-  float xscale = upem / (font->x_scale ? font->x_scale : upem);
-  float yscale = upem / (font->y_scale ? font->y_scale : upem);
+  عائم upem = font->face->get_upem ();
+  عائم xscale = upem / (font->x_scale ? font->x_scale : upem);
+  عائم yscale = upem / (font->y_scale ? font->y_scale : upem);
 
-  *xmin = clip_box->bottom_left.x * xscale;
-  *ymin = clip_box->bottom_left.y * yscale;
-  *xmax = clip_box->top_right.x * xscale;
-  *ymax = clip_box->top_right.y * yscale;
+  *xmin = clip_box->bottom_کیڼ.x * xscale;
+  *ymin = clip_box->bottom_کیڼ.y * yscale;
+  *xmax = clip_box->سر_ښی.x * xscale;
+  *ymax = clip_box->سر_ښی.y * yscale;
 }
 
-static unsigned
-_hb_ft_color_alpha (unsigned alpha, unsigned alpha_mult)
+ساكن بینښه
+_hb_ft_color_alpha (بینښه alpha, بینښه alpha_mult)
 {
-  return (alpha * alpha_mult + (1 << 13)) >> 14;
+  أرجع (alpha * alpha_mult + (1 << 13)) >> 14;
 }
 
-struct hb_ft_paint_context_t
+بنية hb_ft_paint_context_t
 {
-  hb_ft_paint_context_t (const hb_ft_font_t *ft_font_,
+  hb_ft_paint_context_t (ثابت hb_ft_font_t *ft_font_,
 			 hb_font_t *font_,
-			 hb_paint_funcs_t *paint_funcs, void *paint_data,
-			 hb_array_t<const FT_Color> palette,
-			 unsigned palette_index,
+			 hb_paint_funcs_t *paint_funcs, فراغ *paint_معلومات,
+			 hb_array_t<ثابت FT_Color> palette,
+			 بینښه palette_شاخص,
 			 hb_color_t foreground) :
     ft_font (ft_font_), font (font_),
-    funcs (paint_funcs), data (paint_data),
-    palette (palette), palette_index (palette_index), foreground (foreground)
+    funcs (paint_funcs), معلومات (paint_معلومات),
+    palette (palette), palette_شاخص (palette_شاخص), foreground (foreground)
   {
-    if (font->is_synthetic)
+    إذا (font->is_synthetic)
     {
       font = hb_font_create_sub_font (font);
-      hb_font_set_synthetic_bold (font, 0, 0, true);
-      hb_font_set_synthetic_slant (font, 0);
+      hb_font_سېټ_synthetic_bold (font, 0, 0, ریښتیا);
+      hb_font_سېټ_synthetic_slant (font, 0);
     }
-    else
+    وإلا
       hb_font_reference (font);
   }
 
@@ -130,54 +130,54 @@ struct hb_ft_paint_context_t
     hb_font_destroy (font);
   }
 
-  void recurse (FT_OpaquePaint paint)
+  فراغ recurse (FT_OpaquePaint paint)
   {
-    if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
-    depth_left--;
-    edge_count--;
-    _hb_ft_paint (this, paint);
-    depth_left++;
+    إذا (unlikely (ژوروالی_کیڼ <= 0 || څنډه_شمېر <= 0)) أرجع;
+    ژوروالی_کیڼ--;
+    څنډه_شمېر--;
+    _hb_ft_paint (هذا, paint);
+    ژوروالی_کیڼ++;
   }
 
-  const hb_ft_font_t *ft_font;
+  ثابت hb_ft_font_t *ft_font;
   hb_font_t *font;
   hb_paint_funcs_t *funcs;
-  void *data;
-  hb_array_t<const FT_Color> palette;
-  unsigned palette_index;
+  فراغ *معلومات;
+  hb_array_t<ثابت FT_Color> palette;
+  بینښه palette_شاخص;
   hb_color_t foreground;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  صحيح ژوروالی_کیڼ = HB_MAX_NESTING_LEVEL;
+  صحيح څنډه_شمېر = HB_MAX_ګراف_څنډه_شمېر;
 };
 
-static unsigned
-_hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
-				   void *color_line_data,
-				   unsigned int start,
-				   unsigned int *count,
+ساكن بینښه
+hb_ft_color_کرښه_get_color_stops (hb_color_کرښه_t *color_کرښه,
+				   فراغ *color_کرښه_معلومات,
+				   بینښه صحيح پیل,
+				   بینښه صحيح *شمېر,
 				   hb_color_stop_t *color_stops,
-				   void *user_data)
+				   فراغ *user_معلومات)
 {
-  FT_ColorLine *cl = (FT_ColorLine *) color_line_data;
-  hb_ft_paint_context_t *c = (hb_ft_paint_context_t *) user_data;
+  FT_Color_کرښه *cl = (FT_Color_کرښه *) color_کرښه_معلومات;
+  hb_ft_paint_context_t *c = (hb_ft_paint_context_t *) user_معلومات;
 
-  if (count && color_stops)
+  إذا (شمېر && color_stops)
   {
     FT_ColorStop stop;
-    unsigned wrote = 0;
+    بینښه wrote = 0;
     FT_ColorStopIterator iter = cl->color_stop_iterator;
 
-    if (start >= cl->color_stop_iterator.num_color_stops)
+    إذا (پیل >= cl->color_stop_iterator.عدد_color_stops)
     {
-      *count = 0;
-      return cl->color_stop_iterator.num_color_stops;
+      *شمېر = 0;
+      أرجع cl->color_stop_iterator.عدد_color_stops;
     }
 
-    while (cl->color_stop_iterator.current_color_stop < start)
+    طالما (cl->color_stop_iterator.current_color_stop < پیل)
     {
-      if (!FT_Get_Colorline_Stops(c->ft_font->ft_face,
+      إذا (!FT_Get_Colorline_Stops(c->ft_font->ft_face,
 			     &stop,
 			     &cl->color_stop_iterator))
       {
@@ -187,32 +187,32 @@ _hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
          //
          // reset the iterator for next time
         cl->color_stop_iterator = iter;
-        return cl->color_stop_iterator.num_color_stops;
+        أرجع cl->color_stop_iterator.عدد_color_stops;
       }
     }
 
-    while (wrote < *count &&
+    طالما (wrote < *شمېر &&
 	   FT_Get_Colorline_Stops(c->ft_font->ft_face,
 				  &stop,
 				  &cl->color_stop_iterator))
     {
       // https://github.com/harfbuzz/harfbuzz/issues/4013
-      if (sizeof stop.stop_offset == 2)
-	color_stops->offset = stop.stop_offset / 16384.f;
-      else
-	color_stops->offset = stop.stop_offset / 65536.f;
+      إذا (حجم stop.stop_دننه_واټن_2 == 2)
+	color_stops->دننه_واټن = stop.stop_دننه_واټن_2 / 16384.f;
+      وإلا
+	color_stops->دننه_واټن = stop.stop_دننه_واټن_2 / 65536.f;
 
-      color_stops->is_foreground = stop.color.palette_index == 0xFFFF;
-      if (color_stops->is_foreground)
+      color_stops->is_foreground = stop.color.palette_شاخص == 0xFFFF;
+      إذا (color_stops->is_foreground)
 	color_stops->color = HB_COLOR (hb_color_get_blue (c->foreground),
 				       hb_color_get_green (c->foreground),
 				       hb_color_get_red (c->foreground),
 				       _hb_ft_color_alpha (hb_color_get_alpha (c->foreground),
 							   stop.color.alpha));
-      else
+      وإلا
       {
 	hb_color_t color;
-        if (c->funcs->custom_palette_color (c->data, stop.color.palette_index, &color))
+        إذا (c->funcs->custom_palette_color (c->معلومات, stop.color.palette_شاخص, &color))
 	{
 	  color_stops->color = HB_COLOR (hb_color_get_blue (color),
 					 hb_color_get_green (color),
@@ -220,16 +220,16 @@ _hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
 					 _hb_ft_color_alpha (hb_color_get_alpha (color),
 							     stop.color.alpha));
 	}
-	else if (c->palette)
+	وإلا إذا (c->palette)
 	{
-	  FT_Color ft_color = c->palette[stop.color.palette_index];
+	  FT_Color ft_color = c->palette[stop.color.palette_شاخص];
 	  color_stops->color = HB_COLOR (ft_color.blue,
 					 ft_color.green,
 					 ft_color.red,
 					 _hb_ft_color_alpha (ft_color.alpha,
 							     stop.color.alpha));
 	}
-	else
+	وإلا
 	  color_stops->color = HB_COLOR (0, 0, 0, 0);
       }
 
@@ -237,127 +237,127 @@ _hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
       wrote++;
     }
 
-    *count = wrote;
+    *شمېر = wrote;
     // reset the iterator for next time
     cl->color_stop_iterator = iter;
   }
 
-  return cl->color_stop_iterator.num_color_stops;
+  أرجع cl->color_stop_iterator.عدد_color_stops;
 }
 
-static hb_paint_extend_t
-_hb_ft_color_line_get_extend (hb_color_line_t *color_line,
-			      void *color_line_data,
-			      void *user_data)
+ساكن hb_paint_extend_t
+hb_ft_color_کرښه_get_extend (hb_color_کرښه_t *color_کرښه,
+			      فراغ *color_کرښه_معلومات,
+			      فراغ *user_معلومات)
 {
-  FT_ColorLine *c = (FT_ColorLine *) color_line_data;
-  switch (c->extend)
+  FT_Color_کرښه *c = (FT_Color_کرښه *) color_کرښه_معلومات;
+  بدل (c->extend)
   {
-    default:
-    case FT_COLR_PAINT_EXTEND_PAD:     return HB_PAINT_EXTEND_PAD;
-    case FT_COLR_PAINT_EXTEND_REPEAT:  return HB_PAINT_EXTEND_REPEAT;
-    case FT_COLR_PAINT_EXTEND_REFLECT: return HB_PAINT_EXTEND_REFLECT;
+    افتراضي:
+    حالة FT_COLR_PAINT_EXTEND_PAD:     أرجع HB_PAINT_EXTEND_PAD;
+    حالة FT_COLR_PAINT_EXTEND_REPEAT:  أرجع HB_PAINT_EXTEND_REPEAT;
+    حالة FT_COLR_PAINT_EXTEND_REFLECT: أرجع HB_PAINT_EXTEND_REFLECT;
   }
 }
 
-static void
+ساكن فراغ
 _hb_ft_get_solid_color (hb_ft_paint_context_t *c,
-			const FT_ColorIndex &color_index,
+			ثابت FT_Color_شاخص &color_شاخص,
 			hb_bool_t *is_foreground,
 			hb_color_t *color)
 {
-  *is_foreground = color_index.palette_index == 0xFFFF;
+  *is_foreground = color_شاخص.palette_شاخص == 0xFFFF;
 
-  if (*is_foreground)
+  إذا (*is_foreground)
   {
     *color = HB_COLOR (hb_color_get_blue (c->foreground),
 		       hb_color_get_green (c->foreground),
 		       hb_color_get_red (c->foreground),
 		       _hb_ft_color_alpha (hb_color_get_alpha (c->foreground),
-					   color_index.alpha));
-    return;
+					   color_شاخص.alpha));
+    أرجع;
   }
 
-  if (c->funcs->custom_palette_color (c->data, color_index.palette_index, color))
+  إذا (c->funcs->custom_palette_color (c->معلومات, color_شاخص.palette_شاخص, color))
   {
     *color = HB_COLOR (hb_color_get_blue (*color),
 		       hb_color_get_green (*color),
 		       hb_color_get_red (*color),
 		       _hb_ft_color_alpha (hb_color_get_alpha (*color),
-					   color_index.alpha));
-    return;
+					   color_شاخص.alpha));
+    أرجع;
   }
 
-  FT_Color ft_color = c->palette[color_index.palette_index];
+  FT_Color ft_color = c->palette[color_شاخص.palette_شاخص];
   *color = HB_COLOR (ft_color.blue,
 		     ft_color.green,
 		     ft_color.red,
 		     _hb_ft_color_alpha (ft_color.alpha,
-					 color_index.alpha));
+					 color_شاخص.alpha));
 }
 
-void
+فراغ
 _hb_ft_paint (hb_ft_paint_context_t *c,
 	      FT_OpaquePaint opaque_paint)
 {
   FT_Face ft_face = c->ft_font->ft_face;
   FT_COLR_Paint paint;
-  if (!FT_Get_Paint (ft_face, opaque_paint, &paint))
-    return;
+  إذا (!FT_Get_Paint (ft_face, opaque_paint, &paint))
+    أرجع;
 
-  switch (paint.format)
+  بدل (paint.format)
   {
-    case FT_COLR_PAINTFORMAT_COLR_LAYERS:
+    حالة FT_COLR_PAINTFORMAT_COLR_LAYERS:
     {
       FT_OpaquePaint other_paint = {0};
-      hb_decycler_node_t node (c->layers_decycler);
-      while (FT_Get_Paint_Layers (ft_face,
+      hb_decycler_غوټه_t node (c->layers_decycler);
+      طالما (FT_Get_Paint_Layers (ft_face,
 				  &paint.u.colr_layers.layer_iterator,
 				  &other_paint))
       {
 	// FreeType doesn't provide a way to get the layer index, so we use the pointer
 	// for cycle detection.
-	if (unlikely (!node.visit ((uintptr_t) other_paint.p)))
-	  continue;
+	إذا (unlikely (!node.لیدنه ((uintptr_t) other_paint.p)))
+	  استمر;
 
 	c->recurse (other_paint);
       }
     }
-    break;
-    case FT_COLR_PAINTFORMAT_SOLID:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_SOLID:
     {
       hb_bool_t is_foreground;
       hb_color_t color;
       _hb_ft_get_solid_color (c, paint.u.solid.color, &is_foreground, &color);
-      c->funcs->color (c->data, is_foreground, color);
+      c->funcs->color (c->معلومات, is_foreground, color);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_LINEAR_GRADIENT:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_خطي_GRADIENT:
     {
-      hb_color_line_t cl = {
-	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+      hb_color_کرښه_t cl = {
+	&paint.u.خطي_gradient.colorline,
+	hb_ft_color_کرښه_get_color_stops, c,
+	hb_ft_color_کرښه_get_extend, تش_اشاره
       };
 
-      c->funcs->linear_gradient (c->data, &cl,
-				 paint.u.linear_gradient.p0.x / 65536.f,
-				 paint.u.linear_gradient.p0.y / 65536.f,
-				 paint.u.linear_gradient.p1.x / 65536.f,
-				 paint.u.linear_gradient.p1.y / 65536.f,
-				 paint.u.linear_gradient.p2.x / 65536.f,
-				 paint.u.linear_gradient.p2.y / 65536.f);
+      c->funcs->خطي_gradient (c->معلومات, &cl,
+				 paint.u.خطي_gradient.p0.x / 65536.f,
+				 paint.u.خطي_gradient.p0.y / 65536.f,
+				 paint.u.خطي_gradient.p1.x / 65536.f,
+				 paint.u.خطي_gradient.p1.y / 65536.f,
+				 paint.u.خطي_gradient.p2.x / 65536.f,
+				 paint.u.خطي_gradient.p2.y / 65536.f);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_RADIAL_GRADIENT:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_RADIAL_GRADIENT:
     {
-      hb_color_line_t cl = {
-	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+      hb_color_کرښه_t cl = {
+	&paint.u.خطي_gradient.colorline,
+	hb_ft_color_کرښه_get_color_stops, c,
+	hb_ft_color_کرښه_get_extend, تش_اشاره
       };
 
-      c->funcs->radial_gradient (c->data, &cl,
+      c->funcs->radial_gradient (c->معلومات, &cl,
 				 paint.u.radial_gradient.c0.x / 65536.f,
 				 paint.u.radial_gradient.c0.y / 65536.f,
 				 paint.u.radial_gradient.r0 / 65536.f,
@@ -365,27 +365,27 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 				 paint.u.radial_gradient.c1.y / 65536.f,
 				 paint.u.radial_gradient.r1 / 65536.f);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_SWEEP_GRADIENT:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_SWEEP_GRADIENT:
     {
-      hb_color_line_t cl = {
-	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+      hb_color_کرښه_t cl = {
+	&paint.u.خطي_gradient.colorline,
+	hb_ft_color_کرښه_get_color_stops, c,
+	hb_ft_color_کرښه_get_extend, تش_اشاره
       };
 
-      c->funcs->sweep_gradient (c->data, &cl,
+      c->funcs->sweep_gradient (c->معلومات, &cl,
 				paint.u.sweep_gradient.center.x / 65536.f,
 				paint.u.sweep_gradient.center.y / 65536.f,
-				(paint.u.sweep_gradient.start_angle / 65536.f + 1) * HB_PI,
-				(paint.u.sweep_gradient.end_angle / 65536.f + 1) * HB_PI);
+				(paint.u.sweep_gradient.پیل_angle / 65536.f + 1) * HB_PI,
+				(paint.u.sweep_gradient.پای_ټکی_angle / 65536.f + 1) * HB_PI);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_GLYPH:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_GLYPH:
     {
       /* Optimize cases that can use a simple fill-glyph operation. */
       FT_COLR_Paint fill;
-      if (likely (c->depth_left > 0 && c->edge_count > 0) &&
+      إذا (likely (c->ژوروالی_کیڼ > 0 && c->څنډه_شمېر > 0) &&
 	  FT_Get_Paint (ft_face, paint.u.glyph.paint, &fill) &&
 	  fill.format == FT_COLR_PAINTFORMAT_SOLID)
       {
@@ -393,73 +393,73 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 	hb_color_t color;
 	_hb_ft_get_solid_color (c, fill.u.solid.color, &is_foreground, &color);
 
-	c->edge_count--;
-	c->funcs->push_inverse_font_transform (c->data, c->font);
+	c->څنډه_شمېر--;
+	c->funcs->ټېل_inverse_font_transform (c->معلومات, c->font);
 	c->ft_font->lock.unlock ();
-	c->funcs->fill_glyph (c->data, paint.u.glyph.glyphID, c->font,
+	c->funcs->fill_glyph (c->معلومات, paint.u.glyph.glyphID, c->font,
 			      is_foreground, color);
 	c->ft_font->lock.lock ();
-	c->funcs->pop_transform (c->data);
-	break;
+	c->funcs->راوباسه_transform (c->معلومات);
+	اكسر;
       }
 
-      c->funcs->push_inverse_font_transform (c->data, c->font);
+      c->funcs->ټېل_inverse_font_transform (c->معلومات, c->font);
       c->ft_font->lock.unlock ();
-      c->funcs->push_clip_glyph (c->data, paint.u.glyph.glyphID, c->font);
+      c->funcs->ټېل_clip_glyph (c->معلومات, paint.u.glyph.glyphID, c->font);
       c->ft_font->lock.lock ();
-      c->funcs->push_font_transform (c->data, c->font);
+      c->funcs->ټېل_font_transform (c->معلومات, c->font);
       c->recurse (paint.u.glyph.paint);
-      c->funcs->pop_transform (c->data);
-      c->funcs->pop_clip (c->data);
-      c->funcs->pop_transform (c->data);
+      c->funcs->راوباسه_transform (c->معلومات);
+      c->funcs->راوباسه_clip (c->معلومات);
+      c->funcs->راوباسه_transform (c->معلومات);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_COLR_GLYPH:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_COLR_GLYPH:
     {
       hb_codepoint_t gid = paint.u.colr_glyph.glyphID;
 
-      hb_decycler_node_t node (c->glyphs_decycler);
-      if (unlikely (!node.visit (gid)))
-	return;
+      hb_decycler_غوټه_t node (c->glyphs_decycler);
+      إذا (unlikely (!node.لیدنه (gid)))
+	أرجع;
 
-      c->funcs->push_inverse_font_transform (c->data, c->font);
+      c->funcs->ټېل_inverse_font_transform (c->معلومات, c->font);
       c->ft_font->lock.unlock ();
-      if (c->funcs->color_glyph (c->data, gid, c->font))
+      إذا (c->funcs->color_glyph (c->معلومات, gid, c->font))
       {
 	c->ft_font->lock.lock ();
-	c->funcs->pop_transform (c->data);
-	return;
+	c->funcs->راوباسه_transform (c->معلومات);
+	أرجع;
       }
       c->ft_font->lock.lock ();
-      c->funcs->pop_transform (c->data);
+      c->funcs->راوباسه_transform (c->معلومات);
 
       FT_OpaquePaint other_paint = {0};
-      if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-				    FT_COLOR_NO_ROOT_TRANSFORM,
+      إذا (FT_Get_Color_Glyph_Paint (ft_face, gid,
+				    FT_COLOR_NO_ریښه_TRANSFORM,
 				    &other_paint))
       {
-        bool has_clip_box;
+        منطقي has_clip_box;
         FT_ClipBox clip_box;
         has_clip_box = FT_Get_Color_Glyph_ClipBox (ft_face, paint.u.colr_glyph.glyphID, &clip_box);
 
-        if (has_clip_box)
+        إذا (has_clip_box)
 	{
-	  float xmin, ymin, xmax, ymax;
+	  عائم xmin, ymin, xmax, ymax;
 	  _hb_ft_unscale_clip_box (c->font, &clip_box,
 				   &xmin, &ymin, &xmax, &ymax);
-	  c->funcs->push_clip_rectangle (c->data, xmin, ymin, xmax, ymax);
+	  c->funcs->ټېل_clip_rectangle (c->معلومات, xmin, ymin, xmax, ymax);
 	}
 
 	c->recurse (other_paint);
 
-        if (has_clip_box)
-          c->funcs->pop_clip (c->data);
+        إذا (has_clip_box)
+          c->funcs->راوباسه_clip (c->معلومات);
       }
     }
-    break;
-    case FT_COLR_PAINTFORMAT_TRANSFORM:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_TRANSFORM:
     {
-      c->funcs->push_transform (c->data,
+      c->funcs->ټېل_transform (c->معلومات,
 				paint.u.transform.affine.xx / 65536.f,
 				paint.u.transform.affine.yx / 65536.f,
 				paint.u.transform.affine.xy / 65536.f,
@@ -467,193 +467,193 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 				paint.u.transform.affine.dx / 65536.f,
 				paint.u.transform.affine.dy / 65536.f);
       c->recurse (paint.u.transform.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->راوباسه_transform (c->معلومات);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_TRANSLATE:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_TRANSLATE:
     {
-      float dx = paint.u.translate.dx / 65536.f;
-      float dy = paint.u.translate.dy / 65536.f;
+      عائم dx = paint.u.translate.dx / 65536.f;
+      عائم dy = paint.u.translate.dy / 65536.f;
 
-      c->funcs->push_translate (c->data, dx, dy);
+      c->funcs->ټېل_translate (c->معلومات, dx, dy);
       c->recurse (paint.u.translate.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->راوباسه_transform (c->معلومات);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_SCALE:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_SCALE:
     {
-      float dx = paint.u.scale.center_x / 65536.f;
-      float dy = paint.u.scale.center_y / 65536.f;
-      float sx = paint.u.scale.scale_x / 65536.f;
-      float sy = paint.u.scale.scale_y / 65536.f;
+      عائم dx = paint.u.scale.center_x / 65536.f;
+      عائم dy = paint.u.scale.center_y / 65536.f;
+      عائم sx = paint.u.scale.scale_x / 65536.f;
+      عائم sy = paint.u.scale.scale_y / 65536.f;
 
-      c->funcs->push_scale_around_center (c->data, sx, sy, dx, dy);
+      c->funcs->ټېل_scale_around_center (c->معلومات, sx, sy, dx, dy);
       c->recurse (paint.u.scale.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->راوباسه_transform (c->معلومات);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_ROTATE:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_ROTATE:
     {
-      float dx = paint.u.rotate.center_x / 65536.f;
-      float dy = paint.u.rotate.center_y / 65536.f;
-      float a = paint.u.rotate.angle / 65536.f;
+      عائم dx = paint.u.rotate.center_x / 65536.f;
+      عائم dy = paint.u.rotate.center_y / 65536.f;
+      عائم a = paint.u.rotate.angle / 65536.f;
 
-      c->funcs->push_rotate_around_center (c->data, a, dx, dy);
+      c->funcs->ټېل_rotate_around_center (c->معلومات, a, dx, dy);
       c->recurse (paint.u.rotate.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->راوباسه_transform (c->معلومات);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_SKEW:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_SKEW:
     {
-      float dx = paint.u.skew.center_x / 65536.f;
-      float dy = paint.u.skew.center_y / 65536.f;
-      float sx = paint.u.skew.x_skew_angle / 65536.f;
-      float sy = paint.u.skew.y_skew_angle / 65536.f;
+      عائم dx = paint.u.skew.center_x / 65536.f;
+      عائم dy = paint.u.skew.center_y / 65536.f;
+      عائم sx = paint.u.skew.x_skew_angle / 65536.f;
+      عائم sy = paint.u.skew.y_skew_angle / 65536.f;
 
-      c->funcs->push_skew_around_center (c->data, sx, sy, dx, dy);
+      c->funcs->ټېل_skew_around_center (c->معلومات, sx, sy, dx, dy);
       c->recurse (paint.u.skew.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->راوباسه_transform (c->معلومات);
     }
-    break;
-    case FT_COLR_PAINTFORMAT_COMPOSITE:
+    اكسر;
+    حالة FT_COLR_PAINTFORMAT_مرکب:
     {
-      c->funcs->push_group (c->data);
-      c->recurse (paint.u.composite.backdrop_paint);
-      c->funcs->push_group (c->data);
-      c->recurse (paint.u.composite.source_paint);
-      c->funcs->pop_group (c->data, _hb_ft_paint_composite_mode (paint.u.composite.composite_mode));
-      c->funcs->pop_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+      c->funcs->ټېل_ډله (c->معلومات);
+      c->recurse (paint.u.مرکب_2.backdrop_paint);
+      c->funcs->ټېل_ډله (c->معلومات);
+      c->recurse (paint.u.مرکب_2.سرچینه_paint);
+      c->funcs->راوباسه_ډله (c->معلومات, hb_ft_paint_مرکب_ډېرپېښ (paint.u.مرکب_2.مرکب_ډېرپېښ_2));
+      c->funcs->راوباسه_ډله (c->معلومات, HB_PAINT_مرکب_ډېرپېښ_SRC_OVER);
     }
-    break;
+    اكسر;
 
-    case FT_COLR_PAINT_FORMAT_MAX: break;
-    default: HB_FALLTHROUGH;
-    case FT_COLR_PAINTFORMAT_UNSUPPORTED: break;
+    حالة FT_COLR_PAINT_FORMAT_MAX: اكسر;
+    افتراضي: HB_FALLTHROUGH;
+    حالة FT_COLR_PAINTFORMAT_UNSUPPORTED: اكسر;
   }
 }
 
 
-static bool
+ساكن منطقي
 hb_ft_paint_glyph_colr (hb_font_t *font,
-			void *font_data,
+			فراغ *font_معلومات,
 			hb_codepoint_t gid,
-			hb_paint_funcs_t *paint_funcs, void *paint_data,
-			unsigned int palette_index,
+			hb_paint_funcs_t *paint_funcs, فراغ *paint_معلومات,
+			بینښه صحيح palette_شاخص,
 			hb_color_t foreground,
-			void *user_data)
+			فراغ *user_معلومات)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_معلومات;
   FT_Face ft_face = ft_font->ft_face;
 
   /* Face is locked. */
 
-  FT_Palette_Data   palette_data = {};
-  FT_Color*         palette = NULL;
+  FT_Palette_معلومات   palette_معلومات = {};
+  FT_Color*         palette = عدم;
   FT_LayerIterator  iterator;
 
   FT_Bool  have_layers;
-  FT_UInt  layer_glyph_index;
-  FT_UInt  layer_color_index;
+  FT_UInt  layer_glyph_شاخص;
+  FT_UInt  layer_color_شاخص;
 
-  (void) FT_Palette_Data_Get(ft_face, &palette_data);
-  (void) FT_Palette_Select(ft_face, palette_index, &palette);
-  if (!palette)
+  (فراغ) FT_Palette_معلومات_Get(ft_face, &palette_معلومات);
+  (فراغ) FT_Palette_Select(ft_face, palette_شاخص, &palette);
+  إذا (!palette)
   {
     // https://github.com/harfbuzz/harfbuzz/issues/5116
-    (void) FT_Palette_Select(ft_face, 0, &palette);
+    (فراغ) FT_Palette_Select(ft_face, 0, &palette);
   }
 
-  auto palette_array = hb_array ((const FT_Color *) palette,
-				 palette ? palette_data.num_palette_entries : 0);
+  خپلکاری palette_array = hb_array ((ثابت FT_Color *) palette,
+				 palette ? palette_معلومات.عدد_palette_entries : 0);
 
   /* COLRv1 */
   FT_OpaquePaint paint = {0};
-  if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-			        FT_COLOR_NO_ROOT_TRANSFORM,
+  إذا (FT_Get_Color_Glyph_Paint (ft_face, gid,
+			        FT_COLOR_NO_ریښه_TRANSFORM,
 			        &paint))
   {
     hb_ft_paint_context_t c (ft_font, font,
-			     paint_funcs, paint_data,
-			     palette_array, palette_index, foreground);
-    hb_decycler_node_t node (c.glyphs_decycler);
-    node.visit (gid);
+			     paint_funcs, paint_معلومات,
+			     palette_array, palette_شاخص, foreground);
+    hb_decycler_غوټه_t node (c.glyphs_decycler);
+    node.لیدنه (gid);
 
     FT_ClipBox clip_box;
-    bool clip = FT_Get_Color_Glyph_ClipBox (ft_face, gid, &clip_box);
-    bool is_bounded = clip;
-    if (!is_bounded)
+    منطقي clip = FT_Get_Color_Glyph_ClipBox (ft_face, gid, &clip_box);
+    منطقي is_bounded = clip;
+    إذا (!is_bounded)
     {
-      auto *bounded_funcs = hb_paint_bounded_get_funcs ();
-      hb_paint_bounded_context_t bounded_data;
+      خپلکاری *bounded_funcs = hb_paint_bounded_get_funcs ();
+      hb_paint_bounded_context_t bounded_معلومات;
       hb_ft_paint_context_t ce (ft_font, font,
-			        bounded_funcs, &bounded_data,
-			        palette_array, palette_index, foreground);
-      hb_decycler_node_t node2 (ce.glyphs_decycler);
-      node2.visit (gid);
+			        bounded_funcs, &bounded_معلومات,
+			        palette_array, palette_شاخص, foreground);
+      hb_decycler_غوټه_t node2 (ce.glyphs_decycler);
+      node2.لیدنه (gid);
       ce.recurse (paint);
-      is_bounded = bounded_data.is_bounded ();
+      is_bounded = bounded_معلومات.is_bounded ();
     }
 
-    c.funcs->push_font_transform (c.data, font);
+    c.funcs->ټېل_font_transform (c.معلومات, font);
 
-    if (clip)
+    إذا (clip)
     {
-      float xmin, ymin, xmax, ymax;
+      عائم xmin, ymin, xmax, ymax;
       _hb_ft_unscale_clip_box (font, &clip_box,
 			       &xmin, &ymin, &xmax, &ymax);
-      c.funcs->push_clip_rectangle (c.data, xmin, ymin, xmax, ymax);
+      c.funcs->ټېل_clip_rectangle (c.معلومات, xmin, ymin, xmax, ymax);
     }
 
-    if (is_bounded)
+    إذا (is_bounded)
       c.recurse (paint);
 
-    if (clip)
-      c.funcs->pop_clip (c.data);
+    إذا (clip)
+      c.funcs->راوباسه_clip (c.معلومات);
 
-    c.funcs->pop_transform (c.data);
+    c.funcs->راوباسه_transform (c.معلومات);
 
-    return true;
+    أرجع ریښتیا;
   }
 
   /* COLRv0 */
-  iterator.p  = NULL;
+  iterator.p  = عدم;
   have_layers = FT_Get_Color_Glyph_Layer(ft_face,
 					 gid,
-					 &layer_glyph_index,
-					 &layer_color_index,
+					 &layer_glyph_شاخص,
+					 &layer_color_شاخص,
 					 &iterator);
 
-  if (palette && have_layers)
+  إذا (palette && have_layers)
   {
-    do
+    افعل
     {
-      hb_bool_t is_foreground = true;
+      hb_bool_t is_foreground = ریښتیا;
       hb_color_t color = foreground;
 
-      if ( layer_color_index != 0xFFFF )
+      إذا ( layer_color_شاخص != 0xFFFF )
       {
-	FT_Color layer_color = palette[layer_color_index];
+	FT_Color layer_color = palette[layer_color_شاخص];
 	color = HB_COLOR (layer_color.blue,
 			  layer_color.green,
 			  layer_color.red,
 			  layer_color.alpha);
-	is_foreground = false;
+	is_foreground = خطأ;
       }
 
       ft_font->lock.unlock ();
-      paint_funcs->fill_glyph (paint_data, layer_glyph_index, font, is_foreground, color);
+      paint_funcs->fill_glyph (paint_معلومات, layer_glyph_شاخص, font, is_foreground, color);
       ft_font->lock.lock ();
 
-    } while (FT_Get_Color_Glyph_Layer(ft_face,
+    } طالما (FT_Get_Color_Glyph_Layer(ft_face,
 				      gid,
-				      &layer_glyph_index,
-				      &layer_color_index,
+				      &layer_glyph_شاخص,
+				      &layer_color_شاخص,
 				      &iterator));
-    return true;
+    أرجع ریښتیا;
   }
 
-  return false;
+  أرجع خطأ;
 }
 
 
-#endif /* HB_FT_COLR_HH */
+#د_که_پای /* HB_FT_COLR_HH */

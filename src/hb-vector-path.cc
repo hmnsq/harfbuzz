@@ -24,217 +24,217 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
-#include "hb-vector-path.hh"
-#include "hb-vector-buf.hh"
-#include "hb-vector-internal.hh"
+#ضمن "hb-geometry.hh"
+#ضمن "hb-machinery.hh"
+#ضمن "hb-vector-path.hh"
+#ضمن "hb-vector-buf.hh"
+#ضمن "hb-vector-internal.hh"
 
 
 /* ---- SVG path callbacks ---- */
 
-static inline void
-hb_vector_svg_path_append_xy (hb_vector_path_sink_t *s, float x, float y)
+ساكن مضمن فراغ
+hb_ویکټور_svg_لار_append_xy (hb_ویکټور_لار_sink_t *s, عائم x, عائم y)
 {
-  s->path->append_num (x / s->x_scale, s->precision);
-  s->path->append_c (',');
-  s->path->append_num (y / s->y_scale, s->precision);
+  s->لار->append_عدد (x / s->x_scale, s->precision);
+  s->لار->append_c (',');
+  s->لار->append_عدد (y / s->y_scale, s->precision);
 }
 
-static void
-hb_vector_svg_path_move_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			     float to_x, float to_y, void *)
+ساكن فراغ
+hb_ویکټور_svg_لار_move_منزل (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *,
+			     عائم منزل_x, عائم منزل_y, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('M');
-  hb_vector_svg_path_append_xy (s, to_x, to_y);
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  s->لار->append_c ('M');
+  hb_ویکټور_svg_لار_append_xy (s, منزل_x, منزل_y);
+  s->پای_ټکی_command ();
 }
 
-static void
-hb_vector_svg_path_line_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			     float to_x, float to_y, void *)
+ساكن فراغ
+hb_ویکټور_svg_لار_کرښه_منزل (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *,
+			     عائم منزل_x, عائم منزل_y, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('L');
-  hb_vector_svg_path_append_xy (s, to_x, to_y);
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  s->لار->append_c ('L');
+  hb_ویکټور_svg_لار_append_xy (s, منزل_x, منزل_y);
+  s->پای_ټکی_command ();
 }
 
-static void
-hb_vector_svg_path_quadratic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-				  float cx, float cy, float to_x, float to_y, void *)
+ساكن فراغ
+hb_ویکټور_svg_لار_quadratic_منزل (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *,
+				  عائم cx, عائم cy, عائم منزل_x, عائم منزل_y, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('Q');
-  hb_vector_svg_path_append_xy (s, cx, cy);
-  s->path->append_c (' ');
-  hb_vector_svg_path_append_xy (s, to_x, to_y);
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  s->لار->append_c ('Q');
+  hb_ویکټور_svg_لار_append_xy (s, cx, cy);
+  s->لار->append_c (' ');
+  hb_ویکټور_svg_لار_append_xy (s, منزل_x, منزل_y);
+  s->پای_ټکی_command ();
 }
 
-static void
-hb_vector_svg_path_cubic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			      float c1x, float c1y, float c2x, float c2y,
-			      float to_x, float to_y, void *)
+ساكن فراغ
+hb_ویکټور_svg_لار_cubic_منزل (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *,
+			      عائم c1x, عائم c1y, عائم c2x, عائم c2y,
+			      عائم منزل_x, عائم منزل_y, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('C');
-  hb_vector_svg_path_append_xy (s, c1x, c1y);
-  s->path->append_c (' ');
-  hb_vector_svg_path_append_xy (s, c2x, c2y);
-  s->path->append_c (' ');
-  hb_vector_svg_path_append_xy (s, to_x, to_y);
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  s->لار->append_c ('C');
+  hb_ویکټور_svg_لار_append_xy (s, c1x, c1y);
+  s->لار->append_c (' ');
+  hb_ویکټور_svg_لار_append_xy (s, c2x, c2y);
+  s->لار->append_c (' ');
+  hb_ویکټور_svg_لار_append_xy (s, منزل_x, منزل_y);
+  s->پای_ټکی_command ();
 }
 
-static void
-hb_vector_svg_path_close_path (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *, void *)
+ساكن فراغ
+hb_ویکټور_svg_لار_close_لار (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('Z');
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  s->لار->append_c ('Z');
+  s->پای_ټکی_command ();
 }
 
 
 /* ---- PDF path callbacks ---- */
 
-static inline void
-hb_vector_pdf_path_append_xy (hb_vector_path_sink_t *s, float x, float y)
+ساكن مضمن فراغ
+hb_ویکټور_pdf_لار_append_xy (hb_ویکټور_لار_sink_t *s, عائم x, عائم y)
 {
-  s->path->append_num (x / s->x_scale, s->precision);
-  s->path->append_c (' ');
-  s->path->append_num (y / s->y_scale, s->precision);
+  s->لار->append_عدد (x / s->x_scale, s->precision);
+  s->لار->append_c (' ');
+  s->لار->append_عدد (y / s->y_scale, s->precision);
 }
 
-static void
-hb_vector_pdf_path_move_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			     float to_x, float to_y, void *)
+ساكن فراغ
+hb_ویکټور_pdf_لار_move_منزل (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *,
+			     عائم منزل_x, عائم منزل_y, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  hb_vector_pdf_path_append_xy (s, to_x, to_y);
-  s->path->append_str (" m\n");
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  hb_ویکټور_pdf_لار_append_xy (s, منزل_x, منزل_y);
+  s->لار->append_str (" m\n");
+  s->پای_ټکی_command ();
 }
 
-static void
-hb_vector_pdf_path_line_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			     float to_x, float to_y, void *)
+ساكن فراغ
+hb_ویکټور_pdf_لار_کرښه_منزل (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *,
+			     عائم منزل_x, عائم منزل_y, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  hb_vector_pdf_path_append_xy (s, to_x, to_y);
-  s->path->append_str (" l\n");
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  hb_ویکټور_pdf_لار_append_xy (s, منزل_x, منزل_y);
+  s->لار->append_str (" l\n");
+  s->پای_ټکی_command ();
 }
 
 /* No quadratic_to — the null fallback auto-promotes to cubic. */
 
-static void
-hb_vector_pdf_path_cubic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			      float c1x, float c1y, float c2x, float c2y,
-			      float to_x, float to_y, void *)
+ساكن فراغ
+hb_ویکټور_pdf_لار_cubic_منزل (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *,
+			      عائم c1x, عائم c1y, عائم c2x, عائم c2y,
+			      عائم منزل_x, عائم منزل_y, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  hb_vector_pdf_path_append_xy (s, c1x, c1y);
-  s->path->append_c (' ');
-  hb_vector_pdf_path_append_xy (s, c2x, c2y);
-  s->path->append_c (' ');
-  hb_vector_pdf_path_append_xy (s, to_x, to_y);
-  s->path->append_str (" c\n");
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  hb_ویکټور_pdf_لار_append_xy (s, c1x, c1y);
+  s->لار->append_c (' ');
+  hb_ویکټور_pdf_لار_append_xy (s, c2x, c2y);
+  s->لار->append_c (' ');
+  hb_ویکټور_pdf_لار_append_xy (s, منزل_x, منزل_y);
+  s->لار->append_str (" c\n");
+  s->پای_ټکی_command ();
 }
 
-static void
-hb_vector_pdf_path_close_path (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *, void *)
+ساكن فراغ
+hb_ویکټور_pdf_لار_close_لار (hb_draw_funcs_t *, فراغ *draw_معلومات, hb_draw_state_t *, فراغ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_str ("h\n");
-  s->end_command ();
+  خپلکاری *s = (hb_ویکټور_لار_sink_t *) draw_معلومات;
+  إذا (unlikely (!s->begin_command ())) أرجع;
+  s->لار->append_str ("h\n");
+  s->پای_ټکی_command ();
 }
 
-static int64_t *
-hb_vector_path_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ساكن int64_t *
+hb_ویکټور_لار_get_budget_پاتې_شوی (hb_draw_funcs_t *, فراغ *draw_معلومات, فراغ *)
 {
-  return ((hb_vector_path_sink_t *) draw_data)->budget;
+  أرجع ((hb_ویکټور_لار_sink_t *) draw_معلومات)->budget;
 }
 
 
 /* ---- Lazy loaders ---- */
 
-static inline void free_static_vector_svg_path_draw_funcs ();
-static struct hb_vector_svg_path_draw_funcs_lazy_loader_t
-  : hb_draw_funcs_lazy_loader_t<hb_vector_svg_path_draw_funcs_lazy_loader_t>
+ساكن مضمن فراغ free_static_ویکټور_svg_لار_draw_funcs ();
+ساكن بنية hb_ویکټور_svg_لار_draw_funcs_lazy_loader_t
+  : hb_draw_funcs_lazy_loader_t<hb_ویکټور_svg_لار_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساكن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-    hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) hb_vector_svg_path_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) hb_vector_svg_path_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, (hb_draw_quadratic_to_func_t) hb_vector_svg_path_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) hb_vector_svg_path_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) hb_vector_svg_path_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_vector_path_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_سېټ_move_منزل_func (funcs, (hb_draw_move_منزل_func_t) hb_ویکټور_svg_لار_move_منزل, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_کرښه_منزل_func (funcs, (hb_draw_کرښه_منزل_func_t) hb_ویکټور_svg_لار_کرښه_منزل, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_quadratic_منزل_func (funcs, (hb_draw_quadratic_منزل_func_t) hb_ویکټور_svg_لار_quadratic_منزل, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_cubic_منزل_func (funcs, (hb_draw_cubic_منزل_func_t) hb_ویکټور_svg_لار_cubic_منزل, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_close_لار_func (funcs, (hb_draw_close_لار_func_t) hb_ویکټور_svg_لار_close_لار, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_get_budget_پاتې_شوی_func (funcs, hb_ویکټور_لار_get_budget_پاتې_شوی, تش_اشاره, تش_اشاره);
     hb_draw_funcs_make_immutable (funcs);
-    hb_atexit (free_static_vector_svg_path_draw_funcs);
-    return funcs;
+    hb_atexit (free_static_ویکټور_svg_لار_draw_funcs);
+    أرجع funcs;
   }
-} static_vector_svg_path_draw_funcs;
+} static_ویکټور_svg_لار_draw_funcs;
 
-static inline void
-free_static_vector_svg_path_draw_funcs ()
-{ static_vector_svg_path_draw_funcs.free_instance (); }
+ساكن مضمن فراغ
+free_static_ویکټور_svg_لار_draw_funcs ()
+{ static_ویکټور_svg_لار_draw_funcs.free_instance (); }
 
 hb_draw_funcs_t *
-hb_vector_svg_path_draw_funcs_get ()
-{ return static_vector_svg_path_draw_funcs.get_unconst (); }
+hb_ویکټور_svg_لار_draw_funcs_get ()
+{ أرجع static_ویکټور_svg_لار_draw_funcs.get_unconst (); }
 
 
-static inline void free_static_vector_pdf_path_draw_funcs ();
-static struct hb_vector_pdf_path_draw_funcs_lazy_loader_t
-  : hb_draw_funcs_lazy_loader_t<hb_vector_pdf_path_draw_funcs_lazy_loader_t>
+ساكن مضمن فراغ free_static_ویکټور_pdf_لار_draw_funcs ();
+ساكن بنية hb_ویکټور_pdf_لار_draw_funcs_lazy_loader_t
+  : hb_draw_funcs_lazy_loader_t<hb_ویکټور_pdf_لار_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساكن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-    hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) hb_vector_pdf_path_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) hb_vector_pdf_path_line_to, nullptr, nullptr);
+    hb_draw_funcs_سېټ_move_منزل_func (funcs, (hb_draw_move_منزل_func_t) hb_ویکټور_pdf_لار_move_منزل, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_کرښه_منزل_func (funcs, (hb_draw_کرښه_منزل_func_t) hb_ویکټور_pdf_لار_کرښه_منزل, تش_اشاره, تش_اشاره);
     /* No quadratic_to: the null fallback auto-promotes to cubic. */
-    hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) hb_vector_pdf_path_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) hb_vector_pdf_path_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_vector_path_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_سېټ_cubic_منزل_func (funcs, (hb_draw_cubic_منزل_func_t) hb_ویکټور_pdf_لار_cubic_منزل, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_close_لار_func (funcs, (hb_draw_close_لار_func_t) hb_ویکټور_pdf_لار_close_لار, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_get_budget_پاتې_شوی_func (funcs, hb_ویکټور_لار_get_budget_پاتې_شوی, تش_اشاره, تش_اشاره);
     hb_draw_funcs_make_immutable (funcs);
-    hb_atexit (free_static_vector_pdf_path_draw_funcs);
-    return funcs;
+    hb_atexit (free_static_ویکټور_pdf_لار_draw_funcs);
+    أرجع funcs;
   }
-} static_vector_pdf_path_draw_funcs;
+} static_ویکټور_pdf_لار_draw_funcs;
 
-static inline void
-free_static_vector_pdf_path_draw_funcs ()
-{ static_vector_pdf_path_draw_funcs.free_instance (); }
-
-hb_draw_funcs_t *
-hb_vector_pdf_path_draw_funcs_get ()
-{ return static_vector_pdf_path_draw_funcs.get_unconst (); }
-
+ساكن مضمن فراغ
+free_static_ویکټور_pdf_لار_draw_funcs ()
+{ static_ویکټور_pdf_لار_draw_funcs.free_instance (); }
 
 hb_draw_funcs_t *
-hb_vector_path_draw_funcs_get (hb_vector_format_t format)
+hb_ویکټور_pdf_لار_draw_funcs_get ()
+{ أرجع static_ویکټور_pdf_لار_draw_funcs.get_unconst (); }
+
+
+hb_draw_funcs_t *
+hb_ویکټور_لار_draw_funcs_get (hb_ویکټور_format_t format)
 {
-  switch (format)
+  بدل (format)
   {
-    case HB_VECTOR_FORMAT_SVG: return hb_vector_svg_path_draw_funcs_get ();
-    case HB_VECTOR_FORMAT_PDF: return hb_vector_pdf_path_draw_funcs_get ();
-    case HB_VECTOR_FORMAT_INVALID: default: return nullptr;
+    حالة HB_ویکټور_FORMAT_SVG: أرجع hb_ویکټور_svg_لار_draw_funcs_get ();
+    حالة HB_ویکټور_FORMAT_PDF: أرجع hb_ویکټور_pdf_لار_draw_funcs_get ();
+    حالة HB_ویکټور_FORMAT_INVALID: افتراضي: أرجع تش_اشاره;
   }
 }

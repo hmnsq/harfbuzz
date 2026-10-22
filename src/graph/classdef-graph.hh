@@ -24,294 +24,294 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-common.hh"
-#include "graph-result.hh"
+#ضمن "graph.hh"
+#ضمن "../hb-ot-layout-common.hh"
+#ضمن "graph-result.hh"
 
-#ifndef GRAPH_CLASSDEF_GRAPH_HH
-#define GRAPH_CLASSDEF_GRAPH_HH
+#که_نه_تعریف_شوی ګراف_CLASSDEF_ګراف_HH
+#تعریف_کړه ګراف_CLASSDEF_ګراف_HH
 
-namespace graph {
+نطاق ګراف {
 
-template <typename Types>
-struct ClassDefFormat1_3 : public OT::ClassDefFormat1_3<Types>
+کينډۍ <ډول_نوم Types>
+بنية ClassDefFormat1_3 : عام OT::ClassDefFormat1_3<Types>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ګراف_پایله_t<فراغ> sanitize (ثابت ګراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size();
-    constexpr unsigned min_size = OT::ClassDefFormat1_3<Types>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_اندازه();
+    constexpr بینښه min_اندازه = OT::ClassDefFormat1_3<Types>::min_اندازه;
+    إذا (unlikely (راس_len < min_اندازه)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < min_size + this->classValue.get_size () - this->classValue.len.get_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    إذا (unlikely (راس_len < min_اندازه + هذا->class_ارزښت.get_اندازه () - هذا->class_ارزښت.len.get_اندازه ()))
+      أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 };
 
-template <typename Types>
-struct ClassDefFormat2_4 : public OT::ClassDefFormat2_4<Types>
+کينډۍ <ډول_نوم Types>
+بنية ClassDefFormat2_4 : عام OT::ClassDefFormat2_4<Types>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ګراف_پایله_t<فراغ> sanitize (ثابت ګراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size();
-    constexpr unsigned min_size = OT::ClassDefFormat2_4<Types>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_اندازه();
+    constexpr بینښه min_اندازه = OT::ClassDefFormat2_4<Types>::min_اندازه;
+    إذا (unlikely (راس_len < min_اندازه)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < min_size + this->rangeRecord.get_size () - this->rangeRecord.len.get_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    إذا (unlikely (راس_len < min_اندازه + هذا->range_ریکارډ.get_اندازه () - هذا->range_ریکارډ.len.get_اندازه ()))
+      أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 };
 
-struct ClassDef : public OT::ClassDef
+بنية ClassDef : عام OT::ClassDef
 {
-  template<typename It>
-  static graph_result_t<void> add_class_def (gsubgpos_graph_context_t& c,
-                                             unsigned parent_id,
-                                             unsigned link_position,
+  کينډۍ<ډول_نوم It>
+  ساكن ګراف_پایله_t<فراغ> جمع_کړه_class_def (gsubgpos_ګراف_context_t& c,
+                                             بینښه پلار_id,
+                                             بینښه link_position,
                                              It glyph_and_class,
-                                             unsigned max_size)
+                                             بینښه max_size)
   {
-    TRY_ASSIGN (unsigned class_def_prime_id, c.graph.new_node (nullptr, nullptr));
-    auto& class_def_prime_vertex = c.graph.vertices_[class_def_prime_id];
-    TRY (make_class_def (c, glyph_and_class, class_def_prime_id, max_size));
+    TRY_ټاکل (بینښه class_def_اولي_id, c.ګراف.new_غوټه (تش_اشاره, تش_اشاره));
+    خپلکاری& class_def_اولي_راس = c.ګراف.vertices_[class_def_اولي_id];
+    TRY (make_class_def (c, glyph_and_class, class_def_اولي_id, max_size));
 
-    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, class_def_prime_id, link_position));
-    TRY(class_def_prime_vertex.add_parent (parent_id, false));
+    TRY(c.ګراف.vertices_[پلار_id].جمع_کړه_real_link (SmallTypes::اندازه, class_def_اولي_id, link_position));
+    TRY(class_def_اولي_راس.جمع_کړه_پلار (پلار_id, خطأ));
 
-    return Ok();
+    أرجع Ok();
   }
 
-  template<typename It>
-  static graph_result_t<void> make_class_def (gsubgpos_graph_context_t& c,
+  کينډۍ<ډول_نوم It>
+  ساكن ګراف_پایله_t<فراغ> make_class_def (gsubgpos_ګراف_context_t& c,
                                               It glyph_and_class,
-                                              unsigned dest_obj,
-                                              unsigned max_size)
+                                              بینښه dest_obj,
+                                              بینښه max_size)
   {
-    char* buffer = (char*) hb_calloc (1, max_size);
-    if (unlikely (!buffer))
-      return Err(ALLOCATION_FAILURE);
+    حرف* بفر = (حرف*) hb_calloc (1, max_size);
+    إذا (unlikely (!بفر))
+      أرجع Err(ویش_FAILURE);
 
-    hb_serialize_context_t serializer (buffer, max_size);
+    hb_serialize_context_t serializer (بفر, max_size);
     OT::ClassDef_serialize (&serializer, glyph_and_class);
-    serializer.end_serialize ();
-    if (unlikely (serializer.in_error ()))
+    serializer.پای_ټکی_serialize ();
+    إذا (unlikely (serializer.دننه_error ()))
     {
-      hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      hb_free (بفر);
+      أرجع Err(ویش_FAILURE);
     }
 
-    hb_bytes_t class_def_copy = serializer.copy_bytes ();
-    if (unlikely (!class_def_copy.arrayZ))
+    hb_بایټونه_t class_def_copy = serializer.copy_بایټونه ();
+    إذا (unlikely (!class_def_copy.arrayZ))
     {
-      hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      hb_free (بفر);
+      أرجع Err(ویش_FAILURE);
     }
 
     // Give ownership to the context, it will cleanup the buffer.
-    auto res = c.add_buffer ((char *) class_def_copy.arrayZ);
-    if (unlikely (!res.is_ok ()))
+    خپلکاری res = c.جمع_کړه_بفر ((حرف *) class_def_copy.arrayZ);
+    إذا (unlikely (!res.is_ok ()))
     {
-      hb_free (buffer);
-      hb_free ((char *) class_def_copy.arrayZ);
-      return res;
+      hb_free (بفر);
+      hb_free ((حرف *) class_def_copy.arrayZ);
+      أرجع res;
     }
 
 
-    auto& v = c.graph.vertices_[dest_obj];
-    char* head = (char *) class_def_copy.arrayZ;
-    v.set_buffer (head, head + class_def_copy.length);
+    خپلکاری& v = c.ګراف.vertices_[dest_obj];
+    حرف* سر_2 = (حرف *) class_def_copy.arrayZ;
+    v.سېټ_بفر (سر_2, سر_2 + class_def_copy.اوږدتیا);
 
-    hb_free (buffer);
-    return Ok();
+    hb_free (بفر);
+    أرجع Ok();
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ګراف_پایله_t<فراغ> sanitize (ثابت ګراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < OT::ClassDef::min_size)) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_اندازه();
+    إذا (unlikely (راس_len < OT::ClassDef::min_اندازه)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
-    switch (u.format.v)
+    بدل (u.format.v)
     {
-    case 1: return ((ClassDefFormat1_3<SmallTypes>*)this)->sanitize (vertex);
-    case 2: return ((ClassDefFormat2_4<SmallTypes>*)this)->sanitize (vertex);
-#ifndef HB_NO_BEYOND_64K
-    case 3: return ((ClassDefFormat1_3<MediumTypes>*)this)->sanitize (vertex);
-    case 4: return ((ClassDefFormat2_4<MediumTypes>*)this)->sanitize (vertex);
-#endif
-    default: return Err(SANITIZE_FAILURE);
+    حالة 1: أرجع ((ClassDefFormat1_3<SmallTypes>*)هذا)->sanitize (راس);
+    حالة 2: أرجع ((ClassDefFormat2_4<SmallTypes>*)هذا)->sanitize (راس);
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+    حالة 3: أرجع ((ClassDefFormat1_3<MediumTypes>*)هذا)->sanitize (راس);
+    حالة 4: أرجع ((ClassDefFormat2_4<MediumTypes>*)هذا)->sanitize (راس);
+#د_که_پای
+    افتراضي: أرجع Err(SANITIZE_FAILURE);
     }
   }
 };
 
 
-struct class_def_size_estimator_t
+بنية class_def_اندازه_estimator_t
 {
-  template<typename It>
-  static graph_result_t<class_def_size_estimator_t> create (It glyph_and_class)
+  کينډۍ<ډول_نوم It>
+  ساكن ګراف_پایله_t<class_def_اندازه_estimator_t> create (It glyph_and_class)
   {
-    class_def_size_estimator_t estimator;
+    class_def_اندازه_estimator_t estimator;
     estimator.reset();
-    for (auto p : + glyph_and_class)
+    لكل (خپلکاری p : + glyph_and_class)
     {
-      unsigned gid = p.first;
-      unsigned klass = p.second;
+      بینښه gid = p.لومړی;
+      بینښه klass = p.second;
 
-      hb_set_t* glyphs;
-      if (estimator.glyphs_per_class.has (klass, &glyphs) && glyphs) {
-        glyphs->add (gid);
-        continue;
+      hb_سېټ_t* glyphs;
+      إذا (estimator.glyphs_فی_class.has (klass, &glyphs) && glyphs) {
+        glyphs->جمع_کړه (gid);
+        استمر;
       }
 
-      hb_set_t new_glyphs;
-      new_glyphs.add (gid);
-      estimator.glyphs_per_class.set (klass, std::move (new_glyphs));
+      hb_سېټ_t new_glyphs;
+      new_glyphs.جمع_کړه (gid);
+      estimator.glyphs_فی_class.سېټ (klass, std::move (new_glyphs));
     }
 
-    TRY(estimator.to_result ());
+    TRY(estimator.منزل_پایله ());
 
-    for (unsigned klass : estimator.glyphs_per_class.keys ())
+    لكل (بینښه klass : estimator.glyphs_فی_class.کلیګانې ())
     {
-      if (!klass) continue; // class 0 doesn't get encoded.
+      إذا (!klass) استمر; // class 0 doesn't get encoded.
 
-      const hb_set_t& glyphs = estimator.glyphs_per_class.get (klass);
-      hb_codepoint_t start = HB_SET_VALUE_INVALID;
-      hb_codepoint_t end = HB_SET_VALUE_INVALID;
+      ثابت hb_سېټ_t& glyphs = estimator.glyphs_فی_class.get (klass);
+      hb_codepoint_t پیل = HB_سېټ_ارزښت_INVALID;
+      hb_codepoint_t پای_ټکی = HB_سېټ_ارزښت_INVALID;
 
-      unsigned count = 0;
-      while (glyphs.next_range (&start, &end))
-        count++;
+      بینښه شمېر = 0;
+      طالما (glyphs.بل_range (&پیل, &پای_ټکی))
+        شمېر++;
 
-      estimator.num_ranges_per_class.set (klass, count);
+      estimator.عدد_ranges_فی_class.سېټ (klass, شمېر);
     }
 
-    TRY(estimator.to_result ());
-    return estimator;
+    TRY(estimator.منزل_پایله ());
+    أرجع estimator;
   }
 
-  void reset() {
+  فراغ reset() {
     included_glyphs.clear();
     included_class_def_glyphs.clear();
     included_classes.clear();
-    class_def_range_count = 0;
+    class_def_range_شمېر = 0;
     class_max = 0;
-    coverage_size_val = compute_coverage_size ();
+    coverage_اندازه_val = compute_coverage_اندازه ();
   }
 
   // Size of coverage for all glyphs added via 'add_class_def_size'.
-  unsigned coverage_size () const
+  بینښه coverage_اندازه () ثابت
   {
-    return coverage_size_val;
+    أرجع coverage_اندازه_val;
   }
 
   // Compute the new size of the ClassDef table if all glyphs associated with 'klass' were added.
-  unsigned add_class_def_size (unsigned klass)
+  بینښه جمع_کړه_class_def_اندازه (بینښه klass)
   {
-    if (!included_classes.has(klass)) {
-      hb_set_t* glyphs = nullptr;
-      if (glyphs_per_class.has(klass, &glyphs)) {
-        unsigned num_glyphs = included_glyphs.get_population();
+    إذا (!included_classes.has(klass)) {
+      hb_سېټ_t* glyphs = تش_اشاره;
+      إذا (glyphs_فی_class.has(klass, &glyphs)) {
+        بینښه عدد_glyphs = included_glyphs.get_population();
         included_glyphs.union_(*glyphs);
-        if (klass)
+        إذا (klass)
           included_class_def_glyphs.union_(*glyphs);
-        if (num_glyphs != included_glyphs.get_population())
-          coverage_size_val = compute_coverage_size ();
+        إذا (عدد_glyphs != included_glyphs.get_population())
+          coverage_اندازه_val = compute_coverage_اندازه ();
       }
 
-      if (klass)
+      إذا (klass)
       {
-        class_def_range_count += num_ranges_per_class.get (klass);
-        if (glyphs && klass > class_max)
+        class_def_range_شمېر += عدد_ranges_فی_class.get (klass);
+        إذا (glyphs && klass > class_max)
           class_max = klass;
       }
-      included_classes.add(klass);
+      included_classes.جمع_کړه(klass);
     }
 
-    return class_def_size ();
+    أرجع class_def_اندازه ();
   }
 
-  unsigned num_glyph_ranges (const hb_set_t &glyphs) const {
-    hb_codepoint_t start = HB_SET_VALUE_INVALID;
-    hb_codepoint_t end = HB_SET_VALUE_INVALID;
+  بینښه عدد_glyph_ranges (ثابت hb_سېټ_t &glyphs) ثابت {
+    hb_codepoint_t پیل = HB_سېټ_ارزښت_INVALID;
+    hb_codepoint_t پای_ټکی = HB_سېټ_ارزښت_INVALID;
 
-    unsigned count = 0;
-    while (glyphs.next_range (&start, &end)) {
-        count++;
+    بینښه شمېر = 0;
+    طالما (glyphs.بل_range (&پیل, &پای_ټکی)) {
+        شمېر++;
     }
-    return count;
+    أرجع شمېر;
   }
 
- private:
-  graph_result_t<void> to_result() const
+ خاص:
+  ګراف_پایله_t<فراغ> منزل_پایله() ثابت
   {
-    TRY (graph_result_t<void>::from (num_ranges_per_class, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (glyphs_per_class, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (included_classes, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (included_glyphs, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (included_class_def_glyphs, ALLOCATION_FAILURE));
+    TRY (ګراف_پایله_t<فراغ>::from (عدد_ranges_فی_class, ویش_FAILURE));
+    TRY (ګراف_پایله_t<فراغ>::from (glyphs_فی_class, ویش_FAILURE));
+    TRY (ګراف_پایله_t<فراغ>::from (included_classes, ویش_FAILURE));
+    TRY (ګراف_پایله_t<فراغ>::from (included_glyphs, ویش_FAILURE));
+    TRY (ګراف_پایله_t<فراغ>::from (included_class_def_glyphs, ویش_FAILURE));
 
-    for (const hb_set_t& s : glyphs_per_class.values ())
+    لكل (ثابت hb_سېټ_t& s : glyphs_فی_class.values ())
     {
-          TRY (graph_result_t<void>::from (s, ALLOCATION_FAILURE));
+          TRY (ګراف_پایله_t<فراغ>::from (s, ویش_FAILURE));
     }
-    return Ok();
+    أرجع Ok();
   }
 
-  class_def_size_estimator_t ()
-      : num_ranges_per_class (), glyphs_per_class () {}
+  class_def_اندازه_estimator_t ()
+      : عدد_ranges_فی_class (), glyphs_فی_class () {}
 
-  unsigned compute_coverage_size () const
+  بینښه compute_coverage_اندازه () ثابت
   {
-    unsigned glyph_size = glyph_id_size (included_glyphs);
-    unsigned coverage_base_size = OT::HBUINT16::static_size + glyph_size;
-    unsigned range_size = 3 * glyph_size;
-    unsigned format1_size = coverage_base_size + glyph_size * included_glyphs.get_population();
-    unsigned format2_size = coverage_base_size + range_size * num_glyph_ranges (included_glyphs);
-    return hb_min(format1_size, format2_size);
+    بینښه glyph_اندازه = glyph_id_اندازه (included_glyphs);
+    بینښه coverage_بنسټ_اندازه = OT::HBUINT16::static_اندازه + glyph_اندازه;
+    بینښه range_اندازه = 3 * glyph_اندازه;
+    بینښه format1_اندازه = coverage_بنسټ_اندازه + glyph_اندازه * included_glyphs.get_population();
+    بینښه format2_اندازه = coverage_بنسټ_اندازه + range_اندازه * عدد_glyph_ranges (included_glyphs);
+    أرجع hb_min(format1_اندازه, format2_اندازه);
   }
 
-  unsigned glyph_id_size (const hb_set_t &glyphs) const
+  بینښه glyph_id_اندازه (ثابت hb_سېټ_t &glyphs) ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (!glyphs.is_empty () && glyphs.get_max () > 0xFFFFu)
-      return OT::Layout::MediumTypes::size;
-#endif
-    return OT::Layout::SmallTypes::size;
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+    إذا (!glyphs.is_empty () && glyphs.get_max () > 0xFFFFu)
+      أرجع OT::Layout::MediumTypes::اندازه;
+#د_که_پای
+    أرجع OT::Layout::SmallTypes::اندازه;
   }
 
-  unsigned class_def_size () const
+  بینښه class_def_اندازه () ثابت
   {
-    if (included_class_def_glyphs.is_empty ())
-      return OT::HBUINT16::static_size + OT::Layout::SmallTypes::size;
+    إذا (included_class_def_glyphs.is_empty ())
+      أرجع OT::HBUINT16::static_اندازه + OT::Layout::SmallTypes::اندازه;
 
-    unsigned best_size = UINT_MAX;
+    بینښه غوره_اندازه = UINT_MAX;
     hb_codepoint_t glyph_max = included_class_def_glyphs.get_max ();
-    unsigned glyph_span = glyph_max - included_class_def_glyphs.get_min () + 1;
+    بینښه glyph_پراختیا = glyph_max - included_class_def_glyphs.get_min () + 1;
 
-    if (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
-      best_size = hb_min (best_size, 6 + 2 * glyph_span);
-    if (glyph_max <= 0xFFFFu && class_def_range_count <= 0xFFFFu && class_max <= 0xFFFFu)
-      best_size = hb_min (best_size, 4 + 6 * class_def_range_count);
-#ifndef HB_NO_BEYOND_64K
-    if (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
-      best_size = hb_min (best_size, 8 + 3 * glyph_span);
-    if (glyph_max <= 0xFFFFFFu && class_def_range_count <= 0xFFFFFFu && class_max <= 0xFFFFu)
-      best_size = hb_min (best_size, 5 + 8 * class_def_range_count);
-#endif
-    return best_size;
+    إذا (glyph_max <= 0xFFFFu && glyph_پراختیا <= 0xFFFFu && class_max <= 0xFFFFu)
+      غوره_اندازه = hb_min (غوره_اندازه, 6 + 2 * glyph_پراختیا);
+    إذا (glyph_max <= 0xFFFFu && class_def_range_شمېر <= 0xFFFFu && class_max <= 0xFFFFu)
+      غوره_اندازه = hb_min (غوره_اندازه, 4 + 6 * class_def_range_شمېر);
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+    إذا (glyph_max <= 0xFFFFFFu && glyph_پراختیا <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
+      غوره_اندازه = hb_min (غوره_اندازه, 8 + 3 * glyph_پراختیا);
+    إذا (glyph_max <= 0xFFFFFFu && class_def_range_شمېر <= 0xFFFFFFu && class_max <= 0xFFFFu)
+      غوره_اندازه = hb_min (غوره_اندازه, 5 + 8 * class_def_range_شمېر);
+#د_که_پای
+    أرجع غوره_اندازه;
   }
 
-  hb_hashmap_t<unsigned, unsigned> num_ranges_per_class;
-  hb_hashmap_t<unsigned, hb_set_t> glyphs_per_class;
-  hb_set_t included_classes;
-  hb_set_t included_glyphs;
-  hb_set_t included_class_def_glyphs;
-  unsigned class_def_range_count;
-  unsigned class_max;
-  unsigned coverage_size_val;
+  hb_hashmap_t<بینښه, بینښه> عدد_ranges_فی_class;
+  hb_hashmap_t<بینښه, hb_سېټ_t> glyphs_فی_class;
+  hb_سېټ_t included_classes;
+  hb_سېټ_t included_glyphs;
+  hb_سېټ_t included_class_def_glyphs;
+  بینښه class_def_range_شمېر;
+  بینښه class_max;
+  بینښه coverage_اندازه_val;
 };
 
 
 }
 
-#endif  // GRAPH_CLASSDEF_GRAPH_HH
+#د_که_پای  // GRAPH_CLASSDEF_GRAPH_HH

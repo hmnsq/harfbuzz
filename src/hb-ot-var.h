@@ -24,14 +24,14 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#إذا !defined(HB_OT_H_دننه) && !defined(HB_NO_SINGLE_سرلیک_ERROR)
+#تېروتنه "Include <hb-ot.h> instead."
+#د_که_پای
 
-#ifndef HB_OT_VAR_H
-#define HB_OT_VAR_H
+#که_نه_تعریف_شوی HB_OT_VAR_H
+#تعریف_کړه HB_OT_VAR_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -40,7 +40,7 @@ HB_BEGIN_DECLS
  *
  * Registered tag for the roman/italic axis.
  */
-#define HB_OT_TAG_VAR_AXIS_ITALIC	HB_TAG('i','t','a','l')
+#تعریف_کړه HB_OT_نښان_VAR_AXIS_ITALIC	HB_نښان('i','t','a','l')
 
 /**
  * HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE:
@@ -48,28 +48,28 @@ HB_BEGIN_DECLS
  * Registered tag for the optical-size axis.
  * <note>Note: The optical-size axis supersedes the OpenType `size` feature.</note>
  */
-#define HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE	HB_TAG('o','p','s','z')
+#تعریف_کړه HB_OT_نښان_VAR_AXIS_OPTICAL_اندازه	HB_نښان('o','p','s','z')
 
 /**
  * HB_OT_TAG_VAR_AXIS_SLANT:
  *
  * Registered tag for the slant axis
  */
-#define HB_OT_TAG_VAR_AXIS_SLANT	HB_TAG('s','l','n','t')
+#تعریف_کړه HB_OT_نښان_VAR_AXIS_SLANT	HB_نښان('s','l','n','t')
 
 /**
  * HB_OT_TAG_VAR_AXIS_WIDTH:
  *
  * Registered tag for the width axis.
  */
-#define HB_OT_TAG_VAR_AXIS_WIDTH	HB_TAG('w','d','t','h')
+#تعریف_کړه HB_OT_نښان_VAR_AXIS_پلنوالی	HB_نښان('w','d','t','h')
 
 /**
  * HB_OT_TAG_VAR_AXIS_WEIGHT:
  *
  * Registered tag for the weight axis.
  */
-#define HB_OT_TAG_VAR_AXIS_WEIGHT	HB_TAG('w','g','h','t')
+#تعریف_کړه HB_OT_نښان_VAR_AXIS_وزن	HB_نښان('w','g','h','t')
 
 
 /*
@@ -77,7 +77,7 @@ HB_BEGIN_DECLS
  */
 
 HB_EXTERN hb_bool_t
-hb_ot_var_has_data (hb_face_t *face);
+hb_ot_var_has_معلومات (hb_face_t *face);
 
 
 /*
@@ -85,8 +85,8 @@ hb_ot_var_has_data (hb_face_t *face);
  */
 
 
-HB_EXTERN unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face);
+HB_EXTERN بینښه صحيح
+hb_ot_var_get_axis_شمېر (hb_face_t *face);
 
 /**
  * hb_ot_var_axis_flags_t:
@@ -96,11 +96,11 @@ hb_ot_var_get_axis_count (hb_face_t *face);
  *
  * Since: 2.2.0
  */
-typedef enum { /*< flags >*/
+تعريفنوع تعداد { /*< flags >*/
   HB_OT_VAR_AXIS_FLAG_HIDDEN	= 0x00000001u,
 
   /*< private >*/
-  _HB_OT_VAR_AXIS_FLAG_MAX_VALUE= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_VAR_AXIS_FLAG_MAX_ارزښت= HB_نښان_MAX_SIGNED /*< skip >*/
 } hb_ot_var_axis_flags_t;
 
 /**
@@ -122,27 +122,27 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.2.0
  */
-typedef struct hb_ot_var_axis_info_t {
-  unsigned int			axis_index;
-  hb_tag_t			tag;
+تعريفنوع بنية hb_ot_var_axis_info_t {
+  بینښه صحيح			axis_شاخص;
+  hb_نښان_t			نښان_2;
   hb_ot_name_id_t		name_id;
   hb_ot_var_axis_flags_t	flags;
-  float				min_value;
-  float				default_value;
-  float				max_value;
+  عائم				min_ارزښت;
+  عائم				default_ارزښت;
+  عائم				max_ارزښت;
   /*< private >*/
-  unsigned int			reserved;
+  بینښه صحيح			reserved;
 } hb_ot_var_axis_info_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN بینښه صحيح
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
-			  hb_ot_var_axis_info_t *axes_array /* OUT */);
+			  بینښه صحيح           پیل_دننه_واټن,
+			  بینښه صحيح          *axes_شمېر /* IN/OUT */,
+			  hb_ot_var_axis_info_t *axes_array /*بهر*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_var_find_axis_info (hb_face_t             *face,
-			  hb_tag_t               axis_tag,
+hb_ot_var_پیدا_کړه_axis_info (hb_face_t             *face,
+			  hb_نښان_t               axis_نښان_2,
 			  hb_ot_var_axis_info_t *axis_info);
 
 
@@ -150,42 +150,42 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  * Named instances.
  */
 
-HB_EXTERN unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face);
+HB_EXTERN بینښه صحيح
+hb_ot_var_get_named_instance_شمېر (hb_face_t *face);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index);
+						بینښه صحيح instance_شاخص);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index);
+						بینښه صحيح instance_شاخص);
 
-HB_EXTERN unsigned int
+HB_EXTERN بینښه صحيح
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */);
+					    بینښه صحيح  instance_شاخص,
+					    بینښه صحيح *coords_اوږدتیا, /* IN/OUT */
+					    عائم        *coords         /*بهر*/);
 
 
 /*
  * Conversions.
  */
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length);
+				ثابت hb_variation_t *variations, /*دننه*/
+				بینښه صحيح          variations_اوږدتیا,
+				صحيح                  *coords, /*بهر*/
+				بینښه صحيح          coords_اوږدتیا);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */);
+			    بینښه صحيح coords_اوږدتیا,
+			    ثابت عائم *design_coords, /*دننه*/
+			    صحيح *normalized_coords /*بهر*/);
 
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
-#endif /* HB_OT_VAR_H */
+#د_که_پای /* HB_OT_VAR_H */

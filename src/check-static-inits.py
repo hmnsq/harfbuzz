@@ -1,64 +1,64 @@
 #!/usr/bin/env python3
 
-import glob
-import os
-import re
-import shutil
-import subprocess
-import sys
+استورد glob
+استورد os
+استورد re
+استورد shutil
+استورد subprocess
+استورد sys
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+بنسټ_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 objdump = os.getenv("OBJDUMP", shutil.which("objdump"))
-if not objdump:
-    print("check-static-inits.py: 'ldd' not found; skipping test")
+إذا ليس objdump:
+    چاپ("check-static-inits.py: 'ldd' not found; skipping test")
     sys.exit(77)
 
-if sys.version_info < (3, 5):
-    print("check-static-inits.py: needs python 3.5 for recursive support in glob")
+إذا sys.نسخه_info < (3, 5):
+    چاپ("check-static-inits.py: needs python 3.5 for recursive support in glob")
     sys.exit(77)
 
-OBJS = glob.glob(os.path.join(builddir, "**", "*hb*.o"), recursive=True)
-if not OBJS:
-    print("check-static-inits.py: object files not found; skipping test")
+OBJS = glob.glob(os.لار.join(builddir, "**", "*hb*.o"), recursive=ریښتیا)
+إذا ليس OBJS:
+    چاپ("check-static-inits.py: object files not found; skipping test")
     sys.exit(77)
 
 stat = 0
-tested = False
+tested = خطأ
 
-print("Checking that the following object files has no static initializers/finalizers")
-print("\n".join(OBJS))
+چاپ("Checking that the following object files has no static initializers/finalizers")
+چاپ("\n".join(OBJS))
 
-result = subprocess.run(
-    objdump.split() + ["-t"] + OBJS, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+پایله = subprocess.پرلپسې(
+    objdump.وېشل() + ["-t"] + OBJS, stdout=subprocess.PIPE, stderr=subprocess.PIPE
 )
 
-if result.returncode:
-    if result.stderr.find(b"not recognized") != -1:
+إذا پایله.returncode:
+    إذا پایله.stderr.پیدا_کړه(b"not recognized") != -1:
         # https://github.com/harfbuzz/harfbuzz/issues/3019
-        print('objdump returned "not recognized", skipping')
-    else:
-        print("objdump returned error:\n%s" % (result.stderr.decode("utf-8")))
+        چاپ('objdump returned "not recognized", skipping')
+    وإلا:
+        چاپ("objdump returned error:\n%s" % (پایله.stderr.decode("utf-8")))
         stat = 2
-else:
-    tested = True
+وإلا:
+    tested = ریښتیا
 
-result = result.stdout.decode("utf-8")
+پایله = پایله.stdout.decode("utf-8")
 
 # Checking that no object file has static initializers
-for lib in re.findall(r"^.*\.[cd]tors.*$", result, re.MULTILINE):
-    if not re.match(r".*\b0+\b", lib):
-        print("Ouch, library has static initializers/finalizers")
+لكل lib في re.findall(r"^.*\.[cd]tors.*$", پایله, re.MULTILINE):
+    إذا ليس re.سمون(r".*\b0+\b", lib):
+        چاپ("Ouch, library has static initializers/finalizers")
         stat = 1
 
 # Checking that no object file has lazy static C++ constructors/destructors or other such stuff
-if ("__cxa_" in result) and ("__ubsan_handle" not in result):
-    print(
+إذا ("__cxa_" في پایله) و ("__ubsan_handle" ليس في پایله):
+    چاپ(
         "Ouch, library has lazy static C++ constructors/destructors or other such stuff"
     )
     stat = 1
 
 
-sys.exit(stat if tested else 77)
+sys.exit(stat إذا tested وإلا 77)

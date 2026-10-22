@@ -24,83 +24,83 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-gpu.h"
-#include "hb-gpu-paint.hh"
-#include "hb-gpu-draw.hh"
-#include "hb-draw.hh"
-#include "hb-machinery.hh"
-#include "hb-paint.hh"
+#ضمن "hb-gpu.h"
+#ضمن "hb-gpu-paint.hh"
+#ضمن "hb-gpu-draw.hh"
+#ضمن "hb-draw.hh"
+#ضمن "hb-machinery.hh"
+#ضمن "hb-paint.hh"
 
 
 /* ---- Paint callbacks ---- */
 
 /* Op-type tags.  Must match the layout documented in
  * hb-gpu-paint.hh. */
-enum {
+تعداد {
   HB_GPU_PAINT_OP_LAYER_SOLID    = 0,
   HB_GPU_PAINT_OP_LAYER_GRADIENT = 1,
-  HB_GPU_PAINT_OP_PUSH_GROUP     = 2,
-  HB_GPU_PAINT_OP_POP_GROUP      = 3,
+  HB_GPU_PAINT_OP_ټېل_ډله     = 2,
+  HB_GPU_PAINT_OP_راوباسه_ډله      = 3,
 };
 
 /* Encoder limits.  Hitting any of these flips paint->unsupported and
  * makes hb_gpu_paint_encode() return NULL rather than emit a blob
  * that would render incorrectly. */
-#define HB_GPU_PAINT_MAX_OPS         0x7fff /* num_ops is i16 in the blob header */
-#define HB_GPU_PAINT_MAX_GROUP_DEPTH 4      /* matches HB_GPU_PAINT_GROUP_DEPTH in fragment shader */
-#define HB_GPU_PAINT_MAX_CLIP_DEPTH  3      /* shader can intersect up to 3 clip outlines per layer */
-#define HB_GPU_PAINT_MAX_SUB_BLOBS   1024   /* bound clip-glyph rasterizations per paint walk */
+#تعریف_کړه HB_GPU_PAINT_MAX_OPS         0x7fff /* num_ops is i16 in the blob header */
+#تعریف_کړه HB_GPU_PAINT_MAX_ډله_ژوروالی 4      /* matches HB_GPU_PAINT_GROUP_DEPTH in fragment shader */
+#تعریف_کړه HB_GPU_PAINT_MAX_CLIP_ژوروالی  3      /* shader can intersect up to 3 clip outlines per layer */
+#تعریف_کړه HB_GPU_PAINT_MAX_SUB_BLOBS   1024   /* bound clip-glyph rasterizations per paint walk */
 
 /* Layer-op flag bits (LAYER_SOLID texel 0 .g, LAYER_GRADIENT
  * texel 0 .g where bits 0-7 hold the gradient subtype). */
-#define HB_GPU_PAINT_FLAG_IS_FOREGROUND  0x0001
-#define HB_GPU_PAINT_FLAG_HAS_CLIP2      0x0100
-#define HB_GPU_PAINT_FLAG_HAS_CLIP3      0x0200
+#تعریف_کړه HB_GPU_PAINT_FLAG_IS_FOREGROUND  0x0001
+#تعریف_کړه HB_GPU_PAINT_FLAG_HAS_CLIP2      0x0100
+#تعریف_کړه HB_GPU_PAINT_FLAG_HAS_CLIP3      0x0200
 
-static hb_bool_t
-hb_gpu_paint_custom_palette_color (hb_paint_funcs_t *funcs HB_UNUSED,
-				   void             *paint_data,
-				   unsigned          color_index,
+ساكن hb_bool_t
+hb_gpu_paint_custom_palette_color (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+				   فراغ             *paint_معلومات,
+				   بینښه          color_شاخص,
 				   hb_color_t       *color,
-				   void             *user_data HB_UNUSED)
+				   فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (likely (c->custom_palette && hb_map_has (c->custom_palette, color_index)))
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
+  إذا (likely (c->custom_palette && hb_map_has (c->custom_palette, color_شاخص)))
   {
-    *color = hb_map_get (c->custom_palette, color_index);
-    return true;
+    *color = hb_map_get (c->custom_palette, color_شاخص);
+    أرجع ریښتیا;
   }
-  return false;
+  أرجع خطأ;
 }
 
-static void
-hb_gpu_paint_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void             *paint_data,
+ساكن فراغ
+hb_gpu_paint_ټېل_clip_glyph (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+			      فراغ             *paint_معلومات,
 			      hb_codepoint_t    glyph,
 			      hb_font_t        *font,
-			      void             *user_data HB_UNUSED)
+			      فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
 
-  if (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
+  إذا (unlikely (c->clip_ژوروالی >= HB_GPU_PAINT_MAX_CLIP_ژوروالی))
   {
-    c->unsupported = true;
-    c->clip_depth++;
-    return;
+    c->unsupported = ریښتیا;
+    c->clip_ژوروالی++;
+    أرجع;
   }
-  c->clip_stack[c->clip_depth] = { glyph, font, c->cur_transform, -1, 0, 0, 0, 0 };
-  c->clip_depth++;
+  c->clip_ډېری[c->clip_ژوروالی] = { glyph, font, c->cur_transform, -1, 0, 0, 0, 0 };
+  c->clip_ژوروالی++;
 }
 
-static void
-hb_gpu_paint_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
-		       void             *paint_data,
-		       void             *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_راوباسه_clip (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+		       فراغ             *paint_معلومات,
+		       فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (likely (c->clip_depth > 0)) c->clip_depth--;
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
+  إذا (likely (c->clip_ژوروالی > 0)) c->clip_ژوروالی--;
 }
 
 /* Arbitrary-path clip: hand the caller the same hb_gpu_draw
@@ -109,196 +109,196 @@ hb_gpu_paint_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
  * geometry into a sub-blob and commits it to clip_stack just
  * like a glyph clip.  No font ref needed — the sub-blob is a
  * self-contained slug bundle. */
-static hb_draw_funcs_t *
-hb_gpu_paint_push_clip_path_start (hb_paint_funcs_t *funcs HB_UNUSED,
-				   void             *paint_data,
-				   void            **draw_data,
-				   void             *user_data HB_UNUSED)
+ساكن hb_draw_funcs_t *
+hb_gpu_paint_ټېل_clip_لار_پیل (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+				   فراغ             *paint_معلومات,
+				   فراغ            **draw_معلومات,
+				   فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
 
-  if (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
+  إذا (unlikely (c->clip_ژوروالی >= HB_GPU_PAINT_MAX_CLIP_ژوروالی))
   {
-    c->unsupported = true;
-    *draw_data = nullptr;
-    return nullptr;
+    c->unsupported = ریښتیا;
+    *draw_معلومات = تش_اشاره;
+    أرجع تش_اشاره;
   }
 
-  if (unlikely (!c->scratch_draw))
+  إذا (unlikely (!c->scratch_draw))
   {
     c->scratch_draw = hb_gpu_draw_create_or_fail ();
-    if (unlikely (!c->scratch_draw))
+    إذا (unlikely (!c->scratch_draw))
     {
-      c->unsupported = true;
-      *draw_data = nullptr;
-      return nullptr;
+      c->unsupported = ریښتیا;
+      *draw_معلومات = تش_اشاره;
+      أرجع تش_اشاره;
     }
   }
 
   hb_gpu_draw_clear (c->scratch_draw);
   /* Seed the scratch encoder's budget from the session's remainder; it is
    * read back in push_clip_path_end after the caller has drawn the path. */
-  hb_draw_set_budget (hb_gpu_draw_get_funcs (c->scratch_draw), c->scratch_draw,
-		      c->budget_remaining);
-  hb_gpu_draw_set_scale (c->scratch_draw, c->x_scale, c->y_scale);
+  hb_draw_سېټ_budget (hb_gpu_draw_get_funcs (c->scratch_draw), c->scratch_draw,
+		      c->budget_پاتې_شوی);
+  hb_gpu_draw_سېټ_scale (c->scratch_draw, c->x_scale, c->y_scale);
 
-  c->pending_clip_path_transform = c->cur_transform;
-  c->pending_clip_path = true;
+  c->pending_clip_لار_transform = c->cur_transform;
+  c->pending_clip_لار = ریښتیا;
 
-  *draw_data = c->scratch_draw;
-  return hb_gpu_draw_get_funcs (c->scratch_draw);
+  *draw_معلومات = c->scratch_draw;
+  أرجع hb_gpu_draw_get_funcs (c->scratch_draw);
 }
 
-static void
-hb_gpu_paint_push_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
-				 void             *paint_data,
-				 void             *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_ټېل_clip_لار_پای_ټکی (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+				 فراغ             *paint_معلومات,
+				 فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
 
-  if (unlikely (!c->pending_clip_path))
-    return;
-  c->pending_clip_path = false;
+  إذا (unlikely (!c->pending_clip_لار))
+    أرجع;
+  c->pending_clip_لار = خطأ;
 
   /* Pull back the outline budget the caller's path draw consumed. */
-  c->budget_remaining = hb_draw_get_budget_remaining (hb_gpu_draw_get_funcs (c->scratch_draw),
+  c->budget_پاتې_شوی = hb_draw_get_budget_پاتې_شوی (hb_gpu_draw_get_funcs (c->scratch_draw),
 						      c->scratch_draw);
 
   hb_glyph_extents_t ext;
   hb_blob_t *blob = hb_gpu_draw_encode (c->scratch_draw, &ext);
-  if (unlikely (!blob || !c->push_sub_blob (blob)))
+  إذا (unlikely (!blob || !c->ټېل_sub_blob (blob)))
   {
     hb_blob_destroy (blob);
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  int idx = (int) (c->sub_blobs.length - 1);
+  صحيح idx = (صحيح) (c->sub_blobs.اوږدتیا - 1);
 
-  if (unlikely (c->clip_depth >= HB_GPU_PAINT_MAX_CLIP_DEPTH))
+  إذا (unlikely (c->clip_ژوروالی >= HB_GPU_PAINT_MAX_CLIP_ژوروالی))
   {
-    c->unsupported = true;
-    c->clip_depth++;
-    return;
+    c->unsupported = ریښتیا;
+    c->clip_ژوروالی++;
+    أرجع;
   }
 
-  int x0 = ext.x_bearing;
-  int x1 = hb_saturate_add (ext.x_bearing, ext.width);
-  int y0 = ext.y_bearing;
-  int y1 = hb_saturate_add (ext.y_bearing, ext.height);
+  صحيح x0 = ext.x_bearing;
+  صحيح x1 = hb_saturate_جمع_کړه (ext.x_bearing, ext.پلنوالی);
+  صحيح y0 = ext.y_bearing;
+  صحيح y1 = hb_saturate_جمع_کړه (ext.y_bearing, ext.لوړوالی);
 
-  c->clip_stack[c->clip_depth] = {
-    HB_CODEPOINT_INVALID, nullptr,
-    c->pending_clip_path_transform,
+  c->clip_ډېری[c->clip_ژوروالی] = {
+    HB_CODEPOINT_INVALID, تش_اشاره,
+    c->pending_clip_لار_transform,
     idx,
     hb_min (x0, x1), hb_min (y0, y1),
     hb_max (x0, x1), hb_max (y0, y1),
   };
-  c->clip_depth++;
+  c->clip_ژوروالی++;
 }
 
-static void
-hb_gpu_paint_push_transform (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void             *paint_data,
-			     float xx, float yx,
-			     float xy, float yy,
-			     float dx, float dy,
-			     void             *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_ټېل_transform (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+			     فراغ             *paint_معلومات,
+			     عائم xx, عائم yx,
+			     عائم xy, عائم yy,
+			     عائم dx, عائم dy,
+			     فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (unlikely (!c->transform_stack.push_or_fail (c->cur_transform)))
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
+  إذا (unlikely (!c->transform_ډېری.ټېل_or_fail (c->cur_transform)))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  hb_transform_t<float> t (xx, yx, xy, yy, dx, dy);
+  hb_transform_t<عائم> t (xx, yx, xy, yy, dx, dy);
   c->cur_transform.multiply (t);  /* cur = cur * t */
 }
 
-static void
-hb_gpu_paint_pop_transform (hb_paint_funcs_t *funcs HB_UNUSED,
-			    void             *paint_data,
-			    void             *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_راوباسه_transform (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+			    فراغ             *paint_معلومات,
+			    فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (unlikely (!c->transform_stack.length))
-    return;
-  c->cur_transform = c->transform_stack.arrayZ[c->transform_stack.length - 1];
-  c->transform_stack.shrink (c->transform_stack.length - 1);
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
+  إذا (unlikely (!c->transform_ډېری.اوږدتیا))
+    أرجع;
+  c->cur_transform = c->transform_ډېری.arrayZ[c->transform_ډېری.اوږدتیا - 1];
+  c->transform_ډېری.shrink (c->transform_ډېری.اوږدتیا - 1);
 }
 
 /* Emit a 1-texel control op.  Used for PUSH_GROUP / POP_GROUP. */
-static void
+ساكن فراغ
 emit_control_op (hb_gpu_paint_t *c, int16_t op_type, int16_t aux)
 {
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  إذا (unlikely (c->عدد_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  if (unlikely (!c->ops.resize (c->ops.length + 4)))
+  إذا (unlikely (!c->ops.resize (c->ops.اوږدتیا + 4)))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  int16_t *o = &c->ops.arrayZ[c->ops.length - 4];
+  int16_t *o = &c->ops.arrayZ[c->ops.اوږدتیا - 4];
   o[0] = op_type;
   o[1] = aux;
   o[2] = 0;
   o[3] = 0;
-  c->num_ops++;
+  c->عدد_ops++;
 }
 
-static void
-hb_gpu_paint_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			 void             *paint_data,
-			 void             *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_ټېل_ډله (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+			 فراغ             *paint_معلومات,
+			 فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  c->group_depth++;
-  if (unlikely (c->group_depth > HB_GPU_PAINT_MAX_GROUP_DEPTH))
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
+  c->ډله_ژوروالی++;
+  إذا (unlikely (c->ډله_ژوروالی > HB_GPU_PAINT_MAX_ډله_ژوروالی))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  emit_control_op (c, HB_GPU_PAINT_OP_PUSH_GROUP, 0);
+  emit_control_op (c, HB_GPU_PAINT_OP_ټېل_ډله, 0);
 }
 
-static void
-hb_gpu_paint_pop_group (hb_paint_funcs_t    *funcs HB_UNUSED,
-			void                *paint_data,
-			hb_paint_composite_mode_t mode,
-			void                *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_راوباسه_ډله (hb_paint_funcs_t    *funcs HB_ناکارول_شوی,
+			فراغ                *paint_معلومات,
+			hb_paint_مرکب_ډېرپېښ_t ډېرپېښ,
+			فراغ                *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  bool was_in_range = c->group_depth <= HB_GPU_PAINT_MAX_GROUP_DEPTH;
-  if (likely (c->group_depth > 0)) c->group_depth--;
-  if (was_in_range)
-    emit_control_op (c, HB_GPU_PAINT_OP_POP_GROUP, (int16_t) mode);
+  hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_معلومات;
+  منطقي was_دننه_range = c->ډله_ژوروالی <= HB_GPU_PAINT_MAX_ډله_ژوروالی;
+  إذا (likely (c->ډله_ژوروالی > 0)) c->ډله_ژوروالی--;
+  إذا (was_دننه_range)
+    emit_control_op (c, HB_GPU_PAINT_OP_راوباسه_ډله, (int16_t) ډېرپېښ);
 }
 
 /* Quantize unsigned byte 0..255 to signed Q15 0..32767. */
-static inline int16_t
-color_to_q15 (unsigned byte_value)
+ساكن مضمن int16_t
+color_منزل_q15 (بینښه byte_ارزښت)
 {
-  return (int16_t) ((byte_value * 32767u + 127u) / 255u);
+  أرجع (int16_t) ((byte_ارزښت * 32767u + 127u) / 255u);
 }
 
-static inline void
-color_to_q15_rgba (hb_color_t color, int16_t out[4])
+ساكن مضمن فراغ
+color_منزل_q15_rgba (hb_color_t color, int16_t بهر[4])
 {
-  out[0] = color_to_q15 (hb_color_get_red   (color));
-  out[1] = color_to_q15 (hb_color_get_green (color));
-  out[2] = color_to_q15 (hb_color_get_blue  (color));
-  out[3] = color_to_q15 (hb_color_get_alpha (color));
+  بهر[0] = color_منزل_q15 (hb_color_get_red   (color));
+  بهر[1] = color_منزل_q15 (hb_color_get_green (color));
+  بهر[2] = color_منزل_q15 (hb_color_get_blue  (color));
+  بهر[3] = color_منزل_q15 (hb_color_get_alpha (color));
 }
 
-static inline int16_t
-clamp_i16 (float v)
+ساكن مضمن int16_t
+clamp_i16 (عائم v)
 {
-  if (v <= -32768.f) return -32768;
-  if (v >=  32767.f) return  32767;
-  if (unlikely (std::isnan (v))) return 0;
-  return (int16_t) v;
+  إذا (v <= -32768.f) أرجع -32768;
+  إذا (v >=  32767.f) أرجع  32767;
+  إذا (unlikely (std::isnan (v))) أرجع 0;
+  أرجع (int16_t) v;
 }
 
 /* Compute the 2x2 inverse of the transform's linear part, quantize
@@ -311,15 +311,15 @@ clamp_i16 (float v)
  * transforms for degenerate cases can check for is_identity before
  * doing the extra work in-shader, but we always emit so the format
  * stays uniform. */
-static inline void
-linv_q10 (const hb_transform_t<float> &t, int16_t out[4])
+ساكن مضمن فراغ
+linv_q10 (ثابت hb_transform_t<عائم> &t, int16_t بهر[4])
 {
-  float det = t.xx * t.yy - t.xy * t.yx;
-  float inv = fabsf (det) > 1e-12f ? 1.0f / det : 0.0f;
-  out[0] = clamp_i16 ( t.yy * inv * 1024.f);
-  out[1] = clamp_i16 (-t.xy * inv * 1024.f);
-  out[2] = clamp_i16 (-t.yx * inv * 1024.f);
-  out[3] = clamp_i16 ( t.xx * inv * 1024.f);
+  عائم det = t.xx * t.yy - t.xy * t.yx;
+  عائم inv = fabsf (det) > 1e-12f ? 1.0f / det : 0.0f;
+  بهر[0] = clamp_i16 ( t.yy * inv * 1024.f);
+  بهر[1] = clamp_i16 (-t.xy * inv * 1024.f);
+  بهر[2] = clamp_i16 (-t.yx * inv * 1024.f);
+  بهر[3] = clamp_i16 ( t.xx * inv * 1024.f);
 }
 
 /* Transforming pen: applies an affine transform to each outline
@@ -327,101 +327,101 @@ linv_q10 (const hb_transform_t<float> &t, int16_t out[4])
  * downstream's inline draw-state bookkeeping runs against a
  * separate state (down_st) so transformed-space updates don't
  * pollute the caller's pre-transform state. */
-struct hb_gpu_paint_pen_t
+بنية hb_gpu_paint_pen_t
 {
-  hb_transform_t<float> transform;
+  hb_transform_t<عائم> transform;
   hb_draw_funcs_t  *dfuncs;
-  void             *data;
-  hb_draw_state_t   down_st;
-  int64_t          *budget_remaining;
+  فراغ             *معلومات;
+  hb_draw_state_t   ښکته_st;
+  int64_t          *budget_پاتې_شوی;
 };
 
-static void
-hb_gpu_paint_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data, hb_draw_state_t *st HB_UNUSED,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_pen_move_منزل (hb_draw_funcs_t *dfuncs HB_ناکارول_شوی,
+			  فراغ *معلومات, hb_draw_state_t *st HB_ناکارول_شوی,
+			  عائم منزل_x, عائم منزل_y,
+			  فراغ *user_معلومات HB_ناکارول_شوی)
 {
-  auto *c = (hb_gpu_paint_pen_t *) data;
-  c->transform.transform_point (to_x, to_y);
-  c->dfuncs->move_to (c->data, c->down_st, to_x, to_y);
+  خپلکاری *c = (hb_gpu_paint_pen_t *) معلومات;
+  c->transform.transform_ټکی (منزل_x, منزل_y);
+  c->dfuncs->move_منزل (c->معلومات, c->ښکته_st, منزل_x, منزل_y);
 }
 
-static void
-hb_gpu_paint_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data, hb_draw_state_t *st HB_UNUSED,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_pen_کرښه_منزل (hb_draw_funcs_t *dfuncs HB_ناکارول_شوی,
+			  فراغ *معلومات, hb_draw_state_t *st HB_ناکارول_شوی,
+			  عائم منزل_x, عائم منزل_y,
+			  فراغ *user_معلومات HB_ناکارول_شوی)
 {
-  auto *c = (hb_gpu_paint_pen_t *) data;
-  c->transform.transform_point (to_x, to_y);
-  c->dfuncs->line_to (c->data, c->down_st, to_x, to_y);
+  خپلکاری *c = (hb_gpu_paint_pen_t *) معلومات;
+  c->transform.transform_ټکی (منزل_x, منزل_y);
+  c->dfuncs->کرښه_منزل (c->معلومات, c->ښکته_st, منزل_x, منزل_y);
 }
 
-static void
-hb_gpu_paint_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			       void *data, hb_draw_state_t *st HB_UNUSED,
-			       float c_x, float c_y,
-			       float to_x, float to_y,
-			       void *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_pen_quadratic_منزل (hb_draw_funcs_t *dfuncs HB_ناکارول_شوی,
+			       فراغ *معلومات, hb_draw_state_t *st HB_ناکارول_شوی,
+			       عائم c_x, عائم c_y,
+			       عائم منزل_x, عائم منزل_y,
+			       فراغ *user_معلومات HB_ناکارول_شوی)
 {
-  auto *c = (hb_gpu_paint_pen_t *) data;
-  c->transform.transform_point (c_x, c_y);
-  c->transform.transform_point (to_x, to_y);
-  c->dfuncs->quadratic_to (c->data, c->down_st, c_x, c_y, to_x, to_y);
+  خپلکاری *c = (hb_gpu_paint_pen_t *) معلومات;
+  c->transform.transform_ټکی (c_x, c_y);
+  c->transform.transform_ټکی (منزل_x, منزل_y);
+  c->dfuncs->quadratic_منزل (c->معلومات, c->ښکته_st, c_x, c_y, منزل_x, منزل_y);
 }
 
-static void
-hb_gpu_paint_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			   void *data, hb_draw_state_t *st HB_UNUSED,
-			   float c1_x, float c1_y,
-			   float c2_x, float c2_y,
-			   float to_x, float to_y,
-			   void *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_pen_cubic_منزل (hb_draw_funcs_t *dfuncs HB_ناکارول_شوی,
+			   فراغ *معلومات, hb_draw_state_t *st HB_ناکارول_شوی,
+			   عائم c1_x, عائم c1_y,
+			   عائم c2_x, عائم c2_y,
+			   عائم منزل_x, عائم منزل_y,
+			   فراغ *user_معلومات HB_ناکارول_شوی)
 {
-  auto *c = (hb_gpu_paint_pen_t *) data;
-  c->transform.transform_point (c1_x, c1_y);
-  c->transform.transform_point (c2_x, c2_y);
-  c->transform.transform_point (to_x, to_y);
-  c->dfuncs->cubic_to (c->data, c->down_st, c1_x, c1_y, c2_x, c2_y, to_x, to_y);
+  خپلکاری *c = (hb_gpu_paint_pen_t *) معلومات;
+  c->transform.transform_ټکی (c1_x, c1_y);
+  c->transform.transform_ټکی (c2_x, c2_y);
+  c->transform.transform_ټکی (منزل_x, منزل_y);
+  c->dfuncs->cubic_منزل (c->معلومات, c->ښکته_st, c1_x, c1_y, c2_x, c2_y, منزل_x, منزل_y);
 }
 
-static void
-hb_gpu_paint_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			     void *data, hb_draw_state_t *st HB_UNUSED,
-			     void *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_pen_close_لار (hb_draw_funcs_t *dfuncs HB_ناکارول_شوی,
+			     فراغ *معلومات, hb_draw_state_t *st HB_ناکارول_شوی,
+			     فراغ *user_معلومات HB_ناکارول_شوی)
 {
-  auto *c = (hb_gpu_paint_pen_t *) data;
-  c->dfuncs->close_path (c->data, c->down_st);
+  خپلکاری *c = (hb_gpu_paint_pen_t *) معلومات;
+  c->dfuncs->close_لار (c->معلومات, c->ښکته_st);
 }
 
-static int64_t *
-hb_gpu_paint_pen_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ساكن int64_t *
+hb_gpu_paint_pen_get_budget_پاتې_شوی (hb_draw_funcs_t *, فراغ *draw_معلومات, فراغ *)
 {
-  return ((hb_gpu_paint_pen_t *) draw_data)->budget_remaining;
+  أرجع ((hb_gpu_paint_pen_t *) draw_معلومات)->budget_پاتې_شوی;
 }
 
-static inline void free_static_gpu_paint_pen_funcs ();
+ساكن مضمن فراغ free_static_gpu_paint_pen_funcs ();
 
-static struct hb_gpu_paint_pen_funcs_lazy_loader_t
+ساكن بنية hb_gpu_paint_pen_funcs_lazy_loader_t
   : hb_draw_funcs_lazy_loader_t<hb_gpu_paint_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساكن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-    hb_draw_funcs_set_move_to_func      (funcs, hb_gpu_paint_pen_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_gpu_paint_pen_line_to,      nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_gpu_paint_pen_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func     (funcs, hb_gpu_paint_pen_cubic_to,     nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func   (funcs, hb_gpu_paint_pen_close_path,   nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_gpu_paint_pen_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_سېټ_move_منزل_func      (funcs, hb_gpu_paint_pen_move_منزل,      تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_کرښه_منزل_func      (funcs, hb_gpu_paint_pen_کرښه_منزل,      تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_quadratic_منزل_func (funcs, hb_gpu_paint_pen_quadratic_منزل, تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_cubic_منزل_func     (funcs, hb_gpu_paint_pen_cubic_منزل,     تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_close_لار_func   (funcs, hb_gpu_paint_pen_close_لار,   تش_اشاره, تش_اشاره);
+    hb_draw_funcs_سېټ_get_budget_پاتې_شوی_func (funcs, hb_gpu_paint_pen_get_budget_پاتې_شوی, تش_اشاره, تش_اشاره);
     hb_draw_funcs_make_immutable (funcs);
     hb_atexit (free_static_gpu_paint_pen_funcs);
-    return funcs;
+    أرجع funcs;
   }
 } static_gpu_paint_pen_funcs;
 
-static inline void
+ساكن مضمن فراغ
 free_static_gpu_paint_pen_funcs ()
 {
   static_gpu_paint_pen_funcs.free_instance ();
@@ -436,7 +436,7 @@ free_static_gpu_paint_pen_funcs ()
  * path.  This matters for adversarial COLR trees that emit many
  * paint layers under the same clip stack -- without memoization
  * each layer re-rasterizes every clip glyph. */
-static int
+ساكن صحيح
 emit_clip_sub_blob (hb_gpu_paint_t *c,
 		    hb_gpu_paint_t::pending_clip_t &clip)
 {
@@ -444,150 +444,150 @@ emit_clip_sub_blob (hb_gpu_paint_t *c,
    * push_clip_path_end time; glyph clips are cached here on first
    * use.  Either way: just accumulate extents and hand back the
    * recorded index. */
-  if (clip.sub_blob_index >= 0)
+  إذا (clip.sub_blob_شاخص >= 0)
   {
     c->ext_min_x = hb_min (c->ext_min_x, clip.ext_x0);
     c->ext_max_x = hb_max (c->ext_max_x, clip.ext_x1);
     c->ext_min_y = hb_min (c->ext_min_y, clip.ext_y0);
     c->ext_max_y = hb_max (c->ext_max_y, clip.ext_y1);
-    return clip.sub_blob_index;
+    أرجع clip.sub_blob_شاخص;
   }
 
   /* Adversarial COLR trees can drive thousands of fresh
    * push_clip_glyph / paint_color cycles within a single paint
    * walk, each demanding a fresh sub-blob.  Bound the work. */
-  if (unlikely (c->sub_blobs.length >= HB_GPU_PAINT_MAX_SUB_BLOBS))
+  إذا (unlikely (c->sub_blobs.اوږدتیا >= HB_GPU_PAINT_MAX_SUB_BLOBS))
   {
-    c->unsupported = true;
-    return -1;
+    c->unsupported = ریښتیا;
+    أرجع -1;
   }
 
   /* Out of budget: skip the glyph-outline extraction entirely, so
    * per-glyph outline limits cannot multiply with the caller's
    * paint-graph traversal limits. */
-  if (unlikely (c->budget_remaining < 0))
+  إذا (unlikely (c->budget_پاتې_شوی < 0))
   {
-    c->unsupported = true;
-    return -1;
+    c->unsupported = ریښتیا;
+    أرجع -1;
   }
 
-  if (unlikely (!c->scratch_draw))
+  إذا (unlikely (!c->scratch_draw))
   {
     c->scratch_draw = hb_gpu_draw_create_or_fail ();
-    if (unlikely (!c->scratch_draw))
+    إذا (unlikely (!c->scratch_draw))
     {
-      c->unsupported = true;
-      return -1;
+      c->unsupported = ریښتیا;
+      أرجع -1;
     }
   }
   hb_gpu_draw_clear (c->scratch_draw);
   /* Seed the scratch encoder's budget from the session's remainder and
    * read it back after the glyph is drawn, so the whole paint walk shares
    * one budget through the public draw-budget API. */
-  hb_draw_set_budget (hb_gpu_draw_get_funcs (c->scratch_draw), c->scratch_draw,
-		      c->budget_remaining);
+  hb_draw_سېټ_budget (hb_gpu_draw_get_funcs (c->scratch_draw), c->scratch_draw,
+		      c->budget_پاتې_شوی);
 
-  bool ok;
-  if (clip.transform.is_identity ())
+  منطقي ok;
+  إذا (clip.transform.is_بې_اغېزه_عنصر ())
   {
     /* Fast path: feed the glyph outline straight into the draw
      * encoder with no adapter. */
     ok = hb_gpu_draw_glyph_or_fail (c->scratch_draw, clip.font, clip.glyph);
   }
-  else
+  وإلا
   {
     /* Transform each outline point by the transform that was
      * current at push_clip_glyph time -- NOT the innermost
      * cur_transform, which may have additional PaintTransform
      * wrappers from the paint child underneath. */
-    int x_scale, y_scale;
+    صحيح x_scale, y_scale;
     hb_font_get_scale (clip.font, &x_scale, &y_scale);
-    hb_gpu_draw_set_scale (c->scratch_draw, x_scale, y_scale);
+    hb_gpu_draw_سېټ_scale (c->scratch_draw, x_scale, y_scale);
 
     hb_gpu_paint_pen_t pen = {};
     pen.transform = clip.transform;
     pen.dfuncs    = hb_gpu_draw_get_funcs (c->scratch_draw);
-    pen.data      = c->scratch_draw;
-    pen.down_st   = HB_DRAW_STATE_DEFAULT;
-    pen.budget_remaining = &c->scratch_draw->budget_remaining;
+    pen.معلومات      = c->scratch_draw;
+    pen.ښکته_st   = HB_DRAW_STATE_DEFAULT;
+    pen.budget_پاتې_شوی = &c->scratch_draw->budget_پاتې_شوی;
     ok = hb_font_draw_glyph_or_fail (clip.font, clip.glyph,
 				     static_gpu_paint_pen_funcs.get_unconst (),
 				     &pen);
     /* Close any trailing open path on the downstream state, since
      * hb_font_draw_glyph_or_fail only closes via our pen's state. */
-    pen.dfuncs->close_path (pen.data, pen.down_st);
+    pen.dfuncs->close_لار (pen.معلومات, pen.ښکته_st);
   }
-  c->budget_remaining = hb_draw_get_budget_remaining (hb_gpu_draw_get_funcs (c->scratch_draw),
+  c->budget_پاتې_شوی = hb_draw_get_budget_پاتې_شوی (hb_gpu_draw_get_funcs (c->scratch_draw),
 						      c->scratch_draw);
-  if (!ok)
-    return -1;  /* Clip glyph has no outline -- skip. */
+  إذا (!ok)
+    أرجع -1;  /* Clip glyph has no outline -- skip. */
 
   hb_glyph_extents_t ext;
   hb_blob_t *blob = hb_gpu_draw_encode (c->scratch_draw, &ext);
-  if (unlikely (!blob || !c->push_sub_blob (blob)))
+  إذا (unlikely (!blob || !c->ټېل_sub_blob (blob)))
   {
     hb_blob_destroy (blob);
-    c->unsupported = true;
-    return -1;
+    c->unsupported = ریښتیا;
+    أرجع -1;
   }
 
   /* Accumulate extents: x_bearing/y_bearing are top-left, width
    * positive, height negative (growing down). */
-  int x0 = ext.x_bearing;
-  int x1 = hb_saturate_add (ext.x_bearing, ext.width);
-  int y0 = ext.y_bearing;
-  int y1 = hb_saturate_add (ext.y_bearing, ext.height);
+  صحيح x0 = ext.x_bearing;
+  صحيح x1 = hb_saturate_جمع_کړه (ext.x_bearing, ext.پلنوالی);
+  صحيح y0 = ext.y_bearing;
+  صحيح y1 = hb_saturate_جمع_کړه (ext.y_bearing, ext.لوړوالی);
   c->ext_min_x = hb_min (c->ext_min_x, hb_min (x0, x1));
   c->ext_max_x = hb_max (c->ext_max_x, hb_max (x0, x1));
   c->ext_min_y = hb_min (c->ext_min_y, hb_min (y0, y1));
   c->ext_max_y = hb_max (c->ext_max_y, hb_max (y0, y1));
 
-  int idx = (int) (c->sub_blobs.length - 1);
+  صحيح idx = (صحيح) (c->sub_blobs.اوږدتیا - 1);
 
   /* Memoize on the slot.  The (glyph, font, transform) tuple is
    * fixed between push_clip_glyph and pop_clip, and pop_clip's
    * subsequent push reinitializes the slot to sub_blob_index = -1,
    * so a stale cache cannot leak across pushes. */
-  clip.sub_blob_index = idx;
+  clip.sub_blob_شاخص = idx;
   clip.ext_x0 = hb_min (x0, x1);
   clip.ext_y0 = hb_min (y0, y1);
   clip.ext_x1 = hb_max (x0, x1);
   clip.ext_y1 = hb_max (y0, y1);
 
-  return idx;
+  أرجع idx;
 }
 
 /* Emit a sub-blob for every clip currently on the stack and return
  * their indices in @out (set to -1 for unused slots).  Returns
  * false if any clip's outline is empty (caller should skip the
  * layer entirely) or hb_gpu_draw_encode failed. */
-static bool
-emit_all_clip_sub_blobs (hb_gpu_paint_t *c, int out[HB_GPU_PAINT_MAX_CLIP_DEPTH])
+ساكن منطقي
+emit_all_clip_sub_blobs (hb_gpu_paint_t *c, صحيح بهر[HB_GPU_PAINT_MAX_CLIP_ژوروالی])
 {
-  for (unsigned i = 0; i < HB_GPU_PAINT_MAX_CLIP_DEPTH; i++)
-    out[i] = -1;
-  for (unsigned i = 0; i < hb_min (c->clip_depth, (unsigned) HB_GPU_PAINT_MAX_CLIP_DEPTH); i++)
+  لكل (بینښه i = 0; i < HB_GPU_PAINT_MAX_CLIP_ژوروالی; i++)
+    بهر[i] = -1;
+  لكل (بینښه i = 0; i < hb_min (c->clip_ژوروالی, (بینښه) HB_GPU_PAINT_MAX_CLIP_ژوروالی); i++)
   {
-    out[i] = emit_clip_sub_blob (c, c->clip_stack[i]);
-    if (out[i] < 0)
-      return false;
+    بهر[i] = emit_clip_sub_blob (c, c->clip_ډېری[i]);
+    إذا (بهر[i] < 0)
+      أرجع خطأ;
   }
-  return true;
+  أرجع ریښتیا;
 }
 
 /* Emit a 3-texel LAYER_GRADIENT op header (excluding the
  * gradient-meta texel which the caller fills in).  @subtype is
  * 0 = linear, 1 = radial, 2 = sweep. */
-static int16_t *
-emit_gradient_op_header (hb_gpu_paint_t *c, unsigned subtype,
-			 const int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH])
+ساكن int16_t *
+emit_gradient_op_سرلیک (hb_gpu_paint_t *c, بینښه subtype,
+			 ثابت صحيح clip_idx[HB_GPU_PAINT_MAX_CLIP_ژوروالی])
 {
-  if (unlikely (!c->ops.resize (c->ops.length + 12)))
-  { c->unsupported = true; return nullptr; }
-  int16_t *o = &c->ops.arrayZ[c->ops.length - 12];
+  إذا (unlikely (!c->ops.resize (c->ops.اوږدتیا + 12)))
+  { c->unsupported = ریښتیا; أرجع تش_اشاره; }
+  int16_t *o = &c->ops.arrayZ[c->ops.اوږدتیا - 12];
   int16_t flags = (int16_t) subtype;
-  if (clip_idx[1] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP2;
-  if (clip_idx[2] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP3;
+  إذا (clip_idx[1] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP2;
+  إذا (clip_idx[2] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP3;
   o[0] = HB_GPU_PAINT_OP_LAYER_GRADIENT;
   o[1] = flags;
   o[2] = (int16_t) ((clip_idx[0] >> 16) & 0xffff);
@@ -596,27 +596,27 @@ emit_gradient_op_header (hb_gpu_paint_t *c, unsigned subtype,
   o[5] = clip_idx[1] >= 0 ? (int16_t) (clip_idx[1] & 0xffff) : 0;
   o[6] = clip_idx[2] >= 0 ? (int16_t) ((clip_idx[2] >> 16) & 0xffff) : 0;
   o[7] = clip_idx[2] >= 0 ? (int16_t) (clip_idx[2] & 0xffff) : 0;
-  return o + 8;  /* texel 2: gradient meta -- caller fills */
+  أرجع o + 8;  /* texel 2: gradient meta -- caller fills */
 }
 
-static void
+ساكن فراغ
 hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
 			 hb_bool_t       is_foreground,
 			 hb_color_t      color)
 {
-  if (unlikely (c->unsupported))
-    return;
-  if (unlikely (c->clip_depth == 0))
-    return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  إذا (unlikely (c->unsupported))
+    أرجع;
+  إذا (unlikely (c->clip_ژوروالی == 0))
+    أرجع;
+  إذا (unlikely (c->عدد_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
 
-  int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
-  if (!emit_all_clip_sub_blobs (c, clip_idx))
-    return;
+  صحيح clip_idx[HB_GPU_PAINT_MAX_CLIP_ژوروالی];
+  إذا (!emit_all_clip_sub_blobs (c, clip_idx))
+    أرجع;
 
   /* Emit LAYER_SOLID op: 3 texels (12 int16s).
    *   texel 0: op_type, flags, clip1_hi, clip1_lo
@@ -627,15 +627,15 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
    * flags bit 0: use shader foreground uniform instead of the
    * baked color (so runtime foreground-color changes still work).
    * flags bit 8: a second clip outline is present in texel 1. */
-  if (unlikely (!c->ops.resize (c->ops.length + 12)))
+  إذا (unlikely (!c->ops.resize (c->ops.اوږدتیا + 12)))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  int16_t *o = &c->ops.arrayZ[c->ops.length - 12];
+  int16_t *o = &c->ops.arrayZ[c->ops.اوږدتیا - 12];
   int16_t flags = (int16_t) (is_foreground ? HB_GPU_PAINT_FLAG_IS_FOREGROUND : 0);
-  if (clip_idx[1] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP2;
-  if (clip_idx[2] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP3;
+  إذا (clip_idx[1] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP2;
+  إذا (clip_idx[2] >= 0) flags |= HB_GPU_PAINT_FLAG_HAS_CLIP3;
   o[0] = HB_GPU_PAINT_OP_LAYER_SOLID;
   o[1] = flags;
   o[2] = (int16_t) ((clip_idx[0] >> 16) & 0xffff);
@@ -644,8 +644,8 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
   o[5] = clip_idx[1] >= 0 ? (int16_t) (clip_idx[1] & 0xffff) : 0;
   o[6] = clip_idx[2] >= 0 ? (int16_t) ((clip_idx[2] >> 16) & 0xffff) : 0;
   o[7] = clip_idx[2] >= 0 ? (int16_t) (clip_idx[2] & 0xffff) : 0;
-  color_to_q15_rgba (color, o + 8);
-  c->num_ops++;
+  color_منزل_q15_rgba (color, o + 8);
+  c->عدد_ops++;
 }
 
 /* Append a color line (@count stops) to @grad_data in the encoded
@@ -653,58 +653,58 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
  *   texel a: (offset_q15, flags, _, _) with flags bit 0 = is_foreground
  *   texel b: (r_q15, g_q15, b_q15, a_q15)
  * Returns false on allocation failure. */
-static bool
-append_color_stops (hb_vector_t<int16_t> &grad_data,
-		    const hb_color_stop_t *stops,
-		    unsigned count)
+ساكن منطقي
+append_color_stops (hb_ویکټور_t<int16_t> &grad_معلومات,
+		    ثابت hb_color_stop_t *stops,
+		    بینښه شمېر)
 {
-  unsigned base = grad_data.length;
-  if (unlikely (!grad_data.resize (base + count * 8)))
-    return false;
-  int16_t *p = grad_data.arrayZ + base;
-  for (unsigned i = 0; i < count; i++)
+  بینښه بنسټ = grad_معلومات.اوږدتیا;
+  إذا (unlikely (!grad_معلومات.resize (بنسټ + شمېر * 8)))
+    أرجع خطأ;
+  int16_t *p = grad_معلومات.arrayZ + بنسټ;
+  لكل (بینښه i = 0; i < شمېر; i++)
   {
-    float off = stops[i].offset;
-    if (off < -1.f) off = -1.f;
-    else if (off > 1.f) off = 1.f;
+    عائم off = stops[i].دننه_واټن;
+    إذا (off < -1.f) off = -1.f;
+    وإلا إذا (off > 1.f) off = 1.f;
     p[0] = (int16_t) (off * 32767.f);
     p[1] = (int16_t) (stops[i].is_foreground ? 1 : 0);
     p[2] = 0;
     p[3] = 0;
-    color_to_q15_rgba (stops[i].color, p + 4);
+    color_منزل_q15_rgba (stops[i].color, p + 4);
     p += 8;
   }
-  return true;
+  أرجع ریښتیا;
 }
 
-static void
-hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
-			  hb_color_line_t *color_line,
-			  float x0, float y0,
-			  float x1, float y1,
-			  float x2, float y2)
+ساكن فراغ
+hb_gpu_paint_emit_خطي (hb_gpu_paint_t  *c,
+			  hb_color_کرښه_t *color_کرښه,
+			  عائم x0, عائم y0,
+			  عائم x1, عائم y1,
+			  عائم x2, عائم y2)
 {
-  if (unlikely (c->unsupported))
-    return;
-  if (unlikely (c->clip_depth == 0))
-    return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  إذا (unlikely (c->unsupported))
+    أرجع;
+  إذا (unlikely (c->clip_ژوروالی == 0))
+    أرجع;
+  إذا (unlikely (c->عدد_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
 
   /* Resolve stops (triggers custom_palette_color, etc). */
-  if (unlikely (!c->fetch_color_stops (color_line)))
-    return;
+  إذا (unlikely (!c->fetch_color_stops (color_کرښه)))
+    أرجع;
   hb_color_stop_t *stops = c->color_stops_scratch.arrayZ;
-  unsigned got = c->color_stops_scratch.length;
+  بینښه got = c->color_stops_scratch.اوږدتیا;
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_کرښه_get_extend (color_کرښه);
 
   /* Emit clip sub-blob(s) first. */
-  int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
-  if (!emit_all_clip_sub_blobs (c, clip_idx)) return;
+  صحيح clip_idx[HB_GPU_PAINT_MAX_CLIP_ژوروالی];
+  إذا (!emit_all_clip_sub_blobs (c, clip_idx)) أرجع;
 
   /* Build gradient params sub-blob.
    *   texel 0: (p0_rendered_x, p0_rendered_y, d_canonical_x, d_canonical_y)
@@ -715,81 +715,81 @@ hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
    * and evaluates t = dot(p_canonical, d) / dot(d, d) in
    * untransformed space, so affine distortions of the axis are
    * handled exactly rather than approximated. */
-  hb_vector_t<int16_t> grad_data;
-  if (unlikely (!grad_data.resize (8)))
-  { c->unsupported = true; return; }
+  hb_ویکټور_t<int16_t> grad_معلومات;
+  إذا (unlikely (!grad_معلومات.resize (8)))
+  { c->unsupported = ریښتیا; أرجع; }
 
-  float lx0, ly0, lx1, ly1;
-  hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &lx0, &ly0, &lx1, &ly1);
+  عائم lx0, ly0, lx1, ly1;
+  hb_paint_reduce_خطي_anchors (x0, y0, x1, y1, x2, y2, &lx0, &ly0, &lx1, &ly1);
   /* Normalize stops to [0,1]; shift axis endpoints to compensate. */
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
-  float dx = lx1 - lx0, dy = ly1 - ly0;
-  float ax0 = lx0 + mn * dx, ay0 = ly0 + mn * dy;
-  float ax1 = lx0 + mx * dx, ay1 = ly0 + mx * dy;
+  عائم mn, mx;
+  hb_paint_normalize_color_کرښه (stops, got, &mn, &mx);
+  عائم dx = lx1 - lx0, dy = ly1 - ly0;
+  عائم ax0 = lx0 + mn * dx, ay0 = ly0 + mn * dy;
+  عائم ax1 = lx0 + mx * dx, ay1 = ly0 + mx * dy;
   /* p0 in rendered space; d in untransformed space. */
-  float p0x_r = ax0, p0y_r = ay0;
-  c->cur_transform.transform_point (p0x_r, p0y_r);
-  grad_data[0] = clamp_i16 (p0x_r);
-  grad_data[1] = clamp_i16 (p0y_r);
-  grad_data[2] = clamp_i16 (ax1 - ax0);
-  grad_data[3] = clamp_i16 (ay1 - ay0);
+  عائم p0x_r = ax0, p0y_r = ay0;
+  c->cur_transform.transform_ټکی (p0x_r, p0y_r);
+  grad_معلومات[0] = clamp_i16 (p0x_r);
+  grad_معلومات[1] = clamp_i16 (p0y_r);
+  grad_معلومات[2] = clamp_i16 (ax1 - ax0);
+  grad_معلومات[3] = clamp_i16 (ay1 - ay0);
   int16_t Linv[4];
   linv_q10 (c->cur_transform, Linv);
-  grad_data[4] = Linv[0];
-  grad_data[5] = Linv[1];
-  grad_data[6] = Linv[2];
-  grad_data[7] = Linv[3];
+  grad_معلومات[4] = Linv[0];
+  grad_معلومات[5] = Linv[1];
+  grad_معلومات[6] = Linv[2];
+  grad_معلومات[7] = Linv[3];
 
-  if (unlikely (!append_color_stops (grad_data, stops, got)))
-  { c->unsupported = true; return; }
+  إذا (unlikely (!append_color_stops (grad_معلومات, stops, got)))
+  { c->unsupported = ریښتیا; أرجع; }
 
-  unsigned grad_bytes = grad_data.length * sizeof (int16_t);
-  hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
-					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
-					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  بینښه grad_بایټونه = grad_معلومات.اوږدتیا * حجم (int16_t);
+  hb_blob_t *grad_blob = hb_blob_create ((ثابت حرف *) grad_معلومات.arrayZ,
+					 grad_بایټونه, HB_حافظه_ډېرپېښ_DUPLICATE,
+					 تش_اشاره, تش_اشاره);
+  إذا (unlikely (!grad_blob || !c->ټېل_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  unsigned grad_idx = c->sub_blobs.length - 1;
+  بینښه grad_idx = c->sub_blobs.اوږدتیا - 1;
 
-  int16_t *meta = emit_gradient_op_header (c, 0 /* linear */, clip_idx);
-  if (unlikely (!meta)) return;
+  int16_t *meta = emit_gradient_op_سرلیک (c, 0 /*خطي*/, clip_idx);
+  إذا (unlikely (!meta)) أرجع;
   meta[0] = (int16_t) ((grad_idx >> 16) & 0xffff);
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->عدد_ops++;
 }
 
-static void
+ساكن فراغ
 hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
-			  hb_color_line_t *color_line,
-			  float x0, float y0, float r0,
-			  float x1, float y1, float r1)
+			  hb_color_کرښه_t *color_کرښه,
+			  عائم x0, عائم y0, عائم r0,
+			  عائم x1, عائم y1, عائم r1)
 {
-  if (unlikely (c->unsupported))
-    return;
-  if (unlikely (c->clip_depth == 0))
-    return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  إذا (unlikely (c->unsupported))
+    أرجع;
+  إذا (unlikely (c->clip_ژوروالی == 0))
+    أرجع;
+  إذا (unlikely (c->عدد_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
 
-  if (unlikely (!c->fetch_color_stops (color_line)))
-    return;
+  إذا (unlikely (!c->fetch_color_stops (color_کرښه)))
+    أرجع;
   hb_color_stop_t *stops = c->color_stops_scratch.arrayZ;
-  unsigned got = c->color_stops_scratch.length;
+  بینښه got = c->color_stops_scratch.اوږدتیا;
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_کرښه_get_extend (color_کرښه);
 
-  int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
-  if (!emit_all_clip_sub_blobs (c, clip_idx)) return;
+  صحيح clip_idx[HB_GPU_PAINT_MAX_CLIP_ژوروالی];
+  إذا (!emit_all_clip_sub_blobs (c, clip_idx)) أرجع;
 
   /* Build gradient params sub-blob.
    *   texel 0: (c0_rendered_x, c0_rendered_y, d_canonical_x, d_canonical_y)
@@ -803,126 +803,126 @@ hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
    * turn the circle into an ellipse in rendered space) is handled
    * exactly.
    */
-  hb_vector_t<int16_t> grad_data;
-  if (unlikely (!grad_data.resize (12)))
-  { c->unsupported = true; return; }
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
-  float dx = x1 - x0, dy = y1 - y0, dr = r1 - r0;
-  float cx0 = x0 + mn * dx, cy0 = y0 + mn * dy, cr0 = r0 + mn * dr;
-  float cx1 = x0 + mx * dx, cy1 = y0 + mx * dy, cr1 = r0 + mx * dr;
+  hb_ویکټور_t<int16_t> grad_معلومات;
+  إذا (unlikely (!grad_معلومات.resize (12)))
+  { c->unsupported = ریښتیا; أرجع; }
+  عائم mn, mx;
+  hb_paint_normalize_color_کرښه (stops, got, &mn, &mx);
+  عائم dx = x1 - x0, dy = y1 - y0, dr = r1 - r0;
+  عائم cx0 = x0 + mn * dx, cy0 = y0 + mn * dy, cr0 = r0 + mn * dr;
+  عائم cx1 = x0 + mx * dx, cy1 = y0 + mx * dy, cr1 = r0 + mx * dr;
   /* c0 in rendered space; d (= c1 - c0) and radii in untransformed. */
-  float cx0_r = cx0, cy0_r = cy0;
-  c->cur_transform.transform_point (cx0_r, cy0_r);
-  grad_data[0] = clamp_i16 (cx0_r);
-  grad_data[1] = clamp_i16 (cy0_r);
-  grad_data[2] = clamp_i16 (cx1 - cx0);
-  grad_data[3] = clamp_i16 (cy1 - cy0);
-  grad_data[4] = clamp_i16 (cr0);
-  grad_data[5] = clamp_i16 (cr1);
-  grad_data[6] = 0;
-  grad_data[7] = 0;
+  عائم cx0_r = cx0, cy0_r = cy0;
+  c->cur_transform.transform_ټکی (cx0_r, cy0_r);
+  grad_معلومات[0] = clamp_i16 (cx0_r);
+  grad_معلومات[1] = clamp_i16 (cy0_r);
+  grad_معلومات[2] = clamp_i16 (cx1 - cx0);
+  grad_معلومات[3] = clamp_i16 (cy1 - cy0);
+  grad_معلومات[4] = clamp_i16 (cr0);
+  grad_معلومات[5] = clamp_i16 (cr1);
+  grad_معلومات[6] = 0;
+  grad_معلومات[7] = 0;
   int16_t Linv[4];
   linv_q10 (c->cur_transform, Linv);
-  grad_data[8]  = Linv[0];
-  grad_data[9]  = Linv[1];
-  grad_data[10] = Linv[2];
-  grad_data[11] = Linv[3];
+  grad_معلومات[8]  = Linv[0];
+  grad_معلومات[9]  = Linv[1];
+  grad_معلومات[10] = Linv[2];
+  grad_معلومات[11] = Linv[3];
 
-  if (unlikely (!append_color_stops (grad_data, stops, got)))
-  { c->unsupported = true; return; }
+  إذا (unlikely (!append_color_stops (grad_معلومات, stops, got)))
+  { c->unsupported = ریښتیا; أرجع; }
 
-  unsigned grad_bytes = grad_data.length * sizeof (int16_t);
-  hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
-					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
-					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  بینښه grad_بایټونه = grad_معلومات.اوږدتیا * حجم (int16_t);
+  hb_blob_t *grad_blob = hb_blob_create ((ثابت حرف *) grad_معلومات.arrayZ,
+					 grad_بایټونه, HB_حافظه_ډېرپېښ_DUPLICATE,
+					 تش_اشاره, تش_اشاره);
+  إذا (unlikely (!grad_blob || !c->ټېل_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  unsigned grad_idx = c->sub_blobs.length - 1;
+  بینښه grad_idx = c->sub_blobs.اوږدتیا - 1;
 
-  int16_t *meta = emit_gradient_op_header (c, 1 /* radial */, clip_idx);
-  if (unlikely (!meta)) return;
+  int16_t *meta = emit_gradient_op_سرلیک (c, 1 /* radial */, clip_idx);
+  إذا (unlikely (!meta)) أرجع;
   meta[0] = (int16_t) ((grad_idx >> 16) & 0xffff);
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->عدد_ops++;
 }
 
-static void
-hb_gpu_paint_color (hb_paint_funcs_t *funcs HB_UNUSED,
-		    void             *paint_data,
+ساكن فراغ
+hb_gpu_paint_color (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+		    فراغ             *paint_معلومات,
 		    hb_bool_t         is_foreground,
 		    hb_color_t        color,
-		    void             *user_data HB_UNUSED)
+		    فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_emit_solid ((hb_gpu_paint_t *) paint_data, is_foreground, color);
+  hb_gpu_paint_emit_solid ((hb_gpu_paint_t *) paint_معلومات, is_foreground, color);
 }
 
-static void
-hb_gpu_paint_linear_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void             *paint_data,
-			      hb_color_line_t  *color_line,
-			      float x0, float y0,
-			      float x1, float y1,
-			      float x2, float y2,
-			      void             *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_خطي_gradient (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+			      فراغ             *paint_معلومات,
+			      hb_color_کرښه_t  *color_کرښه,
+			      عائم x0, عائم y0,
+			      عائم x1, عائم y1,
+			      عائم x2, عائم y2,
+			      فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_emit_linear ((hb_gpu_paint_t *) paint_data, color_line,
+  hb_gpu_paint_emit_خطي ((hb_gpu_paint_t *) paint_معلومات, color_کرښه,
 			    x0, y0, x1, y1, x2, y2);
 }
 
-static void
-hb_gpu_paint_radial_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void             *paint_data,
-			      hb_color_line_t  *color_line,
-			      float x0, float y0, float r0,
-			      float x1, float y1, float r1,
-			      void             *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_radial_gradient (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+			      فراغ             *paint_معلومات,
+			      hb_color_کرښه_t  *color_کرښه,
+			      عائم x0, عائم y0, عائم r0,
+			      عائم x1, عائم y1, عائم r1,
+			      فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_emit_radial ((hb_gpu_paint_t *) paint_data, color_line,
+  hb_gpu_paint_emit_radial ((hb_gpu_paint_t *) paint_معلومات, color_کرښه,
 			    x0, y0, r0, x1, y1, r1);
 }
 
-static void
+ساكن فراغ
 hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
-			 hb_color_line_t *color_line,
-			 float cx, float cy,
-			 float start_angle, float end_angle)
+			 hb_color_کرښه_t *color_کرښه,
+			 عائم cx, عائم cy,
+			 عائم پیل_angle, عائم پای_ټکی_angle)
 {
-  if (unlikely (c->unsupported))
-    return;
-  if (unlikely (c->clip_depth == 0))
-    return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  إذا (unlikely (c->unsupported))
+    أرجع;
+  إذا (unlikely (c->clip_ژوروالی == 0))
+    أرجع;
+  إذا (unlikely (c->عدد_ops >= HB_GPU_PAINT_MAX_OPS))
   {
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
 
-  unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-  if (unlikely (!count))
-    return;
-  hb_color_stop_t stack_stops[16];
-  hb_color_stop_t *stops = stack_stops;
-  hb_color_stop_t *heap_stops = nullptr;
-  if (count > 16)
+  بینښه شمېر = hb_color_کرښه_get_color_stops (color_کرښه, 0, تش_اشاره, تش_اشاره);
+  إذا (unlikely (!شمېر))
+    أرجع;
+  hb_color_stop_t ډېری_stops[16];
+  hb_color_stop_t *stops = ډېری_stops;
+  hb_color_stop_t *ډېرۍ_stops = تش_اشاره;
+  إذا (شمېر > 16)
   {
-    heap_stops = (hb_color_stop_t *) hb_malloc2 (count, sizeof (hb_color_stop_t));
-    if (unlikely (!heap_stops)) { c->unsupported = true; return; }
-    stops = heap_stops;
+    ډېرۍ_stops = (hb_color_stop_t *) hb_malloc2 (شمېر, حجم (hb_color_stop_t));
+    إذا (unlikely (!ډېرۍ_stops)) { c->unsupported = ریښتیا; أرجع; }
+    stops = ډېرۍ_stops;
   }
-  unsigned got = count;
-  hb_color_line_get_color_stops (color_line, 0, &got, stops);
+  بینښه got = شمېر;
+  hb_color_کرښه_get_color_stops (color_کرښه, 0, &got, stops);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_کرښه_get_extend (color_کرښه);
 
-  int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
-  if (!emit_all_clip_sub_blobs (c, clip_idx)) { hb_free (heap_stops); return; }
+  صحيح clip_idx[HB_GPU_PAINT_MAX_CLIP_ژوروالی];
+  إذا (!emit_all_clip_sub_blobs (c, clip_idx)) { hb_free (ډېرۍ_stops); أرجع; }
 
   /* Build gradient params sub-blob.
    *   texel 0: (center_rendered_x, center_rendered_y,
@@ -935,71 +935,71 @@ hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
    * atan2 on p, so non-uniform scale / shear angular distortion is
    * handled exactly.
    */
-  hb_vector_t<int16_t> grad_data;
-  if (unlikely (!grad_data.resize (8)))
-  { c->unsupported = true; hb_free (heap_stops); return; }
+  hb_ویکټور_t<int16_t> grad_معلومات;
+  إذا (unlikely (!grad_معلومات.resize (8)))
+  { c->unsupported = ریښتیا; hb_free (ډېرۍ_stops); أرجع; }
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
-  float a_span = end_angle - start_angle;
-  float a_lo = start_angle + mn * a_span;
-  float a_hi = start_angle + mx * a_span;
-  auto rad_to_q14_pi = [] (float rad) -> int16_t {
-    float v = rad * (float) (1.0 / M_PI);  /* fraction of pi */
-    if (v <= -2.f) return -32768;
-    if (v >=  2.f) return  32767;
-    return (int16_t) (v * 16384.f);
+  عائم mn, mx;
+  hb_paint_normalize_color_کرښه (stops, got, &mn, &mx);
+  عائم a_پراختیا = پای_ټکی_angle - پیل_angle;
+  عائم a_lo = پیل_angle + mn * a_پراختیا;
+  عائم a_hi = پیل_angle + mx * a_پراختیا;
+  خپلکاری rad_منزل_q14_pi = [] (عائم rad) -> int16_t {
+    عائم v = rad * (عائم) (1.0 / M_PI);  /* fraction of pi */
+    إذا (v <= -2.f) أرجع -32768;
+    إذا (v >=  2.f) أرجع  32767;
+    أرجع (int16_t) (v * 16384.f);
   };
   /* center in rendered space; angles stay canonical. */
-  float tcx = cx, tcy = cy;
-  c->cur_transform.transform_point (tcx, tcy);
-  grad_data[0] = clamp_i16 (tcx);
-  grad_data[1] = clamp_i16 (tcy);
-  grad_data[2] = rad_to_q14_pi (a_lo);
-  grad_data[3] = rad_to_q14_pi (a_hi);
+  عائم tcx = cx, tcy = cy;
+  c->cur_transform.transform_ټکی (tcx, tcy);
+  grad_معلومات[0] = clamp_i16 (tcx);
+  grad_معلومات[1] = clamp_i16 (tcy);
+  grad_معلومات[2] = rad_منزل_q14_pi (a_lo);
+  grad_معلومات[3] = rad_منزل_q14_pi (a_hi);
   int16_t Linv[4];
   linv_q10 (c->cur_transform, Linv);
-  grad_data[4] = Linv[0];
-  grad_data[5] = Linv[1];
-  grad_data[6] = Linv[2];
-  grad_data[7] = Linv[3];
+  grad_معلومات[4] = Linv[0];
+  grad_معلومات[5] = Linv[1];
+  grad_معلومات[6] = Linv[2];
+  grad_معلومات[7] = Linv[3];
 
-  if (unlikely (!append_color_stops (grad_data, stops, got)))
-  { c->unsupported = true; hb_free (heap_stops); return; }
-  hb_free (heap_stops);
+  إذا (unlikely (!append_color_stops (grad_معلومات, stops, got)))
+  { c->unsupported = ریښتیا; hb_free (ډېرۍ_stops); أرجع; }
+  hb_free (ډېرۍ_stops);
 
-  unsigned grad_bytes = grad_data.length * sizeof (int16_t);
-  hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
-					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
-					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  بینښه grad_بایټونه = grad_معلومات.اوږدتیا * حجم (int16_t);
+  hb_blob_t *grad_blob = hb_blob_create ((ثابت حرف *) grad_معلومات.arrayZ,
+					 grad_بایټونه, HB_حافظه_ډېرپېښ_DUPLICATE,
+					 تش_اشاره, تش_اشاره);
+  إذا (unlikely (!grad_blob || !c->ټېل_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
-    c->unsupported = true;
-    return;
+    c->unsupported = ریښتیا;
+    أرجع;
   }
-  unsigned grad_idx = c->sub_blobs.length - 1;
+  بینښه grad_idx = c->sub_blobs.اوږدتیا - 1;
 
-  int16_t *meta = emit_gradient_op_header (c, 2 /* sweep */, clip_idx);
-  if (unlikely (!meta)) return;
+  int16_t *meta = emit_gradient_op_سرلیک (c, 2 /* sweep */, clip_idx);
+  إذا (unlikely (!meta)) أرجع;
   meta[0] = (int16_t) ((grad_idx >> 16) & 0xffff);
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->عدد_ops++;
 }
 
-static void
-hb_gpu_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void             *paint_data,
-			     hb_color_line_t  *color_line,
-			     float cx, float cy,
-			     float start_angle,
-			     float end_angle,
-			     void             *user_data HB_UNUSED)
+ساكن فراغ
+hb_gpu_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_ناکارول_شوی,
+			     فراغ             *paint_معلومات,
+			     hb_color_کرښه_t  *color_کرښه,
+			     عائم cx, عائم cy,
+			     عائم پیل_angle,
+			     عائم پای_ټکی_angle,
+			     فراغ             *user_معلومات HB_ناکارول_شوی)
 {
-  hb_gpu_paint_emit_sweep ((hb_gpu_paint_t *) paint_data, color_line,
-			   cx, cy, start_angle, end_angle);
+  hb_gpu_paint_emit_sweep ((hb_gpu_paint_t *) paint_معلومات, color_کرښه,
+			   cx, cy, پیل_angle, پای_ټکی_angle);
 }
 
 /* PaintImage isn't representable by our slug+gradient encoder; mark
@@ -1007,80 +1007,80 @@ hb_gpu_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
  * than getting a partial blob.  PaintRectangleClip is intentionally
  * left to the default no-op: the encoder simply ignores the
  * rectangle (output is bigger than it should be, but renders). */
-static hb_bool_t
-hb_gpu_paint_image (hb_paint_funcs_t   *funcs   HB_UNUSED,
-		    void               *paint_data,
-		    hb_blob_t          *image   HB_UNUSED,
-		    unsigned int        width   HB_UNUSED,
-		    unsigned int        height  HB_UNUSED,
-		    hb_tag_t            format  HB_UNUSED,
-		    float               slant   HB_UNUSED,
-		    hb_glyph_extents_t *extents HB_UNUSED,
-		    void               *user_data HB_UNUSED)
+ساكن hb_bool_t
+hb_gpu_paint_image (hb_paint_funcs_t   *funcs   HB_ناکارول_شوی,
+		    فراغ               *paint_معلومات,
+		    hb_blob_t          *image   HB_ناکارول_شوی,
+		    بینښه صحيح        پلنوالی   HB_ناکارول_شوی,
+		    بینښه صحيح        لوړوالی  HB_ناکارول_شوی,
+		    hb_نښان_t            format  HB_ناکارول_شوی,
+		    عائم               slant   HB_ناکارول_شوی,
+		    hb_glyph_extents_t *extents HB_ناکارول_شوی,
+		    فراغ               *user_معلومات HB_ناکارول_شوی)
 {
-  ((hb_gpu_paint_t *) paint_data)->unsupported = true;
-  return false;
+  ((hb_gpu_paint_t *) paint_معلومات)->unsupported = ریښتیا;
+  أرجع خطأ;
 }
 
-static hb_bool_t
-hb_gpu_paint_set_budget (hb_paint_funcs_t *, void *paint_data,
-			 int64_t budget, void *)
+ساكن hb_bool_t
+hb_gpu_paint_سېټ_budget (hb_paint_funcs_t *, فراغ *paint_معلومات,
+			 int64_t budget, فراغ *)
 {
-  auto *paint = (hb_gpu_paint_t *) paint_data;
+  خپلکاری *paint = (hb_gpu_paint_t *) paint_معلومات;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  أرجع ریښتیا;
 }
 
-static int64_t
-hb_gpu_paint_get_budget (hb_paint_funcs_t *, void *paint_data, void *)
+ساكن int64_t
+hb_gpu_paint_get_budget (hb_paint_funcs_t *, فراغ *paint_معلومات, فراغ *)
 {
-  return ((hb_gpu_paint_t *) paint_data)->budget;
+  أرجع ((hb_gpu_paint_t *) paint_معلومات)->budget;
 }
 
-static int64_t *
-hb_gpu_paint_get_budget_remaining (hb_paint_funcs_t *, void *paint_data, void *)
+ساكن int64_t *
+hb_gpu_paint_get_budget_پاتې_شوی (hb_paint_funcs_t *, فراغ *paint_معلومات, فراغ *)
 {
-  return &((hb_gpu_paint_t *) paint_data)->budget_remaining;
+  أرجع &((hb_gpu_paint_t *) paint_معلومات)->budget_پاتې_شوی;
 }
 
-static inline void free_static_gpu_paint_funcs ();
+ساكن مضمن فراغ free_static_gpu_paint_funcs ();
 
-static struct hb_gpu_paint_funcs_lazy_loader_t
+ساكن بنية hb_gpu_paint_funcs_lazy_loader_t
   : hb_paint_funcs_lazy_loader_t<hb_gpu_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  ساكن hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_transform_func        (funcs, hb_gpu_paint_push_transform,        nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func         (funcs, hb_gpu_paint_pop_transform,         nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func       (funcs, hb_gpu_paint_push_clip_glyph,       nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func  (funcs, hb_gpu_paint_push_clip_path_start,  nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func    (funcs, hb_gpu_paint_push_clip_path_end,    nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func              (funcs, hb_gpu_paint_pop_clip,              nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func            (funcs, hb_gpu_paint_push_group,            nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func             (funcs, hb_gpu_paint_pop_group,             nullptr, nullptr);
-    hb_paint_funcs_set_color_func                 (funcs, hb_gpu_paint_color,                 nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func       (funcs, hb_gpu_paint_linear_gradient,       nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func       (funcs, hb_gpu_paint_radial_gradient,       nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func        (funcs, hb_gpu_paint_sweep_gradient,        nullptr, nullptr);
-    hb_paint_funcs_set_custom_palette_color_func  (funcs, hb_gpu_paint_custom_palette_color,  nullptr, nullptr);
+    hb_paint_funcs_سېټ_ټېل_transform_func        (funcs, hb_gpu_paint_ټېل_transform,        تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_راوباسه_transform_func         (funcs, hb_gpu_paint_راوباسه_transform,         تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_ټېل_clip_glyph_func       (funcs, hb_gpu_paint_ټېل_clip_glyph,       تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_ټېل_clip_لار_پیل_func  (funcs, hb_gpu_paint_ټېل_clip_لار_پیل,  تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_ټېل_clip_لار_پای_ټکی_func    (funcs, hb_gpu_paint_ټېل_clip_لار_پای_ټکی,    تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_راوباسه_clip_func              (funcs, hb_gpu_paint_راوباسه_clip,              تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_ټېل_ډله_func            (funcs, hb_gpu_paint_ټېل_ډله,            تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_راوباسه_ډله_func             (funcs, hb_gpu_paint_راوباسه_ډله,             تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_color_func                 (funcs, hb_gpu_paint_color,                 تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_خطي_gradient_func       (funcs, hb_gpu_paint_خطي_gradient,       تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_radial_gradient_func       (funcs, hb_gpu_paint_radial_gradient,       تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_sweep_gradient_func        (funcs, hb_gpu_paint_sweep_gradient,        تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_custom_palette_color_func  (funcs, hb_gpu_paint_custom_palette_color,  تش_اشاره, تش_اشاره);
     /* PaintImage can't be represented by our slug+gradient encoder. */
-    hb_paint_funcs_set_image_func                 (funcs, hb_gpu_paint_image,                 nullptr, nullptr);
-    hb_paint_funcs_set_set_budget_func (funcs, hb_gpu_paint_set_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_func (funcs, hb_gpu_paint_get_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_gpu_paint_get_budget_remaining, nullptr, nullptr);
+    hb_paint_funcs_سېټ_image_func                 (funcs, hb_gpu_paint_image,                 تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_سېټ_budget_func (funcs, hb_gpu_paint_سېټ_budget, تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_get_budget_func (funcs, hb_gpu_paint_get_budget, تش_اشاره, تش_اشاره);
+    hb_paint_funcs_سېټ_get_budget_پاتې_شوی_func (funcs, hb_gpu_paint_get_budget_پاتې_شوی, تش_اشاره, تش_اشاره);
 
     hb_paint_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_gpu_paint_funcs);
 
-    return funcs;
+    أرجع funcs;
   }
 } static_gpu_paint_funcs;
 
-static inline void
+ساكن مضمن فراغ
 free_static_gpu_paint_funcs ()
 {
   static_gpu_paint_funcs.free_instance ();
@@ -1101,9 +1101,9 @@ free_static_gpu_paint_funcs ()
  * Since: 14.2.0
  **/
 hb_gpu_paint_t *
-hb_gpu_paint_create_or_fail (void)
+hb_gpu_paint_create_or_fail (فراغ)
 {
-  return hb_object_create<hb_gpu_paint_t> ();
+  أرجع hb_object_create<hb_gpu_paint_t> ();
 }
 
 /**
@@ -1120,7 +1120,7 @@ hb_gpu_paint_create_or_fail (void)
 hb_gpu_paint_t *
 hb_gpu_paint_reference (hb_gpu_paint_t *paint)
 {
-  return hb_object_reference (paint);
+  أرجع hb_object_reference (paint);
 }
 
 /**
@@ -1132,14 +1132,14 @@ hb_gpu_paint_reference (hb_gpu_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+فراغ
 hb_gpu_paint_destroy (hb_gpu_paint_t *paint)
 {
-  if (!hb_object_should_destroy (paint))
-    return;
+  إذا (!hb_object_should_destroy (paint))
+    أرجع;
 
   hb_map_destroy (paint->custom_palette);
-  for (hb_blob_t *b : paint->sub_blobs)
+  لكل (hb_blob_t *b : paint->sub_blobs)
     hb_blob_destroy (b);
   hb_gpu_draw_destroy (paint->scratch_draw);
   hb_blob_destroy (paint->recycled_blob);
@@ -1163,13 +1163,13 @@ hb_gpu_paint_destroy (hb_gpu_paint_t *paint)
  * Since: 14.2.0
  **/
 hb_bool_t
-hb_gpu_paint_set_user_data (hb_gpu_paint_t     *paint,
-			    hb_user_data_key_t *key,
-			    void               *data,
+hb_gpu_paint_سېټ_user_معلومات (hb_gpu_paint_t     *paint,
+			    hb_user_معلومات_کلی_t *key,
+			    فراغ               *معلومات,
 			    hb_destroy_func_t   destroy,
 			    hb_bool_t           replace)
 {
-  return hb_object_set_user_data (paint, key, data, destroy, replace);
+  أرجع hb_object_سېټ_user_معلومات (paint, key, معلومات, destroy, replace);
 }
 
 /**
@@ -1184,11 +1184,11 @@ hb_gpu_paint_set_user_data (hb_gpu_paint_t     *paint,
  *
  * Since: 14.2.0
  **/
-void *
-hb_gpu_paint_get_user_data (const hb_gpu_paint_t *paint,
-			    hb_user_data_key_t   *key)
+فراغ *
+hb_gpu_paint_get_user_معلومات (ثابت hb_gpu_paint_t *paint,
+			    hb_user_معلومات_کلی_t   *key)
 {
-  return hb_object_get_user_data (paint, key);
+  أرجع hb_object_get_user_معلومات (paint, key);
 }
 
 /**
@@ -1205,9 +1205,9 @@ hb_gpu_paint_get_user_data (const hb_gpu_paint_t *paint,
  * Since: 14.2.0
  **/
 hb_paint_funcs_t *
-hb_gpu_paint_get_funcs (const hb_gpu_paint_t *paint HB_UNUSED)
+hb_gpu_paint_get_funcs (ثابت hb_gpu_paint_t *paint HB_ناکارول_شوی)
 {
-  return static_gpu_paint_funcs.get_unconst ();
+  أرجع static_gpu_paint_funcs.get_unconst ();
 }
 
 /**
@@ -1220,9 +1220,9 @@ hb_gpu_paint_get_funcs (const hb_gpu_paint_t *paint HB_UNUSED)
  *
  * Since: 14.2.0
  **/
-void
-hb_gpu_paint_set_palette (hb_gpu_paint_t *paint,
-			  unsigned        palette)
+فراغ
+hb_gpu_paint_سېټ_palette (hb_gpu_paint_t *paint,
+			  بینښه        palette)
 {
   paint->palette = palette;
 }
@@ -1238,10 +1238,10 @@ hb_gpu_paint_set_palette (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-unsigned
-hb_gpu_paint_get_palette (const hb_gpu_paint_t *paint)
+بینښه
+hb_gpu_paint_get_palette (ثابت hb_gpu_paint_t *paint)
 {
-  return paint->palette;
+  أرجع paint->palette;
 }
 
 /**
@@ -1252,10 +1252,10 @@ hb_gpu_paint_get_palette (const hb_gpu_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+فراغ
 hb_gpu_paint_clear_custom_palette_colors (hb_gpu_paint_t *paint)
 {
-  if (paint->custom_palette)
+  إذا (paint->custom_palette)
     hb_map_clear (paint->custom_palette);
 }
 
@@ -1274,18 +1274,18 @@ hb_gpu_paint_clear_custom_palette_colors (hb_gpu_paint_t *paint)
  * Since: 14.2.0
  **/
 hb_bool_t
-hb_gpu_paint_set_custom_palette_color (hb_gpu_paint_t *paint,
-				       unsigned int    color_index,
+hb_gpu_paint_سېټ_custom_palette_color (hb_gpu_paint_t *paint,
+				       بینښه صحيح    color_شاخص,
 				       hb_color_t      color)
 {
-  if (unlikely (!paint->custom_palette))
+  إذا (unlikely (!paint->custom_palette))
   {
     paint->custom_palette = hb_map_create ();
-    if (unlikely (!paint->custom_palette))
-      return false;
+    إذا (unlikely (!paint->custom_palette))
+      أرجع خطأ;
   }
-  hb_map_set (paint->custom_palette, color_index, color);
-  return hb_map_allocation_successful (paint->custom_palette);
+  hb_map_سېټ (paint->custom_palette, color_شاخص, color);
+  أرجع hb_map_ویش_successful (paint->custom_palette);
 }
 
 /**
@@ -1300,10 +1300,10 @@ hb_gpu_paint_set_custom_palette_color (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-void
-hb_gpu_paint_set_scale (hb_gpu_paint_t *paint,
-			int             x_scale,
-			int             y_scale)
+فراغ
+hb_gpu_paint_سېټ_scale (hb_gpu_paint_t *paint,
+			صحيح             x_scale,
+			صحيح             y_scale)
 {
   paint->x_scale = x_scale;
   paint->y_scale = y_scale;
@@ -1319,13 +1319,13 @@ hb_gpu_paint_set_scale (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-void
-hb_gpu_paint_get_scale (const hb_gpu_paint_t *paint,
-			int                  *x_scale,
-			int                  *y_scale)
+فراغ
+hb_gpu_paint_get_scale (ثابت hb_gpu_paint_t *paint,
+			صحيح                  *x_scale,
+			صحيح                  *y_scale)
 {
-  if (x_scale) *x_scale = paint->x_scale;
-  if (y_scale) *y_scale = paint->y_scale;
+  إذا (x_scale) *x_scale = paint->x_scale;
+  إذا (y_scale) *y_scale = paint->y_scale;
 }
 
 /**
@@ -1358,10 +1358,10 @@ hb_gpu_paint_glyph_or_fail (hb_gpu_paint_t *paint,
 			    hb_font_t      *font,
 			    hb_codepoint_t  glyph)
 {
-  int x_scale, y_scale;
+  صحيح x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
-  hb_gpu_paint_set_scale (paint, x_scale, y_scale);
-  return hb_font_paint_glyph_or_fail (font, glyph,
+  hb_gpu_paint_سېټ_scale (paint, x_scale, y_scale);
+  أرجع hb_font_paint_glyph_or_fail (font, glyph,
 				      hb_gpu_paint_get_funcs (paint), paint,
 				      paint->palette,
 				      /* Foreground RGB is not read from
@@ -1389,14 +1389,14 @@ hb_gpu_paint_glyph_or_fail (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-void
+فراغ
 hb_gpu_paint_glyph (hb_gpu_paint_t *paint,
 		    hb_font_t      *font,
 		    hb_codepoint_t  glyph)
 {
-  int x_scale, y_scale;
+  صحيح x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
-  hb_gpu_paint_set_scale (paint, x_scale, y_scale);
+  hb_gpu_paint_سېټ_scale (paint, x_scale, y_scale);
   hb_font_paint_glyph (font, glyph,
 		       hb_gpu_paint_get_funcs (paint), paint,
 		       paint->palette,
@@ -1440,14 +1440,14 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
 {
   HB_SCOPE_GUARD (hb_gpu_paint_clear (paint));
 
-  if (unlikely (paint->unsupported))
-    return nullptr;
+  إذا (unlikely (paint->unsupported))
+    أرجع تش_اشاره;
   /* No ink (e.g. space glyph): return the empty-blob singleton, not
    * nullptr.  Same convention as hb_gpu_draw_encode(); callers can
    * distinguish "nothing to render" (length 0) from "encoder
    * failed" (NULL). */
-  if (paint->num_ops == 0)
-    return hb_blob_get_empty ();
+  إذا (paint->عدد_ops == 0)
+    أرجع hb_blob_get_تشه ();
 
   /* Layout:
    *   header          (3 texels = 24 bytes)
@@ -1455,52 +1455,52 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
    *   sub-payloads    (concat of each sub_blob's data, 8-byte
    *                    aligned since draw blobs are RGBA16I)
    */
-  const unsigned header_texels = 3;
-  const unsigned texel_bytes   = 8;
+  ثابت بینښه سرلیک_texels = 3;
+  ثابت بینښه texel_بایټونه   = 8;
 
-  unsigned ops_texels = paint->ops.length / 4;
-  unsigned sub_bytes = 0;
-  for (hb_blob_t *b : paint->sub_blobs)
-    if (unlikely (hb_unsigned_add_overflows (sub_bytes,
-					     hb_blob_get_length (b),
-					     &sub_bytes)))
-      return nullptr;
+  بینښه ops_texels = paint->ops.اوږدتیا / 4;
+  بینښه sub_بایټونه = 0;
+  لكل (hb_blob_t *b : paint->sub_blobs)
+    إذا (unlikely (hb_unsigned_جمع_کړه_overflows (sub_بایټونه,
+					     hb_blob_get_اوږدتیا (b),
+					     &sub_بایټونه)))
+      أرجع تش_اشاره;
   /* Sub-blobs come from the draw encoder which produces 8-byte
    * aligned blobs; assert so we notice if that ever changes. */
-  if (unlikely (sub_bytes % texel_bytes))
-    return nullptr;
+  إذا (unlikely (sub_بایټونه % texel_بایټونه))
+    أرجع تش_اشاره;
 
-  unsigned total_bytes = header_texels * texel_bytes
-			+ paint->ops.length * 2;
-  if (unlikely (hb_unsigned_add_overflows (total_bytes, sub_bytes,
-					   &total_bytes)))
-    return nullptr;
+  بینښه ټول_بایټونه = سرلیک_texels * texel_بایټونه
+			+ paint->ops.اوږدتیا * 2;
+  إذا (unlikely (hb_unsigned_جمع_کړه_overflows (ټول_بایټونه, sub_بایټونه,
+					   &ټول_بایټونه)))
+    أرجع تش_اشاره;
 
-  unsigned buf_capacity = 0;
-  char *replaced_recycled_buf = nullptr;
-  char *buf_raw = hb_blob_t::recycle_acquire (paint->recycled_blob, total_bytes,
-					&buf_capacity, &replaced_recycled_buf);
-  if (unlikely (!buf_raw))
-    return nullptr;
-  int16_t *buf = (int16_t *) (void *) buf_raw;
+  بینښه buf_ظرفیت = 0;
+  حرف *replaced_recycled_buf = تش_اشاره;
+  حرف *buf_raw = hb_blob_t::recycle_acquire (paint->recycled_blob, ټول_بایټونه,
+					&buf_ظرفیت, &replaced_recycled_buf);
+  إذا (unlikely (!buf_raw))
+    أرجع تش_اشاره;
+  int16_t *buf = (int16_t *) (فراغ *) buf_raw;
 
   /* Compute each sub_blob's texel offset (relative to blob base). */
-  unsigned sub_offsets_count = paint->sub_blobs.length;
-  hb_vector_t<unsigned> sub_offsets;
-  if (unlikely (!sub_offsets.resize (sub_offsets_count)))
+  بینښه sub_offsets_شمېر = paint->sub_blobs.اوږدتیا;
+  hb_ویکټور_t<بینښه> sub_offsets;
+  إذا (unlikely (!sub_offsets.resize (sub_offsets_شمېر)))
   {
     hb_blob_t::recycle_abort (buf_raw, paint->recycled_blob);
-    return nullptr;
+    أرجع تش_اشاره;
   }
-  unsigned cursor = header_texels + ops_texels;
-  for (unsigned i = 0; i < sub_offsets_count; i++)
+  بینښه cursor = سرلیک_texels + ops_texels;
+  لكل (بینښه i = 0; i < sub_offsets_شمېر; i++)
   {
     sub_offsets[i] = cursor;
-    cursor += hb_blob_get_length (paint->sub_blobs[i]) / texel_bytes;
+    cursor += hb_blob_get_اوږدتیا (paint->sub_blobs[i]) / texel_بایټونه;
   }
 
   /* Header. */
-  buf[0] = (int16_t) paint->num_ops;
+  buf[0] = (int16_t) paint->عدد_ops;
   buf[1] = 0;
   buf[2] = 0;
   buf[3] = 0;
@@ -1508,84 +1508,84 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
   buf[5] = (int16_t) hb_clamp (paint->ext_min_y, -0x7fff, 0x7fff);
   buf[6] = (int16_t) hb_clamp (paint->ext_max_x, -0x7fff, 0x7fff);
   buf[7] = (int16_t) hb_clamp (paint->ext_max_y, -0x7fff, 0x7fff);
-  buf[8] = (int16_t) header_texels;
+  buf[8] = (int16_t) سرلیک_texels;
   buf[9]  = 0;
   buf[10] = 0;
   buf[11] = 0;
 
   /* Op stream: copy raw, then patch payload slots to texel
    * offsets where op_type indicates a sub_blob reference. */
-  int16_t *ops_out = buf + header_texels * 4;
-  hb_memcpy (ops_out, paint->ops.arrayZ, paint->ops.length * 2);
+  int16_t *ops_بهر = buf + سرلیک_texels * 4;
+  hb_memcpy (ops_بهر, paint->ops.arrayZ, paint->ops.اوږدتیا * 2);
 
-  unsigned i = 0;
-  while (i < paint->ops.length)
+  بینښه i = 0;
+  طالما (i < paint->ops.اوږدتیا)
   {
-    int16_t op_type = ops_out[i];
-    switch (op_type)
+    int16_t op_type = ops_بهر[i];
+    بدل (op_type)
     {
-      case HB_GPU_PAINT_OP_LAYER_SOLID:
-      case HB_GPU_PAINT_OP_LAYER_GRADIENT:
+      حالة HB_GPU_PAINT_OP_LAYER_SOLID:
+      حالة HB_GPU_PAINT_OP_LAYER_GRADIENT:
       {
-	int16_t flags = ops_out[i + 1];
+	int16_t flags = ops_بهر[i + 1];
 	/* Sub-blob slots in i16 offsets within the op:
 	 *   clip1: [i+2, i+3]                     -- always present
 	 *   clip2: [i+4, i+5]                     -- only if HAS_CLIP2
 	 *   clip3: [i+6, i+7]                     -- only if HAS_CLIP3
 	 *   grad : [i+8, i+9]  (LAYER_GRADIENT only) */
-	unsigned slots[4] = {
+	بینښه slots[4] = {
 	  2,
 	  (flags & HB_GPU_PAINT_FLAG_HAS_CLIP2) ? 4u : 0u,
 	  (flags & HB_GPU_PAINT_FLAG_HAS_CLIP3) ? 6u : 0u,
 	  op_type == HB_GPU_PAINT_OP_LAYER_GRADIENT ? 8u : 0u
 	};
-	for (unsigned k = 0; k < 4; k++)
+	لكل (بینښه k = 0; k < 4; k++)
 	{
-	  if (!slots[k]) continue;
-	  unsigned p = i + slots[k];
-	  unsigned idx = ((uint16_t) ops_out[p] << 16)
-		       |  (uint16_t) ops_out[p + 1];
-	  if (idx < sub_offsets_count)
+	  إذا (!slots[k]) استمر;
+	  بینښه p = i + slots[k];
+	  بینښه idx = ((uint16_t) ops_بهر[p] << 16)
+		       |  (uint16_t) ops_بهر[p + 1];
+	  إذا (idx < sub_offsets_شمېر)
 	  {
-	    unsigned off = sub_offsets[idx];
-	    ops_out[p]     = (int16_t) ((off >> 16) & 0xffff);
-	    ops_out[p + 1] = (int16_t) (off & 0xffff);
+	    بینښه off = sub_offsets[idx];
+	    ops_بهر[p]     = (int16_t) ((off >> 16) & 0xffff);
+	    ops_بهر[p + 1] = (int16_t) (off & 0xffff);
 	  }
 	}
 	i += 12;  /* 3 texels */
-	break;
+	اكسر;
       }
-      case HB_GPU_PAINT_OP_PUSH_GROUP:
-      case HB_GPU_PAINT_OP_POP_GROUP:
+      حالة HB_GPU_PAINT_OP_ټېل_ډله:
+      حالة HB_GPU_PAINT_OP_راوباسه_ډله:
 	i += 4;  /* 1 texel */
-	break;
-      default:
+	اكسر;
+      افتراضي:
 	hb_blob_t::recycle_abort (buf_raw, paint->recycled_blob);
-	return nullptr;
+	أرجع تش_اشاره;
     }
   }
 
   /* Sub-payloads: concat in recorded order. */
-  char *dst = (char *) buf + header_texels * texel_bytes
-			+ paint->ops.length * 2;
-  for (hb_blob_t *b : paint->sub_blobs)
+  حرف *dst = (حرف *) buf + سرلیک_texels * texel_بایټونه
+			+ paint->ops.اوږدتیا * 2;
+  لكل (hb_blob_t *b : paint->sub_blobs)
   {
-    unsigned len = hb_blob_get_length (b);
-    hb_memcpy (dst, hb_blob_get_data (b, nullptr), len);
+    بینښه len = hb_blob_get_اوږدتیا (b);
+    hb_memcpy (dst, hb_blob_get_معلومات (b, تش_اشاره), len);
     dst += len;
   }
 
-  if (extents)
+  إذا (extents)
   {
     extents->x_bearing = paint->ext_min_x;
     extents->y_bearing = paint->ext_max_y;
-    extents->width     = hb_saturate_sub (paint->ext_max_x, paint->ext_min_x);
-    extents->height    = hb_saturate_sub (paint->ext_min_y, paint->ext_max_y);
+    extents->پلنوالی     = hb_saturate_sub (paint->ext_max_x, paint->ext_min_x);
+    extents->لوړوالی    = hb_saturate_sub (paint->ext_min_y, paint->ext_max_y);
   }
 
   hb_blob_t *recycled = paint->recycled_blob;
-  paint->recycled_blob = nullptr;
-  return hb_blob_t::recycle_finalize (buf_raw, buf_capacity, total_bytes,
+  paint->recycled_blob = تش_اشاره;
+  أرجع hb_blob_t::recycle_finalize (buf_raw, buf_ظرفیت, ټول_بایټونه,
 				recycled, replaced_recycled_buf);
 }
 
@@ -1598,7 +1598,7 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
  *
  * Since: 14.2.0
  **/
-void
+فراغ
 hb_gpu_paint_clear (hb_gpu_paint_t *paint)
 {
   /* Use reset() not resize(0): if an earlier push_or_fail() set
@@ -1607,17 +1607,17 @@ hb_gpu_paint_clear (hb_gpu_paint_t *paint)
    * subsequent clear would double-destroy the blob pointers left
    * in the array, or keep stale ops across encodes. */
   paint->ops.reset ();
-  paint->num_ops = 0;
-  for (hb_blob_t *b : paint->sub_blobs)
+  paint->عدد_ops = 0;
+  لكل (hb_blob_t *b : paint->sub_blobs)
     hb_blob_destroy (b);
   paint->sub_blobs.reset ();
-  paint->sub_bytes = 0;
-  paint->clip_depth = 0;
-  paint->pending_clip_path = false;
-  paint->unsupported = false;
+  paint->sub_بایټونه = 0;
+  paint->clip_ژوروالی = 0;
+  paint->pending_clip_لار = خطأ;
+  paint->unsupported = خطأ;
   paint->recharge_budget ();
   paint->cur_transform = {1, 0, 0, 1, 0, 0};
-  paint->transform_stack.reset ();
+  paint->transform_ډېری.reset ();
   paint->ext_min_x =  0x7fffffff;
   paint->ext_min_y =  0x7fffffff;
   paint->ext_max_x = -0x7fffffff;
@@ -1633,7 +1633,7 @@ hb_gpu_paint_clear (hb_gpu_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+فراغ
 hb_gpu_paint_reset (hb_gpu_paint_t *paint)
 {
   paint->x_scale = 0;
@@ -1641,7 +1641,7 @@ hb_gpu_paint_reset (hb_gpu_paint_t *paint)
   paint->palette = 0;
   paint->budget = HB_BUDGET_DEFAULT;
   hb_map_destroy (paint->custom_palette);
-  paint->custom_palette = nullptr;
+  paint->custom_palette = تش_اشاره;
   hb_gpu_paint_clear (paint);
 }
 
@@ -1659,7 +1659,7 @@ hb_gpu_paint_reset (hb_gpu_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+فراغ
 hb_gpu_paint_recycle_blob (hb_gpu_paint_t *paint,
 			   hb_blob_t      *blob)
 {
@@ -1667,10 +1667,10 @@ hb_gpu_paint_recycle_blob (hb_gpu_paint_t *paint,
 }
 
 
-#include "hb-gpu-paint-fragment-glsl.hh"
-#include "hb-gpu-paint-fragment-msl.hh"
-#include "hb-gpu-paint-fragment-wgsl.hh"
-#include "hb-gpu-paint-fragment-hlsl.hh"
+#ضمن "hb-gpu-paint-fragment-glsl.hh"
+#ضمن "hb-gpu-paint-fragment-msl.hh"
+#ضمن "hb-gpu-paint-fragment-wgsl.hh"
+#ضمن "hb-gpu-paint-fragment-hlsl.hh"
 
 /**
  * hb_gpu_paint_shader_source:
@@ -1698,30 +1698,30 @@ hb_gpu_paint_recycle_blob (hb_gpu_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-const char *
-hb_gpu_paint_shader_source (hb_gpu_shader_stage_t stage,
+ثابت حرف *
+hb_gpu_paint_shader_سرچینه (hb_gpu_shader_stage_t stage,
 			    hb_gpu_shader_lang_t  lang)
 {
-  switch (stage) {
-  case HB_GPU_SHADER_STAGE_FRAGMENT:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_paint_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_paint_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_paint_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_paint_fragment_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  بدل (stage) {
+  حالة HB_GPU_SHADER_STAGE_FRAGMENT:
+    بدل (lang) {
+    حالة HB_GPU_SHADER_LANG_GLSL: أرجع hb_gpu_paint_fragment_glsl;
+    حالة HB_GPU_SHADER_LANG_MSL:  أرجع hb_gpu_paint_fragment_msl;
+    حالة HB_GPU_SHADER_LANG_WGSL: أرجع hb_gpu_paint_fragment_wgsl;
+    حالة HB_GPU_SHADER_LANG_HLSL: أرجع hb_gpu_paint_fragment_hlsl;
+    حالة HB_GPU_SHADER_LANG_INVALID:
+    افتراضي: أرجع تش_اشاره;
     }
-  case HB_GPU_SHADER_STAGE_VERTEX:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL:
-    case HB_GPU_SHADER_LANG_MSL:
-    case HB_GPU_SHADER_LANG_WGSL:
-    case HB_GPU_SHADER_LANG_HLSL: return "";
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  حالة HB_GPU_SHADER_STAGE_راس:
+    بدل (lang) {
+    حالة HB_GPU_SHADER_LANG_GLSL:
+    حالة HB_GPU_SHADER_LANG_MSL:
+    حالة HB_GPU_SHADER_LANG_WGSL:
+    حالة HB_GPU_SHADER_LANG_HLSL: أرجع "";
+    حالة HB_GPU_SHADER_LANG_INVALID:
+    افتراضي: أرجع تش_اشاره;
     }
-  default:
-    return nullptr;
+  افتراضي:
+    أرجع تش_اشاره;
   }
 }

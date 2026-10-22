@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifdef HAVE_CORETEXT
+#که_تعریف_شوی HAVE_CORETEXT
 
-#include "hb-shaper-impl.hh"
+#ضمن "hb-shaper-impl.hh"
 
-#include "hb-coretext.hh"
+#ضمن "hb-coretext.hh"
 
 
 /**
@@ -44,241 +44,241 @@
  * Functions for using HarfBuzz with the CoreText fonts.
  **/
 
-static void
-release_table_data (void *user_data)
+ساكن فراغ
+release_جدول_معلومات (فراغ *user_معلومات)
 {
-  CFDataRef cf_data = reinterpret_cast<CFDataRef> (user_data);
-  CFRelease(cf_data);
+  CFDataRef cf_معلومات = reinterpret_cast<CFDataRef> (user_معلومات);
+  CFRelease(cf_معلومات);
 }
 
-static hb_blob_t *
-_hb_cg_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ساكن hb_blob_t *
+hb_cg_reference_جدول (hb_face_t *face HB_ناکارول_شوی, hb_نښان_t نښان_2, فراغ *user_معلومات)
 {
-  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_data);
-  if (unlikely (!cg_font))
-    return nullptr;
+  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_معلومات);
+  إذا (unlikely (!cg_font))
+    أرجع تش_اشاره;
 
-  hb_cf_ptr_t<CFDataRef> cf_data (CGFontCopyTableForTag (cg_font, tag));
-  if (unlikely (!cf_data))
-    return nullptr;
+  hb_cf_ptr_t<CFDataRef> cf_معلومات (CGFont_Copy_جدول_For_نښان (cg_font, نښان_2));
+  إذا (unlikely (!cf_معلومات))
+    أرجع تش_اشاره;
 
-  const char *data = reinterpret_cast<const char*> (CFDataGetBytePtr (cf_data));
-  const size_t length = CFDataGetLength (cf_data);
-  if (!data || !length)
-    return nullptr;
+  ثابت حرف *معلومات = reinterpret_cast<ثابت حرف*> (CFDataGetBytePtr (cf_معلومات));
+  ثابت size_t اوږدتیا = CFData_Get_اوږدتیا (cf_معلومات);
+  إذا (!معلومات || !اوږدتیا)
+    أرجع تش_اشاره;
 
-  return hb_blob_create (data, length, HB_MEMORY_MODE_READONLY,
-			 reinterpret_cast<void *> (const_cast<__CFData *> (cf_data.release ())),
-			 release_table_data);
+  أرجع hb_blob_create (معلومات, اوږدتیا, HB_حافظه_ډېرپېښ_READONLY,
+			 reinterpret_cast<فراغ *> (const_cast<__CFData *> (cf_معلومات.release ())),
+			 release_جدول_معلومات);
 }
 
-static unsigned
-_hb_cg_get_table_tags (const hb_face_t *face HB_UNUSED,
-		       unsigned int start_offset,
-		       unsigned int *table_count,
-		       hb_tag_t *table_tags,
-		       void *user_data)
+ساكن بینښه
+hb_cg_get_جدول_نښانونه (ثابت hb_face_t *face HB_ناکارول_شوی,
+		       بینښه صحيح پیل_دننه_واټن,
+		       بینښه صحيح *جدول_شمېر_2,
+		       hb_نښان_t *جدول_نښانونه,
+		       فراغ *user_معلومات)
 {
-  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_data);
-  if (unlikely (!cg_font))
+  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_معلومات);
+  إذا (unlikely (!cg_font))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    إذا (جدول_شمېر_2)
+      *جدول_شمېر_2 = 0;
+    أرجع 0;
   }
 
-  hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, (CGFloat) HB_CORETEXT_DEFAULT_FONT_SIZE));
-  if (unlikely (!ct_font))
+  hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, (CGFloat) HB_CORETEXT_DEFAULT_FONT_اندازه));
+  إذا (unlikely (!ct_font))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    إذا (جدول_شمېر_2)
+      *جدول_شمېر_2 = 0;
+    أرجع 0;
   }
 
-  hb_cf_ptr_t<CFArrayRef> arr (CTFontCopyAvailableTables (ct_font, kCTFontTableOptionNoOptions));
-  if (unlikely (!arr))
+  hb_cf_ptr_t<CFArrayRef> arr (CTFont_Copy_شته_Tables (ct_font, k_CTFont_جدول_Option_No_Options));
+  إذا (unlikely (!arr))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    إذا (جدول_شمېر_2)
+      *جدول_شمېر_2 = 0;
+    أرجع 0;
   }
 
-  unsigned population = (unsigned) CFArrayGetCount (arr);
+  بینښه population = (بینښه) CFArray_Get_شمېر (arr);
 
-  if (!table_count)
-    return population;
+  إذا (!جدول_شمېر_2)
+    أرجع population;
 
-  if (unlikely (start_offset >= population))
+  إذا (unlikely (پیل_دننه_واټن >= population))
   {
-    *table_count = 0;
-    return population;
+    *جدول_شمېر_2 = 0;
+    أرجع population;
   }
 
-  unsigned end_offset = start_offset + *table_count;
-  if (unlikely (end_offset < start_offset))
+  بینښه پای_ټکی_دننه_واټن = پیل_دننه_واټن + *جدول_شمېر_2;
+  إذا (unlikely (پای_ټکی_دننه_واټن < پیل_دننه_واټن))
   {
-    *table_count = 0;
-    return population;
+    *جدول_شمېر_2 = 0;
+    أرجع population;
   }
-  end_offset = hb_min (end_offset, (unsigned) population);
+  پای_ټکی_دننه_واټن = hb_min (پای_ټکی_دننه_واټن, (بینښه) population);
 
-  *table_count = end_offset - start_offset;
-  if (table_tags)
-    for (unsigned i = start_offset; i < end_offset; i++)
+  *جدول_شمېر_2 = پای_ټکی_دننه_واټن - پیل_دننه_واټن;
+  إذا (جدول_نښانونه)
+    لكل (بینښه i = پیل_دننه_واټن; i < پای_ټکی_دننه_واټن; i++)
     {
-      CTFontTableTag tag = (CTFontTableTag)(uintptr_t) CFArrayGetValueAtIndex (arr, i);
-      table_tags[i - start_offset] = tag;
+      CTFont_جدول_نښان نښان_2 = (CTFont_جدول_نښان)(uintptr_t) CFArray_Get_ارزښت_At_شاخص (arr, i);
+      جدول_نښانونه[i - پیل_دننه_واټن] = نښان_2;
     }
 
-  return population;
+  أرجع population;
 }
 
-static void
-_hb_cg_font_release (void *data)
+ساكن فراغ
+_hb_cg_font_release (فراغ *معلومات)
 {
-  if (data)
-    CGFontRelease ((CGFontRef) data);
+  إذا (معلومات)
+    CGFontRelease ((CGFontRef) معلومات);
 }
 
 
-static CTFontDescriptorRef
-get_last_resort_font_desc ()
+ساكن CTFontDescriptorRef
+get_وروستی_resort_font_desc ()
 {
-  hb_cf_ptr_t<CTFontDescriptorRef> last_resort (CTFontDescriptorCreateWithNameAndSize (CFSTR("LastResort"), 0));
-  if (unlikely (!last_resort))
-    return nullptr;
+  hb_cf_ptr_t<CTFontDescriptorRef> وروستی_resort (CTFont_Descriptor_Create_With_Name_And_اندازه (CFSTR("LastResort"), 0));
+  إذا (unlikely (!وروستی_resort))
+    أرجع تش_اشاره;
 
-  const void *cascade_elements[] = { last_resort.get () };
+  ثابت فراغ *cascade_elements[] = { وروستی_resort.get () };
   hb_cf_ptr_t<CFArrayRef> cascade_list (CFArrayCreate (kCFAllocatorDefault,
 						       cascade_elements,
 						       1,
 						       &kCFTypeArrayCallBacks));
-  if (unlikely (!cascade_list))
-    return nullptr;
+  إذا (unlikely (!cascade_list))
+    أرجع تش_اشاره;
 
-  const void *keys[] = { kCTFontCascadeListAttribute };
-  const void *values[] = { cascade_list.get () };
-  hb_cf_ptr_t<CFDictionaryRef> attributes (CFDictionaryCreate (kCFAllocatorDefault,
-							       keys,
+  ثابت فراغ *کلیګانې[] = { kCTFontCascadeListAttribute };
+  ثابت فراغ *values[] = { cascade_list.get () };
+  hb_cf_ptr_t<CFDictionaryRef> ځانګړتیاوې (CFDictionaryCreate (kCFAllocatorDefault,
+							       کلیګانې,
 							       values,
 							       1,
-							       &kCFTypeDictionaryKeyCallBacks,
-							       &kCFTypeDictionaryValueCallBacks));
-  if (unlikely (!attributes))
-    return nullptr;
+							       &k_CFType_Dictionary_کلی_Call_Backs,
+							       &k_CFType_Dictionary_ارزښت_Call_Backs));
+  إذا (unlikely (!ځانګړتیاوې))
+    أرجع تش_اشاره;
 
-  return CTFontDescriptorCreateWithAttributes (attributes);
+  أرجع CTFont_Descriptor_Create_With_ځانګړتیاوې (ځانګړتیاوې);
 }
 
-static void
-release_data (void *info, const void *data, size_t size)
+ساكن فراغ
+release_معلومات (فراغ *info, ثابت فراغ *معلومات, size_t اندازه)
 {
-  assert (hb_blob_get_length ((hb_blob_t *) info) == size &&
-	  hb_blob_get_data ((hb_blob_t *) info, nullptr) == data);
+  أكد (hb_blob_get_اوږدتیا ((hb_blob_t *) info) == اندازه &&
+	  hb_blob_get_معلومات ((hb_blob_t *) info, تش_اشاره) == معلومات);
 
   hb_blob_destroy ((hb_blob_t *) info);
 }
 
 CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int named_instance_index)
+create_cg_font (CFArrayRef ct_font_desc_array, بینښه صحيح named_instance_شاخص)
 {
   hb_cf_ptr_t<CFArrayRef> desc_array (ct_font_desc_array);
-  if (unlikely (!desc_array))
-    return nullptr;
+  إذا (unlikely (!desc_array))
+    أرجع تش_اشاره;
 
-  if (named_instance_index == 0)
+  إذا (named_instance_شاخص == 0)
   {
     // Default instance. We don't know which one is it. Return the first one.
     // We will set the correct variations on it later.
   }
-  else
-    named_instance_index--;
-  auto ct_font_desc = (CFArrayGetCount (desc_array) > (CFIndex) named_instance_index) ?
-		      (CTFontDescriptorRef) CFArrayGetValueAtIndex (desc_array, (CFIndex) named_instance_index) : nullptr;
-  if (unlikely (!ct_font_desc))
-    return nullptr;
+  وإلا
+    named_instance_شاخص--;
+  خپلکاری ct_font_desc = (CFArray_Get_شمېر (desc_array) > (CFIndex) named_instance_شاخص) ?
+		      (CTFontDescriptorRef) CFArray_Get_ارزښت_At_شاخص (desc_array, (CFIndex) named_instance_شاخص) : تش_اشاره;
+  إذا (unlikely (!ct_font_desc))
+    أرجع تش_اشاره;
 
-  hb_cf_ptr_t<CTFontRef> ct_font (CTFontCreateWithFontDescriptor (ct_font_desc, 0, nullptr));
-  if (unlikely (!ct_font))
-    return nullptr;
+  hb_cf_ptr_t<CTFontRef> ct_font (CTFontCreateWithFontDescriptor (ct_font_desc, 0, تش_اشاره));
+  إذا (unlikely (!ct_font))
+    أرجع تش_اشاره;
 
-  return CTFontCopyGraphicsFont (ct_font, nullptr);
+  أرجع CTFontCopyGraphicsFont (ct_font, تش_اشاره);
 }
 
 CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index)
+create_cg_font (hb_blob_t *blob, بینښه صحيح شاخص_2)
 {
   hb_blob_make_immutable (blob);
-  unsigned int blob_length;
-  const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
-    DEBUG_MSG (CORETEXT, blob, "Empty blob");
+  بینښه صحيح blob_اوږدتیا;
+  ثابت حرف *blob_معلومات = hb_blob_get_معلومات (blob, &blob_اوږدتیا);
+  إذا (unlikely (!blob_اوږدتیا))
+    DEBUG_پیغام (CORETEXT, blob, "Empty blob");
 
-  unsigned ttc_index = index & 0xFFFF;
-  unsigned named_instance_index = index >> 16;
+  بینښه ttc_شاخص = شاخص_2 & 0xFFFF;
+  بینښه named_instance_شاخص = شاخص_2 >> 16;
 
-  if (ttc_index != 0)
+  إذا (ttc_شاخص != 0)
   {
-    DEBUG_MSG (CORETEXT, blob, "TTC index %u not supported", ttc_index);
-    return nullptr; // CoreText does not support TTCs
+    DEBUG_پیغام (CORETEXT, blob, "TTC index %u not supported", ttc_شاخص);
+    أرجع تش_اشاره; // CoreText does not support TTCs
   }
 
-  if (unlikely (named_instance_index != 0))
+  إذا (unlikely (named_instance_شاخص != 0))
   {
     // https://github.com/harfbuzz/harfbuzz/issues/5300
     // https://github.com/harfbuzz/harfbuzz/issues/5354
-#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 110000) || \
+#إذا (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 110000) || \
     (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101500) || \
     (defined(__TV_OS_VERSION_MIN_REQUIRED) && __TV_OS_VERSION_MIN_REQUIRED >= 110000) || \
     (defined(__WATCH_OS_VERSION_MIN_REQUIRED) && __WATCH_OS_VERSION_MIN_REQUIRED >= 40000) || \
     (defined(__MACCATALYST_VERSION_MIN_REQUIRED) && __MACCATALYST_VERSION_MIN_REQUIRED >= 130100) || \
     (defined(__VISION_OS_VERSION_MIN_REQUIRED) && __VISION_OS_VERSION_MIN_REQUIRED >= 10000)
-    hb_cf_ptr_t<CFDataRef> data (CFDataCreate (kCFAllocatorDefault, (const UInt8 *) blob_data, blob_length));
-    if (data)
+    hb_cf_ptr_t<CFDataRef> معلومات (CFDataCreate (kCFAllocatorDefault, (ثابت UInt8 *) blob_معلومات, blob_اوږدتیا));
+    إذا (معلومات)
     {
-      auto ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromData (data);
-      if (likely (ct_font_desc_array))
-	return create_cg_font (ct_font_desc_array, named_instance_index);
+      خپلکاری ct_font_desc_array = CTFont_Manager_Create_Font_Descriptors_From_معلومات (معلومات);
+      إذا (likely (ct_font_desc_array))
+	أرجع create_cg_font (ct_font_desc_array, named_instance_شاخص);
     }
-#endif
-    return nullptr;
+#د_که_پای
+    أرجع تش_اشاره;
   }
 
   hb_blob_reference (blob);
-  hb_cf_ptr_t<CGDataProviderRef> provider (CGDataProviderCreateWithData (blob, blob_data, blob_length, &release_data));
-  if (unlikely (!provider))
+  hb_cf_ptr_t<CGDataProviderRef> provider (CGData_Provider_Create_With_معلومات (blob, blob_معلومات, blob_اوږدتیا, &release_معلومات));
+  إذا (unlikely (!provider))
   {
     hb_blob_destroy (blob);
-    return nullptr;
+    أرجع تش_اشاره;
   }
-  CGFontRef cg_font = CGFontCreateWithDataProvider (provider);
-  if (unlikely (!cg_font))
-    DEBUG_MSG (CORETEXT, blob, "CGFontCreateWithDataProvider() failed");
-  return cg_font;
+  CGFontRef cg_font = CGFont_Create_With_معلومات_Provider (provider);
+  إذا (unlikely (!cg_font))
+    DEBUG_پیغام (CORETEXT, blob, "CGFontCreateWithDataProvider() failed");
+  أرجع cg_font;
 }
 
 CGFontRef
 create_cg_font (hb_face_t *face)
 {
-  CGFontRef cg_font = nullptr;
-  if (unlikely (!face))
-    return nullptr;
-  if (face->destroy == _hb_cg_font_release)
-    cg_font = face->user_data ? CGFontRetain ((CGFontRef) face->user_data) : nullptr;
-  else
+  CGFontRef cg_font = تش_اشاره;
+  إذا (unlikely (!face))
+    أرجع تش_اشاره;
+  إذا (face->destroy == _hb_cg_font_release)
+    cg_font = face->user_معلومات ? CGFontRetain ((CGFontRef) face->user_معلومات) : تش_اشاره;
+  وإلا
   {
     hb_blob_t *blob = hb_face_reference_blob (face);
-    cg_font = create_cg_font (blob, face->index);
+    cg_font = create_cg_font (blob, face->شاخص_2);
     hb_blob_destroy (blob);
   }
-  return cg_font;
+  أرجع cg_font;
 }
 
 CTFontRef
-create_ct_font (CGFontRef cg_font, CGFloat font_size)
+create_ct_font (CGFontRef cg_font, CGFloat font_اندازه)
 {
-  if (unlikely (!cg_font))
-    return nullptr;
+  إذا (unlikely (!cg_font))
+    أرجع تش_اشاره;
 
   hb_cf_ptr_t<CTFontRef> ct_font;
 
@@ -286,35 +286,35 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
    * using CTFontCreateWithGraphicsFont. The only way of enabling tracking seems
    * to be through the CTFontCreateUIFontForLanguage call. */
   hb_cf_ptr_t<CFStringRef> cg_postscript_name (CGFontCopyPostScriptName (cg_font));
-  if (cg_postscript_name)
+  إذا (cg_postscript_name)
   {
-    if (CFStringHasPrefix (cg_postscript_name, CFSTR (".SFNSText")) ||
-	CFStringHasPrefix (cg_postscript_name, CFSTR (".SFNSDisplay")))
+    إذا (CFString_Has_مختاړی (cg_postscript_name, CFSTR (".SFNSText")) ||
+	CFString_Has_مختاړی (cg_postscript_name, CFSTR (".SFNSDisplay")))
     {
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1080
+#إذا !(defined(موخه_OS_IPHONE) && موخه_OS_IPHONE) && MAC_OS_X_نسخه_MIN_REQUIRED < 1080
 # define kCTFontUIFontSystem kCTFontSystemFontType
 # define kCTFontUIFontEmphasizedSystem kCTFontEmphasizedSystemFontType
-#endif
+#د_که_پای
       CTFontUIFontType font_type = kCTFontUIFontSystem;
-      if (CFStringHasSuffix (cg_postscript_name, CFSTR ("-Bold")))
+      إذا (CFStringHasSuffix (cg_postscript_name, CFSTR ("-Bold")))
 	font_type = kCTFontUIFontEmphasizedSystem;
 
-      ct_font.reset (CTFontCreateUIFontForLanguage (font_type, font_size, nullptr));
-      if (ct_font)
+      ct_font.reset (CTFontCreateUIFontForLanguage (font_type, font_اندازه, تش_اشاره));
+      إذا (ct_font)
       {
-	hb_cf_ptr_t<CFStringRef> ct_result_name (CTFontCopyPostScriptName (ct_font));
-	if (!ct_result_name || CFStringCompare (ct_result_name, cg_postscript_name, 0) != kCFCompareEqualTo)
+	hb_cf_ptr_t<CFStringRef> ct_پایله_name (CTFontCopyPostScriptName (ct_font));
+	إذا (!ct_پایله_name || CFStringCompare (ct_پایله_name, cg_postscript_name, 0) != k_CFCompare_Equal_منزل)
 	  ct_font.reset ();
       }
     }
   }
 
-  if (!ct_font)
-    ct_font.reset (CTFontCreateWithGraphicsFont (cg_font, font_size, nullptr, nullptr));
+  إذا (!ct_font)
+    ct_font.reset (CTFontCreateWithGraphicsFont (cg_font, font_اندازه, تش_اشاره, تش_اشاره));
 
-  if (unlikely (!ct_font)) {
-    DEBUG_MSG (CORETEXT, cg_font, "Font CTFontCreateWithGraphicsFont() failed");
-    return nullptr;
+  إذا (unlikely (!ct_font)) {
+    DEBUG_پیغام (CORETEXT, cg_font, "Font CTFontCreateWithGraphicsFont() failed");
+    أرجع تش_اشاره;
   }
 
   /* crbug.com/576941 and crbug.com/625902 and the investigation in the latter
@@ -324,37 +324,37 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
    * reconfiguring the cascade list causes CoreText crashes. For details, see
    * crbug.com/549610 */
   // 0x00070000 stands for "kCTVersionNumber10_10", see CoreText.h
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-  if (&CTGetCoreTextVersion != nullptr && CTGetCoreTextVersion() < 0x00070000) {
-#pragma GCC diagnostic pop
+#لارښوونه GCC diagnostic push
+#لارښوونه GCC diagnostic ignored "-Wdeprecated-declarations"
+  إذا (&CTGet_Core_متن_نسخه != تش_اشاره && CTGet_Core_متن_نسخه() < 0x00070000) {
+#لارښوونه GCC diagnostic راوباسه
     hb_cf_ptr_t<CFStringRef> fontName (CTFontCopyPostScriptName (ct_font));
-    bool isEmojiFont = fontName && CFStringCompare (fontName, CFSTR("AppleColorEmoji"), 0) == kCFCompareEqualTo;
-    if (!isEmojiFont)
-      return ct_font.release ();
+    منطقي isEmojiFont = fontName && CFStringCompare (fontName, CFSTR("AppleColorEmoji"), 0) == k_CFCompare_Equal_منزل;
+    إذا (!isEmojiFont)
+      أرجع ct_font.release ();
   }
 
   hb_cf_ptr_t<CFURLRef> original_url;
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
+#إذا !(defined(موخه_OS_IPHONE) && موخه_OS_IPHONE) && MAC_OS_X_نسخه_MIN_REQUIRED < 1060
   ATSFontRef atsFont;
   FSRef fsref;
-  OSStatus status;
-  atsFont = CTFontGetPlatformFont (ct_font, NULL);
-  status = ATSFontGetFileReference (atsFont, &fsref);
-  if (status == noErr)
-    original_url.reset (CFURLCreateFromFSRef (NULL, &fsref));
-#else
+  OSStatus حالت;
+  atsFont = CTFontGetPlatformFont (ct_font, عدم);
+  حالت = ATSFontGetFileReference (atsFont, &fsref);
+  إذا (حالت == noErr)
+    original_url.reset (CFURLCreateFromFSRef (عدم, &fsref));
+#وإلا
   original_url.reset ((CFURLRef) CTFontCopyAttribute (ct_font, kCTFontURLAttribute));
-#endif
+#د_که_پای
 
   /* Create font copy with cascade list that has LastResort first; this speeds up CoreText
    * font fallback which we don't need anyway. */
   {
-    hb_cf_ptr_t<CTFontDescriptorRef> last_resort_font_desc (get_last_resort_font_desc ());
-    if (last_resort_font_desc)
+    hb_cf_ptr_t<CTFontDescriptorRef> وروستی_resort_font_desc (get_وروستی_resort_font_desc ());
+    إذا (وروستی_resort_font_desc)
     {
-      hb_cf_ptr_t<CTFontRef> new_ct_font (CTFontCreateCopyWithAttributes (ct_font, 0.0, nullptr, last_resort_font_desc));
-      if (new_ct_font)
+      hb_cf_ptr_t<CTFontRef> new_ct_font (CTFont_Create_Copy_With_ځانګړتیاوې (ct_font, 0.0, تش_اشاره, وروستی_resort_font_desc));
+      إذا (new_ct_font)
       {
 	/* The CTFontCreateCopyWithAttributes call fails to stay on the same font
 	 * when reconfiguring the cascade list and may switch to a different font
@@ -366,30 +366,30 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
 	 * process in Blink. This can be detected by the new file URL location
 	 * that the newly found font points to. */
 	hb_cf_ptr_t<CFURLRef> new_url;
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
-	atsFont = CTFontGetPlatformFont (new_ct_font, NULL);
-	status = ATSFontGetFileReference (atsFont, &fsref);
-	if (status == noErr)
-	  new_url.reset (CFURLCreateFromFSRef (NULL, &fsref));
-#else
+#إذا !(defined(موخه_OS_IPHONE) && موخه_OS_IPHONE) && MAC_OS_X_نسخه_MIN_REQUIRED < 1060
+	atsFont = CTFontGetPlatformFont (new_ct_font, عدم);
+	حالت = ATSFontGetFileReference (atsFont, &fsref);
+	إذا (حالت == noErr)
+	  new_url.reset (CFURLCreateFromFSRef (عدم, &fsref));
+#وإلا
 	new_url.reset ((CFURLRef) CTFontCopyAttribute (new_ct_font, kCTFontURLAttribute));
-#endif
+#د_که_پای
 	// Keep reconfigured font if URL cannot be retrieved (seems to be the case
 	// on Mac OS 10.12 Sierra), speculative fix for crbug.com/625606
-	if (!original_url || !new_url || CFEqual (original_url, new_url)) {
+	إذا (!original_url || !new_url || CFEqual (original_url, new_url)) {
 	  ct_font = std::move (new_ct_font);
-	} else {
-	  DEBUG_MSG (CORETEXT, ct_font, "Discarding reconfigured CTFont, location changed.");
+	} وإلا {
+	  DEBUG_پیغام (CORETEXT, ct_font, "Discarding reconfigured CTFont, location changed.");
 	}
       }
-      else
-	DEBUG_MSG (CORETEXT, ct_font, "Font copy with empty cascade list failed");
+      وإلا
+	DEBUG_پیغام (CORETEXT, ct_font, "Font copy with empty cascade list failed");
     }
-    else
-      DEBUG_MSG (CORETEXT, ct_font, "Font copy with empty cascade list failed");
+    وإلا
+      DEBUG_پیغام (CORETEXT, ct_font, "Font copy with empty cascade list failed");
   }
 
-  return ct_font.release ();
+  أرجع ct_font.release ();
 }
 
 /**
@@ -406,12 +406,12 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
 hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font)
 {
-  if (unlikely (!cg_font))
-    return hb_face_get_empty ();
+  إذا (unlikely (!cg_font))
+    أرجع hb_face_get_تشه ();
 
-  hb_face_t *face = hb_face_create_for_tables (_hb_cg_reference_table, CGFontRetain (cg_font), _hb_cg_font_release);
-  hb_face_set_get_table_tags_func (face, _hb_cg_get_table_tags, cg_font, nullptr);
-  return face;
+  hb_face_t *face = hb_face_create_for_tables (hb_cg_reference_جدول, CGFontRetain (cg_font), _hb_cg_font_release);
+  hb_face_سېټ_get_جدول_نښانونه_func (face, hb_cg_get_جدول_نښانونه, cg_font, تش_اشاره);
+  أرجع face;
 }
 
 /**
@@ -431,43 +431,43 @@ hb_coretext_face_create (CGFontRef cg_font)
  * Since: 10.1.0
  */
 hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index)
+hb_coretext_face_create_from_file_or_fail (ثابت حرف   *file_name,
+					   بینښه صحيح  شاخص_2)
 {
-  unsigned ttc_index = index & 0xFFFF;
-  unsigned named_instance_index = index >> 16;
+  بینښه ttc_شاخص = شاخص_2 & 0xFFFF;
+  بینښه named_instance_شاخص = شاخص_2 >> 16;
 
-  if (ttc_index != 0)
+  إذا (ttc_شاخص != 0)
   {
-    DEBUG_MSG (CORETEXT, nullptr, "TTC index %u not supported", ttc_index);
-    return nullptr; // CoreText does not support TTCs
+    DEBUG_پیغام (CORETEXT, تش_اشاره, "TTC index %u not supported", ttc_شاخص);
+    أرجع تش_اشاره; // CoreText does not support TTCs
   }
 
-  hb_cf_ptr_t<CFURLRef> url (CFURLCreateFromFileSystemRepresentation (nullptr,
-								      (const UInt8 *) file_name,
-								      strlen (file_name),
-								      false));
-  if (unlikely (!url))
-    return nullptr;
+  hb_cf_ptr_t<CFURLRef> url (CFURLCreateFromFileSystemRepresentation (تش_اشاره,
+								      (ثابت UInt8 *) file_name,
+								      مزي_اوږدوالی (file_name),
+								      خطأ));
+  إذا (unlikely (!url))
+    أرجع تش_اشاره;
 
-  auto ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromURL (url);
-  if (unlikely (!ct_font_desc_array))
-    return nullptr;
+  خپلکاری ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromURL (url);
+  إذا (unlikely (!ct_font_desc_array))
+    أرجع تش_اشاره;
 
-  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (ct_font_desc_array, named_instance_index));
-  if (unlikely (!cg_font))
-    return nullptr;
+  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (ct_font_desc_array, named_instance_شاخص));
+  إذا (unlikely (!cg_font))
+    أرجع تش_اشاره;
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
-  if (unlikely (hb_face_is_immutable (face)))
+  إذا (unlikely (hb_face_is_immutable (face)))
   {
     hb_face_destroy (face);
-    return nullptr;
+    أرجع تش_اشاره;
   }
 
-  hb_face_set_index (face, index);
+  hb_face_سېټ_شاخص (face, شاخص_2);
 
-  return face;
+  أرجع face;
 }
 
 /**
@@ -488,22 +488,22 @@ hb_coretext_face_create_from_file_or_fail (const char   *file_name,
  */
 hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index)
+					   بینښه صحيح  شاخص_2)
 {
-  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (blob, index));
-  if (unlikely (!cg_font))
-    return nullptr;
+  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (blob, شاخص_2));
+  إذا (unlikely (!cg_font))
+    أرجع تش_اشاره;
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
-  if (unlikely (hb_face_is_immutable (face)))
+  إذا (unlikely (hb_face_is_immutable (face)))
   {
     hb_face_destroy (face);
-    return nullptr;
+    أرجع تش_اشاره;
   }
 
-  hb_face_set_index (face, index);
+  hb_face_سېټ_شاخص (face, شاخص_2);
 
-  return face;
+  أرجع face;
 }
 
 /**
@@ -520,7 +520,7 @@ hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
 CGFontRef
 hb_coretext_face_get_cg_font (hb_face_t *face)
 {
-  return face ? (CGFontRef) (const void *) face->data.coretext : nullptr;
+  أرجع face ? (CGFontRef) (ثابت فراغ *) face->معلومات.coretext : تش_اشاره;
 }
 
 /**
@@ -542,58 +542,58 @@ hb_coretext_face_get_cg_font (hb_face_t *face)
 hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font)
 {
-  if (unlikely (!ct_font))
-    return hb_font_get_empty ();
+  إذا (unlikely (!ct_font))
+    أرجع hb_font_get_تشه ();
 
-  hb_cf_ptr_t<CGFontRef> cg_font (CTFontCopyGraphicsFont (ct_font, nullptr));
-  if (unlikely (!cg_font))
-    return hb_font_get_empty ();
+  hb_cf_ptr_t<CGFontRef> cg_font (CTFontCopyGraphicsFont (ct_font, تش_اشاره));
+  إذا (unlikely (!cg_font))
+    أرجع hb_font_get_تشه ();
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
   cg_font.reset ();
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  إذا (unlikely (hb_object_is_immutable (font)))
+    أرجع font;
 
-  hb_font_set_ptem (font, CTFontGetSize (ct_font));
+  hb_font_سېټ_ptem (font, CTFont_Get_اندازه (ct_font));
 
   /* Copy font variations */
   hb_cf_ptr_t<CFDictionaryRef> variations (CTFontCopyVariation (ct_font));
-  if (variations)
+  إذا (variations)
   {
 
-    hb_vector_t<hb_variation_t> vars;
-    hb_vector_t<CFTypeRef> keys;
-    hb_vector_t<CFTypeRef> values;
+    hb_ویکټور_t<hb_variation_t> vars;
+    hb_ویکټور_t<CFTypeRef> کلیګانې;
+    hb_ویکټور_t<CFTypeRef> values;
 
-    CFIndex count = CFDictionaryGetCount (variations);
-    if (likely (vars.alloc_exact (count) && keys.resize_exact (count) && values.resize_exact (count)))
+    CFIndex شمېر = CFDictionary_Get_شمېر (variations);
+    إذا (likely (vars.alloc_exact (شمېر) && کلیګانې.resize_exact (شمېر) && values.resize_exact (شمېر)))
     {
       // Fetch them one by one and collect in a vector of our own.
-      CFDictionaryGetKeysAndValues (variations, keys.arrayZ, values.arrayZ);
-      for (CFIndex i = 0; i < count; i++)
+      CFDictionary_Get_کلیګانې_And_ارزښتونه (variations, کلیګانې.arrayZ, values.arrayZ);
+      لكل (CFIndex i = 0; i < شمېر; i++)
       {
-	int tag;
-	float value;
-	CFNumberGetValue ((CFNumberRef) keys.arrayZ[i], kCFNumberIntType, &tag);
-	CFNumberGetValue ((CFNumberRef) values.arrayZ[i], kCFNumberFloatType, &value);
+	صحيح نښان_2;
+	عائم value;
+	CFNumber_Get_ارزښت ((CFNumberRef) کلیګانې.arrayZ[i], kCFNumberIntType, &نښان_2);
+	CFNumber_Get_ارزښت ((CFNumberRef) values.arrayZ[i], kCFNumberFloatType, &value);
 
-	hb_variation_t var = {(hb_tag_t) tag, value};
+	hb_variation_t var = {(hb_نښان_t) نښان_2, value};
 	vars.push (var);
       }
-      hb_font_set_variations (font, vars.arrayZ, vars.length);
+      hb_font_سېټ_variations (font, vars.arrayZ, vars.اوږدتیا);
     }
   }
 
   /* Let there be dragons here... */
-  font->data.coretext.cmpexch (nullptr, (hb_coretext_font_data_t *) CFRetain (ct_font));
+  font->معلومات.coretext.cmpexch (تش_اشاره, (hb_coretext_font_معلومات_t *) CFRetain (ct_font));
 
   // https://github.com/harfbuzz/harfbuzz/pull/4895#issuecomment-2408471254
   //hb_coretext_font_set_funcs (font);
 
-  return font;
+  أرجع font;
 }
 
 /**
@@ -610,8 +610,8 @@ hb_coretext_font_create (CTFontRef ct_font)
 CTFontRef
 hb_coretext_font_get_ct_font (hb_font_t *font)
 {
-  return font ? (CTFontRef) (const void *) font->data.coretext : nullptr;
+  أرجع font ? (CTFontRef) (ثابت فراغ *) font->معلومات.coretext : تش_اشاره;
 }
 
 
-#endif
+#د_که_پای

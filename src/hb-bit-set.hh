@@ -25,1214 +25,1214 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_SET_HH
-#define HB_BIT_SET_HH
+#که_نه_تعریف_شوی HB_بټ_سېټ_HH
+#تعریف_کړه HB_بټ_سېټ_HH
 
-#include "hb.hh"
-#include "hb-bit-page.hh"
+#ضمن "hb.hh"
+#ضمن "hb-bit-page.hh"
 
-struct hb_bit_set_t
+بنية hb_بټ_سېټ_t
 {
-  hb_bit_set_t () = default;
-  ~hb_bit_set_t () = default;
+  hb_بټ_سېټ_t () = افتراضي;
+  ~hb_بټ_سېټ_t () = افتراضي;
 
-  hb_bit_set_t (const hb_bit_set_t& other) : hb_bit_set_t () { set (other, true); }
-  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*this, other); }
-  hb_bit_set_t& operator= (const hb_bit_set_t& other) { set (other); return *this; }
-  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
+  hb_بټ_سېټ_t (ثابت hb_بټ_سېټ_t& other) : hb_بټ_سېټ_t () { سېټ (other, ریښتیا); }
+  hb_بټ_سېټ_t ( hb_بټ_سېټ_t&& other)  noexcept : hb_بټ_سېټ_t () { hb_بدلون (*هذا, other); }
+  hb_بټ_سېټ_t& چلوونکی= (ثابت hb_بټ_سېټ_t& other) { سېټ (other); أرجع *هذا; }
+  hb_بټ_سېټ_t& چلوونکی= (hb_بټ_سېټ_t&& other)  noexcept { hb_بدلون (*هذا, other); أرجع *هذا; }
+  ملګری فراغ swap (hb_بټ_سېټ_t &a, hb_بټ_سېټ_t &b) noexcept
   {
-    if (likely (!a.successful || !b.successful))
-      return;
-    hb_swap (a.population, b.population);
-    hb_swap (a.last_page_lookup, b.last_page_lookup);
-    hb_swap (a.page_map, b.page_map);
-    hb_swap (a.pages, b.pages);
+    إذا (likely (!a.successful || !b.successful))
+      أرجع;
+    hb_بدلون (a.population, b.population);
+    hb_بدلون (a.وروستی_پاڼه_lookup, b.وروستی_پاڼه_lookup);
+    hb_بدلون (a.پاڼه_map, b.پاڼه_map);
+    hb_بدلون (a.پاڼې, b.پاڼې);
   }
 
-  void init ()
+  فراغ init ()
   {
-    successful = true;
+    successful = ریښتیا;
     population = 0;
-    last_page_lookup = 0;
-    page_map.init ();
-    pages.init ();
+    وروستی_پاڼه_lookup = 0;
+    پاڼه_map.init ();
+    پاڼې.init ();
   }
-  void fini ()
+  فراغ fini ()
   {
-    page_map.fini ();
-    pages.fini ();
+    پاڼه_map.fini ();
+    پاڼې.fini ();
   }
 
-  using page_t = hb_bit_page_t;
-  struct page_map_t
+  کارول پاڼه_t = hb_بټ_پاڼه_t;
+  بنية پاڼه_map_t
   {
-    int cmp (const page_map_t &o) const { return cmp (o.major); }
-    int cmp (uint32_t o_major) const { return (int) o_major - (int) major; }
+    صحيح cmp (ثابت پاڼه_map_t &o) ثابت { أرجع cmp (o.major); }
+    صحيح cmp (uint32_t o_major) ثابت { أرجع (صحيح) o_major - (صحيح) major; }
 
     uint32_t major;
-    uint32_t index;
+    uint32_t شاخص_2;
   };
 
-  bool successful = true; /* Allocations successful */
-  mutable unsigned int population = 0;
-  mutable hb_atomic_t<unsigned> last_page_lookup = 0;
-  hb_sorted_vector_t<page_map_t> page_map;
-  hb_vector_t<page_t> pages;
+  منطقي successful = ریښتیا; /* Allocations successful */
+  بدلیدونکی بینښه صحيح population = 0;
+  بدلیدونکی hb_atomic_t<بینښه> وروستی_پاڼه_lookup = 0;
+  hb_sorted_ویکټور_t<پاڼه_map_t> پاڼه_map;
+  hb_ویکټور_t<پاڼه_t> پاڼې;
 
-  void err () { if (successful) successful = false; } /* TODO Remove */
-  bool in_error () const { return !successful; }
+  فراغ err () { إذا (successful) successful = خطأ; } /* TODO Remove */
+  منطقي دننه_error () ثابت { أرجع !successful; }
 
-  bool resize (unsigned int count, bool clear = true, bool exact_size = false)
+  منطقي resize (بینښه صحيح شمېر, منطقي clear = ریښتیا, منطقي exact_اندازه = خطأ)
   {
-    if (unlikely (!successful)) return false;
+    إذا (unlikely (!successful)) أرجع خطأ;
 
-    if (pages.length < count && (unsigned) pages.allocated < count && count <= 2)
-      exact_size = true; // Most sets are small and local
+    إذا (پاڼې.اوږدتیا < شمېر && (بینښه) پاڼې.allocated < شمېر && شمېر <= 2)
+      exact_اندازه = ریښتیا; // Most sets are small and local
 
-    if (unlikely (!pages.resize_full (count, clear, exact_size) ||
-	!page_map.resize_full (count, clear, false)))
+    إذا (unlikely (!پاڼې.resize_ډک (شمېر, clear, exact_اندازه) ||
+	!پاڼه_map.resize_ډک (شمېر, clear, خطأ)))
     {
-      pages.resize_full (page_map.length, clear, exact_size);
-      successful = false;
-      return false;
+      پاڼې.resize_ډک (پاڼه_map.اوږدتیا, clear, exact_اندازه);
+      successful = خطأ;
+      أرجع خطأ;
     }
-    return true;
+    أرجع ریښتیا;
   }
 
-  void alloc (unsigned sz)
+  فراغ alloc (بینښه sz)
   {
-    sz >>= (page_t::PAGE_BITS_LOG_2 - 1);
-    pages.alloc (sz);
-    page_map.alloc (sz);
+    sz >>= (پاڼه_t::پاڼه_بټونه_LOG_2 - 1);
+    پاڼې.alloc (sz);
+    پاڼه_map.alloc (sz);
   }
 
-  hb_bit_set_t& reset ()
+  hb_بټ_سېټ_t& reset ()
   {
-    successful = true;
+    successful = ریښتیا;
     clear ();
-    return *this;
+    أرجع *هذا;
   }
 
-  void clear ()
+  فراغ clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (which is zero-initialized) from any writes.  Any non-empty
      * instance is a real heap object with writable storage, so
      * clearing through the vector's always-safe clear() is fine
      * even if we entered error state. */
-    if (!pages.length && !population) return;
-    pages.clear ();
-    page_map.clear ();
+    إذا (!پاڼې.اوږدتیا && !population) أرجع;
+    پاڼې.clear ();
+    پاڼه_map.clear ();
     population = 0;
   }
-  bool is_empty () const
+  منطقي is_empty () ثابت
   {
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      if (!pages[i].is_empty ())
-	return false;
-    return true;
+    بینښه صحيح شمېر = پاڼې.اوږدتیا;
+    لكل (بینښه صحيح i = 0; i < شمېر; i++)
+      إذا (!پاڼې[i].is_empty ())
+	أرجع خطأ;
+    أرجع ریښتیا;
   }
-  explicit operator bool () const { return !is_empty (); }
+  څرګند چلوونکی منطقي () ثابت { أرجع !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
     uint32_t h = 0;
-    for (auto &map : page_map)
+    لكل (خپلکاری &map : پاڼه_map)
     {
-      auto &page = pages.arrayZ[map.index];
-      if (unlikely (page.is_empty ())) continue;
-      h = h * 31 + hb_hash (map.major) + hb_hash (page);
+      خپلکاری &پاڼه = پاڼې.arrayZ[map.شاخص_2];
+      إذا (unlikely (پاڼه.is_empty ())) استمر;
+      h = h * 31 + hb_hash (map.major) + hb_hash (پاڼه);
     }
-    return h;
+    أرجع h;
   }
 
-  private:
-  void dirty () { population = UINT_MAX; }
-  public:
+  خاص:
+  فراغ dirty () { population = UINT_MAX; }
+  عام:
 
-  void add (hb_codepoint_t g)
+  فراغ جمع_کړه (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (g == INVALID)) return;
+    إذا (unlikely (!successful)) أرجع;
+    إذا (unlikely (g == INVALID)) أرجع;
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
-    page->add (g);
+    پاڼه_t *پاڼه = پاڼه_for (g, ریښتیا); إذا (unlikely (!پاڼه)) أرجع;
+    پاڼه->جمع_کړه (g);
   }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  فراغ جمع_کړه_بټونه (hb_codepoint_t g, uint64_t بټونه)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    إذا (unlikely (!successful) || unlikely (!بټونه)) أرجع;
+    أكد (!(g & (پاڼه_t::ELT_بټونه - 1)));
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
-    page->add_bits (g, bits);
+    پاڼه_t *پاڼه = پاڼه_for (g, ریښتیا); إذا (unlikely (!پاڼه)) أرجع;
+    پاڼه->جمع_کړه_بټونه (g, بټونه);
   }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  منطقي جمع_کړه_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (a > b || a == INVALID || b == INVALID)) return false;
+    إذا (unlikely (!successful)) أرجع ریښتیا; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    إذا (unlikely (a > b || a == INVALID || b == INVALID)) أرجع خطأ;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
-    if (ma == mb)
+    بینښه صحيح ma = get_major (a);
+    بینښه صحيح mb = get_major (b);
+    إذا (ma == mb)
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
-      page->add_range (a, b);
+      پاڼه_t *پاڼه = پاڼه_for (a, ریښتیا); إذا (unlikely (!پاڼه)) أرجع خطأ;
+      پاڼه->جمع_کړه_range (a, b);
     }
-    else
+    وإلا
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
-      page->add_range (a, major_start (ma + 1) - 1);
+      پاڼه_t *پاڼه = پاڼه_for (a, ریښتیا); إذا (unlikely (!پاڼه)) أرجع خطأ;
+      پاڼه->جمع_کړه_range (a, major_پیل (ma + 1) - 1);
 
-      for (unsigned int m = ma + 1; m < mb; m++)
+      لكل (بینښه صحيح m = ma + 1; m < mb; m++)
       {
-	page = page_for (major_start (m), true); if (unlikely (!page)) return false;
-	page->init1 ();
+	پاڼه = پاڼه_for (major_پیل (m), ریښتیا); إذا (unlikely (!پاڼه)) أرجع خطأ;
+	پاڼه->init1 ();
       }
 
-      page = page_for (b, true); if (unlikely (!page)) return false;
-      page->add_range (major_start (mb), b);
+      پاڼه = پاڼه_for (b, ریښتیا); إذا (unlikely (!پاڼه)) أرجع خطأ;
+      پاڼه->جمع_کړه_range (major_پیل (mb), b);
     }
-    return true;
+    أرجع ریښتیا;
   }
 
   /* Duplicated here from hb-machinery.hh to avoid including it. */
-  template<typename Type>
-  static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+  کينډۍ<ډول_نوم Type>
+  ساكن مضمن ثابت Type& Struct_At_دننه_واټن_Unaligned(ثابت فراغ *P, بینښه صحيح دننه_واټن)
   {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-    return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#لارښوونه GCC diagnostic push
+#لارښوونه GCC diagnostic ignored "-Wcast-align"
+    أرجع * reinterpret_cast<ثابت Type*> ((ثابت حرف *) P + دننه_واټن);
+#لارښوونه GCC diagnostic راوباسه
   }
 
-  template <typename T>
-  void set_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  کينډۍ <ډول_نوم T>
+  فراغ سېټ_array (منطقي v, ثابت T *array, بینښه صحيح شمېر, بینښه صحيح stride=حجم(T))
   {
-    if (unlikely (!successful)) return;
-    if (!count) return;
+    إذا (unlikely (!successful)) أرجع;
+    إذا (!شمېر) أرجع;
     dirty ();
     hb_codepoint_t g = *array;
-    while (count)
+    طالما (شمېر)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return;
-      unsigned int start = major_start (m);
-      unsigned int end = major_start (m + 1);
-      do
+      بینښه صحيح m = get_major (g);
+      پاڼه_t *پاڼه = پاڼه_for (g, v); إذا (unlikely (v && !پاڼه)) أرجع;
+      بینښه صحيح پیل = major_پیل (m);
+      بینښه صحيح پای_ټکی = major_پیل (m + 1);
+      افعل
       {
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
-	  page->set (g, v);
+        إذا (g != INVALID && (v || پاڼه)) /* The v check is to optimize out the page check if v is true. */
+	  پاڼه->سېټ (g, v);
 
-	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	array = &Struct_At_دننه_واټن_Unaligned<T> (array, stride);
+	شمېر--;
       }
-      while (count && (g = *array, start <= g && g < end));
+      طالما (شمېر && (g = *array, پیل <= g && g < پای_ټکی));
     }
   }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (true, array, count, stride); }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  کينډۍ <ډول_نوم T>
+  فراغ جمع_کړه_array (ثابت T *array, بینښه صحيح شمېر, بینښه صحيح stride=حجم(T))
+  { سېټ_array (ریښتیا, array, شمېر, stride); }
+  کينډۍ <ډول_نوم T>
+  فراغ جمع_کړه_array (ثابت hb_array_t<ثابت T>& arr) { جمع_کړه_array (&arr, arr.len ()); }
 
-  template <typename T>
-  void del_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (false, array, count, stride); }
-  template <typename T>
-  void del_array (const hb_array_t<const T>& arr) { del_array (&arr, arr.len ()); }
+  کينډۍ <ډول_نوم T>
+  فراغ del_array (ثابت T *array, بینښه صحيح شمېر, بینښه صحيح stride=حجم(T))
+  { سېټ_array (خطأ, array, شمېر, stride); }
+  کينډۍ <ډول_نوم T>
+  فراغ del_array (ثابت hb_array_t<ثابت T>& arr) { del_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename T>
-  bool set_sorted_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  کينډۍ <ډول_نوم T>
+  منطقي سېټ_sorted_array (منطقي v, ثابت T *array, بینښه صحيح شمېر, بینښه صحيح stride=حجم(T))
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (!count)) return true;
+    إذا (unlikely (!successful)) أرجع ریښتیا; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    إذا (unlikely (!شمېر)) أرجع ریښتیا;
     dirty ();
     hb_codepoint_t g = *array;
-    hb_codepoint_t last_g = g;
-    while (count)
+    hb_codepoint_t وروستی_g = g;
+    طالما (شمېر)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return false;
-      unsigned int end = major_start (m + 1);
-      do
+      بینښه صحيح m = get_major (g);
+      پاڼه_t *پاڼه = پاڼه_for (g, v); إذا (unlikely (v && !پاڼه)) أرجع خطأ;
+      بینښه صحيح پای_ټکی = major_پیل (m + 1);
+      افعل
       {
 	/* If we try harder we can change the following comparison to <=;
 	 * Not sure if it's worth it. */
-	if (g < last_g) return false;
-	last_g = g;
+	إذا (g < وروستی_g) أرجع خطأ;
+	وروستی_g = g;
 
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
-	  page->set (g, v);
+        إذا (g != INVALID && (v || پاڼه)) /* The v check is to optimize out the page check if v is true. */
+	  پاڼه->سېټ (g, v);
 
-	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	array = &Struct_At_دننه_واټن_Unaligned<T> (array, stride);
+	شمېر--;
       }
-      while (count && (g = *array, g < end));
+      طالما (شمېر && (g = *array, g < پای_ټکی));
     }
-    return true;
+    أرجع ریښتیا;
   }
 
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (true, array, count, stride); }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  کينډۍ <ډول_نوم T>
+  منطقي جمع_کړه_sorted_array (ثابت T *array, بینښه صحيح شمېر, بینښه صحيح stride=حجم(T))
+  { أرجع سېټ_sorted_array (ریښتیا, array, شمېر, stride); }
+  کينډۍ <ډول_نوم T>
+  منطقي جمع_کړه_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { أرجع جمع_کړه_sorted_array (&arr, arr.len ()); }
 
-  template <typename T>
-  bool del_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (false, array, count, stride); }
-  template <typename T>
-  bool del_sorted_array (const hb_sorted_array_t<const T>& arr) { return del_sorted_array (&arr, arr.len ()); }
+  کينډۍ <ډول_نوم T>
+  منطقي del_sorted_array (ثابت T *array, بینښه صحيح شمېر, بینښه صحيح stride=حجم(T))
+  { أرجع سېټ_sorted_array (خطأ, array, شمېر, stride); }
+  کينډۍ <ډول_نوم T>
+  منطقي del_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { أرجع del_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g)
+  فراغ del (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    page_t *page = page_for (g);
-    if (!page)
-      return;
+    إذا (unlikely (!successful)) أرجع;
+    پاڼه_t *پاڼه = پاڼه_for (g);
+    إذا (!پاڼه)
+      أرجع;
     dirty ();
-    page->del (g);
+    پاڼه->del (g);
   }
-  void del_bits (hb_codepoint_t g, uint64_t bits)
+  فراغ del_بټونه (hb_codepoint_t g, uint64_t بټونه)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
-    page_t *page = page_for (g);
-    if (!page)
-      return;
+    إذا (unlikely (!successful) || unlikely (!بټونه)) أرجع;
+    أكد (!(g & (پاڼه_t::ELT_بټونه - 1)));
+    پاڼه_t *پاڼه = پاڼه_for (g);
+    إذا (!پاڼه)
+      أرجع;
     dirty ();
-    page->del_bits (g, bits);
+    پاڼه->del_بټونه (g, بټونه);
   }
 
-  private:
-  void del_pages (int ds, int de)
+  خاص:
+  فراغ del_پاڼې (صحيح ds, صحيح de)
   {
-    if (ds <= de)
+    إذا (ds <= de)
     {
       // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
       // before attempting to rewrite the page map.
-      hb_vector_t<unsigned> compact_workspace;
-      if (unlikely (!allocate_compact_workspace (compact_workspace))) return;
+      hb_ویکټور_t<بینښه> compact_workspace;
+      إذا (unlikely (!allocate_compact_workspace (compact_workspace))) أرجع;
 
-      unsigned int write_index = 0;
-      for (unsigned int i = 0; i < page_map.length; i++)
+      بینښه صحيح write_شاخص = 0;
+      لكل (بینښه صحيح i = 0; i < پاڼه_map.اوږدتیا; i++)
       {
-	int m = (int) page_map.arrayZ[i].major;
-	if (m < ds || de < m)
-	  page_map.arrayZ[write_index++] = page_map.arrayZ[i];
+	صحيح m = (صحيح) پاڼه_map.arrayZ[i].major;
+	إذا (m < ds || de < m)
+	  پاڼه_map.arrayZ[write_شاخص++] = پاڼه_map.arrayZ[i];
       }
-      compact (compact_workspace, write_index);
-      resize (write_index);
+      compact (compact_workspace, write_شاخص);
+      resize (write_شاخص);
     }
   }
 
 
-  public:
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  عام:
+  فراغ del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (a > b || a == INVALID)) return;
+    إذا (unlikely (!successful)) أرجع;
+    إذا (unlikely (a > b || a == INVALID)) أرجع;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
+    بینښه صحيح ma = get_major (a);
+    بینښه صحيح mb = get_major (b);
     /* Delete pages from ds through de if ds <= de. */
-    int ds = (a == major_start (ma))? (int) ma: (int) (ma + 1);
-    int de = (b + 1 == major_start (mb + 1))? (int) mb: ((int) mb - 1);
-    if (ds > de || (int) ma < ds)
+    صحيح ds = (a == major_پیل (ma))? (صحيح) ma: (صحيح) (ma + 1);
+    صحيح de = (b + 1 == major_پیل (mb + 1))? (صحيح) mb: ((صحيح) mb - 1);
+    إذا (ds > de || (صحيح) ma < ds)
     {
-      page_t *page = page_for (a);
-      if (page)
+      پاڼه_t *پاڼه = پاڼه_for (a);
+      إذا (پاڼه)
       {
-	if (ma == mb)
-	  page->del_range (a, b);
-	else
-	  page->del_range (a, major_start (ma + 1) - 1);
+	إذا (ma == mb)
+	  پاڼه->del_range (a, b);
+	وإلا
+	  پاڼه->del_range (a, major_پیل (ma + 1) - 1);
       }
     }
-    if (de < (int) mb && ma != mb)
+    إذا (de < (صحيح) mb && ma != mb)
     {
-      page_t *page = page_for (b);
-      if (page)
-	page->del_range (major_start (mb), b);
+      پاڼه_t *پاڼه = پاڼه_for (b);
+      إذا (پاڼه)
+	پاڼه->del_range (major_پیل (mb), b);
     }
-    del_pages (ds, de);
+    del_پاڼې (ds, de);
   }
 
-  bool get (hb_codepoint_t g) const
+  منطقي get (hb_codepoint_t g) ثابت
   {
-    const page_t *page = page_for (g);
-    if (!page)
-      return false;
-    return page->get (g);
+    ثابت پاڼه_t *پاڼه = پاڼه_for (g);
+    إذا (!پاڼه)
+      أرجع خطأ;
+    أرجع پاڼه->get (g);
   }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  منطقي may_have (hb_codepoint_t g) ثابت { أرجع get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  منطقي چلوونکی [] (hb_codepoint_t k) ثابت { أرجع get (k); }
+  منطقي has (hb_codepoint_t k) ثابت { أرجع (*هذا)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  منطقي چلوونکی () (hb_codepoint_t k) ثابت { أرجع has (k); }
 
   /* Sink interface. */
-  hb_bit_set_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  hb_بټ_سېټ_t& چلوونکی << (hb_codepoint_t v)
+  { جمع_کړه (v); أرجع *هذا; }
+  hb_بټ_سېټ_t& چلوونکی << (ثابت hb_codepoint_pair_t& range)
+  { جمع_کړه_range (range.لومړی, range.second); أرجع *هذا; }
 
-  bool intersects (const hb_bit_set_t &other) const
+  منطقي intersects (ثابت hb_بټ_سېټ_t &other) ثابت
   {
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    بینښه صحيح na = پاڼې.اوږدتیا;
+    بینښه صحيح nb = other.پاڼې.اوږدتیا;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    بینښه صحيح a = 0, b = 0;
+    لكل (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      إذا (پاڼه_map.arrayZ[a].major == other.پاڼه_map.arrayZ[b].major)
       {
-	if (page_at (a).intersects (other.page_at (b)))
-	  return true;
+	إذا (پاڼه_at (a).intersects (other.پاڼه_at (b)))
+	  أرجع ریښتیا;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      وإلا إذا (پاڼه_map.arrayZ[a].major < other.پاڼه_map.arrayZ[b].major)
 	a++;
-      else
+      وإلا
 	b++;
     }
-    return false;
+    أرجع خطأ;
   }
-  bool may_intersect (const hb_bit_set_t &other) const
-  { return intersects (other); }
+  منطقي may_intersect (ثابت hb_بټ_سېټ_t &other) ثابت
+  { أرجع intersects (other); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  منطقي intersects (hb_codepoint_t لومړی, hb_codepoint_t وروستی) ثابت
   {
-    hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    hb_codepoint_t c = لومړی - 1;
+    أرجع next (&c) && c <= وروستی;
   }
-  void set (const hb_bit_set_t &other, bool exact_size = false)
+  فراغ سېټ (ثابت hb_بټ_سېټ_t &other, منطقي exact_اندازه = خطأ)
   {
-    if (unlikely (!successful)) return;
-    unsigned int count = other.pages.length;
-    if (unlikely (!resize  (count, false, exact_size)))
-      return;
+    إذا (unlikely (!successful)) أرجع;
+    بینښه صحيح شمېر = other.پاڼې.اوږدتیا;
+    إذا (unlikely (!resize  (شمېر, خطأ, exact_اندازه)))
+      أرجع;
     population = other.population;
 
-    page_map = other.page_map;
-    pages = other.pages;
+    پاڼه_map = other.پاڼه_map;
+    پاڼې = other.پاڼې;
   }
 
-  bool is_equal (const hb_bit_set_t &other) const
+  منطقي is_equal (ثابت hb_بټ_سېټ_t &other) ثابت
   {
-    if (has_population () && other.has_population () &&
+    إذا (has_population () && other.has_population () &&
 	population != other.population)
-      return false;
+      أرجع خطأ;
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    بینښه صحيح na = پاڼې.اوږدتیا;
+    بینښه صحيح nb = other.پاڼې.اوږدتیا;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    بینښه صحيح a = 0, b = 0;
+    لكل (; a < na && b < nb; )
     {
-      if (page_at (a).is_empty ()) { a++; continue; }
-      if (other.page_at (b).is_empty ()) { b++; continue; }
-      if (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
-	  !page_at (a).is_equal (other.page_at (b)))
-	return false;
+      إذا (پاڼه_at (a).is_empty ()) { a++; استمر; }
+      إذا (other.پاڼه_at (b).is_empty ()) { b++; استمر; }
+      إذا (پاڼه_map.arrayZ[a].major != other.پاڼه_map.arrayZ[b].major ||
+	  !پاڼه_at (a).is_equal (other.پاڼه_at (b)))
+	أرجع خطأ;
       a++;
       b++;
     }
-    for (; a < na; a++)
-      if (!page_at (a).is_empty ()) { return false; }
-    for (; b < nb; b++)
-      if (!other.page_at (b).is_empty ()) { return false; }
+    لكل (; a < na; a++)
+      إذا (!پاڼه_at (a).is_empty ()) { أرجع خطأ; }
+    لكل (; b < nb; b++)
+      إذا (!other.پاڼه_at (b).is_empty ()) { أرجع خطأ; }
 
-    return true;
+    أرجع ریښتیا;
   }
 
-  bool is_subset (const hb_bit_set_t &larger_set) const
+  منطقي is_subset (ثابت hb_بټ_سېټ_t &larger_سېټ) ثابت
   {
-    if (has_population () && larger_set.has_population () &&
-	population > larger_set.population)
-      return false;
+    إذا (has_population () && larger_سېټ.has_population () &&
+	population > larger_سېټ.population)
+      أرجع خطأ;
 
     uint32_t spi = 0;
     uint32_t lpi = 0;
-    while (spi < page_map.length && lpi < larger_set.page_map.length)
+    طالما (spi < پاڼه_map.اوږدتیا && lpi < larger_سېټ.پاڼه_map.اوږدتیا)
     {
-      uint32_t spm = page_map.arrayZ[spi].major;
-      uint32_t lpm = larger_set.page_map.arrayZ[lpi].major;
-      auto sp = page_at (spi);
+      uint32_t spm = پاڼه_map.arrayZ[spi].major;
+      uint32_t lpm = larger_سېټ.پاڼه_map.arrayZ[lpi].major;
+      خپلکاری sp = پاڼه_at (spi);
 
-      if (spm < lpm) {
-        if (!sp.is_empty ())
-          return false;
+      إذا (spm < lpm) {
+        إذا (!sp.is_empty ())
+          أرجع خطأ;
         spi++;
-        continue;
+        استمر;
       }
 
-      if (lpm < spm) {
+      إذا (lpm < spm) {
         lpi++;
-        continue;
+        استمر;
       }
 
-      auto lp = larger_set.page_at (lpi);
-      if (!sp.is_subset (lp))
-        return false;
+      خپلکاری lp = larger_سېټ.پاڼه_at (lpi);
+      إذا (!sp.is_subset (lp))
+        أرجع خطأ;
 
       spi++;
       lpi++;
     }
 
-    while (spi < page_map.length)
-      if (!page_at (spi++).is_empty ())
-        return false;
+    طالما (spi < پاڼه_map.اوږدتیا)
+      إذا (!پاڼه_at (spi++).is_empty ())
+        أرجع خطأ;
 
-    return true;
+    أرجع ریښتیا;
   }
 
-  private:
-  bool allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
+  خاص:
+  منطقي allocate_compact_workspace (hb_ویکټور_t<بینښه>& workspace)
   {
-    if (unlikely (!workspace.resize_exact (pages.length)))
+    إذا (unlikely (!workspace.resize_exact (پاڼې.اوږدتیا)))
     {
-      successful = false;
-      return false;
+      successful = خطأ;
+      أرجع خطأ;
     }
 
-    return true;
+    أرجع ریښتیا;
   }
 
   /*
    * workspace should be a pre-sized vector allocated to hold at exactly pages.length
    * elements.
    */
-  void compact (hb_vector_t<unsigned>& workspace,
-                unsigned int length)
+  فراغ compact (hb_ویکټور_t<بینښه>& workspace,
+                بینښه صحيح اوږدتیا)
   {
-    assert(workspace.length == pages.length);
-    hb_vector_t<unsigned>& old_index_to_page_map_index = workspace;
+    أكد(workspace.اوږدتیا == پاڼې.اوږدتیا);
+    hb_ویکټور_t<بینښه>& old_شاخص_منزل_پاڼه_map_شاخص = workspace;
 
-    hb_fill (old_index_to_page_map_index.writer(), 0xFFFFFFFF);
-    for (unsigned i = 0; i < length; i++)
-      old_index_to_page_map_index[page_map[i].index] =  i;
+    hb_fill (old_شاخص_منزل_پاڼه_map_شاخص.writer(), 0xFFFFFFFF);
+    لكل (بینښه i = 0; i < اوږدتیا; i++)
+      old_شاخص_منزل_پاڼه_map_شاخص[پاڼه_map[i].شاخص_2] =  i;
 
-    compact_pages (old_index_to_page_map_index);
+    compact_پاڼې (old_شاخص_منزل_پاڼه_map_شاخص);
   }
-  void compact_pages (const hb_vector_t<unsigned>& old_index_to_page_map_index)
+  فراغ compact_پاڼې (ثابت hb_ویکټور_t<بینښه>& old_شاخص_منزل_پاڼه_map_شاخص)
   {
-    unsigned int write_index = 0;
-    for (unsigned int i = 0; i < pages.length; i++)
+    بینښه صحيح write_شاخص = 0;
+    لكل (بینښه صحيح i = 0; i < پاڼې.اوږدتیا; i++)
     {
-      if (old_index_to_page_map_index[i] == 0xFFFFFFFF) continue;
+      إذا (old_شاخص_منزل_پاڼه_map_شاخص[i] == 0xFFFFFFFF) استمر;
 
-      if (write_index < i)
-	pages[write_index] = pages[i];
+      إذا (write_شاخص < i)
+	پاڼې[write_شاخص] = پاڼې[i];
 
-      page_map[old_index_to_page_map_index[i]].index = write_index;
-      write_index++;
+      پاڼه_map[old_شاخص_منزل_پاڼه_map_شاخص[i]].شاخص_2 = write_شاخص;
+      write_شاخص++;
     }
   }
-  public:
+  عام:
 
-  void process_ (hb_bit_page_t::vector_t (*op) (const hb_bit_page_t::vector_t &, const hb_bit_page_t::vector_t &),
-		 bool passthru_left, bool passthru_right,
-		 const hb_bit_set_t &other,
-		 hb_vector_t<unsigned> *workspace = nullptr)
+  فراغ process_ (hb_بټ_پاڼه_t::ویکټور_t (*op) (ثابت hb_بټ_پاڼه_t::ویکټور_t &, ثابت hb_بټ_پاڼه_t::ویکټور_t &),
+		 منطقي passthru_کیڼ, منطقي passthru_ښی,
+		 ثابت hb_بټ_سېټ_t &other,
+		 hb_ویکټور_t<بینښه> *workspace = تش_اشاره)
   {
-    if (unlikely (!successful)) return;
+    إذا (unlikely (!successful)) أرجع;
 
     dirty ();
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
-    unsigned int next_page = na;
+    بینښه صحيح na = پاڼې.اوږدتیا;
+    بینښه صحيح nb = other.پاڼې.اوږدتیا;
+    بینښه صحيح بل_پاڼه = na;
 
-    unsigned int count = 0, newCount = 0;
-    unsigned int a = 0, b = 0;
-    unsigned int write_index = 0;
+    بینښه صحيح شمېر = 0, new_شمېر = 0;
+    بینښه صحيح a = 0, b = 0;
+    بینښه صحيح write_شاخص = 0;
 
     // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
     // before attempting to rewrite the page map.
-    hb_vector_t<unsigned> local_workspace;
-    hb_vector_t<unsigned> &compact_workspace = workspace ? *workspace : local_workspace;
-    if (!passthru_left)
+    hb_ویکټور_t<بینښه> local_workspace;
+    hb_ویکټور_t<بینښه> &compact_workspace = workspace ? *workspace : local_workspace;
+    إذا (!passthru_کیڼ)
     {
-      bool allocated = workspace ? compact_workspace.resize (pages.length)
+      منطقي allocated = workspace ? compact_workspace.resize (پاڼې.اوږدتیا)
 				 : allocate_compact_workspace (compact_workspace);
-      if (unlikely (!allocated))
+      إذا (unlikely (!allocated))
       {
-	successful = false;
-	return;
+	successful = خطأ;
+	أرجع;
       }
     }
 
-    for (; a < na && b < nb; )
+    لكل (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      إذا (پاڼه_map.arrayZ[a].major == other.پاڼه_map.arrayZ[b].major)
       {
-	if (!passthru_left)
+	إذا (!passthru_کیڼ)
 	{
 	  // Move page_map entries that we're keeping from the left side set
 	  // to the front of the page_map vector. This isn't necessary if
 	  // passthru_left is set since no left side pages will be removed
 	  // in that case.
-	  if (write_index < a)
-	    page_map.arrayZ[write_index] = page_map.arrayZ[a];
-	  write_index++;
+	  إذا (write_شاخص < a)
+	    پاڼه_map.arrayZ[write_شاخص] = پاڼه_map.arrayZ[a];
+	  write_شاخص++;
 	}
 
-	count++;
+	شمېر++;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      وإلا إذا (پاڼه_map.arrayZ[a].major < other.پاڼه_map.arrayZ[b].major)
       {
-	if (passthru_left)
-	  count++;
+	إذا (passthru_کیڼ)
+	  شمېر++;
 	a++;
       }
-      else
+      وإلا
       {
-	if (passthru_right)
-	  count++;
+	إذا (passthru_ښی)
+	  شمېر++;
 	b++;
       }
     }
-    if (passthru_left)
-      count += na - a;
-    if (passthru_right)
-      count += nb - b;
+    إذا (passthru_کیڼ)
+      شمېر += na - a;
+    إذا (passthru_ښی)
+      شمېر += nb - b;
 
-    if (!passthru_left)
+    إذا (!passthru_کیڼ)
     {
-      na  = write_index;
-      next_page = write_index;
-      compact (compact_workspace, write_index);
+      na  = write_شاخص;
+      بل_پاڼه = write_شاخص;
+      compact (compact_workspace, write_شاخص);
     }
 
-    if (unlikely (!resize (count)))
-      return;
+    إذا (unlikely (!resize (شمېر)))
+      أرجع;
 
-    newCount = count;
+    new_شمېر = شمېر;
 
     /* Process in-place backward. */
     a = na;
     b = nb;
-    for (; a && b; )
+    لكل (; a && b; )
     {
-      if (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
+      إذا (پاڼه_map.arrayZ[a - 1].major == other.پاڼه_map.arrayZ[b - 1].major)
       {
 	a--;
 	b--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
-	page_at (count).v = op (page_at (a).v, other.page_at (b).v);
-	page_at (count).dirty ();
+	شمېر--;
+	پاڼه_map.arrayZ[شمېر] = پاڼه_map.arrayZ[a];
+	پاڼه_at (شمېر).v = op (پاڼه_at (a).v, other.پاڼه_at (b).v);
+	پاڼه_at (شمېر).dirty ();
       }
-      else if (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
+      وإلا إذا (پاڼه_map.arrayZ[a - 1].major > other.پاڼه_map.arrayZ[b - 1].major)
       {
 	a--;
-	if (passthru_left)
+	إذا (passthru_کیڼ)
 	{
-	  count--;
-	  page_map.arrayZ[count] = page_map.arrayZ[a];
+	  شمېر--;
+	  پاڼه_map.arrayZ[شمېر] = پاڼه_map.arrayZ[a];
 	}
       }
-      else
+      وإلا
       {
 	b--;
-	if (passthru_right)
+	إذا (passthru_ښی)
 	{
-	  count--;
-	  page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	  page_map.arrayZ[count].index = next_page++;
-	  page_at (count) = other.page_at (b);
+	  شمېر--;
+	  پاڼه_map.arrayZ[شمېر].major = other.پاڼه_map.arrayZ[b].major;
+	  پاڼه_map.arrayZ[شمېر].شاخص_2 = بل_پاڼه++;
+	  پاڼه_at (شمېر) = other.پاڼه_at (b);
 	}
       }
     }
-    if (passthru_left)
-      while (a)
+    إذا (passthru_کیڼ)
+      طالما (a)
       {
 	a--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
+	شمېر--;
+	پاڼه_map.arrayZ[شمېر] = پاڼه_map.arrayZ[a];
       }
-    if (passthru_right)
-      while (b)
+    إذا (passthru_ښی)
+      طالما (b)
       {
 	b--;
-	count--;
-	page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	page_map.arrayZ[count].index = next_page++;
-	page_at (count) = other.page_at (b);
+	شمېر--;
+	پاڼه_map.arrayZ[شمېر].major = other.پاڼه_map.arrayZ[b].major;
+	پاڼه_map.arrayZ[شمېر].شاخص_2 = بل_پاڼه++;
+	پاڼه_at (شمېر) = other.پاڼه_at (b);
       }
-    assert (!count);
-    resize (newCount);
+    أكد (!شمېر);
+    resize (new_شمېر);
   }
-  template <typename Op>
-  static hb_bit_page_t::vector_t
-  op_ (const hb_bit_page_t::vector_t &a, const hb_bit_page_t::vector_t &b)
-  { return Op{} (a, b); }
-  template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_t &other,
-		hb_vector_t<unsigned> *workspace = nullptr)
+  کينډۍ <ډول_نوم Op>
+  ساكن hb_بټ_پاڼه_t::ویکټور_t
+  op_ (ثابت hb_بټ_پاڼه_t::ویکټور_t &a, ثابت hb_بټ_پاڼه_t::ویکټور_t &b)
+  { أرجع Op{} (a, b); }
+  کينډۍ <ډول_نوم Op>
+  فراغ process (ثابت Op& op,
+		ثابت hb_بټ_سېټ_t &other,
+		hb_ویکټور_t<بینښه> *workspace = تش_اشاره)
   {
     process_ (op_<Op>, op (1, 0), op (0, 1), other, workspace);
   }
 
-  void union_ (const hb_bit_set_t &other) { process (hb_bitwise_or, other); }
-  void intersect (const hb_bit_set_t &other,
-		  hb_vector_t<unsigned> *workspace = nullptr)
+  فراغ union_ (ثابت hb_بټ_سېټ_t &other) { process (hb_bitwise_or, other); }
+  فراغ intersect (ثابت hb_بټ_سېټ_t &other,
+		  hb_ویکټور_t<بینښه> *workspace = تش_اشاره)
   { process (hb_bitwise_and, other, workspace); }
-  void subtract (const hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
-  void symmetric_difference (const hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
+  فراغ کمول (ثابت hb_بټ_سېټ_t &other) { process (hb_bitwise_gt, other); }
+  فراغ متناظر_difference (ثابت hb_بټ_سېټ_t &other) { process (hb_bitwise_xor, other); }
 
-  bool next (hb_codepoint_t *codepoint) const
+  منطقي next (hb_codepoint_t *codepoint) ثابت
   {
-    if (unlikely (*codepoint == INVALID)) {
+    إذا (unlikely (*codepoint == INVALID)) {
       *codepoint = get_min ();
-      return *codepoint != INVALID;
+      أرجع *codepoint != INVALID;
     }
 
-    const auto* page_map_array = page_map.arrayZ;
-    unsigned int major = get_major (*codepoint);
-    unsigned int i = last_page_lookup;
+    ثابت خپلکاری* پاڼه_map_array = پاڼه_map.arrayZ;
+    بینښه صحيح major = get_major (*codepoint);
+    بینښه صحيح i = وروستی_پاڼه_lookup;
 
-    if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+    إذا (unlikely (i >= پاڼه_map.اوږدتیا || پاڼه_map_array[i].major != major))
     {
-      page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-      if (i >= page_map.length) {
+      پاڼه_map.bfind (major, &i, HB_NOT_وموندل_STORE_CLOSEST);
+      إذا (i >= پاڼه_map.اوږدتیا) {
         *codepoint = INVALID;
-        return false;
+        أرجع خطأ;
       }
-      last_page_lookup = i;
+      وروستی_پاڼه_lookup = i;
     }
 
-    const auto* pages_array = pages.arrayZ;
-    const page_map_t &current = page_map_array[i];
-    if (likely (current.major == major))
+    ثابت خپلکاری* پاڼې_array = پاڼې.arrayZ;
+    ثابت پاڼه_map_t &current = پاڼه_map_array[i];
+    إذا (likely (current.major == major))
     {
-      if (pages_array[current.index].next (codepoint))
+      إذا (پاڼې_array[current.شاخص_2].next (codepoint))
       {
-        *codepoint += current.major * page_t::PAGE_BITS;
-        return true;
+        *codepoint += current.major * پاڼه_t::پاڼه_بټونه;
+        أرجع ریښتیا;
       }
       i++;
     }
 
-    for (; i < page_map.length; i++)
+    لكل (; i < پاڼه_map.اوږدتیا; i++)
     {
-      const page_map_t &current = page_map_array[i];
-      hb_codepoint_t m = pages_array[current.index].get_min ();
-      if (m != INVALID)
+      ثابت پاڼه_map_t &current = پاڼه_map_array[i];
+      hb_codepoint_t m = پاڼې_array[current.شاخص_2].get_min ();
+      إذا (m != INVALID)
       {
-	*codepoint = current.major * page_t::PAGE_BITS + m;
-        last_page_lookup = i;
-	return true;
+	*codepoint = current.major * پاڼه_t::پاڼه_بټونه + m;
+        وروستی_پاڼه_lookup = i;
+	أرجع ریښتیا;
       }
     }
     *codepoint = INVALID;
-    return false;
+    أرجع خطأ;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  منطقي بل_بټونه (hb_codepoint_t *codepoint, uint64_t *بټونه) ثابت
   {
-    static_assert (page_t::ELT_BITS == 64, "");
+    static_assert (پاڼه_t::ELT_بټونه == 64, "");
 
-    unsigned int i = 0;
-    unsigned int elt = 0;
-    if (likely (*codepoint != INVALID))
+    بینښه صحيح i = 0;
+    بینښه صحيح elt = 0;
+    إذا (likely (*codepoint != INVALID))
     {
-      hb_codepoint_t base = *codepoint & ~page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
-        goto done;
-      base += page_t::ELT_BITS;
+      hb_codepoint_t بنسټ = *codepoint & ~پاڼه_t::ELT_ماسک;
+      إذا (unlikely (بنسټ >= INVALID - پاڼه_t::ELT_بټونه + 1))
+        اذهب بشپړ;
+      بنسټ += پاڼه_t::ELT_بټونه;
 
-      unsigned int major = get_major (base);
-      i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
+      بینښه صحيح major = get_major (بنسټ);
+      i = وروستی_پاڼه_lookup;
+      إذا (unlikely (i >= پاڼه_map.اوږدتیا || پاڼه_map.arrayZ[i].major != major))
       {
-	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  goto done;
+	پاڼه_map.bfind (major, &i, HB_NOT_وموندل_STORE_CLOSEST);
+	إذا (i >= پاڼه_map.اوږدتیا)
+	  اذهب بشپړ;
       }
-      if (page_map.arrayZ[i].major == major)
-	elt = page_remainder (base) / page_t::ELT_BITS;
+      إذا (پاڼه_map.arrayZ[i].major == major)
+	elt = پاڼه_remainder (بنسټ) / پاڼه_t::ELT_بټونه;
     }
 
-    for (; i < page_map.length; i++, elt = 0)
+    لكل (; i < پاڼه_map.اوږدتیا; i++, elt = 0)
     {
-      const page_map_t &map = page_map.arrayZ[i];
-      const page_t &page = pages.arrayZ[map.index];
-      for (; elt < page_t::len (); elt++)
-	if (page.v[elt])
+      ثابت پاڼه_map_t &map = پاڼه_map.arrayZ[i];
+      ثابت پاڼه_t &پاڼه = پاڼې.arrayZ[map.شاخص_2];
+      لكل (; elt < پاڼه_t::len (); elt++)
+	إذا (پاڼه.v[elt])
 	{
-	  *codepoint = major_start (map.major) + elt * page_t::ELT_BITS;
-	  *bits = page.v[elt];
-	  last_page_lookup = i;
-	  return true;
+	  *codepoint = major_پیل (map.major) + elt * پاڼه_t::ELT_بټونه;
+	  *بټونه = پاڼه.v[elt];
+	  وروستی_پاڼه_lookup = i;
+	  أرجع ریښتیا;
 	}
     }
 
-  done:
+  بشپړ:
     *codepoint = INVALID;
-    *bits = 0;
-    return false;
+    *بټونه = 0;
+    أرجع خطأ;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  منطقي پخوانی (hb_codepoint_t *codepoint) ثابت
   {
-    if (unlikely (*codepoint == INVALID)) {
+    إذا (unlikely (*codepoint == INVALID)) {
       *codepoint = get_max ();
-      return *codepoint != INVALID;
+      أرجع *codepoint != INVALID;
     }
 
-    page_map_t map = {get_major (*codepoint), 0};
-    unsigned int i;
-    page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST);
-    if (i < page_map.length && page_map.arrayZ[i].major == map.major)
+    پاڼه_map_t map = {get_major (*codepoint), 0};
+    بینښه صحيح i;
+    پاڼه_map.bfind (map, &i, HB_NOT_وموندل_STORE_CLOSEST);
+    إذا (i < پاڼه_map.اوږدتیا && پاڼه_map.arrayZ[i].major == map.major)
     {
-      if (pages[page_map.arrayZ[i].index].previous (codepoint))
+      إذا (پاڼې[پاڼه_map.arrayZ[i].شاخص_2].پخوانی (codepoint))
       {
-	*codepoint += page_map.arrayZ[i].major * page_t::PAGE_BITS;
-	return true;
+	*codepoint += پاڼه_map.arrayZ[i].major * پاڼه_t::پاڼه_بټونه;
+	أرجع ریښتیا;
       }
     }
     i--;
-    for (; (int) i >= 0; i--)
+    لكل (; (صحيح) i >= 0; i--)
     {
-      hb_codepoint_t m = pages.arrayZ[page_map.arrayZ[i].index].get_max ();
-      if (m != INVALID)
+      hb_codepoint_t m = پاڼې.arrayZ[پاڼه_map.arrayZ[i].شاخص_2].get_max ();
+      إذا (m != INVALID)
       {
-	*codepoint = page_map.arrayZ[i].major * page_t::PAGE_BITS + m;
-	return true;
+	*codepoint = پاڼه_map.arrayZ[i].major * پاڼه_t::پاڼه_بټونه + m;
+	أرجع ریښتیا;
       }
     }
     *codepoint = INVALID;
-    return false;
+    أرجع خطأ;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  منطقي بل_range (hb_codepoint_t *لومړی, hb_codepoint_t *وروستی) ثابت
   {
     hb_codepoint_t i;
 
-    i = *last;
-    if (!next (&i))
+    i = *وروستی;
+    إذا (!next (&i))
     {
-      *last = *first = INVALID;
-      return false;
+      *وروستی = *لومړی = INVALID;
+      أرجع خطأ;
     }
 
-    *last = *first = i;
+    *وروستی = *لومړی = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*last);
-    unsigned int p_index = last_page_lookup;
+    ثابت خپلکاری* پاڼه_map_array = پاڼه_map.arrayZ;
+    ثابت خپلکاری* پاڼې_array = پاڼې.arrayZ;
+    بینښه صحيح major = get_major (*وروستی);
+    بینښه صحيح p_شاخص = وروستی_پاڼه_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    إذا (unlikely (p_شاخص >= پاڼه_map.اوږدتیا || پاڼه_map_array[p_شاخص].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      پاڼه_map.bfind (major, &p_شاخص, HB_NOT_وموندل_STORE_CLOSEST);
       // The above next() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      أكد(p_شاخص < پاڼه_map.اوږدتیا && پاڼه_map_array[p_شاخص].major == major);
+      وروستی_پاڼه_lookup = p_شاخص;
     }
 
-    unsigned int rem = page_remainder (*last);
-    unsigned int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    بینښه صحيح rem = پاڼه_remainder (*وروستی);
+    بینښه صحيح elt = rem / پاڼه_t::ELT_بټونه;
+    بینښه صحيح bit = rem & پاڼه_t::ELT_ماسک;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    unsigned int run = hb_ctz (~(page->v[elt] >> bit));
-    *last += run - 1;
-    if (run < page_t::ELT_BITS - bit)
-      return true;
+    ثابت پاڼه_t *پاڼه = &پاڼې_array[پاڼه_map_array[p_شاخص].شاخص_2];
+    بینښه صحيح پرلپسې = hb_ctz (~(پاڼه->v[elt] >> bit));
+    *وروستی += پرلپسې - 1;
+    إذا (پرلپسې < پاڼه_t::ELT_بټونه - bit)
+      أرجع ریښتیا;
 
     elt++;
 
-    while (true)
+    طالما (ریښتیا)
     {
-      for (; elt < page_t::len (); elt++)
+      لكل (; elt < پاڼه_t::len (); elt++)
       {
-        uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        uint64_t w = پاڼه->v[elt];
+        إذا (w == (uint64_t) -1)
         {
-          *last += page_t::ELT_BITS;
-          continue;
+          *وروستی += پاڼه_t::ELT_بټونه;
+          استمر;
         }
         uint64_t inv = ~w;
-        *last += hb_ctz (inv);
-        return true;
+        *وروستی += hb_ctz (inv);
+        أرجع ریښتیا;
       }
 
-      p_index++;
+      p_شاخص++;
 
 
-      if (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
-        return true;
+      إذا (p_شاخص >= پاڼه_map.اوږدتیا || پاڼه_map_array[p_شاخص].major != major + 1)
+        أرجع ریښتیا;
 
-      const auto& entry = page_map_array[p_index];
-      major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
+      ثابت خپلکاری& ثبت = پاڼه_map_array[p_شاخص];
+      major = ثبت.major;
+      وروستی_پاڼه_lookup = p_شاخص;
+      پاڼه = &پاڼې_array[ثبت.شاخص_2];
       elt = 0;
     }
   }
 
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  منطقي پخوانی_range (hb_codepoint_t *لومړی, hb_codepoint_t *وروستی) ثابت
   {
     hb_codepoint_t i;
 
-    i = *first;
-    if (!previous (&i))
+    i = *لومړی;
+    إذا (!پخوانی (&i))
     {
-      *last = *first = INVALID;
-      return false;
+      *وروستی = *لومړی = INVALID;
+      أرجع خطأ;
     }
 
-    *last = *first = i;
+    *وروستی = *لومړی = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*first);
-    unsigned int p_index = last_page_lookup;
+    ثابت خپلکاری* پاڼه_map_array = پاڼه_map.arrayZ;
+    ثابت خپلکاری* پاڼې_array = پاڼې.arrayZ;
+    بینښه صحيح major = get_major (*لومړی);
+    بینښه صحيح p_شاخص = وروستی_پاڼه_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    إذا (unlikely (p_شاخص >= پاڼه_map.اوږدتیا || پاڼه_map_array[p_شاخص].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      پاڼه_map.bfind (major, &p_شاخص, HB_NOT_وموندل_STORE_CLOSEST);
       // The above previous() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      أكد(p_شاخص < پاڼه_map.اوږدتیا && پاڼه_map_array[p_شاخص].major == major);
+      وروستی_پاڼه_lookup = p_شاخص;
     }
 
-    unsigned int rem = page_remainder (*first);
-    int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    بینښه صحيح rem = پاڼه_remainder (*لومړی);
+    صحيح elt = rem / پاڼه_t::ELT_بټونه;
+    بینښه صحيح bit = rem & پاڼه_t::ELT_ماسک;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    uint64_t inv = ~(page->v[elt] << (63 - bit));
-    unsigned int run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
-    *first -= run - 1;
-    if (run < bit + 1)
-      return true;
+    ثابت پاڼه_t *پاڼه = &پاڼې_array[پاڼه_map_array[p_شاخص].شاخص_2];
+    uint64_t inv = ~(پاڼه->v[elt] << (63 - bit));
+    بینښه صحيح پرلپسې = hb_بټ_storage (inv) ? (پاڼه_t::ELT_بټونه - hb_بټ_storage (inv)) : پاڼه_t::ELT_بټونه;
+    *لومړی -= پرلپسې - 1;
+    إذا (پرلپسې < bit + 1)
+      أرجع ریښتیا;
 
     elt--;
 
-    while (true)
+    طالما (ریښتیا)
     {
-      for (; elt >= 0; elt--)
+      لكل (; elt >= 0; elt--)
       {
-        uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        uint64_t w = پاڼه->v[elt];
+        إذا (w == (uint64_t) -1)
         {
-          *first -= page_t::ELT_BITS;
-          continue;
+          *لومړی -= پاڼه_t::ELT_بټونه;
+          استمر;
         }
         uint64_t inv = ~w;
-        unsigned int zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
-        *first -= zeros;
-        return true;
+        بینښه صحيح zeros = hb_بټ_storage (inv) ? (پاڼه_t::ELT_بټونه - hb_بټ_storage (inv)) : پاڼه_t::ELT_بټونه;
+        *لومړی -= zeros;
+        أرجع ریښتیا;
       }
 
 
-      if (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
-        return true;
+      إذا (p_شاخص == 0 || پاڼه_map_array[p_شاخص - 1].major != major - 1)
+        أرجع ریښتیا;
 
-      p_index--;
-      const auto& entry = page_map_array[p_index];
+      p_شاخص--;
+      ثابت خپلکاری& ثبت = پاڼه_map_array[p_شاخص];
 
-      major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
-      elt = page_t::len () - 1;
+      major = ثبت.major;
+      وروستی_پاڼه_lookup = p_شاخص;
+      پاڼه = &پاڼې_array[ثبت.شاخص_2];
+      elt = پاڼه_t::len () - 1;
     }
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
-			  hb_codepoint_t *out,
-			  unsigned int    size) const
+  بینښه صحيح بل_many (hb_codepoint_t  codepoint,
+			  hb_codepoint_t *بهر,
+			  بینښه صحيح    اندازه) ثابت
   {
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    بینښه صحيح پیل_پاڼه = 0;
+    بینښه صحيح پیل_پاڼه_ارزښت = 0;
+    إذا (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      ثابت خپلکاری* پاڼه_map_array = پاڼه_map.arrayZ;
+      بینښه صحيح major = get_major (codepoint);
+      بینښه صحيح i = وروستی_پاڼه_lookup;
+      إذا (unlikely (i >= پاڼه_map.اوږدتیا || پاڼه_map_array[i].major != major))
       {
-	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  return 0;  // codepoint is greater than our max element.
+	پاڼه_map.bfind (major, &i, HB_NOT_وموندل_STORE_CLOSEST);
+	إذا (i >= پاڼه_map.اوږدتیا)
+	  أرجع 0;  // codepoint is greater than our max element.
       }
-      start_page = i;
-      if (page_map_array[i].major == major)
+      پیل_پاڼه = i;
+      إذا (پاڼه_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        پیل_پاڼه_ارزښت = پاڼه_remainder (codepoint + 1);
+        إذا (unlikely (پیل_پاڼه_ارزښت == 0))
         {
           // The export-after value was last in the page. Start on next page.
-          start_page++;
-          start_page_value = 0;
+          پیل_پاڼه++;
+          پیل_پاڼه_ارزښت = 0;
         }
       }
     }
 
-    unsigned int initial_size = size;
-    for (unsigned int i = start_page; i < page_map.length && size; i++)
+    بینښه صحيح initial_اندازه = اندازه;
+    لكل (بینښه صحيح i = پیل_پاڼه; i < پاڼه_map.اوږدتیا && اندازه; i++)
     {
-      uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_value, out, size);
-      out += n;
-      size -= n;
-      start_page_value = 0;
+      uint32_t بنسټ = major_پیل (پاڼه_map.arrayZ[i].major);
+      بینښه صحيح n = پاڼې[پاڼه_map.arrayZ[i].شاخص_2].اكتب (بنسټ, پیل_پاڼه_ارزښت, بهر, اندازه);
+      بهر += n;
+      اندازه -= n;
+      پیل_پاڼه_ارزښت = 0;
     }
-    return initial_size - size;
+    أرجع initial_اندازه - اندازه;
   }
 
-  unsigned int next_many_inverted (hb_codepoint_t  codepoint,
-				   hb_codepoint_t *out,
-				   unsigned int    size) const
+  بینښه صحيح بل_many_inverted (hb_codepoint_t  codepoint,
+				   hb_codepoint_t *بهر,
+				   بینښه صحيح    اندازه) ثابت
   {
-    unsigned int initial_size = size;
+    بینښه صحيح initial_اندازه = اندازه;
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    بینښه صحيح پیل_پاڼه = 0;
+    بینښه صحيح پیل_پاڼه_ارزښت = 0;
+    إذا (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      ثابت خپلکاری* پاڼه_map_array = پاڼه_map.arrayZ;
+      بینښه صحيح major = get_major (codepoint);
+      بینښه صحيح i = وروستی_پاڼه_lookup;
+      إذا (unlikely (i >= پاڼه_map.اوږدتیا || پاڼه_map_array[i].major != major))
       {
-        page_map.bfind(major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-        if (unlikely (i >= page_map.length))
+        پاڼه_map.bfind(major, &i, HB_NOT_وموندل_STORE_CLOSEST);
+        إذا (unlikely (i >= پاڼه_map.اوږدتیا))
         {
           // codepoint is greater than our max element.
-          while (++codepoint != INVALID && size)
+          طالما (++codepoint != INVALID && اندازه)
           {
-            *out++ = codepoint;
-            size--;
+            *بهر++ = codepoint;
+            اندازه--;
           }
-          return initial_size - size;
+          أرجع initial_اندازه - اندازه;
         }
       }
-      start_page = i;
-      if (page_map_array[i].major == major)
+      پیل_پاڼه = i;
+      إذا (پاڼه_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        پیل_پاڼه_ارزښت = پاڼه_remainder (codepoint + 1);
+        إذا (unlikely (پیل_پاڼه_ارزښت == 0))
         {
           // The export-after value was last in the page. Start on next page.
-          start_page++;
-          start_page_value = 0;
+          پیل_پاڼه++;
+          پیل_پاڼه_ارزښت = 0;
         }
       }
     }
 
-    hb_codepoint_t next_value = codepoint + 1;
-    for (unsigned int i=start_page; i<page_map.length && size; i++)
+    hb_codepoint_t بل_ارزښت = codepoint + 1;
+    لكل (بینښه صحيح i=پیل_پاڼه; i<پاڼه_map.اوږدتیا && اندازه; i++)
     {
-      uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_value, out, size, &next_value);
-      out += n;
-      size -= n;
-      start_page_value = 0;
+      uint32_t بنسټ = major_پیل (پاڼه_map.arrayZ[i].major);
+      بینښه صحيح n = پاڼې[پاڼه_map.arrayZ[i].شاخص_2].write_inverted (بنسټ, پیل_پاڼه_ارزښت, بهر, اندازه, &بل_ارزښت);
+      بهر += n;
+      اندازه -= n;
+      پیل_پاڼه_ارزښت = 0;
     }
-    while (next_value < HB_SET_VALUE_INVALID && size) {
-      *out++ = next_value++;
-      size--;
+    طالما (بل_ارزښت < HB_سېټ_ارزښت_INVALID && اندازه) {
+      *بهر++ = بل_ارزښت++;
+      اندازه--;
     }
-    return initial_size - size;
+    أرجع initial_اندازه - اندازه;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned int get_population () const
+  منطقي has_population () ثابت { أرجع population != UINT_MAX; }
+  بینښه صحيح get_population () ثابت
   {
-    if (has_population ())
-      return population;
+    إذا (has_population ())
+      أرجع population;
 
-    unsigned int pop = 0;
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      pop += pages[i].get_population ();
+    بینښه صحيح راوباسه = 0;
+    بینښه صحيح شمېر = پاڼې.اوږدتیا;
+    لكل (بینښه صحيح i = 0; i < شمېر; i++)
+      راوباسه += پاڼې[i].get_population ();
 
-    population = pop;
-    return pop;
+    population = راوباسه;
+    أرجع راوباسه;
   }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  منطقي get_singleton (hb_codepoint_t *codepoint) ثابت
   {
-    if (has_population ())
+    إذا (has_population ())
     {
-      if (population != 1) return false;
+      إذا (population != 1) أرجع خطأ;
       *codepoint = get_min ();
-      return true;
+      أرجع ریښتیا;
     }
 
     hb_codepoint_t singleton = INVALID;
-    for (const auto &map : page_map)
+    لكل (ثابت خپلکاری &map : پاڼه_map)
     {
-      const auto &page = pages.arrayZ[map.index];
-      for (unsigned i = 0; i < page_t::len (); i++)
+      ثابت خپلکاری &پاڼه = پاڼې.arrayZ[map.شاخص_2];
+      لكل (بینښه i = 0; i < پاڼه_t::len (); i++)
       {
-	page_t::elt_t bits = page.v[i];
-	if (!bits) continue;
-	if (singleton != INVALID || (bits & (bits - 1)))
-	  return false;
-	singleton = map.major * page_t::PAGE_BITS +
-		    i * page_t::ELT_BITS + hb_ctz (bits);
+	پاڼه_t::elt_t بټونه = پاڼه.v[i];
+	إذا (!بټونه) استمر;
+	إذا (singleton != INVALID || (بټونه & (بټونه - 1)))
+	  أرجع خطأ;
+	singleton = map.major * پاڼه_t::پاڼه_بټونه +
+		    i * پاڼه_t::ELT_بټونه + hb_ctz (بټونه);
       }
     }
 
-    if (singleton == INVALID)
+    إذا (singleton == INVALID)
     {
       population = 0;
-      return false;
+      أرجع خطأ;
     }
     population = 1;
     *codepoint = singleton;
-    return true;
+    أرجع ریښتیا;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () ثابت
   {
-    unsigned count = pages.length;
-    for (unsigned i = 0; i < count; i++)
+    بینښه شمېر = پاڼې.اوږدتیا;
+    لكل (بینښه i = 0; i < شمېر; i++)
     {
-      const auto& map = page_map.arrayZ[i];
-      const auto& page = pages.arrayZ[map.index];
+      ثابت خپلکاری& map = پاڼه_map.arrayZ[i];
+      ثابت خپلکاری& پاڼه = پاڼې.arrayZ[map.شاخص_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_min ();
+      إذا (!پاڼه.is_empty ())
+	أرجع map.major * پاڼه_t::پاڼه_بټونه + پاڼه.get_min ();
     }
-    return INVALID;
+    أرجع INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () ثابت
   {
-    unsigned count = pages.length;
-    for (signed i = count - 1; i >= 0; i--)
+    بینښه شمېر = پاڼې.اوږدتیا;
+    لكل (نښهدار i = شمېر - 1; i >= 0; i--)
     {
-      const auto& map = page_map.arrayZ[(unsigned) i];
-      const auto& page = pages.arrayZ[map.index];
+      ثابت خپلکاری& map = پاڼه_map.arrayZ[(بینښه) i];
+      ثابت خپلکاری& پاڼه = پاڼې.arrayZ[map.شاخص_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_max ();
+      إذا (!پاڼه.is_empty ())
+	أرجع map.major * پاڼه_t::پاڼه_بټونه + پاڼه.get_max ();
     }
-    return INVALID;
+    أرجع INVALID;
   }
 
-  static constexpr hb_codepoint_t INVALID = page_t::INVALID;
+  ساكن constexpr hb_codepoint_t INVALID = پاڼه_t::INVALID;
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  بنية iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_t &s_ = Null (hb_bit_set_t),
-	    bool init = true) : s (&s_), v (INVALID), l(0)
+    ساكن constexpr منطقي is_sorted_iterator = ریښتیا;
+    ساكن constexpr منطقي has_fast_len = ریښتیا;
+    iter_t (ثابت hb_بټ_سېټ_t &s_ = Null (hb_بټ_سېټ_t),
+	    منطقي init = ریښتیا) : s (&s_), v (INVALID), l(0)
     {
-      if (init)
+      إذا (init)
       {
 	l = s->get_population () + 1;
 	__next__ ();
       }
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () { s->next (&v); if (l) l--; }
-    void __prev__ () { s->previous (&v); }
-    unsigned __len__ () const { return l; }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    تعريفنوع hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () ثابت { أرجع v; }
+    منطقي __more__ () ثابت { أرجع v != INVALID; }
+    فراغ __next__ () { s->next (&v); إذا (l) l--; }
+    فراغ __prev__ () { s->پخوانی (&v); }
+    بینښه __len__ () ثابت { أرجع l; }
+    iter_t پای_ټکی () ثابت { أرجع iter_t (*s, خطأ); }
+    منطقي چلوونکی != (ثابت iter_t& o) ثابت
+    { أرجع v != o.v; }
 
-    protected:
-    const hb_bit_set_t *s;
+    محمي:
+    ثابت hb_بټ_سېټ_t *s;
     hb_codepoint_t v;
-    unsigned l;
+    بینښه l;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ثابت { أرجع iter_t (*هذا); }
+  چلوونکی iter_t () ثابت { أرجع iter (); }
 
-  protected:
+  محمي:
 
-  page_t *page_for (hb_codepoint_t g, bool insert = false)
+  پاڼه_t *پاڼه_for (hb_codepoint_t g, منطقي insert = خطأ)
   {
-    unsigned major = get_major (g);
+    بینښه major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    بینښه i = وروستی_پاڼه_lookup;
+    إذا (likely (i < پاڼه_map.اوږدتیا))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      خپلکاری &cached_پاڼه = پاڼه_map.arrayZ[i];
+      إذا (cached_پاڼه.major == major)
+	أرجع &پاڼې.arrayZ[cached_پاڼه.شاخص_2];
     }
 
-    page_map_t map = {major, pages.length};
-    if (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
+    پاڼه_map_t map = {major, پاڼې.اوږدتیا};
+    إذا (!پاڼه_map.bfind (map, &i, HB_NOT_وموندل_STORE_CLOSEST))
     {
-      if (!insert)
-        return nullptr;
+      إذا (!insert)
+        أرجع تش_اشاره;
 
-      if (unlikely (!resize (pages.length + 1)))
-	return nullptr;
+      إذا (unlikely (!resize (پاڼې.اوږدتیا + 1)))
+	أرجع تش_اشاره;
 
-      pages.arrayZ[map.index].init0 ();
-      memmove (page_map.arrayZ + i + 1,
-	       page_map.arrayZ + i,
-	       (page_map.length - 1 - i) * page_map.item_size);
-      page_map.arrayZ[i] = map;
+      پاڼې.arrayZ[map.شاخص_2].init0 ();
+      memmove (پاڼه_map.arrayZ + i + 1,
+	       پاڼه_map.arrayZ + i,
+	       (پاڼه_map.اوږدتیا - 1 - i) * پاڼه_map.توکی_اندازه);
+      پاڼه_map.arrayZ[i] = map;
     }
 
-    last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    وروستی_پاڼه_lookup = i;
+    أرجع &پاڼې.arrayZ[پاڼه_map.arrayZ[i].شاخص_2];
   }
-  const page_t *page_for (hb_codepoint_t g) const
+  ثابت پاڼه_t *پاڼه_for (hb_codepoint_t g) ثابت
   {
-    unsigned major = get_major (g);
+    بینښه major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    بینښه i = وروستی_پاڼه_lookup;
+    إذا (likely (i < پاڼه_map.اوږدتیا))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      خپلکاری &cached_پاڼه = پاڼه_map.arrayZ[i];
+      إذا (cached_پاڼه.major == major)
+	أرجع &پاڼې.arrayZ[cached_پاڼه.شاخص_2];
     }
 
-    page_map_t key = {major};
-    if (!page_map.bfind (key, &i))
-      return nullptr;
+    پاڼه_map_t key = {major};
+    إذا (!پاڼه_map.bfind (key, &i))
+      أرجع تش_اشاره;
 
-    last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    وروستی_پاڼه_lookup = i;
+    أرجع &پاڼې.arrayZ[پاڼه_map.arrayZ[i].شاخص_2];
   }
-  page_t &page_at (unsigned int i)
+  پاڼه_t &پاڼه_at (بینښه صحيح i)
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    أكد (i < پاڼه_map.اوږدتیا);
+    أرجع پاڼې.arrayZ[پاڼه_map.arrayZ[i].شاخص_2];
   }
-  const page_t &page_at (unsigned int i) const
+  ثابت پاڼه_t &پاڼه_at (بینښه صحيح i) ثابت
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    أكد (i < پاڼه_map.اوږدتیا);
+    أرجع پاڼې.arrayZ[پاڼه_map.arrayZ[i].شاخص_2];
   }
-  unsigned int get_major (hb_codepoint_t g) const { return g >> page_t::PAGE_BITS_LOG_2; }
-  unsigned int page_remainder (hb_codepoint_t g) const { return g & page_t::PAGE_BITMASK; }
-  hb_codepoint_t major_start (unsigned int major) const { return major << page_t::PAGE_BITS_LOG_2; }
+  بینښه صحيح get_major (hb_codepoint_t g) ثابت { أرجع g >> پاڼه_t::پاڼه_بټونه_LOG_2; }
+  بینښه صحيح پاڼه_remainder (hb_codepoint_t g) ثابت { أرجع g & پاڼه_t::پاڼه_BITMASK; }
+  hb_codepoint_t major_پیل (بینښه صحيح major) ثابت { أرجع major << پاڼه_t::پاڼه_بټونه_LOG_2; }
 };
 
 
-#endif /* HB_BIT_SET_HH */
+#د_که_پای /* HB_BIT_SET_HH */

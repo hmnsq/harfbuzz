@@ -24,241 +24,241 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_COMMON_HH
-#define HB_AAT_LAYOUT_COMMON_HH
+#که_نه_تعریف_شوی HB_AAT_LAYOUT_COMMON_HH
+#تعریف_کړه HB_AAT_LAYOUT_COMMON_HH
 
-#include "hb-aat-layout.hh"
-#include "hb-aat-map.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-open-type.hh"
-#include "hb-cache.hh"
-#include "hb-bit-set.hh"
-#include "hb-bit-page.hh"
+#ضمن "hb-aat-layout.hh"
+#ضمن "hb-aat-map.hh"
+#ضمن "hb-ot-layout-common.hh"
+#ضمن "hb-ot-layout-gdef-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-cache.hh"
+#ضمن "hb-bit-set.hh"
+#ضمن "hb-bit-page.hh"
 
 
-namespace OT {
-struct GDEF;
+نطاق OT {
+بنية GDEF;
 };
 
-namespace AAT {
+نطاق AAT {
 
-using namespace OT;
+کارول نطاق OT;
 
-struct ankr;
+بنية ankr;
 
-using hb_aat_class_cache_t = hb_ot_layout_mapping_cache_t;
+کارول hb_aat_class_cache_t = hb_ot_layout_mapping_cache_t;
 
 /* The state-machine subtables' transition functions are called once per
  * transition from the drive loop, but are big enough that the compiler
  * declines to inline them, leaving a call in the hottest loop of AAT
  * shaping.  Forcing them inline is worth 3-10% instructions on
  * morx/kerx-heavy fonts, for about 16KB of code. */
-#ifndef HB_OPTIMIZE_SIZE
-#define HB_AAT_TRANSITION_INLINE HB_ALWAYS_INLINE
-#else
-#define HB_AAT_TRANSITION_INLINE
-#endif
+#که_نه_تعریف_شوی HB_OPTIMIZE_اندازه
+#تعریف_کړه HB_AAT_TRANSITION_INLINE HB_ALWAYS_INLINE
+#وإلا
+#تعریف_کړه HB_AAT_TRANSITION_INLINE
+#د_که_پای
 
-struct hb_aat_scratch_t
+بنية hb_aat_scratch_t
 {
-  hb_aat_scratch_t () = default;
-  hb_aat_scratch_t (const hb_aat_scratch_t &) = delete;
+  hb_aat_scratch_t () = افتراضي;
+  hb_aat_scratch_t (ثابت hb_aat_scratch_t &) = ړنګول;
 
   hb_aat_scratch_t (hb_aat_scratch_t &&o)
   {
-    buffer_glyph_set.set_relaxed (o.buffer_glyph_set.get_relaxed ());
-    o.buffer_glyph_set.set_relaxed (nullptr);
+    بفر_glyph_سېټ.سېټ_relaxed (o.بفر_glyph_سېټ.get_relaxed ());
+    o.بفر_glyph_سېټ.سېټ_relaxed (تش_اشاره);
   }
-  hb_aat_scratch_t & operator = (hb_aat_scratch_t &&o)
+  hb_aat_scratch_t & چلوونکی = (hb_aat_scratch_t &&o)
   {
-    buffer_glyph_set.set_relaxed (o.buffer_glyph_set.get_relaxed ());
-    o.buffer_glyph_set.set_relaxed (nullptr);
-    return *this;
+    بفر_glyph_سېټ.سېټ_relaxed (o.بفر_glyph_سېټ.get_relaxed ());
+    o.بفر_glyph_سېټ.سېټ_relaxed (تش_اشاره);
+    أرجع *هذا;
   }
   ~hb_aat_scratch_t ()
   {
-    auto *s = buffer_glyph_set.get_relaxed ();
-    if (unlikely (!s))
-      return;
+    خپلکاری *s = بفر_glyph_سېټ.get_relaxed ();
+    إذا (unlikely (!s))
+      أرجع;
     s->fini ();
     hb_free (s);
   }
 
-  hb_bit_set_t *create_buffer_glyph_set () const
+  hb_بټ_سېټ_t *create_بفر_glyph_سېټ () ثابت
   {
-    hb_bit_set_t *s = buffer_glyph_set.get_acquire ();
-    if (s && buffer_glyph_set.cmpexch (s, nullptr))
+    hb_بټ_سېټ_t *s = بفر_glyph_سېټ.get_acquire ();
+    إذا (s && بفر_glyph_سېټ.cmpexch (s, تش_اشاره))
     {
       s->clear ();
-      return s;
+      أرجع s;
     }
 
-    s = (hb_bit_set_t *) hb_calloc (1, sizeof (hb_bit_set_t));
-    if (unlikely (!s))
-      return nullptr;
+    s = (hb_بټ_سېټ_t *) hb_calloc (1, حجم (hb_بټ_سېټ_t));
+    إذا (unlikely (!s))
+      أرجع تش_اشاره;
     s->init ();
 
-    return s;
+    أرجع s;
   }
-  void destroy_buffer_glyph_set (hb_bit_set_t *s) const
+  فراغ destroy_بفر_glyph_سېټ (hb_بټ_سېټ_t *s) ثابت
   {
-    if (unlikely (!s))
-      return;
-    if (buffer_glyph_set.cmpexch (nullptr, s))
-      return;
+    إذا (unlikely (!s))
+      أرجع;
+    إذا (بفر_glyph_سېټ.cmpexch (تش_اشاره, s))
+      أرجع;
     s->fini ();
     hb_free (s);
   }
 
-  mutable hb_atomic_t<hb_bit_set_t *> buffer_glyph_set;
+  بدلیدونکی hb_atomic_t<hb_بټ_سېټ_t *> بفر_glyph_سېټ;
 };
 
-enum { DELETED_GLYPH = 0xFFFF };
+تعداد { DELETED_GLYPH = 0xFFFF };
 
-#define HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED HB_BUFFER_SCRATCH_FLAG_SHAPER0
+#تعریف_کړه HB_بفر_SCRATCH_FLAG_AAT_HAS_DELETED HB_بفر_SCRATCH_FLAG_SHAPER0
 
-struct hb_aat_apply_context_t :
-       hb_dispatch_context_t<hb_aat_apply_context_t, bool, HB_DEBUG_APPLY>
+بنية hb_aat_apply_context_t :
+       hb_dispatch_context_t<hb_aat_apply_context_t, منطقي, HB_DEBUG_APPLY>
 {
-  const char *get_name () { return "APPLY"; }
-  template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.apply (this, std::forward<Ts> (ds)...); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  ثابت حرف *get_name () { أرجع "APPLY"; }
+  کينډۍ <ډول_نوم T, ډول_نوم ...Ts>
+  return_t dispatch (ثابت T &obj, Ts&&... ds)
+  { أرجع obj.apply (هذا, std::forward<Ts> (ds)...); }
+  ساكن return_t default_return_ارزښت () { أرجع خطأ; }
+  منطقي stop_sublookup_iteration (return_t r) ثابت { أرجع r; }
 
-  const hb_ot_shape_plan_t *plan;
+  ثابت hb_ot_shape_plan_t *plan;
   hb_font_t *font;
   hb_face_t *face;
-  hb_buffer_t *buffer;
+  hb_بفر_t *بفر;
   hb_sanitize_context_t sanitizer;
-  const ankr *ankr_table;
-  const OT::GDEF &gdef;
-  bool has_glyph_classes;
-  const hb_sorted_vector_t<hb_aat_map_t::range_flags_t> *range_flags = nullptr;
-  hb_mask_t subtable_flags = 0;
-  bool buffer_is_reversed = false;
+  ثابت ankr *ankr_جدول;
+  ثابت OT::GDEF &gdef;
+  منطقي has_glyph_classes;
+  ثابت hb_sorted_ویکټور_t<hb_aat_map_t::range_flags_t> *range_flags = تش_اشاره;
+  hb_ماسک_t subtable_flags = 0;
+  منطقي بفر_is_reversed = خطأ;
   // Caches
-  bool using_buffer_glyph_set = false;
-  hb_bit_set_t *buffer_glyph_set = nullptr;
-  const hb_bit_set_t *first_set = nullptr;
-  const hb_bit_set_t *second_set = nullptr;
-  hb_aat_class_cache_t *machine_class_cache = nullptr;
+  منطقي using_بفر_glyph_سېټ = خطأ;
+  hb_بټ_سېټ_t *بفر_glyph_سېټ = تش_اشاره;
+  ثابت hb_بټ_سېټ_t *لومړی_سېټ = تش_اشاره;
+  ثابت hb_بټ_سېټ_t *دوهم_سېټ = تش_اشاره;
+  hb_aat_class_cache_t *machine_class_cache = تش_اشاره;
 
   /* Unused. For debug tracing only. */
-  unsigned int lookup_index;
+  بینښه صحيح lookup_شاخص;
 
-  HB_INTERNAL hb_aat_apply_context_t (const hb_ot_shape_plan_t *plan_,
+  HB_دننی hb_aat_apply_context_t (ثابت hb_ot_shape_plan_t *plan_,
 				      hb_font_t *font_,
-				      hb_buffer_t *buffer_,
+				      hb_بفر_t *بفر_2,
 				      hb_blob_t *blob = const_cast<hb_blob_t *> (&Null (hb_blob_t)));
 
-  HB_INTERNAL ~hb_aat_apply_context_t ();
+  HB_دننی ~hb_aat_apply_context_t ();
 
-  HB_INTERNAL void set_ankr_table (const AAT::ankr *ankr_table_);
+  HB_دننی فراغ سېټ_ankr_جدول (ثابت AAT::ankr *ankr_جدول_2);
 
-  void set_lookup_index (unsigned int i) { lookup_index = i; }
+  فراغ سېټ_lookup_شاخص (بینښه صحيح i) { lookup_شاخص = i; }
 
-  void reverse_buffer ()
+  فراغ سرچپه_بفر ()
   {
-    buffer->reverse ();
-    buffer_is_reversed = !buffer_is_reversed;
+    بفر->reverse ();
+    بفر_is_reversed = !بفر_is_reversed;
   }
 
-  void setup_buffer_glyph_set ()
+  فراغ تیاری_بفر_glyph_سېټ ()
   {
-    using_buffer_glyph_set = buffer->len >= 4 && buffer_glyph_set;
+    using_بفر_glyph_سېټ = بفر->len >= 4 && بفر_glyph_سېټ;
 
-    if (likely (using_buffer_glyph_set))
-      buffer->collect_codepoints (*buffer_glyph_set);
+    إذا (likely (using_بفر_glyph_سېټ))
+      بفر->collect_codepoints (*بفر_glyph_سېټ);
   }
-  bool buffer_intersects_machine () const
+  منطقي بفر_intersects_machine () ثابت
   {
-    if (likely (using_buffer_glyph_set))
-      return buffer_glyph_set->intersects (*first_set);
+    إذا (likely (using_بفر_glyph_سېټ))
+      أرجع بفر_glyph_سېټ->intersects (*لومړی_سېټ);
 
     // Faster for shorter buffers.
-    for (unsigned i = 0; i < buffer->len; i++)
-      if (first_set->has (buffer->info[i].codepoint))
-	return true;
-    return false;
+    لكل (بینښه i = 0; i < بفر->len; i++)
+      إذا (لومړی_سېټ->has (بفر->info[i].codepoint))
+	أرجع ریښتیا;
+    أرجع خطأ;
   }
 
-  template <typename T>
-  HB_NODISCARD bool output_glyphs (unsigned int count,
-				   const T *glyphs)
+  کينډۍ <ډول_نوم T>
+  HB_NODISCARD منطقي output_glyphs (بینښه صحيح شمېر,
+				   ثابت T *glyphs)
   {
-    if (likely (using_buffer_glyph_set))
-      buffer_glyph_set->add_array (glyphs, count);
-    for (unsigned int i = 0; i < count; i++)
+    إذا (likely (using_بفر_glyph_سېټ))
+      بفر_glyph_سېټ->جمع_کړه_array (glyphs, شمېر);
+    لكل (بینښه صحيح i = 0; i < شمېر; i++)
     {
-      bool at_end_of_text = buffer->idx == buffer->len;
-      if (at_end_of_text)
-	if (unlikely (!buffer->output_glyph (glyphs[i]))) return false;
+      منطقي at_پای_ټکی_د_متن = بفر->idx == بفر->len;
+      إذا (at_پای_ټکی_د_متن)
+	إذا (unlikely (!بفر->output_glyph (glyphs[i]))) أرجع خطأ;
 
-      hb_glyph_info_t &info = at_end_of_text ? buffer->prev () : buffer->cur ();
-      if (glyphs[i] == DELETED_GLYPH)
+      hb_glyph_info_t &info = at_پای_ټکی_د_متن ? بفر->prev () : بفر->cur ();
+      إذا (glyphs[i] == DELETED_GLYPH)
       {
-        buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
-	_hb_glyph_info_set_aat_deleted (&info);
+        بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_AAT_HAS_DELETED;
+	hb_glyph_info_سېټ_aat_deleted (&info);
       }
-      else
+      وإلا
       {
-#ifndef HB_NO_OT_LAYOUT
-	if (has_glyph_classes)
-	  _hb_glyph_info_set_glyph_props (&info,
+#که_نه_تعریف_شوی HB_NO_OT_LAYOUT
+	إذا (has_glyph_classes)
+	  hb_glyph_info_سېټ_glyph_props (&info,
 					  gdef.get_glyph_props (glyphs[i]));
-#endif
+#د_که_پای
       }
-      if (!at_end_of_text)
-	if (unlikely (!buffer->output_glyph (glyphs[i]))) return false;
+      إذا (!at_پای_ټکی_د_متن)
+	إذا (unlikely (!بفر->output_glyph (glyphs[i]))) أرجع خطأ;
     }
-    return true;
+    أرجع ریښتیا;
   }
 
-  HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph)
+  HB_NODISCARD منطقي replace_glyph (hb_codepoint_t glyph)
   {
-    if (glyph == DELETED_GLYPH)
+    إذا (glyph == DELETED_GLYPH)
     {
-      buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
-      _hb_glyph_info_set_aat_deleted (&buffer->cur());
+      بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_AAT_HAS_DELETED;
+      hb_glyph_info_سېټ_aat_deleted (&بفر->cur());
     }
 
-    if (likely (using_buffer_glyph_set))
-      buffer_glyph_set->add (glyph);
-#ifndef HB_NO_OT_LAYOUT
-    if (has_glyph_classes)
-      _hb_glyph_info_set_glyph_props (&buffer->cur(),
+    إذا (likely (using_بفر_glyph_سېټ))
+      بفر_glyph_سېټ->جمع_کړه (glyph);
+#که_نه_تعریف_شوی HB_NO_OT_LAYOUT
+    إذا (has_glyph_classes)
+      hb_glyph_info_سېټ_glyph_props (&بفر->cur(),
 				      gdef.get_glyph_props (glyph));
-#endif
-    return buffer->replace_glyph (glyph);
+#د_که_پای
+    أرجع بفر->replace_glyph (glyph);
   }
 
-  HB_NODISCARD bool delete_glyph ()
+  HB_NODISCARD منطقي delete_glyph ()
   {
-    buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
-    _hb_glyph_info_set_aat_deleted (&buffer->cur());
-    if (likely (using_buffer_glyph_set))
-      buffer_glyph_set->add (DELETED_GLYPH);
-    return buffer->replace_glyph (DELETED_GLYPH);
+    بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_AAT_HAS_DELETED;
+    hb_glyph_info_سېټ_aat_deleted (&بفر->cur());
+    إذا (likely (using_بفر_glyph_سېټ))
+      بفر_glyph_سېټ->جمع_کړه (DELETED_GLYPH);
+    أرجع بفر->replace_glyph (DELETED_GLYPH);
   }
 
-  void replace_glyph_inplace (unsigned i, hb_codepoint_t glyph)
+  فراغ replace_glyph_inplace (بینښه i, hb_codepoint_t glyph)
   {
-    buffer->info[i].codepoint = glyph;
-    if (glyph == DELETED_GLYPH)
+    بفر->info[i].codepoint = glyph;
+    إذا (glyph == DELETED_GLYPH)
     {
-      buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
-      _hb_glyph_info_set_aat_deleted (&buffer->info[i]);
+      بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_AAT_HAS_DELETED;
+      hb_glyph_info_سېټ_aat_deleted (&بفر->info[i]);
     }
-    if (likely (using_buffer_glyph_set))
-      buffer_glyph_set->add (glyph);
-#ifndef HB_NO_OT_LAYOUT
-    if (has_glyph_classes)
-      _hb_glyph_info_set_glyph_props (&buffer->info[i],
+    إذا (likely (using_بفر_glyph_سېټ))
+      بفر_glyph_سېټ->جمع_کړه (glyph);
+#که_نه_تعریف_شوی HB_NO_OT_LAYOUT
+    إذا (has_glyph_classes)
+      hb_glyph_info_سېټ_glyph_props (&بفر->info[i],
 				      gdef.get_glyph_props (glyph));
-#endif
+#د_که_پای
   }
 };
 
@@ -267,545 +267,545 @@ struct hb_aat_apply_context_t :
  * Lookup Table
  */
 
-template <typename T> struct Lookup;
+کينډۍ <ډول_نوم T> بنية Lookup;
 
-template <typename T>
-struct LookupFormat0
+کينډۍ <ډول_نوم T>
+بنية LookupFormat0
 {
-  friend struct Lookup<T>;
+  ملګری بنية Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  خاص:
+  ثابت T* get_ارزښت (hb_codepoint_t glyph_id, بینښه صحيح عدد_glyphs) ثابت
   {
-    if (unlikely (glyph_id >= num_glyphs)) return nullptr;
-    return &arrayZ[glyph_id];
-  }
-
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned num_glyphs) const
-  {
-    glyphs.add_range (0, num_glyphs - 1);
-  }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
-  {
-    for (unsigned i = 0; i < num_glyphs; i++)
-      if (filter (arrayZ[i]))
-	glyphs.add (i);
+    إذا (unlikely (glyph_id >= عدد_glyphs)) أرجع تش_اشاره;
+    أرجع &arrayZ[glyph_id];
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs, بینښه عدد_glyphs) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (arrayZ.sanitize (c, c->get_num_glyphs ()));
+    glyphs.جمع_کړه_range (0, عدد_glyphs - 1);
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, بینښه عدد_glyphs, ثابت filter_t &filter) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (arrayZ.sanitize (c, c->get_num_glyphs (), base));
+    لكل (بینښه i = 0; i < عدد_glyphs; i++)
+      إذا (filter (arrayZ[i]))
+	glyphs.جمع_کړه (i);
   }
 
-  protected:
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
+  {
+    TRACE_SANITIZE (هذا);
+    return_trace (arrayZ.sanitize (c, c->get_عدد_glyphs ()));
+  }
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
+  {
+    TRACE_SANITIZE (هذا);
+    return_trace (arrayZ.sanitize (c, c->get_عدد_glyphs (), بنسټ));
+  }
+
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 0 */
-  UnsizedArrayOf<T>
+  Unsized_Array_د<T>
 		arrayZ;		/* Array of lookup values, indexed by glyph index. */
-  public:
-  DEFINE_SIZE_UNBOUNDED (2);
+  عام:
+  DEFINE_اندازه_UNBOUNDED (2);
 };
 
 
-template <typename T>
-struct LookupSegmentSingle
+کينډۍ <ډول_نوم T>
+بنية LookupSegmentSingle
 {
-  static constexpr unsigned TerminationWordCount = 2u;
+  ساكن constexpr بینښه Termination_کلمه_شمېر = 2u;
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1 ; }
+  صحيح cmp (hb_codepoint_t g) ثابت
+  { أرجع g < لومړی ? -1 : g <= وروستی ? 0 : +1 ; }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs) ثابت
   {
-    if (first == DELETED_GLYPH) return;
-    glyphs.add_range (first, last);
+    إذا (لومړی == DELETED_GLYPH) أرجع;
+    glyphs.جمع_کړه_range (لومړی, وروستی);
   }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, ثابت filter_t &filter) ثابت
   {
-    if (first == DELETED_GLYPH) return;
-    if (!filter (value)) return;
-    glyphs.add_range (first, last);
-  }
-
-  bool sanitize (hb_sanitize_context_t *c) const
-  {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
-  }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
-  {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c, base));
+    إذا (لومړی == DELETED_GLYPH) أرجع;
+    إذا (!filter (value)) أرجع;
+    glyphs.جمع_کړه_range (لومړی, وروستی);
   }
 
-  HBGlyphID16	last;		/* Last GlyphID in this segment */
-  HBGlyphID16	first;		/* First GlyphID in this segment */
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
+  {
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && value.sanitize (c));
+  }
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
+  {
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && value.sanitize (c, بنسټ));
+  }
+
+  HBGlyphID16	وروستی;		/* Last GlyphID in this segment */
+  HBGlyphID16	لومړی;		/* First GlyphID in this segment */
   T		value;		/* The lookup value (only one) */
-  public:
-  DEFINE_SIZE_STATIC (4 + T::static_size);
+  عام:
+  DEFINE_اندازه_STATIC (4 + T::static_اندازه);
 };
 
-template <typename T>
-struct LookupFormat2
+کينډۍ <ډول_نوم T>
+بنية LookupFormat2
 {
-  friend struct Lookup<T>;
+  ملګری بنية Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  خاص:
+  ثابت T* get_ارزښت (hb_codepoint_t glyph_id) ثابت
   {
-    const LookupSegmentSingle<T> *v = segments.bsearch (glyph_id);
-    return v ? &v->value : nullptr;
+    ثابت LookupSegmentSingle<T> *v = segments.bsearch (glyph_id);
+    أرجع v ? &v->value : تش_اشاره;
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs) ثابت
   {
-    unsigned count = segments.get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    بینښه شمېر = segments.get_اوږدتیا ();
+    لكل (بینښه صحيح i = 0; i < شمېر; i++)
       segments[i].collect_glyphs (glyphs);
   }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, ثابت filter_t &filter) ثابت
   {
-    unsigned count = segments.get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    بینښه شمېر = segments.get_اوږدتیا ();
+    لكل (بینښه صحيح i = 0; i < شمېر; i++)
       segments[i].collect_glyphs_filtered (glyphs, filter);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (segments.sanitize (c));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (segments.sanitize (c, base));
+    TRACE_SANITIZE (هذا);
+    return_trace (segments.sanitize (c, بنسټ));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 2 */
-  VarSizedBinSearchArrayOf<LookupSegmentSingle<T>>
+  Var_Sized_Bin_پلټنه_Array_د<LookupSegmentSingle<T>>
 		segments;	/* The actual segments. These must already be sorted,
 				 * according to the first word in each one (the last
 				 * glyph in each segment). */
-  public:
-  DEFINE_SIZE_ARRAY (8, segments);
+  عام:
+  DEFINE_اندازه_ARRAY (8, segments);
 };
 
-template <typename T>
-struct LookupSegmentArray
+کينډۍ <ډول_نوم T>
+بنية LookupSegmentArray
 {
-  static constexpr unsigned TerminationWordCount = 2u;
+  ساكن constexpr بینښه Termination_کلمه_شمېر = 2u;
 
-  const T* get_value (hb_codepoint_t glyph_id, const void *base) const
+  ثابت T* get_ارزښت (hb_codepoint_t glyph_id, ثابت فراغ *بنسټ) ثابت
   {
-    return first <= glyph_id && glyph_id <= last ? &(base+valuesZ)[glyph_id - first] : nullptr;
+    أرجع لومړی <= glyph_id && glyph_id <= وروستی ? &(بنسټ+ارزښتونه_Z)[glyph_id - لومړی] : تش_اشاره;
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs) ثابت
   {
-    if (first == DELETED_GLYPH) return;
-    glyphs.add_range (first, last);
+    إذا (لومړی == DELETED_GLYPH) أرجع;
+    glyphs.جمع_کړه_range (لومړی, وروستی);
   }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const void *base, const filter_t &filter) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, ثابت فراغ *بنسټ, ثابت filter_t &filter) ثابت
   {
-    if (first == DELETED_GLYPH) return;
-    const auto &values = base+valuesZ;
-    for (hb_codepoint_t i = first; i <= last; i++)
-      if (filter (values[i - first]))
-	glyphs.add (i);
+    إذا (لومړی == DELETED_GLYPH) أرجع;
+    ثابت خپلکاری &values = بنسټ+ارزښتونه_Z;
+    لكل (hb_codepoint_t i = لومړی; i <= وروستی; i++)
+      إذا (filter (values[i - لومړی]))
+	glyphs.جمع_کړه (i);
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  صحيح cmp (hb_codepoint_t g) ثابت
+  { أرجع g < لومړی ? -1 : g <= وروستی ? 0 : +1; }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  first <= last &&
-		  valuesZ.sanitize (c, base, last - first + 1));
+		  لومړی <= وروستی &&
+		  ارزښتونه_Z.sanitize (c, بنسټ, وروستی - لومړی + 1));
   }
-  template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, const void *base, Ts&&... ds) const
+  کينډۍ <ډول_نوم ...Ts>
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  first <= last &&
-		  valuesZ.sanitize (c, base, last - first + 1, std::forward<Ts> (ds)...));
+		  لومړی <= وروستی &&
+		  ارزښتونه_Z.sanitize (c, بنسټ, وروستی - لومړی + 1, std::forward<Ts> (ds)...));
   }
 
-  HBGlyphID16	last;		/* Last GlyphID in this segment */
-  HBGlyphID16	first;		/* First GlyphID in this segment */
-  NNOffset16To<UnsizedArrayOf<T>>
-		valuesZ;	/* A 16-bit offset from the start of
+  HBGlyphID16	وروستی;		/* Last GlyphID in this segment */
+  HBGlyphID16	لومړی;		/* First GlyphID in this segment */
+  NNOffset16_منزل<Unsized_Array_د<T>>
+		ارزښتونه_Z;	/* A 16-bit offset from the start of
 				 * the table to the data. */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عام:
+  DEFINE_اندازه_STATIC (6);
 };
 
-template <typename T>
-struct LookupFormat4
+کينډۍ <ډول_نوم T>
+بنية LookupFormat4
 {
-  friend struct Lookup<T>;
+  ملګری بنية Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  خاص:
+  ثابت T* get_ارزښت (hb_codepoint_t glyph_id) ثابت
   {
-    const LookupSegmentArray<T> *v = segments.bsearch (glyph_id);
-    return v ? v->get_value (glyph_id, this) : nullptr;
+    ثابت LookupSegmentArray<T> *v = segments.bsearch (glyph_id);
+    أرجع v ? v->get_ارزښت (glyph_id, هذا) : تش_اشاره;
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs) ثابت
   {
-    unsigned count = segments.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    بینښه شمېر = segments.get_اوږدتیا ();
+    لكل (بینښه i = 0; i < شمېر; i++)
       segments[i].collect_glyphs (glyphs);
   }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, ثابت filter_t &filter) ثابت
   {
-    unsigned count = segments.get_length ();
-    for (unsigned i = 0; i < count; i++)
-      segments[i].collect_glyphs_filtered (glyphs, this, filter);
+    بینښه شمېر = segments.get_اوږدتیا ();
+    لكل (بینښه i = 0; i < شمېر; i++)
+      segments[i].collect_glyphs_filtered (glyphs, هذا, filter);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (segments.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (segments.sanitize (c, هذا));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (segments.sanitize (c, this, base));
+    TRACE_SANITIZE (هذا);
+    return_trace (segments.sanitize (c, هذا, بنسټ));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 4 */
-  VarSizedBinSearchArrayOf<LookupSegmentArray<T>>
+  Var_Sized_Bin_پلټنه_Array_د<LookupSegmentArray<T>>
 		segments;	/* The actual segments. These must already be sorted,
 				 * according to the first word in each one (the last
 				 * glyph in each segment). */
-  public:
-  DEFINE_SIZE_ARRAY (8, segments);
+  عام:
+  DEFINE_اندازه_ARRAY (8, segments);
 };
 
-template <typename T>
-struct LookupSingle
+کينډۍ <ډول_نوم T>
+بنية LookupSingle
 {
-  static constexpr unsigned TerminationWordCount = 1u;
+  ساكن constexpr بینښه Termination_کلمه_شمېر = 1u;
 
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  صحيح cmp (hb_codepoint_t g) ثابت { أرجع glyph.cmp (g); }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs) ثابت
   {
-    if (glyph == DELETED_GLYPH) return;
-    glyphs.add (glyph);
+    إذا (glyph == DELETED_GLYPH) أرجع;
+    glyphs.جمع_کړه (glyph);
   }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, ثابت filter_t &filter) ثابت
   {
-    if (glyph == DELETED_GLYPH) return;
-    if (!filter (value)) return;
-    glyphs.add (glyph);
+    إذا (glyph == DELETED_GLYPH) أرجع;
+    إذا (!filter (value)) أرجع;
+    glyphs.جمع_کړه (glyph);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && value.sanitize (c));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c, base));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && value.sanitize (c, بنسټ));
   }
 
   HBGlyphID16	glyph;		/* Last GlyphID */
   T		value;		/* The lookup value (only one) */
-  public:
-  DEFINE_SIZE_STATIC (2 + T::static_size);
+  عام:
+  DEFINE_اندازه_STATIC (2 + T::static_اندازه);
 };
 
-template <typename T>
-struct LookupFormat6
+کينډۍ <ډول_نوم T>
+بنية LookupFormat6
 {
-  friend struct Lookup<T>;
+  ملګری بنية Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  خاص:
+  ثابت T* get_ارزښت (hb_codepoint_t glyph_id) ثابت
   {
-    const LookupSingle<T> *v = entries.bsearch (glyph_id);
-    return v ? &v->value : nullptr;
+    ثابت LookupSingle<T> *v = entries.bsearch (glyph_id);
+    أرجع v ? &v->value : تش_اشاره;
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs) ثابت
   {
-    unsigned count = entries.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    بینښه شمېر = entries.get_اوږدتیا ();
+    لكل (بینښه i = 0; i < شمېر; i++)
       entries[i].collect_glyphs (glyphs);
   }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, ثابت filter_t &filter) ثابت
   {
-    unsigned count = entries.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    بینښه شمېر = entries.get_اوږدتیا ();
+    لكل (بینښه i = 0; i < شمېر; i++)
       entries[i].collect_glyphs_filtered (glyphs, filter);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (entries.sanitize (c));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (entries.sanitize (c, base));
+    TRACE_SANITIZE (هذا);
+    return_trace (entries.sanitize (c, بنسټ));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 6 */
-  VarSizedBinSearchArrayOf<LookupSingle<T>>
+  Var_Sized_Bin_پلټنه_Array_د<LookupSingle<T>>
 		entries;	/* The actual entries, sorted by glyph index. */
-  public:
-  DEFINE_SIZE_ARRAY (8, entries);
+  عام:
+  DEFINE_اندازه_ARRAY (8, entries);
 };
 
-template <typename T>
-struct LookupFormat8
+کينډۍ <ډول_نوم T>
+بنية LookupFormat8
 {
-  friend struct Lookup<T>;
+  ملګری بنية Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  خاص:
+  ثابت T* get_ارزښت (hb_codepoint_t glyph_id) ثابت
   {
-    return firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount ?
-	   &valueArrayZ[glyph_id - firstGlyph] : nullptr;
-  }
-
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
-  {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
-    glyphs.add_range (firstGlyph, firstGlyph + glyphCount - 1);
-  }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
-  {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
-    const T *p = valueArrayZ.arrayZ;
-    for (unsigned i = 0; i < glyphCount; i++)
-      if (filter (p[i]))
-	glyphs.add (firstGlyph + i);
+    أرجع لومړی_Glyph <= glyph_id && glyph_id - لومړی_Glyph < glyph_شمېر_2 ?
+	   &ارزښت_Array_Z[glyph_id - لومړی_Glyph] : تش_اشاره;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && valueArrayZ.sanitize (c, glyphCount));
+    إذا (unlikely (!glyph_شمېر_2)) أرجع;
+    إذا (لومړی_Glyph == DELETED_GLYPH) أرجع;
+    glyphs.جمع_کړه_range (لومړی_Glyph, لومړی_Glyph + glyph_شمېر_2 - 1);
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, ثابت filter_t &filter) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && valueArrayZ.sanitize (c, glyphCount, base));
+    إذا (unlikely (!glyph_شمېر_2)) أرجع;
+    إذا (لومړی_Glyph == DELETED_GLYPH) أرجع;
+    ثابت T *p = ارزښت_Array_Z.arrayZ;
+    لكل (بینښه i = 0; i < glyph_شمېر_2; i++)
+      إذا (filter (p[i]))
+	glyphs.جمع_کړه (لومړی_Glyph + i);
   }
 
-  protected:
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
+  {
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && ارزښت_Array_Z.sanitize (c, glyph_شمېر_2));
+  }
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
+  {
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && ارزښت_Array_Z.sanitize (c, glyph_شمېر_2, بنسټ));
+  }
+
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 8 */
-  HBGlyphID16	firstGlyph;	/* First glyph index included in the trimmed array. */
-  HBUINT16	glyphCount;	/* Total number of glyphs (equivalent to the last
+  HBGlyphID16	لومړی_Glyph;	/* First glyph index included in the trimmed array. */
+  HBUINT16	glyph_شمېر_2;	/* Total number of glyphs (equivalent to the last
 				 * glyph minus the value of firstGlyph plus 1). */
-  UnsizedArrayOf<T>
-		valueArrayZ;	/* The lookup values (indexed by the glyph index
+  Unsized_Array_د<T>
+		ارزښت_Array_Z;	/* The lookup values (indexed by the glyph index
 				 * minus the value of firstGlyph). */
-  public:
-  DEFINE_SIZE_ARRAY (6, valueArrayZ);
+  عام:
+  DEFINE_اندازه_ARRAY (6, ارزښت_Array_Z);
 };
 
-template <typename T>
-struct LookupFormat10
+کينډۍ <ډول_نوم T>
+بنية LookupFormat10
 {
-  friend struct Lookup<T>;
+  ملګری بنية Lookup<T>;
 
-  private:
-  const typename T::type get_value_or_null (hb_codepoint_t glyph_id) const
+  خاص:
+  ثابت ډول_نوم T::type get_ارزښت_or_null (hb_codepoint_t glyph_id) ثابت
   {
-    if (!(firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount))
-      return Null (T);
+    إذا (!(لومړی_Glyph <= glyph_id && glyph_id - لومړی_Glyph < glyph_شمېر_2))
+      أرجع Null (T);
 
-    const HBUINT8 *p = &valueArrayZ[(glyph_id - firstGlyph) * valueSize];
+    ثابت HBUINT8 *p = &ارزښت_Array_Z[(glyph_id - لومړی_Glyph) * ارزښت_اندازه];
 
-    unsigned int v = 0;
-    unsigned int count = valueSize;
-    for (unsigned int i = 0; i < count; i++)
+    بینښه صحيح v = 0;
+    بینښه صحيح شمېر = ارزښت_اندازه;
+    لكل (بینښه صحيح i = 0; i < شمېر; i++)
       v = (v << 8) | *p++;
 
-    return v;
+    أرجع v;
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs) ثابت
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
-    glyphs.add_range (firstGlyph, firstGlyph + glyphCount - 1);
+    إذا (unlikely (!glyph_شمېر_2)) أرجع;
+    إذا (لومړی_Glyph == DELETED_GLYPH) أرجع;
+    glyphs.جمع_کړه_range (لومړی_Glyph, لومړی_Glyph + glyph_شمېر_2 - 1);
   }
 
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, ثابت filter_t &filter) ثابت
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
-    const HBUINT8 *p = valueArrayZ.arrayZ;
-    for (unsigned i = 0; i < glyphCount; i++)
+    إذا (unlikely (!glyph_شمېر_2)) أرجع;
+    إذا (لومړی_Glyph == DELETED_GLYPH) أرجع;
+    ثابت HBUINT8 *p = ارزښت_Array_Z.arrayZ;
+    لكل (بینښه i = 0; i < glyph_شمېر_2; i++)
     {
-      unsigned int v = 0;
-      unsigned int count = valueSize;
-      for (unsigned int j = 0; j < count; j++)
+      بینښه صحيح v = 0;
+      بینښه صحيح شمېر = ارزښت_اندازه;
+      لكل (بینښه صحيح j = 0; j < شمېر; j++)
 	v = (v << 8) | *p++;
-      if (filter (v))
-	glyphs.add (firstGlyph + i);
+      إذا (filter (v))
+	glyphs.جمع_کړه (لومړی_Glyph + i);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  valueSize <= 4 &&
-		  valueArrayZ.sanitize (c, glyphCount * valueSize));
+		  ارزښت_اندازه <= 4 &&
+		  ارزښت_Array_Z.sanitize (c, glyph_شمېر_2 * ارزښت_اندازه));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 8 */
-  HBUINT16	valueSize;	/* Byte size of each value. */
-  HBGlyphID16	firstGlyph;	/* First glyph index included in the trimmed array. */
-  HBUINT16	glyphCount;	/* Total number of glyphs (equivalent to the last
+  HBUINT16	ارزښت_اندازه;	/* Byte size of each value. */
+  HBGlyphID16	لومړی_Glyph;	/* First glyph index included in the trimmed array. */
+  HBUINT16	glyph_شمېر_2;	/* Total number of glyphs (equivalent to the last
 				 * glyph minus the value of firstGlyph plus 1). */
-  UnsizedArrayOf<HBUINT8>
-		valueArrayZ;	/* The lookup values (indexed by the glyph index
+  Unsized_Array_د<HBUINT8>
+		ارزښت_Array_Z;	/* The lookup values (indexed by the glyph index
 				 * minus the value of firstGlyph). */
-  public:
-  DEFINE_SIZE_ARRAY (8, valueArrayZ);
+  عام:
+  DEFINE_اندازه_ARRAY (8, ارزښت_Array_Z);
 };
 
-template <typename T>
-struct Lookup
+کينډۍ <ډول_نوم T>
+بنية Lookup
 {
-  const T* get_value (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  ثابت T* get_ارزښت (hb_codepoint_t glyph_id, بینښه صحيح عدد_glyphs) ثابت
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_value (glyph_id, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_value (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_value (glyph_id);
-    case 6: hb_barrier (); return u.format6.get_value (glyph_id);
-    case 8: hb_barrier (); return u.format8.get_value (glyph_id);
-    default:return nullptr;
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); أرجع u.format0.get_ارزښت (glyph_id, عدد_glyphs);
+    حالة 2: hb_barrier (); أرجع u.format2.get_ارزښت (glyph_id);
+    حالة 4: hb_barrier (); أرجع u.format4.get_ارزښت (glyph_id);
+    حالة 6: hb_barrier (); أرجع u.format6.get_ارزښت (glyph_id);
+    حالة 8: hb_barrier (); أرجع u.format8.get_ارزښت (glyph_id);
+    افتراضي:أرجع تش_اشاره;
     }
   }
 
-  const typename T::type get_value_or_null (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  ثابت ډول_نوم T::type get_ارزښت_or_null (hb_codepoint_t glyph_id, بینښه صحيح عدد_glyphs) ثابت
   {
-    switch (u.format.v) {
+    بدل (u.format.v) {
       /* Format 10 cannot return a pointer. */
-      case 10: hb_barrier (); return u.format10.get_value_or_null (glyph_id);
-      default:
-      const T *v = get_value (glyph_id, num_glyphs);
-      return v ? *v : Null (T);
+      حالة 10: hb_barrier (); أرجع u.format10.get_ارزښت_or_null (glyph_id);
+      افتراضي:
+      ثابت T *v = get_ارزښت (glyph_id, عدد_glyphs);
+      أرجع v ? *v : Null (T);
     }
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned int num_glyphs) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs, بینښه صحيح عدد_glyphs) ثابت
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); u.format0.collect_glyphs (glyphs, num_glyphs); return;
-    case 2: hb_barrier (); u.format2.collect_glyphs (glyphs); return;
-    case 4: hb_barrier (); u.format4.collect_glyphs (glyphs); return;
-    case 6: hb_barrier (); u.format6.collect_glyphs (glyphs); return;
-    case 8: hb_barrier (); u.format8.collect_glyphs (glyphs); return;
-    case 10: hb_barrier (); u.format10.collect_glyphs (glyphs); return;
-    default:return;
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); u.format0.collect_glyphs (glyphs, عدد_glyphs); أرجع;
+    حالة 2: hb_barrier (); u.format2.collect_glyphs (glyphs); أرجع;
+    حالة 4: hb_barrier (); u.format4.collect_glyphs (glyphs); أرجع;
+    حالة 6: hb_barrier (); u.format6.collect_glyphs (glyphs); أرجع;
+    حالة 8: hb_barrier (); u.format8.collect_glyphs (glyphs); أرجع;
+    حالة 10: hb_barrier (); u.format10.collect_glyphs (glyphs); أرجع;
+    افتراضي:أرجع;
     }
   }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, بینښه عدد_glyphs, ثابت filter_t &filter) ثابت
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); u.format0.collect_glyphs_filtered (glyphs, num_glyphs, filter); return;
-    case 2: hb_barrier (); u.format2.collect_glyphs_filtered (glyphs, filter); return;
-    case 4: hb_barrier (); u.format4.collect_glyphs_filtered (glyphs, filter); return;
-    case 6: hb_barrier (); u.format6.collect_glyphs_filtered (glyphs, filter); return;
-    case 8: hb_barrier (); u.format8.collect_glyphs_filtered (glyphs, filter); return;
-    case 10: hb_barrier (); u.format10.collect_glyphs_filtered (glyphs, filter); return;
-    default:return;
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); u.format0.collect_glyphs_filtered (glyphs, عدد_glyphs, filter); أرجع;
+    حالة 2: hb_barrier (); u.format2.collect_glyphs_filtered (glyphs, filter); أرجع;
+    حالة 4: hb_barrier (); u.format4.collect_glyphs_filtered (glyphs, filter); أرجع;
+    حالة 6: hb_barrier (); u.format6.collect_glyphs_filtered (glyphs, filter); أرجع;
+    حالة 8: hb_barrier (); u.format8.collect_glyphs_filtered (glyphs, filter); أرجع;
+    حالة 10: hb_barrier (); u.format10.collect_glyphs_filtered (glyphs, filter); أرجع;
+    افتراضي:أرجع;
     }
   }
 
-  typename T::type get_class (hb_codepoint_t glyph_id,
-			      unsigned int num_glyphs,
-			      unsigned int outOfRange) const
+  ډول_نوم T::type get_class (hb_codepoint_t glyph_id,
+			      بینښه صحيح عدد_glyphs,
+			      بینښه صحيح بهر_د_Range) ثابت
   {
-    const T *v = get_value (glyph_id, num_glyphs);
-    return v ? *v : outOfRange;
+    ثابت T *v = get_ارزښت (glyph_id, عدد_glyphs);
+    أرجع v ? *v : بهر_د_Range;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (!u.format.v.sanitize (c)) return_trace (خطأ);
     hb_barrier ();
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-    case 6: hb_barrier (); return_trace (u.format6.sanitize (c));
-    case 8: hb_barrier (); return_trace (u.format8.sanitize (c));
-    case 10: hb_barrier (); return_trace (u.format10.sanitize (c));
-    default:return_trace (true);
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); return_trace (u.format0.sanitize (c));
+    حالة 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    حالة 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    حالة 6: hb_barrier (); return_trace (u.format6.sanitize (c));
+    حالة 8: hb_barrier (); return_trace (u.format8.sanitize (c));
+    حالة 10: hb_barrier (); return_trace (u.format10.sanitize (c));
+    افتراضي:return_trace (ریښتیا);
     }
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنسټ) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (!u.format.v.sanitize (c)) return_trace (خطأ);
     hb_barrier ();
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, base));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c, base));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c, base));
-    case 6: hb_barrier (); return_trace (u.format6.sanitize (c, base));
-    case 8: hb_barrier (); return_trace (u.format8.sanitize (c, base));
-    case 10: return_trace (false); /* We don't support format10 here currently. */
-    default:return_trace (true);
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); return_trace (u.format0.sanitize (c, بنسټ));
+    حالة 2: hb_barrier (); return_trace (u.format2.sanitize (c, بنسټ));
+    حالة 4: hb_barrier (); return_trace (u.format4.sanitize (c, بنسټ));
+    حالة 6: hb_barrier (); return_trace (u.format6.sanitize (c, بنسټ));
+    حالة 8: hb_barrier (); return_trace (u.format8.sanitize (c, بنسټ));
+    حالة 10: return_trace (خطأ); /* We don't support format10 here currently. */
+    افتراضي:return_trace (ریښتیا);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }	format;		/* Format identifier */
   LookupFormat0<T>	format0;
   LookupFormat2<T>	format2;
   LookupFormat4<T>	format4;
@@ -813,22 +813,22 @@ struct Lookup
   LookupFormat8<T>	format8;
   LookupFormat10<T>	format10;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  عام:
+  DEFINE_اندازه_UNION (2, format.v);
 };
-DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (AAT, Lookup, 13);
+DECLARE_NULL_NAMESPACE_بایټونه_TEMPLATE1 (AAT, Lookup, 13);
 
 /*
  * (Extended) State Table
  */
 
-template <typename T>
-struct Entry
+کينډۍ <ډول_نوم T>
+بنية ثبت_2
 {
   // This doesn't seem like it's ever called.
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     /* Note, we don't recurse-sanitize data because we don't access it.
      * That said, in our DEFINE_SIZE_STATIC we access T::static_size,
      * which ensures that data has a simple sanitize(). To be determined
@@ -836,140 +836,140 @@ struct Entry
      *
      * HOWEVER! Because we are a template, our DEFINE_SIZE_STATIC
      * assertion wouldn't be checked, hence the line below. */
-    static_assert (T::static_size, "");
+    static_assert (T::static_اندازه, "");
 
-    return_trace (c->check_struct (this));
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
+  عام:
   HBUINT16	newState;	/* Byte offset from beginning of state table
 				 * to the new state. Really?!?! Or just state
 				 * number?  The latter in morx for sure. */
   HBUINT16	flags;		/* Table specific. */
-  T		data;		/* Optional offsets to per-glyph tables. */
-  public:
-  DEFINE_SIZE_STATIC (4 + T::static_size);
+  T		معلومات;		/* Optional offsets to per-glyph tables. */
+  عام:
+  DEFINE_اندازه_STATIC (4 + T::static_اندازه);
 };
 
-template <>
-struct Entry<void>
+کينډۍ <>
+بنية ثبت_2<فراغ>
 {
   // This does seem like it's ever called.
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
+  عام:
   HBUINT16	newState;	/* Byte offset from beginning of state table to the new state. */
   HBUINT16	flags;		/* Table specific. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عام:
+  DEFINE_اندازه_STATIC (4);
 };
 
-enum Class
+تعداد Class
 {
-  CLASS_END_OF_TEXT = 0,
-  CLASS_OUT_OF_BOUNDS = 1,
+  CLASS_پای_ټکی_د_متن = 0,
+  CLASS_بهر_د_BOUNDS = 1,
   CLASS_DELETED_GLYPH = 2,
-  CLASS_END_OF_LINE = 3,
+  CLASS_پای_ټکی_د_کرښه = 3,
 };
 
-template <typename Types, typename Extra>
-struct StateTable
+کينډۍ <ډول_نوم Types, ډول_نوم Extra>
+بنية State_جدول
 {
-  typedef typename Types::HBUINT HBUINT;
-  typedef typename Types::HBUSHORT HBUSHORT;
-  typedef typename Types::ClassTypeNarrow ClassType;
+  تعريفنوع ډول_نوم Types::HBUINT HBUINT;
+  تعريفنوع ډول_نوم Types::HBUSHORT HBUSHORT;
+  تعريفنوع ډول_نوم Types::ClassTypeNarrow ClassType;
 
-  enum State
+  تعداد State
   {
-    STATE_START_OF_TEXT = 0,
-    STATE_START_OF_LINE = 1,
+    STATE_پیل_د_متن = 0,
+    STATE_پیل_د_کرښه = 1,
   };
 
-  template <typename set_t, typename table_t>
-  void collect_initial_glyphs (set_t &glyphs, unsigned num_glyphs, const table_t &table) const
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم جدول_t>
+  فراغ collect_initial_glyphs (سېټ_t &glyphs, بینښه عدد_glyphs, ثابت جدول_t &جدول) ثابت
   {
-    unsigned num_classes = nClasses;
+    بینښه عدد_classes = nClasses;
 
-    if (unlikely (num_classes > hb_bit_page_t::BITS))
+    إذا (unlikely (عدد_classes > hb_بټ_پاڼه_t::بټونه_2))
     {
-      (this+classTable).collect_glyphs (glyphs, num_glyphs);
-      return;
+      (هذا+class_جدول).collect_glyphs (glyphs, عدد_glyphs);
+      أرجع;
     }
 
     // Collect all classes going out from the start state.
-    hb_bit_page_t filter;
+    hb_بټ_پاڼه_t filter;
 
-    for (unsigned i = 0; i < num_classes; i++)
+    لكل (بینښه i = 0; i < عدد_classes; i++)
     {
-      const auto &entry = get_entry (STATE_START_OF_TEXT, i);
-      if (new_state (entry.newState) == STATE_START_OF_TEXT &&
-	  !table.is_action_initiable (entry) && !table.is_actionable (entry))
-	continue;
+      ثابت خپلکاری &ثبت = get_ثبت (STATE_پیل_د_متن, i);
+      إذا (new_state (ثبت.newState) == STATE_پیل_د_متن &&
+	  !جدول.is_action_initiable (ثبت) && !جدول.is_actionable (ثبت))
+	استمر;
 
-      filter.add (i);
+      filter.جمع_کړه (i);
     }
 
     // And glyphs in those classes.
 
-    if (filter (CLASS_DELETED_GLYPH))
-      glyphs.add (DELETED_GLYPH);
+    إذا (filter (CLASS_DELETED_GLYPH))
+      glyphs.جمع_کړه (DELETED_GLYPH);
 
-    (this+classTable).collect_glyphs_filtered (glyphs, num_glyphs, filter);
+    (هذا+class_جدول).collect_glyphs_filtered (glyphs, عدد_glyphs, filter);
   }
 
-  int new_state (unsigned int newState) const
-  { return Types::extended ? newState : ((int) newState - (int) stateArrayTable) / (int) nClasses; }
+  صحيح new_state (بینښه صحيح newState) ثابت
+  { أرجع Types::extended ? newState : ((صحيح) newState - (صحيح) state_Array_جدول) / (صحيح) nClasses; }
 
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  unsigned int num_glyphs,
-			  hb_aat_class_cache_t *cache = nullptr) const
+  بینښه صحيح get_class (hb_codepoint_t glyph_id,
+			  بینښه صحيح عدد_glyphs,
+			  hb_aat_class_cache_t *cache = تش_اشاره) ثابت
   {
-    unsigned klass;
-    if (cache && cache->get (glyph_id, &klass)) return klass;
-    if (unlikely (glyph_id == DELETED_GLYPH)) return CLASS_DELETED_GLYPH;
-    klass = (this+classTable).get_class (glyph_id, num_glyphs, CLASS_OUT_OF_BOUNDS);
-    if (cache) cache->set (glyph_id, klass);
-    return klass;
+    بینښه klass;
+    إذا (cache && cache->get (glyph_id, &klass)) أرجع klass;
+    إذا (unlikely (glyph_id == DELETED_GLYPH)) أرجع CLASS_DELETED_GLYPH;
+    klass = (هذا+class_جدول).get_class (glyph_id, عدد_glyphs, CLASS_بهر_د_BOUNDS);
+    إذا (cache) cache->سېټ (glyph_id, klass);
+    أرجع klass;
   }
 
-  const Entry<Extra> *get_entries () const
-  { return (this+entryTable).arrayZ; }
+  ثابت ثبت_2<Extra> *get_entries () ثابت
+  { أرجع (هذا+ثبت_جدول).arrayZ; }
 
-  const Entry<Extra> &get_entry (int state, unsigned int klass) const
+  ثابت ثبت_2<Extra> &get_ثبت (صحيح state, بینښه صحيح klass) ثابت
   {
-    unsigned n_classes = nClasses;
-    if (unlikely (klass >= n_classes))
-      klass = CLASS_OUT_OF_BOUNDS;
+    بینښه n_classes = nClasses;
+    إذا (unlikely (klass >= n_classes))
+      klass = CLASS_بهر_د_BOUNDS;
 
-    const HBUSHORT *states = (this+stateArrayTable).arrayZ;
-    const Entry<Extra> *entries = (this+entryTable).arrayZ;
+    ثابت HBUSHORT *حالتونه = (هذا+state_Array_جدول).arrayZ;
+    ثابت ثبت_2<Extra> *entries = (هذا+ثبت_جدول).arrayZ;
 
-    unsigned int entry = states[state * n_classes + klass];
-    DEBUG_MSG (APPLY, nullptr, "e%u", entry);
+    بینښه صحيح ثبت = حالتونه[state * n_classes + klass];
+    DEBUG_پیغام (APPLY, تش_اشاره, "e%u", ثبت);
 
-    return entries[entry];
+    أرجع entries[ثبت];
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 unsigned int *num_entries_out = nullptr) const
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 بینښه صحيح *عدد_entries_بهر = تش_اشاره) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!(c->check_struct (هذا) &&
 		    hb_barrier () &&
 		    nClasses >= 4 /* Ensure pre-defined classes fit.  */ &&
-		    classTable.sanitize (c, this)))) return_trace (false);
+		    class_جدول.sanitize (c, هذا)))) return_trace (خطأ);
 
-    const HBUSHORT *states = (this+stateArrayTable).arrayZ;
-    const Entry<Extra> *entries = (this+entryTable).arrayZ;
+    ثابت HBUSHORT *حالتونه = (هذا+state_Array_جدول).arrayZ;
+    ثابت ثبت_2<Extra> *entries = (هذا+ثبت_جدول).arrayZ;
 
-    unsigned int num_classes = nClasses;
-    if (unlikely (hb_unsigned_mul_overflows (num_classes, states[0].static_size)))
-      return_trace (false);
-    unsigned int row_stride = num_classes * states[0].static_size;
+    بینښه صحيح عدد_classes = nClasses;
+    إذا (unlikely (hb_unsigned_mul_overflows (عدد_classes, حالتونه[0].static_اندازه)))
+      return_trace (خطأ);
+    بینښه صحيح لیکه_stride = عدد_classes * حالتونه[0].static_اندازه;
 
     /* Apple 'kern' table has this peculiarity:
      *
@@ -985,340 +985,340 @@ struct StateTable
      * tables are not affected since those address states by index, not offset.
      */
 
-    int min_state = 0;
-    int max_state = 0;
-    unsigned int num_entries = 0;
+    صحيح min_state = 0;
+    صحيح max_state = 0;
+    بینښه صحيح عدد_entries = 0;
 
-    int state_pos = 0;
-    int state_neg = 0;
-    unsigned int entry = 0;
-    while (min_state < state_neg || state_pos <= max_state)
+    صحيح state_pos = 0;
+    صحيح state_neg = 0;
+    بینښه صحيح ثبت = 0;
+    طالما (min_state < state_neg || state_pos <= max_state)
     {
-      if (min_state < state_neg)
+      إذا (min_state < state_neg)
       {
 	/* Negative states. */
-	if (unlikely (hb_unsigned_mul_overflows (min_state, num_classes)))
-	  return_trace (false);
-	if (unlikely (!c->check_range (&states[min_state * num_classes],
+	إذا (unlikely (hb_unsigned_mul_overflows (min_state, عدد_classes)))
+	  return_trace (خطأ);
+	إذا (unlikely (!c->check_range (&حالتونه[min_state * عدد_classes],
 				       -min_state,
-				       row_stride)))
-	  return_trace (false);
-	if ((c->max_ops -= state_neg - min_state) <= 0)
-	  return_trace (false);
+				       لیکه_stride)))
+	  return_trace (خطأ);
+	إذا ((c->max_ops -= state_neg - min_state) <= 0)
+	  return_trace (خطأ);
 	{ /* Sweep new states. */
-	  const HBUSHORT *stop = &states[min_state * num_classes];
-	  if (unlikely (stop > states))
-	    return_trace (false);
-	  for (const HBUSHORT *p = states; stop < p; p--)
-	    num_entries = hb_max (num_entries, *(p - 1) + 1u);
+	  ثابت HBUSHORT *stop = &حالتونه[min_state * عدد_classes];
+	  إذا (unlikely (stop > حالتونه))
+	    return_trace (خطأ);
+	  لكل (ثابت HBUSHORT *p = حالتونه; stop < p; p--)
+	    عدد_entries = hb_max (عدد_entries, *(p - 1) + 1u);
 	  state_neg = min_state;
 	}
       }
 
-      if (state_pos <= max_state)
+      إذا (state_pos <= max_state)
       {
 	/* Positive states. */
-	if (unlikely (!c->check_range (states,
+	إذا (unlikely (!c->check_range (حالتونه,
 				       max_state + 1,
-				       row_stride)))
-	  return_trace (false);
-	if ((c->max_ops -= max_state - state_pos + 1) <= 0)
-	  return_trace (false);
+				       لیکه_stride)))
+	  return_trace (خطأ);
+	إذا ((c->max_ops -= max_state - state_pos + 1) <= 0)
+	  return_trace (خطأ);
 	{ /* Sweep new states. */
-	  if (unlikely (hb_unsigned_mul_overflows ((max_state + 1), num_classes)))
-	    return_trace (false);
-	  const HBUSHORT *stop = &states[(max_state + 1) * num_classes];
-	  if (unlikely (stop < states))
-	    return_trace (false);
-	  for (const HBUSHORT *p = &states[state_pos * num_classes]; p < stop; p++)
-	    num_entries = hb_max (num_entries, *p + 1u);
+	  إذا (unlikely (hb_unsigned_mul_overflows ((max_state + 1), عدد_classes)))
+	    return_trace (خطأ);
+	  ثابت HBUSHORT *stop = &حالتونه[(max_state + 1) * عدد_classes];
+	  إذا (unlikely (stop < حالتونه))
+	    return_trace (خطأ);
+	  لكل (ثابت HBUSHORT *p = &حالتونه[state_pos * عدد_classes]; p < stop; p++)
+	    عدد_entries = hb_max (عدد_entries, *p + 1u);
 	  state_pos = max_state + 1;
 	}
       }
 
-      if (unlikely (!c->check_array (entries, num_entries)))
-	return_trace (false);
-      if ((c->max_ops -= num_entries - entry) <= 0)
-	return_trace (false);
+      إذا (unlikely (!c->check_array (entries, عدد_entries)))
+	return_trace (خطأ);
+      إذا ((c->max_ops -= عدد_entries - ثبت) <= 0)
+	return_trace (خطأ);
       { /* Sweep new entries. */
-	const Entry<Extra> *stop = &entries[num_entries];
-	for (const Entry<Extra> *p = &entries[entry]; p < stop; p++)
+	ثابت ثبت_2<Extra> *stop = &entries[عدد_entries];
+	لكل (ثابت ثبت_2<Extra> *p = &entries[ثبت]; p < stop; p++)
 	{
-	  int newState = new_state (p->newState);
+	  صحيح newState = new_state (p->newState);
 	  min_state = hb_min (min_state, newState);
 	  max_state = hb_max (max_state, newState);
 	}
-	entry = num_entries;
+	ثبت = عدد_entries;
       }
     }
 
-    if (num_entries_out)
-      *num_entries_out = num_entries;
+    إذا (عدد_entries_بهر)
+      *عدد_entries_بهر = عدد_entries;
 
-    return_trace (true);
+    return_trace (ریښتیا);
   }
 
-  protected:
+  محمي:
   HBUINT	nClasses;	/* Number of classes, which is the number of indices
 				 * in a single line in the state array. */
-  NNOffsetTo<ClassType, HBUINT>
-		classTable;	/* Offset to the class table. */
-  NNOffsetTo<UnsizedArrayOf<HBUSHORT>, HBUINT>
-		stateArrayTable;/* Offset to the state array. */
-  NNOffsetTo<UnsizedArrayOf<Entry<Extra>>, HBUINT>
-		entryTable;	/* Offset to the entry array. */
+  NNOffset_منزل<ClassType, HBUINT>
+		class_جدول;	/* Offset to the class table. */
+  NNOffset_منزل<Unsized_Array_د<HBUSHORT>, HBUINT>
+		state_Array_جدول;/* Offset to the state array. */
+  NNOffset_منزل<Unsized_Array_د<ثبت_2<Extra>>, HBUINT>
+		ثبت_جدول;	/* Offset to the entry array. */
 
-  public:
-  DEFINE_SIZE_STATIC (4 * sizeof (HBUINT));
+  عام:
+  DEFINE_اندازه_STATIC (4 * حجم (HBUINT));
 };
 
-template <typename HBUCHAR>
-struct ClassTable
+کينډۍ <ډول_نوم HBUCHAR>
+بنية Class_جدول
 {
-  unsigned int get_class (hb_codepoint_t glyph_id, unsigned int outOfRange) const
+  بینښه صحيح get_class (hb_codepoint_t glyph_id, بینښه صحيح بهر_د_Range) ثابت
   {
-    unsigned int i = glyph_id - firstGlyph;
-    return i >= classArray.len ? outOfRange : classArray.arrayZ[i];
+    بینښه صحيح i = glyph_id - لومړی_Glyph;
+    أرجع i >= classArray.len ? بهر_د_Range : classArray.arrayZ[i];
   }
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  unsigned int num_glyphs HB_UNUSED,
-			  unsigned int outOfRange) const
+  بینښه صحيح get_class (hb_codepoint_t glyph_id,
+			  بینښه صحيح عدد_glyphs HB_ناکارول_شوی,
+			  بینښه صحيح بهر_د_Range) ثابت
   {
-    return get_class (glyph_id, outOfRange);
-  }
-
-  template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned num_glyphs) const
-  {
-    for (unsigned i = 0; i < classArray.len; i++)
-      if (classArray.arrayZ[i] != CLASS_OUT_OF_BOUNDS)
-	glyphs.add (firstGlyph + i);
-  }
-  template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
-  {
-    for (unsigned i = 0; i < classArray.len; i++)
-      if (filter (classArray.arrayZ[i]))
-	glyphs.add (firstGlyph + i);
+    أرجع get_class (glyph_id, بهر_د_Range);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  کينډۍ <ډول_نوم سېټ_t>
+  فراغ collect_glyphs (سېټ_t &glyphs, بینښه عدد_glyphs) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && classArray.sanitize (c));
+    لكل (بینښه i = 0; i < classArray.len; i++)
+      إذا (classArray.arrayZ[i] != CLASS_بهر_د_BOUNDS)
+	glyphs.جمع_کړه (لومړی_Glyph + i);
   }
-  protected:
-  HBGlyphID16		firstGlyph;	/* First glyph index included in the trimmed array. */
-  Array16Of<HBUCHAR>	classArray;	/* The class codes (indexed by glyph index minus
+  کينډۍ <ډول_نوم سېټ_t, ډول_نوم filter_t>
+  فراغ collect_glyphs_filtered (سېټ_t &glyphs, بینښه عدد_glyphs, ثابت filter_t &filter) ثابت
+  {
+    لكل (بینښه i = 0; i < classArray.len; i++)
+      إذا (filter (classArray.arrayZ[i]))
+	glyphs.جمع_کړه (لومړی_Glyph + i);
+  }
+
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
+  {
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && classArray.sanitize (c));
+  }
+  محمي:
+  HBGlyphID16		لومړی_Glyph;	/* First glyph index included in the trimmed array. */
+  Array16_د<HBUCHAR>	classArray;	/* The class codes (indexed by glyph index minus
 					 * firstGlyph). */
-  public:
-  DEFINE_SIZE_ARRAY (4, classArray);
+  عام:
+  DEFINE_اندازه_ARRAY (4, classArray);
 };
 
-struct SubtableGlyphCoverage
+بنية SubtableGlyphCoverage
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned subtable_count) const
+  منطقي sanitize (hb_sanitize_context_t *c, بینښه subtable_شمېر) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
 
-    if (unlikely (!c->check_array (&subtableOffsets, subtable_count)))
-      return_trace (false);
+    إذا (unlikely (!c->check_array (&subtableOffsets, subtable_شمېر)))
+      return_trace (خطأ);
 
-    unsigned bytes = (c->get_num_glyphs () + CHAR_BIT - 1) / CHAR_BIT;
-    for (unsigned i = 0; i < subtable_count; i++)
+    بینښه بایټونه = (c->get_عدد_glyphs () + CHAR_بټ - 1) / CHAR_بټ;
+    لكل (بینښه i = 0; i < subtable_شمېر; i++)
     {
-      uint32_t offset = (uint32_t) subtableOffsets[i];
+      uint32_t دننه_واټن = (uint32_t) subtableOffsets[i];
       // A font file called SFNSDisplay.ttf has value 0xFFFFFFFF in the offsets.
       // Just ignore it.
-      if (offset == 0 || offset == 0xFFFFFFFF)
-        continue;
-      if (unlikely (!subtableOffsets[i].sanitize (c, this, bytes)))
-        return_trace (false);
+      إذا (دننه_واټن == 0 || دننه_واټن == 0xFFFFFFFF)
+        استمر;
+      إذا (unlikely (!subtableOffsets[i].sanitize (c, هذا, بایټونه)))
+        return_trace (خطأ);
     }
 
-    return_trace (true);
+    return_trace (ریښتیا);
   }
-  protected:
-  UnsizedArrayOf<NNOffset32To<UnsizedArrayOf<HBUINT8>>> subtableOffsets;
+  محمي:
+  Unsized_Array_د<NNOffset32_منزل<Unsized_Array_د<HBUINT8>>> subtableOffsets;
 					    /* Array of offsets from the beginning of the
 					     * subtable glyph coverage table to the glyph
 					     * coverage bitfield for a given subtable; there
 					     * is one offset for each subtable in the chain */
   /* UnsizedArrayOf<HBUINT8> coverageBitfields; *//* The individual coverage bitfields. */
-  public:
-  DEFINE_SIZE_ARRAY (0, subtableOffsets);
+  عام:
+  DEFINE_اندازه_ARRAY (0, subtableOffsets);
 };
 
-struct ObsoleteTypes
+بنية ObsoleteTypes
 {
-  static constexpr bool extended = false;
-  typedef HBUINT16 HBUINT;
-  typedef HBUINT8 HBUSHORT;
-  typedef ClassTable<HBUINT8> ClassTypeNarrow;
-  typedef ClassTable<HBUINT16> ClassTypeWide;
+  ساكن constexpr منطقي extended = خطأ;
+  تعريفنوع HBUINT16 HBUINT;
+  تعريفنوع HBUINT8 HBUSHORT;
+  تعريفنوع Class_جدول<HBUINT8> ClassTypeNarrow;
+  تعريفنوع Class_جدول<HBUINT16> ClassTypeWide;
 
-  template <typename T>
-  static int offsetToIndex (int64_t offset,
-			    const void *base,
-			    const T *array)
+  کينډۍ <ډول_نوم T>
+  ساكن صحيح دننه_واټن_منزل_شاخص (int64_t دننه_واټن,
+			    ثابت فراغ *بنسټ,
+			    ثابت T *array)
   {
-    int64_t array_offset = (const char *) array - (const char *) base;
-    int bad_index = INT_MAX / T::static_size;
+    int64_t array_دننه_واټن = (ثابت حرف *) array - (ثابت حرف *) بنسټ;
+    صحيح bad_شاخص = لوی_عدد / T::static_اندازه;
 
     /* https://github.com/harfbuzz/harfbuzz/issues/3483 */
     /* If offset is less than base, return an offset that would
      * result in an address half a 32bit address-space away,
      * to make sure sanitize fails even on 32bit builds. */
-    if (unlikely (offset < array_offset))
-      return bad_index;
+    إذا (unlikely (دننه_واټن < array_دننه_واټن))
+      أرجع bad_شاخص;
 
     /* https://github.com/harfbuzz/harfbuzz/issues/2816 */
-    int64_t index = (offset - array_offset) / T::static_size;
-    if (unlikely (index > bad_index))
-      return bad_index;
-    return index;
+    int64_t شاخص_2 = (دننه_واټن - array_دننه_واټن) / T::static_اندازه;
+    إذا (unlikely (شاخص_2 > bad_شاخص))
+      أرجع bad_شاخص;
+    أرجع شاخص_2;
   }
-  template <typename T>
-  static int byteOffsetToIndex (int64_t offset,
-				const void *base,
-				const T *array)
+  کينډۍ <ډول_نوم T>
+  ساكن صحيح byte_دننه_واټن_منزل_شاخص (int64_t دننه_واټن,
+				ثابت فراغ *بنسټ,
+				ثابت T *array)
   {
-    return offsetToIndex (offset, base, array);
+    أرجع دننه_واټن_منزل_شاخص (دننه_واټن, بنسټ, array);
   }
-  template <typename T>
-  static int wordOffsetToIndex (int64_t offset,
-				const void *base,
-				const T *array)
+  کينډۍ <ډول_نوم T>
+  ساكن صحيح کلمه_دننه_واټن_منزل_شاخص (int64_t دننه_واټن,
+				ثابت فراغ *بنسټ,
+				ثابت T *array)
   {
-    return offsetToIndex (2 * offset, base, array);
+    أرجع دننه_واټن_منزل_شاخص (2 * دننه_واټن, بنسټ, array);
   }
 };
-struct ExtendedTypes
+بنية ExtendedTypes
 {
-  static constexpr bool extended = true;
-  typedef HBUINT32 HBUINT;
-  typedef HBUINT16 HBUSHORT;
-  typedef Lookup<HBUINT16> ClassTypeNarrow;
-  typedef Lookup<HBUINT16> ClassTypeWide;
+  ساكن constexpr منطقي extended = ریښتیا;
+  تعريفنوع HBUINT32 HBUINT;
+  تعريفنوع HBUINT16 HBUSHORT;
+  تعريفنوع Lookup<HBUINT16> ClassTypeNarrow;
+  تعريفنوع Lookup<HBUINT16> ClassTypeWide;
 
-  template <typename T>
-  static unsigned int offsetToIndex (unsigned int offset,
-				     const void *base HB_UNUSED,
-				     const T *array HB_UNUSED)
+  کينډۍ <ډول_نوم T>
+  ساكن بینښه صحيح دننه_واټن_منزل_شاخص (بینښه صحيح دننه_واټن,
+				     ثابت فراغ *بنسټ HB_ناکارول_شوی,
+				     ثابت T *array HB_ناکارول_شوی)
   {
-    return offset;
+    أرجع دننه_واټن;
   }
-  template <typename T>
-  static unsigned int byteOffsetToIndex (unsigned int offset,
-					 const void *base HB_UNUSED,
-					 const T *array HB_UNUSED)
+  کينډۍ <ډول_نوم T>
+  ساكن بینښه صحيح byte_دننه_واټن_منزل_شاخص (بینښه صحيح دننه_واټن,
+					 ثابت فراغ *بنسټ HB_ناکارول_شوی,
+					 ثابت T *array HB_ناکارول_شوی)
   {
-    return offset / 2;
+    أرجع دننه_واټن / 2;
   }
-  template <typename T>
-  static unsigned int wordOffsetToIndex (unsigned int offset,
-					 const void *base HB_UNUSED,
-					 const T *array HB_UNUSED)
+  کينډۍ <ډول_نوم T>
+  ساكن بینښه صحيح کلمه_دننه_واټن_منزل_شاخص (بینښه صحيح دننه_واټن,
+					 ثابت فراغ *بنسټ HB_ناکارول_شوی,
+					 ثابت T *array HB_ناکارول_شوی)
   {
-    return offset;
+    أرجع دننه_واټن;
   }
 };
 
-template <typename Types, typename EntryData, typename Flags>
-struct StateTableDriver
+کينډۍ <ډول_نوم Types, ډول_نوم ثبت_معلومات, ډول_نوم Flags>
+بنية State_جدول_Driver
 {
-  using StateTableT = StateTable<Types, EntryData>;
-  using EntryT = Entry<EntryData>;
+  کارول State_جدول_T = State_جدول<Types, ثبت_معلومات>;
+  کارول ثبت_T = ثبت_2<ثبت_معلومات>;
 
-  StateTableDriver (const StateTableT &machine_,
+  State_جدول_Driver (ثابت State_جدول_T &machine_,
 		    hb_face_t *face_) :
 	      machine (machine_),
-	      num_glyphs (face_->get_num_glyphs ()) {}
+	      عدد_glyphs (face_->get_عدد_glyphs ()) {}
 
-  template <typename context_t>
-  void drive (context_t *c, hb_aat_apply_context_t *ac)
+  کينډۍ <ډول_نوم context_t>
+  فراغ drive (context_t *c, hb_aat_apply_context_t *ac)
   {
-    hb_buffer_t *buffer = ac->buffer;
+    hb_بفر_t *بفر = ac->بفر;
 
-    if (!c->in_place)
-      buffer->clear_output ();
+    إذا (!c->in_place)
+      بفر->clear_output ();
 
-    int state = StateTableT::STATE_START_OF_TEXT;
+    صحيح state = State_جدول_T::STATE_پیل_د_متن;
     // If there's only one range, we already checked the flag.
-    auto *last_range = ac->range_flags && (ac->range_flags->length > 1) ? &(*ac->range_flags)[0] : nullptr;
-    const bool start_state_safe_to_break_eot =
-      !c->table->is_actionable (machine.get_entry (StateTableT::STATE_START_OF_TEXT, CLASS_END_OF_TEXT));
-    for (buffer->idx = 0; buffer->successful;)
+    خپلکاری *وروستی_range = ac->range_flags && (ac->range_flags->اوږدتیا > 1) ? &(*ac->range_flags)[0] : تش_اشاره;
+    ثابت منطقي پیل_state_خوندي_منزل_break_eot =
+      !c->جدول->is_actionable (machine.get_ثبت (State_جدول_T::STATE_پیل_د_متن, CLASS_پای_ټکی_د_متن));
+    لكل (بفر->idx = 0; بفر->successful;)
     {
-      unsigned int klass = likely (buffer->idx < buffer->len) ?
-			   machine.get_class (buffer->cur().codepoint, num_glyphs, ac->machine_class_cache) :
-			   (unsigned) CLASS_END_OF_TEXT;
+      بینښه صحيح klass = likely (بفر->idx < بفر->len) ?
+			   machine.get_class (بفر->cur().codepoint, عدد_glyphs, ac->machine_class_cache) :
+			   (بینښه) CLASS_پای_ټکی_د_متن;
     resume:
-      DEBUG_MSG (APPLY, nullptr, "c%u at %u", klass, buffer->idx);
-      const EntryT &entry = machine.get_entry (state, klass);
-      const int next_state = machine.new_state (entry.newState);
+      DEBUG_پیغام (APPLY, تش_اشاره, "c%u at %u", klass, بفر->idx);
+      ثابت ثبت_T &ثبت = machine.get_ثبت (state, klass);
+      ثابت صحيح بل_state = machine.new_state (ثبت.newState);
 
-      bool is_not_epsilon_transition = !(entry.flags & Flags::DontAdvance);
-      bool is_not_actionable = !c->table->is_actionable (entry);
+      منطقي is_not_epsilon_transition = !(ثبت.flags & Flags::DontAdvance);
+      منطقي is_not_actionable = !c->جدول->is_actionable (ثبت);
 
-      if (unlikely (last_range))
+      إذا (unlikely (وروستی_range))
       {
 	/* This block is copied in NoncontextualSubtable::apply. Keep in sync. */
-	auto *range = last_range;
-	if (buffer->idx < buffer->len)
+	خپلکاری *range = وروستی_range;
+	إذا (بفر->idx < بفر->len)
 	{
-	  unsigned cluster = buffer->cur().cluster;
-	  while (cluster < range->cluster_first)
+	  بینښه cluster = بفر->cur().cluster;
+	  طالما (cluster < range->cluster_لومړی)
 	    range--;
-	  while (cluster > range->cluster_last)
+	  طالما (cluster > range->cluster_وروستی)
 	    range++;
 
 
-	  last_range = range;
+	  وروستی_range = range;
 	}
-	if (!(range->flags & ac->subtable_flags))
+	إذا (!(range->flags & ac->subtable_flags))
 	{
-	  if (buffer->idx == buffer->len)
-	    break;
+	  إذا (بفر->idx == بفر->len)
+	    اكسر;
 
-	  state = StateTableT::STATE_START_OF_TEXT;
-	  (void) buffer->next_glyph ();
-	  continue;
+	  state = State_جدول_T::STATE_پیل_د_متن;
+	  (فراغ) بفر->بل_glyph ();
+	  استمر;
 	}
       }
-      else
+      وإلا
       {
 	// Fast path for when transitioning from start-state to start-state with
 	// no action and advancing. Do so as long as the class remains the same.
 	// This is common with runs of non-actionable glyphs.
 
-	bool is_null_transition = state == StateTableT::STATE_START_OF_TEXT &&
-				  next_state == StateTableT::STATE_START_OF_TEXT &&
-				  start_state_safe_to_break_eot &&
+	منطقي is_null_transition = state == State_جدول_T::STATE_پیل_د_متن &&
+				  بل_state == State_جدول_T::STATE_پیل_د_متن &&
+				  پیل_state_خوندي_منزل_break_eot &&
 				  is_not_actionable &&
 				  is_not_epsilon_transition;
 
-	if (is_null_transition)
+	إذا (is_null_transition)
 	{
-	  unsigned old_klass = klass;
-	  do
+	  بینښه old_klass = klass;
+	  افعل
 	  {
-	    c->transition (buffer, this, entry);
+	    c->transition (بفر, هذا, ثبت);
 
-	    if (buffer->idx == buffer->len || !buffer->successful)
-	      break;
+	    إذا (بفر->idx == بفر->len || !بفر->successful)
+	      اكسر;
 
-	    (void) buffer->next_glyph ();
+	    (فراغ) بفر->بل_glyph ();
 
-	    klass = likely (buffer->idx < buffer->len) ?
-		     machine.get_class (buffer->cur().codepoint, num_glyphs, ac->machine_class_cache) :
-		     (unsigned) CLASS_END_OF_TEXT;
-	  } while (klass == old_klass);
+	    klass = likely (بفر->idx < بفر->len) ?
+		     machine.get_class (بفر->cur().codepoint, عدد_glyphs, ac->machine_class_cache) :
+		     (بینښه) CLASS_پای_ټکی_د_متن;
+	  } طالما (klass == old_klass);
 
-	  if (buffer->idx == buffer->len || !buffer->successful)
-	    break;
+	  إذا (بفر->idx == بفر->len || !بفر->successful)
+	    اكسر;
 
-	  goto resume;
+	  اذهب resume;
 	}
       }
 
@@ -1350,61 +1350,61 @@ struct StateTableDriver
        *
        *   https://github.com/harfbuzz/harfbuzz/issues/2860
        */
-      const EntryT *wouldbe_entry;
-      bool is_safe_to_break =
+      ثابت ثبت_T *wouldbe_ثبت;
+      منطقي is_خوندي_منزل_break =
       (
           /* 1. */
-          !c->table->is_actionable (entry) &&
+          !c->جدول->is_actionable (ثبت) &&
 
           /* 2. */
           // This one is meh, I know...
 	  (
-                 state == StateTableT::STATE_START_OF_TEXT
-              || ((entry.flags & Flags::DontAdvance) && next_state == StateTableT::STATE_START_OF_TEXT)
+                 state == State_جدول_T::STATE_پیل_د_متن
+              || ((ثبت.flags & Flags::DontAdvance) && بل_state == State_جدول_T::STATE_پیل_د_متن)
               || (
 		    /* 2c. */
-		    wouldbe_entry = &machine.get_entry(StateTableT::STATE_START_OF_TEXT, klass)
+		    wouldbe_ثبت = &machine.get_ثبت(State_جدول_T::STATE_پیل_د_متن, klass)
 		    ,
 		    /* 2c'. */
-		    !c->table->is_actionable (*wouldbe_entry) &&
+		    !c->جدول->is_actionable (*wouldbe_ثبت) &&
 		    /* 2c". */
 		    (
-		      next_state == machine.new_state(wouldbe_entry->newState) &&
-		      (entry.flags & Flags::DontAdvance) == (wouldbe_entry->flags & Flags::DontAdvance)
+		      بل_state == machine.new_state(wouldbe_ثبت->newState) &&
+		      (ثبت.flags & Flags::DontAdvance) == (wouldbe_ثبت->flags & Flags::DontAdvance)
 		    )
 		 )
 	  ) &&
 
           /* 3. */
-          !c->table->is_actionable (machine.get_entry (state, CLASS_END_OF_TEXT))
+          !c->جدول->is_actionable (machine.get_ثبت (state, CLASS_پای_ټکی_د_متن))
       );
 
-      if (!is_safe_to_break && buffer->backtrack_len () && buffer->idx < buffer->len)
-	buffer->unsafe_to_break_from_outbuffer (buffer->backtrack_len () - 1, buffer->idx + 1);
+      إذا (!is_خوندي_منزل_break && بفر->backtrack_len () && بفر->idx < بفر->len)
+	بفر->unsafe_منزل_break_from_outbuffer (بفر->backtrack_len () - 1, بفر->idx + 1);
 
-      c->transition (buffer, this, entry);
+      c->transition (بفر, هذا, ثبت);
 
-      state = next_state;
-      DEBUG_MSG (APPLY, nullptr, "s%d", state);
+      state = بل_state;
+      DEBUG_پیغام (APPLY, تش_اشاره, "s%d", state);
 
-      if (buffer->idx == buffer->len)
-	break;
+      إذا (بفر->idx == بفر->len)
+	اكسر;
 
-      if (is_not_epsilon_transition || buffer->max_ops-- <= 0)
-	(void) buffer->next_glyph ();
+      إذا (is_not_epsilon_transition || بفر->max_ops-- <= 0)
+	(فراغ) بفر->بل_glyph ();
     }
 
-    if (!c->in_place)
-      buffer->sync ();
+    إذا (!c->in_place)
+      بفر->متزامن ();
   }
 
-  public:
-  const StateTableT &machine;
-  unsigned int num_glyphs;
+  عام:
+  ثابت State_جدول_T &machine;
+  بینښه صحيح عدد_glyphs;
 };
 
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_COMMON_HH */
+#د_که_پای /* HB_AAT_LAYOUT_COMMON_HH */

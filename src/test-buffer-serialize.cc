@@ -24,112 +24,112 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#ضمن "hb.h"
+#ضمن "hb-ot.h"
+#که_تعریف_شوی HAVE_FREETYPE
+#ضمن "hb-ft.h"
+#د_که_پای
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#که_تعریف_شوی HB_NO_OPEN
+#تعریف_کړه hb_blob_create_from_file_or_fail(x)  hb_blob_get_تشه ()
+#د_که_پای
 
-int
-main (int argc, char **argv)
+صحيح
+اصلي (صحيح argc, حرف **argv)
 {
-  bool ret = true;
+  منطقي ret = ریښتیا;
 
-#ifndef HB_NO_BUFFER_SERIALIZE
+#که_نه_تعریف_شوی HB_NO_بفر_SERIALIZE
 
-  hb_buffer_serialize_format_t format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
-  if (argc > 1)
+  hb_بفر_serialize_format_t format = HB_بفر_SERIALIZE_FORMAT_متن;
+  إذا (argc > 1)
   {
-    if (!strcmp (argv[1], "--json"))
+    إذا (!strcmp (argv[1], "--json"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_JSON;
+      format = HB_بفر_SERIALIZE_FORMAT_JSON;
       argc--;
       argv++;
     }
-    else if (!strcmp (argv[1], "--text"))
+    وإلا إذا (!strcmp (argv[1], "--text"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
+      format = HB_بفر_SERIALIZE_FORMAT_متن;
       argc--;
       argv++;
     }
   }
 
-  if (argc < 2)
-    argv[1] = (char *) "/dev/null";
+  إذا (argc < 2)
+    argv[1] = (حرف *) "/dev/null";
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = تش_اشاره;
 
-  unsigned int upem = hb_face_get_upem (face);
+  بینښه صحيح upem = hb_face_get_upem (face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
-  hb_font_set_scale (font, upem, upem);
+  hb_font_سېټ_scale (font, upem, upem);
 
-  hb_buffer_t *buf;
-  buf = hb_buffer_create ();
+  hb_بفر_t *buf;
+  buf = hb_بفر_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  حرف کرښه[BUFSIZ], بهر[BUFSIZ];
+  طالما (fgets (کرښه, حجم(کرښه), stdin))
   {
-    hb_buffer_clear_contents (buf);
+    hb_بفر_clear_contents (buf);
 
-    while (true)
+    طالما (ریښتیا)
     {
-      const char *p = line;
-      const char *end = p + strlen (p);
-      if (p < end && *(end - 1) == '\n')
-	  end--;
-      if (!hb_buffer_deserialize_glyphs (buf,
-					 p, end - p, &p,
+      ثابت حرف *p = کرښه;
+      ثابت حرف *پای_ټکی = p + مزي_اوږدوالی (p);
+      إذا (p < پای_ټکی && *(پای_ټکی - 1) == '\n')
+	  پای_ټکی--;
+      إذا (!hb_بفر_deserialize_glyphs (buf,
+					 p, پای_ټکی - p, &p,
 					 font,
 					 format))
       {
-        ret = false;
-        break;
+        ret = خطأ;
+        اكسر;
       }
 
-      if (*p == '\n')
-        break;
-      if (p == line)
+      إذا (*p == '\n')
+        اكسر;
+      إذا (p == کرښه)
       {
-	ret = false;
-	break;
+	ret = خطأ;
+	اكسر;
       }
 
-      unsigned len = strlen (p);
-      memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
-        line[len] = '\0';
+      بینښه len = مزي_اوږدوالی (p);
+      memmove (کرښه, p, len);
+      إذا (!fgets (کرښه + len, حجم(کرښه) - len, stdin))
+        کرښه[len] = '\0';
     }
 
-    unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    بینښه شمېر = hb_بفر_get_اوږدتیا (buf);
+    لكل (بینښه دننه_واټن = 0; دننه_واټن < شمېر;)
     {
-      unsigned len;
-      offset += hb_buffer_serialize_glyphs (buf, offset, count,
-					    out, sizeof (out), &len,
+      بینښه len;
+      دننه_واټن += hb_بفر_serialize_glyphs (buf, دننه_واټن, شمېر,
+					    بهر, حجم (بهر), &len,
 					    font,
 					    format,
-					    HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS);
-      fwrite (out, 1, len, stdout);
+					    HB_بفر_SERIALIZE_FLAG_GLYPH_FLAGS);
+      fwrite (بهر, 1, len, stdout);
     }
     fputs ("\n", stdout);
   }
 
-  hb_buffer_destroy (buf);
+  hb_بفر_destroy (buf);
 
   hb_font_destroy (font);
 
-#endif
+#د_که_پای
 
-  return !ret;
+  أرجع !ret;
 }

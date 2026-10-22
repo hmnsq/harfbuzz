@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_H
-#define HB_AAT_H
-#define HB_AAT_H_IN
+#که_نه_تعریف_شوی HB_AAT_H
+#تعریف_کړه HB_AAT_H
+#تعریف_کړه HB_AAT_H_دننه
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#include "hb-aat-layout.h"
+#ضمن "hb-aat-layout.h"
 
 HB_BEGIN_DECLS
 
-HB_END_DECLS
+HB_پای_ټکی_DECLS
 
-#undef HB_AAT_H_IN
-#endif /* HB_AAT_H */
+#تعریف_لغوه HB_AAT_H_دننه
+#د_که_پای /* HB_AAT_H */

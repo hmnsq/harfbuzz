@@ -24,43 +24,43 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#ضمن "graph.hh"
+#ضمن "../hb-ot-layout-gsubgpos.hh"
 
-#ifndef GRAPH_GSUBGPOS_CONTEXT_HH
-#define GRAPH_GSUBGPOS_CONTEXT_HH
+#که_نه_تعریف_شوی ګراف_GSUBGPOS_CONTEXT_HH
+#تعریف_کړه ګراف_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+نطاق ګراف {
 
-struct Lookup;
+بنية Lookup;
 
-struct gsubgpos_graph_context_t
+بنية gsubgpos_ګراف_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
-                                                                      graph_t& graph_);
+  HB_دننی ساكن ګراف_پایله_t<gsubgpos_ګراف_context_t> create (hb_نښان_t جدول_نښان_3,
+                                                                      ګراف_t& ګراف_2);
 
-  hb_tag_t table_tag;
-  graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  hb_نښان_t جدول_نښان_2;
+  ګراف_t& ګراف;
+  بینښه lookup_list_شاخص;
+  hb_hashmap_t<بینښه, ګراف::Lookup*> lookups;
+  hb_hashmap_t<بینښه, بینښه> subtable_منزل_extension;
+  hb_hashmap_t<بینښه, hb_ویکټور_t<بینښه>> وېشل_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_دننی ګراف_پایله_t<بینښه> create_غوټه (بینښه اندازه);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  ګراف_پایله_t<فراغ> جمع_کړه_بفر (حرف* بفر)
   {
-    return graph.add_buffer (buffer);
+    أرجع ګراف.جمع_کړه_بفر (بفر);
   }
 
- private:
-  HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                        graph_t& graph_);
+ خاص:
+  HB_دننی gsubgpos_ګراف_context_t (hb_نښان_t جدول_نښان_3,
+                                        ګراف_t& ګراف_2);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_دننی بینښه عدد_non_ext_subtables ();
 };
 
 }
 
-#endif  // GRAPH_GSUBGPOS_CONTEXT
+#د_که_پای  // GRAPH_GSUBGPOS_CONTEXT

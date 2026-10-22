@@ -1,35 +1,35 @@
-#ifndef OT_LAYOUT_GPOS_MARKBASEPOS_HH
-#define OT_LAYOUT_GPOS_MARKBASEPOS_HH
+#که_نه_تعریف_شوی OT_LAYOUT_GPOS_MARKBASEPOS_HH
+#تعریف_کړه OT_LAYOUT_GPOS_MARKBASEPOS_HH
 
-#include "MarkBasePosFormat1.hh"
+#ضمن "MarkBasePosFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-struct MarkBasePos
+بنية Mark_بنسټ_Pos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
-  MarkBasePosFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
-  MarkBasePosFormat1_2<MediumTypes>	format2;
-#endif
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }		format;         /* Format identifier */
+  Mark_بنسټ_Pos_Format1_2<SmallTypes>	format1;
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+  Mark_بنسټ_Pos_Format1_2<MediumTypes>	format2;
+#د_که_پای
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  عام:
+  کينډۍ <ډول_نوم context_t, ډول_نوم ...Ts>
+  ډول_نوم context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    إذا (unlikely (!c->may_dispatch (هذا, &u.format.v))) أرجع c->no_dispatch_return_ارزښت ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#که_نه_تعریف_شوی HB_NO_BEYOND_64K
+    حالة 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#د_که_پای
+    افتراضي:return_trace (c->default_return_ارزښت ());
     }
   }
 };
@@ -38,4 +38,4 @@ struct MarkBasePos
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKBASEPOS_HH */
+#د_که_پای /* OT_LAYOUT_GPOS_MARKBASEPOS_HH */
