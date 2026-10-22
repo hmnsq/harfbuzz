@@ -24,35 +24,35 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_CFF1_TABLE_CC
-#define HB_OT_CFF1_TABLE_CC
-#ifdef HB_OT_CFF1_TABLE_CC /* Pacify -Wunused-macros. */
+#جے_بنا_تعریف HB_OT_CFF1_جدول_CC
+#تعریف_کرو HB_OT_CFF1_جدول_CC
+#جے_تعریف_شدہ HB_OT_CFF1_جدول_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_CFF
+#جے_بنا_تعریف HB_NO_CFF
 
-#include "hb-draw.hh"
-#include "hb-algs.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-cff1-interp-cs.hh"
+#ضمن "hb-draw.hh"
+#ضمن "hb-algs.hh"
+#ضمن "hb-ot-cff1-table.hh"
+#ضمن "hb-cff1-interp-cs.hh"
 
-using namespace CFF;
+ورتوں نطاق CFF;
 
-struct sid_to_gid_t
+بنية sid_منزل_gid_t
 {
   uint16_t  sid;
   uint8_t   gid;
 
-  int cmp (uint16_t a) const
+  صحيح cmp (uint16_t a) ثابت
   {
-    if (a == sid) return 0;
-    return (a < sid) ? -1 : 1;
+    إذا (a == sid) أرجع 0;
+    أرجع (a < sid) ? -1 : 1;
   }
 };
 
 /* SID to code */
-static const uint8_t standard_encoding_to_code [] =
+ساكن ثابت uint8_t standard_encoding_منزل_کوڈ [] =
 {
     0,   32,   33,   34,   35,   36,   37,   38,  39,   40,   41,   42,   43,   44,   45,   46,
    47,   48,   49,   50,   51,   52,   53,   54,  55,   56,   57,   58,   59,   60,   61,   62,
@@ -67,7 +67,7 @@ static const uint8_t standard_encoding_to_code [] =
 };
 
 /* SID to code */
-static const uint8_t expert_encoding_to_code [] =
+ساكن ثابت uint8_t expert_encoding_منزل_کوڈ [] =
 {
     0,   32,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,   44,   45,   46,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,   58,   59,    0,    0,    0,
@@ -96,7 +96,7 @@ static const uint8_t expert_encoding_to_code [] =
 };
 
 /* glyph ID to SID */
-static const uint16_t expert_charset_to_sid [] =
+ساكن ثابت uint16_t expert_charset_منزل_sid [] =
 {
     0,    1,  229,  230,  231,  232,  233,  234,  235,  236,  237,  238,   13,   14,   15,   99,
   239,  240,  241,  242,  243,  244,  245,  246,  247,  248,   27,   28,  249,  250,  251,  252,
@@ -112,7 +112,7 @@ static const uint16_t expert_charset_to_sid [] =
 };
 
 /* glyph ID to SID */
-static const uint16_t expert_subset_charset_to_sid [] =
+ساكن ثابت uint16_t expert_subset_charset_منزل_sid [] =
 {
     0,    1,  231,  232,  235,  236,  237,  238,   13,   14,   15,   99,  239,  240,  241,  242,
   243,  244,  245,  246,  247,  248,   27,   28,  249,  250,  251,  253,  254,  255,  256,  257,
@@ -123,7 +123,7 @@ static const uint16_t expert_subset_charset_to_sid [] =
 };
 
 /* SID to glyph ID */
-static const sid_to_gid_t expert_charset_sid_to_gid [] =
+ساكن ثابت sid_منزل_gid_t expert_charset_sid_منزل_gid [] =
 {
     { 1, 1 },     { 13, 12 },   { 14, 13 },   { 15, 14 },
     { 27, 26 },   { 28, 27 },   { 99, 15 },   { 109, 46 },
@@ -170,7 +170,7 @@ static const sid_to_gid_t expert_charset_sid_to_gid [] =
 };
 
 /* SID to glyph ID */
-static const sid_to_gid_t expert_subset_charset_sid_to_gid [] =
+ساكن ثابت sid_منزل_gid_t expert_subset_charset_sid_منزل_gid [] =
 {
   { 1, 1 },       { 13, 8 },      { 14, 9 },      { 15, 10 },
   { 27, 22 },     { 28, 23 },     { 99, 11 },     { 109, 41 },
@@ -197,7 +197,7 @@ static const sid_to_gid_t expert_subset_charset_sid_to_gid [] =
 };
 
 /* code to SID */
-static const uint8_t standard_encoding_to_sid [] =
+ساكن ثابت uint8_t standard_encoding_منزل_sid [] =
 {
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -217,143 +217,143 @@ static const uint8_t standard_encoding_to_sid [] =
     0,   144,   0,    0,    0,  145,    0,    0,  146,  147,  148,  149,    0,    0,    0,    0
 };
 
-hb_codepoint_t OT::cff1::lookup_standard_encoding_for_code (hb_codepoint_t sid)
+hb_codepoint_t OT::cff1::lookup_standard_encoding_for_کوڈ (hb_codepoint_t sid)
 {
-  if (sid < ARRAY_LENGTH (standard_encoding_to_code))
-    return (hb_codepoint_t)standard_encoding_to_code[sid];
-  else
-    return 0;
+  إذا (sid < ARRAY_لمائی (standard_encoding_منزل_کوڈ))
+    أرجع (hb_codepoint_t)standard_encoding_منزل_کوڈ[sid];
+  وإلا
+    أرجع 0;
 }
 
-hb_codepoint_t OT::cff1::lookup_expert_encoding_for_code (hb_codepoint_t sid)
+hb_codepoint_t OT::cff1::lookup_expert_encoding_for_کوڈ (hb_codepoint_t sid)
 {
-  if (sid < ARRAY_LENGTH (expert_encoding_to_code))
-    return (hb_codepoint_t)expert_encoding_to_code[sid];
-  else
-    return 0;
+  إذا (sid < ARRAY_لمائی (expert_encoding_منزل_کوڈ))
+    أرجع (hb_codepoint_t)expert_encoding_منزل_کوڈ[sid];
+  وإلا
+    أرجع 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_charset_for_sid (hb_codepoint_t glyph)
 {
-  if (glyph < ARRAY_LENGTH (expert_charset_to_sid))
-    return (hb_codepoint_t)expert_charset_to_sid[glyph];
-  else
-    return 0;
+  إذا (glyph < ARRAY_لمائی (expert_charset_منزل_sid))
+    أرجع (hb_codepoint_t)expert_charset_منزل_sid[glyph];
+  وإلا
+    أرجع 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_subset_charset_for_sid (hb_codepoint_t glyph)
 {
-  if (glyph < ARRAY_LENGTH (expert_subset_charset_to_sid))
-    return (hb_codepoint_t)expert_subset_charset_to_sid[glyph];
-  else
-    return 0;
+  إذا (glyph < ARRAY_لمائی (expert_subset_charset_منزل_sid))
+    أرجع (hb_codepoint_t)expert_subset_charset_منزل_sid[glyph];
+  وإلا
+    أرجع 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_charset_for_glyph (hb_codepoint_t sid)
 {
-  const auto *pair = hb_sorted_array (expert_charset_sid_to_gid).bsearch (sid);
-  return pair ? pair->gid : 0;
+  ثابت خودکار *pair = hb_sorted_array (expert_charset_sid_منزل_gid).bsearch (sid);
+  أرجع pair ? pair->gid : 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_subset_charset_for_glyph (hb_codepoint_t sid)
 {
-  const auto *pair = hb_sorted_array (expert_subset_charset_sid_to_gid).bsearch (sid);
-  return pair ? pair->gid : 0;
+  ثابت خودکار *pair = hb_sorted_array (expert_subset_charset_sid_منزل_gid).bsearch (sid);
+  أرجع pair ? pair->gid : 0;
 }
 
-hb_codepoint_t OT::cff1::lookup_standard_encoding_for_sid (hb_codepoint_t code)
+hb_codepoint_t OT::cff1::lookup_standard_encoding_for_sid (hb_codepoint_t کوڈ)
 {
-  if (code < ARRAY_LENGTH (standard_encoding_to_sid))
-    return (hb_codepoint_t)standard_encoding_to_sid[code];
-  else
-    return CFF_UNDEF_SID;
+  إذا (کوڈ < ARRAY_لمائی (standard_encoding_منزل_sid))
+    أرجع (hb_codepoint_t)standard_encoding_منزل_sid[کوڈ];
+  وإلا
+    أرجع CFF_UNDEF_SID;
 }
 
-struct bounds_t
+بنية bounds_t
 {
-  void init ()
+  فراغ init ()
   {
-    min.set_int (INT_MAX, INT_MAX);
-    max.set_int (INT_MIN, INT_MIN);
+    min.سیٹ_int (ودھ_توں_ودھ_عدد, ودھ_توں_ودھ_عدد);
+    max.سیٹ_int (INT_MIN, INT_MIN);
   }
 
-  void update (const point_t &pt)
+  فراغ update (ثابت نقطہ_t &pt)
   {
-    if (pt.x < min.x) min.x = pt.x;
-    if (pt.x > max.x) max.x = pt.x;
-    if (pt.y < min.y) min.y = pt.y;
-    if (pt.y > max.y) max.y = pt.y;
+    إذا (pt.x < min.x) min.x = pt.x;
+    إذا (pt.x > max.x) max.x = pt.x;
+    إذا (pt.y < min.y) min.y = pt.y;
+    إذا (pt.y > max.y) max.y = pt.y;
   }
 
-  void merge (const bounds_t &b)
+  فراغ ملاؤ (ثابت bounds_t &b)
   {
-    if (empty ())
-      *this = b;
-    else if (!b.empty ())
+    إذا (خالی_تھاواں_2 ())
+      *هذا = b;
+    وإلا إذا (!b.خالی_تھاواں_2 ())
     {
-      if (b.min.x < min.x) min.x = b.min.x;
-      if (b.max.x > max.x) max.x = b.max.x;
-      if (b.min.y < min.y) min.y = b.min.y;
-      if (b.max.y > max.y) max.y = b.max.y;
+      إذا (b.min.x < min.x) min.x = b.min.x;
+      إذا (b.max.x > max.x) max.x = b.max.x;
+      إذا (b.min.y < min.y) min.y = b.min.y;
+      إذا (b.max.y > max.y) max.y = b.max.y;
     }
   }
 
-  void offset (const point_t &delta)
+  فراغ وتھ (ثابت نقطہ_t &delta)
   {
-    if (!empty ())
+    إذا (!خالی_تھاواں_2 ())
     {
       min.move (delta);
       max.move (delta);
     }
   }
 
-  bool empty () const { return (min.x >= max.x) || (min.y >= max.y); }
+  منطقي خالی_تھاواں_2 () ثابت { أرجع (min.x >= max.x) || (min.y >= max.y); }
 
-  point_t min;
-  point_t max;
+  نقطہ_t min;
+  نقطہ_t max;
 };
 
-struct cff1_extents_param_t
+بنية cff1_extents_param_t
 {
-  cff1_extents_param_t (const OT::cff1::accelerator_t *_cff) : cff (_cff)
+  cff1_extents_param_t (ثابت OT::cff1::accelerator_t *_cff) : cff (_cff)
   {
     bounds.init ();
   }
 
-  void start_path   ()       { path_open = true; }
-  void end_path     ()       { path_open = false; }
-  bool is_path_open () const { return path_open; }
+  فراغ شروع_رستہ   ()       { رستہ_open = سچ; }
+  فراغ سرا_رستہ     ()       { رستہ_open = خطأ; }
+  منطقي is_رستہ_open () ثابت { أرجع رستہ_open; }
 
-  bool path_open = false;
+  منطقي رستہ_open = خطأ;
   bounds_t bounds;
 
-  const OT::cff1::accelerator_t *cff;
+  ثابت OT::cff1::accelerator_t *cff;
 };
 
-struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_cs_interp_env_t, cff1_extents_param_t>
+بنية cff1_رستہ_procs_extents_t : رستہ_procs_t<cff1_رستہ_procs_extents_t, cff1_cs_interp_env_t, cff1_extents_param_t>
 {
-  static void moveto (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt)
+  ساكن فراغ moveto (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, ثابت نقطہ_t &pt)
   {
-    param.end_path ();
+    param.سرا_رستہ ();
     env.moveto (pt);
   }
 
-  static void line (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1)
+  ساكن فراغ سطر (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, ثابت نقطہ_t &pt1)
   {
-    if (!param.is_path_open ())
+    إذا (!param.is_رستہ_open ())
     {
-      param.start_path ();
+      param.شروع_رستہ ();
       param.bounds.update (env.get_pt ());
     }
     env.moveto (pt1);
     param.bounds.update (env.get_pt ());
   }
 
-  static void curve (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ساكن فراغ ونگ (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, ثابت نقطہ_t &pt1, ثابت نقطہ_t &pt2, ثابت نقطہ_t &pt3)
   {
-    if (!param.is_path_open ())
+    إذا (!param.is_رستہ_open ())
     {
-      param.start_path ();
+      param.شروع_رستہ ();
       param.bounds.update (env.get_pt ());
     }
     /* include control points */
@@ -364,96 +364,96 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
   }
 };
 
-static bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac=false, int64_t *budget = nullptr);
+ساكن منطقي _get_bounds (ثابت OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, منطقي وچ_seac=خطأ, int64_t *budget = خالی_سوچک);
 
-struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_extents_param_t, cff1_path_procs_extents_t>
+بنية cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_extents_param_t, cff1_رستہ_procs_extents_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, cff1_extents_param_t& param)
+  ساكن فراغ process_seac (cff1_cs_interp_env_t &env, cff1_extents_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
-    point_t delta;
-    delta.x = env.argStack[n-4];
-    delta.y = env.argStack[n-3];
-    hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
-    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
+    بنانشانی صحيح  n = env.arg_ڈھیر.get_گنتی ();
+    نقطہ_t delta;
+    delta.x = env.arg_ڈھیر[n-4];
+    delta.y = env.arg_ڈھیر[n-3];
+    hb_codepoint_t ادھار = param.cff->std_کوڈ_منزل_glyph (env.arg_ڈھیر[n-2].منزل_int ());
+    hb_codepoint_t accent = param.cff->std_کوڈ_منزل_glyph (env.arg_ڈھیر[n-1].منزل_int ());
 
-    bounds_t  base_bounds, accent_bounds;
-    if (likely (!env.in_seac && base && accent
-	       && _get_bounds (param.cff, base, base_bounds, true, env.get_budget ())
-	       && _get_bounds (param.cff, accent, accent_bounds, true, env.get_budget ())))
+    bounds_t  ادھار_bounds, accent_bounds;
+    إذا (likely (!env.وچ_seac && ادھار && accent
+	       && _get_bounds (param.cff, ادھار, ادھار_bounds, سچ, env.get_budget ())
+	       && _get_bounds (param.cff, accent, accent_bounds, سچ, env.get_budget ())))
     {
-      param.bounds.merge (base_bounds);
-      accent_bounds.offset (delta);
-      param.bounds.merge (accent_bounds);
+      param.bounds.ملاؤ (ادھار_bounds);
+      accent_bounds.وتھ (delta);
+      param.bounds.ملاؤ (accent_bounds);
     }
-    else
-      env.set_error ();
+    وإلا
+      env.سیٹ_error ();
   }
 };
 
-bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac, int64_t *budget)
+منطقي _get_bounds (ثابت OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, منطقي وچ_seac, int64_t *budget)
 {
   bounds.init ();
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  إذا (unlikely (!cff->is_valid () || (glyph >= cff->عدد_glyphs))) أرجع خطأ;
 
-  unsigned int fd = cff->fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*cff->charStrings)[glyph];
+  بنانشانی صحيح fd = cff->fdSelect->get_fd (glyph);
+  ثابت hb_ubytes_t str = (*cff->char_لڑیاں)[glyph];
   cff1_cs_interp_env_t env (str, *cff, fd);
-  env.set_in_seac (in_seac);
+  env.سیٹ_وچ_seac (وچ_seac);
   cff1_cs_interpreter_t<cff1_cs_opset_extents_t, cff1_extents_param_t> interp (env);
   cff1_extents_param_t param (cff);
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  إذا (unlikely (!interp.interpret (param, budget))) أرجع خطأ;
   bounds = param.bounds;
-  return true;
+  أرجع سچ;
 }
 
-bool OT::cff1::accelerator_t::get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget) const
+منطقي OT::cff1::accelerator_t::get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget) ثابت
 {
-#ifdef HB_NO_OT_FONT_CFF
+#جے_تعریف_شدہ HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
-#endif
+  أرجع سچ;
+#جے_انت
 
   bounds_t bounds;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ڈھیر_budget = HB_BUDGET_GLYPH;
+  إذا (!budget) budget = &ڈھیر_budget;
 
-  if (!_get_bounds (this, glyph, bounds, false, budget))
-    return false;
+  إذا (!_get_bounds (هذا, glyph, bounds, خطأ, budget))
+    أرجع خطأ;
 
-  if (bounds.min.x >= bounds.max.x)
+  إذا (bounds.min.x >= bounds.max.x)
   {
-    extents->width = 0;
+    extents->چوڑائی = 0;
     extents->x_bearing = 0;
   }
-  else
+  وإلا
   {
-    double x_bearing = roundf (bounds.min.x.to_real ());
-    extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-    extents->width = hb_clamp_to<hb_position_t> ((double) roundf (bounds.max.x.to_real ()) - x_bearing);
+    مزدوج x_bearing = roundf (bounds.min.x.منزل_real ());
+    extents->x_bearing = hb_clamp_منزل<hb_position_t> (x_bearing);
+    extents->چوڑائی = hb_clamp_منزل<hb_position_t> ((مزدوج) roundf (bounds.max.x.منزل_real ()) - x_bearing);
   }
-  if (bounds.min.y >= bounds.max.y)
+  إذا (bounds.min.y >= bounds.max.y)
   {
-    extents->height = 0;
+    extents->اچائی = 0;
     extents->y_bearing = 0;
   }
-  else
+  وإلا
   {
-    double y_bearing = roundf (bounds.max.y.to_real ());
-    extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-    extents->height = hb_clamp_to<hb_position_t> ((double) roundf (bounds.min.y.to_real ()) - y_bearing);
+    مزدوج y_bearing = roundf (bounds.max.y.منزل_real ());
+    extents->y_bearing = hb_clamp_منزل<hb_position_t> (y_bearing);
+    extents->اچائی = hb_clamp_منزل<hb_position_t> ((مزدوج) roundf (bounds.min.y.منزل_real ()) - y_bearing);
   }
 
   font->scale_glyph_extents (extents);
 
-  return true;
+  أرجع سچ;
 }
 
-struct cff1_path_param_t
+بنية cff1_رستہ_param_t
 {
-  cff1_path_param_t (const OT::cff1::accelerator_t *cff_, hb_font_t *font_,
-		     hb_draw_session_t &draw_session_, point_t *delta_)
+  cff1_رستہ_param_t (ثابت OT::cff1::accelerator_t *cff_, hb_font_t *font_,
+		     hb_draw_session_t &draw_session_, نقطہ_t *delta_)
   {
     draw_session = &draw_session_;
     cff = cff_;
@@ -461,197 +461,197 @@ struct cff1_path_param_t
     delta = delta_;
   }
 
-  void move_to (const point_t &p)
+  فراغ move_منزل (ثابت نقطہ_t &p)
   {
-    point_t point = p;
-    if (delta) point.move (*delta);
-    draw_session->move_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
+    نقطہ_t نقطہ = p;
+    إذا (delta) نقطہ.move (*delta);
+    draw_session->move_منزل (font->em_fscalef_x (نقطہ.x.منزل_real ()), font->em_fscalef_y (نقطہ.y.منزل_real ()));
   }
 
-  void line_to (const point_t &p)
+  فراغ سطر_منزل (ثابت نقطہ_t &p)
   {
-    point_t point = p;
-    if (delta) point.move (*delta);
-    draw_session->line_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
+    نقطہ_t نقطہ = p;
+    إذا (delta) نقطہ.move (*delta);
+    draw_session->سطر_منزل (font->em_fscalef_x (نقطہ.x.منزل_real ()), font->em_fscalef_y (نقطہ.y.منزل_real ()));
   }
 
-  void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
+  فراغ cubic_منزل (ثابت نقطہ_t &p1, ثابت نقطہ_t &p2, ثابت نقطہ_t &p3)
   {
-    point_t point1 = p1, point2 = p2, point3 = p3;
-    if (delta)
+    نقطہ_t point1 = p1, point2 = p2, point3 = p3;
+    إذا (delta)
     {
       point1.move (*delta);
       point2.move (*delta);
       point3.move (*delta);
     }
-    draw_session->cubic_to (font->em_fscalef_x (point1.x.to_real ()), font->em_fscalef_y (point1.y.to_real ()),
-			   font->em_fscalef_x (point2.x.to_real ()), font->em_fscalef_y (point2.y.to_real ()),
-			   font->em_fscalef_x (point3.x.to_real ()), font->em_fscalef_y (point3.y.to_real ()));
+    draw_session->cubic_منزل (font->em_fscalef_x (point1.x.منزل_real ()), font->em_fscalef_y (point1.y.منزل_real ()),
+			   font->em_fscalef_x (point2.x.منزل_real ()), font->em_fscalef_y (point2.y.منزل_real ()),
+			   font->em_fscalef_x (point3.x.منزل_real ()), font->em_fscalef_y (point3.y.منزل_real ()));
   }
 
-  void end_path () { draw_session->close_path (); }
+  فراغ سرا_رستہ () { draw_session->close_رستہ (); }
 
   hb_font_t *font;
   hb_draw_session_t *draw_session;
-  point_t *delta;
+  نقطہ_t *delta;
 
-  const OT::cff1::accelerator_t *cff;
+  ثابت OT::cff1::accelerator_t *cff;
 };
 
-struct cff1_path_procs_path_t : path_procs_t<cff1_path_procs_path_t, cff1_cs_interp_env_t, cff1_path_param_t>
+بنية cff1_رستہ_procs_رستہ_t : رستہ_procs_t<cff1_رستہ_procs_رستہ_t, cff1_cs_interp_env_t, cff1_رستہ_param_t>
 {
-  static void moveto (cff1_cs_interp_env_t &env, cff1_path_param_t& param, const point_t &pt)
+  ساكن فراغ moveto (cff1_cs_interp_env_t &env, cff1_رستہ_param_t& param, ثابت نقطہ_t &pt)
   {
-    param.move_to (pt);
+    param.move_منزل (pt);
     env.moveto (pt);
   }
 
-  static void line (cff1_cs_interp_env_t &env, cff1_path_param_t &param, const point_t &pt1)
+  ساكن فراغ سطر (cff1_cs_interp_env_t &env, cff1_رستہ_param_t &param, ثابت نقطہ_t &pt1)
   {
-    param.line_to (pt1);
+    param.سطر_منزل (pt1);
     env.moveto (pt1);
   }
 
-  static void curve (cff1_cs_interp_env_t &env, cff1_path_param_t &param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ساكن فراغ ونگ (cff1_cs_interp_env_t &env, cff1_رستہ_param_t &param, ثابت نقطہ_t &pt1, ثابت نقطہ_t &pt2, ثابت نقطہ_t &pt3)
   {
-    param.cubic_to (pt1, pt2, pt3);
+    param.cubic_منزل (pt1, pt2, pt3);
     env.moveto (pt3);
   }
 };
 
-static bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
-		       hb_draw_session_t &draw_session, bool in_seac = false, point_t *delta = nullptr,
-		       int64_t *budget = nullptr);
+ساكن منطقي get_رستہ_2 (ثابت OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
+		       hb_draw_session_t &draw_session, منطقي وچ_seac = خطأ, نقطہ_t *delta = خالی_سوچک,
+		       int64_t *budget = خالی_سوچک);
 
-struct cff1_cs_opset_path_t : cff1_cs_opset_t<cff1_cs_opset_path_t, cff1_path_param_t, cff1_path_procs_path_t>
+بنية cff1_cs_opset_رستہ_t : cff1_cs_opset_t<cff1_cs_opset_رستہ_t, cff1_رستہ_param_t, cff1_رستہ_procs_رستہ_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, cff1_path_param_t& param)
+  ساكن فراغ process_seac (cff1_cs_interp_env_t &env, cff1_رستہ_param_t& param)
   {
     /* End previous path */
-    param.end_path ();
+    param.سرا_رستہ ();
 
-    unsigned int n = env.argStack.get_count ();
-    point_t delta;
-    delta.x = env.argStack[n-4];
-    delta.y = env.argStack[n-3];
-    hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
-    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
+    بنانشانی صحيح n = env.arg_ڈھیر.get_گنتی ();
+    نقطہ_t delta;
+    delta.x = env.arg_ڈھیر[n-4];
+    delta.y = env.arg_ڈھیر[n-3];
+    hb_codepoint_t ادھار = param.cff->std_کوڈ_منزل_glyph (env.arg_ڈھیر[n-2].منزل_int ());
+    hb_codepoint_t accent = param.cff->std_کوڈ_منزل_glyph (env.arg_ڈھیر[n-1].منزل_int ());
 
-    if (unlikely (!(!env.in_seac && base && accent
-		    && _get_path (param.cff, param.font, base, *param.draw_session, true, nullptr, env.get_budget ())
-		    && _get_path (param.cff, param.font, accent, *param.draw_session, true, &delta, env.get_budget ()))))
-      env.set_error ();
+    إذا (unlikely (!(!env.وچ_seac && ادھار && accent
+		    && get_رستہ_2 (param.cff, param.font, ادھار, *param.draw_session, سچ, خالی_سوچک, env.get_budget ())
+		    && get_رستہ_2 (param.cff, param.font, accent, *param.draw_session, سچ, &delta, env.get_budget ()))))
+      env.سیٹ_error ();
   }
 };
 
-bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
-		hb_draw_session_t &draw_session, bool in_seac, point_t *delta,
+منطقي get_رستہ_2 (ثابت OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
+		hb_draw_session_t &draw_session, منطقي وچ_seac, نقطہ_t *delta,
 		int64_t *budget)
 {
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  إذا (unlikely (!cff->is_valid () || (glyph >= cff->عدد_glyphs))) أرجع خطأ;
 
-  unsigned int fd = cff->fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*cff->charStrings)[glyph];
+  بنانشانی صحيح fd = cff->fdSelect->get_fd (glyph);
+  ثابت hb_ubytes_t str = (*cff->char_لڑیاں)[glyph];
   cff1_cs_interp_env_t env (str, *cff, fd);
-  env.set_in_seac (in_seac);
-  cff1_cs_interpreter_t<cff1_cs_opset_path_t, cff1_path_param_t> interp (env);
-  cff1_path_param_t param (cff, font, draw_session, delta);
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  env.سیٹ_وچ_seac (وچ_seac);
+  cff1_cs_interpreter_t<cff1_cs_opset_رستہ_t, cff1_رستہ_param_t> interp (env);
+  cff1_رستہ_param_t param (cff, font, draw_session, delta);
+  إذا (unlikely (!interp.interpret (param, budget))) أرجع خطأ;
 
   /* Let's end the path specially since it is called inside seac also */
-  param.end_path ();
+  param.سرا_رستہ ();
 
-  return true;
+  أرجع سچ;
 }
 
-bool OT::cff1::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget) const
+منطقي OT::cff1::accelerator_t::get_رستہ (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget) ثابت
 {
-#ifdef HB_NO_OT_FONT_CFF
+#جے_تعریف_شدہ HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
-#endif
+  أرجع سچ;
+#جے_انت
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ڈھیر_budget = HB_BUDGET_GLYPH;
+  إذا (!budget) budget = &ڈھیر_budget;
 
-  return _get_path (this, font, glyph, draw_session, false, nullptr, budget);
+  أرجع get_رستہ_2 (هذا, font, glyph, draw_session, خطأ, خالی_سوچک, budget);
 }
 
-struct get_seac_param_t
+بنية get_seac_param_t
 {
-  get_seac_param_t (const OT::cff1::accelerator_subset_t *_cff) : cff (_cff) {}
+  get_seac_param_t (ثابت OT::cff1::accelerator_subset_t *_cff) : cff (_cff) {}
 
-  bool has_seac () const { return base && accent; }
+  منطقي has_seac () ثابت { أرجع ادھار && accent; }
 
-  const OT::cff1::accelerator_subset_t *cff;
-  hb_codepoint_t  base = 0;
+  ثابت OT::cff1::accelerator_subset_t *cff;
+  hb_codepoint_t  ادھار = 0;
   hb_codepoint_t  accent = 0;
 };
 
-struct cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_param_t>
+بنية cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_param_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, get_seac_param_t& param)
+  ساكن فراغ process_seac (cff1_cs_interp_env_t &env, get_seac_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
-    hb_codepoint_t  base_char = (hb_codepoint_t)env.argStack[n-2].to_int ();
-    hb_codepoint_t  accent_char = (hb_codepoint_t)env.argStack[n-1].to_int ();
+    بنانشانی صحيح  n = env.arg_ڈھیر.get_گنتی ();
+    hb_codepoint_t  ادھار_char = (hb_codepoint_t)env.arg_ڈھیر[n-2].منزل_int ();
+    hb_codepoint_t  accent_char = (hb_codepoint_t)env.arg_ڈھیر[n-1].منزل_int ();
 
-    param.base = param.cff->std_code_to_glyph (base_char);
-    param.accent = param.cff->std_code_to_glyph (accent_char);
+    param.ادھار = param.cff->std_کوڈ_منزل_glyph (ادھار_char);
+    param.accent = param.cff->std_کوڈ_منزل_glyph (accent_char);
   }
 };
 
-static bool
-_cff1_charstring_may_end_in_seac (const hb_ubytes_t &str)
+ساكن منطقي
+cff1_charstring_may_سرا_وچ_seac (ثابت hb_ubytes_t &str)
 {
-  if (unlikely (!str.length || str[str.length - 1] != OpCode_endchar))
-    return false;
+  إذا (unlikely (!str.لمائی || str[str.لمائی - 1] != Op_کوڈ_endchar))
+    أرجع خطأ;
 
-  unsigned int end = str.length - 1;
-  if (!end) return false;
+  بنانشانی صحيح سرا = str.لمائی - 1;
+  إذا (!سرا) أرجع خطأ;
 
-  unsigned int last = str[end - 1];
+  بنانشانی صحيح آخری = str[سرا - 1];
 
   /* Type 2 numbers are not self-synchronizing when read backwards.
    * Keep interpreting if any number encoding could end at endchar. */
-  if (OpCode_OneByteIntFirst <= last && last <= OpCode_OneByteIntLast)
-    return true;
-  if (end >= 2 &&
-      OpCode_TwoBytePosInt0 <= str[end - 2] &&
-      str[end - 2] <= OpCode_TwoByteNegInt3)
-    return true;
-  if (end >= 3 && str[end - 3] == OpCode_shortint)
-    return true;
-  if (end >= 5 && str[end - 5] == OpCode_fixedcs)
-    return true;
+  إذا (Op_کوڈ_One_Byte_Int_پہلا <= آخری && آخری <= Op_کوڈ_One_Byte_Int_آخری)
+    أرجع سچ;
+  إذا (سرا >= 2 &&
+      Op_کوڈ_Two_Byte_Pos_Int0 <= str[سرا - 2] &&
+      str[سرا - 2] <= Op_کوڈ_Two_Byte_Neg_Int3)
+    أرجع سچ;
+  إذا (سرا >= 3 && str[سرا - 3] == Op_کوڈ_shortint)
+    أرجع سچ;
+  إذا (سرا >= 5 && str[سرا - 5] == Op_کوڈ_fixedcs)
+    أرجع سچ;
 
   /* A subroutine can leave the seac operands on the shared stack. */
-  return last == OpCode_callsubr || last == OpCode_callgsubr;
+  أرجع آخری == Op_کوڈ_callsubr || آخری == Op_کوڈ_callgsubr;
 }
 
-bool OT::cff1::accelerator_subset_t::get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) const
+منطقي OT::cff1::accelerator_subset_t::get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *ادھار, hb_codepoint_t *accent) ثابت
 {
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  إذا (unlikely (!is_valid () || (glyph >= عدد_glyphs))) أرجع خطأ;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  if (unlikely (!_cff1_charstring_may_end_in_seac (str))) return false;
-  cff1_cs_interp_env_t env (str, *this, fd);
+  بنانشانی صحيح fd = fdSelect->get_fd (glyph);
+  ثابت hb_ubytes_t str = (*char_لڑیاں)[glyph];
+  إذا (unlikely (!cff1_charstring_may_سرا_وچ_seac (str))) أرجع خطأ;
+  cff1_cs_interp_env_t env (str, *هذا, fd);
   cff1_cs_interpreter_t<cff1_cs_opset_seac_t, get_seac_param_t> interp (env);
-  get_seac_param_t  param (this);
-  if (unlikely (!interp.interpret (param))) return false;
+  get_seac_param_t  param (هذا);
+  إذا (unlikely (!interp.interpret (param))) أرجع خطأ;
 
-  if (param.has_seac ())
+  إذا (param.has_seac ())
   {
-    *base = param.base;
+    *ادھار = param.ادھار;
     *accent = param.accent;
-    return true;
+    أرجع سچ;
   }
-  return false;
+  أرجع خطأ;
 }
 
 
-#endif
+#جے_انت
 
-#endif /* HB_OT_CFF1_TABLE_CC pacify */
-#endif /* HB_OT_CFF1_TABLE_CC guard */
+#جے_انت /* HB_OT_CFF1_TABLE_CC pacify */
+#جے_انت /* HB_OT_CFF1_TABLE_CC guard */

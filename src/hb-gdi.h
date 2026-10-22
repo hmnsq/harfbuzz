@@ -22,18 +22,18 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_GDI_H
-#define HB_GDI_H
+#جے_بنا_تعریف HB_GDI_H
+#تعریف_کرو HB_GDI_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#include <windows.h>
+#ضمن <windows.h>
 
 HB_BEGIN_DECLS
 
 HB_EXTERN hb_face_t *
 hb_gdi_face_create (HFONT hfont);
 
-HB_END_DECLS
+HB_سرا_DECLS
 
-#endif /* HB_GDI_H */
+#جے_انت /* HB_GDI_H */

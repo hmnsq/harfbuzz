@@ -25,1214 +25,1214 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_SET_HH
-#define HB_BIT_SET_HH
+#جے_بنا_تعریف HB_ثنائی_ہندسہ_سیٹ_HH
+#تعریف_کرو HB_ثنائی_ہندسہ_سیٹ_HH
 
-#include "hb.hh"
-#include "hb-bit-page.hh"
+#ضمن "hb.hh"
+#ضمن "hb-bit-page.hh"
 
-struct hb_bit_set_t
+بنية hb_ثنائی_ہندسہ_سیٹ_t
 {
-  hb_bit_set_t () = default;
-  ~hb_bit_set_t () = default;
+  hb_ثنائی_ہندسہ_سیٹ_t () = افتراضي;
+  ~hb_ثنائی_ہندسہ_سیٹ_t () = افتراضي;
 
-  hb_bit_set_t (const hb_bit_set_t& other) : hb_bit_set_t () { set (other, true); }
-  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*this, other); }
-  hb_bit_set_t& operator= (const hb_bit_set_t& other) { set (other); return *this; }
-  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
+  hb_ثنائی_ہندسہ_سیٹ_t (ثابت hb_ثنائی_ہندسہ_سیٹ_t& other) : hb_ثنائی_ہندسہ_سیٹ_t () { سیٹ (other, سچ); }
+  hb_ثنائی_ہندسہ_سیٹ_t ( hb_ثنائی_ہندسہ_سیٹ_t&& other)  noexcept : hb_ثنائی_ہندسہ_سیٹ_t () { hb_وٹاندرا (*هذا, other); }
+  hb_ثنائی_ہندسہ_سیٹ_t& عامل= (ثابت hb_ثنائی_ہندسہ_سیٹ_t& other) { سیٹ (other); أرجع *هذا; }
+  hb_ثنائی_ہندسہ_سیٹ_t& عامل= (hb_ثنائی_ہندسہ_سیٹ_t&& other)  noexcept { hb_وٹاندرا (*هذا, other); أرجع *هذا; }
+  یار فراغ swap (hb_ثنائی_ہندسہ_سیٹ_t &a, hb_ثنائی_ہندسہ_سیٹ_t &b) noexcept
   {
-    if (likely (!a.successful || !b.successful))
-      return;
-    hb_swap (a.population, b.population);
-    hb_swap (a.last_page_lookup, b.last_page_lookup);
-    hb_swap (a.page_map, b.page_map);
-    hb_swap (a.pages, b.pages);
+    إذا (likely (!a.successful || !b.successful))
+      أرجع;
+    hb_وٹاندرا (a.population, b.population);
+    hb_وٹاندرا (a.آخری_ورقہ_lookup, b.آخری_ورقہ_lookup);
+    hb_وٹاندرا (a.ورقہ_map, b.ورقہ_map);
+    hb_وٹاندرا (a.ورقے, b.ورقے);
   }
 
-  void init ()
+  فراغ init ()
   {
-    successful = true;
+    successful = سچ;
     population = 0;
-    last_page_lookup = 0;
-    page_map.init ();
-    pages.init ();
+    آخری_ورقہ_lookup = 0;
+    ورقہ_map.init ();
+    ورقے.init ();
   }
-  void fini ()
+  فراغ fini ()
   {
-    page_map.fini ();
-    pages.fini ();
+    ورقہ_map.fini ();
+    ورقے.fini ();
   }
 
-  using page_t = hb_bit_page_t;
-  struct page_map_t
+  ورتوں ورقہ_t = hb_ثنائی_ہندسہ_ورقہ_t;
+  بنية ورقہ_map_t
   {
-    int cmp (const page_map_t &o) const { return cmp (o.major); }
-    int cmp (uint32_t o_major) const { return (int) o_major - (int) major; }
+    صحيح cmp (ثابت ورقہ_map_t &o) ثابت { أرجع cmp (o.major); }
+    صحيح cmp (uint32_t o_major) ثابت { أرجع (صحيح) o_major - (صحيح) major; }
 
     uint32_t major;
-    uint32_t index;
+    uint32_t اشاریہ_2;
   };
 
-  bool successful = true; /* Allocations successful */
-  mutable unsigned int population = 0;
-  mutable hb_atomic_t<unsigned> last_page_lookup = 0;
-  hb_sorted_vector_t<page_map_t> page_map;
-  hb_vector_t<page_t> pages;
+  منطقي successful = سچ; /* Allocations successful */
+  بدلنجوگ بنانشانی صحيح population = 0;
+  بدلنجوگ hb_atomic_t<بنانشانی> آخری_ورقہ_lookup = 0;
+  hb_sorted_سمتیہ_t<ورقہ_map_t> ورقہ_map;
+  hb_سمتیہ_t<ورقہ_t> ورقے;
 
-  void err () { if (successful) successful = false; } /* TODO Remove */
-  bool in_error () const { return !successful; }
+  فراغ err () { إذا (successful) successful = خطأ; } /* TODO Remove */
+  منطقي وچ_error () ثابت { أرجع !successful; }
 
-  bool resize (unsigned int count, bool clear = true, bool exact_size = false)
+  منطقي resize (بنانشانی صحيح گنتی, منطقي clear = سچ, منطقي exact_ناپ = خطأ)
   {
-    if (unlikely (!successful)) return false;
+    إذا (unlikely (!successful)) أرجع خطأ;
 
-    if (pages.length < count && (unsigned) pages.allocated < count && count <= 2)
-      exact_size = true; // Most sets are small and local
+    إذا (ورقے.لمائی < گنتی && (بنانشانی) ورقے.allocated < گنتی && گنتی <= 2)
+      exact_ناپ = سچ; // Most sets are small and local
 
-    if (unlikely (!pages.resize_full (count, clear, exact_size) ||
-	!page_map.resize_full (count, clear, false)))
+    إذا (unlikely (!ورقے.resize_بھریا (گنتی, clear, exact_ناپ) ||
+	!ورقہ_map.resize_بھریا (گنتی, clear, خطأ)))
     {
-      pages.resize_full (page_map.length, clear, exact_size);
-      successful = false;
-      return false;
+      ورقے.resize_بھریا (ورقہ_map.لمائی, clear, exact_ناپ);
+      successful = خطأ;
+      أرجع خطأ;
     }
-    return true;
+    أرجع سچ;
   }
 
-  void alloc (unsigned sz)
+  فراغ alloc (بنانشانی sz)
   {
-    sz >>= (page_t::PAGE_BITS_LOG_2 - 1);
-    pages.alloc (sz);
-    page_map.alloc (sz);
+    sz >>= (ورقہ_t::ورقہ_بٹ_LOG_2 - 1);
+    ورقے.alloc (sz);
+    ورقہ_map.alloc (sz);
   }
 
-  hb_bit_set_t& reset ()
+  hb_ثنائی_ہندسہ_سیٹ_t& reset ()
   {
-    successful = true;
+    successful = سچ;
     clear ();
-    return *this;
+    أرجع *هذا;
   }
 
-  void clear ()
+  فراغ clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (which is zero-initialized) from any writes.  Any non-empty
      * instance is a real heap object with writable storage, so
      * clearing through the vector's always-safe clear() is fine
      * even if we entered error state. */
-    if (!pages.length && !population) return;
-    pages.clear ();
-    page_map.clear ();
+    إذا (!ورقے.لمائی && !population) أرجع;
+    ورقے.clear ();
+    ورقہ_map.clear ();
     population = 0;
   }
-  bool is_empty () const
+  منطقي is_empty () ثابت
   {
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      if (!pages[i].is_empty ())
-	return false;
-    return true;
+    بنانشانی صحيح گنتی = ورقے.لمائی;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
+      إذا (!ورقے[i].is_empty ())
+	أرجع خطأ;
+    أرجع سچ;
   }
-  explicit operator bool () const { return !is_empty (); }
+  واضح عامل منطقي () ثابت { أرجع !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
     uint32_t h = 0;
-    for (auto &map : page_map)
+    لكل (خودکار &map : ورقہ_map)
     {
-      auto &page = pages.arrayZ[map.index];
-      if (unlikely (page.is_empty ())) continue;
-      h = h * 31 + hb_hash (map.major) + hb_hash (page);
+      خودکار &ورقہ = ورقے.arrayZ[map.اشاریہ_2];
+      إذا (unlikely (ورقہ.is_empty ())) استمر;
+      h = h * 31 + hb_hash (map.major) + hb_hash (ورقہ);
     }
-    return h;
+    أرجع h;
   }
 
-  private:
-  void dirty () { population = UINT_MAX; }
-  public:
+  خاص:
+  فراغ dirty () { population = UINT_MAX; }
+  عام:
 
-  void add (hb_codepoint_t g)
+  فراغ جوڑو (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (g == INVALID)) return;
+    إذا (unlikely (!successful)) أرجع;
+    إذا (unlikely (g == INVALID)) أرجع;
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
-    page->add (g);
+    ورقہ_t *ورقہ = ورقہ_for (g, سچ); إذا (unlikely (!ورقہ)) أرجع;
+    ورقہ->جوڑو (g);
   }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  فراغ جوڑو_بٹ (hb_codepoint_t g, uint64_t بٹ)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    إذا (unlikely (!successful) || unlikely (!بٹ)) أرجع;
+    أكد (!(g & (ورقہ_t::ELT_بٹ - 1)));
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
-    page->add_bits (g, bits);
+    ورقہ_t *ورقہ = ورقہ_for (g, سچ); إذا (unlikely (!ورقہ)) أرجع;
+    ورقہ->جوڑو_بٹ (g, بٹ);
   }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  منطقي جوڑو_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (a > b || a == INVALID || b == INVALID)) return false;
+    إذا (unlikely (!successful)) أرجع سچ; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    إذا (unlikely (a > b || a == INVALID || b == INVALID)) أرجع خطأ;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
-    if (ma == mb)
+    بنانشانی صحيح ma = get_major (a);
+    بنانشانی صحيح mb = get_major (b);
+    إذا (ma == mb)
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
-      page->add_range (a, b);
+      ورقہ_t *ورقہ = ورقہ_for (a, سچ); إذا (unlikely (!ورقہ)) أرجع خطأ;
+      ورقہ->جوڑو_range (a, b);
     }
-    else
+    وإلا
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
-      page->add_range (a, major_start (ma + 1) - 1);
+      ورقہ_t *ورقہ = ورقہ_for (a, سچ); إذا (unlikely (!ورقہ)) أرجع خطأ;
+      ورقہ->جوڑو_range (a, major_شروع (ma + 1) - 1);
 
-      for (unsigned int m = ma + 1; m < mb; m++)
+      لكل (بنانشانی صحيح m = ma + 1; m < mb; m++)
       {
-	page = page_for (major_start (m), true); if (unlikely (!page)) return false;
-	page->init1 ();
+	ورقہ = ورقہ_for (major_شروع (m), سچ); إذا (unlikely (!ورقہ)) أرجع خطأ;
+	ورقہ->init1 ();
       }
 
-      page = page_for (b, true); if (unlikely (!page)) return false;
-      page->add_range (major_start (mb), b);
+      ورقہ = ورقہ_for (b, سچ); إذا (unlikely (!ورقہ)) أرجع خطأ;
+      ورقہ->جوڑو_range (major_شروع (mb), b);
     }
-    return true;
+    أرجع سچ;
   }
 
   /* Duplicated here from hb-machinery.hh to avoid including it. */
-  template<typename Type>
-  static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+  سانچا<قسم_ناں Type>
+  ساكن مضمن ثابت Type& Struct_At_وتھ_Unaligned(ثابت فراغ *P, بنانشانی صحيح وتھ)
   {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-    return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#ہدایت GCC diagnostic push
+#ہدایت GCC diagnostic ignored "-Wcast-align"
+    أرجع * reinterpret_cast<ثابت Type*> ((ثابت حرف *) P + وتھ);
+#ہدایت GCC diagnostic نکالو
   }
 
-  template <typename T>
-  void set_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  سانچا <قسم_ناں T>
+  فراغ سیٹ_array (منطقي v, ثابت T *array, بنانشانی صحيح گنتی, بنانشانی صحيح stride=حجم(T))
   {
-    if (unlikely (!successful)) return;
-    if (!count) return;
+    إذا (unlikely (!successful)) أرجع;
+    إذا (!گنتی) أرجع;
     dirty ();
     hb_codepoint_t g = *array;
-    while (count)
+    طالما (گنتی)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return;
-      unsigned int start = major_start (m);
-      unsigned int end = major_start (m + 1);
-      do
+      بنانشانی صحيح m = get_major (g);
+      ورقہ_t *ورقہ = ورقہ_for (g, v); إذا (unlikely (v && !ورقہ)) أرجع;
+      بنانشانی صحيح شروع = major_شروع (m);
+      بنانشانی صحيح سرا = major_شروع (m + 1);
+      افعل
       {
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
-	  page->set (g, v);
+        إذا (g != INVALID && (v || ورقہ)) /* The v check is to optimize out the page check if v is true. */
+	  ورقہ->سیٹ (g, v);
 
-	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	array = &Struct_At_وتھ_Unaligned<T> (array, stride);
+	گنتی--;
       }
-      while (count && (g = *array, start <= g && g < end));
+      طالما (گنتی && (g = *array, شروع <= g && g < سرا));
     }
   }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (true, array, count, stride); }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  سانچا <قسم_ناں T>
+  فراغ جوڑو_array (ثابت T *array, بنانشانی صحيح گنتی, بنانشانی صحيح stride=حجم(T))
+  { سیٹ_array (سچ, array, گنتی, stride); }
+  سانچا <قسم_ناں T>
+  فراغ جوڑو_array (ثابت hb_array_t<ثابت T>& arr) { جوڑو_array (&arr, arr.len ()); }
 
-  template <typename T>
-  void del_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (false, array, count, stride); }
-  template <typename T>
-  void del_array (const hb_array_t<const T>& arr) { del_array (&arr, arr.len ()); }
+  سانچا <قسم_ناں T>
+  فراغ del_array (ثابت T *array, بنانشانی صحيح گنتی, بنانشانی صحيح stride=حجم(T))
+  { سیٹ_array (خطأ, array, گنتی, stride); }
+  سانچا <قسم_ناں T>
+  فراغ del_array (ثابت hb_array_t<ثابت T>& arr) { del_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename T>
-  bool set_sorted_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  سانچا <قسم_ناں T>
+  منطقي سیٹ_sorted_array (منطقي v, ثابت T *array, بنانشانی صحيح گنتی, بنانشانی صحيح stride=حجم(T))
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (!count)) return true;
+    إذا (unlikely (!successful)) أرجع سچ; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    إذا (unlikely (!گنتی)) أرجع سچ;
     dirty ();
     hb_codepoint_t g = *array;
-    hb_codepoint_t last_g = g;
-    while (count)
+    hb_codepoint_t آخری_g = g;
+    طالما (گنتی)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return false;
-      unsigned int end = major_start (m + 1);
-      do
+      بنانشانی صحيح m = get_major (g);
+      ورقہ_t *ورقہ = ورقہ_for (g, v); إذا (unlikely (v && !ورقہ)) أرجع خطأ;
+      بنانشانی صحيح سرا = major_شروع (m + 1);
+      افعل
       {
 	/* If we try harder we can change the following comparison to <=;
 	 * Not sure if it's worth it. */
-	if (g < last_g) return false;
-	last_g = g;
+	إذا (g < آخری_g) أرجع خطأ;
+	آخری_g = g;
 
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
-	  page->set (g, v);
+        إذا (g != INVALID && (v || ورقہ)) /* The v check is to optimize out the page check if v is true. */
+	  ورقہ->سیٹ (g, v);
 
-	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	array = &Struct_At_وتھ_Unaligned<T> (array, stride);
+	گنتی--;
       }
-      while (count && (g = *array, g < end));
+      طالما (گنتی && (g = *array, g < سرا));
     }
-    return true;
+    أرجع سچ;
   }
 
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (true, array, count, stride); }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  سانچا <قسم_ناں T>
+  منطقي جوڑو_sorted_array (ثابت T *array, بنانشانی صحيح گنتی, بنانشانی صحيح stride=حجم(T))
+  { أرجع سیٹ_sorted_array (سچ, array, گنتی, stride); }
+  سانچا <قسم_ناں T>
+  منطقي جوڑو_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { أرجع جوڑو_sorted_array (&arr, arr.len ()); }
 
-  template <typename T>
-  bool del_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (false, array, count, stride); }
-  template <typename T>
-  bool del_sorted_array (const hb_sorted_array_t<const T>& arr) { return del_sorted_array (&arr, arr.len ()); }
+  سانچا <قسم_ناں T>
+  منطقي del_sorted_array (ثابت T *array, بنانشانی صحيح گنتی, بنانشانی صحيح stride=حجم(T))
+  { أرجع سیٹ_sorted_array (خطأ, array, گنتی, stride); }
+  سانچا <قسم_ناں T>
+  منطقي del_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { أرجع del_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g)
+  فراغ del (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    page_t *page = page_for (g);
-    if (!page)
-      return;
+    إذا (unlikely (!successful)) أرجع;
+    ورقہ_t *ورقہ = ورقہ_for (g);
+    إذا (!ورقہ)
+      أرجع;
     dirty ();
-    page->del (g);
+    ورقہ->del (g);
   }
-  void del_bits (hb_codepoint_t g, uint64_t bits)
+  فراغ del_بٹ (hb_codepoint_t g, uint64_t بٹ)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
-    page_t *page = page_for (g);
-    if (!page)
-      return;
+    إذا (unlikely (!successful) || unlikely (!بٹ)) أرجع;
+    أكد (!(g & (ورقہ_t::ELT_بٹ - 1)));
+    ورقہ_t *ورقہ = ورقہ_for (g);
+    إذا (!ورقہ)
+      أرجع;
     dirty ();
-    page->del_bits (g, bits);
+    ورقہ->del_بٹ (g, بٹ);
   }
 
-  private:
-  void del_pages (int ds, int de)
+  خاص:
+  فراغ del_ورقے (صحيح ds, صحيح de)
   {
-    if (ds <= de)
+    إذا (ds <= de)
     {
       // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
       // before attempting to rewrite the page map.
-      hb_vector_t<unsigned> compact_workspace;
-      if (unlikely (!allocate_compact_workspace (compact_workspace))) return;
+      hb_سمتیہ_t<بنانشانی> compact_workspace;
+      إذا (unlikely (!allocate_compact_workspace (compact_workspace))) أرجع;
 
-      unsigned int write_index = 0;
-      for (unsigned int i = 0; i < page_map.length; i++)
+      بنانشانی صحيح write_اشاریہ = 0;
+      لكل (بنانشانی صحيح i = 0; i < ورقہ_map.لمائی; i++)
       {
-	int m = (int) page_map.arrayZ[i].major;
-	if (m < ds || de < m)
-	  page_map.arrayZ[write_index++] = page_map.arrayZ[i];
+	صحيح m = (صحيح) ورقہ_map.arrayZ[i].major;
+	إذا (m < ds || de < m)
+	  ورقہ_map.arrayZ[write_اشاریہ++] = ورقہ_map.arrayZ[i];
       }
-      compact (compact_workspace, write_index);
-      resize (write_index);
+      compact (compact_workspace, write_اشاریہ);
+      resize (write_اشاریہ);
     }
   }
 
 
-  public:
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  عام:
+  فراغ del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (a > b || a == INVALID)) return;
+    إذا (unlikely (!successful)) أرجع;
+    إذا (unlikely (a > b || a == INVALID)) أرجع;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
+    بنانشانی صحيح ma = get_major (a);
+    بنانشانی صحيح mb = get_major (b);
     /* Delete pages from ds through de if ds <= de. */
-    int ds = (a == major_start (ma))? (int) ma: (int) (ma + 1);
-    int de = (b + 1 == major_start (mb + 1))? (int) mb: ((int) mb - 1);
-    if (ds > de || (int) ma < ds)
+    صحيح ds = (a == major_شروع (ma))? (صحيح) ma: (صحيح) (ma + 1);
+    صحيح de = (b + 1 == major_شروع (mb + 1))? (صحيح) mb: ((صحيح) mb - 1);
+    إذا (ds > de || (صحيح) ma < ds)
     {
-      page_t *page = page_for (a);
-      if (page)
+      ورقہ_t *ورقہ = ورقہ_for (a);
+      إذا (ورقہ)
       {
-	if (ma == mb)
-	  page->del_range (a, b);
-	else
-	  page->del_range (a, major_start (ma + 1) - 1);
+	إذا (ma == mb)
+	  ورقہ->del_range (a, b);
+	وإلا
+	  ورقہ->del_range (a, major_شروع (ma + 1) - 1);
       }
     }
-    if (de < (int) mb && ma != mb)
+    إذا (de < (صحيح) mb && ma != mb)
     {
-      page_t *page = page_for (b);
-      if (page)
-	page->del_range (major_start (mb), b);
+      ورقہ_t *ورقہ = ورقہ_for (b);
+      إذا (ورقہ)
+	ورقہ->del_range (major_شروع (mb), b);
     }
-    del_pages (ds, de);
+    del_ورقے (ds, de);
   }
 
-  bool get (hb_codepoint_t g) const
+  منطقي get (hb_codepoint_t g) ثابت
   {
-    const page_t *page = page_for (g);
-    if (!page)
-      return false;
-    return page->get (g);
+    ثابت ورقہ_t *ورقہ = ورقہ_for (g);
+    إذا (!ورقہ)
+      أرجع خطأ;
+    أرجع ورقہ->get (g);
   }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  منطقي may_have (hb_codepoint_t g) ثابت { أرجع get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  منطقي عامل [] (hb_codepoint_t k) ثابت { أرجع get (k); }
+  منطقي has (hb_codepoint_t k) ثابت { أرجع (*هذا)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  منطقي عامل () (hb_codepoint_t k) ثابت { أرجع has (k); }
 
   /* Sink interface. */
-  hb_bit_set_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  hb_ثنائی_ہندسہ_سیٹ_t& عامل << (hb_codepoint_t v)
+  { جوڑو (v); أرجع *هذا; }
+  hb_ثنائی_ہندسہ_سیٹ_t& عامل << (ثابت hb_codepoint_pair_t& range)
+  { جوڑو_range (range.پہلا, range.second); أرجع *هذا; }
 
-  bool intersects (const hb_bit_set_t &other) const
+  منطقي intersects (ثابت hb_ثنائی_ہندسہ_سیٹ_t &other) ثابت
   {
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    بنانشانی صحيح na = ورقے.لمائی;
+    بنانشانی صحيح nb = other.ورقے.لمائی;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    بنانشانی صحيح a = 0, b = 0;
+    لكل (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      إذا (ورقہ_map.arrayZ[a].major == other.ورقہ_map.arrayZ[b].major)
       {
-	if (page_at (a).intersects (other.page_at (b)))
-	  return true;
+	إذا (ورقہ_at (a).intersects (other.ورقہ_at (b)))
+	  أرجع سچ;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      وإلا إذا (ورقہ_map.arrayZ[a].major < other.ورقہ_map.arrayZ[b].major)
 	a++;
-      else
+      وإلا
 	b++;
     }
-    return false;
+    أرجع خطأ;
   }
-  bool may_intersect (const hb_bit_set_t &other) const
-  { return intersects (other); }
+  منطقي may_intersect (ثابت hb_ثنائی_ہندسہ_سیٹ_t &other) ثابت
+  { أرجع intersects (other); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  منطقي intersects (hb_codepoint_t پہلا, hb_codepoint_t آخری) ثابت
   {
-    hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    hb_codepoint_t c = پہلا - 1;
+    أرجع next (&c) && c <= آخری;
   }
-  void set (const hb_bit_set_t &other, bool exact_size = false)
+  فراغ سیٹ (ثابت hb_ثنائی_ہندسہ_سیٹ_t &other, منطقي exact_ناپ = خطأ)
   {
-    if (unlikely (!successful)) return;
-    unsigned int count = other.pages.length;
-    if (unlikely (!resize  (count, false, exact_size)))
-      return;
+    إذا (unlikely (!successful)) أرجع;
+    بنانشانی صحيح گنتی = other.ورقے.لمائی;
+    إذا (unlikely (!resize  (گنتی, خطأ, exact_ناپ)))
+      أرجع;
     population = other.population;
 
-    page_map = other.page_map;
-    pages = other.pages;
+    ورقہ_map = other.ورقہ_map;
+    ورقے = other.ورقے;
   }
 
-  bool is_equal (const hb_bit_set_t &other) const
+  منطقي is_equal (ثابت hb_ثنائی_ہندسہ_سیٹ_t &other) ثابت
   {
-    if (has_population () && other.has_population () &&
+    إذا (has_population () && other.has_population () &&
 	population != other.population)
-      return false;
+      أرجع خطأ;
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    بنانشانی صحيح na = ورقے.لمائی;
+    بنانشانی صحيح nb = other.ورقے.لمائی;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    بنانشانی صحيح a = 0, b = 0;
+    لكل (; a < na && b < nb; )
     {
-      if (page_at (a).is_empty ()) { a++; continue; }
-      if (other.page_at (b).is_empty ()) { b++; continue; }
-      if (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
-	  !page_at (a).is_equal (other.page_at (b)))
-	return false;
+      إذا (ورقہ_at (a).is_empty ()) { a++; استمر; }
+      إذا (other.ورقہ_at (b).is_empty ()) { b++; استمر; }
+      إذا (ورقہ_map.arrayZ[a].major != other.ورقہ_map.arrayZ[b].major ||
+	  !ورقہ_at (a).is_equal (other.ورقہ_at (b)))
+	أرجع خطأ;
       a++;
       b++;
     }
-    for (; a < na; a++)
-      if (!page_at (a).is_empty ()) { return false; }
-    for (; b < nb; b++)
-      if (!other.page_at (b).is_empty ()) { return false; }
+    لكل (; a < na; a++)
+      إذا (!ورقہ_at (a).is_empty ()) { أرجع خطأ; }
+    لكل (; b < nb; b++)
+      إذا (!other.ورقہ_at (b).is_empty ()) { أرجع خطأ; }
 
-    return true;
+    أرجع سچ;
   }
 
-  bool is_subset (const hb_bit_set_t &larger_set) const
+  منطقي is_subset (ثابت hb_ثنائی_ہندسہ_سیٹ_t &larger_سیٹ) ثابت
   {
-    if (has_population () && larger_set.has_population () &&
-	population > larger_set.population)
-      return false;
+    إذا (has_population () && larger_سیٹ.has_population () &&
+	population > larger_سیٹ.population)
+      أرجع خطأ;
 
     uint32_t spi = 0;
     uint32_t lpi = 0;
-    while (spi < page_map.length && lpi < larger_set.page_map.length)
+    طالما (spi < ورقہ_map.لمائی && lpi < larger_سیٹ.ورقہ_map.لمائی)
     {
-      uint32_t spm = page_map.arrayZ[spi].major;
-      uint32_t lpm = larger_set.page_map.arrayZ[lpi].major;
-      auto sp = page_at (spi);
+      uint32_t spm = ورقہ_map.arrayZ[spi].major;
+      uint32_t lpm = larger_سیٹ.ورقہ_map.arrayZ[lpi].major;
+      خودکار sp = ورقہ_at (spi);
 
-      if (spm < lpm) {
-        if (!sp.is_empty ())
-          return false;
+      إذا (spm < lpm) {
+        إذا (!sp.is_empty ())
+          أرجع خطأ;
         spi++;
-        continue;
+        استمر;
       }
 
-      if (lpm < spm) {
+      إذا (lpm < spm) {
         lpi++;
-        continue;
+        استمر;
       }
 
-      auto lp = larger_set.page_at (lpi);
-      if (!sp.is_subset (lp))
-        return false;
+      خودکار lp = larger_سیٹ.ورقہ_at (lpi);
+      إذا (!sp.is_subset (lp))
+        أرجع خطأ;
 
       spi++;
       lpi++;
     }
 
-    while (spi < page_map.length)
-      if (!page_at (spi++).is_empty ())
-        return false;
+    طالما (spi < ورقہ_map.لمائی)
+      إذا (!ورقہ_at (spi++).is_empty ())
+        أرجع خطأ;
 
-    return true;
+    أرجع سچ;
   }
 
-  private:
-  bool allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
+  خاص:
+  منطقي allocate_compact_workspace (hb_سمتیہ_t<بنانشانی>& workspace)
   {
-    if (unlikely (!workspace.resize_exact (pages.length)))
+    إذا (unlikely (!workspace.resize_exact (ورقے.لمائی)))
     {
-      successful = false;
-      return false;
+      successful = خطأ;
+      أرجع خطأ;
     }
 
-    return true;
+    أرجع سچ;
   }
 
   /*
    * workspace should be a pre-sized vector allocated to hold at exactly pages.length
    * elements.
    */
-  void compact (hb_vector_t<unsigned>& workspace,
-                unsigned int length)
+  فراغ compact (hb_سمتیہ_t<بنانشانی>& workspace,
+                بنانشانی صحيح لمائی)
   {
-    assert(workspace.length == pages.length);
-    hb_vector_t<unsigned>& old_index_to_page_map_index = workspace;
+    أكد(workspace.لمائی == ورقے.لمائی);
+    hb_سمتیہ_t<بنانشانی>& old_اشاریہ_منزل_ورقہ_map_اشاریہ = workspace;
 
-    hb_fill (old_index_to_page_map_index.writer(), 0xFFFFFFFF);
-    for (unsigned i = 0; i < length; i++)
-      old_index_to_page_map_index[page_map[i].index] =  i;
+    hb_fill (old_اشاریہ_منزل_ورقہ_map_اشاریہ.writer(), 0xFFFFFFFF);
+    لكل (بنانشانی i = 0; i < لمائی; i++)
+      old_اشاریہ_منزل_ورقہ_map_اشاریہ[ورقہ_map[i].اشاریہ_2] =  i;
 
-    compact_pages (old_index_to_page_map_index);
+    compact_ورقے (old_اشاریہ_منزل_ورقہ_map_اشاریہ);
   }
-  void compact_pages (const hb_vector_t<unsigned>& old_index_to_page_map_index)
+  فراغ compact_ورقے (ثابت hb_سمتیہ_t<بنانشانی>& old_اشاریہ_منزل_ورقہ_map_اشاریہ)
   {
-    unsigned int write_index = 0;
-    for (unsigned int i = 0; i < pages.length; i++)
+    بنانشانی صحيح write_اشاریہ = 0;
+    لكل (بنانشانی صحيح i = 0; i < ورقے.لمائی; i++)
     {
-      if (old_index_to_page_map_index[i] == 0xFFFFFFFF) continue;
+      إذا (old_اشاریہ_منزل_ورقہ_map_اشاریہ[i] == 0xFFFFFFFF) استمر;
 
-      if (write_index < i)
-	pages[write_index] = pages[i];
+      إذا (write_اشاریہ < i)
+	ورقے[write_اشاریہ] = ورقے[i];
 
-      page_map[old_index_to_page_map_index[i]].index = write_index;
-      write_index++;
+      ورقہ_map[old_اشاریہ_منزل_ورقہ_map_اشاریہ[i]].اشاریہ_2 = write_اشاریہ;
+      write_اشاریہ++;
     }
   }
-  public:
+  عام:
 
-  void process_ (hb_bit_page_t::vector_t (*op) (const hb_bit_page_t::vector_t &, const hb_bit_page_t::vector_t &),
-		 bool passthru_left, bool passthru_right,
-		 const hb_bit_set_t &other,
-		 hb_vector_t<unsigned> *workspace = nullptr)
+  فراغ process_ (hb_ثنائی_ہندسہ_ورقہ_t::سمتیہ_t (*op) (ثابت hb_ثنائی_ہندسہ_ورقہ_t::سمتیہ_t &, ثابت hb_ثنائی_ہندسہ_ورقہ_t::سمتیہ_t &),
+		 منطقي passthru_بایاں, منطقي passthru_دایاں,
+		 ثابت hb_ثنائی_ہندسہ_سیٹ_t &other,
+		 hb_سمتیہ_t<بنانشانی> *workspace = خالی_سوچک)
   {
-    if (unlikely (!successful)) return;
+    إذا (unlikely (!successful)) أرجع;
 
     dirty ();
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
-    unsigned int next_page = na;
+    بنانشانی صحيح na = ورقے.لمائی;
+    بنانشانی صحيح nb = other.ورقے.لمائی;
+    بنانشانی صحيح اگلا_ورقہ = na;
 
-    unsigned int count = 0, newCount = 0;
-    unsigned int a = 0, b = 0;
-    unsigned int write_index = 0;
+    بنانشانی صحيح گنتی = 0, new_گنتی = 0;
+    بنانشانی صحيح a = 0, b = 0;
+    بنانشانی صحيح write_اشاریہ = 0;
 
     // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
     // before attempting to rewrite the page map.
-    hb_vector_t<unsigned> local_workspace;
-    hb_vector_t<unsigned> &compact_workspace = workspace ? *workspace : local_workspace;
-    if (!passthru_left)
+    hb_سمتیہ_t<بنانشانی> local_workspace;
+    hb_سمتیہ_t<بنانشانی> &compact_workspace = workspace ? *workspace : local_workspace;
+    إذا (!passthru_بایاں)
     {
-      bool allocated = workspace ? compact_workspace.resize (pages.length)
+      منطقي allocated = workspace ? compact_workspace.resize (ورقے.لمائی)
 				 : allocate_compact_workspace (compact_workspace);
-      if (unlikely (!allocated))
+      إذا (unlikely (!allocated))
       {
-	successful = false;
-	return;
+	successful = خطأ;
+	أرجع;
       }
     }
 
-    for (; a < na && b < nb; )
+    لكل (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      إذا (ورقہ_map.arrayZ[a].major == other.ورقہ_map.arrayZ[b].major)
       {
-	if (!passthru_left)
+	إذا (!passthru_بایاں)
 	{
 	  // Move page_map entries that we're keeping from the left side set
 	  // to the front of the page_map vector. This isn't necessary if
 	  // passthru_left is set since no left side pages will be removed
 	  // in that case.
-	  if (write_index < a)
-	    page_map.arrayZ[write_index] = page_map.arrayZ[a];
-	  write_index++;
+	  إذا (write_اشاریہ < a)
+	    ورقہ_map.arrayZ[write_اشاریہ] = ورقہ_map.arrayZ[a];
+	  write_اشاریہ++;
 	}
 
-	count++;
+	گنتی++;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      وإلا إذا (ورقہ_map.arrayZ[a].major < other.ورقہ_map.arrayZ[b].major)
       {
-	if (passthru_left)
-	  count++;
+	إذا (passthru_بایاں)
+	  گنتی++;
 	a++;
       }
-      else
+      وإلا
       {
-	if (passthru_right)
-	  count++;
+	إذا (passthru_دایاں)
+	  گنتی++;
 	b++;
       }
     }
-    if (passthru_left)
-      count += na - a;
-    if (passthru_right)
-      count += nb - b;
+    إذا (passthru_بایاں)
+      گنتی += na - a;
+    إذا (passthru_دایاں)
+      گنتی += nb - b;
 
-    if (!passthru_left)
+    إذا (!passthru_بایاں)
     {
-      na  = write_index;
-      next_page = write_index;
-      compact (compact_workspace, write_index);
+      na  = write_اشاریہ;
+      اگلا_ورقہ = write_اشاریہ;
+      compact (compact_workspace, write_اشاریہ);
     }
 
-    if (unlikely (!resize (count)))
-      return;
+    إذا (unlikely (!resize (گنتی)))
+      أرجع;
 
-    newCount = count;
+    new_گنتی = گنتی;
 
     /* Process in-place backward. */
     a = na;
     b = nb;
-    for (; a && b; )
+    لكل (; a && b; )
     {
-      if (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
+      إذا (ورقہ_map.arrayZ[a - 1].major == other.ورقہ_map.arrayZ[b - 1].major)
       {
 	a--;
 	b--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
-	page_at (count).v = op (page_at (a).v, other.page_at (b).v);
-	page_at (count).dirty ();
+	گنتی--;
+	ورقہ_map.arrayZ[گنتی] = ورقہ_map.arrayZ[a];
+	ورقہ_at (گنتی).v = op (ورقہ_at (a).v, other.ورقہ_at (b).v);
+	ورقہ_at (گنتی).dirty ();
       }
-      else if (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
+      وإلا إذا (ورقہ_map.arrayZ[a - 1].major > other.ورقہ_map.arrayZ[b - 1].major)
       {
 	a--;
-	if (passthru_left)
+	إذا (passthru_بایاں)
 	{
-	  count--;
-	  page_map.arrayZ[count] = page_map.arrayZ[a];
+	  گنتی--;
+	  ورقہ_map.arrayZ[گنتی] = ورقہ_map.arrayZ[a];
 	}
       }
-      else
+      وإلا
       {
 	b--;
-	if (passthru_right)
+	إذا (passthru_دایاں)
 	{
-	  count--;
-	  page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	  page_map.arrayZ[count].index = next_page++;
-	  page_at (count) = other.page_at (b);
+	  گنتی--;
+	  ورقہ_map.arrayZ[گنتی].major = other.ورقہ_map.arrayZ[b].major;
+	  ورقہ_map.arrayZ[گنتی].اشاریہ_2 = اگلا_ورقہ++;
+	  ورقہ_at (گنتی) = other.ورقہ_at (b);
 	}
       }
     }
-    if (passthru_left)
-      while (a)
+    إذا (passthru_بایاں)
+      طالما (a)
       {
 	a--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
+	گنتی--;
+	ورقہ_map.arrayZ[گنتی] = ورقہ_map.arrayZ[a];
       }
-    if (passthru_right)
-      while (b)
+    إذا (passthru_دایاں)
+      طالما (b)
       {
 	b--;
-	count--;
-	page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	page_map.arrayZ[count].index = next_page++;
-	page_at (count) = other.page_at (b);
+	گنتی--;
+	ورقہ_map.arrayZ[گنتی].major = other.ورقہ_map.arrayZ[b].major;
+	ورقہ_map.arrayZ[گنتی].اشاریہ_2 = اگلا_ورقہ++;
+	ورقہ_at (گنتی) = other.ورقہ_at (b);
       }
-    assert (!count);
-    resize (newCount);
+    أكد (!گنتی);
+    resize (new_گنتی);
   }
-  template <typename Op>
-  static hb_bit_page_t::vector_t
-  op_ (const hb_bit_page_t::vector_t &a, const hb_bit_page_t::vector_t &b)
-  { return Op{} (a, b); }
-  template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_t &other,
-		hb_vector_t<unsigned> *workspace = nullptr)
+  سانچا <قسم_ناں Op>
+  ساكن hb_ثنائی_ہندسہ_ورقہ_t::سمتیہ_t
+  op_ (ثابت hb_ثنائی_ہندسہ_ورقہ_t::سمتیہ_t &a, ثابت hb_ثنائی_ہندسہ_ورقہ_t::سمتیہ_t &b)
+  { أرجع Op{} (a, b); }
+  سانچا <قسم_ناں Op>
+  فراغ process (ثابت Op& op,
+		ثابت hb_ثنائی_ہندسہ_سیٹ_t &other,
+		hb_سمتیہ_t<بنانشانی> *workspace = خالی_سوچک)
   {
     process_ (op_<Op>, op (1, 0), op (0, 1), other, workspace);
   }
 
-  void union_ (const hb_bit_set_t &other) { process (hb_bitwise_or, other); }
-  void intersect (const hb_bit_set_t &other,
-		  hb_vector_t<unsigned> *workspace = nullptr)
+  فراغ union_ (ثابت hb_ثنائی_ہندسہ_سیٹ_t &other) { process (hb_bitwise_or, other); }
+  فراغ intersect (ثابت hb_ثنائی_ہندسہ_سیٹ_t &other,
+		  hb_سمتیہ_t<بنانشانی> *workspace = خالی_سوچک)
   { process (hb_bitwise_and, other, workspace); }
-  void subtract (const hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
-  void symmetric_difference (const hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
+  فراغ گھٹاؤ (ثابت hb_ثنائی_ہندسہ_سیٹ_t &other) { process (hb_bitwise_gt, other); }
+  فراغ متشاکل_difference (ثابت hb_ثنائی_ہندسہ_سیٹ_t &other) { process (hb_bitwise_xor, other); }
 
-  bool next (hb_codepoint_t *codepoint) const
+  منطقي next (hb_codepoint_t *codepoint) ثابت
   {
-    if (unlikely (*codepoint == INVALID)) {
+    إذا (unlikely (*codepoint == INVALID)) {
       *codepoint = get_min ();
-      return *codepoint != INVALID;
+      أرجع *codepoint != INVALID;
     }
 
-    const auto* page_map_array = page_map.arrayZ;
-    unsigned int major = get_major (*codepoint);
-    unsigned int i = last_page_lookup;
+    ثابت خودکار* ورقہ_map_array = ورقہ_map.arrayZ;
+    بنانشانی صحيح major = get_major (*codepoint);
+    بنانشانی صحيح i = آخری_ورقہ_lookup;
 
-    if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+    إذا (unlikely (i >= ورقہ_map.لمائی || ورقہ_map_array[i].major != major))
     {
-      page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-      if (i >= page_map.length) {
+      ورقہ_map.bfind (major, &i, HB_NOT_لبھیا_STORE_CLOSEST);
+      إذا (i >= ورقہ_map.لمائی) {
         *codepoint = INVALID;
-        return false;
+        أرجع خطأ;
       }
-      last_page_lookup = i;
+      آخری_ورقہ_lookup = i;
     }
 
-    const auto* pages_array = pages.arrayZ;
-    const page_map_t &current = page_map_array[i];
-    if (likely (current.major == major))
+    ثابت خودکار* ورقے_array = ورقے.arrayZ;
+    ثابت ورقہ_map_t &current = ورقہ_map_array[i];
+    إذا (likely (current.major == major))
     {
-      if (pages_array[current.index].next (codepoint))
+      إذا (ورقے_array[current.اشاریہ_2].next (codepoint))
       {
-        *codepoint += current.major * page_t::PAGE_BITS;
-        return true;
+        *codepoint += current.major * ورقہ_t::ورقہ_بٹ;
+        أرجع سچ;
       }
       i++;
     }
 
-    for (; i < page_map.length; i++)
+    لكل (; i < ورقہ_map.لمائی; i++)
     {
-      const page_map_t &current = page_map_array[i];
-      hb_codepoint_t m = pages_array[current.index].get_min ();
-      if (m != INVALID)
+      ثابت ورقہ_map_t &current = ورقہ_map_array[i];
+      hb_codepoint_t m = ورقے_array[current.اشاریہ_2].get_min ();
+      إذا (m != INVALID)
       {
-	*codepoint = current.major * page_t::PAGE_BITS + m;
-        last_page_lookup = i;
-	return true;
+	*codepoint = current.major * ورقہ_t::ورقہ_بٹ + m;
+        آخری_ورقہ_lookup = i;
+	أرجع سچ;
       }
     }
     *codepoint = INVALID;
-    return false;
+    أرجع خطأ;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  منطقي اگلا_بٹ (hb_codepoint_t *codepoint, uint64_t *بٹ) ثابت
   {
-    static_assert (page_t::ELT_BITS == 64, "");
+    static_assert (ورقہ_t::ELT_بٹ == 64, "");
 
-    unsigned int i = 0;
-    unsigned int elt = 0;
-    if (likely (*codepoint != INVALID))
+    بنانشانی صحيح i = 0;
+    بنانشانی صحيح elt = 0;
+    إذا (likely (*codepoint != INVALID))
     {
-      hb_codepoint_t base = *codepoint & ~page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
-        goto done;
-      base += page_t::ELT_BITS;
+      hb_codepoint_t ادھار = *codepoint & ~ورقہ_t::ELT_نقاب;
+      إذا (unlikely (ادھار >= INVALID - ورقہ_t::ELT_بٹ + 1))
+        اذهب پورا;
+      ادھار += ورقہ_t::ELT_بٹ;
 
-      unsigned int major = get_major (base);
-      i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
+      بنانشانی صحيح major = get_major (ادھار);
+      i = آخری_ورقہ_lookup;
+      إذا (unlikely (i >= ورقہ_map.لمائی || ورقہ_map.arrayZ[i].major != major))
       {
-	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  goto done;
+	ورقہ_map.bfind (major, &i, HB_NOT_لبھیا_STORE_CLOSEST);
+	إذا (i >= ورقہ_map.لمائی)
+	  اذهب پورا;
       }
-      if (page_map.arrayZ[i].major == major)
-	elt = page_remainder (base) / page_t::ELT_BITS;
+      إذا (ورقہ_map.arrayZ[i].major == major)
+	elt = ورقہ_remainder (ادھار) / ورقہ_t::ELT_بٹ;
     }
 
-    for (; i < page_map.length; i++, elt = 0)
+    لكل (; i < ورقہ_map.لمائی; i++, elt = 0)
     {
-      const page_map_t &map = page_map.arrayZ[i];
-      const page_t &page = pages.arrayZ[map.index];
-      for (; elt < page_t::len (); elt++)
-	if (page.v[elt])
+      ثابت ورقہ_map_t &map = ورقہ_map.arrayZ[i];
+      ثابت ورقہ_t &ورقہ = ورقے.arrayZ[map.اشاریہ_2];
+      لكل (; elt < ورقہ_t::len (); elt++)
+	إذا (ورقہ.v[elt])
 	{
-	  *codepoint = major_start (map.major) + elt * page_t::ELT_BITS;
-	  *bits = page.v[elt];
-	  last_page_lookup = i;
-	  return true;
+	  *codepoint = major_شروع (map.major) + elt * ورقہ_t::ELT_بٹ;
+	  *بٹ = ورقہ.v[elt];
+	  آخری_ورقہ_lookup = i;
+	  أرجع سچ;
 	}
     }
 
-  done:
+  پورا:
     *codepoint = INVALID;
-    *bits = 0;
-    return false;
+    *بٹ = 0;
+    أرجع خطأ;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  منطقي پچھلا (hb_codepoint_t *codepoint) ثابت
   {
-    if (unlikely (*codepoint == INVALID)) {
+    إذا (unlikely (*codepoint == INVALID)) {
       *codepoint = get_max ();
-      return *codepoint != INVALID;
+      أرجع *codepoint != INVALID;
     }
 
-    page_map_t map = {get_major (*codepoint), 0};
-    unsigned int i;
-    page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST);
-    if (i < page_map.length && page_map.arrayZ[i].major == map.major)
+    ورقہ_map_t map = {get_major (*codepoint), 0};
+    بنانشانی صحيح i;
+    ورقہ_map.bfind (map, &i, HB_NOT_لبھیا_STORE_CLOSEST);
+    إذا (i < ورقہ_map.لمائی && ورقہ_map.arrayZ[i].major == map.major)
     {
-      if (pages[page_map.arrayZ[i].index].previous (codepoint))
+      إذا (ورقے[ورقہ_map.arrayZ[i].اشاریہ_2].پچھلا (codepoint))
       {
-	*codepoint += page_map.arrayZ[i].major * page_t::PAGE_BITS;
-	return true;
+	*codepoint += ورقہ_map.arrayZ[i].major * ورقہ_t::ورقہ_بٹ;
+	أرجع سچ;
       }
     }
     i--;
-    for (; (int) i >= 0; i--)
+    لكل (; (صحيح) i >= 0; i--)
     {
-      hb_codepoint_t m = pages.arrayZ[page_map.arrayZ[i].index].get_max ();
-      if (m != INVALID)
+      hb_codepoint_t m = ورقے.arrayZ[ورقہ_map.arrayZ[i].اشاریہ_2].get_max ();
+      إذا (m != INVALID)
       {
-	*codepoint = page_map.arrayZ[i].major * page_t::PAGE_BITS + m;
-	return true;
+	*codepoint = ورقہ_map.arrayZ[i].major * ورقہ_t::ورقہ_بٹ + m;
+	أرجع سچ;
       }
     }
     *codepoint = INVALID;
-    return false;
+    أرجع خطأ;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  منطقي اگلا_range (hb_codepoint_t *پہلا, hb_codepoint_t *آخری) ثابت
   {
     hb_codepoint_t i;
 
-    i = *last;
-    if (!next (&i))
+    i = *آخری;
+    إذا (!next (&i))
     {
-      *last = *first = INVALID;
-      return false;
+      *آخری = *پہلا = INVALID;
+      أرجع خطأ;
     }
 
-    *last = *first = i;
+    *آخری = *پہلا = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*last);
-    unsigned int p_index = last_page_lookup;
+    ثابت خودکار* ورقہ_map_array = ورقہ_map.arrayZ;
+    ثابت خودکار* ورقے_array = ورقے.arrayZ;
+    بنانشانی صحيح major = get_major (*آخری);
+    بنانشانی صحيح p_اشاریہ = آخری_ورقہ_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    إذا (unlikely (p_اشاریہ >= ورقہ_map.لمائی || ورقہ_map_array[p_اشاریہ].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      ورقہ_map.bfind (major, &p_اشاریہ, HB_NOT_لبھیا_STORE_CLOSEST);
       // The above next() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      أكد(p_اشاریہ < ورقہ_map.لمائی && ورقہ_map_array[p_اشاریہ].major == major);
+      آخری_ورقہ_lookup = p_اشاریہ;
     }
 
-    unsigned int rem = page_remainder (*last);
-    unsigned int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    بنانشانی صحيح rem = ورقہ_remainder (*آخری);
+    بنانشانی صحيح elt = rem / ورقہ_t::ELT_بٹ;
+    بنانشانی صحيح bit = rem & ورقہ_t::ELT_نقاب;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    unsigned int run = hb_ctz (~(page->v[elt] >> bit));
-    *last += run - 1;
-    if (run < page_t::ELT_BITS - bit)
-      return true;
+    ثابت ورقہ_t *ورقہ = &ورقے_array[ورقہ_map_array[p_اشاریہ].اشاریہ_2];
+    بنانشانی صحيح لگاتار = hb_ctz (~(ورقہ->v[elt] >> bit));
+    *آخری += لگاتار - 1;
+    إذا (لگاتار < ورقہ_t::ELT_بٹ - bit)
+      أرجع سچ;
 
     elt++;
 
-    while (true)
+    طالما (سچ)
     {
-      for (; elt < page_t::len (); elt++)
+      لكل (; elt < ورقہ_t::len (); elt++)
       {
-        uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        uint64_t w = ورقہ->v[elt];
+        إذا (w == (uint64_t) -1)
         {
-          *last += page_t::ELT_BITS;
-          continue;
+          *آخری += ورقہ_t::ELT_بٹ;
+          استمر;
         }
         uint64_t inv = ~w;
-        *last += hb_ctz (inv);
-        return true;
+        *آخری += hb_ctz (inv);
+        أرجع سچ;
       }
 
-      p_index++;
+      p_اشاریہ++;
 
 
-      if (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
-        return true;
+      إذا (p_اشاریہ >= ورقہ_map.لمائی || ورقہ_map_array[p_اشاریہ].major != major + 1)
+        أرجع سچ;
 
-      const auto& entry = page_map_array[p_index];
-      major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
+      ثابت خودکار& اندراج = ورقہ_map_array[p_اشاریہ];
+      major = اندراج.major;
+      آخری_ورقہ_lookup = p_اشاریہ;
+      ورقہ = &ورقے_array[اندراج.اشاریہ_2];
       elt = 0;
     }
   }
 
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  منطقي پچھلا_range (hb_codepoint_t *پہلا, hb_codepoint_t *آخری) ثابت
   {
     hb_codepoint_t i;
 
-    i = *first;
-    if (!previous (&i))
+    i = *پہلا;
+    إذا (!پچھلا (&i))
     {
-      *last = *first = INVALID;
-      return false;
+      *آخری = *پہلا = INVALID;
+      أرجع خطأ;
     }
 
-    *last = *first = i;
+    *آخری = *پہلا = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*first);
-    unsigned int p_index = last_page_lookup;
+    ثابت خودکار* ورقہ_map_array = ورقہ_map.arrayZ;
+    ثابت خودکار* ورقے_array = ورقے.arrayZ;
+    بنانشانی صحيح major = get_major (*پہلا);
+    بنانشانی صحيح p_اشاریہ = آخری_ورقہ_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    إذا (unlikely (p_اشاریہ >= ورقہ_map.لمائی || ورقہ_map_array[p_اشاریہ].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      ورقہ_map.bfind (major, &p_اشاریہ, HB_NOT_لبھیا_STORE_CLOSEST);
       // The above previous() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      أكد(p_اشاریہ < ورقہ_map.لمائی && ورقہ_map_array[p_اشاریہ].major == major);
+      آخری_ورقہ_lookup = p_اشاریہ;
     }
 
-    unsigned int rem = page_remainder (*first);
-    int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    بنانشانی صحيح rem = ورقہ_remainder (*پہلا);
+    صحيح elt = rem / ورقہ_t::ELT_بٹ;
+    بنانشانی صحيح bit = rem & ورقہ_t::ELT_نقاب;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    uint64_t inv = ~(page->v[elt] << (63 - bit));
-    unsigned int run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
-    *first -= run - 1;
-    if (run < bit + 1)
-      return true;
+    ثابت ورقہ_t *ورقہ = &ورقے_array[ورقہ_map_array[p_اشاریہ].اشاریہ_2];
+    uint64_t inv = ~(ورقہ->v[elt] << (63 - bit));
+    بنانشانی صحيح لگاتار = hb_ثنائی_ہندسہ_storage (inv) ? (ورقہ_t::ELT_بٹ - hb_ثنائی_ہندسہ_storage (inv)) : ورقہ_t::ELT_بٹ;
+    *پہلا -= لگاتار - 1;
+    إذا (لگاتار < bit + 1)
+      أرجع سچ;
 
     elt--;
 
-    while (true)
+    طالما (سچ)
     {
-      for (; elt >= 0; elt--)
+      لكل (; elt >= 0; elt--)
       {
-        uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        uint64_t w = ورقہ->v[elt];
+        إذا (w == (uint64_t) -1)
         {
-          *first -= page_t::ELT_BITS;
-          continue;
+          *پہلا -= ورقہ_t::ELT_بٹ;
+          استمر;
         }
         uint64_t inv = ~w;
-        unsigned int zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
-        *first -= zeros;
-        return true;
+        بنانشانی صحيح zeros = hb_ثنائی_ہندسہ_storage (inv) ? (ورقہ_t::ELT_بٹ - hb_ثنائی_ہندسہ_storage (inv)) : ورقہ_t::ELT_بٹ;
+        *پہلا -= zeros;
+        أرجع سچ;
       }
 
 
-      if (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
-        return true;
+      إذا (p_اشاریہ == 0 || ورقہ_map_array[p_اشاریہ - 1].major != major - 1)
+        أرجع سچ;
 
-      p_index--;
-      const auto& entry = page_map_array[p_index];
+      p_اشاریہ--;
+      ثابت خودکار& اندراج = ورقہ_map_array[p_اشاریہ];
 
-      major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
-      elt = page_t::len () - 1;
+      major = اندراج.major;
+      آخری_ورقہ_lookup = p_اشاریہ;
+      ورقہ = &ورقے_array[اندراج.اشاریہ_2];
+      elt = ورقہ_t::len () - 1;
     }
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
-			  hb_codepoint_t *out,
-			  unsigned int    size) const
+  بنانشانی صحيح اگلا_many (hb_codepoint_t  codepoint,
+			  hb_codepoint_t *باہرلا,
+			  بنانشانی صحيح    ناپ) ثابت
   {
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    بنانشانی صحيح شروع_ورقہ = 0;
+    بنانشانی صحيح شروع_ورقہ_قدر = 0;
+    إذا (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      ثابت خودکار* ورقہ_map_array = ورقہ_map.arrayZ;
+      بنانشانی صحيح major = get_major (codepoint);
+      بنانشانی صحيح i = آخری_ورقہ_lookup;
+      إذا (unlikely (i >= ورقہ_map.لمائی || ورقہ_map_array[i].major != major))
       {
-	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  return 0;  // codepoint is greater than our max element.
+	ورقہ_map.bfind (major, &i, HB_NOT_لبھیا_STORE_CLOSEST);
+	إذا (i >= ورقہ_map.لمائی)
+	  أرجع 0;  // codepoint is greater than our max element.
       }
-      start_page = i;
-      if (page_map_array[i].major == major)
+      شروع_ورقہ = i;
+      إذا (ورقہ_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        شروع_ورقہ_قدر = ورقہ_remainder (codepoint + 1);
+        إذا (unlikely (شروع_ورقہ_قدر == 0))
         {
           // The export-after value was last in the page. Start on next page.
-          start_page++;
-          start_page_value = 0;
+          شروع_ورقہ++;
+          شروع_ورقہ_قدر = 0;
         }
       }
     }
 
-    unsigned int initial_size = size;
-    for (unsigned int i = start_page; i < page_map.length && size; i++)
+    بنانشانی صحيح initial_ناپ = ناپ;
+    لكل (بنانشانی صحيح i = شروع_ورقہ; i < ورقہ_map.لمائی && ناپ; i++)
     {
-      uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_value, out, size);
-      out += n;
-      size -= n;
-      start_page_value = 0;
+      uint32_t ادھار = major_شروع (ورقہ_map.arrayZ[i].major);
+      بنانشانی صحيح n = ورقے[ورقہ_map.arrayZ[i].اشاریہ_2].اكتب (ادھار, شروع_ورقہ_قدر, باہرلا, ناپ);
+      باہرلا += n;
+      ناپ -= n;
+      شروع_ورقہ_قدر = 0;
     }
-    return initial_size - size;
+    أرجع initial_ناپ - ناپ;
   }
 
-  unsigned int next_many_inverted (hb_codepoint_t  codepoint,
-				   hb_codepoint_t *out,
-				   unsigned int    size) const
+  بنانشانی صحيح اگلا_many_inverted (hb_codepoint_t  codepoint,
+				   hb_codepoint_t *باہرلا,
+				   بنانشانی صحيح    ناپ) ثابت
   {
-    unsigned int initial_size = size;
+    بنانشانی صحيح initial_ناپ = ناپ;
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    بنانشانی صحيح شروع_ورقہ = 0;
+    بنانشانی صحيح شروع_ورقہ_قدر = 0;
+    إذا (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      ثابت خودکار* ورقہ_map_array = ورقہ_map.arrayZ;
+      بنانشانی صحيح major = get_major (codepoint);
+      بنانشانی صحيح i = آخری_ورقہ_lookup;
+      إذا (unlikely (i >= ورقہ_map.لمائی || ورقہ_map_array[i].major != major))
       {
-        page_map.bfind(major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-        if (unlikely (i >= page_map.length))
+        ورقہ_map.bfind(major, &i, HB_NOT_لبھیا_STORE_CLOSEST);
+        إذا (unlikely (i >= ورقہ_map.لمائی))
         {
           // codepoint is greater than our max element.
-          while (++codepoint != INVALID && size)
+          طالما (++codepoint != INVALID && ناپ)
           {
-            *out++ = codepoint;
-            size--;
+            *باہرلا++ = codepoint;
+            ناپ--;
           }
-          return initial_size - size;
+          أرجع initial_ناپ - ناپ;
         }
       }
-      start_page = i;
-      if (page_map_array[i].major == major)
+      شروع_ورقہ = i;
+      إذا (ورقہ_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        شروع_ورقہ_قدر = ورقہ_remainder (codepoint + 1);
+        إذا (unlikely (شروع_ورقہ_قدر == 0))
         {
           // The export-after value was last in the page. Start on next page.
-          start_page++;
-          start_page_value = 0;
+          شروع_ورقہ++;
+          شروع_ورقہ_قدر = 0;
         }
       }
     }
 
-    hb_codepoint_t next_value = codepoint + 1;
-    for (unsigned int i=start_page; i<page_map.length && size; i++)
+    hb_codepoint_t اگلا_قدر = codepoint + 1;
+    لكل (بنانشانی صحيح i=شروع_ورقہ; i<ورقہ_map.لمائی && ناپ; i++)
     {
-      uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_value, out, size, &next_value);
-      out += n;
-      size -= n;
-      start_page_value = 0;
+      uint32_t ادھار = major_شروع (ورقہ_map.arrayZ[i].major);
+      بنانشانی صحيح n = ورقے[ورقہ_map.arrayZ[i].اشاریہ_2].write_inverted (ادھار, شروع_ورقہ_قدر, باہرلا, ناپ, &اگلا_قدر);
+      باہرلا += n;
+      ناپ -= n;
+      شروع_ورقہ_قدر = 0;
     }
-    while (next_value < HB_SET_VALUE_INVALID && size) {
-      *out++ = next_value++;
-      size--;
+    طالما (اگلا_قدر < HB_سیٹ_قدر_INVALID && ناپ) {
+      *باہرلا++ = اگلا_قدر++;
+      ناپ--;
     }
-    return initial_size - size;
+    أرجع initial_ناپ - ناپ;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned int get_population () const
+  منطقي has_population () ثابت { أرجع population != UINT_MAX; }
+  بنانشانی صحيح get_population () ثابت
   {
-    if (has_population ())
-      return population;
+    إذا (has_population ())
+      أرجع population;
 
-    unsigned int pop = 0;
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      pop += pages[i].get_population ();
+    بنانشانی صحيح نکالو = 0;
+    بنانشانی صحيح گنتی = ورقے.لمائی;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
+      نکالو += ورقے[i].get_population ();
 
-    population = pop;
-    return pop;
+    population = نکالو;
+    أرجع نکالو;
   }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  منطقي get_singleton (hb_codepoint_t *codepoint) ثابت
   {
-    if (has_population ())
+    إذا (has_population ())
     {
-      if (population != 1) return false;
+      إذا (population != 1) أرجع خطأ;
       *codepoint = get_min ();
-      return true;
+      أرجع سچ;
     }
 
     hb_codepoint_t singleton = INVALID;
-    for (const auto &map : page_map)
+    لكل (ثابت خودکار &map : ورقہ_map)
     {
-      const auto &page = pages.arrayZ[map.index];
-      for (unsigned i = 0; i < page_t::len (); i++)
+      ثابت خودکار &ورقہ = ورقے.arrayZ[map.اشاریہ_2];
+      لكل (بنانشانی i = 0; i < ورقہ_t::len (); i++)
       {
-	page_t::elt_t bits = page.v[i];
-	if (!bits) continue;
-	if (singleton != INVALID || (bits & (bits - 1)))
-	  return false;
-	singleton = map.major * page_t::PAGE_BITS +
-		    i * page_t::ELT_BITS + hb_ctz (bits);
+	ورقہ_t::elt_t بٹ = ورقہ.v[i];
+	إذا (!بٹ) استمر;
+	إذا (singleton != INVALID || (بٹ & (بٹ - 1)))
+	  أرجع خطأ;
+	singleton = map.major * ورقہ_t::ورقہ_بٹ +
+		    i * ورقہ_t::ELT_بٹ + hb_ctz (بٹ);
       }
     }
 
-    if (singleton == INVALID)
+    إذا (singleton == INVALID)
     {
       population = 0;
-      return false;
+      أرجع خطأ;
     }
     population = 1;
     *codepoint = singleton;
-    return true;
+    أرجع سچ;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () ثابت
   {
-    unsigned count = pages.length;
-    for (unsigned i = 0; i < count; i++)
+    بنانشانی گنتی = ورقے.لمائی;
+    لكل (بنانشانی i = 0; i < گنتی; i++)
     {
-      const auto& map = page_map.arrayZ[i];
-      const auto& page = pages.arrayZ[map.index];
+      ثابت خودکار& map = ورقہ_map.arrayZ[i];
+      ثابت خودکار& ورقہ = ورقے.arrayZ[map.اشاریہ_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_min ();
+      إذا (!ورقہ.is_empty ())
+	أرجع map.major * ورقہ_t::ورقہ_بٹ + ورقہ.get_min ();
     }
-    return INVALID;
+    أرجع INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () ثابت
   {
-    unsigned count = pages.length;
-    for (signed i = count - 1; i >= 0; i--)
+    بنانشانی گنتی = ورقے.لمائی;
+    لكل (نشانیوالا i = گنتی - 1; i >= 0; i--)
     {
-      const auto& map = page_map.arrayZ[(unsigned) i];
-      const auto& page = pages.arrayZ[map.index];
+      ثابت خودکار& map = ورقہ_map.arrayZ[(بنانشانی) i];
+      ثابت خودکار& ورقہ = ورقے.arrayZ[map.اشاریہ_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_max ();
+      إذا (!ورقہ.is_empty ())
+	أرجع map.major * ورقہ_t::ورقہ_بٹ + ورقہ.get_max ();
     }
-    return INVALID;
+    أرجع INVALID;
   }
 
-  static constexpr hb_codepoint_t INVALID = page_t::INVALID;
+  ساكن constexpr hb_codepoint_t INVALID = ورقہ_t::INVALID;
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  بنية iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_t &s_ = Null (hb_bit_set_t),
-	    bool init = true) : s (&s_), v (INVALID), l(0)
+    ساكن constexpr منطقي is_sorted_iterator = سچ;
+    ساكن constexpr منطقي has_fast_len = سچ;
+    iter_t (ثابت hb_ثنائی_ہندسہ_سیٹ_t &s_ = Null (hb_ثنائی_ہندسہ_سیٹ_t),
+	    منطقي init = سچ) : s (&s_), v (INVALID), l(0)
     {
-      if (init)
+      إذا (init)
       {
 	l = s->get_population () + 1;
 	__next__ ();
       }
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () { s->next (&v); if (l) l--; }
-    void __prev__ () { s->previous (&v); }
-    unsigned __len__ () const { return l; }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    تعريفنوع hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () ثابت { أرجع v; }
+    منطقي __more__ () ثابت { أرجع v != INVALID; }
+    فراغ __next__ () { s->next (&v); إذا (l) l--; }
+    فراغ __prev__ () { s->پچھلا (&v); }
+    بنانشانی __len__ () ثابت { أرجع l; }
+    iter_t سرا () ثابت { أرجع iter_t (*s, خطأ); }
+    منطقي عامل != (ثابت iter_t& o) ثابت
+    { أرجع v != o.v; }
 
-    protected:
-    const hb_bit_set_t *s;
+    محمي:
+    ثابت hb_ثنائی_ہندسہ_سیٹ_t *s;
     hb_codepoint_t v;
-    unsigned l;
+    بنانشانی l;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ثابت { أرجع iter_t (*هذا); }
+  عامل iter_t () ثابت { أرجع iter (); }
 
-  protected:
+  محمي:
 
-  page_t *page_for (hb_codepoint_t g, bool insert = false)
+  ورقہ_t *ورقہ_for (hb_codepoint_t g, منطقي insert = خطأ)
   {
-    unsigned major = get_major (g);
+    بنانشانی major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    بنانشانی i = آخری_ورقہ_lookup;
+    إذا (likely (i < ورقہ_map.لمائی))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      خودکار &cached_ورقہ = ورقہ_map.arrayZ[i];
+      إذا (cached_ورقہ.major == major)
+	أرجع &ورقے.arrayZ[cached_ورقہ.اشاریہ_2];
     }
 
-    page_map_t map = {major, pages.length};
-    if (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
+    ورقہ_map_t map = {major, ورقے.لمائی};
+    إذا (!ورقہ_map.bfind (map, &i, HB_NOT_لبھیا_STORE_CLOSEST))
     {
-      if (!insert)
-        return nullptr;
+      إذا (!insert)
+        أرجع خالی_سوچک;
 
-      if (unlikely (!resize (pages.length + 1)))
-	return nullptr;
+      إذا (unlikely (!resize (ورقے.لمائی + 1)))
+	أرجع خالی_سوچک;
 
-      pages.arrayZ[map.index].init0 ();
-      memmove (page_map.arrayZ + i + 1,
-	       page_map.arrayZ + i,
-	       (page_map.length - 1 - i) * page_map.item_size);
-      page_map.arrayZ[i] = map;
+      ورقے.arrayZ[map.اشاریہ_2].init0 ();
+      memmove (ورقہ_map.arrayZ + i + 1,
+	       ورقہ_map.arrayZ + i,
+	       (ورقہ_map.لمائی - 1 - i) * ورقہ_map.شے_ناپ);
+      ورقہ_map.arrayZ[i] = map;
     }
 
-    last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    آخری_ورقہ_lookup = i;
+    أرجع &ورقے.arrayZ[ورقہ_map.arrayZ[i].اشاریہ_2];
   }
-  const page_t *page_for (hb_codepoint_t g) const
+  ثابت ورقہ_t *ورقہ_for (hb_codepoint_t g) ثابت
   {
-    unsigned major = get_major (g);
+    بنانشانی major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    بنانشانی i = آخری_ورقہ_lookup;
+    إذا (likely (i < ورقہ_map.لمائی))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      خودکار &cached_ورقہ = ورقہ_map.arrayZ[i];
+      إذا (cached_ورقہ.major == major)
+	أرجع &ورقے.arrayZ[cached_ورقہ.اشاریہ_2];
     }
 
-    page_map_t key = {major};
-    if (!page_map.bfind (key, &i))
-      return nullptr;
+    ورقہ_map_t key = {major};
+    إذا (!ورقہ_map.bfind (key, &i))
+      أرجع خالی_سوچک;
 
-    last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    آخری_ورقہ_lookup = i;
+    أرجع &ورقے.arrayZ[ورقہ_map.arrayZ[i].اشاریہ_2];
   }
-  page_t &page_at (unsigned int i)
+  ورقہ_t &ورقہ_at (بنانشانی صحيح i)
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    أكد (i < ورقہ_map.لمائی);
+    أرجع ورقے.arrayZ[ورقہ_map.arrayZ[i].اشاریہ_2];
   }
-  const page_t &page_at (unsigned int i) const
+  ثابت ورقہ_t &ورقہ_at (بنانشانی صحيح i) ثابت
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    أكد (i < ورقہ_map.لمائی);
+    أرجع ورقے.arrayZ[ورقہ_map.arrayZ[i].اشاریہ_2];
   }
-  unsigned int get_major (hb_codepoint_t g) const { return g >> page_t::PAGE_BITS_LOG_2; }
-  unsigned int page_remainder (hb_codepoint_t g) const { return g & page_t::PAGE_BITMASK; }
-  hb_codepoint_t major_start (unsigned int major) const { return major << page_t::PAGE_BITS_LOG_2; }
+  بنانشانی صحيح get_major (hb_codepoint_t g) ثابت { أرجع g >> ورقہ_t::ورقہ_بٹ_LOG_2; }
+  بنانشانی صحيح ورقہ_remainder (hb_codepoint_t g) ثابت { أرجع g & ورقہ_t::ورقہ_BITMASK; }
+  hb_codepoint_t major_شروع (بنانشانی صحيح major) ثابت { أرجع major << ورقہ_t::ورقہ_بٹ_LOG_2; }
 };
 
 
-#endif /* HB_BIT_SET_HH */
+#جے_انت /* HB_BIT_SET_HH */

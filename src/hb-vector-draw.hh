@@ -24,96 +24,96 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_DRAW_HH
-#define HB_VECTOR_DRAW_HH
+#جے_بنا_تعریف HB_سمتیہ_DRAW_HH
+#تعریف_کرو HB_سمتیہ_DRAW_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-vector.h"
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
-#include "hb-vector-internal.hh"
+#ضمن "hb-vector.h"
+#ضمن "hb-geometry.hh"
+#ضمن "hb-machinery.hh"
+#ضمن "hb-vector-buf.hh"
+#ضمن "hb-vector-internal.hh"
 
-struct hb_vector_draw_t
+بنية hb_سمتیہ_draw_t
 {
-  hb_object_header_t header;
+  hb_object_سرخی_t سرخی;
 
-  hb_vector_format_t format = HB_VECTOR_FORMAT_INVALID;
+  hb_سمتیہ_format_t format = HB_سمتیہ_FORMAT_INVALID;
   hb_transform_t<> transform = {1, 0, 0, 1, 0, 0};
-  float x_scale_factor = 1.f;
-  float y_scale_factor = 1.f;
-  hb_vector_extents_t extents = {0, 0, 0, 0};
-  bool has_extents = false;
+  عائم x_scale_ضارب = 1.f;
+  عائم y_scale_ضارب = 1.f;
+  hb_سمتیہ_extents_t extents = {0, 0, 0, 0};
+  منطقي has_extents = خطأ;
   hb_color_t foreground = HB_COLOR (0, 0, 0, 255);
   hb_color_t background = HB_COLOR (0, 0, 0, 0);
 
-  hb_vector_buf_t defs;
-  hb_vector_buf_t body;
-  hb_vector_buf_t path;
-  hb_vector_buf_t pdf_extgstate_dict;
-  unsigned pdf_extgstate_count = 0;
+  hb_سمتیہ_buf_t defs;
+  hb_سمتیہ_buf_t body;
+  hb_سمتیہ_buf_t رستہ;
+  hb_سمتیہ_buf_t pdf_extgstate_dict;
+  بنانشانی pdf_extgstate_گنتی = 0;
 
   /* Cumulative work budget for the current draw session; reset by
    * hb_vector_draw_clear().  Outline traversal and complete path commands
    * charge the same live counter. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  int64_t budget_remaining = HB_BUDGET_GLYPH;
+  int64_t budget_بچیا = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  فراغ recharge_budget ()
   {
-    budget_remaining = budget == HB_BUDGET_DEFAULT ?
+    budget_بچیا = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  bool begin_path_command ()
+  منطقي begin_رستہ_command ()
   {
-    return likely (budget_remaining >= 0 && !path.in_error ());
+    أرجع likely (budget_بچیا >= 0 && !رستہ.وچ_error ());
   }
 
-  void end_path_command ()
+  فراغ سرا_رستہ_command ()
   {
     /* The serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (unlikely (path.in_error ()))
-      budget_remaining = 0;
+    إذا (unlikely (رستہ.وچ_error ()))
+      budget_بچیا = 0;
   }
 
-  void set_precision (unsigned p)
+  فراغ سیٹ_precision (بنانشانی p)
   {
     p = hb_min (p, 12u);
     defs.precision = p;
     body.precision = p;
-    path.precision = p;
+    رستہ.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
-  hb_blob_t *recycled_blob = nullptr;
+  بنانشانی get_precision () ثابت { أرجع رستہ.precision; }
+  hb_blob_t *recycled_blob = خالی_سوچک;
 
-  void new_path ()
+  فراغ new_رستہ ()
   {
-    flush_path ();
+    flush_رستہ ();
   }
 
-  void flush_path ()
+  فراغ flush_رستہ ()
   {
-    if (!path.length) return;
-    switch (format)
+    إذا (!رستہ.لمائی) أرجع;
+    بدل (format)
     {
-      case HB_VECTOR_FORMAT_PDF: flush_path_pdf (); break;
-      case HB_VECTOR_FORMAT_SVG: flush_path_svg (); break;
-      case HB_VECTOR_FORMAT_INVALID: default: break;
+      حالة HB_سمتیہ_FORMAT_PDF: flush_رستہ_pdf (); اكسر;
+      حالة HB_سمتیہ_FORMAT_SVG: flush_رستہ_svg (); اكسر;
+      حالة HB_سمتیہ_FORMAT_INVALID: افتراضي: اكسر;
     }
-    path.shrink (0);
+    رستہ.shrink (0);
   }
 
-  void flush_path_pdf ()
+  فراغ flush_رستہ_pdf ()
   {
-    unsigned a = hb_color_get_alpha (foreground);
-    if (a < 255)
+    بنانشانی a = hb_color_get_alpha (foreground);
+    إذا (a < 255)
     {
-      unsigned gs_idx = pdf_extgstate_count++;
+      بنانشانی gs_idx = pdf_extgstate_گنتی++;
       body.append_str ("/GS");
       body.append_unsigned (gs_idx);
       body.append_str (" gs\n");
@@ -121,44 +121,44 @@ struct hb_vector_draw_t
       pdf_extgstate_dict.append_str ("/GS");
       pdf_extgstate_dict.append_unsigned (gs_idx);
       pdf_extgstate_dict.append_str (" << /Type /ExtGState /ca ");
-      pdf_extgstate_dict.append_num (a / 255.f, 4);
+      pdf_extgstate_dict.append_عدد (a / 255.f, 4);
       pdf_extgstate_dict.append_str (" >> ");
     }
-    body.append_num (hb_color_get_red (foreground) / 255.f, 4);
+    body.append_عدد (hb_color_get_red (foreground) / 255.f, 4);
     body.append_c (' ');
-    body.append_num (hb_color_get_green (foreground) / 255.f, 4);
+    body.append_عدد (hb_color_get_green (foreground) / 255.f, 4);
     body.append_c (' ');
-    body.append_num (hb_color_get_blue (foreground) / 255.f, 4);
+    body.append_عدد (hb_color_get_blue (foreground) / 255.f, 4);
     body.append_str (" rg\n");
-    body.append_len (path.arrayZ, path.length);
+    body.append_len (رستہ.arrayZ, رستہ.لمائی);
     body.append_str ("f\n");
   }
 
-  void flush_path_svg ()
+  فراغ flush_رستہ_svg ()
   {
     body.append_str ("<path d=\"");
-    body.append_len (path.arrayZ, path.length);
+    body.append_len (رستہ.arrayZ, رستہ.لمائی);
     body.append_str ("\" fill=\"");
-    body.append_svg_color (foreground, true);
+    body.append_svg_color (foreground, سچ);
     body.append_str ("\"/>\n");
   }
 
-  void transform_xy (float x, float y, float *tx, float *ty)
+  فراغ transform_xy (عائم x, عائم y, عائم *tx, عائم *ty)
   {
-    hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, x, y, tx, ty);
+    hb_سمتیہ_transform_نقطہ (transform, x_scale_ضارب, y_scale_ضارب, x, y, tx, ty);
   }
 
-  void append_xy (float x, float y, char sep)
+  فراغ append_xy (عائم x, عائم y, حرف sep)
   {
-    float tx, ty;
+    عائم tx, ty;
     transform_xy (x, y, &tx, &ty);
-    path.append_num (tx, path.precision);
-    path.append_c (sep);
-    path.append_num (ty, path.precision);
+    رستہ.append_عدد (tx, رستہ.precision);
+    رستہ.append_c (sep);
+    رستہ.append_عدد (ty, رستہ.precision);
   }
 
-  void append_xy_svg (float x, float y) { append_xy (x, y, ','); }
-  void append_xy_pdf (float x, float y) { append_xy (x, y, ' '); }
+  فراغ append_xy_svg (عائم x, عائم y) { append_xy (x, y, ','); }
+  فراغ append_xy_pdf (عائم x, عائم y) { append_xy (x, y, ' '); }
 };
 
-#endif /* HB_VECTOR_DRAW_HH */
+#جے_انت /* HB_VECTOR_DRAW_HH */

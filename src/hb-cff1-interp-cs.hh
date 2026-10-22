@@ -23,138 +23,138 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF1_INTERP_CS_HH
-#define HB_CFF1_INTERP_CS_HH
+#جے_بنا_تعریف HB_CFF1_INTERP_CS_HH
+#تعریف_کرو HB_CFF1_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#ضمن "hb.hh"
+#ضمن "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+ورتوں نطاق OT;
 
-typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
+تعريفنوع biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+بنية cff1_cs_interp_env_t : cs_interp_env_t<نمبر_t, CFF1Subrs>
 {
-  template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
-    : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
+  سانچا <قسم_ناں ACC>
+  cff1_cs_interp_env_t (ثابت hb_ubytes_t &str, ACC &acc, بنانشانی صحيح fd,
+			ثابت صحيح *coords_=خالی_سوچک, بنانشانی صحيح عدد_coords_2=0)
+    : SUPER (str, acc.globalSubrs, acc.نجی_Dicts[fd].localSubrs)
   {
-    processed_width = false;
-    has_width = false;
-    arg_start = 0;
-    in_seac = false;
+    processed_چوڑائی = خطأ;
+    has_چوڑائی = خطأ;
+    arg_شروع = 0;
+    وچ_seac = خطأ;
   }
 
-  void set_width (bool has_width_)
+  فراغ سیٹ_چوڑائی (منطقي has_چوڑائی_2)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    إذا (likely (!processed_چوڑائی && (SUPER::arg_ڈھیر.get_گنتی () > 0)))
     {
-      if (has_width_)
+      إذا (has_چوڑائی_2)
       {
-	width = SUPER::argStack[0];
-	has_width = true;
-	arg_start = 1;
+	چوڑائی = SUPER::arg_ڈھیر[0];
+	has_چوڑائی = سچ;
+	arg_شروع = 1;
       }
     }
-    processed_width = true;
+    processed_چوڑائی = سچ;
   }
 
-  void clear_args ()
+  فراغ clear_دلیلاں ()
   {
-    arg_start = 0;
-    SUPER::clear_args ();
+    arg_شروع = 0;
+    SUPER::clear_دلیلاں ();
   }
 
-  void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
+  فراغ سیٹ_وچ_seac (منطقي وچ_seac_2) { وچ_seac = وچ_seac_2; }
 
-  bool	  processed_width;
-  bool	  has_width;
-  unsigned int  arg_start;
-  number_t	width;
-  bool	  in_seac;
+  منطقي	  processed_چوڑائی;
+  منطقي	  has_چوڑائی;
+  بنانشانی صحيح  arg_شروع;
+  نمبر_t	چوڑائی;
+  منطقي	  وچ_seac;
 
-  private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  خاص:
+  تعريفنوع cs_interp_env_t<نمبر_t, CFF1Subrs> SUPER;
 };
 
-template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+سانچا <قسم_ناں OPSET, قسم_ناں PARAM, قسم_ناں رستہ_3=رستہ_procs_null_t<cff1_cs_interp_env_t, PARAM>>
+بنية cff1_cs_opset_t : cs_opset_t<نمبر_t, OPSET, cff1_cs_interp_env_t, PARAM, رستہ_3>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ process_op (op_کوڈ_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_dotsection:
-	SUPER::flush_args_and_op (op, env, param);
-	break;
+    بدل (op) {
+      حالة Op_کوڈ_dotsection:
+	SUPER::flush_دلیلاں_and_op (op, env, param);
+	اكسر;
 
-      case OpCode_endchar:
-	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+      حالة Op_کوڈ_endchar:
+	OPSET::check_چوڑائی (op, env, param);
+	إذا (env.arg_ڈھیر.get_گنتی () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
-	OPSET::flush_args_and_op (op, env, param);
-	env.set_endchar (true);
-	break;
+	OPSET::flush_دلیلاں_and_op (op, env, param);
+	env.سیٹ_endchar (سچ);
+	اكسر;
 
-      default:
+      افتراضي:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ check_چوڑائی (op_کوڈ_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    إذا (!env.processed_چوڑائی)
     {
-      bool  has_width = false;
-      switch (op)
+      منطقي  has_چوڑائی = خطأ;
+      بدل (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
-	  break;
-	default:
-	  return;
+	حالة Op_کوڈ_endchar:
+	حالة Op_کوڈ_hstem:
+	حالة Op_کوڈ_hstemhm:
+	حالة Op_کوڈ_vstem:
+	حالة Op_کوڈ_vstemhm:
+	حالة Op_کوڈ_hintmask:
+	حالة Op_کوڈ_cntrmask:
+	  has_چوڑائی = ((env.arg_ڈھیر.get_گنتی () & 1) != 0);
+	  اكسر;
+	حالة Op_کوڈ_hmoveto:
+	حالة Op_کوڈ_vmoveto:
+	  has_چوڑائی = (env.arg_ڈھیر.get_گنتی () > 1);
+	  اكسر;
+	حالة Op_کوڈ_rmoveto:
+	  has_چوڑائی = (env.arg_ڈھیر.get_گنتی () > 2);
+	  اكسر;
+	افتراضي:
+	  أرجع;
       }
-      env.set_width (has_width);
+      env.سیٹ_چوڑائی (has_چوڑائی);
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ process_seac (cff1_cs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ flush_دلیلاں (cff1_cs_interp_env_t &env, PARAM& param)
   {
-    SUPER::flush_args (env, param);
-    env.clear_args ();  /* pop off width */
+    SUPER::flush_دلیلاں (env, param);
+    env.clear_دلیلاں ();  /* pop off width */
   }
 
-  private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  خاص:
+  تعريفنوع cs_opset_t<نمبر_t, OPSET, cff1_cs_interp_env_t, PARAM, رستہ_3>  SUPER;
 };
 
-template <typename OPSET, typename PARAM>
-using cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
+سانچا <قسم_ناں OPSET, قسم_ناں PARAM>
+ورتوں cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF1_INTERP_CS_HH */
+#جے_انت /* HB_CFF1_INTERP_CS_HH */

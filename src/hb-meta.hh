@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_META_HH
-#define HB_META_HH
+#جے_بنا_تعریف HB_META_HH
+#تعریف_کرو HB_META_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include <memory>
-#include <type_traits>
-#include <utility>
+#ضمن <memory>
+#ضمن <type_traits>
+#ضمن <utility>
 
 
 /*
@@ -39,200 +39,200 @@
  */
 
 /* Void!  For when we need a expression-type of void. */
-struct hb_empty_t {};
+بنية hb_خالی_تھاواں_t {};
 
 /* https://en.cppreference.com/w/cpp/types/void_t */
-template<typename... Ts> struct _hb_void_t { typedef void type; };
-template<typename... Ts> using hb_void_t = typename _hb_void_t<Ts...>::type;
+سانچا<قسم_ناں... Ts> بنية _hb_void_t { تعريفنوع فراغ type; };
+سانچا<قسم_ناں... Ts> ورتوں hb_void_t = قسم_ناں _hb_void_t<Ts...>::type;
 
-template<typename Head, typename... Ts> struct _hb_head_t { typedef Head type; };
-template<typename... Ts> using hb_head_t = typename _hb_head_t<Ts...>::type;
+سانچا<قسم_ناں سر, قسم_ناں... Ts> بنية hb_سر_t { تعريفنوع سر type; };
+سانچا<قسم_ناں... Ts> ورتوں hb_سر_t_2 = قسم_ناں hb_سر_t<Ts...>::type;
 
-template <typename T, T v> struct hb_integral_constant { static constexpr T value = v; };
-template <bool b> using hb_bool_constant = hb_integral_constant<bool, b>;
-using hb_true_type = hb_bool_constant<true>;
-using hb_false_type = hb_bool_constant<false>;
+سانچا <قسم_ناں T, T v> بنية hb_integral_constant { ساكن constexpr T value = v; };
+سانچا <منطقي b> ورتوں hb_bool_constant = hb_integral_constant<منطقي, b>;
+ورتوں hb_true_type = hb_bool_constant<سچ>;
+ورتوں hb_false_type = hb_bool_constant<خطأ>;
 
 /* Static-assert as expression. */
-template <bool cond> struct static_assert_expr;
-template <> struct static_assert_expr<true> : hb_false_type {};
-#define static_assert_expr(C) static_assert_expr<C>::value
+سانچا <منطقي cond> بنية static_assert_اظہاریہ;
+سانچا <> بنية static_assert_اظہاریہ<سچ> : hb_false_type {};
+#تعریف_کرو static_assert_اظہاریہ(C) static_assert_اظہاریہ<C>::value
 
 /* Basic type SFINAE. */
 
-template <bool B, typename T = void> struct hb_enable_if {};
-template <typename T>                struct hb_enable_if<true, T> { typedef T type; };
-#define hb_enable_if(Cond) typename hb_enable_if<(Cond)>::type* = nullptr
+سانچا <منطقي B, قسم_ناں T = فراغ> بنية hb_enable_if {};
+سانچا <قسم_ناں T>                بنية hb_enable_if<سچ, T> { تعريفنوع T type; };
+#تعریف_کرو hb_enable_if(Cond) قسم_ناں hb_enable_if<(Cond)>::type* = خالی_سوچک
 /* Concepts/Requires alias: */
-#define hb_requires(Cond) hb_enable_if((Cond))
+#تعریف_کرو hb_requires(Cond) hb_enable_if((Cond))
 
-template <typename T, typename T2> struct hb_is_same : hb_false_type {};
-template <typename T>              struct hb_is_same<T, T> : hb_true_type {};
-#define hb_is_same(T, T2) hb_is_same<T, T2>::value
+سانچا <قسم_ناں T, قسم_ناں T2> بنية hb_is_same : hb_false_type {};
+سانچا <قسم_ناں T>              بنية hb_is_same<T, T> : hb_true_type {};
+#تعریف_کرو hb_is_same(T, T2) hb_is_same<T, T2>::value
 
 /* Function overloading SFINAE and priority. */
 
-#define HB_RETURN(Ret, E) -> hb_head_t<Ret, decltype ((E))> { return (E); }
-#define HB_AUTO_RETURN(E) -> decltype ((E)) { return (E); }
-#define HB_VOID_RETURN(E) -> hb_void_t<decltype ((E))> { (E); }
+#تعریف_کرو HB_RETURN(Ret, E) -> hb_سر_t_2<Ret, decltype ((E))> { أرجع (E); }
+#تعریف_کرو HB_AUTO_RETURN(E) -> decltype ((E)) { أرجع (E); }
+#تعریف_کرو HB_VOID_RETURN(E) -> hb_void_t<decltype ((E))> { (E); }
 
-template <unsigned Pri> struct hb_priority : hb_priority<Pri - 1> {};
-template <>             struct hb_priority<0> {};
-#define hb_prioritize hb_priority<16> ()
+سانچا <بنانشانی Pri> بنية hb_ترجیح : hb_ترجیح<Pri - 1> {};
+سانچا <>             بنية hb_ترجیح<0> {};
+#تعریف_کرو hb_prioritize hb_ترجیح<16> ()
 
-#define HB_FUNCOBJ(x) static_const x HB_UNUSED
-
-
-template <typename T> struct hb_type_identity_t { typedef T type; };
-template <typename T> using hb_type_identity = typename hb_type_identity_t<T>::type;
-
-template <typename T> static inline T hb_declval ();
-#define hb_declval(T) (hb_declval<T> ())
-
-template <typename T> struct hb_match_const		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_const<const T>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_const = typename hb_match_const<T>::type;
-
-template <typename T> struct hb_match_reference		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_reference<T &>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> struct hb_match_reference<T &&>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_reference = typename hb_match_reference<T>::type;
-template <typename T> auto _hb_try_add_lvalue_reference (hb_priority<1>) -> hb_type_identity<T&>;
-template <typename T> auto _hb_try_add_lvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
-template <typename T> using hb_add_lvalue_reference = decltype (_hb_try_add_lvalue_reference<T> (hb_prioritize));
-template <typename T> auto _hb_try_add_rvalue_reference (hb_priority<1>) -> hb_type_identity<T&&>;
-template <typename T> auto _hb_try_add_rvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
-template <typename T> using hb_add_rvalue_reference = decltype (_hb_try_add_rvalue_reference<T> (hb_prioritize));
-
-template <typename T> struct hb_match_pointer		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_pointer<T *>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_pointer = typename hb_match_pointer<T>::type;
-template <typename T> auto _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<hb_remove_reference<T>*>;
-template <typename T> auto _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<T>;
-template <typename T> using hb_add_pointer = decltype (_hb_try_add_pointer<T> (hb_prioritize));
+#تعریف_کرو HB_FUNCOBJ(x) static_const x HB_بن_ورتیا
 
 
-template <typename T> using hb_decay = typename std::decay<T>::type;
+سانچا <قسم_ناں T> بنية hb_type_پچھان_تت_t { تعريفنوع T type; };
+سانچا <قسم_ناں T> ورتوں hb_type_پچھان_تت = قسم_ناں hb_type_پچھان_تت_t<T>::type;
 
-#define hb_is_convertible(From,To) std::is_convertible<From, To>::value
+سانچا <قسم_ناں T> ساكن مضمن T hb_declval ();
+#تعریف_کرو hb_declval(T) (hb_declval<T> ())
 
-template <typename From, typename To>
-using hb_is_cr_convertible = hb_bool_constant<
-  hb_is_same (hb_decay<From>, hb_decay<To>) &&
-  (!std::is_const<From>::value || std::is_const<To>::value) &&
-  (!std::is_reference<To>::value || std::is_const<To>::value || std::is_reference<To>::value)
+سانچا <قسم_ناں T> بنية hb_میل_const		: hb_type_پچھان_تت_t<T>, hb_false_type	{};
+سانچا <قسم_ناں T> بنية hb_میل_const<ثابت T>	: hb_type_پچھان_تت_t<T>, hb_true_type	{};
+سانچا <قسم_ناں T> ورتوں hb_remove_const = قسم_ناں hb_میل_const<T>::type;
+
+سانچا <قسم_ناں T> بنية hb_میل_reference		: hb_type_پچھان_تت_t<T>, hb_false_type	{};
+سانچا <قسم_ناں T> بنية hb_میل_reference<T &>	: hb_type_پچھان_تت_t<T>, hb_true_type	{};
+سانچا <قسم_ناں T> بنية hb_میل_reference<T &&>	: hb_type_پچھان_تت_t<T>, hb_true_type	{};
+سانچا <قسم_ناں T> ورتوں hb_remove_reference = قسم_ناں hb_میل_reference<T>::type;
+سانچا <قسم_ناں T> خودکار hb_try_جوڑو_lvalue_reference (hb_ترجیح<1>) -> hb_type_پچھان_تت<T&>;
+سانچا <قسم_ناں T> خودکار hb_try_جوڑو_lvalue_reference (hb_ترجیح<0>) -> hb_type_پچھان_تت<T>;
+سانچا <قسم_ناں T> ورتوں hb_جوڑو_lvalue_reference = decltype (hb_try_جوڑو_lvalue_reference<T> (hb_prioritize));
+سانچا <قسم_ناں T> خودکار hb_try_جوڑو_rvalue_reference (hb_ترجیح<1>) -> hb_type_پچھان_تت<T&&>;
+سانچا <قسم_ناں T> خودکار hb_try_جوڑو_rvalue_reference (hb_ترجیح<0>) -> hb_type_پچھان_تت<T>;
+سانچا <قسم_ناں T> ورتوں hb_جوڑو_rvalue_reference = decltype (hb_try_جوڑو_rvalue_reference<T> (hb_prioritize));
+
+سانچا <قسم_ناں T> بنية hb_میل_اشارہ_گر		: hb_type_پچھان_تت_t<T>, hb_false_type	{};
+سانچا <قسم_ناں T> بنية hb_میل_اشارہ_گر<T *>	: hb_type_پچھان_تت_t<T>, hb_true_type	{};
+سانچا <قسم_ناں T> ورتوں hb_remove_اشارہ_گر = قسم_ناں hb_میل_اشارہ_گر<T>::type;
+سانچا <قسم_ناں T> خودکار hb_try_جوڑو_اشارہ_گر (hb_ترجیح<1>) -> hb_type_پچھان_تت<hb_remove_reference<T>*>;
+سانچا <قسم_ناں T> خودکار hb_try_جوڑو_اشارہ_گر (hb_ترجیح<1>) -> hb_type_پچھان_تت<T>;
+سانچا <قسم_ناں T> ورتوں hb_جوڑو_اشارہ_گر = decltype (hb_try_جوڑو_اشارہ_گر<T> (hb_prioritize));
+
+
+سانچا <قسم_ناں T> ورتوں hb_decay = قسم_ناں std::decay<T>::type;
+
+#تعریف_کرو hb_is_convertible(From,منزل) std::is_convertible<From, منزل>::value
+
+سانچا <قسم_ناں From, قسم_ناں منزل>
+ورتوں hb_is_cr_convertible = hb_bool_constant<
+  hb_is_same (hb_decay<From>, hb_decay<منزل>) &&
+  (!std::is_const<From>::value || std::is_const<منزل>::value) &&
+  (!std::is_reference<منزل>::value || std::is_const<منزل>::value || std::is_reference<منزل>::value)
 >;
-#define hb_is_cr_convertible(From,To) hb_is_cr_convertible<From, To>::value
+#تعریف_کرو hb_is_cr_convertible(From,منزل) hb_is_cr_convertible<From, منزل>::value
 
 
-struct
+بنية
 {
-  template <typename T> constexpr auto
-  operator () (T&& v) const HB_AUTO_RETURN (std::forward<T> (v))
+  سانچا <قسم_ناں T> constexpr خودکار
+  عامل () (T&& v) ثابت HB_AUTO_RETURN (std::forward<T> (v))
 
-  template <typename T> constexpr auto
-  operator () (T *v) const HB_AUTO_RETURN (*v)
+  سانچا <قسم_ناں T> constexpr خودکار
+  عامل () (T *v) ثابت HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (const hb::shared_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  سانچا <قسم_ناں T> constexpr خودکار
+  عامل () (ثابت hb::shared_ptr<T>& v) ثابت HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (hb::shared_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  سانچا <قسم_ناں T> constexpr خودکار
+  عامل () (hb::shared_ptr<T>& v) ثابت HB_AUTO_RETURN (*v)
   
-  template <typename T> constexpr auto
-  operator () (const hb::unique_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  سانچا <قسم_ناں T> constexpr خودکار
+  عامل () (ثابت hb::unique_ptr<T>& v) ثابت HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (hb::unique_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  سانچا <قسم_ناں T> constexpr خودکار
+  عامل () (hb::unique_ptr<T>& v) ثابت HB_AUTO_RETURN (*v)
 }
 HB_FUNCOBJ (hb_deref);
 
-template <typename T>
-struct hb_reference_wrapper
+سانچا <قسم_ناں T>
+بنية hb_reference_wrapper
 {
   hb_reference_wrapper (T v) : v (v) {}
-  bool operator == (const hb_reference_wrapper& o) const { return v == o.v; }
-  bool operator != (const hb_reference_wrapper& o) const { return v != o.v; }
-  operator T& () { return v; }
-  T& get () { return v; }
+  منطقي عامل == (ثابت hb_reference_wrapper& o) ثابت { أرجع v == o.v; }
+  منطقي عامل != (ثابت hb_reference_wrapper& o) ثابت { أرجع v != o.v; }
+  عامل T& () { أرجع v; }
+  T& get () { أرجع v; }
   T v;
 };
-template <typename T>
-struct hb_reference_wrapper<T&>
+سانچا <قسم_ناں T>
+بنية hb_reference_wrapper<T&>
 {
   hb_reference_wrapper (T& v) : v (std::addressof (v)) {}
-  bool operator == (const hb_reference_wrapper& o) const { return v == o.v; }
-  bool operator != (const hb_reference_wrapper& o) const { return v != o.v; }
-  operator T& () { return *v; }
-  T& get () { return *v; }
+  منطقي عامل == (ثابت hb_reference_wrapper& o) ثابت { أرجع v == o.v; }
+  منطقي عامل != (ثابت hb_reference_wrapper& o) ثابت { أرجع v != o.v; }
+  عامل T& () { أرجع *v; }
+  T& get () { أرجع *v; }
   T* v;
 };
 
 
 /* Type traits */
 
-template <typename T> struct hb_int_min;
-template <> struct hb_int_min<char>			: hb_integral_constant<char,			CHAR_MIN>	{};
-template <> struct hb_int_min<signed char>		: hb_integral_constant<signed char,		SCHAR_MIN>	{};
-template <> struct hb_int_min<unsigned char>		: hb_integral_constant<unsigned char,		0>		{};
-template <> struct hb_int_min<signed short>		: hb_integral_constant<signed short,		SHRT_MIN>	{};
-template <> struct hb_int_min<unsigned short>		: hb_integral_constant<unsigned short,		0>		{};
-template <> struct hb_int_min<signed int>		: hb_integral_constant<signed int,		INT_MIN>	{};
-template <> struct hb_int_min<unsigned int>		: hb_integral_constant<unsigned int,		0>		{};
-template <> struct hb_int_min<signed long>		: hb_integral_constant<signed long,		LONG_MIN>	{};
-template <> struct hb_int_min<unsigned long>		: hb_integral_constant<unsigned long,		0>		{};
-template <> struct hb_int_min<signed long long>		: hb_integral_constant<signed long long,	LLONG_MIN>	{};
-template <> struct hb_int_min<unsigned long long>	: hb_integral_constant<unsigned long long,	0>		{};
-template <typename T> struct hb_int_min<T *>		: hb_integral_constant<T *,			nullptr>	{};
-#define hb_int_min(T) hb_int_min<T>::value
-template <typename T> struct hb_int_max;
-template <> struct hb_int_max<char>			: hb_integral_constant<char,			CHAR_MAX>	{};
-template <> struct hb_int_max<signed char>		: hb_integral_constant<signed char,		SCHAR_MAX>	{};
-template <> struct hb_int_max<unsigned char>		: hb_integral_constant<unsigned char,		UCHAR_MAX>	{};
-template <> struct hb_int_max<signed short>		: hb_integral_constant<signed short,		SHRT_MAX>	{};
-template <> struct hb_int_max<unsigned short>		: hb_integral_constant<unsigned short,		USHRT_MAX>	{};
-template <> struct hb_int_max<signed int>		: hb_integral_constant<signed int,		INT_MAX>	{};
-template <> struct hb_int_max<unsigned int>		: hb_integral_constant<unsigned int,		UINT_MAX>	{};
-template <> struct hb_int_max<signed long>		: hb_integral_constant<signed long,		LONG_MAX>	{};
-template <> struct hb_int_max<unsigned long>		: hb_integral_constant<unsigned long,		ULONG_MAX>	{};
-template <> struct hb_int_max<signed long long>		: hb_integral_constant<signed long long,	LLONG_MAX>	{};
-template <> struct hb_int_max<unsigned long long>	: hb_integral_constant<unsigned long long,	ULLONG_MAX>	{};
-#define hb_int_max(T) hb_int_max<T>::value
+سانچا <قسم_ناں T> بنية hb_int_min;
+سانچا <> بنية hb_int_min<حرف>			: hb_integral_constant<حرف,			CHAR_MIN>	{};
+سانچا <> بنية hb_int_min<نشانیوالا حرف>		: hb_integral_constant<نشانیوالا حرف,		SCHAR_MIN>	{};
+سانچا <> بنية hb_int_min<بنانشانی حرف>		: hb_integral_constant<بنانشانی حرف,		0>		{};
+سانچا <> بنية hb_int_min<نشانیوالا چھوٹا>		: hb_integral_constant<نشانیوالا چھوٹا,		SHRT_MIN>	{};
+سانچا <> بنية hb_int_min<بنانشانی چھوٹا>		: hb_integral_constant<بنانشانی چھوٹا,		0>		{};
+سانچا <> بنية hb_int_min<نشانیوالا صحيح>		: hb_integral_constant<نشانیوالا صحيح,		INT_MIN>	{};
+سانچا <> بنية hb_int_min<بنانشانی صحيح>		: hb_integral_constant<بنانشانی صحيح,		0>		{};
+سانچا <> بنية hb_int_min<نشانیوالا لما>		: hb_integral_constant<نشانیوالا لما,		LONG_MIN>	{};
+سانچا <> بنية hb_int_min<بنانشانی لما>		: hb_integral_constant<بنانشانی لما,		0>		{};
+سانچا <> بنية hb_int_min<نشانیوالا لما لما>		: hb_integral_constant<نشانیوالا لما لما,	LLONG_MIN>	{};
+سانچا <> بنية hb_int_min<بنانشانی لما لما>	: hb_integral_constant<بنانشانی لما لما,	0>		{};
+سانچا <قسم_ناں T> بنية hb_int_min<T *>		: hb_integral_constant<T *,			خالی_سوچک>	{};
+#تعریف_کرو hb_int_min(T) hb_int_min<T>::value
+سانچا <قسم_ناں T> بنية hb_int_max;
+سانچا <> بنية hb_int_max<حرف>			: hb_integral_constant<حرف,			CHAR_MAX>	{};
+سانچا <> بنية hb_int_max<نشانیوالا حرف>		: hb_integral_constant<نشانیوالا حرف,		SCHAR_MAX>	{};
+سانچا <> بنية hb_int_max<بنانشانی حرف>		: hb_integral_constant<بنانشانی حرف,		UCHAR_MAX>	{};
+سانچا <> بنية hb_int_max<نشانیوالا چھوٹا>		: hb_integral_constant<نشانیوالا چھوٹا,		SHRT_MAX>	{};
+سانچا <> بنية hb_int_max<بنانشانی چھوٹا>		: hb_integral_constant<بنانشانی چھوٹا,		USHRT_MAX>	{};
+سانچا <> بنية hb_int_max<نشانیوالا صحيح>		: hb_integral_constant<نشانیوالا صحيح,		ودھ_توں_ودھ_عدد>	{};
+سانچا <> بنية hb_int_max<بنانشانی صحيح>		: hb_integral_constant<بنانشانی صحيح,		UINT_MAX>	{};
+سانچا <> بنية hb_int_max<نشانیوالا لما>		: hb_integral_constant<نشانیوالا لما,		LONG_MAX>	{};
+سانچا <> بنية hb_int_max<بنانشانی لما>		: hb_integral_constant<بنانشانی لما,		ULONG_MAX>	{};
+سانچا <> بنية hb_int_max<نشانیوالا لما لما>		: hb_integral_constant<نشانیوالا لما لما,	LLONG_MAX>	{};
+سانچا <> بنية hb_int_max<بنانشانی لما لما>	: hb_integral_constant<بنانشانی لما لما,	ULLONG_MAX>	{};
+#تعریف_کرو hb_int_max(T) hb_int_max<T>::value
 
-#if defined(__GNUC__) && __GNUC__ < 5 && !defined(__clang__)
-#define hb_is_trivially_copyable(T) __has_trivial_copy(T)
-#define hb_is_trivially_copy_assignable(T) __has_trivial_assign(T)
-#define hb_is_trivially_constructible(T) __has_trivial_constructor(T)
-#define hb_is_trivially_copy_constructible(T) __has_trivial_copy_constructor(T)
-#define hb_is_trivially_destructible(T) __has_trivial_destructor(T)
-#else
-#define hb_is_trivially_copyable(T) std::is_trivially_copyable<T>::value
-#define hb_is_trivially_copy_assignable(T) std::is_trivially_copy_assignable<T>::value
-#define hb_is_trivially_constructible(T) std::is_trivially_constructible<T>::value
-#define hb_is_trivially_copy_constructible(T) std::is_trivially_copy_constructible<T>::value
-#define hb_is_trivially_destructible(T) std::is_trivially_destructible<T>::value
-#endif
+#إذا defined(__GNUC__) && __GNUC__ < 5 && !defined(__clang__)
+#تعریف_کرو hb_is_trivially_copyable(T) __has_trivial_copy(T)
+#تعریف_کرو hb_is_trivially_copy_assignable(T) __has_trivial_assign(T)
+#تعریف_کرو hb_is_trivially_constructible(T) __has_trivial_constructor(T)
+#تعریف_کرو hb_is_trivially_copy_constructible(T) __has_trivial_copy_constructor(T)
+#تعریف_کرو hb_is_trivially_destructible(T) __has_trivial_destructor(T)
+#وإلا
+#تعریف_کرو hb_is_trivially_copyable(T) std::is_trivially_copyable<T>::value
+#تعریف_کرو hb_is_trivially_copy_assignable(T) std::is_trivially_copy_assignable<T>::value
+#تعریف_کرو hb_is_trivially_constructible(T) std::is_trivially_constructible<T>::value
+#تعریف_کرو hb_is_trivially_copy_constructible(T) std::is_trivially_copy_constructible<T>::value
+#تعریف_کرو hb_is_trivially_destructible(T) std::is_trivially_destructible<T>::value
+#جے_انت
 
 /* Class traits. */
 
-#define HB_DELETE_COPY_ASSIGN(TypeName) \
-  TypeName(const TypeName&) = delete; \
-  void operator=(const TypeName&) = delete
-#define HB_DELETE_CREATE_COPY_ASSIGN(TypeName) \
-  TypeName() = delete; \
-  TypeName(const TypeName&) = delete; \
-  void operator=(const TypeName&) = delete
+#تعریف_کرو HB_DELETE_COPY_سونپو(TypeName) \
+  TypeName(ثابت TypeName&) = مٹاؤ; \
+  فراغ عامل=(ثابت TypeName&) = مٹاؤ
+#تعریف_کرو HB_DELETE_CREATE_COPY_سونپو(TypeName) \
+  TypeName() = مٹاؤ; \
+  TypeName(ثابت TypeName&) = مٹاؤ; \
+  فراغ عامل=(ثابت TypeName&) = مٹاؤ
 
 /* hb_unwrap_type (T)
  * If T has no T::type, returns T. Otherwise calls itself on T::type recursively.
  */
 
-template <typename T, typename>
-struct _hb_unwrap_type : hb_type_identity_t<T> {};
-template <typename T>
-struct _hb_unwrap_type<T, hb_void_t<typename T::type>> : _hb_unwrap_type<typename T::type, void> {};
-template <typename T>
-using hb_unwrap_type = _hb_unwrap_type<T, void>;
-#define hb_unwrap_type(T) typename hb_unwrap_type<T>::type
+سانچا <قسم_ناں T, قسم_ناں>
+بنية _hb_unwrap_type : hb_type_پچھان_تت_t<T> {};
+سانچا <قسم_ناں T>
+بنية _hb_unwrap_type<T, hb_void_t<قسم_ناں T::type>> : _hb_unwrap_type<قسم_ناں T::type, فراغ> {};
+سانچا <قسم_ناں T>
+ورتوں hb_unwrap_type = _hb_unwrap_type<T, فراغ>;
+#تعریف_کرو hb_unwrap_type(T) قسم_ناں hb_unwrap_type<T>::type
 
-#endif /* HB_META_HH */
+#جے_انت /* HB_META_HH */

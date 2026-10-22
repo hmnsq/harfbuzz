@@ -27,103 +27,103 @@
  */
 
 
-#ifndef HB_CORETEXT_HH
-#define HB_CORETEXT_HH
+#جے_بنا_تعریف HB_CORETEXT_HH
+#تعریف_کرو HB_CORETEXT_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-coretext.h"
+#ضمن "hb-coretext.h"
 
-#include "hb-aat-layout.hh"
+#ضمن "hb-aat-layout.hh"
 
 
-HB_INTERNAL CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int index);
+HB_اندرونی CGFontRef
+create_cg_font (CFArrayRef ct_font_desc_array, بنانشانی صحيح اشاریہ_2);
 
-HB_INTERNAL CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index);
+HB_اندرونی CGFontRef
+create_cg_font (hb_blob_t *blob, بنانشانی صحيح اشاریہ_2);
 
-HB_INTERNAL CGFontRef
+HB_اندرونی CGFontRef
 create_cg_font (hb_face_t *face);
 
-HB_INTERNAL CTFontRef
-create_ct_font (CGFontRef cg_font, CGFloat font_size);
+HB_اندرونی CTFontRef
+create_ct_font (CGFontRef cg_font, CGFloat font_ناپ);
 
 
-template <typename T>
-struct hb_cf_releaser_t
+سانچا <قسم_ناں T>
+بنية hb_cf_releaser_t
 {
-  static void release (T obj)
+  ساكن فراغ release (T obj)
   {
-    if (obj)
+    إذا (obj)
       CFRelease ((CFTypeRef) obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGFontRef>
+سانچا <>
+بنية hb_cf_releaser_t<CGFontRef>
 {
-  static void release (CGFontRef obj)
+  ساكن فراغ release (CGFontRef obj)
   {
-    if (obj)
+    إذا (obj)
       CGFontRelease (obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGDataProviderRef>
+سانچا <>
+بنية hb_cf_releaser_t<CGDataProviderRef>
 {
-  static void release (CGDataProviderRef obj)
+  ساكن فراغ release (CGDataProviderRef obj)
   {
-    if (obj)
+    إذا (obj)
       CGDataProviderRelease (obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGPathRef>
+سانچا <>
+بنية hb_cf_releaser_t<CGPathRef>
 {
-  static void release (CGPathRef obj)
+  ساكن فراغ release (CGPathRef obj)
   {
-    if (obj)
+    إذا (obj)
       CGPathRelease (obj);
   }
 };
 
-template <typename T, typename Releaser = hb_cf_releaser_t<T>>
-struct hb_cf_ptr_t
+سانچا <قسم_ناں T, قسم_ناں Releaser = hb_cf_releaser_t<T>>
+بنية hb_cf_ptr_t
 {
-  using element_type = T;
+  ورتوں element_type = T;
 
-  constexpr hb_cf_ptr_t () noexcept : p (nullptr) {}
-  constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (nullptr) {}
-  explicit hb_cf_ptr_t (T p) noexcept : p (p) {}
+  constexpr hb_cf_ptr_t () noexcept : p (خالی_سوچک) {}
+  constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (خالی_سوچک) {}
+  واضح hb_cf_ptr_t (T p) noexcept : p (p) {}
 
-  hb_cf_ptr_t (const hb_cf_ptr_t &) = delete;
-  hb_cf_ptr_t &operator = (const hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t (ثابت hb_cf_ptr_t &) = مٹاؤ;
+  hb_cf_ptr_t &عامل = (ثابت hb_cf_ptr_t &) = مٹاؤ;
 
   hb_cf_ptr_t (hb_cf_ptr_t &&o) noexcept : p (o.release ()) {}
-  hb_cf_ptr_t &operator = (hb_cf_ptr_t &&o) noexcept
+  hb_cf_ptr_t &عامل = (hb_cf_ptr_t &&o) noexcept
   {
     reset (o.release ());
-    return *this;
+    أرجع *هذا;
   }
 
-  hb_cf_ptr_t &operator = (std::nullptr_t) noexcept
+  hb_cf_ptr_t &عامل = (std::nullptr_t) noexcept
   {
     reset ();
-    return *this;
+    أرجع *هذا;
   }
 
   ~hb_cf_ptr_t ()
   {
     Releaser::release (p);
-    p = nullptr;
+    p = خالی_سوچک;
   }
 
-  void reset (T new_p = nullptr)
+  فراغ reset (T new_p = خالی_سوچک)
   {
-    if (p != new_p)
+    إذا (p != new_p)
     {
       T old_p = p;
       p = new_p;
@@ -134,29 +134,29 @@ struct hb_cf_ptr_t
   T release () noexcept
   {
     T old_p = p;
-    p = nullptr;
-    return old_p;
+    p = خالی_سوچک;
+    أرجع old_p;
   }
 
-  T get () const noexcept { return p; }
+  T get () ثابت noexcept { أرجع p; }
 
-  operator T () const noexcept { return p; }
-  explicit operator bool () const noexcept { return p != nullptr; }
-  bool operator ! () const noexcept { return !p; }
+  عامل T () ثابت noexcept { أرجع p; }
+  واضح عامل منطقي () ثابت noexcept { أرجع p != خالی_سوچک; }
+  منطقي عامل ! () ثابت noexcept { أرجع !p; }
 
-  void swap (hb_cf_ptr_t &o) noexcept
+  فراغ swap (hb_cf_ptr_t &o) noexcept
   {
     T tmp = p;
     p = o.p;
     o.p = tmp;
   }
-  friend void swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
+  یار فراغ swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
   {
     a.swap (b);
   }
 
-  private:
+  خاص:
   T p;
 };
 
-#endif /* HB_CORETEXT_HH */
+#جے_انت /* HB_CORETEXT_HH */

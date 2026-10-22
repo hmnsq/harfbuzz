@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SANITIZE_HH
-#define HB_SANITIZE_HH
+#جے_بنا_تعریف HB_SANITIZE_HH
+#تعریف_کرو HB_SANITIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-dispatch.hh"
+#ضمن "hb.hh"
+#ضمن "hb-blob.hh"
+#ضمن "hb-dispatch.hh"
 
 
 /*
@@ -104,373 +104,373 @@
  */
 
 /* This limits sanitizing time on really broken fonts. */
-#ifndef HB_SANITIZE_MAX_EDITS
-#define HB_SANITIZE_MAX_EDITS 32
-#endif
-#ifndef HB_SANITIZE_MAX_OPS_FACTOR
-#define HB_SANITIZE_MAX_OPS_FACTOR 64
-#endif
-#ifndef HB_SANITIZE_MAX_OPS_MIN
-#define HB_SANITIZE_MAX_OPS_MIN 16384
-#endif
-#ifndef HB_SANITIZE_MAX_OPS_MAX
-#define HB_SANITIZE_MAX_OPS_MAX 0x3FFFFFFF
-#endif
-#ifndef HB_SANITIZE_MAX_SUBTABLES
-#define HB_SANITIZE_MAX_SUBTABLES 0x4000
-#endif
+#جے_بنا_تعریف HB_SANITIZE_MAX_EDITS
+#تعریف_کرو HB_SANITIZE_MAX_EDITS 32
+#جے_انت
+#جے_بنا_تعریف HB_SANITIZE_MAX_OPS_ضارب
+#تعریف_کرو HB_SANITIZE_MAX_OPS_ضارب 64
+#جے_انت
+#جے_بنا_تعریف HB_SANITIZE_MAX_OPS_MIN
+#تعریف_کرو HB_SANITIZE_MAX_OPS_MIN 16384
+#جے_انت
+#جے_بنا_تعریف HB_SANITIZE_MAX_OPS_MAX
+#تعریف_کرو HB_SANITIZE_MAX_OPS_MAX 0x3FFFFFFF
+#جے_انت
+#جے_بنا_تعریف HB_SANITIZE_MAX_SUBTABLES
+#تعریف_کرو HB_SANITIZE_MAX_SUBTABLES 0x4000
+#جے_انت
 
-struct hb_sanitize_context_t :
-       hb_dispatch_context_t<hb_sanitize_context_t, bool, HB_DEBUG_SANITIZE>
+بنية hb_sanitize_context_t :
+       hb_dispatch_context_t<hb_sanitize_context_t, منطقي, HB_DEBUG_SANITIZE>
 {
-  hb_sanitize_context_t (const char *start_ = nullptr, const char *end_ = nullptr) :
-	start (start_), end (end_),
-	length (0),
+  hb_sanitize_context_t (ثابت حرف *شروع_2 = خالی_سوچک, ثابت حرف *سرا_4 = خالی_سوچک) :
+	شروع (شروع_2), سرا (سرا_4),
+	لمائی (0),
 	max_ops (0), max_subtables (0),
-        recursion_depth (0),
-	writable (false),
-	blob (nullptr),
-	num_glyphs (65536),
-	num_glyphs_set (false),
-	lazy_some_gpos (false) {}
+        recursion_ڈونگھائی (0),
+	writable (خطأ),
+	blob (خالی_سوچک),
+	عدد_glyphs (65536),
+	عدد_glyphs_سیٹ (خطأ),
+	lazy_some_gpos (خطأ) {}
 
-  const char *get_name () { return "SANITIZE"; }
-  template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format)
+  ثابت حرف *get_name () { أرجع "SANITIZE"; }
+  سانچا <قسم_ناں T, قسم_ناں F>
+  منطقي may_dispatch (ثابت T *obj HB_بن_ورتیا, ثابت F *format)
   {
-    return format->sanitize (this) &&
+    أرجع format->sanitize (هذا) &&
 	   hb_barrier ();
   }
-  static return_t default_return_value () { return true; }
-  static return_t no_dispatch_return_value () { return false; }
-  bool stop_sublookup_iteration (const return_t r) const { return !r; }
+  ساكن return_t default_return_قدر () { أرجع سچ; }
+  ساكن return_t no_dispatch_return_قدر () { أرجع خطأ; }
+  منطقي stop_sublookup_iteration (ثابت return_t r) ثابت { أرجع !r; }
 
-  bool visit_subtables (unsigned count)
+  منطقي ویکھو_subtables (بنانشانی گنتی)
   {
-    max_subtables += count;
-    return max_subtables < HB_SANITIZE_MAX_SUBTABLES;
+    max_subtables += گنتی;
+    أرجع max_subtables < HB_SANITIZE_MAX_SUBTABLES;
   }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.sanitize (this, std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  خاص:
+  سانچا <قسم_ناں T, قسم_ناں ...Ts> خودکار
+  _dispatch (ثابت T &obj, hb_ترجیح<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.sanitize (هذا, std::forward<Ts> (ds)...) )
+  سانچا <قسم_ناں T, قسم_ناں ...Ts> خودکار
+  _dispatch (ثابت T &obj, hb_ترجیح<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (هذا, std::forward<Ts> (ds)...) )
+  عام:
+  سانچا <قسم_ناں T, قسم_ناں ...Ts> خودکار
+  dispatch (ثابت T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
   hb_sanitize_context_t (hb_blob_t *b) : hb_sanitize_context_t ()
   {
     init (b);
 
-    if (blob)
-      start_processing ();
+    إذا (blob)
+      شروع_processing ();
   }
 
   ~hb_sanitize_context_t ()
   {
-    if (blob)
-      end_processing ();
+    إذا (blob)
+      سرا_processing ();
   }
 
-  void init (hb_blob_t *b)
+  فراغ init (hb_blob_t *b)
   {
-    this->blob = hb_blob_reference (b);
-    this->writable = false;
+    هذا->blob = hb_blob_reference (b);
+    هذا->writable = خطأ;
   }
 
-  void set_num_glyphs (unsigned int num_glyphs_)
+  فراغ سیٹ_عدد_glyphs (بنانشانی صحيح عدد_glyphs_2)
   {
-    num_glyphs = num_glyphs_;
-    num_glyphs_set = true;
+    عدد_glyphs = عدد_glyphs_2;
+    عدد_glyphs_سیٹ = سچ;
   }
-  unsigned int get_num_glyphs () { return num_glyphs; }
+  بنانشانی صحيح get_عدد_glyphs () { أرجع عدد_glyphs; }
 
-  void set_max_ops (int max_ops_) { max_ops = max_ops_; }
+  فراغ سیٹ_max_ops (صحيح max_ops_) { max_ops = max_ops_; }
 
-  template <typename T>
-  void set_object (const T *obj)
+  سانچا <قسم_ناں T>
+  فراغ سیٹ_object (ثابت T *obj)
   {
     reset_object ();
 
-    if (!obj) return;
+    إذا (!obj) أرجع;
 
-    const char *obj_start = (const char *) obj;
-    if (unlikely (obj_start < this->start || this->end <= obj_start))
+    ثابت حرف *obj_شروع = (ثابت حرف *) obj;
+    إذا (unlikely (obj_شروع < هذا->شروع || هذا->سرا <= obj_شروع))
     {
-      this->start = this->end = nullptr;
-      this->length = 0;
+      هذا->شروع = هذا->سرا = خالی_سوچک;
+      هذا->لمائی = 0;
     }
-    else
+    وإلا
     {
-      this->start = obj_start;
-      this->end   = obj_start + hb_min (size_t (this->end - obj_start), obj->get_size ());
-      this->length = this->end - this->start;
+      هذا->شروع = obj_شروع;
+      هذا->سرا   = obj_شروع + hb_min (size_t (هذا->سرا - obj_شروع), obj->get_ناپ ());
+      هذا->لمائی = هذا->سرا - هذا->شروع;
     }
   }
 
-  void reset_object ()
+  فراغ reset_object ()
   {
-    if (this->blob)
+    إذا (هذا->blob)
     {
-      this->start = this->blob->data;
-      this->end = this->start + this->blob->length;
+      هذا->شروع = هذا->blob->انکڑے;
+      هذا->سرا = هذا->شروع + هذا->blob->لمائی;
     }
-    this->length = this->end - this->start;
-    assert (this->start <= this->end); /* Must not overflow. */
+    هذا->لمائی = هذا->سرا - هذا->شروع;
+    أكد (هذا->شروع <= هذا->سرا); /* Must not overflow. */
   }
 
-  void start_processing (const char *start_ = nullptr, const char *end_ = nullptr)
+  فراغ شروع_processing (ثابت حرف *شروع_2 = خالی_سوچک, ثابت حرف *سرا_4 = خالی_سوچک)
   {
-    if (start_)
+    إذا (شروع_2)
     {
-      this->start = start_;
-      this->end = end_;
+      هذا->شروع = شروع_2;
+      هذا->سرا = سرا_4;
     }
     reset_object ();
-    unsigned m;
-    if (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
-      this->max_ops = HB_SANITIZE_MAX_OPS_MAX;
-    else
-      this->max_ops = hb_clamp (m,
-				(unsigned) HB_SANITIZE_MAX_OPS_MIN,
-				(unsigned) HB_SANITIZE_MAX_OPS_MAX);
-    this->debug_depth = 0;
-    this->recursion_depth = 0;
+    بنانشانی m;
+    إذا (unlikely (hb_unsigned_mul_overflows (هذا->سرا - هذا->شروع, HB_SANITIZE_MAX_OPS_ضارب, &m)))
+      هذا->max_ops = HB_SANITIZE_MAX_OPS_MAX;
+    وإلا
+      هذا->max_ops = hb_clamp (m,
+				(بنانشانی) HB_SANITIZE_MAX_OPS_MIN,
+				(بنانشانی) HB_SANITIZE_MAX_OPS_MAX);
+    هذا->debug_ڈونگھائی = 0;
+    هذا->recursion_ڈونگھائی = 0;
 
-    DEBUG_MSG_LEVEL (SANITIZE, start, 0, +1,
+    DEBUG_پیغام_LEVEL (SANITIZE, شروع, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     هذا->شروع, هذا->سرا,
+		     (بنانشانی لما) (هذا->سرا - هذا->شروع));
   }
 
-  void end_processing ()
+  فراغ سرا_processing ()
   {
-    DEBUG_MSG_LEVEL (SANITIZE, this->start, 0, -1,
+    DEBUG_پیغام_LEVEL (SANITIZE, هذا->شروع, 0, -1,
 		     "end [%p..%p]",
-		     this->start, this->end);
+		     هذا->شروع, هذا->سرا);
 
-    hb_blob_destroy (this->blob);
-    this->blob = nullptr;
-    this->start = this->end = nullptr;
-    this->length = 0;
+    hb_blob_destroy (هذا->blob);
+    هذا->blob = خالی_سوچک;
+    هذا->شروع = هذا->سرا = خالی_سوچک;
+    هذا->لمائی = 0;
   }
 
-  bool check_ops(unsigned count)
+  منطقي check_ops(بنانشانی گنتی)
   {
     /* Avoid underflow */
-    if (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
+    إذا (unlikely (هذا->max_ops < 0 || گنتی >= (بنانشانی) هذا->max_ops))
     {
-      this->max_ops = -1;
-      return false;
+      هذا->max_ops = -1;
+      أرجع خطأ;
     }
-    this->max_ops -= (int) count;
-    return true;
+    هذا->max_ops -= (صحيح) گنتی;
+    أرجع سچ;
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#جے_بنا_تعریف HB_OPTIMIZE_ناپ
   HB_ALWAYS_INLINE
-#endif
-  bool check_range (const void *base,
-		    unsigned int len) const
+#جے_انت
+  منطقي check_range (ثابت فراغ *ادھار,
+		    بنانشانی صحيح len) ثابت
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length &&
-	      (unsigned int) (this->end - p) >= len &&
-	      ((this->max_ops -= len) > 0);
+    ثابت حرف *p = (ثابت حرف *) ادھار;
+    منطقي ok = (uintptr_t) (p - هذا->شروع) <= هذا->لمائی &&
+	      (بنانشانی صحيح) (هذا->سرا - p) >= len &&
+	      ((هذا->max_ops -= len) > 0);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_پیغام_LEVEL (SANITIZE, p, هذا->debug_ڈونگھائی+1, 0,
 		     "check_range [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     هذا->شروع, هذا->سرا,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    أرجع likely (ok);
   }
-#ifndef HB_OPTIMIZE_SIZE
+#جے_بنا_تعریف HB_OPTIMIZE_ناپ
   HB_ALWAYS_INLINE
-#endif
-  bool check_range_fast (const void *base,
-			 unsigned int len) const
+#جے_انت
+  منطقي check_range_fast (ثابت فراغ *ادھار,
+			 بنانشانی صحيح len) ثابت
   {
-    const char *p = (const char *) base;
-    bool ok = ((uintptr_t) (p - this->start) <= this->length &&
-	       (unsigned int) (this->end - p) >= len);
+    ثابت حرف *p = (ثابت حرف *) ادھار;
+    منطقي ok = ((uintptr_t) (p - هذا->شروع) <= هذا->لمائی &&
+	       (بنانشانی صحيح) (هذا->سرا - p) >= len);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_پیغام_LEVEL (SANITIZE, p, هذا->debug_ڈونگھائی+1, 0,
 		     "check_range_fast [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     هذا->شروع, هذا->سرا,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    أرجع likely (ok);
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#جے_بنا_تعریف HB_OPTIMIZE_ناپ
   HB_ALWAYS_INLINE
-#endif
-  bool check_point (const void *base) const
+#جے_انت
+  منطقي check_نقطہ (ثابت فراغ *ادھار) ثابت
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length;
+    ثابت حرف *p = (ثابت حرف *) ادھار;
+    منطقي ok = (uintptr_t) (p - هذا->شروع) <= هذا->لمائی;
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_پیغام_LEVEL (SANITIZE, p, هذا->debug_ڈونگھائی+1, 0,
 		     "check_point [%p]"
 		     " in [%p..%p] -> %s",
 		     p,
-		     this->start, this->end,
+		     هذا->شروع, هذا->سرا,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    أرجع likely (ok);
   }
 
-  template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  سانچا <قسم_ناں T>
+  منطقي check_range (ثابت T *ادھار,
+		    بنانشانی صحيح a,
+		    بنانشانی صحيح b) ثابت
   {
-    unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m);
+    بنانشانی m;
+    أرجع !hb_unsigned_mul_overflows (a, b, &m) &&
+	   هذا->check_range (ادھار, m);
   }
 
-  template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b,
-		    unsigned int c) const
+  سانچا <قسم_ناں T>
+  منطقي check_range (ثابت T *ادھار,
+		    بنانشانی صحيح a,
+		    بنانشانی صحيح b,
+		    بنانشانی صحيح c) ثابت
   {
-    unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m, c);
+    بنانشانی m;
+    أرجع !hb_unsigned_mul_overflows (a, b, &m) &&
+	   هذا->check_range (ادھار, m, c);
   }
 
-  template <typename T>
+  سانچا <قسم_ناں T>
   HB_ALWAYS_INLINE
-  bool check_array_sized (const T *base, unsigned int len, unsigned len_size) const
+  منطقي check_array_sized (ثابت T *ادھار, بنانشانی صحيح len, بنانشانی len_ناپ) ثابت
   {
-    if (len_size >= 4)
+    إذا (len_ناپ >= 4)
     {
-      if (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
-	return false;
+      إذا (unlikely (hb_unsigned_mul_overflows (len, hb_static_ناپ (T), &len)))
+	أرجع خطأ;
     }
-    else
-      len = len * hb_static_size (T);
-    return this->check_range (base, len);
+    وإلا
+      len = len * hb_static_ناپ (T);
+    أرجع هذا->check_range (ادھار, len);
   }
 
-  template <typename T>
-  bool check_array (const T *base, unsigned int len) const
+  سانچا <قسم_ناں T>
+  منطقي check_array (ثابت T *ادھار, بنانشانی صحيح len) ثابت
   {
-    return this->check_range (base, len, hb_static_size (T));
+    أرجع هذا->check_range (ادھار, len, hb_static_ناپ (T));
   }
 
-  template <typename T>
-  bool check_array (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  سانچا <قسم_ناں T>
+  منطقي check_array (ثابت T *ادھار,
+		    بنانشانی صحيح a,
+		    بنانشانی صحيح b) ثابت
   {
-    return this->check_range (base, hb_static_size (T), a, b);
+    أرجع هذا->check_range (ادھار, hb_static_ناپ (T), a, b);
   }
 
-  bool check_start_recursion (int max_depth)
+  منطقي check_شروع_recursion (صحيح max_ڈونگھائی)
   {
-    if (unlikely (recursion_depth >= max_depth)) return false;
-    return ++recursion_depth;
+    إذا (unlikely (recursion_ڈونگھائی >= max_ڈونگھائی)) أرجع خطأ;
+    أرجع ++recursion_ڈونگھائی;
   }
 
-  bool end_recursion (bool result)
+  منطقي سرا_recursion (منطقي نتیجہ)
   {
-    recursion_depth--;
-    return result;
+    recursion_ڈونگھائی--;
+    أرجع نتیجہ;
   }
 
-  template <typename Type>
-#ifndef HB_OPTIMIZE_SIZE
+  سانچا <قسم_ناں Type>
+#جے_بنا_تعریف HB_OPTIMIZE_ناپ
   HB_ALWAYS_INLINE
-#endif
-  bool check_struct (const Type *obj) const
+#جے_انت
+  منطقي check_struct (ثابت Type *obj) ثابت
   {
-    if (sizeof (uintptr_t) == sizeof (uint32_t))
-      return likely (this->check_range_fast (obj, obj->min_size));
-    else
-      return likely (this->check_point ((const char *) obj + obj->min_size));
+    إذا (حجم (uintptr_t) == حجم (uint32_t))
+      أرجع likely (هذا->check_range_fast (obj, obj->min_ناپ));
+    وإلا
+      أرجع likely (هذا->check_نقطہ ((ثابت حرف *) obj + obj->min_ناپ));
   }
 
-  template <typename Type>
+  سانچا <قسم_ناں Type>
   hb_blob_t *sanitize_blob (hb_blob_t *blob)
   {
-    bool sane;
+    منطقي sane;
 
     init (blob);
 
-    DEBUG_MSG_FUNC (SANITIZE, start, "start");
+    DEBUG_پیغام_FUNC (SANITIZE, شروع, "start");
 
-    start_processing ();
+    شروع_processing ();
 
-    if (unlikely (!start))
+    إذا (unlikely (!شروع))
     {
-      end_processing ();
-      return blob;
+      سرا_processing ();
+      أرجع blob;
     }
 
-    Type *t = reinterpret_cast<Type *> (const_cast<char *> (start));
+    Type *t = reinterpret_cast<Type *> (const_cast<حرف *> (شروع));
 
-    sane = t->sanitize (this);
+    sane = t->sanitize (هذا);
 
-    end_processing ();
+    سرا_processing ();
 
-    DEBUG_MSG_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
-    if (sane)
+    DEBUG_پیغام_FUNC (SANITIZE, شروع, sane ? "PASSED" : "FAILED");
+    إذا (sane)
     {
       hb_blob_make_immutable (blob);
-      return blob;
+      أرجع blob;
     }
-    else
+    وإلا
     {
       hb_blob_destroy (blob);
-      return hb_blob_get_empty ();
+      أرجع hb_blob_get_خالی_تھاواں ();
     }
   }
 
-  template <typename Type>
-  hb_blob_t *reference_table (const hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
+  سانچا <قسم_ناں Type>
+  hb_blob_t *reference_جدول (ثابت hb_face_t *face, hb_ٹیگ_t جدول_ٹیگ = Type::جدول_ٹیگ)
   {
-    if (!num_glyphs_set)
-      set_num_glyphs (hb_face_get_glyph_count (face));
-    return sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
+    إذا (!عدد_glyphs_سیٹ)
+      سیٹ_عدد_glyphs (hb_face_get_glyph_گنتی (face));
+    أرجع sanitize_blob<Type> (hb_face_reference_جدول (face, جدول_ٹیگ));
   }
 
-  const char *start, *end;
-  unsigned length;
-  mutable int max_ops, max_subtables;
-  private:
-  int recursion_depth;
-  bool writable;
+  ثابت حرف *شروع, *سرا;
+  بنانشانی لمائی;
+  بدلنجوگ صحيح max_ops, max_subtables;
+  خاص:
+  صحيح recursion_ڈونگھائی;
+  منطقي writable;
   hb_blob_t *blob;
-  unsigned int num_glyphs;
-  bool  num_glyphs_set;
-  public:
-  bool lazy_some_gpos;
+  بنانشانی صحيح عدد_glyphs;
+  منطقي  عدد_glyphs_سیٹ;
+  عام:
+  منطقي lazy_some_gpos;
 };
 
-struct hb_sanitize_with_object_t
+بنية hb_sanitize_with_object_t
 {
-  template <typename T>
-  hb_sanitize_with_object_t (hb_sanitize_context_t *c, const T& obj) : c (c)
-  { c->set_object (obj); }
+  سانچا <قسم_ناں T>
+  hb_sanitize_with_object_t (hb_sanitize_context_t *c, ثابت T& obj) : c (c)
+  { c->سیٹ_object (obj); }
   ~hb_sanitize_with_object_t ()
   { c->reset_object (); }
 
-  private:
+  خاص:
   hb_sanitize_context_t *c;
 };
 
 
-#endif /* HB_SANITIZE_HH */
+#جے_انت /* HB_SANITIZE_HH */

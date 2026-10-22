@@ -18,14 +18,14 @@
  * # For documentation and usage, see https://www.unicode.org/reports/tr51
  */
 
-#ifndef HB_UNICODE_EMOJI_TABLE_HH
-#define HB_UNICODE_EMOJI_TABLE_HH
+#جے_بنا_تعریف HB_UNICODE_EMOJI_جدول_HH
+#تعریف_کرو HB_UNICODE_EMOJI_جدول_HH
 
-#include "hb-unicode.hh"
+#ضمن "hb-unicode.hh"
 
-#include <stdint.h>
+#ضمن <stdint.h>
 
-static const uint8_t _hb_emoji_u8[624]=
+ساكن ثابت uint8_t _hb_emoji_u8[624]=
 {
     1,  0,  0,  0, 50,  4,  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -68,21 +68,21 @@ static const uint8_t _hb_emoji_u8[624]=
   191,255,255,255,255,255,255,255,  0,  0,  0,255,  0,192,255,255,
 };
 
-static inline uint8_t _hb_emoji_b4 (const uint8_t* a, unsigned i)
+ساكن مضمن uint8_t _hb_emoji_b4 (ثابت uint8_t* a, بنانشانی i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  أرجع (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_emoji_b1 (const uint8_t* a, unsigned i)
+ساكن مضمن uint8_t _hb_emoji_b1 (ثابت uint8_t* a, بنانشانی i)
 {
-  return (a[i>>3]>>((i&7)<<0))&1;
+  أرجع (a[i>>3]>>((i&7)<<0))&1;
 }
-static inline uint8_t _hb_emoji_is_Extended_Pictographic (unsigned u)
+ساكن مضمن uint8_t _hb_emoji_is_Extended_Pictographic (بنانشانی u)
 {
   /* packtab: [2^4,2^4,2^6] */
-  return u<131070u ? (uint8_t)(_hb_emoji_b1(_hb_emoji_u8+224u,((_hb_emoji_u8[64u+((_hb_emoji_b4(_hb_emoji_u8,((((u)>>6))>>4)))<<4)+((((u)>>6))&15)])<<6)+((u)&63))) : 0;
+  أرجع u<131070u ? (uint8_t)(_hb_emoji_b1(_hb_emoji_u8+224u,((_hb_emoji_u8[64u+((_hb_emoji_b4(_hb_emoji_u8,((((u)>>6))>>4)))<<4)+((((u)>>6))&15)])<<6)+((u)&63))) : 0;
 }
 
 
-#endif /* HB_UNICODE_EMOJI_TABLE_HH */
+#جے_انت /* HB_UNICODE_EMOJI_TABLE_HH */
 
 /* == End of generated table == */

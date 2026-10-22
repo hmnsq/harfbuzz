@@ -1,22 +1,22 @@
-#ifndef HB_OT_VAR_VARC_CC
-#define HB_OT_VAR_VARC_CC
-#ifdef HB_OT_VAR_VARC_CC /* Pacify -Wunused-macros. */
+#جے_بنا_تعریف HB_OT_VAR_VARC_CC
+#تعریف_کرو HB_OT_VAR_VARC_CC
+#جے_تعریف_شدہ HB_OT_VAR_VARC_CC /* Pacify -Wunused-macros. */
 
-#include "VARC.hh"
+#ضمن "VARC.hh"
 
-#ifndef HB_NO_VAR_COMPOSITES
+#جے_بنا_تعریف HB_NO_VAR_COMPOSITES
 
-#include "../../../hb-draw.hh"
-#include "../../../hb-depend-data.hh"
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-layout-gdef-table.hh"
+#ضمن "../../../hb-draw.hh"
+#ضمن "../../../hb-depend-data.hh"
+#ضمن "../../../hb-ot-layout-common.hh"
+#ضمن "../../../hb-ot-layout-gdef-table.hh"
 
-namespace OT {
+نطاق OT {
 
 //namespace Var {
 
-#define VARC_PROCESS_TRANSFORM_COMPONENTS \
-	HB_STMT_START { \
+#تعریف_کرو VARC_PROCESS_TRANSFORM_COMPONENTS \
+	HB_STMT_شروع { \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TRANSLATE_X, translateX); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TRANSLATE_Y, translateY); \
 	PROCESS_TRANSFORM_COMPONENT (12, F4DOT12, HAVE_ROTATION, rotation); \
@@ -26,540 +26,540 @@ namespace OT {
 	PROCESS_TRANSFORM_COMPONENT (12, F4DOT12, HAVE_SKEW_Y, skewY); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TCENTER_X, tCenterX); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TCENTER_Y, tCenterY); \
-	} HB_STMT_END
+	} HB_STMT_سرا
 
-bool
-VarComponent::decompile_record (const VARC &varc,
-				hb_ubytes_t total_record,
-				hb_vector_t<unsigned> *axis_indices,
-				hb_vector_t<double> *axis_values,
-				record_t *decoded,
+منطقي
+VarComponent::decompile_ریکارڈ (ثابت VARC &varc,
+				hb_ubytes_t کل_ریکارڈ,
+				hb_سمتیہ_t<بنانشانی> *axis_indices,
+				hb_سمتیہ_t<مزدوج> *axis_اقدار,
+				ریکارڈ_t *decoded,
 				int64_t *budget)
 {
-  const unsigned char *start = total_record.arrayZ;
-  const unsigned char *record = start;
-  const unsigned char *end = start + total_record.length;
+  ثابت بنانشانی حرف *شروع = کل_ریکارڈ.arrayZ;
+  ثابت بنانشانی حرف *ریکارڈ = شروع;
+  ثابت بنانشانی حرف *سرا = شروع + کل_ریکارڈ.لمائی;
 
-  if (axis_indices) axis_indices->clear ();
-  if (axis_values) axis_values->clear ();
+  إذا (axis_indices) axis_indices->clear ();
+  إذا (axis_اقدار) axis_اقدار->clear ();
 
-#define READ_UINT32VAR(name) \
-  HB_STMT_START { \
-    if (unlikely (unsigned (end - record) < HBUINT32VAR::min_size)) return false; \
+#تعریف_کرو READ_UINT32VAR(name) \
+  HB_STMT_شروع { \
+    إذا (unlikely (بنانشانی (سرا - ریکارڈ) < HBUINT32VAR::min_ناپ)) أرجع خطأ; \
     hb_barrier (); \
-    auto &varint = * (const HBUINT32VAR *) record; \
-    unsigned size = varint.get_size (); \
-    if (unlikely (unsigned (end - record) < size)) return false; \
+    خودکار &varint = * (ثابت HBUINT32VAR *) ریکارڈ; \
+    بنانشانی ناپ = varint.get_ناپ (); \
+    إذا (unlikely (بنانشانی (سرا - ریکارڈ) < ناپ)) أرجع خطأ; \
     name = (uint32_t) varint; \
-    record += size; \
-  } HB_STMT_END
-#define READ_UINT32VAR_FIELD(name, field) \
-  HB_STMT_START { \
-    decoded->field##_offset = record - start; \
+    ریکارڈ += ناپ; \
+  } HB_STMT_سرا
+#تعریف_کرو READ_UINT32_VAR_میدان(name, میدان) \
+  HB_STMT_شروع { \
+    decoded->میدان##_offset = ریکارڈ - شروع; \
     READ_UINT32VAR (name); \
-    decoded->field##_size = record - start - decoded->field##_offset; \
-  } HB_STMT_END
+    decoded->میدان##_size = ریکارڈ - شروع - decoded->میدان##_offset; \
+  } HB_STMT_سرا
 
   READ_UINT32VAR (decoded->flags);
 
-  decoded->gid_offset = record - start;
-  if (decoded->flags & (unsigned) flags_t::GID_IS_24BIT)
+  decoded->gid_وتھ = ریکارڈ - شروع;
+  إذا (decoded->flags & (بنانشانی) flags_t::GID_IS_24_ثنائی_ہندسہ)
   {
-    decoded->gid_size = HBGlyphID24::static_size;
-    if (unlikely (unsigned (end - record) < HBGlyphID24::static_size)) return false;
+    decoded->gid_ناپ = HBGlyphID24::static_ناپ;
+    إذا (unlikely (بنانشانی (سرا - ریکارڈ) < HBGlyphID24::static_ناپ)) أرجع خطأ;
     hb_barrier ();
-    decoded->gid = * (const HBGlyphID24 *) record;
-    record += HBGlyphID24::static_size;
+    decoded->gid = * (ثابت HBGlyphID24 *) ریکارڈ;
+    ریکارڈ += HBGlyphID24::static_ناپ;
   }
-  else
+  وإلا
   {
-    decoded->gid_size = HBGlyphID16::static_size;
-    if (unlikely (unsigned (end - record) < HBGlyphID16::static_size)) return false;
+    decoded->gid_ناپ = HBGlyphID16::static_ناپ;
+    إذا (unlikely (بنانشانی (سرا - ریکارڈ) < HBGlyphID16::static_ناپ)) أرجع خطأ;
     hb_barrier ();
-    decoded->gid = * (const HBGlyphID16 *) record;
-    record += HBGlyphID16::static_size;
+    decoded->gid = * (ثابت HBGlyphID16 *) ریکارڈ;
+    ریکارڈ += HBGlyphID16::static_ناپ;
   }
 
-  if (decoded->flags & (unsigned) flags_t::HAVE_CONDITION)
-    READ_UINT32VAR_FIELD (decoded->condition_index, condition);
+  إذا (decoded->flags & (بنانشانی) flags_t::HAVE_CONDITION)
+    READ_UINT32_VAR_میدان (decoded->condition_اشاریہ, condition);
 
-  if (decoded->flags & (unsigned) flags_t::HAVE_AXES)
+  إذا (decoded->flags & (بنانشانی) flags_t::HAVE_AXES)
   {
-    READ_UINT32VAR_FIELD (decoded->axis_indices_index, axis_indices);
-    unsigned axis_count;
-    if (axis_indices)
+    READ_UINT32_VAR_میدان (decoded->axis_indices_اشاریہ, axis_indices);
+    بنانشانی axis_گنتی;
+    إذا (axis_indices)
     {
-      axis_indices->extend ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
-      if (unlikely (axis_indices->in_error ())) return false;
-      axis_count = axis_indices->length;
+      axis_indices->extend ((&varc+varc.axisIndicesList)[decoded->axis_indices_اشاریہ]);
+      إذا (unlikely (axis_indices->وچ_error ())) أرجع خطأ;
+      axis_گنتی = axis_indices->لمائی;
     }
-    else
-      axis_count = hb_len ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
-    if (unlikely (budget && axis_count &&
-		  !hb_budget_spend (*budget, HB_BUDGET_1, axis_count)))
-      return false;
-    if (axis_values)
+    وإلا
+      axis_گنتی = hb_len ((&varc+varc.axisIndicesList)[decoded->axis_indices_اشاریہ]);
+    إذا (unlikely (budget && axis_گنتی &&
+		  !hb_budget_spend (*budget, HB_BUDGET_1, axis_گنتی)))
+      أرجع خطأ;
+    إذا (axis_اقدار)
     {
-      if (unlikely (!axis_values->resize (axis_count))) return false;
-      const HBUINT8 *p = (const HBUINT8 *) record;
-      if (unlikely (!TupleValues::decompile (p, *axis_values,
-					    (const HBUINT8 *) end)))
-	return false;
-      record = (const unsigned char *) p;
+      إذا (unlikely (!axis_اقدار->resize (axis_گنتی))) أرجع خطأ;
+      ثابت HBUINT8 *p = (ثابت HBUINT8 *) ریکارڈ;
+      إذا (unlikely (!Tuple_اقدار::decompile (p, *axis_اقدار,
+					    (ثابت HBUINT8 *) سرا)))
+	أرجع خطأ;
+      ریکارڈ = (ثابت بنانشانی حرف *) p;
     }
-    else if (unlikely (!TupleValues::skip (record, end, axis_count)))
-      return false;
+    وإلا إذا (unlikely (!Tuple_اقدار::skip (ریکارڈ, سرا, axis_گنتی)))
+      أرجع خطأ;
   }
 
-  decoded->axis_values_var_idx = VarIdx::NO_VARIATION;
-  if (decoded->flags & (unsigned) flags_t::AXIS_VALUES_HAVE_VARIATION)
-    READ_UINT32VAR_FIELD (decoded->axis_values_var_idx, axis_values_var);
+  decoded->axis_اقدار_var_idx = VarIdx::NO_VARIATION;
+  إذا (decoded->flags & (بنانشانی) flags_t::AXIS_اقدار_HAVE_VARIATION)
+    READ_UINT32_VAR_میدان (decoded->axis_اقدار_var_idx, axis_اقدار_var);
 
   decoded->transform_var_idx = VarIdx::NO_VARIATION;
-  if (decoded->flags & (unsigned) flags_t::TRANSFORM_HAS_VARIATION)
-    READ_UINT32VAR_FIELD (decoded->transform_var_idx, transform_var);
+  إذا (decoded->flags & (بنانشانی) flags_t::TRANSFORM_HAS_VARIATION)
+    READ_UINT32_VAR_میدان (decoded->transform_var_idx, transform_var);
 
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-  if (decoded->flags & (unsigned) flags_t::flag) \
+#تعریف_کرو PROCESS_TRANSFORM_COMPONENT(کھسکاؤ, type, flag, name) \
+  إذا (decoded->flags & (بنانشانی) flags_t::flag) \
   { \
-    static_assert (type::static_size == HBINT16::static_size, ""); \
-    if (unlikely (unsigned (end - record) < HBINT16::static_size)) return false; \
+    static_assert (type::static_ناپ == HBINT16::static_ناپ, ""); \
+    إذا (unlikely (بنانشانی (سرا - ریکارڈ) < HBINT16::static_ناپ)) أرجع خطأ; \
     hb_barrier (); \
-    decoded->transform.name = * (const HBINT16 *) record; \
-    record += HBINT16::static_size; \
+    decoded->transform.name = * (ثابت HBINT16 *) ریکارڈ; \
+    ریکارڈ += HBINT16::static_ناپ; \
   }
   VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#تعریف_رد PROCESS_TRANSFORM_COMPONENT
 
-  unsigned reserved = decoded->flags & (unsigned) flags_t::RESERVED_MASK;
-  while (reserved)
+  بنانشانی reserved = decoded->flags & (بنانشانی) flags_t::RESERVED_نقاب;
+  طالما (reserved)
   {
-    uint32_t discard HB_UNUSED;
+    uint32_t discard HB_بن_ورتیا;
     READ_UINT32VAR (discard);
     reserved &= reserved - 1;
   }
 
-  decoded->size = record - start;
-#undef READ_UINT32VAR_FIELD
-#undef READ_UINT32VAR
-  return true;
+  decoded->ناپ = ریکارڈ - شروع;
+#تعریف_رد READ_UINT32_VAR_میدان
+#تعریف_رد READ_UINT32VAR
+  أرجع سچ;
 }
 
-bool
-VARC::closure_glyphs (hb_set_t *glyphset) const
+منطقي
+VARC::گھیرا_glyphs (hb_سیٹ_t *glyphset) ثابت
 {
-  if (unlikely (glyphset->in_error ()))
-    return false;
+  إذا (unlikely (glyphset->وچ_error ()))
+    أرجع خطأ;
 
-  hb_set_t pending = *glyphset;
-  if (unlikely (pending.in_error ()))
-    return false;
+  hb_سیٹ_t pending = *glyphset;
+  إذا (unlikely (pending.وچ_error ()))
+    أرجع خطأ;
 
-  while (pending)
+  طالما (pending)
   {
     hb_codepoint_t gid = pending.get_min ();
     pending.del (gid);
 
-    unsigned index = (this+coverage).get_coverage (gid);
-    if (index == NOT_COVERED) continue;
+    بنانشانی اشاریہ_2 = (هذا+coverage).get_coverage (gid);
+    إذا (اشاریہ_2 == NOT_COVERED) استمر;
 
-    hb_ubytes_t record = (this+glyphRecords)[index];
-    while (record)
+    hb_ubytes_t ریکارڈ = (هذا+glyph_ریکارڈاں)[اشاریہ_2];
+    طالما (ریکارڈ)
     {
-      VarComponent::record_t component;
-      if (unlikely (!VarComponent::decompile_record (*this, record,
-						     nullptr, nullptr, &component)))
-	return false;
-      if (!glyphset->has (component.gid))
+      VarComponent::ریکارڈ_t component;
+      إذا (unlikely (!VarComponent::decompile_ریکارڈ (*هذا, ریکارڈ,
+						     خالی_سوچک, خالی_سوچک, &component)))
+	أرجع خطأ;
+      إذا (!glyphset->has (component.gid))
       {
-	glyphset->add (component.gid);
-	if (unlikely (glyphset->in_error ()))
-	  return false;
-	pending.add (component.gid);
-	if (unlikely (pending.in_error ()))
-	  return false;
+	glyphset->جوڑو (component.gid);
+	إذا (unlikely (glyphset->وچ_error ()))
+	  أرجع خطأ;
+	pending.جوڑو (component.gid);
+	إذا (unlikely (pending.وچ_error ()))
+	  أرجع خطأ;
       }
-      record = record.sub_array (component.size);
+      ریکارڈ = ریکارڈ.sub_array (component.ناپ);
     }
   }
-  return true;
+  أرجع سچ;
 }
 
-void
-VARC::depend (hb_depend_data_builder_t *depend_data) const
+فراغ
+VARC::depend (hb_depend_انکڑے_builder_t *depend_انکڑے) ثابت
 {
-  const CFF2Index &records = this+glyphRecords;
-  for (auto _ : + hb_zip (this+coverage,
-			  hb_range ((unsigned) records.count)))
+  ثابت CFF2_اشاریہ &ریکارڈاں = هذا+glyph_ریکارڈاں;
+  لكل (خودکار _ : + hb_zip (هذا+coverage,
+			  hb_range ((بنانشانی) ریکارڈاں.گنتی)))
   {
-    hb_codepoint_t gid = _.first;
-    hb_ubytes_t record = records[_.second];
-    while (record)
+    hb_codepoint_t gid = _.پہلا;
+    hb_ubytes_t ریکارڈ = ریکارڈاں[_.second];
+    طالما (ریکارڈ)
     {
-	VarComponent::record_t component;
-	if (unlikely (!VarComponent::decompile_record (*this, record,
-						       nullptr, nullptr, &component)))
+	VarComponent::ریکارڈ_t component;
+	إذا (unlikely (!VarComponent::decompile_ریکارڈ (*هذا, ریکارڈ,
+						       خالی_سوچک, خالی_سوچک, &component)))
 	{
-	  depend_data->fail ();
-	  return;
+	  depend_انکڑے->fail ();
+	  أرجع;
 	}
-      depend_data->add_depend (gid, tableTag, component.gid);
-      record = record.sub_array (component.size);
+      depend_انکڑے->جوڑو_depend (gid, جدول_ٹیگ, component.gid);
+      ریکارڈ = ریکارڈ.sub_array (component.ناپ);
     }
   }
 }
 
 
-#ifndef HB_NO_DRAW
+#جے_بنا_تعریف HB_NO_DRAW
 
-struct hb_transforming_pen_context_t
+بنية hb_transforming_pen_context_t
 {
   hb_transform_t<> transform;
   hb_draw_funcs_t *dfuncs;
-  void *data;
+  فراغ *انکڑے;
   hb_draw_state_t *st;
-  int64_t *budget_remaining;
+  int64_t *budget_بچیا;
 };
 
-static void
-hb_transforming_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			     void *data,
+ساكن فراغ
+hb_transforming_pen_move_منزل (hb_draw_funcs_t *dfuncs HB_بن_ورتیا,
+			     فراغ *انکڑے,
 			     hb_draw_state_t *st,
-			     float to_x, float to_y,
-			     void *user_data HB_UNUSED)
+			     عائم منزل_x, عائم منزل_y,
+			     فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) انکڑے;
 
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_نقطہ (منزل_x, منزل_y);
 
-  c->dfuncs->move_to (c->data, *c->st, to_x, to_y);
+  c->dfuncs->move_منزل (c->انکڑے, *c->st, منزل_x, منزل_y);
 }
 
-static void
-hb_transforming_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			     void *data,
+ساكن فراغ
+hb_transforming_pen_سطر_منزل (hb_draw_funcs_t *dfuncs HB_بن_ورتیا,
+			     فراغ *انکڑے,
 			     hb_draw_state_t *st,
-			     float to_x, float to_y,
-			     void *user_data HB_UNUSED)
+			     عائم منزل_x, عائم منزل_y,
+			     فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) انکڑے;
 
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_نقطہ (منزل_x, منزل_y);
 
-  c->dfuncs->line_to (c->data, *c->st, to_x, to_y);
+  c->dfuncs->سطر_منزل (c->انکڑے, *c->st, منزل_x, منزل_y);
 }
 
-static void
-hb_transforming_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+ساكن فراغ
+hb_transforming_pen_quadratic_منزل (hb_draw_funcs_t *dfuncs HB_بن_ورتیا,
+				  فراغ *انکڑے,
 				  hb_draw_state_t *st,
-				  float control_x, float control_y,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  عائم control_x, عائم control_y,
+				  عائم منزل_x, عائم منزل_y,
+				  فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) انکڑے;
 
-  c->transform.transform_point (control_x, control_y);
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_نقطہ (control_x, control_y);
+  c->transform.transform_نقطہ (منزل_x, منزل_y);
 
-  c->dfuncs->quadratic_to (c->data, *c->st, control_x, control_y, to_x, to_y);
+  c->dfuncs->quadratic_منزل (c->انکڑے, *c->st, control_x, control_y, منزل_x, منزل_y);
 }
 
-static void
-hb_transforming_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			      void *data,
+ساكن فراغ
+hb_transforming_pen_cubic_منزل (hb_draw_funcs_t *dfuncs HB_بن_ورتیا,
+			      فراغ *انکڑے,
 			      hb_draw_state_t *st,
-			      float control1_x, float control1_y,
-			      float control2_x, float control2_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      عائم control1_x, عائم control1_y,
+			      عائم control2_x, عائم control2_y,
+			      عائم منزل_x, عائم منزل_y,
+			      فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) انکڑے;
 
-  c->transform.transform_point (control1_x, control1_y);
-  c->transform.transform_point (control2_x, control2_y);
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_نقطہ (control1_x, control1_y);
+  c->transform.transform_نقطہ (control2_x, control2_y);
+  c->transform.transform_نقطہ (منزل_x, منزل_y);
 
-  c->dfuncs->cubic_to (c->data, *c->st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
+  c->dfuncs->cubic_منزل (c->انکڑے, *c->st, control1_x, control1_y, control2_x, control2_y, منزل_x, منزل_y);
 }
 
-static void
-hb_transforming_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				void *data,
+ساكن فراغ
+hb_transforming_pen_close_رستہ (hb_draw_funcs_t *dfuncs HB_بن_ورتیا,
+				فراغ *انکڑے,
 				hb_draw_state_t *st,
-				void *user_data HB_UNUSED)
+				فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) انکڑے;
 
-  c->dfuncs->close_path (c->data, *c->st);
+  c->dfuncs->close_رستہ (c->انکڑے, *c->st);
 }
 
-static int64_t *
-hb_transforming_pen_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ساكن int64_t *
+hb_transforming_pen_get_budget_بچیا (hb_draw_funcs_t *, فراغ *draw_انکڑے, فراغ *)
 {
-  return ((hb_transforming_pen_context_t *) draw_data)->budget_remaining;
+  أرجع ((hb_transforming_pen_context_t *) draw_انکڑے)->budget_بچیا;
 }
 
-static inline void free_static_transforming_pen_funcs ();
+ساكن مضمن فراغ free_static_transforming_pen_funcs ();
 
-static struct hb_transforming_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_transforming_pen_funcs_lazy_loader_t>
+ساكن بنية hb_transforming_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_transforming_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساكن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_transforming_pen_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_transforming_pen_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_transforming_pen_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_transforming_pen_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, hb_transforming_pen_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_transforming_pen_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_سیٹ_move_منزل_func (funcs, hb_transforming_pen_move_منزل, خالی_سوچک, خالی_سوچک);
+    hb_draw_funcs_سیٹ_سطر_منزل_func (funcs, hb_transforming_pen_سطر_منزل, خالی_سوچک, خالی_سوچک);
+    hb_draw_funcs_سیٹ_quadratic_منزل_func (funcs, hb_transforming_pen_quadratic_منزل, خالی_سوچک, خالی_سوچک);
+    hb_draw_funcs_سیٹ_cubic_منزل_func (funcs, hb_transforming_pen_cubic_منزل, خالی_سوچک, خالی_سوچک);
+    hb_draw_funcs_سیٹ_close_رستہ_func (funcs, hb_transforming_pen_close_رستہ, خالی_سوچک, خالی_سوچک);
+    hb_draw_funcs_سیٹ_get_budget_بچیا_func (funcs, hb_transforming_pen_get_budget_بچیا, خالی_سوچک, خالی_سوچک);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_transforming_pen_funcs);
 
-    return funcs;
+    أرجع funcs;
   }
 } static_transforming_pen_funcs;
 
-static inline
-void free_static_transforming_pen_funcs ()
+ساكن مضمن
+فراغ free_static_transforming_pen_funcs ()
 {
   static_transforming_pen_funcs.free_instance ();
 }
 
-static hb_draw_funcs_t *
+ساكن hb_draw_funcs_t *
 hb_transforming_pen_get_funcs ()
 {
-  return static_transforming_pen_funcs.get_unconst ();
+  أرجع static_transforming_pen_funcs.get_unconst ();
 }
 
 hb_ubytes_t
-VarComponent::get_path_at (const hb_varc_context_t &c,
-			   hb_codepoint_t parent_gid,
-			   hb_array_t<const int> coords,
-			   hb_transform_t<> total_transform,
-			   hb_ubytes_t total_record,
-			   hb_scalar_cache_t *cache) const
+VarComponent::get_رستہ_at (ثابت hb_varc_context_t &c,
+			   hb_codepoint_t ماپا_gid,
+			   hb_array_t<ثابت صحيح> coords,
+			   hb_transform_t<> کل_transform,
+			   hb_ubytes_t کل_ریکارڈ,
+			   hb_scalar_cache_t *cache) ثابت
 {
-  if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_4)))
-    return hb_ubytes_t ();
+  إذا (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_4)))
+    أرجع hb_ubytes_t ();
 
-  const unsigned char *end = total_record.arrayZ + total_record.length;
-  auto &VARC = *c.font->face->table.VARC->table;
-  auto &varStore = &VARC+VARC.varStore;
+  ثابت بنانشانی حرف *سرا = کل_ریکارڈ.arrayZ + کل_ریکارڈ.لمائی;
+  خودکار &VARC = *c.font->face->جدول.VARC->جدول;
+  خودکار &varStore = &VARC+VARC.varStore;
 
-  auto &axisIndices = c.scratch.axisIndices;
-  auto &axisValues = c.scratch.axisValues;
-  record_t component;
-  if (unlikely (!decompile_record (VARC, total_record,
-				   &axisIndices, &axisValues, &component,
+  خودکار &axisIndices = c.scratch.axisIndices;
+  خودکار &axis_اقدار_2 = c.scratch.axis_اقدار_2;
+  ریکارڈ_t component;
+  إذا (unlikely (!decompile_ریکارڈ (VARC, کل_ریکارڈ,
+				   &axisIndices, &axis_اقدار_2, &component,
 				   &c.budget)))
-    return hb_ubytes_t ();
+    أرجع hb_ubytes_t ();
 
   uint32_t flags = component.flags;
   hb_codepoint_t gid = component.gid;
-  const unsigned char *record = total_record.arrayZ + component.size;
+  ثابت بنانشانی حرف *ریکارڈ = کل_ریکارڈ.arrayZ + component.ناپ;
 
   // Condition
-  bool show = true;
-  if (flags & (unsigned) flags_t::HAVE_CONDITION)
+  منطقي show = سچ;
+  إذا (flags & (بنانشانی) flags_t::HAVE_CONDITION)
   {
-    const auto &condition = (&VARC+VARC.conditionList)[component.condition_index];
-    auto instancer = MultiItemVarStoreInstancer(&varStore, nullptr, coords, cache);
-    show = condition.evaluate (coords.arrayZ, coords.length, &instancer);
+    ثابت خودکار &condition = (&VARC+VARC.conditionList)[component.condition_اشاریہ];
+    خودکار instancer = Multi_شے_Var_Store_Instancer(&varStore, خالی_سوچک, coords, cache);
+    show = condition.evaluate (coords.arrayZ, coords.لمائی, &instancer);
   }
 
   // Axis values
 
   // Apply variations if any
-  if ((flags & (unsigned) flags_t::AXIS_VALUES_HAVE_VARIATION) &&
-      show && !axisValues.in_error ())
+  إذا ((flags & (بنانشانی) flags_t::AXIS_اقدار_HAVE_VARIATION) &&
+      show && !axis_اقدار_2.وچ_error ())
   {
-    if (unlikely (!hb_budget_spend (c.budget, axisValues.length,
-				    coords.length)))
-      return hb_ubytes_t ();
-    varStore.get_delta (component.axis_values_var_idx, coords,
-			axisValues.as_array (), cache);
+    إذا (unlikely (!hb_budget_spend (c.budget, axis_اقدار_2.لمائی,
+				    coords.لمائی)))
+      أرجع hb_ubytes_t ();
+    varStore.get_delta (component.axis_اقدار_var_idx, coords,
+			axis_اقدار_2.as_array (), cache);
   }
 
-  auto component_coords = coords;
+  خودکار component_coords = coords;
   /* Copying coords is expensive; so we have put an arbitrary
    * limit on the max number of coords for now. */
-  if ((flags & (unsigned) flags_t::RESET_UNSPECIFIED_AXES) ||
-      coords.length > HB_VAR_COMPOSITE_MAX_AXES)
-    component_coords = hb_array (c.font->coords, c.font->num_coords);
+  إذا ((flags & (بنانشانی) flags_t::RESET_UNSPECIFIED_AXES) ||
+      coords.لمائی > HB_VAR_مرکب_MAX_AXES)
+    component_coords = hb_array (c.font->coords, c.font->عدد_coords);
 
   uint32_t transformVarIdx = component.transform_var_idx;
   hb_transform_decomposed_t<> transform = component.transform;
 
-  if (show)
+  إذا (show)
   {
     // Only use coord_setter if there's actually any axis overrides.
-    if (unlikely (axisIndices &&
+    إذا (unlikely (axisIndices &&
 		  !hb_budget_spend (c.budget, HB_BUDGET_1,
-				    component_coords.length)))
-      return hb_ubytes_t ();
-    coord_setter_t coord_setter (axisIndices ? component_coords : hb_array<int> ());
-    for (unsigned i = 0; i < axisIndices.length; i++)
-      coord_setter[axisIndices[i]] = hb_clamp_to<int> (round (axisValues[i]));
-    if (axisIndices)
+				    component_coords.لمائی)))
+      أرجع hb_ubytes_t ();
+    coord_setter_t coord_setter (axisIndices ? component_coords : hb_array<صحيح> ());
+    لكل (بنانشانی i = 0; i < axisIndices.لمائی; i++)
+      coord_setter[axisIndices[i]] = hb_clamp_منزل<صحيح> (round (axis_اقدار_2[i]));
+    إذا (axisIndices)
       component_coords = coord_setter.get_coords ();
 
     // Apply transform variations if any
-    if (transformVarIdx != VarIdx::NO_VARIATION)
+    إذا (transformVarIdx != VarIdx::NO_VARIATION)
     {
-      double transformValues[9];
-      unsigned numTransformValues = 0;
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (flags & (unsigned) flags_t::flag) \
-	    transformValues[numTransformValues++] = (double) transform.name;
+      مزدوج transform_اقدار[9];
+      بنانشانی عدد_Transform_اقدار = 0;
+#تعریف_کرو PROCESS_TRANSFORM_COMPONENT(کھسکاؤ, type, flag, name) \
+	  إذا (flags & (بنانشانی) flags_t::flag) \
+	    transform_اقدار[عدد_Transform_اقدار++] = (مزدوج) transform.name;
       VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
-      if (unlikely (!hb_budget_spend (c.budget, numTransformValues,
-				      coords.length)))
-	return hb_ubytes_t ();
-      varStore.get_delta (transformVarIdx, coords, hb_array (transformValues, numTransformValues), cache);
-      numTransformValues = 0;
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (flags & (unsigned) flags_t::flag) \
-	    transform.name = (float) transformValues[numTransformValues++];
+#تعریف_رد PROCESS_TRANSFORM_COMPONENT
+      إذا (unlikely (!hb_budget_spend (c.budget, عدد_Transform_اقدار,
+				      coords.لمائی)))
+	أرجع hb_ubytes_t ();
+      varStore.get_delta (transformVarIdx, coords, hb_array (transform_اقدار, عدد_Transform_اقدار), cache);
+      عدد_Transform_اقدار = 0;
+#تعریف_کرو PROCESS_TRANSFORM_COMPONENT(کھسکاؤ, type, flag, name) \
+	  إذا (flags & (بنانشانی) flags_t::flag) \
+	    transform.name = (عائم) transform_اقدار[عدد_Transform_اقدار++];
       VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#تعریف_رد PROCESS_TRANSFORM_COMPONENT
     }
 
     // Divide them by their divisors
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (shift && (flags & (unsigned) flags_t::flag)) \
-	     transform.name *= 1.f / (1 << shift);
+#تعریف_کرو PROCESS_TRANSFORM_COMPONENT(کھسکاؤ, type, flag, name) \
+	  إذا (کھسکاؤ && (flags & (بنانشانی) flags_t::flag)) \
+	     transform.name *= 1.f / (1 << کھسکاؤ);
     VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#تعریف_رد PROCESS_TRANSFORM_COMPONENT
 
-    if (!(flags & (unsigned) flags_t::HAVE_SCALE_Y))
+    إذا (!(flags & (بنانشانی) flags_t::HAVE_SCALE_Y))
       transform.scaleY = transform.scaleX;
 
     transform.rotation *= HB_PI;
     transform.skewX *= HB_PI;
     transform.skewY *= HB_PI;
 
-    total_transform.transform (transform.to_transform ());
+    کل_transform.transform (transform.منزل_transform ());
 
-    bool same_coords = component_coords.length == coords.length &&
+    منطقي same_coords = component_coords.لمائی == coords.لمائی &&
 		       component_coords.arrayZ == coords.arrayZ;
 
-    c.depth_left--;
-    VARC.get_path_at (c, gid,
-		      component_coords, total_transform,
-		      parent_gid,
-		      same_coords ? cache : nullptr);
-    c.depth_left++;
+    c.ڈونگھائی_بایاں--;
+    VARC.get_رستہ_at (c, gid,
+		      component_coords, کل_transform,
+		      ماپا_gid,
+		      same_coords ? cache : خالی_سوچک);
+    c.ڈونگھائی_بایاں++;
   }
 
-  return hb_ubytes_t (record, end - record);
+  أرجع hb_ubytes_t (ریکارڈ, سرا - ریکارڈ);
 }
 
-bool
-VARC::get_path_at (const hb_varc_context_t &c,
+منطقي
+VARC::get_رستہ_at (ثابت hb_varc_context_t &c,
 		   hb_codepoint_t glyph,
-		   hb_array_t<const int> coords,
+		   hb_array_t<ثابت صحيح> coords,
 		   hb_transform_t<> transform,
-		   hb_codepoint_t parent_glyph,
-		   hb_scalar_cache_t *parent_cache) const
+		   hb_codepoint_t ماپا_glyph,
+		   hb_scalar_cache_t *ماپا_cache) ثابت
 {
   // Don't recurse on the same glyph.
-  unsigned idx = glyph == parent_glyph ?
+  بنانشانی idx = glyph == ماپا_glyph ?
 		 NOT_COVERED :
-		 (this+coverage).get_coverage (glyph);
-  if (idx == NOT_COVERED)
+		 (هذا+coverage).get_coverage (glyph);
+  إذا (idx == NOT_COVERED)
   {
-    if (c.draw_session)
+    إذا (c.draw_session)
     {
       /* Out of budget: draw nothing, but signal success so remaining
        * leaves are skipped instead of falling back per-glyph. */
-      if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) return true;
+      إذا (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) أرجع سچ;
 
-      hb_transform_t<> leaf_transform = transform;
-      leaf_transform.x0 *= c.font->x_multf;
-      leaf_transform.y0 *= c.font->y_multf;
+      hb_transform_t<> پتی_transform = transform;
+      پتی_transform.x0 *= c.font->x_multf;
+      پتی_transform.y0 *= c.font->y_multf;
 
       // Build a transforming pen to apply the transform.
       hb_draw_funcs_t *transformer_funcs = hb_transforming_pen_get_funcs ();
-      hb_transforming_pen_context_t context {leaf_transform,
+      hb_transforming_pen_context_t context {پتی_transform,
 					     c.draw_session->funcs,
-					     c.draw_session->draw_data,
+					     c.draw_session->draw_انکڑے,
 					     &c.draw_session->st,
 					     &c.budget};
       hb_draw_session_t transformer_session {transformer_funcs, &context};
-      hb_draw_session_t &shape_draw_session = leaf_transform.is_identity () ? *c.draw_session : transformer_session;
+      hb_draw_session_t &shape_draw_session = پتی_transform.is_پچھان_تت () ? *c.draw_session : transformer_session;
 
-      if (c.font->face->table.glyf->get_path_at (c.font, glyph, shape_draw_session, coords, c.scratch.glyf_scratch, nullptr, &shape_draw_session.get_budget ())) return true;
-#ifndef HB_NO_CFF
-      if (c.font->face->table.cff2->get_path_at (c.font, glyph, shape_draw_session, coords, &shape_draw_session.get_budget ())) return true;
-      if (c.font->face->table.cff1->get_path (c.font, glyph, shape_draw_session, &shape_draw_session.get_budget ())) return true; // Doesn't have variations
-#endif
-      return false;
+      إذا (c.font->face->جدول.glyf->get_رستہ_at (c.font, glyph, shape_draw_session, coords, c.scratch.glyf_scratch, خالی_سوچک, &shape_draw_session.get_budget ())) أرجع سچ;
+#جے_بنا_تعریف HB_NO_CFF
+      إذا (c.font->face->جدول.cff2->get_رستہ_at (c.font, glyph, shape_draw_session, coords, &shape_draw_session.get_budget ())) أرجع سچ;
+      إذا (c.font->face->جدول.cff1->get_رستہ (c.font, glyph, shape_draw_session, &shape_draw_session.get_budget ())) أرجع سچ; // Doesn't have variations
+#جے_انت
+      أرجع خطأ;
     }
-    else if (c.extents)
+    وإلا إذا (c.extents)
     {
-      if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) return true;
+      إذا (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) أرجع سچ;
 
       hb_glyph_extents_t glyph_extents;
-      if (!c.font->face->table.glyf->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
-#ifndef HB_NO_CFF
-      if (!c.font->face->table.cff2->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
-      if (!c.font->face->table.cff1->get_extents (c.font, glyph, &glyph_extents, &c.budget)) // Doesn't have variations
-#endif
-	return false;
+      إذا (!c.font->face->جدول.glyf->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
+#جے_بنا_تعریف HB_NO_CFF
+      إذا (!c.font->face->جدول.cff2->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
+      إذا (!c.font->face->جدول.cff1->get_extents (c.font, glyph, &glyph_extents, &c.budget)) // Doesn't have variations
+#جے_انت
+	أرجع خطأ;
 
       hb_extents_t<> comp_extents (glyph_extents);
-      hb_transform_t<> leaf_transform = transform;
-      leaf_transform.x0 *= c.font->x_multf;
-      leaf_transform.y0 *= c.font->y_multf;
-      leaf_transform.transform_extents (comp_extents);
+      hb_transform_t<> پتی_transform = transform;
+      پتی_transform.x0 *= c.font->x_multf;
+      پتی_transform.y0 *= c.font->y_multf;
+      پتی_transform.transform_extents (comp_extents);
       c.extents->union_ (comp_extents);
     }
-    return true;
+    أرجع سچ;
   }
 
-  if (c.depth_left <= 0)
-    return true;
+  إذا (c.ڈونگھائی_بایاں <= 0)
+    أرجع سچ;
 
-  if (c.edges_left <= 0)
-    return true;
-  (c.edges_left)--;
+  إذا (c.کنارے_بایاں <= 0)
+    أرجع سچ;
+  (c.کنارے_بایاں)--;
 
-  hb_decycler_node_t node (c.decycler);
-  if (unlikely (!node.visit (glyph)))
-    return true;
+  hb_decycler_گرہ_t node (c.decycler);
+  إذا (unlikely (!node.ویکھو (glyph)))
+    أرجع سچ;
 
-  hb_ubytes_t record = (this+glyphRecords)[idx];
+  hb_ubytes_t ریکارڈ = (هذا+glyph_ریکارڈاں)[idx];
 
   hb_scalar_cache_t static_cache;
-  hb_scalar_cache_t *cache = parent_cache ?
-				  parent_cache :
-				  (this+varStore).create_cache (&static_cache);
+  hb_scalar_cache_t *cache = ماپا_cache ?
+				  ماپا_cache :
+				  (هذا+varStore).create_cache (&static_cache);
 
-  VarCompositeGlyph::get_path_at (c,
+  Var_مرکب_Glyph::get_رستہ_at (c,
 				  glyph,
 				  coords, transform,
-				  record,
+				  ریکارڈ,
 				  cache);
 
-  if (cache != parent_cache)
-    (this+varStore).destroy_cache (cache, &static_cache);
+  إذا (cache != ماپا_cache)
+    (هذا+varStore).destroy_cache (cache, &static_cache);
 
-  return true;
+  أرجع سچ;
 }
 
-#endif
+#جے_انت
 
-#undef VARC_PROCESS_TRANSFORM_COMPONENTS
+#تعریف_رد VARC_PROCESS_TRANSFORM_COMPONENTS
 
 //} // namespace Var
 } // namespace OT
 
-#endif
+#جے_انت
 
-#endif /* HB_OT_VAR_VARC_CC (pacify clang) */
-#endif /* HB_OT_VAR_VARC_CC */
+#جے_انت /* HB_OT_VAR_VARC_CC (pacify clang) */
+#جے_انت /* HB_OT_VAR_VARC_CC */

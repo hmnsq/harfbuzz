@@ -24,100 +24,100 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_MAP_HH
-#define HB_AAT_MAP_HH
+#جے_بنا_تعریف HB_AAT_MAP_HH
+#تعریف_کرو HB_AAT_MAP_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 
-struct hb_aat_map_t
+بنية hb_aat_map_t
 {
-  friend struct hb_aat_map_builder_t;
+  یار بنية hb_aat_map_builder_t;
 
-  public:
-  struct range_flags_t
+  عام:
+  بنية range_flags_t
   {
-    hb_mask_t flags;
-    unsigned cluster_first;
-    unsigned cluster_last; // end - 1
+    hb_نقاب_t flags;
+    بنانشانی cluster_پہلا;
+    بنانشانی cluster_آخری; // end - 1
   };
 
-  public:
-  hb_vector_t<hb_sorted_vector_t<range_flags_t>> chain_flags;
+  عام:
+  hb_سمتیہ_t<hb_sorted_سمتیہ_t<range_flags_t>> chain_flags;
 };
 
-struct hb_aat_map_builder_t
+بنية hb_aat_map_builder_t
 {
-  public:
+  عام:
 
-  HB_INTERNAL hb_aat_map_builder_t (hb_face_t *face_,
-				    const hb_segment_properties_t props_) :
+  HB_اندرونی hb_aat_map_builder_t (hb_face_t *face_,
+				    ثابت hb_segment_properties_t props_) :
 				      face (face_),
 				      props (props_) {}
 
-  HB_INTERNAL void add_feature (const hb_feature_t &feature);
+  HB_اندرونی فراغ جوڑو_feature (ثابت hb_feature_t &feature);
 
-  HB_INTERNAL void compile (hb_aat_map_t  &m);
+  HB_اندرونی فراغ compile (hb_aat_map_t  &m);
 
-  public:
-  struct feature_info_t
+  عام:
+  بنية feature_info_t
   {
     hb_aat_layout_feature_type_t  type;
     hb_aat_layout_feature_selector_t  setting;
-    bool is_exclusive;
-    unsigned  seq; /* For stable sorting only. */
+    منطقي is_exclusive;
+    بنانشانی  seq; /* For stable sorting only. */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_اندرونی ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
     {
-      const feature_info_t *a = (const feature_info_t *) pa;
-      const feature_info_t *b = (const feature_info_t *) pb;
-      if (a->type != b->type) return (a->type < b->type ? -1 : 1);
-      if (!a->is_exclusive &&
-	  (a->setting & ~1) != (b->setting & ~1)) return (a->setting < b->setting ? -1 : 1);
-	    return (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
+      ثابت feature_info_t *a = (ثابت feature_info_t *) pa;
+      ثابت feature_info_t *b = (ثابت feature_info_t *) pb;
+      إذا (a->type != b->type) أرجع (a->type < b->type ? -1 : 1);
+      إذا (!a->is_exclusive &&
+	  (a->setting & ~1) != (b->setting & ~1)) أرجع (a->setting < b->setting ? -1 : 1);
+	    أرجع (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
 
     /* compares type & setting only */
-    int cmp (const feature_info_t& f) const
+    صحيح cmp (ثابت feature_info_t& f) ثابت
     {
-      return (f.type != type) ? (f.type < type ? -1 : 1) :
+      أرجع (f.type != type) ? (f.type < type ? -1 : 1) :
 	     (f.setting != setting) ? (f.setting < setting ? -1 : 1) : 0;
     }
   };
 
-  struct feature_range_t
+  بنية feature_range_t
   {
     feature_info_t info;
-    unsigned start;
-    unsigned end;
+    بنانشانی شروع;
+    بنانشانی سرا;
   };
 
-  private:
-  struct feature_event_t
+  خاص:
+  بنية feature_event_t
   {
-    unsigned int index;
-    bool start;
+    بنانشانی صحيح اشاریہ_2;
+    منطقي شروع;
     feature_info_t feature;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb) {
-      const feature_event_t *a = (const feature_event_t *) pa;
-      const feature_event_t *b = (const feature_event_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 :
-	     a->start < b->start ? -1 : a->start > b->start ? 1 :
+    HB_اندرونی ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb) {
+      ثابت feature_event_t *a = (ثابت feature_event_t *) pa;
+      ثابت feature_event_t *b = (ثابت feature_event_t *) pb;
+      أرجع a->اشاریہ_2 < b->اشاریہ_2 ? -1 : a->اشاریہ_2 > b->اشاریہ_2 ? 1 :
+	     a->شروع < b->شروع ? -1 : a->شروع > b->شروع ? 1 :
 	     feature_info_t::cmp (&a->feature, &b->feature);
     }
   };
 
-  public:
+  عام:
   hb_face_t *face;
   hb_segment_properties_t props;
 
-  public:
-  hb_sorted_vector_t<feature_range_t> features;
-  hb_sorted_vector_t<feature_info_t> current_features;
-  unsigned range_first = HB_FEATURE_GLOBAL_START;
-  unsigned range_last = HB_FEATURE_GLOBAL_END;
+  عام:
+  hb_sorted_سمتیہ_t<feature_range_t> features;
+  hb_sorted_سمتیہ_t<feature_info_t> current_features;
+  بنانشانی range_پہلا = HB_FEATURE_GLOBAL_شروع;
+  بنانشانی range_آخری = HB_FEATURE_GLOBAL_سرا;
 };
 
 
-#endif /* HB_AAT_MAP_HH */
+#جے_انت /* HB_AAT_MAP_HH */

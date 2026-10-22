@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
+#ضمن "hb-machinery.hh"
+#ضمن "hb-vector-buf.hh"
 
 /**
  * SECTION:hb-vector
@@ -74,62 +74,62 @@
  * painted as a single uniform layer.
  **/
 
-struct hb_vector_decimal_point_t
+بنية hb_سمتیہ_decimal_نقطہ_t
 {
-  char value[8];
+  حرف value[8];
 };
 
-static hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
+ساكن hb_سمتیہ_decimal_نقطہ_t hb_سمتیہ_decimal_نقطہ_default = {{'.', '\0'}};
 
-static inline void free_static_svg_decimal_point ();
+ساكن مضمن فراغ free_static_svg_decimal_نقطہ ();
 
-static struct hb_vector_decimal_point_lazy_loader_t
-  : hb_lazy_loader_t<hb_vector_decimal_point_t, hb_vector_decimal_point_lazy_loader_t>
+ساكن بنية hb_سمتیہ_decimal_نقطہ_lazy_loader_t
+  : hb_lazy_loader_t<hb_سمتیہ_decimal_نقطہ_t, hb_سمتیہ_decimal_نقطہ_lazy_loader_t>
 {
-  static hb_vector_decimal_point_t *create ()
+  ساكن hb_سمتیہ_decimal_نقطہ_t *create ()
   {
-    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    خودکار *p = (hb_سمتیہ_decimal_نقطہ_t *) hb_calloc (1, حجم (hb_سمتیہ_decimal_نقطہ_t));
+    إذا (!p)
+      أرجع خالی_سوچک;
 
     p->value[0] = '.';
     p->value[1] = '\0';
 
-#ifndef HB_NO_SETLOCALE
-    lconv *lc = nullptr;
-#ifdef HAVE_LOCALECONV_L
+#جے_بنا_تعریف HB_NO_SETLOCALE
+    lconv *lc = خالی_سوچک;
+#جے_تعریف_شدہ HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    إذا (current_locale)
       lc = localeconv_l (current_locale);
-#endif
-    if (!lc)
+#جے_انت
+    إذا (!lc)
       lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+    إذا (lc && lc->decimal_point && lc->decimal_point[0])
     {
-      strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
-      p->value[sizeof (p->value) - 1] = '\0';
+      strncpy (p->value, lc->decimal_point, حجم (p->value) - 1);
+      p->value[حجم (p->value) - 1] = '\0';
     }
-#endif
+#جے_انت
 
-    hb_atexit (free_static_svg_decimal_point);
-    return p;
+    hb_atexit (free_static_svg_decimal_نقطہ);
+    أرجع p;
   }
 
-  static void destroy (hb_vector_decimal_point_t *p)
+  ساكن فراغ destroy (hb_سمتیہ_decimal_نقطہ_t *p)
   { hb_free (p); }
 
-  static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
-} static_svg_decimal_point;
+  ساكن ثابت hb_سمتیہ_decimal_نقطہ_t *get_null ()
+  { أرجع &hb_سمتیہ_decimal_نقطہ_default; }
+} static_svg_decimal_نقطہ;
 
-static inline void
-free_static_svg_decimal_point ()
+ساكن مضمن فراغ
+free_static_svg_decimal_نقطہ ()
 {
-  static_svg_decimal_point.free_instance ();
+  static_svg_decimal_نقطہ.free_instance ();
 }
 
-const char *
-hb_vector_decimal_point_get (void)
+ثابت حرف *
+hb_سمتیہ_decimal_نقطہ_get (فراغ)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  أرجع static_svg_decimal_نقطہ.get_unconst ()->value;
 }

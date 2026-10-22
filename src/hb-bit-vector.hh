@@ -22,174 +22,174 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_VECTOR_HH
-#define HB_BIT_VECTOR_HH
+#جے_بنا_تعریف HB_ثنائی_ہندسہ_سمتیہ_HH
+#تعریف_کرو HB_ثنائی_ہندسہ_سمتیہ_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-atomic.hh"
+#ضمن "hb-atomic.hh"
 
-struct hb_min_max_t
+بنية hb_min_max_t
 {
-  void add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  فراغ جوڑو (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
+  فراغ جوڑو_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     min_v = hb_min (min_v, a);
     max_v = hb_max (max_v, b);
   }
 
-  template <typename set_t>
-  void union_ (const set_t &set)
+  سانچا <قسم_ناں سیٹ_t>
+  فراغ union_ (ثابت سیٹ_t &سیٹ)
   {
-    hb_codepoint_t set_min = set.get_min ();
-    if (unlikely (set_min == HB_CODEPOINT_INVALID))
-      return;
-    hb_codepoint_t set_max = set.get_max ();
-    min_v = hb_min (min_v, set_min);
-    max_v = hb_max (max_v, set_max);
+    hb_codepoint_t سیٹ_min = سیٹ.get_min ();
+    إذا (unlikely (سیٹ_min == HB_CODEPOINT_INVALID))
+      أرجع;
+    hb_codepoint_t سیٹ_max = سیٹ.get_max ();
+    min_v = hb_min (min_v, سیٹ_min);
+    max_v = hb_max (max_v, سیٹ_max);
   }
 
-  hb_codepoint_t get_min () const { return min_v; }
-  hb_codepoint_t get_max () const { return max_v; }
+  hb_codepoint_t get_min () ثابت { أرجع min_v; }
+  hb_codepoint_t get_max () ثابت { أرجع max_v; }
 
-  private:
+  خاص:
   hb_codepoint_t min_v = HB_CODEPOINT_INVALID;
   hb_codepoint_t max_v = 0;
 };
 
-template <bool atomic = false>
-struct hb_bit_vector_t
+سانچا <منطقي atomic = خطأ>
+بنية hb_ثنائی_ہندسہ_سمتیہ_t
 {
-  using int_t = uint64_t;
-  using elt_t = typename std::conditional<atomic, hb_atomic_t<int_t>, int_t>::type;
+  ورتوں int_t = uint64_t;
+  ورتوں elt_t = قسم_ناں std::conditional<atomic, hb_atomic_t<int_t>, int_t>::type;
 
-  hb_bit_vector_t () = delete;
-  hb_bit_vector_t (const hb_bit_vector_t &other) = delete;
-  hb_bit_vector_t &operator= (const hb_bit_vector_t &other) = delete;
+  hb_ثنائی_ہندسہ_سمتیہ_t () = مٹاؤ;
+  hb_ثنائی_ہندسہ_سمتیہ_t (ثابت hb_ثنائی_ہندسہ_سمتیہ_t &other) = مٹاؤ;
+  hb_ثنائی_ہندسہ_سمتیہ_t &عامل= (ثابت hb_ثنائی_ہندسہ_سمتیہ_t &other) = مٹاؤ;
 
   // Move
-  hb_bit_vector_t (hb_bit_vector_t &&other)
-		: min_v (other.min_v), max_v (other.max_v), count (other.count), elts (other.elts)
+  hb_ثنائی_ہندسہ_سمتیہ_t (hb_ثنائی_ہندسہ_سمتیہ_t &&other)
+		: min_v (other.min_v), max_v (other.max_v), گنتی (other.گنتی), elts (other.elts)
   {
-    other.min_v = other.max_v = other.count = 0;
-    other.elts = nullptr;
+    other.min_v = other.max_v = other.گنتی = 0;
+    other.elts = خالی_سوچک;
   }
-  hb_bit_vector_t &operator= (hb_bit_vector_t &&other)
+  hb_ثنائی_ہندسہ_سمتیہ_t &عامل= (hb_ثنائی_ہندسہ_سمتیہ_t &&other)
   {
-    hb_swap (min_v, other.min_v);
-    hb_swap (max_v, other.max_v);
-    hb_swap (count, other.count);
-    hb_swap (elts, other.elts);
-    return *this;
+    hb_وٹاندرا (min_v, other.min_v);
+    hb_وٹاندرا (max_v, other.max_v);
+    hb_وٹاندرا (گنتی, other.گنتی);
+    hb_وٹاندرا (elts, other.elts);
+    أرجع *هذا;
   }
 
-  hb_bit_vector_t (unsigned min_v, unsigned max_v)
+  hb_ثنائی_ہندسہ_سمتیہ_t (بنانشانی min_v, بنانشانی max_v)
     : min_v (min_v), max_v (max_v)
   {
-    if (unlikely (min_v >= max_v))
+    إذا (unlikely (min_v >= max_v))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = گنتی = 0;
+      أرجع;
     }
 
-    unsigned num = (max_v - min_v + sizeof (int_t) * 8) / (sizeof (int_t) * 8);
-    elts = (elt_t *) hb_calloc (num, sizeof (int_t));
-    if (unlikely (!elts))
+    بنانشانی عدد = (max_v - min_v + حجم (int_t) * 8) / (حجم (int_t) * 8);
+    elts = (elt_t *) hb_calloc (عدد, حجم (int_t));
+    إذا (unlikely (!elts))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = گنتی = 0;
+      أرجع;
     }
 
-    count = max_v - min_v + 1;
+    گنتی = max_v - min_v + 1;
   }
-  ~hb_bit_vector_t ()
+  ~hb_ثنائی_ہندسہ_سمتیہ_t ()
   {
     hb_free (elts);
   }
 
-  void add (hb_codepoint_t g) { elt (g) |= mask (g); }
-  void del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  فراغ جوڑو (hb_codepoint_t g) { elt (g) |= نقاب (g); }
+  فراغ del (hb_codepoint_t g) { elt (g) &= ~نقاب (g); }
+  فراغ سیٹ (hb_codepoint_t g, منطقي value) { إذا (value) جوڑو (g); وإلا del (g); }
+  منطقي get (hb_codepoint_t g) ثابت { أرجع elt (g) & نقاب (g); }
+  منطقي has (hb_codepoint_t g) ثابت { أرجع get (g); }
+  منطقي may_have (hb_codepoint_t g) ثابت { أرجع get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
+  منطقي عامل [] (hb_codepoint_t g) ثابت { أرجع get (g); }
+  منطقي عامل () (hb_codepoint_t g) ثابت { أرجع get (g); }
 
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  فراغ جوڑو_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    إذا (unlikely (!گنتی || a > b || a < min_v || b > max_v))
+      أرجع;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
-      *la |= (mask (b) << 1) - mask(a);
-    else
+    إذا (la == lb)
+      *la |= (نقاب (b) << 1) - نقاب(a);
+    وإلا
     {
-      *la |= ~(mask (a) - 1llu);
+      *la |= ~(نقاب (a) - 1llu);
       la++;
 
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (حرف *) lb - (حرف *) la);
 
-      *lb |= ((mask (b) << 1) - 1llu);
+      *lb |= ((نقاب (b) << 1) - 1llu);
     }
   }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  فراغ del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    إذا (unlikely (!گنتی || a > b || a < min_v || b > max_v))
+      أرجع;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
-      *la &= ~((mask (b) << 1llu) - mask(a));
-    else
+    إذا (la == lb)
+      *la &= ~((نقاب (b) << 1llu) - نقاب(a));
+    وإلا
     {
-      *la &= mask (a) - 1;
+      *la &= نقاب (a) - 1;
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0, (حرف *) lb - (حرف *) la);
 
-      *lb &= ~((mask (b) << 1) - 1llu);
+      *lb &= ~((نقاب (b) << 1) - 1llu);
     }
   }
-  void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  فراغ سیٹ_range (hb_codepoint_t a, hb_codepoint_t b, منطقي v)
+  { إذا (v) جوڑو_range (a, b); وإلا del_range (a, b); }
 
-  template <typename set_t>
-  void union_ (const set_t &set)
+  سانچا <قسم_ناں سیٹ_t>
+  فراغ union_ (ثابت سیٹ_t &سیٹ)
   {
-    for (hb_codepoint_t g : set)
-      add (g);
+    لكل (hb_codepoint_t g : سیٹ)
+      جوڑو (g);
   }
 
-  static const unsigned int ELT_BITS = sizeof (elt_t) * 8;
-  static constexpr unsigned ELT_MASK = ELT_BITS - 1;
+  ساكن ثابت بنانشانی صحيح ELT_بٹ = حجم (elt_t) * 8;
+  ساكن constexpr بنانشانی ELT_نقاب = ELT_بٹ - 1;
 
-  static constexpr elt_t zero = 0;
+  ساكن constexpr elt_t zero = 0;
 
   elt_t &elt (hb_codepoint_t g)
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Crap(elt_t);
-    return elts[g / ELT_BITS];
+    إذا (unlikely (g >= گنتی))
+      أرجع Crap(elt_t);
+    أرجع elts[g / ELT_بٹ];
   }
-  const elt_t& elt (hb_codepoint_t g) const
+  ثابت elt_t& elt (hb_codepoint_t g) ثابت
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Null(elt_t);
-    return elts[g / ELT_BITS];
+    إذا (unlikely (g >= گنتی))
+      أرجع Null(elt_t);
+    أرجع elts[g / ELT_بٹ];
   }
 
-  static constexpr int_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  ساكن constexpr int_t نقاب (hb_codepoint_t g) { أرجع elt_t (1) << (g & ELT_نقاب); }
 
-  hb_codepoint_t min_v = 0, max_v = 0, count = 0;
-  elt_t *elts = nullptr;
+  hb_codepoint_t min_v = 0, max_v = 0, گنتی = 0;
+  elt_t *elts = خالی_سوچک;
 };
 
 
-#endif /* HB_BIT_VECTOR_HH */
+#جے_انت /* HB_BIT_VECTOR_HH */

@@ -24,50 +24,50 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_LIST_HH
-#define HB_SHAPER_LIST_HH
-#endif /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
+#جے_بنا_تعریف HB_SHAPER_LIST_HH
+#تعریف_کرو HB_SHAPER_LIST_HH
+#جے_انت /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_NO_SHAPER
+#جے_بنا_تعریف HB_NO_SHAPER
 
 
 /* v--- Add new shapers in the right place here. */
 
-#ifdef HAVE_WASM
+#جے_تعریف_شدہ HAVE_WASM
 /* Only picks up fonts that have a "Wasm" table. */
 HB_SHAPER_IMPLEMENT (wasm)
-#endif
+#جے_انت
 
-#ifdef HAVE_GRAPHITE2
+#جے_تعریف_شدہ HAVE_GRAPHITE2
 /* Only picks up fonts that have a "Silf" table. */
 HB_SHAPER_IMPLEMENT (graphite2)
-#endif
+#جے_انت
 
-#ifndef HB_NO_OT_SHAPE
+#جے_بنا_تعریف HB_NO_OT_SHAPE
 HB_SHAPER_IMPLEMENT (ot) /* <--- This is our main shaper. */
-#endif
+#جے_انت
 
-#ifdef HAVE_UNISCRIBE
+#جے_تعریف_شدہ HAVE_UNISCRIBE
 HB_SHAPER_IMPLEMENT (uniscribe)
-#endif
-#ifdef HAVE_DIRECTWRITE
+#جے_انت
+#جے_تعریف_شدہ HAVE_DIRECTWRITE
 HB_SHAPER_IMPLEMENT (directwrite)
-#endif
-#ifdef HAVE_CORETEXT
+#جے_انت
+#جے_تعریف_شدہ HAVE_CORETEXT
 HB_SHAPER_IMPLEMENT (coretext)
-#endif
+#جے_انت
 
-#ifdef HAVE_HARFRUST
+#جے_تعریف_شدہ HAVE_HARFRUST
 HB_SHAPER_IMPLEMENT (harfrust)
-#endif
+#جے_انت
 
-#ifdef HAVE_KBTS
+#جے_تعریف_شدہ HAVE_KBTS
 HB_SHAPER_IMPLEMENT (kbts)
-#endif
+#جے_انت
 
-#ifndef HB_NO_FALLBACK_SHAPE
+#جے_بنا_تعریف HB_NO_FALLBACK_SHAPE
 HB_SHAPER_IMPLEMENT (fallback) /* <--- This should be last. */
-#endif
+#جے_انت
 
 
-#endif
+#جے_انت

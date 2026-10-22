@@ -1,5 +1,5 @@
 
-#line 1 "hb-ot-shaper-khmer-machine.rl"
+#سطر 1 "hb-ot-shaper-khmer-machine.rl"
 /*
  * Copyright © 2011,2012  Google, Inc.
  *
@@ -26,48 +26,48 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_KHMER_MACHINE_HH
-#define HB_OT_SHAPER_KHMER_MACHINE_HH
+#جے_بنا_تعریف HB_OT_SHAPER_KHMER_MACHINE_HH
+#تعریف_کرو HB_OT_SHAPER_KHMER_MACHINE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-ot-layout.hh"
-#include "hb-ot-shaper-indic.hh"
+#ضمن "hb-ot-layout.hh"
+#ضمن "hb-ot-shaper-indic.hh"
 
 /* buffer var allocations */
-#define khmer_category() ot_shaper_var_u8_category() /* khmer_category_t */
+#تعریف_کرو khmer_category() ot_shaper_var_u8_category() /* khmer_category_t */
 
-using khmer_category_t = unsigned;
+ورتوں khmer_category_t = بنانشانی;
 
-#define K_Cat(Cat) khmer_syllable_machine_ex_##Cat
+#تعریف_کرو K_Cat(Cat) khmer_syllable_machine_ex_##Cat
 
-enum khmer_syllable_type_t {
+تعداد khmer_syllable_type_t {
   khmer_consonant_syllable,
   khmer_broken_cluster,
   khmer_non_khmer_cluster,
 };
 
 
-#line 49 "hb-ot-shaper-khmer-machine.hh"
-#define khmer_syllable_machine_ex_C 1u
-#define khmer_syllable_machine_ex_DOTTEDCIRCLE 11u
-#define khmer_syllable_machine_ex_H 4u
-#define khmer_syllable_machine_ex_PLACEHOLDER 10u
-#define khmer_syllable_machine_ex_Ra 15u
-#define khmer_syllable_machine_ex_Robatic 25u
-#define khmer_syllable_machine_ex_V 2u
-#define khmer_syllable_machine_ex_VAbv 20u
-#define khmer_syllable_machine_ex_VBlw 21u
-#define khmer_syllable_machine_ex_VPre 22u
-#define khmer_syllable_machine_ex_VPst 23u
-#define khmer_syllable_machine_ex_Xgroup 26u
-#define khmer_syllable_machine_ex_Ygroup 27u
-#define khmer_syllable_machine_ex_ZWJ 6u
-#define khmer_syllable_machine_ex_ZWNJ 5u
+#سطر 49 "hb-ot-shaper-khmer-machine.hh"
+#تعریف_کرو khmer_syllable_machine_ex_C 1u
+#تعریف_کرو khmer_syllable_machine_ex_DOTTEDCIRCLE 11u
+#تعریف_کرو khmer_syllable_machine_ex_H 4u
+#تعریف_کرو khmer_syllable_machine_ex_PLACEHOLDER 10u
+#تعریف_کرو khmer_syllable_machine_ex_Ra 15u
+#تعریف_کرو khmer_syllable_machine_ex_Robatic 25u
+#تعریف_کرو khmer_syllable_machine_ex_V 2u
+#تعریف_کرو khmer_syllable_machine_ex_VAbv 20u
+#تعریف_کرو khmer_syllable_machine_ex_VBlw 21u
+#تعریف_کرو khmer_syllable_machine_ex_VPre 22u
+#تعریف_کرو khmer_syllable_machine_ex_VPst 23u
+#تعریف_کرو khmer_syllable_machine_ex_Xgroup 26u
+#تعریف_کرو khmer_syllable_machine_ex_Ygroup 27u
+#تعریف_کرو khmer_syllable_machine_ex_ZWJ 6u
+#تعریف_کرو khmer_syllable_machine_ex_ZWNJ 5u
 
 
-#line 65 "hb-ot-shaper-khmer-machine.hh"
-static const unsigned char _khmer_syllable_machine_trans_keys[] = {
+#سطر 65 "hb-ot-shaper-khmer-machine.hh"
+ساكن ثابت بنانشانی حرف khmer_syllable_machine_trans_کلیدیں[] = {
 	5u, 26u, 5u, 26u, 1u, 15u, 5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 
 	5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 1u, 15u, 5u, 26u, 5u, 26u, 
 	5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 1u, 27u, 4u, 27u, 1u, 15u, 
@@ -76,7 +76,7 @@ static const unsigned char _khmer_syllable_machine_trans_keys[] = {
 	4u, 27u, 4u, 27u, 5u, 26u, 0
 };
 
-static const char _khmer_syllable_machine_key_spans[] = {
+ساكن ثابت حرف khmer_syllable_machine_کلید_spans[] = {
 	22, 22, 15, 22, 22, 22, 22, 22, 
 	22, 22, 22, 22, 22, 15, 22, 22, 
 	22, 22, 22, 22, 22, 27, 24, 15, 
@@ -85,7 +85,7 @@ static const char _khmer_syllable_machine_key_spans[] = {
 	24, 24, 22
 };
 
-static const short _khmer_syllable_machine_index_offsets[] = {
+ساكن ثابت چھوٹا khmer_syllable_machine_اشاریہ_offsets[] = {
 	0, 23, 46, 62, 85, 108, 131, 154, 
 	177, 200, 223, 246, 269, 292, 308, 331, 
 	354, 377, 400, 423, 446, 469, 497, 522, 
@@ -94,7 +94,7 @@ static const short _khmer_syllable_machine_index_offsets[] = {
 	883, 908, 933
 };
 
-static const char _khmer_syllable_machine_indicies[] = {
+ساكن ثابت حرف _khmer_syllable_machine_indicies[] = {
 	1, 1, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 2, 
 	0, 0, 0, 0, 3, 4, 0, 1, 
@@ -217,7 +217,7 @@ static const char _khmer_syllable_machine_indicies[] = {
 	48, 48, 18, 48, 0
 };
 
-static const char _khmer_syllable_machine_trans_targs[] = {
+ساكن ثابت حرف _khmer_syllable_machine_trans_targs[] = {
 	21, 1, 27, 31, 25, 26, 4, 5, 
 	28, 7, 29, 9, 30, 32, 21, 12, 
 	37, 41, 35, 21, 36, 15, 16, 38, 
@@ -227,7 +227,7 @@ static const char _khmer_syllable_machine_trans_targs[] = {
 	21
 };
 
-static const char _khmer_syllable_machine_trans_actions[] = {
+ساكن ثابت حرف _khmer_syllable_machine_trans_actions[] = {
 	1, 0, 2, 2, 2, 0, 0, 0, 
 	2, 0, 2, 0, 2, 2, 3, 0, 
 	2, 4, 4, 5, 0, 0, 0, 2, 
@@ -237,7 +237,7 @@ static const char _khmer_syllable_machine_trans_actions[] = {
 	12
 };
 
-static const char _khmer_syllable_machine_to_state_actions[] = {
+ساكن ثابت حرف khmer_syllable_machine_منزل_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 6, 0, 0, 
@@ -246,7 +246,7 @@ static const char _khmer_syllable_machine_to_state_actions[] = {
 	0, 0, 0
 };
 
-static const char _khmer_syllable_machine_from_state_actions[] = {
+ساكن ثابت حرف _khmer_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 7, 0, 0, 
@@ -255,7 +255,7 @@ static const char _khmer_syllable_machine_from_state_actions[] = {
 	0, 0, 0
 };
 
-static const short _khmer_syllable_machine_eof_trans[] = {
+ساكن ثابت چھوٹا _khmer_syllable_machine_eof_trans[] = {
 	1, 1, 1, 1, 1, 1, 1, 1, 
 	1, 1, 1, 15, 20, 15, 15, 15, 
 	15, 15, 15, 15, 15, 0, 33, 33, 
@@ -264,165 +264,165 @@ static const short _khmer_syllable_machine_eof_trans[] = {
 	42, 42, 49
 };
 
-static const int khmer_syllable_machine_start = 21;
-static const int khmer_syllable_machine_first_final = 21;
-static const int khmer_syllable_machine_error = -1;
+ساكن ثابت صحيح khmer_syllable_machine_شروع = 21;
+ساكن ثابت صحيح khmer_syllable_machine_پہلا_final = 21;
+ساكن ثابت صحيح khmer_syllable_machine_error = -1;
 
-static const int khmer_syllable_machine_en_main = 21;
-
-
-#line 53 "hb-ot-shaper-khmer-machine.rl"
+ساكن ثابت صحيح khmer_syllable_machine_en_main = 21;
 
 
+#سطر 53 "hb-ot-shaper-khmer-machine.rl"
 
-#line 102 "hb-ot-shaper-khmer-machine.rl"
 
 
-#define found_syllable(syllable_type) \
-  HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+#سطر 102 "hb-ot-shaper-khmer-machine.rl"
+
+
+#تعریف_کرو لبھیا_syllable(syllable_type) \
+  HB_STMT_شروع { \
+    إذا (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    لكل (بنانشانی صحيح i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
-  } HB_STMT_END
+    إذا (syllable_serial == 16) syllable_serial = 1; \
+  } HB_STMT_سرا
 
-inline void
-find_syllables_khmer (hb_buffer_t *buffer)
+مضمن فراغ
+لبھو_syllables_khmer (hb_بفر_t *بفر)
 {
-  unsigned int p, pe, eof, ts, te, act HB_UNUSED;
-  int cs;
-  hb_glyph_info_t *info = buffer->info;
+  بنانشانی صحيح p, pe, eof, ts, te, act HB_بن_ورتیا;
+  صحيح cs;
+  hb_glyph_info_t *info = بفر->info;
   
-#line 287 "hb-ot-shaper-khmer-machine.hh"
+#سطر 287 "hb-ot-shaper-khmer-machine.hh"
 	{
-	cs = khmer_syllable_machine_start;
+	cs = khmer_syllable_machine_شروع;
 	ts = 0;
 	te = 0;
 	act = 0;
 	}
 
-#line 122 "hb-ot-shaper-khmer-machine.rl"
+#سطر 122 "hb-ot-shaper-khmer-machine.rl"
 
 
   p = 0;
-  pe = eof = buffer->len;
+  pe = eof = بفر->len;
 
-  unsigned int syllable_serial = 1;
+  بنانشانی صحيح syllable_serial = 1;
   
-#line 299 "hb-ot-shaper-khmer-machine.hh"
+#سطر 299 "hb-ot-shaper-khmer-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	صحيح _slen;
+	صحيح _trans;
+	ثابت بنانشانی حرف *کلیدیں_2;
+	ثابت حرف *_inds;
+	إذا ( p == pe )
+		اذهب _test_eof;
 _resume:
-	switch ( _khmer_syllable_machine_from_state_actions[cs] ) {
-	case 7:
-#line 1 "NONE"
+	بدل ( _khmer_syllable_machine_from_state_actions[cs] ) {
+	حالة 7:
+#سطر 1 "NONE"
 	{ts = p;}
-	break;
-#line 311 "hb-ot-shaper-khmer-machine.hh"
+	اكسر;
+#سطر 311 "hb-ot-shaper-khmer-machine.hh"
 	}
 
-	_keys = _khmer_syllable_machine_trans_keys + (cs<<1);
-	_inds = _khmer_syllable_machine_indicies + _khmer_syllable_machine_index_offsets[cs];
+	کلیدیں_2 = khmer_syllable_machine_trans_کلیدیں + (cs<<1);
+	_inds = _khmer_syllable_machine_indicies + khmer_syllable_machine_اشاریہ_offsets[cs];
 
-	_slen = _khmer_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].khmer_category()) &&
-		( info[p].khmer_category()) <= _keys[1] ?
-		( info[p].khmer_category()) - _keys[0] : _slen ];
+	_slen = khmer_syllable_machine_کلید_spans[cs];
+	_trans = _inds[ _slen > 0 && کلیدیں_2[0] <=( info[p].khmer_category()) &&
+		( info[p].khmer_category()) <= کلیدیں_2[1] ?
+		( info[p].khmer_category()) - کلیدیں_2[0] : _slen ];
 
 _eof_trans:
 	cs = _khmer_syllable_machine_trans_targs[_trans];
 
-	if ( _khmer_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	إذا ( _khmer_syllable_machine_trans_actions[_trans] == 0 )
+		اذهب _again;
 
-	switch ( _khmer_syllable_machine_trans_actions[_trans] ) {
-	case 2:
-#line 1 "NONE"
+	بدل ( _khmer_syllable_machine_trans_actions[_trans] ) {
+	حالة 2:
+#سطر 1 "NONE"
 	{te = p+1;}
-	break;
-	case 8:
-#line 98 "hb-ot-shaper-khmer-machine.rl"
-	{te = p+1;{ found_syllable (khmer_non_khmer_cluster); }}
-	break;
-	case 10:
-#line 96 "hb-ot-shaper-khmer-machine.rl"
-	{te = p;p--;{ found_syllable (khmer_consonant_syllable); }}
-	break;
-	case 11:
-#line 97 "hb-ot-shaper-khmer-machine.rl"
-	{te = p;p--;{ found_syllable (khmer_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 12:
-#line 98 "hb-ot-shaper-khmer-machine.rl"
-	{te = p;p--;{ found_syllable (khmer_non_khmer_cluster); }}
-	break;
-	case 1:
-#line 96 "hb-ot-shaper-khmer-machine.rl"
-	{{p = ((te))-1;}{ found_syllable (khmer_consonant_syllable); }}
-	break;
-	case 3:
-#line 97 "hb-ot-shaper-khmer-machine.rl"
-	{{p = ((te))-1;}{ found_syllable (khmer_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 5:
-#line 1 "NONE"
-	{	switch( act ) {
-	case 2:
-	{{p = ((te))-1;} found_syllable (khmer_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
-	case 3:
-	{{p = ((te))-1;} found_syllable (khmer_non_khmer_cluster); }
-	break;
+	اكسر;
+	حالة 8:
+#سطر 98 "hb-ot-shaper-khmer-machine.rl"
+	{te = p+1;{ لبھیا_syllable (khmer_non_khmer_cluster); }}
+	اكسر;
+	حالة 10:
+#سطر 96 "hb-ot-shaper-khmer-machine.rl"
+	{te = p;p--;{ لبھیا_syllable (khmer_consonant_syllable); }}
+	اكسر;
+	حالة 11:
+#سطر 97 "hb-ot-shaper-khmer-machine.rl"
+	{te = p;p--;{ لبھیا_syllable (khmer_broken_cluster); بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	اكسر;
+	حالة 12:
+#سطر 98 "hb-ot-shaper-khmer-machine.rl"
+	{te = p;p--;{ لبھیا_syllable (khmer_non_khmer_cluster); }}
+	اكسر;
+	حالة 1:
+#سطر 96 "hb-ot-shaper-khmer-machine.rl"
+	{{p = ((te))-1;}{ لبھیا_syllable (khmer_consonant_syllable); }}
+	اكسر;
+	حالة 3:
+#سطر 97 "hb-ot-shaper-khmer-machine.rl"
+	{{p = ((te))-1;}{ لبھیا_syllable (khmer_broken_cluster); بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	اكسر;
+	حالة 5:
+#سطر 1 "NONE"
+	{	بدل( act ) {
+	حالة 2:
+	{{p = ((te))-1;} لبھیا_syllable (khmer_broken_cluster); بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
+	اكسر;
+	حالة 3:
+	{{p = ((te))-1;} لبھیا_syllable (khmer_non_khmer_cluster); }
+	اكسر;
 	}
 	}
-	break;
-	case 4:
-#line 1 "NONE"
+	اكسر;
+	حالة 4:
+#سطر 1 "NONE"
 	{te = p+1;}
-#line 97 "hb-ot-shaper-khmer-machine.rl"
+#سطر 97 "hb-ot-shaper-khmer-machine.rl"
 	{act = 2;}
-	break;
-	case 9:
-#line 1 "NONE"
+	اكسر;
+	حالة 9:
+#سطر 1 "NONE"
 	{te = p+1;}
-#line 98 "hb-ot-shaper-khmer-machine.rl"
+#سطر 98 "hb-ot-shaper-khmer-machine.rl"
 	{act = 3;}
-	break;
-#line 368 "hb-ot-shaper-khmer-machine.hh"
+	اكسر;
+#سطر 368 "hb-ot-shaper-khmer-machine.hh"
 	}
 
 _again:
-	switch ( _khmer_syllable_machine_to_state_actions[cs] ) {
-	case 6:
-#line 1 "NONE"
+	بدل ( khmer_syllable_machine_منزل_state_actions[cs] ) {
+	حالة 6:
+#سطر 1 "NONE"
 	{ts = 0;}
-	break;
-#line 375 "hb-ot-shaper-khmer-machine.hh"
+	اكسر;
+#سطر 375 "hb-ot-shaper-khmer-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	إذا ( ++p != pe )
+		اذهب _resume;
 	_test_eof: {}
-	if ( p == eof )
+	إذا ( p == eof )
 	{
-	if ( _khmer_syllable_machine_eof_trans[cs] > 0 ) {
+	إذا ( _khmer_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _khmer_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		اذهب _eof_trans;
 	}
 	}
 
 	}
 
-#line 130 "hb-ot-shaper-khmer-machine.rl"
+#سطر 130 "hb-ot-shaper-khmer-machine.rl"
 
 }
 
-#undef found_syllable
+#تعریف_رد لبھیا_syllable
 
-#endif /* HB_OT_SHAPER_KHMER_MACHINE_HH */
+#جے_انت /* HB_OT_SHAPER_KHMER_MACHINE_HH */

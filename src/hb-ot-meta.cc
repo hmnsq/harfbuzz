@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_META
+#جے_بنا_تعریف HB_NO_META
 
-#include "hb-ot-meta-table.hh"
+#ضمن "hb-ot-meta-table.hh"
 
 /**
  * SECTION:hb-ot-meta
@@ -50,13 +50,13 @@
  *
  * Since: 2.6.0
  **/
-unsigned int
-hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
-			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */)
+بنانشانی صحيح
+hb_ot_meta_get_اندراج_ٹیگ_سوچی (hb_face_t        *face,
+			   بنانشانی صحيح      شروع_وتھ,
+			   بنانشانی صحيح     *entries_گنتی, /* IN/OUT.  May be NULL. */
+			   hb_ot_meta_ٹیگ_t *entries        /* OUT.     May be NULL. */)
 {
-  return face->table.meta->get_entries (start_offset, entries_count, entries);
+  أرجع face->جدول.meta->get_entries (شروع_وتھ, entries_گنتی, entries);
 }
 
 /**
@@ -71,9 +71,9 @@ hb_ot_meta_get_entry_tags (hb_face_t        *face,
  * Since: 2.6.0
  **/
 hb_blob_t *
-hb_ot_meta_reference_entry (hb_face_t *face, hb_ot_meta_tag_t meta_tag)
+hb_ot_meta_reference_اندراج (hb_face_t *face, hb_ot_meta_ٹیگ_t meta_ٹیگ)
 {
-  return face->table.meta->reference_entry (meta_tag);
+  أرجع face->جدول.meta->reference_اندراج (meta_ٹیگ);
 }
 
-#endif
+#جے_انت

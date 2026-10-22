@@ -1,38 +1,38 @@
-#ifndef OT_GLYF_LOCA_HH
-#define OT_GLYF_LOCA_HH
+#جے_بنا_تعریف OT_GLYF_LOCA_HH
+#تعریف_کرو OT_GLYF_LOCA_HH
 
 
-#include "../../hb-open-type.hh"
+#ضمن "../../hb-open-type.hh"
 
 
-namespace OT {
+نطاق OT {
 
 
 /*
  * loca -- Index to Location
  * https://docs.microsoft.com/en-us/typography/opentype/spec/loca
  */
-#define HB_OT_TAG_loca HB_TAG('l','o','c','a')
-#define HB_OT_TAG_LOCA HB_TAG('L','O','C','A')
+#تعریف_کرو HB_OT_ٹیگ_loca HB_ٹیگ('l','o','c','a')
+#تعریف_کرو HB_OT_ٹیگ_LOCA HB_ٹیگ('L','O','C','A')
 
-struct loca
+بنية loca
 {
-  friend struct glyf;
-  friend struct glyf_accelerator_t;
+  یار بنية glyf;
+  یار بنية glyf_accelerator_t;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_loca;
+  ساكن constexpr hb_ٹیگ_t جدول_ٹیگ = HB_OT_ٹیگ_loca;
 
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  منطقي sanitize (hb_sanitize_context_t *c HB_بن_ورتیا) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (true);
+    TRACE_SANITIZE (هذا);
+    return_trace (سچ);
   }
 
-  protected:
-  UnsizedArrayOf<HBUINT8>
-		dataZ;	/* Location data. */
-  public:
-  DEFINE_SIZE_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
+  محمي:
+  Unsized_Array_دا<HBUINT8>
+		انکڑے_Z;	/* Location data. */
+  عام:
+  DEFINE_ناپ_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
 			 * check the size externally, allow Null() object of it by
 			 * defining it _MIN instead. */
 };
@@ -41,4 +41,4 @@ struct loca
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_LOCA_HH */
+#جے_انت /* OT_GLYF_LOCA_HH */

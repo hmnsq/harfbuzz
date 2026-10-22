@@ -24,464 +24,464 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
-#include "../OT/Layout/GSUB/ExtensionSubst.hh"
-#include "../OT/Layout/GSUB/SubstLookupSubTable.hh"
-#include "gsubgpos-context.hh"
-#include "pairpos-graph.hh"
-#include "markbasepos-graph.hh"
-#include "ligature-graph.hh"
+#ضمن "graph.hh"
+#ضمن "../hb-ot-layout-gsubgpos.hh"
+#ضمن "../OT/Layout/GSUB/ExtensionSubst.hh"
+#ضمن "../OT/Layout/GSUB/SubstLookupSubTable.hh"
+#ضمن "gsubgpos-context.hh"
+#ضمن "pairpos-graph.hh"
+#ضمن "markbasepos-graph.hh"
+#ضمن "ligature-graph.hh"
 
-#ifndef GRAPH_GSUBGPOS_GRAPH_HH
-#define GRAPH_GSUBGPOS_GRAPH_HH
+#جے_بنا_تعریف گراف_GSUBGPOS_گراف_HH
+#تعریف_کرو گراف_GSUBGPOS_گراف_HH
 
-namespace graph {
+نطاق گراف {
 
-struct Lookup;
+بنية Lookup;
 
-template<typename T>
-struct ExtensionFormat1 : public OT::ExtensionFormat1<T>
+سانچا<قسم_ناں T>
+بنية ExtensionFormat1 : عام OT::ExtensionFormat1<T>
 {
-  void reset(unsigned type)
+  فراغ reset(بنانشانی type)
   {
-    this->format = 1;
-    this->extensionLookupType = type;
-    this->extensionOffset = 0;
+    هذا->format = 1;
+    هذا->extensionLookupType = type;
+    هذا->extension_وتھ = 0;
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  گراف_نتیجہ_t<فراغ> sanitize (ثابت گراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::ExtensionFormat1<T>::static_size))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    size_t راس_len = راس.جدول_ناپ ();
+    إذا (unlikely (راس_len < OT::ExtensionFormat1<T>::static_ناپ))
+      أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 
-  unsigned get_lookup_type () const
+  بنانشانی get_lookup_type () ثابت
   {
-    return this->extensionLookupType;
+    أرجع هذا->extensionLookupType;
   }
 
-  graph_result_t<unsigned> get_subtable_index (graph_t& graph, unsigned this_index) const
+  گراف_نتیجہ_t<بنانشانی> get_subtable_اشاریہ (گراف_t& گراف, بنانشانی this_اشاریہ) ثابت
   {
-    return graph.index_for_offset (this_index, &this->extensionOffset);
+    أرجع گراف.اشاریہ_for_وتھ (this_اشاریہ, &هذا->extension_وتھ);
   }
 };
 
-struct Lookup : public OT::Lookup
+بنية Lookup : عام OT::Lookup
 {
-  unsigned number_of_subtables () const
+  بنانشانی نمبر_دا_subtables () ثابت
   {
-    return subTable.len;
+    أرجع sub_جدول.len;
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  گراف_نتیجہ_t<فراغ> sanitize (ثابت گراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Lookup::min_size)) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_ناپ ();
+    إذا (unlikely (راس_len < OT::Lookup::min_ناپ)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < this->get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    إذا (unlikely (راس_len < هذا->get_ناپ ())) أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 
-  bool is_extension (hb_tag_t table_tag) const
+  منطقي is_extension (hb_ٹیگ_t جدول_ٹیگ_2) ثابت
   {
-    return lookupType == extension_type (table_tag);
+    أرجع lookupType == extension_type (جدول_ٹیگ_2);
   }
 
-  bool use_mark_filtering_set () const
+  منطقي use_mark_filtering_سیٹ () ثابت
   {
-    unsigned flag = lookupFlag;
-    return flag & 0x0010u;
+    بنانشانی flag = lookupFlag;
+    أرجع flag & 0x0010u;
   }
 
-  graph_result_t<void> make_extension (gsubgpos_graph_context_t& c,
-                                       unsigned this_index)
+  گراف_نتیجہ_t<فراغ> make_extension (gsubgpos_گراف_context_t& c,
+                                       بنانشانی this_اشاریہ)
   {
-    unsigned type = lookupType;
-    unsigned ext_type = extension_type (c.table_tag);
-    if (!ext_type || is_extension (c.table_tag))
+    بنانشانی type = lookupType;
+    بنانشانی ext_type = extension_type (c.جدول_ٹیگ_2);
+    إذا (!ext_type || is_extension (c.جدول_ٹیگ_2))
     {
       // NOOP
-      return Ok();
+      أرجع Ok();
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_پیغام (SUBSET_REPACK, خالی_سوچک,
                "Promoting lookup type %u (obj %u) to extension.",
                type,
-               this_index);
+               this_اشاریہ);
 
-    hb_set_t seen;
-    hb_vector_t<unsigned> subtables;
-    for (unsigned i = 0; i < subTable.len; i++)
+    hb_سیٹ_t تکیا;
+    hb_سمتیہ_t<بنانشانی> subtables;
+    لكل (بنانشانی i = 0; i < sub_جدول.len; i++)
     {
-      TRY_ASSIGN (unsigned subtable_index, c.graph.index_for_offset (this_index, &subTable[i]));
-      if (seen.has (subtable_index))
-        continue;
-      seen.add (subtable_index);
-      subtables.push (subtable_index);
+      TRY_سونپو (بنانشانی subtable_اشاریہ, c.گراف.اشاریہ_for_وتھ (this_اشاریہ, &sub_جدول[i]));
+      إذا (تکیا.has (subtable_اشاریہ))
+        استمر;
+      تکیا.جوڑو (subtable_اشاریہ);
+      subtables.push (subtable_اشاریہ);
     }
-    TRY (graph_result_t<void>::from (seen, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (subtables, ALLOCATION_FAILURE));
+    TRY (گراف_نتیجہ_t<فراغ>::from (تکیا, ونڈ_FAILURE));
+    TRY (گراف_نتیجہ_t<فراغ>::from (subtables, ونڈ_FAILURE));
 
-    for (unsigned subtable_index : subtables)
-      TRY (make_subtable_extension (c, this_index, subtable_index));
+    لكل (بنانشانی subtable_اشاریہ : subtables)
+      TRY (make_subtable_extension (c, this_اشاریہ, subtable_اشاریہ));
 
     lookupType = ext_type;
-    return Ok();
+    أرجع Ok();
   }
 
-  graph_result_t<void> split_subtables_if_needed (gsubgpos_graph_context_t& c,
-                                                  unsigned this_index)
+  گراف_نتیجہ_t<فراغ> ونڈو_subtables_if_needed (gsubgpos_گراف_context_t& c,
+                                                  بنانشانی this_اشاریہ)
   {
-    unsigned type = lookupType;
-    bool is_ext = is_extension (c.table_tag);
+    بنانشانی type = lookupType;
+    منطقي is_ext = is_extension (c.جدول_ٹیگ_2);
 
-    if (c.table_tag != HB_OT_TAG_GPOS && c.table_tag != HB_OT_TAG_GSUB)
-      return Ok();
+    إذا (c.جدول_ٹیگ_2 != HB_OT_ٹیگ_GPOS && c.جدول_ٹیگ_2 != HB_OT_ٹیگ_GSUB)
+      أرجع Ok();
 
-    if (!is_ext && !is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
-      return Ok();
+    إذا (!is_ext && !is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
+      أرجع Ok();
 
-    hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>> all_new_subtables;
-    for (unsigned i = 0; i < subTable.len; i++)
+    hb_سمتیہ_t<hb_pair_t<بنانشانی, hb_سمتیہ_t<بنانشانی>>> all_new_subtables;
+    لكل (بنانشانی i = 0; i < sub_جدول.len; i++)
     {
       // This assumes we are working with something like a GSUB/GPOS table, if
       // sanitization fails we ignore and skip splitting for the particular sub table.
-      auto idx_res = c.graph.index_for_offset (this_index, &subTable[i]);
-      if (!idx_res.is_ok ()) continue;
-      unsigned subtable_index = *idx_res;
-      if (is_ext) {
-        unsigned ext_subtable_index = subtable_index;
+      خودکار idx_res = c.گراف.اشاریہ_for_وتھ (this_اشاریہ, &sub_جدول[i]);
+      إذا (!idx_res.is_ok ()) استمر;
+      بنانشانی subtable_اشاریہ = *idx_res;
+      إذا (is_ext) {
+        بنانشانی ext_subtable_اشاریہ = subtable_اشاریہ;
         ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>* extension =
             (ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*)
-            c.graph.object (ext_subtable_index).head;
-        if (!extension || !extension->sanitize (c.graph.vertices_[ext_subtable_index]).is_ok ())
-          continue;
+            c.گراف.object (ext_subtable_اشاریہ).سر_2;
+        إذا (!extension || !extension->sanitize (c.گراف.vertices_[ext_subtable_اشاریہ]).is_ok ())
+          استمر;
 
-        TRY_ASSIGN (subtable_index, extension->get_subtable_index (c.graph, ext_subtable_index));
+        TRY_سونپو (subtable_اشاریہ, extension->get_subtable_اشاریہ (c.گراف, ext_subtable_اشاریہ));
         type = extension->get_lookup_type ();
-        if (!is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
-          continue;
+        إذا (!is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
+          استمر;
       }
 
-      hb_vector_t<unsigned>* split_result;
-      if (c.split_subtables.has (subtable_index, &split_result))
+      hb_سمتیہ_t<بنانشانی>* ونڈو_نتیجہ;
+      إذا (c.ونڈو_subtables.has (subtable_اشاریہ, &ونڈو_نتیجہ))
       {
-        if (split_result->length == 0)
-          continue;
-        all_new_subtables.push (hb_pair(i, *split_result));
-        TRY (graph_result_t<void>::from (all_new_subtables, ALLOCATION_FAILURE));
+        إذا (ونڈو_نتیجہ->لمائی == 0)
+          استمر;
+        all_new_subtables.push (hb_pair(i, *ونڈو_نتیجہ));
+        TRY (گراف_نتیجہ_t<فراغ>::from (all_new_subtables, ونڈ_FAILURE));
       }
-      else
+      وإلا
       {
-        hb_vector_t<unsigned> new_sub_tables;
+        hb_سمتیہ_t<بنانشانی> new_sub_tables;
 
-        if (c.table_tag == HB_OT_TAG_GPOS) {
-          switch (type)
+        إذا (c.جدول_ٹیگ_2 == HB_OT_ٹیگ_GPOS) {
+          بدل (type)
           {
-          case 2:
+          حالة 2:
             {
-              TRY_ASSIGN (new_sub_tables, split_subtable<PairPos> (c, subtable_index));
-              break;
+              TRY_سونپو (new_sub_tables, ونڈو_subtable<PairPos> (c, subtable_اشاریہ));
+              اكسر;
             }
-          case 4:
+          حالة 4:
             {
-              TRY_ASSIGN (new_sub_tables, split_subtable<MarkBasePos> (c, subtable_index));
-              break;
+              TRY_سونپو (new_sub_tables, ونڈو_subtable<Mark_ادھار_Pos> (c, subtable_اشاریہ));
+              اكسر;
             }
-          default:
-            break;
+          افتراضي:
+            اكسر;
           }
-        } else if (c.table_tag == HB_OT_TAG_GSUB) {
-          switch (type)
+        } وإلا إذا (c.جدول_ٹیگ_2 == HB_OT_ٹیگ_GSUB) {
+          بدل (type)
           {
-          case 4:
+          حالة 4:
             {
-              TRY_ASSIGN (new_sub_tables, split_subtable<graph::LigatureSubst> (c, subtable_index));
-              break;
+              TRY_سونپو (new_sub_tables, ونڈو_subtable<گراف::LigatureSubst> (c, subtable_اشاریہ));
+              اكسر;
             }
-          default:
-            break;
+          افتراضي:
+            اكسر;
           }
         }
 
-        c.split_subtables.set (subtable_index, new_sub_tables);
-        TRY (graph_result_t<void>::from (c.split_subtables, ALLOCATION_FAILURE));
-        if (new_sub_tables) {
+        c.ونڈو_subtables.سیٹ (subtable_اشاریہ, new_sub_tables);
+        TRY (گراف_نتیجہ_t<فراغ>::from (c.ونڈو_subtables, ونڈ_FAILURE));
+        إذا (new_sub_tables) {
           all_new_subtables.push (hb_pair (i, std::move (new_sub_tables)));
-          TRY (graph_result_t<void>::from (all_new_subtables, ALLOCATION_FAILURE));
+          TRY (گراف_نتیجہ_t<فراغ>::from (all_new_subtables, ونڈ_FAILURE));
         }
       }
     }
 
-    if (all_new_subtables) {
-      TRY (add_sub_tables (c, this_index, type, all_new_subtables));
+    إذا (all_new_subtables) {
+      TRY (جوڑو_sub_tables (c, this_اشاریہ, type, all_new_subtables));
     }
 
-    return Ok();
+    أرجع Ok();
   }
 
-  template<typename T>
-  graph_result_t<hb_vector_t<unsigned>> split_subtable (gsubgpos_graph_context_t& c,
-                                                        unsigned objidx)
+  سانچا<قسم_ناں T>
+  گراف_نتیجہ_t<hb_سمتیہ_t<بنانشانی>> ونڈو_subtable (gsubgpos_گراف_context_t& c,
+                                                        بنانشانی objidx)
   {
-    T* sub_table = (T*) c.graph.object (objidx).head;
-    if (!sub_table || !sub_table->sanitize (c.graph.vertices_[objidx]).is_ok ())
-      return Ok(hb_vector_t<unsigned> ());
+    T* sub_جدول_2 = (T*) c.گراف.object (objidx).سر_2;
+    إذا (!sub_جدول_2 || !sub_جدول_2->sanitize (c.گراف.vertices_[objidx]).is_ok ())
+      أرجع Ok(hb_سمتیہ_t<بنانشانی> ());
 
-    return sub_table->split_subtables (c, objidx);
+    أرجع sub_جدول_2->ونڈو_subtables (c, objidx);
   }
 
-  graph_result_t<void> add_sub_tables (gsubgpos_graph_context_t& c,
-                                       unsigned this_index,
-                                       unsigned type,
-                                       const hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>>& subtable_ids)
+  گراف_نتیجہ_t<فراغ> جوڑو_sub_tables (gsubgpos_گراف_context_t& c,
+                                       بنانشانی this_اشاریہ,
+                                       بنانشانی type,
+                                       ثابت hb_سمتیہ_t<hb_pair_t<بنانشانی, hb_سمتیہ_t<بنانشانی>>>& subtable_ids)
   {
-    bool is_ext = is_extension (c.table_tag);
-    auto* v = &c.graph.vertices_[this_index];
-    fix_existing_subtable_links (c, this_index, subtable_ids);
+    منطقي is_ext = is_extension (c.جدول_ٹیگ_2);
+    خودکار* v = &c.گراف.vertices_[this_اشاریہ];
+    fix_existing_subtable_links (c, this_اشاریہ, subtable_ids);
 
-    unsigned new_subtable_count = 0;
-    for (const auto& p : subtable_ids)
-      new_subtable_count += p.second.length;
+    بنانشانی new_subtable_گنتی = 0;
+    لكل (ثابت خودکار& p : subtable_ids)
+      new_subtable_گنتی += p.second.لمائی;
 
-    size_t new_size = v->table_size ()
-                      + new_subtable_count * OT::Offset16::static_size;
-    char* buffer = (char*) hb_calloc (1, new_size);
-    if (unlikely (!buffer)) return Err(ALLOCATION_FAILURE);
-    auto res = c.add_buffer (buffer);
-    if (unlikely (!res.is_ok ()))
+    size_t new_ناپ = v->جدول_ناپ ()
+                      + new_subtable_گنتی * OT::Offset16::static_ناپ;
+    حرف* بفر = (حرف*) hb_calloc (1, new_ناپ);
+    إذا (unlikely (!بفر)) أرجع Err(ونڈ_FAILURE);
+    خودکار res = c.جوڑو_بفر (بفر);
+    إذا (unlikely (!res.is_ok ()))
     {
-      hb_free (buffer);
-      return res;
+      hb_free (بفر);
+      أرجع res;
     }
-    hb_memcpy (buffer, v->obj ().head, v->table_size());
+    hb_memcpy (بفر, v->obj ().سر_2, v->جدول_ناپ());
 
-    if (use_mark_filtering_set ())
-      hb_memcpy (buffer + new_size - 2, v->obj ().tail - 2, 2);
+    إذا (use_mark_filtering_سیٹ ())
+      hb_memcpy (بفر + new_ناپ - 2, v->obj ().پوچھ - 2, 2);
 
-    v->set_buffer (buffer, buffer + new_size);
+    v->سیٹ_بفر (بفر, بفر + new_ناپ);
 
-    Lookup* new_lookup = (Lookup*) buffer;
+    Lookup* new_lookup = (Lookup*) بفر;
 
-    unsigned shift = 0;
-    new_lookup->subTable.len = subTable.len + new_subtable_count;
-    for (const auto& p : subtable_ids)
+    بنانشانی کھسکاؤ = 0;
+    new_lookup->sub_جدول.len = sub_جدول.len + new_subtable_گنتی;
+    لكل (ثابت خودکار& p : subtable_ids)
     {
-      unsigned offset_index = p.first + shift + 1;
-      shift += p.second.length;
+      بنانشانی وتھ_اشاریہ = p.پہلا + کھسکاؤ + 1;
+      کھسکاؤ += p.second.لمائی;
 
-      for (unsigned subtable_id : p.second)
+      لكل (بنانشانی subtable_id : p.second)
       {
-        if (is_ext)
+        إذا (is_ext)
         {
-          TRY_ASSIGN (unsigned ext_id, create_extension_subtable (c, subtable_id, type));
-          TRY(c.graph.vertices_[subtable_id].add_parent (ext_id, false));
+          TRY_سونپو (بنانشانی ext_id, create_extension_subtable (c, subtable_id, type));
+          TRY(c.گراف.vertices_[subtable_id].جوڑو_ماپا (ext_id, خطأ));
           subtable_id = ext_id;
           // the reference to v may have changed on adding a node, so reassign it.
-          v = &c.graph.vertices_[this_index];
+          v = &c.گراف.vertices_[this_اشاریہ];
         }
 
-        TRY(v->add_real_link(2, subtable_id,
-          (char*) &new_lookup->subTable[offset_index++] - (char*) new_lookup));
-        TRY(c.graph.vertices_[subtable_id].add_parent (this_index, false));
+        TRY(v->جوڑو_real_link(2, subtable_id,
+          (حرف*) &new_lookup->sub_جدول[وتھ_اشاریہ++] - (حرف*) new_lookup));
+        TRY(c.گراف.vertices_[subtable_id].جوڑو_ماپا (this_اشاریہ, خطأ));
       }
     }
 
     // Repacker sort order depends on link order, which we've messed up so resort it.
-    v->sort_real_links ();
+    v->ترتیب_دیو_real_links ();
 
     // The head location of the lookup has changed, invalidating the lookups map entry
     // in the context. Update the map.
-    c.lookups.set (this_index, new_lookup);
-    TRY (graph_result_t<void>::from (c.lookups, ALLOCATION_FAILURE));
-    return Ok();
+    c.lookups.سیٹ (this_اشاریہ, new_lookup);
+    TRY (گراف_نتیجہ_t<فراغ>::from (c.lookups, ونڈ_FAILURE));
+    أرجع Ok();
   }
 
-  void fix_existing_subtable_links (gsubgpos_graph_context_t& c,
-                                    unsigned this_index,
-                                    const hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>>& subtable_ids)
+  فراغ fix_existing_subtable_links (gsubgpos_گراف_context_t& c,
+                                    بنانشانی this_اشاریہ,
+                                    ثابت hb_سمتیہ_t<hb_pair_t<بنانشانی, hb_سمتیہ_t<بنانشانی>>>& subtable_ids)
   {
-    auto& v = c.graph.vertices_[this_index];
-    unsigned shift = 0;
-    for (const auto& p : subtable_ids)
+    خودکار& v = c.گراف.vertices_[this_اشاریہ];
+    بنانشانی کھسکاؤ = 0;
+    لكل (ثابت خودکار& p : subtable_ids)
     {
-      unsigned insert_index = p.first + shift;
-      unsigned pos_offset = p.second.length * OT::Offset16::static_size;
-      unsigned insert_offset = Lookup::min_size + insert_index * OT::Offset16::static_size;
-      shift += p.second.length;
+      بنانشانی داخل_کرو_اشاریہ = p.پہلا + کھسکاؤ;
+      بنانشانی pos_وتھ = p.second.لمائی * OT::Offset16::static_ناپ;
+      بنانشانی داخل_کرو_وتھ = Lookup::min_ناپ + داخل_کرو_اشاریہ * OT::Offset16::static_ناپ;
+      کھسکاؤ += p.second.لمائی;
 
-      for (auto& l : v.all_links_writer ())
+      لكل (خودکار& l : v.all_links_writer ())
       {
-        if (l.position > insert_offset) l.position += pos_offset;
+        إذا (l.position > داخل_کرو_وتھ) l.position += pos_وتھ;
       }
     }
   }
 
-  graph_result_t<unsigned> create_extension_subtable (gsubgpos_graph_context_t& c,
-                                                      unsigned subtable_index,
-                                                      unsigned type)
+  گراف_نتیجہ_t<بنانشانی> create_extension_subtable (gsubgpos_گراف_context_t& c,
+                                                      بنانشانی subtable_اشاریہ,
+                                                      بنانشانی type)
   {
-    unsigned extension_size = OT::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>::static_size;
+    بنانشانی extension_ناپ = OT::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>::static_ناپ;
 
-    TRY_ASSIGN (unsigned ext_index, c.create_node (extension_size));
+    TRY_سونپو (بنانشانی ext_اشاریہ, c.create_گرہ (extension_ناپ));
 
-    auto& ext_vertex = c.graph.vertices_[ext_index];
+    خودکار& ext_راس = c.گراف.vertices_[ext_اشاریہ];
     ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>* extension =
-        ext_vertex.as<ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*> ();
+        ext_راس.as<ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*> ();
     extension->reset (type);
 
     // Make extension point at the subtable.
-    TRY(ext_vertex.add_real_link (4, subtable_index, 4));
+    TRY(ext_راس.جوڑو_real_link (4, subtable_اشاریہ, 4));
 
-    return Ok(ext_index);
+    أرجع Ok(ext_اشاریہ);
   }
 
-  graph_result_t<void> make_subtable_extension (gsubgpos_graph_context_t& c,
-                                                unsigned lookup_index,
-                                                unsigned subtable_index)
+  گراف_نتیجہ_t<فراغ> make_subtable_extension (gsubgpos_گراف_context_t& c,
+                                                بنانشانی lookup_اشاریہ,
+                                                بنانشانی subtable_اشاریہ)
   {
-    unsigned type = lookupType;
-    unsigned ext_index = HB_GRAPH_INVALID;
-    unsigned* existing_ext_index = nullptr;
-    if (c.subtable_to_extension.has(subtable_index, &existing_ext_index)) {
-      ext_index = *existing_ext_index;
-    } else {
-      TRY_ASSIGN (ext_index, create_extension_subtable(c, subtable_index, type));
-      c.subtable_to_extension.set(subtable_index, ext_index);
-      TRY (graph_result_t<void>::from (c.subtable_to_extension, ALLOCATION_FAILURE));
+    بنانشانی type = lookupType;
+    بنانشانی ext_اشاریہ = HB_گراف_INVALID;
+    بنانشانی* existing_ext_اشاریہ = خالی_سوچک;
+    إذا (c.subtable_منزل_extension.has(subtable_اشاریہ, &existing_ext_اشاریہ)) {
+      ext_اشاریہ = *existing_ext_اشاریہ;
+    } وإلا {
+      TRY_سونپو (ext_اشاریہ, create_extension_subtable(c, subtable_اشاریہ, type));
+      c.subtable_منزل_extension.سیٹ(subtable_اشاریہ, ext_اشاریہ);
+      TRY (گراف_نتیجہ_t<فراغ>::from (c.subtable_منزل_extension, ونڈ_FAILURE));
     }
 
-    auto& subtable_vertex = c.graph.vertices_[subtable_index];
-    auto& lookup_vertex = c.graph.vertices_[lookup_index];
-    unsigned replaced = 0;
-    for (auto& l : lookup_vertex.real_links_writer ())
+    خودکار& subtable_راس = c.گراف.vertices_[subtable_اشاریہ];
+    خودکار& lookup_راس = c.گراف.vertices_[lookup_اشاریہ];
+    بنانشانی replaced = 0;
+    لكل (خودکار& l : lookup_راس.real_links_writer ())
     {
-      if (l.objidx == subtable_index) {
+      إذا (l.objidx == subtable_اشاریہ) {
         // Change lookup to point at the extension.
-        l.objidx = ext_index;
+        l.objidx = ext_اشاریہ;
         replaced++;
       }
     }
 
     // Make extension point at the subtable.
-    auto& ext_vertex = c.graph.vertices_[ext_index];
-    for (unsigned i = 0; i < replaced; i++)
+    خودکار& ext_راس = c.گراف.vertices_[ext_اشاریہ];
+    لكل (بنانشانی i = 0; i < replaced; i++)
     {
-      subtable_vertex.remove_parent (lookup_index);
-      TRY(ext_vertex.add_parent (lookup_index, false));
+      subtable_راس.remove_ماپا (lookup_اشاریہ);
+      TRY(ext_راس.جوڑو_ماپا (lookup_اشاریہ, خطأ));
     }
-    if (!existing_ext_index)
-      TRY(subtable_vertex.add_parent (ext_index, false));
+    إذا (!existing_ext_اشاریہ)
+      TRY(subtable_راس.جوڑو_ماپا (ext_اشاریہ, خطأ));
 
-    return Ok();
+    أرجع Ok();
   }
 
- private:
-  bool is_supported_gsub_type(unsigned type, gsubgpos_graph_context_t& c) const {
-    return (c.table_tag == HB_OT_TAG_GSUB) && (
-      type == OT::Layout::GSUB_impl::SubstLookupSubTable::Type::Ligature
+ خاص:
+  منطقي is_supported_gsub_type(بنانشانی type, gsubgpos_گراف_context_t& c) ثابت {
+    أرجع (c.جدول_ٹیگ_2 == HB_OT_ٹیگ_GSUB) && (
+      type == OT::Layout::GSUB_impl::Subst_Lookup_Sub_جدول::Type::Ligature
     );
   }
 
-  bool is_supported_gpos_type(unsigned type, gsubgpos_graph_context_t& c) const {
-   return (c.table_tag == HB_OT_TAG_GPOS) && (
-      type == OT::Layout::GPOS_impl::PosLookupSubTable::Type::Pair ||
-      type == OT::Layout::GPOS_impl::PosLookupSubTable::Type::MarkBase
+  منطقي is_supported_gpos_type(بنانشانی type, gsubgpos_گراف_context_t& c) ثابت {
+   أرجع (c.جدول_ٹیگ_2 == HB_OT_ٹیگ_GPOS) && (
+      type == OT::Layout::GPOS_impl::Pos_Lookup_Sub_جدول::Type::Pair ||
+      type == OT::Layout::GPOS_impl::Pos_Lookup_Sub_جدول::Type::Mark_ادھار
     );
   }
 
-  unsigned extension_type (hb_tag_t table_tag) const
+  بنانشانی extension_type (hb_ٹیگ_t جدول_ٹیگ_2) ثابت
   {
-    switch (table_tag)
+    بدل (جدول_ٹیگ_2)
     {
-    case HB_OT_TAG_GPOS: return 9;
-    case HB_OT_TAG_GSUB: return 7;
-    default: return 0;
+    حالة HB_OT_ٹیگ_GPOS: أرجع 9;
+    حالة HB_OT_ٹیگ_GSUB: أرجع 7;
+    افتراضي: أرجع 0;
     }
   }
 };
 
-template <typename T>
-struct LookupList : public OT::LookupList<T>
+سانچا <قسم_ناں T>
+بنية LookupList : عام OT::LookupList<T>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  گراف_نتیجہ_t<فراغ> sanitize (ثابت گراف_t::راس_t& راس) ثابت
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::LookupList<T>::min_size)) return Err(SANITIZE_FAILURE);
+    size_t راس_len = راس.جدول_ناپ ();
+    إذا (unlikely (راس_len < OT::LookupList<T>::min_ناپ)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < OT::LookupList<T>::item_size * this->len)) return Err(SANITIZE_FAILURE);
-    return Ok();
+    إذا (unlikely (راس_len < OT::LookupList<T>::شے_ناپ * هذا->len)) أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 };
 
-struct GSTAR : public OT::GSUBGPOS
+بنية GSTAR : عام OT::GSUBGPOS
 {
-  static graph_result_t<const GSTAR*> graph_to_gstar (graph_t& graph)
+  ساكن گراف_نتیجہ_t<ثابت GSTAR*> گراف_منزل_gstar (گراف_t& گراف)
   {
-    const auto& r = graph.root ();
+    ثابت خودکار& r = گراف.جڑ ();
 
-    const GSTAR* gstar = (GSTAR*) r.obj ().head;
-    if (unlikely (!gstar)) return Err(INVALID_ARGUMENT);
+    ثابت GSTAR* gstar = (GSTAR*) r.obj ().سر_2;
+    إذا (unlikely (!gstar)) أرجع Err(INVALID_دلیل);
     TRY (gstar->sanitize (r));
     hb_barrier ();
 
-    return gstar;
+    أرجع gstar;
   }
 
-  const void* get_lookup_list_field_offset () const
+  ثابت فراغ* get_lookup_list_میدان_وتھ () ثابت
   {
-    return OT::GSUBGPOS::get_lookup_list_field_offset ();
+    أرجع OT::GSUBGPOS::get_lookup_list_میدان_وتھ ();
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  گراف_نتیجہ_t<فراغ> sanitize (ثابت گراف_t::راس_t& راس) ثابت
   {
-    size_t len = vertex.table_size ();
-    if (unlikely (len < OT::GSUBGPOS::min_size)) return Err(SANITIZE_FAILURE);
+    size_t len = راس.جدول_ناپ ();
+    إذا (unlikely (len < OT::GSUBGPOS::min_ناپ)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (version.major != 1)) return Err(SANITIZE_FAILURE);
-    if (unlikely (len < get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    إذا (unlikely (نسخہ.major != 1)) أرجع Err(SANITIZE_FAILURE);
+    إذا (unlikely (len < get_ناپ ())) أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 
-  graph_result_t<void> find_lookups (graph_t& graph,
-                                     hb_hashmap_t<unsigned, Lookup*>& lookups /* OUT */) const
+  گراف_نتیجہ_t<فراغ> لبھو_lookups (گراف_t& گراف,
+                                     hb_hashmap_t<بنانشانی, Lookup*>& lookups /*باہرلا*/) ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return find_lookups<MediumTypes> (graph, lookups);
-#endif
-    TRY(find_lookups<SmallTypes> (graph, lookups));
-    return Ok();
+#جے_بنا_تعریف HB_NO_BEYOND_64K
+    إذا (نسخہ.منزل_int () >= 0x00010002u && lookupList2)
+      أرجع لبھو_lookups<MediumTypes> (گراف, lookups);
+#جے_انت
+    TRY(لبھو_lookups<SmallTypes> (گراف, lookups));
+    أرجع Ok();
   }
 
-  graph_result_t<unsigned> get_lookup_list_index (graph_t& graph) const
+  گراف_نتیجہ_t<بنانشانی> get_lookup_list_اشاریہ (گراف_t& گراف) ثابت
   {
-    const void* offset = get_lookup_list_field_offset ();
-    if (unlikely (!offset)) return Err(INVALID_ARGUMENT);
-    return graph.index_for_offset (graph.root_idx (), offset);
+    ثابت فراغ* وتھ = get_lookup_list_میدان_وتھ ();
+    إذا (unlikely (!وتھ)) أرجع Err(INVALID_دلیل);
+    أرجع گراف.اشاریہ_for_وتھ (گراف.جڑ_idx (), وتھ);
   }
 
-  template<typename Types>
-  graph_result_t<void> find_lookups (graph_t& graph,
-                                     hb_hashmap_t<unsigned, Lookup*>& lookups /* OUT */) const
+  سانچا<قسم_ناں Types>
+  گراف_نتیجہ_t<فراغ> لبھو_lookups (گراف_t& گراف,
+                                     hb_hashmap_t<بنانشانی, Lookup*>& lookups /*باہرلا*/) ثابت
   {
-    TRY_ASSIGN (unsigned lookup_list_idx, get_lookup_list_index (graph));
-    const LookupList<Types>* lookupList =
-        (const LookupList<Types>*) graph.object (lookup_list_idx).head;
-    if (unlikely (!lookupList)) return Err(INVALID_ARGUMENT);
-    TRY(lookupList->sanitize (graph.vertices_[lookup_list_idx]));
+    TRY_سونپو (بنانشانی lookup_list_idx, get_lookup_list_اشاریہ (گراف));
+    ثابت LookupList<Types>* lookupList =
+        (ثابت LookupList<Types>*) گراف.object (lookup_list_idx).سر_2;
+    إذا (unlikely (!lookupList)) أرجع Err(INVALID_دلیل);
+    TRY(lookupList->sanitize (گراف.vertices_[lookup_list_idx]));
 
-    for (unsigned i = 0; i < lookupList->len; i++)
+    لكل (بنانشانی i = 0; i < lookupList->len; i++)
     {
-      TRY_ASSIGN (unsigned lookup_idx, graph.index_for_offset (lookup_list_idx, &(lookupList->arrayZ[i])));
-      Lookup* lookup = (Lookup*) graph.object (lookup_idx).head;
-      if (!lookup || !lookup->sanitize (graph.vertices_[lookup_idx]).is_ok ()) continue;
-      lookups.set (lookup_idx, lookup);
+      TRY_سونپو (بنانشانی lookup_idx, گراف.اشاریہ_for_وتھ (lookup_list_idx, &(lookupList->arrayZ[i])));
+      Lookup* lookup = (Lookup*) گراف.object (lookup_idx).سر_2;
+      إذا (!lookup || !lookup->sanitize (گراف.vertices_[lookup_idx]).is_ok ()) استمر;
+      lookups.سیٹ (lookup_idx, lookup);
     }
-    return Ok();
+    أرجع Ok();
   }
 };
 
@@ -490,4 +490,4 @@ struct GSTAR : public OT::GSUBGPOS
 
 }
 
-#endif  /* GRAPH_GSUBGPOS_GRAPH_HH */
+#جے_انت  /* GRAPH_GSUBGPOS_GRAPH_HH */

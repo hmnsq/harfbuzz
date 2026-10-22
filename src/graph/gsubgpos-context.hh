@@ -24,43 +24,43 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#ضمن "graph.hh"
+#ضمن "../hb-ot-layout-gsubgpos.hh"
 
-#ifndef GRAPH_GSUBGPOS_CONTEXT_HH
-#define GRAPH_GSUBGPOS_CONTEXT_HH
+#جے_بنا_تعریف گراف_GSUBGPOS_CONTEXT_HH
+#تعریف_کرو گراف_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+نطاق گراف {
 
-struct Lookup;
+بنية Lookup;
 
-struct gsubgpos_graph_context_t
+بنية gsubgpos_گراف_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
-                                                                      graph_t& graph_);
+  HB_اندرونی ساكن گراف_نتیجہ_t<gsubgpos_گراف_context_t> create (hb_ٹیگ_t جدول_ٹیگ_3,
+                                                                      گراف_t& گراف_2);
 
-  hb_tag_t table_tag;
-  graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  hb_ٹیگ_t جدول_ٹیگ_2;
+  گراف_t& گراف;
+  بنانشانی lookup_list_اشاریہ;
+  hb_hashmap_t<بنانشانی, گراف::Lookup*> lookups;
+  hb_hashmap_t<بنانشانی, بنانشانی> subtable_منزل_extension;
+  hb_hashmap_t<بنانشانی, hb_سمتیہ_t<بنانشانی>> ونڈو_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_اندرونی گراف_نتیجہ_t<بنانشانی> create_گرہ (بنانشانی ناپ);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  گراف_نتیجہ_t<فراغ> جوڑو_بفر (حرف* بفر)
   {
-    return graph.add_buffer (buffer);
+    أرجع گراف.جوڑو_بفر (بفر);
   }
 
- private:
-  HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                        graph_t& graph_);
+ خاص:
+  HB_اندرونی gsubgpos_گراف_context_t (hb_ٹیگ_t جدول_ٹیگ_3,
+                                        گراف_t& گراف_2);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_اندرونی بنانشانی عدد_non_ext_subtables ();
 };
 
 }
 
-#endif  // GRAPH_GSUBGPOS_CONTEXT
+#جے_انت  // GRAPH_GSUBGPOS_CONTEXT

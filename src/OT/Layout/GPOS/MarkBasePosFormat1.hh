@@ -1,204 +1,204 @@
-#ifndef OT_LAYOUT_GPOS_MARKBASEPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_MARKBASEPOSFORMAT1_HH
+#جے_بنا_تعریف OT_LAYOUT_GPOS_MARKBASEPOSFORMAT1_HH
+#تعریف_کرو OT_LAYOUT_GPOS_MARKBASEPOSFORMAT1_HH
 
-#include "MarkArray.hh"
+#ضمن "MarkArray.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-template <typename Types>
-struct MarkBasePosFormat1_2
+سانچا <قسم_ناں Types>
+بنية Mark_ادھار_Pos_Format1_2
 {
-  protected:
+  محمي:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  قسم_ناں Types::سانچا LOffset_منزل<Coverage>
                 markCoverage;           /* Offset to MarkCoverage table--from
                                          * beginning of MarkBasePos subtable */
-  typename Types::template LOffsetTo<Coverage>
-                baseCoverage;           /* Offset to BaseCoverage table--from
+  قسم_ناں Types::سانچا LOffset_منزل<Coverage>
+                ادھار_Coverage;           /* Offset to BaseCoverage table--from
                                          * beginning of MarkBasePos subtable */
-  HBUINT16      classCount;             /* Number of classes defined for marks */
-  typename Types::template LOffsetTo<MarkArray<Types>>
+  HBUINT16      class_گنتی_2;             /* Number of classes defined for marks */
+  قسم_ناں Types::سانچا LOffset_منزل<MarkArray<Types>>
                 markArray;              /* Offset to MarkArray table--from
                                          * beginning of MarkBasePos subtable */
-  typename Types::template LOffsetTo<AnchorMatrix<Types>>
-                baseArray;              /* Offset to BaseArray table--from
+  قسم_ناں Types::سانچا LOffset_منزل<Anchor_میٹرکس<Types>>
+                ادھار_Array;              /* Offset to BaseArray table--from
                                          * beginning of MarkBasePos subtable */
 
-  public:
-  DEFINE_SIZE_STATIC (4 + 4 * Types::LOffset::static_size);
+  عام:
+  DEFINE_ناپ_STATIC (4 + 4 * Types::LOffset::static_ناپ);
 
-    bool sanitize (hb_sanitize_context_t *c) const
+    منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  markCoverage.sanitize (c, this) &&
-                  baseCoverage.sanitize (c, this) &&
-                  markArray.sanitize (c, this) &&
-                  baseArray.sanitize (c, this, (unsigned int) classCount));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
+                  markCoverage.sanitize (c, هذا) &&
+                  ادھار_Coverage.sanitize (c, هذا) &&
+                  markArray.sanitize (c, هذا) &&
+                  ادھار_Array.sanitize (c, هذا, (بنانشانی صحيح) class_گنتی_2));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_سیٹ_t *glyphs) ثابت
   {
-    return (this+markCoverage).intersects (glyphs) &&
-           (this+baseCoverage).intersects (glyphs);
+    أرجع (هذا+markCoverage).intersects (glyphs) &&
+           (هذا+ادھار_Coverage).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  فراغ گھیرا_lookups (hb_گھیرا_lookups_context_t *c) ثابت {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    (this+markArray).collect_variation_indices (c, this+markCoverage);
+    (هذا+markArray).collect_variation_indices (c, هذا+markCoverage);
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, *c->glyph_set, &klass_mapping);
+    Markclass_گھیرا_and_remap_indexes (هذا+markCoverage, هذا+markArray, *c->glyph_سیٹ, &klass_mapping);
 
-    hb_sorted_vector_t<unsigned> base_indexes;
-    collect_anchor_indexes (this+baseCoverage, (this+baseArray).rows,
-                            classCount, *c->glyph_set, klass_mapping,
-                            base_indexes);
-    (this+baseArray).collect_variation_indices (c, base_indexes.iter ());
+    hb_sorted_سمتیہ_t<بنانشانی> ادھار_indexes;
+    collect_anchor_indexes (هذا+ادھار_Coverage, (هذا+ادھار_Array).صفاں,
+                            class_گنتی_2, *c->glyph_سیٹ, klass_mapping,
+                            ادھار_indexes);
+    (هذا+ادھار_Array).collect_variation_indices (c, ادھار_indexes.iter ());
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+baseCoverage).collect_coverage (c->input))) return;
+    إذا (unlikely (!(هذا+markCoverage).collect_coverage (c->داخلہ))) أرجع;
+    إذا (unlikely (!(هذا+ادھار_Coverage).collect_coverage (c->داخلہ))) أرجع;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+baseCoverage).collect_coverage (digest); }
+  فراغ collect_دوجا_glyphs (hb_سیٹ_digest_t *digest) ثابت
+  { (هذا+ادھار_Coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+markCoverage; }
+  ثابت Coverage &get_coverage () ثابت { أرجع هذا+markCoverage; }
 
-  static inline bool accept (hb_buffer_t *buffer, unsigned idx)
+  ساكن مضمن منطقي accept (hb_بفر_t *بفر, بنانشانی idx)
   {
     /* We only want to attach to the first of a MultipleSubst sequence.
      * https://github.com/harfbuzz/harfbuzz/issues/740
      * Reject others...
      * ...but stop if we find a mark in the MultipleSubst sequence:
      * https://github.com/harfbuzz/harfbuzz/issues/1020 */
-    return !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
-	   0 == _hb_glyph_info_get_lig_comp (&buffer->info[idx]) ||
+    أرجع !_hb_glyph_info_multiplied (&بفر->info[idx]) ||
+	   0 == _hb_glyph_info_get_lig_comp (&بفر->info[idx]) ||
 	   (idx == 0 ||
-	    _hb_glyph_info_is_mark (&buffer->info[idx - 1]) ||
-	    !_hb_glyph_info_multiplied (&buffer->info[idx - 1]) ||
-	    _hb_glyph_info_get_lig_id (&buffer->info[idx]) !=
-	    _hb_glyph_info_get_lig_id (&buffer->info[idx - 1]) ||
-	    _hb_glyph_info_get_lig_comp (&buffer->info[idx]) !=
-	    _hb_glyph_info_get_lig_comp (&buffer->info[idx - 1]) + 1
+	    _hb_glyph_info_is_mark (&بفر->info[idx - 1]) ||
+	    !_hb_glyph_info_multiplied (&بفر->info[idx - 1]) ||
+	    _hb_glyph_info_get_lig_id (&بفر->info[idx]) !=
+	    _hb_glyph_info_get_lig_id (&بفر->info[idx - 1]) ||
+	    _hb_glyph_info_get_lig_comp (&بفر->info[idx]) !=
+	    _hb_glyph_info_get_lig_comp (&بفر->info[idx - 1]) + 1
 	    );
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark_index == NOT_COVERED)) return_trace (false);
+    TRACE_APPLY (هذا);
+    hb_بفر_t *بفر = c->بفر;
+    بنانشانی صحيح mark_اشاریہ = (هذا+markCoverage).get_coverage  (بفر->cur().codepoint);
+    إذا (likely (mark_اشاریہ == NOT_COVERED)) return_trace (خطأ);
 
     /* Now we search backwards for a non-mark glyph.
      * We don't use skippy_iter.prev() to avoid O(n^2) behavior. */
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.set_lookup_props (LookupFlag::IgnoreMarks);
+    خودکار &skippy_iter = c->iter_داخلہ;
+    skippy_iter.سیٹ_lookup_props (LookupFlag::IgnoreMarks);
 
-    if (c->last_base_until > buffer->idx)
+    إذا (c->آخری_ادھار_until > بفر->idx)
     {
-      c->last_base_until = 0;
-      c->last_base = -1;
+      c->آخری_ادھار_until = 0;
+      c->آخری_ادھار = -1;
     }
-    unsigned j;
-    for (j = buffer->idx; j > c->last_base_until; j--)
+    بنانشانی j;
+    لكل (j = بفر->idx; j > c->آخری_ادھار_until; j--)
     {
-      auto match = skippy_iter.match (buffer->info[j - 1]);
-      if (match == skippy_iter.MATCH)
+      خودکار میل = skippy_iter.میل (بفر->info[j - 1]);
+      إذا (میل == skippy_iter.میل_2)
       {
         // https://github.com/harfbuzz/harfbuzz/issues/4124
-	if (!accept (buffer, j - 1) &&
-	    NOT_COVERED == (this+baseCoverage).get_coverage  (buffer->info[j - 1].codepoint))
-	  match = skippy_iter.SKIP;
+	إذا (!accept (بفر, j - 1) &&
+	    NOT_COVERED == (هذا+ادھار_Coverage).get_coverage  (بفر->info[j - 1].codepoint))
+	  میل = skippy_iter.SKIP;
       }
-      if (match == skippy_iter.MATCH)
+      إذا (میل == skippy_iter.میل_2)
       {
-	c->last_base = (signed) j - 1;
-	break;
+	c->آخری_ادھار = (نشانیوالا) j - 1;
+	اكسر;
       }
     }
-    c->last_base_until = buffer->idx;
-    if (c->last_base == -1)
+    c->آخری_ادھار_until = بفر->idx;
+    إذا (c->آخری_ادھار == -1)
     {
-      buffer->unsafe_to_concat_from_outbuffer (0, buffer->idx + 1);
-      return_trace (false);
+      بفر->unsafe_منزل_concat_from_outbuffer (0, بفر->idx + 1);
+      return_trace (خطأ);
     }
 
-    unsigned idx = (unsigned) c->last_base;
+    بنانشانی idx = (بنانشانی) c->آخری_ادھار;
 
     /* Checking that matched glyph is actually a base glyph by GDEF is too strong; disabled */
     //if (!_hb_glyph_info_is_base_glyph (&buffer->info[idx])) { return_trace (false); }
 
-    unsigned int base_index = (this+baseCoverage).get_coverage  (buffer->info[idx].codepoint);
-    if (base_index == NOT_COVERED)
+    بنانشانی صحيح ادھار_اشاریہ = (هذا+ادھار_Coverage).get_coverage  (بفر->info[idx].codepoint);
+    إذا (ادھار_اشاریہ == NOT_COVERED)
     {
-      buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
-      return_trace (false);
+      بفر->unsafe_منزل_concat_from_outbuffer (idx, بفر->idx + 1);
+      return_trace (خطأ);
     }
 
-    return_trace ((this+markArray).apply (c, mark_index, base_index, this+baseArray, classCount, idx));
+    return_trace ((هذا+markArray).apply (c, mark_اشاریہ, ادھار_اشاریہ, هذا+ادھار_Array, class_گنتی_2, idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (هذا);
+    ثابت hb_سیٹ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    خودکار *باہرلا = c->serializer->شروع_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (باہرلا))) return_trace (خطأ);
+    باہرلا->format = format;
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
+    Markclass_گھیرا_and_remap_indexes (هذا+markCoverage, هذا+markArray, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
-    out->classCount = klass_mapping.get_population ();
+    إذا (!klass_mapping.get_population ()) return_trace (خطأ);
+    باہرلا->class_گنتی_2 = klass_mapping.get_population ();
 
-    auto mark_iter =
-    + hb_zip (this+markCoverage, this+markArray)
-    | hb_filter (glyphset, hb_first)
+    خودکار mark_iter =
+    + hb_zip (هذا+markCoverage, هذا+markArray)
+    | hb_filter (glyphset, hb_پہلا)
     ;
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
+    hb_sorted_سمتیہ_t<hb_codepoint_t> new_coverage;
     + mark_iter
-    | hb_map (hb_first)
+    | hb_map (hb_پہلا)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
-    if (!out->markCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
-      return_trace (false);
+    إذا (!باہرلا->markCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+      return_trace (خطأ);
 
-    if (unlikely (!out->markArray.serialize_subset (c, markArray, this,
-						    (this+markCoverage).iter (),
+    إذا (unlikely (!باہرلا->markArray.serialize_subset (c, markArray, هذا,
+						    (هذا+markCoverage).iter (),
 						    &klass_mapping)))
-      return_trace (false);
+      return_trace (خطأ);
 
     new_coverage.reset ();
-    hb_sorted_vector_t<unsigned> base_indexes;
-    const auto &base_array = this+baseArray;
-    collect_subset_anchor_indexes (this+baseCoverage, base_array.rows,
-                                   classCount, base_array.matrixZ.arrayZ,
+    hb_sorted_سمتیہ_t<بنانشانی> ادھار_indexes;
+    ثابت خودکار &ادھار_array = هذا+ادھار_Array;
+    collect_subset_anchor_indexes (هذا+ادھار_Coverage, ادھار_array.صفاں,
+                                   class_گنتی_2, ادھار_array.میٹرکس_Z.arrayZ,
                                    glyphset, glyph_map, klass_mapping,
-                                   new_coverage, base_indexes);
+                                   new_coverage, ادھار_indexes);
 
-    if (!new_coverage) return_trace (false);
-    if (!out->baseCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
-      return_trace (false);
+    إذا (!new_coverage) return_trace (خطأ);
+    إذا (!باہرلا->ادھار_Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+      return_trace (خطأ);
 
-    return_trace (out->baseArray.serialize_subset (c, baseArray, this,
-						   new_coverage.length,
-						   base_indexes.iter ()));
+    return_trace (باہرلا->ادھار_Array.serialize_subset (c, ادھار_Array, هذا,
+						   new_coverage.لمائی,
+						   ادھار_indexes.iter ()));
   }
 };
 
@@ -207,4 +207,4 @@ struct MarkBasePosFormat1_2
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKBASEPOSFORMAT1_HH */
+#جے_انت /* OT_LAYOUT_GPOS_MARKBASEPOSFORMAT1_HH */

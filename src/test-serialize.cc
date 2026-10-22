@@ -23,45 +23,45 @@
  *
  */
 
-#include "hb.hh"
-#include "hb-serialize.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gsubgpos.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "OT/Layout/GPOS/ValueFormat.hh"
+#ضمن "hb.hh"
+#ضمن "hb-serialize.hh"
+#ضمن "hb-ot-layout-common.hh"
+#ضمن "hb-ot-layout-gsubgpos.hh"
+#ضمن "hb-ot-layout-gsub-table.hh"
+#ضمن "OT/Layout/GPOS/ValueFormat.hh"
 
-using OT::Layout::Common::Coverage;
+ورتوں OT::Layout::Common::Coverage;
 
-static void
+ساكن فراغ
 test_null_condition ()
 {
-  static const char and_condition[sizeof (OT::Condition)] = {
+  ساكن ثابت حرف and_condition[حجم (OT::Condition)] = {
     0, 3, 1,                     /* format, conditionCount */
     0, 0, 0,                     /* conditionOffset */
   };
-  static const char or_condition[sizeof (OT::Condition)] = {
+  ساكن ثابت حرف or_condition[حجم (OT::Condition)] = {
     0, 4, 1,                     /* format, conditionCount */
     0, 0, 0,                     /* conditionOffset */
   };
-  static const char negate_condition[sizeof (OT::Condition)] = {
+  ساكن ثابت حرف negate_condition[حجم (OT::Condition)] = {
     0, 5,                        /* format */
     0, 0, 0,                     /* conditionOffset */
   };
 
-  const auto &condition = Null (OT::Condition);
-  const auto &condition_and =
-      *reinterpret_cast<const OT::Condition *> (and_condition);
-  const auto &condition_or =
-      *reinterpret_cast<const OT::Condition *> (or_condition);
-  const auto &condition_negate =
-      *reinterpret_cast<const OT::Condition *> (negate_condition);
-  OT::ItemVarStoreInstancer *instancer = nullptr;
-  hb_set_t var_indices;
+  ثابت خودکار &condition = Null (OT::Condition);
+  ثابت خودکار &condition_and =
+      *reinterpret_cast<ثابت OT::Condition *> (and_condition);
+  ثابت خودکار &condition_or =
+      *reinterpret_cast<ثابت OT::Condition *> (or_condition);
+  ثابت خودکار &condition_negate =
+      *reinterpret_cast<ثابت OT::Condition *> (negate_condition);
+  OT::شے_Var_Store_Instancer *instancer = خالی_سوچک;
+  hb_سیٹ_t var_indices;
 
-  hb_always_assert (condition.evaluate (nullptr, 0, instancer));
-  hb_always_assert (condition_and.evaluate (nullptr, 0, instancer));
-  hb_always_assert (condition_or.evaluate (nullptr, 0, instancer));
-  hb_always_assert (!condition_negate.evaluate (nullptr, 0, instancer));
+  hb_always_assert (condition.evaluate (خالی_سوچک, 0, instancer));
+  hb_always_assert (condition_and.evaluate (خالی_سوچک, 0, instancer));
+  hb_always_assert (condition_or.evaluate (خالی_سوچک, 0, instancer));
+  hb_always_assert (!condition_negate.evaluate (خالی_سوچک, 0, instancer));
 
   hb_always_assert (condition.collect_var_indices (&var_indices));
   hb_always_assert (condition_and.collect_var_indices (&var_indices));
@@ -69,96 +69,96 @@ test_null_condition ()
   hb_always_assert (condition_negate.collect_var_indices (&var_indices));
   hb_always_assert (var_indices.is_empty ());
 
-  char buf[8];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  حرف buf[8];
+  hb_serialize_context_t s (buf, حجم (buf));
   hb_map_t varidx_map;
-  static const unsigned char expected[] = {
+  ساكن ثابت بنانشانی حرف expected[] = {
     0, 2,                        /* format */
     0, 1,                        /* defaultValue */
     0xFF, 0xFF, 0xFF, 0xFF,     /* varIdx */
   };
 
-  auto *copy = s.start_serialize<OT::Condition> ();
+  خودکار *copy = s.شروع_serialize<OT::Condition> ();
   hb_always_assert (copy->serialize (&s, &condition, varidx_map));
-  s.end_serialize ();
+  s.سرا_serialize ();
 
-  hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
-  bytes.fini ();
+  hb_بائٹاں_t بائٹاں = s.copy_بائٹاں ();
+  hb_always_assert (بائٹاں.لمائی == حجم (expected));
+  hb_always_assert (!hb_memcmp (بائٹاں.arrayZ, expected, حجم (expected)));
+  بائٹاں.fini ();
 }
 
-static void
+ساكن فراغ
 test_lookup_condition_sharing ()
 {
-  const unsigned feature_count = 10922, lookup_count = 402;
-  const unsigned table_offset = 12 + 6 * feature_count;
-  const unsigned condition_offset = table_offset + 20 + 2 * lookup_count;
-  hb_vector_t<char> data;
-  hb_always_assert (data.resize (condition_offset + 8));
-  hb_memset (data.arrayZ, 0, data.length);
-  auto put16 = [&data] (unsigned offset, unsigned value)
+  ثابت بنانشانی feature_گنتی_2 = 10922, lookup_گنتی = 402;
+  ثابت بنانشانی جدول_وتھ = 12 + 6 * feature_گنتی_2;
+  ثابت بنانشانی condition_وتھ = جدول_وتھ + 20 + 2 * lookup_گنتی;
+  hb_سمتیہ_t<حرف> انکڑے;
+  hb_always_assert (انکڑے.resize (condition_وتھ + 8));
+  hb_memset (انکڑے.arrayZ, 0, انکڑے.لمائی);
+  خودکار put16 = [&انکڑے] (بنانشانی وتھ, بنانشانی value)
   {
-    data[offset] = value >> 8;
-    data[offset + 1] = value;
+    انکڑے[وتھ] = value >> 8;
+    انکڑے[وتھ + 1] = value;
   };
-  auto put32 = [&put16] (unsigned offset, unsigned value)
+  خودکار put32 = [&put16] (بنانشانی وتھ, بنانشانی value)
   {
-    put16 (offset, value >> 16);
-    put16 (offset + 2, value);
+    put16 (وتھ, value >> 16);
+    put16 (وتھ + 2, value);
   };
   put32 (0, 0x00010001);
-  put32 (8, feature_count);
-  for (unsigned i = 0; i < feature_count; i++)
+  put32 (8, feature_گنتی_2);
+  لكل (بنانشانی i = 0; i < feature_گنتی_2; i++)
   {
     put16 (12 + 6 * i, i);
-    put32 (14 + 6 * i, table_offset);
+    put32 (14 + 6 * i, جدول_وتھ);
   }
-  put32 (table_offset, 0x00010000);
-  put32 (table_offset + 6, 1); /* LookupConditionRecord count */
-  put32 (table_offset + 10, condition_offset - table_offset);
-  put32 (table_offset + 14, 18); /* LookupIndexList offset */
-  put16 (table_offset + 18, lookup_count);
-  for (unsigned i = 0; i < lookup_count; i++)
-    put16 (table_offset + 20 + 2 * i, i);
-  put16 (condition_offset, 2); /* Constant true ConditionValue */
-  put16 (condition_offset + 2, 1);
-  put32 (condition_offset + 4, OT::VarIdx::NO_VARIATION);
+  put32 (جدول_وتھ, 0x00010000);
+  put32 (جدول_وتھ + 6, 1); /* LookupConditionRecord count */
+  put32 (جدول_وتھ + 10, condition_وتھ - جدول_وتھ);
+  put32 (جدول_وتھ + 14, 18); /* LookupIndexList offset */
+  put16 (جدول_وتھ + 18, lookup_گنتی);
+  لكل (بنانشانی i = 0; i < lookup_گنتی; i++)
+    put16 (جدول_وتھ + 20 + 2 * i, i);
+  put16 (condition_وتھ, 2); /* Constant true ConditionValue */
+  put16 (condition_وتھ + 2, 1);
+  put32 (condition_وتھ + 4, OT::VarIdx::NO_VARIATION);
 
-  const auto &variations = *reinterpret_cast<const OT::FeatureVariations *> (data.arrayZ);
-  OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array_t<const int> ());
-  hb_vector_t<unsigned> state;
-  hb_always_assert (variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
-  hb_always_assert (state.length == 1 && state[0] == condition_offset);
+  ثابت خودکار &variations = *reinterpret_cast<ثابت OT::FeatureVariations *> (انکڑے.arrayZ);
+  OT::شے_Var_Store_Instancer instancer (خالی_سوچک, خالی_سوچک, hb_array_t<ثابت صحيح> ());
+  hb_سمتیہ_t<بنانشانی> state;
+  hb_always_assert (variations.collect_lookup_conditions (خالی_سوچک, 0, &instancer, &state));
+  hb_always_assert (state.لمائی == 1 && state[0] == condition_وتھ);
 
-  for (unsigned feature_index : {0u, feature_count - 1})
+  لكل (بنانشانی feature_اشاریہ : {0u, feature_گنتی_2 - 1})
   {
-    hb_set_t lookups;
+    hb_سیٹ_t lookups;
     hb_always_assert (variations.get_lookup_variations (
-        feature_index, Null (OT::Feature), state.as_sorted_array (), &lookups));
-    hb_always_assert (lookups.get_population () == lookup_count);
-    hb_always_assert (lookups.get_min () == 0 && lookups.get_max () == lookup_count - 1);
+        feature_اشاریہ, Null (OT::Feature), state.as_sorted_array (), &lookups));
+    hb_always_assert (lookups.get_population () == lookup_گنتی);
+    hb_always_assert (lookups.get_min () == 0 && lookups.get_max () == lookup_گنتی - 1);
   }
 
   /* Null conditions need no state, even when thousands of records use them. */
-  put32 (table_offset + 10, 0);
+  put32 (جدول_وتھ + 10, 0);
   state.reset ();
-  hb_always_assert (variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
-  hb_always_assert (!state.length);
-  hb_set_t lookups;
+  hb_always_assert (variations.collect_lookup_conditions (خالی_سوچک, 0, &instancer, &state));
+  hb_always_assert (!state.لمائی);
+  hb_سیٹ_t lookups;
   hb_always_assert (variations.get_lookup_variations (
       0, Null (OT::Feature), state.as_sorted_array (), &lookups));
-  hb_always_assert (lookups.get_population () == lookup_count);
+  hb_always_assert (lookups.get_population () == lookup_گنتی);
 
-  put32 (table_offset + 10, condition_offset - table_offset);
-  state.set_error (); /* Simulate failure allocating the condition key. */
-  hb_always_assert (!variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
+  put32 (جدول_وتھ + 10, condition_وتھ - جدول_وتھ);
+  state.سیٹ_error (); /* Simulate failure allocating the condition key. */
+  hb_always_assert (!variations.collect_lookup_conditions (خالی_سوچک, 0, &instancer, &state));
 }
 
-static void
+ساكن فراغ
 test_lookup_condition_resolution ()
 {
-  static const char data[] = {
+  ساكن ثابت حرف انکڑے[] = {
     0, 1, 0, 1, 0, 0, 0, 0,     /* FeatureVariations 1.1, no 1.0 records */
     0, 0, 0, 2,                 /* LookupVariationRecord count */
     0, 0, 0, 0, 0, 24,          /* Feature 0 */
@@ -174,44 +174,44 @@ test_lookup_condition_resolution ()
     0, 1, 0, 1, 0x20, 0, 0x40, 0, /* Axis 1: [0.5, 1] */
     0, 1, 0, 0, 0x20, 0, 0x40, 0, /* Axis 0: [0.5, 1] */
   };
-  static const char feature_data[] = {0, 0, 0, 2, 0, 0, 0, 6};
-  const auto &variations = *reinterpret_cast<const OT::FeatureVariations *> (data);
-  const auto &feature = *reinterpret_cast<const OT::Feature *> (feature_data);
+  ساكن ثابت حرف feature_انکڑے[] = {0, 0, 0, 2, 0, 0, 0, 6};
+  ثابت خودکار &variations = *reinterpret_cast<ثابت OT::FeatureVariations *> (انکڑے);
+  ثابت خودکار &feature = *reinterpret_cast<ثابت OT::Feature *> (feature_انکڑے);
 
-  for (unsigned mask = 0; mask < 4; mask++)
+  لكل (بنانشانی نقاب = 0; نقاب < 4; نقاب++)
   {
-    int coords[] = {mask & 1 ? 16384 : 0, mask & 2 ? 16384 : 0};
-    OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array (coords));
-    hb_vector_t<unsigned> state;
+    صحيح coords[] = {نقاب & 1 ? 16384 : 0, نقاب & 2 ? 16384 : 0};
+    OT::شے_Var_Store_Instancer instancer (خالی_سوچک, خالی_سوچک, hb_array (coords));
+    hb_سمتیہ_t<بنانشانی> state;
     hb_always_assert (variations.collect_lookup_conditions (coords, 2, &instancer, &state));
-    unsigned condition_count = !!(mask & 1) + !!(mask & 2);
-    hb_always_assert (state.length == condition_count);
-    if (mask == 3)
+    بنانشانی condition_گنتی = !!(نقاب & 1) + !!(نقاب & 2);
+    hb_always_assert (state.لمائی == condition_گنتی);
+    إذا (نقاب == 3)
       hb_always_assert (state[0] == 92 && state[1] == 100);
 
-    hb_set_t lookups;
+    hb_سیٹ_t lookups;
     hb_always_assert (variations.get_lookup_variations (
         0, feature, state.as_sorted_array (), &lookups));
-    hb_always_assert (lookups.get_population () == (mask & 1 ? 7 : 5));
+    hb_always_assert (lookups.get_population () == (نقاب & 1 ? 7 : 5));
     hb_always_assert (lookups.has (0) && lookups.has (6));
-    hb_always_assert (lookups.has (4) == !!(mask & 1));
+    hb_always_assert (lookups.has (4) == !!(نقاب & 1));
 
     lookups.clear ();
     hb_always_assert (variations.get_lookup_variations (
         1, feature, state.as_sorted_array (), &lookups));
-    hb_always_assert (lookups.get_population () == (mask == 3 ? 5 : mask ? 3 : 0));
+    hb_always_assert (lookups.get_population () == (نقاب == 3 ? 5 : نقاب ? 3 : 0));
     hb_always_assert (!lookups.has (0) && !lookups.has (6));
-    hb_always_assert (lookups.has (1) == !!(mask & 1));
-    hb_always_assert (lookups.has (5) == !!(mask & 2));
+    hb_always_assert (lookups.has (1) == !!(نقاب & 1));
+    hb_always_assert (lookups.has (5) == !!(نقاب & 2));
     hb_always_assert (!variations.get_lookup_variations (
         2, feature, state.as_sorted_array (), &lookups));
   }
 }
 
-static void
+ساكن فراغ
 test_feature_substitution_params_sanitize ()
 {
-  static const char data[] = {
+  ساكن ثابت حرف انکڑے[] = {
     0, 1, 0, 1,                 /* GSUB 1.1 */
     0, 14, 0, 16, 0, 28,        /* ScriptList, FeatureList, LookupList */
     0, 0, 0, 30,                /* FeatureVariations */
@@ -228,168 +228,168 @@ test_feature_substitution_params_sanitize ()
     0, 0, 0, 0, 0, 1, 0, 0, 0x41, /* No named parameters, one character */
   };
 
-  hb_blob_t *blob = hb_blob_create (data, sizeof (data),
-				    HB_MEMORY_MODE_READONLY, nullptr, nullptr);
+  hb_blob_t *blob = hb_blob_create (انکڑے, حجم (انکڑے),
+				    HB_حافظہ_منوال_READONLY, خالی_سوچک, خالی_سوچک);
   blob = hb_sanitize_context_t ().sanitize_blob<OT::Layout::GSUB> (blob);
-  hb_always_assert (hb_blob_get_length (blob) == sizeof (data));
+  hb_always_assert (hb_blob_get_لمائی (blob) == حجم (انکڑے));
   hb_blob_destroy (blob);
 
-#if !defined(HB_NO_VAR) && !defined(HB_NO_LAYOUT_FEATURE_PARAMS)
-  blob = hb_blob_create (data, sizeof (data) - 1,
-			 HB_MEMORY_MODE_READONLY, nullptr, nullptr);
+#إذا !defined(HB_NO_VAR) && !defined(HB_NO_LAYOUT_FEATURE_PARAMS)
+  blob = hb_blob_create (انکڑے, حجم (انکڑے) - 1,
+			 HB_حافظہ_منوال_READONLY, خالی_سوچک, خالی_سوچک);
   blob = hb_sanitize_context_t ().sanitize_blob<OT::Layout::GSUB> (blob);
-  hb_always_assert (!hb_blob_get_length (blob));
+  hb_always_assert (!hb_blob_get_لمائی (blob));
   hb_blob_destroy (blob);
-#endif
+#جے_انت
 }
 
-static void
-test_medium_rule ()
+ساكن فراغ
+test_medium_قاعدہ ()
 {
-  static const char data[] = {
+  ساكن ثابت حرف انکڑے[] = {
     0, 2, 0, 1,                 /* inputCount, lookupCount */
     0, 0, 5,                    /* input glyph */
     0, 1, 0, 2,                 /* LookupRecord */
   };
-  static const char expected[] = {
+  ساكن ثابت حرف expected[] = {
     0, 2, 0, 1,                 /* inputCount, lookupCount */
     1, 0, 1,                    /* input glyph */
     0, 1, 0, 3,                 /* LookupRecord */
   };
-  const auto &rule = *reinterpret_cast<const OT::Rule<OT::Layout::MediumTypes> *> (data);
+  ثابت خودکار &قاعدہ_2 = *reinterpret_cast<ثابت OT::قاعدہ_3<OT::Layout::MediumTypes> *> (انکڑے);
 
   hb_map_t glyph_map;
-  glyph_map.set (5, 0x10001);
+  glyph_map.سیٹ (5, 0x10001);
   hb_map_t lookup_map;
-  lookup_map.set (2, 3);
+  lookup_map.سیٹ (2, 3);
 
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
-  s.start_serialize ();
-  hb_always_assert (rule.serialize (&s, &glyph_map, &lookup_map));
-  s.end_serialize ();
+  حرف buf[32];
+  hb_serialize_context_t s (buf, حجم (buf));
+  s.شروع_serialize ();
+  hb_always_assert (قاعدہ_2.serialize (&s, &glyph_map, &lookup_map));
+  s.سرا_serialize ();
 
-  hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
-  bytes.fini ();
+  hb_بائٹاں_t بائٹاں = s.copy_بائٹاں ();
+  hb_always_assert (بائٹاں.لمائی == حجم (expected));
+  hb_always_assert (!hb_memcmp (بائٹاں.arrayZ, expected, حجم (expected)));
+  بائٹاں.fini ();
 }
 
-static void
-test_medium_chain_rule ()
+ساكن فراغ
+test_medium_chain_قاعدہ ()
 {
-  static const char data[] = {
+  ساكن ثابت حرف انکڑے[] = {
     0, 1, 0, 0, 5,             /* backtrack */
-    0, 2, 0, 0, 6,             /* input */
+    0, 2, 0, 0, 6,             /*داخلہ*/
     0, 1, 0, 0, 7,             /* lookahead */
     0, 1, 0, 0, 0, 2,          /* LookupRecord */
   };
-  static const char expected[] = {
+  ساكن ثابت حرف expected[] = {
     0, 1, 1, 0, 1,             /* backtrack */
-    0, 2, 1, 0, 2,             /* input */
+    0, 2, 1, 0, 2,             /*داخلہ*/
     0, 1, 1, 0, 3,             /* lookahead */
     0, 1, 0, 0, 0, 3,          /* LookupRecord */
   };
-  const auto &rule = *reinterpret_cast<const OT::ChainRule<OT::Layout::MediumTypes> *> (data);
+  ثابت خودکار &قاعدہ_2 = *reinterpret_cast<ثابت OT::Chain_قاعدہ<OT::Layout::MediumTypes> *> (انکڑے);
 
   hb_map_t glyph_map;
-  glyph_map.set (5, 0x10001);
-  glyph_map.set (6, 0x10002);
-  glyph_map.set (7, 0x10003);
+  glyph_map.سیٹ (5, 0x10001);
+  glyph_map.سیٹ (6, 0x10002);
+  glyph_map.سیٹ (7, 0x10003);
   hb_map_t lookup_map;
-  lookup_map.set (2, 3);
+  lookup_map.سیٹ (2, 3);
 
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
-  s.start_serialize ();
-  hb_always_assert (rule.serialize (&s, &lookup_map, &glyph_map));
-  s.end_serialize ();
+  حرف buf[32];
+  hb_serialize_context_t s (buf, حجم (buf));
+  s.شروع_serialize ();
+  hb_always_assert (قاعدہ_2.serialize (&s, &lookup_map, &glyph_map));
+  s.سرا_serialize ();
 
-  hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
-  bytes.fini ();
+  hb_بائٹاں_t بائٹاں = s.copy_بائٹاں ();
+  hb_always_assert (بائٹاں.لمائی == حجم (expected));
+  hb_always_assert (!hb_memcmp (بائٹاں.arrayZ, expected, حجم (expected)));
+  بائٹاں.fini ();
 }
 
-static void
-test_device_only_value ()
+ساكن فراغ
+test_device_only_قدر ()
 {
-  using namespace OT::Layout::GPOS_impl;
-  static const char data[] = {
+  ورتوں نطاق OT::Layout::GPOS_impl;
+  ساكن ثابت حرف انکڑے[] = {
     0, 2,                      /* Device offset */
-    0, 0, 0, 0, (char) 0x80, 0, /* VariationIndex 0 */
+    0, 0, 0, 0, (حرف) 0x80, 0, /* VariationIndex 0 */
   };
-  const auto *base = reinterpret_cast<const ValueBase *> (data);
-  const auto *values = reinterpret_cast<const Value *> (data);
-  for (unsigned device = ValueFormat::xPlaDevice;
-       device <= ValueFormat::yAdvDevice; device <<= 1)
-    for (bool partial : {false, true})
+  ثابت خودکار *ادھار = reinterpret_cast<ثابت قدر_ادھار *> (انکڑے);
+  ثابت خودکار *values = reinterpret_cast<ثابت قدر *> (انکڑے);
+  لكل (بنانشانی device = قدر_Format::xPlaDevice;
+       device <= قدر_Format::yAdvDevice; device <<= 1)
+    لكل (منطقي partial : {خطأ, سچ})
     {
-      ValueFormat format;
+      قدر_Format format;
       format = device;
-      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> mapping;
-      mapping.set (0, hb_pair (partial ? 1u : OT::VarIdx::NO_VARIATION, 25));
-      unsigned new_format = format.get_effective_format (values, false, false, base, &mapping);
+      hb_hashmap_t<بنانشانی, hb_pair_t<بنانشانی, صحيح>> mapping;
+      mapping.سیٹ (0, hb_pair (partial ? 1u : OT::VarIdx::NO_VARIATION, 25));
+      بنانشانی new_format = format.get_effective_format (values, خطأ, خطأ, ادھار, &mapping);
       hb_always_assert (new_format == (device >> 4 | (partial ? device : 0)));
 
-      char buf[32];
-      hb_serialize_context_t s (buf, sizeof (buf));
-      s.start_serialize ();
-      format.copy_values (&s, new_format, base, values, &mapping);
-      s.end_serialize ();
-      hb_bytes_t bytes = s.copy_bytes ();
-      hb_always_assert (!s.in_error ());
-      hb_always_assert (bytes.length >= OT::HBINT16::static_size);
-      hb_always_assert (*reinterpret_cast<const OT::HBINT16 *> (bytes.arrayZ) == 25);
-      bytes.fini ();
+      حرف buf[32];
+      hb_serialize_context_t s (buf, حجم (buf));
+      s.شروع_serialize ();
+      format.copy_اقدار (&s, new_format, ادھار, values, &mapping);
+      s.سرا_serialize ();
+      hb_بائٹاں_t بائٹاں = s.copy_بائٹاں ();
+      hb_always_assert (!s.وچ_error ());
+      hb_always_assert (بائٹاں.لمائی >= OT::HBINT16::static_ناپ);
+      hb_always_assert (*reinterpret_cast<ثابت OT::HBINT16 *> (بائٹاں.arrayZ) == 25);
+      بائٹاں.fini ();
     }
 }
 
-static void
+ساكن فراغ
 test_failed_class_mapping ()
 {
-  hb_set_t klasses;
-  klasses.add (1);
-  hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
+  hb_سیٹ_t klasses;
+  klasses.جوڑو (1);
+  hb_sorted_سمتیہ_t<hb_codepoint_pair_t> glyph_and_klass;
   glyph_and_klass.push (hb_pair (hb_codepoint_t (42), hb_codepoint_t (1)));
   hb_map_t klass_map;
-  klass_map.successful = false; /* Simulate failure allocating the class map. */
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
-  s.start_serialize<OT::ClassDef> ();
+  klass_map.successful = خطأ; /* Simulate failure allocating the class map. */
+  حرف buf[32];
+  hb_serialize_context_t s (buf, حجم (buf));
+  s.شروع_serialize<OT::ClassDef> ();
   hb_always_assert (!OT::ClassDef_remap_and_serialize (
-      &s, klasses, true, glyph_and_klass, &klass_map));
-  hb_always_assert (s.in_error () && !s.only_overflow ());
+      &s, klasses, سچ, glyph_and_klass, &klass_map));
+  hb_always_assert (s.وچ_error () && !s.only_حد_توں_ودھ ());
   hb_always_assert (glyph_and_klass[0].second == 1);
 }
 
-int
-main (int argc, char **argv)
+صحيح
+مکھ (صحيح argc, حرف **argv)
 {
   test_null_condition ();
   test_lookup_condition_sharing ();
   test_lookup_condition_resolution ();
   test_feature_substitution_params_sanitize ();
-  test_medium_rule ();
-  test_medium_chain_rule ();
-  test_device_only_value ();
+  test_medium_قاعدہ ();
+  test_medium_chain_قاعدہ ();
+  test_device_only_قدر ();
   test_failed_class_mapping ();
 
-  char buf[16384];
+  حرف buf[16384];
 
-  hb_serialize_context_t s (buf, sizeof (buf));
+  hb_serialize_context_t s (buf, حجم (buf));
 
-  hb_sorted_vector_t<hb_codepoint_t> v{1, 2, 5};
+  hb_sorted_سمتیہ_t<hb_codepoint_t> v{1, 2, 5};
 
-  auto c = s.start_serialize<Coverage> ();
+  خودکار c = s.شروع_serialize<Coverage> ();
 
   c->serialize (&s, hb_iter (v));
 
-  s.end_serialize ();
+  s.سرا_serialize ();
 
-  hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == 10);
-  bytes.fini ();
+  hb_بائٹاں_t بائٹاں = s.copy_بائٹاں ();
+  hb_always_assert (بائٹاں.لمائی == 10);
+  بائٹاں.fini ();
 
-  return 0;
+  أرجع 0;
 }

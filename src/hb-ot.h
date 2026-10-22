@@ -24,27 +24,27 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_H
-#define HB_OT_H
-#define HB_OT_H_IN
+#جے_بنا_تعریف HB_OT_H
+#تعریف_کرو HB_OT_H
+#تعریف_کرو HB_OT_H_وچ
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#include "hb-ot-fetch.h"
-#include "hb-ot-color.h"
-#include "hb-ot-deprecated.h"
-#include "hb-ot-font.h"
-#include "hb-ot-layout.h"
-#include "hb-ot-math.h"
-#include "hb-ot-meta.h"
-#include "hb-ot-metrics.h"
-#include "hb-ot-name.h"
-#include "hb-ot-shape.h"
-#include "hb-ot-var.h"
+#ضمن "hb-ot-fetch.h"
+#ضمن "hb-ot-color.h"
+#ضمن "hb-ot-deprecated.h"
+#ضمن "hb-ot-font.h"
+#ضمن "hb-ot-layout.h"
+#ضمن "hb-ot-math.h"
+#ضمن "hb-ot-meta.h"
+#ضمن "hb-ot-metrics.h"
+#ضمن "hb-ot-name.h"
+#ضمن "hb-ot-shape.h"
+#ضمن "hb-ot-var.h"
 
 HB_BEGIN_DECLS
 
-HB_END_DECLS
+HB_سرا_DECLS
 
-#undef HB_OT_H_IN
-#endif /* HB_OT_H */
+#تعریف_رد HB_OT_H_وچ
+#جے_انت /* HB_OT_H */

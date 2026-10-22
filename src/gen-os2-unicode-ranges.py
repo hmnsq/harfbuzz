@@ -5,46 +5,46 @@ Input is a tab separated list of unicode ranges from the otspec
 (https://docs.microsoft.com/en-us/typography/opentype/spec/os2#ur).
 """
 
-import re
-import sys
+استورد re
+استورد sys
 
 
-print ("""static OS2Range _hb_os2_unicode_ranges[] =
+چھاپو ("""static OS2Range _hb_os2_unicode_ranges[] =
 {""")
 
-args = sys.argv[1:]
-input_file = args[0]
+دلیلاں = sys.argv[1:]
+داخلہ_file = دلیلاں[0]
 
-with open (input_file, mode="r", encoding="utf-8") as f:
+نال open (داخلہ_file, منوال="r", encoding="utf-8") كـ f:
 
   all_ranges = []
-  current_bit = 0
-  while True:
-    line = f.readline().strip()
-    if not line:
-      break
-    fields = re.split(r'\t+', line)
-    if len(fields) == 3:
-      current_bit = fields[0]
+  current_ثنائی_ہندسہ = 0
+  طالما سچ:
+    سطر = f.readline().strip()
+    إذا ليس سطر:
+      اكسر
+    fields = re.ونڈو(r'\t+', سطر)
+    إذا لمبائی(fields) == 3:
+      current_ثنائی_ہندسہ = fields[0]
       fields = fields[1:]
-    elif len(fields) > 3:
-      raise Exception("bad input :(.")
+    وإلاإذا لمبائی(fields) > 3:
+      ارفع Exception("bad input :(.")
 
     name = fields[0]
-    ranges = re.split("-", fields[1])
-    if len(ranges) != 2:
-      raise Exception("bad input :(.")
+    ranges = re.ونڈو("-", fields[1])
+    إذا لمبائی(ranges) != 2:
+      ارفع Exception("bad input :(.")
 
-    v = tuple((int(ranges[0], 16), int(ranges[1], 16), int(current_bit), name))
+    v = tuple((صحيح(ranges[0], 16), صحيح(ranges[1], 16), صحيح(current_ثنائی_ہندسہ), name))
     all_ranges.append(v)
 
-all_ranges = sorted(all_ranges, key=lambda t: t[0])
+all_ranges = sorted(all_ranges, کلید_2=مجهول t: t[0])
 
-for ranges in all_ranges:
-  start = ("0x%X" % ranges[0]).rjust(8)
-  end = ("0x%X" % ranges[1]).rjust(8)
-  bit = ("%s" % ranges[2]).rjust(3)
+لكل ranges في all_ranges:
+  شروع = ("0x%X" % ranges[0]).rjust(8)
+  سرا = ("0x%X" % ranges[1]).rjust(8)
+  ثنائی_ہندسہ = ("%s" % ranges[2]).rjust(3)
 
-  print ("  {%s, %s, %s}, // %s" % (start, end, bit, ranges[3]))
+  چھاپو ("  {%s, %s, %s}, // %s" % (شروع, سرا, ثنائی_ہندسہ, ranges[3]))
 
-print ("""};""")
+چھاپو ("""};""")

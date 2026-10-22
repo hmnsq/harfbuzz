@@ -24,624 +24,624 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#جے_بنا_تعریف HB_NO_OT_SHAPE
 
-#include "hb-ot-shape-fallback.hh"
-#include "hb-kern.hh"
+#ضمن "hb-ot-shape-fallback.hh"
+#ضمن "hb-kern.hh"
 
-static unsigned int
+ساكن بنانشانی صحيح
 recategorize_combining_class (hb_codepoint_t u,
-			      unsigned int klass)
+			      بنانشانی صحيح klass)
 {
-  if (klass >= 200)
-    return klass;
+  إذا (klass >= 200)
+    أرجع klass;
 
   /* Thai / Lao need some per-character work. */
-  if ((u & ~0xFF) == 0x0E00u)
+  إذا ((u & ~0xFF) == 0x0E00u)
   {
-    if (unlikely (klass == 0))
+    إذا (unlikely (klass == 0))
     {
-      switch (u)
+      بدل (u)
       {
-	case 0x0E31u:
-	case 0x0E34u:
-	case 0x0E35u:
-	case 0x0E36u:
-	case 0x0E37u:
-	case 0x0E47u:
-	case 0x0E4Cu:
-	case 0x0E4Du:
-	case 0x0E4Eu:
-	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
-	  break;
+	حالة 0x0E31u:
+	حالة 0x0E34u:
+	حالة 0x0E35u:
+	حالة 0x0E36u:
+	حالة 0x0E37u:
+	حالة 0x0E47u:
+	حالة 0x0E4Cu:
+	حالة 0x0E4Du:
+	حالة 0x0E4Eu:
+	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE_دایاں;
+	  اكسر;
 
-	case 0x0EB1u:
-	case 0x0EB4u:
-	case 0x0EB5u:
-	case 0x0EB6u:
-	case 0x0EB7u:
-	case 0x0EBBu:
-	case 0x0ECCu:
-	case 0x0ECDu:
+	حالة 0x0EB1u:
+	حالة 0x0EB4u:
+	حالة 0x0EB5u:
+	حالة 0x0EB6u:
+	حالة 0x0EB7u:
+	حالة 0x0EBBu:
+	حالة 0x0ECCu:
+	حالة 0x0ECDu:
 	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE;
-	  break;
+	  اكسر;
 
-	case 0x0EBCu:
-	  klass = HB_UNICODE_COMBINING_CLASS_BELOW;
-	  break;
+	حالة 0x0EBCu:
+	  klass = HB_UNICODE_COMBINING_CLASS_ہیٹھاں;
+	  اكسر;
       }
-    } else {
+    } وإلا {
       /* Thai virama is below-right */
-      if (u == 0x0E3Au)
-	klass = HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
+      إذا (u == 0x0E3Au)
+	klass = HB_UNICODE_COMBINING_CLASS_ہیٹھاں_دایاں;
     }
   }
 
-  switch (klass)
+  بدل (klass)
   {
 
     /* Hebrew */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC10: /* sheva */
-    case HB_MODIFIED_COMBINING_CLASS_CCC11: /* hataf segol */
-    case HB_MODIFIED_COMBINING_CLASS_CCC12: /* hataf patah */
-    case HB_MODIFIED_COMBINING_CLASS_CCC13: /* hataf qamats */
-    case HB_MODIFIED_COMBINING_CLASS_CCC14: /* hiriq */
-    case HB_MODIFIED_COMBINING_CLASS_CCC15: /* tsere */
-    case HB_MODIFIED_COMBINING_CLASS_CCC16: /* segol */
-    case HB_MODIFIED_COMBINING_CLASS_CCC17: /* patah */
-    case HB_MODIFIED_COMBINING_CLASS_CCC18: /* qamats & qamats qatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC20: /* qubuts */
-    case HB_MODIFIED_COMBINING_CLASS_CCC22: /* meteg */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC10: /* sheva */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC11: /* hataf segol */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC12: /* hataf patah */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC13: /* hataf qamats */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC14: /* hiriq */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC15: /* tsere */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC16: /* segol */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC17: /* patah */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC18: /* qamats & qamats qatan */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC20: /* qubuts */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC22: /* meteg */
+      أرجع HB_UNICODE_COMBINING_CLASS_ہیٹھاں;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC23: /* rafe */
-      return HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC23: /* rafe */
+      أرجع HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC24: /* shin dot */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC24: /* shin dot */
+      أرجع HB_UNICODE_COMBINING_CLASS_ABOVE_دایاں;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC25: /* sin dot */
-    case HB_MODIFIED_COMBINING_CLASS_CCC19: /* holam & holam haser for vav */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC25: /* sin dot */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC19: /* holam & holam haser for vav */
+      أرجع HB_UNICODE_COMBINING_CLASS_ABOVE_بایاں;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC26: /* point varika */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC26: /* point varika */
+      أرجع HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC21: /* dagesh */
-      break;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC21: /* dagesh */
+      اكسر;
 
 
     /* Arabic and Syriac */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC27: /* fathatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC28: /* dammatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC30: /* fatha */
-    case HB_MODIFIED_COMBINING_CLASS_CCC31: /* damma */
-    case HB_MODIFIED_COMBINING_CLASS_CCC33: /* shadda */
-    case HB_MODIFIED_COMBINING_CLASS_CCC34: /* sukun */
-    case HB_MODIFIED_COMBINING_CLASS_CCC35: /* superscript alef */
-    case HB_MODIFIED_COMBINING_CLASS_CCC36: /* superscript alaph */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC27: /* fathatan */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC28: /* dammatan */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC30: /* fatha */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC31: /* damma */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC33: /* shadda */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC34: /* sukun */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC35: /* superscript alef */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC36: /* superscript alaph */
+      أرجع HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC29: /* kasratan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC32: /* kasra */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC29: /* kasratan */
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC32: /* kasra */
+      أرجع HB_UNICODE_COMBINING_CLASS_ہیٹھاں;
 
 
     /* Thai */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC103: /* sara u / sara uu */
-      return HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC103: /* sara u / sara uu */
+      أرجع HB_UNICODE_COMBINING_CLASS_ہیٹھاں_دایاں;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC107: /* mai */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC107: /* mai */
+      أرجع HB_UNICODE_COMBINING_CLASS_ABOVE_دایاں;
 
 
     /* Lao */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC118: /* sign u / sign uu */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC118: /* sign u / sign uu */
+      أرجع HB_UNICODE_COMBINING_CLASS_ہیٹھاں;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC122: /* mai */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC122: /* mai */
+      أرجع HB_UNICODE_COMBINING_CLASS_ABOVE;
 
 
     /* Tibetan */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC129: /* sign aa */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC129: /* sign aa */
+      أرجع HB_UNICODE_COMBINING_CLASS_ہیٹھاں;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC130: /* sign i*/
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC130: /* sign i*/
+      أرجع HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC132: /* sign u */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    حالة HB_MODIFIED_COMBINING_CLASS_CCC132: /* sign u */
+      أرجع HB_UNICODE_COMBINING_CLASS_ہیٹھاں;
 
   }
 
-  return klass;
+  أرجع klass;
 }
 
-void
-_hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t *plan HB_UNUSED,
-							hb_font_t *font HB_UNUSED,
-							hb_buffer_t  *buffer)
+فراغ
+_hb_ot_shape_fallback_mark_position_recategorize_marks (ثابت hb_ot_shape_plan_t *plan HB_بن_ورتیا,
+							hb_font_t *font HB_بن_ورتیا,
+							hb_بفر_t  *بفر)
 {
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
-#endif
+#جے_تعریف_شدہ HB_NO_OT_SHAPE_FALLBACK
+  أرجع;
+#جے_انت
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {
-      unsigned int combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
+    إذا (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {
+      بنانشانی صحيح combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
       combining_class = recategorize_combining_class (info[i].codepoint, combining_class);
-      _hb_glyph_info_set_modified_combining_class (&info[i], combining_class);
+      hb_glyph_info_سیٹ_modified_combining_class (&info[i], combining_class);
     }
 }
 
 
-static void
-zero_mark_advances (hb_buffer_t *buffer,
-		    unsigned int start,
-		    unsigned int end,
-		    bool adjust_offsets_when_zeroing)
+ساكن فراغ
+zero_mark_advances (hb_بفر_t *بفر,
+		    بنانشانی صحيح شروع,
+		    بنانشانی صحيح سرا,
+		    منطقي adjust_offsets_when_zeroing)
 {
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = start; i < end; i++)
-    if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
+    إذا (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
     {
-      if (adjust_offsets_when_zeroing)
+      إذا (adjust_offsets_when_zeroing)
       {
-	buffer->pos[i].x_offset = hb_saturate_sub (buffer->pos[i].x_offset,
-						     buffer->pos[i].x_advance);
-	buffer->pos[i].y_offset = hb_saturate_sub (buffer->pos[i].y_offset,
-						     buffer->pos[i].y_advance);
+	بفر->pos[i].x_وتھ_2 = hb_saturate_sub (بفر->pos[i].x_وتھ_2,
+						     بفر->pos[i].x_advance);
+	بفر->pos[i].y_وتھ_2 = hb_saturate_sub (بفر->pos[i].y_وتھ_2,
+						     بفر->pos[i].y_advance);
       }
-      buffer->pos[i].x_advance = 0;
-      buffer->pos[i].y_advance = 0;
+      بفر->pos[i].x_advance = 0;
+      بفر->pos[i].y_advance = 0;
     }
 }
 
-static inline void
-position_mark (const hb_ot_shape_plan_t *plan HB_UNUSED,
+ساكن مضمن فراغ
+position_mark (ثابت hb_ot_shape_plan_t *plan HB_بن_ورتیا,
 	       hb_font_t *font,
-	       hb_buffer_t  *buffer,
-	       hb_glyph_extents_t &base_extents,
-	       unsigned int i,
-	       unsigned int combining_class)
+	       hb_بفر_t  *بفر,
+	       hb_glyph_extents_t &ادھار_extents,
+	       بنانشانی صحيح i,
+	       بنانشانی صحيح combining_class)
 {
   hb_glyph_extents_t mark_extents;
-  if (!font->get_glyph_extents (buffer->info[i].codepoint, &mark_extents))
-    return;
+  إذا (!font->get_glyph_extents (بفر->info[i].codepoint, &mark_extents))
+    أرجع;
 
   hb_position_t y_gap = font->y_scale / 16;
 
-  hb_glyph_position_t &pos = buffer->pos[i];
-  pos.x_offset = pos.y_offset = 0;
+  hb_glyph_position_t &pos = بفر->pos[i];
+  pos.x_وتھ_2 = pos.y_وتھ_2 = 0;
 
 
   /* We don't position LEFT and RIGHT marks. */
 
   /* X positioning */
-  switch (combining_class)
+  بدل (combining_class)
   {
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
-      if (buffer->props.direction == HB_DIRECTION_LTR) {
-	pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing + base_extents.width -
-						    mark_extents.width / 2 - mark_extents.x_bearing);
-	break;
-      } else if (buffer->props.direction == HB_DIRECTION_RTL) {
-	pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing -
-						    mark_extents.width / 2 - mark_extents.x_bearing);
-	break;
+    حالة HB_UNICODE_COMBINING_CLASS_DOUBLE_ہیٹھاں:
+    حالة HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
+      إذا (بفر->props.direction == HB_DIRECTION_LTR) {
+	pos.x_وتھ_2 = hb_clamp_منزل<hb_position_t> ((int64_t) ادھار_extents.x_bearing + ادھار_extents.چوڑائی -
+						    mark_extents.چوڑائی / 2 - mark_extents.x_bearing);
+	اكسر;
+      } وإلا إذا (بفر->props.direction == HB_DIRECTION_RTL) {
+	pos.x_وتھ_2 = hb_clamp_منزل<hb_position_t> ((int64_t) ادھار_extents.x_bearing -
+						    mark_extents.چوڑائی / 2 - mark_extents.x_bearing);
+	اكسر;
       }
       HB_FALLTHROUGH;
 
-    default:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE:
+    افتراضي:
+    حالة HB_UNICODE_COMBINING_CLASS_ATTACHED_ہیٹھاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
+    حالة HB_UNICODE_COMBINING_CLASS_ہیٹھاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ABOVE:
       /* Center align. */
-      pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing +
-						((int64_t) base_extents.width - mark_extents.width) / 2 -
+      pos.x_وتھ_2 = hb_clamp_منزل<hb_position_t> ((int64_t) ادھار_extents.x_bearing +
+						((int64_t) ادھار_extents.چوڑائی - mark_extents.چوڑائی) / 2 -
 						mark_extents.x_bearing);
-      break;
+      اكسر;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
+    حالة HB_UNICODE_COMBINING_CLASS_ATTACHED_ہیٹھاں_بایاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ہیٹھاں_بایاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ABOVE_بایاں:
       /* Left align. */
-      pos.x_offset = hb_saturate_sub (base_extents.x_bearing, mark_extents.x_bearing);
-      break;
+      pos.x_وتھ_2 = hb_saturate_sub (ادھار_extents.x_bearing, mark_extents.x_bearing);
+      اكسر;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
+    حالة HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_دایاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ہیٹھاں_دایاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ABOVE_دایاں:
       /* Right align. */
-      pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing + base_extents.width -
-						mark_extents.width - mark_extents.x_bearing);
-      break;
+      pos.x_وتھ_2 = hb_clamp_منزل<hb_position_t> ((int64_t) ادھار_extents.x_bearing + ادھار_extents.چوڑائی -
+						mark_extents.چوڑائی - mark_extents.x_bearing);
+      اكسر;
   }
 
   /* Y positioning */
-  switch (combining_class)
+  بدل (combining_class)
   {
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
+    حالة HB_UNICODE_COMBINING_CLASS_DOUBLE_ہیٹھاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ہیٹھاں_بایاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ہیٹھاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ہیٹھاں_دایاں:
       /* Add gap, fall-through. */
-      base_extents.height = hb_saturate_sub (base_extents.height, y_gap);
+      ادھار_extents.اچائی = hb_saturate_sub (ادھار_extents.اچائی, y_gap);
       HB_FALLTHROUGH;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
-      pos.y_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.y_bearing +
-						base_extents.height - mark_extents.y_bearing);
+    حالة HB_UNICODE_COMBINING_CLASS_ATTACHED_ہیٹھاں_بایاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ATTACHED_ہیٹھاں:
+      pos.y_وتھ_2 = hb_clamp_منزل<hb_position_t> ((int64_t) ادھار_extents.y_bearing +
+						ادھار_extents.اچائی - mark_extents.y_bearing);
       /* Never shift up "below" marks. */
-      if ((y_gap > 0) == (pos.y_offset > 0))
+      إذا ((y_gap > 0) == (pos.y_وتھ_2 > 0))
       {
-	base_extents.height = hb_saturate_sub (base_extents.height, pos.y_offset);
-	pos.y_offset = 0;
+	ادھار_extents.اچائی = hb_saturate_sub (ادھار_extents.اچائی, pos.y_وتھ_2);
+	pos.y_وتھ_2 = 0;
       }
-      base_extents.height = hb_saturate_add (base_extents.height, mark_extents.height);
-      break;
+      ادھار_extents.اچائی = hb_saturate_جوڑو (ادھار_extents.اچائی, mark_extents.اچائی);
+      اكسر;
 
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
+    حالة HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
+    حالة HB_UNICODE_COMBINING_CLASS_ABOVE_بایاں:
+    حالة HB_UNICODE_COMBINING_CLASS_ABOVE:
+    حالة HB_UNICODE_COMBINING_CLASS_ABOVE_دایاں:
       /* Add gap, fall-through. */
-      base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing, y_gap);
-      base_extents.height = hb_saturate_sub (base_extents.height, y_gap);
+      ادھار_extents.y_bearing = hb_saturate_جوڑو (ادھار_extents.y_bearing, y_gap);
+      ادھار_extents.اچائی = hb_saturate_sub (ادھار_extents.اچائی, y_gap);
       HB_FALLTHROUGH;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
-      pos.y_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.y_bearing -
-						mark_extents.y_bearing - mark_extents.height);
+    حالة HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
+    حالة HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_دایاں:
+      pos.y_وتھ_2 = hb_clamp_منزل<hb_position_t> ((int64_t) ادھار_extents.y_bearing -
+						mark_extents.y_bearing - mark_extents.اچائی);
       /* Don't shift down "above" marks too much. */
-      if ((y_gap > 0) != (pos.y_offset > 0))
+      إذا ((y_gap > 0) != (pos.y_وتھ_2 > 0))
       {
-	hb_position_t correction = -(pos.y_offset / 2);
-	base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing, correction);
-	base_extents.height = hb_saturate_sub (base_extents.height, correction);
-	pos.y_offset = hb_saturate_add (pos.y_offset, correction);
+	hb_position_t correction = -(pos.y_وتھ_2 / 2);
+	ادھار_extents.y_bearing = hb_saturate_جوڑو (ادھار_extents.y_bearing, correction);
+	ادھار_extents.اچائی = hb_saturate_sub (ادھار_extents.اچائی, correction);
+	pos.y_وتھ_2 = hb_saturate_جوڑو (pos.y_وتھ_2, correction);
       }
-      base_extents.y_bearing = hb_saturate_sub (base_extents.y_bearing, mark_extents.height);
-      base_extents.height = hb_saturate_add (base_extents.height, mark_extents.height);
-      break;
+      ادھار_extents.y_bearing = hb_saturate_sub (ادھار_extents.y_bearing, mark_extents.اچائی);
+      ادھار_extents.اچائی = hb_saturate_جوڑو (ادھار_extents.اچائی, mark_extents.اچائی);
+      اكسر;
   }
 }
 
-static inline void
-position_around_base (const hb_ot_shape_plan_t *plan,
+ساكن مضمن فراغ
+position_around_ادھار (ثابت hb_ot_shape_plan_t *plan,
 		      hb_font_t *font,
-		      hb_buffer_t  *buffer,
-		      unsigned int base,
-		      unsigned int end,
-		      bool adjust_offsets_when_zeroing)
+		      hb_بفر_t  *بفر,
+		      بنانشانی صحيح ادھار,
+		      بنانشانی صحيح سرا,
+		      منطقي adjust_offsets_when_zeroing)
 {
   hb_direction_t horiz_dir = HB_DIRECTION_INVALID;
 
-  buffer->unsafe_to_break (base, end);
+  بفر->unsafe_منزل_break (ادھار, سرا);
 
-  hb_glyph_extents_t base_extents;
-  if (!font->get_glyph_extents (buffer->info[base].codepoint,
-				&base_extents))
+  hb_glyph_extents_t ادھار_extents;
+  إذا (!font->get_glyph_extents (بفر->info[ادھار].codepoint,
+				&ادھار_extents))
   {
     /* If extents don't work, zero marks and go home. */
-    zero_mark_advances (buffer, base + 1, end, adjust_offsets_when_zeroing);
-    return;
+    zero_mark_advances (بفر, ادھار + 1, سرا, adjust_offsets_when_zeroing);
+    أرجع;
   }
-  base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing,
-					    buffer->pos[base].y_offset);
+  ادھار_extents.y_bearing = hb_saturate_جوڑو (ادھار_extents.y_bearing,
+					    بفر->pos[ادھار].y_وتھ_2);
   /* Use horizontal advance for horizontal positioning.
    * Generally a better idea.  Also works for zero-ink glyphs.  See:
    * https://github.com/harfbuzz/harfbuzz/issues/1532 */
-  base_extents.x_bearing = 0;
-  base_extents.width = font->get_glyph_h_advance (buffer->info[base].codepoint);
+  ادھار_extents.x_bearing = 0;
+  ادھار_extents.چوڑائی = font->get_glyph_h_advance (بفر->info[ادھار].codepoint);
 
-  unsigned int lig_id = _hb_glyph_info_get_lig_id (&buffer->info[base]);
+  بنانشانی صحيح lig_id = _hb_glyph_info_get_lig_id (&بفر->info[ادھار]);
   /* Use integer for num_lig_components such that it doesn't convert to unsigned
    * when we divide or multiply by it. */
-  int num_lig_components = _hb_glyph_info_get_lig_num_comps (&buffer->info[base]);
+  صحيح عدد_lig_components = hb_glyph_info_get_lig_عدد_comps (&بفر->info[ادھار]);
 
-  hb_position_t x_offset = 0, y_offset = 0;
-  if (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
-    x_offset = hb_saturate_neg (buffer->pos[base].x_advance);
-    y_offset = hb_saturate_neg (buffer->pos[base].y_advance);
+  hb_position_t x_وتھ_2 = 0, y_وتھ_2 = 0;
+  إذا (HB_DIRECTION_IS_FORWARD (بفر->props.direction)) {
+    x_وتھ_2 = hb_saturate_neg (بفر->pos[ادھار].x_advance);
+    y_وتھ_2 = hb_saturate_neg (بفر->pos[ادھار].y_advance);
   }
 
-  hb_glyph_extents_t component_extents = base_extents;
-  int last_lig_component = -1;
-  unsigned int last_combining_class = 255;
-  hb_glyph_extents_t cluster_extents = base_extents; /* Initialization is just to shut gcc up. */
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = base + 1; i < end; i++)
-    if (_hb_glyph_info_get_modified_combining_class (&info[i]))
+  hb_glyph_extents_t component_extents = ادھار_extents;
+  صحيح آخری_lig_component = -1;
+  بنانشانی صحيح آخری_combining_class = 255;
+  hb_glyph_extents_t cluster_extents = ادھار_extents; /* Initialization is just to shut gcc up. */
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = ادھار + 1; i < سرا; i++)
+    إذا (_hb_glyph_info_get_modified_combining_class (&info[i]))
     {
-      if (num_lig_components > 1) {
-	unsigned int this_lig_id = _hb_glyph_info_get_lig_id (&info[i]);
-	int this_lig_component = _hb_glyph_info_get_lig_comp (&info[i]) - 1;
+      إذا (عدد_lig_components > 1) {
+	بنانشانی صحيح this_lig_id = _hb_glyph_info_get_lig_id (&info[i]);
+	صحيح this_lig_component = _hb_glyph_info_get_lig_comp (&info[i]) - 1;
 	/* Conditions for attaching to the last component. */
-	if (!lig_id || lig_id != this_lig_id || this_lig_component >= num_lig_components)
-	  this_lig_component = num_lig_components - 1;
-	if (last_lig_component != this_lig_component)
+	إذا (!lig_id || lig_id != this_lig_id || this_lig_component >= عدد_lig_components)
+	  this_lig_component = عدد_lig_components - 1;
+	إذا (آخری_lig_component != this_lig_component)
 	{
-	  last_lig_component = this_lig_component;
-	  last_combining_class = 255;
-	  component_extents = base_extents;
-	  if (unlikely (horiz_dir == HB_DIRECTION_INVALID)) {
-	    if (HB_DIRECTION_IS_HORIZONTAL (plan->props.direction))
+	  آخری_lig_component = this_lig_component;
+	  آخری_combining_class = 255;
+	  component_extents = ادھار_extents;
+	  إذا (unlikely (horiz_dir == HB_DIRECTION_INVALID)) {
+	    إذا (HB_DIRECTION_IS_HORIZONTAL (plan->props.direction))
 	      horiz_dir = plan->props.direction;
-	    else
+	    وإلا
 	      horiz_dir = hb_script_get_horizontal_direction (plan->props.script);
 	  }
-	  if (horiz_dir == HB_DIRECTION_LTR)
-	    component_extents.x_bearing = hb_clamp_to<hb_position_t> (
+	  إذا (horiz_dir == HB_DIRECTION_LTR)
+	    component_extents.x_bearing = hb_clamp_منزل<hb_position_t> (
 		(int64_t) component_extents.x_bearing +
-		(int64_t) this_lig_component * component_extents.width / num_lig_components);
-	  else
-	    component_extents.x_bearing = hb_clamp_to<hb_position_t> (
+		(int64_t) this_lig_component * component_extents.چوڑائی / عدد_lig_components);
+	  وإلا
+	    component_extents.x_bearing = hb_clamp_منزل<hb_position_t> (
 		(int64_t) component_extents.x_bearing +
-		(int64_t) (num_lig_components - 1 - this_lig_component) * component_extents.width / num_lig_components);
-	  component_extents.width /= num_lig_components;
+		(int64_t) (عدد_lig_components - 1 - this_lig_component) * component_extents.چوڑائی / عدد_lig_components);
+	  component_extents.چوڑائی /= عدد_lig_components;
 	}
       }
 
-      unsigned int this_combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
-      if (last_combining_class != this_combining_class)
+      بنانشانی صحيح this_combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
+      إذا (آخری_combining_class != this_combining_class)
       {
-	last_combining_class = this_combining_class;
+	آخری_combining_class = this_combining_class;
 	cluster_extents = component_extents;
       }
 
-      position_mark (plan, font, buffer, cluster_extents, i, this_combining_class);
+      position_mark (plan, font, بفر, cluster_extents, i, this_combining_class);
 
-      buffer->pos[i].x_advance = 0;
-      buffer->pos[i].y_advance = 0;
-      buffer->pos[i].x_offset = hb_saturate_add (buffer->pos[i].x_offset, x_offset);
-      buffer->pos[i].y_offset = hb_saturate_add (buffer->pos[i].y_offset, y_offset);
+      بفر->pos[i].x_advance = 0;
+      بفر->pos[i].y_advance = 0;
+      بفر->pos[i].x_وتھ_2 = hb_saturate_جوڑو (بفر->pos[i].x_وتھ_2, x_وتھ_2);
+      بفر->pos[i].y_وتھ_2 = hb_saturate_جوڑو (بفر->pos[i].y_وتھ_2, y_وتھ_2);
 
-    } else {
-      if (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
-	x_offset = hb_saturate_sub (x_offset, buffer->pos[i].x_advance);
-	y_offset = hb_saturate_sub (y_offset, buffer->pos[i].y_advance);
-      } else {
-	x_offset = hb_saturate_add (x_offset, buffer->pos[i].x_advance);
-	y_offset = hb_saturate_add (y_offset, buffer->pos[i].y_advance);
+    } وإلا {
+      إذا (HB_DIRECTION_IS_FORWARD (بفر->props.direction)) {
+	x_وتھ_2 = hb_saturate_sub (x_وتھ_2, بفر->pos[i].x_advance);
+	y_وتھ_2 = hb_saturate_sub (y_وتھ_2, بفر->pos[i].y_advance);
+      } وإلا {
+	x_وتھ_2 = hb_saturate_جوڑو (x_وتھ_2, بفر->pos[i].x_advance);
+	y_وتھ_2 = hb_saturate_جوڑو (y_وتھ_2, بفر->pos[i].y_advance);
       }
     }
 }
 
-static inline void
-position_cluster_impl (const hb_ot_shape_plan_t *plan,
+ساكن مضمن فراغ
+position_cluster_impl (ثابت hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t  *buffer,
-		       unsigned int start,
-		       unsigned int end,
-		       bool adjust_offsets_when_zeroing)
+		       hb_بفر_t  *بفر,
+		       بنانشانی صحيح شروع,
+		       بنانشانی صحيح سرا,
+		       منطقي adjust_offsets_when_zeroing)
 {
   /* Find the base glyph */
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = start; i < end; i++)
-    if (!_hb_glyph_info_is_unicode_mark (&info[i]))
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
+    إذا (!_hb_glyph_info_is_unicode_mark (&info[i]))
     {
       /* Find mark glyphs */
-      unsigned int j;
-      for (j = i + 1; j < end; j++)
+      بنانشانی صحيح j;
+      لكل (j = i + 1; j < سرا; j++)
       {
-        if (_hb_glyph_info_is_hidden (&info[j]) ||
+        إذا (_hb_glyph_info_is_hidden (&info[j]) ||
 	    _hb_glyph_info_is_default_ignorable (&info[j]))
-	  continue;
-	if (!_hb_glyph_info_is_unicode_mark (&info[j]))
-	  break;
+	  استمر;
+	إذا (!_hb_glyph_info_is_unicode_mark (&info[j]))
+	  اكسر;
       }
 
-      position_around_base (plan, font, buffer, i, j, adjust_offsets_when_zeroing);
+      position_around_ادھار (plan, font, بفر, i, j, adjust_offsets_when_zeroing);
 
       i = j - 1;
     }
 }
 
-static HB_ALWAYS_INLINE void
-position_cluster (const hb_ot_shape_plan_t *plan,
+ساكن HB_ALWAYS_INLINE فراغ
+position_cluster (ثابت hb_ot_shape_plan_t *plan,
 		  hb_font_t *font,
-		  hb_buffer_t  *buffer,
-		  unsigned int start,
-		  unsigned int end,
-		  bool adjust_offsets_when_zeroing)
+		  hb_بفر_t  *بفر,
+		  بنانشانی صحيح شروع,
+		  بنانشانی صحيح سرا,
+		  منطقي adjust_offsets_when_zeroing)
 {
-  if (end - start < 2)
-    return;
+  إذا (سرا - شروع < 2)
+    أرجع;
 
-  position_cluster_impl (plan, font, buffer, start, end, adjust_offsets_when_zeroing);
+  position_cluster_impl (plan, font, بفر, شروع, سرا, adjust_offsets_when_zeroing);
 }
 
-void
-_hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
+فراغ
+_hb_ot_shape_fallback_mark_position (ثابت hb_ot_shape_plan_t *plan,
 				     hb_font_t *font,
-				     hb_buffer_t  *buffer,
-				     bool adjust_offsets_when_zeroing)
+				     hb_بفر_t  *بفر,
+				     منطقي adjust_offsets_when_zeroing)
 {
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
-#endif
+#جے_تعریف_شدہ HB_NO_OT_SHAPE_FALLBACK
+  أرجع;
+#جے_انت
 
-  if (!buffer->message (font, "start fallback mark"))
-    return;
+  إذا (!بفر->سنیہا (font, "start fallback mark"))
+    أرجع;
 
-  _hb_buffer_assert_gsubgpos_vars (buffer);
+  hb_بفر_assert_gsubgpos_vars (بفر);
 
-  unsigned int start = 0;
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 1; i < count; i++)
-    if (likely (!_hb_glyph_info_is_unicode_mark (&info[i]) &&
+  بنانشانی صحيح شروع = 0;
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 1; i < گنتی; i++)
+    إذا (likely (!_hb_glyph_info_is_unicode_mark (&info[i]) &&
 		!_hb_glyph_info_is_hidden (&info[i]) &&
 		!_hb_glyph_info_is_default_ignorable (&info[i]))) {
-      position_cluster (plan, font, buffer, start, i, adjust_offsets_when_zeroing);
-      start = i;
+      position_cluster (plan, font, بفر, شروع, i, adjust_offsets_when_zeroing);
+      شروع = i;
     }
-  position_cluster (plan, font, buffer, start, count, adjust_offsets_when_zeroing);
+  position_cluster (plan, font, بفر, شروع, گنتی, adjust_offsets_when_zeroing);
 
-  (void) buffer->message (font, "end fallback mark");
+  (فراغ) بفر->سنیہا (font, "end fallback mark");
 }
 
 
-#ifndef HB_DISABLE_DEPRECATED
-struct hb_ot_shape_fallback_kern_driver_t
+#جے_بنا_تعریف HB_DISABLE_DEPRECATED
+بنية hb_ot_shape_fallback_kern_driver_t
 {
   hb_ot_shape_fallback_kern_driver_t (hb_font_t   *font_,
-				      hb_buffer_t *buffer) :
-    font (font_), direction (buffer->props.direction) {}
+				      hb_بفر_t *بفر) :
+    font (font_), direction (بفر->props.direction) {}
 
-  hb_position_t get_kerning (hb_codepoint_t first, hb_codepoint_t second) const
+  hb_position_t get_kerning (hb_codepoint_t پہلا, hb_codepoint_t second) ثابت
   {
     hb_position_t kern = 0;
-    font->get_glyph_kerning_for_direction (first, second,
+    font->get_glyph_kerning_for_direction (پہلا, second,
 					   direction,
 					   &kern, &kern);
-    return kern;
+    أرجع kern;
   }
 
   hb_font_t *font;
   hb_direction_t direction;
 };
-#endif
+#جے_انت
 
 /* Performs font-assisted kerning. */
-void
-_hb_ot_shape_fallback_kern (const hb_ot_shape_plan_t *plan,
+فراغ
+_hb_ot_shape_fallback_kern (ثابت hb_ot_shape_plan_t *plan,
 			    hb_font_t *font,
-			    hb_buffer_t *buffer)
+			    hb_بفر_t *بفر)
 {
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
-#endif
+#جے_تعریف_شدہ HB_NO_OT_SHAPE_FALLBACK
+  أرجع;
+#جے_انت
 
-#ifndef HB_DISABLE_DEPRECATED
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction) ?
+#جے_بنا_تعریف HB_DISABLE_DEPRECATED
+  إذا (HB_DIRECTION_IS_HORIZONTAL (بفر->props.direction) ?
       !font->has_glyph_h_kerning_func () :
       !font->has_glyph_v_kerning_func ())
-    return;
+    أرجع;
 
-  if (!buffer->message (font, "start fallback kern"))
-    return;
+  إذا (!بفر->سنیہا (font, "start fallback kern"))
+    أرجع;
 
-  bool reverse = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  منطقي reverse = HB_DIRECTION_IS_BACKWARD (بفر->props.direction);
 
-  if (reverse)
-    buffer->reverse ();
+  إذا (reverse)
+    بفر->reverse ();
 
-  hb_ot_shape_fallback_kern_driver_t driver (font, buffer);
+  hb_ot_shape_fallback_kern_driver_t driver (font, بفر);
   OT::hb_kern_machine_t<hb_ot_shape_fallback_kern_driver_t> machine (driver);
-  machine.kern (font, buffer, plan->kern_mask, false);
+  machine.kern (font, بفر, plan->kern_نقاب, خطأ);
 
-  if (reverse)
-    buffer->reverse ();
+  إذا (reverse)
+    بفر->reverse ();
 
-  (void) buffer->message (font, "end fallback kern");
-#endif
+  (فراغ) بفر->سنیہا (font, "end fallback kern");
+#جے_انت
 }
 
 
 /* Adjusts width of various spaces. */
-void
-_hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan HB_UNUSED,
+فراغ
+_hb_ot_shape_fallback_spaces (ثابت hb_ot_shape_plan_t *plan HB_بن_ورتیا,
 			      hb_font_t *font,
-			      hb_buffer_t  *buffer)
+			      hb_بفر_t  *بفر)
 {
-  hb_glyph_info_t *info = buffer->info;
-  hb_glyph_position_t *pos = buffer->pos;
-  bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_is_unicode_space (&info[i]) && !_hb_glyph_info_ligated (&info[i]))
+  hb_glyph_info_t *info = بفر->info;
+  hb_glyph_position_t *pos = بفر->pos;
+  منطقي horizontal = HB_DIRECTION_IS_HORIZONTAL (بفر->props.direction);
+  بنانشانی صحيح گنتی = بفر->len;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
+    إذا (_hb_glyph_info_is_unicode_space (&info[i]) && !_hb_glyph_info_ligated (&info[i]))
     {
       /* If font had no ASCII space and we used the invisible glyph, give it a 1/4 EM default advance. */
-      if (buffer->invisible && info[i].codepoint == buffer->invisible)
+      إذا (بفر->invisible && info[i].codepoint == بفر->invisible)
       {
-        if (horizontal)
+        إذا (horizontal)
 	  pos[i].x_advance = +font->x_scale / 4;
-        else
+        وإلا
 	  pos[i].y_advance = -(int64_t) font->y_scale / 4;
       }
 
       hb_unicode_funcs_t::space_t space_type = _hb_glyph_info_get_unicode_space_fallback_type (&info[i]);
       hb_codepoint_t glyph;
-      typedef hb_unicode_funcs_t t;
-      switch (space_type)
+      تعريفنوع hb_unicode_funcs_t t;
+      بدل (space_type)
       {
-	case t::NOT_SPACE: /* Shouldn't happen. */
-	case t::SPACE:
-	  break;
+	حالة t::NOT_SPACE: /* Shouldn't happen. */
+	حالة t::SPACE:
+	  اكسر;
 
-	case t::SPACE_EM:
-	case t::SPACE_EM_2:
-	case t::SPACE_EM_3:
-	case t::SPACE_EM_4:
-	case t::SPACE_EM_5:
-	case t::SPACE_EM_6:
-	case t::SPACE_EM_16:
-	  if (horizontal)
-	    pos[i].x_advance = ((int64_t) font->x_scale + ((int) space_type)/2) / (int) space_type;
-	  else
-	    pos[i].y_advance = -((int64_t) font->y_scale + ((int) space_type)/2) / (int) space_type;
-	  break;
+	حالة t::SPACE_EM:
+	حالة t::SPACE_EM_2:
+	حالة t::SPACE_EM_3:
+	حالة t::SPACE_EM_4:
+	حالة t::SPACE_EM_5:
+	حالة t::SPACE_EM_6:
+	حالة t::SPACE_EM_16:
+	  إذا (horizontal)
+	    pos[i].x_advance = ((int64_t) font->x_scale + ((صحيح) space_type)/2) / (صحيح) space_type;
+	  وإلا
+	    pos[i].y_advance = -((int64_t) font->y_scale + ((صحيح) space_type)/2) / (صحيح) space_type;
+	  اكسر;
 
-	case t::SPACE_4_EM_18:
-	  if (horizontal)
+	حالة t::SPACE_4_EM_18:
+	  إذا (horizontal)
 	    pos[i].x_advance = (int64_t) font->x_scale * 4 / 18;
-	  else
+	  وإلا
 	    pos[i].y_advance = -(int64_t) font->y_scale * 4 / 18;
-	  break;
+	  اكسر;
 
-	case t::SPACE_FIGURE:
-	  for (char u = '0'; u <= '9'; u++)
-	    if (font->get_nominal_glyph (u, &glyph))
+	حالة t::SPACE_FIGURE:
+	  لكل (حرف u = '0'; u <= '9'; u++)
+	    إذا (font->get_nominal_glyph (u, &glyph))
 	    {
-	      if (horizontal)
+	      إذا (horizontal)
 		pos[i].x_advance = font->get_glyph_h_advance (glyph);
-	      else
+	      وإلا
 		pos[i].y_advance = font->get_glyph_v_advance (glyph);
-	      break;
+	      اكسر;
 	    }
-	  break;
+	  اكسر;
 
-	case t::SPACE_PUNCTUATION:
-	  if (font->get_nominal_glyph ('.', &glyph) ||
+	حالة t::SPACE_PUNCTUATION:
+	  إذا (font->get_nominal_glyph ('.', &glyph) ||
 	      font->get_nominal_glyph (',', &glyph))
 	  {
-	    if (horizontal)
+	    إذا (horizontal)
 	      pos[i].x_advance = font->get_glyph_h_advance (glyph);
-	    else
+	    وإلا
 	      pos[i].y_advance = font->get_glyph_v_advance (glyph);
 	  }
-	  break;
+	  اكسر;
 
-	case t::SPACE_NARROW:
+	حالة t::SPACE_NARROW:
 	  /* Half-space?
 	   * Unicode doc https://unicode.org/charts/PDF/U2000.pdf says ~1/4 or 1/5 of EM.
 	   * However, in my testing, many fonts have their regular space being about that
 	   * size.  To me, a percentage of the space width makes more sense.  Half is as
 	   * good as any. */
-	  if (horizontal)
+	  إذا (horizontal)
 	    pos[i].x_advance /= 2;
-	  else
+	  وإلا
 	    pos[i].y_advance /= 2;
-	  break;
+	  اكسر;
       }
     }
 }
 
 
-#endif
+#جے_انت

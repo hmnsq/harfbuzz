@@ -24,10 +24,10 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_CACHE_HH
-#define HB_CACHE_HH
+#جے_بنا_تعریف HB_CACHE_HH
+#تعریف_کرو HB_CACHE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,66 +57,66 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+سانچا <بنانشانی صحيح کلید_بٹ=16,
+	 بنانشانی صحيح قدر_بٹ=8 + 32 - کلید_بٹ,
+	 بنانشانی صحيح cache_بٹ=8,
+	 منطقي thread_محفوظ=سچ>
+بنية hb_cache_t
 {
-  using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       unsigned short,
-											       unsigned int>::type>::type
+  ورتوں شے_t = قسم_ناں std::conditional<thread_محفوظ,
+					   قسم_ناں std::conditional<کلید_بٹ + قدر_بٹ - cache_بٹ <= 8,
+								     hb_atomic_t<بنانشانی حرف>,
+								     قسم_ناں std::conditional<کلید_بٹ + قدر_بٹ - cache_بٹ <= 16,
+											       hb_atomic_t<بنانشانی چھوٹا>,
+											       hb_atomic_t<بنانشانی صحيح>>::type>::type,
+					   قسم_ناں std::conditional<کلید_بٹ + قدر_بٹ - cache_بٹ <= 8,
+								     بنانشانی حرف,
+								     قسم_ناں std::conditional<کلید_بٹ + قدر_بٹ - cache_بٹ <= 16,
+											       بنانشانی چھوٹا,
+											       بنانشانی صحيح>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((کلید_بٹ >= cache_بٹ), "");
+  static_assert ((کلید_بٹ + قدر_بٹ <= cache_بٹ + 8 * حجم (شے_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  ساكن constexpr بنانشانی MAX_قدر = (1u << قدر_بٹ) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  فراغ clear ()
   {
-    for (auto &v : values)
+    لكل (خودکار &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  منطقي get (بنانشانی صحيح key, بنانشانی صحيح *value) ثابت
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    بنانشانی صحيح k = key & ((1u<<cache_بٹ)-1);
+    بنانشانی صحيح v = values[k];
+    constexpr بنانشانی صحيح خالی_تھاواں_2 = (1ULL << (8 * حجم (شے_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    إذا ((key >> کلید_بٹ) |
+	((v >> قدر_بٹ) ^ (key >> cache_بٹ)) |
+	((کلید_بٹ + قدر_بٹ - cache_بٹ == 8 * حجم (شے_t)) && (v == خالی_تھاواں_2)))
+      أرجع خطأ;
+    *value = v & ((1u<<قدر_بٹ)-1);
+    أرجع سچ;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  فراغ سیٹ (بنانشانی صحيح key, بنانشانی صحيح value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    إذا (unlikely ((key >> کلید_بٹ) || (value >> قدر_بٹ)))
+      أرجع; /* Overflows */
+    بنانشانی صحيح k = key & ((1u<<cache_بٹ)-1);
+    بنانشانی صحيح v = ((key>>cache_بٹ)<<قدر_بٹ) | value;
     values[k] = v;
   }
 
-  private:
-  item_t values[1u<<cache_bits];
+  خاص:
+  شے_t values[1u<<cache_بٹ];
 };
 
 
-#endif /* HB_CACHE_HH */
+#جے_انت /* HB_CACHE_HH */

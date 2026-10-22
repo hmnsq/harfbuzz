@@ -22,19 +22,19 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include <string>
+#ضمن "hb.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-set.hh"
+#ضمن <string>
 
-int
-main (int argc, char **argv)
+صحيح
+مکھ (صحيح argc, حرف **argv)
 {
 
   /* Test copy constructor. */
   {
     hb_map_t v1;
-    v1.set (1, 2);
+    v1.سیٹ (1, 2);
     hb_map_t v2 {v1};
     hb_always_assert (v1.get_population () == 1);
     hb_always_assert (v2.get_population () == 1);
@@ -45,7 +45,7 @@ main (int argc, char **argv)
   /* Test copy assignment. */
   {
     hb_map_t v1;
-    v1.set (1, 2);
+    v1.سیٹ (1, 2);
     hb_map_t v2 = v1;
     hb_always_assert (v1.get_population () == 1);
     hb_always_assert (v2.get_population () == 1);
@@ -56,7 +56,7 @@ main (int argc, char **argv)
   /* Test move constructor. */
   {
     hb_map_t s {};
-    s.set (1, 2);
+    s.سیٹ (1, 2);
     hb_map_t v (std::move (s));
     hb_always_assert (s.get_population () == 0);
     hb_always_assert (v.get_population () == 1);
@@ -65,7 +65,7 @@ main (int argc, char **argv)
   /* Test move assignment. */
   {
     hb_map_t s {};
-    s.set (1, 2);
+    s.سیٹ (1, 2);
     hb_map_t v;
     v = std::move (s);
     hb_always_assert (s.get_population () == 0);
@@ -76,10 +76,10 @@ main (int argc, char **argv)
   {
     hb_map_t s;
 
-    s.set (1, 2);
-    s.set (3, 4);
+    s.سیٹ (1, 2);
+    s.سیٹ (3, 4);
 
-    hb_vector_t<hb_codepoint_pair_t> v (s);
+    hb_سمتیہ_t<hb_codepoint_pair_t> v (s);
     hb_map_t v0 (v);
     hb_map_t v1 (s);
     hb_map_t v2 (std::move (s));
@@ -93,8 +93,8 @@ main (int argc, char **argv)
   /* Test call fini() twice. */
   {
     hb_map_t s;
-    for (int i = 0; i < 16; i++)
-      s.set(i, i+1);
+    لكل (صحيح i = 0; i < 16; i++)
+      s.سیٹ(i, i+1);
     s.fini();
   }
 
@@ -102,8 +102,8 @@ main (int argc, char **argv)
   {
     hb_map_t s;
 
-    s.set (1, 2);
-    s.set (3, 4);
+    s.سیٹ (1, 2);
+    s.سیٹ (3, 4);
 
     hb_map_t v (hb_iter (s));
 
@@ -112,50 +112,50 @@ main (int argc, char **argv)
 
   /* Test initializing from initializer list and swapping. */
   {
-    using pair_t = hb_codepoint_pair_t;
+    ورتوں pair_t = hb_codepoint_pair_t;
     hb_map_t v1 {pair_t{1,2}, pair_t{4,5}};
     hb_map_t v2 {pair_t{3,4}};
-    hb_swap (v1, v2);
+    hb_وٹاندرا (v1, v2);
     hb_always_assert (v1.get_population () == 1);
     hb_always_assert (v2.get_population () == 2);
   }
 
   /* Test class key / value types. */
   {
-    hb_hashmap_t<hb_bytes_t, int> m1;
-    hb_hashmap_t<int, hb_bytes_t> m2;
-    hb_hashmap_t<hb_bytes_t, hb_bytes_t> m3;
+    hb_hashmap_t<hb_بائٹاں_t, صحيح> m1;
+    hb_hashmap_t<صحيح, hb_بائٹاں_t> m2;
+    hb_hashmap_t<hb_بائٹاں_t, hb_بائٹاں_t> m3;
     hb_always_assert (m1.get_population () == 0);
     hb_always_assert (m2.get_population () == 0);
     hb_always_assert (m3.get_population () == 0);
   }
 
   {
-    hb_hashmap_t<int, int> m0;
-    hb_hashmap_t<std::string, int> m1;
-    hb_hashmap_t<int, std::string> m2;
+    hb_hashmap_t<صحيح, صحيح> m0;
+    hb_hashmap_t<std::string, صحيح> m1;
+    hb_hashmap_t<صحيح, std::string> m2;
     hb_hashmap_t<std::string, std::string> m3;
 
     std::string s;
-    for (unsigned i = 1; i < 1000; i++)
+    لكل (بنانشانی i = 1; i < 1000; i++)
     {
       s += "x";
-      m0.set (i, i);
-      m1.set (s, i);
-      m2.set (i, s);
-      m3.set (s, s);
+      m0.سیٹ (i, i);
+      m1.سیٹ (s, i);
+      m2.سیٹ (i, s);
+      m3.سیٹ (s, s);
     }
   }
 
   /* Test hashing maps. */
   {
-    using pair = hb_codepoint_pair_t;
+    ورتوں pair = hb_codepoint_pair_t;
 
     hb_hashmap_t<hb_map_t, hb_map_t> m1;
 
-    m1.set (hb_map_t (), hb_map_t {});
-    m1.set (hb_map_t (), hb_map_t {pair (1u, 2u)});
-    m1.set (hb_map_t {pair (1u, 2u)}, hb_map_t {pair (2u, 3u)});
+    m1.سیٹ (hb_map_t (), hb_map_t {});
+    m1.سیٹ (hb_map_t (), hb_map_t {pair (1u, 2u)});
+    m1.سیٹ (hb_map_t {pair (1u, 2u)}, hb_map_t {pair (2u, 3u)});
 
     hb_always_assert (m1.get (hb_map_t ()) == hb_map_t {pair (1u, 2u)});
     hb_always_assert (m1.get (hb_map_t {pair (1u, 2u)}) == hb_map_t {pair (2u, 3u)});
@@ -163,117 +163,117 @@ main (int argc, char **argv)
 
   /* Test hashing sets. */
   {
-    hb_hashmap_t<hb_set_t, hb_set_t> m1;
+    hb_hashmap_t<hb_سیٹ_t, hb_سیٹ_t> m1;
 
-    m1.set (hb_set_t (), hb_set_t ());
-    m1.set (hb_set_t (), hb_set_t {1});
-    m1.set (hb_set_t {1, 1000}, hb_set_t {2});
+    m1.سیٹ (hb_سیٹ_t (), hb_سیٹ_t ());
+    m1.سیٹ (hb_سیٹ_t (), hb_سیٹ_t {1});
+    m1.سیٹ (hb_سیٹ_t {1, 1000}, hb_سیٹ_t {2});
 
-    hb_always_assert (m1.get (hb_set_t ()) == hb_set_t {1});
-    hb_always_assert (m1.get (hb_set_t {1000, 1}) == hb_set_t {2});
+    hb_always_assert (m1.get (hb_سیٹ_t ()) == hb_سیٹ_t {1});
+    hb_always_assert (m1.get (hb_سیٹ_t {1000, 1}) == hb_سیٹ_t {2});
   }
 
   /* Test hashing vectors. */
   {
-    using vector_t = hb_vector_t<unsigned>;
+    ورتوں سمتیہ_t = hb_سمتیہ_t<بنانشانی>;
 
-    hb_hashmap_t<vector_t, vector_t> m1;
+    hb_hashmap_t<سمتیہ_t, سمتیہ_t> m1;
 
-    m1.set (vector_t (), vector_t {1});
-    m1.set (vector_t {1}, vector_t {2});
+    m1.سیٹ (سمتیہ_t (), سمتیہ_t {1});
+    m1.سیٹ (سمتیہ_t {1}, سمتیہ_t {2});
 
-    m1 << hb_pair_t<vector_t, vector_t> {vector_t {2}, vector_t ()};
+    m1 << hb_pair_t<سمتیہ_t, سمتیہ_t> {سمتیہ_t {2}, سمتیہ_t ()};
 
-    hb_always_assert (m1.get (vector_t ()) == vector_t {1});
-    hb_always_assert (m1.get (vector_t {1}) == vector_t {2});
+    hb_always_assert (m1.get (سمتیہ_t ()) == سمتیہ_t {1});
+    hb_always_assert (m1.get (سمتیہ_t {1}) == سمتیہ_t {2});
   }
 
   /* Test moving values */
   {
-    using vector_t = hb_vector_t<unsigned>;
+    ورتوں سمتیہ_t = hb_سمتیہ_t<بنانشانی>;
 
-    hb_hashmap_t<vector_t, vector_t> m1;
-    vector_t v {3};
-    hb_always_assert (v.length == 1);
-    m1 << hb_pair_t<vector_t, vector_t> {vector_t {3}, v};
-    hb_always_assert (v.length == 1);
-    m1 << hb_pair_t<vector_t, vector_t&&> {vector_t {4}, std::move (v)};
-    hb_always_assert (v.length == 0);
-    m1 << hb_pair_t<vector_t&&, vector_t> {vector_t {4}, vector_t {5}};
-    m1 << hb_pair_t<vector_t&&, vector_t&&> {vector_t {4}, vector_t {5}};
+    hb_hashmap_t<سمتیہ_t, سمتیہ_t> m1;
+    سمتیہ_t v {3};
+    hb_always_assert (v.لمائی == 1);
+    m1 << hb_pair_t<سمتیہ_t, سمتیہ_t> {سمتیہ_t {3}, v};
+    hb_always_assert (v.لمائی == 1);
+    m1 << hb_pair_t<سمتیہ_t, سمتیہ_t&&> {سمتیہ_t {4}, std::move (v)};
+    hb_always_assert (v.لمائی == 0);
+    m1 << hb_pair_t<سمتیہ_t&&, سمتیہ_t> {سمتیہ_t {4}, سمتیہ_t {5}};
+    m1 << hb_pair_t<سمتیہ_t&&, سمتیہ_t&&> {سمتیہ_t {4}, سمتیہ_t {5}};
 
-    hb_hashmap_t<vector_t, vector_t> m2;
-    vector_t v2 {3};
-    m2.set (vector_t {4}, v2);
-    hb_always_assert (v2.length == 1);
-    m2.set (vector_t {5}, std::move (v2));
-    hb_always_assert (v2.length == 0);
+    hb_hashmap_t<سمتیہ_t, سمتیہ_t> m2;
+    سمتیہ_t v2 {3};
+    m2.سیٹ (سمتیہ_t {4}, v2);
+    hb_always_assert (v2.لمائی == 1);
+    m2.سیٹ (سمتیہ_t {5}, std::move (v2));
+    hb_always_assert (v2.لمائی == 0);
   }
 
   /* Test hb::shared_ptr. */
   {
-    hb_hashmap_t<hb::shared_ptr<hb_set_t>, hb::shared_ptr<hb_set_t>> m;
+    hb_hashmap_t<hb::shared_ptr<hb_سیٹ_t>, hb::shared_ptr<hb_سیٹ_t>> m;
 
-    m.set (hb::shared_ptr<hb_set_t> (hb_set_get_empty ()),
-	   hb::shared_ptr<hb_set_t> (hb_set_get_empty ()));
-    m.get (hb::shared_ptr<hb_set_t> (hb_set_get_empty ()));
+    m.سیٹ (hb::shared_ptr<hb_سیٹ_t> (hb_سیٹ_get_خالی_تھاواں ()),
+	   hb::shared_ptr<hb_سیٹ_t> (hb_سیٹ_get_خالی_تھاواں ()));
+    m.get (hb::shared_ptr<hb_سیٹ_t> (hb_سیٹ_get_خالی_تھاواں ()));
     m.iter ();
-    m.keys ();
+    m.کلیدیں ();
     m.values ();
     m.iter_ref ();
-    m.keys_ref ();
-    m.values_ref ();
+    m.کلیدیں_ref ();
+    m.اقدار_ref ();
   }
   /* Test hb::unique_ptr. */
   {
-    hb_hashmap_t<hb::unique_ptr<hb_set_t>, hb::unique_ptr<hb_set_t>> m;
+    hb_hashmap_t<hb::unique_ptr<hb_سیٹ_t>, hb::unique_ptr<hb_سیٹ_t>> m;
 
-    m.set (hb::unique_ptr<hb_set_t> (hb_set_get_empty ()),
-           hb::unique_ptr<hb_set_t> (hb_set_get_empty ()));
-    m.get (hb::unique_ptr<hb_set_t> (hb_set_get_empty ()));
-    hb::unique_ptr<hb_set_t> *v;
-    m.has (hb::unique_ptr<hb_set_t> (hb_set_get_empty ()), &v);
+    m.سیٹ (hb::unique_ptr<hb_سیٹ_t> (hb_سیٹ_get_خالی_تھاواں ()),
+           hb::unique_ptr<hb_سیٹ_t> (hb_سیٹ_get_خالی_تھاواں ()));
+    m.get (hb::unique_ptr<hb_سیٹ_t> (hb_سیٹ_get_خالی_تھاواں ()));
+    hb::unique_ptr<hb_سیٹ_t> *v;
+    m.has (hb::unique_ptr<hb_سیٹ_t> (hb_سیٹ_get_خالی_تھاواں ()), &v);
     m.iter_ref ();
-    m.keys_ref ();
-    m.values_ref ();
+    m.کلیدیں_ref ();
+    m.اقدار_ref ();
   }
   /* Test hashmap with complex shared_ptrs as keys. */
   {
-    hb_hashmap_t<hb::shared_ptr<hb_map_t>, unsigned> m;
+    hb_hashmap_t<hb::shared_ptr<hb_map_t>, بنانشانی> m;
 
     hb_map_t *m1 = hb_map_create ();
     hb_map_t *m2 = hb_map_create ();
-    m1->set (1,3);
-    m2->set (1,3);
+    m1->سیٹ (1,3);
+    m2->سیٹ (1,3);
 
     hb::shared_ptr<hb_map_t> p1 {m1};
     hb::shared_ptr<hb_map_t> p2 {m2};
-    m.set (p1,1);
+    m.سیٹ (p1,1);
 
     hb_always_assert (m.has (p2));
 
-    m1->set (2,4);
+    m1->سیٹ (2,4);
     hb_always_assert (!m.has (p2));
   }
   /* Test value type with hb_bytes_t. */
   {
-    hb_hashmap_t<int, hb_bytes_t> m;
-    char c_str[] = "Test";
-    hb_bytes_t bytes (c_str);
+    hb_hashmap_t<صحيح, hb_بائٹاں_t> m;
+    حرف c_str[] = "Test";
+    hb_بائٹاں_t بائٹاں (c_str);
 
-    m.set (1, bytes);
+    m.سیٹ (1, بائٹاں);
     hb_always_assert (m.has (1));
-    hb_always_assert (m.get (1) == hb_bytes_t {"Test"});
+    hb_always_assert (m.get (1) == hb_بائٹاں_t {"Test"});
   }
   /* Test operators. */
   {
     hb_map_t m1, m2, m3;
-    m1.set (1, 2);
-    m1.set (2, 4);
-    m2.set (1, 2);
-    m2.set (2, 4);
-    m3.set (1, 3);
-    m3.set (3, 5);
+    m1.سیٹ (1, 2);
+    m1.سیٹ (2, 4);
+    m2.سیٹ (1, 2);
+    m2.سیٹ (2, 4);
+    m3.سیٹ (1, 3);
+    m3.سیٹ (3, 5);
 
     hb_always_assert (m1 == m2);
     hb_always_assert (m1 != m3);
@@ -288,43 +288,43 @@ main (int argc, char **argv)
   }
   /* Test reset. */
   {
-    hb_hashmap_t<int, hb_set_t> m;
-    m.set (1, hb_set_t {1, 2, 3});
+    hb_hashmap_t<صحيح, hb_سیٹ_t> m;
+    m.سیٹ (1, hb_سیٹ_t {1, 2, 3});
     m.reset ();
   }
   /* Test iteration. */
   {
     hb_map_t m;
-    m.set (1, 1);
-    m.set (4, 3);
-    m.set (5, 5);
-    m.set (2, 1);
-    m.set (3, 2);
-    m.set (6, 8);
+    m.سیٹ (1, 1);
+    m.سیٹ (4, 3);
+    m.سیٹ (5, 5);
+    m.سیٹ (2, 1);
+    m.سیٹ (3, 2);
+    m.سیٹ (6, 8);
 
     hb_codepoint_t k;
     hb_codepoint_t v;
-    unsigned pop = 0;
-    for (signed i = -1;
+    بنانشانی نکالو = 0;
+    لكل (نشانیوالا i = -1;
 	 m.next (&i, &k, &v);)
     {
-      pop++;
-           if (k == 1) hb_always_assert (v == 1);
-      else if (k == 2) hb_always_assert (v == 1);
-      else if (k == 3) hb_always_assert (v == 2);
-      else if (k == 4) hb_always_assert (v == 3);
-      else if (k == 5) hb_always_assert (v == 5);
-      else if (k == 6) hb_always_assert (v == 8);
-      else hb_always_assert (false);
+      نکالو++;
+           إذا (k == 1) hb_always_assert (v == 1);
+      وإلا إذا (k == 2) hb_always_assert (v == 1);
+      وإلا إذا (k == 3) hb_always_assert (v == 2);
+      وإلا إذا (k == 4) hb_always_assert (v == 3);
+      وإلا إذا (k == 5) hb_always_assert (v == 5);
+      وإلا إذا (k == 6) hb_always_assert (v == 8);
+      وإلا hb_always_assert (خطأ);
     }
-    hb_always_assert (pop == m.get_population ());
+    hb_always_assert (نکالو == m.get_population ());
   }
   /* Test update */
   {
     hb_map_t m1, m2;
-    m1.set (1, 2);
-    m1.set (2, 4);
-    m2.set (1, 3);
+    m1.سیٹ (1, 2);
+    m1.سیٹ (2, 4);
+    m2.سیٹ (1, 3);
 
     m1.update (m2);
     hb_always_assert (m1.get_population () == 2);
@@ -334,65 +334,65 @@ main (int argc, char **argv)
   /* Test keys / values */
   {
     hb_map_t m;
-    m.set (1, 1);
-    m.set (4, 3);
-    m.set (5, 5);
-    m.set (2, 1);
-    m.set (3, 2);
-    m.set (6, 8);
+    m.سیٹ (1, 1);
+    m.سیٹ (4, 3);
+    m.سیٹ (5, 5);
+    m.سیٹ (2, 1);
+    m.سیٹ (3, 2);
+    m.سیٹ (6, 8);
 
-    hb_set_t keys;
-    hb_set_t values;
+    hb_سیٹ_t کلیدیں;
+    hb_سیٹ_t values;
 
-    hb_copy (m.keys (), keys);
+    hb_copy (m.کلیدیں (), کلیدیں);
     hb_copy (m.values (), values);
 
-    hb_always_assert (keys.is_equal (hb_set_t ({1, 2, 3, 4, 5, 6})));
-    hb_always_assert (values.is_equal (hb_set_t ({1, 1, 2, 3, 5, 8})));
+    hb_always_assert (کلیدیں.is_equal (hb_سیٹ_t ({1, 2, 3, 4, 5, 6})));
+    hb_always_assert (values.is_equal (hb_سیٹ_t ({1, 1, 2, 3, 5, 8})));
 
-    hb_always_assert (keys.is_equal (hb_set_t (m.keys ())));
-    hb_always_assert (values.is_equal (hb_set_t (m.values ())));
+    hb_always_assert (کلیدیں.is_equal (hb_سیٹ_t (m.کلیدیں ())));
+    hb_always_assert (values.is_equal (hb_سیٹ_t (m.values ())));
   }
   /* Test setting a key or value that lives in the map's own storage
    * while the map grows. */
   {
     hb_map_t m;
-    m.set (1, 2);
-    for (unsigned i = 0; i < 1000; i++)
+    m.سیٹ (1, 2);
+    لكل (بنانشانی i = 0; i < 1000; i++)
     {
-      m.set (1000 + i, m.get (1));
+      m.سیٹ (1000 + i, m.get (1));
       hb_always_assert (m.get (1000 + i) == 2);
     }
     hb_map_t m2;
-    m2.set (1, 5000);
-    for (unsigned i = 0; i < 1000; i++)
+    m2.سیٹ (1, 5000);
+    لكل (بنانشانی i = 0; i < 1000; i++)
     {
-      m2.set (m2.get (1), i);
-      m2.set (1, 5001 + i);
+      m2.سیٹ (m2.get (1), i);
+      m2.سیٹ (1, 5001 + i);
       hb_always_assert (m2.get (5000 + i) == i);
     }
-    hb_hashmap_t<unsigned, hb_vector_t<unsigned>> v;
-    v.set (1, hb_vector_t<unsigned> {1, 2, 3});
-    for (unsigned i = 0; i < 1000; i++)
+    hb_hashmap_t<بنانشانی, hb_سمتیہ_t<بنانشانی>> v;
+    v.سیٹ (1, hb_سمتیہ_t<بنانشانی> {1, 2, 3});
+    لكل (بنانشانی i = 0; i < 1000; i++)
     {
-      v.set (1000 + i, v.get (1));
-      hb_always_assert (v.get (1000 + i).length == 3);
+      v.سیٹ (1000 + i, v.get (1));
+      hb_always_assert (v.get (1000 + i).لمائی == 3);
     }
   }
   /* Test allocation bounds and overflow protection. */
   {
     hb_map_t m1;
-    hb_always_assert (!m1.alloc ((unsigned) -1));
-    hb_always_assert (m1.in_error ());
+    hb_always_assert (!m1.alloc ((بنانشانی) -1));
+    hb_always_assert (m1.وچ_error ());
 
     hb_map_t m2;
     hb_always_assert (!m2.alloc (0x40000000u));
-    hb_always_assert (m2.in_error ());
+    hb_always_assert (m2.وچ_error ());
 
     /* Test copy of map in error state. */
     hb_map_t m3 (m1);
-    hb_always_assert (m3.in_error ());
+    hb_always_assert (m3.وچ_error ());
   }
 
-  return 0;
+  أرجع 0;
 }

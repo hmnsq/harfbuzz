@@ -26,44 +26,44 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#جے_بنا_تعریف HB_NO_OT_SHAPE
 
-#ifdef HB_NO_OT_LAYOUT
-#error "Cannot compile 'ot' shaper with HB_NO_OT_LAYOUT."
-#endif
+#جے_تعریف_شدہ HB_NO_OT_LAYOUT
+#غلطی "Cannot compile 'ot' shaper with HB_NO_OT_LAYOUT."
+#جے_انت
 
-#include "hb-shaper-impl.hh"
+#ضمن "hb-shaper-impl.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-ot-shaper.hh"
-#include "hb-ot-shape-fallback.hh"
-#include "hb-ot-shape-normalize.hh"
+#ضمن "hb-ot-shape.hh"
+#ضمن "hb-ot-shaper.hh"
+#ضمن "hb-ot-shape-fallback.hh"
+#ضمن "hb-ot-shape-normalize.hh"
 
-#include "hb-ot-face.hh"
+#ضمن "hb-ot-face.hh"
 
-#include "hb-set.hh"
-#include "hb-unicode.hh"
+#ضمن "hb-set.hh"
+#ضمن "hb-unicode.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-stat-table.hh"
+#ضمن "hb-aat-layout.hh"
+#ضمن "hb-ot-layout-gdef-table.hh"
+#ضمن "hb-ot-stat-table.hh"
 
 
-static inline bool
+ساكن مضمن منطقي
 _hb_codepoint_is_regional_indicator (hb_codepoint_t u)
-{ return hb_in_range<hb_codepoint_t> (u, 0x1F1E6u, 0x1F1FFu); }
+{ أرجع hb_وچ_range<hb_codepoint_t> (u, 0x1F1E6u, 0x1F1FFu); }
 
-#ifndef HB_NO_AAT_SHAPE
-static inline bool
-_hb_apply_morx (hb_face_t *face, const hb_segment_properties_t &props)
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+ساكن مضمن منطقي
+_hb_apply_morx (hb_face_t *face, ثابت hb_segment_properties_t &props)
 {
   /* https://github.com/harfbuzz/harfbuzz/issues/2124 */
-  return hb_aat_layout_has_substitution (face) &&
+  أرجع hb_aat_layout_has_substitution (face) &&
 	 (HB_DIRECTION_IS_HORIZONTAL (props.direction) || !hb_ot_layout_has_substitution (face));
 }
-#endif
+#جے_انت
 
 /**
  * SECTION:hb-ot-shape
@@ -75,113 +75,113 @@ _hb_apply_morx (hb_face_t *face, const hb_segment_properties_t &props)
  **/
 
 
-static void
+ساكن فراغ
 hb_ot_shape_collect_features (hb_ot_shape_planner_t          *planner,
-			      const hb_feature_t             *user_features,
-			      unsigned int                    num_user_features);
+			      ثابت hb_feature_t             *user_features,
+			      بنانشانی صحيح                    عدد_user_features);
 
 hb_ot_shape_planner_t::hb_ot_shape_planner_t (hb_face_t                     *face,
-					      const hb_segment_properties_t &props) :
+					      ثابت hb_segment_properties_t &props) :
 						face (face),
 						props (props),
 						map (face, props)
-#ifndef HB_NO_AAT_SHAPE
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
 						, aat_map (face, props)
 						, apply_morx (_hb_apply_morx (face, props))
-#endif
+#جے_انت
 {
   shaper = hb_ot_shaper_categorize (props.script, props.direction, map.chosen_script[0]);
 
-  script_zero_marks = shaper->zero_width_marks != HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE;
+  script_zero_marks = shaper->zero_چوڑائی_marks != HB_OT_SHAPE_ZERO_چوڑائی_MARKS_NONE;
   script_fallback_position = shaper->fallback_position;
 
-#ifndef HB_NO_AAT_SHAPE
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
   /* https://github.com/harfbuzz/harfbuzz/issues/1528 */
-  if (apply_morx && shaper != &_hb_ot_shaper_default)
+  إذا (apply_morx && shaper != &_hb_ot_shaper_default)
     shaper = &_hb_ot_shaper_dumber;
-#endif
+#جے_انت
 }
 
-void
+فراغ
 hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
-				const hb_ot_shape_plan_key_t &key)
+				ثابت hb_ot_shape_plan_کلید_t &key)
 {
   plan.props = props;
   plan.shaper = shaper;
   map.compile (plan.map, key);
-#ifndef HB_NO_AAT_SHAPE
-  if (apply_morx)
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+  إذا (apply_morx)
     aat_map.compile (plan.aat_map);
-#endif
+#جے_انت
 
-#ifndef HB_NO_OT_SHAPE_FRACTIONS
-  plan.frac_mask = plan.map.get_1_mask (HB_TAG ('f','r','a','c'));
-  plan.numr_mask = plan.map.get_1_mask (HB_TAG ('n','u','m','r'));
-  plan.dnom_mask = plan.map.get_1_mask (HB_TAG ('d','n','o','m'));
-  plan.has_frac = plan.frac_mask || (plan.numr_mask && plan.dnom_mask);
-#endif
+#جے_بنا_تعریف HB_NO_OT_SHAPE_FRACTIONS
+  plan.frac_نقاب = plan.map.get_1_نقاب (HB_ٹیگ ('f','r','a','c'));
+  plan.numr_نقاب = plan.map.get_1_نقاب (HB_ٹیگ ('n','u','m','r'));
+  plan.dnom_نقاب = plan.map.get_1_نقاب (HB_ٹیگ ('d','n','o','m'));
+  plan.has_frac = plan.frac_نقاب || (plan.numr_نقاب && plan.dnom_نقاب);
+#جے_انت
 
-  plan.rtlm_mask = plan.map.get_1_mask (HB_TAG ('r','t','l','m'));
-  plan.has_vert = !!plan.map.get_1_mask (HB_TAG ('v','e','r','t'));
+  plan.rtlm_نقاب = plan.map.get_1_نقاب (HB_ٹیگ ('r','t','l','m'));
+  plan.has_vert = !!plan.map.get_1_نقاب (HB_ٹیگ ('v','e','r','t'));
 
-  hb_tag_t kern_tag = HB_DIRECTION_IS_HORIZONTAL (props.direction) ?
-		      HB_TAG ('k','e','r','n') : HB_TAG ('v','k','r','n');
-#ifndef HB_NO_OT_KERN
-  plan.kern_mask = plan.map.get_mask (kern_tag);
-  plan.requested_kerning = !!plan.kern_mask;
-#endif
+  hb_ٹیگ_t kern_ٹیگ = HB_DIRECTION_IS_HORIZONTAL (props.direction) ?
+		      HB_ٹیگ ('k','e','r','n') : HB_ٹیگ ('v','k','r','n');
+#جے_بنا_تعریف HB_NO_OT_KERN
+  plan.kern_نقاب = plan.map.get_نقاب (kern_ٹیگ);
+  plan.requested_kerning = !!plan.kern_نقاب;
+#جے_انت
 
-  bool has_gpos_kern = plan.map.get_feature_index (1, kern_tag) != HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  bool disable_gpos = plan.shaper->gpos_tag &&
-		      plan.shaper->gpos_tag != plan.map.chosen_script[1];
+  منطقي has_gpos_kern = plan.map.get_feature_اشاریہ (1, kern_ٹیگ) != HB_OT_LAYOUT_NO_FEATURE_اشاریہ;
+  منطقي disable_gpos = plan.shaper->gpos_ٹیگ &&
+		      plan.shaper->gpos_ٹیگ != plan.map.chosen_script[1];
 
   /*
    * Decide who provides glyph classes. GDEF or Unicode.
    */
 
-  if (!hb_ot_layout_has_glyph_classes (face))
-    plan.fallback_glyph_classes = true;
+  إذا (!hb_ot_layout_has_glyph_classes (face))
+    plan.fallback_glyph_classes = سچ;
 
   /*
    * Decide who does substitutions. GSUB, morx, or fallback.
    */
 
-#ifndef HB_NO_AAT_SHAPE
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
   plan.apply_morx = apply_morx;
-#endif
+#جے_انت
 
   /*
    * Decide who does positioning. GPOS, kerx, kern, or fallback.
    */
 
-#ifndef HB_NO_AAT_SHAPE
-  bool has_kerx = hb_aat_layout_has_positioning (face);
-  bool has_gsub = !apply_morx && hb_ot_layout_has_substitution (face);
-#endif
-  bool has_gpos = !disable_gpos && hb_ot_layout_has_positioning (face);
-  if (false)
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+  منطقي has_kerx = hb_aat_layout_has_positioning (face);
+  منطقي has_gsub = !apply_morx && hb_ot_layout_has_substitution (face);
+#جے_انت
+  منطقي has_gpos = !disable_gpos && hb_ot_layout_has_positioning (face);
+  إذا (خطأ)
     {}
-#ifndef HB_NO_AAT_SHAPE
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
   /* Prefer GPOS over kerx if GSUB is present;
    * https://github.com/harfbuzz/harfbuzz/issues/3008 */
-  else if (has_kerx && !(has_gsub && has_gpos))
-    plan.apply_kerx = true;
-#endif
-  else if (has_gpos)
-    plan.apply_gpos = true;
+  وإلا إذا (has_kerx && !(has_gsub && has_gpos))
+    plan.apply_kerx = سچ;
+#جے_انت
+  وإلا إذا (has_gpos)
+    plan.apply_gpos = سچ;
 
-  if (!plan.apply_kerx && (!has_gpos_kern || !plan.apply_gpos))
+  إذا (!plan.apply_kerx && (!has_gpos_kern || !plan.apply_gpos))
   {
-    if (false) {}
-#ifndef HB_NO_AAT_SHAPE
-    else if (has_kerx)
-      plan.apply_kerx = true;
-#endif
-#ifndef HB_NO_OT_KERN
-    else if (hb_ot_layout_has_kerning (face))
+    إذا (خطأ) {}
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+    وإلا إذا (has_kerx)
+      plan.apply_kerx = سچ;
+#جے_انت
+#جے_بنا_تعریف HB_NO_OT_KERN
+    وإلا إذا (hb_ot_layout_has_kerning (face))
       plan.apply_kern = script_fallback_position; // Not all shapers apply legacy `kern`
-#endif
-    else {}
+#جے_انت
+    وإلا {}
   }
 
   plan.apply_fallback_kern = script_fallback_position && !(plan.apply_gpos || plan.apply_kerx || plan.apply_kern);
@@ -189,43 +189,43 @@ hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
   plan.zero_marks = script_zero_marks &&
 		    !plan.apply_kerx &&
 		    (!plan.apply_kern
-#ifndef HB_NO_OT_KERN
+#جے_بنا_تعریف HB_NO_OT_KERN
 		     || !hb_ot_layout_has_machine_kerning (face)
-#endif
+#جے_انت
 		    );
-  plan.has_gpos_mark = !!plan.map.get_1_mask (HB_TAG ('m','a','r','k'));
+  plan.has_gpos_mark = !!plan.map.get_1_نقاب (HB_ٹیگ ('m','a','r','k'));
 
   plan.adjust_mark_positioning_when_zeroing = !plan.apply_gpos &&
 					      !plan.apply_kerx &&
 					      (!plan.apply_kern
-#ifndef HB_NO_OT_KERN
+#جے_بنا_تعریف HB_NO_OT_KERN
 					       || !hb_ot_layout_has_cross_kerning (face)
-#endif
+#جے_انت
 					      );
 
   plan.fallback_mark_positioning = plan.adjust_mark_positioning_when_zeroing &&
 				   script_fallback_position;
 
-#ifndef HB_NO_AAT_SHAPE
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
   /* If we're using morx shaping, we cancel mark position adjustment because
      Apple Color Emoji assumes this will NOT be done when forming emoji sequences;
      https://github.com/harfbuzz/harfbuzz/issues/2967. */
-  if (plan.apply_morx)
-    plan.adjust_mark_positioning_when_zeroing = false;
+  إذا (plan.apply_morx)
+    plan.adjust_mark_positioning_when_zeroing = خطأ;
 
   /* According to Ned, trak is applied by default for "modern fonts", as detected by presence of STAT table. */
-#ifndef HB_NO_STYLE
-  plan.apply_trak = hb_aat_layout_has_tracking (face) && face->table.STAT->has_data ();
-#else
-  plan.apply_trak = false;
-#endif
+#جے_بنا_تعریف HB_NO_STYLE
+  plan.apply_trak = hb_aat_layout_has_tracking (face) && face->جدول.STAT->has_انکڑے ();
+#وإلا
+  plan.apply_trak = خطأ;
+#جے_انت
 
-#endif
+#جے_انت
 }
 
-bool
+منطقي
 hb_ot_shape_plan_t::init0 (hb_face_t                     *face,
-			   const hb_shape_plan_key_t     *key)
+			   ثابت hb_shape_plan_کلید_t     *key)
 {
   map.init ();
 
@@ -234,147 +234,147 @@ hb_ot_shape_plan_t::init0 (hb_face_t                     *face,
 
   hb_ot_shape_collect_features (&planner,
 				key->user_features,
-				key->num_user_features);
+				key->عدد_user_features);
 
-  planner.compile (*this, key->ot);
+  planner.compile (*هذا, key->ot);
 
-  if (shaper->data_create)
+  إذا (shaper->انکڑے_create)
   {
-    data = shaper->data_create (this);
-    if (unlikely (!data))
+    انکڑے = shaper->انکڑے_create (هذا);
+    إذا (unlikely (!انکڑے))
     {
       map.fini ();
-      return false;
+      أرجع خطأ;
     }
   }
 
-  return true;
+  أرجع سچ;
 }
 
-void
+فراغ
 hb_ot_shape_plan_t::fini ()
 {
-  if (shaper->data_destroy)
-    shaper->data_destroy (const_cast<void *> (data));
+  إذا (shaper->انکڑے_destroy)
+    shaper->انکڑے_destroy (const_cast<فراغ *> (انکڑے));
 
   map.fini ();
 }
 
-void
+فراغ
 hb_ot_shape_plan_t::substitute (hb_font_t   *font,
-				hb_buffer_t *buffer) const
+				hb_بفر_t *بفر) ثابت
 {
-  map.substitute (this, font, buffer);
+  map.substitute (هذا, font, بفر);
 }
 
-void
+فراغ
 hb_ot_shape_plan_t::position (hb_font_t   *font,
-			      hb_buffer_t *buffer) const
+			      hb_بفر_t *بفر) ثابت
 {
-  if (this->apply_gpos)
-    map.position (this, font, buffer);
-#ifndef HB_NO_AAT_SHAPE
-  else if (this->apply_kerx)
-    hb_aat_layout_position (this, font, buffer);
-#endif
+  إذا (هذا->apply_gpos)
+    map.position (هذا, font, بفر);
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+  وإلا إذا (هذا->apply_kerx)
+    hb_aat_layout_position (هذا, font, بفر);
+#جے_انت
 
-#ifndef HB_NO_OT_KERN
-  if (this->apply_kern)
-    hb_ot_layout_kern (this, font, buffer);
-#endif
-  else if (this->apply_fallback_kern)
-    _hb_ot_shape_fallback_kern (this, font, buffer);
+#جے_بنا_تعریف HB_NO_OT_KERN
+  إذا (هذا->apply_kern)
+    hb_ot_layout_kern (هذا, font, بفر);
+#جے_انت
+  وإلا إذا (هذا->apply_fallback_kern)
+    _hb_ot_shape_fallback_kern (هذا, font, بفر);
 
-#ifndef HB_NO_AAT_SHAPE
-  if (this->apply_trak)
-    hb_aat_layout_track (this, font, buffer);
-#endif
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+  إذا (هذا->apply_trak)
+    hb_aat_layout_track (هذا, font, بفر);
+#جے_انت
 }
 
 
-static const hb_ot_map_feature_t
+ساكن ثابت hb_ot_map_feature_t
 common_features[] =
 {
-  {HB_TAG('a','b','v','m'), F_GLOBAL},
-  {HB_TAG('b','l','w','m'), F_GLOBAL},
-  {HB_TAG('c','c','m','p'), F_GLOBAL},
-  {HB_TAG('l','o','c','l'), F_GLOBAL},
-  {HB_TAG('m','a','r','k'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('m','k','m','k'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('r','l','i','g'), F_GLOBAL},
+  {HB_ٹیگ('a','b','v','m'), F_GLOBAL},
+  {HB_ٹیگ('b','l','w','m'), F_GLOBAL},
+  {HB_ٹیگ('c','c','m','p'), F_GLOBAL},
+  {HB_ٹیگ('l','o','c','l'), F_GLOBAL},
+  {HB_ٹیگ('m','a','r','k'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_ٹیگ('m','k','m','k'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_ٹیگ('r','l','i','g'), F_GLOBAL},
 };
 
 
-static const hb_ot_map_feature_t
+ساكن ثابت hb_ot_map_feature_t
 horizontal_features[] =
 {
-  {HB_TAG('c','a','l','t'), F_GLOBAL},
-  {HB_TAG('c','l','i','g'), F_GLOBAL},
-  {HB_TAG('c','u','r','s'), F_GLOBAL},
-  {HB_TAG('d','i','s','t'), F_GLOBAL},
-  {HB_TAG('k','e','r','n'), F_GLOBAL_HAS_FALLBACK},
-  {HB_TAG('l','i','g','a'), F_GLOBAL},
-  {HB_TAG('r','c','l','t'), F_GLOBAL},
+  {HB_ٹیگ('c','a','l','t'), F_GLOBAL},
+  {HB_ٹیگ('c','l','i','g'), F_GLOBAL},
+  {HB_ٹیگ('c','u','r','s'), F_GLOBAL},
+  {HB_ٹیگ('d','i','s','t'), F_GLOBAL},
+  {HB_ٹیگ('k','e','r','n'), F_GLOBAL_HAS_FALLBACK},
+  {HB_ٹیگ('l','i','g','a'), F_GLOBAL},
+  {HB_ٹیگ('r','c','l','t'), F_GLOBAL},
 };
 
-static void
+ساكن فراغ
 hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
-			      const hb_feature_t    *user_features,
-			      unsigned int           num_user_features)
+			      ثابت hb_feature_t    *user_features,
+			      بنانشانی صحيح           عدد_user_features)
 {
   hb_ot_map_builder_t *map = &planner->map;
 
-  map->is_simple = true;
+  map->is_simple = سچ;
 
-  map->enable_feature (HB_TAG('r','v','r','n'));
-  map->add_gsub_pause (nullptr);
+  map->enable_feature (HB_ٹیگ('r','v','r','n'));
+  map->جوڑو_gsub_pause (خالی_سوچک);
 
-  switch (planner->props.direction)
+  بدل (planner->props.direction)
   {
-    case HB_DIRECTION_LTR:
-      map->enable_feature (HB_TAG ('l','t','r','a'));
-      map->enable_feature (HB_TAG ('l','t','r','m'));
-      break;
-    case HB_DIRECTION_RTL:
-      map->enable_feature (HB_TAG ('r','t','l','a'));
-      map->add_feature (HB_TAG ('r','t','l','m'));
-      break;
-    case HB_DIRECTION_TTB:
-    case HB_DIRECTION_BTT:
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+    حالة HB_DIRECTION_LTR:
+      map->enable_feature (HB_ٹیگ ('l','t','r','a'));
+      map->enable_feature (HB_ٹیگ ('l','t','r','m'));
+      اكسر;
+    حالة HB_DIRECTION_RTL:
+      map->enable_feature (HB_ٹیگ ('r','t','l','a'));
+      map->جوڑو_feature (HB_ٹیگ ('r','t','l','m'));
+      اكسر;
+    حالة HB_DIRECTION_TTB:
+    حالة HB_DIRECTION_BTT:
+    حالة HB_DIRECTION_INVALID:
+    افتراضي:
+      اكسر;
   }
 
-#ifndef HB_NO_OT_SHAPE_FRACTIONS
+#جے_بنا_تعریف HB_NO_OT_SHAPE_FRACTIONS
   /* Automatic fractions. */
-  map->add_feature (HB_TAG ('f','r','a','c'));
-  map->add_feature (HB_TAG ('n','u','m','r'));
-  map->add_feature (HB_TAG ('d','n','o','m'));
-#endif
+  map->جوڑو_feature (HB_ٹیگ ('f','r','a','c'));
+  map->جوڑو_feature (HB_ٹیگ ('n','u','m','r'));
+  map->جوڑو_feature (HB_ٹیگ ('d','n','o','m'));
+#جے_انت
 
   /* Random! */
-  map->enable_feature (HB_TAG ('r','a','n','d'), F_RANDOM, HB_OT_MAP_MAX_VALUE);
+  map->enable_feature (HB_ٹیگ ('r','a','n','d'), F_RANDOM, HB_OT_MAP_MAX_قدر);
 
-  map->enable_feature (HB_TAG ('H','a','r','f')); /* Considered required. */
-  map->enable_feature (HB_TAG ('H','A','R','F')); /* Considered discretionary. */
+  map->enable_feature (HB_ٹیگ ('H','a','r','f')); /* Considered required. */
+  map->enable_feature (HB_ٹیگ ('H','A','R','F')); /* Considered discretionary. */
 
-  if (planner->shaper->collect_features)
+  إذا (planner->shaper->collect_features)
   {
-    map->is_simple = false;
+    map->is_simple = خطأ;
     planner->shaper->collect_features (planner);
   }
 
-  map->enable_feature (HB_TAG ('B','u','z','z')); /* Considered required. */
-  map->enable_feature (HB_TAG ('B','U','Z','Z')); /* Considered discretionary. */
+  map->enable_feature (HB_ٹیگ ('B','u','z','z')); /* Considered required. */
+  map->enable_feature (HB_ٹیگ ('B','U','Z','Z')); /* Considered discretionary. */
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (common_features); i++)
-    map->add_feature (common_features[i]);
+  لكل (بنانشانی صحيح i = 0; i < ARRAY_لمائی (common_features); i++)
+    map->جوڑو_feature (common_features[i]);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (planner->props.direction))
-    for (unsigned int i = 0; i < ARRAY_LENGTH (horizontal_features); i++)
-      map->add_feature (horizontal_features[i]);
-  else
+  إذا (HB_DIRECTION_IS_HORIZONTAL (planner->props.direction))
+    لكل (بنانشانی صحيح i = 0; i < ARRAY_لمائی (horizontal_features); i++)
+      map->جوڑو_feature (horizontal_features[i]);
+  وإلا
   {
     /* We only apply `vert` feature. See:
      * https://github.com/harfbuzz/harfbuzz/commit/d71c0df2d17f4590d5611239577a6cb532c26528
@@ -384,21 +384,21 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
      * matter which script/langsys it is listed (or not) under.
      * See various bugs referenced from:
      * https://github.com/harfbuzz/harfbuzz/issues/63 */
-    map->enable_feature (HB_TAG ('v','e','r','t'), F_GLOBAL_SEARCH);
+    map->enable_feature (HB_ٹیگ ('v','e','r','t'), F_GLOBAL_تلاش);
   }
 
-  if (num_user_features)
-    map->is_simple = false;
-  for (unsigned int i = 0; i < num_user_features; i++)
+  إذا (عدد_user_features)
+    map->is_simple = خطأ;
+  لكل (بنانشانی صحيح i = 0; i < عدد_user_features; i++)
   {
-    const hb_feature_t *feature = &user_features[i];
-    map->add_feature (feature->tag,
-		      (feature->start == HB_FEATURE_GLOBAL_START &&
-		       feature->end == HB_FEATURE_GLOBAL_END) ?  F_GLOBAL : F_NONE,
+    ثابت hb_feature_t *feature = &user_features[i];
+    map->جوڑو_feature (feature->ٹیگ_2,
+		      (feature->شروع == HB_FEATURE_GLOBAL_شروع &&
+		       feature->سرا == HB_FEATURE_GLOBAL_سرا) ?  F_GLOBAL : F_NONE,
 		      feature->value);
   }
 
-  if (planner->shaper->override_features)
+  إذا (planner->shaper->override_features)
     planner->shaper->override_features (planner);
 }
 
@@ -407,16 +407,16 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
  * shaper face data
  */
 
-struct hb_ot_face_data_t {};
+بنية hb_ot_face_انکڑے_t {};
 
-hb_ot_face_data_t *
-_hb_ot_shaper_face_data_create (hb_face_t *face)
+hb_ot_face_انکڑے_t *
+hb_ot_shaper_face_انکڑے_create (hb_face_t *face)
 {
-  return (hb_ot_face_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  أرجع (hb_ot_face_انکڑے_t *) HB_SHAPER_انکڑے_SUCCEEDED;
 }
 
-void
-_hb_ot_shaper_face_data_destroy (hb_ot_face_data_t *data)
+فراغ
+hb_ot_shaper_face_انکڑے_destroy (hb_ot_face_انکڑے_t *انکڑے)
 {
 }
 
@@ -425,21 +425,21 @@ _hb_ot_shaper_face_data_destroy (hb_ot_face_data_t *data)
  * shaper font data
  */
 
-struct hb_ot_font_data_t {
-  OT::hb_scalar_cache_t unused; // Just for alignment
+بنية hb_ot_font_انکڑے_t {
+  OT::hb_scalar_cache_t بن_ورتیا_2; // Just for alignment
 };
 
-hb_ot_font_data_t *
-_hb_ot_shaper_font_data_create (hb_font_t *font)
+hb_ot_font_انکڑے_t *
+hb_ot_shaper_font_انکڑے_create (hb_font_t *font)
 {
-  const OT::ItemVariationStore &var_store = font->face->table.GDEF->table->get_var_store ();
-  return (hb_ot_font_data_t *) var_store.create_cache ();
+  ثابت OT::شے_Variation_Store &var_store = font->face->جدول.GDEF->جدول->get_var_store ();
+  أرجع (hb_ot_font_انکڑے_t *) var_store.create_cache ();
 }
 
-void
-_hb_ot_shaper_font_data_destroy (hb_ot_font_data_t *data)
+فراغ
+hb_ot_shaper_font_انکڑے_destroy (hb_ot_font_انکڑے_t *انکڑے)
 {
-  OT::ItemVariationStore::destroy_cache ((OT::hb_scalar_cache_t *) data);
+  OT::شے_Variation_Store::destroy_cache ((OT::hb_scalar_cache_t *) انکڑے);
 }
 
 
@@ -447,17 +447,17 @@ _hb_ot_shaper_font_data_destroy (hb_ot_font_data_t *data)
  * shaper
  */
 
-struct hb_ot_shape_context_t
+بنية hb_ot_shape_context_t
 {
   hb_ot_shape_plan_t *plan;
   hb_font_t *font;
   hb_face_t *face;
-  hb_buffer_t  *buffer;
-  const hb_feature_t *user_features;
-  unsigned int        num_user_features;
+  hb_بفر_t  *بفر;
+  ثابت hb_feature_t *user_features;
+  بنانشانی صحيح        عدد_user_features;
 
   /* Transient stuff */
-  hb_direction_t target_direction;
+  hb_direction_t نشانہ_direction;
 };
 
 
@@ -467,9 +467,9 @@ struct hb_ot_shape_context_t
 
 /* Prepare */
 
-static void
-hb_set_unicode_props (hb_buffer_t *buffer,
-		      hb_mask_t    global_mask)
+ساكن فراغ
+hb_سیٹ_unicode_props (hb_بفر_t *بفر,
+		      hb_نقاب_t    global_نقاب)
 {
   /* Implement enough of Unicode Graphemes here that shaping
    * in reverse-direction wouldn't break graphemes.  Namely,
@@ -479,54 +479,54 @@ hb_set_unicode_props (hb_buffer_t *buffer,
    *
    * https://www.unicode.org/reports/tr29/#Regex_Definitions
    */
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
   {
-    info[i].mask = global_mask;
-    _hb_glyph_info_set_unicode_props (&info[i], buffer);
+    info[i].نقاب = global_نقاب;
+    hb_glyph_info_سیٹ_unicode_props (&info[i], بفر);
 
-    if (info[i].codepoint < 0x80)
-      continue;
+    إذا (info[i].codepoint < 0x80)
+      استمر;
 
-    unsigned gen_cat = _hb_glyph_info_get_general_category (&info[i]);
-    if (FLAG_UNSAFE (gen_cat) &
+    بنانشانی gen_cat = _hb_glyph_info_get_general_category (&info[i]);
+    إذا (FLAG_UNSAFE (gen_cat) &
 	(FLAG (HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR)))
-      continue;
+      استمر;
 
     /* Marks are already set as continuation by the above line.
      * Handle Emoji_Modifier and ZWJ-continuation. */
-    if (unlikely (gen_cat == HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL &&
-		  hb_in_range<hb_codepoint_t> (info[i].codepoint, 0x1F3FBu, 0x1F3FFu)))
+    إذا (unlikely (gen_cat == HB_UNICODE_GENERAL_CATEGORY_MODIFIER_علامت &&
+		  hb_وچ_range<hb_codepoint_t> (info[i].codepoint, 0x1F3FBu, 0x1F3FFu)))
     {
-      _hb_glyph_info_set_continuation (&info[i], buffer);
+      hb_glyph_info_سیٹ_continuation (&info[i], بفر);
     }
     /* Regional_Indicators are hairy as hell...
      * https://github.com/harfbuzz/harfbuzz/issues/2265 */
-    else if (unlikely (i && _hb_codepoint_is_regional_indicator (info[i].codepoint)))
+    وإلا إذا (unlikely (i && _hb_codepoint_is_regional_indicator (info[i].codepoint)))
     {
-      if (_hb_codepoint_is_regional_indicator (info[i - 1].codepoint) &&
+      إذا (_hb_codepoint_is_regional_indicator (info[i - 1].codepoint) &&
 	  !_hb_glyph_info_is_continuation (&info[i - 1]))
-	_hb_glyph_info_set_continuation (&info[i], buffer);
+	hb_glyph_info_سیٹ_continuation (&info[i], بفر);
     }
-#ifndef HB_NO_EMOJI_SEQUENCES
-    else if (unlikely (_hb_glyph_info_is_zwj (&info[i])))
+#جے_بنا_تعریف HB_NO_EMOJI_SEQUENCES
+    وإلا إذا (unlikely (_hb_glyph_info_is_zwj (&info[i])))
     {
-      _hb_glyph_info_set_continuation (&info[i], buffer);
-      if (i + 1 < count &&
+      hb_glyph_info_سیٹ_continuation (&info[i], بفر);
+      إذا (i + 1 < گنتی &&
 	  _hb_unicode_is_emoji_Extended_Pictographic (info[i + 1].codepoint))
       {
 	i++;
-	info[i].mask = global_mask;
-	_hb_glyph_info_set_unicode_props (&info[i], buffer);
-	_hb_glyph_info_set_continuation (&info[i], buffer);
+	info[i].نقاب = global_نقاب;
+	hb_glyph_info_سیٹ_unicode_props (&info[i], بفر);
+	hb_glyph_info_سیٹ_continuation (&info[i], بفر);
       }
     }
-#endif
+#جے_انت
     /* Or part of the Other_Grapheme_Extend that is not marks.
      * As of Unicode 15 that is just:
      *
@@ -541,57 +541,57 @@ hb_set_unicode_props (hb_buffer_t *buffer,
      * Katakana ones were requested:
      * https://github.com/harfbuzz/harfbuzz/issues/3844
      */
-    else if (unlikely (hb_in_ranges<hb_codepoint_t> (info[i].codepoint, 0xFF9Eu, 0xFF9Fu, 0xE0020u, 0xE007Fu)))
-      _hb_glyph_info_set_continuation (&info[i], buffer);
-    else if (unlikely (info[i].codepoint == 0x2044u /* FRACTION SLASH */))
-      buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH;
+    وإلا إذا (unlikely (hb_وچ_ranges<hb_codepoint_t> (info[i].codepoint, 0xFF9Eu, 0xFF9Fu, 0xE0020u, 0xE007Fu)))
+      hb_glyph_info_سیٹ_continuation (&info[i], بفر);
+    وإلا إذا (unlikely (info[i].codepoint == 0x2044u /* FRACTION SLASH */))
+      بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_FRACTION_SLASH;
   }
 }
 
-static void
-hb_insert_dotted_circle (hb_buffer_t *buffer, hb_font_t *font)
+ساكن فراغ
+hb_داخل_کرو_dotted_circle (hb_بفر_t *بفر, hb_font_t *font)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return;
+  إذا (unlikely (بفر->flags & HB_بفر_FLAG_DO_NOT_داخل_کرو_DOTTED_CIRCLE))
+    أرجع;
 
-  if (!(buffer->flags & HB_BUFFER_FLAG_BOT) ||
-      buffer->context_len[0] ||
-      !_hb_glyph_info_is_unicode_mark (&buffer->info[0]))
-    return;
+  إذا (!(بفر->flags & HB_بفر_FLAG_BOT) ||
+      بفر->context_len[0] ||
+      !_hb_glyph_info_is_unicode_mark (&بفر->info[0]))
+    أرجع;
 
-  if (!font->has_glyph (0x25CCu))
-    return;
+  إذا (!font->has_glyph (0x25CCu))
+    أرجع;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
-  _hb_glyph_info_set_unicode_props (&dottedcircle, buffer);
+  hb_glyph_info_سیٹ_unicode_props (&dottedcircle, بفر);
 
-  buffer->clear_output ();
+  بفر->clear_output ();
 
-  buffer->idx = 0;
+  بفر->idx = 0;
   hb_glyph_info_t info = dottedcircle;
-  info.cluster = buffer->cur().cluster;
-  info.mask = buffer->cur().mask;
-  (void) buffer->output_info (info);
+  info.cluster = بفر->cur().cluster;
+  info.نقاب = بفر->cur().نقاب;
+  (فراغ) بفر->output_info (info);
 
-  buffer->sync ();
+  بفر->متزامن ();
 }
 
-static void
-hb_form_clusters (hb_buffer_t *buffer)
+ساكن فراغ
+hb_form_clusters (hb_بفر_t *بفر)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_CONTINUATIONS))
-    return;
+  إذا (!(بفر->scratch_flags & HB_بفر_SCRATCH_FLAG_HAS_CONTINUATIONS))
+    أرجع;
 
-  foreach_grapheme (buffer, start, end)
-    buffer->merge_grapheme_clusters (start, end);
+  foreach_grapheme (بفر, شروع, سرا)
+    بفر->ملاؤ_grapheme_clusters (شروع, سرا);
 }
 
-static void
-hb_ensure_native_direction (hb_buffer_t *buffer)
+ساكن فراغ
+hb_ensure_native_direction (hb_بفر_t *بفر)
 {
-  hb_direction_t direction = buffer->props.direction;
-  hb_direction_t horiz_dir = hb_script_get_horizontal_direction (buffer->props.script);
+  hb_direction_t direction = بفر->props.direction;
+  hb_direction_t horiz_dir = hb_script_get_horizontal_direction (بفر->props.script);
 
   /* Numeric runs in natively-RTL scripts are actually native-LTR, so we reset
    * the horiz_dir if the run contains at least one decimal-number char, and no
@@ -610,25 +610,25 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
    *
    * https://github.com/harfbuzz/harfbuzz/issues/3314
    */
-  if (unlikely (horiz_dir == HB_DIRECTION_RTL && direction == HB_DIRECTION_LTR))
+  إذا (unlikely (horiz_dir == HB_DIRECTION_RTL && direction == HB_DIRECTION_LTR))
   {
-    bool found_number = false, found_letter = false, found_ri = false;
-    const auto* info = buffer->info;
-    const auto count = buffer->len;
-    for (unsigned i = 0; i < count; i++)
+    منطقي لبھیا_نمبر = خطأ, لبھیا_letter = خطأ, لبھیا_ri = خطأ;
+    ثابت خودکار* info = بفر->info;
+    ثابت خودکار گنتی = بفر->len;
+    لكل (بنانشانی i = 0; i < گنتی; i++)
     {
-      auto gc = _hb_glyph_info_get_general_category (&info[i]);
-      if (HB_UNICODE_GENERAL_CATEGORY_IS_LETTER (gc))
+      خودکار gc = _hb_glyph_info_get_general_category (&info[i]);
+      إذا (HB_UNICODE_GENERAL_CATEGORY_IS_LETTER (gc))
       {
-	found_letter = true;
-	break;
+	لبھیا_letter = سچ;
+	اكسر;
       }
-      else if (gc == HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
-	found_number = true;
-      else if (unlikely (_hb_codepoint_is_regional_indicator (info[i].codepoint)))
-	found_ri = true;
+      وإلا إذا (gc == HB_UNICODE_GENERAL_CATEGORY_DECIMAL_نمبر)
+	لبھیا_نمبر = سچ;
+      وإلا إذا (unlikely (_hb_codepoint_is_regional_indicator (info[i].codepoint)))
+	لبھیا_ri = سچ;
     }
-    if ((found_number || found_ri) && !found_letter)
+    إذا ((لبھیا_نمبر || لبھیا_ri) && !لبھیا_letter)
       horiz_dir = HB_DIRECTION_LTR;
   }
 
@@ -636,13 +636,13 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
+  إذا ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && HB_DIRECTION_IS_VALID (horiz_dir)) ||
       (HB_DIRECTION_IS_VERTICAL   (direction) &&
        direction != HB_DIRECTION_TTB))
   {
-    _hb_ot_layout_reverse_graphemes (buffer);
-    buffer->props.direction = HB_DIRECTION_REVERSE (buffer->props.direction);
+    hb_ot_layout_الٹ_graphemes (بفر);
+    بفر->props.direction = HB_DIRECTION_الٹ (بفر->props.direction);
   }
 }
 
@@ -651,213 +651,213 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
  * Substitute
  */
 
-static inline void
-hb_ot_rotate_chars (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_rotate_chars (ثابت hb_ot_shape_context_t *c)
 {
-  hb_buffer_t *buffer = c->buffer;
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
+  hb_بفر_t *بفر = c->بفر;
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
 
-  if (HB_DIRECTION_IS_BACKWARD (c->target_direction))
+  إذا (HB_DIRECTION_IS_BACKWARD (c->نشانہ_direction))
   {
-    hb_unicode_funcs_t *unicode = buffer->unicode;
-    hb_mask_t rtlm_mask = c->plan->rtlm_mask;
+    hb_unicode_funcs_t *unicode = بفر->unicode;
+    hb_نقاب_t rtlm_نقاب = c->plan->rtlm_نقاب;
 
-    for (unsigned int i = 0; i < count; i++) {
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++) {
       hb_codepoint_t codepoint = unicode->mirroring (info[i].codepoint);
-      if (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
+      إذا (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
 	info[i].codepoint = codepoint;
-      else
-	info[i].mask |= rtlm_mask;
+      وإلا
+	info[i].نقاب |= rtlm_نقاب;
     }
   }
 
-#ifndef HB_NO_VERTICAL
-  if (HB_DIRECTION_IS_VERTICAL (c->target_direction) && !c->plan->has_vert)
+#جے_بنا_تعریف HB_NO_VERTICAL
+  إذا (HB_DIRECTION_IS_VERTICAL (c->نشانہ_direction) && !c->plan->has_vert)
   {
-    for (unsigned int i = 0; i < count; i++) {
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++) {
       hb_codepoint_t codepoint = hb_unicode_funcs_t::vertical_char_for (info[i].codepoint);
-      if (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
+      إذا (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
 	info[i].codepoint = codepoint;
     }
   }
-#endif
+#جے_انت
 }
 
-static inline void
-hb_ot_shape_setup_masks_fraction (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_shape_تیاری_masks_fraction (ثابت hb_ot_shape_context_t *c)
 {
-#ifdef HB_NO_OT_SHAPE_FRACTIONS
-  return;
-#endif
+#جے_تعریف_شدہ HB_NO_OT_SHAPE_FRACTIONS
+  أرجع;
+#جے_انت
 
-  if (!(c->buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH) ||
+  إذا (!(c->بفر->scratch_flags & HB_بفر_SCRATCH_FLAG_HAS_FRACTION_SLASH) ||
       !c->plan->has_frac)
-    return;
+    أرجع;
 
-  hb_buffer_t *buffer = c->buffer;
+  hb_بفر_t *بفر = c->بفر;
 
-  hb_mask_t pre_mask, post_mask;
-  if (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
+  hb_نقاب_t pre_نقاب, post_نقاب;
+  إذا (HB_DIRECTION_IS_FORWARD (بفر->props.direction))
   {
-    pre_mask = c->plan->numr_mask | c->plan->frac_mask;
-    post_mask = c->plan->frac_mask | c->plan->dnom_mask;
+    pre_نقاب = c->plan->numr_نقاب | c->plan->frac_نقاب;
+    post_نقاب = c->plan->frac_نقاب | c->plan->dnom_نقاب;
   }
-  else
+  وإلا
   {
-    pre_mask = c->plan->frac_mask | c->plan->dnom_mask;
-    post_mask = c->plan->numr_mask | c->plan->frac_mask;
+    pre_نقاب = c->plan->frac_نقاب | c->plan->dnom_نقاب;
+    post_نقاب = c->plan->numr_نقاب | c->plan->frac_نقاب;
   }
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
   {
-    if (info[i].codepoint == 0x2044u) /* FRACTION SLASH */
+    إذا (info[i].codepoint == 0x2044u) /* FRACTION SLASH */
     {
-      unsigned int start = i, end = i + 1;
-      while (start &&
-	     _hb_glyph_info_get_general_category (&info[start - 1]) ==
-	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
-	start--;
-      while (end < count &&
-	     _hb_glyph_info_get_general_category (&info[end]) ==
-	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
-	end++;
-      if (start == i || end == i + 1)
+      بنانشانی صحيح شروع = i, سرا = i + 1;
+      طالما (شروع &&
+	     _hb_glyph_info_get_general_category (&info[شروع - 1]) ==
+	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_نمبر)
+	شروع--;
+      طالما (سرا < گنتی &&
+	     _hb_glyph_info_get_general_category (&info[سرا]) ==
+	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_نمبر)
+	سرا++;
+      إذا (شروع == i || سرا == i + 1)
       {
-        if (start == i)
-	  buffer->unsafe_to_concat (start, start + 1);
-	if (end == i + 1)
-	  buffer->unsafe_to_concat (end - 1, end);
-	continue;
+        إذا (شروع == i)
+	  بفر->unsafe_منزل_concat (شروع, شروع + 1);
+	إذا (سرا == i + 1)
+	  بفر->unsafe_منزل_concat (سرا - 1, سرا);
+	استمر;
       }
 
-      buffer->unsafe_to_break (start, end);
+      بفر->unsafe_منزل_break (شروع, سرا);
 
-      for (unsigned int j = start; j < i; j++)
-	info[j].mask |= pre_mask;
-      info[i].mask |= c->plan->frac_mask;
-      for (unsigned int j = i + 1; j < end; j++)
-	info[j].mask |= post_mask;
+      لكل (بنانشانی صحيح j = شروع; j < i; j++)
+	info[j].نقاب |= pre_نقاب;
+      info[i].نقاب |= c->plan->frac_نقاب;
+      لكل (بنانشانی صحيح j = i + 1; j < سرا; j++)
+	info[j].نقاب |= post_نقاب;
 
-      i = end - 1;
+      i = سرا - 1;
     }
   }
 }
 
-static inline void
-hb_ot_shape_setup_masks (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_shape_تیاری_masks (ثابت hb_ot_shape_context_t *c)
 {
   hb_ot_map_t *map = &c->plan->map;
-  hb_buffer_t *buffer = c->buffer;
+  hb_بفر_t *بفر = c->بفر;
 
-  hb_ot_shape_setup_masks_fraction (c);
+  hb_ot_shape_تیاری_masks_fraction (c);
 
-  if (c->plan->shaper->setup_masks)
-    c->plan->shaper->setup_masks (c->plan, buffer, c->font);
+  إذا (c->plan->shaper->تیاری_masks)
+    c->plan->shaper->تیاری_masks (c->plan, بفر, c->font);
 
-  for (unsigned int i = 0; i < c->num_user_features; i++)
+  لكل (بنانشانی صحيح i = 0; i < c->عدد_user_features; i++)
   {
-    const hb_feature_t *feature = &c->user_features[i];
-    if (!(feature->start == HB_FEATURE_GLOBAL_START && feature->end == HB_FEATURE_GLOBAL_END)) {
-      unsigned int shift;
-      hb_mask_t mask = map->get_mask (feature->tag, &shift);
-      buffer->set_masks (feature->value << shift, mask, feature->start, feature->end);
+    ثابت hb_feature_t *feature = &c->user_features[i];
+    إذا (!(feature->شروع == HB_FEATURE_GLOBAL_شروع && feature->سرا == HB_FEATURE_GLOBAL_سرا)) {
+      بنانشانی صحيح کھسکاؤ;
+      hb_نقاب_t نقاب = map->get_نقاب (feature->ٹیگ_2, &کھسکاؤ);
+      بفر->سیٹ_masks (feature->value << کھسکاؤ, نقاب, feature->شروع, feature->سرا);
     }
   }
 }
 
-static void
-hb_ot_zero_width_default_ignorables (const hb_buffer_t *buffer)
+ساكن فراغ
+hb_ot_zero_چوڑائی_default_ignorables (ثابت hb_بفر_t *بفر)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
-      (buffer->flags & HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES) ||
-      (buffer->flags & HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES))
-    return;
+  إذا (!(بفر->scratch_flags & HB_بفر_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
+      (بفر->flags & HB_بفر_FLAG_PRESERVE_DEFAULT_IGNORABLES) ||
+      (بفر->flags & HB_بفر_FLAG_REMOVE_DEFAULT_IGNORABLES))
+    أرجع;
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  hb_glyph_position_t *pos = buffer->pos;
-  unsigned int i = 0;
-  for (i = 0; i < count; i++)
-    if (unlikely (_hb_glyph_info_is_default_ignorable (&info[i])))
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  hb_glyph_position_t *pos = بفر->pos;
+  بنانشانی صحيح i = 0;
+  لكل (i = 0; i < گنتی; i++)
+    إذا (unlikely (_hb_glyph_info_is_default_ignorable (&info[i])))
     {
       pos[i].x_advance = pos[i].y_advance = 0;
-      if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-	pos[i].x_offset = 0;
-      else
-        pos[i].y_offset = 0;
+      إذا (HB_DIRECTION_IS_HORIZONTAL (بفر->props.direction))
+	pos[i].x_وتھ_2 = 0;
+      وإلا
+        pos[i].y_وتھ_2 = 0;
     }
 }
 
-static void
-hb_ot_deal_with_variation_selectors (hb_buffer_t *buffer)
+ساكن فراغ
+hb_ot_deal_with_variation_selectors (hb_بفر_t *بفر)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK) ||
-	buffer->not_found_variation_selector == HB_CODEPOINT_INVALID)
-    return;
+  إذا (!(بفر->scratch_flags & HB_بفر_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK) ||
+	بفر->not_لبھیا_variation_selector == HB_CODEPOINT_INVALID)
+    أرجع;
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  hb_glyph_position_t *pos = buffer->pos;
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  hb_glyph_position_t *pos = بفر->pos;
 
-  for (unsigned int i = 0; i < count; i++)
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
   {
-    if (_hb_glyph_info_is_variation_selector (&info[i]))
+    إذا (_hb_glyph_info_is_variation_selector (&info[i]))
     {
-      info[i].codepoint = buffer->not_found_variation_selector;
-      pos[i].x_advance = pos[i].y_advance = pos[i].x_offset = pos[i].y_offset = 0;
-      _hb_glyph_info_set_variation_selector (&info[i], false);
+      info[i].codepoint = بفر->not_لبھیا_variation_selector;
+      pos[i].x_advance = pos[i].y_advance = pos[i].x_وتھ_2 = pos[i].y_وتھ_2 = 0;
+      hb_glyph_info_سیٹ_variation_selector (&info[i], خطأ);
     }
   }
 }
 
-static void
-hb_ot_hide_default_ignorables (hb_buffer_t *buffer,
+ساكن فراغ
+hb_ot_hide_default_ignorables (hb_بفر_t *بفر,
 			       hb_font_t   *font)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
-      (buffer->flags & HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES))
-    return;
+  إذا (!(بفر->scratch_flags & HB_بفر_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
+      (بفر->flags & HB_بفر_FLAG_PRESERVE_DEFAULT_IGNORABLES))
+    أرجع;
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
 
-  hb_codepoint_t invisible = buffer->invisible;
-  if (!(buffer->flags & HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES) &&
+  hb_codepoint_t invisible = بفر->invisible;
+  إذا (!(بفر->flags & HB_بفر_FLAG_REMOVE_DEFAULT_IGNORABLES) &&
       (invisible || font->get_nominal_glyph (' ', &invisible)))
   {
     /* Replace default-ignorables with a zero-advance invisible glyph. */
-    for (unsigned int i = 0; i < count; i++)
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
     {
-      if (_hb_glyph_info_is_default_ignorable (&info[i]))
+      إذا (_hb_glyph_info_is_default_ignorable (&info[i]))
 	info[i].codepoint = invisible;
     }
   }
-  else
-    buffer->delete_glyphs_inplace (_hb_glyph_info_is_default_ignorable);
+  وإلا
+    بفر->delete_glyphs_inplace (_hb_glyph_info_is_default_ignorable);
 }
 
 
-static inline void
-hb_ot_map_glyphs_fast (hb_buffer_t  *buffer)
+ساكن مضمن فراغ
+hb_ot_map_glyphs_fast (hb_بفر_t  *بفر)
 {
   /* Normalization process sets up normalizer_glyph_index(), we just copy it. */
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    info[i].codepoint = info[i].normalizer_glyph_index();
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
+    info[i].codepoint = info[i].normalizer_glyph_اشاریہ();
 
-  buffer->content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
+  بفر->content_type = HB_بفر_CONTENT_TYPE_GLYPHS;
 }
 
-static inline void
-hb_synthesize_glyph_classes (hb_buffer_t *buffer)
+ساكن مضمن فراغ
+hb_synthesize_glyph_classes (hb_بفر_t *بفر)
 {
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
   {
     hb_ot_layout_glyph_props_flags_t klass;
 
@@ -872,96 +872,96 @@ hb_synthesize_glyph_classes (hb_buffer_t *buffer)
     klass = (_hb_glyph_info_get_general_category (&info[i]) !=
 	     HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK ||
 	     _hb_glyph_info_is_default_ignorable (&info[i])) ?
-	    HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH :
+	    HB_OT_LAYOUT_GLYPH_PROPS_ادھار_GLYPH :
 	    HB_OT_LAYOUT_GLYPH_PROPS_MARK;
-    _hb_glyph_info_set_glyph_props (&info[i], klass);
+    hb_glyph_info_سیٹ_glyph_props (&info[i], klass);
   }
 }
 
-static inline void
-hb_ot_substitute_default (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_substitute_default (ثابت hb_ot_shape_context_t *c)
 {
-  hb_buffer_t *buffer = c->buffer;
+  hb_بفر_t *بفر = c->بفر;
 
   hb_ot_rotate_chars (c);
 
-  HB_BUFFER_ALLOCATE_VAR (buffer, normalizer_glyph_index);
+  HB_بفر_ALLOCATE_VAR (بفر, normalizer_glyph_اشاریہ);
 
-  _hb_ot_shape_normalize (c->plan, buffer, c->font);
+  _hb_ot_shape_normalize (c->plan, بفر, c->font);
 
-  hb_ot_shape_setup_masks (c);
+  hb_ot_shape_تیاری_masks (c);
 
   /* This is unfortunate to go here, but necessary... */
-  if (c->plan->fallback_mark_positioning)
-    _hb_ot_shape_fallback_mark_position_recategorize_marks (c->plan, c->font, buffer);
+  إذا (c->plan->fallback_mark_positioning)
+    _hb_ot_shape_fallback_mark_position_recategorize_marks (c->plan, c->font, بفر);
 
-  hb_ot_map_glyphs_fast (buffer);
+  hb_ot_map_glyphs_fast (بفر);
 
-  HB_BUFFER_DEALLOCATE_VAR (buffer, normalizer_glyph_index);
+  HB_بفر_DEALLOCATE_VAR (بفر, normalizer_glyph_اشاریہ);
 }
 
-static inline void
-hb_ot_substitute_plan (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_substitute_plan (ثابت hb_ot_shape_context_t *c)
 {
-  hb_buffer_t *buffer = c->buffer;
+  hb_بفر_t *بفر = c->بفر;
 
-#ifndef HB_NO_AAT_SHAPE
-  if (unlikely (c->plan->apply_morx))
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+  إذا (unlikely (c->plan->apply_morx))
   {
-    hb_ot_layout_substitute_start (c->font, buffer);
+    hb_ot_layout_substitute_شروع (c->font, بفر);
 
-    if (c->plan->fallback_glyph_classes)
-      hb_synthesize_glyph_classes (buffer);
+    إذا (c->plan->fallback_glyph_classes)
+      hb_synthesize_glyph_classes (بفر);
 
-    hb_aat_layout_substitute (c->plan, c->font, c->buffer,
-			      c->user_features, c->num_user_features);
+    hb_aat_layout_substitute (c->plan, c->font, c->بفر,
+			      c->user_features, c->عدد_user_features);
     /* The buffer digest is only used by the OT lookup-apply loop;
      * without GPOS ahead, nothing consumes it. */
-    if (c->plan->apply_gpos)
-      c->buffer->update_digest ();
+    إذا (c->plan->apply_gpos)
+      c->بفر->update_digest ();
   }
-  else
-#endif
+  وإلا
+#جے_انت
   {
-    hb_ot_layout_substitute_start_with_digest (c->font, buffer);
+    hb_ot_layout_substitute_شروع_with_digest (c->font, بفر);
 
-    if (c->plan->fallback_glyph_classes)
-      hb_synthesize_glyph_classes (buffer);
+    إذا (c->plan->fallback_glyph_classes)
+      hb_synthesize_glyph_classes (بفر);
 
-    c->plan->substitute (c->font, buffer);
+    c->plan->substitute (c->font, بفر);
   }
 }
 
-static inline void
-hb_ot_substitute_pre (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_substitute_pre (ثابت hb_ot_shape_context_t *c)
 {
   hb_ot_substitute_default (c);
 
-  _hb_buffer_allocate_gsubgpos_vars (c->buffer);
+  hb_بفر_allocate_gsubgpos_vars (c->بفر);
 
   hb_ot_substitute_plan (c);
 
-#ifndef HB_NO_AAT_SHAPE
-  if (c->plan->apply_morx && c->plan->apply_gpos)
-    hb_aat_layout_remove_deleted_glyphs (c->buffer);
-#endif
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+  إذا (c->plan->apply_morx && c->plan->apply_gpos)
+    hb_aat_layout_remove_deleted_glyphs (c->بفر);
+#جے_انت
 }
 
-static inline void
-hb_ot_substitute_post (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_substitute_post (ثابت hb_ot_shape_context_t *c)
 {
-#ifndef HB_NO_AAT_SHAPE
-  if (c->plan->apply_morx && !c->plan->apply_gpos)
-    hb_aat_layout_remove_deleted_glyphs (c->buffer);
-#endif
+#جے_بنا_تعریف HB_NO_AAT_SHAPE
+  إذا (c->plan->apply_morx && !c->plan->apply_gpos)
+    hb_aat_layout_remove_deleted_glyphs (c->بفر);
+#جے_انت
 
-  hb_ot_deal_with_variation_selectors (c->buffer);
-  hb_ot_hide_default_ignorables (c->buffer, c->font);
+  hb_ot_deal_with_variation_selectors (c->بفر);
+  hb_ot_hide_default_ignorables (c->بفر, c->font);
 
-  if (c->plan->shaper->postprocess_glyphs &&
-    c->buffer->message(c->font, "start postprocess-glyphs")) {
-    c->plan->shaper->postprocess_glyphs (c->plan, c->buffer, c->font);
-    (void) c->buffer->message(c->font, "end postprocess-glyphs");
+  إذا (c->plan->shaper->postprocess_glyphs &&
+    c->بفر->سنیہا(c->font, "start postprocess-glyphs")) {
+    c->plan->shaper->postprocess_glyphs (c->plan, c->بفر, c->font);
+    (فراغ) c->بفر->سنیہا(c->font, "end postprocess-glyphs");
   }
 }
 
@@ -970,63 +970,63 @@ hb_ot_substitute_post (const hb_ot_shape_context_t *c)
  * Position
  */
 
-static inline void
+ساكن مضمن فراغ
 adjust_mark_offsets (hb_glyph_position_t *pos)
 {
-  pos->x_offset = hb_saturate_sub (pos->x_offset, pos->x_advance);
-  pos->y_offset = hb_saturate_sub (pos->y_offset, pos->y_advance);
+  pos->x_وتھ_2 = hb_saturate_sub (pos->x_وتھ_2, pos->x_advance);
+  pos->y_وتھ_2 = hb_saturate_sub (pos->y_وتھ_2, pos->y_advance);
 }
 
-static inline void
-zero_mark_width (hb_glyph_position_t *pos)
+ساكن مضمن فراغ
+zero_mark_چوڑائی (hb_glyph_position_t *pos)
 {
   pos->x_advance = 0;
   pos->y_advance = 0;
 }
 
-static inline void
-zero_mark_widths_by_gdef (hb_buffer_t *buffer, bool adjust_offsets)
+ساكن مضمن فراغ
+zero_mark_widths_by_gdef (hb_بفر_t *بفر, منطقي adjust_offsets)
 {
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_is_mark (&info[i]))
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
+    إذا (_hb_glyph_info_is_mark (&info[i]))
     {
-      if (adjust_offsets)
-	adjust_mark_offsets (&buffer->pos[i]);
-      zero_mark_width (&buffer->pos[i]);
+      إذا (adjust_offsets)
+	adjust_mark_offsets (&بفر->pos[i]);
+      zero_mark_چوڑائی (&بفر->pos[i]);
     }
 }
 
-static inline void
-hb_ot_position_default (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_position_default (ثابت hb_ot_shape_context_t *c)
 {
-  hb_direction_t direction = c->buffer->props.direction;
-  unsigned int count = c->buffer->len;
-  hb_glyph_info_t *info = c->buffer->info;
-  hb_glyph_position_t *pos = c->buffer->pos;
+  hb_direction_t direction = c->بفر->props.direction;
+  بنانشانی صحيح گنتی = c->بفر->len;
+  hb_glyph_info_t *info = c->بفر->info;
+  hb_glyph_position_t *pos = c->بفر->pos;
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  إذا (HB_DIRECTION_IS_HORIZONTAL (direction))
   {
-    c->font->get_glyph_h_advances (count, &info[0].codepoint, sizeof(info[0]),
-				   &pos[0].x_advance, sizeof(pos[0]));
+    c->font->get_glyph_h_advances (گنتی, &info[0].codepoint, حجم(info[0]),
+				   &pos[0].x_advance, حجم(pos[0]));
     // h_origin defaults to zero; only apply it if the font has it.
-    if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
-      c->font->subtract_glyph_h_origins (c->buffer);
+    إذا (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+      c->font->گھٹاؤ_glyph_h_origins (c->بفر);
   }
-  else
+  وإلا
   {
-    c->font->get_glyph_v_advances (count, &info[0].codepoint, sizeof(info[0]),
-				   &pos[0].y_advance, sizeof(pos[0]));
+    c->font->get_glyph_v_advances (گنتی, &info[0].codepoint, حجم(info[0]),
+				   &pos[0].y_advance, حجم(pos[0]));
     // v_origin defaults to non-zero; apply even if only fallback is there.
-    c->font->subtract_glyph_v_origins (c->buffer);
+    c->font->گھٹاؤ_glyph_v_origins (c->بفر);
   }
-  if (c->buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK)
-    _hb_ot_shape_fallback_spaces (c->plan, c->font, c->buffer);
+  إذا (c->بفر->scratch_flags & HB_بفر_SCRATCH_FLAG_HAS_SPACE_FALLBACK)
+    _hb_ot_shape_fallback_spaces (c->plan, c->font, c->بفر);
 }
 
-static inline void
-hb_ot_position_plan (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_position_plan (ثابت hb_ot_shape_context_t *c)
 {
   /* If the font has no GPOS and direction is forward, then when
    * zeroing mark widths, we shift the mark with it, such that the
@@ -1037,106 +1037,106 @@ hb_ot_position_plan (const hb_ot_shape_context_t *c)
    * Note: If fallback positioning happens, we don't care about
    * this as it will be overridden.
    */
-  bool adjust_offsets_when_zeroing = c->plan->adjust_mark_positioning_when_zeroing &&
-				     HB_DIRECTION_IS_FORWARD (c->buffer->props.direction);
+  منطقي adjust_offsets_when_zeroing = c->plan->adjust_mark_positioning_when_zeroing &&
+				     HB_DIRECTION_IS_FORWARD (c->بفر->props.direction);
 
   /* We change glyph origin to what GPOS expects (horizontal), apply GPOS, change it back. */
 
   // h_origin defaults to zero; only apply it if the font has it.
-  if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
-    c->font->add_glyph_h_origins (c->buffer);
+  إذا (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+    c->font->جوڑو_glyph_h_origins (c->بفر);
 
-  hb_ot_layout_position_start (c->font, c->buffer);
+  hb_ot_layout_position_شروع (c->font, c->بفر);
 
-  if (c->plan->zero_marks)
-    switch (c->plan->shaper->zero_width_marks)
+  إذا (c->plan->zero_marks)
+    بدل (c->plan->shaper->zero_چوڑائی_marks)
     {
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:
-	zero_mark_widths_by_gdef (c->buffer, adjust_offsets_when_zeroing);
-	break;
+      حالة HB_OT_SHAPE_ZERO_چوڑائی_MARKS_BY_GDEF_EARLY:
+	zero_mark_widths_by_gdef (c->بفر, adjust_offsets_when_zeroing);
+	اكسر;
 
-      default:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:
-	break;
+      افتراضي:
+      حالة HB_OT_SHAPE_ZERO_چوڑائی_MARKS_NONE:
+      حالة HB_OT_SHAPE_ZERO_چوڑائی_MARKS_BY_GDEF_LATE:
+	اكسر;
     }
 
-  c->plan->position (c->font, c->buffer);
+  c->plan->position (c->font, c->بفر);
 
-  if (c->plan->zero_marks)
-    switch (c->plan->shaper->zero_width_marks)
+  إذا (c->plan->zero_marks)
+    بدل (c->plan->shaper->zero_چوڑائی_marks)
     {
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:
-	zero_mark_widths_by_gdef (c->buffer, adjust_offsets_when_zeroing);
-	break;
+      حالة HB_OT_SHAPE_ZERO_چوڑائی_MARKS_BY_GDEF_LATE:
+	zero_mark_widths_by_gdef (c->بفر, adjust_offsets_when_zeroing);
+	اكسر;
 
-      default:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:
-	break;
+      افتراضي:
+      حالة HB_OT_SHAPE_ZERO_چوڑائی_MARKS_NONE:
+      حالة HB_OT_SHAPE_ZERO_چوڑائی_MARKS_BY_GDEF_EARLY:
+	اكسر;
     }
 
   /* Finish off.  Has to follow a certain order. */
-  hb_ot_layout_position_finish_advances (c->font, c->buffer);
-  hb_ot_zero_width_default_ignorables (c->buffer);
-  hb_ot_layout_position_finish_offsets (c->font, c->buffer);
+  hb_ot_layout_position_انت_advances (c->font, c->بفر);
+  hb_ot_zero_چوڑائی_default_ignorables (c->بفر);
+  hb_ot_layout_position_انت_offsets (c->font, c->بفر);
 
   // h_origin defaults to zero; only apply it if the font has it.
-  if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
-    c->font->subtract_glyph_h_origins (c->buffer);
+  إذا (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+    c->font->گھٹاؤ_glyph_h_origins (c->بفر);
 
-  if (c->plan->fallback_mark_positioning)
-    _hb_ot_shape_fallback_mark_position (c->plan, c->font, c->buffer,
+  إذا (c->plan->fallback_mark_positioning)
+    _hb_ot_shape_fallback_mark_position (c->plan, c->font, c->بفر,
 					 adjust_offsets_when_zeroing);
 }
 
-static inline void
-hb_ot_position (const hb_ot_shape_context_t *c)
+ساكن مضمن فراغ
+hb_ot_position (ثابت hb_ot_shape_context_t *c)
 {
-  c->buffer->clear_positions ();
+  c->بفر->clear_positions ();
 
   hb_ot_position_default (c);
 
   hb_ot_position_plan (c);
 
-  if (HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction))
-    hb_buffer_reverse (c->buffer);
+  إذا (HB_DIRECTION_IS_BACKWARD (c->بفر->props.direction))
+    hb_بفر_الٹ (c->بفر);
 
-  _hb_buffer_deallocate_gsubgpos_vars (c->buffer);
+  hb_بفر_deallocate_gsubgpos_vars (c->بفر);
 }
 
-static inline void
-hb_propagate_flags (hb_buffer_t *buffer)
+ساكن مضمن فراغ
+hb_propagate_flags (hb_بفر_t *بفر)
 {
   /* Propagate cluster-level glyph flags to be the same on all cluster glyphs.
    * Simplifies using them. */
 
-  hb_mask_t and_mask = HB_GLYPH_FLAG_DEFINED;
-  if ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0)
-    and_mask &= ~HB_GLYPH_FLAG_UNSAFE_TO_CONCAT;
+  hb_نقاب_t and_نقاب = HB_GLYPH_FLAG_DEFINED;
+  إذا ((بفر->flags & HB_بفر_FLAG_PRODUCE_UNSAFE_منزل_CONCAT) == 0)
+    and_نقاب &= ~HB_GLYPH_FLAG_UNSAFE_منزل_CONCAT;
 
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = بفر->info;
 
-  if ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+  إذا ((بفر->flags & HB_بفر_FLAG_PRODUCE_محفوظ_منزل_داخل_کرو_TATWEEL) == 0)
   {
-    foreach_cluster (buffer, start, end)
+    foreach_cluster (بفر, شروع, سرا)
     {
-      if (end - start == 1)
+      إذا (سرا - شروع == 1)
       {
-        info[start].mask &= and_mask;
-	continue;
+        info[شروع].نقاب &= and_نقاب;
+	استمر;
       }
 
-      unsigned int mask = 0;
-      for (unsigned int i = start; i < end; i++)
-	mask |= info[i].mask;
+      بنانشانی صحيح نقاب = 0;
+      لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
+	نقاب |= info[i].نقاب;
 
-      mask &= and_mask;
+      نقاب &= and_نقاب;
 
-      for (unsigned int i = start; i < end; i++)
-	info[i].mask = mask;
+      لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
+	info[i].نقاب = نقاب;
     }
-    return;
+    أرجع;
   }
 
   /* If we are producing SAFE_TO_INSERT_TATWEEL, then do two things:
@@ -1147,71 +1147,71 @@ hb_propagate_flags (hb_buffer_t *buffer)
    *
    * We couldn't make this interaction earlier. It has to be done this way.
    */
-  foreach_cluster (buffer, start, end)
+  foreach_cluster (بفر, شروع, سرا)
   {
-    unsigned int mask = 0;
-    for (unsigned int i = start; i < end; i++)
-      mask |= info[i].mask;
+    بنانشانی صحيح نقاب = 0;
+    لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
+      نقاب |= info[i].نقاب;
 
-    if (mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK)
-      mask &= ~HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL;
-    if (mask & HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL)
-      mask |= HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT;
+    إذا (نقاب & HB_GLYPH_FLAG_UNSAFE_منزل_BREAK)
+      نقاب &= ~HB_GLYPH_FLAG_محفوظ_منزل_داخل_کرو_TATWEEL;
+    إذا (نقاب & HB_GLYPH_FLAG_محفوظ_منزل_داخل_کرو_TATWEEL)
+      نقاب |= HB_GLYPH_FLAG_UNSAFE_منزل_BREAK | HB_GLYPH_FLAG_UNSAFE_منزل_CONCAT;
 
-    mask &= and_mask;
+    نقاب &= and_نقاب;
 
-    for (unsigned int i = start; i < end; i++)
-      info[i].mask = mask;
+    لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
+      info[i].نقاب = نقاب;
   }
 }
 
 /* Pull it all together! */
 
-static void
-hb_ot_shape_internal (hb_ot_shape_context_t *c)
+ساكن فراغ
+hb_ot_shape_اندرونی (hb_ot_shape_context_t *c)
 {
   /* Save the original direction, we use it later. */
-  c->target_direction = c->buffer->props.direction;
+  c->نشانہ_direction = c->بفر->props.direction;
 
-  _hb_buffer_allocate_unicode_vars (c->buffer);
+  hb_بفر_allocate_unicode_vars (c->بفر);
 
-  hb_set_unicode_props (c->buffer, c->plan->map.get_global_mask ());
-  hb_insert_dotted_circle (c->buffer, c->font);
+  hb_سیٹ_unicode_props (c->بفر, c->plan->map.get_global_نقاب ());
+  hb_داخل_کرو_dotted_circle (c->بفر, c->font);
 
-  hb_form_clusters (c->buffer);
+  hb_form_clusters (c->بفر);
 
-  hb_ensure_native_direction (c->buffer);
+  hb_ensure_native_direction (c->بفر);
 
-  if (c->plan->shaper->preprocess_text &&
-      c->buffer->message(c->font, "start preprocess-text"))
+  إذا (c->plan->shaper->preprocess_متن &&
+      c->بفر->سنیہا(c->font, "start preprocess-text"))
   {
-    c->plan->shaper->preprocess_text (c->plan, c->buffer, c->font);
-    (void) c->buffer->message(c->font, "end preprocess-text");
+    c->plan->shaper->preprocess_متن (c->plan, c->بفر, c->font);
+    (فراغ) c->بفر->سنیہا(c->font, "end preprocess-text");
   }
 
   hb_ot_substitute_pre (c);
   hb_ot_position (c);
   hb_ot_substitute_post (c);
 
-  hb_propagate_flags (c->buffer);
+  hb_propagate_flags (c->بفر);
 
-  _hb_buffer_deallocate_unicode_vars (c->buffer);
+  hb_بفر_deallocate_unicode_vars (c->بفر);
 
-  c->buffer->props.direction = c->target_direction;
+  c->بفر->props.direction = c->نشانہ_direction;
 }
 
 
 hb_bool_t
 _hb_ot_shape (hb_shape_plan_t    *shape_plan,
 	      hb_font_t          *font,
-	      hb_buffer_t        *buffer,
-	      const hb_feature_t *features,
-	      unsigned int        num_features)
+	      hb_بفر_t        *بفر,
+	      ثابت hb_feature_t *features,
+	      بنانشانی صحيح        عدد_features)
 {
-  hb_ot_shape_context_t c = {&shape_plan->ot, font, font->face, buffer, features, num_features};
-  hb_ot_shape_internal (&c);
+  hb_ot_shape_context_t c = {&shape_plan->ot, font, font->face, بفر, features, عدد_features};
+  hb_ot_shape_اندرونی (&c);
 
-  return true;
+  أرجع سچ;
 }
 
 
@@ -1226,12 +1226,12 @@ _hb_ot_shape (hb_shape_plan_t    *shape_plan,
  *
  * Since: 0.9.7
  **/
-void
+فراغ
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
-				  hb_tag_t         table_tag,
-				  hb_set_t        *lookup_indexes /* OUT */)
+				  hb_ٹیگ_t         جدول_ٹیگ_2,
+				  hb_سیٹ_t        *lookup_indexes /*باہرلا*/)
 {
-  shape_plan->ot.collect_lookups (table_tag, lookup_indexes);
+  shape_plan->ot.collect_lookups (جدول_ٹیگ_2, lookup_indexes);
 }
 
 
@@ -1249,38 +1249,38 @@ hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
  *
  * Since: 10.3.0
  */
-unsigned int
-hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
-				   hb_tag_t        *tags /* OUT */)
+بنانشانی صحيح
+hb_ot_shape_plan_get_feature_ٹیگ_سوچی (hb_shape_plan_t *shape_plan,
+				   بنانشانی صحيح     شروع_وتھ,
+				   بنانشانی صحيح    *ٹیگ_گنتی, /* IN/OUT */
+				   hb_ٹیگ_t        *ٹیگ_سوچی /*باہرلا*/)
 {
-#ifndef HB_NO_OT_SHAPE
-  return shape_plan->ot.map.get_feature_tags (start_offset, tag_count, tags);
-#else
-  if (tag_count)
-	*tag_count = 0;
-  return 0;
-#endif
+#جے_بنا_تعریف HB_NO_OT_SHAPE
+  أرجع shape_plan->ot.map.get_feature_ٹیگ_سوچی (شروع_وتھ, ٹیگ_گنتی, ٹیگ_سوچی);
+#وإلا
+  إذا (ٹیگ_گنتی)
+	*ٹیگ_گنتی = 0;
+  أرجع 0;
+#جے_انت
 }
 
 
 /* TODO Move this to hb-ot-shape-normalize, make it do decompose, and make it public. */
-static void
-add_char (hb_font_t          *font,
+ساكن فراغ
+جوڑو_char (hb_font_t          *font,
 	  hb_unicode_funcs_t *unicode,
 	  hb_bool_t           mirror,
 	  hb_codepoint_t      u,
-	  hb_set_t           *glyphs)
+	  hb_سیٹ_t           *glyphs)
 {
   hb_codepoint_t glyph;
-  if (font->get_nominal_glyph (u, &glyph))
-    glyphs->add (glyph);
-  if (mirror)
+  إذا (font->get_nominal_glyph (u, &glyph))
+    glyphs->جوڑو (glyph);
+  إذا (mirror)
   {
     hb_codepoint_t m = unicode->mirroring (u);
-    if (m != u && font->get_nominal_glyph (m, &glyph))
-      glyphs->add (glyph);
+    إذا (m != u && font->get_nominal_glyph (m, &glyph))
+      glyphs->جوڑو (glyph);
   }
 }
 
@@ -1299,29 +1299,29 @@ add_char (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void
-hb_ot_shape_glyphs_closure (hb_font_t          *font,
-			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
-			    hb_set_t           *glyphs)
+فراغ
+hb_ot_shape_glyphs_گھیرا (hb_font_t          *font,
+			    hb_بفر_t        *بفر,
+			    ثابت hb_feature_t *features,
+			    بنانشانی صحيح        عدد_features,
+			    hb_سیٹ_t           *glyphs)
 {
-  const char *shapers[] = {"ot", nullptr};
-  hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached (font->face, &buffer->props,
-							     features, num_features, shapers);
+  ثابت حرف *shapers[] = {"ot", خالی_سوچک};
+  hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached (font->face, &بفر->props,
+							     features, عدد_features, shapers);
 
-  bool mirror = hb_script_get_horizontal_direction (buffer->props.script) == HB_DIRECTION_RTL;
+  منطقي mirror = hb_script_get_horizontal_direction (بفر->props.script) == HB_DIRECTION_RTL;
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    add_char (font, buffer->unicode, mirror, info[i].codepoint, glyphs);
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
+    جوڑو_char (font, بفر->unicode, mirror, info[i].codepoint, glyphs);
 
-  hb_set_t *lookups = hb_set_create ();
-  hb_ot_shape_plan_collect_lookups (shape_plan, HB_OT_TAG_GSUB, lookups);
-  hb_ot_layout_lookups_substitute_closure (font->face, lookups, glyphs);
+  hb_سیٹ_t *lookups = hb_سیٹ_create ();
+  hb_ot_shape_plan_collect_lookups (shape_plan, HB_OT_ٹیگ_GSUB, lookups);
+  hb_ot_layout_lookups_substitute_گھیرا (font->face, lookups, glyphs);
 
-  hb_set_destroy (lookups);
+  hb_سیٹ_destroy (lookups);
 
   hb_shape_plan_destroy (shape_plan);
 }
@@ -1337,10 +1337,10 @@ hb_ot_shape_glyphs_closure (hb_font_t          *font,
  *
  * Since: 13.2.0
  **/
-unsigned int
-hb_ot_shape_get_buffer_format_serial (void)
+بنانشانی صحيح
+hb_ot_shape_get_بفر_format_serial (فراغ)
 {
-  return HB_OT_SHAPE_BUFFER_FORMAT_SERIAL;
+  أرجع HB_OT_SHAPE_بفر_FORMAT_SERIAL;
 }
 
-#endif
+#جے_انت

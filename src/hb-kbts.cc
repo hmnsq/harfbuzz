@@ -22,304 +22,304 @@
  * Author(s): Khaled Hosny
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifdef HAVE_KBTS
+#جے_تعریف_شدہ HAVE_KBTS
 
-#include "hb-shaper-impl.hh"
+#ضمن "hb-shaper-impl.hh"
 
-#define KB_TEXT_SHAPE_IMPLEMENTATION
-#define KB_TEXT_SHAPE_STATIC
-#define KB_TEXT_SHAPE_NO_CRT
-#define KBTS_MALLOC(a, b) hb_malloc(b)
-#define KBTS_FREE(a, b) hb_free(b)
-#define KBTS_MEMCPY hb_memcpy
-#define KBTS_MEMSET hb_memset
+#تعریف_کرو KB_متن_SHAPE_IMPLEMENTATION
+#تعریف_کرو KB_متن_SHAPE_STATIC
+#تعریف_کرو KB_متن_SHAPE_NO_CRT
+#تعریف_کرو KBTS_MALLOC(a, b) hb_malloc(b)
+#تعریف_کرو KBTS_FREE(a, b) hb_free(b)
+#تعریف_کرو KBTS_MEMCPY hb_memcpy
+#تعریف_کرو KBTS_MEMSET hb_memset
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-#pragma GCC diagnostic ignored "-Wunused-function"
-#pragma GCC diagnostic ignored "-Wextra-semi-stmt"
-#include "kb_text_shape.h"
-#pragma GCC diagnostic pop
+#ہدایت GCC diagnostic push
+#ہدایت GCC diagnostic ignored "-Wcast-align"
+#ہدایت GCC diagnostic ignored "-Wunused-function"
+#ہدایت GCC diagnostic ignored "-Wextra-semi-stmt"
+#ضمن "kb_text_shape.h"
+#ہدایت GCC diagnostic نکالو
 
-static hb_user_data_key_t hb_kbts_shape_plan_data_key = {0};
+ساكن hb_user_انکڑے_کلید_t hb_kbts_shape_plan_انکڑے_کلید = {0};
 
-struct hb_kbts_shape_plan_data_t
+بنية hb_kbts_shape_plan_انکڑے_t
 {
-  kbts_shape_config *config = nullptr;
-  mutable hb_atomic_t<kbts_shape_scratchpad *> scratchpad;
+  kbts_shape_config *config = خالی_سوچک;
+  بدلنجوگ hb_atomic_t<kbts_shape_scratchpad *> scratchpad;
 };
 
-static void
-hb_kbts_shape_plan_data_destroy (void *data)
+ساكن فراغ
+hb_kbts_shape_plan_انکڑے_destroy (فراغ *انکڑے)
 {
-  auto *plan_data = (hb_kbts_shape_plan_data_t *) data;
-  if (!plan_data)
-    return;
+  خودکار *plan_انکڑے = (hb_kbts_shape_plan_انکڑے_t *) انکڑے;
+  إذا (!plan_انکڑے)
+    أرجع;
 
-  auto *scratchpad = plan_data->scratchpad.get_acquire ();
-  if (scratchpad && plan_data->scratchpad.cmpexch (scratchpad, nullptr))
+  خودکار *scratchpad = plan_انکڑے->scratchpad.get_acquire ();
+  إذا (scratchpad && plan_انکڑے->scratchpad.cmpexch (scratchpad, خالی_سوچک))
     kbts_DestroyShapeScratchpad (scratchpad);
 
-  if (plan_data->config)
-    kbts_DestroyShapeConfig (plan_data->config);
+  إذا (plan_انکڑے->config)
+    kbts_DestroyShapeConfig (plan_انکڑے->config);
 
-  hb_free (plan_data);
+  hb_free (plan_انکڑے);
 }
 
-static void
-hb_kbts_plan_props_to_script_language (const hb_segment_properties_t &props,
+ساكن فراغ
+hb_kbts_plan_props_منزل_script_language (ثابت hb_segment_properties_t &props,
 				       kbts_script *kb_script,
 				       kbts_language *kb_language)
 {
-  hb_tag_t scripts[HB_OT_MAX_TAGS_PER_SCRIPT];
-  hb_tag_t language;
-  unsigned int script_count = ARRAY_LENGTH (scripts);
-  unsigned int language_count = 1;
+  hb_ٹیگ_t scripts[HB_OT_MAX_ٹیگ_سوچی_فی_SCRIPT];
+  hb_ٹیگ_t language;
+  بنانشانی صحيح script_گنتی = ARRAY_لمائی (scripts);
+  بنانشانی صحيح language_گنتی = 1;
 
   *kb_script = KBTS_SCRIPT_DONT_KNOW;
   *kb_language = KBTS_LANGUAGE_DEFAULT;
 
-  hb_ot_tags_from_script_and_language (props.script, props.language,
-				       &script_count, scripts,
-				       &language_count, &language);
+  hb_ot_ٹیگ_سوچی_from_script_and_language (props.script, props.language,
+				       &script_گنتی, scripts,
+				       &language_گنتی, &language);
 
-  for (unsigned int i = 0; i < script_count && scripts[i] != HB_TAG_NONE; ++i)
+  لكل (بنانشانی صحيح i = 0; i < script_گنتی && scripts[i] != HB_ٹیگ_NONE; ++i)
   {
-    *kb_script = kbts_ScriptTagToScript (hb_uint32_swap (scripts[i]));
-    if (*kb_script != KBTS_SCRIPT_DONT_KNOW)
-      break;
+    *kb_script = kbts_Script_ٹیگ_منزل_Script (hb_uint32_وٹاندرا (scripts[i]));
+    إذا (*kb_script != KBTS_SCRIPT_DONT_KNOW)
+      اكسر;
   }
 
-  if (language_count)
-    *kb_language = (kbts_language) hb_uint32_swap (language);
+  إذا (language_گنتی)
+    *kb_language = (kbts_language) hb_uint32_وٹاندرا (language);
 }
 
-static hb_kbts_shape_plan_data_t *
-hb_kbts_get_shape_plan_data (hb_shape_plan_t *shape_plan,
+ساكن hb_kbts_shape_plan_انکڑے_t *
+hb_kbts_get_shape_plan_انکڑے (hb_shape_plan_t *shape_plan,
 			     kbts_font *kb_font)
 {
 retry:
-  auto *plan_data = (hb_kbts_shape_plan_data_t *)
-    hb_shape_plan_get_user_data (shape_plan, &hb_kbts_shape_plan_data_key);
-  if (plan_data)
-    return plan_data;
+  خودکار *plan_انکڑے = (hb_kbts_shape_plan_انکڑے_t *)
+    hb_shape_plan_get_user_انکڑے (shape_plan, &hb_kbts_shape_plan_انکڑے_کلید);
+  إذا (plan_انکڑے)
+    أرجع plan_انکڑے;
 
   kbts_script kb_script;
   kbts_language kb_language;
-  hb_kbts_plan_props_to_script_language (shape_plan->key.props, &kb_script, &kb_language);
+  hb_kbts_plan_props_منزل_script_language (shape_plan->key.props, &kb_script, &kb_language);
 
-  kbts_shape_config *config = kbts_CreateShapeConfig (kb_font, kb_script, kb_language, nullptr, nullptr);
-  if (unlikely (!config))
-    return nullptr;
+  kbts_shape_config *config = kbts_CreateShapeConfig (kb_font, kb_script, kb_language, خالی_سوچک, خالی_سوچک);
+  إذا (unlikely (!config))
+    أرجع خالی_سوچک;
 
-  plan_data = (hb_kbts_shape_plan_data_t *) hb_calloc (1, sizeof (*plan_data));
-  if (unlikely (!plan_data))
+  plan_انکڑے = (hb_kbts_shape_plan_انکڑے_t *) hb_calloc (1, حجم (*plan_انکڑے));
+  إذا (unlikely (!plan_انکڑے))
   {
     kbts_DestroyShapeConfig (config);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
-  plan_data->config = config;
-  plan_data->scratchpad.init (nullptr);
+  plan_انکڑے->config = config;
+  plan_انکڑے->scratchpad.init (خالی_سوچک);
 
-  if (!hb_shape_plan_set_user_data (shape_plan,
-				    &hb_kbts_shape_plan_data_key,
-				    plan_data,
-				    hb_kbts_shape_plan_data_destroy,
-				    false))
+  إذا (!hb_shape_plan_سیٹ_user_انکڑے (shape_plan,
+				    &hb_kbts_shape_plan_انکڑے_کلید,
+				    plan_انکڑے,
+				    hb_kbts_shape_plan_انکڑے_destroy,
+				    خطأ))
   {
-    hb_kbts_shape_plan_data_destroy (plan_data);
-    goto retry;
+    hb_kbts_shape_plan_انکڑے_destroy (plan_انکڑے);
+    اذهب retry;
   }
 
-  return plan_data;
+  أرجع plan_انکڑے;
 }
 
-static kbts_shape_scratchpad *
-hb_kbts_acquire_shape_scratchpad (hb_kbts_shape_plan_data_t *plan_data)
+ساكن kbts_shape_scratchpad *
+hb_kbts_acquire_shape_scratchpad (hb_kbts_shape_plan_انکڑے_t *plan_انکڑے)
 {
-  auto *scratchpad = plan_data->scratchpad.get_acquire ();
-  if (!scratchpad || unlikely (!plan_data->scratchpad.cmpexch (scratchpad, nullptr)))
-    scratchpad = kbts_CreateShapeScratchpad (plan_data->config, nullptr, nullptr);
+  خودکار *scratchpad = plan_انکڑے->scratchpad.get_acquire ();
+  إذا (!scratchpad || unlikely (!plan_انکڑے->scratchpad.cmpexch (scratchpad, خالی_سوچک)))
+    scratchpad = kbts_CreateShapeScratchpad (plan_انکڑے->config, خالی_سوچک, خالی_سوچک);
 
-  return scratchpad;
+  أرجع scratchpad;
 }
 
-static void
-hb_kbts_release_shape_scratchpad (hb_kbts_shape_plan_data_t *plan_data,
+ساكن فراغ
+hb_kbts_release_shape_scratchpad (hb_kbts_shape_plan_انکڑے_t *plan_انکڑے,
 				  kbts_shape_scratchpad *scratchpad)
 {
-  if (!scratchpad)
-    return;
+  إذا (!scratchpad)
+    أرجع;
 
-  if (!plan_data->scratchpad.cmpexch (nullptr, scratchpad))
+  إذا (!plan_انکڑے->scratchpad.cmpexch (خالی_سوچک, scratchpad))
     kbts_DestroyShapeScratchpad (scratchpad);
 }
 
 
-hb_kbts_face_data_t *
-_hb_kbts_shaper_face_data_create (hb_face_t *face)
+hb_kbts_face_انکڑے_t *
+hb_kbts_shaper_face_انکڑے_create (hb_face_t *face)
 {
   hb_blob_t *blob = hb_face_reference_blob (face);
 
-  unsigned int blob_length;
-  const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
+  بنانشانی صحيح blob_لمائی;
+  ثابت حرف *blob_انکڑے = hb_blob_get_انکڑے (blob, &blob_لمائی);
+  إذا (unlikely (!blob_لمائی))
   {
-    DEBUG_MSG (KBTS, blob, "Empty blob");
+    DEBUG_پیغام (KBTS, blob, "Empty blob");
     hb_blob_destroy (blob);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
-  kbts_font *kb_font = (kbts_font *) hb_calloc (1, sizeof (kbts_font));
-  if (unlikely (!kb_font))
+  kbts_font *kb_font = (kbts_font *) hb_calloc (1, حجم (kbts_font));
+  إذا (unlikely (!kb_font))
   {
     hb_blob_destroy (blob);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
-  *kb_font = kbts_FontFromMemory((void *)blob_data, blob_length, face->index, nullptr, nullptr);
+  *kb_font = kbts_Font_From_حافظہ((فراغ *)blob_انکڑے, blob_لمائی, face->اشاریہ_2, خالی_سوچک, خالی_سوچک);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = خالی_سوچک;
 
-  if (unlikely (!kbts_FontIsValid (kb_font)))
+  إذا (unlikely (!kbts_FontIsValid (kb_font)))
   {
-    DEBUG_MSG (KBTS, face, "Failed create font from data");
+    DEBUG_پیغام (KBTS, face, "Failed create font from data");
     kbts_FreeFont (kb_font);
     hb_free (kb_font);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
-  return (hb_kbts_face_data_t *) kb_font;
+  أرجع (hb_kbts_face_انکڑے_t *) kb_font;
 }
 
-void
-_hb_kbts_shaper_face_data_destroy (hb_kbts_face_data_t *data)
+فراغ
+hb_kbts_shaper_face_انکڑے_destroy (hb_kbts_face_انکڑے_t *انکڑے)
 {
-  kbts_font *font = (kbts_font *) data;
+  kbts_font *font = (kbts_font *) انکڑے;
 
-  assert (kbts_FontIsValid (font));
+  أكد (kbts_FontIsValid (font));
 
   kbts_FreeFont (font);
   hb_free (font);
 }
 
-hb_kbts_font_data_t *
-_hb_kbts_shaper_font_data_create (hb_font_t *font)
+hb_kbts_font_انکڑے_t *
+hb_kbts_shaper_font_انکڑے_create (hb_font_t *font)
 {
-  return (hb_kbts_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  أرجع (hb_kbts_font_انکڑے_t *) HB_SHAPER_انکڑے_SUCCEEDED;
 }
 
-void
-_hb_kbts_shaper_font_data_destroy (hb_kbts_font_data_t *data)
+فراغ
+hb_kbts_shaper_font_انکڑے_destroy (hb_kbts_font_انکڑے_t *انکڑے)
 {
 }
 
 hb_bool_t
 _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
 		hb_font_t          *font,
-		hb_buffer_t        *buffer,
-		const hb_feature_t *features,
-		unsigned int        num_features)
+		hb_بفر_t        *بفر,
+		ثابت hb_feature_t *features,
+		بنانشانی صحيح        عدد_features)
 {
   hb_face_t *face = font->face;
-  kbts_font *kb_font = (kbts_font *) (const void *) face->data.kbts;
+  kbts_font *kb_font = (kbts_font *) (ثابت فراغ *) face->انکڑے.kbts;
 
   kbts_direction kb_direction;
-  switch (buffer->props.direction)
+  بدل (بفر->props.direction)
   {
-    case HB_DIRECTION_LTR: kb_direction = KBTS_DIRECTION_LTR; break;
-    case HB_DIRECTION_RTL: kb_direction = KBTS_DIRECTION_RTL; break;
-    case HB_DIRECTION_TTB:
-    case HB_DIRECTION_BTT:
-      DEBUG_MSG (KBTS, face, "Vertical direction is not supported");
-      return false;
-    default:
-    case HB_DIRECTION_INVALID:
-      DEBUG_MSG (KBTS, face, "Invalid direction");
-      return false;
+    حالة HB_DIRECTION_LTR: kb_direction = KBTS_DIRECTION_LTR; اكسر;
+    حالة HB_DIRECTION_RTL: kb_direction = KBTS_DIRECTION_RTL; اكسر;
+    حالة HB_DIRECTION_TTB:
+    حالة HB_DIRECTION_BTT:
+      DEBUG_پیغام (KBTS, face, "Vertical direction is not supported");
+      أرجع خطأ;
+    افتراضي:
+    حالة HB_DIRECTION_INVALID:
+      DEBUG_پیغام (KBTS, face, "Invalid direction");
+      أرجع خطأ;
   }
 
   kbts_glyph_storage kb_glyph_storage;
-  if (unlikely (!kbts_InitializeGlyphStorage (&kb_glyph_storage, nullptr, nullptr)))
-    return false;
+  إذا (unlikely (!kbts_InitializeGlyphStorage (&kb_glyph_storage, خالی_سوچک, خالی_سوچک)))
+    أرجع خطأ;
 
-  hb_kbts_shape_plan_data_t *plan_data = hb_kbts_get_shape_plan_data (shape_plan, kb_font);
-  if (unlikely (!plan_data))
+  hb_kbts_shape_plan_انکڑے_t *plan_انکڑے = hb_kbts_get_shape_plan_انکڑے (shape_plan, kb_font);
+  إذا (unlikely (!plan_انکڑے))
   {
     kbts_FreeAllGlyphs (&kb_glyph_storage);
-    return false;
+    أرجع خطأ;
   }
 
-  kbts_shape_config *kb_shape_config = nullptr;
-  kbts_shape_scratchpad *kb_shape_scratchpad = nullptr;
-  uint32_t glyph_count = 0;
-  kbts_glyph *kb_glyph = nullptr;
+  kbts_shape_config *kb_shape_config = خالی_سوچک;
+  kbts_shape_scratchpad *kb_shape_scratchpad = خالی_سوچک;
+  uint32_t glyph_گنتی = 0;
+  kbts_glyph *kb_glyph = خالی_سوچک;
   kbts_glyph_iterator kb_output;
   hb_glyph_info_t *info;
   hb_glyph_position_t *pos;
-  hb_bool_t res = false;
+  hb_bool_t res = خطأ;
 
-  kb_shape_config = plan_data->config;
-  kb_shape_scratchpad = hb_kbts_acquire_shape_scratchpad (plan_data);
-  if (unlikely (!kb_shape_scratchpad))
-    goto done;
+  kb_shape_config = plan_انکڑے->config;
+  kb_shape_scratchpad = hb_kbts_acquire_shape_scratchpad (plan_انکڑے);
+  إذا (unlikely (!kb_shape_scratchpad))
+    اذهب پورا;
 
-  for (size_t i = 0; i < buffer->len; ++i)
+  لكل (size_t i = 0; i < بفر->len; ++i)
   {
-    kbts_glyph_config *kb_config = nullptr;
-    if (num_features)
+    kbts_glyph_config *kb_config = خالی_سوچک;
+    إذا (عدد_features)
     {
-      hb_vector_t<kbts_feature_override> kb_features;
-      for (unsigned int j = 0; j < num_features; ++j)
+      hb_سمتیہ_t<kbts_feature_override> kb_features;
+      لكل (بنانشانی صحيح j = 0; j < عدد_features; ++j)
       {
-        if (hb_in_range<size_t> (i, features[j].start, features[j].end))
-	  kb_features.push<kbts_feature_override>({ hb_uint32_swap (features[j].tag), (int)features[j].value });
+        إذا (hb_وچ_range<size_t> (i, features[j].شروع, features[j].سرا))
+	  kb_features.push<kbts_feature_override>({ hb_uint32_وٹاندرا (features[j].ٹیگ_2), (صحيح)features[j].value });
       }
-      if (kb_features)
-        kb_config = kbts_CreateGlyphConfig (kb_shape_config, kb_features.arrayZ, kb_features.length, nullptr, nullptr);
+      إذا (kb_features)
+        kb_config = kbts_CreateGlyphConfig (kb_shape_config, kb_features.arrayZ, kb_features.لمائی, خالی_سوچک, خالی_سوچک);
     }
-    kbts_PushGlyph (&kb_glyph_storage, kb_font, buffer->info[i].codepoint, kb_config, buffer->info[i].cluster);
+    kbts_ڈالو_Glyph (&kb_glyph_storage, kb_font, بفر->info[i].codepoint, kb_config, بفر->info[i].cluster);
   }
 
-  res = kbts_ShapeDirect (kb_shape_scratchpad, &kb_glyph_storage, kb_direction, &kb_output) == KBTS_SHAPE_ERROR_NONE;
-  if (unlikely (!res))
-    goto done;
+  res = kbts_Shape_سدھا (kb_shape_scratchpad, &kb_glyph_storage, kb_direction, &kb_output) == KBTS_SHAPE_ERROR_NONE;
+  إذا (unlikely (!res))
+    اذهب پورا;
 
-  for (auto it = kb_output; kbts_GlyphIteratorNext (&it, &kb_glyph); )
-    glyph_count += 1;
+  لكل (خودکار it = kb_output; kbts_Glyph_Iterator_اگلا (&it, &kb_glyph); )
+    glyph_گنتی += 1;
 
-  hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_GLYPHS);
-  hb_buffer_set_length (buffer, glyph_count);
+  hb_بفر_سیٹ_content_type (بفر, HB_بفر_CONTENT_TYPE_GLYPHS);
+  hb_بفر_سیٹ_لمائی (بفر, glyph_گنتی);
 
-  buffer->clear_positions ();
+  بفر->clear_positions ();
 
-  info = buffer->info;
-  pos = buffer->pos;
+  info = بفر->info;
+  pos = بفر->pos;
 
-  for (auto it = kb_output; kbts_GlyphIteratorNext (&it, &kb_glyph); info++, pos++)
+  لكل (خودکار it = kb_output; kbts_Glyph_Iterator_اگلا (&it, &kb_glyph); info++, pos++)
   {
     info->codepoint = kb_glyph->Id;
-    info->cluster = kb_glyph->UserIdOrCodepointIndex;
+    info->cluster = kb_glyph->User_Id_Or_Codepoint_اشاریہ;
     pos->x_advance = font->em_scalef_x (kb_glyph->AdvanceX);
     pos->y_advance = font->em_scalef_y (kb_glyph->AdvanceY);
-    pos->x_offset = font->em_scalef_x (kb_glyph->OffsetX);
-    pos->y_offset = font->em_scalef_y (kb_glyph->OffsetY);
+    pos->x_وتھ_2 = font->em_scalef_x (kb_glyph->وتھ_X);
+    pos->y_وتھ_2 = font->em_scalef_y (kb_glyph->وتھ_Y);
   }
 
-done:
-  if (likely (kb_shape_scratchpad))
-    hb_kbts_release_shape_scratchpad (plan_data, kb_shape_scratchpad);
-  while (kbts_GlyphIteratorNext (&kb_output, &kb_glyph))
+پورا:
+  إذا (likely (kb_shape_scratchpad))
+    hb_kbts_release_shape_scratchpad (plan_انکڑے, kb_shape_scratchpad);
+  طالما (kbts_Glyph_Iterator_اگلا (&kb_output, &kb_glyph))
     kbts_DestroyGlyphConfig (kb_glyph->Config);
   kbts_FreeAllGlyphs (&kb_glyph_storage);
 
-  buffer->clear_glyph_flags ();
-  buffer->unsafe_to_break ();
+  بفر->clear_glyph_flags ();
+  بفر->unsafe_منزل_break ();
 
-  return res;
+  أرجع res;
 }
 
-#endif
+#جے_انت

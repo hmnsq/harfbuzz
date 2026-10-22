@@ -24,9 +24,9 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_VAR_VARC_TABLE_HH
-#define HB_OT_VAR_VARC_TABLE_HH
+#جے_بنا_تعریف HB_OT_VAR_VARC_جدول_HH
+#تعریف_کرو HB_OT_VAR_VARC_جدول_HH
 
-#include "OT/Var/VARC/VARC.hh"
+#ضمن "OT/Var/VARC/VARC.hh"
 
-#endif /* HB_OT_VAR_VARC_TABLE_HH */
+#جے_انت /* HB_OT_VAR_VARC_TABLE_HH */

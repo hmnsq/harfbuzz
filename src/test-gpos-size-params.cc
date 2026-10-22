@@ -24,21 +24,21 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#ضمن "hb.h"
+#ضمن "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#جے_تعریف_شدہ HB_NO_OPEN
+#تعریف_کرو hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالی_تھاواں ()
+#جے_انت
 
-int
-main (int argc, char **argv)
+صحيح
+مکھ (صحيح argc, حرف **argv)
 {
-  if (argc != 2) {
+  إذا (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    باہر_نکلو (1);
   }
 
   /* Create the face */
@@ -46,17 +46,17 @@ main (int argc, char **argv)
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = خالی_سوچک;
 
-  bool ret = true;
+  منطقي ret = سچ;
 
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  unsigned int p[5];
-  ret = hb_ot_layout_get_size_params (face, p, p+1, (p+2), p+3, p+4);
-  printf ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
-#endif
+#جے_بنا_تعریف HB_NO_LAYOUT_FEATURE_PARAMS
+  بنانشانی صحيح p[5];
+  ret = hb_ot_layout_get_ناپ_params (face, p, p+1, (p+2), p+3, p+4);
+  لکھو ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
+#جے_انت
 
   hb_face_destroy (face);
 
-  return !ret;
+  أرجع !ret;
 }

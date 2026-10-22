@@ -23,317 +23,317 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF2_INTERP_CS_HH
-#define HB_CFF2_INTERP_CS_HH
+#جے_بنا_تعریف HB_CFF2_INTERP_CS_HH
+#تعریف_کرو HB_CFF2_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#ضمن "hb.hh"
+#ضمن "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+ورتوں نطاق OT;
 
-struct blend_arg_t : number_t
+بنية blend_arg_t : نمبر_t
 {
-  void set_int (int v) { reset_blends (); number_t::set_int (v); }
-  void set_fixed (int32_t v) { reset_blends (); number_t::set_fixed (v); }
-  void set_real (double v) { reset_blends (); number_t::set_real (v); }
+  فراغ سیٹ_int (صحيح v) { reset_blends (); نمبر_t::سیٹ_int (v); }
+  فراغ سیٹ_fixed (int32_t v) { reset_blends (); نمبر_t::سیٹ_fixed (v); }
+  فراغ سیٹ_real (مزدوج v) { reset_blends (); نمبر_t::سیٹ_real (v); }
 
-  void set_blends (unsigned int numValues_, unsigned int valueIndex_,
-		   hb_array_t<const blend_arg_t> blends_)
+  فراغ سیٹ_blends (بنانشانی صحيح عدد_اقدار, بنانشانی صحيح قدر_اشاریہ,
+		   hb_array_t<ثابت blend_arg_t> blends_)
   {
-    numValues = numValues_;
-    valueIndex = valueIndex_;
-    unsigned numBlends = blends_.length;
-    if (unlikely (!deltas.resize_exact (numBlends)))
-      return;
-    for (unsigned int i = 0; i < numBlends; i++)
+    عدد_اقدار_2 = عدد_اقدار;
+    قدر_اشاریہ_2 = قدر_اشاریہ;
+    بنانشانی عدد_Blends = blends_.لمائی;
+    إذا (unlikely (!deltas.resize_exact (عدد_Blends)))
+      أرجع;
+    لكل (بنانشانی صحيح i = 0; i < عدد_Blends; i++)
       deltas.arrayZ[i] = blends_.arrayZ[i];
   }
 
-  bool blending () const { return deltas.length > 0; }
-  void reset_blends ()
+  منطقي blending () ثابت { أرجع deltas.لمائی > 0; }
+  فراغ reset_blends ()
   {
-    numValues = valueIndex = 0;
+    عدد_اقدار_2 = قدر_اشاریہ_2 = 0;
     deltas.clear ();
   }
 
-  unsigned int numValues;
-  unsigned int valueIndex;
-  hb_vector_t<number_t> deltas;
+  بنانشانی صحيح عدد_اقدار_2;
+  بنانشانی صحيح قدر_اشاریہ_2;
+  hb_سمتیہ_t<نمبر_t> deltas;
 };
 
-typedef biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
+تعريفنوع biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
 
-template <typename ELEM>
-struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
+سانچا <قسم_ناں ELEM>
+بنية cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 {
-  template <typename ACC>
-  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
-    : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs),
-      region_count (0), cached_scalars_vector (&acc.cached_scalars_vector)
+  سانچا <قسم_ناں ACC>
+  cff2_cs_interp_env_t (ثابت hb_ubytes_t &str, ACC &acc, بنانشانی صحيح fd,
+			ثابت صحيح *coords_=خالی_سوچک, بنانشانی صحيح عدد_coords_2=0)
+    : SUPER (str, acc.globalSubrs, acc.نجی_Dicts[fd].localSubrs),
+      region_گنتی_2 (0), cached_scalars_سمتیہ (&acc.cached_scalars_سمتیہ)
   {
     coords = coords_;
-    num_coords = num_coords_;
+    عدد_coords = عدد_coords_2;
     varStore = acc.varStore;
-    do_blend = num_coords && varStore->size;
-    orig_ivs = acc.privateDicts[fd].ivs;
-    set_ivs (orig_ivs);
+    do_blend = عدد_coords && varStore->ناپ;
+    orig_ivs = acc.نجی_Dicts[fd].ivs;
+    سیٹ_ivs (orig_ivs);
   }
 
   ~cff2_cs_interp_env_t ()
   {
-    release_scalars_vector (scalars);
+    release_scalars_سمتیہ (scalars);
   }
 
-  hb_vector_t<float> *acquire_scalars_vector () const
+  hb_سمتیہ_t<عائم> *acquire_scalars_سمتیہ () ثابت
   {
-    hb_vector_t<float> *scalars = cached_scalars_vector->get_acquire ();
+    hb_سمتیہ_t<عائم> *scalars = cached_scalars_سمتیہ->get_acquire ();
 
-    if (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
+    إذا (!scalars || !cached_scalars_سمتیہ->cmpexch (scalars, خالی_سوچک))
     {
-      scalars = (hb_vector_t<float> *) hb_calloc (1, sizeof (hb_vector_t<float>));
-      if (unlikely (!scalars))
-	return nullptr;
+      scalars = (hb_سمتیہ_t<عائم> *) hb_calloc (1, حجم (hb_سمتیہ_t<عائم>));
+      إذا (unlikely (!scalars))
+	أرجع خالی_سوچک;
       scalars->init ();
     }
 
-    return scalars;
+    أرجع scalars;
   }
 
-  void release_scalars_vector (hb_vector_t<float> *scalars) const
+  فراغ release_scalars_سمتیہ (hb_سمتیہ_t<عائم> *scalars) ثابت
   {
-    if (!scalars)
-      return;
+    إذا (!scalars)
+      أرجع;
 
     scalars->clear ();
 
-    if (!cached_scalars_vector->cmpexch (nullptr, scalars))
+    إذا (!cached_scalars_سمتیہ->cmpexch (خالی_سوچک, scalars))
     {
       scalars->fini ();
       hb_free (scalars);
     }
-    scalars = nullptr;
+    scalars = خالی_سوچک;
   }
 
-  op_code_t fetch_op ()
+  op_کوڈ_t fetch_op ()
   {
-    if (this->str_ref.avail ())
-      return SUPER::fetch_op ();
+    إذا (هذا->str_ref.avail ())
+      أرجع SUPER::fetch_op ();
 
     /* make up return or endchar op */
-    if (this->callStack.is_empty ())
-      return OpCode_endchar;
-    else
-      return OpCode_return;
+    إذا (هذا->call_ڈھیر.is_empty ())
+      أرجع Op_کوڈ_endchar;
+    وإلا
+      أرجع Op_کوڈ_return;
   }
 
-  const ELEM& eval_arg (unsigned int i)
+  ثابت ELEM& eval_arg (بنانشانی صحيح i)
   {
-    return SUPER::argStack[i];
+    أرجع SUPER::arg_ڈھیر[i];
   }
 
-  const ELEM& pop_arg ()
+  ثابت ELEM& نکالو_arg ()
   {
-    return SUPER::argStack.pop ();
+    أرجع SUPER::arg_ڈھیر.نکالو ();
   }
 
-  void process_blend ()
+  فراغ process_blend ()
   {
-    if (!seen_blend)
+    إذا (!تکیا_blend)
     {
-      scalars = acquire_scalars_vector ();
-      if (unlikely (!scalars))
-	SUPER::set_error ();
-      else
+      scalars = acquire_scalars_سمتیہ ();
+      إذا (unlikely (!scalars))
+	SUPER::سیٹ_error ();
+      وإلا
       {
-	region_count = varStore->varStore.get_region_index_count (get_ivs ());
-	if (do_blend)
+	region_گنتی_2 = varStore->varStore.get_region_اشاریہ_گنتی (get_ivs ());
+	إذا (do_blend)
 	{
-	  if (unlikely (!scalars->resize_exact (region_count)))
-	    SUPER::set_error ();
-	  else
-	    varStore->varStore.get_region_scalars (get_ivs (), coords, num_coords,
-						   &(*scalars)[0], region_count);
+	  إذا (unlikely (!scalars->resize_exact (region_گنتی_2)))
+	    SUPER::سیٹ_error ();
+	  وإلا
+	    varStore->varStore.get_region_scalars (get_ivs (), coords, عدد_coords,
+						   &(*scalars)[0], region_گنتی_2);
 	}
       }
-      seen_blend = true;
+      تکیا_blend = سچ;
     }
   }
 
-  void process_vsindex ()
+  فراغ process_vsindex ()
   {
-    unsigned int  index = SUPER::argStack.pop_uint ();
-    if (unlikely (seen_vsindex () || seen_blend))
+    بنانشانی صحيح  اشاریہ_2 = SUPER::arg_ڈھیر.نکالو_uint ();
+    إذا (unlikely (تکیا_vsindex () || تکیا_blend))
     {
-     SUPER::set_error ();
+     SUPER::سیٹ_error ();
     }
-    else
+    وإلا
     {
-      set_ivs (index);
+      سیٹ_ivs (اشاریہ_2);
     }
-    seen_vsindex_ = true;
+    تکیا_vsindex_2 = سچ;
   }
 
-  unsigned int get_region_count () const { return region_count; }
-  void	 set_region_count (unsigned int region_count_) { region_count = region_count_; }
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  بنانشانی صحيح get_region_گنتی () ثابت { أرجع region_گنتی_2; }
+  فراغ	 سیٹ_region_گنتی (بنانشانی صحيح region_گنتی_3) { region_گنتی_2 = region_گنتی_3; }
+  بنانشانی صحيح get_ivs () ثابت { أرجع ivs; }
+  فراغ	 سیٹ_ivs (بنانشانی صحيح ivs_) { ivs = ivs_; }
   /* The FD's private-dict ivs, before any vsindex op in the charstring. */
-  unsigned int get_orig_ivs () const { return orig_ivs; }
-  bool	 seen_vsindex () const { return seen_vsindex_; }
+  بنانشانی صحيح get_orig_ivs () ثابت { أرجع orig_ivs; }
+  منطقي	 تکیا_vsindex () ثابت { أرجع تکیا_vsindex_2; }
 
-  double blend_deltas (hb_array_t<const ELEM> deltas) const
+  مزدوج blend_deltas (hb_array_t<ثابت ELEM> deltas) ثابت
   {
-    double v = 0;
-    if (do_blend)
+    مزدوج v = 0;
+    إذا (do_blend)
     {
-      if (likely (scalars && scalars->length == deltas.length))
+      إذا (likely (scalars && scalars->لمائی == deltas.لمائی))
       {
-        unsigned count = scalars->length;
-	for (unsigned i = 0; i < count; i++)
-	  v += (double) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
+        بنانشانی گنتی = scalars->لمائی;
+	لكل (بنانشانی i = 0; i < گنتی; i++)
+	  v += (مزدوج) scalars->arrayZ[i] * deltas.arrayZ[i].منزل_real ();
       }
     }
-    return v;
+    أرجع v;
   }
 
-  bool have_coords () const { return num_coords; }
+  منطقي have_coords () ثابت { أرجع عدد_coords; }
 
-  protected:
-  const int     *coords;
-  unsigned int  num_coords;
-  const	 CFF2ItemVariationStore *varStore;
-  unsigned int  region_count;
-  unsigned int  ivs;
-  unsigned int  orig_ivs;
-  hb_vector_t<float>  *scalars = nullptr;
-  hb_atomic_t<hb_vector_t<float> *> *cached_scalars_vector = nullptr;
-  bool	  do_blend;
-  bool	  seen_vsindex_ = false;
-  bool	  seen_blend = false;
+  محمي:
+  ثابت صحيح     *coords;
+  بنانشانی صحيح  عدد_coords;
+  ثابت	 CFF2_شے_Variation_Store *varStore;
+  بنانشانی صحيح  region_گنتی_2;
+  بنانشانی صحيح  ivs;
+  بنانشانی صحيح  orig_ivs;
+  hb_سمتیہ_t<عائم>  *scalars = خالی_سوچک;
+  hb_atomic_t<hb_سمتیہ_t<عائم> *> *cached_scalars_سمتیہ = خالی_سوچک;
+  منطقي	  do_blend;
+  منطقي	  تکیا_vsindex_2 = خطأ;
+  منطقي	  تکیا_blend = خطأ;
 
-  typedef cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
+  تعريفنوع cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
 };
-template <typename OPSET, typename PARAM, typename ELEM, typename PATH=path_procs_null_t<cff2_cs_interp_env_t<ELEM>, PARAM>>
-struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
+سانچا <قسم_ناں OPSET, قسم_ناں PARAM, قسم_ناں ELEM, قسم_ناں رستہ_3=رستہ_procs_null_t<cff2_cs_interp_env_t<ELEM>, PARAM>>
+بنية cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, رستہ_3>
 {
-  static void process_op (op_code_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  ساكن فراغ process_op (op_کوڈ_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_callsubr:
-      case OpCode_callgsubr:
+    بدل (op) {
+      حالة Op_کوڈ_callsubr:
+      حالة Op_کوڈ_callgsubr:
 	/* a subroutine number shouldn't be a blended value */
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+#إذا 0
+	إذا (unlikely (env.arg_ڈھیر.peek ().blending ()))
 	{
-	  env.set_error ();
-	  break;
+	  env.سیٹ_error ();
+	  اكسر;
 	}
-#endif
+#جے_انت
 	SUPER::process_op (op, env, param);
-	break;
+	اكسر;
 
-      case OpCode_blendcs:
+      حالة Op_کوڈ_blendcs:
 	OPSET::process_blend (env, param);
-	break;
+	اكسر;
 
-      case OpCode_vsindexcs:
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+      حالة Op_کوڈ_vsindexcs:
+#إذا 0
+	إذا (unlikely (env.arg_ڈھیر.peek ().blending ()))
 	{
-	  env.set_error ();
-	  break;
+	  env.سیٹ_error ();
+	  اكسر;
 	}
-#endif
+#جے_انت
 	OPSET::process_vsindex (env, param);
-	break;
+	اكسر;
 
-      default:
+      افتراضي:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  template <typename T = ELEM,
+  سانچا <قسم_ناں T = ELEM,
 	    hb_enable_if (hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
+  ساكن فراغ process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
-				 const hb_array_t<const ELEM> blends,
-				 unsigned n, unsigned i)
+				 ثابت hb_array_t<ثابت ELEM> blends,
+				 بنانشانی n, بنانشانی i)
   {
-    if (env.have_coords ())
-      arg.set_int (round (arg.to_real () + env.blend_deltas (blends)));
-    else if (unlikely (arg.blending ()))
+    إذا (env.have_coords ())
+      arg.سیٹ_int (round (arg.منزل_real () + env.blend_deltas (blends)));
+    وإلا إذا (unlikely (arg.blending ()))
     {
       /* A blend result used as an operand of a later blend: the value is
        * default + inner deltas + outer deltas, so accumulate the deltas. */
-      hb_vector_t<number_t> inner = std::move (arg.deltas);
-      arg.set_blends (n, i, blends);
-      if (likely (inner.length == arg.deltas.length))
-	for (unsigned j = 0; j < inner.length; j++)
-	  arg.deltas.arrayZ[j].set_real (arg.deltas.arrayZ[j].to_real () +
-					 inner.arrayZ[j].to_real ());
-      else
-	env.set_error ();
+      hb_سمتیہ_t<نمبر_t> inner = std::move (arg.deltas);
+      arg.سیٹ_blends (n, i, blends);
+      إذا (likely (inner.لمائی == arg.deltas.لمائی))
+	لكل (بنانشانی j = 0; j < inner.لمائی; j++)
+	  arg.deltas.arrayZ[j].سیٹ_real (arg.deltas.arrayZ[j].منزل_real () +
+					 inner.arrayZ[j].منزل_real ());
+      وإلا
+	env.سیٹ_error ();
     }
-    else
-      arg.set_blends (n, i, blends);
+    وإلا
+      arg.سیٹ_blends (n, i, blends);
   }
-  template <typename T = ELEM,
+  سانچا <قسم_ناں T = ELEM,
 	    hb_enable_if (!hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
+  ساكن فراغ process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
-				 const hb_array_t<const ELEM> blends,
-				 unsigned n, unsigned i)
+				 ثابت hb_array_t<ثابت ELEM> blends,
+				 بنانشانی n, بنانشانی i)
   {
-    arg.set_real (arg.to_real () + env.blend_deltas (blends));
+    arg.سیٹ_real (arg.منزل_real () + env.blend_deltas (blends));
   }
 
-  static void process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  ساكن فراغ process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    unsigned int n, k;
+    بنانشانی صحيح n, k;
 
     env.process_blend ();
-    k = env.get_region_count ();
-    n = env.argStack.pop_uint ();
+    k = env.get_region_گنتی ();
+    n = env.arg_ڈھیر.نکالو_uint ();
     /* copy the blend values into blend array of the default values */
-    unsigned int count = env.argStack.get_count ();
-    unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    بنانشانی صحيح گنتی = env.arg_ڈھیر.get_گنتی ();
+    بنانشانی صحيح کل;
+    إذا (unlikely (hb_unsigned_mul_overflows (k + 1, n, &کل) || کل > گنتی))
     {
-      env.set_error ();
-      return;
+      env.سیٹ_error ();
+      أرجع;
     }
-    if (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
+    إذا (unlikely (!env.spend_budget (HB_BUDGET_1, کل - n)))
     {
-      env.set_error ();
-      return;
+      env.سیٹ_error ();
+      أرجع;
     }
-    unsigned int start = count - total;
-    for (unsigned int i = 0; i < n; i++)
+    بنانشانی صحيح شروع = گنتی - کل;
+    لكل (بنانشانی صحيح i = 0; i < n; i++)
     {
-      const hb_array_t<const ELEM> blends = env.argStack.sub_array (start + n + (i * k), k);
-      process_arg_blend (env, env.argStack.arrayZ[start + i], blends, n, i);
+      ثابت hb_array_t<ثابت ELEM> blends = env.arg_ڈھیر.sub_array (شروع + n + (i * k), k);
+      process_arg_blend (env, env.arg_ڈھیر.arrayZ[شروع + i], blends, n, i);
     }
 
     /* pop off blend values leaving default values now adorned with blend values */
-    env.argStack.pop (k * n);
+    env.arg_ڈھیر.نکالو (k * n);
   }
 
-  static void process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  ساكن فراغ process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     env.process_vsindex ();
-    env.clear_args ();
+    env.clear_دلیلاں ();
   }
 
-  private:
-  typedef cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>  SUPER;
+  خاص:
+  تعريفنوع cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, رستہ_3>  SUPER;
 };
 
-template <typename OPSET, typename PARAM, typename ELEM>
-using cff2_cs_interpreter_t = cs_interpreter_t<cff2_cs_interp_env_t<ELEM>, OPSET, PARAM>;
+سانچا <قسم_ناں OPSET, قسم_ناں PARAM, قسم_ناں ELEM>
+ورتوں cff2_cs_interpreter_t = cs_interpreter_t<cff2_cs_interp_env_t<ELEM>, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF2_INTERP_CS_HH */
+#جے_انت /* HB_CFF2_INTERP_CS_HH */

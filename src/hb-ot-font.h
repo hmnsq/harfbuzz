@@ -24,22 +24,22 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#إذا !defined(HB_OT_H_وچ) && !defined(HB_NO_SINGLE_سرخی_ERROR)
+#غلطی "Include <hb-ot.h> instead."
+#جے_انت
 
-#ifndef HB_OT_FONT_H
-#define HB_OT_FONT_H
+#جے_بنا_تعریف HB_OT_FONT_H
+#تعریف_کرو HB_OT_FONT_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
-hb_ot_font_set_funcs (hb_font_t *font);
+HB_EXTERN فراغ
+hb_ot_font_سیٹ_funcs (hb_font_t *font);
 
 
-HB_END_DECLS
+HB_سرا_DECLS
 
-#endif /* HB_OT_FONT_H */
+#جے_انت /* HB_OT_FONT_H */

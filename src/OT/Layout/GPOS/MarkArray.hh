@@ -1,216 +1,216 @@
-#ifndef OT_LAYOUT_GPOS_MARKARRAY_HH
-#define OT_LAYOUT_GPOS_MARKARRAY_HH
+#جے_بنا_تعریف OT_LAYOUT_GPOS_MARKARRAY_HH
+#تعریف_کرو OT_LAYOUT_GPOS_MARKARRAY_HH
 
-#include "AnchorMatrix.hh"
-#include "MarkRecord.hh"
+#ضمن "AnchorMatrix.hh"
+#ضمن "MarkRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-static inline hb_position_t
-resolve_cross_offset (const hb_glyph_position_t *pos,
-		      unsigned int len,
-		      unsigned int glyph_pos,
+ساكن مضمن hb_position_t
+resolve_cross_وتھ (ثابت hb_glyph_position_t *pos,
+		      بنانشانی صحيح len,
+		      بنانشانی صحيح glyph_pos,
 		      hb_direction_t direction)
 {
-  bool horizontal = HB_DIRECTION_IS_HORIZONTAL (direction);
-  hb_position_t offset = horizontal ? pos[glyph_pos].y_offset : pos[glyph_pos].x_offset;
-  while (pos[glyph_pos].attach_type() & ATTACH_TYPE_CURSIVE)
+  منطقي horizontal = HB_DIRECTION_IS_HORIZONTAL (direction);
+  hb_position_t وتھ = horizontal ? pos[glyph_pos].y_وتھ_2 : pos[glyph_pos].x_وتھ_2;
+  طالما (pos[glyph_pos].attach_type() & ATTACH_TYPE_CURSIVE)
   {
-    int chain = pos[glyph_pos].attach_chain();
-    if (!chain)
-      break;
-    unsigned int parent = (int) glyph_pos + chain;
-    if (unlikely (parent >= len))
-      break;
-    glyph_pos = parent;
-    offset = hb_saturate_add (offset,
-			      horizontal ? pos[glyph_pos].y_offset : pos[glyph_pos].x_offset);
+    صحيح chain = pos[glyph_pos].attach_chain();
+    إذا (!chain)
+      اكسر;
+    بنانشانی صحيح ماپا = (صحيح) glyph_pos + chain;
+    إذا (unlikely (ماپا >= len))
+      اكسر;
+    glyph_pos = ماپا;
+    وتھ = hb_saturate_جوڑو (وتھ,
+			      horizontal ? pos[glyph_pos].y_وتھ_2 : pos[glyph_pos].x_وتھ_2);
   }
-  return offset;
+  أرجع وتھ;
 }
 
-static inline bool
+ساكن مضمن منطقي
 apply_mark_attachment (hb_ot_apply_context_t *c,
-                       const Anchor &mark_anchor,
-                       const Anchor &glyph_anchor,
-                       unsigned glyph_pos)
+                       ثابت Anchor &mark_anchor,
+                       ثابت Anchor &glyph_anchor,
+                       بنانشانی glyph_pos)
 {
-  hb_buffer_t *buffer = c->buffer;
-  float mark_x, mark_y, base_x, base_y;
+  hb_بفر_t *بفر = c->بفر;
+  عائم mark_x, mark_y, ادھار_x, ادھار_y;
 
-  buffer->unsafe_to_break (glyph_pos, buffer->idx + 1);
-  mark_anchor.get_anchor (c, buffer->cur().codepoint, &mark_x, &mark_y);
-  glyph_anchor.get_anchor (c, buffer->info[glyph_pos].codepoint, &base_x, &base_y);
+  بفر->unsafe_منزل_break (glyph_pos, بفر->idx + 1);
+  mark_anchor.get_anchor (c, بفر->cur().codepoint, &mark_x, &mark_y);
+  glyph_anchor.get_anchor (c, بفر->info[glyph_pos].codepoint, &ادھار_x, &ادھار_y);
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  إذا (HB_بفر_سنیہا_ہور && c->بفر->messaging ())
   {
-    c->buffer->message (c->font,
+    c->بفر->سنیہا (c->font,
 			  "attaching mark glyph at %u to glyph at %u",
-			  c->buffer->idx, glyph_pos);
+			  c->بفر->idx, glyph_pos);
   }
 
-  hb_position_t base_offset = resolve_cross_offset (buffer->pos, buffer->len, glyph_pos,
-						      buffer->props.direction);
+  hb_position_t ادھار_وتھ = resolve_cross_وتھ (بفر->pos, بفر->len, glyph_pos,
+						      بفر->props.direction);
 
-  hb_glyph_position_t &mark = buffer->cur_pos();
-  mark.attach_chain() = (int) glyph_pos - (int) buffer->idx;
-  if (mark.attach_chain() != (int) glyph_pos - (int) buffer->idx)
+  hb_glyph_position_t &mark = بفر->cur_pos();
+  mark.attach_chain() = (صحيح) glyph_pos - (صحيح) بفر->idx;
+  إذا (mark.attach_chain() != (صحيح) glyph_pos - (صحيح) بفر->idx)
   {
     mark.attach_chain() = 0;
-    goto overflow;
+    اذهب حد_توں_ودھ;
   }
   mark.attach_type() = ATTACH_TYPE_MARK;
-  mark.x_offset = roundf (base_x - mark_x);
-  mark.y_offset = roundf (base_y - mark_y);
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    mark.y_offset = hb_saturate_add (mark.y_offset, base_offset);
-  else
-    mark.x_offset = hb_saturate_add (mark.x_offset, base_offset);
-  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+  mark.x_وتھ_2 = roundf (ادھار_x - mark_x);
+  mark.y_وتھ_2 = roundf (ادھار_y - mark_y);
+  إذا (HB_DIRECTION_IS_HORIZONTAL (بفر->props.direction))
+    mark.y_وتھ_2 = hb_saturate_جوڑو (mark.y_وتھ_2, ادھار_وتھ);
+  وإلا
+    mark.x_وتھ_2 = hb_saturate_جوڑو (mark.x_وتھ_2, ادھار_وتھ);
+  بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  إذا (HB_بفر_سنیہا_ہور && c->بفر->messaging ())
   {
-    c->buffer->message (c->font,
+    c->بفر->سنیہا (c->font,
 			  "attached mark glyph at %u to glyph at %u",
-			  c->buffer->idx, glyph_pos);
+			  c->بفر->idx, glyph_pos);
   }
 
-overflow:
-  buffer->idx++;
-  return true;
+حد_توں_ودھ:
+  بفر->idx++;
+  أرجع سچ;
 }
 
-HB_INTERNAL inline
-void collect_mark_variation_indices (hb_collect_variation_indices_context_t *c,
-                                    const Coverage &coverage,
-                                    const void *base,
-                                    glyph_data_t anchors,
-                                    unsigned count,
-                                    unsigned record_size)
+HB_اندرونی مضمن
+فراغ collect_mark_variation_indices (hb_collect_variation_indices_context_t *c,
+                                    ثابت Coverage &coverage,
+                                    ثابت فراغ *ادھار,
+                                    glyph_انکڑے_t anchors,
+                                    بنانشانی گنتی,
+                                    بنانشانی ریکارڈ_ناپ)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  لكل (ثابت خودکار _ : hb_zip (coverage, hb_range (گنتی)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
-    glyph_data_t anchor = anchors;
-    anchor.data = (const char *) anchors.data + _.second * record_size;
-    unsigned offset = anchor[0];
-    if (offset)
-      StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
+    إذا (!c->glyph_سیٹ->has (_.پہلا)) استمر;
+    glyph_انکڑے_t anchor = anchors;
+    anchor.انکڑے = (ثابت حرف *) anchors.انکڑے + _.second * ریکارڈ_ناپ;
+    بنانشانی وتھ = anchor[0];
+    إذا (وتھ)
+      Struct_At_وتھ<ثابت Anchor> (ادھار, وتھ).collect_variation_indices (c);
   }
 }
 
-template <typename Types>
-struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
+سانچا <قسم_ناں Types>
+بنية MarkArray : Types::سانچا Array_دا<Mark_ریکارڈ<Types>>
                                                 /* Array of MarkRecords--in Coverage order */
 {
-  typedef typename Types::template ArrayOf<MarkRecord<Types>> Super;
+  تعريفنوع قسم_ناں Types::سانچا Array_دا<Mark_ریکارڈ<Types>> Super;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (Super::sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (Super::sanitize (c, هذا));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const Coverage &coverage) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت Coverage &coverage) ثابت
   {
-    if (!this->len) return;
-    collect_mark_variation_indices (c, coverage, this,
-                                   &this->arrayZ[0].markAnchor,
-                                   this->len, MarkRecord<Types>::static_size);
+    إذا (!هذا->len) أرجع;
+    collect_mark_variation_indices (c, coverage, هذا,
+                                   &هذا->arrayZ[0].markAnchor,
+                                   هذا->len, Mark_ریکارڈ<Types>::static_ناپ);
   }
 
-  template <typename AnchorMatrixType>
-  bool apply (hb_ot_apply_context_t *c,
-              unsigned int mark_index, unsigned int glyph_index,
-              const AnchorMatrixType &anchors, unsigned int class_count,
-              unsigned int glyph_pos) const
+  سانچا <قسم_ناں Anchor_میٹرکس_Type>
+  منطقي apply (hb_ot_apply_context_t *c,
+              بنانشانی صحيح mark_اشاریہ, بنانشانی صحيح glyph_اشاریہ,
+              ثابت Anchor_میٹرکس_Type &anchors, بنانشانی صحيح class_گنتی,
+              بنانشانی صحيح glyph_pos) ثابت
   {
-    TRACE_APPLY (this);
-    const MarkRecord<Types> &record = Super::operator[](mark_index);
-    unsigned int mark_class = record.klass;
+    TRACE_APPLY (هذا);
+    ثابت Mark_ریکارڈ<Types> &ریکارڈ = Super::عامل[](mark_اشاریہ);
+    بنانشانی صحيح mark_class = ریکارڈ.klass;
 
-    const Anchor& mark_anchor = this + record.markAnchor;
-    bool found;
-    const Anchor& glyph_anchor = anchors.get_anchor (c, glyph_index, mark_class, class_count, &found);
+    ثابت Anchor& mark_anchor = هذا + ریکارڈ.markAnchor;
+    منطقي لبھیا;
+    ثابت Anchor& glyph_anchor = anchors.get_anchor (c, glyph_اشاریہ, mark_class, class_گنتی, &لبھیا);
     /* If this subtable doesn't have an anchor for this base and this class,
      * return false such that the subsequent subtables have a chance at it. */
-    if (unlikely (!found)) return_trace (false);
+    إذا (unlikely (!لبھیا)) return_trace (خطأ);
 
     return_trace (apply_mark_attachment (c, mark_anchor, glyph_anchor, glyph_pos));
   }
 
-  template <typename Iterator,
+  سانچا <قسم_ناں Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
+  منطقي subset (hb_subset_context_t *c,
                Iterator             coverage,
-               const hb_map_t      *klass_mapping) const
+               ثابت hb_map_t      *klass_mapping) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    TRACE_SUBSET (هذا);
+    ثابت hb_سیٹ_t &glyphset = *c->plan->glyphset_gsub ();
 
-    auto* out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    خودکار* باہرلا = c->serializer->شروع_embed (هذا);
+    إذا (unlikely (!c->serializer->extend_min (باہرلا))) return_trace (خطأ);
 
-    auto mark_iter =
-    + hb_zip (coverage, this->iter ())
-    | hb_filter (glyphset, hb_first)
-    | hb_map (hb_second)
+    خودکار mark_iter =
+    + hb_zip (coverage, هذا->iter ())
+    | hb_filter (glyphset, hb_پہلا)
+    | hb_map (hb_دوجا)
     ;
 
-    bool ret = false;
-    unsigned new_length = 0;
-    for (const auto& mark_record : mark_iter) {
-      ret |= mark_record.subset (c, this, klass_mapping);
-      new_length++;
+    منطقي ret = خطأ;
+    بنانشانی new_لمائی = 0;
+    لكل (ثابت خودکار& mark_ریکارڈ : mark_iter) {
+      ret |= mark_ریکارڈ.subset (c, هذا, klass_mapping);
+      new_لمائی++;
     }
 
-    if (unlikely (!c->serializer->check_assign (out->len, new_length,
-                                                HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)))
-      return_trace (false);
+    إذا (unlikely (!c->serializer->check_سونپو (باہرلا->len, new_لمائی,
+                                                HB_SERIALIZE_ERROR_ARRAY_حد_توں_ودھ)))
+      return_trace (خطأ);
 
     return_trace (ret);
   }
 };
 
-HB_INTERNAL inline
-void Markclass_closure_and_remap_indexes (const Coverage &mark_coverage,
-                                    const void *mark_records,
-                                    unsigned count,
-                                    unsigned record_size,
-                                    const hb_set_t &glyphset,
+HB_اندرونی مضمن
+فراغ Markclass_گھیرا_and_remap_indexes (ثابت Coverage &mark_coverage,
+                                    ثابت فراغ *mark_ریکارڈاں,
+                                    بنانشانی گنتی,
+                                    بنانشانی ریکارڈ_ناپ,
+                                    ثابت hb_سیٹ_t &glyphset,
                                     hb_map_t *klass_mapping)
 {
-  hb_set_t orig_classes;
-  for (const auto _ : hb_zip (mark_coverage, hb_range (count)))
-    if (glyphset.has (_.first))
+  hb_سیٹ_t orig_classes;
+  لكل (ثابت خودکار _ : hb_zip (mark_coverage, hb_range (گنتی)))
+    إذا (glyphset.has (_.پہلا))
     {
-      const auto *klass = reinterpret_cast<const HBUINT16 *>
-        ((const char *) mark_records + _.second * record_size);
-      orig_classes.add (*klass);
+      ثابت خودکار *klass = reinterpret_cast<ثابت HBUINT16 *>
+        ((ثابت حرف *) mark_ریکارڈاں + _.second * ریکارڈ_ناپ);
+      orig_classes.جوڑو (*klass);
     }
 
-  unsigned idx = 0;
-  for (auto klass : orig_classes.iter ())
+  بنانشانی idx = 0;
+  لكل (خودکار klass : orig_classes.iter ())
   {
-    if (klass_mapping->has (klass)) continue;
-    klass_mapping->set (klass, idx);
+    إذا (klass_mapping->has (klass)) استمر;
+    klass_mapping->سیٹ (klass, idx);
     idx++;
   }
 }
 
-template <typename Types>
-HB_INTERNAL inline
-void Markclass_closure_and_remap_indexes (const Coverage     &mark_coverage,
-                                          const MarkArray<Types> &mark_array,
-                                          const hb_set_t     &glyphset,
+سانچا <قسم_ناں Types>
+HB_اندرونی مضمن
+فراغ Markclass_گھیرا_and_remap_indexes (ثابت Coverage     &mark_coverage,
+                                          ثابت MarkArray<Types> &mark_array,
+                                          ثابت hb_سیٹ_t     &glyphset,
                                           hb_map_t*           klass_mapping /* INOUT */)
 {
-  Markclass_closure_and_remap_indexes (mark_coverage,
+  Markclass_گھیرا_and_remap_indexes (mark_coverage,
                                        mark_array.arrayZ, mark_array.len,
-                                       MarkRecord<Types>::static_size,
+                                       Mark_ریکارڈ<Types>::static_ناپ,
                                        glyphset, klass_mapping);
 }
 
@@ -218,4 +218,4 @@ void Markclass_closure_and_remap_indexes (const Coverage     &mark_coverage,
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKARRAY_HH */
+#جے_انت /* OT_LAYOUT_GPOS_MARKARRAY_HH */

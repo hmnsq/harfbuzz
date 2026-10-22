@@ -27,29 +27,29 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifdef HAVE_FREETYPE
+#جے_تعریف_شدہ HAVE_FREETYPE
 
-#include "hb-ft.h"
+#ضمن "hb-ft.h"
 
-#include "hb-cache.hh"
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-shaper-arabic-pua.hh"
-#include "hb-paint.hh"
+#ضمن "hb-cache.hh"
+#ضمن "hb-draw.hh"
+#ضمن "hb-font.hh"
+#ضمن "hb-machinery.hh"
+#ضمن "hb-ot-os2-table.hh"
+#ضمن "hb-ot-shaper-arabic-pua.hh"
+#ضمن "hb-paint.hh"
 
-#include FT_MODULE_H
-#include FT_ADVANCES_H
-#include FT_MULTIPLE_MASTERS_H
-#include FT_OUTLINE_H
-#include FT_TRUETYPE_TABLES_H
-#include FT_SYNTHESIS_H
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
-#include FT_COLOR_H
-#endif
+#ضمن FT_MODULE_H
+#ضمن FT_ADVANCES_H
+#ضمن FT_مضرب_MASTERS_H
+#ضمن FT_OUTLINE_H
+#ضمن FT_TRUETYPE_TABLES_H
+#ضمن FT_SYNTHESIS_H
+#إذا (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#ضمن FT_COLOR_H
+#جے_انت
 
 
 /**
@@ -86,58 +86,58 @@
  */
 
 
-using hb_ft_advance_cache_t = hb_cache_t<16, 24, 8, false>;
+ورتوں hb_ft_advance_cache_t = hb_cache_t<16, 24, 8, خطأ>;
 
-static void _hb_ft_face_destroy_static (void *data);
+ساكن فراغ _hb_ft_face_destroy_static (فراغ *انکڑے);
 
-struct hb_ft_font_t
+بنية hb_ft_font_t
 {
-  int load_flags;
-  bool symbol; /* Whether selected cmap is symbol cmap. */
-  bool unref; /* Whether to destroy ft_face when done. */
-  bool transform; /* Whether to apply FT_Face's transform. */
-  bool static_library; /* Whether ft_face uses static_ft_library. */
+  صحيح لدو_flags;
+  منطقي علامت; /* Whether selected cmap is symbol cmap. */
+  منطقي unref; /* Whether to destroy ft_face when done. */
+  منطقي transform; /* Whether to apply FT_Face's transform. */
+  منطقي static_library; /* Whether ft_face uses static_ft_library. */
 
-  mutable hb_mutex_t lock; /* Protects members below. */
+  بدلنجوگ hb_mutex_t lock; /* Protects members below. */
   FT_Face ft_face;
-  mutable hb_atomic_t<unsigned> cached_serial;
-  mutable hb_ft_advance_cache_t advance_cache;
+  بدلنجوگ hb_atomic_t<بنانشانی> cached_serial;
+  بدلنجوگ hb_ft_advance_cache_t advance_cache;
 };
 
-static hb_ft_font_t *
-_hb_ft_font_create (FT_Face ft_face, bool symbol, bool unref, bool static_library)
+ساكن hb_ft_font_t *
+_hb_ft_font_create (FT_Face ft_face, منطقي علامت, منطقي unref, منطقي static_library)
 {
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) hb_calloc (1, sizeof (hb_ft_font_t));
-  if (unlikely (!ft_font)) return nullptr;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) hb_calloc (1, حجم (hb_ft_font_t));
+  إذا (unlikely (!ft_font)) أرجع خالی_سوچک;
 
   ft_font->lock.init ();
   ft_font->ft_face = ft_face;
-  ft_font->symbol = symbol;
+  ft_font->علامت = علامت;
   ft_font->unref = unref;
   ft_font->static_library = static_library;
 
-  ft_font->load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
+  ft_font->لدو_flags = FT_لدو_DEFAULT | FT_لدو_NO_HINTING;
 
   ft_font->cached_serial = UINT_MAX;
-  new (&ft_font->advance_cache) hb_ft_advance_cache_t;
+  جديد (&ft_font->advance_cache) hb_ft_advance_cache_t;
 
-  return ft_font;
+  أرجع ft_font;
 }
 
-static void
-_hb_ft_face_destroy (void *data)
+ساكن فراغ
+_hb_ft_face_destroy (فراغ *انکڑے)
 {
-  FT_Done_Face ((FT_Face) data);
+  FT_پورا_Face ((FT_Face) انکڑے);
 }
 
-static void
-_hb_ft_font_destroy (void *data)
+ساكن فراغ
+_hb_ft_font_destroy (فراغ *انکڑے)
 {
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) انکڑے;
 
-  if (ft_font->unref)
+  إذا (ft_font->unref)
   {
-    if (ft_font->static_library)
+    إذا (ft_font->static_library)
     {
       /* ft_font->ft_face->generic.data is the blob that hb_ft_font_set_funcs()
        * hooked up as this internal FT_Face's finalizer target (_release_blob).
@@ -147,11 +147,11 @@ _hb_ft_font_destroy (void *data)
        * to re-lock the same non-recursive mutex and self-deadlock. Hold an
        * extra reference across the locked call so the blob (and thus that
        * callback) can only be freed after the lock is released. */
-      hb_blob_t *blob = hb_blob_reference ((hb_blob_t *) ft_font->ft_face->generic.data);
+      hb_blob_t *blob = hb_blob_reference ((hb_blob_t *) ft_font->ft_face->generic.انکڑے);
       _hb_ft_face_destroy_static (ft_font->ft_face);
       hb_blob_destroy (blob);
     }
-    else
+    وإلا
       _hb_ft_face_destroy (ft_font->ft_face);
   }
 
@@ -162,92 +162,92 @@ _hb_ft_font_destroy (void *data)
 
 
 /* hb_font changed, update FT_Face. */
-static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
+ساكن فراغ hb_ft_hb_font_بدلیا (hb_font_t *font, FT_Face ft_face)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  إذا (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    أرجع;
 
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_انکڑے;
 
-  float x_mult = 1.f, y_mult = 1.f;
+  عائم x_mult = 1.f, y_mult = 1.f;
 
-  if (font->x_scale < 0) x_mult = -x_mult;
-  if (font->y_scale < 0) y_mult = -y_mult;
+  إذا (font->x_scale < 0) x_mult = -x_mult;
+  إذا (font->y_scale < 0) y_mult = -y_mult;
 
-  if (FT_Set_Char_Size (ft_face,
-			abs (font->x_scale), abs (font->y_scale),
+  إذا (FT_سیٹ_Char_ناپ (ft_face,
+			مطلق_قدر (font->x_scale), مطلق_قدر (font->y_scale),
 			0, 0
-#if 0
+#إذا 0
 		    font->x_ppem * 72 * 64 / font->x_scale,
 		    font->y_ppem * 72 * 64 / font->y_scale
-#endif
-     ) && ft_face->num_fixed_sizes)
+#جے_انت
+     ) && ft_face->عدد_fixed_sizes)
   {
-#ifdef HAVE_FT_GET_TRANSFORM
+#جے_تعریف_شدہ HAVE_FT_GET_TRANSFORM
     /* Bitmap font, eg. bitmap color emoji. */
     /* Pick largest size? */
-    int x_scale  = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].x_ppem;
-    int y_scale = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].y_ppem;
-    FT_Set_Char_Size (ft_face,
+    صحيح x_scale  = ft_face->دستیاب_sizes[ft_face->عدد_fixed_sizes - 1].x_ppem;
+    صحيح y_scale = ft_face->دستیاب_sizes[ft_face->عدد_fixed_sizes - 1].y_ppem;
+    FT_سیٹ_Char_ناپ (ft_face,
 		      x_scale, y_scale,
 		      0, 0);
 
     /* This contains the sign that was previously in x_mult/y_mult. */
-    x_mult = (float) font->x_scale / x_scale;
-    y_mult = (float) font->y_scale / y_scale;
-#endif
+    x_mult = (عائم) font->x_scale / x_scale;
+    y_mult = (عائم) font->y_scale / y_scale;
+#جے_انت
   }
-  else
+  وإلا
   { /* Shrug */ }
 
 
-  if (x_mult != 1.f || y_mult != 1.f)
+  إذا (x_mult != 1.f || y_mult != 1.f)
   {
-    FT_Matrix matrix = { (int) roundf (x_mult * (1<<16)), 0,
-			  0, (int) roundf (y_mult * (1<<16))};
-    FT_Set_Transform (ft_face, &matrix, nullptr);
-    ft_font->transform = true;
+    FT_میٹرکس میٹرکس = { (صحيح) roundf (x_mult * (1<<16)), 0,
+			  0, (صحيح) roundf (y_mult * (1<<16))};
+    FT_سیٹ_Transform (ft_face, &میٹرکس, خالی_سوچک);
+    ft_font->transform = سچ;
   }
-  else
-    FT_Set_Transform (ft_face, nullptr, nullptr);
+  وإلا
+    FT_سیٹ_Transform (ft_face, خالی_سوچک, خالی_سوچک);
 
-#if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
-  if (font->has_nonzero_coords)
+#إذا defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
+  إذا (font->has_nonzero_coords)
   {
-    unsigned int num_coords;
-    const float *coords = hb_font_get_var_coords_design (font, &num_coords);
-    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (num_coords, sizeof (FT_Fixed));
-    if (ft_coords)
+    بنانشانی صحيح عدد_coords;
+    ثابت عائم *coords = hb_font_get_var_coords_design (font, &عدد_coords);
+    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (عدد_coords, حجم (FT_Fixed));
+    إذا (ft_coords)
     {
-      for (unsigned int i = 0; i < num_coords; i++)
+      لكل (بنانشانی صحيح i = 0; i < عدد_coords; i++)
 	  ft_coords[i] = coords[i] * 65536.f;
-      FT_Set_Var_Design_Coordinates (ft_face, num_coords, ft_coords);
+      FT_سیٹ_Var_Design_Coordinates (ft_face, عدد_coords, ft_coords);
       hb_free (ft_coords);
     }
   }
-  else if (font->num_coords)
+  وإلا إذا (font->عدد_coords)
   {
     // Some old versions of FreeType crash if we
     // call this function on non-variable fonts.
-    FT_Set_Var_Design_Coordinates (ft_face, 0, nullptr);
+    FT_سیٹ_Var_Design_Coordinates (ft_face, 0, خالی_سوچک);
   }
-#endif
+#جے_انت
 }
 
 /* Check if hb_font changed, update FT_Face. */
-static inline bool
-_hb_ft_hb_font_check_changed (hb_font_t *font,
-			      const hb_ft_font_t *ft_font)
+ساكن مضمن منطقي
+hb_ft_hb_font_check_بدلیا (hb_font_t *font,
+			      ثابت hb_ft_font_t *ft_font)
 {
-  if (font->serial != ft_font->cached_serial)
+  إذا (font->serial != ft_font->cached_serial)
   {
-    hb_lock_t lock (ft_font->lock);
-    _hb_ft_hb_font_changed (font, ft_font->ft_face);
+    hb_جندرا_t lock (ft_font->lock);
+    hb_ft_hb_font_بدلیا (font, ft_font->ft_face);
     ft_font->advance_cache.clear ();
-    ft_font->cached_serial.set_release (font->serial.get_acquire ());
-    return true;
+    ft_font->cached_serial.سیٹ_release (font->serial.get_acquire ());
+    أرجع سچ;
   }
-  return false;
+  أرجع خطأ;
 }
 
 
@@ -266,18 +266,18 @@ _hb_ft_hb_font_check_changed (hb_font_t *font,
  *
  * Since: 1.0.5
  **/
-void
-hb_ft_font_set_load_flags (hb_font_t *font, int load_flags)
+فراغ
+hb_ft_font_سیٹ_لدو_flags (hb_font_t *font, صحيح لدو_flags)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  إذا (hb_object_is_immutable (font))
+    أرجع;
 
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  إذا (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    أرجع;
 
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_انکڑے;
 
-  ft_font->load_flags = load_flags;
+  ft_font->لدو_flags = لدو_flags;
 }
 
 /**
@@ -296,15 +296,15 @@ hb_ft_font_set_load_flags (hb_font_t *font, int load_flags)
  *
  * Since: 1.0.5
  **/
-int
-hb_ft_font_get_load_flags (hb_font_t *font)
+صحيح
+hb_ft_font_get_لدو_flags (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return 0;
+  إذا (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    أرجع 0;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font->user_انکڑے;
 
-  return ft_font->load_flags;
+  أرجع ft_font->لدو_flags;
 }
 
 /**
@@ -324,15 +324,15 @@ hb_ft_font_get_load_flags (hb_font_t *font)
 FT_Face
 hb_ft_font_get_ft_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return nullptr;
+  إذا (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    أرجع خالی_سوچک;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font->user_انکڑے;
 
-  return ft_font->ft_face;
+  أرجع ft_font->ft_face;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#جے_بنا_تعریف HB_DISABLE_DEPRECATED
 
 /**
  * hb_ft_font_get_face: (skip)
@@ -352,10 +352,10 @@ hb_ft_font_get_ft_face (hb_font_t *font)
 FT_Face
 hb_ft_font_get_face (hb_font_t *font)
 {
-  return hb_ft_font_get_ft_face (font);
+  أرجع hb_ft_font_get_ft_face (font);
 }
 
-#endif
+#جے_انت
 
 /**
  * hb_ft_font_lock_face: (skip)
@@ -373,16 +373,16 @@ hb_ft_font_get_face (hb_font_t *font)
  * Since: 2.6.5
  **/
 FT_Face
-hb_ft_font_lock_face (hb_font_t *font)
+hb_ft_font_جندرا_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return nullptr;
+  إذا (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    أرجع خالی_سوچک;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font->user_انکڑے;
 
   ft_font->lock.lock ();
 
-  return ft_font->ft_face;
+  أرجع ft_font->ft_face;
 }
 
 /**
@@ -393,821 +393,821 @@ hb_ft_font_lock_face (hb_font_t *font)
  *
  * Since: 2.6.5
  **/
-void
+فراغ
 hb_ft_font_unlock_face (hb_font_t *font)
 {
-  if (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
-    return;
+  إذا (unlikely (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy))
+    أرجع;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font->user_data;
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font->user_انکڑے;
 
   ft_font->lock.unlock ();
 }
 
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_ft_get_nominal_glyph (hb_font_t *font,
-			 void *font_data,
+			 فراغ *font_انکڑے,
 			 hb_codepoint_t unicode,
 			 hb_codepoint_t *glyph,
-			 void *user_data HB_UNUSED)
+			 فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  hb_lock_t lock (ft_font->lock);
-  unsigned int g = FT_Get_Char_Index (ft_font->ft_face, unicode);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_جندرا_t lock (ft_font->lock);
+  بنانشانی صحيح g = FT_Get_Char_اشاریہ (ft_font->ft_face, unicode);
 
-  if (unlikely (!g))
+  إذا (unlikely (!g))
   {
-    if (unlikely (ft_font->symbol))
+    إذا (unlikely (ft_font->علامت))
     {
-      switch ((unsigned) font->face->table.OS2->get_font_page ()) {
-      case OT::OS2::font_page_t::FONT_PAGE_NONE:
-	if (unicode <= 0x00FFu)
+      بدل ((بنانشانی) font->face->جدول.OS2->get_font_ورقہ ()) {
+      حالة OT::OS2::font_ورقہ_t::FONT_ورقہ_NONE:
+	إذا (unicode <= 0x00FFu)
 	  /* For symbol-encoded OpenType fonts, we duplicate the
 	   * U+F000..F0FF range at U+0000..U+00FF.  That's what
 	   * Windows seems to do, and that's hinted about at:
 	   * https://docs.microsoft.com/en-us/typography/opentype/spec/recom
 	   * under "Non-Standard (Symbol) Fonts". */
-	  g = FT_Get_Char_Index (ft_font->ft_face, 0xF000u + unicode);
-	break;
-#ifndef HB_NO_OT_SHAPER_ARABIC_FALLBACK
-      case OT::OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
-	g = FT_Get_Char_Index (ft_font->ft_face, _hb_arabic_pua_simp_map (unicode));
-	break;
-      case OT::OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
-	g = FT_Get_Char_Index (ft_font->ft_face, _hb_arabic_pua_trad_map (unicode));
-	break;
-#endif
-      default:
-	break;
+	  g = FT_Get_Char_اشاریہ (ft_font->ft_face, 0xF000u + unicode);
+	اكسر;
+#جے_بنا_تعریف HB_NO_OT_SHAPER_ARABIC_FALLBACK
+      حالة OT::OS2::font_ورقہ_t::FONT_ورقہ_SIMP_ARABIC:
+	g = FT_Get_Char_اشاریہ (ft_font->ft_face, _hb_arabic_pua_simp_map (unicode));
+	اكسر;
+      حالة OT::OS2::font_ورقہ_t::FONT_ورقہ_TRAD_ARABIC:
+	g = FT_Get_Char_اشاریہ (ft_font->ft_face, _hb_arabic_pua_trad_map (unicode));
+	اكسر;
+#جے_انت
+      افتراضي:
+	اكسر;
       }
-      if (!g)
-	return false;
+      إذا (!g)
+	أرجع خطأ;
     }
-    else
-      return false;
+    وإلا
+      أرجع خطأ;
   }
 
   *glyph = g;
-  return true;
+  أرجع سچ;
 }
 
-static unsigned int
-hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
-			  void *font_data,
-			  unsigned int count,
-			  const hb_codepoint_t *first_unicode,
-			  unsigned int unicode_stride,
-			  hb_codepoint_t *first_glyph,
-			  unsigned int glyph_stride,
-			  void *user_data HB_UNUSED)
+ساكن بنانشانی صحيح
+hb_ft_get_nominal_glyphs (hb_font_t *font HB_بن_ورتیا,
+			  فراغ *font_انکڑے,
+			  بنانشانی صحيح گنتی,
+			  ثابت hb_codepoint_t *پہلا_unicode,
+			  بنانشانی صحيح unicode_stride,
+			  hb_codepoint_t *پہلا_glyph,
+			  بنانشانی صحيح glyph_stride,
+			  فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  hb_lock_t lock (ft_font->lock);
-  unsigned int done;
-  for (done = 0;
-       done < count && (*first_glyph = FT_Get_Char_Index (ft_font->ft_face, *first_unicode));
-       done++)
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_جندرا_t lock (ft_font->lock);
+  بنانشانی صحيح پورا;
+  لكل (پورا = 0;
+       پورا < گنتی && (*پہلا_glyph = FT_Get_Char_اشاریہ (ft_font->ft_face, *پہلا_unicode));
+       پورا++)
   {
-    first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
-    first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
+    پہلا_unicode = &Struct_At_وتھ_Unaligned<hb_codepoint_t> (پہلا_unicode, unicode_stride);
+    پہلا_glyph = &Struct_At_وتھ_Unaligned<hb_codepoint_t> (پہلا_glyph, glyph_stride);
   }
   /* We don't need to do ft_font->symbol dance here, since HB calls the singular
    * nominal_glyph() for what we don't handle here. */
-  return done;
+  أرجع پورا;
 }
 
 
-static hb_bool_t
-hb_ft_get_variation_glyph (hb_font_t *font HB_UNUSED,
-			   void *font_data,
+ساكن hb_bool_t
+hb_ft_get_variation_glyph (hb_font_t *font HB_بن_ورتیا,
+			   فراغ *font_انکڑے,
 			   hb_codepoint_t unicode,
 			   hb_codepoint_t variation_selector,
 			   hb_codepoint_t *glyph,
-			   void *user_data HB_UNUSED)
+			   فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  hb_lock_t lock (ft_font->lock);
-  unsigned int g = FT_Face_GetCharVariantIndex (ft_font->ft_face, unicode, variation_selector);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_جندرا_t lock (ft_font->lock);
+  بنانشانی صحيح g = FT_Face_Get_Char_Variant_اشاریہ (ft_font->ft_face, unicode, variation_selector);
 
-  if (unlikely (!g))
-    return false;
+  إذا (unlikely (!g))
+    أرجع خطأ;
 
   *glyph = g;
-  return true;
+  أرجع سچ;
 }
 
-static void
-hb_ft_get_glyph_h_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
-			    const hb_codepoint_t *first_glyph,
-			    unsigned glyph_stride,
-			    hb_position_t *first_advance,
-			    unsigned advance_stride,
-			    void *user_data HB_UNUSED)
+ساكن فراغ
+hb_ft_get_glyph_h_advances (hb_font_t* font, فراغ* font_انکڑے,
+			    بنانشانی گنتی,
+			    ثابت hb_codepoint_t *پہلا_glyph,
+			    بنانشانی glyph_stride,
+			    hb_position_t *پہلا_advance,
+			    بنانشانی advance_stride,
+			    فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  int load_flags = ft_font->load_flags;
-  float x_mult;
-#ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  صحيح لدو_flags = ft_font->لدو_flags;
+  عائم x_mult;
+#جے_تعریف_شدہ HAVE_FT_GET_TRANSFORM
+  إذا (ft_font->transform)
   {
-    FT_Matrix matrix;
-    FT_Get_Transform (ft_face, &matrix, nullptr);
-    x_mult = sqrtf ((float)matrix.xx * matrix.xx + (float)matrix.xy * matrix.xy) / 65536.f;
+    FT_میٹرکس میٹرکس;
+    FT_Get_Transform (ft_face, &میٹرکس, خالی_سوچک);
+    x_mult = sqrtf ((عائم)میٹرکس.xx * میٹرکس.xx + (عائم)میٹرکس.xy * میٹرکس.xy) / 65536.f;
     x_mult *= font->x_scale < 0 ? -1 : +1;
   }
-  else
-#endif
+  وإلا
+#جے_انت
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
   }
 
-  for (unsigned int i = 0; i < count; i++)
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
   {
     hb_position_t advance;
-    hb_codepoint_t glyph = *first_glyph;
+    hb_codepoint_t glyph = *پہلا_glyph;
 
-    unsigned int cv;
-    if (ft_font->advance_cache.get (glyph, &cv))
+    بنانشانی صحيح cv;
+    إذا (ft_font->advance_cache.get (glyph, &cv))
       advance = (hb_position_t) cv;
-    else
+    وإلا
     {
       FT_Fixed v = 0;
-      FT_Get_Advance (ft_face, glyph, load_flags, &v);
+      FT_Get_Advance (ft_face, glyph, لدو_flags, &v);
       /* Work around bug that FreeType seems to return negative advance
        * for variable-set fonts if x_scale is negative! */
-      double scaled = trunc (fabs ((double) v) * (double) x_mult + (1<<9)) / (1<<10);
-      advance = hb_clamp_to<hb_position_t> (floor (scaled));
-      ft_font->advance_cache.set (glyph, advance);
+      مزدوج scaled = trunc (fabs ((مزدوج) v) * (مزدوج) x_mult + (1<<9)) / (1<<10);
+      advance = hb_clamp_منزل<hb_position_t> (floor (scaled));
+      ft_font->advance_cache.سیٹ (glyph, advance);
     }
 
-    *first_advance = advance;
-    first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-    first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+    *پہلا_advance = advance;
+    پہلا_glyph = &Struct_At_وتھ_Unaligned<hb_codepoint_t> (پہلا_glyph, glyph_stride);
+    پہلا_advance = &Struct_At_وتھ_Unaligned<hb_position_t> (پہلا_advance, advance_stride);
   }
 }
 
-#ifndef HB_NO_VERTICAL
-static hb_position_t
+#جے_بنا_تعریف HB_NO_VERTICAL
+ساكن hb_position_t
 hb_ft_get_glyph_v_advance (hb_font_t *font,
-			   void *font_data,
+			   فراغ *font_انکڑے,
 			   hb_codepoint_t glyph,
-			   void *user_data HB_UNUSED)
+			   فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
+  hb_جندرا_t lock (ft_font->lock);
   FT_Fixed v;
-  float y_mult;
-#ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  عائم y_mult;
+#جے_تعریف_شدہ HAVE_FT_GET_TRANSFORM
+  إذا (ft_font->transform)
   {
-    FT_Matrix matrix;
-    FT_Get_Transform (ft_font->ft_face, &matrix, nullptr);
-    y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
+    FT_میٹرکس میٹرکس;
+    FT_Get_Transform (ft_font->ft_face, &میٹرکس, خالی_سوچک);
+    y_mult = sqrtf ((عائم)میٹرکس.yx * میٹرکس.yx + (عائم)میٹرکس.yy * میٹرکس.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
-#endif
+  وإلا
+#جے_انت
   {
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Get_Advance (ft_font->ft_face, glyph, ft_font->load_flags | FT_LOAD_VERTICAL_LAYOUT, &v)))
-    return 0;
+  إذا (unlikely (FT_Get_Advance (ft_font->ft_face, glyph, ft_font->لدو_flags | FT_لدو_VERTICAL_LAYOUT, &v)))
+    أرجع 0;
 
   /* Note: FreeType's vertical metrics grows downward while other FreeType coordinates
    * have a Y growing upward.  Hence the extra negation. */
-  double advance = floor ((-(double) v + (1<<9)) / (1<<10));
+  مزدوج advance = floor ((-(مزدوج) v + (1<<9)) / (1<<10));
 
-  return hb_clamp_to<hb_position_t> ((double) y_mult * advance);
+  أرجع hb_clamp_منزل<hb_position_t> ((مزدوج) y_mult * advance);
 }
-#endif
+#جے_انت
 
-#ifndef HB_NO_VERTICAL
-static hb_bool_t
+#جے_بنا_تعریف HB_NO_VERTICAL
+ساكن hb_bool_t
 hb_ft_get_glyph_v_origin (hb_font_t *font,
-			  void *font_data,
+			  فراغ *font_انکڑے,
 			  hb_codepoint_t glyph,
 			  hb_position_t *x,
 			  hb_position_t *y,
-			  void *user_data HB_UNUSED)
+			  فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  float x_mult, y_mult;
-#ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  عائم x_mult, y_mult;
+#جے_تعریف_شدہ HAVE_FT_GET_TRANSFORM
+  إذا (ft_font->transform)
   {
-    FT_Matrix matrix;
-    FT_Get_Transform (ft_face, &matrix, nullptr);
-    x_mult = sqrtf ((float)matrix.xx * matrix.xx + (float)matrix.xy * matrix.xy) / 65536.f;
+    FT_میٹرکس میٹرکس;
+    FT_Get_Transform (ft_face, &میٹرکس, خالی_سوچک);
+    x_mult = sqrtf ((عائم)میٹرکس.xx * میٹرکس.xx + (عائم)میٹرکس.xy * میٹرکس.xy) / 65536.f;
     x_mult *= font->x_scale < 0 ? -1 : +1;
-    y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
+    y_mult = sqrtf ((عائم)میٹرکس.yx * میٹرکس.yx + (عائم)میٹرکس.yy * میٹرکس.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
-#endif
+  وإلا
+#جے_انت
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-    return false;
+  إذا (unlikely (FT_لدو_Glyph (ft_face, glyph, ft_font->لدو_flags)))
+    أرجع خطأ;
 
   /* Note: FreeType's vertical metrics grows downward while other FreeType coordinates
    * have a Y growing upward.  Hence the extra negation. */
-  *x = hb_clamp_to<hb_position_t> ((double) x_mult *
-				   ((double) ft_face->glyph->metrics.horiBearingX -
+  *x = hb_clamp_منزل<hb_position_t> ((مزدوج) x_mult *
+				   ((مزدوج) ft_face->glyph->metrics.horiBearingX -
 				    ft_face->glyph->metrics.vertBearingX));
-  *y = hb_clamp_to<hb_position_t> ((double) y_mult *
-				   ((double) ft_face->glyph->metrics.horiBearingY +
+  *y = hb_clamp_منزل<hb_position_t> ((مزدوج) y_mult *
+				   ((مزدوج) ft_face->glyph->metrics.horiBearingY +
 				    ft_face->glyph->metrics.vertBearingY));
 
-  return true;
+  أرجع سچ;
 }
-#endif
+#جے_انت
 
-#ifndef HB_NO_OT_SHAPE_FALLBACK
-static hb_position_t
+#جے_بنا_تعریف HB_NO_OT_SHAPE_FALLBACK
+ساكن hb_position_t
 hb_ft_get_glyph_h_kerning (hb_font_t *font,
-			   void *font_data,
-			   hb_codepoint_t left_glyph,
-			   hb_codepoint_t right_glyph,
-			   void *user_data HB_UNUSED)
+			   فراغ *font_انکڑے,
+			   hb_codepoint_t بایاں_glyph,
+			   hb_codepoint_t دایاں_glyph,
+			   فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
-  FT_Vector kerningv;
+  hb_جندرا_t lock (ft_font->lock);
+  FT_سمتیہ kerningv;
 
-  FT_Kerning_Mode mode = font->x_ppem ? FT_KERNING_DEFAULT : FT_KERNING_UNFITTED;
-  if (FT_Get_Kerning (ft_font->ft_face, left_glyph, right_glyph, mode, &kerningv))
-    return 0;
+  FT_Kerning_منوال منوال = font->x_ppem ? FT_KERNING_DEFAULT : FT_KERNING_UNFITTED;
+  إذا (FT_Get_Kerning (ft_font->ft_face, بایاں_glyph, دایاں_glyph, منوال, &kerningv))
+    أرجع 0;
 
-  return hb_clamp_to<hb_position_t> ((int64_t) kerningv.x);
+  أرجع hb_clamp_منزل<hb_position_t> ((int64_t) kerningv.x);
 }
-#endif
+#جے_انت
 
-static bool
+ساكن منطقي
 hb_ft_is_colr_glyph (hb_font_t *font,
-		     void *font_data,
+		     فراغ *font_انکڑے,
 		     hb_codepoint_t gid)
 {
-#ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
+#جے_بنا_تعریف HB_NO_PAINT
+#إذا (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
   FT_Face ft_face = ft_font->ft_face;
 
 
   /* COLRv1 */
   FT_OpaquePaint paint = {0};
-  if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-			        FT_COLOR_NO_ROOT_TRANSFORM,
+  إذا (FT_Get_Color_Glyph_Paint (ft_face, gid,
+			        FT_COLOR_NO_جڑ_TRANSFORM,
 			        &paint))
-    return true;
+    أرجع سچ;
 
   /* COLRv0 */
   FT_LayerIterator  iterator;
-  FT_UInt  layer_glyph_index;
-  FT_UInt  layer_color_index;
-  iterator.p  = NULL;
-  if (FT_Get_Color_Glyph_Layer (ft_face,
+  FT_UInt  layer_glyph_اشاریہ;
+  FT_UInt  layer_color_اشاریہ;
+  iterator.p  = عدم;
+  إذا (FT_Get_Color_Glyph_Layer (ft_face,
 				gid,
-				&layer_glyph_index,
-				&layer_color_index,
+				&layer_glyph_اشاریہ,
+				&layer_color_اشاریہ,
 				&iterator))
-    return true;
-#endif
-#endif
+    أرجع سچ;
+#جے_انت
+#جے_انت
 
-  return false;
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_ft_get_glyph_extents (hb_font_t *font,
-			 void *font_data,
+			 فراغ *font_انکڑے,
 			 hb_codepoint_t glyph,
 			 hb_glyph_extents_t *extents,
-			 void *user_data HB_UNUSED)
+			 فراغ *user_انکڑے HB_بن_ورتیا)
 {
   // FreeType doesn't return COLR glyph extents.
-  if (hb_ft_is_colr_glyph (font, font_data, glyph))
-    return false;
+  إذا (hb_ft_is_colr_glyph (font, font_انکڑے, glyph))
+    أرجع خطأ;
 
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  float x_mult, y_mult;
+  عائم x_mult, y_mult;
 
-#ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+#جے_تعریف_شدہ HAVE_FT_GET_TRANSFORM
+  إذا (ft_font->transform)
   {
-    FT_Matrix matrix;
-    FT_Get_Transform (ft_face, &matrix, nullptr);
-    x_mult = sqrtf ((float)matrix.xx * matrix.xx + (float)matrix.xy * matrix.xy) / 65536.f;
+    FT_میٹرکس میٹرکس;
+    FT_Get_Transform (ft_face, &میٹرکس, خالی_سوچک);
+    x_mult = sqrtf ((عائم)میٹرکس.xx * میٹرکس.xx + (عائم)میٹرکس.xy * میٹرکس.xy) / 65536.f;
     x_mult *= font->x_scale < 0 ? -1 : +1;
-    y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
+    y_mult = sqrtf ((عائم)میٹرکس.yx * میٹرکس.yx + (عائم)میٹرکس.yy * میٹرکس.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
-#endif
+  وإلا
+#جے_انت
   {
     x_mult = font->x_scale < 0 ? -1 : +1;
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-    return false;
+  إذا (unlikely (FT_لدو_Glyph (ft_face, glyph, ft_font->لدو_flags)))
+    أرجع خطأ;
 
   /* Copied from hb_font_t::scale_glyph_extents. */
 
-  float x1 = x_mult * ft_face->glyph->metrics.horiBearingX;
-  float y1 = y_mult * ft_face->glyph->metrics.horiBearingY;
-  float x2 = x1 + x_mult *  ft_face->glyph->metrics.width;
-  float y2 = y1 + y_mult * -ft_face->glyph->metrics.height;
+  عائم x1 = x_mult * ft_face->glyph->metrics.horiBearingX;
+  عائم y1 = y_mult * ft_face->glyph->metrics.horiBearingY;
+  عائم x2 = x1 + x_mult *  ft_face->glyph->metrics.چوڑائی;
+  عائم y2 = y1 + y_mult * -ft_face->glyph->metrics.اچائی;
 
-  double rx1 = (double) roundf (x1);
-  double ry1 = (double) roundf (y1);
-  double rx2 = (double) roundf (x2);
-  double ry2 = (double) roundf (y2);
+  مزدوج rx1 = (مزدوج) roundf (x1);
+  مزدوج ry1 = (مزدوج) roundf (y1);
+  مزدوج rx2 = (مزدوج) roundf (x2);
+  مزدوج ry2 = (مزدوج) roundf (y2);
 
-  extents->x_bearing = hb_clamp_to<hb_position_t> (rx1);
-  extents->y_bearing = hb_clamp_to<hb_position_t> (ry1);
-  extents->width = hb_clamp_to<hb_position_t> (rx2 - rx1);
-  extents->height = hb_clamp_to<hb_position_t> (ry2 - ry1);
+  extents->x_bearing = hb_clamp_منزل<hb_position_t> (rx1);
+  extents->y_bearing = hb_clamp_منزل<hb_position_t> (ry1);
+  extents->چوڑائی = hb_clamp_منزل<hb_position_t> (rx2 - rx1);
+  extents->اچائی = hb_clamp_منزل<hb_position_t> (ry2 - ry1);
 
-  return true;
+  أرجع سچ;
 }
 
-static hb_bool_t
-hb_ft_get_glyph_contour_point (hb_font_t *font HB_UNUSED,
-			       void *font_data,
+ساكن hb_bool_t
+hb_ft_get_glyph_contour_نقطہ (hb_font_t *font HB_بن_ورتیا,
+			       فراغ *font_انکڑے,
 			       hb_codepoint_t glyph,
-			       unsigned int point_index,
+			       بنانشانی صحيح نقطہ_اشاریہ,
 			       hb_position_t *x,
 			       hb_position_t *y,
-			       void *user_data HB_UNUSED)
+			       فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph, ft_font->load_flags)))
-      return false;
+  إذا (unlikely (FT_لدو_Glyph (ft_face, glyph, ft_font->لدو_flags)))
+      أرجع خطأ;
 
-  if (unlikely (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE))
-      return false;
+  إذا (unlikely (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE))
+      أرجع خطأ;
 
-  if (unlikely (point_index >= (unsigned int) ft_face->glyph->outline.n_points))
-      return false;
+  إذا (unlikely (نقطہ_اشاریہ >= (بنانشانی صحيح) ft_face->glyph->outline.n_points))
+      أرجع خطأ;
 
-  *x = ft_face->glyph->outline.points[point_index].x;
-  *y = ft_face->glyph->outline.points[point_index].y;
+  *x = ft_face->glyph->outline.points[نقطہ_اشاریہ].x;
+  *y = ft_face->glyph->outline.points[نقطہ_اشاریہ].y;
 
-  return true;
+  أرجع سچ;
 }
 
-static hb_bool_t
-hb_ft_get_glyph_name (hb_font_t *font HB_UNUSED,
-		      void *font_data,
+ساكن hb_bool_t
+hb_ft_get_glyph_name (hb_font_t *font HB_بن_ورتیا,
+		      فراغ *font_انکڑے,
 		      hb_codepoint_t glyph,
-		      char *name, unsigned int size,
-		      void *user_data HB_UNUSED)
+		      حرف *name, بنانشانی صحيح ناپ,
+		      فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  hb_lock_t lock (ft_font->lock);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (!size)
+  إذا (!ناپ)
   {
-    char buf[128];
-    return !FT_Get_Glyph_Name (ft_face, glyph, buf, sizeof (buf)) && *buf;
+    حرف buf[128];
+    أرجع !FT_Get_Glyph_Name (ft_face, glyph, buf, حجم (buf)) && *buf;
   }
 
-  hb_bool_t ret = !FT_Get_Glyph_Name (ft_face, glyph, name, size);
-  if (ret && (size && !*name))
-    ret = false;
+  hb_bool_t ret = !FT_Get_Glyph_Name (ft_face, glyph, name, ناپ);
+  إذا (ret && (ناپ && !*name))
+    ret = خطأ;
 
-  return ret;
+  أرجع ret;
 }
 
-static hb_bool_t
-hb_ft_get_glyph_from_name (hb_font_t *font HB_UNUSED,
-			   void *font_data,
-			   const char *name, int len, /* -1 means nul-terminated */
+ساكن hb_bool_t
+hb_ft_get_glyph_from_name (hb_font_t *font HB_بن_ورتیا,
+			   فراغ *font_انکڑے,
+			   ثابت حرف *name, صحيح len, /* -1 means nul-terminated */
 			   hb_codepoint_t *glyph,
-			   void *user_data HB_UNUSED)
+			   فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  hb_lock_t lock (ft_font->lock);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (len < 0)
-    *glyph = FT_Get_Name_Index (ft_face, (FT_String *) name);
-  else {
+  إذا (len < 0)
+    *glyph = FT_Get_Name_اشاریہ (ft_face, (FT_String *) name);
+  وإلا {
     /* Make a nul-terminated version. */
-    char buf[128];
-    len = hb_min (len, (int) sizeof (buf) - 1);
+    حرف buf[128];
+    len = hb_min (len, (صحيح) حجم (buf) - 1);
     strncpy (buf, name, len);
     buf[len] = '\0';
-    *glyph = FT_Get_Name_Index (ft_face, buf);
+    *glyph = FT_Get_Name_اشاریہ (ft_face, buf);
   }
 
-  if (*glyph == 0)
+  إذا (*glyph == 0)
   {
     /* Check whether the given name was actually the name of glyph 0. */
-    char buf[128];
-    if (!FT_Get_Glyph_Name(ft_face, 0, buf, sizeof (buf)) &&
-	len < 0 ? !strcmp (buf, name) : !strncmp (buf, name, len))
-      return true;
+    حرف buf[128];
+    إذا (!FT_Get_Glyph_Name(ft_face, 0, buf, حجم (buf)) &&
+	len < 0 ? !strcmp (buf, name) : !لڑی_مقابلہ (buf, name, len))
+      أرجع سچ;
   }
 
-  return *glyph != 0;
+  أرجع *glyph != 0;
 }
 
-static hb_bool_t
-hb_ft_get_font_h_extents (hb_font_t *font HB_UNUSED,
-			  void *font_data,
+ساكن hb_bool_t
+hb_ft_get_font_h_extents (hb_font_t *font HB_بن_ورتیا,
+			  فراغ *font_انکڑے,
 			  hb_font_extents_t *metrics,
-			  void *user_data HB_UNUSED)
+			  فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
-  float y_mult;
-#ifdef HAVE_FT_GET_TRANSFORM
-  if (ft_font->transform)
+  عائم y_mult;
+#جے_تعریف_شدہ HAVE_FT_GET_TRANSFORM
+  إذا (ft_font->transform)
   {
-    FT_Matrix matrix;
-    FT_Get_Transform (ft_face, &matrix, nullptr);
-    y_mult = sqrtf ((float)matrix.yx * matrix.yx + (float)matrix.yy * matrix.yy) / 65536.f;
+    FT_میٹرکس میٹرکس;
+    FT_Get_Transform (ft_face, &میٹرکس, خالی_سوچک);
+    y_mult = sqrtf ((عائم)میٹرکس.yx * میٹرکس.yx + (عائم)میٹرکس.yy * میٹرکس.yy) / 65536.f;
     y_mult *= font->y_scale < 0 ? -1 : +1;
   }
-  else
-#endif
+  وإلا
+#جے_انت
   {
     y_mult = font->y_scale < 0 ? -1 : +1;
   }
 
-  if (ft_face->units_per_EM != 0)
+  إذا (ft_face->units_فی_EM != 0)
   {
-    double ascender = FT_MulFix(ft_face->ascender, ft_face->size->metrics.y_scale);
-    double descender = FT_MulFix(ft_face->descender, ft_face->size->metrics.y_scale);
-    double height = FT_MulFix( ft_face->height, ft_face->size->metrics.y_scale );
-    metrics->ascender = hb_clamp_to<hb_position_t> ((double) y_mult * ascender);
-    metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
-    metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
+    مزدوج ascender = FT_MulFix(ft_face->ascender, ft_face->ناپ->metrics.y_scale);
+    مزدوج descender = FT_MulFix(ft_face->descender, ft_face->ناپ->metrics.y_scale);
+    مزدوج اچائی = FT_MulFix( ft_face->اچائی, ft_face->ناپ->metrics.y_scale );
+    metrics->ascender = hb_clamp_منزل<hb_position_t> ((مزدوج) y_mult * ascender);
+    metrics->descender = hb_clamp_منزل<hb_position_t> ((مزدوج) y_mult * descender);
+    metrics->سطر_gap = hb_clamp_منزل<hb_position_t> ((مزدوج) y_mult * (اچائی - (ascender - descender)));
   }
-  else
+  وإلا
   {
     /* Bitmap-only font, eg. color bitmap font. */
-    double ascender = ft_face->size->metrics.ascender;
-    double descender = ft_face->size->metrics.descender;
-    double height = ft_face->size->metrics.height;
-    metrics->ascender = hb_clamp_to<hb_position_t> ((double) y_mult * ascender);
-    metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
-    metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
+    مزدوج ascender = ft_face->ناپ->metrics.ascender;
+    مزدوج descender = ft_face->ناپ->metrics.descender;
+    مزدوج اچائی = ft_face->ناپ->metrics.اچائی;
+    metrics->ascender = hb_clamp_منزل<hb_position_t> ((مزدوج) y_mult * ascender);
+    metrics->descender = hb_clamp_منزل<hb_position_t> ((مزدوج) y_mult * descender);
+    metrics->سطر_gap = hb_clamp_منزل<hb_position_t> ((مزدوج) y_mult * (اچائی - (ascender - descender)));
   }
 
-  return true;
+  أرجع سچ;
 }
 
-#ifndef HB_NO_DRAW
+#جے_بنا_تعریف HB_NO_DRAW
 
-static int
-_hb_ft_move_to (const FT_Vector *to,
-		void *arg)
+ساكن صحيح
+hb_ft_move_منزل (ثابت FT_سمتیہ *to,
+		فراغ *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
-  drawing->move_to (to->x, to->y);
-  return FT_Err_Ok;
+  drawing->move_منزل (to->x, to->y);
+  أرجع FT_Err_Ok;
 }
 
-static int
-_hb_ft_line_to (const FT_Vector *to,
-		void *arg)
+ساكن صحيح
+hb_ft_سطر_منزل (ثابت FT_سمتیہ *to,
+		فراغ *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
-  drawing->line_to (to->x, to->y);
-  return FT_Err_Ok;
+  drawing->سطر_منزل (to->x, to->y);
+  أرجع FT_Err_Ok;
 }
 
-static int
-_hb_ft_conic_to (const FT_Vector *control,
-		 const FT_Vector *to,
-		 void *arg)
+ساكن صحيح
+hb_ft_conic_منزل (ثابت FT_سمتیہ *control,
+		 ثابت FT_سمتیہ *to,
+		 فراغ *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
-  drawing->quadratic_to (control->x, control->y,
+  drawing->quadratic_منزل (control->x, control->y,
 			 to->x, to->y);
-  return FT_Err_Ok;
+  أرجع FT_Err_Ok;
 }
 
-static int
-_hb_ft_cubic_to (const FT_Vector *control1,
-		 const FT_Vector *control2,
-		 const FT_Vector *to,
-		 void *arg)
+ساكن صحيح
+hb_ft_cubic_منزل (ثابت FT_سمتیہ *control1,
+		 ثابت FT_سمتیہ *control2,
+		 ثابت FT_سمتیہ *to,
+		 فراغ *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
-  drawing->cubic_to (control1->x, control1->y,
+  drawing->cubic_منزل (control1->x, control1->y,
 		     control2->x, control2->y,
 		     to->x, to->y);
-  return FT_Err_Ok;
+  أرجع FT_Err_Ok;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_ft_draw_glyph_or_fail (hb_font_t *font,
-			  void *font_data,
+			  فراغ *font_انکڑے,
 			  hb_codepoint_t glyph,
-			  hb_draw_funcs_t *draw_funcs, void *draw_data,
-			  void *user_data HB_UNUSED)
+			  hb_draw_funcs_t *draw_funcs, فراغ *draw_انکڑے,
+			  فراغ *user_انکڑے HB_بن_ورتیا)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  if (unlikely (FT_Load_Glyph (ft_face, glyph,
-			       FT_LOAD_NO_BITMAP | ft_font->load_flags)))
-    return false;
+  إذا (unlikely (FT_لدو_Glyph (ft_face, glyph,
+			       FT_لدو_NO_BITMAP | ft_font->لدو_flags)))
+    أرجع خطأ;
 
-  if (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
-    return false;
+  إذا (ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
+    أرجع خطأ;
 
-  const FT_Outline_Funcs outline_funcs = {
-    _hb_ft_move_to,
-    _hb_ft_line_to,
-    _hb_ft_conic_to,
-    _hb_ft_cubic_to,
-    0, /* shift */
+  ثابت FT_Outline_Funcs outline_funcs = {
+    hb_ft_move_منزل,
+    hb_ft_سطر_منزل,
+    hb_ft_conic_منزل,
+    hb_ft_cubic_منزل,
+    0, /*کھسکاؤ*/
     0, /* delta */
   };
 
-  hb_draw_session_t draw_session {draw_funcs, draw_data};
+  hb_draw_session_t draw_session {draw_funcs, draw_انکڑے};
 
   FT_Outline_Decompose (&ft_face->glyph->outline,
 			&outline_funcs,
 			&draw_session);
 
-  return true;
+  أرجع سچ;
 }
-#endif
+#جے_انت
 
-#ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+#جے_بنا_تعریف HB_NO_PAINT
+#إذا (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
 
-#include "hb-ft-colr.hh"
+#ضمن "hb-ft-colr.hh"
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_ft_paint_glyph_or_fail (hb_font_t *font,
-			   void *font_data,
+			   فراغ *font_انکڑے,
 			   hb_codepoint_t gid,
-			   hb_paint_funcs_t *paint_funcs, void *paint_data,
-			   unsigned int palette_index,
+			   hb_paint_funcs_t *paint_funcs, فراغ *paint_انکڑے,
+			   بنانشانی صحيح palette_اشاریہ,
 			   hb_color_t foreground,
-			   void *user_data)
+			   فراغ *user_انکڑے)
 {
-  const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
-  _hb_ft_hb_font_check_changed (font, ft_font);
+  ثابت hb_ft_font_t *ft_font = (ثابت hb_ft_font_t *) font_انکڑے;
+  hb_ft_hb_font_check_بدلیا (font, ft_font);
 
-  hb_lock_t lock (ft_font->lock);
+  hb_جندرا_t lock (ft_font->lock);
   FT_Face ft_face = ft_font->ft_face;
 
-  FT_Long load_flags = ft_font->load_flags | FT_LOAD_COLOR;
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21301
-  load_flags |= FT_LOAD_NO_SVG;
-#endif
+  FT_Long لدو_flags = ft_font->لدو_flags | FT_لدو_COLOR;
+#إذا (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21301
+  لدو_flags |= FT_لدو_NO_SVG;
+#جے_انت
 
   /* We release the lock before calling into glyph callbacks, such that
    * eg. draw API can call back into the face.*/
 
-  if (unlikely (FT_Load_Glyph (ft_face, gid, load_flags)))
-    return false;
+  إذا (unlikely (FT_لدو_Glyph (ft_face, gid, لدو_flags)))
+    أرجع خطأ;
 
-  if (ft_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
+  إذا (ft_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
   {
-    if (hb_ft_paint_glyph_colr (font, font_data, gid,
-				paint_funcs, paint_data,
-				palette_index, foreground,
-				user_data))
-      return true;
+    إذا (hb_ft_paint_glyph_colr (font, font_انکڑے, gid,
+				paint_funcs, paint_انکڑے,
+				palette_اشاریہ, foreground,
+				user_انکڑے))
+      أرجع سچ;
 
     // Outline glyph
-    return false;
+    أرجع خطأ;
   }
 
-  auto *glyph = ft_face->glyph;
-  if (glyph->format == FT_GLYPH_FORMAT_BITMAP)
+  خودکار *glyph = ft_face->glyph;
+  إذا (glyph->format == FT_GLYPH_FORMAT_BITMAP)
   {
-    bool ret = false;
-    auto &bitmap = glyph->bitmap;
-    if (bitmap.pixel_mode == FT_PIXEL_MODE_BGRA)
+    منطقي ret = خطأ;
+    خودکار &bitmap = glyph->bitmap;
+    إذا (bitmap.pixel_منوال == FT_PIXEL_منوال_BGRA)
     {
-      if (bitmap.pitch != (signed) bitmap.width * 4)
-        return ret;
+      إذا (bitmap.pitch != (نشانیوالا) bitmap.چوڑائی * 4)
+        أرجع ret;
 
       ft_font->lock.unlock ();
 
-      hb_blob_t *blob = hb_blob_create ((const char *) bitmap.buffer,
-					bitmap.pitch * bitmap.rows,
-					HB_MEMORY_MODE_DUPLICATE,
-					nullptr, nullptr);
+      hb_blob_t *blob = hb_blob_create ((ثابت حرف *) bitmap.بفر,
+					bitmap.pitch * bitmap.صفاں,
+					HB_حافظہ_منوال_DUPLICATE,
+					خالی_سوچک, خالی_سوچک);
 
       hb_glyph_extents_t extents;
-      if (!font->get_glyph_extents (gid, &extents, false))
-	goto out;
+      إذا (!font->get_glyph_extents (gid, &extents, خطأ))
+	اذهب باہرلا;
 
-      if (paint_funcs->image (paint_data,
+      إذا (paint_funcs->image (paint_انکڑے,
 			      blob,
-			      bitmap.width,
-			      bitmap.rows,
+			      bitmap.چوڑائی,
+			      bitmap.صفاں,
 			      HB_PAINT_IMAGE_FORMAT_BGRA,
 			      0.f,
 			      &extents))
-        ret = true;
+        ret = سچ;
 
-    out:
+    باہرلا:
       hb_blob_destroy (blob);
       ft_font->lock.lock ();
     }
 
-    return ret;
+    أرجع ret;
   }
-  return false;
+  أرجع خطأ;
 }
-#endif
-#endif
+#جے_انت
+#جے_انت
 
 
-static inline void free_static_ft_funcs ();
+ساكن مضمن فراغ free_static_ft_funcs ();
 
-static struct hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft_font_funcs_lazy_loader_t>
+ساكن بنية hb_ft_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ft_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  ساكن hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
-    hb_font_funcs_set_nominal_glyph_func (funcs, hb_ft_get_nominal_glyph, nullptr, nullptr);
-    hb_font_funcs_set_nominal_glyphs_func (funcs, hb_ft_get_nominal_glyphs, nullptr, nullptr);
-    hb_font_funcs_set_variation_glyph_func (funcs, hb_ft_get_variation_glyph, nullptr, nullptr);
+    hb_font_funcs_سیٹ_nominal_glyph_func (funcs, hb_ft_get_nominal_glyph, خالی_سوچک, خالی_سوچک);
+    hb_font_funcs_سیٹ_nominal_glyphs_func (funcs, hb_ft_get_nominal_glyphs, خالی_سوچک, خالی_سوچک);
+    hb_font_funcs_سیٹ_variation_glyph_func (funcs, hb_ft_get_variation_glyph, خالی_سوچک, خالی_سوچک);
 
-    hb_font_funcs_set_font_h_extents_func (funcs, hb_ft_get_font_h_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_h_advances_func (funcs, hb_ft_get_glyph_h_advances, nullptr, nullptr);
+    hb_font_funcs_سیٹ_font_h_extents_func (funcs, hb_ft_get_font_h_extents, خالی_سوچک, خالی_سوچک);
+    hb_font_funcs_سیٹ_glyph_h_advances_func (funcs, hb_ft_get_glyph_h_advances, خالی_سوچک, خالی_سوچک);
 
-#ifndef HB_NO_VERTICAL
-    hb_font_funcs_set_glyph_v_advance_func (funcs, hb_ft_get_glyph_v_advance, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_origin_func (funcs, hb_ft_get_glyph_v_origin, nullptr, nullptr);
-#endif
+#جے_بنا_تعریف HB_NO_VERTICAL
+    hb_font_funcs_سیٹ_glyph_v_advance_func (funcs, hb_ft_get_glyph_v_advance, خالی_سوچک, خالی_سوچک);
+    hb_font_funcs_سیٹ_glyph_v_origin_func (funcs, hb_ft_get_glyph_v_origin, خالی_سوچک, خالی_سوچک);
+#جے_انت
 
-#ifndef HB_NO_OT_SHAPE_FALLBACK
-    hb_font_funcs_set_glyph_h_kerning_func (funcs, hb_ft_get_glyph_h_kerning, nullptr, nullptr);
-#endif
-    hb_font_funcs_set_glyph_extents_func (funcs, hb_ft_get_glyph_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_contour_point_func (funcs, hb_ft_get_glyph_contour_point, nullptr, nullptr);
-    hb_font_funcs_set_glyph_name_func (funcs, hb_ft_get_glyph_name, nullptr, nullptr);
-    hb_font_funcs_set_glyph_from_name_func (funcs, hb_ft_get_glyph_from_name, nullptr, nullptr);
+#جے_بنا_تعریف HB_NO_OT_SHAPE_FALLBACK
+    hb_font_funcs_سیٹ_glyph_h_kerning_func (funcs, hb_ft_get_glyph_h_kerning, خالی_سوچک, خالی_سوچک);
+#جے_انت
+    hb_font_funcs_سیٹ_glyph_extents_func (funcs, hb_ft_get_glyph_extents, خالی_سوچک, خالی_سوچک);
+    hb_font_funcs_سیٹ_glyph_contour_نقطہ_func (funcs, hb_ft_get_glyph_contour_نقطہ, خالی_سوچک, خالی_سوچک);
+    hb_font_funcs_سیٹ_glyph_name_func (funcs, hb_ft_get_glyph_name, خالی_سوچک, خالی_سوچک);
+    hb_font_funcs_سیٹ_glyph_from_name_func (funcs, hb_ft_get_glyph_from_name, خالی_سوچک, خالی_سوچک);
 
-#ifndef HB_NO_DRAW
-    hb_font_funcs_set_draw_glyph_or_fail_func (funcs, hb_ft_draw_glyph_or_fail, nullptr, nullptr);
-#endif
+#جے_بنا_تعریف HB_NO_DRAW
+    hb_font_funcs_سیٹ_draw_glyph_or_fail_func (funcs, hb_ft_draw_glyph_or_fail, خالی_سوچک, خالی_سوچک);
+#جے_انت
 
-#ifndef HB_NO_PAINT
-#if (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
-    hb_font_funcs_set_paint_glyph_or_fail_func (funcs, hb_ft_paint_glyph_or_fail, nullptr, nullptr);
-#endif
-#endif
+#جے_بنا_تعریف HB_NO_PAINT
+#إذا (FREETYPE_MAJOR*10000 + FREETYPE_MINOR*100 + FREETYPE_PATCH) >= 21300
+    hb_font_funcs_سیٹ_paint_glyph_or_fail_func (funcs, hb_ft_paint_glyph_or_fail, خالی_سوچک, خالی_سوچک);
+#جے_انت
+#جے_انت
 
     hb_font_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_ft_funcs);
 
-    return funcs;
+    أرجع funcs;
   }
 } static_ft_funcs;
 
-static inline
-void free_static_ft_funcs ()
+ساكن مضمن
+فراغ free_static_ft_funcs ()
 {
   static_ft_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+ساكن hb_font_funcs_t *
 _hb_ft_get_font_funcs ()
 {
-  return static_ft_funcs.get_unconst ();
+  أرجع static_ft_funcs.get_unconst ();
 }
 
-static void
-_hb_ft_font_set_funcs (hb_font_t *font, FT_Face ft_face, bool unref,
-		       bool static_library = false)
+ساكن فراغ
+hb_ft_font_سیٹ_funcs_2 (hb_font_t *font, FT_Face ft_face, منطقي unref,
+		       منطقي static_library = خطأ)
 {
-  bool symbol = ft_face->charmap && ft_face->charmap->encoding == FT_ENCODING_MS_SYMBOL;
+  منطقي علامت = ft_face->charmap && ft_face->charmap->encoding == FT_ENCODING_MS_علامت;
 
-  hb_ft_font_t *ft_font = _hb_ft_font_create (ft_face, symbol, unref, static_library);
-  if (unlikely (!ft_font)) return;
+  hb_ft_font_t *ft_font = _hb_ft_font_create (ft_face, علامت, unref, static_library);
+  إذا (unlikely (!ft_font)) أرجع;
 
-  hb_font_set_funcs (font,
+  hb_font_سیٹ_funcs (font,
 		     _hb_ft_get_font_funcs (),
 		     ft_font,
 		     _hb_ft_font_destroy);
 }
 
 
-static hb_blob_t *
-_hb_ft_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ساكن hb_blob_t *
+hb_ft_reference_جدول (hb_face_t *face HB_بن_ورتیا, hb_ٹیگ_t ٹیگ_2, فراغ *user_انکڑے)
 {
-  FT_Face ft_face = (FT_Face) user_data;
-  FT_Byte *buffer;
-  FT_ULong  length = 0;
+  FT_Face ft_face = (FT_Face) user_انکڑے;
+  FT_Byte *بفر;
+  FT_ULong  لمائی = 0;
   FT_Error error;
 
   /* In new FreeType, a tag value of 1 loads the SFNT table directory. Reject it. */
-  if (tag == 1)
-    return nullptr;
+  إذا (ٹیگ_2 == 1)
+    أرجع خالی_سوچک;
 
   /* Note: FreeType like HarfBuzz uses the NONE tag for fetching the entire blob */
 
-  error = FT_Load_Sfnt_Table (ft_face, tag, 0, nullptr, &length);
-  if (error)
-    return nullptr;
+  error = FT_لدو_Sfnt_جدول (ft_face, ٹیگ_2, 0, خالی_سوچک, &لمائی);
+  إذا (error)
+    أرجع خالی_سوچک;
 
-  buffer = (FT_Byte *) hb_malloc (length);
-  if (!buffer)
-    return nullptr;
-  auto buffer_guard = hb_make_scope_guard ([&]() { hb_free (buffer); });
+  بفر = (FT_Byte *) hb_malloc (لمائی);
+  إذا (!بفر)
+    أرجع خالی_سوچک;
+  خودکار بفر_guard = hb_make_scope_guard ([&]() { hb_free (بفر); });
 
-  error = FT_Load_Sfnt_Table (ft_face, tag, 0, buffer, &length);
-  if (error)
-    return nullptr;
+  error = FT_لدو_Sfnt_جدول (ft_face, ٹیگ_2, 0, بفر, &لمائی);
+  إذا (error)
+    أرجع خالی_سوچک;
 
-  buffer_guard.release ();
-  return hb_blob_create ((const char *) buffer, length,
-			 HB_MEMORY_MODE_WRITABLE,
-			 buffer, hb_free);
+  بفر_guard.release ();
+  أرجع hb_blob_create ((ثابت حرف *) بفر, لمائی,
+			 HB_حافظہ_منوال_WRITABLE,
+			 بفر, hb_free);
 }
 
-static unsigned
-_hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
-		       unsigned int start_offset,
-		       unsigned int *table_count,
-		       hb_tag_t *table_tags,
-		       void *user_data)
+ساكن بنانشانی
+hb_ft_get_جدول_ٹیگ_سوچی (ثابت hb_face_t *face HB_بن_ورتیا,
+		       بنانشانی صحيح شروع_وتھ,
+		       بنانشانی صحيح *جدول_گنتی_2,
+		       hb_ٹیگ_t *جدول_ٹیگ_سوچی,
+		       فراغ *user_انکڑے)
 {
-  FT_Face ft_face = (FT_Face) user_data;
+  FT_Face ft_face = (FT_Face) user_انکڑے;
 
   FT_ULong population = 0;
-  FT_Sfnt_Table_Info (ft_face,
+  FT_Sfnt_جدول_Info (ft_face,
 		      0, // table_index; ignored
-		      nullptr,
+		      خالی_سوچک,
                       &population);
 
-  if (!table_count)
-    return population;
+  إذا (!جدول_گنتی_2)
+    أرجع population;
 
-  if (unlikely (start_offset >= population))
+  إذا (unlikely (شروع_وتھ >= population))
   {
-    *table_count = 0;
-    return population;
+    *جدول_گنتی_2 = 0;
+    أرجع population;
   }
 
-  unsigned end_offset = start_offset + *table_count;
-  if (unlikely (end_offset < start_offset)) /* Overflow. */
+  بنانشانی سرا_وتھ = شروع_وتھ + *جدول_گنتی_2;
+  إذا (unlikely (سرا_وتھ < شروع_وتھ)) /* Overflow. */
   {
-    *table_count = 0;
-    return population;
+    *جدول_گنتی_2 = 0;
+    أرجع population;
   }
-  end_offset = hb_min (end_offset, (unsigned) population);
+  سرا_وتھ = hb_min (سرا_وتھ, (بنانشانی) population);
 
-  *table_count = end_offset - start_offset;
-  if (table_tags)
-    for (unsigned i = start_offset; i < end_offset; i++)
+  *جدول_گنتی_2 = سرا_وتھ - شروع_وتھ;
+  إذا (جدول_ٹیگ_سوچی)
+    لكل (بنانشانی i = شروع_وتھ; i < سرا_وتھ; i++)
     {
-      FT_ULong tag = 0, length;
-      FT_Sfnt_Table_Info (ft_face, i, &tag, &length);
-      table_tags[i - start_offset] = tag;
+      FT_ULong ٹیگ_2 = 0, لمائی;
+      FT_Sfnt_جدول_Info (ft_face, i, &ٹیگ_2, &لمائی);
+      جدول_ٹیگ_سوچی[i - شروع_وتھ] = ٹیگ_2;
     }
 
-  return population;
+  أرجع population;
 }
 
 
@@ -1241,24 +1241,24 @@ hb_ft_face_create (FT_Face           ft_face,
 {
   hb_face_t *face;
 
-  if (!ft_face->stream->read) {
+  إذا (!ft_face->دھارا->اقرأ) {
     hb_blob_t *blob;
 
-    blob = hb_blob_create ((const char *) ft_face->stream->base,
-			   (unsigned int) ft_face->stream->size,
-			   HB_MEMORY_MODE_READONLY,
+    blob = hb_blob_create ((ثابت حرف *) ft_face->دھارا->ادھار,
+			   (بنانشانی صحيح) ft_face->دھارا->ناپ,
+			   HB_حافظہ_منوال_READONLY,
 			   ft_face, destroy);
-    face = hb_face_create (blob, ft_face->face_index);
+    face = hb_face_create (blob, ft_face->face_اشاریہ);
     hb_blob_destroy (blob);
-  } else {
-    face = hb_face_create_for_tables (_hb_ft_reference_table, ft_face, destroy);
-    hb_face_set_get_table_tags_func (face, _hb_ft_get_table_tags, ft_face, nullptr);
+  } وإلا {
+    face = hb_face_create_for_tables (hb_ft_reference_جدول, ft_face, destroy);
+    hb_face_سیٹ_get_جدول_ٹیگ_سوچی_func (face, hb_ft_get_جدول_ٹیگ_سوچی, ft_face, خالی_سوچک);
   }
 
-  hb_face_set_index (face, ft_face->face_index);
-  hb_face_set_upem (face, ft_face->units_per_EM);
+  hb_face_سیٹ_اشاریہ (face, ft_face->face_اشاریہ);
+  hb_face_سیٹ_upem (face, ft_face->units_فی_EM);
 
-  return face;
+  أرجع face;
 }
 
 /**
@@ -1287,14 +1287,14 @@ hb_face_t *
 hb_ft_face_create_referenced (FT_Face ft_face)
 {
   FT_Reference_Face (ft_face);
-  return hb_ft_face_create (ft_face, _hb_ft_face_destroy);
+  أرجع hb_ft_face_create (ft_face, _hb_ft_face_destroy);
 }
 
-static void
-hb_ft_face_finalize (void *arg)
+ساكن فراغ
+hb_ft_face_finalize (فراغ *arg)
 {
   FT_Face ft_face = (FT_Face) arg;
-  hb_face_destroy ((hb_face_t *) ft_face->generic.data);
+  hb_face_destroy ((hb_face_t *) ft_face->generic.انکڑے);
 }
 
 /**
@@ -1323,16 +1323,16 @@ hb_ft_face_finalize (void *arg)
 hb_face_t *
 hb_ft_face_create_cached (FT_Face ft_face)
 {
-  if (unlikely (!ft_face->generic.data || ft_face->generic.finalizer != hb_ft_face_finalize))
+  إذا (unlikely (!ft_face->generic.انکڑے || ft_face->generic.finalizer != hb_ft_face_finalize))
   {
-    if (ft_face->generic.finalizer)
+    إذا (ft_face->generic.finalizer)
       ft_face->generic.finalizer (ft_face);
 
-    ft_face->generic.data = hb_ft_face_create (ft_face, nullptr);
+    ft_face->generic.انکڑے = hb_ft_face_create (ft_face, خالی_سوچک);
     ft_face->generic.finalizer = hb_ft_face_finalize;
   }
 
-  return hb_face_reference ((hb_face_t *) ft_face->generic.data);
+  أرجع hb_face_reference ((hb_face_t *) ft_face->generic.انکڑے);
 }
 
 /**
@@ -1375,9 +1375,9 @@ hb_ft_font_create (FT_Face           ft_face,
   face = hb_ft_face_create (ft_face, destroy);
   font = hb_font_create (face);
   hb_face_destroy (face);
-  _hb_ft_font_set_funcs (font, ft_face, false);
-  hb_ft_font_changed (font);
-  return font;
+  hb_ft_font_سیٹ_funcs_2 (font, ft_face, خطأ);
+  hb_ft_font_بدلیا (font);
+  أرجع font;
 }
 
 /**
@@ -1390,58 +1390,58 @@ hb_ft_font_create (FT_Face           ft_face,
  *
  * Since: 1.0.5
  **/
-void
-hb_ft_font_changed (hb_font_t *font)
+فراغ
+hb_ft_font_بدلیا (hb_font_t *font)
 {
-  if (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
-    return;
+  إذا (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
+    أرجع;
 
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_انکڑے;
 
   FT_Face ft_face = ft_font->ft_face;
 
-  hb_font_set_scale (font,
-		     (int) (((uint64_t) ft_face->size->metrics.x_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16),
-		     (int) (((uint64_t) ft_face->size->metrics.y_scale * (uint64_t) ft_face->units_per_EM + (1u<<15)) >> 16));
-#if 0 /* hb-ft works in no-hinting model */
-  hb_font_set_ppem (font,
-		    ft_face->size->metrics.x_ppem,
-		    ft_face->size->metrics.y_ppem);
-#endif
+  hb_font_سیٹ_scale (font,
+		     (صحيح) (((uint64_t) ft_face->ناپ->metrics.x_scale * (uint64_t) ft_face->units_فی_EM + (1u<<15)) >> 16),
+		     (صحيح) (((uint64_t) ft_face->ناپ->metrics.y_scale * (uint64_t) ft_face->units_فی_EM + (1u<<15)) >> 16));
+#إذا 0 /* hb-ft works in no-hinting model */
+  hb_font_سیٹ_ppem (font,
+		    ft_face->ناپ->metrics.x_ppem,
+		    ft_face->ناپ->metrics.y_ppem);
+#جے_انت
 
-#if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
-  FT_MM_Var *mm_var = nullptr;
-  if (!FT_Get_MM_Var (ft_face, &mm_var))
+#إذا defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
+  FT_MM_Var *mm_var = خالی_سوچک;
+  إذا (!FT_Get_MM_Var (ft_face, &mm_var))
   {
-    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->num_axis, sizeof (FT_Fixed));
-    int *coords = (int *) hb_calloc (mm_var->num_axis, sizeof (int));
-    if (coords && ft_coords)
+    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->عدد_axis, حجم (FT_Fixed));
+    صحيح *coords = (صحيح *) hb_calloc (mm_var->عدد_axis, حجم (صحيح));
+    إذا (coords && ft_coords)
     {
-      if (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->num_axis, ft_coords))
+      إذا (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->عدد_axis, ft_coords))
       {
-	bool nonzero = false;
+	منطقي nonzero = خطأ;
 
-	for (unsigned int i = 0; i < mm_var->num_axis; ++i)
+	لكل (بنانشانی صحيح i = 0; i < mm_var->عدد_axis; ++i)
 	 {
 	  coords[i] = (ft_coords[i] + 2) >> 2;
 	  nonzero = nonzero || coords[i];
 	 }
 
-	if (nonzero)
-	  hb_font_set_var_coords_normalized (font, coords, mm_var->num_axis);
-	else
-	  hb_font_set_var_coords_normalized (font, nullptr, 0);
+	إذا (nonzero)
+	  hb_font_سیٹ_var_coords_normalized (font, coords, mm_var->عدد_axis);
+	وإلا
+	  hb_font_سیٹ_var_coords_normalized (font, خالی_سوچک, 0);
       }
     }
     hb_free (coords);
     hb_free (ft_coords);
-#ifdef HAVE_FT_DONE_MM_VAR
-    FT_Done_MM_Var (ft_face->glyph->library, mm_var);
-#else
+#جے_تعریف_شدہ HAVE_FT_پورا_MM_VAR
+    FT_پورا_MM_Var (ft_face->glyph->library, mm_var);
+#وإلا
     hb_free (mm_var);
-#endif
+#جے_انت
   }
-#endif
+#جے_انت
 
   ft_font->advance_cache.clear ();
   ft_font->cached_serial = font->serial;
@@ -1466,14 +1466,14 @@ hb_ft_font_changed (hb_font_t *font)
  * Since: 4.4.0
  **/
 hb_bool_t
-hb_ft_hb_font_changed (hb_font_t *font)
+hb_ft_hb_font_بدلیا_2 (hb_font_t *font)
 {
-  if (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
-    return false;
+  إذا (font->destroy != (hb_destroy_func_t) _hb_ft_font_destroy)
+    أرجع خطأ;
 
-  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_data;
+  hb_ft_font_t *ft_font = (hb_ft_font_t *) font->user_انکڑے;
 
-  return _hb_ft_hb_font_check_changed (font, ft_font);
+  أرجع hb_ft_hb_font_check_بدلیا (font, ft_font);
 }
 
 /**
@@ -1501,151 +1501,151 @@ hb_font_t *
 hb_ft_font_create_referenced (FT_Face ft_face)
 {
   FT_Reference_Face (ft_face);
-  return hb_ft_font_create (ft_face, _hb_ft_face_destroy);
+  أرجع hb_ft_font_create (ft_face, _hb_ft_face_destroy);
 }
 
 
-static void * _hb_ft_alloc (FT_Memory memory, long size)
-{ return hb_malloc (size); }
+ساكن فراغ * _hb_ft_alloc (FT_حافظہ حافظہ, لما ناپ)
+{ أرجع hb_malloc (ناپ); }
 
-static void _hb_ft_free (FT_Memory memory, void *block)
-{ hb_free (block); }
+ساكن فراغ _hb_ft_free (FT_حافظہ حافظہ, فراغ *بلاک)
+{ hb_free (بلاک); }
 
-static void * _hb_ft_realloc (FT_Memory memory, long cur_size, long new_size, void *block)
-{ return hb_realloc (block, new_size); }
+ساكن فراغ * _hb_ft_realloc (FT_حافظہ حافظہ, لما cur_ناپ, لما new_ناپ, فراغ *بلاک)
+{ أرجع hb_realloc (بلاک, new_ناپ); }
 
-static FT_MemoryRec_ m =
+ساكن FT_حافظہ_Rec m =
 {
-  nullptr,
+  خالی_سوچک,
   _hb_ft_alloc,
   _hb_ft_free,
   _hb_ft_realloc
 };
 
-static inline void free_static_ft_library ();
-static inline void free_static_ft_library_mutex ();
+ساكن مضمن فراغ free_static_ft_library ();
+ساكن مضمن فراغ free_static_ft_library_mutex ();
 
-static struct hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
+ساكن بنية hb_ft_library_mutex_lazy_loader_t : hb_lazy_loader_t<hb_mutex_t,
 								   hb_ft_library_mutex_lazy_loader_t>
 {
-  static hb_mutex_t *create ()
+  ساكن hb_mutex_t *create ()
   {
-    hb_mutex_t *lock = (hb_mutex_t *) hb_calloc (1, sizeof (hb_mutex_t));
-    if (unlikely (!lock))
-      return nullptr;
+    hb_mutex_t *lock = (hb_mutex_t *) hb_calloc (1, حجم (hb_mutex_t));
+    إذا (unlikely (!lock))
+      أرجع خالی_سوچک;
 
-    lock = new (lock) hb_mutex_t;
+    lock = جديد (lock) hb_mutex_t;
     hb_atexit (free_static_ft_library_mutex);
-    return lock;
+    أرجع lock;
   }
-  static void destroy (hb_mutex_t *lock)
+  ساكن فراغ destroy (hb_mutex_t *lock)
   {
     lock->~hb_mutex_t ();
     hb_free (lock);
   }
-  static hb_mutex_t *get_null ()
+  ساكن hb_mutex_t *get_null ()
   {
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 } static_ft_library_mutex;
 
-static struct hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<FT_Library>,
+ساكن بنية hb_ft_library_lazy_loader_t : hb_lazy_loader_t<hb_remove_اشارہ_گر<FT_Library>,
 							     hb_ft_library_lazy_loader_t>
 {
-  static FT_Library create ()
+  ساكن FT_Library create ()
   {
     FT_Library l;
-    if (FT_New_Library (&m, &l))
-      return nullptr;
+    إذا (FT_New_Library (&m, &l))
+      أرجع خالی_سوچک;
 
-    FT_Add_Default_Modules (l);
-    FT_Set_Default_Properties (l);
+    FT_جوڑو_Default_Modules (l);
+    FT_سیٹ_Default_Properties (l);
 
     hb_atexit (free_static_ft_library);
 
-    return l;
+    أرجع l;
   }
-  static void destroy (FT_Library l)
+  ساكن فراغ destroy (FT_Library l)
   {
-    FT_Done_Library (l);
+    FT_پورا_Library (l);
   }
-  static FT_Library get_null ()
+  ساكن FT_Library get_null ()
   {
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 } static_ft_library;
 
-static inline
-void free_static_ft_library_mutex ()
+ساكن مضمن
+فراغ free_static_ft_library_mutex ()
 {
   static_ft_library_mutex.free_instance ();
 }
 
-static inline
-void free_static_ft_library ()
+ساكن مضمن
+فراغ free_static_ft_library ()
 {
-  hb_lock_t lock (static_ft_library_mutex.get_unconst ());
+  hb_جندرا_t lock (static_ft_library_mutex.get_unconst ());
   static_ft_library.free_instance ();
 }
 
-static FT_Library
+ساكن FT_Library
 reference_ft_library ()
 {
   hb_mutex_t *mutex = static_ft_library_mutex.get_unconst ();
-  if (unlikely (!mutex))
-    return nullptr;
-  hb_lock_t lock (mutex);
+  إذا (unlikely (!mutex))
+    أرجع خالی_سوچک;
+  hb_جندرا_t lock (mutex);
   FT_Library l = static_ft_library.get_unconst ();
-  if (unlikely (FT_Reference_Library (l)))
+  إذا (unlikely (FT_Reference_Library (l)))
   {
-    DEBUG_MSG (FT, l, "FT_Reference_Library() failed");
-    return nullptr;
+    DEBUG_پیغام (FT, l, "FT_Reference_Library() failed");
+    أرجع خالی_سوچک;
   }
-  return l;
+  أرجع l;
 }
 
-static hb_user_data_key_t ft_library_key = {0};
+ساكن hb_user_انکڑے_کلید_t ft_library_کلید = {0};
 
-static void
-_hb_ft_face_destroy_static (void *data)
+ساكن فراغ
+_hb_ft_face_destroy_static (فراغ *انکڑے)
 {
-  hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  FT_Done_Face ((FT_Face) data);
+  hb_جندرا_t lock (static_ft_library_mutex.get_unconst ());
+  FT_پورا_Face ((FT_Face) انکڑے);
 }
 
-static FT_Error
+ساكن FT_Error
 new_ft_face (FT_Library  ft_library,
-	     const char *file_name,
-	     unsigned int index,
+	     ثابت حرف *file_name,
+	     بنانشانی صحيح اشاریہ_2,
 	     FT_Face     *ft_face)
 {
-  hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  return FT_New_Face (ft_library, file_name, index, ft_face);
+  hb_جندرا_t lock (static_ft_library_mutex.get_unconst ());
+  أرجع FT_New_Face (ft_library, file_name, اشاریہ_2, ft_face);
 }
 
-static FT_Error
-new_ft_memory_face (FT_Library    ft_library,
-		    const FT_Byte *blob_data,
-		    unsigned int   blob_size,
-		    unsigned int   index,
+ساكن FT_Error
+new_ft_حافظہ_face (FT_Library    ft_library,
+		    ثابت FT_Byte *blob_انکڑے,
+		    بنانشانی صحيح   blob_ناپ,
+		    بنانشانی صحيح   اشاریہ_2,
 		    FT_Face       *ft_face)
 {
-  hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  return FT_New_Memory_Face (ft_library, blob_data, blob_size, index, ft_face);
+  hb_جندرا_t lock (static_ft_library_mutex.get_unconst ());
+  أرجع FT_New_حافظہ_Face (ft_library, blob_انکڑے, blob_ناپ, اشاریہ_2, ft_face);
 }
 
-static void
-finalize_ft_library (void *arg)
+ساكن فراغ
+finalize_ft_library (فراغ *arg)
 {
   FT_Face ft_face = (FT_Face) arg;
-  FT_Done_Library ((FT_Library) ft_face->generic.data);
+  FT_پورا_Library ((FT_Library) ft_face->generic.انکڑے);
 }
 
-static void
-destroy_ft_library (void *arg)
+ساكن فراغ
+destroy_ft_library (فراغ *arg)
 {
-  hb_lock_t lock (static_ft_library_mutex.get_unconst ());
-  FT_Done_Library ((FT_Library) arg);
+  hb_جندرا_t lock (static_ft_library_mutex.get_unconst ());
+  FT_پورا_Library ((FT_Library) arg);
 }
 
 /**
@@ -1666,43 +1666,43 @@ destroy_ft_library (void *arg)
  * Since: 10.1.0
  */
 hb_face_t *
-hb_ft_face_create_from_file_or_fail (const char   *file_name,
-				     unsigned int  index)
+hb_ft_face_create_from_file_or_fail (ثابت حرف   *file_name,
+				     بنانشانی صحيح  اشاریہ_2)
 {
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  إذا (unlikely (!ft_library))
   {
-    DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
-    return nullptr;
+    DEBUG_پیغام (FT, ft_library, "reference_ft_library failed");
+    أرجع خالی_سوچک;
   }
 
   FT_Face ft_face;
-  if (unlikely (new_ft_face (ft_library,
+  إذا (unlikely (new_ft_face (ft_library,
 			     file_name,
-			     index,
+			     اشاریہ_2,
 			     &ft_face)))
   {
     destroy_ft_library (ft_library);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
   FT_Reference_Face (ft_face);
   hb_face_t *face = hb_ft_face_create (ft_face, _hb_ft_face_destroy_static);
   _hb_ft_face_destroy_static (ft_face);
 
-  ft_face->generic.data = ft_library;
+  ft_face->generic.انکڑے = ft_library;
   ft_face->generic.finalizer = finalize_ft_library;
 
-  if (hb_face_is_immutable (face))
-    return nullptr;
+  إذا (hb_face_is_immutable (face))
+    أرجع خالی_سوچک;
 
-  return face;
+  أرجع face;
 }
 
-static hb_user_data_key_t ft_blob_key = {0};
+ساكن hb_user_انکڑے_کلید_t ft_blob_کلید = {0};
 
-static void
-_destroy_blob (void *p)
+ساكن فراغ
+_destroy_blob (فراغ *p)
 {
   hb_blob_destroy ((hb_blob_t *) p);
 }
@@ -1726,57 +1726,57 @@ _destroy_blob (void *p)
  */
 hb_face_t *
 hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
-				     unsigned int  index)
+				     بنانشانی صحيح  اشاریہ_2)
 {
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  إذا (unlikely (!ft_library))
   {
-    DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
-    return nullptr;
+    DEBUG_پیغام (FT, ft_library, "reference_ft_library failed");
+    أرجع خالی_سوچک;
   }
 
   hb_blob_make_immutable (blob);
-  unsigned blob_size;
-  const char *blob_data = hb_blob_get_data (blob, &blob_size);
+  بنانشانی blob_ناپ;
+  ثابت حرف *blob_انکڑے = hb_blob_get_انکڑے (blob, &blob_ناپ);
 
   FT_Face ft_face;
-  if (unlikely (new_ft_memory_face (ft_library,
-				    (const FT_Byte *) blob_data,
-				    blob_size,
-				    index,
+  إذا (unlikely (new_ft_حافظہ_face (ft_library,
+				    (ثابت FT_Byte *) blob_انکڑے,
+				    blob_ناپ,
+				    اشاریہ_2,
 				    &ft_face)))
   {
     destroy_ft_library (ft_library);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
   FT_Reference_Face (ft_face);
   hb_face_t *face = hb_ft_face_create (ft_face, _hb_ft_face_destroy_static);
   _hb_ft_face_destroy_static (ft_face);
 
-  ft_face->generic.data = ft_library;
+  ft_face->generic.انکڑے = ft_library;
   ft_face->generic.finalizer = finalize_ft_library;
 
-  if (hb_face_is_immutable (face))
-    return nullptr;
+  إذا (hb_face_is_immutable (face))
+    أرجع خالی_سوچک;
 
   // Hook the blob to the hb_face_t, since FT_Face still needs it.
   hb_blob_reference (blob);
-  if (!hb_face_set_user_data (face, &ft_blob_key, blob, _destroy_blob, true))
+  إذا (!hb_face_سیٹ_user_انکڑے (face, &ft_blob_کلید, blob, _destroy_blob, سچ))
   {
     hb_blob_destroy (blob);
     hb_face_destroy (face);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
-  return face;
+  أرجع face;
 }
 
-static void
-_release_blob (void *arg)
+ساكن فراغ
+_release_blob (فراغ *arg)
 {
   FT_Face ft_face = (FT_Face) arg;
-  hb_blob_destroy ((hb_blob_t *) ft_face->generic.data);
+  hb_blob_destroy ((hb_blob_t *) ft_face->generic.انکڑے);
 }
 
 /**
@@ -1805,68 +1805,68 @@ _release_blob (void *arg)
  *
  * Since: 1.0.5
  **/
-void
-hb_ft_font_set_funcs (hb_font_t *font)
+فراغ
+hb_ft_font_سیٹ_funcs (hb_font_t *font)
 {
-  int load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING;
-  if (font->destroy == (hb_destroy_func_t) _hb_ft_font_destroy && font->user_data)
+  صحيح لدو_flags = FT_لدو_DEFAULT | FT_لدو_NO_HINTING;
+  إذا (font->destroy == (hb_destroy_func_t) _hb_ft_font_destroy && font->user_انکڑے)
   {
-    const hb_ft_font_t *existing_ft_font = (const hb_ft_font_t *) font->user_data;
-    load_flags = existing_ft_font->load_flags;
+    ثابت hb_ft_font_t *existing_ft_font = (ثابت hb_ft_font_t *) font->user_انکڑے;
+    لدو_flags = existing_ft_font->لدو_flags;
   }
 
   // In case of failure...
-  hb_font_set_funcs (font,
-		     hb_font_funcs_get_empty (),
-		     nullptr, nullptr);
+  hb_font_سیٹ_funcs (font,
+		     hb_font_funcs_get_خالی_تھاواں (),
+		     خالی_سوچک, خالی_سوچک);
 
   hb_blob_t *blob = hb_face_reference_blob (font->face);
-  unsigned int blob_length;
-  const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
-    DEBUG_MSG (FT, font, "Font face has empty blob");
+  بنانشانی صحيح blob_لمائی;
+  ثابت حرف *blob_انکڑے = hb_blob_get_انکڑے (blob, &blob_لمائی);
+  إذا (unlikely (!blob_لمائی))
+    DEBUG_پیغام (FT, font, "Font face has empty blob");
 
   FT_Library ft_library = reference_ft_library ();
-  if (unlikely (!ft_library))
+  إذا (unlikely (!ft_library))
   {
     hb_blob_destroy (blob);
-    DEBUG_MSG (FT, font, "reference_ft_library failed");
-    return;
+    DEBUG_پیغام (FT, font, "reference_ft_library failed");
+    أرجع;
   }
 
-  FT_Face ft_face = nullptr;
-  if (unlikely (new_ft_memory_face (ft_library,
-				    (const FT_Byte *) blob_data,
-				    blob_length,
-				    hb_face_get_index (font->face),
+  FT_Face ft_face = خالی_سوچک;
+  إذا (unlikely (new_ft_حافظہ_face (ft_library,
+				    (ثابت FT_Byte *) blob_انکڑے,
+				    blob_لمائی,
+				    hb_face_get_اشاریہ (font->face),
 				    &ft_face)))
   {
     hb_blob_destroy (blob);
     destroy_ft_library (ft_library);
-    DEBUG_MSG (FT, font, "FT_New_Memory_Face() failed");
-    return;
+    DEBUG_پیغام (FT, font, "FT_New_Memory_Face() failed");
+    أرجع;
   }
 
-  if (FT_Select_Charmap (ft_face, FT_ENCODING_MS_SYMBOL))
+  إذا (FT_Select_Charmap (ft_face, FT_ENCODING_MS_علامت))
     FT_Select_Charmap (ft_face, FT_ENCODING_UNICODE);
 
   // Hook the blob to the FT_Face
-  ft_face->generic.data = blob;
+  ft_face->generic.انکڑے = blob;
   ft_face->generic.finalizer = _release_blob;
 
   // And the FT_Library to the blob
-  if (unlikely (!hb_blob_set_user_data (blob, &ft_library_key, ft_library, destroy_ft_library, true)))
+  إذا (unlikely (!hb_blob_سیٹ_user_انکڑے (blob, &ft_library_کلید, ft_library, destroy_ft_library, سچ)))
   {
-    DEBUG_MSG (FT, font, "hb_blob_set_user_data() failed");
+    DEBUG_پیغام (FT, font, "hb_blob_set_user_data() failed");
     _hb_ft_face_destroy_static (ft_face);
     destroy_ft_library (ft_library);
-    return;
+    أرجع;
   }
 
-  _hb_ft_font_set_funcs (font, ft_face, true, true);
-  hb_ft_font_set_load_flags (font, load_flags);
+  hb_ft_font_سیٹ_funcs_2 (font, ft_face, سچ, سچ);
+  hb_ft_font_سیٹ_لدو_flags (font, لدو_flags);
 
-  _hb_ft_hb_font_changed (font, ft_face);
+  hb_ft_hb_font_بدلیا (font, ft_face);
 }
 
-#endif
+#جے_انت

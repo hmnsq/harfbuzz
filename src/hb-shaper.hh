@@ -24,111 +24,111 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_HH
-#define HB_SHAPER_HH
+#جے_بنا_تعریف HB_SHAPER_HH
+#تعریف_کرو HB_SHAPER_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#ضمن "hb.hh"
+#ضمن "hb-machinery.hh"
 
-typedef hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
+تعريفنوع hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
 				   hb_font_t          *font,
-				   hb_buffer_t        *buffer,
-				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   hb_بفر_t        *بفر,
+				   ثابت hb_feature_t *features,
+				   بنانشانی صحيح        عدد_features);
 
-#define HB_SHAPER_IMPLEMENT(name) \
-	extern "C" HB_INTERNAL hb_shape_func_t _hb_##name##_shape;
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#تعریف_کرو HB_SHAPER_IMPLEMENT(name) \
+	خارجي "C" HB_اندرونی hb_shape_func_t _hb_##name##_shape;
+#ضمن "hb-shaper-list.hh"
+#تعریف_رد HB_SHAPER_IMPLEMENT
 
-struct hb_shaper_entry_t {
-  char name[16];
+بنية hb_shaper_اندراج_t {
+  حرف name[16];
   hb_shape_func_t *func;
 };
 
-HB_INTERNAL const hb_shaper_entry_t *
+HB_اندرونی ثابت hb_shaper_اندراج_t *
 _hb_shapers_get ();
 
 
-template <typename Data, unsigned int WheresData, typename T>
-struct hb_shaper_lazy_loader_t;
+سانچا <قسم_ناں انکڑے_3, بنانشانی صحيح Wheres_انکڑے, قسم_ناں T>
+بنية hb_shaper_lazy_loader_t;
 
-#define HB_SHAPER_ORDER(Shaper) \
-  HB_PASTE (HB_SHAPER_ORDER_, Shaper)
-enum hb_shaper_order_t
+#تعریف_کرو HB_SHAPER_ترتیب(Shaper) \
+  HB_PASTE (HB_SHAPER_ترتیب_2, Shaper)
+تعداد hb_shaper_ترتیب_t
 {
-  _HB_SHAPER_ORDER_ORDER_ZERO,
-#define HB_SHAPER_IMPLEMENT(Shaper) \
-      HB_SHAPER_ORDER (Shaper),
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
-  _HB_SHAPERS_COUNT_PLUS_ONE,
-  HB_SHAPERS_COUNT = _HB_SHAPERS_COUNT_PLUS_ONE - 1,
+  HB_SHAPER_ترتیب_ترتیب_ZERO,
+#تعریف_کرو HB_SHAPER_IMPLEMENT(Shaper) \
+      HB_SHAPER_ترتیب (Shaper),
+#ضمن "hb-shaper-list.hh"
+#تعریف_رد HB_SHAPER_IMPLEMENT
+  HB_SHAPERS_گنتی_PLUS_ONE,
+  HB_SHAPERS_گنتی = HB_SHAPERS_گنتی_PLUS_ONE - 1,
 };
 
-template <enum hb_shaper_order_t order, typename Object> struct hb_shaper_object_data_type_t;
+سانچا <تعداد hb_shaper_ترتیب_t ترتیب, قسم_ناں Object> بنية hb_shaper_object_انکڑے_type_t;
 
-#define HB_SHAPER_DATA_SUCCEEDED ((void *) +1)
-#define HB_SHAPER_DATA_TYPE(shaper, object)		hb_##shaper##_##object##_data_t
-#define HB_SHAPER_DATA_CREATE_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_create
-#define HB_SHAPER_DATA_DESTROY_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_destroy
+#تعریف_کرو HB_SHAPER_انکڑے_SUCCEEDED ((فراغ *) +1)
+#تعریف_کرو HB_SHAPER_انکڑے_TYPE(shaper, object)		hb_##shaper##_##object##_data_t
+#تعریف_کرو HB_SHAPER_انکڑے_CREATE_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_create
+#تعریف_کرو HB_SHAPER_انکڑے_DESTROY_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_destroy
 
-#define HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, object) \
+#تعریف_کرو HB_SHAPER_انکڑے_INSTANTIATE_SHAPERS(shaper, object) \
 	\
-	struct HB_SHAPER_DATA_TYPE (shaper, object); /* Type forward declaration. */ \
-	extern "C" HB_INTERNAL HB_SHAPER_DATA_TYPE (shaper, object) * \
-	HB_SHAPER_DATA_CREATE_FUNC (shaper, object) (hb_##object##_t *object); \
-	extern "C" HB_INTERNAL void \
-	HB_SHAPER_DATA_DESTROY_FUNC (shaper, object) (HB_SHAPER_DATA_TYPE (shaper, object) *shaper##_##object); \
+	بنية HB_SHAPER_انکڑے_TYPE (shaper, object); /* Type forward declaration. */ \
+	خارجي "C" HB_اندرونی HB_SHAPER_انکڑے_TYPE (shaper, object) * \
+	HB_SHAPER_انکڑے_CREATE_FUNC (shaper, object) (hb_##object##_t *object); \
+	خارجي "C" HB_اندرونی فراغ \
+	HB_SHAPER_انکڑے_DESTROY_FUNC (shaper, object) (HB_SHAPER_انکڑے_TYPE (shaper, object) *shaper##_##object); \
 	\
-	template <> \
-	struct hb_shaper_object_data_type_t<HB_SHAPER_ORDER (shaper), hb_##object##_t> \
+	سانچا <> \
+	بنية hb_shaper_object_انکڑے_type_t<HB_SHAPER_ترتیب (shaper), hb_##object##_t> \
 	{ \
-	  typedef HB_SHAPER_DATA_TYPE(shaper, object) value; \
+	  تعريفنوع HB_SHAPER_انکڑے_TYPE(shaper, object) value; \
 	}; \
 	\
-	template <unsigned int WheresData> \
-	struct hb_shaper_lazy_loader_t<hb_##object##_t, WheresData, HB_SHAPER_DATA_TYPE(shaper, object)> \
-		: hb_lazy_loader_t<HB_SHAPER_DATA_TYPE(shaper, object), \
+	سانچا <بنانشانی صحيح Wheres_انکڑے> \
+	بنية hb_shaper_lazy_loader_t<hb_##object##_t, Wheres_انکڑے, HB_SHAPER_انکڑے_TYPE(shaper, object)> \
+		: hb_lazy_loader_t<HB_SHAPER_انکڑے_TYPE(shaper, object), \
 				   hb_shaper_lazy_loader_t<hb_##object##_t, \
-							   WheresData, \
-							   HB_SHAPER_DATA_TYPE(shaper, object)>, \
-				   hb_##object##_t, WheresData> \
+							   Wheres_انکڑے, \
+							   HB_SHAPER_انکڑے_TYPE(shaper, object)>, \
+				   hb_##object##_t, Wheres_انکڑے> \
 	{ \
-	  typedef HB_SHAPER_DATA_TYPE(shaper, object) Type; \
-	  static Type* create (hb_##object##_t *data) \
-	  { return HB_SHAPER_DATA_CREATE_FUNC (shaper, object) (data); } \
-	  static Type *get_null () { return nullptr; } \
-	  static void destroy (Type *p) { HB_SHAPER_DATA_DESTROY_FUNC (shaper, object) (p); } \
+	  تعريفنوع HB_SHAPER_انکڑے_TYPE(shaper, object) Type; \
+	  ساكن Type* create (hb_##object##_t *انکڑے) \
+	  { أرجع HB_SHAPER_انکڑے_CREATE_FUNC (shaper, object) (انکڑے); } \
+	  ساكن Type *get_null () { أرجع خالی_سوچک; } \
+	  ساكن فراغ destroy (Type *p) { HB_SHAPER_انکڑے_DESTROY_FUNC (shaper, object) (p); } \
 	}; \
 	\
-	static_assert (true, "") /* Require semicolon after. */
+	static_assert (سچ, "") /* Require semicolon after. */
 
 
-template <typename Object>
-struct hb_shaper_object_dataset_t
+سانچا <قسم_ناں Object>
+بنية hb_shaper_object_dataset_t
 {
-  void init0 (Object *parent_data)
+  فراغ init0 (Object *ماپا_انکڑے)
   {
-    this->parent_data = parent_data;
-#define HB_SHAPER_IMPLEMENT(shaper) shaper.init0 ();
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+    هذا->ماپا_انکڑے = ماپا_انکڑے;
+#تعریف_کرو HB_SHAPER_IMPLEMENT(shaper) shaper.init0 ();
+#ضمن "hb-shaper-list.hh"
+#تعریف_رد HB_SHAPER_IMPLEMENT
   }
-  void fini ()
+  فراغ fini ()
   {
-#define HB_SHAPER_IMPLEMENT(shaper) shaper.fini ();
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#تعریف_کرو HB_SHAPER_IMPLEMENT(shaper) shaper.fini ();
+#ضمن "hb-shaper-list.hh"
+#تعریف_رد HB_SHAPER_IMPLEMENT
   }
 
-  Object *parent_data; /* MUST be JUST before the lazy loaders. */
-#define HB_SHAPER_IMPLEMENT(shaper) \
-	hb_shaper_lazy_loader_t<Object, HB_SHAPER_ORDER(shaper), \
-				typename hb_shaper_object_data_type_t<HB_SHAPER_ORDER(shaper), Object>::value \
+  Object *ماپا_انکڑے; /* MUST be JUST before the lazy loaders. */
+#تعریف_کرو HB_SHAPER_IMPLEMENT(shaper) \
+	hb_shaper_lazy_loader_t<Object, HB_SHAPER_ترتیب(shaper), \
+				قسم_ناں hb_shaper_object_انکڑے_type_t<HB_SHAPER_ترتیب(shaper), Object>::value \
 			       > shaper;
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#ضمن "hb-shaper-list.hh"
+#تعریف_رد HB_SHAPER_IMPLEMENT
 };
 
-#endif /* HB_SHAPER_HH */
+#جے_انت /* HB_SHAPER_HH */

@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#إذا !defined(HB_OT_H_وچ) && !defined(HB_NO_SINGLE_سرخی_ERROR)
+#غلطی "Include <hb-ot.h> instead."
+#جے_انت
 
-#ifndef HB_OT_META_H
-#define HB_OT_META_H
+#جے_بنا_تعریف HB_OT_META_H
+#تعریف_کرو HB_OT_META_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -46,27 +46,27 @@ HB_BEGIN_DECLS
  *
  * Since: 2.6.0
  **/
-typedef enum {
+تعريفنوع تعداد {
 /*
    HB_OT_META_TAG_APPL		= HB_TAG ('a','p','p','l'),
    HB_OT_META_TAG_BILD		= HB_TAG ('b','i','l','d'),
 */
-  HB_OT_META_TAG_DESIGN_LANGUAGES	= HB_TAG ('d','l','n','g'),
-  HB_OT_META_TAG_SUPPORTED_LANGUAGES	= HB_TAG ('s','l','n','g'),
+  HB_OT_META_ٹیگ_DESIGN_LANGUAGES	= HB_ٹیگ ('d','l','n','g'),
+  HB_OT_META_ٹیگ_SUPPORTED_LANGUAGES	= HB_ٹیگ ('s','l','n','g'),
 
   /*< private >*/
-  _HB_OT_META_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_meta_tag_t;
+  HB_OT_META_ٹیگ_MAX_قدر = HB_ٹیگ_MAX_SIGNED /*< skip >*/
+} hb_ot_meta_ٹیگ_t;
 
-HB_EXTERN unsigned int
-hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
-			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */);
+HB_EXTERN بنانشانی صحيح
+hb_ot_meta_get_اندراج_ٹیگ_سوچی (hb_face_t        *face,
+			   بنانشانی صحيح      شروع_وتھ,
+			   بنانشانی صحيح     *entries_گنتی, /* IN/OUT.  May be NULL. */
+			   hb_ot_meta_ٹیگ_t *entries        /* OUT.     May be NULL. */);
 
 HB_EXTERN hb_blob_t *
-hb_ot_meta_reference_entry (hb_face_t *face, hb_ot_meta_tag_t meta_tag);
+hb_ot_meta_reference_اندراج (hb_face_t *face, hb_ot_meta_ٹیگ_t meta_ٹیگ);
 
-HB_END_DECLS
+HB_سرا_DECLS
 
-#endif /* HB_OT_META_H */
+#جے_انت /* HB_OT_META_H */

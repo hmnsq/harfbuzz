@@ -26,55 +26,55 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
-#define OT_LAYOUT_COMMON_RANGERECORD_HH
+#جے_بنا_تعریف OT_LAYOUT_COMMON_RANGERECORD_HH
+#تعریف_کرو OT_LAYOUT_COMMON_RANGERECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+نطاق OT {
+نطاق Layout {
+نطاق Common {
 
-template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+سانچا <قسم_ناں Types, قسم_ناں قدر = HBUINT16>
+بنية Range_ریکارڈ
 {
-  typename Types::HBGlyphID     first;          /* First GlyphID in the range */
-  typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  قسم_ناں Types::HBGlyphID     پہلا;          /* First GlyphID in the range */
+  قسم_ناں Types::HBGlyphID     آخری;           /* Last GlyphID in the range */
+  قدر                         value;          /*قدر*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_ناپ_STATIC (2 * Types::ناپ + قدر::static_ناپ);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  صحيح cmp (hb_codepoint_t g) ثابت
+  { أرجع g < پہلا ? -1 : g <= آخری ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
-    const RangeRecord *a = (const RangeRecord *) pa;
-    const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+  HB_اندرونی ساكن صحيح cmp_range (ثابت فراغ *pa, ثابت فراغ *pb) {
+    ثابت Range_ریکارڈ *a = (ثابت Range_ریکارڈ *) pa;
+    ثابت Range_ریکارڈ *b = (ثابت Range_ریکارڈ *) pb;
+    إذا (a->پہلا < b->پہلا) أرجع -1;
+    إذا (a->پہلا > b->پہلا) أرجع +1;
+    إذا (a->آخری < b->آخری) أرجع -1;
+    إذا (a->آخری > b->آخری) أرجع +1;
+    إذا (a->value < b->value) أرجع -1;
+    إذا (a->value > b->value) أرجع +1;
+    أرجع 0;
   }
 
-  unsigned get_population () const
+  بنانشانی get_population () ثابت
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    إذا (unlikely (آخری < پہلا)) أرجع 0;
+    أرجع (آخری - پہلا + 1);
   }
 
-  bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  منطقي intersects (ثابت hb_سیٹ_t &glyphs) ثابت
+  { أرجع glyphs.intersects (پہلا, آخری); }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  سانچا <قسم_ناں سیٹ_t>
+  منطقي collect_coverage (سیٹ_t *glyphs) ثابت
+  { أرجع glyphs->جوڑو_range (پہلا, آخری); }
 };
 
 }
@@ -85,13 +85,13 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+خارجي HB_اندرونی ثابت بنانشانی حرف hb_Null_OT_Range_ریکارڈ[9];
+سانچا <قسم_ناں Spec, قسم_ناں قدر>
+بنية Null<OT::Layout::Common::Range_ریکارڈ<Spec, قدر>> {
+  ساكن OT::Layout::Common::Range_ریکارڈ<Spec, قدر> ثابت & get_null () {
+    أرجع *reinterpret_cast<ثابت OT::Layout::Common::Range_ریکارڈ<Spec, قدر> *> (hb_Null_OT_Range_ریکارڈ);
   }
 };
 
 
-#endif  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
+#جے_انت  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH

@@ -24,46 +24,46 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#جے_بنا_تعریف HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#ضمن "hb-ot-shaper.hh"
 
 
 /* Hangul shaper */
 
 
 /* Same order as the feature array below */
-enum {
+تعداد {
   _JMO,
 
   LJMO,
   VJMO,
   TJMO,
 
-  FIRST_HANGUL_FEATURE = LJMO,
-  HANGUL_FEATURE_COUNT = TJMO + 1
+  پہلا_HANGUL_FEATURE = LJMO,
+  HANGUL_FEATURE_گنتی = TJMO + 1
 };
 
-static const hb_tag_t hangul_features[HANGUL_FEATURE_COUNT] =
+ساكن ثابت hb_ٹیگ_t hangul_features[HANGUL_FEATURE_گنتی] =
 {
-  HB_TAG_NONE,
-  HB_TAG('l','j','m','o'),
-  HB_TAG('v','j','m','o'),
-  HB_TAG('t','j','m','o')
+  HB_ٹیگ_NONE,
+  HB_ٹیگ('l','j','m','o'),
+  HB_ٹیگ('v','j','m','o'),
+  HB_ٹیگ('t','j','m','o')
 };
 
-static void
+ساكن فراغ
 collect_features_hangul (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
-  for (unsigned int i = FIRST_HANGUL_FEATURE; i < HANGUL_FEATURE_COUNT; i++)
-    map->add_feature (hangul_features[i]);
+  لكل (بنانشانی صحيح i = پہلا_HANGUL_FEATURE; i < HANGUL_FEATURE_گنتی; i++)
+    map->جوڑو_feature (hangul_features[i]);
 }
 
-static void
+ساكن فراغ
 override_features_hangul (hb_ot_shape_planner_t *plan)
 {
   /* Uniscribe does not apply 'calt' for Hangul, and certain fonts
@@ -77,75 +77,75 @@ override_features_hangul (hb_ot_shape_planner_t *plan)
    * the run shape with 'calt' as usual.
    *
    * https://github.com/harfbuzz/harfbuzz/discussions/4853 */
-  plan->map.add_feature (HB_TAG('c','a','l','t'));
+  plan->map.جوڑو_feature (HB_ٹیگ('c','a','l','t'));
 }
 
-struct hangul_shape_plan_t
+بنية hangul_shape_plan_t
 {
-  hb_mask_t mask_array[HANGUL_FEATURE_COUNT];
-  hb_mask_t calt_mask;
+  hb_نقاب_t نقاب_array[HANGUL_FEATURE_گنتی];
+  hb_نقاب_t calt_نقاب;
 };
 
-static void *
-data_create_hangul (const hb_ot_shape_plan_t *plan)
+ساكن فراغ *
+انکڑے_create_hangul (ثابت hb_ot_shape_plan_t *plan)
 {
-  hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, sizeof (hangul_shape_plan_t));
-  if (unlikely (!hangul_plan))
-    return nullptr;
+  hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, حجم (hangul_shape_plan_t));
+  إذا (unlikely (!hangul_plan))
+    أرجع خالی_سوچک;
 
-  for (unsigned int i = 0; i < HANGUL_FEATURE_COUNT; i++)
-    hangul_plan->mask_array[i] = plan->map.get_1_mask (hangul_features[i]);
+  لكل (بنانشانی صحيح i = 0; i < HANGUL_FEATURE_گنتی; i++)
+    hangul_plan->نقاب_array[i] = plan->map.get_1_نقاب (hangul_features[i]);
 
-  hangul_plan->calt_mask = plan->map.get_1_mask (HB_TAG('c','a','l','t'));
+  hangul_plan->calt_نقاب = plan->map.get_1_نقاب (HB_ٹیگ('c','a','l','t'));
 
-  return hangul_plan;
+  أرجع hangul_plan;
 }
 
-static void
-data_destroy_hangul (void *data)
+ساكن فراغ
+انکڑے_destroy_hangul (فراغ *انکڑے)
 {
-  hb_free (data);
+  hb_free (انکڑے);
 }
 
 /* Constants for algorithmic hangul syllable [de]composition. */
-#define LBase 0x1100u
-#define VBase 0x1161u
-#define TBase 0x11A7u
-#define LCount 19u
-#define VCount 21u
-#define TCount 28u
-#define SBase 0xAC00u
-#define NCount (VCount * TCount)
-#define SCount (LCount * NCount)
+#تعریف_کرو LBase 0x1100u
+#تعریف_کرو VBase 0x1161u
+#تعریف_کرو TBase 0x11A7u
+#تعریف_کرو LCount 19u
+#تعریف_کرو VCount 21u
+#تعریف_کرو TCount 28u
+#تعریف_کرو SBase 0xAC00u
+#تعریف_کرو NCount (VCount * TCount)
+#تعریف_کرو SCount (LCount * NCount)
 
-#define isCombiningL(u) (hb_in_range<hb_codepoint_t> ((u), LBase, LBase+LCount-1))
-#define isCombiningV(u) (hb_in_range<hb_codepoint_t> ((u), VBase, VBase+VCount-1))
-#define isCombiningT(u) (hb_in_range<hb_codepoint_t> ((u), TBase+1, TBase+TCount-1))
-#define isCombinedS(u) (hb_in_range<hb_codepoint_t> ((u), SBase, SBase+SCount-1))
+#تعریف_کرو isCombiningL(u) (hb_وچ_range<hb_codepoint_t> ((u), LBase, LBase+LCount-1))
+#تعریف_کرو isCombiningV(u) (hb_وچ_range<hb_codepoint_t> ((u), VBase, VBase+VCount-1))
+#تعریف_کرو isCombiningT(u) (hb_وچ_range<hb_codepoint_t> ((u), TBase+1, TBase+TCount-1))
+#تعریف_کرو isCombinedS(u) (hb_وچ_range<hb_codepoint_t> ((u), SBase, SBase+SCount-1))
 
-#define isL(u) (hb_in_ranges<hb_codepoint_t> ((u), 0x1100u, 0x115Fu, 0xA960u, 0xA97Cu))
-#define isV(u) (hb_in_ranges<hb_codepoint_t> ((u), 0x1160u, 0x11A7u, 0xD7B0u, 0xD7C6u))
-#define isT(u) (hb_in_ranges<hb_codepoint_t> ((u), 0x11A8u, 0x11FFu, 0xD7CBu, 0xD7FBu))
+#تعریف_کرو isL(u) (hb_وچ_ranges<hb_codepoint_t> ((u), 0x1100u, 0x115Fu, 0xA960u, 0xA97Cu))
+#تعریف_کرو isV(u) (hb_وچ_ranges<hb_codepoint_t> ((u), 0x1160u, 0x11A7u, 0xD7B0u, 0xD7C6u))
+#تعریف_کرو isT(u) (hb_وچ_ranges<hb_codepoint_t> ((u), 0x11A8u, 0x11FFu, 0xD7CBu, 0xD7FBu))
 
-#define isHangulTone(u) (hb_in_range<hb_codepoint_t> ((u), 0x302Eu, 0x302Fu))
+#تعریف_کرو isHangulTone(u) (hb_وچ_range<hb_codepoint_t> ((u), 0x302Eu, 0x302Fu))
 
 /* buffer var allocations */
-#define hangul_shaping_feature() ot_shaper_var_u8_auxiliary() /* hangul jamo shaping feature */
+#تعریف_کرو hangul_shaping_feature() ot_shaper_var_u8_auxiliary() /* hangul jamo shaping feature */
 
-static bool
-is_zero_width_char (hb_font_t *font,
+ساكن منطقي
+is_zero_چوڑائی_char (hb_font_t *font,
 		    hb_codepoint_t unicode)
 {
   hb_codepoint_t glyph;
-  return hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
+  أرجع hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
 }
 
-static void
-preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
-			hb_buffer_t              *buffer,
+ساكن فراغ
+preprocess_متن_hangul (ثابت hb_ot_shape_plan_t *plan HB_بن_ورتیا,
+			hb_بفر_t              *بفر,
 			hb_font_t                *font)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, hangul_shaping_feature);
+  HB_بفر_ALLOCATE_VAR (بفر, hangul_shaping_feature);
 
   /* Hangul syllables come in two shapes: LV, and LVT.  Of those:
    *
@@ -195,98 +195,98 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
    *   decompose.
    */
 
-  buffer->clear_output ();
-  unsigned int start = 0, end = 0; /* Extent of most recently seen syllable;
+  بفر->clear_output ();
+  بنانشانی صحيح شروع = 0, سرا = 0; /* Extent of most recently seen syllable;
 				    * valid only if start < end
 				    */
-  unsigned int count = buffer->len;
+  بنانشانی صحيح گنتی = بفر->len;
 
-  for (buffer->idx = 0; buffer->idx < count && buffer->successful;)
+  لكل (بفر->idx = 0; بفر->idx < گنتی && بفر->successful;)
   {
-    hb_codepoint_t u = buffer->cur().codepoint;
+    hb_codepoint_t u = بفر->cur().codepoint;
 
-    if (isHangulTone (u))
+    إذا (isHangulTone (u))
     {
       /*
        * We could cache the width of the tone marks and the existence of dotted-circle,
        * but the use of the Hangul tone mark characters seems to be rare enough that
        * I didn't bother for now.
        */
-      if (start < end && end == buffer->out_len)
+      إذا (شروع < سرا && سرا == بفر->باہرلا_len)
       {
 	/* Tone mark follows a valid syllable; move it in front, unless it's zero width. */
-	buffer->unsafe_to_break_from_outbuffer (start, buffer->idx);
-	if (unlikely (!buffer->next_glyph ())) break;
-	if (!is_zero_width_char (font, u))
+	بفر->unsafe_منزل_break_from_outbuffer (شروع, بفر->idx);
+	إذا (unlikely (!بفر->اگلا_glyph ())) اكسر;
+	إذا (!is_zero_چوڑائی_char (font, u))
 	{
-	  buffer->merge_out_clusters (start, end + 1);
-	  hb_glyph_info_t *info = buffer->out_info;
-	  hb_glyph_info_t tone = info[end];
-	  memmove (&info[start + 1], &info[start], (end - start) * sizeof (hb_glyph_info_t));
-	  info[start] = tone;
+	  بفر->ملاؤ_باہرلا_clusters (شروع, سرا + 1);
+	  hb_glyph_info_t *info = بفر->باہرلا_info;
+	  hb_glyph_info_t tone = info[سرا];
+	  memmove (&info[شروع + 1], &info[شروع], (سرا - شروع) * حجم (hb_glyph_info_t));
+	  info[شروع] = tone;
 	}
       }
-      else
+      وإلا
       {
 	/* No valid syllable as base for tone mark; try to insert dotted circle. */
-	if (!(buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE) &&
+	إذا (!(بفر->flags & HB_بفر_FLAG_DO_NOT_داخل_کرو_DOTTED_CIRCLE) &&
 	    font->has_glyph (0x25CCu))
 	{
 	  hb_codepoint_t chars[2];
-	  if (!is_zero_width_char (font, u))
+	  إذا (!is_zero_چوڑائی_char (font, u))
 	  {
 	    chars[0] = u;
 	    chars[1] = 0x25CCu;
-	  } else
+	  } وإلا
 	  {
 	    chars[0] = 0x25CCu;
 	    chars[1] = u;
 	  }
-	  (void) buffer->replace_glyphs (1, 2, chars);
+	  (فراغ) بفر->replace_glyphs (1, 2, chars);
 	}
-	else
+	وإلا
 	{
 	  /* No dotted circle available in the font; just leave tone mark untouched. */
-	  (void) buffer->next_glyph ();
+	  (فراغ) بفر->اگلا_glyph ();
 	}
       }
-      start = end = buffer->out_len;
-      continue;
+      شروع = سرا = بفر->باہرلا_len;
+      استمر;
     }
 
-    start = buffer->out_len; /* Remember current position as a potential syllable start;
+    شروع = بفر->باہرلا_len; /* Remember current position as a potential syllable start;
 			      * will only be used if we set end to a later position.
 			      */
 
-    if (isL (u) && buffer->idx + 1 < count)
+    إذا (isL (u) && بفر->idx + 1 < گنتی)
     {
       hb_codepoint_t l = u;
-      hb_codepoint_t v = buffer->cur(+1).codepoint;
-      if (isV (v))
+      hb_codepoint_t v = بفر->cur(+1).codepoint;
+      إذا (isV (v))
       {
 	/* Have <L,V> or <L,V,T>. */
 	hb_codepoint_t t = 0;
-	unsigned int tindex = 0;
-	if (buffer->idx + 2 < count)
+	بنانشانی صحيح tindex = 0;
+	إذا (بفر->idx + 2 < گنتی)
 	{
-	  t = buffer->cur(+2).codepoint;
-	  if (isT (t))
+	  t = بفر->cur(+2).codepoint;
+	  إذا (isT (t))
 	    tindex = t - TBase; /* Only used if isCombiningT (t); otherwise invalid. */
-	  else
+	  وإلا
 	    t = 0; /* The next character was not a trailing jamo. */
 	}
-	buffer->unsafe_to_break (buffer->idx, buffer->idx + (t ? 3 : 2));
+	بفر->unsafe_منزل_break (بفر->idx, بفر->idx + (t ? 3 : 2));
 
 	/* We've got a syllable <L,V,T?>; see if it can potentially be composed. */
-	if (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
+	إذا (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
 	{
 	  /* Try to compose; if this succeeds, end is set to start+1. */
 	  hb_codepoint_t s = SBase + (l - LBase) * NCount + (v - VBase) * TCount + tindex;
-	  if (font->has_glyph (s))
+	  إذا (font->has_glyph (s))
 	  {
-	    (void) buffer->replace_glyphs (t ? 3 : 2, 1, &s);
-	    end = start + 1;
-	    continue;
+	    (فراغ) بفر->replace_glyphs (t ? 3 : 2, 1, &s);
+	    سرا = شروع + 1;
+	    استمر;
 	  }
 	}
 
@@ -295,158 +295,158 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	 * necessary precomposed glyph.
 	 * Set jamo features on the individual glyphs, and advance past them.
 	 */
-	buffer->cur().hangul_shaping_feature() = LJMO;
-	(void) buffer->next_glyph ();
-	buffer->cur().hangul_shaping_feature() = VJMO;
-	(void) buffer->next_glyph ();
-	if (t)
+	بفر->cur().hangul_shaping_feature() = LJMO;
+	(فراغ) بفر->اگلا_glyph ();
+	بفر->cur().hangul_shaping_feature() = VJMO;
+	(فراغ) بفر->اگلا_glyph ();
+	إذا (t)
 	{
-	  buffer->cur().hangul_shaping_feature() = TJMO;
-	  (void) buffer->next_glyph ();
-	  end = start + 3;
+	  بفر->cur().hangul_shaping_feature() = TJMO;
+	  (فراغ) بفر->اگلا_glyph ();
+	  سرا = شروع + 3;
 	}
-	else
-	  end = start + 2;
-	if (unlikely (!buffer->successful))
-	  break;
-	buffer->merge_out_grapheme_clusters (start, end);
-	continue;
+	وإلا
+	  سرا = شروع + 2;
+	إذا (unlikely (!بفر->successful))
+	  اكسر;
+	بفر->ملاؤ_باہرلا_grapheme_clusters (شروع, سرا);
+	استمر;
       }
     }
 
-    else if (isCombinedS (u))
+    وإلا إذا (isCombinedS (u))
     {
       /* Have <LV>, <LVT>, or <LV,T> */
       hb_codepoint_t s = u;
-      bool has_glyph = font->has_glyph (s);
-      unsigned int lindex = (s - SBase) / NCount;
-      unsigned int nindex = (s - SBase) % NCount;
-      unsigned int vindex = nindex / TCount;
-      unsigned int tindex = nindex % TCount;
+      منطقي has_glyph = font->has_glyph (s);
+      بنانشانی صحيح lindex = (s - SBase) / NCount;
+      بنانشانی صحيح nindex = (s - SBase) % NCount;
+      بنانشانی صحيح vindex = nindex / TCount;
+      بنانشانی صحيح tindex = nindex % TCount;
 
-      if (!tindex &&
-	  buffer->idx + 1 < count &&
-	  isCombiningT (buffer->cur(+1).codepoint))
+      إذا (!tindex &&
+	  بفر->idx + 1 < گنتی &&
+	  isCombiningT (بفر->cur(+1).codepoint))
       {
 	/* <LV,T>, try to combine. */
-	unsigned int new_tindex = buffer->cur(+1).codepoint - TBase;
+	بنانشانی صحيح new_tindex = بفر->cur(+1).codepoint - TBase;
 	hb_codepoint_t new_s = s + new_tindex;
-	if (font->has_glyph (new_s))
+	إذا (font->has_glyph (new_s))
 	{
-	  (void) buffer->replace_glyphs (2, 1, &new_s);
-	  end = start + 1;
-	  continue;
+	  (فراغ) بفر->replace_glyphs (2, 1, &new_s);
+	  سرا = شروع + 1;
+	  استمر;
 	}
-	else
-	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
+	وإلا
+	  بفر->unsafe_منزل_break (بفر->idx, بفر->idx + 2); /* Mark unsafe between LV and T. */
       }
 
       /* Otherwise, decompose if font doesn't support <LV> or <LVT>,
        * or if having non-combining <LV,T>.  Note that we already handled
        * combining <LV,T> above. */
-      if (!has_glyph ||
+      إذا (!has_glyph ||
 	  (!tindex &&
-	   buffer->idx + 1 < count &&
-	   isT (buffer->cur(+1).codepoint)))
+	   بفر->idx + 1 < گنتی &&
+	   isT (بفر->cur(+1).codepoint)))
       {
 	hb_codepoint_t decomposed[3] = {LBase + lindex,
 					VBase + vindex,
 					TBase + tindex};
-	if (font->has_glyph (decomposed[0]) &&
+	إذا (font->has_glyph (decomposed[0]) &&
 	    font->has_glyph (decomposed[1]) &&
 	    (!tindex || font->has_glyph (decomposed[2])))
 	{
-	  unsigned int s_len = tindex ? 3 : 2;
-	  (void) buffer->replace_glyphs (1, s_len, decomposed);
+	  بنانشانی صحيح s_len = tindex ? 3 : 2;
+	  (فراغ) بفر->replace_glyphs (1, s_len, decomposed);
 
 	  /* If we decomposed an LV because of a non-combining T following,
 	   * we want to include this T in the syllable.
 	   */
-	  if (has_glyph && !tindex)
+	  إذا (has_glyph && !tindex)
 	  {
-	    (void) buffer->next_glyph ();
+	    (فراغ) بفر->اگلا_glyph ();
 	    s_len++;
 	  }
-	  if (unlikely (!buffer->successful))
-	    break;
+	  إذا (unlikely (!بفر->successful))
+	    اكسر;
 
 	  /* We decomposed S: apply jamo features to the individual glyphs
 	   * that are now in buffer->out_info.
 	   */
-	  hb_glyph_info_t *info = buffer->out_info;
-	  end = start + s_len;
+	  hb_glyph_info_t *info = بفر->باہرلا_info;
+	  سرا = شروع + s_len;
 
-	  unsigned int i = start;
+	  بنانشانی صحيح i = شروع;
 	  info[i++].hangul_shaping_feature() = LJMO;
 	  info[i++].hangul_shaping_feature() = VJMO;
-	  if (i < end)
+	  إذا (i < سرا)
 	    info[i++].hangul_shaping_feature() = TJMO;
 
-	  buffer->merge_out_grapheme_clusters (start, end);
-	  continue;
+	  بفر->ملاؤ_باہرلا_grapheme_clusters (شروع, سرا);
+	  استمر;
 	}
-	else if ((!tindex && buffer->idx + 1 < count && isT (buffer->cur(+1).codepoint)))
-	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
+	وإلا إذا ((!tindex && بفر->idx + 1 < گنتی && isT (بفر->cur(+1).codepoint)))
+	  بفر->unsafe_منزل_break (بفر->idx, بفر->idx + 2); /* Mark unsafe between LV and T. */
       }
 
-      if (has_glyph)
+      إذا (has_glyph)
       {
 	/* We didn't decompose the S, so just advance past it and fall through. */
-	end = start + 1;
+	سرا = شروع + 1;
       }
     }
 
     /* Didn't find a recognizable syllable, so we leave end <= start;
      * this will prevent tone-mark reordering happening.
      */
-    (void) buffer->next_glyph ();
+    (فراغ) بفر->اگلا_glyph ();
   }
-  buffer->sync ();
+  بفر->متزامن ();
 }
 
-static void
-setup_masks_hangul (const hb_ot_shape_plan_t *plan,
-		    hb_buffer_t              *buffer,
-		    hb_font_t                *font HB_UNUSED)
+ساكن فراغ
+تیاری_masks_hangul (ثابت hb_ot_shape_plan_t *plan,
+		    hb_بفر_t              *بفر,
+		    hb_font_t                *font HB_بن_ورتیا)
 {
-  const hangul_shape_plan_t *hangul_plan = (const hangul_shape_plan_t *) plan->data;
+  ثابت hangul_shape_plan_t *hangul_plan = (ثابت hangul_shape_plan_t *) plan->انکڑے;
 
-  if (likely (hangul_plan))
+  إذا (likely (hangul_plan))
   {
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++, info++)
+    بنانشانی صحيح گنتی = بفر->len;
+    hb_glyph_info_t *info = بفر->info;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++, info++)
     {
-      info->mask |= hangul_plan->mask_array[info->hangul_shaping_feature()];
+      info->نقاب |= hangul_plan->نقاب_array[info->hangul_shaping_feature()];
 
       /* Keep 'calt' away from jamo; see override_features_hangul(). */
       hb_codepoint_t u = info->codepoint;
-      if (isL (u) || isV (u) || isT (u))
-	info->mask &= ~hangul_plan->calt_mask;
+      إذا (isL (u) || isV (u) || isT (u))
+	info->نقاب &= ~hangul_plan->calt_نقاب;
     }
   }
 
-  HB_BUFFER_DEALLOCATE_VAR (buffer, hangul_shaping_feature);
+  HB_بفر_DEALLOCATE_VAR (بفر, hangul_shaping_feature);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_hangul =
+ثابت hb_ot_shaper_t _hb_ot_shaper_hangul =
 {
   collect_features_hangul,
   override_features_hangul,
-  data_create_hangul,
-  data_destroy_hangul,
-  preprocess_text_hangul,
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  setup_masks_hangul,
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  true, /* fallback_position */
+  انکڑے_create_hangul,
+  انکڑے_destroy_hangul,
+  preprocess_متن_hangul,
+  خالی_سوچک, /* postprocess_glyphs */
+  خالی_سوچک, /* decompose */
+  خالی_سوچک, /* compose */
+  تیاری_masks_hangul,
+  خالی_سوچک, /* reorder_marks */
+  HB_ٹیگ_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_منوال_NONE,
+  HB_OT_SHAPE_ZERO_چوڑائی_MARKS_NONE,
+  سچ, /* fallback_position */
 };
 
 
-#endif
+#جے_انت

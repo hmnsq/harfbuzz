@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_H
-#define HB_VECTOR_H
+#جے_بنا_تعریف HB_سمتیہ_H
+#تعریف_کرو HB_سمتیہ_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -41,11 +41,11 @@ HB_BEGIN_DECLS
  *
  * Since: 13.0.0
  */
-typedef enum {
-  HB_VECTOR_FORMAT_INVALID = HB_TAG_NONE,
-  HB_VECTOR_FORMAT_SVG = HB_TAG ('s','v','g',' '),
-  HB_VECTOR_FORMAT_PDF = HB_TAG ('p','d','f',' '),
-} hb_vector_format_t;
+تعريفنوع تعداد {
+  HB_سمتیہ_FORMAT_INVALID = HB_ٹیگ_NONE,
+  HB_سمتیہ_FORMAT_SVG = HB_ٹیگ ('s','v','g',' '),
+  HB_سمتیہ_FORMAT_PDF = HB_ٹیگ ('p','d','f',' '),
+} hb_سمتیہ_format_t;
 
 /**
  * hb_vector_extents_t:
@@ -58,10 +58,10 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_extents_t {
-  float x, y;
-  float width, height;
-} hb_vector_extents_t;
+تعريفنوع بنية hb_سمتیہ_extents_t {
+  عائم x, y;
+  عائم چوڑائی, اچائی;
+} hb_سمتیہ_extents_t;
 
 /**
  * hb_vector_extents_mode_t:
@@ -72,10 +72,10 @@ typedef struct hb_vector_extents_t {
  *
  * Since: 13.0.0
  */
-typedef enum {
-  HB_VECTOR_EXTENTS_MODE_NONE = 0,
-  HB_VECTOR_EXTENTS_MODE_EXPAND = 1,
-} hb_vector_extents_mode_t;
+تعريفنوع تعداد {
+  HB_سمتیہ_EXTENTS_منوال_NONE = 0,
+  HB_سمتیہ_EXTENTS_منوال_EXPAND = 1,
+} hb_سمتیہ_extents_منوال_t;
 
 /* hb_vector_draw_t */
 
@@ -86,115 +86,115 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_draw_t hb_vector_draw_t;
+تعريفنوع بنية hb_سمتیہ_draw_t hb_سمتیہ_draw_t;
 
-HB_EXTERN hb_vector_draw_t *
-hb_vector_draw_create_or_fail (hb_vector_format_t format);
+HB_EXTERN hb_سمتیہ_draw_t *
+hb_سمتیہ_draw_create_or_fail (hb_سمتیہ_format_t format);
 
-HB_EXTERN hb_vector_draw_t *
-hb_vector_draw_reference (hb_vector_draw_t *draw);
+HB_EXTERN hb_سمتیہ_draw_t *
+hb_سمتیہ_draw_reference (hb_سمتیہ_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_destroy (hb_vector_draw_t *draw);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_destroy (hb_سمتیہ_draw_t *draw);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_set_user_data (hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_سمتیہ_draw_سیٹ_user_انکڑے (hb_سمتیہ_draw_t   *draw,
+                              hb_user_انکڑے_کلید_t *کلید_2,
+                              فراغ               *انکڑے,
                               hb_destroy_func_t   destroy,
                               hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_vector_draw_get_user_data (const hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_سمتیہ_draw_get_user_انکڑے (ثابت hb_سمتیہ_draw_t   *draw,
+                              hb_user_انکڑے_کلید_t *کلید_2);
 
-HB_EXTERN void
-hb_vector_draw_set_transform (hb_vector_draw_t *draw,
-                              float xx, float yx,
-                              float xy, float yy,
-                              float dx, float dy);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_سیٹ_transform (hb_سمتیہ_draw_t *draw,
+                              عائم xx, عائم yx,
+                              عائم xy, عائم yy,
+                              عائم dx, عائم dy);
 
-HB_EXTERN void
-hb_vector_draw_get_transform (const hb_vector_draw_t *draw,
-                              float *xx, float *yx,
-                              float *xy, float *yy,
-                              float *dx, float *dy);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_get_transform (ثابت hb_سمتیہ_draw_t *draw,
+                              عائم *xx, عائم *yx,
+                              عائم *xy, عائم *yy,
+                              عائم *dx, عائم *dy);
 
-HB_EXTERN void
-hb_vector_draw_set_scale_factor (hb_vector_draw_t *draw,
-                                 float x_scale_factor,
-                                 float y_scale_factor);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_سیٹ_scale_ضارب (hb_سمتیہ_draw_t *draw,
+                                 عائم x_scale_ضارب,
+                                 عائم y_scale_ضارب);
 
-HB_EXTERN void
-hb_vector_draw_get_scale_factor (const hb_vector_draw_t *draw,
-                                 float *x_scale_factor,
-                                 float *y_scale_factor);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_get_scale_ضارب (ثابت hb_سمتیہ_draw_t *draw,
+                                 عائم *x_scale_ضارب,
+                                 عائم *y_scale_ضارب);
 
-HB_EXTERN void
-hb_vector_draw_set_extents (hb_vector_draw_t *draw,
-                            const hb_vector_extents_t *extents);
-
-HB_EXTERN hb_bool_t
-hb_vector_draw_get_extents (const hb_vector_draw_t *draw,
-                            hb_vector_extents_t *extents);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_سیٹ_extents (hb_سمتیہ_draw_t *draw,
+                            ثابت hb_سمتیہ_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_set_glyph_extents (hb_vector_draw_t *draw,
-                                  const hb_glyph_extents_t *glyph_extents);
+hb_سمتیہ_draw_get_extents (ثابت hb_سمتیہ_draw_t *draw,
+                            hb_سمتیہ_extents_t *extents);
 
-HB_EXTERN hb_vector_format_t
-hb_vector_draw_get_format (const hb_vector_draw_t *draw);
+HB_EXTERN hb_bool_t
+hb_سمتیہ_draw_سیٹ_glyph_extents (hb_سمتیہ_draw_t *draw,
+                                  ثابت hb_glyph_extents_t *glyph_extents);
+
+HB_EXTERN hb_سمتیہ_format_t
+hb_سمتیہ_draw_get_format (ثابت hb_سمتیہ_draw_t *draw);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_vector_draw_get_funcs (const hb_vector_draw_t *draw);
+hb_سمتیہ_draw_get_funcs (ثابت hb_سمتیہ_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_new_path (hb_vector_draw_t *draw);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_new_رستہ (hb_سمتیہ_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_glyph (hb_vector_draw_t *draw,
+HB_EXTERN فراغ
+hb_سمتیہ_draw_glyph (hb_سمتیہ_draw_t *draw,
                       hb_font_t *font,
                       hb_codepoint_t glyph,
-                      hb_vector_extents_mode_t extents_mode);
+                      hb_سمتیہ_extents_منوال_t extents_منوال);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_glyph_or_fail (hb_vector_draw_t *draw,
+hb_سمتیہ_draw_glyph_or_fail (hb_سمتیہ_draw_t *draw,
                               hb_font_t *font,
                               hb_codepoint_t glyph,
-                              hb_vector_extents_mode_t extents_mode);
+                              hb_سمتیہ_extents_منوال_t extents_منوال);
 
-HB_EXTERN void
-hb_vector_draw_set_precision (hb_vector_draw_t *draw,
-                             unsigned precision);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_سیٹ_precision (hb_سمتیہ_draw_t *draw,
+                             بنانشانی precision);
 
-HB_EXTERN unsigned
-hb_vector_draw_get_precision (const hb_vector_draw_t *draw);
+HB_EXTERN بنانشانی
+hb_سمتیہ_draw_get_precision (ثابت hb_سمتیہ_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_set_foreground (hb_vector_draw_t *draw,
+HB_EXTERN فراغ
+hb_سمتیہ_draw_سیٹ_foreground (hb_سمتیہ_draw_t *draw,
                                hb_color_t foreground);
 
 HB_EXTERN hb_color_t
-hb_vector_draw_get_foreground (const hb_vector_draw_t *draw);
+hb_سمتیہ_draw_get_foreground (ثابت hb_سمتیہ_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_set_background (hb_vector_draw_t *draw,
+HB_EXTERN فراغ
+hb_سمتیہ_draw_سیٹ_background (hb_سمتیہ_draw_t *draw,
                                hb_color_t background);
 
 HB_EXTERN hb_color_t
-hb_vector_draw_get_background (const hb_vector_draw_t *draw);
+hb_سمتیہ_draw_get_background (ثابت hb_سمتیہ_draw_t *draw);
 
 HB_EXTERN hb_blob_t *
-hb_vector_draw_render (hb_vector_draw_t *draw);
+hb_سمتیہ_draw_render (hb_سمتیہ_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_clear (hb_vector_draw_t *draw);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_clear (hb_سمتیہ_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_reset (hb_vector_draw_t *draw);
+HB_EXTERN فراغ
+hb_سمتیہ_draw_reset (hb_سمتیہ_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_recycle_blob (hb_vector_draw_t *draw,
+HB_EXTERN فراغ
+hb_سمتیہ_draw_recycle_blob (hb_سمتیہ_draw_t *draw,
                              hb_blob_t *blob);
 
 
@@ -207,144 +207,144 @@ hb_vector_draw_recycle_blob (hb_vector_draw_t *draw,
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_paint_t hb_vector_paint_t;
+تعريفنوع بنية hb_سمتیہ_paint_t hb_سمتیہ_paint_t;
 
-HB_EXTERN hb_vector_paint_t *
-hb_vector_paint_create_or_fail (hb_vector_format_t format);
+HB_EXTERN hb_سمتیہ_paint_t *
+hb_سمتیہ_paint_create_or_fail (hb_سمتیہ_format_t format);
 
-HB_EXTERN hb_vector_paint_t *
-hb_vector_paint_reference (hb_vector_paint_t *paint);
+HB_EXTERN hb_سمتیہ_paint_t *
+hb_سمتیہ_paint_reference (hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_destroy (hb_vector_paint_t *paint);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_destroy (hb_سمتیہ_paint_t *paint);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key,
-                               void               *data,
+hb_سمتیہ_paint_سیٹ_user_انکڑے (hb_سمتیہ_paint_t  *paint,
+                               hb_user_انکڑے_کلید_t *کلید_2,
+                               فراغ               *انکڑے,
                                hb_destroy_func_t   destroy,
                                hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_vector_paint_get_user_data (const hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_سمتیہ_paint_get_user_انکڑے (ثابت hb_سمتیہ_paint_t  *paint,
+                               hb_user_انکڑے_کلید_t *کلید_2);
 
-HB_EXTERN void
-hb_vector_paint_set_transform (hb_vector_paint_t *paint,
-                               float xx, float yx,
-                               float xy, float yy,
-                               float dx, float dy);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_transform (hb_سمتیہ_paint_t *paint,
+                               عائم xx, عائم yx,
+                               عائم xy, عائم yy,
+                               عائم dx, عائم dy);
 
-HB_EXTERN void
-hb_vector_paint_get_transform (const hb_vector_paint_t *paint,
-                               float *xx, float *yx,
-                               float *xy, float *yy,
-                               float *dx, float *dy);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_get_transform (ثابت hb_سمتیہ_paint_t *paint,
+                               عائم *xx, عائم *yx,
+                               عائم *xy, عائم *yy,
+                               عائم *dx, عائم *dy);
 
-HB_EXTERN void
-hb_vector_paint_set_scale_factor (hb_vector_paint_t *paint,
-                                  float x_scale_factor,
-                                  float y_scale_factor);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_scale_ضارب (hb_سمتیہ_paint_t *paint,
+                                  عائم x_scale_ضارب,
+                                  عائم y_scale_ضارب);
 
-HB_EXTERN void
-hb_vector_paint_get_scale_factor (const hb_vector_paint_t *paint,
-                                  float *x_scale_factor,
-                                  float *y_scale_factor);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_get_scale_ضارب (ثابت hb_سمتیہ_paint_t *paint,
+                                  عائم *x_scale_ضارب,
+                                  عائم *y_scale_ضارب);
 
-HB_EXTERN void
-hb_vector_paint_set_extents (hb_vector_paint_t *paint,
-                             const hb_vector_extents_t *extents);
-
-HB_EXTERN hb_bool_t
-hb_vector_paint_get_extents (const hb_vector_paint_t *paint,
-                             hb_vector_extents_t *extents);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_extents (hb_سمتیہ_paint_t *paint,
+                             ثابت hb_سمتیہ_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_set_glyph_extents (hb_vector_paint_t *paint,
-                                   const hb_glyph_extents_t *glyph_extents);
+hb_سمتیہ_paint_get_extents (ثابت hb_سمتیہ_paint_t *paint,
+                             hb_سمتیہ_extents_t *extents);
 
-HB_EXTERN void
-hb_vector_paint_set_foreground (hb_vector_paint_t *paint,
+HB_EXTERN hb_bool_t
+hb_سمتیہ_paint_سیٹ_glyph_extents (hb_سمتیہ_paint_t *paint,
+                                   ثابت hb_glyph_extents_t *glyph_extents);
+
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_foreground (hb_سمتیہ_paint_t *paint,
                                 hb_color_t foreground);
 
 HB_EXTERN hb_color_t
-hb_vector_paint_get_foreground (const hb_vector_paint_t *paint);
+hb_سمتیہ_paint_get_foreground (ثابت hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_background (hb_vector_paint_t *paint,
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_background (hb_سمتیہ_paint_t *paint,
                                 hb_color_t background);
 
 HB_EXTERN hb_color_t
-hb_vector_paint_get_background (const hb_vector_paint_t *paint);
+hb_سمتیہ_paint_get_background (ثابت hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_palette (hb_vector_paint_t *paint,
-                             int palette);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_palette (hb_سمتیہ_paint_t *paint,
+                             صحيح palette);
 
-HB_EXTERN int
-hb_vector_paint_get_palette (const hb_vector_paint_t *paint);
+HB_EXTERN صحيح
+hb_سمتیہ_paint_get_palette (ثابت hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_custom_palette_color (hb_vector_paint_t *paint,
-                                          unsigned color_index,
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_custom_palette_color (hb_سمتیہ_paint_t *paint,
+                                          بنانشانی color_اشاریہ,
                                           hb_color_t color);
 
-HB_EXTERN void
-hb_vector_paint_clear_custom_palette_colors (hb_vector_paint_t *paint);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_clear_custom_palette_colors (hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN hb_vector_format_t
-hb_vector_paint_get_format (const hb_vector_paint_t *paint);
+HB_EXTERN hb_سمتیہ_format_t
+hb_سمتیہ_paint_get_format (ثابت hb_سمتیہ_paint_t *paint);
 
 HB_EXTERN hb_paint_funcs_t *
-hb_vector_paint_get_funcs (const hb_vector_paint_t *paint);
+hb_سمتیہ_paint_get_funcs (ثابت hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_glyph (hb_vector_paint_t *paint,
+HB_EXTERN فراغ
+hb_سمتیہ_paint_glyph (hb_سمتیہ_paint_t *paint,
 		       hb_font_t         *font,
 		       hb_codepoint_t     glyph,
-		       hb_vector_extents_mode_t extents_mode);
+		       hb_سمتیہ_extents_منوال_t extents_منوال);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_glyph_or_fail (hb_vector_paint_t *paint,
+hb_سمتیہ_paint_glyph_or_fail (hb_سمتیہ_paint_t *paint,
 			       hb_font_t         *font,
 			       hb_codepoint_t     glyph,
-			       hb_vector_extents_mode_t extents_mode);
+			       hb_سمتیہ_extents_منوال_t extents_منوال);
 
-HB_EXTERN void
-hb_vector_paint_set_precision (hb_vector_paint_t *paint,
-                                   unsigned precision);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_precision (hb_سمتیہ_paint_t *paint,
+                                   بنانشانی precision);
 
-HB_EXTERN unsigned
-hb_vector_paint_get_precision (const hb_vector_paint_t *paint);
+HB_EXTERN بنانشانی
+hb_سمتیہ_paint_get_precision (ثابت hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_svg_prefix (hb_vector_paint_t *paint,
-                                const char *prefix);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_سیٹ_svg_اگیتر (hb_سمتیہ_paint_t *paint,
+                                ثابت حرف *اگیتر);
 
-HB_EXTERN const char *
-hb_vector_paint_get_svg_prefix (const hb_vector_paint_t *paint);
+HB_EXTERN ثابت حرف *
+hb_سمتیہ_paint_get_svg_اگیتر (ثابت hb_سمتیہ_paint_t *paint);
 
 HB_EXTERN hb_blob_t *
-hb_vector_paint_render (hb_vector_paint_t *paint);
+hb_سمتیہ_paint_render (hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_clear (hb_vector_paint_t *paint);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_clear (hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_reset (hb_vector_paint_t *paint);
+HB_EXTERN فراغ
+hb_سمتیہ_paint_reset (hb_سمتیہ_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_recycle_blob (hb_vector_paint_t *paint,
+HB_EXTERN فراغ
+hb_سمتیہ_paint_recycle_blob (hb_سمتیہ_paint_t *paint,
                               hb_blob_t *blob);
 
-HB_END_DECLS
+HB_سرا_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#إذا defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (vector_draw,  nullptr);
-HB_DEFINE_VTABLE (vector_paint, nullptr);
+HB_DEFINE_VTABLE (سمتیہ_draw,  nullptr);
+HB_DEFINE_VTABLE (سمتیہ_paint, nullptr);
 } // namespace hb
-#endif
+#جے_انت
 
-#endif /* HB_VECTOR_H */
+#جے_انت /* HB_VECTOR_H */

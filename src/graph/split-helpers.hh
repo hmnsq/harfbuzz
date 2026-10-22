@@ -24,38 +24,38 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SPLIT_HELPERS_HH
-#define GRAPH_SPLIT_HELPERS_HH
+#جے_بنا_تعریف گراف_ونڈو_HELPERS_HH
+#تعریف_کرو گراف_ونڈو_HELPERS_HH
 
-#include "graph-result.hh"
+#ضمن "graph-result.hh"
 
-namespace graph {
+نطاق گراف {
 
-template<typename Context>
-HB_INTERNAL
-graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+سانچا<قسم_ناں Context>
+HB_اندرونی
+گراف_نتیجہ_t<hb_سمتیہ_t<بنانشانی>> actuate_subtable_ونڈو (Context& ونڈو_context,
+                                                              ثابت hb_سمتیہ_t<بنانشانی>& ونڈو_points)
 {
-  hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  hb_سمتیہ_t<بنانشانی> new_objects;
+  إذا (!ونڈو_points)
+    أرجع Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  لكل (بنانشانی i = 0; i < ونڈو_points.لمائی; i++)
   {
-    unsigned start = split_points[i];
-    unsigned end = (i < split_points.length - 1)
-                   ? split_points[i + 1]
-                   : split_context.original_count ();
-    TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
+    بنانشانی شروع = ونڈو_points[i];
+    بنانشانی سرا = (i < ونڈو_points.لمائی - 1)
+                   ? ونڈو_points[i + 1]
+                   : ونڈو_context.original_گنتی_2 ();
+    TRY_سونپو (بنانشانی id, ونڈو_context.clone_range (شروع, سرا));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (گراف_نتیجہ_t<فراغ>::from (new_objects, ونڈ_FAILURE));
   }
 
-  TRY (split_context.shrink (split_points[0]));
+  TRY (ونڈو_context.shrink (ونڈو_points[0]));
 
-  return Ok(new_objects);
+  أرجع Ok(new_objects);
 }
 
 }
 
-#endif  // GRAPH_SPLIT_HELPERS_HH
+#جے_انت  // GRAPH_SPLIT_HELPERS_HH

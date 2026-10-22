@@ -26,175 +26,175 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-face.hh"
+#ضمن "hb-face.hh"
 
-#include "hb-map.hh"
-#include "hb-open-file.hh"
-#include "hb-serialize.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-open-file.hh"
+#ضمن "hb-serialize.hh"
 
 
 /*
  * face-builder: A face that has add_table().
  */
 
-struct face_table_info_t
+بنية face_جدول_info_t
 {
-  hb_blob_t* data;
-  unsigned order;
+  hb_blob_t* انکڑے;
+  بنانشانی ترتیب;
 };
 
-struct hb_face_builder_data_t
+بنية hb_face_builder_انکڑے_t
 {
-  hb_hashmap_t<hb_tag_t, face_table_info_t> tables;
+  hb_hashmap_t<hb_ٹیگ_t, face_جدول_info_t> tables;
 };
 
-static int compare_entries (const void* pa, const void* pb)
+ساكن صحيح compare_entries (ثابت فراغ* pa, ثابت فراغ* pb)
 {
-  const auto& a = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
-  const auto& b = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
+  ثابت خودکار& a = * (ثابت hb_pair_t<hb_ٹیگ_t, face_جدول_info_t> *) pa;
+  ثابت خودکار& b = * (ثابت hb_pair_t<hb_ٹیگ_t, face_جدول_info_t> *) pb;
 
   /* Order by blob size first (smallest to largest) and then table tag */
 
-  if (a.second.order != b.second.order)
-    return a.second.order < b.second.order ? -1 : +1;
+  إذا (a.second.ترتیب != b.second.ترتیب)
+    أرجع a.second.ترتیب < b.second.ترتیب ? -1 : +1;
 
-  if (a.second.data->length != b.second.data->length)
-    return a.second.data->length < b.second.data->length ? -1 : +1;
+  إذا (a.second.انکڑے->لمائی != b.second.انکڑے->لمائی)
+    أرجع a.second.انکڑے->لمائی < b.second.انکڑے->لمائی ? -1 : +1;
 
-  return a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
+  أرجع a.پہلا < b.پہلا ? -1 : a.پہلا == b.پہلا ? 0 : +1;
 }
 
-static hb_face_builder_data_t *
-_hb_face_builder_data_create ()
+ساكن hb_face_builder_انکڑے_t *
+hb_face_builder_انکڑے_create ()
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, sizeof (hb_face_builder_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_face_builder_انکڑے_t *انکڑے = (hb_face_builder_انکڑے_t *) hb_calloc (1, حجم (hb_face_builder_انکڑے_t));
+  إذا (unlikely (!انکڑے))
+    أرجع خالی_سوچک;
 
-  data->tables.init ();
+  انکڑے->tables.init ();
 
-  return data;
+  أرجع انکڑے;
 }
 
-static void
-_hb_face_builder_data_destroy (void *user_data)
+ساكن فراغ
+hb_face_builder_انکڑے_destroy (فراغ *user_انکڑے)
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
+  hb_face_builder_انکڑے_t *انکڑے = (hb_face_builder_انکڑے_t *) user_انکڑے;
 
-  for (auto info : data->tables.values())
-    hb_blob_destroy (info.data);
+  لكل (خودکار info : انکڑے->tables.values())
+    hb_blob_destroy (info.انکڑے);
 
-  data->tables.fini ();
+  انکڑے->tables.fini ();
 
-  hb_free (data);
+  hb_free (انکڑے);
 }
 
-static hb_blob_t *
-_hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
+ساكن hb_blob_t *
+hb_face_builder_انکڑے_reference_blob (hb_face_builder_انکڑے_t *انکڑے)
 {
 
-  unsigned int table_count = data->tables.get_population ();
-  unsigned int face_length = table_count * 16 + 12;
+  بنانشانی صحيح جدول_گنتی_2 = انکڑے->tables.get_population ();
+  بنانشانی صحيح face_لمائی = جدول_گنتی_2 * 16 + 12;
 
-  for (auto info : data->tables.values())
-    face_length += hb_ceil_to_4 (hb_blob_get_length (info.data));
+  لكل (خودکار info : انکڑے->tables.values())
+    face_لمائی += hb_ceil_منزل_4 (hb_blob_get_لمائی (info.انکڑے));
 
-  char *buf = (char *) hb_malloc (face_length);
-  if (unlikely (!buf))
-    return nullptr;
+  حرف *buf = (حرف *) hb_malloc (face_لمائی);
+  إذا (unlikely (!buf))
+    أرجع خالی_سوچک;
 
-  hb_serialize_context_t c (buf, face_length);
-  c.propagate_error (data->tables);
-  OT::OpenTypeFontFile *f = c.start_serialize<OT::OpenTypeFontFile> ();
+  hb_serialize_context_t c (buf, face_لمائی);
+  c.propagate_error (انکڑے->tables);
+  OT::OpenTypeFontFile *f = c.شروع_serialize<OT::OpenTypeFontFile> ();
 
-  bool is_cff = (data->tables.has (HB_TAG ('C','F','F',' '))
-                 || data->tables.has (HB_TAG ('C','F','F','2')));
-  hb_tag_t sfnt_tag = is_cff ? OT::OpenTypeFontFile::CFFTag : OT::OpenTypeFontFile::TrueTypeTag;
+  منطقي is_cff = (انکڑے->tables.has (HB_ٹیگ ('C','F','F',' '))
+                 || انکڑے->tables.has (HB_ٹیگ ('C','F','F','2')));
+  hb_ٹیگ_t sfnt_ٹیگ = is_cff ? OT::OpenTypeFontFile::CFFTag : OT::OpenTypeFontFile::True_Type_ٹیگ;
 
   // Sort the tags so that produced face is deterministic.
-  hb_vector_t<hb_pair_t <hb_tag_t, face_table_info_t>> sorted_entries;
-  data->tables.iter () | hb_sink (sorted_entries);
-  if (unlikely (sorted_entries.in_error ()))
+  hb_سمتیہ_t<hb_pair_t <hb_ٹیگ_t, face_جدول_info_t>> sorted_entries;
+  انکڑے->tables.iter () | hb_sink (sorted_entries);
+  إذا (unlikely (sorted_entries.وچ_error ()))
   {
     hb_free (buf);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
   sorted_entries.qsort (compare_entries);
 
-  bool ret = f->serialize_single (&c,
-                                  sfnt_tag,
+  منطقي ret = f->serialize_single (&c,
+                                  sfnt_ٹیگ,
                                   + sorted_entries.iter()
-                                  | hb_map ([&] (hb_pair_t<hb_tag_t, face_table_info_t> _) {
-                                    return hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
+                                  | hb_map ([&] (hb_pair_t<hb_ٹیگ_t, face_جدول_info_t> _) {
+                                    أرجع hb_pair_t<hb_ٹیگ_t, hb_blob_t*> (_.پہلا, _.second.انکڑے);
                                   }));
 
-  c.end_serialize ();
+  c.سرا_serialize ();
 
-  if (unlikely (!ret))
+  إذا (unlikely (!ret))
   {
     hb_free (buf);
-    return nullptr;
+    أرجع خالی_سوچک;
   }
 
-  return hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  أرجع hb_blob_create (buf, face_لمائی, HB_حافظہ_منوال_WRITABLE, buf, hb_free);
 }
 
-static hb_blob_t *
-_hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ساكن hb_blob_t *
+hb_face_builder_reference_جدول (hb_face_t *face HB_بن_ورتیا, hb_ٹیگ_t ٹیگ_2, فراغ *user_انکڑے)
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
+  hb_face_builder_انکڑے_t *انکڑے = (hb_face_builder_انکڑے_t *) user_انکڑے;
 
-  if (!tag)
-    return _hb_face_builder_data_reference_blob (data);
+  إذا (!ٹیگ_2)
+    أرجع hb_face_builder_انکڑے_reference_blob (انکڑے);
 
-  return hb_blob_reference (data->tables[tag].data);
+  أرجع hb_blob_reference (انکڑے->tables[ٹیگ_2].انکڑے);
 }
 
-static unsigned
-_hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
-				 unsigned int start_offset,
-				 unsigned int *table_count,
-				 hb_tag_t *table_tags,
-				 void *user_data)
+ساكن بنانشانی
+hb_face_builder_get_جدول_ٹیگ_سوچی (ثابت hb_face_t *face HB_بن_ورتیا,
+				 بنانشانی صحيح شروع_وتھ,
+				 بنانشانی صحيح *جدول_گنتی_2,
+				 hb_ٹیگ_t *جدول_ٹیگ_سوچی,
+				 فراغ *user_انکڑے)
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
+  hb_face_builder_انکڑے_t *انکڑے = (hb_face_builder_انکڑے_t *) user_انکڑے;
 
-  unsigned population = data->tables.get_population ();
+  بنانشانی population = انکڑے->tables.get_population ();
 
-  if (!table_count)
-    return population;
+  إذا (!جدول_گنتی_2)
+    أرجع population;
 
-  if (unlikely (start_offset >= population))
+  إذا (unlikely (شروع_وتھ >= population))
   {
-    *table_count = 0;
-    return population;
+    *جدول_گنتی_2 = 0;
+    أرجع population;
   }
 
   // Sort the tags.
-  hb_vector_t<hb_tag_t> sorted_tags;
-  data->tables.keys () | hb_sink (sorted_tags);
-  if (unlikely (sorted_tags.in_error ()))
+  hb_سمتیہ_t<hb_ٹیگ_t> sorted_ٹیگ_سوچی;
+  انکڑے->tables.کلیدیں () | hb_sink (sorted_ٹیگ_سوچی);
+  إذا (unlikely (sorted_ٹیگ_سوچی.وچ_error ()))
   {
     // Not much to do...
   }
-  sorted_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) {
-    return (a > b) - (a < b);
+  sorted_ٹیگ_سوچی.qsort ([] (ثابت hb_ٹیگ_t &a, ثابت hb_ٹیگ_t &b) {
+    أرجع (a > b) - (a < b);
   });
 
-  auto array = sorted_tags.as_array ().sub_array (start_offset, table_count);
-  if (table_tags)
+  خودکار array = sorted_ٹیگ_سوچی.as_array ().sub_array (شروع_وتھ, جدول_گنتی_2);
+  إذا (جدول_ٹیگ_سوچی)
   {
-    auto out = hb_array (table_tags, *table_count);
+    خودکار باہرلا = hb_array (جدول_ٹیگ_سوچی, *جدول_گنتی_2);
 
     + array.iter ()
-    | hb_sink (out)
+    | hb_sink (باہرلا)
     ;
   }
 
-  return population;
+  أرجع population;
 }
 
 
@@ -212,19 +212,19 @@ _hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
 hb_face_t *
 hb_face_builder_create ()
 {
-  hb_face_builder_data_t *data = _hb_face_builder_data_create ();
-  if (unlikely (!data)) return hb_face_get_empty ();
+  hb_face_builder_انکڑے_t *انکڑے = hb_face_builder_انکڑے_create ();
+  إذا (unlikely (!انکڑے)) أرجع hb_face_get_خالی_تھاواں ();
 
-  hb_face_t *face = hb_face_create_for_tables (_hb_face_builder_reference_table,
-					       data,
-					       _hb_face_builder_data_destroy);
+  hb_face_t *face = hb_face_create_for_tables (hb_face_builder_reference_جدول,
+					       انکڑے,
+					       hb_face_builder_انکڑے_destroy);
 
-  hb_face_set_get_table_tags_func (face,
-				   _hb_face_builder_get_table_tags,
-				   data,
-				   nullptr);
+  hb_face_سیٹ_get_جدول_ٹیگ_سوچی_func (face,
+				   hb_face_builder_get_جدول_ٹیگ_سوچی,
+				   انکڑے,
+				   خالی_سوچک);
 
-  return face;
+  أرجع face;
 }
 
 /**
@@ -239,25 +239,25 @@ hb_face_builder_create ()
  * Since: 1.9.0
  **/
 hb_bool_t
-hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
+hb_face_builder_جوڑو_جدول (hb_face_t *face, hb_ٹیگ_t ٹیگ_2, hb_blob_t *blob)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return false;
+  إذا (unlikely (face->destroy != (hb_destroy_func_t) hb_face_builder_انکڑے_destroy))
+    أرجع خطأ;
 
-  if (tag == HB_MAP_VALUE_INVALID)
-    return false;
+  إذا (ٹیگ_2 == HB_MAP_قدر_INVALID)
+    أرجع خطأ;
 
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
+  hb_face_builder_انکڑے_t *انکڑے = (hb_face_builder_انکڑے_t *) face->user_انکڑے;
 
-  hb_blob_t* previous = data->tables.get (tag).data;
-  if (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
+  hb_blob_t* پچھلا = انکڑے->tables.get (ٹیگ_2).انکڑے;
+  إذا (!انکڑے->tables.سیٹ (ٹیگ_2, face_جدول_info_t {hb_blob_reference (blob), (بنانشانی) -1}))
   {
     hb_blob_destroy (blob);
-    return false;
+    أرجع خطأ;
   }
 
-  hb_blob_destroy (previous);
-  return true;
+  hb_blob_destroy (پچھلا);
+  أرجع سچ;
 }
 
 /**
@@ -272,26 +272,26 @@ hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
  *
  * Since: 5.3.0
  **/
-void
-hb_face_builder_sort_tables (hb_face_t *face,
-                             const hb_tag_t  *tags)
+فراغ
+hb_face_builder_ترتیب_دیو_tables (hb_face_t *face,
+                             ثابت hb_ٹیگ_t  *ٹیگ_سوچی)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return;
+  إذا (unlikely (face->destroy != (hb_destroy_func_t) hb_face_builder_انکڑے_destroy))
+    أرجع;
 
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
+  hb_face_builder_انکڑے_t *انکڑے = (hb_face_builder_انکڑے_t *) face->user_انکڑے;
 
   // Sort all unspecified tables after any specified tables.
-  for (auto& info : data->tables.values_ref())
-    info.order = (unsigned) -1;
+  لكل (خودکار& info : انکڑے->tables.اقدار_ref())
+    info.ترتیب = (بنانشانی) -1;
 
-  signed order = 0;
-  for (const hb_tag_t* tag = tags;
-       *tag;
-       tag++)
+  نشانیوالا ترتیب = 0;
+  لكل (ثابت hb_ٹیگ_t* ٹیگ_2 = ٹیگ_سوچی;
+       *ٹیگ_2;
+       ٹیگ_2++)
   {
-    face_table_info_t* info;
-    if (!data->tables.has (*tag, &info)) continue;
-    info->order = order++;
+    face_جدول_info_t* info;
+    إذا (!انکڑے->tables.has (*ٹیگ_2, &info)) استمر;
+    info->ترتیب = ترتیب++;
   }
 }

@@ -24,31 +24,31 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPE_FALLBACK_HH
-#define HB_OT_SHAPE_FALLBACK_HH
+#جے_بنا_تعریف HB_OT_SHAPE_FALLBACK_HH
+#تعریف_کرو HB_OT_SHAPE_FALLBACK_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-ot-shape.hh"
+#ضمن "hb-ot-shape.hh"
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
+HB_اندرونی فراغ _hb_ot_shape_fallback_mark_position (ثابت hb_ot_shape_plan_t *plan,
 						      hb_font_t *font,
-						      hb_buffer_t  *buffer,
-						      bool adjust_offsets_when_zeroing);
+						      hb_بفر_t  *بفر,
+						      منطقي adjust_offsets_when_zeroing);
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t *plan,
+HB_اندرونی فراغ _hb_ot_shape_fallback_mark_position_recategorize_marks (ثابت hb_ot_shape_plan_t *plan,
 									 hb_font_t *font,
-									 hb_buffer_t  *buffer);
+									 hb_بفر_t  *بفر);
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_kern (const hb_ot_shape_plan_t *plan,
+HB_اندرونی فراغ _hb_ot_shape_fallback_kern (ثابت hb_ot_shape_plan_t *plan,
 					     hb_font_t *font,
-					     hb_buffer_t  *buffer);
+					     hb_بفر_t  *بفر);
 
-HB_INTERNAL void _hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan,
+HB_اندرونی فراغ _hb_ot_shape_fallback_spaces (ثابت hb_ot_shape_plan_t *plan,
 					       hb_font_t *font,
-					       hb_buffer_t  *buffer);
+					       hb_بفر_t  *بفر);
 
 
-#endif /* HB_OT_SHAPE_FALLBACK_HH */
+#جے_انت /* HB_OT_SHAPE_FALLBACK_HH */

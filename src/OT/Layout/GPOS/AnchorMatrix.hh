@@ -1,158 +1,158 @@
-#ifndef OT_LAYOUT_GPOS_ANCHORMATRIX_HH
-#define OT_LAYOUT_GPOS_ANCHORMATRIX_HH
+#جے_بنا_تعریف OT_LAYOUT_GPOS_ANCHORMATRIX_HH
+#تعریف_کرو OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-HB_INTERNAL inline
-void collect_ligature_anchor_indexes (unsigned rows,
-                                     unsigned class_count,
-                                     const hb_map_t &klass_mapping,
-                                     hb_sorted_vector_t<unsigned> &indexes)
+HB_اندرونی مضمن
+فراغ collect_ligature_anchor_indexes (بنانشانی صفاں,
+                                     بنانشانی class_گنتی,
+                                     ثابت hb_map_t &klass_mapping,
+                                     hb_sorted_سمتیہ_t<بنانشانی> &indexes)
 {
-  for (unsigned row = 0; row < rows; row++)
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+  لكل (بنانشانی صف = 0; صف < صفاں; صف++)
+    لكل (بنانشانی خانہ = 0; خانہ < class_گنتی; خانہ++)
+      إذا (klass_mapping.has (خانہ))
+        indexes.push (صف * class_گنتی + خانہ);
 }
 
-HB_INTERNAL inline
-void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
-                                      const void *base,
-                                      glyph_data_t offsets,
-                                      hb_array_t<const unsigned> indexes)
+HB_اندرونی مضمن
+فراغ collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
+                                      ثابت فراغ *ادھار,
+                                      glyph_انکڑے_t offsets,
+                                      hb_array_t<ثابت بنانشانی> indexes)
 {
-  for (unsigned i : indexes)
+  لكل (بنانشانی i : indexes)
   {
-    unsigned offset = offsets[i];
-    if (offset)
-      StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
+    بنانشانی وتھ = offsets[i];
+    إذا (وتھ)
+      Struct_At_وتھ<ثابت Anchor> (ادھار, وتھ).collect_variation_indices (c);
   }
 }
 
-HB_INTERNAL inline
-void collect_anchor_indexes (const Coverage &coverage,
-                             unsigned rows,
-                             unsigned class_count,
-                             const hb_set_t &glyphset,
-                             const hb_map_t &klass_mapping,
-                             hb_sorted_vector_t<unsigned> &indexes)
+HB_اندرونی مضمن
+فراغ collect_anchor_indexes (ثابت Coverage &coverage,
+                             بنانشانی صفاں,
+                             بنانشانی class_گنتی,
+                             ثابت hb_سیٹ_t &glyphset,
+                             ثابت hb_map_t &klass_mapping,
+                             hb_sorted_سمتیہ_t<بنانشانی> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
-    if (glyphset.has (_.first))
-      for (unsigned col = 0; col < class_count; col++)
-        if (klass_mapping.has (col))
-          indexes.push (_.second * class_count + col);
+  لكل (ثابت خودکار _ : hb_zip (coverage, hb_range (صفاں)))
+    إذا (glyphset.has (_.پہلا))
+      لكل (بنانشانی خانہ = 0; خانہ < class_گنتی; خانہ++)
+        إذا (klass_mapping.has (خانہ))
+          indexes.push (_.second * class_گنتی + خانہ);
 }
 
-HB_INTERNAL inline
-void collect_subset_anchor_indexes (const Coverage &coverage,
-                                    unsigned rows,
-                                    unsigned class_count,
-                                    glyph_data_t offsets,
-                                    const hb_set_t &glyphset,
-                                    const hb_map_t &glyph_map,
-                                    const hb_map_t &klass_mapping,
-                                    hb_sorted_vector_t<hb_codepoint_t> &new_coverage,
-                                    hb_sorted_vector_t<unsigned> &indexes)
+HB_اندرونی مضمن
+فراغ collect_subset_anchor_indexes (ثابت Coverage &coverage,
+                                    بنانشانی صفاں,
+                                    بنانشانی class_گنتی,
+                                    glyph_انکڑے_t offsets,
+                                    ثابت hb_سیٹ_t &glyphset,
+                                    ثابت hb_map_t &glyph_map,
+                                    ثابت hb_map_t &klass_mapping,
+                                    hb_sorted_سمتیہ_t<hb_codepoint_t> &new_coverage,
+                                    hb_sorted_سمتیہ_t<بنانشانی> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
+  لكل (ثابت خودکار _ : hb_zip (coverage, hb_range (صفاں)))
   {
-    if (!glyphset.has (_.first)) continue;
-    unsigned row = _.second;
-    bool non_empty = false;
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+    إذا (!glyphset.has (_.پہلا)) استمر;
+    بنانشانی صف = _.second;
+    منطقي non_خالی_تھاواں = خطأ;
+    لكل (بنانشانی خانہ = 0; خانہ < class_گنتی; خانہ++)
+      إذا (klass_mapping.has (خانہ) && offsets[صف * class_گنتی + خانہ])
       {
-        non_empty = true;
-        break;
+        non_خالی_تھاواں = سچ;
+        اكسر;
       }
-    if (!non_empty) continue;
+    إذا (!non_خالی_تھاواں) استمر;
 
-    new_coverage.push (glyph_map.get (_.first));
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+    new_coverage.push (glyph_map.get (_.پہلا));
+    لكل (بنانشانی خانہ = 0; خانہ < class_گنتی; خانہ++)
+      إذا (klass_mapping.has (خانہ))
+        indexes.push (صف * class_گنتی + خانہ);
   }
 }
 
-template <typename Types, typename RowCount=typename Types::HBUINT>
-struct AnchorMatrix
+سانچا <قسم_ناں Types, قسم_ناں صف_گنتی=قسم_ناں Types::HBUINT>
+بنية Anchor_میٹرکس
 {
-  RowCount      rows;                   /* Number of rows */
-  UnsizedArrayOf<typename Types::template OffsetTo<Anchor, AnchorMatrix>>
-                matrixZ;                /* Matrix of offsets to Anchor tables--
+  صف_گنتی      صفاں;                   /* Number of rows */
+  Unsized_Array_دا<قسم_ناں Types::سانچا وتھ_منزل<Anchor, Anchor_میٹرکس>>
+                میٹرکس_Z;                /* Matrix of offsets to Anchor tables--
                                          * from beginning of AnchorMatrix table */
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
+  عام:
+  DEFINE_ناپ_ARRAY (حجم (صف_گنتی), میٹرکس_Z);
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  منطقي sanitize (hb_sanitize_context_t *c, بنانشانی صحيح خانے_گنتی) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!c->check_struct (this)) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (!c->check_struct (هذا)) return_trace (خطأ);
     hb_barrier ();
-    if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    إذا (unlikely (hb_unsigned_mul_overflows (صفاں, خانے_گنتی))) return_trace (خطأ);
+    بنانشانی صحيح گنتی = صفاں * خانے_گنتی;
+    إذا (!c->check_array (میٹرکس_Z.arrayZ, گنتی)) return_trace (خطأ);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    إذا (c->lazy_some_gpos)
+      return_trace (سچ);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (!matrixZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
+      إذا (!میٹرکس_Z[i].sanitize (c, هذا)) return_trace (خطأ);
+    return_trace (سچ);
   }
 
-  const Anchor& get_anchor (hb_ot_apply_context_t *c,
-			    unsigned int row, unsigned int col,
-			    unsigned int cols, bool *found) const
+  ثابت Anchor& get_anchor (hb_ot_apply_context_t *c,
+			    بنانشانی صحيح صف, بنانشانی صحيح خانہ,
+			    بنانشانی صحيح خانے_گنتی, منطقي *لبھیا) ثابت
   {
-    *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
-    auto &offset = matrixZ[row * cols + col];
-    if (unlikely (!offset.sanitize (&c->sanitizer, this))) return Null (Anchor);
+    *لبھیا = خطأ;
+    إذا (unlikely (صف >= صفاں || خانہ >= خانے_گنتی)) أرجع Null (Anchor);
+    خودکار &وتھ = میٹرکس_Z[صف * خانے_گنتی + خانہ];
+    إذا (unlikely (!وتھ.sanitize (&c->sanitizer, هذا))) أرجع Null (Anchor);
     hb_barrier ();
-    *found = !offset.is_null ();
-    return this+offset;
+    *لبھیا = !وتھ.is_null ();
+    أرجع هذا+وتھ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  hb_array_t<const unsigned> indexes) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  hb_array_t<ثابت بنانشانی> indexes) ثابت
   {
-    collect_anchor_variation_indices (c, this, matrixZ.arrayZ, indexes);
+    collect_anchor_variation_indices (c, هذا, میٹرکس_Z.arrayZ, indexes);
   }
 
-  template <typename Iterator,
+  سانچا <قسم_ناں Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
-               unsigned             num_rows,
-               Iterator             index_iter) const
+  منطقي subset (hb_subset_context_t *c,
+               بنانشانی             عدد_صفاں,
+               Iterator             اشاریہ_iter) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    auto *out = c->serializer->start_embed (this);
+    خودکار *باہرلا = c->serializer->شروع_embed (هذا);
 
-    if (!index_iter) return_trace (false);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    إذا (!اشاریہ_iter) return_trace (خطأ);
+    إذا (unlikely (!c->serializer->extend_min (باہرلا)))  return_trace (خطأ);
 
-    out->rows = num_rows;
-    for (const unsigned i : index_iter)
+    باہرلا->صفاں = عدد_صفاں;
+    لكل (ثابت بنانشانی i : اشاریہ_iter)
     {
-      auto *offset = c->serializer->embed (matrixZ[i]);
-      if (!offset) return_trace (false);
-      offset->serialize_subset (c, matrixZ[i], this);
+      خودکار *وتھ = c->serializer->embed (میٹرکس_Z[i]);
+      إذا (!وتھ) return_trace (خطأ);
+      وتھ->serialize_subset (c, میٹرکس_Z[i], هذا);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
+  منطقي وتھ_is_null (بنانشانی صف, بنانشانی خانہ, بنانشانی عدد_خانے_گنتی) ثابت
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
-    auto &offset = matrixZ[row * num_cols + col];
-    return offset.is_null ();
+    إذا (unlikely (صف >= صفاں || خانہ >= عدد_خانے_گنتی)) أرجع سچ;
+    خودکار &وتھ = میٹرکس_Z[صف * عدد_خانے_گنتی + خانہ];
+    أرجع وتھ.is_null ();
   }
 };
 
@@ -161,4 +161,4 @@ struct AnchorMatrix
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_ANCHORMATRIX_HH */
+#جے_انت /* OT_LAYOUT_GPOS_ANCHORMATRIX_HH */

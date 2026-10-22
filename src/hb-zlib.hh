@@ -1,37 +1,37 @@
-#ifndef HB_ZLIB_HH
-#define HB_ZLIB_HH
+#جے_بنا_تعریف HB_ZLIB_HH
+#تعریف_کرو HB_ZLIB_HH
 
-#include "hb-blob.hh"
+#ضمن "hb-blob.hh"
 
-static inline bool
-hb_blob_is_gzip (const char *data,
-                 unsigned    data_len)
+ساكن مضمن منطقي
+hb_blob_is_gzip (ثابت حرف *انکڑے,
+                 بنانشانی    انکڑے_len)
 {
-  return data_len >= 3 &&
-         (unsigned char) data[0] == 0x1Fu &&
-         (unsigned char) data[1] == 0x8Bu &&
-         (unsigned char) data[2] == 0x08u;
+  أرجع انکڑے_len >= 3 &&
+         (بنانشانی حرف) انکڑے[0] == 0x1Fu &&
+         (بنانشانی حرف) انکڑے[1] == 0x8Bu &&
+         (بنانشانی حرف) انکڑے[2] == 0x08u;
 }
 
-static inline bool
-hb_gzip_get_uncompressed_size (const char *data,
-                               unsigned    data_len,
-                               uint32_t   *size)
+ساكن مضمن منطقي
+hb_gzip_get_uncompressed_ناپ (ثابت حرف *انکڑے,
+                               بنانشانی    انکڑے_len,
+                               uint32_t   *ناپ)
 {
-  if (data_len < 4)
-    return false;
+  إذا (انکڑے_len < 4)
+    أرجع خطأ;
 
-  const unsigned char *trailer = (const unsigned char *) data + data_len - 4;
-  if (size)
-    *size = (uint32_t) trailer[0] |
+  ثابت بنانشانی حرف *trailer = (ثابت بنانشانی حرف *) انکڑے + انکڑے_len - 4;
+  إذا (ناپ)
+    *ناپ = (uint32_t) trailer[0] |
             ((uint32_t) trailer[1] << 8) |
             ((uint32_t) trailer[2] << 16) |
             ((uint32_t) trailer[3] << 24);
-  return true;
+  أرجع سچ;
 }
 
-HB_INTERNAL hb_blob_t *
+HB_اندرونی hb_blob_t *
 hb_blob_decompress_gzip (hb_blob_t *blob,
-                         unsigned   max_output_len);
+                         بنانشانی   max_output_len);
 
-#endif /* HB_ZLIB_HH */
+#جے_انت /* HB_ZLIB_HH */

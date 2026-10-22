@@ -24,18 +24,18 @@
  * Mozilla Author(s): Jonathan Kew
  */
 
-#ifndef HB_CORETEXT_H
-#define HB_CORETEXT_H
+#جے_بنا_تعریف HB_CORETEXT_H
+#تعریف_کرو HB_CORETEXT_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#include <TargetConditionals.h>
-#if TARGET_OS_IPHONE
+#ضمن <TargetConditionals.h>
+#إذا نشانہ_OS_IPHONE
 #  include <CoreText/CoreText.h>
 #  include <CoreGraphics/CoreGraphics.h>
-#else
+#وإلا
 #  include <ApplicationServices/ApplicationServices.h>
-#endif
+#جے_انت
 
 HB_BEGIN_DECLS
 
@@ -50,7 +50,7 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6mort.html
  *
  **/
-#define HB_CORETEXT_TAG_MORT HB_TAG('m','o','r','t')
+#تعریف_کرو HB_CORETEXT_ٹیگ_MORT HB_ٹیگ('m','o','r','t')
 
 /**
  * HB_CORETEXT_TAG_MORX:
@@ -62,7 +62,7 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6morx.html
  *
  **/
-#define HB_CORETEXT_TAG_MORX HB_TAG('m','o','r','x')
+#تعریف_کرو HB_CORETEXT_ٹیگ_MORX HB_ٹیگ('m','o','r','x')
 
 /**
  * HB_CORETEXT_TAG_KERX:
@@ -74,19 +74,19 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6kerx.html
  *
  **/
-#define HB_CORETEXT_TAG_KERX HB_TAG('k','e','r','x')
+#تعریف_کرو HB_CORETEXT_ٹیگ_KERX HB_ٹیگ('k','e','r','x')
 
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font);
 
 HB_EXTERN hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index);
+hb_coretext_face_create_from_file_or_fail (ثابت حرف   *file_name,
+					   بنانشانی صحيح  اشاریہ_2);
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index);
+					   بنانشانی صحيح  اشاریہ_2);
 
 HB_EXTERN hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font);
@@ -98,10 +98,10 @@ hb_coretext_face_get_cg_font (hb_face_t *face);
 HB_EXTERN CTFontRef
 hb_coretext_font_get_ct_font (hb_font_t *font);
 
-HB_EXTERN void
-hb_coretext_font_set_funcs (hb_font_t *font);
+HB_EXTERN فراغ
+hb_coretext_font_سیٹ_funcs (hb_font_t *font);
 
 
-HB_END_DECLS
+HB_سرا_DECLS
 
-#endif /* HB_CORETEXT_H */
+#جے_انت /* HB_CORETEXT_H */

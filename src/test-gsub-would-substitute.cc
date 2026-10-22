@@ -24,25 +24,25 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#ضمن "hb.h"
+#ضمن "hb-ot.h"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#جے_تعریف_شدہ HAVE_FREETYPE
+#ضمن "hb-ft.h"
+#جے_انت
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#جے_تعریف_شدہ HB_NO_OPEN
+#تعریف_کرو hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالی_تھاواں ()
+#جے_انت
 
-int
-main (int argc, char **argv)
+صحيح
+مکھ (صحيح argc, حرف **argv)
 {
-  if (argc != 4 && argc != 5) {
+  إذا (argc != 4 && argc != 5) {
     fprintf (stderr, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
-    exit (1);
+    باہر_نکلو (1);
   }
 
   /* Create the face */
@@ -50,18 +50,18 @@ main (int argc, char **argv)
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = خالی_سوچک;
 
   hb_font_t *font = hb_font_create (face);
-#ifdef HAVE_FREETYPE
-  hb_ft_font_set_funcs (font);
-#endif
+#جے_تعریف_شدہ HAVE_FREETYPE
+  hb_ft_font_سیٹ_funcs (font);
+#جے_انت
 
-  unsigned int len = argc - 3;
+  بنانشانی صحيح len = argc - 3;
   hb_codepoint_t glyphs[2];
-  if (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
+  إذا (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
       (argc > 4 &&
        !hb_font_glyph_from_string (font, argv[4], -1, &glyphs[1])))
-    return 2;
-  return !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, false);
+    أرجع 2;
+  أرجع !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], خالی_سوچک, 0), glyphs, len, خطأ);
 }

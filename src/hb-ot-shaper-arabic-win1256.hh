@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_ARABIC_WIN1256_HH
+#جے_بنا_تعریف HB_OT_SHAPER_ARABIC_WIN1256_HH
 
 
 /*
@@ -37,131 +37,131 @@
 
 
 /* First we measure, then we cut. */
-#ifndef OT_MEASURE
-#define OT_MEASURE
-#define OT_TABLE_START			static const struct TABLE_NAME {
-#define OT_TABLE_END			}
-#define OT_LABEL_START(Name)		unsigned char Name[
-#define OT_LABEL_END			];
-#define OT_UINT8(u8)			+1/*byte*/
-#define OT_UINT16(u16)			+2/*bytes*/
-#else
-#undef  OT_MEASURE
-#define OT_TABLE_START			TABLE_NAME = {
-#define OT_TABLE_END			};
-#define OT_LABEL_START(Name)		{
-#define OT_LABEL_END			},
-#define OT_UINT8(u8)			(u8),
-#define OT_UINT16(u16)			(unsigned char)((u16)>>8), (unsigned char)((u16)&0xFFu),
-#define OT_COUNT(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
-					 / (unsigned int)(ItemSize) \
+#جے_بنا_تعریف OT_MEASURE
+#تعریف_کرو OT_MEASURE
+#تعریف_کرو OT_جدول_شروع			ساكن ثابت بنية جدول_NAME {
+#تعریف_کرو OT_جدول_سرا			}
+#تعریف_کرو OT_LABEL_شروع(Name)		بنانشانی حرف Name[
+#تعریف_کرو OT_LABEL_سرا			];
+#تعریف_کرو OT_UINT8(u8)			+1/*byte*/
+#تعریف_کرو OT_UINT16(u16)			+2/*bytes*/
+#وإلا
+#تعریف_رد  OT_MEASURE
+#تعریف_کرو OT_جدول_شروع			جدول_NAME = {
+#تعریف_کرو OT_جدول_سرا			};
+#تعریف_کرو OT_LABEL_شروع(Name)		{
+#تعریف_کرو OT_LABEL_سرا			},
+#تعریف_کرو OT_UINT8(u8)			(u8),
+#تعریف_کرو OT_UINT16(u16)			(بنانشانی حرف)((u16)>>8), (بنانشانی حرف)((u16)&0xFFu),
+#تعریف_کرو OT_گنتی(Name, شے_ناپ_2)	((بنانشانی صحيح) حجم(((بنية جدول_NAME*)0)->Name) \
+					 / (بنانشانی صحيح)(شے_ناپ_2) \
 					 /* OT_ASSERT it's divisible (and positive). */)
-#define OT_DISTANCE(From,To)		((unsigned int) \
-					 ((char*)(&((struct TABLE_NAME*)0)->To) - \
-					  (char*)(&((struct TABLE_NAME*)0)->From)) \
+#تعریف_کرو OT_فاصلہ(From,منزل)		((بنانشانی صحيح) \
+					 ((حرف*)(&((بنية جدول_NAME*)0)->منزل) - \
+					  (حرف*)(&((بنية جدول_NAME*)0)->From)) \
 					 /* OT_ASSERT it's positive. */)
-#endif
+#جے_انت
 
 
-#define OT_LABEL(Name) \
-	OT_LABEL_END \
-	OT_LABEL_START(Name)
+#تعریف_کرو OT_LABEL(Name) \
+	OT_LABEL_سرا \
+	OT_LABEL_شروع(Name)
 
 /* Whenever we receive an argument that is a list, it will expand to
  * contain commas.  That cannot be passed to another macro because the
  * commas will throw off the preprocessor.  The solution is to wrap
  * the passed-in argument in OT_LIST() before passing to the next macro.
  * Unfortunately this trick requires vararg macros. */
-#define OT_LIST(...) __VA_ARGS__
+#تعریف_کرو OT_LIST(...) __VA_ARGS__
 
 
 /*
  * Basic Types
  */
 
-#define OT_TAG(a,b,c,d) \
+#تعریف_کرو OT_ٹیگ(a,b,c,d) \
 	OT_UINT8(a) OT_UINT8(b) OT_UINT8(c) OT_UINT8(d)
 
-#define OT_OFFSET(From, To) /* Offset from From to To in bytes */ \
-	OT_UINT16(OT_DISTANCE(From, To))
+#تعریف_کرو OT_وتھ(From, منزل) /* Offset from From to To in bytes */ \
+	OT_UINT16(OT_فاصلہ(From, منزل))
 
-#define OT_GLYPHID /* GlyphID */ \
+#تعریف_کرو OT_GLYPHID /* GlyphID */ \
 	OT_UINT16
 /* Shorthand. */
-#define G	OT_GLYPHID
+#تعریف_کرو G	OT_GLYPHID
 
-#define OT_UARRAY(Name, Items) \
-	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2)) \
+#تعریف_کرو OT_UARRAY(Name, اشیاء_2) \
+	OT_LABEL_شروع(Name) \
+	OT_UINT16(OT_گنتی(Name##Data, 2)) \
 	OT_LABEL(Name##Data) \
-	Items \
-	OT_LABEL_END
+	اشیاء_2 \
+	OT_LABEL_سرا
 
-#define OT_UHEADLESSARRAY(Name, Items) \
-	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2) + 1) \
+#تعریف_کرو OT_UHEADLESSARRAY(Name, اشیاء_2) \
+	OT_LABEL_شروع(Name) \
+	OT_UINT16(OT_گنتی(Name##Data, 2) + 1) \
 	OT_LABEL(Name##Data) \
-	Items \
-	OT_LABEL_END
+	اشیاء_2 \
+	OT_LABEL_سرا
 
 
 /*
  * Common Types
  */
 
-#define OT_LOOKUP_FLAG_IGNORE_MARKS	0x08u
+#تعریف_کرو OT_LOOKUP_FLAG_IGNORE_MARKS	0x08u
 
-#define OT_LOOKUP(Name, LookupType, LookupFlag, SubLookupOffsets) \
-	OT_LABEL_START(Name) \
+#تعریف_کرو OT_LOOKUP(Name, LookupType, LookupFlag, SubLookupOffsets) \
+	OT_LABEL_شروع(Name) \
 	OT_UINT16(LookupType) \
 	OT_UINT16(LookupFlag) \
-	OT_LABEL_END \
+	OT_LABEL_سرا \
 	OT_UARRAY(Name##SubLookupOffsetsArray, OT_LIST(SubLookupOffsets))
 
-#define OT_SUBLOOKUP(Name, SubFormat, Items) \
-	OT_LABEL_START(Name) \
+#تعریف_کرو OT_SUBLOOKUP(Name, SubFormat, اشیاء_2) \
+	OT_LABEL_شروع(Name) \
 	OT_UINT16(SubFormat) \
-	Items
+	اشیاء_2
 
-#define OT_COVERAGE1(Name, Items) \
-	OT_LABEL_START(Name) \
+#تعریف_کرو OT_COVERAGE1(Name, اشیاء_2) \
+	OT_LABEL_شروع(Name) \
 	OT_UINT16(1) \
-	OT_LABEL_END \
-	OT_UARRAY(Name##Glyphs, OT_LIST(Items))
+	OT_LABEL_سرا \
+	OT_UARRAY(Name##Glyphs, OT_LIST(اشیاء_2))
 
 
 /*
  * GSUB
  */
 
-#define OT_LOOKUP_TYPE_SUBST_SINGLE	1u
-#define OT_LOOKUP_TYPE_SUBST_LIGATURE	4u
+#تعریف_کرو OT_LOOKUP_TYPE_SUBST_SINGLE	1u
+#تعریف_کرو OT_LOOKUP_TYPE_SUBST_LIGATURE	4u
 
-#define OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2(Name, FromGlyphs, ToGlyphs) \
+#تعریف_کرو OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2(Name, FromGlyphs, منزل_Glyphs) \
 	OT_SUBLOOKUP(Name, 2, \
-		OT_OFFSET(Name, Name##Coverage) \
-		OT_LABEL_END \
-		OT_UARRAY(Name##Substitute, OT_LIST(ToGlyphs)) \
+		OT_وتھ(Name, Name##Coverage) \
+		OT_LABEL_سرا \
+		OT_UARRAY(Name##Substitute, OT_LIST(منزل_Glyphs)) \
 	) \
 	OT_COVERAGE1(Name##Coverage, OT_LIST(FromGlyphs)) \
 	/* static_assert_expr (len(FromGlyphs) == len(ToGlyphs)) */
 
-#define OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1(Name, FirstGlyphs, LigatureSetOffsets) \
+#تعریف_کرو OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1(Name, پہلا_Glyphs, Ligature_سیٹ_Offsets) \
 	OT_SUBLOOKUP(Name, 1, \
-		OT_OFFSET(Name, Name##Coverage) \
-		OT_LABEL_END \
-		OT_UARRAY(Name##LigatureSetOffsetsArray, OT_LIST(LigatureSetOffsets)) \
+		OT_وتھ(Name, Name##Coverage) \
+		OT_LABEL_سرا \
+		OT_UARRAY(Name##LigatureSetOffsetsArray, OT_LIST(Ligature_سیٹ_Offsets)) \
 	) \
-	OT_COVERAGE1(Name##Coverage, OT_LIST(FirstGlyphs)) \
+	OT_COVERAGE1(Name##Coverage, OT_LIST(پہلا_Glyphs)) \
 	/* static_assert_expr (len(FirstGlyphs) == len(LigatureSetOffsets)) */
 
-#define OT_LIGATURE_SET(Name, LigatureSetOffsets) \
-	OT_UARRAY(Name, OT_LIST(LigatureSetOffsets))
+#تعریف_کرو OT_LIGATURE_سیٹ(Name, Ligature_سیٹ_Offsets) \
+	OT_UARRAY(Name, OT_LIST(Ligature_سیٹ_Offsets))
 
-#define OT_LIGATURE(Name, Components, LigGlyph) \
-	OT_LABEL_START(Name) \
+#تعریف_کرو OT_LIGATURE(Name, Components, LigGlyph) \
+	OT_LABEL_شروع(Name) \
 	LigGlyph \
-	OT_LABEL_END \
+	OT_LABEL_سرا \
 	OT_UHEADLESSARRAY(Name##ComponentsArray, OT_LIST(Components))
 
 /*
@@ -171,62 +171,62 @@
  */
 
 /* Table name. */
-#define TABLE_NAME arabic_win1256_gsub_lookups
+#تعریف_کرو جدول_NAME arabic_win1256_gsub_lookups
 
 /* Table manifest. */
-#define MANIFEST(Items) \
-	OT_LABEL_START(manifest) \
-	OT_UINT16(OT_COUNT(manifestData, 6)) \
-	OT_LABEL(manifestData) \
-	Items \
-	OT_LABEL_END
+#تعریف_کرو MANIFEST(اشیاء_2) \
+	OT_LABEL_شروع(manifest) \
+	OT_UINT16(OT_گنتی(manifest_انکڑے, 6)) \
+	OT_LABEL(manifest_انکڑے) \
+	اشیاء_2 \
+	OT_LABEL_سرا
 
-#define MANIFEST_LOOKUP(Tag, Name) \
-	Tag \
-	OT_OFFSET(manifest, Name)
+#تعریف_کرو MANIFEST_LOOKUP(ٹیگ, Name) \
+	ٹیگ \
+	OT_وتھ(manifest, Name)
 
 
 /*
  * Table Start
  */
-OT_TABLE_START
+OT_جدول_شروع
 
 
 /*
  * Manifest
  */
 MANIFEST(
-	MANIFEST_LOOKUP(OT_TAG('r','l','i','g'), rligLookup)
-	MANIFEST_LOOKUP(OT_TAG('i','n','i','t'), initLookup)
-	MANIFEST_LOOKUP(OT_TAG('m','e','d','i'), mediLookup)
-	MANIFEST_LOOKUP(OT_TAG('f','i','n','a'), finaLookup)
-	MANIFEST_LOOKUP(OT_TAG('r','l','i','g'), rligMarksLookup)
+	MANIFEST_LOOKUP(OT_ٹیگ('r','l','i','g'), rligLookup)
+	MANIFEST_LOOKUP(OT_ٹیگ('i','n','i','t'), initLookup)
+	MANIFEST_LOOKUP(OT_ٹیگ('m','e','d','i'), mediLookup)
+	MANIFEST_LOOKUP(OT_ٹیگ('f','i','n','a'), finaLookup)
+	MANIFEST_LOOKUP(OT_ٹیگ('r','l','i','g'), rligMarksLookup)
 )
 
 /*
  * Lookups
  */
 OT_LOOKUP(initLookup, OT_LOOKUP_TYPE_SUBST_SINGLE, OT_LOOKUP_FLAG_IGNORE_MARKS,
-	OT_OFFSET(initLookup, initmediSubLookup)
-	OT_OFFSET(initLookup, initSubLookup)
+	OT_وتھ(initLookup, initmediSubLookup)
+	OT_وتھ(initLookup, initSubLookup)
 )
 OT_LOOKUP(mediLookup, OT_LOOKUP_TYPE_SUBST_SINGLE, OT_LOOKUP_FLAG_IGNORE_MARKS,
-	OT_OFFSET(mediLookup, initmediSubLookup)
-	OT_OFFSET(mediLookup, mediSubLookup)
-	OT_OFFSET(mediLookup, medifinaLamAlefSubLookup)
+	OT_وتھ(mediLookup, initmediSubLookup)
+	OT_وتھ(mediLookup, mediSubLookup)
+	OT_وتھ(mediLookup, medifinaLamAlefSubLookup)
 )
 OT_LOOKUP(finaLookup, OT_LOOKUP_TYPE_SUBST_SINGLE, OT_LOOKUP_FLAG_IGNORE_MARKS,
-	OT_OFFSET(finaLookup, finaSubLookup)
+	OT_وتھ(finaLookup, finaSubLookup)
 	/* We don't need this one currently as the sequence inherits masks
 	 * from the first item.  Just in case we change that in the future
 	 * to be smart about Arabic masks when ligating... */
-	OT_OFFSET(finaLookup, medifinaLamAlefSubLookup)
+	OT_وتھ(finaLookup, medifinaLamAlefSubLookup)
 )
 OT_LOOKUP(rligLookup, OT_LOOKUP_TYPE_SUBST_LIGATURE, OT_LOOKUP_FLAG_IGNORE_MARKS,
-	OT_OFFSET(rligLookup, lamAlefLigaturesSubLookup)
+	OT_وتھ(rligLookup, lamAlefLigaturesSubLookup)
 )
 OT_LOOKUP(rligMarksLookup, OT_LOOKUP_TYPE_SUBST_LIGATURE, 0,
-	OT_OFFSET(rligMarksLookup, shaddaLigaturesSubLookup)
+	OT_وتھ(rligMarksLookup, shaddaLigaturesSubLookup)
 )
 
 /*
@@ -262,13 +262,13 @@ OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2(medifinaLamAlefSubLookup,
  */
 OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1(lamAlefLigaturesSubLookup,
 	G(225),
-	OT_OFFSET(lamAlefLigaturesSubLookup, lamLigatureSet)
+	OT_وتھ(lamAlefLigaturesSubLookup, lam_Ligature_سیٹ)
 )
-OT_LIGATURE_SET(lamLigatureSet,
-	OT_OFFSET(lamLigatureSet, lamInitLigature1)
-	OT_OFFSET(lamLigatureSet, lamInitLigature2)
-	OT_OFFSET(lamLigatureSet, lamInitLigature3)
-	OT_OFFSET(lamLigatureSet, lamInitLigature4)
+OT_LIGATURE_سیٹ(lam_Ligature_سیٹ,
+	OT_وتھ(lam_Ligature_سیٹ, lamInitLigature1)
+	OT_وتھ(lam_Ligature_سیٹ, lamInitLigature2)
+	OT_وتھ(lam_Ligature_سیٹ, lamInitLigature3)
+	OT_وتھ(lam_Ligature_سیٹ, lamInitLigature4)
 )
 OT_LIGATURE(lamInitLigature1, G(199), G(165))
 OT_LIGATURE(lamInitLigature2, G(195), G(178))
@@ -280,12 +280,12 @@ OT_LIGATURE(lamInitLigature4, G(197), G(252))
  */
 OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1(shaddaLigaturesSubLookup,
 	G(248),
-	OT_OFFSET(shaddaLigaturesSubLookup, shaddaLigatureSet)
+	OT_وتھ(shaddaLigaturesSubLookup, shadda_Ligature_سیٹ)
 )
-OT_LIGATURE_SET(shaddaLigatureSet,
-	OT_OFFSET(shaddaLigatureSet, shaddaLigature1)
-	OT_OFFSET(shaddaLigatureSet, shaddaLigature2)
-	OT_OFFSET(shaddaLigatureSet, shaddaLigature3)
+OT_LIGATURE_سیٹ(shadda_Ligature_سیٹ,
+	OT_وتھ(shadda_Ligature_سیٹ, shaddaLigature1)
+	OT_وتھ(shadda_Ligature_سیٹ, shaddaLigature2)
+	OT_وتھ(shadda_Ligature_سیٹ, shaddaLigature3)
 )
 OT_LIGATURE(shaddaLigature1, G(243), G(172))
 OT_LIGATURE(shaddaLigature2, G(245), G(173))
@@ -294,56 +294,56 @@ OT_LIGATURE(shaddaLigature3, G(246), G(175))
 /*
  * Table end
  */
-OT_TABLE_END
+OT_جدول_سرا
 
 
 /*
  * Clean up
  */
 
-#undef MANIFEST
-#undef MANIFEST_LOOKUP
+#تعریف_رد MANIFEST
+#تعریف_رد MANIFEST_LOOKUP
 
-#undef OT_TABLE_START
-#undef OT_TABLE_END
-#undef OT_LABEL_START
-#undef OT_LABEL_END
-#undef OT_UINT8
-#undef OT_UINT16
-#undef OT_COUNT
-#undef OT_DISTANCE
+#تعریف_رد OT_جدول_شروع
+#تعریف_رد OT_جدول_سرا
+#تعریف_رد OT_LABEL_شروع
+#تعریف_رد OT_LABEL_سرا
+#تعریف_رد OT_UINT8
+#تعریف_رد OT_UINT16
+#تعریف_رد OT_گنتی
+#تعریف_رد OT_فاصلہ
 
-#undef OT_LABEL
-#undef OT_LIST
+#تعریف_رد OT_LABEL
+#تعریف_رد OT_LIST
 
-#undef OT_TAG
-#undef OT_OFFSET
-#undef OT_GLYPHID
-#undef G
-#undef OT_UARRAY
-#undef OT_UHEADLESSARRAY
+#تعریف_رد OT_ٹیگ
+#تعریف_رد OT_وتھ
+#تعریف_رد OT_GLYPHID
+#تعریف_رد G
+#تعریف_رد OT_UARRAY
+#تعریف_رد OT_UHEADLESSARRAY
 
-#undef OT_LOOKUP_FLAG_IGNORE_MARKS
-#undef OT_LOOKUP
-#undef OT_SUBLOOKUP
-#undef OT_COVERAGE1
-#undef OT_LOOKUP_TYPE_SUBST_SINGLE
-#undef OT_LOOKUP_TYPE_SUBST_LIGATURE
-#undef OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2
-#undef OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1
-#undef OT_LIGATURE_SET
-#undef OT_LIGATURE
+#تعریف_رد OT_LOOKUP_FLAG_IGNORE_MARKS
+#تعریف_رد OT_LOOKUP
+#تعریف_رد OT_SUBLOOKUP
+#تعریف_رد OT_COVERAGE1
+#تعریف_رد OT_LOOKUP_TYPE_SUBST_SINGLE
+#تعریف_رد OT_LOOKUP_TYPE_SUBST_LIGATURE
+#تعریف_رد OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2
+#تعریف_رد OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1
+#تعریف_رد OT_LIGATURE_سیٹ
+#تعریف_رد OT_LIGATURE
 
 
 /*
  * Include a second time to get the table data...
  */
-#if 0
-#include "hb.hh" /* Make check-includes.sh happy. */
-#endif
-#ifdef OT_MEASURE
-#include "hb-ot-shaper-arabic-win1256.hh"
-#endif
+#إذا 0
+#ضمن "hb.hh" /* Make check-includes.sh happy. */
+#جے_انت
+#جے_تعریف_شدہ OT_MEASURE
+#ضمن "hb-ot-shaper-arabic-win1256.hh"
+#جے_انت
 
-#define HB_OT_SHAPER_ARABIC_WIN1256_HH
-#endif /* HB_OT_SHAPER_ARABIC_WIN1256_HH */
+#تعریف_کرو HB_OT_SHAPER_ARABIC_WIN1256_HH
+#جے_انت /* HB_OT_SHAPER_ARABIC_WIN1256_HH */

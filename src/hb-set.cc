@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-set.hh"
+#ضمن "hb-set.hh"
 
 
 /**
@@ -48,15 +48,15 @@
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_create ()
+hb_سیٹ_t *
+hb_سیٹ_create ()
 {
-  hb_set_t *set;
+  hb_سیٹ_t *سیٹ;
 
-  if (!(set = hb_object_create<hb_set_t> ()))
-    return hb_set_get_empty ();
+  إذا (!(سیٹ = hb_object_create<hb_سیٹ_t> ()))
+    أرجع hb_سیٹ_get_خالی_تھاواں ();
 
-  return set;
+  أرجع سیٹ;
 }
 
 /**
@@ -68,10 +68,10 @@ hb_set_create ()
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_get_empty ()
+hb_سیٹ_t *
+hb_سیٹ_get_خالی_تھاواں ()
 {
-  return const_cast<hb_set_t *> (&Null (hb_set_t));
+  أرجع const_cast<hb_سیٹ_t *> (&Null (hb_سیٹ_t));
 }
 
 /**
@@ -84,10 +84,10 @@ hb_set_get_empty ()
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_reference (hb_set_t *set)
+hb_سیٹ_t *
+hb_سیٹ_reference (hb_سیٹ_t *سیٹ)
 {
-  return hb_object_reference (set);
+  أرجع hb_object_reference (سیٹ);
 }
 
 /**
@@ -100,12 +100,12 @@ hb_set_reference (hb_set_t *set)
  *
  * Since: 0.9.2
  **/
-void
-hb_set_destroy (hb_set_t *set)
+فراغ
+hb_سیٹ_destroy (hb_سیٹ_t *سیٹ)
 {
-  if (!hb_object_destroy (set)) return;
+  إذا (!hb_object_destroy (سیٹ)) أرجع;
 
-  hb_free (set);
+  hb_free (سیٹ);
 }
 
 /**
@@ -123,13 +123,13 @@ hb_set_destroy (hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_سیٹ_سیٹ_user_انکڑے (hb_سیٹ_t           *سیٹ,
+		      hb_user_انکڑے_کلید_t *key,
+		      فراغ *              انکڑے,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (set, key, data, destroy, replace);
+  أرجع hb_object_سیٹ_user_انکڑے (سیٹ, key, انکڑے, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_set_set_user_data (hb_set_t           *set,
  *
  * Since: 0.9.2
  **/
-void *
-hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key)
+فراغ *
+hb_سیٹ_get_user_انکڑے (ثابت hb_سیٹ_t     *سیٹ,
+		      hb_user_انکڑے_کلید_t *key)
 {
-  return hb_object_get_user_data (set, key);
+  أرجع hb_object_get_user_انکڑے (سیٹ, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_set_get_user_data (const hb_set_t     *set,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_allocation_successful (const hb_set_t  *set)
+hb_سیٹ_ونڈ_successful (ثابت hb_سیٹ_t  *سیٹ)
 {
-  return !set->in_error ();
+  أرجع !سیٹ->وچ_error ();
 }
 
 /**
@@ -178,15 +178,15 @@ hb_set_allocation_successful (const hb_set_t  *set)
  *
  * Since: 2.8.2
  **/
-hb_set_t *
-hb_set_copy (const hb_set_t *set)
+hb_سیٹ_t *
+hb_سیٹ_copy (ثابت hb_سیٹ_t *سیٹ)
 {
-  hb_set_t *copy = hb_set_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_set_get_empty ();
+  hb_سیٹ_t *copy = hb_سیٹ_create ();
+  إذا (unlikely (copy->وچ_error ()))
+    أرجع hb_سیٹ_get_خالی_تھاواں ();
 
-  copy->set (*set);
-  return copy;
+  copy->سیٹ (*سیٹ);
+  أرجع copy;
 }
 
 /**
@@ -197,11 +197,11 @@ hb_set_copy (const hb_set_t *set)
  *
  * Since: 0.9.2
  **/
-void
-hb_set_clear (hb_set_t *set)
+فراغ
+hb_سیٹ_clear (hb_سیٹ_t *سیٹ)
 {
   /* Immutable-safe. */
-  set->clear ();
+  سیٹ->clear ();
 }
 
 /**
@@ -215,9 +215,9 @@ hb_set_clear (hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_is_empty (const hb_set_t *set)
+hb_سیٹ_is_خالی_تھاواں (ثابت hb_سیٹ_t *سیٹ)
 {
-  return set->is_empty ();
+  أرجع سیٹ->is_empty ();
 }
 
 /**
@@ -232,10 +232,10 @@ hb_set_is_empty (const hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_has (const hb_set_t *set,
+hb_سیٹ_has (ثابت hb_سیٹ_t *سیٹ,
 	    hb_codepoint_t  codepoint)
 {
-  return set->has (codepoint);
+  أرجع سیٹ->has (codepoint);
 }
 
 /**
@@ -247,12 +247,12 @@ hb_set_has (const hb_set_t *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_add (hb_set_t       *set,
+فراغ
+hb_سیٹ_جوڑو (hb_سیٹ_t       *سیٹ,
 	    hb_codepoint_t  codepoint)
 {
   /* Immutable-safe. */
-  set->add (codepoint);
+  سیٹ->جوڑو (codepoint);
 }
 
 /**
@@ -267,15 +267,15 @@ hb_set_add (hb_set_t       *set,
  *
  * Since: 4.1.0
  */
-HB_EXTERN void
-hb_set_add_sorted_array (hb_set_t             *set,
-		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints)
+HB_EXTERN فراغ
+hb_سیٹ_جوڑو_sorted_array (hb_سیٹ_t             *سیٹ,
+		         ثابت hb_codepoint_t *sorted_codepoints,
+		         بنانشانی صحيح          عدد_codepoints)
 {
   /* Immutable-safe. */
-  set->add_sorted_array (sorted_codepoints,
-		         num_codepoints,
-		         sizeof(hb_codepoint_t));
+  سیٹ->جوڑو_sorted_array (sorted_codepoints,
+		         عدد_codepoints,
+		         حجم(hb_codepoint_t));
 }
 
 /**
@@ -289,13 +289,13 @@ hb_set_add_sorted_array (hb_set_t             *set,
  *
  * Since: 0.9.7
  **/
-void
-hb_set_add_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last)
+فراغ
+hb_سیٹ_جوڑو_range (hb_سیٹ_t       *سیٹ,
+		  hb_codepoint_t  پہلا,
+		  hb_codepoint_t  آخری)
 {
   /* Immutable-safe. */
-  set->add_range (first, last);
+  سیٹ->جوڑو_range (پہلا, آخری);
 }
 
 /**
@@ -307,12 +307,12 @@ hb_set_add_range (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_del (hb_set_t       *set,
+فراغ
+hb_سیٹ_del (hb_سیٹ_t       *سیٹ,
 	    hb_codepoint_t  codepoint)
 {
   /* Immutable-safe. */
-  set->del (codepoint);
+  سیٹ->del (codepoint);
 }
 
 /**
@@ -329,13 +329,13 @@ hb_set_del (hb_set_t       *set,
  *
  * Since: 0.9.7
  **/
-void
-hb_set_del_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last)
+فراغ
+hb_سیٹ_del_range (hb_سیٹ_t       *سیٹ,
+		  hb_codepoint_t  پہلا,
+		  hb_codepoint_t  آخری)
 {
   /* Immutable-safe. */
-  set->del_range (first, last);
+  سیٹ->del_range (پہلا, آخری);
 }
 
 /**
@@ -351,10 +351,10 @@ hb_set_del_range (hb_set_t       *set,
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_is_equal (const hb_set_t *set,
-		 const hb_set_t *other)
+hb_سیٹ_is_equal (ثابت hb_سیٹ_t *سیٹ,
+		 ثابت hb_سیٹ_t *other)
 {
-  return set->is_equal (*other);
+  أرجع سیٹ->is_equal (*other);
 }
 
 /**
@@ -369,10 +369,10 @@ hb_set_is_equal (const hb_set_t *set,
  * Since: 14.4.0
  **/
 hb_bool_t
-hb_set_intersects (const hb_set_t *set,
-		   const hb_set_t *other)
+hb_سیٹ_intersects (ثابت hb_سیٹ_t *سیٹ,
+		   ثابت hb_سیٹ_t *other)
 {
-  return set->intersects (*other);
+  أرجع سیٹ->intersects (*other);
 }
 
 /**
@@ -386,10 +386,10 @@ hb_set_intersects (const hb_set_t *set,
  *
  * Since: 4.4.0
  **/
-HB_EXTERN unsigned int
-hb_set_hash (const hb_set_t *set)
+HB_EXTERN بنانشانی صحيح
+hb_سیٹ_hash (ثابت hb_سیٹ_t *سیٹ)
 {
-  return set->hash ();
+  أرجع سیٹ->hash ();
 }
 
 /**
@@ -404,10 +404,10 @@ hb_set_hash (const hb_set_t *set)
  * Since: 1.8.1
  **/
 hb_bool_t
-hb_set_is_subset (const hb_set_t *set,
-		  const hb_set_t *larger_set)
+hb_سیٹ_is_subset (ثابت hb_سیٹ_t *سیٹ,
+		  ثابت hb_سیٹ_t *larger_سیٹ)
 {
-  return set->is_subset (*larger_set);
+  أرجع سیٹ->is_subset (*larger_سیٹ);
 }
 
 /**
@@ -419,12 +419,12 @@ hb_set_is_subset (const hb_set_t *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_set (hb_set_t       *set,
-	    const hb_set_t *other)
+فراغ
+hb_سیٹ_سیٹ (hb_سیٹ_t       *سیٹ,
+	    ثابت hb_سیٹ_t *other)
 {
   /* Immutable-safe. */
-  set->set (*other);
+  سیٹ->سیٹ (*other);
 }
 
 /**
@@ -436,12 +436,12 @@ hb_set_set (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_union (hb_set_t       *set,
-	      const hb_set_t *other)
+فراغ
+hb_سیٹ_union (hb_سیٹ_t       *سیٹ,
+	      ثابت hb_سیٹ_t *other)
 {
   /* Immutable-safe. */
-  set->union_ (*other);
+  سیٹ->union_ (*other);
 }
 
 /**
@@ -453,12 +453,12 @@ hb_set_union (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_intersect (hb_set_t       *set,
-		  const hb_set_t *other)
+فراغ
+hb_سیٹ_intersect (hb_سیٹ_t       *سیٹ,
+		  ثابت hb_سیٹ_t *other)
 {
   /* Immutable-safe. */
-  set->intersect (*other);
+  سیٹ->intersect (*other);
 }
 
 /**
@@ -470,12 +470,12 @@ hb_set_intersect (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_subtract (hb_set_t       *set,
-		 const hb_set_t *other)
+فراغ
+hb_سیٹ_گھٹاؤ (hb_سیٹ_t       *سیٹ,
+		 ثابت hb_سیٹ_t *other)
 {
   /* Immutable-safe. */
-  set->subtract (*other);
+  سیٹ->گھٹاؤ (*other);
 }
 
 /**
@@ -488,12 +488,12 @@ hb_set_subtract (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_symmetric_difference (hb_set_t       *set,
-			     const hb_set_t *other)
+فراغ
+hb_سیٹ_متشاکل_difference (hb_سیٹ_t       *سیٹ,
+			     ثابت hb_سیٹ_t *other)
 {
   /* Immutable-safe. */
-  set->symmetric_difference (*other);
+  سیٹ->متشاکل_difference (*other);
 }
 
 /**
@@ -504,11 +504,11 @@ hb_set_symmetric_difference (hb_set_t       *set,
  *
  * Since: 3.0.0
  **/
-void
-hb_set_invert (hb_set_t *set)
+فراغ
+hb_سیٹ_invert (hb_سیٹ_t *سیٹ)
 {
   /* Immutable-safe. */
-  set->invert ();
+  سیٹ->invert ();
 }
 
 /**
@@ -522,9 +522,9 @@ hb_set_invert (hb_set_t *set)
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_set_is_inverted (const hb_set_t *set)
+hb_سیٹ_is_inverted (ثابت hb_سیٹ_t *سیٹ)
 {
-  return set->is_inverted ();
+  أرجع سیٹ->is_inverted ();
 }
 
 /**
@@ -537,10 +537,10 @@ hb_set_is_inverted (const hb_set_t *set)
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_set_get_population (const hb_set_t *set)
+بنانشانی صحيح
+hb_سیٹ_get_population (ثابت hb_سیٹ_t *سیٹ)
 {
-  return set->get_population ();
+  أرجع سیٹ->get_population ();
 }
 
 /**
@@ -554,9 +554,9 @@ hb_set_get_population (const hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_codepoint_t
-hb_set_get_min (const hb_set_t *set)
+hb_سیٹ_get_min (ثابت hb_سیٹ_t *سیٹ)
 {
-  return set->get_min ();
+  أرجع سیٹ->get_min ();
 }
 
 /**
@@ -570,9 +570,9 @@ hb_set_get_min (const hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_codepoint_t
-hb_set_get_max (const hb_set_t *set)
+hb_سیٹ_get_max (ثابت hb_سیٹ_t *سیٹ)
 {
-  return set->get_max ();
+  أرجع سیٹ->get_max ();
 }
 
 /**
@@ -590,10 +590,10 @@ hb_set_get_max (const hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_next (const hb_set_t *set,
+hb_سیٹ_اگلا (ثابت hb_سیٹ_t *سیٹ,
 	     hb_codepoint_t *codepoint)
 {
-  return set->next (codepoint);
+  أرجع سیٹ->next (codepoint);
 }
 
 /**
@@ -611,10 +611,10 @@ hb_set_next (const hb_set_t *set,
  * Since: 1.8.0
  **/
 hb_bool_t
-hb_set_previous (const hb_set_t *set,
+hb_سیٹ_پچھلا (ثابت hb_سیٹ_t *سیٹ,
 		 hb_codepoint_t *codepoint)
 {
-  return set->previous (codepoint);
+  أرجع سیٹ->پچھلا (codepoint);
 }
 
 /**
@@ -634,11 +634,11 @@ hb_set_previous (const hb_set_t *set,
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_next_range (const hb_set_t *set,
-		   hb_codepoint_t *first,
-		   hb_codepoint_t *last)
+hb_سیٹ_اگلا_range (ثابت hb_سیٹ_t *سیٹ,
+		   hb_codepoint_t *پہلا,
+		   hb_codepoint_t *آخری)
 {
-  return set->next_range (first, last);
+  أرجع سیٹ->اگلا_range (پہلا, آخری);
 }
 
 /**
@@ -658,11 +658,11 @@ hb_set_next_range (const hb_set_t *set,
  * Since: 1.8.0
  **/
 hb_bool_t
-hb_set_previous_range (const hb_set_t *set,
-		       hb_codepoint_t *first,
-		       hb_codepoint_t *last)
+hb_سیٹ_پچھلا_range (ثابت hb_سیٹ_t *سیٹ,
+		       hb_codepoint_t *پہلا,
+		       hb_codepoint_t *آخری)
 {
-  return set->previous_range (first, last);
+  أرجع سیٹ->پچھلا_range (پہلا, آخری);
 }
 
 /**
@@ -681,11 +681,11 @@ hb_set_previous_range (const hb_set_t *set,
  *
  * Since: 4.2.0
  **/
-unsigned int
-hb_set_next_many (const hb_set_t *set,
+بنانشانی صحيح
+hb_سیٹ_اگلا_many (ثابت hb_سیٹ_t *سیٹ,
 		  hb_codepoint_t  codepoint,
-		  hb_codepoint_t *out,
-		  unsigned int    size)
+		  hb_codepoint_t *باہرلا,
+		  بنانشانی صحيح    ناپ)
 {
-  return set->next_many (codepoint, out, size);
+  أرجع سیٹ->اگلا_many (codepoint, باہرلا, ناپ);
 }

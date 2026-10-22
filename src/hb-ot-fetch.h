@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#إذا !defined(HB_OT_H_وچ) && !defined(HB_NO_SINGLE_سرخی_ERROR)
+#غلطی "Include <hb-ot.h> instead."
+#جے_انت
 
-#ifndef HB_OT_FETCH_H
-#define HB_OT_FETCH_H
+#جے_بنا_تعریف HB_OT_FETCH_H
+#تعریف_کرو HB_OT_FETCH_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -50,26 +50,26 @@ HB_BEGIN_DECLS
  *
  * Since: 14.3.0
  **/
-typedef enum {
-  HB_OT_BITS_TAG_FS_TYPE		= HB_TAG ('f','s','t','p'),
-  HB_OT_BITS_TAG_FS_SELECTION		= HB_TAG ('f','s','s','l'),
-  HB_OT_BITS_TAG_MAC_STYLE		= HB_TAG ('m','c','s','t'),
-  HB_OT_BITS_TAG_IS_FIXED_PITCH		= HB_TAG ('f','x','p','t'),
-  HB_OT_BITS_TAG_UNICODE_RANGE_1	= HB_TAG ('u','r','n','1'),
-  HB_OT_BITS_TAG_UNICODE_RANGE_2	= HB_TAG ('u','r','n','2'),
-  HB_OT_BITS_TAG_UNICODE_RANGE_3	= HB_TAG ('u','r','n','3'),
-  HB_OT_BITS_TAG_UNICODE_RANGE_4	= HB_TAG ('u','r','n','4'),
-  HB_OT_BITS_TAG_CODE_PAGE_RANGE_1	= HB_TAG ('c','p','r','1'),
-  HB_OT_BITS_TAG_CODE_PAGE_RANGE_2	= HB_TAG ('c','p','r','2'),
+تعريفنوع تعداد {
+  HB_OT_بٹ_ٹیگ_FS_TYPE		= HB_ٹیگ ('f','s','t','p'),
+  HB_OT_بٹ_ٹیگ_FS_SELECTION		= HB_ٹیگ ('f','s','s','l'),
+  HB_OT_بٹ_ٹیگ_MAC_STYLE		= HB_ٹیگ ('m','c','s','t'),
+  HB_OT_بٹ_ٹیگ_IS_FIXED_PITCH		= HB_ٹیگ ('f','x','p','t'),
+  HB_OT_بٹ_ٹیگ_UNICODE_RANGE_1	= HB_ٹیگ ('u','r','n','1'),
+  HB_OT_بٹ_ٹیگ_UNICODE_RANGE_2	= HB_ٹیگ ('u','r','n','2'),
+  HB_OT_بٹ_ٹیگ_UNICODE_RANGE_3	= HB_ٹیگ ('u','r','n','3'),
+  HB_OT_بٹ_ٹیگ_UNICODE_RANGE_4	= HB_ٹیگ ('u','r','n','4'),
+  HB_OT_بٹ_ٹیگ_کوڈ_ورقہ_RANGE_1	= HB_ٹیگ ('c','p','r','1'),
+  HB_OT_بٹ_ٹیگ_کوڈ_ورقہ_RANGE_2	= HB_ٹیگ ('c','p','r','2'),
 
   /*< private >*/
-  _HB_OT_BITS_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_bits_tag_t;
+  HB_OT_بٹ_ٹیگ_MAX_قدر = HB_ٹیگ_MAX_SIGNED /*< skip >*/
+} hb_ot_بٹ_ٹیگ_t;
 
 
 HB_EXTERN uint32_t
-hb_ot_fetch_bits (hb_face_t        *face,
-		hb_ot_bits_tag_t  tag);
+hb_ot_fetch_بٹ (hb_face_t        *face,
+		hb_ot_بٹ_ٹیگ_t  ٹیگ_2);
 
 /**
  * hb_ot_number_tag_t:
@@ -82,20 +82,20 @@ hb_ot_fetch_bits (hb_face_t        *face,
  *
  * Since: 14.3.0
  **/
-typedef enum {
-  HB_OT_NUMBER_TAG_FONT_X_MIN		= HB_TAG ('x','m','i','n'),
-  HB_OT_NUMBER_TAG_FONT_Y_MIN		= HB_TAG ('y','m','i','n'),
-  HB_OT_NUMBER_TAG_FONT_X_MAX		= HB_TAG ('x','m','a','x'),
-  HB_OT_NUMBER_TAG_FONT_Y_MAX		= HB_TAG ('y','m','a','x'),
+تعريفنوع تعداد {
+  HB_OT_نمبر_ٹیگ_FONT_X_MIN		= HB_ٹیگ ('x','m','i','n'),
+  HB_OT_نمبر_ٹیگ_FONT_Y_MIN		= HB_ٹیگ ('y','m','i','n'),
+  HB_OT_نمبر_ٹیگ_FONT_X_MAX		= HB_ٹیگ ('x','m','a','x'),
+  HB_OT_نمبر_ٹیگ_FONT_Y_MAX		= HB_ٹیگ ('y','m','a','x'),
 
   /*< private >*/
-  _HB_OT_NUMBER_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_number_tag_t;
+  HB_OT_نمبر_ٹیگ_MAX_قدر = HB_ٹیگ_MAX_SIGNED /*< skip >*/
+} hb_ot_نمبر_ٹیگ_t;
 
 HB_EXTERN int32_t
-hb_ot_fetch_number (hb_face_t          *face,
-		  hb_ot_number_tag_t  tag);
+hb_ot_fetch_نمبر (hb_face_t          *face,
+		  hb_ot_نمبر_ٹیگ_t  ٹیگ_2);
 
-HB_END_DECLS
+HB_سرا_DECLS
 
-#endif /* HB_OT_FETCH_H */
+#جے_انت /* HB_OT_FETCH_H */

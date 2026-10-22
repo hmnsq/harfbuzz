@@ -1,17 +1,17 @@
-#ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
-#define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#جے_بنا_تعریف OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#تعریف_کرو OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+بنية ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  تعريفنوع بنية Pos_Lookup_Sub_جدول Sub_جدول;
 };
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */
+#جے_انت /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */

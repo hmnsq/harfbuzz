@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import re
-import argparse
+استورد re
+استورد argparse
 
-parser = argparse.ArgumentParser ()
-parser.add_argument ('input')
-parser.add_argument ('output')
-args = parser.parse_args ()
+parser = argparse.دلیل_Parser ()
+parser.جوڑو_دلیل ('input')
+parser.جوڑو_دلیل ('output')
+دلیلاں = parser.parse_دلیلاں ()
 
-with open (args.input, 'r') as inp, open (args.output, 'w') as out:
-    for l in inp.readlines ():
+نال open (دلیلاں.داخلہ, 'r') كـ inp, open (دلیلاں.output, 'w') كـ باہرلا:
+    لكل l في inp.readlines ():
         l = re.sub ('_t_get_type', '_get_type', l)
         l = re.sub (r'_T \(', ' (', l)
-        out.write (l)
+        باہرلا.اكتب (l)

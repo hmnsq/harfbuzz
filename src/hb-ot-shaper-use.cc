@@ -26,15 +26,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#جے_بنا_تعریف HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-use-machine.hh"
-#include "hb-ot-shaper-use-table.hh"
-#include "hb-ot-shaper-arabic.hh"
-#include "hb-ot-shaper-arabic-joining-list.hh"
-#include "hb-ot-shaper-vowel-constraints.hh"
+#ضمن "hb-ot-shaper-use-machine.hh"
+#ضمن "hb-ot-shaper-use-table.hh"
+#ضمن "hb-ot-shaper-arabic.hh"
+#ضمن "hb-ot-shaper-arabic-joining-list.hh"
+#ضمن "hb-ot-shaper-vowel-constraints.hh"
 
 
 /*
@@ -42,7 +42,7 @@
  * https://docs.microsoft.com/en-us/typography/script-development/use
  */
 
-static const hb_tag_t
+ساكن ثابت hb_ٹیگ_t
 use_basic_features[] =
 {
   /*
@@ -50,31 +50,31 @@ use_basic_features[] =
    * These features are applied all at once, before reordering, constrained
    * to the syllable.
    */
-  HB_TAG('r','k','r','f'),
-  HB_TAG('a','b','v','f'),
-  HB_TAG('b','l','w','f'),
-  HB_TAG('h','a','l','f'),
-  HB_TAG('p','s','t','f'),
-  HB_TAG('v','a','t','u'),
-  HB_TAG('c','j','c','t'),
+  HB_ٹیگ('r','k','r','f'),
+  HB_ٹیگ('a','b','v','f'),
+  HB_ٹیگ('b','l','w','f'),
+  HB_ٹیگ('h','a','l','f'),
+  HB_ٹیگ('p','s','t','f'),
+  HB_ٹیگ('v','a','t','u'),
+  HB_ٹیگ('c','j','c','t'),
 };
-static const hb_tag_t
+ساكن ثابت hb_ٹیگ_t
 use_topographical_features[] =
 {
-  HB_TAG('i','s','o','l'),
-  HB_TAG('i','n','i','t'),
-  HB_TAG('m','e','d','i'),
-  HB_TAG('f','i','n','a'),
+  HB_ٹیگ('i','s','o','l'),
+  HB_ٹیگ('i','n','i','t'),
+  HB_ٹیگ('m','e','d','i'),
+  HB_ٹیگ('f','i','n','a'),
 };
 /* Same order as use_topographical_features. */
-enum joining_form_t {
+تعداد joining_form_t {
   JOINING_FORM_ISOL,
   JOINING_FORM_INIT,
   JOINING_FORM_MEDI,
   JOINING_FORM_FINA,
   _JOINING_FORM_NONE
 };
-static const hb_tag_t
+ساكن ثابت hb_ٹیگ_t
 use_other_features[] =
 {
   /*
@@ -82,299 +82,299 @@ use_other_features[] =
    * These features are applied all at once, after reordering and
    * clearing syllables.
    */
-  HB_TAG('a','b','v','s'),
-  HB_TAG('b','l','w','s'),
-  HB_TAG('h','a','l','n'),
-  HB_TAG('p','r','e','s'),
-  HB_TAG('p','s','t','s'),
+  HB_ٹیگ('a','b','v','s'),
+  HB_ٹیگ('b','l','w','s'),
+  HB_ٹیگ('h','a','l','n'),
+  HB_ٹیگ('p','r','e','s'),
+  HB_ٹیگ('p','s','t','s'),
 };
 
-static bool
-setup_syllables_use (const hb_ot_shape_plan_t *plan,
+ساكن منطقي
+تیاری_syllables_use (ثابت hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
-		     hb_buffer_t *buffer);
-static bool
-record_rphf_use (const hb_ot_shape_plan_t *plan,
+		     hb_بفر_t *بفر);
+ساكن منطقي
+ریکارڈ_rphf_use (ثابت hb_ot_shape_plan_t *plan,
 		 hb_font_t *font,
-		 hb_buffer_t *buffer);
-static bool
-record_pref_use (const hb_ot_shape_plan_t *plan,
+		 hb_بفر_t *بفر);
+ساكن منطقي
+ریکارڈ_pref_use (ثابت hb_ot_shape_plan_t *plan,
 		 hb_font_t *font,
-		 hb_buffer_t *buffer);
-static bool
-reorder_use (const hb_ot_shape_plan_t *plan,
+		 hb_بفر_t *بفر);
+ساكن منطقي
+reorder_use (ثابت hb_ot_shape_plan_t *plan,
 	     hb_font_t *font,
-	     hb_buffer_t *buffer);
+	     hb_بفر_t *بفر);
 
-static void
+ساكن فراغ
 collect_features_use (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
   /* Do this before any lookups have been applied. */
-  map->add_gsub_pause (setup_syllables_use);
+  map->جوڑو_gsub_pause (تیاری_syllables_use);
 
   /* "Default glyph pre-processing group" */
-  map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
-  map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
-  map->enable_feature (HB_TAG('n','u','k','t'), F_PER_SYLLABLE);
-  map->enable_feature (HB_TAG('a','k','h','n'), F_MANUAL_ZWJ | F_PER_SYLLABLE);
+  map->enable_feature (HB_ٹیگ('l','o','c','l'), F_فی_SYLLABLE);
+  map->enable_feature (HB_ٹیگ('c','c','m','p'), F_فی_SYLLABLE);
+  map->enable_feature (HB_ٹیگ('n','u','k','t'), F_فی_SYLLABLE);
+  map->enable_feature (HB_ٹیگ('a','k','h','n'), F_MANUAL_ZWJ | F_فی_SYLLABLE);
 
   /* "Reordering group" */
-  map->add_gsub_pause (_hb_clear_substitution_flags);
-  map->add_feature (HB_TAG('r','p','h','f'), F_MANUAL_ZWJ | F_PER_SYLLABLE);
-  map->add_gsub_pause (record_rphf_use);
-  map->add_gsub_pause (_hb_clear_substitution_flags);
-  map->enable_feature (HB_TAG('p','r','e','f'), F_MANUAL_ZWJ | F_PER_SYLLABLE);
-  map->add_gsub_pause (record_pref_use);
+  map->جوڑو_gsub_pause (_hb_clear_substitution_flags);
+  map->جوڑو_feature (HB_ٹیگ('r','p','h','f'), F_MANUAL_ZWJ | F_فی_SYLLABLE);
+  map->جوڑو_gsub_pause (ریکارڈ_rphf_use);
+  map->جوڑو_gsub_pause (_hb_clear_substitution_flags);
+  map->enable_feature (HB_ٹیگ('p','r','e','f'), F_MANUAL_ZWJ | F_فی_SYLLABLE);
+  map->جوڑو_gsub_pause (ریکارڈ_pref_use);
 
   /* "Orthographic unit shaping group" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_basic_features); i++)
-    map->enable_feature (use_basic_features[i], F_MANUAL_ZWJ | F_PER_SYLLABLE);
+  لكل (بنانشانی صحيح i = 0; i < ARRAY_لمائی (use_basic_features); i++)
+    map->enable_feature (use_basic_features[i], F_MANUAL_ZWJ | F_فی_SYLLABLE);
 
-  map->add_gsub_pause (reorder_use);
-  map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
+  map->جوڑو_gsub_pause (reorder_use);
+  map->جوڑو_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
   /* "Topographical features" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_topographical_features); i++)
-    map->add_feature (use_topographical_features[i]);
-  map->add_gsub_pause (nullptr);
+  لكل (بنانشانی صحيح i = 0; i < ARRAY_لمائی (use_topographical_features); i++)
+    map->جوڑو_feature (use_topographical_features[i]);
+  map->جوڑو_gsub_pause (خالی_سوچک);
 
   /* "Standard typographic presentation" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_other_features); i++)
+  لكل (بنانشانی صحيح i = 0; i < ARRAY_لمائی (use_other_features); i++)
     map->enable_feature (use_other_features[i], F_MANUAL_ZWJ);
 }
 
-struct use_shape_plan_t
+بنية use_shape_plan_t
 {
-  hb_mask_t rphf_mask;
+  hb_نقاب_t rphf_نقاب;
 
   arabic_shape_plan_t *arabic_plan;
 };
 
-static void *
-data_create_use (const hb_ot_shape_plan_t *plan)
+ساكن فراغ *
+انکڑے_create_use (ثابت hb_ot_shape_plan_t *plan)
 {
-  use_shape_plan_t *use_plan = (use_shape_plan_t *) hb_calloc (1, sizeof (use_shape_plan_t));
-  if (unlikely (!use_plan))
-    return nullptr;
+  use_shape_plan_t *use_plan = (use_shape_plan_t *) hb_calloc (1, حجم (use_shape_plan_t));
+  إذا (unlikely (!use_plan))
+    أرجع خالی_سوچک;
 
-  use_plan->rphf_mask = plan->map.get_1_mask (HB_TAG('r','p','h','f'));
+  use_plan->rphf_نقاب = plan->map.get_1_نقاب (HB_ٹیگ('r','p','h','f'));
 
-  if (has_arabic_joining (plan->props.script))
+  إذا (has_arabic_joining (plan->props.script))
   {
-    use_plan->arabic_plan = (arabic_shape_plan_t *) data_create_arabic (plan);
-    if (unlikely (!use_plan->arabic_plan))
+    use_plan->arabic_plan = (arabic_shape_plan_t *) انکڑے_create_arabic (plan);
+    إذا (unlikely (!use_plan->arabic_plan))
     {
       hb_free (use_plan);
-      return nullptr;
+      أرجع خالی_سوچک;
     }
   }
 
-  return use_plan;
+  أرجع use_plan;
 }
 
-static void
-data_destroy_use (void *data)
+ساكن فراغ
+انکڑے_destroy_use (فراغ *انکڑے)
 {
-  use_shape_plan_t *use_plan = (use_shape_plan_t *) data;
+  use_shape_plan_t *use_plan = (use_shape_plan_t *) انکڑے;
 
-  if (use_plan->arabic_plan)
-    data_destroy_arabic (use_plan->arabic_plan);
+  إذا (use_plan->arabic_plan)
+    انکڑے_destroy_arabic (use_plan->arabic_plan);
 
-  hb_free (data);
+  hb_free (انکڑے);
 }
 
-static void
-setup_masks_use (const hb_ot_shape_plan_t *plan,
-		 hb_buffer_t              *buffer,
-		 hb_font_t                *font HB_UNUSED)
+ساكن فراغ
+تیاری_masks_use (ثابت hb_ot_shape_plan_t *plan,
+		 hb_بفر_t              *بفر,
+		 hb_font_t                *font HB_بن_ورتیا)
 {
-  const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
+  ثابت use_shape_plan_t *use_plan = (ثابت use_shape_plan_t *) plan->انکڑے;
 
   /* Do this before allocating use_category(). */
-  if (use_plan->arabic_plan)
+  إذا (use_plan->arabic_plan)
   {
-    setup_masks_arabic_plan (use_plan->arabic_plan, buffer, plan->props.script);
+    تیاری_masks_arabic_plan (use_plan->arabic_plan, بفر, plan->props.script);
   }
 
-  HB_BUFFER_ALLOCATE_VAR (buffer, use_category);
+  HB_بفر_ALLOCATE_VAR (بفر, use_category);
 
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  بنانشانی صحيح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
     info[i].use_category() = hb_use_get_category (info[i].codepoint);
 }
 
-static void
-setup_rphf_mask (const hb_ot_shape_plan_t *plan,
-		 hb_buffer_t *buffer)
+ساكن فراغ
+تیاری_rphf_نقاب (ثابت hb_ot_shape_plan_t *plan,
+		 hb_بفر_t *بفر)
 {
-  const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
+  ثابت use_shape_plan_t *use_plan = (ثابت use_shape_plan_t *) plan->انکڑے;
 
-  hb_mask_t mask = use_plan->rphf_mask;
-  if (!mask) return;
+  hb_نقاب_t نقاب = use_plan->rphf_نقاب;
+  إذا (!نقاب) أرجع;
 
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = بفر->info;
 
-  foreach_syllable (buffer, start, end)
+  foreach_syllable (بفر, شروع, سرا)
   {
-    unsigned int limit = info[start].use_category() == USE(R) ? 1 : hb_min (3u, end - start);
-    for (unsigned int i = start; i < start + limit; i++)
-      info[i].mask |= mask;
+    بنانشانی صحيح حد_بندی = info[شروع].use_category() == USE(R) ? 1 : hb_min (3u, سرا - شروع);
+    لكل (بنانشانی صحيح i = شروع; i < شروع + حد_بندی; i++)
+      info[i].نقاب |= نقاب;
   }
 }
 
-static void
-setup_topographical_masks (const hb_ot_shape_plan_t *plan,
-			   hb_buffer_t *buffer)
+ساكن فراغ
+تیاری_topographical_masks (ثابت hb_ot_shape_plan_t *plan,
+			   hb_بفر_t *بفر)
 {
-  const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
-  if (use_plan->arabic_plan)
-    return;
+  ثابت use_shape_plan_t *use_plan = (ثابت use_shape_plan_t *) plan->انکڑے;
+  إذا (use_plan->arabic_plan)
+    أرجع;
 
   static_assert ((JOINING_FORM_INIT < 4 && JOINING_FORM_ISOL < 4 && JOINING_FORM_MEDI < 4 && JOINING_FORM_FINA < 4), "");
-  hb_mask_t masks[4], all_masks = 0;
-  for (unsigned int i = 0; i < 4; i++)
+  hb_نقاب_t masks[4], all_masks = 0;
+  لكل (بنانشانی صحيح i = 0; i < 4; i++)
   {
-    masks[i] = plan->map.get_1_mask (use_topographical_features[i]);
-    if (masks[i] == plan->map.get_global_mask ())
+    masks[i] = plan->map.get_1_نقاب (use_topographical_features[i]);
+    إذا (masks[i] == plan->map.get_global_نقاب ())
       masks[i] = 0;
     all_masks |= masks[i];
   }
-  if (!all_masks)
-    return;
-  hb_mask_t other_masks = ~all_masks;
+  إذا (!all_masks)
+    أرجع;
+  hb_نقاب_t other_masks = ~all_masks;
 
-  unsigned int last_start = 0;
-  joining_form_t last_form = _JOINING_FORM_NONE;
-  hb_glyph_info_t *info = buffer->info;
-  foreach_syllable (buffer, start, end)
+  بنانشانی صحيح آخری_شروع = 0;
+  joining_form_t آخری_form = _JOINING_FORM_NONE;
+  hb_glyph_info_t *info = بفر->info;
+  foreach_syllable (بفر, شروع, سرا)
   {
-    use_syllable_type_t syllable_type = (use_syllable_type_t) (info[start].syllable() & 0x0F);
-    switch (syllable_type)
+    use_syllable_type_t syllable_type = (use_syllable_type_t) (info[شروع].syllable() & 0x0F);
+    بدل (syllable_type)
     {
-      case use_hieroglyph_cluster:
-      case use_non_cluster:
+      حالة use_hieroglyph_cluster:
+      حالة use_non_cluster:
 	/* These don't join.  Nothing to do. */
-	last_form = _JOINING_FORM_NONE;
-	break;
+	آخری_form = _JOINING_FORM_NONE;
+	اكسر;
 
-      case use_virama_terminated_cluster:
-      case use_sakot_terminated_cluster:
-      case use_standard_cluster:
-      case use_number_joiner_terminated_cluster:
-      case use_numeral_cluster:
-      case use_symbol_cluster:
-      case use_broken_cluster:
+      حالة use_virama_terminated_cluster:
+      حالة use_sakot_terminated_cluster:
+      حالة use_standard_cluster:
+      حالة use_نمبر_joiner_terminated_cluster:
+      حالة use_numeral_cluster:
+      حالة use_علامت_cluster:
+      حالة use_broken_cluster:
 
-	bool join = last_form == JOINING_FORM_FINA || last_form == JOINING_FORM_ISOL;
+	منطقي join = آخری_form == JOINING_FORM_FINA || آخری_form == JOINING_FORM_ISOL;
 
-	if (join)
+	إذا (join)
 	{
 	  /* Fixup previous syllable's form. */
-	  last_form = last_form == JOINING_FORM_FINA ? JOINING_FORM_MEDI : JOINING_FORM_INIT;
-	  for (unsigned int i = last_start; i < start; i++)
-	    info[i].mask = (info[i].mask & other_masks) | masks[last_form];
+	  آخری_form = آخری_form == JOINING_FORM_FINA ? JOINING_FORM_MEDI : JOINING_FORM_INIT;
+	  لكل (بنانشانی صحيح i = آخری_شروع; i < شروع; i++)
+	    info[i].نقاب = (info[i].نقاب & other_masks) | masks[آخری_form];
 	}
 
 	/* Form for this syllable. */
-	last_form = join ? JOINING_FORM_FINA : JOINING_FORM_ISOL;
-	for (unsigned int i = start; i < end; i++)
-	  info[i].mask = (info[i].mask & other_masks) | masks[last_form];
+	آخری_form = join ? JOINING_FORM_FINA : JOINING_FORM_ISOL;
+	لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
+	  info[i].نقاب = (info[i].نقاب & other_masks) | masks[آخری_form];
 
-	break;
+	اكسر;
     }
 
-    last_start = start;
+    آخری_شروع = شروع;
   }
 }
 
-static bool
-setup_syllables_use (const hb_ot_shape_plan_t *plan,
-		     hb_font_t *font HB_UNUSED,
-		     hb_buffer_t *buffer)
+ساكن منطقي
+تیاری_syllables_use (ثابت hb_ot_shape_plan_t *plan,
+		     hb_font_t *font HB_بن_ورتیا,
+		     hb_بفر_t *بفر)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, syllable);
-  find_syllables_use (buffer);
-  foreach_syllable (buffer, start, end)
-    buffer->unsafe_to_break (start, end);
-  setup_rphf_mask (plan, buffer);
-  setup_topographical_masks (plan, buffer);
-  return false;
+  HB_بفر_ALLOCATE_VAR (بفر, syllable);
+  لبھو_syllables_use (بفر);
+  foreach_syllable (بفر, شروع, سرا)
+    بفر->unsafe_منزل_break (شروع, سرا);
+  تیاری_rphf_نقاب (plan, بفر);
+  تیاری_topographical_masks (plan, بفر);
+  أرجع خطأ;
 }
 
-static bool
-record_rphf_use (const hb_ot_shape_plan_t *plan,
-		 hb_font_t *font HB_UNUSED,
-		 hb_buffer_t *buffer)
+ساكن منطقي
+ریکارڈ_rphf_use (ثابت hb_ot_shape_plan_t *plan,
+		 hb_font_t *font HB_بن_ورتیا,
+		 hb_بفر_t *بفر)
 {
-  const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
+  ثابت use_shape_plan_t *use_plan = (ثابت use_shape_plan_t *) plan->انکڑے;
 
-  hb_mask_t mask = use_plan->rphf_mask;
-  if (!mask) return false;
-  hb_glyph_info_t *info = buffer->info;
+  hb_نقاب_t نقاب = use_plan->rphf_نقاب;
+  إذا (!نقاب) أرجع خطأ;
+  hb_glyph_info_t *info = بفر->info;
 
-  foreach_syllable (buffer, start, end)
+  foreach_syllable (بفر, شروع, سرا)
   {
     /* Mark a substituted repha as USE(R). */
-    for (unsigned int i = start; i < end && (info[i].mask & mask); i++)
-      if (_hb_glyph_info_substituted (&info[i]))
+    لكل (بنانشانی صحيح i = شروع; i < سرا && (info[i].نقاب & نقاب); i++)
+      إذا (_hb_glyph_info_substituted (&info[i]))
       {
 	info[i].use_category() = USE(R);
-	break;
+	اكسر;
       }
   }
-  return false;
+  أرجع خطأ;
 }
 
-static bool
-record_pref_use (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		 hb_font_t *font HB_UNUSED,
-		 hb_buffer_t *buffer)
+ساكن منطقي
+ریکارڈ_pref_use (ثابت hb_ot_shape_plan_t *plan HB_بن_ورتیا,
+		 hb_font_t *font HB_بن_ورتیا,
+		 hb_بفر_t *بفر)
 {
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = بفر->info;
 
-  foreach_syllable (buffer, start, end)
+  foreach_syllable (بفر, شروع, سرا)
   {
     /* Mark a substituted pref as VPre, as they behave the same way. */
-    for (unsigned int i = start; i < end; i++)
-      if (_hb_glyph_info_substituted (&info[i]))
+    لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
+      إذا (_hb_glyph_info_substituted (&info[i]))
       {
 	info[i].use_category() = USE(VPre);
-	break;
+	اكسر;
       }
   }
-  return false;
+  أرجع خطأ;
 }
 
-static inline bool
-is_halant_use (const hb_glyph_info_t &info)
+ساكن مضمن منطقي
+is_halant_use (ثابت hb_glyph_info_t &info)
 {
-  return (info.use_category() == USE(H) || info.use_category() == USE(HVM) || info.use_category() == USE(IS)) &&
+  أرجع (info.use_category() == USE(H) || info.use_category() == USE(HVM) || info.use_category() == USE(IS)) &&
 	 !_hb_glyph_info_ligated (&info);
 }
 
-static void
-reorder_syllable_use (hb_buffer_t *buffer, unsigned int start, unsigned int end)
+ساكن فراغ
+reorder_syllable_use (hb_بفر_t *بفر, بنانشانی صحيح شروع, بنانشانی صحيح سرا)
 {
-  use_syllable_type_t syllable_type = (use_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
+  use_syllable_type_t syllable_type = (use_syllable_type_t) (بفر->info[شروع].syllable() & 0x0F);
   /* Only a few syllable types need reordering. */
-  if (unlikely (!(FLAG_UNSAFE (syllable_type) &
+  إذا (unlikely (!(FLAG_UNSAFE (syllable_type) &
 		  (FLAG (use_virama_terminated_cluster) |
 		   FLAG (use_sakot_terminated_cluster) |
 		   FLAG (use_standard_cluster) |
-		   FLAG (use_symbol_cluster) |
+		   FLAG (use_علامت_cluster) |
 		   FLAG (use_broken_cluster) |
 		   0))))
-    return;
+    أرجع;
 
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = بفر->info;
 
-#define POST_BASE_FLAGS64 (FLAG64 (USE(FAbv)) | \
+#تعریف_کرو POST_ادھار_FLAGS64 (FLAG64 (USE(FAbv)) | \
 			   FLAG64 (USE(FBlw)) | \
 			   FLAG64 (USE(FPst)) | \
 			   FLAG64 (USE(FMAbv)) | \
@@ -394,121 +394,121 @@ reorder_syllable_use (hb_buffer_t *buffer, unsigned int start, unsigned int end)
 			   FLAG64 (USE(VMPre)))
 
   /* Move things forward. */
-  if (info[start].use_category() == USE(R) && end - start > 1)
+  إذا (info[شروع].use_category() == USE(R) && سرا - شروع > 1)
   {
     /* Got a repha.  Reorder it towards the end, but before the first post-base
      * glyph. */
-    for (unsigned int i = start + 1; i < end; i++)
+    لكل (بنانشانی صحيح i = شروع + 1; i < سرا; i++)
     {
-      bool is_post_base_glyph = (FLAG64_UNSAFE (info[i].use_category()) & POST_BASE_FLAGS64) ||
+      منطقي is_post_ادھار_glyph = (FLAG64_UNSAFE (info[i].use_category()) & POST_ادھار_FLAGS64) ||
 				is_halant_use (info[i]);
-      if (is_post_base_glyph || i == end - 1)
+      إذا (is_post_ادھار_glyph || i == سرا - 1)
       {
 	/* If we hit a post-base glyph, move before it; otherwise move to the
 	 * end. Shift things in between backward. */
 
-	if (is_post_base_glyph)
+	إذا (is_post_ادھار_glyph)
 	  i--;
 
-	buffer->merge_clusters (start, i + 1);
-	hb_glyph_info_t t = info[start];
-	memmove (&info[start], &info[start + 1], (i - start) * sizeof (info[0]));
+	بفر->ملاؤ_clusters (شروع, i + 1);
+	hb_glyph_info_t t = info[شروع];
+	memmove (&info[شروع], &info[شروع + 1], (i - شروع) * حجم (info[0]));
 	info[i] = t;
 
-	break;
+	اكسر;
       }
     }
   }
 
   /* Move things back. */
-  unsigned int j = start;
-  for (unsigned int i = start; i < end; i++)
+  بنانشانی صحيح j = شروع;
+  لكل (بنانشانی صحيح i = شروع; i < سرا; i++)
   {
     uint32_t flag = FLAG_UNSAFE (info[i].use_category());
-    if (is_halant_use (info[i]))
+    إذا (is_halant_use (info[i]))
     {
       /* If we hit a halant, move after it; otherwise move to the beginning, and
        * shift things in between forward. */
       j = i + 1;
     }
-    else if (((flag) & (FLAG (USE(VPre)) | FLAG (USE(VMPre)))) &&
+    وإلا إذا (((flag) & (FLAG (USE(VPre)) | FLAG (USE(VMPre)))) &&
 	     /* Only move the first component of a MultipleSubst. */
 	     0 == _hb_glyph_info_get_lig_comp (&info[i]) &&
 	     j < i)
     {
-      buffer->merge_clusters (j, i + 1);
+      بفر->ملاؤ_clusters (j, i + 1);
       hb_glyph_info_t t = info[i];
-      memmove (&info[j + 1], &info[j], (i - j) * sizeof (info[0]));
+      memmove (&info[j + 1], &info[j], (i - j) * حجم (info[0]));
       info[j] = t;
     }
   }
 }
 
-static bool
-reorder_use (const hb_ot_shape_plan_t *plan,
+ساكن منطقي
+reorder_use (ثابت hb_ot_shape_plan_t *plan,
 	     hb_font_t *font,
-	     hb_buffer_t *buffer)
+	     hb_بفر_t *بفر)
 {
-  bool ret = false;
-  if (buffer->message (font, "start reordering USE"))
+  منطقي ret = خطأ;
+  إذا (بفر->سنیہا (font, "start reordering USE"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    إذا (hb_syllabic_داخل_کرو_dotted_circles (font, بفر,
 					   use_broken_cluster,
 					   USE(B),
 					   USE(R)))
-      ret = true;
+      ret = سچ;
 
-    foreach_syllable (buffer, start, end)
-      reorder_syllable_use (buffer, start, end);
+    foreach_syllable (بفر, شروع, سرا)
+      reorder_syllable_use (بفر, شروع, سرا);
 
-    (void) buffer->message (font, "end reordering USE");
+    (فراغ) بفر->سنیہا (font, "end reordering USE");
   }
 
-  HB_BUFFER_DEALLOCATE_VAR (buffer, use_category);
+  HB_بفر_DEALLOCATE_VAR (بفر, use_category);
 
-  return ret;
+  أرجع ret;
 }
 
 
-static void
-preprocess_text_use (const hb_ot_shape_plan_t *plan,
-		     hb_buffer_t              *buffer,
+ساكن فراغ
+preprocess_متن_use (ثابت hb_ot_shape_plan_t *plan,
+		     hb_بفر_t              *بفر,
 		     hb_font_t                *font)
 {
-  _hb_preprocess_text_vowel_constraints (plan, buffer, font);
+  hb_preprocess_متن_vowel_constraints (plan, بفر, font);
 }
 
-static bool
-compose_use (const hb_ot_shape_normalize_context_t *c,
+ساكن منطقي
+compose_use (ثابت hb_ot_shape_normalize_context_t *c,
 	     hb_codepoint_t  a,
 	     hb_codepoint_t  b,
 	     hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  إذا (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    أرجع خطأ;
 
-  return (bool)c->unicode->compose (a, b, ab);
+  أرجع (منطقي)c->unicode->compose (a, b, ab);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_use =
+ثابت hb_ot_shaper_t _hb_ot_shaper_use =
 {
   collect_features_use,
-  nullptr, /* override_features */
-  data_create_use,
-  data_destroy_use,
-  preprocess_text_use,
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
+  خالی_سوچک, /* override_features */
+  انکڑے_create_use,
+  انکڑے_destroy_use,
+  preprocess_متن_use,
+  خالی_سوچک, /* postprocess_glyphs */
+  خالی_سوچک, /* decompose */
   compose_use,
-  setup_masks_use,
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY,
-  false, /* fallback_position */
+  تیاری_masks_use,
+  خالی_سوچک, /* reorder_marks */
+  HB_ٹیگ_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_منوال_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
+  HB_OT_SHAPE_ZERO_چوڑائی_MARKS_BY_GDEF_EARLY,
+  خطأ, /* fallback_position */
 };
 
 
-#endif
+#جے_انت

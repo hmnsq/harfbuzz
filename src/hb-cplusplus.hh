@@ -22,175 +22,175 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_CPLUSPLUS_HH
-#define HB_CPLUSPLUS_HH
+#جے_بنا_تعریف HB_CPLUSPLUS_HH
+#تعریف_کرو HB_CPLUSPLUS_HH
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#ifdef __cplusplus
+#جے_تعریف_شدہ __cplusplus
 
-#include <functional>
-#include <utility>
+#ضمن <functional>
+#ضمن <utility>
 
-#if 0
-#if !(__cplusplus >= 201103L)
-#error "HarfBuzz C++ helpers require C++11"
-#endif
-#endif
+#إذا 0
+#إذا !(__cplusplus >= 201103L)
+#غلطی "HarfBuzz C++ helpers require C++11"
+#جے_انت
+#جے_انت
 
-namespace hb {
+نطاق hb {
 
 
-template <typename T>
-struct vtable;
+سانچا <قسم_ناں T>
+بنية vtable;
 
-template <typename T>
-struct shared_ptr
+سانچا <قسم_ناں T>
+بنية shared_ptr
 {
-  using element_type = T;
+  ورتوں element_type = T;
 
-  using v = vtable<T>;
+  ورتوں v = vtable<T>;
 
-  explicit shared_ptr (T *p = nullptr) : p (p) {}
-  shared_ptr (const shared_ptr &o) : p (v::reference (o.p)) {}
-  shared_ptr (shared_ptr &&o)  noexcept : p (o.p) { o.p = nullptr; }
-  shared_ptr& operator = (const shared_ptr &o) { if (p != o.p) { destroy (); p = o.p; reference (); } return *this; }
-  shared_ptr& operator = (shared_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; return *this; }
-  ~shared_ptr () { v::destroy (p); p = nullptr; }
+  واضح shared_ptr (T *p = خالی_سوچک) : p (p) {}
+  shared_ptr (ثابت shared_ptr &o) : p (v::reference (o.p)) {}
+  shared_ptr (shared_ptr &&o)  noexcept : p (o.p) { o.p = خالی_سوچک; }
+  shared_ptr& عامل = (ثابت shared_ptr &o) { إذا (p != o.p) { destroy (); p = o.p; reference (); } أرجع *هذا; }
+  shared_ptr& عامل = (shared_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = خالی_سوچک; أرجع *هذا; }
+  ~shared_ptr () { v::destroy (p); p = خالی_سوچک; }
 
-  T* get() const { return p; }
+  T* get() ثابت { أرجع p; }
 
-  void swap (shared_ptr &o)  noexcept { std::swap (p, o.p); }
-  friend void swap (shared_ptr &a, shared_ptr &b)  noexcept { std::swap (a.p, b.p); }
+  فراغ swap (shared_ptr &o)  noexcept { std::swap (p, o.p); }
+  یار فراغ swap (shared_ptr &a, shared_ptr &b)  noexcept { std::swap (a.p, b.p); }
 
-  operator T * () const { return p; }
-  T& operator * () const { return *get (); }
-  T* operator -> () const { return get (); }
-  operator bool () const { return p; }
-  bool operator == (const shared_ptr &o) const { return p == o.p; }
-  bool operator != (const shared_ptr &o) const { return p != o.p; }
+  عامل T * () ثابت { أرجع p; }
+  T& عامل * () ثابت { أرجع *get (); }
+  T* عامل -> () ثابت { أرجع get (); }
+  عامل منطقي () ثابت { أرجع p; }
+  منطقي عامل == (ثابت shared_ptr &o) ثابت { أرجع p == o.p; }
+  منطقي عامل != (ثابت shared_ptr &o) ثابت { أرجع p != o.p; }
 
-  static T* get_empty() { return v::get_empty (); }
-  T* reference() { return v::reference (p); }
-  void destroy() { v::destroy (p); }
-  void set_user_data (hb_user_data_key_t *key,
-		      void *value,
+  ساكن T* get_خالی_تھاواں() { أرجع v::get_خالی_تھاواں (); }
+  T* reference() { أرجع v::reference (p); }
+  فراغ destroy() { v::destroy (p); }
+  فراغ سیٹ_user_انکڑے (hb_user_انکڑے_کلید_t *key,
+		      فراغ *value,
 		      hb_destroy_func_t destroy,
-		      hb_bool_t replace) { v::set_user_data (p, key, value, destroy, replace); } 
-  void * get_user_data (hb_user_data_key_t *key) { return v::get_user_data (p, key); }
+		      hb_bool_t replace) { v::سیٹ_user_انکڑے (p, key, value, destroy, replace); } 
+  فراغ * get_user_انکڑے (hb_user_انکڑے_کلید_t *key) { أرجع v::get_user_انکڑے (p, key); }
 
-  private:
+  خاص:
   T *p;
 };
 
-template<typename T> struct is_shared_ptr : std::false_type {};
-template<typename T> struct is_shared_ptr<shared_ptr<T>> : std::true_type {};
+سانچا<قسم_ناں T> بنية is_shared_ptr : std::false_type {};
+سانچا<قسم_ناں T> بنية is_shared_ptr<shared_ptr<T>> : std::true_type {};
 
-template <typename T>
-struct unique_ptr
+سانچا <قسم_ناں T>
+بنية unique_ptr
 {
-  using element_type = T;
+  ورتوں element_type = T;
 
-  using v = vtable<T>;
+  ورتوں v = vtable<T>;
 
-  explicit unique_ptr (T *p = nullptr) : p (p) {}
-  unique_ptr (const unique_ptr &o) = delete;
-  unique_ptr (unique_ptr &&o)  noexcept : p (o.p) { o.p = nullptr; }
-  unique_ptr& operator = (const unique_ptr &o) = delete;
-  unique_ptr& operator = (unique_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; return *this; }
-  ~unique_ptr () { v::destroy (p); p = nullptr; }
+  واضح unique_ptr (T *p = خالی_سوچک) : p (p) {}
+  unique_ptr (ثابت unique_ptr &o) = مٹاؤ;
+  unique_ptr (unique_ptr &&o)  noexcept : p (o.p) { o.p = خالی_سوچک; }
+  unique_ptr& عامل = (ثابت unique_ptr &o) = مٹاؤ;
+  unique_ptr& عامل = (unique_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = خالی_سوچک; أرجع *هذا; }
+  ~unique_ptr () { v::destroy (p); p = خالی_سوچک; }
 
-  T* get() const { return p; }
-  T* release () { T* v = p; p = nullptr; return v; }
+  T* get() ثابت { أرجع p; }
+  T* release () { T* v = p; p = خالی_سوچک; أرجع v; }
 
-  void swap (unique_ptr &o)  noexcept { std::swap (p, o.p); }
-  friend void swap (unique_ptr &a, unique_ptr &b)  noexcept { std::swap (a.p, b.p); }
+  فراغ swap (unique_ptr &o)  noexcept { std::swap (p, o.p); }
+  یار فراغ swap (unique_ptr &a, unique_ptr &b)  noexcept { std::swap (a.p, b.p); }
 
-  operator T * () const { return p; }
-  T& operator * () const { return *get (); }
-  T* operator -> () const { return get (); }
-  operator bool () { return p; }
+  عامل T * () ثابت { أرجع p; }
+  T& عامل * () ثابت { أرجع *get (); }
+  T* عامل -> () ثابت { أرجع get (); }
+  عامل منطقي () { أرجع p; }
 
-  private:
+  خاص:
   T *p;
 };
 
-template<typename T> struct is_unique_ptr : std::false_type {};
-template<typename T> struct is_unique_ptr<unique_ptr<T>> : std::true_type {};
+سانچا<قسم_ناں T> بنية is_unique_ptr : std::false_type {};
+سانچا<قسم_ناں T> بنية is_unique_ptr<unique_ptr<T>> : std::true_type {};
 
-template <typename T,
-	  T * (*_get_empty) (void),
+سانچا <قسم_ناں T,
+	  T * (*get_خالی_تھاواں_2) (فراغ),
 	  T * (*_reference) (T *),
-	  void (*_destroy) (T *),
-	  hb_bool_t (*_set_user_data) (T *,
-				       hb_user_data_key_t *,
-				       void *,
+	  فراغ (*_destroy) (T *),
+	  hb_bool_t (*سیٹ_user_انکڑے_2) (T *,
+				       hb_user_انکڑے_کلید_t *,
+				       فراغ *,
 				       hb_destroy_func_t,
 				       hb_bool_t),
-	  void * (*_get_user_data) (const T *,
-				    hb_user_data_key_t *)>
-struct vtable_t
+	  فراغ * (*get_user_انکڑے_2) (ثابت T *,
+				    hb_user_انکڑے_کلید_t *)>
+بنية vtable_t
 {
-  static constexpr auto get_empty = _get_empty;
-  static constexpr auto reference = _reference;
-  static constexpr auto destroy = _destroy;
-  static constexpr auto set_user_data = _set_user_data;
-  static constexpr auto get_user_data = _get_user_data;
+  ساكن constexpr خودکار get_خالی_تھاواں = get_خالی_تھاواں_2;
+  ساكن constexpr خودکار reference = _reference;
+  ساكن constexpr خودکار destroy = _destroy;
+  ساكن constexpr خودکار سیٹ_user_انکڑے = سیٹ_user_انکڑے_2;
+  ساكن constexpr خودکار get_user_انکڑے = get_user_انکڑے_2;
 };
 
-#define HB_DEFINE_VTABLE(name, empty) \
-	template<> \
-	struct vtable<hb_##name##_t> \
+#تعریف_کرو HB_DEFINE_VTABLE(name, خالی_تھاواں_2) \
+	سانچا<> \
+	بنية vtable<hb_##name##_t> \
 	     : vtable_t<hb_##name##_t, \
-			empty, \
+			خالی_تھاواں_2, \
 			&hb_##name##_reference, \
 			&hb_##name##_destroy, \
 			&hb_##name##_set_user_data, \
 			&hb_##name##_get_user_data> {}
 
-HB_DEFINE_VTABLE (buffer, &hb_buffer_get_empty);
-HB_DEFINE_VTABLE (blob, &hb_blob_get_empty);
-HB_DEFINE_VTABLE (face, &hb_face_get_empty);
-HB_DEFINE_VTABLE (font, &hb_font_get_empty);
-HB_DEFINE_VTABLE (font_funcs, &hb_font_funcs_get_empty);
-HB_DEFINE_VTABLE (map, &hb_map_get_empty);
-HB_DEFINE_VTABLE (set, &hb_set_get_empty);
-HB_DEFINE_VTABLE (shape_plan, &hb_shape_plan_get_empty);
-HB_DEFINE_VTABLE (unicode_funcs, &hb_unicode_funcs_get_empty);
-HB_DEFINE_VTABLE (draw_funcs, &hb_draw_funcs_get_empty);
-HB_DEFINE_VTABLE (paint_funcs, &hb_paint_funcs_get_empty);
+HB_DEFINE_VTABLE (بفر, &hb_بفر_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (blob, &hb_blob_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (face, &hb_face_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (font, &hb_font_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (font_funcs, &hb_font_funcs_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (map, &hb_map_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (سیٹ, &hb_سیٹ_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (shape_plan, &hb_shape_plan_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (unicode_funcs, &hb_unicode_funcs_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (draw_funcs, &hb_draw_funcs_get_خالی_تھاواں);
+HB_DEFINE_VTABLE (paint_funcs, &hb_paint_funcs_get_خالی_تھاواں);
 
 
-#ifdef HB_SUBSET_H
+#جے_تعریف_شدہ HB_SUBSET_H
 
-HB_DEFINE_VTABLE (subset_input, nullptr);
-HB_DEFINE_VTABLE (subset_plan, nullptr);
+HB_DEFINE_VTABLE (subset_داخلہ, خالی_سوچک);
+HB_DEFINE_VTABLE (subset_plan, خالی_سوچک);
 
-#endif
-
-
-#ifdef HB_RASTER_H
-
-HB_DEFINE_VTABLE (raster_image, nullptr);
-HB_DEFINE_VTABLE (raster_draw, nullptr);
-HB_DEFINE_VTABLE (raster_paint, nullptr);
-
-#endif
+#جے_انت
 
 
-#ifdef HB_VECTOR_H
+#جے_تعریف_شدہ HB_RASTER_H
 
-HB_DEFINE_VTABLE (vector_draw, nullptr);
-HB_DEFINE_VTABLE (vector_paint, nullptr);
+HB_DEFINE_VTABLE (raster_image, خالی_سوچک);
+HB_DEFINE_VTABLE (raster_draw, خالی_سوچک);
+HB_DEFINE_VTABLE (raster_paint, خالی_سوچک);
 
-#endif
+#جے_انت
 
 
-#ifdef HB_GPU_H
+#جے_تعریف_شدہ HB_سمتیہ_H
 
-HB_DEFINE_VTABLE (gpu_draw, nullptr);
+HB_DEFINE_VTABLE (سمتیہ_draw, خالی_سوچک);
+HB_DEFINE_VTABLE (سمتیہ_paint, خالی_سوچک);
 
-#endif
+#جے_انت
+
+
+#جے_تعریف_شدہ HB_GPU_H
+
+HB_DEFINE_VTABLE (gpu_draw, خالی_سوچک);
+
+#جے_انت
 
 /* HB_DEFINE_VTABLE stays available for subsystem headers' paired tail
  * blocks (see hb-raster.h, hb-vector.h, hb-gpu.h, hb-subset.h). */
@@ -201,32 +201,32 @@ HB_DEFINE_VTABLE (gpu_draw, nullptr);
 /* Workaround for GCC < 7, see:
  * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=56480
  * https://stackoverflow.com/a/25594741 */
-namespace std {
+نطاق std {
 
 
-template<typename T>
-struct hash<hb::shared_ptr<T>>
+سانچا<قسم_ناں T>
+بنية hash<hb::shared_ptr<T>>
 {
-    std::size_t operator()(const hb::shared_ptr<T>& v) const noexcept
+    std::size_t عامل()(ثابت hb::shared_ptr<T>& v) ثابت noexcept
     {
         std::size_t h = std::hash<decltype (v.get ())>{}(v.get ());
-        return h;
+        أرجع h;
     }
 };
 
-template<typename T>
-struct hash<hb::unique_ptr<T>>
+سانچا<قسم_ناں T>
+بنية hash<hb::unique_ptr<T>>
 {
-    std::size_t operator()(const hb::unique_ptr<T>& v) const noexcept
+    std::size_t عامل()(ثابت hb::unique_ptr<T>& v) ثابت noexcept
     {
         std::size_t h = std::hash<decltype (v.get ())>{}(v.get ());
-        return h;
+        أرجع h;
     }
 };
 
 
 } // namespace std
 
-#endif /* __cplusplus */
+#جے_انت /* __cplusplus */
 
-#endif /* HB_CPLUSPLUS_HH */
+#جے_انت /* HB_CPLUSPLUS_HH */

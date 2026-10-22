@@ -15,26 +15,26 @@ Input files:
 * ms-use/IndicPositionalCategory-Additional.txt
 """
 
-import os
-import packTab
+استورد os
+استورد packTab
 
-import sys
-import logging
+استورد sys
+استورد logging
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
-    del sys.argv[1]
+إذا لمبائی(sys.argv) > 1 و sys.argv[1] == "--rust":
+    ہٹاؤ sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+وإلا:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
-import sys
+استورد sys
 
-if len (sys.argv) != 10:
+إذا لمبائی (sys.argv) != 10:
 	sys.exit (__doc__)
 
 DISABLED_SCRIPTS = {
@@ -45,71 +45,71 @@ DISABLED_SCRIPTS = {
 	'Thai',
 }
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') لكل x في sys.argv[1:]]
 
-headers = [[f.readline () for i in range (2)] for j,f in enumerate(files) if j != 4]
-for j in range(7, 9):
-	for line in files[j]:
-		line = line.rstrip()
-		if not line:
-			break
-		headers[j - 1].append(line)
-headers.append (["UnicodeData.txt does not have a header."])
+سرخیاں = [[f.readline () لكل i في سلسلہ (2)] لكل j,f في enumerate(files) إذا j != 4]
+لكل j في سلسلہ(7, 9):
+	لكل سطر في files[j]:
+		سطر = سطر.rstrip()
+		إذا ليس سطر:
+			اكسر
+		سرخیاں[j - 1].append(سطر)
+سرخیاں.append (["UnicodeData.txt does not have a header."])
 
-unicode_data = [{} for _ in files]
-values = [{} for _ in files]
-for i, f in enumerate (files):
-	for line in f:
+unicode_انکڑے = [{} لكل _ في files]
+اقدار = [{} لكل _ في files]
+لكل i, f في enumerate (files):
+	لكل سطر في f:
 
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
+		j = سطر.لبھو ('#')
+		إذا j >= 0:
+			سطر = سطر[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () لكل x في سطر.ونڈو (';')]
+		إذا لمبائی (fields) == 1:
+			استمر
 
-		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
-			end = start
-		else:
-			end = int (uu[1], 16)
+		uu = fields[0].ونڈو ('..')
+		شروع = صحيح (uu[0], 16)
+		إذا لمبائی (uu) == 1:
+			سرا = شروع
+		وإلا:
+			سرا = صحيح (uu[1], 16)
 
-		t = fields[1 if i not in [2, 4] else 2]
+		t = fields[1 إذا i ليس في [2, 4] وإلا 2]
 
-		if i == 2:
+		إذا i == 2:
 			t = 'jt_' + t
-		elif i == 3 and t != 'Default_Ignorable_Code_Point':
-			continue
-		elif i == 7 and t == 'Consonant_Final_Modifier':
+		وإلاإذا i == 3 و t != 'Default_Ignorable_Code_Point':
+			استمر
+		وإلاإذا i == 7 و t == 'Consonant_Final_Modifier':
 			# TODO: https://github.com/MicrosoftDocs/typography-issues/issues/336
 			t = 'Syllable_Modifier'
-		elif i == 8 and t == 'NA':
+		وإلاإذا i == 8 و t == 'NA':
 			t = 'Not_Applicable'
 
-		i0 = i if i < 7 else i - 7
-		for u in range (start, end + 1):
-			unicode_data[i0][u] = t
-		values[i0][t] = values[i0].get (t, 0) + end - start + 1
+		i0 = i إذا i < 7 وإلا i - 7
+		لكل u في سلسلہ (شروع, سرا + 1):
+			unicode_انکڑے[i0][u] = t
+		اقدار[i0][t] = اقدار[i0].get (t, 0) + سرا - شروع + 1
 
 defaults = ('Other', 'Not_Applicable', 'jt_X', '', 'Cn', 'No_Block', 'Unknown')
 
 # Merge data into one dict:
-for i,v in enumerate (defaults):
-	values[i][v] = values[i].get (v, 0) + 1
+لكل i,v في enumerate (defaults):
+	اقدار[i][v] = اقدار[i].get (v, 0) + 1
 combined = {}
-for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
-		if not u in combined:
-			if i >= 4:
-				continue
+لكل i,d في enumerate (unicode_انکڑے):
+	لكل u,v في d.اشیاء ():
+		إذا ليس u في combined:
+			إذا i >= 4:
+				استمر
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k: v for k, v in combined.items() if v[6] not in DISABLED_SCRIPTS}
+combined = {k: v لكل k, v في combined.اشیاء() إذا v[6] ليس في DISABLED_SCRIPTS}
 
 
-property_names = [
+property_ناں = [
 	# General_Category
 	'Cc', 'Cf', 'Cn', 'Co', 'Cs', 'Ll', 'Lm', 'Lo', 'Lt', 'Lu', 'Mc',
 	'Me', 'Mn', 'Nd', 'Nl', 'No', 'Pc', 'Pd', 'Pe', 'Pf', 'Pi', 'Po',
@@ -188,121 +188,121 @@ property_names = [
 	'jt_X',
 ]
 
-class PropertyValue(object):
-	def __init__(self, name_):
+صنف Property_قدر(object):
+	تعریف __init__(self, name_):
 		self.name = name_
-	def __str__(self):
-		return self.name
-	def __eq__(self, other):
-		return self.name == (other if isinstance(other, str) else other.name)
-	def __ne__(self, other):
-		return not (self == other)
-	def __hash__(self):
-		return hash(str(self))
+	تعریف __str__(self):
+		أرجع self.name
+	تعریف __eq__(self, other):
+		أرجع self.name == (other إذا isinstance(other, str) وإلا other.name)
+	تعریف __ne__(self, other):
+		أرجع ليس (self == other)
+	تعریف __hash__(self):
+		أرجع hash(str(self))
 
-property_values = {}
+property_اقدار = {}
 
-for name in property_names:
-	value = PropertyValue(name)
-	assert value not in property_values
-	assert value not in globals()
-	property_values[name] = value
-globals().update(property_values)
+لكل name في property_ناں:
+	قدر_2 = Property_قدر(name)
+	أكد قدر_2 ليس في property_اقدار
+	أكد قدر_2 ليس في globals()
+	property_اقدار[name] = قدر_2
+globals().update(property_اقدار)
 
 
-def is_BASE(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Number, Consonant, Consonant_Head_Letter,
+تعریف is_ادھار(U, UISC, UDI, UGC, AJT):
+	أرجع (UISC في [نمبر, Consonant, Consonant_سر_Letter,
 			Tone_Letter,
 			Vowel_Independent,
-			] or
+			] أو
 		# TODO: https://github.com/MicrosoftDocs/typography-issues/issues/484
-		AJT in [jt_C, jt_D, jt_L, jt_R] and UISC != Joiner or
-		(UGC == Lo and UISC in [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
+		AJT في [jt_C, jt_D, jt_L, jt_R] و UISC != Joiner أو
+		(UGC == Lo و UISC في [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
 					Consonant_Subjoined, Vowel, Vowel_Dependent]))
-def is_BASE_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Brahmi_Joining_Number
-def is_BASE_OTHER(U, UISC, UDI, UGC, AJT):
-	if UISC == Consonant_Placeholder: return True
-	return U in [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
-def is_CGJ(U, UISC, UDI, UGC, AJT):
+تعریف is_ادھار_عدد(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Brahmi_Joining_نمبر
+تعریف is_ادھار_OTHER(U, UISC, UDI, UGC, AJT):
+	إذا UISC == Consonant_Placeholder: أرجع سچ
+	أرجع U في [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
+تعریف is_CGJ(U, UISC, UDI, UGC, AJT):
 	# Also includes VARIATION_SELECTOR and ZWJ
-	return UISC == Joiner or UDI and UGC in [Mc, Me, Mn]
-def is_CONS_FINAL(U, UISC, UDI, UGC, AJT):
-	return ((UISC == Consonant_Final and UGC != Lo) or
+	أرجع UISC == Joiner أو UDI و UGC في [Mc, Me, Mn]
+تعریف is_CONS_FINAL(U, UISC, UDI, UGC, AJT):
+	أرجع ((UISC == Consonant_Final و UGC != Lo) أو
 		UISC == Consonant_Succeeding_Repha)
-def is_CONS_FINAL_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Syllable_Modifier
-def is_CONS_MED(U, UISC, UDI, UGC, AJT):
+تعریف is_CONS_FINAL_MOD(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Syllable_Modifier
+تعریف is_CONS_MED(U, UISC, UDI, UGC, AJT):
 	# Consonant_Initial_Postfixed is new in Unicode 11; not in the spec.
-	return (UISC == Consonant_Medial and UGC != Lo or
+	أرجع (UISC == Consonant_Medial و UGC != Lo أو
 		UISC == Consonant_Initial_Postfixed)
-def is_CONS_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC in [Nukta, Gemination_Mark, Consonant_Killer]
-def is_CONS_SUB(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_Subjoined and UGC != Lo
-def is_CONS_WITH_STACKER(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_With_Stacker
-def is_HALANT(U, UISC, UDI, UGC, AJT):
-	return UISC == Virama and not is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
-def is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT):
+تعریف is_CONS_MOD(U, UISC, UDI, UGC, AJT):
+	أرجع UISC في [Nukta, Gemination_Mark, Consonant_Killer]
+تعریف is_CONS_SUB(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Consonant_Subjoined و UGC != Lo
+تعریف is_CONS_WITH_STACKER(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Consonant_With_Stacker
+تعریف is_HALANT(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Virama و ليس is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
+تعریف is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x0DCA
-def is_HALANT_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Number_Joiner
-def is_HIEROGLYPH(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph
-def is_HIEROGLYPH_JOINER(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Joiner
-def is_HIEROGLYPH_MIRROR(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Mirror
-def is_HIEROGLYPH_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Modifier
-def is_HIEROGLYPH_SEGMENT_BEGIN(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
-def is_HIEROGLYPH_SEGMENT_END(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_End, Hieroglyph_Segment_End]
-def is_INVISIBLE_STACKER(U, UISC, UDI, UGC, AJT):
+	أرجع U == 0x0DCA
+تعریف is_HALANT_عدد(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == نمبر_Joiner
+تعریف is_HIEROGLYPH(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Hieroglyph
+تعریف is_HIEROGLYPH_JOINER(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Hieroglyph_Joiner
+تعریف is_HIEROGLYPH_MIRROR(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Hieroglyph_Mirror
+تعریف is_HIEROGLYPH_MOD(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Hieroglyph_Modifier
+تعریف is_HIEROGLYPH_SEGMENT_BEGIN(U, UISC, UDI, UGC, AJT):
+	أرجع UISC في [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
+تعریف is_HIEROGLYPH_SEGMENT_سرا(U, UISC, UDI, UGC, AJT):
+	أرجع UISC في [Hieroglyph_Mark_سرا, Hieroglyph_Segment_سرا]
+تعریف is_INVISIBLE_STACKER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return (UISC == Invisible_Stacker
-		and not is_SAKOT(U, UISC, UDI, UGC, AJT)
+	أرجع (UISC == Invisible_Stacker
+		و ليس is_SAKOT(U, UISC, UDI, UGC, AJT)
 	)
-def is_ZWNJ(U, UISC, UDI, UGC, AJT):
-	return UISC == Non_Joiner
-def is_OTHER(U, UISC, UDI, UGC, AJT):
+تعریف is_ZWNJ(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Non_Joiner
+تعریف is_OTHER(U, UISC, UDI, UGC, AJT):
 	# Also includes BASE_IND and SYM
-	return ((UGC == Po or UISC in [Consonant_Dead, Joiner, Modifying_Letter, Other])
-		and not is_BASE(U, UISC, UDI, UGC, AJT)
-		and not is_BASE_OTHER(U, UISC, UDI, UGC, AJT)
-		and not is_CGJ(U, UISC, UDI, UGC, AJT)
-		and not is_SYM_MOD(U, UISC, UDI, UGC, AJT)
-		and not is_Word_Joiner(U, UISC, UDI, UGC, AJT)
+	أرجع ((UGC == Po أو UISC في [Consonant_Dead, Joiner, Modifying_Letter, Other])
+		و ليس is_ادھار(U, UISC, UDI, UGC, AJT)
+		و ليس is_ادھار_OTHER(U, UISC, UDI, UGC, AJT)
+		و ليس is_CGJ(U, UISC, UDI, UGC, AJT)
+		و ليس is_SYM_MOD(U, UISC, UDI, UGC, AJT)
+		و ليس is_لفظ_Joiner(U, UISC, UDI, UGC, AJT)
 	)
-def is_REORDERING_KILLER(U, UISC, UDI, UGC, AJT):
-	return UISC == Reordering_Killer
-def is_REPHA(U, UISC, UDI, UGC, AJT):
-	return UISC in [Consonant_Preceding_Repha, Consonant_Prefixed]
-def is_SAKOT(U, UISC, UDI, UGC, AJT):
+تعریف is_REORDERING_KILLER(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == Reordering_Killer
+تعریف is_REPHA(U, UISC, UDI, UGC, AJT):
+	أرجع UISC في [Consonant_Preceding_Repha, Consonant_Prefixed]
+تعریف is_SAKOT(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x1A60
-def is_SYM_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Symbol_Modifier
-def is_VOWEL(U, UISC, UDI, UGC, AJT):
-	return (UISC == Pure_Killer or
-		UGC != Lo and UISC in [Vowel, Vowel_Dependent])
-def is_VOWEL_MOD(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Tone_Mark, Cantillation_Mark, Register_Shifter, Visarga] or
-		UGC != Lo and UISC == Bindu)
-def is_Word_Joiner(U, UISC, UDI, UGC, AJT):
+	أرجع U == 0x1A60
+تعریف is_SYM_MOD(U, UISC, UDI, UGC, AJT):
+	أرجع UISC == علامت_Modifier
+تعریف is_VOWEL(U, UISC, UDI, UGC, AJT):
+	أرجع (UISC == خالص_Killer أو
+		UGC != Lo و UISC في [Vowel, Vowel_Dependent])
+تعریف is_VOWEL_MOD(U, UISC, UDI, UGC, AJT):
+	أرجع (UISC في [Tone_Mark, Cantillation_Mark, رجسٹر_Shifter, Visarga] أو
+		UGC != Lo و UISC == Bindu)
+تعریف is_لفظ_Joiner(U, UISC, UDI, UGC, AJT):
 	# Also includes Rsv
-	return (UDI and U not in [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
-		and UISC == Other
-		and not is_CGJ(U, UISC, UDI, UGC, AJT)
-	) or UGC == Cn
+	أرجع (UDI و U ليس في [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
+		و UISC == Other
+		و ليس is_CGJ(U, UISC, UDI, UGC, AJT)
+	) أو UGC == Cn
 
 use_mapping = {
-	'B':	is_BASE,
-	'N':	is_BASE_NUM,
-	'GB':	is_BASE_OTHER,
+	'B':	is_ادھار,
+	'N':	is_ادھار_عدد,
+	'GB':	is_ادھار_OTHER,
 	'CGJ':	is_CGJ,
 	'F':	is_CONS_FINAL,
 	'FM':	is_CONS_FINAL_MOD,
@@ -312,14 +312,14 @@ use_mapping = {
 	'CS':	is_CONS_WITH_STACKER,
 	'H':	is_HALANT,
 	'HVM':	is_HALANT_OR_VOWEL_MODIFIER,
-	'HN':	is_HALANT_NUM,
+	'HN':	is_HALANT_عدد,
 	'IS':	is_INVISIBLE_STACKER,
 	'G':	is_HIEROGLYPH,
 	'HM':	is_HIEROGLYPH_MOD,
 	'HR':	is_HIEROGLYPH_MIRROR,
 	'J':	is_HIEROGLYPH_JOINER,
 	'SB':	is_HIEROGLYPH_SEGMENT_BEGIN,
-	'SE':	is_HIEROGLYPH_SEGMENT_END,
+	'SE':	is_HIEROGLYPH_SEGMENT_سرا,
 	'ZWNJ':	is_ZWNJ,
 	'O':	is_OTHER,
 	'RK':	is_REORDERING_KILLER,
@@ -328,156 +328,156 @@ use_mapping = {
 	'SM':	is_SYM_MOD,
 	'V':	is_VOWEL,
 	'VM':	is_VOWEL_MOD,
-	'WJ':	is_Word_Joiner,
+	'WJ':	is_لفظ_Joiner,
 }
 
 use_positions = {
 	'F': {
-		'Abv': [Top],
+		'Abv': [چوٹی],
 		'Blw': [Bottom],
-		'Pst': [Right],
+		'Pst': [دایاں],
 	},
 	'M': {
-		'Abv': [Top],
-		'Blw': [Bottom, Bottom_And_Left, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Bottom_And_Left],
+		'Abv': [چوٹی],
+		'Blw': [Bottom, Bottom_And_بایاں, Bottom_And_دایاں],
+		'Pst': [دایاں],
+		'Pre': [بایاں, چوٹی_And_Bottom_And_بایاں],
 	},
 	'CM': {
-		'Abv': [Top],
+		'Abv': [چوٹی],
 		'Blw': [Bottom, Overstruck],
 	},
 	'V': {
-		'Abv': [Top, Top_And_Bottom, Top_And_Bottom_And_Right, Top_And_Right],
-		'Blw': [Bottom, Overstruck, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Left, Top_And_Left_And_Right, Left_And_Right],
+		'Abv': [چوٹی, چوٹی_And_Bottom, چوٹی_And_Bottom_And_دایاں, چوٹی_And_دایاں],
+		'Blw': [Bottom, Overstruck, Bottom_And_دایاں],
+		'Pst': [دایاں],
+		'Pre': [بایاں, چوٹی_And_بایاں, چوٹی_And_بایاں_And_دایاں, بایاں_And_دایاں],
 	},
 	'VM': {
-		'Abv': [Top],
+		'Abv': [چوٹی],
 		'Blw': [Bottom, Overstruck],
-		'Pst': [Right],
-		'Pre': [Left],
+		'Pst': [دایاں],
+		'Pre': [بایاں],
 	},
 	'SM': {
-		'Abv': [Top],
+		'Abv': [چوٹی],
 		'Blw': [Bottom],
 	},
-	'H': None,
-	'HM': None,
-	'HR': None,
-	'HVM': None,
-	'IS': None,
-	'B': None,
+	'H': کجھ_نئیں,
+	'HM': کجھ_نئیں,
+	'HR': کجھ_نئیں,
+	'HVM': کجھ_نئیں,
+	'IS': کجھ_نئیں,
+	'B': کجھ_نئیں,
 	'FM': {
-		'Abv': [Top],
+		'Abv': [چوٹی],
 		'Blw': [Bottom],
 		'Pst': [Not_Applicable],
 	},
-	'R': None,
-	'RK': None,
-	'SUB': None,
+	'R': کجھ_نئیں,
+	'RK': کجھ_نئیں,
+	'SUB': کجھ_نئیں,
 }
 
-def map_to_use(data):
-	out = {}
-	items = use_mapping.items()
-	for U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) in data.items():
+تعریف map_منزل_use(انکڑے):
+	باہرلا = {}
+	اشیاء = use_mapping.اشیاء()
+	لكل U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) في انکڑے.اشیاء():
 
 		# Resolve Indic_Syllabic_Category
 
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
+		إذا 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
 
 		# Tibetan:
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x0F18 <= U <= 0x0F19 or 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
+		إذا 0x0F18 <= U <= 0x0F19 أو 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
 
 		# TODO: U+1CED should only be allowed after some of
 		# the nasalization marks, maybe only for U+1CE9..U+1CF1.
-		if U == 0x1CED: UISC = Tone_Mark
+		إذا U == 0x1CED: UISC = Tone_Mark
 
-		values = [k for k,v in items if v(U, UISC, UDI, UGC, AJT)]
-		assert len(values) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, values)
-		USE = values[0]
+		اقدار = [k لكل k,v في اشیاء إذا v(U, UISC, UDI, UGC, AJT)]
+		أكد لمبائی(اقدار) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, اقدار)
+		USE = اقدار[0]
 
 		# Resolve Indic_Positional_Category
 
 		# TODO: https://github.com/harfbuzz/harfbuzz/pull/1037
 		#  and https://github.com/harfbuzz/harfbuzz/issues/1631
-		if U in [0x11302, 0x11303, 0x114C1]: UIPC = Top
+		إذا U في [0x11302, 0x11303, 0x114C1]: UIPC = چوٹی
 
-		assert (UIPC in [Not_Applicable, Visual_Order_Left] or
-			U == 0x0F7F or
-			USE in use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
+		أكد (UIPC في [Not_Applicable, Visual_ترتیب_بایاں] أو
+			U == 0x0F7F أو
+			USE في use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
 
-		pos_mapping = use_positions.get(USE, None)
-		if pos_mapping:
-			values = [k for k,v in pos_mapping.items() if v and UIPC in v]
-			assert len(values) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, values)
-			USE = USE + values[0]
+		pos_mapping = use_positions.get(USE, کجھ_نئیں)
+		إذا pos_mapping:
+			اقدار = [k لكل k,v في pos_mapping.اشیاء() إذا v و UIPC في v]
+			أكد لمبائی(اقدار) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, اقدار)
+			USE = USE + اقدار[0]
 
-		out[U] = (USE, UBlock)
-	return out
+		باہرلا[U] = (USE, UBlock)
+	أرجع باہرلا
 
-use_data = map_to_use(combined)
+use_انکڑے = map_منزل_use(combined)
 
-print ("/* == Start of generated table == */")
-print ("/*")
-print (" * The following table is generated by running:")
-print (" *")
-print (" *   {} IndicSyllabicCategory.txt IndicPositionalCategory.txt ArabicShaping.txt DerivedCoreProperties.txt UnicodeData.txt Blocks.txt Scripts.txt IndicSyllabicCategory-Additional.txt IndicPositionalCategory-Additional.txt".format (os.path.basename (sys.argv[0])))
-print (" *")
-print (" * on files with these headers:")
-print (" *")
-for h in headers:
-	for l in h:
-		print (" * %s" % (l.strip()))
-print (" */")
-print ()
-if language.name == "c":
-    print ("#ifndef HB_OT_SHAPER_USE_TABLE_HH")
-    print ("#define HB_OT_SHAPER_USE_TABLE_HH")
-    print ()
-    print ('#include "hb.hh"')
-    print ()
-    print ('#include "hb-ot-shaper-use-machine.hh"')
-    print ()
+چھاپو ("/* == Start of generated table == */")
+چھاپو ("/*")
+چھاپو (" * The following table is generated by running:")
+چھاپو (" *")
+چھاپو (" *   {} IndicSyllabicCategory.txt IndicPositionalCategory.txt ArabicShaping.txt DerivedCoreProperties.txt UnicodeData.txt Blocks.txt Scripts.txt IndicSyllabicCategory-Additional.txt IndicPositionalCategory-Additional.txt".format (os.رستہ.basename (sys.argv[0])))
+چھاپو (" *")
+چھاپو (" * on files with these headers:")
+چھاپو (" *")
+لكل h في سرخیاں:
+	لكل l في h:
+		چھاپو (" * %s" % (l.strip()))
+چھاپو (" */")
+چھاپو ()
+إذا language.name == "c":
+    چھاپو ("#ifndef HB_OT_SHAPER_USE_TABLE_HH")
+    چھاپو ("#define HB_OT_SHAPER_USE_TABLE_HH")
+    چھاپو ()
+    چھاپو ('#include "hb.hh"')
+    چھاپو ()
+    چھاپو ('#include "hb-ot-shaper-use-machine.hh"')
+    چھاپو ()
 
-    print ('#pragma GCC diagnostic push')
-    print ('#pragma GCC diagnostic ignored "-Wunused-macros"')
-    for k,v in sorted(use_mapping.items()):
-        if k in use_positions and use_positions[k]: continue
-        print ("#define %s	USE(%s)	/* %s */" % (k, k, v.__name__[3:]))
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
-            tag = k + suf
-            print ("#define %s	USE(%s)" % (tag, tag))
-    print ('#pragma GCC diagnostic pop')
-    print ("")
+    چھاپو ('#pragma GCC diagnostic push')
+    چھاپو ('#pragma GCC diagnostic ignored "-Wunused-macros"')
+    لكل k,v في sorted(use_mapping.اشیاء()):
+        إذا k في use_positions و use_positions[k]: استمر
+        چھاپو ("#define %s	USE(%s)	/* %s */" % (k, k, v.__name__[3:]))
+    لكل k,v في sorted(use_positions.اشیاء()):
+        إذا ليس v: استمر
+        لكل suf في v.کلیدیں():
+            ٹیگ_2 = k + suf
+            چھاپو ("#define %s	USE(%s)" % (ٹیگ_2, ٹیگ_2))
+    چھاپو ('#pragma GCC diagnostic pop')
+    چھاپو ("")
 
-elif language.name == "rust":
-    print()
-    print("#![allow(unused_parens)]")
-    print("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
-    print()
-    print("use super::ot_shaper_use::category::*;")
-    print()
-else:
-    assert False, "Unknown language: %s" % language.name
+وإلاإذا language.name == "rust":
+    چھاپو()
+    چھاپو("#![allow(unused_parens)]")
+    چھاپو("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
+    چھاپو()
+    چھاپو("use super::ot_shaper_use::category::*;")
+    چھاپو()
+وإلا:
+    أكد خطأ, "Unknown language: %s" % language.name
 
-uu = sorted (use_data.keys ())
+uu = sorted (use_انکڑے.کلیدیں ())
 
-data = {u:v[0] for u,v in use_data.items()}
+انکڑے = {u:v[0] لكل u,v في use_انکڑے.اشیاء()}
 
-if language.name == "c":
-    private = True
-elif language.name == "rust":
-    private = False
-    language.public_function_linkage = "pub(crate)"
-else:
-    assert False, "Unknown language: %s" % language.name
+إذا language.name == "c":
+    خاص = سچ
+وإلاإذا language.name == "rust":
+    خاص = خطأ
+    language.عوامی_function_linkage = "pub(crate)"
+وإلا:
+    أكد خطأ, "Unknown language: %s" % language.name
 
 
 DEFAULT = "DEFAULT"
@@ -489,46 +489,46 @@ compression_level = {
 }
 
 modes = {}
-if language.name == "c":
+إذا language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#else"
-    modes[None] = "#endif"
-else:
+    modes[کجھ_نئیں] = "#endif"
+وإلا:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
-    print()
-    if text:
-        print(text)
-        print()
-    if step is None:
-        continue
+لكل قدم, متن في modes.اشیاء():
+    چھاپو()
+    إذا متن:
+        چھاپو(متن)
+        چھاپو()
+    إذا قدم اے کجھ_نئیں:
+        استمر
 
-    compression = compression_level[step]
+    compression = compression_level[قدم]
     logging.info("  Compression=%d:" % compression)
 
-    code = packTab.Code('hb_use')
-    sol = packTab.pack_table(data, compression=compression, default='O')
-    logging.info('      FullCost=%d' % (sol.fullCost))
-    sol.genCode(code, f'get_category', language=language, private=private)
-    code.print_code(language=language, private=private)
-    print ()
+    کوڈ = packTab.کوڈ_2('hb_use')
+    sol = packTab.pack_جدول(انکڑے, compression=compression, افتراضي='O')
+    logging.info('      FullCost=%d' % (sol.بھریا_لاگت))
+    sol.gen_کوڈ(کوڈ, f'get_category', language=language, خاص=خاص)
+    کوڈ.print_کوڈ(language=language, خاص=خاص)
+    چھاپو ()
 
-if language.name == "c":
-    print ()
-    for k in sorted(use_mapping.keys()):
-        if k in use_positions and use_positions[k]: continue
-        print ("#undef %s" % k)
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
-            tag = k + suf
-            print ("#undef %s" % tag)
-    print ()
-    print ()
-    print ("#endif /* HB_OT_SHAPER_USE_TABLE_HH */")
-elif language.name == "rust":
-    pass
-else:
-    assert False, "Unknown language: %s" % language.name
-print ("/* == End of generated table == */")
+إذا language.name == "c":
+    چھاپو ()
+    لكل k في sorted(use_mapping.کلیدیں()):
+        إذا k في use_positions و use_positions[k]: استمر
+        چھاپو ("#undef %s" % k)
+    لكل k,v في sorted(use_positions.اشیاء()):
+        إذا ليس v: استمر
+        لكل suf في v.کلیدیں():
+            ٹیگ_2 = k + suf
+            چھاپو ("#undef %s" % ٹیگ_2)
+    چھاپو ()
+    چھاپو ()
+    چھاپو ("#endif /* HB_OT_SHAPER_USE_TABLE_HH */")
+وإلاإذا language.name == "rust":
+    لنگھو
+وإلا:
+    أكد خطأ, "Unknown language: %s" % language.name
+چھاپو ("/* == End of generated table == */")

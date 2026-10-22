@@ -25,496 +25,496 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_KERX_TABLE_HH
-#define HB_AAT_LAYOUT_KERX_TABLE_HH
+#جے_بنا_تعریف HB_AAT_LAYOUT_KERX_جدول_HH
+#تعریف_کرو HB_AAT_LAYOUT_KERX_جدول_HH
 
-#include "hb-kern.hh"
-#include "hb-aat-layout-ankr-table.hh"
-#include "hb-set-digest.hh"
+#ضمن "hb-kern.hh"
+#ضمن "hb-aat-layout-ankr-table.hh"
+#ضمن "hb-set-digest.hh"
 
 /*
  * kerx -- Extended Kerning
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6kerx.html
  */
-#define HB_AAT_TAG_kerx HB_TAG('k','e','r','x')
+#تعریف_کرو HB_AAT_ٹیگ_kerx HB_ٹیگ('k','e','r','x')
 
 
-namespace AAT {
+نطاق AAT {
 
-using namespace OT;
+ورتوں نطاق OT;
 
 
-static inline int
-kerxTupleKern (int value,
-	       unsigned int tupleCount,
-	       const void *base,
+ساكن مضمن صحيح
+kerxTupleKern (صحيح value,
+	       بنانشانی صحيح tuple_گنتی,
+	       ثابت فراغ *ادھار,
 	       hb_aat_apply_context_t *c)
 {
-  if (likely (!tupleCount || !c)) return value;
+  إذا (likely (!tuple_گنتی || !c)) أرجع value;
 
-  unsigned int offset = value;
-  const FWORD *pv = &StructAtOffset<FWORD> (base, offset);
-  if (unlikely (!c->sanitizer.check_array (pv, tupleCount))) return 0;
+  بنانشانی صحيح وتھ = value;
+  ثابت FWORD *pv = &Struct_At_وتھ<FWORD> (ادھار, وتھ);
+  إذا (unlikely (!c->sanitizer.check_array (pv, tuple_گنتی))) أرجع 0;
   hb_barrier ();
-  return *pv;
+  أرجع *pv;
 }
 
 
-struct hb_glyph_pair_t
+بنية hb_glyph_pair_t
 {
-  hb_codepoint_t left;
-  hb_codepoint_t right;
+  hb_codepoint_t کھبے;
+  hb_codepoint_t سجے;
 };
 
-struct KernPair
+بنية KernPair
 {
-  int get_kerning () const { return value; }
+  صحيح get_kerning () ثابت { أرجع value; }
 
-  int cmp (const hb_glyph_pair_t &o) const
+  صحيح cmp (ثابت hb_glyph_pair_t &o) ثابت
   {
-    int ret = left.cmp (o.left);
-    if (ret) return ret;
-    return right.cmp (o.right);
+    صحيح ret = کھبے.cmp (o.کھبے);
+    إذا (ret) أرجع ret;
+    أرجع سجے.cmp (o.سجے);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
-  HBGlyphID16	left;
-  HBGlyphID16	right;
+  عام:
+  HBGlyphID16	کھبے;
+  HBGlyphID16	سجے;
   FWORD		value;
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عام:
+  DEFINE_ناپ_STATIC (6);
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat0
+سانچا <قسم_ناں Kern_Sub_جدول_سرخی>
+بنية Kerx_Sub_جدول_Format0
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c = nullptr) const
+  صحيح get_kerning (hb_codepoint_t کھبے, hb_codepoint_t سجے,
+		   hb_aat_apply_context_t *c = خالی_سوچک) ثابت
   {
-    hb_glyph_pair_t pair = {left, right};
-    int v = pairs.bsearch (pair).get_kerning ();
-    return kerxTupleKern (v, header.tuple_count (), this, c);
+    hb_glyph_pair_t pair = {کھبے, سجے};
+    صحيح v = جوڑے.bsearch (pair).get_kerning ();
+    أرجع kerxTupleKern (v, سرخی.tuple_گنتی_2 (), هذا, c);
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقي apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    إذا (!c->plan->requested_kerning)
+      return_trace (خطأ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    إذا (سرخی.coverage & سرخی.Backwards)
+      return_trace (خطأ);
 
-    accelerator_t accel (*this, c);
-    hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
-    machine.kern (c->font, c->buffer, c->plan->kern_mask);
+    accelerator_t accel (*هذا, c);
+    hb_kern_machine_t<accelerator_t> machine (accel, سرخی.coverage & سرخی.Cross_دھارا);
+    machine.kern (c->font, c->بفر, c->plan->kern_نقاب);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  سانچا <قسم_ناں سیٹ_t>
+  فراغ collect_glyphs (سیٹ_t &پہلا_سیٹ, سیٹ_t &دوجا_سیٹ, بنانشانی عدد_glyphs) ثابت
   {
-    for (const KernPair& pair : pairs)
+    لكل (ثابت KernPair& pair : جوڑے)
     {
-      first_set.add (pair.left);
-      second_set.add (pair.right);
+      پہلا_سیٹ.جوڑو (pair.کھبے);
+      دوجا_سیٹ.جوڑو (pair.سجے);
     }
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
-    const KerxSubTableFormat0 &table;
+    ثابت Kerx_Sub_جدول_Format0 &جدول;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat0 &table_,
+    accelerator_t (ثابت Kerx_Sub_جدول_Format0 &جدول_2,
 		   hb_aat_apply_context_t *c_) :
-		     table (table_), c (c_) {}
+		     جدول (جدول_2), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    صحيح get_kerning (hb_codepoint_t کھبے, hb_codepoint_t سجے) ثابت
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      إذا (!(*c->پہلا_سیٹ)[کھبے] || !(*c->دوجا_سیٹ)[سجے]) أرجع 0;
+      أرجع جدول.get_kerning (کھبے, سجے, c);
     }
   };
 
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (pairs.sanitize (c)));
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (جوڑے.sanitize (c)));
   }
 
-  protected:
-  KernSubTableHeader	header;
-  BinSearchArrayOf<KernPair, typename KernSubTableHeader::Types::HBUINT>
-			pairs;	/* Sorted kern records. */
-  public:
-  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 16, pairs);
+  محمي:
+  Kern_Sub_جدول_سرخی	سرخی;
+  Bin_تلاش_Array_دا<KernPair, قسم_ناں Kern_Sub_جدول_سرخی::Types::HBUINT>
+			جوڑے;	/* Sorted kern records. */
+  عام:
+  DEFINE_ناپ_ARRAY (Kern_Sub_جدول_سرخی::static_ناپ + 16, جوڑے);
 };
 
 
-template <bool extended>
-struct Format1Entry;
+سانچا <منطقي extended>
+بنية Format1_اندراج;
 
-template <>
-struct Format1Entry<true>
+سانچا <>
+بنية Format1_اندراج<سچ>
 {
-  enum Flags
+  تعداد Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    ڈالو		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
     Reset		= 0x2000,	/* If set, reset the kerning data (clear the stack) */
     Reserved		= 0x1FFF,	/* Not used; set to 0. */
   };
 
-  struct EntryData
+  بنية اندراج_انکڑے
   {
-    HBUINT16	kernActionIndex;/* Index into the kerning value array. If
+    HBUINT16	kern_Action_اشاریہ;/* Index into the kerning value array. If
 				 * this index is 0xFFFF, then no kerning
 				 * is to be performed. */
-    public:
-    DEFINE_SIZE_STATIC (2);
+    عام:
+    DEFINE_ناپ_STATIC (2);
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  ساكن منطقي initiateAction (ثابت اندراج_2<اندراج_انکڑے> &اندراج)
+  { أرجع اندراج.flags & ڈالو; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex != 0xFFFF; }
+  ساكن منطقي performAction (ثابت اندراج_2<اندراج_انکڑے> &اندراج)
+  { أرجع اندراج.انکڑے.kern_Action_اشاریہ != 0xFFFF; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex; }
+  ساكن بنانشانی صحيح kern_Action_اشاریہ (ثابت اندراج_2<اندراج_انکڑے> &اندراج)
+  { أرجع اندراج.انکڑے.kern_Action_اشاریہ; }
 };
-template <>
-struct Format1Entry<false>
+سانچا <>
+بنية Format1_اندراج<خطأ>
 {
-  enum Flags
+  تعداد Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    ڈالو		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
-    Offset		= 0x3FFF,	/* Byte offset from beginning of subtable to the
+    وتھ_2		= 0x3FFF,	/* Byte offset from beginning of subtable to the
 					 * value table for the glyphs on the kerning stack. */
 
     Reset		= 0x0000,	/* Not supported? */
   };
 
-  typedef void EntryData;
+  تعريفنوع فراغ اندراج_انکڑے;
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  ساكن منطقي initiateAction (ثابت اندراج_2<اندراج_انکڑے> &اندراج)
+  { أرجع اندراج.flags & ڈالو; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  ساكن منطقي performAction (ثابت اندراج_2<اندراج_انکڑے> &اندراج)
+  { أرجع اندراج.flags & وتھ_2; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  ساكن بنانشانی صحيح kern_Action_اشاریہ (ثابت اندراج_2<اندراج_انکڑے> &اندراج)
+  { أرجع اندراج.flags & وتھ_2; }
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat1
+سانچا <قسم_ناں Kern_Sub_جدول_سرخی>
+بنية Kerx_Sub_جدول_Format1
 {
-  typedef typename KernSubTableHeader::Types Types;
-  typedef typename Types::HBUINT HBUINT;
+  تعريفنوع قسم_ناں Kern_Sub_جدول_سرخی::Types Types;
+  تعريفنوع قسم_ناں Types::HBUINT HBUINT;
 
-  typedef Format1Entry<Types::extended> Format1EntryT;
-  typedef typename Format1EntryT::EntryData EntryData;
+  تعريفنوع Format1_اندراج<Types::extended> Format1_اندراج_T;
+  تعريفنوع قسم_ناں Format1_اندراج_T::اندراج_انکڑے اندراج_انکڑے;
 
-  enum Flags
+  تعداد Flags
   {
-    DontAdvance	= Format1EntryT::DontAdvance,
+    DontAdvance	= Format1_اندراج_T::DontAdvance,
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  منطقي is_action_initiable (ثابت اندراج_2<اندراج_انکڑے> &اندراج) ثابت
   {
-    return Format1EntryT::initiateAction (entry);
+    أرجع Format1_اندراج_T::initiateAction (اندراج);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  منطقي is_actionable (ثابت اندراج_2<اندراج_انکڑے> &اندراج) ثابت
   {
-    return Format1EntryT::performAction (entry);
+    أرجع Format1_اندراج_T::performAction (اندراج);
   }
 
-  struct driver_context_t
+  بنية driver_context_t
   {
-    static constexpr bool in_place = true;
+    ساكن constexpr منطقي in_place = سچ;
 
-    driver_context_t (const KerxSubTableFormat1 *table_,
+    driver_context_t (ثابت Kerx_Sub_جدول_Format1 *جدول_2,
 		      hb_aat_apply_context_t *c_) :
 	c (c_),
-	table (table_),
+	جدول (جدول_2),
 	/* Apparently the offset kernAction is from the beginning of the state-machine,
 	 * similar to offsets in morx table, NOT from beginning of this table, like
 	 * other subtables in kerx.  Discovered via testing. */
-	kernAction (&table->machine + table->kernAction),
-	depth (0),
-	crossStream (table->header.coverage & table->header.CrossStream) {}
+	kernAction (&جدول->machine + جدول->kernAction),
+	ڈونگھائی (0),
+	cross_دھارا (جدول->سرخی.coverage & جدول->سرخی.Cross_دھارا) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
-		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+    فراغ transition (hb_بفر_t *بفر,
+		     State_جدول_Driver<Types, اندراج_انکڑے, Flags> *driver,
+		     ثابت اندراج_2<اندراج_انکڑے> &اندراج)
     {
-      unsigned int flags = entry.flags;
+      بنانشانی صحيح flags = اندراج.flags;
 
-      if (flags & Format1EntryT::Reset)
-	depth = 0;
+      إذا (flags & Format1_اندراج_T::Reset)
+	ڈونگھائی = 0;
 
-      if (flags & Format1EntryT::Push)
+      إذا (flags & Format1_اندراج_T::ڈالو)
       {
-	if (likely (depth < ARRAY_LENGTH (stack)))
-	  stack[depth++] = buffer->idx;
-	else
-	  depth = 0; /* Probably not what CoreText does, but better? */
+	إذا (likely (ڈونگھائی < ARRAY_لمائی (ڈھیر)))
+	  ڈھیر[ڈونگھائی++] = بفر->idx;
+	وإلا
+	  ڈونگھائی = 0; /* Probably not what CoreText does, but better? */
       }
 
-      if (Format1EntryT::performAction (entry) && depth)
+      إذا (Format1_اندراج_T::performAction (اندراج) && ڈونگھائی)
       {
-	unsigned int tuple_count = hb_max (1u, table->header.tuple_count ());
+	بنانشانی صحيح tuple_گنتی_2 = hb_max (1u, جدول->سرخی.tuple_گنتی_2 ());
 
-	unsigned int kern_idx = Format1EntryT::kernActionIndex (entry);
-	kern_idx = Types::byteOffsetToIndex (kern_idx, &table->machine, kernAction.arrayZ);
-	const FWORD *actions = &kernAction[kern_idx];
-	if (!c->sanitizer.check_array (actions, depth, tuple_count))
+	بنانشانی صحيح kern_idx = Format1_اندراج_T::kern_Action_اشاریہ (اندراج);
+	kern_idx = Types::byte_وتھ_منزل_اشاریہ (kern_idx, &جدول->machine, kernAction.arrayZ);
+	ثابت FWORD *actions = &kernAction[kern_idx];
+	إذا (!c->sanitizer.check_array (actions, ڈونگھائی, tuple_گنتی_2))
 	{
-	  depth = 0;
-	  return;
+	  ڈونگھائی = 0;
+	  أرجع;
 	}
 	hb_barrier ();
 
-	hb_mask_t kern_mask = c->plan->kern_mask;
+	hb_نقاب_t kern_نقاب = c->plan->kern_نقاب;
 
 	/* From Apple 'kern' spec:
 	 * "Each pops one glyph from the kerning stack and applies the kerning value to it.
 	 * The end of the list is marked by an odd value... */
-	bool last = false;
-	while (!last && depth)
+	منطقي آخری = خطأ;
+	طالما (!آخری && ڈونگھائی)
 	{
-	  unsigned int idx = stack[--depth];
-	  int v = *actions;
-	  actions += tuple_count;
-	  if (idx >= buffer->len) continue;
+	  بنانشانی صحيح idx = ڈھیر[--ڈونگھائی];
+	  صحيح v = *actions;
+	  actions += tuple_گنتی_2;
+	  إذا (idx >= بفر->len) استمر;
 
 	  /* "The end of the list is marked by an odd value..." */
-	  last = v & 1;
+	  آخری = v & 1;
 	  v &= ~1;
 
-	  hb_glyph_position_t &o = buffer->pos[idx];
+	  hb_glyph_position_t &o = بفر->pos[idx];
 
-	  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+	  إذا (HB_DIRECTION_IS_HORIZONTAL (بفر->props.direction))
 	  {
-	    if (crossStream)
+	    إذا (cross_دھارا)
 	    {
 	      /* The following flag is undocumented in the spec, but described
 	       * in the 'kern' table example. */
-	      if (v == -0x8000)
+	      إذا (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
-		o.y_offset = 0;
+		o.y_وتھ_2 = 0;
 	      }
-	      else if (o.attach_type())
+	      وإلا إذا (o.attach_type())
 	      {
-		o.y_offset = hb_saturate_add (o.y_offset, c->font->em_scale_y (v));
-		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+		o.y_وتھ_2 = hb_saturate_جوڑو (o.y_وتھ_2, c->font->em_scale_y (v));
+		بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    وإلا إذا (بفر->info[idx].نقاب & kern_نقاب)
 	    {
-	      auto scaled = c->font->em_scale_x (v);
-	      o.x_advance = hb_saturate_add (o.x_advance, scaled);
-	      o.x_offset = hb_saturate_add (o.x_offset, scaled);
+	      خودکار scaled = c->font->em_scale_x (v);
+	      o.x_advance = hb_saturate_جوڑو (o.x_advance, scaled);
+	      o.x_وتھ_2 = hb_saturate_جوڑو (o.x_وتھ_2, scaled);
 	    }
 	  }
-	  else
+	  وإلا
 	  {
-	    if (crossStream)
+	    إذا (cross_دھارا)
 	    {
 	      /* CoreText doesn't do crossStream kerning in vertical.  We do. */
-	      if (v == -0x8000)
+	      إذا (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
-		o.x_offset = 0;
+		o.x_وتھ_2 = 0;
 	      }
-	      else if (o.attach_type())
+	      وإلا إذا (o.attach_type())
 	      {
-		o.x_offset = hb_saturate_add (o.x_offset, c->font->em_scale_x (v));
-		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+		o.x_وتھ_2 = hb_saturate_جوڑو (o.x_وتھ_2, c->font->em_scale_x (v));
+		بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    وإلا إذا (بفر->info[idx].نقاب & kern_نقاب)
 	    {
-	      auto scaled = c->font->em_scale_y (v);
-	      o.y_advance = hb_saturate_add (o.y_advance, scaled);
-	      o.y_offset = hb_saturate_add (o.y_offset, scaled);
+	      خودکار scaled = c->font->em_scale_y (v);
+	      o.y_advance = hb_saturate_جوڑو (o.y_advance, scaled);
+	      o.y_وتھ_2 = hb_saturate_جوڑو (o.y_وتھ_2, scaled);
 	    }
 	  }
 	}
       }
     }
 
-    public:
+    عام:
     hb_aat_apply_context_t *c;
-    const KerxSubTableFormat1 *table;
-    private:
-    const UnsizedArrayOf<FWORD> &kernAction;
-    unsigned int stack[8];
-    unsigned int depth;
-    bool crossStream;
+    ثابت Kerx_Sub_جدول_Format1 *جدول;
+    خاص:
+    ثابت Unsized_Array_دا<FWORD> &kernAction;
+    بنانشانی صحيح ڈھیر[8];
+    بنانشانی صحيح ڈونگھائی;
+    منطقي cross_دھارا;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقي apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    if (!c->plan->requested_kerning &&
-	!(header.coverage & header.CrossStream))
-      return false;
+    إذا (!c->plan->requested_kerning &&
+	!(سرخی.coverage & سرخی.Cross_دھارا))
+      أرجع خطأ;
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (هذا, c);
 
-    StateTableDriver<Types, EntryData, Flags> driver (machine, c->font->face);
+    State_جدول_Driver<Types, اندراج_انکڑے, Flags> driver (machine, c->font->face);
 
     driver.drive (&dc, c);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (هذا) &&
 			  machine.sanitize (c)));
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  سانچا <قسم_ناں سیٹ_t>
+  فراغ collect_glyphs (سیٹ_t &پہلا_سیٹ, سیٹ_t &دوجا_سیٹ, بنانشانی عدد_glyphs) ثابت
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (پہلا_سیٹ, عدد_glyphs, *هذا);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
-  protected:
-  KernSubTableHeader				header;
-  StateTable<Types, EntryData>			machine;
-  NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>	kernAction;
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + (StateTable<Types, EntryData>::static_size + HBUINT::static_size));
+  محمي:
+  Kern_Sub_جدول_سرخی				سرخی;
+  State_جدول<Types, اندراج_انکڑے>			machine;
+  NNOffset_منزل<Unsized_Array_دا<FWORD>, HBUINT>	kernAction;
+  عام:
+  DEFINE_ناپ_STATIC (Kern_Sub_جدول_سرخی::static_ناپ + (State_جدول<Types, اندراج_انکڑے>::static_ناپ + HBUINT::static_ناپ));
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat2
+سانچا <قسم_ناں Kern_Sub_جدول_سرخی>
+بنية Kerx_Sub_جدول_Format2
 {
-  typedef typename KernSubTableHeader::Types Types;
-  typedef typename Types::HBUINT HBUINT;
+  تعريفنوع قسم_ناں Kern_Sub_جدول_سرخی::Types Types;
+  تعريفنوع قسم_ناں Types::HBUINT HBUINT;
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c) const
+  صحيح get_kerning (hb_codepoint_t کھبے, hb_codepoint_t سجے,
+		   hb_aat_apply_context_t *c) ثابت
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    unsigned int l = (this+leftClassTable).get_class (left, num_glyphs, 0);
-    unsigned int r = (this+rightClassTable).get_class (right, num_glyphs, 0);
+    بنانشانی صحيح عدد_glyphs = c->sanitizer.get_عدد_glyphs ();
+    بنانشانی صحيح l = (هذا+بایاں_Class_جدول).get_class (کھبے, عدد_glyphs, 0);
+    بنانشانی صحيح r = (هذا+دایاں_Class_جدول).get_class (سجے, عدد_glyphs, 0);
 
-    const UnsizedArrayOf<FWORD> &arrayZ = this+array;
-    unsigned int kern_idx = l + r;
-    kern_idx = Types::offsetToIndex (kern_idx, this, arrayZ.arrayZ);
-    const FWORD *v = &arrayZ[kern_idx];
-    if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+    ثابت Unsized_Array_دا<FWORD> &arrayZ = هذا+array;
+    بنانشانی صحيح kern_idx = l + r;
+    kern_idx = Types::وتھ_منزل_اشاریہ (kern_idx, هذا, arrayZ.arrayZ);
+    ثابت FWORD *v = &arrayZ[kern_idx];
+    إذا (unlikely (!v->sanitize (&c->sanitizer))) أرجع 0;
     hb_barrier ();
 
-    return kerxTupleKern (*v, header.tuple_count (), this, c);
+    أرجع kerxTupleKern (*v, سرخی.tuple_گنتی_2 (), هذا, c);
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقي apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    إذا (!c->plan->requested_kerning)
+      return_trace (خطأ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    إذا (سرخی.coverage & سرخی.Backwards)
+      return_trace (خطأ);
 
-    accelerator_t accel (*this, c);
-    hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
-    machine.kern (c->font, c->buffer, c->plan->kern_mask);
+    accelerator_t accel (*هذا, c);
+    hb_kern_machine_t<accelerator_t> machine (accel, سرخی.coverage & سرخی.Cross_دھارا);
+    machine.kern (c->font, c->بفر, c->plan->kern_نقاب);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  سانچا <قسم_ناں سیٹ_t>
+  فراغ collect_glyphs (سیٹ_t &پہلا_سیٹ, سیٹ_t &دوجا_سیٹ, بنانشانی عدد_glyphs) ثابت
   {
-    (this+leftClassTable).collect_glyphs (first_set, num_glyphs);
-    (this+rightClassTable).collect_glyphs (second_set, num_glyphs);
+    (هذا+بایاں_Class_جدول).collect_glyphs (پہلا_سیٹ, عدد_glyphs);
+    (هذا+دایاں_Class_جدول).collect_glyphs (دوجا_سیٹ, عدد_glyphs);
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
-    const KerxSubTableFormat2 &table;
+    ثابت Kerx_Sub_جدول_Format2 &جدول;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat2 &table_,
+    accelerator_t (ثابت Kerx_Sub_جدول_Format2 &جدول_2,
 		   hb_aat_apply_context_t *c_) :
-		     table (table_), c (c_) {}
+		     جدول (جدول_2), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    صحيح get_kerning (hb_codepoint_t کھبے, hb_codepoint_t سجے) ثابت
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      إذا (!(*c->پہلا_سیٹ)[کھبے] || !(*c->دوجا_سیٹ)[سجے]) أرجع 0;
+      أرجع جدول.get_kerning (کھبے, سجے, c);
     }
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  leftClassTable.sanitize (c, this) &&
-			  rightClassTable.sanitize (c, this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
+			  بایاں_Class_جدول.sanitize (c, هذا) &&
+			  دایاں_Class_جدول.sanitize (c, هذا) &&
 			  hb_barrier () &&
-			  c->check_range (this, array)));
+			  c->check_range (هذا, array)));
   }
 
-  protected:
-  KernSubTableHeader	header;
-  HBUINT		rowWidth;	/* The width, in bytes, of a row in the table. */
-  NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			leftClassTable;	/* Offset from beginning of this subtable to
+  محمي:
+  Kern_Sub_جدول_سرخی	سرخی;
+  HBUINT		صف_چوڑائی;	/* The width, in bytes, of a row in the table. */
+  NNOffset_منزل<قسم_ناں Types::ClassTypeWide, HBUINT>
+			بایاں_Class_جدول;	/* Offset from beginning of this subtable to
 					 * left-hand class table. */
-  NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			rightClassTable;/* Offset from beginning of this subtable to
+  NNOffset_منزل<قسم_ناں Types::ClassTypeWide, HBUINT>
+			دایاں_Class_جدول;/* Offset from beginning of this subtable to
 					 * right-hand class table. */
-  NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>
+  NNOffset_منزل<Unsized_Array_دا<FWORD>, HBUINT>
 			 array;		/* Offset from beginning of this subtable to
 					 * the start of the kerning array. */
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 4 * sizeof (HBUINT));
+  عام:
+  DEFINE_ناپ_STATIC (Kern_Sub_جدول_سرخی::static_ناپ + 4 * حجم (HBUINT));
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat4
+سانچا <قسم_ناں Kern_Sub_جدول_سرخی>
+بنية Kerx_Sub_جدول_Format4
 {
-  typedef ExtendedTypes Types;
+  تعريفنوع ExtendedTypes Types;
 
-  struct EntryData
+  بنية اندراج_انکڑے
   {
-    HBUINT16	ankrActionIndex;/* Either 0xFFFF (for no action) or the index of
+    HBUINT16	ankr_Action_اشاریہ;/* Either 0xFFFF (for no action) or the index of
 				 * the action to perform. */
-    public:
-    DEFINE_SIZE_STATIC (2);
+    عام:
+    DEFINE_ناپ_STATIC (2);
   };
 
-  enum Flags
+  تعداد Flags
   {
     Mark		= 0x8000,	/* If set, remember this glyph as the marked glyph. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph before
@@ -522,322 +522,322 @@ struct KerxSubTableFormat4
     Reserved		= 0x3FFF,	/* Not used; set to 0. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  منطقي is_action_initiable (ثابت اندراج_2<اندراج_انکڑے> &اندراج) ثابت
   {
-    return (entry.flags & Mark);
+    أرجع (اندراج.flags & Mark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  منطقي is_actionable (ثابت اندراج_2<اندراج_انکڑے> &اندراج) ثابت
   {
-    return entry.data.ankrActionIndex != 0xFFFF;
+    أرجع اندراج.انکڑے.ankr_Action_اشاریہ != 0xFFFF;
   }
 
-  struct driver_context_t
+  بنية driver_context_t
   {
-    static constexpr bool in_place = true;
-    enum SubTableFlags
+    ساكن constexpr منطقي in_place = سچ;
+    تعداد Sub_جدول_Flags
     {
       ActionType	= 0xC0000000,	/* A two-bit field containing the action type. */
-      Unused		= 0x3F000000,	/* Unused - must be zero. */
-      Offset		= 0x00FFFFFF,	/* Masks the offset in bytes from the beginning
+      بن_ورتیا		= 0x3F000000,	/* Unused - must be zero. */
+      وتھ_2		= 0x00FFFFFF,	/* Masks the offset in bytes from the beginning
 					 * of the subtable to the beginning of the control
 					 * point table. */
     };
 
-    driver_context_t (const KerxSubTableFormat4 *table_,
+    driver_context_t (ثابت Kerx_Sub_جدول_Format4 *جدول_2,
 		      hb_aat_apply_context_t *c_) :
 	c (c_),
-	table (table_),
-	action_type ((table->flags & ActionType) >> 30),
-	ankrData ((HBUINT16 *) ((const char *) &table->machine + (table->flags & Offset))),
-	mark_set (false),
+	جدول (جدول_2),
+	action_type ((جدول->flags & ActionType) >> 30),
+	ankr_انکڑے ((HBUINT16 *) ((ثابت حرف *) &جدول->machine + (جدول->flags & وتھ_2))),
+	mark_سیٹ (خطأ),
 	mark (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
-		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+    فراغ transition (hb_بفر_t *بفر,
+		     State_جدول_Driver<Types, اندراج_انکڑے, Flags> *driver,
+		     ثابت اندراج_2<اندراج_انکڑے> &اندراج)
     {
-      if (mark_set && entry.data.ankrActionIndex != 0xFFFF && buffer->idx < buffer->len)
+      إذا (mark_سیٹ && اندراج.انکڑے.ankr_Action_اشاریہ != 0xFFFF && بفر->idx < بفر->len)
       {
-	hb_glyph_position_t &o = buffer->cur_pos();
-	switch (action_type)
+	hb_glyph_position_t &o = بفر->cur_pos();
+	بدل (action_type)
 	{
-	  case 0: /* Control Point Actions.*/
+	  حالة 0: /* Control Point Actions.*/
 	  {
 	    /* Indexed into glyph outline. */
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
-	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    ثابت HBUINT16 *انکڑے = &ankr_انکڑے[اندراج.انکڑے.ankr_Action_اشاریہ * 2];
+	    إذا (!c->sanitizer.check_array (انکڑے, 2)) أرجع;
 	    hb_barrier ();
-	    unsigned int markControlPoint = *data++;
-	    unsigned int currControlPoint = *data++;
+	    بنانشانی صحيح mark_Control_نقطہ = *انکڑے++;
+	    بنانشانی صحيح curr_Control_نقطہ = *انکڑے++;
 	    hb_position_t markX = 0;
 	    hb_position_t markY = 0;
 	    hb_position_t currX = 0;
 	    hb_position_t currY = 0;
-	    if (!c->font->get_glyph_contour_point_for_origin (c->buffer->info[mark].codepoint,
-							      markControlPoint,
+	    إذا (!c->font->get_glyph_contour_نقطہ_for_origin (c->بفر->info[mark].codepoint,
+							      mark_Control_نقطہ,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &markX, &markY) ||
-		!c->font->get_glyph_contour_point_for_origin (c->buffer->cur ().codepoint,
-							      currControlPoint,
+		!c->font->get_glyph_contour_نقطہ_for_origin (c->بفر->cur ().codepoint,
+							      curr_Control_نقطہ,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &currX, &currY))
-	      return;
+	      أرجع;
 
-	    o.x_offset = hb_saturate_sub (markX, currX);
-	    o.y_offset = hb_saturate_sub (markY, currY);
+	    o.x_وتھ_2 = hb_saturate_sub (markX, currX);
+	    o.y_وتھ_2 = hb_saturate_sub (markY, currY);
 	  }
-	  break;
+	  اكسر;
 
-	  case 1: /* Anchor Point Actions. */
+	  حالة 1: /* Anchor Point Actions. */
 	  {
 	    /* Indexed into 'ankr' table. */
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
-	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    ثابت HBUINT16 *انکڑے = &ankr_انکڑے[اندراج.انکڑے.ankr_Action_اشاریہ * 2];
+	    إذا (!c->sanitizer.check_array (انکڑے, 2)) أرجع;
 	    hb_barrier ();
-	    unsigned int markAnchorPoint = *data++;
-	    unsigned int currAnchorPoint = *data++;
-	    const Anchor &markAnchor = c->ankr_table->get_anchor (c->buffer->info[mark].codepoint,
-								  markAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
-	    const Anchor &currAnchor = c->ankr_table->get_anchor (c->buffer->cur ().codepoint,
-								  currAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
+	    بنانشانی صحيح mark_Anchor_نقطہ = *انکڑے++;
+	    بنانشانی صحيح curr_Anchor_نقطہ = *انکڑے++;
+	    ثابت Anchor &markAnchor = c->ankr_جدول->get_anchor (c->بفر->info[mark].codepoint,
+								  mark_Anchor_نقطہ,
+								  c->sanitizer.get_عدد_glyphs ());
+	    ثابت Anchor &currAnchor = c->ankr_جدول->get_anchor (c->بفر->cur ().codepoint,
+								  curr_Anchor_نقطہ,
+								  c->sanitizer.get_عدد_glyphs ());
 
-	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markAnchor.xCoordinate),
+	    o.x_وتھ_2 = hb_saturate_sub (c->font->em_scale_x (markAnchor.xCoordinate),
 					  c->font->em_scale_x (currAnchor.xCoordinate));
-	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markAnchor.yCoordinate),
+	    o.y_وتھ_2 = hb_saturate_sub (c->font->em_scale_y (markAnchor.yCoordinate),
 					  c->font->em_scale_y (currAnchor.yCoordinate));
 	  }
-	  break;
+	  اكسر;
 
-	  case 2: /* Control Point Coordinate Actions. */
+	  حالة 2: /* Control Point Coordinate Actions. */
 	  {
 	    /* Each action contains four 16-bit fields, so we multiply the ankrActionIndex
 	       by 4 to get the correct offset for the given action. */
-	    const FWORD *data = (const FWORD *) &ankrData[entry.data.ankrActionIndex * 4];
-	    if (!c->sanitizer.check_array (data, 4)) return;
+	    ثابت FWORD *انکڑے = (ثابت FWORD *) &ankr_انکڑے[اندراج.انکڑے.ankr_Action_اشاریہ * 4];
+	    إذا (!c->sanitizer.check_array (انکڑے, 4)) أرجع;
 	    hb_barrier ();
-	    int markX = *data++;
-	    int markY = *data++;
-	    int currX = *data++;
-	    int currY = *data++;
+	    صحيح markX = *انکڑے++;
+	    صحيح markY = *انکڑے++;
+	    صحيح currX = *انکڑے++;
+	    صحيح currY = *انکڑے++;
 
-	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markX), c->font->em_scale_x (currX));
-	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markY), c->font->em_scale_y (currY));
+	    o.x_وتھ_2 = hb_saturate_sub (c->font->em_scale_x (markX), c->font->em_scale_x (currX));
+	    o.y_وتھ_2 = hb_saturate_sub (c->font->em_scale_y (markY), c->font->em_scale_y (currY));
 	  }
-	  break;
+	  اكسر;
 	}
 	o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_MARK;
-	o.attach_chain() = (int) mark - (int) buffer->idx;
-	if (c->buffer_is_reversed)
+	o.attach_chain() = (صحيح) mark - (صحيح) بفر->idx;
+	إذا (c->بفر_is_reversed)
 	  o.attach_chain() = -o.attach_chain();
-	buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
       }
 
-      if (entry.flags & Mark)
+      إذا (اندراج.flags & Mark)
       {
-	mark_set = true;
-	mark = buffer->idx;
+	mark_سیٹ = سچ;
+	mark = بفر->idx;
       }
     }
 
-    public:
+    عام:
     hb_aat_apply_context_t *c;
-    const KerxSubTableFormat4 *table;
-    private:
-    unsigned int action_type;
-    const HBUINT16 *ankrData;
-    bool mark_set;
-    unsigned int mark;
+    ثابت Kerx_Sub_جدول_Format4 *جدول;
+    خاص:
+    بنانشانی صحيح action_type;
+    ثابت HBUINT16 *ankr_انکڑے;
+    منطقي mark_سیٹ;
+    بنانشانی صحيح mark;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقي apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (هذا, c);
 
-    StateTableDriver<Types, EntryData, Flags> driver (machine, c->font->face);
+    State_جدول_Driver<Types, اندراج_انکڑے, Flags> driver (machine, c->font->face);
 
     driver.drive (&dc, c);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (هذا) &&
 			  machine.sanitize (c)));
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  سانچا <قسم_ناں سیٹ_t>
+  فراغ collect_glyphs (سیٹ_t &پہلا_سیٹ, سیٹ_t &دوجا_سیٹ, بنانشانی عدد_glyphs) ثابت
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (پہلا_سیٹ, عدد_glyphs, *هذا);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
-  protected:
-  KernSubTableHeader		header;
-  StateTable<Types, EntryData>	machine;
+  محمي:
+  Kern_Sub_جدول_سرخی		سرخی;
+  State_جدول<Types, اندراج_انکڑے>	machine;
   HBUINT32			flags;
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + (StateTable<Types, EntryData>::static_size + HBUINT32::static_size));
+  عام:
+  DEFINE_ناپ_STATIC (Kern_Sub_جدول_سرخی::static_ناپ + (State_جدول<Types, اندراج_انکڑے>::static_ناپ + HBUINT32::static_ناپ));
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat6
+سانچا <قسم_ناں Kern_Sub_جدول_سرخی>
+بنية Kerx_Sub_جدول_Format6
 {
-  enum Flags
+  تعداد Flags
   {
-    ValuesAreLong	= 0x00000001,
+    اقدار_Are_Long	= 0x00000001,
   };
 
-  bool is_long () const { return flags & ValuesAreLong; }
+  منطقي is_long () ثابت { أرجع flags & اقدار_Are_Long; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c) const
+  صحيح get_kerning (hb_codepoint_t کھبے, hb_codepoint_t سجے,
+		   hb_aat_apply_context_t *c) ثابت
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    if (is_long ())
+    بنانشانی صحيح عدد_glyphs = c->sanitizer.get_عدد_glyphs ();
+    إذا (is_long ())
     {
-      const auto &t = u.l;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      if (unlikely (offset < l)) return 0; /* Addition overflow. */
-      if (unlikely (hb_unsigned_mul_overflows (offset, sizeof (FWORD32)))) return 0;
-      const FWORD32 *v = &StructAtOffset<FWORD32> (&(this+t.array), offset * sizeof (FWORD32));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      ثابت خودکار &t = u.l;
+      بنانشانی صحيح l = (هذا+t.صف_اشاریہ_جدول).get_قدر_or_null (کھبے, عدد_glyphs);
+      بنانشانی صحيح r = (هذا+t.کالم_اشاریہ_جدول).get_قدر_or_null (سجے, عدد_glyphs);
+      بنانشانی صحيح وتھ = l + r;
+      إذا (unlikely (وتھ < l)) أرجع 0; /* Addition overflow. */
+      إذا (unlikely (hb_unsigned_mul_overflows (وتھ, حجم (FWORD32)))) أرجع 0;
+      ثابت FWORD32 *v = &Struct_At_وتھ<FWORD32> (&(هذا+t.array), وتھ * حجم (FWORD32));
+      إذا (unlikely (!v->sanitize (&c->sanitizer))) أرجع 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      أرجع kerxTupleKern (*v, سرخی.tuple_گنتی_2 (), &(هذا+vector), c);
     }
-    else
+    وإلا
     {
-      const auto &t = u.s;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      const FWORD *v = &StructAtOffset<FWORD> (&(this+t.array), offset * sizeof (FWORD));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      ثابت خودکار &t = u.s;
+      بنانشانی صحيح l = (هذا+t.صف_اشاریہ_جدول).get_قدر_or_null (کھبے, عدد_glyphs);
+      بنانشانی صحيح r = (هذا+t.کالم_اشاریہ_جدول).get_قدر_or_null (سجے, عدد_glyphs);
+      بنانشانی صحيح وتھ = l + r;
+      ثابت FWORD *v = &Struct_At_وتھ<FWORD> (&(هذا+t.array), وتھ * حجم (FWORD));
+      إذا (unlikely (!v->sanitize (&c->sanitizer))) أرجع 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      أرجع kerxTupleKern (*v, سرخی.tuple_گنتی_2 (), &(هذا+vector), c);
     }
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقي apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    إذا (!c->plan->requested_kerning)
+      return_trace (خطأ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    إذا (سرخی.coverage & سرخی.Backwards)
+      return_trace (خطأ);
 
-    accelerator_t accel (*this, c);
-    hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
-    machine.kern (c->font, c->buffer, c->plan->kern_mask);
+    accelerator_t accel (*هذا, c);
+    hb_kern_machine_t<accelerator_t> machine (accel, سرخی.coverage & سرخی.Cross_دھارا);
+    machine.kern (c->font, c->بفر, c->plan->kern_نقاب);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
 			  (is_long () ?
 			   (
-			     u.l.rowIndexTable.sanitize (c, this) &&
-			     u.l.columnIndexTable.sanitize (c, this) &&
-			     c->check_range (this, u.l.array)
+			     u.l.صف_اشاریہ_جدول.sanitize (c, هذا) &&
+			     u.l.کالم_اشاریہ_جدول.sanitize (c, هذا) &&
+			     c->check_range (هذا, u.l.array)
 			   ) : (
-			     u.s.rowIndexTable.sanitize (c, this) &&
-			     u.s.columnIndexTable.sanitize (c, this) &&
-			     c->check_range (this, u.s.array)
+			     u.s.صف_اشاریہ_جدول.sanitize (c, هذا) &&
+			     u.s.کالم_اشاریہ_جدول.sanitize (c, هذا) &&
+			     c->check_range (هذا, u.s.array)
 			   )) &&
-			  (header.tuple_count () == 0 ||
-			   c->check_range (this, vector))));
+			  (سرخی.tuple_گنتی_2 () == 0 ||
+			   c->check_range (هذا, vector))));
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  سانچا <قسم_ناں سیٹ_t>
+  فراغ collect_glyphs (سیٹ_t &پہلا_سیٹ, سیٹ_t &دوجا_سیٹ, بنانشانی عدد_glyphs) ثابت
   {
-    if (is_long ())
+    إذا (is_long ())
     {
-      const auto &t = u.l;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      ثابت خودکار &t = u.l;
+      (هذا+t.صف_اشاریہ_جدول).collect_glyphs (پہلا_سیٹ, عدد_glyphs);
+      (هذا+t.کالم_اشاریہ_جدول).collect_glyphs (دوجا_سیٹ, عدد_glyphs);
     }
-    else
+    وإلا
     {
-      const auto &t = u.s;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      ثابت خودکار &t = u.s;
+      (هذا+t.صف_اشاریہ_جدول).collect_glyphs (پہلا_سیٹ, عدد_glyphs);
+      (هذا+t.کالم_اشاریہ_جدول).collect_glyphs (دوجا_سیٹ, عدد_glyphs);
     }
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
-    const KerxSubTableFormat6 &table;
+    ثابت Kerx_Sub_جدول_Format6 &جدول;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat6 &table_,
+    accelerator_t (ثابت Kerx_Sub_جدول_Format6 &جدول_2,
 		   hb_aat_apply_context_t *c_) :
-		     table (table_), c (c_) {}
+		     جدول (جدول_2), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    صحيح get_kerning (hb_codepoint_t کھبے, hb_codepoint_t سجے) ثابت
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      إذا (!(*c->پہلا_سیٹ)[کھبے] || !(*c->دوجا_سیٹ)[سجے]) أرجع 0;
+      أرجع جدول.get_kerning (کھبے, سجے, c);
     }
   };
 
-  protected:
-  KernSubTableHeader		header;
+  محمي:
+  Kern_Sub_جدول_سرخی		سرخی;
   HBUINT32			flags;
-  HBUINT16			rowCount;
-  HBUINT16			columnCount;
-  union U
+  HBUINT16			صف_گنتی_2;
+  HBUINT16			کالم_گنتی;
+  اتحاد U
   {
-    struct Long
+    بنية Long
     {
-      NNOffset32To<Lookup<HBUINT32>>		rowIndexTable;
-      NNOffset32To<Lookup<HBUINT32>>		columnIndexTable;
-      NNOffset32To<UnsizedArrayOf<FWORD32>>	array;
+      NNOffset32_منزل<Lookup<HBUINT32>>		صف_اشاریہ_جدول;
+      NNOffset32_منزل<Lookup<HBUINT32>>		کالم_اشاریہ_جدول;
+      NNOffset32_منزل<Unsized_Array_دا<FWORD32>>	array;
     } l;
-    struct Short
+    بنية Short
     {
-      NNOffset32To<Lookup<HBUINT16>>		rowIndexTable;
-      NNOffset32To<Lookup<HBUINT16>>		columnIndexTable;
-      NNOffset32To<UnsizedArrayOf<FWORD>>	array;
+      NNOffset32_منزل<Lookup<HBUINT16>>		صف_اشاریہ_جدول;
+      NNOffset32_منزل<Lookup<HBUINT16>>		کالم_اشاریہ_جدول;
+      NNOffset32_منزل<Unsized_Array_دا<FWORD>>	array;
     } s;
   } u;
-  NNOffset32To<UnsizedArrayOf<FWORD>>	vector;
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 24);
+  NNOffset32_منزل<Unsized_Array_دا<FWORD>>	vector;
+  عام:
+  DEFINE_ناپ_STATIC (Kern_Sub_جدول_سرخی::static_ناپ + 24);
 };
 
 
-struct KerxSubTableHeader
+بنية Kerx_Sub_جدول_سرخی
 {
-  typedef ExtendedTypes Types;
+  تعريفنوع ExtendedTypes Types;
 
-  unsigned   tuple_count () const { return tupleCount; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  بنانشانی   tuple_گنتی_2 () ثابت { أرجع tuple_گنتی; }
+  منطقي     is_horizontal () ثابت { أرجع !(coverage & Vertical); }
 
-  enum Coverage
+  تعداد Coverage
   {
     Vertical	= 0x80000000u,	/* Set if table has vertical kerning values. */
-    CrossStream	= 0x40000000u,	/* Set if table has cross-stream kerning values. */
+    Cross_دھارا	= 0x40000000u,	/* Set if table has cross-stream kerning values. */
     Variation	= 0x20000000u,	/* Set if table has variation kerning values. */
     Backwards	= 0x10000000u,	/* If clear, process the glyphs forwards, that
 				 * is, from first to last in the glyph stream.
@@ -848,79 +848,79 @@ struct KerxSubTableHeader
     SubtableType= 0x000000FFu,	/* Subtable type. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
-  HBUINT32	length;
+  عام:
+  HBUINT32	لمائی;
   HBUINT32	coverage;
-  HBUINT32	tupleCount;
-  public:
-  DEFINE_SIZE_STATIC (12);
+  HBUINT32	tuple_گنتی;
+  عام:
+  DEFINE_ناپ_STATIC (12);
 };
 
-struct KerxSubTable
+بنية Kerx_Sub_جدول
 {
-  friend struct kerx;
+  یار بنية kerx;
 
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.coverage & u.header.SubtableType; }
+  size_t get_ناپ () ثابت { أرجع u.سرخی.لمائی; }
+  بنانشانی صحيح get_type () ثابت { أرجع u.سرخی.coverage & u.سرخی.SubtableType; }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچا <قسم_ناں context_t, قسم_ناں ...Ts>
+  قسم_ناں context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
-    default:	return_trace (c->default_return_value ());
+    بنانشانی صحيح subtable_type = get_type ();
+    TRACE_DISPATCH (هذا, subtable_type);
+    بدل (subtable_type) {
+    حالة 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
+    حالة 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالة 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    حالة 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    حالة 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
+    افتراضي:	return_trace (c->default_return_قدر ());
     }
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  سانچا <قسم_ناں سیٹ_t>
+  فراغ collect_glyphs (سیٹ_t &پہلا_سیٹ, سیٹ_t &دوجا_سیٹ, بنانشانی عدد_glyphs) ثابت
   {
-    unsigned int subtable_type = get_type ();
-    switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, num_glyphs); return;
-    default:	return;
+    بنانشانی صحيح subtable_type = get_type ();
+    بدل (subtable_type) {
+    حالة 0:	hb_barrier (); u.format0.collect_glyphs (پہلا_سیٹ, دوجا_سیٹ, عدد_glyphs); أرجع;
+    حالة 1:	hb_barrier (); u.format1.collect_glyphs (پہلا_سیٹ, دوجا_سیٹ, عدد_glyphs); أرجع;
+    حالة 2:	hb_barrier (); u.format2.collect_glyphs (پہلا_سیٹ, دوجا_سیٹ, عدد_glyphs); أرجع;
+    حالة 4:	hb_barrier (); u.format4.collect_glyphs (پہلا_سیٹ, دوجا_سیٹ, عدد_glyphs); أرجع;
+    حالة 6:	hb_barrier (); u.format6.collect_glyphs (پہلا_سیٹ, دوجا_سیٹ, عدد_glyphs); أرجع;
+    افتراضي:	أرجع;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(u.header.sanitize (c) &&
+    TRACE_SANITIZE (هذا);
+    إذا (!(u.سرخی.sanitize (c) &&
 	  hb_barrier () &&
-	  u.header.length >= u.header.static_size &&
-	  c->check_range (this, u.header.length)))
-      return_trace (false);
+	  u.سرخی.لمائی >= u.سرخی.static_ناپ &&
+	  c->check_range (هذا, u.سرخی.لمائی)))
+      return_trace (خطأ);
 
     return_trace (dispatch (c));
   }
 
-  public:
-  union {
-  KerxSubTableHeader				header;
-  KerxSubTableFormat0<KerxSubTableHeader>	format0;
-  KerxSubTableFormat1<KerxSubTableHeader>	format1;
-  KerxSubTableFormat2<KerxSubTableHeader>	format2;
-  KerxSubTableFormat4<KerxSubTableHeader>	format4;
-  KerxSubTableFormat6<KerxSubTableHeader>	format6;
+  عام:
+  اتحاد {
+  Kerx_Sub_جدول_سرخی				سرخی;
+  Kerx_Sub_جدول_Format0<Kerx_Sub_جدول_سرخی>	format0;
+  Kerx_Sub_جدول_Format1<Kerx_Sub_جدول_سرخی>	format1;
+  Kerx_Sub_جدول_Format2<Kerx_Sub_جدول_سرخی>	format2;
+  Kerx_Sub_جدول_Format4<Kerx_Sub_جدول_سرخی>	format4;
+  Kerx_Sub_جدول_Format6<Kerx_Sub_جدول_سرخی>	format6;
   } u;
-  public:
-  DEFINE_SIZE_MIN (12);
+  عام:
+  DEFINE_ناپ_MIN (12);
 };
 
 
@@ -928,173 +928,173 @@ struct KerxSubTable
  * The 'kerx' Table
  */
 
-struct kern_subtable_accelerator_data_t
+بنية kern_subtable_accelerator_انکڑے_t
 {
-  hb_bit_set_t first_set;
-  hb_bit_set_t second_set;
-  mutable hb_aat_class_cache_t class_cache;
+  hb_ثنائی_ہندسہ_سیٹ_t پہلا_سیٹ;
+  hb_ثنائی_ہندسہ_سیٹ_t دوجا_سیٹ;
+  بدلنجوگ hb_aat_class_cache_t class_cache;
 };
 
-struct kern_accelerator_data_t
+بنية kern_accelerator_انکڑے_t
 {
-  hb_vector_t<kern_subtable_accelerator_data_t> subtable_accels;
+  hb_سمتیہ_t<kern_subtable_accelerator_انکڑے_t> subtable_accels;
   hb_aat_scratch_t scratch;
 };
 
-template <typename T>
-struct KerxTable
+سانچا <قسم_ناں T>
+بنية Kerx_جدول
 {
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const T* thiz () const { return static_cast<const T *> (this); }
+  ثابت T* thiz () ثابت { أرجع static_cast<ثابت T *> (هذا); }
 
-  bool has_state_machine () const
+  منطقي has_state_machine () ثابت
   {
-    typedef typename T::SubTable SubTable;
+    تعريفنوع قسم_ناں T::Sub_جدول Sub_جدول;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Sub_جدول *st = &thiz()->پہلا_Sub_جدول;
+    بنانشانی صحيح گنتی = thiz()->جدول_گنتی;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
     {
-      if (st->get_type () == 1)
-	return true;
+      إذا (st->get_type () == 1)
+	أرجع سچ;
 
       // TODO: What about format 4? What's this API used for anyway?
 
-      st = &StructAfter<SubTable> (*st);
+      st = &StructAfter<Sub_جدول> (*st);
     }
-    return false;
+    أرجع خطأ;
   }
 
-  bool has_cross_stream () const
+  منطقي has_cross_دھارا () ثابت
   {
-    typedef typename T::SubTable SubTable;
+    تعريفنوع قسم_ناں T::Sub_جدول Sub_جدول;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Sub_جدول *st = &thiz()->پہلا_Sub_جدول;
+    بنانشانی صحيح گنتی = thiz()->جدول_گنتی;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
     {
-      if (st->u.header.coverage & st->u.header.CrossStream)
-	return true;
-      st = &StructAfter<SubTable> (*st);
+      إذا (st->u.سرخی.coverage & st->u.سرخی.Cross_دھارا)
+	أرجع سچ;
+      st = &StructAfter<Sub_جدول> (*st);
     }
-    return false;
+    أرجع خطأ;
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  صحيح get_h_kerning (hb_codepoint_t کھبے, hb_codepoint_t سجے) ثابت
   {
-    typedef typename T::SubTable SubTable;
+    تعريفنوع قسم_ناں T::Sub_جدول Sub_جدول;
 
-    int v = 0;
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    صحيح v = 0;
+    ثابت Sub_جدول *st = &thiz()->پہلا_Sub_جدول;
+    بنانشانی صحيح گنتی = thiz()->جدول_گنتی;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
     {
-      if ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
-	  !st->u.header.is_horizontal ())
-	continue;
-      v += st->get_kerning (left, right);
-      st = &StructAfter<SubTable> (*st);
+      إذا ((st->u.سرخی.coverage & (st->u.سرخی.Variation | st->u.سرخی.Cross_دھارا)) ||
+	  !st->u.سرخی.is_horizontal ())
+	استمر;
+      v += st->get_kerning (کھبے, سجے);
+      st = &StructAfter<Sub_جدول> (*st);
     }
-    return v;
+    أرجع v;
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c,
-	      const kern_accelerator_data_t &accel_data) const
+  منطقي apply (AAT::hb_aat_apply_context_t *c,
+	      ثابت kern_accelerator_انکڑے_t &accel_انکڑے) ثابت
   {
-    c->buffer->unsafe_to_concat ();
+    c->بفر->unsafe_منزل_concat ();
 
-    c->setup_buffer_glyph_set ();
+    c->تیاری_بفر_glyph_سیٹ ();
 
-    typedef typename T::SubTable SubTable;
+    تعريفنوع قسم_ناں T::Sub_جدول Sub_جدول;
 
-    bool ret = false;
-    bool seenCrossStream = false;
-    c->set_lookup_index (0);
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    منطقي ret = خطأ;
+    منطقي تکیا_Cross_دھارا = خطأ;
+    c->سیٹ_lookup_اشاریہ (0);
+    ثابت Sub_جدول *st = &thiz()->پہلا_Sub_جدول;
+    بنانشانی صحيح گنتی = thiz()->جدول_گنتی;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
     {
-      bool reverse;
+      منطقي reverse;
 
-      auto &subtable_accel = accel_data.subtable_accels[i];
+      خودکار &subtable_accel = accel_انکڑے.subtable_accels[i];
 
-      if (!T::Types::extended && (st->u.header.coverage & st->u.header.Variation))
-	goto skip;
+      إذا (!T::Types::extended && (st->u.سرخی.coverage & st->u.سرخی.Variation))
+	اذهب skip;
 
-      if (HB_DIRECTION_IS_HORIZONTAL (c->buffer->props.direction) != st->u.header.is_horizontal ())
-	goto skip;
+      إذا (HB_DIRECTION_IS_HORIZONTAL (c->بفر->props.direction) != st->u.سرخی.is_horizontal ())
+	اذهب skip;
 
-      c->first_set = &subtable_accel.first_set;
-      c->second_set = &subtable_accel.second_set;
+      c->پہلا_سیٹ = &subtable_accel.پہلا_سیٹ;
+      c->دوجا_سیٹ = &subtable_accel.دوجا_سیٹ;
       c->machine_class_cache = &subtable_accel.class_cache;
 
-      if (!c->buffer_intersects_machine ())
+      إذا (!c->بفر_intersects_machine ())
       {
-	(void) c->buffer->message (c->font, "skipped subtable %u because no glyph matches", c->lookup_index);
-	goto skip;
+	(فراغ) c->بفر->سنیہا (c->font, "skipped subtable %u because no glyph matches", c->lookup_اشاریہ);
+	اذهب skip;
       }
 
-      reverse = bool (st->u.header.coverage & st->u.header.Backwards) !=
-		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
+      reverse = منطقي (st->u.سرخی.coverage & st->u.سرخی.Backwards) !=
+		HB_DIRECTION_IS_BACKWARD (c->بفر->props.direction);
 
-      if (!c->buffer->message (c->font, "start subtable %u", c->lookup_index))
-	goto skip;
+      إذا (!c->بفر->سنیہا (c->font, "start subtable %u", c->lookup_اشاریہ))
+	اذهب skip;
 
-      if (!seenCrossStream &&
-	  (st->u.header.coverage & st->u.header.CrossStream))
+      إذا (!تکیا_Cross_دھارا &&
+	  (st->u.سرخی.coverage & st->u.سرخی.Cross_دھارا))
       {
 	/* Attach all glyphs into a chain. */
-	seenCrossStream = true;
-	hb_glyph_position_t *pos = c->buffer->pos;
-	unsigned int count = c->buffer->len;
-	for (unsigned int i = 0; i < count; i++)
+	تکیا_Cross_دھارا = سچ;
+	hb_glyph_position_t *pos = c->بفر->pos;
+	بنانشانی صحيح گنتی = c->بفر->len;
+	لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
 	{
 	  pos[i].attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_CURSIVE;
-	  pos[i].attach_chain() = HB_DIRECTION_IS_FORWARD (c->buffer->props.direction) ? -1 : +1;
+	  pos[i].attach_chain() = HB_DIRECTION_IS_FORWARD (c->بفر->props.direction) ? -1 : +1;
 	  /* We intentionally don't set HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT,
 	   * since there needs to be a non-zero attachment for post-positioning to
 	   * be needed. */
 	}
       }
 
-      if (reverse != c->buffer_is_reversed)
-        c->reverse_buffer ();
+      إذا (reverse != c->بفر_is_reversed)
+        c->الٹ_بفر ();
 
       {
 	/* See comment in sanitize() for conditional here. */
-	hb_sanitize_with_object_t with (&c->sanitizer, i < count - 1 ? st : (const SubTable *) nullptr);
+	hb_sanitize_with_object_t with (&c->sanitizer, i < گنتی - 1 ? st : (ثابت Sub_جدول *) خالی_سوچک);
 	ret |= st->dispatch (c);
       }
 
-      (void) c->buffer->message (c->font, "end subtable %u", c->lookup_index);
+      (فراغ) c->بفر->سنیہا (c->font, "end subtable %u", c->lookup_اشاریہ);
 
     skip:
-      st = &StructAfter<SubTable> (*st);
-      c->set_lookup_index (c->lookup_index + 1);
+      st = &StructAfter<Sub_جدول> (*st);
+      c->سیٹ_lookup_اشاریہ (c->lookup_اشاریہ + 1);
     }
-    if (c->buffer_is_reversed)
-      c->reverse_buffer ();
+    إذا (c->بفر_is_reversed)
+      c->الٹ_بفر ();
 
-    return ret;
+    أرجع ret;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(thiz()->version.sanitize (c) &&
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!(thiz()->نسخہ.sanitize (c) &&
 		    hb_barrier () &&
-		    (unsigned) thiz()->version >= (unsigned) T::minVersion &&
-		    thiz()->tableCount.sanitize (c))))
-      return_trace (false);
+		    (بنانشانی) thiz()->نسخہ >= (بنانشانی) T::min_نسخہ &&
+		    thiz()->جدول_گنتی.sanitize (c))))
+      return_trace (خطأ);
 
-    typedef typename T::SubTable SubTable;
+    تعريفنوع قسم_ناں T::Sub_جدول Sub_جدول;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Sub_جدول *st = &thiz()->پہلا_Sub_جدول;
+    بنانشانی صحيح گنتی = thiz()->جدول_گنتی;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
     {
-      if (unlikely (!st->u.header.sanitize (c)))
-	return_trace (false);
+      إذا (unlikely (!st->u.سرخی.sanitize (c)))
+	return_trace (خطأ);
       hb_barrier ();
       /* OpenType kern table has 2-byte subtable lengths.  That's limiting.
        * MS implementation also only supports one subtable, of format 0,
@@ -1103,106 +1103,106 @@ struct KerxTable
        * is simply ignored.  Which makes sense.  It's only needed if you
        * have multiple subtables.  To handle such fonts, we just ignore
        * the length for the last subtable. */
-      hb_sanitize_with_object_t with (c, i < count - 1 ? st : (const SubTable *) nullptr);
+      hb_sanitize_with_object_t with (c, i < گنتی - 1 ? st : (ثابت Sub_جدول *) خالی_سوچک);
 
-      if (unlikely (!st->sanitize (c)))
-	return_trace (false);
+      إذا (unlikely (!st->sanitize (c)))
+	return_trace (خطأ);
 
-      st = &StructAfter<SubTable> (*st);
+      st = &StructAfter<Sub_جدول> (*st);
     }
 
-    unsigned majorVersion = thiz()->version;
-    if (sizeof (thiz()->version) == 4)
-      majorVersion = majorVersion >> 16;
-    if (majorVersion >= 3)
+    بنانشانی major_نسخہ = thiz()->نسخہ;
+    إذا (حجم (thiz()->نسخہ) == 4)
+      major_نسخہ = major_نسخہ >> 16;
+    إذا (major_نسخہ >= 3)
     {
-      const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) st;
-      if (!coverage->sanitize (c, count))
-        return_trace (false);
+      ثابت SubtableGlyphCoverage *coverage = (ثابت SubtableGlyphCoverage *) st;
+      إذا (!coverage->sanitize (c, گنتی))
+        return_trace (خطأ);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  kern_accelerator_انکڑے_t create_accelerator_انکڑے (بنانشانی عدد_glyphs) ثابت
   {
-    kern_accelerator_data_t accel_data;
+    kern_accelerator_انکڑے_t accel_انکڑے;
 
-    typedef typename T::SubTable SubTable;
+    تعريفنوع قسم_ناں T::Sub_جدول Sub_جدول;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Sub_جدول *st = &thiz()->پہلا_Sub_جدول;
+    بنانشانی صحيح گنتی = thiz()->جدول_گنتی;
+    لكل (بنانشانی صحيح i = 0; i < گنتی; i++)
     {
-      auto &subtable_accel = *accel_data.subtable_accels.push ();
-      if (unlikely (accel_data.subtable_accels.in_error ()))
-	  return accel_data;
+      خودکار &subtable_accel = *accel_انکڑے.subtable_accels.push ();
+      إذا (unlikely (accel_انکڑے.subtable_accels.وچ_error ()))
+	  أرجع accel_انکڑے;
 
-      st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, num_glyphs);
+      st->collect_glyphs (subtable_accel.پہلا_سیٹ, subtable_accel.دوجا_سیٹ, عدد_glyphs);
       subtable_accel.class_cache.clear ();
 
-      st = &StructAfter<SubTable> (*st);
+      st = &StructAfter<Sub_جدول> (*st);
     }
 
-    return accel_data;
+    أرجع accel_انکڑے;
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<T> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      هذا->جدول = sc.reference_جدول<T> (face);
+      هذا->accel_انکڑے = هذا->جدول->create_accelerator_انکڑے (face->get_عدد_glyphs ());
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      هذا->جدول.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () ثابت { أرجع جدول.get_blob (); }
 
-    bool apply (AAT::hb_aat_apply_context_t *c) const
+    منطقي apply (AAT::hb_aat_apply_context_t *c) ثابت
     {
-      return table->apply (c, accel_data);
+      أرجع جدول->apply (c, accel_انکڑے);
     }
 
-    hb_blob_ptr_t<T> table;
-    kern_accelerator_data_t accel_data;
+    hb_blob_ptr_t<T> جدول;
+    kern_accelerator_انکڑے_t accel_انکڑے;
     hb_aat_scratch_t scratch;
   };
 };
 
-struct kerx : KerxTable<kerx>
+بنية kerx : Kerx_جدول<kerx>
 {
-  friend struct KerxTable<kerx>;
+  یار بنية Kerx_جدول<kerx>;
 
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_kerx;
-  static constexpr unsigned minVersion = 2u;
+  ساكن constexpr hb_ٹیگ_t جدول_ٹیگ = HB_AAT_ٹیگ_kerx;
+  ساكن constexpr بنانشانی min_نسخہ = 2u;
 
-  typedef KerxSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KerxSubTable SubTable;
+  تعريفنوع Kerx_Sub_جدول_سرخی Sub_جدول_سرخی;
+  تعريفنوع Sub_جدول_سرخی::Types Types;
+  تعريفنوع Kerx_Sub_جدول Sub_جدول;
 
-  bool has_data () const { return version; }
+  منطقي has_انکڑے () ثابت { أرجع نسخہ; }
 
-  protected:
-  HBUINT16	version;	/* The version number of the extended kerning table
+  محمي:
+  HBUINT16	نسخہ;	/* The version number of the extended kerning table
 				 * (currently 2, 3, or 4). */
-  HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	tableCount;	/* The number of subtables included in the extended kerning
+  HBUINT16	بن_ورتیا_2;		/* Set to 0. */
+  HBUINT32	جدول_گنتی;	/* The number of subtables included in the extended kerning
 				 * table. */
-  SubTable	firstSubTable;	/* Subtables. */
+  Sub_جدول	پہلا_Sub_جدول;	/* Subtables. */
 /*subtableGlyphCoverageArray*/	/* Only if version >= 3. We don't use. */
 
-  public:
-  DEFINE_SIZE_MIN (8);
+  عام:
+  DEFINE_ناپ_MIN (8);
 };
 
-struct kerx_accelerator_t : kerx::accelerator_t {
+بنية kerx_accelerator_t : kerx::accelerator_t {
   kerx_accelerator_t (hb_face_t *face) : kerx::accelerator_t (face) {}
 };
 
 } /* namespace AAT */
 
-#endif /* HB_AAT_LAYOUT_KERX_TABLE_HH */
+#جے_انت /* HB_AAT_LAYOUT_KERX_TABLE_HH */

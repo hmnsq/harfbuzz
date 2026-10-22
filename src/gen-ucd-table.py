@@ -7,31 +7,31 @@ Input file:
 """
 
 # https://github.com/harfbuzz/packtab
-import packTab
-import packTab.ucdxml
+استورد packTab
+استورد packTab.ucdxml
 
-import sys, re
-import logging
+استورد sys, re
+استورد logging
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
-    del sys.argv[1]
+إذا لمبائی(sys.argv) > 1 و sys.argv[1] == "--rust":
+    ہٹاؤ sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+وإلا:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
-if len(sys.argv) not in (2, 3):
+إذا لمبائی(sys.argv) ليس في (2, 3):
     sys.exit(__doc__)
 
 logging.info("Loading UCDXML...")
-ucdxml = packTab.ucdxml.load_ucdxml(sys.argv[1])
+ucdxml = packTab.ucdxml.لدو_ucdxml(sys.argv[1])
 ucd = packTab.ucdxml.ucdxml_get_repertoire(ucdxml)
 
-hb_script_list_h = "hb-script-list.h" if len(sys.argv) < 3 else sys.argv[2]
+hb_script_list_h = "hb-script-list.h" إذا لمبائی(sys.argv) < 3 وإلا sys.argv[2]
 
 logging.info("Preparing data tables...")
 
@@ -47,10 +47,10 @@ logging.info("Preparing data tables...")
 # Composition & Decomposition (dm) are encoded elaborately,
 # as discussed below.
 
-gc = [u["gc"] for u in ucd]
-ccc = [int(u["ccc"]) for u in ucd]
-bmg = [int(v, 16) - int(u) if v else 0 for u, v in enumerate(u["bmg"] for u in ucd)]
-sc = [u["sc"] for u in ucd]
+gc = [u["gc"] لكل u في ucd]
+ccc = [صحيح(u["ccc"]) لكل u في ucd]
+bmg = [صحيح(v, 16) - صحيح(u) إذا v وإلا 0 لكل u, v في enumerate(u["bmg"] لكل u في ucd)]
+sc = [u["sc"] لكل u في ucd]
 
 
 # Prepare Compose / Decompose data
@@ -58,53 +58,53 @@ sc = [u["sc"] for u in ucd]
 # This code is very dense.  See hb_ucd_compose() / hb_ucd_decompose() for the logic.
 
 dm = {
-    i: tuple(int(v, 16) for v in u["dm"].split())
-    for i, u in enumerate(ucd)
-    if u["dm"] != "#" and u["dt"] == "can" and not (0xAC00 <= i < 0xAC00 + 11172)
+    i: tuple(صحيح(v, 16) لكل v في u["dm"].ونڈو())
+    لكل i, u في enumerate(ucd)
+    إذا u["dm"] != "#" و u["dt"] == "can" و ليس (0xAC00 <= i < 0xAC00 + 11172)
 }
-ce = {i for i, u in enumerate(ucd) if u["Comp_Ex"] == "Y"}
+ce = {i لكل i, u في enumerate(ucd) إذا u["Comp_Ex"] == "Y"}
 
-assert not any(v for v in dm.values() if len(v) not in (1, 2))
-dm1 = sorted(set(v for v in dm.values() if len(v) == 1))
-assert all((v[0] >> 16) in (0, 2) for v in dm1)
-dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 0]
-dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 2]
-dm1_order = {v: i + 1 for i, v in enumerate(dm1)}
+أكد ليس any(v لكل v في dm.اقدار() إذا لمبائی(v) ليس في (1, 2))
+dm1 = sorted(سیٹ(v لكل v في dm.اقدار() إذا لمبائی(v) == 1))
+أكد all((v[0] >> 16) في (0, 2) لكل v في dm1)
+dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) لكل v في dm1 إذا (v[0] >> 16) == 0]
+dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) لكل v في dm1 إذا (v[0] >> 16) == 2]
+dm1_ترتیب = {v: i + 1 لكل i, v في enumerate(dm1)}
 
 dm2 = sorted(
-    (v + (i if i not in ce and not ccc[i] else 0,), v)
-    for i, v in dm.items()
-    if len(v) == 2
+    (v + (i إذا i ليس في ce و ليس ccc[i] وإلا 0,), v)
+    لكل i, v في dm.اشیاء()
+    إذا لمبائی(v) == 2
 )
 
-filt = lambda v: (
+filt = مجهول v: (
     (v[0] & 0xFFFFF800) == 0x0000
-    and (v[1] & 0xFFFFFF80) == 0x0300
-    and (v[2] & 0xFFF0C000) == 0x0000
+    و (v[1] & 0xFFFFFF80) == 0x0300
+    و (v[2] & 0xFFF0C000) == 0x0000
 )
-dm2_u32_array = [v for v in dm2 if filt(v[0])]
-dm2_u64_array = [v for v in dm2 if not filt(v[0])]
-assert dm2_u32_array + dm2_u64_array == dm2
+dm2_u32_array = [v لكل v في dm2 إذا filt(v[0])]
+dm2_u64_array = [v لكل v في dm2 إذا ليس filt(v[0])]
+أكد dm2_u32_array + dm2_u64_array == dm2
 dm2_u32_array = [
     "HB_CODEPOINT_ENCODE3_11_7_14 (0x%04X, 0x%04X, 0x%04X)" % v[0]
-    for v in dm2_u32_array
+    لكل v في dm2_u32_array
 ]
 dm2_u64_array = [
-    "HB_CODEPOINT_ENCODE3 (0x%04X, 0x%04X, 0x%04X)" % v[0] for v in dm2_u64_array
+    "HB_CODEPOINT_ENCODE3 (0x%04X, 0x%04X, 0x%04X)" % v[0] لكل v في dm2_u64_array
 ]
 
-l = 1 + len(dm1_p0_array) + len(dm1_p2_array)
-dm2_order = {v[1]: i + l for i, v in enumerate(dm2)}
+l = 1 + لمبائی(dm1_p0_array) + لمبائی(dm1_p2_array)
+dm2_ترتیب = {v[1]: i + l لكل i, v في enumerate(dm2)}
 
-dm_order = {None: 0}
-dm_order.update(dm1_order)
-dm_order.update(dm2_order)
+dm_ترتیب = {کجھ_نئیں: 0}
+dm_ترتیب.update(dm1_ترتیب)
+dm_ترتیب.update(dm2_ترتیب)
 
 
 # Prepare General_Category / Script mapping arrays
 
-gc_order = dict()
-for i, v in enumerate(
+gc_ترتیب = dict()
+لكل i, v في enumerate(
     (
         "Cc",
         "Cf",
@@ -138,22 +138,22 @@ for i, v in enumerate(
         "Zs",
     )
 ):
-    gc_order[i] = v
-    gc_order[v] = i
+    gc_ترتیب[i] = v
+    gc_ترتیب[v] = i
 
-sc_order = dict()
+sc_ترتیب = dict()
 sc_array = []
 sc_re = re.compile(r"\b(HB_SCRIPT_[_A-Z]*).*HB_TAG [(]'(.)','(.)','(.)','(.)'[)]")
-for line in open(hb_script_list_h):
-    m = sc_re.search(line)
-    if not m:
-        continue
-    name = m.group(1)
-    tag = "".join(m.group(i) for i in range(2, 6))
-    i = len(sc_array)
-    sc_order[tag] = i
-    sc_order[i] = tag
-    if language.name == "rust":
+لكل سطر في open(hb_script_list_h):
+    m = sc_re.تلاش(سطر)
+    إذا ليس m:
+        استمر
+    name = m.گروہ(1)
+    ٹیگ_2 = "".join(m.گروہ(i) لكل i في سلسلہ(2, 6))
+    i = لمبائی(sc_array)
+    sc_ترتیب[ٹیگ_2] = i
+    sc_ترتیب[i] = ٹیگ_2
+    إذا language.name == "rust":
         name = name.replace("HB_SCRIPT_", "script::")
     sc_array.append(name)
 
@@ -171,36 +171,36 @@ compression_level = {
 }
 
 logging.info("Generating output...")
-print("/* == Start of generated table == */")
-print("/*")
-print(" * The following table is generated by running:")
-print(" *")
-print(
+چھاپو("/* == Start of generated table == */")
+چھاپو("/*")
+چھاپو(" * The following table is generated by running:")
+چھاپو(" *")
+چھاپو(
     " *   ./gen-ucd-table.py %sucd.nounihan.grouped.xml hb-script-list.h"
-    % (("--%s " % language.name) if language.name != "c" else "")
+    % (("--%s " % language.name) إذا language.name != "c" وإلا "")
 )
-print(" *")
-print(" * on file with this description:", ucdxml.description)
-print(" */")
-print()
-if language.name == "c":
-    print("#ifndef HB_UCD_TABLE_HH")
-    print("#define HB_UCD_TABLE_HH")
-    print()
-    print('#include "hb.hh"')
-    print()
-elif language.name == "rust":
-    print("pub(crate) mod ucd {")
-    print()
-    print("#![allow(unused_parens)]")
-    print("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
-    print()
-    print("use crate::hb::algs::{HB_CODEPOINT_ENCODE3, HB_CODEPOINT_ENCODE3_11_7_14};")
-    print("use crate::hb::common::script;")
-    print("use crate::hb::common::Script as hb_script_t;")
-    print()
-else:
-    assert False, "Unknown language: %s" % language.name
+چھاپو(" *")
+چھاپو(" * on file with this description:", ucdxml.description)
+چھاپو(" */")
+چھاپو()
+إذا language.name == "c":
+    چھاپو("#ifndef HB_UCD_TABLE_HH")
+    چھاپو("#define HB_UCD_TABLE_HH")
+    چھاپو()
+    چھاپو('#include "hb.hh"')
+    چھاپو()
+وإلاإذا language.name == "rust":
+    چھاپو("pub(crate) mod ucd {")
+    چھاپو()
+    چھاپو("#![allow(unused_parens)]")
+    چھاپو("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
+    چھاپو()
+    چھاپو("use crate::hb::algs::{HB_CODEPOINT_ENCODE3, HB_CODEPOINT_ENCODE3_11_7_14};")
+    چھاپو("use crate::hb::common::script;")
+    چھاپو("use crate::hb::common::Script as hb_script_t;")
+    چھاپو()
+وإلا:
+    أكد خطأ, "Unknown language: %s" % language.name
 
 # Write mapping data
 
@@ -208,85 +208,85 @@ uint16_t = language.type_name("u16")
 uint32_t = language.type_name("u32")
 uint64_t = language.type_name("u64")
 
-if language.name == "c":
-    private = True
-elif language.name == "rust":
-    private = False
-else:
-    assert False, "Unknown language: %s" % language.name
+إذا language.name == "c":
+    خاص = سچ
+وإلاإذا language.name == "rust":
+    خاص = خطأ
+وإلا:
+    أكد خطأ, "Unknown language: %s" % language.name
 
-code = packTab.Code("_hb_ucd")
-sc_array, _ = code.addArray("hb_script_t", "sc_map", sc_array)
-dm1_p0_array, _ = code.addArray(uint16_t, "dm1_p0_map", dm1_p0_array)
-dm1_p2_array, _ = code.addArray(uint16_t, "dm1_p2_map", dm1_p2_array)
-dm2_u32_array, _ = code.addArray(uint32_t, "dm2_u32_map", dm2_u32_array)
-dm2_u64_array, _ = code.addArray(uint64_t, "dm2_u64_map", dm2_u64_array)
-code.print_code(language=language, private=private)
+کوڈ = packTab.کوڈ_2("_hb_ucd")
+sc_array, _ = کوڈ.جوڑو_Array("hb_script_t", "sc_map", sc_array)
+dm1_p0_array, _ = کوڈ.جوڑو_Array(uint16_t, "dm1_p0_map", dm1_p0_array)
+dm1_p2_array, _ = کوڈ.جوڑو_Array(uint16_t, "dm1_p2_map", dm1_p2_array)
+dm2_u32_array, _ = کوڈ.جوڑو_Array(uint32_t, "dm2_u32_map", dm2_u32_array)
+dm2_u64_array, _ = کوڈ.جوڑو_Array(uint64_t, "dm2_u64_map", dm2_u64_array)
+کوڈ.print_کوڈ(language=language, خاص=خاص)
 
 datasets = [
-    ("gc", gc, "Cn", gc_order),
-    ("ccc", ccc, 0, None),
-    ("bmg", bmg, 0, None),
-    ("sc", sc, "Zzzz", sc_order),
-    ("dm", dm, None, dm_order),
+    ("gc", gc, "Cn", gc_ترتیب),
+    ("ccc", ccc, 0, کجھ_نئیں),
+    ("bmg", bmg, 0, کجھ_نئیں),
+    ("sc", sc, "Zzzz", sc_ترتیب),
+    ("dm", dm, کجھ_نئیں, dm_ترتیب),
 ]
 
 
 # Write main data
 
 modes = {}
-if language.name == "c":
+إذا language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#elif !defined(HB_NO_UCD_UNASSIGNED)"
     modes[SLOPPY] = "#else"
-    modes[None] = "#endif"
-else:
+    modes[کجھ_نئیں] = "#endif"
+وإلا:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
-    print()
-    if text:
-        print(text)
-        print()
-    if step is None:
-        continue
+لكل قدم, متن في modes.اشیاء():
+    چھاپو()
+    إذا متن:
+        چھاپو(متن)
+        چھاپو()
+    إذا قدم اے کجھ_نئیں:
+        استمر
 
-    compression = compression_level[step]
+    compression = compression_level[قدم]
     logging.info("  Compression=%d:" % compression)
 
-    if step == SLOPPY:
-        for i in range(len(gc)):
-            if (i % 128) and gc[i] == "Cn":
+    إذا قدم == SLOPPY:
+        لكل i في سلسلہ(لمبائی(gc)):
+            إذا (i % 128) و gc[i] == "Cn":
                 gc[i] = gc[i - 1]
-        for i in range(len(gc) - 2, -1, -1):
-            if ((i + 1) % 128) and gc[i] == "Cn":
+        لكل i في سلسلہ(لمبائی(gc) - 2, -1, -1):
+            إذا ((i + 1) % 128) و gc[i] == "Cn":
                 gc[i] = gc[i + 1]
-        for i in range(len(sc)):
-            if (i % 128) and sc[i] == "Zzzz":
+        لكل i في سلسلہ(لمبائی(sc)):
+            إذا (i % 128) و sc[i] == "Zzzz":
                 sc[i] = sc[i - 1]
-        for i in range(len(sc) - 2, -1, -1):
-            if ((i + 1) % 128) and sc[i] == "Zzzz":
+        لكل i في سلسلہ(لمبائی(sc) - 2, -1, -1):
+            إذا ((i + 1) % 128) و sc[i] == "Zzzz":
                 sc[i] = sc[i + 1]
 
-    code = packTab.Code("_hb_ucd")
+    کوڈ = packTab.کوڈ_2("_hb_ucd")
 
-    for name, data, default, mapping in datasets:
-        sol = packTab.pack_table(
-            data, default, mapping=mapping, compression=compression
+    لكل name, انکڑے, افتراضي, mapping في datasets:
+        sol = packTab.pack_جدول(
+            انکڑے, افتراضي, mapping=mapping, compression=compression
         )
-        logging.info("      Dataset=%-8s FullCost=%d" % (name, sol.fullCost))
-        sol.genCode(code, name, private=private, language=language)
+        logging.info("      Dataset=%-8s FullCost=%d" % (name, sol.بھریا_لاگت))
+        sol.gen_کوڈ(کوڈ, name, خاص=خاص, language=language)
 
-    code.print_code(language=language)
+    کوڈ.print_کوڈ(language=language)
 
-    print()
+    چھاپو()
 
-if language.name == "c":
-    print("#endif /* HB_UCD_TABLE_HH */")
-elif language.name == "rust":
-    print("}")
-else:
-    assert False, "Unknown language: %s" % language.name
-print()
-print("/* == End of generated table == */")
+إذا language.name == "c":
+    چھاپو("#endif /* HB_UCD_TABLE_HH */")
+وإلاإذا language.name == "rust":
+    چھاپو("}")
+وإلا:
+    أكد خطأ, "Unknown language: %s" % language.name
+چھاپو()
+چھاپو("/* == End of generated table == */")
 logging.info("Done.")
