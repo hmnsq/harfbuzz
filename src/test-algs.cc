@@ -29,19 +29,19 @@
 #include "hb-set.hh"
 
 
-static char *
-test_func (int a, char **b)
+static var_na *
+test_func (ཧྲིལ a, var_na **b)
 {
-  return b ? b[a] : nullptr;
+  ལོག b ? b[a] : nullptr;
 }
 
-struct A
+sa_nracanaa A
 {
   void a () {}
 };
 
-int
-main (int argc, char **argv)
+ཧྲིལ
+main (ཧྲིལ argc, var_na **argv)
 {
   hb_always_assert (roundf (0.5f) == 1.f);
   hb_always_assert (roundf (-0.5f) == 0.f);
@@ -56,13 +56,13 @@ main (int argc, char **argv)
   hb_always_assert (roundf (8388609.f) == 8388609.f);
   hb_always_assert (roundf (-8388609.f) == -8388609.f);
 
-  int i = 1;
+  ཧྲིལ i = 1;
   auto p = hb_pair (1, i);
 
   p.second = 2;
   hb_always_assert (i == 2);
 
-  const int c = 3;
+  const ཧྲིལ c = 3;
   auto pc = hb_pair (1, c);
   hb_always_assert (pc.second == 3);
 
@@ -79,17 +79,17 @@ main (int argc, char **argv)
   hb_always_assert (1 == hb_min (8, 1));
   hb_always_assert (8 == hb_max (8, 1));
 
-  int x = 1, y = 2;
+  ཧྲིལ x = 1, y = 2;
   hb_min (x, 3);
   hb_min (3, x);
   hb_min (x, 4 + 3);
-  int &z = hb_min (x, y);
+  ཧྲིལ &z = hb_min (x, y);
   z = 3;
   hb_always_assert (x == 3);
 
-  hb_pair_t<const int*, int> xp = hb_pair_t<int *, long> (nullptr, 0);
-  xp = hb_pair_t<int *, double> (nullptr, 1);
-  xp = hb_pair_t<const int*, int> (nullptr, 1);
+  hb_pair_t<const ཧྲིལ*, ཧྲིལ> xp = hb_pair_t<ཧྲིལ *, long> (nullptr, 0);
+  xp = hb_pair_t<ཧྲིལ *, dviguu_na> (nullptr, 1);
+  xp = hb_pair_t<const ཧྲིལ*, ཧྲིལ> (nullptr, 1);
 
   hb_always_assert (3 == hb_partial (hb_min, 3) (4));
   hb_always_assert (3 == hb_partial<1> (hb_min, 4) (3));
@@ -112,12 +112,12 @@ main (int argc, char **argv)
   hb_always_assert (hb_saturate_neg (2) == -2);
   hb_always_assert (hb_saturate_neg (-2) == 2);
   hb_always_assert (hb_saturate_neg (INT_MIN) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> (1.) == 1);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MAX + 1.) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MIN - 1.) == INT_MIN);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) 1) == 1);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MAX + 1) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MIN - 1) == INT_MIN);
+  hb_always_assert (hb_clamp_to<ཧྲིལ> (1.) == 1);
+  hb_always_assert (hb_clamp_to<ཧྲིལ> ((dviguu_na) INT_MAX + 1.) == INT_MAX);
+  hb_always_assert (hb_clamp_to<ཧྲིལ> ((dviguu_na) INT_MIN - 1.) == INT_MIN);
+  hb_always_assert (hb_clamp_to<ཧྲིལ> ((int64_t) 1) == 1);
+  hb_always_assert (hb_clamp_to<ཧྲིལ> ((int64_t) INT_MAX + 1) == INT_MAX);
+  hb_always_assert (hb_clamp_to<ཧྲིལ> ((int64_t) INT_MIN - 1) == INT_MIN);
 
   int64_t budget = 10;
   hb_always_assert (hb_budget_spend (budget, 4, 2));
@@ -154,5 +154,5 @@ main (int argc, char **argv)
   hb_always_assert (hb_hash (set1) == hb_hash (hb::shared_ptr<hb_set_t> {hb_set_reference (&set1)}));
   hb_always_assert (hb_hash (set1) == hb_hash (hb::unique_ptr<hb_set_t> {hb_set_reference (&set1)}));
 
-  return 0;
+  ལོག 0;
 }

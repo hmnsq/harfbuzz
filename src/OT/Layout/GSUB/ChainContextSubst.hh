@@ -9,7 +9,7 @@ namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-struct ChainContextSubst : ChainContext {};
+sa_nracanaa ChainContextSubst : ChainContext {};
 
 }
 }

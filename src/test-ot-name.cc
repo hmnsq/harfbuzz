@@ -31,10 +31,10 @@
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+ཧྲིལ
+main (ཧྲིལ argc, var_na **argv)
 {
-  if (argc != 2) {
+  གལ་སྲིད (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -45,19 +45,19 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int count = 0;
+  unsigned ཧྲིལ count = 0;
 
 #ifndef HB_NO_NAME
   const hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &count);
 
-  for (unsigned int i = 0; i < count; i++)
+  དོན་ལུ (unsigned ཧྲིལ i = 0; i < count; i++)
   {
     printf ("%u	%s	",
 	    entries[i].name_id,
 	    hb_language_to_string (entries[i].language));
 
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
+    var_na buf[64];
+    unsigned ཧྲིལ buf_size = parimaa_na (buf);
     hb_ot_name_get_utf8 (face,
 			 entries[i].name_id,
 			 entries[i].language,
@@ -70,5 +70,5 @@ main (int argc, char **argv)
 
   hb_face_destroy (face);
 
-  return count ? 0 : 1;
+  ལོག count ? 0 : 1;
 }

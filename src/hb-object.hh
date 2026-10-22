@@ -43,7 +43,7 @@
  */
 
 template <typename item_t, typename lock_t>
-struct hb_lockable_set_t
+sa_nracanaa hb_lockable_set_t
 {
   hb_vector_t<item_t> items;
 
@@ -54,22 +54,22 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
+    གལ་སྲིད (item) {
+      གལ་སྲིད (replace) {
 	item_t old = *item;
 	*item = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
+      དེ་མིན {
 	item = nullptr;
 	l.unlock ();
       }
-    } else {
+    } དེ་མིན {
       item = items.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    ལོག items.in_error () ? nullptr : item;
   }
 
   template <typename T>
@@ -77,14 +77,14 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item)
+    གལ་སྲིད (item)
     {
       item_t old = *item;
       *item = std::move (items.tail ());
       items.pop ();
       l.unlock ();
       old.fini ();
-    } else {
+    } དེ་མིན {
       l.unlock ();
     }
   }
@@ -94,10 +94,10 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item)
+    གལ་སྲིད (item)
       *i = *item;
     l.unlock ();
-    return !!item;
+    ལོག !!item;
   }
 
   template <typename T>
@@ -105,23 +105,23 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.find (v);
-    if (!item) {
+    གལ་སྲིད (!item) {
       item = items.push (v);
     }
     l.unlock ();
-    return item;
+    ལོག item;
   }
 
   void fini (lock_t &l)
   {
-    if (!items.length)
+    གལ་སྲིད (!items.length)
     {
       /* No need to lock. */
       items.fini ();
-      return;
+      ལོག;
     }
     l.lock ();
-    while (items.length)
+    སྐབས (items.length)
     {
       item_t old = items.tail ();
       items.pop ();
@@ -140,34 +140,34 @@ struct hb_lockable_set_t
  * Reference-count.
  */
 
-struct hb_reference_count_t
+sa_nracanaa hb_reference_count_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  mutable hb_atomic_t<ཧྲིལ> ref_count;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
+  void init (ཧྲིལ v = 1) { ref_count = v; }
+  ཧྲིལ get_relaxed () const { ལོག ref_count; }
+  ཧྲིལ inc () const { ལོག ref_count.inc (); }
+  ཧྲིལ dec () const { ལོག ref_count.dec (); }
   void fini () { ref_count = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  bool is_inert () const { ལོག !ref_count; }
+  bool is_valid () const { ལོག ref_count > 0; }
 };
 
 
 /* user_data */
 
-struct hb_user_data_array_t
+sa_nracanaa hb_user_data_array_t
 {
-  struct hb_user_data_item_t {
+  sa_nracanaa hb_user_data_item_t {
     hb_user_data_key_t *key;
     void *data;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    bool operator == (const hb_user_data_key_t *other_key) const { ལོག key == other_key; }
+    bool operator == (const hb_user_data_item_t &other) const { ལོག key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    void fini () { གལ་སྲིད (destroy) destroy (data); }
   };
 
   hb_mutex_t lock;
@@ -182,26 +182,26 @@ struct hb_user_data_array_t
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    གལ་སྲིད (!key)
+      ལོག false;
 
-    if (replace) {
-      if (!data && !destroy) {
+    གལ་སྲིད (replace) {
+      གལ་སྲིད (!data && !destroy) {
 	items.remove (key, lock);
-	return true;
+	ལོག true;
       }
     }
     hb_user_data_item_t item = {key, data, destroy};
     bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
 
-    return ret;
+    ལོག ret;
   }
 
   void *get (hb_user_data_key_t *key)
   {
     hb_user_data_item_t item = {nullptr, nullptr, nullptr};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    ལོག items.find (key, &item, lock) ? item.data : nullptr;
   }
 };
 
@@ -210,13 +210,13 @@ struct hb_user_data_array_t
  * Object header
  */
 
-struct hb_object_header_t
+sa_nracanaa hb_object_header_t
 {
   hb_reference_count_t ref_count;
   mutable hb_atomic_t<bool> writable = false;
   hb_atomic_t<hb_user_data_array_t *> user_data;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  bool is_inert () const { ལོག !ref_count.get_relaxed (); }
 };
 #define HB_OBJECT_HEADER_STATIC {}
 
@@ -226,7 +226,7 @@ struct hb_object_header_t
  */
 
 template <typename Type>
-static inline void hb_object_trace (const Type *obj, const char *function)
+static anta_hstha void hb_object_trace (const Type *obj, const var_na *function)
 {
   DEBUG_MSG (OBJECT, (void *) obj,
 	     "%s refcount=%d",
@@ -235,90 +235,90 @@ static inline void hb_object_trace (const Type *obj, const char *function)
 }
 
 template <typename Type, typename ...Ts>
-static inline Type *hb_object_create (Ts... ds)
+static anta_hstha Type *hb_object_create (Ts... ds)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
+  Type *obj = (Type *) hb_calloc (1, parimaa_na (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  གལ་སྲིད (unlikely (!obj))
+    ལོག obj;
 
   new (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  ལོག obj;
 }
 template <typename Type>
-static inline void hb_object_init (Type *obj)
+static anta_hstha void hb_object_init (Type *obj)
 {
   obj->header.ref_count.init ();
   obj->header.writable = true;
   obj->header.user_data.init ();
 }
 template <typename Type>
-static inline bool hb_object_is_valid (const Type *obj)
+static anta_hstha bool hb_object_is_valid (const Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  ལོག likely (obj->header.ref_count.is_valid ());
 }
 template <typename Type>
-static inline bool hb_object_is_immutable (const Type *obj)
+static anta_hstha bool hb_object_is_immutable (const Type *obj)
 {
-  return !obj->header.writable;
+  ལོག !obj->header.writable;
 }
 template <typename Type>
-static inline void hb_object_make_immutable (const Type *obj)
+static anta_hstha void hb_object_make_immutable (const Type *obj)
 {
   obj->header.writable = false;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj);
+static anta_hstha void hb_object_fini (Type *obj);
 template <typename Type>
-static inline Type *hb_object_reference (Type *obj)
+static anta_hstha Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
+  གལ་སྲིད (unlikely (!obj || obj->header.is_inert ()))
+    ལོག obj;
   assert (hb_object_is_valid (obj));
   obj->header.ref_count.inc ();
-  return obj;
+  ལོག obj;
 }
 template <typename Type>
-static inline bool hb_object_should_destroy (Type *obj)
+static anta_hstha bool hb_object_should_destroy (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
+  གལ་སྲིད (unlikely (!obj || obj->header.is_inert ()))
+    ལོག false;
   assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  གལ་སྲིད (obj->header.ref_count.dec () != 1)
+    ལོག false;
+  ལོག true;
 }
 
 template <typename Type>
-static inline void hb_object_actually_destroy (Type *obj)
+static anta_hstha void hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  གལ་སྲིད (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
 template <typename Type>
-static inline bool hb_object_destroy (Type *obj)
+static anta_hstha bool hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  གལ་སྲིད (!hb_object_should_destroy (obj))
+    ལོག false;
 
   hb_object_actually_destroy (obj);
-  return true;
+  ལོག true;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj)
+static anta_hstha void hb_object_fini (Type *obj)
 {
   obj->header.ref_count.fini (); /* Do this before user_data */
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  གལ་སྲིད (user_data)
   {
     user_data->fini ();
     hb_free (user_data);
@@ -326,25 +326,25 @@ static inline void hb_object_fini (Type *obj)
   }
 }
 template <typename Type>
-static inline bool hb_object_set_user_data (Type               *obj,
+static anta_hstha bool hb_object_set_user_data (Type               *obj,
 					    hb_user_data_key_t *key,
 					    void *              data,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
+  གལ་སྲིད (unlikely (!obj || obj->header.is_inert ()))
+    ལོག false;
   assert (hb_object_is_valid (obj));
 
 retry:
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  གལ་སྲིད (unlikely (!user_data))
   {
-    user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
+    user_data = (hb_user_data_array_t *) hb_calloc (1, parimaa_na (hb_user_data_array_t));
+    གལ་སྲིད (unlikely (!user_data))
+      ལོག false;
     user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    གལ་སྲིད (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
     {
       user_data->fini ();
       hb_free (user_data);
@@ -352,20 +352,20 @@ retry:
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  ལོག user_data->set (key, data, destroy, replace);
 }
 
 template <typename Type>
-static inline void *hb_object_get_user_data (Type               *obj,
+static anta_hstha void *hb_object_get_user_data (Type               *obj,
 					     hb_user_data_key_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
+  གལ་སྲིད (unlikely (!obj || obj->header.is_inert ()))
+    ལོག nullptr;
   assert (hb_object_is_valid (obj));
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  གལ་སྲིད (!user_data)
+    ལོག nullptr;
+  ལོག user_data->get (key);
 }
 
 

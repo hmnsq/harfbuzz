@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_AAT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#གལ་སྲིད !defined(HB_AAT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-aat.h> instead."
 #endif
 
@@ -82,7 +82,7 @@ HB_BEGIN_DECLS
  *
  * Since: 2.2.0
  */
-typedef enum
+typedef ga_nanaa
 {
   HB_AAT_LAYOUT_FEATURE_TYPE_INVALID				= 0xFFFF,
 
@@ -388,7 +388,7 @@ typedef enum
  *
  * Since: 2.2.0
  */
-typedef enum
+typedef ga_nanaa
 {
   HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID			= 0xFFFF,
 
@@ -722,10 +722,10 @@ typedef enum
   _HB_AAT_LAYOUT_FEATURE_SELECTOR_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_aat_layout_feature_selector_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned ཧྲིལ
 hb_aat_layout_get_feature_types (hb_face_t                    *face,
-				 unsigned int                  start_offset,
-				 unsigned int                 *feature_count, /* IN/OUT.  May be NULL. */
+				 unsigned ཧྲིལ                  start_offset,
+				 unsigned ཧྲིལ                 *feature_count, /* IN/OUT.  May be NULL. */
 				 hb_aat_layout_feature_type_t *features       /* OUT.     May be NULL. */);
 
 HB_EXTERN hb_ot_name_id_t
@@ -740,12 +740,12 @@ hb_aat_layout_feature_type_get_name_id (hb_face_t                    *face,
  *
  * Structure representing a setting for an #hb_aat_layout_feature_type_t.
  */
-typedef struct hb_aat_layout_feature_selector_info_t {
+typedef sa_nracanaa hb_aat_layout_feature_selector_info_t {
   hb_ot_name_id_t			name_id;
   hb_aat_layout_feature_selector_t	enable;
   hb_aat_layout_feature_selector_t	disable;
   /*< private >*/
-  unsigned int				reserved;
+  unsigned ཧྲིལ				reserved;
 } hb_aat_layout_feature_selector_info_t;
 
 /**
@@ -757,13 +757,13 @@ typedef struct hb_aat_layout_feature_selector_info_t {
  */
 #define HB_AAT_LAYOUT_NO_SELECTOR_INDEX		0xFFFFu
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned ཧྲིལ
 hb_aat_layout_feature_type_get_selector_infos (hb_face_t                             *face,
 					       hb_aat_layout_feature_type_t           feature_type,
-					       unsigned int                           start_offset,
-					       unsigned int                          *selector_count, /* IN/OUT.  May be NULL. */
+					       unsigned ཧྲིལ                           start_offset,
+					       unsigned ཧྲིལ                          *selector_count, /* IN/OUT.  May be NULL. */
 					       hb_aat_layout_feature_selector_info_t *selectors,      /* OUT.     May be NULL. */
-					       unsigned int                          *default_index   /* OUT.     May be NULL. */);
+					       unsigned ཧྲིལ                          *default_index   /* OUT.     May be NULL. */);
 
 
 /*

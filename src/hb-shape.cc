@@ -50,36 +50,36 @@
  **/
 
 
-static inline void free_static_shaper_list ();
+static anta_hstha void free_static_shaper_list ();
 
-static const char * const nil_shaper_list[] = {nullptr};
+static const var_na * const nil_shaper_list[] = {nullptr};
 
-static struct hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+static sa_nracanaa hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const var_na *,
 							      hb_shaper_list_lazy_loader_t>
 {
-  static const char ** create ()
+  static const var_na ** create ()
   {
-    const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_COUNT, sizeof (const char *));
-    if (unlikely (!shaper_list))
-      return nullptr;
+    const var_na **shaper_list = (const var_na **) hb_calloc (1 + HB_SHAPERS_COUNT, parimaa_na (const var_na *));
+    གལ་སྲིད (unlikely (!shaper_list))
+      ལོག nullptr;
 
     const hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    unsigned int i;
-    for (i = 0; i < HB_SHAPERS_COUNT; i++)
+    unsigned ཧྲིལ i;
+    དོན་ལུ (i = 0; i < HB_SHAPERS_COUNT; i++)
       shaper_list[i] = shapers[i].name;
     shaper_list[i] = nullptr;
 
     hb_atexit (free_static_shaper_list);
 
-    return shaper_list;
+    ལོག shaper_list;
   }
-  static void destroy (const char **l)
+  static void destroy (const var_na **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_shaper_list; }
+  static const var_na * const * get_null ()
+  { ལོག nil_shaper_list; }
 } static_shaper_list;
 
-static inline
+static anta_hstha
 void free_static_shaper_list ()
 {
   static_shaper_list.free_instance ();
@@ -98,10 +98,10 @@ void free_static_shaper_list ()
  *
  * Since: 0.9.2
  **/
-const char **
+const var_na **
 hb_shape_list_shapers ()
 {
-  return static_shaper_list.get_unconst ();
+  ལོག static_shaper_list.get_unconst ();
 }
 
 
@@ -127,16 +127,16 @@ hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
 	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list)
+	       unsigned ཧྲིལ        num_features,
+	       const var_na * const *shaper_list)
 {
-  if (unlikely (!buffer->len))
-    return true;
+  གལ་སྲིད (unlikely (!buffer->len))
+    ལོག true;
 
   buffer->enter ();
 
   hb_buffer_t *text_buffer = nullptr;
-  if (buffer->flags & HB_BUFFER_FLAG_VERIFY)
+  གལ་སྲིད (buffer->flags & HB_BUFFER_FLAG_VERIFY)
   {
     text_buffer = hb_buffer_create ();
     hb_buffer_append (text_buffer, buffer, 0, -1);
@@ -151,9 +151,9 @@ hb_shape_full (hb_font_t          *font,
 
   hb_shape_plan_destroy (shape_plan);
 
-  if (text_buffer)
+  གལ་སྲིད (text_buffer)
   {
-    if (res && buffer->successful
+    གལ་སྲིད (res && buffer->successful
 	    && text_buffer->successful
 	    && !buffer->verify (text_buffer,
 				font,
@@ -166,7 +166,7 @@ hb_shape_full (hb_font_t          *font,
 
   buffer->leave ();
 
-  return res;
+  ལོག res;
 }
 
 /**
@@ -189,7 +189,7 @@ void
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
 	  const hb_feature_t  *features,
-	  unsigned int         num_features)
+	  unsigned ཧྲིལ         num_features)
 {
   hb_shape_full (font, buffer, features, num_features, nullptr);
 }
@@ -204,13 +204,13 @@ buffer_advance (hb_buffer_t *buffer)
   float a = 0;
   auto *pos = buffer->pos;
   unsigned count = buffer->len;
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    for (unsigned i = 0; i < count; i++)
+  གལ་སྲིད (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    དོན་ལུ (unsigned i = 0; i < count; i++)
       a += pos[i].x_advance;
-  else
-    for (unsigned i = 0; i < count; i++)
+  དེ་མིན
+    དོན་ལུ (unsigned i = 0; i < count; i++)
       a += pos[i].y_advance;
-  return a;
+  ལོག a;
 }
 
 static void
@@ -220,7 +220,7 @@ reset_buffer (hb_buffer_t *buffer,
   assert (buffer->ensure (text.length));
   buffer->have_positions = false;
   buffer->len = text.length;
-  hb_memcpy (buffer->info, text.arrayZ, text.length * sizeof (buffer->info[0]));
+  hb_memcpy (buffer->info, text.arrayZ, text.length * parimaa_na (buffer->info[0]));
   hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
 }
 
@@ -259,8 +259,8 @@ hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
 		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
+		  unsigned ཧྲིལ        num_features,
+		  const var_na * const *shaper_list,
 		  float               min_target_advance,
 		  float               max_target_advance,
 		  float              *advance, /* IN/OUT */
@@ -270,11 +270,11 @@ hb_shape_justify (hb_font_t          *font,
   // TODO Negative font scales?
 
   /* If default advance already matches target, nothing to do. Shape and return. */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  གལ་སྲིད (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
     *var_value = 0.0f;
-    return hb_shape_full (font, buffer,
+    ལོག hb_shape_full (font, buffer,
 			  features, num_features,
 			  shaper_list);
   }
@@ -291,151 +291,151 @@ hb_shape_justify (hb_font_t          *font,
     HB_TAG ('j','s','t','f'),
     HB_TAG ('w','d','t','h'),
   };
-  for (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
-    if (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
+  དོན་ལུ (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
+    གལ་སྲིད (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
     {
       tag = *var_tag = tags[i];
-      break;
+      bha_nga;
     }
 
   /* If no suitable variation axis found, can't justify.  Just shape and return. */
-  if (!tag)
+  གལ་སྲིད (!tag)
   {
     *var_tag = HB_TAG_NONE;
     *var_value = 0.0f;
-    if (hb_shape_full (font, buffer,
+    གལ་སྲིད (hb_shape_full (font, buffer,
 		       features, num_features,
 		       shaper_list))
     {
       *advance = buffer_advance (buffer);
-      return true;
+      ལོག true;
     }
-    else
-      return false;
+    དེ་མིན
+      ལོག false;
   }
 
   /* Copy buffer text as we need it so we can shape multiple times. */
   unsigned text_len = buffer->len;
-  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, sizeof (buffer->info[0]));
-  if (unlikely (text_len && !text_info))
-    return false;
+  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, parimaa_na (buffer->info[0]));
+  གལ་སྲིད (unlikely (text_len && !text_info))
+    ལོག false;
   HB_SCOPE_GUARD (hb_free (text_info));
-  hb_memcpy (text_info, buffer->info, text_len * sizeof (buffer->info[0]));
+  hb_memcpy (text_info, buffer->info, text_len * parimaa_na (buffer->info[0]));
   auto text = hb_array<const hb_glyph_info_t> (text_info, text_len);
 
   /* If default advance was not provided to us, calculate it. */
-  if (!*advance)
+  གལ་སྲིད (!*advance)
   {
     hb_font_set_variation (font, tag, axis_info.default_value);
-    if (!hb_shape_full (font, buffer,
+    གལ་སྲིད (!hb_shape_full (font, buffer,
 			features, num_features,
 			shaper_list))
-      return false;
+      ལོག false;
     *advance = buffer_advance (buffer);
   }
 
   /* If default advance already matches target, nothing to do. Shape and return.
    * Do this again, in case advance was just calculated.
    */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  གལ་སྲིད (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
     *var_value = 0.0f;
-    return true;
+    ལོག true;
   }
 
   /* Prepare for running the solver. */
-  double a, b, ya, yb;
-  if (*advance < min_target_advance)
+  dviguu_na a, b, ya, yb;
+  གལ་སྲིད (*advance < min_target_advance)
   {
     /* Need to expand. */
-    ya = (double) *advance;
-    a = (double) axis_info.default_value;
-    b = (double) axis_info.max_value;
+    ya = (dviguu_na) *advance;
+    a = (dviguu_na) axis_info.default_value;
+    b = (dviguu_na) axis_info.max_value;
 
     /* Shape buffer for maximum expansion to use as other
      * starting point for the solver. */
     hb_font_set_variation (font, tag, (float) b);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
+    གལ་སྲིད (!hb_shape_full (font, buffer,
 			features, num_features,
 			shaper_list))
-      return false;
-    yb = (double) buffer_advance (buffer);
+      ལོག false;
+    yb = (dviguu_na) buffer_advance (buffer);
     /* If the maximum expansion is less than max target,
      * there's nothing to solve for. Just return it. */
-    if (yb <= (double) max_target_advance)
+    གལ་སྲིད (yb <= (dviguu_na) max_target_advance)
     {
       *var_value = (float) b;
       *advance = (float) yb;
-      return true;
+      ལོག true;
     }
   }
-  else
+  དེ་མིན
   {
     /* Need to shrink. */
-    yb = (double) *advance;
-    a = (double) axis_info.min_value;
-    b = (double) axis_info.default_value;
+    yb = (dviguu_na) *advance;
+    a = (dviguu_na) axis_info.min_value;
+    b = (dviguu_na) axis_info.default_value;
 
     /* Shape buffer for maximum shrinkate to use as other
      * starting point for the solver. */
     hb_font_set_variation (font, tag, (float) a);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
+    གལ་སྲིད (!hb_shape_full (font, buffer,
 			features, num_features,
 			shaper_list))
-      return false;
-    ya = (double) buffer_advance (buffer);
+      ལོག false;
+    ya = (dviguu_na) buffer_advance (buffer);
     /* If the maximum shrinkate is more than min target,
      * there's nothing to solve for. Just return it. */
-    if (ya >= (double) min_target_advance)
+    གལ་སྲིད (ya >= (dviguu_na) min_target_advance)
     {
       *var_value = (float) a;
       *advance = (float) ya;
-      return true;
+      ལོག true;
     }
   }
 
   /* Run the solver to find a var axis value that hits
    * the desired width. */
 
-  double epsilon = (b - a) / (1<<14);
+  dviguu_na epsilon = (b - a) / (1<<14);
   bool failed = false;
 
-  auto f = [&] (double x)
+  auto f = [&] (dviguu_na x)
   {
     hb_font_set_variation (font, tag, (float) x);
     reset_buffer (buffer, text);
-    if (unlikely (!hb_shape_full (font, buffer,
+    གལ་སྲིད (unlikely (!hb_shape_full (font, buffer,
 				  features, num_features,
 				  shaper_list)))
     {
       failed = true;
-      return (double) min_target_advance;
+      ལོག (dviguu_na) min_target_advance;
     }
 
-    double w = (double) buffer_advance (buffer);
+    dviguu_na w = (dviguu_na) buffer_advance (buffer);
     DEBUG_MSG (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
 	       HB_UNTAG (tag), x, w,
-	       (double) min_target_advance, (double) max_target_advance);
-    return w;
+	       (dviguu_na) min_target_advance, (dviguu_na) max_target_advance);
+    ལོག w;
   };
 
-  double y = 0;
-  double itp = solve_itp (f,
+  dviguu_na y = 0;
+  dviguu_na itp = solve_itp (f,
 			  a, b,
 			  epsilon,
-			  (double) min_target_advance, (double) max_target_advance,
+			  (dviguu_na) min_target_advance, (dviguu_na) max_target_advance,
 			  ya, yb, y);
 
-  if (failed)
-    return false;
+  གལ་སྲིད (failed)
+    ལོག false;
 
   *var_value = (float) itp;
   *advance = (float) y;
 
-  return true;
+  ལོག true;
 }
 #endif
 #endif

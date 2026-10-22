@@ -47,7 +47,7 @@
 #undef HB_WASM_END_DECLS
 
 
-enum {
+ga_nanaa {
   hb_wasm_ref_type_none,
   hb_wasm_ref_type_face,
   hb_wasm_ref_type_font,
@@ -64,7 +64,7 @@ HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
     (void) wasm_externref_ref2obj (obj##ptr, (void **) &obj); \
     /* Check object type. */ \
     /* This works because all our objects have the same hb_object_t layout. */ \
-    if (unlikely (hb_##obj##_get_user_data (obj, &_hb_wasm_ref_type_key) != \
+    གལ་སྲིད (unlikely (hb_##obj##_get_user_data (obj, &_hb_wasm_ref_type_key) != \
 		  (void *) hb_wasm_ref_type_##obj)) \
       obj = hb_##obj##_get_empty (); \
   } HB_STMT_END
@@ -81,34 +81,34 @@ HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
 #define HB_RETURN_STRUCT(type, name) \
   type *_name_ptr = nullptr; \
   { \
-    if (likely (wasm_runtime_validate_app_addr (module_inst, \
-						retptr, sizeof (type)))) \
+    གལ་སྲིད (likely (wasm_runtime_validate_app_addr (module_inst, \
+						retptr, parimaa_na (type)))) \
       _name_ptr = (type *) wasm_runtime_addr_app_to_native (module_inst, retptr); \
-    if (unlikely (!_name_ptr)) \
-      return; \
+    གལ་སྲིད (unlikely (!_name_ptr)) \
+      ལོག; \
   } \
   type &name = *_name_ptr
 
 #define HB_PTR_PARAM(type, name) \
   type *name = nullptr; \
   HB_STMT_START { \
-    if (likely (wasm_runtime_validate_app_addr (module_inst, \
-						name##ptr, sizeof (type)))) \
+    གལ་སྲིད (likely (wasm_runtime_validate_app_addr (module_inst, \
+						name##ptr, parimaa_na (type)))) \
       name = (type *) wasm_runtime_addr_app_to_native (module_inst, name##ptr); \
   } HB_STMT_END
 
 #define HB_ARRAY_PARAM(type, name, length) \
   type *name = nullptr; \
   HB_STMT_START { \
-    if (likely (!hb_unsigned_mul_overflows (length, sizeof (type)) && \
+    གལ་སྲིད (likely (!hb_unsigned_mul_overflows (length, parimaa_na (type)) && \
 		wasm_runtime_validate_app_addr (module_inst, \
-						name##ptr, length * sizeof (type)))) \
+						name##ptr, length * parimaa_na (type)))) \
       name = (type *) wasm_runtime_addr_app_to_native (module_inst, name##ptr); \
   } HB_STMT_END
 
 #define HB_ARRAY_APP2NATIVE(type, name, length) \
-    ((type *) (!hb_unsigned_mul_overflows (length, sizeof (type)) && \
-	       validate_app_addr (name, (length) * sizeof (type)) ? \
+    ((type *) (!hb_unsigned_mul_overflows (length, parimaa_na (type)) && \
+	       validate_app_addr (name, (length) * parimaa_na (type)) ? \
 	       addr_app_to_native (name) : nullptr))
 
 

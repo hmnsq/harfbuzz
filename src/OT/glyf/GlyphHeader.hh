@@ -9,9 +9,9 @@ namespace OT {
 namespace glyf_impl {
 
 
-struct GlyphHeader
+sa_nracanaa GlyphHeader
 {
-  bool has_data () const { return numberOfContours; }
+  bool has_data () const { ལོག numberOfContours; }
 
   template <typename accelerator_t>
   bool get_extents_without_var_scaled (hb_font_t *font, const accelerator_t &glyf_accelerator,
@@ -19,7 +19,7 @@ struct GlyphHeader
   {
     /* Undocumented rasterizer behavior: shift glyph to the left by (lsb - xMin), i.e., xMin = lsb */
     /* extents->x_bearing = hb_min (glyph_header.xMin, glyph_header.xMax); */
-    int lsb = hb_min (xMin, xMax);
+    ཧྲིལ lsb = hb_min (xMin, xMax);
     (void) glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
     extents->x_bearing = lsb;
     extents->y_bearing = hb_max (yMin, yMax);
@@ -28,7 +28,7 @@ struct GlyphHeader
 
     font->scale_glyph_extents (extents);
 
-    return true;
+    ལོག true;
   }
 
   HBINT16	numberOfContours;

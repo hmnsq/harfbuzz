@@ -40,26 +40,26 @@
  * Functions for using HarfBuzz with DirectWrite fonts.
  **/
 
-static inline void free_static_directwrite_global ();
+static anta_hstha void free_static_directwrite_global ();
 
-static struct hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
+static sa_nracanaa hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
 								     hb_directwrite_global_lazy_loader_t>
 {
   static hb_directwrite_global_t * create ()
   {
     hb_directwrite_global_t *global = hb_directwrite_object_create<hb_directwrite_global_t> ();
 
-    if (unlikely (!global))
-      return nullptr;
-    if (unlikely (!global->success))
+    གལ་སྲིད (unlikely (!global))
+      ལོག nullptr;
+    གལ་སྲིད (unlikely (!global->success))
     {
       hb_directwrite_object_destroy (global);
-      return nullptr;
+      ལོག nullptr;
     }
 
     hb_atexit (free_static_directwrite_global);
 
-    return global;
+    ལོག global;
   }
   static void destroy (hb_directwrite_global_t *l)
   {
@@ -67,12 +67,12 @@ static struct hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwr
   }
   static hb_directwrite_global_t * get_null ()
   {
-    return nullptr;
+    ལོག nullptr;
   }
 } static_directwrite_global;
 
 
-static inline
+static anta_hstha
 void free_static_directwrite_global ()
 {
   static_directwrite_global.free_instance ();
@@ -81,7 +81,7 @@ void free_static_directwrite_global ()
 hb_directwrite_global_t *
 get_directwrite_global ()
 {
-  return static_directwrite_global.get_unconst ();
+  ལོག static_directwrite_global.get_unconst ();
 }
 
 DWriteFontFileStream::DWriteFontFileStream (hb_blob_t *blob)
@@ -109,24 +109,24 @@ dw_face_create (hb_blob_t *blob, unsigned index)
 #define FAIL(...) \
   HB_STMT_START { \
     DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
-    return nullptr; \
+    ལོག nullptr; \
   } HB_STMT_END
 
   auto *global = get_directwrite_global ();
-  if (unlikely (!global))
+  གལ་སྲིད (unlikely (!global))
     FAIL ("Couldn't load DirectWrite!");
 
   DWriteFontFileStream *fontFileStream = hb_directwrite_object_create<DWriteFontFileStream> (blob);
-  if (unlikely (!fontFileStream))
+  གལ་སྲིད (unlikely (!fontFileStream))
     FAIL ("Failed to allocate font file stream!");
 
   IDWriteFontFile *fontFile;
-  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->fontFileKey, sizeof (fontFileStream->fontFileKey),
+  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->fontFileKey, parimaa_na (fontFileStream->fontFileKey),
 								  global->fontFileLoader, &fontFile);
 
   fontFileStream->Release ();
 
-  if (FAILED (hr))
+  གལ་སྲིད (FAILED (hr))
     FAIL ("Failed to load font file from data!");
 
   BOOL isSupported;
@@ -134,7 +134,7 @@ dw_face_create (hb_blob_t *blob, unsigned index)
   DWRITE_FONT_FACE_TYPE faceType;
   uint32_t numberOfFaces;
   hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &numberOfFaces);
-  if (FAILED (hr) || !isSupported)
+  གལ་སྲིད (FAILED (hr) || !isSupported)
   {
     fontFile->Release ();
     FAIL ("Font file is not supported.");
@@ -147,10 +147,10 @@ dw_face_create (hb_blob_t *blob, unsigned index)
 					 DWRITE_FONT_SIMULATIONS_NONE, &fontFace);
   fontFile->Release ();
 
-  return fontFace;
+  ལོག fontFace;
 }
 
-struct _hb_directwrite_font_table_context {
+sa_nracanaa _hb_directwrite_font_table_context {
   IDWriteFontFace *face;
   void *table_context;
 };
@@ -167,29 +167,29 @@ static hb_blob_t *
 _hb_directwrite_get_file_blob (IDWriteFontFace *dw_face)
 {
   UINT32 file_count;
-  if (FAILED (dw_face->GetFiles(&file_count, NULL)))
-    return nullptr;
+  གལ་སྲིད (FAILED (dw_face->GetFiles(&file_count, NULL)))
+    ལོག nullptr;
 
   hb_vector_t<IDWriteFontFile *> files;
-  if (unlikely (!files.resize_exact (file_count)))
-    return nullptr;
-  if (FAILED (dw_face->GetFiles(&file_count, files.arrayZ)))
-    return nullptr;
+  གལ་སྲིད (unlikely (!files.resize_exact (file_count)))
+    ལོག nullptr;
+  གལ་སྲིད (FAILED (dw_face->GetFiles(&file_count, files.arrayZ)))
+    ལོག nullptr;
 
   hb_blob_t *blob = nullptr;
-  for (UINT32 i = 0; i < file_count; i++)
+  དོན་ལུ (UINT32 i = 0; i < file_count; i++)
   {
     LPCVOID reference_key;
     UINT32 reference_key_size;
-    if (FAILED (files[i]->GetReferenceKey(&reference_key, &reference_key_size)))
+    གལ་སྲིད (FAILED (files[i]->GetReferenceKey(&reference_key, &reference_key_size)))
       continue;
 
     IDWriteFontFileLoader *loader;
-    if (FAILED (files[i]->GetLoader(&loader)))
+    གལ་སྲིད (FAILED (files[i]->GetLoader(&loader)))
       continue;
     
     IDWriteFontFileStream *stream;
-    if (FAILED (loader->CreateStreamFromKey (reference_key, reference_key_size, &stream)))
+    གལ་སྲིད (FAILED (loader->CreateStreamFromKey (reference_key, reference_key_size, &stream)))
     {
       loader->Release ();
       continue;
@@ -198,19 +198,19 @@ _hb_directwrite_get_file_blob (IDWriteFontFace *dw_face)
     UINT64 file_size;
     const void *fragment;
     void *context;
-    if (FAILED (stream->GetFileSize(&file_size)) ||
+    གལ་སྲིད (FAILED (stream->GetFileSize(&file_size)) ||
         FAILED (stream->ReadFileFragment (&fragment, 0, file_size, &context)))
     {
       loader->Release ();
       continue;
     }
-    blob = hb_blob_create ((const char *) fragment, file_size, HB_MEMORY_MODE_DUPLICATE, NULL, NULL);
+    blob = hb_blob_create ((const var_na *) fragment, file_size, HB_MEMORY_MODE_DUPLICATE, NULL, NULL);
     stream->ReleaseFileFragment (context);
     loader->Release ();
-    break;
+    bha_nga;
   }
 
-  return blob;
+  ལོག blob;
 }
 
 static hb_blob_t *
@@ -221,29 +221,29 @@ _hb_directwrite_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *
   uint32_t length;
   void *table_context;
   BOOL exists;
-  if (tag == HB_TAG_NONE)
-    return _hb_directwrite_get_file_blob (dw_face);
+  གལ་སྲིད (tag == HB_TAG_NONE)
+    ལོག _hb_directwrite_get_file_blob (dw_face);
 
-  if (FAILED (dw_face->TryGetFontTable (hb_uint32_swap (tag), &data,
+  གལ་སྲིད (FAILED (dw_face->TryGetFontTable (hb_uint32_swap (tag), &data,
 					&length, &table_context, &exists)))
-    return nullptr;
+    ལོག nullptr;
 
-  if (!data || !exists || !length)
+  གལ་སྲིད (!data || !exists || !length)
   {
     dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    ལོག nullptr;
   }
 
-  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) hb_malloc (sizeof (_hb_directwrite_font_table_context));
-  if (unlikely (!context))
+  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) hb_malloc (parimaa_na (_hb_directwrite_font_table_context));
+  གལ་སྲིད (unlikely (!context))
   {
     dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    ལོག nullptr;
   }
   context->face = dw_face;
   context->table_context = table_context;
 
-  return hb_blob_create ((const char *) data, length, HB_MEMORY_MODE_READONLY,
+  ལོག hb_blob_create ((const var_na *) data, length, HB_MEMORY_MODE_READONLY,
 			 context, _hb_directwrite_table_data_release);
 }
 
@@ -266,8 +266,8 @@ _hb_directwrite_face_release (void *data)
 hb_face_t *
 hb_directwrite_face_create (IDWriteFontFace *dw_face)
 {
-  if (!dw_face)
-    return hb_face_get_empty ();
+  གལ་སྲིད (!dw_face)
+    ལོག hb_face_get_empty ();
 
   dw_face->AddRef ();
   hb_face_t *face = hb_face_create_for_tables (_hb_directwrite_reference_table,
@@ -277,7 +277,7 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
   hb_face_set_index (face, dw_face->GetIndex ());
   hb_face_set_glyph_count (face, dw_face->GetGlyphCount ());
 
-  return face;
+  ལོག face;
 }
 
 /**
@@ -297,14 +297,14 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
  * Since: 11.0.0
  */
 hb_face_t *
-hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
-					      unsigned int  index)
+hb_directwrite_face_create_from_file_or_fail (const var_na   *file_name,
+					      unsigned ཧྲིལ  index)
 {
   auto *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  གལ་སྲིད (unlikely (!blob))
+    ལོག nullptr;
 
-  return hb_directwrite_face_create_from_blob_or_fail (blob, index);
+  ལོག hb_directwrite_face_create_from_blob_or_fail (blob, index);
 }
 
 /**
@@ -325,23 +325,23 @@ hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
  */
 HB_EXTERN hb_face_t *
 hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					      unsigned int  index)
+					      unsigned ཧྲིལ  index)
 {
   IDWriteFontFace *dw_face = dw_face_create (blob, index);
-  if (unlikely (!dw_face))
-    return nullptr;
+  གལ་སྲིད (unlikely (!dw_face))
+    ལོག nullptr;
 
   hb_face_t *face = hb_directwrite_face_create (dw_face);
-  if (unlikely (hb_object_is_immutable (face)))
+  གལ་སྲིད (unlikely (hb_object_is_immutable (face)))
   {
     dw_face->Release ();
-    return face;
+    ལོག face;
   }
 
   /* Let there be dragons here... */
   face->data.directwrite.cmpexch (nullptr, (hb_directwrite_face_data_t *) dw_face);
 
-  return face;
+  ལོག face;
 }
 
 /**
@@ -357,7 +357,7 @@ hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
 IDWriteFontFace *
 hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 {
-  return (IDWriteFontFace *) (const void *) face->data.directwrite;
+  ལོག (IDWriteFontFace *) (const void *) face->data.directwrite;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -376,7 +376,7 @@ hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 IDWriteFontFace *
 hb_directwrite_face_get_font_face (hb_face_t *face)
 {
-  return hb_directwrite_face_get_dw_font_face (face);
+  ལོག hb_directwrite_face_get_dw_font_face (face);
 }
 
 #endif
@@ -400,23 +400,23 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  གལ་སྲིད (unlikely (hb_object_is_immutable (font)))
+    ལོག font;
 
   /* Copy font variations */
-  if (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (void**) &dw_face5)))
+  གལ་སྲིད (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (void**) &dw_face5)))
   {
-    if (dw_face5->HasVariations ())
+    གལ་སྲིད (dw_face5->HasVariations ())
     {
       hb_vector_t<DWRITE_FONT_AXIS_VALUE> values;
       uint32_t count = dw_face5->GetFontAxisValueCount ();
-      if (likely (values.resize_exact (count)) &&
+      གལ་སྲིད (likely (values.resize_exact (count)) &&
 	  SUCCEEDED (dw_face5->GetFontAxisValues (values.arrayZ, count)))
       {
 	hb_vector_t<hb_variation_t> vars;
-	if (likely (vars.resize_exact (count)))
+	གལ་སྲིད (likely (vars.resize_exact (count)))
 	{
-	  for (uint32_t i = 0; i < count; ++i)
+	  དོན་ལུ (uint32_t i = 0; i < count; ++i)
 	  {
 	    hb_tag_t tag = hb_uint32_swap (values[i].axisTag);
 	    float value = values[i].value;
@@ -433,7 +433,7 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   dw_face->AddRef ();
   font->data.directwrite.cmpexch (nullptr, (hb_directwrite_font_data_t *) dw_face);
 
-  return font;
+  ལོག font;
 }
 
 /**
@@ -449,7 +449,7 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
 IDWriteFontFace *
 hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 {
-  return (IDWriteFontFace *) (const void *) font->data.directwrite;
+  ལོག (IDWriteFontFace *) (const void *) font->data.directwrite;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -468,7 +468,7 @@ hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 IDWriteFont *
 hb_directwrite_font_get_dw_font (hb_font_t *font)
 {
-  return nullptr;
+  ལོག nullptr;
 }
 
 #endif

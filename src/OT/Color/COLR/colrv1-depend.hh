@@ -39,7 +39,7 @@ namespace OT {
 HB_INTERNAL void PaintColrLayers::dependv1 (hb_colrv1_depend_context_t* c) const
 {
   const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  དོན་ལུ (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
   {
     const Paint &paint = paint_offset_lists.get_paint (i);
     paint.dispatch (c);
@@ -53,7 +53,7 @@ HB_INTERNAL void PaintGlyph<Types>::dependv1 (hb_colrv1_depend_context_t* c) con
   // Self-reference is valid per OpenType spec: a base glyph can reference its own
   // outline as geometry to fill. This is not a dependency in the traditional sense
   // since the outline is part of the same glyph data, so we skip it.
-  if (gid != c->source_gid)
+  གལ་སྲིད (gid != c->source_gid)
     c->depend_data->add_depend(c->source_gid, HB_OT_TAG_COLR, gid);
   (this+paint).dispatch (c);
 }
@@ -62,7 +62,7 @@ HB_INTERNAL void PaintColrGlyph::dependv1 (hb_colrv1_depend_context_t* c) const
 {
   const COLR *colr_table = c->get_colr_table ();
   const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
+  གལ་སྲིད (!baseglyph_paintrecord) ལོག;
   c->depend_data->add_depend(c->source_gid, HB_OT_TAG_COLR, gid);
 
   const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();

@@ -36,9 +36,9 @@ namespace Layout {
 namespace Common {
 
 template <typename Types>
-struct CoverageFormat2_4
+sa_nracanaa CoverageFormat2_4
 {
-  friend struct Coverage;
+  friend sa_nracanaa Coverage;
   using CoverageRangeRecord = RangeRecord<Types, typename Types::HBUINT>;
 
   public:
@@ -58,20 +58,20 @@ struct CoverageFormat2_4
     return_trace (rangeRecord.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned ཧྲིལ get_coverage (hb_codepoint_t glyph_id) const
   {
     const CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
-    return likely (range.first <= range.last)
-         ? (unsigned int) range.value + (glyph_id - range.first)
+    ལོག likely (range.first <= range.last)
+         ? (unsigned ཧྲིལ) range.value + (glyph_id - range.first)
          : NOT_COVERED;
   }
 
   unsigned get_population () const
   {
     typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    དོན་ལུ (const auto &r : rangeRecord)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    ལོག ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
   }
 
   template <typename Iterator,
@@ -79,29 +79,29 @@ struct CoverageFormat2_4
   bool serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    གལ་སྲིད (unlikely (!c->extend_min (this))) return_trace (false);
 
     unsigned num_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
-    for (auto g: glyphs)
+    དོན་ལུ (auto g: glyphs)
     {
-      if (last + 1 != g)
+      གལ་སྲིད (last + 1 != g)
         num_ranges++;
       last = g;
     }
 
-    if (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
-    if (!num_ranges) return_trace (true);
+    གལ་སྲིད (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
+    གལ་སྲིད (!num_ranges) return_trace (true);
 
     unsigned count = 0;
     unsigned range = (unsigned) -1;
     last = (hb_codepoint_t) -2;
     unsigned unsorted = false;
-    for (auto g: glyphs)
+    དོན་ལུ (auto g: glyphs)
     {
-      if (last + 1 != g)
+      གལ་སྲིད (last + 1 != g)
       {
-	if (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
+	གལ་སྲིད (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
 	  unsorted = true;
 
         range++;
@@ -113,7 +113,7 @@ struct CoverageFormat2_4
       count++;
     }
 
-    if (unlikely (unsorted))
+    གལ་སྲིད (unlikely (unsorted))
       rangeRecord.as_array ().qsort (CoverageRangeRecord::cmp_range);
 
     return_trace (true);
@@ -121,23 +121,23 @@ struct CoverageFormat2_4
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    གལ་སྲིད (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      དོན་ལུ (auto g : *glyphs)
+        གལ་སྲིད (get_coverage (g) != NOT_COVERED)
+	  ལོག true;
+      ལོག false;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { return range.intersects (*glyphs); }));
+    ལོག hb_any (+ hb_iter (rangeRecord)
+                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { ལོག range.intersects (*glyphs); }));
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  bool intersects_coverage (const hb_set_t *glyphs, unsigned ཧྲིལ index) const
   {
     auto *range = rangeRecord.as_array ().bsearch (index);
-    if (range)
-      return range->intersects (*glyphs);
-    return false;
+    གལ་སྲིད (range)
+      ལོག range->intersects (*glyphs);
+    ལོག false;
   }
 
   static void add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
@@ -146,7 +146,7 @@ struct CoverageFormat2_4
   template <typename IterableOut>
   static void add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
   {
-    while (bits)
+    སྐབས (bits)
     {
       out << base + hb_ctz (bits);
       bits &= bits - 1;
@@ -160,40 +160,40 @@ struct CoverageFormat2_4
     /* Break out of loop for overlapping, broken, tables,
      * to avoid fuzzer timouts. */
     hb_codepoint_t last = 0;
-    for (const auto& range : rangeRecord)
+    དོན་ལུ (const auto& range : rangeRecord)
     {
-      if (unlikely (range.first < last))
-        break;
+      གལ་སྲིད (unlikely (range.first < last))
+        bha_nga;
       last = range.last;
       hb_codepoint_t cursor = range.first & ~hb_bit_page_t::ELT_MASK;
       cursor = cursor ? cursor - 1 : HB_SET_VALUE_INVALID;
       uint64_t bits;
-      while (glyphs.next_bits (&cursor, &bits) && cursor <= last)
+      སྐབས (glyphs.next_bits (&cursor, &bits) && cursor <= last)
       {
-	if (range.first > cursor)
+	གལ་སྲིད (range.first > cursor)
 	  bits &= UINT64_MAX << (range.first - cursor);
-	unsigned int end = last - cursor;
-	if (end < hb_bit_page_t::ELT_BITS - 1)
+	unsigned ཧྲིལ end = last - cursor;
+	གལ་སྲིད (end < hb_bit_page_t::ELT_BITS - 1)
 	  bits &= (uint64_t (1) << (end + 1)) - 1;
 	add_intersected_bits (intersect_glyphs, cursor, bits);
       }
     }
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  unsigned cost () const { ལོག hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
 
   template <typename set_t>
   bool collect_coverage (set_t *glyphs) const
   {
-    for (const auto& range: rangeRecord)
-      if (unlikely (!range.collect_coverage (glyphs)))
-        return false;
-    return true;
+    དོན་ལུ (const auto& range: rangeRecord)
+      གལ་སྲིད (unlikely (!range.collect_coverage (glyphs)))
+        ལོག false;
+    ལོག true;
   }
 
   public:
   /* Older compilers need this to be public. */
-  struct iter_t
+  sa_nracanaa iter_t
   {
     void init (const CoverageFormat2_4 &c_)
     {
@@ -201,25 +201,25 @@ struct CoverageFormat2_4
       coverage = 0;
       i = 0;
       j = c->rangeRecord.len ? c->rangeRecord[0].first : 0;
-      if (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
+      གལ་སྲིད (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
       {
         /* Broken table. Skip. */
         i = c->rangeRecord.len;
         j = 0;
       }
     }
-    bool __more__ () const { return i < c->rangeRecord.len; }
+    bool __more__ () const { ལོག i < c->rangeRecord.len; }
     void __next__ ()
     {
-      if (j >= c->rangeRecord[i].last)
+      གལ་སྲིད (j >= c->rangeRecord[i].last)
       {
         i++;
-        if (__more__ ())
+        གལ་སྲིད (__more__ ())
         {
-          unsigned int old = coverage;
+          unsigned ཧྲིལ old = coverage;
           j = c->rangeRecord.arrayZ[i].first;
           coverage = c->rangeRecord.arrayZ[i].value;
-          if (unlikely (coverage != old + 1))
+          གལ་སྲིད (unlikely (coverage != old + 1))
           {
             /* Broken table. Skip. Important to avoid DoS.
              * Also, our callers depend on coverage being
@@ -227,31 +227,31 @@ struct CoverageFormat2_4
              * ie. iota(). */
            i = c->rangeRecord.len;
            j = 0;
-           return;
+           ལོག;
           }
         }
-        else
+        དེ་མིན
           j = 0;
-        return;
+        ལོག;
       }
       coverage++;
       j++;
     }
-    hb_codepoint_t get_glyph () const { return j; }
+    hb_codepoint_t get_glyph () const { ལོག j; }
     bool operator != (const iter_t& o) const
-    { return i != o.i || j != o.j; }
+    { ལོག i != o.i || j != o.j; }
     iter_t __end__ () const
     {
       iter_t it;
       it.init (*c);
       it.i = c->rangeRecord.len;
       it.j = 0;
-      return it;
+      ལོག it;
     }
 
     private:
-    const struct CoverageFormat2_4 *c;
-    unsigned int i, coverage;
+    const sa_nracanaa CoverageFormat2_4 *c;
+    unsigned ཧྲིལ i, coverage;
     hb_codepoint_t j;
   };
   private:

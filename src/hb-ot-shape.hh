@@ -36,9 +36,9 @@
 HB_INTERNAL bool
 _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
 						   hb_tag_t               table_tag,
-						   const int             *coords,
-						   unsigned int           num_coords,
-						   unsigned int          *variations_index,
+						   const ཧྲིལ             *coords,
+						   unsigned ཧྲིལ           num_coords,
+						   unsigned ཧྲིལ          *variations_index,
 						   hb_vector_t<unsigned> *lookup_conditions);
 
 HB_INTERNAL bool
@@ -49,19 +49,19 @@ _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
                                              hb_sorted_array_t<const unsigned> conditions,
                                              hb_set_t *lookup_indexes);
 
-struct hb_ot_shape_plan_key_t
+sa_nracanaa hb_ot_shape_plan_key_t
 {
-  unsigned int variations_index[2];
+  unsigned ཧྲིལ variations_index[2];
   /* Sorted offsets of distinct true conditions within FeatureVariations.
    * Different outcomes may conservatively separate equivalent lookup sets. */
   hb_vector_t<unsigned> lookup_conditions[2];
 
   bool init (hb_face_t *face,
-	     const int *coords,
+	     const ཧྲིལ *coords,
 	     unsigned   num_coords)
   {
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
-      if (unlikely (!_hb_ot_layout_table_get_feature_variations_state (
+    དོན་ལུ (unsigned ཧྲིལ table_index = 0; table_index < 2; table_index++)
+      གལ་སྲིད (unlikely (!_hb_ot_layout_table_get_feature_variations_state (
 			face,
 			table_tags[table_index],
 			coords,
@@ -69,32 +69,32 @@ struct hb_ot_shape_plan_key_t
 			&variations_index[table_index],
 			&lookup_conditions[table_index])))
       {
-	for (auto &v : lookup_conditions)
+	དོན་ལུ (auto &v : lookup_conditions)
 	  v.fini ();
-	return false;
+	ལོག false;
       }
-    return true;
+    ལོག true;
   }
 
   void fini ()
   {
-    for (auto &v : lookup_conditions)
+    དོན་ལུ (auto &v : lookup_conditions)
       v.fini ();
   }
 
   bool get_lookup_variations (hb_face_t *face,
-                              unsigned int table_index,
-			      unsigned int feature_index,
+                              unsigned ཧྲིལ table_index,
+			      unsigned ཧྲིལ feature_index,
 			      hb_set_t *lookups) const
   {
-    return _hb_ot_layout_feature_get_lookup_variations (
+    ལོག _hb_ot_layout_feature_get_lookup_variations (
 	face, table_tags[table_index], feature_index, variations_index[table_index],
 	lookup_conditions[table_index].as_sorted_array (), lookups);
   }
 
   bool equal (const hb_ot_shape_plan_key_t *other)
   {
-    return variations_index[0] == other->variations_index[0] &&
+    ལོག variations_index[0] == other->variations_index[0] &&
 	   variations_index[1] == other->variations_index[1] &&
 	   lookup_conditions[0] == other->lookup_conditions[0] &&
 	   lookup_conditions[1] == other->lookup_conditions[1];
@@ -102,20 +102,20 @@ struct hb_ot_shape_plan_key_t
 };
 
 
-struct hb_shape_plan_key_t;
+sa_nracanaa hb_shape_plan_key_t;
 
-struct hb_ot_shape_plan_t
+sa_nracanaa hb_ot_shape_plan_t
 {
   ~hb_ot_shape_plan_t () { fini (); }
 
   hb_segment_properties_t props;
-  const struct hb_ot_shaper_t *shaper;
+  const sa_nracanaa hb_ot_shaper_t *shaper;
   hb_ot_map_t map;
   hb_aat_map_t aat_map;
   const void *data;
 #ifndef HB_NO_OT_SHAPE_FRACTIONS
   hb_mask_t frac_mask, numr_mask, dnom_mask;
-#else
+#དེ་མིན
   static constexpr hb_mask_t frac_mask = 0;
   static constexpr hb_mask_t numr_mask = 0;
   static constexpr hb_mask_t dnom_mask = 0;
@@ -123,18 +123,18 @@ struct hb_ot_shape_plan_t
   hb_mask_t rtlm_mask;
 #ifndef HB_NO_OT_KERN
   hb_mask_t kern_mask;
-#else
+#དེ་མིན
   static constexpr hb_mask_t kern_mask = 0;
 #endif
 
 #ifndef HB_NO_OT_KERN
   bool requested_kerning : 1;
-#else
+#དེ་མིན
   static constexpr bool requested_kerning = false;
 #endif
 #ifndef HB_NO_OT_SHAPE_FRACTIONS
   bool has_frac : 1;
-#else
+#དེ་མིན
   static constexpr bool has_frac = false;
 #endif
   bool has_vert : 1;
@@ -147,7 +147,7 @@ struct hb_ot_shape_plan_t
   bool apply_gpos : 1;
 #ifndef HB_NO_OT_KERN
   bool apply_kern : 1;
-#else
+#དེ་མིན
   static constexpr bool apply_kern = false;
 #endif
   bool apply_fallback_kern : 1;
@@ -155,7 +155,7 @@ struct hb_ot_shape_plan_t
   bool apply_kerx : 1;
   bool apply_morx : 1;
   bool apply_trak : 1;
-#else
+#དེ་མིན
   static constexpr bool apply_kerx = false;
   static constexpr bool apply_morx = false;
   static constexpr bool apply_trak = false;
@@ -163,11 +163,11 @@ struct hb_ot_shape_plan_t
 
   void collect_lookups (hb_tag_t table_tag, hb_set_t *lookups) const
   {
-    unsigned int table_index;
+    unsigned ཧྲིལ table_index;
     switch (table_tag) {
-      case HB_OT_TAG_GSUB: table_index = 0; break;
-      case HB_OT_TAG_GPOS: table_index = 1; break;
-      default: return;
+      pak_sa HB_OT_TAG_GSUB: table_index = 0; bha_nga;
+      pak_sa HB_OT_TAG_GPOS: table_index = 1; bha_nga;
+      default: ལོག;
     }
     map.collect_lookups (table_index, lookups);
   }
@@ -180,9 +180,9 @@ struct hb_ot_shape_plan_t
   HB_INTERNAL void position (hb_font_t *font, hb_buffer_t *buffer) const;
 };
 
-struct hb_shape_plan_t;
+sa_nracanaa hb_shape_plan_t;
 
-struct hb_ot_shape_planner_t
+sa_nracanaa hb_ot_shape_planner_t
 {
   /* In the order that they are filled in. */
   hb_face_t *face;
@@ -191,12 +191,12 @@ struct hb_ot_shape_planner_t
 #ifndef HB_NO_AAT_SHAPE
   hb_aat_map_builder_t aat_map;
   bool apply_morx : 1;
-#else
+#དེ་མིན
   static constexpr bool apply_morx = false;
 #endif
   bool script_zero_marks : 1;
   bool script_fallback_position : 1;
-  const struct hb_ot_shaper_t *shaper;
+  const sa_nracanaa hb_ot_shaper_t *shaper;
 
   HB_INTERNAL hb_ot_shape_planner_t (hb_face_t                     *face,
 				     const hb_segment_properties_t &props);

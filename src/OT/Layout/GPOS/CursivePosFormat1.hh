@@ -9,32 +9,32 @@ namespace Layout {
 namespace GPOS_impl {
 
 template <typename Types>
-struct CursivePosFormat1_2;
+sa_nracanaa CursivePosFormat1_2;
 
 template <typename Types>
-struct EntryExitRecord
+sa_nracanaa EntryExitRecord
 {
-  template <typename Types2> friend struct CursivePosFormat1_2;
+  template <typename Types2> friend sa_nracanaa CursivePosFormat1_2;
 
-  bool sanitize (hb_sanitize_context_t *c, const struct CursivePosFormat1_2<Types> *base) const
+  bool sanitize (hb_sanitize_context_t *c, const sa_nracanaa CursivePosFormat1_2<Types> *base) const
   {
     TRACE_SANITIZE (this);
     return_trace (entryAnchor.sanitize (c, base) && exitAnchor.sanitize (c, base));
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const struct CursivePosFormat1_2<Types> *src_base) const
+                                  const sa_nracanaa CursivePosFormat1_2<Types> *src_base) const
   {
     (src_base+entryAnchor).collect_variation_indices (c);
     (src_base+exitAnchor).collect_variation_indices (c);
   }
 
   bool subset (hb_subset_context_t *c,
-	       const struct CursivePosFormat1_2<Types> *src_base) const
+	       const sa_nracanaa CursivePosFormat1_2<Types> *src_base) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    གལ་སྲིད (unlikely (!out)) return_trace (false);
 
     bool ret = false;
     ret |= out->entryAnchor.serialize_subset (c, entryAnchor, src_base);
@@ -42,12 +42,12 @@ struct EntryExitRecord
     return_trace (ret);
   }
 
-  protected:
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
+  rak_sita:
+  typename Types::template OffsetTo<Anchor, sa_nracanaa CursivePosFormat1_2<Types>>
                 entryAnchor;            /* Offset to EntryAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
+  typename Types::template OffsetTo<Anchor, sa_nracanaa CursivePosFormat1_2<Types>>
                 exitAnchor;             /* Offset to ExitAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
@@ -55,44 +55,44 @@ struct EntryExitRecord
   DEFINE_SIZE_STATIC (2 * Types::size);
 };
 
-static inline void
+static anta_hstha void
 reverse_cursive_minor_offset (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned ཧྲིལ len,
+                              unsigned ཧྲིལ i,
                               hb_direction_t direction,
-                              unsigned int new_parent,
+                              unsigned ཧྲིལ new_parent,
                               unsigned nesting_level = 0)
 {
-  if (nesting_level > HB_MAX_NESTING_LEVEL)
-    return;
+  གལ་སྲིད (nesting_level > HB_MAX_NESTING_LEVEL)
+    ལོག;
 
-  int chain = pos[i].attach_chain(), type = pos[i].attach_type();
-  if (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
-    return;
+  ཧྲིལ chain = pos[i].attach_chain(), type = pos[i].attach_type();
+  གལ་སྲིད (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
+    ལོག;
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  unsigned ཧྲིལ j = (ཧྲིལ) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  གལ་སྲིད (unlikely (j >= len))
+    ལོག;
 
   /* Stop if we see new parent in the chain. */
-  if (j == new_parent)
-    return;
+  གལ་སྲིད (j == new_parent)
+    ལོག;
 
   int16_t reversed_chain = -chain;
   /* The old edge was cleared above; if the reversed distance truncates,
    * keep it detached instead of storing a poisoned chain.
    */
-  if (unlikely (reversed_chain != -chain))
-    return;
+  གལ་སྲིད (unlikely (reversed_chain != -chain))
+    ལོག;
 
   reverse_cursive_minor_offset (pos, len, j, direction, new_parent, nesting_level + 1);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  གལ་སྲིད (HB_DIRECTION_IS_HORIZONTAL (direction))
     pos[j].y_offset = hb_saturate_neg (pos[i].y_offset);
-  else
+  དེ་མིན
     pos[j].x_offset = hb_saturate_neg (pos[i].x_offset);
 
   pos[j].attach_chain() = reversed_chain;
@@ -100,16 +100,16 @@ reverse_cursive_minor_offset (hb_glyph_position_t *pos,
 }
 
 
-static inline bool
+static anta_hstha bool
 apply_cursive_attachment (hb_ot_apply_context_t *c,
                           const Anchor &exit_anchor,
                           const Anchor &entry_anchor,
                           unsigned i)
 {
   hb_buffer_t *buffer = c->buffer;
-  unsigned int j = buffer->idx;
+  unsigned ཧྲིལ j = buffer->idx;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  གལ་སྲིད (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "cursive attaching glyph at %u to glyph at %u",
@@ -126,37 +126,37 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
   hb_position_t d;
   /* Main-direction adjustment */
   switch (c->direction) {
-    case HB_DIRECTION_LTR:
+    pak_sa HB_DIRECTION_LTR:
       pos[i].x_advance = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
 
       d = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
       pos[j].x_advance = hb_saturate_sub (pos[j].x_advance, d);
       pos[j].x_offset = hb_saturate_sub (pos[j].x_offset, d);
-      break;
-    case HB_DIRECTION_RTL:
+      bha_nga;
+    pak_sa HB_DIRECTION_RTL:
       d = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
       pos[i].x_advance = hb_saturate_sub (pos[i].x_advance, d);
       pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, d);
 
       pos[j].x_advance = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
-      break;
-    case HB_DIRECTION_TTB:
+      bha_nga;
+    pak_sa HB_DIRECTION_TTB:
       pos[i].y_advance = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
 
       d = hb_saturate_add ((hb_position_t) roundf (entry_y), pos[j].y_offset);
       pos[j].y_advance = hb_saturate_sub (pos[j].y_advance, d);
       pos[j].y_offset = hb_saturate_sub (pos[j].y_offset, d);
-      break;
-    case HB_DIRECTION_BTT:
+      bha_nga;
+    pak_sa HB_DIRECTION_BTT:
       d = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
       pos[i].y_advance = hb_saturate_sub (pos[i].y_advance, d);
       pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, d);
 
       pos[j].y_advance = (hb_position_t) roundf (entry_y);
-      break;
-    case HB_DIRECTION_INVALID:
+      bha_nga;
+    pak_sa HB_DIRECTION_INVALID:
     default:
-      break;
+      bha_nga;
   }
 
   /* Cross-direction adjustment */
@@ -167,13 +167,13 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    *
    * Optimize things for the case of RightToLeft, as that's most common in
    * Arabic. */
-  unsigned int child  = i;
-  unsigned int parent = j;
+  unsigned ཧྲིལ child  = i;
+  unsigned ཧྲིལ parent = j;
   hb_position_t x_offset = (hb_position_t) roundf (entry_x - exit_x);
   hb_position_t y_offset = (hb_position_t) roundf (entry_y - exit_y);
-  if  (!(c->lookup_props & LookupFlag::RightToLeft))
+  གལ་སྲིད  (!(c->lookup_props & LookupFlag::RightToLeft))
   {
-    unsigned int k = child;
+    unsigned ཧྲིལ k = child;
     child = parent;
     parent = k;
     x_offset = -x_offset;
@@ -187,32 +187,32 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    */
   reverse_cursive_minor_offset (pos, buffer->len, child, c->direction, parent);
 
-  pos[child].attach_chain() = (int) parent - (int) child;
-  if (pos[child].attach_chain() != (int) parent - (int) child)
+  pos[child].attach_chain() = (ཧྲིལ) parent - (ཧྲིལ) child;
+  གལ་སྲིད (pos[child].attach_chain() != (ཧྲིལ) parent - (ཧྲིལ) child)
   {
     pos[child].attach_chain() = 0;
     goto overflow;
   }
   pos[child].attach_type() = ATTACH_TYPE_CURSIVE;
   buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
-  if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+  གལ་སྲིད (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
     pos[child].y_offset = y_offset;
-  else
+  དེ་མིན
     pos[child].x_offset = x_offset;
 
   /* If parent was attached to child, separate them.
    * https://github.com/harfbuzz/harfbuzz/issues/2469
    */
-  if (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
+  གལ་སྲིད (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
   {
     pos[parent].attach_chain() = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+    གལ་སྲིད (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
 	pos[parent].y_offset = 0;
-    else
+    དེ་མིན
 	pos[parent].x_offset = 0;
   }
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  གལ་སྲིད (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "cursive attached glyph at %u to glyph at %u",
@@ -221,14 +221,14 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
 
 overflow:
   buffer->idx++;
-  return true;
+  ལོག true;
 }
 
 template <typename Types>
-struct CursivePosFormat1_2
+sa_nracanaa CursivePosFormat1_2
 {
 
-  protected:
+  rak_sita:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from beginning of subtable */
@@ -241,17 +241,17 @@ struct CursivePosFormat1_2
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!coverage.sanitize (c, this)))
+    གལ་སྲིད (unlikely (!coverage.sanitize (c, this)))
       return_trace (false);
 
-    if (c->lazy_some_gpos)
+    གལ་སྲིད (c->lazy_some_gpos)
       return_trace (entryExitRecord.sanitize_shallow (c));
-    else
+    དེ་མིན
       return_trace (entryExitRecord.sanitize (c, this));
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { ལོག (this+coverage).intersects (glyphs); }
 
   void closure_lookups (hb_closure_lookups_context_t *c) const {}
 
@@ -265,12 +265,12 @@ struct CursivePosFormat1_2
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  { གལ་སྲིད (unlikely (!(this+coverage).collect_coverage (c->input))) ལོག; }
 
   void collect_second_glyphs (hb_set_digest_t *digest) const
   { (this+coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { ལོག this+coverage; }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
@@ -278,21 +278,21 @@ struct CursivePosFormat1_2
     hb_buffer_t *buffer = c->buffer;
 
     const EntryExitRecord<Types> &this_record = entryExitRecord[(this+coverage).get_coverage  (buffer->cur().codepoint)];
-    if (!this_record.entryAnchor ||
+    གལ་སྲིད (!this_record.entryAnchor ||
 	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, this))) return_trace (false);
     hb_barrier ();
 
     auto &skippy_iter = c->iter_input;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_from;
-    if (unlikely (!skippy_iter.prev (&unsafe_from)))
+    གལ་སྲིད (unlikely (!skippy_iter.prev (&unsafe_from)))
     {
       buffer->unsafe_to_concat_from_outbuffer (unsafe_from, buffer->idx + 1);
       return_trace (false);
     }
 
     const EntryExitRecord<Types> &prev_record = entryExitRecord[(this+coverage).get_coverage  (buffer->info[skippy_iter.idx].codepoint)];
-    if (!prev_record.exitAnchor ||
+    གལ་སྲིད (!prev_record.exitAnchor ||
 	unlikely (!prev_record.exitAnchor.sanitize (&c->sanitizer, this)))
     {
       buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
@@ -310,13 +310,13 @@ struct CursivePosFormat1_2
             hb_requires (hb_is_iterator (Iterator))>
   void serialize (hb_subset_context_t *c,
                   Iterator it,
-                  const struct CursivePosFormat1_2<Types> *src_base)
+                  const sa_nracanaa CursivePosFormat1_2<Types> *src_base)
   {
-    if (unlikely (!c->serializer->extend_min ((*this)))) return;
+    གལ་སྲིད (unlikely (!c->serializer->extend_min ((*this)))) ལོག;
     this->format = src_base->format;
     this->entryExitRecord.len = it.len ();
 
-    for (const EntryExitRecord<Types>& entry_record : + it
+    དོན་ལུ (const EntryExitRecord<Types>& entry_record : + it
                                                       | hb_map (hb_second))
       entry_record.subset (c, src_base);
 
@@ -341,7 +341,7 @@ struct CursivePosFormat1_2
     | hb_filter (glyphset, hb_first)
     | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&> p)
                               -> hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&>
-                              { return hb_pair (glyph_map[p.first], p.second);})
+                              { ལོག hb_pair (glyph_map[p.first], p.second);})
     ;
 
     bool ret = bool (it);

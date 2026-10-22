@@ -35,41 +35,41 @@
 #define HB_OT_MAP_MAX_BITS 8u
 #define HB_OT_MAP_MAX_VALUE ((1u << HB_OT_MAP_MAX_BITS) - 1u)
 
-struct hb_ot_shape_plan_t;
+sa_nracanaa hb_ot_shape_plan_t;
 
 static const hb_tag_t table_tags[2] = {HB_OT_TAG_GSUB, HB_OT_TAG_GPOS};
 
-struct hb_ot_map_t
+sa_nracanaa hb_ot_map_t
 {
-  friend struct hb_ot_map_builder_t;
+  friend sa_nracanaa hb_ot_map_builder_t;
 
   public:
 
-  struct feature_map_t {
+  sa_nracanaa feature_map_t {
     hb_tag_t tag; /* should be first for our bsearch to work */
-    unsigned int index[2]; /* GSUB/GPOS */
-    unsigned int stage[2]; /* GSUB/GPOS */
-    unsigned int shift;
+    unsigned ཧྲིལ index[2]; /* GSUB/GPOS */
+    unsigned ཧྲིལ stage[2]; /* GSUB/GPOS */
+    unsigned ཧྲིལ shift;
     hb_mask_t mask;
     hb_mask_t _1_mask; /* mask for value=1, for quick access */
-    unsigned int needs_fallback : 1;
-    unsigned int auto_zwnj : 1;
-    unsigned int auto_zwj : 1;
-    unsigned int random : 1;
-    unsigned int per_syllable : 1;
+    unsigned ཧྲིལ needs_fallback : 1;
+    unsigned ཧྲིལ auto_zwnj : 1;
+    unsigned ཧྲིལ auto_zwj : 1;
+    unsigned ཧྲིལ random : 1;
+    unsigned ཧྲིལ per_syllable : 1;
 
-    int cmp (const hb_tag_t tag_) const
-    { return tag_ < tag ? -1 : tag_ > tag ? 1 : 0; }
+    ཧྲིལ cmp (const hb_tag_t tag_) const
+    { ལོག tag_ < tag ? -1 : tag_ > tag ? 1 : 0; }
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL static ཧྲིལ cmp (const void *pa, const void *pb)
     {
       const feature_map_t *a = (const feature_map_t *) pa;
       const feature_map_t *b = (const feature_map_t *) pb;
-      return a->tag < b->tag ? -1 : a->tag > b->tag ? 1 : 0;
+      ལོག a->tag < b->tag ? -1 : a->tag > b->tag ? 1 : 0;
     }
   };
 
-  struct lookup_map_t {
+  sa_nracanaa lookup_map_t {
     unsigned short index;
     unsigned short auto_zwnj : 1;
     unsigned short auto_zwj : 1;
@@ -78,29 +78,29 @@ struct hb_ot_map_t
     hb_mask_t mask;
     hb_tag_t feature_tag;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL static ཧྲིལ cmp (const void *pa, const void *pb)
     {
       const lookup_map_t *a = (const lookup_map_t *) pa;
       const lookup_map_t *b = (const lookup_map_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 : 0;
+      ལོག a->index < b->index ? -1 : a->index > b->index ? 1 : 0;
     }
   };
 
   /* Pause functions return true if new glyph indices might have been
    * added to the buffer.  This is used to update buffer digest. */
-  typedef bool (*pause_func_t) (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer);
+  typedef bool (*pause_func_t) (const sa_nracanaa hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer);
 
-  struct stage_map_t {
-    unsigned int last_lookup; /* Cumulative */
+  sa_nracanaa stage_map_t {
+    unsigned ཧྲིལ last_lookup; /* Cumulative */
     pause_func_t pause_func;
   };
 
   void init ()
   {
-    hb_memset (this, 0, sizeof (*this));
+    hb_memset (this, 0, parimaa_na (*this));
 
     features.init0 ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    དོན་ལུ (unsigned ཧྲིལ table_index = 0; table_index < 2; table_index++)
     {
       lookups[table_index].init0 ();
       stages[table_index].init0 ();
@@ -109,65 +109,65 @@ struct hb_ot_map_t
   void fini ()
   {
     features.fini ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    དོན་ལུ (unsigned ཧྲིལ table_index = 0; table_index < 2; table_index++)
     {
       lookups[table_index].fini ();
       stages[table_index].fini ();
     }
   }
 
-  hb_mask_t get_global_mask () const { return global_mask; }
+  hb_mask_t get_global_mask () const { ལོག global_mask; }
 
-  hb_mask_t get_mask (hb_tag_t feature_tag, unsigned int *shift = nullptr) const
+  hb_mask_t get_mask (hb_tag_t feature_tag, unsigned ཧྲིལ *shift = nullptr) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    if (shift) *shift = map ? map->shift : 0;
-    return map ? map->mask : 0;
+    གལ་སྲིད (shift) *shift = map ? map->shift : 0;
+    ལོག map ? map->mask : 0;
   }
 
   bool needs_fallback (hb_tag_t feature_tag) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->needs_fallback : false;
+    ལོག map ? map->needs_fallback : false;
   }
 
   hb_mask_t get_1_mask (hb_tag_t feature_tag) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->_1_mask : 0;
+    ལོག map ? map->_1_mask : 0;
   }
 
-  unsigned int get_feature_index (unsigned int table_index, hb_tag_t feature_tag) const
+  unsigned ཧྲིལ get_feature_index (unsigned ཧྲིལ table_index, hb_tag_t feature_tag) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->index[table_index] : HB_OT_LAYOUT_NO_FEATURE_INDEX;
+    ལོག map ? map->index[table_index] : HB_OT_LAYOUT_NO_FEATURE_INDEX;
   }
 
-  unsigned int get_feature_stage (unsigned int table_index, hb_tag_t feature_tag) const
+  unsigned ཧྲིལ get_feature_stage (unsigned ཧྲིལ table_index, hb_tag_t feature_tag) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->stage[table_index] : UINT_MAX;
+    ལོག map ? map->stage[table_index] : UINT_MAX;
   }
 
   hb_array_t<const hb_ot_map_t::lookup_map_t>
-  get_stage_lookups (unsigned int table_index, unsigned int stage) const
+  get_stage_lookups (unsigned ཧྲིལ table_index, unsigned ཧྲིལ stage) const
   {
-    if (unlikely (stage > stages[table_index].length))
-      return hb_array<const hb_ot_map_t::lookup_map_t> (nullptr, 0);
+    གལ་སྲིད (unlikely (stage > stages[table_index].length))
+      ལོག hb_array<const hb_ot_map_t::lookup_map_t> (nullptr, 0);
 
-    unsigned int start = stage ? stages[table_index][stage - 1].last_lookup : 0;
-    unsigned int end   = stage < stages[table_index].length ? stages[table_index][stage].last_lookup : lookups[table_index].length;
-    return lookups[table_index].as_array ().sub_array (start, end - start);
+    unsigned ཧྲིལ start = stage ? stages[table_index][stage - 1].last_lookup : 0;
+    unsigned ཧྲིལ end   = stage < stages[table_index].length ? stages[table_index][stage].last_lookup : lookups[table_index].length;
+    ལོག lookups[table_index].as_array ().sub_array (start, end - start);
   }
 
-  HB_INTERNAL void collect_lookups (unsigned int table_index, hb_set_t *lookups) const;
+  HB_INTERNAL void collect_lookups (unsigned ཧྲིལ table_index, hb_set_t *lookups) const;
   template <typename Proxy>
   HB_INTERNAL void apply (const Proxy &proxy,
-			  const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void substitute (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void position (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL unsigned int get_feature_tags (unsigned int  start_offset,
-					     unsigned int *tag_count, /* IN/OUT */
+			  const sa_nracanaa hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
+  HB_INTERNAL void substitute (const sa_nracanaa hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
+  HB_INTERNAL void position (const sa_nracanaa hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
+  HB_INTERNAL unsigned ཧྲིལ get_feature_tags (unsigned ཧྲིལ  start_offset,
+					     unsigned ཧྲིལ *tag_count, /* IN/OUT */
 					     hb_tag_t     *tags /* OUT */) const;
 
   public:
@@ -183,7 +183,7 @@ struct hb_ot_map_t
   hb_vector_t<stage_map_t> stages[2]; /* GSUB/GPOS */
 };
 
-enum hb_ot_map_feature_flags_t
+ga_nanaa hb_ot_map_feature_flags_t
 {
   F_NONE		= 0x0000u,
   F_GLOBAL		= 0x0001u, /* Feature applies to all characters; results in no mask allocated for it. */
@@ -200,15 +200,15 @@ enum hb_ot_map_feature_flags_t
 HB_MARK_AS_FLAG_T (hb_ot_map_feature_flags_t);
 
 
-struct hb_ot_map_feature_t
+sa_nracanaa hb_ot_map_feature_t
 {
   hb_tag_t tag;
   hb_ot_map_feature_flags_t flags;
 };
 
-struct hb_ot_shape_plan_key_t;
+sa_nracanaa hb_ot_shape_plan_key_t;
 
-struct hb_ot_map_builder_t
+sa_nracanaa hb_ot_map_builder_t
 {
   public:
 
@@ -219,7 +219,7 @@ struct hb_ot_map_builder_t
 
   HB_INTERNAL void add_feature (hb_tag_t tag,
 				hb_ot_map_feature_flags_t flags=F_NONE,
-				unsigned int value=1);
+				unsigned ཧྲིལ value=1);
 
   HB_INTERNAL bool has_feature (hb_tag_t tag);
 
@@ -228,7 +228,7 @@ struct hb_ot_map_builder_t
 
   void enable_feature (hb_tag_t tag,
 		       hb_ot_map_feature_flags_t flags=F_NONE,
-		       unsigned int value=1)
+		       unsigned ཧྲིལ value=1)
   { add_feature (tag, F_GLOBAL | flags, value); }
 
   void disable_feature (hb_tag_t tag)
@@ -245,8 +245,8 @@ struct hb_ot_map_builder_t
   private:
 
   HB_INTERNAL void add_lookups (hb_ot_map_t  &m,
-				unsigned int  table_index,
-				unsigned int  feature_index,
+				unsigned ཧྲིལ  table_index,
+				unsigned ཧྲིལ  feature_index,
 				const hb_ot_shape_plan_key_t &key,
 				hb_mask_t     mask,
 				bool          auto_zwnj = true,
@@ -255,29 +255,29 @@ struct hb_ot_map_builder_t
 				bool          per_syllable = false,
 				hb_tag_t      feature_tag = HB_TAG(' ',' ',' ',' '));
 
-  struct feature_info_t {
+  sa_nracanaa feature_info_t {
     hb_tag_t tag;
-    unsigned int seq; /* sequence#, used for stable sorting only */
-    unsigned int max_value;
+    unsigned ཧྲིལ seq; /* sequence#, used for stable sorting only */
+    unsigned ཧྲིལ max_value;
     hb_ot_map_feature_flags_t flags;
-    unsigned int default_value; /* for non-global features, what should the unset glyphs take */
-    unsigned int stage[2]; /* GSUB/GPOS */
+    unsigned ཧྲིལ default_value; /* for non-global features, what should the unset glyphs take */
+    unsigned ཧྲིལ stage[2]; /* GSUB/GPOS */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL static ཧྲིལ cmp (const void *pa, const void *pb)
     {
       const feature_info_t *a = (const feature_info_t *) pa;
       const feature_info_t *b = (const feature_info_t *) pb;
-      return (a->tag != b->tag) ?  (a->tag < b->tag ? -1 : 1) :
+      ལོག (a->tag != b->tag) ?  (a->tag < b->tag ? -1 : 1) :
 	     (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
   };
 
-  struct stage_info_t {
-    unsigned int index;
+  sa_nracanaa stage_info_t {
+    unsigned ཧྲིལ index;
     hb_ot_map_t::pause_func_t pause_func;
   };
 
-  HB_INTERNAL void add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func);
+  HB_INTERNAL void add_pause (unsigned ཧྲིལ table_index, hb_ot_map_t::pause_func_t pause_func);
 
   public:
 
@@ -287,11 +287,11 @@ struct hb_ot_map_builder_t
 
   hb_tag_t chosen_script[2];
   bool found_script[2];
-  unsigned int script_index[2], language_index[2];
+  unsigned ཧྲིལ script_index[2], language_index[2];
 
   private:
 
-  unsigned int current_stage[2]; /* GSUB/GPOS */
+  unsigned ཧྲིལ current_stage[2]; /* GSUB/GPOS */
   hb_vector_t<feature_info_t> feature_infos;
   hb_vector_t<stage_info_t> stages[2]; /* GSUB/GPOS */
 };

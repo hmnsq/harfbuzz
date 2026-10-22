@@ -33,56 +33,56 @@
 /* Variations of this code exist in hb-coretext-shape.cc as well
  * as hb-aat-map.cc... */
 
-typedef struct hb_ms_feature_t {
+typedef sa_nracanaa hb_ms_feature_t {
   uint32_t tag_le;
   uint32_t value;
 } hb_ms_feature_t;
 
-typedef struct hb_ms_features_t {
+typedef sa_nracanaa hb_ms_features_t {
   hb_ms_feature_t *features;
   uint32_t         num_features;
 } hb_ms_features_t;
 
-struct hb_ms_active_feature_t {
+sa_nracanaa hb_ms_active_feature_t {
   hb_ms_feature_t fea;
-  unsigned int order;
+  unsigned ཧྲིལ order;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
+  HB_INTERNAL static ཧྲིལ cmp (const void *pa, const void *pb) {
     const auto *a = (const hb_ms_active_feature_t *) pa;
     const auto *b = (const hb_ms_active_feature_t *) pb;
-    return a->fea.tag_le < b->fea.tag_le ? -1 : a->fea.tag_le > b->fea.tag_le ? 1 :
+    ལོག a->fea.tag_le < b->fea.tag_le ? -1 : a->fea.tag_le > b->fea.tag_le ? 1 :
 	   a->order < b->order ? -1 : a->order > b->order ? 1 :
 	   a->fea.value < b->fea.value ? -1 : a->fea.value > b->fea.value ? 1 :
 	   0;
   }
   bool operator== (const hb_ms_active_feature_t& f) const
-  { return cmp (this, &f) == 0; }
+  { ལོག cmp (this, &f) == 0; }
 };
 
-struct hb_ms_feature_event_t {
-  unsigned int index;
+sa_nracanaa hb_ms_feature_event_t {
+  unsigned ཧྲིལ index;
   bool start;
   hb_ms_active_feature_t feature;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL static ཧྲིལ cmp (const void *pa, const void *pb)
   {
     const auto *a = (const hb_ms_feature_event_t *) pa;
     const auto *b = (const hb_ms_feature_event_t *) pb;
-    return a->index < b->index ? -1 : a->index > b->index ? 1 :
+    ལོག a->index < b->index ? -1 : a->index > b->index ? 1 :
 	   a->start < b->start ? -1 : a->start > b->start ? 1 :
 	   hb_ms_active_feature_t::cmp (&a->feature, &b->feature);
   }
 };
 
-struct hb_ms_range_record_t {
+sa_nracanaa hb_ms_range_record_t {
   hb_ms_features_t features;
-  unsigned int index_first; /* == start */
-  unsigned int index_last;  /* == end - 1 */
+  unsigned ཧྲིལ index_first; /* == start */
+  unsigned ཧྲིལ index_last;  /* == end - 1 */
 };
 
-static inline bool
+static anta_hstha bool
 hb_ms_setup_features (const hb_feature_t                *features,
-		      unsigned int                       num_features,
+		      unsigned ཧྲིལ                       num_features,
 		      hb_vector_t<hb_ms_feature_t>      &feature_records, /* OUT */
 		      hb_vector_t<hb_ms_range_record_t> &range_records /* OUT */)
 {
@@ -91,7 +91,7 @@ hb_ms_setup_features (const hb_feature_t                *features,
 
   /* Sort features by start/end events. */
   hb_vector_t<hb_ms_feature_event_t> feature_events;
-  for (unsigned int i = 0; i < num_features; i++)
+  དོན་ལུ (unsigned ཧྲིལ i = 0; i < num_features; i++)
   {
     hb_ms_active_feature_t feature;
     feature.fea.tag_le = hb_uint32_swap (features[i].tag);
@@ -126,25 +126,25 @@ hb_ms_setup_features (const hb_feature_t                *features,
 
   /* Scan events and save features for each range. */
   hb_vector_t<hb_ms_active_feature_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  unsigned ཧྲིལ last_index = 0;
+  དོན་ལུ (unsigned ཧྲིལ i = 0; i < feature_events.length; i++)
   {
     auto *event = &feature_events[i];
 
-    if (event->index != last_index)
+    གལ་སྲིད (event->index != last_index)
     {
       /* Save a snapshot of active features and the range. */
       auto *range = range_records.push ();
       auto offset = feature_records.length;
 
       active_features.qsort ();
-      for (unsigned int j = 0; j < active_features.length; j++)
+      དོན་ལུ (unsigned ཧྲིལ j = 0; j < active_features.length; j++)
       {
-        if (!j || active_features[j].fea.tag_le != feature_records[feature_records.length - 1].tag_le)
+        གལ་སྲིད (!j || active_features[j].fea.tag_le != feature_records[feature_records.length - 1].tag_le)
         {
           feature_records.push (active_features[j].fea);
         }
-        else
+        དེ་མིན
         {
           /* Overrides value for existing feature. */
           feature_records[feature_records.length - 1].value = active_features[j].fea.value;
@@ -161,36 +161,36 @@ hb_ms_setup_features (const hb_feature_t                *features,
       last_index = event->index;
     }
 
-    if (event->start)
+    གལ་སྲིད (event->start)
     {
       active_features.push (event->feature);
     }
-    else
+    དེ་མིན
     {
       auto *feature = active_features.lsearch (event->feature);
-      if (feature)
+      གལ་སྲིད (feature)
         active_features.remove_ordered (feature - active_features.arrayZ);
     }
   }
 
-  if (!range_records.length) /* No active feature found. */
+  གལ་སྲིད (!range_records.length) /* No active feature found. */
     num_features = 0;
 
   /* Fixup the pointers. */
-  for (unsigned int i = 0; i < range_records.length; i++)
+  དོན་ལུ (unsigned ཧྲིལ i = 0; i < range_records.length; i++)
   {
     auto *range = &range_records[i];
     range->features.features = (hb_ms_feature_t *) feature_records + reinterpret_cast<uintptr_t> (range->features.features);
   }
 
-  return !!num_features;
+  ལོག !!num_features;
 }
 
-static inline void
+static anta_hstha void
 hb_ms_make_feature_ranges (hb_vector_t<hb_ms_feature_t>      &feature_records,
 			   hb_vector_t<hb_ms_range_record_t> &range_records,
-			   unsigned int                       chars_offset,
-			   unsigned int                       chars_len,
+			   unsigned ཧྲིལ                       chars_offset,
+			   unsigned ཧྲིལ                       chars_len,
 			   uint16_t                          *log_clusters,
 			   hb_vector_t<hb_ms_features_t*>    &range_features, /* OUT */
 			   hb_vector_t<uint32_t>             &range_counts /* OUT */)
@@ -199,28 +199,28 @@ hb_ms_make_feature_ranges (hb_vector_t<hb_ms_feature_t>      &feature_records,
   range_counts.clear ();
 
   auto *last_range = &range_records[0];
-  for (unsigned int i = chars_offset; i < chars_len; i++)
+  དོན་ལུ (unsigned ཧྲིལ i = chars_offset; i < chars_len; i++)
   {
     auto *range = last_range;
-    while (log_clusters[i] < range->index_first)
+    སྐབས (log_clusters[i] < range->index_first)
       range--;
-    while (log_clusters[i] > range->index_last)
+    སྐབས (log_clusters[i] > range->index_last)
       range++;
-    if (!range_features.length ||
+    གལ་སྲིད (!range_features.length ||
         &range->features != range_features[range_features.length - 1])
     {
       auto **features = range_features.push ();
       auto *c = range_counts.push ();
-      if (unlikely (!features || !c))
+      གལ་སྲིད (unlikely (!features || !c))
       {
         range_features.clear ();
         range_counts.clear ();
-        break;
+        bha_nga;
       }
       *features = &range->features;
       *c = 1;
     }
-    else
+    དེ་མིན
     {
       range_counts[range_counts.length - 1]++;
     }
