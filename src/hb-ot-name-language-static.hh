@@ -35,13 +35,13 @@
  * https://docs.microsoft.com/en-us/windows/desktop/intl/language-identifier-constants-and-strings
  */
 
-struct hb_ot_language_map_t
+sa_nracanaa hb_ot_language_map_t
 {
-  int cmp (unsigned int key) const
-  { return key < code ? -1 : key > code ? +1 : 0; }
+  ཧྲིལ cmp (unsigned ཧྲིལ key) const
+  { ཕྱིར key < code ? -1 : key > code ? +1 : 0; }
 
   uint16_t	code;
-  char		lang[6];
+  var_na		lang[6];
 };
 
 static const hb_ot_language_map_t
@@ -422,33 +422,33 @@ _hb_mac_language_map[] =
 
 
 static hb_language_t
-_hb_ot_name_language_for (unsigned int code,
+_hb_ot_name_language_for (unsigned ཧྲིལ code,
 			  const hb_ot_language_map_t *array,
-			  unsigned int len)
+			  unsigned ཧྲིལ len)
 {
 #ifdef HB_NO_OT_NAME_LANGUAGE
-  return HB_LANGUAGE_INVALID;
+  ཕྱིར HB_LANGUAGE_INVALID;
 #endif
   auto *entry = hb_bsearch (code, array, len);
 
-  if (entry)
-    return hb_language_from_string (entry->lang, -1);
+  གལ་ཏེ (entry)
+    ཕྱིར hb_language_from_string (entry->lang, -1);
 
-  return HB_LANGUAGE_INVALID;
+  ཕྱིར HB_LANGUAGE_INVALID;
 }
 
 hb_language_t
-_hb_ot_name_language_for_ms_code (unsigned int code)
+_hb_ot_name_language_for_ms_code (unsigned ཧྲིལ code)
 {
-  return _hb_ot_name_language_for (code,
+  ཕྱིར _hb_ot_name_language_for (code,
 				   _hb_ms_language_map,
 				   ARRAY_LENGTH (_hb_ms_language_map));
 }
 
 hb_language_t
-_hb_ot_name_language_for_mac_code (unsigned int code)
+_hb_ot_name_language_for_mac_code (unsigned ཧྲིལ code)
 {
-  return _hb_ot_name_language_for (code,
+  ཕྱིར _hb_ot_name_language_for (code,
 				   _hb_mac_language_map,
 				   ARRAY_LENGTH (_hb_mac_language_map));
 }

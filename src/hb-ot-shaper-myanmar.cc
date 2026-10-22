@@ -64,22 +64,22 @@ myanmar_other_features[] =
   HB_TAG('p','s','t','s'),
 };
 
-static inline void
+static anta_hstha void
 set_myanmar_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  unsigned ཧྲིལ type = hb_indic_get_categories (u);
 
   info.myanmar_category() = (myanmar_category_t) (type & 0xFFu);
 }
 
 
-static inline bool
-is_one_of_myanmar (const hb_glyph_info_t &info, unsigned int flags)
+static anta_hstha bool
+is_one_of_myanmar (const hb_glyph_info_t &info, unsigned ཧྲིལ flags)
 {
   /* If it ligated, all bets are off. */
-  if (_hb_glyph_info_ligated (&info)) return false;
-  return !!(FLAG_UNSAFE (info.myanmar_category()) & flags);
+  གལ་ཏེ (_hb_glyph_info_ligated (&info)) ཕྱིར false;
+  ཕྱིར !!(FLAG_UNSAFE (info.myanmar_category()) & flags);
 }
 
 /* Note:
@@ -91,10 +91,10 @@ is_one_of_myanmar (const hb_glyph_info_t &info, unsigned int flags)
  * Keep in sync with consonant_categories in the generator. */
 #define CONSONANT_FLAGS_MYANMAR (FLAG (M_Cat(C)) | FLAG (M_Cat(CS)) | FLAG (M_Cat(Ra)) | /* FLAG (M_Cat(CM)) | */ FLAG (M_Cat(IV)) | FLAG (M_Cat(GB)) | FLAG (M_Cat(DOTTEDCIRCLE)))
 
-static inline bool
+static anta_hstha bool
 is_consonant_myanmar (const hb_glyph_info_t &info)
 {
-  return is_one_of_myanmar (info, CONSONANT_FLAGS_MYANMAR);
+  ཕྱིར is_one_of_myanmar (info, CONSONANT_FLAGS_MYANMAR);
 }
 
 
@@ -123,14 +123,14 @@ collect_features_myanmar (hb_ot_shape_planner_t *plan)
 
   map->add_gsub_pause (reorder_myanmar);
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (myanmar_basic_features); i++)
+  ཆེད་དུ (unsigned ཧྲིལ i = 0; i < ARRAY_LENGTH (myanmar_basic_features); i++)
   {
     map->enable_feature (myanmar_basic_features[i], F_MANUAL_ZWJ | F_PER_SYLLABLE);
     map->add_gsub_pause (nullptr);
   }
   map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (myanmar_other_features); i++)
+  ཆེད་དུ (unsigned ཧྲིལ i = 0; i < ARRAY_LENGTH (myanmar_other_features); i++)
     map->enable_feature (myanmar_other_features[i], F_MANUAL_ZWJ);
 }
 
@@ -144,9 +144,9 @@ setup_masks_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
 
   /* No masks, we just save information about characters. */
 
-  unsigned int count = buffer->len;
+  unsigned ཧྲིལ count = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
     set_myanmar_properties (info[i]);
 }
 
@@ -159,16 +159,16 @@ setup_syllables_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
   find_syllables_myanmar (buffer);
   foreach_syllable (buffer, start, end)
     buffer->unsafe_to_break (start, end);
-  return false;
+  ཕྱིར false;
 }
 
-static int
+static ཧྲིལ
 compare_myanmar_order (const hb_glyph_info_t *pa, const hb_glyph_info_t *pb)
 {
-  int a = pa->myanmar_position();
-  int b = pb->myanmar_position();
+  ཧྲིལ a = pa->myanmar_position();
+  ཧྲིལ b = pb->myanmar_position();
 
-  return (int) a - (int) b;
+  ཕྱིར (ཧྲིལ) a - (ཧྲིལ) b;
 }
 
 
@@ -177,16 +177,16 @@ compare_myanmar_order (const hb_glyph_info_t *pa, const hb_glyph_info_t *pb)
 
 static void
 initial_reordering_consonant_syllable (hb_buffer_t *buffer,
-				       unsigned int start, unsigned int end)
+				       unsigned ཧྲིལ start, unsigned ཧྲིལ end)
 {
   hb_glyph_info_t *info = buffer->info;
 
-  unsigned int base = end;
+  unsigned ཧྲིལ base = end;
   bool has_reph = false;
 
   {
-    unsigned int limit = start;
-    if (start + 3 <= end &&
+    unsigned ཧྲིལ limit = start;
+    གལ་ཏེ (start + 3 <= end &&
 	info[start  ].myanmar_category() == M_Cat(Ra) &&
 	info[start+1].myanmar_category() == M_Cat(As) &&
 	info[start+2].myanmar_category() == M_Cat(H))
@@ -197,26 +197,26 @@ initial_reordering_consonant_syllable (hb_buffer_t *buffer,
     }
 
     {
-      if (!has_reph)
+      གལ་ཏེ (!has_reph)
 	base = limit;
 
-      for (unsigned int i = limit; i < end; i++)
-	if (is_consonant_myanmar (info[i]))
+      ཆེད་དུ (unsigned ཧྲིལ i = limit; i < end; i++)
+	གལ་ཏེ (is_consonant_myanmar (info[i]))
 	{
 	  base = i;
-	  break;
+	  bha_nga;
 	}
     }
   }
 
   /* Reorder! */
   {
-    unsigned int i = start;
-    for (; i < start + (has_reph ? 3 : 0); i++)
+    unsigned ཧྲིལ i = start;
+    ཆེད་དུ (; i < start + (has_reph ? 3 : 0); i++)
       info[i].myanmar_position() = POS_AFTER_MAIN;
-    for (; i < base; i++)
+    ཆེད་དུ (; i < base; i++)
       info[i].myanmar_position() = POS_PRE_C;
-    if (i < end)
+    གལ་ཏེ (i < end)
     {
       info[i].myanmar_position() = POS_BASE_C;
       i++;
@@ -224,42 +224,42 @@ initial_reordering_consonant_syllable (hb_buffer_t *buffer,
     myanmar_position_t pos = POS_AFTER_MAIN;
     /* The following loop may be ugly, but it implements all of
      * Myanmar reordering! */
-    for (; i < end; i++)
+    ཆེད་དུ (; i < end; i++)
     {
-      if (info[i].myanmar_category() == M_Cat(MR)) /* Pre-base reordering */
+      གལ་ཏེ (info[i].myanmar_category() == M_Cat(MR)) /* Pre-base reordering */
       {
 	info[i].myanmar_position() = POS_PRE_C;
 	continue;
       }
-      if (info[i].myanmar_category() == M_Cat(VPre)) /* Left matra */
+      གལ་ཏེ (info[i].myanmar_category() == M_Cat(VPre)) /* Left matra */
       {
 	info[i].myanmar_position() = POS_PRE_M;
 	continue;
       }
-      if (info[i].myanmar_category() == M_Cat(VS))
+      གལ་ཏེ (info[i].myanmar_category() == M_Cat(VS))
       {
 	info[i].myanmar_position() = info[i - 1].myanmar_position();
 	continue;
       }
 
-      if (pos == POS_AFTER_MAIN && info[i].myanmar_category() == M_Cat(VBlw))
+      གལ་ཏེ (pos == POS_AFTER_MAIN && info[i].myanmar_category() == M_Cat(VBlw))
       {
 	pos = POS_BELOW_C;
 	info[i].myanmar_position() = pos;
 	continue;
       }
 
-      if (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(A))
+      གལ་ཏེ (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(A))
       {
 	info[i].myanmar_position() = POS_BEFORE_SUB;
 	continue;
       }
-      if (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(VBlw))
+      གལ་ཏེ (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(VBlw))
       {
 	info[i].myanmar_position() = pos;
 	continue;
       }
-      if (pos == POS_BELOW_C && info[i].myanmar_category() != M_Cat(A))
+      གལ་ཏེ (pos == POS_BELOW_C && info[i].myanmar_category() != M_Cat(A))
       {
 	pos = POS_AFTER_SUB;
 	info[i].myanmar_position() = pos;
@@ -275,24 +275,24 @@ initial_reordering_consonant_syllable (hb_buffer_t *buffer,
   /* Flip left-matra sequence. */
   unsigned first_left_matra = end;
   unsigned last_left_matra = end;
-  for (unsigned int i = start; i < end; i++)
+  ཆེད་དུ (unsigned ཧྲིལ i = start; i < end; i++)
   {
-    if (info[i].myanmar_position() == POS_PRE_M)
+    གལ་ཏེ (info[i].myanmar_position() == POS_PRE_M)
     {
-      if (first_left_matra == end)
+      གལ་ཏེ (first_left_matra == end)
 	first_left_matra = i;
       last_left_matra = i;
     }
   }
   /* https://github.com/harfbuzz/harfbuzz/issues/3863 */
-  if (first_left_matra < last_left_matra)
+  གལ་ཏེ (first_left_matra < last_left_matra)
   {
     /* No need to merge clusters, done already? */
     buffer->reverse_range (first_left_matra, last_left_matra + 1);
     /* Reverse back VS, etc. */
     unsigned i = first_left_matra;
-    for (unsigned j = i; j <= last_left_matra; j++)
-      if (info[j].myanmar_category() == M_Cat(VPre))
+    ཆེད་དུ (unsigned j = i; j <= last_left_matra; j++)
+      གལ་ཏེ (info[j].myanmar_category() == M_Cat(VPre))
       {
 	buffer->reverse_range (i, j + 1);
 	i = j + 1;
@@ -304,18 +304,18 @@ static void
 reorder_syllable_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
 			  hb_face_t *face HB_UNUSED,
 			  hb_buffer_t *buffer,
-			  unsigned int start, unsigned int end)
+			  unsigned ཧྲིལ start, unsigned ཧྲིལ end)
 {
   myanmar_syllable_type_t syllable_type = (myanmar_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
   switch (syllable_type) {
 
-    case myanmar_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
-    case myanmar_consonant_syllable:
+    pak_sa myanmar_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
+    pak_sa myanmar_consonant_syllable:
       initial_reordering_consonant_syllable  (buffer, start, end);
-      break;
+      bha_nga;
 
-    case myanmar_non_myanmar_cluster:
-      break;
+    pak_sa myanmar_non_myanmar_cluster:
+      bha_nga;
   }
 }
 
@@ -325,9 +325,9 @@ reorder_myanmar (const hb_ot_shape_plan_t *plan,
 		 hb_buffer_t *buffer)
 {
   bool ret = false;
-  if (buffer->message (font, "start reordering myanmar"))
+  གལ་ཏེ (buffer->message (font, "start reordering myanmar"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    གལ་ཏེ (hb_syllabic_insert_dotted_circles (font, buffer,
 					   myanmar_broken_cluster,
 					   M_Cat(DOTTEDCIRCLE)))
       ret = true;
@@ -340,7 +340,7 @@ reorder_myanmar (const hb_ot_shape_plan_t *plan,
   HB_BUFFER_DEALLOCATE_VAR (buffer, myanmar_category);
   HB_BUFFER_DEALLOCATE_VAR (buffer, myanmar_position);
 
-  return ret;
+  ཕྱིར ret;
 }
 
 

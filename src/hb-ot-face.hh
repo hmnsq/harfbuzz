@@ -39,20 +39,20 @@
  */
 
 /* Declare tables. */
-#define HB_OT_TABLE(Namespace, Type) namespace Namespace { struct Type; }
+#define HB_OT_TABLE(Namespace, Type) namespace Namespace { sa_nracanaa Type; }
 #define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type##_accelerator_t)
 #include "hb-ot-face-table-list.hh"
 #undef HB_OT_ACCELERATOR
 #undef HB_OT_TABLE
 
-struct hb_ot_face_t
+sa_nracanaa hb_ot_face_t
 {
   HB_INTERNAL void init0 (hb_face_t *face);
   HB_INTERNAL void fini ();
 
 #define HB_OT_TABLE_ORDER(Namespace, Type) \
     HB_PASTE (ORDER_, HB_PASTE (Namespace, HB_PASTE (_, Type)))
-  enum order_t
+  ga_nanaa order_t
   {
     ORDER_ZERO,
 #define HB_OT_TABLE(Namespace, Type) HB_OT_TABLE_ORDER (Namespace, Type),

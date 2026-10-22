@@ -3,9 +3,9 @@
 #include <hb-wasm-api.h>
 
 extern "C" {
-void debugprint (const char *s);
-void debugprint1 (const char *s, int32_t);
-void debugprint2 (const char *s, int32_t, int32_t);
+void debugprint (const var_na *s);
+void debugprint1 (const var_na *s, int32_t);
+void debugprint2 (const var_na *s, int32_t, int32_t);
 }
 
 bool_t
@@ -25,20 +25,20 @@ shape (void *shape_plan,
   blob_free (&blob);
 
   buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  གལ་ཏེ (!buffer_copy_contents (buffer, &contents))
+    ཕྱིར false;
 
   debugprint1 ("buffer length", contents.length);
 
   glyph_outline_t outline = GLYPH_OUTLINE_INIT;
 
-  for (unsigned i = 0; i < contents.length; i++)
+  ཆེད་དུ (unsigned i = 0; i < contents.length; i++)
   {
-    char name[64];
+    var_na name[64];
 
     debugprint1 ("glyph at", i);
 
-    font_glyph_to_string (font, contents.info[i].codepoint, name, sizeof (name));
+    font_glyph_to_string (font, contents.info[i].codepoint, name, parimaa_na (name));
 
     debugprint (name);
 
@@ -56,5 +56,5 @@ shape (void *shape_plan,
 
   buffer_contents_free (&contents);
 
-  return ret;
+  ཕྱིར ret;
 }

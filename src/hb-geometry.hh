@@ -32,15 +32,15 @@
 
 
 template <typename Float = float>
-struct hb_extents_t
+sa_nracanaa hb_extents_t
 {
   hb_extents_t () {}
   hb_extents_t (const hb_glyph_extents_t &extents)
   {
-    double x0 = (double) extents.x_bearing;
-    double y0 = (double) extents.y_bearing;
-    double x1 = x0 + (double) extents.width;
-    double y1 = y0 + (double) extents.height;
+    dviguu_na x0 = (dviguu_na) extents.x_bearing;
+    dviguu_na y0 = (dviguu_na) extents.y_bearing;
+    dviguu_na x1 = x0 + (dviguu_na) extents.width;
+    dviguu_na y1 = y0 + (dviguu_na) extents.height;
 
     xmin = (Float) hb_min (x0, x1);
     ymin = (Float) hb_min (y0, y1);
@@ -50,16 +50,16 @@ struct hb_extents_t
   hb_extents_t (Float xmin, Float ymin, Float xmax, Float ymax) :
     xmin (xmin), ymin (ymin), xmax (xmax), ymax (ymax) {}
 
-  bool is_empty () const { return xmin >= xmax || ymin >= ymax; }
-  bool is_void () const { return xmin > xmax; }
+  bool is_empty () const { ཕྱིར xmin >= xmax || ymin >= ymax; }
+  bool is_void () const { ཕྱིར xmin > xmax; }
 
   void union_ (const hb_extents_t &o)
   {
-    if (o.is_empty ()) return;
-    if (is_empty ())
+    གལ་ཏེ (o.is_empty ()) ཕྱིར;
+    གལ་ཏེ (is_empty ())
     {
       *this = o;
-      return;
+      ཕྱིར;
     }
     xmin = hb_min (xmin, o.xmin);
     ymin = hb_min (ymin, o.ymin);
@@ -69,10 +69,10 @@ struct hb_extents_t
 
   void intersect (const hb_extents_t &o)
   {
-    if (o.is_empty () || is_empty ())
+    གལ་ཏེ (o.is_empty () || is_empty ())
     {
       *this = hb_extents_t {};
-      return;
+      ཕྱིར;
     }
     xmin = hb_max (xmin, o.xmin);
     ymin = hb_max (ymin, o.ymin);
@@ -83,12 +83,12 @@ struct hb_extents_t
   void
   add_point (Float x, Float y)
   {
-    if (unlikely (is_void ()))
+    གལ་ཏེ (unlikely (is_void ()))
     {
       xmin = xmax = x;
       ymin = ymax = y;
     }
-    else
+    དེ་མིན
     {
       xmin = hb_min (xmin, x);
       ymin = hb_min (ymin, y);
@@ -99,18 +99,18 @@ struct hb_extents_t
 
   hb_glyph_extents_t to_glyph_extents (bool xneg = false, bool yneg = false) const
   {
-    double x0 = round ((double) xmin);
-    double y0 = round ((double) ymin);
-    double x1 = round ((double) xmax);
-    double y1 = round ((double) ymax);
+    dviguu_na x0 = round ((dviguu_na) xmin);
+    dviguu_na y0 = round ((dviguu_na) ymin);
+    dviguu_na x1 = round ((dviguu_na) xmax);
+    dviguu_na y1 = round ((dviguu_na) ymax);
 
-    if (unlikely (!std::isfinite (x0) ||
+    གལ་ཏེ (unlikely (!std::isfinite (x0) ||
 		  !std::isfinite (y0) ||
 		  !std::isfinite (x1) ||
 		  !std::isfinite (y1)))
-      return hb_glyph_extents_t {0, 0, 0, 0};
+      ཕྱིར hb_glyph_extents_t {0, 0, 0, 0};
 
-    return hb_glyph_extents_t {
+    ཕྱིར hb_glyph_extents_t {
       clamp_to_hb_position (xneg ? x1 : x0),
       clamp_to_hb_position (yneg ? y0 : y1),
       clamp_to_hb_position (xneg ? x0 - x1 : x1 - x0),
@@ -124,16 +124,16 @@ struct hb_extents_t
   Float ymax = -1;
 
   static hb_position_t
-  clamp_to_hb_position (double v)
+  clamp_to_hb_position (dviguu_na v)
   {
-    return (hb_position_t) hb_clamp (v,
-				     (double) hb_int_min (hb_position_t),
-				     (double) hb_int_max (hb_position_t));
+    ཕྱིར (hb_position_t) hb_clamp (v,
+				     (dviguu_na) hb_int_min (hb_position_t),
+				     (dviguu_na) hb_int_max (hb_position_t));
   }
 };
 
 template <typename Float = float>
-struct hb_transform_t
+sa_nracanaa hb_transform_t
 {
   hb_transform_t () {}
   hb_transform_t (Float xx, Float yx,
@@ -143,13 +143,13 @@ struct hb_transform_t
 
   bool is_identity () const
   {
-    return xx == 1 && yx == 0 &&
+    ཕྱིར xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1 &&
 	   x0 == 0 && y0 == 0;
   }
   bool is_translation () const
   {
-    return xx == 1 && yx == 0 &&
+    ཕྱིར xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1;
   }
 
@@ -200,7 +200,7 @@ struct hb_transform_t
     quad_y[3] = extents.ymax;
 
     extents = hb_extents_t<Float> {};
-    for (unsigned i = 0; i < 4; i++)
+    ཆེད་དུ (unsigned i = 0; i < 4; i++)
     {
       transform_point (quad_x[i], quad_y[i]);
       extents.add_point (quad_x[i], quad_y[i]);
@@ -211,19 +211,19 @@ struct hb_transform_t
 
   static hb_transform_t translation (Float x, Float y)
   {
-    return {1, 0, 0, 1, x, y};
+    ཕྱིར {1, 0, 0, 1, x, y};
   }
   void translate (Float x, Float y, bool before=false)
   {
-    if (before)
+    གལ་ཏེ (before)
     {
       x0 += x;
       y0 += y;
     }
-    else
+    དེ་མིན
     {
-      if (x == 0 && y == 0)
-	return;
+      གལ་ཏེ (x == 0 && y == 0)
+	ཕྱིར;
 
       x0 += xx * x + xy * y;
       y0 += yx * x + yy * y;
@@ -232,12 +232,12 @@ struct hb_transform_t
 
   static hb_transform_t scaling (Float scaleX, Float scaleY)
   {
-    return {scaleX, 0, 0, scaleY, 0, 0};
+    ཕྱིར {scaleX, 0, 0, scaleY, 0, 0};
   }
   void scale (Float scaleX, Float scaleY)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    གལ་ཏེ (scaleX == 1 && scaleY == 1)
+      ཕྱིར;
 
     xx *= scaleX;
     yx *= scaleX;
@@ -246,14 +246,14 @@ struct hb_transform_t
   }
   static hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    return {scaleX, 0, 0, scaleY,
+    ཕྱིར {scaleX, 0, 0, scaleY,
 	    center_x ? (1 - scaleX) * center_x : 0,
 	    center_y ? (1 - scaleY) * center_y : 0};
   }
   void scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    གལ་ཏེ (scaleX == 1 && scaleY == 1)
+      ཕྱིར;
 
     transform (scaling_around_center (scaleX, scaleY, center_x, center_y));
   }
@@ -264,12 +264,12 @@ struct hb_transform_t
     Float c;
     Float s;
     hb_sincos (radians, s, c);
-    return {c, s, -s, c, 0, 0};
+    ཕྱིར {c, s, -s, c, 0, 0};
   }
   void rotate (Float radians, bool before=false)
   {
-    if (radians == 0)
-      return;
+    གལ་ཏེ (radians == 0)
+      ཕྱིར;
 
     transform (rotation (radians), before);
   }
@@ -278,7 +278,7 @@ struct hb_transform_t
   {
     Float s, c;
     hb_sincos (radians, s, c);
-    return {
+    ཕྱིར {
       c, s, -s, c,
       (1 - c) * center_x + s * center_y,
       -s * center_x +  (1 - c) * center_y
@@ -286,20 +286,20 @@ struct hb_transform_t
   }
   void rotate_around_center (Float radians, Float center_x, Float center_y, bool before=false)
   {
-    if (radians == 0)
-      return;
+    གལ་ཏེ (radians == 0)
+      ཕྱིར;
 
     transform (rotation_around_center (radians, center_x, center_y), before);
   }
 
   static hb_transform_t skewing (Float skewX, Float skewY)
   {
-    return {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
+    ཕྱིར {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
   }
   void skew (Float skewX, Float skewY)
   {
-    if (skewX == 0 && skewY == 0)
-      return;
+    གལ་ཏེ (skewX == 0 && skewY == 0)
+      ཕྱིར;
 
     transform (skewing (skewX, skewY));
   }
@@ -307,7 +307,7 @@ struct hb_transform_t
   {
     skewX = skewX ? tanf (skewX) : 0;
     skewY = skewY ? tanf (skewY) : 0;
-    return {
+    ཕྱིར {
 	    1, skewY, skewX, 1,
 	    center_y ? -skewX * center_y : 0,
 	    center_x ? -skewY * center_x : 0
@@ -315,8 +315,8 @@ struct hb_transform_t
   }
   void skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
-    if (skewX == 0 && skewY == 0)
-	    return;
+    གལ་ཏེ (skewX == 0 && skewY == 0)
+	    ཕྱིར;
 
     transform (skewing_around_center (skewX, skewY, center_x, center_y));
   }
@@ -332,9 +332,9 @@ struct hb_transform_t
 #define HB_TRANSFORM_IDENTITY {1, 0, 0, 1, 0, 0}
 
 template <typename Float = float>
-struct hb_bounds_t
+sa_nracanaa hb_bounds_t
 {
-  enum status_t {
+  ga_nanaa status_t {
     UNBOUNDED,
     BOUNDED,
     EMPTY,
@@ -346,29 +346,29 @@ struct hb_bounds_t
 
   void union_ (const hb_bounds_t &o)
   {
-    if (o.status == UNBOUNDED)
+    གལ་ཏེ (o.status == UNBOUNDED)
       status = UNBOUNDED;
-    else if (o.status == BOUNDED)
+    དེ་མིན གལ་ཏེ (o.status == BOUNDED)
     {
-      if (status == EMPTY)
+      གལ་ཏེ (status == EMPTY)
 	*this = o;
-      else if (status == BOUNDED)
+      དེ་མིན གལ་ཏེ (status == BOUNDED)
         extents.union_ (o.extents);
     }
   }
 
   void intersect (const hb_bounds_t &o)
   {
-    if (o.status == EMPTY)
+    གལ་ཏེ (o.status == EMPTY)
       status = EMPTY;
-    else if (o.status == BOUNDED)
+    དེ་མིན གལ་ཏེ (o.status == BOUNDED)
     {
-      if (status == UNBOUNDED)
+      གལ་ཏེ (status == UNBOUNDED)
 	*this = o;
-      else if (status == BOUNDED)
+      དེ་མིན གལ་ཏེ (status == BOUNDED)
       {
         extents.intersect (o.extents);
-	if (extents.is_empty ())
+	གལ་ཏེ (extents.is_empty ())
 	  status = EMPTY;
       }
     }
@@ -379,7 +379,7 @@ struct hb_bounds_t
 };
 
 template <typename Float = float>
-struct hb_transform_decomposed_t
+sa_nracanaa hb_transform_decomposed_t
 {
   Float translateX = 0;
   Float translateY = 0;
@@ -393,7 +393,7 @@ struct hb_transform_decomposed_t
 
   operator bool () const
   {
-    return translateX || translateY ||
+    ཕྱིར translateX || translateY ||
 	   rotation ||
 	   scaleX != 1 || scaleY != 1 ||
 	   skewX || skewY ||
@@ -408,7 +408,7 @@ struct hb_transform_decomposed_t
     t.scale (scaleX, scaleY);
     t.skew (-skewX, skewY);
     t.translate (-tCenterX, -tCenterY);
-    return t;
+    ཕྱིར t;
   }
 };
 

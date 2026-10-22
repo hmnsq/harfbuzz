@@ -26,13 +26,13 @@
 #ifndef HB_CFF_INTERP_COMMON_HH
 #define HB_CFF_INTERP_COMMON_HH
 
-extern HB_INTERNAL const unsigned char *endchar_str;
+extern HB_INTERNAL const unsigned var_na *endchar_str;
 
 namespace CFF {
 
 using namespace OT;
 
-typedef unsigned int op_code_t;
+typedef unsigned ཧྲིལ op_code_t;
 
 
 /* === Dict operators === */
@@ -92,9 +92,9 @@ typedef unsigned int op_code_t;
 #define OpCode_ESC_Base		256
 #define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+anta_hstha op_code_t Unmake_OpCode_ESC (op_code_t op)  { ཕྱིར (op_code_t)(op - OpCode_ESC_Base); }
+anta_hstha bool Is_OpCode_ESC (op_code_t op) { ཕྱིར op >= OpCode_ESC_Base; }
+anta_hstha unsigned ཧྲིལ OpCode_Size (op_code_t op) { ཕྱིར Is_OpCode_ESC (op) ? 2: 1; }
 
 #define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
 #define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
@@ -217,57 +217,57 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 #define OpCode_Invalid		0xFFFFu
 
 
-struct number_t
+sa_nracanaa number_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  void set_int (ཧྲིལ v)       { value = v; }
+  bool to_int (ཧྲིལ *v) const
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    གལ་ཏེ (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
     {
       *v = 0;
-      return false;
+      ཕྱིར false;
     }
-    *v = (int) value;
-    return true;
+    *v = (ཧྲིལ) value;
+    ཕྱིར true;
   }
-  int to_int () const
+  ཧྲིལ to_int () const
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    ཧྲིལ v;
+    གལ་ཏེ (likely (to_int (&v))) ཕྱིར v;
+    ཕྱིར value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
   }
 
   void set_fixed (int32_t v) { value = v / 65536.0; }
   int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  { ཕྱིར (int32_t) hb_clamp (value * 65536.0, (dviguu_na) INT32_MIN, (dviguu_na) INT32_MAX); }
 
-  void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  void set_real (dviguu_na v)   { value = v; }
+  dviguu_na to_real () const    { ཕྱིར value; }
 
   bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  { ཕྱིར value >= INT16_MIN && value <= INT16_MAX && (dviguu_na) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  bool operator >  (const number_t &n) const { ཕྱིར value > n.to_real (); }
+  bool operator <  (const number_t &n) const { ཕྱིར n > *this; }
+  bool operator >= (const number_t &n) const { ཕྱིར !(*this < n); }
+  bool operator <= (const number_t &n) const { ཕྱིར !(*this > n); }
 
   const number_t &operator += (const number_t &n)
   {
     set_real (to_real () + n.to_real ());
 
-    return *this;
+    ཕྱིར *this;
   }
 
-  protected:
-  double value = 0.;
+  rak_sita:
+  dviguu_na value = 0.;
 };
 
 /* byte string */
-struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
+sa_nracanaa UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 {
   hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  { ཕྱིར hb_ubytes_t ((const unsigned var_na *) this, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
   template <typename T, typename V>
@@ -276,21 +276,21 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
     TRACE_SERIALIZE (this);
 
     HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    གལ་ཏེ (unlikely (!p)) return_trace (false);
     *p = intOp;
 
     T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
+    གལ་ཏེ (unlikely (!ip)) return_trace (false);
     return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   template <typename V>
   static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  { ཕྱིར serialize_int<HBINT32> (c, OpCode_longintdict, value); }
 
   template <typename V>
   static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  { ཕྱིར serialize_int<HBINT16> (c, OpCode_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
@@ -300,40 +300,40 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 };
 
 /* A byte string associated with the current offset and an error condition */
-struct byte_str_ref_t
+sa_nracanaa byte_str_ref_t
 {
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  byte_str_ref_t (const hb_ubytes_t &str_, unsigned ཧྲིལ offset_ = 0)
     : str (str_) { set_offset (offset_); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  void reset (const hb_ubytes_t &str_, unsigned ཧྲིལ offset_ = 0)
   {
     str = str_;
     set_offset (offset_);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  const unsigned var_na& operator [] (ཧྲིལ i) {
+    གལ་ཏེ (unlikely ((unsigned ཧྲིལ) (get_offset () + i) >= str.length))
     {
       set_error ();
-      return Null (unsigned char);
+      ཕྱིར Null (unsigned var_na);
     }
-    return str.arrayZ[get_offset () + i];
+    ཕྱིར str.arrayZ[get_offset () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  unsigned var_na head_unchecked () const { ཕྱིར str.arrayZ[get_offset ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  operator hb_ubytes_t () const { ཕྱིར str.sub_array (get_offset ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (unsigned ཧྲིལ offset_, unsigned ཧྲིལ len_) const
+  { ཕྱིར str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  bool avail (unsigned ཧྲིལ count=1) const
+  { ཕྱིར get_offset () + count <= str.length; }
+  void inc (unsigned ཧྲིལ count=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
     set_offset (get_offset () + count);
@@ -342,107 +342,107 @@ struct byte_str_ref_t
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
+  unsigned get_offset () const { ཕྱིར str.backwards_length; }
   void set_offset (unsigned offset) { str.backwards_length = offset; }
 
   void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  bool in_error () const { ཕྱིར str.backwards_length > str.length; }
 
-  unsigned total_size () const { return str.length; }
+  unsigned total_size () const { ཕྱིར str.length; }
 
-  protected:
+  rak_sita:
   hb_ubytes_t       str;
 };
 
 /* stack */
-template <typename ELEM, int LIMIT>
-struct cff_stack_t
+template <typename ELEM, ཧྲིལ LIMIT>
+sa_nracanaa cff_stack_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& operator [] (unsigned ཧྲིལ i)
   {
-    if (unlikely (i >= length))
+    གལ་ཏེ (unlikely (i >= length))
     {
       set_error ();
-      return Crap (ELEM);
+      ཕྱིར Crap (ELEM);
     }
-    return arrayZ[i];
+    ཕྱིར arrayZ[i];
   }
 
   void push (const ELEM &v)
   {
-    if (likely (length < LIMIT))
+    གལ་ཏེ (likely (length < LIMIT))
       arrayZ[length++] = v;
-    else
+    དེ་མིན
       set_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    གལ་ཏེ (likely (length < LIMIT))
+      ཕྱིར arrayZ[length++];
+    དེ་མིན
     {
       set_error ();
-      return Crap (ELEM);
+      ཕྱིར Crap (ELEM);
     }
   }
 
   ELEM& pop ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    གལ་ཏེ (likely (length > 0))
+      ཕྱིར arrayZ[--length];
+    དེ་མིན
     {
       set_error ();
-      return Crap (ELEM);
+      ཕྱིར Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  void pop (unsigned ཧྲིལ n)
   {
-    if (likely (length >= n))
+    གལ་ཏེ (likely (length >= n))
       length -= n;
-    else
+    དེ་མིན
       set_error ();
   }
 
   const ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    གལ་ཏེ (unlikely (length == 0))
     {
       set_error ();
-      return Null (ELEM);
+      ཕྱིར Null (ELEM);
     }
-    return arrayZ[length - 1];
+    ཕྱིར arrayZ[length - 1];
   }
 
   void unpop ()
   {
-    if (likely (length < LIMIT))
+    གལ་ཏེ (likely (length < LIMIT))
       length++;
-    else
+    དེ་མིན
       set_error ();
   }
 
   void clear () { length = 0; }
 
-  bool in_error () const { return (error); }
+  bool in_error () const { ཕྱིར (error); }
   void set_error ()      { error = true; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  unsigned ཧྲིལ get_count () const { ཕྱིར length; }
+  bool is_empty () const          { ཕྱིར !length; }
 
   hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  { ཕྱིར hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
 
   bool error = false;
-  unsigned int length = 0;
+  unsigned ཧྲིལ length = 0;
   ELEM arrayZ[LIMIT];
 };
 
 /* argument stack */
 template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+sa_nracanaa arg_stack_t : cff_stack_t<ARG, 513>
 {
-  void push_int (int v)
+  void push_int (ཧྲིལ v)
   {
     ARG &n = S::push ();
     n.set_int (v);
@@ -454,46 +454,46 @@ struct arg_stack_t : cff_stack_t<ARG, 513>
     n.set_fixed (v);
   }
 
-  void push_real (double v)
+  void push_real (dviguu_na v)
   {
     ARG &n = S::push ();
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& pop_num () { ཕྱིར this->pop (); }
 
-  int pop_int ()
+  ཧྲིལ pop_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    ཧྲིལ v;
+    གལ་ཏེ (unlikely (!this->pop ().to_int (&v)))
       S::set_error ();
-    return v;
+    ཕྱིར v;
   }
 
-  unsigned int pop_uint ()
+  unsigned ཧྲིལ pop_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    ཧྲིལ i = pop_int ();
+    གལ་ཏེ (unlikely (i < 0))
     {
       i = 0;
       S::set_error ();
     }
-    return (unsigned) i;
+    ཕྱིར (unsigned) i;
   }
 
   void push_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    push_int ((ཧྲིལ) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
   bool push_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
+    གལ་ཏེ (unlikely (!str_ref.avail (4)))
+      ཕྱིར false;
     push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    ཕྱིར true;
   }
 
   private:
@@ -501,13 +501,13 @@ struct arg_stack_t : cff_stack_t<ARG, 513>
 };
 
 /* an operator prefixed by its operands in a byte string */
-struct op_str_t
+sa_nracanaa op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
    * in our parsed_cs_op_t subclass. */
 
-  const unsigned char *ptr = nullptr;
+  const unsigned var_na *ptr = nullptr;
 
   op_code_t  op = OpCode_Invalid;
 
@@ -515,24 +515,24 @@ struct op_str_t
 };
 
 /* base of OP_SERIALIZER */
-struct op_serializer_t
+sa_nracanaa op_serializer_t
 {
-  protected:
+  rak_sita:
   bool copy_opstr (hb_serialize_context_t *c, const op_str_t& opstr) const
   {
     TRACE_SERIALIZE (this);
 
-    unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    unsigned var_na *d = c->allocate_size<unsigned var_na> (opstr.length);
+    གལ་ཏེ (unlikely (!d)) return_trace (false);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    ཆེད་དུ (unsigned i = 0; i < opstr.length; i++)
       d[i] = opstr.ptr[i];
     return_trace (true);
   }
 };
 
 template <typename VAL>
-struct parsed_values_t
+sa_nracanaa parsed_values_t
 {
   void init ()
   {
@@ -558,20 +558,20 @@ struct parsed_values_t
 
   bool has_op (op_code_t op) const
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    ཆེད་དུ (const auto& v : values)
+      གལ་ཏེ (v.op == op) ཕྱིར true;
+    ཕྱིར false;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  unsigned get_count () const { ཕྱིར values.length; }
+  const VAL &operator [] (unsigned ཧྲིལ i) const { ཕྱིར values[i]; }
 
-  unsigned int       opStart;
+  unsigned ཧྲིལ       opStart;
   hb_vector_t<VAL>   values;
 };
 
 template <typename ARG=number_t>
-struct interp_env_t
+sa_nracanaa interp_env_t
 {
   interp_env_t () {}
   interp_env_t (const hb_ubytes_t &str_)
@@ -579,30 +579,30 @@ struct interp_env_t
     str_ref.reset (str_);
   }
   bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  { ཕྱིར str_ref.in_error () || argStack.in_error (); }
 
   void set_error () { str_ref.set_error (); }
 
   op_code_t fetch_op ()
   {
     op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
+    གལ་ཏེ (unlikely (!str_ref.avail ()))
+      ཕྱིར OpCode_Invalid;
     op = (op_code_t) str_ref.head_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
+    གལ་ཏེ (op == OpCode_escape) {
+      གལ་ཏེ (unlikely (!str_ref.avail ()))
+	ཕྱིར OpCode_Invalid;
       op = Make_OpCode_ESC (str_ref.head_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    ཕྱིར op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  const ARG& eval_arg (unsigned ཧྲིལ i) { ཕྱིར argStack[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& pop_arg () { ཕྱིར argStack.pop (); }
+  void pop_n_args (unsigned ཧྲིལ n) { argStack.pop (n); }
 
   void clear_args () { pop_n_args (argStack.get_count ()); }
 
@@ -615,44 +615,44 @@ struct interp_env_t
 using num_interp_env_t =  interp_env_t<>;
 
 template <typename ARG=number_t>
-struct opset_t
+sa_nracanaa opset_t
 {
   static void process_op (op_code_t op, interp_env_t<ARG>& env)
   {
     switch (op) {
-      case OpCode_shortint:
+      pak_sa OpCode_shortint:
 	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
-	break;
+	bha_nga;
 
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
+      pak_sa OpCode_TwoBytePosInt0: pak_sa OpCode_TwoBytePosInt1:
+      pak_sa OpCode_TwoBytePosInt2: pak_sa OpCode_TwoBytePosInt3:
 	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
-	break;
+	bha_nga;
 
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
+      pak_sa OpCode_TwoByteNegInt0: pak_sa OpCode_TwoByteNegInt1:
+      pak_sa OpCode_TwoByteNegInt2: pak_sa OpCode_TwoByteNegInt3:
 	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
-	break;
+	bha_nga;
 
       default:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	གལ་ཏེ (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.argStack.push_int ((ཧྲིལ)op - 139);
+	} དེ་མིན {
 	  /* invalid unknown operator */
 	  env.clear_args ();
 	}
-	break;
+	bha_nga;
     }
   }
 };
 
 template <typename ENV>
-struct interpreter_t
+sa_nracanaa interpreter_t
 {
   interpreter_t (ENV& env_) : env (env_) {}
   ENV& env;

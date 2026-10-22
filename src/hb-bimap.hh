@@ -31,7 +31,7 @@
 #include "hb-map.hh"
 
 /* Bi-directional map */
-struct hb_bimap_t
+sa_nracanaa hb_bimap_t
 {
   void reset ()
   {
@@ -45,26 +45,26 @@ struct hb_bimap_t
     back_map.alloc (pop);
   }
 
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  bool in_error () const { ཕྱིར forw_map.in_error () || back_map.in_error (); }
 
   void set (hb_codepoint_t lhs, hb_codepoint_t rhs)
   {
-    if (in_error ()) return;
-    if (unlikely (lhs == HB_MAP_VALUE_INVALID)) return;
-    if (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); return; }
+    གལ་ཏེ (in_error ()) ཕྱིར;
+    གལ་ཏེ (unlikely (lhs == HB_MAP_VALUE_INVALID)) ཕྱིར;
+    གལ་ཏེ (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); ཕྱིར; }
 
     forw_map.set (lhs, rhs);
-    if (unlikely (in_error ())) return;
+    གལ་ཏེ (unlikely (in_error ())) ཕྱིར;
 
     back_map.set (rhs, lhs);
-    if (unlikely (in_error ())) forw_map.del (lhs);
+    གལ་ཏེ (unlikely (in_error ())) forw_map.del (lhs);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map.get (rhs); }
+  hb_codepoint_t get (hb_codepoint_t lhs) const { ཕྱིར forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) const { ཕྱིར back_map.get (rhs); }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { ཕྱིར get (lhs); }
+  bool has (hb_codepoint_t lhs) const { ཕྱིར forw_map.has (lhs); }
 
 
   void del (hb_codepoint_t lhs)
@@ -79,11 +79,11 @@ struct hb_bimap_t
     back_map.clear ();
   }
 
-  bool is_empty () const { return forw_map.is_empty (); }
+  bool is_empty () const { ཕྱིར forw_map.is_empty (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  unsigned ཧྲིལ get_population () const { ཕྱིར forw_map.get_population (); }
 
-  protected:
+  rak_sita:
   hb_map_t  forw_map;
   hb_map_t  back_map;
 
@@ -94,11 +94,11 @@ struct hb_bimap_t
 };
 
 /* Incremental bimap: only lhs is given, rhs is incrementally assigned */
-struct hb_inc_bimap_t
+sa_nracanaa hb_inc_bimap_t
 {
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  bool in_error () const { ཕྱིར forw_map.in_error () || back_map.in_error (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  unsigned ཧྲིལ get_population () const { ཕྱིར forw_map.get_population (); }
 
   void reset ()
   {
@@ -124,50 +124,50 @@ struct hb_inc_bimap_t
   hb_codepoint_t add (hb_codepoint_t lhs)
   {
     hb_codepoint_t  rhs = forw_map[lhs];
-    if (rhs == HB_MAP_VALUE_INVALID)
+    གལ་ཏེ (rhs == HB_MAP_VALUE_INVALID)
     {
       rhs = back_map.length;
       forw_map.set (lhs, rhs);
       back_map.push (lhs);
     }
-    return rhs;
+    ཕྱིར rhs;
   }
 
   hb_codepoint_t skip ()
   {
     hb_codepoint_t start = back_map.length;
     back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    ཕྱིར start;
   }
 
   hb_codepoint_t skip (unsigned count)
   {
     hb_codepoint_t start = back_map.length;
     back_map.alloc (back_map.length + count);
-    for (unsigned i = 0; i < count; i++)
+    ཆེད་དུ (unsigned i = 0; i < count; i++)
       back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    ཕྱིར start;
   }
 
   hb_codepoint_t get_next_value () const
-  { return back_map.length; }
+  { ཕྱིར back_map.length; }
 
   void add_set (const hb_set_t *set)
   {
-    for (auto i : *set) add (i);
+    ཆེད་དུ (auto i : *set) add (i);
   }
 
   /* Create an identity map. */
-  bool identity (unsigned int size)
+  bool identity (unsigned ཧྲིལ size)
   {
     clear ();
-    for (hb_codepoint_t i = 0; i < size; i++) add (i);
-    return !in_error ();
+    ཆེད་དུ (hb_codepoint_t i = 0; i < size; i++) add (i);
+    ཕྱིར !in_error ();
   }
 
-  protected:
-  static int cmp_id (const void* a, const void* b)
-  { return (int)*(const hb_codepoint_t *)a - (int)*(const hb_codepoint_t *)b; }
+  rak_sita:
+  static ཧྲིལ cmp_id (const void* a, const void* b)
+  { ཕྱིར (ཧྲིལ)*(const hb_codepoint_t *)a - (ཧྲིལ)*(const hb_codepoint_t *)b; }
 
   public:
   /* Optional: after finished adding all mappings in a random order,
@@ -176,25 +176,25 @@ struct hb_inc_bimap_t
   {
     hb_codepoint_t  count = get_population ();
     hb_vector_t <hb_codepoint_t> work;
-    if (unlikely (!work.resize_dirty  (count))) return;
+    གལ་ཏེ (unlikely (!work.resize_dirty  (count))) ཕྱིར;
 
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    ཆེད་དུ (hb_codepoint_t rhs = 0; rhs < count; rhs++)
       work.arrayZ[rhs] = back_map[rhs];
 
     work.qsort (cmp_id);
 
     clear ();
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    ཆེད་དུ (hb_codepoint_t rhs = 0; rhs < count; rhs++)
       add (work.arrayZ[rhs]);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map[rhs]; }
+  hb_codepoint_t get (hb_codepoint_t lhs) const { ཕྱིར forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) const { ཕྱིར back_map[rhs]; }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { ཕྱིར get (lhs); }
+  bool has (hb_codepoint_t lhs) const { ཕྱིར forw_map.has (lhs); }
 
-  protected:
+  rak_sita:
   hb_map_t forw_map;
   hb_vector_t<hb_codepoint_t> back_map;
 

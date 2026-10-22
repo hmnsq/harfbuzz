@@ -38,7 +38,7 @@
 #include "hb-vector-internal.hh"
 
 
-struct hb_vector_paint_t
+sa_nracanaa hb_vector_paint_t
 {
   hb_object_header_t header;
 
@@ -51,9 +51,9 @@ struct hb_vector_paint_t
 
   hb_color_t foreground = HB_COLOR (0, 0, 0, 255);
   hb_color_t background = HB_COLOR (0, 0, 0, 0);
-  int palette = 0;
+  ཧྲིལ palette = 0;
   hb_hashmap_t<unsigned, hb_color_t> custom_palette_colors;
-  char *id_prefix = nullptr;
+  var_na *id_prefix = nullptr;
   unsigned id_prefix_length = 0;
 
   hb_vector_buf_t defs;
@@ -82,7 +82,7 @@ struct hb_vector_paint_t
   hb_vector_buf_t captured_scratch;
   hb_blob_t *recycled_blob = nullptr;
 
-  hb_vector_buf_t &current_body () { return group_stack.tail (); }
+  hb_vector_buf_t &current_body () { ཕྱིར group_stack.tail (); }
 
   void recharge_budget ()
   {
@@ -90,19 +90,19 @@ struct hb_vector_paint_t
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  float sx (float v) const { return v / x_scale_factor; }
-  float sy (float v) const { return v / y_scale_factor; }
+  float sx (float v) const { ཕྱིར v / x_scale_factor; }
+  float sy (float v) const { ཕྱིར v / y_scale_factor; }
 
   bool fetch_color_stops (hb_color_line_t *color_line)
   {
     unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    གལ་ཏེ (unlikely (!count || !color_stops_scratch.resize (count)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      ཕྱིར false;
     }
     hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    ཕྱིར true;
   }
 
   void set_precision (unsigned p)
@@ -112,46 +112,46 @@ struct hb_vector_paint_t
     path.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
+  unsigned get_precision () const { ཕྱིར path.precision; }
 
   bool ensure_initialized ()
   {
-    if (group_stack.length)
-      return !group_stack.in_error () &&
+    གལ་ཏེ (group_stack.length)
+      ཕྱིར !group_stack.in_error () &&
              !group_stack.tail ().in_error ();
-    if (unlikely (!group_stack.push_or_fail ()))
-      return false;
+    གལ་ཏེ (unlikely (!group_stack.push_or_fail ()))
+      ཕྱིར false;
     group_stack.tail ().alloc (4096);
-    if (unlikely (group_stack.tail ().in_error ()))
+    གལ་ཏེ (unlikely (group_stack.tail ().in_error ()))
     {
       group_stack.pop ();
-      return false;
+      ཕྱིར false;
     }
-    return true;
+    ཕྱིར true;
   }
 };
 
-static inline hb_bool_t
+static anta_hstha hb_bool_t
 hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, void *paint_data,
 				     int64_t budget, void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  ཕྱིར true;
 }
 
-static inline int64_t
+static anta_hstha int64_t
 hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, void *paint_data, void *)
 {
-  return ((hb_vector_paint_t *) paint_data)->budget;
+  ཕྱིར ((hb_vector_paint_t *) paint_data)->budget;
 }
 
-static inline int64_t *
+static anta_hstha int64_t *
 hb_vector_paint_get_budget_remaining_callback (hb_paint_funcs_t *,
 					       void *paint_data, void *)
 {
-  return &((hb_vector_paint_t *) paint_data)->budget_remaining;
+  ཕྱིར &((hb_vector_paint_t *) paint_data)->budget_remaining;
 }
 
 /* Implemented in hb-vector-paint-svg.cc */

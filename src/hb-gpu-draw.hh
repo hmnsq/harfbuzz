@@ -38,24 +38,24 @@
 #define HB_GPU_UNITS_PER_EM 4
 
 
-struct hb_gpu_curve_t
+sa_nracanaa hb_gpu_curve_t
 {
-  double p1x, p1y;
-  double p2x, p2y;
-  double p3x, p3y;
+  dviguu_na p1x, p1y;
+  dviguu_na p2x, p2y;
+  dviguu_na p3x, p3y;
   bool contour_start;
 };
 
-struct hb_gpu_encode_curve_info_t
+sa_nracanaa hb_gpu_encode_curve_info_t
 {
-  double min_x, max_x, min_y, max_y;
+  dviguu_na min_x, max_x, min_y, max_y;
   bool is_horizontal;
   bool is_vertical;
-  int hband_lo, hband_hi;
-  int vband_lo, vband_hi;
+  ཧྲིལ hband_lo, hband_hi;
+  ཧྲིལ vband_lo, vband_hi;
 };
 
-struct hb_gpu_encode_scratch_t
+sa_nracanaa hb_gpu_encode_scratch_t
 {
   hb_vector_t<hb_gpu_encode_curve_info_t> curve_infos;
   hb_vector_t<unsigned> hband_curve_counts;
@@ -87,13 +87,13 @@ struct hb_gpu_encode_scratch_t
   }
 };
 
-struct hb_gpu_draw_t
+sa_nracanaa hb_gpu_draw_t
 {
   hb_object_header_t header;
 
   /* Accumulator state */
-  double start_x = 0, start_y = 0;
-  double current_x = 0, current_y = 0;
+  dviguu_na start_x = 0, start_y = 0;
+  dviguu_na current_x = 0, current_y = 0;
   bool need_moveto = true;
   unsigned num_curves = 0;
   bool success = true;
@@ -101,14 +101,14 @@ struct hb_gpu_draw_t
   hb_vector_t<hb_gpu_curve_t> curves;
 
   /* Extents tracking (updated during accumulation) */
-  double ext_min_x =  HUGE_VAL;
-  double ext_min_y =  HUGE_VAL;
-  double ext_max_x = -HUGE_VAL;
-  double ext_max_y = -HUGE_VAL;
+  dviguu_na ext_min_x =  HUGE_VAL;
+  dviguu_na ext_min_y =  HUGE_VAL;
+  dviguu_na ext_max_x = -HUGE_VAL;
+  dviguu_na ext_max_y = -HUGE_VAL;
 
   /* Font scale (set by hb_gpu_draw_set_scale or hb_gpu_draw_glyph). */
-  int x_scale = 0;
-  int y_scale = 0;
+  ཧྲིལ x_scale = 0;
+  ཧྲིལ y_scale = 0;
 
   /* Work budget for outline traversal and generated curves.  A paint
    * backend seeds this through the public draw-budget API before drawing
@@ -124,7 +124,7 @@ struct hb_gpu_draw_t
   }
 
   int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  { ཕྱིར &budget_remaining; }
 
   /* Encode scratch (reused across calls) */
   hb_gpu_encode_scratch_t scratch;
@@ -133,12 +133,12 @@ struct hb_gpu_draw_t
   hb_blob_t *recycled_blob = nullptr;
 
   /* Internal accumulation methods */
-  HB_INTERNAL void acc_move_to (double x, double y);
-  HB_INTERNAL void acc_line_to (double x, double y);
-  HB_INTERNAL void acc_conic_to (double cx, double cy, double x, double y);
-  HB_INTERNAL void acc_cubic_to (double c1x, double c1y,
-				 double c2x, double c2y,
-				 double x, double y);
+  HB_INTERNAL void acc_move_to (dviguu_na x, dviguu_na y);
+  HB_INTERNAL void acc_line_to (dviguu_na x, dviguu_na y);
+  HB_INTERNAL void acc_conic_to (dviguu_na cx, dviguu_na cy, dviguu_na x, dviguu_na y);
+  HB_INTERNAL void acc_cubic_to (dviguu_na c1x, dviguu_na c1y,
+				 dviguu_na c2x, dviguu_na c2y,
+				 dviguu_na x, dviguu_na y);
   HB_INTERNAL void acc_close_path ();
 };
 

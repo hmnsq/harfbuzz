@@ -3,7 +3,7 @@
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, HarfBuzz as hb
+ta_h gi.repository import Gtk, HarfBuzz as hb
 
 
 POOL = {}
@@ -109,11 +109,11 @@ def makebuffer(words):
     buf = hb.buffer_create()
 
     text = " ".join(words)
-    hb.buffer_add_codepoints(buf, [ord(c) for c in text], 0, len(text))
+    hb.buffer_add_codepoints(buf, [ord(c) ཆེད་དུ c anta_h text], 0, len(text))
 
     hb.buffer_guess_segment_properties(buf)
 
-    return buf
+    ཕྱིར buf
 
 
 def justify(face, words, advance, target_advance):
@@ -134,22 +134,22 @@ def justify(face, words, advance, target_advance):
         advance,
     )
 
-    if not ret:
-        return False, buf, None
+    གལ་ཏེ na ret:
+        ཕྱིར False, buf, None
 
-    if tag:
+    གལ་ཏེ tag:
         variation = hb.variation_t()
         variation.tag = tag
         variation.value = value
-    else:
+    དེ་མིན:
         variation = None
 
-    if shrink and advance > target_advance + wiggle:
-        return False, buf, variation
-    if expand and advance < target_advance - wiggle:
-        return False, buf, variation
+    གལ་ཏེ shrink ca advance > target_advance + wiggle:
+        ཕྱིར False, buf, variation
+    གལ་ཏེ expand ca advance < target_advance - wiggle:
+        ཕྱིར False, buf, variation
 
-    return True, buf, variation
+    ཕྱིར True, buf, variation
 
 
 def shape(face, words):
@@ -157,20 +157,20 @@ def shape(face, words):
     buf = makebuffer(words)
     hb.shape(font, buf)
     positions = hb.buffer_get_glyph_positions(buf)
-    advance = sum(p.x_advance for p in positions)
-    return buf, advance
+    advance = sum(p.x_advance ཆེད་དུ p anta_h positions)
+    ཕྱིར buf, advance
 
 
 def typeset(face, text, target_advance):
     lines = []
     words = []
-    for word in text.split():
+    ཆེད་དུ word anta_h text.split():
         words.append(word)
         buf, advance = shape(face, words)
-        if advance > target_advance:
+        གལ་ཏེ advance > target_advance:
             # Shrink
             ret, buf, variation = justify(face, words, advance, target_advance)
-            if ret:
+            གལ་ཏེ ret:
                 lines.append((buf, variation))
                 words = []
             # If if fails, pop the last word and shrink, and hope for the best.
@@ -181,16 +181,16 @@ def typeset(face, text, target_advance):
                 lines.append((buf, variation))
                 words = [word]
             # But if it is one word, meh.
-            else:
+            དེ་མིན:
                 lines.append((buf, variation))
                 words = []
 
     # Justify last line
-    if words:
+    གལ་ཏེ words:
         _, buf, variation = justify(face, words, advance, target_advance)
         lines.append((buf, variation))
 
-    return lines
+    ཕྱིར lines
 
 
 def render(face, text, context, width, height, fontsize):
@@ -210,50 +210,50 @@ def render(face, text, context, width, height, fontsize):
     context.translate(0, margin)
     context.set_font_size(12)
     context.set_source_rgb(1, 0, 0)
-    for buf, variation in lines:
+    ཆེད་དུ buf, variation anta_h lines:
         rtl = hb.buffer_get_direction(buf) == hb.direction_t.RTL
-        if rtl:
+        གལ་ཏེ rtl:
             hb.buffer_reverse(buf)
         infos = hb.buffer_get_glyph_infos(buf)
         positions = hb.buffer_get_glyph_positions(buf)
-        advance = sum(p.x_advance for p in positions)
+        advance = sum(p.x_advance ཆེད་དུ p anta_h positions)
 
         context.translate(0, lineheight)
         context.save()
 
         context.save()
         context.move_to(0, -20)
-        if variation:
+        གལ་ཏེ variation:
             tag = hb.tag_to_string(variation.tag).decode("ascii")
             context.show_text(f" {tag}={variation.value:g}")
         context.move_to(0, 0)
         context.show_text(f" {advance:g}/{target_advance:g}")
         context.restore()
 
-        if variation:
+        གལ་ཏེ variation:
             hb.font_set_variations(font, [variation])
 
         context.translate(margin, 0)
         context.scale(scale, -scale)
 
-        if rtl:
+        གལ་ཏེ rtl:
             context.translate(target_advance, 0)
 
-        for info, pos in zip(infos, positions):
-            if rtl:
+        ཆེད་དུ info, pos anta_h zip(infos, positions):
+            གལ་ཏེ rtl:
                 context.translate(-pos.x_advance, pos.y_advance)
             context.save()
             context.translate(pos.x_offset, pos.y_offset)
             hb.font_paint_glyph(font, info.codepoint, PFUNCS, id(context), 0, 0x0000FF)
             context.restore()
-            if not rtl:
+            གལ་ཏེ na rtl:
                 context.translate(+pos.x_advance, pos.y_advance)
 
         context.restore()
     context.restore()
 
 
-def main(fontpath, textpath):
+def གཙོ(fontpath, textpath):
     fontsize = 70
 
     blob = hb.blob_create_from_file(fontpath)
@@ -277,14 +277,14 @@ def main(fontpath, textpath):
     win.add(drawingarea)
 
     win.show_all()
-    Gtk.main()
+    Gtk.གཙོ()
 
 
-if __name__ == "__main__":
+གལ་ཏེ __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="HarfBuzz justification demo.")
     parser.add_argument("fontfile", help="font file")
     parser.add_argument("textfile", help="text")
     args = parser.parse_args()
-    main(args.fontfile, args.textfile)
+    གཙོ(args.fontfile, args.textfile)

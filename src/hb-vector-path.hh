@@ -38,7 +38,7 @@
  * operators, depending on format.  Used by the vector paint
  * backends to accumulate arbitrary clip paths (and by the
  * SVG backend to emit glyph outlines into defs). */
-struct hb_vector_path_sink_t
+sa_nracanaa hb_vector_path_sink_t
 {
   hb_vector_buf_t *path;
   unsigned precision;
@@ -48,7 +48,7 @@ struct hb_vector_path_sink_t
 
   bool begin_command ()
   {
-    return likely (!path->in_error () && !(budget && *budget < 0));
+    ཕྱིར likely (!path->in_error () && !(budget && *budget < 0));
   }
 
   void end_command ()
@@ -56,8 +56,8 @@ struct hb_vector_path_sink_t
     /* Serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (!budget) return;
-    if (unlikely (path->in_error ()))
+    གལ་ཏེ (!budget) ཕྱིར;
+    གལ་ཏེ (unlikely (path->in_error ()))
       *budget = 0;
   }
 };

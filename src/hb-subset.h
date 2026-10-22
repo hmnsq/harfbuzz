@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  * Things that change based on the input. Characters to keep, etc.
  */
 
-typedef struct hb_subset_input_t hb_subset_input_t;
+typedef sa_nracanaa hb_subset_input_t hb_subset_input_t;
 
 /**
  * hb_subset_plan_t:
@@ -53,7 +53,7 @@ typedef struct hb_subset_input_t hb_subset_input_t;
  * Such as mappings from the old glyph ids to the new ones in the subset.
  */
 
-typedef struct hb_subset_plan_t hb_subset_plan_t;
+typedef sa_nracanaa hb_subset_plan_t hb_subset_plan_t;
 
 /**
  * hb_subset_flags_t:
@@ -101,7 +101,7 @@ typedef struct hb_subset_plan_t hb_subset_plan_t;
  *
  * Since: 2.9.0
  **/
-typedef enum { /*< flags >*/
+typedef ga_nanaa { /*< flags >*/
   HB_SUBSET_FLAGS_DEFAULT =		     0x00000000u,
   HB_SUBSET_FLAGS_NO_HINTING =		     0x00000001u,
   HB_SUBSET_FLAGS_RETAIN_GIDS =		     0x00000002u,
@@ -142,7 +142,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.9.1
  **/
-typedef enum {
+typedef ga_nanaa {
   HB_SUBSET_SETS_GLYPH_INDEX = 0,
   HB_SUBSET_SETS_UNICODE,
   HB_SUBSET_SETS_NO_SUBSET_TABLE_TAG,
@@ -226,7 +226,7 @@ hb_subset_input_set_axis_range (hb_subset_input_t  *input,
 				float               axis_def_value);
 
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
+hb_subset_axis_range_from_string (const var_na *str, ཧྲིལ len,
 				  float *axis_min_value,
 				  float *axis_max_value,
 				  float *axis_def_value);
@@ -234,7 +234,7 @@ hb_subset_axis_range_from_string (const char *str, int len,
 HB_EXTERN void
 hb_subset_axis_range_to_string (hb_subset_input_t *input,
 				hb_tag_t axis_tag,
-				char *buf,
+				var_na *buf,
 				unsigned size);
 
 #ifdef HB_EXPERIMENTAL_API
@@ -247,8 +247,8 @@ hb_subset_input_override_name_table (hb_subset_input_t  *input,
 				     unsigned            platform_id,
 				     unsigned            encoding_id,
 				     unsigned            language_id,
-				     const char         *name_str,
-				     int                 str_len);
+				     const var_na         *name_str,
+				     ཧྲིལ                 str_len);
 
 
 /*
@@ -312,7 +312,7 @@ hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#གལ་ཏེ defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
 HB_DEFINE_VTABLE (subset_input, nullptr);
 HB_DEFINE_VTABLE (subset_plan,  nullptr);

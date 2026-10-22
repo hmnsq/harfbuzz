@@ -74,24 +74,24 @@ hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font);
 
 HB_EXTERN void
 hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
-				     unsigned int scale_factor);
+				     unsigned ཧྲིལ scale_factor);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned ཧྲིལ
 hb_cairo_font_face_get_scale_factor (cairo_font_face_t *font_face);
 
 HB_EXTERN void
 hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
 			     hb_bool_t utf8_clusters,
-			     double x_scale_factor,
-			     double y_scale_factor,
-			     double x,
-			     double y,
-			     const char *utf8,
-			     int utf8_len,
+			     dviguu_na x_scale_factor,
+			     dviguu_na y_scale_factor,
+			     dviguu_na x,
+			     dviguu_na y,
+			     const var_na *utf8,
+			     ཧྲིལ utf8_len,
 			     cairo_glyph_t **glyphs,
-			     unsigned int *num_glyphs,
+			     unsigned ཧྲིལ *num_glyphs,
 			     cairo_text_cluster_t **clusters,
-			     unsigned int *num_clusters,
+			     unsigned ཧྲིལ *num_clusters,
 			     cairo_text_cluster_flags_t *cluster_flags);
 
 HB_END_DECLS

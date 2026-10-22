@@ -31,50 +31,50 @@
 #include "hb-ot-shape-fallback.hh"
 #include "hb-kern.hh"
 
-static unsigned int
+static unsigned ཧྲིལ
 recategorize_combining_class (hb_codepoint_t u,
-			      unsigned int klass)
+			      unsigned ཧྲིལ klass)
 {
-  if (klass >= 200)
-    return klass;
+  གལ་ཏེ (klass >= 200)
+    ཕྱིར klass;
 
   /* Thai / Lao need some per-character work. */
-  if ((u & ~0xFF) == 0x0E00u)
+  གལ་ཏེ ((u & ~0xFF) == 0x0E00u)
   {
-    if (unlikely (klass == 0))
+    གལ་ཏེ (unlikely (klass == 0))
     {
       switch (u)
       {
-	case 0x0E31u:
-	case 0x0E34u:
-	case 0x0E35u:
-	case 0x0E36u:
-	case 0x0E37u:
-	case 0x0E47u:
-	case 0x0E4Cu:
-	case 0x0E4Du:
-	case 0x0E4Eu:
+	pak_sa 0x0E31u:
+	pak_sa 0x0E34u:
+	pak_sa 0x0E35u:
+	pak_sa 0x0E36u:
+	pak_sa 0x0E37u:
+	pak_sa 0x0E47u:
+	pak_sa 0x0E4Cu:
+	pak_sa 0x0E4Du:
+	pak_sa 0x0E4Eu:
 	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
-	  break;
+	  bha_nga;
 
-	case 0x0EB1u:
-	case 0x0EB4u:
-	case 0x0EB5u:
-	case 0x0EB6u:
-	case 0x0EB7u:
-	case 0x0EBBu:
-	case 0x0ECCu:
-	case 0x0ECDu:
+	pak_sa 0x0EB1u:
+	pak_sa 0x0EB4u:
+	pak_sa 0x0EB5u:
+	pak_sa 0x0EB6u:
+	pak_sa 0x0EB7u:
+	pak_sa 0x0EBBu:
+	pak_sa 0x0ECCu:
+	pak_sa 0x0ECDu:
 	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE;
-	  break;
+	  bha_nga;
 
-	case 0x0EBCu:
+	pak_sa 0x0EBCu:
 	  klass = HB_UNICODE_COMBINING_CLASS_BELOW;
-	  break;
+	  bha_nga;
       }
-    } else {
+    } དེ་མིན {
       /* Thai virama is below-right */
-      if (u == 0x0E3Au)
+      གལ་ཏེ (u == 0x0E3Au)
 	klass = HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
     }
   }
@@ -84,85 +84,85 @@ recategorize_combining_class (hb_codepoint_t u,
 
     /* Hebrew */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC10: /* sheva */
-    case HB_MODIFIED_COMBINING_CLASS_CCC11: /* hataf segol */
-    case HB_MODIFIED_COMBINING_CLASS_CCC12: /* hataf patah */
-    case HB_MODIFIED_COMBINING_CLASS_CCC13: /* hataf qamats */
-    case HB_MODIFIED_COMBINING_CLASS_CCC14: /* hiriq */
-    case HB_MODIFIED_COMBINING_CLASS_CCC15: /* tsere */
-    case HB_MODIFIED_COMBINING_CLASS_CCC16: /* segol */
-    case HB_MODIFIED_COMBINING_CLASS_CCC17: /* patah */
-    case HB_MODIFIED_COMBINING_CLASS_CCC18: /* qamats & qamats qatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC20: /* qubuts */
-    case HB_MODIFIED_COMBINING_CLASS_CCC22: /* meteg */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC10: /* sheva */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC11: /* hataf segol */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC12: /* hataf patah */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC13: /* hataf qamats */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC14: /* hiriq */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC15: /* tsere */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC16: /* segol */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC17: /* patah */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC18: /* qamats & qamats qatan */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC20: /* qubuts */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC22: /* meteg */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_BELOW;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC23: /* rafe */
-      return HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC23: /* rafe */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC24: /* shin dot */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC24: /* shin dot */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC25: /* sin dot */
-    case HB_MODIFIED_COMBINING_CLASS_CCC19: /* holam & holam haser for vav */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC25: /* sin dot */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC19: /* holam & holam haser for vav */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC26: /* point varika */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC26: /* point varika */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC21: /* dagesh */
-      break;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC21: /* dagesh */
+      bha_nga;
 
 
     /* Arabic and Syriac */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC27: /* fathatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC28: /* dammatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC30: /* fatha */
-    case HB_MODIFIED_COMBINING_CLASS_CCC31: /* damma */
-    case HB_MODIFIED_COMBINING_CLASS_CCC33: /* shadda */
-    case HB_MODIFIED_COMBINING_CLASS_CCC34: /* sukun */
-    case HB_MODIFIED_COMBINING_CLASS_CCC35: /* superscript alef */
-    case HB_MODIFIED_COMBINING_CLASS_CCC36: /* superscript alaph */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC27: /* fathatan */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC28: /* dammatan */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC30: /* fatha */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC31: /* damma */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC33: /* shadda */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC34: /* sukun */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC35: /* superscript alef */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC36: /* superscript alaph */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC29: /* kasratan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC32: /* kasra */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC29: /* kasratan */
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC32: /* kasra */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_BELOW;
 
 
     /* Thai */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC103: /* sara u / sara uu */
-      return HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC103: /* sara u / sara uu */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC107: /* mai */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC107: /* mai */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
 
 
     /* Lao */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC118: /* sign u / sign uu */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC118: /* sign u / sign uu */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_BELOW;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC122: /* mai */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC122: /* mai */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_ABOVE;
 
 
     /* Tibetan */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC129: /* sign aa */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC129: /* sign aa */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_BELOW;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC130: /* sign i*/
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC130: /* sign i*/
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC132: /* sign u */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    pak_sa HB_MODIFIED_COMBINING_CLASS_CCC132: /* sign u */
+      ཕྱིར HB_UNICODE_COMBINING_CLASS_BELOW;
 
   }
 
-  return klass;
+  ཕྱིར klass;
 }
 
 void
@@ -171,14 +171,14 @@ _hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t
 							hb_buffer_t  *buffer)
 {
 #ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
+  ཕྱིར;
 #endif
 
-  unsigned int count = buffer->len;
+  unsigned ཧྲིལ count = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {
-      unsigned int combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
+  ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
+    གལ་ཏེ (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {
+      unsigned ཧྲིལ combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
       combining_class = recategorize_combining_class (info[i].codepoint, combining_class);
       _hb_glyph_info_set_modified_combining_class (&info[i], combining_class);
     }
@@ -187,15 +187,15 @@ _hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t
 
 static void
 zero_mark_advances (hb_buffer_t *buffer,
-		    unsigned int start,
-		    unsigned int end,
+		    unsigned ཧྲིལ start,
+		    unsigned ཧྲིལ end,
 		    bool adjust_offsets_when_zeroing)
 {
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = start; i < end; i++)
-    if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
+  ཆེད་དུ (unsigned ཧྲིལ i = start; i < end; i++)
+    གལ་ཏེ (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
     {
-      if (adjust_offsets_when_zeroing)
+      གལ་ཏེ (adjust_offsets_when_zeroing)
       {
 	buffer->pos[i].x_offset = hb_saturate_sub (buffer->pos[i].x_offset,
 						     buffer->pos[i].x_advance);
@@ -207,17 +207,17 @@ zero_mark_advances (hb_buffer_t *buffer,
     }
 }
 
-static inline void
+static anta_hstha void
 position_mark (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	       hb_font_t *font,
 	       hb_buffer_t  *buffer,
 	       hb_glyph_extents_t &base_extents,
-	       unsigned int i,
-	       unsigned int combining_class)
+	       unsigned ཧྲིལ i,
+	       unsigned ཧྲིལ combining_class)
 {
   hb_glyph_extents_t mark_extents;
-  if (!font->get_glyph_extents (buffer->info[i].codepoint, &mark_extents))
-    return;
+  གལ་ཏེ (!font->get_glyph_extents (buffer->info[i].codepoint, &mark_extents))
+    ཕྱིར;
 
   hb_position_t y_gap = font->y_scale / 16;
 
@@ -230,85 +230,85 @@ position_mark (const hb_ot_shape_plan_t *plan HB_UNUSED,
   /* X positioning */
   switch (combining_class)
   {
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
-      if (buffer->props.direction == HB_DIRECTION_LTR) {
+    pak_sa HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
+    pak_sa HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
+      གལ་ཏེ (buffer->props.direction == HB_DIRECTION_LTR) {
 	pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing + base_extents.width -
 						    mark_extents.width / 2 - mark_extents.x_bearing);
-	break;
-      } else if (buffer->props.direction == HB_DIRECTION_RTL) {
+	bha_nga;
+      } དེ་མིན གལ་ཏེ (buffer->props.direction == HB_DIRECTION_RTL) {
 	pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing -
 						    mark_extents.width / 2 - mark_extents.x_bearing);
-	break;
+	bha_nga;
       }
       HB_FALLTHROUGH;
 
     default:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
+    pak_sa HB_UNICODE_COMBINING_CLASS_BELOW:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ABOVE:
       /* Center align. */
       pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing +
 						((int64_t) base_extents.width - mark_extents.width) / 2 -
 						mark_extents.x_bearing);
-      break;
+      bha_nga;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
       /* Left align. */
       pos.x_offset = hb_saturate_sub (base_extents.x_bearing, mark_extents.x_bearing);
-      break;
+      bha_nga;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
       /* Right align. */
       pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing + base_extents.width -
 						mark_extents.width - mark_extents.x_bearing);
-      break;
+      bha_nga;
   }
 
   /* Y positioning */
   switch (combining_class)
   {
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
+    pak_sa HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_BELOW:
+    pak_sa HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
       /* Add gap, fall-through. */
       base_extents.height = hb_saturate_sub (base_extents.height, y_gap);
       HB_FALLTHROUGH;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
       pos.y_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.y_bearing +
 						base_extents.height - mark_extents.y_bearing);
       /* Never shift up "below" marks. */
-      if ((y_gap > 0) == (pos.y_offset > 0))
+      གལ་ཏེ ((y_gap > 0) == (pos.y_offset > 0))
       {
 	base_extents.height = hb_saturate_sub (base_extents.height, pos.y_offset);
 	pos.y_offset = 0;
       }
       base_extents.height = hb_saturate_add (base_extents.height, mark_extents.height);
-      break;
+      bha_nga;
 
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ABOVE:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
       /* Add gap, fall-through. */
       base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing, y_gap);
       base_extents.height = hb_saturate_sub (base_extents.height, y_gap);
       HB_FALLTHROUGH;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
+    pak_sa HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
       pos.y_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.y_bearing -
 						mark_extents.y_bearing - mark_extents.height);
       /* Don't shift down "above" marks too much. */
-      if ((y_gap > 0) != (pos.y_offset > 0))
+      གལ་ཏེ ((y_gap > 0) != (pos.y_offset > 0))
       {
 	hb_position_t correction = -(pos.y_offset / 2);
 	base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing, correction);
@@ -317,16 +317,16 @@ position_mark (const hb_ot_shape_plan_t *plan HB_UNUSED,
       }
       base_extents.y_bearing = hb_saturate_sub (base_extents.y_bearing, mark_extents.height);
       base_extents.height = hb_saturate_add (base_extents.height, mark_extents.height);
-      break;
+      bha_nga;
   }
 }
 
-static inline void
+static anta_hstha void
 position_around_base (const hb_ot_shape_plan_t *plan,
 		      hb_font_t *font,
 		      hb_buffer_t  *buffer,
-		      unsigned int base,
-		      unsigned int end,
+		      unsigned ཧྲིལ base,
+		      unsigned ཧྲིལ end,
 		      bool adjust_offsets_when_zeroing)
 {
   hb_direction_t horiz_dir = HB_DIRECTION_INVALID;
@@ -334,12 +334,12 @@ position_around_base (const hb_ot_shape_plan_t *plan,
   buffer->unsafe_to_break (base, end);
 
   hb_glyph_extents_t base_extents;
-  if (!font->get_glyph_extents (buffer->info[base].codepoint,
+  གལ་ཏེ (!font->get_glyph_extents (buffer->info[base].codepoint,
 				&base_extents))
   {
     /* If extents don't work, zero marks and go home. */
     zero_mark_advances (buffer, base + 1, end, adjust_offsets_when_zeroing);
-    return;
+    ཕྱིར;
   }
   base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing,
 					    buffer->pos[base].y_offset);
@@ -349,47 +349,47 @@ position_around_base (const hb_ot_shape_plan_t *plan,
   base_extents.x_bearing = 0;
   base_extents.width = font->get_glyph_h_advance (buffer->info[base].codepoint);
 
-  unsigned int lig_id = _hb_glyph_info_get_lig_id (&buffer->info[base]);
+  unsigned ཧྲིལ lig_id = _hb_glyph_info_get_lig_id (&buffer->info[base]);
   /* Use integer for num_lig_components such that it doesn't convert to unsigned
    * when we divide or multiply by it. */
-  int num_lig_components = _hb_glyph_info_get_lig_num_comps (&buffer->info[base]);
+  ཧྲིལ num_lig_components = _hb_glyph_info_get_lig_num_comps (&buffer->info[base]);
 
   hb_position_t x_offset = 0, y_offset = 0;
-  if (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
+  གལ་ཏེ (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
     x_offset = hb_saturate_neg (buffer->pos[base].x_advance);
     y_offset = hb_saturate_neg (buffer->pos[base].y_advance);
   }
 
   hb_glyph_extents_t component_extents = base_extents;
-  int last_lig_component = -1;
-  unsigned int last_combining_class = 255;
+  ཧྲིལ last_lig_component = -1;
+  unsigned ཧྲིལ last_combining_class = 255;
   hb_glyph_extents_t cluster_extents = base_extents; /* Initialization is just to shut gcc up. */
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = base + 1; i < end; i++)
-    if (_hb_glyph_info_get_modified_combining_class (&info[i]))
+  ཆེད་དུ (unsigned ཧྲིལ i = base + 1; i < end; i++)
+    གལ་ཏེ (_hb_glyph_info_get_modified_combining_class (&info[i]))
     {
-      if (num_lig_components > 1) {
-	unsigned int this_lig_id = _hb_glyph_info_get_lig_id (&info[i]);
-	int this_lig_component = _hb_glyph_info_get_lig_comp (&info[i]) - 1;
+      གལ་ཏེ (num_lig_components > 1) {
+	unsigned ཧྲིལ this_lig_id = _hb_glyph_info_get_lig_id (&info[i]);
+	ཧྲིལ this_lig_component = _hb_glyph_info_get_lig_comp (&info[i]) - 1;
 	/* Conditions for attaching to the last component. */
-	if (!lig_id || lig_id != this_lig_id || this_lig_component >= num_lig_components)
+	གལ་ཏེ (!lig_id || lig_id != this_lig_id || this_lig_component >= num_lig_components)
 	  this_lig_component = num_lig_components - 1;
-	if (last_lig_component != this_lig_component)
+	གལ་ཏེ (last_lig_component != this_lig_component)
 	{
 	  last_lig_component = this_lig_component;
 	  last_combining_class = 255;
 	  component_extents = base_extents;
-	  if (unlikely (horiz_dir == HB_DIRECTION_INVALID)) {
-	    if (HB_DIRECTION_IS_HORIZONTAL (plan->props.direction))
+	  གལ་ཏེ (unlikely (horiz_dir == HB_DIRECTION_INVALID)) {
+	    གལ་ཏེ (HB_DIRECTION_IS_HORIZONTAL (plan->props.direction))
 	      horiz_dir = plan->props.direction;
-	    else
+	    དེ་མིན
 	      horiz_dir = hb_script_get_horizontal_direction (plan->props.script);
 	  }
-	  if (horiz_dir == HB_DIRECTION_LTR)
+	  གལ་ཏེ (horiz_dir == HB_DIRECTION_LTR)
 	    component_extents.x_bearing = hb_clamp_to<hb_position_t> (
 		(int64_t) component_extents.x_bearing +
 		(int64_t) this_lig_component * component_extents.width / num_lig_components);
-	  else
+	  དེ་མིན
 	    component_extents.x_bearing = hb_clamp_to<hb_position_t> (
 		(int64_t) component_extents.x_bearing +
 		(int64_t) (num_lig_components - 1 - this_lig_component) * component_extents.width / num_lig_components);
@@ -397,8 +397,8 @@ position_around_base (const hb_ot_shape_plan_t *plan,
 	}
       }
 
-      unsigned int this_combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
-      if (last_combining_class != this_combining_class)
+      unsigned ཧྲིལ this_combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
+      གལ་ཏེ (last_combining_class != this_combining_class)
       {
 	last_combining_class = this_combining_class;
 	cluster_extents = component_extents;
@@ -411,39 +411,39 @@ position_around_base (const hb_ot_shape_plan_t *plan,
       buffer->pos[i].x_offset = hb_saturate_add (buffer->pos[i].x_offset, x_offset);
       buffer->pos[i].y_offset = hb_saturate_add (buffer->pos[i].y_offset, y_offset);
 
-    } else {
-      if (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
+    } དེ་མིན {
+      གལ་ཏེ (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
 	x_offset = hb_saturate_sub (x_offset, buffer->pos[i].x_advance);
 	y_offset = hb_saturate_sub (y_offset, buffer->pos[i].y_advance);
-      } else {
+      } དེ་མིན {
 	x_offset = hb_saturate_add (x_offset, buffer->pos[i].x_advance);
 	y_offset = hb_saturate_add (y_offset, buffer->pos[i].y_advance);
       }
     }
 }
 
-static inline void
+static anta_hstha void
 position_cluster_impl (const hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
 		       hb_buffer_t  *buffer,
-		       unsigned int start,
-		       unsigned int end,
+		       unsigned ཧྲིལ start,
+		       unsigned ཧྲིལ end,
 		       bool adjust_offsets_when_zeroing)
 {
   /* Find the base glyph */
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = start; i < end; i++)
-    if (!_hb_glyph_info_is_unicode_mark (&info[i]))
+  ཆེད་དུ (unsigned ཧྲིལ i = start; i < end; i++)
+    གལ་ཏེ (!_hb_glyph_info_is_unicode_mark (&info[i]))
     {
       /* Find mark glyphs */
-      unsigned int j;
-      for (j = i + 1; j < end; j++)
+      unsigned ཧྲིལ j;
+      ཆེད་དུ (j = i + 1; j < end; j++)
       {
-        if (_hb_glyph_info_is_hidden (&info[j]) ||
+        གལ་ཏེ (_hb_glyph_info_is_hidden (&info[j]) ||
 	    _hb_glyph_info_is_default_ignorable (&info[j]))
 	  continue;
-	if (!_hb_glyph_info_is_unicode_mark (&info[j]))
-	  break;
+	གལ་ཏེ (!_hb_glyph_info_is_unicode_mark (&info[j]))
+	  bha_nga;
       }
 
       position_around_base (plan, font, buffer, i, j, adjust_offsets_when_zeroing);
@@ -456,12 +456,12 @@ static HB_ALWAYS_INLINE void
 position_cluster (const hb_ot_shape_plan_t *plan,
 		  hb_font_t *font,
 		  hb_buffer_t  *buffer,
-		  unsigned int start,
-		  unsigned int end,
+		  unsigned ཧྲིལ start,
+		  unsigned ཧྲིལ end,
 		  bool adjust_offsets_when_zeroing)
 {
-  if (end - start < 2)
-    return;
+  གལ་ཏེ (end - start < 2)
+    ཕྱིར;
 
   position_cluster_impl (plan, font, buffer, start, end, adjust_offsets_when_zeroing);
 }
@@ -473,19 +473,19 @@ _hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
 				     bool adjust_offsets_when_zeroing)
 {
 #ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
+  ཕྱིར;
 #endif
 
-  if (!buffer->message (font, "start fallback mark"))
-    return;
+  གལ་ཏེ (!buffer->message (font, "start fallback mark"))
+    ཕྱིར;
 
   _hb_buffer_assert_gsubgpos_vars (buffer);
 
-  unsigned int start = 0;
-  unsigned int count = buffer->len;
+  unsigned ཧྲིལ start = 0;
+  unsigned ཧྲིལ count = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 1; i < count; i++)
-    if (likely (!_hb_glyph_info_is_unicode_mark (&info[i]) &&
+  ཆེད་དུ (unsigned ཧྲིལ i = 1; i < count; i++)
+    གལ་ཏེ (likely (!_hb_glyph_info_is_unicode_mark (&info[i]) &&
 		!_hb_glyph_info_is_hidden (&info[i]) &&
 		!_hb_glyph_info_is_default_ignorable (&info[i]))) {
       position_cluster (plan, font, buffer, start, i, adjust_offsets_when_zeroing);
@@ -498,7 +498,7 @@ _hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
 
 
 #ifndef HB_DISABLE_DEPRECATED
-struct hb_ot_shape_fallback_kern_driver_t
+sa_nracanaa hb_ot_shape_fallback_kern_driver_t
 {
   hb_ot_shape_fallback_kern_driver_t (hb_font_t   *font_,
 				      hb_buffer_t *buffer) :
@@ -510,7 +510,7 @@ struct hb_ot_shape_fallback_kern_driver_t
     font->get_glyph_kerning_for_direction (first, second,
 					   direction,
 					   &kern, &kern);
-    return kern;
+    ཕྱིར kern;
   }
 
   hb_font_t *font;
@@ -525,28 +525,28 @@ _hb_ot_shape_fallback_kern (const hb_ot_shape_plan_t *plan,
 			    hb_buffer_t *buffer)
 {
 #ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
+  ཕྱིར;
 #endif
 
 #ifndef HB_DISABLE_DEPRECATED
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction) ?
+  གལ་ཏེ (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction) ?
       !font->has_glyph_h_kerning_func () :
       !font->has_glyph_v_kerning_func ())
-    return;
+    ཕྱིར;
 
-  if (!buffer->message (font, "start fallback kern"))
-    return;
+  གལ་ཏེ (!buffer->message (font, "start fallback kern"))
+    ཕྱིར;
 
   bool reverse = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
 
-  if (reverse)
+  གལ་ཏེ (reverse)
     buffer->reverse ();
 
   hb_ot_shape_fallback_kern_driver_t driver (font, buffer);
   OT::hb_kern_machine_t<hb_ot_shape_fallback_kern_driver_t> machine (driver);
   machine.kern (font, buffer, plan->kern_mask, false);
 
-  if (reverse)
+  གལ་ཏེ (reverse)
     buffer->reverse ();
 
   (void) buffer->message (font, "end fallback kern");
@@ -563,16 +563,16 @@ _hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan HB_UNUSED,
   hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pos = buffer->pos;
   bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_is_unicode_space (&info[i]) && !_hb_glyph_info_ligated (&info[i]))
+  unsigned ཧྲིལ count = buffer->len;
+  ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
+    གལ་ཏེ (_hb_glyph_info_is_unicode_space (&info[i]) && !_hb_glyph_info_ligated (&info[i]))
     {
       /* If font had no ASCII space and we used the invisible glyph, give it a 1/4 EM default advance. */
-      if (buffer->invisible && info[i].codepoint == buffer->invisible)
+      གལ་ཏེ (buffer->invisible && info[i].codepoint == buffer->invisible)
       {
-        if (horizontal)
+        གལ་ཏེ (horizontal)
 	  pos[i].x_advance = +font->x_scale / 4;
-        else
+        དེ་མིན
 	  pos[i].y_advance = -(int64_t) font->y_scale / 4;
       }
 
@@ -581,64 +581,64 @@ _hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan HB_UNUSED,
       typedef hb_unicode_funcs_t t;
       switch (space_type)
       {
-	case t::NOT_SPACE: /* Shouldn't happen. */
-	case t::SPACE:
-	  break;
+	pak_sa t::NOT_SPACE: /* Shouldn't happen. */
+	pak_sa t::SPACE:
+	  bha_nga;
 
-	case t::SPACE_EM:
-	case t::SPACE_EM_2:
-	case t::SPACE_EM_3:
-	case t::SPACE_EM_4:
-	case t::SPACE_EM_5:
-	case t::SPACE_EM_6:
-	case t::SPACE_EM_16:
-	  if (horizontal)
-	    pos[i].x_advance = ((int64_t) font->x_scale + ((int) space_type)/2) / (int) space_type;
-	  else
-	    pos[i].y_advance = -((int64_t) font->y_scale + ((int) space_type)/2) / (int) space_type;
-	  break;
+	pak_sa t::SPACE_EM:
+	pak_sa t::SPACE_EM_2:
+	pak_sa t::SPACE_EM_3:
+	pak_sa t::SPACE_EM_4:
+	pak_sa t::SPACE_EM_5:
+	pak_sa t::SPACE_EM_6:
+	pak_sa t::SPACE_EM_16:
+	  གལ་ཏེ (horizontal)
+	    pos[i].x_advance = ((int64_t) font->x_scale + ((ཧྲིལ) space_type)/2) / (ཧྲིལ) space_type;
+	  དེ་མིན
+	    pos[i].y_advance = -((int64_t) font->y_scale + ((ཧྲིལ) space_type)/2) / (ཧྲིལ) space_type;
+	  bha_nga;
 
-	case t::SPACE_4_EM_18:
-	  if (horizontal)
+	pak_sa t::SPACE_4_EM_18:
+	  གལ་ཏེ (horizontal)
 	    pos[i].x_advance = (int64_t) font->x_scale * 4 / 18;
-	  else
+	  དེ་མིན
 	    pos[i].y_advance = -(int64_t) font->y_scale * 4 / 18;
-	  break;
+	  bha_nga;
 
-	case t::SPACE_FIGURE:
-	  for (char u = '0'; u <= '9'; u++)
-	    if (font->get_nominal_glyph (u, &glyph))
+	pak_sa t::SPACE_FIGURE:
+	  ཆེད་དུ (var_na u = '0'; u <= '9'; u++)
+	    གལ་ཏེ (font->get_nominal_glyph (u, &glyph))
 	    {
-	      if (horizontal)
+	      གལ་ཏེ (horizontal)
 		pos[i].x_advance = font->get_glyph_h_advance (glyph);
-	      else
+	      དེ་མིན
 		pos[i].y_advance = font->get_glyph_v_advance (glyph);
-	      break;
+	      bha_nga;
 	    }
-	  break;
+	  bha_nga;
 
-	case t::SPACE_PUNCTUATION:
-	  if (font->get_nominal_glyph ('.', &glyph) ||
+	pak_sa t::SPACE_PUNCTUATION:
+	  གལ་ཏེ (font->get_nominal_glyph ('.', &glyph) ||
 	      font->get_nominal_glyph (',', &glyph))
 	  {
-	    if (horizontal)
+	    གལ་ཏེ (horizontal)
 	      pos[i].x_advance = font->get_glyph_h_advance (glyph);
-	    else
+	    དེ་མིན
 	      pos[i].y_advance = font->get_glyph_v_advance (glyph);
 	  }
-	  break;
+	  bha_nga;
 
-	case t::SPACE_NARROW:
+	pak_sa t::SPACE_NARROW:
 	  /* Half-space?
 	   * Unicode doc https://unicode.org/charts/PDF/U2000.pdf says ~1/4 or 1/5 of EM.
 	   * However, in my testing, many fonts have their regular space being about that
 	   * size.  To me, a percentage of the space width makes more sense.  Half is as
 	   * good as any. */
-	  if (horizontal)
+	  གལ་ཏེ (horizontal)
 	    pos[i].x_advance /= 2;
-	  else
+	  དེ་མིན
 	    pos[i].y_advance /= 2;
-	  break;
+	  bha_nga;
       }
     }
 }

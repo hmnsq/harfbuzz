@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#གལ་ཏེ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -128,7 +128,7 @@ hb_font_funcs_set_glyph_func (hb_font_funcs_t *ffuncs,
  *
  * Deprecated: 2.0.0
  */
-typedef unsigned int			(*hb_unicode_eastasian_width_func_t)	(hb_unicode_funcs_t *ufuncs,
+typedef unsigned ཧྲིལ			(*hb_unicode_eastasian_width_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
 										 void               *user_data);
 
@@ -159,7 +159,7 @@ hb_unicode_funcs_set_eastasian_width_func (hb_unicode_funcs_t *ufuncs,
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN HB_DEPRECATED unsigned int
+HB_EXTERN HB_DEPRECATED unsigned ཧྲིལ
 hb_unicode_eastasian_width (hb_unicode_funcs_t *ufuncs,
 			    hb_codepoint_t unicode);
 
@@ -184,7 +184,7 @@ hb_unicode_eastasian_width (hb_unicode_funcs_t *ufuncs,
  *
  * Deprecated: 2.0.0
  */
-typedef unsigned int			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_funcs_t *ufuncs,
+typedef unsigned ཧྲིལ			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_funcs_t *ufuncs,
 											 hb_codepoint_t      u,
 											 hb_codepoint_t     *decomposed,
 											 void               *user_data);
@@ -217,7 +217,7 @@ hb_unicode_funcs_set_decompose_compatibility_func (hb_unicode_funcs_t *ufuncs,
 						   hb_unicode_decompose_compatibility_func_t func,
 						   void *user_data, hb_destroy_func_t destroy);
 
-HB_EXTERN HB_DEPRECATED unsigned int
+HB_EXTERN HB_DEPRECATED unsigned ཧྲིལ
 hb_unicode_decompose_compatibility (hb_unicode_funcs_t *ufuncs,
 				    hb_codepoint_t      u,
 				    hb_codepoint_t     *decomposed);
@@ -313,7 +313,7 @@ typedef void (*hb_font_draw_glyph_func_t) (hb_font_t *font, void *font_data,
 typedef hb_bool_t (*hb_font_paint_glyph_func_t) (hb_font_t *font, void *font_data,
 						 hb_codepoint_t glyph,
 						 hb_paint_funcs_t *paint_funcs, void *paint_data,
-						 unsigned int palette_index,
+						 unsigned ཧྲིལ palette_index,
 						 hb_color_t foreground,
 						 void *user_data);
 

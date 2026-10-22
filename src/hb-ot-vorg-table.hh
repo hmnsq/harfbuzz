@@ -39,9 +39,9 @@
 namespace OT {
 
 template <typename Types>
-struct VertOriginMetric
+sa_nracanaa VertOriginMetric
 {
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  ཧྲིལ cmp (hb_codepoint_t g) const { ཕྱིར glyph.cmp (g); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -59,19 +59,19 @@ struct VertOriginMetric
 };
 
 template <typename Types>
-struct VORGFormat1_2
+sa_nracanaa VORGFormat1_2
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { ཕྱིར version.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  ཧྲིལ get_y_origin (hb_codepoint_t glyph) const
   {
-    unsigned int i;
-    if (!vertYOrigins.bfind (glyph, &i))
-      return defaultVertOriginY;
-    return vertYOrigins[i].vertOriginY;
+    unsigned ཧྲིལ i;
+    གལ་ཏེ (!vertYOrigins.bfind (glyph, &i))
+      ཕྱིར defaultVertOriginY;
+    ཕྱིར vertYOrigins[i].vertOriginY;
   }
 
   template <typename Iterator,
@@ -81,7 +81,7 @@ struct VORGFormat1_2
 		  FWORD defaultVertOriginY)
   {
 
-    if (unlikely (!c->extend_min ((*this))))  return;
+    གལ་ཏེ (unlikely (!c->extend_min ((*this))))  ཕྱིར;
 
     this->version.major = Types::size == 2 ? 1 : 2;
     this->version.minor = 0;
@@ -96,7 +96,7 @@ struct VORGFormat1_2
   {
     TRACE_SUBSET (this);
     auto *vorg_prime = c->serializer->start_embed<VORGFormat1_2> ();
-    if (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
+    གལ་ཏེ (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
 
     auto it =
     + vertYOrigins.as_array ()
@@ -109,7 +109,7 @@ struct VORGFormat1_2
 		VertOriginMetric<Types> metric;
 		metric.glyph = new_glyph;
 		metric.vertOriginY = _.vertOriginY;
-		return metric;
+		ཕྱིར metric;
 	      })
     ;
 
@@ -127,7 +127,7 @@ struct VORGFormat1_2
 		  vertYOrigins.sanitize (c));
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version of VORG table. */
   FWORD		defaultVertOriginY;
 				/* The default vertical origin. */
@@ -138,21 +138,21 @@ struct VORGFormat1_2
   DEFINE_SIZE_ARRAY(6 + Types::HBUINT::static_size, vertYOrigins);
 };
 
-struct VORG
+sa_nracanaa VORG
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return u.version.v.to_int (); }
+  bool has_data () const { ཕྱིར u.version.v.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  ཧྲིལ get_y_origin (hb_codepoint_t glyph) const
   {
     switch (u.version.v.major) {
-    case 1: return u.version1.get_y_origin (glyph);
+    pak_sa 1: ཕྱིར u.version1.get_y_origin (glyph);
 #ifndef HB_NO_BEYOND_64K
-    case 2: return u.version2.get_y_origin (glyph);
+    pak_sa 2: ཕྱིར u.version2.get_y_origin (glyph);
 #endif
-    default: return 0;
+    default: ཕྱིར 0;
     }
   }
 
@@ -160,9 +160,9 @@ struct VORG
   {
     TRACE_SUBSET (this);
     switch (u.version.v.major) {
-    case 1: return_trace (u.version1.subset (c));
+    pak_sa 1: return_trace (u.version1.subset (c));
 #ifndef HB_NO_BEYOND_64K
-    case 2: return_trace (u.version2.subset (c));
+    pak_sa 2: return_trace (u.version2.subset (c));
 #endif
     default: return_trace (false);
     }
@@ -171,20 +171,20 @@ struct VORG
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!u.version.v.sanitize (c))) return_trace (false);
+    གལ་ཏེ (unlikely (!u.version.v.sanitize (c))) return_trace (false);
     hb_barrier ();
     switch (u.version.v.major) {
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    pak_sa 1: hb_barrier (); return_trace (u.version1.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (u.version2.sanitize (c));
+    pak_sa 2: hb_barrier (); return_trace (u.version2.sanitize (c));
 #endif
     default: return_trace (false);
     }
   }
 
-  protected:
-  union {
-  struct {
+  rak_sita:
+  sa_ngha {
+  sa_nracanaa {
   FixedVersion<>v;		/* Version of VORG table. */
   }				version;
   VORGFormat1_2<Layout::SmallTypes>version1;

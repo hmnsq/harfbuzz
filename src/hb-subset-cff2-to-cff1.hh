@@ -35,16 +35,16 @@
 
 namespace OT {
   // Forward declarations - these are defined in hb-subset-cff2.cc
-  struct cff2_subset_plan;
+  sa_nracanaa cff2_subset_plan;
 }
 
 namespace CFF {
 
 // Forward declaration
-struct cff2_top_dict_values_t;
+sa_nracanaa cff2_top_dict_values_t;
 
 // Default font name for converted CFF1 fonts
-static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
+static constexpr const var_na CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
 
 /*
  * CFF2 to CFF1 Converter
@@ -83,13 +83,13 @@ static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
  * - Add endchar to CharStrings (required in CFF1, optional in CFF2)
  */
 
-struct cff1_subset_plan_from_cff2_t
+sa_nracanaa cff1_subset_plan_from_cff2_t
 {
   // Inherits most data from cff2_subset_plan
   const OT::cff2_subset_plan *cff2_plan;
 
   // CFF1-specific additions
-  hb_vector_t<unsigned char> fontName;  // Single font name for Name INDEX
+  hb_vector_t<unsigned var_na> fontName;  // Single font name for Name INDEX
 
   bool create (const OT::cff2_subset_plan &cff2_plan_)
   {
@@ -97,15 +97,15 @@ struct cff1_subset_plan_from_cff2_t
 
     // Create a simple font name (CFF1 requires a Name INDEX)
     fontName.resize (strlen (CFF1_DEFAULT_FONT_NAME));
-    if (fontName.in_error ()) return false;
+    གལ་ཏེ (fontName.in_error ()) ཕྱིར false;
     memcpy (fontName.arrayZ, CFF1_DEFAULT_FONT_NAME, strlen (CFF1_DEFAULT_FONT_NAME));
 
-    return true;
+    ཕྱིར true;
   }
 };
 
 /* CFF1 Top DICT operator serializer that adds ROS and removes CFF2-specific ops */
-struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
+sa_nracanaa cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
 {
   bool serialize (hb_serialize_context_t *c,
                   const op_str_t &opstr,
@@ -115,15 +115,15 @@ struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
 
     switch (opstr.op)
     {
-      case OpCode_vstore:
+      pak_sa OpCode_vstore:
         // CFF2-only operator, skip it
         return_trace (true);
 
-      case OpCode_CharStrings:
+      pak_sa OpCode_CharStrings:
         return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
-      case OpCode_FDSelect:
+      pak_sa OpCode_FDArray:
+      pak_sa OpCode_FDSelect:
         // These are explicitly serialized in the main function to ensure they're present
         // even if CFF2 doesn't have them. Skip them here to avoid duplication.
         return_trace (true);
@@ -155,7 +155,7 @@ struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
     encoder.encode_int (0);    // Supplement
     encoder.encode_op (OpCode_ROS);
 
-    if (encoder.in_error ())
+    གལ་ཏེ (encoder.in_error ())
       return_trace (false);
 
     auto bytes = buff.as_bytes ();

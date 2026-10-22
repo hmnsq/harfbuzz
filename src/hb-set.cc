@@ -53,10 +53,10 @@ hb_set_create ()
 {
   hb_set_t *set;
 
-  if (!(set = hb_object_create<hb_set_t> ()))
-    return hb_set_get_empty ();
+  གལ་ཏེ (!(set = hb_object_create<hb_set_t> ()))
+    ཕྱིར hb_set_get_empty ();
 
-  return set;
+  ཕྱིར set;
 }
 
 /**
@@ -71,7 +71,7 @@ hb_set_create ()
 hb_set_t *
 hb_set_get_empty ()
 {
-  return const_cast<hb_set_t *> (&Null (hb_set_t));
+  ཕྱིར const_cast<hb_set_t *> (&Null (hb_set_t));
 }
 
 /**
@@ -87,7 +87,7 @@ hb_set_get_empty ()
 hb_set_t *
 hb_set_reference (hb_set_t *set)
 {
-  return hb_object_reference (set);
+  ཕྱིར hb_object_reference (set);
 }
 
 /**
@@ -103,7 +103,7 @@ hb_set_reference (hb_set_t *set)
 void
 hb_set_destroy (hb_set_t *set)
 {
-  if (!hb_object_destroy (set)) return;
+  གལ་ཏེ (!hb_object_destroy (set)) ཕྱིར;
 
   hb_free (set);
 }
@@ -129,7 +129,7 @@ hb_set_set_user_data (hb_set_t           *set,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (set, key, data, destroy, replace);
+  ཕྱིར hb_object_set_user_data (set, key, data, destroy, replace);
 }
 
 /**
@@ -148,7 +148,7 @@ void *
 hb_set_get_user_data (const hb_set_t     *set,
 		      hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (set, key);
+  ཕྱིར hb_object_get_user_data (set, key);
 }
 
 
@@ -165,7 +165,7 @@ hb_set_get_user_data (const hb_set_t     *set,
 hb_bool_t
 hb_set_allocation_successful (const hb_set_t  *set)
 {
-  return !set->in_error ();
+  ཕྱིར !set->in_error ();
 }
 
 /**
@@ -182,11 +182,11 @@ hb_set_t *
 hb_set_copy (const hb_set_t *set)
 {
   hb_set_t *copy = hb_set_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_set_get_empty ();
+  གལ་ཏེ (unlikely (copy->in_error ()))
+    ཕྱིར hb_set_get_empty ();
 
   copy->set (*set);
-  return copy;
+  ཕྱིར copy;
 }
 
 /**
@@ -217,7 +217,7 @@ hb_set_clear (hb_set_t *set)
 hb_bool_t
 hb_set_is_empty (const hb_set_t *set)
 {
-  return set->is_empty ();
+  ཕྱིར set->is_empty ();
 }
 
 /**
@@ -235,7 +235,7 @@ hb_bool_t
 hb_set_has (const hb_set_t *set,
 	    hb_codepoint_t  codepoint)
 {
-  return set->has (codepoint);
+  ཕྱིར set->has (codepoint);
 }
 
 /**
@@ -270,12 +270,12 @@ hb_set_add (hb_set_t       *set,
 HB_EXTERN void
 hb_set_add_sorted_array (hb_set_t             *set,
 		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints)
+		         unsigned ཧྲིལ          num_codepoints)
 {
   /* Immutable-safe. */
   set->add_sorted_array (sorted_codepoints,
 		         num_codepoints,
-		         sizeof(hb_codepoint_t));
+		         parimaa_na(hb_codepoint_t));
 }
 
 /**
@@ -354,7 +354,7 @@ hb_bool_t
 hb_set_is_equal (const hb_set_t *set,
 		 const hb_set_t *other)
 {
-  return set->is_equal (*other);
+  ཕྱིར set->is_equal (*other);
 }
 
 /**
@@ -372,7 +372,7 @@ hb_bool_t
 hb_set_intersects (const hb_set_t *set,
 		   const hb_set_t *other)
 {
-  return set->intersects (*other);
+  ཕྱིར set->intersects (*other);
 }
 
 /**
@@ -386,10 +386,10 @@ hb_set_intersects (const hb_set_t *set,
  *
  * Since: 4.4.0
  **/
-HB_EXTERN unsigned int
+HB_EXTERN unsigned ཧྲིལ
 hb_set_hash (const hb_set_t *set)
 {
-  return set->hash ();
+  ཕྱིར set->hash ();
 }
 
 /**
@@ -407,7 +407,7 @@ hb_bool_t
 hb_set_is_subset (const hb_set_t *set,
 		  const hb_set_t *larger_set)
 {
-  return set->is_subset (*larger_set);
+  ཕྱིར set->is_subset (*larger_set);
 }
 
 /**
@@ -524,7 +524,7 @@ hb_set_invert (hb_set_t *set)
 hb_bool_t
 hb_set_is_inverted (const hb_set_t *set)
 {
-  return set->is_inverted ();
+  ཕྱིར set->is_inverted ();
 }
 
 /**
@@ -537,10 +537,10 @@ hb_set_is_inverted (const hb_set_t *set)
  *
  * Since: 0.9.7
  **/
-unsigned int
+unsigned ཧྲིལ
 hb_set_get_population (const hb_set_t *set)
 {
-  return set->get_population ();
+  ཕྱིར set->get_population ();
 }
 
 /**
@@ -556,7 +556,7 @@ hb_set_get_population (const hb_set_t *set)
 hb_codepoint_t
 hb_set_get_min (const hb_set_t *set)
 {
-  return set->get_min ();
+  ཕྱིར set->get_min ();
 }
 
 /**
@@ -572,7 +572,7 @@ hb_set_get_min (const hb_set_t *set)
 hb_codepoint_t
 hb_set_get_max (const hb_set_t *set)
 {
-  return set->get_max ();
+  ཕྱིར set->get_max ();
 }
 
 /**
@@ -593,7 +593,7 @@ hb_bool_t
 hb_set_next (const hb_set_t *set,
 	     hb_codepoint_t *codepoint)
 {
-  return set->next (codepoint);
+  ཕྱིར set->next (codepoint);
 }
 
 /**
@@ -614,7 +614,7 @@ hb_bool_t
 hb_set_previous (const hb_set_t *set,
 		 hb_codepoint_t *codepoint)
 {
-  return set->previous (codepoint);
+  ཕྱིར set->previous (codepoint);
 }
 
 /**
@@ -638,7 +638,7 @@ hb_set_next_range (const hb_set_t *set,
 		   hb_codepoint_t *first,
 		   hb_codepoint_t *last)
 {
-  return set->next_range (first, last);
+  ཕྱིར set->next_range (first, last);
 }
 
 /**
@@ -662,7 +662,7 @@ hb_set_previous_range (const hb_set_t *set,
 		       hb_codepoint_t *first,
 		       hb_codepoint_t *last)
 {
-  return set->previous_range (first, last);
+  ཕྱིར set->previous_range (first, last);
 }
 
 /**
@@ -681,11 +681,11 @@ hb_set_previous_range (const hb_set_t *set,
  *
  * Since: 4.2.0
  **/
-unsigned int
+unsigned ཧྲིལ
 hb_set_next_many (const hb_set_t *set,
 		  hb_codepoint_t  codepoint,
 		  hb_codepoint_t *out,
-		  unsigned int    size)
+		  unsigned ཧྲིལ    size)
 {
-  return set->next_many (codepoint, out, size);
+  ཕྱིར set->next_many (codepoint, out, size);
 }

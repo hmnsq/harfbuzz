@@ -9,50 +9,50 @@ namespace OT {
 //namespace Var {
 
 
-struct coord_setter_t
+sa_nracanaa coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<const ཧྲིལ> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    གལ་ཏེ (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * parimaa_na (ཧྲིལ));
+    དེ་མིན
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  ཧྲིལ& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    གལ་ཏེ (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      ཕྱིར Crap(ཧྲིལ);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    གལ་ཏེ (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      གལ་ཏེ (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        སྐབས (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	ཕྱིར static_coords[idx];
       }
-      else
+      དེ་མིན
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    གལ་ཏེ (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      གལ་ཏེ (unlikely (!dynamic_coords.resize (idx + 1)))
+	ཕྱིར Crap(ཧྲིལ);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    ཕྱིར dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<ཧྲིལ> get_coords ()
+  { ཕྱིར length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
   private:
-  hb_vector_t<int> dynamic_coords;
+  hb_vector_t<ཧྲིལ> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  ཧྲིལ static_coords[parimaa_na (void *) * 8];
 };
 
 

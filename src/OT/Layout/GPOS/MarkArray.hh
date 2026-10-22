@@ -8,30 +8,30 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-static inline hb_position_t
+static anta_hstha hb_position_t
 resolve_cross_offset (const hb_glyph_position_t *pos,
-		      unsigned int len,
-		      unsigned int glyph_pos,
+		      unsigned ཧྲིལ len,
+		      unsigned ཧྲིལ glyph_pos,
 		      hb_direction_t direction)
 {
   bool horizontal = HB_DIRECTION_IS_HORIZONTAL (direction);
   hb_position_t offset = horizontal ? pos[glyph_pos].y_offset : pos[glyph_pos].x_offset;
-  while (pos[glyph_pos].attach_type() & ATTACH_TYPE_CURSIVE)
+  སྐབས (pos[glyph_pos].attach_type() & ATTACH_TYPE_CURSIVE)
   {
-    int chain = pos[glyph_pos].attach_chain();
-    if (!chain)
-      break;
-    unsigned int parent = (int) glyph_pos + chain;
-    if (unlikely (parent >= len))
-      break;
+    ཧྲིལ chain = pos[glyph_pos].attach_chain();
+    གལ་ཏེ (!chain)
+      bha_nga;
+    unsigned ཧྲིལ parent = (ཧྲིལ) glyph_pos + chain;
+    གལ་ཏེ (unlikely (parent >= len))
+      bha_nga;
     glyph_pos = parent;
     offset = hb_saturate_add (offset,
 			      horizontal ? pos[glyph_pos].y_offset : pos[glyph_pos].x_offset);
   }
-  return offset;
+  ཕྱིར offset;
 }
 
-static inline bool
+static anta_hstha bool
 apply_mark_attachment (hb_ot_apply_context_t *c,
                        const Anchor &mark_anchor,
                        const Anchor &glyph_anchor,
@@ -44,7 +44,7 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
   mark_anchor.get_anchor (c, buffer->cur().codepoint, &mark_x, &mark_y);
   glyph_anchor.get_anchor (c, buffer->info[glyph_pos].codepoint, &base_x, &base_y);
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  གལ་ཏེ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "attaching mark glyph at %u to glyph at %u",
@@ -55,8 +55,8 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
 						      buffer->props.direction);
 
   hb_glyph_position_t &mark = buffer->cur_pos();
-  mark.attach_chain() = (int) glyph_pos - (int) buffer->idx;
-  if (mark.attach_chain() != (int) glyph_pos - (int) buffer->idx)
+  mark.attach_chain() = (ཧྲིལ) glyph_pos - (ཧྲིལ) buffer->idx;
+  གལ་ཏེ (mark.attach_chain() != (ཧྲིལ) glyph_pos - (ཧྲིལ) buffer->idx)
   {
     mark.attach_chain() = 0;
     goto overflow;
@@ -64,13 +64,13 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
   mark.attach_type() = ATTACH_TYPE_MARK;
   mark.x_offset = roundf (base_x - mark_x);
   mark.y_offset = roundf (base_y - mark_y);
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+  གལ་ཏེ (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
     mark.y_offset = hb_saturate_add (mark.y_offset, base_offset);
-  else
+  དེ་མིན
     mark.x_offset = hb_saturate_add (mark.x_offset, base_offset);
   buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  གལ་ཏེ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "attached mark glyph at %u to glyph at %u",
@@ -79,10 +79,10 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
 
 overflow:
   buffer->idx++;
-  return true;
+  ཕྱིར true;
 }
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_mark_variation_indices (hb_collect_variation_indices_context_t *c,
                                     const Coverage &coverage,
                                     const void *base,
@@ -90,19 +90,19 @@ void collect_mark_variation_indices (hb_collect_variation_indices_context_t *c,
                                     unsigned count,
                                     unsigned record_size)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  ཆེད་དུ (const auto _ : hb_zip (coverage, hb_range (count)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
+    གལ་ཏེ (!c->glyph_set->has (_.first)) continue;
     glyph_data_t anchor = anchors;
-    anchor.data = (const char *) anchors.data + _.second * record_size;
+    anchor.data = (const var_na *) anchors.data + _.second * record_size;
     unsigned offset = anchor[0];
-    if (offset)
+    གལ་ཏེ (offset)
       StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
   }
 }
 
 template <typename Types>
-struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
+sa_nracanaa MarkArray : Types::template ArrayOf<MarkRecord<Types>>
                                                 /* Array of MarkRecords--in Coverage order */
 {
   typedef typename Types::template ArrayOf<MarkRecord<Types>> Super;
@@ -116,7 +116,7 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
                                   const Coverage &coverage) const
   {
-    if (!this->len) return;
+    གལ་ཏེ (!this->len) ཕྱིར;
     collect_mark_variation_indices (c, coverage, this,
                                    &this->arrayZ[0].markAnchor,
                                    this->len, MarkRecord<Types>::static_size);
@@ -124,20 +124,20 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
 
   template <typename AnchorMatrixType>
   bool apply (hb_ot_apply_context_t *c,
-              unsigned int mark_index, unsigned int glyph_index,
-              const AnchorMatrixType &anchors, unsigned int class_count,
-              unsigned int glyph_pos) const
+              unsigned ཧྲིལ mark_index, unsigned ཧྲིལ glyph_index,
+              const AnchorMatrixType &anchors, unsigned ཧྲིལ class_count,
+              unsigned ཧྲིལ glyph_pos) const
   {
     TRACE_APPLY (this);
     const MarkRecord<Types> &record = Super::operator[](mark_index);
-    unsigned int mark_class = record.klass;
+    unsigned ཧྲིལ mark_class = record.klass;
 
     const Anchor& mark_anchor = this + record.markAnchor;
     bool found;
     const Anchor& glyph_anchor = anchors.get_anchor (c, glyph_index, mark_class, class_count, &found);
     /* If this subtable doesn't have an anchor for this base and this class,
      * return false such that the subsequent subtables have a chance at it. */
-    if (unlikely (!found)) return_trace (false);
+    གལ་ཏེ (unlikely (!found)) return_trace (false);
 
     return_trace (apply_mark_attachment (c, mark_anchor, glyph_anchor, glyph_pos));
   }
@@ -152,7 +152,7 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
     const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
 
     auto* out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    གལ་ཏེ (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     auto mark_iter =
     + hb_zip (coverage, this->iter ())
@@ -162,12 +162,12 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
 
     bool ret = false;
     unsigned new_length = 0;
-    for (const auto& mark_record : mark_iter) {
+    ཆེད་དུ (const auto& mark_record : mark_iter) {
       ret |= mark_record.subset (c, this, klass_mapping);
       new_length++;
     }
 
-    if (unlikely (!c->serializer->check_assign (out->len, new_length,
+    གལ་ཏེ (unlikely (!c->serializer->check_assign (out->len, new_length,
                                                 HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)))
       return_trace (false);
 
@@ -175,7 +175,7 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
   }
 };
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void Markclass_closure_and_remap_indexes (const Coverage &mark_coverage,
                                     const void *mark_records,
                                     unsigned count,
@@ -184,25 +184,25 @@ void Markclass_closure_and_remap_indexes (const Coverage &mark_coverage,
                                     hb_map_t *klass_mapping)
 {
   hb_set_t orig_classes;
-  for (const auto _ : hb_zip (mark_coverage, hb_range (count)))
-    if (glyphset.has (_.first))
+  ཆེད་དུ (const auto _ : hb_zip (mark_coverage, hb_range (count)))
+    གལ་ཏེ (glyphset.has (_.first))
     {
       const auto *klass = reinterpret_cast<const HBUINT16 *>
-        ((const char *) mark_records + _.second * record_size);
+        ((const var_na *) mark_records + _.second * record_size);
       orig_classes.add (*klass);
     }
 
   unsigned idx = 0;
-  for (auto klass : orig_classes.iter ())
+  ཆེད་དུ (auto klass : orig_classes.iter ())
   {
-    if (klass_mapping->has (klass)) continue;
+    གལ་ཏེ (klass_mapping->has (klass)) continue;
     klass_mapping->set (klass, idx);
     idx++;
   }
 }
 
 template <typename Types>
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void Markclass_closure_and_remap_indexes (const Coverage     &mark_coverage,
                                           const MarkArray<Types> &mark_array,
                                           const hb_set_t     &glyphset,

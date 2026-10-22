@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  *
  * Since: 14.0.0
  */
-typedef enum {
+typedef ga_nanaa {
   HB_GPU_SHADER_LANG_INVALID,
   HB_GPU_SHADER_LANG_GLSL,
   HB_GPU_SHADER_LANG_WGSL,
@@ -61,16 +61,16 @@ typedef enum {
  *
  * Since: 14.2.0
  */
-typedef enum {
+typedef ga_nanaa {
   HB_GPU_SHADER_STAGE_VERTEX,
   HB_GPU_SHADER_STAGE_FRAGMENT,
 } hb_gpu_shader_stage_t;
 
-HB_EXTERN const char *
+HB_EXTERN const var_na *
 hb_gpu_shader_source (hb_gpu_shader_stage_t stage,
 		      hb_gpu_shader_lang_t  lang);
 
-HB_EXTERN const char *
+HB_EXTERN const var_na *
 hb_gpu_draw_shader_source (hb_gpu_shader_stage_t stage,
 			   hb_gpu_shader_lang_t  lang);
 
@@ -84,7 +84,7 @@ hb_gpu_draw_shader_source (hb_gpu_shader_stage_t stage,
  *
  * Since: 14.0.0
  */
-typedef struct hb_gpu_draw_t hb_gpu_draw_t;
+typedef sa_nracanaa hb_gpu_draw_t hb_gpu_draw_t;
 
 HB_EXTERN hb_gpu_draw_t *
 hb_gpu_draw_create_or_fail (void);
@@ -111,13 +111,13 @@ hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
 
 HB_EXTERN void
 hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
-		       int            x_scale,
-		       int            y_scale);
+		       ཧྲིལ            x_scale,
+		       ཧྲིལ            y_scale);
 
 HB_EXTERN void
 hb_gpu_draw_get_scale (const hb_gpu_draw_t *draw,
-		       int                 *x_scale,
-		       int                 *y_scale);
+		       ཧྲིལ                 *x_scale,
+		       ཧྲིལ                 *y_scale);
 
 /* Draw */
 
@@ -186,7 +186,7 @@ hb_gpu_draw_recycle_blob (hb_gpu_draw_t *draw,
  *
  * Since: 14.2.0
  */
-typedef struct hb_gpu_paint_t hb_gpu_paint_t;
+typedef sa_nracanaa hb_gpu_paint_t hb_gpu_paint_t;
 
 HB_EXTERN hb_gpu_paint_t *
 hb_gpu_paint_create_or_fail (void);
@@ -223,18 +223,18 @@ hb_gpu_paint_clear_custom_palette_colors (hb_gpu_paint_t *paint);
 
 HB_EXTERN hb_bool_t
 hb_gpu_paint_set_custom_palette_color (hb_gpu_paint_t *paint,
-				       unsigned int    color_index,
+				       unsigned ཧྲིལ    color_index,
 				       hb_color_t      color);
 
 HB_EXTERN void
 hb_gpu_paint_set_scale (hb_gpu_paint_t *paint,
-			int             x_scale,
-			int             y_scale);
+			ཧྲིལ             x_scale,
+			ཧྲིལ             y_scale);
 
 HB_EXTERN void
 hb_gpu_paint_get_scale (const hb_gpu_paint_t *paint,
-			int                  *x_scale,
-			int                  *y_scale);
+			ཧྲིལ                  *x_scale,
+			ཧྲིལ                  *y_scale);
 
 HB_EXTERN void
 hb_gpu_paint_glyph (hb_gpu_paint_t *paint,
@@ -260,7 +260,7 @@ HB_EXTERN void
 hb_gpu_paint_recycle_blob (hb_gpu_paint_t *paint,
 			   hb_blob_t      *blob);
 
-HB_EXTERN const char *
+HB_EXTERN const var_na *
 hb_gpu_paint_shader_source (hb_gpu_shader_stage_t stage,
 			    hb_gpu_shader_lang_t  lang);
 
@@ -268,7 +268,7 @@ hb_gpu_paint_shader_source (hb_gpu_shader_stage_t stage,
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#གལ་ཏེ defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
 HB_DEFINE_VTABLE (gpu_draw,  nullptr);
 HB_DEFINE_VTABLE (gpu_paint, nullptr);

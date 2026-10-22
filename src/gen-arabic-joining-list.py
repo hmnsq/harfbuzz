@@ -9,57 +9,57 @@ Input files:
 
 import os.path, sys
 
-if len (sys.argv) != 3:
+གལ་ཏེ len (sys.argv) != 3:
 	sys.exit (__doc__)
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') ཆེད་དུ x anta_h sys.argv[1:]]
 
-headers = [[f.readline (), f.readline ()] for f in files]
-while files[0].readline ().find ('##################') < 0:
+headers = [[f.readline (), f.readline ()] ཆེད་དུ f anta_h files]
+སྐབས files[0].readline ().find ('##################') < 0:
 	pass
 
 def read (f):
 	mapping = {}
-	for line in f:
+	ཆེད་དུ line anta_h f:
 
 		j = line.find ('#')
-		if j >= 0:
+		གལ་ཏེ j >= 0:
 			line = line[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () ཆེད་དུ x anta_h line.split (';')]
+		གལ་ཏེ len (fields) == 1:
 			continue
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = ཧྲིལ (uu[0], 16)
+		གལ་ཏེ len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		དེ་མིན:
+			end = ཧྲིལ (uu[1], 16)
 
 		t = fields[1]
 
-		for u in range (start, end + 1):
+		ཆེད་དུ u anta_h range (start, end + 1):
 			mapping[u] = t
 
-	return mapping
+	ཕྱིར mapping
 
 def read_joining_uu (f):
 	values = set ()
-	for line in f:
+	ཆེད་དུ line anta_h f:
 
-		if line[0] == '#':
+		གལ་ཏེ line[0] == '#':
 			continue
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () ཆེད་དུ x anta_h line.split (';')]
+		གལ་ཏེ len (fields) == 1:
 			continue
-		if fields[2] in {'T', 'U'}:
+		གལ་ཏེ fields[2] anta_h {'T', 'U'}:
 			continue
 
-		values.add (int (fields[0], 16))
+		values.add (ཧྲིལ (fields[0], 16))
 
-	return sorted (values)
+	ཕྱིར sorted (values)
 
 def print_has_arabic_joining (scripts, joining_uu):
 
@@ -70,7 +70,7 @@ def print_has_arabic_joining (scripts, joining_uu):
 	print ("  switch ((int) script)")
 	print ("  {")
 
-	for script in sorted ({scripts[u] for u in joining_uu if scripts[u] not in {'Common', 'Inherited'}}):
+	ཆེད་དུ script anta_h sorted ({scripts[u] ཆེད་དུ u anta_h joining_uu གལ་ཏེ scripts[u] na anta_h {'Common', 'Inherited'}}):
 		print ("    case HB_SCRIPT_{}:".format (script.upper ()))
 
 	print ("      return true;")
@@ -89,8 +89,8 @@ print (" *   ./gen-arabic-joining-list.py ArabicShaping.txt Scripts.txt")
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+ཆེད་དུ h anta_h headers:
+	ཆེད་དུ l anta_h h:
 		print (" * %s" % (l.strip ()))
 print (" */")
 print ()

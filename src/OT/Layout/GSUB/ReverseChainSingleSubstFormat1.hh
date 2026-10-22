@@ -8,9 +8,9 @@ namespace Layout {
 namespace GSUB_impl {
 
 template <typename Types>
-struct ReverseChainSingleSubstFormat1_2
+sa_nracanaa ReverseChainSingleSubstFormat1_2
 {
-  protected:
+  rak_sita:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
@@ -34,11 +34,11 @@ struct ReverseChainSingleSubstFormat1_2
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!(coverage.sanitize (c, this) && backtrack.sanitize (c, this)))
+    གལ་ཏེ (!(coverage.sanitize (c, this) && backtrack.sanitize (c, this)))
       return_trace (false);
     hb_barrier ();
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    if (!lookahead.sanitize (c, this))
+    གལ་ཏེ (!lookahead.sanitize (c, this))
       return_trace (false);
     hb_barrier ();
     const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
@@ -47,32 +47,32 @@ struct ReverseChainSingleSubstFormat1_2
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    གལ་ཏེ (!(this+coverage).intersects (glyphs))
+      ཕྱིར false;
 
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
 
-    unsigned int count;
+    unsigned ཧྲིལ count;
 
     count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+backtrack[i]).intersects (glyphs))
-        return false;
+    ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
+      གལ་ཏེ (!(this+backtrack[i]).intersects (glyphs))
+        ཕྱིར false;
 
     count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+lookahead[i]).intersects (glyphs))
-        return false;
+    ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
+      གལ་ཏེ (!(this+lookahead[i]).intersects (glyphs))
+        ཕྱིར false;
 
-    return true;
+    ཕྱིར true;
   }
 
   bool may_have_non_1to1 () const
-  { return false; }
+  { ཕྱིར false; }
 
   void depend (hb_depend_context_t *c) const {
     // Filter by intersects and parent_active_glyphs like closure does
-    if (!intersects (c->glyphs)) return;
+    གལ་ཏེ (!intersects (c->glyphs)) ཕྱིར;
 
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
     const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
@@ -83,51 +83,51 @@ struct ReverseChainSingleSubstFormat1_2
     hb_set_t context_glyphs;
 
     /* Add glyphs from backtrack coverages */
-    unsigned int count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ཧྲིལ count = backtrack.len;
+    ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
     {
       hb_set_t back_glyphs;
       (this+backtrack[i]).intersect_set (*c->glyphs, back_glyphs);
-      if (back_glyphs.get_population () == 1)
+      གལ་ཏེ (back_glyphs.get_population () == 1)
         context_glyphs.add (back_glyphs.get_min ());
-      else if (back_glyphs.get_population () > 1)
+      དེ་མིན གལ་ཏེ (back_glyphs.get_population () > 1)
       {
         hb_codepoint_t set_idx = c->depend_data->find_or_create_context_set (back_glyphs);
-        if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-          return;
+        གལ་ཏེ (unlikely (set_idx == HB_CODEPOINT_INVALID))
+          ཕྱིར;
         context_glyphs.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
       }
     }
 
     /* Add glyphs from lookahead coverages */
     count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
+    ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
     {
       hb_set_t look_glyphs;
       (this+lookahead[i]).intersect_set (*c->glyphs, look_glyphs);
-      if (look_glyphs.get_population () == 1)
+      གལ་ཏེ (look_glyphs.get_population () == 1)
         context_glyphs.add (look_glyphs.get_min ());
-      else if (look_glyphs.get_population () > 1)
+      དེ་མིན གལ་ཏེ (look_glyphs.get_population () > 1)
       {
         hb_codepoint_t set_idx = c->depend_data->find_or_create_context_set (look_glyphs);
-        if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-          return;
+        གལ་ཏེ (unlikely (set_idx == HB_CODEPOINT_INVALID))
+          ཕྱིར;
         context_glyphs.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
       }
     }
 
     /* Allocate context set and save/restore around edge creation */
-    if (unlikely (context_glyphs.in_error ()))
+    གལ་ཏེ (unlikely (context_glyphs.in_error ()))
     {
       c->depend_data->fail ();
-      return;
+      ཕྱིར;
     }
     hb_codepoint_t context_set_idx = context_glyphs.is_empty ()
       ? HB_CODEPOINT_INVALID
       : c->depend_data->find_or_create_context_set (context_glyphs);
-    if (unlikely (!context_glyphs.is_empty () &&
+    གལ་ཏེ (unlikely (!context_glyphs.is_empty () &&
                   context_set_idx == HB_CODEPOINT_INVALID))
-      return;
+      ཕྱིར;
 
     hb_codepoint_t saved_context = c->depend_data->current_context_set_index;
     c->depend_data->current_context_set_index = context_set_idx;
@@ -142,7 +142,7 @@ struct ReverseChainSingleSubstFormat1_2
 
   void closure (hb_closure_context_t *c) const
   {
-    if (!intersects (c->glyphs)) return;
+    གལ་ཏེ (!intersects (c->glyphs)) ཕྱིར;
 
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
     const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
@@ -158,45 +158,45 @@ struct ReverseChainSingleSubstFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    གལ་ཏེ (unlikely (!(this+coverage).collect_coverage (c->input))) ཕྱིར;
 
-    unsigned int count;
+    unsigned ཧྲིལ count;
 
     count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(this+backtrack[i]).collect_coverage (c->before))) return;
+    ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
+      གལ་ཏེ (unlikely (!(this+backtrack[i]).collect_coverage (c->before))) ཕྱིར;
 
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
     count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(this+lookahead[i]).collect_coverage (c->after))) return;
+    ཆེད་དུ (unsigned ཧྲིལ i = 0; i < count; i++)
+      གལ་ཏེ (unlikely (!(this+lookahead[i]).collect_coverage (c->after))) ཕྱིར;
 
     const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
     count = substitute.len;
     c->output->add_array (substitute.arrayZ, substitute.len);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { ཕྱིར this+coverage; }
 
   bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  { ཕྱིར c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur ().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned ཧྲིལ index = (this+coverage).get_coverage (c->buffer->cur ().codepoint);
+    གལ་ཏེ (index == NOT_COVERED) return_trace (false);
 
-    if (unlikely (c->nesting_level_left != HB_MAX_NESTING_LEVEL))
+    གལ་ཏེ (unlikely (c->nesting_level_left != HB_MAX_NESTING_LEVEL))
       return_trace (false); /* No chaining to this type */
 
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
     const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    གལ་ཏེ (unlikely (index >= substitute.len)) return_trace (false);
 
-    unsigned int start_index = 0, end_index = 0;
-    if (match_backtrack (c,
+    unsigned ཧྲིལ start_index = 0, end_index = 0;
+    གལ་ཏེ (match_backtrack (c,
                          backtrack.len, backtrack.arrayZ,
                          match_coverage, this,
                          &start_index) &&
@@ -207,7 +207,7 @@ struct ReverseChainSingleSubstFormat1_2
     {
       c->buffer->unsafe_to_break_from_outbuffer (start_index, end_index);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      གལ་ཏེ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "replacing glyph at %u (reverse chaining substitution)",
@@ -216,7 +216,7 @@ struct ReverseChainSingleSubstFormat1_2
 
       c->replace_glyph_inplace (substitute[index]);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      གལ་ཏེ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "replaced glyph at %u (reverse chaining substitution)",
@@ -228,7 +228,7 @@ struct ReverseChainSingleSubstFormat1_2
        * calls us through a Context lookup. */
       return_trace (true);
     }
-    else
+    དེ་མིན
     {
       c->buffer->unsafe_to_concat_from_outbuffer (start_index, end_index);
       return_trace (false);
@@ -241,11 +241,11 @@ struct ReverseChainSingleSubstFormat1_2
   {
     TRACE_SERIALIZE (this);
     auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    གལ་ཏེ (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
 
-    for (auto& offset : it) {
+    ཆེད་དུ (auto& offset : it) {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, this))
+      གལ་ཏེ (unlikely (!o) || !o->serialize_subset (c, offset, this))
         return_trace (false);
     }
 
@@ -264,11 +264,11 @@ struct ReverseChainSingleSubstFormat1_2
     TRACE_SERIALIZE (this);
 
     auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->embed (this->format))) return_trace (false);
-    if (unlikely (!c->serializer->embed (this->coverage))) return_trace (false);
+    གལ་ཏེ (unlikely (!c->serializer->embed (this->format))) return_trace (false);
+    གལ་ཏེ (unlikely (!c->serializer->embed (this->coverage))) return_trace (false);
 
-    if (!serialize_coverage_offset_array (c, backtrack_iter)) return_trace (false);
-    if (!serialize_lookahead_coverage_offset_array (c, lookahead_iter)) return_trace (false);
+    གལ་ཏེ (!serialize_coverage_offset_array (c, backtrack_iter)) return_trace (false);
+    གལ་ཏེ (!serialize_lookahead_coverage_offset_array (c, lookahead_iter)) return_trace (false);
 
     auto *substitute_out = c->serializer->start_embed<typename Types::template ArrayOf<typename Types::HBGlyphID>> ();
     auto substitutes =
@@ -280,10 +280,10 @@ struct ReverseChainSingleSubstFormat1_2
     + coverage_subst_iter
     | hb_map_retains_sorting (hb_first)
     ;
-    if (unlikely (! c->serializer->check_success (substitute_out->serialize (c->serializer, substitutes))))
+    གལ་ཏེ (unlikely (! c->serializer->check_success (substitute_out->serialize (c->serializer, substitutes))))
         return_trace (false);
 
-    if (unlikely (!out->coverage.serialize_serialize (c->serializer, glyphs)))
+    གལ་ཏེ (unlikely (!out->coverage.serialize_serialize (c->serializer, glyphs)))
       return_trace (false);
     return_trace (true);
   }
@@ -302,7 +302,7 @@ struct ReverseChainSingleSubstFormat1_2
     | hb_filter (glyphset, hb_first)
     | hb_filter (glyphset, hb_second)
     | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+                              { ཕྱིར hb_pair (glyph_map[p.first], glyph_map[p.second]); })
     ;
 
     return_trace (bool (it) && serialize (c, it, backtrack.iter (), lookahead.iter ()));
@@ -314,11 +314,11 @@ struct ReverseChainSingleSubstFormat1_2
   {
     TRACE_SERIALIZE (this);
     auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    གལ་ཏེ (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
 
-    for (auto& offset : it) {
+    ཆེད་དུ (auto& offset : it) {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, this))
+      གལ་ཏེ (unlikely (!o) || !o->serialize_subset (c, offset, this))
         return_trace (false);
     }
 

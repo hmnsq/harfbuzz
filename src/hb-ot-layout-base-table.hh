@@ -39,11 +39,11 @@ namespace OT {
  * https://docs.microsoft.com/en-us/typography/opentype/spec/base
  */
 
-struct BaseCoordFormat1
+sa_nracanaa BaseCoordFormat1
 {
   hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) const
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
+    ཕྱིར HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
   }
 
   bool subset (hb_subset_context_t *c) const
@@ -58,7 +58,7 @@ struct BaseCoordFormat1
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	format;		/* Format identifier--format = 1 */
   FWORD		coordinate;	/* X or Y value, in design units */
   public:
@@ -66,22 +66,22 @@ struct BaseCoordFormat1
 };
 
 template <typename Types>
-struct BaseCoordFormat2_4
+sa_nracanaa BaseCoordFormat2_4
 {
   hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) const
   {
     /* TODO */
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
+    ཕྱིར HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
   }
 
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    གལ་ཏེ (unlikely (!out)) return_trace (false);
 
     hb_codepoint_t *new_gid;
-    if (!c->plan->glyph_map->has (referenceGlyph, &new_gid))
+    གལ་ཏེ (!c->plan->glyph_map->has (referenceGlyph, &new_gid))
       return_trace (false);
 
     return_trace (c->serializer->check_assign (out->referenceGlyph,
@@ -95,7 +95,7 @@ struct BaseCoordFormat2_4
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	format;		/* Format identifier--format = 2 or 4 */
   FWORD		coordinate;	/* X or Y value, in design units */
   typename Types::HBGlyphID
@@ -106,7 +106,7 @@ struct BaseCoordFormat2_4
   DEFINE_SIZE_STATIC (6 + Types::HBGlyphID::static_size);
 };
 
-struct BaseCoordFormat3
+sa_nracanaa BaseCoordFormat3
 {
   hb_position_t get_coord (hb_font_t *font,
 			   const ItemVariationStore &var_store,
@@ -114,7 +114,7 @@ struct BaseCoordFormat3
   {
     const Device &device = this+deviceTable;
 
-    return HB_DIRECTION_IS_HORIZONTAL (direction)
+    ཕྱིར HB_DIRECTION_IS_HORIZONTAL (direction)
 	 ? hb_saturate_add (font->em_scale_y (coordinate), device.get_y_delta (font, var_store))
 	 : hb_saturate_add (font->em_scale_x (coordinate), device.get_x_delta (font, var_store));
   }
@@ -129,18 +129,18 @@ struct BaseCoordFormat3
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    གལ་ཏེ (unlikely (!out)) return_trace (false);
 
-    if (!c->plan->pinned_at_default)
+    གལ་ཏེ (!c->plan->pinned_at_default)
     {
       unsigned var_idx = (this+deviceTable).get_variation_index ();
-      if (var_idx != VarIdx::NO_VARIATION)
+      གལ་ཏེ (var_idx != VarIdx::NO_VARIATION)
       {
-        hb_pair_t<unsigned, int> *v;
-        if (!c->plan->base_variation_idx_map.has (var_idx, &v))
+        hb_pair_t<unsigned, ཧྲིལ> *v;
+        གལ་ཏེ (!c->plan->base_variation_idx_map.has (var_idx, &v))
           return_trace (false);
         
-        if (unlikely (!c->serializer->check_assign (out->coordinate, coordinate + hb_second (*v),
+        གལ་ཏེ (unlikely (!c->serializer->check_assign (out->coordinate, coordinate + hb_second (*v),
                                                     HB_SERIALIZE_ERROR_INT_OVERFLOW)))
           return_trace (false);
       }
@@ -160,7 +160,7 @@ struct BaseCoordFormat3
 			  deviceTable.sanitize (c, this)));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	format;		/* Format identifier--format = 3 */
   FWORD		coordinate;	/* X or Y value, in design units */
   Offset16To<Device>
@@ -171,44 +171,44 @@ struct BaseCoordFormat3
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseCoord
+sa_nracanaa BaseCoord
 {
-  bool has_data () const { return u.format.v; }
+  bool has_data () const { ཕྱིར u.format.v; }
 
   hb_position_t get_coord (hb_font_t            *font,
 			   const ItemVariationStore &var_store,
 			   hb_direction_t        direction) const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coord (font, direction);
-    case 2: hb_barrier (); return u.format2.get_coord (font, direction);
-    case 3: hb_barrier (); return u.format3.get_coord (font, var_store, direction);
+    pak_sa 1: hb_barrier (); ཕྱིར u.format1.get_coord (font, direction);
+    pak_sa 2: hb_barrier (); ཕྱིར u.format2.get_coord (font, direction);
+    pak_sa 3: hb_barrier (); ཕྱིར u.format3.get_coord (font, var_store, direction);
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return u.format4.get_coord (font, direction);
+    pak_sa 4: hb_barrier (); ཕྱིར u.format4.get_coord (font, direction);
 #endif
-    default:return 0;
+    default:ཕྱིར 0;
     }
   }
 
   void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
   {
     switch (u.format.v) {
-    case 3: hb_barrier (); u.format3.collect_variation_indices (varidx_set); return;
-    default:return;
+    pak_sa 3: hb_barrier (); u.format3.collect_variation_indices (varidx_set); ཕྱིར;
+    default:ཕྱིར;
     }
   }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    གལ་ཏེ (unlikely (!c->may_dispatch (this, &u.format.v))) ཕྱིར c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    pak_sa 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    pak_sa 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    pak_sa 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    pak_sa 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
 #endif
     default:return_trace (c->default_return_value ());
     }
@@ -217,22 +217,22 @@ struct BaseCoord
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!u.format.v.sanitize (c))) return_trace (false);
+    གལ་ཏེ (unlikely (!u.format.v.sanitize (c))) return_trace (false);
     hb_barrier ();
     switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    pak_sa 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    pak_sa 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    pak_sa 3: hb_barrier (); return_trace (u.format3.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    pak_sa 4: hb_barrier (); return_trace (u.format4.sanitize (c));
 #endif
     default:return_trace (false);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;
+  rak_sita:
+  sa_ngha {
+  sa_nracanaa { HBUINT16 v; }	format;
   BaseCoordFormat1	format1;
   BaseCoordFormat2_4<Layout::SmallTypes>
 			format2;
@@ -246,26 +246,26 @@ struct BaseCoord
   DEFINE_SIZE_UNION (2, format.v);
 };
 
-struct FeatMinMaxRecord
+sa_nracanaa FeatMinMaxRecord
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  ཧྲིལ cmp (hb_tag_t key) const { ཕྱིར tag.cmp (key); }
 
-  bool has_data () const { return tag; }
+  bool has_data () const { ཕྱིར tag; }
 
-  hb_tag_t get_feature_tag () const { return tag; }
+  hb_tag_t get_feature_tag () const { ཕྱིར tag; }
 
   void get_min_max (const BaseCoord **min, const BaseCoord **max) const
   {
-    if (likely (min)) *min = &(this+minCoord);
-    if (likely (max)) *max = &(this+maxCoord);
+    གལ་ཏེ (likely (min)) *min = &(this+minCoord);
+    གལ་ཏེ (likely (max)) *max = &(this+maxCoord);
   }
 
   void collect_variation_indices (const hb_subset_plan_t* plan,
                                   const void *base,
                                   hb_set_t& varidx_set /* OUT */) const
   {
-    if (!plan->layout_features.has (tag))
-      return;
+    གལ་ཏེ (!plan->layout_features.has (tag))
+      ཕྱིར;
 
     (base+minCoord).collect_variation_indices (varidx_set);
     (base+maxCoord).collect_variation_indices (varidx_set);
@@ -276,7 +276,7 @@ struct FeatMinMaxRecord
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    གལ་ཏེ (unlikely (!out)) return_trace (false);
 
     bool ret = out->minCoord.serialize_subset (c, minCoord, base);
     ret |= out->maxCoord.serialize_subset (c, maxCoord, base);
@@ -291,7 +291,7 @@ struct FeatMinMaxRecord
 			  maxCoord.sanitize (c, base)));
   }
 
-  protected:
+  rak_sita:
   Tag		tag;		/* 4-byte feature identification tag--must
 				 * match feature tag in FeatureList */
   Offset16To<BaseCoord>
@@ -306,19 +306,19 @@ struct FeatMinMaxRecord
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MinMax
+sa_nracanaa MinMax
 {
   void get_min_max (hb_tag_t          feature_tag,
 		    const BaseCoord **min,
 		    const BaseCoord **max) const
   {
     const FeatMinMaxRecord &minMaxCoord = featMinMaxRecords.bsearch (feature_tag);
-    if (minMaxCoord.has_data ())
+    གལ་ཏེ (minMaxCoord.has_data ())
       minMaxCoord.get_min_max (min, max);
-    else
+    དེ་མིན
     {
-      if (likely (min)) *min = &(this+minCoord);
-      if (likely (max)) *max = &(this+maxCoord);
+      གལ་ཏེ (likely (min)) *min = &(this+minCoord);
+      གལ་ཏེ (likely (max)) *max = &(this+maxCoord);
     }
   }
 
@@ -327,7 +327,7 @@ struct MinMax
   {
     (this+minCoord).collect_variation_indices (varidx_set);
     (this+maxCoord).collect_variation_indices (varidx_set);
-    for (const FeatMinMaxRecord& record : featMinMaxRecords)
+    ཆེད་དུ (const FeatMinMaxRecord& record : featMinMaxRecords)
       record.collect_variation_indices (plan, this, varidx_set);
   }
 
@@ -335,25 +335,25 @@ struct MinMax
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    གལ་ཏེ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
 
     bool ret = out->minCoord.serialize_subset (c, minCoord, this);
     ret |= out->maxCoord.serialize_subset (c, maxCoord, this);
 
     unsigned len = 0;
-    for (const FeatMinMaxRecord& _ : featMinMaxRecords)
+    ཆེད་དུ (const FeatMinMaxRecord& _ : featMinMaxRecords)
     {
       hb_tag_t feature_tag = _.get_feature_tag ();
-      if (!c->plan->layout_features.has (feature_tag))
+      གལ་ཏེ (!c->plan->layout_features.has (feature_tag))
         continue;
 
       auto snap = c->serializer->snapshot ();
-      if (!_.subset (c, this)) c->serializer->revert (snap);
-      else len++;
+      གལ་ཏེ (!_.subset (c, this)) c->serializer->revert (snap);
+      དེ་མིན len++;
     }
 
-    if (len > 0) ret = true;
-    if (!ret) return_trace (false);
+    གལ་ཏེ (len > 0) ret = true;
+    གལ་ཏེ (!ret) return_trace (false);
     return_trace (c->serializer->check_assign (out->featMinMaxRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
@@ -367,7 +367,7 @@ struct MinMax
 			  featMinMaxRecords.sanitize (c, this)));
   }
 
-  protected:
+  rak_sita:
   Offset16To<BaseCoord>
 		minCoord;	/* Offset to BaseCoord table that defines
 				 * minimum extent value, from the beginning
@@ -384,17 +384,17 @@ struct MinMax
   DEFINE_SIZE_ARRAY (6, featMinMaxRecords);
 };
 
-struct BaseValues
+sa_nracanaa BaseValues
 {
-  const BaseCoord &get_base_coord (int baseline_tag_index) const
+  const BaseCoord &get_base_coord (ཧྲིལ baseline_tag_index) const
   {
-    if (baseline_tag_index == -1) baseline_tag_index = defaultIndex;
-    return this+baseCoords[baseline_tag_index];
+    གལ་ཏེ (baseline_tag_index == -1) baseline_tag_index = defaultIndex;
+    ཕྱིར this+baseCoords[baseline_tag_index];
   }
 
   void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
   {
-    for (const auto& _ : baseCoords)
+    ཆེད་དུ (const auto& _ : baseCoords)
       (this+_).collect_variation_indices (varidx_set);
   }
 
@@ -402,14 +402,14 @@ struct BaseValues
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    གལ་ཏེ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
     out->defaultIndex = defaultIndex;
 
     bool ret = false;
-    for (const auto& _ : baseCoords)
+    ཆེད་དུ (const auto& _ : baseCoords)
     {
       auto *o = out->baseCoords.serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
+      གལ་ཏེ (unlikely (!o)) return_trace (false);
        ret |= o->serialize_subset (c, _, this);
     }
 
@@ -423,7 +423,7 @@ struct BaseValues
 			  baseCoords.sanitize (c, this)));
   }
 
-  protected:
+  rak_sita:
   Index		defaultIndex;	/* Index number of default baseline for this
 				 * script — equals index position of baseline tag
 				 * in baselineTags array of the BaseTagList */
@@ -438,13 +438,13 @@ struct BaseValues
   DEFINE_SIZE_ARRAY (4, baseCoords);
 };
 
-struct BaseLangSysRecord
+sa_nracanaa BaseLangSysRecord
 {
-  int cmp (hb_tag_t key) const { return baseLangSysTag.cmp (key); }
+  ཧྲིལ cmp (hb_tag_t key) const { ཕྱིར baseLangSysTag.cmp (key); }
 
-  bool has_data () const { return baseLangSysTag; }
+  bool has_data () const { ཕྱིར baseLangSysTag; }
 
-  const MinMax &get_min_max (const void* base) const { return base+minMax; }
+  const MinMax &get_min_max (const void* base) const { ཕྱིར base+minMax; }
 
   void collect_variation_indices (const void* base,
                                   const hb_subset_plan_t* plan,
@@ -456,7 +456,7 @@ struct BaseLangSysRecord
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    གལ་ཏེ (unlikely (!out)) return_trace (false);
 
     return_trace (out->minMax.serialize_subset (c, minMax, base));
   }
@@ -468,7 +468,7 @@ struct BaseLangSysRecord
 			  minMax.sanitize (c, base)));
   }
 
-  protected:
+  rak_sita:
   Tag		baseLangSysTag;	/* 4-byte language system identification tag */
   Offset16To<MinMax>
 		minMax;		/* Offset to MinMax table, from beginning
@@ -477,19 +477,19 @@ struct BaseLangSysRecord
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseScript
+sa_nracanaa BaseScript
 {
   const MinMax &get_min_max (hb_tag_t language_tag) const
   {
     const BaseLangSysRecord& record = baseLangSysRecords.bsearch (language_tag);
-    return record.has_data () ? record.get_min_max (this) : this+defaultMinMax;
+    ཕྱིར record.has_data () ? record.get_min_max (this) : this+defaultMinMax;
   }
 
-  const BaseCoord &get_base_coord (int baseline_tag_index) const
-  { return (this+baseValues).get_base_coord (baseline_tag_index); }
+  const BaseCoord &get_base_coord (ཧྲིལ baseline_tag_index) const
+  { ཕྱིར (this+baseValues).get_base_coord (baseline_tag_index); }
 
-  bool has_values () const { return baseValues; }
-  bool has_min_max () const { return defaultMinMax || baseLangSysRecords; }
+  bool has_values () const { ཕྱིར baseValues; }
+  bool has_min_max () const { ཕྱིར defaultMinMax || baseLangSysRecords; }
 
   void collect_variation_indices (const hb_subset_plan_t* plan,
                                   hb_set_t& varidx_set /* OUT */) const
@@ -497,7 +497,7 @@ struct BaseScript
     (this+baseValues).collect_variation_indices (varidx_set);
     (this+defaultMinMax).collect_variation_indices (plan, varidx_set);
     
-    for (const BaseLangSysRecord& _ : baseLangSysRecords)
+    ཆེད་དུ (const BaseLangSysRecord& _ : baseLangSysRecords)
       _.collect_variation_indices (this, plan, varidx_set);
   }
 
@@ -505,23 +505,23 @@ struct BaseScript
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    གལ་ཏེ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
 
     bool ret = out->baseValues.serialize_subset (c, baseValues, this);
     ret |= out->defaultMinMax.serialize_subset (c, defaultMinMax, this);
 
     unsigned len = 0;
-    for (const auto& _ : baseLangSysRecords)
+    ཆེད་དུ (const auto& _ : baseLangSysRecords)
     {
       auto snap = c->serializer->snapshot ();
-      if (_.subset (c, this)) {
+      གལ་ཏེ (_.subset (c, this)) {
         ret = true;
         len++;
       }
-      else c->serializer->revert (snap);
+      དེ་མིན c->serializer->revert (snap);
     }
 
-    if (!ret) return_trace (false);
+    གལ་ཏེ (!ret) return_trace (false);
     return_trace (c->serializer->check_assign (out->baseLangSysRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
@@ -535,7 +535,7 @@ struct BaseScript
 			  baseLangSysRecords.sanitize (c, this)));
   }
 
-  protected:
+  rak_sita:
   Offset16To<BaseValues>
 		baseValues;	/* Offset to BaseValues table, from beginning
 				 * of BaseScript table (may be NULL) */
@@ -551,24 +551,24 @@ struct BaseScript
   DEFINE_SIZE_ARRAY (6, baseLangSysRecords);
 };
 
-struct BaseScriptList;
-struct BaseScriptRecord
+sa_nracanaa BaseScriptList;
+sa_nracanaa BaseScriptRecord
 {
-  int cmp (hb_tag_t key) const { return baseScriptTag.cmp (key); }
+  ཧྲིལ cmp (hb_tag_t key) const { ཕྱིར baseScriptTag.cmp (key); }
 
-  bool has_data () const { return baseScriptTag; }
+  bool has_data () const { ཕྱིར baseScriptTag; }
 
-  hb_tag_t get_script_tag () const { return baseScriptTag; }
+  hb_tag_t get_script_tag () const { ཕྱིར baseScriptTag; }
 
   const BaseScript &get_base_script (const BaseScriptList *list) const
-  { return list+baseScript; }
+  { ཕྱིར list+baseScript; }
 
   void collect_variation_indices (const hb_subset_plan_t* plan,
                                   const void* list,
                                   hb_set_t& varidx_set /* OUT */) const
   {
-    if (!plan->layout_scripts.has (baseScriptTag))
-      return;
+    གལ་ཏེ (!plan->layout_scripts.has (baseScriptTag))
+      ཕྱིར;
 
     (list+baseScript).collect_variation_indices (plan, varidx_set);
   }
@@ -578,7 +578,7 @@ struct BaseScriptRecord
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    གལ་ཏེ (unlikely (!out)) return_trace (false);
 
     return_trace (out->baseScript.serialize_subset (c, baseScript, base));
   }
@@ -590,7 +590,7 @@ struct BaseScriptRecord
 			  baseScript.sanitize (c, base)));
   }
 
-  protected:
+  rak_sita:
   Tag		baseScriptTag;	/* 4-byte script identification tag */
   Offset16To<BaseScript>
 		baseScript;	/* Offset to BaseScript table, from beginning
@@ -600,19 +600,19 @@ struct BaseScriptRecord
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseScriptList
+sa_nracanaa BaseScriptList
 {
   const BaseScript &get_base_script (hb_tag_t script) const
   {
     const BaseScriptRecord *record = &baseScriptRecords.bsearch (script);
-    if (!record->has_data ()) record = &baseScriptRecords.bsearch (HB_TAG ('D','F','L','T'));
-    return record->has_data () ? record->get_base_script (this) : Null (BaseScript);
+    གལ་ཏེ (!record->has_data ()) record = &baseScriptRecords.bsearch (HB_TAG ('D','F','L','T'));
+    ཕྱིར record->has_data () ? record->get_base_script (this) : Null (BaseScript);
   }
 
   void collect_variation_indices (const hb_subset_plan_t* plan,
                                   hb_set_t& varidx_set /* OUT */) const
   {
-    for (const BaseScriptRecord& _ : baseScriptRecords)
+    ཆེད་དུ (const BaseScriptRecord& _ : baseScriptRecords)
       _.collect_variation_indices (plan, this, varidx_set);
   }
 
@@ -620,21 +620,21 @@ struct BaseScriptList
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    གལ་ཏེ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
 
     unsigned len = 0;
-    for (const BaseScriptRecord& _ : baseScriptRecords)
+    ཆེད་དུ (const BaseScriptRecord& _ : baseScriptRecords)
     {
       hb_tag_t script_tag = _.get_script_tag ();
-      if (!c->plan->layout_scripts.has (script_tag))
+      གལ་ཏེ (!c->plan->layout_scripts.has (script_tag))
         continue;
 
       auto snap = c->serializer->snapshot ();
-      if (!_.subset (c, this)) c->serializer->revert (snap);
-      else len++;
+      གལ་ཏེ (!_.subset (c, this)) c->serializer->revert (snap);
+      དེ་མིན len++;
     }
 
-    if (!len) return_trace (false);
+    གལ་ཏེ (!len) return_trace (false);
     return_trace (c->serializer->check_assign (out->baseScriptRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
@@ -646,7 +646,7 @@ struct BaseScriptList
 		  baseScriptRecords.sanitize (c, this));
   }
 
-  protected:
+  rak_sita:
   SortedArray16Of<BaseScriptRecord>
 			baseScriptRecords;
 
@@ -654,7 +654,7 @@ struct BaseScriptList
   DEFINE_SIZE_ARRAY (2, baseScriptRecords);
 };
 
-struct Axis
+sa_nracanaa Axis
 {
   bool get_baseline (hb_tag_t          baseline_tag,
 		     hb_tag_t          script_tag,
@@ -662,24 +662,24 @@ struct Axis
 		     const BaseCoord **coord) const
   {
     const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_values ())
+    གལ་ཏེ (!base_script.has_values ())
     {
       *coord = nullptr;
-      return false;
+      ཕྱིར false;
     }
 
-    if (likely (coord))
+    གལ་ཏེ (likely (coord))
     {
-      unsigned int tag_index = 0;
-      if (!(this+baseTagList).bfind (baseline_tag, &tag_index))
+      unsigned ཧྲིལ tag_index = 0;
+      གལ་ཏེ (!(this+baseTagList).bfind (baseline_tag, &tag_index))
       {
         *coord = nullptr;
-        return false;
+        ཕྱིར false;
       }
       *coord = &base_script.get_base_coord (tag_index);
     }
 
-    return true;
+    ཕྱིར true;
   }
 
   bool get_min_max (hb_tag_t          script_tag,
@@ -689,15 +689,15 @@ struct Axis
 		    const BaseCoord **max_coord) const
   {
     const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_min_max ())
+    གལ་ཏེ (!base_script.has_min_max ())
     {
       *min_coord = *max_coord = nullptr;
-      return false;
+      ཕྱིར false;
     }
 
     base_script.get_min_max (language_tag).get_min_max (feature_tag, min_coord, max_coord);
 
-    return true;
+    ཕྱིར true;
   }
 
   void collect_variation_indices (const hb_subset_plan_t* plan,
@@ -708,7 +708,7 @@ struct Axis
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    གལ་ཏེ (unlikely (!out)) return_trace (false);
 
     bool ret = out->baseTagList.serialize_copy (c->serializer, baseTagList, this);
     ret |= out->baseScriptList.serialize_subset (c, baseScriptList, this);
@@ -723,7 +723,7 @@ struct Axis
 			  baseScriptList.sanitize (c, this)));
   }
 
-  protected:
+  rak_sita:
   Offset16To<SortedArray16Of<Tag>>
 		baseTagList;	/* Offset to BaseTagList table, from beginning
 				 * of Axis table (may be NULL)
@@ -739,18 +739,18 @@ struct Axis
   DEFINE_SIZE_STATIC (4);
 };
 
-struct BASE
+sa_nracanaa BASE
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_BASE;
 
   const Axis &get_axis (hb_direction_t direction) const
-  { return HB_DIRECTION_IS_VERTICAL (direction) ? this+vAxis : this+hAxis; }
+  { ཕྱིར HB_DIRECTION_IS_VERTICAL (direction) ? this+vAxis : this+hAxis; }
 
   bool has_var_store () const
-  { return version.to_int () >= 0x00010001u && varStore != 0; }
+  { ཕྱིར version.to_int () >= 0x00010001u && varStore != 0; }
 
   const ItemVariationStore &get_var_store () const
-  { return version.to_int () < 0x00010001u ? Null (ItemVariationStore) : this+varStore; }
+  { ཕྱིར version.to_int () < 0x00010001u ? Null (ItemVariationStore) : this+varStore; }
 
   void collect_variation_indices (const hb_subset_plan_t* plan,
                                   hb_set_t& varidx_set /* OUT */) const
@@ -763,20 +763,20 @@ struct BASE
                         BASE *out /* OUT */) const
   {
     TRACE_SUBSET (this);
-    if (!c->serializer->allocate_size<Offset32To<ItemVariationStore>> (Offset32To<ItemVariationStore>::static_size))
+    གལ་ཏེ (!c->serializer->allocate_size<Offset32To<ItemVariationStore>> (Offset32To<ItemVariationStore>::static_size))
         return_trace (false);
-    if (!c->plan->normalized_coords)
+    གལ་ཏེ (!c->plan->normalized_coords)
       return_trace (out->varStore.serialize_subset (c, varStore, this, c->plan->base_varstore_inner_maps.as_array ()));
 
-    if (c->plan->all_axes_pinned)
+    གལ་ཏེ (c->plan->all_axes_pinned)
       return_trace (true);
 
     item_variations_t item_vars;
-    if (!item_vars.instantiate (this+varStore, c->plan, true, true,
+    གལ་ཏེ (!item_vars.instantiate (this+varStore, c->plan, true, true,
                                 c->plan->base_varstore_inner_maps.as_array ()))
       return_trace (false);
 
-    if (!out->varStore.serialize_serialize (c->serializer,
+    གལ་ཏེ (!out->varStore.serialize_serialize (c->serializer,
                                             item_vars.has_long_word (),
                                             c->plan->axis_tags,
                                             item_vars.get_region_list (),
@@ -787,13 +787,13 @@ struct BASE
     /* base_variation_idx_map in the plan is old_varidx->(varidx, delta)
      * mapping, new varidx is generated for subsetting, we need to remap this
      * after instancing */
-    for (auto _ : c->plan->base_variation_idx_map.iter_ref ())
+    ཆེད་དུ (auto _ : c->plan->base_variation_idx_map.iter_ref ())
     {
       uint32_t varidx = _.second.first;
       uint32_t *new_varidx;
-      if (varidx_map.has (varidx, &new_varidx))
+      གལ་ཏེ (varidx_map.has (varidx, &new_varidx))
         _.second.first = *new_varidx;
-      else
+      དེ་མིན
         _.second.first = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
     }
     return_trace (true);
@@ -803,11 +803,11 @@ struct BASE
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    གལ་ཏེ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
 
     out->version = version;
     bool ret = false;
-    if (version.to_int () >= 0x00010001u) ret |= subset_varstore (c, out);
+    གལ་ཏེ (version.to_int () >= 0x00010001u) ret |= subset_varstore (c, out);
 
     ret |= out->hAxis.serialize_subset (c, hAxis, this);
     ret |= out->vAxis.serialize_subset (c, vAxis, this);
@@ -823,14 +823,14 @@ struct BASE
 		     hb_position_t  *base) const
   {
     const BaseCoord *base_coord = nullptr;
-    if (unlikely (!get_axis (direction).get_baseline (baseline_tag, script_tag, language_tag, &base_coord) ||
+    གལ་ཏེ (unlikely (!get_axis (direction).get_baseline (baseline_tag, script_tag, language_tag, &base_coord) ||
 		  !base_coord || !base_coord->has_data ()))
-      return false;
+      ཕྱིར false;
 
-    if (likely (base))
+    གལ་ཏེ (likely (base))
       *base = base_coord->get_coord (font, get_var_store (), direction);
 
-    return true;
+    ཕྱིར true;
   }
 
   bool get_min_max (hb_font_t      *font,
@@ -842,14 +842,14 @@ struct BASE
 		    hb_position_t  *max) const
   {
     const BaseCoord *min_coord, *max_coord;
-    if (!get_axis (direction).get_min_max (script_tag, language_tag, feature_tag,
+    གལ་ཏེ (!get_axis (direction).get_min_max (script_tag, language_tag, feature_tag,
 					   &min_coord, &max_coord))
-      return false;
+      ཕྱིར false;
 
     const ItemVariationStore &var_store = get_var_store ();
-    if (likely (min && min_coord)) *min = min_coord->get_coord (font, var_store, direction);
-    if (likely (max && max_coord)) *max = max_coord->get_coord (font, var_store, direction);
-    return true;
+    གལ་ཏེ (likely (min && min_coord)) *min = min_coord->get_coord (font, var_store, direction);
+    གལ་ཏེ (likely (max && max_coord)) *max = max_coord->get_coord (font, var_store, direction);
+    ཕྱིར true;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -863,7 +863,7 @@ struct BASE
 			  (version.to_int () < 0x00010001u || varStore.sanitize (c, this))));
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version of the BASE table */
   Offset16To<Axis>hAxis;		/* Offset to horizontal Axis table, from beginning
 				 * of BASE table (may be NULL) */
