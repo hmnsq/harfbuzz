@@ -9,13 +9,13 @@ namespace GPOS_impl {
 
 typedef HBUINT16 Value;
 
-struct ValueBase {}; // Dummy base class tag for OffsetTo<Value> bases.
+sa_nracanaa ValueBase {}; // Dummy base class tag for OffsetTo<Value> bases.
 
 typedef UnsizedArrayOf<Value> ValueRecord;
 
-struct ValueFormat : HBUINT16
+sa_nracanaa ValueFormat : HBUINT16
 {
-  enum Flags {
+  ga_nanaa Flags {
     xPlacement  = 0x0001u,      /* Includes horizontal adjustment for placement */
     yPlacement  = 0x0002u,      /* Includes vertical adjustment for placement */
     xAdvance    = 0x0004u,      /* Includes horizontal adjustment for advance */
@@ -31,7 +31,7 @@ struct ValueFormat : HBUINT16
   };
 
 /* All fields are options.  Only those available advance the value pointer. */
-#if 0
+#ຖ້າ 0
   HBINT16               xPlacement;     /* Horizontal adjustment for
                                          * placement--in design units */
   HBINT16               yPlacement;     /* Vertical adjustment for
@@ -56,32 +56,32 @@ struct ValueFormat : HBUINT16
                                          * PosTable (may be NULL) */
 #endif
 
-  NumType& operator = (uint16_t i) { v = i; return *this; }
+  NumType& operator = (uint16_t i) { v = i; ສົ່ງຄືນ *this; }
 
   // Note: spec says skip 2 bytes per bit in the valueformat. But reports
   // from Microsoft developers indicate that only the fields that are
   // currently defined are counted. We don't expect any new fields to
   // be added to ValueFormat. As such, we use the faster hb_popcount8
   // that only processes the lowest 8 bits.
-  unsigned int get_len () const  { return hb_popcount8 ((uint8_t) *this); }
-  size_t get_size () const { return get_len () * Value::static_size; }
+  unsigned ຈຳນວນເຕັມ get_len () const  { ສົ່ງຄືນ hb_popcount8 ((uint8_t) *this); }
+  size_t get_size () const { ສົ່ງຄືນ get_len () * Value::static_size; }
 
   hb_vector_t<unsigned> get_device_table_indices () const {
     unsigned i = 0;
     hb_vector_t<unsigned> result;
     unsigned format = *this;
 
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance)   i++;
-    if (format & yAdvance)   i++;
+    ຖ້າ (format & xPlacement) i++;
+    ຖ້າ (format & yPlacement) i++;
+    ຖ້າ (format & xAdvance)   i++;
+    ຖ້າ (format & yAdvance)   i++;
 
-    if (format & xPlaDevice) result.push (i++);
-    if (format & yPlaDevice) result.push (i++);
-    if (format & xAdvDevice) result.push (i++);
-    if (format & yAdvDevice) result.push (i++);
+    ຖ້າ (format & xPlaDevice) result.push (i++);
+    ຖ້າ (format & yPlaDevice) result.push (i++);
+    ຖ້າ (format & xAdvDevice) result.push (i++);
+    ຖ້າ (format & yAdvDevice) result.push (i++);
 
-    return result;
+    ສົ່ງຄືນ result;
   }
 
   bool apply_value (hb_ot_apply_context_t *c,
@@ -90,71 +90,71 @@ struct ValueFormat : HBUINT16
                     hb_glyph_position_t   &glyph_pos) const
   {
     bool ret = false;
-    unsigned int format = *this;
-    if (!format) return ret;
+    unsigned ຈຳນວນເຕັມ format = *this;
+    ຖ້າ (!format) ສົ່ງຄືນ ret;
 
     hb_font_t *font = c->font;
     bool horizontal =
 #ifndef HB_NO_VERTICAL
       HB_DIRECTION_IS_HORIZONTAL (c->direction)
-#else
+#ບໍ່ດັ່ງນັ້ນ
       true
 #endif
       ;
 
-    if (format & xPlacement)
+    ຖ້າ (format & xPlacement)
       glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, font->em_scale_x (get_short (values++, &ret)));
-    if (format & yPlacement)
+    ຖ້າ (format & yPlacement)
       glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, font->em_scale_y (get_short (values++, &ret)));
-    if (format & xAdvance) {
-      if (likely (horizontal))
+    ຖ້າ (format & xAdvance) {
+      ຖ້າ (likely (horizontal))
 	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, font->em_scale_x (get_short (values, &ret)));
       values++;
     }
     /* y_advance values grow downward but font-space grows upward, hence negation */
-    if (format & yAdvance) {
-      if (unlikely (!horizontal))
+    ຖ້າ (format & yAdvance) {
+      ຖ້າ (unlikely (!horizontal))
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, font->em_scale_y (get_short (values, &ret)));
       values++;
     }
 
-    if (!has_device ()) return ret;
+    ຖ້າ (!has_device ()) ສົ່ງຄືນ ret;
 
     bool use_x_device = font->x_ppem || font->has_nonzero_coords;
     bool use_y_device = font->y_ppem || font->has_nonzero_coords;
 
-    if (!use_x_device && !use_y_device) return ret;
+    ຖ້າ (!use_x_device && !use_y_device) ສົ່ງຄືນ ret;
 
     const ItemVariationStore &store = c->var_store;
     auto *cache = c->var_store_cache;
 
     /* pixel -> fractional pixel */
-    if (format & xPlaDevice)
+    ຖ້າ (format & xPlaDevice)
     {
-      if (use_x_device)
+      ຖ້າ (use_x_device)
 	glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yPlaDevice)
+    ຖ້າ (format & yPlaDevice)
     {
-      if (use_y_device)
+      ຖ້າ (use_y_device)
 	glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    if (format & xAdvDevice)
+    ຖ້າ (format & xAdvDevice)
     {
-      if (horizontal && use_x_device)
+      ຖ້າ (horizontal && use_x_device)
 	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yAdvDevice)
+    ຖ້າ (format & yAdvDevice)
     {
       /* y_advance values grow downward but font-space grows upward, hence negation */
-      if (!horizontal && use_y_device)
+      ຖ້າ (!horizontal && use_y_device)
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    return ret;
+    ສົ່ງຄືນ ret;
   }
 
   void position_single (hb_font_t *font,
@@ -172,87 +172,87 @@ struct ValueFormat : HBUINT16
     apply_value (&c, base, values, pos);
   }
 
-  unsigned int get_effective_format (const Value *values, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  unsigned ຈຳນວນເຕັມ get_effective_format (const Value *values, bool strip_hints, bool strip_empty, const ValueBase *base,
+                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> *varidx_delta_map) const
   {
-    unsigned int format = *this;
-    for (unsigned flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
-      if (format & flag)
+    unsigned ຈຳນວນເຕັມ format = *this;
+    ສຳລັບ (unsigned flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
+      ຖ້າ (format & flag)
       {
-        if (strip_hints && flag >= xPlaDevice)
+        ຖ້າ (strip_hints && flag >= xPlaDevice)
         {
           format = format & ~flag;
           values++;
           continue;
         }
-        if (varidx_delta_map && flag >= xPlaDevice)
+        ຖ້າ (varidx_delta_map && flag >= xPlaDevice)
         {
           update_var_flag (values++, (Flags) flag, &format, base, varidx_delta_map);
           continue;
         }
         /* do not strip empty when instancing, cause we don't know whether the new
          * default value is 0 or not */
-        if (strip_empty) should_drop (*values, (Flags) flag, &format);
+        ຖ້າ (strip_empty) should_drop (*values, (Flags) flag, &format);
         values++;
       }
     }
 
-    return format;
+    ສົ່ງຄືນ format;
   }
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  unsigned int get_effective_format (Iterator it, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const {
-    unsigned int new_format = 0;
+  unsigned ຈຳນວນເຕັມ get_effective_format (Iterator it, bool strip_hints, bool strip_empty, const ValueBase *base,
+                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> *varidx_delta_map) const {
+    unsigned ຈຳນວນເຕັມ new_format = 0;
 
-    for (const hb_array_t<const Value>& values : it)
+    ສຳລັບ (const hb_array_t<const Value>& values : it)
       new_format = new_format | get_effective_format (&values, strip_hints, strip_empty, base, varidx_delta_map);
 
-    return new_format;
+    ສົ່ງຄືນ new_format;
   }
 
   void copy_values (hb_serialize_context_t *c,
-                    unsigned int new_format,
+                    unsigned ຈຳນວນເຕັມ new_format,
                     const ValueBase *base,
                     const Value *values,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> *layout_variation_idx_delta_map) const
   {
-    unsigned int format = *this;
-    if (!format) return;
+    unsigned ຈຳນວນເຕັມ format = *this;
+    ຖ້າ (!format) ສົ່ງຄືນ;
 
     HBINT16 *x_placement = nullptr, *y_placement = nullptr, *x_adv = nullptr, *y_adv = nullptr;
-    if ((format | new_format) & xPlacement)
+    ຖ້າ ((format | new_format) & xPlacement)
       x_placement = copy_value (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & yPlacement)
+    ຖ້າ ((format | new_format) & yPlacement)
       y_placement = copy_value (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & xAdvance)
+    ຖ້າ ((format | new_format) & xAdvance)
       x_adv = copy_value (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (Value));
-    if ((format | new_format) & yAdvance)
+    ຖ້າ ((format | new_format) & yAdvance)
       y_adv = copy_value (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (Value));
 
-    if (!has_device ())
-      return;
+    ຖ້າ (!has_device ())
+      ສົ່ງຄືນ;
 
-    if (format & xPlaDevice)
+    ຖ້າ (format & xPlaDevice)
     {
       add_delta_to_value (x_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xPlaDevice);
     }
 
-    if (format & yPlaDevice)
+    ຖ້າ (format & yPlaDevice)
     {
       add_delta_to_value (y_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yPlaDevice);
     }
 
-    if (format & xAdvDevice)
+    ຖ້າ (format & xAdvDevice)
     {
       add_delta_to_value (x_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xAdvDevice);
     }
 
-    if (format & yAdvDevice)
+    ຖ້າ (format & yAdvDevice)
     {
       add_delta_to_value (y_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yAdvDevice);
@@ -260,13 +260,13 @@ struct ValueFormat : HBUINT16
   }
 
   HBINT16* copy_value (hb_serialize_context_t *c,
-                       unsigned int new_format,
+                       unsigned ຈຳນວນເຕັມ new_format,
                        Flags flag,
                        Value value) const
   {
     // Filter by new format.
-    if (!(new_format & flag)) return nullptr;
-    return reinterpret_cast<HBINT16 *> (c->copy (value));
+    ຖ້າ (!(new_format & flag)) ສົ່ງຄືນ nullptr;
+    ສົ່ງຄືນ reinterpret_cast<HBINT16 *> (c->copy (value));
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
@@ -275,29 +275,29 @@ struct ValueFormat : HBUINT16
   {
     unsigned format = *this;
     unsigned i = 0;
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance) i++;
-    if (format & yAdvance) i++;
-    if (format & xPlaDevice)
+    ຖ້າ (format & xPlacement) i++;
+    ຖ້າ (format & yPlacement) i++;
+    ຖ້າ (format & xAdvance) i++;
+    ຖ້າ (format & yAdvance) i++;
+    ຖ້າ (format & xPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yPlaDevice)
+    ຖ້າ (format & ValueFormat::yPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::xAdvDevice)
+    ຖ້າ (format & ValueFormat::xAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yAdvDevice)
+    ຖ້າ (format & ValueFormat::yAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
@@ -307,53 +307,53 @@ struct ValueFormat : HBUINT16
   private:
   bool sanitize_value_devices (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
   {
-    unsigned int format = *this;
+    unsigned ຈຳນວນເຕັມ format = *this;
 
-    if (format & xPlacement) values++;
-    if (format & yPlacement) values++;
-    if (format & xAdvance)   values++;
-    if (format & yAdvance)   values++;
+    ຖ້າ (format & xPlacement) values++;
+    ຖ້າ (format & yPlacement) values++;
+    ຖ້າ (format & xAdvance)   values++;
+    ຖ້າ (format & yAdvance)   values++;
 
-    if ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
+    ຖ້າ ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) ສົ່ງຄືນ false;
+    ຖ້າ ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) ສົ່ງຄືນ false;
+    ຖ້າ ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) ສົ່ງຄືນ false;
+    ຖ້າ ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) ສົ່ງຄືນ false;
 
-    return true;
+    ສົ່ງຄືນ true;
   }
 
-  static inline Offset16To<Device, ValueBase>& get_device (Value* value)
+  static anta_hstha Offset16To<Device, ValueBase>& get_device (Value* value)
   {
-    return *static_cast<Offset16To<Device, ValueBase> *> (value);
+    ສົ່ງຄືນ *static_cast<Offset16To<Device, ValueBase> *> (value);
   }
-  static inline const Offset16To<Device, ValueBase>& get_device (const Value* value)
+  static anta_hstha const Offset16To<Device, ValueBase>& get_device (const Value* value)
   {
-    return *static_cast<const Offset16To<Device, ValueBase> *> (value);
+    ສົ່ງຄືນ *static_cast<const Offset16To<Device, ValueBase> *> (value);
   }
-  static inline const Device& get_device (const Value* value,
+  static anta_hstha const Device& get_device (const Value* value,
 					  bool *worked,
 					  const ValueBase *base,
 					  hb_sanitize_context_t &c)
   {
-    if (worked) *worked |= bool (*value);
+    ຖ້າ (worked) *worked |= bool (*value);
     auto &offset = *static_cast<const Offset16To<Device> *> (value);
 
-    if (unlikely (!offset.sanitize (&c, base)))
-      return Null(Device);
+    ຖ້າ (unlikely (!offset.sanitize (&c, base)))
+      ສົ່ງຄືນ Null(Device);
     hb_barrier ();
 
-    return base + offset;
+    ສົ່ງຄືນ base + offset;
   }
 
   void add_delta_to_value (HBINT16 *value,
                            const ValueBase *base,
                            const Value *src_value,
-                           const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+                           const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> *layout_variation_idx_delta_map) const
   {
-    if (!value) return;
+    ຖ້າ (!value) ສົ່ງຄືນ;
     unsigned varidx = (base + get_device (src_value)).get_variation_index ();
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) return;
+    hb_pair_t<unsigned, ຈຳນວນເຕັມ> *varidx_delta;
+    ຖ້າ (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) ສົ່ງຄືນ;
 
     *value += hb_second (*varidx_delta);
   }
@@ -361,65 +361,65 @@ struct ValueFormat : HBUINT16
   bool copy_device (hb_serialize_context_t *c,
                     const ValueBase *base,
                     const Value *src_value,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                    unsigned int new_format, Flags flag) const
+                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> *layout_variation_idx_delta_map,
+                    unsigned ຈຳນວນເຕັມ new_format, Flags flag) const
   {
     // Filter by new format.
-    if (!(new_format & flag)) return true;
+    ຖ້າ (!(new_format & flag)) ສົ່ງຄືນ true;
 
     Value       *dst_value = c->copy (*src_value);
 
-    if (!dst_value) return false;
-    if (*dst_value == 0) return true;
+    ຖ້າ (!dst_value) ສົ່ງຄືນ false;
+    ຖ້າ (*dst_value == 0) ສົ່ງຄືນ true;
 
     *dst_value = 0;
     c->push ();
-    if ((base + get_device (src_value)).copy (c, layout_variation_idx_delta_map))
+    ຖ້າ ((base + get_device (src_value)).copy (c, layout_variation_idx_delta_map))
     {
       c->add_link (*dst_value, c->pop_pack ());
-      return true;
+      ສົ່ງຄືນ true;
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       c->pop_discard ();
-      return false;
+      ສົ່ງຄືນ false;
     }
   }
 
-  static inline const HBINT16& get_short (const Value* value, bool *worked=nullptr)
+  static anta_hstha const HBINT16& get_short (const Value* value, bool *worked=nullptr)
   {
-    if (worked) *worked |= bool (*value);
-    return *reinterpret_cast<const HBINT16 *> (value);
+    ຖ້າ (worked) *worked |= bool (*value);
+    ສົ່ງຄືນ *reinterpret_cast<const HBINT16 *> (value);
   }
 
   public:
 
   bool has_device () const
   {
-    unsigned int format = *this;
-    return (format & devices) != 0;
+    unsigned ຈຳນວນເຕັມ format = *this;
+    ສົ່ງຄືນ (format & devices) != 0;
   }
 
   bool sanitize_value (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
   {
     TRACE_SANITIZE (this);
 
-    if (unlikely (!c->check_range (values, get_size ()))) return_trace (false);
+    ຖ້າ (unlikely (!c->check_range (values, get_size ()))) return_trace (false);
 
-    if (c->lazy_some_gpos)
+    ຖ້າ (c->lazy_some_gpos)
       return_trace (true);
 
     return_trace (!has_device () || sanitize_value_devices (c, base, values));
   }
 
-  bool sanitize_values (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count) const
+  bool sanitize_values (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned ຈຳນວນເຕັມ count) const
   {
     TRACE_SANITIZE (this);
     unsigned size = get_size ();
 
-    if (!c->check_range (values, count, size)) return_trace (false);
+    ຖ້າ (!c->check_range (values, count, size)) return_trace (false);
 
-    if (c->lazy_some_gpos)
+    ຖ້າ (c->lazy_some_gpos)
       return_trace (true);
 
     hb_barrier ();
@@ -427,14 +427,14 @@ struct ValueFormat : HBUINT16
   }
 
   /* Just sanitize referenced Device tables.  Doesn't check the values themselves. */
-  bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count, unsigned int stride) const
+  bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned ຈຳນວນເຕັມ count, unsigned ຈຳນວນເຕັມ stride) const
   {
     TRACE_SANITIZE (this);
 
-    if (!has_device ()) return_trace (true);
+    ຖ້າ (!has_device ()) return_trace (true);
 
-    for (unsigned int i = 0; i < count; i++) {
-      if (!sanitize_value_devices (c, base, values))
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 0; i < count; i++) {
+      ຖ້າ (!sanitize_value_devices (c, base, values))
         return_trace (false);
       values = &StructAtOffset<const Value> (values, stride);
     }
@@ -444,27 +444,27 @@ struct ValueFormat : HBUINT16
 
  private:
 
-  void should_drop (Value value, Flags flag, unsigned int* format) const
+  void should_drop (Value value, Flags flag, unsigned ຈຳນວນເຕັມ* format) const
   {
-    if (value) return;
+    ຖ້າ (value) ສົ່ງຄືນ;
     *format = *format & ~flag;
   }
 
   void update_var_flag (const Value* value, Flags flag,
-                        unsigned int* format, const ValueBase *base,
-                        const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+                        unsigned ຈຳນວນເຕັມ* format, const ValueBase *base,
+                        const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> *varidx_delta_map) const
   {
-    if (*value)
+    ຖ້າ (*value)
     {
       unsigned varidx = (base + get_device (value)).get_variation_index ();
-      hb_pair_t<unsigned, int> *varidx_delta;
-      if (varidx_delta_map->has (varidx, &varidx_delta))
+      hb_pair_t<unsigned, ຈຳນວນເຕັມ> *varidx_delta;
+      ຖ້າ (varidx_delta_map->has (varidx, &varidx_delta))
       {
         /* A device-only value needs a base field for its instanced delta. */
-        if (varidx_delta->second)
+        ຖ້າ (varidx_delta->second)
           *format |= flag >> 4;
-        if (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-          return;
+        ຖ້າ (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+          ສົ່ງຄືນ;
       }
     }
     *format = *format & ~flag;

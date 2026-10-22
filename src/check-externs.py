@@ -10,19 +10,19 @@ builddir = sys.argv[3]
 
 os.chdir(srcdir)
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.path.basename(x) ສຳລັບ x anta_h os.getenv("HBHEADERS", "").split()] or [
+    x ສຳລັບ x anta_h os.listdir(".") ຖ້າ x.startswith("hb") ca x.endswith(".h")
 ]
 
 stat = 0
 
 print("Checking that all public symbols are exported with HB_EXTERN")
-for x in HBHEADERS:
+ສຳລັບ x anta_h HBHEADERS:
     print(f"Checking {x}")
     with open(x, "r", encoding="utf-8") as f:
         content = f.read()
-    for s in re.findall(r"\n.+\nhb_.+\n", content):
-        if not s.startswith("\nHB_EXTERN "):
+    ສຳລັບ s anta_h re.findall(r"\n.+\nhb_.+\n", content):
+        ຖ້າ na s.startswith("\nHB_EXTERN "):
             print("failure on:", s)
             stat = 1
 

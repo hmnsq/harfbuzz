@@ -1614,1375 +1614,1375 @@ static const LangTagRange ot_languages3_multi[] = {
  *
  * Return value: Whether any language systems were retrieved.
  **/
-static inline bool
-hb_ot_tags_from_complex_language (const char   *lang_str,
-				  const char   *limit,
-				  unsigned int *count /* IN/OUT */,
+static anta_hstha bool
+hb_ot_tags_from_complex_language (const var_na   *lang_str,
+				  const var_na   *limit,
+				  unsigned ຈຳນວນເຕັມ *count /* IN/OUT */,
 				  hb_tag_t     *tags /* OUT */)
 {
-  if (limit - lang_str >= 7)
+  ຖ້າ (limit - lang_str >= 7)
   {
-    const char *p = strchr (lang_str, '-');
-    if (!p || p >= limit || limit - p < 5) goto out;
-    if (subtag_matches (p, limit, "-fonnapa", 8))
+    const var_na *p = strchr (lang_str, '-');
+    ຖ້າ (!p || p >= limit || limit - p < 5) goto out;
+    ຖ້າ (subtag_matches (p, limit, "-fonnapa", 8))
     {
       /* Undetermined; North American Phonetic Alphabet */
       tags[0] = HB_TAG('A','P','P','H');  /* Phonetic transcription—Americanist conventions */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-polyton", 8))
+    ຖ້າ (subtag_matches (p, limit, "-polyton", 8))
     {
       /* Modern Greek (1453-); Polytonic Greek */
       tags[0] = HB_TAG('P','G','R',' ');  /* Polytonic Greek */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-arevmda", 8))
+    ຖ້າ (subtag_matches (p, limit, "-arevmda", 8))
     {
       /* Armenian; Western Armenian (retired code) */
       tags[0] = HB_TAG('H','Y','E',' ');  /* Armenian */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-provenc", 8))
+    ຖ້າ (subtag_matches (p, limit, "-provenc", 8))
     {
       /* Occitan (post 1500); Provençal */
       tags[0] = HB_TAG('P','R','O',' ');  /* Provençal / Old Provençal */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-fonipa", 7))
+    ຖ້າ (subtag_matches (p, limit, "-fonipa", 7))
     {
       /* Undetermined; International Phonetic Alphabet */
       tags[0] = HB_TAG('I','P','P','H');  /* Phonetic transcription—IPA conventions */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-fonupa", 7))
+    ຖ້າ (subtag_matches (p, limit, "-fonupa", 7))
     {
       /* Undetermined; Uralic Phonetic Alphabet */
       tags[0] = HB_TAG('U','P','P','H');  /* Uralic Phonetic Alphabet */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-geok", 5))
+    ຖ້າ (subtag_matches (p, limit, "-geok", 5))
     {
       /* Undetermined; Khutsuri (Asomtavruli and Nuskhuri) */
       tags[0] = HB_TAG('K','G','E',' ');  /* Khutsuri Georgian */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-syre", 5))
+    ຖ້າ (subtag_matches (p, limit, "-syre", 5))
     {
       /* Undetermined; Syriac (Estrangelo variant) */
       tags[0] = HB_TAG('S','Y','R','E');  /* Syriac, Estrangela script-variant (equivalent to ISO 15924 'Syre') */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-syrj", 5))
+    ຖ້າ (subtag_matches (p, limit, "-syrj", 5))
     {
       /* Undetermined; Syriac (Western variant) */
       tags[0] = HB_TAG('S','Y','R','J');  /* Syriac, Western script-variant (equivalent to ISO 15924 'Syrj') */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (subtag_matches (p, limit, "-syrn", 5))
+    ຖ້າ (subtag_matches (p, limit, "-syrn", 5))
     {
       /* Undetermined; Syriac (Eastern variant) */
       tags[0] = HB_TAG('S','Y','R','N');  /* Syriac, Eastern script-variant (equivalent to ISO 15924 'Syrn') */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
   }
 out:
   switch (lang_str[0])
   {
-  case 'a':
-    if (0 == strcmp (&lang_str[1], "rt-lojban"))
+  pak_sa 'a':
+    ຖ້າ (0 == strcmp (&lang_str[1], "rt-lojban"))
     {
       /* Lojban (retired code) */
       tags[0] = HB_TAG('J','B','O',' ');  /* Lojban */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'c':
-    if (lang_matches (&lang_str[1], limit, "do-hant-hk", 10))
+    bha_nga;
+  pak_sa 'c':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "do-hant-hk", 10))
     {
       /* Min Dong Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "do-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "do-hant-mo", 10))
     {
       /* Min Dong Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "jy-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "jy-hant-hk", 10))
     {
       /* Jinyu Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "jy-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "jy-hant-mo", 10))
     {
       /* Jinyu Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "mn-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "mn-hant-hk", 10))
     {
       /* Mandarin Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "mn-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "mn-hant-mo", 10))
     {
       /* Mandarin Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "np-hant-hk", 10))
     {
       /* Northern Ping Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "np-hant-mo", 10))
     {
       /* Northern Ping Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "px-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "px-hant-hk", 10))
     {
       /* Pu-Xian Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "px-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "px-hant-mo", 10))
     {
       /* Pu-Xian Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "sp-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "sp-hant-hk", 10))
     {
       /* Southern Ping Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "sp-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "sp-hant-mo", 10))
     {
       /* Southern Ping Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zh-hant-hk", 10))
     {
       /* Huizhou Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zh-hant-mo", 10))
     {
       /* Huizhou Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zo-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zo-hant-hk", 10))
     {
       /* Min Zhong Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zo-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zo-hant-mo", 10))
     {
       /* Min Zhong Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "do-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "do-hans", 7))
     {
       /* Min Dong Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "do-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "do-hant", 7))
     {
       /* Min Dong Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "jy-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "jy-hans", 7))
     {
       /* Jinyu Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "jy-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "jy-hant", 7))
     {
       /* Jinyu Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "mn-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "mn-hans", 7))
     {
       /* Mandarin Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "mn-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "mn-hant", 7))
     {
       /* Mandarin Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "np-hans", 7))
     {
       /* Northern Ping Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "np-hant", 7))
     {
       /* Northern Ping Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "px-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "px-hans", 7))
     {
       /* Pu-Xian Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "px-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "px-hant", 7))
     {
       /* Pu-Xian Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "sp-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "sp-hans", 7))
     {
       /* Southern Ping Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "sp-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "sp-hant", 7))
     {
       /* Southern Ping Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zh-hans", 7))
     {
       /* Huizhou Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zh-hant", 7))
     {
       /* Huizhou Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zo-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zo-hans", 7))
     {
       /* Min Zhong Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zo-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zo-hant", 7))
     {
       /* Min Zhong Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "do-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "do-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Min Dong Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "do-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "do-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Min Dong Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "do-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "do-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Min Dong Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "jy-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "jy-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Jinyu Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "jy-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "jy-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Jinyu Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "jy-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "jy-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Jinyu Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "mn-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "mn-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Mandarin Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "mn-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "mn-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Mandarin Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "mn-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "mn-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Mandarin Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "np-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Northern Ping Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "np-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Northern Ping Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "np-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Northern Ping Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "px-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "px-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Pu-Xian Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "px-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "px-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Pu-Xian Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "px-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "px-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Pu-Xian Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "sp-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "sp-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Southern Ping Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "sp-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "sp-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Southern Ping Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "sp-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "sp-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Southern Ping Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "zh-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "zh-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Huizhou Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "zh-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "zh-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Huizhou Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "zh-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "zh-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Huizhou Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "zo-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "zo-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Min Zhong Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "zo-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "zo-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Min Zhong Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "zo-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "zo-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Min Zhong Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'g':
-    if (lang_matches (&lang_str[1], limit, "an-hant-hk", 10))
+    bha_nga;
+  pak_sa 'g':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "an-hant-hk", 10))
     {
       /* Gan Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "an-hant-mo", 10))
     {
       /* Gan Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "an-hans", 7))
     {
       /* Gan Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "an-hant", 7))
     {
       /* Gan Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "a-latg", 6))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "a-latg", 6))
     {
       /* Irish; Latin (Gaelic variant) */
       tags[0] = HB_TAG('I','R','T',' ');  /* Irish Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "an-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Gan Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "an-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Gan Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "an-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Gan Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'h':
-    if (lang_matches (&lang_str[1], limit, "ak-hant-hk", 10))
+    bha_nga;
+  pak_sa 'h':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "ak-hant-hk", 10))
     {
       /* Hakka Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "ak-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "ak-hant-mo", 10))
     {
       /* Hakka Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "nm-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "nm-hant-hk", 10))
     {
       /* Hainanese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "nm-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "nm-hant-mo", 10))
     {
       /* Hainanese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "sn-hant-hk", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "sn-hant-hk", 10))
     {
       /* Xiang Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "sn-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "sn-hant-mo", 10))
     {
       /* Xiang Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "ak-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "ak-hans", 7))
     {
       /* Hakka Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "ak-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "ak-hant", 7))
     {
       /* Hakka Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "nm-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "nm-hans", 7))
     {
       /* Hainanese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "nm-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "nm-hant", 7))
     {
       /* Hainanese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "sn-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "sn-hans", 7))
     {
       /* Xiang Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "sn-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "sn-hant", 7))
     {
       /* Xiang Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "ak-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "ak-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Hakka Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "ak-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "ak-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Hakka Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "ak-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "ak-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Hakka Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "nm-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "nm-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Hainanese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "nm-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "nm-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Hainanese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "nm-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "nm-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Hainanese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "sn-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "sn-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Xiang Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "sn-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "sn-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Xiang Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "sn-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "sn-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Xiang Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'i':
-    if (0 == strcmp (&lang_str[1], "-navajo"))
+    bha_nga;
+  pak_sa 'i':
+    ຖ້າ (0 == strcmp (&lang_str[1], "-navajo"))
     {
       /* Navajo (retired code) */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('N','A','V',' '),  /* Navajo */
 	HB_TAG('A','T','H',' '),  /* Athapaskan */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strcmp (&lang_str[1], "-hak"))
+    ຖ້າ (0 == strcmp (&lang_str[1], "-hak"))
     {
       /* Hakka (retired code) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strcmp (&lang_str[1], "-lux"))
+    ຖ້າ (0 == strcmp (&lang_str[1], "-lux"))
     {
       /* Luxembourgish (retired code) */
       tags[0] = HB_TAG('L','T','Z',' ');  /* Luxembourgish */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'l':
-    if (lang_matches (&lang_str[1], limit, "uh-hant-hk", 10))
+    bha_nga;
+  pak_sa 'l':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "uh-hant-hk", 10))
     {
       /* Leizhou Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "uh-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "uh-hant-mo", 10))
     {
       /* Leizhou Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "uh-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "uh-hans", 7))
     {
       /* Leizhou Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "uh-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "uh-hant", 7))
     {
       /* Leizhou Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "zh-hans", 7))
     {
       /* Literary Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "uh-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "uh-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Leizhou Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "uh-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "uh-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Leizhou Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "uh-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "uh-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Leizhou Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'm':
-    if (lang_matches (&lang_str[1], limit, "np-hant-hk", 10))
+    bha_nga;
+  pak_sa 'm':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "np-hant-hk", 10))
     {
       /* Min Bei Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "np-hant-mo", 10))
     {
       /* Min Bei Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "np-hans", 7))
     {
       /* Min Bei Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "np-hant", 7))
     {
       /* Min Bei Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "np-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Min Bei Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "np-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Min Bei Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "np-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Min Bei Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "nw-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "nw-", 3)
 	&& subtag_matches (lang_str, limit, "-th", 3))
     {
       /* Mon; Thailand */
       tags[0] = HB_TAG('M','O','N','T');  /* Thailand Mon */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'n':
-    if (lang_matches (&lang_str[1], limit, "an-hant-hk", 10))
+    bha_nga;
+  pak_sa 'n':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "an-hant-hk", 10))
     {
       /* Min Nan Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "an-hant-mo", 10))
     {
       /* Min Nan Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "an-hans", 7))
     {
       /* Min Nan Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "an-hant", 7))
     {
       /* Min Nan Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "an-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Min Nan Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "an-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Min Nan Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "an-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Min Nan Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strcmp (&lang_str[1], "o-bok"))
+    ຖ້າ (0 == strcmp (&lang_str[1], "o-bok"))
     {
       /* Norwegian Bokmal (retired code) */
       tags[0] = HB_TAG('N','O','R',' ');  /* Norwegian */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strcmp (&lang_str[1], "o-nyn"))
+    ຖ້າ (0 == strcmp (&lang_str[1], "o-nyn"))
     {
       /* Norwegian Nynorsk (retired code) */
       tags[0] = HB_TAG('N','Y','N',' ');  /* Norwegian Nynorsk (Nynorsk, Norwegian) */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'r':
-    if (0 == strncmp (&lang_str[1], "o-", 2)
+    bha_nga;
+  pak_sa 'r':
+    ຖ້າ (0 == strncmp (&lang_str[1], "o-", 2)
 	&& subtag_matches (lang_str, limit, "-md", 3))
     {
       /* Romanian; Moldova */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('M','O','L',' '),  /* Moldavian */
 	HB_TAG('R','O','M',' '),  /* Romanian */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 's':
-    if (lang_matches (&lang_str[1], limit, "jc-hant-hk", 10))
+    bha_nga;
+  pak_sa 's':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "jc-hant-hk", 10))
     {
       /* Shaojiang Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "jc-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "jc-hant-mo", 10))
     {
       /* Shaojiang Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "jc-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "jc-hans", 7))
     {
       /* Shaojiang Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "jc-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "jc-hant", 7))
     {
       /* Shaojiang Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "jc-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "jc-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Shaojiang Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "jc-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "jc-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Shaojiang Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "jc-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "jc-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Shaojiang Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'w':
-    if (lang_matches (&lang_str[1], limit, "uu-hant-hk", 10))
+    bha_nga;
+  pak_sa 'w':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "uu-hant-hk", 10))
     {
       /* Wu Chinese; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "uu-hant-mo", 10))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "uu-hant-mo", 10))
     {
       /* Wu Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "uu-hans", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "uu-hans", 7))
     {
       /* Wu Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "uu-hant", 7))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "uu-hant", 7))
     {
       /* Wu Chinese; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "uu-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "uu-", 3)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Wu Chinese; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "uu-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "uu-", 3)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Wu Chinese; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "uu-", 3)
+    ຖ້າ (0 == strncmp (&lang_str[1], "uu-", 3)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Wu Chinese; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'y':
-    if (lang_matches (&lang_str[1], limit, "ue-hans", 7))
+    bha_nga;
+  pak_sa 'y':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "ue-hans", 7))
     {
       /* Yue Chinese; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
-  case 'z':
-    if (lang_matches (&lang_str[1], limit, "h-hant-hk", 9))
+    bha_nga;
+  pak_sa 'z':
+    ຖ້າ (lang_matches (&lang_str[1], limit, "h-hant-hk", 9))
     {
       /* Chinese [macrolanguage]; Han (Traditional variant); Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "h-hant-mo", 9))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "h-hant-mo", 9))
     {
       /* Chinese [macrolanguage]; Han (Traditional variant); Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strcmp (&lang_str[1], "h-min-nan"))
+    ຖ້າ (0 == strcmp (&lang_str[1], "h-min-nan"))
     {
       /* Minnan, Hokkien, Amoy, Taiwanese, Southern Min, Southern Fujian, Hoklo, Southern Fukien, Ho-lo (retired code) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "h-hans", 6))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "h-hans", 6))
     {
       /* Chinese [macrolanguage]; Han (Simplified variant) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (lang_matches (&lang_str[1], limit, "h-hant", 6))
+    ຖ້າ (lang_matches (&lang_str[1], limit, "h-hant", 6))
     {
       /* Chinese [macrolanguage]; Han (Traditional variant) */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strcmp (&lang_str[1], "h-min"))
+    ຖ້າ (0 == strcmp (&lang_str[1], "h-min"))
     {
       /* Min, Fuzhou, Hokkien, Amoy, or Taiwanese (retired code) */
       tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "h-", 2)
+    ຖ້າ (0 == strncmp (&lang_str[1], "h-", 2)
 	&& subtag_matches (lang_str, limit, "-hk", 3))
     {
       /* Chinese [macrolanguage]; Hong Kong */
       tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "h-", 2)
+    ຖ້າ (0 == strncmp (&lang_str[1], "h-", 2)
 	&& subtag_matches (lang_str, limit, "-mo", 3))
     {
       /* Chinese [macrolanguage]; Macao */
-      unsigned int i;
+      unsigned ຈຳນວນເຕັມ i;
       hb_tag_t possible_tags[] = {
 	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
 	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
+      ສຳລັບ (i = 0; i < 2 && i < *count; i++)
 	tags[i] = possible_tags[i];
       *count = i;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    if (0 == strncmp (&lang_str[1], "h-", 2)
+    ຖ້າ (0 == strncmp (&lang_str[1], "h-", 2)
 	&& subtag_matches (lang_str, limit, "-tw", 3))
     {
       /* Chinese [macrolanguage]; Taiwan, Province of China */
       tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
       *count = 1;
-      return true;
+      ສົ່ງຄືນ true;
     }
-    break;
+    bha_nga;
   }
-  return false;
+  ສົ່ງຄືນ false;
 }
 
 /**
@@ -2998,143 +2998,143 @@ out:
  * Return value: The #hb_language_t corresponding to the BCP 47 language tag,
  * or #HB_LANGUAGE_INVALID if @tag is not ambiguous.
  **/
-static inline hb_language_t
+static anta_hstha hb_language_t
 hb_ot_ambiguous_tag_to_language (hb_tag_t tag)
 {
   switch (tag)
   {
-  case HB_TAG('A','L','T',' '):  /* Altai */
-    return hb_language_from_string ("alt", -1);  /* Southern Altai */
-  case HB_TAG('A','P','P','H'):  /* Phonetic transcription—Americanist conventions */
-    return hb_language_from_string ("und-fonnapa", -1);  /* Undetermined; North American Phonetic Alphabet */
-  case HB_TAG('A','R','K',' '):  /* Rakhine */
-    return hb_language_from_string ("rki", -1);  /* Rakhine */
-  case HB_TAG('A','T','H',' '):  /* Athapaskan */
-    return hb_language_from_string ("ath", -1);  /* Athapascan [collection] */
-  case HB_TAG('B','B','R',' '):  /* Berber */
-    return hb_language_from_string ("ber", -1);  /* Berber [collection] */
-  case HB_TAG('B','I','K',' '):  /* Bikol */
-    return hb_language_from_string ("bik", -1);  /* Bikol [macrolanguage] */
-  case HB_TAG('B','T','K',' '):  /* Batak */
-    return hb_language_from_string ("btk", -1);  /* Batak [collection] */
-  case HB_TAG('C','P','P',' '):  /* Creoles */
-    return hb_language_from_string ("crp", -1);  /* Creoles and pidgins [collection] */
-  case HB_TAG('C','R','R',' '):  /* Carrier */
-    return hb_language_from_string ("crx", -1);  /* Carrier */
-  case HB_TAG('D','G','R',' '):  /* Dogri (macrolanguage) */
-    return hb_language_from_string ("doi", -1);  /* Dogri [macrolanguage] */
-  case HB_TAG('D','N','K',' '):  /* Dinka */
-    return hb_language_from_string ("din", -1);  /* Dinka [macrolanguage] */
-  case HB_TAG('D','R','I',' '):  /* Dari */
-    return hb_language_from_string ("prs", -1);  /* Dari */
-  case HB_TAG('G','O','N',' '):  /* Gondi */
-    return hb_language_from_string ("gon", -1);  /* Gondi [macrolanguage] */
-  case HB_TAG('H','M','A',' '):  /* High Mari */
-    return hb_language_from_string ("mrj", -1);  /* Western Mari */
-  case HB_TAG('H','M','N',' '):  /* Hmong */
-    return hb_language_from_string ("hmn", -1);  /* Hmong [macrolanguage] */
-  case HB_TAG('H','N','D',' '):  /* Hindko */
-    return hb_language_from_string ("hnd", -1);  /* Southern Hindko */
-  case HB_TAG('H','Y','E',' '):  /* Armenian */
-    return hb_language_from_string ("hyw", -1);  /* Western Armenian */
-  case HB_TAG('I','B','A',' '):  /* Iban */
-    return hb_language_from_string ("iba", -1);  /* Iban */
-  case HB_TAG('I','J','O',' '):  /* Ijo */
-    return hb_language_from_string ("ijo", -1);  /* Ijo [collection] */
-  case HB_TAG('I','P','P','H'):  /* Phonetic transcription—IPA conventions */
-    return hb_language_from_string ("und-fonipa", -1);  /* Undetermined; International Phonetic Alphabet */
-  case HB_TAG('I','R','T',' '):  /* Irish Traditional */
-    return hb_language_from_string ("ghc", -1);  /* Hiberno-Scottish Gaelic */
-  case HB_TAG('J','I','I',' '):  /* Yiddish */
-    return hb_language_from_string ("yi", -1);  /* Yiddish [macrolanguage] */
-  case HB_TAG('K','A','L',' '):  /* Kalenjin */
-    return hb_language_from_string ("kln", -1);  /* Kalenjin [macrolanguage] */
-  case HB_TAG('K','G','E',' '):  /* Khutsuri Georgian */
-    return hb_language_from_string ("und-Geok", -1);  /* Undetermined; Khutsuri (Asomtavruli and Nuskhuri) */
-  case HB_TAG('K','O','H',' '):  /* Korean Old Hangul */
-    return hb_language_from_string ("okm", -1);  /* Middle Korean (10th-16th cent.) */
-  case HB_TAG('K','O','K',' '):  /* Konkani */
-    return hb_language_from_string ("kok", -1);  /* Konkani [macrolanguage] */
-  case HB_TAG('K','P','L',' '):  /* Kpelle */
-    return hb_language_from_string ("kpe", -1);  /* Kpelle [macrolanguage] */
-  case HB_TAG('K','R','N',' '):  /* Karen */
-    return hb_language_from_string ("kar", -1);  /* Karen [collection] */
-  case HB_TAG('K','U','I',' '):  /* Kui */
-    return hb_language_from_string ("uki", -1);  /* Kui (India) */
-  case HB_TAG('L','M','A',' '):  /* Low Mari */
-    return hb_language_from_string ("mhr", -1);  /* Eastern Mari */
-  case HB_TAG('L','U','H',' '):  /* Luyia */
-    return hb_language_from_string ("luy", -1);  /* Luyia [macrolanguage] */
-  case HB_TAG('M','A','W',' '):  /* Marwari */
-    return hb_language_from_string ("mwr", -1);  /* Marwari [macrolanguage] */
-  case HB_TAG('M','L','Y',' '):  /* Malay */
-    return hb_language_from_string ("ms", -1);  /* Malay [macrolanguage] */
-  case HB_TAG('M','N','K',' '):  /* Maninka */
-    return hb_language_from_string ("man", -1);  /* Mandingo [macrolanguage] */
-  case HB_TAG('M','O','L',' '):  /* Moldavian */
-    return hb_language_from_string ("ro-MD", -1);  /* Romanian; Moldova */
-  case HB_TAG('M','O','N','T'):  /* Thailand Mon */
-    return hb_language_from_string ("mnw-TH", -1);  /* Mon; Thailand */
-  case HB_TAG('M','Y','N',' '):  /* Mayan */
-    return hb_language_from_string ("myn", -1);  /* Mayan [collection] */
-  case HB_TAG('N','A','H',' '):  /* Nahuatl */
-    return hb_language_from_string ("nah", -1);  /* Nahuatl [collection] */
-  case HB_TAG('N','I','S',' '):  /* Nisi */
-    return hb_language_from_string ("njz", -1);  /* Nyishi */
-  case HB_TAG('N','O','R',' '):  /* Norwegian */
-    return hb_language_from_string ("no", -1);  /* Norwegian [macrolanguage] */
-  case HB_TAG('P','G','R',' '):  /* Polytonic Greek */
-    return hb_language_from_string ("el-polyton", -1);  /* Modern Greek (1453-); Polytonic Greek */
-  case HB_TAG('P','R','O',' '):  /* Provençal / Old Provençal */
-    return hb_language_from_string ("pro", -1);  /* Old Provençal (to 1500) */
-  case HB_TAG('Q','U','H',' '):  /* Quechua (Bolivia) */
-    return hb_language_from_string ("quh", -1);  /* South Bolivian Quechua */
-  case HB_TAG('Q','V','I',' '):  /* Quechua (Ecuador) */
-    return hb_language_from_string ("qvi", -1);  /* Imbabura Highland Quichua */
-  case HB_TAG('Q','W','H',' '):  /* Quechua (Peru) */
-    return hb_language_from_string ("qwh", -1);  /* Huaylas Ancash Quechua */
-  case HB_TAG('R','A','J',' '):  /* Rajasthani */
-    return hb_language_from_string ("raj", -1);  /* Rajasthani [macrolanguage] */
-  case HB_TAG('R','O','M',' '):  /* Romanian */
-    return hb_language_from_string ("ro", -1);  /* Romanian */
-  case HB_TAG('R','O','Y',' '):  /* Romany */
-    return hb_language_from_string ("rom", -1);  /* Romany [macrolanguage] */
-  case HB_TAG('S','G','A',' '):  /* Old Irish */
-    return hb_language_from_string ("sga", -1);  /* Old Irish (to 900) */
-  case HB_TAG('S','R','B',' '):  /* Serbian */
-    return hb_language_from_string ("sr", -1);  /* Serbian */
-  case HB_TAG('S','X','T',' '):  /* Sutu */
-    return hb_language_from_string ("xnj", -1);  /* Ngoni (Tanzania) */
-  case HB_TAG('S','Y','R',' '):  /* Syriac */
-    return hb_language_from_string ("syr", -1);  /* Syriac [macrolanguage] */
-  case HB_TAG('S','Y','R','E'):  /* Syriac, Estrangela script-variant (equivalent to ISO 15924 'Syre') */
-    return hb_language_from_string ("und-Syre", -1);  /* Undetermined; Syriac (Estrangelo variant) */
-  case HB_TAG('S','Y','R','J'):  /* Syriac, Western script-variant (equivalent to ISO 15924 'Syrj') */
-    return hb_language_from_string ("und-Syrj", -1);  /* Undetermined; Syriac (Western variant) */
-  case HB_TAG('S','Y','R','N'):  /* Syriac, Eastern script-variant (equivalent to ISO 15924 'Syrn') */
-    return hb_language_from_string ("und-Syrn", -1);  /* Undetermined; Syriac (Eastern variant) */
-  case HB_TAG('T','M','H',' '):  /* Tamashek */
-    return hb_language_from_string ("tmh", -1);  /* Tamashek [macrolanguage] */
-  case HB_TAG('T','O','D',' '):  /* Todo */
-    return hb_language_from_string ("xwo", -1);  /* Written Oirat */
-  case HB_TAG('U','P','P','H'):  /* Uralic Phonetic Alphabet */
-    return hb_language_from_string ("und-fonupa", -1);  /* Undetermined; Uralic Phonetic Alphabet */
-  case HB_TAG('W','D','T',' '):  /* Wendat */
-    return hb_language_from_string ("wdt", -1);  /* Wendat */
-  case HB_TAG('W','Y','N',' '):  /* Wyandot */
-    return hb_language_from_string ("wyn", -1);  /* Wyandot */
-  case HB_TAG('Z','H','H',' '):  /* Chinese, Traditional, Hong Kong SAR */
-    return hb_language_from_string ("zh-HK", -1);  /* Chinese [macrolanguage]; Hong Kong */
-  case HB_TAG('Z','H','S',' '):  /* Chinese, Simplified */
-    return hb_language_from_string ("zh-Hans", -1);  /* Chinese [macrolanguage]; Han (Simplified variant) */
-  case HB_TAG('Z','H','T',' '):  /* Chinese, Traditional */
-    return hb_language_from_string ("zh-Hant", -1);  /* Chinese [macrolanguage]; Han (Traditional variant) */
-  case HB_TAG('Z','H','T','M'):  /* Chinese, Traditional, Macao SAR */
-    return hb_language_from_string ("zh-MO", -1);  /* Chinese [macrolanguage]; Macao */
-  case HB_TAG('Z','Z','A',' '):  /* Zazaki */
-    return hb_language_from_string ("zza", -1);  /* Zaza [macrolanguage] */
+  pak_sa HB_TAG('A','L','T',' '):  /* Altai */
+    ສົ່ງຄືນ hb_language_from_string ("alt", -1);  /* Southern Altai */
+  pak_sa HB_TAG('A','P','P','H'):  /* Phonetic transcription—Americanist conventions */
+    ສົ່ງຄືນ hb_language_from_string ("und-fonnapa", -1);  /* Undetermined; North American Phonetic Alphabet */
+  pak_sa HB_TAG('A','R','K',' '):  /* Rakhine */
+    ສົ່ງຄືນ hb_language_from_string ("rki", -1);  /* Rakhine */
+  pak_sa HB_TAG('A','T','H',' '):  /* Athapaskan */
+    ສົ່ງຄືນ hb_language_from_string ("ath", -1);  /* Athapascan [collection] */
+  pak_sa HB_TAG('B','B','R',' '):  /* Berber */
+    ສົ່ງຄືນ hb_language_from_string ("ber", -1);  /* Berber [collection] */
+  pak_sa HB_TAG('B','I','K',' '):  /* Bikol */
+    ສົ່ງຄືນ hb_language_from_string ("bik", -1);  /* Bikol [macrolanguage] */
+  pak_sa HB_TAG('B','T','K',' '):  /* Batak */
+    ສົ່ງຄືນ hb_language_from_string ("btk", -1);  /* Batak [collection] */
+  pak_sa HB_TAG('C','P','P',' '):  /* Creoles */
+    ສົ່ງຄືນ hb_language_from_string ("crp", -1);  /* Creoles and pidgins [collection] */
+  pak_sa HB_TAG('C','R','R',' '):  /* Carrier */
+    ສົ່ງຄືນ hb_language_from_string ("crx", -1);  /* Carrier */
+  pak_sa HB_TAG('D','G','R',' '):  /* Dogri (macrolanguage) */
+    ສົ່ງຄືນ hb_language_from_string ("doi", -1);  /* Dogri [macrolanguage] */
+  pak_sa HB_TAG('D','N','K',' '):  /* Dinka */
+    ສົ່ງຄືນ hb_language_from_string ("din", -1);  /* Dinka [macrolanguage] */
+  pak_sa HB_TAG('D','R','I',' '):  /* Dari */
+    ສົ່ງຄືນ hb_language_from_string ("prs", -1);  /* Dari */
+  pak_sa HB_TAG('G','O','N',' '):  /* Gondi */
+    ສົ່ງຄືນ hb_language_from_string ("gon", -1);  /* Gondi [macrolanguage] */
+  pak_sa HB_TAG('H','M','A',' '):  /* High Mari */
+    ສົ່ງຄືນ hb_language_from_string ("mrj", -1);  /* Western Mari */
+  pak_sa HB_TAG('H','M','N',' '):  /* Hmong */
+    ສົ່ງຄືນ hb_language_from_string ("hmn", -1);  /* Hmong [macrolanguage] */
+  pak_sa HB_TAG('H','N','D',' '):  /* Hindko */
+    ສົ່ງຄືນ hb_language_from_string ("hnd", -1);  /* Southern Hindko */
+  pak_sa HB_TAG('H','Y','E',' '):  /* Armenian */
+    ສົ່ງຄືນ hb_language_from_string ("hyw", -1);  /* Western Armenian */
+  pak_sa HB_TAG('I','B','A',' '):  /* Iban */
+    ສົ່ງຄືນ hb_language_from_string ("iba", -1);  /* Iban */
+  pak_sa HB_TAG('I','J','O',' '):  /* Ijo */
+    ສົ່ງຄືນ hb_language_from_string ("ijo", -1);  /* Ijo [collection] */
+  pak_sa HB_TAG('I','P','P','H'):  /* Phonetic transcription—IPA conventions */
+    ສົ່ງຄືນ hb_language_from_string ("und-fonipa", -1);  /* Undetermined; International Phonetic Alphabet */
+  pak_sa HB_TAG('I','R','T',' '):  /* Irish Traditional */
+    ສົ່ງຄືນ hb_language_from_string ("ghc", -1);  /* Hiberno-Scottish Gaelic */
+  pak_sa HB_TAG('J','I','I',' '):  /* Yiddish */
+    ສົ່ງຄືນ hb_language_from_string ("yi", -1);  /* Yiddish [macrolanguage] */
+  pak_sa HB_TAG('K','A','L',' '):  /* Kalenjin */
+    ສົ່ງຄືນ hb_language_from_string ("kln", -1);  /* Kalenjin [macrolanguage] */
+  pak_sa HB_TAG('K','G','E',' '):  /* Khutsuri Georgian */
+    ສົ່ງຄືນ hb_language_from_string ("und-Geok", -1);  /* Undetermined; Khutsuri (Asomtavruli and Nuskhuri) */
+  pak_sa HB_TAG('K','O','H',' '):  /* Korean Old Hangul */
+    ສົ່ງຄືນ hb_language_from_string ("okm", -1);  /* Middle Korean (10th-16th cent.) */
+  pak_sa HB_TAG('K','O','K',' '):  /* Konkani */
+    ສົ່ງຄືນ hb_language_from_string ("kok", -1);  /* Konkani [macrolanguage] */
+  pak_sa HB_TAG('K','P','L',' '):  /* Kpelle */
+    ສົ່ງຄືນ hb_language_from_string ("kpe", -1);  /* Kpelle [macrolanguage] */
+  pak_sa HB_TAG('K','R','N',' '):  /* Karen */
+    ສົ່ງຄືນ hb_language_from_string ("kar", -1);  /* Karen [collection] */
+  pak_sa HB_TAG('K','U','I',' '):  /* Kui */
+    ສົ່ງຄືນ hb_language_from_string ("uki", -1);  /* Kui (India) */
+  pak_sa HB_TAG('L','M','A',' '):  /* Low Mari */
+    ສົ່ງຄືນ hb_language_from_string ("mhr", -1);  /* Eastern Mari */
+  pak_sa HB_TAG('L','U','H',' '):  /* Luyia */
+    ສົ່ງຄືນ hb_language_from_string ("luy", -1);  /* Luyia [macrolanguage] */
+  pak_sa HB_TAG('M','A','W',' '):  /* Marwari */
+    ສົ່ງຄືນ hb_language_from_string ("mwr", -1);  /* Marwari [macrolanguage] */
+  pak_sa HB_TAG('M','L','Y',' '):  /* Malay */
+    ສົ່ງຄືນ hb_language_from_string ("ms", -1);  /* Malay [macrolanguage] */
+  pak_sa HB_TAG('M','N','K',' '):  /* Maninka */
+    ສົ່ງຄືນ hb_language_from_string ("man", -1);  /* Mandingo [macrolanguage] */
+  pak_sa HB_TAG('M','O','L',' '):  /* Moldavian */
+    ສົ່ງຄືນ hb_language_from_string ("ro-MD", -1);  /* Romanian; Moldova */
+  pak_sa HB_TAG('M','O','N','T'):  /* Thailand Mon */
+    ສົ່ງຄືນ hb_language_from_string ("mnw-TH", -1);  /* Mon; Thailand */
+  pak_sa HB_TAG('M','Y','N',' '):  /* Mayan */
+    ສົ່ງຄືນ hb_language_from_string ("myn", -1);  /* Mayan [collection] */
+  pak_sa HB_TAG('N','A','H',' '):  /* Nahuatl */
+    ສົ່ງຄືນ hb_language_from_string ("nah", -1);  /* Nahuatl [collection] */
+  pak_sa HB_TAG('N','I','S',' '):  /* Nisi */
+    ສົ່ງຄືນ hb_language_from_string ("njz", -1);  /* Nyishi */
+  pak_sa HB_TAG('N','O','R',' '):  /* Norwegian */
+    ສົ່ງຄືນ hb_language_from_string ("no", -1);  /* Norwegian [macrolanguage] */
+  pak_sa HB_TAG('P','G','R',' '):  /* Polytonic Greek */
+    ສົ່ງຄືນ hb_language_from_string ("el-polyton", -1);  /* Modern Greek (1453-); Polytonic Greek */
+  pak_sa HB_TAG('P','R','O',' '):  /* Provençal / Old Provençal */
+    ສົ່ງຄືນ hb_language_from_string ("pro", -1);  /* Old Provençal (to 1500) */
+  pak_sa HB_TAG('Q','U','H',' '):  /* Quechua (Bolivia) */
+    ສົ່ງຄືນ hb_language_from_string ("quh", -1);  /* South Bolivian Quechua */
+  pak_sa HB_TAG('Q','V','I',' '):  /* Quechua (Ecuador) */
+    ສົ່ງຄືນ hb_language_from_string ("qvi", -1);  /* Imbabura Highland Quichua */
+  pak_sa HB_TAG('Q','W','H',' '):  /* Quechua (Peru) */
+    ສົ່ງຄືນ hb_language_from_string ("qwh", -1);  /* Huaylas Ancash Quechua */
+  pak_sa HB_TAG('R','A','J',' '):  /* Rajasthani */
+    ສົ່ງຄືນ hb_language_from_string ("raj", -1);  /* Rajasthani [macrolanguage] */
+  pak_sa HB_TAG('R','O','M',' '):  /* Romanian */
+    ສົ່ງຄືນ hb_language_from_string ("ro", -1);  /* Romanian */
+  pak_sa HB_TAG('R','O','Y',' '):  /* Romany */
+    ສົ່ງຄືນ hb_language_from_string ("rom", -1);  /* Romany [macrolanguage] */
+  pak_sa HB_TAG('S','G','A',' '):  /* Old Irish */
+    ສົ່ງຄືນ hb_language_from_string ("sga", -1);  /* Old Irish (to 900) */
+  pak_sa HB_TAG('S','R','B',' '):  /* Serbian */
+    ສົ່ງຄືນ hb_language_from_string ("sr", -1);  /* Serbian */
+  pak_sa HB_TAG('S','X','T',' '):  /* Sutu */
+    ສົ່ງຄືນ hb_language_from_string ("xnj", -1);  /* Ngoni (Tanzania) */
+  pak_sa HB_TAG('S','Y','R',' '):  /* Syriac */
+    ສົ່ງຄືນ hb_language_from_string ("syr", -1);  /* Syriac [macrolanguage] */
+  pak_sa HB_TAG('S','Y','R','E'):  /* Syriac, Estrangela script-variant (equivalent to ISO 15924 'Syre') */
+    ສົ່ງຄືນ hb_language_from_string ("und-Syre", -1);  /* Undetermined; Syriac (Estrangelo variant) */
+  pak_sa HB_TAG('S','Y','R','J'):  /* Syriac, Western script-variant (equivalent to ISO 15924 'Syrj') */
+    ສົ່ງຄືນ hb_language_from_string ("und-Syrj", -1);  /* Undetermined; Syriac (Western variant) */
+  pak_sa HB_TAG('S','Y','R','N'):  /* Syriac, Eastern script-variant (equivalent to ISO 15924 'Syrn') */
+    ສົ່ງຄືນ hb_language_from_string ("und-Syrn", -1);  /* Undetermined; Syriac (Eastern variant) */
+  pak_sa HB_TAG('T','M','H',' '):  /* Tamashek */
+    ສົ່ງຄືນ hb_language_from_string ("tmh", -1);  /* Tamashek [macrolanguage] */
+  pak_sa HB_TAG('T','O','D',' '):  /* Todo */
+    ສົ່ງຄືນ hb_language_from_string ("xwo", -1);  /* Written Oirat */
+  pak_sa HB_TAG('U','P','P','H'):  /* Uralic Phonetic Alphabet */
+    ສົ່ງຄືນ hb_language_from_string ("und-fonupa", -1);  /* Undetermined; Uralic Phonetic Alphabet */
+  pak_sa HB_TAG('W','D','T',' '):  /* Wendat */
+    ສົ່ງຄືນ hb_language_from_string ("wdt", -1);  /* Wendat */
+  pak_sa HB_TAG('W','Y','N',' '):  /* Wyandot */
+    ສົ່ງຄືນ hb_language_from_string ("wyn", -1);  /* Wyandot */
+  pak_sa HB_TAG('Z','H','H',' '):  /* Chinese, Traditional, Hong Kong SAR */
+    ສົ່ງຄືນ hb_language_from_string ("zh-HK", -1);  /* Chinese [macrolanguage]; Hong Kong */
+  pak_sa HB_TAG('Z','H','S',' '):  /* Chinese, Simplified */
+    ສົ່ງຄືນ hb_language_from_string ("zh-Hans", -1);  /* Chinese [macrolanguage]; Han (Simplified variant) */
+  pak_sa HB_TAG('Z','H','T',' '):  /* Chinese, Traditional */
+    ສົ່ງຄືນ hb_language_from_string ("zh-Hant", -1);  /* Chinese [macrolanguage]; Han (Traditional variant) */
+  pak_sa HB_TAG('Z','H','T','M'):  /* Chinese, Traditional, Macao SAR */
+    ສົ່ງຄືນ hb_language_from_string ("zh-MO", -1);  /* Chinese [macrolanguage]; Macao */
+  pak_sa HB_TAG('Z','Z','A',' '):  /* Zazaki */
+    ສົ່ງຄືນ hb_language_from_string ("zza", -1);  /* Zaza [macrolanguage] */
   default:
-    return HB_LANGUAGE_INVALID;
+    ສົ່ງຄືນ HB_LANGUAGE_INVALID;
   }
 }
 

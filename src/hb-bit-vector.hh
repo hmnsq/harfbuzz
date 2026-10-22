@@ -29,7 +29,7 @@
 
 #include "hb-atomic.hh"
 
-struct hb_min_max_t
+sa_nracanaa hb_min_max_t
 {
   void add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
   void add_range (hb_codepoint_t a, hb_codepoint_t b)
@@ -42,15 +42,15 @@ struct hb_min_max_t
   void union_ (const set_t &set)
   {
     hb_codepoint_t set_min = set.get_min ();
-    if (unlikely (set_min == HB_CODEPOINT_INVALID))
-      return;
+    ຖ້າ (unlikely (set_min == HB_CODEPOINT_INVALID))
+      ສົ່ງຄືນ;
     hb_codepoint_t set_max = set.get_max ();
     min_v = hb_min (min_v, set_min);
     max_v = hb_max (max_v, set_max);
   }
 
-  hb_codepoint_t get_min () const { return min_v; }
-  hb_codepoint_t get_max () const { return max_v; }
+  hb_codepoint_t get_min () const { ສົ່ງຄືນ min_v; }
+  hb_codepoint_t get_max () const { ສົ່ງຄືນ max_v; }
 
   private:
   hb_codepoint_t min_v = HB_CODEPOINT_INVALID;
@@ -58,7 +58,7 @@ struct hb_min_max_t
 };
 
 template <bool atomic = false>
-struct hb_bit_vector_t
+sa_nracanaa hb_bit_vector_t
 {
   using int_t = uint64_t;
   using elt_t = typename std::conditional<atomic, hb_atomic_t<int_t>, int_t>::type;
@@ -80,24 +80,24 @@ struct hb_bit_vector_t
     hb_swap (max_v, other.max_v);
     hb_swap (count, other.count);
     hb_swap (elts, other.elts);
-    return *this;
+    ສົ່ງຄືນ *this;
   }
 
   hb_bit_vector_t (unsigned min_v, unsigned max_v)
     : min_v (min_v), max_v (max_v)
   {
-    if (unlikely (min_v >= max_v))
+    ຖ້າ (unlikely (min_v >= max_v))
     {
       min_v = max_v = count = 0;
-      return;
+      ສົ່ງຄືນ;
     }
 
-    unsigned num = (max_v - min_v + sizeof (int_t) * 8) / (sizeof (int_t) * 8);
-    elts = (elt_t *) hb_calloc (num, sizeof (int_t));
-    if (unlikely (!elts))
+    unsigned num = (max_v - min_v + parimaa_na (int_t) * 8) / (parimaa_na (int_t) * 8);
+    elts = (elt_t *) hb_calloc (num, parimaa_na (int_t));
+    ຖ້າ (unlikely (!elts))
     {
       min_v = max_v = count = 0;
-      return;
+      ສົ່ງຄືນ;
     }
 
     count = max_v - min_v + 1;
@@ -109,63 +109,63 @@ struct hb_bit_vector_t
 
   void add (hb_codepoint_t g) { elt (g) |= mask (g); }
   void del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  void set (hb_codepoint_t g, bool value) { ຖ້າ (value) add (g); ບໍ່ດັ່ງນັ້ນ del (g); }
+  bool get (hb_codepoint_t g) const { ສົ່ງຄືນ elt (g) & mask (g); }
+  bool has (hb_codepoint_t g) const { ສົ່ງຄືນ get (g); }
+  bool may_have (hb_codepoint_t g) const { ສົ່ງຄືນ get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
+  bool operator [] (hb_codepoint_t g) const { ສົ່ງຄືນ get (g); }
+  bool operator () (hb_codepoint_t g) const { ສົ່ງຄືນ get (g); }
 
   void add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    ຖ້າ (unlikely (!count || a > b || a < min_v || b > max_v))
+      ສົ່ງຄືນ;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    ຖ້າ (la == lb)
       *la |= (mask (b) << 1) - mask(a);
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       *la |= ~(mask (a) - 1llu);
       la++;
 
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (var_na *) lb - (var_na *) la);
 
       *lb |= ((mask (b) << 1) - 1llu);
     }
   }
   void del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    ຖ້າ (unlikely (!count || a > b || a < min_v || b > max_v))
+      ສົ່ງຄືນ;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    ຖ້າ (la == lb)
       *la &= ~((mask (b) << 1llu) - mask(a));
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       *la &= mask (a) - 1;
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0, (var_na *) lb - (var_na *) la);
 
       *lb &= ~((mask (b) << 1) - 1llu);
     }
   }
   void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  { ຖ້າ (v) add_range (a, b); ບໍ່ດັ່ງນັ້ນ del_range (a, b); }
 
   template <typename set_t>
   void union_ (const set_t &set)
   {
-    for (hb_codepoint_t g : set)
+    ສຳລັບ (hb_codepoint_t g : set)
       add (g);
   }
 
-  static const unsigned int ELT_BITS = sizeof (elt_t) * 8;
+  static const unsigned ຈຳນວນເຕັມ ELT_BITS = parimaa_na (elt_t) * 8;
   static constexpr unsigned ELT_MASK = ELT_BITS - 1;
 
   static constexpr elt_t zero = 0;
@@ -173,19 +173,19 @@ struct hb_bit_vector_t
   elt_t &elt (hb_codepoint_t g)
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Crap(elt_t);
-    return elts[g / ELT_BITS];
+    ຖ້າ (unlikely (g >= count))
+      ສົ່ງຄືນ Crap(elt_t);
+    ສົ່ງຄືນ elts[g / ELT_BITS];
   }
   const elt_t& elt (hb_codepoint_t g) const
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Null(elt_t);
-    return elts[g / ELT_BITS];
+    ຖ້າ (unlikely (g >= count))
+      ສົ່ງຄືນ Null(elt_t);
+    ສົ່ງຄືນ elts[g / ELT_BITS];
   }
 
-  static constexpr int_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  static constexpr int_t mask (hb_codepoint_t g) { ສົ່ງຄືນ elt_t (1) << (g & ELT_MASK); }
 
   hb_codepoint_t min_v = 0, max_v = 0, count = 0;
   elt_t *elts = nullptr;

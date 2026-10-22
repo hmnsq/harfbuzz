@@ -31,7 +31,7 @@
 #include "hb-map.hh"
 
 /* Bi-directional map */
-struct hb_bimap_t
+sa_nracanaa hb_bimap_t
 {
   void reset ()
   {
@@ -45,26 +45,26 @@ struct hb_bimap_t
     back_map.alloc (pop);
   }
 
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  bool in_error () const { ສົ່ງຄືນ forw_map.in_error () || back_map.in_error (); }
 
   void set (hb_codepoint_t lhs, hb_codepoint_t rhs)
   {
-    if (in_error ()) return;
-    if (unlikely (lhs == HB_MAP_VALUE_INVALID)) return;
-    if (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); return; }
+    ຖ້າ (in_error ()) ສົ່ງຄືນ;
+    ຖ້າ (unlikely (lhs == HB_MAP_VALUE_INVALID)) ສົ່ງຄືນ;
+    ຖ້າ (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); ສົ່ງຄືນ; }
 
     forw_map.set (lhs, rhs);
-    if (unlikely (in_error ())) return;
+    ຖ້າ (unlikely (in_error ())) ສົ່ງຄືນ;
 
     back_map.set (rhs, lhs);
-    if (unlikely (in_error ())) forw_map.del (lhs);
+    ຖ້າ (unlikely (in_error ())) forw_map.del (lhs);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map.get (rhs); }
+  hb_codepoint_t get (hb_codepoint_t lhs) const { ສົ່ງຄືນ forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) const { ສົ່ງຄືນ back_map.get (rhs); }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { ສົ່ງຄືນ get (lhs); }
+  bool has (hb_codepoint_t lhs) const { ສົ່ງຄືນ forw_map.has (lhs); }
 
 
   void del (hb_codepoint_t lhs)
@@ -79,11 +79,11 @@ struct hb_bimap_t
     back_map.clear ();
   }
 
-  bool is_empty () const { return forw_map.is_empty (); }
+  bool is_empty () const { ສົ່ງຄືນ forw_map.is_empty (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  unsigned ຈຳນວນເຕັມ get_population () const { ສົ່ງຄືນ forw_map.get_population (); }
 
-  protected:
+  rak_sita:
   hb_map_t  forw_map;
   hb_map_t  back_map;
 
@@ -94,11 +94,11 @@ struct hb_bimap_t
 };
 
 /* Incremental bimap: only lhs is given, rhs is incrementally assigned */
-struct hb_inc_bimap_t
+sa_nracanaa hb_inc_bimap_t
 {
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  bool in_error () const { ສົ່ງຄືນ forw_map.in_error () || back_map.in_error (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  unsigned ຈຳນວນເຕັມ get_population () const { ສົ່ງຄືນ forw_map.get_population (); }
 
   void reset ()
   {
@@ -124,50 +124,50 @@ struct hb_inc_bimap_t
   hb_codepoint_t add (hb_codepoint_t lhs)
   {
     hb_codepoint_t  rhs = forw_map[lhs];
-    if (rhs == HB_MAP_VALUE_INVALID)
+    ຖ້າ (rhs == HB_MAP_VALUE_INVALID)
     {
       rhs = back_map.length;
       forw_map.set (lhs, rhs);
       back_map.push (lhs);
     }
-    return rhs;
+    ສົ່ງຄືນ rhs;
   }
 
   hb_codepoint_t skip ()
   {
     hb_codepoint_t start = back_map.length;
     back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    ສົ່ງຄືນ start;
   }
 
   hb_codepoint_t skip (unsigned count)
   {
     hb_codepoint_t start = back_map.length;
     back_map.alloc (back_map.length + count);
-    for (unsigned i = 0; i < count; i++)
+    ສຳລັບ (unsigned i = 0; i < count; i++)
       back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    ສົ່ງຄືນ start;
   }
 
   hb_codepoint_t get_next_value () const
-  { return back_map.length; }
+  { ສົ່ງຄືນ back_map.length; }
 
   void add_set (const hb_set_t *set)
   {
-    for (auto i : *set) add (i);
+    ສຳລັບ (auto i : *set) add (i);
   }
 
   /* Create an identity map. */
-  bool identity (unsigned int size)
+  bool identity (unsigned ຈຳນວນເຕັມ size)
   {
     clear ();
-    for (hb_codepoint_t i = 0; i < size; i++) add (i);
-    return !in_error ();
+    ສຳລັບ (hb_codepoint_t i = 0; i < size; i++) add (i);
+    ສົ່ງຄືນ !in_error ();
   }
 
-  protected:
-  static int cmp_id (const void* a, const void* b)
-  { return (int)*(const hb_codepoint_t *)a - (int)*(const hb_codepoint_t *)b; }
+  rak_sita:
+  static ຈຳນວນເຕັມ cmp_id (const void* a, const void* b)
+  { ສົ່ງຄືນ (ຈຳນວນເຕັມ)*(const hb_codepoint_t *)a - (ຈຳນວນເຕັມ)*(const hb_codepoint_t *)b; }
 
   public:
   /* Optional: after finished adding all mappings in a random order,
@@ -176,25 +176,25 @@ struct hb_inc_bimap_t
   {
     hb_codepoint_t  count = get_population ();
     hb_vector_t <hb_codepoint_t> work;
-    if (unlikely (!work.resize_dirty  (count))) return;
+    ຖ້າ (unlikely (!work.resize_dirty  (count))) ສົ່ງຄືນ;
 
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    ສຳລັບ (hb_codepoint_t rhs = 0; rhs < count; rhs++)
       work.arrayZ[rhs] = back_map[rhs];
 
     work.qsort (cmp_id);
 
     clear ();
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    ສຳລັບ (hb_codepoint_t rhs = 0; rhs < count; rhs++)
       add (work.arrayZ[rhs]);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map[rhs]; }
+  hb_codepoint_t get (hb_codepoint_t lhs) const { ສົ່ງຄືນ forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) const { ສົ່ງຄືນ back_map[rhs]; }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { ສົ່ງຄືນ get (lhs); }
+  bool has (hb_codepoint_t lhs) const { ສົ່ງຄືນ forw_map.has (lhs); }
 
-  protected:
+  rak_sita:
   hb_map_t forw_map;
   hb_vector_t<hb_codepoint_t> back_map;
 

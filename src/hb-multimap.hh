@@ -34,25 +34,25 @@
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+sa_nracanaa hb_multimap_t
 {
   void add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    ຖ້າ (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      ສົ່ງຄືນ;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    ຖ້າ (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      ສົ່ງຄືນ;
     }
 
     singulars.set (k, v);
@@ -61,24 +61,24 @@ struct hb_multimap_t
   hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
   {
     const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ຖ້າ (singulars.has (k, &v))
+      ສົ່ງຄືນ hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    ຖ້າ (multiples.has (k, &m))
+      ສົ່ງຄືນ m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    ສົ່ງຄືນ hb_array_t<const hb_codepoint_t> ();
   }
 
   bool in_error () const
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    ຖ້າ (singulars.in_error () || multiples.in_error ())
+      ສົ່ງຄືນ true;
+    ສຳລັບ (const auto &m : multiples.values_ref ())
+      ຖ້າ (m.in_error ())
+        ສົ່ງຄືນ true;
+    ສົ່ງຄືນ false;
   }
 
   void alloc (unsigned size)
@@ -86,7 +86,7 @@ struct hb_multimap_t
     singulars.alloc (size);
   }
 
-  protected:
+  rak_sita:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };

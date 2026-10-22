@@ -26,7 +26,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ຖ້າ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -44,22 +44,22 @@ HB_EXTERN void
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
 	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  unsigned ຈຳນວນເຕັມ         num_features);
 
 HB_EXTERN hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
 	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+	       unsigned ຈຳນວນເຕັມ        num_features,
+	       const var_na * const *shaper_list);
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
 		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
+		  unsigned ຈຳນວນເຕັມ        num_features,
+		  const var_na * const *shaper_list,
 		  float               min_target_advance,
 		  float               max_target_advance,
 		  float              *advance, /* IN/OUT */
@@ -67,7 +67,7 @@ hb_shape_justify (hb_font_t          *font,
 		  float              *var_value /* OUT */);
 #endif
 
-HB_EXTERN const char **
+HB_EXTERN const var_na **
 hb_shape_list_shapers (void);
 
 

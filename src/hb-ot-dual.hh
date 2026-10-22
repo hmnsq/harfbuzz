@@ -35,7 +35,7 @@
 namespace OT {
 namespace Layout {
 
-struct SmallTypes {
+sa_nracanaa SmallTypes {
   static constexpr unsigned size = 2;
   using large_int = uint32_t;
   using HBUINT = HBUINT16;
@@ -53,7 +53,7 @@ struct SmallTypes {
   using SortedArrayOf = OT::SortedArray16Of<Type>;
 };
 
-struct MediumTypes {
+sa_nracanaa MediumTypes {
   static constexpr unsigned size = 3;
   using large_int = uint64_t;
   using HBUINT = HBUINT24;
@@ -77,7 +77,7 @@ struct MediumTypes {
 
 
 template <typename Lower, typename Upper>
-struct hb_dual_accelerator_t
+sa_nracanaa hb_dual_accelerator_t
 {
   hb_dual_accelerator_t (hb_face_t *face) :
 #ifndef HB_NO_BEYOND_64K
@@ -93,17 +93,17 @@ struct hb_dual_accelerator_t
   bool has_data () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (upper.has_data ()) return true;
+    ຖ້າ (upper.has_data ()) ສົ່ງຄືນ true;
 #endif
-    return lower.has_data ();
+    ສົ່ງຄືນ lower.has_data ();
   }
 
   bool has_upper_data () const
   {
 #ifndef HB_NO_BEYOND_64K
-    return upper.has_data ();
-#else
-    return false;
+    ສົ່ງຄືນ upper.has_data ();
+#ບໍ່ດັ່ງນັ້ນ
+    ສົ່ງຄືນ false;
 #endif
   }
 
@@ -114,20 +114,20 @@ struct hb_dual_accelerator_t
 };
 
 template <typename Table>
-struct hb_table_accelerator_t
+sa_nracanaa hb_table_accelerator_t
 {
   hb_table_accelerator_t (hb_face_t *face) :
     table (hb_sanitize_context_t ().reference_table<Table> (face))
   {}
   ~hb_table_accelerator_t () { table.destroy (); }
 
-  bool has_data () const { return table->has_data (); }
+  bool has_data () const { ສົ່ງຄືນ table->has_data (); }
 
   hb_blob_ptr_t<Table> table;
 };
 
 template <typename Lower, typename Upper>
-struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
+sa_nracanaa hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
 					       hb_table_accelerator_t<Upper>>
 {
   hb_dual_table_t (hb_face_t *face) :
@@ -137,7 +137,7 @@ struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
 
 #ifndef HB_NO_BEYOND_64K
 #define HB_DUAL_GET(accel, expr) ((accel).upper.has_data () ? (accel).upper.expr : (accel).lower.expr)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define HB_DUAL_GET(accel, expr) ((accel).lower.expr)
 #endif
 

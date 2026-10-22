@@ -68,18 +68,18 @@ static const uint8_t _hb_emoji_u8[624]=
   191,255,255,255,255,255,255,255,  0,  0,  0,255,  0,192,255,255,
 };
 
-static inline uint8_t _hb_emoji_b4 (const uint8_t* a, unsigned i)
+static anta_hstha uint8_t _hb_emoji_b4 (const uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  ສົ່ງຄືນ (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_emoji_b1 (const uint8_t* a, unsigned i)
+static anta_hstha uint8_t _hb_emoji_b1 (const uint8_t* a, unsigned i)
 {
-  return (a[i>>3]>>((i&7)<<0))&1;
+  ສົ່ງຄືນ (a[i>>3]>>((i&7)<<0))&1;
 }
-static inline uint8_t _hb_emoji_is_Extended_Pictographic (unsigned u)
+static anta_hstha uint8_t _hb_emoji_is_Extended_Pictographic (unsigned u)
 {
   /* packtab: [2^4,2^4,2^6] */
-  return u<131070u ? (uint8_t)(_hb_emoji_b1(_hb_emoji_u8+224u,((_hb_emoji_u8[64u+((_hb_emoji_b4(_hb_emoji_u8,((((u)>>6))>>4)))<<4)+((((u)>>6))&15)])<<6)+((u)&63))) : 0;
+  ສົ່ງຄືນ u<131070u ? (uint8_t)(_hb_emoji_b1(_hb_emoji_u8+224u,((_hb_emoji_u8[64u+((_hb_emoji_b4(_hb_emoji_u8,((((u)>>6))>>4)))<<4)+((((u)>>6))&15)])<<6)+((u)&63))) : 0;
 }
 
 

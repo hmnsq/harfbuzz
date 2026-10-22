@@ -44,11 +44,11 @@
 #include "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
 
-struct hb_face_t
+sa_nracanaa hb_face_t
 {
   hb_object_header_t header;
 
-  unsigned int index;			/* Face index in a collection, zero-based. */
+  unsigned ຈຳນວນເຕັມ index;			/* Face index in a collection, zero-based. */
   mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
   mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
 
@@ -64,7 +64,7 @@ struct hb_face_t
   hb_ot_face_t table;			/* All the face's tables. */
 
   /* Cache */
-  struct plan_node_t
+  sa_nracanaa plan_node_t
   {
     hb_shape_plan_t *shape_plan;
     plan_node_t *next;
@@ -77,37 +77,37 @@ struct hb_face_t
   {
     hb_blob_t *blob;
 
-    if (unlikely (!reference_table_func))
-      return hb_blob_get_empty ();
+    ຖ້າ (unlikely (!reference_table_func))
+      ສົ່ງຄືນ hb_blob_get_empty ();
 
     blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (this), tag, user_data);
-    if (unlikely (!blob))
-      return hb_blob_get_empty ();
+    ຖ້າ (unlikely (!blob))
+      ສົ່ງຄືນ hb_blob_get_empty ();
 
-    return blob;
+    ສົ່ງຄືນ blob;
   }
 
-  unsigned int get_upem () const
+  unsigned ຈຳນວນເຕັມ get_upem () const
   {
-    unsigned int ret = upem;
-    if (unlikely (!ret))
+    unsigned ຈຳນວນເຕັມ ret = upem;
+    ຖ້າ (unlikely (!ret))
     {
-      return load_upem ();
+      ສົ່ງຄືນ load_upem ();
     }
-    return ret;
+    ສົ່ງຄືນ ret;
   }
 
-  unsigned int get_num_glyphs () const
+  unsigned ຈຳນວນເຕັມ get_num_glyphs () const
   {
-    unsigned int ret = num_glyphs;
-    if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
-    return ret;
+    unsigned ຈຳນວນເຕັມ ret = num_glyphs;
+    ຖ້າ (unlikely (ret == UINT_MAX))
+      ສົ່ງຄືນ load_num_glyphs ();
+    ສົ່ງຄືນ ret;
   }
 
   private:
-  HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  HB_INTERNAL unsigned ຈຳນວນເຕັມ load_upem () const;
+  HB_INTERNAL unsigned ຈຳນວນເຕັມ load_num_glyphs () const;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 

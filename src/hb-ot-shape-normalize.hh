@@ -34,9 +34,9 @@
 /* buffer var allocations, used during the normalization process */
 #define normalizer_glyph_index()	var1.u32
 
-struct hb_ot_shape_plan_t;
+sa_nracanaa hb_ot_shape_plan_t;
 
-enum hb_ot_shape_normalization_mode_t {
+ga_nanaa hb_ot_shape_normalization_mode_t {
   HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
   HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED,
   HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS, /* Never composes base-to-base */
@@ -51,7 +51,7 @@ HB_INTERNAL void _hb_ot_shape_normalize (const hb_ot_shape_plan_t *shaper,
 					 hb_font_t *font);
 
 
-struct hb_ot_shape_normalize_context_t
+sa_nracanaa hb_ot_shape_normalize_context_t
 {
   static bool
   decompose_unicode (const hb_ot_shape_normalize_context_t *c,
@@ -59,7 +59,7 @@ struct hb_ot_shape_normalize_context_t
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b)
   {
-    return (bool) c->unicode->decompose (ab, a, b);
+    ສົ່ງຄືນ (bool) c->unicode->decompose (ab, a, b);
   }
 
   static bool
@@ -68,7 +68,7 @@ struct hb_ot_shape_normalize_context_t
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab)
   {
-    return (bool) c->unicode->compose (a, b, ab);
+    ສົ່ງຄືນ (bool) c->unicode->compose (a, b, ab);
   }
 
   void

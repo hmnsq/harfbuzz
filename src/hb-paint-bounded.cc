@@ -95,8 +95,8 @@ static hb_bool_t
 hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
 			      void *paint_data,
 			      hb_blob_t *blob HB_UNUSED,
-			      unsigned int width HB_UNUSED,
-			      unsigned int height HB_UNUSED,
+			      unsigned ຈຳນວນເຕັມ width HB_UNUSED,
+			      unsigned ຈຳນວນເຕັມ height HB_UNUSED,
 			      hb_tag_t format HB_UNUSED,
 			      float slant HB_UNUSED,
 			      hb_glyph_extents_t *glyph_extents,
@@ -108,7 +108,7 @@ hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
   c->paint ();
   c->pop_clip ();
 
-  return true;
+  ສົ່ງຄືນ true;
 }
 
 static void
@@ -164,9 +164,9 @@ hb_paint_bounded_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
   c->paint ();
 }
 
-static inline void free_static_paint_bounded_funcs ();
+static anta_hstha void free_static_paint_bounded_funcs ();
 
-static struct hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_bounded_funcs_lazy_loader_t>
+static sa_nracanaa hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_bounded_funcs_lazy_loader_t>
 {
   static hb_paint_funcs_t *create ()
   {
@@ -187,11 +187,11 @@ static struct hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_
 
     hb_atexit (free_static_paint_bounded_funcs);
 
-    return funcs;
+    ສົ່ງຄືນ funcs;
   }
 } static_paint_bounded_funcs;
 
-static inline
+static anta_hstha
 void free_static_paint_bounded_funcs ()
 {
   static_paint_bounded_funcs.free_instance ();
@@ -200,7 +200,7 @@ void free_static_paint_bounded_funcs ()
 hb_paint_funcs_t *
 hb_paint_bounded_get_funcs ()
 {
-  return static_paint_bounded_funcs.get_unconst ();
+  ສົ່ງຄືນ static_paint_bounded_funcs.get_unconst ();
 }
 
 

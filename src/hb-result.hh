@@ -32,51 +32,51 @@
 // Helper structs for Ok(...) and Err(...), not used directly
 // by users of hb_result_t.
 template <typename T>
-struct hb_result_ok_t
+sa_nracanaa hb_result_ok_t
 {
   T value;
 };
 
 template <>
-struct hb_result_ok_t<void> {};
+sa_nracanaa hb_result_ok_t<void> {};
 
 template <typename E>
-struct hb_result_err_t
+sa_nracanaa hb_result_err_t
 {
   E error;
 
   template <typename OtherE>
-  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { return error == other.error; }
+  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { ສົ່ງຄືນ error == other.error; }
   template <typename OtherE>
-  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { return error != other.error; }
+  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { ສົ່ງຄືນ error != other.error; }
 };
 
-template <typename X> struct _hb_is_result_tag : hb_false_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
+template <typename X> sa_nracanaa _hb_is_result_tag : hb_false_type {};
+template <typename X> sa_nracanaa _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
+template <typename X> sa_nracanaa _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
 
 template <typename T>
-static inline constexpr hb_result_ok_t<T&&> Ok (T&& v)
+static anta_hstha constexpr hb_result_ok_t<T&&> Ok (T&& v)
 {
-  return hb_result_ok_t<T&&>{std::forward<T> (v)};
+  ສົ່ງຄືນ hb_result_ok_t<T&&>{std::forward<T> (v)};
 }
 
-static inline constexpr hb_result_ok_t<void> Ok ()
+static anta_hstha constexpr hb_result_ok_t<void> Ok ()
 {
-  return hb_result_ok_t<void>{};
+  ສົ່ງຄືນ hb_result_ok_t<void>{};
 }
 
 template <typename E>
-static inline constexpr hb_result_err_t<E&&> Err (E&& e)
+static anta_hstha constexpr hb_result_err_t<E&&> Err (E&& e)
 {
-  return hb_result_err_t<E&&>{std::forward<E> (e)};
+  ສົ່ງຄືນ hb_result_err_t<E&&>{std::forward<E> (e)};
 }
 
 template <typename T, typename E>
-struct HB_NODISCARD_STRUCT hb_result_t
+sa_nracanaa HB_NODISCARD_STRUCT hb_result_t
 {
   private:
-  union
+  sa_ngha
   {
     T val_;
     E err_;
@@ -85,25 +85,25 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
   void destroy ()
   {
-    if (is_ok_)
+    ຖ້າ (is_ok_)
       val_.~T ();
-    else
+    ບໍ່ດັ່ງນັ້ນ
       err_.~E ();
   }
 
   void init(const hb_result_t& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
+    ຖ້າ (is_ok_)
       new (std::addressof (val_)) T (o.val_);
-    else
+    ບໍ່ດັ່ງນັ້ນ
       new (std::addressof (err_)) E (o.err_);
   }
 
   void init(hb_result_t&& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
+    ຖ້າ (is_ok_)
       new (std::addressof (val_)) T (std::move (o.val_));
-    else
+    ບໍ່ດັ່ງນັ້ນ
       new (std::addressof (err_)) E (std::move (o.err_));
   }
 
@@ -129,41 +129,41 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
   hb_result_t& operator = (const hb_result_t& o)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    ຖ້າ (this == &o) ສົ່ງຄືນ *this;
+    ຖ້າ (is_ok_ && o.is_ok_)
     {
       val_ = o.val_;
     }
-    else if (!is_ok_ && !o.is_ok_)
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       destroy ();
       init (o);
     }
-    return *this;
+    ສົ່ງຄືນ *this;
   }
 
   hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
                                                 std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    ຖ້າ (this == &o) ສົ່ງຄືນ *this;
+    ຖ້າ (is_ok_ && o.is_ok_)
     {
       val_ = std::move (o.val_);
     }
-    else if (!is_ok_ && !o.is_ok_)
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       destroy ();
       init (std::move (o));
     }
-    return *this;
+    ສົ່ງຄືນ *this;
   }
 
   // Construct from Ok(...) tag
@@ -219,91 +219,91 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
   // Move fallible into a result if it's in_error() method returns false.
   static hb_result_t from (T&& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+    ຖ້າ (fallible.in_error()) {
+      ສົ່ງຄືນ Err(error_value);
     }
-    return Ok(fallible);
+    ສົ່ງຄືນ Ok(fallible);
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  bool is_ok () const { ສົ່ງຄືນ is_ok_; }
+  bool is_err () const { ສົ່ງຄືນ !is_ok_; }
+  explicit operator bool () const { ສົ່ງຄືນ is_ok (); }
 
-  T& value () & { assert (is_ok_); return val_; }
-  const T& value () const & { assert (is_ok_); return val_; }
-  T value () && { assert (is_ok_); return std::move (val_); }
+  T& value () & { assert (is_ok_); ສົ່ງຄືນ val_; }
+  const T& value () const & { assert (is_ok_); ສົ່ງຄືນ val_; }
+  T value () && { assert (is_ok_); ສົ່ງຄືນ std::move (val_); }
 
-  T& operator * () & { return value (); }
-  const T& operator * () const & { return value (); }
-  T operator * () && { return std::move (*this).value (); }
+  T& operator * () & { ສົ່ງຄືນ value (); }
+  const T& operator * () const & { ສົ່ງຄືນ value (); }
+  T operator * () && { ສົ່ງຄືນ std::move (*this).value (); }
 
-  T* operator -> () { return std::addressof (value ()); }
-  const T* operator -> () const { return std::addressof (value ()); }
+  T* operator -> () { ສົ່ງຄືນ std::addressof (value ()); }
+  const T* operator -> () const { ສົ່ງຄືນ std::addressof (value ()); }
 
   template <typename U>
   T value_or (U&& default_value) const &
   {
-    if (is_ok_) return val_;
-    return std::forward<U> (default_value);
+    ຖ້າ (is_ok_) ສົ່ງຄືນ val_;
+    ສົ່ງຄືນ std::forward<U> (default_value);
   }
 
   template <typename U>
   T value_or (U&& default_value) &&
   {
-    if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
+    ຖ້າ (is_ok_) ສົ່ງຄືນ std::move (val_);
+    ສົ່ງຄືນ std::forward<U> (default_value);
   }
 
   T value_or_default () const &
   {
-    if (is_ok_) return val_;
-    return T ();
+    ຖ້າ (is_ok_) ສົ່ງຄືນ val_;
+    ສົ່ງຄືນ T ();
   }
 
   T value_or_default () &&
   {
-    if (is_ok_) return std::move (val_);
-    return T ();
+    ຖ້າ (is_ok_) ສົ່ງຄືນ std::move (val_);
+    ສົ່ງຄືນ T ();
   }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  const E& error () const & { assert (!is_ok_); ສົ່ງຄືນ err_; }
+  E& error () & { assert (!is_ok_); ສົ່ງຄືນ err_; }
+  E error () && { assert (!is_ok_); ສົ່ງຄືນ std::move (err_); }
 
   bool operator == (const hb_result_t& o) const
   {
-    if (is_ok_ != o.is_ok_) return false;
-    if (is_ok_) return val_ == o.val_;
-    return err_ == o.err_;
+    ຖ້າ (is_ok_ != o.is_ok_) ສົ່ງຄືນ false;
+    ຖ້າ (is_ok_) ສົ່ງຄືນ val_ == o.val_;
+    ສົ່ງຄືນ err_ == o.err_;
   }
 
   bool operator != (const hb_result_t& o) const
   {
-    return !(*this == o);
+    ສົ່ງຄືນ !(*this == o);
   }
 
   template <typename U>
   bool operator == (const hb_result_ok_t<U>& o) const
   {
-    return is_ok_ && val_ == o.value;
+    ສົ່ງຄືນ is_ok_ && val_ == o.value;
   }
 
   template <typename U>
   bool operator != (const hb_result_ok_t<U>& o) const
   {
-    return !(*this == o);
+    ສົ່ງຄືນ !(*this == o);
   }
 
   template <typename F>
   bool operator == (const hb_result_err_t<F>& e) const
   {
-    return !is_ok_ && err_ == e.error;
+    ສົ່ງຄືນ !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
   bool operator != (const hb_result_err_t<F>& e) const
   {
-    return !(*this == e);
+    ສົ່ງຄືນ !(*this == e);
   }
 
   template <typename U>
@@ -315,21 +315,21 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
 // Partial specialization for void
 template <typename E>
-struct HB_NODISCARD_STRUCT hb_result_t<void, E>
+sa_nracanaa HB_NODISCARD_STRUCT hb_result_t<void, E>
 {
   private:
-  union
+  sa_ngha
   {
     E err_;
   };
   bool is_ok_;
 
-  template <typename, typename> friend struct hb_result_t;
+  template <typename, typename> friend sa_nracanaa hb_result_t;
 
   public:
   ~hb_result_t ()
   {
-    if (!is_ok_)
+    ຖ້າ (!is_ok_)
       err_.~E ();
   }
 
@@ -338,55 +338,55 @@ struct HB_NODISCARD_STRUCT hb_result_t<void, E>
 
   hb_result_t (const hb_result_t& o) : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
+    ຖ້າ (!is_ok_)
       new (std::addressof (err_)) E (o.err_);
   }
 
   hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
       : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
+    ຖ້າ (!is_ok_)
       new (std::addressof (err_)) E (std::move (o.err_));
   }
 
   hb_result_t& operator = (const hb_result_t& o)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    ຖ້າ (this == &o) ສົ່ງຄືນ *this;
+    ຖ້າ (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else if (!is_ok_ && o.is_ok_)
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
       is_ok_ = true;
     }
-    else if (is_ok_ && !o.is_ok_)
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (is_ok_ && !o.is_ok_)
     {
       new (std::addressof (err_)) E (o.err_);
       is_ok_ = false;
     }
-    return *this;
+    ສົ່ງຄືນ *this;
   }
 
   hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    ຖ້າ (this == &o) ສົ່ງຄືນ *this;
+    ຖ້າ (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else if (!is_ok_ && o.is_ok_)
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
       is_ok_ = true;
     }
-    else if (is_ok_ && !o.is_ok_)
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (is_ok_ && !o.is_ok_)
     {
       new (std::addressof (err_)) E (std::move (o.err_));
       is_ok_ = false;
     }
-    return *this;
+    ສົ່ງຄືນ *this;
   }
 
   template <typename F,
@@ -413,54 +413,54 @@ struct HB_NODISCARD_STRUCT hb_result_t<void, E>
   // of in_error() and returns either Ok() or Err(error_value).
   template<typename V>
   static hb_result_t<void, E> from (const V& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+    ຖ້າ (fallible.in_error()) {
+      ສົ່ງຄືນ Err(error_value);
     }
-    return Ok();
+    ສົ່ງຄືນ Ok();
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  bool is_ok () const { ສົ່ງຄືນ is_ok_; }
+  bool is_err () const { ສົ່ງຄືນ !is_ok_; }
+  explicit operator bool () const { ສົ່ງຄືນ is_ok (); }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  const E& error () const & { assert (!is_ok_); ສົ່ງຄືນ err_; }
+  E& error () & { assert (!is_ok_); ສົ່ງຄືນ err_; }
+  E error () && { assert (!is_ok_); ສົ່ງຄືນ std::move (err_); }
 
-  void operator * () & { return; }
-  void operator * () const & { return; }
-  void operator * () && { return; }
+  void operator * () & { ສົ່ງຄືນ; }
+  void operator * () const & { ສົ່ງຄືນ; }
+  void operator * () && { ສົ່ງຄືນ; }
 
   bool operator == (const hb_result_t<void, E>& o) const
   {
-    return is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
+    ສົ່ງຄືນ is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
   }
 
   bool operator != (const hb_result_t<void, E>& o) const
   {
-    return !(*this == o);
+    ສົ່ງຄືນ !(*this == o);
   }
 
   bool operator == (hb_result_ok_t<void>) const
   {
-    return is_ok_;
+    ສົ່ງຄືນ is_ok_;
   }
 
   bool operator != (hb_result_ok_t<void>) const
   {
-    return !is_ok_;
+    ສົ່ງຄືນ !is_ok_;
   }
 
   template <typename F>
   bool operator == (const hb_result_err_t<F>& e) const
   {
-    return !is_ok_ && err_ == e.error;
+    ສົ່ງຄືນ !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
   bool operator != (const hb_result_err_t<F>& e) const
   {
-    return !(*this == e);
+    ສົ່ງຄືນ !(*this == e);
   }
 
   template <typename U>
@@ -471,38 +471,38 @@ struct HB_NODISCARD_STRUCT hb_result_t<void, E>
 };
 
 template <typename U, typename T, typename E>
-static inline bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+static anta_hstha bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
 {
-  return r == o;
+  ສົ່ງຄືນ r == o;
 }
 template <typename U, typename T, typename E>
-static inline bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+static anta_hstha bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
 {
-  return r != o;
+  ສົ່ງຄືນ r != o;
 }
 template <typename F, typename T, typename E>
-static inline bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+static anta_hstha bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
 {
-  return r == e;
+  ສົ່ງຄືນ r == e;
 }
 template <typename F, typename T, typename E>
-static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+static anta_hstha bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
 {
-  return r != e;
+  ສົ່ງຄືນ r != e;
 }
 
 #ifndef TRY
 #define TRY(expr)                                                             \
   do {                                                                        \
     auto _res = (expr);                                                       \
-    if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
-  } while (0)
+    ຖ້າ (unlikely (!_res.is_ok())) ສົ່ງຄືນ Err(std::move(_res).error());        \
+  } ໃນຂະນະທີ່ (0)
 #endif
 
 #ifndef TRY_ASSIGN
 #define TRY_ASSIGN(var, ...)                                                  \
   auto HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
-  if (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) return Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
+  ຖ້າ (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) ສົ່ງຄືນ Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
   var = *std::move(HB_PASTE(_res_, __LINE__))
 #endif
 

@@ -35,15 +35,15 @@
 /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
 #define HB_CORETEXT_DEFAULT_FONT_SIZE 12.f
 
-struct hb_aat_feature_mapping_t
+sa_nracanaa hb_aat_feature_mapping_t
 {
   hb_tag_t otFeatureTag;
   hb_aat_layout_feature_type_t aatFeatureType;
   hb_aat_layout_feature_selector_t selectorToEnable;
   hb_aat_layout_feature_selector_t selectorToDisable;
 
-  int cmp (hb_tag_t key) const
-  { return key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
+  ຈຳນວນເຕັມ cmp (hb_tag_t key) const
+  { ສົ່ງຄືນ key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
 };
 
 HB_INTERNAL const hb_aat_feature_mapping_t *

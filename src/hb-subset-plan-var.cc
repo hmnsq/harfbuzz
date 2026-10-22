@@ -41,15 +41,15 @@
                                unsigned subtable_count,
                                hb_vector_t<hb_inc_bimap_t> &inner_maps /* OUT */)
  {
-   if (varidx_set.is_empty () || subtable_count == 0) return;
+   ຖ້າ (varidx_set.is_empty () || subtable_count == 0) ສົ່ງຄືນ;
 
-   if (unlikely (!inner_maps.resize (subtable_count))) return;
-   for (unsigned idx : varidx_set)
+   ຖ້າ (unlikely (!inner_maps.resize (subtable_count))) ສົ່ງຄືນ;
+   ສຳລັບ (unsigned idx : varidx_set)
    {
      uint16_t major = idx >> 16;
      uint16_t minor = idx & 0xFFFF;
 
-     if (major >= subtable_count)
+     ຖ້າ (major >= subtable_count)
        continue;
      inner_maps[major].add (minor);
    }
@@ -57,32 +57,32 @@
 
  /* Evaluate a variation-region tent at v, mirroring VarRegionAxis::evaluate
   * (invalid regions evaluate as constant 1). */
- static double
- _tent_eval (const Triple &tent, double v)
+ static dviguu_na
+ _tent_eval (const Triple &tent, dviguu_na v)
  {
-   double start = (double) tent.minimum;
-   double peak = (double) tent.middle;
-   double end = (double) tent.maximum;
-   if (unlikely (start > peak || peak > end)) return 1.0;
-   if (unlikely (start < 0.0 && end > 0.0 && peak != 0.0)) return 1.0;
-   if (peak == 0.0 || v == peak) return 1.0;
-   if (v <= start || end <= v) return 0.0;
-   if (v < peak) return (v - start) / (peak - start);
-   return (end - v) / (end - peak);
+   dviguu_na start = (dviguu_na) tent.minimum;
+   dviguu_na peak = (dviguu_na) tent.middle;
+   dviguu_na end = (dviguu_na) tent.maximum;
+   ຖ້າ (unlikely (start > peak || peak > end)) ສົ່ງຄືນ 1.0;
+   ຖ້າ (unlikely (start < 0.0 && end > 0.0 && peak != 0.0)) ສົ່ງຄືນ 1.0;
+   ຖ້າ (peak == 0.0 || v == peak) ສົ່ງຄືນ 1.0;
+   ຖ້າ (v <= start || end <= v) ສົ່ງຄືນ 0.0;
+   ຖ້າ (v < peak) ສົ່ງຄືນ (v - start) / (peak - start);
+   ສົ່ງຄືນ (end - v) / (end - peak);
  }
 
  /* Range of a tent's scalar over an input interval [lo, hi]. The tent is
   * unimodal, so the extremes are at the interval endpoints, plus the peak
   * when it falls inside. */
  static void
- _tent_value_range (const Triple &tent, double lo, double hi,
-                    double *tmin, double *tmax)
+ _tent_value_range (const Triple &tent, dviguu_na lo, dviguu_na hi,
+                    dviguu_na *tmin, dviguu_na *tmax)
  {
-   double a = _tent_eval (tent, lo);
-   double b = _tent_eval (tent, hi);
+   dviguu_na a = _tent_eval (tent, lo);
+   dviguu_na b = _tent_eval (tent, hi);
    *tmin = hb_min (a, b);
    *tmax = hb_max (a, b);
-   if (lo <= (double) tent.middle && (double) tent.middle <= hi)
+   ຖ້າ (lo <= (dviguu_na) tent.middle && (dviguu_na) tent.middle <= hi)
      *tmax = hb_max (*tmax, 1.0);
  }
 
@@ -107,53 +107,53 @@
  {
    const OT::ItemVariationStore *var_store;
    const OT::DeltaSetIndexMap *varidx_map;
-   if (!avar_table->get_v2_store_and_map (&var_store, &varidx_map))
-     return false;
+   ຖ້າ (!avar_table->get_v2_store_and_map (&var_store, &varidx_map))
+     ສົ່ງຄືນ false;
 
    /* Old-intermediate input box per axis. */
-   hb_hashmap_t<hb_tag_t, hb_pair_t<double, double>> box;
-   for (const auto &axis : axes)
+   hb_hashmap_t<hb_tag_t, hb_pair_t<dviguu_na, dviguu_na>> box;
+   ສຳລັບ (const auto &axis : axes)
    {
      hb_tag_t tag = axis.get_axis_tag ();
-     double lo = -1.0, hi = +1.0;
+     dviguu_na lo = -1.0, hi = +1.0;
      Triple *old_int;
-     if (plan->user_axes_location.has (tag))
+     ຖ້າ (plan->user_axes_location.has (tag))
      {
-       if (!plan->old_intermediates.has (tag, &old_int)) return false;
-       lo = (double) old_int->minimum;
-       hi = (double) old_int->maximum;
+       ຖ້າ (!plan->old_intermediates.has (tag, &old_int)) ສົ່ງຄືນ false;
+       lo = (dviguu_na) old_int->minimum;
+       hi = (dviguu_na) old_int->maximum;
      }
-     else if (axis.is_hidden ())
+     ບໍ່ດັ່ງນັ້ນ ຖ້າ (axis.is_hidden ())
        lo = hi = 0.0; /* private axis: intermediate is always 0 */
-     if (!box.set (tag, hb_pair (lo, hi))) return false;
+     ຖ້າ (!box.set (tag, hb_pair (lo, hi))) ສົ່ງຄືນ false;
    }
 
    hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>> regions;
-   if (!var_store->get_region_list ().get_var_regions (plan->axes_old_index_tag_map, regions))
-     return false;
+   ຖ້າ (!var_store->get_region_list ().get_var_regions (plan->axes_old_index_tag_map, regions))
+     ສົ່ງຄືນ false;
 
    hb_hashmap_t<hb_tag_t, unsigned> grid_pos;
-   hb_vector_t<hb_vector_t<double>> grid_points;
-   for (unsigned i = 0; i < axes.length; i++)
+   hb_vector_t<hb_vector_t<dviguu_na>> grid_points;
+   ສຳລັບ (unsigned i = 0; i < axes.length; i++)
    {
      grid_pos.reset ();
      grid_points.reset ();
 
      hb_tag_t tag = axes[i].get_axis_tag ();
-     hb_pair_t<double, double> *identity;
-     if (!box.has (tag, &identity)) return false;
+     hb_pair_t<dviguu_na, dviguu_na> *identity;
+     ຖ້າ (!box.has (tag, &identity)) ສົ່ງຄືນ false;
 
      /* Collect the row's active regions (non-zero delta). A varidx (or the
       * implicit identity mapping) that doesn't resolve to a real store row
       * behaves as "no variation" at runtime, so it contributes no regions;
       * this also covers a NULL VarStore. */
-     hb_vector_t<hb_pair_t<int, unsigned>> active; /* (delta, region index) */
+     hb_vector_t<hb_pair_t<ຈຳນວນເຕັມ, unsigned>> active; /* (delta, region index) */
      uint32_t varidx = varidx_map->map (i);
      /* Runtime treats out-of-range delta-set indices as zero. */
-     if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
+     ຖ້າ (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
 	 !var_store->has_delta_set (varidx))
        varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-     if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+     ຖ້າ (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
      {
        unsigned outer = varidx >> 16;
        unsigned inner = varidx & 0xFFFF;
@@ -161,15 +161,15 @@
        const OT::HBUINT8 *delta_bytes = vd.get_delta_bytes ();
        unsigned row_size = vd.get_row_size ();
        unsigned region_count = vd.get_region_index_count ();
-       for (unsigned r = 0; r < region_count; r++)
+       ສຳລັບ (unsigned r = 0; r < region_count; r++)
        {
-	 int delta = vd.get_item_delta_fast (inner, r, delta_bytes, row_size);
-	 if (!delta) continue;
+	 ຈຳນວນເຕັມ delta = vd.get_item_delta_fast (inner, r, delta_bytes, row_size);
+	 ຖ້າ (!delta) continue;
 	 unsigned region_idx = vd.get_region_index (r);
-	 if (region_idx >= regions.length) return false;
+	 ຖ້າ (region_idx >= regions.length) ສົ່ງຄືນ false;
 	 active.push (hb_pair (delta, region_idx));
        }
-       if (active.in_error ()) return false;
+       ຖ້າ (active.in_error ()) ສົ່ງຄືນ false;
      }
 
      /* The delta is piecewise multilinear in the axis coordinates (each
@@ -182,131 +182,131 @@
       * VarStore.getExtremes. */
      constexpr unsigned MAX_GRID = 1u << 14;
      bool exact = true;
-     double dmin = 0.0, dmax = 0.0; /* delta extremes, F2Dot14 units */
-     double vmin = 0.0, vmax = 0.0; /* identity + delta extremes, coord units */
+     dviguu_na dmin = 0.0, dmax = 0.0; /* delta extremes, F2Dot14 units */
+     dviguu_na vmin = 0.0, vmax = 0.0; /* identity + delta extremes, coord units */
 
      /* Grid axes: the target axis (identity term), plus every axis a valid
       * tent of an active region references. */
-     auto add_grid_axis = [&] (hb_tag_t t) -> int
+     auto add_grid_axis = [&] (hb_tag_t t) -> ຈຳນວນເຕັມ
      {
        unsigned *pos;
-       if (grid_pos.has (t, &pos)) return (int) *pos;
+       ຖ້າ (grid_pos.has (t, &pos)) ສົ່ງຄືນ (ຈຳນວນເຕັມ) *pos;
        unsigned new_pos = grid_pos.get_population ();
-       hb_pair_t<double, double> *input;
-       double blo = -1.0, bhi = +1.0;
-       if (box.has (t, &input)) { blo = input->first; bhi = input->second; }
-       grid_points.push (hb_vector_t<double> ());
-       if (grid_points.in_error ()) return -1;
+       hb_pair_t<dviguu_na, dviguu_na> *input;
+       dviguu_na blo = -1.0, bhi = +1.0;
+       ຖ້າ (box.has (t, &input)) { blo = input->first; bhi = input->second; }
+       grid_points.push (hb_vector_t<dviguu_na> ());
+       ຖ້າ (grid_points.in_error ()) ສົ່ງຄືນ -1;
        auto &points = grid_points[new_pos];
        points.push (blo);
        points.push (bhi);
-       if (points.in_error () || !grid_pos.set (t, new_pos)) return -1;
-       return (int) new_pos;
+       ຖ້າ (points.in_error () || !grid_pos.set (t, new_pos)) ສົ່ງຄືນ -1;
+       ສົ່ງຄືນ (ຈຳນວນເຕັມ) new_pos;
      };
 
-     if (add_grid_axis (tag) < 0) return false;
+     ຖ້າ (add_grid_axis (tag) < 0) ສົ່ງຄືນ false;
      /* Per active region: (grid axis position, tent) for its valid tents. */
      hb_vector_t<hb_vector_t<hb_pair_t<unsigned, Triple>>> region_tents;
-     for (const auto &ar : active)
+     ສຳລັບ (const auto &ar : active)
      {
        region_tents.push (hb_vector_t<hb_pair_t<unsigned, Triple>> ());
-       if (region_tents.in_error ()) return false;
+       ຖ້າ (region_tents.in_error ()) ສົ່ງຄືນ false;
        auto &tents = region_tents[region_tents.length - 1];
-       for (const auto &_ : regions[ar.second])
+       ສຳລັບ (const auto &_ : regions[ar.second])
        {
 	 const Triple &tent = _.second;
 	 /* Tents the runtime ignores (constant scalar 1) add no breakpoints. */
-	 if (tent.middle == 0.f ||
+	 ຖ້າ (tent.middle == 0.f ||
 	     tent.minimum > tent.middle || tent.middle > tent.maximum ||
 	     (tent.minimum < 0.f && tent.maximum > 0.f))
 	   continue;
-	 int pos = add_grid_axis (_.first);
-	 if (pos < 0) return false;
+	 ຈຳນວນເຕັມ pos = add_grid_axis (_.first);
+	 ຖ້າ (pos < 0) ສົ່ງຄືນ false;
 	 auto &points = grid_points[pos];
-	 double blo = points[0], bhi = points[1];
-	 points.push (hb_clamp ((double) tent.minimum, blo, bhi));
-	 points.push (hb_clamp ((double) tent.middle, blo, bhi));
-	 points.push (hb_clamp ((double) tent.maximum, blo, bhi));
+	 dviguu_na blo = points[0], bhi = points[1];
+	 points.push (hb_clamp ((dviguu_na) tent.minimum, blo, bhi));
+	 points.push (hb_clamp ((dviguu_na) tent.middle, blo, bhi));
+	 points.push (hb_clamp ((dviguu_na) tent.maximum, blo, bhi));
 	 tents.push (hb_pair ((unsigned) pos, tent));
-	 if (points.in_error () || tents.in_error ()) return false;
+	 ຖ້າ (points.in_error () || tents.in_error ()) ສົ່ງຄືນ false;
        }
      }
 
      unsigned grid_size = 1;
-     for (auto &points : grid_points)
+     ສຳລັບ (auto &points : grid_points)
      {
-       points.qsort ([] (const double &a, const double &b) -> int
-		     { return a < b ? -1 : a > b ? +1 : 0; });
+       points.qsort ([] (const dviguu_na &a, const dviguu_na &b) -> ຈຳນວນເຕັມ
+		     { ສົ່ງຄືນ a < b ? -1 : a > b ? +1 : 0; });
        unsigned n = 0;
-       for (unsigned j = 0; j < points.length; j++)
-	 if (!n || points.arrayZ[j] != points.arrayZ[n - 1])
+       ສຳລັບ (unsigned j = 0; j < points.length; j++)
+	 ຖ້າ (!n || points.arrayZ[j] != points.arrayZ[n - 1])
 	   points.arrayZ[n++] = points.arrayZ[j];
        points.shrink (n);
-       if (grid_size > MAX_GRID / points.length) { exact = false; break; }
+       ຖ້າ (grid_size > MAX_GRID / points.length) { exact = false; bha_nga; }
        grid_size *= points.length;
      }
 
-     if (exact)
+     ຖ້າ (exact)
      {
        unsigned target_pos = 0; /* the target axis was added first */
        hb_vector_t<unsigned> odometer;
-       if (!odometer.resize (grid_pos.get_population ())) return false;
+       ຖ້າ (!odometer.resize (grid_pos.get_population ())) ສົ່ງຄືນ false;
        bool first = true;
-       while (true)
+       ໃນຂະນະທີ່ (true)
        {
-	 double delta_sum = 0.0;
-	 for (unsigned r = 0; r < active.length; r++)
+	 dviguu_na delta_sum = 0.0;
+	 ສຳລັບ (unsigned r = 0; r < active.length; r++)
 	 {
-	   double scalar = 1.0;
-	   for (const auto &pt : region_tents[r])
+	   dviguu_na scalar = 1.0;
+	   ສຳລັບ (const auto &pt : region_tents[r])
 	   {
-	     double v = grid_points[pt.first][odometer[pt.first]];
+	     dviguu_na v = grid_points[pt.first][odometer[pt.first]];
 	     scalar *= _tent_eval (pt.second, v);
-	     if (scalar == 0.0) break;
+	     ຖ້າ (scalar == 0.0) bha_nga;
 	   }
 	   delta_sum += scalar * active[r].first;
 	 }
-	 double coord = grid_points[target_pos][odometer[target_pos]];
-	 double value = coord + delta_sum / 16384.0;
-	 if (first)
+	 dviguu_na coord = grid_points[target_pos][odometer[target_pos]];
+	 dviguu_na value = coord + delta_sum / 16384.0;
+	 ຖ້າ (first)
 	 {
 	   dmin = dmax = delta_sum;
 	   vmin = vmax = value;
 	   first = false;
 	 }
-	 else
+	 ບໍ່ດັ່ງນັ້ນ
 	 {
 	   dmin = hb_min (dmin, delta_sum); dmax = hb_max (dmax, delta_sum);
 	   vmin = hb_min (vmin, value);     vmax = hb_max (vmax, value);
 	 }
 	 unsigned k = 0;
-	 for (; k < odometer.length; k++)
+	 ສຳລັບ (; k < odometer.length; k++)
 	 {
-	   if (++odometer[k] < grid_points[k].length) break;
+	   ຖ້າ (++odometer[k] < grid_points[k].length) bha_nga;
 	   odometer[k] = 0;
 	 }
-	 if (k == odometer.length) break;
+	 ຖ້າ (k == odometer.length) bha_nga;
        }
      }
-     else
+     ບໍ່ດັ່ງນັ້ນ
      {
-       for (const auto &ar : active)
+       ສຳລັບ (const auto &ar : active)
        {
-	 int delta = ar.first;
-	 double smin = 1.0, smax = 1.0;
-	 for (const auto &_ : regions[ar.second])
+	 ຈຳນວນເຕັມ delta = ar.first;
+	 dviguu_na smin = 1.0, smax = 1.0;
+	 ສຳລັບ (const auto &_ : regions[ar.second])
 	 {
-	   hb_pair_t<double, double> *input;
-	   double blo = -1.0, bhi = +1.0;
-	   if (box.has (_.first, &input)) { blo = input->first; bhi = input->second; }
-	   double tmin, tmax;
+	   hb_pair_t<dviguu_na, dviguu_na> *input;
+	   dviguu_na blo = -1.0, bhi = +1.0;
+	   ຖ້າ (box.has (_.first, &input)) { blo = input->first; bhi = input->second; }
+	   dviguu_na tmin, tmax;
 	   _tent_value_range (_.second, blo, bhi, &tmin, &tmax);
 	   smin *= tmin;
 	   smax *= tmax;
-	   if (smax == 0.0) break;
+	   ຖ້າ (smax == 0.0) bha_nga;
 	 }
-	 if (delta > 0) { dmin += smin * delta; dmax += smax * delta; }
-	 else           { dmin += smax * delta; dmax += smin * delta; }
+	 ຖ້າ (delta > 0) { dmin += smin * delta; dmax += smax * delta; }
+	 ບໍ່ດັ່ງນັ້ນ           { dmin += smax * delta; dmax += smin * delta; }
        }
        vmin = identity->first + dmin / 16384.0;
        vmax = identity->second + dmax / 16384.0;
@@ -318,37 +318,37 @@
       * and add it to the exact quantized intermediate, matching the runtime
       * (map_coords_2_14) and fontTools. */
      Triple *user;
-     if (detect_self_contained && dmin == dmax &&
+     ຖ້າ (detect_self_contained && dmin == dmax &&
 	 plan->user_axes_location.has (tag, &user) && user->is_point ())
      {
-       int v_int = (int) roundf ((float) identity->first * 16384.f) +
-		   (int) roundf ((float) dmin);
+       ຈຳນວນເຕັມ v_int = (ຈຳນວນເຕັມ) roundf ((float) identity->first * 16384.f) +
+		   (ຈຳນວນເຕັມ) roundf ((float) dmin);
        v_int = hb_clamp (v_int, -(1 << 14), +(1 << 14));
-       if (!plan->avar2_self_contained.set (tag, v_int / 16384.0)) return false;
+       ຖ້າ (!plan->avar2_self_contained.set (tag, v_int / 16384.0)) ສົ່ງຄືນ false;
        continue; /* axis is dropped; no region can reference it afterwards */
      }
 
      /* Pad by one F2Dot14 unit against rounding differences with the
       * runtime's fixed-point evaluation. */
-     double lo = hb_clamp (vmin - 1.0 / 16384.0, -1.0, +1.0);
-     double hi = hb_clamp (vmax + 1.0 / 16384.0, -1.0, +1.0);
+     dviguu_na lo = hb_clamp (vmin - 1.0 / 16384.0, -1.0, +1.0);
+     dviguu_na hi = hb_clamp (vmax + 1.0 / 16384.0, -1.0, +1.0);
      lo = floor (lo * 16384.0) / 16384.0;
      hi = ceil (hi * 16384.0) / 16384.0;
-     if (lo <= -1.0 && hi >= +1.0)
+     ຖ້າ (lo <= -1.0 && hi >= +1.0)
        continue; /* not constraining */
-     if (!plan->avar2_reachable_ranges.set (tag, Triple (lo, hb_clamp (0.0, lo, hi), hi)))
-       return false;
+     ຖ້າ (!plan->avar2_reachable_ranges.set (tag, Triple (lo, hb_clamp (0.0, lo, hi), hi)))
+       ສົ່ງຄືນ false;
    }
-   return true;
+   ສົ່ງຄືນ true;
  }
 
 #ifndef HB_NO_OT_FONT_CFF
- static inline hb_font_t*
+ static anta_hstha hb_font_t*
  _get_hb_font_with_variations (const hb_subset_plan_t *plan)
  {
    hb_font_t *font = hb_font_create (plan->source);
 
-   if (plan->has_avar2)
+   ຖ້າ (plan->has_avar2)
    {
      /* Under avar2, instancing applies only to the self-contained pins,
       * whose constant final coordinates the plan holds in normalized_coords.
@@ -356,16 +356,16 @@
       * bake contributions that remain live in the instance's variations. */
      hb_font_set_var_coords_normalized (font, plan->normalized_coords.arrayZ,
                                         plan->normalized_coords.length);
-     return font;
+     ສົ່ງຄືນ font;
    }
 
    hb_vector_t<hb_variation_t> vars;
-   if (!vars.alloc (plan->user_axes_location.get_population ())) {
+   ຖ້າ (!vars.alloc (plan->user_axes_location.get_population ())) {
      hb_font_destroy (font);
-     return nullptr;
+     ສົ່ງຄືນ nullptr;
    }
 
-   for (auto _ : plan->user_axes_location)
+   ສຳລັບ (auto _ : plan->user_axes_location)
    {
      hb_variation_t var;
      var.tag = _.first;
@@ -374,7 +374,7 @@
    }
 
    hb_font_set_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
-   return font;
+   ສົ່ງຄືນ font;
  }
 #endif
 
@@ -382,40 +382,40 @@
  void
  remap_variation_indices (const ItemVarStore &var_store,
                           const hb_set_t &variation_indices,
-                          const hb_vector_t<int>& normalized_coords,
+                          const hb_vector_t<ຈຳນວນເຕັມ>& normalized_coords,
                           bool calculate_delta, /* not pinned at default */
                           bool no_variations, /* all axes pinned */
-                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */)
+                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> &variation_idx_delta_map /* OUT */)
  {
-   if (&var_store == &Null (OT::ItemVariationStore)) return;
+   ຖ້າ (&var_store == &Null (OT::ItemVariationStore)) ສົ່ງຄືນ;
    unsigned subtable_count = var_store.get_sub_table_count ();
    auto *store_cache = var_store.create_cache ();
 
    unsigned new_major = 0, new_minor = 0;
    unsigned last_major = (variation_indices.get_min ()) >> 16;
-   for (unsigned idx : variation_indices)
+   ສຳລັບ (unsigned idx : variation_indices)
    {
-     int delta = 0;
-     if (calculate_delta)
+     ຈຳນວນເຕັມ delta = 0;
+     ຖ້າ (calculate_delta)
        delta = roundf (var_store.get_delta (idx, normalized_coords.arrayZ,
                                             normalized_coords.length, store_cache));
 
-     if (no_variations)
+     ຖ້າ (no_variations)
      {
-       variation_idx_delta_map.set (idx, hb_pair_t<unsigned, int> (HB_OT_LAYOUT_NO_VARIATIONS_INDEX, delta));
+       variation_idx_delta_map.set (idx, hb_pair_t<unsigned, ຈຳນວນເຕັມ> (HB_OT_LAYOUT_NO_VARIATIONS_INDEX, delta));
        continue;
      }
 
      uint16_t major = idx >> 16;
-     if (major >= subtable_count) break;
-     if (major != last_major)
+     ຖ້າ (major >= subtable_count) bha_nga;
+     ຖ້າ (major != last_major)
      {
        new_minor = 0;
        ++new_major;
      }
 
      unsigned new_idx = (new_major << 16) + new_minor;
-     variation_idx_delta_map.set (idx, hb_pair_t<unsigned, int> (new_idx, delta));
+     variation_idx_delta_map.set (idx, hb_pair_t<unsigned, ຈຳນວນເຕັມ> (new_idx, delta));
      ++new_minor;
      last_major = major;
    }
@@ -426,20 +426,20 @@
  void
  remap_variation_indices<OT::ItemVariationStore> (const OT::ItemVariationStore &var_store,
                           const hb_set_t &variation_indices,
-                          const hb_vector_t<int>& normalized_coords,
+                          const hb_vector_t<ຈຳນວນເຕັມ>& normalized_coords,
                           bool calculate_delta, /* not pinned at default */
                           bool no_variations, /* all axes pinned */
-                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> &variation_idx_delta_map /* OUT */);
 
  #ifndef HB_NO_BASE
  void
  collect_base_variation_indices (hb_subset_plan_t* plan)
  {
    hb_blob_ptr_t<OT::BASE> base = plan->source_table<OT::BASE> ();
-   if (!base->has_var_store ())
+   ຖ້າ (!base->has_var_store ())
    {
      base.destroy ();
-     return;
+     ສົ່ງຄືນ;
    }
 
    hb_set_t varidx_set;
@@ -463,51 +463,51 @@
 bool
 normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
 {
-  if (plan->user_axes_location.is_empty ())
-    return true;
+  ຖ້າ (plan->user_axes_location.is_empty ())
+    ສົ່ງຄືນ true;
 
   hb_array_t<const OT::AxisRecord> axes = face->table.fvar->get_axes ();
-  for (const auto &axis : axes)
+  ສຳລັບ (const auto &axis : axes)
   {
     hb_tag_t tag = axis.get_axis_tag ();
     const Triple *range;
     float minimum, middle, maximum;
     axis.get_coordinates (minimum, middle, maximum);
-    if (plan->user_axes_location.has (tag, &range) && !range->is_point () &&
+    ຖ້າ (plan->user_axes_location.has (tag, &range) && !range->is_point () &&
         range->minimum == minimum &&
         range->middle == middle &&
         range->maximum == maximum)
       plan->user_axes_location.del (tag);
   }
-  if (plan->user_axes_location.is_empty ())
-    return true;
+  ຖ້າ (plan->user_axes_location.is_empty ())
+    ສົ່ງຄືນ true;
 
-  if (!plan->check_success (plan->normalized_coords.resize (axes.length)))
-    return false;
+  ຖ້າ (!plan->check_success (plan->normalized_coords.resize (axes.length)))
+    ສົ່ງຄືນ false;
 
   bool has_avar = face->table.avar->has_data ();
   hb_vector_t<float> normalized_mins;
   hb_vector_t<float> normalized_defaults;
   hb_vector_t<float> normalized_maxs;
-  if (has_avar)
+  ຖ້າ (has_avar)
   {
-    if (!plan->check_success (normalized_mins.resize (axes.length)) ||
+    ຖ້າ (!plan->check_success (normalized_mins.resize (axes.length)) ||
         !plan->check_success (normalized_defaults.resize (axes.length)) ||
         !plan->check_success (normalized_maxs.resize (axes.length)))
-      return false;
+      ສົ່ງຄືນ false;
   }
 
   bool axis_not_pinned = false;
   unsigned new_axis_idx = 0;
   unsigned last_idx = 0;
-  for (const auto& _ : + hb_enumerate (axes))
+  ສຳລັບ (const auto& _ : + hb_enumerate (axes))
   {
     unsigned i = _.first;
     const OT::AxisRecord &axis = _.second;
     hb_tag_t axis_tag = axis.get_axis_tag ();
     plan->axes_old_index_tag_map.set (i, axis_tag);
 
-    if (!plan->user_axes_location.has (axis_tag) ||
+    ຖ້າ (!plan->user_axes_location.has (axis_tag) ||
         !plan->user_axes_location.get (axis_tag).is_point ())
     {
       axis_not_pinned = true;
@@ -517,7 +517,7 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
     }
 
     Triple *axis_range;
-    if (plan->user_axes_location.has (axis_tag, &axis_range))
+    ຖ້າ (plan->user_axes_location.has (axis_tag, &axis_range))
     {
       plan->axes_triple_distances.set (axis_tag, axis.get_triple_distances ());
 
@@ -538,21 +538,21 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       normalized_default = roundf (normalized_default * 16384.f) / 16384.f;
       normalized_max = roundf (normalized_max * 16384.f) / 16384.f;
 
-      if (has_avar)
+      ຖ້າ (has_avar)
       {
         normalized_mins[i] = normalized_min;
         normalized_defaults[i] = normalized_default;
         normalized_maxs[i] = normalized_max;
         last_idx = i;
       }
-      else
+      ບໍ່ດັ່ງນັ້ນ
       {
-        plan->axes_location.set (axis_tag, Triple ((double) normalized_min,
-                                                   (double) normalized_default,
-                                                   (double) normalized_max));
-        if (normalized_default == -0.f)
+        plan->axes_location.set (axis_tag, Triple ((dviguu_na) normalized_min,
+                                                   (dviguu_na) normalized_default,
+                                                   (dviguu_na) normalized_max));
+        ຖ້າ (normalized_default == -0.f)
           normalized_default = 0.f; // Normalize -0 to 0
-        if (normalized_default != 0.f)
+        ຖ້າ (normalized_default != 0.f)
           plan->pinned_at_default = false;
 
         plan->normalized_coords[i] = roundf (normalized_default * 16384.f);
@@ -563,33 +563,33 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
 
   // TODO: use avar map_coords_16_16() when normalization is changed to 16.16
   // in fonttools
-  if (has_avar)
+  ຖ້າ (has_avar)
   {
     const OT::avar* avar_table = face->table.avar;
     unsigned coords_len = last_idx + 1;
 
-    if (avar_table->has_v2_data () && !plan->all_axes_pinned)
+    ຖ້າ (avar_table->has_v2_data () && !plan->all_axes_pinned)
     {
       /* avar2 partial instancing: use v1-only mapping to get intermediate-space
        * coords. These are used for IVS rebasing and offset compensation. */
       plan->has_avar2 = true;
 
-      if (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len, true)) ||
+      ຖ້າ (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len, true)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len, true)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len, true)))
-        return false;
+        ສົ່ງຄືນ false;
 
-      for (const auto& _ : + hb_enumerate (axes))
+      ສຳລັບ (const auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->user_axes_location.has (axis_tag))
+        ຖ້າ (plan->user_axes_location.has (axis_tag))
         {
           /* Store intermediate-space coords for offset compensation,
            * segment-map renormalization, and IVS rebasing. */
-          plan->old_intermediates.set (axis_tag, Triple ((double) normalized_mins[i],
-                                                         (double) normalized_defaults[i],
-                                                         (double) normalized_maxs[i]));
+          plan->old_intermediates.set (axis_tag, Triple ((dviguu_na) normalized_mins[i],
+                                                         (dviguu_na) normalized_defaults[i],
+                                                         (dviguu_na) normalized_maxs[i]));
         }
       }
 
@@ -606,17 +606,17 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       hb_blob_t *cff2_blob = hb_face_reference_table (face, HB_TAG ('C','F','F','2'));
       bool detect_self_contained = !hb_blob_get_length (cff2_blob);
       hb_blob_destroy (cff2_blob);
-      if (!_compute_avar2_reachable_ranges (plan, axes, avar_table,
+      ຖ້າ (!_compute_avar2_reachable_ranges (plan, axes, avar_table,
                                             detect_self_contained))
-        return false;
+        ສົ່ງຄືນ false;
 
 #ifndef HB_NO_VAR_COMPOSITES
       /* VARC overrides can reach coordinates outside the font-level
        * ranges. Do not cull variation data using those ranges. */
-      if (!plan->drop_tables.has (HB_TAG ('V','A','R','C')))
+      ຖ້າ (!plan->drop_tables.has (HB_TAG ('V','A','R','C')))
       {
         hb_blob_t *varc_blob = hb_face_reference_table (face, HB_TAG ('V','A','R','C'));
-        if (hb_blob_get_length (varc_blob))
+        ຖ້າ (hb_blob_get_length (varc_blob))
           plan->avar2_reachable_ranges.reset ();
         hb_blob_destroy (varc_blob);
       }
@@ -627,11 +627,11 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       plan->axes_index_map.reset ();
       plan->axis_tags.reset ();
       unsigned retained_axis_idx = 0;
-      for (const auto& _ : + hb_enumerate (axes))
+      ສຳລັບ (const auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->avar2_self_contained.has (axis_tag))
+        ຖ້າ (plan->avar2_self_contained.has (axis_tag))
           continue;
         plan->axes_index_map.set (i, retained_axis_idx++);
         plan->axis_tags.push (axis_tag);
@@ -641,48 +641,48 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
        * instancing machinery bakes those axes' contributions in. The
        * remaining restriction is carried entirely by avar. */
       plan->axes_location.reset ();
-      if (plan->avar2_self_contained.get_population ())
+      ຖ້າ (plan->avar2_self_contained.get_population ())
       {
         bool sc_pinned_at_default = true;
-        for (auto _ : plan->avar2_self_contained)
+        ສຳລັບ (auto _ : plan->avar2_self_contained)
         {
           plan->axes_location.set (_.first, Triple (_.second, _.second, _.second));
-          if (_.second != 0.0)
+          ຖ້າ (_.second != 0.0)
             sc_pinned_at_default = false;
         }
-        for (const auto& _ : + hb_enumerate (axes))
+        ສຳລັບ (const auto& _ : + hb_enumerate (axes))
         {
-          double *v;
+          dviguu_na *v;
           plan->normalized_coords[_.first] =
               plan->avar2_self_contained.has (_.second.get_axis_tag (), &v)
-              ? (int) roundf ((float) (*v * 16384.0)) : 0;
+              ? (ຈຳນວນເຕັມ) roundf ((float) (*v * 16384.0)) : 0;
         }
         plan->pinned_at_default = sc_pinned_at_default;
       }
-      else
+      ບໍ່ດັ່ງນັ້ນ
         plan->normalized_coords.shrink (0);
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       /* Standard avar v1 (or v1+v2 with all axes pinned) */
-      if (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len)) ||
+      ຖ້າ (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len)))
-        return false;
+        ສົ່ງຄືນ false;
 
-      for (const auto& _ : + hb_enumerate (axes))
+      ສຳລັບ (const auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->user_axes_location.has (axis_tag))
+        ຖ້າ (plan->user_axes_location.has (axis_tag))
         {
-          plan->axes_location.set (axis_tag, Triple ((double) normalized_mins[i],
-                                                     (double) normalized_defaults[i],
-                                                     (double) normalized_maxs[i]));
+          plan->axes_location.set (axis_tag, Triple ((dviguu_na) normalized_mins[i],
+                                                     (dviguu_na) normalized_defaults[i],
+                                                     (dviguu_na) normalized_maxs[i]));
           float normalized_default = normalized_defaults[i];
-          if (normalized_default == -0.f)
+          ຖ້າ (normalized_default == -0.f)
             normalized_default = 0.f;
-          if (normalized_default != 0.f)
+          ຖ້າ (normalized_default != 0.f)
             plan->pinned_at_default = false;
 
           plan->normalized_coords[i] = roundf (normalized_default * 16384.f);
@@ -690,46 +690,46 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       }
     }
   }
-  return true;
+  ສົ່ງຄືນ true;
 }
 
 #ifndef HB_NO_OT_FONT_CFF
 void
 update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
 {
-  if (!plan->normalized_coords) return;
+  ຖ້າ (!plan->normalized_coords) ສົ່ງຄືນ;
   OT::cff2::accelerator_t cff2 (plan->source);
-  if (!cff2.is_valid ()) return;
+  ຖ້າ (!cff2.is_valid ()) ສົ່ງຄືນ;
 
   hb_font_t *font = _get_hb_font_with_variations (plan);
-  if (unlikely (!plan->check_success (font != nullptr)))
+  ຖ້າ (unlikely (!plan->check_success (font != nullptr)))
   {
     hb_font_destroy (font);
-    return;
+    ສົ່ງຄືນ;
   }
 
   hb_glyph_extents_t extents = {0x7FFF, -0x7FFF};
   OT::hmtx_accelerator_t _hmtx (plan->source);
   OT::hb_scalar_cache_t *hvar_store_cache = nullptr;
-  if (_hmtx.has_data () && _hmtx.var_table.get_length ())
+  ຖ້າ (_hmtx.has_data () && _hmtx.var_table.get_length ())
     hvar_store_cache = _hmtx.var_table->get_var_store ().create_cache ();
 
   OT::vmtx_accelerator_t _vmtx (plan->source);
   OT::hb_scalar_cache_t *vvar_store_cache = nullptr;
-  if (_vmtx.has_data () && _vmtx.var_table.get_length ())
+  ຖ້າ (_vmtx.has_data () && _vmtx.var_table.get_length ())
     vvar_store_cache = _vmtx.var_table->get_var_store ().create_cache ();
 
-  for (auto p : *plan->glyph_map)
+  ສຳລັບ (auto p : *plan->glyph_map)
   {
     hb_codepoint_t old_gid = p.first;
     hb_codepoint_t new_gid = p.second;
-    if (!cff2.get_extents (font, old_gid, &extents)) continue;
+    ຖ້າ (!cff2.get_extents (font, old_gid, &extents)) continue;
     bool has_bounds_info = true;
-    if (extents.x_bearing == 0 && extents.width == 0 &&
+    ຖ້າ (extents.x_bearing == 0 && extents.width == 0 &&
         extents.height == 0 && extents.y_bearing == 0)
       has_bounds_info = false;
 
-    if (has_bounds_info)
+    ຖ້າ (has_bounds_info)
     {
       plan->head_maxp_info.xMin = hb_min (plan->head_maxp_info.xMin, extents.x_bearing);
       plan->head_maxp_info.xMax = hb_max (plan->head_maxp_info.xMax,
@@ -739,18 +739,18 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
 						 hb_saturate_add (extents.y_bearing, extents.height));
     }
 
-    if (_hmtx.has_data ())
+    ຖ້າ (_hmtx.has_data ())
     {
-      double hori_aw = _hmtx.get_advance_without_var_unscaled (old_gid);
-      if (_hmtx.var_table.get_length ())
-        hori_aw += (double) roundf (_hmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
+      dviguu_na hori_aw = _hmtx.get_advance_without_var_unscaled (old_gid);
+      ຖ້າ (_hmtx.var_table.get_length ())
+        hori_aw += (dviguu_na) roundf (_hmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
 									 hvar_store_cache));
       /* Malicious deltas can take the advance out of the UFWORD range that
        * hmtx serialization stores.  Clamp, to keep downstream consumers
        * (e.g. CFF width optimizer) bounded and consistent with hmtx. */
       hori_aw = hb_clamp (hori_aw, 0., 65535.);
-      int lsb = extents.x_bearing;
-      if (!has_bounds_info)
+      ຈຳນວນເຕັມ lsb = extents.x_bearing;
+      ຖ້າ (!has_bounds_info)
       {
         _hmtx.get_leading_bearing_without_var_unscaled (old_gid, &lsb);
       }
@@ -758,21 +758,21 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
       plan->bounds_width_vec[new_gid] = extents.width;
     }
 
-    if (_vmtx.has_data ())
+    ຖ້າ (_vmtx.has_data ())
     {
-      double vert_aw = _vmtx.get_advance_without_var_unscaled (old_gid);
-      if (_vmtx.var_table.get_length ())
-        vert_aw += (double) roundf (_vmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
+      dviguu_na vert_aw = _vmtx.get_advance_without_var_unscaled (old_gid);
+      ຖ້າ (_vmtx.var_table.get_length ())
+        vert_aw += (dviguu_na) roundf (_vmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
 									 vvar_store_cache));
       vert_aw = hb_clamp (vert_aw, 0., 65535.);
       hb_position_t vorg_x = 0;
       hb_position_t vorg_y = 0;
-      int tsb = 0;
-      if (has_bounds_info &&
+      ຈຳນວນເຕັມ tsb = 0;
+      ຖ້າ (has_bounds_info &&
            hb_font_get_glyph_v_origin (font, old_gid, &vorg_x, &vorg_y))
       {
         tsb = hb_saturate_sub (vorg_y, extents.y_bearing);
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
         _vmtx.get_leading_bearing_without_var_unscaled (old_gid, &tsb);
       }
 
@@ -782,15 +782,15 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
   }
   /* No glyph contributed bounds: do not serialize the accumulator's
    * inverted sentinels into head (or a downgraded CFF FontBBox). */
-  if (plan->head_maxp_info.xMin > plan->head_maxp_info.xMax)
+  ຖ້າ (plan->head_maxp_info.xMin > plan->head_maxp_info.xMax)
   {
     plan->head_maxp_info.xMin = plan->head_maxp_info.xMax = 0;
     plan->head_maxp_info.yMin = plan->head_maxp_info.yMax = 0;
   }
   hb_font_destroy (font);
-  if (hvar_store_cache)
+  ຖ້າ (hvar_store_cache)
     _hmtx.var_table->get_var_store ().destroy_cache (hvar_store_cache);
-  if (vvar_store_cache)
+  ຖ້າ (vvar_store_cache)
     _vmtx.var_table->get_var_store ().destroy_cache (vvar_store_cache);
 }
 #endif
@@ -800,65 +800,65 @@ get_instance_glyphs_contour_points (hb_subset_plan_t *plan)
 {
   /* contour_points vector only needed for updating gvar table (infer delta and
    * iup delta optimization) during partial instancing */
-  if (plan->user_axes_location.is_empty () || plan->all_axes_pinned)
-    return true;
+  ຖ້າ (plan->user_axes_location.is_empty () || plan->all_axes_pinned)
+    ສົ່ງຄືນ true;
 
   OT::glyf_accelerator_t glyf (plan->source);
 
-  for (auto &_ : plan->new_to_old_gid_list)
+  ສຳລັບ (auto &_ : plan->new_to_old_gid_list)
   {
     hb_codepoint_t new_gid = _.first;
     contour_point_vector_t all_points;
-    if (new_gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    ຖ້າ (new_gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
-      if (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
-        return false;
+      ຖ້າ (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
+        ສົ່ງຄືນ false;
       continue;
     }
 
     hb_codepoint_t old_gid = _.second;
     auto glyph = glyf.glyph_for_gid (old_gid);
-    if (unlikely (!glyph.get_all_points_without_var (plan->source, all_points)))
-      return false;
-    if (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
-      return false;
+    ຖ້າ (unlikely (!glyph.get_all_points_without_var (plan->source, all_points)))
+      ສົ່ງຄືນ false;
+    ຖ້າ (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
+      ສົ່ງຄືນ false;
 
     /* composite new gids are only needed by iup delta optimization */
-    if ((plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS) && glyph.is_composite ())
+    ຖ້າ ((plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS) && glyph.is_composite ())
       plan->composite_new_gids.add (new_gid);
   }
-  return true;
+  ສົ່ງຄືນ true;
 }
 
 template<typename DeltaSetIndexMap>
 void
 remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
                                       const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */)
 {
-  if (!index_map.get_map_count ())
-    return;
+  ຖ້າ (!index_map.get_map_count ())
+    ສົ່ງຄືນ;
 
-  hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> delta_set_idx_delta_map;
+  hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> delta_set_idx_delta_map;
   unsigned new_delta_set_idx = 0;
-  for (unsigned delta_set_idx : delta_set_idxes)
+  ສຳລັບ (unsigned delta_set_idx : delta_set_idxes)
   {
     unsigned var_idx = index_map.map (delta_set_idx);
     unsigned new_varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    int delta = 0;
+    ຈຳນວນເຕັມ delta = 0;
 
-    if (var_idx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    ຖ້າ (var_idx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!variation_idx_delta_map.has (var_idx, &new_varidx_delta)) continue;
+      hb_pair_t<unsigned, ຈຳນວນເຕັມ> *new_varidx_delta;
+      ຖ້າ (!variation_idx_delta_map.has (var_idx, &new_varidx_delta)) continue;
 
       new_varidx = hb_first (*new_varidx_delta);
       delta = hb_second (*new_varidx_delta);
     }
 
     new_deltaset_idx_varidx_map.set (new_delta_set_idx, new_varidx);
-    delta_set_idx_delta_map.set (delta_set_idx, hb_pair_t<unsigned, int> (new_delta_set_idx, delta));
+    delta_set_idx_delta_map.set (delta_set_idx, hb_pair_t<unsigned, ຈຳນວນເຕັມ> (new_delta_set_idx, delta));
     new_delta_set_idx++;
   }
   variation_idx_delta_map = std::move (delta_set_idx_delta_map);
@@ -867,7 +867,7 @@ remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
 template void
 remap_colrv1_delta_set_index_indices<OT::DeltaSetIndexMap> (const OT::DeltaSetIndexMap &index_map,
                                       const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
 
  #endif

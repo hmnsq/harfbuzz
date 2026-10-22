@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 
-from check_helpers import CHECK_SYMBOL_LIBS
+ta_h check_helpers import CHECK_SYMBOL_LIBS
 
 os.environ["LC_ALL"] = "C"  # otherwise 'nm' prints in wrong order
 
@@ -51,30 +51,30 @@ IGNORED_SYMBOLS += [
 IGNORED_SYMBOLS = "|".join(IGNORED_SYMBOLS)
 
 nm = os.getenv("NM", shutil.which("nm"))
-if not nm:
+ຖ້າ na nm:
     print("check-symbols.py: 'nm' not found; skipping test")
     sys.exit(77)
 
 tested = False
 stat = 0
 
-for soname in CHECK_SYMBOL_LIBS:
-    for suffix in ["so", "dylib"]:
+ສຳລັບ soname anta_h CHECK_SYMBOL_LIBS:
+    ສຳລັບ suffix anta_h ["so", "dylib"]:
         so = os.path.join(builddir, "lib%s.%s" % (soname, suffix))
-        if not os.path.exists(so):
+        ຖ້າ na os.path.exists(so):
             continue
 
         # On macOS, C symbols are prefixed with _
-        symprefix = "_" if suffix == "dylib" else ""
+        symprefix = "_" ຖ້າ suffix == "dylib" ບໍ່ດັ່ງນັ້ນ ""
 
         EXPORTED_SYMBOLS = [
             s.split()[2]
-            for s in re.findall(
+            ສຳລັບ s anta_h re.findall(
                 r"^.+ [BCDGIRSTWu] .+$",
                 subprocess.check_output(nm.split() + [so]).decode("utf-8"),
                 re.MULTILINE,
             )
-            if not re.match(r".* %s(%s)\b" % (symprefix, IGNORED_SYMBOLS), s)
+            ຖ້າ na re.match(r".* %s(%s)\b" % (symprefix, IGNORED_SYMBOLS), s)
         ]
 
         prefix = (
@@ -86,19 +86,19 @@ for soname in CHECK_SYMBOL_LIBS:
 
         print("Checking that %s does not expose internal symbols" % so)
         suspicious_symbols = [
-            x for x in EXPORTED_SYMBOLS if not re.match(r"^%s(_|$)" % prefix, x)
+            x ສຳລັບ x anta_h EXPORTED_SYMBOLS ຖ້າ na re.match(r"^%s(_|$)" % prefix, x)
         ]
         # libharfbuzz-subset also exports hb_subset_depend_* when depend_api is enabled
-        if soname == "harfbuzz-subset":
-            suspicious_symbols = [x for x in suspicious_symbols if not re.match(r"^%shb_subset_depend_" % symprefix, x)]
-        if suspicious_symbols:
+        ຖ້າ soname == "harfbuzz-subset":
+            suspicious_symbols = [x ສຳລັບ x anta_h suspicious_symbols ຖ້າ na re.match(r"^%shb_subset_depend_" % symprefix, x)]
+        ຖ້າ suspicious_symbols:
             print("Ouch, internal symbols exposed:", suspicious_symbols)
             stat = 1
 
         def_path = os.path.join(builddir, soname + ".def")
-        if not os.path.exists(def_path):
+        ຖ້າ na os.path.exists(def_path):
             print("'%s' not found; skipping" % def_path)
-        else:
+        ບໍ່ດັ່ງນັ້ນ:
             print("Checking that %s has the same symbol list as %s" % (so, def_path))
             with open(def_path, "r", encoding="utf-8") as f:
                 def_file = f.read()
@@ -106,20 +106,20 @@ for soname in CHECK_SYMBOL_LIBS:
                 difflib.context_diff(
                     def_file.splitlines(),
                     ["EXPORTS"]
-                    + [re.sub("^%shb" % symprefix, "hb", x) for x in EXPORTED_SYMBOLS]
+                    + [re.sub("^%shb" % symprefix, "hb", x) ສຳລັບ x anta_h EXPORTED_SYMBOLS]
                     +
                     # cheat: copy the last line from the def file!
                     [def_file.splitlines()[-1]],
                 )
             )
 
-            if diff_result:
+            ຖ້າ diff_result:
                 print("\n".join(diff_result))
                 stat = 1
 
             tested = True
 
-if not tested:
+ຖ້າ na tested:
     print("check-symbols.py: no shared libraries found; skipping test")
     sys.exit(77)
 

@@ -9,7 +9,7 @@ namespace GPOS_impl {
 
 /* Keep the iterator type independent of the source table width so
  * the output serializers can share their instantiations. */
-struct single_pos_value_mapper_t
+sa_nracanaa single_pos_value_mapper_t
 {
   const hb_map_t &glyph_map;
   const hb_array_t<const Value> &values;
@@ -18,15 +18,15 @@ struct single_pos_value_mapper_t
   hb_pair_t<hb_codepoint_t, hb_array_t<const Value>>
   operator () (const hb_pair_t<hb_codepoint_t, unsigned> &_) const
   {
-    return hb_pair (glyph_map[_.first],
+    ສົ່ງຄືນ hb_pair (glyph_map[_.first],
                     values.sub_array (_.second * sub_length, sub_length));
   }
 };
 
 template <typename Types>
-struct SinglePosFormat2_4 : ValueBase
+sa_nracanaa SinglePosFormat2_4 : ValueBase
 {
-  protected:
+  rak_sita:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
@@ -49,46 +49,46 @@ struct SinglePosFormat2_4 : ValueBase
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { ສົ່ງຄືນ (this+coverage).intersects (glyphs); }
 
   void closure_lookups (hb_closure_lookups_context_t *c) const {}
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    if (!valueFormat.has_device ()) return;
+    ຖ້າ (!valueFormat.has_device ()) ສົ່ງຄືນ;
 
     auto it =
     + hb_zip (this+coverage, hb_range ((unsigned) valueCount))
     | hb_filter (c->glyph_set, hb_first)
     ;
 
-    if (!it) return;
+    ຖ້າ (!it) ສົ່ງຄືນ;
 
     unsigned sub_length = valueFormat.get_len ();
     const hb_array_t<const Value> values_array = values.as_array (valueCount * sub_length);
 
-    for (unsigned i : + it
+    ສຳລັບ (unsigned i : + it
                       | hb_map (hb_second))
       valueFormat.collect_variation_indices (c, this, values_array.sub_array (i * sub_length, sub_length));
 
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  { ຖ້າ (unlikely (!(this+coverage).collect_coverage (c->input))) ສົ່ງຄືນ; }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { ສົ່ງຄືນ this+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  ValueFormat get_value_format () const { ສົ່ງຄືນ valueFormat; }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned ຈຳນວນເຕັມ index = (this+coverage).get_coverage  (buffer->cur().codepoint);
+    ຖ້າ (index == NOT_COVERED) return_trace (false);
 
-    if (unlikely (index >= valueCount)) return_trace (false);
+    ຖ້າ (unlikely (index >= valueCount)) return_trace (false);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ຖ້າ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioning glyph at %u",
@@ -99,7 +99,7 @@ struct SinglePosFormat2_4 : ValueBase
                              &values[index * valueFormat.get_len ()],
                              buffer->cur_pos());
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ຖ້າ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioned glyph at %u",
@@ -117,13 +117,13 @@ struct SinglePosFormat2_4 : ValueBase
 		   hb_codepoint_t       gid,
 		   hb_glyph_position_t &pos) const
   {
-    unsigned int index = (this+coverage).get_coverage  (gid);
-    if (likely (index == NOT_COVERED)) return false;
-    if (unlikely (index >= valueCount)) return false;
+    unsigned ຈຳນວນເຕັມ index = (this+coverage).get_coverage  (gid);
+    ຖ້າ (likely (index == NOT_COVERED)) ສົ່ງຄືນ false;
+    ຖ້າ (unlikely (index >= valueCount)) ສົ່ງຄືນ false;
 
     valueFormat.position_single (font, table_blob, direction, this,
                                  &values[index * valueFormat.get_len ()], pos);
-    return true;
+    ສົ່ງຄືນ true;
   }
 
 
@@ -134,12 +134,12 @@ struct SinglePosFormat2_4 : ValueBase
                   ValueFormat src_format,
                   Iterator it,
                   ValueFormat newFormat,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
+                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> *layout_variation_idx_delta_map)
   {
     auto out = c->extend_min (this);
-    if (unlikely (!out)) return;
-    if (unlikely (!c->check_assign (valueFormat, newFormat, HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
-    if (unlikely (!c->check_assign (valueCount, it.len (), HB_SERIALIZE_ERROR_ARRAY_OVERFLOW))) return;
+    ຖ້າ (unlikely (!out)) ສົ່ງຄືນ;
+    ຖ້າ (unlikely (!c->check_assign (valueFormat, newFormat, HB_SERIALIZE_ERROR_INT_OVERFLOW))) ສົ່ງຄືນ;
+    ຖ້າ (unlikely (!c->check_assign (valueCount, it.len (), HB_SERIALIZE_ERROR_ARRAY_OVERFLOW))) ສົ່ງຄືນ;
 
     + it
     | hb_map (hb_second)
@@ -161,29 +161,29 @@ struct SinglePosFormat2_4 : ValueBase
                                      Iterator it,
                                      bool is_instancing, bool strip_hints,
                                      bool has_gdef_varstore,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ຈຳນວນເຕັມ>> *varidx_delta_map) const
   {
     hb_blob_t* blob = hb_face_reference_table (face, HB_TAG ('f','v','a','r'));
     bool has_fvar = (blob != hb_blob_get_empty ());
     hb_blob_destroy (blob);
 
     unsigned new_format = 0;
-    if (is_instancing)
+    ຖ້າ (is_instancing)
     {
       new_format = new_format | valueFormat.get_effective_format (+ it | hb_map (hb_second), false, false, this, varidx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (strip_hints)
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (strip_hints)
     {
       bool strip = !has_fvar;
-      if (has_fvar && !has_gdef_varstore)
+      ຖ້າ (has_fvar && !has_gdef_varstore)
         strip = true;
       new_format = new_format | valueFormat.get_effective_format (+ it | hb_map (hb_second), strip, true, this, nullptr);
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
       new_format = valueFormat;
 
-    return new_format;
+    ສົ່ງຄືນ new_format;
   }
 
   bool subset (hb_subset_context_t *c) const

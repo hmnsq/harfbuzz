@@ -43,7 +43,7 @@
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
 template <typename K>
-struct hb_priority_queue_t
+sa_nracanaa hb_priority_queue_t
 {
  public:
   typedef hb_pair_t<K, unsigned> item_t;
@@ -57,16 +57,16 @@ struct hb_priority_queue_t
   hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
+    ສຳລັບ (ຈຳນວນເຕັມ i = (heap.length / 2) - 1; i >= 0; i--)
       bubble_down (i);
   }
 
   void reset () { heap.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  bool in_error () const { ສົ່ງຄືນ heap.in_error (); }
 
   bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  { ສົ່ງຄືນ heap.alloc (size); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
@@ -74,7 +74,7 @@ struct hb_priority_queue_t
   void insert (K priority, unsigned value)
   {
     heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
+    ຖ້າ (unlikely (heap.in_error ())) ສົ່ງຄືນ;
     bubble_up (heap.length - 1);
   }
 
@@ -90,40 +90,40 @@ struct hb_priority_queue_t
     heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
     heap.resize (heap.length - 1);
 
-    if (!is_empty ())
+    ຖ້າ (!is_empty ())
       bubble_down (0);
 
-    return result;
+    ສົ່ງຄືນ result;
   }
 
   const item_t& minimum ()
   {
-    return heap[0];
+    ສົ່ງຄືນ heap[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  bool is_empty () const { ສົ່ງຄືນ heap.length == 0; }
+  explicit operator bool () const { ສົ່ງຄືນ !is_empty (); }
+  unsigned ຈຳນວນເຕັມ get_population () const { ສົ່ງຄືນ heap.length; }
 
   /* Sink interface. */
   hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  { insert (item.first, item.second); ສົ່ງຄືນ *this; }
 
  private:
 
   static constexpr unsigned parent (unsigned index)
   {
-    return (index - 1) / 2;
+    ສົ່ງຄືນ (index - 1) / 2;
   }
 
   static constexpr unsigned left_child (unsigned index)
   {
-    return 2 * index + 1;
+    ສົ່ງຄືນ 2 * index + 1;
   }
 
   static constexpr unsigned right_child (unsigned index)
   {
-    return 2 * index + 2;
+    ສົ່ງຄືນ 2 * index + 2;
   }
 
   HB_ALWAYS_INLINE
@@ -136,19 +136,19 @@ struct hb_priority_queue_t
     unsigned right = right_child (index);
 
     bool has_left = left < heap.length;
-    if (!has_left)
+    ຖ້າ (!has_left)
       // If there's no left, then there's also no right.
-      return;
+      ສົ່ງຄືນ;
 
     bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
+    ຖ້າ (heap.arrayZ[index].first <= heap.arrayZ[left].first
         && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+      ສົ່ງຄືນ;
 
     unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    ຖ້າ (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
       child = left;
-    else
+    ບໍ່ດັ່ງນັ້ນ
       child = right;
 
     swap (index, child);
@@ -162,11 +162,11 @@ struct hb_priority_queue_t
     repeat:
     assert (index < heap.length);
 
-    if (index == 0) return;
+    ຖ້າ (index == 0) ສົ່ງຄືນ;
 
     unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    ຖ້າ (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
+      ສົ່ງຄືນ;
 
     swap (index, parent_index);
     index = parent_index;

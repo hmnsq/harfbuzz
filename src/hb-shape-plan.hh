@@ -31,28 +31,28 @@
 #include "hb-shaper.hh"
 #include "hb-ot-shape.hh"
 
-struct hb_shape_plan_key_t
+sa_nracanaa hb_shape_plan_key_t
 {
   hb_segment_properties_t  props;
 
   const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  unsigned ຈຳນວນເຕັມ             num_user_features;
 
 #ifndef HB_NO_OT_SHAPE
   hb_ot_shape_plan_key_t   ot;
 #endif
 
   hb_shape_func_t         *shaper_func;
-  const char              *shaper_name;
+  const var_na              *shaper_name;
 
   HB_INTERNAL bool init (bool                           copy,
 			 hb_face_t                     *face,
 			 const hb_segment_properties_t *props,
 			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
-			 const int                     *coords,
-			 unsigned int                   num_coords,
-			 const char * const            *shaper_list);
+			 unsigned ຈຳນວນເຕັມ                   num_user_features,
+			 const ຈຳນວນເຕັມ                     *coords,
+			 unsigned ຈຳນວນເຕັມ                   num_coords,
+			 const var_na * const            *shaper_list);
 
   HB_INTERNAL void fini ()
   {
@@ -68,7 +68,7 @@ struct hb_shape_plan_key_t
   HB_INTERNAL bool equal (const hb_shape_plan_key_t *other);
 };
 
-struct hb_shape_plan_t
+sa_nracanaa hb_shape_plan_t
 {
   HB_INTERNAL ~hb_shape_plan_t ();
   hb_object_header_t header;

@@ -32,9 +32,9 @@
 
 namespace graph {
 
-struct Lookup;
+sa_nracanaa Lookup;
 
-struct gsubgpos_graph_context_t
+sa_nracanaa gsubgpos_graph_context_t
 {
   HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
                                                                       graph_t& graph_);
@@ -49,9 +49,9 @@ struct gsubgpos_graph_context_t
 
   HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_result_t<void> add_buffer (var_na* buffer)
   {
-    return graph.add_buffer (buffer);
+    ສົ່ງຄືນ graph.add_buffer (buffer);
   }
 
  private:

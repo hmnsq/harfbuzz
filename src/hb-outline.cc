@@ -39,35 +39,35 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
   hb_draw_state_t st = HB_DRAW_STATE_DEFAULT;
 
   unsigned first = 0;
-  for (unsigned contour : contours)
+  ສຳລັບ (unsigned contour : contours)
   {
     auto it = points.as_array ().sub_array (first, contour - first);
-    while (it)
+    ໃນຂະນະທີ່ (it)
     {
       hb_outline_point_t p1 = *it++;
       switch (p1.type)
       {
-	case hb_outline_point_t::type_t::MOVE_TO:
+	pak_sa hb_outline_point_t::type_t::MOVE_TO:
 	{
 	  pen->move_to (pen_data, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::LINE_TO:
+	bha_nga;
+	pak_sa hb_outline_point_t::type_t::LINE_TO:
 	{
 	  pen->line_to (pen_data, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::QUADRATIC_TO:
+	bha_nga;
+	pak_sa hb_outline_point_t::type_t::QUADRATIC_TO:
 	{
 	  hb_outline_point_t p2 = *it++;
 	  pen->quadratic_to (pen_data, st,
 				p1.x, p1.y,
 				p2.x, p2.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::CUBIC_TO:
+	bha_nga;
+	pak_sa hb_outline_point_t::type_t::CUBIC_TO:
 	{
 	  hb_outline_point_t p2 = *it++;
 	  hb_outline_point_t p3 = *it++;
@@ -76,7 +76,7 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
 			    p2.x, p2.y,
 			    p3.x, p3.y);
 	}
-	break;
+	bha_nga;
       }
     }
     pen->close_path (pen_data, st);
@@ -86,7 +86,7 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
 
 void hb_outline_t::translate (float dx, float dy)
 {
-  for (auto &p : points)
+  ສຳລັບ (auto &p : points)
   {
     p.x += dx;
     p.y += dy;
@@ -95,7 +95,7 @@ void hb_outline_t::translate (float dx, float dy)
 
 void hb_outline_t::slant (float slant_xy)
 {
-  for (auto &p : points)
+  ສຳລັບ (auto &p : points)
     p.x += slant_xy * p.y;
 }
 
@@ -103,9 +103,9 @@ float hb_outline_t::control_area () const
 {
   float a = 0;
   unsigned first = 0;
-  for (unsigned contour : contours)
+  ສຳລັບ (unsigned contour : contours)
   {
-    for (unsigned i = first; i < contour; i++)
+    ສຳລັບ (unsigned i = first; i < contour; i++)
     {
       unsigned j = i + 1 < contour ? i + 1 : first;
 
@@ -116,7 +116,7 @@ float hb_outline_t::control_area () const
 
     first = contour;
   }
-  return a * .5f;
+  ສົ່ງຄືນ a * .5f;
 }
 
 void hb_outline_t::embolden (float x_strength, float y_strength,
@@ -126,8 +126,8 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
    * Permission has been obtained from the FreeType authors of the code
    * to relicense it under the HarfBuzz license. */
 
-  if (!x_strength && !y_strength) return;
-  if (!points) return;
+  ຖ້າ (!x_strength && !y_strength) ສົ່ງຄືນ;
+  ຖ້າ (!points) ສົ່ງຄືນ;
 
   x_strength /= 2.f;
   y_strength /= 2.f;
@@ -135,41 +135,41 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
   bool orientation_negative = control_area () < 0;
 
   signed first = 0;
-  for (unsigned c = 0; c < contours.length; c++)
+  ສຳລັບ (unsigned c = 0; c < contours.length; c++)
   {
     hb_outline_vector_t in, out, anchor, shift;
     float l_in, l_out, l_anchor = 0, l, q, d;
 
     l_in = 0;
-    signed last = (int) contours[c] - 1;
+    signed last = (ຈຳນວນເຕັມ) contours[c] - 1;
 
     /* pacify compiler */
     in.x = in.y = anchor.x = anchor.y = 0;
 
     /* Counter j cycles though the points; counter i advances only  */
     /* when points are moved; anchor k marks the first moved point. */
-    for ( signed i = last, j = first, k = -1;
+    ສຳລັບ ( signed i = last, j = first, k = -1;
 	  j != i && i != k;
 	  j = j < last ? j + 1 : first )
     {
-      if ( j != k )
+      ຖ້າ ( j != k )
       {
 	out.x = points[j].x - points[i].x;
 	out.y = points[j].y - points[i].y;
 	l_out = out.normalize_len ();
 
-	if ( l_out == 0 )
+	ຖ້າ ( l_out == 0 )
 	  continue;
       }
-      else
+      ບໍ່ດັ່ງນັ້ນ
       {
 	out   = anchor;
 	l_out = l_anchor;
       }
 
-      if ( l_in != 0 )
+      ຖ້າ ( l_in != 0 )
       {
-	if ( k < 0 )
+	ຖ້າ ( k < 0 )
 	{
 	  k        = i;
 	  anchor   = in;
@@ -179,7 +179,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	d = in.x * out.x + in.y * out.y;
 
 	/* shift only if turn is less than ~160 degrees */
-	if ( d > -15.f/16.f )
+	ຖ້າ ( d > -15.f/16.f )
 	{
 	  d = d + 1.f;
 
@@ -187,34 +187,34 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  shift.x = in.y + out.y;
 	  shift.y = in.x + out.x;
 
-	  if ( orientation_negative )
+	  ຖ້າ ( orientation_negative )
 	    shift.x = -shift.x;
-	  else
+	  ບໍ່ດັ່ງນັ້ນ
 	    shift.y = -shift.y;
 
 	  /* restrict shift magnitude to better handle collapsing segments */
 	  q = out.x * in.y - out.y * in.x;
-	  if ( orientation_negative )
+	  ຖ້າ ( orientation_negative )
 	    q = -q;
 
 	  l = hb_min (l_in, l_out);
 
 	  /* non-strict inequalities avoid divide-by-zero when q == l == 0 */
-	  if (x_strength * q <= l * d)
+	  ຖ້າ (x_strength * q <= l * d)
 	    shift.x = shift.x * x_strength / d;
-	  else
+	  ບໍ່ດັ່ງນັ້ນ
 	    shift.x = shift.x * l / q;
 
 
-	  if (y_strength * q <= l * d)
+	  ຖ້າ (y_strength * q <= l * d)
 	    shift.y = shift.y * y_strength / d;
-	  else
+	  ບໍ່ດັ່ງນັ້ນ
 	    shift.y = shift.y * l / q;
 	}
-	else
+	ບໍ່ດັ່ງນັ້ນ
 	  shift.x = shift.y = 0;
 
-	for ( ;
+	ສຳລັບ ( ;
 	      i != j;
 	      i = i < last ? i + 1 : first )
 	{
@@ -222,7 +222,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  points[i].y += y_shift + shift.y;
 	}
       }
-      else
+      ບໍ່ດັ່ງນັ້ນ
 	i = j;
 
       in   = out;
@@ -305,12 +305,12 @@ hb_outline_recording_pen_get_budget_remaining (hb_draw_funcs_t *dfuncs HB_UNUSED
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
-  return c->budget_remaining;
+  ສົ່ງຄືນ c->budget_remaining;
 }
 
-static inline void free_static_outline_recording_pen_funcs ();
+static anta_hstha void free_static_outline_recording_pen_funcs ();
 
-static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
+static sa_nracanaa hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
 {
   static hb_draw_funcs_t *create ()
   {
@@ -327,11 +327,11 @@ static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_
 
     hb_atexit (free_static_outline_recording_pen_funcs);
 
-    return funcs;
+    ສົ່ງຄືນ funcs;
   }
 } static_outline_recording_pen_funcs;
 
-static inline
+static anta_hstha
 void free_static_outline_recording_pen_funcs ()
 {
   static_outline_recording_pen_funcs.free_instance ();
@@ -340,7 +340,7 @@ void free_static_outline_recording_pen_funcs ()
 hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ()
 {
-  return static_outline_recording_pen_funcs.get_unconst ();
+  ສົ່ງຄືນ static_outline_recording_pen_funcs.get_unconst ();
 }
 
 

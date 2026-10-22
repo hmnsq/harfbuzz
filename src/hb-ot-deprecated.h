@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ຖ້າ !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -72,16 +72,16 @@ HB_EXTERN hb_bool_t
 hb_ot_layout_table_choose_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
 				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index,
+				  unsigned ຈຳນວນເຕັມ   *script_index,
 				  hb_tag_t       *chosen_script);
 
 HB_DEPRECATED_FOR (hb_ot_layout_script_select_language)
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_find_language (hb_face_t    *face,
 				   hb_tag_t      table_tag,
-				   unsigned int  script_index,
+				   unsigned ຈຳນວນເຕັມ  script_index,
 				   hb_tag_t      language_tag,
-				   unsigned int *language_index);
+				   unsigned ຈຳນວນເຕັມ *language_index);
 
 HB_DEPRECATED_FOR (hb_ot_tags_from_script_and_language)
 HB_EXTERN void
@@ -117,7 +117,7 @@ hb_ot_tag_from_language (hb_language_t language);
  * Since: 1.4.2
  * Deprecated: 2.2.0
  */
-typedef struct hb_ot_var_axis_t {
+typedef sa_nracanaa hb_ot_var_axis_t {
   hb_tag_t tag;
   hb_ot_name_id_t name_id;
   float min_value;
@@ -126,17 +126,17 @@ typedef struct hb_ot_var_axis_t {
 } hb_ot_var_axis_t;
 
 HB_DEPRECATED_FOR (hb_ot_var_get_axis_infos)
-HB_EXTERN unsigned int
+HB_EXTERN unsigned ຈຳນວນເຕັມ
 hb_ot_var_get_axes (hb_face_t        *face,
-		    unsigned int      start_offset,
-		    unsigned int     *axes_count /* IN/OUT */,
+		    unsigned ຈຳນວນເຕັມ      start_offset,
+		    unsigned ຈຳນວນເຕັມ     *axes_count /* IN/OUT */,
 		    hb_ot_var_axis_t *axes_array /* OUT */);
 
 HB_DEPRECATED_FOR (hb_ot_var_find_axis_info)
 HB_EXTERN hb_bool_t
 hb_ot_var_find_axis (hb_face_t        *face,
 		     hb_tag_t          axis_tag,
-		     unsigned int     *axis_index,
+		     unsigned ຈຳນວນເຕັມ     *axis_index,
 		     hb_ot_var_axis_t *axis_info);
 
 

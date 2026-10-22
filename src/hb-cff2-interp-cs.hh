@@ -33,44 +33,44 @@ namespace CFF {
 
 using namespace OT;
 
-struct blend_arg_t : number_t
+sa_nracanaa blend_arg_t : number_t
 {
-  void set_int (int v) { reset_blends (); number_t::set_int (v); }
+  void set_int (ຈຳນວນເຕັມ v) { reset_blends (); number_t::set_int (v); }
   void set_fixed (int32_t v) { reset_blends (); number_t::set_fixed (v); }
-  void set_real (double v) { reset_blends (); number_t::set_real (v); }
+  void set_real (dviguu_na v) { reset_blends (); number_t::set_real (v); }
 
-  void set_blends (unsigned int numValues_, unsigned int valueIndex_,
+  void set_blends (unsigned ຈຳນວນເຕັມ numValues_, unsigned ຈຳນວນເຕັມ valueIndex_,
 		   hb_array_t<const blend_arg_t> blends_)
   {
     numValues = numValues_;
     valueIndex = valueIndex_;
     unsigned numBlends = blends_.length;
-    if (unlikely (!deltas.resize_exact (numBlends)))
-      return;
-    for (unsigned int i = 0; i < numBlends; i++)
+    ຖ້າ (unlikely (!deltas.resize_exact (numBlends)))
+      ສົ່ງຄືນ;
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 0; i < numBlends; i++)
       deltas.arrayZ[i] = blends_.arrayZ[i];
   }
 
-  bool blending () const { return deltas.length > 0; }
+  bool blending () const { ສົ່ງຄືນ deltas.length > 0; }
   void reset_blends ()
   {
     numValues = valueIndex = 0;
     deltas.clear ();
   }
 
-  unsigned int numValues;
-  unsigned int valueIndex;
+  unsigned ຈຳນວນເຕັມ numValues;
+  unsigned ຈຳນວນເຕັມ valueIndex;
   hb_vector_t<number_t> deltas;
 };
 
 typedef biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
 
 template <typename ELEM>
-struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
+sa_nracanaa cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 {
   template <typename ACC>
-  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned ຈຳນວນເຕັມ fd,
+			const ຈຳນວນເຕັມ *coords_=nullptr, unsigned ຈຳນວນເຕັມ num_coords_=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs),
       region_count (0), cached_scalars_vector (&acc.cached_scalars_vector)
   {
@@ -91,25 +91,25 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
   {
     hb_vector_t<float> *scalars = cached_scalars_vector->get_acquire ();
 
-    if (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
+    ຖ້າ (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
     {
-      scalars = (hb_vector_t<float> *) hb_calloc (1, sizeof (hb_vector_t<float>));
-      if (unlikely (!scalars))
-	return nullptr;
+      scalars = (hb_vector_t<float> *) hb_calloc (1, parimaa_na (hb_vector_t<float>));
+      ຖ້າ (unlikely (!scalars))
+	ສົ່ງຄືນ nullptr;
       scalars->init ();
     }
 
-    return scalars;
+    ສົ່ງຄືນ scalars;
   }
 
   void release_scalars_vector (hb_vector_t<float> *scalars) const
   {
-    if (!scalars)
-      return;
+    ຖ້າ (!scalars)
+      ສົ່ງຄືນ;
 
     scalars->clear ();
 
-    if (!cached_scalars_vector->cmpexch (nullptr, scalars))
+    ຖ້າ (!cached_scalars_vector->cmpexch (nullptr, scalars))
     {
       scalars->fini ();
       hb_free (scalars);
@@ -119,41 +119,41 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 
   op_code_t fetch_op ()
   {
-    if (this->str_ref.avail ())
-      return SUPER::fetch_op ();
+    ຖ້າ (this->str_ref.avail ())
+      ສົ່ງຄືນ SUPER::fetch_op ();
 
     /* make up return or endchar op */
-    if (this->callStack.is_empty ())
-      return OpCode_endchar;
-    else
-      return OpCode_return;
+    ຖ້າ (this->callStack.is_empty ())
+      ສົ່ງຄືນ OpCode_endchar;
+    ບໍ່ດັ່ງນັ້ນ
+      ສົ່ງຄືນ OpCode_return;
   }
 
-  const ELEM& eval_arg (unsigned int i)
+  const ELEM& eval_arg (unsigned ຈຳນວນເຕັມ i)
   {
-    return SUPER::argStack[i];
+    ສົ່ງຄືນ SUPER::argStack[i];
   }
 
   const ELEM& pop_arg ()
   {
-    return SUPER::argStack.pop ();
+    ສົ່ງຄືນ SUPER::argStack.pop ();
   }
 
   void process_blend ()
   {
-    if (!seen_blend)
+    ຖ້າ (!seen_blend)
     {
       scalars = acquire_scalars_vector ();
-      if (unlikely (!scalars))
+      ຖ້າ (unlikely (!scalars))
 	SUPER::set_error ();
-      else
+      ບໍ່ດັ່ງນັ້ນ
       {
 	region_count = varStore->varStore.get_region_index_count (get_ivs ());
-	if (do_blend)
+	ຖ້າ (do_blend)
 	{
-	  if (unlikely (!scalars->resize_exact (region_count)))
+	  ຖ້າ (unlikely (!scalars->resize_exact (region_count)))
 	    SUPER::set_error ();
-	  else
+	  ບໍ່ດັ່ງນັ້ນ
 	    varStore->varStore.get_region_scalars (get_ivs (), coords, num_coords,
 						   &(*scalars)[0], region_count);
 	}
@@ -164,50 +164,50 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 
   void process_vsindex ()
   {
-    unsigned int  index = SUPER::argStack.pop_uint ();
-    if (unlikely (seen_vsindex () || seen_blend))
+    unsigned ຈຳນວນເຕັມ  index = SUPER::argStack.pop_uint ();
+    ຖ້າ (unlikely (seen_vsindex () || seen_blend))
     {
      SUPER::set_error ();
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       set_ivs (index);
     }
     seen_vsindex_ = true;
   }
 
-  unsigned int get_region_count () const { return region_count; }
-  void	 set_region_count (unsigned int region_count_) { region_count = region_count_; }
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  unsigned ຈຳນວນເຕັມ get_region_count () const { ສົ່ງຄືນ region_count; }
+  void	 set_region_count (unsigned ຈຳນວນເຕັມ region_count_) { region_count = region_count_; }
+  unsigned ຈຳນວນເຕັມ get_ivs () const { ສົ່ງຄືນ ivs; }
+  void	 set_ivs (unsigned ຈຳນວນເຕັມ ivs_) { ivs = ivs_; }
   /* The FD's private-dict ivs, before any vsindex op in the charstring. */
-  unsigned int get_orig_ivs () const { return orig_ivs; }
-  bool	 seen_vsindex () const { return seen_vsindex_; }
+  unsigned ຈຳນວນເຕັມ get_orig_ivs () const { ສົ່ງຄືນ orig_ivs; }
+  bool	 seen_vsindex () const { ສົ່ງຄືນ seen_vsindex_; }
 
-  double blend_deltas (hb_array_t<const ELEM> deltas) const
+  dviguu_na blend_deltas (hb_array_t<const ELEM> deltas) const
   {
-    double v = 0;
-    if (do_blend)
+    dviguu_na v = 0;
+    ຖ້າ (do_blend)
     {
-      if (likely (scalars && scalars->length == deltas.length))
+      ຖ້າ (likely (scalars && scalars->length == deltas.length))
       {
         unsigned count = scalars->length;
-	for (unsigned i = 0; i < count; i++)
-	  v += (double) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
+	ສຳລັບ (unsigned i = 0; i < count; i++)
+	  v += (dviguu_na) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
       }
     }
-    return v;
+    ສົ່ງຄືນ v;
   }
 
-  bool have_coords () const { return num_coords; }
+  bool have_coords () const { ສົ່ງຄືນ num_coords; }
 
-  protected:
-  const int     *coords;
-  unsigned int  num_coords;
+  rak_sita:
+  const ຈຳນວນເຕັມ     *coords;
+  unsigned ຈຳນວນເຕັມ  num_coords;
   const	 CFF2ItemVariationStore *varStore;
-  unsigned int  region_count;
-  unsigned int  ivs;
-  unsigned int  orig_ivs;
+  unsigned ຈຳນວນເຕັມ  region_count;
+  unsigned ຈຳນວນເຕັມ  ivs;
+  unsigned ຈຳນວນເຕັມ  orig_ivs;
   hb_vector_t<float>  *scalars = nullptr;
   hb_atomic_t<hb_vector_t<float> *> *cached_scalars_vector = nullptr;
   bool	  do_blend;
@@ -217,38 +217,38 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
   typedef cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
 };
 template <typename OPSET, typename PARAM, typename ELEM, typename PATH=path_procs_null_t<cff2_cs_interp_env_t<ELEM>, PARAM>>
-struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
+sa_nracanaa cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
 {
   static void process_op (op_code_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     switch (op) {
-      case OpCode_callsubr:
-      case OpCode_callgsubr:
+      pak_sa OpCode_callsubr:
+      pak_sa OpCode_callgsubr:
 	/* a subroutine number shouldn't be a blended value */
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+#ຖ້າ 0
+	ຖ້າ (unlikely (env.argStack.peek ().blending ()))
 	{
 	  env.set_error ();
-	  break;
+	  bha_nga;
 	}
 #endif
 	SUPER::process_op (op, env, param);
-	break;
+	bha_nga;
 
-      case OpCode_blendcs:
+      pak_sa OpCode_blendcs:
 	OPSET::process_blend (env, param);
-	break;
+	bha_nga;
 
-      case OpCode_vsindexcs:
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+      pak_sa OpCode_vsindexcs:
+#ຖ້າ 0
+	ຖ້າ (unlikely (env.argStack.peek ().blending ()))
 	{
 	  env.set_error ();
-	  break;
+	  bha_nga;
 	}
 #endif
 	OPSET::process_vsindex (env, param);
-	break;
+	bha_nga;
 
       default:
 	SUPER::process_op (op, env, param);
@@ -262,22 +262,22 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
 				 const hb_array_t<const ELEM> blends,
 				 unsigned n, unsigned i)
   {
-    if (env.have_coords ())
+    ຖ້າ (env.have_coords ())
       arg.set_int (round (arg.to_real () + env.blend_deltas (blends)));
-    else if (unlikely (arg.blending ()))
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (unlikely (arg.blending ()))
     {
       /* A blend result used as an operand of a later blend: the value is
        * default + inner deltas + outer deltas, so accumulate the deltas. */
       hb_vector_t<number_t> inner = std::move (arg.deltas);
       arg.set_blends (n, i, blends);
-      if (likely (inner.length == arg.deltas.length))
-	for (unsigned j = 0; j < inner.length; j++)
+      ຖ້າ (likely (inner.length == arg.deltas.length))
+	ສຳລັບ (unsigned j = 0; j < inner.length; j++)
 	  arg.deltas.arrayZ[j].set_real (arg.deltas.arrayZ[j].to_real () +
 					 inner.arrayZ[j].to_real ());
-      else
+      ບໍ່ດັ່ງນັ້ນ
 	env.set_error ();
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
       arg.set_blends (n, i, blends);
   }
   template <typename T = ELEM,
@@ -292,26 +292,26 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
 
   static void process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    unsigned int n, k;
+    unsigned ຈຳນວນເຕັມ n, k;
 
     env.process_blend ();
     k = env.get_region_count ();
     n = env.argStack.pop_uint ();
     /* copy the blend values into blend array of the default values */
-    unsigned int count = env.argStack.get_count ();
-    unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    unsigned ຈຳນວນເຕັມ count = env.argStack.get_count ();
+    unsigned ຈຳນວນເຕັມ total;
+    ຖ້າ (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
     {
       env.set_error ();
-      return;
+      ສົ່ງຄືນ;
     }
-    if (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
+    ຖ້າ (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
     {
       env.set_error ();
-      return;
+      ສົ່ງຄືນ;
     }
-    unsigned int start = count - total;
-    for (unsigned int i = 0; i < n; i++)
+    unsigned ຈຳນວນເຕັມ start = count - total;
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 0; i < n; i++)
     {
       const hb_array_t<const ELEM> blends = env.argStack.sub_array (start + n + (i * k), k);
       process_arg_blend (env, env.argStack.arrayZ[start + i], blends, n, i);

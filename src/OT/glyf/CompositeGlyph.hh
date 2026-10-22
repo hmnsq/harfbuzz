@@ -10,10 +10,10 @@ namespace OT {
 namespace glyf_impl {
 
 
-struct CompositeGlyphRecord
+sa_nracanaa CompositeGlyphRecord
 {
-  protected:
-  enum composite_glyph_flag_t
+  rak_sita:
+  ga_nanaa composite_glyph_flag_t
   {
     ARG_1_AND_2_ARE_WORDS	= 0x0001,
     ARGS_ARE_XY_VALUES		= 0x0002,
@@ -35,24 +35,24 @@ struct CompositeGlyphRecord
   public:
   size_t get_size (bool extended) const
   {
-    unsigned int size = min_size;
+    unsigned ຈຳນວນເຕັມ size = min_size;
     /* glyphIndex is 24bit instead of 16bit */
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT)) size += HBGlyphID24::static_size - HBGlyphID16::static_size;
+    ຖ້າ (extended && (flags & GID_IS_24BIT)) size += HBGlyphID24::static_size - HBGlyphID16::static_size;
 #endif
     /* arg1 and 2 are int16 */
-    if (flags & ARG_1_AND_2_ARE_WORDS) size += 4;
+    ຖ້າ (flags & ARG_1_AND_2_ARE_WORDS) size += 4;
     /* arg1 and 2 are int8 */
-    else size += 2;
+    ບໍ່ດັ່ງນັ້ນ size += 2;
 
     /* One x 16 bit (scale) */
-    if (flags & WE_HAVE_A_SCALE) size += 2;
+    ຖ້າ (flags & WE_HAVE_A_SCALE) size += 2;
     /* Two x 16 bit (xscale, yscale) */
-    else if (flags & WE_HAVE_AN_X_AND_Y_SCALE) size += 4;
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (flags & WE_HAVE_AN_X_AND_Y_SCALE) size += 4;
     /* Four x 16 bit (xscale, scale01, scale10, yscale) */
-    else if (flags & WE_HAVE_A_TWO_BY_TWO) size += 8;
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (flags & WE_HAVE_A_TWO_BY_TWO) size += 8;
 
-    return size;
+    ສົ່ງຄືນ size;
   }
 
   void drop_instructions_flag ()  { flags = (uint16_t) flags & ~WE_HAVE_INSTRUCTIONS; }
@@ -61,26 +61,26 @@ struct CompositeGlyphRecord
     flags = (uint16_t) flags | OVERLAP_COMPOUND;
   }
 
-  bool has_instructions ()  const { return   flags & WE_HAVE_INSTRUCTIONS; }
+  bool has_instructions ()  const { ສົ່ງຄືນ   flags & WE_HAVE_INSTRUCTIONS; }
 
-  bool has_more ()          const { return   flags & MORE_COMPONENTS; }
-  bool is_use_my_metrics () const { return   flags & USE_MY_METRICS; }
-  bool is_anchored ()       const { return !(flags & ARGS_ARE_XY_VALUES); }
-  void get_anchor_points (unsigned int &point1, unsigned int &point2, bool extended) const
+  bool has_more ()          const { ສົ່ງຄືນ   flags & MORE_COMPONENTS; }
+  bool is_use_my_metrics () const { ສົ່ງຄືນ   flags & USE_MY_METRICS; }
+  bool is_anchored ()       const { ສົ່ງຄືນ !(flags & ARGS_ARE_XY_VALUES); }
+  void get_anchor_points (unsigned ຈຳນວນເຕັມ &point1, unsigned ຈຳນວນເຕັມ &point2, bool extended) const
   {
     const auto *p = &StructAfter<const HBUINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    ຖ້າ (extended && (flags & GID_IS_24BIT))
       p += HBGlyphID24::static_size;
-    else
+    ບໍ່ດັ່ງນັ້ນ
 #endif
       p += HBGlyphID16::static_size;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    ຖ້າ (flags & ARG_1_AND_2_ARE_WORDS)
     {
       point1 = ((const HBUINT16 *) p)[0];
       point2 = ((const HBUINT16 *) p)[1];
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       point1 = p[0];
       point2 = p[1];
@@ -90,33 +90,33 @@ struct CompositeGlyphRecord
   static void transform (const float (&matrix)[4],
 			 hb_array_t<contour_point_t> points)
   {
-    if (matrix[0] != 1.f || matrix[1] != 0.f ||
+    ຖ້າ (matrix[0] != 1.f || matrix[1] != 0.f ||
 	matrix[2] != 0.f || matrix[3] != 1.f)
-      for (auto &point : points)
+      ສຳລັບ (auto &point : points)
         point.transform (matrix);
   }
 
   static void translate (const contour_point_t &trans,
 			 hb_array_t<contour_point_t> points)
   {
-    if (HB_OPTIMIZE_SIZE_VAL)
+    ຖ້າ (HB_OPTIMIZE_SIZE_VAL)
     {
-      if (trans.x != 0.f || trans.y != 0.f)
-        for (auto &point : points)
+      ຖ້າ (trans.x != 0.f || trans.y != 0.f)
+        ສຳລັບ (auto &point : points)
 	  point.translate (trans);
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
-      if (trans.x != 0.f && trans.y != 0.f)
-        for (auto &point : points)
+      ຖ້າ (trans.x != 0.f && trans.y != 0.f)
+        ສຳລັບ (auto &point : points)
 	  point.translate (trans);
-      else
+      ບໍ່ດັ່ງນັ້ນ
       {
-	if (trans.x != 0.f)
-	  for (auto &point : points)
+	ຖ້າ (trans.x != 0.f)
+	  ສຳລັບ (auto &point : points)
 	    point.x += trans.x;
-	else if (trans.y != 0.f)
-	  for (auto &point : points)
+	ບໍ່ດັ່ງນັ້ນ ຖ້າ (trans.y != 0.f)
+	  ສຳລັບ (auto &point : points)
 	    point.y += trans.y;
       }
     }
@@ -126,12 +126,12 @@ struct CompositeGlyphRecord
 			 const float (&matrix)[4],
 			 const contour_point_t &trans) const
   {
-    if (scaled_offsets ())
+    ຖ້າ (scaled_offsets ())
     {
       translate (trans, points);
       transform (matrix, points);
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       transform (matrix, points);
       translate (trans, points);
@@ -143,26 +143,26 @@ struct CompositeGlyphRecord
     float matrix[4];
     contour_point_t trans;
     get_transformation (matrix, trans, extended);
-    if (unlikely (!points.alloc (points.length + 1 + 4))) return false; // For phantom points
+    ຖ້າ (unlikely (!points.alloc (points.length + 1 + 4))) ສົ່ງຄືນ false; // For phantom points
     points.push (trans);
-    return true;
+    ສົ່ງຄືນ true;
   }
 
   unsigned compile_with_point (const contour_point_t &point,
-                               char *out,
+                               var_na *out,
 			       bool extended) const
   {
     const HBINT8 *p = &StructAfter<const HBINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    ຖ້າ (extended && (flags & GID_IS_24BIT))
       p += HBGlyphID24::static_size;
-    else
+    ບໍ່ດັ່ງນັ້ນ
 #endif
       p += HBGlyphID16::static_size;
 
     unsigned len = get_size (extended);
-    unsigned len_before_val = (const char *)p - (const char *)this;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    unsigned len_before_val = (const var_na *)p - (const var_na *)this;
+    ຖ້າ (flags & ARG_1_AND_2_ARE_WORDS)
     {
       // no overflow, copy value
       hb_memcpy (out, this, len);
@@ -171,11 +171,11 @@ struct CompositeGlyphRecord
       o[0] = roundf (point.x);
       o[1] = roundf (point.y);
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
-      int new_x = roundf (point.x);
-      int new_y = roundf (point.y);
-      if (new_x <= 127 && new_x >= -128 &&
+      ຈຳນວນເຕັມ new_x = roundf (point.x);
+      ຈຳນວນເຕັມ new_y = roundf (point.y);
+      ຖ້າ (new_x <= 127 && new_x >= -128 &&
           new_y <= 127 && new_y >= -128)
       {
         hb_memcpy (out, this, len);
@@ -183,7 +183,7 @@ struct CompositeGlyphRecord
         o[0] = new_x;
         o[1] = new_y;
       }
-      else
+      ບໍ່ດັ່ງນັ້ນ
       {
         // new point value has an int8 overflow
         hb_memcpy (out, this, len_before_val);
@@ -206,12 +206,12 @@ struct CompositeGlyphRecord
         len += 2;
       }
     }
-    return len;
+    ສົ່ງຄືນ len;
   }
 
-  protected:
+  rak_sita:
   bool scaled_offsets () const
-  { return (flags & (SCALED_COMPONENT_OFFSET | UNSCALED_COMPONENT_OFFSET)) == SCALED_COMPONENT_OFFSET; }
+  { ສົ່ງຄືນ (flags & (SCALED_COMPONENT_OFFSET | UNSCALED_COMPONENT_OFFSET)) == SCALED_COMPONENT_OFFSET; }
 
   public:
   bool get_transformation (float (&matrix)[4], contour_point_t &trans, bool extended) const
@@ -221,69 +221,69 @@ struct CompositeGlyphRecord
 
     const auto *p = &StructAfter<const HBINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    ຖ້າ (extended && (flags & GID_IS_24BIT))
       p += HBGlyphID24::static_size;
-    else
+    ບໍ່ດັ່ງນັ້ນ
 #endif
       p += HBGlyphID16::static_size;
-    int tx, ty;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    ຈຳນວນເຕັມ tx, ty;
+    ຖ້າ (flags & ARG_1_AND_2_ARE_WORDS)
     {
       tx = *(const HBINT16 *) p;
       p += HBINT16::static_size;
       ty = *(const HBINT16 *) p;
       p += HBINT16::static_size;
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       tx = *p++;
       ty = *p++;
     }
-    if (is_anchored ()) tx = ty = 0;
+    ຖ້າ (is_anchored ()) tx = ty = 0;
 
     /* set is_end_point flag to true, used by IUP delta optimization */
     trans.init ((float) tx, (float) ty, true);
 
     {
       const F2DOT14 *points = (const F2DOT14 *) p;
-      if (flags & WE_HAVE_A_SCALE)
+      ຖ້າ (flags & WE_HAVE_A_SCALE)
       {
 	matrix[0] = matrix[3] = points[0].to_float ();
-	return true;
+	ສົ່ງຄືນ true;
       }
-      else if (flags & WE_HAVE_AN_X_AND_Y_SCALE)
+      ບໍ່ດັ່ງນັ້ນ ຖ້າ (flags & WE_HAVE_AN_X_AND_Y_SCALE)
       {
 	matrix[0] = points[0].to_float ();
 	matrix[3] = points[1].to_float ();
-	return true;
+	ສົ່ງຄືນ true;
       }
-      else if (flags & WE_HAVE_A_TWO_BY_TWO)
+      ບໍ່ດັ່ງນັ້ນ ຖ້າ (flags & WE_HAVE_A_TWO_BY_TWO)
       {
 	matrix[0] = points[0].to_float ();
 	matrix[1] = points[1].to_float ();
 	matrix[2] = points[2].to_float ();
 	matrix[3] = points[3].to_float ();
-	return true;
+	ສົ່ງຄືນ true;
       }
     }
-    return tx || ty;
+    ສົ່ງຄືນ tx || ty;
   }
 
   hb_codepoint_t get_gid (bool extended) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      return StructAfter<const HBGlyphID24> (flags);
-    else
+    ຖ້າ (extended && (flags & GID_IS_24BIT))
+      ສົ່ງຄືນ StructAfter<const HBGlyphID24> (flags);
+    ບໍ່ດັ່ງນັ້ນ
 #endif
-      return StructAfter<const HBGlyphID16> (flags);
+      ສົ່ງຄືນ StructAfter<const HBGlyphID16> (flags);
   }
   void set_gid (hb_codepoint_t gid, bool extended)
   {
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    ຖ້າ (extended && (flags & GID_IS_24BIT))
       StructAfter<HBGlyphID24> (flags) = gid;
-    else
+    ບໍ່ດັ່ງນັ້ນ
 #endif
       /* TODO assert? */
       StructAfter<HBGlyphID16> (flags) = gid;
@@ -293,14 +293,14 @@ struct CompositeGlyphRecord
   void lower_gid_24_to_16 ()
   {
     hb_codepoint_t gid = get_gid (true);
-    if (!(flags & GID_IS_24BIT) || gid > 0xFFFFu)
-      return;
+    ຖ້າ (!(flags & GID_IS_24BIT) || gid > 0xFFFFu)
+      ສົ່ງຄືນ;
 
     /* Lower the flag and move the rest of the struct down. */
 
     unsigned size = get_size (true);
-    char *end = (char *) this + size;
-    char *p = &StructAfter<char> (flags);
+    var_na *end = (var_na *) this + size;
+    var_na *p = &StructAfter<var_na> (flags);
     p += HBGlyphID24::static_size;
 
     flags = flags & ~GID_IS_24BIT;
@@ -310,7 +310,7 @@ struct CompositeGlyphRecord
   }
 #endif
 
-  protected:
+  rak_sita:
   HBUINT16	flags;
   HBUINT24	pad;
   public:
@@ -319,7 +319,7 @@ struct CompositeGlyphRecord
 
 using composite_iter_t = composite_iter_tmpl<CompositeGlyphRecord>;
 
-struct CompositeGlyph
+sa_nracanaa CompositeGlyph
 {
   const GlyphHeader &header;
   hb_bytes_t bytes;
@@ -328,30 +328,30 @@ struct CompositeGlyph
     header (header_), bytes (bytes_), extended (extended_) {}
 
   composite_iter_t iter () const
-  { return composite_iter_t (bytes, &StructAfter<CompositeGlyphRecord, GlyphHeader> (header), extended); }
+  { ສົ່ງຄືນ composite_iter_t (bytes, &StructAfter<CompositeGlyphRecord, GlyphHeader> (header), extended); }
 
-  unsigned int instructions_length (hb_bytes_t bytes) const
+  unsigned ຈຳນວນເຕັມ instructions_length (hb_bytes_t bytes) const
   {
-    unsigned int start = bytes.length;
-    unsigned int end = bytes.length;
+    unsigned ຈຳນວນເຕັມ start = bytes.length;
+    unsigned ຈຳນວນເຕັມ end = bytes.length;
     const CompositeGlyphRecord *last = nullptr;
-    for (auto &item : iter ())
+    ສຳລັບ (auto &item : iter ())
       last = &item;
-    if (unlikely (!last)) return 0;
+    ຖ້າ (unlikely (!last)) ສົ່ງຄືນ 0;
 
-    if (last->has_instructions ())
-      start = (char *) last - &bytes + last->get_size (extended);
-    if (unlikely (start > end)) return 0;
-    return end - start;
+    ຖ້າ (last->has_instructions ())
+      start = (var_na *) last - &bytes + last->get_size (extended);
+    ຖ້າ (unlikely (start > end)) ສົ່ງຄືນ 0;
+    ສົ່ງຄືນ end - start;
   }
 
   /* Trimming for composites not implemented.
    * If removing hints it falls out of that. */
-  const hb_bytes_t trim_padding () const { return bytes; }
+  const hb_bytes_t trim_padding () const { ສົ່ງຄືນ bytes; }
 
   void drop_hints ()
   {
-    for (const auto &_ : iter ())
+    ສຳລັບ (const auto &_ : iter ())
       const_cast<CompositeGlyphRecord &> (_).drop_instructions_flag ();
   }
 
@@ -363,8 +363,8 @@ struct CompositeGlyph
   {
     CompositeGlyphRecord& glyph_chain = const_cast<CompositeGlyphRecord &> (
 	StructAfter<CompositeGlyphRecord, GlyphHeader> (header));
-    if (!bytes.check_range(&glyph_chain, CompositeGlyphRecord::min_size))
-      return;
+    ຖ້າ (!bytes.check_range(&glyph_chain, CompositeGlyphRecord::min_size))
+      ສົ່ງຄືນ;
     glyph_chain.set_overlaps_flag ();
   }
 
@@ -372,11 +372,11 @@ struct CompositeGlyph
                                   const contour_point_vector_t &points_with_deltas,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (source_bytes.length <= GlyphHeader::static_size ||
+    ຖ້າ (source_bytes.length <= GlyphHeader::static_size ||
         header.numberOfContours != -1)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      ສົ່ງຄືນ true;
     }
 
     unsigned source_len = source_bytes.length - GlyphHeader::static_size;
@@ -384,29 +384,29 @@ struct CompositeGlyph
     /* try to allocate more memories than source glyph bytes
      * in case that there might be an overflow for int8 value
      * and we would need to use int16 instead */
-    char *o = (char *) hb_calloc (source_len * 2, sizeof (char));
-    if (unlikely (!o)) return false;
+    var_na *o = (var_na *) hb_calloc (source_len * 2, parimaa_na (var_na));
+    ຖ້າ (unlikely (!o)) ສົ່ງຄືນ false;
 
     const CompositeGlyphRecord *c = reinterpret_cast<const CompositeGlyphRecord *> (source_bytes.arrayZ + GlyphHeader::static_size);
-    auto it = composite_iter_t (hb_bytes_t ((const char *)c, source_len), c, extended);
+    auto it = composite_iter_t (hb_bytes_t ((const var_na *)c, source_len), c, extended);
 
-    char *p = o;
+    var_na *p = o;
     unsigned i = 0, source_comp_len = 0;
-    for (const auto &component : it)
+    ສຳລັບ (const auto &component : it)
     {
       /* last 4 points in points_with_deltas are phantom points and should not be included */
-      if (i >= points_with_deltas.length - 4) {
+      ຖ້າ (i >= points_with_deltas.length - 4) {
         hb_free (o);
-        return false;
+        ສົ່ງຄືນ false;
       }
 
       unsigned comp_len = component.get_size (extended);
-      if (component.is_anchored ())
+      ຖ້າ (component.is_anchored ())
       {
         hb_memcpy (p, &component, comp_len);
         p += comp_len;
       }
-      else
+      ບໍ່ດັ່ງນັ້ນ
       {
         unsigned new_len = component.compile_with_point (points_with_deltas[i], p, extended);
         p += new_len;
@@ -416,16 +416,16 @@ struct CompositeGlyph
     }
 
     //copy instructions if any
-    if (source_len > source_comp_len)
+    ຖ້າ (source_len > source_comp_len)
     {
       unsigned instr_len = source_len - source_comp_len;
-      hb_memcpy (p, (const char *)c + source_comp_len, instr_len);
+      hb_memcpy (p, (const var_na *)c + source_comp_len, instr_len);
       p += instr_len;
     }
 
     unsigned len = p - o;
     dest_bytes = hb_bytes_t (o, len);
-    return true;
+    ສົ່ງຄືນ true;
   }
 };
 

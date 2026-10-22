@@ -47,74 +47,74 @@ namespace OT {
 /* Tracks image data blocks emitted into the subset CBDT table so that
  * identical subtables (for example the same bitmaps used by several strikes)
  * can share a single copy. */
-struct cbdt_dedup_context_t
+sa_nracanaa cbdt_dedup_context_t
 {
-  struct entry_t
+  sa_nracanaa entry_t
   {
-    unsigned int base;		/* Offset of the data in cbdt_prime. */
-    unsigned int lstart;	/* Start index in lengths. */
-    unsigned int lcount;	/* Number of length entries. */
+    unsigned ຈຳນວນເຕັມ base;		/* Offset of the data in cbdt_prime. */
+    unsigned ຈຳນວນເຕັມ lstart;	/* Start index in lengths. */
+    unsigned ຈຳນວນເຕັມ lcount;	/* Number of length entries. */
   };
 
-  static uint64_t hash (unsigned int image_format,
-			const hb_vector_t<char> &data,
-			const hb_vector_t<unsigned int> &lengths)
+  static uint64_t hash (unsigned ຈຳນວນເຕັມ image_format,
+			const hb_vector_t<var_na> &data,
+			const hb_vector_t<unsigned ຈຳນວນເຕັມ> &lengths)
   {
     uint32_t h = hb_hash (hb_bytes_t (data.arrayZ, data.length));
-    h = h * 31 + hb_hash (hb_bytes_t ((const char *) lengths.arrayZ,
-				      lengths.length * sizeof (unsigned int)));
-    return ((uint64_t) image_format << 32) | h;
+    h = h * 31 + hb_hash (hb_bytes_t ((const var_na *) lengths.arrayZ,
+				      lengths.length * parimaa_na (unsigned ຈຳນວນເຕັມ)));
+    ສົ່ງຄືນ ((uint64_t) image_format << 32) | h;
   }
 
   bool find (uint64_t key,
-	     const hb_vector_t<char> &data,
-	     const hb_vector_t<unsigned int> &lengths,
-	     const hb_vector_t<char> &cbdt_prime,
-	     unsigned int *base /* OUT */) const
+	     const hb_vector_t<var_na> &data,
+	     const hb_vector_t<unsigned ຈຳນວນເຕັມ> &lengths,
+	     const hb_vector_t<var_na> &cbdt_prime,
+	     unsigned ຈຳນວນເຕັມ *base /* OUT */) const
   {
-    unsigned int *idx_p = nullptr;
-    if (!map.has (key, &idx_p)) return false;
+    unsigned ຈຳນວນເຕັມ *idx_p = nullptr;
+    ຖ້າ (!map.has (key, &idx_p)) ສົ່ງຄືນ false;
     const entry_t &e = entries[*idx_p];
     /* The data and the per-glyph lengths must both match, otherwise the
      * glyph extents implied by the offset array would differ. */
-    if (e.lcount != lengths.length) return false;
-    if (unlikely (e.base + data.length > (unsigned int) cbdt_prime.length)) return false;
-    if (hb_memcmp (cbdt_prime.arrayZ + e.base, data.arrayZ, data.length)) return false;
-    if (hb_memcmp (this->lengths.arrayZ + e.lstart,
-		   lengths.arrayZ, lengths.length * sizeof (unsigned int)))
-      return false;
+    ຖ້າ (e.lcount != lengths.length) ສົ່ງຄືນ false;
+    ຖ້າ (unlikely (e.base + data.length > (unsigned ຈຳນວນເຕັມ) cbdt_prime.length)) ສົ່ງຄືນ false;
+    ຖ້າ (hb_memcmp (cbdt_prime.arrayZ + e.base, data.arrayZ, data.length)) ສົ່ງຄືນ false;
+    ຖ້າ (hb_memcmp (this->lengths.arrayZ + e.lstart,
+		   lengths.arrayZ, lengths.length * parimaa_na (unsigned ຈຳນວນເຕັມ)))
+      ສົ່ງຄືນ false;
     *base = e.base;
-    return true;
+    ສົ່ງຄືນ true;
   }
 
   bool add (uint64_t key,
-	    unsigned int base,
-	    const hb_vector_t<unsigned int> &lengths)
+	    unsigned ຈຳນວນເຕັມ base,
+	    const hb_vector_t<unsigned ຈຳນວນເຕັມ> &lengths)
   {
-    if (unlikely (entries.in_error () || this->lengths.in_error () || map.in_error ()))
-      return false;
+    ຖ້າ (unlikely (entries.in_error () || this->lengths.in_error () || map.in_error ()))
+      ສົ່ງຄືນ false;
     entry_t e = {base, this->lengths.length, lengths.length};
-    if (unlikely (!entries.push_or_fail (e))) return false;
-    for (unsigned int length : lengths)
-      if (unlikely (!this->lengths.push_or_fail (length))) return false;
-    return map.set (key, entries.length - 1);
+    ຖ້າ (unlikely (!entries.push_or_fail (e))) ສົ່ງຄືນ false;
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ length : lengths)
+      ຖ້າ (unlikely (!this->lengths.push_or_fail (length))) ສົ່ງຄືນ false;
+    ສົ່ງຄືນ map.set (key, entries.length - 1);
   }
 
-  hb_hashmap_t<uint64_t, unsigned int> map;
+  hb_hashmap_t<uint64_t, unsigned ຈຳນວນເຕັມ> map;
   hb_vector_t<entry_t> entries;
-  hb_vector_t<unsigned int> lengths; /* Concatenated per-entry lengths. */
+  hb_vector_t<unsigned ຈຳນວນເຕັມ> lengths; /* Concatenated per-entry lengths. */
 };
 
-struct cblc_bitmap_size_subset_context_t
+sa_nracanaa cblc_bitmap_size_subset_context_t
 {
-  const char *cbdt;
-  unsigned int cbdt_length;
-  hb_vector_t<char> *cbdt_prime;
-  unsigned int size;		/* INOUT
+  const var_na *cbdt;
+  unsigned ຈຳນວນເຕັມ cbdt_length;
+  hb_vector_t<var_na> *cbdt_prime;
+  unsigned ຈຳນວນເຕັມ size;		/* INOUT
 				 *  Input: old size of IndexSubtable
 				 *  Output: new size of IndexSubtable
 				 */
-  unsigned int num_tables;	/* INOUT
+  unsigned ຈຳນວນເຕັມ num_tables;	/* INOUT
 				 *  Input: old number of subtables.
 				 *  Output: new number of subtables.
 				 */
@@ -123,19 +123,19 @@ struct cblc_bitmap_size_subset_context_t
   cbdt_dedup_context_t *dedup;	/* Shared across strikes; may be null. */
 };
 
-static inline bool
-_copy_data_to_cbdt (hb_vector_t<char> *cbdt_prime,
+static anta_hstha bool
+_copy_data_to_cbdt (hb_vector_t<var_na> *cbdt_prime,
 		    const void        *data,
 		    unsigned           length)
 {
-  unsigned int new_len = cbdt_prime->length + length;
-  if (unlikely (!cbdt_prime->alloc (new_len))) return false;
+  unsigned ຈຳນວນເຕັມ new_len = cbdt_prime->length + length;
+  ຖ້າ (unlikely (!cbdt_prime->alloc (new_len))) ສົ່ງຄືນ false;
   hb_memcpy (cbdt_prime->arrayZ + cbdt_prime->length, data, length);
   cbdt_prime->length = new_len;
-  return true;
+  ສົ່ງຄືນ true;
 }
 
-struct SmallGlyphMetrics
+sa_nracanaa SmallGlyphMetrics
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -148,9 +148,9 @@ struct SmallGlyphMetrics
     extents->x_bearing = bearingX;
     extents->y_bearing = bearingY;
     extents->width = width;
-    extents->height = -static_cast<int> (height);
+    extents->height = -static_cast<ຈຳນວນເຕັມ> (height);
 
-    if (scale)
+    ຖ້າ (scale)
       font->scale_glyph_extents (extents);
   }
 
@@ -163,7 +163,7 @@ struct SmallGlyphMetrics
   DEFINE_SIZE_STATIC (5);
 };
 
-struct BigGlyphMetrics : SmallGlyphMetrics
+sa_nracanaa BigGlyphMetrics : SmallGlyphMetrics
 {
   HBINT8	vertBearingX;
   HBINT8	vertBearingY;
@@ -172,7 +172,7 @@ struct BigGlyphMetrics : SmallGlyphMetrics
   DEFINE_SIZE_STATIC (8);
 };
 
-struct SBitLineMetrics
+sa_nracanaa SBitLineMetrics
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -201,7 +201,7 @@ struct SBitLineMetrics
  * Index Subtables.
  */
 
-struct IndexSubtableHeader
+sa_nracanaa IndexSubtableHeader
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -217,35 +217,35 @@ struct IndexSubtableHeader
 };
 
 template <typename OffsetType>
-struct IndexSubtableFormat1Or3
+sa_nracanaa IndexSubtableFormat1Or3
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_count) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned ຈຳນວນເຕັມ glyph_count) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
 		  offsetArrayZ.sanitize (c, glyph_count + 1));
   }
 
-  bool get_image_data (unsigned int idx,
-		       unsigned int *offset,
-		       unsigned int *length) const
+  bool get_image_data (unsigned ຈຳນວນເຕັມ idx,
+		       unsigned ຈຳນວນເຕັມ *offset,
+		       unsigned ຈຳນວນເຕັມ *length) const
   {
-    if (unlikely (offsetArrayZ[idx + 1] <= offsetArrayZ[idx]))
-      return false;
+    ຖ້າ (unlikely (offsetArrayZ[idx + 1] <= offsetArrayZ[idx]))
+      ສົ່ງຄືນ false;
 
     *offset = header.imageDataOffset + offsetArrayZ[idx];
     *length = offsetArrayZ[idx + 1] - offsetArrayZ[idx];
-    return true;
+    ສົ່ງຄືນ true;
   }
 
   bool add_offset (hb_serialize_context_t *c,
-		   unsigned int offset,
-		   unsigned int *size /* OUT (accumulated) */)
+		   unsigned ຈຳນວນເຕັມ offset,
+		   unsigned ຈຳນວນເຕັມ *size /* OUT (accumulated) */)
   {
     TRACE_SERIALIZE (this);
     Offset<OffsetType> embedded_offset;
     embedded_offset = offset;
-    *size += sizeof (OffsetType);
+    *size += parimaa_na (OffsetType);
     auto *o = c->embed (embedded_offset);
     return_trace ((bool) o);
   }
@@ -257,62 +257,62 @@ struct IndexSubtableFormat1Or3
   DEFINE_SIZE_ARRAY (8, offsetArrayZ);
 };
 
-struct IndexSubtableFormat1 : IndexSubtableFormat1Or3<HBUINT32> {};
-struct IndexSubtableFormat3 : IndexSubtableFormat1Or3<HBUINT16> {};
+sa_nracanaa IndexSubtableFormat1 : IndexSubtableFormat1Or3<HBUINT32> {};
+sa_nracanaa IndexSubtableFormat3 : IndexSubtableFormat1Or3<HBUINT16> {};
 
-struct IndexSubtable
+sa_nracanaa IndexSubtable
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_count) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned ຈຳນວນເຕັມ glyph_count) const
   {
     TRACE_SANITIZE (this);
-    if (!u.header.sanitize (c)) return_trace (false);
+    ຖ້າ (!u.header.sanitize (c)) return_trace (false);
     hb_barrier ();
     switch (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, glyph_count));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, glyph_count));
+    pak_sa 1: hb_barrier (); return_trace (u.format1.sanitize (c, glyph_count));
+    pak_sa 3: hb_barrier (); return_trace (u.format3.sanitize (c, glyph_count));
     default:return_trace (true);
     }
   }
 
   bool
   finish_subtable (hb_serialize_context_t *c,
-		   unsigned int end_offset,
-		   unsigned int num_glyphs,
-		   unsigned int *size /* OUT (accumulated) */)
+		   unsigned ຈຳນວນເຕັມ end_offset,
+		   unsigned ຈຳນວນເຕັມ num_glyphs,
+		   unsigned ຈຳນວນເຕັມ *size /* OUT (accumulated) */)
   {
     TRACE_SERIALIZE (this);
 
     switch (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return_trace (u.format1.add_offset (c, end_offset, size));
-    case 3: {
+    pak_sa 1: hb_barrier (); return_trace (u.format1.add_offset (c, end_offset, size));
+    pak_sa 3: {
       hb_barrier ();
-      if (!u.format3.add_offset (c, end_offset, size))
+      ຖ້າ (!u.format3.add_offset (c, end_offset, size))
 	return_trace (false);
-      if (!(num_glyphs & 0x01))  // Pad to 32-bit alignment if needed.
+      ຖ້າ (!(num_glyphs & 0x01))  // Pad to 32-bit alignment if needed.
 	return_trace (u.format3.add_offset (c, 0, size));
       return_trace (true);
     }
     // TODO: implement 2, 4, 5.
-    case 2: case 4:  // No-op.
-    case 5:  // Pad to 32-bit aligned.
+    pak_sa 2: pak_sa 4:  // No-op.
+    pak_sa 5:  // Pad to 32-bit aligned.
     default: return_trace (false);
     }
   }
 
   bool
-  add_offset (hb_serialize_context_t *c, unsigned int local_offset,
-	      unsigned int *size /* OUT (accumulated) */)
+  add_offset (hb_serialize_context_t *c, unsigned ຈຳນວນເຕັມ local_offset,
+	      unsigned ຈຳນວນເຕັມ *size /* OUT (accumulated) */)
   {
     TRACE_SERIALIZE (this);
     switch (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return_trace (u.format1.add_offset (c, local_offset, size));
-    case 3: hb_barrier (); return_trace (u.format3.add_offset (c, local_offset, size));
+    pak_sa 1: hb_barrier (); return_trace (u.format1.add_offset (c, local_offset, size));
+    pak_sa 3: hb_barrier (); return_trace (u.format3.add_offset (c, local_offset, size));
     // TODO: Implement tables 2, 4, 5
-    case 2:  // Should be a no-op.
-    case 4: case 5:  // Handle sparse cases.
+    pak_sa 2:  // Should be a no-op.
+    pak_sa 4: pak_sa 5:  // Handle sparse cases.
     default: return_trace (false);
     }
   }
@@ -321,44 +321,44 @@ struct IndexSubtable
   {
     switch (u.header.indexFormat)
     {
-    case 2: case 5: /* TODO */
-    case 1: case 3: case 4: /* Variable-metrics formats do not have metrics here. */
-    default:return (false);
+    pak_sa 2: pak_sa 5: /* TODO */
+    pak_sa 1: pak_sa 3: pak_sa 4: /* Variable-metrics formats do not have metrics here. */
+    default:ສົ່ງຄືນ (false);
     }
   }
 
   bool
-  get_image_data (unsigned int idx, unsigned int *offset,
-		  unsigned int *length, unsigned int *format) const
+  get_image_data (unsigned ຈຳນວນເຕັມ idx, unsigned ຈຳນວນເຕັມ *offset,
+		  unsigned ຈຳນວນເຕັມ *length, unsigned ຈຳນວນເຕັມ *format) const
   {
     *format = u.header.imageFormat;
     switch (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return u.format1.get_image_data (idx, offset, length);
-    case 3: hb_barrier (); return u.format3.get_image_data (idx, offset, length);
-    default: return false;
+    pak_sa 1: hb_barrier (); ສົ່ງຄືນ u.format1.get_image_data (idx, offset, length);
+    pak_sa 3: hb_barrier (); ສົ່ງຄືນ u.format3.get_image_data (idx, offset, length);
+    default: ສົ່ງຄືນ false;
     }
   }
 
-  const IndexSubtableHeader* get_header () const { return &u.header; }
+  const IndexSubtableHeader* get_header () const { ສົ່ງຄືນ &u.header; }
 
   void populate_header (unsigned index_format,
 			unsigned image_format,
-			unsigned int image_data_offset,
-			unsigned int *size)
+			unsigned ຈຳນວນເຕັມ image_data_offset,
+			unsigned ຈຳນວນເຕັມ *size)
   {
     u.header.indexFormat = index_format;
     u.header.imageFormat = image_format;
     u.header.imageDataOffset = image_data_offset;
     switch (u.header.indexFormat)
     {
-    case 1: *size += IndexSubtableFormat1::min_size; break;
-    case 3: *size += IndexSubtableFormat3::min_size; break;
+    pak_sa 1: *size += IndexSubtableFormat1::min_size; bha_nga;
+    pak_sa 3: *size += IndexSubtableFormat3::min_size; bha_nga;
     }
   }
 
-  protected:
-  union {
+  rak_sita:
+  sa_ngha {
   IndexSubtableHeader	header;
   IndexSubtableFormat1	format1;
   IndexSubtableFormat3	format3;
@@ -368,7 +368,7 @@ struct IndexSubtable
   DEFINE_SIZE_UNION (8, header);
 };
 
-struct IndexSubtableRecord
+sa_nracanaa IndexSubtableRecord
 {
   /* XXX Remove this and fix by not inserting it into vector. */
   IndexSubtableRecord& operator = (const IndexSubtableRecord &o)
@@ -377,7 +377,7 @@ struct IndexSubtableRecord
     lastGlyphIndex = o.lastGlyphIndex;
     offsetToSubtable = (unsigned) o.offsetToSubtable;
     assert (offsetToSubtable.is_null ());
-    return *this;
+    ສົ່ງຄືນ *this;
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -391,7 +391,7 @@ struct IndexSubtableRecord
 
   const IndexSubtable* get_subtable (const void *base) const
   {
-    return &(base+offsetToSubtable);
+    ສົ່ງຄືນ &(base+offsetToSubtable);
   }
 
   bool add_new_subtable (hb_subset_context_t* c,
@@ -399,85 +399,85 @@ struct IndexSubtableRecord
 			 IndexSubtableRecord *record,
 			 const hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> *lookup, /* IN */
 			 const void *base,
-			 unsigned int *start /* INOUT */) const
+			 unsigned ຈຳນວນເຕັມ *start /* INOUT */) const
   {
     TRACE_SERIALIZE (this);
 
     auto *subtable = c->serializer->start_embed<IndexSubtable> ();
-    if (unlikely (!c->serializer->extend_min (subtable))) return_trace (false);
+    ຖ້າ (unlikely (!c->serializer->extend_min (subtable))) return_trace (false);
 
     auto *old_subtable = get_subtable (base);
     auto *old_header = old_subtable->get_header ();
-    unsigned int image_format = old_header->imageFormat;
+    unsigned ຈຳນວນເຕັມ image_format = old_header->imageFormat;
 
     /* Collect this subtable's image data and the length of each glyph's block
      * (zero for glyphs without data). This allows an earlier identical
      * subtable to share the same data. */
-    hb_vector_t<char> data;
-    hb_vector_t<unsigned int> lengths;
-    unsigned int num_glyphs = 0;
+    hb_vector_t<var_na> data;
+    hb_vector_t<unsigned ຈຳນວນເຕັມ> lengths;
+    unsigned ຈຳນວນເຕັມ num_glyphs = 0;
     bool early_exit = false;
-    for (unsigned int i = *start; i < lookup->length; i++)
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = *start; i < lookup->length; i++)
     {
       hb_codepoint_t new_gid = (*lookup)[i].first;
       const IndexSubtableRecord *next_record = (*lookup)[i].second;
       const IndexSubtable *next_subtable = next_record->get_subtable (base);
       auto *next_header = next_subtable->get_header ();
-      if (next_header != old_header)
+      ຖ້າ (next_header != old_header)
       {
 	*start = i;
 	early_exit = true;
-	break;
+	bha_nga;
       }
-      unsigned int num_missing = record->add_glyph_for_subset (new_gid);
-      for (unsigned int j = 0; j < num_missing; j++)
-	if (unlikely (!c->serializer->check_success (lengths.push_or_fail (0))))
+      unsigned ຈຳນວນເຕັມ num_missing = record->add_glyph_for_subset (new_gid);
+      ສຳລັບ (unsigned ຈຳນວນເຕັມ j = 0; j < num_missing; j++)
+	ຖ້າ (unlikely (!c->serializer->check_success (lengths.push_or_fail (0))))
 	  return_trace (false);
 
       hb_codepoint_t old_gid = 0;
       c->plan->old_gid_for_new_gid (new_gid, &old_gid);
-      if (old_gid < next_record->firstGlyphIndex)
+      ຖ້າ (old_gid < next_record->firstGlyphIndex)
 	return_trace (false);
 
-      unsigned int old_idx = (unsigned int) old_gid - next_record->firstGlyphIndex;
-      unsigned int offset, length, format;
-      if (unlikely (!next_subtable->get_image_data (old_idx, &offset, &length, &format)))
+      unsigned ຈຳນວນເຕັມ old_idx = (unsigned ຈຳນວນເຕັມ) old_gid - next_record->firstGlyphIndex;
+      unsigned ຈຳນວນເຕັມ offset, length, format;
+      ຖ້າ (unlikely (!next_subtable->get_image_data (old_idx, &offset, &length, &format)))
 	return_trace (false);
-      if (unlikely (offset > bitmap_size_context->cbdt_length ||
+      ຖ້າ (unlikely (offset > bitmap_size_context->cbdt_length ||
 		    bitmap_size_context->cbdt_length - offset < length))
 	return_trace (false);
-      if (unlikely (!c->serializer->check_success (
+      ຖ້າ (unlikely (!c->serializer->check_success (
 			_copy_data_to_cbdt (&data,
 					    bitmap_size_context->cbdt + offset,
 					    length))))
 	return_trace (false);
-      if (unlikely (!c->serializer->check_success (lengths.push_or_fail (length))))
+      ຖ້າ (unlikely (!c->serializer->check_success (lengths.push_or_fail (length))))
 	return_trace (false);
       num_glyphs += 1 + num_missing;
     }
-    if (!early_exit)
+    ຖ້າ (!early_exit)
       *start = lookup->length;
 
     /* Find or append the data block for this subtable. */
-    unsigned int image_data_offset;
+    unsigned ຈຳນວນເຕັມ image_data_offset;
     cbdt_dedup_context_t *dedup = bitmap_size_context->dedup;
     bool shared = false;
     uint64_t key = 0;
-    if (dedup && data.length)
+    ຖ້າ (dedup && data.length)
     {
       key = cbdt_dedup_context_t::hash (image_format, data, lengths);
       shared = dedup->find (key, data, lengths,
 			    *bitmap_size_context->cbdt_prime,
 			    &image_data_offset);
     }
-    if (!shared)
+    ຖ້າ (!shared)
     {
       image_data_offset = bitmap_size_context->cbdt_prime->length;
-      if (unlikely (!c->serializer->check_success (
+      ຖ້າ (unlikely (!c->serializer->check_success (
 			_copy_data_to_cbdt (bitmap_size_context->cbdt_prime,
 					    data.arrayZ, data.length))))
 	return_trace (false);
-      if (dedup && data.length)
+      ຖ້າ (dedup && data.length)
 	/* The bitmap data is already copied; caching is best-effort. */
 	(void) dedup->add (key, image_data_offset, lengths);
     }
@@ -489,15 +489,15 @@ struct IndexSubtableRecord
 
     /* Glyphs without data use the offset of the following block's start,
      * which yields a zero length span, matching the old behavior. */
-    unsigned int cumulative = 0;
-    for (unsigned int length : lengths)
+    unsigned ຈຳນວນເຕັມ cumulative = 0;
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ length : lengths)
     {
-      if (unlikely (!subtable->add_offset (c->serializer, cumulative,
+      ຖ້າ (unlikely (!subtable->add_offset (c->serializer, cumulative,
 					   &bitmap_size_context->size)))
 	return_trace (false);
       cumulative += length;
     }
-    if (unlikely (!subtable->finish_subtable (c->serializer,
+    ຖ້າ (unlikely (!subtable->finish_subtable (c->serializer,
 					      cumulative,
 					      num_glyphs,
 					      &bitmap_size_context->size)))
@@ -509,16 +509,16 @@ struct IndexSubtableRecord
 		       cblc_bitmap_size_subset_context_t *bitmap_size_context,
 		       const hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> *lookup, /* IN */
 		       const void *base,
-		       unsigned int *start, /* INOUT */
+		       unsigned ຈຳນວນເຕັມ *start, /* INOUT */
 		       hb_vector_t<IndexSubtableRecord>* records /* INOUT */) const
   {
     TRACE_SERIALIZE (this);
     auto snap = c->serializer->snapshot ();
-    unsigned int old_size = bitmap_size_context->size;
-    unsigned int old_cbdt_prime_length = bitmap_size_context->cbdt_prime->length;
+    unsigned ຈຳນວນເຕັມ old_size = bitmap_size_context->size;
+    unsigned ຈຳນວນເຕັມ old_cbdt_prime_length = bitmap_size_context->cbdt_prime->length;
 
     // Set to invalid state to indicate filling glyphs is not yet started.
-    if (unlikely (!c->serializer->check_success (records->resize (records->length + 1))))
+    ຖ້າ (unlikely (!c->serializer->check_success (records->resize (records->length + 1))))
       return_trace (false);
 
     records->tail ().firstGlyphIndex = 1;
@@ -527,7 +527,7 @@ struct IndexSubtableRecord
 
     c->serializer->push ();
 
-    if (unlikely (!add_new_subtable (c, bitmap_size_context, &(records->tail ()), lookup, base, start)))
+    ຖ້າ (unlikely (!add_new_subtable (c, bitmap_size_context, &(records->tail ()), lookup, base, start)))
     {
       c->serializer->pop_discard ();
       c->serializer->revert (snap);
@@ -541,33 +541,33 @@ struct IndexSubtableRecord
     return_trace (true);
   }
 
-  unsigned int add_glyph_for_subset (hb_codepoint_t gid)
+  unsigned ຈຳນວນເຕັມ add_glyph_for_subset (hb_codepoint_t gid)
   {
-    if (firstGlyphIndex > lastGlyphIndex)
+    ຖ້າ (firstGlyphIndex > lastGlyphIndex)
     {
       firstGlyphIndex = gid;
       lastGlyphIndex = gid;
-      return 0;
+      ສົ່ງຄືນ 0;
     }
     // TODO maybe assert? this shouldn't occur.
-    if (lastGlyphIndex > gid)
-      return 0;
-    unsigned int num_missing = (unsigned int) (gid - lastGlyphIndex - 1);
+    ຖ້າ (lastGlyphIndex > gid)
+      ສົ່ງຄືນ 0;
+    unsigned ຈຳນວນເຕັມ num_missing = (unsigned ຈຳນວນເຕັມ) (gid - lastGlyphIndex - 1);
     lastGlyphIndex = gid;
-    return num_missing;
+    ສົ່ງຄືນ num_missing;
   }
 
   bool get_extents (hb_glyph_extents_t *extents, const void *base, bool scale) const
-  { return (base+offsetToSubtable).get_extents (extents, scale); }
+  { ສົ່ງຄືນ (base+offsetToSubtable).get_extents (extents, scale); }
 
-  bool get_image_data (unsigned int  gid,
+  bool get_image_data (unsigned ຈຳນວນເຕັມ  gid,
 		       const void   *base,
-		       unsigned int *offset,
-		       unsigned int *length,
-		       unsigned int *format) const
+		       unsigned ຈຳນວນເຕັມ *offset,
+		       unsigned ຈຳນວນເຕັມ *length,
+		       unsigned ຈຳນວນເຕັມ *format) const
   {
-    if (gid < firstGlyphIndex || gid > lastGlyphIndex) return false;
-    return (base+offsetToSubtable).get_image_data (gid - firstGlyphIndex,
+    ຖ້າ (gid < firstGlyphIndex || gid > lastGlyphIndex) ສົ່ງຄືນ false;
+    ສົ່ງຄືນ (base+offsetToSubtable).get_image_data (gid - firstGlyphIndex,
 						   offset, length, format);
   }
 
@@ -578,11 +578,11 @@ struct IndexSubtableRecord
   DEFINE_SIZE_STATIC (8);
 };
 
-struct IndexSubtableArray
+sa_nracanaa IndexSubtableArray
 {
-  friend struct CBDT;
+  friend sa_nracanaa CBDT;
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned ຈຳນວນເຕັມ count) const
   {
     TRACE_SANITIZE (this);
     return_trace (indexSubtablesZ.sanitize (c, count, this));
@@ -595,22 +595,22 @@ struct IndexSubtableArray
   {
     bool start_glyph_is_set = false;
     unsigned num_glyphs = c->plan->num_output_glyphs ();
-    for (hb_codepoint_t new_gid = 0; new_gid < num_glyphs; new_gid++)
+    ສຳລັບ (hb_codepoint_t new_gid = 0; new_gid < num_glyphs; new_gid++)
     {
       hb_codepoint_t old_gid;
-      if (unlikely (!c->plan->old_gid_for_new_gid (new_gid, &old_gid))) continue;
+      ຖ້າ (unlikely (!c->plan->old_gid_for_new_gid (new_gid, &old_gid))) continue;
 
       const IndexSubtableRecord* record = find_table (old_gid, bitmap_size_context->num_tables);
-      if (unlikely (!record)) continue;
+      ຖ້າ (unlikely (!record)) continue;
 
       // Don't add gaps to the lookup. The best way to determine if a glyph is a
       // gap is that it has no image data.
-      unsigned int offset, length, format;
-      if (unlikely (!record->get_image_data (old_gid, this, &offset, &length, &format))) continue;
+      unsigned ຈຳນວນເຕັມ offset, length, format;
+      ຖ້າ (unlikely (!record->get_image_data (old_gid, this, &offset, &length, &format))) continue;
 
       lookup->push (hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*> (new_gid, record));
 
-      if (!start_glyph_is_set)
+      ຖ້າ (!start_glyph_is_set)
       {
 	bitmap_size_context->start_glyph = new_gid;
 	start_glyph_is_set = true;
@@ -628,18 +628,18 @@ struct IndexSubtableArray
 
     hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> lookup;
     build_lookup (c, bitmap_size_context, &lookup);
-    if (unlikely (!c->serializer->propagate_error (lookup)))
-      return false;
+    ຖ້າ (unlikely (!c->serializer->propagate_error (lookup)))
+      ສົ່ງຄືນ false;
 
     bitmap_size_context->size = 0;
     bitmap_size_context->num_tables = 0;
     hb_vector_t<IndexSubtableRecord> records;
-    for (unsigned int start = 0; start < lookup.length;)
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ start = 0; start < lookup.length;)
     {
-      if (unlikely (!lookup[start].second->add_new_record (c, bitmap_size_context, &lookup, this, &start, &records)))
+      ຖ້າ (unlikely (!lookup[start].second->add_new_record (c, bitmap_size_context, &lookup, this, &start, &records)))
       {
 	// Discard any leftover pushes to the serializer from successful records.
-	for (unsigned int i = 0; i < records.length; i++)
+	ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 0; i < records.length; i++)
 	  c->serializer->pop_discard ();
 	return_trace (false);
       }
@@ -648,38 +648,38 @@ struct IndexSubtableArray
     /* Workaround to ensure offset ordering is from least to greatest when
      * resolving links. */
     hb_vector_t<hb_serialize_context_t::objidx_t> objidxs;
-    for (unsigned int i = 0; i < records.length; i++)
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 0; i < records.length; i++)
       objidxs.push (c->serializer->pop_pack ());
-    for (unsigned int i = 0; i < records.length; i++)
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 0; i < records.length; i++)
     {
       IndexSubtableRecord* record = c->serializer->embed (records[i]);
-      if (unlikely (!record)) return_trace (false);
+      ຖ້າ (unlikely (!record)) return_trace (false);
       c->serializer->add_link (record->offsetToSubtable, objidxs[records.length - 1 - i]);
     }
     return_trace (true);
   }
 
   public:
-  const IndexSubtableRecord* find_table (hb_codepoint_t glyph, unsigned int numTables) const
+  const IndexSubtableRecord* find_table (hb_codepoint_t glyph, unsigned ຈຳນວນເຕັມ numTables) const
   {
-    for (unsigned int i = 0; i < numTables; ++i)
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 0; i < numTables; ++i)
     {
-      unsigned int firstGlyphIndex = indexSubtablesZ[i].firstGlyphIndex;
-      unsigned int lastGlyphIndex = indexSubtablesZ[i].lastGlyphIndex;
-      if (firstGlyphIndex <= glyph && glyph <= lastGlyphIndex)
-	return &indexSubtablesZ[i];
+      unsigned ຈຳນວນເຕັມ firstGlyphIndex = indexSubtablesZ[i].firstGlyphIndex;
+      unsigned ຈຳນວນເຕັມ lastGlyphIndex = indexSubtablesZ[i].lastGlyphIndex;
+      ຖ້າ (firstGlyphIndex <= glyph && glyph <= lastGlyphIndex)
+	ສົ່ງຄືນ &indexSubtablesZ[i];
     }
-    return nullptr;
+    ສົ່ງຄືນ nullptr;
   }
 
-  protected:
+  rak_sita:
   UnsizedArrayOf<IndexSubtableRecord>	indexSubtablesZ;
 };
 
-struct BitmapSizeTable
+sa_nracanaa BitmapSizeTable
 {
-  friend struct CBLC;
-  friend struct CBDT;
+  friend sa_nracanaa CBLC;
+  friend sa_nracanaa CBDT;
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -695,18 +695,18 @@ struct BitmapSizeTable
   find_table (hb_codepoint_t glyph, const void *base, const void **out_base) const
   {
     *out_base = &(base+indexSubtableArrayOffset);
-    return (base+indexSubtableArrayOffset).find_table (glyph, numberOfIndexSubtables);
+    ສົ່ງຄືນ (base+indexSubtableArrayOffset).find_table (glyph, numberOfIndexSubtables);
   }
 
   bool
   subset (hb_subset_context_t *c, const void *base,
-	  const char *cbdt, unsigned int cbdt_length,
-	  hb_vector_t<char> *cbdt_prime /* INOUT */,
+	  const var_na *cbdt, unsigned ຈຳນວນເຕັມ cbdt_length,
+	  hb_vector_t<var_na> *cbdt_prime /* INOUT */,
 	  cbdt_dedup_context_t *dedup /* INOUT */) const
   {
     TRACE_SUBSET (this);
     auto *out_table = c->serializer->embed (this);
-    if (unlikely (!out_table)) return_trace (false);
+    ຖ້າ (unlikely (!out_table)) return_trace (false);
 
     cblc_bitmap_size_subset_context_t bitmap_size_context;
     bitmap_size_context.cbdt = cbdt;
@@ -718,12 +718,12 @@ struct BitmapSizeTable
     bitmap_size_context.end_glyph = 0;
     bitmap_size_context.dedup = dedup;
 
-    if (!out_table->indexSubtableArrayOffset.serialize_subset (c,
+    ຖ້າ (!out_table->indexSubtableArrayOffset.serialize_subset (c,
 							       indexSubtableArrayOffset,
 							       base,
 							       &bitmap_size_context))
       return_trace (false);
-    if (!bitmap_size_context.size ||
+    ຖ້າ (!bitmap_size_context.size ||
 	!bitmap_size_context.num_tables ||
 	bitmap_size_context.start_glyph > bitmap_size_context.end_glyph)
       return_trace (false);
@@ -735,7 +735,7 @@ struct BitmapSizeTable
     return_trace (true);
   }
 
-  protected:
+  rak_sita:
   NNOffset32To<IndexSubtableArray>
 			indexSubtableArrayOffset;
   HBUINT32		indexTablesSize;
@@ -758,7 +758,7 @@ struct BitmapSizeTable
  * Glyph Bitmap Data Formats.
  */
 
-struct GlyphBitmapDataFormat17
+sa_nracanaa GlyphBitmapDataFormat17
 {
   SmallGlyphMetrics	glyphMetrics;
   Array32Of<HBUINT8>	data;
@@ -766,7 +766,7 @@ struct GlyphBitmapDataFormat17
   DEFINE_SIZE_ARRAY (9, data);
 };
 
-struct GlyphBitmapDataFormat18
+sa_nracanaa GlyphBitmapDataFormat18
 {
   BigGlyphMetrics	glyphMetrics;
   Array32Of<HBUINT8>	data;
@@ -774,16 +774,16 @@ struct GlyphBitmapDataFormat18
   DEFINE_SIZE_ARRAY (12, data);
 };
 
-struct GlyphBitmapDataFormat19
+sa_nracanaa GlyphBitmapDataFormat19
 {
   Array32Of<HBUINT8>	data;
   public:
   DEFINE_SIZE_ARRAY (4, data);
 };
 
-struct CBLC
+sa_nracanaa CBLC
 {
-  friend struct CBDT;
+  friend sa_nracanaa CBDT;
 
   static constexpr hb_tag_t tableTag = HB_OT_TAG_CBLC;
 
@@ -798,7 +798,7 @@ struct CBLC
   }
 
   static bool
-  sink_cbdt (hb_subset_context_t *c, hb_vector_t<char>* cbdt_prime)
+  sink_cbdt (hb_subset_context_t *c, hb_vector_t<var_na>* cbdt_prime)
   {
     hb_blob_t *cbdt_prime_blob = hb_blob_create (cbdt_prime->arrayZ,
 						 cbdt_prime->length,
@@ -808,13 +808,13 @@ struct CBLC
     cbdt_prime->init ();  // Leak arrayZ to the blob.
     bool ret = c->plan->add_table (HB_OT_TAG_CBDT, cbdt_prime_blob);
     hb_blob_destroy (cbdt_prime_blob);
-    return ret;
+    ສົ່ງຄືນ ret;
   }
 
   bool
   subset_size_table (hb_subset_context_t *c, const BitmapSizeTable& table,
-		     const char *cbdt /* IN */, unsigned int cbdt_length,
-		     CBLC *cblc_prime /* INOUT */, hb_vector_t<char> *cbdt_prime /* INOUT */,
+		     const var_na *cbdt /* IN */, unsigned ຈຳນວນເຕັມ cbdt_length,
+		     CBLC *cblc_prime /* INOUT */, hb_vector_t<var_na> *cbdt_prime /* INOUT */,
 		     cbdt_dedup_context_t *dedup /* INOUT */) const
   {
     TRACE_SUBSET (this);
@@ -823,7 +823,7 @@ struct CBLC
     auto snap = c->serializer->snapshot ();
     auto cbdt_prime_len = cbdt_prime->length;
 
-    if (!table.subset (c, this, cbdt, cbdt_length, cbdt_prime, dedup))
+    ຖ້າ (!table.subset (c, this, cbdt, cbdt_length, cbdt_prime, dedup))
     {
       cblc_prime->sizeTables.len--;
       c->serializer->revert (snap);
@@ -836,23 +836,23 @@ struct CBLC
   // Implemented in cc file as it depends on definition of CBDT.
   HB_INTERNAL bool subset (hb_subset_context_t *c) const;
 
-  protected:
+  rak_sita:
   const BitmapSizeTable &choose_strike (hb_font_t *font) const
   {
     unsigned count = sizeTables.len;
-    if (unlikely (!count))
-      return Null (BitmapSizeTable);
+    ຖ້າ (unlikely (!count))
+      ສົ່ງຄືນ Null (BitmapSizeTable);
 
-    unsigned int requested_ppem = hb_max (font->x_ppem, font->y_ppem);
-    if (!requested_ppem)
+    unsigned ຈຳນວນເຕັມ requested_ppem = hb_max (font->x_ppem, font->y_ppem);
+    ຖ້າ (!requested_ppem)
       requested_ppem = 1<<30; /* Choose largest strike. */
-    unsigned int best_i = 0;
-    unsigned int best_ppem = hb_max (sizeTables[0].ppemX, sizeTables[0].ppemY);
+    unsigned ຈຳນວນເຕັມ best_i = 0;
+    unsigned ຈຳນວນເຕັມ best_ppem = hb_max (sizeTables[0].ppemX, sizeTables[0].ppemY);
 
-    for (unsigned int i = 1; i < count; i++)
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 1; i < count; i++)
     {
-      unsigned int ppem = hb_max (sizeTables[i].ppemX, sizeTables[i].ppemY);
-      if ((requested_ppem <= ppem && ppem < best_ppem) ||
+      unsigned ຈຳນວນເຕັມ ppem = hb_max (sizeTables[i].ppemX, sizeTables[i].ppemY);
+      ຖ້າ ((requested_ppem <= ppem && ppem < best_ppem) ||
 	  (requested_ppem > best_ppem && ppem > best_ppem))
       {
 	best_i = i;
@@ -860,21 +860,21 @@ struct CBLC
       }
     }
 
-    return sizeTables[best_i];
+    ສົ່ງຄືນ sizeTables[best_i];
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>		version;
   Array32Of<BitmapSizeTable>	sizeTables;
   public:
   DEFINE_SIZE_ARRAY (8, sizeTables);
 };
 
-struct CBDT
+sa_nracanaa CBDT
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_CBDT;
 
-  struct accelerator_t
+  sa_nracanaa accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
@@ -895,41 +895,41 @@ struct CBDT
       const void *base;
       const BitmapSizeTable &strike = this->cblc->choose_strike (font);
       const IndexSubtableRecord *subtable_record = strike.find_table (glyph, cblc, &base);
-      if (!subtable_record || !strike.ppemX || !strike.ppemY)
-	return false;
+      ຖ້າ (!subtable_record || !strike.ppemX || !strike.ppemY)
+	ສົ່ງຄືນ false;
 
-      if (subtable_record->get_extents (extents, base, scale))
-	return true;
+      ຖ້າ (subtable_record->get_extents (extents, base, scale))
+	ສົ່ງຄືນ true;
 
-      unsigned int image_offset = 0, image_length = 0, image_format = 0;
-      if (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
-	return false;
+      unsigned ຈຳນວນເຕັມ image_offset = 0, image_length = 0, image_format = 0;
+      ຖ້າ (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
+	ສົ່ງຄືນ false;
 
-      unsigned int cbdt_len = cbdt.get_length ();
-      if (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
-	return false;
+      unsigned ຈຳນວນເຕັມ cbdt_len = cbdt.get_length ();
+      ຖ້າ (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
+	ສົ່ງຄືນ false;
 
       switch (image_format)
       {
-      case 17: {
-	if (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
-	  return false;
+      pak_sa 17: {
+	ຖ້າ (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
+	  ສົ່ງຄືນ false;
 	auto &glyphFormat17 = StructAtOffset<GlyphBitmapDataFormat17> (this->cbdt, image_offset);
 	glyphFormat17.glyphMetrics.get_extents (font, extents, scale);
-	break;
+	bha_nga;
       }
-      case 18: {
-	if (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
-	  return false;
+      pak_sa 18: {
+	ຖ້າ (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
+	  ສົ່ງຄືນ false;
 	auto &glyphFormat18 = StructAtOffset<GlyphBitmapDataFormat18> (this->cbdt, image_offset);
 	glyphFormat18.glyphMetrics.get_extents (font, extents, scale);
-	break;
+	bha_nga;
       }
-      default: return false; /* TODO: Support other image formats. */
+      default: ສົ່ງຄືນ false; /* TODO: Support other image formats. */
       }
 
       /* Convert to font units. */
-      if (scale)
+      ຖ້າ (scale)
       {
 	float x_scale = upem / (float) strike.ppemX;
 	float y_scale = upem / (float) strike.ppemY;
@@ -939,7 +939,7 @@ struct CBDT
 	extents->height = hb_clamp_to<hb_position_t> (roundf (extents->height * y_scale));
       }
 
-      return true;
+      ສົ່ງຄືນ true;
     }
 
     hb_blob_t*
@@ -948,67 +948,67 @@ struct CBDT
       const void *base;
       const BitmapSizeTable &strike = this->cblc->choose_strike (font);
       const IndexSubtableRecord *subtable_record = strike.find_table (glyph, cblc, &base);
-      if (!subtable_record || !strike.ppemX || !strike.ppemY)
-	return hb_blob_get_empty ();
+      ຖ້າ (!subtable_record || !strike.ppemX || !strike.ppemY)
+	ສົ່ງຄືນ hb_blob_get_empty ();
 
-      unsigned int image_offset = 0, image_length = 0, image_format = 0;
-      if (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
-	return hb_blob_get_empty ();
+      unsigned ຈຳນວນເຕັມ image_offset = 0, image_length = 0, image_format = 0;
+      ຖ້າ (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
+	ສົ່ງຄືນ hb_blob_get_empty ();
 
-      unsigned int cbdt_len = cbdt.get_length ();
-      if (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
-	return hb_blob_get_empty ();
+      unsigned ຈຳນວນເຕັມ cbdt_len = cbdt.get_length ();
+      ຖ້າ (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
+	ສົ່ງຄືນ hb_blob_get_empty ();
 
       switch (image_format)
       {
-      case 17:
+      pak_sa 17:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
-	  return hb_blob_get_empty ();
+	ຖ້າ (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
+	  ສົ່ງຄືນ hb_blob_get_empty ();
 	auto &glyphFormat17 = StructAtOffset<GlyphBitmapDataFormat17> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
+	ສົ່ງຄືນ hb_blob_create_sub_blob (cbdt.get_blob (),
 					image_offset + GlyphBitmapDataFormat17::min_size,
 					glyphFormat17.data.len);
       }
-      case 18:
+      pak_sa 18:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
-	  return hb_blob_get_empty ();
+	ຖ້າ (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
+	  ສົ່ງຄືນ hb_blob_get_empty ();
 	auto &glyphFormat18 = StructAtOffset<GlyphBitmapDataFormat18> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
+	ສົ່ງຄືນ hb_blob_create_sub_blob (cbdt.get_blob (),
 					image_offset + GlyphBitmapDataFormat18::min_size,
 					glyphFormat18.data.len);
       }
-      case 19:
+      pak_sa 19:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat19::min_size))
-	  return hb_blob_get_empty ();
+	ຖ້າ (unlikely (image_length < GlyphBitmapDataFormat19::min_size))
+	  ສົ່ງຄືນ hb_blob_get_empty ();
 	auto &glyphFormat19 = StructAtOffset<GlyphBitmapDataFormat19> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
+	ສົ່ງຄືນ hb_blob_create_sub_blob (cbdt.get_blob (),
 					image_offset + GlyphBitmapDataFormat19::min_size,
 					glyphFormat19.data.len);
       }
-      default: return hb_blob_get_empty (); /* TODO: Support other image formats. */
+      default: ສົ່ງຄືນ hb_blob_get_empty (); /* TODO: Support other image formats. */
       }
     }
 
-    bool has_data () const { return cbdt->version.major; }
+    bool has_data () const { ສົ່ງຄືນ cbdt->version.major; }
 
     bool paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
     {
-      if (!has_data ()) return false;
+      ຖ້າ (!has_data ()) ສົ່ງຄືນ false;
 
       hb_glyph_extents_t extents;
       hb_glyph_extents_t pixel_extents;
-      if (unlikely (!font->get_glyph_extents (glyph, &extents, false)))
-        return false;
+      ຖ້າ (unlikely (!font->get_glyph_extents (glyph, &extents, false)))
+        ສົ່ງຄືນ false;
 
-      if (unlikely (!get_extents (font, glyph, &pixel_extents, false)))
-        return false;
+      ຖ້າ (unlikely (!get_extents (font, glyph, &pixel_extents, false)))
+        ສົ່ງຄືນ false;
 
       hb_blob_t *blob = reference_png (font, glyph);
-      if (unlikely (hb_blob_is_immutable (blob)))
-        return false;
+      ຖ້າ (unlikely (hb_blob_is_immutable (blob)))
+        ສົ່ງຄືນ false;
 
       bool ret = funcs->image (data,
 			       blob,
@@ -1019,14 +1019,14 @@ struct CBDT
 
       hb_blob_destroy (blob);
 
-      return ret;
+      ສົ່ງຄືນ ret;
     }
 
     private:
     hb_blob_ptr_t<CBLC> cblc;
     hb_blob_ptr_t<CBDT> cbdt;
 
-    unsigned int upem;
+    unsigned ຈຳນວນເຕັມ upem;
   };
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -1037,29 +1037,29 @@ struct CBDT
 		  likely (version.major == 2 || version.major == 3));
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>		version;
   UnsizedArrayOf<HBUINT8>	dataZ;
   public:
   DEFINE_SIZE_ARRAY (4, dataZ);
 };
 
-inline bool
+anta_hstha bool
 CBLC::subset (hb_subset_context_t *c) const
 {
   TRACE_SUBSET (this);
 
   // Use a vector as a secondary buffer as the tables need to be built in parallel.
-  hb_vector_t<char> cbdt_prime;
+  hb_vector_t<var_na> cbdt_prime;
 
   auto *cblc_prime = c->serializer->start_embed<CBLC> ();
-  if (unlikely (!c->serializer->extend_min (cblc_prime))) return_trace (false);
+  ຖ້າ (unlikely (!c->serializer->extend_min (cblc_prime))) return_trace (false);
   cblc_prime->version = version;
 
   hb_blob_t* cbdt_blob = hb_sanitize_context_t ().reference_table<CBDT> (c->plan->source);
-  unsigned int cbdt_length;
+  unsigned ຈຳນວນເຕັມ cbdt_length;
   CBDT* cbdt = (CBDT *) hb_blob_get_data (cbdt_blob, &cbdt_length);
-  if (unlikely (cbdt_length < CBDT::min_size))
+  ຖ້າ (unlikely (cbdt_length < CBDT::min_size))
   {
     hb_blob_destroy (cbdt_blob);
     return_trace (false);
@@ -1067,15 +1067,15 @@ CBLC::subset (hb_subset_context_t *c) const
   _copy_data_to_cbdt (&cbdt_prime, cbdt, CBDT::min_size);
 
   cbdt_dedup_context_t dedup;
-  for (const BitmapSizeTable& table : + sizeTables.iter ())
-    subset_size_table (c, table, (const char *) cbdt, cbdt_length, cblc_prime, &cbdt_prime, &dedup);
+  ສຳລັບ (const BitmapSizeTable& table : + sizeTables.iter ())
+    subset_size_table (c, table, (const var_na *) cbdt, cbdt_length, cblc_prime, &cbdt_prime, &dedup);
 
   hb_blob_destroy (cbdt_blob);
 
   return_trace (CBLC::sink_cbdt (c, &cbdt_prime));
 }
 
-struct CBDT_accelerator_t : CBDT::accelerator_t {
+sa_nracanaa CBDT_accelerator_t : CBDT::accelerator_t {
   CBDT_accelerator_t (hb_face_t *face) : CBDT::accelerator_t (face) {}
 };
 

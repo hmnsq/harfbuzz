@@ -35,11 +35,11 @@ using namespace OT;
 
 typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+sa_nracanaa cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
 {
   template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned ຈຳນວນເຕັມ fd,
+			const ຈຳນວນເຕັມ *coords_=nullptr, unsigned ຈຳນວນເຕັມ num_coords_=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
   {
     processed_width = false;
@@ -50,9 +50,9 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
 
   void set_width (bool has_width_)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    ຖ້າ (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
     {
-      if (has_width_)
+      ຖ້າ (has_width_)
       {
 	width = SUPER::argStack[0];
 	has_width = true;
@@ -72,7 +72,7 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
 
   bool	  processed_width;
   bool	  has_width;
-  unsigned int  arg_start;
+  unsigned ຈຳນວນເຕັມ  arg_start;
   number_t	width;
   bool	  in_seac;
 
@@ -81,7 +81,7 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
 };
 
 template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+sa_nracanaa cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
@@ -89,19 +89,19 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
   static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
     switch (op) {
-      case OpCode_dotsection:
+      pak_sa OpCode_dotsection:
 	SUPER::flush_args_and_op (op, env, param);
-	break;
+	bha_nga;
 
-      case OpCode_endchar:
+      pak_sa OpCode_endchar:
 	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+	ຖ້າ (env.argStack.get_count () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
 	OPSET::flush_args_and_op (op, env, param);
 	env.set_endchar (true);
-	break;
+	bha_nga;
 
       default:
 	SUPER::process_op (op, env, param);
@@ -110,29 +110,29 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
 
   static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    ຖ້າ (!env.processed_width)
     {
       bool  has_width = false;
       switch (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
+	pak_sa OpCode_endchar:
+	pak_sa OpCode_hstem:
+	pak_sa OpCode_hstemhm:
+	pak_sa OpCode_vstem:
+	pak_sa OpCode_vstemhm:
+	pak_sa OpCode_hintmask:
+	pak_sa OpCode_cntrmask:
 	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
+	  bha_nga;
+	pak_sa OpCode_hmoveto:
+	pak_sa OpCode_vmoveto:
 	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
+	  bha_nga;
+	pak_sa OpCode_rmoveto:
 	  has_width = (env.argStack.get_count () > 2);
-	  break;
+	  bha_nga;
 	default:
-	  return;
+	  ສົ່ງຄືນ;
       }
       env.set_width (has_width);
     }

@@ -27,8 +27,8 @@
 #include "hb.hh"
 #include "hb-bimap.hh"
 
-int
-main (int argc, char **argv)
+ຈຳນວນເຕັມ
+main (ຈຳນວນເຕັມ argc, var_na **argv)
 {
   hb_bimap_t	bm;
 
@@ -72,5 +72,5 @@ main (int argc, char **argv)
   hb_always_assert (ibm.backward (2) == 2);
   hb_always_assert (ibm.has (4) == false);
 
-  return 0;
+  ສົ່ງຄືນ 0;
 }

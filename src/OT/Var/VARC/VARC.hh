@@ -10,7 +10,7 @@
 
 #include "coord-setter.hh"
 
-struct hb_depend_data_builder_t;
+sa_nracanaa hb_depend_data_builder_t;
 
 namespace OT {
 
@@ -23,14 +23,14 @@ namespace OT {
 
 #ifndef HB_NO_VAR_COMPOSITES
 
-struct hb_varc_scratch_t
+sa_nracanaa hb_varc_scratch_t
 {
   hb_vector_t<unsigned> axisIndices;
-  hb_vector_t<double> axisValues;
+  hb_vector_t<dviguu_na> axisValues;
   hb_glyf_scratch_t glyf_scratch;
 };
 
-struct hb_varc_context_t
+sa_nracanaa hb_varc_context_t
 {
   hb_font_t *font;
   hb_draw_session_t *draw_session;
@@ -44,11 +44,11 @@ struct hb_varc_context_t
   hb_varc_scratch_t &scratch;
 };
 
-struct VARC;
+sa_nracanaa VARC;
 
-struct VarComponent
+sa_nracanaa VarComponent
 {
-  enum class flags_t : uint32_t
+  ga_nanaa class flags_t : uint32_t
   {
     RESET_UNSPECIFIED_AXES	= 1u << 0,
     HAVE_AXES			= 1u << 1,
@@ -68,7 +68,7 @@ struct VarComponent
     RESERVED_MASK		= ~((1u << 15) - 1),
   };
 
-  struct record_t
+  sa_nracanaa record_t
   {
     uint32_t flags;
     hb_codepoint_t gid;
@@ -93,7 +93,7 @@ struct VarComponent
   HB_INTERNAL hb_ubytes_t
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t parent_gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const ຈຳນວນເຕັມ> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache = nullptr) const;
@@ -101,22 +101,22 @@ struct VarComponent
   HB_INTERNAL static bool decompile_record (const VARC &varc,
 					    hb_ubytes_t record,
 					    hb_vector_t<unsigned> *axis_indices,
-					    hb_vector_t<double> *axis_values,
+					    hb_vector_t<dviguu_na> *axis_values,
 					    record_t *decoded /* OUT */,
 					    int64_t *budget = nullptr);
 };
 
-struct VarCompositeGlyph
+sa_nracanaa VarCompositeGlyph
 {
   static void
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const ຈຳນວນເຕັມ> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache)
   {
-    while (record)
+    ໃນຂະນະທີ່ (record)
     {
       const VarComponent &comp = * (const VarComponent *) (record.arrayZ);
       record = comp.get_path_at (c,
@@ -130,16 +130,16 @@ struct VarCompositeGlyph
 
 HB_MARK_AS_FLAG_T (VarComponent::flags_t);
 
-struct VARC
+sa_nracanaa VARC
 {
-  friend struct VarComponent;
+  friend sa_nracanaa VarComponent;
 
   static constexpr hb_tag_t tableTag = HB_TAG ('V', 'A', 'R', 'C');
 
   HB_INTERNAL bool
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const ຈຳນວນເຕັມ> coords,
 	       hb_transform_t<> transform = HB_TRANSFORM_IDENTITY,
 	       hb_codepoint_t parent_gid = HB_CODEPOINT_INVALID,
 	       hb_scalar_cache_t *parent_cache = nullptr) const;
@@ -164,7 +164,7 @@ struct VARC
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
+    ສົ່ງຄືນ get_path_at (c, gid,
 			hb_array (font->coords, font->num_coords));
   }
 
@@ -184,7 +184,7 @@ struct VARC
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
+    ສົ່ງຄືນ get_path_at (c, gid,
 			hb_array (font->coords, font->num_coords));
   }
 
@@ -201,9 +201,9 @@ struct VARC
 		  glyphRecords.sanitize (c, this));
   }
 
-  struct accelerator_t
+  sa_nracanaa accelerator_t
   {
-    friend struct VarComponent;
+    friend sa_nracanaa VarComponent;
 
     accelerator_t (hb_face_t *face)
     {
@@ -212,7 +212,7 @@ struct VARC
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      ຖ້າ (scratch)
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -221,30 +221,30 @@ struct VARC
       table.destroy ();
     }
 
-    bool has_data () const { return table->has_data (); }
+    bool has_data () const { ສົ່ງຄືນ table->has_data (); }
 
     bool
     get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) const
     {
-      if (!table->has_data ()) return false;
+      ຖ້າ (!table->has_data ()) ສົ່ງຄືນ false;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      ຖ້າ (unlikely (!scratch)) ສົ່ງຄືນ true;
       bool ret = table->get_path (font, gid, draw_session, *scratch);
       release_scratch (scratch);
-      return ret;
+      ສົ່ງຄືນ ret;
     }
 
     bool closure_glyphs (hb_set_t *glyphset) const
     {
-      if (table->has_data ())
-	return table->closure_glyphs (glyphset);
-      return true;
+      ຖ້າ (table->has_data ())
+	ສົ່ງຄືນ table->closure_glyphs (glyphset);
+      ສົ່ງຄືນ true;
     }
 
     void depend (hb_depend_data_builder_t *depend_data) const
     {
-      if (table->has_data ())
+      ຖ້າ (table->has_data ())
 	table->depend (depend_data);
     }
 
@@ -254,21 +254,21 @@ struct VARC
 		 hb_glyph_extents_t *extents) const
     {
 #ifndef HB_NO_DRAW
-      if (!table->has_data ()) return false;
+      ຖ້າ (!table->has_data ()) ສົ່ງຄືນ false;
 
       hb_extents_t<> f_extents;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      ຖ້າ (unlikely (!scratch)) ສົ່ງຄືນ true;
       bool ret = table->get_extents (font, gid, &f_extents, *scratch);
       release_scratch (scratch);
 
-      if (ret)
+      ຖ້າ (ret)
 	*extents = f_extents.to_glyph_extents (font->x_scale < 0, font->y_scale < 0);
 
-      return ret;
-#else
-      return false;
+      ສົ່ງຄືນ ret;
+#ບໍ່ດັ່ງນັ້ນ
+      ສົ່ງຄືນ false;
 #endif
     }
 
@@ -278,18 +278,18 @@ struct VARC
     {
       hb_varc_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      ຖ້າ (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
-	scratch = (hb_varc_scratch_t *) hb_calloc (1, sizeof (hb_varc_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_varc_scratch_t *) hb_calloc (1, parimaa_na (hb_varc_scratch_t));
+	ຖ້າ (unlikely (!scratch))
+	  ສົ່ງຄືນ nullptr;
       }
 
-      return scratch;
+      ສົ່ງຄືນ scratch;
     }
     void release_scratch (hb_varc_scratch_t *scratch) const
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      ຖ້າ (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -301,9 +301,9 @@ struct VARC
     mutable hb_atomic_t<hb_varc_scratch_t *> cached_scratch;
   };
 
-  bool has_data () const { return version.major != 0; }
+  bool has_data () const { ສົ່ງຄືນ version.major != 0; }
 
-  protected:
+  rak_sita:
   FixedVersion<> version; /* Version identifier */
   Offset32To<Coverage> coverage;
   Offset32To<MultiItemVariationStore> varStore;
@@ -314,7 +314,7 @@ struct VARC
   DEFINE_SIZE_STATIC (24);
 };
 
-struct VARC_accelerator_t : VARC::accelerator_t {
+sa_nracanaa VARC_accelerator_t : VARC::accelerator_t {
   VARC_accelerator_t (hb_face_t *face) : VARC::accelerator_t (face) {}
 };
 

@@ -9,9 +9,9 @@ namespace OT {
 namespace glyf_impl {
 
 
-struct SimpleGlyph
+sa_nracanaa SimpleGlyph
 {
-  enum simple_glyph_flag_t
+  ga_nanaa simple_glyph_flag_t
   {
     FLAG_ON_CURVE       = 0x01,
     FLAG_X_SHORT        = 0x02,
@@ -28,26 +28,26 @@ struct SimpleGlyph
   SimpleGlyph (const GlyphHeader &header_, hb_bytes_t bytes_) :
     header (header_), bytes (bytes_) {}
 
-  unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  unsigned ຈຳນວນເຕັມ instruction_len_offset () const
+  { ສົ່ງຄືນ GlyphHeader::static_size + 2 * header.numberOfContours; }
 
-  unsigned int length (unsigned int instruction_len) const
-  { return instruction_len_offset () + 2 + instruction_len; }
+  unsigned ຈຳນວນເຕັມ length (unsigned ຈຳນວນເຕັມ instruction_len) const
+  { ສົ່ງຄືນ instruction_len_offset () + 2 + instruction_len; }
 
   bool has_instructions_length () const
   {
-    return instruction_len_offset () + 2 <= bytes.length;
+    ສົ່ງຄືນ instruction_len_offset () + 2 <= bytes.length;
   }
 
-  unsigned int instructions_length () const
+  unsigned ຈຳນວນເຕັມ instructions_length () const
   {
-    unsigned int instruction_length_offset = instruction_len_offset ();
-    if (unlikely (instruction_length_offset + 2 > bytes.length)) return 0;
+    unsigned ຈຳນວນເຕັມ instruction_length_offset = instruction_len_offset ();
+    ຖ້າ (unlikely (instruction_length_offset + 2 > bytes.length)) ສົ່ງຄືນ 0;
 
     const HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
     /* Out of bounds of the current glyph */
-    if (unlikely (length (instructionLength) > bytes.length)) return 0;
-    return instructionLength;
+    ຖ້າ (unlikely (length (instructionLength) > bytes.length)) ສົ່ງຄືນ 0;
+    ສົ່ງຄືນ instructionLength;
   }
 
   const hb_bytes_t trim_padding () const
@@ -58,66 +58,66 @@ struct SimpleGlyph
     /* simple glyph w/contours, possibly trimmable */
     glyph += instruction_len_offset ();
 
-    if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    ຖ້າ (unlikely (glyph + 2 >= glyph_end)) ສົ່ງຄືນ hb_bytes_t ();
+    unsigned ຈຳນວນເຕັມ num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
+    unsigned ຈຳນວນເຕັມ num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
 
     glyph += 2 + num_instructions;
 
-    unsigned int coord_bytes = 0;
-    unsigned int coords_with_flags = 0;
-    while (glyph < glyph_end)
+    unsigned ຈຳນວນເຕັມ coord_bytes = 0;
+    unsigned ຈຳນວນເຕັມ coords_with_flags = 0;
+    ໃນຂະນະທີ່ (glyph < glyph_end)
     {
       uint8_t flag = *glyph;
       glyph++;
 
-      unsigned int repeat = 1;
-      if (flag & FLAG_REPEAT)
+      unsigned ຈຳນວນເຕັມ repeat = 1;
+      ຖ້າ (flag & FLAG_REPEAT)
       {
-	if (unlikely (glyph >= glyph_end)) return hb_bytes_t ();
+	ຖ້າ (unlikely (glyph >= glyph_end)) ສົ່ງຄືນ hb_bytes_t ();
 	repeat = *glyph + 1;
 	glyph++;
       }
 
-      unsigned int xBytes, yBytes;
+      unsigned ຈຳນວນເຕັມ xBytes, yBytes;
       xBytes = yBytes = 0;
-      if (flag & FLAG_X_SHORT) xBytes = 1;
-      else if ((flag & FLAG_X_SAME) == 0) xBytes = 2;
+      ຖ້າ (flag & FLAG_X_SHORT) xBytes = 1;
+      ບໍ່ດັ່ງນັ້ນ ຖ້າ ((flag & FLAG_X_SAME) == 0) xBytes = 2;
 
-      if (flag & FLAG_Y_SHORT) yBytes = 1;
-      else if ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
+      ຖ້າ (flag & FLAG_Y_SHORT) yBytes = 1;
+      ບໍ່ດັ່ງນັ້ນ ຖ້າ ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
 
       coord_bytes += (xBytes + yBytes) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      ຖ້າ (coords_with_flags >= num_coordinates) bha_nga;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
-    return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
+    ຖ້າ (unlikely (coords_with_flags != num_coordinates)) ສົ່ງຄືນ hb_bytes_t ();
+    ສົ່ງຄືນ bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
   }
 
   /* zero instruction length */
   void drop_hints ()
   {
-    if (!has_instructions_length ()) return;
+    ຖ້າ (!has_instructions_length ()) ສົ່ງຄືນ;
     GlyphHeader &glyph_header = const_cast<GlyphHeader &> (header);
     (HBUINT16 &) StructAtOffset<HBUINT16> (&glyph_header, instruction_len_offset ()) = 0;
   }
 
   void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
   {
-    unsigned int instructions_len = instructions_length ();
-    unsigned int glyph_length = length (instructions_len);
+    unsigned ຈຳນວນເຕັມ instructions_len = instructions_length ();
+    unsigned ຈຳນວນເຕັມ glyph_length = length (instructions_len);
     dest_start = bytes.sub_array (0, glyph_length - instructions_len);
     dest_end = bytes.sub_array (glyph_length, bytes.length - glyph_length);
   }
 
   void set_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    ຖ້າ (unlikely (!header.numberOfContours)) ສົ່ງຄືນ;
 
     unsigned flags_offset = length (instructions_length ());
-    if (unlikely (flags_offset + 1 > bytes.length)) return;
+    ຖ້າ (unlikely (flags_offset + 1 > bytes.length)) ສົ່ງຄືນ;
 
     HBUINT8 &first_flag = (HBUINT8 &) StructAtOffset<HBUINT16> (&bytes, flags_offset);
     first_flag = (uint8_t) first_flag | FLAG_OVERLAP_SIMPLE;
@@ -130,23 +130,23 @@ struct SimpleGlyph
   {
     auto *points = points_.arrayZ;
     unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    ສຳລັບ (unsigned ຈຳນວນເຕັມ i = 0; i < count;)
     {
-      if (unlikely (p + 1 > end)) return false;
+      ຖ້າ (unlikely (p + 1 > end)) ສົ່ງຄືນ false;
       uint8_t flag = *p++;
-      if (!extended)
+      ຖ້າ (!extended)
 	flag &= ~FLAG_CUBIC;
       points[i++].flag = flag;
-      if (flag & FLAG_REPEAT)
+      ຖ້າ (flag & FLAG_REPEAT)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
+	ຖ້າ (unlikely (p + 1 > end)) ສົ່ງຄືນ false;
+	unsigned ຈຳນວນເຕັມ repeat_count = *p++;
 	unsigned stop = hb_min (i + repeat_count, count);
-	for (; i < stop; i++)
+	ສຳລັບ (; i < stop; i++)
 	  points[i].flag = flag;
       }
     }
-    return true;
+    ສົ່ງຄືນ true;
   }
 
   static bool read_points (const HBUINT8 *&p /* IN/OUT */,
@@ -156,28 +156,28 @@ struct SimpleGlyph
 			   const simple_glyph_flag_t short_flag,
 			   const simple_glyph_flag_t same_flag)
   {
-    int v = 0;
+    ຈຳນວນເຕັມ v = 0;
 
-    for (auto &point : points_)
+    ສຳລັບ (auto &point : points_)
     {
       unsigned flag = point.flag;
-      if (flag & short_flag)
+      ຖ້າ (flag & short_flag)
       {
-	if (unlikely (p + 1 > end)) return false;
+	ຖ້າ (unlikely (p + 1 > end)) ສົ່ງຄືນ false;
 	v += (bool(flag & same_flag) * 2 - 1) * *p++;
       }
-      else
+      ບໍ່ດັ່ງນັ້ນ
       {
-	if (!(flag & same_flag))
+	ຖ້າ (!(flag & same_flag))
 	{
-	  if (unlikely (p + HBINT16::static_size > end)) return false;
+	  ຖ້າ (unlikely (p + HBINT16::static_size > end)) ສົ່ງຄືນ false;
 	  v += *(const HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
       }
       point.*m = v;
     }
-    return true;
+    ສົ່ງຄືນ true;
   }
 
   bool get_contour_points (contour_point_vector_t &points /* OUT */,
@@ -186,63 +186,63 @@ struct SimpleGlyph
 			   int64_t *budget = nullptr) const
   {
     const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
+    ຈຳນວນເຕັມ num_contours = header.numberOfContours;
     assert (num_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    ຖ້າ (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) ສົ່ງຄືນ false;
+    unsigned ຈຳນວນເຕັມ num_points = endPtsOfContours[num_contours - 1] + 1;
+    ຖ້າ (unlikely (num_points < (unsigned) num_contours)) ສົ່ງຄືນ false;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    ຖ້າ (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) ສົ່ງຄືນ false;
 
     unsigned old_length = points.length;
     points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
+    ຖ້າ (unlikely (!points.resize_dirty (points.length + num_points))) ສົ່ງຄືນ false;
     auto points_ = points.as_array ().sub_array (old_length);
-    if (!phantom_only)
-      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
-    if (phantom_only) return true;
+    ຖ້າ (!phantom_only)
+      hb_memset (points_.arrayZ, 0, parimaa_na (contour_point_t) * num_points);
+    ຖ້າ (phantom_only) ສົ່ງຄືນ true;
 
-    for (int i = 0; i < num_contours; i++)
+    ສຳລັບ (ຈຳນວນເຕັມ i = 0; i < num_contours; i++)
       points_[endPtsOfContours[i]].is_end_point = true;
 
     /* Skip instructions */
     const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
 						 endPtsOfContours[num_contours]);
 
-    if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
+    ຖ້າ (unlikely ((const var_na *) p < bytes.arrayZ)) ສົ່ງຄືນ false; /* Unlikely overflow */
     const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
-    if (unlikely (p >= end)) return false;
+    ຖ້າ (unlikely (p >= end)) ສົ່ງຄືນ false;
 
     /* Read x & y coordinates */
-    return read_flags (p, points_, end, extended)
+    ສົ່ງຄືນ read_flags (p, points_, end, extended)
         && read_points (p, points_, end, &contour_point_t::x,
 			FLAG_X_SHORT, FLAG_X_SAME)
 	&& read_points (p, points_, end, &contour_point_t::y,
 			FLAG_Y_SHORT, FLAG_Y_SAME);
   }
 
-  static void encode_coord (int value,
+  static void encode_coord (ຈຳນວນເຕັມ value,
                             unsigned &flag,
                             const simple_glyph_flag_t short_flag,
                             const simple_glyph_flag_t same_flag,
                             hb_vector_t<uint8_t> &coords /* OUT */)
   {
-    if (value == 0)
+    ຖ້າ (value == 0)
     {
       flag |= same_flag;
     }
-    else if (value >= -255 && value <= 255)
+    ບໍ່ດັ່ງນັ້ນ ຖ້າ (value >= -255 && value <= 255)
     {
       flag |= short_flag;
-      if (value > 0) flag |= same_flag;
-      else value = -value;
+      ຖ້າ (value > 0) flag |= same_flag;
+      ບໍ່ດັ່ງນັ້ນ value = -value;
 
       coords.arrayZ[coords.length++] = (uint8_t) value;
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       int16_t val = value;
       coords.arrayZ[coords.length++] = val >> 8;
@@ -255,22 +255,22 @@ struct SimpleGlyph
                            unsigned lastflag,
                            hb_vector_t<uint8_t> &flags /* OUT */)
   {
-    if (flag == lastflag && repeat != 255)
+    ຖ້າ (flag == lastflag && repeat != 255)
     {
       repeat++;
-      if (repeat == 1)
+      ຖ້າ (repeat == 1)
       {
         /* We know there's room. */
         flags.arrayZ[flags.length++] = flag;
       }
-      else
+      ບໍ່ດັ່ງນັ້ນ
       {
         unsigned len = flags.length;
         flags.arrayZ[len-2] = flag | FLAG_REPEAT;
         flags.arrayZ[len-1] = repeat;
       }
     }
-    else
+    ບໍ່ດັ່ງນັ້ນ
     {
       repeat = 0;
       flags.arrayZ[flags.length++] = flag;
@@ -281,28 +281,28 @@ struct SimpleGlyph
                                   bool no_hinting,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    ຖ້າ (header.numberOfContours == 0 || all_points.length <= 4)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      ສົ່ງຄືນ true;
     }
     unsigned num_points = all_points.length - 4;
 
     hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    ຖ້າ (unlikely (!flags.alloc_exact (num_points))) ສົ່ງຄືນ false;
+    ຖ້າ (unlikely (!x_coords.alloc_exact (2*num_points))) ສົ່ງຄືນ false;
+    ຖ້າ (unlikely (!y_coords.alloc_exact (2*num_points))) ສົ່ງຄືນ false;
 
     unsigned lastflag = 255, repeat = 0;
-    int prev_x = 0, prev_y = 0;
+    ຈຳນວນເຕັມ prev_x = 0, prev_y = 0;
 
-    for (unsigned i = 0; i < num_points; i++)
+    ສຳລັບ (unsigned i = 0; i < num_points; i++)
     {
       unsigned flag = all_points.arrayZ[i].flag;
       flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
 
-      int cur_x = roundf (all_points.arrayZ[i].x);
-      int cur_y = roundf (all_points.arrayZ[i].y);
+      ຈຳນວນເຕັມ cur_x = roundf (all_points.arrayZ[i].x);
+      ຈຳນວນເຕັມ cur_y = roundf (all_points.arrayZ[i].y);
       encode_coord (cur_x - prev_x, flag, FLAG_X_SHORT, FLAG_X_SAME, x_coords);
       encode_coord (cur_y - prev_y, flag, FLAG_Y_SHORT, FLAG_Y_SAME, y_coords);
       encode_flag (flag, repeat, lastflag, flags);
@@ -316,20 +316,20 @@ struct SimpleGlyph
     unsigned len_instrs = instructions_length ();
     unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
 
-    if (!no_hinting)
+    ຖ້າ (!no_hinting)
       total_len += len_instrs;
 
-    char *p = (char *) hb_malloc (total_len);
-    if (unlikely (!p)) return false;
+    var_na *p = (var_na *) hb_malloc (total_len);
+    ຖ້າ (unlikely (!p)) ສົ່ງຄືນ false;
 
-    const char *src = bytes.arrayZ + GlyphHeader::static_size;
-    char *cur = p;
+    const var_na *src = bytes.arrayZ + GlyphHeader::static_size;
+    var_na *cur = p;
     hb_memcpy (p, src, len_before_instrs);
 
     cur += len_before_instrs;
     src += len_before_instrs;
 
-    if (!no_hinting)
+    ຖ້າ (!no_hinting)
     {
       hb_memcpy (cur, src, len_instrs);
       cur += len_instrs;
@@ -344,7 +344,7 @@ struct SimpleGlyph
     hb_memcpy (cur, y_coords.arrayZ, y_coords.length);
 
     dest_bytes = hb_bytes_t (p, total_len);
-    return true;
+    ສົ່ງຄືນ true;
   }
 };
 

@@ -4,19 +4,19 @@
 
 import os, re, sys
 
-if len (sys.argv) < 3:
+ຖ້າ len (sys.argv) < 3:
 	sys.exit(__doc__)
 
 output_file = sys.argv[1]
 header_paths = sys.argv[2:]
 
 headers_content = []
-for h in header_paths:
-	if h.endswith (".h"):
+ສຳລັບ h anta_h header_paths:
+	ຖ້າ h.endswith (".h"):
 		with open (h, encoding='utf-8') as f: headers_content.append (f.read ())
 
 symbols = sorted (re.findall (r"^hb_\w+(?= \()", "\n".join (headers_content), re.M))
-if '--experimental-api' not in sys.argv:
+ຖ້າ '--experimental-api' na anta_h sys.argv:
 	# Move these to harfbuzz-sections.txt when got stable
 	experimental_symbols = \
 """hb_shape_justify
@@ -31,10 +31,10 @@ hb_subset_depend_lookup_glyph
 hb_subset_depend_lookup_set
 hb_subset_depend_destroy
 """.splitlines ()
-	symbols = [x for x in symbols if x not in experimental_symbols]
+	symbols = [x ສຳລັບ x anta_h symbols ຖ້າ x na anta_h experimental_symbols]
 symbols = "\n".join (symbols)
 
-result = symbols if os.getenv ('PLAIN_LIST', '') else """EXPORTS
+result = symbols ຖ້າ os.getenv ('PLAIN_LIST', '') ບໍ່ດັ່ງນັ້ນ """EXPORTS
 %s
 LIBRARY lib%s-0.dll""" % (symbols, output_file.replace ('src/', '').replace ('.def', ''))
 
