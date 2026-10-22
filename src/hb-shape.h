@@ -26,49 +26,49 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#यदि !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_SHAPE_H
 #define HB_SHAPE_H
 
-#include "hb-common.h"
-#include "hb-buffer.h"
-#include "hb-font.h"
+#अन्तर्भाव "hb-common.h"
+#अन्तर्भाव "hb-buffer.h"
+#अन्तर्भाव "hb-font.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  ध्रुव hb_feature_t  *features,
+	  unsigned पूर्णाङ्क         अंक_features);
 
 HB_EXTERN hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+	       ध्रुव hb_feature_t *features,
+	       unsigned पूर्णाङ्क        अंक_features,
+	       ध्रुव वर्ण * ध्रुव *shaper_list);
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  ध्रुव hb_feature_t *features,
+		  unsigned पूर्णाङ्क        अंक_features,
+		  ध्रुव वर्ण * ध्रुव *shaper_list,
+		  भिन्न               min_target_advance,
+		  भिन्न               max_target_advance,
+		  भिन्न              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */);
+		  भिन्न              *var_मूल्य /* OUT */);
 #endif
 
-HB_EXTERN const char **
-hb_shape_list_shapers (void);
+HB_EXTERN ध्रुव वर्ण **
+hb_shape_list_shapers (शून्य);
 
 
 HB_END_DECLS
