@@ -23,12 +23,12 @@
  *
  */
 
-#include "hb.hh"
-#include "hb-geometry.hh"
+#ضمن "hb.hh"
+#ضمن "hb-geometry.hh"
 
 
-int
-main (int argc HB_UNUSED, char **argv HB_UNUSED)
+صحيح
+main (صحيح argc HB_UNUSED, حرف **argv HB_UNUSED)
 {
   {
     hb_extents_t<> extents (-0x1p31f, 0.f, 427.f, 1.f);
@@ -47,13 +47,13 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
       1,
       -3
     };
-    hb_extents_t<double> extents (glyph_extents);
+    hb_extents_t<مزدوج> extents (glyph_extents);
 
-    hb_always_assert (extents.xmin == (double) hb_int_max (hb_position_t));
-    hb_always_assert (extents.xmax == (double) hb_int_max (hb_position_t) + 1);
+    hb_always_assert (extents.xmin == (مزدوج) hb_int_max (hb_position_t));
+    hb_always_assert (extents.xmax == (مزدوج) hb_int_max (hb_position_t) + 1);
     hb_always_assert (extents.ymin == 4);
     hb_always_assert (extents.ymax == 7);
   }
 
-  return 0;
+  ܦܢܐ 0;
 }

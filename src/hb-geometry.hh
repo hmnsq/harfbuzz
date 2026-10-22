@@ -24,23 +24,23 @@
 #ifndef HB_GEOMETRY_HH
 #define HB_GEOMETRY_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-algs.hh"
+#ضمن "hb-algs.hh"
 
-#include <cmath>
+#ضمن <cmath>
 
 
-template <typename Float = float>
-struct hb_extents_t
+template <typename Float = عائم>
+بنية hb_extents_t
 {
   hb_extents_t () {}
-  hb_extents_t (const hb_glyph_extents_t &extents)
+  hb_extents_t (ثابت hb_glyph_extents_t &extents)
   {
-    double x0 = (double) extents.x_bearing;
-    double y0 = (double) extents.y_bearing;
-    double x1 = x0 + (double) extents.width;
-    double y1 = y0 + (double) extents.height;
+    مزدوج x0 = (مزدوج) extents.x_bearing;
+    مزدوج y0 = (مزدوج) extents.y_bearing;
+    مزدوج x1 = x0 + (مزدوج) extents.width;
+    مزدوج y1 = y0 + (مزدوج) extents.height;
 
     xmin = (Float) hb_min (x0, x1);
     ymin = (Float) hb_min (y0, y1);
@@ -50,16 +50,16 @@ struct hb_extents_t
   hb_extents_t (Float xmin, Float ymin, Float xmax, Float ymax) :
     xmin (xmin), ymin (ymin), xmax (xmax), ymax (ymax) {}
 
-  bool is_empty () const { return xmin >= xmax || ymin >= ymax; }
-  bool is_void () const { return xmin > xmax; }
+  منطقي is_empty () ثابت { ܦܢܐ xmin >= xmax || ymin >= ymax; }
+  منطقي is_void () ثابت { ܦܢܐ xmin > xmax; }
 
-  void union_ (const hb_extents_t &o)
+  فراغ union_ (ثابت hb_extents_t &o)
   {
-    if (o.is_empty ()) return;
-    if (is_empty ())
+    ܐܢ (o.is_empty ()) ܦܢܐ;
+    ܐܢ (is_empty ())
     {
-      *this = o;
-      return;
+      *هذا = o;
+      ܦܢܐ;
     }
     xmin = hb_min (xmin, o.xmin);
     ymin = hb_min (ymin, o.ymin);
@@ -67,12 +67,12 @@ struct hb_extents_t
     ymax = hb_max (ymax, o.ymax);
   }
 
-  void intersect (const hb_extents_t &o)
+  فراغ intersect (ثابت hb_extents_t &o)
   {
-    if (o.is_empty () || is_empty ())
+    ܐܢ (o.is_empty () || is_empty ())
     {
-      *this = hb_extents_t {};
-      return;
+      *هذا = hb_extents_t {};
+      ܦܢܐ;
     }
     xmin = hb_max (xmin, o.xmin);
     ymin = hb_max (ymin, o.ymin);
@@ -80,15 +80,15 @@ struct hb_extents_t
     ymax = hb_min (ymax, o.ymax);
   }
 
-  void
+  فراغ
   add_point (Float x, Float y)
   {
-    if (unlikely (is_void ()))
+    ܐܢ (unlikely (is_void ()))
     {
       xmin = xmax = x;
       ymin = ymax = y;
     }
-    else
+    ܐܚܪܢܐ
     {
       xmin = hb_min (xmin, x);
       ymin = hb_min (ymin, y);
@@ -97,20 +97,20 @@ struct hb_extents_t
     }
   }
 
-  hb_glyph_extents_t to_glyph_extents (bool xneg = false, bool yneg = false) const
+  hb_glyph_extents_t to_glyph_extents (منطقي xneg = ܕܓܠܐ, منطقي yneg = ܕܓܠܐ) ثابت
   {
-    double x0 = round ((double) xmin);
-    double y0 = round ((double) ymin);
-    double x1 = round ((double) xmax);
-    double y1 = round ((double) ymax);
+    مزدوج x0 = round ((مزدوج) xmin);
+    مزدوج y0 = round ((مزدوج) ymin);
+    مزدوج x1 = round ((مزدوج) xmax);
+    مزدوج y1 = round ((مزدوج) ymax);
 
-    if (unlikely (!std::isfinite (x0) ||
+    ܐܢ (unlikely (!std::isfinite (x0) ||
 		  !std::isfinite (y0) ||
 		  !std::isfinite (x1) ||
 		  !std::isfinite (y1)))
-      return hb_glyph_extents_t {0, 0, 0, 0};
+      ܦܢܐ hb_glyph_extents_t {0, 0, 0, 0};
 
-    return hb_glyph_extents_t {
+    ܦܢܐ hb_glyph_extents_t {
       clamp_to_hb_position (xneg ? x1 : x0),
       clamp_to_hb_position (yneg ? y0 : y1),
       clamp_to_hb_position (xneg ? x0 - x1 : x1 - x0),
@@ -123,17 +123,17 @@ struct hb_extents_t
   Float xmax = -1;
   Float ymax = -1;
 
-  static hb_position_t
-  clamp_to_hb_position (double v)
+  ساكن hb_position_t
+  clamp_to_hb_position (مزدوج v)
   {
-    return (hb_position_t) hb_clamp (v,
-				     (double) hb_int_min (hb_position_t),
-				     (double) hb_int_max (hb_position_t));
+    ܦܢܐ (hb_position_t) hb_clamp (v,
+				     (مزدوج) hb_int_min (hb_position_t),
+				     (مزدوج) hb_int_max (hb_position_t));
   }
 };
 
-template <typename Float = float>
-struct hb_transform_t
+template <typename Float = عائم>
+بنية hb_transform_t
 {
   hb_transform_t () {}
   hb_transform_t (Float xx, Float yx,
@@ -141,24 +141,24 @@ struct hb_transform_t
 		  Float x0, Float y0) :
     xx (xx), yx (yx), xy (xy), yy (yy), x0 (x0), y0 (y0) {}
 
-  bool is_identity () const
+  منطقي is_identity () ثابت
   {
-    return xx == 1 && yx == 0 &&
+    ܦܢܐ xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1 &&
 	   x0 == 0 && y0 == 0;
   }
-  bool is_translation () const
+  منطقي is_translation () ثابت
   {
-    return xx == 1 && yx == 0 &&
+    ܦܢܐ xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1;
   }
 
-  void multiply (const hb_transform_t &o, bool before=false)
+  فراغ multiply (ثابت hb_transform_t &o, منطقي before=ܕܓܠܐ)
   {
     // Copied from cairo-matrix.c
-    const hb_transform_t &a = before ? o : *this;
-    const hb_transform_t &b = before ? *this : o;
-    *this = {
+    ثابت hb_transform_t &a = before ? o : *هذا;
+    ثابت hb_transform_t &b = before ? *هذا : o;
+    *هذا = {
       a.xx * b.xx + a.xy * b.yx,
       a.yx * b.xx + a.yy * b.yx,
       a.xx * b.xy + a.xy * b.yy,
@@ -169,7 +169,7 @@ struct hb_transform_t
   }
 
   HB_ALWAYS_INLINE
-  void transform_distance (Float &dx, Float &dy) const
+  فراغ transform_distance (Float &dx, Float &dy) ثابت
   {
     Float new_x = xx * dx + xy * dy;
     Float new_y = yx * dx + yy * dy;
@@ -178,7 +178,7 @@ struct hb_transform_t
   }
 
   HB_ALWAYS_INLINE
-  void transform_point (Float &x, Float &y) const
+  فراغ transform_point (Float &x, Float &y) ثابت
   {
     Float new_x = x0 + xx * x + xy * y;
     Float new_y = y0 + yx * x + yy * y;
@@ -186,7 +186,7 @@ struct hb_transform_t
     y = new_y;
   }
 
-  void transform_extents (hb_extents_t<Float> &extents) const
+  فراغ transform_extents (hb_extents_t<Float> &extents) ثابت
   {
     Float quad_x[4], quad_y[4];
 
@@ -200,123 +200,123 @@ struct hb_transform_t
     quad_y[3] = extents.ymax;
 
     extents = hb_extents_t<Float> {};
-    for (unsigned i = 0; i < 4; i++)
+    لكل (unsigned i = 0; i < 4; i++)
     {
       transform_point (quad_x[i], quad_y[i]);
       extents.add_point (quad_x[i], quad_y[i]);
     }
   }
 
-  void transform (const hb_transform_t &o, bool before=false) { multiply (o, before); }
+  فراغ transform (ثابت hb_transform_t &o, منطقي before=ܕܓܠܐ) { multiply (o, before); }
 
-  static hb_transform_t translation (Float x, Float y)
+  ساكن hb_transform_t translation (Float x, Float y)
   {
-    return {1, 0, 0, 1, x, y};
+    ܦܢܐ {1, 0, 0, 1, x, y};
   }
-  void translate (Float x, Float y, bool before=false)
+  فراغ translate (Float x, Float y, منطقي before=ܕܓܠܐ)
   {
-    if (before)
+    ܐܢ (before)
     {
       x0 += x;
       y0 += y;
     }
-    else
+    ܐܚܪܢܐ
     {
-      if (x == 0 && y == 0)
-	return;
+      ܐܢ (x == 0 && y == 0)
+	ܦܢܐ;
 
       x0 += xx * x + xy * y;
       y0 += yx * x + yy * y;
     }
   }
 
-  static hb_transform_t scaling (Float scaleX, Float scaleY)
+  ساكن hb_transform_t scaling (Float scaleX, Float scaleY)
   {
-    return {scaleX, 0, 0, scaleY, 0, 0};
+    ܦܢܐ {scaleX, 0, 0, scaleY, 0, 0};
   }
-  void scale (Float scaleX, Float scaleY)
+  فراغ scale (Float scaleX, Float scaleY)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    ܐܢ (scaleX == 1 && scaleY == 1)
+      ܦܢܐ;
 
     xx *= scaleX;
     yx *= scaleX;
     xy *= scaleY;
     yy *= scaleY;
   }
-  static hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
+  ساكن hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    return {scaleX, 0, 0, scaleY,
+    ܦܢܐ {scaleX, 0, 0, scaleY,
 	    center_x ? (1 - scaleX) * center_x : 0,
 	    center_y ? (1 - scaleY) * center_y : 0};
   }
-  void scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
+  فراغ scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    ܐܢ (scaleX == 1 && scaleY == 1)
+      ܦܢܐ;
 
     transform (scaling_around_center (scaleX, scaleY, center_x, center_y));
   }
 
-  static hb_transform_t rotation (Float radians)
+  ساكن hb_transform_t rotation (Float radians)
   {
     // https://github.com/fonttools/fonttools/blob/f66ee05f71c8b57b5f519ee975e95edcd1466e14/Lib/fontTools/misc/transform.py#L240
     Float c;
     Float s;
     hb_sincos (radians, s, c);
-    return {c, s, -s, c, 0, 0};
+    ܦܢܐ {c, s, -s, c, 0, 0};
   }
-  void rotate (Float radians, bool before=false)
+  فراغ rotate (Float radians, منطقي before=ܕܓܠܐ)
   {
-    if (radians == 0)
-      return;
+    ܐܢ (radians == 0)
+      ܦܢܐ;
 
     transform (rotation (radians), before);
   }
 
-  static hb_transform_t rotation_around_center (Float radians, Float center_x, Float center_y)
+  ساكن hb_transform_t rotation_around_center (Float radians, Float center_x, Float center_y)
   {
     Float s, c;
     hb_sincos (radians, s, c);
-    return {
+    ܦܢܐ {
       c, s, -s, c,
       (1 - c) * center_x + s * center_y,
       -s * center_x +  (1 - c) * center_y
     };
   }
-  void rotate_around_center (Float radians, Float center_x, Float center_y, bool before=false)
+  فراغ rotate_around_center (Float radians, Float center_x, Float center_y, منطقي before=ܕܓܠܐ)
   {
-    if (radians == 0)
-      return;
+    ܐܢ (radians == 0)
+      ܦܢܐ;
 
     transform (rotation_around_center (radians, center_x, center_y), before);
   }
 
-  static hb_transform_t skewing (Float skewX, Float skewY)
+  ساكن hb_transform_t skewing (Float skewX, Float skewY)
   {
-    return {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
+    ܦܢܐ {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
   }
-  void skew (Float skewX, Float skewY)
+  فراغ skew (Float skewX, Float skewY)
   {
-    if (skewX == 0 && skewY == 0)
-      return;
+    ܐܢ (skewX == 0 && skewY == 0)
+      ܦܢܐ;
 
     transform (skewing (skewX, skewY));
   }
-  static hb_transform_t skewing_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
+  ساكن hb_transform_t skewing_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
     skewX = skewX ? tanf (skewX) : 0;
     skewY = skewY ? tanf (skewY) : 0;
-    return {
+    ܦܢܐ {
 	    1, skewY, skewX, 1,
 	    center_y ? -skewX * center_y : 0,
 	    center_x ? -skewY * center_x : 0
     };
   }
-  void skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
+  فراغ skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
-    if (skewX == 0 && skewY == 0)
-	    return;
+    ܐܢ (skewX == 0 && skewY == 0)
+	    ܦܢܐ;
 
     transform (skewing_around_center (skewX, skewY, center_x, center_y));
   }
@@ -331,44 +331,44 @@ struct hb_transform_t
 
 #define HB_TRANSFORM_IDENTITY {1, 0, 0, 1, 0, 0}
 
-template <typename Float = float>
-struct hb_bounds_t
+template <typename Float = عائم>
+بنية hb_bounds_t
 {
-  enum status_t {
+  تعداد status_t {
     UNBOUNDED,
     BOUNDED,
     EMPTY,
   };
 
   hb_bounds_t (status_t status = UNBOUNDED) : status (status) {}
-  hb_bounds_t (const hb_extents_t<Float> &extents) :
+  hb_bounds_t (ثابت hb_extents_t<Float> &extents) :
     status (extents.is_empty () ? EMPTY : BOUNDED), extents (extents) {}
 
-  void union_ (const hb_bounds_t &o)
+  فراغ union_ (ثابت hb_bounds_t &o)
   {
-    if (o.status == UNBOUNDED)
+    ܐܢ (o.status == UNBOUNDED)
       status = UNBOUNDED;
-    else if (o.status == BOUNDED)
+    ܐܚܪܢܐ ܐܢ (o.status == BOUNDED)
     {
-      if (status == EMPTY)
-	*this = o;
-      else if (status == BOUNDED)
+      ܐܢ (status == EMPTY)
+	*هذا = o;
+      ܐܚܪܢܐ ܐܢ (status == BOUNDED)
         extents.union_ (o.extents);
     }
   }
 
-  void intersect (const hb_bounds_t &o)
+  فراغ intersect (ثابت hb_bounds_t &o)
   {
-    if (o.status == EMPTY)
+    ܐܢ (o.status == EMPTY)
       status = EMPTY;
-    else if (o.status == BOUNDED)
+    ܐܚܪܢܐ ܐܢ (o.status == BOUNDED)
     {
-      if (status == UNBOUNDED)
-	*this = o;
-      else if (status == BOUNDED)
+      ܐܢ (status == UNBOUNDED)
+	*هذا = o;
+      ܐܚܪܢܐ ܐܢ (status == BOUNDED)
       {
         extents.intersect (o.extents);
-	if (extents.is_empty ())
+	ܐܢ (extents.is_empty ())
 	  status = EMPTY;
       }
     }
@@ -378,8 +378,8 @@ struct hb_bounds_t
   hb_extents_t<Float> extents;
 };
 
-template <typename Float = float>
-struct hb_transform_decomposed_t
+template <typename Float = عائم>
+بنية hb_transform_decomposed_t
 {
   Float translateX = 0;
   Float translateY = 0;
@@ -391,16 +391,16 @@ struct hb_transform_decomposed_t
   Float tCenterX = 0;
   Float tCenterY = 0;
 
-  operator bool () const
+  operator منطقي () ثابت
   {
-    return translateX || translateY ||
+    ܦܢܐ translateX || translateY ||
 	   rotation ||
 	   scaleX != 1 || scaleY != 1 ||
 	   skewX || skewY ||
 	   tCenterX || tCenterY;
   }
 
-  hb_transform_t<Float> to_transform () const
+  hb_transform_t<Float> to_transform () ثابت
   {
     hb_transform_t<Float> t;
     t.translate (translateX + tCenterX, translateY + tCenterY);
@@ -408,7 +408,7 @@ struct hb_transform_decomposed_t
     t.scale (scaleX, scaleY);
     t.skew (-skewX, skewY);
     t.translate (-tCenterX, -tCenterY);
-    return t;
+    ܦܢܐ t;
   }
 };
 

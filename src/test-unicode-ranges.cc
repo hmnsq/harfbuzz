@@ -24,13 +24,13 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb.hh"
-#include "hb-ot-os2-unicode-ranges.hh"
+#ضمن "hb.hh"
+#ضمن "hb-ot-os2-unicode-ranges.hh"
 
-static void
-test (hb_codepoint_t cp, unsigned int bit)
+ساكن فراغ
+test (hb_codepoint_t cp, unsigned صحيح bit)
 {
-  if (OT::_hb_ot_os2_get_unicode_range_bit (cp) != bit)
+  ܐܢ (OT::_hb_ot_os2_get_unicode_range_bit (cp) != bit)
   {
     fprintf (stderr, "got incorrect bit (%u) for cp 0x%X. Should have been %u.",
 	     OT::_hb_ot_os2_get_unicode_range_bit (cp),
@@ -40,7 +40,7 @@ test (hb_codepoint_t cp, unsigned int bit)
   }
 }
 
-static void
+ساكن فراغ
 test_get_unicode_range_bit ()
 {
   test (0x0000, 0);
@@ -58,9 +58,9 @@ test_get_unicode_range_bit ()
   test (0x110000, -1);
 }
 
-int
+صحيح
 main ()
 {
   test_get_unicode_range_bit ();
-  return 0;
+  ܦܢܐ 0;
 }

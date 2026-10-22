@@ -26,16 +26,16 @@
 #ifndef HB_NUMBER_HH
 #define HB_NUMBER_HH
 
-HB_INTERNAL bool
-hb_parse_int (const char **pp, const char *end, int *pv,
-	      bool whole_buffer = false);
+HB_INTERNAL منطقي
+hb_parse_int (ثابت حرف **pp, ثابت حرف *end, صحيح *pv,
+	      منطقي whole_buffer = ܕܓܠܐ);
 
-HB_INTERNAL bool
-hb_parse_uint (const char **pp, const char *end, unsigned int *pv,
-	       bool whole_buffer = false, int base = 10);
+HB_INTERNAL منطقي
+hb_parse_uint (ثابت حرف **pp, ثابت حرف *end, unsigned صحيح *pv,
+	       منطقي whole_buffer = ܕܓܠܐ, صحيح base = 10);
 
-HB_INTERNAL bool
-hb_parse_double (const char **pp, const char *end, double *pv,
-		 bool whole_buffer = false);
+HB_INTERNAL منطقي
+hb_parse_double (ثابت حرف **pp, ثابت حرف *end, مزدوج *pv,
+		 منطقي whole_buffer = ܕܓܠܐ);
 
 #endif /* HB_NUMBER_HH */

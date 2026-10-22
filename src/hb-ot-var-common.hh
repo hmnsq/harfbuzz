@@ -26,79 +26,79 @@
 #ifndef HB_OT_VAR_COMMON_HH
 #define HB_OT_VAR_COMMON_HH
 
-#include "hb-ot-layout-common.hh"
-#include "hb-alloc-pool.hh"
-#include "hb-priority-queue.hh"
-#include "hb-subset-instancer-iup.hh"
+#ضمن "hb-ot-layout-common.hh"
+#ضمن "hb-alloc-pool.hh"
+#ضمن "hb-priority-queue.hh"
+#ضمن "hb-subset-instancer-iup.hh"
 
 
-namespace OT {
+نطاق OT {
 
 using rebase_tent_result_scratch_t = hb_pair_t<rebase_tent_result_t, rebase_tent_result_t>;
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/otvarcommonformats#tuplevariationheader */
-struct TupleVariationHeader
+بنية TupleVariationHeader
 {
-  friend struct tuple_delta_t;
-  size_t get_size (unsigned axis_count_times_2) const
+  friend بنية tuple_delta_t;
+  size_t get_size (unsigned axis_count_times_2) ثابت
   {
     // This function is super hot in mega-var-fonts with hundreds of masters.
     unsigned ti = tupleIndex;
-    if (unlikely ((ti & (TupleIndex::EmbeddedPeakTuple | TupleIndex::IntermediateRegion))))
+    ܐܢ (unlikely ((ti & (TupleIndex::EmbeddedPeakTuple | TupleIndex::IntermediateRegion))))
     {
       unsigned count = ((ti & TupleIndex::EmbeddedPeakTuple) != 0) + ((ti & TupleIndex::IntermediateRegion) != 0) * 2;
-      return hb_unsigned_mul_add_saturate (count, axis_count_times_2, min_size);
+      ܦܢܐ hb_unsigned_mul_add_saturate (count, axis_count_times_2, min_size);
     }
-    return min_size;
+    ܦܢܐ min_size;
   }
 
-  unsigned get_data_size () const { return varDataSize; }
+  unsigned get_data_size () ثابت { ܦܢܐ varDataSize; }
 
-  const TupleVariationHeader &get_next (unsigned axis_count_times_2) const
-  { return StructAtOffset<TupleVariationHeader> (this, get_size (axis_count_times_2)); }
+  ثابت TupleVariationHeader &get_next (unsigned axis_count_times_2) ثابت
+  { ܦܢܐ StructAtOffset<TupleVariationHeader> (هذا, get_size (axis_count_times_2)); }
 
-  bool unpack_axis_tuples (unsigned axis_count,
-                           const hb_array_t<const F2DOT14> shared_tuples,
-                           const hb_map_t *axes_old_index_tag_map,
-                           hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) const
+  منطقي unpack_axis_tuples (unsigned axis_count,
+                           ثابت hb_array_t<ثابت F2DOT14> shared_tuples,
+                           ثابت hb_map_t *axes_old_index_tag_map,
+                           hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) ثابت
   {
-    const F2DOT14 *peak_tuple = nullptr;
-    if (has_peak ())
+    ثابت F2DOT14 *peak_tuple = nullptr;
+    ܐܢ (has_peak ())
       peak_tuple = get_peak_tuple (axis_count);
-    else
+    ܐܚܪܢܐ
     {
-      unsigned int index = get_index ();
-      if (unlikely ((index + 1) * axis_count > shared_tuples.length))
-        return false;
+      unsigned صحيح index = get_index ();
+      ܐܢ (unlikely ((index + 1) * axis_count > shared_tuples.length))
+        ܦܢܐ ܕܓܠܐ;
       peak_tuple = shared_tuples.sub_array (axis_count * index, axis_count).arrayZ;
     }
 
-    const F2DOT14 *start_tuple = nullptr;
-    const F2DOT14 *end_tuple = nullptr;
-    bool has_interm = has_intermediate ();
+    ثابت F2DOT14 *start_tuple = nullptr;
+    ثابت F2DOT14 *end_tuple = nullptr;
+    منطقي has_interm = has_intermediate ();
 
-    if (has_interm)
+    ܐܢ (has_interm)
     {
       start_tuple = get_start_tuple (axis_count);
       end_tuple = get_end_tuple (axis_count);
     }
 
-    for (unsigned i = 0; i < axis_count; i++)
+    لكل (unsigned i = 0; i < axis_count; i++)
     {
-      float peak = peak_tuple[i].to_float ();
-      if (peak == 0.f) continue;
+      عائم peak = peak_tuple[i].to_float ();
+      ܐܢ (peak == 0.f) استمر;
 
       hb_tag_t *axis_tag;
-      if (!axes_old_index_tag_map->has (i, &axis_tag))
-        return false;
+      ܐܢ (!axes_old_index_tag_map->has (i, &axis_tag))
+        ܦܢܐ ܕܓܠܐ;
 
-      float start, end;
-      if (has_interm)
+      عائم start, end;
+      ܐܢ (has_interm)
       {
         start = start_tuple[i].to_float ();
         end = end_tuple[i].to_float ();
       }
-      else
+      ܐܚܪܢܐ
       {
         start = hb_min (peak, 0.f);
         end = hb_max (peak, 0.f);
@@ -106,147 +106,147 @@ struct TupleVariationHeader
       axis_tuples.set (*axis_tag, Triple (start, peak, end));
     }
 
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
   HB_ALWAYS_INLINE
-  float calculate_scalar (hb_array_t<const int> coords, unsigned int coord_count,
-			   const hb_array_t<const F2DOT14> shared_tuples,
-			   hb_scalar_cache_t *shared_tuple_scalar_cache = (hb_scalar_cache_t *) &Null(hb_scalar_cache_t)) const
+  عائم calculate_scalar (hb_array_t<ثابت صحيح> coords, unsigned صحيح coord_count,
+			   ثابت hb_array_t<ثابت F2DOT14> shared_tuples,
+			   hb_scalar_cache_t *shared_tuple_scalar_cache = (hb_scalar_cache_t *) &Null(hb_scalar_cache_t)) ثابت
   {
     unsigned tuple_index = tupleIndex;
-    unsigned int index = tuple_index & TupleIndex::TupleIndexMask;
+    unsigned صحيح index = tuple_index & TupleIndex::TupleIndexMask;
 
     /* The gvar shared-tuple cache is clamped to the 12-bit tuple-index range.
      * Only PrivatePointNumbers may accompany a cached shared-tuple index; any
      * other flag sets a bit at or above 0x1000, making this range test fail.
      */
-    bool plain_shared_tuple = (tuple_index & ~TupleIndex::PrivatePointNumbers) < shared_tuple_scalar_cache->length;
-    if (likely (plain_shared_tuple))
+    منطقي plain_shared_tuple = (tuple_index & ~TupleIndex::PrivatePointNumbers) < shared_tuple_scalar_cache->length;
+    ܐܢ (likely (plain_shared_tuple))
     {
-      float scalar;
-      if (likely (shared_tuple_scalar_cache->get (index, &scalar)))
-	return scalar;
+      عائم scalar;
+      ܐܢ (likely (shared_tuple_scalar_cache->get (index, &scalar)))
+	ܦܢܐ scalar;
     }
 
-    const F2DOT14 *peak_tuple;
+    ثابت F2DOT14 *peak_tuple;
 
-    bool has_interm = tuple_index & TupleIndex::IntermediateRegion; // Inlined for performance
+    منطقي has_interm = tuple_index & TupleIndex::IntermediateRegion; // Inlined for performance
 
-    if (unlikely (tuple_index & TupleIndex::EmbeddedPeakTuple)) // Inlined for performance
+    ܐܢ (unlikely (tuple_index & TupleIndex::EmbeddedPeakTuple)) // Inlined for performance
     {
       peak_tuple = get_peak_tuple (coord_count);
       shared_tuple_scalar_cache = nullptr;
     }
-    else
+    ܐܚܪܢܐ
     {
-      float scalar;
-      if (!plain_shared_tuple &&
+      عائم scalar;
+      ܐܢ (!plain_shared_tuple &&
 	  shared_tuple_scalar_cache->length &&
 	  shared_tuple_scalar_cache->get (index, &scalar))
       {
-        if (has_interm && (scalar != 0 && scalar != 1.f))
+        ܐܢ (has_interm && (scalar != 0 && scalar != 1.f))
 	  shared_tuple_scalar_cache = nullptr;
-	else
-	  return scalar;
+	ܐܚܪܢܐ
+	  ܦܢܐ scalar;
       }
 
-      if (unlikely ((index + 1) * coord_count > shared_tuples.length))
-        return 0.f;
+      ܐܢ (unlikely ((index + 1) * coord_count > shared_tuples.length))
+        ܦܢܐ 0.f;
       peak_tuple = shared_tuples.arrayZ + (coord_count * index);
 
     }
 
-    const F2DOT14 *start_tuple = nullptr;
-    const F2DOT14 *end_tuple = nullptr;
+    ثابت F2DOT14 *start_tuple = nullptr;
+    ثابت F2DOT14 *end_tuple = nullptr;
 
-    if (has_interm)
+    ܐܢ (has_interm)
     {
       start_tuple = get_start_tuple (coord_count);
       end_tuple = get_end_tuple (coord_count);
     }
 
-    float scalar = 1.f;
+    عائم scalar = 1.f;
 #ifndef HB_OPTIMIZE_SIZE
-#if HB_FAST_NUM_ACCESS
-    bool skip = coord_count >= 16;
+#ܐܢ HB_FAST_NUM_ACCESS
+    منطقي skip = coord_count >= 16;
 #endif
 #endif
-    for (unsigned int i = 0; i < coord_count; i++)
+    لكل (unsigned صحيح i = 0; i < coord_count; i++)
     {
 #ifndef HB_OPTIMIZE_SIZE
-#if HB_FAST_NUM_ACCESS
-      if (skip)
+#ܐܢ HB_FAST_NUM_ACCESS
+      ܐܢ (skip)
       {
-	while (i + 4 <= coord_count && * (HBUINT64LE *) &peak_tuple[i] == 0)
+	ܟܡܐ (i + 4 <= coord_count && * (HBUINT64LE *) &peak_tuple[i] == 0)
 	  i += 4;
-	while (i < coord_count && peak_tuple[i].to_int () == 0)
+	ܟܡܐ (i < coord_count && peak_tuple[i].to_int () == 0)
 	  i += 1;
-	if (i >= coord_count)
-	  break;
+	ܐܢ (i >= coord_count)
+	  اكسر;
       }
 #endif
 #endif
 
-      int peak = peak_tuple[i].to_int ();
-      if (!peak) continue;
+      صحيح peak = peak_tuple[i].to_int ();
+      ܐܢ (!peak) استمر;
 
-      int v = coords[i];
-      if (!v) { scalar = 0.f; break; }
-      if (v == peak) continue;
+      صحيح v = coords[i];
+      ܐܢ (!v) { scalar = 0.f; اكسر; }
+      ܐܢ (v == peak) استمر;
 
-      if (has_interm)
+      ܐܢ (has_interm)
       {
 	shared_tuple_scalar_cache = nullptr;
-        int start = start_tuple[i].to_int ();
-        int end = end_tuple[i].to_int ();
-        if (unlikely (start > peak || peak > end ||
-                      (start < 0 && end > 0 && peak))) continue;
-        if (v < start || v > end) { scalar = 0.f; break; }
-        if (v < peak)
-        { if (peak != start) scalar *= (float) (v - start) / (peak - start); }
-        else
-        { if (peak != end) scalar *= (float) (end - v) / (end - peak); }
+        صحيح start = start_tuple[i].to_int ();
+        صحيح end = end_tuple[i].to_int ();
+        ܐܢ (unlikely (start > peak || peak > end ||
+                      (start < 0 && end > 0 && peak))) استمر;
+        ܐܢ (v < start || v > end) { scalar = 0.f; اكسر; }
+        ܐܢ (v < peak)
+        { ܐܢ (peak != start) scalar *= (عائم) (v - start) / (peak - start); }
+        ܐܚܪܢܐ
+        { ܐܢ (peak != end) scalar *= (عائم) (end - v) / (end - peak); }
       }
-      else if (v < hb_min (0, peak) || v > hb_max (0, peak)) { scalar = 0.f; break; }
-      else
-        scalar *= (float) v / peak;
+      ܐܚܪܢܐ ܐܢ (v < hb_min (0, peak) || v > hb_max (0, peak)) { scalar = 0.f; اكسر; }
+      ܐܚܪܢܐ
+        scalar *= (عائم) v / peak;
     }
-    if (shared_tuple_scalar_cache)
+    ܐܢ (shared_tuple_scalar_cache)
       shared_tuple_scalar_cache->set (index, scalar);
-    return scalar;
+    ܦܢܐ scalar;
   }
 
-  bool           has_peak () const { return tupleIndex & TupleIndex::EmbeddedPeakTuple; }
-  bool   has_intermediate () const { return tupleIndex & TupleIndex::IntermediateRegion; }
-  bool has_private_points () const { return tupleIndex & TupleIndex::PrivatePointNumbers; }
-  unsigned      get_index () const { return tupleIndex & TupleIndex::TupleIndexMask; }
-  static constexpr unsigned max_shared_tuple_count = 0x1000u;
+  منطقي           has_peak () ثابت { ܦܢܐ tupleIndex & TupleIndex::EmbeddedPeakTuple; }
+  منطقي   has_intermediate () ثابت { ܦܢܐ tupleIndex & TupleIndex::IntermediateRegion; }
+  منطقي has_private_points () ثابت { ܦܢܐ tupleIndex & TupleIndex::PrivatePointNumbers; }
+  unsigned      get_index () ثابت { ܦܢܐ tupleIndex & TupleIndex::TupleIndexMask; }
+  ساكن constexpr unsigned max_shared_tuple_count = 0x1000u;
 
-  protected:
-  struct TupleIndex : HBUINT16
+  محمي:
+  بنية TupleIndex : HBUINT16
   {
-    enum Flags {
+    تعداد Flags {
       EmbeddedPeakTuple   = 0x8000u,
       IntermediateRegion  = 0x4000u,
       PrivatePointNumbers = 0x2000u,
       TupleIndexMask      = 0x0FFFu
     };
 
-    TupleIndex& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+    TupleIndex& operator = (uint16_t i) { HBUINT16::operator= (i); ܦܢܐ *هذا; }
     DEFINE_SIZE_STATIC (2);
   };
 
-  hb_array_t<const F2DOT14> get_all_tuples (unsigned axis_count) const
-  { return StructAfter<UnsizedArrayOf<F2DOT14>> (tupleIndex).as_array ((has_peak () + has_intermediate () * 2) * axis_count); }
-  const F2DOT14* get_all_tuples_base (unsigned axis_count) const
-  { return StructAfter<UnsizedArrayOf<F2DOT14>> (tupleIndex).arrayZ; }
-  const F2DOT14* get_peak_tuple (unsigned axis_count) const
-  { return get_all_tuples_base (axis_count); }
-  const F2DOT14* get_start_tuple (unsigned axis_count) const
-  { return get_all_tuples_base (axis_count) + has_peak () * axis_count; }
-  const F2DOT14* get_end_tuple (unsigned axis_count) const
-  { return get_all_tuples_base (axis_count) + has_peak () * axis_count + axis_count; }
+  hb_array_t<ثابت F2DOT14> get_all_tuples (unsigned axis_count) ثابت
+  { ܦܢܐ StructAfter<UnsizedArrayOf<F2DOT14>> (tupleIndex).as_array ((has_peak () + has_intermediate () * 2) * axis_count); }
+  ثابت F2DOT14* get_all_tuples_base (unsigned axis_count) ثابت
+  { ܦܢܐ StructAfter<UnsizedArrayOf<F2DOT14>> (tupleIndex).arrayZ; }
+  ثابت F2DOT14* get_peak_tuple (unsigned axis_count) ثابت
+  { ܦܢܐ get_all_tuples_base (axis_count); }
+  ثابت F2DOT14* get_start_tuple (unsigned axis_count) ثابت
+  { ܦܢܐ get_all_tuples_base (axis_count) + has_peak () * axis_count; }
+  ثابت F2DOT14* get_end_tuple (unsigned axis_count) ثابت
+  { ܦܢܐ get_all_tuples_base (axis_count) + has_peak () * axis_count + axis_count; }
 
   HBUINT16      varDataSize;    /* The size in bytes of the serialized
                                  * data for this tuple variation table. */
@@ -264,53 +264,53 @@ struct TupleVariationHeader
   /* UnsizedArrayOf<F2DOT14> intermediateEndTuple - optional */
                                 /* Intermediate end tuple record for this tuple variation table — optional,
                                  * determined by flags in the tupleIndex value. */
-  public:
+  عام:
   DEFINE_SIZE_MIN (4);
 };
 
-struct optimize_scratch_t
+بنية optimize_scratch_t
 {
   iup_scratch_t iup;
-  hb_vector_t<bool> opt_indices;
-  hb_vector_t<int> rounded_x_deltas;
-  hb_vector_t<int> rounded_y_deltas;
-  hb_vector_t<float> opt_deltas_x;
-  hb_vector_t<float> opt_deltas_y;
-  hb_vector_t<unsigned char> opt_point_data;
-  hb_vector_t<unsigned char> opt_deltas_data;
-  hb_vector_t<unsigned char> point_data;
-  hb_vector_t<unsigned char> deltas_data;
-  hb_vector_t<int> rounded_deltas;
+  hb_vector_t<منطقي> opt_indices;
+  hb_vector_t<صحيح> rounded_x_deltas;
+  hb_vector_t<صحيح> rounded_y_deltas;
+  hb_vector_t<عائم> opt_deltas_x;
+  hb_vector_t<عائم> opt_deltas_y;
+  hb_vector_t<unsigned حرف> opt_point_data;
+  hb_vector_t<unsigned حرف> opt_deltas_data;
+  hb_vector_t<unsigned حرف> point_data;
+  hb_vector_t<unsigned حرف> deltas_data;
+  hb_vector_t<صحيح> rounded_deltas;
 };
 
-struct tuple_delta_t
+بنية tuple_delta_t
 {
-  static constexpr bool realloc_move = true;  // Watch out when adding new members!
+  ساكن constexpr منطقي realloc_move = ܫܪܪܐ;  // Watch out when adding new members!
 
-  public:
+  عام:
   hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
 
   /* indices_length = point_count, indice[i] = 1 means point i is referenced */
-  hb_vector_t<bool> indices;
+  hb_vector_t<منطقي> indices;
 
-  hb_vector_t<float> deltas_x;
+  hb_vector_t<عائم> deltas_x;
   /* empty for cvar tuples */
-  hb_vector_t<float> deltas_y;
+  hb_vector_t<عائم> deltas_y;
 
   /* compiled data: header and deltas
    * compiled point data is saved in a hashmap within tuple_variations_t cause
    * some point sets might be reused by different tuple variations */
-  hb_vector_t<unsigned char> compiled_tuple_header;
-  hb_vector_t<unsigned char> compiled_deltas;
+  hb_vector_t<unsigned حرف> compiled_tuple_header;
+  hb_vector_t<unsigned حرف> compiled_deltas;
 
   hb_vector_t<F2DOT14> compiled_peak_coords;
   hb_vector_t<F2DOT14> compiled_interm_coords;
 
   tuple_delta_t (hb_alloc_pool_t *pool = nullptr) {}
-  tuple_delta_t (const tuple_delta_t& o) = default;
-  tuple_delta_t& operator = (const tuple_delta_t& o) = default;
+  tuple_delta_t (ثابت tuple_delta_t& o) = افتراضي;
+  tuple_delta_t& operator = (ثابت tuple_delta_t& o) = افتراضي;
 
-  friend void swap (tuple_delta_t& a, tuple_delta_t& b) noexcept
+  friend فراغ swap (tuple_delta_t& a, tuple_delta_t& b) noexcept
   {
     hb_swap (a.axis_tuples, b.axis_tuples);
     hb_swap (a.indices, b.indices);
@@ -322,15 +322,15 @@ struct tuple_delta_t
   }
 
   tuple_delta_t (tuple_delta_t&& o)  noexcept : tuple_delta_t ()
-  { hb_swap (*this, o); }
+  { hb_swap (*هذا, o); }
 
   tuple_delta_t& operator = (tuple_delta_t&& o) noexcept
   {
-    hb_swap (*this, o);
-    return *this;
+    hb_swap (*هذا, o);
+    ܦܢܐ *هذا;
   }
 
-  void copy_from (const tuple_delta_t& o, hb_alloc_pool_t *pool = nullptr)
+  فراغ copy_from (ثابت tuple_delta_t& o, hb_alloc_pool_t *pool = nullptr)
   {
     axis_tuples = o.axis_tuples;
     indices.duplicate_vector_from_pool (pool, o.indices);
@@ -342,61 +342,61 @@ struct tuple_delta_t
     compiled_interm_coords.duplicate_vector_from_pool (pool, o.compiled_interm_coords);
   }
 
-  void remove_axis (hb_tag_t axis_tag)
+  فراغ remove_axis (hb_tag_t axis_tag)
   { axis_tuples.del (axis_tag); }
 
-  bool set_tent (hb_tag_t axis_tag, Triple tent)
-  { return axis_tuples.set (axis_tag, tent); }
+  منطقي set_tent (hb_tag_t axis_tag, Triple tent)
+  { ܦܢܐ axis_tuples.set (axis_tag, tent); }
 
-  tuple_delta_t& operator += (const tuple_delta_t& o)
+  tuple_delta_t& operator += (ثابت tuple_delta_t& o)
   {
     unsigned num = indices.length;
-    for (unsigned i = 0; i < num; i++)
+    لكل (unsigned i = 0; i < num; i++)
     {
-      if (indices.arrayZ[i])
+      ܐܢ (indices.arrayZ[i])
       {
-        if (o.indices.arrayZ[i])
+        ܐܢ (o.indices.arrayZ[i])
         {
           deltas_x[i] += o.deltas_x[i];
-          if (deltas_y && o.deltas_y)
+          ܐܢ (deltas_y && o.deltas_y)
             deltas_y[i] += o.deltas_y[i];
         }
       }
-      else
+      ܐܚܪܢܐ
       {
-        if (!o.indices.arrayZ[i]) continue;
-        indices.arrayZ[i] = true;
+        ܐܢ (!o.indices.arrayZ[i]) استمر;
+        indices.arrayZ[i] = ܫܪܪܐ;
         deltas_x[i] = o.deltas_x[i];
-        if (deltas_y && o.deltas_y)
+        ܐܢ (deltas_y && o.deltas_y)
           deltas_y[i] = o.deltas_y[i];
       }
     }
-    return *this;
+    ܦܢܐ *هذا;
   }
 
-  tuple_delta_t& operator *= (float scalar)
+  tuple_delta_t& operator *= (عائم scalar)
   {
-    if (scalar == 1.0f)
-      return *this;
+    ܐܢ (scalar == 1.0f)
+      ܦܢܐ *هذا;
 
     unsigned num = indices.length;
-    if (deltas_y)
-      for (unsigned i = 0; i < num; i++)
+    ܐܢ (deltas_y)
+      لكل (unsigned i = 0; i < num; i++)
       {
-	if (!indices.arrayZ[i]) continue;
+	ܐܢ (!indices.arrayZ[i]) استمر;
 	deltas_x[i] *= scalar;
 	deltas_y[i] *= scalar;
       }
-    else
-      for (unsigned i = 0; i < num; i++)
+    ܐܚܪܢܐ
+      لكل (unsigned i = 0; i < num; i++)
       {
-	if (!indices.arrayZ[i]) continue;
+	ܐܢ (!indices.arrayZ[i]) استمر;
 	deltas_x[i] *= scalar;
       }
-    return *this;
+    ܦܢܐ *هذا;
   }
 
-  void change_tuple_var_axis_limit (hb_tag_t axis_tag, Triple axis_limit,
+  فراغ change_tuple_var_axis_limit (hb_tag_t axis_tag, Triple axis_limit,
 				    TripleDistances axis_triple_distances,
 				    hb_vector_t<tuple_delta_t>& out,
 				    rebase_tent_result_scratch_t &scratch,
@@ -406,44 +406,44 @@ struct tuple_delta_t
 
     out.reset ();
     Triple *tent;
-    if (!axis_tuples.has (axis_tag, &tent))
+    ܐܢ (!axis_tuples.has (axis_tag, &tent))
     {
-      out.push (std::move (*this));
-      return;
+      out.push (std::move (*هذا));
+      ܦܢܐ;
     }
 
-    if ((tent->minimum < 0.f && tent->maximum > 0.f) ||
+    ܐܢ ((tent->minimum < 0.f && tent->maximum > 0.f) ||
         !(tent->minimum <= tent->middle && tent->middle <= tent->maximum))
-      return;
+      ܦܢܐ;
 
-    if (tent->middle == 0.f)
+    ܐܢ (tent->middle == 0.f)
     {
-      out.push (std::move (*this));
-      return;
+      out.push (std::move (*هذا));
+      ܦܢܐ;
     }
 
-    if (!axis_limit.is_point () &&
+    ܐܢ (!axis_limit.is_point () &&
         !(-1.f <= axis_limit.minimum &&
           axis_limit.minimum <= axis_limit.middle &&
           axis_limit.middle <= axis_limit.maximum &&
           axis_limit.maximum <= +1.f))
-      return;
+      ܦܢܐ;
 
     rebase_tent_result_t &solutions = scratch.first;
     rebase_tent (*tent, axis_limit, axis_triple_distances, solutions, scratch.second);
-    for (unsigned i = 0; i < solutions.length; i++)
+    لكل (unsigned i = 0; i < solutions.length; i++)
     {
       auto &t = solutions.arrayZ[i];
 
       tuple_delta_t new_var;
-      if (i < solutions.length - 1)
-	new_var.copy_from (*this, pool);
-      else
-	new_var = std::move (*this);
+      ܐܢ (i < solutions.length - 1)
+	new_var.copy_from (*هذا, pool);
+      ܐܚܪܢܐ
+	new_var = std::move (*هذا);
 
-      if (t.second == Triple ())
+      ܐܢ (t.second == Triple ())
         new_var.remove_axis (axis_tag);
-      else
+      ܐܚܪܢܐ
         new_var.set_tent (axis_tag, t.second);
 
       new_var *= t.first;
@@ -451,56 +451,56 @@ struct tuple_delta_t
     }
   }
 
-  bool compile_coords (const hb_map_t& axes_index_map,
-		       const hb_map_t& axes_old_index_tag_map,
+  منطقي compile_coords (ثابت hb_map_t& axes_index_map,
+		       ثابت hb_map_t& axes_old_index_tag_map,
 		       hb_alloc_pool_t *pool= nullptr)
   {
     unsigned cur_axis_count = axes_index_map.get_population ();
-    if (pool)
+    ܐܢ (pool)
     {
-      if (unlikely (!compiled_peak_coords.allocate_from_pool (pool, cur_axis_count)))
-	return false;
+      ܐܢ (unlikely (!compiled_peak_coords.allocate_from_pool (pool, cur_axis_count)))
+	ܦܢܐ ܕܓܠܐ;
     }
-    else if (unlikely (!compiled_peak_coords.resize (cur_axis_count)))
-      return false;
+    ܐܚܪܢܐ ܐܢ (unlikely (!compiled_peak_coords.resize (cur_axis_count)))
+      ܦܢܐ ܕܓܠܐ;
 
     hb_array_t<F2DOT14> start_coords, end_coords;
 
     unsigned orig_axis_count = axes_old_index_tag_map.get_population ();
     unsigned j = 0;
-    for (unsigned i = 0; i < orig_axis_count; i++)
+    لكل (unsigned i = 0; i < orig_axis_count; i++)
     {
-      if (!axes_index_map.has (i))
-        continue;
+      ܐܢ (!axes_index_map.has (i))
+        استمر;
 
       hb_tag_t axis_tag = axes_old_index_tag_map.get (i);
       Triple *coords = nullptr;
-      if (axis_tuples.has (axis_tag, &coords))
+      ܐܢ (axis_tuples.has (axis_tag, &coords))
       {
-	float min_val = coords->minimum;
-	float val = coords->middle;
-	float max_val = coords->maximum;
+	عائم min_val = coords->minimum;
+	عائم val = coords->middle;
+	عائم max_val = coords->maximum;
 
 	compiled_peak_coords.arrayZ[j].set_float (val);
 
-	if (min_val != hb_min (val, 0.f) || max_val != hb_max (val, 0.f))
+	ܐܢ (min_val != hb_min (val, 0.f) || max_val != hb_max (val, 0.f))
 	{
-	  if (!compiled_interm_coords)
+	  ܐܢ (!compiled_interm_coords)
 	  {
-	    if (pool)
+	    ܐܢ (pool)
 	    {
-	      if (unlikely (!compiled_interm_coords.allocate_from_pool (pool, 2 * cur_axis_count)))
-		return false;
+	      ܐܢ (unlikely (!compiled_interm_coords.allocate_from_pool (pool, 2 * cur_axis_count)))
+		ܦܢܐ ܕܓܠܐ;
 	    }
-	    else if (unlikely (!compiled_interm_coords.resize (2 * cur_axis_count)))
-	      return false;
+	    ܐܚܪܢܐ ܐܢ (unlikely (!compiled_interm_coords.resize (2 * cur_axis_count)))
+	      ܦܢܐ ܕܓܠܐ;
 	    start_coords = compiled_interm_coords.as_array ().sub_array (0, cur_axis_count);
 	    end_coords = compiled_interm_coords.as_array ().sub_array (cur_axis_count);
 
-	    for (unsigned k = 0; k < j; k++)
+	    لكل (unsigned k = 0; k < j; k++)
 	    {
 	      signed peak = compiled_peak_coords.arrayZ[k].to_int ();
-	      if (!peak) continue;
+	      ܐܢ (!peak) استمر;
 	      start_coords.arrayZ[k].set_int (hb_min (peak, 0));
 	      end_coords.arrayZ[k].set_int (hb_max (peak, 0));
 	    }
@@ -508,7 +508,7 @@ struct tuple_delta_t
 
 	}
 
-	if (compiled_interm_coords)
+	ܐܢ (compiled_interm_coords)
 	{
 	  start_coords.arrayZ[j].set_float (min_val);
 	  end_coords.arrayZ[j].set_float (max_val);
@@ -518,26 +518,26 @@ struct tuple_delta_t
       j++;
     }
 
-    return !compiled_peak_coords.in_error () && !compiled_interm_coords.in_error ();
+    ܦܢܐ !compiled_peak_coords.in_error () && !compiled_interm_coords.in_error ();
   }
 
   /* deltas should be compiled already before we compile tuple
    * variation header cause we need to fill in the size of the
    * serialized data for this tuple variation */
-  bool compile_tuple_var_header (const hb_map_t& axes_index_map,
+  منطقي compile_tuple_var_header (ثابت hb_map_t& axes_index_map,
                                  unsigned points_data_length,
-                                 const hb_map_t& axes_old_index_tag_map,
-                                 const hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned>* shared_tuples_idx_map,
+                                 ثابت hb_map_t& axes_old_index_tag_map,
+                                 ثابت hb_hashmap_t<ثابت hb_vector_t<F2DOT14>*, unsigned>* shared_tuples_idx_map,
 				 hb_alloc_pool_t *pool = nullptr)
   {
     /* compiled_deltas could be empty after iup delta optimization, we can skip
      * compiling this tuple and return true */
-    if (!compiled_deltas) return true;
+    ܐܢ (!compiled_deltas) ܦܢܐ ܫܪܪܐ;
 
     unsigned cur_axis_count = axes_index_map.get_population ();
     /* allocate enough memory: 1 peak + 2 intermediate coords + fixed header size */
     unsigned alloc_len = 3 * cur_axis_count * (F2DOT14::static_size) + 4;
-    if (unlikely (!compiled_tuple_header.allocate_from_pool (pool, alloc_len, false))) return false;
+    ܐܢ (unlikely (!compiled_tuple_header.allocate_from_pool (pool, alloc_len, ܕܓܠܐ))) ܦܢܐ ܕܓܠܐ;
 
     unsigned flag = 0;
     /* skip the first 4 header bytes: variationDataSize+tupleIndex */
@@ -545,28 +545,28 @@ struct tuple_delta_t
     F2DOT14* end = reinterpret_cast<F2DOT14 *> (compiled_tuple_header.end ());
     hb_array_t<F2DOT14> coords (p, end - p);
 
-    if (!shared_tuples_idx_map)
+    ܐܢ (!shared_tuples_idx_map)
       compile_coords (axes_index_map, axes_old_index_tag_map); // non-gvar tuples do not have compiled coords yet
 
     /* encode peak coords */
     unsigned peak_count = 0;
     unsigned *shared_tuple_idx;
-    if (shared_tuples_idx_map &&
+    ܐܢ (shared_tuples_idx_map &&
         shared_tuples_idx_map->has (&compiled_peak_coords, &shared_tuple_idx))
     {
       flag = *shared_tuple_idx;
     }
-    else
+    ܐܚܪܢܐ
     {
       peak_count = encode_peak_coords(coords, flag);
-      if (!peak_count) return false;
+      ܐܢ (!peak_count) ܦܢܐ ܕܓܠܐ;
     }
 
     /* encode interim coords, it's optional so returned num could be 0 */
     unsigned interim_count = encode_interm_coords (coords.sub_array (peak_count), flag);
 
     /* pointdata length = 0 implies "use shared points" */
-    if (points_data_length)
+    ܐܢ (points_data_length)
       flag |= TupleVariationHeader::TupleIndex::PrivatePointNumbers;
 
     unsigned serialized_data_size = points_data_length + compiled_deltas.length;
@@ -576,153 +576,153 @@ struct tuple_delta_t
 
     unsigned total_header_len = 4 + (peak_count + interim_count) * (F2DOT14::static_size);
     compiled_tuple_header.shrink_back_to_pool (pool, total_header_len);
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
   unsigned encode_peak_coords (hb_array_t<F2DOT14> peak_coords,
-                               unsigned& flag) const
+                               unsigned& flag) ثابت
   {
-    hb_memcpy (&peak_coords[0], &compiled_peak_coords[0], compiled_peak_coords.length * sizeof (compiled_peak_coords[0]));
+    hb_memcpy (&peak_coords[0], &compiled_peak_coords[0], compiled_peak_coords.length * حجم (compiled_peak_coords[0]));
     flag |= TupleVariationHeader::TupleIndex::EmbeddedPeakTuple;
-    return compiled_peak_coords.length;
+    ܦܢܐ compiled_peak_coords.length;
   }
 
   /* if no need to encode intermediate coords, then just return p */
   unsigned encode_interm_coords (hb_array_t<F2DOT14> coords,
-                                 unsigned& flag) const
+                                 unsigned& flag) ثابت
   {
-    if (compiled_interm_coords)
+    ܐܢ (compiled_interm_coords)
     {
-      hb_memcpy (&coords[0], &compiled_interm_coords[0], compiled_interm_coords.length * sizeof (compiled_interm_coords[0]));
+      hb_memcpy (&coords[0], &compiled_interm_coords[0], compiled_interm_coords.length * حجم (compiled_interm_coords[0]));
       flag |= TupleVariationHeader::TupleIndex::IntermediateRegion;
     }
-    return compiled_interm_coords.length;
+    ܦܢܐ compiled_interm_coords.length;
   }
 
-  bool compile_deltas (hb_vector_t<int> &rounded_deltas_scratch,
+  منطقي compile_deltas (hb_vector_t<صحيح> &rounded_deltas_scratch,
 		       hb_alloc_pool_t *pool = nullptr)
-  { return compile_deltas (indices, deltas_x, deltas_y, compiled_deltas, rounded_deltas_scratch, pool); }
+  { ܦܢܐ compile_deltas (indices, deltas_x, deltas_y, compiled_deltas, rounded_deltas_scratch, pool); }
 
-  static bool compile_deltas (hb_array_t<const bool> point_indices,
-			      hb_array_t<const float> x_deltas,
-			      hb_array_t<const float> y_deltas,
-			      hb_vector_t<unsigned char> &compiled_deltas, /* OUT */
-			      hb_vector_t<int> &rounded_deltas, /* scratch */
+  ساكن منطقي compile_deltas (hb_array_t<ثابت منطقي> point_indices,
+			      hb_array_t<ثابت عائم> x_deltas,
+			      hb_array_t<ثابت عائم> y_deltas,
+			      hb_vector_t<unsigned حرف> &compiled_deltas, /* OUT */
+			      hb_vector_t<صحيح> &rounded_deltas, /* scratch */
 			      hb_alloc_pool_t *pool = nullptr)
   {
-    if (unlikely (!rounded_deltas.resize_dirty  (point_indices.length)))
-      return false;
+    ܐܢ (unlikely (!rounded_deltas.resize_dirty  (point_indices.length)))
+      ܦܢܐ ܕܓܠܐ;
 
     unsigned j = 0;
-    for (unsigned i = 0; i < point_indices.length; i++)
+    لكل (unsigned i = 0; i < point_indices.length; i++)
     {
-      if (!point_indices[i]) continue;
-      rounded_deltas.arrayZ[j++] = hb_clamp_to<int> (roundf ((double) x_deltas.arrayZ[i]));
+      ܐܢ (!point_indices[i]) استمر;
+      rounded_deltas.arrayZ[j++] = hb_clamp_to<صحيح> (roundf ((مزدوج) x_deltas.arrayZ[i]));
     }
     rounded_deltas.resize (j);
 
-    if (!rounded_deltas) return true;
+    ܐܢ (!rounded_deltas) ܦܢܐ ܫܪܪܐ;
     /* Allocate enough memory: this is the correct bound:
      * Worst case scenario is that each delta has to be encoded in 4 bytes, and there
      * are runs of 64 items each. Any delta encoded in less than 4 bytes (2, 1, or 0)
      * is still smaller than the 4-byte encoding even with their control byte.
      * The initial 2 is to handle length==0, for both x and y deltas. */
     unsigned alloc_len = 2 + 4 * rounded_deltas.length + (rounded_deltas.length + 63) / 64;
-    if (y_deltas)
+    ܐܢ (y_deltas)
       alloc_len *= 2;
 
-    if (unlikely (!compiled_deltas.allocate_from_pool (pool, alloc_len, false))) return false;
+    ܐܢ (unlikely (!compiled_deltas.allocate_from_pool (pool, alloc_len, ܕܓܠܐ))) ܦܢܐ ܕܓܠܐ;
 
     unsigned encoded_len = compile_deltas (compiled_deltas, rounded_deltas);
 
-    if (y_deltas)
+    ܐܢ (y_deltas)
     {
       /* reuse the rounded_deltas vector, check that y_deltas have the same num of deltas as x_deltas */
       unsigned j = 0;
-      for (unsigned idx = 0; idx < point_indices.length; idx++)
+      لكل (unsigned idx = 0; idx < point_indices.length; idx++)
       {
-        if (!point_indices[idx]) continue;
-        int rounded_delta = hb_clamp_to<int> (roundf ((double) y_deltas.arrayZ[idx]));
+        ܐܢ (!point_indices[idx]) استمر;
+        صحيح rounded_delta = hb_clamp_to<صحيح> (roundf ((مزدوج) y_deltas.arrayZ[idx]));
 
-        if (j >= rounded_deltas.length) return false;
+        ܐܢ (j >= rounded_deltas.length) ܦܢܐ ܕܓܠܐ;
 
         rounded_deltas[j++] = rounded_delta;
       }
 
-      if (j != rounded_deltas.length) return false;
+      ܐܢ (j != rounded_deltas.length) ܦܢܐ ܕܓܠܐ;
       encoded_len += compile_deltas (compiled_deltas.as_array ().sub_array (encoded_len), rounded_deltas);
     }
     compiled_deltas.shrink_back_to_pool (pool, encoded_len);
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
-  static unsigned compile_deltas (hb_array_t<unsigned char> encoded_bytes,
-				  hb_array_t<const int> deltas)
+  ساكن unsigned compile_deltas (hb_array_t<unsigned حرف> encoded_bytes,
+				  hb_array_t<ثابت صحيح> deltas)
   {
-    return TupleValues::compile_unsafe (deltas, encoded_bytes);
+    ܦܢܐ TupleValues::compile_unsafe (deltas, encoded_bytes);
   }
 
-  bool calc_inferred_deltas (const contour_point_vector_t& orig_points,
+  منطقي calc_inferred_deltas (ثابت contour_point_vector_t& orig_points,
 			     hb_vector_t<unsigned> &scratch)
   {
     unsigned point_count = orig_points.length;
-    if (point_count != indices.length)
-      return false;
+    ܐܢ (point_count != indices.length)
+      ܦܢܐ ܕܓܠܐ;
 
     unsigned ref_count = 0;
 
     hb_vector_t<unsigned> &end_points = scratch.reset ();
 
-    for (unsigned i = 0; i < point_count; i++)
+    لكل (unsigned i = 0; i < point_count; i++)
     {
       ref_count += indices.arrayZ[i];
-      if (orig_points.arrayZ[i].is_end_point)
+      ܐܢ (orig_points.arrayZ[i].is_end_point)
         end_points.push (i);
     }
     /* all points are referenced, nothing to do */
-    if (ref_count == point_count)
-      return true;
-    if (unlikely (end_points.in_error ())) return false;
+    ܐܢ (ref_count == point_count)
+      ܦܢܐ ܫܪܪܐ;
+    ܐܢ (unlikely (end_points.in_error ())) ܦܢܐ ܕܓܠܐ;
 
     hb_bit_set_t inferred_idxes;
     unsigned start_point = 0;
-    for (unsigned end_point : end_points)
+    لكل (unsigned end_point : end_points)
     {
       /* Check the number of unreferenced points in a contour. If no unref points or no ref points, nothing to do. */
       unsigned unref_count = 0;
-      for (unsigned i = start_point; i < end_point + 1; i++)
+      لكل (unsigned i = start_point; i < end_point + 1; i++)
         unref_count += indices.arrayZ[i];
       unref_count = (end_point - start_point + 1) - unref_count;
 
       unsigned j = start_point;
-      if (unref_count == 0 || unref_count > end_point - start_point)
-        goto no_more_gaps;
-      for (;;)
+      ܐܢ (unref_count == 0 || unref_count > end_point - start_point)
+        اذهب no_more_gaps;
+      لكل (;;)
       {
         /* Locate the next gap of unreferenced points between two referenced points prev and next.
          * Note that a gap may wrap around at left (start_point) and/or at right (end_point).
          */
-        unsigned int prev, next, i;
-        for (;;)
+        unsigned صحيح prev, next, i;
+        لكل (;;)
         {
           i = j;
           j = next_index (i, start_point, end_point);
-          if (indices.arrayZ[i] && !indices.arrayZ[j]) break;
+          ܐܢ (indices.arrayZ[i] && !indices.arrayZ[j]) اكسر;
         }
         prev = j = i;
-        for (;;)
+        لكل (;;)
         {
           i = j;
           j = next_index (i, start_point, end_point);
-          if (!indices.arrayZ[i] && indices.arrayZ[j]) break;
+          ܐܢ (!indices.arrayZ[i] && indices.arrayZ[j]) اكسر;
         }
         next = j;
        /* Infer deltas for all unref points in the gap between prev and next */
         i = prev;
-        for (;;)
+        لكل (;;)
         {
           i = next_index (i, start_point, end_point);
-          if (i == next) break;
+          ܐܢ (i == next) اكسر;
           deltas_x.arrayZ[i] = infer_delta (orig_points.arrayZ[i].x,
                                             orig_points.arrayZ[prev].x,
                                             orig_points.arrayZ[next].x,
@@ -732,175 +732,175 @@ struct tuple_delta_t
                                             orig_points.arrayZ[next].y,
                                             deltas_y.arrayZ[prev], deltas_y.arrayZ[next]);
           inferred_idxes.add (i);
-          if (--unref_count == 0) goto no_more_gaps;
+          ܐܢ (--unref_count == 0) اذهب no_more_gaps;
         }
       }
     no_more_gaps:
       start_point = end_point + 1;
     }
 
-    for (unsigned i = 0; i < point_count; i++)
+    لكل (unsigned i = 0; i < point_count; i++)
     {
       /* if points are not referenced and deltas are not inferred, set to 0.
        * reference all points for gvar */
-      if ( !indices[i])
+      ܐܢ ( !indices[i])
       {
-        if (!inferred_idxes.has (i))
+        ܐܢ (!inferred_idxes.has (i))
         {
           deltas_x.arrayZ[i] = 0.f;
           deltas_y.arrayZ[i] = 0.f;
         }
-        indices[i] = true;
+        indices[i] = ܫܪܪܐ;
       }
     }
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
-  bool optimize (const contour_point_vector_t& contour_points,
-                 bool is_composite,
+  منطقي optimize (ثابت contour_point_vector_t& contour_points,
+                 منطقي is_composite,
 		 optimize_scratch_t &scratch,
-                 double tolerance = 0.5 + 1e-10)
+                 مزدوج tolerance = 0.5 + 1e-10)
   {
     unsigned count = contour_points.length;
-    if (deltas_x.length != count ||
+    ܐܢ (deltas_x.length != count ||
         deltas_y.length != count)
-      return false;
+      ܦܢܐ ܕܓܠܐ;
 
-    hb_vector_t<bool> &opt_indices = scratch.opt_indices.reset ();
-    hb_vector_t<int> &rounded_x_deltas = scratch.rounded_x_deltas;
-    hb_vector_t<int> &rounded_y_deltas = scratch.rounded_y_deltas;
+    hb_vector_t<منطقي> &opt_indices = scratch.opt_indices.reset ();
+    hb_vector_t<صحيح> &rounded_x_deltas = scratch.rounded_x_deltas;
+    hb_vector_t<صحيح> &rounded_y_deltas = scratch.rounded_y_deltas;
 
-    if (unlikely (!rounded_x_deltas.resize_dirty  (count) ||
+    ܐܢ (unlikely (!rounded_x_deltas.resize_dirty  (count) ||
                   !rounded_y_deltas.resize_dirty  (count)))
-      return false;
+      ܦܢܐ ܕܓܠܐ;
 
-    for (unsigned i = 0; i < count; i++)
+    لكل (unsigned i = 0; i < count; i++)
     {
-      rounded_x_deltas.arrayZ[i] = hb_clamp_to<int> (roundf ((double) deltas_x.arrayZ[i]));
-      rounded_y_deltas.arrayZ[i] = hb_clamp_to<int> (roundf ((double) deltas_y.arrayZ[i]));
+      rounded_x_deltas.arrayZ[i] = hb_clamp_to<صحيح> (roundf ((مزدوج) deltas_x.arrayZ[i]));
+      rounded_y_deltas.arrayZ[i] = hb_clamp_to<صحيح> (roundf ((مزدوج) deltas_y.arrayZ[i]));
     }
 
-    if (!iup_delta_optimize (contour_points, rounded_x_deltas, rounded_y_deltas, opt_indices, scratch.iup, tolerance))
-      return false;
+    ܐܢ (!iup_delta_optimize (contour_points, rounded_x_deltas, rounded_y_deltas, opt_indices, scratch.iup, tolerance))
+      ܦܢܐ ܕܓܠܐ;
 
     unsigned ref_count = 0;
-    for (bool ref_flag : opt_indices)
+    لكل (منطقي ref_flag : opt_indices)
        ref_count += ref_flag;
 
-    if (ref_count == count) return true;
+    ܐܢ (ref_count == count) ܦܢܐ ܫܪܪܐ;
 
-    hb_vector_t<float> &opt_deltas_x = scratch.opt_deltas_x.reset ();
-    hb_vector_t<float> &opt_deltas_y = scratch.opt_deltas_y.reset ();
-    bool is_comp_glyph_wo_deltas = (is_composite && ref_count == 0);
-    if (is_comp_glyph_wo_deltas)
+    hb_vector_t<عائم> &opt_deltas_x = scratch.opt_deltas_x.reset ();
+    hb_vector_t<عائم> &opt_deltas_y = scratch.opt_deltas_y.reset ();
+    منطقي is_comp_glyph_wo_deltas = (is_composite && ref_count == 0);
+    ܐܢ (is_comp_glyph_wo_deltas)
     {
-      if (unlikely (!opt_deltas_x.resize (count) ||
+      ܐܢ (unlikely (!opt_deltas_x.resize (count) ||
                     !opt_deltas_y.resize (count)))
-        return false;
+        ܦܢܐ ܕܓܠܐ;
 
-      opt_indices.arrayZ[0] = true;
-      for (unsigned i = 1; i < count; i++)
-        opt_indices.arrayZ[i] = false;
+      opt_indices.arrayZ[0] = ܫܪܪܐ;
+      لكل (unsigned i = 1; i < count; i++)
+        opt_indices.arrayZ[i] = ܕܓܠܐ;
     }
 
-    hb_vector_t<unsigned char> &opt_point_data = scratch.opt_point_data.reset ();
-    if (!compile_point_set (opt_indices, opt_point_data))
-      return false;
-    hb_vector_t<unsigned char> &opt_deltas_data = scratch.opt_deltas_data.reset ();
-    if (!compile_deltas (opt_indices,
+    hb_vector_t<unsigned حرف> &opt_point_data = scratch.opt_point_data.reset ();
+    ܐܢ (!compile_point_set (opt_indices, opt_point_data))
+      ܦܢܐ ܕܓܠܐ;
+    hb_vector_t<unsigned حرف> &opt_deltas_data = scratch.opt_deltas_data.reset ();
+    ܐܢ (!compile_deltas (opt_indices,
                          is_comp_glyph_wo_deltas ? opt_deltas_x : deltas_x,
                          is_comp_glyph_wo_deltas ? opt_deltas_y : deltas_y,
                          opt_deltas_data,
 			 scratch.rounded_deltas))
-      return false;
+      ܦܢܐ ܕܓܠܐ;
 
-    hb_vector_t<unsigned char> &point_data = scratch.point_data.reset ();
-    if (!compile_point_set (indices, point_data))
-      return false;
-    hb_vector_t<unsigned char> &deltas_data = scratch.deltas_data.reset ();
-    if (!compile_deltas (indices, deltas_x, deltas_y, deltas_data, scratch.rounded_deltas))
-      return false;
+    hb_vector_t<unsigned حرف> &point_data = scratch.point_data.reset ();
+    ܐܢ (!compile_point_set (indices, point_data))
+      ܦܢܐ ܕܓܠܐ;
+    hb_vector_t<unsigned حرف> &deltas_data = scratch.deltas_data.reset ();
+    ܐܢ (!compile_deltas (indices, deltas_x, deltas_y, deltas_data, scratch.rounded_deltas))
+      ܦܢܐ ܕܓܠܐ;
 
-    if (opt_point_data.length + opt_deltas_data.length < point_data.length + deltas_data.length)
+    ܐܢ (opt_point_data.length + opt_deltas_data.length < point_data.length + deltas_data.length)
     {
       indices = std::move (opt_indices);
 
-      if (is_comp_glyph_wo_deltas)
+      ܐܢ (is_comp_glyph_wo_deltas)
       {
         deltas_x = std::move (opt_deltas_x);
         deltas_y = std::move (opt_deltas_y);
       }
     }
-    return !indices.in_error () && !deltas_x.in_error () && !deltas_y.in_error ();
+    ܦܢܐ !indices.in_error () && !deltas_x.in_error () && !deltas_y.in_error ();
   }
 
-  static bool compile_point_set (const hb_vector_t<bool> &point_indices,
-                                 hb_vector_t<unsigned char>& compiled_points /* OUT */)
+  ساكن منطقي compile_point_set (ثابت hb_vector_t<منطقي> &point_indices,
+                                 hb_vector_t<unsigned حرف>& compiled_points /* OUT */)
   {
     unsigned num_points = 0;
-    for (bool i : point_indices)
-      if (i) num_points++;
+    لكل (منطقي i : point_indices)
+      ܐܢ (i) num_points++;
 
     /* when iup optimization is enabled, num of referenced points could be 0 */
-    if (!num_points) return true;
+    ܐܢ (!num_points) ܦܢܐ ܫܪܪܐ;
 
     unsigned indices_length = point_indices.length;
     /* If the points set consists of all points in the glyph, it's encoded with a
      * single zero byte */
-    if (num_points == indices_length)
-      return compiled_points.resize (1);
+    ܐܢ (num_points == indices_length)
+      ܦܢܐ compiled_points.resize (1);
 
     /* allocate enough memories: 2 bytes for count + 3 bytes for each point */
     unsigned num_bytes = 2 + 3 *num_points;
-    if (unlikely (!compiled_points.resize_dirty  (num_bytes)))
-      return false;
+    ܐܢ (unlikely (!compiled_points.resize_dirty  (num_bytes)))
+      ܦܢܐ ܕܓܠܐ;
 
     unsigned pos = 0;
     /* binary data starts with the total number of reference points */
-    if (num_points < 0x80)
+    ܐܢ (num_points < 0x80)
       compiled_points.arrayZ[pos++] = num_points;
-    else
+    ܐܚܪܢܐ
     {
       compiled_points.arrayZ[pos++] = ((num_points >> 8) | 0x80);
       compiled_points.arrayZ[pos++] = num_points & 0xFF;
     }
 
-    const unsigned max_run_length = 0x7F;
+    ثابت unsigned max_run_length = 0x7F;
     unsigned i = 0;
     unsigned last_value = 0;
     unsigned num_encoded = 0;
-    while (i < indices_length && num_encoded < num_points)
+    ܟܡܐ (i < indices_length && num_encoded < num_points)
     {
       unsigned run_length = 0;
       unsigned header_pos = pos;
       compiled_points.arrayZ[pos++] = 0;
 
-      bool use_byte_encoding = false;
-      bool new_run = true;
-      while (i < indices_length && num_encoded < num_points &&
+      منطقي use_byte_encoding = ܕܓܠܐ;
+      منطقي new_run = ܫܪܪܐ;
+      ܟܡܐ (i < indices_length && num_encoded < num_points &&
              run_length <= max_run_length)
       {
         // find out next referenced point index
-        while (i < indices_length && !point_indices[i])
+        ܟܡܐ (i < indices_length && !point_indices[i])
           i++;
 
-        if (i >= indices_length) break;
+        ܐܢ (i >= indices_length) اكسر;
 
         unsigned cur_value = i;
         unsigned delta = cur_value - last_value;
 
-        if (new_run)
+        ܐܢ (new_run)
         {
           use_byte_encoding = (delta <= 0xFF);
-          new_run = false;
+          new_run = ܕܓܠܐ;
         }
 
-        if (use_byte_encoding && delta > 0xFF)
-          break;
+        ܐܢ (use_byte_encoding && delta > 0xFF)
+          اكسر;
 
-        if (use_byte_encoding)
+        ܐܢ (use_byte_encoding)
           compiled_points.arrayZ[pos++] = delta;
-        else
+        ܐܚܪܢܐ
         {
           compiled_points.arrayZ[pos++] = delta >> 8;
           compiled_points.arrayZ[pos++] = delta & 0xFF;
@@ -911,48 +911,48 @@ struct tuple_delta_t
         num_encoded++;
       }
 
-      if (use_byte_encoding)
+      ܐܢ (use_byte_encoding)
         compiled_points.arrayZ[header_pos] = run_length - 1;
-      else
+      ܐܚܪܢܐ
         compiled_points.arrayZ[header_pos] = (run_length - 1) | 0x80;
     }
-    return compiled_points.resize_dirty  (pos);
+    ܦܢܐ compiled_points.resize_dirty  (pos);
   }
 
-  static float infer_delta (float target_val, float prev_val, float next_val, float prev_delta, float next_delta)
+  ساكن عائم infer_delta (عائم target_val, عائم prev_val, عائم next_val, عائم prev_delta, عائم next_delta)
   {
-    if (prev_val == next_val)
-      return (prev_delta == next_delta) ? prev_delta : 0.f;
-    else if (target_val <= hb_min (prev_val, next_val))
-      return (prev_val < next_val) ? prev_delta : next_delta;
-    else if (target_val >= hb_max (prev_val, next_val))
-      return (prev_val > next_val) ? prev_delta : next_delta;
+    ܐܢ (prev_val == next_val)
+      ܦܢܐ (prev_delta == next_delta) ? prev_delta : 0.f;
+    ܐܚܪܢܐ ܐܢ (target_val <= hb_min (prev_val, next_val))
+      ܦܢܐ (prev_val < next_val) ? prev_delta : next_delta;
+    ܐܚܪܢܐ ܐܢ (target_val >= hb_max (prev_val, next_val))
+      ܦܢܐ (prev_val > next_val) ? prev_delta : next_delta;
 
-    float r = (target_val - prev_val) / (next_val - prev_val);
-    return prev_delta + r * (next_delta - prev_delta);
+    عائم r = (target_val - prev_val) / (next_val - prev_val);
+    ܦܢܐ prev_delta + r * (next_delta - prev_delta);
   }
 
-  static unsigned int next_index (unsigned int i, unsigned int start, unsigned int end)
-  { return (i >= end) ? start : (i + 1); }
+  ساكن unsigned صحيح next_index (unsigned صحيح i, unsigned صحيح start, unsigned صحيح end)
+  { ܦܢܐ (i >= end) ? start : (i + 1); }
 };
 
 template <typename OffType = HBUINT16>
-struct TupleVariationData
+بنية TupleVariationData
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     // here check on min_size only, TupleVariationHeader and var data will be
     // checked while accessing through iterator.
-    return_trace (c->check_struct (this));
+    return_trace (c->check_struct (هذا));
   }
 
-  size_t get_size (unsigned axis_count_times_2) const
+  size_t get_size (unsigned axis_count_times_2) ثابت
   {
     size_t total_size = min_size;
     unsigned count = tupleVarCount.get_count ();
-    const TupleVariationHeader *tuple_var_header = &(get_tuple_var_header());
-    for (unsigned i = 0; i < count; i++)
+    ثابت TupleVariationHeader *tuple_var_header = &(get_tuple_var_header());
+    لكل (unsigned i = 0; i < count; i++)
     {
       total_size = hb_unsigned_add_saturate (total_size,
 					     tuple_var_header->get_size (axis_count_times_2),
@@ -960,193 +960,193 @@ struct TupleVariationData
       tuple_var_header = &tuple_var_header->get_next (axis_count_times_2);
     }
 
-    return total_size;
+    ܦܢܐ total_size;
   }
 
-  const TupleVariationHeader &get_tuple_var_header (void) const
-  { return StructAfter<TupleVariationHeader> (data); }
+  ثابت TupleVariationHeader &get_tuple_var_header (فراغ) ثابت
+  { ܦܢܐ StructAfter<TupleVariationHeader> (data); }
 
-  struct tuple_iterator_t;
-  struct tuple_variations_t
+  بنية tuple_iterator_t;
+  بنية tuple_variations_t
   {
     hb_vector_t<tuple_delta_t> tuple_vars;
 
-    private:
+    خاص:
     /* referenced point set->compiled point data map */
-    hb_hashmap_t<const hb_vector_t<bool>*, hb_vector_t<unsigned char>> point_data_map;
+    hb_hashmap_t<ثابت hb_vector_t<منطقي>*, hb_vector_t<unsigned حرف>> point_data_map;
     /* referenced point set-> count map, used in finding shared points */
-    hb_hashmap_t<const hb_vector_t<bool>*, unsigned> point_set_count_map;
+    hb_hashmap_t<ثابت hb_vector_t<منطقي>*, unsigned> point_set_count_map;
 
     /* empty for non-gvar tuples.
      * shared_points_bytes is a pointer to some value in the point_data_map,
      * which will be freed during map destruction. Save it for serialization, so
      * no need to do find_shared_points () again */
-    hb_vector_t<unsigned char> *shared_points_bytes = nullptr;
+    hb_vector_t<unsigned حرف> *shared_points_bytes = nullptr;
 
     /* total compiled byte size as TupleVariationData format, initialized to 0 */
     unsigned compiled_byte_size = 0;
-    bool needs_padding = false;
+    منطقي needs_padding = ܕܓܠܐ;
 
     /* for gvar iup delta optimization: whether this is a composite glyph */
-    bool is_composite = false;
+    منطقي is_composite = ܕܓܠܐ;
 
-    public:
-    tuple_variations_t () = default;
-    tuple_variations_t (const tuple_variations_t&) = delete;
-    tuple_variations_t& operator=(const tuple_variations_t&) = delete;
-    tuple_variations_t (tuple_variations_t&&) = default;
-    tuple_variations_t& operator=(tuple_variations_t&&) = default;
-    ~tuple_variations_t () = default;
+    عام:
+    tuple_variations_t () = افتراضي;
+    tuple_variations_t (ثابت tuple_variations_t&) = delete;
+    tuple_variations_t& operator=(ثابت tuple_variations_t&) = delete;
+    tuple_variations_t (tuple_variations_t&&) = افتراضي;
+    tuple_variations_t& operator=(tuple_variations_t&&) = افتراضي;
+    ~tuple_variations_t () = افتراضي;
 
-    explicit operator bool () const { return bool (tuple_vars); }
-    unsigned get_var_count () const
+    explicit operator منطقي () ثابت { ܦܢܐ منطقي (tuple_vars); }
+    unsigned get_var_count () ثابت
     {
       unsigned count = 0;
       /* when iup delta opt is enabled, compiled_deltas could be empty and we
        * should skip this tuple */
-      for (auto& tuple: tuple_vars)
-        if (tuple.compiled_deltas) count++;
+      لكل (auto& tuple: tuple_vars)
+        ܐܢ (tuple.compiled_deltas) count++;
 
-      if (shared_points_bytes && shared_points_bytes->length)
+      ܐܢ (shared_points_bytes && shared_points_bytes->length)
         count |= TupleVarCount::SharedPointNumbers;
-      return count;
+      ܦܢܐ count;
     }
 
-    unsigned get_compiled_byte_size () const
-    { return compiled_byte_size; }
+    unsigned get_compiled_byte_size () ثابت
+    { ܦܢܐ compiled_byte_size; }
 
-    bool create_from_tuple_var_data (tuple_iterator_t iterator,
+    منطقي create_from_tuple_var_data (tuple_iterator_t iterator,
                                      unsigned tuple_var_count,
                                      unsigned point_count,
-                                     bool is_gvar,
-                                     const hb_map_t *axes_old_index_tag_map,
-                                     const hb_vector_t<unsigned> &shared_indices,
-                                     const hb_array_t<const F2DOT14> shared_tuples,
+                                     منطقي is_gvar,
+                                     ثابت hb_map_t *axes_old_index_tag_map,
+                                     ثابت hb_vector_t<unsigned> &shared_indices,
+                                     ثابت hb_array_t<ثابت F2DOT14> shared_tuples,
 				     hb_alloc_pool_t *pool = nullptr,
-                                     bool is_composite_glyph = false)
+                                     منطقي is_composite_glyph = ܕܓܠܐ)
     {
       hb_vector_t<unsigned> private_indices;
-      hb_vector_t<int> deltas_x;
-      hb_vector_t<int> deltas_y;
-      do
+      hb_vector_t<صحيح> deltas_x;
+      hb_vector_t<صحيح> deltas_y;
+      ܥܒܕ
       {
-        const HBUINT8 *p = iterator.get_serialized_data ();
-        unsigned int length = iterator.current_tuple->get_data_size ();
-        if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-          return false;
+        ثابت HBUINT8 *p = iterator.get_serialized_data ();
+        unsigned صحيح length = iterator.current_tuple->get_data_size ();
+        ܐܢ (unlikely (!iterator.var_data_bytes.check_range (p, length)))
+          ܦܢܐ ܕܓܠܐ;
 
 	hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-        if (!iterator.current_tuple->unpack_axis_tuples (iterator.get_axis_count (), shared_tuples, axes_old_index_tag_map, axis_tuples)
+        ܐܢ (!iterator.current_tuple->unpack_axis_tuples (iterator.get_axis_count (), shared_tuples, axes_old_index_tag_map, axis_tuples)
             || axis_tuples.is_empty ())
-          return false;
+          ܦܢܐ ܕܓܠܐ;
 
 	private_indices.reset ();
-        bool has_private_points = iterator.current_tuple->has_private_points ();
-        const HBUINT8 *end = p + length;
-        if (has_private_points &&
+        منطقي has_private_points = iterator.current_tuple->has_private_points ();
+        ثابت HBUINT8 *end = p + length;
+        ܐܢ (has_private_points &&
             !TupleVariationData::decompile_points (p, private_indices, end))
-          return false;
+          ܦܢܐ ܕܓܠܐ;
 
-        const hb_vector_t<unsigned> &indices = has_private_points ? private_indices : shared_indices;
-        bool apply_to_all = (indices.length == 0);
+        ثابت hb_vector_t<unsigned> &indices = has_private_points ? private_indices : shared_indices;
+        منطقي apply_to_all = (indices.length == 0);
         unsigned num_deltas = apply_to_all ? point_count : indices.length;
 
-        if (unlikely (!deltas_x.resize_dirty  (num_deltas) ||
+        ܐܢ (unlikely (!deltas_x.resize_dirty  (num_deltas) ||
                       !TupleVariationData::decompile_deltas (p, deltas_x, end)))
-          return false;
+          ܦܢܐ ܕܓܠܐ;
 
-        if (is_gvar)
+        ܐܢ (is_gvar)
         {
-          if (unlikely (!deltas_y.resize_dirty  (num_deltas) ||
+          ܐܢ (unlikely (!deltas_y.resize_dirty  (num_deltas) ||
                         !TupleVariationData::decompile_deltas (p, deltas_y, end)))
-            return false;
+            ܦܢܐ ܕܓܠܐ;
         }
 
         tuple_delta_t var;
         var.axis_tuples = std::move (axis_tuples);
-        if (unlikely (!var.indices.allocate_from_pool (pool, point_count) ||
-                      !var.deltas_x.allocate_from_pool (pool, point_count, false)))
-          return false;
+        ܐܢ (unlikely (!var.indices.allocate_from_pool (pool, point_count) ||
+                      !var.deltas_x.allocate_from_pool (pool, point_count, ܕܓܠܐ)))
+          ܦܢܐ ܕܓܠܐ;
 
-        if (is_gvar && unlikely (!var.deltas_y.allocate_from_pool (pool, point_count, false)))
-          return false;
+        ܐܢ (is_gvar && unlikely (!var.deltas_y.allocate_from_pool (pool, point_count, ܕܓܠܐ)))
+          ܦܢܐ ܕܓܠܐ;
 
-        for (unsigned i = 0; i < num_deltas; i++)
+        لكل (unsigned i = 0; i < num_deltas; i++)
         {
           unsigned idx = apply_to_all ? i : indices[i];
-          if (idx >= point_count) continue;
-          var.indices[idx] = true;
+          ܐܢ (idx >= point_count) استمر;
+          var.indices[idx] = ܫܪܪܐ;
           var.deltas_x[idx] = deltas_x[i];
-          if (is_gvar)
+          ܐܢ (is_gvar)
             var.deltas_y[idx] = deltas_y[i];
         }
         tuple_vars.push (std::move (var));
-      } while (iterator.move_to_next ());
+      } ܟܡܐ (iterator.move_to_next ());
 
       is_composite = is_composite_glyph;
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
-    bool create_from_item_var_data (const VarData &var_data,
-                                    const hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions,
-                                    const hb_map_t& axes_old_index_tag_map,
+    منطقي create_from_item_var_data (ثابت VarData &var_data,
+                                    ثابت hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions,
+                                    ثابت hb_map_t& axes_old_index_tag_map,
                                     unsigned& item_count,
-                                    const hb_inc_bimap_t* inner_map = nullptr)
+                                    ثابت hb_inc_bimap_t* inner_map = nullptr)
     {
       /* NULL offset, to keep original varidx valid, just return */
-      if (&var_data == &Null (VarData))
-        return true;
+      ܐܢ (&var_data == &Null (VarData))
+        ܦܢܐ ܫܪܪܐ;
 
       unsigned num_regions = var_data.get_region_index_count ();
-      if (!tuple_vars.alloc (num_regions)) return false;
+      ܐܢ (!tuple_vars.alloc (num_regions)) ܦܢܐ ܕܓܠܐ;
 
       item_count = inner_map ? inner_map->get_population () : var_data.get_item_count ();
-      if (!item_count) return true;
+      ܐܢ (!item_count) ܦܢܐ ܫܪܪܐ;
       unsigned row_size = var_data.get_row_size ();
-      const HBUINT8 *delta_bytes = var_data.get_delta_bytes ();
+      ثابت HBUINT8 *delta_bytes = var_data.get_delta_bytes ();
 
-      for (unsigned r = 0; r < num_regions; r++)
+      لكل (unsigned r = 0; r < num_regions; r++)
       {
         /* In VarData, deltas are organized in rows, convert them into
          * column(region) based tuples, resize deltas_x first */
         tuple_delta_t tuple;
-        if (!tuple.deltas_x.resize_dirty  (item_count) ||
+        ܐܢ (!tuple.deltas_x.resize_dirty  (item_count) ||
             !tuple.indices.resize_dirty  (item_count))
-          return false;
+          ܦܢܐ ܕܓܠܐ;
 
-        for (unsigned i = 0; i < item_count; i++)
+        لكل (unsigned i = 0; i < item_count; i++)
         {
-          tuple.indices.arrayZ[i] = true;
+          tuple.indices.arrayZ[i] = ܫܪܪܐ;
           tuple.deltas_x.arrayZ[i] = var_data.get_item_delta_fast (inner_map ? inner_map->backward (i) : i,
                                                                    r, delta_bytes, row_size);
         }
 
         unsigned region_index = var_data.get_region_index (r);
-        if (region_index >= regions.length) return false;
+        ܐܢ (region_index >= regions.length) ܦܢܐ ܕܓܠܐ;
         tuple.axis_tuples = regions.arrayZ[region_index];
 
         tuple_vars.push (std::move (tuple));
       }
-      return !tuple_vars.in_error ();
+      ܦܢܐ !tuple_vars.in_error ();
     }
 
-    private:
-    static int _cmp_axis_tag (const void *pa, const void *pb)
+    خاص:
+    ساكن صحيح _cmp_axis_tag (ثابت فراغ *pa, ثابت فراغ *pb)
     {
-      const hb_tag_t *a = (const hb_tag_t*) pa;
-      const hb_tag_t *b = (const hb_tag_t*) pb;
-      return (int)(*a) - (int)(*b);
+      ثابت hb_tag_t *a = (ثابت hb_tag_t*) pa;
+      ثابت hb_tag_t *b = (ثابت hb_tag_t*) pb;
+      ܦܢܐ (صحيح)(*a) - (صحيح)(*b);
     }
 
-    bool change_tuple_variations_axis_limits (const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
-                                              const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
+    منطقي change_tuple_variations_axis_limits (ثابت hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
+                                              ثابت hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
 					      hb_alloc_pool_t *pool = nullptr)
     {
       /* sort axis_tag/axis_limits, make result deterministic */
       hb_vector_t<hb_tag_t> axis_tags;
-      if (!axis_tags.alloc (normalized_axes_location.get_population ()))
-        return false;
-      for (auto t : normalized_axes_location.keys ())
+      ܐܢ (!axis_tags.alloc (normalized_axes_location.get_population ()))
+        ܦܢܐ ܕܓܠܐ;
+      لكل (auto t : normalized_axes_location.keys ())
         axis_tags.push (t);
 
       // Reused vectors for reduced malloc pressure.
@@ -1154,128 +1154,128 @@ struct TupleVariationData
       hb_vector_t<tuple_delta_t> out;
 
       axis_tags.qsort (_cmp_axis_tag);
-      for (auto axis_tag : axis_tags)
+      لكل (auto axis_tag : axis_tags)
       {
         Triple *axis_limit;
-        if (!normalized_axes_location.has (axis_tag, &axis_limit))
-          return false;
+        ܐܢ (!normalized_axes_location.has (axis_tag, &axis_limit))
+          ܦܢܐ ܕܓܠܐ;
         TripleDistances axis_triple_distances{1.f, 1.f};
-        if (axes_triple_distances.has (axis_tag))
+        ܐܢ (axes_triple_distances.has (axis_tag))
           axis_triple_distances = axes_triple_distances.get (axis_tag);
 
         hb_vector_t<tuple_delta_t> new_vars;
-        for (tuple_delta_t& var : tuple_vars)
+        لكل (tuple_delta_t& var : tuple_vars)
         {
 	  // This may move var out.
 	  var.change_tuple_var_axis_limit (axis_tag, *axis_limit, axis_triple_distances, out, scratch, pool);
-          if (!out) continue;
+          ܐܢ (!out) استمر;
 
           unsigned new_len = new_vars.length + out.length;
 
-          if (unlikely (!new_vars.alloc (new_len, false)))
-            return false;
+          ܐܢ (unlikely (!new_vars.alloc (new_len, ܕܓܠܐ)))
+            ܦܢܐ ܕܓܠܐ;
 
-          for (unsigned i = 0; i < out.length; i++)
+          لكل (unsigned i = 0; i < out.length; i++)
             new_vars.push (std::move (out[i]));
         }
         tuple_vars = std::move (new_vars);
       }
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
     /* merge tuple variations with overlapping tents, if iup delta optimization
      * is enabled, add default deltas to contour_points */
-    bool merge_tuple_variations (contour_point_vector_t* contour_points = nullptr)
+    منطقي merge_tuple_variations (contour_point_vector_t* contour_points = nullptr)
     {
       hb_vector_t<tuple_delta_t> new_vars;
       // The pre-allocation is essential for address stability of pointers
       // we store in the hashmap.
-      if (unlikely (!new_vars.alloc (tuple_vars.length)))
-	return false;
-      hb_hashmap_t<const hb_hashmap_t<hb_tag_t, Triple>*, unsigned> m;
-      for (tuple_delta_t& var : tuple_vars)
+      ܐܢ (unlikely (!new_vars.alloc (tuple_vars.length)))
+	ܦܢܐ ܕܓܠܐ;
+      hb_hashmap_t<ثابت hb_hashmap_t<hb_tag_t, Triple>*, unsigned> m;
+      لكل (tuple_delta_t& var : tuple_vars)
       {
         /* if all axes are pinned, drop the tuple variation */
-        if (var.axis_tuples.is_empty ())
+        ܐܢ (var.axis_tuples.is_empty ())
         {
           /* if iup_delta_optimize is enabled, add deltas to contour coords */
-          if (contour_points && !contour_points->add_deltas (var.deltas_x,
+          ܐܢ (contour_points && !contour_points->add_deltas (var.deltas_x,
                                                              var.deltas_y,
                                                              var.indices))
-            return false;
-          continue;
+            ܦܢܐ ܕܓܠܐ;
+          استمر;
         }
 
         unsigned *idx;
-        if (m.has (&(var.axis_tuples), &idx))
+        ܐܢ (m.has (&(var.axis_tuples), &idx))
         {
           new_vars[*idx] += var;
         }
-        else
+        ܐܚܪܢܐ
         {
 	  auto *new_var = new_vars.push ();
-	  if (unlikely (new_vars.in_error ()))
-	    return false;
+	  ܐܢ (unlikely (new_vars.in_error ()))
+	    ܦܢܐ ܕܓܠܐ;
           hb_swap (*new_var, var);
-          if (unlikely (!m.set (&(new_var->axis_tuples), new_vars.length - 1)))
-            return false;
+          ܐܢ (unlikely (!m.set (&(new_var->axis_tuples), new_vars.length - 1)))
+            ܦܢܐ ܕܓܠܐ;
         }
       }
       m.fini (); // Just in case, since it points into new_vars data.
 		 // Shouldn't be necessary though, since we only move new_vars, not its
 		 // contents.
       tuple_vars = std::move (new_vars);
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
     /* compile all point set and store byte data in a point_set->hb_bytes_t hashmap,
      * also update point_set->count map, which will be used in finding shared
      * point set*/
-    bool compile_all_point_sets ()
+    منطقي compile_all_point_sets ()
     {
-      for (const auto& tuple: tuple_vars)
+      لكل (ثابت auto& tuple: tuple_vars)
       {
-        const hb_vector_t<bool>* points_set = &(tuple.indices);
-        if (point_data_map.has (points_set))
+        ثابت hb_vector_t<منطقي>* points_set = &(tuple.indices);
+        ܐܢ (point_data_map.has (points_set))
         {
           unsigned *count;
-          if (unlikely (!point_set_count_map.has (points_set, &count) ||
+          ܐܢ (unlikely (!point_set_count_map.has (points_set, &count) ||
                         !point_set_count_map.set (points_set, (*count) + 1)))
-            return false;
-          continue;
+            ܦܢܐ ܕܓܠܐ;
+          استمر;
         }
 
-        hb_vector_t<unsigned char> compiled_point_data;
-        if (!tuple_delta_t::compile_point_set (*points_set, compiled_point_data))
-          return false;
+        hb_vector_t<unsigned حرف> compiled_point_data;
+        ܐܢ (!tuple_delta_t::compile_point_set (*points_set, compiled_point_data))
+          ܦܢܐ ܕܓܠܐ;
 
-        if (!point_data_map.set (points_set, std::move (compiled_point_data)) ||
+        ܐܢ (!point_data_map.set (points_set, std::move (compiled_point_data)) ||
             !point_set_count_map.set (points_set, 1))
-          return false;
+          ܦܢܐ ܕܓܠܐ;
       }
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
     /* find shared points set which saves most bytes */
-    void find_shared_points ()
+    فراغ find_shared_points ()
     {
       unsigned max_saved_bytes = 0;
 
-      for (const auto& _ : point_data_map.iter_ref ())
+      لكل (ثابت auto& _ : point_data_map.iter_ref ())
       {
-        const hb_vector_t<bool>* points_set = _.first;
+        ثابت hb_vector_t<منطقي>* points_set = _.first;
         unsigned data_length = _.second.length;
-        if (!data_length) continue;
+        ܐܢ (!data_length) استمر;
         unsigned *count;
-        if (unlikely (!point_set_count_map.has (points_set, &count) ||
+        ܐܢ (unlikely (!point_set_count_map.has (points_set, &count) ||
                       *count <= 1))
         {
           shared_points_bytes = nullptr;
-          return;
+          ܦܢܐ;
         }
 
         unsigned saved_bytes = data_length * ((*count) -1);
-        if (saved_bytes > max_saved_bytes)
+        ܐܢ (saved_bytes > max_saved_bytes)
         {
           max_saved_bytes = saved_bytes;
           shared_points_bytes = &(_.second);
@@ -1283,186 +1283,186 @@ struct TupleVariationData
       }
     }
 
-    bool calc_inferred_deltas (const contour_point_vector_t& contour_points,
+    منطقي calc_inferred_deltas (ثابت contour_point_vector_t& contour_points,
 			       hb_vector_t<unsigned> &scratch)
     {
-      for (tuple_delta_t& var : tuple_vars)
-        if (!var.calc_inferred_deltas (contour_points, scratch))
-          return false;
+      لكل (tuple_delta_t& var : tuple_vars)
+        ܐܢ (!var.calc_inferred_deltas (contour_points, scratch))
+          ܦܢܐ ܕܓܠܐ;
 
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
-    bool iup_optimize (const contour_point_vector_t& contour_points,
+    منطقي iup_optimize (ثابت contour_point_vector_t& contour_points,
 		       optimize_scratch_t &scratch)
     {
-      for (tuple_delta_t& var : tuple_vars)
+      لكل (tuple_delta_t& var : tuple_vars)
       {
-        if (!var.optimize (contour_points, is_composite, scratch))
-          return false;
+        ܐܢ (!var.optimize (contour_points, is_composite, scratch))
+          ܦܢܐ ܕܓܠܐ;
       }
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
-    public:
+    عام:
     /* avar2 partial-instancing culling: drop tuples whose region a partial
      * instance can never reach (hb_subset_plan_t::avar2_reachable_ranges). */
-    void cull_unreachable (const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges)
+    فراغ cull_unreachable (ثابت hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges)
     {
       unsigned j = 0;
-      for (unsigned i = 0; i < tuple_vars.length; i++)
+      لكل (unsigned i = 0; i < tuple_vars.length; i++)
       {
-	if (_hb_avar2_region_is_dead (tuple_vars.arrayZ[i].axis_tuples, reachable_ranges))
-	  continue;
-	if (i != j)
+	ܐܢ (_hb_avar2_region_is_dead (tuple_vars.arrayZ[i].axis_tuples, reachable_ranges))
+	  استمر;
+	ܐܢ (i != j)
 	  tuple_vars.arrayZ[j] = std::move (tuple_vars.arrayZ[i]);
 	j++;
       }
       tuple_vars.shrink (j);
     }
 
-    bool instantiate (const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
-                      const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
+    منطقي instantiate (ثابت hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
+                      ثابت hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
 		      optimize_scratch_t &scratch,
 		      hb_alloc_pool_t *pool = nullptr,
                       contour_point_vector_t* contour_points = nullptr,
-                      bool optimize = false)
+                      منطقي optimize = ܕܓܠܐ)
     {
-      if (!tuple_vars) return true;
-      if (!change_tuple_variations_axis_limits (normalized_axes_location, axes_triple_distances, pool))
-        return false;
+      ܐܢ (!tuple_vars) ܦܢܐ ܫܪܪܐ;
+      ܐܢ (!change_tuple_variations_axis_limits (normalized_axes_location, axes_triple_distances, pool))
+        ܦܢܐ ܕܓܠܐ;
       /* compute inferred deltas only for gvar */
-      if (contour_points)
+      ܐܢ (contour_points)
       {
 	hb_vector_t<unsigned> scratch;
-	if (!calc_inferred_deltas (*contour_points, scratch))
-	  return false;
+	ܐܢ (!calc_inferred_deltas (*contour_points, scratch))
+	  ܦܢܐ ܕܓܠܐ;
       }
 
       /* if iup delta opt is on, contour_points can't be null */
-      if (optimize && !contour_points)
-        return false;
+      ܐܢ (optimize && !contour_points)
+        ܦܢܐ ܕܓܠܐ;
 
-      if (!merge_tuple_variations (optimize ? contour_points : nullptr))
-        return false;
+      ܐܢ (!merge_tuple_variations (optimize ? contour_points : nullptr))
+        ܦܢܐ ܕܓܠܐ;
 
-      if (optimize && !iup_optimize (*contour_points, scratch)) return false;
-      return !tuple_vars.in_error ();
+      ܐܢ (optimize && !iup_optimize (*contour_points, scratch)) ܦܢܐ ܕܓܠܐ;
+      ܦܢܐ !tuple_vars.in_error ();
     }
 
-    bool compile_bytes (const hb_map_t& axes_index_map,
-                        const hb_map_t& axes_old_index_tag_map,
-                        bool use_shared_points,
-                        bool is_gvar = false,
-                        const hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned>* shared_tuples_idx_map = nullptr,
+    منطقي compile_bytes (ثابت hb_map_t& axes_index_map,
+                        ثابت hb_map_t& axes_old_index_tag_map,
+                        منطقي use_shared_points,
+                        منطقي is_gvar = ܕܓܠܐ,
+                        ثابت hb_hashmap_t<ثابت hb_vector_t<F2DOT14>*, unsigned>* shared_tuples_idx_map = nullptr,
 			hb_alloc_pool_t *pool = nullptr)
     {
       // return true for empty glyph
-      if (!tuple_vars)
-        return true;
+      ܐܢ (!tuple_vars)
+        ܦܢܐ ܫܪܪܐ;
 
       // compile points set and store data in hashmap
-      if (!compile_all_point_sets ())
-        return false;
+      ܐܢ (!compile_all_point_sets ())
+        ܦܢܐ ܕܓܠܐ;
 
       /* total compiled byte size as TupleVariationData format, initialized to its
        * min_size: 4 */
       compiled_byte_size += 4;
 
-      if (use_shared_points)
+      ܐܢ (use_shared_points)
       {
         find_shared_points ();
-        if (shared_points_bytes)
+        ܐܢ (shared_points_bytes)
           compiled_byte_size += shared_points_bytes->length;
       }
-      hb_vector_t<int> rounded_deltas_scratch;
+      hb_vector_t<صحيح> rounded_deltas_scratch;
       // compile delta and tuple var header for each tuple variation
-      for (auto& tuple: tuple_vars)
+      لكل (auto& tuple: tuple_vars)
       {
-        const hb_vector_t<bool>* points_set = &(tuple.indices);
-        hb_vector_t<unsigned char> *points_data;
-        if (unlikely (!point_data_map.has (points_set, &points_data)))
-          return false;
+        ثابت hb_vector_t<منطقي>* points_set = &(tuple.indices);
+        hb_vector_t<unsigned حرف> *points_data;
+        ܐܢ (unlikely (!point_data_map.has (points_set, &points_data)))
+          ܦܢܐ ܕܓܠܐ;
 
         /* when iup optimization is enabled, num of referenced points could be 0
          * and thus the compiled points bytes is empty, we should skip compiling
          * this tuple */
-        if (!points_data->length)
-          continue;
-        if (!tuple.compile_deltas (rounded_deltas_scratch, pool))
-          return false;
+        ܐܢ (!points_data->length)
+          استمر;
+        ܐܢ (!tuple.compile_deltas (rounded_deltas_scratch, pool))
+          ܦܢܐ ܕܓܠܐ;
 
         unsigned points_data_length = (points_data != shared_points_bytes) ? points_data->length : 0;
-        if (!tuple.compile_tuple_var_header (axes_index_map, points_data_length, axes_old_index_tag_map,
+        ܐܢ (!tuple.compile_tuple_var_header (axes_index_map, points_data_length, axes_old_index_tag_map,
                                              shared_tuples_idx_map,
 					     pool))
-          return false;
+          ܦܢܐ ܕܓܠܐ;
         compiled_byte_size += tuple.compiled_tuple_header.length + points_data_length + tuple.compiled_deltas.length;
       }
 
-      if (is_gvar && (compiled_byte_size % 2))
+      ܐܢ (is_gvar && (compiled_byte_size % 2))
       {
-        needs_padding = true;
+        needs_padding = ܫܪܪܐ;
         compiled_byte_size += 1;
       }
 
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
-    bool serialize_var_headers (hb_serialize_context_t *c, unsigned& total_header_len) const
+    منطقي serialize_var_headers (hb_serialize_context_t *c, unsigned& total_header_len) ثابت
     {
-      TRACE_SERIALIZE (this);
-      for (const auto& tuple: tuple_vars)
+      TRACE_SERIALIZE (هذا);
+      لكل (ثابت auto& tuple: tuple_vars)
       {
         tuple.compiled_tuple_header.as_array ().copy (c);
-        if (c->in_error ()) return_trace (false);
+        ܐܢ (c->in_error ()) return_trace (ܕܓܠܐ);
         total_header_len += tuple.compiled_tuple_header.length;
       }
-      return_trace (true);
+      return_trace (ܫܪܪܐ);
     }
 
-    bool serialize_var_data (hb_serialize_context_t *c, bool is_gvar) const
+    منطقي serialize_var_data (hb_serialize_context_t *c, منطقي is_gvar) ثابت
     {
-      TRACE_SERIALIZE (this);
-      if (is_gvar && shared_points_bytes)
+      TRACE_SERIALIZE (هذا);
+      ܐܢ (is_gvar && shared_points_bytes)
       {
         hb_ubytes_t s (shared_points_bytes->arrayZ, shared_points_bytes->length);
         s.copy (c);
       }
 
-      for (const auto& tuple: tuple_vars)
+      لكل (ثابت auto& tuple: tuple_vars)
       {
-        const hb_vector_t<bool>* points_set = &(tuple.indices);
-        hb_vector_t<unsigned char> *point_data;
-        if (!point_data_map.has (points_set, &point_data))
-          return_trace (false);
+        ثابت hb_vector_t<منطقي>* points_set = &(tuple.indices);
+        hb_vector_t<unsigned حرف> *point_data;
+        ܐܢ (!point_data_map.has (points_set, &point_data))
+          return_trace (ܕܓܠܐ);
 
-        if (!is_gvar || point_data != shared_points_bytes)
+        ܐܢ (!is_gvar || point_data != shared_points_bytes)
         {
           hb_ubytes_t s (point_data->arrayZ, point_data->length);
           s.copy (c);
         }
 
         tuple.compiled_deltas.as_array ().copy (c);
-        if (c->in_error ()) return_trace (false);
+        ܐܢ (c->in_error ()) return_trace (ܕܓܠܐ);
       }
 
       /* padding for gvar */
-      if (is_gvar && needs_padding)
+      ܐܢ (is_gvar && needs_padding)
       {
         HBUINT8 pad;
         pad = 0;
-        if (!c->embed (pad)) return_trace (false);
+        ܐܢ (!c->embed (pad)) return_trace (ܕܓܠܐ);
       }
-      return_trace (true);
+      return_trace (ܫܪܪܐ);
     }
   };
 
-  struct tuple_iterator_t
+  بنية tuple_iterator_t
   {
-    unsigned get_axis_count () const { return axis_count; }
+    unsigned get_axis_count () ثابت { ܦܢܐ axis_count; }
 
-    void init (hb_bytes_t var_data_bytes_, unsigned int axis_count_, const void *table_base_)
+    فراغ init (hb_bytes_t var_data_bytes_, unsigned صحيح axis_count_, ثابت فراغ *table_base_)
     {
       var_data_bytes = var_data_bytes_;
       var_data = var_data_bytes_.as<TupleVariationData> ();
@@ -1474,73 +1474,73 @@ struct TupleVariationData
       table_base = table_base_;
     }
 
-    bool get_shared_indices (hb_vector_t<unsigned int> &shared_indices /* OUT */)
+    منطقي get_shared_indices (hb_vector_t<unsigned صحيح> &shared_indices /* OUT */)
     {
-      if (var_data->has_shared_point_numbers ())
+      ܐܢ (var_data->has_shared_point_numbers ())
       {
-        const HBUINT8 *base = &(table_base+var_data->data);
-        const HBUINT8 *p = base;
-        if (!decompile_points (p, shared_indices, (const HBUINT8 *) (var_data_bytes.arrayZ + var_data_bytes.length))) return false;
+        ثابت HBUINT8 *base = &(table_base+var_data->data);
+        ثابت HBUINT8 *p = base;
+        ܐܢ (!decompile_points (p, shared_indices, (ثابت HBUINT8 *) (var_data_bytes.arrayZ + var_data_bytes.length))) ܦܢܐ ܕܓܠܐ;
         data_offset = p - base;
       }
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
-    bool is_valid ()
+    منطقي is_valid ()
     {
-      if (unlikely (tuples_left <= 0))
-	return false;
+      ܐܢ (unlikely (tuples_left <= 0))
+	ܦܢܐ ܕܓܠܐ;
 
       current_tuple_size = TupleVariationHeader::min_size;
-      if (unlikely (!var_data_bytes.check_end ((const char *) current_tuple + current_tuple_size)))
-	return false;
+      ܐܢ (unlikely (!var_data_bytes.check_end ((ثابت حرف *) current_tuple + current_tuple_size)))
+	ܦܢܐ ܕܓܠܐ;
 
       current_tuple_size = current_tuple->get_size (axis_count_times_2);
-      if (unlikely (!var_data_bytes.check_end ((const char *) current_tuple + current_tuple_size)))
-	return false;
+      ܐܢ (unlikely (!var_data_bytes.check_end ((ثابت حرف *) current_tuple + current_tuple_size)))
+	ܦܢܐ ܕܓܠܐ;
 
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
 
     HB_ALWAYS_INLINE
-    bool move_to_next ()
+    منطقي move_to_next ()
     {
       data_offset += current_tuple->get_data_size ();
       current_tuple = &StructAtOffset<TupleVariationHeader> (current_tuple, current_tuple_size);
       tuples_left--;
-      return is_valid ();
+      ܦܢܐ is_valid ();
     }
 
     // TODO: Make it return (sanitized) hb_bytes_t
-    const HBUINT8 *get_serialized_data () const
-    { return &(table_base+var_data->data) + data_offset; }
+    ثابت HBUINT8 *get_serialized_data () ثابت
+    { ܦܢܐ &(table_base+var_data->data) + data_offset; }
 
-    private:
+    خاص:
     signed tuples_left;
-    const TupleVariationData *var_data;
-    unsigned int axis_count;
-    unsigned int axis_count_times_2;
-    unsigned int data_offset;
-    unsigned int current_tuple_size;
-    const void *table_base;
+    ثابت TupleVariationData *var_data;
+    unsigned صحيح axis_count;
+    unsigned صحيح axis_count_times_2;
+    unsigned صحيح data_offset;
+    unsigned صحيح current_tuple_size;
+    ثابت فراغ *table_base;
 
-    public:
+    عام:
     hb_bytes_t var_data_bytes;
-    const TupleVariationHeader *current_tuple;
+    ثابت TupleVariationHeader *current_tuple;
   };
 
-  static bool get_tuple_iterator (hb_bytes_t var_data_bytes, unsigned axis_count,
-                                  const void *table_base,
-                                  hb_vector_t<unsigned int> &shared_indices /* OUT */,
+  ساكن منطقي get_tuple_iterator (hb_bytes_t var_data_bytes, unsigned axis_count,
+                                  ثابت فراغ *table_base,
+                                  hb_vector_t<unsigned صحيح> &shared_indices /* OUT */,
                                   tuple_iterator_t *iterator /* OUT */)
   {
     iterator->init (var_data_bytes, axis_count, table_base);
-    if (!iterator->get_shared_indices (shared_indices))
-      return false;
-    return iterator->is_valid ();
+    ܐܢ (!iterator->get_shared_indices (shared_indices))
+      ܦܢܐ ܕܓܠܐ;
+    ܦܢܐ iterator->is_valid ();
   }
 
-  bool has_shared_point_numbers () const { return tupleVarCount.has_shared_point_numbers (); }
+  منطقي has_shared_point_numbers () ثابت { ܦܢܐ tupleVarCount.has_shared_point_numbers (); }
 
   /* avar2 partial-instancing culling: rewrite this tuple variation data,
    * dropping TupleVariations whose region a partial instance can never
@@ -1549,174 +1549,174 @@ struct TupleVariationData
    * every tuple died. Keeps the original data (*changed stays false) when
    * nothing is culled or the data is malformed. Returns false only on
    * allocation failure. */
-  bool cull_tuple_variations (hb_bytes_t var_data_bytes,
+  منطقي cull_tuple_variations (hb_bytes_t var_data_bytes,
 			      unsigned axis_count,
-			      hb_array_t<const F2DOT14> shared_tuples,
-			      const hb_map_t *axes_old_index_tag_map,
-			      const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges,
-			      hb_vector_t<char> &out /* OUT */,
-			      bool *changed /* OUT */) const
+			      hb_array_t<ثابت F2DOT14> shared_tuples,
+			      ثابت hb_map_t *axes_old_index_tag_map,
+			      ثابت hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges,
+			      hb_vector_t<حرف> &out /* OUT */,
+			      منطقي *changed /* OUT */) ثابت
   {
-    *changed = false;
+    *changed = ܕܓܠܐ;
 
-    hb_vector_t<unsigned int> shared_indices;
+    hb_vector_t<unsigned صحيح> shared_indices;
     tuple_iterator_t iterator;
-    if (!get_tuple_iterator (var_data_bytes, axis_count, this,
+    ܐܢ (!get_tuple_iterator (var_data_bytes, axis_count, هذا,
 			     shared_indices, &iterator))
-      return true; /* no tuples or malformed: keep original */
+      ܦܢܐ ܫܪܪܐ; /* no tuples or malformed: keep original */
 
-    const char *bytes_start = var_data_bytes.arrayZ;
-    const char *bytes_end = bytes_start + var_data_bytes.length;
-    const char *serialized_base = (const char *) &(this+data);
-    const char *shared_points_end = (const char *) iterator.get_serialized_data ();
-    if (unlikely (serialized_base < bytes_start || serialized_base > bytes_end ||
+    ثابت حرف *bytes_start = var_data_bytes.arrayZ;
+    ثابت حرف *bytes_end = bytes_start + var_data_bytes.length;
+    ثابت حرف *serialized_base = (ثابت حرف *) &(هذا+data);
+    ثابت حرف *shared_points_end = (ثابت حرف *) iterator.get_serialized_data ();
+    ܐܢ (unlikely (serialized_base < bytes_start || serialized_base > bytes_end ||
 		  shared_points_end < serialized_base || shared_points_end > bytes_end))
-      return true;
+      ܦܢܐ ܫܪܪܐ;
 
-    struct kept_tuple_t
+    بنية kept_tuple_t
     {
-      const char *header;
+      ثابت حرف *header;
       unsigned header_size;
-      const char *data;
+      ثابت حرف *data;
       unsigned data_size;
     };
     hb_vector_t<kept_tuple_t> kept;
     unsigned total = 0;
     unsigned kept_headers_size = 0, kept_data_size = 0;
-    do
+    ܥܒܕ
     {
-      const TupleVariationHeader *header = iterator.current_tuple;
+      ثابت TupleVariationHeader *header = iterator.current_tuple;
       unsigned header_size = header->get_size (axis_count * 2);
       unsigned data_size = header->get_data_size ();
-      const char *tuple_data = (const char *) iterator.get_serialized_data ();
-      if (unlikely (tuple_data < serialized_base ||
+      ثابت حرف *tuple_data = (ثابت حرف *) iterator.get_serialized_data ();
+      ܐܢ (unlikely (tuple_data < serialized_base ||
 		    data_size > (unsigned) (bytes_end - tuple_data)))
-	return true; /* malformed: keep original */
+	ܦܢܐ ܫܪܪܐ; /* malformed: keep original */
 
       hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-      if (!header->unpack_axis_tuples (axis_count, shared_tuples,
+      ܐܢ (!header->unpack_axis_tuples (axis_count, shared_tuples,
 				       axes_old_index_tag_map, axis_tuples))
-	return true;
+	ܦܢܐ ܫܪܪܐ;
 
       total++;
-      if (!_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
+      ܐܢ (!_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
       {
-	kept.push (kept_tuple_t {(const char *) header, header_size,
+	kept.push (kept_tuple_t {(ثابت حرف *) header, header_size,
 				 tuple_data, data_size});
 	kept_headers_size += header_size;
 	kept_data_size += data_size;
       }
-    } while (iterator.move_to_next ());
+    } ܟܡܐ (iterator.move_to_next ());
 
-    if (unlikely (kept.in_error ())) return false;
-    if (kept.length == total) return true; /* nothing to cull */
+    ܐܢ (unlikely (kept.in_error ())) ܦܢܐ ܕܓܠܐ;
+    ܐܢ (kept.length == total) ܦܢܐ ܫܪܪܐ; /* nothing to cull */
 
-    *changed = true;
-    if (!kept.length) return true; /* everything culled: no variation data */
+    *changed = ܫܪܪܐ;
+    ܐܢ (!kept.length) ܦܢܐ ܫܪܪܐ; /* everything culled: no variation data */
 
     unsigned shared_points_size = shared_points_end - serialized_base;
     unsigned data_offset = min_size + kept_headers_size;
     unsigned new_size = data_offset + shared_points_size + kept_data_size;
-    if (unlikely (!out.resize (new_size)))
-      return false;
+    ܐܢ (unlikely (!out.resize (new_size)))
+      ܦܢܐ ܕܓܠܐ;
 
     TupleVariationData *out_data = (TupleVariationData *) out.arrayZ;
     out_data->tupleVarCount = (uint16_t) (kept.length |
 					  (has_shared_point_numbers () ? 0x8000u : 0u));
     out_data->data = data_offset;
 
-    char *p = out.arrayZ + min_size;
-    for (const auto &t : kept)
+    حرف *p = out.arrayZ + min_size;
+    لكل (ثابت auto &t : kept)
     {
       hb_memcpy (p, t.header, t.header_size);
       p += t.header_size;
     }
     hb_memcpy (p, serialized_base, shared_points_size);
     p += shared_points_size;
-    for (const auto &t : kept)
+    لكل (ثابت auto &t : kept)
     {
       hb_memcpy (p, t.data, t.data_size);
       p += t.data_size;
     }
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
-  static bool decompile_points (const HBUINT8 *&p /* IN/OUT */,
-				hb_vector_t<unsigned int> &points /* OUT */,
-				const HBUINT8 *end)
+  ساكن منطقي decompile_points (ثابت HBUINT8 *&p /* IN/OUT */,
+				hb_vector_t<unsigned صحيح> &points /* OUT */,
+				ثابت HBUINT8 *end)
   {
-    enum packed_point_flag_t
+    تعداد packed_point_flag_t
     {
       POINTS_ARE_WORDS     = 0x80,
       POINT_RUN_COUNT_MASK = 0x7F
     };
 
-    if (unlikely (p + 1 > end)) return false;
+    ܐܢ (unlikely (p + 1 > end)) ܦܢܐ ܕܓܠܐ;
 
     unsigned count = *p++;
-    if (count & POINTS_ARE_WORDS)
+    ܐܢ (count & POINTS_ARE_WORDS)
     {
-      if (unlikely (p + 1 > end)) return false;
+      ܐܢ (unlikely (p + 1 > end)) ܦܢܐ ܕܓܠܐ;
       count = ((count & POINT_RUN_COUNT_MASK) << 8) | *p++;
     }
-    if (unlikely (!points.resize_dirty  (count))) return false;
+    ܐܢ (unlikely (!points.resize_dirty  (count))) ܦܢܐ ܕܓܠܐ;
 
     unsigned n = 0;
     unsigned i = 0;
-    while (i < count)
+    ܟܡܐ (i < count)
     {
-      if (unlikely (p + 1 > end)) return false;
+      ܐܢ (unlikely (p + 1 > end)) ܦܢܐ ܕܓܠܐ;
       unsigned control = *p++;
       unsigned run_count = (control & POINT_RUN_COUNT_MASK) + 1;
       unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
-      if (control & POINTS_ARE_WORDS)
+      ܐܢ (unlikely (stop > count)) ܦܢܐ ܕܓܠܐ;
+      ܐܢ (control & POINTS_ARE_WORDS)
       {
-        if (unlikely (p + run_count * HBUINT16::static_size > end)) return false;
-        for (; i < stop; i++)
+        ܐܢ (unlikely (p + run_count * HBUINT16::static_size > end)) ܦܢܐ ܕܓܠܐ;
+        لكل (; i < stop; i++)
         {
-          n += *(const HBUINT16 *)p;
+          n += *(ثابت HBUINT16 *)p;
           points.arrayZ[i] = n;
           p += HBUINT16::static_size;
         }
       }
-      else
+      ܐܚܪܢܐ
       {
-        if (unlikely (p + run_count > end)) return false;
-        for (; i < stop; i++)
+        ܐܢ (unlikely (p + run_count > end)) ܦܢܐ ܕܓܠܐ;
+        لكل (; i < stop; i++)
         {
           n += *p++;
           points.arrayZ[i] = n;
         }
       }
     }
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
   template <typename T>
   HB_ALWAYS_INLINE
-  static bool decompile_deltas (const HBUINT8 *&p /* IN/OUT */,
+  ساكن منطقي decompile_deltas (ثابت HBUINT8 *&p /* IN/OUT */,
 				hb_vector_t<T> &deltas /* IN/OUT */,
-				const HBUINT8 *end,
-				bool consume_all = false,
+				ثابت HBUINT8 *end,
+				منطقي consume_all = ܕܓܠܐ,
 				unsigned start = 0)
   {
-    return TupleValues::decompile (p, deltas, end, consume_all, start);
+    ܦܢܐ TupleValues::decompile (p, deltas, end, consume_all, start);
   }
 
-  bool has_data () const { return tupleVarCount; }
+  منطقي has_data () ثابت { ܦܢܐ tupleVarCount; }
 
-  bool decompile_tuple_variations (unsigned point_count,
-                                   bool is_gvar,
+  منطقي decompile_tuple_variations (unsigned point_count,
+                                   منطقي is_gvar,
                                    tuple_iterator_t iterator,
-                                   const hb_map_t *axes_old_index_tag_map,
-                                   const hb_vector_t<unsigned> &shared_indices,
-                                   const hb_array_t<const F2DOT14> shared_tuples,
+                                   ثابت hb_map_t *axes_old_index_tag_map,
+                                   ثابت hb_vector_t<unsigned> &shared_indices,
+                                   ثابت hb_array_t<ثابت F2DOT14> shared_tuples,
                                    tuple_variations_t& tuple_variations, /* OUT */
 				   hb_alloc_pool_t *pool = nullptr,
-                                   bool is_composite_glyph = false) const
+                                   منطقي is_composite_glyph = ܕܓܠܐ) ثابت
   {
-    return tuple_variations.create_from_tuple_var_data (iterator, tupleVarCount,
+    ܦܢܐ tuple_variations.create_from_tuple_var_data (iterator, tupleVarCount,
                                                         point_count, is_gvar,
                                                         axes_old_index_tag_map,
                                                         shared_indices,
@@ -1725,48 +1725,48 @@ struct TupleVariationData
                                                         is_composite_glyph);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  bool is_gvar,
-                  const tuple_variations_t& tuple_variations) const
+  منطقي serialize (hb_serialize_context_t *c,
+                  منطقي is_gvar,
+                  ثابت tuple_variations_t& tuple_variations) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     /* empty tuple variations, just return and skip serialization. */
-    if (!tuple_variations) return_trace (true);
+    ܐܢ (!tuple_variations) return_trace (ܫܪܪܐ);
 
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (false);
+    auto *out = c->start_embed (هذا);
+    ܐܢ (unlikely (!c->extend_min (out))) return_trace (ܕܓܠܐ);
 
-    if (!c->check_assign (out->tupleVarCount, tuple_variations.get_var_count (),
-                          HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    ܐܢ (!c->check_assign (out->tupleVarCount, tuple_variations.get_var_count (),
+                          HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (ܕܓܠܐ);
 
     unsigned total_header_len = 0;
 
-    if (!tuple_variations.serialize_var_headers (c, total_header_len))
-      return_trace (false);
+    ܐܢ (!tuple_variations.serialize_var_headers (c, total_header_len))
+      return_trace (ܕܓܠܐ);
 
     unsigned data_offset = min_size + total_header_len;
-    if (!is_gvar) data_offset += 4;
-    if (!c->check_assign (out->data, data_offset, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    ܐܢ (!is_gvar) data_offset += 4;
+    ܐܢ (!c->check_assign (out->data, data_offset, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (ܕܓܠܐ);
 
-    return tuple_variations.serialize_var_data (c, is_gvar);
+    ܦܢܐ tuple_variations.serialize_var_data (c, is_gvar);
   }
 
-  protected:
-  struct TupleVarCount : HBUINT16
+  محمي:
+  بنية TupleVarCount : HBUINT16
   {
-    friend struct tuple_variations_t;
-    bool has_shared_point_numbers () const { return ((*this) & SharedPointNumbers); }
-    unsigned int get_count () const { return (*this) & CountMask; }
-    TupleVarCount& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
-    explicit operator bool () const { return get_count (); }
+    friend بنية tuple_variations_t;
+    منطقي has_shared_point_numbers () ثابت { ܦܢܐ ((*هذا) & SharedPointNumbers); }
+    unsigned صحيح get_count () ثابت { ܦܢܐ (*هذا) & CountMask; }
+    TupleVarCount& operator = (uint16_t i) { HBUINT16::operator= (i); ܦܢܐ *هذا; }
+    explicit operator منطقي () ثابت { ܦܢܐ get_count (); }
 
-    protected:
-    enum Flags
+    محمي:
+    تعداد Flags
     {
       SharedPointNumbers= 0x8000u,
       CountMask         = 0x0FFFu
     };
-    public:
+    عام:
     DEFINE_SIZE_STATIC (2);
   };
 
@@ -1778,16 +1778,16 @@ struct TupleVariationData
                 data;           /* Offset from the start of the base table
                                  * to the serialized data. */
   /* TupleVariationHeader tupleVariationHeaders[] *//* Array of tuple variation headers. */
-  public:
+  عام:
   DEFINE_SIZE_MIN (2 + OffType::static_size);
 };
 
 // TODO: Move tuple_variations_t to outside of TupleVariationData
 using tuple_variations_t = TupleVariationData<HBUINT16>::tuple_variations_t;
-struct item_variations_t
+بنية item_variations_t
 {
-  using region_t = const hb_hashmap_t<hb_tag_t, Triple>*;
-  private:
+  using region_t = ثابت hb_hashmap_t<hb_tag_t, Triple>*;
+  خاص:
   /* each subtable is decompiled into a tuple_variations_t, in which all tuples
    * have the same num of deltas (rows) */
   hb_vector_t<tuple_variations_t> vars;
@@ -1814,7 +1814,7 @@ struct item_variations_t
   hb_hashmap_t<region_t, unsigned> region_map;
 
   /* all delta rows after instantiation */
-  hb_vector_t<hb_vector_t<int>> delta_rows;
+  hb_vector_t<hb_vector_t<صحيح>> delta_rows;
   /* final optimized vector of encoding objects used to assemble the varstore */
   hb_vector_t<delta_row_encoding_t> encodings;
 
@@ -1822,217 +1822,217 @@ struct item_variations_t
   hb_map_t varidx_map;
 
   /* has long words */
-  bool has_long = false;
+  منطقي has_long = ܕܓܠܐ;
 
-  public:
-  bool has_long_word () const
-  { return has_long; }
+  عام:
+  منطقي has_long_word () ثابت
+  { ܦܢܐ has_long; }
 
-  const hb_vector_t<region_t>& get_region_list () const
-  { return region_list; }
+  ثابت hb_vector_t<region_t>& get_region_list () ثابت
+  { ܦܢܐ region_list; }
 
-  const hb_vector_t<delta_row_encoding_t>& get_vardata_encodings () const
-  { return encodings; }
+  ثابت hb_vector_t<delta_row_encoding_t>& get_vardata_encodings () ثابت
+  { ܦܢܐ encodings; }
 
-  const hb_map_t& get_varidx_map () const
-  { return varidx_map; }
+  ثابت hb_map_t& get_varidx_map () ثابت
+  { ܦܢܐ varidx_map; }
 
-  bool add_vardata_encoding_for_testing (hb_vector_t<const hb_vector_t<int>*> &&rows,
+  منطقي add_vardata_encoding_for_testing (hb_vector_t<ثابت hb_vector_t<صحيح>*> &&rows,
                                          unsigned num_cols)
   {
     encodings.push (delta_row_encoding_t (std::move (rows), num_cols));
-    return !encodings.in_error ();
+    ܦܢܐ !encodings.in_error ();
   }
 
-  bool compile_varidx_map_for_testing (const hb_hashmap_t<unsigned, const hb_vector_t<int>*>& front_mapping)
-  { return compile_varidx_map (front_mapping); }
+  منطقي compile_varidx_map_for_testing (ثابت hb_hashmap_t<unsigned, ثابت hb_vector_t<صحيح>*>& front_mapping)
+  { ܦܢܐ compile_varidx_map (front_mapping); }
 
-  bool instantiate (const ItemVariationStore& varStore,
-                    const hb_subset_plan_t *plan,
-                    bool optimize=true,
-                    bool use_no_variation_idx=true,
-                    const hb_array_t <const hb_inc_bimap_t> inner_maps = hb_array_t<const hb_inc_bimap_t> (),
-                    bool layout_conditions = false)
+  منطقي instantiate (ثابت ItemVariationStore& varStore,
+                    ثابت hb_subset_plan_t *plan,
+                    منطقي optimize=ܫܪܪܐ,
+                    منطقي use_no_variation_idx=ܫܪܪܐ,
+                    ثابت hb_array_t <ثابت hb_inc_bimap_t> inner_maps = hb_array_t<ثابت hb_inc_bimap_t> (),
+                    منطقي layout_conditions = ܕܓܠܐ)
   {
-    if (!create_from_item_varstore (varStore, plan->axes_old_index_tag_map, inner_maps))
-      return false;
+    ܐܢ (!create_from_item_varstore (varStore, plan->axes_old_index_tag_map, inner_maps))
+      ܦܢܐ ܕܓܠܐ;
     /* avar2 partial instancing: cull unreachable regions. */
-    if (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
-      for (tuple_variations_t& tuple_vars : vars)
+    ܐܢ (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
+      لكل (tuple_variations_t& tuple_vars : vars)
 	tuple_vars.cull_unreachable (plan->avar2_reachable_ranges);
-    if (!instantiate_tuple_vars (plan->axes_location, plan->axes_triple_distances,
+    ܐܢ (!instantiate_tuple_vars (plan->axes_location, plan->axes_triple_distances,
                                  !layout_conditions))
-      return false;
-    if (layout_conditions &&
+      ܦܢܐ ܕܓܠܐ;
+    ܐܢ (layout_conditions &&
         (!instantiate_condition_values (plan, varStore) || !build_region_list ()))
-      return false;
-    return as_item_varstore (optimize, use_no_variation_idx);
+      ܦܢܐ ܕܓܠܐ;
+    ܦܢܐ as_item_varstore (optimize, use_no_variation_idx);
   }
 
-  bool instantiate_condition_values (const hb_subset_plan_t *plan,
-                                      const ItemVariationStore &varStore)
+  منطقي instantiate_condition_values (ثابت hb_subset_plan_t *plan,
+                                      ثابت ItemVariationStore &varStore)
   {
     // GDEF serialization can be retried; always start from the source values.
     auto &condition_map = plan->layout_condition_idx_value_map;
     condition_map.clear ();
-    if (!plan->layout_condition_values) return true;
-    using condition_value_t = hb_pair_t<uintptr_t, hb_pair_t<unsigned, int>>;
+    ܐܢ (!plan->layout_condition_values) ܦܢܐ ܫܪܪܐ;
+    using condition_value_t = hb_pair_t<uintptr_t, hb_pair_t<unsigned, صحيح>>;
     hb_vector_t<condition_value_t> conditions;
-    for (auto condition : plan->layout_condition_values.iter ())
+    لكل (auto condition : plan->layout_condition_values.iter ())
       conditions.push (condition);
-    if (unlikely (conditions.in_error ())) return false;
+    ܐܢ (unlikely (conditions.in_error ())) ܦܢܐ ܕܓܠܐ;
     // Row order must not depend on the addresses of the source conditions.
-    conditions.qsort ([] (const condition_value_t &a, const condition_value_t &b) {
-      if (a.second.first != b.second.first)
-        return a.second.first < b.second.first ? -1 : 1;
-      return a.second.second < b.second.second ? -1 :
+    conditions.qsort ([] (ثابت condition_value_t &a, ثابت condition_value_t &b) {
+      ܐܢ (a.second.first != b.second.first)
+        ܦܢܐ a.second.first < b.second.first ? -1 : 1;
+      ܦܢܐ a.second.second < b.second.second ? -1 :
              a.second.second > b.second.second ? 1 : 0;
     });
     hb_map_t outer_map;
     unsigned new_outer = 0;
-    for (unsigned i = 0; i < plan->gdef_varstore_inner_maps.length; i++)
-      if (plan->gdef_varstore_inner_maps[i].get_population ())
-        if (!outer_map.set (i, new_outer++)) return false;
-    for (auto condition : conditions)
+    لكل (unsigned i = 0; i < plan->gdef_varstore_inner_maps.length; i++)
+      ܐܢ (plan->gdef_varstore_inner_maps[i].get_population ())
+        ܐܢ (!outer_map.set (i, new_outer++)) ܦܢܐ ܕܓܠܐ;
+    لكل (auto condition : conditions)
     {
       unsigned old_idx = condition.second.first;
-      double value = condition.second.second +
-                     varStore.get_delta<double> (old_idx, plan->normalized_coords.as_array ());
+      مزدوج value = condition.second.second +
+                     varStore.get_delta<مزدوج> (old_idx, plan->normalized_coords.as_array ());
       unsigned old_outer = old_idx >> 16;
-      if (!outer_map.has (old_outer))
-        continue;
+      ܐܢ (!outer_map.has (old_outer))
+        استمر;
       unsigned outer = outer_map.get (old_outer);
       unsigned inner = plan->gdef_varstore_inner_maps[old_outer].get (old_idx & 0xFFFF);
       unsigned idx = (outer << 16) | inner;
-      if (outer >= vars.length || inner >= var_data_num_rows[outer])
-        continue;
+      ܐܢ (outer >= vars.length || inner >= var_data_num_rows[outer])
+        استمر;
 
-      double maximum = fabs ((double) value);
-      bool variable = false;
-      for (const tuple_delta_t &tuple : vars[outer].tuple_vars)
+      مزدوج maximum = fabs ((مزدوج) value);
+      منطقي variable = ܕܓܠܐ;
+      لكل (ثابت tuple_delta_t &tuple : vars[outer].tuple_vars)
       {
-        if (unlikely (inner >= tuple.deltas_x.length)) return false;
-        float delta = tuple.deltas_x[inner];
+        ܐܢ (unlikely (inner >= tuple.deltas_x.length)) ܦܢܐ ܕܓܠܐ;
+        عائم delta = tuple.deltas_x[inner];
         variable |= delta != 0.f;
-        maximum = hb_max (maximum, fabs ((double) delta));
+        maximum = hb_max (maximum, fabs ((مزدوج) delta));
       }
-      if (!variable)
+      ܐܢ (!variable)
       {
-        if (!condition_map.set (condition.first,
-                                hb_pair (unsigned (VarIdx::NO_VARIATION), int (value > 0))))
-          return false;
-        continue;
+        ܐܢ (!condition_map.set (condition.first,
+                                hb_pair (unsigned (VarIdx::NO_VARIATION), صحيح (value > 0))))
+          ܦܢܐ ܕܓܠܐ;
+        استمر;
       }
 
-      double scale = 1.;
-      while (maximum * scale > INT_MAX)
+      مزدوج scale = 1.;
+      ܟܡܐ (maximum * scale > INT_MAX)
         scale *= .5;
       // Positive rescaling preserves the Boolean boundary. Prefer exact
       // integers, otherwise use the available 32-bit precision.
-      while (maximum * scale * 2 <= INT_MAX)
+      ܟܡܐ (maximum * scale * 2 <= INT_MAX)
       {
-        bool integral = (double) value * scale == round ((double) value * scale);
-        for (const tuple_delta_t &tuple : vars[outer].tuple_vars)
-          integral &= (double) tuple.deltas_x[inner] * scale ==
-                      round ((double) tuple.deltas_x[inner] * scale);
-        if (integral) break;
+        منطقي integral = (مزدوج) value * scale == round ((مزدوج) value * scale);
+        لكل (ثابت tuple_delta_t &tuple : vars[outer].tuple_vars)
+          integral &= (مزدوج) tuple.deltas_x[inner] * scale ==
+                      round ((مزدوج) tuple.deltas_x[inner] * scale);
+        ܐܢ (integral) اكسر;
         scale *= 2;
       }
-      int default_value = (int) round ((double) value * scale);
-      if (scale != 1. || default_value < -32768 || default_value > 32767)
+      صحيح default_value = (صحيح) round ((مزدوج) value * scale);
+      ܐܢ (scale != 1. || default_value < -32768 || default_value > 32767)
       {
         // A condition may share its row with a positioning value. Give it a
         // private copy before integer rounding discards fractional deltas.
         tuple_variations_t private_row;
-        for (const tuple_delta_t &tuple : vars[outer].tuple_vars)
+        لكل (ثابت tuple_delta_t &tuple : vars[outer].tuple_vars)
         {
-          if (!tuple.deltas_x[inner]) continue;
+          ܐܢ (!tuple.deltas_x[inner]) استمر;
           tuple_delta_t copy;
           copy.axis_tuples = tuple.axis_tuples;
-          copy.indices.push (true);
-          copy.deltas_x.push ((float) round ((double) tuple.deltas_x[inner] * scale));
-          if (unlikely (copy.axis_tuples.in_error () || copy.indices.in_error () ||
-                        copy.deltas_x.in_error ())) return false;
+          copy.indices.push (ܫܪܪܐ);
+          copy.deltas_x.push ((عائم) round ((مزدوج) tuple.deltas_x[inner] * scale));
+          ܐܢ (unlikely (copy.axis_tuples.in_error () || copy.indices.in_error () ||
+                        copy.deltas_x.in_error ())) ܦܢܐ ܕܓܠܐ;
           private_row.tuple_vars.push (std::move (copy));
         }
-        if (unlikely (vars.length >= 0xFFFFu)) return false;
-        if (unlikely (private_row.tuple_vars.in_error ())) return false;
+        ܐܢ (unlikely (vars.length >= 0xFFFFu)) ܦܢܐ ܕܓܠܐ;
+        ܐܢ (unlikely (private_row.tuple_vars.in_error ())) ܦܢܐ ܕܓܠܐ;
         idx = vars.length << 16;
         vars.push (std::move (private_row));
         var_data_num_rows.push (1);
-        if (unlikely (vars.in_error () || var_data_num_rows.in_error ())) return false;
-        if (default_value < -32768 || default_value > 32767)
+        ܐܢ (unlikely (vars.in_error () || var_data_num_rows.in_error ())) ܦܢܐ ܕܓܠܐ;
+        ܐܢ (default_value < -32768 || default_value > 32767)
         {
           // Keep the Boolean result in the int16 default: no deltas apply
           // at the default instance. A neutral region carries the excess.
           // Each part is exact in float; integer row assembly adds them
           // before serialization, preserving all 32 bits of the bias.
-          int bias = default_value - hb_clamp (default_value, -32768, 32767);
+          صحيح bias = default_value - hb_clamp (default_value, -32768, 32767);
           default_value -= bias;
-          int high = bias / 65536 * 65536;
-          int parts[] = {high, bias - high};
-          for (int part : parts)
+          صحيح high = bias / 65536 * 65536;
+          صحيح parts[] = {high, bias - high};
+          لكل (صحيح part : parts)
           {
-            if (!part) continue;
+            ܐܢ (!part) استمر;
             unsigned count = vars[idx >> 16].tuple_vars.length;
             add_tuple (idx >> 16, hb_hashmap_t<hb_tag_t, Triple> (),
                        0, part, 1);
-            const auto &tuples = vars[idx >> 16].tuple_vars;
-            if (unlikely (tuples.in_error () || tuples.length != count + 1 ||
+            ثابت auto &tuples = vars[idx >> 16].tuple_vars;
+            ܐܢ (unlikely (tuples.in_error () || tuples.length != count + 1 ||
                           tuples.tail ().indices.in_error () ||
-                          tuples.tail ().deltas_x.in_error ())) return false;
+                          tuples.tail ().deltas_x.in_error ())) ܦܢܐ ܕܓܠܐ;
           }
         }
       }
-      if (!condition_map.set (condition.first, hb_pair (idx, default_value)))
-        return false;
+      ܐܢ (!condition_map.set (condition.first, hb_pair (idx, default_value)))
+        ܦܢܐ ܕܓܠܐ;
     }
-    return !condition_map.in_error ();
+    ܦܢܐ !condition_map.in_error ();
   }
 
   /* keep below APIs public only for unit test: test-item-varstore */
-  bool create_from_item_varstore (const ItemVariationStore& varStore,
-                                  const hb_map_t& axes_old_index_tag_map,
-                                  const hb_array_t <const hb_inc_bimap_t> inner_maps = hb_array_t<const hb_inc_bimap_t> ())
+  منطقي create_from_item_varstore (ثابت ItemVariationStore& varStore,
+                                  ثابت hb_map_t& axes_old_index_tag_map,
+                                  ثابت hb_array_t <ثابت hb_inc_bimap_t> inner_maps = hb_array_t<ثابت hb_inc_bimap_t> ())
   {
-    const VarRegionList& regionList = varStore.get_region_list ();
-    if (!regionList.get_var_regions (axes_old_index_tag_map, orig_region_list))
-      return false;
+    ثابت VarRegionList& regionList = varStore.get_region_list ();
+    ܐܢ (!regionList.get_var_regions (axes_old_index_tag_map, orig_region_list))
+      ܦܢܐ ܕܓܠܐ;
 
     unsigned num_var_data = varStore.get_sub_table_count ();
-    if (inner_maps && inner_maps.length != num_var_data) return false;
-    if (!vars.alloc (num_var_data) ||
-        !var_data_num_rows.alloc (num_var_data)) return false;
+    ܐܢ (inner_maps && inner_maps.length != num_var_data) ܦܢܐ ܕܓܠܐ;
+    ܐܢ (!vars.alloc (num_var_data) ||
+        !var_data_num_rows.alloc (num_var_data)) ܦܢܐ ܕܓܠܐ;
 
-    for (unsigned i = 0; i < num_var_data; i++)
+    لكل (unsigned i = 0; i < num_var_data; i++)
     {
-      if (inner_maps && !inner_maps.arrayZ[i].get_population ())
-          continue;
+      ܐܢ (inner_maps && !inner_maps.arrayZ[i].get_population ())
+          استمر;
       tuple_variations_t var_data_tuples;
       unsigned item_count = 0;
-      if (!var_data_tuples.create_from_item_var_data (varStore.get_sub_table (i),
+      ܐܢ (!var_data_tuples.create_from_item_var_data (varStore.get_sub_table (i),
                                                       orig_region_list,
                                                       axes_old_index_tag_map,
                                                       item_count,
                                                       inner_maps ? &(inner_maps.arrayZ[i]) : nullptr))
-        return false;
+        ܦܢܐ ܕܓܠܐ;
 
       var_data_num_rows.push (item_count);
       vars.push (std::move (var_data_tuples));
     }
-    return !vars.in_error () && !var_data_num_rows.in_error () && vars.length == var_data_num_rows.length;
+    ܦܢܐ !vars.in_error () && !var_data_num_rows.in_error () && vars.length == var_data_num_rows.length;
   }
 
-  bool instantiate_tuple_vars (const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
-                               const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
-                               bool build_regions = true)
+  منطقي instantiate_tuple_vars (ثابت hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
+                               ثابت hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
+                               منطقي build_regions = ܫܪܪܐ)
   {
     optimize_scratch_t scratch;
-    for (tuple_variations_t& tuple_vars : vars)
-      if (!tuple_vars.instantiate (normalized_axes_location, axes_triple_distances, scratch))
-        return false;
+    لكل (tuple_variations_t& tuple_vars : vars)
+      ܐܢ (!tuple_vars.instantiate (normalized_axes_location, axes_triple_distances, scratch))
+        ܦܢܐ ܕܓܠܐ;
 
-    return !build_regions || build_region_list ();
+    ܦܢܐ !build_regions || build_region_list ();
   }
 
   /* Add a new VarData subtable. Returns outer index. */
@@ -2040,12 +2040,12 @@ struct item_variations_t
   {
     vars.push (tuple_variations_t ());
     var_data_num_rows.push (item_count);
-    return vars.length - 1;
+    ܦܢܐ vars.length - 1;
   }
 
   /* Get item count for a VarData subtable. */
-  unsigned get_item_count (unsigned outer) const
-  { return outer < var_data_num_rows.length ? var_data_num_rows[outer] : 0; }
+  unsigned get_item_count (unsigned outer) ثابت
+  { ܦܢܐ outer < var_data_num_rows.length ? var_data_num_rows[outer] : 0; }
 
   /* Duplicate the delta row at position inner within VarData subtable outer,
    * appending the copy as a new item. Used to give an axis a private copy of
@@ -2054,48 +2054,48 @@ struct item_variations_t
    * inner index, or (unsigned) -1 on failure. */
   unsigned duplicate_row (unsigned outer, unsigned inner)
   {
-    if (unlikely (outer >= vars.length ||
+    ܐܢ (unlikely (outer >= vars.length ||
                   inner >= var_data_num_rows[outer] ||
                   var_data_num_rows[outer] >= 0xFFFFu))
-      return (unsigned) -1;
-    for (tuple_delta_t& tuple : vars[outer].tuple_vars)
+      ܦܢܐ (unsigned) -1;
+    لكل (tuple_delta_t& tuple : vars[outer].tuple_vars)
     {
-      if (unlikely (inner >= tuple.deltas_x.length ||
+      ܐܢ (unlikely (inner >= tuple.deltas_x.length ||
                     inner >= tuple.indices.length))
-        return (unsigned) -1;
+        ܦܢܐ (unsigned) -1;
       tuple.indices.push (tuple.indices.arrayZ[inner]);
       tuple.deltas_x.push (tuple.deltas_x.arrayZ[inner]);
-      if (inner < tuple.deltas_y.length)
+      ܐܢ (inner < tuple.deltas_y.length)
         tuple.deltas_y.push (tuple.deltas_y.arrayZ[inner]);
-      if (unlikely (tuple.indices.in_error () ||
+      ܐܢ (unlikely (tuple.indices.in_error () ||
                     tuple.deltas_x.in_error () ||
                     tuple.deltas_y.in_error ()))
-        return (unsigned) -1;
+        ܦܢܐ (unsigned) -1;
     }
-    return var_data_num_rows[outer]++;
+    ܦܢܐ var_data_num_rows[outer]++;
   }
 
   /* Add a tuple with a single non-zero delta at position inner.
    * axis_tuples defines the region (empty map = constant/bias tuple). */
-  void add_tuple (unsigned outer,
+  فراغ add_tuple (unsigned outer,
                   hb_hashmap_t<hb_tag_t, Triple>&& axis_tuples,
-                  unsigned inner, int delta, unsigned item_count)
+                  unsigned inner, صحيح delta, unsigned item_count)
   {
-    if (outer >= vars.length) return;
+    ܐܢ (outer >= vars.length) ܦܢܐ;
     tuple_delta_t tuple;
     tuple.axis_tuples = std::move (axis_tuples);
-    if (!tuple.indices.resize (item_count) ||
-        !tuple.deltas_x.resize (item_count)) return;
-    for (unsigned i = 0; i < item_count; i++)
+    ܐܢ (!tuple.indices.resize (item_count) ||
+        !tuple.deltas_x.resize (item_count)) ܦܢܐ;
+    لكل (unsigned i = 0; i < item_count; i++)
     {
-      tuple.indices.arrayZ[i] = true;
+      tuple.indices.arrayZ[i] = ܫܪܪܐ;
       tuple.deltas_x.arrayZ[i] = 0.f;
     }
-    tuple.deltas_x[inner] = (float) delta;
+    tuple.deltas_x[inner] = (عائم) delta;
     vars[outer].tuple_vars.push (std::move (tuple));
   }
 
-  bool build_region_list ()
+  منطقي build_region_list ()
   {
     /* scan all tuples and collect all unique regions, prune unused regions */
     hb_hashmap_t<region_t, unsigned> all_regions;
@@ -2103,182 +2103,182 @@ struct item_variations_t
 
     /* use a vector when inserting new regions, make result deterministic */
     hb_vector_t<region_t> all_unique_regions;
-    for (const tuple_variations_t& sub_table : vars)
+    لكل (ثابت tuple_variations_t& sub_table : vars)
     {
-      for (const tuple_delta_t& tuple : sub_table.tuple_vars)
+      لكل (ثابت tuple_delta_t& tuple : sub_table.tuple_vars)
       {
         region_t r = &(tuple.axis_tuples);
-        if (!used_regions.has (r))
+        ܐܢ (!used_regions.has (r))
         {
-          bool all_zeros = true;
-          for (float d : tuple.deltas_x)
+          منطقي all_zeros = ܫܪܪܐ;
+          لكل (عائم d : tuple.deltas_x)
           {
-            int delta = hb_clamp_to<int> (roundf ((double) d));
-            if (delta != 0)
+            صحيح delta = hb_clamp_to<صحيح> (roundf ((مزدوج) d));
+            ܐܢ (delta != 0)
             {
-              all_zeros = false;
-              break;
+              all_zeros = ܕܓܠܐ;
+              اكسر;
             }
           }
-          if (!all_zeros)
+          ܐܢ (!all_zeros)
           {
-            if (!used_regions.set (r, 1))
-              return false;
+            ܐܢ (!used_regions.set (r, 1))
+              ܦܢܐ ܕܓܠܐ;
           }
         }
-        if (all_regions.has (r))
-          continue;
-        if (!all_regions.set (r, 1))
-          return false;
+        ܐܢ (all_regions.has (r))
+          استمر;
+        ܐܢ (!all_regions.set (r, 1))
+          ܦܢܐ ܕܓܠܐ;
         all_unique_regions.push (r);
       }
     }
 
     /* regions are empty means no variation data, return true */
-    if (!all_regions || !all_unique_regions) return true;
+    ܐܢ (!all_regions || !all_unique_regions) ܦܢܐ ܫܪܪܐ;
 
-    if (!region_list.alloc (all_regions.get_population ()))
-      return false;
+    ܐܢ (!region_list.alloc (all_regions.get_population ()))
+      ܦܢܐ ܕܓܠܐ;
 
     unsigned idx = 0;
     /* append the original regions that pre-existed */
-    for (const auto& r : orig_region_list)
+    لكل (ثابت auto& r : orig_region_list)
     {
-      if (!all_regions.has (&r) || !used_regions.has (&r))
-        continue;
+      ܐܢ (!all_regions.has (&r) || !used_regions.has (&r))
+        استمر;
 
       region_list.push (&r);
-      if (!region_map.set (&r, idx))
-        return false;
+      ܐܢ (!region_map.set (&r, idx))
+        ܦܢܐ ܕܓܠܐ;
       all_regions.del (&r);
       idx++;
     }
 
     /* append the new regions at the end */
-    for (const auto& r: all_unique_regions)
+    لكل (ثابت auto& r: all_unique_regions)
     {
-      if (!all_regions.has (r) || !used_regions.has (r))
-        continue;
+      ܐܢ (!all_regions.has (r) || !used_regions.has (r))
+        استمر;
       region_list.push (r);
-      if (!region_map.set (r, idx))
-        return false;
+      ܐܢ (!region_map.set (r, idx))
+        ܦܢܐ ܕܓܠܐ;
       all_regions.del (r);
       idx++;
     }
-    return (!region_list.in_error ()) && (!region_map.in_error ());
+    ܦܢܐ (!region_list.in_error ()) && (!region_map.in_error ());
   }
 
   /* main algorithm ported from fonttools VarStore_optimize() method, optimize
    * varstore by default */
 
-  struct combined_gain_idx_tuple_t
+  بنية combined_gain_idx_tuple_t
   {
     uint64_t encoded;
 
-    combined_gain_idx_tuple_t () = default;
+    combined_gain_idx_tuple_t () = افتراضي;
     combined_gain_idx_tuple_t (unsigned gain, unsigned i, unsigned j)
         : encoded ((uint64_t (0xFFFFFF - gain) << 40) | (uint64_t (i) << 20) | uint64_t (j))
     {
-      assert (gain < 0xFFFFFF);
-      assert (i < 0xFFFFFFF && j < 0xFFFFFFF);
+      أكد (gain < 0xFFFFFF);
+      أكد (i < 0xFFFFFFF && j < 0xFFFFFFF);
     }
 
-    bool operator < (const combined_gain_idx_tuple_t& o)
+    منطقي operator < (ثابت combined_gain_idx_tuple_t& o)
     {
-      return encoded < o.encoded;
+      ܦܢܐ encoded < o.encoded;
     }
 
-    bool operator <= (const combined_gain_idx_tuple_t& o)
+    منطقي operator <= (ثابت combined_gain_idx_tuple_t& o)
     {
-      return encoded <= o.encoded;
+      ܦܢܐ encoded <= o.encoded;
     }
 
-    unsigned idx_1 () const { return (encoded >> 20) & 0xFFFFF; };
-    unsigned idx_2 () const { return encoded & 0xFFFFF; };
+    unsigned idx_1 () ثابت { ܦܢܐ (encoded >> 20) & 0xFFFFF; };
+    unsigned idx_2 () ثابت { ܦܢܐ encoded & 0xFFFFF; };
   };
 
-  bool as_item_varstore (bool optimize=true, bool use_no_variation_idx=true)
+  منطقي as_item_varstore (منطقي optimize=ܫܪܪܐ, منطقي use_no_variation_idx=ܫܪܪܐ)
   {
     /* return true if no variation data */
-    if (!region_list) return true;
+    ܐܢ (!region_list) ܦܢܐ ܫܪܪܐ;
     unsigned num_cols = region_list.length;
     /* pre-alloc a 2D vector for all sub_table's VarData rows */
     unsigned total_rows = 0;
-    for (unsigned major = 0; major < var_data_num_rows.length; major++)
+    لكل (unsigned major = 0; major < var_data_num_rows.length; major++)
       total_rows += var_data_num_rows[major];
 
-    if (!delta_rows.resize (total_rows)) return false;
+    ܐܢ (!delta_rows.resize (total_rows)) ܦܢܐ ܕܓܠܐ;
     /* init all rows to [0]*num_cols */
-    for (unsigned i = 0; i < total_rows; i++)
-      if (!(delta_rows[i].resize (num_cols))) return false;
+    لكل (unsigned i = 0; i < total_rows; i++)
+      ܐܢ (!(delta_rows[i].resize (num_cols))) ܦܢܐ ܕܓܠܐ;
 
     /* old VarIdxes -> full encoding_row mapping */
-    hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
+    hb_hashmap_t<unsigned, ثابت hb_vector_t<صحيح>*> front_mapping;
     unsigned start_row = 0;
     hb_vector_t<delta_row_encoding_t> encoding_objs;
 
     /* delta_rows map, used for filtering out duplicate rows */
-    hb_vector_t<const hb_vector_t<int> *> major_rows;
-    hb_hashmap_t<const hb_vector_t<int>*, unsigned> delta_rows_map;
-    for (unsigned major = 0; major < vars.length; major++)
+    hb_vector_t<ثابت hb_vector_t<صحيح> *> major_rows;
+    hb_hashmap_t<ثابت hb_vector_t<صحيح>*, unsigned> delta_rows_map;
+    لكل (unsigned major = 0; major < vars.length; major++)
     {
       /* deltas are stored in tuples(column based), convert them back into items
        * (row based) delta */
-      const tuple_variations_t& tuples = vars[major];
+      ثابت tuple_variations_t& tuples = vars[major];
       unsigned num_rows = var_data_num_rows[major];
 
-      if (!num_rows) continue;
+      ܐܢ (!num_rows) استمر;
 
-      for (const tuple_delta_t& tuple: tuples.tuple_vars)
+      لكل (ثابت tuple_delta_t& tuple: tuples.tuple_vars)
       {
-        if (tuple.deltas_x.length != num_rows)
-          return false;
+        ܐܢ (tuple.deltas_x.length != num_rows)
+          ܦܢܐ ܕܓܠܐ;
 
         /* skip unused regions */
         unsigned *col_idx;
-        if (!region_map.has (&(tuple.axis_tuples), &col_idx))
-          continue;
+        ܐܢ (!region_map.has (&(tuple.axis_tuples), &col_idx))
+          استمر;
 
-        for (unsigned i = 0; i < num_rows; i++)
+        لكل (unsigned i = 0; i < num_rows; i++)
         {
-          int rounded_delta = hb_clamp_to<int> (roundf ((double) tuple.deltas_x[i]));
-          int &delta = delta_rows[start_row + i][*col_idx];
+          صحيح rounded_delta = hb_clamp_to<صحيح> (roundf ((مزدوج) tuple.deltas_x[i]));
+          صحيح &delta = delta_rows[start_row + i][*col_idx];
           int64_t sum = (int64_t) delta + rounded_delta;
-          if (unlikely (sum < INT_MIN || sum > INT_MAX)) return false;
-          delta = (int) sum;
+          ܐܢ (unlikely (sum < INT_MIN || sum > INT_MAX)) ܦܢܐ ܕܓܠܐ;
+          delta = (صحيح) sum;
           has_long |= delta < -32768 || delta > 32767;
         }
       }
 
       major_rows.reset ();
-      for (unsigned minor = 0; minor < num_rows; minor++)
+      لكل (unsigned minor = 0; minor < num_rows; minor++)
       {
-	const hb_vector_t<int>& row = delta_rows[start_row + minor];
-	if (use_no_variation_idx)
+	ثابت hb_vector_t<صحيح>& row = delta_rows[start_row + minor];
+	ܐܢ (use_no_variation_idx)
 	{
-	  bool all_zeros = true;
-	  for (int delta : row)
+	  منطقي all_zeros = ܫܪܪܐ;
+	  لكل (صحيح delta : row)
 	  {
-	    if (delta != 0)
+	    ܐܢ (delta != 0)
 	    {
-	      all_zeros = false;
-	      break;
+	      all_zeros = ܕܓܠܐ;
+	      اكسر;
 	    }
 	  }
-	  if (all_zeros)
-	    continue;
+	  ܐܢ (all_zeros)
+	    استمر;
 	}
 
-	if (!front_mapping.set ((major<<16) + minor, &row))
-	  return false;
+	ܐܢ (!front_mapping.set ((major<<16) + minor, &row))
+	  ܦܢܐ ܕܓܠܐ;
 
 	/* Duplicate rows may only be dropped when optimizing: without a
 	 * varidx_map the caller relies on original VariationIndex values
 	 * staying valid (e.g. HVAR/VVAR with an implicit advance mapping). */
-	if (optimize)
+	ܐܢ (optimize)
 	{
-	  if (delta_rows_map.has (&row))
-	    continue;
+	  ܐܢ (delta_rows_map.has (&row))
+	    استمر;
 
 	  delta_rows_map.set (&row, 1);
 	}
@@ -2286,13 +2286,13 @@ struct item_variations_t
 	major_rows.push (&row);
       }
 
-      if (unlikely (major_rows.in_error () || delta_rows_map.in_error ()))
-        return false;
-      if (major_rows)
+      ܐܢ (unlikely (major_rows.in_error () || delta_rows_map.in_error ()))
+        ܦܢܐ ܕܓܠܐ;
+      ܐܢ (major_rows)
       {
 	auto *encoding = encoding_objs.push (std::move (major_rows), num_cols);
-	if (unlikely (encoding_objs.in_error () || encoding->in_error ()))
-	  return false;
+	ܐܢ (unlikely (encoding_objs.in_error () || encoding->in_error ()))
+	  ܦܢܐ ܕܓܠܐ;
       }
 
       start_row += num_rows;
@@ -2300,10 +2300,10 @@ struct item_variations_t
 
     /* return directly if no optimization, maintain original VariationIndex so
      * varidx_map would be empty */
-    if (!optimize)
+    ܐܢ (!optimize)
     {
       encodings = std::move (encoding_objs);
-      return !encodings.in_error ();
+      ܦܢܐ !encodings.in_error ();
     }
 
     /* NOTE: Fonttools instancer always optimizes VarStore from scratch. This
@@ -2319,12 +2319,12 @@ struct item_variations_t
     using item_t = hb_priority_queue_t<combined_gain_idx_tuple_t>::item_t;
     hb_vector_t<item_t> queue_items;
     unsigned num_todos = encoding_objs.length;
-    for (unsigned i = 0; i < num_todos; i++)
+    لكل (unsigned i = 0; i < num_todos; i++)
     {
-      for (unsigned j = i + 1; j < num_todos; j++)
+      لكل (unsigned j = i + 1; j < num_todos; j++)
       {
-        int combining_gain = encoding_objs.arrayZ[i].gain_from_merging (encoding_objs.arrayZ[j]);
-        if (combining_gain > 0)
+        صحيح combining_gain = encoding_objs.arrayZ[i].gain_from_merging (encoding_objs.arrayZ[j]);
+        ܐܢ (combining_gain > 0)
           queue_items.push (item_t (combined_gain_idx_tuple_t (combining_gain, i, j), 0));
       }
     }
@@ -2332,32 +2332,32 @@ struct item_variations_t
     hb_priority_queue_t<combined_gain_idx_tuple_t> queue (std::move (queue_items));
 
     hb_bit_set_t removed_todo_idxes;
-    while (queue)
+    ܟܡܐ (queue)
     {
       auto t = queue.pop_minimum ().first;
       unsigned i = t.idx_1 ();
       unsigned j = t.idx_2 ();
 
-      if (removed_todo_idxes.has (i) || removed_todo_idxes.has (j))
-        continue;
+      ܐܢ (removed_todo_idxes.has (i) || removed_todo_idxes.has (j))
+        استمر;
 
       delta_row_encoding_t& encoding = encoding_objs.arrayZ[i];
       delta_row_encoding_t& other_encoding = encoding_objs.arrayZ[j];
 
       removed_todo_idxes.add (i);
       removed_todo_idxes.add (j);
-      if (unlikely (removed_todo_idxes.in_error ())) return false;
+      ܐܢ (unlikely (removed_todo_idxes.in_error ())) ܦܢܐ ܕܓܠܐ;
 
       encoding.merge (other_encoding);
-      if (unlikely (encoding.in_error ())) return false;
+      ܐܢ (unlikely (encoding.in_error ())) ܦܢܐ ܕܓܠܐ;
 
-      for (unsigned idx = 0; idx < encoding_objs.length; idx++)
+      لكل (unsigned idx = 0; idx < encoding_objs.length; idx++)
       {
-        if (removed_todo_idxes.has (idx)) continue;
+        ܐܢ (removed_todo_idxes.has (idx)) استمر;
 
-        const delta_row_encoding_t& obj = encoding_objs.arrayZ[idx];
+        ثابت delta_row_encoding_t& obj = encoding_objs.arrayZ[idx];
 	// In the unlikely event that the same encoding exists already, combine it.
-        if (obj.width == encoding.width && obj.chars == encoding.chars)
+        ܐܢ (obj.width == encoding.width && obj.chars == encoding.chars)
         {
 	  // This is straight port from fonttools algorithm. I added this branch there
 	  // because I thought it can happen. But looks like we never get in here in
@@ -2365,52 +2365,52 @@ struct item_variations_t
 	  // happen. I think it's just that our tests are not extensive enough to hit
 	  // this path.
 
-          for (const auto& row : obj.items)
+          لكل (ثابت auto& row : obj.items)
             encoding.add_row (row);
-          if (unlikely (encoding.in_error ())) return false;
+          ܐܢ (unlikely (encoding.in_error ())) ܦܢܐ ܕܓܠܐ;
 
           removed_todo_idxes.add (idx);
-          if (unlikely (removed_todo_idxes.in_error ())) return false;
-          continue;
+          ܐܢ (unlikely (removed_todo_idxes.in_error ())) ܦܢܐ ܕܓܠܐ;
+          استمر;
         }
 
-        int combined_gain = encoding.gain_from_merging (obj);
-        if (combined_gain > 0)
+        صحيح combined_gain = encoding.gain_from_merging (obj);
+        ܐܢ (combined_gain > 0)
           queue.insert (combined_gain_idx_tuple_t (combined_gain, idx, encoding_objs.length), 0);
       }
 
       auto moved_encoding = std::move (encoding);
       encoding_objs.push (std::move (moved_encoding));
-      if (unlikely (encoding_objs.in_error ())) return false;
+      ܐܢ (unlikely (encoding_objs.in_error ())) ܦܢܐ ܕܓܠܐ;
     }
 
-    int num_final_encodings = (int) encoding_objs.length - (int) removed_todo_idxes.get_population ();
-    if (num_final_encodings <= 0) return false;
+    صحيح num_final_encodings = (صحيح) encoding_objs.length - (صحيح) removed_todo_idxes.get_population ();
+    ܐܢ (num_final_encodings <= 0) ܦܢܐ ܕܓܠܐ;
 
-    if (!encodings.alloc (num_final_encodings)) return false;
-    for (unsigned i = 0; i < encoding_objs.length; i++)
+    ܐܢ (!encodings.alloc (num_final_encodings)) ܦܢܐ ܕܓܠܐ;
+    لكل (unsigned i = 0; i < encoding_objs.length; i++)
     {
-      if (removed_todo_idxes.has (i)) continue;
+      ܐܢ (removed_todo_idxes.has (i)) استمر;
       encodings.push (std::move (encoding_objs.arrayZ[i]));
     }
 
-    return compile_varidx_map (front_mapping);
+    ܦܢܐ compile_varidx_map (front_mapping);
   }
 
-  private:
+  خاص:
   /* compile varidx_map for one VarData subtable (index specified by major) */
-  bool compile_varidx_map (const hb_hashmap_t<unsigned, const hb_vector_t<int>*>& front_mapping)
+  منطقي compile_varidx_map (ثابت hb_hashmap_t<unsigned, ثابت hb_vector_t<صحيح>*>& front_mapping)
   {
     /* full encoding_row -> new VarIdxes mapping */
-    hb_hashmap_t<const hb_vector_t<int>*, unsigned> back_mapping;
+    hb_hashmap_t<ثابت hb_vector_t<صحيح>*, unsigned> back_mapping;
     hb_vector_t<delta_row_encoding_t> split_encodings;
 
-    for (unsigned i = 0; i < encodings.length; i++)
+    لكل (unsigned i = 0; i < encodings.length; i++)
     {
       delta_row_encoding_t& encoding = encodings[i];
       /* just sanity check, this shouldn't happen */
-      if (encoding.is_empty () || encoding.in_error ())
-        return false;
+      ܐܢ (encoding.is_empty () || encoding.in_error ())
+        ܦܢܐ ܕܓܠܐ;
 
       unsigned num_rows = encoding.items.length;
       unsigned num_cols = encoding.chars.length;
@@ -2418,59 +2418,59 @@ struct item_variations_t
       /* sort rows, make result deterministic */
       encoding.items.qsort (_cmp_row);
 
-      for (unsigned start = 0; start < num_rows; start += 0xFFFFu)
+      لكل (unsigned start = 0; start < num_rows; start += 0xFFFFu)
       {
         unsigned chunk_len = hb_min (num_rows - start, 0xFFFFu);
-        hb_vector_t<const hb_vector_t<int>*> rows;
+        hb_vector_t<ثابت hb_vector_t<صحيح>*> rows;
 
-        if (!rows.alloc (chunk_len))
-          return false;
+        ܐܢ (!rows.alloc (chunk_len))
+          ܦܢܐ ܕܓܠܐ;
 
         unsigned major = split_encodings.length;
-        for (unsigned minor = 0; minor < chunk_len; minor++)
+        لكل (unsigned minor = 0; minor < chunk_len; minor++)
         {
-          const hb_vector_t<int> *row = encoding.items.arrayZ[start + minor];
+          ثابت hb_vector_t<صحيح> *row = encoding.items.arrayZ[start + minor];
           rows.push (row);
-          if (!back_mapping.set (row, (major << 16) + minor))
-            return false;
+          ܐܢ (!back_mapping.set (row, (major << 16) + minor))
+            ܦܢܐ ܕܓܠܐ;
         }
 
         auto *split = split_encodings.push (std::move (rows), num_cols);
-        if (unlikely (split_encodings.in_error () || split->in_error ()))
-          return false;
+        ܐܢ (unlikely (split_encodings.in_error () || split->in_error ()))
+          ܦܢܐ ܕܓܠܐ;
       }
     }
 
     encodings = std::move (split_encodings);
-    if (encodings.in_error () || back_mapping.in_error ())
-      return false;
+    ܐܢ (encodings.in_error () || back_mapping.in_error ())
+      ܦܢܐ ܕܓܠܐ;
 
-    for (auto _ : front_mapping.iter ())
+    لكل (auto _ : front_mapping.iter ())
     {
       unsigned old_varidx = _.first;
       unsigned *new_varidx;
-      if (back_mapping.has (_.second, &new_varidx))
+      ܐܢ (back_mapping.has (_.second, &new_varidx))
         varidx_map.set (old_varidx, *new_varidx);
-      else
+      ܐܚܪܢܐ
         varidx_map.set (old_varidx, HB_OT_LAYOUT_NO_VARIATIONS_INDEX);
     }
-    return !varidx_map.in_error ();
+    ܦܢܐ !varidx_map.in_error ();
   }
 
-  static int _cmp_row (const void *pa, const void *pb)
+  ساكن صحيح _cmp_row (ثابت فراغ *pa, ثابت فراغ *pb)
   {
     /* compare pointers of vectors(const hb_vector_t<int>*) that represent a row */
-    const hb_vector_t<int>** a = (const hb_vector_t<int>**) pa;
-    const hb_vector_t<int>** b = (const hb_vector_t<int>**) pb;
+    ثابت hb_vector_t<صحيح>** a = (ثابت hb_vector_t<صحيح>**) pa;
+    ثابت hb_vector_t<صحيح>** b = (ثابت hb_vector_t<صحيح>**) pb;
 
-    for (unsigned i = 0; i < (*b)->length; i++)
+    لكل (unsigned i = 0; i < (*b)->length; i++)
     {
-      int va = (*a)->arrayZ[i];
-      int vb = (*b)->arrayZ[i];
-      if (va != vb)
-        return va < vb ? -1 : 1;
+      صحيح va = (*a)->arrayZ[i];
+      صحيح vb = (*b)->arrayZ[i];
+      ܐܢ (va != vb)
+        ܦܢܐ va < vb ? -1 : 1;
     }
-    return 0;
+    ܦܢܐ 0;
   }
 };
 

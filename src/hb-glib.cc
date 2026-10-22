@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 #ifdef HAVE_GLIB
 
-#include "hb-glib.h"
+#ضمن "hb-glib.h"
 
-#include "hb-machinery.hh"
+#ضمن "hb-machinery.hh"
 
 
 /**
@@ -63,7 +63,7 @@
 hb_script_t
 hb_glib_script_to_script (GUnicodeScript script)
 {
-  return (hb_script_t) g_unicode_script_to_iso15924 (script);
+  ܦܢܐ (hb_script_t) g_unicode_script_to_iso15924 (script);
 }
 
 /**
@@ -80,72 +80,72 @@ hb_glib_script_to_script (GUnicodeScript script)
 GUnicodeScript
 hb_glib_script_from_script (hb_script_t script)
 {
-  return g_unicode_script_from_iso15924 (script);
+  ܦܢܐ g_unicode_script_from_iso15924 (script);
 }
 
 
-static hb_unicode_combining_class_t
+ساكن hb_unicode_combining_class_t
 hb_glib_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 فراغ               *user_data HB_UNUSED)
 
 {
-  return (hb_unicode_combining_class_t) g_unichar_combining_class (unicode);
+  ܦܢܐ (hb_unicode_combining_class_t) g_unichar_combining_class (unicode);
 }
 
-static hb_unicode_general_category_t
+ساكن hb_unicode_general_category_t
 hb_glib_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				  hb_codepoint_t      unicode,
-				  void               *user_data HB_UNUSED)
+				  فراغ               *user_data HB_UNUSED)
 
 {
   /* hb_unicode_general_category_t and GUnicodeType are identical */
-  return (hb_unicode_general_category_t) g_unichar_type (unicode);
+  ܦܢܐ (hb_unicode_general_category_t) g_unichar_type (unicode);
 }
 
-static hb_codepoint_t
+ساكن hb_codepoint_t
 hb_glib_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			   hb_codepoint_t      unicode,
-			   void               *user_data HB_UNUSED)
+			   فراغ               *user_data HB_UNUSED)
 {
   g_unichar_get_mirror_char (unicode, &unicode);
-  return unicode;
+  ܦܢܐ unicode;
 }
 
-static hb_script_t
+ساكن hb_script_t
 hb_glib_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			hb_codepoint_t      unicode,
-			void               *user_data HB_UNUSED)
+			فراغ               *user_data HB_UNUSED)
 {
-  return hb_glib_script_to_script (g_unichar_get_script (unicode));
+  ܦܢܐ hb_glib_script_to_script (g_unichar_get_script (unicode));
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_glib_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			 hb_codepoint_t      a,
 			 hb_codepoint_t      b,
 			 hb_codepoint_t     *ab,
-			 void               *user_data HB_UNUSED)
+			 فراغ               *user_data HB_UNUSED)
 {
-  return g_unichar_compose (a, b, ab);
+  ܦܢܐ g_unichar_compose (a, b, ab);
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_glib_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			   hb_codepoint_t      ab,
 			   hb_codepoint_t     *a,
 			   hb_codepoint_t     *b,
-			   void               *user_data HB_UNUSED)
+			   فراغ               *user_data HB_UNUSED)
 {
-  return g_unichar_decompose (ab, a, b);
+  ܦܢܐ g_unichar_decompose (ab, a, b);
 }
 
 
-static inline void free_static_glib_funcs ();
+ساكن مضمن فراغ free_static_glib_funcs ();
 
-static struct hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_glib_unicode_funcs_lazy_loader_t>
+ساكن بنية hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_glib_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  ساكن hb_unicode_funcs_t *create ()
   {
     hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
 
@@ -160,12 +160,12 @@ static struct hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader
 
     hb_atexit (free_static_glib_funcs);
 
-    return funcs;
+    ܦܢܐ funcs;
   }
 } static_glib_funcs;
 
-static inline
-void free_static_glib_funcs ()
+ساكن مضمن
+فراغ free_static_glib_funcs ()
 {
   static_glib_funcs.free_instance ();
 }
@@ -183,15 +183,15 @@ void free_static_glib_funcs ()
 hb_unicode_funcs_t *
 hb_glib_get_unicode_funcs ()
 {
-  return static_glib_funcs.get_unconst ();
+  ܦܢܐ static_glib_funcs.get_unconst ();
 }
 
 
 
-#if GLIB_CHECK_VERSION(2,31,10)
+#ܐܢ GLIB_CHECK_VERSION(2,31,10)
 
-static void
-_hb_g_bytes_unref (void *data)
+ساكن فراغ
+_hb_g_bytes_unref (فراغ *data)
 {
   g_bytes_unref ((GBytes *) data);
 }
@@ -212,7 +212,7 @@ hb_glib_blob_create (GBytes *gbytes)
 {
   gsize size = 0;
   gconstpointer data = g_bytes_get_data (gbytes, &size);
-  return hb_blob_create ((const char *) data,
+  ܦܢܐ hb_blob_create ((ثابت حرف *) data,
 			 size,
 			 HB_MEMORY_MODE_READONLY,
 			 g_bytes_ref (gbytes),

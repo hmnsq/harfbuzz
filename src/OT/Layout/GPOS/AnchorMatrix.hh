@@ -1,158 +1,158 @@
 #ifndef OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 #define OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-HB_INTERNAL inline
-void collect_ligature_anchor_indexes (unsigned rows,
+HB_INTERNAL مضمن
+فراغ collect_ligature_anchor_indexes (unsigned rows,
                                      unsigned class_count,
-                                     const hb_map_t &klass_mapping,
+                                     ثابت hb_map_t &klass_mapping,
                                      hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (unsigned row = 0; row < rows; row++)
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
+  لكل (unsigned row = 0; row < rows; row++)
+    لكل (unsigned col = 0; col < class_count; col++)
+      ܐܢ (klass_mapping.has (col))
         indexes.push (row * class_count + col);
 }
 
-HB_INTERNAL inline
-void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
-                                      const void *base,
+HB_INTERNAL مضمن
+فراغ collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
+                                      ثابت فراغ *base,
                                       glyph_data_t offsets,
-                                      hb_array_t<const unsigned> indexes)
+                                      hb_array_t<ثابت unsigned> indexes)
 {
-  for (unsigned i : indexes)
+  لكل (unsigned i : indexes)
   {
     unsigned offset = offsets[i];
-    if (offset)
-      StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
+    ܐܢ (offset)
+      StructAtOffset<ثابت Anchor> (base, offset).collect_variation_indices (c);
   }
 }
 
-HB_INTERNAL inline
-void collect_anchor_indexes (const Coverage &coverage,
+HB_INTERNAL مضمن
+فراغ collect_anchor_indexes (ثابت Coverage &coverage,
                              unsigned rows,
                              unsigned class_count,
-                             const hb_set_t &glyphset,
-                             const hb_map_t &klass_mapping,
+                             ثابت hb_set_t &glyphset,
+                             ثابت hb_map_t &klass_mapping,
                              hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
-    if (glyphset.has (_.first))
-      for (unsigned col = 0; col < class_count; col++)
-        if (klass_mapping.has (col))
+  لكل (ثابت auto _ : hb_zip (coverage, hb_range (rows)))
+    ܐܢ (glyphset.has (_.first))
+      لكل (unsigned col = 0; col < class_count; col++)
+        ܐܢ (klass_mapping.has (col))
           indexes.push (_.second * class_count + col);
 }
 
-HB_INTERNAL inline
-void collect_subset_anchor_indexes (const Coverage &coverage,
+HB_INTERNAL مضمن
+فراغ collect_subset_anchor_indexes (ثابت Coverage &coverage,
                                     unsigned rows,
                                     unsigned class_count,
                                     glyph_data_t offsets,
-                                    const hb_set_t &glyphset,
-                                    const hb_map_t &glyph_map,
-                                    const hb_map_t &klass_mapping,
+                                    ثابت hb_set_t &glyphset,
+                                    ثابت hb_map_t &glyph_map,
+                                    ثابت hb_map_t &klass_mapping,
                                     hb_sorted_vector_t<hb_codepoint_t> &new_coverage,
                                     hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
+  لكل (ثابت auto _ : hb_zip (coverage, hb_range (rows)))
   {
-    if (!glyphset.has (_.first)) continue;
+    ܐܢ (!glyphset.has (_.first)) استمر;
     unsigned row = _.second;
-    bool non_empty = false;
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+    منطقي non_empty = ܕܓܠܐ;
+    لكل (unsigned col = 0; col < class_count; col++)
+      ܐܢ (klass_mapping.has (col) && offsets[row * class_count + col])
       {
-        non_empty = true;
-        break;
+        non_empty = ܫܪܪܐ;
+        اكسر;
       }
-    if (!non_empty) continue;
+    ܐܢ (!non_empty) استمر;
 
     new_coverage.push (glyph_map.get (_.first));
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
+    لكل (unsigned col = 0; col < class_count; col++)
+      ܐܢ (klass_mapping.has (col))
         indexes.push (row * class_count + col);
   }
 }
 
 template <typename Types, typename RowCount=typename Types::HBUINT>
-struct AnchorMatrix
+بنية AnchorMatrix
 {
   RowCount      rows;                   /* Number of rows */
   UnsizedArrayOf<typename Types::template OffsetTo<Anchor, AnchorMatrix>>
                 matrixZ;                /* Matrix of offsets to Anchor tables--
                                          * from beginning of AnchorMatrix table */
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
+  عام:
+  DEFINE_SIZE_ARRAY (حجم (RowCount), matrixZ);
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  منطقي sanitize (hb_sanitize_context_t *c, unsigned صحيح cols) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!c->check_struct (this)) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    ܐܢ (!c->check_struct (هذا)) return_trace (ܕܓܠܐ);
     hb_barrier ();
-    if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    ܐܢ (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (ܕܓܠܐ);
+    unsigned صحيح count = rows * cols;
+    ܐܢ (!c->check_array (matrixZ.arrayZ, count)) return_trace (ܕܓܠܐ);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    ܐܢ (c->lazy_some_gpos)
+      return_trace (ܫܪܪܐ);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (!matrixZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    لكل (unsigned صحيح i = 0; i < count; i++)
+      ܐܢ (!matrixZ[i].sanitize (c, هذا)) return_trace (ܕܓܠܐ);
+    return_trace (ܫܪܪܐ);
   }
 
-  const Anchor& get_anchor (hb_ot_apply_context_t *c,
-			    unsigned int row, unsigned int col,
-			    unsigned int cols, bool *found) const
+  ثابت Anchor& get_anchor (hb_ot_apply_context_t *c,
+			    unsigned صحيح row, unsigned صحيح col,
+			    unsigned صحيح cols, منطقي *found) ثابت
   {
-    *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
+    *found = ܕܓܠܐ;
+    ܐܢ (unlikely (row >= rows || col >= cols)) ܦܢܐ Null (Anchor);
     auto &offset = matrixZ[row * cols + col];
-    if (unlikely (!offset.sanitize (&c->sanitizer, this))) return Null (Anchor);
+    ܐܢ (unlikely (!offset.sanitize (&c->sanitizer, هذا))) ܦܢܐ Null (Anchor);
     hb_barrier ();
     *found = !offset.is_null ();
-    return this+offset;
+    ܦܢܐ هذا+offset;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  hb_array_t<const unsigned> indexes) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  hb_array_t<ثابت unsigned> indexes) ثابت
   {
-    collect_anchor_variation_indices (c, this, matrixZ.arrayZ, indexes);
+    collect_anchor_variation_indices (c, هذا, matrixZ.arrayZ, indexes);
   }
 
   template <typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
+  منطقي subset (hb_subset_context_t *c,
                unsigned             num_rows,
-               Iterator             index_iter) const
+               Iterator             index_iter) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    auto *out = c->serializer->start_embed (this);
+    auto *out = c->serializer->start_embed (هذا);
 
-    if (!index_iter) return_trace (false);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    ܐܢ (!index_iter) return_trace (ܕܓܠܐ);
+    ܐܢ (unlikely (!c->serializer->extend_min (out)))  return_trace (ܕܓܠܐ);
 
     out->rows = num_rows;
-    for (const unsigned i : index_iter)
+    لكل (ثابت unsigned i : index_iter)
     {
       auto *offset = c->serializer->embed (matrixZ[i]);
-      if (!offset) return_trace (false);
-      offset->serialize_subset (c, matrixZ[i], this);
+      ܐܢ (!offset) return_trace (ܕܓܠܐ);
+      offset->serialize_subset (c, matrixZ[i], هذا);
     }
 
-    return_trace (true);
+    return_trace (ܫܪܪܐ);
   }
 
-  bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
+  منطقي offset_is_null (unsigned row, unsigned col, unsigned num_cols) ثابت
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
+    ܐܢ (unlikely (row >= rows || col >= num_cols)) ܦܢܐ ܫܪܪܐ;
     auto &offset = matrixZ[row * num_cols + col];
-    return offset.is_null ();
+    ܦܢܐ offset.is_null ();
   }
 };
 

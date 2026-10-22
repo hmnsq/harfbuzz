@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ܐܢ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_VERSION_H
 #define HB_VERSION_H
 
-#include "hb-common.h"
+#ضمن "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -76,18 +76,18 @@ HB_BEGIN_DECLS
 	 HB_VERSION_MAJOR*10000+HB_VERSION_MINOR*100+HB_VERSION_MICRO)
 
 
-HB_EXTERN void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro);
+HB_EXTERN فراغ
+hb_version (unsigned صحيح *major,
+	    unsigned صحيح *minor,
+	    unsigned صحيح *micro);
 
-HB_EXTERN const char *
-hb_version_string (void);
+HB_EXTERN ثابت حرف *
+hb_version_string (فراغ);
 
 HB_EXTERN hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro);
+hb_version_atleast (unsigned صحيح major,
+		    unsigned صحيح minor,
+		    unsigned صحيح micro);
 
 
 HB_END_DECLS

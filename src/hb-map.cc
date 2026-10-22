@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-map.hh"
+#ضمن "hb-map.hh"
 
 
 /**
@@ -53,10 +53,10 @@ hb_map_create ()
 {
   hb_map_t *map;
 
-  if (!(map = hb_object_create<hb_map_t> ()))
-    return hb_map_get_empty ();
+  ܐܢ (!(map = hb_object_create<hb_map_t> ()))
+    ܦܢܐ hb_map_get_empty ();
 
-  return map;
+  ܦܢܐ map;
 }
 
 /**
@@ -71,7 +71,7 @@ hb_map_create ()
 hb_map_t *
 hb_map_get_empty ()
 {
-  return const_cast<hb_map_t *> (&Null (hb_map_t));
+  ܦܢܐ const_cast<hb_map_t *> (&Null (hb_map_t));
 }
 
 /**
@@ -87,7 +87,7 @@ hb_map_get_empty ()
 hb_map_t *
 hb_map_reference (hb_map_t *map)
 {
-  return hb_object_reference (map);
+  ܦܢܐ hb_object_reference (map);
 }
 
 /**
@@ -100,10 +100,10 @@ hb_map_reference (hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
+فراغ
 hb_map_destroy (hb_map_t *map)
 {
-  if (!hb_object_destroy (map)) return;
+  ܐܢ (!hb_object_destroy (map)) ܦܢܐ;
 
   hb_free (map);
 }
@@ -125,11 +125,11 @@ hb_map_destroy (hb_map_t *map)
 hb_bool_t
 hb_map_set_user_data (hb_map_t           *map,
 		      hb_user_data_key_t *key,
-		      void *              data,
+		      فراغ *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (map, key, data, destroy, replace);
+  ܦܢܐ hb_object_set_user_data (map, key, data, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_map_set_user_data (hb_map_t           *map,
  *
  * Since: 1.7.7
  **/
-void *
-hb_map_get_user_data (const hb_map_t     *map,
+فراغ *
+hb_map_get_user_data (ثابت hb_map_t     *map,
 		      hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (map, key);
+  ܦܢܐ hb_object_get_user_data (map, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_map_get_user_data (const hb_map_t     *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_allocation_successful (const hb_map_t  *map)
+hb_map_allocation_successful (ثابت hb_map_t  *map)
 {
-  return map->successful;
+  ܦܢܐ map->successful;
 }
 
 /**
@@ -179,14 +179,14 @@ hb_map_allocation_successful (const hb_map_t  *map)
  * Since: 4.4.0
  **/
 hb_map_t *
-hb_map_copy (const hb_map_t *map)
+hb_map_copy (ثابت hb_map_t *map)
 {
   hb_map_t *copy = hb_map_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_map_get_empty ();
+  ܐܢ (unlikely (copy->in_error ()))
+    ܦܢܐ hb_map_get_empty ();
 
   *copy = *map;
-  return copy;
+  ܦܢܐ copy;
 }
 
 /**
@@ -199,7 +199,7 @@ hb_map_copy (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
+فراغ
 hb_map_set (hb_map_t       *map,
 	    hb_codepoint_t  key,
 	    hb_codepoint_t  value)
@@ -218,10 +218,10 @@ hb_map_set (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_codepoint_t
-hb_map_get (const hb_map_t *map,
+hb_map_get (ثابت hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->get (key);
+  ܦܢܐ map->get (key);
 }
 
 /**
@@ -233,7 +233,7 @@ hb_map_get (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+فراغ
 hb_map_del (hb_map_t       *map,
 	    hb_codepoint_t  key)
 {
@@ -253,10 +253,10 @@ hb_map_del (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_has (const hb_map_t *map,
+hb_map_has (ثابت hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->has (key);
+  ܦܢܐ map->has (key);
 }
 
 
@@ -268,10 +268,10 @@ hb_map_has (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+فراغ
 hb_map_clear (hb_map_t *map)
 {
-  return map->clear ();
+  ܦܢܐ map->clear ();
 }
 
 /**
@@ -285,9 +285,9 @@ hb_map_clear (hb_map_t *map)
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_is_empty (const hb_map_t *map)
+hb_map_is_empty (ثابت hb_map_t *map)
 {
-  return map->is_empty ();
+  ܦܢܐ map->is_empty ();
 }
 
 /**
@@ -300,10 +300,10 @@ hb_map_is_empty (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_map_get_population (const hb_map_t *map)
+unsigned صحيح
+hb_map_get_population (ثابت hb_map_t *map)
 {
-  return map->get_population ();
+  ܦܢܐ map->get_population ();
 }
 
 /**
@@ -319,10 +319,10 @@ hb_map_get_population (const hb_map_t *map)
  * Since: 4.3.0
  **/
 hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other)
+hb_map_is_equal (ثابت hb_map_t *map,
+		 ثابت hb_map_t *other)
 {
-  return map->is_equal (*other);
+  ܦܢܐ map->is_equal (*other);
 }
 
 /**
@@ -336,10 +336,10 @@ hb_map_is_equal (const hb_map_t *map,
  *
  * Since: 4.4.0
  **/
-unsigned int
-hb_map_hash (const hb_map_t *map)
+unsigned صحيح
+hb_map_hash (ثابت hb_map_t *map)
 {
-  return map->hash ();
+  ܦܢܐ map->hash ();
 }
 
 /**
@@ -351,9 +351,9 @@ hb_map_hash (const hb_map_t *map)
  *
  * Since: 7.0.0
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other)
+	       ثابت hb_map_t *other)
 {
   map->update (*other);
 }
@@ -378,12 +378,12 @@ hb_map_update (hb_map_t *map,
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
+hb_map_next (ثابت hb_map_t *map,
+	     صحيح *idx,
 	     hb_codepoint_t *key,
 	     hb_codepoint_t *value)
 {
-  return map->next (idx, key, value);
+  ܦܢܐ map->next (idx, key, value);
 }
 
 /**
@@ -395,8 +395,8 @@ hb_map_next (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_keys (const hb_map_t *map,
+فراغ
+hb_map_keys (ثابت hb_map_t *map,
 	     hb_set_t *keys)
 {
   hb_copy (map->keys() , *keys);
@@ -411,8 +411,8 @@ hb_map_keys (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_values (const hb_map_t *map,
+فراغ
+hb_map_values (ثابت hb_map_t *map,
 	       hb_set_t *values)
 {
   hb_copy (map->values() , *values);

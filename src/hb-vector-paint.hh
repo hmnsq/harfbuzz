@@ -27,33 +27,33 @@
 #ifndef HB_VECTOR_PAINT_HH
 #define HB_VECTOR_PAINT_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-vector.h"
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
-#include "hb-map.hh"
-#include "hb-vector-path.hh"
-#include "hb-vector-buf.hh"
-#include "hb-vector-internal.hh"
+#ضمن "hb-vector.h"
+#ضمن "hb-geometry.hh"
+#ضمن "hb-machinery.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-vector-path.hh"
+#ضمن "hb-vector-buf.hh"
+#ضمن "hb-vector-internal.hh"
 
 
-struct hb_vector_paint_t
+بنية hb_vector_paint_t
 {
   hb_object_header_t header;
 
   hb_vector_format_t format = HB_VECTOR_FORMAT_INVALID;
   hb_transform_t<> transform = {1, 0, 0, 1, 0, 0};
-  float x_scale_factor = 1.f;
-  float y_scale_factor = 1.f;
+  عائم x_scale_factor = 1.f;
+  عائم y_scale_factor = 1.f;
   hb_vector_extents_t extents = {0, 0, 0, 0};
-  bool has_extents = false;
+  منطقي has_extents = ܕܓܠܐ;
 
   hb_color_t foreground = HB_COLOR (0, 0, 0, 255);
   hb_color_t background = HB_COLOR (0, 0, 0, 0);
-  int palette = 0;
+  صحيح palette = 0;
   hb_hashmap_t<unsigned, hb_color_t> custom_palette_colors;
-  char *id_prefix = nullptr;
+  حرف *id_prefix = nullptr;
   unsigned id_prefix_length = 0;
 
   hb_vector_buf_t defs;
@@ -82,76 +82,76 @@ struct hb_vector_paint_t
   hb_vector_buf_t captured_scratch;
   hb_blob_t *recycled_blob = nullptr;
 
-  hb_vector_buf_t &current_body () { return group_stack.tail (); }
+  hb_vector_buf_t &current_body () { ܦܢܐ group_stack.tail (); }
 
-  void recharge_budget ()
+  فراغ recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  float sx (float v) const { return v / x_scale_factor; }
-  float sy (float v) const { return v / y_scale_factor; }
+  عائم sx (عائم v) ثابت { ܦܢܐ v / x_scale_factor; }
+  عائم sy (عائم v) ثابت { ܦܢܐ v / y_scale_factor; }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  منطقي fetch_color_stops (hb_color_line_t *color_line)
   {
     unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    ܐܢ (unlikely (!count || !color_stops_scratch.resize (count)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      ܦܢܐ ܕܓܠܐ;
     }
     hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
-  void set_precision (unsigned p)
+  فراغ set_precision (unsigned p)
   {
     p = hb_min (p, 12u);
     defs.precision = p;
     path.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
+  unsigned get_precision () ثابت { ܦܢܐ path.precision; }
 
-  bool ensure_initialized ()
+  منطقي ensure_initialized ()
   {
-    if (group_stack.length)
-      return !group_stack.in_error () &&
+    ܐܢ (group_stack.length)
+      ܦܢܐ !group_stack.in_error () &&
              !group_stack.tail ().in_error ();
-    if (unlikely (!group_stack.push_or_fail ()))
-      return false;
+    ܐܢ (unlikely (!group_stack.push_or_fail ()))
+      ܦܢܐ ܕܓܠܐ;
     group_stack.tail ().alloc (4096);
-    if (unlikely (group_stack.tail ().in_error ()))
+    ܐܢ (unlikely (group_stack.tail ().in_error ()))
     {
       group_stack.pop ();
-      return false;
+      ܦܢܐ ܕܓܠܐ;
     }
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 };
 
-static inline hb_bool_t
-hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, void *paint_data,
-				     int64_t budget, void *)
+ساكن مضمن hb_bool_t
+hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, فراغ *paint_data,
+				     int64_t budget, فراغ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  ܦܢܐ ܫܪܪܐ;
 }
 
-static inline int64_t
-hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, void *paint_data, void *)
+ساكن مضمن int64_t
+hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, فراغ *paint_data, فراغ *)
 {
-  return ((hb_vector_paint_t *) paint_data)->budget;
+  ܦܢܐ ((hb_vector_paint_t *) paint_data)->budget;
 }
 
-static inline int64_t *
+ساكن مضمن int64_t *
 hb_vector_paint_get_budget_remaining_callback (hb_paint_funcs_t *,
-					       void *paint_data, void *)
+					       فراغ *paint_data, فراغ *)
 {
-  return &((hb_vector_paint_t *) paint_data)->budget_remaining;
+  ܦܢܐ &((hb_vector_paint_t *) paint_data)->budget_remaining;
 }
 
 /* Implemented in hb-vector-paint-svg.cc */
@@ -161,6 +161,6 @@ HB_INTERNAL hb_blob_t * hb_vector_paint_render_svg (hb_vector_paint_t *paint);
 /* Implemented in hb-vector-paint-pdf.cc */
 HB_INTERNAL hb_paint_funcs_t * hb_vector_paint_pdf_funcs_get ();
 HB_INTERNAL hb_blob_t * hb_vector_paint_render_pdf (hb_vector_paint_t *paint);
-HB_INTERNAL void hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint);
+HB_INTERNAL فراغ hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint);
 
 #endif /* HB_VECTOR_PAINT_HH */

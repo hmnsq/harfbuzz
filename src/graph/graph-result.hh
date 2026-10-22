@@ -27,11 +27,11 @@
 #ifndef GRAPH_GRAPH_RESULT_HH
 #define GRAPH_GRAPH_RESULT_HH
 
-#include "../hb-result.hh"
+#ضمن "../hb-result.hh"
 
-namespace graph {
+نطاق graph {
 
-enum graph_error_t {
+تعداد graph_error_t {
   ALLOCATION_FAILURE,
   LIMIT_EXCEEDED,
   INVALID_ARGUMENT,
@@ -43,19 +43,19 @@ enum graph_error_t {
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+ساكن مضمن ثابت حرف* to_string(graph_error_t e) {
+  بدل (e) {
+    حالة ALLOCATION_FAILURE: ܦܢܐ "Memory Allocation Failed";
+    حالة LIMIT_EXCEEDED: ܦܢܐ "Limit Exceeded";
+    حالة INVALID_ARGUMENT: ܦܢܐ "Invalid Argument";
+    حالة CYCLE_DETECTED: ܦܢܐ "Cycle in Graph";
+    حالة SANITIZE_FAILURE: ܦܢܐ "Failed Sanitization";
+    حالة OUT_OF_BOUNDS: ܦܢܐ "Out of Bounds";
+    حالة ORPHANED_NODES: ܦܢܐ "Graph is not fully connected";
+    حالة OVERFLOW_RESOLUTION_FAILED: ܦܢܐ "Overflows are not able to be resolved";
+    حالة UNKNOWN:
+    افتراضي:
+      ܦܢܐ "Unknown Error";
   }
 }
 

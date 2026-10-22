@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import os
-import re
-import sys
+استورد os
+استورد re
+استورد sys
 
 srcdir = sys.argv[1]
 base_srcdir = sys.argv[2]
@@ -10,19 +10,19 @@ builddir = sys.argv[3]
 
 os.chdir(srcdir)
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.path.basename(x) لكل x في os.getenv("HBHEADERS", "").split()] ܐܘ [
+    x لكل x في os.listdir(".") ܐܢ x.startswith("hb") ܘ x.endswith(".h")
 ]
 
 stat = 0
 
 print("Checking that all public symbols are exported with HB_EXTERN")
-for x in HBHEADERS:
+لكل x في HBHEADERS:
     print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    for s in re.findall(r"\n.+\nhb_.+\n", content):
-        if not s.startswith("\nHB_EXTERN "):
+    with open(x, "r", encoding="utf-8") كـ f:
+        content = f.اقرأ()
+    لكل s في re.findall(r"\n.+\nhb_.+\n", content):
+        ܐܢ ܠܐ s.startswith("\nHB_EXTERN "):
             print("failure on:", s)
             stat = 1
 

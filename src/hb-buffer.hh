@@ -30,20 +30,20 @@
 #ifndef HB_BUFFER_HH
 #define HB_BUFFER_HH
 
-#include "hb.hh"
-#include "hb-unicode.hh"
-#include "hb-set-digest.hh"
+#ضمن "hb.hh"
+#ضمن "hb-unicode.hh"
+#ضمن "hb-set-digest.hh"
 
 
-static_assert ((sizeof (hb_glyph_info_t) == 20), "");
-static_assert ((sizeof (hb_glyph_info_t) == sizeof (hb_glyph_position_t)), "");
+static_assert ((حجم (hb_glyph_info_t) == 20), "");
+static_assert ((حجم (hb_glyph_info_t) == حجم (hb_glyph_position_t)), "");
 
 HB_MARK_AS_FLAG_T (hb_glyph_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_serialize_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_diff_flags_t);
 
-enum hb_buffer_scratch_flags_t {
+تعداد hb_buffer_scratch_flags_t {
   HB_BUFFER_SCRATCH_FLAG_DEFAULT			= 0x00000000u,
   HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH		= 0x00000001u,
   HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES		= 0x00000002u,
@@ -67,7 +67,7 @@ HB_MARK_AS_FLAG_T (hb_buffer_scratch_flags_t);
  * hb_buffer_t
  */
 
-struct hb_buffer_t
+بنية hb_buffer_t
 {
   hb_object_header_t header;
 
@@ -90,15 +90,15 @@ struct hb_buffer_t
   hb_buffer_content_type_t content_type;
   hb_segment_properties_t props; /* Script, language, direction */
 
-  bool successful; /* Allocations successful */
-  bool have_output; /* Whether we have an output buffer going on */
-  bool have_positions; /* Whether we have positions */
+  منطقي successful; /* Allocations successful */
+  منطقي have_output; /* Whether we have an output buffer going on */
+  منطقي have_positions; /* Whether we have positions */
 
-  unsigned int idx; /* Cursor into ->info and ->pos arrays */
-  unsigned int len; /* Length of ->info and ->pos arrays */
-  unsigned int out_len; /* Length of ->out_info array if have_output */
+  unsigned صحيح idx; /* Cursor into ->info and ->pos arrays */
+  unsigned صحيح len; /* Length of ->info and ->pos arrays */
+  unsigned صحيح out_len; /* Length of ->out_info array if have_output */
 
-  unsigned int allocated; /* Length of allocated arrays */
+  unsigned صحيح allocated; /* Length of allocated arrays */
   hb_glyph_info_t     *info;
   hb_glyph_info_t     *out_info;
   hb_glyph_position_t *pos;
@@ -106,9 +106,9 @@ struct hb_buffer_t
   /* Text before / after the main buffer contents.
    * Always in Unicode, and ordered outward.
    * Index 0 is for "pre-context", 1 for "post-context". */
-  static constexpr unsigned CONTEXT_LENGTH = 5u;
+  ساكن constexpr unsigned CONTEXT_LENGTH = 5u;
   hb_codepoint_t context[2][CONTEXT_LENGTH];
-  unsigned int context_len[2];
+  unsigned صحيح context_len[2];
 
   hb_set_digest_t digest; /* Manually updated sometimes */
 
@@ -120,8 +120,8 @@ struct hb_buffer_t
   uint8_t serial;
   uint32_t random_state;
   hb_buffer_scratch_flags_t scratch_flags; /* Have space-fallback, etc. */
-  unsigned int max_len; /* Maximum allowed len. */
-  int max_ops; /* Maximum allowed operations. */
+  unsigned صحيح max_len; /* Maximum allowed len. */
+  صحيح max_ops; /* Maximum allowed operations. */
   /* The bits here reflect current allocations of the bytes in glyph_info_t's var1 and var2. */
 
 
@@ -130,190 +130,190 @@ struct hb_buffer_t
    */
 
 #ifndef HB_NO_BUFFER_MESSAGE
-  typedef void (*changed_func_t) (hb_buffer_t *buffer, void *user_data);
+  تعريفنوع فراغ (*changed_func_t) (hb_buffer_t *buffer, فراغ *user_data);
 
   hb_buffer_message_func_t message_func;
-  void *message_data;
+  فراغ *message_data;
   hb_destroy_func_t message_destroy;
   changed_func_t changed_func;
-  void *changed_data;
+  فراغ *changed_data;
   unsigned message_depth; /* How deeply are we inside a message callback? */
-#else
-  static constexpr unsigned message_depth = 0u;
+#ܐܚܪܢܐ
+  ساكن constexpr unsigned message_depth = 0u;
 #endif
 
 
 
   /* Methods */
 
-  HB_NODISCARD bool in_error () const { return !successful; }
+  HB_NODISCARD منطقي in_error () ثابت { ܦܢܐ !successful; }
 
-  void allocate_var (unsigned int start, unsigned int count)
+  فراغ allocate_var (unsigned صحيح start, unsigned صحيح count)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    assert (0 == (allocated_var_bits & bits));
+    unsigned صحيح end = start + count;
+    أكد (end <= 8);
+    unsigned صحيح bits = (1u<<end) - (1u<<start);
+    أكد (0 == (allocated_var_bits & bits));
     allocated_var_bits |= bits;
   }
-  bool try_allocate_var (unsigned int start, unsigned int count)
+  منطقي try_allocate_var (unsigned صحيح start, unsigned صحيح count)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    if (allocated_var_bits & bits)
-      return false;
+    unsigned صحيح end = start + count;
+    أكد (end <= 8);
+    unsigned صحيح bits = (1u<<end) - (1u<<start);
+    ܐܢ (allocated_var_bits & bits)
+      ܦܢܐ ܕܓܠܐ;
     allocated_var_bits |= bits;
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
-  void deallocate_var (unsigned int start, unsigned int count)
+  فراغ deallocate_var (unsigned صحيح start, unsigned صحيح count)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    assert (bits == (allocated_var_bits & bits));
+    unsigned صحيح end = start + count;
+    أكد (end <= 8);
+    unsigned صحيح bits = (1u<<end) - (1u<<start);
+    أكد (bits == (allocated_var_bits & bits));
     allocated_var_bits &= ~bits;
   }
-  void assert_var (unsigned int start, unsigned int count)
+  فراغ assert_var (unsigned صحيح start, unsigned صحيح count)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    HB_UNUSED unsigned int bits = (1u<<end) - (1u<<start);
-    assert (bits == (allocated_var_bits & bits));
+    unsigned صحيح end = start + count;
+    أكد (end <= 8);
+    HB_UNUSED unsigned صحيح bits = (1u<<end) - (1u<<start);
+    أكد (bits == (allocated_var_bits & bits));
   }
-  void deallocate_var_all ()
+  فراغ deallocate_var_all ()
   {
     allocated_var_bits = 0;
   }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &cur (unsigned int i = 0) { return info[idx + i]; }
+  hb_glyph_info_t &cur (unsigned صحيح i = 0) { ܦܢܐ info[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t cur (unsigned int i = 0) const { return info[idx + i]; }
+  hb_glyph_info_t cur (unsigned صحيح i = 0) ثابت { ܦܢܐ info[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_position_t &cur_pos (unsigned int i = 0) { return pos[idx + i]; }
+  hb_glyph_position_t &cur_pos (unsigned صحيح i = 0) { ܦܢܐ pos[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_position_t cur_pos (unsigned int i = 0) const { return pos[idx + i]; }
+  hb_glyph_position_t cur_pos (unsigned صحيح i = 0) ثابت { ܦܢܐ pos[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &prev ()      { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t &prev ()      { ܦܢܐ out_info[out_len ? out_len - 1 : 0]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t prev () const { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t prev () ثابت { ܦܢܐ out_info[out_len ? out_len - 1 : 0]; }
 
   template <typename set_t>
-  void collect_codepoints (set_t &d) const
-  { d.clear (); d.add_array (&info[0].codepoint, len, sizeof (info[0])); }
+  فراغ collect_codepoints (set_t &d) ثابت
+  { d.clear (); d.add_array (&info[0].codepoint, len, حجم (info[0])); }
 
-  void update_digest ()
+  فراغ update_digest ()
   {
     digest = hb_set_digest_t ();
     collect_codepoints (digest);
   }
 
-  HB_INTERNAL void similar (const hb_buffer_t &src);
-  HB_INTERNAL void reset ();
-  HB_INTERNAL void clear ();
+  HB_INTERNAL فراغ similar (ثابت hb_buffer_t &src);
+  HB_INTERNAL فراغ reset ();
+  HB_INTERNAL فراغ clear ();
 
   /* Called around shape() */
-  HB_INTERNAL void enter ();
-  HB_INTERNAL void leave ();
+  HB_INTERNAL فراغ enter ();
+  HB_INTERNAL فراغ leave ();
 
 #ifndef HB_NO_BUFFER_VERIFY
   HB_INTERNAL
 #endif
-  bool verify (hb_buffer_t        *text_buffer,
+  منطقي verify (hb_buffer_t        *text_buffer,
 	       hb_font_t          *font,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shapers)
+	       ثابت hb_feature_t *features,
+	       unsigned صحيح        num_features,
+	       ثابت حرف * ثابت *shapers)
 #ifndef HB_NO_BUFFER_VERIFY
   ;
-#else
-  { return true; }
+#ܐܚܪܢܐ
+  { ܦܢܐ ܫܪܪܐ; }
 #endif
 
-  unsigned int backtrack_len () const { return have_output ? out_len : idx; }
-  unsigned int lookahead_len () const { return len - idx; }
-  uint8_t next_serial () { return ++serial ? serial : ++serial; }
+  unsigned صحيح backtrack_len () ثابت { ܦܢܐ have_output ? out_len : idx; }
+  unsigned صحيح lookahead_len () ثابت { ܦܢܐ len - idx; }
+  uint8_t next_serial () { ܦܢܐ ++serial ? serial : ++serial; }
 
-  HB_INTERNAL void add (hb_codepoint_t  codepoint,
-			unsigned int    cluster);
-  HB_INTERNAL void add_info (const hb_glyph_info_t &glyph_info);
-  HB_INTERNAL void add_info_and_pos (const hb_glyph_info_t &glyph_info,
-				     const hb_glyph_position_t &glyph_pos);
+  HB_INTERNAL فراغ add (hb_codepoint_t  codepoint,
+			unsigned صحيح    cluster);
+  HB_INTERNAL فراغ add_info (ثابت hb_glyph_info_t &glyph_info);
+  HB_INTERNAL فراغ add_info_and_pos (ثابت hb_glyph_info_t &glyph_info,
+				     ثابت hb_glyph_position_t &glyph_pos);
 
-  void reverse_range (unsigned start, unsigned end)
+  فراغ reverse_range (unsigned start, unsigned end)
   {
     hb_array_t<hb_glyph_info_t> (info, len).reverse (start, end);
-    if (have_positions)
+    ܐܢ (have_positions)
       hb_array_t<hb_glyph_position_t> (pos, len).reverse (start, end);
   }
-  void reverse () { reverse_range (0, len); }
+  فراغ reverse () { reverse_range (0, len); }
 
   template <typename FuncType>
-  void reverse_groups (const FuncType& group,
-		       bool merge_clusters = false)
+  فراغ reverse_groups (ثابت FuncType& group,
+		       منطقي merge_clusters = ܕܓܠܐ)
   {
-    if (unlikely (!len))
-      return;
+    ܐܢ (unlikely (!len))
+      ܦܢܐ;
 
     unsigned start = 0;
     unsigned i;
-    for (i = 1; i < len; i++)
+    لكل (i = 1; i < len; i++)
     {
-      if (!group (info[i - 1], info[i]))
+      ܐܢ (!group (info[i - 1], info[i]))
       {
-	if (merge_clusters)
-	  this->merge_clusters (start, i);
+	ܐܢ (merge_clusters)
+	  هذا->merge_clusters (start, i);
 	reverse_range (start, i);
 	start = i;
       }
     }
-    if (merge_clusters)
-      this->merge_clusters (start, i);
+    ܐܢ (merge_clusters)
+      هذا->merge_clusters (start, i);
     reverse_range (start, i);
 
     reverse ();
   }
 
   template <typename FuncType>
-  unsigned group_end (unsigned start, const FuncType& group) const
+  unsigned group_end (unsigned start, ثابت FuncType& group) ثابت
   {
-    while (++start < len && group (info[start - 1], info[start]))
+    ܟܡܐ (++start < len && group (info[start - 1], info[start]))
       ;
 
-    return start;
+    ܦܢܐ start;
   }
 
-  static bool _cluster_group_func (const hb_glyph_info_t& a,
-				   const hb_glyph_info_t& b)
-  { return a.cluster == b.cluster; }
+  ساكن منطقي _cluster_group_func (ثابت hb_glyph_info_t& a,
+				   ثابت hb_glyph_info_t& b)
+  { ܦܢܐ a.cluster == b.cluster; }
 
-  void reverse_clusters () { reverse_groups (_cluster_group_func); }
+  فراغ reverse_clusters () { reverse_groups (_cluster_group_func); }
 
-  HB_INTERNAL void guess_segment_properties ();
+  HB_INTERNAL فراغ guess_segment_properties ();
 
-  HB_INTERNAL bool sync ();
-  HB_INTERNAL int sync_so_far ();
-  HB_INTERNAL void clear_output ();
-  HB_INTERNAL void clear_positions ();
+  HB_INTERNAL منطقي متزامن ();
+  HB_INTERNAL صحيح sync_so_far ();
+  HB_INTERNAL فراغ clear_output ();
+  HB_INTERNAL فراغ clear_positions ();
 
   template <typename T>
-  HB_NODISCARD bool replace_glyphs (unsigned int num_in,
-				    unsigned int num_out,
-				    const T *glyph_data)
+  HB_NODISCARD منطقي replace_glyphs (unsigned صحيح num_in,
+				    unsigned صحيح num_out,
+				    ثابت T *glyph_data)
   {
-    if (unlikely (!make_room_for (num_in, num_out))) return false;
+    ܐܢ (unlikely (!make_room_for (num_in, num_out))) ܦܢܐ ܕܓܠܐ;
 
-    assert (idx + num_in <= len);
+    أكد (idx + num_in <= len);
 
     merge_clusters (idx, idx + num_in);
 
     hb_glyph_info_t &orig_info = idx < len ? cur() : prev();
 
     hb_glyph_info_t *pinfo = &out_info[out_len];
-    for (unsigned int i = 0; i < num_out; i++)
+    لكل (unsigned صحيح i = 0; i < num_out; i++)
     {
       *pinfo = orig_info;
       pinfo->codepoint = glyph_data[i];
@@ -322,158 +322,158 @@ struct hb_buffer_t
 
     idx  += num_in;
     out_len += num_out;
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
-  HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (1, 1, &glyph_index); }
+  HB_NODISCARD منطقي replace_glyph (hb_codepoint_t glyph_index)
+  { ܦܢܐ replace_glyphs (1, 1, &glyph_index); }
 
   /* Makes a copy of the glyph at idx to output and replace glyph_index */
-  HB_NODISCARD bool output_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (0, 1, &glyph_index); }
+  HB_NODISCARD منطقي output_glyph (hb_codepoint_t glyph_index)
+  { ܦܢܐ replace_glyphs (0, 1, &glyph_index); }
 
-  HB_NODISCARD bool output_info (const hb_glyph_info_t &glyph_info)
+  HB_NODISCARD منطقي output_info (ثابت hb_glyph_info_t &glyph_info)
   {
-    if (unlikely (!make_room_for (0, 1))) return false;
+    ܐܢ (unlikely (!make_room_for (0, 1))) ܦܢܐ ܕܓܠܐ;
 
     out_info[out_len] = glyph_info;
 
     out_len++;
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
   /* Copies glyph at idx to output but doesn't advance idx */
-  HB_NODISCARD bool copy_glyph ()
+  HB_NODISCARD منطقي copy_glyph ()
   {
     /* Extra copy because cur()'s return can be freed within
      * output_info() call if buffer reallocates. */
-    return output_info (hb_glyph_info_t (cur()));
+    ܦܢܐ output_info (hb_glyph_info_t (cur()));
   }
 
   /* Copies glyph at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyph ()
+  HB_NODISCARD منطقي next_glyph ()
   {
-    if (have_output)
+    ܐܢ (have_output)
     {
-      if (out_info != info || out_len != idx)
+      ܐܢ (out_info != info || out_len != idx)
       {
-	if (unlikely (!ensure (out_len + 1))) return false;
+	ܐܢ (unlikely (!ensure (out_len + 1))) ܦܢܐ ܕܓܠܐ;
 	out_info[out_len] = info[idx];
       }
       out_len++;
     }
 
     idx++;
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
   /* Copies n glyphs at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyphs (unsigned int n)
+  HB_NODISCARD منطقي next_glyphs (unsigned صحيح n)
   {
-    if (have_output)
+    ܐܢ (have_output)
     {
-      if (out_info != info || out_len != idx)
+      ܐܢ (out_info != info || out_len != idx)
       {
-	if (unlikely (!ensure (out_len + n))) return false;
-	memmove (out_info + out_len, info + idx, n * sizeof (out_info[0]));
+	ܐܢ (unlikely (!ensure (out_len + n))) ܦܢܐ ܕܓܠܐ;
+	memmove (out_info + out_len, info + idx, n * حجم (out_info[0]));
       }
       out_len += n;
     }
 
     idx += n;
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
   /* Advance idx without copying to output. */
-  void skip_glyph () { idx++; }
-  void add_masks (hb_mask_t mask)
+  فراغ skip_glyph () { idx++; }
+  فراغ add_masks (hb_mask_t mask)
   {
-    for (unsigned int j = 0; j < len; j++)
+    لكل (unsigned صحيح j = 0; j < len; j++)
       info[j].mask |= mask;
   }
-  HB_INTERNAL void set_masks (hb_mask_t value, hb_mask_t mask,
-			      unsigned int cluster_start, unsigned int cluster_end);
+  HB_INTERNAL فراغ set_masks (hb_mask_t value, hb_mask_t mask,
+			      unsigned صحيح cluster_start, unsigned صحيح cluster_end);
 
-  void merge_clusters (unsigned int start, unsigned int end)
+  فراغ merge_clusters (unsigned صحيح start, unsigned صحيح end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+    ܐܢ (end - start < 2)
+      ܦܢܐ;
+    ܐܢ (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
     {
       unsafe_to_break (start, end);
-      return;
+      ܦܢܐ;
     }
     merge_clusters_impl (start, end);
   }
-  void merge_grapheme_clusters (unsigned int start, unsigned int end)
+  فراغ merge_grapheme_clusters (unsigned صحيح start, unsigned صحيح end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+    ܐܢ (end - start < 2)
+      ܦܢܐ;
+    ܐܢ (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
     {
       unsafe_to_break (start, end);
-      return;
+      ܦܢܐ;
     }
     merge_clusters_impl (start, end);
   }
-  HB_INTERNAL void merge_clusters_impl (unsigned int start, unsigned int end);
-  void merge_out_clusters (unsigned int start, unsigned int end)
+  HB_INTERNAL فراغ merge_clusters_impl (unsigned صحيح start, unsigned صحيح end);
+  فراغ merge_out_clusters (unsigned صحيح start, unsigned صحيح end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
-      return;
+    ܐܢ (end - start < 2)
+      ܦܢܐ;
+    ܐܢ (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+      ܦܢܐ;
     merge_out_clusters_impl (start, end);
   }
-  void merge_out_grapheme_clusters (unsigned int start, unsigned int end)
+  فراغ merge_out_grapheme_clusters (unsigned صحيح start, unsigned صحيح end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
-      return;
+    ܐܢ (end - start < 2)
+      ܦܢܐ;
+    ܐܢ (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+      ܦܢܐ;
     merge_out_clusters_impl (start, end);
   }
-  HB_INTERNAL void merge_out_clusters_impl (unsigned int start, unsigned int end);
+  HB_INTERNAL فراغ merge_out_clusters_impl (unsigned صحيح start, unsigned صحيح end);
   /* Merge clusters for deleting current glyph, and skip it. */
-  HB_INTERNAL void delete_glyph ();
-  HB_INTERNAL void delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info));
+  HB_INTERNAL فراغ delete_glyph ();
+  HB_INTERNAL فراغ delete_glyphs_inplace (منطقي (*filter) (ثابت hb_glyph_info_t *info));
 
 
 
   /* Adds glyph flags in mask to infos with clusters between start and end.
    * The start index will be from out-buffer if from_out_buffer is true.
    * If interior is true, then the cluster having the minimum value is skipped. */
-  void _set_glyph_flags_impl (hb_mask_t mask,
+  فراغ _set_glyph_flags_impl (hb_mask_t mask,
 			      unsigned start,
 			      unsigned end,
-			      bool interior,
-			      bool from_out_buffer)
+			      منطقي interior,
+			      منطقي from_out_buffer)
   {
-    if (!from_out_buffer || !have_output)
+    ܐܢ (!from_out_buffer || !have_output)
     {
-      if (!interior)
+      ܐܢ (!interior)
       {
-	for (unsigned i = start; i < end; i++)
+	لكل (unsigned i = start; i < end; i++)
 	  info[i].mask |= mask;
       }
-      else
+      ܐܚܪܢܐ
       {
 	unsigned cluster = _infos_find_min_cluster (info, start, end);
 	_infos_set_glyph_flags (info, start, end, cluster, mask);
       }
     }
-    else
+    ܐܚܪܢܐ
     {
-      assert (start <= out_len);
-      assert (idx <= end);
+      أكد (start <= out_len);
+      أكد (idx <= end);
 
-      if (!interior)
+      ܐܢ (!interior)
       {
-	for (unsigned i = start; i < out_len; i++)
+	لكل (unsigned i = start; i < out_len; i++)
 	  out_info[i].mask |= mask;
-	for (unsigned i = idx; i < end; i++)
+	لكل (unsigned i = idx; i < end; i++)
 	  info[i].mask |= mask;
       }
-      else
+      ܐܚܪܢܐ
       {
 	unsigned cluster = _infos_find_min_cluster (info, idx, end);
 	cluster = _infos_find_min_cluster (out_info, start, out_len, cluster);
@@ -485,225 +485,225 @@ struct hb_buffer_t
   }
 
   HB_ALWAYS_INLINE
-  void _set_glyph_flags (hb_mask_t mask,
+  فراغ _set_glyph_flags (hb_mask_t mask,
 			 unsigned start = 0,
 			 unsigned end = (unsigned) -1,
-			 bool interior = false,
-			 bool from_out_buffer = false)
+			 منطقي interior = ܕܓܠܐ,
+			 منطقي from_out_buffer = ܕܓܠܐ)
   {
-    if (unlikely (end != (unsigned) -1 && end - start > 255))
-      return;
+    ܐܢ (unlikely (end != (unsigned) -1 && end - start > 255))
+      ܦܢܐ;
 
     end = hb_min (end, len);
 
-    if (interior && !from_out_buffer && end - start < 2)
-      return;
+    ܐܢ (interior && !from_out_buffer && end - start < 2)
+      ܦܢܐ;
 
     _set_glyph_flags_impl (mask, start, end, interior, from_out_buffer);
   }
 
 
-  void unsafe_to_break (unsigned int start = 0, unsigned int end = -1)
+  فراغ unsafe_to_break (unsigned صحيح start = 0, unsigned صحيح end = -1)
   {
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
-		      true);
+		      ܫܪܪܐ);
   }
-  void safe_to_insert_tatweel (unsigned int start = 0, unsigned int end = -1)
+  فراغ safe_to_insert_tatweel (unsigned صحيح start = 0, unsigned صحيح end = -1)
   {
-    if ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+    ܐܢ ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
     {
       unsafe_to_break (start, end);
-      return;
+      ܦܢܐ;
     }
     _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL,
 		      start, end,
-		      true);
+		      ܫܪܪܐ);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void unsafe_to_concat (unsigned int start = 0, unsigned int end = -1)
+  فراغ unsafe_to_concat (unsigned صحيح start = 0, unsigned صحيح end = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
+    ܐܢ (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
+      ܦܢܐ;
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
-		      false);
+		      ܕܓܠܐ);
   }
-  void unsafe_to_break_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  فراغ unsafe_to_break_from_outbuffer (unsigned صحيح start = 0, unsigned صحيح end = -1)
   {
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
-		      true, true);
+		      ܫܪܪܐ, ܫܪܪܐ);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void unsafe_to_concat_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  فراغ unsafe_to_concat_from_outbuffer (unsigned صحيح start = 0, unsigned صحيح end = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
+    ܐܢ (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
+      ܦܢܐ;
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
-		      false, true);
+		      ܕܓܠܐ, ܫܪܪܐ);
   }
 
 
   /* Internal methods */
-  HB_NODISCARD HB_INTERNAL bool move_to (unsigned int i); /* i is output-buffer index. */
+  HB_NODISCARD HB_INTERNAL منطقي move_to (unsigned صحيح i); /* i is output-buffer index. */
 
-  HB_NODISCARD HB_INTERNAL bool enlarge (unsigned int size);
+  HB_NODISCARD HB_INTERNAL منطقي enlarge (unsigned صحيح size);
 
-  HB_NODISCARD bool resize (unsigned length)
+  HB_NODISCARD منطقي resize (unsigned length)
   {
-    assert (!have_output);
-    if (unlikely (!ensure (length))) return false;
+    أكد (!have_output);
+    ܐܢ (unlikely (!ensure (length))) ܦܢܐ ܕܓܠܐ;
     len = length;
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
-  HB_NODISCARD bool ensure (unsigned int size)
-  { return likely (!size || size < allocated) ? true : enlarge (size); }
+  HB_NODISCARD منطقي ensure (unsigned صحيح size)
+  { ܦܢܐ likely (!size || size < allocated) ? ܫܪܪܐ : enlarge (size); }
 
-  HB_NODISCARD bool ensure_inplace (unsigned int size)
-  { return likely (!size || size < allocated); }
+  HB_NODISCARD منطقي ensure_inplace (unsigned صحيح size)
+  { ܦܢܐ likely (!size || size < allocated); }
 
-  void assert_glyphs ()
+  فراغ assert_glyphs ()
   {
-    assert ((content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS) ||
+    أكد ((content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS) ||
 	    (!len && (content_type == HB_BUFFER_CONTENT_TYPE_INVALID)));
   }
-  void assert_unicode ()
+  فراغ assert_unicode ()
   {
-    assert ((content_type == HB_BUFFER_CONTENT_TYPE_UNICODE) ||
+    أكد ((content_type == HB_BUFFER_CONTENT_TYPE_UNICODE) ||
 	    (!len && (content_type == HB_BUFFER_CONTENT_TYPE_INVALID)));
   }
-  HB_NODISCARD bool ensure_glyphs ()
+  HB_NODISCARD منطقي ensure_glyphs ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
+    ܐܢ (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
-      assert (len == 0);
+      ܐܢ (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
+	ܦܢܐ ܕܓܠܐ;
+      أكد (len == 0);
       content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
     }
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
-  HB_NODISCARD bool ensure_unicode ()
+  HB_NODISCARD منطقي ensure_unicode ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
+    ܐܢ (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
-      assert (len == 0);
+      ܐܢ (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
+	ܦܢܐ ܕܓܠܐ;
+      أكد (len == 0);
       content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
     }
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
-  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned int num_in, unsigned int num_out);
-  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned int count);
+  HB_NODISCARD HB_INTERNAL منطقي make_room_for (unsigned صحيح num_in, unsigned صحيح num_out);
+  HB_NODISCARD HB_INTERNAL منطقي shift_forward (unsigned صحيح count);
 
-  typedef long scratch_buffer_t;
-  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned int *size);
+  تعريفنوع long scratch_buffer_t;
+  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned صحيح *size);
 
-  void clear_context (unsigned int side) { context_len[side] = 0; }
+  فراغ clear_context (unsigned صحيح side) { context_len[side] = 0; }
 
-  HB_INTERNAL void sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *));
+  HB_INTERNAL فراغ sort (unsigned صحيح start, unsigned صحيح end, صحيح(*compar)(ثابت hb_glyph_info_t *, ثابت hb_glyph_info_t *));
 
-  bool messaging ()
+  منطقي messaging ()
   {
 #ifdef HB_NO_BUFFER_MESSAGE
-    return false;
-#else
-    return unlikely (message_func);
+    ܦܢܐ ܕܓܠܐ;
+#ܐܚܪܢܐ
+    ܦܢܐ unlikely (message_func);
 #endif
   }
-  bool message (hb_font_t *font, const char *fmt, ...) HB_PRINTF_FUNC(3, 4)
+  منطقي message (hb_font_t *font, ثابت حرف *fmt, ...) HB_PRINTF_FUNC(3, 4)
   {
 #ifdef HB_NO_BUFFER_MESSAGE
-    return true;
-#else
-    if (likely (!messaging ()))
-      return true;
+    ܦܢܐ ܫܪܪܐ;
+#ܐܚܪܢܐ
+    ܐܢ (likely (!messaging ()))
+      ܦܢܐ ܫܪܪܐ;
 
     va_list ap;
     va_start (ap, fmt);
-    bool ret = message_impl (font, fmt, ap);
+    منطقي ret = message_impl (font, fmt, ap);
     va_end (ap);
 
-    return ret;
+    ܦܢܐ ret;
 #endif
   }
-  HB_INTERNAL bool message_impl (hb_font_t *font, const char *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
-  HB_INTERNAL void changed ();
+  HB_INTERNAL منطقي message_impl (hb_font_t *font, ثابت حرف *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
+  HB_INTERNAL فراغ changed ();
 
-  static void
-  set_cluster (hb_glyph_info_t &inf, unsigned int cluster, unsigned int mask = 0)
+  ساكن فراغ
+  set_cluster (hb_glyph_info_t &inf, unsigned صحيح cluster, unsigned صحيح mask = 0)
   {
-    if (inf.cluster != cluster)
+    ܐܢ (inf.cluster != cluster)
       inf.mask = (inf.mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
     inf.cluster = cluster;
   }
-  void
+  فراغ
   _infos_set_glyph_flags (hb_glyph_info_t *infos,
-			  unsigned int start, unsigned int end,
-			  unsigned int cluster,
+			  unsigned صحيح start, unsigned صحيح end,
+			  unsigned صحيح cluster,
 			  hb_mask_t mask)
   {
-    if (unlikely (start == end))
-      return;
+    ܐܢ (unlikely (start == end))
+      ܦܢܐ;
 
     max_ops -= end - start;
-    if (unlikely (max_ops < 0))
-      successful = false;
+    ܐܢ (unlikely (max_ops < 0))
+      successful = ܕܓܠܐ;
 
     unsigned cluster_first = infos[start].cluster;
     unsigned cluster_last = infos[end - 1].cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
+    ܐܢ (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
 	(cluster != cluster_first && cluster != cluster_last))
     {
-      for (unsigned int i = start; i < end; i++)
-	if (cluster != infos[i].cluster)
+      لكل (unsigned صحيح i = start; i < end; i++)
+	ܐܢ (cluster != infos[i].cluster)
 	  infos[i].mask |= mask;
-      return;
+      ܦܢܐ;
     }
 
     /* Monotone clusters */
 
-    if (cluster == cluster_first)
+    ܐܢ (cluster == cluster_first)
     {
-      for (unsigned int i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
+      لكل (unsigned صحيح i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
 	infos[i - 1].mask |= mask;
     }
-    else /* cluster == cluster_last */
+    ܐܚܪܢܐ /* cluster == cluster_last */
     {
-      for (unsigned int i = start; i < end && infos[i].cluster != cluster_last; i++)
+      لكل (unsigned صحيح i = start; i < end && infos[i].cluster != cluster_last; i++)
 	infos[i].mask |= mask;
     }
   }
   unsigned
-  _infos_find_min_cluster (const hb_glyph_info_t *infos,
+  _infos_find_min_cluster (ثابت hb_glyph_info_t *infos,
 			   unsigned start, unsigned end,
 			   unsigned cluster = UINT_MAX)
   {
-    if (unlikely (start == end))
-      return cluster;
+    ܐܢ (unlikely (start == end))
+      ܦܢܐ cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
+    ܐܢ (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
     {
-      for (unsigned int i = start; i < end; i++)
+      لكل (unsigned صحيح i = start; i < end; i++)
 	cluster = hb_min (cluster, infos[i].cluster);
-      return cluster;
+      ܦܢܐ cluster;
     }
 
-    return hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
+    ܦܢܐ hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
   }
 
-  void clear_glyph_flags (hb_mask_t mask = 0)
+  فراغ clear_glyph_flags (hb_mask_t mask = 0)
   {
-    for (unsigned int i = 0; i < len; i++)
+    لكل (unsigned صحيح i = 0; i < len; i++)
       info[i].mask = (info[i].mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
   }
 };
@@ -711,7 +711,7 @@ DECLARE_NULL_INSTANCE (hb_buffer_t);
 
 
 #define foreach_group(buffer, start, end, group_func) \
-  for (unsigned int \
+  لكل (unsigned صحيح \
        _count = buffer->len, \
        start = 0, end = _count ? buffer->group_end (0, group_func) : 0; \
        start < _count; \
@@ -723,7 +723,7 @@ DECLARE_NULL_INSTANCE (hb_buffer_t);
 
 #define HB_BUFFER_XALLOCATE_VAR(b, func, var) \
   b->func (offsetof (hb_glyph_info_t, var) - offsetof(hb_glyph_info_t, var1), \
-	   sizeof (b->info[0].var))
+	   حجم (b->info[0].var))
 #define HB_BUFFER_ALLOCATE_VAR(b, var)		HB_BUFFER_XALLOCATE_VAR (b, allocate_var,     var ())
 #define HB_BUFFER_TRY_ALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, try_allocate_var, var ())
 #define HB_BUFFER_DEALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, deallocate_var,   var ())

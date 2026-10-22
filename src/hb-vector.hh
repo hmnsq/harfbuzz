@@ -27,62 +27,62 @@
 #ifndef HB_VECTOR_HH
 #define HB_VECTOR_HH
 
-#include "hb.hh"
-#include "hb-array.hh"
-#include "hb-meta.hh"
-#include "hb-null.hh"
+#ضمن "hb.hh"
+#ضمن "hb-array.hh"
+#ضمن "hb-meta.hh"
+#ضمن "hb-null.hh"
 
 // Change to 1 to force inline vector allocs, to see callsite in malloc-stats tool.
-#if 0
+#ܐܢ 0
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS HB_ALWAYS_INLINE
-#else
+#ܐܚܪܢܐ
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS
 #endif
 
 template <typename Type,
-	  bool sorted=false>
-struct hb_vector_t
+	  منطقي sorted=ܕܓܠܐ>
+بنية hb_vector_t
 {
-  static constexpr bool realloc_move = true;
+  ساكن constexpr منطقي realloc_move = ܫܪܪܐ;
 
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  تعريفنوع Type item_t;
+  ساكن constexpr unsigned item_size = hb_static_size (Type);
   using array_t = typename std::conditional<sorted, hb_sorted_array_t<Type>, hb_array_t<Type>>::type;
-  using c_array_t = typename std::conditional<sorted, hb_sorted_array_t<const Type>, hb_array_t<const Type>>::type;
+  using c_array_t = typename std::conditional<sorted, hb_sorted_array_t<ثابت Type>, hb_array_t<ثابت Type>>::type;
 
-  hb_vector_t () = default;
+  hb_vector_t () = افتراضي;
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (std::initializer_list<Type> lst) : hb_vector_t ()
   {
-    alloc (lst.size (), true);
-    for (auto&& item : lst)
+    alloc (lst.size (), ܫܪܪܐ);
+    لكل (auto&& item : lst)
       push (item);
   }
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  explicit hb_vector_t (const Iterable &o) : hb_vector_t ()
+  explicit hb_vector_t (ثابت Iterable &o) : hb_vector_t ()
   {
-    extend (o, true);
+    extend (o, ܫܪܪܐ);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  hb_vector_t (const hb_vector_t &o) : hb_vector_t ()
+  hb_vector_t (ثابت hb_vector_t &o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ܐܢ (unlikely (in_error ())) ܦܢܐ;
     copy_array (o.as_array ());
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ܐܢ (unlikely (in_error ())) ܦܢܐ;
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (c_array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ܐܢ (unlikely (in_error ())) ܦܢܐ;
     copy_array (o);
   }
   hb_vector_t (hb_vector_t &&o) noexcept
@@ -95,20 +95,20 @@ struct hb_vector_t
   ~hb_vector_t () { fini (); }
 
   template <unsigned n>
-  void
+  فراغ
   set_storage (Type (&array)[n])
   { set_storage (array, n); }
-  void
+  فراغ
   set_storage (hb_array_t<Type> array)
   { set_storage (array.arrayZ, array.length); }
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_constructible(T) &&
 			  hb_is_trivially_destructible(T))>
-  void
+  فراغ
   set_storage (Type *array, unsigned n)
   {
-    assert (allocated == 0);
-    assert (length == 0);
+    أكد (allocated == 0);
+    أكد (length == 0);
 
     arrayZ = array;
     length = n;
@@ -117,64 +117,64 @@ struct hb_vector_t
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (const Iterable &o, bool exact=false)
+  فراغ extend (ثابت Iterable &o, منطقي exact=ܕܓܠܐ)
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    ܐܢ (iter.is_random_access_iterator || iter.has_fast_len)
     {
-      if (unlikely (!alloc (length + hb_len (iter), exact)))
-	return;
+      ܐܢ (unlikely (!alloc (length + hb_len (iter), exact)))
+	ܦܢܐ;
       unsigned count = hb_len (iter);
-      for (unsigned i = 0; i < count; i++)
+      لكل (unsigned i = 0; i < count; i++)
 	push_has_room (*iter++);
     }
-    while (iter)
+    ܟܡܐ (iter)
     {
-      if (unlikely (!alloc (length + 1)))
-        return;
+      ܐܢ (unlikely (!alloc (length + 1)))
+        ܦܢܐ;
       unsigned room = allocated - length;
-      for (unsigned i = 0; i < room && iter; i++)
+      لكل (unsigned i = 0; i < room && iter; i++)
 	push_has_room (*iter++);
     }
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (array_t o, bool exact=false)
+  فراغ extend (array_t o, منطقي exact=ܕܓܠܐ)
   { extend (c_array_t (o), exact); }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (c_array_t o, bool exact=false)
+  فراغ extend (c_array_t o, منطقي exact=ܕܓܠܐ)
   {
     /* o may point into our own storage, eg. v.extend (v.as_array ()).
      * alloc() may move that storage, so find o again afterwards. */
-    bool aliased = o.length && in_storage (*o.arrayZ);
+    منطقي aliased = o.length && in_storage (*o.arrayZ);
     unsigned offset = aliased ? o.arrayZ - arrayZ : 0;
     alloc (length + o.length, exact);
-    if (unlikely (in_error ())) return;
-    if (unlikely (aliased))
+    ܐܢ (unlikely (in_error ())) ܦܢܐ;
+    ܐܢ (unlikely (aliased))
       o = {arrayZ + offset, o.length};
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (const hb_vector_t &o, bool exact=false)
+  فراغ extend (ثابت hb_vector_t &o, منطقي exact=ܕܓܠܐ)
   { extend (o.as_array (), exact); }
 
-  public:
-  int allocated = 0; /* < 0 means allocation failed. */
-  unsigned int length = 0;
-  public:
+  عام:
+  صحيح allocated = 0; /* < 0 means allocation failed. */
+  unsigned صحيح length = 0;
+  عام:
   Type *arrayZ = nullptr;
 
-  void init ()
+  فراغ init ()
   {
     allocated = length = 0;
     arrayZ = nullptr;
   }
-  void init0 ()
+  فراغ init0 ()
   {
   }
 
-  void fini ()
+  فراغ fini ()
   {
-    if (is_owned ())
+    ܐܢ (is_owned ())
     {
       shrink_vector (0);
       hb_free (arrayZ);
@@ -185,41 +185,41 @@ struct hb_vector_t
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset ()
   {
-    if (unlikely (in_error ()))
+    ܐܢ (unlikely (in_error ()))
       reset_error ();
     clear ();
-    return *this;
+    ܦܢܐ *هذا;
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset_if_error ()
   {
-    if (unlikely (in_error ()))
+    ܐܢ (unlikely (in_error ()))
       reset ();
-    return *this;
+    ܦܢܐ *هذا;
   }
 
   /* Transfer ownership of the backing storage to caller.
    * Returns nullptr if storage is not owned by this vector. */
   Type *
-  steal (unsigned *len = nullptr, int *allocated_out = nullptr)
+  steal (unsigned *len = nullptr, صحيح *allocated_out = nullptr)
   {
-    if (!is_owned ())
-      return nullptr;
-    if (len)
+    ܐܢ (!is_owned ())
+      ܦܢܐ nullptr;
+    ܐܢ (len)
       *len = length;
-    if (allocated_out)
+    ܐܢ (allocated_out)
       *allocated_out = allocated;
     Type *p = arrayZ;
     init ();
-    return p;
+    ܦܢܐ p;
   }
 
   /* Adopt a previously detached owned buffer. */
-  void
+  فراغ
   recycle_buffer (Type *buffer,
                   unsigned len,
-                  int allocated_len)
+                  صحيح allocated_len)
   {
     fini ();
     arrayZ = buffer;
@@ -227,130 +227,130 @@ struct hb_vector_t
     allocated = allocated_len;
   }
 
-  friend void swap (hb_vector_t& a, hb_vector_t& b) noexcept
+  friend فراغ swap (hb_vector_t& a, hb_vector_t& b) noexcept
   {
     hb_swap (a.allocated, b.allocated);
     hb_swap (a.length, b.length);
     hb_swap (a.arrayZ, b.arrayZ);
   }
 
-  hb_vector_t& operator = (const hb_vector_t &o)
+  hb_vector_t& operator = (ثابت hb_vector_t &o)
   {
-    if (this == &o) return *this;
+    ܐܢ (هذا == &o) ܦܢܐ *هذا;
 
     reset ();
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return *this;
+    ܐܢ (unlikely (in_error ())) ܦܢܐ *هذا;
 
     length = 0;
     copy_array (o.as_array ());
 
-    return *this;
+    ܦܢܐ *هذا;
   }
   hb_vector_t& operator = (hb_vector_t &&o) noexcept
   {
-    hb_swap (*this, o);
-    return *this;
+    hb_swap (*هذا, o);
+    ܦܢܐ *هذا;
   }
 
-  hb_bytes_t as_bytes () const
-  { return hb_bytes_t ((const char *) arrayZ, get_size ()); }
+  hb_bytes_t as_bytes () ثابت
+  { ܦܢܐ hb_bytes_t ((ثابت حرف *) arrayZ, get_size ()); }
 
-  bool operator == (const hb_vector_t &o) const { return as_array () == o.as_array (); }
-  bool operator != (const hb_vector_t &o) const { return !(*this == o); }
-  uint32_t hash () const { return as_array ().hash (); }
+  منطقي operator == (ثابت hb_vector_t &o) ثابت { ܦܢܐ as_array () == o.as_array (); }
+  منطقي operator != (ثابت hb_vector_t &o) ثابت { ܦܢܐ !(*هذا == o); }
+  uint32_t hash () ثابت { ܦܢܐ as_array ().hash (); }
 
-  Type& operator [] (int i_)
+  Type& operator [] (صحيح i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Crap (Type);
-    return arrayZ[i];
+    unsigned صحيح i = (unsigned صحيح) i_;
+    ܐܢ (unlikely (i >= length))
+      ܦܢܐ Crap (Type);
+    ܦܢܐ arrayZ[i];
   }
-  const Type& operator [] (int i_) const
+  ثابت Type& operator [] (صحيح i_) ثابت
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Null (Type);
-    return arrayZ[i];
+    unsigned صحيح i = (unsigned صحيح) i_;
+    ܐܢ (unlikely (i >= length))
+      ܦܢܐ Null (Type);
+    ܦܢܐ arrayZ[i];
   }
 
-  Type& tail () { return (*this)[length - 1]; }
-  const Type& tail () const { return (*this)[length - 1]; }
+  Type& tail () { ܦܢܐ (*هذا)[length - 1]; }
+  ثابت Type& tail () ثابت { ܦܢܐ (*هذا)[length - 1]; }
 
-  explicit operator bool () const { return length; }
-  size_t get_size () const { return hb_unsigned_mul_saturate (length, item_size); }
+  explicit operator منطقي () ثابت { ܦܢܐ length; }
+  size_t get_size () ثابت { ܦܢܐ hb_unsigned_mul_saturate (length, item_size); }
 
   /* Sink interface. */
   template <typename T>
-  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); return *this; }
+  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); ܦܢܐ *هذا; }
 
-  array_t   as_array ()       { return hb_array (arrayZ, length); }
-  c_array_t as_array () const { return hb_array (arrayZ, length); }
+  array_t   as_array ()       { ܦܢܐ hb_array (arrayZ, length); }
+  c_array_t as_array () ثابت { ܦܢܐ hb_array (arrayZ, length); }
 
   /* Iterator. */
-  typedef c_array_t   iter_t;
-  typedef array_t   writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  تعريفنوع c_array_t   iter_t;
+  تعريفنوع array_t   writer_t;
+    iter_t   iter () ثابت { ܦܢܐ as_array (); }
+  writer_t writer ()       { ܦܢܐ as_array (); }
+  operator   iter_t () ثابت { ܦܢܐ   iter (); }
+  operator writer_t ()       { ܦܢܐ writer (); }
 
   /* Faster range-based for loop. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () ثابت { ܦܢܐ arrayZ; }
+  Type *end () ثابت { ܦܢܐ arrayZ + length; }
 
 
   hb_sorted_array_t<Type> as_sorted_array ()
-  { return hb_sorted_array (arrayZ, length); }
-  hb_sorted_array_t<const Type> as_sorted_array () const
-  { return hb_sorted_array (arrayZ, length); }
+  { ܦܢܐ hb_sorted_array (arrayZ, length); }
+  hb_sorted_array_t<ثابت Type> as_sorted_array () ثابت
+  { ܦܢܐ hb_sorted_array (arrayZ, length); }
 
-  template <typename T> explicit operator T * () { return arrayZ; }
-  template <typename T> explicit operator const T * () const { return arrayZ; }
+  template <typename T> explicit operator T * () { ܦܢܐ arrayZ; }
+  template <typename T> explicit operator ثابت T * () ثابت { ܦܢܐ arrayZ; }
 
-  Type * operator  + (unsigned int i) { return arrayZ + i; }
-  const Type * operator  + (unsigned int i) const { return arrayZ + i; }
+  Type * operator  + (unsigned صحيح i) { ܦܢܐ arrayZ + i; }
+  ثابت Type * operator  + (unsigned صحيح i) ثابت { ܦܢܐ arrayZ + i; }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push ()
   {
-    if (unlikely (!resize (length + 1)))
-      return std::addressof (Crap (Type));
-    return std::addressof (arrayZ[length - 1]);
+    ܐܢ (unlikely (!resize (length + 1)))
+      ܦܢܐ std::addressof (Crap (Type));
+    ܦܢܐ std::addressof (arrayZ[length - 1]);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push (Args&&... args)
   {
-    if (unlikely ((int) length >= allocated))
+    ܐܢ (unlikely ((صحيح) length >= allocated))
     {
-      if (unlikely (in_error ()))
-	return std::addressof (Crap (Type));
+      ܐܢ (unlikely (in_error ()))
+	ܦܢܐ std::addressof (Crap (Type));
 
       /* An argument may live in our own storage, eg. v.push (v[i]).
        * alloc() frees that storage, so copy it out first. */
-      if (unlikely (in_storage (args...)))
+      ܐܢ (unlikely (in_storage (args...)))
       {
 	Type copy (std::forward<Args> (args)...);
-	if (unlikely (!alloc (length + 1)))
-	  return std::addressof (Crap (Type));
-	return push_has_room (std::move (copy));
+	ܐܢ (unlikely (!alloc (length + 1)))
+	  ܦܢܐ std::addressof (Crap (Type));
+	ܦܢܐ push_has_room (std::move (copy));
       }
-      if (unlikely (!alloc (length + 1)))
+      ܐܢ (unlikely (!alloc (length + 1)))
 	// If push failed to allocate then don't copy v, since this may cause
 	// the created copy to leak memory since we won't have stored a
 	// reference to it.
-	return std::addressof (Crap (Type));
+	ܦܢܐ std::addressof (Crap (Type));
     }
 
-    return push_has_room (std::forward<Args> (args)...);
+    ܦܢܐ push_has_room (std::forward<Args> (args)...);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool push_or_fail (Args&&... args)
+  منطقي push_or_fail (Args&&... args)
   {
-    return push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
+    ܦܢܐ push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
@@ -358,84 +358,84 @@ struct hb_vector_t
   {
     /* Emplace. */
     Type *p = std::addressof (arrayZ[length++]);
-    return new (p) Type (std::forward<Args> (args)...);
+    ܦܢܐ جديد (p) Type (std::forward<Args> (args)...);
   }
 
-  bool in_storage () const { return false; }
+  منطقي in_storage () ثابت { ܦܢܐ ܕܓܠܐ; }
   template <typename T, typename... Ts>
-  bool in_storage (const T &v, const Ts &...vs) const
+  منطقي in_storage (ثابت T &v, ثابت Ts &...vs) ثابت
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return (arrayZ &&
+    ܦܢܐ (arrayZ &&
 	    (uintptr_t) arrayZ <= p && p < (uintptr_t) (arrayZ + length)) ||
 	   in_storage (vs...);
   }
 
-  bool is_owned () const
+  منطقي is_owned () ثابت
   {
-    return allocated != 0 && allocated != -1;
+    ܦܢܐ allocated != 0 && allocated != -1;
   }
 
-  bool in_error () const { return allocated < 0; }
-  void set_error ()
+  منطقي in_error () ثابت { ܦܢܐ allocated < 0; }
+  فراغ set_error ()
   {
-    assert (allocated >= 0);
+    أكد (allocated >= 0);
     allocated = -allocated - 1;
   }
-  void reset_error ()
+  فراغ reset_error ()
   {
-    assert (allocated < 0);
+    أكد (allocated < 0);
     allocated = -(allocated + 1);
   }
-  void ensure_error ()
+  فراغ ensure_error ()
   {
-    if (!in_error ())
+    ܐܢ (!in_error ())
       set_error ();
   }
 
   Type *
   _realloc (unsigned new_allocated)
   {
-    if (!new_allocated)
+    ܐܢ (!new_allocated)
     {
-      if (is_owned ())
+      ܐܢ (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      ܦܢܐ nullptr;
     }
-    if (!allocated && arrayZ)
+    ܐܢ (!allocated && arrayZ)
     {
       /* If we have a non-null arrayZ but allocated is 0, then we are
        * reallocating from a foreign array. */
-      Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-      if (unlikely (!new_array))
-	return nullptr;
-      hb_memcpy ((void *) new_array, (const void *) arrayZ, length * sizeof (Type));
-      return new_array;
+      Type *new_array = (Type *) hb_malloc (new_allocated * حجم (Type));
+      ܐܢ (unlikely (!new_array))
+	ܦܢܐ nullptr;
+      hb_memcpy ((فراغ *) new_array, (ثابت فراغ *) arrayZ, length * حجم (Type));
+      ܦܢܐ new_array;
     }
-    return (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
+    ܦܢܐ (Type *) hb_realloc (arrayZ, new_allocated * حجم (Type));
   }
   Type *
   _malloc_move (unsigned new_allocated)
   {
-    if (!new_allocated)
+    ܐܢ (!new_allocated)
     {
-      if (is_owned ())
+      ܐܢ (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      ܦܢܐ nullptr;
     }
-    Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-    if (likely (new_array))
+    Type *new_array = (Type *) hb_malloc (new_allocated * حجم (Type));
+    ܐܢ (likely (new_array))
     {
-      for (unsigned i = 0; i < length; i++)
+      لكل (unsigned i = 0; i < length; i++)
       {
-	new (std::addressof (new_array[i])) Type ();
+	جديد (std::addressof (new_array[i])) Type ();
 	new_array[i] = std::move (arrayZ[i]);
 	arrayZ[i].~Type ();
       }
-      if (is_owned ())
+      ܐܢ (is_owned ())
 	hb_free (arrayZ);
     }
-    return new_array;
+    ܦܢܐ new_array;
   }
 
   template <typename T = Type,
@@ -443,14 +443,14 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _realloc (new_allocated);
+    ܦܢܐ _realloc (new_allocated);
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copy_assignable(T))>
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _malloc_move (new_allocated);
+    ܦܢܐ _malloc_move (new_allocated);
   }
   /* Specialization for types that can be moved using realloc(). */
   template <typename T = Type,
@@ -458,60 +458,60 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<1>)
   {
-    return _realloc (new_allocated);
+    ܦܢܐ _realloc (new_allocated);
   }
 
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_constructible(T))>
-  void
+  فراغ
   grow_vector (unsigned size, hb_priority<0>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * حجم (*arrayZ));
     length = size;
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_constructible(T))>
-  void
+  فراغ
   grow_vector (unsigned size, hb_priority<0>)
   {
-    for (; length < size; length++)
-      new (std::addressof (arrayZ[length])) Type ();
+    لكل (; length < size; length++)
+      جديد (std::addressof (arrayZ[length])) Type ();
   }
   /* Specialization for hb_vector_t<hb_{vector,array}_t<U>> to speed up. */
   template <typename T = Type,
 	    hb_enable_if (hb_is_same (T, hb_vector_t<typename T::item_t>) ||
 			  hb_is_same (T, hb_array_t <typename T::item_t>))>
-  void
+  فراغ
   grow_vector (unsigned size, hb_priority<1>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * حجم (*arrayZ));
     length = size;
   }
 
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_copyable (T))>
-  void
+  فراغ
   copy_array (hb_array_t<Type> other)
   {
-    hb_memcpy ((void *) (arrayZ + length), (const void *) other.arrayZ, other.length * item_size);
+    hb_memcpy ((فراغ *) (arrayZ + length), (ثابت فراغ *) other.arrayZ, other.length * item_size);
     length += other.length;
   }
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_copyable (T))>
-  void
-  copy_array (hb_array_t<const Type> other)
+  فراغ
+  copy_array (hb_array_t<ثابت Type> other)
   {
-    hb_memcpy ((void *) (arrayZ + length), (const void *) other.arrayZ, other.length * item_size);
+    hb_memcpy ((فراغ *) (arrayZ + length), (ثابت فراغ *) other.arrayZ, other.length * item_size);
     length += other.length;
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copyable (T) &&
 			   std::is_copy_constructible<T>::value)>
-  void
-  copy_array (hb_array_t<const Type> other)
+  فراغ
+  copy_array (hb_array_t<ثابت Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
-      new (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
+    لكل (unsigned i = 0; i < other.length; i++)
+      جديد (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
     length += other.length;
   }
   template <typename T = Type,
@@ -519,269 +519,269 @@ struct hb_vector_t
 			  !std::is_copy_constructible<T>::value &&
 			  std::is_default_constructible<T>::value &&
 			  std::is_copy_assignable<T>::value)>
-  void
-  copy_array (hb_array_t<const Type> other)
+  فراغ
+  copy_array (hb_array_t<ثابت Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    لكل (unsigned i = 0; i < other.length; i++)
     {
-      new (std::addressof (arrayZ[length + i])) Type ();
+      جديد (std::addressof (arrayZ[length + i])) Type ();
       arrayZ[length + i] = other.arrayZ[i];
     }
     length += other.length;
   }
 
-  void
+  فراغ
   shrink_vector (unsigned size)
   {
-    assert (size <= length);
-    if (!hb_is_trivially_destructible(Type))
+    أكد (size <= length);
+    ܐܢ (!hb_is_trivially_destructible(Type))
     {
       unsigned count = length - size;
       Type *p = arrayZ + length;
-      while (count--)
+      ܟܡܐ (count--)
         (--p)->~Type ();
     }
     length = size;
   }
 
-  void
+  فراغ
   shift_down_vector (unsigned i)
   {
-    for (; i < length; i++)
+    لكل (; i < length; i++)
       arrayZ[i - 1] = std::move (arrayZ[i]);
   }
 
   /* Allocate for size but don't adjust length. */
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc (unsigned int size, bool exact=false)
+  منطقي alloc (unsigned صحيح size, منطقي exact=ܕܓܠܐ)
   {
-    if (unlikely (in_error ()))
-      return false;
+    ܐܢ (unlikely (in_error ()))
+      ܦܢܐ ܕܓܠܐ;
 
-    unsigned int new_allocated;
-    if (exact)
+    unsigned صحيح new_allocated;
+    ܐܢ (exact)
     {
       /* If exact was specified, we allow shrinking the storage. */
       size = hb_max (size, length);
-      if (size <= (unsigned) allocated &&
+      ܐܢ (size <= (unsigned) allocated &&
 	  size >= (unsigned) allocated >> 2)
-	return true;
+	ܦܢܐ ܫܪܪܐ;
 
       new_allocated = size;
     }
-    else
+    ܐܚܪܢܐ
     {
-      if (likely (size <= (unsigned) allocated))
-	return true;
+      ܐܢ (likely (size <= (unsigned) allocated))
+	ܦܢܐ ܫܪܪܐ;
 
       new_allocated = allocated;
-      while (size > new_allocated)
+      ܟܡܐ (size > new_allocated)
 	new_allocated += (new_allocated >> 1) + 8;
     }
 
     /* Reallocate */
 
-    bool overflows =
-      (int) in_error () ||
+    منطقي overflows =
+      (صحيح) in_error () ||
       (new_allocated < size) ||
-      hb_unsigned_mul_overflows (new_allocated, sizeof (Type));
+      hb_unsigned_mul_overflows (new_allocated, حجم (Type));
 
-    if (unlikely (overflows))
+    ܐܢ (unlikely (overflows))
     {
       set_error ();
-      return false;
+      ܦܢܐ ܕܓܠܐ;
     }
 
     Type *new_array = realloc_vector (new_allocated, hb_prioritize);
 
-    if (unlikely (new_allocated && !new_array))
+    ܐܢ (unlikely (new_allocated && !new_array))
     {
-      if (new_allocated <= (unsigned) allocated)
-        return true; // shrinking failed; it's okay; happens in our fuzzer
+      ܐܢ (new_allocated <= (unsigned) allocated)
+        ܦܢܐ ܫܪܪܐ; // shrinking failed; it's okay; happens in our fuzzer
 
       set_error ();
-      return false;
+      ܦܢܐ ܕܓܠܐ;
     }
 
     arrayZ = new_array;
     allocated = new_allocated;
 
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc_exact (unsigned int size)
+  منطقي alloc_exact (unsigned صحيح size)
   {
-    return alloc (size, true);
+    ܦܢܐ alloc (size, ܫܪܪܐ);
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void clear ()
+  فراغ clear ()
   {
     shrink_vector (0);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned int initialize = true)
+  منطقي allocate_from_pool (allocator_t *allocator, unsigned size, unsigned صحيح initialize = ܫܪܪܐ)
   {
-    if (allocator)
+    ܐܢ (allocator)
     {
-      assert (!length && !allocated);
-      arrayZ = (Type *) allocator->alloc (size * sizeof (Type), alignof (Type));
-      if (unlikely (!arrayZ))
+      أكد (!length && !allocated);
+      arrayZ = (Type *) allocator->alloc (size * حجم (Type), alignof (Type));
+      ܐܢ (unlikely (!arrayZ))
       {
 	set_error ();
-	return false;
+	ܦܢܐ ܕܓܠܐ;
       }
-      if (initialize)
+      ܐܢ (initialize)
 	grow_vector (size, hb_prioritize);
-      else
+      ܐܚܪܢܐ
 	length = size;
-      return true;
+      ܦܢܐ ܫܪܪܐ;
     }
-    return resize_full ((int) size, initialize, true);
+    ܦܢܐ resize_full ((صحيح) size, initialize, ܫܪܪܐ);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool duplicate_vector_from_pool (allocator_t *allocator, const hb_vector_t &other)
+  منطقي duplicate_vector_from_pool (allocator_t *allocator, ثابت hb_vector_t &other)
   {
-    if (unlikely (!allocate_from_pool (allocator, other.length, false)))
-      return false;
+    ܐܢ (unlikely (!allocate_from_pool (allocator, other.length, ܕܓܠܐ)))
+      ܦܢܐ ܕܓܠܐ;
     length = 0;
     copy_array (other.as_array ());
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
 
   template <typename allocator_t>
-  void shrink_back_to_pool (allocator_t *allocator, int size)
+  فراغ shrink_back_to_pool (allocator_t *allocator, صحيح size)
   {
     unsigned orig_length = length;
 
-    shrink (size, false);
+    shrink (size, ܕܓܠܐ);
 
-    if (allocator && !is_owned ())
-      allocator->discard (arrayZ + length, (orig_length - length) * sizeof (Type));
+    ܐܢ (allocator && !is_owned ())
+      allocator->discard (arrayZ + length, (orig_length - length) * حجم (Type));
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_full (int size_, bool initialize, bool exact)
+  منطقي resize_full (صحيح size_, منطقي initialize, منطقي exact)
   {
-    if (unlikely (size_ < 0))
-      return false;
-    unsigned int size = (unsigned int) size_;
-    if (!alloc (size, exact))
-      return false;
+    ܐܢ (unlikely (size_ < 0))
+      ܦܢܐ ܕܓܠܐ;
+    unsigned صحيح size = (unsigned صحيح) size_;
+    ܐܢ (!alloc (size, exact))
+      ܦܢܐ ܕܓܠܐ;
 
-    if (size > length)
+    ܐܢ (size > length)
     {
-      if (initialize)
+      ܐܢ (initialize)
 	grow_vector (size, hb_prioritize);
     }
-    else if (size < length)
+    ܐܚܪܢܐ ܐܢ (size < length)
     {
-      if (initialize)
+      ܐܢ (initialize)
 	shrink_vector (size);
     }
 
     length = size;
-    return true;
+    ܦܢܐ ܫܪܪܐ;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize (int size_)
+  منطقي resize (صحيح size_)
   {
-    return resize_full (size_, true, false);
+    ܦܢܐ resize_full (size_, ܫܪܪܐ, ܕܓܠܐ);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_dirty (int size_)
+  منطقي resize_dirty (صحيح size_)
   {
-    return resize_full (size_, false, false);
+    ܦܢܐ resize_full (size_, ܕܓܠܐ, ܕܓܠܐ);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_exact (int size_)
+  منطقي resize_exact (صحيح size_)
   {
-    return resize_full (size_, true, true);
+    ܦܢܐ resize_full (size_, ܫܪܪܐ, ܫܪܪܐ);
   }
 
   Type pop ()
   {
-    if (!length) return Null (Type);
+    ܐܢ (!length) ܦܢܐ Null (Type);
     Type v (std::move (arrayZ[length - 1]));
     arrayZ[length - 1].~Type ();
     length--;
-    return v;
+    ܦܢܐ v;
   }
 
-  void remove_ordered (unsigned int i)
+  فراغ remove_ordered (unsigned صحيح i)
   {
-    if (unlikely (i >= length))
-      return;
+    ܐܢ (unlikely (i >= length))
+      ܦܢܐ;
     shift_down_vector (i + 1);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  template <bool Sorted = sorted,
+  template <منطقي Sorted = sorted,
 	    hb_enable_if (!Sorted)>
-  void remove_unordered (unsigned int i)
+  فراغ remove_unordered (unsigned صحيح i)
   {
-    if (unlikely (i >= length))
-      return;
-    if (i != length - 1)
+    ܐܢ (unlikely (i >= length))
+      ܦܢܐ;
+    ܐܢ (i != length - 1)
       arrayZ[i] = std::move (arrayZ[length - 1]);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  void shrink (int size_, bool shrink_memory = true)
+  فراغ shrink (صحيح size_, منطقي shrink_memory = ܫܪܪܐ)
   {
-    unsigned int size = size_ < 0 ? 0u : (unsigned int) size_;
-    if (size >= length)
-      return;
+    unsigned صحيح size = size_ < 0 ? 0u : (unsigned صحيح) size_;
+    ܐܢ (size >= length)
+      ܦܢܐ;
 
     shrink_vector (size);
 
-    if (is_owned () && shrink_memory)
+    ܐܢ (is_owned () && shrink_memory)
       alloc_exact (size); /* To force shrinking memory if needed. */
   }
 
 
   /* Sorting API. */
   template <typename Compar>
-  void qsort (Compar compar)
+  فراغ qsort (Compar compar)
   { as_array ().qsort (compar); }
-  void qsort ()
+  فراغ qsort ()
   { as_array ().qsort (); }
 
   /* Unsorted search API. */
   template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().lsearch (x, not_found); }
+  Type *lsearch (ثابت T &x, Type *not_found = nullptr)
+  { ܦܢܐ as_array ().lsearch (x, not_found); }
   template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().lsearch (x, not_found); }
+  ثابت Type *lsearch (ثابت T &x, ثابت Type *not_found = nullptr) ثابت
+  { ܦܢܐ as_array ().lsearch (x, not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr) const
-  { return as_array ().lfind (x, pos); }
+  منطقي lfind (ثابت T &x, unsigned *pos = nullptr) ثابت
+  { ܦܢܐ as_array ().lfind (x, pos); }
 
   /* Sorted search API. */
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().bsearch (x, not_found); }
+	    منطقي Sorted=sorted, hb_enable_if (Sorted)>
+  Type *bsearch (ثابت T &x, Type *not_found = nullptr)
+  { ܦܢܐ as_array ().bsearch (x, not_found); }
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().bsearch (x, not_found); }
+	    منطقي Sorted=sorted, hb_enable_if (Sorted)>
+  ثابت Type *bsearch (ثابت T &x, ثابت Type *not_found = nullptr) ثابت
+  { ܦܢܐ as_array ().bsearch (x, not_found); }
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+	    منطقي Sorted=sorted, hb_enable_if (Sorted)>
+  منطقي bfind (ثابت T &x, unsigned صحيح *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned صحيح to_store = (unsigned صحيح) -1) ثابت
+  { ܦܢܐ as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type>
-using hb_sorted_vector_t = hb_vector_t<Type, true>;
+using hb_sorted_vector_t = hb_vector_t<Type, ܫܪܪܐ>;
 
 #endif /* HB_VECTOR_HH */

@@ -27,10 +27,10 @@
 #ifndef HB_DEPEND_HH
 #define HB_DEPEND_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-subset-depend.h"
-#include "hb-depend-data.hh"
+#ضمن "hb-subset-depend.h"
+#ضمن "hb-depend-data.hh"
 
 
 /**
@@ -42,19 +42,19 @@
  * graph once via hb_depend_data_builder_t::compile(). The graph remains
  * immutable for the lifetime of the object.
  */
-struct hb_subset_depend_t
+بنية hb_subset_depend_t
 {
   HB_INTERNAL hb_subset_depend_t (hb_face_t *face);
 
   hb_object_header_t header;
 
-  bool successful;
+  منطقي successful;
 
-  bool in_error () const { return !successful; }
+  منطقي in_error () ثابت { ܦܢܐ !successful; }
 
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
+  ثابت hb_set_t *get_set_from_index (hb_codepoint_t index)
   {
-    return data.get_set_from_index (index);
+    ܦܢܐ data.get_set_from_index (index);
   }
 
   hb_depend_data_t data;

@@ -39,26 +39,26 @@
 /* First we measure, then we cut. */
 #ifndef OT_MEASURE
 #define OT_MEASURE
-#define OT_TABLE_START			static const struct TABLE_NAME {
+#define OT_TABLE_START			ساكن ثابت بنية TABLE_NAME {
 #define OT_TABLE_END			}
-#define OT_LABEL_START(Name)		unsigned char Name[
+#define OT_LABEL_START(Name)		unsigned حرف Name[
 #define OT_LABEL_END			];
 #define OT_UINT8(u8)			+1/*byte*/
 #define OT_UINT16(u16)			+2/*bytes*/
-#else
+#ܐܚܪܢܐ
 #undef  OT_MEASURE
 #define OT_TABLE_START			TABLE_NAME = {
 #define OT_TABLE_END			};
 #define OT_LABEL_START(Name)		{
 #define OT_LABEL_END			},
 #define OT_UINT8(u8)			(u8),
-#define OT_UINT16(u16)			(unsigned char)((u16)>>8), (unsigned char)((u16)&0xFFu),
-#define OT_COUNT(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
-					 / (unsigned int)(ItemSize) \
+#define OT_UINT16(u16)			(unsigned حرف)((u16)>>8), (unsigned حرف)((u16)&0xFFu),
+#define OT_COUNT(Name, ItemSize)	((unsigned صحيح) حجم(((بنية TABLE_NAME*)0)->Name) \
+					 / (unsigned صحيح)(ItemSize) \
 					 /* OT_ASSERT it's divisible (and positive). */)
-#define OT_DISTANCE(From,To)		((unsigned int) \
-					 ((char*)(&((struct TABLE_NAME*)0)->To) - \
-					  (char*)(&((struct TABLE_NAME*)0)->From)) \
+#define OT_DISTANCE(From,To)		((unsigned صحيح) \
+					 ((حرف*)(&((بنية TABLE_NAME*)0)->To) - \
+					  (حرف*)(&((بنية TABLE_NAME*)0)->From)) \
 					 /* OT_ASSERT it's positive. */)
 #endif
 
@@ -338,11 +338,11 @@ OT_TABLE_END
 /*
  * Include a second time to get the table data...
  */
-#if 0
-#include "hb.hh" /* Make check-includes.sh happy. */
+#ܐܢ 0
+#ضمن "hb.hh" /* Make check-includes.sh happy. */
 #endif
 #ifdef OT_MEASURE
-#include "hb-ot-shaper-arabic-win1256.hh"
+#ضمن "hb-ot-shaper-arabic-win1256.hh"
 #endif
 
 #define HB_OT_SHAPER_ARABIC_WIN1256_HH
