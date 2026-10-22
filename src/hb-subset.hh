@@ -28,31 +28,31 @@
 #define HB_SUBSET_HH
 
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-subset.h"
+#অন্তর্ভাব "hb-subset.h"
 
-#include "hb-machinery.hh"
-#include "hb-serialize.hh"
-#include "hb-subset-input.hh"
-#include "hb-subset-plan.hh"
+#অন্তর্ভাব "hb-machinery.hh"
+#অন্তর্ভাব "hb-serialize.hh"
+#অন্তর্ভাব "hb-subset-input.hh"
+#অন্তর্ভাব "hb-subset-plan.hh"
 
-struct hb_subset_context_t :
-       hb_dispatch_context_t<hb_subset_context_t, bool, HB_DEBUG_SUBSET>
+সংরচনা hb_subset_context_t :
+       hb_dispatch_context_t<hb_subset_context_t, তার্কিক, HB_DEBUG_SUBSET>
 {
-  const char *get_name () { return "SUBSET"; }
-  static return_t default_return_value () { return true; }
+  ধ্রুব বর্ণ *get_name () { প্রত্যাগম "SUBSET"; }
+  স্থির return_t default_return_মান () { প্রত্যাগম সত্য; }
 
-  private:
+  গুপ্ত:
   template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.subset (this, std::forward<Ts> (ds)...) )
+  _dispatch (ধ্রুব T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.subset (এতত্, std::forward<Ts> (ds)...) )
   template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
+  _dispatch (ধ্রুব T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (এতত্, std::forward<Ts> (ds)...) )
+  সার্বজনিক:
   template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  dispatch (ধ্রুব T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
   hb_blob_t *source_blob;

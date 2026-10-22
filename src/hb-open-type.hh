@@ -29,15 +29,15 @@
 #ifndef HB_OPEN_TYPE_HH
 #define HB_OPEN_TYPE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-face.hh"
-#include "hb-machinery.hh"
-#include "hb-meta.hh"
-#include "hb-subset.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-blob.hh"
+#অন্তর্ভাব "hb-face.hh"
+#অন্তর্ভাব "hb-machinery.hh"
+#অন্তর্ভাব "hb-meta.hh"
+#অন্তর্ভাব "hb-subset.hh"
 
 
-namespace OT {
+নামাকাশ OT {
 
 
 /*
@@ -54,209 +54,209 @@ namespace OT {
  */
 
 /* Integer types in big-endian order and no alignment requirement */
-template <bool BE,
+template <তার্কিক BE,
 	  typename Type,
-	  unsigned int Size = sizeof (Type)>
-struct NumType
+	  unsigned পূর্ণাঙ্ক Size = পরিমাণ (Type)>
+সংরচনা অঙ্ক_Type
 {
-  typedef Type type;
+  প্রকারনির্দেশ Type type;
   /* For reason we define cast out operator for signed/unsigned, instead of Type, see:
    * https://github.com/harfbuzz/harfbuzz/pull/2875/commits/09836013995cab2b9f07577a179ad7b024130467 */
-  typedef typename std::conditional<std::is_integral<Type>::value && sizeof (Type) <= sizeof(int),
+  প্রকারনির্দেশ typename std::conditional<std::is_integral<Type>::value && পরিমাণ (Type) <= পরিমাণ(পূর্ণাঙ্ক),
 				     typename std::conditional<std::is_signed<Type>::value, signed, unsigned>::type,
 				     Type>::type WideType;
 
-  NumType () = default;
-  explicit constexpr NumType (Type V) : v {V} {}
-  NumType& operator = (Type V) { v = V; return *this; }
+  অঙ্ক_Type () = স্বভাব;
+  explicit constexpr অঙ্ক_Type (Type V) : v {V} {}
+  অঙ্ক_Type& operator = (Type V) { v = V; প্রত্যাগম *এতত্; }
 
-  operator WideType () const { return v; }
+  operator WideType () ধ্রুব { প্রত্যাগম v; }
 
-  bool operator == (const NumType &o) const { return (Type) v == (Type) o.v; }
-  bool operator != (const NumType &o) const { return !(*this == o); }
+  তার্কিক operator == (ধ্রুব অঙ্ক_Type &o) ধ্রুব { প্রত্যাগম (Type) v == (Type) o.v; }
+  তার্কিক operator != (ধ্রুব অঙ্ক_Type &o) ধ্রুব { প্রত্যাগম !(*এতত্ == o); }
 
-  NumType& operator += (WideType count) { *this = *this + count; return *this; }
-  NumType& operator -= (WideType count) { *this = *this - count; return *this; }
-  NumType& operator ++ () { *this += 1; return *this; }
-  NumType& operator -- () { *this -= 1; return *this; }
-  NumType operator ++ (int) { NumType c (*this); ++*this; return c; }
-  NumType operator -- (int) { NumType c (*this); --*this; return c; }
+  অঙ্ক_Type& operator += (WideType গুনতি) { *এতত্ = *এতত্ + গুনতি; প্রত্যাগম *এতত্; }
+  অঙ্ক_Type& operator -= (WideType গুনতি) { *এতত্ = *এতত্ - গুনতি; প্রত্যাগম *এতত্; }
+  অঙ্ক_Type& operator ++ () { *এতত্ += 1; প্রত্যাগম *এতত্; }
+  অঙ্ক_Type& operator -- () { *এতত্ -= 1; প্রত্যাগম *এতত্; }
+  অঙ্ক_Type operator ++ (পূর্ণাঙ্ক) { অঙ্ক_Type c (*এতত্); ++*এতত্; প্রত্যাগম c; }
+  অঙ্ক_Type operator -- (পূর্ণাঙ্ক) { অঙ্ক_Type c (*এতত্); --*এতত্; প্রত্যাগম c; }
 
-  uint32_t hash () const { return hb_array ((const char *) &v, sizeof (v)).hash (); }
-  HB_INTERNAL static int cmp (const NumType *a, const NumType *b)
-  { return b->cmp (*a); }
-  HB_INTERNAL static int cmp (const void *a, const void *b)
+  uint32_t hash () ধ্রুব { প্রত্যাগম hb_array ((ধ্রুব বর্ণ *) &v, পরিমাণ (v)).hash (); }
+  HB_INTERNAL স্থির পূর্ণাঙ্ক cmp (ধ্রুব অঙ্ক_Type *a, ধ্রুব অঙ্ক_Type *b)
+  { প্রত্যাগম b->cmp (*a); }
+  HB_INTERNAL স্থির পূর্ণাঙ্ক cmp (ধ্রুব শূন্য *a, ধ্রুব শূন্য *b)
   {
-    NumType *pa = (NumType *) a;
-    NumType *pb = (NumType *) b;
+    অঙ্ক_Type *pa = (অঙ্ক_Type *) a;
+    অঙ্ক_Type *pb = (অঙ্ক_Type *) b;
 
-    return pb->cmp (*pa);
+    প্রত্যাগম pb->cmp (*pa);
   }
   template <typename Type2,
 	    hb_enable_if (hb_is_convertible (Type2, Type))>
-  int cmp (Type2 a) const
+  পূর্ণাঙ্ক cmp (Type2 a) ধ্রুব
   {
     Type b = v;
-    return (a > b) - (a < b);
+    প্রত্যাগম (a > b) - (a < b);
   }
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
-  protected:
+  রক্ষিত:
   typename std::conditional<std::is_integral<Type>::value,
 			    HBInt<BE, Type, Size>,
 			    HBFloat<BE, Type, Size>>::type v;
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (Size);
 };
 
-typedef NumType<true, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
-typedef NumType<true, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
-typedef NumType<true, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
-typedef NumType<true, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
-typedef NumType<true, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
-typedef NumType<true, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
-typedef NumType<true, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
-typedef NumType<true, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
 /* Note: we cannot defined a signed HBINT24 because there's no corresponding C type.
  * Works for unsigned, but not signed, since we rely on compiler for sign-extension. */
-typedef NumType<true, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
 
-typedef NumType<false, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
-typedef NumType<false, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
-typedef NumType<false, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
-typedef NumType<false, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
-typedef NumType<false, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
-typedef NumType<false, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
+প্রকারনির্দেশ অঙ্ক_Type<অসত্য, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
+প্রকারনির্দেশ অঙ্ক_Type<অসত্য, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
+প্রকারনির্দেশ অঙ্ক_Type<অসত্য, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
+প্রকারনির্দেশ অঙ্ক_Type<অসত্য, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
+প্রকারনির্দেশ অঙ্ক_Type<অসত্য, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
+প্রকারনির্দেশ অঙ্ক_Type<অসত্য, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
 
-typedef NumType<true,  float>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
-typedef NumType<true,  double> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
-typedef NumType<false, float>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
-typedef NumType<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য,  ভিন্ন>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
+প্রকারনির্দেশ অঙ্ক_Type<সত্য,  দ্বিগুণ> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
+প্রকারনির্দেশ অঙ্ক_Type<অসত্য, ভিন্ন>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
+প্রকারনির্দেশ অঙ্ক_Type<অসত্য, দ্বিগুণ> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
 
 /* 15-bit unsigned number; top bit used for extension. */
-struct HBUINT15 : HBUINT16
+সংরচনা HBUINT15 : HBUINT16
 {
   /* TODO Flesh out; actually mask top bit. */
-  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); return *this; }
-  public:
+  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); প্রত্যাগম *এতত্; }
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (2);
 };
 
 /* 32-bit unsigned integer with variable encoding. */
-struct HBUINT32VAR
+সংরচনা HBUINT32VAR
 {
-  size_t get_size () const
+  size_t get_size () ধ্রুব
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return 1;
-    else if (b0 < 0xC0)
-      return 2;
-    else if (b0 < 0xE0)
-      return 3;
-    else if (b0 < 0xF0)
-      return 4;
-    else
-      return 5;
+    যদি (b0 < 0x80)
+      প্রত্যাগম 1;
+    অন্যথা যদি (b0 < 0xC0)
+      প্রত্যাগম 2;
+    অন্যথা যদি (b0 < 0xE0)
+      প্রত্যাগম 3;
+    অন্যথা যদি (b0 < 0xF0)
+      প্রত্যাগম 4;
+    অন্যথা
+      প্রত্যাগম 5;
   }
 
-  static size_t get_size (uint32_t v)
+  স্থির size_t get_size (uint32_t v)
   {
-    if (v < 0x80)
-      return 1;
-    else if (v < 0x4000)
-      return 2;
-    else if (v < 0x200000)
-      return 3;
-    else if (v < 0x10000000)
-      return 4;
-    else
-      return 5;
+    যদি (v < 0x80)
+      প্রত্যাগম 1;
+    অন্যথা যদি (v < 0x4000)
+      প্রত্যাগম 2;
+    অন্যথা যদি (v < 0x200000)
+      প্রত্যাগম 3;
+    অন্যথা যদি (v < 0x10000000)
+      প্রত্যাগম 4;
+    অন্যথা
+      প্রত্যাগম 5;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace (c->check_range (v, 1) &&
 		  hb_barrier () &&
 		  c->check_range (v, get_size ()));
   }
 
-  operator uint32_t () const
+  operator uint32_t () ধ্রুব
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return b0;
-    else if (b0 < 0xC0)
-      return ((b0 & 0x3F) << 8) | v[1];
-    else if (b0 < 0xE0)
-      return ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
-    else if (b0 < 0xF0)
-      return ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-    else
-      return (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
+    যদি (b0 < 0x80)
+      প্রত্যাগম b0;
+    অন্যথা যদি (b0 < 0xC0)
+      প্রত্যাগম ((b0 & 0x3F) << 8) | v[1];
+    অন্যথা যদি (b0 < 0xE0)
+      প্রত্যাগম ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
+    অন্যথা যদি (b0 < 0xF0)
+      প্রত্যাগম ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    অন্যথা
+      প্রত্যাগম (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
   }
 
-  static unsigned serialize_unsafe (unsigned char *buf, uint32_t v)
+  স্থির unsigned serialize_unsafe (unsigned বর্ণ *buf, uint32_t v)
   {
     unsigned len = get_size (v);
-    unsigned char *p = buf + len;
-    for (unsigned i = 0; i < len; i++)
+    unsigned বর্ণ *p = buf + len;
+    প্রতি (unsigned i = 0; i < len; i++)
     {
       *--p = v & 0xFF;
       v >>= 8;
     }
 
-    if (len > 1)
+    যদি (len > 1)
       buf[0] |= ((1 << (len - 1)) - 1) << (9 - len);
 
-    return len;
+    প্রত্যাগম len;
   }
 
-  static bool serialize (hb_serialize_context_t *c, uint32_t v)
+  স্থির তার্কিক serialize (hb_serialize_context_t *c, uint32_t v)
   {
     unsigned len = get_size (v);
-    unsigned char *buf = c->allocate_size<unsigned char> (len, false);
-    if (unlikely (!buf))
-      return false;
+    unsigned বর্ণ *buf = c->allocate_size<unsigned বর্ণ> (len, অসত্য);
+    যদি (unlikely (!buf))
+      প্রত্যাগম অসত্য;
 
     serialize_unsafe (buf, v);
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  protected:
-  unsigned char v[5];
+  রক্ষিত:
+  unsigned বর্ণ v[5];
 
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_MIN (1);
 };
 
 /* 16-bit signed integer (HBINT16) that describes a quantity in FUnits. */
-typedef HBINT16 FWORD;
+প্রকারনির্দেশ HBINT16 FWORD;
 
 /* 32-bit signed integer (HBINT32) that describes a quantity in FUnits. */
-typedef HBINT32 FWORD32;
+প্রকারনির্দেশ HBINT32 FWORD32;
 
 /* 16-bit unsigned integer (HBUINT16) that describes a quantity in FUnits. */
-typedef HBUINT16 UFWORD;
+প্রকারনির্দেশ HBUINT16 UFWORD;
 
 template <typename Type, unsigned fraction_bits>
-struct HBFixed : Type
+সংরচনা HBFixed : Type
 {
-  static constexpr float mult = 1.f / (1 << fraction_bits);
+  স্থির constexpr ভিন্ন mult = 1.f / (1 << fraction_bits);
   static_assert (Type::static_size * 8 > fraction_bits, "");
 
-  operator signed () const = delete;
-  operator unsigned () const = delete;
-  explicit operator float () const { return to_float (); }
-  typename Type::type to_int () const { return Type::v; }
-  void set_int (typename Type::type i ) { Type::v = i; }
-  float to_float (float offset = 0) const  { return ((int32_t) Type::v + offset) * mult; }
-  void set_float (float f) { Type::v = roundf (f / mult); }
-  public:
+  operator signed () ধ্রুব = delete;
+  operator unsigned () ধ্রুব = delete;
+  explicit operator ভিন্ন () ধ্রুব { প্রত্যাগম to_float (); }
+  typename Type::type to_int () ধ্রুব { প্রত্যাগম Type::v; }
+  শূন্য set_int (typename Type::type i ) { Type::v = i; }
+  ভিন্ন to_float (ভিন্ন offset = 0) ধ্রুব  { প্রত্যাগম ((int32_t) Type::v + offset) * mult; }
+  শূন্য set_float (ভিন্ন f) { Type::v = roundf (f / mult); }
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (Type::static_size);
 };
 
@@ -270,99 +270,99 @@ using F16DOT16 = HBFixed<HBINT32, 16>;
 
 /* Date represented in number of seconds since 12:00 midnight, January 1,
  * 1904. The value is represented as a signed 64-bit integer. */
-struct LONGDATETIME
+সংরচনা LONGDATETIME
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
-  protected:
+  রক্ষিত:
   HBINT32 major;
   HBUINT32 minor;
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (8);
 };
 
 /* Array of four uint8s (length = 32 bits) used to identify a script, language
  * system, feature, or baseline */
-struct Tag : HBUINT32
+সংরচনা Tag : HBUINT32
 {
-  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); return *this; }
+  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); প্রত্যাগম *এতত্; }
   /* What the char* converters return is NOT nul-terminated.  Print using "%.4s" */
-  operator const char* () const { return reinterpret_cast<const char *> (this); }
-  operator char* ()             { return reinterpret_cast<char *> (this); }
-  public:
+  operator ধ্রুব বর্ণ* () ধ্রুব { প্রত্যাগম reinterpret_cast<ধ্রুব বর্ণ *> (এতত্); }
+  operator বর্ণ* ()             { প্রত্যাগম reinterpret_cast<বর্ণ *> (এতত্); }
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (4);
 };
 
 /* Glyph index number, same as uint16 (length = 16 bits) */
-struct HBGlyphID16 : HBUINT16
+সংরচনা HBGlyphID16 : HBUINT16
 {
-  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); প্রত্যাগম *এতত্; }
 };
-struct HBGlyphID24 : HBUINT24
+সংরচনা HBGlyphID24 : HBUINT24
 {
-  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); return *this; }
+  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); প্রত্যাগম *এতত্; }
 };
 
 /* Script/language-system/feature index */
-struct Index : HBUINT16 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
-  Index& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+সংরচনা Index : HBUINT16 {
+  স্থির constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
+  Index& operator = (uint16_t i) { HBUINT16::operator= (i); প্রত্যাগম *এতত্; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, Index);
 
-typedef Index NameID;
+প্রকারনির্দেশ Index NameID;
 
-struct VarIdx : HBUINT32 {
-  static constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
+সংরচনা VarIdx : HBUINT32 {
+  স্থির constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
   static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_INDEX, "");
-  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); প্রত্যাগম *এতত্; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, VarIdx);
 
 /* Offset, Null offset = 0 */
-template <typename Type, bool has_null=true>
-struct Offset : Type
+template <typename Type, তার্কিক has_null=সত্য>
+সংরচনা Offset : Type
 {
-  Offset& operator = (typename Type::type i) { Type::operator= (i); return *this; }
+  Offset& operator = (typename Type::type i) { Type::operator= (i); প্রত্যাগম *এতত্; }
 
-  typedef Type type;
+  প্রকারনির্দেশ Type type;
 
-  bool is_null () const { return has_null && 0 == *this; }
+  তার্কিক is_null () ধ্রুব { প্রত্যাগম has_null && 0 == *এতত্; }
 
-  public:
-  DEFINE_SIZE_STATIC (sizeof (Type));
+  সার্বজনিক:
+  DEFINE_SIZE_STATIC (পরিমাণ (Type));
 };
 
-typedef Offset<HBUINT16> Offset16;
-typedef Offset<HBUINT24> Offset24;
-typedef Offset<HBUINT32> Offset32;
+প্রকারনির্দেশ Offset<HBUINT16> Offset16;
+প্রকারনির্দেশ Offset<HBUINT24> Offset24;
+প্রকারনির্দেশ Offset<HBUINT32> Offset32;
 
 
 /* CheckSum */
-struct CheckSum : HBUINT32
+সংরচনা CheckSum : HBUINT32
 {
-  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); প্রত্যাগম *এতত্; }
 
   /* This is reference implementation from the spec. */
-  static uint32_t CalcTableChecksum (const HBUINT32 *Table, uint32_t Length)
+  স্থির uint32_t CalcTableChecksum (ধ্রুব HBUINT32 *Table, uint32_t Length)
   {
     uint32_t Sum = 0L;
-    assert (0 == (Length & 3));
-    const HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
+    প্রতিজ্ঞা (0 == (Length & 3));
+    ধ্রুব HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
 
-    while (Table < EndPtr)
+    যাবত্ (Table < EndPtr)
       Sum += *Table++;
-    return Sum;
+    প্রত্যাগম Sum;
   }
 
   /* Note: data should be 4byte aligned and have 4byte padding at the end. */
-  void set_for_data (const void *data, unsigned int length)
-  { *this = CalcTableChecksum ((const HBUINT32 *) data, length); }
+  শূন্য set_for_data (ধ্রুব শূন্য *data, unsigned পূর্ণাঙ্ক length)
+  { *এতত্ = CalcTableChecksum ((ধ্রুব HBUINT32 *) data, length); }
 
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (4);
 };
 
@@ -372,20 +372,20 @@ struct CheckSum : HBUINT32
  */
 
 template <typename FixedType=HBUINT16>
-struct FixedVersion
+সংরচনা FixedVersion
 {
-  uint32_t to_int () const { return (major << (sizeof (FixedType) * 8)) + minor; }
+  uint32_t to_int () ধ্রুব { প্রত্যাগম (major << (পরিমাণ (FixedType) * 8)) + minor; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
   FixedType major;
   FixedType minor;
-  public:
-  DEFINE_SIZE_STATIC (2 * sizeof (FixedType));
+  সার্বজনিক:
+  DEFINE_SIZE_STATIC (2 * পরিমাণ (FixedType));
 };
 
 
@@ -394,95 +394,95 @@ struct FixedVersion
  * Use: (base+offset)
  */
 
-template <typename Type, bool has_null>
-struct _hb_has_null
+template <typename Type, তার্কিক has_null>
+সংরচনা _hb_has_null
 {
-  static const Type *get_null () { return nullptr; }
-  static Type *get_crap ()       { return nullptr; }
+  স্থির ধ্রুব Type *get_null () { প্রত্যাগম nullptr; }
+  স্থির Type *get_crap ()       { প্রত্যাগম nullptr; }
 };
 template <typename Type>
-struct _hb_has_null<Type, true>
+সংরচনা _hb_has_null<Type, সত্য>
 {
-  static const Type *get_null () { return &Null (Type); }
-  static       Type *get_crap () { return &Crap (Type); }
+  স্থির ধ্রুব Type *get_null () { প্রত্যাগম &Null (Type); }
+  স্থির       Type *get_crap () { প্রত্যাগম &Crap (Type); }
 };
 
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct OffsetTo : Offset<OffsetType, has_null>
+template <typename Type, typename OffsetType, typename BaseType=শূন্য, তার্কিক has_null=সত্য>
+সংরচনা OffsetTo : Offset<OffsetType, has_null>
 {
   using target_t = Type;
 
   // Make sure Type is not unbounded; works only for types that are fully defined at OffsetTo time.
-  static_assert (has_null == false ||
+  static_assert (has_null == অসত্য ||
 		 (hb_has_null_size (Type) || !hb_has_min_size (Type)), "");
 
   HB_DELETE_COPY_ASSIGN (OffsetTo);
-  OffsetTo () = default;
+  OffsetTo () = স্বভাব;
 
-  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); return *this; }
+  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); প্রত্যাগম *এতত্; }
 
-  const Type& operator () (const void *base) const
+  ধ্রুব Type& operator () (ধ্রুব শূন্য *base) ধ্রুব
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_null ();
-    return StructAtOffset<const Type> (base, *this);
+    যদি (unlikely (এতত্->is_null ())) প্রত্যাগম *_hb_has_null<Type, has_null>::get_null ();
+    প্রত্যাগম StructAtOffset<ধ্রুব Type> (base, *এতত্);
   }
-  Type& operator () (void *base) const
+  Type& operator () (শূন্য *base) ধ্রুব
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_crap ();
-    return StructAtOffset<Type> (base, *this);
+    যদি (unlikely (এতত্->is_null ())) প্রত্যাগম *_hb_has_null<Type, has_null>::get_crap ();
+    প্রত্যাগম StructAtOffset<Type> (base, *এতত্);
   }
 
   template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const Base &base, const OffsetTo &offset) { return offset ((const void *) base); }
+	    hb_enable_if (hb_is_convertible (ধ্রুব Base, ধ্রুব BaseType *))>
+  friend ধ্রুব Type& operator + (ধ্রুব Base &base, ধ্রুব OffsetTo &offset) { প্রত্যাগম offset ((ধ্রুব শূন্য *) base); }
   template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const OffsetTo &offset, const Base &base) { return offset ((const void *) base); }
+	    hb_enable_if (hb_is_convertible (ধ্রুব Base, ধ্রুব BaseType *))>
+  friend ধ্রুব Type& operator + (ধ্রুব OffsetTo &offset, ধ্রুব Base &base) { প্রত্যাগম offset ((ধ্রুব শূন্য *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (Base &&base, OffsetTo &offset) { return offset ((void *) base); }
+  friend Type& operator + (Base &&base, OffsetTo &offset) { প্রত্যাগম offset ((শূন্য *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (OffsetTo &offset, Base &&base) { return offset ((void *) base); }
+  friend Type& operator + (OffsetTo &offset, Base &&base) { প্রত্যাগম offset ((শূন্য *) base); }
 
 
   template <typename Base, typename ...Ts>
-  bool serialize_subset (hb_subset_context_t *c, const OffsetTo& src,
-			 const Base *src_base, Ts&&... ds)
+  তার্কিক serialize_subset (hb_subset_context_t *c, ধ্রুব OffsetTo& src,
+			 ধ্রুব Base *src_base, Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *এতত্ = 0;
+    যদি (src.is_null ())
+      প্রত্যাগম অসত্য;
 
     auto *s = c->serializer;
 
     s->push ();
 
-    bool ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
+    তার্কিক ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
 
-    if (ret || !has_null)
-      s->add_link (*this, s->pop_pack ());
-    else
-      s->pop_discard ();
+    যদি (ret || !has_null)
+      s->add_link (*এতত্, s->বের_করো_pack ());
+    অন্যথা
+      s->বের_করো_discard ();
 
-    return ret;
+    প্রত্যাগম ret;
   }
 
 
   template <typename ...Ts>
-  bool serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
+  তার্কিক serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
   {
-    *this = 0;
+    *এতত্ = 0;
 
     Type* obj = c->push<Type> ();
-    bool ret = obj->serialize (c, std::forward<Ts> (ds)...);
+    তার্কিক ret = obj->serialize (c, std::forward<Ts> (ds)...);
 
-    if (ret)
-      c->add_link (*this, c->pop_pack ());
-    else
-      c->pop_discard ();
+    যদি (ret)
+      c->add_link (*এতত্, c->বের_করো_pack ());
+    অন্যথা
+      c->বের_করো_discard ();
 
-    return ret;
+    প্রত্যাগম ret;
   }
 
   /* TODO: Somehow merge this with previous function into a serialize_dispatch(). */
@@ -490,62 +490,62 @@ struct OffsetTo : Offset<OffsetType, has_null>
    * Can't compile: whence = hb_serialize_context_t::Head followed by Ts&&...
    */
   template <typename ...Ts>
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias,
+  তার্কিক serialize_copy (hb_serialize_context_t *c, ধ্রুব OffsetTo& src,
+		       ধ্রুব শূন্য *src_base, unsigned dst_bias,
 		       hb_serialize_context_t::whence_t whence,
 		       Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *এতত্ = 0;
+    যদি (src.is_null ())
+      প্রত্যাগম অসত্য;
 
     c->push ();
 
-    bool ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
+    তার্কিক ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
 
-    c->add_link (*this, c->pop_pack (), whence, dst_bias);
+    c->add_link (*এতত্, c->বের_করো_pack (), whence, dst_bias);
 
-    return ret;
+    প্রত্যাগম ret;
   }
 
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias = 0)
-  { return serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
+  তার্কিক serialize_copy (hb_serialize_context_t *c, ধ্রুব OffsetTo& src,
+		       ধ্রুব শূন্য *src_base, unsigned dst_bias = 0)
+  { প্রত্যাগম serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, const BaseType *base) const
+  তার্কিক sanitize_shallow (hb_sanitize_context_t *c, ধ্রুব BaseType *base) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!c->check_struct (এতত্))) return_trace (অসত্য);
     hb_barrier ();
     //if (unlikely (this->is_null ())) return_trace (true);
-    if (unlikely ((const char *) base + (unsigned) *this < (const char *) base)) return_trace (false);
-    return_trace (true);
+    যদি (unlikely ((ধ্রুব বর্ণ *) base + (unsigned) *এতত্ < (ধ্রুব বর্ণ *) base)) return_trace (অসত্য);
+    return_trace (সত্য);
   }
 
   template <typename ...Ts>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool sanitize (hb_sanitize_context_t *c, const BaseType *base, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, ধ্রুব BaseType *base, Ts&&... ds) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace (sanitize_shallow (c, base) &&
 		  hb_barrier () &&
-		  (this->is_null () ||
-		   c->dispatch (StructAtOffset<Type> (base, *this), std::forward<Ts> (ds)...)));
+		  (এতত্->is_null () ||
+		   c->dispatch (StructAtOffset<Type> (base, *এতত্), std::forward<Ts> (ds)...)));
   }
 
-  DEFINE_SIZE_STATIC (sizeof (OffsetType));
+  DEFINE_SIZE_STATIC (পরিমাণ (OffsetType));
 };
 /* Partial specializations. */
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
+template <typename Type, typename BaseType=শূন্য, তার্কিক has_null=সত্য> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
+template <typename Type, typename BaseType=শূন্য, তার্কিক has_null=সত্য> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
+template <typename Type, typename BaseType=শূন্য, তার্কিক has_null=সত্য> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
 
-template <typename Type, typename OffsetType, typename BaseType=void> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset16To = Offset16To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset24To = Offset24To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To<Type, BaseType, false>;
+template <typename Type, typename OffsetType, typename BaseType=শূন্য> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, অসত্য>;
+template <typename Type, typename BaseType=শূন্য> using NNOffset16To = Offset16To<Type, BaseType, অসত্য>;
+template <typename Type, typename BaseType=শূন্য> using NNOffset24To = Offset24To<Type, BaseType, অসত্য>;
+template <typename Type, typename BaseType=শূন্য> using NNOffset32To = Offset32To<Type, BaseType, অসত্য>;
 
 
 /*
@@ -553,248 +553,248 @@ template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To
  */
 
 template <typename Type>
-struct UnsizedArrayOf
+সংরচনা UnsizedArrayOf
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  প্রকারনির্দেশ Type item_t;
+  স্থির constexpr unsigned item_size = hb_static_size (Type);
 
   HB_DELETE_CREATE_COPY_ASSIGN (UnsizedArrayOf);
 
-  const Type& operator [] (unsigned int i) const
+  ধ্রুব Type& operator [] (unsigned পূর্ণাঙ্ক i) ধ্রুব
   {
-    return arrayZ[i];
+    প্রত্যাগম arrayZ[i];
   }
-  Type& operator [] (unsigned int i)
+  Type& operator [] (unsigned পূর্ণাঙ্ক i)
   {
-    return arrayZ[i];
+    প্রত্যাগম arrayZ[i];
   }
 
-  static size_t get_size (unsigned int len)
-  { return hb_unsigned_mul_saturate (len, Type::static_size); }
+  স্থির size_t get_size (unsigned পূর্ণাঙ্ক len)
+  { প্রত্যাগম hb_unsigned_mul_saturate (len, Type::static_size); }
 
-  template <typename T> operator T * () { return arrayZ; }
-  template <typename T> operator const T * () const { return arrayZ; }
-  hb_array_t<Type> as_array (unsigned int len)
-  { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array (unsigned int len) const
-  { return hb_array (arrayZ, len); }
+  template <typename T> operator T * () { প্রত্যাগম arrayZ; }
+  template <typename T> operator ধ্রুব T * () ধ্রুব { প্রত্যাগম arrayZ; }
+  hb_array_t<Type> as_array (unsigned পূর্ণাঙ্ক len)
+  { প্রত্যাগম hb_array (arrayZ, len); }
+  hb_array_t<ধ্রুব Type> as_array (unsigned পূর্ণাঙ্ক len) ধ্রুব
+  { প্রত্যাগম hb_array (arrayZ, len); }
 
   template <typename T>
-  Type &lsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).lsearch (x, &not_found); }
+  Type &lsearch (unsigned পূর্ণাঙ্ক len, ধ্রুব T &x, Type &not_found = Crap (Type))
+  { প্রত্যাগম *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).lsearch (x, &not_found); }
+  ধ্রুব Type &lsearch (unsigned পূর্ণাঙ্ক len, ধ্রুব T &x, ধ্রুব Type &not_found = Null (Type)) ধ্রুব
+  { প্রত্যাগম *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  তার্কিক lfind (unsigned পূর্ণাঙ্ক len, ধ্রুব T &x, unsigned পূর্ণাঙ্ক *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).lfind (x, i, not_found, to_store); }
+	      unsigned পূর্ণাঙ্ক to_store = (unsigned পূর্ণাঙ্ক) -1) ধ্রুব
+  { প্রত্যাগম as_array (len).lfind (x, i, not_found, to_store); }
 
-  void qsort (unsigned int len, unsigned int start = 0, unsigned int end = (unsigned int) -1)
+  শূন্য qsort (unsigned পূর্ণাঙ্ক len, unsigned পূর্ণাঙ্ক start = 0, unsigned পূর্ণাঙ্ক end = (unsigned পূর্ণাঙ্ক) -1)
   { as_array (len).qsort (start, end); }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  তার্কিক serialize (hb_serialize_context_t *c, unsigned পূর্ণাঙ্ক বস্তুসমূহ_len, তার্কিক clear = সত্য)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (এতত্);
+    যদি (unlikely (!c->extend_size (এতত্, get_size (বস্তুসমূহ_len), clear))) return_trace (অসত্য);
+    return_trace (সত্য);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  তার্কিক serialize (hb_serialize_context_t *c, Iterator বস্তুসমূহ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (এতত্);
+    unsigned গুনতি = hb_len (বস্তুসমূহ);
+    যদি (unlikely (!serialize (c, গুনতি, অসত্য))) return_trace (অসত্য);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    প্রতি (unsigned i = 0; i < গুনতি; i++, ++বস্তুসমূহ)
+      arrayZ[i] = *বস্তুসমূহ;
+    return_trace (সত্য);
   }
 
-  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned count) const
+  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned গুনতি) ধ্রুব
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
+    TRACE_SERIALIZE (এতত্);
+    auto *out = c->start_embed (এতত্);
+    যদি (unlikely (!as_array (গুনতি).copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, unsigned পূর্ণাঙ্ক গুনতি, Ts&&... ds) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c, count))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!sanitize_shallow (c, গুনতি))) return_trace (অসত্য);
+    যদি (!পরিমাণ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (সত্য);
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < গুনতি; i++)
+      যদি (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (অসত্য);
+    return_trace (সত্য);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int count) const
+  তার্কিক sanitize_shallow (hb_sanitize_context_t *c, unsigned পূর্ণাঙ্ক গুনতি) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_array (arrayZ, count));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_array (arrayZ, গুনতি));
   }
 
-  public:
+  সার্বজনিক:
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_UNBOUNDED (0);
 };
 
 /* Unsized array of offset's */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
+template <typename Type, typename OffsetType, typename BaseType=শূন্য, তার্কিক has_null=সত্য>
 using UnsizedArray16OfOffsetTo = UnsizedArrayOf<OffsetTo<Type, OffsetType, BaseType, has_null>>;
 
 /* Unsized array of offsets relative to the beginning of the array itself. */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
+template <typename Type, typename OffsetType, typename BaseType=শূন্য, তার্কিক has_null=সত্য>
+সংরচনা UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
 {
-  const Type& operator [] (int i_) const
+  ধ্রুব Type& operator [] (পূর্ণাঙ্ক i_) ধ্রুব
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Null (Type); /* Overflowed. */
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    ধ্রুব OffsetTo<Type, OffsetType, BaseType, has_null> *p = &এতত্->arrayZ[i];
+    যদি (unlikely ((ধ্রুব শূন্য *) p < (ধ্রুব শূন্য *) এতত্->arrayZ)) প্রত্যাগম Null (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    প্রত্যাগম এতত্+*p;
   }
-  Type& operator [] (int i_)
+  Type& operator [] (পূর্ণাঙ্ক i_)
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Crap (Type); /* Overflowed. */
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    ধ্রুব OffsetTo<Type, OffsetType, BaseType, has_null> *p = &এতত্->arrayZ[i];
+    যদি (unlikely ((ধ্রুব শূন্য *) p < (ধ্রুব শূন্য *) এতত্->arrayZ)) প্রত্যাগম Crap (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    প্রত্যাগম এতত্+*p;
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, unsigned পূর্ণাঙ্ক গুনতি, Ts&&... ds) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace ((UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
-		   ::sanitize (c, count, this, std::forward<Ts> (ds)...)));
+		   ::sanitize (c, গুনতি, এতত্, std::forward<Ts> (ds)...)));
   }
 };
 
 /* An array with sorted elements.  Supports binary searching. */
 template <typename Type>
-struct SortedUnsizedArrayOf : UnsizedArrayOf<Type>
+সংরচনা SortedUnsizedArrayOf : UnsizedArrayOf<Type>
 {
-  hb_sorted_array_t<Type> as_array (unsigned int len)
-  { return hb_sorted_array (this->arrayZ, len); }
-  hb_sorted_array_t<const Type> as_array (unsigned int len) const
-  { return hb_sorted_array (this->arrayZ, len); }
-  operator hb_sorted_array_t<Type> ()             { return as_array (); }
-  operator hb_sorted_array_t<const Type> () const { return as_array (); }
+  hb_sorted_array_t<Type> as_array (unsigned পূর্ণাঙ্ক len)
+  { প্রত্যাগম hb_sorted_array (এতত্->arrayZ, len); }
+  hb_sorted_array_t<ধ্রুব Type> as_array (unsigned পূর্ণাঙ্ক len) ধ্রুব
+  { প্রত্যাগম hb_sorted_array (এতত্->arrayZ, len); }
+  operator hb_sorted_array_t<Type> ()             { প্রত্যাগম as_array (); }
+  operator hb_sorted_array_t<ধ্রুব Type> () ধ্রুব { প্রত্যাগম as_array (); }
 
   template <typename T>
-  Type &bsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).bsearch (x, &not_found); }
+  Type &bsearch (unsigned পূর্ণাঙ্ক len, ধ্রুব T &x, Type &not_found = Crap (Type))
+  { প্রত্যাগম *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).bsearch (x, &not_found); }
+  ধ্রুব Type &bsearch (unsigned পূর্ণাঙ্ক len, ধ্রুব T &x, ধ্রুব Type &not_found = Null (Type)) ধ্রুব
+  { প্রত্যাগম *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  তার্কিক bfind (unsigned পূর্ণাঙ্ক len, ধ্রুব T &x, unsigned পূর্ণাঙ্ক *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).bfind (x, i, not_found, to_store); }
+	      unsigned পূর্ণাঙ্ক to_store = (unsigned পূর্ণাঙ্ক) -1) ধ্রুব
+  { প্রত্যাগম as_array (len).bfind (x, i, not_found, to_store); }
 };
 
 
 /* An array with a number of elements. */
 template <typename Type, typename LenType>
-struct ArrayOf
+সংরচনা ArrayOf
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  প্রকারনির্দেশ Type item_t;
+  স্থির constexpr unsigned item_size = hb_static_size (Type);
 
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOf);
 
-  const Type& operator [] (int i_) const
+  ধ্রুব Type& operator [] (পূর্ণাঙ্ক i_) ধ্রুব
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Null (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i >= len)) প্রত্যাগম Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    প্রত্যাগম arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (পূর্ণাঙ্ক i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Crap (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i >= len)) প্রত্যাগম Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    প্রত্যাগম arrayZ[i];
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
+  size_t get_size () ধ্রুব
+  { প্রত্যাগম hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
 
-  explicit operator bool () const { return len; }
+  explicit operator তার্কিক () ধ্রুব { প্রত্যাগম len; }
 
-  void pop () { len--; }
+  শূন্য বের_করো () { len--; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, len); }
+  hb_array_t<      Type> as_array ()       { প্রত্যাগম hb_array (arrayZ, len); }
+  hb_array_t<ধ্রুব Type> as_array () ধ্রুব { প্রত্যাগম hb_array (arrayZ, len); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  প্রকারনির্দেশ hb_array_t<ধ্রুব Type>   iter_t;
+  প্রকারনির্দেশ hb_array_t<      Type> writer_t;
+    iter_t   iter () ধ্রুব { প্রত্যাগম as_array (); }
+  writer_t writer ()       { প্রত্যাগম as_array (); }
+  operator   iter_t () ধ্রুব { প্রত্যাগম   iter (); }
+  operator writer_t ()       { প্রত্যাগম writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + len; }
+  ধ্রুব Type *begin () ধ্রুব { প্রত্যাগম arrayZ; }
+  ধ্রুব Type *end () ধ্রুব { প্রত্যাগম arrayZ + len; }
 
   template <typename T>
-  Type &lsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().lsearch (x, &not_found); }
+  Type &lsearch (ধ্রুব T &x, Type &not_found = Crap (Type))
+  { প্রত্যাগম *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().lsearch (x, &not_found); }
+  ধ্রুব Type &lsearch (ধ্রুব T &x, ধ্রুব Type &not_found = Null (Type)) ধ্রুব
+  { প্রত্যাগম *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned int *i = nullptr,
+  তার্কিক lfind (ধ্রুব T &x, unsigned পূর্ণাঙ্ক *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().lfind (x, i, not_found, to_store); }
+	      unsigned পূর্ণাঙ্ক to_store = (unsigned পূর্ণাঙ্ক) -1) ধ্রুব
+  { প্রত্যাগম as_array ().lfind (x, i, not_found, to_store); }
 
-  void qsort ()
+  শূন্য qsort ()
   { as_array ().qsort (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned items_len, bool clear = true)
+  HB_NODISCARD তার্কিক serialize (hb_serialize_context_t *c, unsigned বস্তুসমূহ_len, তার্কিক clear = সত্য)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (len, items_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (এতত্);
+    যদি (unlikely (!c->extend_min (এতত্))) return_trace (অসত্য);
+    c->check_assign (len, বস্তুসমূহ_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    যদি (unlikely (!c->extend_size (এতত্, get_size (), clear))) return_trace (অসত্য);
+    return_trace (সত্য);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD তার্কিক serialize (hb_serialize_context_t *c, Iterator বস্তুসমূহ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (এতত্);
+    unsigned গুনতি = hb_len (বস্তুসমূহ);
+    যদি (unlikely (!serialize (c, গুনতি, অসত্য))) return_trace (অসত্য);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    প্রতি (unsigned i = 0; i < গুনতি; i++, ++বস্তুসমূহ)
+      arrayZ[i] = *বস্তুসমূহ;
+    return_trace (সত্য);
   }
 
   Type* serialize_append (hb_serialize_context_t *c)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
     len++;
-    if (unlikely (!len || !c->extend (this)))
+    যদি (unlikely (!len || !c->extend (এতত্)))
     {
       len--;
       return_trace (nullptr);
@@ -802,44 +802,44 @@ struct ArrayOf
     return_trace (&arrayZ[len - 1]);
   }
 
-  ArrayOf* copy (hb_serialize_context_t *c) const
+  ArrayOf* copy (hb_serialize_context_t *c) ধ্রুব
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (nullptr);
+    TRACE_SERIALIZE (এতত্);
+    auto *out = c->start_embed (এতত্);
+    যদি (unlikely (!c->extend_min (out))) return_trace (nullptr);
     c->check_assign (out->len, len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!as_array ().copy (c))) return_trace (nullptr);
+    যদি (unlikely (!as_array ().copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, Ts&&... ds) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!sanitize_shallow (c))) return_trace (অসত্য);
+    যদি (!পরিমাণ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (সত্য);
     hb_barrier ();
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned পূর্ণাঙ্ক গুনতি = len;
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < গুনতি; i++)
+      যদি (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (অসত্য);
+    return_trace (সত্য);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  তার্কিক sanitize_shallow (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace (len.sanitize (c) &&
 		  hb_barrier () &&
-		  c->check_array_sized (arrayZ, len, sizeof (LenType)));
+		  c->check_array_sized (arrayZ, len, পরিমাণ (LenType)));
   }
 
-  public:
+  সার্বজনিক:
   LenType	len;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  সার্বজনিক:
+  DEFINE_SIZE_ARRAY (পরিমাণ (LenType), arrayZ);
 };
 template <typename Type> using Array16Of = ArrayOf<Type, HBUINT16>;
 template <typename Type> using Array24Of = ArrayOf<Type, HBUINT24>;
@@ -854,39 +854,39 @@ template <typename Type> using Array32OfOffset32To = ArrayOf<OffsetTo<Type, HBUI
 
 /* Array of offsets relative to the beginning of the array itself. */
 template <typename Type, typename OffsetType>
-struct List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
+সংরচনা List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
 {
-  const Type& operator [] (int i_) const
+  ধ্রুব Type& operator [] (পূর্ণাঙ্ক i_) ধ্রুব
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i >= এতত্->len)) প্রত্যাগম Null (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    প্রত্যাগম এতত্+এতত্->arrayZ[i];
   }
-  const Type& operator [] (int i_)
+  ধ্রুব Type& operator [] (পূর্ণাঙ্ক i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Crap (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i >= এতত্->len)) প্রত্যাগম Crap (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    প্রত্যাগম এতত্+এতত্->arrayZ[i];
   }
 
-  bool subset (hb_subset_context_t *c) const
+  তার্কিক subset (hb_subset_context_t *c) ধ্রুব
   {
-    TRACE_SUBSET (this);
-    struct List16OfOffsetTo *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    unsigned int count = this->len;
-    for (unsigned int i = 0; i < count; i++)
-      out->arrayZ[i].serialize_subset (c, this->arrayZ[i], this, out);
-    return_trace (true);
+    TRACE_SUBSET (এতত্);
+    সংরচনা List16OfOffsetTo *out = c->serializer->embed (*এতত্);
+    যদি (unlikely (!out)) return_trace (অসত্য);
+    unsigned পূর্ণাঙ্ক গুনতি = এতত্->len;
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < গুনতি; i++)
+      out->arrayZ[i].serialize_subset (c, এতত্->arrayZ[i], এতত্, out);
+    return_trace (সত্য);
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, Ts&&... ds) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, this, std::forward<Ts> (ds)...)));
+    TRACE_SANITIZE (এতত্);
+    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, এতত্, std::forward<Ts> (ds)...)));
   }
 };
 
@@ -895,206 +895,206 @@ using List16OfOffset16To = List16OfOffsetTo<Type, HBUINT16>;
 
 /* An array starting at second element. */
 template <typename Type, typename LenType>
-struct HeadlessArrayOf
+সংরচনা HeadlessArrayOf
 {
-  static constexpr unsigned item_size = Type::static_size;
+  স্থির constexpr unsigned item_size = Type::static_size;
 
   HB_DELETE_CREATE_COPY_ASSIGN (HeadlessArrayOf);
 
-  const Type& operator [] (int i_) const
+  ধ্রুব Type& operator [] (পূর্ণাঙ্ক i_) ধ্রুব
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Null (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i >= lenP1 || !i)) প্রত্যাগম Null (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    প্রত্যাগম arrayZ[i-1];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (পূর্ণাঙ্ক i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Crap (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i >= lenP1 || !i)) প্রত্যাগম Crap (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    প্রত্যাগম arrayZ[i-1];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
+  size_t get_size () ধ্রুব
+  { প্রত্যাগম hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
 
-  unsigned get_length () const { return lenP1 ? lenP1 - 1 : 0; }
+  unsigned get_length () ধ্রুব { প্রত্যাগম lenP1 ? lenP1 - 1 : 0; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, get_length ()); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, get_length ()); }
+  hb_array_t<      Type> as_array ()       { প্রত্যাগম hb_array (arrayZ, get_length ()); }
+  hb_array_t<ধ্রুব Type> as_array () ধ্রুব { প্রত্যাগম hb_array (arrayZ, get_length ()); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  প্রকারনির্দেশ hb_array_t<ধ্রুব Type>   iter_t;
+  প্রকারনির্দেশ hb_array_t<      Type> writer_t;
+    iter_t   iter () ধ্রুব { প্রত্যাগম as_array (); }
+  writer_t writer ()       { প্রত্যাগম as_array (); }
+  operator   iter_t () ধ্রুব { প্রত্যাগম   iter (); }
+  operator writer_t ()       { প্রত্যাগম writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + get_length (); }
+  ধ্রুব Type *begin () ধ্রুব { প্রত্যাগম arrayZ; }
+  ধ্রুব Type *end () ধ্রুব { প্রত্যাগম arrayZ + get_length (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  HB_NODISCARD তার্কিক serialize (hb_serialize_context_t *c, unsigned পূর্ণাঙ্ক বস্তুসমূহ_len, তার্কিক clear = সত্য)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (lenP1, items_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (এতত্);
+    যদি (unlikely (!c->extend_min (এতত্))) return_trace (অসত্য);
+    c->check_assign (lenP1, বস্তুসমূহ_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    যদি (unlikely (!c->extend_size (এতত্, get_size (), clear))) return_trace (অসত্য);
+    return_trace (সত্য);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD তার্কিক serialize (hb_serialize_context_t *c, Iterator বস্তুসমূহ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (এতত্);
+    unsigned গুনতি = hb_len (বস্তুসমূহ);
+    যদি (unlikely (!serialize (c, গুনতি, অসত্য))) return_trace (অসত্য);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    প্রতি (unsigned i = 0; i < গুনতি; i++, ++বস্তুসমূহ)
+      arrayZ[i] = *বস্তুসমূহ;
+    return_trace (সত্য);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, Ts&&... ds) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!sanitize_shallow (c))) return_trace (অসত্য);
+    যদি (!পরিমাণ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (সত্য);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned পূর্ণাঙ্ক গুনতি = get_length ();
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < গুনতি; i++)
+      যদি (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (অসত্য);
+    return_trace (সত্য);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  গুপ্ত:
+  তার্কিক sanitize_shallow (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace (lenP1.sanitize (c) &&
 		  hb_barrier () &&
-		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, sizeof (LenType))));
+		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, পরিমাণ (LenType))));
   }
 
-  public:
+  সার্বজনিক:
   LenType	lenP1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  সার্বজনিক:
+  DEFINE_SIZE_ARRAY (পরিমাণ (LenType), arrayZ);
 };
 template <typename Type> using HeadlessArray16Of = HeadlessArrayOf<Type, HBUINT16>;
 
 /* An array storing length-1. */
 template <typename Type, typename LenType=HBUINT16>
-struct ArrayOfM1
+সংরচনা ArrayOfM1
 {
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOfM1);
 
-  const Type& operator [] (int i_) const
+  ধ্রুব Type& operator [] (পূর্ণাঙ্ক i_) ধ্রুব
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Null (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i > lenM1)) প্রত্যাগম Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    প্রত্যাগম arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (পূর্ণাঙ্ক i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Crap (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i > lenM1)) প্রত্যাগম Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    প্রত্যাগম arrayZ[i];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
+  size_t get_size () ধ্রুব
+  { প্রত্যাগম hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, Ts&&... ds) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!sanitize_shallow (c))) return_trace (অসত্য);
+    যদি (!পরিমাণ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (সত্য);
     hb_barrier ();
-    unsigned int count = lenM1 + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned পূর্ণাঙ্ক গুনতি = lenM1 + 1;
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < গুনতি; i++)
+      যদি (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (অসত্য);
+    return_trace (সত্য);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  গুপ্ত:
+  তার্কিক sanitize_shallow (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace (lenM1.sanitize (c) &&
 		  hb_barrier () &&
-		  (c->check_array_sized (arrayZ, lenM1 + 1, sizeof (LenType))));
+		  (c->check_array_sized (arrayZ, lenM1 + 1, পরিমাণ (LenType))));
   }
 
-  public:
+  সার্বজনিক:
   LenType	lenM1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  সার্বজনিক:
+  DEFINE_SIZE_ARRAY (পরিমাণ (LenType), arrayZ);
 };
 
 /* An array with sorted elements.  Supports binary searching. */
 template <typename Type, typename LenType>
-struct SortedArrayOf : ArrayOf<Type, LenType>
+সংরচনা SortedArrayOf : ArrayOf<Type, LenType>
 {
-  hb_sorted_array_t<      Type> as_array ()       { return hb_sorted_array (this->arrayZ, this->len); }
-  hb_sorted_array_t<const Type> as_array () const { return hb_sorted_array (this->arrayZ, this->len); }
+  hb_sorted_array_t<      Type> as_array ()       { প্রত্যাগম hb_sorted_array (এতত্->arrayZ, এতত্->len); }
+  hb_sorted_array_t<ধ্রুব Type> as_array () ধ্রুব { প্রত্যাগম hb_sorted_array (এতত্->arrayZ, এতত্->len); }
 
   /* Iterator. */
-  typedef hb_sorted_array_t<const Type>   iter_t;
-  typedef hb_sorted_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  প্রকারনির্দেশ hb_sorted_array_t<ধ্রুব Type>   iter_t;
+  প্রকারনির্দেশ hb_sorted_array_t<      Type> writer_t;
+    iter_t   iter () ধ্রুব { প্রত্যাগম as_array (); }
+  writer_t writer ()       { প্রত্যাগম as_array (); }
+  operator   iter_t () ধ্রুব { প্রত্যাগম   iter (); }
+  operator writer_t ()       { প্রত্যাগম writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return this->arrayZ; }
-  const Type *end () const { return this->arrayZ + this->len; }
+  ধ্রুব Type *begin () ধ্রুব { প্রত্যাগম এতত্->arrayZ; }
+  ধ্রুব Type *end () ধ্রুব { প্রত্যাগম এতত্->arrayZ + এতত্->len; }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len)
+  তার্কিক serialize (hb_serialize_context_t *c, unsigned পূর্ণাঙ্ক বস্তুসমূহ_len)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items_len);
+    TRACE_SERIALIZE (এতত্);
+    তার্কিক ret = ArrayOf<Type, LenType>::serialize (c, বস্তুসমূহ_len);
     return_trace (ret);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_sorted_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  তার্কিক serialize (hb_serialize_context_t *c, Iterator বস্তুসমূহ)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items);
+    TRACE_SERIALIZE (এতত্);
+    তার্কিক ret = ArrayOf<Type, LenType>::serialize (c, বস্তুসমূহ);
     return_trace (ret);
   }
 
-  SortedArrayOf* copy (hb_serialize_context_t *c) const
+  SortedArrayOf* copy (hb_serialize_context_t *c) ধ্রুব
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
     SortedArrayOf* out = reinterpret_cast<SortedArrayOf *> (ArrayOf<Type, LenType>::copy (c));
     return_trace (out);
   }
 
   template <typename T>
-  Type &bsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().bsearch (x, &not_found); }
+  Type &bsearch (ধ্রুব T &x, Type &not_found = Crap (Type))
+  { প্রত্যাগম *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().bsearch (x, &not_found); }
+  ধ্রুব Type &bsearch (ধ্রুব T &x, ধ্রুব Type &not_found = Null (Type)) ধ্রুব
+  { প্রত্যাগম *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  তার্কিক bfind (ধ্রুব T &x, unsigned পূর্ণাঙ্ক *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned পূর্ণাঙ্ক to_store = (unsigned পূর্ণাঙ্ক) -1) ধ্রুব
+  { প্রত্যাগম as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type> using SortedArray16Of = SortedArrayOf<Type, HBUINT16>;
@@ -1106,139 +1106,139 @@ template <typename Type> using SortedArray32Of = SortedArrayOf<Type, HBUINT32>;
  */
 
 template <typename LenType=HBUINT16>
-struct BinSearchHeader
+সংরচনা Bin_অনুসন্ধান_Header
 {
-  operator uint32_t () const { return len; }
+  operator uint32_t () ধ্রুব { প্রত্যাগম len; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
-  BinSearchHeader& operator = (unsigned int v)
+  Bin_অনুসন্ধান_Header& operator = (unsigned পূর্ণাঙ্ক v)
   {
     len = v;
-    assert (len == v);
+    প্রতিজ্ঞা (len == v);
     entrySelector = hb_max (1u, hb_bit_storage (v)) - 1;
-    searchRange = 16 * (1u << entrySelector);
-    rangeShift = v * 16 > searchRange
-		 ? 16 * v - searchRange
+    অনুসন্ধান_Range = 16 * (1u << entrySelector);
+    rangeShift = v * 16 > অনুসন্ধান_Range
+		 ? 16 * v - অনুসন্ধান_Range
 		 : 0;
-    return *this;
+    প্রত্যাগম *এতত্;
   }
 
-  protected:
+  রক্ষিত:
   LenType	len;
-  LenType	searchRange;
+  LenType	অনুসন্ধান_Range;
   LenType	entrySelector;
   LenType	rangeShift;
 
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (8);
 };
 
 template <typename Type, typename LenType=HBUINT16>
-using BinSearchArrayOf = SortedArrayOf<Type, BinSearchHeader<LenType>>;
+using Bin_অনুসন্ধান_Array_Of = SortedArrayOf<Type, Bin_অনুসন্ধান_Header<LenType>>;
 
 
-struct VarSizedBinSearchHeader
+সংরচনা Var_Sized_Bin_অনুসন্ধান_Header
 {
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্));
   }
 
   HBUINT16	unitSize;	/* Size of a lookup unit for this search in bytes. */
   HBUINT16	nUnits;		/* Number of units of the preceding size to be searched. */
-  HBUINT16	searchRange;	/* The value of unitSize times the largest power of 2
+  HBUINT16	অনুসন্ধান_Range;	/* The value of unitSize times the largest power of 2
 				 * that is less than or equal to the value of nUnits. */
   HBUINT16	entrySelector;	/* The log base 2 of the largest power of 2 less than
 				 * or equal to the value of nUnits. */
   HBUINT16	rangeShift;	/* The value of unitSize times the difference of the
 				 * value of nUnits minus the largest power of 2 less
 				 * than or equal to the value of nUnits. */
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (10);
 };
 
 template <typename Type>
-struct VarSizedBinSearchArrayOf
+সংরচনা Var_Sized_Bin_অনুসন্ধান_Array_Of
 {
-  static constexpr unsigned item_size = Type::static_size;
+  স্থির constexpr unsigned item_size = Type::static_size;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (VarSizedBinSearchArrayOf);
+  HB_DELETE_CREATE_COPY_ASSIGN (Var_Sized_Bin_অনুসন্ধান_Array_Of);
 
-  bool last_is_terminator () const
+  তার্কিক last_is_terminator () ধ্রুব
   {
-    if (unlikely (!header.nUnits)) return false;
+    যদি (unlikely (!header.nUnits)) প্রত্যাগম অসত্য;
 
     /* Gah.
      *
      * "The number of termination values that need to be included is table-specific.
      * The value that indicates binary search termination is 0xFFFF." */
-    const HBUINT16 *words = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
-    unsigned int count = Type::TerminationWordCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (words[i] != 0xFFFFu)
-	return false;
-    return true;
+    ধ্রুব HBUINT16 *শব্দগুলি = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
+    unsigned পূর্ণাঙ্ক গুনতি = Type::Termination_Word_গুনতি;
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < গুনতি; i++)
+      যদি (শব্দগুলি[i] != 0xFFFFu)
+	প্রত্যাগম অসত্য;
+    প্রত্যাগম সত্য;
   }
 
-  const Type& operator [] (int i_) const
+  ধ্রুব Type& operator [] (পূর্ণাঙ্ক i_) ধ্রুব
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Null (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i >= get_length ())) প্রত্যাগম Null (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    প্রত্যাগম StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  Type& operator [] (int i_)
+  Type& operator [] (পূর্ণাঙ্ক i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Crap (Type);
+    unsigned পূর্ণাঙ্ক i = (unsigned পূর্ণাঙ্ক) i_;
+    যদি (unlikely (i >= get_length ())) প্রত্যাগম Crap (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    প্রত্যাগম StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  unsigned int get_length () const
-  { return header.nUnits - last_is_terminator (); }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
+  unsigned পূর্ণাঙ্ক get_length () ধ্রুব
+  { প্রত্যাগম header.nUnits - last_is_terminator (); }
+  size_t get_size () ধ্রুব
+  { প্রত্যাগম hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, Ts&&... ds) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!sanitize_shallow (c))) return_trace (অসত্য);
+    যদি (!পরিমাণ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (সত্য);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned পূর্ণাঙ্ক গুনতি = get_length ();
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < গুনতি; i++)
+      যদি (unlikely (!(*এতত্)[i].sanitize (c, std::forward<Ts> (ds)...)))
+	return_trace (অসত্য);
+    return_trace (সত্য);
   }
 
   template <typename T>
-  const Type *bsearch (const T &key) const
+  ধ্রুব Type *bsearch (ধ্রুব T &key) ধ্রুব
   {
     unsigned pos;
-    return hb_bsearch_impl (&pos,
+    প্রত্যাগম hb_bsearch_impl (&pos,
 			    key,
-			    (const void *) bytesZ,
+			    (ধ্রুব শূন্য *) bytesZ,
 			    get_length (),
 			    header.unitSize,
 			    _hb_cmp_method<T, Type>)
-	   ? (const Type *) (((const char *) &bytesZ) + (pos * header.unitSize))
+	   ? (ধ্রুব Type *) (((ধ্রুব বর্ণ *) &bytesZ) + (pos * header.unitSize))
 	   : nullptr;
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  গুপ্ত:
+  তার্কিক sanitize_shallow (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace (header.sanitize (c) &&
 		  hb_barrier () &&
 		  Type::static_size <= header.unitSize &&
@@ -1247,338 +1247,338 @@ struct VarSizedBinSearchArrayOf
 				  header.unitSize));
   }
 
-  protected:
-  VarSizedBinSearchHeader	header;
+  রক্ষিত:
+  Var_Sized_Bin_অনুসন্ধান_Header	header;
   UnsizedArrayOf<HBUINT8>	bytesZ;
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_ARRAY (10, bytesZ);
 };
 
 
 /* CFF INDEX */
 
-template <typename COUNT>
-struct CFFIndex
+template <typename গুনতি_3>
+সংরচনা CFFIndex
 {
-  unsigned int offset_array_size () const
-  { return offSize * (count + 1); }
+  unsigned পূর্ণাঙ্ক offset_array_size () ধ্রুব
+  { প্রত্যাগম offSize * (গুনতি + 1); }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool serialize (hb_serialize_context_t *c,
-		  const Iterable &iterable,
-		  const unsigned *p_data_size = nullptr,
+  তার্কিক serialize (hb_serialize_context_t *c,
+		  ধ্রুব Iterable &iterable,
+		  ধ্রুব unsigned *p_data_size = nullptr,
                   unsigned min_off_size = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
     unsigned data_size;
-    if (p_data_size)
+    যদি (p_data_size)
       data_size = *p_data_size;
-    else
+    অন্যথা
       total_size (iterable, &data_size);
 
     auto it = hb_iter (iterable);
-    if (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (false);
-    unsigned char *ret = c->allocate_size<unsigned char> (data_size, false);
-    if (unlikely (!ret)) return_trace (false);
+    যদি (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (অসত্য);
+    unsigned বর্ণ *ret = c->allocate_size<unsigned বর্ণ> (data_size, অসত্য);
+    যদি (unlikely (!ret)) return_trace (অসত্য);
     unsigned remaining = data_size;
-    for (const auto &_ : +it)
+    প্রতি (ধ্রুব auto &_ : +it)
     {
       unsigned len = _.length;
 
-      if (!len)
-	continue;
+      যদি (!len)
+	অনুবর্ত;
 
-      if (unlikely (len > remaining)) {
+      যদি (unlikely (len > remaining)) {
         // We have more bytes to write then the computed data size, so the size calculation
         // must have encountered overflow.
-        return_trace (c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+        return_trace (c->check_success (অসত্য, HB_SERIALIZE_ERROR_INT_OVERFLOW));
       }
 
       remaining -= len;
 
-      if (len <= 1)
+      যদি (len <= 1)
       {
 	*ret++ = *_.arrayZ;
-	continue;
+	অনুবর্ত;
       }
       hb_memcpy (ret, _.arrayZ, len);
       ret += len;
     }
-    return_trace (true);
+    return_trace (সত্য);
   }
 
   template <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_header (hb_serialize_context_t *c,
+  তার্কিক serialize_header (hb_serialize_context_t *c,
 			 Iterator it,
 			 unsigned data_size,
                          unsigned min_off_size = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
 
     unsigned off_size = (hb_bit_storage (data_size + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
     /* serialize CFFIndex header */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    this->count = hb_len (it);
-    if (!this->count) return_trace (true);
-    if (unlikely (!c->extend (this->offSize))) return_trace (false);
-    this->offSize = off_size;
-    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
-      return_trace (false);
+    যদি (unlikely (!c->extend_min (এতত্))) return_trace (অসত্য);
+    এতত্->গুনতি = hb_len (it);
+    যদি (!এতত্->গুনতি) return_trace (সত্য);
+    যদি (unlikely (!c->extend (এতত্->offSize))) return_trace (অসত্য);
+    এতত্->offSize = off_size;
+    যদি (unlikely (!c->allocate_size<HBUINT8> (off_size * (এতত্->গুনতি + 1), অসত্য)))
+      return_trace (অসত্য);
 
     /* serialize indices */
-    unsigned int offset = 1;
-    if (HB_OPTIMIZE_SIZE_VAL)
+    unsigned পূর্ণাঙ্ক offset = 1;
+    যদি (HB_OPTIMIZE_SIZE_VAL)
     {
-      unsigned int i = 0;
-      for (const auto &_ : +it)
+      unsigned পূর্ণাঙ্ক i = 0;
+      প্রতি (ধ্রুব auto &_ : +it)
       {
 	set_offset_at (i++, offset);
 	offset += hb_len_of (_);
       }
       set_offset_at (i, offset);
     }
-    else
-      switch (off_size)
+    অন্যথা
+      বিকল্প (off_size)
       {
-	case 1:
+	পক্ষ 1:
 	{
 	  HBUINT8 *p = (HBUINT8 *) offsets;
-	  for (const auto &_ : +it)
+	  প্রতি (ধ্রুব auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 2:
+	ভঙ্গ;
+	পক্ষ 2:
 	{
 	  HBUINT16 *p = (HBUINT16 *) offsets;
-	  for (const auto &_ : +it)
+	  প্রতি (ধ্রুব auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 3:
+	ভঙ্গ;
+	পক্ষ 3:
 	{
 	  HBUINT24 *p = (HBUINT24 *) offsets;
-	  for (const auto &_ : +it)
+	  প্রতি (ধ্রুব auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 4:
+	ভঙ্গ;
+	পক্ষ 4:
 	{
 	  HBUINT32 *p = (HBUINT32 *) offsets;
-	  for (const auto &_ : +it)
+	  প্রতি (ধ্রুব auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	default:
-	break;
+	ভঙ্গ;
+	স্বভাব:
+	ভঙ্গ;
       }
 
-    assert (offset == data_size + 1);
-    return_trace (true);
+    প্রতিজ্ঞা (offset == data_size + 1);
+    return_trace (সত্য);
   }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  static unsigned total_size (const Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
+  স্থির unsigned total_size (ধ্রুব Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
   {
     auto it = + hb_iter (iterable);
-    if (!it)
+    যদি (!it)
     {
-      if (data_size) *data_size = 0;
-      return min_size;
+      যদি (data_size) *data_size = 0;
+      প্রত্যাগম min_size;
     }
 
     unsigned total = 0;
-    for (const auto &_ : +it)
+    প্রতি (ধ্রুব auto &_ : +it)
       total += hb_len_of (_);
 
-    if (data_size) *data_size = total;
+    যদি (data_size) *data_size = total;
 
     unsigned off_size = (hb_bit_storage (total + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
-    return min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
+    প্রত্যাগম min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
   }
 
-  void set_offset_at (unsigned int index, unsigned int offset)
+  শূন্য set_offset_at (unsigned পূর্ণাঙ্ক index, unsigned পূর্ণাঙ্ক offset)
   {
-    assert (index <= count);
+    প্রতিজ্ঞা (index <= গুনতি);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    unsigned পূর্ণাঙ্ক size = offSize;
+    ধ্রুব HBUINT8 *p = offsets;
+    বিকল্প (size)
     {
-      case 1: ((HBUINT8  *) p)[index] = offset; break;
-      case 2: ((HBUINT16 *) p)[index] = offset; break;
-      case 3: ((HBUINT24 *) p)[index] = offset; break;
-      case 4: ((HBUINT32 *) p)[index] = offset; break;
-      default: return;
+      পক্ষ 1: ((HBUINT8  *) p)[index] = offset; ভঙ্গ;
+      পক্ষ 2: ((HBUINT16 *) p)[index] = offset; ভঙ্গ;
+      পক্ষ 3: ((HBUINT24 *) p)[index] = offset; ভঙ্গ;
+      পক্ষ 4: ((HBUINT32 *) p)[index] = offset; ভঙ্গ;
+      স্বভাব: প্রত্যাগম;
     }
   }
 
-  private:
-  unsigned int offset_at (unsigned int index) const
+  গুপ্ত:
+  unsigned পূর্ণাঙ্ক offset_at (unsigned পূর্ণাঙ্ক index) ধ্রুব
   {
-    assert (index <= count);
+    প্রতিজ্ঞা (index <= গুনতি);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    unsigned পূর্ণাঙ্ক size = offSize;
+    ধ্রুব HBUINT8 *p = offsets;
+    বিকল্প (size)
     {
-      case 1: return ((HBUINT8  *) p)[index];
-      case 2: return ((HBUINT16 *) p)[index];
-      case 3: return ((HBUINT24 *) p)[index];
-      case 4: return ((HBUINT32 *) p)[index];
-      default: return 0;
+      পক্ষ 1: প্রত্যাগম ((HBUINT8  *) p)[index];
+      পক্ষ 2: প্রত্যাগম ((HBUINT16 *) p)[index];
+      পক্ষ 3: প্রত্যাগম ((HBUINT24 *) p)[index];
+      পক্ষ 4: প্রত্যাগম ((HBUINT32 *) p)[index];
+      স্বভাব: প্রত্যাগম 0;
     }
   }
 
-  const unsigned char *data_base () const
-  { return (const unsigned char *) this + min_size + offSize.static_size - 1 + offset_array_size (); }
-  public:
+  ধ্রুব unsigned বর্ণ *data_base () ধ্রুব
+  { প্রত্যাগম (ধ্রুব unsigned বর্ণ *) এতত্ + min_size + offSize.static_size - 1 + offset_array_size (); }
+  সার্বজনিক:
 
-  hb_ubytes_t operator [] (unsigned int index) const
+  hb_ubytes_t operator [] (unsigned পূর্ণাঙ্ক index) ধ্রুব
   {
-    if (unlikely (index >= count)) return hb_ubytes_t ();
+    যদি (unlikely (index >= গুনতি)) প্রত্যাগম hb_ubytes_t ();
     hb_barrier ();
     unsigned offset0 = offset_at (index);
     unsigned offset1 = offset_at (index + 1);
-    if (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
-      return hb_ubytes_t ();
-    return hb_ubytes_t (data_base () + offset0, offset1 - offset0);
+    যদি (unlikely (offset1 < offset0 || offset1 > offset_at (গুনতি)))
+      প্রত্যাগম hb_ubytes_t ();
+    প্রত্যাগম hb_ubytes_t (data_base () + offset0, offset1 - offset0);
   }
 
-  size_t get_size () const
+  size_t get_size () ধ্রুব
   {
-    if (count)
-      return hb_unsigned_add_saturate (min_size, offSize.static_size,
-				       offset_array_size (), offset_at (count) - 1);
-    return min_size;  /* empty CFFIndex contains count only */
+    যদি (গুনতি)
+      প্রত্যাগম hb_unsigned_add_saturate (min_size, offSize.static_size,
+				       offset_array_size (), offset_at (গুনতি) - 1);
+    প্রত্যাগম min_size;  /* empty CFFIndex contains count only */
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    return_trace (likely (c->check_struct (এতত্) &&
 			  hb_barrier () &&
-			  (count == 0 || /* empty INDEX */
-			   (count < count + 1u &&
+			  (গুনতি == 0 || /* empty INDEX */
+			   (গুনতি < গুনতি + 1u &&
 			    c->check_struct (&offSize) && offSize >= 1 && offSize <= 4 &&
-			    c->check_array (offsets, offSize, count + 1u) &&
-			    c->check_range (data_base (), offset_at (count))))));
+			    c->check_array (offsets, offSize, গুনতি + 1u) &&
+			    c->check_range (data_base (), offset_at (গুনতি))))));
   }
 
-  public:
-  COUNT		count;		/* Number of object data. Note there are (count+1) offsets */
-  private:
+  সার্বজনিক:
+  গুনতি_3		গুনতি;		/* Number of object data. Note there are (count+1) offsets */
+  গুপ্ত:
   HBUINT8	offSize;	/* The byte size of each offset in the offsets array. */
   HBUINT8	offsets[HB_VAR_ARRAY];
 				/* The array of (count + 1) offsets into objects array (1-base). */
   /* HBUINT8 data[HB_VAR_ARRAY];	Object data */
-  public:
-  DEFINE_SIZE_MIN (COUNT::static_size);
+  সার্বজনিক:
+  DEFINE_SIZE_MIN (গুনতি_3::static_size);
 };
-typedef CFFIndex<HBUINT16> CFF1Index;
-typedef CFFIndex<HBUINT32> CFF2Index;
+প্রকারনির্দেশ CFFIndex<HBUINT16> CFF1Index;
+প্রকারনির্দেশ CFFIndex<HBUINT32> CFF2Index;
 
 
 /* TupleValues */
-struct TupleValues
+সংরচনা Tuple_মানসমূহ
 {
-  enum packed_value_flag_t
+  গণনা packed_মান_flag_t
   {
-    VALUES_ARE_ZEROS     = 0x80,
-    VALUES_ARE_BYTES     = 0x00,
-    VALUES_ARE_WORDS     = 0x40,
-    VALUES_ARE_LONGS     = 0xC0,
-    VALUES_SIZE_MASK     = 0xC0,
-    VALUE_RUN_COUNT_MASK = 0x3F
+    মানসমূহ_ARE_ZEROS     = 0x80,
+    মানসমূহ_ARE_BYTES     = 0x00,
+    মানসমূহ_ARE_শব্দগুলি     = 0x40,
+    মানসমূহ_ARE_LONGS     = 0xC0,
+    মানসমূহ_SIZE_MASK     = 0xC0,
+    মান_RUN_গুনতি_MASK = 0x3F
   };
 
-  static unsigned compile_unsafe (hb_array_t<const int> values, /* IN */
-				  unsigned char *encoded_bytes /* OUT */)
+  স্থির unsigned compile_unsafe (hb_array_t<ধ্রুব পূর্ণাঙ্ক> values, /* IN */
+				  unsigned বর্ণ *encoded_bytes /* OUT */)
   {
-    unsigned num_values = values.length;
+    unsigned অঙ্ক_মানসমূহ_3 = values.length;
     unsigned encoded_len = 0;
     unsigned i = 0;
-    while (i < num_values)
+    যাবত্ (i < অঙ্ক_মানসমূহ_3)
     {
-      int val = values.arrayZ[i];
-      if (val == 0)
-        encoded_len += encode_value_run_as_zeroes (i, encoded_bytes + encoded_len, values);
-      else if ((int8_t) val == val)
-        encoded_len += encode_value_run_as_bytes (i, encoded_bytes + encoded_len, values);
-      else if ((int16_t) val == val)
-        encoded_len += encode_value_run_as_words (i, encoded_bytes + encoded_len, values);
-      else
-        encoded_len += encode_value_run_as_longs (i, encoded_bytes + encoded_len, values);
+      পূর্ণাঙ্ক val = values.arrayZ[i];
+      যদি (val == 0)
+        encoded_len += encode_মান_run_as_zeroes (i, encoded_bytes + encoded_len, values);
+      অন্যথা যদি ((int8_t) val == val)
+        encoded_len += encode_মান_run_as_bytes (i, encoded_bytes + encoded_len, values);
+      অন্যথা যদি ((int16_t) val == val)
+        encoded_len += encode_মান_run_as_শব্দগুলি (i, encoded_bytes + encoded_len, values);
+      অন্যথা
+        encoded_len += encode_মান_run_as_longs (i, encoded_bytes + encoded_len, values);
     }
-    return encoded_len;
+    প্রত্যাগম encoded_len;
   }
 
-  static unsigned encode_value_run_as_zeroes (unsigned& i,
-					      unsigned char *it,
-					      hb_array_t<const int> values)
+  স্থির unsigned encode_মান_run_as_zeroes (unsigned& i,
+					      unsigned বর্ণ *it,
+					      hb_array_t<ধ্রুব পূর্ণাঙ্ক> values)
   {
-    unsigned num_values = values.length;
+    unsigned অঙ্ক_মানসমূহ_3 = values.length;
     unsigned run_length = 0;
     unsigned encoded_len = 0;
-    while (i < num_values && values.arrayZ[i] == 0)
+    যাবত্ (i < অঙ্ক_মানসমূহ_3 && values.arrayZ[i] == 0)
     {
       i++;
       run_length++;
     }
 
-    while (run_length >= 64)
+    যাবত্ (run_length >= 64)
     {
-      *it++ = char (VALUES_ARE_ZEROS | 63);
+      *it++ = বর্ণ (মানসমূহ_ARE_ZEROS | 63);
       run_length -= 64;
       encoded_len++;
     }
 
-    if (run_length)
+    যদি (run_length)
     {
-      *it++ = char (VALUES_ARE_ZEROS | (run_length - 1));
+      *it++ = বর্ণ (মানসমূহ_ARE_ZEROS | (run_length - 1));
       encoded_len++;
     }
-    return encoded_len;
+    প্রত্যাগম encoded_len;
   }
 
-  static unsigned encode_value_run_as_bytes (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  স্থির unsigned encode_মান_run_as_bytes (unsigned &i,
+					     unsigned বর্ণ *it,
+					     hb_array_t<ধ্রুব পূর্ণাঙ্ক> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned অঙ্ক_মানসমূহ_3 = values.length;
+    যাবত্ (i < অঙ্ক_মানসমূহ_3)
     {
-      int val = values.arrayZ[i];
-      if ((int8_t) val != val)
-        break;
+      পূর্ণাঙ্ক val = values.arrayZ[i];
+      যদি ((int8_t) val != val)
+        ভঙ্গ;
 
       /* from fonttools: if there're 2 or more zeros in a sequence,
        * it is better to start a new run to save bytes. */
-      if (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
-        break;
+      যদি (val == 0 && i + 1 < অঙ্ক_মানসমূহ_3 && values.arrayZ[i+1] == 0)
+        ভঙ্গ;
 
       i++;
     }
@@ -1586,13 +1586,13 @@ struct TupleValues
 
     unsigned encoded_len = 0;
 
-    while (run_length >= 64)
+    যাবত্ (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_BYTES | 63);
+      *it++ = (মানসমূহ_ARE_BYTES | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
-	it[j] = static_cast<char> (values.arrayZ[start + j]);
+      প্রতি (unsigned j = 0; j < 64; j++)
+	it[j] = static_cast<বর্ণ> (values.arrayZ[start + j]);
       it += 64;
       encoded_len += 64;
 
@@ -1600,58 +1600,58 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    যদি (run_length)
     {
-      *it++ = (VALUES_ARE_BYTES | (run_length - 1));
+      *it++ = (মানসমূহ_ARE_BYTES | (run_length - 1));
       encoded_len++;
 
-      for (unsigned j = 0; j < run_length; j++)
-        it[j] = static_cast<char> (values.arrayZ[start + j]);
+      প্রতি (unsigned j = 0; j < run_length; j++)
+        it[j] = static_cast<বর্ণ> (values.arrayZ[start + j]);
       encoded_len += run_length;
     }
 
-    return encoded_len;
+    প্রত্যাগম encoded_len;
   }
 
-  static unsigned encode_value_run_as_words (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  স্থির unsigned encode_মান_run_as_শব্দগুলি (unsigned &i,
+					     unsigned বর্ণ *it,
+					     hb_array_t<ধ্রুব পূর্ণাঙ্ক> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned অঙ্ক_মানসমূহ_3 = values.length;
+    যাবত্ (i < অঙ্ক_মানসমূহ_3)
     {
-      int val = values.arrayZ[i];
+      পূর্ণাঙ্ক val = values.arrayZ[i];
 
-      if ((int16_t) val != val)
-        break;
+      যদি ((int16_t) val != val)
+        ভঙ্গ;
 
       /* start a new run for a single zero value. */
-      if (val == 0) break;
+      যদি (val == 0) ভঙ্গ;
 
       /* From fonttools: continue word-encoded run if there's only one
        * single value in the range [-128, 127] because it is more compact.
        * Only start a new run when there're 2 continuous such values. */
-      if ((int8_t) val == val &&
-          i + 1 < num_values &&
+      যদি ((int8_t) val == val &&
+          i + 1 < অঙ্ক_মানসমূহ_3 &&
           (int8_t) values.arrayZ[i+1] == values.arrayZ[i+1])
-        break;
+        ভঙ্গ;
 
       i++;
     }
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    যাবত্ (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_WORDS | 63);
+      *it++ = (মানসমূহ_ARE_শব্দগুলি | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      প্রতি (unsigned j = 0; j < 64; j++)
       {
-        int16_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t মান_val = values.arrayZ[start + j];
+        *it++ = static_cast<বর্ণ> (মান_val >> 8);
+        *it++ = static_cast<বর্ণ> (মান_val & 0xFF);
 
         encoded_len += 2;
       }
@@ -1660,52 +1660,52 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    যদি (run_length)
     {
-      *it++ = (VALUES_ARE_WORDS | (run_length - 1));
+      *it++ = (মানসমূহ_ARE_শব্দগুলি | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      যাবত্ (start < i)
       {
-        int16_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t মান_val = values.arrayZ[start++];
+        *it++ = static_cast<বর্ণ> (মান_val >> 8);
+        *it++ = static_cast<বর্ণ> (মান_val & 0xFF);
 
         encoded_len += 2;
       }
     }
-    return encoded_len;
+    প্রত্যাগম encoded_len;
   }
 
-  static unsigned encode_value_run_as_longs (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  স্থির unsigned encode_মান_run_as_longs (unsigned &i,
+					     unsigned বর্ণ *it,
+					     hb_array_t<ধ্রুব পূর্ণাঙ্ক> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned অঙ্ক_মানসমূহ_3 = values.length;
+    যাবত্ (i < অঙ্ক_মানসমূহ_3)
     {
-      int val = values.arrayZ[i];
+      পূর্ণাঙ্ক val = values.arrayZ[i];
 
-      if ((int16_t) val == val)
-        break;
+      যদি ((int16_t) val == val)
+        ভঙ্গ;
 
       i++;
     }
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    যাবত্ (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_LONGS | 63);
+      *it++ = (মানসমূহ_ARE_LONGS | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      প্রতি (unsigned j = 0; j < 64; j++)
       {
-        int32_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t মান_val = values.arrayZ[start + j];
+        *it++ = static_cast<বর্ণ> (মান_val >> 24);
+        *it++ = static_cast<বর্ণ> (মান_val >> 16);
+        *it++ = static_cast<বর্ণ> (মান_val >> 8);
+        *it++ = static_cast<বর্ণ> (মান_val & 0xFF);
 
         encoded_len += 4;
       }
@@ -1714,324 +1714,324 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    যদি (run_length)
     {
-      *it++ = (VALUES_ARE_LONGS | (run_length - 1));
+      *it++ = (মানসমূহ_ARE_LONGS | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      যাবত্ (start < i)
       {
-        int32_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t মান_val = values.arrayZ[start++];
+        *it++ = static_cast<বর্ণ> (মান_val >> 24);
+        *it++ = static_cast<বর্ণ> (মান_val >> 16);
+        *it++ = static_cast<বর্ণ> (মান_val >> 8);
+        *it++ = static_cast<বর্ণ> (মান_val & 0xFF);
 
         encoded_len += 4;
       }
     }
-    return encoded_len;
+    প্রত্যাগম encoded_len;
   }
 
   template <typename T>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  static bool decompile (const HBUINT8 *&p /* IN/OUT */,
+  স্থির তার্কিক decompile (ধ্রুব HBUINT8 *&p /* IN/OUT */,
 			 hb_vector_t<T> &values /* IN/OUT */,
-			 const HBUINT8 *end,
-			 bool consume_all = false,
+			 ধ্রুব HBUINT8 *end,
+			 তার্কিক consume_all = অসত্য,
 			 unsigned start = 0)
   {
     unsigned i = 0;
-    unsigned count = consume_all ? UINT_MAX : values.length;
-    if (consume_all)
+    unsigned গুনতি = consume_all ? UINT_MAX : values.length;
+    যদি (consume_all)
       values.alloc ((end - p) / 2);
-    while (i < count)
+    যাবত্ (i < গুনতি)
     {
-      if (unlikely (p + 1 > end)) return consume_all;
+      যদি (unlikely (p + 1 > end)) প্রত্যাগম consume_all;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (consume_all)
+      unsigned run_গুনতি = (control & মান_RUN_গুনতি_MASK) + 1;
+      যদি (consume_all)
       {
-        if (unlikely (!values.resize_dirty  (values.length + run_count)))
-	  return false;
+        যদি (unlikely (!values.resize_dirty  (values.length + run_গুনতি)))
+	  প্রত্যাগম অসত্য;
       }
-      unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
+      unsigned stop = i + run_গুনতি;
+      যদি (unlikely (stop > গুনতি)) প্রত্যাগম অসত্য;
 
-      unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+      unsigned skip = i < start ? hb_min (start - i, run_গুনতি) : 0;
       i += skip;
 
-      if ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
+      যদি ((control & মানসমূহ_SIZE_MASK) == মানসমূহ_ARE_ZEROS)
       {
-	hb_memset (&values.arrayZ[i], 0, (stop - i) * sizeof (T));
+	hb_memset (&values.arrayZ[i], 0, (stop - i) * পরিমাণ (T));
 	i = stop;
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
+      অন্যথা যদি ((control & মানসমূহ_SIZE_MASK) ==  মানসমূহ_ARE_শব্দগুলি)
       {
-        if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
+        যদি (unlikely (p + run_গুনতি * HBINT16::static_size > end)) প্রত্যাগম অসত্য;
 	p += skip * HBINT16::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-        for (; i + 3 < stop; i += 4)
+        প্রতি (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT16 *) p;
+	  values.arrayZ[i] = * (ধ্রুব HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 1] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 1] = * (ধ্রুব HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 2] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 2] = * (ধ্রুব HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 3] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 3] = * (ধ্রুব HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
 #endif
-        for (; i < stop; i++)
+        প্রতি (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT16 *) p;
+          values.arrayZ[i] = * (ধ্রুব HBINT16 *) p;
           p += HBINT16::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
+      অন্যথা যদি ((control & মানসমূহ_SIZE_MASK) ==  মানসমূহ_ARE_LONGS)
       {
-        if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
+        যদি (unlikely (p + run_গুনতি * HBINT32::static_size > end)) প্রত্যাগম অসত্য;
 	p += skip * HBINT32::static_size;
-        for (; i < stop; i++)
+        প্রতি (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT32 *) p;
+          values.arrayZ[i] = * (ধ্রুব HBINT32 *) p;
           p += HBINT32::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
+      অন্যথা যদি ((control & মানসমূহ_SIZE_MASK) ==  মানসমূহ_ARE_BYTES)
       {
-        if (unlikely (p + run_count > end)) return false;
+        যদি (unlikely (p + run_গুনতি > end)) প্রত্যাগম অসত্য;
 	p += skip * HBINT8::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-	for (; i + 3 < stop; i += 4)
+	প্রতি (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 1] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 2] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 3] = * (const HBINT8 *) p++;
+	  values.arrayZ[i] = * (ধ্রুব HBINT8 *) p++;
+	  values.arrayZ[i + 1] = * (ধ্রুব HBINT8 *) p++;
+	  values.arrayZ[i + 2] = * (ধ্রুব HBINT8 *) p++;
+	  values.arrayZ[i + 3] = * (ধ্রুব HBINT8 *) p++;
 	}
 #endif
-        for (; i < stop; i++)
-          values.arrayZ[i] = * (const HBINT8 *) p++;
+        প্রতি (; i < stop; i++)
+          values.arrayZ[i] = * (ধ্রুব HBINT8 *) p++;
       }
     }
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  static bool skip (const unsigned char *&p /* IN/OUT */,
-		    const unsigned char *end,
-		    unsigned count)
+  স্থির তার্কিক skip (ধ্রুব unsigned বর্ণ *&p /* IN/OUT */,
+		    ধ্রুব unsigned বর্ণ *end,
+		    unsigned গুনতি)
   {
     unsigned seen = 0;
-    while (seen < count)
+    যাবত্ (seen < গুনতি)
     {
-      if (unlikely (p >= end)) return false;
+      যদি (unlikely (p >= end)) প্রত্যাগম অসত্য;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (unlikely (run_count > count - seen)) return false;
+      unsigned run_গুনতি = (control & মান_RUN_গুনতি_MASK) + 1;
+      যদি (unlikely (run_গুনতি > গুনতি - seen)) প্রত্যাগম অসত্য;
 
       unsigned width = 0;
-      switch (control & VALUES_SIZE_MASK)
+      বিকল্প (control & মানসমূহ_SIZE_MASK)
       {
-	case VALUES_ARE_ZEROS: break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size; break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+	পক্ষ মানসমূহ_ARE_ZEROS: ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_BYTES: width = HBINT8::static_size; ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_শব্দগুলি: width = HBINT16::static_size; ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_LONGS: width = HBINT32::static_size; ভঙ্গ;
       }
-      if (unlikely (unsigned (end - p) < run_count * width)) return false;
-      p += run_count * width;
-      seen += run_count;
+      যদি (unlikely (unsigned (end - p) < run_গুনতি * width)) প্রত্যাগম অসত্য;
+      p += run_গুনতি * width;
+      seen += run_গুনতি;
     }
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, int>
+  সংরচনা iter_t : hb_iter_with_fallback_t<iter_t, পূর্ণাঙ্ক>
   {
-    iter_t (const unsigned char *p_, unsigned len_)
+    iter_t (ধ্রুব unsigned বর্ণ *p_, unsigned len_)
 	    : p (p_), endp (p_ + len_)
-    { if (likely (ensure_run ())) read_value (); }
+    { যদি (likely (ensure_run ())) read_মান (); }
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const endp;
-    int current_value = 0;
-    signed run_count = 0;
+    গুপ্ত:
+    ধ্রুব unsigned বর্ণ *p;
+    ধ্রুব unsigned বর্ণ * ধ্রুব endp;
+    পূর্ণাঙ্ক current_মান = 0;
+    signed run_গুনতি = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    তার্কিক ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      যদি (likely (run_গুনতি > 0)) প্রত্যাগম সত্য;
+      প্রত্যাগম _ensure_run ();
     }
-    bool _ensure_run ()
+    তার্কিক _ensure_run ()
     {
-      if (unlikely (p >= endp))
+      যদি (unlikely (p >= endp))
       {
-        run_count = 0;
-        current_value = 0;
-	return false;
+        run_গুনতি = 0;
+        current_মান = 0;
+	প্রত্যাগম অসত্য;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      run_গুনতি = (control & মান_RUN_গুনতি_MASK) + 1;
+      width = control & মানসমূহ_SIZE_MASK;
+      বিকল্প (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        পক্ষ মানসমূহ_ARE_ZEROS: width = 0; ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_BYTES: width = HBINT8::static_size;  ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_শব্দগুলি: width = HBINT16::static_size; ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_LONGS: width = HBINT32::static_size; ভঙ্গ;
+	স্বভাব: প্রতিজ্ঞা (অসত্য);
       }
 
-      if (unlikely (p + run_count * width > endp))
+      যদি (unlikely (p + run_গুনতি * width > endp))
       {
-	run_count = 0;
-	current_value = 0;
-	return false;
+	run_গুনতি = 0;
+	current_মান = 0;
+	প্রত্যাগম অসত্য;
       }
 
-      return true;
+      প্রত্যাগম সত্য;
     }
-    void read_value ()
+    শূন্য read_মান ()
     {
-      switch (width)
+      বিকল্প (width)
       {
-        case 0: current_value = 0; break;
-	case 1: current_value = * (const HBINT8  *) p; break;
-	case 2: current_value = * (const HBINT16 *) p; break;
-	case 4: current_value = * (const HBINT32 *) p; break;
+        পক্ষ 0: current_মান = 0; ভঙ্গ;
+	পক্ষ 1: current_মান = * (ধ্রুব HBINT8  *) p; ভঙ্গ;
+	পক্ষ 2: current_মান = * (ধ্রুব HBINT16 *) p; ভঙ্গ;
+	পক্ষ 4: current_মান = * (ধ্রুব HBINT32 *) p; ভঙ্গ;
       }
       p += width;
     }
 
-    public:
+    সার্বজনিক:
 
-    typedef int __item_t__;
-    __item_t__ __item__ () const
-    { return current_value; }
+    প্রকারনির্দেশ পূর্ণাঙ্ক __item_t__;
+    __item_t__ __item__ () ধ্রুব
+    { প্রত্যাগম current_মান; }
 
-    bool __more__ () const { return run_count || p < endp; }
-    void __next__ ()
+    তার্কিক __more__ () ধ্রুব { প্রত্যাগম run_গুনতি || p < endp; }
+    শূন্য __next__ ()
     {
-      run_count--;
-      if (unlikely (!ensure_run ()))
-	return;
-      read_value ();
+      run_গুনতি--;
+      যদি (unlikely (!ensure_run ()))
+	প্রত্যাগম;
+      read_মান ();
     }
-    void __forward__ (unsigned n)
+    শূন্য __forward__ (unsigned n)
     {
-      if (unlikely (!ensure_run ()))
-	return;
-      while (n)
+      যদি (unlikely (!ensure_run ()))
+	প্রত্যাগম;
+      যাবত্ (n)
       {
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	unsigned i = hb_min (n, (unsigned) run_গুনতি);
+	run_গুনতি -= i;
 	n -= i;
 	p += (i - 1) * width;
-	if (unlikely (!ensure_run ()))
-	  return;
-	read_value ();
+	যদি (unlikely (!ensure_run ()))
+	  প্রত্যাগম;
+	read_মান ();
       }
     }
-    bool operator != (const iter_t& o) const
-    { return p != o.p || run_count != o.run_count; }
-    iter_t __end__ () const
+    তার্কিক operator != (ধ্রুব iter_t& o) ধ্রুব
+    { প্রত্যাগম p != o.p || run_গুনতি != o.run_গুনতি; }
+    iter_t __end__ () ধ্রুব
     {
       iter_t it (endp, 0);
-      return it;
+      প্রত্যাগম it;
     }
   };
 
-  struct fetcher_t
+  সংরচনা fetcher_t
   {
-    fetcher_t (const unsigned char *p_, unsigned len_)
+    fetcher_t (ধ্রুব unsigned বর্ণ *p_, unsigned len_)
 	      : p (p_), end (p_ + len_) {}
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const end;
-    signed run_count = 0;
+    গুপ্ত:
+    ধ্রুব unsigned বর্ণ *p;
+    ধ্রুব unsigned বর্ণ * ধ্রুব end;
+    signed run_গুনতি = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    তার্কিক ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      যদি (likely (run_গুনতি > 0)) প্রত্যাগম সত্য;
+      প্রত্যাগম _ensure_run ();
     }
 
-    bool _ensure_run ()
+    তার্কিক _ensure_run ()
     {
-      if (unlikely (p >= end))
+      যদি (unlikely (p >= end))
       {
-        run_count = 0;
-	return false;
+        run_গুনতি = 0;
+	প্রত্যাগম অসত্য;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      run_গুনতি = (control & মান_RUN_গুনতি_MASK) + 1;
+      width = control & মানসমূহ_SIZE_MASK;
+      বিকল্প (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        পক্ষ মানসমূহ_ARE_ZEROS: width = 0; ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_BYTES: width = HBINT8::static_size;  ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_শব্দগুলি: width = HBINT16::static_size; ভঙ্গ;
+	পক্ষ মানসমূহ_ARE_LONGS: width = HBINT32::static_size; ভঙ্গ;
+	স্বভাব: প্রতিজ্ঞা (অসত্য);
       }
 
-      if (unlikely (p + run_count * width > end))
+      যদি (unlikely (p + run_গুনতি * width > end))
       {
-	run_count = 0;
-	return false;
+	run_গুনতি = 0;
+	প্রত্যাগম অসত্য;
       }
 
-      return true;
+      প্রত্যাগম সত্য;
     }
 
-    public:
-    void skip (unsigned n)
+    সার্বজনিক:
+    শূন্য skip (unsigned n)
     {
-      while (n)
+      যাবত্ (n)
       {
-	if (unlikely (!ensure_run ()))
-	  return;
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	যদি (unlikely (!ensure_run ()))
+	  প্রত্যাগম;
+	unsigned i = hb_min (n, (unsigned) run_গুনতি);
+	run_গুনতি -= i;
 	n -= i;
 	p += i * width;
       }
     }
 
-    private:
-    template <bool scaled, typename T>
-    void _add_to (hb_array_t<T> out, T scale = T (1))
+    গুপ্ত:
+    template <তার্কিক scaled, typename T>
+    শূন্য _add_to (hb_array_t<T> out, T scale = T (1))
     {
       unsigned n = out.length;
       T *arrayZ = out.arrayZ;
 
-      for (unsigned i = 0; i < n;)
+      প্রতি (unsigned i = 0; i < n;)
       {
-	if (unlikely (!ensure_run ()))
-	  break;
-	unsigned count = hb_min (n - i, (unsigned) run_count);
-	switch (width)
+	যদি (unlikely (!ensure_run ()))
+	  ভঙ্গ;
+	unsigned গুনতি = hb_min (n - i, (unsigned) run_গুনতি);
+	বিকল্প (width)
 	{
-	  case 0:
+	  পক্ষ 0:
 	  {
-	    arrayZ += count;
-	    break;
+	    arrayZ += গুনতি;
+	    ভঙ্গ;
 	  }
-	  case 1:
+	  পক্ষ 1:
 	  {
-	    const auto *pp = (const HBINT8 *) p;
+	    ধ্রুব auto *pp = (ধ্রুব HBINT8 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    প্রতি (; j + 3 < গুনতি; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2039,18 +2039,18 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    প্রতি (; j < গুনতি; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ধ্রুব unsigned বর্ণ *) pp;
 	  }
-	  break;
-	  case 2:
+	  ভঙ্গ;
+	  পক্ষ 2:
 	  {
-	    const auto *pp = (const HBINT16 *) p;
+	    ধ্রুব auto *pp = (ধ্রুব HBINT16 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    প্রতি (; j + 3 < গুনতি; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2058,72 +2058,72 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    প্রতি (; j < গুনতি; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ধ্রুব unsigned বর্ণ *) pp;
 	  }
-	  break;
-	  case 4:
+	  ভঙ্গ;
+	  পক্ষ 4:
 	  {
-	    const auto *pp = (const HBINT32 *) p;
-	    for (unsigned j = 0; j < count; j++)
+	    ধ্রুব auto *pp = (ধ্রুব HBINT32 *) p;
+	    প্রতি (unsigned j = 0; j < গুনতি; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ধ্রুব unsigned বর্ণ *) pp;
 	  }
-	  break;
+	  ভঙ্গ;
 	}
-	run_count -= count;
-	i += count;
+	run_গুনতি -= গুনতি;
+	i += গুনতি;
       }
     }
 
-    public:
+    সার্বজনিক:
     template <typename T>
-    void add_to (hb_array_t<T> out, float scale = 1.0f)
+    শূন্য add_to (hb_array_t<T> out, ভিন্ন scale = 1.0f)
     {
 #ifndef HB_OPTIMIZE_SIZE
       // The following branch is supposed to speed things up by avoiding
       // the multiplication in _add_to<> if scale is 1.0f.
       // But in practice it seems to bloat the code and slow things down.
-      if (false && scale == 1.0f)
-        _add_to<false> (out);
-      else
+      যদি (অসত্য && scale == 1.0f)
+        _add_to<অসত্য> (out);
+      অন্যথা
 #endif
-        _add_to<true> (out, (T) scale);
+        _add_to<সত্য> (out, (T) scale);
     }
   };
 };
 
-struct TupleList : CFF2Index
+সংরচনা TupleList : CFF2Index
 {
-  TupleValues::iter_t operator [] (unsigned i) const
+  Tuple_মানসমূহ::iter_t operator [] (unsigned i) ধ্রুব
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::iter_t (bytes.arrayZ, bytes.length);
+    প্রত্যাগম Tuple_মানসমূহ::iter_t (bytes.arrayZ, bytes.length);
   }
 
-  TupleValues::fetcher_t fetcher (unsigned i) const
+  Tuple_মানসমূহ::fetcher_t fetcher (unsigned i) ধ্রুব
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
+    প্রত্যাগম Tuple_মানসমূহ::fetcher_t (bytes.arrayZ, bytes.length);
   }
 };
 
 
 // Alignment
 
-template <unsigned int alignment>
-struct Align
+template <unsigned পূর্ণাঙ্ক alignment>
+সংরচনা Align
 {
-  size_t get_size (const void *base) const
+  size_t get_size (ধ্রুব শূন্য *base) ধ্রুব
   {
-    unsigned offset = (const char *) this - (const char *) base;
-    return (alignment - offset) & (alignment - 1);
+    unsigned offset = (ধ্রুব বর্ণ *) এতত্ - (ধ্রুব বর্ণ *) base;
+    প্রত্যাগম (alignment - offset) & (alignment - 1);
   }
 
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_MIN (0);
 };
 

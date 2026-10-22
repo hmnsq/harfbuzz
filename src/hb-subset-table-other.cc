@@ -1,43 +1,43 @@
-#include "hb-subset-table.hh"
+#অন্তর্ভাব "hb-subset-table.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-hdmx-table.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-name-table.hh"
-#include "hb-ot-post-table.hh"
+#অন্তর্ভাব "hb-ot-cmap-table.hh"
+#অন্তর্ভাব "hb-ot-glyf-table.hh"
+#অন্তর্ভাব "hb-ot-hdmx-table.hh"
+#অন্তর্ভাব "hb-ot-hhea-table.hh"
+#অন্তর্ভাব "hb-ot-hmtx-table.hh"
+#অন্তর্ভাব "hb-ot-maxp-table.hh"
+#অন্তর্ভাব "hb-ot-os2-table.hh"
+#অন্তর্ভাব "hb-ot-name-table.hh"
+#অন্তর্ভাব "hb-ot-post-table.hh"
 
-bool _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+তার্কিক _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<বর্ণ> &buf, hb_tag_t tag, তার্কিক *success)
 {
-  switch (tag)
+  বিকল্প (tag)
   {
-  case HB_TAG('g','l','y','f'): *success = _hb_subset_table<const OT::glyf> (plan, buf); return true;
-  case HB_TAG('h','d','m','x'): *success = _hb_subset_table<const OT::hdmx> (plan, buf); return true;
-  case HB_TAG('n','a','m','e'): *success = _hb_subset_table<const OT::name> (plan, buf); return true;
-  case HB_TAG('h','h','e','a'): *success = true; return true; /* skip hhea, handled by hmtx */
-  case HB_TAG('h','m','t','x'): *success = _hb_subset_table<const OT::hmtx> (plan, buf); return true;
-  case HB_TAG('v','h','e','a'): *success = true; return true; /* skip vhea, handled by vmtx */
-  case HB_TAG('v','m','t','x'): *success = _hb_subset_table<const OT::vmtx> (plan, buf); return true;
-  case HB_TAG('m','a','x','p'): *success = _hb_subset_table<const OT::maxp> (plan, buf); return true;
+  পক্ষ HB_TAG('g','l','y','f'): *success = _hb_subset_table<ধ্রুব OT::glyf> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('h','d','m','x'): *success = _hb_subset_table<ধ্রুব OT::hdmx> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('n','a','m','e'): *success = _hb_subset_table<ধ্রুব OT::name> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('h','h','e','a'): *success = সত্য; প্রত্যাগম সত্য; /* skip hhea, handled by hmtx */
+  পক্ষ HB_TAG('h','m','t','x'): *success = _hb_subset_table<ধ্রুব OT::hmtx> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('v','h','e','a'): *success = সত্য; প্রত্যাগম সত্য; /* skip vhea, handled by vmtx */
+  পক্ষ HB_TAG('v','m','t','x'): *success = _hb_subset_table<ধ্রুব OT::vmtx> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('m','a','x','p'): *success = _hb_subset_table<ধ্রুব OT::maxp> (plan, buf); প্রত্যাগম সত্য;
 #ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','L','Y','F'): *success = _hb_subset_table<const OT::GLYF> (plan, buf); return true;
-  case HB_TAG('H','H','E','A'): *success = true; return true; /* skip HHEA, handled by HMTX */
-  case HB_TAG('H','M','T','X'): *success = _hb_subset_table<const OT::HMTX> (plan, buf); return true;
-  case HB_TAG('V','H','E','A'): *success = true; return true; /* skip VHEA, handled by VMTX */
-  case HB_TAG('V','M','T','X'): *success = _hb_subset_table<const OT::VMTX> (plan, buf); return true;
-  case HB_TAG('M','A','X','P'): *success = _hb_subset_table<const OT::MAXP> (plan, buf); return true;
+  পক্ষ HB_TAG('G','L','Y','F'): *success = _hb_subset_table<ধ্রুব OT::GLYF> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('H','H','E','A'): *success = সত্য; প্রত্যাগম সত্য; /* skip HHEA, handled by HMTX */
+  পক্ষ HB_TAG('H','M','T','X'): *success = _hb_subset_table<ধ্রুব OT::HMTX> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('V','H','E','A'): *success = সত্য; প্রত্যাগম সত্য; /* skip VHEA, handled by VMTX */
+  পক্ষ HB_TAG('V','M','T','X'): *success = _hb_subset_table<ধ্রুব OT::VMTX> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('M','A','X','P'): *success = _hb_subset_table<ধ্রুব OT::MAXP> (plan, buf); প্রত্যাগম সত্য;
 #endif
-  case HB_TAG('l','o','c','a'): *success = true; return true; /* skip loca, handled by glyf */
+  পক্ষ HB_TAG('l','o','c','a'): *success = সত্য; প্রত্যাগম সত্য; /* skip loca, handled by glyf */
 #ifndef HB_NO_BEYOND_64K
-  case HB_TAG('L','O','C','A'): *success = true; return true; /* skip LOCA, handled by GLYF */
+  পক্ষ HB_TAG('L','O','C','A'): *success = সত্য; প্রত্যাগম সত্য; /* skip LOCA, handled by GLYF */
 #endif
-  case HB_TAG('c','m','a','p'): *success = _hb_subset_table<const OT::cmap> (plan, buf); return true;
-  case HB_TAG('D','M','A','P'): *success = _hb_subset_table<const OT::DMAP> (plan, buf); return true;
-  case HB_TAG('O','S','/','2'): *success = _hb_subset_table<const OT::OS2 > (plan, buf); return true;
-  case HB_TAG('p','o','s','t'): *success = _hb_subset_table<const OT::post> (plan, buf); return true;
+  পক্ষ HB_TAG('c','m','a','p'): *success = _hb_subset_table<ধ্রুব OT::cmap> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('D','M','A','P'): *success = _hb_subset_table<ধ্রুব OT::DMAP> (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('O','S','/','2'): *success = _hb_subset_table<ধ্রুব OT::OS2 > (plan, buf); প্রত্যাগম সত্য;
+  পক্ষ HB_TAG('p','o','s','t'): *success = _hb_subset_table<ধ্রুব OT::post> (plan, buf); প্রত্যাগম সত্য;
   }
-  return false;
+  প্রত্যাগম অসত্য;
 }

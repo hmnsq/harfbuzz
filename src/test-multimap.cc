@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-multimap.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-multimap.hh"
 
-int
-main (int argc, char **argv)
+পূর্ণাঙ্ক
+main (পূর্ণাঙ্ক argc, বর্ণ **argv)
 {
   hb_multimap_t m;
 
@@ -55,5 +55,5 @@ main (int argc, char **argv)
   hb_always_assert (m.get (11)[0] == 14);
   hb_always_assert (m.get (12)[0] == 0); // Array fallback value
 
-  return 0;
+  প্রত্যাগম 0;
 }

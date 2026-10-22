@@ -28,51 +28,51 @@
 #define HB_SUBSET_ACCELERATOR_HH
 
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
+#অন্তর্ভাব "hb-map.hh"
+#অন্তর্ভাব "hb-multimap.hh"
+#অন্তর্ভাব "hb-set.hh"
 
-extern HB_INTERNAL hb_user_data_key_t _hb_subset_accelerator_user_data_key;
+বাহ্য HB_INTERNAL hb_user_data_চাবি_t hb_subset_accelerator_user_data_চাবি;
 
-namespace CFF {
-struct cff_subset_accelerator_t;
+নামাকাশ CFF {
+সংরচনা cff_subset_accelerator_t;
 }
 
-namespace OT {
-struct SubtableUnicodesCache;
-struct cff1_subset_accelerator_t;
-struct cff2_subset_accelerator_t;
+নামাকাশ OT {
+সংরচনা SubtableUnicodesCache;
+সংরচনা cff1_subset_accelerator_t;
+সংরচনা cff2_subset_accelerator_t;
 }
 
-struct hb_subset_accelerator_t
+সংরচনা hb_subset_accelerator_t
 {
-  static hb_user_data_key_t* user_data_key()
+  স্থির hb_user_data_চাবি_t* user_data_চাবি()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    প্রত্যাগম &hb_subset_accelerator_user_data_চাবি;
   }
 
-  static hb_subset_accelerator_t* create(hb_face_t *source,
-					 const hb_map_t& unicode_to_gid_,
-					 const hb_set_t& unicodes_,
-					 bool has_seac_) {
+  স্থির hb_subset_accelerator_t* create(hb_face_t *source,
+					 ধ্রুব hb_map_t& unicode_to_gid_,
+					 ধ্রুব hb_set_t& unicodes_,
+					 তার্কিক has_seac_) {
     hb_subset_accelerator_t* accel =
-        (hb_subset_accelerator_t*) hb_calloc (1, sizeof(hb_subset_accelerator_t));
+        (hb_subset_accelerator_t*) hb_calloc (1, পরিমাণ(hb_subset_accelerator_t));
 
-    if (unlikely (!accel)) return accel;
+    যদি (unlikely (!accel)) প্রত্যাগম accel;
 
-    new (accel) hb_subset_accelerator_t (source,
+    নূতন (accel) hb_subset_accelerator_t (source,
 					 unicode_to_gid_,
 					 unicodes_,
 					 has_seac_);
 
-    return accel;
+    প্রত্যাগম accel;
   }
 
-  static void destroy (void* p)
+  স্থির শূন্য destroy (শূন্য* p)
   {
-    if (!p) return;
+    যদি (!p) প্রত্যাগম;
 
     hb_subset_accelerator_t *accel = (hb_subset_accelerator_t *) p;
 
@@ -82,9 +82,9 @@ struct hb_subset_accelerator_t
   }
 
   hb_subset_accelerator_t (hb_face_t *source,
-			   const hb_map_t& unicode_to_gid_,
-			   const hb_set_t& unicodes_,
-			   bool has_seac_) :
+			   ধ্রুব hb_map_t& unicode_to_gid_,
+			   ধ্রুব hb_set_t& unicodes_,
+			   তার্কিক has_seac_) :
     unicode_to_gid(unicode_to_gid_),
     unicodes(unicodes_),
     cmap_cache(nullptr),
@@ -93,7 +93,7 @@ struct hb_subset_accelerator_t
     source(hb_face_reference (source))
   {
     gid_to_unicodes.alloc (unicode_to_gid.get_population ());
-    for (const auto &_ : unicode_to_gid)
+    প্রতি (ধ্রুব auto &_ : unicode_to_gid)
     {
       auto unicode = _.first;
       auto gid = _.second;
@@ -113,17 +113,17 @@ struct hb_subset_accelerator_t
   hb_set_t unicodes;
 
   // cmap
-  const OT::SubtableUnicodesCache* cmap_cache;
+  ধ্রুব OT::SubtableUnicodesCache* cmap_cache;
   hb_destroy_func_t destroy_cmap_cache;
 
   // CFF
-  bool has_seac;
+  তার্কিক has_seac;
 
   // TODO(garretrieger): cumulative glyf checksum map
 
-  bool in_error () const
+  তার্কিক in_error () ধ্রুব
   {
-    return unicode_to_gid.in_error () ||
+    প্রত্যাগম unicode_to_gid.in_error () ||
 	   gid_to_unicodes.in_error () ||
 	   unicodes.in_error () ||
 	   sanitized_table_cache.in_error ();

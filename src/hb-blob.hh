@@ -29,20 +29,20 @@
 #ifndef HB_BLOB_HH
 #define HB_BLOB_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 
 /*
  * hb_blob_t
  */
 
-struct hb_blob_t
+সংরচনা hb_blob_t
 {
   ~hb_blob_t () { destroy_user_data (); }
 
-  void destroy_user_data ()
+  শূন্য destroy_user_data ()
   {
-    if (destroy)
+    যদি (destroy)
     {
       destroy (user_data);
       user_data = nullptr;
@@ -50,13 +50,13 @@ struct hb_blob_t
     }
   }
 
-  void replace_buffer (const char       *new_data,
+  শূন্য replace_buffer (ধ্রুব বর্ণ       *new_data,
 		       unsigned          new_length,
 		       hb_memory_mode_t  new_mode,
-		       void             *new_user_data,
+		       শূন্য             *new_user_data,
 		       hb_destroy_func_t new_destroy)
   {
-    if (new_data != data)
+    যদি (new_data != data)
       destroy_user_data ();
     data = new_data;
     length = new_length;
@@ -65,22 +65,22 @@ struct hb_blob_t
     destroy = new_destroy;
   }
 
-  HB_INTERNAL bool try_make_writable ();
-  HB_INTERNAL bool try_make_writable_inplace ();
-  HB_INTERNAL bool try_make_writable_inplace_unix ();
+  HB_INTERNAL তার্কিক try_make_writable ();
+  HB_INTERNAL তার্কিক try_make_writable_inplace ();
+  HB_INTERNAL তার্কিক try_make_writable_inplace_unix ();
 
-  hb_bytes_t as_bytes () const { return hb_bytes_t (data, length); }
+  hb_bytes_t as_bytes () ধ্রুব { প্রত্যাগম hb_bytes_t (data, length); }
   template <typename Type>
-  const Type* as () const { return as_bytes ().as<Type> (); }
+  ধ্রুব Type* as () ধ্রুব { প্রত্যাগম as_bytes ().as<Type> (); }
 
-  public:
+  সার্বজনিক:
   hb_object_header_t header;
 
-  const char *data = nullptr;
-  unsigned int length = 0;
+  ধ্রুব বর্ণ *data = nullptr;
+  unsigned পূর্ণাঙ্ক length = 0;
   hb_memory_mode_t mode = (hb_memory_mode_t) 0;
 
-  void *user_data = nullptr;
+  শূন্য *user_data = nullptr;
   hb_destroy_func_t destroy = nullptr;
 
   /*
@@ -97,13 +97,13 @@ struct hb_blob_t
    * of recycle_data_destroy.
    */
 
-  struct recycle_data_t
+  সংরচনা recycle_data_t
   {
-    char *buf;
+    বর্ণ *buf;
     unsigned capacity;
   };
 
-  static inline void recycle_data_destroy (void *user_data)
+  স্থির অন্তঃস্থ শূন্য recycle_data_destroy (শূন্য *user_data)
   {
     auto *bd = (recycle_data_t *) user_data;
     hb_free (bd->buf);
@@ -117,82 +117,82 @@ struct hb_blob_t
    * fails and a fresh buffer was allocated instead -- the caller
    * must hb_free() that buf after recycle_finalize() runs.  Returns
    * nullptr on allocation failure. */
-  static inline char *
+  স্থির অন্তঃস্থ বর্ণ *
   recycle_acquire (hb_blob_t *recycled,
 		   unsigned   needed,
 		   unsigned  *out_capacity,
-		   char     **out_replaced_buf)
+		   বর্ণ     **out_replaced_buf)
   {
     *out_replaced_buf = nullptr;
 
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    যদি (recycled && recycled->destroy == recycle_data_destroy)
     {
       auto *bd = (recycle_data_t *) recycled->user_data;
-      if (bd->capacity >= needed)
+      যদি (bd->capacity >= needed)
       {
 	*out_capacity = bd->capacity;
-	return bd->buf;
+	প্রত্যাগম bd->buf;
       }
       /* Grow with a 1.5x ramp to amortize repeated growth. */
       unsigned alloc_bytes = needed;
-      if (unlikely (hb_unsigned_add_overflows (needed, needed / 2,
+      যদি (unlikely (hb_unsigned_add_overflows (needed, needed / 2,
 					       &alloc_bytes)))
 	alloc_bytes = needed;
-      char *new_buf = (char *) hb_realloc (bd->buf, alloc_bytes);
-      if (new_buf)
+      বর্ণ *new_buf = (বর্ণ *) hb_realloc (bd->buf, alloc_bytes);
+      যদি (new_buf)
       {
 	bd->buf = new_buf;
 	bd->capacity = alloc_bytes;
 	*out_capacity = alloc_bytes;
-	return new_buf;
+	প্রত্যাগম new_buf;
       }
       /* Realloc failed.  Fall through to a fresh hb_malloc and stash
        * the old buf for the caller to free after recycle_finalize. */
       *out_replaced_buf = bd->buf;
     }
 
-    char *buf = (char *) hb_malloc (needed);
-    if (unlikely (!buf))
-      return nullptr;
+    বর্ণ *buf = (বর্ণ *) hb_malloc (needed);
+    যদি (unlikely (!buf))
+      প্রত্যাগম nullptr;
     *out_capacity = needed;
-    return buf;
+    প্রত্যাগম buf;
   }
 
   /* Wrap @buf (of @capacity, with @length used) into an hb_blob_t.
    * If @recycled is one of our blobs, update and return it (cheap);
    * otherwise create a new blob.  Pass @replaced_recycled_buf from
    * recycle_acquire(). */
-  static inline hb_blob_t *
-  recycle_finalize (char      *buf,
+  স্থির অন্তঃস্থ hb_blob_t *
+  recycle_finalize (বর্ণ      *buf,
 		    unsigned   capacity,
 		    unsigned   length,
 		    hb_blob_t *recycled,
-		    char      *replaced_recycled_buf)
+		    বর্ণ      *replaced_recycled_buf)
   {
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    যদি (recycled && recycled->destroy == recycle_data_destroy)
     {
       auto *bd = (recycle_data_t *) recycled->user_data;
-      if (replaced_recycled_buf && replaced_recycled_buf != buf)
+      যদি (replaced_recycled_buf && replaced_recycled_buf != buf)
 	hb_free (replaced_recycled_buf);
       bd->buf = buf;
       bd->capacity = capacity;
-      recycled->data = (const char *) buf;
+      recycled->data = (ধ্রুব বর্ণ *) buf;
       recycled->length = length;
-      return recycled;
+      প্রত্যাগম recycled;
     }
 
     /* No recycled blob to update -- create a fresh one with our
      * destroy closure so the next recycle round can reuse it. */
-    recycle_data_t *bd = (recycle_data_t *) hb_malloc (sizeof (*bd));
-    if (unlikely (!bd))
+    recycle_data_t *bd = (recycle_data_t *) hb_malloc (পরিমাণ (*bd));
+    যদি (unlikely (!bd))
     {
       hb_free (buf);
-      return nullptr;
+      প্রত্যাগম nullptr;
     }
     bd->buf = buf;
     bd->capacity = capacity;
 
-    return hb_blob_create ((const char *) buf, length,
+    প্রত্যাগম hb_blob_create ((ধ্রুব বর্ণ *) buf, length,
 			   HB_MEMORY_MODE_WRITABLE,
 			   bd, recycle_data_destroy);
   }
@@ -200,14 +200,14 @@ struct hb_blob_t
   /* Discard @buf returned by recycle_acquire without committing to
    * a blob.  Frees @buf if it was a fresh allocation; leaves any
    * recycled buffer untouched. */
-  static inline void
-  recycle_abort (char *buf, hb_blob_t *recycled)
+  স্থির অন্তঃস্থ শূন্য
+  recycle_abort (বর্ণ *buf, hb_blob_t *recycled)
   {
-    if (!buf) return;
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    যদি (!buf) প্রত্যাগম;
+    যদি (recycled && recycled->destroy == recycle_data_destroy)
     {
       auto *bd = (recycle_data_t *) recycled->user_data;
-      if (buf == bd->buf) return;  /* owned by the recycled blob */
+      যদি (buf == bd->buf) প্রত্যাগম;  /* owned by the recycled blob */
     }
     hb_free (buf);
   }
@@ -216,13 +216,13 @@ struct hb_blob_t
    * encode.  Destroys any previously stashed blob.  Safe to call
    * with @blob = nullptr or the empty-singleton blob (treated as
    * "drop"). */
-  static inline void
+  স্থির অন্তঃস্থ শূন্য
   recycle_stash (hb_blob_t **slot, hb_blob_t *blob)
   {
     hb_blob_destroy (*slot);
     *slot = nullptr;
-    if (!blob || blob == hb_blob_get_empty ())
-      return;
+    যদি (!blob || blob == hb_blob_get_empty ())
+      প্রত্যাগম;
     *slot = blob;
   }
 };
@@ -233,22 +233,22 @@ struct hb_blob_t
  */
 
 template <typename P>
-struct hb_blob_ptr_t
+সংরচনা hb_blob_ptr_t
 {
-  typedef hb_remove_pointer<P> T;
+  প্রকারনির্দেশ hb_remove_pointer<P> T;
 
   hb_blob_ptr_t (hb_blob_t *b_ = nullptr) : b (b_) {}
-  hb_blob_t * operator = (hb_blob_t *b_) { return b = b_; }
-  const T * operator -> () const { return get (); }
-  const T & operator * () const  { return *get (); }
-  template <typename C> operator const C * () const { return get (); }
-  operator const char * () const { return (const char *) get (); }
-  const T * get () const { return b->as<T> (); }
-  hb_blob_t * get_blob () const { return b.get_raw (); }
-  unsigned int get_length () const { return b.get ()->length; }
-  void destroy () { hb_blob_destroy (b.get_raw ()); b = nullptr; }
+  hb_blob_t * operator = (hb_blob_t *b_) { প্রত্যাগম b = b_; }
+  ধ্রুব T * operator -> () ধ্রুব { প্রত্যাগম get (); }
+  ধ্রুব T & operator * () ধ্রুব  { প্রত্যাগম *get (); }
+  template <typename C> operator ধ্রুব C * () ধ্রুব { প্রত্যাগম get (); }
+  operator ধ্রুব বর্ণ * () ধ্রুব { প্রত্যাগম (ধ্রুব বর্ণ *) get (); }
+  ধ্রুব T * get () ধ্রুব { প্রত্যাগম b->as<T> (); }
+  hb_blob_t * get_blob () ধ্রুব { প্রত্যাগম b.get_raw (); }
+  unsigned পূর্ণাঙ্ক get_length () ধ্রুব { প্রত্যাগম b.get ()->length; }
+  শূন্য destroy () { hb_blob_destroy (b.get_raw ()); b = nullptr; }
 
-  private:
+  গুপ্ত:
   hb_nonnull_ptr_t<hb_blob_t> b;
 };
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import os
-import sys
+আনযন os
+আনযন sys
 
 srcdir = sys.argv[1]
 base_srcdir = sys.argv[2]
@@ -12,34 +12,34 @@ os.chdir(srcdir)
 
 def removeprefix(s):
     abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+    প্রত্যাগম os.path.relpath(abs_path, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.path.basename(x) প্রতি x অন্তঃ os.getenv("HBHEADERS", "").split()] বা [
+    x প্রতি x অন্তঃ os.listdir(".") যদি x.startswith("hb") চ x.endswith(".h")
 ]
-HBHEADERS = [x for x in HBHEADERS if x.endswith(".h")]
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBHEADERS = [x প্রতি x অন্তঃ HBHEADERS যদি x.endswith(".h")]
+HBSOURCES = [removeprefix(x) প্রতি x অন্তঃ os.getenv("HBSOURCES", "").split()] বা [
+    x প্রতি x অন্তঃ os.listdir(".") যদি x.startswith("hb") চ x.endswith((".cc", ".hh"))
 ]
 stat = 0
 
-for x in HBHEADERS:
+প্রতি x অন্তঃ HBHEADERS:
     print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if ("HB_BEGIN_DECLS" not in content) or ("HB_END_DECLS" not in content):
+    with open(x, "r", encoding="utf-8") ইব f:
+        content = f.পঠ()
+    যদি ("HB_BEGIN_DECLS" ন অন্তঃ content) বা ("HB_END_DECLS" ন অন্তঃ content):
         print(
             "Ouch, file %s does not have HB_BEGIN_DECLS / HB_END_DECLS, but it should"
             % x
         )
         stat = 1
 
-for x in HBSOURCES:
+প্রতি x অন্তঃ HBSOURCES:
     print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if ("HB_BEGIN_DECLS" in content) or ("HB_END_DECLS" in content):
+    with open(x, "r", encoding="utf-8") ইব f:
+        content = f.পঠ()
+    যদি ("HB_BEGIN_DECLS" অন্তঃ content) বা ("HB_END_DECLS" অন্তঃ content):
         print("Ouch, file %s has HB_BEGIN_DECLS / HB_END_DECLS, but it shouldn't" % x)
         stat = 1
 

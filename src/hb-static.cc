@@ -28,28 +28,28 @@
 #define HB_STATIC_CC
 #ifdef HB_STATIC_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-face.hh"
+#অন্তর্ভাব "hb-open-type.hh"
+#অন্তর্ভাব "hb-face.hh"
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-cff-interp-common.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-cmap-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
+#অন্তর্ভাব "hb-aat-layout-common.hh"
+#অন্তর্ভাব "hb-aat-layout-feat-table.hh"
+#অন্তর্ভাব "hb-cff-interp-common.hh"
+#অন্তর্ভাব "hb-ot-layout-common.hh"
+#অন্তর্ভাব "hb-ot-cmap-table.hh"
+#অন্তর্ভাব "OT/Color/COLR/COLR.hh"
+#অন্তর্ভাব "hb-ot-glyf-table.hh"
+#অন্তর্ভাব "hb-ot-head-table.hh"
+#অন্তর্ভাব "hb-ot-hmtx-table.hh"
+#অন্তর্ভাব "hb-ot-maxp-table.hh"
 
 #ifndef HB_NO_VISIBILITY
 
-#include "hb-ot-name-language-static.hh"
+#অন্তর্ভাব "hb-ot-name-language-static.hh"
 
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+uint64_t ধ্রুব _hb_NullPool[(HB_NULL_POOL_SIZE + পরিমাণ (uint64_t) - 1) / পরিমাণ (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + পরিমাণ (uint64_t) - 1) / পরিমাণ (uint64_t)] = {};
 
 DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
 DEFINE_NULL_NAMESPACE_BYTES (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
@@ -63,31 +63,31 @@ DEFINE_NULL_NAMESPACE_BYTES (AAT, Lookup) = {0xFF,0xFF};
 
 /* hb_map_t */
 
-const hb_codepoint_t minus_1 = -1;
-static const unsigned char static_endchar_str[] = {OpCode_endchar};
-const unsigned char *endchar_str = static_endchar_str;
+ধ্রুব hb_codepoint_t minus_1 = -1;
+স্থির ধ্রুব unsigned বর্ণ static_endchar_str[] = {OpCode_endchar};
+ধ্রুব unsigned বর্ণ *endchar_str = static_endchar_str;
 
 /* hb_face_t */
 
-static inline unsigned
-load_num_glyphs_from_maxp (const hb_face_t *face)
+স্থির অন্তঃস্থ unsigned
+load_অঙ্ক_glyphs_from_maxp (ধ্রুব hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  প্রত্যাগম face->table.maxp->get_অঙ্ক_glyphs ();
 }
 
-unsigned int
-hb_face_t::load_num_glyphs () const
+unsigned পূর্ণাঙ্ক
+hb_face_t::load_অঙ্ক_glyphs () ধ্রুব
 {
-  num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  অঙ্ক_glyphs = load_অঙ্ক_glyphs_from_maxp (এতত্);
+  প্রত্যাগম অঙ্ক_glyphs;
 }
 
-unsigned int
-hb_face_t::load_upem () const
+unsigned পূর্ণাঙ্ক
+hb_face_t::load_upem () ধ্রুব
 {
-  unsigned int ret = table.head->get_upem ();
+  unsigned পূর্ণাঙ্ক ret = table.head->get_upem ();
   upem = ret;
-  return ret;
+  প্রত্যাগম ret;
 }
 
 #endif

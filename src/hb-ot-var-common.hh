@@ -26,79 +26,79 @@
 #ifndef HB_OT_VAR_COMMON_HH
 #define HB_OT_VAR_COMMON_HH
 
-#include "hb-ot-layout-common.hh"
-#include "hb-alloc-pool.hh"
-#include "hb-priority-queue.hh"
-#include "hb-subset-instancer-iup.hh"
+#অন্তর্ভাব "hb-ot-layout-common.hh"
+#অন্তর্ভাব "hb-alloc-pool.hh"
+#অন্তর্ভাব "hb-priority-queue.hh"
+#অন্তর্ভাব "hb-subset-instancer-iup.hh"
 
 
-namespace OT {
+নামাকাশ OT {
 
 using rebase_tent_result_scratch_t = hb_pair_t<rebase_tent_result_t, rebase_tent_result_t>;
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/otvarcommonformats#tuplevariationheader */
-struct TupleVariationHeader
+সংরচনা TupleVariationHeader
 {
-  friend struct tuple_delta_t;
-  size_t get_size (unsigned axis_count_times_2) const
+  friend সংরচনা tuple_delta_t;
+  size_t get_size (unsigned axis_গুনতি_times_2) ধ্রুব
   {
     // This function is super hot in mega-var-fonts with hundreds of masters.
     unsigned ti = tupleIndex;
-    if (unlikely ((ti & (TupleIndex::EmbeddedPeakTuple | TupleIndex::IntermediateRegion))))
+    যদি (unlikely ((ti & (TupleIndex::EmbeddedPeakTuple | TupleIndex::IntermediateRegion))))
     {
-      unsigned count = ((ti & TupleIndex::EmbeddedPeakTuple) != 0) + ((ti & TupleIndex::IntermediateRegion) != 0) * 2;
-      return hb_unsigned_mul_add_saturate (count, axis_count_times_2, min_size);
+      unsigned গুনতি = ((ti & TupleIndex::EmbeddedPeakTuple) != 0) + ((ti & TupleIndex::IntermediateRegion) != 0) * 2;
+      প্রত্যাগম hb_unsigned_mul_add_saturate (গুনতি, axis_গুনতি_times_2, min_size);
     }
-    return min_size;
+    প্রত্যাগম min_size;
   }
 
-  unsigned get_data_size () const { return varDataSize; }
+  unsigned get_data_size () ধ্রুব { প্রত্যাগম varDataSize; }
 
-  const TupleVariationHeader &get_next (unsigned axis_count_times_2) const
-  { return StructAtOffset<TupleVariationHeader> (this, get_size (axis_count_times_2)); }
+  ধ্রুব TupleVariationHeader &get_next (unsigned axis_গুনতি_times_2) ধ্রুব
+  { প্রত্যাগম StructAtOffset<TupleVariationHeader> (এতত্, get_size (axis_গুনতি_times_2)); }
 
-  bool unpack_axis_tuples (unsigned axis_count,
-                           const hb_array_t<const F2DOT14> shared_tuples,
-                           const hb_map_t *axes_old_index_tag_map,
-                           hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) const
+  তার্কিক unpack_axis_tuples (unsigned axis_গুনতি,
+                           ধ্রুব hb_array_t<ধ্রুব F2DOT14> shared_tuples,
+                           ধ্রুব hb_map_t *axes_old_index_tag_map,
+                           hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) ধ্রুব
   {
-    const F2DOT14 *peak_tuple = nullptr;
-    if (has_peak ())
-      peak_tuple = get_peak_tuple (axis_count);
-    else
+    ধ্রুব F2DOT14 *peak_tuple = nullptr;
+    যদি (has_peak ())
+      peak_tuple = get_peak_tuple (axis_গুনতি);
+    অন্যথা
     {
-      unsigned int index = get_index ();
-      if (unlikely ((index + 1) * axis_count > shared_tuples.length))
-        return false;
-      peak_tuple = shared_tuples.sub_array (axis_count * index, axis_count).arrayZ;
+      unsigned পূর্ণাঙ্ক index = get_index ();
+      যদি (unlikely ((index + 1) * axis_গুনতি > shared_tuples.length))
+        প্রত্যাগম অসত্য;
+      peak_tuple = shared_tuples.sub_array (axis_গুনতি * index, axis_গুনতি).arrayZ;
     }
 
-    const F2DOT14 *start_tuple = nullptr;
-    const F2DOT14 *end_tuple = nullptr;
-    bool has_interm = has_intermediate ();
+    ধ্রুব F2DOT14 *start_tuple = nullptr;
+    ধ্রুব F2DOT14 *end_tuple = nullptr;
+    তার্কিক has_interm = has_intermediate ();
 
-    if (has_interm)
+    যদি (has_interm)
     {
-      start_tuple = get_start_tuple (axis_count);
-      end_tuple = get_end_tuple (axis_count);
+      start_tuple = get_start_tuple (axis_গুনতি);
+      end_tuple = get_end_tuple (axis_গুনতি);
     }
 
-    for (unsigned i = 0; i < axis_count; i++)
+    প্রতি (unsigned i = 0; i < axis_গুনতি; i++)
     {
-      float peak = peak_tuple[i].to_float ();
-      if (peak == 0.f) continue;
+      ভিন্ন peak = peak_tuple[i].to_float ();
+      যদি (peak == 0.f) অনুবর্ত;
 
       hb_tag_t *axis_tag;
-      if (!axes_old_index_tag_map->has (i, &axis_tag))
-        return false;
+      যদি (!axes_old_index_tag_map->has (i, &axis_tag))
+        প্রত্যাগম অসত্য;
 
-      float start, end;
-      if (has_interm)
+      ভিন্ন start, end;
+      যদি (has_interm)
       {
         start = start_tuple[i].to_float ();
         end = end_tuple[i].to_float ();
       }
-      else
+      অন্যথা
       {
         start = hb_min (peak, 0.f);
         end = hb_max (peak, 0.f);
@@ -106,147 +106,147 @@ struct TupleVariationHeader
       axis_tuples.set (*axis_tag, Triple (start, peak, end));
     }
 
-    return true;
+    প্রত্যাগম সত্য;
   }
 
   HB_ALWAYS_INLINE
-  float calculate_scalar (hb_array_t<const int> coords, unsigned int coord_count,
-			   const hb_array_t<const F2DOT14> shared_tuples,
-			   hb_scalar_cache_t *shared_tuple_scalar_cache = (hb_scalar_cache_t *) &Null(hb_scalar_cache_t)) const
+  ভিন্ন calculate_scalar (hb_array_t<ধ্রুব পূর্ণাঙ্ক> coords, unsigned পূর্ণাঙ্ক coord_গুনতি,
+			   ধ্রুব hb_array_t<ধ্রুব F2DOT14> shared_tuples,
+			   hb_scalar_cache_t *shared_tuple_scalar_cache = (hb_scalar_cache_t *) &Null(hb_scalar_cache_t)) ধ্রুব
   {
     unsigned tuple_index = tupleIndex;
-    unsigned int index = tuple_index & TupleIndex::TupleIndexMask;
+    unsigned পূর্ণাঙ্ক index = tuple_index & TupleIndex::TupleIndexMask;
 
     /* The gvar shared-tuple cache is clamped to the 12-bit tuple-index range.
      * Only PrivatePointNumbers may accompany a cached shared-tuple index; any
      * other flag sets a bit at or above 0x1000, making this range test fail.
      */
-    bool plain_shared_tuple = (tuple_index & ~TupleIndex::PrivatePointNumbers) < shared_tuple_scalar_cache->length;
-    if (likely (plain_shared_tuple))
+    তার্কিক plain_shared_tuple = (tuple_index & ~TupleIndex::PrivatePointNumbers) < shared_tuple_scalar_cache->length;
+    যদি (likely (plain_shared_tuple))
     {
-      float scalar;
-      if (likely (shared_tuple_scalar_cache->get (index, &scalar)))
-	return scalar;
+      ভিন্ন scalar;
+      যদি (likely (shared_tuple_scalar_cache->get (index, &scalar)))
+	প্রত্যাগম scalar;
     }
 
-    const F2DOT14 *peak_tuple;
+    ধ্রুব F2DOT14 *peak_tuple;
 
-    bool has_interm = tuple_index & TupleIndex::IntermediateRegion; // Inlined for performance
+    তার্কিক has_interm = tuple_index & TupleIndex::IntermediateRegion; // Inlined for performance
 
-    if (unlikely (tuple_index & TupleIndex::EmbeddedPeakTuple)) // Inlined for performance
+    যদি (unlikely (tuple_index & TupleIndex::EmbeddedPeakTuple)) // Inlined for performance
     {
-      peak_tuple = get_peak_tuple (coord_count);
+      peak_tuple = get_peak_tuple (coord_গুনতি);
       shared_tuple_scalar_cache = nullptr;
     }
-    else
+    অন্যথা
     {
-      float scalar;
-      if (!plain_shared_tuple &&
+      ভিন্ন scalar;
+      যদি (!plain_shared_tuple &&
 	  shared_tuple_scalar_cache->length &&
 	  shared_tuple_scalar_cache->get (index, &scalar))
       {
-        if (has_interm && (scalar != 0 && scalar != 1.f))
+        যদি (has_interm && (scalar != 0 && scalar != 1.f))
 	  shared_tuple_scalar_cache = nullptr;
-	else
-	  return scalar;
+	অন্যথা
+	  প্রত্যাগম scalar;
       }
 
-      if (unlikely ((index + 1) * coord_count > shared_tuples.length))
-        return 0.f;
-      peak_tuple = shared_tuples.arrayZ + (coord_count * index);
+      যদি (unlikely ((index + 1) * coord_গুনতি > shared_tuples.length))
+        প্রত্যাগম 0.f;
+      peak_tuple = shared_tuples.arrayZ + (coord_গুনতি * index);
 
     }
 
-    const F2DOT14 *start_tuple = nullptr;
-    const F2DOT14 *end_tuple = nullptr;
+    ধ্রুব F2DOT14 *start_tuple = nullptr;
+    ধ্রুব F2DOT14 *end_tuple = nullptr;
 
-    if (has_interm)
+    যদি (has_interm)
     {
-      start_tuple = get_start_tuple (coord_count);
-      end_tuple = get_end_tuple (coord_count);
+      start_tuple = get_start_tuple (coord_গুনতি);
+      end_tuple = get_end_tuple (coord_গুনতি);
     }
 
-    float scalar = 1.f;
+    ভিন্ন scalar = 1.f;
 #ifndef HB_OPTIMIZE_SIZE
-#if HB_FAST_NUM_ACCESS
-    bool skip = coord_count >= 16;
+#যদি HB_FAST_অঙ্ক_ACCESS
+    তার্কিক skip = coord_গুনতি >= 16;
 #endif
 #endif
-    for (unsigned int i = 0; i < coord_count; i++)
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < coord_গুনতি; i++)
     {
 #ifndef HB_OPTIMIZE_SIZE
-#if HB_FAST_NUM_ACCESS
-      if (skip)
+#যদি HB_FAST_অঙ্ক_ACCESS
+      যদি (skip)
       {
-	while (i + 4 <= coord_count && * (HBUINT64LE *) &peak_tuple[i] == 0)
+	যাবত্ (i + 4 <= coord_গুনতি && * (HBUINT64LE *) &peak_tuple[i] == 0)
 	  i += 4;
-	while (i < coord_count && peak_tuple[i].to_int () == 0)
+	যাবত্ (i < coord_গুনতি && peak_tuple[i].to_int () == 0)
 	  i += 1;
-	if (i >= coord_count)
-	  break;
+	যদি (i >= coord_গুনতি)
+	  ভঙ্গ;
       }
 #endif
 #endif
 
-      int peak = peak_tuple[i].to_int ();
-      if (!peak) continue;
+      পূর্ণাঙ্ক peak = peak_tuple[i].to_int ();
+      যদি (!peak) অনুবর্ত;
 
-      int v = coords[i];
-      if (!v) { scalar = 0.f; break; }
-      if (v == peak) continue;
+      পূর্ণাঙ্ক v = coords[i];
+      যদি (!v) { scalar = 0.f; ভঙ্গ; }
+      যদি (v == peak) অনুবর্ত;
 
-      if (has_interm)
+      যদি (has_interm)
       {
 	shared_tuple_scalar_cache = nullptr;
-        int start = start_tuple[i].to_int ();
-        int end = end_tuple[i].to_int ();
-        if (unlikely (start > peak || peak > end ||
-                      (start < 0 && end > 0 && peak))) continue;
-        if (v < start || v > end) { scalar = 0.f; break; }
-        if (v < peak)
-        { if (peak != start) scalar *= (float) (v - start) / (peak - start); }
-        else
-        { if (peak != end) scalar *= (float) (end - v) / (end - peak); }
+        পূর্ণাঙ্ক start = start_tuple[i].to_int ();
+        পূর্ণাঙ্ক end = end_tuple[i].to_int ();
+        যদি (unlikely (start > peak || peak > end ||
+                      (start < 0 && end > 0 && peak))) অনুবর্ত;
+        যদি (v < start || v > end) { scalar = 0.f; ভঙ্গ; }
+        যদি (v < peak)
+        { যদি (peak != start) scalar *= (ভিন্ন) (v - start) / (peak - start); }
+        অন্যথা
+        { যদি (peak != end) scalar *= (ভিন্ন) (end - v) / (end - peak); }
       }
-      else if (v < hb_min (0, peak) || v > hb_max (0, peak)) { scalar = 0.f; break; }
-      else
-        scalar *= (float) v / peak;
+      অন্যথা যদি (v < hb_min (0, peak) || v > hb_max (0, peak)) { scalar = 0.f; ভঙ্গ; }
+      অন্যথা
+        scalar *= (ভিন্ন) v / peak;
     }
-    if (shared_tuple_scalar_cache)
+    যদি (shared_tuple_scalar_cache)
       shared_tuple_scalar_cache->set (index, scalar);
-    return scalar;
+    প্রত্যাগম scalar;
   }
 
-  bool           has_peak () const { return tupleIndex & TupleIndex::EmbeddedPeakTuple; }
-  bool   has_intermediate () const { return tupleIndex & TupleIndex::IntermediateRegion; }
-  bool has_private_points () const { return tupleIndex & TupleIndex::PrivatePointNumbers; }
-  unsigned      get_index () const { return tupleIndex & TupleIndex::TupleIndexMask; }
-  static constexpr unsigned max_shared_tuple_count = 0x1000u;
+  তার্কিক           has_peak () ধ্রুব { প্রত্যাগম tupleIndex & TupleIndex::EmbeddedPeakTuple; }
+  তার্কিক   has_intermediate () ধ্রুব { প্রত্যাগম tupleIndex & TupleIndex::IntermediateRegion; }
+  তার্কিক has_private_points () ধ্রুব { প্রত্যাগম tupleIndex & TupleIndex::PrivatePointNumbers; }
+  unsigned      get_index () ধ্রুব { প্রত্যাগম tupleIndex & TupleIndex::TupleIndexMask; }
+  স্থির constexpr unsigned max_shared_tuple_গুনতি = 0x1000u;
 
-  protected:
-  struct TupleIndex : HBUINT16
+  রক্ষিত:
+  সংরচনা TupleIndex : HBUINT16
   {
-    enum Flags {
+    গণনা Flags {
       EmbeddedPeakTuple   = 0x8000u,
       IntermediateRegion  = 0x4000u,
       PrivatePointNumbers = 0x2000u,
       TupleIndexMask      = 0x0FFFu
     };
 
-    TupleIndex& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+    TupleIndex& operator = (uint16_t i) { HBUINT16::operator= (i); প্রত্যাগম *এতত্; }
     DEFINE_SIZE_STATIC (2);
   };
 
-  hb_array_t<const F2DOT14> get_all_tuples (unsigned axis_count) const
-  { return StructAfter<UnsizedArrayOf<F2DOT14>> (tupleIndex).as_array ((has_peak () + has_intermediate () * 2) * axis_count); }
-  const F2DOT14* get_all_tuples_base (unsigned axis_count) const
-  { return StructAfter<UnsizedArrayOf<F2DOT14>> (tupleIndex).arrayZ; }
-  const F2DOT14* get_peak_tuple (unsigned axis_count) const
-  { return get_all_tuples_base (axis_count); }
-  const F2DOT14* get_start_tuple (unsigned axis_count) const
-  { return get_all_tuples_base (axis_count) + has_peak () * axis_count; }
-  const F2DOT14* get_end_tuple (unsigned axis_count) const
-  { return get_all_tuples_base (axis_count) + has_peak () * axis_count + axis_count; }
+  hb_array_t<ধ্রুব F2DOT14> get_all_tuples (unsigned axis_গুনতি) ধ্রুব
+  { প্রত্যাগম StructAfter<UnsizedArrayOf<F2DOT14>> (tupleIndex).as_array ((has_peak () + has_intermediate () * 2) * axis_গুনতি); }
+  ধ্রুব F2DOT14* get_all_tuples_base (unsigned axis_গুনতি) ধ্রুব
+  { প্রত্যাগম StructAfter<UnsizedArrayOf<F2DOT14>> (tupleIndex).arrayZ; }
+  ধ্রুব F2DOT14* get_peak_tuple (unsigned axis_গুনতি) ধ্রুব
+  { প্রত্যাগম get_all_tuples_base (axis_গুনতি); }
+  ধ্রুব F2DOT14* get_start_tuple (unsigned axis_গুনতি) ধ্রুব
+  { প্রত্যাগম get_all_tuples_base (axis_গুনতি) + has_peak () * axis_গুনতি; }
+  ধ্রুব F2DOT14* get_end_tuple (unsigned axis_গুনতি) ধ্রুব
+  { প্রত্যাগম get_all_tuples_base (axis_গুনতি) + has_peak () * axis_গুনতি + axis_গুনতি; }
 
   HBUINT16      varDataSize;    /* The size in bytes of the serialized
                                  * data for this tuple variation table. */
@@ -264,53 +264,53 @@ struct TupleVariationHeader
   /* UnsizedArrayOf<F2DOT14> intermediateEndTuple - optional */
                                 /* Intermediate end tuple record for this tuple variation table — optional,
                                  * determined by flags in the tupleIndex value. */
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_MIN (4);
 };
 
-struct optimize_scratch_t
+সংরচনা optimize_scratch_t
 {
   iup_scratch_t iup;
-  hb_vector_t<bool> opt_indices;
-  hb_vector_t<int> rounded_x_deltas;
-  hb_vector_t<int> rounded_y_deltas;
-  hb_vector_t<float> opt_deltas_x;
-  hb_vector_t<float> opt_deltas_y;
-  hb_vector_t<unsigned char> opt_point_data;
-  hb_vector_t<unsigned char> opt_deltas_data;
-  hb_vector_t<unsigned char> point_data;
-  hb_vector_t<unsigned char> deltas_data;
-  hb_vector_t<int> rounded_deltas;
+  hb_vector_t<তার্কিক> opt_indices;
+  hb_vector_t<পূর্ণাঙ্ক> rounded_x_deltas;
+  hb_vector_t<পূর্ণাঙ্ক> rounded_y_deltas;
+  hb_vector_t<ভিন্ন> opt_deltas_x;
+  hb_vector_t<ভিন্ন> opt_deltas_y;
+  hb_vector_t<unsigned বর্ণ> opt_point_data;
+  hb_vector_t<unsigned বর্ণ> opt_deltas_data;
+  hb_vector_t<unsigned বর্ণ> point_data;
+  hb_vector_t<unsigned বর্ণ> deltas_data;
+  hb_vector_t<পূর্ণাঙ্ক> rounded_deltas;
 };
 
-struct tuple_delta_t
+সংরচনা tuple_delta_t
 {
-  static constexpr bool realloc_move = true;  // Watch out when adding new members!
+  স্থির constexpr তার্কিক realloc_move = সত্য;  // Watch out when adding new members!
 
-  public:
+  সার্বজনিক:
   hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
 
   /* indices_length = point_count, indice[i] = 1 means point i is referenced */
-  hb_vector_t<bool> indices;
+  hb_vector_t<তার্কিক> indices;
 
-  hb_vector_t<float> deltas_x;
+  hb_vector_t<ভিন্ন> deltas_x;
   /* empty for cvar tuples */
-  hb_vector_t<float> deltas_y;
+  hb_vector_t<ভিন্ন> deltas_y;
 
   /* compiled data: header and deltas
    * compiled point data is saved in a hashmap within tuple_variations_t cause
    * some point sets might be reused by different tuple variations */
-  hb_vector_t<unsigned char> compiled_tuple_header;
-  hb_vector_t<unsigned char> compiled_deltas;
+  hb_vector_t<unsigned বর্ণ> compiled_tuple_header;
+  hb_vector_t<unsigned বর্ণ> compiled_deltas;
 
   hb_vector_t<F2DOT14> compiled_peak_coords;
   hb_vector_t<F2DOT14> compiled_interm_coords;
 
   tuple_delta_t (hb_alloc_pool_t *pool = nullptr) {}
-  tuple_delta_t (const tuple_delta_t& o) = default;
-  tuple_delta_t& operator = (const tuple_delta_t& o) = default;
+  tuple_delta_t (ধ্রুব tuple_delta_t& o) = স্বভাব;
+  tuple_delta_t& operator = (ধ্রুব tuple_delta_t& o) = স্বভাব;
 
-  friend void swap (tuple_delta_t& a, tuple_delta_t& b) noexcept
+  friend শূন্য swap (tuple_delta_t& a, tuple_delta_t& b) noexcept
   {
     hb_swap (a.axis_tuples, b.axis_tuples);
     hb_swap (a.indices, b.indices);
@@ -322,15 +322,15 @@ struct tuple_delta_t
   }
 
   tuple_delta_t (tuple_delta_t&& o)  noexcept : tuple_delta_t ()
-  { hb_swap (*this, o); }
+  { hb_swap (*এতত্, o); }
 
   tuple_delta_t& operator = (tuple_delta_t&& o) noexcept
   {
-    hb_swap (*this, o);
-    return *this;
+    hb_swap (*এতত্, o);
+    প্রত্যাগম *এতত্;
   }
 
-  void copy_from (const tuple_delta_t& o, hb_alloc_pool_t *pool = nullptr)
+  শূন্য copy_from (ধ্রুব tuple_delta_t& o, hb_alloc_pool_t *pool = nullptr)
   {
     axis_tuples = o.axis_tuples;
     indices.duplicate_vector_from_pool (pool, o.indices);
@@ -342,61 +342,61 @@ struct tuple_delta_t
     compiled_interm_coords.duplicate_vector_from_pool (pool, o.compiled_interm_coords);
   }
 
-  void remove_axis (hb_tag_t axis_tag)
+  শূন্য remove_axis (hb_tag_t axis_tag)
   { axis_tuples.del (axis_tag); }
 
-  bool set_tent (hb_tag_t axis_tag, Triple tent)
-  { return axis_tuples.set (axis_tag, tent); }
+  তার্কিক set_tent (hb_tag_t axis_tag, Triple tent)
+  { প্রত্যাগম axis_tuples.set (axis_tag, tent); }
 
-  tuple_delta_t& operator += (const tuple_delta_t& o)
+  tuple_delta_t& operator += (ধ্রুব tuple_delta_t& o)
   {
-    unsigned num = indices.length;
-    for (unsigned i = 0; i < num; i++)
+    unsigned অঙ্ক = indices.length;
+    প্রতি (unsigned i = 0; i < অঙ্ক; i++)
     {
-      if (indices.arrayZ[i])
+      যদি (indices.arrayZ[i])
       {
-        if (o.indices.arrayZ[i])
+        যদি (o.indices.arrayZ[i])
         {
           deltas_x[i] += o.deltas_x[i];
-          if (deltas_y && o.deltas_y)
+          যদি (deltas_y && o.deltas_y)
             deltas_y[i] += o.deltas_y[i];
         }
       }
-      else
+      অন্যথা
       {
-        if (!o.indices.arrayZ[i]) continue;
-        indices.arrayZ[i] = true;
+        যদি (!o.indices.arrayZ[i]) অনুবর্ত;
+        indices.arrayZ[i] = সত্য;
         deltas_x[i] = o.deltas_x[i];
-        if (deltas_y && o.deltas_y)
+        যদি (deltas_y && o.deltas_y)
           deltas_y[i] = o.deltas_y[i];
       }
     }
-    return *this;
+    প্রত্যাগম *এতত্;
   }
 
-  tuple_delta_t& operator *= (float scalar)
+  tuple_delta_t& operator *= (ভিন্ন scalar)
   {
-    if (scalar == 1.0f)
-      return *this;
+    যদি (scalar == 1.0f)
+      প্রত্যাগম *এতত্;
 
-    unsigned num = indices.length;
-    if (deltas_y)
-      for (unsigned i = 0; i < num; i++)
+    unsigned অঙ্ক = indices.length;
+    যদি (deltas_y)
+      প্রতি (unsigned i = 0; i < অঙ্ক; i++)
       {
-	if (!indices.arrayZ[i]) continue;
+	যদি (!indices.arrayZ[i]) অনুবর্ত;
 	deltas_x[i] *= scalar;
 	deltas_y[i] *= scalar;
       }
-    else
-      for (unsigned i = 0; i < num; i++)
+    অন্যথা
+      প্রতি (unsigned i = 0; i < অঙ্ক; i++)
       {
-	if (!indices.arrayZ[i]) continue;
+	যদি (!indices.arrayZ[i]) অনুবর্ত;
 	deltas_x[i] *= scalar;
       }
-    return *this;
+    প্রত্যাগম *এতত্;
   }
 
-  void change_tuple_var_axis_limit (hb_tag_t axis_tag, Triple axis_limit,
+  শূন্য change_tuple_var_axis_limit (hb_tag_t axis_tag, Triple axis_limit,
 				    TripleDistances axis_triple_distances,
 				    hb_vector_t<tuple_delta_t>& out,
 				    rebase_tent_result_scratch_t &scratch,
@@ -406,44 +406,44 @@ struct tuple_delta_t
 
     out.reset ();
     Triple *tent;
-    if (!axis_tuples.has (axis_tag, &tent))
+    যদি (!axis_tuples.has (axis_tag, &tent))
     {
-      out.push (std::move (*this));
-      return;
+      out.push (std::move (*এতত্));
+      প্রত্যাগম;
     }
 
-    if ((tent->minimum < 0.f && tent->maximum > 0.f) ||
-        !(tent->minimum <= tent->middle && tent->middle <= tent->maximum))
-      return;
+    যদি ((tent->minimum < 0.f && tent->maximum > 0.f) ||
+        !(tent->minimum <= tent->মধ্য && tent->মধ্য <= tent->maximum))
+      প্রত্যাগম;
 
-    if (tent->middle == 0.f)
+    যদি (tent->মধ্য == 0.f)
     {
-      out.push (std::move (*this));
-      return;
+      out.push (std::move (*এতত্));
+      প্রত্যাগম;
     }
 
-    if (!axis_limit.is_point () &&
+    যদি (!axis_limit.is_point () &&
         !(-1.f <= axis_limit.minimum &&
-          axis_limit.minimum <= axis_limit.middle &&
-          axis_limit.middle <= axis_limit.maximum &&
+          axis_limit.minimum <= axis_limit.মধ্য &&
+          axis_limit.মধ্য <= axis_limit.maximum &&
           axis_limit.maximum <= +1.f))
-      return;
+      প্রত্যাগম;
 
     rebase_tent_result_t &solutions = scratch.first;
     rebase_tent (*tent, axis_limit, axis_triple_distances, solutions, scratch.second);
-    for (unsigned i = 0; i < solutions.length; i++)
+    প্রতি (unsigned i = 0; i < solutions.length; i++)
     {
       auto &t = solutions.arrayZ[i];
 
       tuple_delta_t new_var;
-      if (i < solutions.length - 1)
-	new_var.copy_from (*this, pool);
-      else
-	new_var = std::move (*this);
+      যদি (i < solutions.length - 1)
+	new_var.copy_from (*এতত্, pool);
+      অন্যথা
+	new_var = std::move (*এতত্);
 
-      if (t.second == Triple ())
+      যদি (t.second == Triple ())
         new_var.remove_axis (axis_tag);
-      else
+      অন্যথা
         new_var.set_tent (axis_tag, t.second);
 
       new_var *= t.first;
@@ -451,56 +451,56 @@ struct tuple_delta_t
     }
   }
 
-  bool compile_coords (const hb_map_t& axes_index_map,
-		       const hb_map_t& axes_old_index_tag_map,
+  তার্কিক compile_coords (ধ্রুব hb_map_t& axes_index_map,
+		       ধ্রুব hb_map_t& axes_old_index_tag_map,
 		       hb_alloc_pool_t *pool= nullptr)
   {
-    unsigned cur_axis_count = axes_index_map.get_population ();
-    if (pool)
+    unsigned cur_axis_গুনতি = axes_index_map.get_population ();
+    যদি (pool)
     {
-      if (unlikely (!compiled_peak_coords.allocate_from_pool (pool, cur_axis_count)))
-	return false;
+      যদি (unlikely (!compiled_peak_coords.allocate_from_pool (pool, cur_axis_গুনতি)))
+	প্রত্যাগম অসত্য;
     }
-    else if (unlikely (!compiled_peak_coords.resize (cur_axis_count)))
-      return false;
+    অন্যথা যদি (unlikely (!compiled_peak_coords.resize (cur_axis_গুনতি)))
+      প্রত্যাগম অসত্য;
 
     hb_array_t<F2DOT14> start_coords, end_coords;
 
-    unsigned orig_axis_count = axes_old_index_tag_map.get_population ();
+    unsigned orig_axis_গুনতি = axes_old_index_tag_map.get_population ();
     unsigned j = 0;
-    for (unsigned i = 0; i < orig_axis_count; i++)
+    প্রতি (unsigned i = 0; i < orig_axis_গুনতি; i++)
     {
-      if (!axes_index_map.has (i))
-        continue;
+      যদি (!axes_index_map.has (i))
+        অনুবর্ত;
 
       hb_tag_t axis_tag = axes_old_index_tag_map.get (i);
       Triple *coords = nullptr;
-      if (axis_tuples.has (axis_tag, &coords))
+      যদি (axis_tuples.has (axis_tag, &coords))
       {
-	float min_val = coords->minimum;
-	float val = coords->middle;
-	float max_val = coords->maximum;
+	ভিন্ন min_val = coords->minimum;
+	ভিন্ন val = coords->মধ্য;
+	ভিন্ন max_val = coords->maximum;
 
 	compiled_peak_coords.arrayZ[j].set_float (val);
 
-	if (min_val != hb_min (val, 0.f) || max_val != hb_max (val, 0.f))
+	যদি (min_val != hb_min (val, 0.f) || max_val != hb_max (val, 0.f))
 	{
-	  if (!compiled_interm_coords)
+	  যদি (!compiled_interm_coords)
 	  {
-	    if (pool)
+	    যদি (pool)
 	    {
-	      if (unlikely (!compiled_interm_coords.allocate_from_pool (pool, 2 * cur_axis_count)))
-		return false;
+	      যদি (unlikely (!compiled_interm_coords.allocate_from_pool (pool, 2 * cur_axis_গুনতি)))
+		প্রত্যাগম অসত্য;
 	    }
-	    else if (unlikely (!compiled_interm_coords.resize (2 * cur_axis_count)))
-	      return false;
-	    start_coords = compiled_interm_coords.as_array ().sub_array (0, cur_axis_count);
-	    end_coords = compiled_interm_coords.as_array ().sub_array (cur_axis_count);
+	    অন্যথা যদি (unlikely (!compiled_interm_coords.resize (2 * cur_axis_গুনতি)))
+	      প্রত্যাগম অসত্য;
+	    start_coords = compiled_interm_coords.as_array ().sub_array (0, cur_axis_গুনতি);
+	    end_coords = compiled_interm_coords.as_array ().sub_array (cur_axis_গুনতি);
 
-	    for (unsigned k = 0; k < j; k++)
+	    প্রতি (unsigned k = 0; k < j; k++)
 	    {
 	      signed peak = compiled_peak_coords.arrayZ[k].to_int ();
-	      if (!peak) continue;
+	      যদি (!peak) অনুবর্ত;
 	      start_coords.arrayZ[k].set_int (hb_min (peak, 0));
 	      end_coords.arrayZ[k].set_int (hb_max (peak, 0));
 	    }
@@ -508,7 +508,7 @@ struct tuple_delta_t
 
 	}
 
-	if (compiled_interm_coords)
+	যদি (compiled_interm_coords)
 	{
 	  start_coords.arrayZ[j].set_float (min_val);
 	  end_coords.arrayZ[j].set_float (max_val);
@@ -518,26 +518,26 @@ struct tuple_delta_t
       j++;
     }
 
-    return !compiled_peak_coords.in_error () && !compiled_interm_coords.in_error ();
+    প্রত্যাগম !compiled_peak_coords.in_error () && !compiled_interm_coords.in_error ();
   }
 
   /* deltas should be compiled already before we compile tuple
    * variation header cause we need to fill in the size of the
    * serialized data for this tuple variation */
-  bool compile_tuple_var_header (const hb_map_t& axes_index_map,
+  তার্কিক compile_tuple_var_header (ধ্রুব hb_map_t& axes_index_map,
                                  unsigned points_data_length,
-                                 const hb_map_t& axes_old_index_tag_map,
-                                 const hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned>* shared_tuples_idx_map,
+                                 ধ্রুব hb_map_t& axes_old_index_tag_map,
+                                 ধ্রুব hb_hashmap_t<ধ্রুব hb_vector_t<F2DOT14>*, unsigned>* shared_tuples_idx_map,
 				 hb_alloc_pool_t *pool = nullptr)
   {
     /* compiled_deltas could be empty after iup delta optimization, we can skip
      * compiling this tuple and return true */
-    if (!compiled_deltas) return true;
+    যদি (!compiled_deltas) প্রত্যাগম সত্য;
 
-    unsigned cur_axis_count = axes_index_map.get_population ();
+    unsigned cur_axis_গুনতি = axes_index_map.get_population ();
     /* allocate enough memory: 1 peak + 2 intermediate coords + fixed header size */
-    unsigned alloc_len = 3 * cur_axis_count * (F2DOT14::static_size) + 4;
-    if (unlikely (!compiled_tuple_header.allocate_from_pool (pool, alloc_len, false))) return false;
+    unsigned alloc_len = 3 * cur_axis_গুনতি * (F2DOT14::static_size) + 4;
+    যদি (unlikely (!compiled_tuple_header.allocate_from_pool (pool, alloc_len, অসত্য))) প্রত্যাগম অসত্য;
 
     unsigned flag = 0;
     /* skip the first 4 header bytes: variationDataSize+tupleIndex */
@@ -545,28 +545,28 @@ struct tuple_delta_t
     F2DOT14* end = reinterpret_cast<F2DOT14 *> (compiled_tuple_header.end ());
     hb_array_t<F2DOT14> coords (p, end - p);
 
-    if (!shared_tuples_idx_map)
+    যদি (!shared_tuples_idx_map)
       compile_coords (axes_index_map, axes_old_index_tag_map); // non-gvar tuples do not have compiled coords yet
 
     /* encode peak coords */
-    unsigned peak_count = 0;
+    unsigned peak_গুনতি = 0;
     unsigned *shared_tuple_idx;
-    if (shared_tuples_idx_map &&
+    যদি (shared_tuples_idx_map &&
         shared_tuples_idx_map->has (&compiled_peak_coords, &shared_tuple_idx))
     {
       flag = *shared_tuple_idx;
     }
-    else
+    অন্যথা
     {
-      peak_count = encode_peak_coords(coords, flag);
-      if (!peak_count) return false;
+      peak_গুনতি = encode_peak_coords(coords, flag);
+      যদি (!peak_গুনতি) প্রত্যাগম অসত্য;
     }
 
     /* encode interim coords, it's optional so returned num could be 0 */
-    unsigned interim_count = encode_interm_coords (coords.sub_array (peak_count), flag);
+    unsigned interim_গুনতি = encode_interm_coords (coords.sub_array (peak_গুনতি), flag);
 
     /* pointdata length = 0 implies "use shared points" */
-    if (points_data_length)
+    যদি (points_data_length)
       flag |= TupleVariationHeader::TupleIndex::PrivatePointNumbers;
 
     unsigned serialized_data_size = points_data_length + compiled_deltas.length;
@@ -574,155 +574,155 @@ struct tuple_delta_t
     o->varDataSize = serialized_data_size;
     o->tupleIndex = flag;
 
-    unsigned total_header_len = 4 + (peak_count + interim_count) * (F2DOT14::static_size);
+    unsigned total_header_len = 4 + (peak_গুনতি + interim_গুনতি) * (F2DOT14::static_size);
     compiled_tuple_header.shrink_back_to_pool (pool, total_header_len);
-    return true;
+    প্রত্যাগম সত্য;
   }
 
   unsigned encode_peak_coords (hb_array_t<F2DOT14> peak_coords,
-                               unsigned& flag) const
+                               unsigned& flag) ধ্রুব
   {
-    hb_memcpy (&peak_coords[0], &compiled_peak_coords[0], compiled_peak_coords.length * sizeof (compiled_peak_coords[0]));
+    hb_memcpy (&peak_coords[0], &compiled_peak_coords[0], compiled_peak_coords.length * পরিমাণ (compiled_peak_coords[0]));
     flag |= TupleVariationHeader::TupleIndex::EmbeddedPeakTuple;
-    return compiled_peak_coords.length;
+    প্রত্যাগম compiled_peak_coords.length;
   }
 
   /* if no need to encode intermediate coords, then just return p */
   unsigned encode_interm_coords (hb_array_t<F2DOT14> coords,
-                                 unsigned& flag) const
+                                 unsigned& flag) ধ্রুব
   {
-    if (compiled_interm_coords)
+    যদি (compiled_interm_coords)
     {
-      hb_memcpy (&coords[0], &compiled_interm_coords[0], compiled_interm_coords.length * sizeof (compiled_interm_coords[0]));
+      hb_memcpy (&coords[0], &compiled_interm_coords[0], compiled_interm_coords.length * পরিমাণ (compiled_interm_coords[0]));
       flag |= TupleVariationHeader::TupleIndex::IntermediateRegion;
     }
-    return compiled_interm_coords.length;
+    প্রত্যাগম compiled_interm_coords.length;
   }
 
-  bool compile_deltas (hb_vector_t<int> &rounded_deltas_scratch,
+  তার্কিক compile_deltas (hb_vector_t<পূর্ণাঙ্ক> &rounded_deltas_scratch,
 		       hb_alloc_pool_t *pool = nullptr)
-  { return compile_deltas (indices, deltas_x, deltas_y, compiled_deltas, rounded_deltas_scratch, pool); }
+  { প্রত্যাগম compile_deltas (indices, deltas_x, deltas_y, compiled_deltas, rounded_deltas_scratch, pool); }
 
-  static bool compile_deltas (hb_array_t<const bool> point_indices,
-			      hb_array_t<const float> x_deltas,
-			      hb_array_t<const float> y_deltas,
-			      hb_vector_t<unsigned char> &compiled_deltas, /* OUT */
-			      hb_vector_t<int> &rounded_deltas, /* scratch */
+  স্থির তার্কিক compile_deltas (hb_array_t<ধ্রুব তার্কিক> point_indices,
+			      hb_array_t<ধ্রুব ভিন্ন> x_deltas,
+			      hb_array_t<ধ্রুব ভিন্ন> y_deltas,
+			      hb_vector_t<unsigned বর্ণ> &compiled_deltas, /* OUT */
+			      hb_vector_t<পূর্ণাঙ্ক> &rounded_deltas, /* scratch */
 			      hb_alloc_pool_t *pool = nullptr)
   {
-    if (unlikely (!rounded_deltas.resize_dirty  (point_indices.length)))
-      return false;
+    যদি (unlikely (!rounded_deltas.resize_dirty  (point_indices.length)))
+      প্রত্যাগম অসত্য;
 
     unsigned j = 0;
-    for (unsigned i = 0; i < point_indices.length; i++)
+    প্রতি (unsigned i = 0; i < point_indices.length; i++)
     {
-      if (!point_indices[i]) continue;
-      rounded_deltas.arrayZ[j++] = hb_clamp_to<int> (roundf ((double) x_deltas.arrayZ[i]));
+      যদি (!point_indices[i]) অনুবর্ত;
+      rounded_deltas.arrayZ[j++] = hb_clamp_to<পূর্ণাঙ্ক> (roundf ((দ্বিগুণ) x_deltas.arrayZ[i]));
     }
     rounded_deltas.resize (j);
 
-    if (!rounded_deltas) return true;
+    যদি (!rounded_deltas) প্রত্যাগম সত্য;
     /* Allocate enough memory: this is the correct bound:
      * Worst case scenario is that each delta has to be encoded in 4 bytes, and there
      * are runs of 64 items each. Any delta encoded in less than 4 bytes (2, 1, or 0)
      * is still smaller than the 4-byte encoding even with their control byte.
      * The initial 2 is to handle length==0, for both x and y deltas. */
     unsigned alloc_len = 2 + 4 * rounded_deltas.length + (rounded_deltas.length + 63) / 64;
-    if (y_deltas)
+    যদি (y_deltas)
       alloc_len *= 2;
 
-    if (unlikely (!compiled_deltas.allocate_from_pool (pool, alloc_len, false))) return false;
+    যদি (unlikely (!compiled_deltas.allocate_from_pool (pool, alloc_len, অসত্য))) প্রত্যাগম অসত্য;
 
     unsigned encoded_len = compile_deltas (compiled_deltas, rounded_deltas);
 
-    if (y_deltas)
+    যদি (y_deltas)
     {
       /* reuse the rounded_deltas vector, check that y_deltas have the same num of deltas as x_deltas */
       unsigned j = 0;
-      for (unsigned idx = 0; idx < point_indices.length; idx++)
+      প্রতি (unsigned idx = 0; idx < point_indices.length; idx++)
       {
-        if (!point_indices[idx]) continue;
-        int rounded_delta = hb_clamp_to<int> (roundf ((double) y_deltas.arrayZ[idx]));
+        যদি (!point_indices[idx]) অনুবর্ত;
+        পূর্ণাঙ্ক rounded_delta = hb_clamp_to<পূর্ণাঙ্ক> (roundf ((দ্বিগুণ) y_deltas.arrayZ[idx]));
 
-        if (j >= rounded_deltas.length) return false;
+        যদি (j >= rounded_deltas.length) প্রত্যাগম অসত্য;
 
         rounded_deltas[j++] = rounded_delta;
       }
 
-      if (j != rounded_deltas.length) return false;
+      যদি (j != rounded_deltas.length) প্রত্যাগম অসত্য;
       encoded_len += compile_deltas (compiled_deltas.as_array ().sub_array (encoded_len), rounded_deltas);
     }
     compiled_deltas.shrink_back_to_pool (pool, encoded_len);
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  static unsigned compile_deltas (hb_array_t<unsigned char> encoded_bytes,
-				  hb_array_t<const int> deltas)
+  স্থির unsigned compile_deltas (hb_array_t<unsigned বর্ণ> encoded_bytes,
+				  hb_array_t<ধ্রুব পূর্ণাঙ্ক> deltas)
   {
-    return TupleValues::compile_unsafe (deltas, encoded_bytes);
+    প্রত্যাগম Tuple_মানসমূহ::compile_unsafe (deltas, encoded_bytes);
   }
 
-  bool calc_inferred_deltas (const contour_point_vector_t& orig_points,
+  তার্কিক calc_inferred_deltas (ধ্রুব contour_point_vector_t& orig_points,
 			     hb_vector_t<unsigned> &scratch)
   {
-    unsigned point_count = orig_points.length;
-    if (point_count != indices.length)
-      return false;
+    unsigned point_গুনতি = orig_points.length;
+    যদি (point_গুনতি != indices.length)
+      প্রত্যাগম অসত্য;
 
-    unsigned ref_count = 0;
+    unsigned ref_গুনতি_2 = 0;
 
     hb_vector_t<unsigned> &end_points = scratch.reset ();
 
-    for (unsigned i = 0; i < point_count; i++)
+    প্রতি (unsigned i = 0; i < point_গুনতি; i++)
     {
-      ref_count += indices.arrayZ[i];
-      if (orig_points.arrayZ[i].is_end_point)
+      ref_গুনতি_2 += indices.arrayZ[i];
+      যদি (orig_points.arrayZ[i].is_end_point)
         end_points.push (i);
     }
     /* all points are referenced, nothing to do */
-    if (ref_count == point_count)
-      return true;
-    if (unlikely (end_points.in_error ())) return false;
+    যদি (ref_গুনতি_2 == point_গুনতি)
+      প্রত্যাগম সত্য;
+    যদি (unlikely (end_points.in_error ())) প্রত্যাগম অসত্য;
 
     hb_bit_set_t inferred_idxes;
     unsigned start_point = 0;
-    for (unsigned end_point : end_points)
+    প্রতি (unsigned end_point : end_points)
     {
       /* Check the number of unreferenced points in a contour. If no unref points or no ref points, nothing to do. */
-      unsigned unref_count = 0;
-      for (unsigned i = start_point; i < end_point + 1; i++)
-        unref_count += indices.arrayZ[i];
-      unref_count = (end_point - start_point + 1) - unref_count;
+      unsigned unref_গুনতি = 0;
+      প্রতি (unsigned i = start_point; i < end_point + 1; i++)
+        unref_গুনতি += indices.arrayZ[i];
+      unref_গুনতি = (end_point - start_point + 1) - unref_গুনতি;
 
       unsigned j = start_point;
-      if (unref_count == 0 || unref_count > end_point - start_point)
-        goto no_more_gaps;
-      for (;;)
+      যদি (unref_গুনতি == 0 || unref_গুনতি > end_point - start_point)
+        গচ্ছ no_more_gaps;
+      প্রতি (;;)
       {
         /* Locate the next gap of unreferenced points between two referenced points prev and next.
          * Note that a gap may wrap around at left (start_point) and/or at right (end_point).
          */
-        unsigned int prev, next, i;
-        for (;;)
+        unsigned পূর্ণাঙ্ক prev, next, i;
+        প্রতি (;;)
         {
           i = j;
           j = next_index (i, start_point, end_point);
-          if (indices.arrayZ[i] && !indices.arrayZ[j]) break;
+          যদি (indices.arrayZ[i] && !indices.arrayZ[j]) ভঙ্গ;
         }
         prev = j = i;
-        for (;;)
+        প্রতি (;;)
         {
           i = j;
           j = next_index (i, start_point, end_point);
-          if (!indices.arrayZ[i] && indices.arrayZ[j]) break;
+          যদি (!indices.arrayZ[i] && indices.arrayZ[j]) ভঙ্গ;
         }
         next = j;
        /* Infer deltas for all unref points in the gap between prev and next */
         i = prev;
-        for (;;)
+        প্রতি (;;)
         {
           i = next_index (i, start_point, end_point);
-          if (i == next) break;
+          যদি (i == next) ভঙ্গ;
           deltas_x.arrayZ[i] = infer_delta (orig_points.arrayZ[i].x,
                                             orig_points.arrayZ[prev].x,
                                             orig_points.arrayZ[next].x,
@@ -732,421 +732,421 @@ struct tuple_delta_t
                                             orig_points.arrayZ[next].y,
                                             deltas_y.arrayZ[prev], deltas_y.arrayZ[next]);
           inferred_idxes.add (i);
-          if (--unref_count == 0) goto no_more_gaps;
+          যদি (--unref_গুনতি == 0) গচ্ছ no_more_gaps;
         }
       }
     no_more_gaps:
       start_point = end_point + 1;
     }
 
-    for (unsigned i = 0; i < point_count; i++)
+    প্রতি (unsigned i = 0; i < point_গুনতি; i++)
     {
       /* if points are not referenced and deltas are not inferred, set to 0.
        * reference all points for gvar */
-      if ( !indices[i])
+      যদি ( !indices[i])
       {
-        if (!inferred_idxes.has (i))
+        যদি (!inferred_idxes.has (i))
         {
           deltas_x.arrayZ[i] = 0.f;
           deltas_y.arrayZ[i] = 0.f;
         }
-        indices[i] = true;
+        indices[i] = সত্য;
       }
     }
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  bool optimize (const contour_point_vector_t& contour_points,
-                 bool is_composite,
+  তার্কিক optimize (ধ্রুব contour_point_vector_t& contour_points,
+                 তার্কিক is_composite,
 		 optimize_scratch_t &scratch,
-                 double tolerance = 0.5 + 1e-10)
+                 দ্বিগুণ tolerance = 0.5 + 1e-10)
   {
-    unsigned count = contour_points.length;
-    if (deltas_x.length != count ||
-        deltas_y.length != count)
-      return false;
+    unsigned গুনতি = contour_points.length;
+    যদি (deltas_x.length != গুনতি ||
+        deltas_y.length != গুনতি)
+      প্রত্যাগম অসত্য;
 
-    hb_vector_t<bool> &opt_indices = scratch.opt_indices.reset ();
-    hb_vector_t<int> &rounded_x_deltas = scratch.rounded_x_deltas;
-    hb_vector_t<int> &rounded_y_deltas = scratch.rounded_y_deltas;
+    hb_vector_t<তার্কিক> &opt_indices = scratch.opt_indices.reset ();
+    hb_vector_t<পূর্ণাঙ্ক> &rounded_x_deltas = scratch.rounded_x_deltas;
+    hb_vector_t<পূর্ণাঙ্ক> &rounded_y_deltas = scratch.rounded_y_deltas;
 
-    if (unlikely (!rounded_x_deltas.resize_dirty  (count) ||
-                  !rounded_y_deltas.resize_dirty  (count)))
-      return false;
+    যদি (unlikely (!rounded_x_deltas.resize_dirty  (গুনতি) ||
+                  !rounded_y_deltas.resize_dirty  (গুনতি)))
+      প্রত্যাগম অসত্য;
 
-    for (unsigned i = 0; i < count; i++)
+    প্রতি (unsigned i = 0; i < গুনতি; i++)
     {
-      rounded_x_deltas.arrayZ[i] = hb_clamp_to<int> (roundf ((double) deltas_x.arrayZ[i]));
-      rounded_y_deltas.arrayZ[i] = hb_clamp_to<int> (roundf ((double) deltas_y.arrayZ[i]));
+      rounded_x_deltas.arrayZ[i] = hb_clamp_to<পূর্ণাঙ্ক> (roundf ((দ্বিগুণ) deltas_x.arrayZ[i]));
+      rounded_y_deltas.arrayZ[i] = hb_clamp_to<পূর্ণাঙ্ক> (roundf ((দ্বিগুণ) deltas_y.arrayZ[i]));
     }
 
-    if (!iup_delta_optimize (contour_points, rounded_x_deltas, rounded_y_deltas, opt_indices, scratch.iup, tolerance))
-      return false;
+    যদি (!iup_delta_optimize (contour_points, rounded_x_deltas, rounded_y_deltas, opt_indices, scratch.iup, tolerance))
+      প্রত্যাগম অসত্য;
 
-    unsigned ref_count = 0;
-    for (bool ref_flag : opt_indices)
-       ref_count += ref_flag;
+    unsigned ref_গুনতি_2 = 0;
+    প্রতি (তার্কিক ref_flag : opt_indices)
+       ref_গুনতি_2 += ref_flag;
 
-    if (ref_count == count) return true;
+    যদি (ref_গুনতি_2 == গুনতি) প্রত্যাগম সত্য;
 
-    hb_vector_t<float> &opt_deltas_x = scratch.opt_deltas_x.reset ();
-    hb_vector_t<float> &opt_deltas_y = scratch.opt_deltas_y.reset ();
-    bool is_comp_glyph_wo_deltas = (is_composite && ref_count == 0);
-    if (is_comp_glyph_wo_deltas)
+    hb_vector_t<ভিন্ন> &opt_deltas_x = scratch.opt_deltas_x.reset ();
+    hb_vector_t<ভিন্ন> &opt_deltas_y = scratch.opt_deltas_y.reset ();
+    তার্কিক is_comp_glyph_wo_deltas = (is_composite && ref_গুনতি_2 == 0);
+    যদি (is_comp_glyph_wo_deltas)
     {
-      if (unlikely (!opt_deltas_x.resize (count) ||
-                    !opt_deltas_y.resize (count)))
-        return false;
+      যদি (unlikely (!opt_deltas_x.resize (গুনতি) ||
+                    !opt_deltas_y.resize (গুনতি)))
+        প্রত্যাগম অসত্য;
 
-      opt_indices.arrayZ[0] = true;
-      for (unsigned i = 1; i < count; i++)
-        opt_indices.arrayZ[i] = false;
+      opt_indices.arrayZ[0] = সত্য;
+      প্রতি (unsigned i = 1; i < গুনতি; i++)
+        opt_indices.arrayZ[i] = অসত্য;
     }
 
-    hb_vector_t<unsigned char> &opt_point_data = scratch.opt_point_data.reset ();
-    if (!compile_point_set (opt_indices, opt_point_data))
-      return false;
-    hb_vector_t<unsigned char> &opt_deltas_data = scratch.opt_deltas_data.reset ();
-    if (!compile_deltas (opt_indices,
+    hb_vector_t<unsigned বর্ণ> &opt_point_data = scratch.opt_point_data.reset ();
+    যদি (!compile_point_set (opt_indices, opt_point_data))
+      প্রত্যাগম অসত্য;
+    hb_vector_t<unsigned বর্ণ> &opt_deltas_data = scratch.opt_deltas_data.reset ();
+    যদি (!compile_deltas (opt_indices,
                          is_comp_glyph_wo_deltas ? opt_deltas_x : deltas_x,
                          is_comp_glyph_wo_deltas ? opt_deltas_y : deltas_y,
                          opt_deltas_data,
 			 scratch.rounded_deltas))
-      return false;
+      প্রত্যাগম অসত্য;
 
-    hb_vector_t<unsigned char> &point_data = scratch.point_data.reset ();
-    if (!compile_point_set (indices, point_data))
-      return false;
-    hb_vector_t<unsigned char> &deltas_data = scratch.deltas_data.reset ();
-    if (!compile_deltas (indices, deltas_x, deltas_y, deltas_data, scratch.rounded_deltas))
-      return false;
+    hb_vector_t<unsigned বর্ণ> &point_data = scratch.point_data.reset ();
+    যদি (!compile_point_set (indices, point_data))
+      প্রত্যাগম অসত্য;
+    hb_vector_t<unsigned বর্ণ> &deltas_data = scratch.deltas_data.reset ();
+    যদি (!compile_deltas (indices, deltas_x, deltas_y, deltas_data, scratch.rounded_deltas))
+      প্রত্যাগম অসত্য;
 
-    if (opt_point_data.length + opt_deltas_data.length < point_data.length + deltas_data.length)
+    যদি (opt_point_data.length + opt_deltas_data.length < point_data.length + deltas_data.length)
     {
       indices = std::move (opt_indices);
 
-      if (is_comp_glyph_wo_deltas)
+      যদি (is_comp_glyph_wo_deltas)
       {
         deltas_x = std::move (opt_deltas_x);
         deltas_y = std::move (opt_deltas_y);
       }
     }
-    return !indices.in_error () && !deltas_x.in_error () && !deltas_y.in_error ();
+    প্রত্যাগম !indices.in_error () && !deltas_x.in_error () && !deltas_y.in_error ();
   }
 
-  static bool compile_point_set (const hb_vector_t<bool> &point_indices,
-                                 hb_vector_t<unsigned char>& compiled_points /* OUT */)
+  স্থির তার্কিক compile_point_set (ধ্রুব hb_vector_t<তার্কিক> &point_indices,
+                                 hb_vector_t<unsigned বর্ণ>& compiled_points /* OUT */)
   {
-    unsigned num_points = 0;
-    for (bool i : point_indices)
-      if (i) num_points++;
+    unsigned অঙ্ক_points = 0;
+    প্রতি (তার্কিক i : point_indices)
+      যদি (i) অঙ্ক_points++;
 
     /* when iup optimization is enabled, num of referenced points could be 0 */
-    if (!num_points) return true;
+    যদি (!অঙ্ক_points) প্রত্যাগম সত্য;
 
     unsigned indices_length = point_indices.length;
     /* If the points set consists of all points in the glyph, it's encoded with a
      * single zero byte */
-    if (num_points == indices_length)
-      return compiled_points.resize (1);
+    যদি (অঙ্ক_points == indices_length)
+      প্রত্যাগম compiled_points.resize (1);
 
     /* allocate enough memories: 2 bytes for count + 3 bytes for each point */
-    unsigned num_bytes = 2 + 3 *num_points;
-    if (unlikely (!compiled_points.resize_dirty  (num_bytes)))
-      return false;
+    unsigned অঙ্ক_bytes = 2 + 3 *অঙ্ক_points;
+    যদি (unlikely (!compiled_points.resize_dirty  (অঙ্ক_bytes)))
+      প্রত্যাগম অসত্য;
 
     unsigned pos = 0;
     /* binary data starts with the total number of reference points */
-    if (num_points < 0x80)
-      compiled_points.arrayZ[pos++] = num_points;
-    else
+    যদি (অঙ্ক_points < 0x80)
+      compiled_points.arrayZ[pos++] = অঙ্ক_points;
+    অন্যথা
     {
-      compiled_points.arrayZ[pos++] = ((num_points >> 8) | 0x80);
-      compiled_points.arrayZ[pos++] = num_points & 0xFF;
+      compiled_points.arrayZ[pos++] = ((অঙ্ক_points >> 8) | 0x80);
+      compiled_points.arrayZ[pos++] = অঙ্ক_points & 0xFF;
     }
 
-    const unsigned max_run_length = 0x7F;
+    ধ্রুব unsigned max_run_length = 0x7F;
     unsigned i = 0;
-    unsigned last_value = 0;
-    unsigned num_encoded = 0;
-    while (i < indices_length && num_encoded < num_points)
+    unsigned last_মান = 0;
+    unsigned অঙ্ক_encoded = 0;
+    যাবত্ (i < indices_length && অঙ্ক_encoded < অঙ্ক_points)
     {
       unsigned run_length = 0;
       unsigned header_pos = pos;
       compiled_points.arrayZ[pos++] = 0;
 
-      bool use_byte_encoding = false;
-      bool new_run = true;
-      while (i < indices_length && num_encoded < num_points &&
+      তার্কিক use_byte_encoding = অসত্য;
+      তার্কিক new_run = সত্য;
+      যাবত্ (i < indices_length && অঙ্ক_encoded < অঙ্ক_points &&
              run_length <= max_run_length)
       {
         // find out next referenced point index
-        while (i < indices_length && !point_indices[i])
+        যাবত্ (i < indices_length && !point_indices[i])
           i++;
 
-        if (i >= indices_length) break;
+        যদি (i >= indices_length) ভঙ্গ;
 
-        unsigned cur_value = i;
-        unsigned delta = cur_value - last_value;
+        unsigned cur_মান = i;
+        unsigned delta = cur_মান - last_মান;
 
-        if (new_run)
+        যদি (new_run)
         {
           use_byte_encoding = (delta <= 0xFF);
-          new_run = false;
+          new_run = অসত্য;
         }
 
-        if (use_byte_encoding && delta > 0xFF)
-          break;
+        যদি (use_byte_encoding && delta > 0xFF)
+          ভঙ্গ;
 
-        if (use_byte_encoding)
+        যদি (use_byte_encoding)
           compiled_points.arrayZ[pos++] = delta;
-        else
+        অন্যথা
         {
           compiled_points.arrayZ[pos++] = delta >> 8;
           compiled_points.arrayZ[pos++] = delta & 0xFF;
         }
         i++;
-        last_value = cur_value;
+        last_মান = cur_মান;
         run_length++;
-        num_encoded++;
+        অঙ্ক_encoded++;
       }
 
-      if (use_byte_encoding)
+      যদি (use_byte_encoding)
         compiled_points.arrayZ[header_pos] = run_length - 1;
-      else
+      অন্যথা
         compiled_points.arrayZ[header_pos] = (run_length - 1) | 0x80;
     }
-    return compiled_points.resize_dirty  (pos);
+    প্রত্যাগম compiled_points.resize_dirty  (pos);
   }
 
-  static float infer_delta (float target_val, float prev_val, float next_val, float prev_delta, float next_delta)
+  স্থির ভিন্ন infer_delta (ভিন্ন target_val, ভিন্ন prev_val, ভিন্ন next_val, ভিন্ন prev_delta, ভিন্ন next_delta)
   {
-    if (prev_val == next_val)
-      return (prev_delta == next_delta) ? prev_delta : 0.f;
-    else if (target_val <= hb_min (prev_val, next_val))
-      return (prev_val < next_val) ? prev_delta : next_delta;
-    else if (target_val >= hb_max (prev_val, next_val))
-      return (prev_val > next_val) ? prev_delta : next_delta;
+    যদি (prev_val == next_val)
+      প্রত্যাগম (prev_delta == next_delta) ? prev_delta : 0.f;
+    অন্যথা যদি (target_val <= hb_min (prev_val, next_val))
+      প্রত্যাগম (prev_val < next_val) ? prev_delta : next_delta;
+    অন্যথা যদি (target_val >= hb_max (prev_val, next_val))
+      প্রত্যাগম (prev_val > next_val) ? prev_delta : next_delta;
 
-    float r = (target_val - prev_val) / (next_val - prev_val);
-    return prev_delta + r * (next_delta - prev_delta);
+    ভিন্ন r = (target_val - prev_val) / (next_val - prev_val);
+    প্রত্যাগম prev_delta + r * (next_delta - prev_delta);
   }
 
-  static unsigned int next_index (unsigned int i, unsigned int start, unsigned int end)
-  { return (i >= end) ? start : (i + 1); }
+  স্থির unsigned পূর্ণাঙ্ক next_index (unsigned পূর্ণাঙ্ক i, unsigned পূর্ণাঙ্ক start, unsigned পূর্ণাঙ্ক end)
+  { প্রত্যাগম (i >= end) ? start : (i + 1); }
 };
 
 template <typename OffType = HBUINT16>
-struct TupleVariationData
+সংরচনা TupleVariationData
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     // here check on min_size only, TupleVariationHeader and var data will be
     // checked while accessing through iterator.
-    return_trace (c->check_struct (this));
+    return_trace (c->check_struct (এতত্));
   }
 
-  size_t get_size (unsigned axis_count_times_2) const
+  size_t get_size (unsigned axis_গুনতি_times_2) ধ্রুব
   {
     size_t total_size = min_size;
-    unsigned count = tupleVarCount.get_count ();
-    const TupleVariationHeader *tuple_var_header = &(get_tuple_var_header());
-    for (unsigned i = 0; i < count; i++)
+    unsigned গুনতি = tuple_Var_গুনতি.get_গুনতি ();
+    ধ্রুব TupleVariationHeader *tuple_var_header = &(get_tuple_var_header());
+    প্রতি (unsigned i = 0; i < গুনতি; i++)
     {
       total_size = hb_unsigned_add_saturate (total_size,
-					     tuple_var_header->get_size (axis_count_times_2),
+					     tuple_var_header->get_size (axis_গুনতি_times_2),
 					     (size_t) tuple_var_header->get_data_size ());
-      tuple_var_header = &tuple_var_header->get_next (axis_count_times_2);
+      tuple_var_header = &tuple_var_header->get_next (axis_গুনতি_times_2);
     }
 
-    return total_size;
+    প্রত্যাগম total_size;
   }
 
-  const TupleVariationHeader &get_tuple_var_header (void) const
-  { return StructAfter<TupleVariationHeader> (data); }
+  ধ্রুব TupleVariationHeader &get_tuple_var_header (শূন্য) ধ্রুব
+  { প্রত্যাগম StructAfter<TupleVariationHeader> (data); }
 
-  struct tuple_iterator_t;
-  struct tuple_variations_t
+  সংরচনা tuple_iterator_t;
+  সংরচনা tuple_variations_t
   {
     hb_vector_t<tuple_delta_t> tuple_vars;
 
-    private:
+    গুপ্ত:
     /* referenced point set->compiled point data map */
-    hb_hashmap_t<const hb_vector_t<bool>*, hb_vector_t<unsigned char>> point_data_map;
+    hb_hashmap_t<ধ্রুব hb_vector_t<তার্কিক>*, hb_vector_t<unsigned বর্ণ>> point_data_map;
     /* referenced point set-> count map, used in finding shared points */
-    hb_hashmap_t<const hb_vector_t<bool>*, unsigned> point_set_count_map;
+    hb_hashmap_t<ধ্রুব hb_vector_t<তার্কিক>*, unsigned> point_set_গুনতি_map;
 
     /* empty for non-gvar tuples.
      * shared_points_bytes is a pointer to some value in the point_data_map,
      * which will be freed during map destruction. Save it for serialization, so
      * no need to do find_shared_points () again */
-    hb_vector_t<unsigned char> *shared_points_bytes = nullptr;
+    hb_vector_t<unsigned বর্ণ> *shared_points_bytes = nullptr;
 
     /* total compiled byte size as TupleVariationData format, initialized to 0 */
     unsigned compiled_byte_size = 0;
-    bool needs_padding = false;
+    তার্কিক needs_padding = অসত্য;
 
     /* for gvar iup delta optimization: whether this is a composite glyph */
-    bool is_composite = false;
+    তার্কিক is_composite = অসত্য;
 
-    public:
-    tuple_variations_t () = default;
-    tuple_variations_t (const tuple_variations_t&) = delete;
-    tuple_variations_t& operator=(const tuple_variations_t&) = delete;
-    tuple_variations_t (tuple_variations_t&&) = default;
-    tuple_variations_t& operator=(tuple_variations_t&&) = default;
-    ~tuple_variations_t () = default;
+    সার্বজনিক:
+    tuple_variations_t () = স্বভাব;
+    tuple_variations_t (ধ্রুব tuple_variations_t&) = delete;
+    tuple_variations_t& operator=(ধ্রুব tuple_variations_t&) = delete;
+    tuple_variations_t (tuple_variations_t&&) = স্বভাব;
+    tuple_variations_t& operator=(tuple_variations_t&&) = স্বভাব;
+    ~tuple_variations_t () = স্বভাব;
 
-    explicit operator bool () const { return bool (tuple_vars); }
-    unsigned get_var_count () const
+    explicit operator তার্কিক () ধ্রুব { প্রত্যাগম তার্কিক (tuple_vars); }
+    unsigned get_var_গুনতি () ধ্রুব
     {
-      unsigned count = 0;
+      unsigned গুনতি = 0;
       /* when iup delta opt is enabled, compiled_deltas could be empty and we
        * should skip this tuple */
-      for (auto& tuple: tuple_vars)
-        if (tuple.compiled_deltas) count++;
+      প্রতি (auto& tuple: tuple_vars)
+        যদি (tuple.compiled_deltas) গুনতি++;
 
-      if (shared_points_bytes && shared_points_bytes->length)
-        count |= TupleVarCount::SharedPointNumbers;
-      return count;
+      যদি (shared_points_bytes && shared_points_bytes->length)
+        গুনতি |= Tuple_Var_গুনতি::SharedPointNumbers;
+      প্রত্যাগম গুনতি;
     }
 
-    unsigned get_compiled_byte_size () const
-    { return compiled_byte_size; }
+    unsigned get_compiled_byte_size () ধ্রুব
+    { প্রত্যাগম compiled_byte_size; }
 
-    bool create_from_tuple_var_data (tuple_iterator_t iterator,
-                                     unsigned tuple_var_count,
-                                     unsigned point_count,
-                                     bool is_gvar,
-                                     const hb_map_t *axes_old_index_tag_map,
-                                     const hb_vector_t<unsigned> &shared_indices,
-                                     const hb_array_t<const F2DOT14> shared_tuples,
+    তার্কিক create_from_tuple_var_data (tuple_iterator_t iterator,
+                                     unsigned tuple_var_গুনতি,
+                                     unsigned point_গুনতি,
+                                     তার্কিক is_gvar,
+                                     ধ্রুব hb_map_t *axes_old_index_tag_map,
+                                     ধ্রুব hb_vector_t<unsigned> &shared_indices,
+                                     ধ্রুব hb_array_t<ধ্রুব F2DOT14> shared_tuples,
 				     hb_alloc_pool_t *pool = nullptr,
-                                     bool is_composite_glyph = false)
+                                     তার্কিক is_composite_glyph = অসত্য)
     {
       hb_vector_t<unsigned> private_indices;
-      hb_vector_t<int> deltas_x;
-      hb_vector_t<int> deltas_y;
-      do
+      hb_vector_t<পূর্ণাঙ্ক> deltas_x;
+      hb_vector_t<পূর্ণাঙ্ক> deltas_y;
+      কুরু
       {
-        const HBUINT8 *p = iterator.get_serialized_data ();
-        unsigned int length = iterator.current_tuple->get_data_size ();
-        if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-          return false;
+        ধ্রুব HBUINT8 *p = iterator.get_serialized_data ();
+        unsigned পূর্ণাঙ্ক length = iterator.current_tuple->get_data_size ();
+        যদি (unlikely (!iterator.var_data_bytes.check_range (p, length)))
+          প্রত্যাগম অসত্য;
 
 	hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-        if (!iterator.current_tuple->unpack_axis_tuples (iterator.get_axis_count (), shared_tuples, axes_old_index_tag_map, axis_tuples)
+        যদি (!iterator.current_tuple->unpack_axis_tuples (iterator.get_axis_গুনতি (), shared_tuples, axes_old_index_tag_map, axis_tuples)
             || axis_tuples.is_empty ())
-          return false;
+          প্রত্যাগম অসত্য;
 
 	private_indices.reset ();
-        bool has_private_points = iterator.current_tuple->has_private_points ();
-        const HBUINT8 *end = p + length;
-        if (has_private_points &&
+        তার্কিক has_private_points = iterator.current_tuple->has_private_points ();
+        ধ্রুব HBUINT8 *end = p + length;
+        যদি (has_private_points &&
             !TupleVariationData::decompile_points (p, private_indices, end))
-          return false;
+          প্রত্যাগম অসত্য;
 
-        const hb_vector_t<unsigned> &indices = has_private_points ? private_indices : shared_indices;
-        bool apply_to_all = (indices.length == 0);
-        unsigned num_deltas = apply_to_all ? point_count : indices.length;
+        ধ্রুব hb_vector_t<unsigned> &indices = has_private_points ? private_indices : shared_indices;
+        তার্কিক apply_to_all = (indices.length == 0);
+        unsigned অঙ্ক_deltas = apply_to_all ? point_গুনতি : indices.length;
 
-        if (unlikely (!deltas_x.resize_dirty  (num_deltas) ||
+        যদি (unlikely (!deltas_x.resize_dirty  (অঙ্ক_deltas) ||
                       !TupleVariationData::decompile_deltas (p, deltas_x, end)))
-          return false;
+          প্রত্যাগম অসত্য;
 
-        if (is_gvar)
+        যদি (is_gvar)
         {
-          if (unlikely (!deltas_y.resize_dirty  (num_deltas) ||
+          যদি (unlikely (!deltas_y.resize_dirty  (অঙ্ক_deltas) ||
                         !TupleVariationData::decompile_deltas (p, deltas_y, end)))
-            return false;
+            প্রত্যাগম অসত্য;
         }
 
         tuple_delta_t var;
         var.axis_tuples = std::move (axis_tuples);
-        if (unlikely (!var.indices.allocate_from_pool (pool, point_count) ||
-                      !var.deltas_x.allocate_from_pool (pool, point_count, false)))
-          return false;
+        যদি (unlikely (!var.indices.allocate_from_pool (pool, point_গুনতি) ||
+                      !var.deltas_x.allocate_from_pool (pool, point_গুনতি, অসত্য)))
+          প্রত্যাগম অসত্য;
 
-        if (is_gvar && unlikely (!var.deltas_y.allocate_from_pool (pool, point_count, false)))
-          return false;
+        যদি (is_gvar && unlikely (!var.deltas_y.allocate_from_pool (pool, point_গুনতি, অসত্য)))
+          প্রত্যাগম অসত্য;
 
-        for (unsigned i = 0; i < num_deltas; i++)
+        প্রতি (unsigned i = 0; i < অঙ্ক_deltas; i++)
         {
           unsigned idx = apply_to_all ? i : indices[i];
-          if (idx >= point_count) continue;
-          var.indices[idx] = true;
+          যদি (idx >= point_গুনতি) অনুবর্ত;
+          var.indices[idx] = সত্য;
           var.deltas_x[idx] = deltas_x[i];
-          if (is_gvar)
+          যদি (is_gvar)
             var.deltas_y[idx] = deltas_y[i];
         }
         tuple_vars.push (std::move (var));
-      } while (iterator.move_to_next ());
+      } যাবত্ (iterator.move_to_next ());
 
       is_composite = is_composite_glyph;
-      return true;
+      প্রত্যাগম সত্য;
     }
 
-    bool create_from_item_var_data (const VarData &var_data,
-                                    const hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions,
-                                    const hb_map_t& axes_old_index_tag_map,
-                                    unsigned& item_count,
-                                    const hb_inc_bimap_t* inner_map = nullptr)
+    তার্কিক create_from_item_var_data (ধ্রুব VarData &var_data,
+                                    ধ্রুব hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions,
+                                    ধ্রুব hb_map_t& axes_old_index_tag_map,
+                                    unsigned& item_গুনতি_2,
+                                    ধ্রুব hb_inc_bimap_t* inner_map = nullptr)
     {
       /* NULL offset, to keep original varidx valid, just return */
-      if (&var_data == &Null (VarData))
-        return true;
+      যদি (&var_data == &Null (VarData))
+        প্রত্যাগম সত্য;
 
-      unsigned num_regions = var_data.get_region_index_count ();
-      if (!tuple_vars.alloc (num_regions)) return false;
+      unsigned অঙ্ক_regions = var_data.get_region_index_গুনতি ();
+      যদি (!tuple_vars.alloc (অঙ্ক_regions)) প্রত্যাগম অসত্য;
 
-      item_count = inner_map ? inner_map->get_population () : var_data.get_item_count ();
-      if (!item_count) return true;
+      item_গুনতি_2 = inner_map ? inner_map->get_population () : var_data.get_item_গুনতি ();
+      যদি (!item_গুনতি_2) প্রত্যাগম সত্য;
       unsigned row_size = var_data.get_row_size ();
-      const HBUINT8 *delta_bytes = var_data.get_delta_bytes ();
+      ধ্রুব HBUINT8 *delta_bytes = var_data.get_delta_bytes ();
 
-      for (unsigned r = 0; r < num_regions; r++)
+      প্রতি (unsigned r = 0; r < অঙ্ক_regions; r++)
       {
         /* In VarData, deltas are organized in rows, convert them into
          * column(region) based tuples, resize deltas_x first */
         tuple_delta_t tuple;
-        if (!tuple.deltas_x.resize_dirty  (item_count) ||
-            !tuple.indices.resize_dirty  (item_count))
-          return false;
+        যদি (!tuple.deltas_x.resize_dirty  (item_গুনতি_2) ||
+            !tuple.indices.resize_dirty  (item_গুনতি_2))
+          প্রত্যাগম অসত্য;
 
-        for (unsigned i = 0; i < item_count; i++)
+        প্রতি (unsigned i = 0; i < item_গুনতি_2; i++)
         {
-          tuple.indices.arrayZ[i] = true;
+          tuple.indices.arrayZ[i] = সত্য;
           tuple.deltas_x.arrayZ[i] = var_data.get_item_delta_fast (inner_map ? inner_map->backward (i) : i,
                                                                    r, delta_bytes, row_size);
         }
 
         unsigned region_index = var_data.get_region_index (r);
-        if (region_index >= regions.length) return false;
+        যদি (region_index >= regions.length) প্রত্যাগম অসত্য;
         tuple.axis_tuples = regions.arrayZ[region_index];
 
         tuple_vars.push (std::move (tuple));
       }
-      return !tuple_vars.in_error ();
+      প্রত্যাগম !tuple_vars.in_error ();
     }
 
-    private:
-    static int _cmp_axis_tag (const void *pa, const void *pb)
+    গুপ্ত:
+    স্থির পূর্ণাঙ্ক _cmp_axis_tag (ধ্রুব শূন্য *pa, ধ্রুব শূন্য *pb)
     {
-      const hb_tag_t *a = (const hb_tag_t*) pa;
-      const hb_tag_t *b = (const hb_tag_t*) pb;
-      return (int)(*a) - (int)(*b);
+      ধ্রুব hb_tag_t *a = (ধ্রুব hb_tag_t*) pa;
+      ধ্রুব hb_tag_t *b = (ধ্রুব hb_tag_t*) pb;
+      প্রত্যাগম (পূর্ণাঙ্ক)(*a) - (পূর্ণাঙ্ক)(*b);
     }
 
-    bool change_tuple_variations_axis_limits (const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
-                                              const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
+    তার্কিক change_tuple_variations_axis_limits (ধ্রুব hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
+                                              ধ্রুব hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
 					      hb_alloc_pool_t *pool = nullptr)
     {
       /* sort axis_tag/axis_limits, make result deterministic */
       hb_vector_t<hb_tag_t> axis_tags;
-      if (!axis_tags.alloc (normalized_axes_location.get_population ()))
-        return false;
-      for (auto t : normalized_axes_location.keys ())
+      যদি (!axis_tags.alloc (normalized_axes_location.get_population ()))
+        প্রত্যাগম অসত্য;
+      প্রতি (auto t : normalized_axes_location.চাবিগুলি ())
         axis_tags.push (t);
 
       // Reused vectors for reduced malloc pressure.
@@ -1154,128 +1154,128 @@ struct TupleVariationData
       hb_vector_t<tuple_delta_t> out;
 
       axis_tags.qsort (_cmp_axis_tag);
-      for (auto axis_tag : axis_tags)
+      প্রতি (auto axis_tag : axis_tags)
       {
         Triple *axis_limit;
-        if (!normalized_axes_location.has (axis_tag, &axis_limit))
-          return false;
+        যদি (!normalized_axes_location.has (axis_tag, &axis_limit))
+          প্রত্যাগম অসত্য;
         TripleDistances axis_triple_distances{1.f, 1.f};
-        if (axes_triple_distances.has (axis_tag))
+        যদি (axes_triple_distances.has (axis_tag))
           axis_triple_distances = axes_triple_distances.get (axis_tag);
 
         hb_vector_t<tuple_delta_t> new_vars;
-        for (tuple_delta_t& var : tuple_vars)
+        প্রতি (tuple_delta_t& var : tuple_vars)
         {
 	  // This may move var out.
 	  var.change_tuple_var_axis_limit (axis_tag, *axis_limit, axis_triple_distances, out, scratch, pool);
-          if (!out) continue;
+          যদি (!out) অনুবর্ত;
 
           unsigned new_len = new_vars.length + out.length;
 
-          if (unlikely (!new_vars.alloc (new_len, false)))
-            return false;
+          যদি (unlikely (!new_vars.alloc (new_len, অসত্য)))
+            প্রত্যাগম অসত্য;
 
-          for (unsigned i = 0; i < out.length; i++)
+          প্রতি (unsigned i = 0; i < out.length; i++)
             new_vars.push (std::move (out[i]));
         }
         tuple_vars = std::move (new_vars);
       }
-      return true;
+      প্রত্যাগম সত্য;
     }
 
     /* merge tuple variations with overlapping tents, if iup delta optimization
      * is enabled, add default deltas to contour_points */
-    bool merge_tuple_variations (contour_point_vector_t* contour_points = nullptr)
+    তার্কিক merge_tuple_variations (contour_point_vector_t* contour_points = nullptr)
     {
       hb_vector_t<tuple_delta_t> new_vars;
       // The pre-allocation is essential for address stability of pointers
       // we store in the hashmap.
-      if (unlikely (!new_vars.alloc (tuple_vars.length)))
-	return false;
-      hb_hashmap_t<const hb_hashmap_t<hb_tag_t, Triple>*, unsigned> m;
-      for (tuple_delta_t& var : tuple_vars)
+      যদি (unlikely (!new_vars.alloc (tuple_vars.length)))
+	প্রত্যাগম অসত্য;
+      hb_hashmap_t<ধ্রুব hb_hashmap_t<hb_tag_t, Triple>*, unsigned> m;
+      প্রতি (tuple_delta_t& var : tuple_vars)
       {
         /* if all axes are pinned, drop the tuple variation */
-        if (var.axis_tuples.is_empty ())
+        যদি (var.axis_tuples.is_empty ())
         {
           /* if iup_delta_optimize is enabled, add deltas to contour coords */
-          if (contour_points && !contour_points->add_deltas (var.deltas_x,
+          যদি (contour_points && !contour_points->add_deltas (var.deltas_x,
                                                              var.deltas_y,
                                                              var.indices))
-            return false;
-          continue;
+            প্রত্যাগম অসত্য;
+          অনুবর্ত;
         }
 
         unsigned *idx;
-        if (m.has (&(var.axis_tuples), &idx))
+        যদি (m.has (&(var.axis_tuples), &idx))
         {
           new_vars[*idx] += var;
         }
-        else
+        অন্যথা
         {
 	  auto *new_var = new_vars.push ();
-	  if (unlikely (new_vars.in_error ()))
-	    return false;
+	  যদি (unlikely (new_vars.in_error ()))
+	    প্রত্যাগম অসত্য;
           hb_swap (*new_var, var);
-          if (unlikely (!m.set (&(new_var->axis_tuples), new_vars.length - 1)))
-            return false;
+          যদি (unlikely (!m.set (&(new_var->axis_tuples), new_vars.length - 1)))
+            প্রত্যাগম অসত্য;
         }
       }
       m.fini (); // Just in case, since it points into new_vars data.
 		 // Shouldn't be necessary though, since we only move new_vars, not its
 		 // contents.
       tuple_vars = std::move (new_vars);
-      return true;
+      প্রত্যাগম সত্য;
     }
 
     /* compile all point set and store byte data in a point_set->hb_bytes_t hashmap,
      * also update point_set->count map, which will be used in finding shared
      * point set*/
-    bool compile_all_point_sets ()
+    তার্কিক compile_all_point_sets ()
     {
-      for (const auto& tuple: tuple_vars)
+      প্রতি (ধ্রুব auto& tuple: tuple_vars)
       {
-        const hb_vector_t<bool>* points_set = &(tuple.indices);
-        if (point_data_map.has (points_set))
+        ধ্রুব hb_vector_t<তার্কিক>* points_set = &(tuple.indices);
+        যদি (point_data_map.has (points_set))
         {
-          unsigned *count;
-          if (unlikely (!point_set_count_map.has (points_set, &count) ||
-                        !point_set_count_map.set (points_set, (*count) + 1)))
-            return false;
-          continue;
+          unsigned *গুনতি;
+          যদি (unlikely (!point_set_গুনতি_map.has (points_set, &গুনতি) ||
+                        !point_set_গুনতি_map.set (points_set, (*গুনতি) + 1)))
+            প্রত্যাগম অসত্য;
+          অনুবর্ত;
         }
 
-        hb_vector_t<unsigned char> compiled_point_data;
-        if (!tuple_delta_t::compile_point_set (*points_set, compiled_point_data))
-          return false;
+        hb_vector_t<unsigned বর্ণ> compiled_point_data;
+        যদি (!tuple_delta_t::compile_point_set (*points_set, compiled_point_data))
+          প্রত্যাগম অসত্য;
 
-        if (!point_data_map.set (points_set, std::move (compiled_point_data)) ||
-            !point_set_count_map.set (points_set, 1))
-          return false;
+        যদি (!point_data_map.set (points_set, std::move (compiled_point_data)) ||
+            !point_set_গুনতি_map.set (points_set, 1))
+          প্রত্যাগম অসত্য;
       }
-      return true;
+      প্রত্যাগম সত্য;
     }
 
     /* find shared points set which saves most bytes */
-    void find_shared_points ()
+    শূন্য find_shared_points ()
     {
       unsigned max_saved_bytes = 0;
 
-      for (const auto& _ : point_data_map.iter_ref ())
+      প্রতি (ধ্রুব auto& _ : point_data_map.iter_ref ())
       {
-        const hb_vector_t<bool>* points_set = _.first;
+        ধ্রুব hb_vector_t<তার্কিক>* points_set = _.first;
         unsigned data_length = _.second.length;
-        if (!data_length) continue;
-        unsigned *count;
-        if (unlikely (!point_set_count_map.has (points_set, &count) ||
-                      *count <= 1))
+        যদি (!data_length) অনুবর্ত;
+        unsigned *গুনতি;
+        যদি (unlikely (!point_set_গুনতি_map.has (points_set, &গুনতি) ||
+                      *গুনতি <= 1))
         {
           shared_points_bytes = nullptr;
-          return;
+          প্রত্যাগম;
         }
 
-        unsigned saved_bytes = data_length * ((*count) -1);
-        if (saved_bytes > max_saved_bytes)
+        unsigned saved_bytes = data_length * ((*গুনতি) -1);
+        যদি (saved_bytes > max_saved_bytes)
         {
           max_saved_bytes = saved_bytes;
           shared_points_bytes = &(_.second);
@@ -1283,264 +1283,264 @@ struct TupleVariationData
       }
     }
 
-    bool calc_inferred_deltas (const contour_point_vector_t& contour_points,
+    তার্কিক calc_inferred_deltas (ধ্রুব contour_point_vector_t& contour_points,
 			       hb_vector_t<unsigned> &scratch)
     {
-      for (tuple_delta_t& var : tuple_vars)
-        if (!var.calc_inferred_deltas (contour_points, scratch))
-          return false;
+      প্রতি (tuple_delta_t& var : tuple_vars)
+        যদি (!var.calc_inferred_deltas (contour_points, scratch))
+          প্রত্যাগম অসত্য;
 
-      return true;
+      প্রত্যাগম সত্য;
     }
 
-    bool iup_optimize (const contour_point_vector_t& contour_points,
+    তার্কিক iup_optimize (ধ্রুব contour_point_vector_t& contour_points,
 		       optimize_scratch_t &scratch)
     {
-      for (tuple_delta_t& var : tuple_vars)
+      প্রতি (tuple_delta_t& var : tuple_vars)
       {
-        if (!var.optimize (contour_points, is_composite, scratch))
-          return false;
+        যদি (!var.optimize (contour_points, is_composite, scratch))
+          প্রত্যাগম অসত্য;
       }
-      return true;
+      প্রত্যাগম সত্য;
     }
 
-    public:
+    সার্বজনিক:
     /* avar2 partial-instancing culling: drop tuples whose region a partial
      * instance can never reach (hb_subset_plan_t::avar2_reachable_ranges). */
-    void cull_unreachable (const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges)
+    শূন্য cull_unreachable (ধ্রুব hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges)
     {
       unsigned j = 0;
-      for (unsigned i = 0; i < tuple_vars.length; i++)
+      প্রতি (unsigned i = 0; i < tuple_vars.length; i++)
       {
-	if (_hb_avar2_region_is_dead (tuple_vars.arrayZ[i].axis_tuples, reachable_ranges))
-	  continue;
-	if (i != j)
+	যদি (_hb_avar2_region_is_dead (tuple_vars.arrayZ[i].axis_tuples, reachable_ranges))
+	  অনুবর্ত;
+	যদি (i != j)
 	  tuple_vars.arrayZ[j] = std::move (tuple_vars.arrayZ[i]);
 	j++;
       }
       tuple_vars.shrink (j);
     }
 
-    bool instantiate (const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
-                      const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
+    তার্কিক instantiate (ধ্রুব hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
+                      ধ্রুব hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
 		      optimize_scratch_t &scratch,
 		      hb_alloc_pool_t *pool = nullptr,
                       contour_point_vector_t* contour_points = nullptr,
-                      bool optimize = false)
+                      তার্কিক optimize = অসত্য)
     {
-      if (!tuple_vars) return true;
-      if (!change_tuple_variations_axis_limits (normalized_axes_location, axes_triple_distances, pool))
-        return false;
+      যদি (!tuple_vars) প্রত্যাগম সত্য;
+      যদি (!change_tuple_variations_axis_limits (normalized_axes_location, axes_triple_distances, pool))
+        প্রত্যাগম অসত্য;
       /* compute inferred deltas only for gvar */
-      if (contour_points)
+      যদি (contour_points)
       {
 	hb_vector_t<unsigned> scratch;
-	if (!calc_inferred_deltas (*contour_points, scratch))
-	  return false;
+	যদি (!calc_inferred_deltas (*contour_points, scratch))
+	  প্রত্যাগম অসত্য;
       }
 
       /* if iup delta opt is on, contour_points can't be null */
-      if (optimize && !contour_points)
-        return false;
+      যদি (optimize && !contour_points)
+        প্রত্যাগম অসত্য;
 
-      if (!merge_tuple_variations (optimize ? contour_points : nullptr))
-        return false;
+      যদি (!merge_tuple_variations (optimize ? contour_points : nullptr))
+        প্রত্যাগম অসত্য;
 
-      if (optimize && !iup_optimize (*contour_points, scratch)) return false;
-      return !tuple_vars.in_error ();
+      যদি (optimize && !iup_optimize (*contour_points, scratch)) প্রত্যাগম অসত্য;
+      প্রত্যাগম !tuple_vars.in_error ();
     }
 
-    bool compile_bytes (const hb_map_t& axes_index_map,
-                        const hb_map_t& axes_old_index_tag_map,
-                        bool use_shared_points,
-                        bool is_gvar = false,
-                        const hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned>* shared_tuples_idx_map = nullptr,
+    তার্কিক compile_bytes (ধ্রুব hb_map_t& axes_index_map,
+                        ধ্রুব hb_map_t& axes_old_index_tag_map,
+                        তার্কিক use_shared_points,
+                        তার্কিক is_gvar = অসত্য,
+                        ধ্রুব hb_hashmap_t<ধ্রুব hb_vector_t<F2DOT14>*, unsigned>* shared_tuples_idx_map = nullptr,
 			hb_alloc_pool_t *pool = nullptr)
     {
       // return true for empty glyph
-      if (!tuple_vars)
-        return true;
+      যদি (!tuple_vars)
+        প্রত্যাগম সত্য;
 
       // compile points set and store data in hashmap
-      if (!compile_all_point_sets ())
-        return false;
+      যদি (!compile_all_point_sets ())
+        প্রত্যাগম অসত্য;
 
       /* total compiled byte size as TupleVariationData format, initialized to its
        * min_size: 4 */
       compiled_byte_size += 4;
 
-      if (use_shared_points)
+      যদি (use_shared_points)
       {
         find_shared_points ();
-        if (shared_points_bytes)
+        যদি (shared_points_bytes)
           compiled_byte_size += shared_points_bytes->length;
       }
-      hb_vector_t<int> rounded_deltas_scratch;
+      hb_vector_t<পূর্ণাঙ্ক> rounded_deltas_scratch;
       // compile delta and tuple var header for each tuple variation
-      for (auto& tuple: tuple_vars)
+      প্রতি (auto& tuple: tuple_vars)
       {
-        const hb_vector_t<bool>* points_set = &(tuple.indices);
-        hb_vector_t<unsigned char> *points_data;
-        if (unlikely (!point_data_map.has (points_set, &points_data)))
-          return false;
+        ধ্রুব hb_vector_t<তার্কিক>* points_set = &(tuple.indices);
+        hb_vector_t<unsigned বর্ণ> *points_data;
+        যদি (unlikely (!point_data_map.has (points_set, &points_data)))
+          প্রত্যাগম অসত্য;
 
         /* when iup optimization is enabled, num of referenced points could be 0
          * and thus the compiled points bytes is empty, we should skip compiling
          * this tuple */
-        if (!points_data->length)
-          continue;
-        if (!tuple.compile_deltas (rounded_deltas_scratch, pool))
-          return false;
+        যদি (!points_data->length)
+          অনুবর্ত;
+        যদি (!tuple.compile_deltas (rounded_deltas_scratch, pool))
+          প্রত্যাগম অসত্য;
 
         unsigned points_data_length = (points_data != shared_points_bytes) ? points_data->length : 0;
-        if (!tuple.compile_tuple_var_header (axes_index_map, points_data_length, axes_old_index_tag_map,
+        যদি (!tuple.compile_tuple_var_header (axes_index_map, points_data_length, axes_old_index_tag_map,
                                              shared_tuples_idx_map,
 					     pool))
-          return false;
+          প্রত্যাগম অসত্য;
         compiled_byte_size += tuple.compiled_tuple_header.length + points_data_length + tuple.compiled_deltas.length;
       }
 
-      if (is_gvar && (compiled_byte_size % 2))
+      যদি (is_gvar && (compiled_byte_size % 2))
       {
-        needs_padding = true;
+        needs_padding = সত্য;
         compiled_byte_size += 1;
       }
 
-      return true;
+      প্রত্যাগম সত্য;
     }
 
-    bool serialize_var_headers (hb_serialize_context_t *c, unsigned& total_header_len) const
+    তার্কিক serialize_var_headers (hb_serialize_context_t *c, unsigned& total_header_len) ধ্রুব
     {
-      TRACE_SERIALIZE (this);
-      for (const auto& tuple: tuple_vars)
+      TRACE_SERIALIZE (এতত্);
+      প্রতি (ধ্রুব auto& tuple: tuple_vars)
       {
         tuple.compiled_tuple_header.as_array ().copy (c);
-        if (c->in_error ()) return_trace (false);
+        যদি (c->in_error ()) return_trace (অসত্য);
         total_header_len += tuple.compiled_tuple_header.length;
       }
-      return_trace (true);
+      return_trace (সত্য);
     }
 
-    bool serialize_var_data (hb_serialize_context_t *c, bool is_gvar) const
+    তার্কিক serialize_var_data (hb_serialize_context_t *c, তার্কিক is_gvar) ধ্রুব
     {
-      TRACE_SERIALIZE (this);
-      if (is_gvar && shared_points_bytes)
+      TRACE_SERIALIZE (এতত্);
+      যদি (is_gvar && shared_points_bytes)
       {
         hb_ubytes_t s (shared_points_bytes->arrayZ, shared_points_bytes->length);
         s.copy (c);
       }
 
-      for (const auto& tuple: tuple_vars)
+      প্রতি (ধ্রুব auto& tuple: tuple_vars)
       {
-        const hb_vector_t<bool>* points_set = &(tuple.indices);
-        hb_vector_t<unsigned char> *point_data;
-        if (!point_data_map.has (points_set, &point_data))
-          return_trace (false);
+        ধ্রুব hb_vector_t<তার্কিক>* points_set = &(tuple.indices);
+        hb_vector_t<unsigned বর্ণ> *point_data;
+        যদি (!point_data_map.has (points_set, &point_data))
+          return_trace (অসত্য);
 
-        if (!is_gvar || point_data != shared_points_bytes)
+        যদি (!is_gvar || point_data != shared_points_bytes)
         {
           hb_ubytes_t s (point_data->arrayZ, point_data->length);
           s.copy (c);
         }
 
         tuple.compiled_deltas.as_array ().copy (c);
-        if (c->in_error ()) return_trace (false);
+        যদি (c->in_error ()) return_trace (অসত্য);
       }
 
       /* padding for gvar */
-      if (is_gvar && needs_padding)
+      যদি (is_gvar && needs_padding)
       {
         HBUINT8 pad;
         pad = 0;
-        if (!c->embed (pad)) return_trace (false);
+        যদি (!c->embed (pad)) return_trace (অসত্য);
       }
-      return_trace (true);
+      return_trace (সত্য);
     }
   };
 
-  struct tuple_iterator_t
+  সংরচনা tuple_iterator_t
   {
-    unsigned get_axis_count () const { return axis_count; }
+    unsigned get_axis_গুনতি () ধ্রুব { প্রত্যাগম axis_গুনতি; }
 
-    void init (hb_bytes_t var_data_bytes_, unsigned int axis_count_, const void *table_base_)
+    শূন্য init (hb_bytes_t var_data_bytes_, unsigned পূর্ণাঙ্ক axis_গুনতি_3, ধ্রুব শূন্য *table_base_)
     {
       var_data_bytes = var_data_bytes_;
       var_data = var_data_bytes_.as<TupleVariationData> ();
-      tuples_left = var_data->tupleVarCount.get_count ();
-      axis_count = axis_count_;
-      axis_count_times_2 = axis_count_ * 2;
+      tuples_বাম = var_data->tuple_Var_গুনতি.get_গুনতি ();
+      axis_গুনতি = axis_গুনতি_3;
+      axis_গুনতি_times_2 = axis_গুনতি_3 * 2;
       current_tuple = &var_data->get_tuple_var_header ();
       data_offset = 0;
       table_base = table_base_;
     }
 
-    bool get_shared_indices (hb_vector_t<unsigned int> &shared_indices /* OUT */)
+    তার্কিক get_shared_indices (hb_vector_t<unsigned পূর্ণাঙ্ক> &shared_indices /* OUT */)
     {
-      if (var_data->has_shared_point_numbers ())
+      যদি (var_data->has_shared_point_numbers ())
       {
-        const HBUINT8 *base = &(table_base+var_data->data);
-        const HBUINT8 *p = base;
-        if (!decompile_points (p, shared_indices, (const HBUINT8 *) (var_data_bytes.arrayZ + var_data_bytes.length))) return false;
+        ধ্রুব HBUINT8 *base = &(table_base+var_data->data);
+        ধ্রুব HBUINT8 *p = base;
+        যদি (!decompile_points (p, shared_indices, (ধ্রুব HBUINT8 *) (var_data_bytes.arrayZ + var_data_bytes.length))) প্রত্যাগম অসত্য;
         data_offset = p - base;
       }
-      return true;
+      প্রত্যাগম সত্য;
     }
 
-    bool is_valid ()
+    তার্কিক is_valid ()
     {
-      if (unlikely (tuples_left <= 0))
-	return false;
+      যদি (unlikely (tuples_বাম <= 0))
+	প্রত্যাগম অসত্য;
 
       current_tuple_size = TupleVariationHeader::min_size;
-      if (unlikely (!var_data_bytes.check_end ((const char *) current_tuple + current_tuple_size)))
-	return false;
+      যদি (unlikely (!var_data_bytes.check_end ((ধ্রুব বর্ণ *) current_tuple + current_tuple_size)))
+	প্রত্যাগম অসত্য;
 
-      current_tuple_size = current_tuple->get_size (axis_count_times_2);
-      if (unlikely (!var_data_bytes.check_end ((const char *) current_tuple + current_tuple_size)))
-	return false;
+      current_tuple_size = current_tuple->get_size (axis_গুনতি_times_2);
+      যদি (unlikely (!var_data_bytes.check_end ((ধ্রুব বর্ণ *) current_tuple + current_tuple_size)))
+	প্রত্যাগম অসত্য;
 
-      return true;
+      প্রত্যাগম সত্য;
     }
 
     HB_ALWAYS_INLINE
-    bool move_to_next ()
+    তার্কিক move_to_next ()
     {
       data_offset += current_tuple->get_data_size ();
       current_tuple = &StructAtOffset<TupleVariationHeader> (current_tuple, current_tuple_size);
-      tuples_left--;
-      return is_valid ();
+      tuples_বাম--;
+      প্রত্যাগম is_valid ();
     }
 
     // TODO: Make it return (sanitized) hb_bytes_t
-    const HBUINT8 *get_serialized_data () const
-    { return &(table_base+var_data->data) + data_offset; }
+    ধ্রুব HBUINT8 *get_serialized_data () ধ্রুব
+    { প্রত্যাগম &(table_base+var_data->data) + data_offset; }
 
-    private:
-    signed tuples_left;
-    const TupleVariationData *var_data;
-    unsigned int axis_count;
-    unsigned int axis_count_times_2;
-    unsigned int data_offset;
-    unsigned int current_tuple_size;
-    const void *table_base;
+    গুপ্ত:
+    signed tuples_বাম;
+    ধ্রুব TupleVariationData *var_data;
+    unsigned পূর্ণাঙ্ক axis_গুনতি;
+    unsigned পূর্ণাঙ্ক axis_গুনতি_times_2;
+    unsigned পূর্ণাঙ্ক data_offset;
+    unsigned পূর্ণাঙ্ক current_tuple_size;
+    ধ্রুব শূন্য *table_base;
 
-    public:
+    সার্বজনিক:
     hb_bytes_t var_data_bytes;
-    const TupleVariationHeader *current_tuple;
+    ধ্রুব TupleVariationHeader *current_tuple;
   };
 
-  static bool get_tuple_iterator (hb_bytes_t var_data_bytes, unsigned axis_count,
-                                  const void *table_base,
-                                  hb_vector_t<unsigned int> &shared_indices /* OUT */,
+  স্থির তার্কিক get_tuple_iterator (hb_bytes_t var_data_bytes, unsigned axis_গুনতি,
+                                  ধ্রুব শূন্য *table_base,
+                                  hb_vector_t<unsigned পূর্ণাঙ্ক> &shared_indices /* OUT */,
                                   tuple_iterator_t *iterator /* OUT */)
   {
-    iterator->init (var_data_bytes, axis_count, table_base);
-    if (!iterator->get_shared_indices (shared_indices))
-      return false;
-    return iterator->is_valid ();
+    iterator->init (var_data_bytes, axis_গুনতি, table_base);
+    যদি (!iterator->get_shared_indices (shared_indices))
+      প্রত্যাগম অসত্য;
+    প্রত্যাগম iterator->is_valid ();
   }
 
-  bool has_shared_point_numbers () const { return tupleVarCount.has_shared_point_numbers (); }
+  তার্কিক has_shared_point_numbers () ধ্রুব { প্রত্যাগম tuple_Var_গুনতি.has_shared_point_numbers (); }
 
   /* avar2 partial-instancing culling: rewrite this tuple variation data,
    * dropping TupleVariations whose region a partial instance can never
@@ -1549,175 +1549,175 @@ struct TupleVariationData
    * every tuple died. Keeps the original data (*changed stays false) when
    * nothing is culled or the data is malformed. Returns false only on
    * allocation failure. */
-  bool cull_tuple_variations (hb_bytes_t var_data_bytes,
-			      unsigned axis_count,
-			      hb_array_t<const F2DOT14> shared_tuples,
-			      const hb_map_t *axes_old_index_tag_map,
-			      const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges,
-			      hb_vector_t<char> &out /* OUT */,
-			      bool *changed /* OUT */) const
+  তার্কিক cull_tuple_variations (hb_bytes_t var_data_bytes,
+			      unsigned axis_গুনতি,
+			      hb_array_t<ধ্রুব F2DOT14> shared_tuples,
+			      ধ্রুব hb_map_t *axes_old_index_tag_map,
+			      ধ্রুব hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges,
+			      hb_vector_t<বর্ণ> &out /* OUT */,
+			      তার্কিক *changed /* OUT */) ধ্রুব
   {
-    *changed = false;
+    *changed = অসত্য;
 
-    hb_vector_t<unsigned int> shared_indices;
+    hb_vector_t<unsigned পূর্ণাঙ্ক> shared_indices;
     tuple_iterator_t iterator;
-    if (!get_tuple_iterator (var_data_bytes, axis_count, this,
+    যদি (!get_tuple_iterator (var_data_bytes, axis_গুনতি, এতত্,
 			     shared_indices, &iterator))
-      return true; /* no tuples or malformed: keep original */
+      প্রত্যাগম সত্য; /* no tuples or malformed: keep original */
 
-    const char *bytes_start = var_data_bytes.arrayZ;
-    const char *bytes_end = bytes_start + var_data_bytes.length;
-    const char *serialized_base = (const char *) &(this+data);
-    const char *shared_points_end = (const char *) iterator.get_serialized_data ();
-    if (unlikely (serialized_base < bytes_start || serialized_base > bytes_end ||
+    ধ্রুব বর্ণ *bytes_start = var_data_bytes.arrayZ;
+    ধ্রুব বর্ণ *bytes_end = bytes_start + var_data_bytes.length;
+    ধ্রুব বর্ণ *serialized_base = (ধ্রুব বর্ণ *) &(এতত্+data);
+    ধ্রুব বর্ণ *shared_points_end = (ধ্রুব বর্ণ *) iterator.get_serialized_data ();
+    যদি (unlikely (serialized_base < bytes_start || serialized_base > bytes_end ||
 		  shared_points_end < serialized_base || shared_points_end > bytes_end))
-      return true;
+      প্রত্যাগম সত্য;
 
-    struct kept_tuple_t
+    সংরচনা kept_tuple_t
     {
-      const char *header;
+      ধ্রুব বর্ণ *header;
       unsigned header_size;
-      const char *data;
+      ধ্রুব বর্ণ *data;
       unsigned data_size;
     };
     hb_vector_t<kept_tuple_t> kept;
     unsigned total = 0;
     unsigned kept_headers_size = 0, kept_data_size = 0;
-    do
+    কুরু
     {
-      const TupleVariationHeader *header = iterator.current_tuple;
-      unsigned header_size = header->get_size (axis_count * 2);
+      ধ্রুব TupleVariationHeader *header = iterator.current_tuple;
+      unsigned header_size = header->get_size (axis_গুনতি * 2);
       unsigned data_size = header->get_data_size ();
-      const char *tuple_data = (const char *) iterator.get_serialized_data ();
-      if (unlikely (tuple_data < serialized_base ||
+      ধ্রুব বর্ণ *tuple_data = (ধ্রুব বর্ণ *) iterator.get_serialized_data ();
+      যদি (unlikely (tuple_data < serialized_base ||
 		    data_size > (unsigned) (bytes_end - tuple_data)))
-	return true; /* malformed: keep original */
+	প্রত্যাগম সত্য; /* malformed: keep original */
 
       hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-      if (!header->unpack_axis_tuples (axis_count, shared_tuples,
+      যদি (!header->unpack_axis_tuples (axis_গুনতি, shared_tuples,
 				       axes_old_index_tag_map, axis_tuples))
-	return true;
+	প্রত্যাগম সত্য;
 
       total++;
-      if (!_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
+      যদি (!_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
       {
-	kept.push (kept_tuple_t {(const char *) header, header_size,
+	kept.push (kept_tuple_t {(ধ্রুব বর্ণ *) header, header_size,
 				 tuple_data, data_size});
 	kept_headers_size += header_size;
 	kept_data_size += data_size;
       }
-    } while (iterator.move_to_next ());
+    } যাবত্ (iterator.move_to_next ());
 
-    if (unlikely (kept.in_error ())) return false;
-    if (kept.length == total) return true; /* nothing to cull */
+    যদি (unlikely (kept.in_error ())) প্রত্যাগম অসত্য;
+    যদি (kept.length == total) প্রত্যাগম সত্য; /* nothing to cull */
 
-    *changed = true;
-    if (!kept.length) return true; /* everything culled: no variation data */
+    *changed = সত্য;
+    যদি (!kept.length) প্রত্যাগম সত্য; /* everything culled: no variation data */
 
     unsigned shared_points_size = shared_points_end - serialized_base;
     unsigned data_offset = min_size + kept_headers_size;
     unsigned new_size = data_offset + shared_points_size + kept_data_size;
-    if (unlikely (!out.resize (new_size)))
-      return false;
+    যদি (unlikely (!out.resize (new_size)))
+      প্রত্যাগম অসত্য;
 
     TupleVariationData *out_data = (TupleVariationData *) out.arrayZ;
-    out_data->tupleVarCount = (uint16_t) (kept.length |
+    out_data->tuple_Var_গুনতি = (uint16_t) (kept.length |
 					  (has_shared_point_numbers () ? 0x8000u : 0u));
     out_data->data = data_offset;
 
-    char *p = out.arrayZ + min_size;
-    for (const auto &t : kept)
+    বর্ণ *p = out.arrayZ + min_size;
+    প্রতি (ধ্রুব auto &t : kept)
     {
       hb_memcpy (p, t.header, t.header_size);
       p += t.header_size;
     }
     hb_memcpy (p, serialized_base, shared_points_size);
     p += shared_points_size;
-    for (const auto &t : kept)
+    প্রতি (ধ্রুব auto &t : kept)
     {
       hb_memcpy (p, t.data, t.data_size);
       p += t.data_size;
     }
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  static bool decompile_points (const HBUINT8 *&p /* IN/OUT */,
-				hb_vector_t<unsigned int> &points /* OUT */,
-				const HBUINT8 *end)
+  স্থির তার্কিক decompile_points (ধ্রুব HBUINT8 *&p /* IN/OUT */,
+				hb_vector_t<unsigned পূর্ণাঙ্ক> &points /* OUT */,
+				ধ্রুব HBUINT8 *end)
   {
-    enum packed_point_flag_t
+    গণনা packed_point_flag_t
     {
-      POINTS_ARE_WORDS     = 0x80,
-      POINT_RUN_COUNT_MASK = 0x7F
+      POINTS_ARE_শব্দগুলি     = 0x80,
+      POINT_RUN_গুনতি_MASK = 0x7F
     };
 
-    if (unlikely (p + 1 > end)) return false;
+    যদি (unlikely (p + 1 > end)) প্রত্যাগম অসত্য;
 
-    unsigned count = *p++;
-    if (count & POINTS_ARE_WORDS)
+    unsigned গুনতি = *p++;
+    যদি (গুনতি & POINTS_ARE_শব্দগুলি)
     {
-      if (unlikely (p + 1 > end)) return false;
-      count = ((count & POINT_RUN_COUNT_MASK) << 8) | *p++;
+      যদি (unlikely (p + 1 > end)) প্রত্যাগম অসত্য;
+      গুনতি = ((গুনতি & POINT_RUN_গুনতি_MASK) << 8) | *p++;
     }
-    if (unlikely (!points.resize_dirty  (count))) return false;
+    যদি (unlikely (!points.resize_dirty  (গুনতি))) প্রত্যাগম অসত্য;
 
     unsigned n = 0;
     unsigned i = 0;
-    while (i < count)
+    যাবত্ (i < গুনতি)
     {
-      if (unlikely (p + 1 > end)) return false;
+      যদি (unlikely (p + 1 > end)) প্রত্যাগম অসত্য;
       unsigned control = *p++;
-      unsigned run_count = (control & POINT_RUN_COUNT_MASK) + 1;
-      unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
-      if (control & POINTS_ARE_WORDS)
+      unsigned run_গুনতি = (control & POINT_RUN_গুনতি_MASK) + 1;
+      unsigned stop = i + run_গুনতি;
+      যদি (unlikely (stop > গুনতি)) প্রত্যাগম অসত্য;
+      যদি (control & POINTS_ARE_শব্দগুলি)
       {
-        if (unlikely (p + run_count * HBUINT16::static_size > end)) return false;
-        for (; i < stop; i++)
+        যদি (unlikely (p + run_গুনতি * HBUINT16::static_size > end)) প্রত্যাগম অসত্য;
+        প্রতি (; i < stop; i++)
         {
-          n += *(const HBUINT16 *)p;
+          n += *(ধ্রুব HBUINT16 *)p;
           points.arrayZ[i] = n;
           p += HBUINT16::static_size;
         }
       }
-      else
+      অন্যথা
       {
-        if (unlikely (p + run_count > end)) return false;
-        for (; i < stop; i++)
+        যদি (unlikely (p + run_গুনতি > end)) প্রত্যাগম অসত্য;
+        প্রতি (; i < stop; i++)
         {
           n += *p++;
           points.arrayZ[i] = n;
         }
       }
     }
-    return true;
+    প্রত্যাগম সত্য;
   }
 
   template <typename T>
   HB_ALWAYS_INLINE
-  static bool decompile_deltas (const HBUINT8 *&p /* IN/OUT */,
+  স্থির তার্কিক decompile_deltas (ধ্রুব HBUINT8 *&p /* IN/OUT */,
 				hb_vector_t<T> &deltas /* IN/OUT */,
-				const HBUINT8 *end,
-				bool consume_all = false,
+				ধ্রুব HBUINT8 *end,
+				তার্কিক consume_all = অসত্য,
 				unsigned start = 0)
   {
-    return TupleValues::decompile (p, deltas, end, consume_all, start);
+    প্রত্যাগম Tuple_মানসমূহ::decompile (p, deltas, end, consume_all, start);
   }
 
-  bool has_data () const { return tupleVarCount; }
+  তার্কিক has_data () ধ্রুব { প্রত্যাগম tuple_Var_গুনতি; }
 
-  bool decompile_tuple_variations (unsigned point_count,
-                                   bool is_gvar,
+  তার্কিক decompile_tuple_variations (unsigned point_গুনতি,
+                                   তার্কিক is_gvar,
                                    tuple_iterator_t iterator,
-                                   const hb_map_t *axes_old_index_tag_map,
-                                   const hb_vector_t<unsigned> &shared_indices,
-                                   const hb_array_t<const F2DOT14> shared_tuples,
+                                   ধ্রুব hb_map_t *axes_old_index_tag_map,
+                                   ধ্রুব hb_vector_t<unsigned> &shared_indices,
+                                   ধ্রুব hb_array_t<ধ্রুব F2DOT14> shared_tuples,
                                    tuple_variations_t& tuple_variations, /* OUT */
 				   hb_alloc_pool_t *pool = nullptr,
-                                   bool is_composite_glyph = false) const
+                                   তার্কিক is_composite_glyph = অসত্য) ধ্রুব
   {
-    return tuple_variations.create_from_tuple_var_data (iterator, tupleVarCount,
-                                                        point_count, is_gvar,
+    প্রত্যাগম tuple_variations.create_from_tuple_var_data (iterator, tuple_Var_গুনতি,
+                                                        point_গুনতি, is_gvar,
                                                         axes_old_index_tag_map,
                                                         shared_indices,
                                                         shared_tuples,
@@ -1725,52 +1725,52 @@ struct TupleVariationData
                                                         is_composite_glyph);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  bool is_gvar,
-                  const tuple_variations_t& tuple_variations) const
+  তার্কিক serialize (hb_serialize_context_t *c,
+                  তার্কিক is_gvar,
+                  ধ্রুব tuple_variations_t& tuple_variations) ধ্রুব
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
     /* empty tuple variations, just return and skip serialization. */
-    if (!tuple_variations) return_trace (true);
+    যদি (!tuple_variations) return_trace (সত্য);
 
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (false);
+    auto *out = c->start_embed (এতত্);
+    যদি (unlikely (!c->extend_min (out))) return_trace (অসত্য);
 
-    if (!c->check_assign (out->tupleVarCount, tuple_variations.get_var_count (),
-                          HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    যদি (!c->check_assign (out->tuple_Var_গুনতি, tuple_variations.get_var_গুনতি (),
+                          HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (অসত্য);
 
     unsigned total_header_len = 0;
 
-    if (!tuple_variations.serialize_var_headers (c, total_header_len))
-      return_trace (false);
+    যদি (!tuple_variations.serialize_var_headers (c, total_header_len))
+      return_trace (অসত্য);
 
     unsigned data_offset = min_size + total_header_len;
-    if (!is_gvar) data_offset += 4;
-    if (!c->check_assign (out->data, data_offset, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    যদি (!is_gvar) data_offset += 4;
+    যদি (!c->check_assign (out->data, data_offset, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (অসত্য);
 
-    return tuple_variations.serialize_var_data (c, is_gvar);
+    প্রত্যাগম tuple_variations.serialize_var_data (c, is_gvar);
   }
 
-  protected:
-  struct TupleVarCount : HBUINT16
+  রক্ষিত:
+  সংরচনা Tuple_Var_গুনতি : HBUINT16
   {
-    friend struct tuple_variations_t;
-    bool has_shared_point_numbers () const { return ((*this) & SharedPointNumbers); }
-    unsigned int get_count () const { return (*this) & CountMask; }
-    TupleVarCount& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
-    explicit operator bool () const { return get_count (); }
+    friend সংরচনা tuple_variations_t;
+    তার্কিক has_shared_point_numbers () ধ্রুব { প্রত্যাগম ((*এতত্) & SharedPointNumbers); }
+    unsigned পূর্ণাঙ্ক get_গুনতি () ধ্রুব { প্রত্যাগম (*এতত্) & গুনতি_Mask; }
+    Tuple_Var_গুনতি& operator = (uint16_t i) { HBUINT16::operator= (i); প্রত্যাগম *এতত্; }
+    explicit operator তার্কিক () ধ্রুব { প্রত্যাগম get_গুনতি (); }
 
-    protected:
-    enum Flags
+    রক্ষিত:
+    গণনা Flags
     {
       SharedPointNumbers= 0x8000u,
-      CountMask         = 0x0FFFu
+      গুনতি_Mask         = 0x0FFFu
     };
-    public:
+    সার্বজনিক:
     DEFINE_SIZE_STATIC (2);
   };
 
-  TupleVarCount tupleVarCount;  /* A packed field. The high 4 bits are flags, and the
+  Tuple_Var_গুনতি tuple_Var_গুনতি;  /* A packed field. The high 4 bits are flags, and the
                                  * low 12 bits are the number of tuple variation tables
                                  * for this glyph. The number of tuple variation tables
                                  * can be any number between 1 and 4095. */
@@ -1778,16 +1778,16 @@ struct TupleVariationData
                 data;           /* Offset from the start of the base table
                                  * to the serialized data. */
   /* TupleVariationHeader tupleVariationHeaders[] *//* Array of tuple variation headers. */
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_MIN (2 + OffType::static_size);
 };
 
 // TODO: Move tuple_variations_t to outside of TupleVariationData
 using tuple_variations_t = TupleVariationData<HBUINT16>::tuple_variations_t;
-struct item_variations_t
+সংরচনা item_variations_t
 {
-  using region_t = const hb_hashmap_t<hb_tag_t, Triple>*;
-  private:
+  using region_t = ধ্রুব hb_hashmap_t<hb_tag_t, Triple>*;
+  গুপ্ত:
   /* each subtable is decompiled into a tuple_variations_t, in which all tuples
    * have the same num of deltas (rows) */
   hb_vector_t<tuple_variations_t> vars;
@@ -1798,7 +1798,7 @@ struct item_variations_t
    * when converting to tuples, both will be dropped because the tuple is empty,
    * however, we need to retain 2. as all-zero rows to keep original varidx
    * valid, so we need a way to remember the num of rows for each subtable */
-  hb_vector_t<unsigned> var_data_num_rows;
+  hb_vector_t<unsigned> var_data_অঙ্ক_rows;
 
   /* original region list, decompiled from item varstore, used when rebuilding
    * region list after instantiation */
@@ -1814,7 +1814,7 @@ struct item_variations_t
   hb_hashmap_t<region_t, unsigned> region_map;
 
   /* all delta rows after instantiation */
-  hb_vector_t<hb_vector_t<int>> delta_rows;
+  hb_vector_t<hb_vector_t<পূর্ণাঙ্ক>> delta_rows;
   /* final optimized vector of encoding objects used to assemble the varstore */
   hb_vector_t<delta_row_encoding_t> encodings;
 
@@ -1822,230 +1822,230 @@ struct item_variations_t
   hb_map_t varidx_map;
 
   /* has long words */
-  bool has_long = false;
+  তার্কিক has_long = অসত্য;
 
-  public:
-  bool has_long_word () const
-  { return has_long; }
+  সার্বজনিক:
+  তার্কিক has_long_word () ধ্রুব
+  { প্রত্যাগম has_long; }
 
-  const hb_vector_t<region_t>& get_region_list () const
-  { return region_list; }
+  ধ্রুব hb_vector_t<region_t>& get_region_list () ধ্রুব
+  { প্রত্যাগম region_list; }
 
-  const hb_vector_t<delta_row_encoding_t>& get_vardata_encodings () const
-  { return encodings; }
+  ধ্রুব hb_vector_t<delta_row_encoding_t>& get_vardata_encodings () ধ্রুব
+  { প্রত্যাগম encodings; }
 
-  const hb_map_t& get_varidx_map () const
-  { return varidx_map; }
+  ধ্রুব hb_map_t& get_varidx_map () ধ্রুব
+  { প্রত্যাগম varidx_map; }
 
-  bool add_vardata_encoding_for_testing (hb_vector_t<const hb_vector_t<int>*> &&rows,
-                                         unsigned num_cols)
+  তার্কিক add_vardata_encoding_for_testing (hb_vector_t<ধ্রুব hb_vector_t<পূর্ণাঙ্ক>*> &&rows,
+                                         unsigned অঙ্ক_cols)
   {
-    encodings.push (delta_row_encoding_t (std::move (rows), num_cols));
-    return !encodings.in_error ();
+    encodings.push (delta_row_encoding_t (std::move (rows), অঙ্ক_cols));
+    প্রত্যাগম !encodings.in_error ();
   }
 
-  bool compile_varidx_map_for_testing (const hb_hashmap_t<unsigned, const hb_vector_t<int>*>& front_mapping)
-  { return compile_varidx_map (front_mapping); }
+  তার্কিক compile_varidx_map_for_testing (ধ্রুব hb_hashmap_t<unsigned, ধ্রুব hb_vector_t<পূর্ণাঙ্ক>*>& front_mapping)
+  { প্রত্যাগম compile_varidx_map (front_mapping); }
 
-  bool instantiate (const ItemVariationStore& varStore,
-                    const hb_subset_plan_t *plan,
-                    bool optimize=true,
-                    bool use_no_variation_idx=true,
-                    const hb_array_t <const hb_inc_bimap_t> inner_maps = hb_array_t<const hb_inc_bimap_t> (),
-                    bool layout_conditions = false)
+  তার্কিক instantiate (ধ্রুব ItemVariationStore& varStore,
+                    ধ্রুব hb_subset_plan_t *plan,
+                    তার্কিক optimize=সত্য,
+                    তার্কিক use_no_variation_idx=সত্য,
+                    ধ্রুব hb_array_t <ধ্রুব hb_inc_bimap_t> inner_maps = hb_array_t<ধ্রুব hb_inc_bimap_t> (),
+                    তার্কিক layout_conditions = অসত্য)
   {
-    if (!create_from_item_varstore (varStore, plan->axes_old_index_tag_map, inner_maps))
-      return false;
+    যদি (!create_from_item_varstore (varStore, plan->axes_old_index_tag_map, inner_maps))
+      প্রত্যাগম অসত্য;
     /* avar2 partial instancing: cull unreachable regions. */
-    if (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
-      for (tuple_variations_t& tuple_vars : vars)
+    যদি (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
+      প্রতি (tuple_variations_t& tuple_vars : vars)
 	tuple_vars.cull_unreachable (plan->avar2_reachable_ranges);
-    if (!instantiate_tuple_vars (plan->axes_location, plan->axes_triple_distances,
+    যদি (!instantiate_tuple_vars (plan->axes_location, plan->axes_triple_distances,
                                  !layout_conditions))
-      return false;
-    if (layout_conditions &&
-        (!instantiate_condition_values (plan, varStore) || !build_region_list ()))
-      return false;
-    return as_item_varstore (optimize, use_no_variation_idx);
+      প্রত্যাগম অসত্য;
+    যদি (layout_conditions &&
+        (!instantiate_condition_মানসমূহ (plan, varStore) || !build_region_list ()))
+      প্রত্যাগম অসত্য;
+    প্রত্যাগম as_item_varstore (optimize, use_no_variation_idx);
   }
 
-  bool instantiate_condition_values (const hb_subset_plan_t *plan,
-                                      const ItemVariationStore &varStore)
+  তার্কিক instantiate_condition_মানসমূহ (ধ্রুব hb_subset_plan_t *plan,
+                                      ধ্রুব ItemVariationStore &varStore)
   {
     // GDEF serialization can be retried; always start from the source values.
-    auto &condition_map = plan->layout_condition_idx_value_map;
+    auto &condition_map = plan->layout_condition_idx_মান_map;
     condition_map.clear ();
-    if (!plan->layout_condition_values) return true;
-    using condition_value_t = hb_pair_t<uintptr_t, hb_pair_t<unsigned, int>>;
-    hb_vector_t<condition_value_t> conditions;
-    for (auto condition : plan->layout_condition_values.iter ())
+    যদি (!plan->layout_condition_মানসমূহ) প্রত্যাগম সত্য;
+    using condition_মান_t = hb_pair_t<uintptr_t, hb_pair_t<unsigned, পূর্ণাঙ্ক>>;
+    hb_vector_t<condition_মান_t> conditions;
+    প্রতি (auto condition : plan->layout_condition_মানসমূহ.iter ())
       conditions.push (condition);
-    if (unlikely (conditions.in_error ())) return false;
+    যদি (unlikely (conditions.in_error ())) প্রত্যাগম অসত্য;
     // Row order must not depend on the addresses of the source conditions.
-    conditions.qsort ([] (const condition_value_t &a, const condition_value_t &b) {
-      if (a.second.first != b.second.first)
-        return a.second.first < b.second.first ? -1 : 1;
-      return a.second.second < b.second.second ? -1 :
+    conditions.qsort ([] (ধ্রুব condition_মান_t &a, ধ্রুব condition_মান_t &b) {
+      যদি (a.second.first != b.second.first)
+        প্রত্যাগম a.second.first < b.second.first ? -1 : 1;
+      প্রত্যাগম a.second.second < b.second.second ? -1 :
              a.second.second > b.second.second ? 1 : 0;
     });
     hb_map_t outer_map;
     unsigned new_outer = 0;
-    for (unsigned i = 0; i < plan->gdef_varstore_inner_maps.length; i++)
-      if (plan->gdef_varstore_inner_maps[i].get_population ())
-        if (!outer_map.set (i, new_outer++)) return false;
-    for (auto condition : conditions)
+    প্রতি (unsigned i = 0; i < plan->gdef_varstore_inner_maps.length; i++)
+      যদি (plan->gdef_varstore_inner_maps[i].get_population ())
+        যদি (!outer_map.set (i, new_outer++)) প্রত্যাগম অসত্য;
+    প্রতি (auto condition : conditions)
     {
       unsigned old_idx = condition.second.first;
-      double value = condition.second.second +
-                     varStore.get_delta<double> (old_idx, plan->normalized_coords.as_array ());
+      দ্বিগুণ value = condition.second.second +
+                     varStore.get_delta<দ্বিগুণ> (old_idx, plan->normalized_coords.as_array ());
       unsigned old_outer = old_idx >> 16;
-      if (!outer_map.has (old_outer))
-        continue;
+      যদি (!outer_map.has (old_outer))
+        অনুবর্ত;
       unsigned outer = outer_map.get (old_outer);
       unsigned inner = plan->gdef_varstore_inner_maps[old_outer].get (old_idx & 0xFFFF);
       unsigned idx = (outer << 16) | inner;
-      if (outer >= vars.length || inner >= var_data_num_rows[outer])
-        continue;
+      যদি (outer >= vars.length || inner >= var_data_অঙ্ক_rows[outer])
+        অনুবর্ত;
 
-      double maximum = fabs ((double) value);
-      bool variable = false;
-      for (const tuple_delta_t &tuple : vars[outer].tuple_vars)
+      দ্বিগুণ maximum = fabs ((দ্বিগুণ) value);
+      তার্কিক variable = অসত্য;
+      প্রতি (ধ্রুব tuple_delta_t &tuple : vars[outer].tuple_vars)
       {
-        if (unlikely (inner >= tuple.deltas_x.length)) return false;
-        float delta = tuple.deltas_x[inner];
+        যদি (unlikely (inner >= tuple.deltas_x.length)) প্রত্যাগম অসত্য;
+        ভিন্ন delta = tuple.deltas_x[inner];
         variable |= delta != 0.f;
-        maximum = hb_max (maximum, fabs ((double) delta));
+        maximum = hb_max (maximum, fabs ((দ্বিগুণ) delta));
       }
-      if (!variable)
+      যদি (!variable)
       {
-        if (!condition_map.set (condition.first,
-                                hb_pair (unsigned (VarIdx::NO_VARIATION), int (value > 0))))
-          return false;
-        continue;
+        যদি (!condition_map.set (condition.first,
+                                hb_pair (unsigned (VarIdx::NO_VARIATION), পূর্ণাঙ্ক (value > 0))))
+          প্রত্যাগম অসত্য;
+        অনুবর্ত;
       }
 
-      double scale = 1.;
-      while (maximum * scale > INT_MAX)
+      দ্বিগুণ scale = 1.;
+      যাবত্ (maximum * scale > INT_MAX)
         scale *= .5;
       // Positive rescaling preserves the Boolean boundary. Prefer exact
       // integers, otherwise use the available 32-bit precision.
-      while (maximum * scale * 2 <= INT_MAX)
+      যাবত্ (maximum * scale * 2 <= INT_MAX)
       {
-        bool integral = (double) value * scale == round ((double) value * scale);
-        for (const tuple_delta_t &tuple : vars[outer].tuple_vars)
-          integral &= (double) tuple.deltas_x[inner] * scale ==
-                      round ((double) tuple.deltas_x[inner] * scale);
-        if (integral) break;
+        তার্কিক integral = (দ্বিগুণ) value * scale == round ((দ্বিগুণ) value * scale);
+        প্রতি (ধ্রুব tuple_delta_t &tuple : vars[outer].tuple_vars)
+          integral &= (দ্বিগুণ) tuple.deltas_x[inner] * scale ==
+                      round ((দ্বিগুণ) tuple.deltas_x[inner] * scale);
+        যদি (integral) ভঙ্গ;
         scale *= 2;
       }
-      int default_value = (int) round ((double) value * scale);
-      if (scale != 1. || default_value < -32768 || default_value > 32767)
+      পূর্ণাঙ্ক default_মান = (পূর্ণাঙ্ক) round ((দ্বিগুণ) value * scale);
+      যদি (scale != 1. || default_মান < -32768 || default_মান > 32767)
       {
         // A condition may share its row with a positioning value. Give it a
         // private copy before integer rounding discards fractional deltas.
         tuple_variations_t private_row;
-        for (const tuple_delta_t &tuple : vars[outer].tuple_vars)
+        প্রতি (ধ্রুব tuple_delta_t &tuple : vars[outer].tuple_vars)
         {
-          if (!tuple.deltas_x[inner]) continue;
+          যদি (!tuple.deltas_x[inner]) অনুবর্ত;
           tuple_delta_t copy;
           copy.axis_tuples = tuple.axis_tuples;
-          copy.indices.push (true);
-          copy.deltas_x.push ((float) round ((double) tuple.deltas_x[inner] * scale));
-          if (unlikely (copy.axis_tuples.in_error () || copy.indices.in_error () ||
-                        copy.deltas_x.in_error ())) return false;
+          copy.indices.push (সত্য);
+          copy.deltas_x.push ((ভিন্ন) round ((দ্বিগুণ) tuple.deltas_x[inner] * scale));
+          যদি (unlikely (copy.axis_tuples.in_error () || copy.indices.in_error () ||
+                        copy.deltas_x.in_error ())) প্রত্যাগম অসত্য;
           private_row.tuple_vars.push (std::move (copy));
         }
-        if (unlikely (vars.length >= 0xFFFFu)) return false;
-        if (unlikely (private_row.tuple_vars.in_error ())) return false;
+        যদি (unlikely (vars.length >= 0xFFFFu)) প্রত্যাগম অসত্য;
+        যদি (unlikely (private_row.tuple_vars.in_error ())) প্রত্যাগম অসত্য;
         idx = vars.length << 16;
         vars.push (std::move (private_row));
-        var_data_num_rows.push (1);
-        if (unlikely (vars.in_error () || var_data_num_rows.in_error ())) return false;
-        if (default_value < -32768 || default_value > 32767)
+        var_data_অঙ্ক_rows.push (1);
+        যদি (unlikely (vars.in_error () || var_data_অঙ্ক_rows.in_error ())) প্রত্যাগম অসত্য;
+        যদি (default_মান < -32768 || default_মান > 32767)
         {
           // Keep the Boolean result in the int16 default: no deltas apply
           // at the default instance. A neutral region carries the excess.
           // Each part is exact in float; integer row assembly adds them
           // before serialization, preserving all 32 bits of the bias.
-          int bias = default_value - hb_clamp (default_value, -32768, 32767);
-          default_value -= bias;
-          int high = bias / 65536 * 65536;
-          int parts[] = {high, bias - high};
-          for (int part : parts)
+          পূর্ণাঙ্ক bias = default_মান - hb_clamp (default_মান, -32768, 32767);
+          default_মান -= bias;
+          পূর্ণাঙ্ক উপরের = bias / 65536 * 65536;
+          পূর্ণাঙ্ক parts[] = {উপরের, bias - উপরের};
+          প্রতি (পূর্ণাঙ্ক part : parts)
           {
-            if (!part) continue;
-            unsigned count = vars[idx >> 16].tuple_vars.length;
+            যদি (!part) অনুবর্ত;
+            unsigned গুনতি = vars[idx >> 16].tuple_vars.length;
             add_tuple (idx >> 16, hb_hashmap_t<hb_tag_t, Triple> (),
                        0, part, 1);
-            const auto &tuples = vars[idx >> 16].tuple_vars;
-            if (unlikely (tuples.in_error () || tuples.length != count + 1 ||
+            ধ্রুব auto &tuples = vars[idx >> 16].tuple_vars;
+            যদি (unlikely (tuples.in_error () || tuples.length != গুনতি + 1 ||
                           tuples.tail ().indices.in_error () ||
-                          tuples.tail ().deltas_x.in_error ())) return false;
+                          tuples.tail ().deltas_x.in_error ())) প্রত্যাগম অসত্য;
           }
         }
       }
-      if (!condition_map.set (condition.first, hb_pair (idx, default_value)))
-        return false;
+      যদি (!condition_map.set (condition.first, hb_pair (idx, default_মান)))
+        প্রত্যাগম অসত্য;
     }
-    return !condition_map.in_error ();
+    প্রত্যাগম !condition_map.in_error ();
   }
 
   /* keep below APIs public only for unit test: test-item-varstore */
-  bool create_from_item_varstore (const ItemVariationStore& varStore,
-                                  const hb_map_t& axes_old_index_tag_map,
-                                  const hb_array_t <const hb_inc_bimap_t> inner_maps = hb_array_t<const hb_inc_bimap_t> ())
+  তার্কিক create_from_item_varstore (ধ্রুব ItemVariationStore& varStore,
+                                  ধ্রুব hb_map_t& axes_old_index_tag_map,
+                                  ধ্রুব hb_array_t <ধ্রুব hb_inc_bimap_t> inner_maps = hb_array_t<ধ্রুব hb_inc_bimap_t> ())
   {
-    const VarRegionList& regionList = varStore.get_region_list ();
-    if (!regionList.get_var_regions (axes_old_index_tag_map, orig_region_list))
-      return false;
+    ধ্রুব VarRegionList& regionList = varStore.get_region_list ();
+    যদি (!regionList.get_var_regions (axes_old_index_tag_map, orig_region_list))
+      প্রত্যাগম অসত্য;
 
-    unsigned num_var_data = varStore.get_sub_table_count ();
-    if (inner_maps && inner_maps.length != num_var_data) return false;
-    if (!vars.alloc (num_var_data) ||
-        !var_data_num_rows.alloc (num_var_data)) return false;
+    unsigned অঙ্ক_var_data = varStore.get_sub_table_গুনতি ();
+    যদি (inner_maps && inner_maps.length != অঙ্ক_var_data) প্রত্যাগম অসত্য;
+    যদি (!vars.alloc (অঙ্ক_var_data) ||
+        !var_data_অঙ্ক_rows.alloc (অঙ্ক_var_data)) প্রত্যাগম অসত্য;
 
-    for (unsigned i = 0; i < num_var_data; i++)
+    প্রতি (unsigned i = 0; i < অঙ্ক_var_data; i++)
     {
-      if (inner_maps && !inner_maps.arrayZ[i].get_population ())
-          continue;
+      যদি (inner_maps && !inner_maps.arrayZ[i].get_population ())
+          অনুবর্ত;
       tuple_variations_t var_data_tuples;
-      unsigned item_count = 0;
-      if (!var_data_tuples.create_from_item_var_data (varStore.get_sub_table (i),
+      unsigned item_গুনতি_2 = 0;
+      যদি (!var_data_tuples.create_from_item_var_data (varStore.get_sub_table (i),
                                                       orig_region_list,
                                                       axes_old_index_tag_map,
-                                                      item_count,
+                                                      item_গুনতি_2,
                                                       inner_maps ? &(inner_maps.arrayZ[i]) : nullptr))
-        return false;
+        প্রত্যাগম অসত্য;
 
-      var_data_num_rows.push (item_count);
+      var_data_অঙ্ক_rows.push (item_গুনতি_2);
       vars.push (std::move (var_data_tuples));
     }
-    return !vars.in_error () && !var_data_num_rows.in_error () && vars.length == var_data_num_rows.length;
+    প্রত্যাগম !vars.in_error () && !var_data_অঙ্ক_rows.in_error () && vars.length == var_data_অঙ্ক_rows.length;
   }
 
-  bool instantiate_tuple_vars (const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
-                               const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
-                               bool build_regions = true)
+  তার্কিক instantiate_tuple_vars (ধ্রুব hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location,
+                               ধ্রুব hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances,
+                               তার্কিক build_regions = সত্য)
   {
     optimize_scratch_t scratch;
-    for (tuple_variations_t& tuple_vars : vars)
-      if (!tuple_vars.instantiate (normalized_axes_location, axes_triple_distances, scratch))
-        return false;
+    প্রতি (tuple_variations_t& tuple_vars : vars)
+      যদি (!tuple_vars.instantiate (normalized_axes_location, axes_triple_distances, scratch))
+        প্রত্যাগম অসত্য;
 
-    return !build_regions || build_region_list ();
+    প্রত্যাগম !build_regions || build_region_list ();
   }
 
   /* Add a new VarData subtable. Returns outer index. */
-  unsigned add_vardata (unsigned item_count)
+  unsigned add_vardata (unsigned item_গুনতি_2)
   {
     vars.push (tuple_variations_t ());
-    var_data_num_rows.push (item_count);
-    return vars.length - 1;
+    var_data_অঙ্ক_rows.push (item_গুনতি_2);
+    প্রত্যাগম vars.length - 1;
   }
 
   /* Get item count for a VarData subtable. */
-  unsigned get_item_count (unsigned outer) const
-  { return outer < var_data_num_rows.length ? var_data_num_rows[outer] : 0; }
+  unsigned get_item_গুনতি (unsigned outer) ধ্রুব
+  { প্রত্যাগম outer < var_data_অঙ্ক_rows.length ? var_data_অঙ্ক_rows[outer] : 0; }
 
   /* Duplicate the delta row at position inner within VarData subtable outer,
    * appending the copy as a new item. Used to give an axis a private copy of
@@ -2054,48 +2054,48 @@ struct item_variations_t
    * inner index, or (unsigned) -1 on failure. */
   unsigned duplicate_row (unsigned outer, unsigned inner)
   {
-    if (unlikely (outer >= vars.length ||
-                  inner >= var_data_num_rows[outer] ||
-                  var_data_num_rows[outer] >= 0xFFFFu))
-      return (unsigned) -1;
-    for (tuple_delta_t& tuple : vars[outer].tuple_vars)
+    যদি (unlikely (outer >= vars.length ||
+                  inner >= var_data_অঙ্ক_rows[outer] ||
+                  var_data_অঙ্ক_rows[outer] >= 0xFFFFu))
+      প্রত্যাগম (unsigned) -1;
+    প্রতি (tuple_delta_t& tuple : vars[outer].tuple_vars)
     {
-      if (unlikely (inner >= tuple.deltas_x.length ||
+      যদি (unlikely (inner >= tuple.deltas_x.length ||
                     inner >= tuple.indices.length))
-        return (unsigned) -1;
+        প্রত্যাগম (unsigned) -1;
       tuple.indices.push (tuple.indices.arrayZ[inner]);
       tuple.deltas_x.push (tuple.deltas_x.arrayZ[inner]);
-      if (inner < tuple.deltas_y.length)
+      যদি (inner < tuple.deltas_y.length)
         tuple.deltas_y.push (tuple.deltas_y.arrayZ[inner]);
-      if (unlikely (tuple.indices.in_error () ||
+      যদি (unlikely (tuple.indices.in_error () ||
                     tuple.deltas_x.in_error () ||
                     tuple.deltas_y.in_error ()))
-        return (unsigned) -1;
+        প্রত্যাগম (unsigned) -1;
     }
-    return var_data_num_rows[outer]++;
+    প্রত্যাগম var_data_অঙ্ক_rows[outer]++;
   }
 
   /* Add a tuple with a single non-zero delta at position inner.
    * axis_tuples defines the region (empty map = constant/bias tuple). */
-  void add_tuple (unsigned outer,
+  শূন্য add_tuple (unsigned outer,
                   hb_hashmap_t<hb_tag_t, Triple>&& axis_tuples,
-                  unsigned inner, int delta, unsigned item_count)
+                  unsigned inner, পূর্ণাঙ্ক delta, unsigned item_গুনতি_2)
   {
-    if (outer >= vars.length) return;
+    যদি (outer >= vars.length) প্রত্যাগম;
     tuple_delta_t tuple;
     tuple.axis_tuples = std::move (axis_tuples);
-    if (!tuple.indices.resize (item_count) ||
-        !tuple.deltas_x.resize (item_count)) return;
-    for (unsigned i = 0; i < item_count; i++)
+    যদি (!tuple.indices.resize (item_গুনতি_2) ||
+        !tuple.deltas_x.resize (item_গুনতি_2)) প্রত্যাগম;
+    প্রতি (unsigned i = 0; i < item_গুনতি_2; i++)
     {
-      tuple.indices.arrayZ[i] = true;
+      tuple.indices.arrayZ[i] = সত্য;
       tuple.deltas_x.arrayZ[i] = 0.f;
     }
-    tuple.deltas_x[inner] = (float) delta;
+    tuple.deltas_x[inner] = (ভিন্ন) delta;
     vars[outer].tuple_vars.push (std::move (tuple));
   }
 
-  bool build_region_list ()
+  তার্কিক build_region_list ()
   {
     /* scan all tuples and collect all unique regions, prune unused regions */
     hb_hashmap_t<region_t, unsigned> all_regions;
@@ -2103,182 +2103,182 @@ struct item_variations_t
 
     /* use a vector when inserting new regions, make result deterministic */
     hb_vector_t<region_t> all_unique_regions;
-    for (const tuple_variations_t& sub_table : vars)
+    প্রতি (ধ্রুব tuple_variations_t& sub_table : vars)
     {
-      for (const tuple_delta_t& tuple : sub_table.tuple_vars)
+      প্রতি (ধ্রুব tuple_delta_t& tuple : sub_table.tuple_vars)
       {
         region_t r = &(tuple.axis_tuples);
-        if (!used_regions.has (r))
+        যদি (!used_regions.has (r))
         {
-          bool all_zeros = true;
-          for (float d : tuple.deltas_x)
+          তার্কিক all_zeros = সত্য;
+          প্রতি (ভিন্ন d : tuple.deltas_x)
           {
-            int delta = hb_clamp_to<int> (roundf ((double) d));
-            if (delta != 0)
+            পূর্ণাঙ্ক delta = hb_clamp_to<পূর্ণাঙ্ক> (roundf ((দ্বিগুণ) d));
+            যদি (delta != 0)
             {
-              all_zeros = false;
-              break;
+              all_zeros = অসত্য;
+              ভঙ্গ;
             }
           }
-          if (!all_zeros)
+          যদি (!all_zeros)
           {
-            if (!used_regions.set (r, 1))
-              return false;
+            যদি (!used_regions.set (r, 1))
+              প্রত্যাগম অসত্য;
           }
         }
-        if (all_regions.has (r))
-          continue;
-        if (!all_regions.set (r, 1))
-          return false;
+        যদি (all_regions.has (r))
+          অনুবর্ত;
+        যদি (!all_regions.set (r, 1))
+          প্রত্যাগম অসত্য;
         all_unique_regions.push (r);
       }
     }
 
     /* regions are empty means no variation data, return true */
-    if (!all_regions || !all_unique_regions) return true;
+    যদি (!all_regions || !all_unique_regions) প্রত্যাগম সত্য;
 
-    if (!region_list.alloc (all_regions.get_population ()))
-      return false;
+    যদি (!region_list.alloc (all_regions.get_population ()))
+      প্রত্যাগম অসত্য;
 
     unsigned idx = 0;
     /* append the original regions that pre-existed */
-    for (const auto& r : orig_region_list)
+    প্রতি (ধ্রুব auto& r : orig_region_list)
     {
-      if (!all_regions.has (&r) || !used_regions.has (&r))
-        continue;
+      যদি (!all_regions.has (&r) || !used_regions.has (&r))
+        অনুবর্ত;
 
       region_list.push (&r);
-      if (!region_map.set (&r, idx))
-        return false;
+      যদি (!region_map.set (&r, idx))
+        প্রত্যাগম অসত্য;
       all_regions.del (&r);
       idx++;
     }
 
     /* append the new regions at the end */
-    for (const auto& r: all_unique_regions)
+    প্রতি (ধ্রুব auto& r: all_unique_regions)
     {
-      if (!all_regions.has (r) || !used_regions.has (r))
-        continue;
+      যদি (!all_regions.has (r) || !used_regions.has (r))
+        অনুবর্ত;
       region_list.push (r);
-      if (!region_map.set (r, idx))
-        return false;
+      যদি (!region_map.set (r, idx))
+        প্রত্যাগম অসত্য;
       all_regions.del (r);
       idx++;
     }
-    return (!region_list.in_error ()) && (!region_map.in_error ());
+    প্রত্যাগম (!region_list.in_error ()) && (!region_map.in_error ());
   }
 
   /* main algorithm ported from fonttools VarStore_optimize() method, optimize
    * varstore by default */
 
-  struct combined_gain_idx_tuple_t
+  সংরচনা combined_gain_idx_tuple_t
   {
     uint64_t encoded;
 
-    combined_gain_idx_tuple_t () = default;
+    combined_gain_idx_tuple_t () = স্বভাব;
     combined_gain_idx_tuple_t (unsigned gain, unsigned i, unsigned j)
         : encoded ((uint64_t (0xFFFFFF - gain) << 40) | (uint64_t (i) << 20) | uint64_t (j))
     {
-      assert (gain < 0xFFFFFF);
-      assert (i < 0xFFFFFFF && j < 0xFFFFFFF);
+      প্রতিজ্ঞা (gain < 0xFFFFFF);
+      প্রতিজ্ঞা (i < 0xFFFFFFF && j < 0xFFFFFFF);
     }
 
-    bool operator < (const combined_gain_idx_tuple_t& o)
+    তার্কিক operator < (ধ্রুব combined_gain_idx_tuple_t& o)
     {
-      return encoded < o.encoded;
+      প্রত্যাগম encoded < o.encoded;
     }
 
-    bool operator <= (const combined_gain_idx_tuple_t& o)
+    তার্কিক operator <= (ধ্রুব combined_gain_idx_tuple_t& o)
     {
-      return encoded <= o.encoded;
+      প্রত্যাগম encoded <= o.encoded;
     }
 
-    unsigned idx_1 () const { return (encoded >> 20) & 0xFFFFF; };
-    unsigned idx_2 () const { return encoded & 0xFFFFF; };
+    unsigned idx_1 () ধ্রুব { প্রত্যাগম (encoded >> 20) & 0xFFFFF; };
+    unsigned idx_2 () ধ্রুব { প্রত্যাগম encoded & 0xFFFFF; };
   };
 
-  bool as_item_varstore (bool optimize=true, bool use_no_variation_idx=true)
+  তার্কিক as_item_varstore (তার্কিক optimize=সত্য, তার্কিক use_no_variation_idx=সত্য)
   {
     /* return true if no variation data */
-    if (!region_list) return true;
-    unsigned num_cols = region_list.length;
+    যদি (!region_list) প্রত্যাগম সত্য;
+    unsigned অঙ্ক_cols = region_list.length;
     /* pre-alloc a 2D vector for all sub_table's VarData rows */
     unsigned total_rows = 0;
-    for (unsigned major = 0; major < var_data_num_rows.length; major++)
-      total_rows += var_data_num_rows[major];
+    প্রতি (unsigned major = 0; major < var_data_অঙ্ক_rows.length; major++)
+      total_rows += var_data_অঙ্ক_rows[major];
 
-    if (!delta_rows.resize (total_rows)) return false;
+    যদি (!delta_rows.resize (total_rows)) প্রত্যাগম অসত্য;
     /* init all rows to [0]*num_cols */
-    for (unsigned i = 0; i < total_rows; i++)
-      if (!(delta_rows[i].resize (num_cols))) return false;
+    প্রতি (unsigned i = 0; i < total_rows; i++)
+      যদি (!(delta_rows[i].resize (অঙ্ক_cols))) প্রত্যাগম অসত্য;
 
     /* old VarIdxes -> full encoding_row mapping */
-    hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
+    hb_hashmap_t<unsigned, ধ্রুব hb_vector_t<পূর্ণাঙ্ক>*> front_mapping;
     unsigned start_row = 0;
     hb_vector_t<delta_row_encoding_t> encoding_objs;
 
     /* delta_rows map, used for filtering out duplicate rows */
-    hb_vector_t<const hb_vector_t<int> *> major_rows;
-    hb_hashmap_t<const hb_vector_t<int>*, unsigned> delta_rows_map;
-    for (unsigned major = 0; major < vars.length; major++)
+    hb_vector_t<ধ্রুব hb_vector_t<পূর্ণাঙ্ক> *> major_rows;
+    hb_hashmap_t<ধ্রুব hb_vector_t<পূর্ণাঙ্ক>*, unsigned> delta_rows_map;
+    প্রতি (unsigned major = 0; major < vars.length; major++)
     {
       /* deltas are stored in tuples(column based), convert them back into items
        * (row based) delta */
-      const tuple_variations_t& tuples = vars[major];
-      unsigned num_rows = var_data_num_rows[major];
+      ধ্রুব tuple_variations_t& tuples = vars[major];
+      unsigned অঙ্ক_rows = var_data_অঙ্ক_rows[major];
 
-      if (!num_rows) continue;
+      যদি (!অঙ্ক_rows) অনুবর্ত;
 
-      for (const tuple_delta_t& tuple: tuples.tuple_vars)
+      প্রতি (ধ্রুব tuple_delta_t& tuple: tuples.tuple_vars)
       {
-        if (tuple.deltas_x.length != num_rows)
-          return false;
+        যদি (tuple.deltas_x.length != অঙ্ক_rows)
+          প্রত্যাগম অসত্য;
 
         /* skip unused regions */
         unsigned *col_idx;
-        if (!region_map.has (&(tuple.axis_tuples), &col_idx))
-          continue;
+        যদি (!region_map.has (&(tuple.axis_tuples), &col_idx))
+          অনুবর্ত;
 
-        for (unsigned i = 0; i < num_rows; i++)
+        প্রতি (unsigned i = 0; i < অঙ্ক_rows; i++)
         {
-          int rounded_delta = hb_clamp_to<int> (roundf ((double) tuple.deltas_x[i]));
-          int &delta = delta_rows[start_row + i][*col_idx];
+          পূর্ণাঙ্ক rounded_delta = hb_clamp_to<পূর্ণাঙ্ক> (roundf ((দ্বিগুণ) tuple.deltas_x[i]));
+          পূর্ণাঙ্ক &delta = delta_rows[start_row + i][*col_idx];
           int64_t sum = (int64_t) delta + rounded_delta;
-          if (unlikely (sum < INT_MIN || sum > INT_MAX)) return false;
-          delta = (int) sum;
+          যদি (unlikely (sum < INT_MIN || sum > INT_MAX)) প্রত্যাগম অসত্য;
+          delta = (পূর্ণাঙ্ক) sum;
           has_long |= delta < -32768 || delta > 32767;
         }
       }
 
       major_rows.reset ();
-      for (unsigned minor = 0; minor < num_rows; minor++)
+      প্রতি (unsigned minor = 0; minor < অঙ্ক_rows; minor++)
       {
-	const hb_vector_t<int>& row = delta_rows[start_row + minor];
-	if (use_no_variation_idx)
+	ধ্রুব hb_vector_t<পূর্ণাঙ্ক>& row = delta_rows[start_row + minor];
+	যদি (use_no_variation_idx)
 	{
-	  bool all_zeros = true;
-	  for (int delta : row)
+	  তার্কিক all_zeros = সত্য;
+	  প্রতি (পূর্ণাঙ্ক delta : row)
 	  {
-	    if (delta != 0)
+	    যদি (delta != 0)
 	    {
-	      all_zeros = false;
-	      break;
+	      all_zeros = অসত্য;
+	      ভঙ্গ;
 	    }
 	  }
-	  if (all_zeros)
-	    continue;
+	  যদি (all_zeros)
+	    অনুবর্ত;
 	}
 
-	if (!front_mapping.set ((major<<16) + minor, &row))
-	  return false;
+	যদি (!front_mapping.set ((major<<16) + minor, &row))
+	  প্রত্যাগম অসত্য;
 
 	/* Duplicate rows may only be dropped when optimizing: without a
 	 * varidx_map the caller relies on original VariationIndex values
 	 * staying valid (e.g. HVAR/VVAR with an implicit advance mapping). */
-	if (optimize)
+	যদি (optimize)
 	{
-	  if (delta_rows_map.has (&row))
-	    continue;
+	  যদি (delta_rows_map.has (&row))
+	    অনুবর্ত;
 
 	  delta_rows_map.set (&row, 1);
 	}
@@ -2286,24 +2286,24 @@ struct item_variations_t
 	major_rows.push (&row);
       }
 
-      if (unlikely (major_rows.in_error () || delta_rows_map.in_error ()))
-        return false;
-      if (major_rows)
+      যদি (unlikely (major_rows.in_error () || delta_rows_map.in_error ()))
+        প্রত্যাগম অসত্য;
+      যদি (major_rows)
       {
-	auto *encoding = encoding_objs.push (std::move (major_rows), num_cols);
-	if (unlikely (encoding_objs.in_error () || encoding->in_error ()))
-	  return false;
+	auto *encoding = encoding_objs.push (std::move (major_rows), অঙ্ক_cols);
+	যদি (unlikely (encoding_objs.in_error () || encoding->in_error ()))
+	  প্রত্যাগম অসত্য;
       }
 
-      start_row += num_rows;
+      start_row += অঙ্ক_rows;
     }
 
     /* return directly if no optimization, maintain original VariationIndex so
      * varidx_map would be empty */
-    if (!optimize)
+    যদি (!optimize)
     {
       encodings = std::move (encoding_objs);
-      return !encodings.in_error ();
+      প্রত্যাগম !encodings.in_error ();
     }
 
     /* NOTE: Fonttools instancer always optimizes VarStore from scratch. This
@@ -2317,47 +2317,47 @@ struct item_variations_t
 
     /* main algorithm: repeatedly pick 2 best encodings to combine, and combine them */
     using item_t = hb_priority_queue_t<combined_gain_idx_tuple_t>::item_t;
-    hb_vector_t<item_t> queue_items;
-    unsigned num_todos = encoding_objs.length;
-    for (unsigned i = 0; i < num_todos; i++)
+    hb_vector_t<item_t> queue_বস্তুসমূহ;
+    unsigned অঙ্ক_todos = encoding_objs.length;
+    প্রতি (unsigned i = 0; i < অঙ্ক_todos; i++)
     {
-      for (unsigned j = i + 1; j < num_todos; j++)
+      প্রতি (unsigned j = i + 1; j < অঙ্ক_todos; j++)
       {
-        int combining_gain = encoding_objs.arrayZ[i].gain_from_merging (encoding_objs.arrayZ[j]);
-        if (combining_gain > 0)
-          queue_items.push (item_t (combined_gain_idx_tuple_t (combining_gain, i, j), 0));
+        পূর্ণাঙ্ক combining_gain = encoding_objs.arrayZ[i].gain_from_merging (encoding_objs.arrayZ[j]);
+        যদি (combining_gain > 0)
+          queue_বস্তুসমূহ.push (item_t (combined_gain_idx_tuple_t (combining_gain, i, j), 0));
       }
     }
 
-    hb_priority_queue_t<combined_gain_idx_tuple_t> queue (std::move (queue_items));
+    hb_priority_queue_t<combined_gain_idx_tuple_t> queue (std::move (queue_বস্তুসমূহ));
 
     hb_bit_set_t removed_todo_idxes;
-    while (queue)
+    যাবত্ (queue)
     {
-      auto t = queue.pop_minimum ().first;
+      auto t = queue.বের_করো_minimum ().first;
       unsigned i = t.idx_1 ();
       unsigned j = t.idx_2 ();
 
-      if (removed_todo_idxes.has (i) || removed_todo_idxes.has (j))
-        continue;
+      যদি (removed_todo_idxes.has (i) || removed_todo_idxes.has (j))
+        অনুবর্ত;
 
       delta_row_encoding_t& encoding = encoding_objs.arrayZ[i];
       delta_row_encoding_t& other_encoding = encoding_objs.arrayZ[j];
 
       removed_todo_idxes.add (i);
       removed_todo_idxes.add (j);
-      if (unlikely (removed_todo_idxes.in_error ())) return false;
+      যদি (unlikely (removed_todo_idxes.in_error ())) প্রত্যাগম অসত্য;
 
       encoding.merge (other_encoding);
-      if (unlikely (encoding.in_error ())) return false;
+      যদি (unlikely (encoding.in_error ())) প্রত্যাগম অসত্য;
 
-      for (unsigned idx = 0; idx < encoding_objs.length; idx++)
+      প্রতি (unsigned idx = 0; idx < encoding_objs.length; idx++)
       {
-        if (removed_todo_idxes.has (idx)) continue;
+        যদি (removed_todo_idxes.has (idx)) অনুবর্ত;
 
-        const delta_row_encoding_t& obj = encoding_objs.arrayZ[idx];
+        ধ্রুব delta_row_encoding_t& obj = encoding_objs.arrayZ[idx];
 	// In the unlikely event that the same encoding exists already, combine it.
-        if (obj.width == encoding.width && obj.chars == encoding.chars)
+        যদি (obj.width == encoding.width && obj.chars == encoding.chars)
         {
 	  // This is straight port from fonttools algorithm. I added this branch there
 	  // because I thought it can happen. But looks like we never get in here in
@@ -2365,112 +2365,112 @@ struct item_variations_t
 	  // happen. I think it's just that our tests are not extensive enough to hit
 	  // this path.
 
-          for (const auto& row : obj.items)
+          প্রতি (ধ্রুব auto& row : obj.বস্তুসমূহ)
             encoding.add_row (row);
-          if (unlikely (encoding.in_error ())) return false;
+          যদি (unlikely (encoding.in_error ())) প্রত্যাগম অসত্য;
 
           removed_todo_idxes.add (idx);
-          if (unlikely (removed_todo_idxes.in_error ())) return false;
-          continue;
+          যদি (unlikely (removed_todo_idxes.in_error ())) প্রত্যাগম অসত্য;
+          অনুবর্ত;
         }
 
-        int combined_gain = encoding.gain_from_merging (obj);
-        if (combined_gain > 0)
+        পূর্ণাঙ্ক combined_gain = encoding.gain_from_merging (obj);
+        যদি (combined_gain > 0)
           queue.insert (combined_gain_idx_tuple_t (combined_gain, idx, encoding_objs.length), 0);
       }
 
       auto moved_encoding = std::move (encoding);
       encoding_objs.push (std::move (moved_encoding));
-      if (unlikely (encoding_objs.in_error ())) return false;
+      যদি (unlikely (encoding_objs.in_error ())) প্রত্যাগম অসত্য;
     }
 
-    int num_final_encodings = (int) encoding_objs.length - (int) removed_todo_idxes.get_population ();
-    if (num_final_encodings <= 0) return false;
+    পূর্ণাঙ্ক অঙ্ক_final_encodings = (পূর্ণাঙ্ক) encoding_objs.length - (পূর্ণাঙ্ক) removed_todo_idxes.get_population ();
+    যদি (অঙ্ক_final_encodings <= 0) প্রত্যাগম অসত্য;
 
-    if (!encodings.alloc (num_final_encodings)) return false;
-    for (unsigned i = 0; i < encoding_objs.length; i++)
+    যদি (!encodings.alloc (অঙ্ক_final_encodings)) প্রত্যাগম অসত্য;
+    প্রতি (unsigned i = 0; i < encoding_objs.length; i++)
     {
-      if (removed_todo_idxes.has (i)) continue;
+      যদি (removed_todo_idxes.has (i)) অনুবর্ত;
       encodings.push (std::move (encoding_objs.arrayZ[i]));
     }
 
-    return compile_varidx_map (front_mapping);
+    প্রত্যাগম compile_varidx_map (front_mapping);
   }
 
-  private:
+  গুপ্ত:
   /* compile varidx_map for one VarData subtable (index specified by major) */
-  bool compile_varidx_map (const hb_hashmap_t<unsigned, const hb_vector_t<int>*>& front_mapping)
+  তার্কিক compile_varidx_map (ধ্রুব hb_hashmap_t<unsigned, ধ্রুব hb_vector_t<পূর্ণাঙ্ক>*>& front_mapping)
   {
     /* full encoding_row -> new VarIdxes mapping */
-    hb_hashmap_t<const hb_vector_t<int>*, unsigned> back_mapping;
+    hb_hashmap_t<ধ্রুব hb_vector_t<পূর্ণাঙ্ক>*, unsigned> back_mapping;
     hb_vector_t<delta_row_encoding_t> split_encodings;
 
-    for (unsigned i = 0; i < encodings.length; i++)
+    প্রতি (unsigned i = 0; i < encodings.length; i++)
     {
       delta_row_encoding_t& encoding = encodings[i];
       /* just sanity check, this shouldn't happen */
-      if (encoding.is_empty () || encoding.in_error ())
-        return false;
+      যদি (encoding.is_empty () || encoding.in_error ())
+        প্রত্যাগম অসত্য;
 
-      unsigned num_rows = encoding.items.length;
-      unsigned num_cols = encoding.chars.length;
+      unsigned অঙ্ক_rows = encoding.বস্তুসমূহ.length;
+      unsigned অঙ্ক_cols = encoding.chars.length;
 
       /* sort rows, make result deterministic */
-      encoding.items.qsort (_cmp_row);
+      encoding.বস্তুসমূহ.qsort (_cmp_row);
 
-      for (unsigned start = 0; start < num_rows; start += 0xFFFFu)
+      প্রতি (unsigned start = 0; start < অঙ্ক_rows; start += 0xFFFFu)
       {
-        unsigned chunk_len = hb_min (num_rows - start, 0xFFFFu);
-        hb_vector_t<const hb_vector_t<int>*> rows;
+        unsigned chunk_len = hb_min (অঙ্ক_rows - start, 0xFFFFu);
+        hb_vector_t<ধ্রুব hb_vector_t<পূর্ণাঙ্ক>*> rows;
 
-        if (!rows.alloc (chunk_len))
-          return false;
+        যদি (!rows.alloc (chunk_len))
+          প্রত্যাগম অসত্য;
 
         unsigned major = split_encodings.length;
-        for (unsigned minor = 0; minor < chunk_len; minor++)
+        প্রতি (unsigned minor = 0; minor < chunk_len; minor++)
         {
-          const hb_vector_t<int> *row = encoding.items.arrayZ[start + minor];
+          ধ্রুব hb_vector_t<পূর্ণাঙ্ক> *row = encoding.বস্তুসমূহ.arrayZ[start + minor];
           rows.push (row);
-          if (!back_mapping.set (row, (major << 16) + minor))
-            return false;
+          যদি (!back_mapping.set (row, (major << 16) + minor))
+            প্রত্যাগম অসত্য;
         }
 
-        auto *split = split_encodings.push (std::move (rows), num_cols);
-        if (unlikely (split_encodings.in_error () || split->in_error ()))
-          return false;
+        auto *split = split_encodings.push (std::move (rows), অঙ্ক_cols);
+        যদি (unlikely (split_encodings.in_error () || split->in_error ()))
+          প্রত্যাগম অসত্য;
       }
     }
 
     encodings = std::move (split_encodings);
-    if (encodings.in_error () || back_mapping.in_error ())
-      return false;
+    যদি (encodings.in_error () || back_mapping.in_error ())
+      প্রত্যাগম অসত্য;
 
-    for (auto _ : front_mapping.iter ())
+    প্রতি (auto _ : front_mapping.iter ())
     {
       unsigned old_varidx = _.first;
       unsigned *new_varidx;
-      if (back_mapping.has (_.second, &new_varidx))
+      যদি (back_mapping.has (_.second, &new_varidx))
         varidx_map.set (old_varidx, *new_varidx);
-      else
+      অন্যথা
         varidx_map.set (old_varidx, HB_OT_LAYOUT_NO_VARIATIONS_INDEX);
     }
-    return !varidx_map.in_error ();
+    প্রত্যাগম !varidx_map.in_error ();
   }
 
-  static int _cmp_row (const void *pa, const void *pb)
+  স্থির পূর্ণাঙ্ক _cmp_row (ধ্রুব শূন্য *pa, ধ্রুব শূন্য *pb)
   {
     /* compare pointers of vectors(const hb_vector_t<int>*) that represent a row */
-    const hb_vector_t<int>** a = (const hb_vector_t<int>**) pa;
-    const hb_vector_t<int>** b = (const hb_vector_t<int>**) pb;
+    ধ্রুব hb_vector_t<পূর্ণাঙ্ক>** a = (ধ্রুব hb_vector_t<পূর্ণাঙ্ক>**) pa;
+    ধ্রুব hb_vector_t<পূর্ণাঙ্ক>** b = (ধ্রুব hb_vector_t<পূর্ণাঙ্ক>**) pb;
 
-    for (unsigned i = 0; i < (*b)->length; i++)
+    প্রতি (unsigned i = 0; i < (*b)->length; i++)
     {
-      int va = (*a)->arrayZ[i];
-      int vb = (*b)->arrayZ[i];
-      if (va != vb)
-        return va < vb ? -1 : 1;
+      পূর্ণাঙ্ক va = (*a)->arrayZ[i];
+      পূর্ণাঙ্ক vb = (*b)->arrayZ[i];
+      যদি (va != vb)
+        প্রত্যাগম va < vb ? -1 : 1;
     }
-    return 0;
+    প্রত্যাগম 0;
   }
 };
 

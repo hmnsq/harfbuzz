@@ -26,97 +26,97 @@
 #ifndef HB_OT_POST_TABLE_V2SUBSET_HH
 #define HB_OT_POST_TABLE_V2SUBSET_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-post-table.hh"
+#অন্তর্ভাব "hb-open-type.hh"
+#অন্তর্ভাব "hb-ot-post-table.hh"
 
 /*
  * post -- PostScript
  * https://docs.microsoft.com/en-us/typography/opentype/spec/post
  */
 
-namespace OT {
+নামাকাশ OT {
 template<typename Iterator>
-HB_INTERNAL bool postV2Tail::serialize (hb_serialize_context_t *c,
+HB_INTERNAL তার্কিক postV2Tail::serialize (hb_serialize_context_t *c,
                                         Iterator it,
-                                        const void* _post) const
+                                        ধ্রুব শূন্য* _post) ধ্রুব
 {
-  TRACE_SERIALIZE (this);
-  auto *out = c->start_embed (this);
-  if (unlikely (!c->check_success (out))) return_trace (false);
-  if (!out->glyphNameIndex.serialize (c, + it
+  TRACE_SERIALIZE (এতত্);
+  auto *out = c->start_embed (এতত্);
+  যদি (unlikely (!c->check_success (out))) return_trace (অসত্য);
+  যদি (!out->glyphNameIndex.serialize (c, + it
                                          | hb_map (hb_second)))
-      return_trace (false);
+      return_trace (অসত্য);
 
   hb_set_t copied_indices;
-  for (const auto& _ : + it )
+  প্রতি (ধ্রুব auto& _ : + it )
   {
     unsigned glyph_id = _.first;
     unsigned new_index = _.second;
 
-    if (new_index < 258) continue;
-    if (copied_indices.has (new_index)) continue;
+    যদি (new_index < 258) অনুবর্ত;
+    যদি (copied_indices.has (new_index)) অনুবর্ত;
     copied_indices.add (new_index);
 
-    hb_bytes_t s = reinterpret_cast<const post::accelerator_t*> (_post)->find_glyph_name (glyph_id);
+    hb_bytes_t s = reinterpret_cast<ধ্রুব post::accelerator_t*> (_post)->find_glyph_name (glyph_id);
     HBUINT8 *o = c->allocate_size<HBUINT8> (HBUINT8::static_size * (s.length + 1));
-    if (unlikely (!o)) return_trace (false);
-    if (!c->check_assign (o[0], s.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    যদি (unlikely (!o)) return_trace (অসত্য);
+    যদি (!c->check_assign (o[0], s.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (অসত্য);
     hb_memcpy (o+1, s.arrayZ, HBUINT8::static_size * s.length);
   }
 
-  return_trace (true);
+  return_trace (সত্য);
 }
 
-HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
+HB_INTERNAL তার্কিক postV2Tail::subset (hb_subset_context_t *c) ধ্রুব
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (এতত্);
 
-  const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-  unsigned num_glyphs = c->plan->num_output_glyphs ();
+  ধ্রুব hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
+  unsigned অঙ্ক_glyphs = c->plan->অঙ্ক_output_glyphs ();
   hb_map_t old_new_index_map, old_gid_new_index_map;
   unsigned i = 0;
 
   post::accelerator_t _post (c->plan->source);
 
-  hb_hashmap_t<hb_bytes_t, uint32_t, true> glyph_name_to_new_index;
+  hb_hashmap_t<hb_bytes_t, uint32_t, সত্য> glyph_name_to_new_index;
 
-  old_new_index_map.alloc (num_glyphs);
-  old_gid_new_index_map.alloc (num_glyphs);
-  glyph_name_to_new_index.alloc (num_glyphs);
+  old_new_index_map.alloc (অঙ্ক_glyphs);
+  old_gid_new_index_map.alloc (অঙ্ক_glyphs);
+  glyph_name_to_new_index.alloc (অঙ্ক_glyphs);
 
-  for (auto _ : c->plan->new_to_old_gid_list)
+  প্রতি (auto _ : c->plan->new_to_old_gid_list)
   {
     hb_codepoint_t old_gid = _.second;
     unsigned old_index = glyphNameIndex[old_gid];
 
     unsigned new_index;
-    const uint32_t *new_index2;
-    if (old_index <= 257)
+    ধ্রুব uint32_t *new_index2;
+    যদি (old_index <= 257)
       new_index = old_index;
-    else if (old_new_index_map.has (old_index, &new_index2))
+    অন্যথা যদি (old_new_index_map.has (old_index, &new_index2))
       new_index = *new_index2;
-    else
+    অন্যথা
     {
       hb_bytes_t s = _post.find_glyph_name (old_gid);
       new_index = glyph_name_to_new_index.get (s);
-      if (new_index == (unsigned)-1)
+      যদি (new_index == (unsigned)-1)
       {
-        int standard_glyph_index = -1;
-        for (unsigned i = 0; i < format1_names_length; i++)
+        পূর্ণাঙ্ক standard_glyph_index = -1;
+        প্রতি (unsigned i = 0; i < format1_names_length; i++)
         {
-          if (s == format1_names (i))
+          যদি (s == format1_names (i))
           {
             standard_glyph_index = i;
-            break;
+            ভঙ্গ;
           }
         }
 
-        if (standard_glyph_index == -1)
+        যদি (standard_glyph_index == -1)
         {
           new_index = 258 + i;
           i++;
         }
-        else
+        অন্যথা
         { new_index = standard_glyph_index; }
         glyph_name_to_new_index.set (s, new_index);
       }
@@ -125,22 +125,22 @@ HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
     old_gid_new_index_map.set (old_gid, new_index);
   }
 
-  if (old_gid_new_index_map.in_error())
-    return_trace (false);
+  যদি (old_gid_new_index_map.in_error())
+    return_trace (অসত্য);
 
   auto index_iter =
-  + hb_range (num_glyphs)
+  + hb_range (অঙ্ক_glyphs)
   | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
                             {
                               hb_codepoint_t *old_gid;
                               /* use 0 for retain-gid holes, which refers to the name .notdef,
                                * as the glyphNameIndex entry for that glyph ID."*/
                               unsigned new_index = 0;
-                              if (reverse_glyph_map.has (new_gid, &old_gid)) {
+                              যদি (reverse_glyph_map.has (new_gid, &old_gid)) {
                                 new_index = old_gid_new_index_map.get (*old_gid);
-                                return hb_pair_t<unsigned, unsigned> (*old_gid, new_index);
+                                প্রত্যাগম hb_pair_t<unsigned, unsigned> (*old_gid, new_index);
                               }
-                              return hb_pair_t<unsigned, unsigned> (new_gid, new_index);
+                              প্রত্যাগম hb_pair_t<unsigned, unsigned> (new_gid, new_index);
                             })
   ;
 

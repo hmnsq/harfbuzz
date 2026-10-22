@@ -29,124 +29,124 @@
 #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
 #define OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
 
-#include "RangeRecord.hh"
+#অন্তর্ভাব "RangeRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ Common {
 
 template <typename Types>
-struct CoverageFormat2_4
+সংরচনা CoverageFormat2_4
 {
-  friend struct Coverage;
+  friend সংরচনা Coverage;
   using CoverageRangeRecord = RangeRecord<Types, typename Types::HBUINT>;
 
-  public:
+  সার্বজনিক:
   HBUINT16      coverageFormat; /* Format identifier--format = 2 */
   typename Types::template SortedArrayOf<CoverageRangeRecord>
                 rangeRecord;    /* Array of glyph ranges--ordered by
                                  * Start GlyphID. rangeCount entries
                                  * long */
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, rangeRecord);
 
-  private:
+  গুপ্ত:
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace (rangeRecord.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned পূর্ণাঙ্ক get_coverage (hb_codepoint_t glyph_id) ধ্রুব
   {
-    const CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
-    return likely (range.first <= range.last)
-         ? (unsigned int) range.value + (glyph_id - range.first)
+    ধ্রুব CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
+    প্রত্যাগম likely (range.first <= range.last)
+         ? (unsigned পূর্ণাঙ্ক) range.value + (glyph_id - range.first)
          : NOT_COVERED;
   }
 
-  unsigned get_population () const
+  unsigned get_population () ধ্রুব
   {
     typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    প্রতি (ধ্রুব auto &r : rangeRecord)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    প্রত্যাগম ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
   }
 
   template <typename Iterator,
       hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  তার্কিক serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (এতত্);
+    যদি (unlikely (!c->extend_min (এতত্))) return_trace (অসত্য);
 
-    unsigned num_ranges = 0;
+    unsigned অঙ্ক_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
-    for (auto g: glyphs)
+    প্রতি (auto g: glyphs)
     {
-      if (last + 1 != g)
-        num_ranges++;
+      যদি (last + 1 != g)
+        অঙ্ক_ranges++;
       last = g;
     }
 
-    if (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
-    if (!num_ranges) return_trace (true);
+    যদি (unlikely (!rangeRecord.serialize (c, অঙ্ক_ranges))) return_trace (অসত্য);
+    যদি (!অঙ্ক_ranges) return_trace (সত্য);
 
-    unsigned count = 0;
+    unsigned গুনতি = 0;
     unsigned range = (unsigned) -1;
     last = (hb_codepoint_t) -2;
-    unsigned unsorted = false;
-    for (auto g: glyphs)
+    unsigned unsorted = অসত্য;
+    প্রতি (auto g: glyphs)
     {
-      if (last + 1 != g)
+      যদি (last + 1 != g)
       {
-	if (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
-	  unsorted = true;
+	যদি (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
+	  unsorted = সত্য;
 
         range++;
         rangeRecord.arrayZ[range].first = g;
-        rangeRecord.arrayZ[range].value = count;
+        rangeRecord.arrayZ[range].value = গুনতি;
       }
       rangeRecord.arrayZ[range].last = g;
       last = g;
-      count++;
+      গুনতি++;
     }
 
-    if (unlikely (unsorted))
+    যদি (unlikely (unsorted))
       rangeRecord.as_array ().qsort (CoverageRangeRecord::cmp_range);
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  তার্কিক intersects (ধ্রুব hb_set_t *glyphs) ধ্রুব
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    যদি (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      প্রতি (auto g : *glyphs)
+        যদি (get_coverage (g) != NOT_COVERED)
+	  প্রত্যাগম সত্য;
+      প্রত্যাগম অসত্য;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { return range.intersects (*glyphs); }));
+    প্রত্যাগম hb_any (+ hb_iter (rangeRecord)
+                   | hb_map ([glyphs] (ধ্রুব CoverageRangeRecord &range) { প্রত্যাগম range.intersects (*glyphs); }));
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  তার্কিক intersects_coverage (ধ্রুব hb_set_t *glyphs, unsigned পূর্ণাঙ্ক index) ধ্রুব
   {
     auto *range = rangeRecord.as_array ().bsearch (index);
-    if (range)
-      return range->intersects (*glyphs);
-    return false;
+    যদি (range)
+      প্রত্যাগম range->intersects (*glyphs);
+    প্রত্যাগম অসত্য;
   }
 
-  static void add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
+  স্থির শূন্য add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
   { set.add_bits (base, bits); }
 
   template <typename IterableOut>
-  static void add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
+  স্থির শূন্য add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
   {
-    while (bits)
+    যাবত্ (bits)
     {
       out << base + hb_ctz (bits);
       bits &= bits - 1;
@@ -155,71 +155,71 @@ struct CoverageFormat2_4
 
   template <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  শূন্য intersect_set (ধ্রুব hb_set_t &glyphs, IterableOut&& intersect_glyphs) ধ্রুব
   {
     /* Break out of loop for overlapping, broken, tables,
      * to avoid fuzzer timouts. */
     hb_codepoint_t last = 0;
-    for (const auto& range : rangeRecord)
+    প্রতি (ধ্রুব auto& range : rangeRecord)
     {
-      if (unlikely (range.first < last))
-        break;
+      যদি (unlikely (range.first < last))
+        ভঙ্গ;
       last = range.last;
       hb_codepoint_t cursor = range.first & ~hb_bit_page_t::ELT_MASK;
-      cursor = cursor ? cursor - 1 : HB_SET_VALUE_INVALID;
+      cursor = cursor ? cursor - 1 : HB_SET_মান_INVALID;
       uint64_t bits;
-      while (glyphs.next_bits (&cursor, &bits) && cursor <= last)
+      যাবত্ (glyphs.next_bits (&cursor, &bits) && cursor <= last)
       {
-	if (range.first > cursor)
+	যদি (range.first > cursor)
 	  bits &= UINT64_MAX << (range.first - cursor);
-	unsigned int end = last - cursor;
-	if (end < hb_bit_page_t::ELT_BITS - 1)
+	unsigned পূর্ণাঙ্ক end = last - cursor;
+	যদি (end < hb_bit_page_t::ELT_BITS - 1)
 	  bits &= (uint64_t (1) << (end + 1)) - 1;
 	add_intersected_bits (intersect_glyphs, cursor, bits);
       }
     }
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  unsigned cost () ধ্রুব { প্রত্যাগম hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
 
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  তার্কিক collect_coverage (set_t *glyphs) ধ্রুব
   {
-    for (const auto& range: rangeRecord)
-      if (unlikely (!range.collect_coverage (glyphs)))
-        return false;
-    return true;
+    প্রতি (ধ্রুব auto& range: rangeRecord)
+      যদি (unlikely (!range.collect_coverage (glyphs)))
+        প্রত্যাগম অসত্য;
+    প্রত্যাগম সত্য;
   }
 
-  public:
+  সার্বজনিক:
   /* Older compilers need this to be public. */
-  struct iter_t
+  সংরচনা iter_t
   {
-    void init (const CoverageFormat2_4 &c_)
+    শূন্য init (ধ্রুব CoverageFormat2_4 &c_)
     {
       c = &c_;
       coverage = 0;
       i = 0;
       j = c->rangeRecord.len ? c->rangeRecord[0].first : 0;
-      if (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
+      যদি (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
       {
         /* Broken table. Skip. */
         i = c->rangeRecord.len;
         j = 0;
       }
     }
-    bool __more__ () const { return i < c->rangeRecord.len; }
-    void __next__ ()
+    তার্কিক __more__ () ধ্রুব { প্রত্যাগম i < c->rangeRecord.len; }
+    শূন্য __next__ ()
     {
-      if (j >= c->rangeRecord[i].last)
+      যদি (j >= c->rangeRecord[i].last)
       {
         i++;
-        if (__more__ ())
+        যদি (__more__ ())
         {
-          unsigned int old = coverage;
+          unsigned পূর্ণাঙ্ক old = coverage;
           j = c->rangeRecord.arrayZ[i].first;
           coverage = c->rangeRecord.arrayZ[i].value;
-          if (unlikely (coverage != old + 1))
+          যদি (unlikely (coverage != old + 1))
           {
             /* Broken table. Skip. Important to avoid DoS.
              * Also, our callers depend on coverage being
@@ -227,34 +227,34 @@ struct CoverageFormat2_4
              * ie. iota(). */
            i = c->rangeRecord.len;
            j = 0;
-           return;
+           প্রত্যাগম;
           }
         }
-        else
+        অন্যথা
           j = 0;
-        return;
+        প্রত্যাগম;
       }
       coverage++;
       j++;
     }
-    hb_codepoint_t get_glyph () const { return j; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i || j != o.j; }
-    iter_t __end__ () const
+    hb_codepoint_t get_glyph () ধ্রুব { প্রত্যাগম j; }
+    তার্কিক operator != (ধ্রুব iter_t& o) ধ্রুব
+    { প্রত্যাগম i != o.i || j != o.j; }
+    iter_t __end__ () ধ্রুব
     {
       iter_t it;
       it.init (*c);
       it.i = c->rangeRecord.len;
       it.j = 0;
-      return it;
+      প্রত্যাগম it;
     }
 
-    private:
-    const struct CoverageFormat2_4 *c;
-    unsigned int i, coverage;
+    গুপ্ত:
+    ধ্রুব সংরচনা CoverageFormat2_4 *c;
+    unsigned পূর্ণাঙ্ক i, coverage;
     hb_codepoint_t j;
   };
-  private:
+  গুপ্ত:
 };
 
 }

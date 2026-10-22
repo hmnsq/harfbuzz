@@ -1,61 +1,61 @@
 #ifndef OT_LAYOUT_GSUB_LIGATURESUBST_HH
 #define OT_LAYOUT_GSUB_LIGATURESUBST_HH
 
-#include "Common.hh"
-#include "LigatureSubstFormat1.hh"
+#অন্তর্ভাব "Common.hh"
+#অন্তর্ভাব "LigatureSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GSUB_impl {
 
-struct LigatureSubst
+সংরচনা LigatureSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  রক্ষিত:
+  সঙ্ঘ {
+  সংরচনা { HBUINT16 v; }		format;         /* Format identifier */
   LigatureSubstFormat1_2<SmallTypes>	format1;
 #ifndef HB_NO_BEYOND_64K
   LigatureSubstFormat1_2<MediumTypes>	format2;
 #endif
   } u;
 
-  public:
+  সার্বজনিক:
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ধ্রুব
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    যদি (unlikely (!c->may_dispatch (এতত্, &u.format.v))) প্রত্যাগম c->no_dispatch_return_মান ();
+    TRACE_DISPATCH (এতত্, u.format.v);
+    বিকল্প (u.format.v) {
+    পক্ষ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    পক্ষ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    স্বভাব:return_trace (c->default_return_মান ());
     }
   }
 
   /* TODO This function should be done using iterators. While at it perhaps
    * using iterator of arrays of hb_codepoint_t instead. */
   template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
+  তার্কিক serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> first_glyphs,
-                  hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                  hb_array_t<ধ্রুব unsigned পূর্ণাঙ্ক> ligature_per_first_glyph_গুনতি_list,
                   hb_array_t<GlyphID> ligatures_list,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<ধ্রুব unsigned পূর্ণাঙ্ক> component_গুনতি_list,
                   hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (এতত্);
+    যদি (unlikely (!c->extend_min (u.format.v))) return_trace (অসত্য);
+    unsigned পূর্ণাঙ্ক format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c,
+    বিকল্প (u.format.v) {
+    পক্ষ 1: hb_barrier (); return_trace (u.format1.serialize (c,
                                                first_glyphs,
-                                               ligature_per_first_glyph_count_list,
+                                               ligature_per_first_glyph_গুনতি_list,
                                                ligatures_list,
-                                               component_count_list,
+                                               component_গুনতি_list,
                                                component_list));
-    default:return_trace (false);
+    স্বভাব:return_trace (অসত্য);
     }
   }
 

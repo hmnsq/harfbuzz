@@ -30,102 +30,102 @@
 #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
 #define OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ Common {
 
-#define NOT_COVERED             ((unsigned int) -1)
+#define NOT_COVERED             ((unsigned পূর্ণাঙ্ক) -1)
 
 template <typename Types>
-struct CoverageFormat1_3
+সংরচনা CoverageFormat1_3
 {
-  friend struct Coverage;
+  friend সংরচনা Coverage;
 
-  public:
+  সার্বজনিক:
   HBUINT16      coverageFormat; /* Format identifier--format = 1 */
   typename Types::template SortedArrayOf<typename Types::HBGlyphID>
                 glyphArray;     /* Array of GlyphIDs--in numerical order */
 
   DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, glyphArray);
 
-  private:
-  bool sanitize (hb_sanitize_context_t *c) const
+  গুপ্ত:
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (এতত্);
     return_trace (glyphArray.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned পূর্ণাঙ্ক get_coverage (hb_codepoint_t glyph_id) ধ্রুব
   {
-    unsigned int i;
+    unsigned পূর্ণাঙ্ক i;
     glyphArray.bfind (glyph_id, &i, HB_NOT_FOUND_STORE, NOT_COVERED);
-    return i;
+    প্রত্যাগম i;
   }
 
-  unsigned get_population () const
+  unsigned get_population () ধ্রুব
   {
-    return glyphArray.len;
+    প্রত্যাগম glyphArray.len;
   }
 
   template <typename Iterator,
       hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  তার্কিক serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
     return_trace (glyphArray.serialize (c, glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  তার্কিক intersects (ধ্রুব hb_set_t *glyphs) ধ্রুব
   {
-    if (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
+    যদি (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      প্রতি (auto g : *glyphs)
+        যদি (get_coverage (g) != NOT_COVERED)
+	  প্রত্যাগম সত্য;
+      প্রত্যাগম অসত্য;
     }
 
-    for (const auto& g : glyphArray.as_array ())
-      if (glyphs->has (g))
-        return true;
-    return false;
+    প্রতি (ধ্রুব auto& g : glyphArray.as_array ())
+      যদি (glyphs->has (g))
+        প্রত্যাগম সত্য;
+    প্রত্যাগম অসত্য;
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
-  { return glyphs->has (glyphArray[index]); }
+  তার্কিক intersects_coverage (ধ্রুব hb_set_t *glyphs, unsigned পূর্ণাঙ্ক index) ধ্রুব
+  { প্রত্যাগম glyphs->has (glyphArray[index]); }
 
   template <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  শূন্য intersect_set (ধ্রুব hb_set_t &glyphs, IterableOut&& intersect_glyphs) ধ্রুব
   {
-    unsigned count = glyphArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphs.has (glyphArray[i]))
+    unsigned গুনতি = glyphArray.len;
+    প্রতি (unsigned i = 0; i < গুনতি; i++)
+      যদি (glyphs.has (glyphArray[i]))
         intersect_glyphs << glyphArray[i];
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
+  unsigned cost () ধ্রুব { প্রত্যাগম hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
 
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_sorted_array (glyphArray.as_array ()); }
+  তার্কিক collect_coverage (set_t *glyphs) ধ্রুব
+  { প্রত্যাগম glyphs->add_sorted_array (glyphArray.as_array ()); }
 
-  public:
+  সার্বজনিক:
   /* Older compilers need this to be public. */
-  struct iter_t
+  সংরচনা iter_t
   {
-    void init (const struct CoverageFormat1_3 &c_) { c = &c_; i = 0; }
-    bool __more__ () const { return i < c->glyphArray.len; }
-    void __next__ () { i++; }
-    hb_codepoint_t get_glyph () const { return c->glyphArray[i]; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i; }
-    iter_t __end__ () const { iter_t it; it.init (*c); it.i = c->glyphArray.len; return it; }
+    শূন্য init (ধ্রুব সংরচনা CoverageFormat1_3 &c_) { c = &c_; i = 0; }
+    তার্কিক __more__ () ধ্রুব { প্রত্যাগম i < c->glyphArray.len; }
+    শূন্য __next__ () { i++; }
+    hb_codepoint_t get_glyph () ধ্রুব { প্রত্যাগম c->glyphArray[i]; }
+    তার্কিক operator != (ধ্রুব iter_t& o) ধ্রুব
+    { প্রত্যাগম i != o.i; }
+    iter_t __end__ () ধ্রুব { iter_t it; it.init (*c); it.i = c->glyphArray.len; প্রত্যাগম it; }
 
-    private:
-    const struct CoverageFormat1_3 *c;
-    unsigned int i;
+    গুপ্ত:
+    ধ্রুব সংরচনা CoverageFormat1_3 *c;
+    unsigned পূর্ণাঙ্ক i;
   };
-  private:
+  গুপ্ত:
 };
 
 }

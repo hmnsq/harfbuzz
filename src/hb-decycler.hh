@@ -27,7 +27,7 @@
 #ifndef HB_DECYCLER_HH
 #define HB_DECYCLER_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 /*
  * hb_decycler_t is an efficient cycle detector for graph traversal.
@@ -82,82 +82,82 @@
  * For usage examples see test-decycler.cc.
  */
 
-struct hb_decycler_node_t;
+সংরচনা hb_decycler_গ্রন্থি_t;
 
-struct hb_decycler_t
+সংরচনা hb_decycler_t
 {
-  friend struct hb_decycler_node_t;
+  friend সংরচনা hb_decycler_গ্রন্থি_t;
 
-  private:
-  bool tortoise_awake = false;
-  hb_decycler_node_t *tortoise = nullptr;
-  hb_decycler_node_t *hare = nullptr;
+  গুপ্ত:
+  তার্কিক tortoise_awake = অসত্য;
+  hb_decycler_গ্রন্থি_t *tortoise = nullptr;
+  hb_decycler_গ্রন্থি_t *hare = nullptr;
 };
 
-struct hb_decycler_node_t
+সংরচনা hb_decycler_গ্রন্থি_t
 {
-  hb_decycler_node_t (hb_decycler_t &decycler)
+  hb_decycler_গ্রন্থি_t (hb_decycler_t &decycler)
   {
     u.decycler = &decycler;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    যদি (!decycler.tortoise)
     {
       // First node.
-      assert (decycler.tortoise_awake);
-      assert (!decycler.hare);
-      decycler.tortoise = decycler.hare = this;
-      return;
+      প্রতিজ্ঞা (decycler.tortoise_awake);
+      প্রতিজ্ঞা (!decycler.hare);
+      decycler.tortoise = decycler.hare = এতত্;
+      প্রত্যাগম;
     }
 
-    if (decycler.tortoise_awake)
+    যদি (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
-    this->prev = decycler.hare;
-    decycler.hare->u.next = this;
-    decycler.hare = this;
+    এতত্->prev = decycler.hare;
+    decycler.hare->u.next = এতত্;
+    decycler.hare = এতত্;
   }
 
-  ~hb_decycler_node_t ()
+  ~hb_decycler_গ্রন্থি_t ()
   {
     hb_decycler_t &decycler = *u.decycler;
 
     // Inverse of the constructor.
 
-    assert (decycler.hare == this);
+    প্রতিজ্ঞা (decycler.hare == এতত্);
     decycler.hare = prev;
-    if (prev)
+    যদি (prev)
       prev->u.decycler = &decycler;
 
-    assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    প্রতিজ্ঞা (decycler.tortoise);
+    যদি (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
   }
 
-  bool visit (uintptr_t value_)
+  তার্কিক visit (uintptr_t মান_3)
   {
-    value = value_;
+    value = মান_3;
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    যদি (decycler.tortoise == এতত্)
+      প্রত্যাগম সত্য; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    যদি (decycler.tortoise->value == value)
+      প্রত্যাগম অসত্য; // Cycle detected.
 
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  private:
-  union {
+  গুপ্ত:
+  সঙ্ঘ {
     hb_decycler_t *decycler;
-    hb_decycler_node_t *next;
+    hb_decycler_গ্রন্থি_t *next;
   } u = {nullptr};
-  hb_decycler_node_t *prev = nullptr;
+  hb_decycler_গ্রন্থি_t *prev = nullptr;
   uintptr_t value = 0;
 };
 

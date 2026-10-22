@@ -24,16 +24,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include <hb.h>
-#include <hb-ot.h>
+#অন্তর্ভাব <hb.h>
+#অন্তর্ভাব <hb-ot.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#অন্তর্ভাব <stdlib.h>
+#অন্তর্ভাব <stdio.h>
 
-int
-main (int argc, char **argv)
+পূর্ণাঙ্ক
+main (পূর্ণাঙ্ক argc, বর্ণ **argv)
 {
-  if (argc != 3) {
+  যদি (argc != 3) {
     fprintf (stderr, "usage: %s font-file text\n", argv[0]);
     exit (1);
   }
@@ -49,32 +49,32 @@ main (int argc, char **argv)
 
   hb_buffer_add_utf8 (buffer, argv[2], -1, 0, -1);
   hb_buffer_guess_segment_properties (buffer);
-  hb_shape (font, buffer, NULL, 0);
+  hb_shape (font, buffer, রিক্ত, 0);
 
   hb_tag_t features[] = {HB_TAG('a','a','l','t'), HB_TAG_NONE};
   hb_set_t *lookup_indexes = hb_set_create ();
   hb_ot_layout_collect_lookups (face,
 				HB_OT_TAG_GSUB,
-				NULL, NULL,
+				রিক্ত, রিক্ত,
 				features,
 				lookup_indexes);
   printf ("lookups %u\n", hb_set_get_population (lookup_indexes));
 
-  unsigned count;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  unsigned গুনতি;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &গুনতি);
+  প্রতি (unsigned i = 0; i < গুনতি; i++)
   {
-    unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
+    unsigned alt_গুনতি = 0;
+    প্রতি (hb_codepoint_t lookup_index = HB_SET_মান_INVALID;
 	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
+      যদি ((alt_গুনতি = hb_ot_layout_lookup_get_glyph_alternates (face,
 								 lookup_index,
 								 info[i].codepoint,
 								 0,
-								 NULL,
-								 NULL)))
-        break;
-    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
+								 রিক্ত,
+								 রিক্ত)))
+        ভঙ্গ;
+    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_গুনতি);
   }
 
   hb_set_destroy (lookup_indexes);
@@ -82,5 +82,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  প্রত্যাগম 0;
 }

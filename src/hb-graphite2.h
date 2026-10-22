@@ -26,9 +26,9 @@
 #ifndef HB_GRAPHITE2_H
 #define HB_GRAPHITE2_H
 
-#include "hb.h"
+#অন্তর্ভাব "hb.h"
 
-#include <graphite2/Font.h>
+#অন্তর্ভাব <graphite2/Font.h>
 
 HB_BEGIN_DECLS
 

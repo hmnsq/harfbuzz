@@ -26,64 +26,64 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-face.hh"
+#অন্তর্ভাব "hb-face.hh"
 
-#include "hb-map.hh"
-#include "hb-open-file.hh"
-#include "hb-serialize.hh"
+#অন্তর্ভাব "hb-map.hh"
+#অন্তর্ভাব "hb-open-file.hh"
+#অন্তর্ভাব "hb-serialize.hh"
 
 
 /*
  * face-builder: A face that has add_table().
  */
 
-struct face_table_info_t
+সংরচনা face_table_info_t
 {
   hb_blob_t* data;
   unsigned order;
 };
 
-struct hb_face_builder_data_t
+সংরচনা hb_face_builder_data_t
 {
   hb_hashmap_t<hb_tag_t, face_table_info_t> tables;
 };
 
-static int compare_entries (const void* pa, const void* pb)
+স্থির পূর্ণাঙ্ক compare_entries (ধ্রুব শূন্য* pa, ধ্রুব শূন্য* pb)
 {
-  const auto& a = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
-  const auto& b = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
+  ধ্রুব auto& a = * (ধ্রুব hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
+  ধ্রুব auto& b = * (ধ্রুব hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
 
   /* Order by blob size first (smallest to largest) and then table tag */
 
-  if (a.second.order != b.second.order)
-    return a.second.order < b.second.order ? -1 : +1;
+  যদি (a.second.order != b.second.order)
+    প্রত্যাগম a.second.order < b.second.order ? -1 : +1;
 
-  if (a.second.data->length != b.second.data->length)
-    return a.second.data->length < b.second.data->length ? -1 : +1;
+  যদি (a.second.data->length != b.second.data->length)
+    প্রত্যাগম a.second.data->length < b.second.data->length ? -1 : +1;
 
-  return a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
+  প্রত্যাগম a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
 }
 
-static hb_face_builder_data_t *
+স্থির hb_face_builder_data_t *
 _hb_face_builder_data_create ()
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, sizeof (hb_face_builder_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, পরিমাণ (hb_face_builder_data_t));
+  যদি (unlikely (!data))
+    প্রত্যাগম nullptr;
 
   data->tables.init ();
 
-  return data;
+  প্রত্যাগম data;
 }
 
-static void
-_hb_face_builder_data_destroy (void *user_data)
+স্থির শূন্য
+_hb_face_builder_data_destroy (শূন্য *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
-  for (auto info : data->tables.values())
+  প্রতি (auto info : data->tables.values())
     hb_blob_destroy (info.data);
 
   data->tables.fini ();
@@ -91,110 +91,110 @@ _hb_face_builder_data_destroy (void *user_data)
   hb_free (data);
 }
 
-static hb_blob_t *
+স্থির hb_blob_t *
 _hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
 {
 
-  unsigned int table_count = data->tables.get_population ();
-  unsigned int face_length = table_count * 16 + 12;
+  unsigned পূর্ণাঙ্ক table_গুনতি_2 = data->tables.get_population ();
+  unsigned পূর্ণাঙ্ক face_length = table_গুনতি_2 * 16 + 12;
 
-  for (auto info : data->tables.values())
+  প্রতি (auto info : data->tables.values())
     face_length += hb_ceil_to_4 (hb_blob_get_length (info.data));
 
-  char *buf = (char *) hb_malloc (face_length);
-  if (unlikely (!buf))
-    return nullptr;
+  বর্ণ *buf = (বর্ণ *) hb_malloc (face_length);
+  যদি (unlikely (!buf))
+    প্রত্যাগম nullptr;
 
   hb_serialize_context_t c (buf, face_length);
   c.propagate_error (data->tables);
   OT::OpenTypeFontFile *f = c.start_serialize<OT::OpenTypeFontFile> ();
 
-  bool is_cff = (data->tables.has (HB_TAG ('C','F','F',' '))
+  তার্কিক is_cff = (data->tables.has (HB_TAG ('C','F','F',' '))
                  || data->tables.has (HB_TAG ('C','F','F','2')));
   hb_tag_t sfnt_tag = is_cff ? OT::OpenTypeFontFile::CFFTag : OT::OpenTypeFontFile::TrueTypeTag;
 
   // Sort the tags so that produced face is deterministic.
   hb_vector_t<hb_pair_t <hb_tag_t, face_table_info_t>> sorted_entries;
   data->tables.iter () | hb_sink (sorted_entries);
-  if (unlikely (sorted_entries.in_error ()))
+  যদি (unlikely (sorted_entries.in_error ()))
   {
     hb_free (buf);
-    return nullptr;
+    প্রত্যাগম nullptr;
   }
 
   sorted_entries.qsort (compare_entries);
 
-  bool ret = f->serialize_single (&c,
+  তার্কিক ret = f->serialize_single (&c,
                                   sfnt_tag,
                                   + sorted_entries.iter()
                                   | hb_map ([&] (hb_pair_t<hb_tag_t, face_table_info_t> _) {
-                                    return hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
+                                    প্রত্যাগম hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
                                   }));
 
   c.end_serialize ();
 
-  if (unlikely (!ret))
+  যদি (unlikely (!ret))
   {
     hb_free (buf);
-    return nullptr;
+    প্রত্যাগম nullptr;
   }
 
-  return hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  প্রত্যাগম hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
 }
 
-static hb_blob_t *
-_hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+স্থির hb_blob_t *
+_hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, শূন্য *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
-  if (!tag)
-    return _hb_face_builder_data_reference_blob (data);
+  যদি (!tag)
+    প্রত্যাগম _hb_face_builder_data_reference_blob (data);
 
-  return hb_blob_reference (data->tables[tag].data);
+  প্রত্যাগম hb_blob_reference (data->tables[tag].data);
 }
 
-static unsigned
-_hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
-				 unsigned int start_offset,
-				 unsigned int *table_count,
+স্থির unsigned
+_hb_face_builder_get_table_tags (ধ্রুব hb_face_t *face HB_UNUSED,
+				 unsigned পূর্ণাঙ্ক start_offset,
+				 unsigned পূর্ণাঙ্ক *table_গুনতি_2,
 				 hb_tag_t *table_tags,
-				 void *user_data)
+				 শূন্য *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
   unsigned population = data->tables.get_population ();
 
-  if (!table_count)
-    return population;
+  যদি (!table_গুনতি_2)
+    প্রত্যাগম population;
 
-  if (unlikely (start_offset >= population))
+  যদি (unlikely (start_offset >= population))
   {
-    *table_count = 0;
-    return population;
+    *table_গুনতি_2 = 0;
+    প্রত্যাগম population;
   }
 
   // Sort the tags.
   hb_vector_t<hb_tag_t> sorted_tags;
-  data->tables.keys () | hb_sink (sorted_tags);
-  if (unlikely (sorted_tags.in_error ()))
+  data->tables.চাবিগুলি () | hb_sink (sorted_tags);
+  যদি (unlikely (sorted_tags.in_error ()))
   {
     // Not much to do...
   }
-  sorted_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) {
-    return (a > b) - (a < b);
+  sorted_tags.qsort ([] (ধ্রুব hb_tag_t &a, ধ্রুব hb_tag_t &b) {
+    প্রত্যাগম (a > b) - (a < b);
   });
 
-  auto array = sorted_tags.as_array ().sub_array (start_offset, table_count);
-  if (table_tags)
+  auto array = sorted_tags.as_array ().sub_array (start_offset, table_গুনতি_2);
+  যদি (table_tags)
   {
-    auto out = hb_array (table_tags, *table_count);
+    auto out = hb_array (table_tags, *table_গুনতি_2);
 
     + array.iter ()
     | hb_sink (out)
     ;
   }
 
-  return population;
+  প্রত্যাগম population;
 }
 
 
@@ -213,7 +213,7 @@ hb_face_t *
 hb_face_builder_create ()
 {
   hb_face_builder_data_t *data = _hb_face_builder_data_create ();
-  if (unlikely (!data)) return hb_face_get_empty ();
+  যদি (unlikely (!data)) প্রত্যাগম hb_face_get_empty ();
 
   hb_face_t *face = hb_face_create_for_tables (_hb_face_builder_reference_table,
 					       data,
@@ -224,7 +224,7 @@ hb_face_builder_create ()
 				   data,
 				   nullptr);
 
-  return face;
+  প্রত্যাগম face;
 }
 
 /**
@@ -241,23 +241,23 @@ hb_face_builder_create ()
 hb_bool_t
 hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return false;
+  যদি (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
+    প্রত্যাগম অসত্য;
 
-  if (tag == HB_MAP_VALUE_INVALID)
-    return false;
+  যদি (tag == HB_MAP_মান_INVALID)
+    প্রত্যাগম অসত্য;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   hb_blob_t* previous = data->tables.get (tag).data;
-  if (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
+  যদি (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
   {
     hb_blob_destroy (blob);
-    return false;
+    প্রত্যাগম অসত্য;
   }
 
   hb_blob_destroy (previous);
-  return true;
+  প্রত্যাগম সত্য;
 }
 
 /**
@@ -272,26 +272,26 @@ hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
  *
  * Since: 5.3.0
  **/
-void
+শূন্য
 hb_face_builder_sort_tables (hb_face_t *face,
-                             const hb_tag_t  *tags)
+                             ধ্রুব hb_tag_t  *tags)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return;
+  যদি (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
+    প্রত্যাগম;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   // Sort all unspecified tables after any specified tables.
-  for (auto& info : data->tables.values_ref())
+  প্রতি (auto& info : data->tables.মানসমূহ_ref())
     info.order = (unsigned) -1;
 
   signed order = 0;
-  for (const hb_tag_t* tag = tags;
+  প্রতি (ধ্রুব hb_tag_t* tag = tags;
        *tag;
        tag++)
   {
     face_table_info_t* info;
-    if (!data->tables.has (*tag, &info)) continue;
+    যদি (!data->tables.has (*tag, &info)) অনুবর্ত;
     info->order = order++;
   }
 }

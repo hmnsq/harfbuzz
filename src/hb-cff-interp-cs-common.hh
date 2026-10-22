@@ -26,100 +26,100 @@
 #ifndef HB_CFF_INTERP_CS_COMMON_HH
 #define HB_CFF_INTERP_CS_COMMON_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-common.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-cff-interp-common.hh"
 
-namespace CFF {
+নামাকাশ CFF {
 
-using namespace OT;
+using নামাকাশ OT;
 
-enum cs_type_t {
+গণনা cs_type_t {
   CSType_CharString,
   CSType_GlobalSubr,
   CSType_LocalSubr
 };
 
-struct call_context_t
+সংরচনা call_context_t
 {
-  void init (const byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned int subr_num_=0)
+  শূন্য init (ধ্রুব byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned পূর্ণাঙ্ক subr_অঙ্ক=0)
   {
     str_ref = substr_;
     type = type_;
-    subr_num = subr_num_;
+    subr_অঙ্ক_2 = subr_অঙ্ক;
   }
 
-  void fini () {}
+  শূন্য fini () {}
 
   byte_str_ref_t  str_ref;
   cs_type_t	  type;
-  unsigned int    subr_num;
+  unsigned পূর্ণাঙ্ক    subr_অঙ্ক_2;
 };
 
 /* call stack */
-const unsigned int kMaxCallLimit = 10;
-struct call_stack_t : cff_stack_t<call_context_t, kMaxCallLimit> {};
+ধ্রুব unsigned পূর্ণাঙ্ক kMaxCallLimit = 10;
+সংরচনা call_স্তূপ_t : cff_স্তূপ_t<call_context_t, kMaxCallLimit> {};
 
 template <typename SUBRS>
-struct biased_subrs_t
+সংরচনা biased_subrs_t
 {
-  void init (const SUBRS *subrs_)
+  শূন্য init (ধ্রুব SUBRS *subrs_)
   {
     subrs = subrs_;
-    unsigned int  nSubrs = get_count ();
-    if (nSubrs < 1240)
+    unsigned পূর্ণাঙ্ক  nSubrs = get_গুনতি ();
+    যদি (nSubrs < 1240)
       bias = 107;
-    else if (nSubrs < 33900)
+    অন্যথা যদি (nSubrs < 33900)
       bias = 1131;
-    else
+    অন্যথা
       bias = 32768;
   }
 
-  void fini () {}
+  শূন্য fini () {}
 
-  unsigned int get_count () const { return subrs ? subrs->count : 0; }
-  unsigned int get_bias () const  { return bias; }
+  unsigned পূর্ণাঙ্ক get_গুনতি () ধ্রুব { প্রত্যাগম subrs ? subrs->গুনতি : 0; }
+  unsigned পূর্ণাঙ্ক get_bias () ধ্রুব  { প্রত্যাগম bias; }
 
-  hb_ubytes_t operator [] (unsigned int index) const
+  hb_ubytes_t operator [] (unsigned পূর্ণাঙ্ক index) ধ্রুব
   {
-    if (unlikely (!subrs || index >= subrs->count))
-      return hb_ubytes_t ();
-    else
-      return (*subrs)[index];
+    যদি (unlikely (!subrs || index >= subrs->গুনতি))
+      প্রত্যাগম hb_ubytes_t ();
+    অন্যথা
+      প্রত্যাগম (*subrs)[index];
   }
 
-  protected:
-  unsigned int  bias;
-  const SUBRS   *subrs;
+  রক্ষিত:
+  unsigned পূর্ণাঙ্ক  bias;
+  ধ্রুব SUBRS   *subrs;
 };
 
-struct point_t
+সংরচনা point_t
 {
-  void set_int (int _x, int _y)
+  শূন্য set_int (পূর্ণাঙ্ক _x, পূর্ণাঙ্ক _y)
   {
     x.set_int (_x);
     y.set_int (_y);
   }
 
-  void move_x (const number_t &dx) { x += dx; }
-  void move_y (const number_t &dy) { y += dy; }
-  void move (const number_t &dx, const number_t &dy) { move_x (dx); move_y (dy); }
-  void move (const point_t &d) { move_x (d.x); move_y (d.y); }
+  শূন্য move_x (ধ্রুব সংখ্যা_t &dx) { x += dx; }
+  শূন্য move_y (ধ্রুব সংখ্যা_t &dy) { y += dy; }
+  শূন্য move (ধ্রুব সংখ্যা_t &dx, ধ্রুব সংখ্যা_t &dy) { move_x (dx); move_y (dy); }
+  শূন্য move (ধ্রুব point_t &d) { move_x (d.x); move_y (d.y); }
 
-  number_t  x;
-  number_t  y;
+  সংখ্যা_t  x;
+  সংখ্যা_t  y;
 };
 
 template <typename ARG, typename SUBRS>
-struct cs_interp_env_t : interp_env_t<ARG>
+সংরচনা cs_interp_env_t : interp_env_t<ARG>
 {
-  cs_interp_env_t (const hb_ubytes_t &str, const SUBRS *globalSubrs_, const SUBRS *localSubrs_) :
+  cs_interp_env_t (ধ্রুব hb_ubytes_t &str, ধ্রুব SUBRS *globalSubrs_, ধ্রুব SUBRS *localSubrs_) :
     interp_env_t<ARG> (str)
   {
     context.init (str, CSType_CharString);
-    seen_moveto = true;
-    seen_hintmask = false;
-    hstem_count = 0;
-    vstem_count = 0;
+    seen_moveto = সত্য;
+    seen_hintmask = অসত্য;
+    hstem_গুনতি = 0;
+    vstem_গুনতি = 0;
     hintmask_size = 0;
     budget = nullptr;
     pt.set_int (0, 0);
@@ -132,408 +132,408 @@ struct cs_interp_env_t : interp_env_t<ARG>
     localSubrs.fini ();
   }
 
-  bool in_error () const
+  তার্কিক in_error () ধ্রুব
   {
-    return callStack.in_error () || SUPER::in_error ();
+    প্রত্যাগম call_স্তূপ.in_error () || SUPER::in_error ();
   }
 
-  bool pop_subr_num (const biased_subrs_t<SUBRS>& biasedSubrs, unsigned int &subr_num)
+  তার্কিক বের_করো_subr_অঙ্ক (ধ্রুব biased_subrs_t<SUBRS>& biasedSubrs, unsigned পূর্ণাঙ্ক &subr_অঙ্ক_2)
   {
-    subr_num = 0;
-    int n = SUPER::argStack.pop_int ();
+    subr_অঙ্ক_2 = 0;
+    পূর্ণাঙ্ক n = SUPER::arg_স্তূপ.বের_করো_int ();
     n += biasedSubrs.get_bias ();
-    if (unlikely ((n < 0) || ((unsigned int)n >= biasedSubrs.get_count ())))
-      return false;
+    যদি (unlikely ((n < 0) || ((unsigned পূর্ণাঙ্ক)n >= biasedSubrs.get_গুনতি ())))
+      প্রত্যাগম অসত্য;
 
-    subr_num = (unsigned int)n;
-    return true;
+    subr_অঙ্ক_2 = (unsigned পূর্ণাঙ্ক)n;
+    প্রত্যাগম সত্য;
   }
 
-  void call_subr (const biased_subrs_t<SUBRS>& biasedSubrs, cs_type_t type)
+  শূন্য call_subr (ধ্রুব biased_subrs_t<SUBRS>& biasedSubrs, cs_type_t type)
   {
-    unsigned int subr_num = 0;
+    unsigned পূর্ণাঙ্ক subr_অঙ্ক_2 = 0;
 
-    if (unlikely (!pop_subr_num (biasedSubrs, subr_num)
-		 || callStack.get_count () >= kMaxCallLimit))
+    যদি (unlikely (!বের_করো_subr_অঙ্ক (biasedSubrs, subr_অঙ্ক_2)
+		 || call_স্তূপ.get_গুনতি () >= kMaxCallLimit))
     {
       SUPER::set_error ();
-      return;
+      প্রত্যাগম;
     }
     context.str_ref = SUPER::str_ref;
-    callStack.push (context);
+    call_স্তূপ.push (context);
 
-    context.init ( biasedSubrs[subr_num], type, subr_num);
+    context.init ( biasedSubrs[subr_অঙ্ক_2], type, subr_অঙ্ক_2);
     SUPER::str_ref = context.str_ref;
   }
 
-  void return_from_subr ()
+  শূন্য return_from_subr ()
   {
-    if (unlikely (SUPER::str_ref.in_error ()))
+    যদি (unlikely (SUPER::str_ref.in_error ()))
       SUPER::set_error ();
-    context = callStack.pop ();
+    context = call_স্তূপ.বের_করো ();
     SUPER::str_ref = context.str_ref;
   }
 
-  void determine_hintmask_size ()
+  শূন্য determine_hintmask_size ()
   {
-    if (!seen_hintmask)
+    যদি (!seen_hintmask)
     {
-      vstem_count += SUPER::argStack.get_count() / 2;
-      hintmask_size = (hstem_count + vstem_count + 7) >> 3;
-      seen_hintmask = true;
+      vstem_গুনতি += SUPER::arg_স্তূপ.get_গুনতি() / 2;
+      hintmask_size = (hstem_গুনতি + vstem_গুনতি + 7) >> 3;
+      seen_hintmask = সত্য;
     }
   }
 
-  void set_endchar (bool endchar_flag_) { endchar_flag = endchar_flag_; }
-  bool is_endchar () const { return endchar_flag; }
+  শূন্য set_endchar (তার্কিক endchar_flag_) { endchar_flag = endchar_flag_; }
+  তার্কিক is_endchar () ধ্রুব { প্রত্যাগম endchar_flag; }
 
-  void set_budget (int64_t *budget_) { budget = budget_; }
-  int64_t *get_budget () const { return budget; }
-  bool spend_budget (unsigned int cost, unsigned int mult = 1)
-  { return !budget || hb_budget_spend (*budget, cost, mult); }
+  শূন্য set_budget (int64_t *budget_) { budget = budget_; }
+  int64_t *get_budget () ধ্রুব { প্রত্যাগম budget; }
+  তার্কিক spend_budget (unsigned পূর্ণাঙ্ক cost, unsigned পূর্ণাঙ্ক mult = 1)
+  { প্রত্যাগম !budget || hb_budget_spend (*budget, cost, mult); }
 
-  const number_t &get_x () const { return pt.x; }
-  const number_t &get_y () const { return pt.y; }
-  const point_t &get_pt () const { return pt; }
+  ধ্রুব সংখ্যা_t &get_x () ধ্রুব { প্রত্যাগম pt.x; }
+  ধ্রুব সংখ্যা_t &get_y () ধ্রুব { প্রত্যাগম pt.y; }
+  ধ্রুব point_t &get_pt () ধ্রুব { প্রত্যাগম pt; }
 
-  void moveto (const point_t &pt_ ) { pt = pt_; }
+  শূন্য moveto (ধ্রুব point_t &pt_ ) { pt = pt_; }
 
-  public:
+  সার্বজনিক:
   call_context_t   context;
-  bool	  endchar_flag;
-  bool	  seen_moveto;
-  bool	  seen_hintmask;
+  তার্কিক	  endchar_flag;
+  তার্কিক	  seen_moveto;
+  তার্কিক	  seen_hintmask;
 
-  unsigned int  hstem_count;
-  unsigned int  vstem_count;
-  unsigned int  hintmask_size;
+  unsigned পূর্ণাঙ্ক  hstem_গুনতি;
+  unsigned পূর্ণাঙ্ক  vstem_গুনতি;
+  unsigned পূর্ণাঙ্ক  hintmask_size;
   int64_t	*budget;
-  call_stack_t	callStack;
+  call_স্তূপ_t	call_স্তূপ;
   biased_subrs_t<SUBRS>   globalSubrs;
   biased_subrs_t<SUBRS>   localSubrs;
 
-  private:
+  গুপ্ত:
   point_t	 pt;
 
-  typedef interp_env_t<ARG> SUPER;
+  প্রকারনির্দেশ interp_env_t<ARG> SUPER;
 };
 
 template <typename ENV, typename PARAM>
-struct path_procs_null_t
+সংরচনা path_procs_null_t
 {
-  static void rmoveto (ENV &env, PARAM& param) {}
-  static void hmoveto (ENV &env, PARAM& param) {}
-  static void vmoveto (ENV &env, PARAM& param) {}
-  static void rlineto (ENV &env, PARAM& param) {}
-  static void hlineto (ENV &env, PARAM& param) {}
-  static void vlineto (ENV &env, PARAM& param) {}
-  static void rrcurveto (ENV &env, PARAM& param) {}
-  static void rcurveline (ENV &env, PARAM& param) {}
-  static void rlinecurve (ENV &env, PARAM& param) {}
-  static void vvcurveto (ENV &env, PARAM& param) {}
-  static void hhcurveto (ENV &env, PARAM& param) {}
-  static void vhcurveto (ENV &env, PARAM& param) {}
-  static void hvcurveto (ENV &env, PARAM& param) {}
-  static void moveto (ENV &env, PARAM& param, const point_t &pt) {}
-  static void line (ENV &env, PARAM& param, const point_t &pt1) {}
-  static void curve (ENV &env, PARAM& param, const point_t &pt1, const point_t &pt2, const point_t &pt3) {}
-  static void hflex (ENV &env, PARAM& param) {}
-  static void flex (ENV &env, PARAM& param) {}
-  static void hflex1 (ENV &env, PARAM& param) {}
-  static void flex1 (ENV &env, PARAM& param) {}
+  স্থির শূন্য rmoveto (ENV &env, PARAM& param) {}
+  স্থির শূন্য hmoveto (ENV &env, PARAM& param) {}
+  স্থির শূন্য vmoveto (ENV &env, PARAM& param) {}
+  স্থির শূন্য rlineto (ENV &env, PARAM& param) {}
+  স্থির শূন্য hlineto (ENV &env, PARAM& param) {}
+  স্থির শূন্য vlineto (ENV &env, PARAM& param) {}
+  স্থির শূন্য rrcurveto (ENV &env, PARAM& param) {}
+  স্থির শূন্য rcurveline (ENV &env, PARAM& param) {}
+  স্থির শূন্য rlinecurve (ENV &env, PARAM& param) {}
+  স্থির শূন্য vvcurveto (ENV &env, PARAM& param) {}
+  স্থির শূন্য hhcurveto (ENV &env, PARAM& param) {}
+  স্থির শূন্য vhcurveto (ENV &env, PARAM& param) {}
+  স্থির শূন্য hvcurveto (ENV &env, PARAM& param) {}
+  স্থির শূন্য moveto (ENV &env, PARAM& param, ধ্রুব point_t &pt) {}
+  স্থির শূন্য সারি (ENV &env, PARAM& param, ধ্রুব point_t &pt1) {}
+  স্থির শূন্য curve (ENV &env, PARAM& param, ধ্রুব point_t &pt1, ধ্রুব point_t &pt2, ধ্রুব point_t &pt3) {}
+  স্থির শূন্য hflex (ENV &env, PARAM& param) {}
+  স্থির শূন্য flex (ENV &env, PARAM& param) {}
+  স্থির শূন্য hflex1 (ENV &env, PARAM& param) {}
+  স্থির শূন্য flex1 (ENV &env, PARAM& param) {}
 };
 
 template <typename ARG, typename OPSET, typename ENV, typename PARAM, typename PATH=path_procs_null_t<ENV, PARAM>>
-struct cs_opset_t : opset_t<ARG>
+সংরচনা cs_opset_t : opset_t<ARG>
 {
-  static void process_op (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য process_op (op_code_t op, ENV &env, PARAM& param)
   {
-    switch (op) {
+    বিকল্প (op) {
 
-      case OpCode_return:
+      পক্ষ OpCode_return:
 	env.return_from_subr ();
-	break;
-      case OpCode_endchar:
+	ভঙ্গ;
+      পক্ষ OpCode_endchar:
 	OPSET::check_width (op, env, param);
-	env.set_endchar (true);
+	env.set_endchar (সত্য);
 	OPSET::flush_args_and_op (op, env, param);
-	break;
+	ভঙ্গ;
 
-      case OpCode_fixedcs:
-	env.argStack.push_fixed_from_substr (env.str_ref);
-	break;
+      পক্ষ OpCode_fixedcs:
+	env.arg_স্তূপ.ঠেলো_fixed_from_substr (env.str_ref);
+	ভঙ্গ;
 
-      case OpCode_callsubr:
+      পক্ষ OpCode_callsubr:
 	env.call_subr (env.localSubrs, CSType_LocalSubr);
-	break;
+	ভঙ্গ;
 
-      case OpCode_callgsubr:
+      পক্ষ OpCode_callgsubr:
 	env.call_subr (env.globalSubrs, CSType_GlobalSubr);
-	break;
+	ভঙ্গ;
 
-      case OpCode_hstem:
-      case OpCode_hstemhm:
+      পক্ষ OpCode_hstem:
+      পক্ষ OpCode_hstemhm:
 	OPSET::check_width (op, env, param);
 	OPSET::process_hstem (op, env, param);
-	break;
-      case OpCode_vstem:
-      case OpCode_vstemhm:
+	ভঙ্গ;
+      পক্ষ OpCode_vstem:
+      পক্ষ OpCode_vstemhm:
 	OPSET::check_width (op, env, param);
 	OPSET::process_vstem (op, env, param);
-	break;
-      case OpCode_hintmask:
-      case OpCode_cntrmask:
+	ভঙ্গ;
+      পক্ষ OpCode_hintmask:
+      পক্ষ OpCode_cntrmask:
 	OPSET::check_width (op, env, param);
 	OPSET::process_hintmask (op, env, param);
-	break;
-      case OpCode_rmoveto:
+	ভঙ্গ;
+      পক্ষ OpCode_rmoveto:
 	OPSET::check_width (op, env, param);
 	PATH::rmoveto (env, param);
 	OPSET::process_post_move (op, env, param);
-	break;
-      case OpCode_hmoveto:
+	ভঙ্গ;
+      পক্ষ OpCode_hmoveto:
 	OPSET::check_width (op, env, param);
 	PATH::hmoveto (env, param);
 	OPSET::process_post_move (op, env, param);
-	break;
-      case OpCode_vmoveto:
+	ভঙ্গ;
+      পক্ষ OpCode_vmoveto:
 	OPSET::check_width (op, env, param);
 	PATH::vmoveto (env, param);
 	OPSET::process_post_move (op, env, param);
-	break;
-      case OpCode_rlineto:
+	ভঙ্গ;
+      পক্ষ OpCode_rlineto:
 	PATH::rlineto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_hlineto:
+	ভঙ্গ;
+      পক্ষ OpCode_hlineto:
 	PATH::hlineto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_vlineto:
+	ভঙ্গ;
+      পক্ষ OpCode_vlineto:
 	PATH::vlineto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_rrcurveto:
+	ভঙ্গ;
+      পক্ষ OpCode_rrcurveto:
 	PATH::rrcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_rcurveline:
+	ভঙ্গ;
+      পক্ষ OpCode_rcurveline:
 	PATH::rcurveline (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_rlinecurve:
+	ভঙ্গ;
+      পক্ষ OpCode_rlinecurve:
 	PATH::rlinecurve (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_vvcurveto:
+	ভঙ্গ;
+      পক্ষ OpCode_vvcurveto:
 	PATH::vvcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_hhcurveto:
+	ভঙ্গ;
+      পক্ষ OpCode_hhcurveto:
 	PATH::hhcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_vhcurveto:
+	ভঙ্গ;
+      পক্ষ OpCode_vhcurveto:
 	PATH::vhcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_hvcurveto:
+	ভঙ্গ;
+      পক্ষ OpCode_hvcurveto:
 	PATH::hvcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
+	ভঙ্গ;
 
-      case OpCode_hflex:
+      পক্ষ OpCode_hflex:
 	PATH::hflex (env, param);
 	OPSET::process_post_flex (op, env, param);
-	break;
+	ভঙ্গ;
 
-      case OpCode_flex:
+      পক্ষ OpCode_flex:
 	PATH::flex (env, param);
 	OPSET::process_post_flex (op, env, param);
-	break;
+	ভঙ্গ;
 
-      case OpCode_hflex1:
+      পক্ষ OpCode_hflex1:
 	PATH::hflex1 (env, param);
 	OPSET::process_post_flex (op, env, param);
-	break;
+	ভঙ্গ;
 
-      case OpCode_flex1:
+      পক্ষ OpCode_flex1:
 	PATH::flex1 (env, param);
 	OPSET::process_post_flex (op, env, param);
-	break;
+	ভঙ্গ;
 
-      default:
+      স্বভাব:
 	SUPER::process_op (op, env);
-	break;
+	ভঙ্গ;
     }
   }
 
-  static void process_hstem (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য process_hstem (op_code_t op, ENV &env, PARAM& param)
   {
-    env.hstem_count += env.argStack.get_count () / 2;
+    env.hstem_গুনতি += env.arg_স্তূপ.get_গুনতি () / 2;
     OPSET::flush_args_and_op (op, env, param);
   }
 
-  static void process_vstem (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য process_vstem (op_code_t op, ENV &env, PARAM& param)
   {
-    env.vstem_count += env.argStack.get_count () / 2;
+    env.vstem_গুনতি += env.arg_স্তূপ.get_গুনতি () / 2;
     OPSET::flush_args_and_op (op, env, param);
   }
 
-  static void process_hintmask (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য process_hintmask (op_code_t op, ENV &env, PARAM& param)
   {
     env.determine_hintmask_size ();
-    if (likely (env.str_ref.avail (env.hintmask_size)))
+    যদি (likely (env.str_ref.avail (env.hintmask_size)))
     {
       OPSET::flush_hintmask (op, env, param);
       env.str_ref.inc (env.hintmask_size);
     }
   }
 
-  static void process_post_flex (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য process_post_flex (op_code_t op, ENV &env, PARAM& param)
   {
     OPSET::flush_args_and_op (op, env, param);
   }
 
-  static void check_width (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য check_width (op_code_t op, ENV &env, PARAM& param)
   {}
 
-  static void process_post_move (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য process_post_move (op_code_t op, ENV &env, PARAM& param)
   {
-    if (!env.seen_moveto)
+    যদি (!env.seen_moveto)
     {
       env.determine_hintmask_size ();
-      env.seen_moveto = true;
+      env.seen_moveto = সত্য;
     }
     OPSET::flush_args_and_op (op, env, param);
   }
 
-  static void process_post_path (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য process_post_path (op_code_t op, ENV &env, PARAM& param)
   {
     OPSET::flush_args_and_op (op, env, param);
   }
 
-  static void flush_args_and_op (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য flush_args_and_op (op_code_t op, ENV &env, PARAM& param)
   {
     OPSET::flush_args (env, param);
     OPSET::flush_op (op, env, param);
   }
 
-  static void flush_args (ENV &env, PARAM& param)
+  স্থির শূন্য flush_args (ENV &env, PARAM& param)
   {
-    env.pop_n_args (env.argStack.get_count ());
+    env.বের_করো_n_args (env.arg_স্তূপ.get_গুনতি ());
   }
 
-  static void flush_op (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য flush_op (op_code_t op, ENV &env, PARAM& param)
   {
   }
 
-  static void flush_hintmask (op_code_t op, ENV &env, PARAM& param)
+  স্থির শূন্য flush_hintmask (op_code_t op, ENV &env, PARAM& param)
   {
     OPSET::flush_args_and_op (op, env, param);
   }
 
-  static bool is_number_op (op_code_t op)
+  স্থির তার্কিক is_সংখ্যা_op (op_code_t op)
   {
-    switch (op)
+    বিকল্প (op)
     {
-      case OpCode_shortint:
-      case OpCode_fixedcs:
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	return true;
+      পক্ষ OpCode_shortint:
+      পক্ষ OpCode_fixedcs:
+      পক্ষ OpCode_TwoBytePosInt0: পক্ষ OpCode_TwoBytePosInt1:
+      পক্ষ OpCode_TwoBytePosInt2: পক্ষ OpCode_TwoBytePosInt3:
+      পক্ষ OpCode_TwoByteNegInt0: পক্ষ OpCode_TwoByteNegInt1:
+      পক্ষ OpCode_TwoByteNegInt2: পক্ষ OpCode_TwoByteNegInt3:
+	প্রত্যাগম সত্য;
 
-      default:
+      স্বভাব:
 	/* 1-byte integer */
-	return (OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast);
+	প্রত্যাগম (OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast);
     }
   }
 
-  protected:
-  typedef opset_t<ARG>  SUPER;
+  রক্ষিত:
+  প্রকারনির্দেশ opset_t<ARG>  SUPER;
 };
 
 template <typename PATH, typename ENV, typename PARAM>
-struct path_procs_t
+সংরচনা path_procs_t
 {
-  static void rmoveto (ENV &env, PARAM& param)
+  স্থির শূন্য rmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    const number_t &dy = env.pop_arg ();
-    const number_t &dx = env.pop_arg ();
+    ধ্রুব সংখ্যা_t &dy = env.বের_করো_arg ();
+    ধ্রুব সংখ্যা_t &dx = env.বের_করো_arg ();
     pt1.move (dx, dy);
     PATH::moveto (env, param, pt1);
   }
 
-  static void hmoveto (ENV &env, PARAM& param)
+  স্থির শূন্য hmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    pt1.move_x (env.pop_arg ());
+    pt1.move_x (env.বের_করো_arg ());
     PATH::moveto (env, param, pt1);
   }
 
-  static void vmoveto (ENV &env, PARAM& param)
+  স্থির শূন্য vmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    pt1.move_y (env.pop_arg ());
+    pt1.move_y (env.বের_করো_arg ());
     PATH::moveto (env, param, pt1);
   }
 
-  static void rlineto (ENV &env, PARAM& param)
+  স্থির শূন্য rlineto (ENV &env, PARAM& param)
   {
-    for (unsigned int i = 0; i + 2 <= env.argStack.get_count (); i += 2)
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i + 2 <= env.arg_স্তূপ.get_গুনতি (); i += 2)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::সারি (env, param, pt1);
     }
   }
 
-  static void hlineto (ENV &env, PARAM& param)
+  স্থির শূন্য hlineto (ENV &env, PARAM& param)
   {
     point_t pt1;
-    unsigned int i = 0;
-    for (; i + 2 <= env.argStack.get_count (); i += 2)
+    unsigned পূর্ণাঙ্ক i = 0;
+    প্রতি (; i + 2 <= env.arg_স্তূপ.get_গুনতি (); i += 2)
     {
       pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::সারি (env, param, pt1);
       pt1.move_y (env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::সারি (env, param, pt1);
     }
-    if (i < env.argStack.get_count ())
+    যদি (i < env.arg_স্তূপ.get_গুনতি ())
     {
       pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::সারি (env, param, pt1);
     }
   }
 
-  static void vlineto (ENV &env, PARAM& param)
+  স্থির শূন্য vlineto (ENV &env, PARAM& param)
   {
     point_t pt1;
-    unsigned int i = 0;
-    for (; i + 2 <= env.argStack.get_count (); i += 2)
+    unsigned পূর্ণাঙ্ক i = 0;
+    প্রতি (; i + 2 <= env.arg_স্তূপ.get_গুনতি (); i += 2)
     {
       pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::সারি (env, param, pt1);
       pt1.move_x (env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::সারি (env, param, pt1);
     }
-    if (i < env.argStack.get_count ())
+    যদি (i < env.arg_স্তূপ.get_গুনতি ())
     {
       pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::সারি (env, param, pt1);
     }
   }
 
-  static void rrcurveto (ENV &env, PARAM& param)
+  স্থির শূন্য rrcurveto (ENV &env, PARAM& param)
   {
-    for (unsigned int i = 0; i + 6 <= env.argStack.get_count (); i += 6)
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i + 6 <= env.arg_স্তূপ.get_গুনতি (); i += 6)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -545,15 +545,15 @@ struct path_procs_t
     }
   }
 
-  static void rcurveline (ENV &env, PARAM& param)
+  স্থির শূন্য rcurveline (ENV &env, PARAM& param)
   {
-    unsigned int arg_count = env.argStack.get_count ();
-    if (unlikely (arg_count < 8))
-      return;
+    unsigned পূর্ণাঙ্ক arg_গুনতি = env.arg_স্তূপ.get_গুনতি ();
+    যদি (unlikely (arg_গুনতি < 8))
+      প্রত্যাগম;
 
-    unsigned int i = 0;
-    unsigned int curve_limit = arg_count - 2;
-    for (; i + 6 <= curve_limit; i += 6)
+    unsigned পূর্ণাঙ্ক i = 0;
+    unsigned পূর্ণাঙ্ক curve_limit = arg_গুনতি - 2;
+    প্রতি (; i + 6 <= curve_limit; i += 6)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -566,22 +566,22 @@ struct path_procs_t
 
     point_t pt1 = env.get_pt ();
     pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-    PATH::line (env, param, pt1);
+    PATH::সারি (env, param, pt1);
   }
 
-  static void rlinecurve (ENV &env, PARAM& param)
+  স্থির শূন্য rlinecurve (ENV &env, PARAM& param)
   {
-    unsigned int arg_count = env.argStack.get_count ();
-    if (unlikely (arg_count < 8))
-      return;
+    unsigned পূর্ণাঙ্ক arg_গুনতি = env.arg_স্তূপ.get_গুনতি ();
+    যদি (unlikely (arg_গুনতি < 8))
+      প্রত্যাগম;
 
-    unsigned int i = 0;
-    unsigned int line_limit = arg_count - 6;
-    for (; i + 2 <= line_limit; i += 2)
+    unsigned পূর্ণাঙ্ক i = 0;
+    unsigned পূর্ণাঙ্ক সারি_limit = arg_গুনতি - 6;
+    প্রতি (; i + 2 <= সারি_limit; i += 2)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::সারি (env, param, pt1);
     }
 
     point_t pt1 = env.get_pt ();
@@ -593,13 +593,13 @@ struct path_procs_t
     PATH::curve (env, param, pt1, pt2, pt3);
   }
 
-  static void vvcurveto (ENV &env, PARAM& param)
+  স্থির শূন্য vvcurveto (ENV &env, PARAM& param)
   {
-    unsigned int i = 0;
+    unsigned পূর্ণাঙ্ক i = 0;
     point_t pt1 = env.get_pt ();
-    if ((env.argStack.get_count () & 1) != 0)
+    যদি ((env.arg_স্তূপ.get_গুনতি () & 1) != 0)
       pt1.move_x (env.eval_arg (i++));
-    for (; i + 4 <= env.argStack.get_count (); i += 4)
+    প্রতি (; i + 4 <= env.arg_স্তূপ.get_গুনতি (); i += 4)
     {
       pt1.move_y (env.eval_arg (i));
       point_t pt2 = pt1;
@@ -611,13 +611,13 @@ struct path_procs_t
     }
   }
 
-  static void hhcurveto (ENV &env, PARAM& param)
+  স্থির শূন্য hhcurveto (ENV &env, PARAM& param)
   {
-    unsigned int i = 0;
+    unsigned পূর্ণাঙ্ক i = 0;
     point_t pt1 = env.get_pt ();
-    if ((env.argStack.get_count () & 1) != 0)
+    যদি ((env.arg_স্তূপ.get_গুনতি () & 1) != 0)
       pt1.move_y (env.eval_arg (i++));
-    for (; i + 4 <= env.argStack.get_count (); i += 4)
+    প্রতি (; i + 4 <= env.arg_স্তূপ.get_গুনতি (); i += 4)
     {
       pt1.move_x (env.eval_arg (i));
       point_t pt2 = pt1;
@@ -629,11 +629,11 @@ struct path_procs_t
     }
   }
 
-  static void vhcurveto (ENV &env, PARAM& param)
+  স্থির শূন্য vhcurveto (ENV &env, PARAM& param)
   {
     point_t pt1, pt2, pt3;
-    unsigned int i = 0;
-    if ((env.argStack.get_count () % 8) >= 4)
+    unsigned পূর্ণাঙ্ক i = 0;
+    যদি ((env.arg_স্তূপ.get_গুনতি () % 8) >= 4)
     {
       point_t pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
@@ -643,7 +643,7 @@ struct path_procs_t
       pt3.move_x (env.eval_arg (i+3));
       i += 4;
 
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      প্রতি (; i + 8 <= env.arg_স্তূপ.get_গুনতি (); i += 8)
       {
 	PATH::curve (env, param, pt1, pt2, pt3);
 	pt1 = env.get_pt ();
@@ -661,13 +661,13 @@ struct path_procs_t
 	pt3 = pt2;
 	pt3.move_x (env.eval_arg (i+7));
       }
-      if (i < env.argStack.get_count ())
+      যদি (i < env.arg_স্তূপ.get_গুনতি ())
 	pt3.move_y (env.eval_arg (i));
       PATH::curve (env, param, pt1, pt2, pt3);
     }
-    else
+    অন্যথা
     {
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      প্রতি (; i + 8 <= env.arg_স্তূপ.get_গুনতি (); i += 8)
       {
 	pt1 = env.get_pt ();
 	pt1.move_y (env.eval_arg (i));
@@ -683,18 +683,18 @@ struct path_procs_t
 	pt2.move (env.eval_arg (i+5), env.eval_arg (i+6));
 	pt3 = pt2;
 	pt3.move_y (env.eval_arg (i+7));
-	if ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
+	যদি ((env.arg_স্তূপ.get_গুনতি () - i < 16) && ((env.arg_স্তূপ.get_গুনতি () & 1) != 0))
 	  pt3.move_x (env.eval_arg (i+8));
 	PATH::curve (env, param, pt1, pt2, pt3);
       }
     }
   }
 
-  static void hvcurveto (ENV &env, PARAM& param)
+  স্থির শূন্য hvcurveto (ENV &env, PARAM& param)
   {
     point_t pt1, pt2, pt3;
-    unsigned int i = 0;
-    if ((env.argStack.get_count () % 8) >= 4)
+    unsigned পূর্ণাঙ্ক i = 0;
+    যদি ((env.arg_স্তূপ.get_গুনতি () % 8) >= 4)
     {
       point_t pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
@@ -704,7 +704,7 @@ struct path_procs_t
       pt3.move_y (env.eval_arg (i+3));
       i += 4;
 
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      প্রতি (; i + 8 <= env.arg_স্তূপ.get_গুনতি (); i += 8)
       {
 	PATH::curve (env, param, pt1, pt2, pt3);
 	pt1 = env.get_pt ();
@@ -722,13 +722,13 @@ struct path_procs_t
 	pt3 = pt2;
 	pt3.move_y (env.eval_arg (i+7));
       }
-      if (i < env.argStack.get_count ())
+      যদি (i < env.arg_স্তূপ.get_গুনতি ())
 	pt3.move_x (env.eval_arg (i));
       PATH::curve (env, param, pt1, pt2, pt3);
     }
-    else
+    অন্যথা
     {
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      প্রতি (; i + 8 <= env.arg_স্তূপ.get_গুনতি (); i += 8)
       {
 	pt1 = env.get_pt ();
 	pt1.move_x (env.eval_arg (i));
@@ -744,7 +744,7 @@ struct path_procs_t
 	pt2.move (env.eval_arg (i+5), env.eval_arg (i+6));
 	pt3 = pt2;
 	pt3.move_x (env.eval_arg (i+7));
-	if ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
+	যদি ((env.arg_স্তূপ.get_গুনতি () - i < 16) && ((env.arg_স্তূপ.get_গুনতি () & 1) != 0))
 	  pt3.move_y (env.eval_arg (i+8));
 	PATH::curve (env, param, pt1, pt2, pt3);
       }
@@ -752,18 +752,18 @@ struct path_procs_t
   }
 
   /* default actions to be overridden */
-  static void moveto (ENV &env, PARAM& param, const point_t &pt)
+  স্থির শূন্য moveto (ENV &env, PARAM& param, ধ্রুব point_t &pt)
   { env.moveto (pt); }
 
-  static void line (ENV &env, PARAM& param, const point_t &pt1)
+  স্থির শূন্য সারি (ENV &env, PARAM& param, ধ্রুব point_t &pt1)
   { PATH::moveto (env, param, pt1); }
 
-  static void curve (ENV &env, PARAM& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  স্থির শূন্য curve (ENV &env, PARAM& param, ধ্রুব point_t &pt1, ধ্রুব point_t &pt2, ধ্রুব point_t &pt3)
   { PATH::moveto (env, param, pt3); }
 
-  static void hflex (ENV &env, PARAM& param)
+  স্থির শূন্য hflex (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 7))
+    যদি (likely (env.arg_স্তূপ.get_গুনতি () == 7))
     {
       point_t pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (0));
@@ -781,13 +781,13 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    অন্যথা
       env.set_error ();
   }
 
-  static void flex (ENV &env, PARAM& param)
+  স্থির শূন্য flex (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 13))
+    যদি (likely (env.arg_স্তূপ.get_গুনতি () == 13))
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (0), env.eval_arg (1));
@@ -804,13 +804,13 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    অন্যথা
       env.set_error ();
   }
 
-  static void hflex1 (ENV &env, PARAM& param)
+  স্থির শূন্য hflex1 (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 9))
+    যদি (likely (env.arg_স্তূপ.get_গুনতি () == 9))
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (0), env.eval_arg (1));
@@ -828,16 +828,16 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    অন্যথা
       env.set_error ();
   }
 
-  static void flex1 (ENV &env, PARAM& param)
+  স্থির শূন্য flex1 (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 11))
+    যদি (likely (env.arg_স্তূপ.get_গুনতি () == 11))
     {
       point_t d;
-      for (unsigned int i = 0; i < 10; i += 2)
+      প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < 10; i += 2)
 	d.move (env.eval_arg (i), env.eval_arg (i+1));
 
       point_t pt1 = env.get_pt ();
@@ -852,12 +852,12 @@ struct path_procs_t
       pt5.move (env.eval_arg (8), env.eval_arg (9));
       point_t pt6 = pt5;
 
-      if (fabs (d.x.to_real ()) > fabs (d.y.to_real ()))
+      যদি (fabs (d.x.to_real ()) > fabs (d.y.to_real ()))
       {
 	pt6.move_x (env.eval_arg (10));
 	pt6.y = env.get_pt ().y;
       }
-      else
+      অন্যথা
       {
 	pt6.x = env.get_pt ().x;
 	pt6.move_y (env.eval_arg (10));
@@ -865,14 +865,14 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    অন্যথা
       env.set_error ();
   }
 
-  protected:
-  static void curve2 (ENV &env, PARAM& param,
-		      const point_t &pt1, const point_t &pt2, const point_t &pt3,
-		      const point_t &pt4, const point_t &pt5, const point_t &pt6)
+  রক্ষিত:
+  স্থির শূন্য curve2 (ENV &env, PARAM& param,
+		      ধ্রুব point_t &pt1, ধ্রুব point_t &pt2, ধ্রুব point_t &pt3,
+		      ধ্রুব point_t &pt4, ধ্রুব point_t &pt5, ধ্রুব point_t &pt6)
   {
     PATH::curve (env, param, pt1, pt2, pt3);
     PATH::curve (env, param, pt4, pt5, pt6);
@@ -880,13 +880,13 @@ struct path_procs_t
 };
 
 template <typename ENV, typename OPSET, typename PARAM>
-struct cs_interpreter_t : interpreter_t<ENV>
+সংরচনা cs_interpreter_t : interpreter_t<ENV>
 {
   cs_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param, int64_t *budget = nullptr)
+  তার্কিক interpret (PARAM& param, int64_t *budget = nullptr)
   {
-    SUPER::env.set_endchar (false);
+    SUPER::env.set_endchar (অসত্য);
     SUPER::env.set_budget (budget);
 
     /* Cap the operator count by the caller's remaining budget so the single
@@ -899,32 +899,32 @@ struct cs_interpreter_t : interpreter_t<ENV>
     unsigned max_ops = (unsigned) hb_clamp (remaining, (int64_t) 0, (int64_t) HB_CFF_MAX_OPS);
     unsigned start_ops = max_ops;
 
-    bool ret = true;
-    if (likely (max_ops))
-      for (;;) {
+    তার্কিক ret = সত্য;
+    যদি (likely (max_ops))
+      প্রতি (;;) {
 	OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-	if (unlikely (SUPER::env.in_error () || !--max_ops))
+	যদি (unlikely (SUPER::env.in_error () || !--max_ops))
 	{
 	  SUPER::env.set_error ();
-	  ret = false;
-	  break;
+	  ret = অসত্য;
+	  ভঙ্গ;
 	}
-	if (SUPER::env.is_endchar ())
-	  break;
+	যদি (SUPER::env.is_endchar ())
+	  ভঙ্গ;
       }
-    else
+    অন্যথা
     {
       SUPER::env.set_error ();
-      ret = false;
+      ret = অসত্য;
     }
 
-    if (budget) *budget -= (int64_t) (start_ops - max_ops);
+    যদি (budget) *budget -= (int64_t) (start_ops - max_ops);
 
-    return ret;
+    প্রত্যাগম ret;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  গুপ্ত:
+  প্রকারনির্দেশ interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */

@@ -5,42 +5,42 @@ Input is a tab separated list of unicode ranges from the otspec
 (https://docs.microsoft.com/en-us/typography/opentype/spec/os2#ur).
 """
 
-import re
-import sys
+আনযন re
+আনযন sys
 
 
 print ("""static OS2Range _hb_os2_unicode_ranges[] =
 {""")
 
 args = sys.argv[1:]
-input_file = args[0]
+প্রবেশ_file = args[0]
 
-with open (input_file, mode="r", encoding="utf-8") as f:
+with open (প্রবেশ_file, mode="r", encoding="utf-8") ইব f:
 
   all_ranges = []
   current_bit = 0
-  while True:
-    line = f.readline().strip()
-    if not line:
-      break
-    fields = re.split(r'\t+', line)
-    if len(fields) == 3:
+  যাবত্ সত্য:
+    সারি = f.readline().strip()
+    যদি ন সারি:
+      ভঙ্গ
+    fields = re.split(r'\t+', সারি)
+    যদি len(fields) == 3:
       current_bit = fields[0]
       fields = fields[1:]
-    elif len(fields) > 3:
-      raise Exception("bad input :(.")
+    নোচেদ্যদি len(fields) > 3:
+      উত্থাপয Exception("bad input :(.")
 
     name = fields[0]
     ranges = re.split("-", fields[1])
-    if len(ranges) != 2:
-      raise Exception("bad input :(.")
+    যদি len(ranges) != 2:
+      উত্থাপয Exception("bad input :(.")
 
-    v = tuple((int(ranges[0], 16), int(ranges[1], 16), int(current_bit), name))
+    v = tuple((পূর্ণাঙ্ক(ranges[0], 16), পূর্ণাঙ্ক(ranges[1], 16), পূর্ণাঙ্ক(current_bit), name))
     all_ranges.append(v)
 
-all_ranges = sorted(all_ranges, key=lambda t: t[0])
+all_ranges = sorted(all_ranges, চাবি_2=অনামন্ t: t[0])
 
-for ranges in all_ranges:
+প্রতি ranges অন্তঃ all_ranges:
   start = ("0x%X" % ranges[0]).rjust(8)
   end = ("0x%X" % ranges[1]).rjust(8)
   bit = ("%s" % ranges[2]).rjust(3)

@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 #ifndef HB_NO_VAR
 
-#include "hb-ot-var.h"
+#অন্তর্ভাব "hb-ot-var.h"
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
+#অন্তর্ভাব "hb-ot-var-avar-table.hh"
+#অন্তর্ভাব "hb-ot-var-fvar-table.hh"
+#অন্তর্ভাব "hb-ot-var-mvar-table.hh"
 
 
 /**
@@ -63,7 +63,7 @@
 hb_bool_t
 hb_ot_var_has_data (hb_face_t *face)
 {
-  return face->table.fvar->has_data ();
+  প্রত্যাগম face->table.fvar->has_data ();
 }
 
 /**
@@ -76,10 +76,10 @@ hb_ot_var_has_data (hb_face_t *face)
  *
  * Since: 1.4.2
  **/
-unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face)
+unsigned পূর্ণাঙ্ক
+hb_ot_var_get_axis_গুনতি (hb_face_t *face)
 {
-  return face->table.fvar->get_axis_count ();
+  প্রত্যাগম face->table.fvar->get_axis_গুনতি ();
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -97,13 +97,13 @@ hb_ot_var_get_axis_count (hb_face_t *face)
  * Since: 1.4.2
  * Deprecated: 2.2.0: use hb_ot_var_get_axis_infos() instead
  **/
-unsigned int
+unsigned পূর্ণাঙ্ক
 hb_ot_var_get_axes (hb_face_t        *face,
-		    unsigned int      start_offset,
-		    unsigned int     *axes_count /* IN/OUT */,
+		    unsigned পূর্ণাঙ্ক      start_offset,
+		    unsigned পূর্ণাঙ্ক     *axes_গুনতি /* IN/OUT */,
 		    hb_ot_var_axis_t *axes_array /* OUT */)
 {
-  return face->table.fvar->get_axes_deprecated (start_offset, axes_count, axes_array);
+  প্রত্যাগম face->table.fvar->get_axes_deprecated (start_offset, axes_গুনতি, axes_array);
 }
 
 /**
@@ -122,10 +122,10 @@ hb_ot_var_get_axes (hb_face_t        *face,
 hb_bool_t
 hb_ot_var_find_axis (hb_face_t        *face,
 		     hb_tag_t          axis_tag,
-		     unsigned int     *axis_index,
+		     unsigned পূর্ণাঙ্ক     *axis_index,
 		     hb_ot_var_axis_t *axis_info)
 {
-  return face->table.fvar->find_axis_deprecated (axis_tag, axis_index, axis_info);
+  প্রত্যাগম face->table.fvar->find_axis_deprecated (axis_tag, axis_index, axis_info);
 }
 #endif
 
@@ -144,13 +144,13 @@ hb_ot_var_find_axis (hb_face_t        *face,
  *
  * Since: 2.2.0
  **/
-HB_EXTERN unsigned int
+HB_EXTERN unsigned পূর্ণাঙ্ক
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
+			  unsigned পূর্ণাঙ্ক           start_offset,
+			  unsigned পূর্ণাঙ্ক          *axes_গুনতি /* IN/OUT */,
 			  hb_ot_var_axis_info_t *axes_array /* OUT */)
 {
-  return face->table.fvar->get_axis_infos (start_offset, axes_count, axes_array);
+  প্রত্যাগম face->table.fvar->get_axis_infos (start_offset, axes_গুনতি, axes_array);
 }
 
 /**
@@ -171,7 +171,7 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
 			  hb_tag_t               axis_tag,
 			  hb_ot_var_axis_info_t *axis_info)
 {
-  return face->table.fvar->find_axis_info (axis_tag, axis_info);
+  প্রত্যাগম face->table.fvar->find_axis_info (axis_tag, axis_info);
 }
 
 
@@ -189,10 +189,10 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  *
  * Since: 2.2.0
  **/
-unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face)
+unsigned পূর্ণাঙ্ক
+hb_ot_var_get_named_instance_গুনতি (hb_face_t *face)
 {
-  return face->table.fvar->get_instance_count ();
+  প্রত্যাগম face->table.fvar->get_instance_গুনতি ();
 }
 
 /**
@@ -209,9 +209,9 @@ hb_ot_var_get_named_instance_count (hb_face_t *face)
  **/
 hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index)
+						unsigned পূর্ণাঙ্ক instance_index)
 {
-  return face->table.fvar->get_instance_subfamily_name_id (instance_index);
+  প্রত্যাগম face->table.fvar->get_instance_subfamily_name_id (instance_index);
 }
 
 /**
@@ -228,9 +228,9 @@ hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
  **/
 hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index)
+						unsigned পূর্ণাঙ্ক instance_index)
 {
-  return face->table.fvar->get_instance_postscript_name_id (instance_index);
+  প্রত্যাগম face->table.fvar->get_instance_postscript_name_id (instance_index);
 }
 
 /**
@@ -248,13 +248,13 @@ hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
  *
  * Since: 2.2.0
  **/
-unsigned int
+unsigned পূর্ণাঙ্ক
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */)
+					    unsigned পূর্ণাঙ্ক  instance_index,
+					    unsigned পূর্ণাঙ্ক *coords_length, /* IN/OUT */
+					    ভিন্ন        *coords         /* OUT */)
 {
-  return face->table.fvar->get_instance_coords (instance_index, coords_length, coords);
+  প্রত্যাগম face->table.fvar->get_instance_coords (instance_index, coords_length, coords);
 }
 
 
@@ -270,29 +270,29 @@ hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
  *
  * Since: 1.4.2
  **/
-void
+শূন্য
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length)
+				ধ্রুব hb_variation_t *variations, /* IN */
+				unsigned পূর্ণাঙ্ক          variations_length,
+				পূর্ণাঙ্ক                  *coords, /* OUT */
+				unsigned পূর্ণাঙ্ক          coords_length)
 {
-  for (unsigned int i = 0; i < coords_length; i++)
+  প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < coords_length; i++)
     coords[i] = 0;
 
-  const OT::fvar &fvar = *face->table.fvar;
-  for (unsigned int i = 0; i < variations_length; i++)
+  ধ্রুব OT::fvar &fvar = *face->table.fvar;
+  প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < variations_length; i++)
   {
     hb_ot_var_axis_info_t info;
-    if (hb_ot_var_find_axis_info (face, variations[i].tag, &info) &&
+    যদি (hb_ot_var_find_axis_info (face, variations[i].tag, &info) &&
 	info.axis_index < coords_length)
-      coords[info.axis_index] = roundf (fvar.normalize_axis_value (info.axis_index, variations[i].value) * 65536.0f);
+      coords[info.axis_index] = roundf (fvar.normalize_axis_মান (info.axis_index, variations[i].value) * 65536.0f);
   }
 
   face->table.avar->map_coords_16_16 (coords, coords_length);
 
   // Round to 2.14
-  for (unsigned i = 0; i < coords_length; i++)
+  প্রতি (unsigned i = 0; i < coords_length; i++)
     coords[i] = (coords[i] + 2) >> 2;
 }
 
@@ -319,20 +319,20 @@ hb_ot_var_normalize_variations (hb_face_t            *face,
  *
  * Since: 1.4.2
  **/
-void
+শূন্য
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */)
+			    unsigned পূর্ণাঙ্ক coords_length,
+			    ধ্রুব ভিন্ন *design_coords, /* IN */
+			    পূর্ণাঙ্ক *normalized_coords /* OUT */)
 {
-  const OT::fvar &fvar = *face->table.fvar;
-  for (unsigned int i = 0; i < coords_length; i++)
-    normalized_coords[i] = roundf (fvar.normalize_axis_value (i, design_coords[i]) * 65536.0f);
+  ধ্রুব OT::fvar &fvar = *face->table.fvar;
+  প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < coords_length; i++)
+    normalized_coords[i] = roundf (fvar.normalize_axis_মান (i, design_coords[i]) * 65536.0f);
 
   face->table.avar->map_coords_16_16 (normalized_coords, coords_length);
 
   // Round to 2.14
-  for (unsigned i = 0; i < coords_length; i++)
+  প্রতি (unsigned i = 0; i < coords_length; i++)
     normalized_coords[i] = (normalized_coords[i] + 2) >> 2;
 }
 

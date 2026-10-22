@@ -22,53 +22,53 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-syllabic.hh"
+#অন্তর্ভাব "hb-ot-shaper-syllabic.hh"
 
 
-bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
+তার্কিক
+hb_syllabic_ঢোকাও_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category,
-				   int dottedcircle_position)
+				   unsigned পূর্ণাঙ্ক broken_syllable_type,
+				   unsigned পূর্ণাঙ্ক dottedcircle_category,
+				   পূর্ণাঙ্ক repha_category,
+				   পূর্ণাঙ্ক dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return false;
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
+  যদি (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_ঢোকাও_DOTTED_CIRCLE))
+    প্রত্যাগম অসত্য;
+  যদি (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {
-    if (buffer->messaging ())
-      (void) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
-    return false;
+    যদি (buffer->messaging ())
+      (শূন্য) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
+    প্রত্যাগম অসত্য;
   }
 
-  if (buffer->messaging () &&
+  যদি (buffer->messaging () &&
       !buffer->message (font, "start inserting dotted-circles"))
-    return false;
+    প্রত্যাগম অসত্য;
 
   hb_codepoint_t dottedcircle_glyph;
-  if (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
-    return false;
+  যদি (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
+    প্রত্যাগম অসত্য;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
   dottedcircle.ot_shaper_var_u8_category() = dottedcircle_category;
-  if (dottedcircle_position != -1)
+  যদি (dottedcircle_position != -1)
     dottedcircle.ot_shaper_var_u8_auxiliary() = dottedcircle_position;
   dottedcircle.codepoint = dottedcircle_glyph;
 
   buffer->clear_output ();
 
   buffer->idx = 0;
-  unsigned int last_syllable = 0;
-  while (buffer->idx < buffer->len && buffer->successful)
+  unsigned পূর্ণাঙ্ক last_syllable = 0;
+  যাবত্ (buffer->idx < buffer->len && buffer->successful)
   {
-    unsigned int syllable = buffer->cur().syllable();
-    if (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
+    unsigned পূর্ণাঙ্ক syllable = buffer->cur().syllable();
+    যদি (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
     {
       last_syllable = syllable;
 
@@ -78,34 +78,34 @@ hb_syllabic_insert_dotted_circles (hb_font_t *font,
       ginfo.syllable() = buffer->cur().syllable();
 
       /* Insert dottedcircle after possible Repha. */
-      if (repha_category != -1)
+      যদি (repha_category != -1)
       {
-	while (buffer->idx < buffer->len && buffer->successful &&
+	যাবত্ (buffer->idx < buffer->len && buffer->successful &&
 	       last_syllable == buffer->cur().syllable() &&
 	       buffer->cur().ot_shaper_var_u8_category() == (unsigned) repha_category)
-	  (void) buffer->next_glyph ();
+	  (শূন্য) buffer->next_glyph ();
       }
 
-      (void) buffer->output_info (ginfo);
+      (শূন্য) buffer->output_info (ginfo);
     }
-    else
-      (void) buffer->next_glyph ();
+    অন্যথা
+      (শূন্য) buffer->next_glyph ();
   }
-  buffer->sync ();
+  buffer->সমকাল ();
 
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end inserting dotted-circles");
+  যদি (buffer->messaging ())
+    (শূন্য) buffer->message (font, "end inserting dotted-circles");
 
-  return true;
+  প্রত্যাগম সত্য;
 }
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL তার্কিক
+hb_syllabic_clear_var (ধ্রুব hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
 		       hb_buffer_t *buffer)
 {
   HB_BUFFER_DEALLOCATE_VAR (buffer, syllable);
-  return false;
+  প্রত্যাগম অসত্য;
 }
 
 

@@ -26,174 +26,174 @@
 #ifndef HB_CFF_INTERP_DICT_COMMON_HH
 #define HB_CFF_INTERP_DICT_COMMON_HH
 
-#include "hb-cff-interp-common.hh"
+#অন্তর্ভাব "hb-cff-interp-common.hh"
 
-namespace CFF {
+নামাকাশ CFF {
 
-using namespace OT;
+using নামাকাশ OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+সংরচনা dict_val_t : op_str_t
 {
-  void init () {}
-  void fini () {}
+  শূন্য init () {}
+  শূন্য fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+প্রকারনির্দেশ dict_val_t অঙ্ক_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+template <typename VAL> সংরচনা dict_মানসমূহ_t : parsed_মানসমূহ_t<VAL> {};
 
 template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+সংরচনা শীর্ষ_dict_মানসমূহ_t : dict_মানসমূহ_t<OPSTR>
 {
-  void init ()
+  শূন্য init ()
   {
-    dict_values_t<OPSTR>::init ();
+    dict_মানসমূহ_t<OPSTR>::init ();
     charStringsOffset = 0;
     FDArrayOffset = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  শূন্য fini () { dict_মানসমূহ_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  পূর্ণাঙ্ক  charStringsOffset;
+  পূর্ণাঙ্ক  FDArrayOffset;
 };
 
-struct dict_opset_t : opset_t<number_t>
+সংরচনা dict_opset_t : opset_t<সংখ্যা_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  স্থির শূন্য process_op (op_code_t op, interp_env_t<সংখ্যা_t>& env)
   {
-    switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+    বিকল্প (op) {
+      পক্ষ OpCode_longintdict:  /* 5-byte integer */
+	env.arg_স্তূপ.ঠেলো_longint_from_substr (env.str_ref);
+	ভঙ্গ;
 
-      case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+      পক্ষ OpCode_BCD:  /* real number */
+	env.arg_স্তূপ.ঠেলো_real (parse_bcd (env.str_ref));
+	ভঙ্গ;
 
-      default:
-	opset_t<number_t>::process_op (op, env);
-	break;
+      স্বভাব:
+	opset_t<সংখ্যা_t>::process_op (op, env);
+	ভঙ্গ;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  স্থির দ্বিগুণ parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    যদি (unlikely (str_ref.in_error ())) প্রত্যাগম .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    গণনা Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    বর্ণ buf[32] = {0};
+    unsigned বর্ণ byte = 0;
+    প্রতি (unsigned i = 0, গুনতি = 0; গুনতি < ARRAY_LENGTH (buf); ++i, ++গুনতি)
     {
       unsigned nibble;
-      if (!(i & 1))
+      যদি (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	যদি (unlikely (!str_ref.avail ())) ভঙ্গ;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      অন্যথা
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      যদি (unlikely (nibble == RESERVED)) ভঙ্গ;
+      অন্যথা যদি (nibble == END)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	ধ্রুব বর্ণ *p = buf;
+	দ্বিগুণ pv;
+	যদি (unlikely (!hb_parse_double (&p, p + গুনতি, &pv, সত্য/* whole buffer */)))
+	  ভঙ্গ;
+	প্রত্যাগম pv;
       }
-      else
+      অন্যথা
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	buf[গুনতি] = "0123456789.EE?-?"[nibble];
+	যদি (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++গুনতি;
+	  যদি (unlikely (গুনতি == ARRAY_LENGTH (buf))) ভঙ্গ;
+	  buf[গুনতি] = '-';
 	}
       }
     }
 
     str_ref.set_error ();
-    return .0;
+    প্রত্যাগম .0;
   }
 
-  static bool is_hint_op (op_code_t op)
+  স্থির তার্কিক is_hint_op (op_code_t op)
   {
-    switch (op)
+    বিকল্প (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
-      default:
-	return false;
+      পক্ষ Op_Code_Blue_মানসমূহ:
+      পক্ষ OpCode_OtherBlues:
+      পক্ষ OpCode_FamilyBlues:
+      পক্ষ OpCode_FamilyOtherBlues:
+      পক্ষ OpCode_StemSnapH:
+      পক্ষ OpCode_StemSnapV:
+      পক্ষ OpCode_StdHW:
+      পক্ষ OpCode_StdVW:
+      পক্ষ OpCode_BlueScale:
+      পক্ষ OpCode_BlueShift:
+      পক্ষ OpCode_BlueFuzz:
+      পক্ষ OpCode_ForceBold:
+      পক্ষ OpCode_LanguageGroup:
+      পক্ষ OpCode_ExpansionFactor:
+	প্রত্যাগম সত্য;
+      স্বভাব:
+	প্রত্যাগম অসত্য;
     }
   }
 };
 
 template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+সংরচনা শীর্ষ_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  স্থির শূন্য process_op (op_code_t op, interp_env_t<সংখ্যা_t>& env, শীর্ষ_dict_মানসমূহ_t<VAL> & dictval)
   {
-    switch (op) {
-      case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
+    বিকল্প (op) {
+      পক্ষ OpCode_CharStrings:
+	dictval.charStringsOffset = env.arg_স্তূপ.বের_করো_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
+	ভঙ্গ;
+      পক্ষ OpCode_FDArray:
+	dictval.FDArrayOffset = env.arg_স্তূপ.বের_করো_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
+	ভঙ্গ;
+      পক্ষ OpCode_FontMatrix:
 	env.clear_args ();
-	break;
-      default:
+	ভঙ্গ;
+      স্বভাব:
 	dict_opset_t::process_op (op, env);
-	break;
+	ভঙ্গ;
     }
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+template <typename OPSET, typename PARAM, typename ENV=অঙ্ক_interp_env_t>
+সংরচনা dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param)
+  তার্কিক interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    যাবত্ (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      যদি (unlikely (SUPER::env.in_error ()))
+	প্রত্যাগম অসত্য;
     }
 
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  গুপ্ত:
+  প্রকারনির্দেশ interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */

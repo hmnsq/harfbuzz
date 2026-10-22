@@ -30,18 +30,18 @@
 #ifndef HB_CORETEXT_HH
 #define HB_CORETEXT_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-coretext.h"
+#অন্তর্ভাব "hb-coretext.h"
 
-#include "hb-aat-layout.hh"
+#অন্তর্ভাব "hb-aat-layout.hh"
 
-
-HB_INTERNAL CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int index);
 
 HB_INTERNAL CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index);
+create_cg_font (CFArrayRef ct_font_desc_array, unsigned পূর্ণাঙ্ক index);
+
+HB_INTERNAL CGFontRef
+create_cg_font (hb_blob_t *blob, unsigned পূর্ণাঙ্ক index);
 
 HB_INTERNAL CGFontRef
 create_cg_font (hb_face_t *face);
@@ -51,47 +51,47 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size);
 
 
 template <typename T>
-struct hb_cf_releaser_t
+সংরচনা hb_cf_releaser_t
 {
-  static void release (T obj)
+  স্থির শূন্য release (T obj)
   {
-    if (obj)
+    যদি (obj)
       CFRelease ((CFTypeRef) obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGFontRef>
+সংরচনা hb_cf_releaser_t<CGFontRef>
 {
-  static void release (CGFontRef obj)
+  স্থির শূন্য release (CGFontRef obj)
   {
-    if (obj)
+    যদি (obj)
       CGFontRelease (obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGDataProviderRef>
+সংরচনা hb_cf_releaser_t<CGDataProviderRef>
 {
-  static void release (CGDataProviderRef obj)
+  স্থির শূন্য release (CGDataProviderRef obj)
   {
-    if (obj)
+    যদি (obj)
       CGDataProviderRelease (obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGPathRef>
+সংরচনা hb_cf_releaser_t<CGPathRef>
 {
-  static void release (CGPathRef obj)
+  স্থির শূন্য release (CGPathRef obj)
   {
-    if (obj)
+    যদি (obj)
       CGPathRelease (obj);
   }
 };
 
 template <typename T, typename Releaser = hb_cf_releaser_t<T>>
-struct hb_cf_ptr_t
+সংরচনা hb_cf_ptr_t
 {
   using element_type = T;
 
@@ -99,20 +99,20 @@ struct hb_cf_ptr_t
   constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (nullptr) {}
   explicit hb_cf_ptr_t (T p) noexcept : p (p) {}
 
-  hb_cf_ptr_t (const hb_cf_ptr_t &) = delete;
-  hb_cf_ptr_t &operator = (const hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t (ধ্রুব hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t &operator = (ধ্রুব hb_cf_ptr_t &) = delete;
 
   hb_cf_ptr_t (hb_cf_ptr_t &&o) noexcept : p (o.release ()) {}
   hb_cf_ptr_t &operator = (hb_cf_ptr_t &&o) noexcept
   {
     reset (o.release ());
-    return *this;
+    প্রত্যাগম *এতত্;
   }
 
   hb_cf_ptr_t &operator = (std::nullptr_t) noexcept
   {
     reset ();
-    return *this;
+    প্রত্যাগম *এতত্;
   }
 
   ~hb_cf_ptr_t ()
@@ -121,9 +121,9 @@ struct hb_cf_ptr_t
     p = nullptr;
   }
 
-  void reset (T new_p = nullptr)
+  শূন্য reset (T new_p = nullptr)
   {
-    if (p != new_p)
+    যদি (p != new_p)
     {
       T old_p = p;
       p = new_p;
@@ -135,27 +135,27 @@ struct hb_cf_ptr_t
   {
     T old_p = p;
     p = nullptr;
-    return old_p;
+    প্রত্যাগম old_p;
   }
 
-  T get () const noexcept { return p; }
+  T get () ধ্রুব noexcept { প্রত্যাগম p; }
 
-  operator T () const noexcept { return p; }
-  explicit operator bool () const noexcept { return p != nullptr; }
-  bool operator ! () const noexcept { return !p; }
+  operator T () ধ্রুব noexcept { প্রত্যাগম p; }
+  explicit operator তার্কিক () ধ্রুব noexcept { প্রত্যাগম p != nullptr; }
+  তার্কিক operator ! () ধ্রুব noexcept { প্রত্যাগম !p; }
 
-  void swap (hb_cf_ptr_t &o) noexcept
+  শূন্য swap (hb_cf_ptr_t &o) noexcept
   {
     T tmp = p;
     p = o.p;
     o.p = tmp;
   }
-  friend void swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
+  friend শূন্য swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
   {
     a.swap (b);
   }
 
-  private:
+  গুপ্ত:
   T p;
 };
 

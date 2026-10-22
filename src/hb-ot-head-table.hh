@@ -29,7 +29,7 @@
 #ifndef HB_OT_HEAD_TABLE_HH
 #define HB_OT_HEAD_TABLE_HH
 
-#include "hb-open-type.hh"
+#অন্তর্ভাব "hb-open-type.hh"
 
 /*
  * head -- Font Header
@@ -38,53 +38,53 @@
 #define HB_OT_TAG_head HB_TAG('h','e','a','d')
 
 
-namespace OT {
+নামাকাশ OT {
 
 
-struct head
+সংরচনা head
 {
-  friend struct OpenTypeOffsetTable;
+  friend সংরচনা OpenTypeOffsetTable;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_head;
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_head;
 
-  unsigned int get_upem () const
+  unsigned পূর্ণাঙ্ক get_upem () ধ্রুব
   {
-    unsigned int upem = unitsPerEm;
+    unsigned পূর্ণাঙ্ক upem = unitsPerEm;
     /* If no valid head table found, assume 1000, which matches typical Type1 usage. */
-    return 16 <= upem && upem <= 16384 ? upem : 1000;
+    প্রত্যাগম 16 <= upem && upem <= 16384 ? upem : 1000;
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  তার্কিক serialize (hb_serialize_context_t *c) ধ্রুব
   {
-    TRACE_SERIALIZE (this);
-    return_trace ((bool) c->embed (this));
+    TRACE_SERIALIZE (এতত্);
+    return_trace ((তার্কিক) c->embed (এতত্));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  তার্কিক subset (hb_subset_context_t *c) ধ্রুব
   {
-    TRACE_SUBSET (this);
-    head *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    head *out = c->serializer->embed (এতত্);
+    যদি (unlikely (!out)) return_trace (অসত্য);
 
-    if (c->plan->normalized_coords)
+    যদি (c->plan->normalized_coords)
     {
-      if (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
+      যদি (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
+        return_trace (অসত্য);
+      যদি (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
+        return_trace (অসত্য);
+      যদি (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
+        return_trace (অসত্য);
+      যদি (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
+        return_trace (অসত্য);
     }
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  enum mac_style_flag_t {
+  গণনা mac_style_flag_t {
     BOLD	= 1u<<0,
     ITALIC	= 1u<<1,
     UNDERLINE	= 1u<<2,
@@ -94,31 +94,31 @@ struct head
     EXPANDED	= 1u<<6,
   };
 
-  bool is_bold () const      { return macStyle & BOLD; }
-  bool is_italic () const    { return macStyle & ITALIC; }
-  bool is_condensed () const { return macStyle & CONDENSED; }
-  bool is_expanded () const  { return macStyle & EXPANDED; }
+  তার্কিক is_bold () ধ্রুব      { প্রত্যাগম macStyle & BOLD; }
+  তার্কিক is_italic () ধ্রুব    { প্রত্যাগম macStyle & ITALIC; }
+  তার্কিক is_condensed () ধ্রুব { প্রত্যাগম macStyle & CONDENSED; }
+  তার্কিক is_expanded () ধ্রুব  { প্রত্যাগম macStyle & EXPANDED; }
 
-  unsigned get_mac_style () const { return macStyle; }
+  unsigned get_mac_style () ধ্রুব { প্রত্যাগম macStyle; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) &&
 		  hb_barrier () &&
 		  version.major == 1 &&
-		  magicNumber == 0x5F0F3CF5u);
+		  magic_সংখ্যা == 0x5F0F3CF5u);
   }
 
-  protected:
+  রক্ষিত:
   FixedVersion<>version;		/* Version of the head table--currently
 					 * 0x00010000u for version 1.0. */
   FixedVersion<>fontRevision;		/* Set by font manufacturer. */
   HBUINT32	checkSumAdjustment;	/* To compute: set it to 0, sum the
 					 * entire font as HBUINT32, then store
 					 * 0xB1B0AFBAu - sum. */
-  HBUINT32	magicNumber;		/* Set to 0x5F0F3CF5u. */
-  public:
+  HBUINT32	magic_সংখ্যা;		/* Set to 0x5F0F3CF5u. */
+  সার্বজনিক:
   HBUINT16	flags;			/* Bit 0: Baseline for font at y=0;
 					 * Bit 1: Left sidebearing point at x=0;
 					 * Bit 2: Instructions may depend on point size;
@@ -163,7 +163,7 @@ struct head
 					 * encoded in the cmap subtables represent proper
 					 * support for those code points.
 					 * Bit 15: Reserved, set to 0. */
-  protected:
+  রক্ষিত:
   HBUINT16	unitsPerEm;		/* Valid range is from 16 to 16384. This value
 					 * should be a power of 2 for fonts that have
 					 * TrueType outlines. */
@@ -171,12 +171,12 @@ struct head
 					   January 1, 1904. 64-bit integer */
   LONGDATETIME	modified;		/* Number of seconds since 12:00 midnight,
 					   January 1, 1904. 64-bit integer */
-  public:
+  সার্বজনিক:
   HBINT16	xMin;			/* For all glyph bounding boxes. */
   HBINT16	yMin;			/* For all glyph bounding boxes. */
   HBINT16	xMax;			/* For all glyph bounding boxes. */
   HBINT16	yMax;			/* For all glyph bounding boxes. */
-  protected:
+  রক্ষিত:
   HBUINT16	macStyle;		/* Bit 0: Bold (if set to 1);
 					 * Bit 1: Italic (if set to 1)
 					 * Bit 2: Underline (if set to 1)
@@ -192,7 +192,7 @@ struct head
 					 * 2: Like 1 but also contains neutrals;
 					 * -1: Only strongly right to left;
 					 * -2: Like -1 but also contains neutrals. */
-  public:
+  সার্বজনিক:
   HBUINT16	indexToLocFormat;	/* 0 for short offsets, 1 for long. */
   HBUINT16	glyphDataFormat;	/* 0 for current format. */
 

@@ -1,11 +1,11 @@
 #ifndef OT_LAYOUT_GPOS_CONTEXTPOS_HH
 #define OT_LAYOUT_GPOS_CONTEXTPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-struct ContextPos : Context {};
+সংরচনা ContextPos : Context {};
 
 }
 }

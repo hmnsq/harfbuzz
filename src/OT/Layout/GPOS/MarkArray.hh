@@ -1,50 +1,50 @@
 #ifndef OT_LAYOUT_GPOS_MARKARRAY_HH
 #define OT_LAYOUT_GPOS_MARKARRAY_HH
 
-#include "AnchorMatrix.hh"
-#include "MarkRecord.hh"
+#অন্তর্ভাব "AnchorMatrix.hh"
+#অন্তর্ভাব "MarkRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-static inline hb_position_t
-resolve_cross_offset (const hb_glyph_position_t *pos,
-		      unsigned int len,
-		      unsigned int glyph_pos,
+স্থির অন্তঃস্থ hb_position_t
+resolve_cross_offset (ধ্রুব hb_glyph_position_t *pos,
+		      unsigned পূর্ণাঙ্ক len,
+		      unsigned পূর্ণাঙ্ক glyph_pos,
 		      hb_direction_t direction)
 {
-  bool horizontal = HB_DIRECTION_IS_HORIZONTAL (direction);
+  তার্কিক horizontal = HB_DIRECTION_IS_HORIZONTAL (direction);
   hb_position_t offset = horizontal ? pos[glyph_pos].y_offset : pos[glyph_pos].x_offset;
-  while (pos[glyph_pos].attach_type() & ATTACH_TYPE_CURSIVE)
+  যাবত্ (pos[glyph_pos].attach_type() & ATTACH_TYPE_CURSIVE)
   {
-    int chain = pos[glyph_pos].attach_chain();
-    if (!chain)
-      break;
-    unsigned int parent = (int) glyph_pos + chain;
-    if (unlikely (parent >= len))
-      break;
+    পূর্ণাঙ্ক chain = pos[glyph_pos].attach_chain();
+    যদি (!chain)
+      ভঙ্গ;
+    unsigned পূর্ণাঙ্ক parent = (পূর্ণাঙ্ক) glyph_pos + chain;
+    যদি (unlikely (parent >= len))
+      ভঙ্গ;
     glyph_pos = parent;
     offset = hb_saturate_add (offset,
 			      horizontal ? pos[glyph_pos].y_offset : pos[glyph_pos].x_offset);
   }
-  return offset;
+  প্রত্যাগম offset;
 }
 
-static inline bool
+স্থির অন্তঃস্থ তার্কিক
 apply_mark_attachment (hb_ot_apply_context_t *c,
-                       const Anchor &mark_anchor,
-                       const Anchor &glyph_anchor,
+                       ধ্রুব Anchor &mark_anchor,
+                       ধ্রুব Anchor &glyph_anchor,
                        unsigned glyph_pos)
 {
   hb_buffer_t *buffer = c->buffer;
-  float mark_x, mark_y, base_x, base_y;
+  ভিন্ন mark_x, mark_y, base_x, base_y;
 
   buffer->unsafe_to_break (glyph_pos, buffer->idx + 1);
   mark_anchor.get_anchor (c, buffer->cur().codepoint, &mark_x, &mark_y);
   glyph_anchor.get_anchor (c, buffer->info[glyph_pos].codepoint, &base_x, &base_y);
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  যদি (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "attaching mark glyph at %u to glyph at %u",
@@ -55,22 +55,22 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
 						      buffer->props.direction);
 
   hb_glyph_position_t &mark = buffer->cur_pos();
-  mark.attach_chain() = (int) glyph_pos - (int) buffer->idx;
-  if (mark.attach_chain() != (int) glyph_pos - (int) buffer->idx)
+  mark.attach_chain() = (পূর্ণাঙ্ক) glyph_pos - (পূর্ণাঙ্ক) buffer->idx;
+  যদি (mark.attach_chain() != (পূর্ণাঙ্ক) glyph_pos - (পূর্ণাঙ্ক) buffer->idx)
   {
     mark.attach_chain() = 0;
-    goto overflow;
+    গচ্ছ overflow;
   }
   mark.attach_type() = ATTACH_TYPE_MARK;
   mark.x_offset = roundf (base_x - mark_x);
   mark.y_offset = roundf (base_y - mark_y);
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+  যদি (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
     mark.y_offset = hb_saturate_add (mark.y_offset, base_offset);
-  else
+  অন্যথা
     mark.x_offset = hb_saturate_add (mark.x_offset, base_offset);
   buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  যদি (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "attached mark glyph at %u to glyph at %u",
@@ -79,133 +79,133 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
 
 overflow:
   buffer->idx++;
-  return true;
+  প্রত্যাগম সত্য;
 }
 
-HB_INTERNAL inline
-void collect_mark_variation_indices (hb_collect_variation_indices_context_t *c,
-                                    const Coverage &coverage,
-                                    const void *base,
+HB_INTERNAL অন্তঃস্থ
+শূন্য collect_mark_variation_indices (hb_collect_variation_indices_context_t *c,
+                                    ধ্রুব Coverage &coverage,
+                                    ধ্রুব শূন্য *base,
                                     glyph_data_t anchors,
-                                    unsigned count,
+                                    unsigned গুনতি,
                                     unsigned record_size)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  প্রতি (ধ্রুব auto _ : hb_zip (coverage, hb_range (গুনতি)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
+    যদি (!c->glyph_set->has (_.first)) অনুবর্ত;
     glyph_data_t anchor = anchors;
-    anchor.data = (const char *) anchors.data + _.second * record_size;
+    anchor.data = (ধ্রুব বর্ণ *) anchors.data + _.second * record_size;
     unsigned offset = anchor[0];
-    if (offset)
-      StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
+    যদি (offset)
+      StructAtOffset<ধ্রুব Anchor> (base, offset).collect_variation_indices (c);
   }
 }
 
 template <typename Types>
-struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
+সংরচনা MarkArray : Types::template ArrayOf<MarkRecord<Types>>
                                                 /* Array of MarkRecords--in Coverage order */
 {
-  typedef typename Types::template ArrayOf<MarkRecord<Types>> Super;
+  প্রকারনির্দেশ typename Types::template ArrayOf<MarkRecord<Types>> Super;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (Super::sanitize (c, this));
+    TRACE_SANITIZE (এতত্);
+    return_trace (Super::sanitize (c, এতত্));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const Coverage &coverage) const
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ধ্রুব Coverage &coverage) ধ্রুব
   {
-    if (!this->len) return;
-    collect_mark_variation_indices (c, coverage, this,
-                                   &this->arrayZ[0].markAnchor,
-                                   this->len, MarkRecord<Types>::static_size);
+    যদি (!এতত্->len) প্রত্যাগম;
+    collect_mark_variation_indices (c, coverage, এতত্,
+                                   &এতত্->arrayZ[0].markAnchor,
+                                   এতত্->len, MarkRecord<Types>::static_size);
   }
 
   template <typename AnchorMatrixType>
-  bool apply (hb_ot_apply_context_t *c,
-              unsigned int mark_index, unsigned int glyph_index,
-              const AnchorMatrixType &anchors, unsigned int class_count,
-              unsigned int glyph_pos) const
+  তার্কিক apply (hb_ot_apply_context_t *c,
+              unsigned পূর্ণাঙ্ক mark_index, unsigned পূর্ণাঙ্ক glyph_index,
+              ধ্রুব AnchorMatrixType &anchors, unsigned পূর্ণাঙ্ক class_গুনতি,
+              unsigned পূর্ণাঙ্ক glyph_pos) ধ্রুব
   {
-    TRACE_APPLY (this);
-    const MarkRecord<Types> &record = Super::operator[](mark_index);
-    unsigned int mark_class = record.klass;
+    TRACE_APPLY (এতত্);
+    ধ্রুব MarkRecord<Types> &record = Super::operator[](mark_index);
+    unsigned পূর্ণাঙ্ক mark_class = record.klass;
 
-    const Anchor& mark_anchor = this + record.markAnchor;
-    bool found;
-    const Anchor& glyph_anchor = anchors.get_anchor (c, glyph_index, mark_class, class_count, &found);
+    ধ্রুব Anchor& mark_anchor = এতত্ + record.markAnchor;
+    তার্কিক found;
+    ধ্রুব Anchor& glyph_anchor = anchors.get_anchor (c, glyph_index, mark_class, class_গুনতি, &found);
     /* If this subtable doesn't have an anchor for this base and this class,
      * return false such that the subsequent subtables have a chance at it. */
-    if (unlikely (!found)) return_trace (false);
+    যদি (unlikely (!found)) return_trace (অসত্য);
 
     return_trace (apply_mark_attachment (c, mark_anchor, glyph_anchor, glyph_pos));
   }
 
   template <typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
+  তার্কিক subset (hb_subset_context_t *c,
                Iterator             coverage,
-               const hb_map_t      *klass_mapping) const
+               ধ্রুব hb_map_t      *klass_mapping) ধ্রুব
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    TRACE_SUBSET (এতত্);
+    ধ্রুব hb_set_t &glyphset = *c->plan->glyphset_gsub ();
 
-    auto* out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto* out = c->serializer->start_embed (এতত্);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (অসত্য);
 
     auto mark_iter =
-    + hb_zip (coverage, this->iter ())
+    + hb_zip (coverage, এতত্->iter ())
     | hb_filter (glyphset, hb_first)
     | hb_map (hb_second)
     ;
 
-    bool ret = false;
+    তার্কিক ret = অসত্য;
     unsigned new_length = 0;
-    for (const auto& mark_record : mark_iter) {
-      ret |= mark_record.subset (c, this, klass_mapping);
+    প্রতি (ধ্রুব auto& mark_record : mark_iter) {
+      ret |= mark_record.subset (c, এতত্, klass_mapping);
       new_length++;
     }
 
-    if (unlikely (!c->serializer->check_assign (out->len, new_length,
+    যদি (unlikely (!c->serializer->check_assign (out->len, new_length,
                                                 HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)))
-      return_trace (false);
+      return_trace (অসত্য);
 
     return_trace (ret);
   }
 };
 
-HB_INTERNAL inline
-void Markclass_closure_and_remap_indexes (const Coverage &mark_coverage,
-                                    const void *mark_records,
-                                    unsigned count,
+HB_INTERNAL অন্তঃস্থ
+শূন্য Markclass_closure_and_remap_indexes (ধ্রুব Coverage &mark_coverage,
+                                    ধ্রুব শূন্য *mark_records,
+                                    unsigned গুনতি,
                                     unsigned record_size,
-                                    const hb_set_t &glyphset,
+                                    ধ্রুব hb_set_t &glyphset,
                                     hb_map_t *klass_mapping)
 {
   hb_set_t orig_classes;
-  for (const auto _ : hb_zip (mark_coverage, hb_range (count)))
-    if (glyphset.has (_.first))
+  প্রতি (ধ্রুব auto _ : hb_zip (mark_coverage, hb_range (গুনতি)))
+    যদি (glyphset.has (_.first))
     {
-      const auto *klass = reinterpret_cast<const HBUINT16 *>
-        ((const char *) mark_records + _.second * record_size);
+      ধ্রুব auto *klass = reinterpret_cast<ধ্রুব HBUINT16 *>
+        ((ধ্রুব বর্ণ *) mark_records + _.second * record_size);
       orig_classes.add (*klass);
     }
 
   unsigned idx = 0;
-  for (auto klass : orig_classes.iter ())
+  প্রতি (auto klass : orig_classes.iter ())
   {
-    if (klass_mapping->has (klass)) continue;
+    যদি (klass_mapping->has (klass)) অনুবর্ত;
     klass_mapping->set (klass, idx);
     idx++;
   }
 }
 
 template <typename Types>
-HB_INTERNAL inline
-void Markclass_closure_and_remap_indexes (const Coverage     &mark_coverage,
-                                          const MarkArray<Types> &mark_array,
-                                          const hb_set_t     &glyphset,
+HB_INTERNAL অন্তঃস্থ
+শূন্য Markclass_closure_and_remap_indexes (ধ্রুব Coverage     &mark_coverage,
+                                          ধ্রুব MarkArray<Types> &mark_array,
+                                          ধ্রুব hb_set_t     &glyphset,
                                           hb_map_t*           klass_mapping /* INOUT */)
 {
   Markclass_closure_and_remap_indexes (mark_coverage,

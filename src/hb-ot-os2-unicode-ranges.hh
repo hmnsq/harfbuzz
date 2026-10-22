@@ -27,22 +27,22 @@
 #ifndef HB_OT_OS2_UNICODE_RANGES_HH
 #define HB_OT_OS2_UNICODE_RANGES_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-namespace OT {
+নামাকাশ OT {
 
-struct OS2Range
+সংরচনা OS2Range
 {
-  int cmp (hb_codepoint_t key) const
-  { return (key < first) ? -1 : key <= last ? 0 : +1; }
+  পূর্ণাঙ্ক cmp (hb_codepoint_t key) ধ্রুব
+  { প্রত্যাগম (key < first) ? -1 : key <= last ? 0 : +1; }
 
   hb_codepoint_t first;
   hb_codepoint_t last;
-  unsigned int bit;
+  unsigned পূর্ণাঙ্ক bit;
 };
 
 /* Note: The contents of this array was generated using gen-os2-unicode-ranges.py. */
-static const OS2Range _hb_os2_unicode_ranges[] =
+স্থির ধ্রুব OS2Range _hb_os2_unicode_ranges[] =
 {
   {     0x0,     0x7F,   0}, // Basic Latin
   {    0x80,     0xFF,   1}, // Latin-1 Supplement
@@ -219,11 +219,11 @@ static const OS2Range _hb_os2_unicode_ranges[] =
  * _hb_ot_os2_get_unicode_range_bit:
  * Returns the bit to be set in os/2 ulUnicodeOS2Range for a given codepoint.
  **/
-static unsigned int
+স্থির unsigned পূর্ণাঙ্ক
 _hb_ot_os2_get_unicode_range_bit (hb_codepoint_t cp)
 {
   auto *range = hb_sorted_array (_hb_os2_unicode_ranges).bsearch (cp);
-  return range ? range->bit : (unsigned) -1;
+  প্রত্যাগম range ? range->bit : (unsigned) -1;
 }
 
 } /* namespace OT */

@@ -26,15 +26,15 @@
 #ifndef HB_OT_CFF_COMMON_HH
 #define HB_OT_CFF_COMMON_HH
 
-#include "hb-open-type.hh"
-#include "hb-bimap.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-cff-interp-dict-common.hh"
-#include "hb-subset-plan.hh"
+#অন্তর্ভাব "hb-open-type.hh"
+#অন্তর্ভাব "hb-bimap.hh"
+#অন্তর্ভাব "hb-ot-layout-common.hh"
+#অন্তর্ভাব "hb-cff-interp-dict-common.hh"
+#অন্তর্ভাব "hb-subset-plan.hh"
 
-namespace CFF {
+নামাকাশ CFF {
 
-using namespace OT;
+using নামাকাশ OT;
 
 #define CFF_UNDEF_CODE  0xFFFFFFFF
 
@@ -43,168 +43,168 @@ using whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
 template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+স্থির অন্তঃস্থ ধ্রুব Type& StructAtOffsetOrNull (ধ্রুব শূন্য *P, পূর্ণাঙ্ক offset, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  যদি (!offset) প্রত্যাগম Null (Type);
 
-  const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  ধ্রুব বর্ণ *p = (ধ্রুব বর্ণ *) P + offset;
+  যদি (!sc.check_point (p)) প্রত্যাগম Null (Type);
 
-  const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  ধ্রুব Type &obj = *reinterpret_cast<ধ্রুব Type *> (p);
+  যদি (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) প্রত্যাগম Null (Type);
 
-  return obj;
+  প্রত্যাগম obj;
 }
 
 
-struct code_pair_t
+সংরচনা code_pair_t
 {
   unsigned code;
   hb_codepoint_t glyph;
 };
 
 
-using str_buff_t = hb_vector_t<unsigned char>;
+using str_buff_t = hb_vector_t<unsigned বর্ণ>;
 using str_buff_vec_t = hb_vector_t<str_buff_t>;
 using glyph_to_sid_map_t = hb_vector_t<code_pair_t>;
 
 /* Top Dict, Font Dict, Private Dict */
-struct Dict : UnsizedByteStr
+সংরচনা Dict : UnsizedByteStr
 {
   template <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
-  bool serialize (hb_serialize_context_t *c,
-		  const DICTVAL &dictval,
+  তার্কিক serialize (hb_serialize_context_t *c,
+		  ধ্রুব DICTVAL &dictval,
 		  OP_SERIALIZER& opszr,
 		  Ts&&... ds)
   {
-    TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
-	return_trace (false);
+    TRACE_SERIALIZE (এতত্);
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < dictval.get_গুনতি (); i++)
+      যদি (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+	return_trace (অসত্য);
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
   template <typename T, typename V>
-  static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
+  স্থির তার্কিক serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    যদি (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      প্রত্যাগম অসত্য;
 
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
     /* serialize the opcode */
-    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), অসত্য);
+    যদি (unlikely (!p)) return_trace (অসত্য);
+    যদি (Is_OpCode_ESC (op))
     {
       *p = OpCode_escape;
       op = Unmake_OpCode_ESC (op);
       p++;
     }
     *p = op;
-    return_trace (true);
+    return_trace (সত্য);
   }
 
   template <typename V>
-  static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  স্থির তার্কিক serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
+  { প্রত্যাগম serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
 
   template <typename V>
-  static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  স্থির তার্কিক serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
+  { প্রত্যাগম serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
 
-  template <typename T, int int_op>
-  static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
+  template <typename T, পূর্ণাঙ্ক int_op>
+  স্থির তার্কিক serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
   {
     T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
+    যদি (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) প্রত্যাগম অসত্য;
     c->add_link (ofs, link, whence);
-    return true;
+    প্রত্যাগম সত্য;
   }
 
-  static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  স্থির তার্কিক serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
+  { প্রত্যাগম serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
 
-  static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  স্থির তার্কিক serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
+  { প্রত্যাগম serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
-struct FontDict : Dict {};
-struct PrivateDict : Dict {};
+সংরচনা শীর্ষ_Dict : Dict {};
+সংরচনা FontDict : Dict {};
+সংরচনা PrivateDict : Dict {};
 
-struct table_info_t
+সংরচনা table_info_t
 {
-  void init () { offset = size = 0; link = 0; }
+  শূন্য init () { offset = size = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  unsigned পূর্ণাঙ্ক    offset;
+  unsigned পূর্ণাঙ্ক    size;
   objidx_t	  link;
 };
 
-template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+template <typename গুনতি_3>
+সংরচনা FDArray : CFFIndex<গুনতি_3>
 {
   template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c,
+  তার্কিক serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  OP_SERIALIZER& opszr)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
 
     /* serialize INDEX data */
     hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    যদি (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
-    char *data_base = c->head;
+    বর্ণ *data_base = c->head;
     + it
-    | hb_map ([&] (const hb_pair_t<const DICTVAL&, const INFO&> &_)
+    | hb_map ([&] (ধ্রুব hb_pair_t<ধ্রুব DICTVAL&, ধ্রুব INFO&> &_)
     {
       FontDict *dict = c->start_embed<FontDict> ();
 		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+		প্রত্যাগম c->head - (ধ্রুব বর্ণ*)dict;
 	      })
     | hb_sink (sizes)
     ;
     unsigned data_size = c->head - data_base;
-    c->pop_pack (false);
+    c->বের_করো_pack (অসত্য);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    যদি (unlikely (sizes.in_error ())) return_trace (অসত্য);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
 
     /* serialize INDEX header */
-    return_trace (CFFIndex<COUNT>::serialize_header (c, hb_iter (sizes), data_size));
+    return_trace (CFFIndex<গুনতি_3>::serialize_header (c, hb_iter (sizes), data_size));
   }
 };
 
 /* FDSelect */
-struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+সংরচনা FDSelect0 {
+  তার্কিক sanitize (hb_sanitize_context_t *c, unsigned পূর্ণাঙ্ক fdcount,
+                 unsigned পূর্ণাঙ্ক glyph_গুনতি = HB_CODEPOINT_INVALID) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
-      return_trace (false);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!(c->check_struct (এতত্))))
+      return_trace (অসত্য);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
-                                     c->get_num_glyphs () : glyph_count)))
-      return_trace (false);
+    যদি (unlikely (!c->check_array (fds, glyph_গুনতি == HB_CODEPOINT_INVALID ?
+                                     c->get_অঙ্ক_glyphs () : glyph_গুনতি)))
+      return_trace (অসত্য);
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  unsigned get_fd (hb_codepoint_t glyph) ধ্রুব
+  { প্রত্যাগম fds[glyph]; }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ধ্রুব
+  { প্রত্যাগম {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_size (unsigned পূর্ণাঙ্ক অঙ্ক_glyphs) ধ্রুব
+  { প্রত্যাগম hb_unsigned_mul_saturate (HBUINT8::static_size, অঙ্ক_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
@@ -212,82 +212,82 @@ struct FDSelect0 {
 };
 
 template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4_Range
+সংরচনা FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, ধ্রুব শূন্য * /*nullptr*/, unsigned পূর্ণাঙ্ক fdcount) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) &&
 		  hb_barrier () &&
-		  first < c->get_num_glyphs () && (fd < fdcount));
+		  first < c->get_অঙ্ক_glyphs () && (fd < fdcount));
   }
 
   GID_TYPE    first;
   FD_TYPE     fd;
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (GID_TYPE::static_size + FD_TYPE::static_size);
 };
 
 template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4
+সংরচনা FDSelect3_4
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  size_t get_size () ধ্রুব
+  { প্রত্যাগম hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, unsigned পূর্ণাঙ্ক fdcount,
+                 unsigned পূর্ণাঙ্ক min_glyphs = HB_CODEPOINT_INVALID) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!(c->check_struct (এতত্) &&
 		    ranges.sanitize (c, nullptr, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
 		    ranges[0].first == 0)))
-      return_trace (false);
+      return_trace (অসত্য);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
-	return_trace (false);
+    প্রতি (unsigned পূর্ণাঙ্ক i = 1; i < nRanges (); i++)
+      যদি (unlikely (ranges[i - 1].first >= ranges[i].first))
+	return_trace (অসত্য);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    যদি (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
                    sentinel() > ranges[nRanges () - 1].first &&
-                   sentinel() <= c->get_num_glyphs () &&
+                   sentinel() <= c->get_অঙ্ক_glyphs () &&
                    sentinel() >= (min_glyphs == HB_CODEPOINT_INVALID ?
-                                  c->get_num_glyphs () : min_glyphs))))
-      return_trace (false);
+                                  c->get_অঙ্ক_glyphs () : min_glyphs))))
+      return_trace (অসত্য);
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  স্থির পূর্ণাঙ্ক _cmp_range (ধ্রুব শূন্য *চাবি_3, ধ্রুব শূন্য *_item)
   {
-    hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
+    hb_codepoint_t glyph = * (hb_codepoint_t *) চাবি_3;
     FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    যদি (glyph < range[0].first) প্রত্যাগম -1;
+    যদি (glyph < range[1].first) প্রত্যাগম 0;
+    প্রত্যাগম +1;
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  unsigned get_fd (hb_codepoint_t glyph) ধ্রুব
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, পরিমাণ (ranges[0]), _cmp_range);
+    প্রত্যাগম range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ধ্রুব
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
+    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, পরিমাণ (ranges[0]), _cmp_range);
     unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
     hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    প্রত্যাগম {fd, end};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { প্রত্যাগম ranges.len; }
+  GID_TYPE         nRanges () ধ্রুব { প্রত্যাগম ranges.len; }
+  GID_TYPE       &sentinel ()       { প্রত্যাগম StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  ধ্রুব GID_TYPE &sentinel () ধ্রুব { প্রত্যাগম StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
   ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
@@ -295,84 +295,84 @@ struct FDSelect3_4
   DEFINE_SIZE_ARRAY (GID_TYPE::static_size, ranges);
 };
 
-typedef FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
-typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
+প্রকারনির্দেশ FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
+প্রকারনির্দেশ FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
-struct FDSelect
+সংরচনা FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  তার্কিক serialize (hb_serialize_context_t *c, ধ্রুব FDSelect &src, unsigned পূর্ণাঙ্ক অঙ্ক_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
-    FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
+    TRACE_SERIALIZE (এতত্);
+    unsigned পূর্ণাঙ্ক size = src.get_size (অঙ্ক_glyphs);
+    FDSelect *dest = c->allocate_size<FDSelect> (size, অসত্য);
+    যদি (unlikely (!dest)) return_trace (অসত্য);
     hb_memcpy (dest, &src, size);
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned পূর্ণাঙ্ক অঙ্ক_glyphs) ধ্রুব
   {
-    switch (format)
+    বিকল্প (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    পক্ষ 0: hb_barrier (); প্রত্যাগম hb_unsigned_add_saturate (format.static_size, u.format0.get_size (অঙ্ক_glyphs));
+    পক্ষ 3: hb_barrier (); প্রত্যাগম hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
+    স্বভাব:প্রত্যাগম 0;
     }
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  unsigned get_fd (hb_codepoint_t glyph) ধ্রুব
   {
-    if (this == &Null (FDSelect)) return 0;
+    যদি (এতত্ == &Null (FDSelect)) প্রত্যাগম 0;
 
-    switch (format)
+    বিকল্প (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    পক্ষ 0: hb_barrier (); প্রত্যাগম u.format0.get_fd (glyph);
+    পক্ষ 3: hb_barrier (); প্রত্যাগম u.format3.get_fd (glyph);
+    স্বভাব:প্রত্যাগম 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ধ্রুব
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    যদি (এতত্ == &Null (FDSelect)) প্রত্যাগম {0, 1};
 
-    switch (format)
+    বিকল্প (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    পক্ষ 0: hb_barrier (); প্রত্যাগম u.format0.get_fd_range (glyph);
+    পক্ষ 3: hb_barrier (); প্রত্যাগম u.format3.get_fd_range (glyph);
+    স্বভাব:প্রত্যাগম {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  তার্কিক sanitize (hb_sanitize_context_t *c, unsigned পূর্ণাঙ্ক fdcount) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!c->check_struct (এতত্)))
+      return_trace (অসত্য);
     hb_barrier ();
 
-    switch (format)
+    বিকল্প (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
-    default:return_trace (false);
+    পক্ষ 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
+    পক্ষ 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
+    স্বভাব:return_trace (অসত্য);
     }
   }
 
   HBUINT8	format;
-  union {
+  সঙ্ঘ {
   FDSelect0	format0;
   FDSelect3	format3;
   } u;
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_MIN (1);
 };
 
-template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+template <typename গুনতি_3>
+সংরচনা Subrs : CFFIndex<গুনতি_3>
 {
-  typedef COUNT count_type;
-  typedef CFFIndex<COUNT> SUPER;
+  প্রকারনির্দেশ গুনতি_3 গুনতি_type;
+  প্রকারনির্দেশ CFFIndex<গুনতি_3> SUPER;
 };
 
 } /* namespace CFF */

@@ -28,15 +28,15 @@
 #ifndef HB_SET_HH
 #define HB_SET_HH
 
-#include "hb.hh"
-#include "hb-bit-set-invertible.hh"
-#include "hb-bit-vector.hh" // Just to include
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-bit-set-invertible.hh"
+#অন্তর্ভাব "hb-bit-vector.hh" // Just to include
 
 
 template <typename impl_t>
-struct hb_sparseset_t
+সংরচনা hb_sparseset_t
 {
-  static constexpr bool realloc_move = true;
+  স্থির constexpr তার্কিক realloc_move = সত্য;
 
   hb_object_header_t header;
   impl_t s;
@@ -44,157 +44,157 @@ struct hb_sparseset_t
   hb_sparseset_t () { init (); }
   ~hb_sparseset_t () { fini (); }
 
-  hb_sparseset_t (const hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
+  hb_sparseset_t (ধ্রুব hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
   hb_sparseset_t (hb_sparseset_t&& other)  noexcept : hb_sparseset_t () { s = std::move (other.s); }
-  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); return *this; }
-  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); return *this; }
-  friend void swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
+  hb_sparseset_t& operator = (ধ্রুব hb_sparseset_t& other) { set (other); প্রত্যাগম *এতত্; }
+  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); প্রত্যাগম *এতত্; }
+  friend শূন্য swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
 
   hb_sparseset_t (std::initializer_list<hb_codepoint_t> lst) : hb_sparseset_t ()
   {
-    for (auto&& item : lst)
+    প্রতি (auto&& item : lst)
       add (item);
   }
   template <typename Iterable,
            hb_requires (hb_is_iterable (Iterable))>
-  hb_sparseset_t (const Iterable &o) : hb_sparseset_t ()
+  hb_sparseset_t (ধ্রুব Iterable &o) : hb_sparseset_t ()
   {
-    hb_copy (o, *this);
+    hb_copy (o, *এতত্);
   }
 
-  void init ()
+  শূন্য init ()
   {
-    hb_object_init (this);
+    hb_object_init (এতত্);
     s.init ();
   }
-  void fini ()
+  শূন্য fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (এতত্);
     s.fini ();
   }
 
-  explicit operator bool () const { return !is_empty (); }
+  explicit operator তার্কিক () ধ্রুব { প্রত্যাগম !is_empty (); }
 
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
+  শূন্য err () { s.err (); }
+  তার্কিক in_error () ধ্রুব { প্রত্যাগম s.in_error (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset () { s.reset (); }
-  void clear () { s.clear (); }
-  void invert () { s.invert (); }
-  bool is_inverted () const { return s.is_inverted (); }
-  bool is_empty () const { return s.is_empty (); }
-  uint32_t hash () const { return s.hash (); }
+  শূন্য alloc (unsigned sz) { s.alloc (sz); }
+  শূন্য reset () { s.reset (); }
+  শূন্য clear () { s.clear (); }
+  শূন্য invert () { s.invert (); }
+  তার্কিক is_inverted () ধ্রুব { প্রত্যাগম s.is_inverted (); }
+  তার্কিক is_empty () ধ্রুব { প্রত্যাগম s.is_empty (); }
+  uint32_t hash () ধ্রুব { প্রত্যাগম s.hash (); }
 
-  void add (hb_codepoint_t g) { s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { return s.add_range (first, last); }
+  শূন্য add (hb_codepoint_t g) { s.add (g); }
+  শূন্য add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
+  তার্কিক add_range (hb_codepoint_t first, hb_codepoint_t last) { প্রত্যাগম s.add_range (first, last); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { s.add_array (array, count, stride); }
+  শূন্য add_array (ধ্রুব T *array, unsigned পূর্ণাঙ্ক গুনতি, unsigned পূর্ণাঙ্ক stride=পরিমাণ(T))
+  { s.add_array (array, গুনতি, stride); }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  শূন্য add_array (ধ্রুব hb_array_t<ধ্রুব T>& arr) { add_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return s.add_sorted_array (array, count, stride); }
+  তার্কিক add_sorted_array (ধ্রুব T *array, unsigned পূর্ণাঙ্ক গুনতি, unsigned পূর্ণাঙ্ক stride=পরিমাণ(T))
+  { প্রত্যাগম s.add_sorted_array (array, গুনতি, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  তার্কিক add_sorted_array (ধ্রুব hb_sorted_array_t<ধ্রুব T>& arr) { প্রত্যাগম add_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
+  শূন্য del (hb_codepoint_t g) { s.del (g); }
+  শূন্য del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  তার্কিক get (hb_codepoint_t g) ধ্রুব { প্রত্যাগম s.get (g); }
+  তার্কিক may_have (hb_codepoint_t g) ধ্রুব { প্রত্যাগম get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  তার্কিক operator [] (hb_codepoint_t k) ধ্রুব { প্রত্যাগম get (k); }
+  তার্কিক has (hb_codepoint_t k) ধ্রুব { প্রত্যাগম (*এতত্)[k]; }
 
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  তার্কিক operator () (hb_codepoint_t k) ধ্রুব { প্রত্যাগম has (k); }
 
   /* Sink interface. */
   hb_sparseset_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_sparseset_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add (v); প্রত্যাগম *এতত্; }
+  hb_sparseset_t& operator << (ধ্রুব hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); প্রত্যাগম *এতত্; }
 
-  bool may_intersect (const hb_sparseset_t &other) const
-  { return s.may_intersect (other.s); }
+  তার্কিক may_intersect (ধ্রুব hb_sparseset_t &other) ধ্রুব
+  { প্রত্যাগম s.may_intersect (other.s); }
 
-  bool intersects (const hb_sparseset_t &other) const
-  { return s.intersects (other.s); }
+  তার্কিক intersects (ধ্রুব hb_sparseset_t &other) ধ্রুব
+  { প্রত্যাগম s.intersects (other.s); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
-  { return s.intersects (first, last); }
+  তার্কিক intersects (hb_codepoint_t first, hb_codepoint_t last) ধ্রুব
+  { প্রত্যাগম s.intersects (first, last); }
 
-  void set (const hb_sparseset_t &other) { s.set (other.s); }
+  শূন্য set (ধ্রুব hb_sparseset_t &other) { s.set (other.s); }
 
-  bool is_equal (const hb_sparseset_t &other) const { return s.is_equal (other.s); }
-  bool operator == (const hb_set_t &other) const { return is_equal (other); }
-  bool operator != (const hb_set_t &other) const { return !is_equal (other); }
+  তার্কিক is_equal (ধ্রুব hb_sparseset_t &other) ধ্রুব { প্রত্যাগম s.is_equal (other.s); }
+  তার্কিক operator == (ধ্রুব hb_set_t &other) ধ্রুব { প্রত্যাগম is_equal (other); }
+  তার্কিক operator != (ধ্রুব hb_set_t &other) ধ্রুব { প্রত্যাগম !is_equal (other); }
 
-  bool is_subset (const hb_sparseset_t &larger_set) const { return s.is_subset (larger_set.s); }
+  তার্কিক is_subset (ধ্রুব hb_sparseset_t &larger_set) ধ্রুব { প্রত্যাগম s.is_subset (larger_set.s); }
 
-  void union_ (const hb_sparseset_t &other) { s.union_ (other.s); }
-  void intersect (const hb_sparseset_t &other,
+  শূন্য union_ (ধ্রুব hb_sparseset_t &other) { s.union_ (other.s); }
+  শূন্য intersect (ধ্রুব hb_sparseset_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   { s.intersect (other.s, workspace); }
-  void subtract (const hb_sparseset_t &other) { s.subtract (other.s); }
-  void symmetric_difference (const hb_sparseset_t &other) { s.symmetric_difference (other.s); }
+  শূন্য subtract (ধ্রুব hb_sparseset_t &other) { s.subtract (other.s); }
+  শূন্য symmetric_difference (ধ্রুব hb_sparseset_t &other) { s.symmetric_difference (other.s); }
 
-  bool next (hb_codepoint_t *codepoint) const { return s.next (codepoint); }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
-  { return s.next_bits (codepoint, bits); }
-  bool previous (hb_codepoint_t *codepoint) const { return s.previous (codepoint); }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.next_range (first, last); }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.previous_range (first, last); }
-  unsigned int next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned int size) const
-  { return s.next_many (codepoint, out, size); }
+  তার্কিক next (hb_codepoint_t *codepoint) ধ্রুব { প্রত্যাগম s.next (codepoint); }
+  তার্কিক next_bits (hb_codepoint_t *codepoint, uint64_t *bits) ধ্রুব
+  { প্রত্যাগম s.next_bits (codepoint, bits); }
+  তার্কিক previous (hb_codepoint_t *codepoint) ধ্রুব { প্রত্যাগম s.previous (codepoint); }
+  তার্কিক next_range (hb_codepoint_t *first, hb_codepoint_t *last) ধ্রুব
+  { প্রত্যাগম s.next_range (first, last); }
+  তার্কিক previous_range (hb_codepoint_t *first, hb_codepoint_t *last) ধ্রুব
+  { প্রত্যাগম s.previous_range (first, last); }
+  unsigned পূর্ণাঙ্ক next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned পূর্ণাঙ্ক size) ধ্রুব
+  { প্রত্যাগম s.next_many (codepoint, out, size); }
 
-  unsigned int get_population () const { return s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const { return s.get_singleton (codepoint); }
-  hb_codepoint_t get_min () const { return s.get_min (); }
-  hb_codepoint_t get_max () const { return s.get_max (); }
+  unsigned পূর্ণাঙ্ক get_population () ধ্রুব { প্রত্যাগম s.get_population (); }
+  তার্কিক get_singleton (hb_codepoint_t *codepoint) ধ্রুব { প্রত্যাগম s.get_singleton (codepoint); }
+  hb_codepoint_t get_min () ধ্রুব { প্রত্যাগম s.get_min (); }
+  hb_codepoint_t get_max () ধ্রুব { প্রত্যাগম s.get_max (); }
 
-  static constexpr hb_codepoint_t INVALID = impl_t::INVALID;
+  স্থির constexpr hb_codepoint_t INVALID = impl_t::INVALID;
 
   /*
    * Iterator implementation.
    */
   using iter_t = typename impl_t::iter_t;
-  iter_t iter () const { return iter_t (this->s); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ধ্রুব { প্রত্যাগম iter_t (এতত্->s); }
+  operator iter_t () ধ্রুব { প্রত্যাগম iter (); }
 };
 
-struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
+সংরচনা hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
 {
   using sparseset = hb_sparseset_t<hb_bit_set_invertible_t>;
 
-  ~hb_set_t () = default;
+  ~hb_set_t () = স্বভাব;
   hb_set_t () : sparseset () {};
-  hb_set_t (const hb_set_t &o) : sparseset ((sparseset &) o) {};
+  hb_set_t (ধ্রুব hb_set_t &o) : sparseset ((sparseset &) o) {};
   hb_set_t (hb_set_t&& o)  noexcept : sparseset (std::move ((sparseset &) o)) {}
-  hb_set_t& operator = (const hb_set_t&) = default;
-  hb_set_t& operator = (hb_set_t&&) = default;
+  hb_set_t& operator = (ধ্রুব hb_set_t&) = স্বভাব;
+  hb_set_t& operator = (hb_set_t&&) = স্বভাব;
   hb_set_t (std::initializer_list<hb_codepoint_t> lst) : sparseset (lst) {}
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_set_t (const Iterable &o) : sparseset (o) {}
+  hb_set_t (ধ্রুব Iterable &o) : sparseset (o) {}
 
   hb_set_t& operator << (hb_codepoint_t v)
-  { sparseset::operator<< (v); return *this; }
-  hb_set_t& operator << (const hb_codepoint_pair_t& range)
-  { sparseset::operator<< (range); return *this; }
+  { sparseset::operator<< (v); প্রত্যাগম *এতত্; }
+  hb_set_t& operator << (ধ্রুব hb_codepoint_pair_t& range)
+  { sparseset::operator<< (range); প্রত্যাগম *এতত্; }
 };
 
-static_assert (hb_set_t::INVALID == HB_SET_VALUE_INVALID, "");
+static_assert (hb_set_t::INVALID == HB_SET_মান_INVALID, "");
 
 
 #endif /* HB_SET_HH */

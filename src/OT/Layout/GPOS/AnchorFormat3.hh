@@ -1,13 +1,13 @@
 #ifndef OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
 #define OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-struct AnchorFormat3
+সংরচনা AnchorFormat3
 {
-  protected:
+  রক্ষিত:
   HBUINT16      format;                 /* Format identifier--format = 3 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
@@ -19,99 +19,99 @@ struct AnchorFormat3
                 yDeviceTable;           /* Offset to Device table for Y
                                          * coordinate-- from beginning of
                                          * Anchor table (may be NULL) */
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_STATIC (10);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (এতত্);
+    যদি (unlikely (!c->check_struct (এতত্))) return_trace (অসত্য);
 
-    return_trace (xDeviceTable.sanitize (c, this) && yDeviceTable.sanitize (c, this));
+    return_trace (xDeviceTable.sanitize (c, এতত্) && yDeviceTable.sanitize (c, এতত্));
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
-                   float *x, float *y) const
+  শূন্য get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
+                   ভিন্ন *x, ভিন্ন *y) ধ্রুব
   {
     hb_font_t *font = c->font;
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
 
-    if ((font->x_ppem || font->has_nonzero_coords) && xDeviceTable.sanitize (&c->sanitizer, this))
+    যদি ((font->x_ppem || font->has_nonzero_coords) && xDeviceTable.sanitize (&c->sanitizer, এতত্))
     {
       hb_barrier ();
-      *x += (this+xDeviceTable).get_x_delta_f (font, c->var_store, c->var_store_cache);
+      *x += (এতত্+xDeviceTable).get_x_delta_f (font, c->var_store, c->var_store_cache);
     }
-    if ((font->y_ppem || font->has_nonzero_coords) && yDeviceTable.sanitize (&c->sanitizer, this))
+    যদি ((font->y_ppem || font->has_nonzero_coords) && yDeviceTable.sanitize (&c->sanitizer, এতত্))
     {
       hb_barrier ();
-      *y += (this+yDeviceTable).get_y_delta_f (font, c->var_store, c->var_store_cache);
+      *y += (এতত্+yDeviceTable).get_y_delta_f (font, c->var_store, c->var_store_cache);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  তার্কিক subset (hb_subset_context_t *c) ধ্রুব
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->embed (format))) return_trace (false);
-    if (unlikely (!c->serializer->embed (xCoordinate))) return_trace (false);
-    if (unlikely (!c->serializer->embed (yCoordinate))) return_trace (false);
+    TRACE_SUBSET (এতত্);
+    auto *out = c->serializer->start_embed (*এতত্);
+    যদি (unlikely (!c->serializer->embed (format))) return_trace (অসত্য);
+    যদি (unlikely (!c->serializer->embed (xCoordinate))) return_trace (অসত্য);
+    যদি (unlikely (!c->serializer->embed (yCoordinate))) return_trace (অসত্য);
 
-    unsigned x_varidx = xDeviceTable ? (this+xDeviceTable).get_variation_index () : HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    if (x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    unsigned x_varidx = xDeviceTable ? (এতত্+xDeviceTable).get_variation_index () : HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+    যদি (x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (x_varidx, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<unsigned, পূর্ণাঙ্ক> *new_varidx_delta;
+      যদি (!c->plan->layout_variation_idx_delta_map.has (x_varidx, &new_varidx_delta))
+        return_trace (অসত্য);
 
       x_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+      পূর্ণাঙ্ক delta = hb_second (*new_varidx_delta);
+      যদি (delta != 0)
       {
-        if (!c->serializer->check_assign (out->xCoordinate, xCoordinate + delta,
+        যদি (!c->serializer->check_assign (out->xCoordinate, xCoordinate + delta,
                                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+          return_trace (অসত্য);
       }
     }
 
-    unsigned y_varidx = yDeviceTable ? (this+yDeviceTable).get_variation_index () : HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    if (y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    unsigned y_varidx = yDeviceTable ? (এতত্+yDeviceTable).get_variation_index () : HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+    যদি (y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (y_varidx, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<unsigned, পূর্ণাঙ্ক> *new_varidx_delta;
+      যদি (!c->plan->layout_variation_idx_delta_map.has (y_varidx, &new_varidx_delta))
+        return_trace (অসত্য);
 
       y_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+      পূর্ণাঙ্ক delta = hb_second (*new_varidx_delta);
+      যদি (delta != 0)
       {
-        if (!c->serializer->check_assign (out->yCoordinate, yCoordinate + delta,
+        যদি (!c->serializer->check_assign (out->yCoordinate, yCoordinate + delta,
                                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+          return_trace (অসত্য);
       }
     }
 
 
-    bool no_downgrade = (!xDeviceTable.is_null () && !(this+xDeviceTable).is_variation_device ()) ||
+    তার্কিক no_downgrade = (!xDeviceTable.is_null () && !(এতত্+xDeviceTable).is_variation_device ()) ||
                         x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX ||
                         y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX ||
-                        (!yDeviceTable.is_null () && !(this+yDeviceTable).is_variation_device ());
+                        (!yDeviceTable.is_null () && !(এতত্+yDeviceTable).is_variation_device ());
 
-    if (!no_downgrade)
+    যদি (!no_downgrade)
       return_trace (c->serializer->check_assign (out->format, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
 
-    if (!c->serializer->embed (xDeviceTable)) return_trace (false);
-    if (!c->serializer->embed (yDeviceTable)) return_trace (false);
+    যদি (!c->serializer->embed (xDeviceTable)) return_trace (অসত্য);
+    যদি (!c->serializer->embed (yDeviceTable)) return_trace (অসত্য);
 
-    out->xDeviceTable.serialize_copy (c->serializer, xDeviceTable, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
-    out->yDeviceTable.serialize_copy (c->serializer, yDeviceTable, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
+    out->xDeviceTable.serialize_copy (c->serializer, xDeviceTable, এতত্, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
+    out->yDeviceTable.serialize_copy (c->serializer, yDeviceTable, এতত্, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুব
   {
-    (this+xDeviceTable).collect_variation_indices (c);
-    (this+yDeviceTable).collect_variation_indices (c);
+    (এতত্+xDeviceTable).collect_variation_indices (c);
+    (এতত্+yDeviceTable).collect_variation_indices (c);
   }
 };
 

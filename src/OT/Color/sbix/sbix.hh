@@ -28,8 +28,8 @@
 #ifndef OT_COLOR_SBIX_SBIX_HH
 #define OT_COLOR_SBIX_SBIX_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-paint.hh"
+#অন্তর্ভাব "../../../hb-open-type.hh"
+#অন্তর্ভাব "../../../hb-paint.hh"
 
 /*
  * sbix -- Standard Bitmap Graphics
@@ -39,16 +39,16 @@
 #define HB_OT_TAG_sbix HB_TAG('s','b','i','x')
 
 
-namespace OT {
+নামাকাশ OT {
 
 
-struct SBIXGlyph
+সংরচনা SBIXGlyph
 {
-  SBIXGlyph* copy (hb_serialize_context_t *c, unsigned int data_length) const
+  SBIXGlyph* copy (hb_serialize_context_t *c, unsigned পূর্ণাঙ্ক data_length) ধ্রুব
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
     SBIXGlyph* new_glyph = c->start_embed<SBIXGlyph> ();
-    if (unlikely (!c->extend_min (new_glyph))) return_trace (nullptr);
+    যদি (unlikely (!c->extend_min (new_glyph))) return_trace (nullptr);
 
     new_glyph->xOffset = xOffset;
     new_glyph->yOffset = yOffset;
@@ -73,184 +73,184 @@ struct SBIXGlyph
 				 * length is inferred from sequential entries in
 				 * the glyphDataOffsets array and the fixed size
 				 * (8 bytes) of the preceding fields. */
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_ARRAY (8, data);
 };
 
-struct SBIXStrike
+সংরচনা SBIXStrike
 {
-  static size_t get_size (unsigned num_glyphs)
-  { return min_size + num_glyphs * HBUINT32::static_size; }
+  স্থির size_t get_size (unsigned অঙ্ক_glyphs)
+  { প্রত্যাগম min_size + অঙ্ক_glyphs * HBUINT32::static_size; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  imageOffsetsZ.sanitize_shallow (c, c->get_num_glyphs () + 1));
+    TRACE_SANITIZE (এতত্);
+    return_trace (c->check_struct (এতত্) &&
+		  imageOffsetsZ.sanitize_shallow (c, c->get_অঙ্ক_glyphs () + 1));
   }
 
-  hb_blob_t *get_glyph_blob (unsigned int  glyph_id,
+  hb_blob_t *get_glyph_blob (unsigned পূর্ণাঙ্ক  glyph_id,
 			     hb_blob_t    *sbix_blob,
 			     hb_tag_t      file_type,
-			     int          *x_offset,
-			     int          *y_offset,
-			     unsigned int  num_glyphs,
-			     unsigned int *strike_ppem) const
+			     পূর্ণাঙ্ক          *x_offset,
+			     পূর্ণাঙ্ক          *y_offset,
+			     unsigned পূর্ণাঙ্ক  অঙ্ক_glyphs,
+			     unsigned পূর্ণাঙ্ক *strike_ppem) ধ্রুব
   {
-    if (unlikely (!ppem)) return hb_blob_get_empty (); /* To get Null() object out of the way. */
+    যদি (unlikely (!ppem)) প্রত্যাগম hb_blob_get_empty (); /* To get Null() object out of the way. */
 
-    unsigned int retry_count = 8;
-    unsigned int sbix_len = sbix_blob->length;
-    unsigned int strike_offset = (const char *) this - (const char *) sbix_blob->data;
-    assert (strike_offset < sbix_len);
+    unsigned পূর্ণাঙ্ক retry_গুনতি = 8;
+    unsigned পূর্ণাঙ্ক sbix_len = sbix_blob->length;
+    unsigned পূর্ণাঙ্ক strike_offset = (ধ্রুব বর্ণ *) এতত্ - (ধ্রুব বর্ণ *) sbix_blob->data;
+    প্রতিজ্ঞা (strike_offset < sbix_len);
 
   retry:
-    if (unlikely (glyph_id >= num_glyphs ||
+    যদি (unlikely (glyph_id >= অঙ্ক_glyphs ||
 		  imageOffsetsZ[glyph_id + 1] <= imageOffsetsZ[glyph_id] ||
 		  imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] <= SBIXGlyph::min_size ||
-		  (unsigned int) imageOffsetsZ[glyph_id + 1] > sbix_len - strike_offset))
-      return hb_blob_get_empty ();
+		  (unsigned পূর্ণাঙ্ক) imageOffsetsZ[glyph_id + 1] > sbix_len - strike_offset))
+      প্রত্যাগম hb_blob_get_empty ();
 
-    unsigned int glyph_offset = strike_offset + (unsigned int) imageOffsetsZ[glyph_id] + SBIXGlyph::min_size;
-    unsigned int glyph_length = imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] - SBIXGlyph::min_size;
+    unsigned পূর্ণাঙ্ক glyph_offset = strike_offset + (unsigned পূর্ণাঙ্ক) imageOffsetsZ[glyph_id] + SBIXGlyph::min_size;
+    unsigned পূর্ণাঙ্ক glyph_length = imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] - SBIXGlyph::min_size;
 
-    const SBIXGlyph *glyph = &(this+imageOffsetsZ[glyph_id]);
+    ধ্রুব SBIXGlyph *glyph = &(এতত্+imageOffsetsZ[glyph_id]);
 
-    if (glyph->graphicType == HB_TAG ('d','u','p','e'))
+    যদি (glyph->graphicType == HB_TAG ('d','u','p','e'))
     {
-      if (glyph_length >= 2)
+      যদি (glyph_length >= 2)
       {
 	glyph_id = *((HBUINT16 *) &glyph->data);
-	if (retry_count--)
-	  goto retry;
+	যদি (retry_গুনতি--)
+	  গচ্ছ retry;
       }
-      return hb_blob_get_empty ();
+      প্রত্যাগম hb_blob_get_empty ();
     }
 
-    if (unlikely (file_type != glyph->graphicType))
-      return hb_blob_get_empty ();
+    যদি (unlikely (file_type != glyph->graphicType))
+      প্রত্যাগম hb_blob_get_empty ();
 
-    if (strike_ppem) *strike_ppem = ppem;
-    if (x_offset) *x_offset = glyph->xOffset;
-    if (y_offset) *y_offset = glyph->yOffset;
-    return hb_blob_create_sub_blob (sbix_blob, glyph_offset, glyph_length);
+    যদি (strike_ppem) *strike_ppem = ppem;
+    যদি (x_offset) *x_offset = glyph->xOffset;
+    যদি (y_offset) *y_offset = glyph->yOffset;
+    প্রত্যাগম hb_blob_create_sub_blob (sbix_blob, glyph_offset, glyph_length);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned int available_len) const
+  তার্কিক subset (hb_subset_context_t *c, unsigned পূর্ণাঙ্ক available_len) ধ্রুব
   {
-    TRACE_SUBSET (this);
-    unsigned int num_output_glyphs = c->plan->num_output_glyphs ();
+    TRACE_SUBSET (এতত্);
+    unsigned পূর্ণাঙ্ক অঙ্ক_output_glyphs = c->plan->অঙ্ক_output_glyphs ();
 
     auto* out = c->serializer->start_embed<SBIXStrike> ();
     auto snap = c->serializer->snapshot ();
-    if (unlikely (!c->serializer->extend (out, num_output_glyphs + 1))) return_trace (false);
+    যদি (unlikely (!c->serializer->extend (out, অঙ্ক_output_glyphs + 1))) return_trace (অসত্য);
     out->ppem = ppem;
     out->resolution = resolution;
     HBUINT32 head;
-    head = get_size (num_output_glyphs + 1);
+    head = get_size (অঙ্ক_output_glyphs + 1);
 
-    bool has_glyphs = false;
-    for (unsigned new_gid = 0; new_gid < num_output_glyphs; new_gid++)
+    তার্কিক has_glyphs = অসত্য;
+    প্রতি (unsigned new_gid = 0; new_gid < অঙ্ক_output_glyphs; new_gid++)
     {
       hb_codepoint_t old_gid;
-      if (!c->plan->old_gid_for_new_gid (new_gid, &old_gid) ||
+      যদি (!c->plan->old_gid_for_new_gid (new_gid, &old_gid) ||
 	  unlikely (imageOffsetsZ[old_gid].is_null () ||
 		    imageOffsetsZ[old_gid + 1].is_null () ||
 		    imageOffsetsZ[old_gid + 1] <= imageOffsetsZ[old_gid] ||
 		    imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid] <= SBIXGlyph::min_size) ||
-		    (unsigned int) imageOffsetsZ[old_gid + 1] > available_len)
+		    (unsigned পূর্ণাঙ্ক) imageOffsetsZ[old_gid + 1] > available_len)
       {
 	out->imageOffsetsZ[new_gid] = head;
-	continue;
+	অনুবর্ত;
       }
-      has_glyphs = true;
-      unsigned int delta = imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid];
-      unsigned int glyph_data_length = delta - SBIXGlyph::min_size;
-      if (!(this+imageOffsetsZ[old_gid]).copy (c->serializer, glyph_data_length))
-	return_trace (false);
+      has_glyphs = সত্য;
+      unsigned পূর্ণাঙ্ক delta = imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid];
+      unsigned পূর্ণাঙ্ক glyph_data_length = delta - SBIXGlyph::min_size;
+      যদি (!(এতত্+imageOffsetsZ[old_gid]).copy (c->serializer, glyph_data_length))
+	return_trace (অসত্য);
       out->imageOffsetsZ[new_gid] = head;
       head += delta;
     }
-    if (has_glyphs)
-      out->imageOffsetsZ[num_output_glyphs] = head;
-    else
+    যদি (has_glyphs)
+      out->imageOffsetsZ[অঙ্ক_output_glyphs] = head;
+    অন্যথা
       c->serializer->revert (snap);
     return_trace (has_glyphs);
   }
 
-  public:
+  সার্বজনিক:
   HBUINT16	ppem;		/* The PPEM size for which this strike was designed. */
   HBUINT16	resolution;	/* The device pixel density (in PPI) for which this
 				 * strike was designed. (E.g., 96 PPI, 192 PPI.) */
-  protected:
+  রক্ষিত:
   UnsizedArrayOf<Offset32To<SBIXGlyph>>
 		imageOffsetsZ;	/* Offset from the beginning of the strike data header
 				 * to bitmap data for an individual glyph ID. */
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_ARRAY (4, imageOffsetsZ);
 };
 
-struct sbix
+সংরচনা sbix
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_sbix;
+  স্থির constexpr hb_tag_t tableTag = HB_OT_TAG_sbix;
 
-  bool has_data () const { return version; }
+  তার্কিক has_data () ধ্রুব { প্রত্যাগম version; }
 
-  const SBIXStrike &get_strike (unsigned int i) const { return this+strikes[i]; }
+  ধ্রুব SBIXStrike &get_strike (unsigned পূর্ণাঙ্ক i) ধ্রুব { প্রত্যাগম এতত্+strikes[i]; }
 
-  struct accelerator_t
+  সংরচনা accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<sbix> (face);
-      num_glyphs = face->get_num_glyphs ();
+      অঙ্ক_glyphs = face->get_অঙ্ক_glyphs ();
     }
     ~accelerator_t () { table.destroy (); }
 
-    bool has_data () const { return table->has_data (); }
+    তার্কিক has_data () ধ্রুব { প্রত্যাগম table->has_data (); }
 
-    bool get_extents (hb_font_t          *font,
+    তার্কিক get_extents (hb_font_t          *font,
 		      hb_codepoint_t      glyph,
 		      hb_glyph_extents_t *extents,
-		      bool                scale = true) const
+		      তার্কিক                scale = সত্য) ধ্রুব
     {
       /* We only support PNG right now, and following function checks type. */
-      return get_png_extents (font, glyph, extents, scale);
+      প্রত্যাগম get_png_extents (font, glyph, extents, scale);
     }
 
     hb_blob_t *reference_png (hb_font_t      *font,
 			      hb_codepoint_t  glyph_id,
-			      int            *x_offset,
-			      int            *y_offset,
-			      unsigned int   *available_ppem) const
+			      পূর্ণাঙ্ক            *x_offset,
+			      পূর্ণাঙ্ক            *y_offset,
+			      unsigned পূর্ণাঙ্ক   *available_ppem) ধ্রুব
     {
-      return choose_strike (font).get_glyph_blob (glyph_id, table.get_blob (),
+      প্রত্যাগম choose_strike (font).get_glyph_blob (glyph_id, table.get_blob (),
 						  HB_TAG ('p','n','g',' '),
 						  x_offset, y_offset,
-						  num_glyphs, available_ppem);
+						  অঙ্ক_glyphs, available_ppem);
     }
 
-    bool paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    তার্কিক paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, শূন্য *data) ধ্রুব
     {
-      if (!has_data ())
-        return false;
+      যদি (!has_data ())
+        প্রত্যাগম অসত্য;
 
-      int x_offset = 0, y_offset = 0;
-      unsigned int strike_ppem = 0;
+      পূর্ণাঙ্ক x_offset = 0, y_offset = 0;
+      unsigned পূর্ণাঙ্ক strike_ppem = 0;
       hb_glyph_extents_t extents;
       hb_glyph_extents_t pixel_extents;
 
-      if (!font->get_glyph_extents (glyph, &extents, false))
-        return false;
+      যদি (!font->get_glyph_extents (glyph, &extents, অসত্য))
+        প্রত্যাগম অসত্য;
 
-      if (unlikely (!get_extents (font, glyph, &pixel_extents, false)))
-        return false;
+      যদি (unlikely (!get_extents (font, glyph, &pixel_extents, অসত্য)))
+        প্রত্যাগম অসত্য;
 
       hb_blob_t *blob = reference_png (font, glyph, &x_offset, &y_offset, &strike_ppem);
-      if (hb_blob_is_immutable (blob))
-        return false;
+      যদি (hb_blob_is_immutable (blob))
+        প্রত্যাগম অসত্য;
 
-      bool ret = funcs->image (data,
+      তার্কিক ret = funcs->image (data,
 			       blob,
 			       pixel_extents.width, -pixel_extents.height,
 			       HB_PAINT_IMAGE_FORMAT_PNG,
@@ -259,28 +259,28 @@ struct sbix
 
       hb_blob_destroy (blob);
 
-      return ret;
+      প্রত্যাগম ret;
     }
 
-    private:
+    গুপ্ত:
 
-    const SBIXStrike &choose_strike (hb_font_t *font) const
+    ধ্রুব SBIXStrike &choose_strike (hb_font_t *font) ধ্রুব
     {
-      unsigned count = table->strikes.len;
-      if (unlikely (!count))
-	return Null (SBIXStrike);
+      unsigned গুনতি = table->strikes.len;
+      যদি (unlikely (!গুনতি))
+	প্রত্যাগম Null (SBIXStrike);
 
-      unsigned int requested_ppem = hb_max (font->x_ppem, font->y_ppem);
-      if (!requested_ppem)
+      unsigned পূর্ণাঙ্ক requested_ppem = hb_max (font->x_ppem, font->y_ppem);
+      যদি (!requested_ppem)
 	requested_ppem = 1<<30; /* Choose largest strike. */
       /* TODO Add DPI sensitivity as well? */
-      unsigned int best_i = 0;
-      unsigned int best_ppem = table->get_strike (0).ppem;
+      unsigned পূর্ণাঙ্ক best_i = 0;
+      unsigned পূর্ণাঙ্ক best_ppem = table->get_strike (0).ppem;
 
-      for (unsigned int i = 1; i < count; i++)
+      প্রতি (unsigned পূর্ণাঙ্ক i = 1; i < গুনতি; i++)
       {
-	unsigned int ppem = (table->get_strike (i)).ppem;
-	if ((requested_ppem <= ppem && ppem < best_ppem) ||
+	unsigned পূর্ণাঙ্ক ppem = (table->get_strike (i)).ppem;
+	যদি ((requested_ppem <= ppem && ppem < best_ppem) ||
 	    (requested_ppem > best_ppem && ppem > best_ppem))
 	{
 	  best_i = i;
@@ -288,15 +288,15 @@ struct sbix
 	}
       }
 
-      return table->get_strike (best_i);
+      প্রত্যাগম table->get_strike (best_i);
     }
 
-    struct PNGHeader
+    সংরচনা PNGHeader
     {
       HBUINT8	signature[8];
-      struct
+      সংরচনা
       {
-	struct
+	সংরচনা
 	{
 	  HBUINT32	length;
 	  Tag		type;
@@ -310,136 +310,136 @@ struct sbix
 	HBUINT8		interlaceMethod;
       } IHDR;
 
-      public:
+      সার্বজনিক:
       DEFINE_SIZE_STATIC (29);
     };
 
-    bool get_png_extents (hb_font_t          *font,
+    তার্কিক get_png_extents (hb_font_t          *font,
 			  hb_codepoint_t      glyph,
 			  hb_glyph_extents_t *extents,
-			  bool                scale = true) const
+			  তার্কিক                scale = সত্য) ধ্রুব
     {
       /* Following code is safe to call even without data.
        * But faster to short-circuit. */
-      if (!has_data ())
-	return false;
+      যদি (!has_data ())
+	প্রত্যাগম অসত্য;
 
-      int x_offset = 0, y_offset = 0;
-      unsigned int strike_ppem = 0;
+      পূর্ণাঙ্ক x_offset = 0, y_offset = 0;
+      unsigned পূর্ণাঙ্ক strike_ppem = 0;
       hb_blob_t *blob = reference_png (font, glyph, &x_offset, &y_offset, &strike_ppem);
 
-      const PNGHeader &png = *blob->as<PNGHeader>();
+      ধ্রুব PNGHeader &png = *blob->as<PNGHeader>();
 
-      if (png.IHDR.height >= 65536 || png.IHDR.width >= 65536)
+      যদি (png.IHDR.height >= 65536 || png.IHDR.width >= 65536)
       {
 	hb_blob_destroy (blob);
-	return false;
+	প্রত্যাগম অসত্য;
       }
 
       extents->x_bearing = x_offset;
-      extents->y_bearing = hb_clamp_to<hb_position_t> ((int64_t) (unsigned int) png.IHDR.height + y_offset);
-      extents->width     = (hb_position_t) (unsigned int) png.IHDR.width;
-      extents->height    = -(hb_position_t) (unsigned int) png.IHDR.height;
+      extents->y_bearing = hb_clamp_to<hb_position_t> ((int64_t) (unsigned পূর্ণাঙ্ক) png.IHDR.height + y_offset);
+      extents->width     = (hb_position_t) (unsigned পূর্ণাঙ্ক) png.IHDR.width;
+      extents->height    = -(hb_position_t) (unsigned পূর্ণাঙ্ক) png.IHDR.height;
 
       /* Convert to font units. */
-      if (strike_ppem && scale)
+      যদি (strike_ppem && scale)
       {
-	float scale = font->face->get_upem () / (float) strike_ppem;
+	ভিন্ন scale = font->face->get_upem () / (ভিন্ন) strike_ppem;
 	extents->x_bearing = hb_clamp_to<hb_position_t> (roundf (extents->x_bearing * scale));
 	extents->y_bearing = hb_clamp_to<hb_position_t> (roundf (extents->y_bearing * scale));
 	extents->width = hb_clamp_to<hb_position_t> (roundf (extents->width * scale));
 	extents->height = hb_clamp_to<hb_position_t> (roundf (extents->height * scale));
       }
 
-      if (scale)
+      যদি (scale)
 	font->scale_glyph_extents (extents);
 
       hb_blob_destroy (blob);
 
-      return strike_ppem;
+      প্রত্যাগম strike_ppem;
     }
 
-    private:
+    গুপ্ত:
     hb_blob_ptr_t<sbix> table;
 
-    unsigned int num_glyphs;
+    unsigned পূর্ণাঙ্ক অঙ্ক_glyphs;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (এতত্);
+    return_trace (likely (c->check_struct (এতত্) &&
 			  hb_barrier () &&
 			  version >= 1 &&
-			  strikes.sanitize (c, this)));
+			  strikes.sanitize (c, এতত্)));
   }
 
-  bool
-  add_strike (hb_subset_context_t *c, unsigned i) const
+  তার্কিক
+  add_strike (hb_subset_context_t *c, unsigned i) ধ্রুব
   {
-    if (strikes[i].is_null () || c->source_blob->length < (unsigned) strikes[i])
-      return false;
+    যদি (strikes[i].is_null () || c->source_blob->length < (unsigned) strikes[i])
+      প্রত্যাগম অসত্য;
 
-    return (this+strikes[i]).subset (c, c->source_blob->length - (unsigned) strikes[i]);
+    প্রত্যাগম (এতত্+strikes[i]).subset (c, c->source_blob->length - (unsigned) strikes[i]);
   }
 
-  bool serialize_strike_offsets (hb_subset_context_t *c) const
+  তার্কিক serialize_strike_offsets (hb_subset_context_t *c) ধ্রুব
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (এতত্);
 
     auto *out = c->serializer->start_embed<Array32OfOffset32To<SBIXStrike>> ();
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    যদি (unlikely (!c->serializer->extend_min (out))) return_trace (অসত্য);
 
     hb_vector_t<Offset32To<SBIXStrike>*> new_strikes;
     hb_vector_t<hb_serialize_context_t::objidx_t> objidxs;
-    for (int i = strikes.len - 1; i >= 0; --i)
+    প্রতি (পূর্ণাঙ্ক i = strikes.len - 1; i >= 0; --i)
     {
       auto* o = out->serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
+      যদি (unlikely (!o)) return_trace (অসত্য);
       *o = 0;
       auto snap = c->serializer->snapshot ();
       c->serializer->push ();
-      bool ret = add_strike (c, i);
-      if (!ret)
+      তার্কিক ret = add_strike (c, i);
+      যদি (!ret)
       {
-	c->serializer->pop_discard ();
-	out->pop ();
+	c->serializer->বের_করো_discard ();
+	out->বের_করো ();
 	c->serializer->revert (snap);
       }
-      else
+      অন্যথা
       {
-	objidxs.push (c->serializer->pop_pack ());
+	objidxs.push (c->serializer->বের_করো_pack ());
 	new_strikes.push (o);
       }
     }
-    for (unsigned int i = 0; i < new_strikes.length; ++i)
+    প্রতি (unsigned পূর্ণাঙ্ক i = 0; i < new_strikes.length; ++i)
       c->serializer->add_link (*new_strikes[i], objidxs[new_strikes.length - 1 - i]);
 
-    return_trace (true);
+    return_trace (সত্য);
   }
 
-  bool subset (hb_subset_context_t* c) const
+  তার্কিক subset (hb_subset_context_t* c) ধ্রুব
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (এতত্);
 
-    if (unlikely (!c->serializer->embed (this->version))) return_trace (false);
-    if (unlikely (!c->serializer->embed (this->flags))) return_trace (false);
+    যদি (unlikely (!c->serializer->embed (এতত্->version))) return_trace (অসত্য);
+    যদি (unlikely (!c->serializer->embed (এতত্->flags))) return_trace (অসত্য);
 
     return_trace (serialize_strike_offsets (c));
   }
 
-  protected:
+  রক্ষিত:
   HBUINT16	version;	/* Table version number — set to 1 */
   HBUINT16	flags;		/* Bit 0: Set to 1. Bit 1: Draw outlines.
 				 * Bits 2 to 15: reserved (set to 0). */
   Array32OfOffset32To<SBIXStrike>
 		strikes;	/* Offsets from the beginning of the 'sbix'
 				 * table to data for each individual bitmap strike. */
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_ARRAY (8, strikes);
 };
 
-struct sbix_accelerator_t : sbix::accelerator_t {
+সংরচনা sbix_accelerator_t : sbix::accelerator_t {
   sbix_accelerator_t (hb_face_t *face) : sbix::accelerator_t (face) {}
 };
 

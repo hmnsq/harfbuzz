@@ -25,16 +25,16 @@
 #ifndef HB_WASM_API_COMMON_HH
 #define HB_WASM_API_COMMON_HH
 
-#include "hb-wasm-api.hh"
+#অন্তর্ভাব "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+নামাকাশ hb {
+নামাকাশ wasm {
 
 
 HB_WASM_API (direction_t, script_get_horizontal_direction) (HB_WASM_EXEC_ENV
 							    script_t script)
 {
-  return (direction_t)
+  প্রত্যাগম (direction_t)
 	 hb_script_get_horizontal_direction (hb_script_from_iso15924_tag (script));
 }
 

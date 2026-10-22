@@ -27,92 +27,92 @@
 #ifndef HB_AAT_MAP_HH
 #define HB_AAT_MAP_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
 
-struct hb_aat_map_t
+সংরচনা hb_aat_map_t
 {
-  friend struct hb_aat_map_builder_t;
+  friend সংরচনা hb_aat_map_builder_t;
 
-  public:
-  struct range_flags_t
+  সার্বজনিক:
+  সংরচনা range_flags_t
   {
     hb_mask_t flags;
     unsigned cluster_first;
     unsigned cluster_last; // end - 1
   };
 
-  public:
+  সার্বজনিক:
   hb_vector_t<hb_sorted_vector_t<range_flags_t>> chain_flags;
 };
 
-struct hb_aat_map_builder_t
+সংরচনা hb_aat_map_builder_t
 {
-  public:
+  সার্বজনিক:
 
   HB_INTERNAL hb_aat_map_builder_t (hb_face_t *face_,
-				    const hb_segment_properties_t props_) :
+				    ধ্রুব hb_segment_properties_t props_) :
 				      face (face_),
 				      props (props_) {}
 
-  HB_INTERNAL void add_feature (const hb_feature_t &feature);
+  HB_INTERNAL শূন্য add_feature (ধ্রুব hb_feature_t &feature);
 
-  HB_INTERNAL void compile (hb_aat_map_t  &m);
+  HB_INTERNAL শূন্য compile (hb_aat_map_t  &m);
 
-  public:
-  struct feature_info_t
+  সার্বজনিক:
+  সংরচনা feature_info_t
   {
     hb_aat_layout_feature_type_t  type;
     hb_aat_layout_feature_selector_t  setting;
-    bool is_exclusive;
+    তার্কিক is_exclusive;
     unsigned  seq; /* For stable sorting only. */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL স্থির পূর্ণাঙ্ক cmp (ধ্রুব শূন্য *pa, ধ্রুব শূন্য *pb)
     {
-      const feature_info_t *a = (const feature_info_t *) pa;
-      const feature_info_t *b = (const feature_info_t *) pb;
-      if (a->type != b->type) return (a->type < b->type ? -1 : 1);
-      if (!a->is_exclusive &&
-	  (a->setting & ~1) != (b->setting & ~1)) return (a->setting < b->setting ? -1 : 1);
-	    return (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
+      ধ্রুব feature_info_t *a = (ধ্রুব feature_info_t *) pa;
+      ধ্রুব feature_info_t *b = (ধ্রুব feature_info_t *) pb;
+      যদি (a->type != b->type) প্রত্যাগম (a->type < b->type ? -1 : 1);
+      যদি (!a->is_exclusive &&
+	  (a->setting & ~1) != (b->setting & ~1)) প্রত্যাগম (a->setting < b->setting ? -1 : 1);
+	    প্রত্যাগম (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
 
     /* compares type & setting only */
-    int cmp (const feature_info_t& f) const
+    পূর্ণাঙ্ক cmp (ধ্রুব feature_info_t& f) ধ্রুব
     {
-      return (f.type != type) ? (f.type < type ? -1 : 1) :
+      প্রত্যাগম (f.type != type) ? (f.type < type ? -1 : 1) :
 	     (f.setting != setting) ? (f.setting < setting ? -1 : 1) : 0;
     }
   };
 
-  struct feature_range_t
+  সংরচনা feature_range_t
   {
     feature_info_t info;
     unsigned start;
     unsigned end;
   };
 
-  private:
-  struct feature_event_t
+  গুপ্ত:
+  সংরচনা feature_event_t
   {
-    unsigned int index;
-    bool start;
+    unsigned পূর্ণাঙ্ক index;
+    তার্কিক start;
     feature_info_t feature;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb) {
-      const feature_event_t *a = (const feature_event_t *) pa;
-      const feature_event_t *b = (const feature_event_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 :
+    HB_INTERNAL স্থির পূর্ণাঙ্ক cmp (ধ্রুব শূন্য *pa, ধ্রুব শূন্য *pb) {
+      ধ্রুব feature_event_t *a = (ধ্রুব feature_event_t *) pa;
+      ধ্রুব feature_event_t *b = (ধ্রুব feature_event_t *) pb;
+      প্রত্যাগম a->index < b->index ? -1 : a->index > b->index ? 1 :
 	     a->start < b->start ? -1 : a->start > b->start ? 1 :
 	     feature_info_t::cmp (&a->feature, &b->feature);
     }
   };
 
-  public:
+  সার্বজনিক:
   hb_face_t *face;
   hb_segment_properties_t props;
 
-  public:
+  সার্বজনিক:
   hb_sorted_vector_t<feature_range_t> features;
   hb_sorted_vector_t<feature_info_t> current_features;
   unsigned range_first = HB_FEATURE_GLOBAL_START;

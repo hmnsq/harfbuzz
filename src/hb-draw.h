@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#যদি !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_DRAW_H
 #define HB_DRAW_H
 
-#include "hb.h"
+#অন্তর্ভাব "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -46,23 +46,23 @@ HB_BEGIN_DECLS
  *
  * Since: 4.0.0
  **/
-typedef struct hb_draw_state_t {
+প্রকারনির্দেশ সংরচনা hb_draw_state_t {
   hb_bool_t path_open;
 
-  float path_start_x;
-  float path_start_y;
+  ভিন্ন path_start_x;
+  ভিন্ন path_start_y;
 
-  float current_x;
-  float current_y;
+  ভিন্ন current_x;
+  ভিন্ন current_y;
 
   /*< private >*/
-  hb_var_num_t   reserved1;
-  hb_var_num_t   reserved2;
-  hb_var_num_t   reserved3;
-  hb_var_num_t   reserved4;
-  hb_var_num_t   reserved5;
-  hb_var_num_t   reserved6;
-  hb_var_num_t   reserved7;
+  hb_var_অঙ্ক_t_2   reserved1;
+  hb_var_অঙ্ক_t_2   reserved2;
+  hb_var_অঙ্ক_t_2   reserved3;
+  hb_var_অঙ্ক_t_2   reserved4;
+  hb_var_অঙ্ক_t_2   reserved5;
+  hb_var_অঙ্ক_t_2   reserved6;
+  hb_var_অঙ্ক_t_2   reserved7;
 } hb_draw_state_t;
 
 /**
@@ -86,7 +86,7 @@ typedef struct hb_draw_state_t {
  * Since: 4.0.0
  **/
 
-typedef struct hb_draw_funcs_t hb_draw_funcs_t;
+প্রকারনির্দেশ সংরচনা hb_draw_funcs_t hb_draw_funcs_t;
 
 
 /**
@@ -104,10 +104,10 @@ typedef struct hb_draw_funcs_t hb_draw_funcs_t;
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_move_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+প্রকারনির্দেশ শূন্য (*hb_draw_move_to_func_t) (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 					hb_draw_state_t *st,
-					float to_x, float to_y,
-					void *user_data);
+					ভিন্ন to_x, ভিন্ন to_y,
+					শূন্য *user_data);
 
 /**
  * hb_draw_line_to_func_t:
@@ -124,10 +124,10 @@ typedef void (*hb_draw_move_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_line_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+প্রকারনির্দেশ শূন্য (*hb_draw_সারি_to_func_t) (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 					hb_draw_state_t *st,
-					float to_x, float to_y,
-					void *user_data);
+					ভিন্ন to_x, ভিন্ন to_y,
+					শূন্য *user_data);
 
 /**
  * hb_draw_quadratic_to_func_t:
@@ -146,11 +146,11 @@ typedef void (*hb_draw_line_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_quadratic_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+প্রকারনির্দেশ শূন্য (*hb_draw_quadratic_to_func_t) (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 					     hb_draw_state_t *st,
-					     float control_x, float control_y,
-					     float to_x, float to_y,
-					     void *user_data);
+					     ভিন্ন control_x, ভিন্ন control_y,
+					     ভিন্ন to_x, ভিন্ন to_y,
+					     শূন্য *user_data);
 
 /**
  * hb_draw_cubic_to_func_t:
@@ -171,12 +171,12 @@ typedef void (*hb_draw_quadratic_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_cubic_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+প্রকারনির্দেশ শূন্য (*hb_draw_cubic_to_func_t) (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 					 hb_draw_state_t *st,
-					 float control1_x, float control1_y,
-					 float control2_x, float control2_y,
-					 float to_x, float to_y,
-					 void *user_data);
+					 ভিন্ন control1_x, ভিন্ন control1_y,
+					 ভিন্ন control2_x, ভিন্ন control2_y,
+					 ভিন্ন to_x, ভিন্ন to_y,
+					 শূন্য *user_data);
 
 /**
  * hb_draw_close_path_func_t:
@@ -191,9 +191,9 @@ typedef void (*hb_draw_cubic_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_dat
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_close_path_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+প্রকারনির্দেশ শূন্য (*hb_draw_close_path_func_t) (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 					   hb_draw_state_t *st,
-					   void *user_data);
+					   শূন্য *user_data);
 
 /**
  * hb_draw_set_budget_func_t:
@@ -209,10 +209,10 @@ typedef void (*hb_draw_close_path_func_t) (hb_draw_funcs_t *dfuncs, void *draw_d
  *
  * Since: 14.5.0
  **/
-typedef hb_bool_t (*hb_draw_set_budget_func_t) (hb_draw_funcs_t *dfuncs,
-						 void *draw_data,
+প্রকারনির্দেশ hb_bool_t (*hb_draw_set_budget_func_t) (hb_draw_funcs_t *dfuncs,
+						 শূন্য *draw_data,
 						 int64_t budget,
-						 void *user_data);
+						 শূন্য *user_data);
 
 /**
  * hb_draw_get_budget_func_t:
@@ -226,9 +226,9 @@ typedef hb_bool_t (*hb_draw_set_budget_func_t) (hb_draw_funcs_t *dfuncs,
  *
  * Since: 14.5.0
  **/
-typedef int64_t (*hb_draw_get_budget_func_t) (hb_draw_funcs_t *dfuncs,
-					      void *draw_data,
-					      void *user_data);
+প্রকারনির্দেশ int64_t (*hb_draw_get_budget_func_t) (hb_draw_funcs_t *dfuncs,
+					      শূন্য *draw_data,
+					      শূন্য *user_data);
 
 /**
  * hb_draw_get_budget_remaining_func_t:
@@ -246,9 +246,9 @@ typedef int64_t (*hb_draw_get_budget_func_t) (hb_draw_funcs_t *dfuncs,
  *
  * Since: 14.5.0
  **/
-typedef int64_t *(*hb_draw_get_budget_remaining_func_t) (hb_draw_funcs_t *dfuncs,
-							 void *draw_data,
-							 void *user_data);
+প্রকারনির্দেশ int64_t *(*hb_draw_get_budget_remaining_func_t) (hb_draw_funcs_t *dfuncs,
+							 শূন্য *draw_data,
+							 শূন্য *user_data);
 
 /**
  * hb_draw_funcs_set_move_to_func:
@@ -261,10 +261,10 @@ typedef int64_t *(*hb_draw_get_budget_remaining_func_t) (hb_draw_funcs_t *dfuncs
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_set_move_to_func (hb_draw_funcs_t        *dfuncs,
 				hb_draw_move_to_func_t  func,
-				void *user_data, hb_destroy_func_t destroy);
+				শূন্য *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_line_to_func:
@@ -277,10 +277,10 @@ hb_draw_funcs_set_move_to_func (hb_draw_funcs_t        *dfuncs,
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_line_to_func (hb_draw_funcs_t        *dfuncs,
-				hb_draw_line_to_func_t  func,
-				void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN শূন্য
+hb_draw_funcs_set_সারি_to_func (hb_draw_funcs_t        *dfuncs,
+				hb_draw_সারি_to_func_t  func,
+				শূন্য *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_quadratic_to_func:
@@ -293,10 +293,10 @@ hb_draw_funcs_set_line_to_func (hb_draw_funcs_t        *dfuncs,
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_set_quadratic_to_func (hb_draw_funcs_t             *dfuncs,
 				     hb_draw_quadratic_to_func_t  func,
-				     void *user_data, hb_destroy_func_t destroy);
+				     শূন্য *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_cubic_to_func:
@@ -309,10 +309,10 @@ hb_draw_funcs_set_quadratic_to_func (hb_draw_funcs_t             *dfuncs,
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_set_cubic_to_func (hb_draw_funcs_t         *dfuncs,
 				 hb_draw_cubic_to_func_t  func,
-				 void *user_data, hb_destroy_func_t destroy);
+				 শূন্য *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_close_path_func:
@@ -325,10 +325,10 @@ hb_draw_funcs_set_cubic_to_func (hb_draw_funcs_t         *dfuncs,
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_set_close_path_func (hb_draw_funcs_t           *dfuncs,
 				   hb_draw_close_path_func_t  func,
-				   void *user_data, hb_destroy_func_t destroy);
+				   শূন্য *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_set_budget_func:
@@ -341,10 +341,10 @@ hb_draw_funcs_set_close_path_func (hb_draw_funcs_t           *dfuncs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_set_set_budget_func (hb_draw_funcs_t         *dfuncs,
 				   hb_draw_set_budget_func_t  func,
-				   void *user_data, hb_destroy_func_t destroy);
+				   শূন্য *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_get_budget_func:
@@ -357,10 +357,10 @@ hb_draw_funcs_set_set_budget_func (hb_draw_funcs_t         *dfuncs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_set_get_budget_func (hb_draw_funcs_t         *dfuncs,
 				   hb_draw_get_budget_func_t  func,
-				   void *user_data, hb_destroy_func_t destroy);
+				   শূন্য *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_get_budget_remaining_func:
@@ -373,78 +373,78 @@ hb_draw_funcs_set_get_budget_func (hb_draw_funcs_t         *dfuncs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_set_get_budget_remaining_func (hb_draw_funcs_t                   *dfuncs,
 					     hb_draw_get_budget_remaining_func_t  func,
-					     void *user_data, hb_destroy_func_t destroy);
+					     শূন্য *user_data, hb_destroy_func_t destroy);
 
 
 HB_EXTERN hb_draw_funcs_t *
-hb_draw_funcs_create (void);
+hb_draw_funcs_create (শূন্য);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_draw_funcs_get_empty (void);
+hb_draw_funcs_get_empty (শূন্য);
 
 HB_EXTERN hb_draw_funcs_t *
 hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs);
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs);
 
 HB_EXTERN hb_bool_t
 hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t *key,
-			     void *              data,
+			     hb_user_data_চাবি_t *চাবি_2,
+			     শূন্য *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t       *key);
+HB_EXTERN শূন্য *
+hb_draw_funcs_get_user_data (ধ্রুব hb_draw_funcs_t *dfuncs,
+			     hb_user_data_চাবি_t       *চাবি_2);
 
-HB_EXTERN void
+HB_EXTERN শূন্য
 hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs);
 
 HB_EXTERN hb_bool_t
 hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs);
 
 HB_EXTERN hb_bool_t
-hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data,
+hb_draw_set_budget (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 		    int64_t budget);
 
 HB_EXTERN int64_t
-hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data);
+hb_draw_get_budget (hb_draw_funcs_t *dfuncs, শূন্য *draw_data);
 
 HB_EXTERN int64_t
-hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data);
+hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, শূন্য *draw_data);
 
 
-HB_EXTERN void
-hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN শূন্য
+hb_draw_move_to (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y);
+		 ভিন্ন to_x, ভিন্ন to_y);
 
-HB_EXTERN void
-hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN শূন্য
+hb_draw_সারি_to (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y);
+		 ভিন্ন to_x, ভিন্ন to_y);
 
-HB_EXTERN void
-hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN শূন্য
+hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 		      hb_draw_state_t *st,
-		      float control_x, float control_y,
-		      float to_x, float to_y);
+		      ভিন্ন control_x, ভিন্ন control_y,
+		      ভিন্ন to_x, ভিন্ন to_y);
 
-HB_EXTERN void
-hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN শূন্য
+hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 		  hb_draw_state_t *st,
-		  float control1_x, float control1_y,
-		  float control2_x, float control2_y,
-		  float to_x, float to_y);
+		  ভিন্ন control1_x, ভিন্ন control1_y,
+		  ভিন্ন control2_x, ভিন্ন control2_y,
+		  ভিন্ন to_x, ভিন্ন to_y);
 
-HB_EXTERN void
-hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN শূন্য
+hb_draw_close_path (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 		    hb_draw_state_t *st);
 
 
@@ -473,31 +473,31 @@ hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-typedef enum {
-  HB_DRAW_LINE_CAP_BUTT   = 0,
-  HB_DRAW_LINE_CAP_SQUARE = 1,
-} hb_draw_line_cap_t;
+প্রকারনির্দেশ গণনা {
+  HB_DRAW_সারি_CAP_BUTT   = 0,
+  HB_DRAW_সারি_CAP_SQUARE = 1,
+} hb_draw_সারি_cap_t;
 
-HB_EXTERN void
-hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN শূন্য
+hb_draw_সারি (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 	      hb_draw_state_t *st,
-	      float x0, float y0, float w0,
-	      float x1, float y1, float w1,
-	      hb_draw_line_cap_t cap);
+	      ভিন্ন x0, ভিন্ন y0, ভিন্ন w0,
+	      ভিন্ন x1, ভিন্ন y1, ভিন্ন w1,
+	      hb_draw_সারি_cap_t cap);
 
-HB_EXTERN void
-hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN শূন্য
+hb_draw_rectangle (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 		   hb_draw_state_t *st,
-		   float x, float y,
-		   float w, float h,
-	      float stroke_width);
+		   ভিন্ন x, ভিন্ন y,
+		   ভিন্ন w, ভিন্ন h,
+	      ভিন্ন stroke_width);
 
-HB_EXTERN void
-hb_draw_circle (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN শূন্য
+hb_draw_circle (hb_draw_funcs_t *dfuncs, শূন্য *draw_data,
 		hb_draw_state_t *st,
-		float cx, float cy,
-		float r,
-		float stroke_width);
+		ভিন্ন cx, ভিন্ন cy,
+		ভিন্ন r,
+		ভিন্ন stroke_width);
 
 
 HB_END_DECLS

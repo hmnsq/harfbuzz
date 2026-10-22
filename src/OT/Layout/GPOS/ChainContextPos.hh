@@ -1,11 +1,11 @@
 #ifndef OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
 #define OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-struct ChainContextPos : ChainContext {};
+সংরচনা ChainContextPos : ChainContext {};
 
 }
 }

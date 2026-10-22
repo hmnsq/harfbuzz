@@ -22,36 +22,36 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-paint-extents.hh"
+#অন্তর্ভাব "hb.hh"
+#অন্তর্ভাব "hb-paint-extents.hh"
 
 
-struct budget_probe_t
+সংরচনা budget_probe_t
 {
   int64_t observed = -1;
 };
 
-static hb_bool_t
-draw_budget_probe (hb_font_t *, void *font_data, hb_codepoint_t,
-		   hb_draw_funcs_t *draw_funcs, void *draw_data, void *)
+স্থির hb_bool_t
+draw_budget_probe (hb_font_t *, শূন্য *font_data, hb_codepoint_t,
+		   hb_draw_funcs_t *draw_funcs, শূন্য *draw_data, শূন্য *)
 {
   auto *probe = (budget_probe_t *) font_data;
   probe->observed = hb_draw_get_budget_remaining (draw_funcs, draw_data);
 
   hb_draw_state_t state = HB_DRAW_STATE_DEFAULT;
   hb_draw_move_to (draw_funcs, draw_data, &state, 10.f, 20.f);
-  hb_draw_line_to (draw_funcs, draw_data, &state, 30.f, 40.f);
-  return true;
+  hb_draw_সারি_to (draw_funcs, draw_data, &state, 30.f, 40.f);
+  প্রত্যাগম সত্য;
 }
 
-int
-main (int argc HB_UNUSED, char **argv HB_UNUSED)
+পূর্ণাঙ্ক
+main (পূর্ণাঙ্ক argc HB_UNUSED, বর্ণ **argv HB_UNUSED)
 {
   hb_paint_funcs_t *paint_funcs = hb_paint_extents_get_funcs ();
 
   /* COLR caches this context in zero-allocated scratch storage. */
   auto *zeroed = (hb_paint_extents_context_t *)
-		 hb_calloc (1, sizeof (hb_paint_extents_context_t));
+		 hb_calloc (1, পরিমাণ (hb_paint_extents_context_t));
   hb_always_assert (zeroed);
   zeroed->clear ();
   hb_always_assert (hb_paint_get_budget (paint_funcs, zeroed) == HB_BUDGET_DEFAULT);
@@ -73,7 +73,7 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
   hb_font_funcs_destroy (font_funcs);
 
   hb_always_assert (hb_paint_set_budget (paint_funcs, &context, 1));
-  hb_paint_push_clip_glyph (paint_funcs, &context, 0, font);
+  hb_paint_ঠেলো_clip_glyph (paint_funcs, &context, 0, font);
   hb_always_assert (probe.observed == 1);
   hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) < 0);
 
@@ -90,5 +90,5 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
   hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) == 0);
 
   hb_font_destroy (font);
-  return 0;
+  প্রত্যাগম 0;
 }

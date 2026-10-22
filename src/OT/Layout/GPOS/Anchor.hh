@@ -1,80 +1,80 @@
 #ifndef OT_LAYOUT_GPOS_ANCHOR_HH
 #define OT_LAYOUT_GPOS_ANCHOR_HH
 
-#include "AnchorFormat1.hh"
-#include "AnchorFormat2.hh"
-#include "AnchorFormat3.hh"
+#অন্তর্ভাব "AnchorFormat1.hh"
+#অন্তর্ভাব "AnchorFormat2.hh"
+#অন্তর্ভাব "AnchorFormat3.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+নামাকাশ OT {
+নামাকাশ Layout {
+নামাকাশ GPOS_impl {
 
-struct Anchor
+সংরচনা Anchor
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  রক্ষিত:
+  সঙ্ঘ {
+  সংরচনা { HBUINT16 v; } format;        /* Format identifier */
   AnchorFormat1         format1;
   AnchorFormat2         format2;
   AnchorFormat3         format3;
   } u;
-  public:
+  সার্বজনিক:
   DEFINE_SIZE_UNION (2, format.v);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  তার্কিক sanitize (hb_sanitize_context_t *c) ধ্রুব
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (এতত্);
+    যদি (!u.format.v.sanitize (c)) return_trace (অসত্য);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    বিকল্প (u.format.v) {
+    পক্ষ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    পক্ষ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    পক্ষ 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    স্বভাব:return_trace (সত্য);
     }
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  শূন্য get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   ভিন্ন *x, ভিন্ন *y) ধ্রুব
   {
     *x = *y = 0;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); return;
-    case 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); return;
-    case 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); return;
-    default:                                          return;
+    বিকল্প (u.format.v) {
+    পক্ষ 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); প্রত্যাগম;
+    পক্ষ 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); প্রত্যাগম;
+    পক্ষ 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); প্রত্যাগম;
+    স্বভাব:                                          প্রত্যাগম;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  তার্কিক subset (hb_subset_context_t *c) ধ্রুব
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
-    case 2:
+    TRACE_SUBSET (এতত্);
+    বিকল্প (u.format.v) {
+    পক্ষ 1: hb_barrier (); return_trace (তার্কিক (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+    পক্ষ 2:
       hb_barrier ();
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      যদি (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       {
         // AnchorFormat 2 just containins extra hinting information, so
         // if hints are being dropped convert to format 1.
-        return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+        return_trace (তার্কিক (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
       }
-      return_trace (bool (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
-    case 3: hb_barrier (); return_trace (u.format3.subset (c));
-    default:return_trace (false);
+      return_trace (তার্কিক (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
+    পক্ষ 3: hb_barrier (); return_trace (u.format3.subset (c));
+    স্বভাব:return_trace (অসত্য);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  শূন্য collect_variation_indices (hb_collect_variation_indices_context_t *c) ধ্রুব
   {
-    switch (u.format.v) {
-    case 1: case 2:
-      return;
-    case 3:
+    বিকল্প (u.format.v) {
+    পক্ষ 1: পক্ষ 2:
+      প্রত্যাগম;
+    পক্ষ 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      প্রত্যাগম;
+    স্বভাব: প্রত্যাগম;
     }
   }
 };

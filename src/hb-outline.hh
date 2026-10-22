@@ -25,54 +25,54 @@
 #ifndef HB_OUTLINE_HH
 #define HB_OUTLINE_HH
 
-#include "hb.hh"
+#অন্তর্ভাব "hb.hh"
 
-#include "hb-draw.hh"
+#অন্তর্ভাব "hb-draw.hh"
 
 
-struct hb_outline_point_t
+সংরচনা hb_outline_point_t
 {
-  enum class type_t
+  গণনা বর্গ type_t
   {
     MOVE_TO,
-    LINE_TO,
+    সারি_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (ভিন্ন x, ভিন্ন y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  ভিন্ন x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+সংরচনা hb_outline_vector_t
 {
-  float normalize_len ()
+  ভিন্ন normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    ভিন্ন len = hypotf (x, y);
+    যদি (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    প্রত্যাগম len;
   }
 
-  float x, y;
+  ভিন্ন x, y;
 };
 
-struct hb_outline_t
+সংরচনা hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  শূন্য reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL শূন্য replay (hb_draw_funcs_t *pen, শূন্য *pen_data) ধ্রুব;
+  HB_INTERNAL ভিন্ন control_area () ধ্রুব;
+  HB_INTERNAL শূন্য translate (ভিন্ন dx, ভিন্ন dy);
+  HB_INTERNAL শূন্য slant (ভিন্ন slant_xy);
+  HB_INTERNAL শূন্য embolden (ভিন্ন x_strength, ভিন্ন y_strength,
+			     ভিন্ন x_shift, ভিন্ন y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
   hb_vector_t<unsigned> contours;
