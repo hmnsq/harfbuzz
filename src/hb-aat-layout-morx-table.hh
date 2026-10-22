@@ -68,11 +68,11 @@ struct RearrangementSubtable
 
   bool is_action_initiable (const Entry<EntryData> &entry) const
   {
-    return (entry.flags & MarkFirst);
+    повернути (entry.flags & MarkFirst);
   }
   bool is_actionable (const Entry<EntryData> &entry) const
   {
-    return (entry.flags & Verb);
+    повернути (entry.flags & Verb);
   }
 
   struct driver_context_t
@@ -89,15 +89,15 @@ struct RearrangementSubtable
 		     StateTableDriver<Types, EntryData, Flags> *driver,
 		     const Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      unsigned ціле flags = entry.flags;
 
-      if (flags & MarkFirst)
+      якщо (flags & MarkFirst)
 	start = buffer->idx;
 
-      if (flags & MarkLast)
+      якщо (flags & MarkLast)
 	end = hb_min (buffer->idx + 1, buffer->len);
 
-      if ((flags & Verb) && start < end)
+      якщо ((flags & Verb) && start < end)
       {
 	/* The following map has two nibbles, for start-side
 	 * and end-side. Values of 0,1,2 mean move that many
@@ -123,13 +123,13 @@ struct RearrangementSubtable
 	  0x33,	/* 15	ABxCD => DCxBA */
 	};
 
-	unsigned int m = map[flags & Verb];
-	unsigned int l = hb_min (2u, m >> 4);
-	unsigned int r = hb_min (2u, m & 0x0F);
+	unsigned ціле m = map[flags & Verb];
+	unsigned ціле l = hb_min (2u, m >> 4);
+	unsigned ціле r = hb_min (2u, m & 0x0F);
 	bool reverse_l = 3 == (m >> 4);
 	bool reverse_r = 3 == (m & 0x0F);
 
-	if (end - start >= l + r && end-start <= HB_MAX_CONTEXT_LENGTH)
+	якщо (end - start >= l + r && end-start <= HB_MAX_CONTEXT_LENGTH)
 	{
 	  buffer->merge_clusters (start, hb_min (buffer->idx + 1, buffer->len));
 	  buffer->merge_clusters (start, end);
@@ -140,18 +140,18 @@ struct RearrangementSubtable
 	  hb_memcpy (buf, info + start, l * sizeof (buf[0]));
 	  hb_memcpy (buf + 2, info + end - r, r * sizeof (buf[0]));
 
-	  if (l != r)
+	  якщо (l != r)
 	    memmove (info + start + r, info + start + l, (end - start - l - r) * sizeof (buf[0]));
 
 	  hb_memcpy (info + start, buf + 2, r * sizeof (buf[0]));
 	  hb_memcpy (info + end - l, buf, l * sizeof (buf[0]));
-	  if (reverse_l)
+	  якщо (reverse_l)
 	  {
 	    buf[0] = info[end - 1];
 	    info[end - 1] = info[end - 2];
 	    info[end - 2] = buf[0];
 	  }
-	  if (reverse_r)
+	  якщо (reverse_r)
 	  {
 	    buf[0] = info[start];
 	    info[start] = info[start + 1];
@@ -165,8 +165,8 @@ struct RearrangementSubtable
     bool ret;
     const RearrangementSubtable *table;
     private:
-    unsigned int start;
-    unsigned int end;
+    unsigned ціле start;
+    unsigned ціле end;
   };
 
   bool apply (hb_aat_apply_context_t *c) const
@@ -221,14 +221,14 @@ struct ContextualSubtable
 
   bool is_action_initiable (const Entry<EntryData> &entry) const
   {
-    return (entry.flags & SetMark);
+    повернути (entry.flags & SetMark);
   }
   bool is_actionable (const Entry<EntryData> &entry) const
   {
-    if (Types::extended)
-      return entry.data.markIndex != 0xFFFF || entry.data.currentIndex != 0xFFFF;
-    else
-      return entry.data.markIndex || entry.data.currentIndex;
+    якщо (Types::extended)
+      повернути entry.data.markIndex != 0xFFFF || entry.data.currentIndex != 0xFFFF;
+    інакше
+      повернути entry.data.markIndex || entry.data.currentIndex;
   }
 
   struct driver_context_t
@@ -251,34 +251,34 @@ struct ContextualSubtable
     {
       /* Looks like CoreText applies neither mark nor current substitution for
        * end-of-text if mark was not explicitly set. */
-      if (buffer->idx == buffer->len && !mark_set)
-	return;
+      якщо (buffer->idx == buffer->len && !mark_set)
+	повернути;
 
       const HBGlyphID16 *replacement;
 
       replacement = nullptr;
-      if (Types::extended)
+      якщо (Types::extended)
       {
-	if (entry.data.markIndex != 0xFFFF)
+	якщо (entry.data.markIndex != 0xFFFF)
 	{
 	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.markIndex];
 	  replacement = lookup.get_value (buffer->info[mark].codepoint, driver->num_glyphs);
 	}
       }
-      else
+      інакше
       {
-	if (entry.data.markIndex)
+	якщо (entry.data.markIndex)
 	{
-	  int offset = (int) entry.data.markIndex + buffer->info[mark].codepoint;
+	  ціле offset = (ціле) entry.data.markIndex + buffer->info[mark].codepoint;
 	  const UnsizedArrayOf<HBGlyphID16> &subs_old = (const UnsizedArrayOf<HBGlyphID16> &) subs;
 	  replacement = &subs_old[Types::wordOffsetToIndex (offset, table, subs_old.arrayZ)];
-	  if (!(replacement->sanitize (&c->sanitizer) &&
+	  якщо (!(replacement->sanitize (&c->sanitizer) &&
 		hb_barrier () &&
 		*replacement))
 	    replacement = nullptr;
 	}
       }
-      if (replacement)
+      якщо (replacement)
       {
 	buffer->unsafe_to_break (mark, hb_min (buffer->idx + 1, buffer->len));
 	c->replace_glyph_inplace (mark, *replacement);
@@ -286,35 +286,35 @@ struct ContextualSubtable
       }
 
       replacement = nullptr;
-      unsigned int idx = hb_min (buffer->idx, buffer->len - 1);
-      if (Types::extended)
+      unsigned ціле idx = hb_min (buffer->idx, buffer->len - 1);
+      якщо (Types::extended)
       {
-	if (entry.data.currentIndex != 0xFFFF)
+	якщо (entry.data.currentIndex != 0xFFFF)
 	{
 	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.currentIndex];
 	  replacement = lookup.get_value (buffer->info[idx].codepoint, driver->num_glyphs);
 	}
       }
-      else
+      інакше
       {
-	if (entry.data.currentIndex)
+	якщо (entry.data.currentIndex)
 	{
-	  int offset = (int) entry.data.currentIndex + buffer->info[idx].codepoint;
+	  ціле offset = (ціле) entry.data.currentIndex + buffer->info[idx].codepoint;
 	  const UnsizedArrayOf<HBGlyphID16> &subs_old = (const UnsizedArrayOf<HBGlyphID16> &) subs;
 	  replacement = &subs_old[Types::wordOffsetToIndex (offset, table, subs_old.arrayZ)];
-	  if (!(replacement->sanitize (&c->sanitizer) &&
+	  якщо (!(replacement->sanitize (&c->sanitizer) &&
 		hb_barrier () &&
 		*replacement))
 	    replacement = nullptr;
 	}
       }
-      if (replacement)
+      якщо (replacement)
       {
 	c->replace_glyph_inplace (idx, *replacement);
 	ret = true;
       }
 
-      if (entry.flags & SetMark)
+      якщо (entry.flags & SetMark)
       {
 	mark_set = true;
 	mark = buffer->idx;
@@ -327,7 +327,7 @@ struct ContextualSubtable
     const ContextualSubtable *table;
     private:
     bool mark_set;
-    unsigned int mark;
+    unsigned ціле mark;
     const UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, void, false> &subs;
   };
 
@@ -348,23 +348,23 @@ struct ContextualSubtable
   {
     TRACE_SANITIZE (this);
 
-    unsigned int num_entries = 0;
-    if (unlikely (!machine.sanitize (c, &num_entries))) return_trace (false);
+    unsigned ціле num_entries = 0;
+    якщо (unlikely (!machine.sanitize (c, &num_entries))) return_trace (false);
     hb_barrier ();
 
-    if (!Types::extended)
+    якщо (!Types::extended)
       return_trace (substitutionTables.sanitize (c, this, 0));
 
-    unsigned int num_lookups = 0;
+    unsigned ціле num_lookups = 0;
 
     const Entry<EntryData> *entries = machine.get_entries ();
-    for (unsigned int i = 0; i < num_entries; i++)
+    для (unsigned ціле i = 0; i < num_entries; i++)
     {
       const EntryData &data = entries[i].data;
 
-      if (data.markIndex != 0xFFFF)
+      якщо (data.markIndex != 0xFFFF)
 	num_lookups = hb_max (num_lookups, 1u + data.markIndex);
-      if (data.currentIndex != 0xFFFF)
+      якщо (data.currentIndex != 0xFFFF)
 	num_lookups = hb_max (num_lookups, 1u + data.currentIndex);
     }
 
@@ -410,13 +410,13 @@ struct LigatureEntry<true>
   };
 
   static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & SetComponent; }
+  { повернути entry.flags & SetComponent; }
 
   static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & PerformAction; }
+  { повернути entry.flags & PerformAction; }
 
-  static unsigned int ligActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.ligActionIndex; }
+  static unsigned ціле ligActionIndex (const Entry<EntryData> &entry)
+  { повернути entry.data.ligActionIndex; }
 };
 template <>
 struct LigatureEntry<false>
@@ -435,13 +435,13 @@ struct LigatureEntry<false>
   };
 
   static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & SetComponent; }
+  { повернути entry.flags & SetComponent; }
 
   static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  { повернути entry.flags & Offset; }
 
-  static unsigned int ligActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  static unsigned ціле ligActionIndex (const Entry<EntryData> &entry)
+  { повернути entry.flags & Offset; }
 };
 
 
@@ -460,11 +460,11 @@ struct LigatureSubtable
 
   bool is_action_initiable (const Entry<EntryData> &entry) const
   {
-    return LigatureEntryT::initiateAction (entry);
+    повернути LigatureEntryT::initiateAction (entry);
   }
   bool is_actionable (const Entry<EntryData> &entry) const
   {
-    return LigatureEntryT::performAction (entry);
+    повернути LigatureEntryT::performAction (entry);
   }
 
   struct driver_context_t
@@ -498,38 +498,38 @@ struct LigatureSubtable
 		     const Entry<EntryData> &entry)
     {
       DEBUG_MSG (APPLY, nullptr, "Ligature transition at %u", buffer->idx);
-      if (entry.flags & LigatureEntryT::SetComponent)
+      якщо (entry.flags & LigatureEntryT::SetComponent)
       {
 	/* Never mark same index twice, in case DontAdvance was used... */
-	if (unlikely (match_length && match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] == buffer->out_len))
+	якщо (unlikely (match_length && match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] == buffer->out_len))
 	  match_length--;
 
 	match_positions[match_length++ % ARRAY_LENGTH (match_positions)] = buffer->out_len;
 	DEBUG_MSG (APPLY, nullptr, "Set component at %u", buffer->out_len);
       }
 
-      if (LigatureEntryT::performAction (entry))
+      якщо (LigatureEntryT::performAction (entry))
       {
 	DEBUG_MSG (APPLY, nullptr, "Perform action with %u", match_length);
-	unsigned int end = buffer->out_len;
+	unsigned ціле end = buffer->out_len;
 
-	if (unlikely (!match_length))
-	  return;
+	якщо (unlikely (!match_length))
+	  повернути;
 
-	if (buffer->idx >= buffer->len)
-	  return; /* TODO Work on previous instead? */
+	якщо (buffer->idx >= buffer->len)
+	  повернути; /* TODO Work on previous instead? */
 
-	unsigned int cursor = match_length;
+	unsigned ціле cursor = match_length;
 
-	unsigned int action_idx = LigatureEntryT::ligActionIndex (entry);
+	unsigned ціле action_idx = LigatureEntryT::ligActionIndex (entry);
 	action_idx = Types::offsetToIndex (action_idx, table, ligAction.arrayZ);
 	const HBUINT32 *actionData = &ligAction[action_idx];
 
-	unsigned int ligature_idx = 0;
-	unsigned int action;
+	unsigned ціле ligature_idx = 0;
+	unsigned ціле action;
 	do
 	{
-	  if (unlikely (!cursor))
+	  якщо (unlikely (!cursor))
 	  {
 	    /* Stack underflow.  Clear the stack. */
 	    DEBUG_MSG (APPLY, nullptr, "Stack underflow");
@@ -538,54 +538,54 @@ struct LigatureSubtable
 	  }
 
 	  DEBUG_MSG (APPLY, nullptr, "Moving to stack position %u", cursor - 1);
-	  if (unlikely (!buffer->move_to (match_positions[--cursor % ARRAY_LENGTH (match_positions)]))) return;
+	  якщо (unlikely (!buffer->move_to (match_positions[--cursor % ARRAY_LENGTH (match_positions)]))) повернути;
 
-	  if (unlikely (!actionData->sanitize (&c->sanitizer))) break;
+	  якщо (unlikely (!actionData->sanitize (&c->sanitizer))) break;
 	  hb_barrier ();
 	  action = *actionData;
 
 	  uint32_t uoffset = action & LigActionOffset;
-	  if (uoffset & 0x20000000)
+	  якщо (uoffset & 0x20000000)
 	    uoffset |= 0xC0000000; /* Sign-extend. */
 	  int32_t offset = (int32_t) uoffset;
-	  unsigned int component_idx = buffer->cur().codepoint + offset;
+	  unsigned ціле component_idx = buffer->cur().codepoint + offset;
 	  component_idx = Types::wordOffsetToIndex (component_idx, table, component.arrayZ);
 	  const HBUINT16 &componentData = component[component_idx];
-	  if (unlikely (!componentData.sanitize (&c->sanitizer))) break;
+	  якщо (unlikely (!componentData.sanitize (&c->sanitizer))) break;
 	  hb_barrier ();
 	  ligature_idx += componentData;
 
 	  DEBUG_MSG (APPLY, nullptr, "Action store %d last %d",
 		     bool (action & LigActionStore),
 		     bool (action & LigActionLast));
-	  if (action & (LigActionStore | LigActionLast))
+	  якщо (action & (LigActionStore | LigActionLast))
 	  {
 	    ligature_idx = Types::offsetToIndex (ligature_idx, table, ligature.arrayZ);
 	    const HBGlyphID16 &ligatureData = ligature[ligature_idx];
-	    if (unlikely (!ligatureData.sanitize (&c->sanitizer))) break;
+	    якщо (unlikely (!ligatureData.sanitize (&c->sanitizer))) break;
 	    hb_barrier ();
 	    hb_codepoint_t lig = ligatureData;
 
 	    DEBUG_MSG (APPLY, nullptr, "Produced ligature %u", lig);
-	    if (unlikely (!c->replace_glyph (lig))) return;
+	    якщо (unlikely (!c->replace_glyph (lig))) повернути;
 
-	    unsigned int lig_end = match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] + 1u;
+	    unsigned ціле lig_end = match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] + 1u;
 	    /* Now go and delete all subsequent components. */
-	    while (match_length - 1u > cursor)
+	    поки (match_length - 1u > cursor)
 	    {
 	      DEBUG_MSG (APPLY, nullptr, "Skipping ligature component");
-	      if (unlikely (!buffer->move_to (match_positions[--match_length % ARRAY_LENGTH (match_positions)]))) return;
-	      if (!c->delete_glyph ()) return;
+	      якщо (unlikely (!buffer->move_to (match_positions[--match_length % ARRAY_LENGTH (match_positions)]))) повернути;
+	      якщо (!c->delete_glyph ()) повернути;
 	    }
 
-	    if (unlikely (!buffer->move_to (lig_end))) return;
+	    якщо (unlikely (!buffer->move_to (lig_end))) повернути;
 	    buffer->merge_out_clusters (match_positions[cursor % ARRAY_LENGTH (match_positions)], buffer->out_len);
 	  }
 
 	  actionData++;
 	}
-	while (!(action & LigActionLast));
-	if (unlikely (!buffer->move_to (end))) return;
+	поки (!(action & LigActionLast));
+	якщо (unlikely (!buffer->move_to (end))) повернути;
       }
     }
 
@@ -597,8 +597,8 @@ struct LigatureSubtable
     const UnsizedArrayOf<HBUINT32> &ligAction;
     const UnsizedArrayOf<HBUINT16> &component;
     const UnsizedArrayOf<HBGlyphID16> &ligature;
-    unsigned int match_length;
-    unsigned int match_positions[HB_MAX_CONTEXT_LENGTH];
+    unsigned ціле match_length;
+    unsigned ціле match_positions[HB_MAX_CONTEXT_LENGTH];
   };
 
   bool apply (hb_aat_apply_context_t *c) const
@@ -645,33 +645,33 @@ struct NoncontextualSubtable
     TRACE_APPLY (this);
 
     bool ret = false;
-    unsigned int num_glyphs = c->face->get_num_glyphs ();
+    unsigned ціле num_glyphs = c->face->get_num_glyphs ();
 
     hb_glyph_info_t *info = c->buffer->info;
-    unsigned int count = c->buffer->len;
+    unsigned ціле count = c->buffer->len;
     // If there's only one range, we already checked the flag.
     auto *last_range = c->range_flags && (c->range_flags->length > 1) ? &(*c->range_flags)[0] : nullptr;
-    for (unsigned int i = 0; i < count; i++)
+    для (unsigned ціле i = 0; i < count; i++)
     {
       /* This block copied from StateTableDriver::drive. Keep in sync. */
-      if (unlikely (last_range))
+      якщо (unlikely (last_range))
       {
 	auto *range = last_range;
 	{
 	  unsigned cluster = info[i].cluster;
-	  while (cluster < range->cluster_first)
+	  поки (cluster < range->cluster_first)
 	    range--;
-	  while (cluster > range->cluster_last)
+	  поки (cluster > range->cluster_last)
 	    range++;
 
 	  last_range = range;
 	}
-	if (!(range->flags & c->subtable_flags))
+	якщо (!(range->flags & c->subtable_flags))
 	  continue;
       }
 
       const HBGlyphID16 *replacement = substitute.get_value (info[i].codepoint, num_glyphs);
-      if (replacement)
+      якщо (replacement)
       {
 	c->replace_glyph_inplace (i, *replacement);
 	ret = true;
@@ -770,11 +770,11 @@ struct InsertionSubtable
 
   bool is_action_initiable (const Entry<EntryData> &entry) const
   {
-    return (entry.flags & SetMark);
+    повернути (entry.flags & SetMark);
   }
   bool is_actionable (const Entry<EntryData> &entry) const
   {
-    return (entry.flags & (CurrentInsertCount | MarkedInsertCount)) &&
+    повернути (entry.flags & (CurrentInsertCount | MarkedInsertCount)) &&
 	   (entry.data.currentInsertIndex != 0xFFFF ||entry.data.markedInsertIndex != 0xFFFF);
   }
 
@@ -795,59 +795,59 @@ struct InsertionSubtable
 		     StateTableDriver<Types, EntryData, Flags> *driver,
 		     const Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      unsigned ціле flags = entry.flags;
 
       unsigned mark_loc = buffer->out_len;
 
-      if (entry.data.markedInsertIndex != 0xFFFF)
+      якщо (entry.data.markedInsertIndex != 0xFFFF)
       {
-	unsigned int count = (flags & MarkedInsertCount);
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.markedInsertIndex;
+	unsigned ціле count = (flags & MarkedInsertCount);
+	якщо (unlikely ((buffer->max_ops -= count) <= 0)) повернути;
+	unsigned ціле start = entry.data.markedInsertIndex;
 	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	якщо (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
 	hb_barrier ();
 
 	bool before = flags & MarkedInsertBefore;
 
-	unsigned int end = buffer->out_len;
-	if (unlikely (!buffer->move_to (mark))) return;
+	unsigned ціле end = buffer->out_len;
+	якщо (unlikely (!buffer->move_to (mark))) повернути;
 
-	if (buffer->idx < buffer->len && !before)
-	  if (unlikely (!buffer->copy_glyph ())) return;
+	якщо (buffer->idx < buffer->len && !before)
+	  якщо (unlikely (!buffer->copy_glyph ())) повернути;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
+	якщо (unlikely (!c->output_glyphs (count, glyphs))) повернути;
 	ret = true;
-	if (buffer->idx < buffer->len && !before)
+	якщо (buffer->idx < buffer->len && !before)
 	  buffer->skip_glyph ();
 
-	if (unlikely (!buffer->move_to (end + count))) return;
+	якщо (unlikely (!buffer->move_to (end + count))) повернути;
 
 	buffer->unsafe_to_break_from_outbuffer (mark, hb_min (buffer->idx + 1, buffer->len));
       }
 
-      if (flags & SetMark)
+      якщо (flags & SetMark)
 	mark = mark_loc;
 
-      if (entry.data.currentInsertIndex != 0xFFFF)
+      якщо (entry.data.currentInsertIndex != 0xFFFF)
       {
-	unsigned int count = (flags & CurrentInsertCount) >> 5;
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.currentInsertIndex;
+	unsigned ціле count = (flags & CurrentInsertCount) >> 5;
+	якщо (unlikely ((buffer->max_ops -= count) <= 0)) повернути;
+	unsigned ціле start = entry.data.currentInsertIndex;
 	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	якщо (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
 	hb_barrier ();
 
 	bool before = flags & CurrentInsertBefore;
 
-	unsigned int end = buffer->out_len;
+	unsigned ціле end = buffer->out_len;
 
-	if (buffer->idx < buffer->len && !before)
-	  if (unlikely (!buffer->copy_glyph ())) return;
+	якщо (buffer->idx < buffer->len && !before)
+	  якщо (unlikely (!buffer->copy_glyph ())) повернути;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
+	якщо (unlikely (!c->output_glyphs (count, glyphs))) повернути;
 	ret = true;
-	if (buffer->idx < buffer->len && !before)
+	якщо (buffer->idx < buffer->len && !before)
 	  buffer->skip_glyph ();
 
 	/* Humm. Not sure where to move to.  There's this wording under
@@ -865,7 +865,7 @@ struct InsertionSubtable
 	 *
 	 * https://github.com/harfbuzz/harfbuzz/issues/1224#issuecomment-427691417
 	 */
-	if (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + count))) return;
+	якщо (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + count))) повернути;
       }
     }
 
@@ -874,7 +874,7 @@ struct InsertionSubtable
     hb_aat_apply_context_t *c;
     const InsertionSubtable *table;
     private:
-    unsigned int mark;
+    unsigned ціле mark;
     const UnsizedArrayOf<HBGlyphID16> &insertionAction;
   };
 
@@ -980,11 +980,11 @@ struct hb_accelerate_subtables_context_t :
 
     entry->init (obj, num_glyphs);
 
-    return hb_empty_t ();
+    повернути hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_value () { повернути hb_empty_t (); }
 
-  bool stop_sublookup_iteration (return_t r) const { return false; }
+  bool stop_sublookup_iteration (return_t r) const { повернути false; }
 
   hb_accelerate_subtables_context_t (hb_applicable_t *array_, unsigned num_glyphs_) :
 				     hb_dispatch_context_t<hb_accelerate_subtables_context_t> (),
@@ -1003,14 +1003,14 @@ struct hb_aat_layout_chain_accelerator_t
     unsigned count = chain.get_subtable_count ();
 
     unsigned product;
-    if (unlikely (hb_unsigned_mul_overflows (count,
+    якщо (unlikely (hb_unsigned_mul_overflows (count,
         sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), &product)))
-      return nullptr;
+      повернути nullptr;
 
     unsigned size;
-    if (unlikely (hb_unsigned_add_overflows (sizeof (hb_aat_layout_chain_accelerator_t) -
+    якщо (unlikely (hb_unsigned_add_overflows (sizeof (hb_aat_layout_chain_accelerator_t) -
         HB_VAR_ARRAY * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), product, &size))) {
-      return nullptr;
+      повернути nullptr;
     }
 
     /* The following is a calloc because when we are collecting subtables,
@@ -1019,20 +1019,20 @@ struct hb_aat_layout_chain_accelerator_t
      * Zeroing it allows the set digest to gatekeep it without having to
      * initialize it further. */
     auto *thiz = (hb_aat_layout_chain_accelerator_t *) hb_calloc (1, size);
-    if (unlikely (!thiz))
-      return nullptr;
+    якщо (unlikely (!thiz))
+      повернути nullptr;
 
     thiz->count = count;
 
     hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, num_glyphs);
     chain.dispatch (&c_accelerate_subtables);
 
-    return thiz;
+    повернути thiz;
   }
 
   void destroy ()
   {
-    for (unsigned i = 0; i < count; i++)
+    для (unsigned i = 0; i < count; i++)
       subtables[i].fini ();
   }
 
@@ -1048,9 +1048,9 @@ struct ChainSubtable
   template <typename T>
   friend struct Chain;
 
-  size_t get_size () const     { return length; }
-  unsigned int get_type () const     { return coverage & 0xFF; }
-  unsigned int get_coverage () const { return coverage >> (sizeof (HBUINT) * 8 - 8); }
+  size_t get_size () const     { повернути length; }
+  unsigned ціле get_type () const     { повернути coverage & 0xFF; }
+  unsigned ціле get_coverage () const { повернути coverage >> (sizeof (HBUINT) * 8 - 8); }
 
   enum Coverage
   {
@@ -1079,7 +1079,7 @@ struct ChainSubtable
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    unsigned int subtable_type = get_type ();
+    unsigned ціле subtable_type = get_type ();
     TRACE_DISPATCH (this, subtable_type);
     switch (subtable_type) {
     case Rearrangement:		hb_barrier (); return_trace (c->dispatch (u.rearrangement, std::forward<Ts> (ds)...));
@@ -1102,7 +1102,7 @@ struct ChainSubtable
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!(length.sanitize (c) &&
+    якщо (!(length.sanitize (c) &&
 	  hb_barrier () &&
 	  length >= min_size &&
 	  c->check_range (this, length)))
@@ -1133,28 +1133,28 @@ struct Chain
 {
   typedef typename Types::HBUINT HBUINT;
 
-  unsigned get_subtable_count () const { return subtableCount; }
+  unsigned get_subtable_count () const { повернути subtableCount; }
 
   hb_mask_t compile_flags (const hb_aat_map_builder_t *map) const
   {
     hb_mask_t flags = defaultFlags;
     {
-      unsigned int count = featureCount;
-      for (unsigned i = 0; i < count; i++)
+      unsigned ціле count = featureCount;
+      для (unsigned i = 0; i < count; i++)
       {
 	const Feature &feature = featureZ[i];
-	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (unsigned int) feature.featureType;
-	hb_aat_layout_feature_selector_t setting = (hb_aat_layout_feature_selector_t) (unsigned int) feature.featureSetting;
+	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (unsigned ціле) feature.featureType;
+	hb_aat_layout_feature_selector_t setting = (hb_aat_layout_feature_selector_t) (unsigned ціле) feature.featureSetting;
       retry:
 	// Check whether this type/setting pair was requested in the map, and if so, apply its flags.
 	// (The search here only looks at the type and setting fields of feature_info_t.)
 	hb_aat_map_builder_t::feature_info_t info = { type, setting, false, 0 };
-	if (map->current_features.bsearch (info))
+	якщо (map->current_features.bsearch (info))
 	{
 	  flags &= feature.disableFlags;
 	  flags |= feature.enableFlags;
 	}
-	else if (type == HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE && setting == HB_AAT_LAYOUT_FEATURE_SELECTOR_SMALL_CAPS)
+	інакше якщо (type == HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE && setting == HB_AAT_LAYOUT_FEATURE_SELECTOR_SMALL_CAPS)
 	{
 	  /* Deprecated. https://github.com/harfbuzz/harfbuzz/issues/1342 */
 	  type = HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE;
@@ -1162,7 +1162,7 @@ struct Chain
 	  goto retry;
 	}
 #ifndef HB_NO_AAT
-	else if (type == HB_AAT_LAYOUT_FEATURE_TYPE_LANGUAGE_TAG_TYPE && setting &&
+	інакше якщо (type == HB_AAT_LAYOUT_FEATURE_TYPE_LANGUAGE_TAG_TYPE && setting &&
 		 /* TODO: Rudimentary language matching. */
 		 hb_language_matches (map->face->table.ltag->get_language (setting - 1), map->props.language))
 	{
@@ -1172,26 +1172,26 @@ struct Chain
 #endif
       }
     }
-    return flags;
+    повернути flags;
   }
 
   void apply (hb_aat_apply_context_t *c,
 	      const hb_aat_layout_chain_accelerator_t *accel) const
   {
     const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ціле count = subtableCount;
+    для (unsigned ціле i = 0; i < count; i++)
     {
       bool reverse;
 
       auto coverage = subtable->get_coverage ();
 
       hb_mask_t subtable_flags = subtable->subFeatureFlags;
-      if (hb_none (hb_iter (c->range_flags) |
-		   hb_map ([subtable_flags] (const hb_aat_map_t::range_flags_t _) -> bool { return subtable_flags & (_.flags); })))
+      якщо (hb_none (hb_iter (c->range_flags) |
+		   hb_map ([subtable_flags] (const hb_aat_map_t::range_flags_t _) -> bool { повернути subtable_flags & (_.flags); })))
 	goto skip;
 
-      if (!(coverage & ChainSubtable<Types>::AllDirections) &&
+      якщо (!(coverage & ChainSubtable<Types>::AllDirections) &&
 	  HB_DIRECTION_IS_VERTICAL (c->buffer->props.direction) !=
 	  bool (coverage & ChainSubtable<Types>::Vertical))
 	goto skip;
@@ -1200,7 +1200,7 @@ struct Chain
       c->first_set = accel ? &accel->subtables[i].glyph_set : &Null(hb_bit_set_t);
       c->machine_class_cache = accel ? &accel->subtables[i].class_cache : nullptr;
 
-      if (!c->buffer_intersects_machine ())
+      якщо (!c->buffer_intersects_machine ())
       {
 	(void) c->buffer->message (c->font, "skipped chainsubtable %u because no glyph matches", c->lookup_index);
 	goto skip;
@@ -1238,69 +1238,69 @@ struct Chain
 		bool (coverage & ChainSubtable<Types>::Backwards) !=
 		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
 
-      if (!c->buffer->message (c->font, "start chainsubtable %u", c->lookup_index))
+      якщо (!c->buffer->message (c->font, "start chainsubtable %u", c->lookup_index))
 	goto skip;
 
-      if (reverse != c->buffer_is_reversed)
+      якщо (reverse != c->buffer_is_reversed)
         c->reverse_buffer ();
 
       subtable->apply (c);
 
       (void) c->buffer->message (c->font, "end chainsubtable %u", c->lookup_index);
 
-      if (unlikely (!c->buffer->successful)) break;
+      якщо (unlikely (!c->buffer->successful)) break;
 
     skip:
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
       c->set_lookup_index (c->lookup_index + 1);
     }
-    if (c->buffer_is_reversed)
+    якщо (c->buffer_is_reversed)
       c->reverse_buffer ();
   }
 
-  size_t get_size () const { return length; }
+  size_t get_size () const { повернути length; }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
     const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ціле count = subtableCount;
+    для (unsigned ціле i = 0; i < count; i++)
     {
       typename context_t::return_t ret = subtable->dispatch (c, std::forward<Ts> (ds)...);
-      if (c->stop_sublookup_iteration (ret))
-	return ret;
+      якщо (c->stop_sublookup_iteration (ret))
+	повернути ret;
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
-    return c->default_return_value ();
+    повернути c->default_return_value ();
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int version) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned ціле version) const
   {
     TRACE_SANITIZE (this);
-    if (!(length.sanitize (c) &&
+    якщо (!(length.sanitize (c) &&
 	  hb_barrier () &&
 	  length >= min_size &&
 	  c->check_range (this, length)))
       return_trace (false);
 
-    if (!c->check_array (featureZ.arrayZ, featureCount))
+    якщо (!c->check_array (featureZ.arrayZ, featureCount))
       return_trace (false);
 
     const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ціле count = subtableCount;
+    для (unsigned ціле i = 0; i < count; i++)
     {
-      if (!subtable->sanitize (c))
+      якщо (!subtable->sanitize (c))
 	return_trace (false);
       hb_barrier ();
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
 
-    if (version >= 3)
+    якщо (version >= 3)
     {
       const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) subtable;
-      if (!coverage->sanitize (c, count))
+      якщо (!coverage->sanitize (c, count))
         return_trace (false);
     }
 
@@ -1331,7 +1331,7 @@ struct mortmorx
 {
   static constexpr hb_tag_t tableTag = TAG;
 
-  bool has_data () const { return version != 0; }
+  bool has_data () const { повернути version != 0; }
 
   struct accelerator_t
   {
@@ -1340,7 +1340,7 @@ struct mortmorx
       hb_sanitize_context_t sc;
       this->table = sc.reference_table<T> (face);
 
-      if (unlikely (this->table->is_blocklisted (this->table.get_blob (), face)))
+      якщо (unlikely (this->table->is_blocklisted (this->table.get_blob (), face)))
       {
         hb_blob_destroy (this->table.get_blob ());
         this->table = hb_blob_get_empty ();
@@ -1349,7 +1349,7 @@ struct mortmorx
       this->chain_count = table->get_chain_count ();
 
       this->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (this->chain_count, sizeof (*accels));
-      if (unlikely (!this->accels))
+      якщо (unlikely (!this->accels))
       {
 	this->chain_count = 0;
 	this->table.destroy ();
@@ -1358,9 +1358,9 @@ struct mortmorx
     }
     ~accelerator_t ()
     {
-      for (unsigned int i = 0; i < this->chain_count; i++)
+      для (unsigned ціле i = 0; i < this->chain_count; i++)
       {
-	if (this->accels[i])
+	якщо (this->accels[i])
 	  this->accels[i]->destroy ();
 	hb_free (this->accels[i]);
       }
@@ -1368,33 +1368,33 @@ struct mortmorx
       this->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () const { повернути table.get_blob (); }
 
     template <typename Chain>
     hb_aat_layout_chain_accelerator_t *get_accel (unsigned chain_index, const Chain &chain, unsigned num_glyphs) const
     {
-      if (unlikely (chain_index >= chain_count)) return nullptr;
+      якщо (unlikely (chain_index >= chain_count)) повернути nullptr;
 
     retry:
       auto *accel = accels[chain_index].get_acquire ();
-      if (unlikely (!accel))
+      якщо (unlikely (!accel))
       {
 	accel = hb_aat_layout_chain_accelerator_t::create (chain, num_glyphs);
-	if (unlikely (!accel))
-	  return nullptr;
+	якщо (unlikely (!accel))
+	  повернути nullptr;
 
-	if (unlikely (!accels[chain_index].cmpexch (nullptr, accel)))
+	якщо (unlikely (!accels[chain_index].cmpexch (nullptr, accel)))
 	{
 	  hb_free (accel);
 	  goto retry;
 	}
       }
 
-      return accel;
+      повернути accel;
     }
 
     hb_blob_ptr_t<T> table;
-    unsigned int chain_count;
+    unsigned ціле chain_count;
     hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *accels;
     hb_aat_scratch_t scratch;
   };
@@ -1404,10 +1404,10 @@ struct mortmorx
 		      hb_aat_map_t *map) const
   {
     const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    if (unlikely (!map->chain_flags.resize (count)))
-      return;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ціле count = chainCount;
+    якщо (unlikely (!map->chain_flags.resize (count)))
+      повернути;
+    для (unsigned ціле i = 0; i < count; i++)
     {
       map->chain_flags[i].push (hb_aat_map_t::range_flags_t {chain->compile_flags (mapper),
 							     mapper->range_first,
@@ -1418,13 +1418,13 @@ struct mortmorx
 
   unsigned get_chain_count () const
   {
-    return chainCount;
+    повернути chainCount;
   }
   void apply (hb_aat_apply_context_t *c,
 	      const hb_aat_map_t &map,
 	      const accelerator_t &accel) const
   {
-    if (unlikely (!c->buffer->successful)) return;
+    якщо (unlikely (!c->buffer->successful)) повернути;
 
     c->buffer->unsafe_to_concat ();
 
@@ -1432,13 +1432,13 @@ struct mortmorx
 
     c->set_lookup_index (0);
     const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ціле count = chainCount;
+    для (unsigned ціле i = 0; i < count; i++)
     {
       auto *chain_accel = accel.get_accel (i, *chain, c->face->get_num_glyphs ());
       c->range_flags = &map.chain_flags[i];
       chain->apply (c, chain_accel);
-      if (unlikely (!c->buffer->successful)) return;
+      якщо (unlikely (!c->buffer->successful)) повернути;
       chain = &StructAfter<Chain<Types>> (*chain);
     }
   }
@@ -1446,17 +1446,17 @@ struct mortmorx
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!(version.sanitize (c) &&
+    якщо (!(version.sanitize (c) &&
 	  hb_barrier () &&
 	  version &&
 	  chainCount.sanitize (c)))
       return_trace (false);
 
     const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ціле count = chainCount;
+    для (unsigned ціле i = 0; i < count; i++)
     {
-      if (!chain->sanitize (c, version))
+      якщо (!chain->sanitize (c, version))
 	return_trace (false);
       hb_barrier ();
       chain = &StructAfter<Chain<Types>> (*chain);

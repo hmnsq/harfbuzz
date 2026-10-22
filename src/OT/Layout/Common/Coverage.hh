@@ -63,7 +63,7 @@ struct Coverage
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    якщо (!u.format.v.sanitize (c)) return_trace (false);
     hb_barrier ();
     switch (u.format.v)
     {
@@ -78,64 +78,64 @@ struct Coverage
   }
 
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k] != NOT_COVERED; }
+  unsigned operator [] (hb_codepoint_t k) const { повернути get (k); }
+  bool has (hb_codepoint_t k) const { повернути (*this)[k] != NOT_COVERED; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  bool operator () (hb_codepoint_t k) const { повернути has (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_coverage (k); }
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned ціле get (hb_codepoint_t k) const { повернути get_coverage (k); }
+  unsigned ціле get_coverage (hb_codepoint_t glyph_id) const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coverage (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_coverage (glyph_id);
+    case 1: hb_barrier (); повернути u.format1.get_coverage (glyph_id);
+    case 2: hb_barrier (); повернути u.format2.get_coverage (glyph_id);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_coverage (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_coverage (glyph_id);
+    case 3: hb_barrier (); повернути u.format3.get_coverage (glyph_id);
+    case 4: hb_barrier (); повернути u.format4.get_coverage (glyph_id);
 #endif
-    default:return NOT_COVERED;
+    default:повернути NOT_COVERED;
     }
   }
-  unsigned int get_coverage (hb_codepoint_t glyph_id,
+  unsigned ціле get_coverage (hb_codepoint_t glyph_id,
 			     hb_ot_layout_mapping_cache_t *cache) const
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    якщо (cache && cache->get (glyph_id, &coverage)) повернути coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
+    якщо (cache) {
+      якщо (coverage == NOT_COVERED)
 	cache->set (glyph_id, cache->MAX_VALUE);
-      else if (likely (coverage < cache->MAX_VALUE))
+      інакше якщо (likely (coverage < cache->MAX_VALUE))
 	cache->set (glyph_id, coverage);
     }
-    return coverage;
+    повернути coverage;
   }
 
-  unsigned int get_coverage_binary (hb_codepoint_t glyph_id,
+  unsigned ціле get_coverage_binary (hb_codepoint_t glyph_id,
 				    hb_ot_layout_binary_cache_t *cache) const
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    якщо (cache && cache->get (glyph_id, &coverage)) повернути coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
+    якщо (cache) {
+      якщо (coverage == NOT_COVERED)
 	cache->set (glyph_id, cache->MAX_VALUE);
-      else
+      інакше
 	cache->set (glyph_id, 0);
     }
-    return coverage;
+    повернути coverage;
   }
 
   unsigned get_population () const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
+    case 1: hb_barrier (); повернути u.format1.get_population ();
+    case 2: hb_barrier (); повернути u.format2.get_population ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
+    case 3: hb_barrier (); повернути u.format3.get_population ();
+    case 4: hb_barrier (); повернути u.format4.get_population ();
 #endif
-    default:return NOT_COVERED;
+    default:повернути NOT_COVERED;
     }
   }
 
@@ -144,30 +144,30 @@ struct Coverage
   bool serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    якщо (unlikely (!c->extend_min (this))) return_trace (false);
 
     unsigned count = hb_len (+ glyphs);
     unsigned num_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
     hb_codepoint_t max = 0;
     bool unsorted = false;
-    for (auto g: + glyphs)
+    для (auto g: + glyphs)
     {
-      if (last != (hb_codepoint_t) -2 && g < last)
+      якщо (last != (hb_codepoint_t) -2 && g < last)
 	unsorted = true;
-      if (last + 1 != g)
+      якщо (last + 1 != g)
 	num_ranges++;
       last = g;
-      if (g > max) max = g;
+      якщо (g > max) max = g;
     }
     u.format.v = !unsorted && count <= num_ranges * 3 ? 1 : 2;
 
 #ifndef HB_NO_BEYOND_64K
-    if (max > 0xFFFFu)
+    якщо (max > 0xFFFFu)
       u.format.v += 2;
-    if (unlikely (max > 0xFFFFFFu))
-#else
-    if (unlikely (max > 0xFFFFu))
+    якщо (unlikely (max > 0xFFFFFFu))
+#інакше
+    якщо (unlikely (max > 0xFFFFu))
 #endif
     {
       c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
@@ -194,9 +194,9 @@ struct Coverage
     + iter ()
     | hb_take (plan->source->get_num_glyphs ())
     | hb_map_retains_sorting ([plan] (hb_codepoint_t g) {
-	return plan->map_gsub_glyph (g);
+	повернути plan->map_gsub_glyph (g);
       })
-    | hb_filter ([] (hb_codepoint_t glyph) { return glyph != HB_MAP_VALUE_INVALID; })
+    | hb_filter ([] (hb_codepoint_t glyph) { повернути glyph != HB_MAP_VALUE_INVALID; })
     ;
 
     // Cache the iterator result as it will be iterated multiple times
@@ -210,39 +210,39 @@ struct Coverage
   {
     switch (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
+    case 1: hb_barrier (); повернути u.format1.intersects (glyphs);
+    case 2: hb_barrier (); повернути u.format2.intersects (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
+    case 3: hb_barrier (); повернути u.format3.intersects (glyphs);
+    case 4: hb_barrier (); повернути u.format4.intersects (glyphs);
 #endif
-    default:return false;
+    default:повернути false;
     }
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  bool intersects_coverage (const hb_set_t *glyphs, unsigned ціле index) const
   {
     switch (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects_coverage (glyphs, index);
-    case 2: hb_barrier (); return u.format2.intersects_coverage (glyphs, index);
+    case 1: hb_barrier (); повернути u.format1.intersects_coverage (glyphs, index);
+    case 2: hb_barrier (); повернути u.format2.intersects_coverage (glyphs, index);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_coverage (glyphs, index);
-    case 4: hb_barrier (); return u.format4.intersects_coverage (glyphs, index);
+    case 3: hb_barrier (); повернути u.format3.intersects_coverage (glyphs, index);
+    case 4: hb_barrier (); повернути u.format4.intersects_coverage (glyphs, index);
 #endif
-    default:return false;
+    default:повернути false;
     }
   }
 
   unsigned cost () const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
+    case 1: hb_barrier (); повернути u.format1.cost ();
+    case 2: hb_barrier (); повернути u.format2.cost ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
+    case 3: hb_barrier (); повернути u.format3.cost ();
+    case 4: hb_barrier (); повернути u.format4.cost ();
 #endif
-    default:return 0u;
+    default:повернути 0u;
     }
   }
 
@@ -253,13 +253,13 @@ struct Coverage
   {
     switch (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
+    case 1: hb_barrier (); повернути u.format1.collect_coverage (glyphs);
+    case 2: hb_barrier (); повернути u.format2.collect_coverage (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
+    case 3: hb_barrier (); повернути u.format3.collect_coverage (glyphs);
+    case 4: hb_barrier (); повернути u.format4.collect_coverage (glyphs);
 #endif
-    default:return false;
+    default:повернути false;
     }
   }
 
@@ -269,13 +269,13 @@ struct Coverage
   {
     switch (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersect_set (glyphs, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersect_set (glyphs, intersect_glyphs);
+    case 1: hb_barrier (); повернути u.format1.intersect_set (glyphs, intersect_glyphs);
+    case 2: hb_barrier (); повернути u.format2.intersect_set (glyphs, intersect_glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersect_set (glyphs, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersect_set (glyphs, intersect_glyphs);
+    case 3: hb_barrier (); повернути u.format3.intersect_set (glyphs, intersect_glyphs);
+    case 4: hb_barrier (); повернути u.format4.intersect_set (glyphs, intersect_glyphs);
 #endif
-    default:return ;
+    default:повернути ;
     }
   }
 
@@ -288,26 +288,26 @@ struct Coverage
       format = c_.u.format.v;
       switch (format)
       {
-      case 1: hb_barrier (); u.format1.init (c_.u.format1); return;
-      case 2: hb_barrier (); u.format2.init (c_.u.format2); return;
+      case 1: hb_barrier (); u.format1.init (c_.u.format1); повернути;
+      case 2: hb_barrier (); u.format2.init (c_.u.format2); повернути;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.init (c_.u.format3); return;
-      case 4: hb_barrier (); u.format4.init (c_.u.format4); return;
+      case 3: hb_barrier (); u.format3.init (c_.u.format3); повернути;
+      case 4: hb_barrier (); u.format4.init (c_.u.format4); повернути;
 #endif
-      default:                               return;
+      default:                               повернути;
       }
     }
     bool __more__ () const
     {
       switch (format)
       {
-      case 1: hb_barrier (); return u.format1.__more__ ();
-      case 2: hb_barrier (); return u.format2.__more__ ();
+      case 1: hb_barrier (); повернути u.format1.__more__ ();
+      case 2: hb_barrier (); повернути u.format2.__more__ ();
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.__more__ ();
-      case 4: hb_barrier (); return u.format4.__more__ ();
+      case 3: hb_barrier (); повернути u.format3.__more__ ();
+      case 4: hb_barrier (); повернути u.format4.__more__ ();
 #endif
-      default:return false;
+      default:повернути false;
       }
     }
     void __next__ ()
@@ -324,33 +324,33 @@ struct Coverage
       }
     }
     typedef hb_codepoint_t __item_t__;
-    __item_t__ __item__ () const { return get_glyph (); }
+    __item_t__ __item__ () const { повернути get_glyph (); }
 
     hb_codepoint_t get_glyph () const
     {
       switch (format)
       {
-      case 1: hb_barrier (); return u.format1.get_glyph ();
-      case 2: hb_barrier (); return u.format2.get_glyph ();
+      case 1: hb_barrier (); повернути u.format1.get_glyph ();
+      case 2: hb_barrier (); повернути u.format2.get_glyph ();
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.get_glyph ();
-      case 4: hb_barrier (); return u.format4.get_glyph ();
+      case 3: hb_barrier (); повернути u.format3.get_glyph ();
+      case 4: hb_barrier (); повернути u.format4.get_glyph ();
 #endif
-      default:return 0;
+      default:повернути 0;
       }
     }
     bool operator != (const iter_t& o) const
     {
-      if (unlikely (format != o.format)) return true;
+      якщо (unlikely (format != o.format)) повернути true;
       switch (format)
       {
-      case 1: hb_barrier (); return u.format1 != o.u.format1;
-      case 2: hb_barrier (); return u.format2 != o.u.format2;
+      case 1: hb_barrier (); повернути u.format1 != o.u.format1;
+      case 2: hb_barrier (); повернути u.format2 != o.u.format2;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3 != o.u.format3;
-      case 4: hb_barrier (); return u.format4 != o.u.format4;
+      case 3: hb_barrier (); повернути u.format3 != o.u.format3;
+      case 4: hb_barrier (); повернути u.format4 != o.u.format4;
 #endif
-      default:return false;
+      default:повернути false;
       }
     }
     iter_t __end__ () const
@@ -367,11 +367,11 @@ struct Coverage
 #endif
       default: break;
       }
-      return it;
+      повернути it;
     }
 
     private:
-    unsigned int format;
+    unsigned ціле format;
     union {
 #ifndef HB_NO_BEYOND_64K
     CoverageFormat2_4<MediumTypes>::iter_t      format4; /* Put this one first since it's larger; helps shut up compiler. */
@@ -381,7 +381,7 @@ struct Coverage
     CoverageFormat1_3<SmallTypes>::iter_t       format1;
     } u;
   };
-  iter_t iter () const { return iter_t (*this); }
+  iter_t iter () const { повернути iter_t (*this); }
 };
 
 template<typename Iterator>

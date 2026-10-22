@@ -94,11 +94,11 @@ struct hb_buffer_t
   bool have_output; /* Whether we have an output buffer going on */
   bool have_positions; /* Whether we have positions */
 
-  unsigned int idx; /* Cursor into ->info and ->pos arrays */
-  unsigned int len; /* Length of ->info and ->pos arrays */
-  unsigned int out_len; /* Length of ->out_info array if have_output */
+  unsigned ціле idx; /* Cursor into ->info and ->pos arrays */
+  unsigned ціле len; /* Length of ->info and ->pos arrays */
+  unsigned ціле out_len; /* Length of ->out_info array if have_output */
 
-  unsigned int allocated; /* Length of allocated arrays */
+  unsigned ціле allocated; /* Length of allocated arrays */
   hb_glyph_info_t     *info;
   hb_glyph_info_t     *out_info;
   hb_glyph_position_t *pos;
@@ -108,7 +108,7 @@ struct hb_buffer_t
    * Index 0 is for "pre-context", 1 for "post-context". */
   static constexpr unsigned CONTEXT_LENGTH = 5u;
   hb_codepoint_t context[2][CONTEXT_LENGTH];
-  unsigned int context_len[2];
+  unsigned ціле context_len[2];
 
   hb_set_digest_t digest; /* Manually updated sometimes */
 
@@ -120,8 +120,8 @@ struct hb_buffer_t
   uint8_t serial;
   uint32_t random_state;
   hb_buffer_scratch_flags_t scratch_flags; /* Have space-fallback, etc. */
-  unsigned int max_len; /* Maximum allowed len. */
-  int max_ops; /* Maximum allowed operations. */
+  unsigned ціле max_len; /* Maximum allowed len. */
+  ціле max_ops; /* Maximum allowed operations. */
   /* The bits here reflect current allocations of the bytes in glyph_info_t's var1 and var2. */
 
 
@@ -138,7 +138,7 @@ struct hb_buffer_t
   changed_func_t changed_func;
   void *changed_data;
   unsigned message_depth; /* How deeply are we inside a message callback? */
-#else
+#інакше
   static constexpr unsigned message_depth = 0u;
 #endif
 
@@ -146,39 +146,39 @@ struct hb_buffer_t
 
   /* Methods */
 
-  HB_NODISCARD bool in_error () const { return !successful; }
+  HB_NODISCARD bool in_error () const { повернути !successful; }
 
-  void allocate_var (unsigned int start, unsigned int count)
+  void allocate_var (unsigned ціле start, unsigned ціле count)
   {
-    unsigned int end = start + count;
+    unsigned ціле end = start + count;
     assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
+    unsigned ціле bits = (1u<<end) - (1u<<start);
     assert (0 == (allocated_var_bits & bits));
     allocated_var_bits |= bits;
   }
-  bool try_allocate_var (unsigned int start, unsigned int count)
+  bool try_allocate_var (unsigned ціле start, unsigned ціле count)
   {
-    unsigned int end = start + count;
+    unsigned ціле end = start + count;
     assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    if (allocated_var_bits & bits)
-      return false;
+    unsigned ціле bits = (1u<<end) - (1u<<start);
+    якщо (allocated_var_bits & bits)
+      повернути false;
     allocated_var_bits |= bits;
-    return true;
+    повернути true;
   }
-  void deallocate_var (unsigned int start, unsigned int count)
+  void deallocate_var (unsigned ціле start, unsigned ціле count)
   {
-    unsigned int end = start + count;
+    unsigned ціле end = start + count;
     assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
+    unsigned ціле bits = (1u<<end) - (1u<<start);
     assert (bits == (allocated_var_bits & bits));
     allocated_var_bits &= ~bits;
   }
-  void assert_var (unsigned int start, unsigned int count)
+  void assert_var (unsigned ціле start, unsigned ціле count)
   {
-    unsigned int end = start + count;
+    unsigned ціле end = start + count;
     assert (end <= 8);
-    HB_UNUSED unsigned int bits = (1u<<end) - (1u<<start);
+    HB_UNUSED unsigned ціле bits = (1u<<end) - (1u<<start);
     assert (bits == (allocated_var_bits & bits));
   }
   void deallocate_var_all ()
@@ -187,19 +187,19 @@ struct hb_buffer_t
   }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &cur (unsigned int i = 0) { return info[idx + i]; }
+  hb_glyph_info_t &cur (unsigned ціле i = 0) { повернути info[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t cur (unsigned int i = 0) const { return info[idx + i]; }
+  hb_glyph_info_t cur (unsigned ціле i = 0) const { повернути info[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_position_t &cur_pos (unsigned int i = 0) { return pos[idx + i]; }
+  hb_glyph_position_t &cur_pos (unsigned ціле i = 0) { повернути pos[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_position_t cur_pos (unsigned int i = 0) const { return pos[idx + i]; }
+  hb_glyph_position_t cur_pos (unsigned ціле i = 0) const { повернути pos[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &prev ()      { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t &prev ()      { повернути out_info[out_len ? out_len - 1 : 0]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t prev () const { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t prev () const { повернути out_info[out_len ? out_len - 1 : 0]; }
 
   template <typename set_t>
   void collect_codepoints (set_t &d) const
@@ -225,20 +225,20 @@ struct hb_buffer_t
   bool verify (hb_buffer_t        *text_buffer,
 	       hb_font_t          *font,
 	       const hb_feature_t *features,
-	       unsigned int        num_features,
+	       unsigned ціле        num_features,
 	       const char * const *shapers)
 #ifndef HB_NO_BUFFER_VERIFY
   ;
-#else
-  { return true; }
+#інакше
+  { повернути true; }
 #endif
 
-  unsigned int backtrack_len () const { return have_output ? out_len : idx; }
-  unsigned int lookahead_len () const { return len - idx; }
-  uint8_t next_serial () { return ++serial ? serial : ++serial; }
+  unsigned ціле backtrack_len () const { повернути have_output ? out_len : idx; }
+  unsigned ціле lookahead_len () const { повернути len - idx; }
+  uint8_t next_serial () { повернути ++serial ? serial : ++serial; }
 
   HB_INTERNAL void add (hb_codepoint_t  codepoint,
-			unsigned int    cluster);
+			unsigned ціле    cluster);
   HB_INTERNAL void add_info (const hb_glyph_info_t &glyph_info);
   HB_INTERNAL void add_info_and_pos (const hb_glyph_info_t &glyph_info,
 				     const hb_glyph_position_t &glyph_pos);
@@ -246,7 +246,7 @@ struct hb_buffer_t
   void reverse_range (unsigned start, unsigned end)
   {
     hb_array_t<hb_glyph_info_t> (info, len).reverse (start, end);
-    if (have_positions)
+    якщо (have_positions)
       hb_array_t<hb_glyph_position_t> (pos, len).reverse (start, end);
   }
   void reverse () { reverse_range (0, len); }
@@ -255,22 +255,22 @@ struct hb_buffer_t
   void reverse_groups (const FuncType& group,
 		       bool merge_clusters = false)
   {
-    if (unlikely (!len))
-      return;
+    якщо (unlikely (!len))
+      повернути;
 
     unsigned start = 0;
     unsigned i;
-    for (i = 1; i < len; i++)
+    для (i = 1; i < len; i++)
     {
-      if (!group (info[i - 1], info[i]))
+      якщо (!group (info[i - 1], info[i]))
       {
-	if (merge_clusters)
+	якщо (merge_clusters)
 	  this->merge_clusters (start, i);
 	reverse_range (start, i);
 	start = i;
       }
     }
-    if (merge_clusters)
+    якщо (merge_clusters)
       this->merge_clusters (start, i);
     reverse_range (start, i);
 
@@ -280,31 +280,31 @@ struct hb_buffer_t
   template <typename FuncType>
   unsigned group_end (unsigned start, const FuncType& group) const
   {
-    while (++start < len && group (info[start - 1], info[start]))
+    поки (++start < len && group (info[start - 1], info[start]))
       ;
 
-    return start;
+    повернути start;
   }
 
   static bool _cluster_group_func (const hb_glyph_info_t& a,
 				   const hb_glyph_info_t& b)
-  { return a.cluster == b.cluster; }
+  { повернути a.cluster == b.cluster; }
 
   void reverse_clusters () { reverse_groups (_cluster_group_func); }
 
   HB_INTERNAL void guess_segment_properties ();
 
   HB_INTERNAL bool sync ();
-  HB_INTERNAL int sync_so_far ();
+  HB_INTERNAL ціле sync_so_far ();
   HB_INTERNAL void clear_output ();
   HB_INTERNAL void clear_positions ();
 
   template <typename T>
-  HB_NODISCARD bool replace_glyphs (unsigned int num_in,
-				    unsigned int num_out,
+  HB_NODISCARD bool replace_glyphs (unsigned ціле num_in,
+				    unsigned ціле num_out,
 				    const T *glyph_data)
   {
-    if (unlikely (!make_room_for (num_in, num_out))) return false;
+    якщо (unlikely (!make_room_for (num_in, num_out))) повернути false;
 
     assert (idx + num_in <= len);
 
@@ -313,7 +313,7 @@ struct hb_buffer_t
     hb_glyph_info_t &orig_info = idx < len ? cur() : prev();
 
     hb_glyph_info_t *pinfo = &out_info[out_len];
-    for (unsigned int i = 0; i < num_out; i++)
+    для (unsigned ціле i = 0; i < num_out; i++)
     {
       *pinfo = orig_info;
       pinfo->codepoint = glyph_data[i];
@@ -322,117 +322,117 @@ struct hb_buffer_t
 
     idx  += num_in;
     out_len += num_out;
-    return true;
+    повернути true;
   }
 
   HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (1, 1, &glyph_index); }
+  { повернути replace_glyphs (1, 1, &glyph_index); }
 
   /* Makes a copy of the glyph at idx to output and replace glyph_index */
   HB_NODISCARD bool output_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (0, 1, &glyph_index); }
+  { повернути replace_glyphs (0, 1, &glyph_index); }
 
   HB_NODISCARD bool output_info (const hb_glyph_info_t &glyph_info)
   {
-    if (unlikely (!make_room_for (0, 1))) return false;
+    якщо (unlikely (!make_room_for (0, 1))) повернути false;
 
     out_info[out_len] = glyph_info;
 
     out_len++;
-    return true;
+    повернути true;
   }
   /* Copies glyph at idx to output but doesn't advance idx */
   HB_NODISCARD bool copy_glyph ()
   {
     /* Extra copy because cur()'s return can be freed within
      * output_info() call if buffer reallocates. */
-    return output_info (hb_glyph_info_t (cur()));
+    повернути output_info (hb_glyph_info_t (cur()));
   }
 
   /* Copies glyph at idx to output and advance idx.
    * If there's no output, just advance idx. */
   HB_NODISCARD bool next_glyph ()
   {
-    if (have_output)
+    якщо (have_output)
     {
-      if (out_info != info || out_len != idx)
+      якщо (out_info != info || out_len != idx)
       {
-	if (unlikely (!ensure (out_len + 1))) return false;
+	якщо (unlikely (!ensure (out_len + 1))) повернути false;
 	out_info[out_len] = info[idx];
       }
       out_len++;
     }
 
     idx++;
-    return true;
+    повернути true;
   }
   /* Copies n glyphs at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyphs (unsigned int n)
+  HB_NODISCARD bool next_glyphs (unsigned ціле n)
   {
-    if (have_output)
+    якщо (have_output)
     {
-      if (out_info != info || out_len != idx)
+      якщо (out_info != info || out_len != idx)
       {
-	if (unlikely (!ensure (out_len + n))) return false;
+	якщо (unlikely (!ensure (out_len + n))) повернути false;
 	memmove (out_info + out_len, info + idx, n * sizeof (out_info[0]));
       }
       out_len += n;
     }
 
     idx += n;
-    return true;
+    повернути true;
   }
   /* Advance idx without copying to output. */
   void skip_glyph () { idx++; }
   void add_masks (hb_mask_t mask)
   {
-    for (unsigned int j = 0; j < len; j++)
+    для (unsigned ціле j = 0; j < len; j++)
       info[j].mask |= mask;
   }
   HB_INTERNAL void set_masks (hb_mask_t value, hb_mask_t mask,
-			      unsigned int cluster_start, unsigned int cluster_end);
+			      unsigned ціле cluster_start, unsigned ціле cluster_end);
 
-  void merge_clusters (unsigned int start, unsigned int end)
+  void merge_clusters (unsigned ціле start, unsigned ціле end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+    якщо (end - start < 2)
+      повернути;
+    якщо (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
     {
       unsafe_to_break (start, end);
-      return;
+      повернути;
     }
     merge_clusters_impl (start, end);
   }
-  void merge_grapheme_clusters (unsigned int start, unsigned int end)
+  void merge_grapheme_clusters (unsigned ціле start, unsigned ціле end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+    якщо (end - start < 2)
+      повернути;
+    якщо (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
     {
       unsafe_to_break (start, end);
-      return;
+      повернути;
     }
     merge_clusters_impl (start, end);
   }
-  HB_INTERNAL void merge_clusters_impl (unsigned int start, unsigned int end);
-  void merge_out_clusters (unsigned int start, unsigned int end)
+  HB_INTERNAL void merge_clusters_impl (unsigned ціле start, unsigned ціле end);
+  void merge_out_clusters (unsigned ціле start, unsigned ціле end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
-      return;
+    якщо (end - start < 2)
+      повернути;
+    якщо (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+      повернути;
     merge_out_clusters_impl (start, end);
   }
-  void merge_out_grapheme_clusters (unsigned int start, unsigned int end)
+  void merge_out_grapheme_clusters (unsigned ціле start, unsigned ціле end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
-      return;
+    якщо (end - start < 2)
+      повернути;
+    якщо (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+      повернути;
     merge_out_clusters_impl (start, end);
   }
-  HB_INTERNAL void merge_out_clusters_impl (unsigned int start, unsigned int end);
+  HB_INTERNAL void merge_out_clusters_impl (unsigned ціле start, unsigned ціле end);
   /* Merge clusters for deleting current glyph, and skip it. */
   HB_INTERNAL void delete_glyph ();
   HB_INTERNAL void delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info));
@@ -448,32 +448,32 @@ struct hb_buffer_t
 			      bool interior,
 			      bool from_out_buffer)
   {
-    if (!from_out_buffer || !have_output)
+    якщо (!from_out_buffer || !have_output)
     {
-      if (!interior)
+      якщо (!interior)
       {
-	for (unsigned i = start; i < end; i++)
+	для (unsigned i = start; i < end; i++)
 	  info[i].mask |= mask;
       }
-      else
+      інакше
       {
 	unsigned cluster = _infos_find_min_cluster (info, start, end);
 	_infos_set_glyph_flags (info, start, end, cluster, mask);
       }
     }
-    else
+    інакше
     {
       assert (start <= out_len);
       assert (idx <= end);
 
-      if (!interior)
+      якщо (!interior)
       {
-	for (unsigned i = start; i < out_len; i++)
+	для (unsigned i = start; i < out_len; i++)
 	  out_info[i].mask |= mask;
-	for (unsigned i = idx; i < end; i++)
+	для (unsigned i = idx; i < end; i++)
 	  info[i].mask |= mask;
       }
-      else
+      інакше
       {
 	unsigned cluster = _infos_find_min_cluster (info, idx, end);
 	cluster = _infos_find_min_cluster (out_info, start, out_len, cluster);
@@ -491,30 +491,30 @@ struct hb_buffer_t
 			 bool interior = false,
 			 bool from_out_buffer = false)
   {
-    if (unlikely (end != (unsigned) -1 && end - start > 255))
-      return;
+    якщо (unlikely (end != (unsigned) -1 && end - start > 255))
+      повернути;
 
     end = hb_min (end, len);
 
-    if (interior && !from_out_buffer && end - start < 2)
-      return;
+    якщо (interior && !from_out_buffer && end - start < 2)
+      повернути;
 
     _set_glyph_flags_impl (mask, start, end, interior, from_out_buffer);
   }
 
 
-  void unsafe_to_break (unsigned int start = 0, unsigned int end = -1)
+  void unsafe_to_break (unsigned ціле start = 0, unsigned ціле end = -1)
   {
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
 		      true);
   }
-  void safe_to_insert_tatweel (unsigned int start = 0, unsigned int end = -1)
+  void safe_to_insert_tatweel (unsigned ціле start = 0, unsigned ціле end = -1)
   {
-    if ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+    якщо ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
     {
       unsafe_to_break (start, end);
-      return;
+      повернути;
     }
     _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL,
 		      start, end,
@@ -523,15 +523,15 @@ struct hb_buffer_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void unsafe_to_concat (unsigned int start = 0, unsigned int end = -1)
+  void unsafe_to_concat (unsigned ціле start = 0, unsigned ціле end = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
+    якщо (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
+      повернути;
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
 		      false);
   }
-  void unsafe_to_break_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  void unsafe_to_break_from_outbuffer (unsigned ціле start = 0, unsigned ціле end = -1)
   {
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
@@ -540,10 +540,10 @@ struct hb_buffer_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void unsafe_to_concat_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  void unsafe_to_concat_from_outbuffer (unsigned ціле start = 0, unsigned ціле end = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
+    якщо (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
+      повернути;
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
 		      false, true);
@@ -551,22 +551,22 @@ struct hb_buffer_t
 
 
   /* Internal methods */
-  HB_NODISCARD HB_INTERNAL bool move_to (unsigned int i); /* i is output-buffer index. */
+  HB_NODISCARD HB_INTERNAL bool move_to (unsigned ціле i); /* i is output-buffer index. */
 
-  HB_NODISCARD HB_INTERNAL bool enlarge (unsigned int size);
+  HB_NODISCARD HB_INTERNAL bool enlarge (unsigned ціле size);
 
   HB_NODISCARD bool resize (unsigned length)
   {
     assert (!have_output);
-    if (unlikely (!ensure (length))) return false;
+    якщо (unlikely (!ensure (length))) повернути false;
     len = length;
-    return true;
+    повернути true;
   }
-  HB_NODISCARD bool ensure (unsigned int size)
-  { return likely (!size || size < allocated) ? true : enlarge (size); }
+  HB_NODISCARD bool ensure (unsigned ціле size)
+  { повернути likely (!size || size < allocated) ? true : enlarge (size); }
 
-  HB_NODISCARD bool ensure_inplace (unsigned int size)
-  { return likely (!size || size < allocated); }
+  HB_NODISCARD bool ensure_inplace (unsigned ціле size)
+  { повернути likely (!size || size < allocated); }
 
   void assert_glyphs ()
   {
@@ -580,106 +580,106 @@ struct hb_buffer_t
   }
   HB_NODISCARD bool ensure_glyphs ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
+    якщо (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
+      якщо (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
+	повернути false;
       assert (len == 0);
       content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
     }
-    return true;
+    повернути true;
   }
   HB_NODISCARD bool ensure_unicode ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
+    якщо (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
+      якщо (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
+	повернути false;
       assert (len == 0);
       content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
     }
-    return true;
+    повернути true;
   }
 
-  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned int num_in, unsigned int num_out);
-  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned int count);
+  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned ціле num_in, unsigned ціле num_out);
+  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned ціле count);
 
   typedef long scratch_buffer_t;
-  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned int *size);
+  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned ціле *size);
 
-  void clear_context (unsigned int side) { context_len[side] = 0; }
+  void clear_context (unsigned ціле side) { context_len[side] = 0; }
 
-  HB_INTERNAL void sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *));
+  HB_INTERNAL void sort (unsigned ціле start, unsigned ціле end, ціле(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *));
 
   bool messaging ()
   {
 #ifdef HB_NO_BUFFER_MESSAGE
-    return false;
-#else
-    return unlikely (message_func);
+    повернути false;
+#інакше
+    повернути unlikely (message_func);
 #endif
   }
   bool message (hb_font_t *font, const char *fmt, ...) HB_PRINTF_FUNC(3, 4)
   {
 #ifdef HB_NO_BUFFER_MESSAGE
-    return true;
-#else
-    if (likely (!messaging ()))
-      return true;
+    повернути true;
+#інакше
+    якщо (likely (!messaging ()))
+      повернути true;
 
     va_list ap;
     va_start (ap, fmt);
     bool ret = message_impl (font, fmt, ap);
     va_end (ap);
 
-    return ret;
+    повернути ret;
 #endif
   }
   HB_INTERNAL bool message_impl (hb_font_t *font, const char *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
   HB_INTERNAL void changed ();
 
   static void
-  set_cluster (hb_glyph_info_t &inf, unsigned int cluster, unsigned int mask = 0)
+  set_cluster (hb_glyph_info_t &inf, unsigned ціле cluster, unsigned ціле mask = 0)
   {
-    if (inf.cluster != cluster)
+    якщо (inf.cluster != cluster)
       inf.mask = (inf.mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
     inf.cluster = cluster;
   }
   void
   _infos_set_glyph_flags (hb_glyph_info_t *infos,
-			  unsigned int start, unsigned int end,
-			  unsigned int cluster,
+			  unsigned ціле start, unsigned ціле end,
+			  unsigned ціле cluster,
 			  hb_mask_t mask)
   {
-    if (unlikely (start == end))
-      return;
+    якщо (unlikely (start == end))
+      повернути;
 
     max_ops -= end - start;
-    if (unlikely (max_ops < 0))
+    якщо (unlikely (max_ops < 0))
       successful = false;
 
     unsigned cluster_first = infos[start].cluster;
     unsigned cluster_last = infos[end - 1].cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
+    якщо (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
 	(cluster != cluster_first && cluster != cluster_last))
     {
-      for (unsigned int i = start; i < end; i++)
-	if (cluster != infos[i].cluster)
+      для (unsigned ціле i = start; i < end; i++)
+	якщо (cluster != infos[i].cluster)
 	  infos[i].mask |= mask;
-      return;
+      повернути;
     }
 
     /* Monotone clusters */
 
-    if (cluster == cluster_first)
+    якщо (cluster == cluster_first)
     {
-      for (unsigned int i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
+      для (unsigned ціле i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
 	infos[i - 1].mask |= mask;
     }
-    else /* cluster == cluster_last */
+    інакше /* cluster == cluster_last */
     {
-      for (unsigned int i = start; i < end && infos[i].cluster != cluster_last; i++)
+      для (unsigned ціле i = start; i < end && infos[i].cluster != cluster_last; i++)
 	infos[i].mask |= mask;
     }
   }
@@ -688,22 +688,22 @@ struct hb_buffer_t
 			   unsigned start, unsigned end,
 			   unsigned cluster = UINT_MAX)
   {
-    if (unlikely (start == end))
-      return cluster;
+    якщо (unlikely (start == end))
+      повернути cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
+    якщо (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
     {
-      for (unsigned int i = start; i < end; i++)
+      для (unsigned ціле i = start; i < end; i++)
 	cluster = hb_min (cluster, infos[i].cluster);
-      return cluster;
+      повернути cluster;
     }
 
-    return hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
+    повернути hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
   }
 
   void clear_glyph_flags (hb_mask_t mask = 0)
   {
-    for (unsigned int i = 0; i < len; i++)
+    для (unsigned ціле i = 0; i < len; i++)
       info[i].mask = (info[i].mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
   }
 };
@@ -711,7 +711,7 @@ DECLARE_NULL_INSTANCE (hb_buffer_t);
 
 
 #define foreach_group(buffer, start, end, group_func) \
-  for (unsigned int \
+  для (unsigned ціле \
        _count = buffer->len, \
        start = 0, end = _count ? buffer->group_end (0, group_func) : 0; \
        start < _count; \

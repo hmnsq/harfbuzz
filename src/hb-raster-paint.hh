@@ -42,8 +42,8 @@ struct hb_raster_clip_t
 
   /* Fast path: simple rectangle (no alpha buffer needed) */
   bool is_rect = true;
-  int rect_x0 = 0, rect_y0 = 0;
-  int rect_x1 = 0, rect_y1 = 0;
+  ціле rect_x0 = 0, rect_y0 = 0;
+  ціле rect_x1 = 0, rect_y1 = 0;
 
   /* Bounding box of non-zero alpha region (valid for both rect and mask) */
   unsigned min_x = 0, min_y = 0;
@@ -57,8 +57,8 @@ struct hb_raster_clip_t
     is_rect = true;
     rect_x0 = 0;
     rect_y0 = 0;
-    rect_x1 = (int) w;
-    rect_y1 = (int) h;
+    rect_x1 = (ціле) w;
+    rect_y1 = (ціле) h;
     min_x = 0;
     min_y = 0;
     max_x = w;
@@ -69,32 +69,32 @@ struct hb_raster_clip_t
   {
     min_x = (unsigned) hb_max (rect_x0, 0);
     min_y = (unsigned) hb_max (rect_y0, 0);
-    max_x = (unsigned) hb_max (hb_min (rect_x1, (int) width), 0);
-    max_y = (unsigned) hb_max (hb_min (rect_y1, (int) height), 0);
+    max_x = (unsigned) hb_max (hb_min (rect_x1, (ціле) width), 0);
+    max_y = (unsigned) hb_max (hb_min (rect_y1, (ціле) height), 0);
   }
 
   uint8_t get_alpha (unsigned x, unsigned y) const
   {
-    if (is_rect)
-      return ((int) x >= rect_x0 && (int) x < rect_x1 &&
-	      (int) y >= rect_y0 && (int) y < rect_y1) ? 255 : 0;
-    if (x >= width || y >= height) return 0;
-    if (stride < width) return 0;
-    if (height && stride > (size_t) -1 / height) return 0;
+    якщо (is_rect)
+      повернути ((ціле) x >= rect_x0 && (ціле) x < rect_x1 &&
+	      (ціле) y >= rect_y0 && (ціле) y < rect_y1) ? 255 : 0;
+    якщо (x >= width || y >= height) повернути 0;
+    якщо (stride < width) повернути 0;
+    якщо (height && stride > (size_t) -1 / height) повернути 0;
     size_t idx = (size_t) y * stride + x;
-    if (!alpha.arrayZ || idx >= alpha.length) return 0;
-    return alpha[idx];
+    якщо (!alpha.arrayZ || idx >= alpha.length) повернути 0;
+    повернути alpha[idx];
   }
 
   bool has_valid_alpha_mask () const
   {
-    if (is_rect)
-      return true;
-    if (!alpha.arrayZ || stride < width)
-      return false;
-    if (height && stride > (size_t) -1 / height)
-      return false;
-    return (size_t) stride * height <= alpha.length;
+    якщо (is_rect)
+      повернути true;
+    якщо (!alpha.arrayZ || stride < width)
+      повернути false;
+    якщо (height && stride > (size_t) -1 / height)
+      повернути false;
+    повернути (size_t) stride * height <= alpha.length;
   }
 };
 
@@ -150,7 +150,7 @@ struct hb_raster_paint_t
 
   int64_t get_default_pixel_budget () const
   {
-    return hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
+    повернути hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
 		   (int64_t) HB_BUDGET_RASTER_PAINT_PASSES *
 		   fixed_extents.width * fixed_extents.height);
   }
@@ -168,53 +168,53 @@ struct hb_raster_paint_t
    * overshoot past zero; callers skip work once the budget is spent. */
   bool charge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < 0)) return false;
+    якщо (unlikely (pixel_remaining < 0)) повернути false;
     pixel_remaining -= work;
-    return true;
+    повернути true;
   }
 
   /* Reject work that would exceed the remaining budget before it starts. */
   bool precharge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < work))
+    якщо (unlikely (pixel_remaining < work))
     {
       pixel_remaining = -1;
-      return false;
+      повернути false;
     }
     pixel_remaining -= work;
-    return true;
+    повернути true;
   }
 
   hb_raster_image_t *acquire_surface ()
   {
     hb_raster_image_t *img;
-    if (surface_cache.length)
+    якщо (surface_cache.length)
       img = surface_cache.pop ();
-    else
+    інакше
     {
       img = hb_raster_image_create_or_fail ();
-      if (unlikely (!img)) return nullptr;
+      якщо (unlikely (!img)) повернути nullptr;
     }
 
-    if (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
+    якщо (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
     {
       hb_raster_image_destroy (img);
-      return nullptr;
+      повернути nullptr;
     }
     img->clear ();
-    return img;
+    повернути img;
   }
 
   void release_surface (hb_raster_image_t *img)
   {
-    if (!surface_cache.push_or_fail (img))
+    якщо (!surface_cache.push_or_fail (img))
       hb_raster_image_destroy (img);
   }
 
   hb_raster_clip_t acquire_clip (unsigned w, unsigned h)
   {
     hb_raster_clip_t clip;
-    if (clip_cache.length)
+    якщо (clip_cache.length)
       clip = clip_cache.pop ();
     clip.width = w;
     clip.height = h;
@@ -223,36 +223,36 @@ struct hb_raster_paint_t
     clip.rect_x0 = clip.rect_y0 = 0;
     clip.rect_x1 = clip.rect_y1 = 0;
     clip.min_x = clip.min_y = clip.max_x = clip.max_y = 0;
-    return clip;
+    повернути clip;
   }
 
   void release_clip (hb_raster_clip_t &&clip)
   {
-    if (clip.alpha.arrayZ)
+    якщо (clip.alpha.arrayZ)
       clip_cache.push (std::move (clip));
   }
 
   void release_all_clips ()
   {
-    while (clip_stack.length)
+    поки (clip_stack.length)
       release_clip (clip_stack.pop ());
   }
 
   hb_raster_image_t *current_surface ()
   {
-    return surface_stack.length ? surface_stack.tail () : nullptr;
+    повернути surface_stack.length ? surface_stack.tail () : nullptr;
   }
 
   hb_raster_clip_t &current_clip ()
   {
-    return clip_stack.tail ();
+    повернути clip_stack.tail ();
   }
 
   hb_transform_t<> current_transform ()
   {
-    if (unlikely (!transform_stack.length))
-      return {1, 0, 0, 1, 0, 0};
-    return transform_stack.tail ();
+    якщо (unlikely (!transform_stack.length))
+      повернути {1, 0, 0, 1, 0, 0};
+    повернути transform_stack.tail ();
   }
 
   void apply_scale_factor (hb_transform_t<> &t) const
@@ -269,19 +269,19 @@ struct hb_raster_paint_t
   {
     hb_transform_t<> t = current_transform ();
     apply_scale_factor (t);
-    return t;
+    повернути t;
   }
 
   bool fetch_color_stops (hb_color_line_t *color_line)
   {
     unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !scratch_color_stops.resize (count)))
+    якщо (unlikely (!count || !scratch_color_stops.resize (count)))
     {
       scratch_color_stops.resize (0);
-      return false;
+      повернути false;
     }
     hb_color_line_get_color_stops (color_line, 0, &count, scratch_color_stops.arrayZ);
-    return true;
+    повернути true;
   }
 };
 

@@ -40,10 +40,10 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 				       hb_font_t                *font HB_UNUSED)
 {
 #ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-  return;
+  повернути;
 #endif
-  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)
-    return;
+  якщо (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)
+    повернути;
 
   /* UGLY UGLY UGLY business of adding dotted-circle in the middle of
    * vowel-sequences that look like another vowel.  Data for each script
@@ -52,11 +52,11 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
    * https://github.com/harfbuzz/harfbuzz/issues/1019
    */
   buffer->clear_output ();
-  unsigned int count = buffer->len;
+  unsigned ціле count = buffer->len;
   switch ((unsigned) buffer->props.script)
   {
     case HB_SCRIPT_DEVANAGARI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -92,7 +92,7 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    }
 	    break;
 	  case 0x0930u:
-	    if (0x094Du == buffer->cur (1).codepoint &&
+	    якщо (0x094Du == buffer->cur (1).codepoint &&
 		buffer->idx + 2 < count &&
 		0x0907u == buffer->cur (2).codepoint)
 	    {
@@ -102,12 +102,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_BENGALI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -123,12 +123,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_GURMUKHI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -159,12 +159,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_GUJARATI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -183,12 +183,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_ORIYA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -201,26 +201,26 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_TAMIL:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
-	if (0x0B85u == buffer->cur ().codepoint &&
+	якщо (0x0B85u == buffer->cur ().codepoint &&
 	    0x0BC2u == buffer->cur (1).codepoint)
 	{
 	  matched = true;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_TELUGU:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -238,12 +238,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_KANNADA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -256,12 +256,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_MALAYALAM:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -282,12 +282,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_SINHALA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -317,12 +317,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_BRAHMI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -338,12 +338,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_KHOJKI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -372,12 +372,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_KHUDAWADI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -393,12 +393,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_TIRHUTA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -419,12 +419,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_MODI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -439,12 +439,12 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 
     case HB_SCRIPT_TAKRI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+      для (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
@@ -462,7 +462,7 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	    break;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	якщо (matched) _output_with_dotted_circle (buffer);
       }
       break;
 

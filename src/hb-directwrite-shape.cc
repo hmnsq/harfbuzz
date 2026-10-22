@@ -46,7 +46,7 @@ _hb_directwrite_shaper_face_data_create (hb_face_t *face)
 
   hb_blob_destroy (blob);
 
-  return data;
+  повернути data;
 }
 
 void
@@ -73,18 +73,18 @@ _hb_directwrite_shaper_font_data_create (hb_font_t *font)
   IDWriteFontFace5 *fontFaceVariations = nullptr;
   {
     IDWriteFontFace5 *fontFace5;
-    if (SUCCEEDED (fontFace->QueryInterface (__uuidof (IDWriteFontFace5), (void **) &fontFace5)))
+    якщо (SUCCEEDED (fontFace->QueryInterface (__uuidof (IDWriteFontFace5), (void **) &fontFace5)))
     {
       IDWriteFontResource *fontResource;
-      if (SUCCEEDED (fontFace5->GetFontResource (&fontResource)))
+      якщо (SUCCEEDED (fontFace5->GetFontResource (&fontResource)))
       {
 	hb_vector_t<DWRITE_FONT_AXIS_VALUE> axis_values;
-	if (likely (axis_values.resize_exact (font->num_coords)))
+	якщо (likely (axis_values.resize_exact (font->num_coords)))
 	{
-	  for (unsigned int i = 0; i < font->num_coords; i++)
+	  для (unsigned ціле i = 0; i < font->num_coords; i++)
 	  {
 	    hb_ot_var_axis_info_t info;
-	    unsigned int c = 1;
+	    unsigned ціле c = 1;
 	    hb_ot_var_get_axis_infos (font->face, i, &c, &info);
 	    axis_values[i].axisTag = (DWRITE_FONT_AXIS_TAG) hb_uint32_swap (info.tag);
 	    axis_values[i].value = i < font->num_coords ?
@@ -101,7 +101,7 @@ _hb_directwrite_shaper_font_data_create (hb_font_t *font)
     }
   }
 
-  return (hb_directwrite_font_data_t *) fontFaceVariations;
+  повернути (hb_directwrite_font_data_t *) fontFaceVariations;
 }
 
 void
@@ -119,18 +119,18 @@ private:
   hb_reference_count_t mRefCount;
 public:
   IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
+  { повернути S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    повернути mRefCount.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
     signed refCount = mRefCount.dec () - 1;
     assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    return 0;
+    якщо (refCount)
+      повернути refCount;
+    повернути 0;
   }
 
   // A single contiguous run of characters containing the same analysis
@@ -148,7 +148,7 @@ public:
 
     bool ContainsTextPosition (uint32_t aTextPosition) const
     {
-      return aTextPosition >= mTextStart &&
+      повернути aTextPosition >= mTextStart &&
 	     aTextPosition <  mTextStart + mTextLength;
     }
 
@@ -166,7 +166,7 @@ public:
   ~TextAnalysis ()
   {
     // free runs, except mRunHead which is part of the TextAnalysis object
-    for (Run *run = mRunHead.nextRun; run;)
+    для (Run *run = mRunHead.nextRun; run;)
     {
       Run *origRun = run;
       run = run->nextRun;
@@ -192,10 +192,10 @@ public:
     mCurrentRun = &mRunHead;
 
     // Call each of the analyzers in sequence, recording their results.
-    if (SUCCEEDED (hr = textAnalyzer->AnalyzeScript (this, 0, mTextLength, this)))
+    якщо (SUCCEEDED (hr = textAnalyzer->AnalyzeScript (this, 0, mTextLength, this)))
       *runHead = &mRunHead;
 
-    return hr;
+    повернути hr;
   }
 
   // IDWriteTextAnalysisSource implementation
@@ -205,18 +205,18 @@ public:
 		     OUT wchar_t const** textString,
 		     OUT uint32_t* textLength)
   {
-    if (textPosition >= mTextLength)
+    якщо (textPosition >= mTextLength)
     {
       // No text at this position, valid query though.
       *textString = nullptr;
       *textLength = 0;
     }
-    else
+    інакше
     {
       *textString = mText + textPosition;
       *textLength = mTextLength - textPosition;
     }
-    return S_OK;
+    повернути S_OK;
   }
 
   IFACEMETHODIMP
@@ -224,27 +224,27 @@ public:
 			 OUT wchar_t const** textString,
 			 OUT uint32_t* textLength)
   {
-    if (textPosition == 0 || textPosition > mTextLength)
+    якщо (textPosition == 0 || textPosition > mTextLength)
     {
       // Either there is no text before here (== 0), or this
       // is an invalid position. The query is considered valid though.
       *textString = nullptr;
       *textLength = 0;
     }
-    else
+    інакше
     {
       *textString = mText;
       *textLength = textPosition;
     }
-    return S_OK;
+    повернути S_OK;
   }
 
   IFACEMETHODIMP_ (DWRITE_READING_DIRECTION)
-  GetParagraphReadingDirection () { return mReadingDirection; }
+  GetParagraphReadingDirection () { повернути mReadingDirection; }
 
   IFACEMETHODIMP GetLocaleName (uint32_t textPosition, uint32_t* textLength,
 				wchar_t const** localeName)
-  { return S_OK; }
+  { повернути S_OK; }
 
   IFACEMETHODIMP
   GetNumberSubstitution (uint32_t textPosition,
@@ -255,7 +255,7 @@ public:
     *numberSubstitution = nullptr;
     *textLength = mTextLength - textPosition;
 
-    return S_OK;
+    повернути S_OK;
   }
 
   // IDWriteTextAnalysisSink implementation
@@ -265,33 +265,33 @@ public:
 		     DWRITE_SCRIPT_ANALYSIS const* scriptAnalysis)
   {
     SetCurrentRun (textPosition);
-    if (unlikely (!SplitCurrentRun (textPosition)))
-      return E_OUTOFMEMORY;
-    while (textLength > 0)
+    якщо (unlikely (!SplitCurrentRun (textPosition)))
+      повернути E_OUTOFMEMORY;
+    поки (textLength > 0)
     {
       Run *run = FetchNextRun (&textLength);
-      if (unlikely (!run))
-        return E_OUTOFMEMORY;
+      якщо (unlikely (!run))
+        повернути E_OUTOFMEMORY;
       run->mScript = *scriptAnalysis;
     }
 
-    return S_OK;
+    повернути S_OK;
   }
 
   IFACEMETHODIMP
   SetLineBreakpoints (uint32_t textPosition,
 		      uint32_t textLength,
 		      const DWRITE_LINE_BREAKPOINT* lineBreakpoints)
-  { return S_OK; }
+  { повернути S_OK; }
 
   IFACEMETHODIMP SetBidiLevel (uint32_t textPosition, uint32_t textLength,
 			       uint8_t explicitLevel, uint8_t resolvedLevel)
-  { return S_OK; }
+  { повернути S_OK; }
 
   IFACEMETHODIMP
   SetNumberSubstitution (uint32_t textPosition, uint32_t textLength,
 			 IDWriteNumberSubstitution* numberSubstitution)
-  { return S_OK; }
+  { повернути S_OK; }
 
 protected:
   Run *FetchNextRun (IN OUT uint32_t* textLength)
@@ -303,18 +303,18 @@ protected:
     Run *origRun = mCurrentRun;
     // Split the tail if needed (the length remaining is less than the
     // current run's size).
-    if (*textLength < mCurrentRun->mTextLength)
+    якщо (*textLength < mCurrentRun->mTextLength)
     {
-      if (unlikely (!SplitCurrentRun (mCurrentRun->mTextStart + *textLength)))
-        return nullptr;
+      якщо (unlikely (!SplitCurrentRun (mCurrentRun->mTextStart + *textLength)))
+        повернути nullptr;
     }
-    else
+    інакше
       // Just advance the current run.
       mCurrentRun = mCurrentRun->nextRun;
     *textLength -= origRun->mTextLength;
 
     // Return a reference to the run that was just current.
-    return origRun;
+    повернути origRun;
   }
 
   void SetCurrentRun (uint32_t textPosition)
@@ -324,36 +324,36 @@ protected:
     // this will usually just return early. If not, find the
     // corresponding run for the text position.
 
-    if (mCurrentRun && mCurrentRun->ContainsTextPosition (textPosition))
-      return;
+    якщо (mCurrentRun && mCurrentRun->ContainsTextPosition (textPosition))
+      повернути;
 
-    for (Run *run = &mRunHead; run; run = run->nextRun)
-      if (run->ContainsTextPosition (textPosition))
+    для (Run *run = &mRunHead; run; run = run->nextRun)
+      якщо (run->ContainsTextPosition (textPosition))
       {
 	mCurrentRun = run;
-	return;
+	повернути;
       }
     assert (0); // We should always be able to find the text position in one of our runs
   }
 
   bool SplitCurrentRun (uint32_t splitPosition)
   {
-    if (!mCurrentRun)
+    якщо (!mCurrentRun)
     {
       assert (0); // SplitCurrentRun called without current run
       // Shouldn't be calling this when no current run is set!
-      return false;
+      повернути false;
     }
     // Split the current run.
-    if (splitPosition <= mCurrentRun->mTextStart)
+    якщо (splitPosition <= mCurrentRun->mTextStart)
     {
       // No need to split, already the start of a run
       // or before it. Usually the first.
-      return true;
+      повернути true;
     }
     Run *newRun = (Run *) hb_malloc (sizeof (Run));
-    if (unlikely (!newRun))
-      return false;
+    якщо (unlikely (!newRun))
+      повернути false;
 
     *newRun = *mCurrentRun;
 
@@ -367,7 +367,7 @@ protected:
     newRun->mTextLength -= splitPoint;
     mCurrentRun->mTextLength = splitPoint;
     mCurrentRun = newRun;
-    return true;
+    повернути true;
   }
 
 protected:
@@ -395,42 +395,42 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
 		       const hb_feature_t *features,
-		       unsigned int        num_features)
+		       unsigned ціле        num_features)
 {
   IDWriteFontFace *fontFace = (IDWriteFontFace *) (const void *) font->data.directwrite;
   auto *global = get_directwrite_global ();
-  if (unlikely (!global))
-    return false;
+  якщо (unlikely (!global))
+    повернути false;
   IDWriteFactory *dwriteFactory = global->dwriteFactory;
 
   IDWriteTextAnalyzer* analyzer;
   dwriteFactory->CreateTextAnalyzer (&analyzer);
 
-  unsigned int scratch_size;
+  unsigned ціле scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 #define ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
   do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
+    unsigned ціле _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
     assert (_consumed <= scratch_size); \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } поки (0)
 
 #define utf16_index() var1.u32
 
   ALLOCATE_ARRAY (wchar_t, textString, buffer->len * 2);
 
-  unsigned int chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  unsigned ціле chars_len = 0;
+  для (unsigned ціле i = 0; i < buffer->len; i++)
   {
     hb_codepoint_t c = buffer->info[i].codepoint;
     buffer->info[i].utf16_index () = chars_len;
-    if (likely (c <= 0xFFFFu))
+    якщо (likely (c <= 0xFFFFu))
       textString[chars_len++] = c;
-    else if (unlikely (c > 0x10FFFFu))
+    інакше якщо (unlikely (c > 0x10FFFFu))
       textString[chars_len++] = 0xFFFDu;
-    else
+    інакше
     {
       textString[chars_len++] = 0xD800u + ((c - 0x10000u) >> 10);
       textString[chars_len++] = 0xDC00u + ((c - 0x10000u) & ((1u << 10) - 1));
@@ -441,12 +441,12 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 #undef ALLOCATE_ARRAY
   /* Need log_clusters to assign features. */
   chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  для (unsigned ціле i = 0; i < buffer->len; i++)
   {
     hb_codepoint_t c = buffer->info[i].codepoint;
-    unsigned int cluster = buffer->info[i].cluster;
+    unsigned ціле cluster = buffer->info[i].cluster;
     log_clusters[chars_len++] = cluster;
-    if (hb_in_range (c, 0x10000u, 0x10FFFFu))
+    якщо (hb_in_range (c, 0x10000u, 0x10FFFFu))
       log_clusters[chars_len++] = cluster; /* Surrogates. */
   }
 
@@ -470,10 +470,10 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 #define FAIL(...) \
   HB_STMT_START { \
     DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
-    return false; \
+    повернути false; \
   } HB_STMT_END
 
-  if (FAILED (hr))
+  якщо (FAILED (hr))
     FAIL ("Analyzer failed to generate results.");
 
   uint32_t maxGlyphCount = 3 * textLength / 2 + 16;
@@ -481,7 +481,7 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
   bool isRightToLeft = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
 
   const wchar_t localeName[20] = {0};
-  if (buffer->props.language)
+  якщо (buffer->props.language)
     mbstowcs ((wchar_t*) localeName,
 	      hb_language_to_string (buffer->props.language), 20);
 
@@ -498,9 +498,9 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
   // should remain alive as long as the above two are.
   hb_vector_t<hb_ms_feature_t> feature_records;
   hb_vector_t<hb_ms_range_record_t> range_records;
-  if (num_features)
+  якщо (num_features)
   {
-    if (hb_ms_setup_features (features, num_features, feature_records, range_records))
+    якщо (hb_ms_setup_features (features, num_features, feature_records, range_records))
     {
       hb_ms_make_feature_ranges (feature_records,
 				 range_records,
@@ -514,7 +514,7 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 
   hb_vector_t<uint16_t> clusterMap;
   hb_vector_t<DWRITE_SHAPING_TEXT_PROPERTIES> textProperties;
-  if (unlikely (!clusterMap.resize_exact (textLength) ||
+  якщо (unlikely (!clusterMap.resize_exact (textLength) ||
                 !textProperties.resize_exact (textLength)))
     FAIL ("Failed to allocate shaping text data.");
 
@@ -522,7 +522,7 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
   hb_vector_t<DWRITE_SHAPING_GLYPH_PROPERTIES> glyphProperties;
 
 retry_getglyphs:
-  if (unlikely (!glyphIndices.resize_exact (maxGlyphCount) ||
+  якщо (unlikely (!glyphIndices.resize_exact (maxGlyphCount) ||
                 !glyphProperties.resize_exact (maxGlyphCount)))
     FAIL ("Failed to allocate shaping glyph data.");
 
@@ -544,18 +544,18 @@ retry_getglyphs:
 			    glyphProperties.arrayZ,
 			    &glyphCount);
 
-  if (unlikely (hr == HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_BUFFER)))
+  якщо (unlikely (hr == HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_BUFFER)))
   {
     maxGlyphCount *= 2;
 
     goto retry_getglyphs;
   }
-  if (FAILED (hr))
+  якщо (FAILED (hr))
     FAIL ("Analyzer failed to get glyphs.");
 
   hb_vector_t<float> glyphAdvances;
   hb_vector_t<DWRITE_GLYPH_OFFSET> glyphOffsets;
-  if (unlikely (!glyphAdvances.resize_exact (maxGlyphCount) ||
+  якщо (unlikely (!glyphAdvances.resize_exact (maxGlyphCount) ||
                 !glyphOffsets.resize_exact (maxGlyphCount)))
     FAIL ("Failed to allocate glyph positioning data.");
 
@@ -584,7 +584,7 @@ retry_getglyphs:
 				     glyphAdvances.arrayZ,
 				     glyphOffsets.arrayZ);
 
-  if (FAILED (hr))
+  якщо (FAILED (hr))
     FAIL ("Analyzer failed to get glyph placements.");
 
   /* Ok, we've got everything we need, now compose output buffer,
@@ -592,34 +592,34 @@ retry_getglyphs:
 
   /* Calculate visual-clusters.  That's what we ship. */
   hb_vector_t<uint32_t> vis_clusters;
-  if (unlikely (!vis_clusters.resize_exact (glyphCount)))
+  якщо (unlikely (!vis_clusters.resize_exact (glyphCount)))
     FAIL ("Failed to allocate visual clusters.");
 
-  for (unsigned int i = 0; i < glyphCount; i++)
+  для (unsigned ціле i = 0; i < glyphCount; i++)
     vis_clusters[i] = (uint32_t) -1;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  для (unsigned ціле i = 0; i < buffer->len; i++)
   {
-    unsigned int c = clusterMap[buffer->info[i].utf16_index ()];
-    if (likely (c < glyphCount))
+    unsigned ціле c = clusterMap[buffer->info[i].utf16_index ()];
+    якщо (likely (c < glyphCount))
       vis_clusters[c] = hb_min (vis_clusters[c], buffer->info[i].cluster);
   }
-  for (unsigned int i = 1; i < glyphCount; i++)
-    if (vis_clusters[i] == (uint32_t) -1)
+  для (unsigned ціле i = 1; i < glyphCount; i++)
+    якщо (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i - 1];
-  for (int i = (int) glyphCount - 2; i >= 0; i--)
-    if (vis_clusters[i] == (uint32_t) -1)
+  для (ціле i = (ціле) glyphCount - 2; i >= 0; i--)
+    якщо (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i + 1];
 
 #undef utf16_index
 
-  if (unlikely (!buffer->ensure (glyphCount)))
+  якщо (unlikely (!buffer->ensure (glyphCount)))
     FAIL ("Buffer in error");
 
 #undef FAIL
 
   /* Set glyph infos */
   buffer->len = 0;
-  for (unsigned int i = 0; i < glyphCount; i++)
+  для (unsigned ціле i = 0; i < glyphCount; i++)
   {
     hb_glyph_info_t *info = &buffer->info[buffer->len++];
 
@@ -634,7 +634,7 @@ retry_getglyphs:
 
   /* Set glyph positions */
   buffer->clear_positions ();
-  for (unsigned int i = 0; i < glyphCount; i++)
+  для (unsigned ціле i = 0; i < glyphCount; i++)
   {
     hb_glyph_info_t *info = &buffer->info[i];
     hb_glyph_position_t *pos = &buffer->pos[i];
@@ -646,13 +646,13 @@ retry_getglyphs:
     pos->y_offset = hb_clamp_to<hb_position_t> (round (y_mult * info->var2.i32));
   }
 
-  if (isRightToLeft) hb_buffer_reverse (buffer);
+  якщо (isRightToLeft) hb_buffer_reverse (buffer);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();
 
   /* Wow, done! */
-  return true;
+  повернути true;
 }
 
 

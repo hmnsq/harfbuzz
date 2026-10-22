@@ -79,27 +79,27 @@ struct hb_serialize_context_t
       tail = o.tail;
       next = nullptr;
       real_links.alloc_exact (o.num_real_links);
-      for (unsigned i = 0 ; i < o.num_real_links; i++)
+      для (unsigned i = 0 ; i < o.num_real_links; i++)
         real_links.push (o.real_links[i]);
 
       virtual_links.alloc_exact (o.num_virtual_links);
-      for (unsigned i = 0; i < o.num_virtual_links; i++)
+      для (unsigned i = 0; i < o.num_virtual_links; i++)
         virtual_links.push (o.virtual_links[i]);
     }
 
     bool in_error () const
     {
-      return real_links.in_error() || virtual_links.in_error();
+      повернути real_links.in_error() || virtual_links.in_error();
     }
 
     bool add_virtual_link (objidx_t objidx)
     {
-      if (!objidx)
-        return false;
+      якщо (!objidx)
+        повернути false;
 
       auto& link = *virtual_links.push ();
-      if (virtual_links.in_error ())
-        return false;
+      якщо (virtual_links.in_error ())
+        повернути false;
 
       link.objidx = objidx;
       // Remaining fields were previously zero'd by push():
@@ -109,7 +109,7 @@ struct hb_serialize_context_t
       // link.position = 0;
       // link.bias = 0;
 
-      return true;
+      повернути true;
     }
 
     friend void swap (object_t& a, object_t& b) noexcept
@@ -125,7 +125,7 @@ struct hb_serialize_context_t
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return (tail - head == o.tail - o.head)
+      повернути (tail - head == o.tail - o.head)
 	  && (real_links.length == o.real_links.length)
 	  && 0 == hb_memcmp (head, o.head, tail - head)
 	  && real_links.as_bytes () == o.real_links.as_bytes ();
@@ -134,7 +134,7 @@ struct hb_serialize_context_t
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
+      повернути hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
           real_links.as_bytes ().hash ();
     }
 
@@ -159,12 +159,12 @@ struct hb_serialize_context_t
         objidx = o.objidx;
       }
 
-      HB_INTERNAL static int cmp (const void* a, const void* b)
+      HB_INTERNAL static ціле cmp (const void* a, const void* b)
       {
-        int cmp = ((const link_t*)a)->position - ((const link_t*)b)->position;
-        if (cmp) return cmp;
+        ціле cmp = ((const link_t*)a)->position - ((const link_t*)b)->position;
+        якщо (cmp) повернути cmp;
 
-        return ((const link_t*)a)->objidx - ((const link_t*)b)->objidx;
+        повернути ((const link_t*)a)->objidx - ((const link_t*)b)->objidx;
       }
     };
 
@@ -192,7 +192,7 @@ struct hb_serialize_context_t
 
   snapshot_t snapshot ()
   {
-    return snapshot_t {
+    повернути snapshot_t {
       head, tail, current,
       current ? current->real_links.length : 0,
       current ? current->virtual_links.length : 0,
@@ -209,11 +209,11 @@ struct hb_serialize_context_t
 
   void fini ()
   {
-    for (object_t *_ : ++hb_iter (packed)) _->fini ();
+    для (object_t *_ : ++hb_iter (packed)) _->fini ();
     packed.fini ();
     this->packed_map.fini ();
 
-    while (current)
+    поки (current)
     {
       auto *_ = current;
       current = current->next;
@@ -221,16 +221,16 @@ struct hb_serialize_context_t
     }
   }
 
-  bool in_error () const { return bool (errors); }
+  bool in_error () const { повернути bool (errors); }
 
-  bool successful () const { return !bool (errors); }
+  bool successful () const { повернути !bool (errors); }
 
-  HB_NODISCARD bool ran_out_of_room () const { return errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
-  HB_NODISCARD bool offset_overflow () const { return errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_offset_overflow () const { return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
+  HB_NODISCARD bool ran_out_of_room () const { повернути errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
+  HB_NODISCARD bool offset_overflow () const { повернути errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
+  HB_NODISCARD bool only_offset_overflow () const { повернути errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
   HB_NODISCARD bool only_overflow () const
   {
-    return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
+    повернути errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
         || errors == HB_SERIALIZE_ERROR_INT_OVERFLOW
         || errors == HB_SERIALIZE_ERROR_ARRAY_OVERFLOW;
   }
@@ -259,29 +259,29 @@ struct hb_serialize_context_t
   bool check_success (bool success,
                       hb_serialize_error_t err_type = HB_SERIALIZE_ERROR_OTHER)
   {
-    return successful ()
+    повернути successful ()
         && (success || err (err_type));
   }
 
   template <typename T1, typename T2>
   bool check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
   {
-    if ((long long) v1 != (long long) v2)
+    якщо ((long long) v1 != (long long) v2)
     {
-      return err (err_type);
+      повернути err (err_type);
     }
-    return true;
+    повернути true;
   }
 
   template <typename T1, typename T2>
   bool check_assign (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
-  { return check_equal (v1 = v2, v2, err_type); }
+  { повернути check_equal (v1 = v2, v2, err_type); }
 
   template <typename T> bool propagate_error (T &&obj)
-  { return check_success (!hb_deref (obj).in_error ()); }
+  { повернути check_success (!hb_deref (obj).in_error ()); }
 
   template <typename T1, typename... Ts> bool propagate_error (T1 &&o1, Ts&&... os)
-  { return propagate_error (std::forward<T1> (o1)) &&
+  { повернути propagate_error (std::forward<T1> (o1)) &&
 	   propagate_error (std::forward<Ts> (os)...); }
 
   /* To be called around main operation. */
@@ -295,7 +295,7 @@ struct hb_serialize_context_t
 		     (unsigned long) (this->end - this->start));
 
     assert (!current);
-    return push<Type> ();
+    повернути push<Type> ();
   }
   void end_serialize ()
   {
@@ -307,21 +307,21 @@ struct hb_serialize_context_t
 
     propagate_error (packed, packed_map);
 
-    if (unlikely (!current)) return;
-    if (unlikely (in_error()))
+    якщо (unlikely (!current)) повернути;
+    якщо (unlikely (in_error()))
     {
       // Offset overflows that occur before link resolution cannot be handled
       // by repacking, so set a more general error.
-      if (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
-      return;
+      якщо (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
+      повернути;
     }
 
     assert (!current->next);
 
     /* Only "pack" if there exist other objects... Otherwise, don't bother.
      * Saves a move. */
-    if (packed.length <= 1)
-      return;
+    якщо (packed.length <= 1)
+      повернути;
 
     pop_pack (false);
 
@@ -332,27 +332,27 @@ struct hb_serialize_context_t
   __attribute__((returns_nonnull))
   Type *push ()
   {
-    if (unlikely (in_error ())) return start_embed<Type> ();
+    якщо (unlikely (in_error ())) повернути start_embed<Type> ();
 
     object_t *obj = object_pool.alloc ();
-    if (unlikely (!obj))
+    якщо (unlikely (!obj))
       check_success (false);
-    else
+    інакше
     {
       obj->head = head;
       obj->tail = tail;
       obj->next = current;
       current = obj;
     }
-    return start_embed<Type> ();
+    повернути start_embed<Type> ();
   }
   void pop_discard ()
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return;
+    якщо (unlikely (!obj)) повернути;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error() && !only_overflow ())) return;
+    якщо (unlikely (in_error() && !only_overflow ())) повернути;
 
     current = current->next;
     revert (zerocopy ? zerocopy : obj->head, obj->tail);
@@ -368,10 +368,10 @@ struct hb_serialize_context_t
   objidx_t pop_pack (bool share=true)
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return 0;
+    якщо (unlikely (!obj)) повернути 0;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error()  && !only_overflow ())) return 0;
+    якщо (unlikely (in_error()  && !only_overflow ())) повернути 0;
 
     current = current->next;
     obj->tail = head;
@@ -382,32 +382,32 @@ struct hb_serialize_context_t
     bool was_zerocopy = zerocopy;
     zerocopy = nullptr;
 
-    if (!len)
+    якщо (!len)
     {
       assert (!obj->real_links.length);
       assert (!obj->virtual_links.length);
-      return 0;
+      повернути 0;
     }
 
     objidx_t objidx;
     uint32_t hash = 0;
-    if (share)
+    якщо (share)
     {
       hash = hb_hash (obj);
       objidx = packed_map.get_with_hash (obj, hash);
-      if (objidx)
+      якщо (objidx)
       {
         merge_virtual_links (obj, objidx);
 	obj->fini ();
         object_pool.release (obj);
-	return objidx;
+	повернути objidx;
       }
     }
 
     tail -= len;
-    if (was_zerocopy)
+    якщо (was_zerocopy)
       assert (tail == obj->head);
-    else
+    інакше
       memmove (tail, obj->head, len);
 
     obj->head = tail;
@@ -415,29 +415,29 @@ struct hb_serialize_context_t
 
     packed.push (obj);
 
-    if (unlikely (!propagate_error (packed)))
+    якщо (unlikely (!propagate_error (packed)))
     {
       /* Obj wasn't successfully added to packed, so clean it up otherwise its
        * links will be leaked. When we use constructor/destructors properly, we
        * can remove these. */
       obj->fini ();
-      return 0;
+      повернути 0;
     }
 
     objidx = packed.length - 1;
 
-    if (share) packed_map.set_with_hash (obj, hash, objidx);
+    якщо (share) packed_map.set_with_hash (obj, hash, objidx);
     propagate_error (packed_map);
 
-    return objidx;
+    повернути objidx;
   }
 
   void revert (snapshot_t snap)
   {
     // Overflows that happened after the snapshot will be erased by the revert.
-    if (unlikely (in_error () && !only_overflow ())) return;
+    якщо (unlikely (in_error () && !only_overflow ())) повернути;
     assert (snap.current == current);
-    if (current)
+    якщо (current)
     {
       current->real_links.shrink (snap.num_real_links);
       current->virtual_links.shrink (snap.num_virtual_links);
@@ -449,7 +449,7 @@ struct hb_serialize_context_t
   void revert (char *snap_head,
 	       char *snap_tail)
   {
-    if (unlikely (in_error ())) return;
+    якщо (unlikely (in_error ())) повернути;
     assert (snap_head <= head);
     assert (tail <= snap_tail);
     head = snap_head;
@@ -459,8 +459,8 @@ struct hb_serialize_context_t
 
   void discard_stale_objects ()
   {
-    if (unlikely (in_error ())) return;
-    while (packed.length > 1 &&
+    якщо (unlikely (in_error ())) повернути;
+    поки (packed.length > 1 &&
 	   packed.tail ()->head < tail)
     {
       object_t *obj = packed.tail ();
@@ -470,7 +470,7 @@ struct hb_serialize_context_t
       object_pool.release (obj);
       packed.pop ();
     }
-    if (packed.length > 1)
+    якщо (packed.length > 1)
       assert (packed.tail ()->head == tail);
   }
 
@@ -484,26 +484,26 @@ struct hb_serialize_context_t
   //  guidance to the repacker for better offset overflow resolution.
   void add_virtual_link (objidx_t objidx)
   {
-    if (unlikely (in_error ())) return;
+    якщо (unlikely (in_error ())) повернути;
 
-    if (!objidx)
-      return;
+    якщо (!objidx)
+      повернути;
 
     assert (current);
 
-    if (!current->add_virtual_link(objidx))
+    якщо (!current->add_virtual_link(objidx))
       err (HB_SERIALIZE_ERROR_OTHER);
   }
 
   objidx_t last_added_child_index() const {
-    if (unlikely (in_error ())) return (objidx_t) -1;
+    якщо (unlikely (in_error ())) повернути (objidx_t) -1;
 
     assert (current);
-    if (!bool(current->real_links)) {
-      return (objidx_t) -1;
+    якщо (!bool(current->real_links)) {
+      повернути (objidx_t) -1;
     }
 
-    return current->real_links[current->real_links.length - 1].objidx;
+    повернути current->real_links[current->real_links.length - 1].objidx;
   }
 
   // For the current object ensure that the sub-table bytes for child objidx are always placed
@@ -512,14 +512,14 @@ struct hb_serialize_context_t
   // (by adding virtual links). It is up to the caller to ensure the initial serialization
   // order is correct.
   void repack_last(objidx_t objidx) {
-    if (unlikely (in_error ())) return;
+    якщо (unlikely (in_error ())) повернути;
 
-    if (!objidx)
-      return;
+    якщо (!objidx)
+      повернути;
 
     assert (current);
-    for (auto& l : current->real_links) {
-      if (l.objidx == objidx) {
+    для (auto& l : current->real_links) {
+      якщо (l.objidx == objidx) {
         continue;
       }
 
@@ -532,21 +532,21 @@ struct hb_serialize_context_t
 		 whence_t whence = Head,
 		 unsigned bias = 0)
   {
-    if (unlikely (in_error ())) return;
+    якщо (unlikely (in_error ())) повернути;
 
-    if (!objidx)
-      return;
+    якщо (!objidx)
+      повернути;
 
     assert (current);
     assert (current->head <= (const char *) &ofs);
 
     auto& link = *current->real_links.push ();
-    if (current->real_links.in_error ())
+    якщо (current->real_links.in_error ())
       err (HB_SERIALIZE_ERROR_OTHER);
 
     link.width = sizeof (T);
     link.objidx = objidx;
-    if (unlikely (!sizeof (T)))
+    якщо (unlikely (!sizeof (T)))
     {
       // This link is not associated with an actual offset and exists merely to enforce
       // an ordering constraint.
@@ -554,7 +554,7 @@ struct hb_serialize_context_t
       link.whence = 0;
       link.position = 0;
       link.bias = 0;
-      return;
+      повернути;
     }
 
     link.is_signed = std::is_signed<hb_unwrap_type (T)>::value;
@@ -565,25 +565,25 @@ struct hb_serialize_context_t
 
   unsigned to_bias (const void *base) const
   {
-    if (unlikely (in_error ())) return 0;
-    if (!base) return 0;
+    якщо (unlikely (in_error ())) повернути 0;
+    якщо (!base) повернути 0;
     assert (current);
     assert (current->head <= (const char *) base);
-    return (const char *) base - current->head;
+    повернути (const char *) base - current->head;
   }
 
   void resolve_links ()
   {
-    if (unlikely (in_error ())) return;
+    якщо (unlikely (in_error ())) повернути;
 
     assert (!current);
     assert (packed.length > 1);
 
-    for (const object_t* parent : ++hb_iter (packed))
-      for (const object_t::link_t &link : parent->real_links)
+    для (const object_t* parent : ++hb_iter (packed))
+      для (const object_t::link_t &link : parent->real_links)
       {
 	const object_t* child = packed[link.objidx];
-	if (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); return; }
+	якщо (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); повернути; }
 	unsigned offset = 0;
 	switch ((whence_t) link.whence) {
 	case Head:     offset = child->head - parent->head; break;
@@ -593,62 +593,62 @@ struct hb_serialize_context_t
 
 	assert (offset >= link.bias);
 	offset -= link.bias;
-	if (link.is_signed)
+	якщо (link.is_signed)
 	{
 	  assert (link.width == 2 || link.width == 4);
-	  if (link.width == 4)
+	  якщо (link.width == 4)
 	    assign_offset<int32_t> (parent, link, offset);
-	  else
+	  інакше
 	    assign_offset<int16_t> (parent, link, offset);
 	}
-	else
+	інакше
 	{
 	  assert (link.width == 2 || link.width == 3 || link.width == 4);
-	  if (link.width == 4)
+	  якщо (link.width == 4)
 	    assign_offset<uint32_t> (parent, link, offset);
-	  else if (link.width == 3)
+	  інакше якщо (link.width == 3)
 	    assign_offset<uint32_t, 3> (parent, link, offset);
-	  else
+	  інакше
 	    assign_offset<uint16_t> (parent, link, offset);
 	}
       }
   }
 
-  unsigned int length () const
+  unsigned ціле length () const
   {
-    if (unlikely (!current)) return 0;
-    return this->head - current->head;
+    якщо (unlikely (!current)) повернути 0;
+    повернути this->head - current->head;
   }
 
-  void align (unsigned int alignment)
+  void align (unsigned ціле alignment)
   {
-    unsigned int l = length () % alignment;
-    if (l)
+    unsigned ціле l = length () % alignment;
+    якщо (l)
       (void) allocate_size<void> (alignment - l);
   }
 
   template <typename Type = void>
   __attribute__((returns_nonnull))
   Type *start_embed (const Type *obj HB_UNUSED = nullptr) const
-  { return reinterpret_cast<Type *> (this->head); }
+  { повернути reinterpret_cast<Type *> (this->head); }
   template <typename Type>
   __attribute__((returns_nonnull))
   Type *start_embed (const Type &obj) const
-  { return start_embed (std::addressof (obj)); }
+  { повернути start_embed (std::addressof (obj)); }
 
   bool err (hb_serialize_error_t err_type)
   {
-    return !bool ((errors = (errors | err_type)));
+    повернути !bool ((errors = (errors | err_type)));
   }
 
   bool start_zerocopy (size_t size)
   {
-    if (unlikely (in_error ())) return false;
+    якщо (unlikely (in_error ())) повернути false;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    якщо (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
     {
       err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return false;
+      повернути false;
     }
 
     assert (!this->zerocopy);
@@ -656,30 +656,30 @@ struct hb_serialize_context_t
 
     assert (this->current->head == this->head);
     this->current->head = this->current->tail = this->head = this->tail - size;
-    return true;
+    повернути true;
   }
 
   template <typename Type>
   HB_NODISCARD
   Type *allocate_size (size_t size, bool clear = true)
   {
-    if (unlikely (in_error ())) return nullptr;
+    якщо (unlikely (in_error ())) повернути nullptr;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    якщо (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
     {
       err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return nullptr;
+      повернути nullptr;
     }
-    if (clear)
+    якщо (clear)
       hb_memset (this->head, 0, size);
     char *ret = this->head;
     this->head += size;
-    return reinterpret_cast<Type *> (ret);
+    повернути reinterpret_cast<Type *> (ret);
   }
 
   template <typename Type>
   Type *allocate_min ()
-  { return this->allocate_size<Type> (Type::min_size); }
+  { повернути this->allocate_size<Type> (Type::min_size); }
 
   template <typename Type>
   HB_NODISCARD
@@ -687,20 +687,20 @@ struct hb_serialize_context_t
   {
     size_t size = obj->get_size ();
     Type *ret = this->allocate_size<Type> (size, false);
-    if (unlikely (!ret)) return nullptr;
+    якщо (unlikely (!ret)) повернути nullptr;
     hb_memcpy (ret, obj, size);
-    return ret;
+    повернути ret;
   }
   template <typename Type>
   HB_NODISCARD
   Type *embed (const Type &obj)
-  { return embed (std::addressof (obj)); }
+  { повернути embed (std::addressof (obj)); }
   char *embed (const char *obj, unsigned size)
   {
     char *ret = this->allocate_size<char> (size, false);
-    if (unlikely (!ret)) return nullptr;
+    якщо (unlikely (!ret)) повернути nullptr;
     hb_memcpy (ret, obj, size);
-    return ret;
+    повернути ret;
   }
 
   template <typename Type, typename ...Ts> auto
@@ -711,90 +711,90 @@ struct hb_serialize_context_t
   _copy (const Type &src, hb_priority<0>) -> decltype (&(hb_declval<Type> () = src))
   {
     Type *ret = this->allocate_size<Type> (sizeof (Type));
-    if (unlikely (!ret)) return nullptr;
+    якщо (unlikely (!ret)) повернути nullptr;
     *ret = src;
-    return ret;
+    повернути ret;
   }
 
   /* Like embed, but active: calls obj.operator=() or obj.copy() to transfer data
    * instead of hb_memcpy(). */
   template <typename Type, typename ...Ts>
   Type *copy (const Type &src, Ts&&... ds)
-  { return _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
+  { повернути _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
   template <typename Type, typename ...Ts>
   Type *copy (const Type *src, Ts&&... ds)
-  { return copy (*src, std::forward<Ts> (ds)...); }
+  { повернути copy (*src, std::forward<Ts> (ds)...); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator)),
 	   typename ...Ts>
   void copy_all (Iterator it, Ts&&... ds)
-  { for (decltype (*it) _ : it) copy (_, ds...); }
+  { для (decltype (*it) _ : it) copy (_, ds...); }
 
   template <typename Type>
-  hb_serialize_context_t& operator << (const Type &obj) & { embed (obj); return *this; }
+  hb_serialize_context_t& operator << (const Type &obj) & { embed (obj); повернути *this; }
 
   template <typename Type>
   Type *extend_size (Type *obj, size_t size, bool clear = true)
   {
-    if (unlikely (in_error ())) return nullptr;
-    if (unlikely (size >= INT_MAX)) { err (HB_SERIALIZE_ERROR_OTHER); return nullptr; }
+    якщо (unlikely (in_error ())) повернути nullptr;
+    якщо (unlikely (size >= INT_MAX)) { err (HB_SERIALIZE_ERROR_OTHER); повернути nullptr; }
 
     assert (this->start <= (char *) obj);
     assert ((char *) obj <= this->head);
     assert ((size_t) (this->head - (char *) obj) <= size);
-    if (unlikely (((char *) obj + size < (char *) obj) ||
-		  !this->allocate_size<Type> (((char *) obj) + size - this->head, clear))) return nullptr;
-    return reinterpret_cast<Type *> (obj);
+    якщо (unlikely (((char *) obj + size < (char *) obj) ||
+		  !this->allocate_size<Type> (((char *) obj) + size - this->head, clear))) повернути nullptr;
+    повернути reinterpret_cast<Type *> (obj);
   }
   template <typename Type>
   Type *extend_size (Type &obj, size_t size, bool clear = true)
-  { return extend_size (std::addressof (obj), size, clear); }
+  { повернути extend_size (std::addressof (obj), size, clear); }
 
   template <typename Type>
-  Type *extend_min (Type *obj) { return extend_size (obj, obj->min_size); }
+  Type *extend_min (Type *obj) { повернути extend_size (obj, obj->min_size); }
   template <typename Type>
-  Type *extend_min (Type &obj) { return extend_min (std::addressof (obj)); }
+  Type *extend_min (Type &obj) { повернути extend_min (std::addressof (obj)); }
 
   template <typename Type, typename ...Ts>
   Type *extend (Type *obj, Ts&&... ds)
-  { return extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
+  { повернути extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
   template <typename Type, typename ...Ts>
   Type *extend (Type &obj, Ts&&... ds)
-  { return extend (std::addressof (obj), std::forward<Ts> (ds)...); }
+  { повернути extend (std::addressof (obj), std::forward<Ts> (ds)...); }
 
   /* Output routines. */
   hb_bytes_t copy_bytes () const
   {
     assert (successful ());
     /* Copy both items from head side and tail side... */
-    unsigned int len = (this->head - this->start)
+    unsigned ціле len = (this->head - this->start)
 		     + (this->end  - this->tail);
 
     // If len is zero don't hb_malloc as the memory won't get properly
     // cleaned up later.
-    if (!len) return hb_bytes_t ();
+    якщо (!len) повернути hb_bytes_t ();
 
     char *p = (char *) hb_malloc (len);
-    if (unlikely (!p)) return hb_bytes_t ();
+    якщо (unlikely (!p)) повернути hb_bytes_t ();
 
     hb_memcpy (p, this->start, this->head - this->start);
     hb_memcpy (p + (this->head - this->start), this->tail, this->end - this->tail);
-    return hb_bytes_t (p, len);
+    повернути hb_bytes_t (p, len);
   }
   template <typename Type>
   Type *copy () const
-  { return reinterpret_cast<Type *> ((char *) copy_bytes ().arrayZ); }
+  { повернути reinterpret_cast<Type *> ((char *) copy_bytes ().arrayZ); }
   hb_blob_t *copy_blob () const
   {
     hb_bytes_t b = copy_bytes ();
-    return hb_blob_create (b.arrayZ, b.length,
+    повернути hb_blob_create (b.arrayZ, b.length,
 			   HB_MEMORY_MODE_WRITABLE,
 			   (char *) b.arrayZ, hb_free);
   }
 
   const hb_vector_t<object_t *>& object_graph() const
-  { return packed; }
+  { повернути packed; }
 
   private:
   template <typename T, unsigned Size = sizeof (T)>
@@ -808,14 +808,14 @@ struct hb_serialize_context_t
 
   public:
   char *start, *head, *tail, *end, *zerocopy;
-  unsigned int debug_depth;
+  unsigned ціле debug_depth;
   hb_serialize_error_t errors;
 
   private:
 
   void merge_virtual_links (const object_t* from, objidx_t to_idx) {
     object_t* to = packed[to_idx];
-    for (const auto& l : from->virtual_links) {
+    для (const auto& l : from->virtual_links) {
       to->virtual_links.push (l);
     }
   }

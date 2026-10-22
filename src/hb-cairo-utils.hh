@@ -37,11 +37,11 @@ struct hb_cairo_budget_t
    * owner there lets recursive color-glyph callbacks share one session. */
   int64_t budget = HB_BUDGET_DEFAULT;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
-  unsigned int active = 0;
+  unsigned ціле active = 0;
 
   void enter ()
   {
-    if (!active++)
+    якщо (!active++)
       recharge ();
   }
 
@@ -79,14 +79,14 @@ struct hb_cairo_context_t
   {
     budget->budget = value;
     budget->recharge ();
-    return true;
+    повернути true;
   }
 
-  int64_t get_budget () const { return budget->budget; }
-  int64_t *get_budget_remaining () { return &budget->budget_remaining; }
+  int64_t get_budget () const { повернути budget->budget; }
+  int64_t *get_budget_remaining () { повернути &budget->budget_remaining; }
 
-  bool spend (unsigned int cost, unsigned int mult = 1)
-  { return hb_budget_spend (budget->budget_remaining, cost, mult); }
+  bool spend (unsigned ціле cost, unsigned ціле mult = 1)
+  { повернути hb_budget_spend (budget->budget_remaining, cost, mult); }
 
   cairo_scaled_font_t *scaled_font;
   cairo_t *cr;
@@ -99,35 +99,35 @@ _hb_paint_composite_mode_to_cairo (hb_paint_composite_mode_t mode)
 {
   switch (mode)
     {
-    case HB_PAINT_COMPOSITE_MODE_CLEAR: return CAIRO_OPERATOR_CLEAR;
-    case HB_PAINT_COMPOSITE_MODE_SRC: return CAIRO_OPERATOR_SOURCE;
-    case HB_PAINT_COMPOSITE_MODE_DEST: return CAIRO_OPERATOR_DEST;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return CAIRO_OPERATOR_OVER;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER: return CAIRO_OPERATOR_DEST_OVER;
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN: return CAIRO_OPERATOR_IN;
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN: return CAIRO_OPERATOR_DEST_IN;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT: return CAIRO_OPERATOR_OUT;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT: return CAIRO_OPERATOR_DEST_OUT;
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP: return CAIRO_OPERATOR_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP: return CAIRO_OPERATOR_DEST_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_XOR: return CAIRO_OPERATOR_XOR;
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return CAIRO_OPERATOR_ADD;
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return CAIRO_OPERATOR_SCREEN;
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return CAIRO_OPERATOR_OVERLAY;
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return CAIRO_OPERATOR_DARKEN;
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return CAIRO_OPERATOR_LIGHTEN;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return CAIRO_OPERATOR_COLOR_DODGE;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return CAIRO_OPERATOR_COLOR_BURN;
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return CAIRO_OPERATOR_HARD_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return CAIRO_OPERATOR_SOFT_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return CAIRO_OPERATOR_DIFFERENCE;
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return CAIRO_OPERATOR_EXCLUSION;
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return CAIRO_OPERATOR_MULTIPLY;
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return CAIRO_OPERATOR_HSL_HUE;
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return CAIRO_OPERATOR_HSL_SATURATION;
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return CAIRO_OPERATOR_HSL_COLOR;
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return CAIRO_OPERATOR_HSL_LUMINOSITY;
-    default: return CAIRO_OPERATOR_CLEAR;
+    case HB_PAINT_COMPOSITE_MODE_CLEAR: повернути CAIRO_OPERATOR_CLEAR;
+    case HB_PAINT_COMPOSITE_MODE_SRC: повернути CAIRO_OPERATOR_SOURCE;
+    case HB_PAINT_COMPOSITE_MODE_DEST: повернути CAIRO_OPERATOR_DEST;
+    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: повернути CAIRO_OPERATOR_OVER;
+    case HB_PAINT_COMPOSITE_MODE_DEST_OVER: повернути CAIRO_OPERATOR_DEST_OVER;
+    case HB_PAINT_COMPOSITE_MODE_SRC_IN: повернути CAIRO_OPERATOR_IN;
+    case HB_PAINT_COMPOSITE_MODE_DEST_IN: повернути CAIRO_OPERATOR_DEST_IN;
+    case HB_PAINT_COMPOSITE_MODE_SRC_OUT: повернути CAIRO_OPERATOR_OUT;
+    case HB_PAINT_COMPOSITE_MODE_DEST_OUT: повернути CAIRO_OPERATOR_DEST_OUT;
+    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP: повернути CAIRO_OPERATOR_ATOP;
+    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP: повернути CAIRO_OPERATOR_DEST_ATOP;
+    case HB_PAINT_COMPOSITE_MODE_XOR: повернути CAIRO_OPERATOR_XOR;
+    case HB_PAINT_COMPOSITE_MODE_PLUS: повернути CAIRO_OPERATOR_ADD;
+    case HB_PAINT_COMPOSITE_MODE_SCREEN: повернути CAIRO_OPERATOR_SCREEN;
+    case HB_PAINT_COMPOSITE_MODE_OVERLAY: повернути CAIRO_OPERATOR_OVERLAY;
+    case HB_PAINT_COMPOSITE_MODE_DARKEN: повернути CAIRO_OPERATOR_DARKEN;
+    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: повернути CAIRO_OPERATOR_LIGHTEN;
+    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: повернути CAIRO_OPERATOR_COLOR_DODGE;
+    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: повернути CAIRO_OPERATOR_COLOR_BURN;
+    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: повернути CAIRO_OPERATOR_HARD_LIGHT;
+    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: повернути CAIRO_OPERATOR_SOFT_LIGHT;
+    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: повернути CAIRO_OPERATOR_DIFFERENCE;
+    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: повернути CAIRO_OPERATOR_EXCLUSION;
+    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: повернути CAIRO_OPERATOR_MULTIPLY;
+    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: повернути CAIRO_OPERATOR_HSL_HUE;
+    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: повернути CAIRO_OPERATOR_HSL_SATURATION;
+    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: повернути CAIRO_OPERATOR_HSL_COLOR;
+    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: повернути CAIRO_OPERATOR_HSL_LUMINOSITY;
+    default: повернути CAIRO_OPERATOR_CLEAR;
     }
 }
 

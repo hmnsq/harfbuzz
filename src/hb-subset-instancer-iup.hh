@@ -33,18 +33,18 @@ struct iup_scratch_t
   hb_vector_t<double> interp_x_deltas;
   hb_vector_t<double> interp_y_deltas;
   hb_vector_t<unsigned> costs;
-  hb_vector_t<int> chain;
+  hb_vector_t<ціле> chain;
   hb_vector_t<bool> rot_indices;
-  hb_vector_t<int> rot_x_deltas;
-  hb_vector_t<int> rot_y_deltas;
+  hb_vector_t<ціле> rot_x_deltas;
+  hb_vector_t<ціле> rot_y_deltas;
   contour_point_vector_t rot_points;
 };
 
 /* given contour points and deltas, optimize a set of referenced points within error
  * tolerance. Returns optimized referenced point indices */
 HB_INTERNAL bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                                     const hb_vector_t<int>& x_deltas,
-                                     const hb_vector_t<int>& y_deltas,
+                                     const hb_vector_t<ціле>& x_deltas,
+                                     const hb_vector_t<ціле>& y_deltas,
                                      hb_vector_t<bool>& opt_indices, /* OUT */
 				     iup_scratch_t &scratch,
                                      double tolerance = 0.0);

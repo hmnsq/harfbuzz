@@ -48,46 +48,46 @@ typedef FDSelect3_4_Range<HBUINT32, HBUINT16> FDSelect4_Range;
 
 struct CFF2FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const CFF2FDSelect &src, unsigned int num_glyphs)
+  bool serialize (hb_serialize_context_t *c, const CFF2FDSelect &src, unsigned ціле num_glyphs)
   {
     TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
+    unsigned ціле size = src.get_size (num_glyphs);
     CFF2FDSelect *dest = c->allocate_size<CFF2FDSelect> (size);
-    if (unlikely (!dest)) return_trace (false);
+    якщо (unlikely (!dest)) return_trace (false);
     hb_memcpy (dest, &src, size);
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned ціле num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return format.static_size + u.format0.get_size (num_glyphs);
-    case 3: hb_barrier (); return format.static_size + u.format3.get_size ();
-    case 4: hb_barrier (); return format.static_size + u.format4.get_size ();
-    default:return 0;
+    case 0: hb_barrier (); повернути format.static_size + u.format0.get_size (num_glyphs);
+    case 3: hb_barrier (); повернути format.static_size + u.format3.get_size ();
+    case 4: hb_barrier (); повернути format.static_size + u.format4.get_size ();
+    default:повернути 0;
     }
   }
 
   hb_codepoint_t get_fd (hb_codepoint_t glyph) const
   {
-    if (this == &Null (CFF2FDSelect))
-      return 0;
+    якщо (this == &Null (CFF2FDSelect))
+      повернути 0;
 
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    case 4: hb_barrier (); return u.format4.get_fd (glyph);
-    default:return 0;
+    case 0: hb_barrier (); повернути u.format0.get_fd (glyph);
+    case 3: hb_barrier (); повернути u.format3.get_fd (glyph);
+    case 4: hb_barrier (); повернути u.format4.get_fd (glyph);
+    default:повернути 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int charstring_count = HB_CODEPOINT_INVALID) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned ціле fdcount,
+                 unsigned ціле charstring_count = HB_CODEPOINT_INVALID) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    якщо (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
@@ -124,14 +124,14 @@ struct CFF2ItemVariationStore
   bool serialize (hb_serialize_context_t *c, const CFF2ItemVariationStore *varStore)
   {
     TRACE_SERIALIZE (this);
-    unsigned int size_ = varStore->get_size ();
+    unsigned ціле size_ = varStore->get_size ();
     CFF2ItemVariationStore *dest = c->allocate_size<CFF2ItemVariationStore> (size_);
-    if (unlikely (!dest)) return_trace (false);
+    якщо (unlikely (!dest)) return_trace (false);
     hb_memcpy (dest, varStore, size_);
     return_trace (true);
   }
 
-  size_t get_size () const { return HBUINT16::static_size + size; }
+  size_t get_size () const { повернути HBUINT16::static_size + size; }
 
   HBUINT16	size;
   ItemVariationStore  varStore;
@@ -149,8 +149,8 @@ struct cff2_top_dict_values_t : top_dict_values_t<>
   }
   void fini () { top_dict_values_t<>::fini (); }
 
-  int  vstoreOffset;
-  int  FDSelectOffset;
+  ціле  vstoreOffset;
+  ціле  FDSelectOffset;
 };
 
 struct cff2_top_dict_opset_t : top_dict_opset_t<>
@@ -179,10 +179,10 @@ struct cff2_top_dict_opset_t : top_dict_opset_t<>
       default:
 	SUPER::process_op (op, env, dictval);
 	/* Record this operand below if stack is empty, otherwise done */
-	if (!env.argStack.is_empty ()) return;
+	якщо (!env.argStack.is_empty ()) повернути;
     }
 
-    if (unlikely (env.in_error ())) return;
+    якщо (unlikely (env.in_error ())) повернути;
 
     dictval.add_op (op, env.str_ref);
   }
@@ -215,11 +215,11 @@ struct cff2_font_dict_opset_t : dict_opset_t
 
       default:
 	SUPER::process_op (op, env);
-	if (!env.argStack.is_empty ())
-	  return;
+	якщо (!env.argStack.is_empty ())
+	  повернути;
     }
 
-    if (unlikely (env.in_error ())) return;
+    якщо (unlikely (env.in_error ())) повернути;
 
     dictval.add_op (op, env.str_ref);
   }
@@ -240,9 +240,9 @@ struct cff2_private_dict_values_base_t : dict_values_t<VAL>
   }
   void fini () { dict_values_t<VAL>::fini (); }
 
-  int                subrsOffset;
+  ціле                subrsOffset;
   const CFF2Subrs   *localSubrs;
-  unsigned int      ivs;
+  unsigned ціле      ivs;
 };
 
 typedef cff2_private_dict_values_base_t<op_str_t> cff2_private_dict_values_subset_t;
@@ -255,18 +255,18 @@ struct cff2_priv_dict_interp_env_t : num_interp_env_t
 
   void process_vsindex ()
   {
-    if (likely (!seen_vsindex))
+    якщо (likely (!seen_vsindex))
     {
       set_ivs (argStack.pop_uint ());
     }
     seen_vsindex = true;
   }
 
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  unsigned ціле get_ivs () const { повернути ivs; }
+  void	 set_ivs (unsigned ціле ivs_) { ivs = ivs_; }
 
   protected:
-  unsigned int  ivs = 0;
+  unsigned ціле  ivs = 0;
   bool	  seen_vsindex = false;
 };
 
@@ -310,11 +310,11 @@ struct cff2_private_dict_opset_t : dict_opset_t
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	якщо (!env.argStack.is_empty ()) повернути;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    якщо (unlikely (env.in_error ())) повернути;
 
     dictval.add_op (op, env.str_ref, val);
   }
@@ -343,7 +343,7 @@ struct cff2_private_dict_opset_subset_t : dict_opset_t
 
       case OpCode_blenddict:
 	env.clear_args ();
-	return;
+	повернути;
 
       case OpCode_Subrs:
 	dictval.subrsOffset = env.argStack.pop_int ();
@@ -358,11 +358,11 @@ struct cff2_private_dict_opset_subset_t : dict_opset_t
 
       default:
 	SUPER::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	якщо (!env.argStack.is_empty ()) повернути;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    якщо (unlikely (env.in_error ())) повернути;
 
     dictval.add_op (op, env.str_ref);
   }
@@ -379,7 +379,7 @@ struct CFF2FDArray : FDArray<HBUINT32>
   /* FDArray::serialize does not compile without this partial specialization */
   template <typename ITER, typename OP_SERIALIZER>
   bool serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
-  { return FDArray<HBUINT32>::serialize<cff2_font_dict_values_t, table_info_t> (c, it, opszr); }
+  { повернути FDArray<HBUINT32>::serialize<cff2_font_dict_values_t, table_info_t> (c, it, opszr); }
 };
 
 } /* namespace CFF */
@@ -407,7 +407,7 @@ struct cff2
 
     accelerator_templ_t (hb_face_t *face)
     {
-      if (!face) return;
+      якщо (!face) повернути;
 
       topDict.init ();
       fontDicts.init ();
@@ -421,17 +421,17 @@ struct cff2
 
       const OT::cff2 *cff2 = this->blob->template as<OT::cff2> ();
 
-      if (cff2 == &Null (OT::cff2))
+      якщо (cff2 == &Null (OT::cff2))
         goto fail;
 
       { /* parse top dict */
 	hb_ubytes_t topDictStr = (cff2 + cff2->topDict).as_ubytes (cff2->topDictSize);
-	if (unlikely (!topDictStr.sanitize (&sc))) goto fail;
+	якщо (unlikely (!topDictStr.sanitize (&sc))) goto fail;
 	hb_barrier ();
 	num_interp_env_t env (topDictStr);
 	cff2_top_dict_interpreter_t top_interp (env);
 	topDict.init ();
-	if (unlikely (!top_interp.interpret (topDict))) goto fail;
+	якщо (unlikely (!top_interp.interpret (topDict))) goto fail;
       }
 
       globalSubrs = &StructAtOffsetOrNull<CFF2Subrs> (cff2, cff2->topDict + cff2->topDictSize, sc);
@@ -439,57 +439,57 @@ struct cff2
       charStrings = &StructAtOffsetOrNull<CFF2CharStrings> (cff2, topDict.charStringsOffset, sc);
       fdArray = &StructAtOffsetOrNull<CFF2FDArray> (cff2, topDict.FDArrayOffset, sc);
 
-      if (charStrings == &Null (CFF2CharStrings) ||
+      якщо (charStrings == &Null (CFF2CharStrings) ||
 	  globalSubrs == &Null (CFF2Subrs) ||
 	  fdArray == &Null (CFF2FDArray))
         goto fail;
 
       num_glyphs = charStrings->count;
-      if (num_glyphs != sc.get_num_glyphs ())
+      якщо (num_glyphs != sc.get_num_glyphs ())
       {
         /* VARC can define glyphs beyond the CFF2 CharStrings INDEX. */
         hb_blob_t *varc = face->reference_table (HB_TAG ('V','A','R','C'));
         bool valid_count = num_glyphs < sc.get_num_glyphs () &&
                            hb_blob_get_length (varc);
         hb_blob_destroy (varc);
-        if (!valid_count) goto fail;
+        якщо (!valid_count) goto fail;
       }
 
       fdSelect = &StructAtOffsetOrNull<CFF2FDSelect> (cff2, topDict.FDSelectOffset, sc,
                                                    fdArray->count, num_glyphs);
-      if (topDict.FDSelectOffset && fdSelect == &Null (CFF2FDSelect))
+      якщо (topDict.FDSelectOffset && fdSelect == &Null (CFF2FDSelect))
         goto fail;
 
       fdCount = fdArray->count;
-      if (!privateDicts.resize (fdCount))
+      якщо (!privateDicts.resize (fdCount))
         goto fail;
 
       /* parse font dicts and gather private dicts */
-      for (unsigned int i = 0; i < fdCount; i++)
+      для (unsigned ціле i = 0; i < fdCount; i++)
       {
 	const hb_ubytes_t fontDictStr = (*fdArray)[i];
-	if (unlikely (!fontDictStr.sanitize (&sc))) goto fail;
+	якщо (unlikely (!fontDictStr.sanitize (&sc))) goto fail;
 	hb_barrier ();
 	cff2_font_dict_values_t  *font;
 	num_interp_env_t env (fontDictStr);
 	cff2_font_dict_interpreter_t font_interp (env);
 	font = fontDicts.push ();
-	if (unlikely (font == &Crap (cff2_font_dict_values_t))) goto fail;
+	якщо (unlikely (font == &Crap (cff2_font_dict_values_t))) goto fail;
 	font->init ();
-	if (unlikely (!font_interp.interpret (*font))) goto fail;
+	якщо (unlikely (!font_interp.interpret (*font))) goto fail;
 
 	const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff2, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	if (unlikely (font->privateDictInfo.size &&
+	якщо (unlikely (font->privateDictInfo.size &&
 		      privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
 	cff2_priv_dict_interp_env_t env2 (privDictStr);
 	dict_interpreter_t<PRIVOPSET, PRIVDICTVAL, cff2_priv_dict_interp_env_t> priv_interp (env2);
 	privateDicts[i].init ();
-	if (unlikely (!priv_interp.interpret (privateDicts[i]))) goto fail;
+	якщо (unlikely (!priv_interp.interpret (privateDicts[i]))) goto fail;
 
 	privateDicts[i].localSubrs = &StructAtOffsetOrNull<CFF2Subrs> (&privDictStr[0], privateDicts[i].subrsOffset, sc);
       }
 
-      return;
+      повернути;
 
       fail:
         _fini ();
@@ -505,7 +505,7 @@ struct cff2
       blob = nullptr;
 
       auto *scalars = cached_scalars_vector.get_acquire ();
-      if (scalars && cached_scalars_vector.cmpexch (scalars, nullptr))
+      якщо (scalars && cached_scalars_vector.cmpexch (scalars, nullptr))
       {
 	scalars->fini ();
 	hb_free (scalars);
@@ -514,12 +514,12 @@ struct cff2
 
     hb_vector_t<uint16_t> *create_glyph_to_sid_map () const
     {
-      return nullptr;
+      повернути nullptr;
     }
 
-    hb_blob_t *get_blob () const { return blob; }
+    hb_blob_t *get_blob () const { повернути blob; }
 
-    bool is_valid () const { return blob; }
+    bool is_valid () const { повернути blob; }
 
     protected:
     hb_sanitize_context_t	sc;
@@ -532,14 +532,14 @@ struct cff2
     const CFF2CharStrings	*charStrings = nullptr;
     const CFF2FDArray		*fdArray = nullptr;
     const CFF2FDSelect		*fdSelect = nullptr;
-    unsigned int		fdCount = 0;
+    unsigned ціле		fdCount = 0;
 
     hb_vector_t<cff2_font_dict_values_t>     fontDicts;
     hb_vector_t<PRIVDICTVAL>  privateDicts;
 
     mutable hb_atomic_t<hb_vector_t<float> *> cached_scalars_vector;
 
-    unsigned int	      num_glyphs = 0;
+    unsigned ціле	      num_glyphs = 0;
   };
 
   struct accelerator_t : accelerator_templ_t<cff2_private_dict_opset_t, cff2_private_dict_values_t>
@@ -552,10 +552,10 @@ struct cff2
     HB_INTERNAL bool get_extents_at (hb_font_t *font,
 				     hb_codepoint_t glyph,
 				     hb_glyph_extents_t *extents,
-				     hb_array_t<const int> coords,
+				     hb_array_t<const ціле> coords,
 				     int64_t *budget = nullptr) const;
     HB_INTERNAL bool get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = nullptr) const;
-    HB_INTERNAL bool get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<const int> coords, int64_t *budget = nullptr) const;
+    HB_INTERNAL bool get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<const ціле> coords, int64_t *budget = nullptr) const;
   };
 
   struct accelerator_subset_t : accelerator_templ_t<cff2_private_dict_opset_subset_t, cff2_private_dict_values_subset_t>
@@ -563,14 +563,14 @@ struct cff2
     accelerator_subset_t (hb_face_t *face) : SUPER (face) {}
     ~accelerator_subset_t ()
     {
-      if (cff_accelerator)
+      якщо (cff_accelerator)
 	cff_subset_accelerator_t::destroy (cff_accelerator);
     }
 
     HB_INTERNAL bool subset (hb_subset_context_t *c) const;
     HB_INTERNAL bool serialize (hb_serialize_context_t *c,
 				struct cff2_subset_plan &plan,
-				hb_array_t<int> normalized_coords) const;
+				hb_array_t<ціле> normalized_coords) const;
 
     mutable CFF::cff_subset_accelerator_t* cff_accelerator = nullptr;
 

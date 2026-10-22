@@ -86,11 +86,11 @@ hb_ft_face_create_referenced (FT_Face ft_face);
 
 HB_EXTERN hb_face_t *
 hb_ft_face_create_from_file_or_fail (const char   *file_name,
-				     unsigned int  index);
+				     unsigned ціле  index);
 
 HB_EXTERN hb_face_t *
 hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
-				     unsigned int  index);
+				     unsigned ціле  index);
 
 /*
  * hb-font from ft-face.
@@ -124,9 +124,9 @@ HB_EXTERN void
 hb_ft_font_unlock_face (hb_font_t *font);
 
 HB_EXTERN void
-hb_ft_font_set_load_flags (hb_font_t *font, int load_flags);
+hb_ft_font_set_load_flags (hb_font_t *font, ціле load_flags);
 
-HB_EXTERN int
+HB_EXTERN ціле
 hb_ft_font_get_load_flags (hb_font_t *font);
 
 /* Call when size or variations settings on underlying FT_Face changed,

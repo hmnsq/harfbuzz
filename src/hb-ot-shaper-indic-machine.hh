@@ -1096,11 +1096,11 @@ static const short _indic_syllable_machine_eof_trans[] = {
 	147, 119
 };
 
-static const int indic_syllable_machine_start = 31;
-static const int indic_syllable_machine_first_final = 31;
-static const int indic_syllable_machine_error = -1;
+static const ціле indic_syllable_machine_start = 31;
+static const ціле indic_syllable_machine_first_final = 31;
+static const ціле indic_syllable_machine_error = -1;
 
-static const int indic_syllable_machine_en_main = 31;
+static const ціле indic_syllable_machine_en_main = 31;
 
 
 #line 58 "hb-ot-shaper-indic-machine.rl"
@@ -1112,18 +1112,18 @@ static const int indic_syllable_machine_en_main = 31;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+    якщо (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    для (unsigned ціле i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    якщо (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
 inline void
 find_syllables_indic (hb_buffer_t *buffer)
 {
-  unsigned int p, pe, eof, ts, te, act;
-  int cs;
+  unsigned ціле p, pe, eof, ts, te, act;
+  ціле cs;
   hb_glyph_info_t *info = buffer->info;
   
 #line 1119 "hb-ot-shaper-indic-machine.hh"
@@ -1140,15 +1140,15 @@ find_syllables_indic (hb_buffer_t *buffer)
   p = 0;
   pe = eof = buffer->len;
 
-  unsigned int syllable_serial = 1;
+  unsigned ціле syllable_serial = 1;
   
 #line 1131 "hb-ot-shaper-indic-machine.hh"
 	{
-	int _slen;
-	int _trans;
+	ціле _slen;
+	ціле _trans;
 	const unsigned char *_keys;
 	const unsigned char *_inds;
-	if ( p == pe )
+	якщо ( p == pe )
 		goto _test_eof;
 _resume:
 	switch ( _indic_syllable_machine_from_state_actions[cs] ) {
@@ -1170,7 +1170,7 @@ _resume:
 _eof_trans:
 	cs = _indic_syllable_machine_trans_targs[_trans];
 
-	if ( _indic_syllable_machine_trans_actions[_trans] == 0 )
+	якщо ( _indic_syllable_machine_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _indic_syllable_machine_trans_actions[_trans] ) {
@@ -1280,12 +1280,12 @@ _again:
 #line 1239 "hb-ot-shaper-indic-machine.hh"
 	}
 
-	if ( ++p != pe )
+	якщо ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
-	if ( p == eof )
+	якщо ( p == eof )
 	{
-	if ( _indic_syllable_machine_eof_trans[cs] > 0 ) {
+	якщо ( _indic_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _indic_syllable_machine_eof_trans[cs] - 1;
 		goto _eof_trans;
 	}

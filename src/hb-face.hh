@@ -48,7 +48,7 @@ struct hb_face_t
 {
   hb_object_header_t header;
 
-  unsigned int index;			/* Face index in a collection, zero-based. */
+  unsigned ціле index;			/* Face index in a collection, zero-based. */
   mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
   mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
 
@@ -77,37 +77,37 @@ struct hb_face_t
   {
     hb_blob_t *blob;
 
-    if (unlikely (!reference_table_func))
-      return hb_blob_get_empty ();
+    якщо (unlikely (!reference_table_func))
+      повернути hb_blob_get_empty ();
 
     blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (this), tag, user_data);
-    if (unlikely (!blob))
-      return hb_blob_get_empty ();
+    якщо (unlikely (!blob))
+      повернути hb_blob_get_empty ();
 
-    return blob;
+    повернути blob;
   }
 
-  unsigned int get_upem () const
+  unsigned ціле get_upem () const
   {
-    unsigned int ret = upem;
-    if (unlikely (!ret))
+    unsigned ціле ret = upem;
+    якщо (unlikely (!ret))
     {
-      return load_upem ();
+      повернути load_upem ();
     }
-    return ret;
+    повернути ret;
   }
 
-  unsigned int get_num_glyphs () const
+  unsigned ціле get_num_glyphs () const
   {
-    unsigned int ret = num_glyphs;
-    if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
-    return ret;
+    unsigned ціле ret = num_glyphs;
+    якщо (unlikely (ret == UINT_MAX))
+      повернути load_num_glyphs ();
+    повернути ret;
   }
 
   private:
-  HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  HB_INTERNAL unsigned ціле load_upem () const;
+  HB_INTERNAL unsigned ціле load_num_glyphs () const;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 

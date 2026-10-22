@@ -39,11 +39,11 @@ static graph_result_t<void> sanitize (
 ) {
   size_t vertex_len = vertex.table_size();
   constexpr unsigned min_size = OT::Layout::Common::CoverageFormat1_3<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  якщо (unlikely (vertex_len < min_size)) повернути Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->glyphArray.get_size () - thiz->glyphArray.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  якщо (unlikely (vertex_len < min_size + thiz->glyphArray.get_size () - thiz->glyphArray.len.get_size ()))
+    повернути Err(SANITIZE_FAILURE);
+  повернути Ok();
 }
 
 template <typename Types>
@@ -53,11 +53,11 @@ static graph_result_t<void> sanitize (
 ) {
   size_t vertex_len = vertex.table_size();
   constexpr unsigned min_size = OT::Layout::Common::CoverageFormat2_4<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  якщо (unlikely (vertex_len < min_size)) повернути Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->rangeRecord.get_size () - thiz->rangeRecord.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  якщо (unlikely (vertex_len < min_size + thiz->rangeRecord.get_size () - thiz->rangeRecord.len.get_size ()))
+    повернути Err(SANITIZE_FAILURE);
+  повернути Ok();
 }
 
 struct Coverage : public OT::Layout::Common::Coverage
@@ -72,19 +72,19 @@ struct Coverage : public OT::Layout::Common::Coverage
     unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
     auto& coverage_v = c.graph.vertices_[coverage_id];
     const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
+    якщо (unlikely (!coverage_table))
+      повернути Err(INVALID_ARGUMENT);
     TRY (coverage_table->sanitize (coverage_v));
 
     auto new_coverage =
         + hb_zip (coverage_table->iter (), hb_range ())
         | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+          повернути p.second >= start && p.second < end;
         })
         | hb_map_retains_sorting (hb_first)
         ;
 
-    return add_coverage (c, new_parent_id, link_position, new_coverage, coverage_size);
+    повернути add_coverage (c, new_parent_id, link_position, new_coverage, coverage_size);
   }
 
   template<typename It>
@@ -101,7 +101,7 @@ struct Coverage : public OT::Layout::Common::Coverage
     TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, coverage_prime_id, link_position));
     TRY(coverage_prime_vertex.add_parent (parent_id, false));
 
-    return Ok();
+    повернути Ok();
   }
 
   // Filter an existing coverage table to glyphs at indices [start, end) and replace it with the filtered version.
@@ -111,19 +111,19 @@ struct Coverage : public OT::Layout::Common::Coverage
     unsigned coverage_size = c.graph.vertices_[existing_coverage].table_size ();
     auto& coverage_v = c.graph.vertices_[existing_coverage];
     const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
+    якщо (unlikely (!coverage_table))
+      повернути Err(INVALID_ARGUMENT);
     TRY (coverage_table->sanitize (coverage_v));
 
     auto new_coverage =
         + hb_zip (coverage_table->iter (), hb_range ())
         | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+          повернути p.second >= start && p.second < end;
         })
         | hb_map_retains_sorting (hb_first)
         ;
 
-    return make_coverage (c, new_coverage, existing_coverage, coverage_size * 2 + 100);
+    повернути make_coverage (c, new_coverage, existing_coverage, coverage_size * 2 + 100);
   }
 
   // Replace the coverage table at dest obj with one covering 'glyphs'.
@@ -134,31 +134,31 @@ struct Coverage : public OT::Layout::Common::Coverage
                                              unsigned max_size)
   {
     char* buffer = (char*) hb_calloc (1, max_size);
-    if (unlikely (!buffer))
-      return Err(ALLOCATION_FAILURE);
+    якщо (unlikely (!buffer))
+      повернути Err(ALLOCATION_FAILURE);
 
     hb_serialize_context_t serializer (buffer, max_size);
     OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
     serializer.end_serialize ();
-    if (unlikely (serializer.in_error ()))
+    якщо (unlikely (serializer.in_error ()))
     {
       hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      повернути Err(ALLOCATION_FAILURE);
     }
 
     hb_bytes_t coverage_copy = serializer.copy_bytes ();
-    if (unlikely (!coverage_copy.arrayZ)) {
+    якщо (unlikely (!coverage_copy.arrayZ)) {
       hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      повернути Err(ALLOCATION_FAILURE);
     }
 
     // Give ownership to the context, it will cleanup the buffer.
     auto res = c.add_buffer ((char *) coverage_copy.arrayZ);
-    if (unlikely (!res.is_ok ()))
+    якщо (unlikely (!res.is_ok ()))
     {
       hb_free (buffer);
       hb_free ((char *) coverage_copy.arrayZ);
-      return res;
+      повернути res;
     }
 
     auto& v = c.graph.vertices_[dest_obj];
@@ -166,23 +166,23 @@ struct Coverage : public OT::Layout::Common::Coverage
     v.set_buffer (head, head + coverage_copy.length);
 
     hb_free (buffer);
-    return Ok();
+    повернути Ok();
   }
 
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Layout::Common::Coverage::min_size)) return Err(SANITIZE_FAILURE);
+    якщо (unlikely (vertex_len < OT::Layout::Common::Coverage::min_size)) повернути Err(SANITIZE_FAILURE);
     hb_barrier ();
     switch (u.format.v)
     {
-    case 1: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) this, vertex);
-    case 2: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) this, vertex);
+    case 1: повернути graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) this, vertex);
+    case 2: повернути graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) this, vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 3: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) this, vertex);
-    case 4: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) this, vertex);
+    case 3: повернути graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) this, vertex);
+    case 4: повернути graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) this, vertex);
 #endif
-    default: return Err(SANITIZE_FAILURE);
+    default: повернути Err(SANITIZE_FAILURE);
     }
   }
 };

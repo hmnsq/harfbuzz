@@ -362,11 +362,11 @@ static const char _deserialize_text_glyphs_eof_actions[] = {
 	0
 };
 
-static const int deserialize_text_glyphs_start = 46;
-static const int deserialize_text_glyphs_first_final = 46;
-static const int deserialize_text_glyphs_error = 0;
+static const ціле deserialize_text_glyphs_start = 46;
+static const ціле deserialize_text_glyphs_first_final = 46;
+static const ціле deserialize_text_glyphs_error = 0;
 
-static const int deserialize_text_glyphs_en_main = 46;
+static const ціле deserialize_text_glyphs_en_main = 46;
 
 
 #line 101 "hb-buffer-deserialize-text-glyphs.rl"
@@ -375,7 +375,7 @@ static const int deserialize_text_glyphs_en_main = 46;
 static hb_bool_t
 _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
 				    const char *buf,
-				    unsigned int buf_len,
+				    unsigned ціле buf_len,
 				    const char **end_ptr,
 				    hb_font_t *font)
 {
@@ -385,7 +385,7 @@ _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
   (void) hb_buffer_get_glyph_positions (buffer, nullptr);
 
   const char *tok = nullptr;
-  int cs;
+  ціле cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
@@ -396,13 +396,13 @@ _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
 
 #line 389 "hb-buffer-deserialize-text-glyphs.hh"
 	{
-	int _slen;
-	int _trans;
+	ціле _slen;
+	ціле _trans;
 	const unsigned char *_keys;
 	const char *_inds;
-	if ( p == pe )
+	якщо ( p == pe )
 		goto _test_eof;
-	if ( cs == 0 )
+	якщо ( cs == 0 )
 		goto _out;
 _resume:
 	_keys = _deserialize_text_glyphs_trans_keys + (cs<<1);
@@ -415,7 +415,7 @@ _resume:
 
 	cs = _deserialize_text_glyphs_trans_targs[_trans];
 
-	if ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
+	якщо ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _deserialize_text_glyphs_trans_actions[_trans] ) {
@@ -429,35 +429,35 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	якщо (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  повернути false;
 }
 	break;
 	case 6:
 #line 62 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
+	{ якщо (!parse_uint (tok, p, &info.cluster )) повернути false; }
 	break;
 	case 7:
 #line 63 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
+	{ якщо (!parse_int  (tok, p, &pos.x_offset )) повернути false; }
 	break;
 	case 8:
 #line 64 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
+	{ якщо (!parse_int  (tok, p, &pos.y_offset )) повернути false; }
 	break;
 	case 4:
 #line 65 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
+	{ якщо (!parse_int  (tok, p, &pos.x_advance)) повернути false; }
 	break;
 	case 5:
 #line 66 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
+	{ якщо (!parse_int  (tok, p, &pos.y_advance)) повернути false; }
 	break;
 	case 3:
 #line 67 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
+	{ якщо (!parse_uint (tok, p, &info.mask    )) повернути false; }
 	break;
 	case 9:
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
@@ -483,18 +483,18 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	якщо (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  повернути false;
 }
 	break;
 	case 12:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	якщо (unlikely (!buffer->successful))
+	  повернути false;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
@@ -511,10 +511,10 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	якщо (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  повернути false;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
@@ -530,8 +530,8 @@ _resume:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	якщо (unlikely (!buffer->successful))
+	  повернути false;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
@@ -546,30 +546,30 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	якщо (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  повернути false;
 }
 	break;
 #line 523 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 
 _again:
-	if ( cs == 0 )
+	якщо ( cs == 0 )
 		goto _out;
-	if ( ++p != pe )
+	якщо ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
-	if ( p == eof )
+	якщо ( p == eof )
 	{
 	switch ( _deserialize_text_glyphs_eof_actions[cs] ) {
 	case 11:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	якщо (unlikely (!buffer->successful))
+	  повернути false;
 	*end_ptr = p;
 }
 	break;
@@ -585,7 +585,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  повернути p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH */

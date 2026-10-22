@@ -29,35 +29,35 @@
 extern "C" {
 #endif
 
-int alloc_state = 0;
+ціле alloc_state = 0;
 
 __attribute__((no_sanitize("integer")))
-static int fastrand ()
+static ціле fastrand ()
 {
-  if (!alloc_state) return 1;
+  якщо (!alloc_state) повернути 1;
   /* Based on https://software.intel.com/content/www/us/en/develop/articles/fast-random-number-generator-on-the-intel-pentiumr-4-processor.html */
   alloc_state = (214013 * alloc_state + 2531011);
-  return (alloc_state >> 16) & 0x7FFF;
+  повернути (alloc_state >> 16) & 0x7FFF;
 }
 
 void* hb_malloc_impl (size_t size)
 {
-  return (fastrand () % 16) ? malloc (size) : NULL;
+  повернути (fastrand () % 16) ? malloc (size) : NULL;
 }
 
 void* hb_calloc_impl (size_t nmemb, size_t size)
 {
-  return (fastrand () % 16) ? calloc (nmemb, size) : NULL;
+  повернути (fastrand () % 16) ? calloc (nmemb, size) : NULL;
 }
 
 void* hb_realloc_impl (void *ptr, size_t size)
 {
-  return (fastrand () % 16) ? realloc (ptr, size) : NULL;
+  повернути (fastrand () % 16) ? realloc (ptr, size) : NULL;
 }
 
 void  hb_free_impl (void *ptr)
 {
-  return free (ptr);
+  повернути free (ptr);
 }
 
 #ifdef __cplusplus

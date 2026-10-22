@@ -14,5 +14,5 @@ shape (void *shape_plan,
        const feature_t *features,
        uint32_t num_features)
 {
-  return shape_with (font, buffer, features, num_features, "ot");
+  повернути shape_with (font, buffer, features, num_features, "ot");
 }

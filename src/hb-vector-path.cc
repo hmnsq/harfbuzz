@@ -48,7 +48,7 @@ hb_vector_svg_path_move_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t 
 			     float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   s->path->append_c ('M');
   hb_vector_svg_path_append_xy (s, to_x, to_y);
   s->end_command ();
@@ -59,7 +59,7 @@ hb_vector_svg_path_line_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t 
 			     float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   s->path->append_c ('L');
   hb_vector_svg_path_append_xy (s, to_x, to_y);
   s->end_command ();
@@ -70,7 +70,7 @@ hb_vector_svg_path_quadratic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_sta
 				  float cx, float cy, float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   s->path->append_c ('Q');
   hb_vector_svg_path_append_xy (s, cx, cy);
   s->path->append_c (' ');
@@ -84,7 +84,7 @@ hb_vector_svg_path_cubic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t
 			      float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   s->path->append_c ('C');
   hb_vector_svg_path_append_xy (s, c1x, c1y);
   s->path->append_c (' ');
@@ -98,7 +98,7 @@ static void
 hb_vector_svg_path_close_path (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   s->path->append_c ('Z');
   s->end_command ();
 }
@@ -119,7 +119,7 @@ hb_vector_pdf_path_move_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t 
 			     float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   hb_vector_pdf_path_append_xy (s, to_x, to_y);
   s->path->append_str (" m\n");
   s->end_command ();
@@ -130,7 +130,7 @@ hb_vector_pdf_path_line_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t 
 			     float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   hb_vector_pdf_path_append_xy (s, to_x, to_y);
   s->path->append_str (" l\n");
   s->end_command ();
@@ -144,7 +144,7 @@ hb_vector_pdf_path_cubic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t
 			      float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   hb_vector_pdf_path_append_xy (s, c1x, c1y);
   s->path->append_c (' ');
   hb_vector_pdf_path_append_xy (s, c2x, c2y);
@@ -158,7 +158,7 @@ static void
 hb_vector_pdf_path_close_path (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
+  якщо (unlikely (!s->begin_command ())) повернути;
   s->path->append_str ("h\n");
   s->end_command ();
 }
@@ -166,7 +166,7 @@ hb_vector_pdf_path_close_path (hb_draw_funcs_t *, void *draw_data, hb_draw_state
 static int64_t *
 hb_vector_path_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
 {
-  return ((hb_vector_path_sink_t *) draw_data)->budget;
+  повернути ((hb_vector_path_sink_t *) draw_data)->budget;
 }
 
 
@@ -187,7 +187,7 @@ static struct hb_vector_svg_path_draw_funcs_lazy_loader_t
     hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_vector_path_get_budget_remaining, nullptr, nullptr);
     hb_draw_funcs_make_immutable (funcs);
     hb_atexit (free_static_vector_svg_path_draw_funcs);
-    return funcs;
+    повернути funcs;
   }
 } static_vector_svg_path_draw_funcs;
 
@@ -197,7 +197,7 @@ free_static_vector_svg_path_draw_funcs ()
 
 hb_draw_funcs_t *
 hb_vector_svg_path_draw_funcs_get ()
-{ return static_vector_svg_path_draw_funcs.get_unconst (); }
+{ повернути static_vector_svg_path_draw_funcs.get_unconst (); }
 
 
 static inline void free_static_vector_pdf_path_draw_funcs ();
@@ -215,7 +215,7 @@ static struct hb_vector_pdf_path_draw_funcs_lazy_loader_t
     hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_vector_path_get_budget_remaining, nullptr, nullptr);
     hb_draw_funcs_make_immutable (funcs);
     hb_atexit (free_static_vector_pdf_path_draw_funcs);
-    return funcs;
+    повернути funcs;
   }
 } static_vector_pdf_path_draw_funcs;
 
@@ -225,7 +225,7 @@ free_static_vector_pdf_path_draw_funcs ()
 
 hb_draw_funcs_t *
 hb_vector_pdf_path_draw_funcs_get ()
-{ return static_vector_pdf_path_draw_funcs.get_unconst (); }
+{ повернути static_vector_pdf_path_draw_funcs.get_unconst (); }
 
 
 hb_draw_funcs_t *
@@ -233,8 +233,8 @@ hb_vector_path_draw_funcs_get (hb_vector_format_t format)
 {
   switch (format)
   {
-    case HB_VECTOR_FORMAT_SVG: return hb_vector_svg_path_draw_funcs_get ();
-    case HB_VECTOR_FORMAT_PDF: return hb_vector_pdf_path_draw_funcs_get ();
-    case HB_VECTOR_FORMAT_INVALID: default: return nullptr;
+    case HB_VECTOR_FORMAT_SVG: повернути hb_vector_svg_path_draw_funcs_get ();
+    case HB_VECTOR_FORMAT_PDF: повернути hb_vector_pdf_path_draw_funcs_get ();
+    case HB_VECTOR_FORMAT_INVALID: default: повернути nullptr;
   }
 }

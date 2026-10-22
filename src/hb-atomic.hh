@@ -47,12 +47,12 @@
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
 #ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
+#якщо defined(__ATOMIC_ACQUIRE) // gcc-like
 static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
 #elif !defined(_MSC_VER)
 #include <atomic>
 #define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
+#інакше
 static inline void _hb_compiler_memory_r_barrier () {}
 #endif
 #endif
@@ -68,24 +68,24 @@ struct hb_atomic_t
   constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
   hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); повернути *this; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); повернути *this; }
   hb_atomic_t &operator= (T v_)
   {
     set_relaxed (v_);
-    return *this;
+    повернути *this;
   }
-  operator T () const { return get_relaxed (); }
+  operator T () const { повернути get_relaxed (); }
 
   void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
   void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  T get_relaxed () const { повернути v.load (std::memory_order_relaxed); }
+  T get_acquire () const { повернути v.load (std::memory_order_acquire); }
+  T inc () { повернути v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { повернути v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  ціле operator++ (ціле) { повернути inc (); }
+  ціле operator-- (ціле) { повернути dec (); }
 
   friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
@@ -106,19 +106,19 @@ struct hb_atomic_t<T *>
 
   void init (T *v_ = nullptr) { set_relaxed (v_); }
   void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  T *get_relaxed () const { повернути v.load (std::memory_order_relaxed); }
+  T *get_acquire () const { повернути v.load (std::memory_order_acquire); }
+  bool cmpexch (T *old, T *new_) { повернути v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); повернути *this; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); повернути *this; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
+  operator bool () const { повернути get_acquire () != nullptr; }
+  T *operator->() const { повернути get_acquire (); }
   template <typename C>
   operator C * () const
   {
-    return get_acquire ();
+    повернути get_acquire ();
   }
 
   friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
@@ -131,7 +131,7 @@ struct hb_atomic_t<T *>
   std::atomic<T *> v {nullptr};
 };
 
-#else /* defined(HB_NO_MT) */
+#інакше /* defined(HB_NO_MT) */
 
 template <typename T>
 struct hb_atomic_t
@@ -139,18 +139,18 @@ struct hb_atomic_t
   hb_atomic_t () = default;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& operator = (T v_) { set_relaxed (v_); повернути *this; }
+  operator T () const { повернути get_relaxed (); }
 
   void set_relaxed (T v_) { v = v_; }
   void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  T get_relaxed () const { повернути v; }
+  T get_acquire () const { повернути v; }
+  T inc () { повернути v++; }
+  T dec () { повернути v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  ціле operator ++ (ціле) { повернути inc (); }
+  ціле operator -- (ціле) { повернути dec (); }
 
   T v = 0;
 };
@@ -164,18 +164,18 @@ struct hb_atomic_t<T*>
 
   void init (T* v_ = nullptr) { set_relaxed (v_); }
   void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
+  T *get_relaxed () const { повернути v; }
+  T *get_acquire () const { повернути v; }
   bool cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    якщо (v != old) повернути false;
     v = new_;
-    return true;
+    повернути true;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  operator bool () const { повернути get_acquire () != nullptr; }
+  T * operator -> () const                    { повернути get_acquire (); }
+  template <typename C> operator C * () const { повернути get_acquire (); }
 
   T *v = nullptr;
 };
@@ -186,7 +186,7 @@ struct hb_atomic_t<T*>
 static inline bool hb_barrier ()
 {
   _hb_compiler_memory_r_barrier ();
-  return true;
+  повернути true;
 }
 
 

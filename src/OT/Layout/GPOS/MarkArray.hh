@@ -10,25 +10,25 @@ namespace GPOS_impl {
 
 static inline hb_position_t
 resolve_cross_offset (const hb_glyph_position_t *pos,
-		      unsigned int len,
-		      unsigned int glyph_pos,
+		      unsigned ціле len,
+		      unsigned ціле glyph_pos,
 		      hb_direction_t direction)
 {
   bool horizontal = HB_DIRECTION_IS_HORIZONTAL (direction);
   hb_position_t offset = horizontal ? pos[glyph_pos].y_offset : pos[glyph_pos].x_offset;
-  while (pos[glyph_pos].attach_type() & ATTACH_TYPE_CURSIVE)
+  поки (pos[glyph_pos].attach_type() & ATTACH_TYPE_CURSIVE)
   {
-    int chain = pos[glyph_pos].attach_chain();
-    if (!chain)
+    ціле chain = pos[glyph_pos].attach_chain();
+    якщо (!chain)
       break;
-    unsigned int parent = (int) glyph_pos + chain;
-    if (unlikely (parent >= len))
+    unsigned ціле parent = (ціле) glyph_pos + chain;
+    якщо (unlikely (parent >= len))
       break;
     glyph_pos = parent;
     offset = hb_saturate_add (offset,
 			      horizontal ? pos[glyph_pos].y_offset : pos[glyph_pos].x_offset);
   }
-  return offset;
+  повернути offset;
 }
 
 static inline bool
@@ -44,7 +44,7 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
   mark_anchor.get_anchor (c, buffer->cur().codepoint, &mark_x, &mark_y);
   glyph_anchor.get_anchor (c, buffer->info[glyph_pos].codepoint, &base_x, &base_y);
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  якщо (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "attaching mark glyph at %u to glyph at %u",
@@ -55,8 +55,8 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
 						      buffer->props.direction);
 
   hb_glyph_position_t &mark = buffer->cur_pos();
-  mark.attach_chain() = (int) glyph_pos - (int) buffer->idx;
-  if (mark.attach_chain() != (int) glyph_pos - (int) buffer->idx)
+  mark.attach_chain() = (ціле) glyph_pos - (ціле) buffer->idx;
+  якщо (mark.attach_chain() != (ціле) glyph_pos - (ціле) buffer->idx)
   {
     mark.attach_chain() = 0;
     goto overflow;
@@ -64,13 +64,13 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
   mark.attach_type() = ATTACH_TYPE_MARK;
   mark.x_offset = roundf (base_x - mark_x);
   mark.y_offset = roundf (base_y - mark_y);
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+  якщо (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
     mark.y_offset = hb_saturate_add (mark.y_offset, base_offset);
-  else
+  інакше
     mark.x_offset = hb_saturate_add (mark.x_offset, base_offset);
   buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  якщо (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "attached mark glyph at %u to glyph at %u",
@@ -79,7 +79,7 @@ apply_mark_attachment (hb_ot_apply_context_t *c,
 
 overflow:
   buffer->idx++;
-  return true;
+  повернути true;
 }
 
 HB_INTERNAL inline
@@ -90,13 +90,13 @@ void collect_mark_variation_indices (hb_collect_variation_indices_context_t *c,
                                     unsigned count,
                                     unsigned record_size)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  для (const auto _ : hb_zip (coverage, hb_range (count)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
+    якщо (!c->glyph_set->has (_.first)) continue;
     glyph_data_t anchor = anchors;
     anchor.data = (const char *) anchors.data + _.second * record_size;
     unsigned offset = anchor[0];
-    if (offset)
+    якщо (offset)
       StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
   }
 }
@@ -116,7 +116,7 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
                                   const Coverage &coverage) const
   {
-    if (!this->len) return;
+    якщо (!this->len) повернути;
     collect_mark_variation_indices (c, coverage, this,
                                    &this->arrayZ[0].markAnchor,
                                    this->len, MarkRecord<Types>::static_size);
@@ -124,20 +124,20 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
 
   template <typename AnchorMatrixType>
   bool apply (hb_ot_apply_context_t *c,
-              unsigned int mark_index, unsigned int glyph_index,
-              const AnchorMatrixType &anchors, unsigned int class_count,
-              unsigned int glyph_pos) const
+              unsigned ціле mark_index, unsigned ціле glyph_index,
+              const AnchorMatrixType &anchors, unsigned ціле class_count,
+              unsigned ціле glyph_pos) const
   {
     TRACE_APPLY (this);
     const MarkRecord<Types> &record = Super::operator[](mark_index);
-    unsigned int mark_class = record.klass;
+    unsigned ціле mark_class = record.klass;
 
     const Anchor& mark_anchor = this + record.markAnchor;
     bool found;
     const Anchor& glyph_anchor = anchors.get_anchor (c, glyph_index, mark_class, class_count, &found);
     /* If this subtable doesn't have an anchor for this base and this class,
      * return false such that the subsequent subtables have a chance at it. */
-    if (unlikely (!found)) return_trace (false);
+    якщо (unlikely (!found)) return_trace (false);
 
     return_trace (apply_mark_attachment (c, mark_anchor, glyph_anchor, glyph_pos));
   }
@@ -152,7 +152,7 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
     const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
 
     auto* out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    якщо (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     auto mark_iter =
     + hb_zip (coverage, this->iter ())
@@ -162,12 +162,12 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
 
     bool ret = false;
     unsigned new_length = 0;
-    for (const auto& mark_record : mark_iter) {
+    для (const auto& mark_record : mark_iter) {
       ret |= mark_record.subset (c, this, klass_mapping);
       new_length++;
     }
 
-    if (unlikely (!c->serializer->check_assign (out->len, new_length,
+    якщо (unlikely (!c->serializer->check_assign (out->len, new_length,
                                                 HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)))
       return_trace (false);
 
@@ -184,8 +184,8 @@ void Markclass_closure_and_remap_indexes (const Coverage &mark_coverage,
                                     hb_map_t *klass_mapping)
 {
   hb_set_t orig_classes;
-  for (const auto _ : hb_zip (mark_coverage, hb_range (count)))
-    if (glyphset.has (_.first))
+  для (const auto _ : hb_zip (mark_coverage, hb_range (count)))
+    якщо (glyphset.has (_.first))
     {
       const auto *klass = reinterpret_cast<const HBUINT16 *>
         ((const char *) mark_records + _.second * record_size);
@@ -193,9 +193,9 @@ void Markclass_closure_and_remap_indexes (const Coverage &mark_coverage,
     }
 
   unsigned idx = 0;
-  for (auto klass : orig_classes.iter ())
+  для (auto klass : orig_classes.iter ())
   {
-    if (klass_mapping->has (klass)) continue;
+    якщо (klass_mapping->has (klass)) continue;
     klass_mapping->set (klass, idx);
     idx++;
   }

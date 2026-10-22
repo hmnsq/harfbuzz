@@ -82,7 +82,7 @@ struct hb_pdf_resources_t
     hb_pdf_obj_t obj;
     obj.data = std::move (obj_data);
     objects.push (std::move (obj));
-    return id;
+    повернути id;
   }
 
   /* Add ExtGState for fill opacity, return resource name index. */
@@ -100,7 +100,7 @@ struct hb_pdf_resources_t
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (obj_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    повернути idx;
   }
 
   /* Add ExtGState for blend mode, return resource name index. */
@@ -118,7 +118,7 @@ struct hb_pdf_resources_t
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (obj_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    повернути idx;
   }
 
   /* Add ExtGState with an SMask (soft mask) referencing a Form XObject
@@ -167,14 +167,14 @@ struct hb_pdf_resources_t
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (gs_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    повернути idx;
   }
 
   /* Add a shading, return resource name index. */
   unsigned add_shading (hb_vector_buf_t &&shading_data)
   {
     unsigned obj_id = add_object (std::move (shading_data));
-    return add_shading_by_id (obj_id);
+    повернути add_shading_by_id (obj_id);
   }
 
   /* Register an already-allocated object as a shading resource. */
@@ -186,7 +186,7 @@ struct hb_pdf_resources_t
     shading_dict.append_c (' ');
     shading_dict.append_unsigned (obj_id);
     shading_dict.append_str (" 0 R ");
-    return idx;
+    повернути idx;
   }
 
   /* Add an XObject image, return resource name index.
@@ -210,21 +210,21 @@ struct hb_pdf_resources_t
     obj.append_unsigned (height);
     obj.append_str ("\n/BitsPerComponent 8\n");
 
-    if (plte && plte_len >= 3)
+    якщо (plte && plte_len >= 3)
     {
       /* Indexed color: /ColorSpace [/Indexed /DeviceRGB N <hex palette>] */
       unsigned n_entries = plte_len / 3;
       obj.append_str ("/ColorSpace [/Indexed /DeviceRGB ");
       obj.append_unsigned (n_entries - 1);
       obj.append_str (" <");
-      for (unsigned i = 0; i < n_entries * 3; i++)
+      для (unsigned i = 0; i < n_entries * 3; i++)
       {
 	obj.append_c ("0123456789ABCDEF"[plte[i] >> 4]);
 	obj.append_c ("0123456789ABCDEF"[plte[i] & 0xF]);
       }
       obj.append_str (">]\n");
     }
-    else
+    інакше
     {
       obj.append_str ("/ColorSpace ");
       unsigned color_channels = has_alpha ? colors - 1 : colors;
@@ -234,10 +234,10 @@ struct hb_pdf_resources_t
 
     /* Build SMask for indexed images with tRNS transparency. */
     unsigned smask_id = 0;
-    if (plte && trns && trns_len)
+    якщо (plte && trns && trns_len)
     {
       hb_vector_buf_t smask_stream;
-      if (hb_pdf_build_indexed_smask (&smask_stream, idat_data, idat_len,
+      якщо (hb_pdf_build_indexed_smask (&smask_stream, idat_data, idat_len,
 				      width, height, trns, trns_len))
       {
 	hb_vector_buf_t smask_obj;
@@ -256,7 +256,7 @@ struct hb_pdf_resources_t
       }
     }
 
-    if (smask_id)
+    якщо (smask_id)
     {
       obj.append_str ("/SMask ");
       obj.append_unsigned (smask_id);
@@ -284,7 +284,7 @@ struct hb_pdf_resources_t
     xobject_dict.append_c (' ');
     xobject_dict.append_unsigned (obj_id);
     xobject_dict.append_str (" 0 R ");
-    return idx;
+    повернути idx;
   }
 };
 
@@ -293,33 +293,33 @@ struct hb_pdf_resources_t
 static hb_pdf_resources_t *
 hb_pdf_get_resources (hb_vector_paint_t *paint)
 {
-  if (!paint->defs.length)
+  якщо (!paint->defs.length)
   {
     /* First call: allocate and store. */
     auto *res = (hb_pdf_resources_t *) hb_calloc (1, sizeof (hb_pdf_resources_t));
-    if (unlikely (!res)) return nullptr;
+    якщо (unlikely (!res)) повернути nullptr;
     new (res) hb_pdf_resources_t ();
-    if (unlikely (!paint->defs.resize (sizeof (void *))))
+    якщо (unlikely (!paint->defs.resize (sizeof (void *))))
     {
       res->~hb_pdf_resources_t ();
       hb_free (res);
-      return nullptr;
+      повернути nullptr;
     }
     memcpy (paint->defs.arrayZ, &res, sizeof (void *));
   }
   hb_pdf_resources_t *res;
   memcpy (&res, paint->defs.arrayZ, sizeof (void *));
-  return res;
+  повернути res;
 }
 
 void
 hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint)
 {
-  if (paint->defs.length >= sizeof (void *))
+  якщо (paint->defs.length >= sizeof (void *))
   {
     hb_pdf_resources_t *res;
     memcpy (&res, paint->defs.arrayZ, sizeof (void *));
-    if (res)
+    якщо (res)
     {
       res->~hb_pdf_resources_t ();
       hb_free (res);
@@ -342,7 +342,7 @@ hb_pdf_emit_glyph_path (hb_vector_paint_t *paint,
   paint->path.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty path keeps the document structure intact. */
-  if (likely (paint->budget_remaining >= 0))
+  якщо (likely (paint->budget_remaining >= 0))
   {
     hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
 				 paint->x_scale_factor, paint->y_scale_factor,
@@ -367,8 +367,8 @@ hb_pdf_paint_push_transform (hb_paint_funcs_t *,
 			     void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
 
   auto &body = paint->current_body ();
   unsigned sprec = body.scale_precision ();
@@ -393,8 +393,8 @@ hb_pdf_paint_pop_transform (hb_paint_funcs_t *,
 			    void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
   paint->current_body ().append_str ("Q\n");
 }
 
@@ -408,26 +408,26 @@ hb_pdf_paint_fill_glyph (hb_paint_funcs_t *,
 			 void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
 
   float r = hb_color_get_red (c) / 255.f;
   float g = hb_color_get_green (c) / 255.f;
   float b = hb_color_get_blue (c) / 255.f;
   float a = hb_color_get_alpha (c) / 255.f;
 
-  if (a < 1.f / 255.f)
-    return;
+  якщо (a < 1.f / 255.f)
+    повернути;
 
   auto &body = paint->current_body ();
 
   bool scoped = false;
   /* Set alpha via ExtGState if needed, scoped so it does not leak
    * into later paints. */
-  if (a < 1.f - 1.f / 512.f)
+  якщо (a < 1.f - 1.f / 512.f)
   {
     auto *res = hb_pdf_get_resources (paint);
-    if (res)
+    якщо (res)
     {
       unsigned gs_idx = res->add_extgstate_alpha (a);
       body.append_str ("q\n");
@@ -446,7 +446,7 @@ hb_pdf_paint_fill_glyph (hb_paint_funcs_t *,
   body.append_str (" rg\n");
   hb_pdf_emit_glyph_path (paint, font, glyph, &body);
   body.append_str ("f\n");
-  if (scoped)
+  якщо (scoped)
     body.append_str ("Q\n");
 }
 
@@ -458,8 +458,8 @@ hb_pdf_paint_push_clip_glyph (hb_paint_funcs_t *,
 			      void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
 
   auto &body = paint->current_body ();
   body.append_str ("q\n");
@@ -475,8 +475,8 @@ hb_pdf_paint_push_clip_rectangle (hb_paint_funcs_t *,
 				  void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
 
   auto &body = paint->current_body ();
   body.append_str ("q\n");
@@ -497,10 +497,10 @@ hb_pdf_paint_push_clip_path_start (hb_paint_funcs_t *,
 				   void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
+  якщо (unlikely (!paint->ensure_initialized ()))
   {
     *draw_data = nullptr;
-    return nullptr;
+    повернути nullptr;
   }
 
   auto &body = paint->current_body ();
@@ -514,7 +514,7 @@ hb_pdf_paint_push_clip_path_start (hb_paint_funcs_t *,
 			   paint->y_scale_factor,
 			   &paint->budget_remaining};
   *draw_data = &paint->clip_path_sink;
-  return hb_vector_pdf_path_draw_funcs_get ();
+  повернути hb_vector_pdf_path_draw_funcs_get ();
 }
 
 static void
@@ -523,8 +523,8 @@ hb_pdf_paint_push_clip_path_end (hb_paint_funcs_t *,
 				 void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
   paint->current_body ().append_str ("W n\n");
 }
 
@@ -534,8 +534,8 @@ hb_pdf_paint_pop_clip (hb_paint_funcs_t *,
 		       void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
   paint->current_body ().append_str ("Q\n");
 }
 
@@ -550,14 +550,14 @@ hb_pdf_paint_solid_color (hb_vector_paint_t *paint, hb_color_t c)
   float b = hb_color_get_blue (c) / 255.f;
   float a = hb_color_get_alpha (c) / 255.f;
 
-  if (a < 1.f / 255.f)
-    return;
+  якщо (a < 1.f / 255.f)
+    повернути;
 
   /* Set alpha via ExtGState if needed. */
-  if (a < 1.f - 1.f / 512.f)
+  якщо (a < 1.f - 1.f / 512.f)
   {
     auto *res = hb_pdf_get_resources (paint);
-    if (res)
+    якщо (res)
     {
       unsigned gs_idx = res->add_extgstate_alpha (a);
       body.append_str ("/GS");
@@ -586,8 +586,8 @@ hb_pdf_paint_color (hb_paint_funcs_t *,
 		    void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
 
   hb_pdf_paint_solid_color (paint, color);
 }
@@ -603,23 +603,23 @@ hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
 #ifndef HAVE_ZLIB
   (void) out; (void) idat_data; (void) idat_len;
   (void) width; (void) height; (void) trns; (void) trns_len;
-  return false;
-#else
+  повернути false;
+#інакше
   /* Guard the size arithmetic below against 32-bit overflow.  width/height come
    * from the attacker-controlled PNG IHDR; without this, (width + 1) * height or
    * width * height can wrap and under-size buffers that are then indexed per
    * pixel (raw + y * (width + 1), out->arrayZ[y * width + x]). */
   unsigned raw_len, mask_len;
-  if (!width || !height ||
+  якщо (!width || !height ||
       width == 0xFFFFFFFFu ||
       hb_unsigned_mul_overflows (width + 1, height, &raw_len) ||
       hb_unsigned_mul_overflows (width, height, &mask_len))
-    return false;
+    повернути false;
 
   /* Decompress IDAT (zlib). */
   /* raw_len = (width + 1) * height: 1 filter byte per row + width bytes. */
   uint8_t *raw = (uint8_t *) hb_malloc (raw_len);
-  if (!raw) return false;
+  якщо (!raw) повернути false;
   HB_SCOPE_GUARD (hb_free (raw));
 
   z_stream stream = {};
@@ -628,35 +628,35 @@ hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
   stream.next_out = (Bytef *) raw;
   stream.avail_out = raw_len;
 
-  if (inflateInit (&stream) != Z_OK)
-    return false;
-  int status = inflate (&stream, Z_FINISH);
+  якщо (inflateInit (&stream) != Z_OK)
+    повернути false;
+  ціле status = inflate (&stream, Z_FINISH);
   unsigned long total_out = stream.total_out;
   inflateEnd (&stream);
-  if (status != Z_STREAM_END || total_out != raw_len)
-    return false;
+  якщо (status != Z_STREAM_END || total_out != raw_len)
+    повернути false;
 
   /* Un-filter and map to alpha. */
-  if (!out->resize (mask_len))
-    return false;
+  якщо (!out->resize (mask_len))
+    повернути false;
 
   uint8_t *unfiltered = (uint8_t *) hb_malloc (width);
-  if (!unfiltered)
-    return false;
+  якщо (!unfiltered)
+    повернути false;
   HB_SCOPE_GUARD (hb_free (unfiltered));
 
   uint8_t *prev_unfiltered = (uint8_t *) hb_calloc (width, 1);
-  if (!prev_unfiltered)
-    return false;
+  якщо (!prev_unfiltered)
+    повернути false;
   HB_SCOPE_GUARD (hb_free (prev_unfiltered));
 
-  for (unsigned y = 0; y < height; y++)
+  для (unsigned y = 0; y < height; y++)
   {
     uint8_t *row = raw + y * (width + 1);
     uint8_t filter = row[0];
     uint8_t *pixels = row + 1;
 
-    for (unsigned x = 0; x < width; x++)
+    для (unsigned x = 0; x < width; x++)
     {
       uint8_t a = (x > 0) ? unfiltered[x - 1] : 0;
       uint8_t b = prev_unfiltered[x];
@@ -671,10 +671,10 @@ hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
       case 3: unfiltered[x] = val + (uint8_t) (((unsigned) a + b) / 2); break; /* Average */
       case 4: /* Paeth */
       {
-	int p = (int) a + (int) b - (int) c;
-	int pa = abs (p - (int) a);
-	int pb = abs (p - (int) b);
-	int pc = abs (p - (int) c);
+	ціле p = (ціле) a + (ціле) b - (ціле) c;
+	ціле pa = abs (p - (ціле) a);
+	ціле pb = abs (p - (ціле) b);
+	ціле pc = abs (p - (ціле) c);
 	uint8_t pr = (pa <= pb && pa <= pc) ? a : (pb <= pc) ? b : c;
 	unfiltered[x] = val + pr;
 	break;
@@ -693,7 +693,7 @@ hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
     unfiltered = tmp;
   }
 
-  return true;
+  повернути true;
 #endif
 }
 
@@ -701,7 +701,7 @@ hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
 static inline uint32_t
 hb_pdf_png_u32 (const uint8_t *p)
 {
-  return ((uint32_t) p[0] << 24) | ((uint32_t) p[1] << 16) |
+  повернути ((uint32_t) p[0] << 24) | ((uint32_t) p[1] << 16) |
 	 ((uint32_t) p[2] << 8)  | (uint32_t) p[3];
 }
 
@@ -716,27 +716,27 @@ hb_pdf_paint_image (hb_paint_funcs_t *,
 		    hb_glyph_extents_t *extents,
 		    void *)
 {
-  if (format != HB_TAG ('p','n','g',' '))
-    return false;
-  if (!extents || !width || !height)
-    return false;
+  якщо (format != HB_TAG ('p','n','g',' '))
+    повернути false;
+  якщо (!extents || !width || !height)
+    повернути false;
 
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути false;
   auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return false;
+  якщо (unlikely (!res))
+    повернути false;
 
   unsigned len = 0;
   const uint8_t *data = (const uint8_t *) hb_blob_get_data (image, &len);
-  if (!data || len < 8)
-    return false;
+  якщо (!data || len < 8)
+    повернути false;
 
   /* Verify PNG signature. */
   static const uint8_t png_sig[8] = {137, 80, 78, 71, 13, 10, 26, 10};
-  if (hb_memcmp (data, png_sig, 8) != 0)
-    return false;
+  якщо (hb_memcmp (data, png_sig, 8) != 0)
+    повернути false;
 
   /* Parse PNG chunks: extract IHDR and concatenate IDAT payloads. */
   unsigned png_w = 0, png_h = 0;
@@ -753,22 +753,22 @@ hb_pdf_paint_image (hb_paint_funcs_t *,
   /* Invariant: pos <= len (len >= 8 checked above).  All bounds checks below
    * are written to avoid 32-bit wrapping: a malicious chunk_len must not be
    * able to wrap pos + 12 + chunk_len past the end of the buffer. */
-  while (len - pos >= 12)
+  поки (len - pos >= 12)
   {
     uint32_t chunk_len = hb_pdf_png_u32 (data + pos);
     uint32_t chunk_type = hb_pdf_png_u32 (data + pos + 4);
-    if (chunk_len > len - pos - 12)
+    якщо (chunk_len > len - pos - 12)
       break;
     const uint8_t *chunk_data = data + pos + 8;
 
-    if (chunk_type == 0x49484452u) /* IHDR */
+    якщо (chunk_type == 0x49484452u) /* IHDR */
     {
-      if (chunk_len < 13) return false;
+      якщо (chunk_len < 13) повернути false;
       png_w = hb_pdf_png_u32 (chunk_data);
       png_h = hb_pdf_png_u32 (chunk_data + 4);
       uint8_t bit_depth = chunk_data[8];
       color_type = chunk_data[9];
-      if (bit_depth != 8) return false; /* only 8-bit supported */
+      якщо (bit_depth != 8) повернути false; /* only 8-bit supported */
 
       switch (color_type)
       {
@@ -777,31 +777,31 @@ hb_pdf_paint_image (hb_paint_funcs_t *,
       case 3: colors = 1; has_alpha = false; break; /* Indexed */
       case 4: colors = 2; has_alpha = true;  break; /* Gray+Alpha */
       case 6: colors = 4; has_alpha = true;  break; /* RGBA */
-      default: return false;
+      default: повернути false;
       }
     }
-    else if (chunk_type == 0x504C5445u) /* PLTE */
+    інакше якщо (chunk_type == 0x504C5445u) /* PLTE */
     {
       plte_data = chunk_data;
       plte_len = chunk_len;
     }
-    else if (chunk_type == 0x74524E53u) /* tRNS */
+    інакше якщо (chunk_type == 0x74524E53u) /* tRNS */
     {
       trns_data = chunk_data;
       trns_len = chunk_len;
     }
-    else if (chunk_type == 0x49444154u) /* IDAT */
+    інакше якщо (chunk_type == 0x49444154u) /* IDAT */
     {
       idat.append_len ((const char *) chunk_data, chunk_len);
     }
-    else if (chunk_type == 0x49454E44u) /* IEND */
+    інакше якщо (chunk_type == 0x49454E44u) /* IEND */
       break;
 
     pos += 12 + chunk_len;
   }
 
-  if (!png_w || !png_h || !idat.length)
-    return false;
+  якщо (!png_w || !png_h || !idat.length)
+    повернути false;
 
   unsigned im_idx = res->add_xobject_png_image (idat.arrayZ, idat.length,
 						 png_w, png_h,
@@ -834,7 +834,7 @@ hb_pdf_paint_image (hb_paint_funcs_t *,
   body.append_unsigned (im_idx);
   body.append_str (" Do\nQ\n");
 
-  return true;
+  повернути true;
 }
 
 /* ---- Gradient helpers ---- */
@@ -842,10 +842,10 @@ hb_pdf_paint_image (hb_paint_funcs_t *,
 static bool
 hb_pdf_gradient_needs_alpha (hb_array_t<const hb_color_stop_t> stops)
 {
-  for (const auto &s : stops)
-    if (hb_color_get_alpha (s.color) != 255)
-      return true;
-  return false;
+  для (const auto &s : stops)
+    якщо (hb_color_get_alpha (s.color) != 255)
+      повернути true;
+  повернути false;
 }
 
 /* Build a PDF Type 2 (exponential interpolation) function for
@@ -870,25 +870,25 @@ hb_pdf_build_alpha_gradient_function_from_stops (hb_pdf_resources_t *res,
 {
   unsigned count = paint->color_stops_scratch.length;
 
-  if (count < 2)
+  якщо (count < 2)
   {
     float a = count ? hb_color_get_alpha (paint->color_stops_scratch.arrayZ[0].color) / 255.f : 1.f;
     hb_vector_buf_t obj;
     hb_pdf_build_alpha_interpolation_function (&obj, a, a);
-    return res->add_object (std::move (obj));
+    повернути res->add_object (std::move (obj));
   }
 
-  if (count == 2)
+  якщо (count == 2)
   {
     hb_vector_buf_t obj;
     hb_pdf_build_alpha_interpolation_function (&obj,
       hb_color_get_alpha (paint->color_stops_scratch.arrayZ[0].color) / 255.f,
       hb_color_get_alpha (paint->color_stops_scratch.arrayZ[1].color) / 255.f);
-    return res->add_object (std::move (obj));
+    повернути res->add_object (std::move (obj));
   }
 
   hb_vector_t<unsigned> sub_func_ids;
-  for (unsigned i = 0; i + 1 < count; i++)
+  для (unsigned i = 0; i + 1 < count; i++)
   {
     hb_vector_buf_t sub;
     hb_pdf_build_alpha_interpolation_function (&sub,
@@ -900,26 +900,26 @@ hb_pdf_build_alpha_gradient_function_from_stops (hb_pdf_resources_t *res,
   hb_vector_buf_t obj;
   obj.append_str ("<< /FunctionType 3 /Domain [0 1]\n");
   obj.append_str ("/Functions [");
-  for (unsigned i = 0; i < sub_func_ids.length; i++)
+  для (unsigned i = 0; i < sub_func_ids.length; i++)
   {
-    if (i) obj.append_c (' ');
+    якщо (i) obj.append_c (' ');
     obj.append_unsigned (sub_func_ids.arrayZ[i]);
     obj.append_str (" 0 R");
   }
   obj.append_str ("]\n/Bounds [");
-  for (unsigned i = 1; i + 1 < count; i++)
+  для (unsigned i = 1; i + 1 < count; i++)
   {
-    if (i > 1) obj.append_c (' ');
+    якщо (i > 1) obj.append_c (' ');
     obj.append_num (paint->color_stops_scratch.arrayZ[i].offset, 4);
   }
   obj.append_str ("]\n/Encode [");
-  for (unsigned i = 0; i + 1 < count; i++)
+  для (unsigned i = 0; i + 1 < count; i++)
   {
-    if (i) obj.append_c (' ');
+    якщо (i) obj.append_c (' ');
     obj.append_str ("0 1");
   }
   obj.append_str ("] >>");
-  return res->add_object (std::move (obj));
+  повернути res->add_object (std::move (obj));
 }
 
 /* Build a PDF Type 2 (exponential interpolation) function for
@@ -952,34 +952,34 @@ hb_pdf_build_gradient_function_from_stops (hb_pdf_resources_t *res,
 {
   unsigned count = paint->color_stops_scratch.length;
 
-  if (count < 2)
+  якщо (count < 2)
   {
     /* Single stop: constant function. */
     hb_color_t c = count ? paint->color_stops_scratch.arrayZ[0].color
 			 : HB_COLOR (0, 0, 0, 255);
     hb_vector_buf_t obj;
     hb_pdf_build_interpolation_function (&obj, c, c);
-    return res->add_object (std::move (obj));
+    повернути res->add_object (std::move (obj));
   }
 
   /* Sort by offset. */
   paint->color_stops_scratch.as_array ().qsort (
     [] (const hb_color_stop_t &a, const hb_color_stop_t &b)
-    { return (a.offset > b.offset) - (a.offset < b.offset); });
+    { повернути (a.offset > b.offset) - (a.offset < b.offset); });
 
-  if (count == 2)
+  якщо (count == 2)
   {
     /* Two stops: single interpolation function. */
     hb_vector_buf_t obj;
     hb_pdf_build_interpolation_function (&obj,
 					  paint->color_stops_scratch.arrayZ[0].color,
 					  paint->color_stops_scratch.arrayZ[1].color);
-    return res->add_object (std::move (obj));
+    повернути res->add_object (std::move (obj));
   }
 
   /* Multiple stops: create sub-functions and stitch. */
   hb_vector_t<unsigned> sub_func_ids;
-  for (unsigned i = 0; i + 1 < count; i++)
+  для (unsigned i = 0; i + 1 < count; i++)
   {
     hb_vector_buf_t sub;
     hb_pdf_build_interpolation_function (&sub,
@@ -994,9 +994,9 @@ hb_pdf_build_gradient_function_from_stops (hb_pdf_resources_t *res,
 
   /* Functions array. */
   obj.append_str ("/Functions [");
-  for (unsigned i = 0; i < sub_func_ids.length; i++)
+  для (unsigned i = 0; i < sub_func_ids.length; i++)
   {
-    if (i) obj.append_c (' ');
+    якщо (i) obj.append_c (' ');
     obj.append_unsigned (sub_func_ids.arrayZ[i]);
     obj.append_str (" 0 R");
   }
@@ -1004,23 +1004,23 @@ hb_pdf_build_gradient_function_from_stops (hb_pdf_resources_t *res,
 
   /* Bounds. */
   obj.append_str ("/Bounds [");
-  for (unsigned i = 1; i + 1 < count; i++)
+  для (unsigned i = 1; i + 1 < count; i++)
   {
-    if (i > 1) obj.append_c (' ');
+    якщо (i > 1) obj.append_c (' ');
     obj.append_num (paint->color_stops_scratch.arrayZ[i].offset, 4);
   }
   obj.append_str ("]\n");
 
   /* Encode array. */
   obj.append_str ("/Encode [");
-  for (unsigned i = 0; i + 1 < count; i++)
+  для (unsigned i = 0; i + 1 < count; i++)
   {
-    if (i) obj.append_c (' ');
+    якщо (i) obj.append_c (' ');
     obj.append_str ("0 1");
   }
   obj.append_str ("] >>");
 
-  return res->add_object (std::move (obj));
+  повернути res->add_object (std::move (obj));
 }
 
 static void
@@ -1033,15 +1033,15 @@ hb_pdf_paint_linear_gradient (hb_paint_funcs_t *,
 			      void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
   auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  якщо (unlikely (!res))
+    повернути;
 
   /* Fetch, normalize stops to [0,1], and adjust coordinates. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  якщо (!paint->fetch_color_stops (color_line))
+    повернути;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
   float mn, mx;
@@ -1079,7 +1079,7 @@ hb_pdf_paint_linear_gradient (hb_paint_funcs_t *,
   auto &body = paint->current_body ();
 
   bool needs_alpha = hb_pdf_gradient_needs_alpha (stops);
-  if (needs_alpha)
+  якщо (needs_alpha)
   {
     unsigned alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
 
@@ -1123,15 +1123,15 @@ hb_pdf_paint_radial_gradient (hb_paint_funcs_t *,
 			      void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
   auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  якщо (unlikely (!res))
+    повернути;
 
   /* Fetch, normalize stops to [0,1], and adjust coordinates. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  якщо (!paint->fetch_color_stops (color_line))
+    повернути;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
   float mn, mx;
@@ -1175,7 +1175,7 @@ hb_pdf_paint_radial_gradient (hb_paint_funcs_t *,
   auto &body = paint->current_body ();
 
   bool needs_alpha = hb_pdf_gradient_needs_alpha (stops);
-  if (needs_alpha)
+  якщо (needs_alpha)
   {
     unsigned alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
 
@@ -1282,10 +1282,10 @@ hb_pdf_add_sweep_patch (hb_vector_buf_t *mesh,
   const float eps = 0.5f;
   const float MAX_SECTOR = (float) M_PI / 2.f;
 
-  int num_splits = (int) ceilf (fabsf (a1 - a0) / MAX_SECTOR);
-  if (num_splits < 1) num_splits = 1;
+  ціле num_splits = (ціле) ceilf (fabsf (a1 - a0) / MAX_SECTOR);
+  якщо (num_splits < 1) num_splits = 1;
 
-  for (int s = 0; s < num_splits; s++)
+  для (ціле s = 0; s < num_splits; s++)
   {
     float k0 = (float) s / num_splits;
     float k1 = (float) (s + 1) / num_splits;
@@ -1349,7 +1349,7 @@ hb_pdf_add_sweep_patch (hb_vector_buf_t *mesh,
     hb_pdf_encode_color_rgb (mesh, sc1); /* outer end */
     hb_pdf_encode_color_rgb (mesh, sc1); /* inner end */
 
-    if (alpha_mesh)
+    якщо (alpha_mesh)
     {
       alpha_mesh->append_c ('\0');
 
@@ -1391,9 +1391,9 @@ hb_pdf_sweep_emit_patch (float a0, hb_color_t c0,
    * the output document-size cap, not the outline work budget: stop once a
    * mesh buffer trips its cap so per-gradient patch counts cannot multiply
    * with the paint-graph traversal limits of the font tables driving us. */
-  if (unlikely (ctx->mesh->in_error () ||
+  якщо (unlikely (ctx->mesh->in_error () ||
 		(ctx->alpha_mesh && ctx->alpha_mesh->in_error ())))
-    return;
+    повернути;
   hb_pdf_add_sweep_patch (ctx->mesh, ctx->alpha_mesh,
 			  ctx->cx, ctx->cy,
 			  ctx->xlo, ctx->xhi, ctx->ylo, ctx->yhi,
@@ -1410,19 +1410,19 @@ hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
 			     void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
   auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  якщо (unlikely (!res))
+    повернути;
 
   /* Get and sort color stops. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  якщо (!paint->fetch_color_stops (color_line))
+    повернути;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
   stops.as_array ().qsort (
     [] (const hb_color_stop_t &a, const hb_color_stop_t &b)
-    { return (a.offset > b.offset) - (a.offset < b.offset); });
+    { повернути (a.offset > b.offset) - (a.offset < b.offset); });
 
   hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
 
@@ -1436,7 +1436,7 @@ hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
   hb_vector_buf_t mesh;
   hb_vector_buf_t alpha_mesh;
   mesh.alloc (256);
-  if (needs_alpha)
+  якщо (needs_alpha)
     alpha_mesh.alloc (256);
 
   hb_pdf_sweep_ctx_t ctx { &mesh, needs_alpha ? &alpha_mesh : nullptr,
@@ -1445,8 +1445,8 @@ hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
 				 start_angle, end_angle,
 				 hb_pdf_sweep_emit_patch, &ctx);
 
-  if (!mesh.length)
-    return;
+  якщо (!mesh.length)
+    повернути;
 
   auto hb_pdf_build_mesh_shading = [&] (hb_vector_buf_t &m,
 					 const char *cs,
@@ -1470,7 +1470,7 @@ hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
     sh.append_str (" >>\nstream\n");
     sh.append_len (m.arrayZ, m.length);
     sh.append_str ("\nendstream");
-    return res->add_object (std::move (sh));
+    повернути res->add_object (std::move (sh));
   };
 
   unsigned sh_obj_id = hb_pdf_build_mesh_shading (mesh, "DeviceRGB",
@@ -1479,7 +1479,7 @@ hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
 
   auto &body = paint->current_body ();
 
-  if (needs_alpha && alpha_mesh.length)
+  якщо (needs_alpha && alpha_mesh.length)
   {
     unsigned alpha_sh_id = hb_pdf_build_mesh_shading (alpha_mesh, "DeviceGray",
 						       " 0 1");
@@ -1502,26 +1502,26 @@ hb_pdf_blend_mode_name (hb_paint_composite_mode_t mode)
 {
   switch (mode)
   {
-  case HB_PAINT_COMPOSITE_MODE_MULTIPLY:       return "Multiply";
-  case HB_PAINT_COMPOSITE_MODE_SCREEN:         return "Screen";
-  case HB_PAINT_COMPOSITE_MODE_OVERLAY:        return "Overlay";
-  case HB_PAINT_COMPOSITE_MODE_DARKEN:         return "Darken";
-  case HB_PAINT_COMPOSITE_MODE_LIGHTEN:        return "Lighten";
-  case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:    return "ColorDodge";
-  case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:     return "ColorBurn";
-  case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:     return "HardLight";
-  case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:     return "SoftLight";
-  case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:     return "Difference";
-  case HB_PAINT_COMPOSITE_MODE_EXCLUSION:      return "Exclusion";
-  case HB_PAINT_COMPOSITE_MODE_HSL_HUE:        return "Hue";
-  case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return "Saturation";
-  case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:      return "Color";
-  case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return "Luminosity";
+  case HB_PAINT_COMPOSITE_MODE_MULTIPLY:       повернути "Multiply";
+  case HB_PAINT_COMPOSITE_MODE_SCREEN:         повернути "Screen";
+  case HB_PAINT_COMPOSITE_MODE_OVERLAY:        повернути "Overlay";
+  case HB_PAINT_COMPOSITE_MODE_DARKEN:         повернути "Darken";
+  case HB_PAINT_COMPOSITE_MODE_LIGHTEN:        повернути "Lighten";
+  case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:    повернути "ColorDodge";
+  case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:     повернути "ColorBurn";
+  case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:     повернути "HardLight";
+  case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:     повернути "SoftLight";
+  case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:     повернути "Difference";
+  case HB_PAINT_COMPOSITE_MODE_EXCLUSION:      повернути "Exclusion";
+  case HB_PAINT_COMPOSITE_MODE_HSL_HUE:        повернути "Hue";
+  case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: повернути "Saturation";
+  case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:      повернути "Color";
+  case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: повернути "Luminosity";
   /* Porter-Duff modes have no PDF blend-mode equivalent; approximate
    * the two that have a plausible color-blend analog, and let the
    * rest fall through to Normal (SRC_OVER). */
-  case HB_PAINT_COMPOSITE_MODE_PLUS:           return "Screen";
-  case HB_PAINT_COMPOSITE_MODE_XOR:            return "Difference";
+  case HB_PAINT_COMPOSITE_MODE_PLUS:           повернути "Screen";
+  case HB_PAINT_COMPOSITE_MODE_XOR:            повернути "Difference";
   case HB_PAINT_COMPOSITE_MODE_CLEAR:
   case HB_PAINT_COMPOSITE_MODE_SRC:
   case HB_PAINT_COMPOSITE_MODE_DEST:
@@ -1533,7 +1533,7 @@ hb_pdf_blend_mode_name (hb_paint_composite_mode_t mode)
   case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
   case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
   case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-  default:                                     return nullptr; /* Normal */
+  default:                                     повернути nullptr; /* Normal */
   }
 }
 
@@ -1543,8 +1543,8 @@ hb_pdf_paint_push_group (hb_paint_funcs_t *,
 			 void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
   paint->current_body ().append_str ("q\n");
 }
 
@@ -1555,17 +1555,17 @@ hb_pdf_paint_push_group_for (hb_paint_funcs_t *,
 			     void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
 
   auto &body = paint->current_body ();
   body.append_str ("q\n");
 
   const char *bm = hb_pdf_blend_mode_name (mode);
-  if (bm)
+  якщо (bm)
   {
     auto *res = hb_pdf_get_resources (paint);
-    if (likely (res))
+    якщо (likely (res))
     {
       unsigned gs_idx = res->add_extgstate_blend (bm);
       body.append_str ("/GS");
@@ -1582,8 +1582,8 @@ hb_pdf_paint_pop_group (hb_paint_funcs_t *,
 			void *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  якщо (unlikely (!paint->ensure_initialized ()))
+    повернути;
   paint->current_body ().append_str ("Q\n");
 }
 
@@ -1619,7 +1619,7 @@ static struct hb_pdf_paint_funcs_lazy_loader_t
     hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_vector_paint_get_budget_remaining_callback, nullptr, nullptr);
     hb_paint_funcs_make_immutable (funcs);
     hb_atexit (free_static_pdf_paint_funcs);
-    return funcs;
+    повернути funcs;
   }
 } static_pdf_paint_funcs;
 
@@ -1632,7 +1632,7 @@ free_static_pdf_paint_funcs ()
 hb_paint_funcs_t *
 hb_vector_paint_pdf_funcs_get ()
 {
-  return static_pdf_paint_funcs.get_unconst ();
+  повернути static_pdf_paint_funcs.get_unconst ();
 }
 
 
@@ -1641,11 +1641,11 @@ hb_vector_paint_pdf_funcs_get ()
 hb_blob_t *
 hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
 {
-  if (!paint->has_extents)
-    return nullptr;
-  if (!paint->group_stack.length ||
+  якщо (!paint->has_extents)
+    повернути nullptr;
+  якщо (!paint->group_stack.length ||
       !paint->group_stack.arrayZ[0].length)
-    return nullptr;
+    повернути nullptr;
 
   hb_vector_buf_t &content = paint->group_stack.arrayZ[0];
   hb_pdf_resources_t *res = hb_pdf_get_resources (paint);
@@ -1664,8 +1664,8 @@ hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
   out.alloc (content.length + num_extra * 128 + 1024);
 
   hb_vector_t<unsigned> offsets;
-  if (unlikely (!offsets.resize (total_objects)))
-    return nullptr;
+  якщо (unlikely (!offsets.resize (total_objects)))
+    повернути nullptr;
 
   out.append_str ("%PDF-1.4\n%\xC0\xC1\xC2\xC3\n");
 
@@ -1692,22 +1692,22 @@ hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
   /* Resources. */
   bool has_resources = res &&
     (res->extgstate_dict.length || res->shading_dict.length || res->xobject_dict.length);
-  if (has_resources)
+  якщо (has_resources)
   {
     out.append_str ("\n/Resources <<");
-    if (res->extgstate_dict.length)
+    якщо (res->extgstate_dict.length)
     {
       out.append_str (" /ExtGState << ");
       out.append_len (res->extgstate_dict.arrayZ, res->extgstate_dict.length);
       out.append_str (">>");
     }
-    if (res->shading_dict.length)
+    якщо (res->shading_dict.length)
     {
       out.append_str (" /Shading << ");
       out.append_len (res->shading_dict.arrayZ, res->shading_dict.length);
       out.append_str (">>");
     }
-    if (res->xobject_dict.length)
+    якщо (res->xobject_dict.length)
     {
       out.append_str (" /XObject << ");
       out.append_len (res->xobject_dict.arrayZ, res->xobject_dict.length);
@@ -1720,15 +1720,15 @@ hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
 
   /* Build content stream: optional background rect + glyph content. */
   hb_vector_buf_t bg_prefix;
-  if (hb_color_get_alpha (paint->background))
+  якщо (hb_color_get_alpha (paint->background))
   {
     float r = hb_color_get_red (paint->background) / 255.f;
     float g = hb_color_get_green (paint->background) / 255.f;
     float b = hb_color_get_blue (paint->background) / 255.f;
     float a = hb_color_get_alpha (paint->background) / 255.f;
-    if (a < 1.f - 1.f / 512.f)
+    якщо (a < 1.f - 1.f / 512.f)
     {
-      if (res)
+      якщо (res)
       {
 	unsigned gs_idx = res->add_extgstate_alpha (a);
 	bg_prefix.append_str ("/GS");
@@ -1763,7 +1763,7 @@ hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
   out.append_str ("endstream\nendobj\n");
 
   /* Extra objects (functions, shadings, ExtGState). */
-  for (unsigned i = 0; i < num_extra; i++)
+  для (unsigned i = 0; i < num_extra; i++)
   {
     offsets.arrayZ[4 + i] = out.length;
     out.append_unsigned (5 + i);
@@ -1778,7 +1778,7 @@ hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
   out.append_str ("xref\n0 ");
   out.append_unsigned (total_objects + 1);
   out.append_str ("\n0000000000 65535 f \n");
-  for (unsigned i = 0; i < total_objects; i++)
+  для (unsigned i = 0; i < total_objects; i++)
   {
     char tmp[21];
     snprintf (tmp, sizeof (tmp), "%010u 00000 n \n", offsets.arrayZ[i]);
@@ -1794,5 +1794,5 @@ hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
 
   hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &out);
 
-  return blob;
+  повернути blob;
 }

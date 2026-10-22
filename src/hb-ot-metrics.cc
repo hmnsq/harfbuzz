@@ -45,13 +45,13 @@
 static float
 _fix_ascender_descender (float value, hb_ot_metrics_tag_t metrics_tag)
 {
-  if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER ||
+  якщо (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER ||
       metrics_tag == HB_OT_METRICS_TAG_VERTICAL_ASCENDER)
-    return fabs ((double) value);
-  if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER ||
+    повернути fabs ((double) value);
+  якщо (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER ||
       metrics_tag == HB_OT_METRICS_TAG_VERTICAL_DESCENDER)
-    return -fabs ((double) value);
-  return value;
+    повернути -fabs ((double) value);
+  повернути value;
 }
 
 /* The common part of _get_position logic needed on hb-ot-font and here
@@ -66,7 +66,7 @@ _hb_ot_metrics_get_position_common (hb_font_t           *font,
   {
 #ifndef HB_NO_VAR
 #define GET_VAR face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords)
-#else
+#інакше
 #define GET_VAR .0f
 #endif
 #define GET_METRIC_Y(TABLE, ATTR) \
@@ -83,39 +83,39 @@ _hb_ot_metrics_get_position_common (hb_font_t           *font,
       HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR, metrics_tag)))), true))
 
   case HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoAscender)) ||
+    повернути (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoAscender)) ||
 	   GET_HEA_METRIC_Y (hhea, ascender);
   case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoDescender)) ||
+    повернути (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoDescender)) ||
 	   GET_HEA_METRIC_Y (hhea, descender);
   case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoLineGap)) ||
+    повернути (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoLineGap)) ||
 	   GET_HEA_METRIC_Y (hhea, lineGap);
 
 #ifndef HB_NO_VERTICAL
-  case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:  return GET_HEA_METRIC_X (vhea, ascender);
-  case HB_OT_METRICS_TAG_VERTICAL_DESCENDER: return GET_HEA_METRIC_X (vhea, descender);
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:  return GET_HEA_METRIC_X (vhea, lineGap);
+  case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:  повернути GET_HEA_METRIC_X (vhea, ascender);
+  case HB_OT_METRICS_TAG_VERTICAL_DESCENDER: повернути GET_HEA_METRIC_X (vhea, descender);
+  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:  повернути GET_HEA_METRIC_X (vhea, lineGap);
 #endif
 
 #undef GET_HEA_METRIC_Y
 #undef GET_HEA_METRIC_X
 #undef GET_METRIC_Y
 #undef GET_VAR
-  default:                               assert (0); return false;
+  default:                               assert (0); повернути false;
   }
 }
 
 #ifndef HB_NO_METRICS
 
-#if 0
+#якщо 0
 static bool
 _get_gasp (hb_face_t *face, float *result, hb_ot_metrics_tag_t metrics_tag)
 {
   const OT::GaspRange& range = face->table.gasp->get_gasp_range (metrics_tag - HB_TAG ('g','s','p','0'));
-  if (&range == &Null (OT::GaspRange)) return false;
-  if (result) *result = range.rangeMaxPPEM + font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
-  return true;
+  якщо (&range == &Null (OT::GaspRange)) повернути false;
+  якщо (result) *result = range.rangeMaxPPEM + font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
+  повернути true;
 }
 #endif
 
@@ -151,10 +151,10 @@ hb_ot_metrics_get_position (hb_font_t           *font,
   case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
   case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:
   case HB_OT_METRICS_TAG_VERTICAL_DESCENDER:
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:           return _hb_ot_metrics_get_position_common (font, metrics_tag, position);
+  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:           повернути _hb_ot_metrics_get_position_common (font, metrics_tag, position);
 #ifndef HB_NO_VAR
 #define GET_VAR hb_ot_metrics_get_variation (font, metrics_tag)
-#else
+#інакше
 #define GET_VAR 0
 #endif
 #define GET_METRIC_X(TABLE, ATTR) \
@@ -169,86 +169,86 @@ hb_ot_metrics_get_position (hb_font_t           *font,
 #define GET_HEA_METRIC_Y(TABLE, ATTR) \
   (face->table.TABLE->has_data () && \
     ((void) (position && (*position = font->em_scalef_y (HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR))), true))
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT:  return GET_METRIC_Y (OS2, usWinAscent);
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT: return GET_METRIC_Y (OS2, usWinDescent);
+  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT:  повернути GET_METRIC_Y (OS2, usWinAscent);
+  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT: повернути GET_METRIC_Y (OS2, usWinDescent);
 
   case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE:
   case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN:
   {
     unsigned mult = 1u;
 
-    if (font->slant)
+    якщо (font->slant)
     {
       unsigned rise = HB_DUAL_GET (*face->table.hhea, table->caretSlopeRise);
       unsigned upem = face->get_upem ();
       mult = (rise && rise < upem) ? hb_min (upem / rise, 256u) : 1u;
     }
 
-    if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE)
+    якщо (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE)
     {
       bool ret = GET_HEA_METRIC_Y (hhea, caretSlopeRise);
 
-      if (position)
+      якщо (position)
 	*position = hb_clamp_to<hb_position_t> ((int64_t) *position * mult);
 
-      return ret;
+      повернути ret;
     }
-    else
+    інакше
     {
       hb_position_t rise = 0;
 
-      if (font->slant && position && GET_HEA_METRIC_Y (hhea, caretSlopeRise))
+      якщо (font->slant && position && GET_HEA_METRIC_Y (hhea, caretSlopeRise))
 	rise = *position;
 
       bool ret = GET_HEA_METRIC_X (hhea, caretSlopeRun);
 
-      if (position)
+      якщо (position)
       {
 	*position = hb_clamp_to<hb_position_t> ((int64_t) *position * mult);
 
-	if (font->slant)
+	якщо (font->slant)
 	  *position = hb_saturate_add (*position,
 				       hb_clamp_to<hb_position_t> (roundf (mult * font->slant_xy * rise)));
       }
 
-      return ret;
+      повернути ret;
     }
   }
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET:     return GET_HEA_METRIC_X (hhea, caretOffset);
+  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET:     повернути GET_HEA_METRIC_X (hhea, caretOffset);
 
 #ifndef HB_NO_VERTICAL
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RISE:         return GET_HEA_METRIC_X (vhea, caretSlopeRise);
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RUN:          return GET_HEA_METRIC_Y (vhea, caretSlopeRun);
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET:       return GET_HEA_METRIC_Y (vhea, caretOffset);
+  case HB_OT_METRICS_TAG_VERTICAL_CARET_RISE:         повернути GET_HEA_METRIC_X (vhea, caretSlopeRise);
+  case HB_OT_METRICS_TAG_VERTICAL_CARET_RUN:          повернути GET_HEA_METRIC_Y (vhea, caretSlopeRun);
+  case HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET:       повернути GET_HEA_METRIC_Y (vhea, caretOffset);
 #endif
-  case HB_OT_METRICS_TAG_X_HEIGHT:                    return GET_METRIC_Y (OS2->v2 (), sxHeight);
-  case HB_OT_METRICS_TAG_CAP_HEIGHT:                  return GET_METRIC_Y (OS2->v2 (), sCapHeight);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE:         return GET_METRIC_X (OS2, ySubscriptXSize);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE:         return GET_METRIC_Y (OS2, ySubscriptYSize);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET:       return GET_METRIC_X (OS2, ySubscriptXOffset);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET:       return GET_METRIC_Y (OS2, ySubscriptYOffset);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE:       return GET_METRIC_X (OS2, ySuperscriptXSize);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE:       return GET_METRIC_Y (OS2, ySuperscriptYSize);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET:     return GET_METRIC_X (OS2, ySuperscriptXOffset);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET:     return GET_METRIC_Y (OS2, ySuperscriptYOffset);
-  case HB_OT_METRICS_TAG_STRIKEOUT_SIZE:              return GET_METRIC_Y (OS2, yStrikeoutSize);
-  case HB_OT_METRICS_TAG_STRIKEOUT_OFFSET:            return GET_METRIC_Y (OS2, yStrikeoutPosition);
-  case HB_OT_METRICS_TAG_UNDERLINE_SIZE:              return GET_METRIC_Y (post->table, underlineThickness);
-  case HB_OT_METRICS_TAG_UNDERLINE_OFFSET:            return GET_METRIC_Y (post->table, underlinePosition);
+  case HB_OT_METRICS_TAG_X_HEIGHT:                    повернути GET_METRIC_Y (OS2->v2 (), sxHeight);
+  case HB_OT_METRICS_TAG_CAP_HEIGHT:                  повернути GET_METRIC_Y (OS2->v2 (), sCapHeight);
+  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE:         повернути GET_METRIC_X (OS2, ySubscriptXSize);
+  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE:         повернути GET_METRIC_Y (OS2, ySubscriptYSize);
+  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET:       повернути GET_METRIC_X (OS2, ySubscriptXOffset);
+  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET:       повернути GET_METRIC_Y (OS2, ySubscriptYOffset);
+  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE:       повернути GET_METRIC_X (OS2, ySuperscriptXSize);
+  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE:       повернути GET_METRIC_Y (OS2, ySuperscriptYSize);
+  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET:     повернути GET_METRIC_X (OS2, ySuperscriptXOffset);
+  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET:     повернути GET_METRIC_Y (OS2, ySuperscriptYOffset);
+  case HB_OT_METRICS_TAG_STRIKEOUT_SIZE:              повернути GET_METRIC_Y (OS2, yStrikeoutSize);
+  case HB_OT_METRICS_TAG_STRIKEOUT_OFFSET:            повернути GET_METRIC_Y (OS2, yStrikeoutPosition);
+  case HB_OT_METRICS_TAG_UNDERLINE_SIZE:              повернути GET_METRIC_Y (post->table, underlineThickness);
+  case HB_OT_METRICS_TAG_UNDERLINE_OFFSET:            повернути GET_METRIC_Y (post->table, underlinePosition);
 
   /* Private tags */
-  case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_OS2:    return GET_METRIC_Y (OS2, sTypoAscender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA:   return GET_HEA_METRIC_Y (hhea, ascender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2:   return GET_METRIC_Y (OS2, sTypoDescender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA:  return GET_HEA_METRIC_Y (hhea, descender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_OS2:    return GET_METRIC_Y (OS2, sTypoLineGap);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_HHEA:   return GET_HEA_METRIC_Y (hhea, lineGap);
+  case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_OS2:    повернути GET_METRIC_Y (OS2, sTypoAscender);
+  case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA:   повернути GET_HEA_METRIC_Y (hhea, ascender);
+  case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2:   повернути GET_METRIC_Y (OS2, sTypoDescender);
+  case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA:  повернути GET_HEA_METRIC_Y (hhea, descender);
+  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_OS2:    повернути GET_METRIC_Y (OS2, sTypoLineGap);
+  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_HHEA:   повернути GET_HEA_METRIC_Y (hhea, lineGap);
 #undef GET_HEA_METRIC_Y
 #undef GET_HEA_METRIC_X
 #undef GET_METRIC_Y
 #undef GET_METRIC_X
 #undef GET_VAR
-  default:                                        return false;
+  default:                                        повернути false;
   }
 }
 
@@ -272,12 +272,12 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
   hb_codepoint_t glyph;
   hb_glyph_extents_t extents;
 
-  if (hb_ot_metrics_get_position (font, metrics_tag, position))
+  якщо (hb_ot_metrics_get_position (font, metrics_tag, position))
     {
-      if ((metrics_tag != HB_OT_METRICS_TAG_STRIKEOUT_SIZE &&
+      якщо ((metrics_tag != HB_OT_METRICS_TAG_STRIKEOUT_SIZE &&
            metrics_tag != HB_OT_METRICS_TAG_UNDERLINE_SIZE) ||
           *position != 0)
-        return;
+        повернути;
     }
 
   switch (metrics_tag)
@@ -330,19 +330,19 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
     break;
 
   case HB_OT_METRICS_TAG_X_HEIGHT:
-    if (hb_font_get_nominal_glyph (font, 'x', &glyph) &&
+    якщо (hb_font_get_nominal_glyph (font, 'x', &glyph) &&
         hb_font_get_glyph_extents (font, glyph, &extents))
       *position = extents.y_bearing;
-    else
+    інакше
       *position = font->y_scale / 2;
     break;
 
   case HB_OT_METRICS_TAG_CAP_HEIGHT:
-    if (hb_font_get_nominal_glyph (font, 'O', &glyph) &&
+    якщо (hb_font_get_nominal_glyph (font, 'O', &glyph) &&
         hb_font_get_glyph_extents (font, glyph, &extents))
       *position = hb_clamp_to<hb_position_t> ((int64_t) extents.height +
 					      2 * (int64_t) extents.y_bearing);
-    else
+    інакше
       *position = hb_clamp_to<hb_position_t> ((int64_t) font->y_scale * 2 / 3);
     break;
 
@@ -408,7 +408,7 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
 float
 hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 {
-  return font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
+  повернути font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
 }
 
 /**
@@ -426,7 +426,7 @@ hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 hb_position_t
 hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 {
-  return font->em_scalef_x (hb_ot_metrics_get_variation (font, metrics_tag));
+  повернути font->em_scalef_x (hb_ot_metrics_get_variation (font, metrics_tag));
 }
 
 /**
@@ -444,7 +444,7 @@ hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 hb_position_t
 hb_ot_metrics_get_y_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 {
-  return font->em_scalef_y (hb_ot_metrics_get_variation (font, metrics_tag));
+  повернути font->em_scalef_y (hb_ot_metrics_get_variation (font, metrics_tag));
 }
 #endif
 

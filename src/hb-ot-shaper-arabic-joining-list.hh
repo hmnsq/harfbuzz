@@ -19,7 +19,7 @@ static bool
 has_arabic_joining (hb_script_t script)
 {
   /* List of scripts that have data in arabic-table. */
-  switch ((int) script)
+  switch ((ціле) script)
   {
     case HB_SCRIPT_ADLAM:
     case HB_SCRIPT_ARABIC:
@@ -34,10 +34,10 @@ has_arabic_joining (hb_script_t script)
     case HB_SCRIPT_PSALTER_PAHLAVI:
     case HB_SCRIPT_SOGDIAN:
     case HB_SCRIPT_SYRIAC:
-      return true;
+      повернути true;
 
     default:
-      return false;
+      повернути false;
   }
 }
 

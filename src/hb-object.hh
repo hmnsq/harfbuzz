@@ -54,22 +54,22 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
+    якщо (item) {
+      якщо (replace) {
 	item_t old = *item;
 	*item = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
+      інакше {
 	item = nullptr;
 	l.unlock ();
       }
-    } else {
+    } інакше {
       item = items.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    повернути items.in_error () ? nullptr : item;
   }
 
   template <typename T>
@@ -77,14 +77,14 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item)
+    якщо (item)
     {
       item_t old = *item;
       *item = std::move (items.tail ());
       items.pop ();
       l.unlock ();
       old.fini ();
-    } else {
+    } інакше {
       l.unlock ();
     }
   }
@@ -94,10 +94,10 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item)
+    якщо (item)
       *i = *item;
     l.unlock ();
-    return !!item;
+    повернути !!item;
   }
 
   template <typename T>
@@ -105,23 +105,23 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.find (v);
-    if (!item) {
+    якщо (!item) {
       item = items.push (v);
     }
     l.unlock ();
-    return item;
+    повернути item;
   }
 
   void fini (lock_t &l)
   {
-    if (!items.length)
+    якщо (!items.length)
     {
       /* No need to lock. */
       items.fini ();
-      return;
+      повернути;
     }
     l.lock ();
-    while (items.length)
+    поки (items.length)
     {
       item_t old = items.tail ();
       items.pop ();
@@ -142,16 +142,16 @@ struct hb_lockable_set_t
 
 struct hb_reference_count_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  mutable hb_atomic_t<ціле> ref_count;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
+  void init (ціле v = 1) { ref_count = v; }
+  ціле get_relaxed () const { повернути ref_count; }
+  ціле inc () const { повернути ref_count.inc (); }
+  ціле dec () const { повернути ref_count.dec (); }
   void fini () { ref_count = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  bool is_inert () const { повернути !ref_count; }
+  bool is_valid () const { повернути ref_count > 0; }
 };
 
 
@@ -164,10 +164,10 @@ struct hb_user_data_array_t
     void *data;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    bool operator == (const hb_user_data_key_t *other_key) const { повернути key == other_key; }
+    bool operator == (const hb_user_data_item_t &other) const { повернути key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    void fini () { якщо (destroy) destroy (data); }
   };
 
   hb_mutex_t lock;
@@ -182,26 +182,26 @@ struct hb_user_data_array_t
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    якщо (!key)
+      повернути false;
 
-    if (replace) {
-      if (!data && !destroy) {
+    якщо (replace) {
+      якщо (!data && !destroy) {
 	items.remove (key, lock);
-	return true;
+	повернути true;
       }
     }
     hb_user_data_item_t item = {key, data, destroy};
     bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
 
-    return ret;
+    повернути ret;
   }
 
   void *get (hb_user_data_key_t *key)
   {
     hb_user_data_item_t item = {nullptr, nullptr, nullptr};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    повернути items.find (key, &item, lock) ? item.data : nullptr;
   }
 };
 
@@ -216,7 +216,7 @@ struct hb_object_header_t
   mutable hb_atomic_t<bool> writable = false;
   hb_atomic_t<hb_user_data_array_t *> user_data;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  bool is_inert () const { повернути !ref_count.get_relaxed (); }
 };
 #define HB_OBJECT_HEADER_STATIC {}
 
@@ -239,15 +239,15 @@ static inline Type *hb_object_create (Ts... ds)
 {
   Type *obj = (Type *) hb_calloc (1, sizeof (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  якщо (unlikely (!obj))
+    повернути obj;
 
   new (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  повернути obj;
 }
 template <typename Type>
 static inline void hb_object_init (Type *obj)
@@ -259,12 +259,12 @@ static inline void hb_object_init (Type *obj)
 template <typename Type>
 static inline bool hb_object_is_valid (const Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  повернути likely (obj->header.ref_count.is_valid ());
 }
 template <typename Type>
 static inline bool hb_object_is_immutable (const Type *obj)
 {
-  return !obj->header.writable;
+  повернути !obj->header.writable;
 }
 template <typename Type>
 static inline void hb_object_make_immutable (const Type *obj)
@@ -277,22 +277,22 @@ template <typename Type>
 static inline Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
+  якщо (unlikely (!obj || obj->header.is_inert ()))
+    повернути obj;
   assert (hb_object_is_valid (obj));
   obj->header.ref_count.inc ();
-  return obj;
+  повернути obj;
 }
 template <typename Type>
 static inline bool hb_object_should_destroy (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
+  якщо (unlikely (!obj || obj->header.is_inert ()))
+    повернути false;
   assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  якщо (obj->header.ref_count.dec () != 1)
+    повернути false;
+  повернути true;
 }
 
 template <typename Type>
@@ -300,25 +300,25 @@ static inline void hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  якщо (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
 template <typename Type>
 static inline bool hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  якщо (!hb_object_should_destroy (obj))
+    повернути false;
 
   hb_object_actually_destroy (obj);
-  return true;
+  повернути true;
 }
 template <typename Type>
 static inline void hb_object_fini (Type *obj)
 {
   obj->header.ref_count.fini (); /* Do this before user_data */
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  якщо (user_data)
   {
     user_data->fini ();
     hb_free (user_data);
@@ -332,19 +332,19 @@ static inline bool hb_object_set_user_data (Type               *obj,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
+  якщо (unlikely (!obj || obj->header.is_inert ()))
+    повернути false;
   assert (hb_object_is_valid (obj));
 
 retry:
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  якщо (unlikely (!user_data))
   {
     user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
+    якщо (unlikely (!user_data))
+      повернути false;
     user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    якщо (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
     {
       user_data->fini ();
       hb_free (user_data);
@@ -352,20 +352,20 @@ retry:
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  повернути user_data->set (key, data, destroy, replace);
 }
 
 template <typename Type>
 static inline void *hb_object_get_user_data (Type               *obj,
 					     hb_user_data_key_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
+  якщо (unlikely (!obj || obj->header.is_inert ()))
+    повернути nullptr;
   assert (hb_object_is_valid (obj));
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  якщо (!user_data)
+    повернути nullptr;
+  повернути user_data->get (key);
 }
 
 

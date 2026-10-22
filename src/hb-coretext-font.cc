@@ -35,7 +35,7 @@
 #include "hb-font.hh"
 #include "hb-machinery.hh"
 
-#if (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
+#якщо (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
     || (defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__ < 60000) \
     || (defined(__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__ < 90000)
 #  define kCTFontOrientationDefault kCTFontDefaultOrientation
@@ -58,34 +58,34 @@ hb_coretext_get_nominal_glyph (hb_font_t *font,
   CGGlyph cg_glyph[2];
   unsigned count = 0;
 
-  if (unicode <= 0xFFFF)
+  якщо (unicode <= 0xFFFF)
   {
     ch[count++] = unicode;
   }
-  else if (unicode <= 0x10FFFF)
+  інакше якщо (unicode <= 0x10FFFF)
   {
     ch[count++] = (unicode >> 10) + 0xD7C0;
     ch[count++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
+  інакше
     ch[count++] = 0xFFFD;
 
-  if (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count))
+  якщо (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count))
   {
     *glyph = cg_glyph[0];
-    return true;
+    повернути true;
   }
-  return false;
+  повернути false;
 }
 
-static unsigned int
+static unsigned ціле
 hb_coretext_get_nominal_glyphs (hb_font_t *font,
 				void *font_data,
-				unsigned int count,
+				unsigned ціле count,
 				const hb_codepoint_t *first_unicode,
-				unsigned int unicode_stride,
+				unsigned ціле unicode_stride,
 				hb_codepoint_t *first_glyph,
-				unsigned int glyph_stride,
+				unsigned ціле glyph_stride,
 				void *user_data HB_UNUSED)
 {
   CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
@@ -93,9 +93,9 @@ hb_coretext_get_nominal_glyphs (hb_font_t *font,
   // If any non-BMP codepoint is requested, use the slow path.
   bool slow_path = false;
   auto *unicode = first_unicode;
-  for (unsigned i = 0; i < count; i++)
+  для (unsigned i = 0; i < count; i++)
   {
-    if (*unicode > 0xFFFF)
+    якщо (*unicode > 0xFFFF)
     {
       slow_path = true;
       break;
@@ -103,46 +103,46 @@ hb_coretext_get_nominal_glyphs (hb_font_t *font,
     unicode = &StructAtOffset<const hb_codepoint_t> (unicode, unicode_stride);
   }
 
-  if (unlikely (slow_path))
+  якщо (unlikely (slow_path))
   {
-    for (unsigned i = 0; i < count; i++)
+    для (unsigned i = 0; i < count; i++)
     {
-      if (!hb_coretext_get_nominal_glyph (font, font_data, *first_unicode, first_glyph, nullptr))
-	return i;
+      якщо (!hb_coretext_get_nominal_glyph (font, font_data, *first_unicode, first_glyph, nullptr))
+	повернути i;
       first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return count;
+    повернути count;
   }
 
   UniChar ch[MAX_GLYPHS];
   CGGlyph cg_glyph[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  для (unsigned i = 0; i < count; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((ціле) MAX_GLYPHS, (ціле) count - (ціле) i);
+    для (unsigned j = 0; j < c; j++)
     {
       ch[j] = *first_unicode;
       first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
     }
-    if (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
+    якщо (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
     {
       // Use slow path partially and return at first failure.
-      for (unsigned j = 0; j < c; j++)
+      для (unsigned j = 0; j < c; j++)
       {
-	if (!hb_coretext_get_nominal_glyph (font, font_data, ch[j], first_glyph, nullptr))
-	  return i + j;
+	якщо (!hb_coretext_get_nominal_glyph (font, font_data, ch[j], first_glyph, nullptr))
+	  повернути i + j;
 	first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
       }
     }
-    for (unsigned j = 0; j < c; j++)
+    для (unsigned j = 0; j < c; j++)
     {
       *first_glyph = cg_glyph[j];
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
   }
 
-  return count;
+  повернути count;
 }
 
 static hb_bool_t
@@ -161,39 +161,39 @@ hb_coretext_get_variation_glyph (hb_font_t *font,
 
   // Add Unicode, then variation selector. Ugly, but works.
   //
-  if (unicode <= 0xFFFF)
+  якщо (unicode <= 0xFFFF)
     ch[count++] = unicode;
-  else if (unicode <= 0x10FFFF)
+  інакше якщо (unicode <= 0x10FFFF)
   {
     ch[count++] = (unicode >> 10) + 0xD7C0;
     ch[count++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
+  інакше
     ch[count++] = 0xFFFD;
 
-  if (variation_selector <= 0xFFFF)
+  якщо (variation_selector <= 0xFFFF)
     ch[count++] = variation_selector;
-  else if (variation_selector <= 0x10FFFF)
+  інакше якщо (variation_selector <= 0x10FFFF)
   {
     ch[count++] = (variation_selector >> 10) + 0xD7C0;
     ch[count++] = (variation_selector & 0x3FF) + 0xDC00;
   }
-  else
+  інакше
     ch[count++] = 0xFFFD;
 
   CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count);
 
   // All except for first should be zero if we succeeded
-  for (unsigned i = 1; i < count; i++)
-    if (cg_glyph[i])
-      return false;
+  для (unsigned i = 1; i < count; i++)
+    якщо (cg_glyph[i])
+      повернути false;
 
   // Humm. CoreText falls back to the default glyph if the variation selector
   // is not supported.  We cannot truly detect that case. So, in essence,
   // we are always returning true here...
 
   *glyph = cg_glyph[0];
-  return true;
+  повернути true;
 }
 
 static void
@@ -214,16 +214,16 @@ hb_coretext_get_glyph_h_advances (hb_font_t* font,
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  для (unsigned i = 0; i < count; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((ціле) MAX_GLYPHS, (ціле) count - (ціле) i);
+    для (unsigned j = 0; j < c; j++)
     {
       cg_glyph[j] = *first_glyph;
       first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationHorizontal, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    для (unsigned j = 0; j < c; j++)
     {
       *first_advance = hb_clamp_to<hb_position_t> (
 	  round (advances[j].width * x_mult) - (double) tracking);
@@ -251,16 +251,16 @@ hb_coretext_get_glyph_v_advances (hb_font_t* font,
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  для (unsigned i = 0; i < count; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    unsigned c = (unsigned) hb_min ((ціле) MAX_GLYPHS, (ціле) count - (ціле) i);
+    для (unsigned j = 0; j < c; j++)
     {
       cg_glyph[j] = *first_glyph;
       first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationVertical, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    для (unsigned j = 0; j < c; j++)
     {
       *first_advance = hb_clamp_to<hb_position_t> (
 	  round (advances[j].width * y_mult) - (double) tracking);
@@ -290,7 +290,7 @@ hb_coretext_get_glyph_v_origin (hb_font_t *font,
   *x = hb_clamp_to<hb_position_t> (round (x_mult * origin.width));
   *y = hb_clamp_to<hb_position_t> (round (y_mult * origin.height));
 
-  return true;
+  повернути true;
 }
 #endif
 
@@ -318,7 +318,7 @@ hb_coretext_get_glyph_extents (hb_font_t *font,
   extents->width = hb_clamp_to<hb_position_t> (round (bounds.size.width * x_mult));
   extents->height = hb_clamp_to<hb_position_t> (round (bounds.origin.y * y_mult) - y_bearing);
 
-  return true;
+  повернути true;
 }
 
 static hb_bool_t
@@ -336,7 +336,7 @@ hb_coretext_get_font_h_extents (hb_font_t *font,
   metrics->descender = hb_clamp_to<hb_position_t> (-round (CTFontGetDescent (ct_font) * y_mult));
   metrics->line_gap = hb_clamp_to<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
 
-  return true;
+  повернути true;
 }
 
 #ifndef HB_NO_DRAW
@@ -386,14 +386,14 @@ hb_coretext_draw_glyph_or_fail (hb_font_t *font,
   transform = CGAffineTransformScale (transform, x_mult, y_mult);
 
   hb_cf_ptr_t<CGPathRef> path (CTFontCreatePathForGlyph (ct_font, glyph, &transform));
-  if (!path)
-    return false;
+  якщо (!path)
+    повернути false;
 
   hb_draw_session_t drawing {draw_funcs, draw_data};
 
   CGPathApply (path, &drawing, ct_apply_func);
 
-  return true;
+  повернути true;
 }
 #endif
 
@@ -401,21 +401,21 @@ static hb_bool_t
 hb_coretext_get_glyph_name (hb_font_t *font,
 			    void *font_data HB_UNUSED,
 			    hb_codepoint_t glyph,
-			    char *name, unsigned int size,
+			    char *name, unsigned ціле size,
 			    void *user_data HB_UNUSED)
 {
   CGFontRef cg_font = (CGFontRef) (const void *) font->face->data.coretext;
 
   CGGlyph cg_glyph = glyph;
   hb_cf_ptr_t<CFStringRef> cf_name (CGFontCopyGlyphNameForGlyph (cg_font, cg_glyph));
-  if (!cf_name)
-    return false;
+  якщо (!cf_name)
+    повернути false;
 
-  if (!size)
-    return true;
+  якщо (!size)
+    повернути true;
 
   CFIndex len = CFStringGetLength (cf_name);
-  if (len > (CFIndex)size - 1)
+  якщо (len > (CFIndex)size - 1)
     len = (CFIndex)size - 1;
 
   CFStringGetBytes (cf_name, CFRangeMake (0, len),
@@ -424,19 +424,19 @@ hb_coretext_get_glyph_name (hb_font_t *font,
 
   name[len] = '\0';
 
-  return true;
+  повернути true;
 }
 
 static hb_bool_t
 hb_coretext_get_glyph_from_name (hb_font_t *font,
 				 void *font_data HB_UNUSED,
-				 const char *name, int len,
+				 const char *name, ціле len,
 				 hb_codepoint_t *glyph,
 				 void *user_data HB_UNUSED)
 {
   CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
 
-  if (len == -1)
+  якщо (len == -1)
     len = strlen (name);
 
   hb_cf_ptr_t<CFStringRef> cf_name (CFStringCreateWithBytes (kCFAllocatorDefault,
@@ -447,7 +447,7 @@ hb_coretext_get_glyph_from_name (hb_font_t *font,
 
   // TODO Return true for .notdef; hb-ft does that.
 
-  return cg_glyph != 0;
+  повернути cg_glyph != 0;
 }
 
 
@@ -486,7 +486,7 @@ static struct hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t
 
     hb_atexit (free_static_coretext_funcs);
 
-    return funcs;
+    повернути funcs;
   }
 } static_coretext_funcs;
 
@@ -499,7 +499,7 @@ void free_static_coretext_funcs ()
 static hb_font_funcs_t *
 _hb_coretext_get_font_funcs ()
 {
-  return static_coretext_funcs.get_unconst ();
+  повернути static_coretext_funcs.get_unconst ();
 }
 
 
@@ -525,12 +525,12 @@ void
 hb_coretext_font_set_funcs (hb_font_t *font)
 {
   CTFontRef ct_font = hb_coretext_font_get_ct_font (font);
-  if (unlikely (!ct_font))
+  якщо (unlikely (!ct_font))
   {
     hb_font_set_funcs (font,
 		       hb_font_funcs_get_empty (),
 		       nullptr, nullptr);
-    return;
+    повернути;
   }
 
   hb_font_set_funcs (font,

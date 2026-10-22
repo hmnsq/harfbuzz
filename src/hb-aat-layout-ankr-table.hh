@@ -61,14 +61,14 @@ struct ankr
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_ankr;
 
   const Anchor &get_anchor (hb_codepoint_t glyph_id,
-			    unsigned int i,
-			    unsigned int num_glyphs) const
+			    unsigned ціле i,
+			    unsigned ціле num_glyphs) const
   {
     const NNOffset16To<GlyphAnchors> *offset = (this+lookupTable).get_value (glyph_id, num_glyphs);
-    if (!offset)
-      return Null (Anchor);
+    якщо (!offset)
+      повернути Null (Anchor);
     const GlyphAnchors &anchors = &(this+anchorData) + *offset;
-    return anchors[i];
+    повернути anchors[i];
   }
 
   bool sanitize (hb_sanitize_context_t *c) const

@@ -29,18 +29,18 @@
 
 static inline bool approx (Triple a, Triple b)
 {
-  return abs (a.minimum - b.minimum) < 0.000001f &&
+  повернути abs (a.minimum - b.minimum) < 0.000001f &&
          abs (a.middle - b.middle) < 0.000001f &&
          abs (a.maximum - b.maximum) < 0.000001f;
 }
 
 static inline bool approx (float a, float b)
-{ return abs (a - b) < 0.000001f; }
+{ повернути abs (a - b) < 0.000001f; }
 
 /* tests ported from
  * https://github.com/fonttools/fonttools/blob/main/Tests/varLib/instancer/solver_test.py */
-int
-main (int argc, char **argv)
+ціле
+main (ціле argc, char **argv)
 {
   TripleDistances default_axis_distances{1.0f, 1.0f};
   /* Case 1 */

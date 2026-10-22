@@ -32,7 +32,7 @@ namespace CFF {
 
 using namespace OT;
 
-typedef unsigned int op_code_t;
+typedef unsigned ціле op_code_t;
 
 
 /* === Dict operators === */
@@ -92,9 +92,9 @@ typedef unsigned int op_code_t;
 #define OpCode_ESC_Base		256
 #define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { повернути (op_code_t)(op - OpCode_ESC_Base); }
+inline bool Is_OpCode_ESC (op_code_t op) { повернути op >= OpCode_ESC_Base; }
+inline unsigned ціле OpCode_Size (op_code_t op) { повернути Is_OpCode_ESC (op) ? 2: 1; }
 
 #define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
 #define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
@@ -219,44 +219,44 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 
 struct number_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  void set_int (ціле v)       { value = v; }
+  bool to_int (ціле *v) const
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    якщо (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
     {
       *v = 0;
-      return false;
+      повернути false;
     }
-    *v = (int) value;
-    return true;
+    *v = (ціле) value;
+    повернути true;
   }
-  int to_int () const
+  ціле to_int () const
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    ціле v;
+    якщо (likely (to_int (&v))) повернути v;
+    повернути value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
   }
 
   void set_fixed (int32_t v) { value = v / 65536.0; }
   int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  { повернути (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
 
   void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  double to_real () const    { повернути value; }
 
   bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  { повернути value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  bool operator >  (const number_t &n) const { повернути value > n.to_real (); }
+  bool operator <  (const number_t &n) const { повернути n > *this; }
+  bool operator >= (const number_t &n) const { повернути !(*this < n); }
+  bool operator <= (const number_t &n) const { повернути !(*this > n); }
 
   const number_t &operator += (const number_t &n)
   {
     set_real (to_real () + n.to_real ());
 
-    return *this;
+    повернути *this;
   }
 
   protected:
@@ -267,7 +267,7 @@ struct number_t
 struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 {
   hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  { повернути hb_ubytes_t ((const unsigned char *) this, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
   template <typename T, typename V>
@@ -276,21 +276,21 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
     TRACE_SERIALIZE (this);
 
     HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    якщо (unlikely (!p)) return_trace (false);
     *p = intOp;
 
     T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
+    якщо (unlikely (!ip)) return_trace (false);
     return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   template <typename V>
   static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  { повернути serialize_int<HBINT32> (c, OpCode_longintdict, value); }
 
   template <typename V>
   static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  { повернути serialize_int<HBINT16> (c, OpCode_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
@@ -305,35 +305,35 @@ struct byte_str_ref_t
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  byte_str_ref_t (const hb_ubytes_t &str_, unsigned ціле offset_ = 0)
     : str (str_) { set_offset (offset_); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  void reset (const hb_ubytes_t &str_, unsigned ціле offset_ = 0)
   {
     str = str_;
     set_offset (offset_);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  const unsigned char& operator [] (ціле i) {
+    якщо (unlikely ((unsigned ціле) (get_offset () + i) >= str.length))
     {
       set_error ();
-      return Null (unsigned char);
+      повернути Null (unsigned char);
     }
-    return str.arrayZ[get_offset () + i];
+    повернути str.arrayZ[get_offset () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  unsigned char head_unchecked () const { повернути str.arrayZ[get_offset ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  operator hb_ubytes_t () const { повернути str.sub_array (get_offset ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (unsigned ціле offset_, unsigned ціле len_) const
+  { повернути str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  bool avail (unsigned ціле count=1) const
+  { повернути get_offset () + count <= str.length; }
+  void inc (unsigned ціле count=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
     set_offset (get_offset () + count);
@@ -342,99 +342,99 @@ struct byte_str_ref_t
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
+  unsigned get_offset () const { повернути str.backwards_length; }
   void set_offset (unsigned offset) { str.backwards_length = offset; }
 
   void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  bool in_error () const { повернути str.backwards_length > str.length; }
 
-  unsigned total_size () const { return str.length; }
+  unsigned total_size () const { повернути str.length; }
 
   protected:
   hb_ubytes_t       str;
 };
 
 /* stack */
-template <typename ELEM, int LIMIT>
+template <typename ELEM, ціле LIMIT>
 struct cff_stack_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& operator [] (unsigned ціле i)
   {
-    if (unlikely (i >= length))
+    якщо (unlikely (i >= length))
     {
       set_error ();
-      return Crap (ELEM);
+      повернути Crap (ELEM);
     }
-    return arrayZ[i];
+    повернути arrayZ[i];
   }
 
   void push (const ELEM &v)
   {
-    if (likely (length < LIMIT))
+    якщо (likely (length < LIMIT))
       arrayZ[length++] = v;
-    else
+    інакше
       set_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    якщо (likely (length < LIMIT))
+      повернути arrayZ[length++];
+    інакше
     {
       set_error ();
-      return Crap (ELEM);
+      повернути Crap (ELEM);
     }
   }
 
   ELEM& pop ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    якщо (likely (length > 0))
+      повернути arrayZ[--length];
+    інакше
     {
       set_error ();
-      return Crap (ELEM);
+      повернути Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  void pop (unsigned ціле n)
   {
-    if (likely (length >= n))
+    якщо (likely (length >= n))
       length -= n;
-    else
+    інакше
       set_error ();
   }
 
   const ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    якщо (unlikely (length == 0))
     {
       set_error ();
-      return Null (ELEM);
+      повернути Null (ELEM);
     }
-    return arrayZ[length - 1];
+    повернути arrayZ[length - 1];
   }
 
   void unpop ()
   {
-    if (likely (length < LIMIT))
+    якщо (likely (length < LIMIT))
       length++;
-    else
+    інакше
       set_error ();
   }
 
   void clear () { length = 0; }
 
-  bool in_error () const { return (error); }
+  bool in_error () const { повернути (error); }
   void set_error ()      { error = true; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  unsigned ціле get_count () const { повернути length; }
+  bool is_empty () const          { повернути !length; }
 
   hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  { повернути hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
 
   bool error = false;
-  unsigned int length = 0;
+  unsigned ціле length = 0;
   ELEM arrayZ[LIMIT];
 };
 
@@ -442,7 +442,7 @@ struct cff_stack_t
 template <typename ARG=number_t>
 struct arg_stack_t : cff_stack_t<ARG, 513>
 {
-  void push_int (int v)
+  void push_int (ціле v)
   {
     ARG &n = S::push ();
     n.set_int (v);
@@ -460,40 +460,40 @@ struct arg_stack_t : cff_stack_t<ARG, 513>
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& pop_num () { повернути this->pop (); }
 
-  int pop_int ()
+  ціле pop_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    ціле v;
+    якщо (unlikely (!this->pop ().to_int (&v)))
       S::set_error ();
-    return v;
+    повернути v;
   }
 
-  unsigned int pop_uint ()
+  unsigned ціле pop_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    ціле i = pop_int ();
+    якщо (unlikely (i < 0))
     {
       i = 0;
       S::set_error ();
     }
-    return (unsigned) i;
+    повернути (unsigned) i;
   }
 
   void push_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    push_int ((ціле) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
   bool push_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
+    якщо (unlikely (!str_ref.avail (4)))
+      повернути false;
     push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    повернути true;
   }
 
   private:
@@ -523,9 +523,9 @@ struct op_serializer_t
     TRACE_SERIALIZE (this);
 
     unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    якщо (unlikely (!d)) return_trace (false);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    для (unsigned i = 0; i < opstr.length; i++)
       d[i] = opstr.ptr[i];
     return_trace (true);
   }
@@ -558,15 +558,15 @@ struct parsed_values_t
 
   bool has_op (op_code_t op) const
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    для (const auto& v : values)
+      якщо (v.op == op) повернути true;
+    повернути false;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  unsigned get_count () const { повернути values.length; }
+  const VAL &operator [] (unsigned ціле i) const { повернути values[i]; }
 
-  unsigned int       opStart;
+  unsigned ціле       opStart;
   hb_vector_t<VAL>   values;
 };
 
@@ -579,30 +579,30 @@ struct interp_env_t
     str_ref.reset (str_);
   }
   bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  { повернути str_ref.in_error () || argStack.in_error (); }
 
   void set_error () { str_ref.set_error (); }
 
   op_code_t fetch_op ()
   {
     op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
+    якщо (unlikely (!str_ref.avail ()))
+      повернути OpCode_Invalid;
     op = (op_code_t) str_ref.head_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
+    якщо (op == OpCode_escape) {
+      якщо (unlikely (!str_ref.avail ()))
+	повернути OpCode_Invalid;
       op = Make_OpCode_ESC (str_ref.head_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    повернути op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  const ARG& eval_arg (unsigned ціле i) { повернути argStack[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& pop_arg () { повернути argStack.pop (); }
+  void pop_n_args (unsigned ціле n) { argStack.pop (n); }
 
   void clear_args () { pop_n_args (argStack.get_count ()); }
 
@@ -639,10 +639,10 @@ struct opset_t
 
       default:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	якщо (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.argStack.push_int ((ціле)op - 139);
+	} інакше {
 	  /* invalid unknown operator */
 	  env.clear_args ();
 	}

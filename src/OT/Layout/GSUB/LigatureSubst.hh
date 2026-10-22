@@ -23,7 +23,7 @@ struct LigatureSubst
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    якщо (unlikely (!c->may_dispatch (this, &u.format.v))) повернути c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -39,14 +39,14 @@ struct LigatureSubst
   template <typename GlyphID>
   bool serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> first_glyphs,
-                  hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                  hb_array_t<const unsigned ціле> ligature_per_first_glyph_count_list,
                   hb_array_t<GlyphID> ligatures_list,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<const unsigned ціле> component_count_list,
                   hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    якщо (unlikely (!c->extend_min (u.format.v))) return_trace (false);
+    unsigned ціле format = 1;
     u.format.v = format;
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (u.format1.serialize (c,

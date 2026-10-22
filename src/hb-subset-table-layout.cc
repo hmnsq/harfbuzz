@@ -11,12 +11,12 @@ bool _hb_subset_table_layout		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, h
 #ifndef HB_NO_SUBSET_LAYOUT
   switch (tag)
   {
-  case HB_TAG('G','D','E','F'): *success = _hb_subset_table<const OT::GDEF> (plan, buf); return true;
-  case HB_TAG('G','S','U','B'): *success = _hb_subset_table<const OT::Layout::GSUB> (plan, buf); return true;
-  case HB_TAG('G','P','O','S'): *success = _hb_subset_table<const OT::Layout::GPOS> (plan, buf); return true;
-  case HB_TAG('B','A','S','E'): *success = _hb_subset_table<const OT::BASE> (plan, buf); return true;
-  case HB_TAG('M','A','T','H'): *success = _hb_subset_table<const OT::MATH> (plan, buf); return true;
+  case HB_TAG('G','D','E','F'): *success = _hb_subset_table<const OT::GDEF> (plan, buf); повернути true;
+  case HB_TAG('G','S','U','B'): *success = _hb_subset_table<const OT::Layout::GSUB> (plan, buf); повернути true;
+  case HB_TAG('G','P','O','S'): *success = _hb_subset_table<const OT::Layout::GPOS> (plan, buf); повернути true;
+  case HB_TAG('B','A','S','E'): *success = _hb_subset_table<const OT::BASE> (plan, buf); повернути true;
+  case HB_TAG('M','A','T','H'): *success = _hb_subset_table<const OT::MATH> (plan, buf); повернути true;
   }
 #endif
-  return false;
+  повернути false;
 }

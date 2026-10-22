@@ -32,7 +32,7 @@
 struct hb_vector_blob_meta_t
 {
   char *data;
-  int allocated;
+  ціле allocated;
   bool transferred;
   bool in_replace;
 };
@@ -42,7 +42,7 @@ static hb_user_data_key_t hb_vector_blob_meta_user_data_key;
 static inline void
 hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
 				char *data,
-				int allocated)
+				ціле allocated)
 {
   meta->data = data;
   meta->allocated = allocated;
@@ -52,9 +52,9 @@ hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
 static inline void
 hb_vector_blob_meta_release_buffer (hb_vector_blob_meta_t *meta)
 {
-  if (!meta)
-    return;
-  if (!meta->transferred && meta->data)
+  якщо (!meta)
+    повернути;
+  якщо (!meta->transferred && meta->data)
     hb_free (meta->data);
   meta->data = nullptr;
   meta->allocated = 0;
@@ -66,10 +66,10 @@ hb_vector_blob_meta_destroy (void *data)
 {
   auto *meta = (hb_vector_blob_meta_t *) data;
   hb_vector_blob_meta_release_buffer (meta);
-  if (meta->in_replace)
+  якщо (meta->in_replace)
   {
     meta->in_replace = false;
-    return;
+    повернути;
   }
   hb_free (meta);
 }
@@ -79,26 +79,26 @@ hb_buf_blob_from (hb_blob_t **recycled_blob,
 		  hb_vector_buf_t *buf)
 {
   unsigned len = 0;
-  int allocated = 0;
+  ціле allocated = 0;
   char *data = buf->steal (&len, &allocated);
-  if (!data)
-    return nullptr;
+  якщо (!data)
+    повернути nullptr;
 
   hb_blob_t *blob = nullptr;
-  if (*recycled_blob)
+  якщо (*recycled_blob)
     blob = *recycled_blob;
   bool reused_blob = blob && blob != hb_blob_get_empty ();
   bool new_meta = false;
   auto *meta = reused_blob
              ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key)
              : nullptr;
-  if (!meta)
+  якщо (!meta)
   {
     meta = (hb_vector_blob_meta_t *) hb_malloc (sizeof (hb_vector_blob_meta_t));
-    if (!meta)
+    якщо (!meta)
     {
       hb_free (data);
-      return nullptr;
+      повернути nullptr;
     }
     meta->data = nullptr;
     meta->allocated = 0;
@@ -107,56 +107,56 @@ hb_buf_blob_from (hb_blob_t **recycled_blob,
     new_meta = true;
   }
 
-  if (reused_blob)
+  якщо (reused_blob)
   {
     meta->in_replace = true;
     blob->replace_buffer (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
     hb_vector_blob_meta_set_buffer (meta, data, allocated);
   }
-  else
+  інакше
   {
     hb_vector_blob_meta_set_buffer (meta, data, allocated);
     blob = hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    if (unlikely (!blob))
-      return nullptr;
+    якщо (unlikely (!blob))
+      повернути nullptr;
   }
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  якщо (unlikely (blob == hb_blob_get_empty ()))
   {
-    if (new_meta)
+    якщо (new_meta)
       hb_free (meta);
     hb_free (data);
-    return nullptr;
+    повернути nullptr;
   }
 
-  if (new_meta &&
+  якщо (new_meta &&
       !hb_blob_set_user_data (blob,
                               &hb_vector_blob_meta_user_data_key,
                               meta,
                               nullptr,
                               true))
   {
-    if (!reused_blob)
+    якщо (!reused_blob)
       hb_blob_destroy (blob);
-    return nullptr;
+    повернути nullptr;
   }
 
-  if (*recycled_blob)
+  якщо (*recycled_blob)
     *recycled_blob = nullptr;
 
-  return blob;
+  повернути blob;
 }
 
 static inline void
 hb_buf_recover_recycled (hb_blob_t *blob,
 			 hb_vector_buf_t *buf)
 {
-  if (!blob)
-    return;
+  якщо (!blob)
+    повернути;
 
   auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key);
-  if (!meta || meta->transferred || !meta->data)
-    return;
+  якщо (!meta || meta->transferred || !meta->data)
+    повернути;
 
   buf->recycle_buffer (meta->data, 0, meta->allocated);
   meta->data = nullptr;
@@ -199,7 +199,7 @@ hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
   float tx_min = tx, tx_max = tx;
   float ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  для (unsigned i = 1; i < 4; i++)
   {
     hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[i], py[i], &tx, &ty);
     tx_min = hb_min (tx_min, tx);
@@ -208,10 +208,10 @@ hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
     ty_max = hb_max (ty_max, ty);
   }
 
-  if (tx_max <= tx_min || ty_max <= ty_min)
-    return false;
+  якщо (tx_max <= tx_min || ty_max <= ty_min)
+    повернути false;
 
-  if (*has_extents)
+  якщо (*has_extents)
   {
     float x0 = hb_min (extents->x, tx_min);
     float y0 = hb_min (extents->y, ty_min);
@@ -219,12 +219,12 @@ hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
     float y1 = hb_max (extents->y + extents->height, ty_max);
     *extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  інакше
   {
     *extents = {tx_min, ty_min, tx_max - tx_min, ty_max - ty_min};
     *has_extents = true;
   }
-  return true;
+  повернути true;
 }
 
 static inline void
@@ -236,7 +236,7 @@ hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
 					 float xy, float yy,
 					 float tx, float ty)
 {
-  if (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
+  якщо (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
   {
     out->append_str ("translate(");
     out->append_num (tx / x_scale_factor, precision);
@@ -244,7 +244,7 @@ hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
     out->append_num (-ty / y_scale_factor, precision);
     out->append_str (") scale(1,-1)");
   }
-  else
+  інакше
   {
     unsigned sprec = out->scale_precision ();
     out->append_str ("matrix(");

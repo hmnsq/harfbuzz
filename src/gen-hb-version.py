@@ -4,7 +4,7 @@
 
 import os, sys, shutil, re
 
-if len (sys.argv) < 4:
+якщо len (sys.argv) < 4:
 	sys.exit(__doc__)
 
 version = sys.argv[1]
@@ -16,9 +16,9 @@ CURRENT_SOURCE_DIR = os.path.dirname(INPUT)
 
 try:
 	with open (OUTPUT, "r", encoding='utf-8') as old_output:
-		for line in old_output:
+		для line in old_output:
 			old_version = re.match (r"#define HB_VERSION_STRING \"(\d.\d.\d)\"", line)
-			if old_version and old_version[1] == version:
+			якщо old_version and old_version[1] == version:
 				sys.exit ()
 except IOError:
 	pass
@@ -36,5 +36,5 @@ with open (INPUT, "r", encoding='utf-8') as template:
 baseline_filename = os.path.join (CURRENT_SOURCE_DIR, os.path.basename (OUTPUT))
 with open(baseline_filename, "rb") as baseline:
 	with open(OUTPUT, "rb") as generated:
-		if baseline.read() != generated.read():
+		якщо baseline.read() != generated.read():
 			shutil.copyfile (OUTPUT, baseline_filename)

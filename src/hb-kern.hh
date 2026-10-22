@@ -48,8 +48,8 @@ struct hb_kern_machine_t
 	     hb_mask_t    kern_mask,
 	     bool         scale = true) const
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    якщо (!buffer->message (font, "start kern"))
+      повернути;
 
     buffer->unsafe_to_concat ();
     OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
@@ -58,12 +58,12 @@ struct hb_kern_machine_t
     auto &skippy_iter = c.iter_input;
 
     bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
+    unsigned ціле count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    для (unsigned ціле idx = 0; idx < count;)
     {
-      if (!(info[idx].mask & kern_mask))
+      якщо (!(info[idx].mask & kern_mask))
       {
 	idx++;
 	continue;
@@ -71,32 +71,32 @@ struct hb_kern_machine_t
 
       skippy_iter.reset_fast (idx);
       unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      якщо (unlikely (!skippy_iter.next (&unsafe_to)))
       {
 	idx = unsafe_to;
 	continue;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      unsigned ціле i = idx;
+      unsigned ціле j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
+      якщо (likely (!kern))
 	goto skip;
 
-      if (horizontal)
+      якщо (horizontal)
       {
-	if (scale)
+	якщо (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	якщо (crossStream)
 	{
 	  pos[j].y_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	інакше
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -105,16 +105,16 @@ struct hb_kern_machine_t
 	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
 	}
       }
-      else
+      інакше
       {
-	if (scale)
+	якщо (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	якщо (crossStream)
 	{
 	  pos[j].x_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	інакше
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;

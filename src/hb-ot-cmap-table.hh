@@ -183,7 +183,7 @@ static inline uint8_t unicode_to_macroman (hb_codepoint_t u)
   };
   auto *c = hb_bsearch (u, mapping, ARRAY_LENGTH (mapping), sizeof (mapping[0]),
 			_hb_cmp_operator<uint16_t, uint16_t>);
-  return c ? c->macroman : 0;
+  повернути c ? c->macroman : 0;
 }
 
 struct CmapSubtableFormat0
@@ -191,29 +191,29 @@ struct CmapSubtableFormat0
   bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
   {
     hb_codepoint_t gid = codepoint < 256 ? glyphIdArray[codepoint] : 0;
-    if (unlikely (!gid))
-      return false;
+    якщо (unlikely (!gid))
+      повернути false;
     *glyph = gid;
-    return true;
+    повернути true;
   }
 
   unsigned get_language () const
   {
-    return language;
+    повернути language;
   }
 
   void collect_unicodes (hb_set_t *out) const
   {
-    for (unsigned int i = 0; i < 256; i++)
-      if (glyphIdArray[i])
+    для (unsigned ціле i = 0; i < 256; i++)
+      якщо (glyphIdArray[i])
 	out->add (i);
   }
 
   void collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping /* OUT */) const
   {
-    for (unsigned i = 0; i < 256; i++)
-      if (glyphIdArray[i])
+    для (unsigned i = 0; i < 256; i++)
+      якщо (glyphIdArray[i])
       {
 	hb_codepoint_t glyph = glyphIdArray[i];
 	unicodes->add (i);
@@ -245,14 +245,14 @@ struct CmapSubtableFormat4
   void to_ranges (Iterator it, Writer& range_writer)
   {
     hb_codepoint_t start_cp = 0, prev_run_start_cp = 0, run_start_cp = 0, end_cp = 0, last_gid = 0;
-    int run_length = 0 , delta = 0, prev_delta = 0;
+    ціле run_length = 0 , delta = 0, prev_delta = 0;
 
     enum {
       FIRST_SUB_RANGE,
       FOLLOWING_SUB_RANGE,
     } mode;
 
-    while (it) {
+    поки (it) {
       // Start a new range
       {
         const auto& pair = *it;
@@ -269,17 +269,17 @@ struct CmapSubtableFormat4
       mode = FIRST_SUB_RANGE;
       it++;
 
-      while (it) {
+      поки (it) {
         // Process range
         const auto& pair = *it;
         hb_codepoint_t next_cp = pair.first;
         hb_codepoint_t next_gid = pair.second;
-        if (next_cp != end_cp + 1) {
+        якщо (next_cp != end_cp + 1) {
           // Current range is over, stop processing.
           break;
         }
 
-        if (next_gid == last_gid + 1) {
+        якщо (next_gid == last_gid + 1) {
           // The current run continues.
           end_cp = next_cp;
           run_length++;
@@ -289,9 +289,9 @@ struct CmapSubtableFormat4
         }
 
         // A new run is starting, decide if we want to commit the current run.
-        int split_cost = (mode == FIRST_SUB_RANGE) ? 8 : 16;
-        int run_cost = run_length * 2;
-        if (run_cost >= split_cost) {
+        ціле split_cost = (mode == FIRST_SUB_RANGE) ? 8 : 16;
+        ціле run_cost = run_length * 2;
+        якщо (run_cost >= split_cost) {
           commit_current_range(start_cp,
                                prev_run_start_cp,
                                run_start_cp,
@@ -326,7 +326,7 @@ struct CmapSubtableFormat4
                             range_writer);
     }
 
-    if (likely (end_cp != 0xFFFF)) {
+    якщо (likely (end_cp != 0xFFFF)) {
       range_writer (0xFFFF, 0xFFFF, 1);
     }
   }
@@ -339,14 +339,14 @@ struct CmapSubtableFormat4
                              hb_codepoint_t prev_run_start,
                              hb_codepoint_t run_start,
                              hb_codepoint_t end,
-                             int run_delta,
-                             int previous_run_delta,
-                             int split_cost,
+                             ціле run_delta,
+                             ціле previous_run_delta,
+                             ціле split_cost,
                              Writer& range_writer) {
     bool should_split = false;
-    if (start < run_start && run_start < end) {
-      int run_cost = (end - run_start + 1) * 2;
-      if (run_cost >= split_cost) {
+    якщо (start < run_start && run_start < end) {
+      ціле run_cost = (end - run_start + 1) * 2;
+      якщо (run_cost >= split_cost) {
         should_split = true;
       }
     }
@@ -354,20 +354,20 @@ struct CmapSubtableFormat4
     // A zero delta is also the marker for ranges that need a
     // glyphIdArray; serialize_rangeoffset_glyid() tells the two cases
     // apart by re-checking the mapping.
-    if (should_split) {
-      if (start == prev_run_start)
+    якщо (should_split) {
+      якщо (start == prev_run_start)
         range_writer (start, run_start - 1, previous_run_delta);
-      else
+      інакше
         range_writer (start, run_start - 1, 0);
       range_writer (run_start, end, run_delta);
-      return;
+      повернути;
     }
 
 
-    if (start == run_start) {
+    якщо (start == run_start) {
       // Range is only a run
       range_writer (start, end, run_delta);
-      return;
+      повернути;
     }
 
     // Write only a single non-run range.
@@ -382,13 +382,13 @@ struct CmapSubtableFormat4
 
       void operator() (hb_codepoint_t start,
                        hb_codepoint_t end,
-                       int delta) {
+                       ціле delta) {
         segcount++;
       }
     } counter;
 
     to_ranges (+it, counter);
-    return counter.segcount;
+    повернути counter.segcount;
   }
 
 
@@ -396,14 +396,14 @@ struct CmapSubtableFormat4
 	   hb_requires (hb_is_iterator (Iterator))>
   bool serialize_start_end_delta_arrays (hb_serialize_context_t *c,
                                          Iterator it,
-                                         int segcount)
+                                         ціле segcount)
   {
     struct Writer {
       hb_serialize_context_t *serializer_;
       HBUINT16* end_code_;
       HBUINT16* start_code_;
       HBINT16* id_delta_;
-      int index_;
+      ціле index_;
 
       Writer(hb_serialize_context_t *serializer)
           : serializer_(serializer),
@@ -413,7 +413,7 @@ struct CmapSubtableFormat4
             index_ (0) {}
       void operator() (hb_codepoint_t start,
                        hb_codepoint_t end,
-                       int delta) {
+                       ціле delta) {
         start_code_[index_] = start;
         end_code_[index_] = end;
         id_delta_[index_] = delta;
@@ -426,10 +426,10 @@ struct CmapSubtableFormat4
     writer.start_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, false);
     writer.id_delta_ = c->allocate_size<HBINT16> (HBINT16::static_size * segcount, false);
 
-    if (unlikely (!writer.end_code_ || !writer.start_code_ || !writer.id_delta_)) return false;
+    якщо (unlikely (!writer.end_code_ || !writer.start_code_ || !writer.id_delta_)) повернути false;
 
     to_ranges (+it, writer);
-    return true;
+    повернути true;
   }
 
   template<typename Iterator,
@@ -444,34 +444,34 @@ struct CmapSubtableFormat4
     hb_map_t cp_to_gid { it };
 
     HBUINT16 *idRangeOffset = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount);
-    if (unlikely (!c->check_success (idRangeOffset))) return nullptr;
-    if (unlikely ((char *)idRangeOffset - (char *)idDelta != (int) segcount * (int) HBINT16::static_size)) return nullptr;
+    якщо (unlikely (!c->check_success (idRangeOffset))) повернути nullptr;
+    якщо (unlikely ((char *)idRangeOffset - (char *)idDelta != (ціле) segcount * (ціле) HBINT16::static_size)) повернути nullptr;
 
-    for (unsigned i : hb_range (segcount))
+    для (unsigned i : hb_range (segcount))
     {
       /* A non-zero delta is always a real run. A zero delta is
        * ambiguous: identity mapping, or the marker for a range that
        * needs a glyphIdArray. Only zero deltas need a check. */
-      int delta = idDelta[i];
-      if (delta)
+      ціле delta = idDelta[i];
+      якщо (delta)
 	continue;
       bool use_delta = true;
-      for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
+      для (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
       {
 	hb_codepoint_t gid = cp_to_gid.get (cp);
-	if (gid == HB_MAP_VALUE_INVALID)
+	якщо (gid == HB_MAP_VALUE_INVALID)
 	  gid = 0;
-	if (gid != cp)
+	якщо (gid != cp)
 	{
 	  use_delta = false;
 	  break;
 	}
       }
-      if (use_delta)
+      якщо (use_delta)
 	continue;
 
       idRangeOffset[i] = 2 * (c->start_embed<HBUINT16> () - idRangeOffset - i);
-      for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
+      для (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
       {
         HBUINT16 gid;
         gid = cp_to_gid[cp];
@@ -479,7 +479,7 @@ struct CmapSubtableFormat4
       }
     }
 
-    return idRangeOffset;
+    повернути idRangeOffset;
   }
 
   template<typename Iterator,
@@ -490,13 +490,13 @@ struct CmapSubtableFormat4
     auto format4_iter =
     + it
     | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return _.first <= 0xFFFF; })
+		 { повернути _.first <= 0xFFFF; })
     ;
 
-    if (!format4_iter) return;
+    якщо (!format4_iter) повернути;
 
     unsigned table_initpos = c->length ();
-    if (unlikely (!c->extend_min (this))) return;
+    якщо (unlikely (!c->extend_min (this))) повернути;
     this->format = 4;
 
     hb_vector_t<hb_codepoint_pair_t> cp_to_gid {
@@ -506,8 +506,8 @@ struct CmapSubtableFormat4
     //serialize endCode[], startCode[], idDelta[]
     HBUINT16* endCode = c->start_embed<HBUINT16> ();
     unsigned segcount = serialize_find_segcount (cp_to_gid.iter());
-    if (unlikely (!serialize_start_end_delta_arrays (c, cp_to_gid.iter(), segcount)))
-      return;
+    якщо (unlikely (!serialize_start_end_delta_arrays (c, cp_to_gid.iter(), segcount)))
+      повернути;
 
     HBUINT16 *startCode = endCode + segcount + 1;
     HBINT16 *idDelta = ((HBINT16*)startCode) + segcount;
@@ -518,13 +518,13 @@ struct CmapSubtableFormat4
                                                            startCode,
                                                            idDelta,
                                                            segcount);
-    if (unlikely (!c->check_success (idRangeOffset))) return;
+    якщо (unlikely (!c->check_success (idRangeOffset))) повернути;
 
     this->length = c->length () - table_initpos;
-    if ((long long) this->length != (long long) c->length () - table_initpos)
+    якщо ((long long) this->length != (long long) c->length () - table_initpos)
     {
       c->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return;
+      повернути;
     }
 
     this->segCountX2 = segcount * 2;
@@ -537,7 +537,7 @@ struct CmapSubtableFormat4
 
   unsigned get_language () const
   {
-    return language;
+    повернути language;
   }
 
   struct accelerator_t
@@ -546,7 +546,7 @@ struct CmapSubtableFormat4
     accelerator_t (const CmapSubtableFormat4 *subtable) = delete;
 
     void init (const CmapSubtableFormat4 *subtable,
-	       unsigned int              subtable_data_size)
+	       unsigned ціле              subtable_data_size)
     {
       segCount = subtable->segCountX2 / 2;
       endCount = subtable->values.arrayZ;
@@ -555,7 +555,7 @@ struct CmapSubtableFormat4
       idRangeOffset = idDelta + segCount;
       glyphIdArray = idRangeOffset + segCount;
 
-      unsigned int values_offset = 16 + 8 * segCount;
+      unsigned ціле values_offset = 16 + 8 * segCount;
       glyphIdArrayLength = subtable_data_size > values_offset
 			   ? (subtable_data_size - values_offset) / 2
 			   : 0;
@@ -565,12 +565,12 @@ struct CmapSubtableFormat4
     {
       struct CustomRange
       {
-	int cmp (hb_codepoint_t k,
+	ціле cmp (hb_codepoint_t k,
 		 unsigned distance) const
 	{
-	  if (k > last) return +1;
-	  if (k < (&last)[distance]/*first*/) return -1;
-	  return 0;
+	  якщо (k > last) повернути +1;
+	  якщо (k < (&last)[distance]/*first*/) повернути -1;
+	  повернути 0;
 	}
 	HBUINT16 last;
       };
@@ -581,67 +581,67 @@ struct CmapSubtableFormat4
 					  sizeof (CustomRange),
 					  _hb_cmp_method<hb_codepoint_t, CustomRange, unsigned>,
 					  this->segCount + 1);
-      if (unlikely (!found))
-	return false;
-      unsigned int i = found - endCount;
+      якщо (unlikely (!found))
+	повернути false;
+      unsigned ціле i = found - endCount;
 
       hb_codepoint_t gid;
-      unsigned int rangeOffset = this->idRangeOffset[i];
-      if (rangeOffset == 0)
+      unsigned ціле rangeOffset = this->idRangeOffset[i];
+      якщо (rangeOffset == 0)
 	gid = codepoint + this->idDelta[i];
-      else
+      інакше
       {
 	/* Somebody has been smoking... */
-	unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	if (unlikely (index >= this->glyphIdArrayLength))
-	  return false;
+	unsigned ціле index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
+	якщо (unlikely (index >= this->glyphIdArrayLength))
+	  повернути false;
 	gid = this->glyphIdArray[index];
-	if (unlikely (!gid))
-	  return false;
+	якщо (unlikely (!gid))
+	  повернути false;
 	gid += this->idDelta[i];
       }
       gid &= 0xFFFFu;
-      if (unlikely (!gid))
-	return false;
+      якщо (unlikely (!gid))
+	повернути false;
       *glyph = gid;
-      return true;
+      повернути true;
     }
 
     HB_INTERNAL static bool get_glyph_func (const void *obj, hb_codepoint_t codepoint, hb_codepoint_t *glyph)
-    { return ((const accelerator_t *) obj)->get_glyph (codepoint, glyph); }
+    { повернути ((const accelerator_t *) obj)->get_glyph (codepoint, glyph); }
 
     void collect_unicodes (hb_set_t *out) const
     {
-      unsigned int count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
+      unsigned ціле count = this->segCount;
+      якщо (count && this->startCount[count - 1] == 0xFFFFu)
 	count--; /* Skip sentinel segment. */
-      for (unsigned int i = 0; i < count; i++)
+      для (unsigned ціле i = 0; i < count; i++)
       {
 	hb_codepoint_t start = this->startCount[i];
 	hb_codepoint_t end = this->endCount[i];
-	unsigned int rangeOffset = this->idRangeOffset[i];
+	unsigned ціле rangeOffset = this->idRangeOffset[i];
         out->add_range(start, end);
-	if (rangeOffset == 0)
+	якщо (rangeOffset == 0)
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  для (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
 	    hb_codepoint_t gid = (codepoint + this->idDelta[i]) & 0xFFFFu;
-	    if (unlikely (!gid))
+	    якщо (unlikely (!gid))
               out->del(codepoint);
 	  }
 	}
-	else
+	інакше
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  для (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	    if (unlikely (index >= this->glyphIdArrayLength))
+	    unsigned ціле index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
+	    якщо (unlikely (index >= this->glyphIdArrayLength))
             {
               out->del_range (codepoint, end);
 	      break;
             }
 	    hb_codepoint_t gid = this->glyphIdArray[index];
-	    if (unlikely (!gid))
+	    якщо (unlikely (!gid))
               out->del(codepoint);
 	  }
 	}
@@ -654,33 +654,33 @@ struct CmapSubtableFormat4
       // TODO(grieger): optimize similar to collect_unicodes
       // (ie. use add_range())
       unsigned count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
+      якщо (count && this->startCount[count - 1] == 0xFFFFu)
 	count--; /* Skip sentinel segment. */
-      for (unsigned i = 0; i < count; i++)
+      для (unsigned i = 0; i < count; i++)
       {
 	hb_codepoint_t start = this->startCount[i];
 	hb_codepoint_t end = this->endCount[i];
 	unsigned rangeOffset = this->idRangeOffset[i];
-	if (rangeOffset == 0)
+	якщо (rangeOffset == 0)
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  для (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
 	    hb_codepoint_t gid = (codepoint + this->idDelta[i]) & 0xFFFFu;
-	    if (unlikely (!gid))
+	    якщо (unlikely (!gid))
 	      continue;
 	    unicodes->add (codepoint);
 	    mapping->set (codepoint, gid);
 	  }
 	}
-	else
+	інакше
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  для (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
 	    unsigned index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	    if (unlikely (index >= this->glyphIdArrayLength))
+	    якщо (unlikely (index >= this->glyphIdArrayLength))
 	      break;
 	    hb_codepoint_t gid = this->glyphIdArray[index];
-	    if (unlikely (!gid))
+	    якщо (unlikely (!gid))
 	      continue;
             gid = (gid + this->idDelta[i]) & 0xFFFFu;
 	    unicodes->add (codepoint);
@@ -695,21 +695,21 @@ struct CmapSubtableFormat4
     const HBUINT16 *idDelta;
     const HBUINT16 *idRangeOffset;
     const HBUINT16 *glyphIdArray;
-    unsigned int segCount;
-    unsigned int glyphIdArrayLength;
+    unsigned ціле segCount;
+    unsigned ціле glyphIdArrayLength;
   };
 
   bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph,
-		  unsigned int subtable_data_size) const
+		  unsigned ціле subtable_data_size) const
   {
     accelerator_t accel;
     accel.init (this, subtable_data_size);
-    return accel.get_glyph_func (&accel, codepoint, glyph);
+    повернути accel.get_glyph_func (&accel, codepoint, glyph);
   }
   bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
-  { return false; }
+  { повернути false; }
 
-  void collect_unicodes (hb_set_t *out, unsigned int subtable_data_size) const
+  void collect_unicodes (hb_set_t *out, unsigned ціле subtable_data_size) const
   {
     accelerator_t accel;
     accel.init (this, subtable_data_size);
@@ -720,7 +720,7 @@ struct CmapSubtableFormat4
 
   void collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned int subtable_data_size) const
+			unsigned ціле subtable_data_size) const
   {
     accelerator_t accel;
     accel.init (this, subtable_data_size);
@@ -733,7 +733,7 @@ struct CmapSubtableFormat4
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    якщо (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
@@ -752,7 +752,7 @@ struct CmapSubtableFormat4
 
   UnsizedArrayOf<HBUINT16>
 		values;
-#if 0
+#якщо 0
   HBUINT16	endCount[segCount];	/* End characterCode for each segment,
 					 * last=0xFFFFu. */
   HBUINT16	reservedPad;		/* Set to 0. */
@@ -775,11 +775,11 @@ struct CmapSubtableLongGroup
   friend struct CmapSubtableLongSegmented;
   friend struct cmap;
 
-  int cmp (hb_codepoint_t codepoint) const
+  ціле cmp (hb_codepoint_t codepoint) const
   {
-    if (codepoint < startCharCode) return -1;
-    if (codepoint > endCharCode)   return +1;
-    return 0;
+    якщо (codepoint < startCharCode) повернути -1;
+    якщо (codepoint > endCharCode)   повернути +1;
+    повернути 0;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -805,23 +805,23 @@ struct CmapSubtableTrimmed
   {
     /* Rely on our implicit array bound-checking. */
     hb_codepoint_t gid = glyphIdArray[codepoint - startCharCode];
-    if (unlikely (!gid))
-      return false;
+    якщо (unlikely (!gid))
+      повернути false;
     *glyph = gid;
-    return true;
+    повернути true;
   }
 
   unsigned get_language () const
   {
-    return language;
+    повернути language;
   }
 
   void collect_unicodes (hb_set_t *out) const
   {
     hb_codepoint_t start = startCharCode;
-    unsigned int count = glyphIdArray.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (glyphIdArray[i])
+    unsigned ціле count = glyphIdArray.len;
+    для (unsigned ціле i = 0; i < count; i++)
+      якщо (glyphIdArray[i])
 	out->add (start + i);
   }
 
@@ -830,8 +830,8 @@ struct CmapSubtableTrimmed
   {
     hb_codepoint_t start_cp = startCharCode;
     unsigned count = glyphIdArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphIdArray[i])
+    для (unsigned i = 0; i < count; i++)
+      якщо (glyphIdArray[i])
       {
 	hb_codepoint_t unicode = start_cp + i;
 	hb_codepoint_t glyphid = glyphIdArray[i];
@@ -869,34 +869,34 @@ struct CmapSubtableLongSegmented
   bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
   {
     hb_codepoint_t gid = T::group_get_glyph (groups.bsearch (codepoint), codepoint);
-    if (unlikely (!gid))
-      return false;
+    якщо (unlikely (!gid))
+      повернути false;
     *glyph = gid;
-    return true;
+    повернути true;
   }
 
   unsigned get_language () const
   {
-    return language;
+    повернути language;
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  void collect_unicodes (hb_set_t *out, unsigned ціле num_glyphs) const
   {
-    for (unsigned int i = 0; i < this->groups.len; i++)
+    для (unsigned ціле i = 0; i < this->groups.len; i++)
     {
       hb_codepoint_t start = this->groups[i].startCharCode;
       hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups[i].endCharCode,
 				   (hb_codepoint_t) HB_UNICODE_MAX);
       hb_codepoint_t gid = this->groups[i].glyphID;
-      if (!gid)
+      якщо (!gid)
       {
 	/* Intention is: if (hb_is_same (T, CmapSubtableFormat13)) continue; */
-	if (! T::group_get_glyph (this->groups[i], end)) continue;
+	якщо (! T::group_get_glyph (this->groups[i], end)) continue;
 	start++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
+      якщо (unlikely ((unsigned ціле) gid >= num_glyphs)) continue;
+      якщо (unlikely ((unsigned ціле) (gid + end - start) >= num_glyphs))
 	end = start + (hb_codepoint_t) num_glyphs - gid;
 
       out->add_range (start, hb_min (end, 0x10FFFFu));
@@ -909,12 +909,12 @@ struct CmapSubtableLongSegmented
   {
     hb_codepoint_t last_end = 0;
     unsigned count = this->groups.len;
-    for (unsigned i = 0; i < count; i++)
+    для (unsigned i = 0; i < count; i++)
     {
       hb_codepoint_t start = this->groups.arrayZ[i].startCharCode;
       hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups.arrayZ[i].endCharCode,
 				   (hb_codepoint_t) HB_UNICODE_MAX);
-      if (unlikely (start > end || start < last_end)) {
+      якщо (unlikely (start > end || start < last_end)) {
         // Range is not in order and is invalid, skip it.
         continue;
       }
@@ -922,20 +922,20 @@ struct CmapSubtableLongSegmented
 
 
       hb_codepoint_t gid = this->groups.arrayZ[i].glyphID;
-      if (!gid)
+      якщо (!gid)
       {
-        if (T::formatNumber == 13) continue;
+        якщо (T::formatNumber == 13) continue;
 	start++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
+      якщо (unlikely ((unsigned ціле) gid >= num_glyphs)) continue;
+      якщо (unlikely ((unsigned ціле) (gid + end - start) >= num_glyphs))
 	end = start + (hb_codepoint_t) num_glyphs - gid;
 
       mapping->alloc (mapping->get_population () + end - start + 1);
 
       unicodes->add_range (start, end);
-      for (unsigned cp = start; cp <= end; cp++)
+      для (unsigned cp = start; cp <= end; cp++)
       {
 	mapping->set (cp, gid);
         gid += T::increment;
@@ -962,12 +962,12 @@ struct CmapSubtableLongSegmented
 
 struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 {
-  static constexpr int increment = 1;
-  static constexpr int formatNumber = 12;
+  static constexpr ціле increment = 1;
+  static constexpr ціле formatNumber = 12;
 
   static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
 					 hb_codepoint_t u)
-  { return likely (group.startCharCode <= group.endCharCode) ?
+  { повернути likely (group.startCharCode <= group.endCharCode) ?
 	   group.glyphID + (u - group.startCharCode) : 0; }
 
 
@@ -976,22 +976,22 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
   void serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    if (!it) return;
+    якщо (!it) повернути;
     unsigned table_initpos = c->length ();
-    if (unlikely (!c->extend_min (this))) return;
+    якщо (unlikely (!c->extend_min (this))) повернути;
 
     hb_codepoint_t startCharCode = (hb_codepoint_t) -1, endCharCode = (hb_codepoint_t) -1;
     hb_codepoint_t glyphID = 0;
 
-    for (const auto& _ : +it)
+    для (const auto& _ : +it)
     {
-      if (startCharCode == (hb_codepoint_t) -1)
+      якщо (startCharCode == (hb_codepoint_t) -1)
       {
 	startCharCode = _.first;
 	endCharCode = _.first;
 	glyphID = _.second;
       }
-      else if (!_is_gid_consecutive (endCharCode, startCharCode, glyphID, _.first, _.second))
+      інакше якщо (!_is_gid_consecutive (endCharCode, startCharCode, glyphID, _.first, _.second))
       {
 	CmapSubtableLongGroup  grouprecord;
 	grouprecord.startCharCode = startCharCode;
@@ -1003,7 +1003,7 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 	endCharCode = _.first;
 	glyphID = _.second;
       }
-      else
+      інакше
 	endCharCode = _.first;
     }
 
@@ -1020,7 +1020,7 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
   }
 
   static size_t get_sub_table_size (const hb_sorted_vector_t<CmapSubtableLongGroup> &groups_data)
-  { return 16 + 12 * groups_data.length; }
+  { повернути 16 + 12 * groups_data.length; }
 
   private:
   static bool _is_gid_consecutive (hb_codepoint_t endCharCode,
@@ -1029,7 +1029,7 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 				   hb_codepoint_t cp,
 				   hb_codepoint_t new_gid)
   {
-    return (cp - 1 == endCharCode) &&
+    повернути (cp - 1 == endCharCode) &&
 	new_gid == glyphID + (cp - startCharCode);
   }
 
@@ -1037,12 +1037,12 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 
 struct CmapSubtableFormat13 : CmapSubtableLongSegmented<CmapSubtableFormat13>
 {
-  static constexpr int increment = 0;
-  static constexpr int formatNumber = 13;
+  static constexpr ціле increment = 0;
+  static constexpr ціле formatNumber = 13;
 
   static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
 					 hb_codepoint_t u HB_UNUSED)
-  { return group.glyphID; }
+  { повернути group.glyphID; }
 };
 
 typedef enum
@@ -1054,11 +1054,11 @@ typedef enum
 
 struct UnicodeValueRange
 {
-  int cmp (const hb_codepoint_t &codepoint) const
+  ціле cmp (const hb_codepoint_t &codepoint) const
   {
-    if (codepoint < startUnicodeValue) return -1;
-    if (codepoint > startUnicodeValue + additionalCount) return +1;
-    return 0;
+    якщо (codepoint < startUnicodeValue) повернути -1;
+    якщо (codepoint > startUnicodeValue + additionalCount) повернути +1;
+    повернути 0;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -1078,8 +1078,8 @@ struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
 {
   void collect_unicodes (hb_set_t *out) const
   {
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ціле count = len;
+    для (unsigned ціле i = 0; i < count; i++)
     {
       hb_codepoint_t first = arrayZ[i].startUnicodeValue;
       hb_codepoint_t last = hb_min ((hb_codepoint_t) (first + arrayZ[i].additionalCount),
@@ -1096,24 +1096,24 @@ struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
 
     HBUINT32 len;
     len = 0;
-    if (unlikely (!c->copy<HBUINT32> (len))) return nullptr;
+    якщо (unlikely (!c->copy<HBUINT32> (len))) повернути nullptr;
     unsigned init_len = c->length ();
 
-    if (this->len > unicodes->get_population () * hb_bit_storage ((unsigned) this->len))
+    якщо (this->len > unicodes->get_population () * hb_bit_storage ((unsigned) this->len))
     {
       hb_codepoint_t start = HB_SET_VALUE_INVALID;
       hb_codepoint_t end = HB_SET_VALUE_INVALID;
 
-      for (auto u : *unicodes)
+      для (auto u : *unicodes)
       {
-        if (!as_array ().bsearch (u))
+        якщо (!as_array ().bsearch (u))
 	  continue;
-	if (start == HB_SET_VALUE_INVALID)
+	якщо (start == HB_SET_VALUE_INVALID)
 	{
 	  start = u;
 	  end = start - 1;
 	}
-	if (end + 1 != u || end - start == 255)
+	якщо (end + 1 != u || end - start == 255)
         {
 	  UnicodeValueRange rec;
 	  rec.startUnicodeValue = start;
@@ -1123,7 +1123,7 @@ struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
 	}
 	end = u;
       }
-      if (start != HB_SET_VALUE_INVALID)
+      якщо (start != HB_SET_VALUE_INVALID)
       {
 	UnicodeValueRange rec;
 	rec.startUnicodeValue = start;
@@ -1132,22 +1132,22 @@ struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
       }
 
     }
-    else
+    інакше
     {
       hb_codepoint_t lastCode = HB_SET_VALUE_INVALID;
-      int count = -1;
+      ціле count = -1;
 
-      for (const UnicodeValueRange& _ : *this)
+      для (const UnicodeValueRange& _ : *this)
       {
 	hb_codepoint_t curEntry = (hb_codepoint_t) (_.startUnicodeValue - 1);
 	hb_codepoint_t end = curEntry + _.additionalCount + 2;
 
-	for (; unicodes->next (&curEntry) && curEntry < end;)
+	для (; unicodes->next (&curEntry) && curEntry < end;)
 	{
 	  count += 1;
-	  if (lastCode == HB_SET_VALUE_INVALID)
+	  якщо (lastCode == HB_SET_VALUE_INVALID)
 	    lastCode = curEntry;
-	  else if (lastCode + count != curEntry || count > 255)
+	  інакше якщо (lastCode + count != curEntry || count > 255)
 	  {
 	    UnicodeValueRange rec;
 	    rec.startUnicodeValue = lastCode;
@@ -1160,7 +1160,7 @@ struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
 	}
       }
 
-      if (lastCode != HB_MAP_VALUE_INVALID)
+      якщо (lastCode != HB_MAP_VALUE_INVALID)
       {
 	UnicodeValueRange rec;
 	rec.startUnicodeValue = lastCode;
@@ -1169,17 +1169,17 @@ struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
       }
     }
 
-    if (c->length () - init_len == 0)
+    якщо (c->length () - init_len == 0)
     {
       c->revert (snap);
-      return nullptr;
+      повернути nullptr;
     }
-    else
+    інакше
     {
-      if (unlikely (!c->check_assign (out->len,
+      якщо (unlikely (!c->check_assign (out->len,
                                       (c->length () - init_len) / UnicodeValueRange::static_size,
-                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))) return nullptr;
-      return out;
+                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))) повернути nullptr;
+      повернути out;
     }
   }
 
@@ -1192,8 +1192,8 @@ struct UVSMapping
 {
   using GlyphID = typename Types::HBGlyphID;
 
-  int cmp (const hb_codepoint_t &codepoint) const
-  { return unicodeValue.cmp (codepoint); }
+  ціле cmp (const hb_codepoint_t &codepoint) const
+  { повернути unicodeValue.cmp (codepoint); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -1215,14 +1215,14 @@ struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
 
   void collect_unicodes (hb_set_t *out) const
   {
-    for (const auto& a : this->as_array ())
+    для (const auto& a : this->as_array ())
       out->add (a.unicodeValue);
   }
 
   void collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping /* OUT */) const
   {
-    for (const auto& a : this->as_array ())
+    для (const auto& a : this->as_array ())
     {
       hb_codepoint_t unicode = a.unicodeValue;
       hb_codepoint_t glyphid = a.glyphID;
@@ -1251,17 +1251,17 @@ struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
     + this->as_array ()
     | hb_filter ([&] (const Mapping& _)
 		 {
-		   return unicodes->has (_.unicodeValue) || glyphs_requested->has (_.glyphID);
+		   повернути unicodes->has (_.unicodeValue) || glyphs_requested->has (_.glyphID);
 		 })
     ;
 
-    if (!it) return nullptr;
+    якщо (!it) повернути nullptr;
 
     HBUINT32 len;
     len = it.len ();
-    if (unlikely (!c->copy<HBUINT32> (len))) return nullptr;
+    якщо (unlikely (!c->copy<HBUINT32> (len))) повернути nullptr;
 
-    for (const Mapping& _ : it)
+    для (const Mapping& _ : it)
     {
       Mapping mapping;
       mapping.unicodeValue = _.unicodeValue;
@@ -1269,7 +1269,7 @@ struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
       c->copy<Mapping> (mapping);
     }
 
-    return out;
+    повернути out;
   }
 
   public:
@@ -1283,15 +1283,15 @@ struct VariationSelectorRecord
 			     hb_codepoint_t *glyph,
 			     const void *base) const
   {
-    if ((base+defaultUVS).bfind (codepoint))
-      return GLYPH_VARIANT_USE_DEFAULT;
+    якщо ((base+defaultUVS).bfind (codepoint))
+      повернути GLYPH_VARIANT_USE_DEFAULT;
     const UVSMapping<Types> &nonDefault = (base+nonDefaultUVS).bsearch (codepoint);
-    if (nonDefault.glyphID)
+    якщо (nonDefault.glyphID)
     {
       *glyph = nonDefault.glyphID;
-       return GLYPH_VARIANT_FOUND;
+       повернути GLYPH_VARIANT_FOUND;
     }
-    return GLYPH_VARIANT_NOT_FOUND;
+    повернути GLYPH_VARIANT_NOT_FOUND;
   }
 
   VariationSelectorRecord(const VariationSelectorRecord& other)
@@ -1322,8 +1322,8 @@ struct VariationSelectorRecord
     (base+nonDefaultUVS).collect_mapping (unicodes, mapping);
   }
 
-  int cmp (const hb_codepoint_t &variation_selector) const
-  { return varSelector.cmp (variation_selector); }
+  ціле cmp (const hb_codepoint_t &variation_selector) const
+  { повернути varSelector.cmp (variation_selector); }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -1342,34 +1342,34 @@ struct VariationSelectorRecord
   {
     auto snap = c->snapshot ();
     auto *out = c->embed<VariationSelectorRecord> (*this);
-    if (unlikely (!out)) return hb_pair (0, 0);
+    якщо (unlikely (!out)) повернути hb_pair (0, 0);
 
     out->defaultUVS = 0;
     out->nonDefaultUVS = 0;
 
     unsigned non_default_uvs_objidx = 0;
-    if (nonDefaultUVS != 0)
+    якщо (nonDefaultUVS != 0)
     {
       c->push ();
-      if (c->copy (base+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
+      якщо (c->copy (base+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
 	non_default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+      інакше c->pop_discard ();
     }
 
     unsigned default_uvs_objidx = 0;
-    if (defaultUVS != 0)
+    якщо (defaultUVS != 0)
     {
       c->push ();
-      if (c->copy (base+defaultUVS, unicodes))
+      якщо (c->copy (base+defaultUVS, unicodes))
 	default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+      інакше c->pop_discard ();
     }
 
 
-    if (!default_uvs_objidx && !non_default_uvs_objidx)
+    якщо (!default_uvs_objidx && !non_default_uvs_objidx)
       c->revert (snap);
 
-    return hb_pair (default_uvs_objidx, non_default_uvs_objidx);
+    повернути hb_pair (default_uvs_objidx, non_default_uvs_objidx);
   }
 
   HBUINT24	varSelector;	/* Variation selector. */
@@ -1391,11 +1391,11 @@ struct CmapSubtableFormat14_15
   glyph_variant_t get_glyph_variant (hb_codepoint_t codepoint,
 				     hb_codepoint_t variation_selector,
 				     hb_codepoint_t *glyph) const
-  { return record.bsearch (variation_selector).get_glyph (codepoint, glyph, this); }
+  { повернути record.bsearch (variation_selector).get_glyph (codepoint, glyph, this); }
 
   void collect_variation_selectors (hb_set_t *out) const
   {
-    for (const auto& a : record.as_array ())
+    для (const auto& a : record.as_array ())
       out->add (a.varSelector);
   }
   void collect_variation_unicodes (hb_codepoint_t variation_selector,
@@ -1412,7 +1412,7 @@ struct CmapSubtableFormat14_15
     unsigned table_initpos = c->length ();
     const char* init_tail = c->tail;
 
-    if (unlikely (!c->extend_min (this))) return;
+    якщо (unlikely (!c->extend_min (this))) повернути;
     this->format = format_value;
 
     auto src_tbl = reinterpret_cast<const CmapSubtableFormat14_15*> (base);
@@ -1431,26 +1431,26 @@ struct CmapSubtableFormat14_15
      * records after everything is finalized.
      */
     hb_vector_t<hb_pair_t<unsigned, unsigned>> obj_indices;
-    for (int i = src_tbl->record.len - 1; i >= 0; i--)
+    для (ціле i = src_tbl->record.len - 1; i >= 0; i--)
     {
-      if (!unicodes->has(src_tbl->record[i].varSelector))
+      якщо (!unicodes->has(src_tbl->record[i].varSelector))
         continue;
 
       hb_pair_t<unsigned, unsigned> result = src_tbl->record[i].copy (c, unicodes, glyphs_requested, glyph_map, base);
-      if (result.first || result.second)
+      якщо (result.first || result.second)
 	obj_indices.push (result);
     }
 
-    if (c->length () - table_initpos == CmapSubtableFormat14_15::min_size)
+    якщо (c->length () - table_initpos == CmapSubtableFormat14_15::min_size)
     {
       c->revert (snap);
-      return;
+      повернути;
     }
 
-    if (unlikely (!c->check_success (!obj_indices.in_error ())))
-      return;
+    якщо (unlikely (!c->check_success (!obj_indices.in_error ())))
+      повернути;
 
-    int tail_len = init_tail - c->tail;
+    ціле tail_len = init_tail - c->tail;
     c->check_assign (this->length, c->length () - table_initpos + tail_len,
                      HB_SERIALIZE_ERROR_INT_OVERFLOW);
     c->check_assign (this->record.len,
@@ -1474,14 +1474,14 @@ struct CmapSubtableFormat14_15
   void _add_links_to_variation_records (hb_serialize_context_t *c,
 					const hb_vector_t<hb_pair_t<unsigned, unsigned>>& obj_indices)
   {
-    for (unsigned i = 0; i < obj_indices.length; i++)
+    для (unsigned i = 0; i < obj_indices.length; i++)
     {
       /*
        * Since the record array has been reversed (see comments in copy())
        * but obj_indices has not been, the indices at obj_indices[i]
        * are for the variation record at record[j].
        */
-      int j = obj_indices.length - 1 - i;
+      ціле j = obj_indices.length - 1 - i;
       c->add_link (record[j].defaultUVS, obj_indices[i].first);
       c->add_link (record[j].nonDefaultUVS, obj_indices[i].second);
     }
@@ -1501,14 +1501,14 @@ struct CmapSubtableFormat14_15
 
   void collect_unicodes (hb_set_t *out) const
   {
-    for (const Record& _ : record)
+    для (const Record& _ : record)
       _.collect_unicodes (out, this);
   }
 
   void collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping /* OUT */) const
   {
-    for (const Record& _ : record)
+    для (const Record& _ : record)
       _.collect_mapping (this, unicodes, mapping);
   }
 
@@ -1540,9 +1540,9 @@ struct CmapSubtable
 #ifndef HB_NO_BEYOND_64K
     case 15:
 #endif
-      return true;
+      повернути true;
     default:
-      return false;
+      повернути false;
     }
   }
 
@@ -1551,22 +1551,22 @@ struct CmapSubtable
 				     hb_codepoint_t *glyph) const
   {
     switch (u.format.v) {
-    case 14: hb_barrier (); return u.format14.get_glyph_variant (codepoint, variation_selector, glyph);
+    case 14: hb_barrier (); повернути u.format14.get_glyph_variant (codepoint, variation_selector, glyph);
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return u.format15.get_glyph_variant (codepoint, variation_selector, glyph);
+    case 15: hb_barrier (); повернути u.format15.get_glyph_variant (codepoint, variation_selector, glyph);
 #endif
-    default: return GLYPH_VARIANT_NOT_FOUND;
+    default: повернути GLYPH_VARIANT_NOT_FOUND;
     }
   }
 
   void collect_variation_selectors (hb_set_t *out) const
   {
     switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.collect_variation_selectors (out); return;
+    case 14: hb_barrier (); u.format14.collect_variation_selectors (out); повернути;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.collect_variation_selectors (out); return;
+    case 15: hb_barrier (); u.format15.collect_variation_selectors (out); повернути;
 #endif
-    default: return;
+    default: повернути;
     }
   }
 
@@ -1574,94 +1574,94 @@ struct CmapSubtable
 				    hb_set_t *out) const
   {
     switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.collect_variation_unicodes (variation_selector, out); return;
+    case 14: hb_barrier (); u.format14.collect_variation_unicodes (variation_selector, out); повернути;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.collect_variation_unicodes (variation_selector, out); return;
+    case 15: hb_barrier (); u.format15.collect_variation_unicodes (variation_selector, out); повернути;
 #endif
-    default: return;
+    default: повернути;
     }
   }
 
   void closure_glyphs (const hb_set_t *unicodes, hb_set_t *glyphset) const
   {
     switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.closure_glyphs (unicodes, glyphset); return;
+    case 14: hb_barrier (); u.format14.closure_glyphs (unicodes, glyphset); повернути;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.closure_glyphs (unicodes, glyphset); return;
+    case 15: hb_barrier (); u.format15.closure_glyphs (unicodes, glyphset); повернути;
 #endif
-    default: return;
+    default: повернути;
     }
   }
 
   bool get_glyph (hb_codepoint_t codepoint,
 		  hb_codepoint_t *glyph,
-		  unsigned int subtable_data_size = 0) const
+		  unsigned ціле subtable_data_size = 0) const
   {
     switch (u.format.v) {
-    case  0: hb_barrier (); return u.format0 .get_glyph (codepoint, glyph);
-    case  4: hb_barrier (); return subtable_data_size
+    case  0: hb_barrier (); повернути u.format0 .get_glyph (codepoint, glyph);
+    case  4: hb_barrier (); повернути subtable_data_size
 				      ? u.format4.get_glyph (codepoint, glyph, subtable_data_size)
 				      : false;
-    case  6: hb_barrier (); return u.format6 .get_glyph (codepoint, glyph);
-    case 10: hb_barrier (); return u.format10.get_glyph (codepoint, glyph);
-    case 12: hb_barrier (); return u.format12.get_glyph (codepoint, glyph);
-    case 13: hb_barrier (); return u.format13.get_glyph (codepoint, glyph);
+    case  6: hb_barrier (); повернути u.format6 .get_glyph (codepoint, glyph);
+    case 10: hb_barrier (); повернути u.format10.get_glyph (codepoint, glyph);
+    case 12: hb_barrier (); повернути u.format12.get_glyph (codepoint, glyph);
+    case 13: hb_barrier (); повернути u.format13.get_glyph (codepoint, glyph);
     case 14:
-    default: return false;
+    default: повернути false;
     }
   }
   void collect_unicodes (hb_set_t *out,
-			 unsigned int num_glyphs = UINT_MAX,
-			 unsigned int subtable_data_size = 0) const
+			 unsigned ціле num_glyphs = UINT_MAX,
+			 unsigned ціле subtable_data_size = 0) const
   {
     switch (u.format.v) {
-    case  0: hb_barrier (); u.format0 .collect_unicodes (out); return;
-    case  4: hb_barrier (); if (subtable_data_size)
+    case  0: hb_barrier (); u.format0 .collect_unicodes (out); повернути;
+    case  4: hb_barrier (); якщо (subtable_data_size)
 			      u.format4.collect_unicodes (out, subtable_data_size);
-			    else
+			    інакше
 			      u.format4.collect_unicodes (out);
-			    return;
-    case  6: hb_barrier (); u.format6 .collect_unicodes (out); return;
-    case 10: hb_barrier (); u.format10.collect_unicodes (out); return;
-    case 12: hb_barrier (); u.format12.collect_unicodes (out, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_unicodes (out, num_glyphs); return;
+			    повернути;
+    case  6: hb_barrier (); u.format6 .collect_unicodes (out); повернути;
+    case 10: hb_barrier (); u.format10.collect_unicodes (out); повернути;
+    case 12: hb_barrier (); u.format12.collect_unicodes (out, num_glyphs); повернути;
+    case 13: hb_barrier (); u.format13.collect_unicodes (out, num_glyphs); повернути;
     case 14:
-    default: return;
+    default: повернути;
     }
   }
 
   void collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
 			unsigned num_glyphs = UINT_MAX,
-			unsigned int subtable_data_size = 0) const
+			unsigned ціле subtable_data_size = 0) const
   {
     switch (u.format.v) {
-    case  0: hb_barrier (); u.format0 .collect_mapping (unicodes, mapping); return;
-    case  4: hb_barrier (); if (subtable_data_size)
+    case  0: hb_barrier (); u.format0 .collect_mapping (unicodes, mapping); повернути;
+    case  4: hb_barrier (); якщо (subtable_data_size)
 			      u.format4.collect_mapping (unicodes, mapping, subtable_data_size);
-			    else
+			    інакше
 			      u.format4.collect_mapping (unicodes, mapping);
-			    return;
-    case  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); return;
-    case 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); return;
-    case 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, num_glyphs); return;
+			    повернути;
+    case  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); повернути;
+    case 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); повернути;
+    case 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, num_glyphs); повернути;
+    case 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, num_glyphs); повернути;
     case 14:
-    default: return;
+    default: повернути;
     }
   }
 
   unsigned get_language () const
   {
     switch (u.format.v) {
-    case  0: hb_barrier (); return u.format0 .get_language ();
-    case  4: hb_barrier (); return u.format4 .get_language ();
-    case  6: hb_barrier (); return u.format6 .get_language ();
-    case 10: hb_barrier (); return u.format10.get_language ();
-    case 12: hb_barrier (); return u.format12.get_language ();
-    case 13: hb_barrier (); return u.format13.get_language ();
+    case  0: hb_barrier (); повернути u.format0 .get_language ();
+    case  4: hb_barrier (); повернути u.format4 .get_language ();
+    case  6: hb_barrier (); повернути u.format6 .get_language ();
+    case 10: hb_barrier (); повернути u.format10.get_language ();
+    case 12: hb_barrier (); повернути u.format12.get_language ();
+    case 13: hb_barrier (); повернути u.format13.get_language ();
     case 14:
-    default: return 0;
+    default: повернути 0;
     }
   }
 
@@ -1674,20 +1674,20 @@ struct CmapSubtable
 		  const void *base)
   {
     switch (format) {
-    case  4: hb_barrier (); return u.format4.serialize (c, it);
-    case 12: hb_barrier (); return u.format12.serialize (c, it);
-    case 14: hb_barrier (); return u.format14.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
+    case  4: hb_barrier (); повернути u.format4.serialize (c, it);
+    case 12: hb_barrier (); повернути u.format12.serialize (c, it);
+    case 14: hb_barrier (); повернути u.format14.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return u.format15.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
+    case 15: hb_barrier (); повернути u.format15.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
 #endif
-    default: return;
+    default: повернути;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    якщо (!u.format.v.sanitize (c)) return_trace (false);
     hb_barrier ();
     switch (u.format.v) {
     case  0: hb_barrier (); return_trace (u.format0 .sanitize (c));
@@ -1727,17 +1727,17 @@ struct CmapSubtable
 
 struct EncodingRecord
 {
-  int cmp (const EncodingRecord &other) const
+  ціле cmp (const EncodingRecord &other) const
   {
-    int ret;
+    ціле ret;
     ret = platformID.cmp (other.platformID);
-    if (ret) return ret;
-    if (other.encodingID != 0xFFFF)
+    якщо (ret) повернути ret;
+    якщо (other.encodingID != 0xFFFF)
     {
       ret = encodingID.cmp (other.encodingID);
-      if (ret) return ret;
+      якщо (ret) повернути ret;
     }
-    return 0;
+    повернути 0;
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -1759,19 +1759,19 @@ struct EncodingRecord
     TRACE_SERIALIZE (this);
     auto snap = c->snapshot ();
     auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    якщо (unlikely (!out)) return_trace (nullptr);
     out->subtable = 0;
 
-    if (*objidx == 0)
+    якщо (*objidx == 0)
     {
       CmapSubtable *cmapsubtable = c->push<CmapSubtable> ();
       unsigned origin_length = c->length ();
       cmapsubtable->serialize (c, it, format, plan, &(base+subtable));
-      if (c->length () > origin_length && !c->in_error()) *objidx = c->pop_pack ();
-      else c->pop_discard ();
+      якщо (c->length () > origin_length && !c->in_error()) *objidx = c->pop_pack ();
+      інакше c->pop_discard ();
     }
 
-    if (*objidx == 0)
+    якщо (*objidx == 0)
     {
       c->revert (snap);
       return_trace (nullptr);
@@ -1796,7 +1796,7 @@ struct SubtableUnicodesCache {
  private:
   hb_blob_ptr_t<cmap> base_blob;
   const char* base;
-  unsigned int table_length;
+  unsigned ціле table_length;
   hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> cached_unicodes;
 
  public:
@@ -1806,15 +1806,15 @@ struct SubtableUnicodesCache {
     SubtableUnicodesCache* cache =
         (SubtableUnicodesCache*) hb_malloc (sizeof(SubtableUnicodesCache));
 
-    if (unlikely (!cache))
-      return nullptr;
+    якщо (unlikely (!cache))
+      повернути nullptr;
 
     new (cache) SubtableUnicodesCache (source_table);
-    return cache;
+    повернути cache;
   }
 
   static void destroy (void* value) {
-    if (!value) return;
+    якщо (!value) повернути;
 
     SubtableUnicodesCache* cache = (SubtableUnicodesCache*) value;
     cache->~SubtableUnicodesCache ();
@@ -1822,7 +1822,7 @@ struct SubtableUnicodesCache {
   }
 
   SubtableUnicodesCache(const void* cmap_base,
-			unsigned int table_length_ = 0)
+			unsigned ціле table_length_ = 0)
       : base_blob(),
         base ((const char*) cmap_base),
         table_length (table_length_),
@@ -1843,37 +1843,37 @@ struct SubtableUnicodesCache {
 
   bool same_base(const void* other) const
   {
-    return other == (const void*) base;
+    повернути other == (const void*) base;
   }
 
   const hb_set_t* set_for (const EncodingRecord* record,
                            SubtableUnicodesCache& mutable_cache) const
   {
-    if (cached_unicodes.has ((unsigned) ((const char *) record - base)))
-      return cached_unicodes.get ((unsigned) ((const char *) record - base));
+    якщо (cached_unicodes.has ((unsigned) ((const char *) record - base)))
+      повернути cached_unicodes.get ((unsigned) ((const char *) record - base));
 
-    return mutable_cache.set_for (record);
+    повернути mutable_cache.set_for (record);
   }
 
   const hb_set_t* set_for (const EncodingRecord* record)
   {
-    if (!cached_unicodes.has ((unsigned) ((const char *) record - base)))
+    якщо (!cached_unicodes.has ((unsigned) ((const char *) record - base)))
     {
       hb_set_t *s = hb_set_create ();
-      if (unlikely (s->in_error ()))
-	return hb_set_get_empty ();
+      якщо (unlikely (s->in_error ()))
+	повернути hb_set_get_empty ();
 
-      unsigned int subtable_data_size = record->subtable < table_length
-					? table_length - (unsigned int) record->subtable
+      unsigned ціле subtable_data_size = record->subtable < table_length
+					? table_length - (unsigned ціле) record->subtable
 					: 0;
       (base+record->subtable).collect_unicodes (s, UINT_MAX, subtable_data_size);
 
-      if (unlikely (!cached_unicodes.set ((unsigned) ((const char *) record - base), hb::unique_ptr<hb_set_t> {s})))
-        return hb_set_get_empty ();
+      якщо (unlikely (!cached_unicodes.set ((unsigned) ((const char *) record - base), hb::unique_ptr<hb_set_t> {s})))
+        повернути hb_set_get_empty ();
 
-      return s;
+      повернути s;
     }
-    return cached_unicodes.get ((unsigned) ((const char *) record - base));
+    повернути cached_unicodes.get ((unsigned) ((const char *) record - base));
   }
 
 };
@@ -1881,16 +1881,16 @@ struct SubtableUnicodesCache {
 static inline uint16_t
 _hb_symbol_pua_map (unsigned codepoint)
 {
-  if (codepoint <= 0x00FFu)
+  якщо (codepoint <= 0x00FFu)
   {
     /* For symbol-encoded OpenType fonts, we duplicate the
      * U+F000..F0FF range at U+0000..U+00FF.  That's what
      * Windows seems to do, and that's hinted about at:
      * https://docs.microsoft.com/en-us/typography/opentype/spec/recom
      * under "Non-Standard (Symbol) Fonts". */
-    return 0xF000u + codepoint;
+    повернути 0xF000u + codepoint;
   }
-  return 0;
+  повернути 0;
 }
 
 struct cmap
@@ -1903,19 +1903,19 @@ struct cmap
     auto it =
     + hb_iter (cmap->encodingRecord)
     | hb_filter ([&](const EncodingRecord& _) {
-      return cmap::filter_encoding_records_for_subset (cmap, _);
+      повернути cmap::filter_encoding_records_for_subset (cmap, _);
     })
     ;
 
     SubtableUnicodesCache* cache = SubtableUnicodesCache::create(source_table);
 
-    if (unlikely (!cache))
-      return nullptr;
+    якщо (unlikely (!cache))
+      повернути nullptr;
 
-    for (const EncodingRecord& _ : it)
+    для (const EncodingRecord& _ : it)
       cache->set_for(&_); // populate the cache for this encoding record.
 
-    return cache;
+    повернути cache;
   }
 
   template<typename Iterator, typename EncodingRecIter,
@@ -1926,9 +1926,9 @@ struct cmap
 		  const void *base,
 		  hb_subset_plan_t *plan,
 	                  bool drop_format_4 = false,
-			  unsigned int source_table_length = 0)
+			  unsigned ціле source_table_length = 0)
   {
-    if (unlikely (!c->extend_min ((*this))))  return false;
+    якщо (unlikely (!c->extend_min ((*this))))  повернути false;
     this->version = 0;
 
     unsigned format4objidx = 0, format12objidx = 0, format14objidx = 0;
@@ -1940,18 +1940,18 @@ struct cmap
     SubtableUnicodesCache local_unicodes_cache (base, source_table_length);
     const SubtableUnicodesCache* unicodes_cache = &local_unicodes_cache;
 
-    if (plan->accelerator &&
+    якщо (plan->accelerator &&
         plan->accelerator->cmap_cache &&
         plan->accelerator->cmap_cache->same_base (base))
       unicodes_cache = plan->accelerator->cmap_cache;
 
-    for (const EncodingRecord& _ : encodingrec_iter)
+    для (const EncodingRecord& _ : encodingrec_iter)
     {
-      if (c->in_error ())
-        return false;
+      якщо (c->in_error ())
+        повернути false;
 
       unsigned format = (base+_.subtable).u.format.v;
-      if (format != 4 && format != 12 && format != 14
+      якщо (format != 4 && format != 12 && format != 14
 #ifndef HB_NO_BEYOND_64K
 	  && format != 15
 #endif
@@ -1959,14 +1959,14 @@ struct cmap
 
       const hb_set_t* unicodes_set = unicodes_cache->set_for (&_, local_unicodes_cache);
 
-      if (!drop_format_4 && format == 4)
+      якщо (!drop_format_4 && format == 4)
       {
         c->copy (_, + it | hb_filter (*unicodes_set, hb_first), 4u, base, plan, &format4objidx);
-        if (c->in_error () && c->only_overflow ())
+        якщо (c->in_error () && c->only_overflow ())
         {
           // cmap4 overflowed, reset and retry serialization without format 4 subtables.
           c->revert (snap);
-          return serialize (c, it,
+          повернути serialize (c, it,
                             encodingrec_iter,
                             base,
                             plan,
@@ -1975,9 +1975,9 @@ struct cmap
         }
       }
 
-      else if (format == 12)
+      інакше якщо (format == 12)
       {
-        if (_can_drop (_,
+        якщо (_can_drop (_,
                        *unicodes_set,
                        base,
                        *unicodes_cache,
@@ -1986,9 +1986,9 @@ struct cmap
           continue;
         c->copy (_, + it | hb_filter (*unicodes_set, hb_first), 12u, base, plan, &format12objidx);
       }
-      else if (format == 14) c->copy (_, it, 14u, base, plan, &format14objidx);
+      інакше якщо (format == 14) c->copy (_, it, 14u, base, plan, &format14objidx);
 #ifndef HB_NO_BEYOND_64K
-      else if (format == 15) c->copy (_, it, 15u, base, plan, &format15objidx);
+      інакше якщо (format == 15) c->copy (_, it, 15u, base, plan, &format15objidx);
 #endif
     }
         unsigned length = c->length ();
@@ -1998,7 +1998,7 @@ struct cmap
                         HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
     // Fail if format 4 was dropped and there is no cmap12.
-    return !drop_format_4 || format12objidx;
+    повернути !drop_format_4 || format12objidx;
   }
 
   template<typename Iterator, typename EncodingRecordIterator,
@@ -2012,29 +2012,29 @@ struct cmap
                   Iterator subset_unicodes,
                   EncodingRecordIterator encoding_records)
   {
-    for (auto cp : + subset_unicodes | hb_filter (cmap12_unicodes))
+    для (auto cp : + subset_unicodes | hb_filter (cmap12_unicodes))
     {
-      if (cp >= 0x10000) return false;
+      якщо (cp >= 0x10000) повернути false;
     }
 
     unsigned target_platform;
     unsigned target_encoding;
     unsigned target_language = (base+cmap12.subtable).get_language ();
 
-    if (cmap12.platformID == 0 && cmap12.encodingID == 4)
+    якщо (cmap12.platformID == 0 && cmap12.encodingID == 4)
     {
       target_platform = 0;
       target_encoding = 3;
-    } else if (cmap12.platformID == 3 && cmap12.encodingID == 10) {
+    } інакше якщо (cmap12.platformID == 3 && cmap12.encodingID == 10) {
       target_platform = 3;
       target_encoding = 1;
-    } else {
-      return false;
+    } інакше {
+      повернути false;
     }
 
-    for (const auto& _ : encoding_records)
+    для (const auto& _ : encoding_records)
     {
-      if (_.platformID != target_platform
+      якщо (_.platformID != target_platform
           || _.encodingID != target_encoding
           || (base+_.subtable).get_language() != target_language)
         continue;
@@ -2043,17 +2043,17 @@ struct cmap
 
       auto cmap12 = + subset_unicodes | hb_filter (cmap12_unicodes);
       auto sibling = + subset_unicodes | hb_filter (*sibling_unicodes);
-      for (; cmap12 && sibling; cmap12++, sibling++)
+      для (; cmap12 && sibling; cmap12++, sibling++)
       {
         unsigned a = *cmap12;
         unsigned b = *sibling;
-        if (a != b) return false;
+        якщо (a != b) повернути false;
       }
 
-      return !cmap12 && !sibling;
+      повернути !cmap12 && !sibling;
     }
 
-    return false;
+    повернути false;
   }
 
   void closure_glyphs (const hb_set_t      *unicodes,
@@ -2068,7 +2068,7 @@ struct cmap
   }
 
   bool subset (hb_subset_context_t *c) const
-  { return subset (c, false); }
+  { повернути subset (c, false); }
 
   bool subset (hb_subset_context_t *c, bool is_dmap) const
   {
@@ -2079,34 +2079,34 @@ struct cmap
     auto encodingrec_iter =
     + hb_iter (encodingRecord)
     | hb_filter ([&](const EncodingRecord& _) {
-      return cmap::filter_encoding_records_for_subset (this, _);
+      повернути cmap::filter_encoding_records_for_subset (this, _);
     })
     ;
 
-    if (unlikely (!encodingrec_iter.len ())) return_trace (false);
+    якщо (unlikely (!encodingrec_iter.len ())) return_trace (false);
 
     const EncodingRecord *unicode_bmp= nullptr, *unicode_ucs4 = nullptr, *ms_bmp = nullptr, *ms_ucs4 = nullptr;
     bool has_format12 = false;
 
-    for (const EncodingRecord& _ : encodingrec_iter)
+    для (const EncodingRecord& _ : encodingrec_iter)
     {
       unsigned format = (this + _.subtable).u.format.v;
-      if (format == 12) has_format12 = true;
+      якщо (format == 12) has_format12 = true;
 
       const EncodingRecord *table = std::addressof (_);
-      if      (_.platformID == 0 && _.encodingID ==  3) unicode_bmp = table;
-      else if (_.platformID == 0 && _.encodingID ==  4) unicode_ucs4 = table;
-      else if (_.platformID == 3 && _.encodingID ==  1) ms_bmp = table;
-      else if (_.platformID == 3 && _.encodingID == 10) ms_ucs4 = table;
+      якщо      (_.platformID == 0 && _.encodingID ==  3) unicode_bmp = table;
+      інакше якщо (_.platformID == 0 && _.encodingID ==  4) unicode_ucs4 = table;
+      інакше якщо (_.platformID == 3 && _.encodingID ==  1) ms_bmp = table;
+      інакше якщо (_.platformID == 3 && _.encodingID == 10) ms_ucs4 = table;
     }
 
-    if (unlikely (!is_dmap && !has_format12 && !unicode_bmp && !ms_bmp)) return_trace (false);
-    if (unlikely (!is_dmap && has_format12 && (!unicode_ucs4 && !ms_ucs4))) return_trace (false);
+    якщо (unlikely (!is_dmap && !has_format12 && !unicode_bmp && !ms_bmp)) return_trace (false);
+    якщо (unlikely (!is_dmap && has_format12 && (!unicode_ucs4 && !ms_ucs4))) return_trace (false);
 
     auto it =
     + c->plan->unicode_to_new_gid_list.iter ()
     | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return (_.second != HB_MAP_VALUE_INVALID); })
+		 { повернути (_.second != HB_MAP_VALUE_INVALID); })
     ;
 
     return_trace (cmap_prime->serialize (c->serializer,
@@ -2122,49 +2122,49 @@ struct cmap
 					  bool *mac = nullptr,
 					  bool *macroman = nullptr) const
   {
-    if (symbol) *symbol = false;
-    if (mac) *mac = false;
-    if (macroman) *macroman = false;
+    якщо (symbol) *symbol = false;
+    якщо (mac) *mac = false;
+    якщо (macroman) *macroman = false;
 
     const CmapSubtable *subtable;
 
     /* Symbol subtable.
      * Prefer symbol if available.
      * https://github.com/harfbuzz/harfbuzz/issues/1918 */
-    if ((subtable = this->find_subtable (3, 0)))
+    якщо ((subtable = this->find_subtable (3, 0)))
     {
-      if (symbol) *symbol = true;
-      return subtable;
+      якщо (symbol) *symbol = true;
+      повернути subtable;
     }
 
     /* 32-bit subtables. */
-    if ((subtable = this->find_subtable (3, 10))) return subtable;
-    if ((subtable = this->find_subtable (0, 6))) return subtable;
-    if ((subtable = this->find_subtable (0, 4))) return subtable;
+    якщо ((subtable = this->find_subtable (3, 10))) повернути subtable;
+    якщо ((subtable = this->find_subtable (0, 6))) повернути subtable;
+    якщо ((subtable = this->find_subtable (0, 4))) повернути subtable;
 
     /* 16-bit subtables. */
-    if ((subtable = this->find_subtable (3, 1))) return subtable;
-    if ((subtable = this->find_subtable (0, 3))) return subtable;
-    if ((subtable = this->find_subtable (0, 2))) return subtable;
-    if ((subtable = this->find_subtable (0, 1))) return subtable;
-    if ((subtable = this->find_subtable (0, 0))) return subtable;
+    якщо ((subtable = this->find_subtable (3, 1))) повернути subtable;
+    якщо ((subtable = this->find_subtable (0, 3))) повернути subtable;
+    якщо ((subtable = this->find_subtable (0, 2))) повернути subtable;
+    якщо ((subtable = this->find_subtable (0, 1))) повернути subtable;
+    якщо ((subtable = this->find_subtable (0, 0))) повернути subtable;
 
     /* MacRoman subtable. */
-    if ((subtable = this->find_subtable (1, 0)))
+    якщо ((subtable = this->find_subtable (1, 0)))
     {
-      if (mac) *mac = true;
-      if (macroman) *macroman = true;
-      return subtable;
+      якщо (mac) *mac = true;
+      якщо (macroman) *macroman = true;
+      повернути subtable;
     }
     /* Any other Mac subtable; we just map ASCII for these. */
-    if ((subtable = this->find_subtable (1, 0xFFFF)))
+    якщо ((subtable = this->find_subtable (1, 0xFFFF)))
     {
-      if (mac) *mac = true;
-      return subtable;
+      якщо (mac) *mac = true;
+      повернути subtable;
     }
 
     /* Meh. */
-    return &Null (CmapSubtable);
+    повернути &Null (CmapSubtable);
   }
 
   struct accelerator_t
@@ -2175,24 +2175,24 @@ struct cmap
     accelerator_t (hb_face_t *face, hb_tag_t table_tag = cmap::tableTag)
     {
       this->table = hb_sanitize_context_t ().reference_table<cmap> (face, table_tag);
-      if (!this->table.get_length ())
-	return;
+      якщо (!this->table.get_length ())
+	повернути;
 
       bool symbol, mac, macroman;
       this->subtable = table->find_best_subtable (&symbol, &mac, &macroman);
       this->subtable_uvs = &Null (CmapSubtable);
       {
 	const CmapSubtable *st = table->find_variation_selector_subtable ();
-	if (st)
+	якщо (st)
 	  subtable_uvs = st;
       }
 
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
       cache = (cache_t *) hb_malloc (sizeof (cache_t));
-      if (cache)
+      якщо (cache)
 	new (cache) cache_t ();
-      else
-        return; // Such that get_glyph_funcZ remains null.
+      інакше
+        повернути; // Such that get_glyph_funcZ remains null.
 #endif
 
       this->get_glyph_data = subtable;
@@ -2207,52 +2207,52 @@ struct cmap
 	this->get_glyph_data = &this->format4_accel;
 	this->get_glyph_funcZ = func;
       };
-      if (unlikely (symbol))
+      якщо (unlikely (symbol))
       {
 	switch ((unsigned) face->table.OS2->get_font_page ()) {
 	case OS2::font_page_t::FONT_PAGE_NONE:
-	  if (is_format4)
+	  якщо (is_format4)
 	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_symbol_pua_map>);
-	  else
+	  інакше
 	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_symbol_pua_map>;
 	  break;
 #ifndef HB_NO_OT_SHAPER_ARABIC_FALLBACK
 	case OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
-	  if (is_format4)
+	  якщо (is_format4)
 	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
-	  else
+	  інакше
 	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_simp_map>;
 	  break;
 	case OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
-	  if (is_format4)
+	  якщо (is_format4)
 	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
-	  else
+	  інакше
 	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_trad_map>;
 	  break;
 #endif
 	default:
-	  if (is_format4)
+	  якщо (is_format4)
 	    set_format4_getter (get_glyph_from<CmapSubtableFormat4::accelerator_t>);
-	  else
+	  інакше
 	    this->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
 	  break;
 	}
       }
-      else if (unlikely (macroman))
+      інакше якщо (unlikely (macroman))
       {
-	if (is_format4)
+	якщо (is_format4)
 	  set_format4_getter (get_glyph_from_macroman<CmapSubtableFormat4::accelerator_t>);
-	else
+	інакше
 	  this->get_glyph_funcZ = get_glyph_from_macroman<CmapSubtable>;
       }
-      else if (unlikely (mac))
+      інакше якщо (unlikely (mac))
       {
-	if (is_format4)
+	якщо (is_format4)
 	  set_format4_getter (get_glyph_from_ascii<CmapSubtableFormat4::accelerator_t>);
-	else
+	інакше
 	  this->get_glyph_funcZ = get_glyph_from_ascii<CmapSubtable>;
       }
-      else
+      інакше
 #endif
       {
 	switch (subtable->u.format.v) {
@@ -2289,46 +2289,46 @@ struct cmap
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
       // cache is always non-null if we have a get_glyph_funcZ
       unsigned v;
-      if (cache->get (unicode, &v))
+      якщо (cache->get (unicode, &v))
       {
         *glyph = v;
-	return true;
+	повернути true;
       }
 #endif
       bool ret  = this->get_glyph_funcZ (this->get_glyph_data, unicode, glyph);
 
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
-      if (ret)
+      якщо (ret)
         cache->set (unicode, *glyph);
 #endif
 
-      return ret;
+      повернути ret;
     }
 
     bool get_nominal_glyph (hb_codepoint_t  unicode,
 			    hb_codepoint_t *glyph) const
     {
-      if (unlikely (!this->get_glyph_funcZ)) return false;
-      return _cached_get (unicode, glyph);
+      якщо (unlikely (!this->get_glyph_funcZ)) повернути false;
+      повернути _cached_get (unicode, glyph);
     }
 
-    unsigned int get_nominal_glyphs (unsigned int count,
+    unsigned ціле get_nominal_glyphs (unsigned ціле count,
 				     const hb_codepoint_t *first_unicode,
-				     unsigned int unicode_stride,
+				     unsigned ціле unicode_stride,
 				     hb_codepoint_t *first_glyph,
-				     unsigned int glyph_stride) const
+				     unsigned ціле glyph_stride) const
     {
-      if (unlikely (!this->get_glyph_funcZ)) return 0;
+      якщо (unlikely (!this->get_glyph_funcZ)) повернути 0;
 
-      unsigned int done;
-      for (done = 0;
+      unsigned ціле done;
+      для (done = 0;
 	   done < count && _cached_get (*first_unicode, first_glyph);
 	   done++)
       {
 	first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
 	first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       }
-      return done;
+      повернути done;
     }
 
     bool get_variation_glyph (hb_codepoint_t  unicode,
@@ -2337,26 +2337,26 @@ struct cmap
     {
       switch (get_glyph_variant (unicode, variation_selector, glyph))
       {
-	case GLYPH_VARIANT_NOT_FOUND:	return false;
-	case GLYPH_VARIANT_FOUND:	return true;
+	case GLYPH_VARIANT_NOT_FOUND:	повернути false;
+	case GLYPH_VARIANT_FOUND:	повернути true;
 	case GLYPH_VARIANT_USE_DEFAULT:	break;
       }
 
-      return get_nominal_glyph (unicode, glyph);
+      повернути get_nominal_glyph (unicode, glyph);
     }
 
     glyph_variant_t get_glyph_variant (hb_codepoint_t  unicode,
 				       hb_codepoint_t  variation_selector,
 				       hb_codepoint_t *glyph) const
     {
-      return this->subtable_uvs->get_glyph_variant (unicode,
+      повернути this->subtable_uvs->get_glyph_variant (unicode,
 						    variation_selector,
 						    glyph);
     }
 
-    bool has_data () const { return table.get_length (); }
+    bool has_data () const { повернути table.get_length (); }
 
-    void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+    void collect_unicodes (hb_set_t *out, unsigned ціле num_glyphs) const
     { subtable->collect_unicodes (out, num_glyphs, get_subtable_data_size (subtable)); }
     void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
 			  unsigned num_glyphs = UINT_MAX) const
@@ -2379,7 +2379,7 @@ struct cmap
 					    hb_codepoint_t *glyph)
     {
       const Type *typed_obj = (const Type *) obj;
-      return typed_obj->get_glyph (codepoint, glyph);
+      повернути typed_obj->get_glyph (codepoint, glyph);
     }
 
     template <typename Type, hb_pua_remap_func_t remap>
@@ -2388,13 +2388,13 @@ struct cmap
 						   hb_codepoint_t *glyph)
     {
       const Type *typed_obj = (const Type *) obj;
-      if (likely (typed_obj->get_glyph (codepoint, glyph)))
-	return true;
+      якщо (likely (typed_obj->get_glyph (codepoint, glyph)))
+	повернути true;
 
-      if (hb_codepoint_t c = remap (codepoint))
-	return typed_obj->get_glyph (c, glyph);
+      якщо (hb_codepoint_t c = remap (codepoint))
+	повернути typed_obj->get_glyph (c, glyph);
 
-      return false;
+      повернути false;
     }
 
     template <typename Type>
@@ -2403,7 +2403,7 @@ struct cmap
 						  hb_codepoint_t *glyph)
     {
       const Type *typed_obj = (const Type *) obj;
-      return codepoint < 0x80 && typed_obj->get_glyph (codepoint, glyph);
+      повернути codepoint < 0x80 && typed_obj->get_glyph (codepoint, glyph);
     }
 
     template <typename Type>
@@ -2411,27 +2411,27 @@ struct cmap
 						     hb_codepoint_t codepoint,
 						     hb_codepoint_t *glyph)
     {
-      if (get_glyph_from_ascii<Type> (obj, codepoint, glyph))
-	return true;
+      якщо (get_glyph_from_ascii<Type> (obj, codepoint, glyph))
+	повернути true;
 
       const Type *typed_obj = (const Type *) obj;
       unsigned c = unicode_to_macroman (codepoint);
-      return c && typed_obj->get_glyph (c, glyph);
+      повернути c && typed_obj->get_glyph (c, glyph);
     }
 
-    unsigned int get_subtable_data_size (const CmapSubtable *subtable) const
+    unsigned ціле get_subtable_data_size (const CmapSubtable *subtable) const
     {
-      unsigned int table_length = this->table.get_length ();
+      unsigned ціле table_length = this->table.get_length ();
       uintptr_t table_start = (uintptr_t) (const void *) this->table.get ();
       uintptr_t subtable_addr = (uintptr_t) (const void *) subtable;
-      if (unlikely (subtable_addr < table_start))
-	return 0;
+      якщо (unlikely (subtable_addr < table_start))
+	повернути 0;
 
       uintptr_t subtable_offset = subtable_addr - table_start;
-      if (unlikely (subtable_offset >= table_length))
-	return 0;
+      якщо (unlikely (subtable_offset >= table_length))
+	повернути 0;
 
-      return table_length - (unsigned int) subtable_offset;
+      повернути table_length - (unsigned ціле) subtable_offset;
     }
 
     private:
@@ -2453,37 +2453,37 @@ struct cmap
 
   protected:
 
-  const CmapSubtable *find_subtable (unsigned int platform_id,
-				     unsigned int encoding_id) const
+  const CmapSubtable *find_subtable (unsigned ціле platform_id,
+				     unsigned ціле encoding_id) const
   {
     EncodingRecord key;
     key.platformID = platform_id;
     key.encodingID = encoding_id;
 
     const EncodingRecord &result = encodingRecord.bsearch (key);
-    if (!result.subtable)
-      return nullptr;
+    якщо (!result.subtable)
+      повернути nullptr;
 
-    return &(this+result.subtable);
+    повернути &(this+result.subtable);
   }
 
   const CmapSubtable *find_variation_selector_subtable () const
   {
     const CmapSubtable *format14 = nullptr;
-    for (const EncodingRecord& record : encodingRecord)
+    для (const EncodingRecord& record : encodingRecord)
     {
-      if (record.platformID != 0 || record.encodingID != 5)
+      якщо (record.platformID != 0 || record.encodingID != 5)
 	continue;
 
       const CmapSubtable *subtable = &(this+record.subtable);
 #ifndef HB_NO_BEYOND_64K
-      if (subtable->u.format.v == 15)
-	return subtable;
+      якщо (subtable->u.format.v == 15)
+	повернути subtable;
 #endif
-      if (subtable->u.format.v == 14)
+      якщо (subtable->u.format.v == 14)
 	format14 = subtable;
     }
-    return format14;
+    повернути format14;
   }
 
   public:
@@ -2502,7 +2502,7 @@ struct cmap
   static bool filter_encoding_records_for_subset(const cmap* cmap,
                                                  const EncodingRecord& _)
   {
-    return
+    повернути
         (_.platformID == 0 && _.encodingID == 3) ||
         (_.platformID == 0 && _.encodingID == 4) ||
         (_.platformID == 3 && _.encodingID == 1) ||
@@ -2523,7 +2523,7 @@ struct DMAP : cmap
   static constexpr hb_tag_t tableTag = HB_OT_TAG_DMAP;
 
   bool subset (hb_subset_context_t *c) const
-  { return cmap::subset (c, true); }
+  { повернути cmap::subset (c, true); }
 };
 
 struct cmap_accelerator_t
@@ -2536,30 +2536,30 @@ struct cmap_accelerator_t
   bool get_nominal_glyph (hb_codepoint_t  unicode,
 			  hb_codepoint_t *glyph) const
   {
-    return dmap.get_nominal_glyph (unicode, glyph) ||
+    повернути dmap.get_nominal_glyph (unicode, glyph) ||
 	   base.get_nominal_glyph (unicode, glyph);
   }
 
-  unsigned int get_nominal_glyphs (unsigned int count,
+  unsigned ціле get_nominal_glyphs (unsigned ціле count,
 				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+				   unsigned ціле unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride) const
+				   unsigned ціле glyph_stride) const
   {
-    if (likely (!dmap.has_data ()))
-      return base.get_nominal_glyphs (count,
+    якщо (likely (!dmap.has_data ()))
+      повернути base.get_nominal_glyphs (count,
 				      first_unicode, unicode_stride,
 				      first_glyph, glyph_stride);
 
-    unsigned int done;
-    for (done = 0;
+    unsigned ціле done;
+    для (done = 0;
 	 done < count && get_nominal_glyph (*first_unicode, first_glyph);
 	 done++)
     {
       first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return done;
+    повернути done;
   }
 
   bool get_variation_glyph (hb_codepoint_t  unicode,
@@ -2569,20 +2569,20 @@ struct cmap_accelerator_t
     glyph_variant_t result = dmap.get_glyph_variant (unicode,
 						     variation_selector,
 						     glyph);
-    if (result == GLYPH_VARIANT_NOT_FOUND)
+    якщо (result == GLYPH_VARIANT_NOT_FOUND)
       result = base.get_glyph_variant (unicode, variation_selector, glyph);
 
     switch (result)
     {
-      case GLYPH_VARIANT_NOT_FOUND: return false;
-      case GLYPH_VARIANT_FOUND: return true;
+      case GLYPH_VARIANT_NOT_FOUND: повернути false;
+      case GLYPH_VARIANT_FOUND: повернути true;
       case GLYPH_VARIANT_USE_DEFAULT: break;
     }
 
-    return get_nominal_glyph (unicode, glyph);
+    повернути get_nominal_glyph (unicode, glyph);
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  void collect_unicodes (hb_set_t *out, unsigned ціле num_glyphs) const
   {
     base.collect_unicodes (out, num_glyphs);
     dmap.collect_unicodes (out, num_glyphs);
@@ -2611,28 +2611,28 @@ struct cmap_accelerator_t
   void closure_glyphs (const hb_set_t *unicodes,
 		       hb_set_t       *glyphset) const
   {
-    if (likely (!dmap.has_data ()))
+    якщо (likely (!dmap.has_data ()))
     {
       base.table->closure_glyphs (unicodes, glyphset);
-      return;
+      повернути;
     }
 
     hb_set_t variation_selectors;
     collect_variation_selectors (&variation_selectors);
-    for (hb_codepoint_t variation_selector : variation_selectors)
+    для (hb_codepoint_t variation_selector : variation_selectors)
     {
-      if (!unicodes->has (variation_selector))
+      якщо (!unicodes->has (variation_selector))
 	continue;
 
       hb_set_t variation_unicodes;
       collect_variation_unicodes (variation_selector, &variation_unicodes);
-      for (hb_codepoint_t unicode : variation_unicodes)
+      для (hb_codepoint_t unicode : variation_unicodes)
       {
-	if (!unicodes->has (unicode))
+	якщо (!unicodes->has (unicode))
 	  continue;
 
 	hb_codepoint_t glyph;
-	if (get_variation_glyph (unicode, variation_selector, &glyph))
+	якщо (get_variation_glyph (unicode, variation_selector, &glyph))
 	  glyphset->add (glyph);
       }
     }
