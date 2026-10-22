@@ -27,7 +27,7 @@
 #ifndef HB_OT_HDMX_TABLE_HH
 #define HB_OT_HDMX_TABLE_HH
 
-#include "hb-open-type.hh"
+#ضمن "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
@@ -36,138 +36,138 @@
 #define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
 
 
-namespace OT {
+نطاق OT {
 
 
-struct DeviceRecord
+بنية DeviceRecord
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  ساكن size_t get_size (unsigned كدي)
+  { أرجع hb_ceil_to_4 (hb_unsigned_mul_add_saturate (كدي, HBUINT8::static_size, min_size)); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقي serialize (hb_serialize_context_t *c,
 		  unsigned pixelSize,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  ثابت hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned لمب_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    إذا (unlikely (!c->extend (هذا, لمب_glyphs)))  return_trace (خطأ);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    هذا->pixelSize = pixelSize;
+    هذا->maxWidth =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
+    لكل (auto &_ : new_to_old_gid_list)
       widthsZ[_.first] = *it++;
 
     return_trace (true);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  منطقي sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (هذا, sizeDeviceRecord)));
   }
 
   HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
   HBUINT8			maxWidth;	/* Maximum width. */
   UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
+  عام:
   DEFINE_SIZE_UNBOUNDED (2);
 };
 
 
-struct hdmx
+بنية hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_size () ثابت
+  { أرجع hb_unsigned_mul_add_saturate (لمب_Records, sizeDeviceRecord, min_size); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقي serialize (hb_serialize_context_t *c,
 		  unsigned version,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<ثابت hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned لمب_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    إذا (unlikely (!c->extend_min ((*هذا))))  return_trace (خطأ);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    هذا->version = version;
+    هذا->لمب_Records = it.len ();
+    هذا->sizeDeviceRecord = DeviceRecord::get_size (لمب_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    لكل (ثابت hb_item_type<Iterator>& _ : +it)
+      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, لمب_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    auto *hdmx_فرك = c->serializer->start_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
+    unsigned لمب_شغرو_glyphs = get_لمب_glyphs ();
     auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    + hb_range ((unsigned) لمب_Records)
+    | hb_map ([c, لمب_شغرو_glyphs, هذا] (unsigned _)
 	{
-	  const DeviceRecord *device_record =
+	  ثابت DeviceRecord *device_record =
 	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
 					   _ * sizeDeviceRecord);
 	  auto row =
 	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	    | hb_map ([لمب_شغرو_glyphs, device_record] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			أرجع device_record->widthsZ.as_array (لمب_شغرو_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  أرجع hb_pair ((unsigned) device_record->pixelSize, +row);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
+    hdmx_فرك->serialize (c->serializer, version, it,
 			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
+			   c->plan->لمب_output_glyphs ());
     return_trace (true);
   }
 
-  unsigned get_num_glyphs () const
+  unsigned get_لمب_glyphs () ثابت
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    أرجع sizeDeviceRecord - DeviceRecord::min_size;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
+		  !hb_unsigned_mul_overflows (لمب_Records, sizeDeviceRecord) &&
+                  min_size + لمب_Records * sizeDeviceRecord > لمب_Records * sizeDeviceRecord &&
 		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  c->check_range (هذا, get_size ()));
   }
 
-  protected:
+  محمي:
   HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
+  HBUINT16	لمب_Records;	/* Number of device records. */
   HBUINT32	sizeDeviceRecord;
 				/* Size of a device record, 32-bit aligned. */
   DeviceRecord	firstDeviceRecord;
 				/* Array of device records. */
-  public:
+  عام:
   DEFINE_SIZE_MIN (8);
 };
 

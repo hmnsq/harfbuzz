@@ -26,100 +26,100 @@
 #ifndef HB_CFF_INTERP_CS_COMMON_HH
 #define HB_CFF_INTERP_CS_COMMON_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-common.hh"
+#ضمن "hb.hh"
+#ضمن "hb-cff-interp-common.hh"
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+using نطاق OT;
 
-enum cs_type_t {
+تعداد cs_type_t {
   CSType_CharString,
   CSType_GlobalSubr,
   CSType_LocalSubr
 };
 
-struct call_context_t
+بنية call_context_t
 {
-  void init (const byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned int subr_num_=0)
+  فراغ init (ثابت byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned صحيح subr_لمب=0)
   {
     str_ref = substr_;
     type = type_;
-    subr_num = subr_num_;
+    subr_لمب_2 = subr_لمب;
   }
 
-  void fini () {}
+  فراغ fini () {}
 
   byte_str_ref_t  str_ref;
   cs_type_t	  type;
-  unsigned int    subr_num;
+  unsigned صحيح    subr_لمب_2;
 };
 
 /* call stack */
-const unsigned int kMaxCallLimit = 10;
-struct call_stack_t : cff_stack_t<call_context_t, kMaxCallLimit> {};
+ثابت unsigned صحيح kMaxCallLimit = 10;
+بنية call_تر_t : cff_تر_t<call_context_t, kMaxCallLimit> {};
 
 template <typename SUBRS>
-struct biased_subrs_t
+بنية biased_subrs_t
 {
-  void init (const SUBRS *subrs_)
+  فراغ init (ثابت SUBRS *subrs_)
   {
     subrs = subrs_;
-    unsigned int  nSubrs = get_count ();
-    if (nSubrs < 1240)
+    unsigned صحيح  nSubrs = get_كدي ();
+    إذا (nSubrs < 1240)
       bias = 107;
-    else if (nSubrs < 33900)
+    وإلا إذا (nSubrs < 33900)
       bias = 1131;
-    else
+    وإلا
       bias = 32768;
   }
 
-  void fini () {}
+  فراغ fini () {}
 
-  unsigned int get_count () const { return subrs ? subrs->count : 0; }
-  unsigned int get_bias () const  { return bias; }
+  unsigned صحيح get_كدي () ثابت { أرجع subrs ? subrs->كدي : 0; }
+  unsigned صحيح get_bias () ثابت  { أرجع bias; }
 
-  hb_ubytes_t operator [] (unsigned int index) const
+  hb_ubytes_t operator [] (unsigned صحيح index) ثابت
   {
-    if (unlikely (!subrs || index >= subrs->count))
-      return hb_ubytes_t ();
-    else
-      return (*subrs)[index];
+    إذا (unlikely (!subrs || index >= subrs->كدي))
+      أرجع hb_ubytes_t ();
+    وإلا
+      أرجع (*subrs)[index];
   }
 
-  protected:
-  unsigned int  bias;
-  const SUBRS   *subrs;
+  محمي:
+  unsigned صحيح  bias;
+  ثابت SUBRS   *subrs;
 };
 
-struct point_t
+بنية point_t
 {
-  void set_int (int _x, int _y)
+  فراغ set_int (صحيح _x, صحيح _y)
   {
     x.set_int (_x);
     y.set_int (_y);
   }
 
-  void move_x (const number_t &dx) { x += dx; }
-  void move_y (const number_t &dy) { y += dy; }
-  void move (const number_t &dx, const number_t &dy) { move_x (dx); move_y (dy); }
-  void move (const point_t &d) { move_x (d.x); move_y (d.y); }
+  فراغ move_x (ثابت لمب_t &dx) { x += dx; }
+  فراغ move_y (ثابت لمب_t &dy) { y += dy; }
+  فراغ move (ثابت لمب_t &dx, ثابت لمب_t &dy) { move_x (dx); move_y (dy); }
+  فراغ move (ثابت point_t &d) { move_x (d.x); move_y (d.y); }
 
-  number_t  x;
-  number_t  y;
+  لمب_t  x;
+  لمب_t  y;
 };
 
 template <typename ARG, typename SUBRS>
-struct cs_interp_env_t : interp_env_t<ARG>
+بنية cs_interp_env_t : interp_env_t<ARG>
 {
-  cs_interp_env_t (const hb_ubytes_t &str, const SUBRS *globalSubrs_, const SUBRS *localSubrs_) :
+  cs_interp_env_t (ثابت hb_ubytes_t &str, ثابت SUBRS *globalSubrs_, ثابت SUBRS *localSubrs_) :
     interp_env_t<ARG> (str)
   {
     context.init (str, CSType_CharString);
     seen_moveto = true;
-    seen_hintmask = false;
-    hstem_count = 0;
-    vstem_count = 0;
+    seen_hintmask = خطأ;
+    hstem_كدي = 0;
+    vstem_كدي = 0;
     hintmask_size = 0;
     budget = nullptr;
     pt.set_int (0, 0);
@@ -132,408 +132,408 @@ struct cs_interp_env_t : interp_env_t<ARG>
     localSubrs.fini ();
   }
 
-  bool in_error () const
+  منطقي in_error () ثابت
   {
-    return callStack.in_error () || SUPER::in_error ();
+    أرجع call_تر.in_error () || SUPER::in_error ();
   }
 
-  bool pop_subr_num (const biased_subrs_t<SUBRS>& biasedSubrs, unsigned int &subr_num)
+  منطقي چرو_subr_لمب (ثابت biased_subrs_t<SUBRS>& biasedSubrs, unsigned صحيح &subr_لمب_2)
   {
-    subr_num = 0;
-    int n = SUPER::argStack.pop_int ();
+    subr_لمب_2 = 0;
+    صحيح n = SUPER::arg_تر.چرو_int ();
     n += biasedSubrs.get_bias ();
-    if (unlikely ((n < 0) || ((unsigned int)n >= biasedSubrs.get_count ())))
-      return false;
+    إذا (unlikely ((n < 0) || ((unsigned صحيح)n >= biasedSubrs.get_كدي ())))
+      أرجع خطأ;
 
-    subr_num = (unsigned int)n;
-    return true;
+    subr_لمب_2 = (unsigned صحيح)n;
+    أرجع true;
   }
 
-  void call_subr (const biased_subrs_t<SUBRS>& biasedSubrs, cs_type_t type)
+  فراغ call_subr (ثابت biased_subrs_t<SUBRS>& biasedSubrs, cs_type_t type)
   {
-    unsigned int subr_num = 0;
+    unsigned صحيح subr_لمب_2 = 0;
 
-    if (unlikely (!pop_subr_num (biasedSubrs, subr_num)
-		 || callStack.get_count () >= kMaxCallLimit))
+    إذا (unlikely (!چرو_subr_لمب (biasedSubrs, subr_لمب_2)
+		 || call_تر.get_كدي () >= kMaxCallLimit))
     {
       SUPER::set_error ();
-      return;
+      أرجع;
     }
     context.str_ref = SUPER::str_ref;
-    callStack.push (context);
+    call_تر.push (context);
 
-    context.init ( biasedSubrs[subr_num], type, subr_num);
+    context.init ( biasedSubrs[subr_لمب_2], type, subr_لمب_2);
     SUPER::str_ref = context.str_ref;
   }
 
-  void return_from_subr ()
+  فراغ return_from_subr ()
   {
-    if (unlikely (SUPER::str_ref.in_error ()))
+    إذا (unlikely (SUPER::str_ref.in_error ()))
       SUPER::set_error ();
-    context = callStack.pop ();
+    context = call_تر.چرو ();
     SUPER::str_ref = context.str_ref;
   }
 
-  void determine_hintmask_size ()
+  فراغ determine_hintmask_size ()
   {
-    if (!seen_hintmask)
+    إذا (!seen_hintmask)
     {
-      vstem_count += SUPER::argStack.get_count() / 2;
-      hintmask_size = (hstem_count + vstem_count + 7) >> 3;
+      vstem_كدي += SUPER::arg_تر.get_كدي() / 2;
+      hintmask_size = (hstem_كدي + vstem_كدي + 7) >> 3;
       seen_hintmask = true;
     }
   }
 
-  void set_endchar (bool endchar_flag_) { endchar_flag = endchar_flag_; }
-  bool is_endchar () const { return endchar_flag; }
+  فراغ set_endchar (منطقي endchar_flag_) { endchar_flag = endchar_flag_; }
+  منطقي is_endchar () ثابت { أرجع endchar_flag; }
 
-  void set_budget (int64_t *budget_) { budget = budget_; }
-  int64_t *get_budget () const { return budget; }
-  bool spend_budget (unsigned int cost, unsigned int mult = 1)
-  { return !budget || hb_budget_spend (*budget, cost, mult); }
+  فراغ set_budget (int64_t *budget_) { budget = budget_; }
+  int64_t *get_budget () ثابت { أرجع budget; }
+  منطقي spend_budget (unsigned صحيح cost, unsigned صحيح mult = 1)
+  { أرجع !budget || hb_budget_spend (*budget, cost, mult); }
 
-  const number_t &get_x () const { return pt.x; }
-  const number_t &get_y () const { return pt.y; }
-  const point_t &get_pt () const { return pt; }
+  ثابت لمب_t &get_x () ثابت { أرجع pt.x; }
+  ثابت لمب_t &get_y () ثابت { أرجع pt.y; }
+  ثابت point_t &get_pt () ثابت { أرجع pt; }
 
-  void moveto (const point_t &pt_ ) { pt = pt_; }
+  فراغ moveto (ثابت point_t &pt_ ) { pt = pt_; }
 
-  public:
+  عام:
   call_context_t   context;
-  bool	  endchar_flag;
-  bool	  seen_moveto;
-  bool	  seen_hintmask;
+  منطقي	  endchar_flag;
+  منطقي	  seen_moveto;
+  منطقي	  seen_hintmask;
 
-  unsigned int  hstem_count;
-  unsigned int  vstem_count;
-  unsigned int  hintmask_size;
+  unsigned صحيح  hstem_كدي;
+  unsigned صحيح  vstem_كدي;
+  unsigned صحيح  hintmask_size;
   int64_t	*budget;
-  call_stack_t	callStack;
+  call_تر_t	call_تر;
   biased_subrs_t<SUBRS>   globalSubrs;
   biased_subrs_t<SUBRS>   localSubrs;
 
-  private:
+  خاص:
   point_t	 pt;
 
-  typedef interp_env_t<ARG> SUPER;
+  تعريفنوع interp_env_t<ARG> SUPER;
 };
 
 template <typename ENV, typename PARAM>
-struct path_procs_null_t
+بنية path_procs_null_t
 {
-  static void rmoveto (ENV &env, PARAM& param) {}
-  static void hmoveto (ENV &env, PARAM& param) {}
-  static void vmoveto (ENV &env, PARAM& param) {}
-  static void rlineto (ENV &env, PARAM& param) {}
-  static void hlineto (ENV &env, PARAM& param) {}
-  static void vlineto (ENV &env, PARAM& param) {}
-  static void rrcurveto (ENV &env, PARAM& param) {}
-  static void rcurveline (ENV &env, PARAM& param) {}
-  static void rlinecurve (ENV &env, PARAM& param) {}
-  static void vvcurveto (ENV &env, PARAM& param) {}
-  static void hhcurveto (ENV &env, PARAM& param) {}
-  static void vhcurveto (ENV &env, PARAM& param) {}
-  static void hvcurveto (ENV &env, PARAM& param) {}
-  static void moveto (ENV &env, PARAM& param, const point_t &pt) {}
-  static void line (ENV &env, PARAM& param, const point_t &pt1) {}
-  static void curve (ENV &env, PARAM& param, const point_t &pt1, const point_t &pt2, const point_t &pt3) {}
-  static void hflex (ENV &env, PARAM& param) {}
-  static void flex (ENV &env, PARAM& param) {}
-  static void hflex1 (ENV &env, PARAM& param) {}
-  static void flex1 (ENV &env, PARAM& param) {}
+  ساكن فراغ rmoveto (ENV &env, PARAM& param) {}
+  ساكن فراغ hmoveto (ENV &env, PARAM& param) {}
+  ساكن فراغ vmoveto (ENV &env, PARAM& param) {}
+  ساكن فراغ rlineto (ENV &env, PARAM& param) {}
+  ساكن فراغ hlineto (ENV &env, PARAM& param) {}
+  ساكن فراغ vlineto (ENV &env, PARAM& param) {}
+  ساكن فراغ rrcurveto (ENV &env, PARAM& param) {}
+  ساكن فراغ rcurveline (ENV &env, PARAM& param) {}
+  ساكن فراغ rlinecurve (ENV &env, PARAM& param) {}
+  ساكن فراغ vvcurveto (ENV &env, PARAM& param) {}
+  ساكن فراغ hhcurveto (ENV &env, PARAM& param) {}
+  ساكن فراغ vhcurveto (ENV &env, PARAM& param) {}
+  ساكن فراغ hvcurveto (ENV &env, PARAM& param) {}
+  ساكن فراغ moveto (ENV &env, PARAM& param, ثابت point_t &pt) {}
+  ساكن فراغ لي (ENV &env, PARAM& param, ثابت point_t &pt1) {}
+  ساكن فراغ curve (ENV &env, PARAM& param, ثابت point_t &pt1, ثابت point_t &pt2, ثابت point_t &pt3) {}
+  ساكن فراغ hflex (ENV &env, PARAM& param) {}
+  ساكن فراغ flex (ENV &env, PARAM& param) {}
+  ساكن فراغ hflex1 (ENV &env, PARAM& param) {}
+  ساكن فراغ flex1 (ENV &env, PARAM& param) {}
 };
 
 template <typename ARG, typename OPSET, typename ENV, typename PARAM, typename PATH=path_procs_null_t<ENV, PARAM>>
-struct cs_opset_t : opset_t<ARG>
+بنية cs_opset_t : opset_t<ARG>
 {
-  static void process_op (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ process_op (op_code_t op, ENV &env, PARAM& param)
   {
-    switch (op) {
+    بدل (op) {
 
-      case OpCode_return:
+      حالة OpCode_return:
 	env.return_from_subr ();
-	break;
-      case OpCode_endchar:
+	اكسر;
+      حالة OpCode_endchar:
 	OPSET::check_width (op, env, param);
 	env.set_endchar (true);
-	OPSET::flush_args_and_op (op, env, param);
-	break;
+	OPSET::flush_حجوجي_and_op (op, env, param);
+	اكسر;
 
-      case OpCode_fixedcs:
-	env.argStack.push_fixed_from_substr (env.str_ref);
-	break;
+      حالة OpCode_fixedcs:
+	env.arg_تر.تور_fixed_from_substr (env.str_ref);
+	اكسر;
 
-      case OpCode_callsubr:
+      حالة OpCode_callsubr:
 	env.call_subr (env.localSubrs, CSType_LocalSubr);
-	break;
+	اكسر;
 
-      case OpCode_callgsubr:
+      حالة OpCode_callgsubr:
 	env.call_subr (env.globalSubrs, CSType_GlobalSubr);
-	break;
+	اكسر;
 
-      case OpCode_hstem:
-      case OpCode_hstemhm:
+      حالة OpCode_hstem:
+      حالة OpCode_hstemhm:
 	OPSET::check_width (op, env, param);
 	OPSET::process_hstem (op, env, param);
-	break;
-      case OpCode_vstem:
-      case OpCode_vstemhm:
+	اكسر;
+      حالة OpCode_vstem:
+      حالة OpCode_vstemhm:
 	OPSET::check_width (op, env, param);
 	OPSET::process_vstem (op, env, param);
-	break;
-      case OpCode_hintmask:
-      case OpCode_cntrmask:
+	اكسر;
+      حالة OpCode_hintmask:
+      حالة OpCode_cntrmask:
 	OPSET::check_width (op, env, param);
 	OPSET::process_hintmask (op, env, param);
-	break;
-      case OpCode_rmoveto:
+	اكسر;
+      حالة OpCode_rmoveto:
 	OPSET::check_width (op, env, param);
 	PATH::rmoveto (env, param);
 	OPSET::process_post_move (op, env, param);
-	break;
-      case OpCode_hmoveto:
+	اكسر;
+      حالة OpCode_hmoveto:
 	OPSET::check_width (op, env, param);
 	PATH::hmoveto (env, param);
 	OPSET::process_post_move (op, env, param);
-	break;
-      case OpCode_vmoveto:
+	اكسر;
+      حالة OpCode_vmoveto:
 	OPSET::check_width (op, env, param);
 	PATH::vmoveto (env, param);
 	OPSET::process_post_move (op, env, param);
-	break;
-      case OpCode_rlineto:
+	اكسر;
+      حالة OpCode_rlineto:
 	PATH::rlineto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_hlineto:
+	اكسر;
+      حالة OpCode_hlineto:
 	PATH::hlineto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_vlineto:
+	اكسر;
+      حالة OpCode_vlineto:
 	PATH::vlineto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_rrcurveto:
+	اكسر;
+      حالة OpCode_rrcurveto:
 	PATH::rrcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_rcurveline:
+	اكسر;
+      حالة OpCode_rcurveline:
 	PATH::rcurveline (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_rlinecurve:
+	اكسر;
+      حالة OpCode_rlinecurve:
 	PATH::rlinecurve (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_vvcurveto:
+	اكسر;
+      حالة OpCode_vvcurveto:
 	PATH::vvcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_hhcurveto:
+	اكسر;
+      حالة OpCode_hhcurveto:
 	PATH::hhcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_vhcurveto:
+	اكسر;
+      حالة OpCode_vhcurveto:
 	PATH::vhcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
-      case OpCode_hvcurveto:
+	اكسر;
+      حالة OpCode_hvcurveto:
 	PATH::hvcurveto (env, param);
 	process_post_path (op, env, param);
-	break;
+	اكسر;
 
-      case OpCode_hflex:
+      حالة OpCode_hflex:
 	PATH::hflex (env, param);
 	OPSET::process_post_flex (op, env, param);
-	break;
+	اكسر;
 
-      case OpCode_flex:
+      حالة OpCode_flex:
 	PATH::flex (env, param);
 	OPSET::process_post_flex (op, env, param);
-	break;
+	اكسر;
 
-      case OpCode_hflex1:
+      حالة OpCode_hflex1:
 	PATH::hflex1 (env, param);
 	OPSET::process_post_flex (op, env, param);
-	break;
+	اكسر;
 
-      case OpCode_flex1:
+      حالة OpCode_flex1:
 	PATH::flex1 (env, param);
 	OPSET::process_post_flex (op, env, param);
-	break;
+	اكسر;
 
-      default:
+      افتراضي:
 	SUPER::process_op (op, env);
-	break;
+	اكسر;
     }
   }
 
-  static void process_hstem (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ process_hstem (op_code_t op, ENV &env, PARAM& param)
   {
-    env.hstem_count += env.argStack.get_count () / 2;
-    OPSET::flush_args_and_op (op, env, param);
+    env.hstem_كدي += env.arg_تر.get_كدي () / 2;
+    OPSET::flush_حجوجي_and_op (op, env, param);
   }
 
-  static void process_vstem (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ process_vstem (op_code_t op, ENV &env, PARAM& param)
   {
-    env.vstem_count += env.argStack.get_count () / 2;
-    OPSET::flush_args_and_op (op, env, param);
+    env.vstem_كدي += env.arg_تر.get_كدي () / 2;
+    OPSET::flush_حجوجي_and_op (op, env, param);
   }
 
-  static void process_hintmask (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ process_hintmask (op_code_t op, ENV &env, PARAM& param)
   {
     env.determine_hintmask_size ();
-    if (likely (env.str_ref.avail (env.hintmask_size)))
+    إذا (likely (env.str_ref.avail (env.hintmask_size)))
     {
       OPSET::flush_hintmask (op, env, param);
       env.str_ref.inc (env.hintmask_size);
     }
   }
 
-  static void process_post_flex (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ process_post_flex (op_code_t op, ENV &env, PARAM& param)
   {
-    OPSET::flush_args_and_op (op, env, param);
+    OPSET::flush_حجوجي_and_op (op, env, param);
   }
 
-  static void check_width (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ check_width (op_code_t op, ENV &env, PARAM& param)
   {}
 
-  static void process_post_move (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ process_post_move (op_code_t op, ENV &env, PARAM& param)
   {
-    if (!env.seen_moveto)
+    إذا (!env.seen_moveto)
     {
       env.determine_hintmask_size ();
       env.seen_moveto = true;
     }
-    OPSET::flush_args_and_op (op, env, param);
+    OPSET::flush_حجوجي_and_op (op, env, param);
   }
 
-  static void process_post_path (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ process_post_path (op_code_t op, ENV &env, PARAM& param)
   {
-    OPSET::flush_args_and_op (op, env, param);
+    OPSET::flush_حجوجي_and_op (op, env, param);
   }
 
-  static void flush_args_and_op (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ flush_حجوجي_and_op (op_code_t op, ENV &env, PARAM& param)
   {
-    OPSET::flush_args (env, param);
+    OPSET::flush_حجوجي (env, param);
     OPSET::flush_op (op, env, param);
   }
 
-  static void flush_args (ENV &env, PARAM& param)
+  ساكن فراغ flush_حجوجي (ENV &env, PARAM& param)
   {
-    env.pop_n_args (env.argStack.get_count ());
+    env.چرو_n_حجوجي (env.arg_تر.get_كدي ());
   }
 
-  static void flush_op (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ flush_op (op_code_t op, ENV &env, PARAM& param)
   {
   }
 
-  static void flush_hintmask (op_code_t op, ENV &env, PARAM& param)
+  ساكن فراغ flush_hintmask (op_code_t op, ENV &env, PARAM& param)
   {
-    OPSET::flush_args_and_op (op, env, param);
+    OPSET::flush_حجوجي_and_op (op, env, param);
   }
 
-  static bool is_number_op (op_code_t op)
+  ساكن منطقي is_لمب_op (op_code_t op)
   {
-    switch (op)
+    بدل (op)
     {
-      case OpCode_shortint:
-      case OpCode_fixedcs:
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	return true;
+      حالة OpCode_shortint:
+      حالة OpCode_fixedcs:
+      حالة OpCode_TwoBytePosInt0: حالة OpCode_TwoBytePosInt1:
+      حالة OpCode_TwoBytePosInt2: حالة OpCode_TwoBytePosInt3:
+      حالة OpCode_TwoByteNegInt0: حالة OpCode_TwoByteNegInt1:
+      حالة OpCode_TwoByteNegInt2: حالة OpCode_TwoByteNegInt3:
+	أرجع true;
 
-      default:
+      افتراضي:
 	/* 1-byte integer */
-	return (OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast);
+	أرجع (OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast);
     }
   }
 
-  protected:
-  typedef opset_t<ARG>  SUPER;
+  محمي:
+  تعريفنوع opset_t<ARG>  SUPER;
 };
 
 template <typename PATH, typename ENV, typename PARAM>
-struct path_procs_t
+بنية path_procs_t
 {
-  static void rmoveto (ENV &env, PARAM& param)
+  ساكن فراغ rmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    const number_t &dy = env.pop_arg ();
-    const number_t &dx = env.pop_arg ();
+    ثابت لمب_t &dy = env.چرو_arg ();
+    ثابت لمب_t &dx = env.چرو_arg ();
     pt1.move (dx, dy);
     PATH::moveto (env, param, pt1);
   }
 
-  static void hmoveto (ENV &env, PARAM& param)
+  ساكن فراغ hmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    pt1.move_x (env.pop_arg ());
+    pt1.move_x (env.چرو_arg ());
     PATH::moveto (env, param, pt1);
   }
 
-  static void vmoveto (ENV &env, PARAM& param)
+  ساكن فراغ vmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    pt1.move_y (env.pop_arg ());
+    pt1.move_y (env.چرو_arg ());
     PATH::moveto (env, param, pt1);
   }
 
-  static void rlineto (ENV &env, PARAM& param)
+  ساكن فراغ rlineto (ENV &env, PARAM& param)
   {
-    for (unsigned int i = 0; i + 2 <= env.argStack.get_count (); i += 2)
+    لكل (unsigned صحيح i = 0; i + 2 <= env.arg_تر.get_كدي (); i += 2)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::لي (env, param, pt1);
     }
   }
 
-  static void hlineto (ENV &env, PARAM& param)
+  ساكن فراغ hlineto (ENV &env, PARAM& param)
   {
     point_t pt1;
-    unsigned int i = 0;
-    for (; i + 2 <= env.argStack.get_count (); i += 2)
+    unsigned صحيح i = 0;
+    لكل (; i + 2 <= env.arg_تر.get_كدي (); i += 2)
     {
       pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::لي (env, param, pt1);
       pt1.move_y (env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::لي (env, param, pt1);
     }
-    if (i < env.argStack.get_count ())
+    إذا (i < env.arg_تر.get_كدي ())
     {
       pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::لي (env, param, pt1);
     }
   }
 
-  static void vlineto (ENV &env, PARAM& param)
+  ساكن فراغ vlineto (ENV &env, PARAM& param)
   {
     point_t pt1;
-    unsigned int i = 0;
-    for (; i + 2 <= env.argStack.get_count (); i += 2)
+    unsigned صحيح i = 0;
+    لكل (; i + 2 <= env.arg_تر.get_كدي (); i += 2)
     {
       pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::لي (env, param, pt1);
       pt1.move_x (env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::لي (env, param, pt1);
     }
-    if (i < env.argStack.get_count ())
+    إذا (i < env.arg_تر.get_كدي ())
     {
       pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::لي (env, param, pt1);
     }
   }
 
-  static void rrcurveto (ENV &env, PARAM& param)
+  ساكن فراغ rrcurveto (ENV &env, PARAM& param)
   {
-    for (unsigned int i = 0; i + 6 <= env.argStack.get_count (); i += 6)
+    لكل (unsigned صحيح i = 0; i + 6 <= env.arg_تر.get_كدي (); i += 6)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -545,15 +545,15 @@ struct path_procs_t
     }
   }
 
-  static void rcurveline (ENV &env, PARAM& param)
+  ساكن فراغ rcurveline (ENV &env, PARAM& param)
   {
-    unsigned int arg_count = env.argStack.get_count ();
-    if (unlikely (arg_count < 8))
-      return;
+    unsigned صحيح arg_كدي = env.arg_تر.get_كدي ();
+    إذا (unlikely (arg_كدي < 8))
+      أرجع;
 
-    unsigned int i = 0;
-    unsigned int curve_limit = arg_count - 2;
-    for (; i + 6 <= curve_limit; i += 6)
+    unsigned صحيح i = 0;
+    unsigned صحيح curve_limit = arg_كدي - 2;
+    لكل (; i + 6 <= curve_limit; i += 6)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -566,22 +566,22 @@ struct path_procs_t
 
     point_t pt1 = env.get_pt ();
     pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-    PATH::line (env, param, pt1);
+    PATH::لي (env, param, pt1);
   }
 
-  static void rlinecurve (ENV &env, PARAM& param)
+  ساكن فراغ rlinecurve (ENV &env, PARAM& param)
   {
-    unsigned int arg_count = env.argStack.get_count ();
-    if (unlikely (arg_count < 8))
-      return;
+    unsigned صحيح arg_كدي = env.arg_تر.get_كدي ();
+    إذا (unlikely (arg_كدي < 8))
+      أرجع;
 
-    unsigned int i = 0;
-    unsigned int line_limit = arg_count - 6;
-    for (; i + 2 <= line_limit; i += 2)
+    unsigned صحيح i = 0;
+    unsigned صحيح لي_limit = arg_كدي - 6;
+    لكل (; i + 2 <= لي_limit; i += 2)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::لي (env, param, pt1);
     }
 
     point_t pt1 = env.get_pt ();
@@ -593,13 +593,13 @@ struct path_procs_t
     PATH::curve (env, param, pt1, pt2, pt3);
   }
 
-  static void vvcurveto (ENV &env, PARAM& param)
+  ساكن فراغ vvcurveto (ENV &env, PARAM& param)
   {
-    unsigned int i = 0;
+    unsigned صحيح i = 0;
     point_t pt1 = env.get_pt ();
-    if ((env.argStack.get_count () & 1) != 0)
+    إذا ((env.arg_تر.get_كدي () & 1) != 0)
       pt1.move_x (env.eval_arg (i++));
-    for (; i + 4 <= env.argStack.get_count (); i += 4)
+    لكل (; i + 4 <= env.arg_تر.get_كدي (); i += 4)
     {
       pt1.move_y (env.eval_arg (i));
       point_t pt2 = pt1;
@@ -611,13 +611,13 @@ struct path_procs_t
     }
   }
 
-  static void hhcurveto (ENV &env, PARAM& param)
+  ساكن فراغ hhcurveto (ENV &env, PARAM& param)
   {
-    unsigned int i = 0;
+    unsigned صحيح i = 0;
     point_t pt1 = env.get_pt ();
-    if ((env.argStack.get_count () & 1) != 0)
+    إذا ((env.arg_تر.get_كدي () & 1) != 0)
       pt1.move_y (env.eval_arg (i++));
-    for (; i + 4 <= env.argStack.get_count (); i += 4)
+    لكل (; i + 4 <= env.arg_تر.get_كدي (); i += 4)
     {
       pt1.move_x (env.eval_arg (i));
       point_t pt2 = pt1;
@@ -629,11 +629,11 @@ struct path_procs_t
     }
   }
 
-  static void vhcurveto (ENV &env, PARAM& param)
+  ساكن فراغ vhcurveto (ENV &env, PARAM& param)
   {
     point_t pt1, pt2, pt3;
-    unsigned int i = 0;
-    if ((env.argStack.get_count () % 8) >= 4)
+    unsigned صحيح i = 0;
+    إذا ((env.arg_تر.get_كدي () % 8) >= 4)
     {
       point_t pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
@@ -643,7 +643,7 @@ struct path_procs_t
       pt3.move_x (env.eval_arg (i+3));
       i += 4;
 
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      لكل (; i + 8 <= env.arg_تر.get_كدي (); i += 8)
       {
 	PATH::curve (env, param, pt1, pt2, pt3);
 	pt1 = env.get_pt ();
@@ -661,13 +661,13 @@ struct path_procs_t
 	pt3 = pt2;
 	pt3.move_x (env.eval_arg (i+7));
       }
-      if (i < env.argStack.get_count ())
+      إذا (i < env.arg_تر.get_كدي ())
 	pt3.move_y (env.eval_arg (i));
       PATH::curve (env, param, pt1, pt2, pt3);
     }
-    else
+    وإلا
     {
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      لكل (; i + 8 <= env.arg_تر.get_كدي (); i += 8)
       {
 	pt1 = env.get_pt ();
 	pt1.move_y (env.eval_arg (i));
@@ -683,18 +683,18 @@ struct path_procs_t
 	pt2.move (env.eval_arg (i+5), env.eval_arg (i+6));
 	pt3 = pt2;
 	pt3.move_y (env.eval_arg (i+7));
-	if ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
+	إذا ((env.arg_تر.get_كدي () - i < 16) && ((env.arg_تر.get_كدي () & 1) != 0))
 	  pt3.move_x (env.eval_arg (i+8));
 	PATH::curve (env, param, pt1, pt2, pt3);
       }
     }
   }
 
-  static void hvcurveto (ENV &env, PARAM& param)
+  ساكن فراغ hvcurveto (ENV &env, PARAM& param)
   {
     point_t pt1, pt2, pt3;
-    unsigned int i = 0;
-    if ((env.argStack.get_count () % 8) >= 4)
+    unsigned صحيح i = 0;
+    إذا ((env.arg_تر.get_كدي () % 8) >= 4)
     {
       point_t pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
@@ -704,7 +704,7 @@ struct path_procs_t
       pt3.move_y (env.eval_arg (i+3));
       i += 4;
 
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      لكل (; i + 8 <= env.arg_تر.get_كدي (); i += 8)
       {
 	PATH::curve (env, param, pt1, pt2, pt3);
 	pt1 = env.get_pt ();
@@ -722,13 +722,13 @@ struct path_procs_t
 	pt3 = pt2;
 	pt3.move_y (env.eval_arg (i+7));
       }
-      if (i < env.argStack.get_count ())
+      إذا (i < env.arg_تر.get_كدي ())
 	pt3.move_x (env.eval_arg (i));
       PATH::curve (env, param, pt1, pt2, pt3);
     }
-    else
+    وإلا
     {
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      لكل (; i + 8 <= env.arg_تر.get_كدي (); i += 8)
       {
 	pt1 = env.get_pt ();
 	pt1.move_x (env.eval_arg (i));
@@ -744,7 +744,7 @@ struct path_procs_t
 	pt2.move (env.eval_arg (i+5), env.eval_arg (i+6));
 	pt3 = pt2;
 	pt3.move_x (env.eval_arg (i+7));
-	if ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
+	إذا ((env.arg_تر.get_كدي () - i < 16) && ((env.arg_تر.get_كدي () & 1) != 0))
 	  pt3.move_y (env.eval_arg (i+8));
 	PATH::curve (env, param, pt1, pt2, pt3);
       }
@@ -752,18 +752,18 @@ struct path_procs_t
   }
 
   /* default actions to be overridden */
-  static void moveto (ENV &env, PARAM& param, const point_t &pt)
+  ساكن فراغ moveto (ENV &env, PARAM& param, ثابت point_t &pt)
   { env.moveto (pt); }
 
-  static void line (ENV &env, PARAM& param, const point_t &pt1)
+  ساكن فراغ لي (ENV &env, PARAM& param, ثابت point_t &pt1)
   { PATH::moveto (env, param, pt1); }
 
-  static void curve (ENV &env, PARAM& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ساكن فراغ curve (ENV &env, PARAM& param, ثابت point_t &pt1, ثابت point_t &pt2, ثابت point_t &pt3)
   { PATH::moveto (env, param, pt3); }
 
-  static void hflex (ENV &env, PARAM& param)
+  ساكن فراغ hflex (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 7))
+    إذا (likely (env.arg_تر.get_كدي () == 7))
     {
       point_t pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (0));
@@ -781,13 +781,13 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    وإلا
       env.set_error ();
   }
 
-  static void flex (ENV &env, PARAM& param)
+  ساكن فراغ flex (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 13))
+    إذا (likely (env.arg_تر.get_كدي () == 13))
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (0), env.eval_arg (1));
@@ -804,13 +804,13 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    وإلا
       env.set_error ();
   }
 
-  static void hflex1 (ENV &env, PARAM& param)
+  ساكن فراغ hflex1 (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 9))
+    إذا (likely (env.arg_تر.get_كدي () == 9))
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (0), env.eval_arg (1));
@@ -828,16 +828,16 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    وإلا
       env.set_error ();
   }
 
-  static void flex1 (ENV &env, PARAM& param)
+  ساكن فراغ flex1 (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 11))
+    إذا (likely (env.arg_تر.get_كدي () == 11))
     {
       point_t d;
-      for (unsigned int i = 0; i < 10; i += 2)
+      لكل (unsigned صحيح i = 0; i < 10; i += 2)
 	d.move (env.eval_arg (i), env.eval_arg (i+1));
 
       point_t pt1 = env.get_pt ();
@@ -852,12 +852,12 @@ struct path_procs_t
       pt5.move (env.eval_arg (8), env.eval_arg (9));
       point_t pt6 = pt5;
 
-      if (fabs (d.x.to_real ()) > fabs (d.y.to_real ()))
+      إذا (fabs (d.x.to_real ()) > fabs (d.y.to_real ()))
       {
 	pt6.move_x (env.eval_arg (10));
 	pt6.y = env.get_pt ().y;
       }
-      else
+      وإلا
       {
 	pt6.x = env.get_pt ().x;
 	pt6.move_y (env.eval_arg (10));
@@ -865,14 +865,14 @@ struct path_procs_t
 
       curve2 (env, param, pt1, pt2, pt3, pt4, pt5, pt6);
     }
-    else
+    وإلا
       env.set_error ();
   }
 
-  protected:
-  static void curve2 (ENV &env, PARAM& param,
-		      const point_t &pt1, const point_t &pt2, const point_t &pt3,
-		      const point_t &pt4, const point_t &pt5, const point_t &pt6)
+  محمي:
+  ساكن فراغ curve2 (ENV &env, PARAM& param,
+		      ثابت point_t &pt1, ثابت point_t &pt2, ثابت point_t &pt3,
+		      ثابت point_t &pt4, ثابت point_t &pt5, ثابت point_t &pt6)
   {
     PATH::curve (env, param, pt1, pt2, pt3);
     PATH::curve (env, param, pt4, pt5, pt6);
@@ -880,13 +880,13 @@ struct path_procs_t
 };
 
 template <typename ENV, typename OPSET, typename PARAM>
-struct cs_interpreter_t : interpreter_t<ENV>
+بنية cs_interpreter_t : interpreter_t<ENV>
 {
   cs_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param, int64_t *budget = nullptr)
+  منطقي interpret (PARAM& param, int64_t *budget = nullptr)
   {
-    SUPER::env.set_endchar (false);
+    SUPER::env.set_endchar (خطأ);
     SUPER::env.set_budget (budget);
 
     /* Cap the operator count by the caller's remaining budget so the single
@@ -899,32 +899,32 @@ struct cs_interpreter_t : interpreter_t<ENV>
     unsigned max_ops = (unsigned) hb_clamp (remaining, (int64_t) 0, (int64_t) HB_CFF_MAX_OPS);
     unsigned start_ops = max_ops;
 
-    bool ret = true;
-    if (likely (max_ops))
-      for (;;) {
+    منطقي ret = true;
+    إذا (likely (max_ops))
+      لكل (;;) {
 	OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-	if (unlikely (SUPER::env.in_error () || !--max_ops))
+	إذا (unlikely (SUPER::env.in_error () || !--max_ops))
 	{
 	  SUPER::env.set_error ();
-	  ret = false;
-	  break;
+	  ret = خطأ;
+	  اكسر;
 	}
-	if (SUPER::env.is_endchar ())
-	  break;
+	إذا (SUPER::env.is_endchar ())
+	  اكسر;
       }
-    else
+    وإلا
     {
       SUPER::env.set_error ();
-      ret = false;
+      ret = خطأ;
     }
 
-    if (budget) *budget -= (int64_t) (start_ops - max_ops);
+    إذا (budget) *budget -= (int64_t) (start_ops - max_ops);
 
-    return ret;
+    أرجع ret;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  خاص:
+  تعريفنوع interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */

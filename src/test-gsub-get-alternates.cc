@@ -24,16 +24,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include <hb.h>
-#include <hb-ot.h>
+#ضمن <hb.h>
+#ضمن <hb-ot.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#ضمن <stdlib.h>
+#ضمن <stdio.h>
 
-int
-main (int argc, char **argv)
+صحيح
+main (صحيح argc, حرف **argv)
 {
-  if (argc != 3) {
+  إذا (argc != 3) {
     fprintf (stderr, "usage: %s font-file text\n", argv[0]);
     exit (1);
   }
@@ -49,32 +49,32 @@ main (int argc, char **argv)
 
   hb_buffer_add_utf8 (buffer, argv[2], -1, 0, -1);
   hb_buffer_guess_segment_properties (buffer);
-  hb_shape (font, buffer, NULL, 0);
+  hb_shape (font, buffer, عدم, 0);
 
   hb_tag_t features[] = {HB_TAG('a','a','l','t'), HB_TAG_NONE};
   hb_set_t *lookup_indexes = hb_set_create ();
   hb_ot_layout_collect_lookups (face,
 				HB_OT_TAG_GSUB,
-				NULL, NULL,
+				عدم, عدم,
 				features,
 				lookup_indexes);
   printf ("lookups %u\n", hb_set_get_population (lookup_indexes));
 
-  unsigned count;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  unsigned كدي;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &كدي);
+  لكل (unsigned i = 0; i < كدي; i++)
   {
-    unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
+    unsigned alt_كدي = 0;
+    لكل (hb_codepoint_t lookup_index = HB_SET_درج_INVALID;
 	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
+      إذا ((alt_كدي = hb_ot_layout_lookup_get_glyph_alternates (face,
 								 lookup_index,
 								 info[i].codepoint,
 								 0,
-								 NULL,
-								 NULL)))
-        break;
-    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
+								 عدم,
+								 عدم)))
+        اكسر;
+    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_كدي);
   }
 
   hb_set_destroy (lookup_indexes);
@@ -82,5 +82,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  أرجع 0;
 }

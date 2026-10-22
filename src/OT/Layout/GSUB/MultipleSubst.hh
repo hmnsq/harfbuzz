@@ -1,52 +1,52 @@
 #ifndef OT_LAYOUT_GSUB_MULTIPLESUBST_HH
 #define OT_LAYOUT_GSUB_MULTIPLESUBST_HH
 
-#include "Common.hh"
-#include "MultipleSubstFormat1.hh"
+#ضمن "Common.hh"
+#ضمن "MultipleSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GSUB_impl {
 
-struct MultipleSubst
+بنية MultipleSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }		format;         /* Format identifier */
   MultipleSubstFormat1_2<SmallTypes>	format1;
 #ifndef HB_NO_BEYOND_64K
   MultipleSubstFormat1_2<MediumTypes>	format2;
 #endif
   } u;
 
-  public:
+  عام:
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    إذا (unlikely (!c->may_dispatch (هذا, &u.format.v))) أرجع c->no_dispatch_return_درج ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    حالة 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    افتراضي:return_trace (c->default_return_درج ());
     }
   }
 
   template<typename Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقي serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (u.format.v))) return_trace (خطأ);
+    unsigned صحيح format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
-    default:return_trace (false);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
+    افتراضي:return_trace (خطأ);
     }
   }
 

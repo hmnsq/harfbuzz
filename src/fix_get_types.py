@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import re
-import argparse
+استورد re
+استورد argparse
 
 parser = argparse.ArgumentParser ()
 parser.add_argument ('input')
 parser.add_argument ('output')
-args = parser.parse_args ()
+حجوجي = parser.parse_حجوجي ()
 
-with open (args.input, 'r') as inp, open (args.output, 'w') as out:
-    for l in inp.readlines ():
+with open (حجوجي.شغرو, 'r') كـ inp, open (حجوجي.output, 'w') كـ out:
+    لكل l في inp.readlines ():
         l = re.sub ('_t_get_type', '_get_type', l)
         l = re.sub (r'_T \(', ' (', l)
-        out.write (l)
+        out.اكتب (l)
