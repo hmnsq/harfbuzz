@@ -28,51 +28,51 @@
 #define HB_SUBSET_ACCELERATOR_HH
 
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-multimap.hh"
+#ضمن "hb-set.hh"
 
-extern HB_INTERNAL hb_user_data_key_t _hb_subset_accelerator_user_data_key;
+خارجي HB_INTERNAL hb_user_data_کونچي_t hb_subset_accelerator_user_data_کونچي;
 
-namespace CFF {
-struct cff_subset_accelerator_t;
+نطاق CFF {
+بنية cff_subset_accelerator_t;
 }
 
-namespace OT {
-struct SubtableUnicodesCache;
-struct cff1_subset_accelerator_t;
-struct cff2_subset_accelerator_t;
+نطاق OT {
+بنية SubtableUnicodesCache;
+بنية cff1_subset_accelerator_t;
+بنية cff2_subset_accelerator_t;
 }
 
-struct hb_subset_accelerator_t
+بنية hb_subset_accelerator_t
 {
-  static hb_user_data_key_t* user_data_key()
+  ساكن hb_user_data_کونچي_t* user_data_کونچي()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    أرجع &hb_subset_accelerator_user_data_کونچي;
   }
 
-  static hb_subset_accelerator_t* create(hb_face_t *source,
-					 const hb_map_t& unicode_to_gid_,
-					 const hb_set_t& unicodes_,
-					 bool has_seac_) {
+  ساكن hb_subset_accelerator_t* create(hb_face_t *source,
+					 ثابت hb_map_t& unicode_to_gid_,
+					 ثابت hb_set_t& unicodes_,
+					 منطقي has_seac_) {
     hb_subset_accelerator_t* accel =
-        (hb_subset_accelerator_t*) hb_calloc (1, sizeof(hb_subset_accelerator_t));
+        (hb_subset_accelerator_t*) hb_calloc (1, حجم(hb_subset_accelerator_t));
 
-    if (unlikely (!accel)) return accel;
+    إذا (unlikely (!accel)) أرجع accel;
 
-    new (accel) hb_subset_accelerator_t (source,
+    جديد (accel) hb_subset_accelerator_t (source,
 					 unicode_to_gid_,
 					 unicodes_,
 					 has_seac_);
 
-    return accel;
+    أرجع accel;
   }
 
-  static void destroy (void* p)
+  ساكن فراغ destroy (فراغ* p)
   {
-    if (!p) return;
+    إذا (!p) أرجع;
 
     hb_subset_accelerator_t *accel = (hb_subset_accelerator_t *) p;
 
@@ -82,9 +82,9 @@ struct hb_subset_accelerator_t
   }
 
   hb_subset_accelerator_t (hb_face_t *source,
-			   const hb_map_t& unicode_to_gid_,
-			   const hb_set_t& unicodes_,
-			   bool has_seac_) :
+			   ثابت hb_map_t& unicode_to_gid_,
+			   ثابت hb_set_t& unicodes_,
+			   منطقي has_seac_) :
     unicode_to_gid(unicode_to_gid_),
     unicodes(unicodes_),
     cmap_cache(nullptr),
@@ -93,7 +93,7 @@ struct hb_subset_accelerator_t
     source(hb_face_reference (source))
   {
     gid_to_unicodes.alloc (unicode_to_gid.get_population ());
-    for (const auto &_ : unicode_to_gid)
+    لكل (ثابت auto &_ : unicode_to_gid)
     {
       auto unicode = _.first;
       auto gid = _.second;
@@ -113,17 +113,17 @@ struct hb_subset_accelerator_t
   hb_set_t unicodes;
 
   // cmap
-  const OT::SubtableUnicodesCache* cmap_cache;
+  ثابت OT::SubtableUnicodesCache* cmap_cache;
   hb_destroy_func_t destroy_cmap_cache;
 
   // CFF
-  bool has_seac;
+  منطقي has_seac;
 
   // TODO(garretrieger): cumulative glyf checksum map
 
-  bool in_error () const
+  منطقي in_error () ثابت
   {
-    return unicode_to_gid.in_error () ||
+    أرجع unicode_to_gid.in_error () ||
 	   gid_to_unicodes.in_error () ||
 	   unicodes.in_error () ||
 	   sanitized_table_cache.in_error ();

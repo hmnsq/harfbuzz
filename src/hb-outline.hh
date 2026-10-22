@@ -25,54 +25,54 @@
 #ifndef HB_OUTLINE_HH
 #define HB_OUTLINE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-draw.hh"
+#ضمن "hb-draw.hh"
 
 
-struct hb_outline_point_t
+بنية hb_outline_point_t
 {
-  enum class type_t
+  تعداد صنف type_t
   {
     MOVE_TO,
-    LINE_TO,
+    باريس_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (عائم x, عائم y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  عائم x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+بنية hb_outline_vector_t
 {
-  float normalize_len ()
+  عائم normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    عائم len = hypotf (x, y);
+    إذا (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    أرجع len;
   }
 
-  float x, y;
+  عائم x, y;
 };
 
-struct hb_outline_t
+بنية hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  فراغ reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL فراغ replay (hb_draw_funcs_t *pen, فراغ *pen_data) ثابت;
+  HB_INTERNAL عائم control_area () ثابت;
+  HB_INTERNAL فراغ translate (عائم dx, عائم dy);
+  HB_INTERNAL فراغ slant (عائم slant_xy);
+  HB_INTERNAL فراغ embolden (عائم x_strength, عائم y_strength,
+			     عائم x_shift, عائم y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
   hb_vector_t<unsigned> contours;
