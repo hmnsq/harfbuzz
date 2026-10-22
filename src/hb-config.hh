@@ -27,7 +27,7 @@
 #ifndef HB_CONFIG_HH
 #define HB_CONFIG_HH
 
-#if 0 /* Make test happy. */
+#ꦪꦼꦤ꧀ 0 /* Make test happy. */
 #include "hb.hh"
 #endif
 
@@ -84,7 +84,7 @@
 #define HB_NO_VERTICAL
 #define HB_NO_VAR
 
-#if !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
+#ꦪꦼꦤ꧀ !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
 #define HB_NO_COLOR
 #define HB_NO_DRAW
 #define HB_NO_PAINT
@@ -105,7 +105,7 @@
 #endif
 #endif
 
-#if defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
+#ꦪꦼꦤ꧀ defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
 #ifndef HB_CONFIG_OVERRIDE_H
 #define HB_CONFIG_OVERRIDE_H "config-override.h"
 #endif
@@ -120,7 +120,7 @@
 
 #ifdef HB_DISABLE_DEPRECATED
 #define HB_IF_NOT_DEPRECATED(x)
-#else
+#ꦭꦶꦪ
 #define HB_IF_NOT_DEPRECATED(x) x
 #endif
 
@@ -191,7 +191,7 @@
 #define HB_NO_OT_FONT_CMAP_CACHE
 #endif
 
-#if defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
+#ꦪꦼꦤ꧀ defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
 #ifndef HB_CONFIG_OVERRIDE_LAST_H
 #define HB_CONFIG_OVERRIDE_LAST_H "config-override-last.h"
 #endif
@@ -200,13 +200,13 @@
 
 #ifdef HB_OPTIMIZE_SIZE
 #define HB_OPTIMIZE_SIZE_VAL 1
-#else
+#ꦭꦶꦪ
 #define HB_OPTIMIZE_SIZE_VAL 0
 #endif
 
 #ifdef HB_MINIMIZE_MEMORY_USAGE
 #define HB_MINIMIZE_MEMORY_USAGE_VAL 1
-#else
+#ꦭꦶꦪ
 #define HB_MINIMIZE_MEMORY_USAGE_VAL 0
 #endif
 

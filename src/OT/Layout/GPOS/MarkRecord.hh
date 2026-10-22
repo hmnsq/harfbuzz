@@ -5,12 +5,12 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-template <typename Types> struct MarkArray;
+template <typename Types> sa_nracanaa MarkArray;
 
 template <typename Types>
-struct MarkRecord
+sa_nracanaa MarkRecord
 {
-  friend struct MarkArray<Types>;
+  friend sa_nracanaa MarkArray<Types>;
 
   public:
   HBUINT16      klass;                  /* Class defined for this mark */
@@ -20,7 +20,7 @@ struct MarkRecord
   public:
   DEFINE_SIZE_STATIC (2 + Types::size);
 
-  unsigned get_class () const { return (unsigned) klass; }
+  unsigned get_class () const { ꦮꦭꦶ (unsigned) klass; }
   bool sanitize (hb_sanitize_context_t *c, const MarkArray<Types> *base) const
   {
     TRACE_SANITIZE (this);
@@ -33,7 +33,7 @@ struct MarkRecord
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ꦪꦼꦤ꧀ (unlikely (!out)) return_trace (false);
 
     out->klass = klass_mapping->get (klass);
     return_trace (out->markAnchor.serialize_subset (c, markAnchor, src_base));

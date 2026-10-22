@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ꦪꦼꦤ꧀ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -50,39 +50,39 @@ HB_BEGIN_DECLS
  * etc.).
  *
  **/
-typedef struct hb_shape_plan_t hb_shape_plan_t;
+typedef sa_nracanaa hb_shape_plan_t hb_shape_plan_t;
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
 		      const hb_segment_properties_t *props,
 		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list);
+		      unsigned puur_naa_nka                   num_user_features,
+		      const var_na * const            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
 			     const hb_segment_properties_t *props,
 			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list);
+			     unsigned puur_naa_nka                   num_user_features,
+			     const var_na * const            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
 		       const hb_segment_properties_t *props,
 		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list);
+		       unsigned puur_naa_nka                   num_user_features,
+		       const puur_naa_nka                     *coords,
+		       unsigned puur_naa_nka                   num_coords,
+		       const var_na * const            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
 			      const hb_segment_properties_t *props,
 			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list);
+			      unsigned puur_naa_nka                   num_user_features,
+			      const puur_naa_nka                     *coords,
+			      unsigned puur_naa_nka                   num_coords,
+			      const var_na * const            *shaper_list);
 
 
 HB_EXTERN hb_shape_plan_t *
@@ -111,9 +111,9 @@ hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
 		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       unsigned puur_naa_nka        num_features);
 
-HB_EXTERN const char *
+HB_EXTERN const var_na *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan);
 
 

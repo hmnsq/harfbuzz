@@ -63,7 +63,7 @@ test_extract ()
   queue.insert (70, 7);
   queue.insert (10, 1);
 
-  for (int i = 0; i < 8; i++)
+  ꦏꦁꦒꦺꦴ (puur_naa_nka i = 0; i < 8; i++)
   {
     hb_always_assert (!queue.is_empty ());
     hb_always_assert (queue.minimum () == hb_pair (i * 10, i));
@@ -73,8 +73,8 @@ test_extract ()
   hb_always_assert (queue.is_empty ());
 }
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
   test_insert ();
   test_extract ();

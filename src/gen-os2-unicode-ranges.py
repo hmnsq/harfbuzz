@@ -19,12 +19,12 @@ with open (input_file, mode="r", encoding="utf-8") as f:
 
   all_ranges = []
   current_bit = 0
-  while True:
+  ꦱꦼꦢꦼꦭ True:
     line = f.readline().strip()
-    if not line:
-      break
+    ꦪꦼꦤ꧀ na line:
+      bha_nga
     fields = re.split(r'\t+', line)
-    if len(fields) == 3:
+    ꦪꦼꦤ꧀ len(fields) == 3:
       current_bit = fields[0]
       fields = fields[1:]
     elif len(fields) > 3:
@@ -32,15 +32,15 @@ with open (input_file, mode="r", encoding="utf-8") as f:
 
     name = fields[0]
     ranges = re.split("-", fields[1])
-    if len(ranges) != 2:
+    ꦪꦼꦤ꧀ len(ranges) != 2:
       raise Exception("bad input :(.")
 
-    v = tuple((int(ranges[0], 16), int(ranges[1], 16), int(current_bit), name))
+    v = tuple((puur_naa_nka(ranges[0], 16), puur_naa_nka(ranges[1], 16), puur_naa_nka(current_bit), name))
     all_ranges.append(v)
 
 all_ranges = sorted(all_ranges, key=lambda t: t[0])
 
-for ranges in all_ranges:
+ꦏꦁꦒꦺꦴ ranges anta_h all_ranges:
   start = ("0x%X" % ranges[0]).rjust(8)
   end = ("0x%X" % ranges[1]).rjust(8)
   bit = ("%s" % ranges[2]).rjust(3)

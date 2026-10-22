@@ -46,7 +46,7 @@ _hb_directwrite_shaper_face_data_create (hb_face_t *face)
 
   hb_blob_destroy (blob);
 
-  return data;
+  ꦮꦭꦶ data;
 }
 
 void
@@ -60,7 +60,7 @@ _hb_directwrite_shaper_face_data_destroy (hb_directwrite_face_data_t *data)
  * shaper font data
  */
 
-struct hb_directwrite_font_data_t {};
+sa_nracanaa hb_directwrite_font_data_t {};
 
 hb_directwrite_font_data_t *
 _hb_directwrite_shaper_font_data_create (hb_font_t *font)
@@ -73,18 +73,18 @@ _hb_directwrite_shaper_font_data_create (hb_font_t *font)
   IDWriteFontFace5 *fontFaceVariations = nullptr;
   {
     IDWriteFontFace5 *fontFace5;
-    if (SUCCEEDED (fontFace->QueryInterface (__uuidof (IDWriteFontFace5), (void **) &fontFace5)))
+    ꦪꦼꦤ꧀ (SUCCEEDED (fontFace->QueryInterface (__uuidof (IDWriteFontFace5), (void **) &fontFace5)))
     {
       IDWriteFontResource *fontResource;
-      if (SUCCEEDED (fontFace5->GetFontResource (&fontResource)))
+      ꦪꦼꦤ꧀ (SUCCEEDED (fontFace5->GetFontResource (&fontResource)))
       {
 	hb_vector_t<DWRITE_FONT_AXIS_VALUE> axis_values;
-	if (likely (axis_values.resize_exact (font->num_coords)))
+	ꦪꦼꦤ꧀ (likely (axis_values.resize_exact (font->num_coords)))
 	{
-	  for (unsigned int i = 0; i < font->num_coords; i++)
+	  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 0; i < font->num_coords; i++)
 	  {
 	    hb_ot_var_axis_info_t info;
-	    unsigned int c = 1;
+	    unsigned puur_naa_nka c = 1;
 	    hb_ot_var_get_axis_infos (font->face, i, &c, &info);
 	    axis_values[i].axisTag = (DWRITE_FONT_AXIS_TAG) hb_uint32_swap (info.tag);
 	    axis_values[i].value = i < font->num_coords ?
@@ -101,7 +101,7 @@ _hb_directwrite_shaper_font_data_create (hb_font_t *font)
     }
   }
 
-  return (hb_directwrite_font_data_t *) fontFaceVariations;
+  ꦮꦭꦶ (hb_directwrite_font_data_t *) fontFaceVariations;
 }
 
 void
@@ -119,23 +119,23 @@ private:
   hb_reference_count_t mRefCount;
 public:
   IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
+  { ꦮꦭꦶ S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    ꦮꦭꦶ mRefCount.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
     signed refCount = mRefCount.dec () - 1;
     assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    return 0;
+    ꦪꦼꦤ꧀ (refCount)
+      ꦮꦭꦶ refCount;
+    ꦮꦭꦶ 0;
   }
 
   // A single contiguous run of characters containing the same analysis
   // results.
-  struct Run
+  sa_nracanaa Run
   {
     uint32_t mTextStart;   // starting text position of this run
     uint32_t mTextLength;  // number of contiguous code units covered
@@ -148,7 +148,7 @@ public:
 
     bool ContainsTextPosition (uint32_t aTextPosition) const
     {
-      return aTextPosition >= mTextStart &&
+      ꦮꦭꦶ aTextPosition >= mTextStart &&
 	     aTextPosition <  mTextStart + mTextLength;
     }
 
@@ -166,7 +166,7 @@ public:
   ~TextAnalysis ()
   {
     // free runs, except mRunHead which is part of the TextAnalysis object
-    for (Run *run = mRunHead.nextRun; run;)
+    ꦏꦁꦒꦺꦴ (Run *run = mRunHead.nextRun; run;)
     {
       Run *origRun = run;
       run = run->nextRun;
@@ -192,10 +192,10 @@ public:
     mCurrentRun = &mRunHead;
 
     // Call each of the analyzers in sequence, recording their results.
-    if (SUCCEEDED (hr = textAnalyzer->AnalyzeScript (this, 0, mTextLength, this)))
+    ꦪꦼꦤ꧀ (SUCCEEDED (hr = textAnalyzer->AnalyzeScript (this, 0, mTextLength, this)))
       *runHead = &mRunHead;
 
-    return hr;
+    ꦮꦭꦶ hr;
   }
 
   // IDWriteTextAnalysisSource implementation
@@ -205,18 +205,18 @@ public:
 		     OUT wchar_t const** textString,
 		     OUT uint32_t* textLength)
   {
-    if (textPosition >= mTextLength)
+    ꦪꦼꦤ꧀ (textPosition >= mTextLength)
     {
       // No text at this position, valid query though.
       *textString = nullptr;
       *textLength = 0;
     }
-    else
+    ꦭꦶꦪ
     {
       *textString = mText + textPosition;
       *textLength = mTextLength - textPosition;
     }
-    return S_OK;
+    ꦮꦭꦶ S_OK;
   }
 
   IFACEMETHODIMP
@@ -224,27 +224,27 @@ public:
 			 OUT wchar_t const** textString,
 			 OUT uint32_t* textLength)
   {
-    if (textPosition == 0 || textPosition > mTextLength)
+    ꦪꦼꦤ꧀ (textPosition == 0 || textPosition > mTextLength)
     {
       // Either there is no text before here (== 0), or this
       // is an invalid position. The query is considered valid though.
       *textString = nullptr;
       *textLength = 0;
     }
-    else
+    ꦭꦶꦪ
     {
       *textString = mText;
       *textLength = textPosition;
     }
-    return S_OK;
+    ꦮꦭꦶ S_OK;
   }
 
   IFACEMETHODIMP_ (DWRITE_READING_DIRECTION)
-  GetParagraphReadingDirection () { return mReadingDirection; }
+  GetParagraphReadingDirection () { ꦮꦭꦶ mReadingDirection; }
 
   IFACEMETHODIMP GetLocaleName (uint32_t textPosition, uint32_t* textLength,
 				wchar_t const** localeName)
-  { return S_OK; }
+  { ꦮꦭꦶ S_OK; }
 
   IFACEMETHODIMP
   GetNumberSubstitution (uint32_t textPosition,
@@ -255,7 +255,7 @@ public:
     *numberSubstitution = nullptr;
     *textLength = mTextLength - textPosition;
 
-    return S_OK;
+    ꦮꦭꦶ S_OK;
   }
 
   // IDWriteTextAnalysisSink implementation
@@ -265,35 +265,35 @@ public:
 		     DWRITE_SCRIPT_ANALYSIS const* scriptAnalysis)
   {
     SetCurrentRun (textPosition);
-    if (unlikely (!SplitCurrentRun (textPosition)))
-      return E_OUTOFMEMORY;
-    while (textLength > 0)
+    ꦪꦼꦤ꧀ (unlikely (!SplitCurrentRun (textPosition)))
+      ꦮꦭꦶ E_OUTOFMEMORY;
+    ꦱꦼꦢꦼꦭ (textLength > 0)
     {
       Run *run = FetchNextRun (&textLength);
-      if (unlikely (!run))
-        return E_OUTOFMEMORY;
+      ꦪꦼꦤ꧀ (unlikely (!run))
+        ꦮꦭꦶ E_OUTOFMEMORY;
       run->mScript = *scriptAnalysis;
     }
 
-    return S_OK;
+    ꦮꦭꦶ S_OK;
   }
 
   IFACEMETHODIMP
   SetLineBreakpoints (uint32_t textPosition,
 		      uint32_t textLength,
 		      const DWRITE_LINE_BREAKPOINT* lineBreakpoints)
-  { return S_OK; }
+  { ꦮꦭꦶ S_OK; }
 
   IFACEMETHODIMP SetBidiLevel (uint32_t textPosition, uint32_t textLength,
 			       uint8_t explicitLevel, uint8_t resolvedLevel)
-  { return S_OK; }
+  { ꦮꦭꦶ S_OK; }
 
   IFACEMETHODIMP
   SetNumberSubstitution (uint32_t textPosition, uint32_t textLength,
 			 IDWriteNumberSubstitution* numberSubstitution)
-  { return S_OK; }
+  { ꦮꦭꦶ S_OK; }
 
-protected:
+rak_sita:
   Run *FetchNextRun (IN OUT uint32_t* textLength)
   {
     // Used by the sink setters, this returns a reference to the next run.
@@ -303,18 +303,18 @@ protected:
     Run *origRun = mCurrentRun;
     // Split the tail if needed (the length remaining is less than the
     // current run's size).
-    if (*textLength < mCurrentRun->mTextLength)
+    ꦪꦼꦤ꧀ (*textLength < mCurrentRun->mTextLength)
     {
-      if (unlikely (!SplitCurrentRun (mCurrentRun->mTextStart + *textLength)))
-        return nullptr;
+      ꦪꦼꦤ꧀ (unlikely (!SplitCurrentRun (mCurrentRun->mTextStart + *textLength)))
+        ꦮꦭꦶ nullptr;
     }
-    else
+    ꦭꦶꦪ
       // Just advance the current run.
       mCurrentRun = mCurrentRun->nextRun;
     *textLength -= origRun->mTextLength;
 
     // Return a reference to the run that was just current.
-    return origRun;
+    ꦮꦭꦶ origRun;
   }
 
   void SetCurrentRun (uint32_t textPosition)
@@ -324,36 +324,36 @@ protected:
     // this will usually just return early. If not, find the
     // corresponding run for the text position.
 
-    if (mCurrentRun && mCurrentRun->ContainsTextPosition (textPosition))
-      return;
+    ꦪꦼꦤ꧀ (mCurrentRun && mCurrentRun->ContainsTextPosition (textPosition))
+      ꦮꦭꦶ;
 
-    for (Run *run = &mRunHead; run; run = run->nextRun)
-      if (run->ContainsTextPosition (textPosition))
+    ꦏꦁꦒꦺꦴ (Run *run = &mRunHead; run; run = run->nextRun)
+      ꦪꦼꦤ꧀ (run->ContainsTextPosition (textPosition))
       {
 	mCurrentRun = run;
-	return;
+	ꦮꦭꦶ;
       }
     assert (0); // We should always be able to find the text position in one of our runs
   }
 
   bool SplitCurrentRun (uint32_t splitPosition)
   {
-    if (!mCurrentRun)
+    ꦪꦼꦤ꧀ (!mCurrentRun)
     {
       assert (0); // SplitCurrentRun called without current run
       // Shouldn't be calling this when no current run is set!
-      return false;
+      ꦮꦭꦶ false;
     }
     // Split the current run.
-    if (splitPosition <= mCurrentRun->mTextStart)
+    ꦪꦼꦤ꧀ (splitPosition <= mCurrentRun->mTextStart)
     {
       // No need to split, already the start of a run
       // or before it. Usually the first.
-      return true;
+      ꦮꦭꦶ true;
     }
-    Run *newRun = (Run *) hb_malloc (sizeof (Run));
-    if (unlikely (!newRun))
-      return false;
+    Run *newRun = (Run *) hb_malloc (parimaa_na (Run));
+    ꦪꦼꦤ꧀ (unlikely (!newRun))
+      ꦮꦭꦶ false;
 
     *newRun = *mCurrentRun;
 
@@ -367,10 +367,10 @@ protected:
     newRun->mTextLength -= splitPoint;
     mCurrentRun->mTextLength = splitPoint;
     mCurrentRun = newRun;
-    return true;
+    ꦮꦭꦶ true;
   }
 
-protected:
+rak_sita:
   // Input
   // (weak references are fine here, since this class is a transient
   //  stack-based helper that doesn't need to copy data)
@@ -395,42 +395,42 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
 		       const hb_feature_t *features,
-		       unsigned int        num_features)
+		       unsigned puur_naa_nka        num_features)
 {
   IDWriteFontFace *fontFace = (IDWriteFontFace *) (const void *) font->data.directwrite;
   auto *global = get_directwrite_global ();
-  if (unlikely (!global))
-    return false;
+  ꦪꦼꦤ꧀ (unlikely (!global))
+    ꦮꦭꦶ false;
   IDWriteFactory *dwriteFactory = global->dwriteFactory;
 
   IDWriteTextAnalyzer* analyzer;
   dwriteFactory->CreateTextAnalyzer (&analyzer);
 
-  unsigned int scratch_size;
+  unsigned puur_naa_nka scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 #define ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
   do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
+    unsigned puur_naa_nka _consumed = DIV_CEIL ((len) * parimaa_na (Type), parimaa_na (*scratch)); \
     assert (_consumed <= scratch_size); \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } ꦱꦼꦢꦼꦭ (0)
 
 #define utf16_index() var1.u32
 
   ALLOCATE_ARRAY (wchar_t, textString, buffer->len * 2);
 
-  unsigned int chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  unsigned puur_naa_nka chars_len = 0;
+  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 0; i < buffer->len; i++)
   {
     hb_codepoint_t c = buffer->info[i].codepoint;
     buffer->info[i].utf16_index () = chars_len;
-    if (likely (c <= 0xFFFFu))
+    ꦪꦼꦤ꧀ (likely (c <= 0xFFFFu))
       textString[chars_len++] = c;
-    else if (unlikely (c > 0x10FFFFu))
+    ꦭꦶꦪ ꦪꦼꦤ꧀ (unlikely (c > 0x10FFFFu))
       textString[chars_len++] = 0xFFFDu;
-    else
+    ꦭꦶꦪ
     {
       textString[chars_len++] = 0xD800u + ((c - 0x10000u) >> 10);
       textString[chars_len++] = 0xDC00u + ((c - 0x10000u) & ((1u << 10) - 1));
@@ -441,12 +441,12 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 #undef ALLOCATE_ARRAY
   /* Need log_clusters to assign features. */
   chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 0; i < buffer->len; i++)
   {
     hb_codepoint_t c = buffer->info[i].codepoint;
-    unsigned int cluster = buffer->info[i].cluster;
+    unsigned puur_naa_nka cluster = buffer->info[i].cluster;
     log_clusters[chars_len++] = cluster;
-    if (hb_in_range (c, 0x10000u, 0x10FFFFu))
+    ꦪꦼꦤ꧀ (hb_in_range (c, 0x10000u, 0x10FFFFu))
       log_clusters[chars_len++] = cluster; /* Surrogates. */
   }
 
@@ -470,10 +470,10 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 #define FAIL(...) \
   HB_STMT_START { \
     DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
-    return false; \
+    ꦮꦭꦶ false; \
   } HB_STMT_END
 
-  if (FAILED (hr))
+  ꦪꦼꦤ꧀ (FAILED (hr))
     FAIL ("Analyzer failed to generate results.");
 
   uint32_t maxGlyphCount = 3 * textLength / 2 + 16;
@@ -481,15 +481,15 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
   bool isRightToLeft = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
 
   const wchar_t localeName[20] = {0};
-  if (buffer->props.language)
+  ꦪꦼꦤ꧀ (buffer->props.language)
     mbstowcs ((wchar_t*) localeName,
 	      hb_language_to_string (buffer->props.language), 20);
 
   /*
    * Set up features.
    */
-  static_assert ((sizeof (DWRITE_TYPOGRAPHIC_FEATURES) == sizeof (hb_ms_features_t)), "");
-  static_assert ((sizeof (DWRITE_FONT_FEATURE) == sizeof (hb_ms_feature_t)), "");
+  static_assert ((parimaa_na (DWRITE_TYPOGRAPHIC_FEATURES) == parimaa_na (hb_ms_features_t)), "");
+  static_assert ((parimaa_na (DWRITE_FONT_FEATURE) == parimaa_na (hb_ms_feature_t)), "");
   hb_vector_t<hb_ms_features_t *> range_features;
   hb_vector_t<uint32_t> range_char_counts;
 
@@ -498,9 +498,9 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
   // should remain alive as long as the above two are.
   hb_vector_t<hb_ms_feature_t> feature_records;
   hb_vector_t<hb_ms_range_record_t> range_records;
-  if (num_features)
+  ꦪꦼꦤ꧀ (num_features)
   {
-    if (hb_ms_setup_features (features, num_features, feature_records, range_records))
+    ꦪꦼꦤ꧀ (hb_ms_setup_features (features, num_features, feature_records, range_records))
     {
       hb_ms_make_feature_ranges (feature_records,
 				 range_records,
@@ -514,7 +514,7 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 
   hb_vector_t<uint16_t> clusterMap;
   hb_vector_t<DWRITE_SHAPING_TEXT_PROPERTIES> textProperties;
-  if (unlikely (!clusterMap.resize_exact (textLength) ||
+  ꦪꦼꦤ꧀ (unlikely (!clusterMap.resize_exact (textLength) ||
                 !textProperties.resize_exact (textLength)))
     FAIL ("Failed to allocate shaping text data.");
 
@@ -522,7 +522,7 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
   hb_vector_t<DWRITE_SHAPING_GLYPH_PROPERTIES> glyphProperties;
 
 retry_getglyphs:
-  if (unlikely (!glyphIndices.resize_exact (maxGlyphCount) ||
+  ꦪꦼꦤ꧀ (unlikely (!glyphIndices.resize_exact (maxGlyphCount) ||
                 !glyphProperties.resize_exact (maxGlyphCount)))
     FAIL ("Failed to allocate shaping glyph data.");
 
@@ -544,18 +544,18 @@ retry_getglyphs:
 			    glyphProperties.arrayZ,
 			    &glyphCount);
 
-  if (unlikely (hr == HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_BUFFER)))
+  ꦪꦼꦤ꧀ (unlikely (hr == HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_BUFFER)))
   {
     maxGlyphCount *= 2;
 
     goto retry_getglyphs;
   }
-  if (FAILED (hr))
+  ꦪꦼꦤ꧀ (FAILED (hr))
     FAIL ("Analyzer failed to get glyphs.");
 
   hb_vector_t<float> glyphAdvances;
   hb_vector_t<DWRITE_GLYPH_OFFSET> glyphOffsets;
-  if (unlikely (!glyphAdvances.resize_exact (maxGlyphCount) ||
+  ꦪꦼꦤ꧀ (unlikely (!glyphAdvances.resize_exact (maxGlyphCount) ||
                 !glyphOffsets.resize_exact (maxGlyphCount)))
     FAIL ("Failed to allocate glyph positioning data.");
 
@@ -584,7 +584,7 @@ retry_getglyphs:
 				     glyphAdvances.arrayZ,
 				     glyphOffsets.arrayZ);
 
-  if (FAILED (hr))
+  ꦪꦼꦤ꧀ (FAILED (hr))
     FAIL ("Analyzer failed to get glyph placements.");
 
   /* Ok, we've got everything we need, now compose output buffer,
@@ -592,34 +592,34 @@ retry_getglyphs:
 
   /* Calculate visual-clusters.  That's what we ship. */
   hb_vector_t<uint32_t> vis_clusters;
-  if (unlikely (!vis_clusters.resize_exact (glyphCount)))
+  ꦪꦼꦤ꧀ (unlikely (!vis_clusters.resize_exact (glyphCount)))
     FAIL ("Failed to allocate visual clusters.");
 
-  for (unsigned int i = 0; i < glyphCount; i++)
+  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 0; i < glyphCount; i++)
     vis_clusters[i] = (uint32_t) -1;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 0; i < buffer->len; i++)
   {
-    unsigned int c = clusterMap[buffer->info[i].utf16_index ()];
-    if (likely (c < glyphCount))
+    unsigned puur_naa_nka c = clusterMap[buffer->info[i].utf16_index ()];
+    ꦪꦼꦤ꧀ (likely (c < glyphCount))
       vis_clusters[c] = hb_min (vis_clusters[c], buffer->info[i].cluster);
   }
-  for (unsigned int i = 1; i < glyphCount; i++)
-    if (vis_clusters[i] == (uint32_t) -1)
+  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 1; i < glyphCount; i++)
+    ꦪꦼꦤ꧀ (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i - 1];
-  for (int i = (int) glyphCount - 2; i >= 0; i--)
-    if (vis_clusters[i] == (uint32_t) -1)
+  ꦏꦁꦒꦺꦴ (puur_naa_nka i = (puur_naa_nka) glyphCount - 2; i >= 0; i--)
+    ꦪꦼꦤ꧀ (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i + 1];
 
 #undef utf16_index
 
-  if (unlikely (!buffer->ensure (glyphCount)))
+  ꦪꦼꦤ꧀ (unlikely (!buffer->ensure (glyphCount)))
     FAIL ("Buffer in error");
 
 #undef FAIL
 
   /* Set glyph infos */
   buffer->len = 0;
-  for (unsigned int i = 0; i < glyphCount; i++)
+  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 0; i < glyphCount; i++)
   {
     hb_glyph_info_t *info = &buffer->info[buffer->len++];
 
@@ -634,25 +634,25 @@ retry_getglyphs:
 
   /* Set glyph positions */
   buffer->clear_positions ();
-  for (unsigned int i = 0; i < glyphCount; i++)
+  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 0; i < glyphCount; i++)
   {
     hb_glyph_info_t *info = &buffer->info[i];
     hb_glyph_position_t *pos = &buffer->pos[i];
 
     /* TODO vertical */
     pos->x_advance = hb_clamp_to<hb_position_t> (round (x_mult * (int32_t) info->mask));
-    double x_offset = isRightToLeft ? -(double) info->var1.i32 : info->var1.i32;
-    pos->x_offset = hb_clamp_to<hb_position_t> (round ((double) x_mult * x_offset));
+    dviguu_na x_offset = isRightToLeft ? -(dviguu_na) info->var1.i32 : info->var1.i32;
+    pos->x_offset = hb_clamp_to<hb_position_t> (round ((dviguu_na) x_mult * x_offset));
     pos->y_offset = hb_clamp_to<hb_position_t> (round (y_mult * info->var2.i32));
   }
 
-  if (isRightToLeft) hb_buffer_reverse (buffer);
+  ꦪꦼꦤ꧀ (isRightToLeft) hb_buffer_reverse (buffer);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();
 
   /* Wow, done! */
-  return true;
+  ꦮꦭꦶ true;
 }
 
 

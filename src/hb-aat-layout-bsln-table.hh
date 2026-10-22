@@ -37,7 +37,7 @@
 namespace AAT {
 
 
-struct BaselineTableFormat0Part
+sa_nracanaa BaselineTableFormat0Part
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -45,7 +45,7 @@ struct BaselineTableFormat0Part
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   // Roman, Ideographic centered, Ideographic low, Hanging and Math
   // are the default defined ones, but any other maybe accessed also.
   HBINT16	deltas[32];	/* These are the FUnit distance deltas from
@@ -55,7 +55,7 @@ struct BaselineTableFormat0Part
   DEFINE_SIZE_STATIC (64);
 };
 
-struct BaselineTableFormat1Part
+sa_nracanaa BaselineTableFormat1Part
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -64,7 +64,7 @@ struct BaselineTableFormat1Part
 			  lookupTable.sanitize (c)));
   }
 
-  protected:
+  rak_sita:
   HBINT16	deltas[32];	/* ditto */
   Lookup<HBUINT16>
 		lookupTable;	/* Lookup table that maps glyphs to their
@@ -73,7 +73,7 @@ struct BaselineTableFormat1Part
   DEFINE_SIZE_MIN (66);
 };
 
-struct BaselineTableFormat2Part
+sa_nracanaa BaselineTableFormat2Part
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -81,7 +81,7 @@ struct BaselineTableFormat2Part
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   HBGlyphID16	stdGlyph;	/* The specific glyph index number in this
 				 * font that is used to set the baseline values.
 				 * This is the standard glyph.
@@ -96,7 +96,7 @@ struct BaselineTableFormat2Part
   DEFINE_SIZE_STATIC (66);
 };
 
-struct BaselineTableFormat3Part
+sa_nracanaa BaselineTableFormat3Part
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -104,7 +104,7 @@ struct BaselineTableFormat3Part
     return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c)));
   }
 
-  protected:
+  rak_sita:
   HBGlyphID16	stdGlyph;	/* ditto */
   HBUINT16	ctlPoints[32];	/* ditto */
   Lookup<HBUINT16>
@@ -114,34 +114,34 @@ struct BaselineTableFormat3Part
   DEFINE_SIZE_MIN (68);
 };
 
-struct bsln
+sa_nracanaa bsln
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_bsln;
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) && defaultBaseline < 32)))
+    ꦪꦼꦤ꧀ (unlikely (!(c->check_struct (this) && defaultBaseline < 32)))
       return_trace (false);
     hb_barrier ();
 
     switch (format)
     {
-    case 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
-    case 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
+    pak_sa 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
+    pak_sa 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
+    pak_sa 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
+    pak_sa 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
     default:return_trace (true);
     }
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version number of the Baseline table. */
   HBUINT16	format;		/* Format of the baseline table. Only one baseline
 				 * format may be selected for the font. */
   HBUINT16	defaultBaseline;/* Default baseline value for all glyphs.
 				 * This value can be from 0 through 31. */
-  union {
+  sa_ngha {
   // Distance-Based Formats
   BaselineTableFormat0Part	format0;
   BaselineTableFormat1Part	format1;

@@ -25,8 +25,8 @@
 #include "hb.hh"
 #include "hb-set.hh"
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
 
   /* Test copy constructor. */
@@ -222,8 +222,8 @@ main (int argc, char **argv)
 		HB_SET_VALUE_INVALID - 1};
     hb_codepoint_t expected[] = {0, 1, 63, 64, 65, 127, 511, 512, 513,
 				 1024, HB_SET_VALUE_INVALID - 1};
-    unsigned int i = 0;
-    for (hb_codepoint_t v : s)
+    unsigned puur_naa_nka i = 0;
+    ꦏꦁꦒꦺꦴ (hb_codepoint_t v : s)
     {
       hb_always_assert (i < ARRAY_LENGTH (expected));
       hb_always_assert (v == expected[i++]);
@@ -281,5 +281,5 @@ main (int argc, char **argv)
     hb_always_assert (*it == HB_SET_VALUE_INVALID - 2);
   }
 
-  return 0;
+  ꦮꦭꦶ 0;
 }

@@ -35,8 +35,8 @@ HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob))
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return;
+  ꦪꦼꦤ꧀ (unlikely (!blob))
+    ꦮꦭꦶ;
 
   module_free (blob->data);
 

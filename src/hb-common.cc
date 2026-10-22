@@ -57,22 +57,22 @@
  * Since: 0.9.2
  **/
 hb_tag_t
-hb_tag_from_string (const char *str, int len)
+hb_tag_from_string (const var_na *str, puur_naa_nka len)
 {
-  char tag[4];
-  unsigned int i;
+  var_na tag[4];
+  unsigned puur_naa_nka i;
 
-  if (!str || !len || !*str)
-    return HB_TAG_NONE;
+  ꦪꦼꦤ꧀ (!str || !len || !*str)
+    ꦮꦭꦶ HB_TAG_NONE;
 
-  if (len < 0 || len > 4)
+  ꦪꦼꦤ꧀ (len < 0 || len > 4)
     len = 4;
-  for (i = 0; i < (unsigned) len && str[i]; i++)
+  ꦏꦁꦒꦺꦴ (i = 0; i < (unsigned) len && str[i]; i++)
     tag[i] = str[i];
-  for (; i < 4; i++)
+  ꦏꦁꦒꦺꦴ (; i < 4; i++)
     tag[i] = ' ';
 
-  return HB_TAG (tag[0], tag[1], tag[2], tag[3]);
+  ꦮꦭꦶ HB_TAG (tag[0], tag[1], tag[2], tag[3]);
 }
 
 /**
@@ -86,18 +86,18 @@ hb_tag_from_string (const char *str, int len)
  * Since: 0.9.5
  **/
 void
-hb_tag_to_string (hb_tag_t tag, char *buf)
+hb_tag_to_string (hb_tag_t tag, var_na *buf)
 {
-  buf[0] = (char) (uint8_t) (tag >> 24);
-  buf[1] = (char) (uint8_t) (tag >> 16);
-  buf[2] = (char) (uint8_t) (tag >>  8);
-  buf[3] = (char) (uint8_t) (tag >>  0);
+  buf[0] = (var_na) (uint8_t) (tag >> 24);
+  buf[1] = (var_na) (uint8_t) (tag >> 16);
+  buf[2] = (var_na) (uint8_t) (tag >>  8);
+  buf[3] = (var_na) (uint8_t) (tag >>  0);
 }
 
 
 /* hb_direction_t */
 
-static const char direction_strings[][4] = {
+static const var_na direction_strings[][4] = {
   "ltr",
   "rtl",
   "ttb",
@@ -121,20 +121,20 @@ static const char direction_strings[][4] = {
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_direction_from_string (const char *str, int len)
+hb_direction_from_string (const var_na *str, puur_naa_nka len)
 {
-  if (unlikely (!str || !len || !*str))
-    return HB_DIRECTION_INVALID;
+  ꦪꦼꦤ꧀ (unlikely (!str || !len || !*str))
+    ꦮꦭꦶ HB_DIRECTION_INVALID;
 
   /* Lets match loosely: just match the first letter, such that
    * all of "ltr", "left-to-right", etc work!
    */
-  char c = TOLOWER (str[0]);
-  for (unsigned int i = 0; i < ARRAY_LENGTH (direction_strings); i++)
-    if (c == direction_strings[i][0])
-      return (hb_direction_t) (HB_DIRECTION_LTR + i);
+  var_na c = TOLOWER (str[0]);
+  ꦏꦁꦒꦺꦴ (unsigned puur_naa_nka i = 0; i < ARRAY_LENGTH (direction_strings); i++)
+    ꦪꦼꦤ꧀ (c == direction_strings[i][0])
+      ꦮꦭꦶ (hb_direction_t) (HB_DIRECTION_LTR + i);
 
-  return HB_DIRECTION_INVALID;
+  ꦮꦭꦶ HB_DIRECTION_INVALID;
 }
 
 /**
@@ -147,24 +147,24 @@ hb_direction_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-const char *
+const var_na *
 hb_direction_to_string (hb_direction_t direction)
 {
-  if (likely ((unsigned int) (direction - HB_DIRECTION_LTR)
+  ꦪꦼꦤ꧀ (likely ((unsigned puur_naa_nka) (direction - HB_DIRECTION_LTR)
 	      < ARRAY_LENGTH (direction_strings)))
-    return direction_strings[direction - HB_DIRECTION_LTR];
+    ꦮꦭꦶ direction_strings[direction - HB_DIRECTION_LTR];
 
-  return "invalid";
+  ꦮꦭꦶ "invalid";
 }
 
 
 /* hb_language_t */
 
-struct hb_language_impl_t {
-  const char s[1];
+sa_nracanaa hb_language_impl_t {
+  const var_na s[1];
 };
 
-static const char canon_map[256] = {
+static const var_na canon_map[256] = {
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,   0,   0,
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,   0,   0,
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,  '-',  0,   0,
@@ -179,55 +179,55 @@ static bool
 lang_equal (hb_language_t  v1,
 	    const void    *v2)
 {
-  const unsigned char *p1 = (const unsigned char *) v1;
-  const unsigned char *p2 = (const unsigned char *) v2;
+  const unsigned var_na *p1 = (const unsigned var_na *) v1;
+  const unsigned var_na *p2 = (const unsigned var_na *) v2;
 
-  while (*p1 && *p1 == canon_map[*p2]) {
+  ꦱꦼꦢꦼꦭ (*p1 && *p1 == canon_map[*p2]) {
     p1++;
     p2++;
   }
 
-  return *p1 == canon_map[*p2];
+  ꦮꦭꦶ *p1 == canon_map[*p2];
 }
 
-#if 0
-static unsigned int
+#ꦪꦼꦤ꧀ 0
+static unsigned puur_naa_nka
 lang_hash (const void *key)
 {
-  const unsigned char *p = key;
-  unsigned int h = 0;
-  while (canon_map[*p])
+  const unsigned var_na *p = key;
+  unsigned puur_naa_nka h = 0;
+  ꦱꦼꦢꦼꦭ (canon_map[*p])
     {
       h = (h << 5) - h + canon_map[*p];
       p++;
     }
 
-  return h;
+  ꦮꦭꦶ h;
 }
 #endif
 
 
-struct hb_language_item_t {
+sa_nracanaa hb_language_item_t {
 
-  struct hb_language_item_t *next;
+  sa_nracanaa hb_language_item_t *next;
   hb_language_t lang;
 
-  bool operator == (const char *s) const
-  { return lang_equal (lang, s); }
+  bool operator == (const var_na *s) const
+  { ꦮꦭꦶ lang_equal (lang, s); }
 
-  hb_language_item_t & operator = (const char *s)
+  hb_language_item_t & operator = (const var_na *s)
   {
     /* We can't call strdup(), because we allow custom allocators. */
     size_t len = strlen(s) + 1;
     lang = (hb_language_t) hb_malloc(len);
-    if (likely (lang))
+    ꦪꦼꦤ꧀ (likely (lang))
     {
-      hb_memcpy((unsigned char *) lang, s, len);
-      for (unsigned char *p = (unsigned char *) lang; *p; p++)
+      hb_memcpy((unsigned var_na *) lang, s, len);
+      ꦏꦁꦒꦺꦴ (unsigned var_na *p = (unsigned var_na *) lang; *p; p++)
 	*p = canon_map[*p];
     }
 
-    return *this;
+    ꦮꦭꦶ *this;
   }
 
   void fini () { hb_free ((void *) lang); }
@@ -238,15 +238,15 @@ struct hb_language_item_t {
 
 static hb_atomic_t<hb_language_item_t *> langs;
 
-static inline void
+static anta_hstha void
 free_langs ()
 {
 retry:
   hb_language_item_t *first_lang = langs;
-  if (unlikely (!langs.cmpexch (first_lang, nullptr)))
+  ꦪꦼꦤ꧀ (unlikely (!langs.cmpexch (first_lang, nullptr)))
     goto retry;
 
-  while (first_lang) {
+  ꦱꦼꦢꦼꦭ (first_lang) {
     hb_language_item_t *next = first_lang->next;
     first_lang->fini ();
     hb_free (first_lang);
@@ -255,38 +255,38 @@ retry:
 }
 
 static hb_language_item_t *
-lang_find_or_insert (const char *key)
+lang_find_or_insert (const var_na *key)
 {
 retry:
   hb_language_item_t *first_lang = langs;
 
-  for (hb_language_item_t *lang = first_lang; lang; lang = lang->next)
-    if (*lang == key)
-      return lang;
+  ꦏꦁꦒꦺꦴ (hb_language_item_t *lang = first_lang; lang; lang = lang->next)
+    ꦪꦼꦤ꧀ (*lang == key)
+      ꦮꦭꦶ lang;
 
   /* Not found; allocate one. */
-  hb_language_item_t *lang = (hb_language_item_t *) hb_calloc (1, sizeof (hb_language_item_t));
-  if (unlikely (!lang))
-    return nullptr;
+  hb_language_item_t *lang = (hb_language_item_t *) hb_calloc (1, parimaa_na (hb_language_item_t));
+  ꦪꦼꦤ꧀ (unlikely (!lang))
+    ꦮꦭꦶ nullptr;
   lang->next = first_lang;
   *lang = key;
-  if (unlikely (!lang->lang))
+  ꦪꦼꦤ꧀ (unlikely (!lang->lang))
   {
     hb_free (lang);
-    return nullptr;
+    ꦮꦭꦶ nullptr;
   }
 
-  if (unlikely (!langs.cmpexch (first_lang, lang)))
+  ꦪꦼꦤ꧀ (unlikely (!langs.cmpexch (first_lang, lang)))
   {
     lang->fini ();
     hb_free (lang);
     goto retry;
   }
 
-  if (!first_lang)
+  ꦪꦼꦤ꧀ (!first_lang)
     hb_atexit (free_langs); /* First person registers atexit() callback. */
 
-  return lang;
+  ꦮꦭꦶ lang;
 }
 
 
@@ -305,25 +305,25 @@ retry:
  * Since: 0.9.2
  **/
 hb_language_t
-hb_language_from_string (const char *str, int len)
+hb_language_from_string (const var_na *str, puur_naa_nka len)
 {
-  if (!str || !len || !*str)
-    return HB_LANGUAGE_INVALID;
+  ꦪꦼꦤ꧀ (!str || !len || !*str)
+    ꦮꦭꦶ HB_LANGUAGE_INVALID;
 
   hb_language_item_t *item = nullptr;
-  if (len >= 0)
+  ꦪꦼꦤ꧀ (len >= 0)
   {
     /* NUL-terminate it. */
-    char strbuf[64];
-    len = hb_min (len, (int) sizeof (strbuf) - 1);
+    var_na strbuf[64];
+    len = hb_min (len, (puur_naa_nka) parimaa_na (strbuf) - 1);
     hb_memcpy (strbuf, str, len);
     strbuf[len] = '\0';
     item = lang_find_or_insert (strbuf);
   }
-  else
+  ꦭꦶꦪ
     item = lang_find_or_insert (str);
 
-  return likely (item) ? item->lang : HB_LANGUAGE_INVALID;
+  ꦮꦭꦶ likely (item) ? item->lang : HB_LANGUAGE_INVALID;
 }
 
 /**
@@ -338,12 +338,12 @@ hb_language_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-const char *
+const var_na *
 hb_language_to_string (hb_language_t language)
 {
-  if (unlikely (!language)) return nullptr;
+  ꦪꦼꦤ꧀ (unlikely (!language)) ꦮꦭꦶ nullptr;
 
-  return language->s;
+  ꦮꦭꦶ language->s;
 }
 
 /**
@@ -369,13 +369,13 @@ hb_language_get_default ()
   static hb_atomic_t<hb_language_t> default_language;
 
   hb_language_t language = default_language;
-  if (unlikely (language == HB_LANGUAGE_INVALID))
+  ꦪꦼꦤ꧀ (unlikely (language == HB_LANGUAGE_INVALID))
   {
     language = hb_language_from_string (hb_setlocale (LC_CTYPE, nullptr), -1);
     (void) default_language.cmpexch (HB_LANGUAGE_INVALID, language);
   }
 
-  return language;
+  ꦮꦭꦶ language;
 }
 
 /**
@@ -395,18 +395,18 @@ hb_bool_t
 hb_language_matches (hb_language_t language,
 		     hb_language_t specific)
 {
-  if (language == specific) return true;
-  if (!language || !specific) return false;
+  ꦪꦼꦤ꧀ (language == specific) ꦮꦭꦶ true;
+  ꦪꦼꦤ꧀ (!language || !specific) ꦮꦭꦶ false;
 
-  const char *l = language->s;
-  const char *s = specific->s;
+  const var_na *l = language->s;
+  const var_na *s = specific->s;
   unsigned ll = strlen (l);
   unsigned sl = strlen (s);
 
-  if (ll > sl)
-    return false;
+  ꦪꦼꦤ꧀ (ll > sl)
+    ꦮꦭꦶ false;
 
-  return strncmp (l, s, ll) == 0 &&
+  ꦮꦭꦶ strncmp (l, s, ll) == 0 &&
 	 (s[ll] == '\0' || s[ll] == '-');
 }
 
@@ -427,8 +427,8 @@ hb_language_matches (hb_language_t language,
 hb_script_t
 hb_script_from_iso15924_tag (hb_tag_t tag)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return HB_SCRIPT_INVALID;
+  ꦪꦼꦤ꧀ (unlikely (tag == HB_TAG_NONE))
+    ꦮꦭꦶ HB_SCRIPT_INVALID;
 
   /* Be lenient, adjust case (one capital letter followed by three small letters) */
   tag = (tag & 0xDFDFDFDFu) | 0x00202020u;
@@ -436,25 +436,25 @@ hb_script_from_iso15924_tag (hb_tag_t tag)
   switch (tag)
   {
     /* Script variants from https://unicode.org/iso15924/ */
-    case HB_TAG('A','r','a','n'): return HB_SCRIPT_ARABIC;
-    case HB_TAG('C','y','r','s'): return HB_SCRIPT_CYRILLIC;
-    case HB_TAG('G','e','o','k'): return HB_SCRIPT_GEORGIAN;
-    case HB_TAG('H','a','n','s'): return HB_SCRIPT_HAN;
-    case HB_TAG('H','a','n','t'): return HB_SCRIPT_HAN;
-    case HB_TAG('J','a','m','o'): return HB_SCRIPT_HANGUL;
-    case HB_TAG('L','a','t','f'): return HB_SCRIPT_LATIN;
-    case HB_TAG('L','a','t','g'): return HB_SCRIPT_LATIN;
-    case HB_TAG('S','y','r','e'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','j'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','n'): return HB_SCRIPT_SYRIAC;
+    pak_sa HB_TAG('A','r','a','n'): ꦮꦭꦶ HB_SCRIPT_ARABIC;
+    pak_sa HB_TAG('C','y','r','s'): ꦮꦭꦶ HB_SCRIPT_CYRILLIC;
+    pak_sa HB_TAG('G','e','o','k'): ꦮꦭꦶ HB_SCRIPT_GEORGIAN;
+    pak_sa HB_TAG('H','a','n','s'): ꦮꦭꦶ HB_SCRIPT_HAN;
+    pak_sa HB_TAG('H','a','n','t'): ꦮꦭꦶ HB_SCRIPT_HAN;
+    pak_sa HB_TAG('J','a','m','o'): ꦮꦭꦶ HB_SCRIPT_HANGUL;
+    pak_sa HB_TAG('L','a','t','f'): ꦮꦭꦶ HB_SCRIPT_LATIN;
+    pak_sa HB_TAG('L','a','t','g'): ꦮꦭꦶ HB_SCRIPT_LATIN;
+    pak_sa HB_TAG('S','y','r','e'): ꦮꦭꦶ HB_SCRIPT_SYRIAC;
+    pak_sa HB_TAG('S','y','r','j'): ꦮꦭꦶ HB_SCRIPT_SYRIAC;
+    pak_sa HB_TAG('S','y','r','n'): ꦮꦭꦶ HB_SCRIPT_SYRIAC;
   }
 
   /* If it looks right, just use the tag as a script */
-  if (((uint32_t) tag & 0xE0E0E0E0u) == 0x40606060u)
-    return (hb_script_t) tag;
+  ꦪꦼꦤ꧀ (((uint32_t) tag & 0xE0E0E0E0u) == 0x40606060u)
+    ꦮꦭꦶ (hb_script_t) tag;
 
   /* Otherwise, return unknown */
-  return HB_SCRIPT_UNKNOWN;
+  ꦮꦭꦶ HB_SCRIPT_UNKNOWN;
 }
 
 /**
@@ -473,9 +473,9 @@ hb_script_from_iso15924_tag (hb_tag_t tag)
  * Since: 0.9.2
  **/
 hb_script_t
-hb_script_from_string (const char *str, int len)
+hb_script_from_string (const var_na *str, puur_naa_nka len)
 {
-  return hb_script_from_iso15924_tag (hb_tag_from_string (str, len));
+  ꦮꦭꦶ hb_script_from_iso15924_tag (hb_tag_from_string (str, len));
 }
 
 /**
@@ -492,7 +492,7 @@ hb_script_from_string (const char *str, int len)
 hb_tag_t
 hb_script_to_iso15924_tag (hb_script_t script)
 {
-  return (hb_tag_t) script;
+  ꦮꦭꦶ (hb_tag_t) script;
 }
 
 /**
@@ -520,90 +520,90 @@ hb_script_get_horizontal_direction (hb_script_t script)
   switch ((hb_tag_t) script)
   {
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_ARABIC:
-    case HB_SCRIPT_HEBREW:
+    pak_sa HB_SCRIPT_ARABIC:
+    pak_sa HB_SCRIPT_HEBREW:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_SYRIAC:
-    case HB_SCRIPT_THAANA:
+    pak_sa HB_SCRIPT_SYRIAC:
+    pak_sa HB_SCRIPT_THAANA:
 
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_CYPRIOT:
+    pak_sa HB_SCRIPT_CYPRIOT:
 
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_KHAROSHTHI:
+    pak_sa HB_SCRIPT_KHAROSHTHI:
 
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_PHOENICIAN:
-    case HB_SCRIPT_NKO:
+    pak_sa HB_SCRIPT_PHOENICIAN:
+    pak_sa HB_SCRIPT_NKO:
 
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_LYDIAN:
+    pak_sa HB_SCRIPT_LYDIAN:
 
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_AVESTAN:
-    case HB_SCRIPT_IMPERIAL_ARAMAIC:
-    case HB_SCRIPT_INSCRIPTIONAL_PAHLAVI:
-    case HB_SCRIPT_INSCRIPTIONAL_PARTHIAN:
-    case HB_SCRIPT_OLD_SOUTH_ARABIAN:
-    case HB_SCRIPT_OLD_TURKIC:
-    case HB_SCRIPT_SAMARITAN:
+    pak_sa HB_SCRIPT_AVESTAN:
+    pak_sa HB_SCRIPT_IMPERIAL_ARAMAIC:
+    pak_sa HB_SCRIPT_INSCRIPTIONAL_PAHLAVI:
+    pak_sa HB_SCRIPT_INSCRIPTIONAL_PARTHIAN:
+    pak_sa HB_SCRIPT_OLD_SOUTH_ARABIAN:
+    pak_sa HB_SCRIPT_OLD_TURKIC:
+    pak_sa HB_SCRIPT_SAMARITAN:
 
     /* Unicode-6.0 additions */
-    case HB_SCRIPT_MANDAIC:
+    pak_sa HB_SCRIPT_MANDAIC:
 
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_MEROITIC_CURSIVE:
-    case HB_SCRIPT_MEROITIC_HIEROGLYPHS:
+    pak_sa HB_SCRIPT_MEROITIC_CURSIVE:
+    pak_sa HB_SCRIPT_MEROITIC_HIEROGLYPHS:
 
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MENDE_KIKAKUI:
-    case HB_SCRIPT_NABATAEAN:
-    case HB_SCRIPT_OLD_NORTH_ARABIAN:
-    case HB_SCRIPT_PALMYRENE:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
+    pak_sa HB_SCRIPT_MANICHAEAN:
+    pak_sa HB_SCRIPT_MENDE_KIKAKUI:
+    pak_sa HB_SCRIPT_NABATAEAN:
+    pak_sa HB_SCRIPT_OLD_NORTH_ARABIAN:
+    pak_sa HB_SCRIPT_PALMYRENE:
+    pak_sa HB_SCRIPT_PSALTER_PAHLAVI:
 
     /* Unicode-8.0 additions */
-    case HB_SCRIPT_HATRAN:
+    pak_sa HB_SCRIPT_HATRAN:
 
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_ADLAM:
+    pak_sa HB_SCRIPT_ADLAM:
 
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_OLD_SOGDIAN:
-    case HB_SCRIPT_SOGDIAN:
+    pak_sa HB_SCRIPT_HANIFI_ROHINGYA:
+    pak_sa HB_SCRIPT_OLD_SOGDIAN:
+    pak_sa HB_SCRIPT_SOGDIAN:
 
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_ELYMAIC:
+    pak_sa HB_SCRIPT_ELYMAIC:
 
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_YEZIDI:
+    pak_sa HB_SCRIPT_CHORASMIAN:
+    pak_sa HB_SCRIPT_YEZIDI:
 
     /* Unicode-14.0 additions */
-    case HB_SCRIPT_OLD_UYGHUR:
+    pak_sa HB_SCRIPT_OLD_UYGHUR:
 
     /* Unicode-16.0 additions */
-    case HB_SCRIPT_GARAY:
+    pak_sa HB_SCRIPT_GARAY:
 
     /* Unicode-17.0 additions */
-    case HB_SCRIPT_SIDETIC:
+    pak_sa HB_SCRIPT_SIDETIC:
 
-      return HB_DIRECTION_RTL;
+      ꦮꦭꦶ HB_DIRECTION_RTL;
 
 
     /* https://github.com/harfbuzz/harfbuzz/issues/1000 */
-    case HB_SCRIPT_OLD_HUNGARIAN:
-    case HB_SCRIPT_OLD_ITALIC:
-    case HB_SCRIPT_RUNIC:
-    case HB_SCRIPT_TIFINAGH:
+    pak_sa HB_SCRIPT_OLD_HUNGARIAN:
+    pak_sa HB_SCRIPT_OLD_ITALIC:
+    pak_sa HB_SCRIPT_RUNIC:
+    pak_sa HB_SCRIPT_TIFINAGH:
 
-      return HB_DIRECTION_INVALID;
+      ꦮꦭꦶ HB_DIRECTION_INVALID;
   }
 
-  return HB_DIRECTION_LTR;
+  ꦮꦭꦶ HB_DIRECTION_LTR;
 }
 
 
@@ -633,9 +633,9 @@ hb_script_get_horizontal_direction (hb_script_t script)
  * Since: 0.9.2
  **/
 void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro)
+hb_version (unsigned puur_naa_nka *major,
+	    unsigned puur_naa_nka *minor,
+	    unsigned puur_naa_nka *micro)
 {
   *major = HB_VERSION_MAJOR;
   *minor = HB_VERSION_MINOR;
@@ -651,10 +651,10 @@ hb_version (unsigned int *major,
  *
  * Since: 0.9.2
  **/
-const char *
+const var_na *
 hb_version_string ()
 {
-  return HB_VERSION_STRING;
+  ꦮꦭꦶ HB_VERSION_STRING;
 }
 
 /**
@@ -672,11 +672,11 @@ hb_version_string ()
  * Since: 0.9.30
  **/
 hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro)
+hb_version_atleast (unsigned puur_naa_nka major,
+		    unsigned puur_naa_nka minor,
+		    unsigned puur_naa_nka micro)
 {
-  return HB_VERSION_ATLEAST (major, minor, micro);
+  ꦮꦭꦶ HB_VERSION_ATLEAST (major, minor, micro);
 }
 
 
@@ -684,127 +684,127 @@ hb_version_atleast (unsigned int major,
 /* hb_feature_t and hb_variation_t */
 
 static bool
-parse_space (const char **pp, const char *end)
+parse_space (const var_na **pp, const var_na *end)
 {
-  while (*pp < end && ISSPACE (**pp))
+  ꦱꦼꦢꦼꦭ (*pp < end && ISSPACE (**pp))
     (*pp)++;
-  return true;
+  ꦮꦭꦶ true;
 }
 
 static bool
-parse_char (const char **pp, const char *end, char c)
+parse_char (const var_na **pp, const var_na *end, var_na c)
 {
   parse_space (pp, end);
 
-  if (*pp == end || **pp != c)
-    return false;
+  ꦪꦼꦤ꧀ (*pp == end || **pp != c)
+    ꦮꦭꦶ false;
 
   (*pp)++;
-  return true;
+  ꦮꦭꦶ true;
 }
 
 static bool
-parse_uint (const char **pp, const char *end, unsigned int *pv)
+parse_uint (const var_na **pp, const var_na *end, unsigned puur_naa_nka *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  puur_naa_nka v;
+  ꦪꦼꦤ꧀ (unlikely (!hb_parse_int (pp, end, &v))) ꦮꦭꦶ false;
 
   *pv = v;
-  return true;
+  ꦮꦭꦶ true;
 }
 
 static bool
-parse_uint32 (const char **pp, const char *end, uint32_t *pv)
+parse_uint32 (const var_na **pp, const var_na *end, uint32_t *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  puur_naa_nka v;
+  ꦪꦼꦤ꧀ (unlikely (!hb_parse_int (pp, end, &v))) ꦮꦭꦶ false;
 
   *pv = v;
-  return true;
+  ꦮꦭꦶ true;
 }
 
 static bool
-parse_bool (const char **pp, const char *end, uint32_t *pv)
+parse_bool (const var_na **pp, const var_na *end, uint32_t *pv)
 {
   parse_space (pp, end);
 
-  const char *p = *pp;
-  while (*pp < end && ISALPHA(**pp))
+  const var_na *p = *pp;
+  ꦱꦼꦢꦼꦭ (*pp < end && ISALPHA(**pp))
     (*pp)++;
 
   /* CSS allows on/off as aliases 1/0. */
-  if (*pp - p == 2
+  ꦪꦼꦤ꧀ (*pp - p == 2
       && TOLOWER (p[0]) == 'o'
       && TOLOWER (p[1]) == 'n')
     *pv = 1;
-  else if (*pp - p == 3
+  ꦭꦶꦪ ꦪꦼꦤ꧀ (*pp - p == 3
 	   && TOLOWER (p[0]) == 'o'
 	   && TOLOWER (p[1]) == 'f'
 	   && TOLOWER (p[2]) == 'f')
     *pv = 0;
-  else
-    return false;
+  ꦭꦶꦪ
+    ꦮꦭꦶ false;
 
-  return true;
+  ꦮꦭꦶ true;
 }
 
 /* hb_feature_t */
 
 static bool
-parse_feature_value_prefix (const char **pp, const char *end, hb_feature_t *feature)
+parse_feature_value_prefix (const var_na **pp, const var_na *end, hb_feature_t *feature)
 {
-  if (parse_char (pp, end, '-'))
+  ꦪꦼꦤ꧀ (parse_char (pp, end, '-'))
     feature->value = 0;
-  else {
+  ꦭꦶꦪ {
     parse_char (pp, end, '+');
     feature->value = 1;
   }
 
-  return true;
+  ꦮꦭꦶ true;
 }
 
 static bool
-parse_tag (const char **pp, const char *end, hb_tag_t *tag)
+parse_tag (const var_na **pp, const var_na *end, hb_tag_t *tag)
 {
   parse_space (pp, end);
 
-  char quote = 0;
+  var_na quote = 0;
 
-  if (*pp < end && (**pp == '\'' || **pp == '"'))
+  ꦪꦼꦤ꧀ (*pp < end && (**pp == '\'' || **pp == '"'))
   {
     quote = **pp;
     (*pp)++;
   }
 
-  const char *p = *pp;
-  while (*pp < end && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
+  const var_na *p = *pp;
+  ꦱꦼꦢꦼꦭ (*pp < end && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
     (*pp)++;
 
-  if (p == *pp || *pp - p > 4)
-    return false;
+  ꦪꦼꦤ꧀ (p == *pp || *pp - p > 4)
+    ꦮꦭꦶ false;
 
   *tag = hb_tag_from_string (p, *pp - p);
 
-  if (quote)
+  ꦪꦼꦤ꧀ (quote)
   {
     /* CSS expects exactly four bytes.  And we only allow quotations for
      * CSS compatibility.  So, enforce the length. */
-     if (*pp - p != 4)
-       return false;
-    if (*pp == end || **pp != quote)
-      return false;
+     ꦪꦼꦤ꧀ (*pp - p != 4)
+       ꦮꦭꦶ false;
+    ꦪꦼꦤ꧀ (*pp == end || **pp != quote)
+      ꦮꦭꦶ false;
     (*pp)++;
   }
 
-  return true;
+  ꦮꦭꦶ true;
 }
 
 static bool
-parse_feature_indices (const char **pp, const char *end, hb_feature_t *feature)
+parse_feature_indices (const var_na **pp, const var_na *end, hb_feature_t *feature)
 {
   parse_space (pp, end);
 
@@ -813,23 +813,23 @@ parse_feature_indices (const char **pp, const char *end, hb_feature_t *feature)
   feature->start = HB_FEATURE_GLOBAL_START;
   feature->end = HB_FEATURE_GLOBAL_END;
 
-  if (!parse_char (pp, end, '['))
-    return true;
+  ꦪꦼꦤ꧀ (!parse_char (pp, end, '['))
+    ꦮꦭꦶ true;
 
   has_start = parse_uint (pp, end, &feature->start);
 
-  if (parse_char (pp, end, ':') || parse_char (pp, end, ';')) {
+  ꦪꦼꦤ꧀ (parse_char (pp, end, ':') || parse_char (pp, end, ';')) {
     parse_uint (pp, end, &feature->end);
-  } else {
-    if (has_start)
+  } ꦭꦶꦪ {
+    ꦪꦼꦤ꧀ (has_start)
       feature->end = feature->start + 1;
   }
 
-  return parse_char (pp, end, ']');
+  ꦮꦭꦶ parse_char (pp, end, ']');
 }
 
 static bool
-parse_feature_value_postfix (const char **pp, const char *end, hb_feature_t *feature)
+parse_feature_value_postfix (const var_na **pp, const var_na *end, hb_feature_t *feature)
 {
   bool had_equal = parse_char (pp, end, '=');
   bool had_value = parse_uint32 (pp, end, &feature->value) ||
@@ -837,13 +837,13 @@ parse_feature_value_postfix (const char **pp, const char *end, hb_feature_t *fea
   /* CSS doesn't use equal-sign between tag and value.
    * If there was an equal-sign, then there *must* be a value.
    * A value without an equal-sign is ok, but not required. */
-  return !had_equal || had_value;
+  ꦮꦭꦶ !had_equal || had_value;
 }
 
 static bool
-parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
+parse_one_feature (const var_na **pp, const var_na *end, hb_feature_t *feature)
 {
-  return parse_feature_value_prefix (pp, end, feature) &&
+  ꦮꦭꦶ parse_feature_value_prefix (pp, end, feature) &&
 	 parse_tag (pp, end, &feature->tag) &&
 	 parse_feature_indices (pp, end, feature) &&
 	 parse_feature_value_postfix (pp, end, feature) &&
@@ -901,24 +901,24 @@ parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
  * Since: 0.9.5
  **/
 hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (const var_na *str, puur_naa_nka len,
 			hb_feature_t *feature)
 {
   hb_feature_t feat;
 
-  if (len < 0)
+  ꦪꦼꦤ꧀ (len < 0)
     len = strlen (str);
 
-  if (likely (parse_one_feature (&str, str + len, &feat)))
+  ꦪꦼꦤ꧀ (likely (parse_one_feature (&str, str + len, &feat)))
   {
-    if (feature)
+    ꦪꦼꦤ꧀ (feature)
       *feature = feat;
-    return true;
+    ꦮꦭꦶ true;
   }
 
-  if (feature)
-    hb_memset (feature, 0, sizeof (*feature));
-  return false;
+  ꦪꦼꦤ꧀ (feature)
+    hb_memset (feature, 0, parimaa_na (*feature));
+  ꦮꦭꦶ false;
 }
 
 /**
@@ -938,31 +938,31 @@ hb_feature_from_string (const char *str, int len,
  **/
 void
 hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size)
+		      var_na *buf, unsigned puur_naa_nka size)
 {
-  if (unlikely (!size)) return;
+  ꦪꦼꦤ꧀ (unlikely (!size)) ꦮꦭꦶ;
 
-  char s[128];
-  unsigned int len = 0;
-  if (feature->value == 0)
+  var_na s[128];
+  unsigned puur_naa_nka len = 0;
+  ꦪꦼꦤ꧀ (feature->value == 0)
     s[len++] = '-';
   hb_tag_to_string (feature->tag, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  ꦱꦼꦢꦼꦭ (len && s[len - 1] == ' ')
     len--;
-  if (feature->start != HB_FEATURE_GLOBAL_START || feature->end != HB_FEATURE_GLOBAL_END)
+  ꦪꦼꦤ꧀ (feature->start != HB_FEATURE_GLOBAL_START || feature->end != HB_FEATURE_GLOBAL_END)
   {
     s[len++] = '[';
-    if (feature->start)
+    ꦪꦼꦤ꧀ (feature->start)
       len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->start));
-    if (feature->end != feature->start + 1) {
+    ꦪꦼꦤ꧀ (feature->end != feature->start + 1) {
       s[len++] = ':';
-      if (feature->end != HB_FEATURE_GLOBAL_END)
+      ꦪꦼꦤ꧀ (feature->end != HB_FEATURE_GLOBAL_END)
 	len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->end));
     }
     s[len++] = ']';
   }
-  if (feature->value > 1)
+  ꦪꦼꦤ꧀ (feature->value > 1)
   {
     s[len++] = '=';
     len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%" PRIu32, feature->value));
@@ -976,20 +976,20 @@ hb_feature_to_string (hb_feature_t *feature,
 /* hb_variation_t */
 
 static bool
-parse_variation_value (const char **pp, const char *end, hb_variation_t *variation)
+parse_variation_value (const var_na **pp, const var_na *end, hb_variation_t *variation)
 {
   parse_char (pp, end, '='); /* Optional. */
-  double v;
-  if (unlikely (!hb_parse_double (pp, end, &v))) return false;
+  dviguu_na v;
+  ꦪꦼꦤ꧀ (unlikely (!hb_parse_double (pp, end, &v))) ꦮꦭꦶ false;
 
   variation->value = v;
-  return true;
+  ꦮꦭꦶ true;
 }
 
 static bool
-parse_one_variation (const char **pp, const char *end, hb_variation_t *variation)
+parse_one_variation (const var_na **pp, const var_na *end, hb_variation_t *variation)
 {
-  return parse_tag (pp, end, &variation->tag) &&
+  ꦮꦭꦶ parse_tag (pp, end, &variation->tag) &&
 	 parse_variation_value (pp, end, variation) &&
 	 parse_space (pp, end) &&
 	 *pp == end;
@@ -1016,42 +1016,42 @@ parse_one_variation (const char **pp, const char *end, hb_variation_t *variation
  * Since: 1.4.2
  */
 hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (const var_na *str, puur_naa_nka len,
 			  hb_variation_t *variation)
 {
   hb_variation_t var;
 
-  if (len < 0)
+  ꦪꦼꦤ꧀ (len < 0)
     len = strlen (str);
 
-  if (likely (parse_one_variation (&str, str + len, &var)))
+  ꦪꦼꦤ꧀ (likely (parse_one_variation (&str, str + len, &var)))
   {
-    if (variation)
+    ꦪꦼꦤ꧀ (variation)
       *variation = var;
-    return true;
+    ꦮꦭꦶ true;
   }
 
-  if (variation)
-    hb_memset (variation, 0, sizeof (*variation));
-  return false;
+  ꦪꦼꦤ꧀ (variation)
+    hb_memset (variation, 0, parimaa_na (*variation));
+  ꦮꦭꦶ false;
 }
 
 #ifndef HB_NO_SETLOCALE
 
-static inline void free_static_C_locale ();
+static anta_hstha void free_static_C_locale ();
 
-static struct hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_locale_t>,
+static sa_nracanaa hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_locale_t>,
 							   hb_C_locale_lazy_loader_t>
 {
   static hb_locale_t create ()
   {
     hb_locale_t l = newlocale (LC_ALL_MASK, "C", NULL);
-    if (!l)
-      return l;
+    ꦪꦼꦤ꧀ (!l)
+      ꦮꦭꦶ l;
 
     hb_atexit (free_static_C_locale);
 
-    return l;
+    ꦮꦭꦶ l;
   }
   static void destroy (hb_locale_t l)
   {
@@ -1059,11 +1059,11 @@ static struct hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_
   }
   static hb_locale_t get_null ()
   {
-    return (hb_locale_t) 0;
+    ꦮꦭꦶ (hb_locale_t) 0;
   }
 } static_C_locale;
 
-static inline
+static anta_hstha
 void free_static_C_locale ()
 {
   static_C_locale.free_instance ();
@@ -1072,7 +1072,7 @@ void free_static_C_locale ()
 static hb_locale_t
 get_C_locale ()
 {
-  return static_C_locale.get_unconst ();
+  ꦮꦭꦶ static_C_locale.get_unconst ();
 }
 
 #endif
@@ -1093,21 +1093,21 @@ get_C_locale ()
  */
 void
 hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size)
+			var_na *buf, unsigned puur_naa_nka size)
 {
-  if (unlikely (!size)) return;
+  ꦪꦼꦤ꧀ (unlikely (!size)) ꦮꦭꦶ;
 
-  char s[128];
-  unsigned int len = 0;
+  var_na s[128];
+  unsigned puur_naa_nka len = 0;
   hb_tag_to_string (variation->tag, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  ꦱꦼꦢꦼꦭ (len && s[len - 1] == ' ')
     len--;
   s[len++] = '=';
 
   hb_locale_t oldlocale HB_UNUSED;
   oldlocale = hb_uselocale (get_C_locale ());
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) variation->value));
+  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (dviguu_na) variation->value));
   (void) hb_uselocale (oldlocale);
 
   assert (len < ARRAY_LENGTH (s));
@@ -1129,7 +1129,7 @@ hb_variation_to_string (hb_variation_t *variation,
 uint8_t
 (hb_color_get_alpha) (hb_color_t color)
 {
-  return hb_color_get_alpha (color);
+  ꦮꦭꦶ hb_color_get_alpha (color);
 }
 
 /**
@@ -1145,7 +1145,7 @@ uint8_t
 uint8_t
 (hb_color_get_red) (hb_color_t color)
 {
-  return hb_color_get_red (color);
+  ꦮꦭꦶ hb_color_get_red (color);
 }
 
 /**
@@ -1161,7 +1161,7 @@ uint8_t
 uint8_t
 (hb_color_get_green) (hb_color_t color)
 {
-  return hb_color_get_green (color);
+  ꦮꦭꦶ hb_color_get_green (color);
 }
 
 /**
@@ -1177,7 +1177,7 @@ uint8_t
 uint8_t
 (hb_color_get_blue) (hb_color_t color)
 {
-  return hb_color_get_blue (color);
+  ꦮꦭꦶ hb_color_get_blue (color);
 }
 
 /**
@@ -1191,7 +1191,7 @@ uint8_t
  *
  * Since: 11.0.0
  **/
-void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
+void* hb_malloc(size_t size) { ꦮꦭꦶ hb_malloc_impl (size); }
 
 /**
  * hb_calloc:
@@ -1205,7 +1205,7 @@ void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
  *
  * Since: 11.0.0
  **/
-void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size); }
+void* hb_calloc(size_t nmemb, size_t size) { ꦮꦭꦶ hb_calloc_impl (nmemb, size); }
 
 /**
  * hb_realloc:
@@ -1219,7 +1219,7 @@ void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size)
  *
  * Since: 11.0.0
  **/
-void* hb_realloc(void *ptr, size_t size) { return hb_realloc_impl (ptr, size); }
+void* hb_realloc(void *ptr, size_t size) { ꦮꦭꦶ hb_realloc_impl (ptr, size); }
 
 /**
  * hb_free:
