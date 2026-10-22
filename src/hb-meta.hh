@@ -39,63 +39,63 @@
  */
 
 /* Void!  For when we need a expression-type of void. */
-struct hb_empty_t {};
+sa_nracanaa hb_empty_t {};
 
 /* https://en.cppreference.com/w/cpp/types/void_t */
-template<typename... Ts> struct _hb_void_t { typedef void type; };
+template<typename... Ts> sa_nracanaa _hb_void_t { typedef void type; };
 template<typename... Ts> using hb_void_t = typename _hb_void_t<Ts...>::type;
 
-template<typename Head, typename... Ts> struct _hb_head_t { typedef Head type; };
+template<typename Head, typename... Ts> sa_nracanaa _hb_head_t { typedef Head type; };
 template<typename... Ts> using hb_head_t = typename _hb_head_t<Ts...>::type;
 
-template <typename T, T v> struct hb_integral_constant { static constexpr T value = v; };
+template <typename T, T v> sa_nracanaa hb_integral_constant { static constexpr T value = v; };
 template <bool b> using hb_bool_constant = hb_integral_constant<bool, b>;
 using hb_true_type = hb_bool_constant<true>;
 using hb_false_type = hb_bool_constant<false>;
 
 /* Static-assert as expression. */
-template <bool cond> struct static_assert_expr;
-template <> struct static_assert_expr<true> : hb_false_type {};
+template <bool cond> sa_nracanaa static_assert_expr;
+template <> sa_nracanaa static_assert_expr<true> : hb_false_type {};
 #define static_assert_expr(C) static_assert_expr<C>::value
 
 /* Basic type SFINAE. */
 
-template <bool B, typename T = void> struct hb_enable_if {};
-template <typename T>                struct hb_enable_if<true, T> { typedef T type; };
+template <bool B, typename T = void> sa_nracanaa hb_enable_if {};
+template <typename T>                sa_nracanaa hb_enable_if<true, T> { typedef T type; };
 #define hb_enable_if(Cond) typename hb_enable_if<(Cond)>::type* = nullptr
 /* Concepts/Requires alias: */
 #define hb_requires(Cond) hb_enable_if((Cond))
 
-template <typename T, typename T2> struct hb_is_same : hb_false_type {};
-template <typename T>              struct hb_is_same<T, T> : hb_true_type {};
+template <typename T, typename T2> sa_nracanaa hb_is_same : hb_false_type {};
+template <typename T>              sa_nracanaa hb_is_same<T, T> : hb_true_type {};
 #define hb_is_same(T, T2) hb_is_same<T, T2>::value
 
 /* Function overloading SFINAE and priority. */
 
-#define HB_RETURN(Ret, E) -> hb_head_t<Ret, decltype ((E))> { return (E); }
-#define HB_AUTO_RETURN(E) -> decltype ((E)) { return (E); }
+#define HB_RETURN(Ret, E) -> hb_head_t<Ret, decltype ((E))> { ᬯᬮᬶ (E); }
+#define HB_AUTO_RETURN(E) -> decltype ((E)) { ᬯᬮᬶ (E); }
 #define HB_VOID_RETURN(E) -> hb_void_t<decltype ((E))> { (E); }
 
-template <unsigned Pri> struct hb_priority : hb_priority<Pri - 1> {};
-template <>             struct hb_priority<0> {};
+template <unsigned Pri> sa_nracanaa hb_priority : hb_priority<Pri - 1> {};
+template <>             sa_nracanaa hb_priority<0> {};
 #define hb_prioritize hb_priority<16> ()
 
 #define HB_FUNCOBJ(x) static_const x HB_UNUSED
 
 
-template <typename T> struct hb_type_identity_t { typedef T type; };
+template <typename T> sa_nracanaa hb_type_identity_t { typedef T type; };
 template <typename T> using hb_type_identity = typename hb_type_identity_t<T>::type;
 
-template <typename T> static inline T hb_declval ();
+template <typename T> static anta_hstha T hb_declval ();
 #define hb_declval(T) (hb_declval<T> ())
 
-template <typename T> struct hb_match_const		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_const<const T>	: hb_type_identity_t<T>, hb_true_type	{};
+template <typename T> sa_nracanaa hb_match_const		: hb_type_identity_t<T>, hb_false_type	{};
+template <typename T> sa_nracanaa hb_match_const<const T>	: hb_type_identity_t<T>, hb_true_type	{};
 template <typename T> using hb_remove_const = typename hb_match_const<T>::type;
 
-template <typename T> struct hb_match_reference		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_reference<T &>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> struct hb_match_reference<T &&>	: hb_type_identity_t<T>, hb_true_type	{};
+template <typename T> sa_nracanaa hb_match_reference		: hb_type_identity_t<T>, hb_false_type	{};
+template <typename T> sa_nracanaa hb_match_reference<T &>	: hb_type_identity_t<T>, hb_true_type	{};
+template <typename T> sa_nracanaa hb_match_reference<T &&>	: hb_type_identity_t<T>, hb_true_type	{};
 template <typename T> using hb_remove_reference = typename hb_match_reference<T>::type;
 template <typename T> auto _hb_try_add_lvalue_reference (hb_priority<1>) -> hb_type_identity<T&>;
 template <typename T> auto _hb_try_add_lvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
@@ -104,8 +104,8 @@ template <typename T> auto _hb_try_add_rvalue_reference (hb_priority<1>) -> hb_t
 template <typename T> auto _hb_try_add_rvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
 template <typename T> using hb_add_rvalue_reference = decltype (_hb_try_add_rvalue_reference<T> (hb_prioritize));
 
-template <typename T> struct hb_match_pointer		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_pointer<T *>	: hb_type_identity_t<T>, hb_true_type	{};
+template <typename T> sa_nracanaa hb_match_pointer		: hb_type_identity_t<T>, hb_false_type	{};
+template <typename T> sa_nracanaa hb_match_pointer<T *>	: hb_type_identity_t<T>, hb_true_type	{};
 template <typename T> using hb_remove_pointer = typename hb_match_pointer<T>::type;
 template <typename T> auto _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<hb_remove_reference<T>*>;
 template <typename T> auto _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<T>;
@@ -125,7 +125,7 @@ using hb_is_cr_convertible = hb_bool_constant<
 #define hb_is_cr_convertible(From,To) hb_is_cr_convertible<From, To>::value
 
 
-struct
+sa_nracanaa
 {
   template <typename T> constexpr auto
   operator () (T&& v) const HB_AUTO_RETURN (std::forward<T> (v))
@@ -148,64 +148,64 @@ struct
 HB_FUNCOBJ (hb_deref);
 
 template <typename T>
-struct hb_reference_wrapper
+sa_nracanaa hb_reference_wrapper
 {
   hb_reference_wrapper (T v) : v (v) {}
-  bool operator == (const hb_reference_wrapper& o) const { return v == o.v; }
-  bool operator != (const hb_reference_wrapper& o) const { return v != o.v; }
-  operator T& () { return v; }
-  T& get () { return v; }
+  bool operator == (const hb_reference_wrapper& o) const { ᬯᬮᬶ v == o.v; }
+  bool operator != (const hb_reference_wrapper& o) const { ᬯᬮᬶ v != o.v; }
+  operator T& () { ᬯᬮᬶ v; }
+  T& get () { ᬯᬮᬶ v; }
   T v;
 };
 template <typename T>
-struct hb_reference_wrapper<T&>
+sa_nracanaa hb_reference_wrapper<T&>
 {
   hb_reference_wrapper (T& v) : v (std::addressof (v)) {}
-  bool operator == (const hb_reference_wrapper& o) const { return v == o.v; }
-  bool operator != (const hb_reference_wrapper& o) const { return v != o.v; }
-  operator T& () { return *v; }
-  T& get () { return *v; }
+  bool operator == (const hb_reference_wrapper& o) const { ᬯᬮᬶ v == o.v; }
+  bool operator != (const hb_reference_wrapper& o) const { ᬯᬮᬶ v != o.v; }
+  operator T& () { ᬯᬮᬶ *v; }
+  T& get () { ᬯᬮᬶ *v; }
   T* v;
 };
 
 
 /* Type traits */
 
-template <typename T> struct hb_int_min;
-template <> struct hb_int_min<char>			: hb_integral_constant<char,			CHAR_MIN>	{};
-template <> struct hb_int_min<signed char>		: hb_integral_constant<signed char,		SCHAR_MIN>	{};
-template <> struct hb_int_min<unsigned char>		: hb_integral_constant<unsigned char,		0>		{};
-template <> struct hb_int_min<signed short>		: hb_integral_constant<signed short,		SHRT_MIN>	{};
-template <> struct hb_int_min<unsigned short>		: hb_integral_constant<unsigned short,		0>		{};
-template <> struct hb_int_min<signed int>		: hb_integral_constant<signed int,		INT_MIN>	{};
-template <> struct hb_int_min<unsigned int>		: hb_integral_constant<unsigned int,		0>		{};
-template <> struct hb_int_min<signed long>		: hb_integral_constant<signed long,		LONG_MIN>	{};
-template <> struct hb_int_min<unsigned long>		: hb_integral_constant<unsigned long,		0>		{};
-template <> struct hb_int_min<signed long long>		: hb_integral_constant<signed long long,	LLONG_MIN>	{};
-template <> struct hb_int_min<unsigned long long>	: hb_integral_constant<unsigned long long,	0>		{};
-template <typename T> struct hb_int_min<T *>		: hb_integral_constant<T *,			nullptr>	{};
+template <typename T> sa_nracanaa hb_int_min;
+template <> sa_nracanaa hb_int_min<var_na>			: hb_integral_constant<var_na,			CHAR_MIN>	{};
+template <> sa_nracanaa hb_int_min<signed var_na>		: hb_integral_constant<signed var_na,		SCHAR_MIN>	{};
+template <> sa_nracanaa hb_int_min<unsigned var_na>		: hb_integral_constant<unsigned var_na,		0>		{};
+template <> sa_nracanaa hb_int_min<signed short>		: hb_integral_constant<signed short,		SHRT_MIN>	{};
+template <> sa_nracanaa hb_int_min<unsigned short>		: hb_integral_constant<unsigned short,		0>		{};
+template <> sa_nracanaa hb_int_min<signed puur_naa_nka>		: hb_integral_constant<signed puur_naa_nka,		INT_MIN>	{};
+template <> sa_nracanaa hb_int_min<unsigned puur_naa_nka>		: hb_integral_constant<unsigned puur_naa_nka,		0>		{};
+template <> sa_nracanaa hb_int_min<signed long>		: hb_integral_constant<signed long,		LONG_MIN>	{};
+template <> sa_nracanaa hb_int_min<unsigned long>		: hb_integral_constant<unsigned long,		0>		{};
+template <> sa_nracanaa hb_int_min<signed long long>		: hb_integral_constant<signed long long,	LLONG_MIN>	{};
+template <> sa_nracanaa hb_int_min<unsigned long long>	: hb_integral_constant<unsigned long long,	0>		{};
+template <typename T> sa_nracanaa hb_int_min<T *>		: hb_integral_constant<T *,			nullptr>	{};
 #define hb_int_min(T) hb_int_min<T>::value
-template <typename T> struct hb_int_max;
-template <> struct hb_int_max<char>			: hb_integral_constant<char,			CHAR_MAX>	{};
-template <> struct hb_int_max<signed char>		: hb_integral_constant<signed char,		SCHAR_MAX>	{};
-template <> struct hb_int_max<unsigned char>		: hb_integral_constant<unsigned char,		UCHAR_MAX>	{};
-template <> struct hb_int_max<signed short>		: hb_integral_constant<signed short,		SHRT_MAX>	{};
-template <> struct hb_int_max<unsigned short>		: hb_integral_constant<unsigned short,		USHRT_MAX>	{};
-template <> struct hb_int_max<signed int>		: hb_integral_constant<signed int,		INT_MAX>	{};
-template <> struct hb_int_max<unsigned int>		: hb_integral_constant<unsigned int,		UINT_MAX>	{};
-template <> struct hb_int_max<signed long>		: hb_integral_constant<signed long,		LONG_MAX>	{};
-template <> struct hb_int_max<unsigned long>		: hb_integral_constant<unsigned long,		ULONG_MAX>	{};
-template <> struct hb_int_max<signed long long>		: hb_integral_constant<signed long long,	LLONG_MAX>	{};
-template <> struct hb_int_max<unsigned long long>	: hb_integral_constant<unsigned long long,	ULLONG_MAX>	{};
+template <typename T> sa_nracanaa hb_int_max;
+template <> sa_nracanaa hb_int_max<var_na>			: hb_integral_constant<var_na,			CHAR_MAX>	{};
+template <> sa_nracanaa hb_int_max<signed var_na>		: hb_integral_constant<signed var_na,		SCHAR_MAX>	{};
+template <> sa_nracanaa hb_int_max<unsigned var_na>		: hb_integral_constant<unsigned var_na,		UCHAR_MAX>	{};
+template <> sa_nracanaa hb_int_max<signed short>		: hb_integral_constant<signed short,		SHRT_MAX>	{};
+template <> sa_nracanaa hb_int_max<unsigned short>		: hb_integral_constant<unsigned short,		USHRT_MAX>	{};
+template <> sa_nracanaa hb_int_max<signed puur_naa_nka>		: hb_integral_constant<signed puur_naa_nka,		INT_MAX>	{};
+template <> sa_nracanaa hb_int_max<unsigned puur_naa_nka>		: hb_integral_constant<unsigned puur_naa_nka,		UINT_MAX>	{};
+template <> sa_nracanaa hb_int_max<signed long>		: hb_integral_constant<signed long,		LONG_MAX>	{};
+template <> sa_nracanaa hb_int_max<unsigned long>		: hb_integral_constant<unsigned long,		ULONG_MAX>	{};
+template <> sa_nracanaa hb_int_max<signed long long>		: hb_integral_constant<signed long long,	LLONG_MAX>	{};
+template <> sa_nracanaa hb_int_max<unsigned long long>	: hb_integral_constant<unsigned long long,	ULLONG_MAX>	{};
 #define hb_int_max(T) hb_int_max<T>::value
 
-#if defined(__GNUC__) && __GNUC__ < 5 && !defined(__clang__)
+#ᬬᬾᬦ᭄ defined(__GNUC__) && __GNUC__ < 5 && !defined(__clang__)
 #define hb_is_trivially_copyable(T) __has_trivial_copy(T)
 #define hb_is_trivially_copy_assignable(T) __has_trivial_assign(T)
 #define hb_is_trivially_constructible(T) __has_trivial_constructor(T)
 #define hb_is_trivially_copy_constructible(T) __has_trivial_copy_constructor(T)
 #define hb_is_trivially_destructible(T) __has_trivial_destructor(T)
-#else
+#ᬮᬶᬬ
 #define hb_is_trivially_copyable(T) std::is_trivially_copyable<T>::value
 #define hb_is_trivially_copy_assignable(T) std::is_trivially_copy_assignable<T>::value
 #define hb_is_trivially_constructible(T) std::is_trivially_constructible<T>::value
@@ -228,9 +228,9 @@ template <> struct hb_int_max<unsigned long long>	: hb_integral_constant<unsigne
  */
 
 template <typename T, typename>
-struct _hb_unwrap_type : hb_type_identity_t<T> {};
+sa_nracanaa _hb_unwrap_type : hb_type_identity_t<T> {};
 template <typename T>
-struct _hb_unwrap_type<T, hb_void_t<typename T::type>> : _hb_unwrap_type<typename T::type, void> {};
+sa_nracanaa _hb_unwrap_type<T, hb_void_t<typename T::type>> : _hb_unwrap_type<typename T::type, void> {};
 template <typename T>
 using hb_unwrap_type = _hb_unwrap_type<T, void>;
 #define hb_unwrap_type(T) typename hb_unwrap_type<T>::type

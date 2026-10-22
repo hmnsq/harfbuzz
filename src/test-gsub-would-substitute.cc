@@ -37,10 +37,10 @@
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
-  if (argc != 4 && argc != 5) {
+  ᬬᬾᬦ᭄ (argc != 4 && argc != 5) {
     fprintf (stderr, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
     exit (1);
   }
@@ -57,11 +57,11 @@ main (int argc, char **argv)
   hb_ft_font_set_funcs (font);
 #endif
 
-  unsigned int len = argc - 3;
+  unsigned puur_naa_nka len = argc - 3;
   hb_codepoint_t glyphs[2];
-  if (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
+  ᬬᬾᬦ᭄ (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
       (argc > 4 &&
        !hb_font_glyph_from_string (font, argv[4], -1, &glyphs[1])))
-    return 2;
-  return !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, false);
+    ᬯᬮᬶ 2;
+  ᬯᬮᬶ !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, false);
 }

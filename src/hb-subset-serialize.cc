@@ -53,5 +53,5 @@ hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
   for (unsigned i = 0 ; i < num_hb_objs ; i++)
     packed.push (&(hb_objects[i]));
 
-  return hb_resolve_overflows (packed, table_tag, 20, true);
+  ᬯᬮᬶ hb_resolve_overflows (packed, table_tag, 20, true);
 }

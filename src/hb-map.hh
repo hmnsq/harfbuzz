@@ -40,7 +40,7 @@ extern HB_INTERNAL const hb_codepoint_t minus_1;
 
 template <typename K, typename V,
 	  bool minus_one = false>
-struct hb_hashmap_t
+sa_nracanaa hb_hashmap_t
 {
   static constexpr bool realloc_move = true;
 
@@ -49,28 +49,28 @@ struct hb_hashmap_t
 
   void _copy (const hb_hashmap_t& o)
   {
-    if (unlikely (!o.successful))
+    ᬬᬾᬦ᭄ (unlikely (!o.successful))
     {
       successful = false;
-      return;
+      ᬯᬮᬶ;
     }
-    if (unlikely (!o.mask)) return;
+    ᬬᬾᬦ᭄ (unlikely (!o.mask)) ᬯᬮᬶ;
 
-    if (hb_is_trivially_copy_assignable (item_t))
+    ᬬᬾᬦ᭄ (hb_is_trivially_copy_assignable (item_t))
     {
-      items = (item_t *) hb_malloc2 ((o.mask + 1), sizeof (item_t));
-      if (unlikely (!items))
+      items = (item_t *) hb_malloc2 ((o.mask + 1), parimaa_na (item_t));
+      ᬬᬾᬦ᭄ (unlikely (!items))
       {
 	successful = false;
-	return;
+	ᬯᬮᬶ;
       }
       population = o.population;
       occupancy = o.occupancy;
       mask = o.mask;
       prime = o.prime;
       max_chain_length = o.max_chain_length;
-      memcpy (items, o.items, sizeof (item_t) * (mask + 1));
-      return;
+      memcpy (items, o.items, parimaa_na (item_t) * (mask + 1));
+      ᬯᬮᬶ;
     }
 
     alloc (o.population); hb_copy (o, *this);
@@ -80,12 +80,12 @@ struct hb_hashmap_t
   hb_hashmap_t& operator= (const hb_hashmap_t& o)
   {
     reset ();
-    if (!items) { _copy (o); return *this; }
-    alloc (o.population); hb_copy (o, *this); return *this;
+    ᬬᬾᬦ᭄ (!items) { _copy (o); ᬯᬮᬶ *this; }
+    alloc (o.population); hb_copy (o, *this); ᬯᬮᬶ *this;
   }
 
   hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*this, o); }
-  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*this, o); return *this; }
+  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*this, o); ᬯᬮᬶ *this; }
 
   hb_hashmap_t (std::initializer_list<hb_pair_t<K, V>> lst) : hb_hashmap_t ()
   {
@@ -97,12 +97,12 @@ struct hb_hashmap_t
   hb_hashmap_t (const Iterable &o) : hb_hashmap_t ()
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    ᬬᬾᬦ᭄ (iter.is_random_access_iterator || iter.has_fast_len)
       alloc (hb_len (iter));
     hb_copy (iter, *this);
   }
 
-  struct item_t
+  sa_nracanaa item_t
   {
     K key;
     uint32_t is_real_ : 1;
@@ -116,32 +116,32 @@ struct hb_hashmap_t
 		value () {}
 
     // Needed for https://github.com/harfbuzz/harfbuzz/issues/4138
-    K& get_key () { return key; }
-    V& get_value () { return value; }
+    K& get_key () { ᬯᬮᬶ key; }
+    V& get_value () { ᬯᬮᬶ value; }
 
-    bool is_used () const { return is_used_; }
+    bool is_used () const { ᬯᬮᬶ is_used_; }
     void set_used (bool is_used) { is_used_ = is_used; }
     void set_real (bool is_real) { is_real_ = is_real; }
-    bool is_real () const { return is_real_; }
+    bool is_real () const { ᬯᬮᬶ is_real_; }
 
     template <bool v = minus_one,
 	      hb_enable_if (v == false)>
-    static inline const V& default_value () { return Null(V); };
+    static anta_hstha const V& default_value () { ᬯᬮᬶ Null(V); };
     template <bool v = minus_one,
 	      hb_enable_if (v == true)>
-    static inline const V& default_value ()
+    static anta_hstha const V& default_value ()
     {
       static_assert (hb_is_same (V, hb_codepoint_t), "");
-      return minus_1;
+      ᬯᬮᬶ minus_1;
     };
 
-    bool operator == (const K &o) const { return hb_deref (key) == hb_deref (o); }
-    bool operator == (const item_t &o) const { return *this == o.key; }
-    hb_pair_t<K, V> get_pair() const { return hb_pair_t<K, V> (key, value); }
-    hb_pair_t<const K &, V &> get_pair_ref() { return hb_pair_t<const K &, V &> (key, value); }
+    bool operator == (const K &o) const { ᬯᬮᬶ hb_deref (key) == hb_deref (o); }
+    bool operator == (const item_t &o) const { ᬯᬮᬶ *this == o.key; }
+    hb_pair_t<K, V> get_pair() const { ᬯᬮᬶ hb_pair_t<K, V> (key, value); }
+    hb_pair_t<const K &, V &> get_pair_ref() { ᬯᬮᬶ hb_pair_t<const K &, V &> (key, value); }
 
     uint32_t total_hash () const
-    { return (hash * 31u) + hb_hash (value); }
+    { ᬯᬮᬶ (hash * 31u) + hb_hash (value); }
 
     static constexpr bool is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
   };
@@ -149,16 +149,16 @@ struct hb_hashmap_t
   hb_object_header_t header;
   bool successful; /* Allocations successful */
   unsigned short max_chain_length;
-  unsigned int population; /* Not including tombstones. */
-  unsigned int occupancy; /* Including tombstones. */
-  unsigned int mask;
-  unsigned int prime;
+  unsigned puur_naa_nka population; /* Not including tombstones. */
+  unsigned puur_naa_nka occupancy; /* Including tombstones. */
+  unsigned puur_naa_nka mask;
+  unsigned puur_naa_nka prime;
   item_t *items;
 
   friend void swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
   {
-    if (unlikely (!a.successful || !b.successful))
-      return;
+    ᬬᬾᬦ᭄ (unlikely (!a.successful || !b.successful))
+      ᬯᬮᬶ;
     hb_swap (a.max_chain_length, b.max_chain_length);
     hb_swap (a.population, b.population);
     hb_swap (a.occupancy, b.occupancy);
@@ -181,7 +181,7 @@ struct hb_hashmap_t
   {
     hb_object_fini (this);
 
-    if (likely (items))
+    ᬬᬾᬦ᭄ (likely (items))
     {
       unsigned size = mask + 1;
       for (unsigned i = 0; i < size; i++)
@@ -196,40 +196,40 @@ struct hb_hashmap_t
   {
     successful = true;
     clear ();
-    return *this;
+    ᬯᬮᬶ *this;
   }
 
-  bool in_error () const { return !successful; }
+  bool in_error () const { ᬯᬮᬶ !successful; }
 
   bool alloc (unsigned new_population = 0)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
+    ᬬᬾᬦ᭄ (unlikely (!successful)) ᬯᬮᬶ false;
+    ᬬᬾᬦ᭄ (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
     {
       // Population sizes >0x3FFFFFFF will result in power
       // being larger than 31, which in turn leads to a new size
       // that overflows u32.
       successful = false;
-      return false;
+      ᬯᬮᬶ false;
     }
 
-    if (new_population != 0 && (new_population + new_population / 2) < mask) return true;
+    ᬬᬾᬦ᭄ (new_population != 0 && (new_population + new_population / 2) < mask) ᬯᬮᬶ true;
 
-    unsigned int power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
-    unsigned int new_size = 1u << power;
-    item_t *new_items = (item_t *) hb_malloc2 ((size_t) new_size, sizeof (item_t));
-    if (unlikely (!new_items))
+    unsigned puur_naa_nka power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
+    unsigned puur_naa_nka new_size = 1u << power;
+    item_t *new_items = (item_t *) hb_malloc2 ((size_t) new_size, parimaa_na (item_t));
+    ᬬᬾᬦ᭄ (unlikely (!new_items))
     {
       successful = false;
-      return false;
+      ᬯᬮᬶ false;
     }
-    if (!item_t::is_trivially_constructible)
+    ᬬᬾᬦ᭄ (!item_t::is_trivially_constructible)
       for (auto &_ : hb_iter (new_items, new_size))
 	new (&_) item_t ();
-    else
-      hb_memset (new_items, 0, (size_t) new_size * sizeof (item_t));
+    ᬮᬶᬬ
+      hb_memset (new_items, 0, (size_t) new_size * parimaa_na (item_t));
 
-    unsigned int old_size = size ();
+    unsigned puur_naa_nka old_size = size ();
     item_t *old_items = items;
 
     /* Switch to new, empty, array. */
@@ -240,66 +240,66 @@ struct hb_hashmap_t
     items = new_items;
 
     /* Insert back old items. */
-    for (unsigned int i = 0; i < old_size; i++)
+    for (unsigned puur_naa_nka i = 0; i < old_size; i++)
     {
-      if (old_items[i].is_real ())
+      ᬬᬾᬦ᭄ (old_items[i].is_real ())
       {
 	set_with_hash (std::move (old_items[i].key),
 		       old_items[i].hash,
 		       std::move (old_items[i].value));
       }
     }
-    for (unsigned int i = 0; i < old_size; i++)
+    for (unsigned puur_naa_nka i = 0; i < old_size; i++)
       old_items[i].~item_t ();
 
     hb_free (old_items);
 
-    return true;
+    ᬯᬮᬶ true;
   }
 
   template <typename T>
   bool in_storage (const T &v) const
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return items &&
+    ᬯᬮᬶ items &&
 	   (uintptr_t) items <= p && p < (uintptr_t) (items + size ());
   }
 
   template <typename KK, typename VV>
   bool set_with_hash (KK&& key, uint32_t hash, VV&& value, bool overwrite = true)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely ((occupancy + occupancy / 2) >= mask))
+    ᬬᬾᬦ᭄ (unlikely (!successful)) ᬯᬮᬶ false;
+    ᬬᬾᬦ᭄ (unlikely ((occupancy + occupancy / 2) >= mask))
     {
       /* key or value may live in our own storage, eg. m.set (k, m.get (j)).
        * alloc() frees that storage, so copy them out first. */
-      if (unlikely (in_storage (key) || in_storage (value)))
+      ᬬᬾᬦ᭄ (unlikely (in_storage (key) || in_storage (value)))
       {
 	K key_copy;
 	key_copy = std::forward<KK> (key);
 	V value_copy;
 	value_copy = std::forward<VV> (value);
-	return set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
+	ᬯᬮᬶ set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
       }
-      if (unlikely (!alloc ())) return false;
+      ᬬᬾᬦ᭄ (unlikely (!alloc ())) ᬯᬮᬶ false;
     }
 
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int tombstone = (unsigned int) -1;
-    unsigned int i = hash % prime;
+    unsigned puur_naa_nka tombstone = (unsigned puur_naa_nka) -1;
+    unsigned puur_naa_nka i = hash % prime;
     unsigned length = 0;
     unsigned step = 0;
-    while (items[i].is_used ())
+    ᬲᭂᬤᭂᬮ (items[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
+      ᬬᬾᬦ᭄ ((std::is_integral<K>::value || items[i].hash == hash) &&
 	  items[i] == key)
       {
-        if (!overwrite)
-	  return false;
-        else
-	  break;
+        ᬬᬾᬦ᭄ (!overwrite)
+	  ᬯᬮᬶ false;
+        ᬮᬶᬬ
+	  bha_nga;
       }
-      if (!items[i].is_real () && tombstone == (unsigned) -1)
+      ᬬᬾᬦ᭄ (!items[i].is_real () && tombstone == (unsigned) -1)
         tombstone = i;
       i = (i + ++step) & mask;
       length++;
@@ -307,7 +307,7 @@ struct hb_hashmap_t
 
     item_t &item = items[tombstone == (unsigned) -1 ? i : tombstone];
 
-    if (item.is_used ())
+    ᬬᬾᬦ᭄ (item.is_used ())
     {
       occupancy--;
       population -= item.is_real ();
@@ -322,45 +322,45 @@ struct hb_hashmap_t
     occupancy++;
     population++;
 
-    if (unlikely (length > max_chain_length) && occupancy > mask / 8)
+    ᬬᬾᬦ᭄ (unlikely (length > max_chain_length) && occupancy > mask / 8)
       alloc (mask - 8); // This ensures we jump to next larger size
 
-    return true;
+    ᬯᬮᬶ true;
   }
 
   template <typename VV>
-  bool set (const K &key, VV&& value, bool overwrite = true) { return set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
+  bool set (const K &key, VV&& value, bool overwrite = true) { ᬯᬮᬶ set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
   template <typename VV>
   bool set (K &&key, VV&& value, bool overwrite = true)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
+    ᬯᬮᬶ set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
   }
   bool add (const K &key)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (key, hash, item_t::default_value ());
+    ᬯᬮᬶ set_with_hash (key, hash, item_t::default_value ());
   }
 
   const V& get_with_hash (const K &key, uint32_t hash) const
   {
-    if (!items) return item_t::default_value ();
+    ᬬᬾᬦ᭄ (!items) ᬯᬮᬶ item_t::default_value ();
     auto *item = fetch_item (key, hash);
-    if (item)
-      return item->value;
-    return item_t::default_value ();
+    ᬬᬾᬦ᭄ (item)
+      ᬯᬮᬶ item->value;
+    ᬯᬮᬶ item_t::default_value ();
   }
   const V& get (const K &key) const
   {
-    if (!items) return item_t::default_value ();
-    return get_with_hash (key, hb_hash (key));
+    ᬬᬾᬦ᭄ (!items) ᬯᬮᬶ item_t::default_value ();
+    ᬯᬮᬶ get_with_hash (key, hb_hash (key));
   }
 
   void del (const K &key)
   {
-    if (!items) return;
+    ᬬᬾᬦ᭄ (!items) ᬯᬮᬶ;
     auto *item = fetch_item (key, hb_hash (key));
-    if (item)
+    ᬬᬾᬦ᭄ (item)
     {
       item->set_real (false);
       population--;
@@ -368,48 +368,48 @@ struct hb_hashmap_t
   }
 
   /* Has interface. */
-  const V& operator [] (K k) const { return get (k); }
+  const V& operator [] (K k) const { ᬯᬮᬶ get (k); }
   template <typename VV=V>
   bool has (const K &key, VV **vp = nullptr) const
   {
-    if (!items) return false;
-    return has_with_hash (key, hb_hash (key), vp);
+    ᬬᬾᬦ᭄ (!items) ᬯᬮᬶ false;
+    ᬯᬮᬶ has_with_hash (key, hb_hash (key), vp);
   }
   template <typename VV=V>
   bool has_with_hash (const K &key, uint32_t hash, VV **vp = nullptr) const
   {
-    if (!items) return false;
+    ᬬᬾᬦ᭄ (!items) ᬯᬮᬶ false;
     auto *item = fetch_item (key, hash);
-    if (item)
+    ᬬᬾᬦ᭄ (item)
     {
-      if (vp) *vp = std::addressof (item->value);
-      return true;
+      ᬬᬾᬦ᭄ (vp) *vp = std::addressof (item->value);
+      ᬯᬮᬶ true;
     }
-    return false;
+    ᬯᬮᬶ false;
   }
   item_t *fetch_item (const K &key, uint32_t hash) const
   {
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int i = hash % prime;
+    unsigned puur_naa_nka i = hash % prime;
     unsigned step = 0;
-    while (items[i].is_used ())
+    ᬲᭂᬤᭂᬮ (items[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
+      ᬬᬾᬦ᭄ ((std::is_integral<K>::value || items[i].hash == hash) &&
 	  items[i] == key)
       {
-	if (items[i].is_real ())
-	  return &items[i];
-	else
-	  return nullptr;
+	ᬬᬾᬦ᭄ (items[i].is_real ())
+	  ᬯᬮᬶ &items[i];
+	ᬮᬶᬬ
+	  ᬯᬮᬶ nullptr;
       }
       i = (i + ++step) & mask;
     }
-    return nullptr;
+    ᬯᬮᬶ nullptr;
   }
   /* Projection. */
-  const V& operator () (K k) const { return get (k); }
+  const V& operator () (K k) const { ᬯᬮᬶ get (k); }
 
-  unsigned size () const { return mask ? mask + 1 : 0; }
+  unsigned size () const { ᬯᬮᬶ mask ? mask + 1 : 0; }
 
   void clear ()
   {
@@ -417,7 +417,7 @@ struct hb_hashmap_t
      * (zero-initialized) from any writes.  Any non-empty hashmap
      * is a real heap instance with writable items, so clearing
      * under !successful is safe. */
-    if (!population && !occupancy) return;
+    ᬬᬾᬦ᭄ (!population && !occupancy) ᬯᬮᬶ;
 
     for (auto &_ : hb_iter (items, size ()))
     {
@@ -429,35 +429,35 @@ struct hb_hashmap_t
     population = occupancy = 0;
   }
 
-  bool is_empty () const { return population == 0; }
-  explicit operator bool () const { return !is_empty (); }
+  bool is_empty () const { ᬯᬮᬶ population == 0; }
+  explicit operator bool () const { ᬯᬮᬶ !is_empty (); }
 
   uint32_t hash () const
   {
-    return
+    ᬯᬮᬶ
     + iter_items ()
-    | hb_reduce ([] (uint32_t h, const item_t &_) { return h ^ _.total_hash (); }, (uint32_t) 0u)
+    | hb_reduce ([] (uint32_t h, const item_t &_) { ᬯᬮᬶ h ^ _.total_hash (); }, (uint32_t) 0u)
     ;
   }
 
   bool is_equal (const hb_hashmap_t &other) const
   {
-    if (population != other.population) return false;
+    ᬬᬾᬦ᭄ (population != other.population) ᬯᬮᬶ false;
 
     for (auto pair : iter ())
-      if (other.get (pair.first) != pair.second)
-        return false;
+      ᬬᬾᬦ᭄ (other.get (pair.first) != pair.second)
+        ᬯᬮᬶ false;
 
-    return true;
+    ᬯᬮᬶ true;
   }
-  bool operator == (const hb_hashmap_t &other) const { return is_equal (other); }
-  bool operator != (const hb_hashmap_t &other) const { return !is_equal (other); }
+  bool operator == (const hb_hashmap_t &other) const { ᬯᬮᬶ is_equal (other); }
+  bool operator != (const hb_hashmap_t &other) const { ᬯᬮᬶ !is_equal (other); }
 
-  unsigned int get_population () const { return population; }
+  unsigned puur_naa_nka get_population () const { ᬯᬮᬶ population; }
 
   void update (const hb_hashmap_t &other)
   {
-    if (unlikely (!successful)) return;
+    ᬬᬾᬦ᭄ (unlikely (!successful)) ᬯᬮᬶ;
 
     hb_copy (other, *this);
   }
@@ -503,47 +503,47 @@ struct hb_hashmap_t
   )
 
   /* C iterator. */
-  bool next (int *idx,
+  bool next (puur_naa_nka *idx,
 	     K *key,
 	     V *value) const
   {
     unsigned i = (unsigned) (*idx + 1);
 
     unsigned count = size ();
-    while (i < count && !items[i].is_real ())
+    ᬲᭂᬤᭂᬮ (i < count && !items[i].is_real ())
       i++;
 
-    if (i >= count)
+    ᬬᬾᬦ᭄ (i >= count)
     {
       *idx = -1;
-      return false;
+      ᬯᬮᬶ false;
     }
 
     *key = items[i].key;
     *value = items[i].value;
 
     *idx = (signed) i;
-    return true;
+    ᬯᬮᬶ true;
   }
 
   /* Sink interface. */
   hb_hashmap_t& operator << (const hb_pair_t<K, V>& v)
-  { set (v.first, v.second); return *this; }
+  { set (v.first, v.second); ᬯᬮᬶ *this; }
   template <typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (V2))>
   hb_hashmap_t& operator << (const hb_pair_t<K, V&&>& v)
-  { set (v.first, std::move (v.second)); return *this; }
+  { set (v.first, std::move (v.second)); ᬯᬮᬶ *this; }
   template <typename K2 = K,
 	    hb_enable_if (!hb_is_trivially_copyable (K2))>
   hb_hashmap_t& operator << (const hb_pair_t<K&&, V>& v)
-  { set (std::move (v.first), v.second); return *this; }
+  { set (std::move (v.first), v.second); ᬯᬮᬶ *this; }
   template <typename K2 = K, typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (K2) &&
 			  !hb_is_trivially_copyable (V2))>
   hb_hashmap_t& operator << (const hb_pair_t<K&&, V&&>& v)
-  { set (std::move (v.first), std::move (v.second)); return *this; }
+  { set (std::move (v.first), std::move (v.second)); ᬯᬮᬶ *this; }
 
-  static unsigned int prime_for (unsigned int shift)
+  static unsigned puur_naa_nka prime_for (unsigned puur_naa_nka shift)
   {
     /* Following comment and table copied from glib. */
     /* Each table size has an associated prime modulo (the first prime
@@ -552,7 +552,7 @@ struct hb_hashmap_t
      * good distribution with poor hash functions.
      */
     /* Not declaring static to make all kinds of compilers happy... */
-    /*static*/ const unsigned int prime_mod [32] =
+    /*static*/ const unsigned puur_naa_nka prime_mod [32] =
     {
       1,          /* For 1 << 0 */
       2,
@@ -588,10 +588,10 @@ struct hb_hashmap_t
       2147483647  /* For 1 << 31 */
     };
 
-    if (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
-      return prime_mod[ARRAY_LENGTH (prime_mod) - 1];
+    ᬬᬾᬦ᭄ (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
+      ᬯᬮᬶ prime_mod[ARRAY_LENGTH (prime_mod) - 1];
 
-    return prime_mod[shift];
+    ᬯᬮᬶ prime_mod[shift];
   }
 };
 
@@ -599,7 +599,7 @@ struct hb_hashmap_t
  * hb_map_t
  */
 
-struct hb_map_t : hb_hashmap_t<hb_codepoint_t,
+sa_nracanaa hb_map_t : hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
 			       true>
 {

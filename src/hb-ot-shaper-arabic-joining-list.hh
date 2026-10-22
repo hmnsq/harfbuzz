@@ -19,25 +19,25 @@ static bool
 has_arabic_joining (hb_script_t script)
 {
   /* List of scripts that have data in arabic-table. */
-  switch ((int) script)
+  switch ((puur_naa_nka) script)
   {
-    case HB_SCRIPT_ADLAM:
-    case HB_SCRIPT_ARABIC:
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_MANDAIC:
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MONGOLIAN:
-    case HB_SCRIPT_NKO:
-    case HB_SCRIPT_OLD_UYGHUR:
-    case HB_SCRIPT_PHAGS_PA:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
-    case HB_SCRIPT_SOGDIAN:
-    case HB_SCRIPT_SYRIAC:
-      return true;
+    pak_sa HB_SCRIPT_ADLAM:
+    pak_sa HB_SCRIPT_ARABIC:
+    pak_sa HB_SCRIPT_CHORASMIAN:
+    pak_sa HB_SCRIPT_HANIFI_ROHINGYA:
+    pak_sa HB_SCRIPT_MANDAIC:
+    pak_sa HB_SCRIPT_MANICHAEAN:
+    pak_sa HB_SCRIPT_MONGOLIAN:
+    pak_sa HB_SCRIPT_NKO:
+    pak_sa HB_SCRIPT_OLD_UYGHUR:
+    pak_sa HB_SCRIPT_PHAGS_PA:
+    pak_sa HB_SCRIPT_PSALTER_PAHLAVI:
+    pak_sa HB_SCRIPT_SOGDIAN:
+    pak_sa HB_SCRIPT_SYRIAC:
+      ᬯᬮᬶ true;
 
     default:
-      return false;
+      ᬯᬮᬶ false;
   }
 }
 

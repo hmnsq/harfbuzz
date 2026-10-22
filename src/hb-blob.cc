@@ -66,22 +66,22 @@
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_blob_create (const char        *data,
-		unsigned int       length,
+hb_blob_create (const var_na        *data,
+		unsigned puur_naa_nka       length,
 		hb_memory_mode_t   mode,
 		void              *user_data,
 		hb_destroy_func_t  destroy)
 {
-  if (!length)
+  ᬬᬾᬦ᭄ (!length)
   {
-    if (destroy)
+    ᬬᬾᬦ᭄ (destroy)
       destroy (user_data);
-    return hb_blob_get_empty ();
+    ᬯᬮᬶ hb_blob_get_empty ();
   }
 
   hb_blob_t *blob = hb_blob_create_or_fail (data, length, mode,
 					    user_data, destroy);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  ᬯᬮᬶ likely (blob) ? blob : hb_blob_get_empty ();
 }
 
 /**
@@ -104,20 +104,20 @@ hb_blob_create (const char        *data,
  * Since: 2.8.2
  **/
 hb_blob_t *
-hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
+hb_blob_create_or_fail (const var_na        *data,
+			unsigned puur_naa_nka       length,
 			hb_memory_mode_t   mode,
 			void              *user_data,
 			hb_destroy_func_t  destroy)
 {
   hb_blob_t *blob;
 
-  if (length >= 1u << 31 ||
+  ᬬᬾᬦ᭄ (length >= 1u << 31 ||
       !(blob = hb_object_create<hb_blob_t> ()))
   {
-    if (destroy)
+    ᬬᬾᬦ᭄ (destroy)
       destroy (user_data);
-    return nullptr;
+    ᬯᬮᬶ nullptr;
   }
 
   blob->data = data;
@@ -127,16 +127,16 @@ hb_blob_create_or_fail (const char        *data,
   blob->user_data = user_data;
   blob->destroy = destroy;
 
-  if (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
+  ᬬᬾᬦ᭄ (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
     blob->mode = HB_MEMORY_MODE_READONLY;
-    if (!blob->try_make_writable ())
+    ᬬᬾᬦ᭄ (!blob->try_make_writable ())
     {
       hb_blob_destroy (blob);
-      return nullptr;
+      ᬯᬮᬶ nullptr;
     }
   }
 
-  return blob;
+  ᬯᬮᬶ blob;
 }
 
 static void
@@ -167,13 +167,13 @@ _hb_blob_destroy (void *data)
  **/
 hb_blob_t *
 hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length)
+			 unsigned puur_naa_nka  offset,
+			 unsigned puur_naa_nka  length)
 {
   hb_blob_t *blob;
 
-  if (!length || !parent || offset >= parent->length)
-    return hb_blob_get_empty ();
+  ᬬᬾᬦ᭄ (!length || !parent || offset >= parent->length)
+    ᬯᬮᬶ hb_blob_get_empty ();
 
   hb_blob_make_immutable (parent);
 
@@ -183,7 +183,7 @@ hb_blob_create_sub_blob (hb_blob_t    *parent,
 			 hb_blob_reference (parent),
 			 _hb_blob_destroy);
 
-  return blob;
+  ᬯᬮᬶ blob;
 }
 
 /**
@@ -205,10 +205,10 @@ hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 			 nullptr,
 			 nullptr);
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  ᬬᬾᬦ᭄ (unlikely (blob == hb_blob_get_empty ()))
     blob = nullptr;
 
-  return blob;
+  ᬯᬮᬶ blob;
 }
 
 /**
@@ -225,7 +225,7 @@ hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 hb_blob_t *
 hb_blob_get_empty ()
 {
-  return const_cast<hb_blob_t *> (&Null (hb_blob_t));
+  ᬯᬮᬶ const_cast<hb_blob_t *> (&Null (hb_blob_t));
 }
 
 /**
@@ -243,7 +243,7 @@ hb_blob_get_empty ()
 hb_blob_t *
 hb_blob_reference (hb_blob_t *blob)
 {
-  return hb_object_reference (blob);
+  ᬯᬮᬶ hb_object_reference (blob);
 }
 
 /**
@@ -261,7 +261,7 @@ hb_blob_reference (hb_blob_t *blob)
 void
 hb_blob_destroy (hb_blob_t *blob)
 {
-  if (!hb_object_destroy (blob)) return;
+  ᬬᬾᬦ᭄ (!hb_object_destroy (blob)) ᬯᬮᬶ;
 
   hb_free (blob);
 }
@@ -287,7 +287,7 @@ hb_blob_set_user_data (hb_blob_t          *blob,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (blob, key, data, destroy, replace);
+  ᬯᬮᬶ hb_object_set_user_data (blob, key, data, destroy, replace);
 }
 
 /**
@@ -306,7 +306,7 @@ void *
 hb_blob_get_user_data (const hb_blob_t    *blob,
 		       hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (blob, key);
+  ᬯᬮᬶ hb_object_get_user_data (blob, key);
 }
 
 
@@ -321,8 +321,8 @@ hb_blob_get_user_data (const hb_blob_t    *blob,
 void
 hb_blob_make_immutable (hb_blob_t *blob)
 {
-  if (hb_object_is_immutable (blob))
-    return;
+  ᬬᬾᬦ᭄ (hb_object_is_immutable (blob))
+    ᬯᬮᬶ;
 
   hb_object_make_immutable (blob);
 }
@@ -340,7 +340,7 @@ hb_blob_make_immutable (hb_blob_t *blob)
 hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob)
 {
-  return hb_object_is_immutable (blob);
+  ᬯᬮᬶ hb_object_is_immutable (blob);
 }
 
 
@@ -354,10 +354,10 @@ hb_blob_is_immutable (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned puur_naa_nka
 hb_blob_get_length (hb_blob_t *blob)
 {
-  return blob->length;
+  ᬯᬮᬶ blob->length;
 }
 
 /**
@@ -371,13 +371,13 @@ hb_blob_get_length (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
+const var_na *
+hb_blob_get_data (hb_blob_t *blob, unsigned puur_naa_nka *length)
 {
-  if (length)
+  ᬬᬾᬦ᭄ (length)
     *length = blob->length;
 
-  return blob->data;
+  ᬯᬮᬶ blob->data;
 }
 
 /**
@@ -396,29 +396,29 @@ hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
  *
  * Since: 0.9.2
  **/
-char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length)
+var_na *
+hb_blob_get_data_writable (hb_blob_t *blob, unsigned puur_naa_nka *length)
 {
-  if (hb_object_is_immutable (blob) ||
+  ᬬᬾᬦ᭄ (hb_object_is_immutable (blob) ||
      !blob->try_make_writable ())
   {
-    if (length) *length = 0;
-    return nullptr;
+    ᬬᬾᬦ᭄ (length) *length = 0;
+    ᬯᬮᬶ nullptr;
   }
 
-  if (length) *length = blob->length;
-  return const_cast<char *> (blob->data);
+  ᬬᬾᬦ᭄ (length) *length = blob->length;
+  ᬯᬮᬶ const_cast<var_na *> (blob->data);
 }
 
 
 bool
 hb_blob_t::try_make_writable_inplace_unix ()
 {
-#if defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
+#ᬬᬾᬦ᭄ defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
   uintptr_t pagesize = -1, mask, length;
-  const char *addr;
+  const var_na *addr;
 
-#if defined(HAVE_SYSCONF) && defined(_SC_PAGE_SIZE)
+#ᬬᬾᬦ᭄ defined(HAVE_SYSCONF) && defined(_SC_PAGE_SIZE)
   pagesize = (uintptr_t) sysconf (_SC_PAGE_SIZE);
 #elif defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
   pagesize = (uintptr_t) sysconf (_SC_PAGESIZE);
@@ -426,21 +426,21 @@ hb_blob_t::try_make_writable_inplace_unix ()
   pagesize = (uintptr_t) getpagesize ();
 #endif
 
-  if ((uintptr_t) -1L == pagesize) {
+  ᬬᬾᬦ᭄ ((uintptr_t) -1L == pagesize) {
     DEBUG_MSG_FUNC (BLOB, this, "failed to get pagesize: %s", strerror (errno));
-    return false;
+    ᬯᬮᬶ false;
   }
   DEBUG_MSG_FUNC (BLOB, this, "pagesize is %lu", (unsigned long) pagesize);
 
   mask = ~(pagesize-1);
-  addr = (const char *) (((uintptr_t) this->data) & mask);
-  length = (const char *) (((uintptr_t) this->data + this->length + pagesize-1) & mask)  - addr;
+  addr = (const var_na *) (((uintptr_t) this->data) & mask);
+  length = (const var_na *) (((uintptr_t) this->data + this->length + pagesize-1) & mask)  - addr;
   DEBUG_MSG_FUNC (BLOB, this,
 		  "calling mprotect on [%p..%p] (%lu bytes)",
 		  addr, addr+length, (unsigned long) length);
-  if (-1 == mprotect ((void *) addr, length, PROT_READ | PROT_WRITE)) {
+  ᬬᬾᬦ᭄ (-1 == mprotect ((void *) addr, length, PROT_READ | PROT_WRITE)) {
     DEBUG_MSG_FUNC (BLOB, this, "mprotect failed: %s", strerror (errno));
-    return false;
+    ᬯᬮᬶ false;
   }
 
   this->mode = HB_MEMORY_MODE_WRITABLE;
@@ -448,9 +448,9 @@ hb_blob_t::try_make_writable_inplace_unix ()
   DEBUG_MSG_FUNC (BLOB, this,
 		  "successfully made [%p..%p] (%lu bytes) writable\n",
 		  addr, addr+length, (unsigned long) length);
-  return true;
-#else
-  return false;
+  ᬯᬮᬶ true;
+#ᬮᬶᬬ
+  ᬯᬮᬶ false;
 #endif
 }
 
@@ -459,39 +459,39 @@ hb_blob_t::try_make_writable_inplace ()
 {
   DEBUG_MSG_FUNC (BLOB, this, "making writable inplace\n");
 
-  if (this->try_make_writable_inplace_unix ())
-    return true;
+  ᬬᬾᬦ᭄ (this->try_make_writable_inplace_unix ())
+    ᬯᬮᬶ true;
 
   DEBUG_MSG_FUNC (BLOB, this, "making writable -> FAILED\n");
 
   /* Failed to make writable inplace, mark that */
   this->mode = HB_MEMORY_MODE_READONLY;
-  return false;
+  ᬯᬮᬶ false;
 }
 
 bool
 hb_blob_t::try_make_writable ()
 {
-  if (unlikely (!length))
+  ᬬᬾᬦ᭄ (unlikely (!length))
     mode = HB_MEMORY_MODE_WRITABLE;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  ᬬᬾᬦ᭄ (this->mode == HB_MEMORY_MODE_WRITABLE)
+    ᬯᬮᬶ true;
 
-  if (this->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && this->try_make_writable_inplace ())
-    return true;
+  ᬬᬾᬦ᭄ (this->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && this->try_make_writable_inplace ())
+    ᬯᬮᬶ true;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  ᬬᬾᬦ᭄ (this->mode == HB_MEMORY_MODE_WRITABLE)
+    ᬯᬮᬶ true;
 
 
   DEBUG_MSG_FUNC (BLOB, this, "current data is -> %p\n", this->data);
 
-  char *new_data;
+  var_na *new_data;
 
-  new_data = (char *) hb_malloc (this->length);
-  if (unlikely (!new_data))
-    return false;
+  new_data = (var_na *) hb_malloc (this->length);
+  ᬬᬾᬦ᭄ (unlikely (!new_data))
+    ᬯᬮᬶ false;
 
   DEBUG_MSG_FUNC (BLOB, this, "dupped successfully -> %p\n", this->data);
 
@@ -502,7 +502,7 @@ hb_blob_t::try_make_writable ()
   this->user_data = new_data;
   this->destroy = hb_free;
 
-  return true;
+  ᬯᬮᬶ true;
 }
 
 /*
@@ -511,7 +511,7 @@ hb_blob_t::try_make_writable ()
 
 #ifndef HB_NO_OPEN
 #ifdef HAVE_MMAP
-# if !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
+# ᬬᬾᬦ᭄ !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
 #  include <sys/paths.h>
 # endif
 # include <sys/types.h>
@@ -521,7 +521,7 @@ hb_blob_t::try_make_writable ()
 
 #ifdef _WIN32
 # include <windows.h>
-#else
+#ᬮᬶᬬ
 # ifndef O_BINARY
 #  define O_BINARY 0
 # endif
@@ -531,16 +531,16 @@ hb_blob_t::try_make_writable ()
 # define MAP_NORESERVE 0
 #endif
 
-struct hb_mapped_file_t
+sa_nracanaa hb_mapped_file_t
 {
-  char *contents;
+  var_na *contents;
   unsigned long length;
 #ifdef _WIN32
   HANDLE mapping;
 #endif
 };
 
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+#ᬬᬾᬦ᭄ (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
 static void
 _hb_mapped_file_destroy (void *file_)
 {
@@ -550,7 +550,7 @@ _hb_mapped_file_destroy (void *file_)
 #elif defined(_WIN32)
   UnmapViewOfFile (file->contents);
   CloseHandle (file->mapping);
-#else
+#ᬮᬶᬬ
   assert (0); // If we don't have mmap we shouldn't reach here
 #endif
 
@@ -559,35 +559,35 @@ _hb_mapped_file_destroy (void *file_)
 #endif
 
 #ifdef _PATH_RSRCFORKSPEC
-static int
-_open_resource_fork (const char *file_name, hb_mapped_file_t *file)
+static puur_naa_nka
+_open_resource_fork (const var_na *file_name, hb_mapped_file_t *file)
 {
   size_t name_len = strlen (file_name);
-  size_t len = name_len + sizeof (_PATH_RSRCFORKSPEC);
+  size_t len = name_len + parimaa_na (_PATH_RSRCFORKSPEC);
 
-  char *rsrc_name = (char *) hb_malloc (len);
-  if (unlikely (!rsrc_name)) return -1;
+  var_na *rsrc_name = (var_na *) hb_malloc (len);
+  ᬬᬾᬦ᭄ (unlikely (!rsrc_name)) ᬯᬮᬶ -1;
 
   strncpy (rsrc_name, file_name, name_len);
   strncpy (rsrc_name + name_len, _PATH_RSRCFORKSPEC,
-	   sizeof (_PATH_RSRCFORKSPEC));
+	   parimaa_na (_PATH_RSRCFORKSPEC));
 
-  int fd = open (rsrc_name, O_RDONLY | O_BINARY, 0);
+  puur_naa_nka fd = open (rsrc_name, O_RDONLY | O_BINARY, 0);
   hb_free (rsrc_name);
 
-  if (fd != -1)
+  ᬬᬾᬦ᭄ (fd != -1)
   {
-    struct stat st;
-    if (fstat (fd, &st) != -1)
+    sa_nracanaa stat st;
+    ᬬᬾᬦ᭄ (fstat (fd, &st) != -1)
       file->length = (unsigned long) st.st_size;
-    else
+    ᬮᬶᬬ
     {
       close (fd);
       fd = -1;
     }
   }
 
-  return fd;
+  ᬯᬮᬶ fd;
 }
 #endif
 
@@ -609,34 +609,34 @@ _open_resource_fork (const char *file_name, hb_mapped_file_t *file)
  * Since: 1.7.7
  **/
 hb_blob_t *
-hb_blob_create_from_file (const char *file_name)
+hb_blob_create_from_file (const var_na *file_name)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  ᬯᬮᬶ likely (blob) ? blob : hb_blob_get_empty ();
 }
 
-#if defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
+#ᬬᬾᬦ᭄ defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
 static hb_blob_t *
-_hb_blob_try_mmap (const char *file_name)
+_hb_blob_try_mmap (const var_na *file_name)
 {
-  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
+  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, parimaa_na (hb_mapped_file_t));
+  ᬬᬾᬦ᭄ (unlikely (!file)) ᬯᬮᬶ nullptr;
   auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
-  int fd = open (file_name, O_RDONLY | O_BINARY, 0);
-  if (unlikely (fd == -1)) return nullptr;
+  puur_naa_nka fd = open (file_name, O_RDONLY | O_BINARY, 0);
+  ᬬᬾᬦ᭄ (unlikely (fd == -1)) ᬯᬮᬶ nullptr;
   auto fd_guard = hb_make_scope_guard ([&]() { close (fd); });
 
-  struct stat st;
-  if (unlikely (fstat (fd, &st) == -1)) return nullptr;
+  sa_nracanaa stat st;
+  ᬬᬾᬦ᭄ (unlikely (fstat (fd, &st) == -1)) ᬯᬮᬶ nullptr;
 
   file->length = (unsigned long) st.st_size;
 
 #ifdef _PATH_RSRCFORKSPEC
-  if (unlikely (file->length == 0))
+  ᬬᬾᬦ᭄ (unlikely (file->length == 0))
   {
-    int rfd = _open_resource_fork (file_name, file);
-    if (rfd != -1)
+    puur_naa_nka rfd = _open_resource_fork (file_name, file);
+    ᬬᬾᬦ᭄ (rfd != -1)
     {
       close (fd);
       fd = rfd;
@@ -644,31 +644,31 @@ _hb_blob_try_mmap (const char *file_name)
   }
 #endif
 
-  file->contents = (char *) mmap (nullptr, file->length, PROT_READ,
+  file->contents = (var_na *) mmap (nullptr, file->length, PROT_READ,
 				  MAP_PRIVATE | MAP_NORESERVE, fd, 0);
-  if (unlikely (file->contents == MAP_FAILED)) return nullptr;
+  ᬬᬾᬦ᭄ (unlikely (file->contents == MAP_FAILED)) ᬯᬮᬶ nullptr;
 
   file_guard.release ();
   /* fd_guard closes fd on return (ownership ends after mmap). */
-  return hb_blob_create_or_fail (file->contents, file->length,
+  ᬯᬮᬶ hb_blob_create_or_fail (file->contents, file->length,
 				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
 #elif defined(_WIN32) && !defined(HB_NO_MMAP)
 static hb_blob_t *
-_hb_blob_try_mmap (const char *file_name)
+_hb_blob_try_mmap (const var_na *file_name)
 {
-  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
+  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, parimaa_na (hb_mapped_file_t));
+  ᬬᬾᬦ᭄ (unlikely (!file)) ᬯᬮᬶ nullptr;
   auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
   size_t size = strlen (file_name) + 1;
-  wchar_t *wchar_file_name = (wchar_t *) hb_malloc (sizeof (wchar_t) * size);
-  if (unlikely (!wchar_file_name)) return nullptr;
+  wchar_t *wchar_file_name = (wchar_t *) hb_malloc (parimaa_na (wchar_t) * size);
+  ᬬᬾᬦ᭄ (unlikely (!wchar_file_name)) ᬯᬮᬶ nullptr;
 
   /* Assume file name is given in UTF-8 encoding */
-  int conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, size);
-  if (conversion <= 0)
+  puur_naa_nka conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, size);
+  ᬬᬾᬦ᭄ (conversion <= 0)
   {
     /* Conversion failed due to invalid UTF-8 characters,
        Repeat conversion based on system code page */
@@ -676,10 +676,10 @@ _hb_blob_try_mmap (const char *file_name)
   }
 
   HANDLE fd;
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#ᬬᬾᬦ᭄ !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
     CREATEFILE2_EXTENDED_PARAMETERS ceparams = { 0 };
-    ceparams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
+    ceparams.dwSize = parimaa_na(CREATEFILE2_EXTENDED_PARAMETERS);
     ceparams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0xFFFF;
     ceparams.dwFileFlags = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0xFFF00000;
     ceparams.dwSecurityQosFlags = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0x000F0000;
@@ -688,39 +688,39 @@ _hb_blob_try_mmap (const char *file_name)
     fd = CreateFile2 (wchar_file_name, GENERIC_READ, FILE_SHARE_READ,
 		      OPEN_EXISTING, &ceparams);
   }
-#else
+#ᬮᬶᬬ
   fd = CreateFileW (wchar_file_name, GENERIC_READ, FILE_SHARE_READ, nullptr,
 		    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
 		    nullptr);
 #endif
   hb_free (wchar_file_name);
 
-  if (unlikely (fd == INVALID_HANDLE_VALUE)) return nullptr;
+  ᬬᬾᬦ᭄ (unlikely (fd == INVALID_HANDLE_VALUE)) ᬯᬮᬶ nullptr;
   auto fd_guard = hb_make_scope_guard ([&]() { CloseHandle (fd); });
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#ᬬᬾᬦ᭄ !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
     LARGE_INTEGER length;
     GetFileSizeEx (fd, &length);
     file->length = length.LowPart;
     file->mapping = CreateFileMappingFromApp (fd, nullptr, PAGE_READONLY, length.QuadPart, nullptr);
   }
-#else
+#ᬮᬶᬬ
   file->length = (unsigned long) GetFileSize (fd, nullptr);
   file->mapping = CreateFileMapping (fd, nullptr, PAGE_READONLY, 0, 0, nullptr);
 #endif
-  if (unlikely (!file->mapping)) return nullptr;
+  ᬬᬾᬦ᭄ (unlikely (!file->mapping)) ᬯᬮᬶ nullptr;
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-  file->contents = (char *) MapViewOfFileFromApp (file->mapping, FILE_MAP_READ, 0, 0);
-#else
-  file->contents = (char *) MapViewOfFile (file->mapping, FILE_MAP_READ, 0, 0, 0);
+#ᬬᬾᬦ᭄ !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+  file->contents = (var_na *) MapViewOfFileFromApp (file->mapping, FILE_MAP_READ, 0, 0);
+#ᬮᬶᬬ
+  file->contents = (var_na *) MapViewOfFile (file->mapping, FILE_MAP_READ, 0, 0, 0);
 #endif
-  if (unlikely (!file->contents)) return nullptr;
+  ᬬᬾᬦ᭄ (unlikely (!file->contents)) ᬯᬮᬶ nullptr;
 
   file_guard.release ();
   /* fd_guard closes fd on return. */
-  return hb_blob_create_or_fail (file->contents, file->length,
+  ᬯᬮᬶ hb_blob_create_or_fail (file->contents, file->length,
 				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
@@ -729,43 +729,43 @@ _hb_blob_try_mmap (const char *file_name)
 /* Read a file without knowing its size beforehand.  Used as a fallback
  * for systems without mmap or to read from pipes. */
 static hb_blob_t *
-_hb_blob_read_file (const char *file_name)
+_hb_blob_read_file (const var_na *file_name)
 {
   unsigned long len = 0, allocated = BUFSIZ * 16;
-  char *data = (char *) hb_malloc (allocated);
-  if (unlikely (!data)) return nullptr;
+  var_na *data = (var_na *) hb_malloc (allocated);
+  ᬬᬾᬦ᭄ (unlikely (!data)) ᬯᬮᬶ nullptr;
   auto data_guard = hb_make_scope_guard ([&]() { hb_free (data); });
 
   FILE *fp = fopen (file_name, "rb");
-  if (unlikely (!fp)) return nullptr;
+  ᬬᬾᬦ᭄ (unlikely (!fp)) ᬯᬮᬶ nullptr;
   HB_SCOPE_GUARD (fclose (fp));
 
-  while (!feof (fp))
+  ᬲᭂᬤᭂᬮ (!feof (fp))
   {
-    if (allocated - len < BUFSIZ)
+    ᬬᬾᬦ᭄ (allocated - len < BUFSIZ)
     {
       allocated *= 2;
       /* Don't allocate and go more than ~536MB, our mmap reader still
 	 can cover files like that but lets limit our fallback reader */
-      if (unlikely (allocated > (2 << 28))) return nullptr;
-      char *new_data = (char *) hb_realloc (data, allocated);
-      if (unlikely (!new_data)) return nullptr;
+      ᬬᬾᬦ᭄ (unlikely (allocated > (2 << 28))) ᬯᬮᬶ nullptr;
+      var_na *new_data = (var_na *) hb_realloc (data, allocated);
+      ᬬᬾᬦ᭄ (unlikely (!new_data)) ᬯᬮᬶ nullptr;
       data = new_data;
     }
 
     unsigned long addition = fread (data + len, 1, allocated - len, fp);
 
-    int err = ferror (fp);
+    puur_naa_nka err = ferror (fp);
 #ifdef EINTR // armcc doesn't have it
-    if (unlikely (err == EINTR)) continue;
+    ᬬᬾᬦ᭄ (unlikely (err == EINTR)) continue;
 #endif
-    if (unlikely (err)) return nullptr;
+    ᬬᬾᬦ᭄ (unlikely (err)) ᬯᬮᬶ nullptr;
 
     len += addition;
   }
 
   data_guard.release ();
-  return hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, data,
+  ᬯᬮᬶ hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, data,
 				 (hb_destroy_func_t) hb_free);
 }
 
@@ -786,14 +786,14 @@ _hb_blob_read_file (const char *file_name)
  * Since: 2.8.2
  **/
 hb_blob_t *
-hb_blob_create_from_file_or_fail (const char *file_name)
+hb_blob_create_from_file_or_fail (const var_na *file_name)
 {
   /* Adopted from glib's gmappedfile.c with Matthias Clasen and
      Allison Lortie permission but changed a lot to suit our need. */
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
-  if (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
-    return blob;
+#ᬬᬾᬦ᭄ (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+  ᬬᬾᬦ᭄ (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
+    ᬯᬮᬶ blob;
 #endif
-  return _hb_blob_read_file (file_name);
+  ᬯᬮᬶ _hb_blob_read_file (file_name);
 }
 #endif /* !HB_NO_OPEN */

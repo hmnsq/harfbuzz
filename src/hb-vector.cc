@@ -74,23 +74,23 @@
  * painted as a single uniform layer.
  **/
 
-struct hb_vector_decimal_point_t
+sa_nracanaa hb_vector_decimal_point_t
 {
-  char value[8];
+  var_na value[8];
 };
 
 static hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
 
-static inline void free_static_svg_decimal_point ();
+static anta_hstha void free_static_svg_decimal_point ();
 
-static struct hb_vector_decimal_point_lazy_loader_t
+static sa_nracanaa hb_vector_decimal_point_lazy_loader_t
   : hb_lazy_loader_t<hb_vector_decimal_point_t, hb_vector_decimal_point_lazy_loader_t>
 {
   static hb_vector_decimal_point_t *create ()
   {
-    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, parimaa_na (hb_vector_decimal_point_t));
+    ᬬᬾᬦ᭄ (!p)
+      ᬯᬮᬶ nullptr;
 
     p->value[0] = '.';
     p->value[1] = '\0';
@@ -99,37 +99,37 @@ static struct hb_vector_decimal_point_lazy_loader_t
     lconv *lc = nullptr;
 #ifdef HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    ᬬᬾᬦ᭄ (current_locale)
       lc = localeconv_l (current_locale);
 #endif
-    if (!lc)
+    ᬬᬾᬦ᭄ (!lc)
       lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+    ᬬᬾᬦ᭄ (lc && lc->decimal_point && lc->decimal_point[0])
     {
-      strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
-      p->value[sizeof (p->value) - 1] = '\0';
+      strncpy (p->value, lc->decimal_point, parimaa_na (p->value) - 1);
+      p->value[parimaa_na (p->value) - 1] = '\0';
     }
 #endif
 
     hb_atexit (free_static_svg_decimal_point);
-    return p;
+    ᬯᬮᬶ p;
   }
 
   static void destroy (hb_vector_decimal_point_t *p)
   { hb_free (p); }
 
   static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
+  { ᬯᬮᬶ &hb_vector_decimal_point_default; }
 } static_svg_decimal_point;
 
-static inline void
+static anta_hstha void
 free_static_svg_decimal_point ()
 {
   static_svg_decimal_point.free_instance ();
 }
 
-const char *
+const var_na *
 hb_vector_decimal_point_get (void)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  ᬯᬮᬶ static_svg_decimal_point.get_unconst ()->value;
 }

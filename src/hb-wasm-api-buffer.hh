@@ -32,64 +32,64 @@
 namespace hb {
 namespace wasm {
 
-static_assert (sizeof (glyph_info_t) == sizeof (hb_glyph_info_t), "");
-static_assert (sizeof (glyph_position_t) == sizeof (hb_glyph_position_t), "");
+static_assert (parimaa_na (glyph_info_t) == parimaa_na (hb_glyph_info_t), "");
+static_assert (parimaa_na (glyph_position_t) == parimaa_na (hb_glyph_position_t), "");
 
 HB_WASM_API (bool_t, buffer_contents_realloc) (HB_WASM_EXEC_ENV
 					       ptr_d(buffer_contents_t, contents),
 					       uint32_t size)
 {
   HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  ᬬᬾᬦ᭄ (unlikely (!contents))
+    ᬯᬮᬶ false;
 
-  if (size <= contents->length)
-    return true;
+  ᬬᬾᬦ᭄ (size <= contents->length)
+    ᬯᬮᬶ true;
 
   unsigned bytes;
-  if (hb_unsigned_mul_overflows (size, sizeof (glyph_info_t), &bytes))
-    return false;
+  ᬬᬾᬦ᭄ (hb_unsigned_mul_overflows (size, parimaa_na (glyph_info_t), &bytes))
+    ᬯᬮᬶ false;
 
   glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, contents->length);
   glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, contents->length);
 
-  if (unlikely (!info || !pos))
-    return false;
+  ᬬᬾᬦ᭄ (unlikely (!info || !pos))
+    ᬯᬮᬶ false;
 
   glyph_info_t *new_info = nullptr;
   uint32_t new_inforef = module_malloc (bytes, (void **) &new_info);
   glyph_position_t *new_pos = nullptr;
   uint32_t new_posref = module_malloc (bytes, (void **) &new_pos);
 
-  unsigned old_bytes = contents->length * sizeof (glyph_info_t);
-  if (likely (new_inforef))
+  unsigned old_bytes = contents->length * parimaa_na (glyph_info_t);
+  ᬬᬾᬦ᭄ (likely (new_inforef))
   {
     hb_memcpy (new_info, info, old_bytes);
     module_free (contents->info);
     contents->info = new_inforef;
   }
-  if (likely (new_posref))
+  ᬬᬾᬦ᭄ (likely (new_posref))
   {
     hb_memcpy (new_pos, pos, old_bytes);
     module_free (contents->pos);
     contents->pos = new_posref;
   }
 
-  if (likely (new_info && new_pos))
+  ᬬᬾᬦ᭄ (likely (new_info && new_pos))
   {
     contents->length = size;
-    return true;
+    ᬯᬮᬶ true;
   }
 
-  return false;
+  ᬯᬮᬶ false;
 }
 
 HB_WASM_API (void, buffer_contents_free) (HB_WASM_EXEC_ENV
 					  ptr_d(buffer_contents_t, contents))
 {
   HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return;
+  ᬬᬾᬦ᭄ (unlikely (!contents))
+    ᬯᬮᬶ;
 
   module_free (contents->info);
   module_free (contents->pos);
@@ -105,49 +105,49 @@ HB_WASM_API (bool_t, buffer_copy_contents) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (buffer);
   HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  ᬬᬾᬦ᭄ (unlikely (!contents))
+    ᬯᬮᬶ false;
 
-  if (buffer->have_output)
+  ᬬᬾᬦ᭄ (buffer->have_output)
     buffer->sync ();
-  if (!buffer->have_positions)
+  ᬬᬾᬦ᭄ (!buffer->have_positions)
     buffer->clear_positions ();
 
   unsigned length = buffer->len;
 
-  if (length <= contents->length)
+  ᬬᬾᬦ᭄ (length <= contents->length)
   {
     glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, length);
     glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, length);
 
-    if (unlikely (!info || !pos))
+    ᬬᬾᬦ᭄ (unlikely (!info || !pos))
     {
       contents->length = 0;
-      return false;
+      ᬯᬮᬶ false;
     }
 
-    unsigned bytes = length * sizeof (hb_glyph_info_t);
+    unsigned bytes = length * parimaa_na (hb_glyph_info_t);
     hb_memcpy (info, buffer->info, bytes);
     hb_memcpy (pos, buffer->pos, bytes);
 
-    return true;
+    ᬯᬮᬶ true;
   }
 
   module_free (contents->info);
   module_free (contents->pos);
 
   contents->length = length;
-  unsigned bytes = length * sizeof (hb_glyph_info_t);
-  contents->info = wasm_runtime_module_dup_data (module_inst, (const char *) buffer->info, bytes);
-  contents->pos = wasm_runtime_module_dup_data (module_inst, (const char *) buffer->pos, bytes);
+  unsigned bytes = length * parimaa_na (hb_glyph_info_t);
+  contents->info = wasm_runtime_module_dup_data (module_inst, (const var_na *) buffer->info, bytes);
+  contents->pos = wasm_runtime_module_dup_data (module_inst, (const var_na *) buffer->pos, bytes);
 
-  if (length && (!contents->info || !contents->pos))
+  ᬬᬾᬦ᭄ (length && (!contents->info || !contents->pos))
   {
     contents->length = 0;
-    return false;
+    ᬯᬮᬶ false;
   }
 
-  return true;
+  ᬯᬮᬶ true;
 }
 
 HB_WASM_API (bool_t, buffer_set_contents) (HB_WASM_EXEC_ENV
@@ -156,30 +156,30 @@ HB_WASM_API (bool_t, buffer_set_contents) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (buffer);
   HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  ᬬᬾᬦ᭄ (unlikely (!contents))
+    ᬯᬮᬶ false;
 
   unsigned length = contents->length;
   unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (length, sizeof (buffer->info[0]), &bytes)))
-    return false;
+  ᬬᬾᬦ᭄ (unlikely (hb_unsigned_mul_overflows (length, parimaa_na (buffer->info[0]), &bytes)))
+    ᬯᬮᬶ false;
 
   glyph_info_t *info = (glyph_info_t *) (validate_app_addr (contents->info, bytes) ? addr_app_to_native (contents->info) : nullptr);
   glyph_position_t *pos = (glyph_position_t *) (validate_app_addr (contents->pos, bytes) ? addr_app_to_native (contents->pos) : nullptr);
-  if (unlikely (!info || !pos))
-    return false;
+  ᬬᬾᬦ᭄ (unlikely (!info || !pos))
+    ᬯᬮᬶ false;
 
-  if (unlikely (!buffer->resize (length)))
-    return false;
+  ᬬᬾᬦ᭄ (unlikely (!buffer->resize (length)))
+    ᬯᬮᬶ false;
 
-  if (!buffer->have_positions)
+  ᬬᬾᬦ᭄ (!buffer->have_positions)
     buffer->clear_positions (); /* This is wasteful. */
 
   hb_memcpy (buffer->info, info, bytes);
   hb_memcpy (buffer->pos, pos, bytes);
   buffer->len = length;
 
-  return true;
+  ᬯᬮᬶ true;
 }
 
 HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
@@ -187,7 +187,7 @@ HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (buffer);
 
-  return (direction_t) hb_buffer_get_direction (buffer);
+  ᬯᬮᬶ (direction_t) hb_buffer_get_direction (buffer);
 }
 
 HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
@@ -195,7 +195,7 @@ HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (buffer);
 
-  return hb_script_to_iso15924_tag (hb_buffer_get_script (buffer));
+  ᬯᬮᬶ hb_script_to_iso15924_tag (hb_buffer_get_script (buffer));
 }
 
 HB_WASM_API (void, buffer_reverse) (HB_WASM_EXEC_ENV

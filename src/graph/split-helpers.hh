@@ -37,8 +37,8 @@ graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_con
                                                               const hb_vector_t<unsigned>& split_points)
 {
   hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  ᬬᬾᬦ᭄ (!split_points)
+    ᬯᬮᬶ Ok(new_objects);
 
   for (unsigned i = 0; i < split_points.length; i++)
   {
@@ -53,7 +53,7 @@ graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_con
 
   TRY (split_context.shrink (split_points[0]));
 
-  return Ok(new_objects);
+  ᬯᬮᬶ Ok(new_objects);
 }
 
 }

@@ -10,7 +10,7 @@ namespace glyf_impl {
 
 
 template <typename CompositeGlyphRecord>
-struct composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<CompositeGlyphRecord>,
+sa_nracanaa composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<CompositeGlyphRecord>,
 						     const CompositeGlyphRecord &>
 {
   typedef const CompositeGlyphRecord *__item_t__;
@@ -22,33 +22,33 @@ struct composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<Composi
 
   composite_iter_tmpl () : glyph (hb_bytes_t ()), current (nullptr), current_size (0), extended (false) {}
 
-  const CompositeGlyphRecord & __item__ () const { return *current; }
-  bool __more__ () const { return current; }
+  const CompositeGlyphRecord & __item__ () const { ᬯᬮᬶ *current; }
+  bool __more__ () const { ᬯᬮᬶ current; }
   void __next__ ()
   {
-    if (!current->has_more ()) { current = nullptr; return; }
+    ᬬᬾᬦ᭄ (!current->has_more ()) { current = nullptr; ᬯᬮᬶ; }
 
     set_current (&StructAtOffset<CompositeGlyphRecord> (current, current_size));
   }
-  composite_iter_tmpl __end__ () const { return composite_iter_tmpl (); }
+  composite_iter_tmpl __end__ () const { ᬯᬮᬶ composite_iter_tmpl (); }
   bool operator != (const composite_iter_tmpl& o) const
-  { return current != o.current; }
+  { ᬯᬮᬶ current != o.current; }
 
 
   void set_current (__item_t__ current_)
   {
-    if (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
+    ᬬᬾᬦ᭄ (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
     {
       current = nullptr;
       current_size = 0;
-      return;
+      ᬯᬮᬶ;
     }
     unsigned size = current_->get_size (extended);
-    if (!glyph.check_range (current_, size))
+    ᬬᬾᬦ᭄ (!glyph.check_range (current_, size))
     {
       current = nullptr;
       current_size = 0;
-      return;
+      ᬯᬮᬶ;
     }
 
     current = current_;
