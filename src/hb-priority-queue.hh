@@ -43,7 +43,7 @@
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
 template <typename K>
-struct hb_priority_queue_t
+sa_nracanaa hb_priority_queue_t
 {
  public:
   typedef hb_pair_t<K, unsigned> item_t;
@@ -57,16 +57,16 @@ struct hb_priority_queue_t
   hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
+    for (puur_naa_nka i = (heap.length / 2) - 1; i >= 0; i--)
       bubble_down (i);
   }
 
   void reset () { heap.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  bool in_error () const { ᱨᱩᱣᱟᱹᱲ heap.in_error (); }
 
   bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  { ᱨᱩᱣᱟᱹᱲ heap.alloc (size); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
@@ -74,7 +74,7 @@ struct hb_priority_queue_t
   void insert (K priority, unsigned value)
   {
     heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
+    ᱡᱩᱫᱤ (unlikely (heap.in_error ())) ᱨᱩᱣᱟᱹᱲ;
     bubble_up (heap.length - 1);
   }
 
@@ -90,40 +90,40 @@ struct hb_priority_queue_t
     heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
     heap.resize (heap.length - 1);
 
-    if (!is_empty ())
+    ᱡᱩᱫᱤ (!is_empty ())
       bubble_down (0);
 
-    return result;
+    ᱨᱩᱣᱟᱹᱲ result;
   }
 
   const item_t& minimum ()
   {
-    return heap[0];
+    ᱨᱩᱣᱟᱹᱲ heap[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  bool is_empty () const { ᱨᱩᱣᱟᱹᱲ heap.length == 0; }
+  explicit operator bool () const { ᱨᱩᱣᱟᱹᱲ !is_empty (); }
+  unsigned puur_naa_nka get_population () const { ᱨᱩᱣᱟᱹᱲ heap.length; }
 
   /* Sink interface. */
   hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  { insert (item.first, item.second); ᱨᱩᱣᱟᱹᱲ *this; }
 
  private:
 
   static constexpr unsigned parent (unsigned index)
   {
-    return (index - 1) / 2;
+    ᱨᱩᱣᱟᱹᱲ (index - 1) / 2;
   }
 
   static constexpr unsigned left_child (unsigned index)
   {
-    return 2 * index + 1;
+    ᱨᱩᱣᱟᱹᱲ 2 * index + 1;
   }
 
   static constexpr unsigned right_child (unsigned index)
   {
-    return 2 * index + 2;
+    ᱨᱩᱣᱟᱹᱲ 2 * index + 2;
   }
 
   HB_ALWAYS_INLINE
@@ -136,19 +136,19 @@ struct hb_priority_queue_t
     unsigned right = right_child (index);
 
     bool has_left = left < heap.length;
-    if (!has_left)
+    ᱡᱩᱫᱤ (!has_left)
       // If there's no left, then there's also no right.
-      return;
+      ᱨᱩᱣᱟᱹᱲ;
 
     bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
+    ᱡᱩᱫᱤ (heap.arrayZ[index].first <= heap.arrayZ[left].first
         && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+      ᱨᱩᱣᱟᱹᱲ;
 
     unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    ᱡᱩᱫᱤ (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
       child = left;
-    else
+    ᱵᱟᱝ
       child = right;
 
     swap (index, child);
@@ -162,11 +162,11 @@ struct hb_priority_queue_t
     repeat:
     assert (index < heap.length);
 
-    if (index == 0) return;
+    ᱡᱩᱫᱤ (index == 0) ᱨᱩᱣᱟᱹᱲ;
 
     unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    ᱡᱩᱫᱤ (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
+      ᱨᱩᱣᱟᱹᱲ;
 
     swap (index, parent_index);
     index = parent_index;

@@ -37,7 +37,7 @@ namespace OT {
  */
 #define HB_OT_TAG_cvar HB_TAG('c','v','a','r')
 
-struct cvar
+sa_nracanaa cvar
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_cvar;
 
@@ -51,7 +51,7 @@ struct cvar
   }
 
   const TupleVariationData<>* get_tuple_var_data (void) const
-  { return &tupleVariationData; }
+  { ᱨᱩᱣᱟᱹᱲ &tupleVariationData; }
 
   bool decompile_tuple_variations (unsigned axis_count,
                                    unsigned point_count,
@@ -63,11 +63,11 @@ struct cvar
     hb_vector_t<unsigned> shared_indices;
     TupleVariationData<>::tuple_iterator_t iterator;
     hb_bytes_t var_data_bytes = blob->as_bytes ().sub_array (4);
-    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, this,
+    ᱡᱩᱫᱤ (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, this,
                                                  shared_indices, &iterator))
-      return false;
+      ᱨᱩᱣᱟᱹᱲ false;
 
-    return tupleVariationData.decompile_tuple_variations (point_count, is_gvar, iterator,
+    ᱨᱩᱣᱟᱹᱲ tupleVariationData.decompile_tuple_variations (point_count, is_gvar, iterator,
                                                           axes_old_index_tag_map,
                                                           shared_indices,
                                                           hb_array<const F2DOT14> (),
@@ -75,65 +75,65 @@ struct cvar
   }
 
   static bool calculate_cvt_deltas (unsigned axis_count,
-                                    hb_array_t<int> coords,
+                                    hb_array_t<puur_naa_nka> coords,
                                     unsigned num_cvt_item,
                                     const TupleVariationData<> *tuple_var_data,
                                     const void *base,
                                     unsigned var_data_length,
                                     hb_vector_t<float>& cvt_deltas /* OUT */)
   {
-    if (!coords) return true;
+    ᱡᱩᱫᱤ (!coords) ᱨᱩᱣᱟᱹᱲ true;
     hb_vector_t<unsigned> shared_indices;
     TupleVariationData<>::tuple_iterator_t iterator;
-    hb_bytes_t var_data_bytes = hb_bytes_t (reinterpret_cast<const char*> (tuple_var_data), var_data_length);
-    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, base,
+    hb_bytes_t var_data_bytes = hb_bytes_t (reinterpret_cast<const var_na*> (tuple_var_data), var_data_length);
+    ᱡᱩᱫᱤ (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, base,
                                                  shared_indices, &iterator))
-      return true; /* isn't applied at all */
+      ᱨᱩᱣᱟᱹᱲ true; /* isn't applied at all */
 
     hb_array_t<const F2DOT14> shared_tuples = hb_array<F2DOT14> ();
     hb_vector_t<unsigned> private_indices;
-    hb_vector_t<int> unpacked_deltas;
+    hb_vector_t<puur_naa_nka> unpacked_deltas;
 
     do
     {
       float scalar = iterator.current_tuple->calculate_scalar (coords, axis_count, shared_tuples);
-      if (scalar == 0.f) continue;
+      ᱡᱩᱫᱤ (scalar == 0.f) continue;
       const HBUINT8 *p = iterator.get_serialized_data ();
-      unsigned int length = iterator.current_tuple->get_data_size ();
-      if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-        return false;
+      unsigned puur_naa_nka length = iterator.current_tuple->get_data_size ();
+      ᱡᱩᱫᱤ (unlikely (!iterator.var_data_bytes.check_range (p, length)))
+        ᱨᱩᱣᱟᱹᱲ false;
 
       const HBUINT8 *end = p + length;
 
       bool has_private_points = iterator.current_tuple->has_private_points ();
-      if (has_private_points &&
+      ᱡᱩᱫᱤ (has_private_points &&
           !TupleVariationData<>::decompile_points (p, private_indices, end))
-        return false;
-      const hb_vector_t<unsigned int> &indices = has_private_points ? private_indices : shared_indices;
+        ᱨᱩᱣᱟᱹᱲ false;
+      const hb_vector_t<unsigned puur_naa_nka> &indices = has_private_points ? private_indices : shared_indices;
 
       bool apply_to_all = (indices.length == 0);
       unsigned num_deltas = apply_to_all ? num_cvt_item : indices.length;
-      if (unlikely (!unpacked_deltas.resize_dirty  (num_deltas))) return false;
-      if (unlikely (!TupleVariationData<>::decompile_deltas (p, unpacked_deltas, end))) return false;
+      ᱡᱩᱫᱤ (unlikely (!unpacked_deltas.resize_dirty  (num_deltas))) ᱨᱩᱣᱟᱹᱲ false;
+      ᱡᱩᱫᱤ (unlikely (!TupleVariationData<>::decompile_deltas (p, unpacked_deltas, end))) ᱨᱩᱣᱟᱹᱲ false;
 
-      for (unsigned int i = 0; i < num_deltas; i++)
+      for (unsigned puur_naa_nka i = 0; i < num_deltas; i++)
       {
-        unsigned int idx = apply_to_all ? i : indices[i];
-        if (unlikely (idx >= num_cvt_item)) continue;
-        if (scalar != 1.0f) cvt_deltas[idx] += unpacked_deltas[i] * scalar ;
-        else cvt_deltas[idx] += unpacked_deltas[i];
+        unsigned puur_naa_nka idx = apply_to_all ? i : indices[i];
+        ᱡᱩᱫᱤ (unlikely (idx >= num_cvt_item)) continue;
+        ᱡᱩᱫᱤ (scalar != 1.0f) cvt_deltas[idx] += unpacked_deltas[i] * scalar ;
+        ᱵᱟᱝ cvt_deltas[idx] += unpacked_deltas[i];
       }
-    } while (iterator.move_to_next ());
+    } ᱡᱚᱠᱷᱚᱱ (iterator.move_to_next ());
 
-    return true;
+    ᱨᱩᱣᱟᱹᱲ true;
   }
   
   bool serialize (hb_serialize_context_t *c,
                   TupleVariationData<>::tuple_variations_t& tuple_variations) const
   {
     TRACE_SERIALIZE (this);
-    if (!tuple_variations) return_trace (false);
-    if (unlikely (!c->embed (version))) return_trace (false);
+    ᱡᱩᱫᱤ (!tuple_variations) return_trace (false);
+    ᱡᱩᱫᱤ (unlikely (!c->embed (version))) return_trace (false);
 
     return_trace (tupleVariationData.serialize (c, false, tuple_variations));
   }
@@ -141,7 +141,7 @@ struct cvar
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
+    ᱡᱩᱫᱤ (c->plan->all_axes_pinned)
       return_trace (false);
 
     OT::TupleVariationData<>::tuple_variations_t tuple_variations;
@@ -152,17 +152,17 @@ struct cvar
     unsigned point_count = hb_blob_get_length (cvt_blob) / FWORD::static_size;
     hb_blob_destroy (cvt_blob);
 
-    if (!decompile_tuple_variations (axis_count, point_count,
+    ᱡᱩᱫᱤ (!decompile_tuple_variations (axis_count, point_count,
                                      c->source_blob, false,
                                      &(c->plan->axes_old_index_tag_map),
                                      tuple_variations))
       return_trace (false);
 
     optimize_scratch_t scratch;
-    if (!tuple_variations.instantiate (c->plan->axes_location, c->plan->axes_triple_distances, scratch))
+    ᱡᱩᱫᱤ (!tuple_variations.instantiate (c->plan->axes_location, c->plan->axes_triple_distances, scratch))
       return_trace (false);
 
-    if (!tuple_variations.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map,
+    ᱡᱩᱫᱤ (!tuple_variations.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map,
                                          false /* do not use shared points */))
       return_trace (false);
 
@@ -178,17 +178,17 @@ struct cvar
     hb_blob_t *cvt_prime_blob = hb_blob_copy_writable_or_fail (cvt_blob);
     hb_blob_destroy (cvt_blob);
   
-    if (unlikely (!cvt_prime_blob))
-      return false;
+    ᱡᱩᱫᱤ (unlikely (!cvt_prime_blob))
+      ᱨᱩᱣᱟᱹᱲ false;
  
     unsigned cvt_blob_length = hb_blob_get_length (cvt_prime_blob);
     unsigned num_cvt_item = cvt_blob_length / FWORD::static_size;
 
     hb_vector_t<float> cvt_deltas;
-    if (unlikely (!cvt_deltas.resize (num_cvt_item)))
+    ᱡᱩᱫᱤ (unlikely (!cvt_deltas.resize (num_cvt_item)))
     {
       hb_blob_destroy (cvt_prime_blob);
-      return false;
+      ᱨᱩᱣᱟᱹᱲ false;
     }
 
     /* Bound the tuple variation data by the actual cvar table length rather
@@ -197,26 +197,26 @@ struct cvar
     hb_blob_t *cvar_blob = hb_face_reference_table (plan->source, cvar::tableTag);
     unsigned cvar_length = hb_blob_get_length (cvar_blob);
     hb_blob_destroy (cvar_blob);
-    unsigned var_data_offset = (unsigned) ((const char *) tuple_var_data - (const char *) base);
+    unsigned var_data_offset = (unsigned) ((const var_na *) tuple_var_data - (const var_na *) base);
     unsigned var_data_length = var_data_offset < cvar_length ? cvar_length - var_data_offset : 0;
 
-    if (!calculate_cvt_deltas (plan->normalized_coords.length, plan->normalized_coords.as_array (),
+    ᱡᱩᱫᱤ (!calculate_cvt_deltas (plan->normalized_coords.length, plan->normalized_coords.as_array (),
                                num_cvt_item, tuple_var_data, base, var_data_length, cvt_deltas))
     {
       hb_blob_destroy (cvt_prime_blob);
-      return false;
+      ᱨᱩᱣᱟᱹᱲ false;
     }
 
     FWORD *cvt_prime = (FWORD *) hb_blob_get_data_writable (cvt_prime_blob, nullptr);
     for (unsigned i = 0; i < num_cvt_item; i++)
-      cvt_prime[i] += (int) roundf (cvt_deltas[i]);
+      cvt_prime[i] += (puur_naa_nka) roundf (cvt_deltas[i]);
     
     bool success = plan->add_table (cvt, cvt_prime_blob);
     hb_blob_destroy (cvt_prime_blob);
-    return success;
+    ᱨᱩᱣᱟᱹᱲ success;
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;		/* Version of the CVT variation table
 					 * initially set to 0x00010000u */
   TupleVariationData<> tupleVariationData; /* TupleVariationDate for cvar table */

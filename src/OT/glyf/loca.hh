@@ -15,10 +15,10 @@ namespace OT {
 #define HB_OT_TAG_loca HB_TAG('l','o','c','a')
 #define HB_OT_TAG_LOCA HB_TAG('L','O','C','A')
 
-struct loca
+sa_nracanaa loca
 {
-  friend struct glyf;
-  friend struct glyf_accelerator_t;
+  friend sa_nracanaa glyf;
+  friend sa_nracanaa glyf_accelerator_t;
 
   static constexpr hb_tag_t tableTag = HB_OT_TAG_loca;
 
@@ -28,7 +28,7 @@ struct loca
     return_trace (true);
   }
 
-  protected:
+  rak_sita:
   UnsizedArrayOf<HBUINT8>
 		dataZ;	/* Location data. */
   public:

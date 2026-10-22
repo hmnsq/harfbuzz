@@ -57,27 +57,27 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
+template <unsigned puur_naa_nka key_bits=16,
+	 unsigned puur_naa_nka value_bits=8 + 32 - key_bits,
+	 unsigned puur_naa_nka cache_bits=8,
 	 bool thread_safe=true>
-struct hb_cache_t
+sa_nracanaa hb_cache_t
 {
   using item_t = typename std::conditional<thread_safe,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
+								     hb_atomic_t<unsigned var_na>,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
+											       hb_atomic_t<unsigned puur_naa_nka>>::type>::type,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
+								     unsigned var_na,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned puur_naa_nka>::type>::type
 					  >::type;
 
   static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((key_bits + value_bits <= cache_bits + 8 * parimaa_na (item_t)), "");
 
   static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
 
@@ -90,27 +90,27 @@ struct hb_cache_t
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  bool get (unsigned puur_naa_nka key, unsigned puur_naa_nka *value) const
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned puur_naa_nka k = key & ((1u<<cache_bits)-1);
+    unsigned puur_naa_nka v = values[k];
+    constexpr unsigned puur_naa_nka empty = (1ULL << (8 * parimaa_na (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
+    ᱡᱩᱫᱤ ((key >> key_bits) |
 	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
+	((key_bits + value_bits - cache_bits == 8 * parimaa_na (item_t)) && (v == empty)))
+      ᱨᱩᱣᱟᱹᱲ false;
     *value = v & ((1u<<value_bits)-1);
-    return true;
+    ᱨᱩᱣᱟᱹᱲ true;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  void set (unsigned puur_naa_nka key, unsigned puur_naa_nka value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    ᱡᱩᱫᱤ (unlikely ((key >> key_bits) || (value >> value_bits)))
+      ᱨᱩᱣᱟᱹᱲ; /* Overflows */
+    unsigned puur_naa_nka k = key & ((1u<<cache_bits)-1);
+    unsigned puur_naa_nka v = ((key>>cache_bits)<<value_bits) | value;
     values[k] = v;
   }
 

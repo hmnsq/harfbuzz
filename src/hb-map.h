@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᱡᱩᱫᱤ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -52,7 +52,7 @@ HB_BEGIN_DECLS
  * Data type for holding integer-to-integer hash maps.
  *
  **/
-typedef struct hb_map_t hb_map_t;
+typedef sa_nracanaa hb_map_t hb_map_t;
 
 
 HB_EXTERN hb_map_t *
@@ -92,14 +92,14 @@ hb_map_clear (hb_map_t *map);
 HB_EXTERN hb_bool_t
 hb_map_is_empty (const hb_map_t *map);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_map_get_population (const hb_map_t *map);
 
 HB_EXTERN hb_bool_t
 hb_map_is_equal (const hb_map_t *map,
 		 const hb_map_t *other);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_map_hash (const hb_map_t *map);
 
 HB_EXTERN void
@@ -126,7 +126,7 @@ hb_map_update (hb_map_t *map,
 /* Pass -1 in for idx to get started. */
 HB_EXTERN hb_bool_t
 hb_map_next (const hb_map_t *map,
-	     int *idx,
+	     puur_naa_nka *idx,
 	     hb_codepoint_t *key,
 	     hb_codepoint_t *value);
 

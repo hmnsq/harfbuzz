@@ -44,66 +44,66 @@
 
 namespace OT {
 
-static inline hb_blob_t *
+static anta_hstha hb_blob_t *
 hb_ot_svg_reference_normalized_blob (hb_blob_t *image,
-                                     const char **svg,
+                                     const var_na **svg,
                                      unsigned *len)
 {
   hb_blob_t *blob = hb_blob_reference (image);
   unsigned data_len = 0;
-  const char *data = hb_blob_get_data (blob, &data_len);
+  const var_na *data = hb_blob_get_data (blob, &data_len);
 
-  if (!data || !data_len)
+  ᱡᱩᱫᱤ (!data || !data_len)
     goto fail;
 
-  if (hb_blob_is_gzip (data, data_len))
+  ᱡᱩᱫᱤ (hb_blob_is_gzip (data, data_len))
   {
     uint32_t expected_size = 0;
-    if (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
+    ᱡᱩᱫᱤ (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
         unlikely ((size_t) expected_size > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
       goto fail;
 
     hb_blob_t *uncompressed = hb_blob_decompress_gzip (blob,
                                                        HB_SVG_MAX_DOCUMENT_SIZE);
-    if (!uncompressed)
+    ᱡᱩᱫᱤ (!uncompressed)
       goto fail;
 
     hb_blob_destroy (blob);
     blob = uncompressed;
     data = hb_blob_get_data (blob, &data_len);
-    if (!data || !data_len)
+    ᱡᱩᱫᱤ (!data || !data_len)
       goto fail;
   }
 
-  if (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
+  ᱡᱩᱫᱤ (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
     goto fail;
 
-  if (svg) *svg = data;
-  if (len) *len = data_len;
-  return blob;
+  ᱡᱩᱫᱤ (svg) *svg = data;
+  ᱡᱩᱫᱤ (len) *len = data_len;
+  ᱨᱩᱣᱟᱹᱲ blob;
 
 fail:
   hb_blob_destroy (blob);
-  if (svg) *svg = nullptr;
-  if (len) *len = 0;
-  return nullptr;
+  ᱡᱩᱫᱤ (svg) *svg = nullptr;
+  ᱡᱩᱫᱤ (len) *len = 0;
+  ᱨᱩᱣᱟᱹᱲ nullptr;
 }
 
-struct SVGDocumentIndexEntry
+sa_nracanaa SVGDocumentIndexEntry
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
+  puur_naa_nka cmp (hb_codepoint_t g) const
+  { ᱨᱩᱣᱟᱹᱲ g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
 
   hb_codepoint_t get_start_glyph () const
-  { return startGlyphID; }
+  { ᱨᱩᱣᱟᱹᱲ startGlyphID; }
 
   hb_codepoint_t get_end_glyph () const
-  { return endGlyphID; }
+  { ᱨᱩᱣᱟᱹᱲ endGlyphID; }
 
-  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned int index_offset) const
+  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned puur_naa_nka index_offset) const
   {
-    return hb_blob_create_sub_blob (svg_blob,
-				    index_offset + (unsigned int) svgDoc,
+    ᱨᱩᱣᱟᱹᱲ hb_blob_create_sub_blob (svg_blob,
+				    index_offset + (unsigned puur_naa_nka) svgDoc,
 				    svgDocLength);
   }
 
@@ -115,7 +115,7 @@ struct SVGDocumentIndexEntry
 		  svgDoc.sanitize (c, base, svgDocLength));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	startGlyphID;	/* The first glyph ID in the range described by
 				 * this index entry. */
   HBUINT16	endGlyphID;	/* The last glyph ID in the range described by
@@ -129,40 +129,40 @@ struct SVGDocumentIndexEntry
   DEFINE_SIZE_STATIC (12);
 };
 
-struct SVG
+sa_nracanaa SVG
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
 
-  struct svg_id_span_t
+  sa_nracanaa svg_id_span_t
   {
-    const char *p;
+    const var_na *p;
     unsigned len;
 
     bool operator == (const svg_id_span_t &o) const
     {
-      return len == o.len && !memcmp (p, o.p, len);
+      ᱨᱩᱣᱟᱹᱲ len == o.len && !memcmp (p, o.p, len);
     }
 
     uint32_t hash () const
     {
       uint32_t h = hb_hash (len);
       for (unsigned i = 0; i < len; i++)
-        h = h * 33u + (unsigned char) p[i];
-      return h;
+        h = h * 33u + (unsigned var_na) p[i];
+      ᱨᱩᱣᱟᱹᱲ h;
     }
   };
 
-  struct svg_defs_entry_t
+  sa_nracanaa svg_defs_entry_t
   {
     svg_id_span_t id;
     unsigned start;
     unsigned end;
   };
 
-  struct svg_doc_cache_t
+  sa_nracanaa svg_doc_cache_t
   {
     hb_blob_t *blob = nullptr;
-    const char *svg = nullptr;
+    const var_na *svg = nullptr;
     unsigned len = 0;
     hb_vector_t<svg_defs_entry_t> defs_entries;
     hb_codepoint_t start_glyph = HB_CODEPOINT_INVALID;
@@ -171,41 +171,41 @@ struct SVG
     hb_hashmap_t<svg_id_span_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
   };
 
-  bool has_data () const { return svgDocEntries; }
+  bool has_data () const { ᱨᱩᱣᱟᱹᱲ svgDocEntries; }
 
-  struct accelerator_t
+  sa_nracanaa accelerator_t
   {
     accelerator_t (hb_face_t *face);
     ~accelerator_t ();
 
     hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) const
     {
-      return table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
+      ᱨᱩᱣᱟᱹᱲ table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
 							       table->svgDocEntries);
     }
 
     unsigned get_document_count () const
-    { return table->get_document_count (); }
+    { ᱨᱩᱣᱟᱹᱲ table->get_document_count (); }
 
     bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
-    { return table->get_glyph_document_index (glyph_id, index); }
+    { ᱨᱩᱣᱟᱹᱲ table->get_glyph_document_index (glyph_id, index); }
 
     bool get_document_glyph_range (unsigned index,
                                    hb_codepoint_t *start_glyph,
                                    hb_codepoint_t *end_glyph) const
-    { return table->get_document_glyph_range (index, start_glyph, end_glyph); }
+    { ᱨᱩᱣᱟᱹᱲ table->get_document_glyph_range (index, start_glyph, end_glyph); }
 
-    bool has_data () const { return table->has_data (); }
+    bool has_data () const { ᱨᱩᱣᱟᱹᱲ table->has_data (); }
 
     const svg_doc_cache_t *
     get_or_create_doc_cache (hb_blob_t *image,
-                             const char *svg,
+                             const var_na *svg,
                              unsigned len,
                              unsigned doc_index,
                              hb_codepoint_t start_glyph,
                              hb_codepoint_t end_glyph) const;
 
-    const char *
+    const var_na *
     doc_cache_get_svg (const svg_doc_cache_t *doc,
                        unsigned *len) const;
 
@@ -226,19 +226,19 @@ struct SVG
 
     bool
     doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                            const char *id,
+                            const var_na *id,
                             unsigned *start,
                             unsigned *end) const;
 
     bool paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
     {
-      if (!has_data ())
-        return false;
+      ᱡᱩᱫᱤ (!has_data ())
+        ᱨᱩᱣᱟᱹᱲ false;
 
       hb_blob_t *blob = reference_blob_for_glyph (glyph);
 
-      if (blob == hb_blob_get_empty ())
-        return false;
+      ᱡᱩᱫᱤ (blob == hb_blob_get_empty ())
+        ᱨᱩᱣᱟᱹᱲ false;
 
       bool ret = funcs->image (data,
 			       blob,
@@ -249,13 +249,13 @@ struct SVG
 
       hb_blob_destroy (blob);
 
-      return ret;
+      ᱨᱩᱣᱟᱹᱲ ret;
     }
 
     private:
     svg_doc_cache_t *
     make_doc_cache (hb_blob_t *image,
-                    const char *svg,
+                    const var_na *svg,
                     unsigned len,
                     hb_codepoint_t start_glyph,
                     hb_codepoint_t end_glyph) const;
@@ -265,42 +265,42 @@ struct SVG
     hb_blob_ptr_t<SVG> table;
     mutable hb_vector_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
     public:
-    DEFINE_SIZE_STATIC (sizeof (hb_blob_ptr_t<SVG>) +
-                        sizeof (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
+    DEFINE_SIZE_STATIC (parimaa_na (hb_blob_ptr_t<SVG>) +
+                        parimaa_na (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
   };
 
   const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
-  { return (this+svgDocEntries).bsearch (glyph_id); }
+  { ᱨᱩᱣᱟᱹᱲ (this+svgDocEntries).bsearch (glyph_id); }
 
   unsigned get_document_count () const
   {
-    if (!has_data ())
-      return 0;
-    return (this + svgDocEntries).len;
+    ᱡᱩᱫᱤ (!has_data ())
+      ᱨᱩᱣᱟᱹᱲ 0;
+    ᱨᱩᱣᱟᱹᱲ (this + svgDocEntries).len;
   }
 
   bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
   {
-    if (!has_data ())
-      return false;
-    return (this + svgDocEntries).bfind (glyph_id, index);
+    ᱡᱩᱫᱤ (!has_data ())
+      ᱨᱩᱣᱟᱹᱲ false;
+    ᱨᱩᱣᱟᱹᱲ (this + svgDocEntries).bfind (glyph_id, index);
   }
 
   bool get_document_glyph_range (unsigned index,
                                  hb_codepoint_t *start_glyph,
                                  hb_codepoint_t *end_glyph) const
   {
-    if (!has_data ())
-      return false;
+    ᱡᱩᱫᱤ (!has_data ())
+      ᱨᱩᱣᱟᱹᱲ false;
 
     const auto &entries = this + svgDocEntries;
-    if (index >= entries.len)
-      return false;
+    ᱡᱩᱫᱤ (index >= entries.len)
+      ᱨᱩᱣᱟᱹᱲ false;
 
     const auto &entry = entries.arrayZ[index];
-    if (start_glyph) *start_glyph = entry.get_start_glyph ();
-    if (end_glyph) *end_glyph = entry.get_end_glyph ();
-    return true;
+    ᱡᱩᱫᱤ (start_glyph) *start_glyph = entry.get_start_glyph ();
+    ᱡᱩᱫᱤ (end_glyph) *end_glyph = entry.get_end_glyph ();
+    ᱨᱩᱣᱟᱹᱲ true;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -310,7 +310,7 @@ struct SVG
 			  (this+svgDocEntries).sanitize_shallow (c)));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	version;	/* Table version (starting at 0). */
   Offset32To<SortedArray16Of<SVGDocumentIndexEntry>>
 		svgDocEntries;	/* Offset (relative to the start of the SVG table) to the
@@ -323,21 +323,21 @@ struct SVG
 
 namespace _hb_svg_cache_impl {
 
-struct glyph_entry_t
+sa_nracanaa glyph_entry_t
 {
   hb_codepoint_t glyph;
   uint32_t start;
   uint32_t end;
 };
 
-struct id_entry_t
+sa_nracanaa id_entry_t
 {
   SVG::svg_id_span_t id;
   uint32_t start;
   uint32_t end;
 };
 
-struct open_elem_t
+sa_nracanaa open_elem_t
 {
   unsigned start;
   SVG::svg_id_span_t id;
@@ -347,84 +347,84 @@ struct open_elem_t
 
 static const unsigned MAX_DEPTH = 128;
 
-static inline int
-find_substr (const char *s,
+static anta_hstha puur_naa_nka
+find_substr (const var_na *s,
              unsigned n,
              unsigned from,
-             const char *needle,
+             const var_na *needle,
              unsigned needle_len)
 {
-  if (!needle_len || from >= n || needle_len > n)
-    return -1;
+  ᱡᱩᱫᱤ (!needle_len || from >= n || needle_len > n)
+    ᱨᱩᱣᱟᱹᱲ -1;
   for (unsigned i = from; i + needle_len <= n; i++)
-    if (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
-      return (int) i;
-  return -1;
+    ᱡᱩᱫᱤ (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
+      ᱨᱩᱣᱟᱹᱲ (puur_naa_nka) i;
+  ᱨᱩᱣᱟᱹᱲ -1;
 }
 
-static inline bool
-parse_id_in_start_tag (const char *svg,
+static anta_hstha bool
+parse_id_in_start_tag (const var_na *svg,
                        unsigned tag_start,
                        unsigned tag_end,
                        SVG::svg_id_span_t *id)
 {
   unsigned p = tag_start;
-  while (p + 4 <= tag_end)
+  ᱡᱚᱠᱷᱚᱱ (p + 4 <= tag_end)
   {
-    if (!memcmp (svg + p, "id=\"", 4))
+    ᱡᱩᱫᱤ (!memcmp (svg + p, "id=\"", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '"') e++;
-      if (e <= tag_end && e > b)
+      ᱡᱚᱠᱷᱚᱱ (e < tag_end && svg[e] != '"') e++;
+      ᱡᱩᱫᱤ (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        ᱨᱩᱣᱟᱹᱲ true;
       }
     }
-    if (!memcmp (svg + p, "id='", 4))
+    ᱡᱩᱫᱤ (!memcmp (svg + p, "id='", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '\'') e++;
-      if (e <= tag_end && e > b)
+      ᱡᱚᱠᱷᱚᱱ (e < tag_end && svg[e] != '\'') e++;
+      ᱡᱩᱫᱤ (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        ᱨᱩᱣᱟᱹᱲ true;
       }
     }
     p++;
   }
-  return false;
+  ᱨᱩᱣᱟᱹᱲ false;
 }
 
-static inline bool
+static anta_hstha bool
 parse_glyph_id_span (const SVG::svg_id_span_t &id,
                      hb_codepoint_t *glyph)
 {
-  if (id.len <= 5 || memcmp (id.p, "glyph", 5))
-    return false;
+  ᱡᱩᱫᱤ (id.len <= 5 || memcmp (id.p, "glyph", 5))
+    ᱨᱩᱣᱟᱹᱲ false;
 
   hb_codepoint_t gid = 0;
   for (unsigned i = 5; i < id.len; i++)
   {
-    unsigned char c = (unsigned char) id.p[i];
-    if (c < '0' || c > '9')
-      return false;
+    unsigned var_na c = (unsigned var_na) id.p[i];
+    ᱡᱩᱫᱤ (c < '0' || c > '9')
+      ᱨᱩᱣᱟᱹᱲ false;
     hb_codepoint_t digit = (hb_codepoint_t) (c - '0');
-    if (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
+    ᱡᱩᱫᱤ (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
                   (gid == HB_CODEPOINT_INVALID / 10 &&
                    digit > HB_CODEPOINT_INVALID % 10)))
-      return false;
+      ᱨᱩᱣᱟᱹᱲ false;
     gid = (hb_codepoint_t) (gid * 10 + digit);
   }
 
   *glyph = gid;
-  return true;
+  ᱨᱩᱣᱟᱹᱲ true;
 }
 
-static inline bool
-parse_cache_entries_linear (const char *svg,
+static anta_hstha bool
+parse_cache_entries_linear (const var_na *svg,
                             unsigned len,
                             hb_vector_t<SVG::svg_defs_entry_t> *defs_entries,
                             hb_vector_t<glyph_entry_t> *glyph_spans,
@@ -432,32 +432,32 @@ parse_cache_entries_linear (const char *svg,
 {
   open_elem_t stack[MAX_DEPTH] = {};
   unsigned depth = 0;
-  if (unlikely (!defs_entries->alloc (256) ||
+  ᱡᱩᱫᱤ (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
                 !id_entries->alloc (256)))
-    return false;
+    ᱨᱩᱣᱟᱹᱲ false;
 
   unsigned defs_depth = 0;
   unsigned i = 0;
-  while (i < len)
+  ᱡᱚᱠᱷᱚᱱ (i < len)
   {
-    if (svg[i] != '<')
+    ᱡᱩᱫᱤ (svg[i] != '<')
     {
       i++;
       continue;
     }
 
-    if (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
+    ᱡᱩᱫᱤ (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
     {
-      int cend = find_substr (svg, len, i + 4, "-->", 3);
-      if (cend < 0) return false;
+      puur_naa_nka cend = find_substr (svg, len, i + 4, "-->", 3);
+      ᱡᱩᱫᱤ (cend < 0) ᱨᱩᱣᱟᱹᱲ false;
       i = (unsigned) cend + 3;
       continue;
     }
-    if (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
+    ᱡᱩᱫᱤ (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
     {
-      int cend = find_substr (svg, len, i + 9, "]]>", 3);
-      if (cend < 0) return false;
+      puur_naa_nka cend = find_substr (svg, len, i + 9, "]]>", 3);
+      ᱡᱩᱫᱤ (cend < 0) ᱨᱩᱣᱟᱹᱲ false;
       i = (unsigned) cend + 3;
       continue;
     }
@@ -466,48 +466,48 @@ parse_cache_entries_linear (const char *svg,
     bool special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
 
     unsigned gt = i + 1;
-    char quote = 0;
-    while (gt < len)
+    var_na quote = 0;
+    ᱡᱚᱠᱷᱚᱱ (gt < len)
     {
-      char c = svg[gt];
-      if (quote)
+      var_na c = svg[gt];
+      ᱡᱩᱫᱤ (quote)
       {
-        if (c == quote) quote = 0;
+        ᱡᱩᱫᱤ (c == quote) quote = 0;
       }
-      else
+      ᱵᱟᱝ
       {
-        if (c == '"' || c == '\'')
+        ᱡᱩᱫᱤ (c == '"' || c == '\'')
           quote = c;
-        else if (c == '>')
-          break;
+        ᱵᱟᱝ ᱡᱩᱫᱤ (c == '>')
+          bha_nga;
       }
       gt++;
     }
-    if (gt >= len)
-      return false;
+    ᱡᱩᱫᱤ (gt >= len)
+      ᱨᱩᱣᱟᱹᱲ false;
 
-    if (special)
+    ᱡᱩᱫᱤ (special)
     {
       i = gt + 1;
       continue;
     }
 
     unsigned p = i + (closing ? 2 : 1);
-    while (p < gt && isspace ((unsigned char) svg[p])) p++;
-    const char *name = svg + p;
+    ᱡᱚᱠᱷᱚᱱ (p < gt && isspace ((unsigned var_na) svg[p])) p++;
+    const var_na *name = svg + p;
     unsigned name_len = 0;
-    while (p + name_len < gt)
+    ᱡᱚᱠᱷᱚᱱ (p + name_len < gt)
     {
-      unsigned char c = (unsigned char) name[name_len];
-      if (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
-        break;
+      unsigned var_na c = (unsigned var_na) name[name_len];
+      ᱡᱩᱫᱤ (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
+        bha_nga;
       name_len++;
     }
     bool is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
 
-    if (closing)
+    ᱡᱩᱫᱤ (closing)
     {
-      if (!depth)
+      ᱡᱩᱫᱤ (!depth)
       {
         i = gt + 1;
         continue;
@@ -516,15 +516,15 @@ parse_cache_entries_linear (const char *svg,
       open_elem_t e = stack[--depth];
       unsigned end = gt + 1;
 
-      if (e.id.len)
+      ᱡᱩᱫᱤ (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        ᱡᱩᱫᱤ (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          ᱨᱩᱣᱟᱹᱲ false;
 
-        if (e.in_defs_content)
+        ᱡᱩᱫᱤ (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          ᱡᱩᱫᱤ (unlikely (!defs_entries->push_or_fail ()))
+            ᱨᱩᱣᱟᱹᱲ false;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -532,14 +532,14 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        ᱡᱩᱫᱤ (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          ᱡᱩᱫᱤ (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            ᱨᱩᱣᱟᱹᱲ false;
         }
       }
 
-      if (e.is_defs && defs_depth)
+      ᱡᱩᱫᱤ (e.is_defs && defs_depth)
         defs_depth--;
 
       i = end;
@@ -550,7 +550,7 @@ parse_cache_entries_linear (const char *svg,
     parse_id_in_start_tag (svg, i, gt, &id);
 
     unsigned r = gt;
-    while (r > i && isspace ((unsigned char) svg[r - 1])) r--;
+    ᱡᱚᱠᱷᱚᱱ (r > i && isspace ((unsigned var_na) svg[r - 1])) r--;
     bool self_closing = (r > i && svg[r - 1] == '/');
 
     open_elem_t e = {};
@@ -559,18 +559,18 @@ parse_cache_entries_linear (const char *svg,
     e.in_defs_content = defs_depth > 0;
     e.is_defs = is_defs;
 
-    if (self_closing)
+    ᱡᱩᱫᱤ (self_closing)
     {
       unsigned end = gt + 1;
-      if (e.id.len)
+      ᱡᱩᱫᱤ (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        ᱡᱩᱫᱤ (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          ᱨᱩᱣᱟᱹᱲ false;
 
-        if (e.in_defs_content)
+        ᱡᱩᱫᱤ (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          ᱡᱩᱫᱤ (unlikely (!defs_entries->push_or_fail ()))
+            ᱨᱩᱣᱟᱹᱲ false;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -578,43 +578,43 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        ᱡᱩᱫᱤ (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          ᱡᱩᱫᱤ (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            ᱨᱩᱣᱟᱹᱲ false;
         }
       }
     }
-    else
+    ᱵᱟᱝ
     {
-      if (unlikely (depth >= MAX_DEPTH))
-        return false;
+      ᱡᱩᱫᱤ (unlikely (depth >= MAX_DEPTH))
+        ᱨᱩᱣᱟᱹᱲ false;
       stack[depth++] = e;
-      if (is_defs)
+      ᱡᱩᱫᱤ (is_defs)
         defs_depth++;
     }
 
     i = gt + 1;
   }
 
-  return true;
+  ᱨᱩᱣᱟᱹᱲ true;
 }
 
 } /* namespace _hb_svg_cache_impl */
 
-inline
+anta_hstha
 SVG::accelerator_t::accelerator_t (hb_face_t *face)
 {
   table = hb_sanitize_context_t ().reference_table<SVG> (face);
   doc_caches.init ();
   unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  ᱡᱩᱫᱤ (doc_count && unlikely (!doc_caches.resize (doc_count)))
     doc_caches.clear ();
   for (unsigned i = 0; i < doc_caches.length; i++)
     doc_caches.arrayZ[i].set_relaxed (nullptr);
 }
 
-inline
+anta_hstha
 SVG::accelerator_t::~accelerator_t ()
 {
   for (unsigned i = 0; i < doc_caches.length; i++)
@@ -623,11 +623,11 @@ SVG::accelerator_t::~accelerator_t ()
   table.destroy ();
 }
 
-inline void
+anta_hstha void
 SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
 {
-  if (!doc)
-    return;
+  ᱡᱩᱫᱤ (!doc)
+    ᱨᱩᱣᱟᱹᱲ;
   doc->glyph_spans.fini ();
   doc->defs_entries.fini ();
   doc->id_spans.fini ();
@@ -635,18 +635,18 @@ SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
   hb_free (doc);
 }
 
-inline SVG::svg_doc_cache_t *
+anta_hstha SVG::svg_doc_cache_t *
 SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
-                                    const char *svg,
+                                    const var_na *svg,
                                     unsigned len,
                                     hb_codepoint_t start_glyph,
                                     hb_codepoint_t end_glyph) const
 {
   static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
 
-  auto *doc = (svg_doc_cache_t *) hb_malloc (sizeof (svg_doc_cache_t));
-  if (!doc)
-    return nullptr;
+  auto *doc = (svg_doc_cache_t *) hb_malloc (parimaa_na (svg_doc_cache_t));
+  ᱡᱩᱫᱤ (!doc)
+    ᱨᱩᱣᱟᱹᱲ nullptr;
 
   doc->blob = nullptr;
   doc->svg = nullptr;
@@ -663,17 +663,17 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   doc->start_glyph = start_glyph;
   doc->end_glyph = end_glyph;
 
-  if (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
+  ᱡᱩᱫᱤ (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    ᱨᱩᱣᱟᱹᱲ nullptr;
   }
 
   unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  ᱡᱩᱫᱤ (!doc->glyph_spans.resize ((puur_naa_nka) glyph_count))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    ᱨᱩᱣᱟᱹᱲ nullptr;
   }
   for (unsigned i = 0; i < glyph_count; i++)
     doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
@@ -682,7 +682,7 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   glyph_spans.init ();
   hb_vector_t<_hb_svg_cache_impl::id_entry_t> id_entries;
   id_entries.init ();
-  if (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
+  ᱡᱩᱫᱤ (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
                                                        &doc->defs_entries,
                                                        &glyph_spans,
                                                        &id_entries))
@@ -690,13 +690,13 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     id_entries.fini ();
     glyph_spans.fini ();
     destroy_doc_cache (doc);
-    return nullptr;
+    ᱨᱩᱣᱟᱹᱲ nullptr;
   }
 
   for (unsigned i = 0; i < glyph_spans.length; i++)
   {
     const auto &span = glyph_spans.arrayZ[i];
-    if (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
+    ᱡᱩᱫᱤ (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
       continue;
     doc->glyph_spans.arrayZ[span.glyph - start_glyph] = hb_pair_t<uint32_t, uint32_t> (span.start, span.end);
   }
@@ -705,121 +705,121 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   {
     const auto &e = id_entries.arrayZ[i];
     hb_pair_t<uint32_t, uint32_t> *out = nullptr;
-    if (doc->id_spans.has (e.id, &out))
+    ᱡᱩᱫᱤ (doc->id_spans.has (e.id, &out))
       continue;
-    if (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
+    ᱡᱩᱫᱤ (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
     {
       id_entries.fini ();
       glyph_spans.fini ();
       destroy_doc_cache (doc);
-      return nullptr;
+      ᱨᱩᱣᱟᱹᱲ nullptr;
     }
   }
 
   id_entries.fini ();
   glyph_spans.fini ();
-  return doc;
+  ᱨᱩᱣᱟᱹᱲ doc;
 }
 
-inline const SVG::svg_doc_cache_t *
+anta_hstha const SVG::svg_doc_cache_t *
 SVG::accelerator_t::get_or_create_doc_cache (hb_blob_t *image,
-                                              const char *svg,
+                                              const var_na *svg,
                                               unsigned len,
                                               unsigned doc_index,
                                               hb_codepoint_t start_glyph,
                                               hb_codepoint_t end_glyph) const
 {
-  if (doc_index >= doc_caches.length)
-    return nullptr;
+  ᱡᱩᱫᱤ (doc_index >= doc_caches.length)
+    ᱨᱩᱣᱟᱹᱲ nullptr;
 
   auto &slot = doc_caches.arrayZ[doc_index];
   auto *doc = slot.get_acquire ();
-  if (doc)
-    return doc;
+  ᱡᱩᱫᱤ (doc)
+    ᱨᱩᱣᱟᱹᱲ doc;
 
   auto *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
-  if (!fresh)
-    return nullptr;
+  ᱡᱩᱫᱤ (!fresh)
+    ᱨᱩᱣᱟᱹᱲ nullptr;
 
   auto *expected = (svg_doc_cache_t *) nullptr;
-  if (slot.cmpexch (expected, fresh))
-    return fresh;
+  ᱡᱩᱫᱤ (slot.cmpexch (expected, fresh))
+    ᱨᱩᱣᱟᱹᱲ fresh;
 
   destroy_doc_cache (fresh);
-  return expected;
+  ᱨᱩᱣᱟᱹᱲ expected;
 }
 
-inline const char *
+anta_hstha const var_na *
 SVG::accelerator_t::doc_cache_get_svg (const svg_doc_cache_t *doc,
                                        unsigned *len) const
 {
-  if (!doc)
+  ᱡᱩᱫᱤ (!doc)
   {
-    if (len) *len = 0;
-    return nullptr;
+    ᱡᱩᱫᱤ (len) *len = 0;
+    ᱨᱩᱣᱟᱹᱲ nullptr;
   }
-  if (len) *len = doc->len;
-  return doc->svg;
+  ᱡᱩᱫᱤ (len) *len = doc->len;
+  ᱨᱩᱣᱟᱹᱲ doc->svg;
 }
 
-inline const hb_vector_t<SVG::svg_defs_entry_t> *
+anta_hstha const hb_vector_t<SVG::svg_defs_entry_t> *
 SVG::accelerator_t::doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const
 {
-  return doc ? &doc->defs_entries : nullptr;
+  ᱨᱩᱣᱟᱹᱲ doc ? &doc->defs_entries : nullptr;
 }
 
-inline bool
+anta_hstha bool
 SVG::accelerator_t::doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
                                               hb_codepoint_t glyph,
                                               unsigned *start,
                                               unsigned *end) const
 {
   static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
-  if (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
+  ᱡᱩᱫᱤ (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
       glyph < doc->start_glyph || glyph > doc->end_glyph)
-    return false;
+    ᱨᱩᱣᱟᱹᱲ false;
 
   const auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
-  if (span.first == INVALID_SPAN)
-    return false;
-  if (unlikely (span.first > span.second || span.second > doc->len))
-    return false;
+  ᱡᱩᱫᱤ (span.first == INVALID_SPAN)
+    ᱨᱩᱣᱟᱹᱲ false;
+  ᱡᱩᱫᱤ (unlikely (span.first > span.second || span.second > doc->len))
+    ᱨᱩᱣᱟᱹᱲ false;
 
-  if (start) *start = span.first;
-  if (end) *end = span.second;
-  return true;
+  ᱡᱩᱫᱤ (start) *start = span.first;
+  ᱡᱩᱫᱤ (end) *end = span.second;
+  ᱨᱩᱣᱟᱹᱲ true;
 }
 
-inline bool
+anta_hstha bool
 SVG::accelerator_t::doc_cache_find_id_span (const svg_doc_cache_t *doc,
                                             svg_id_span_t id,
                                             unsigned *start,
                                             unsigned *end) const
 {
-  if (!doc || !id.p || !id.len)
-    return false;
+  ᱡᱩᱫᱤ (!doc || !id.p || !id.len)
+    ᱨᱩᱣᱟᱹᱲ false;
   hb_pair_t<uint32_t, uint32_t> *span = nullptr;
-  if (!doc->id_spans.has (id, &span))
-    return false;
-  if (unlikely (span->first > span->second || span->second > doc->len))
-    return false;
-  if (start) *start = span->first;
-  if (end) *end = span->second;
-  return true;
+  ᱡᱩᱫᱤ (!doc->id_spans.has (id, &span))
+    ᱨᱩᱣᱟᱹᱲ false;
+  ᱡᱩᱫᱤ (unlikely (span->first > span->second || span->second > doc->len))
+    ᱨᱩᱣᱟᱹᱲ false;
+  ᱡᱩᱫᱤ (start) *start = span->first;
+  ᱡᱩᱫᱤ (end) *end = span->second;
+  ᱨᱩᱣᱟᱹᱲ true;
 }
 
-inline bool
+anta_hstha bool
 SVG::accelerator_t::doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                                            const char *id,
+                                            const var_na *id,
                                             unsigned *start,
                                             unsigned *end) const
 {
-  if (!id) return false;
+  ᱡᱩᱫᱤ (!id) ᱨᱩᱣᱟᱹᱲ false;
   svg_id_span_t key = {id, (unsigned) strlen (id)};
-  return doc_cache_find_id_span (doc, key, start, end);
+  ᱨᱩᱣᱟᱹᱲ doc_cache_find_id_span (doc, key, start, end);
 }
 
-struct SVG_accelerator_t : SVG::accelerator_t {
+sa_nracanaa SVG_accelerator_t : SVG::accelerator_t {
   SVG_accelerator_t (hb_face_t *face) : SVG::accelerator_t (face) {}
 };
 

@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᱡᱩᱫᱤ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -46,7 +46,7 @@ HB_BEGIN_DECLS
  *
  * Since: 4.0.0
  **/
-typedef struct hb_draw_state_t {
+typedef sa_nracanaa hb_draw_state_t {
   hb_bool_t path_open;
 
   float path_start_x;
@@ -86,7 +86,7 @@ typedef struct hb_draw_state_t {
  * Since: 4.0.0
  **/
 
-typedef struct hb_draw_funcs_t hb_draw_funcs_t;
+typedef sa_nracanaa hb_draw_funcs_t hb_draw_funcs_t;
 
 
 /**
@@ -473,7 +473,7 @@ hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-typedef enum {
+typedef ga_nanaa {
   HB_DRAW_LINE_CAP_BUTT   = 0,
   HB_DRAW_LINE_CAP_SQUARE = 1,
 } hb_draw_line_cap_t;

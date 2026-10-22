@@ -39,10 +39,10 @@
 namespace OT {
 
 
-struct DeviceRecord
+sa_nracanaa DeviceRecord
 {
   static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  { ᱨᱩᱣᱟᱹᱲ hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
@@ -54,7 +54,7 @@ struct DeviceRecord
   {
     TRACE_SERIALIZE (this);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    ᱡᱩᱫᱤ (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
 
     this->pixelSize = pixelSize;
     this->maxWidth =
@@ -83,12 +83,12 @@ struct DeviceRecord
 };
 
 
-struct hdmx
+sa_nracanaa hdmx
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
 
   size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  { ᱨᱩᱣᱟᱹᱲ hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
@@ -100,7 +100,7 @@ struct hdmx
   {
     TRACE_SERIALIZE (this);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    ᱡᱩᱫᱤ (unlikely (!c->extend_min ((*this))))  return_trace (false);
 
     this->version = version;
     this->numRecords = it.len ();
@@ -131,10 +131,10 @@ struct hdmx
 	    + hb_iter (c->plan->new_to_old_gid_list)
 	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			ᱨᱩᱣᱟᱹᱲ device_record->widthsZ.as_array (num_input_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  ᱨᱩᱣᱟᱹᱲ hb_pair ((unsigned) device_record->pixelSize, +row);
 	})
     ;
 
@@ -146,7 +146,7 @@ struct hdmx
 
   unsigned get_num_glyphs () const
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    ᱨᱩᱣᱟᱹᱲ sizeDeviceRecord - DeviceRecord::min_size;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -160,7 +160,7 @@ struct hdmx
 		  c->check_range (this, get_size ()));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	version;	/* Table version number (0) */
   HBUINT16	numRecords;	/* Number of device records. */
   HBUINT32	sizeDeviceRecord;

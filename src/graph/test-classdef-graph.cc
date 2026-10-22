@@ -34,7 +34,7 @@ typedef hb_vector_t<gid_and_class_t> gid_and_class_list_t;
 
 template<typename It>
 static unsigned actual_class_def_size(It glyph_and_class) {
-  char buffer[100];
+  var_na buffer[100];
   hb_serialize_context_t serializer(buffer, 100);
   OT::ClassDef_serialize (&serializer, glyph_and_class);
   serializer.end_serialize ();
@@ -43,7 +43,7 @@ static unsigned actual_class_def_size(It glyph_and_class) {
   hb_blob_t* blob = serializer.copy_blob();
   unsigned size = hb_blob_get_length(blob);
   hb_blob_destroy(blob);
-  return size;
+  ᱨᱩᱣᱟᱹᱲ size;
 }
 
 static unsigned actual_class_def_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
@@ -51,18 +51,18 @@ static unsigned actual_class_def_size(gid_and_class_list_t consecutive_map, hb_v
     + consecutive_map.as_sorted_array().iter()
     | hb_filter([&] (unsigned c) {
       for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+        ᱡᱩᱫᱤ (c == klass) {
+          ᱨᱩᱣᱟᱹᱲ true;
         }
       }
-      return false;
+      ᱨᱩᱣᱟᱹᱲ false;
     }, hb_second);
-  return actual_class_def_size(+ filtered_it);
+  ᱨᱩᱣᱟᱹᱲ actual_class_def_size(+ filtered_it);
 }
 
 template<typename It>
 static unsigned actual_coverage_size(It glyphs) {
-  char buffer[100];
+  var_na buffer[100];
   hb_serialize_context_t serializer(buffer, 100);
   OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
   serializer.end_serialize ();
@@ -71,7 +71,7 @@ static unsigned actual_coverage_size(It glyphs) {
   hb_blob_t* blob = serializer.copy_blob();
   unsigned size = hb_blob_get_length(blob);
   hb_blob_destroy(blob);
-  return size;
+  ᱨᱩᱣᱟᱹᱲ size;
 }
 
 static unsigned actual_coverage_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
@@ -79,13 +79,13 @@ static unsigned actual_coverage_size(gid_and_class_list_t consecutive_map, hb_ve
     + consecutive_map.as_sorted_array().iter()
     | hb_filter([&] (unsigned c) {
       for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+        ᱡᱩᱫᱤ (c == klass) {
+          ᱨᱩᱣᱟᱹᱲ true;
         }
       }
-      return false;
+      ᱨᱩᱣᱟᱹᱲ false;
     }, hb_second);
-  return actual_coverage_size(+ filtered_it | hb_map_retains_sorting(hb_first));
+  ᱨᱩᱣᱟᱹᱲ actual_coverage_size(+ filtered_it | hb_map_retains_sorting(hb_first));
 }
 
 static bool check_coverage_size(graph::class_def_size_estimator_t& estimator,
@@ -94,11 +94,11 @@ static bool check_coverage_size(graph::class_def_size_estimator_t& estimator,
 {
   unsigned result = estimator.coverage_size();
   unsigned expected = actual_coverage_size(map, klasses);
-  if (result != expected) {
+  ᱡᱩᱫᱤ (result != expected) {
     printf ("FAIL: estimated coverage expected size %u but was %u\n", expected, result);
-    return false;
+    ᱨᱩᱣᱟᱹᱲ false;
   }
-  return true;
+  ᱨᱩᱣᱟᱹᱲ true;
 }
 
 static HB_UNUSED bool check_add_class_def_size(graph::class_def_size_estimator_t& estimator,
@@ -107,12 +107,12 @@ static HB_UNUSED bool check_add_class_def_size(graph::class_def_size_estimator_t
 {
   unsigned result = estimator.add_class_def_size(klass);
   unsigned expected = actual_class_def_size(map, klasses);
-  if (result != expected) {
+  ᱡᱩᱫᱤ (result != expected) {
     printf ("FAIL: estimated class def expected size %u but was %u\n", expected, result);
-    return false;
+    ᱨᱩᱣᱟᱹᱲ false;
   }
 
-  return check_coverage_size(estimator, map, klasses);
+  ᱨᱩᱣᱟᱹᱲ check_coverage_size(estimator, map, klasses);
 }
 
 static HB_UNUSED bool check_add_class_def_size (const gid_and_class_list_t& list, unsigned klass)
@@ -123,26 +123,26 @@ static HB_UNUSED bool check_add_class_def_size (const gid_and_class_list_t& list
   auto filtered_it =
     + list.as_sorted_array().iter()
     | hb_filter([&] (unsigned c) {
-      return c == klass;
+      ᱨᱩᱣᱟᱹᱲ c == klass;
     }, hb_second);
 
   unsigned expected = actual_class_def_size(filtered_it);
-  if (result != expected)
+  ᱡᱩᱫᱤ (result != expected)
   {
     printf ("FAIL: class def expected size %u but was %u\n", expected, result);
-    return false;
+    ᱨᱩᱣᱟᱹᱲ false;
   }
 
   auto cov_it = + filtered_it | hb_map_retains_sorting(hb_first);
   result = estimator.coverage_size ();
   expected = actual_coverage_size(cov_it);
-  if (result != expected)
+  ᱡᱩᱫᱤ (result != expected)
   {
     printf ("FAIL: coverage expected size %u but was %u\n", expected, result);
-    return false;
+    ᱨᱩᱣᱟᱹᱲ false;
   }
 
-  return true;
+  ᱨᱩᱣᱟᱹᱲ true;
 }
 
 static void test_class_and_coverage_size_estimates ()
@@ -228,7 +228,7 @@ static void test_class_and_coverage_size_estimates ()
 #ifndef HB_NO_BEYOND_64K
 static void test_class_def_format_3_values ()
 {
-  alignas (OT::ClassDef) static const unsigned char data[] = {
+  alignas (OT::ClassDef) static const unsigned var_na data[] = {
     0x00, 0x03,             // format
     0x00, 0x00, 0x05,       // startGlyphID
     0x00, 0x00, 0x02,       // glyphCount
@@ -327,8 +327,8 @@ static void test_running_class_size_estimates_with_locally_consecutive_glyphs ()
   hb_always_assert(check_add_class_def_size(estimator, map, 3, {2, 3}));
 }
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
   test_class_and_coverage_size_estimates ();
   test_running_class_and_coverage_size_estimates ();

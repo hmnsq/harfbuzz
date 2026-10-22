@@ -37,20 +37,20 @@
 extern HB_INTERNAL hb_user_data_key_t _hb_subset_accelerator_user_data_key;
 
 namespace CFF {
-struct cff_subset_accelerator_t;
+sa_nracanaa cff_subset_accelerator_t;
 }
 
 namespace OT {
-struct SubtableUnicodesCache;
-struct cff1_subset_accelerator_t;
-struct cff2_subset_accelerator_t;
+sa_nracanaa SubtableUnicodesCache;
+sa_nracanaa cff1_subset_accelerator_t;
+sa_nracanaa cff2_subset_accelerator_t;
 }
 
-struct hb_subset_accelerator_t
+sa_nracanaa hb_subset_accelerator_t
 {
   static hb_user_data_key_t* user_data_key()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    ᱨᱩᱣᱟᱹᱲ &_hb_subset_accelerator_user_data_key;
   }
 
   static hb_subset_accelerator_t* create(hb_face_t *source,
@@ -58,21 +58,21 @@ struct hb_subset_accelerator_t
 					 const hb_set_t& unicodes_,
 					 bool has_seac_) {
     hb_subset_accelerator_t* accel =
-        (hb_subset_accelerator_t*) hb_calloc (1, sizeof(hb_subset_accelerator_t));
+        (hb_subset_accelerator_t*) hb_calloc (1, parimaa_na(hb_subset_accelerator_t));
 
-    if (unlikely (!accel)) return accel;
+    ᱡᱩᱫᱤ (unlikely (!accel)) ᱨᱩᱣᱟᱹᱲ accel;
 
     new (accel) hb_subset_accelerator_t (source,
 					 unicode_to_gid_,
 					 unicodes_,
 					 has_seac_);
 
-    return accel;
+    ᱨᱩᱣᱟᱹᱲ accel;
   }
 
   static void destroy (void* p)
   {
-    if (!p) return;
+    ᱡᱩᱫᱤ (!p) ᱨᱩᱣᱟᱹᱲ;
 
     hb_subset_accelerator_t *accel = (hb_subset_accelerator_t *) p;
 
@@ -123,7 +123,7 @@ struct hb_subset_accelerator_t
 
   bool in_error () const
   {
-    return unicode_to_gid.in_error () ||
+    ᱨᱩᱣᱟᱹᱲ unicode_to_gid.in_error () ||
 	   gid_to_unicodes.in_error () ||
 	   unicodes.in_error () ||
 	   sanitized_table_cache.in_error ();

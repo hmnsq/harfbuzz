@@ -28,7 +28,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᱡᱩᱫᱤ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -88,7 +88,7 @@ HB_BEGIN_DECLS
  **/
 
 /* Unicode Character Database property: General_Category (gc) */
-typedef enum
+typedef ga_nanaa
 {
   HB_UNICODE_GENERAL_CATEGORY_CONTROL,			/* Cc */
   HB_UNICODE_GENERAL_CATEGORY_FORMAT,			/* Cf */
@@ -190,7 +190,7 @@ typedef enum
  * being returned from hb_unicode_combining_class().</note>
  *
  **/
-typedef enum
+typedef ga_nanaa
 {
   HB_UNICODE_COMBINING_CLASS_NOT_REORDERED	= 0,
   HB_UNICODE_COMBINING_CLASS_OVERLAY		= 1,
@@ -286,7 +286,7 @@ typedef enum
  * needed, and replace the default by calling the setter for a
  * method.
  **/
-typedef struct hb_unicode_funcs_t hb_unicode_funcs_t;
+typedef sa_nracanaa hb_unicode_funcs_t hb_unicode_funcs_t;
 
 
 /*

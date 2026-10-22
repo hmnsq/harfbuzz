@@ -4,8 +4,8 @@ import sys
 import array
 import gi
 gi.require_version('HarfBuzz', '0.0')
-from gi.repository import HarfBuzz as hb
-from gi.repository import GLib
+ta_h gi.repository import HarfBuzz as hb
+ta_h gi.repository import GLib
 
 fontdata = open (sys.argv[1], 'rb').read ()
 text = sys.argv[2]
@@ -25,7 +25,7 @@ buf = hb.buffer_create ()
 class Debugger (object):
 	def message (self, buf, font, msg, data, _x_what_is_this):
 		print (msg)
-		return True
+		ᱨᱩᱣᱟᱹᱲ True
 debugger = Debugger ()
 hb.buffer_set_message_func (buf, debugger.message, 1, 0)
 
@@ -41,9 +41,9 @@ hb.buffer_set_message_func (buf, debugger.message, 1, 0)
 # hb.buffer_add_utf8 (buf, text.encode('utf-8'), 0, -1)
 # Otherwise, then following handles both narrow and wide
 # Python builds (the first item in the array is BOM, so we skip it):
-if sys.maxunicode == 0x10FFFF:
+ᱡᱩᱫᱤ sys.maxunicode == 0x10FFFF:
 	hb.buffer_add_utf32 (buf, array.array ('I', text.encode ('utf-32'))[1:], 0, -1)
-else:
+ᱵᱟᱝ:
 	hb.buffer_add_utf16 (buf, array.array ('H', text.encode ('utf-16'))[1:], 0, -1)
 
 
@@ -55,7 +55,7 @@ del font
 infos = hb.buffer_get_glyph_infos (buf)
 positions = hb.buffer_get_glyph_positions (buf)
 
-for info, pos in zip (infos, positions):
+for info, pos anta_h zip (infos, positions):
 	gid = info.codepoint
 	cluster = info.cluster
 	x_advance = pos.x_advance

@@ -34,7 +34,7 @@
 
 
 template <typename impl_t>
-struct hb_sparseset_t
+sa_nracanaa hb_sparseset_t
 {
   static constexpr bool realloc_move = true;
 
@@ -46,8 +46,8 @@ struct hb_sparseset_t
 
   hb_sparseset_t (const hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
   hb_sparseset_t (hb_sparseset_t&& other)  noexcept : hb_sparseset_t () { s = std::move (other.s); }
-  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); return *this; }
-  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); return *this; }
+  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); ᱨᱩᱣᱟᱹᱲ *this; }
+  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); ᱨᱩᱣᱟᱹᱲ *this; }
   friend void swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
 
   hb_sparseset_t (std::initializer_list<hb_codepoint_t> lst) : hb_sparseset_t ()
@@ -73,25 +73,25 @@ struct hb_sparseset_t
     s.fini ();
   }
 
-  explicit operator bool () const { return !is_empty (); }
+  explicit operator bool () const { ᱨᱩᱣᱟᱹᱲ !is_empty (); }
 
   void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
+  bool in_error () const { ᱨᱩᱣᱟᱹᱲ s.in_error (); }
 
   void alloc (unsigned sz) { s.alloc (sz); }
   void reset () { s.reset (); }
   void clear () { s.clear (); }
   void invert () { s.invert (); }
-  bool is_inverted () const { return s.is_inverted (); }
-  bool is_empty () const { return s.is_empty (); }
-  uint32_t hash () const { return s.hash (); }
+  bool is_inverted () const { ᱨᱩᱣᱟᱹᱲ s.is_inverted (); }
+  bool is_empty () const { ᱨᱩᱣᱟᱹᱲ s.is_empty (); }
+  uint32_t hash () const { ᱨᱩᱣᱟᱹᱲ s.hash (); }
 
   void add (hb_codepoint_t g) { s.add (g); }
   void add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { return s.add_range (first, last); }
+  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { ᱨᱩᱣᱟᱹᱲ s.add_range (first, last); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  void add_array (const T *array, unsigned puur_naa_nka count, unsigned puur_naa_nka stride=parimaa_na(T))
   { s.add_array (array, count, stride); }
   template <typename T>
   void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
@@ -99,46 +99,46 @@ struct hb_sparseset_t
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return s.add_sorted_array (array, count, stride); }
+  bool add_sorted_array (const T *array, unsigned puur_naa_nka count, unsigned puur_naa_nka stride=parimaa_na(T))
+  { ᱨᱩᱣᱟᱹᱲ s.add_sorted_array (array, count, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { ᱨᱩᱣᱟᱹᱲ add_sorted_array (&arr, arr.len ()); }
 
   void del (hb_codepoint_t g) { s.del (g); }
   void del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  bool get (hb_codepoint_t g) const { ᱨᱩᱣᱟᱹᱲ s.get (g); }
+  bool may_have (hb_codepoint_t g) const { ᱨᱩᱣᱟᱹᱲ get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  bool operator [] (hb_codepoint_t k) const { ᱨᱩᱣᱟᱹᱲ get (k); }
+  bool has (hb_codepoint_t k) const { ᱨᱩᱣᱟᱹᱲ (*this)[k]; }
 
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  bool operator () (hb_codepoint_t k) const { ᱨᱩᱣᱟᱹᱲ has (k); }
 
   /* Sink interface. */
   hb_sparseset_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
+  { add (v); ᱨᱩᱣᱟᱹᱲ *this; }
   hb_sparseset_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add_range (range.first, range.second); ᱨᱩᱣᱟᱹᱲ *this; }
 
   bool may_intersect (const hb_sparseset_t &other) const
-  { return s.may_intersect (other.s); }
+  { ᱨᱩᱣᱟᱹᱲ s.may_intersect (other.s); }
 
   bool intersects (const hb_sparseset_t &other) const
-  { return s.intersects (other.s); }
+  { ᱨᱩᱣᱟᱹᱲ s.intersects (other.s); }
 
   bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
-  { return s.intersects (first, last); }
+  { ᱨᱩᱣᱟᱹᱲ s.intersects (first, last); }
 
   void set (const hb_sparseset_t &other) { s.set (other.s); }
 
-  bool is_equal (const hb_sparseset_t &other) const { return s.is_equal (other.s); }
-  bool operator == (const hb_set_t &other) const { return is_equal (other); }
-  bool operator != (const hb_set_t &other) const { return !is_equal (other); }
+  bool is_equal (const hb_sparseset_t &other) const { ᱨᱩᱣᱟᱹᱲ s.is_equal (other.s); }
+  bool operator == (const hb_set_t &other) const { ᱨᱩᱣᱟᱹᱲ is_equal (other); }
+  bool operator != (const hb_set_t &other) const { ᱨᱩᱣᱟᱹᱲ !is_equal (other); }
 
-  bool is_subset (const hb_sparseset_t &larger_set) const { return s.is_subset (larger_set.s); }
+  bool is_subset (const hb_sparseset_t &larger_set) const { ᱨᱩᱣᱟᱹᱲ s.is_subset (larger_set.s); }
 
   void union_ (const hb_sparseset_t &other) { s.union_ (other.s); }
   void intersect (const hb_sparseset_t &other,
@@ -147,21 +147,21 @@ struct hb_sparseset_t
   void subtract (const hb_sparseset_t &other) { s.subtract (other.s); }
   void symmetric_difference (const hb_sparseset_t &other) { s.symmetric_difference (other.s); }
 
-  bool next (hb_codepoint_t *codepoint) const { return s.next (codepoint); }
+  bool next (hb_codepoint_t *codepoint) const { ᱨᱩᱣᱟᱹᱲ s.next (codepoint); }
   bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
-  { return s.next_bits (codepoint, bits); }
-  bool previous (hb_codepoint_t *codepoint) const { return s.previous (codepoint); }
+  { ᱨᱩᱣᱟᱹᱲ s.next_bits (codepoint, bits); }
+  bool previous (hb_codepoint_t *codepoint) const { ᱨᱩᱣᱟᱹᱲ s.previous (codepoint); }
   bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.next_range (first, last); }
+  { ᱨᱩᱣᱟᱹᱲ s.next_range (first, last); }
   bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.previous_range (first, last); }
-  unsigned int next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned int size) const
-  { return s.next_many (codepoint, out, size); }
+  { ᱨᱩᱣᱟᱹᱲ s.previous_range (first, last); }
+  unsigned puur_naa_nka next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned puur_naa_nka size) const
+  { ᱨᱩᱣᱟᱹᱲ s.next_many (codepoint, out, size); }
 
-  unsigned int get_population () const { return s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const { return s.get_singleton (codepoint); }
-  hb_codepoint_t get_min () const { return s.get_min (); }
-  hb_codepoint_t get_max () const { return s.get_max (); }
+  unsigned puur_naa_nka get_population () const { ᱨᱩᱣᱟᱹᱲ s.get_population (); }
+  bool get_singleton (hb_codepoint_t *codepoint) const { ᱨᱩᱣᱟᱹᱲ s.get_singleton (codepoint); }
+  hb_codepoint_t get_min () const { ᱨᱩᱣᱟᱹᱲ s.get_min (); }
+  hb_codepoint_t get_max () const { ᱨᱩᱣᱟᱹᱲ s.get_max (); }
 
   static constexpr hb_codepoint_t INVALID = impl_t::INVALID;
 
@@ -169,11 +169,11 @@ struct hb_sparseset_t
    * Iterator implementation.
    */
   using iter_t = typename impl_t::iter_t;
-  iter_t iter () const { return iter_t (this->s); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () const { ᱨᱩᱣᱟᱹᱲ iter_t (this->s); }
+  operator iter_t () const { ᱨᱩᱣᱟᱹᱲ iter (); }
 };
 
-struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
+sa_nracanaa hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
 {
   using sparseset = hb_sparseset_t<hb_bit_set_invertible_t>;
 
@@ -189,9 +189,9 @@ struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
   hb_set_t (const Iterable &o) : sparseset (o) {}
 
   hb_set_t& operator << (hb_codepoint_t v)
-  { sparseset::operator<< (v); return *this; }
+  { sparseset::operator<< (v); ᱨᱩᱣᱟᱹᱲ *this; }
   hb_set_t& operator << (const hb_codepoint_pair_t& range)
-  { sparseset::operator<< (range); return *this; }
+  { sparseset::operator<< (range); ᱨᱩᱣᱟᱹᱲ *this; }
 };
 
 static_assert (hb_set_t::INVALID == HB_SET_VALUE_INVALID, "");
