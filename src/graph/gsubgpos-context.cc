@@ -24,24 +24,24 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-graph.hh"
+#ضمن "gsubgpos-graph.hh"
 
-namespace graph {
+نطاق graph {
 
 graph_result_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
                                                                            graph_t& graph_)
 {
   gsubgpos_graph_context_t context (table_tag_, graph_);
 
-  if (unlikely (table_tag_ != HB_OT_TAG_GPOS
+  إذا (unlikely (table_tag_ != HB_OT_TAG_GPOS
                 && table_tag_ != HB_OT_TAG_GSUB))
-    return Err(INVALID_ARGUMENT);
+    إرجاع Err(INVALID_ARGUMENT);
 
-  TRY_ASSIGN (const GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
+  TRY_ASSIGN (ثابت GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
   TRY(gstar->find_lookups (context.graph, context.lookups));
   TRY_ASSIGN (context.lookup_list_index, gstar->get_lookup_list_index (context.graph));
 
-  return context;
+  إرجاع context;
 }
 
 gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
@@ -52,30 +52,30 @@ gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
       lookups ()
 {}
 
-graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
+graph_result_t<unsigned> gsubgpos_graph_context_t::create_عقدة (unsigned size)
 {
-  char* buffer = (char*) hb_calloc (1, size);
-  if (unlikely (!buffer))
-    return Err(ALLOCATION_FAILURE);
+  حرف* buffer = (حرف*) hb_calloc (1, size);
+  إذا (unlikely (!buffer))
+    إرجاع Err(ALLOCATION_FAILURE);
 
   auto res = add_buffer (buffer);
-  if (unlikely (!res.is_ok ())) {
+  إذا (unlikely (!res.is_ok ())) {
     // Allocation did not get stored for freeing later.
     hb_free (buffer);
-    return Err(res.error ());
+    إرجاع Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  إرجاع graph.new_عقدة (buffer, buffer + size);
 }
 
-unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
-  unsigned count = 0;
-  for (auto l : lookups.values ())
+unsigned gsubgpos_graph_context_t::رقم_non_ext_subtables ()  {
+  unsigned تعداد_2 = 0;
+  لكل (auto l : lookups.values ())
   {
-    if (l->is_extension (table_tag)) continue;
-    count += l->number_of_subtables ();
+    إذا (l->is_extension (table_tag)) استمر;
+    تعداد_2 += l->العدد_of_subtables ();
   }
-  return count;
+  إرجاع تعداد_2;
 }
 
 }

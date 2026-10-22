@@ -1,213 +1,213 @@
 #ifndef OT_LAYOUT_GPOS_PAIRSET_HH
 #define OT_LAYOUT_GPOS_PAIRSET_HH
 
-#include "PairValueRecord.hh"
+#ضمن "PairValueRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
 
 /* Pair records vary in glyph width; their value traversal need not. */
-struct pair_set_values_t
+بنية pair_set_قيم_t
 {
-  const ValueBase *base;
+  ثابت قيمة_Base *base;
   glyph_data_t glyphs;
-  const Value *values;
-  unsigned count;
+  ثابت قيمة *values;
+  unsigned تعداد_2;
   unsigned record_size;
 
-  unsigned get_glyph (unsigned i) const
+  unsigned get_glyph (unsigned i) ثابت
   {
     glyph_data_t glyph = glyphs;
-    glyph.data = (const char *) glyph.data + i * record_size;
-    return glyph[0];
+    glyph.data = (ثابت حرف *) glyph.data + i * record_size;
+    إرجاع glyph[0];
   }
 
-  const Value *get_values (unsigned i) const
-  { return reinterpret_cast<const Value *> ((const char *) values + i * record_size); }
+  ثابت قيمة *get_قيم (unsigned i) ثابت
+  { إرجاع reinterpret_cast<ثابت قيمة *> ((ثابت حرف *) values + i * record_size); }
 
   hb_pair_t<unsigned, unsigned>
-  compute_effective_value_formats (const hb_set_t &glyphset,
-                                   const ValueFormat valueFormats[2],
-                                   bool strip_hints, bool strip_empty,
-                                   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  compute_effective_قيمة_formats (ثابت hb_set_t &glyphset,
+                                   ثابت قيمة_Format قيمة_Formats[2],
+                                   منطقي strip_hints, منطقي strip_empty,
+                                   ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحيح>> *varidx_delta_map) ثابت
   {
-    unsigned len1 = valueFormats[0].get_len ();
+    unsigned len1 = قيمة_Formats[0].get_len ();
     unsigned format1 = 0, format2 = 0;
-    for (unsigned i = 0; i < count; i++)
+    لكل (unsigned i = 0; i < تعداد_2; i++)
     {
-      if (!glyphset.has (get_glyph (i))) continue;
-      const Value *v = get_values (i);
-      format1 |= valueFormats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
-      format2 |= valueFormats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
+      إذا (!glyphset.has (get_glyph (i))) استمر;
+      ثابت قيمة *v = get_قيم (i);
+      format1 |= قيمة_Formats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
+      format2 |= قيمة_Formats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
     }
-    return hb_pair (format1, format2);
+    إرجاع hb_pair (format1, format2);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat valueFormats[2]) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت قيمة_Format قيمة_Formats[2]) ثابت
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned len1 = قيمة_Formats[0].get_len ();
+    unsigned len2 = قيمة_Formats[1].get_len ();
+    لكل (unsigned i = 0; i < تعداد_2; i++)
     {
-      if (!c->glyph_set->has (get_glyph (i))) continue;
-      const hb_array_t<const Value> v = hb_array (get_values (i), len1 + len2);
-      if (valueFormats[0].has_device ())
-        valueFormats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
-      if (valueFormats[1].has_device ())
-        valueFormats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
+      إذا (!c->glyph_set->has (get_glyph (i))) استمر;
+      ثابت hb_array_t<ثابت قيمة> v = hb_array (get_قيم (i), len1 + len2);
+      إذا (قيمة_Formats[0].has_device ())
+        قيمة_Formats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
+      إذا (قيمة_Formats[1].has_device ())
+        قيمة_Formats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
     }
   }
 };
 
 template <typename Types>
-struct PairSet : ValueBase
+بنية PairSet : قيمة_Base
 {
   template <typename Types2>
-  friend struct PairPosFormat1_3;
+  friend بنية PairPosFormat1_3;
 
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  using Pair_قيمة_Record = GPOS_impl::Pair_قيمة_Record<Types>;
 
-  protected:
+  محمي:
   typename Types::HBUINT
                         len;    /* Number of PairValueRecords */
-  PairValueRecord       firstPairValueRecord;
+  Pair_قيمة_Record       first_Pair_قيمة_Record;
                                 /* Array of PairValueRecords--ordered
                                  * by GlyphID of the second glyph */
-  public:
+  عام:
   DEFINE_SIZE_MIN (Types::HBUINT::static_size);
 
-  static size_t get_size (unsigned len1, unsigned len2)
+  ساكن size_t get_size (unsigned len1, unsigned len2)
   {
-    return Types::HBGlyphID::static_size + Value::static_size * (len1 + len2);
+    إرجاع Types::HBGlyphID::static_size + قيمة::static_size * (len1 + len2);
   }
-  static size_t get_size (const ValueFormat valueFormats[2])
+  ساكن size_t get_size (ثابت قيمة_Format قيمة_Formats[2])
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    return get_size (len1, len2);
+    unsigned len1 = قيمة_Formats[0].get_len ();
+    unsigned len2 = قيمة_Formats[1].get_len ();
+    إرجاع get_size (len1, len2);
   }
 
-  struct sanitize_closure_t
+  بنية sanitize_closure_t
   {
-    const ValueFormat *valueFormats;
-    unsigned int len1; /* valueFormats[0].get_len() */
+    ثابت قيمة_Format *قيمة_Formats;
+    unsigned صحيح len1; /* valueFormats[0].get_len() */
     size_t stride; /* bytes */
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const sanitize_closure_t *closure) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت sanitize_closure_t *closure) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    إذا (!(c->check_struct (هذا) &&
 	  hb_barrier () &&
-          c->check_range (&firstPairValueRecord,
+          c->check_range (&first_Pair_قيمة_Record,
                           len,
-                          closure->stride))) return_trace (false);
+                          closure->stride))) return_trace (خطأ);
     hb_barrier ();
 
-    unsigned int count = len;
-    const PairValueRecord *record = &firstPairValueRecord;
+    unsigned صحيح تعداد_2 = len;
+    ثابت Pair_قيمة_Record *record = &first_Pair_قيمة_Record;
     return_trace (c->lazy_some_gpos ||
-		  (closure->valueFormats[0].sanitize_values_stride_unsafe (c, this, &record->values[0], count, closure->stride) &&
-                   closure->valueFormats[1].sanitize_values_stride_unsafe (c, this, &record->values[closure->len1], count, closure->stride)));
+		  (closure->قيمة_Formats[0].sanitize_قيم_stride_unsafe (c, هذا, &record->values[0], تعداد_2, closure->stride) &&
+                   closure->قيمة_Formats[1].sanitize_قيم_stride_unsafe (c, هذا, &record->values[closure->len1], تعداد_2, closure->stride)));
   }
 
-  bool intersects (const hb_set_t *glyphs,
-                   const ValueFormat *valueFormats) const
+  منطقي intersects (ثابت hb_set_t *glyphs,
+                   ثابت قيمة_Format *قيمة_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
+    unsigned record_size = get_size (قيمة_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Pair_قيمة_Record *record = &first_Pair_قيمة_Record;
+    unsigned صحيح تعداد_2 = len;
+    لكل (unsigned صحيح i = 0; i < تعداد_2; i++)
     {
-      if (glyphs->has (record->secondGlyph))
-        return true;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      إذا (glyphs->has (record->secondGlyph))
+        إرجاع true;
+      record = &StructAtOffset<ثابت Pair_قيمة_Record> (record, record_size);
     }
-    return false;
+    إرجاع خطأ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-                       const ValueFormat *valueFormats) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c,
+                       ثابت قيمة_Format *قيمة_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
+    unsigned record_size = get_size (قيمة_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    c->input->add_array (&record->secondGlyph, len, record_size);
+    ثابت Pair_قيمة_Record *record = &first_Pair_قيمة_Record;
+    c->إدخال->add_array (&record->secondGlyph, len, record_size);
   }
 
   template <typename set_t>
-  void collect_second_glyphs (set_t *glyphs,
-			      const ValueFormat *valueFormats) const
+  فراغ collect_second_glyphs (set_t *glyphs,
+			      ثابت قيمة_Format *قيمة_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
-    const PairValueRecord *record = &firstPairValueRecord;
+    unsigned record_size = get_size (قيمة_Formats);
+    ثابت Pair_قيمة_Record *record = &first_Pair_قيمة_Record;
     glyphs->add_array (&record->secondGlyph, len, record_size);
   }
 
-  pair_set_values_t get_values_view (const ValueFormat valueFormats[2]) const
+  pair_set_قيم_t get_قيم_view (ثابت قيمة_Format قيمة_Formats[2]) ثابت
   {
-    return {this, &firstPairValueRecord.secondGlyph, &firstPairValueRecord.values[0],
-            (unsigned) len, (unsigned) get_size (valueFormats)};
+    إرجاع {هذا, &first_Pair_قيمة_Record.secondGlyph, &first_Pair_قيمة_Record.values[0],
+            (unsigned) len, (unsigned) get_size (قيمة_Formats)};
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت قيمة_Format *قيمة_Formats) ثابت
   {
-    get_values_view (valueFormats).collect_variation_indices (c, valueFormats);
+    get_قيم_view (قيمة_Formats).collect_variation_indices (c, قيمة_Formats);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-              const ValueFormat *valueFormats,
-              unsigned int pos) const
+  منطقي apply (hb_ot_apply_context_t *c,
+              ثابت قيمة_Format *قيمة_Formats,
+              unsigned صحيح pos) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int len1 = valueFormats[0].get_len ();
-    unsigned int len2 = valueFormats[1].get_len ();
+    unsigned صحيح len1 = قيمة_Formats[0].get_len ();
+    unsigned صحيح len2 = قيمة_Formats[1].get_len ();
     unsigned record_size = get_size (len1, len2);
 
-    const PairValueRecord *record = hb_bsearch (buffer->info[pos].codepoint,
-                                                &firstPairValueRecord,
+    ثابت Pair_قيمة_Record *record = hb_bsearch (buffer->info[pos].codepoint,
+                                                &first_Pair_قيمة_Record,
                                                 (unsigned) len,
                                                 record_size);
-    if (record)
+    إذا (record)
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "try kerning glyphs at %u,%u",
 			    c->buffer->idx, pos);
       }
 
-      bool applied_first = len1 && valueFormats[0].apply_value (c, this, &record->values[0], buffer->cur_pos());
-      bool applied_second = len2 && valueFormats[1].apply_value (c, this, &record->values[len1], buffer->pos[pos]);
+      منطقي applied_first = len1 && قيمة_Formats[0].apply_قيمة (c, هذا, &record->values[0], buffer->cur_pos());
+      منطقي applied_second = len2 && قيمة_Formats[1].apply_قيمة (c, هذا, &record->values[len1], buffer->pos[pos]);
 
-      if (applied_first || applied_second)
-	if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (applied_first || applied_second)
+	إذا (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
 	{
 	  c->buffer->message (c->font,
 			      "kerned glyphs at %u,%u",
 			      c->buffer->idx, pos);
 	}
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "tried kerning glyphs at %u,%u",
 			    c->buffer->idx, pos);
       }
 
-      if (applied_first || applied_second)
+      إذا (applied_first || applied_second)
         buffer->unsafe_to_break (buffer->idx, pos + 1);
-      else
+      وإلا
         /* Even a zero-valued pair record is a concat hazard. */
         buffer->unsafe_to_concat (buffer->idx, pos + 1);
 
-      if (len2)
+      إذا (len2)
       {
 	pos++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
@@ -219,49 +219,49 @@ struct PairSet : ValueBase
       return_trace (true);
     }
     buffer->unsafe_to_concat (buffer->idx, pos + 1);
-    return_trace (false);
+    return_trace (خطأ);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ValueFormat valueFormats[2],
-               const ValueFormat newFormats[2]) const
+  منطقي subset (hb_subset_context_t *c,
+               ثابت قيمة_Format قيمة_Formats[2],
+               ثابت قيمة_Format newFormats[2]) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
     auto snap = c->serializer->snapshot ();
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
     out->len = 0;
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ثابت hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
+    unsigned len1 = قيمة_Formats[0].get_len ();
+    unsigned len2 = قيمة_Formats[1].get_len ();
     unsigned record_size = get_size (len1, len2);
 
-    pair_value_record_context_t context =
+    pair_قيمة_record_context_t context =
     {
-      this,
-      valueFormats,
+      هذا,
+      قيمة_Formats,
       newFormats,
       len1,
       &glyph_map,
       &c->plan->layout_variation_idx_delta_map
     };
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned count = len, num = 0;
-    for (unsigned i = 0; i < count; i++)
+    ثابت Pair_قيمة_Record *record = &first_Pair_قيمة_Record;
+    unsigned تعداد_2 = len, رقم = 0;
+    لكل (unsigned i = 0; i < تعداد_2; i++)
     {
-      if (glyphset.has (record->secondGlyph)
-         && record->subset (c, &context)) num++;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      إذا (glyphset.has (record->secondGlyph)
+         && record->subset (c, &context)) رقم++;
+      record = &StructAtOffset<ثابت Pair_قيمة_Record> (record, record_size);
     }
 
-    out->len = num;
-    if (!num) c->serializer->revert (snap);
-    return_trace (num);
+    out->len = رقم;
+    إذا (!رقم) c->serializer->revert (snap);
+    return_trace (رقم);
   }
 };
 

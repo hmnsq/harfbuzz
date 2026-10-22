@@ -29,294 +29,294 @@
 #ifndef HB_OT_LAYOUT_GSUBGPOS_HH
 #define HB_OT_LAYOUT_GSUBGPOS_HH
 
-#include "hb.hh"
-#include "hb-buffer.hh"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-ot-map.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-depend-data.hh"
+#ضمن "hb.hh"
+#ضمن "hb-buffer.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-set.hh"
+#ضمن "hb-ot-map.hh"
+#ضمن "hb-ot-layout-common.hh"
+#ضمن "hb-ot-layout-gdef-table.hh"
+#ضمن "hb-depend-data.hh"
 
 
-namespace OT {
+نطاق OT {
 
 
-struct hb_intersects_context_t :
-       hb_dispatch_context_t<hb_intersects_context_t, bool>
+بنية hb_intersects_context_t :
+       hb_dispatch_context_t<hb_intersects_context_t, منطقي>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.intersects (this->glyphs); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (ثابت T &obj) { إرجاع obj.intersects (هذا->glyphs); }
+  ساكن return_t default_return_قيمة () { إرجاع خطأ; }
+  منطقي stop_sublookup_iteration (return_t r) ثابت { إرجاع r; }
 
-  const hb_set_t *glyphs;
+  ثابت hb_set_t *glyphs;
 
-  hb_intersects_context_t (const hb_set_t *glyphs_) :
+  hb_intersects_context_t (ثابت hb_set_t *glyphs_) :
                             glyphs (glyphs_) {}
 };
 
-struct hb_have_non_1to1_context_t :
-       hb_dispatch_context_t<hb_have_non_1to1_context_t, bool>
+بنية hb_have_non_1to1_context_t :
+       hb_dispatch_context_t<hb_have_non_1to1_context_t, منطقي>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.may_have_non_1to1 (); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (ثابت T &obj) { إرجاع obj.may_have_non_1to1 (); }
+  ساكن return_t default_return_قيمة () { إرجاع خطأ; }
+  منطقي stop_sublookup_iteration (return_t r) ثابت { إرجاع r; }
 };
 
-struct hb_closure_context_t :
+بنية hb_closure_context_t :
        hb_dispatch_context_t<hb_closure_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index);
+  تعريفنوع return_t (*recurse_func_t) (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.closure (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index)
+  return_t dispatch (ثابت T &obj) { obj.closure (هذا); إرجاع hb_empty_t (); }
+  ساكن return_t default_return_قيمة () { إرجاع hb_empty_t (); }
+  فراغ recurse (unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    إذا (unlikely (nesting_level_يسار == 0 || !recurse_func))
+      إرجاع;
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index, covered_seq_indicies, seq_index, end_index);
-    nesting_level_left++;
+    nesting_level_يسار--;
+    recurse_func (هذا, lookup_index, covered_seq_indicies, seq_index, end_index);
+    nesting_level_يسار++;
   }
 
-  void reset_lookup_visit_count ()
-  { lookup_count = 0; }
+  فراغ reset_lookup_visit_تعداد ()
+  { lookup_تعداد = 0; }
 
-  bool lookup_limit_exceeded ()
-  { return lookup_count > HB_MAX_LOOKUP_VISIT_COUNT; }
+  منطقي lookup_limit_exceeded ()
+  { إرجاع lookup_تعداد > HB_MAX_LOOKUP_VISIT_تعداد; }
 
-  bool should_visit_lookup (unsigned int lookup_index)
+  منطقي should_visit_lookup (unsigned صحيح lookup_index)
   {
-    if (lookup_count++ > HB_MAX_LOOKUP_VISIT_COUNT)
-      return false;
+    إذا (lookup_تعداد++ > HB_MAX_LOOKUP_VISIT_تعداد)
+      إرجاع خطأ;
 
-    if (is_lookup_done (lookup_index))
-      return false;
+    إذا (is_lookup_done (lookup_index))
+      إرجاع خطأ;
 
-    return true;
+    إرجاع true;
   }
 
-  bool is_lookup_done (unsigned int lookup_index)
+  منطقي is_lookup_done (unsigned صحيح lookup_index)
   {
-    if (unlikely (done_lookups_glyph_count->in_error () ||
+    إذا (unlikely (done_lookups_glyph_تعداد->in_error () ||
 		  done_lookups_glyph_set->in_error ()))
-      return true;
+      إرجاع true;
 
     /* Have we visited this lookup with the current set of glyphs? */
-    unsigned pop = glyphs->get_population ();
-    if (unlikely (pop == HB_MAP_VALUE_INVALID)) // Avoid sentinel interference.
-      pop--;
-    if (done_lookups_glyph_count->get (lookup_index) != pop)
+    unsigned اسحب = glyphs->get_population ();
+    إذا (unlikely (اسحب == HB_MAP_قيمة_INVALID)) // Avoid sentinel interference.
+      اسحب--;
+    إذا (done_lookups_glyph_تعداد->get (lookup_index) != اسحب)
     {
-      done_lookups_glyph_count->set (lookup_index, pop);
+      done_lookups_glyph_تعداد->set (lookup_index, اسحب);
 
-      if (!done_lookups_glyph_set->has (lookup_index))
+      إذا (!done_lookups_glyph_set->has (lookup_index))
       {
-	if (unlikely (!done_lookups_glyph_set->set (lookup_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
-	  return true;
+	إذا (unlikely (!done_lookups_glyph_set->set (lookup_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
+	  إرجاع true;
       }
 
       done_lookups_glyph_set->get (lookup_index)->clear ();
     }
 
     hb_set_t *covered_glyph_set = done_lookups_glyph_set->get (lookup_index);
-    if (unlikely (covered_glyph_set->in_error ()))
-      return true;
-    if (parent_active_glyphs ().is_subset (*covered_glyph_set))
-      return true;
+    إذا (unlikely (covered_glyph_set->in_error ()))
+      إرجاع true;
+    إذا (parent_active_glyphs ().is_subset (*covered_glyph_set))
+      إرجاع true;
 
     covered_glyph_set->union_ (parent_active_glyphs ());
-    return false;
+    إرجاع خطأ;
   }
 
-  const hb_set_t& previous_parent_active_glyphs () {
-    if (active_glyphs_stack.length <= 1)
-      return *glyphs;
+  ثابت hb_set_t& previous_parent_active_glyphs () {
+    إذا (active_glyphs_مكدس.length <= 1)
+      إرجاع *glyphs;
 
-    return active_glyphs_stack[active_glyphs_stack.length - 2];
+    إرجاع active_glyphs_مكدس[active_glyphs_مكدس.length - 2];
   }
 
-  const hb_set_t& parent_active_glyphs ()
+  ثابت hb_set_t& parent_active_glyphs ()
   {
-    if (!active_glyphs_stack)
-      return *glyphs;
+    إذا (!active_glyphs_مكدس)
+      إرجاع *glyphs;
 
-    return active_glyphs_stack.tail ();
+    إرجاع active_glyphs_مكدس.tail ();
   }
 
-  hb_set_t* push_cur_active_glyphs ()
+  hb_set_t* ادفع_cur_active_glyphs ()
   {
-    hb_set_t *s = active_glyphs_stack.push ();
-    if (unlikely (active_glyphs_stack.in_error ()))
-      return nullptr;
-    return s;
+    hb_set_t *s = active_glyphs_مكدس.push ();
+    إذا (unlikely (active_glyphs_مكدس.in_error ()))
+      إرجاع nullptr;
+    إرجاع s;
   }
 
-  bool pop_cur_done_glyphs ()
+  منطقي اسحب_cur_done_glyphs ()
   {
-    if (!active_glyphs_stack)
-      return false;
+    إذا (!active_glyphs_مكدس)
+      إرجاع خطأ;
 
-    active_glyphs_stack.pop ();
-    return true;
+    active_glyphs_مكدس.اسحب ();
+    إرجاع true;
   }
 
   hb_face_t *face;
   hb_set_t *glyphs;
   hb_set_t output[1];
-  hb_vector_t<hb_set_t> active_glyphs_stack;
+  hb_vector_t<hb_set_t> active_glyphs_مكدس;
   recurse_func_t recurse_func = nullptr;
-  unsigned int nesting_level_left;
+  unsigned صحيح nesting_level_يسار;
 
   hb_closure_context_t (hb_face_t *face_,
 			hb_set_t *glyphs_,
-			hb_map_t *done_lookups_glyph_count_,
+			hb_map_t *done_lookups_glyph_تعداد_2,
 			hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *done_lookups_glyph_set_,
-			unsigned int nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+			unsigned صحيح nesting_level_يسار_2 = HB_MAX_NESTING_LEVEL) :
 			  face (face_),
 			  glyphs (glyphs_),
-			  nesting_level_left (nesting_level_left_),
-			  done_lookups_glyph_count (done_lookups_glyph_count_),
+			  nesting_level_يسار (nesting_level_يسار_2),
+			  done_lookups_glyph_تعداد (done_lookups_glyph_تعداد_2),
 			  done_lookups_glyph_set (done_lookups_glyph_set_)
   {}
 
   ~hb_closure_context_t () { flush (); }
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  فراغ set_recurse_func (recurse_func_t func) { recurse_func = func; }
 
-  void flush ()
+  فراغ flush ()
   {
-    output->del_range (face->get_num_glyphs (), HB_SET_VALUE_INVALID);	/* Remove invalid glyphs. */
+    output->del_range (face->get_رقم_glyphs (), HB_SET_قيمة_INVALID);	/* Remove invalid glyphs. */
     glyphs->union_ (*output);
     output->clear ();
-    active_glyphs_stack.pop ();
-    active_glyphs_stack.reset ();
+    active_glyphs_مكدس.اسحب ();
+    active_glyphs_مكدس.reset ();
   }
 
-  private:
-  hb_map_t *done_lookups_glyph_count;
+  خاص:
+  hb_map_t *done_lookups_glyph_تعداد;
   hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *done_lookups_glyph_set;
-  unsigned int lookup_count = 0;
+  unsigned صحيح lookup_تعداد = 0;
 };
 
 
 
-struct hb_closure_lookups_context_t :
+بنية hb_closure_lookups_context_t :
        hb_dispatch_context_t<hb_closure_lookups_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_closure_lookups_context_t *c, unsigned lookup_index);
+  تعريفنوع return_t (*recurse_func_t) (hb_closure_lookups_context_t *c, unsigned lookup_index);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.closure_lookups (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned lookup_index)
+  return_t dispatch (ثابت T &obj) { obj.closure_lookups (هذا); إرجاع hb_empty_t (); }
+  ساكن return_t default_return_قيمة () { إرجاع hb_empty_t (); }
+  فراغ recurse (unsigned lookup_index)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    إذا (unlikely (nesting_level_يسار == 0 || !recurse_func))
+      إرجاع;
 
     /* Return if new lookup was recursed to before. */
-    if (lookup_limit_exceeded ()
+    إذا (lookup_limit_exceeded ()
         || visited_lookups->in_error ()
         || visited_lookups->has (lookup_index))
       // Don't increment lookup count here, that will be done in the call to closure_lookups()
       // made by recurse_func.
-      return;
+      إرجاع;
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index);
-    nesting_level_left++;
+    nesting_level_يسار--;
+    recurse_func (هذا, lookup_index);
+    nesting_level_يسار++;
   }
 
-  void set_lookup_visited (unsigned lookup_index)
+  فراغ set_lookup_visited (unsigned lookup_index)
   { visited_lookups->add (lookup_index); }
 
-  void set_lookup_inactive (unsigned lookup_index)
+  فراغ set_lookup_inactive (unsigned lookup_index)
   { inactive_lookups->add (lookup_index); }
 
-  bool lookup_limit_exceeded ()
+  منطقي lookup_limit_exceeded ()
   {
-    bool ret = lookup_count > HB_MAX_LOOKUP_VISIT_COUNT;
-    if (ret)
-      DEBUG_MSG (SUBSET, nullptr, "lookup visit count limit exceeded in lookup closure!");
-    return ret; }
+    منطقي ret = lookup_تعداد > HB_MAX_LOOKUP_VISIT_تعداد;
+    إذا (ret)
+      DEBUG_رسالة (SUBSET, nullptr, "lookup visit count limit exceeded in lookup closure!");
+    إرجاع ret; }
 
-  bool is_lookup_visited (unsigned lookup_index)
+  منطقي is_lookup_visited (unsigned lookup_index)
   {
-    if (unlikely (lookup_count++ > HB_MAX_LOOKUP_VISIT_COUNT))
+    إذا (unlikely (lookup_تعداد++ > HB_MAX_LOOKUP_VISIT_تعداد))
     {
-      DEBUG_MSG (SUBSET, nullptr, "total visited lookup count %u exceeds max limit, lookup %u is dropped.",
-                 lookup_count, lookup_index);
-      return true;
+      DEBUG_رسالة (SUBSET, nullptr, "total visited lookup count %u exceeds max limit, lookup %u is dropped.",
+                 lookup_تعداد, lookup_index);
+      إرجاع true;
     }
 
-    if (unlikely (visited_lookups->in_error ()))
-      return true;
+    إذا (unlikely (visited_lookups->in_error ()))
+      إرجاع true;
 
-    return visited_lookups->has (lookup_index);
+    إرجاع visited_lookups->has (lookup_index);
   }
 
   hb_face_t *face;
-  const hb_set_t *glyphs;
+  ثابت hb_set_t *glyphs;
   recurse_func_t recurse_func;
-  unsigned int nesting_level_left;
+  unsigned صحيح nesting_level_يسار;
 
   hb_closure_lookups_context_t (hb_face_t *face_,
-				const hb_set_t *glyphs_,
+				ثابت hb_set_t *glyphs_,
 				hb_set_t *visited_lookups_,
 				hb_set_t *inactive_lookups_,
-				unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+				unsigned nesting_level_يسار_2 = HB_MAX_NESTING_LEVEL) :
 				face (face_),
 				glyphs (glyphs_),
 				recurse_func (nullptr),
-				nesting_level_left (nesting_level_left_),
+				nesting_level_يسار (nesting_level_يسار_2),
 				visited_lookups (visited_lookups_),
 				inactive_lookups (inactive_lookups_),
-				lookup_count (0) {}
+				lookup_تعداد (0) {}
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  فراغ set_recurse_func (recurse_func_t func) { recurse_func = func; }
 
-  private:
+  خاص:
   hb_set_t *visited_lookups;
   hb_set_t *inactive_lookups;
-  unsigned int lookup_count;
+  unsigned صحيح lookup_تعداد;
 };
 
-struct hb_would_apply_context_t :
-       hb_dispatch_context_t<hb_would_apply_context_t, bool>
+بنية hb_would_apply_context_t :
+       hb_dispatch_context_t<hb_would_apply_context_t, منطقي>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.would_apply (this); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (ثابت T &obj) { إرجاع obj.would_apply (هذا); }
+  ساكن return_t default_return_قيمة () { إرجاع خطأ; }
+  منطقي stop_sublookup_iteration (return_t r) ثابت { إرجاع r; }
 
   hb_face_t *face;
-  const hb_codepoint_t *glyphs;
-  unsigned int len;
-  bool zero_context;
+  ثابت hb_codepoint_t *glyphs;
+  unsigned صحيح len;
+  منطقي zero_context;
 
   hb_would_apply_context_t (hb_face_t *face_,
-			    const hb_codepoint_t *glyphs_,
-			    unsigned int len_,
-			    bool zero_context_) :
+			    ثابت hb_codepoint_t *glyphs_,
+			    unsigned صحيح len_,
+			    منطقي zero_context_) :
 			      face (face_),
 			      glyphs (glyphs_),
 			      len (len_),
 			      zero_context (zero_context_) {}
 };
 
-struct hb_collect_glyphs_context_t :
+بنية hb_collect_glyphs_context_t :
        hb_dispatch_context_t<hb_collect_glyphs_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_collect_glyphs_context_t *c, unsigned int lookup_index);
+  تعريفنوع return_t (*recurse_func_t) (hb_collect_glyphs_context_t *c, unsigned صحيح lookup_index);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.collect_glyphs (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned int lookup_index)
+  return_t dispatch (ثابت T &obj) { obj.collect_glyphs (هذا); إرجاع hb_empty_t (); }
+  ساكن return_t default_return_قيمة () { إرجاع hb_empty_t (); }
+  فراغ recurse (unsigned صحيح lookup_index)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    إذا (unlikely (nesting_level_يسار == 0 || !recurse_func))
+      إرجاع;
 
     /* Note that GPOS sets recurse_func to nullptr already, so it doesn't get
      * past the previous check.  For GSUB, we only want to collect the output
@@ -328,24 +328,24 @@ struct hb_collect_glyphs_context_t :
      * with all sets here if it proves to be an issue.
      */
 
-    if (output == hb_set_get_empty ())
-      return;
+    إذا (output == hb_set_get_empty ())
+      إرجاع;
 
     /* Return if new lookup was recursed to before. */
-    if (recursed_lookups->has (lookup_index))
-      return;
+    إذا (recursed_lookups->has (lookup_index))
+      إرجاع;
 
     hb_set_t *old_before = before;
-    hb_set_t *old_input  = input;
+    hb_set_t *old_إدخال  = إدخال;
     hb_set_t *old_after  = after;
-    before = input = after = hb_set_get_empty ();
+    before = إدخال = after = hb_set_get_empty ();
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index);
-    nesting_level_left++;
+    nesting_level_يسار--;
+    recurse_func (هذا, lookup_index);
+    nesting_level_يسار++;
 
     before = old_before;
-    input  = old_input;
+    إدخال  = old_إدخال;
     after  = old_after;
 
     recursed_lookups->add (lookup_index);
@@ -353,80 +353,80 @@ struct hb_collect_glyphs_context_t :
 
   hb_face_t *face;
   hb_set_t *before;
-  hb_set_t *input;
+  hb_set_t *إدخال;
   hb_set_t *after;
   hb_set_t *output;
   recurse_func_t recurse_func;
   hb_set_t *recursed_lookups;
-  unsigned int nesting_level_left;
+  unsigned صحيح nesting_level_يسار;
 
   hb_collect_glyphs_context_t (hb_face_t *face_,
 			       hb_set_t  *glyphs_before, /* OUT.  May be NULL */
-			       hb_set_t  *glyphs_input,  /* OUT.  May be NULL */
+			       hb_set_t  *glyphs_إدخال,  /* OUT.  May be NULL */
 			       hb_set_t  *glyphs_after,  /* OUT.  May be NULL */
 			       hb_set_t  *glyphs_output, /* OUT.  May be NULL */
-			       unsigned int nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+			       unsigned صحيح nesting_level_يسار_2 = HB_MAX_NESTING_LEVEL) :
 			      face (face_),
 			      before (glyphs_before ? glyphs_before : hb_set_get_empty ()),
-			      input  (glyphs_input  ? glyphs_input  : hb_set_get_empty ()),
+			      إدخال  (glyphs_إدخال  ? glyphs_إدخال  : hb_set_get_empty ()),
 			      after  (glyphs_after  ? glyphs_after  : hb_set_get_empty ()),
 			      output (glyphs_output ? glyphs_output : hb_set_get_empty ()),
 			      recurse_func (nullptr),
 			      recursed_lookups (hb_set_create ()),
-			      nesting_level_left (nesting_level_left_) {}
+			      nesting_level_يسار (nesting_level_يسار_2) {}
   ~hb_collect_glyphs_context_t () { hb_set_destroy (recursed_lookups); }
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  فراغ set_recurse_func (recurse_func_t func) { recurse_func = func; }
 };
 
-struct hb_depend_context_t :
+بنية hb_depend_context_t :
        hb_dispatch_context_t<hb_depend_context_t>
 {
-  enum glyph_set_type_t
+  تعداد glyph_set_type_t
   {
     GLYPH_SET_CLASS,
     GLYPH_SET_COVERAGE,
     GLYPH_SET_SINGLE
   };
 
-  static constexpr hb_codepoint_t SINGLE_GLYPH_ACTIVE_FLAG = 0x80000000u;
+  ساكن constexpr hb_codepoint_t SINGLE_GLYPH_ACTIVE_FLAG = 0x80000000u;
 
-  struct glyph_set_cache_key_t
+  بنية glyph_set_cache_مفتاح_t
   {
-    glyph_set_cache_key_t () = default;
-    glyph_set_cache_key_t (const void *data_, unsigned value_, glyph_set_type_t type_)
-      : data (data_), value (value_), type (type_) {}
+    glyph_set_cache_مفتاح_t () = افتراضي;
+    glyph_set_cache_مفتاح_t (ثابت فراغ *data_, unsigned قيمة_3, glyph_set_type_t type_)
+      : data (data_), value (قيمة_3), type (type_) {}
 
-    bool operator == (const glyph_set_cache_key_t &o) const
-    { return data == o.data && value == o.value && type == o.type; }
+    منطقي operator == (ثابت glyph_set_cache_مفتاح_t &o) ثابت
+    { إرجاع data == o.data && value == o.value && type == o.type; }
 
-    uint32_t hash () const
+    uint32_t hash () ثابت
     {
       uint32_t current = hb_hash ((uintptr_t) data);
       current = current * 31 + hb_hash (value);
-      return current * 31 + hb_hash ((unsigned) type);
+      إرجاع current * 31 + hb_hash ((unsigned) type);
     }
 
-    const void *data = nullptr;
+    ثابت فراغ *data = nullptr;
     unsigned value = 0;
     glyph_set_type_t type = GLYPH_SET_CLASS;
   };
 
-  struct context_set_cache_key_t
+  بنية context_set_cache_مفتاح_t
   {
-    context_set_cache_key_t () = default;
-    context_set_cache_key_t (const void *rule_,
-			     const void *record_,
-			     const void *data_,
+    context_set_cache_مفتاح_t () = افتراضي;
+    context_set_cache_مفتاح_t (ثابت فراغ *rule_,
+			     ثابت فراغ *record_,
+			     ثابت فراغ *data_,
 			     hb_codepoint_t active_glyphs_,
-			     unsigned value_,
+			     unsigned قيمة_3,
 			     unsigned format_)
       : rule (rule_), record (record_), data (data_), active_glyphs (active_glyphs_),
-	value (value_), format (format_) {}
+	value (قيمة_3), format (format_) {}
 
-    bool operator == (const context_set_cache_key_t &o) const
+    منطقي operator == (ثابت context_set_cache_مفتاح_t &o) ثابت
     {
-      return rule == o.rule &&
+      إرجاع rule == o.rule &&
 	     record == o.record &&
 	     data == o.data &&
 	     active_glyphs == o.active_glyphs &&
@@ -434,28 +434,28 @@ struct hb_depend_context_t :
 	     format == o.format;
     }
 
-    uint32_t hash () const
+    uint32_t hash () ثابت
     {
       uint32_t current = hb_hash ((uintptr_t) rule);
       current = current * 31 + hb_hash ((uintptr_t) record);
       current = current * 31 + hb_hash ((uintptr_t) data);
       current = current * 31 + hb_hash (active_glyphs);
       current = current * 31 + hb_hash (value);
-      return current * 31 + hb_hash (format);
+      إرجاع current * 31 + hb_hash (format);
     }
 
-    const void *rule = nullptr;
-    const void *record = nullptr;
-    const void *data = nullptr;
+    ثابت فراغ *rule = nullptr;
+    ثابت فراغ *record = nullptr;
+    ثابت فراغ *data = nullptr;
     hb_codepoint_t active_glyphs = HB_CODEPOINT_INVALID;
     unsigned value = 0;
     unsigned format = 0;
   };
 
-  struct recurse_key_t
+  بنية recurse_مفتاح_t
   {
-    recurse_key_t () = default;
-    recurse_key_t (unsigned lookup_index_,
+    recurse_مفتاح_t () = افتراضي;
+    recurse_مفتاح_t (unsigned lookup_index_,
                    hb_codepoint_t active_glyphs_,
                    hb_codepoint_t recurse_path_,
                    hb_codepoint_t context_set_)
@@ -464,22 +464,22 @@ struct hb_depend_context_t :
         recurse_path (recurse_path_),
         context_set (context_set_) {}
 
-    bool operator == (const recurse_key_t &o) const
+    منطقي operator == (ثابت recurse_مفتاح_t &o) ثابت
     {
-      return lookup_index == o.lookup_index &&
+      إرجاع lookup_index == o.lookup_index &&
              active_glyphs == o.active_glyphs &&
              recurse_path == o.recurse_path &&
              context_set == o.context_set;
     }
 
-    uint32_t hash () const
+    uint32_t hash () ثابت
     {
       uint32_t current = 0x84222325;
       current = (current ^ hb_hash (lookup_index)) * 16777619;
       current = (current ^ hb_hash (active_glyphs)) * 16777619;
       current = (current ^ hb_hash (recurse_path)) * 16777619;
       current = (current ^ hb_hash (context_set)) * 16777619;
-      return current;
+      إرجاع current;
     }
 
     unsigned lookup_index = 0;
@@ -488,13 +488,13 @@ struct hb_depend_context_t :
     hb_codepoint_t context_set = HB_CODEPOINT_INVALID;
   };
 
-  typedef return_t (*recurse_func_t) (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  تعريفنوع return_t (*recurse_func_t) (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
   /* return_t is hb_empty_t — dispatch is purely for side-effects, like hb_closure_context_t. */
   template <typename T>
-  return_t dispatch (const T &obj) { obj.depend (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  return_t dispatch (ثابت T &obj) { obj.depend (هذا); إرجاع hb_empty_t (); }
+  ساكن return_t default_return_قيمة () { إرجاع hb_empty_t (); }
 
-  void recurse (unsigned lookup_idx, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  فراغ recurse (unsigned lookup_idx, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
   {
     /* Cycle detection using call-stack semantics: block re-entry of a
      * lookup that is currently on the execution stack, but allow it again
@@ -513,122 +513,122 @@ struct hb_depend_context_t :
      * lookups_seen is pre-seeded with the top-level lookup index in
      * GSUB_accelerator_t::depend before the direct depend() call, so
      * that indirect cycles of the form A→B→A are also caught here. */
-    if (lookups_seen.has (lookup_idx)) return;
+    إذا (lookups_seen.has (lookup_idx)) إرجاع;
     lookups_seen.add (lookup_idx);
 
     /* Intern the ordered recursion path instead of copying and interning the
      * lookups_seen set.  Path identity is more specific than set identity but
      * never merges states with different cycle-detection behavior. */
     hb_codepoint_t parent_path = recurse_path;
-    uint64_t path_key = (uint64_t) parent_path << 32 | lookup_idx;
+    uint64_t path_مفتاح = (uint64_t) parent_path << 32 | lookup_idx;
     hb_codepoint_t *path = nullptr;
     hb_codepoint_t path_index;
-    if (!recurse_path_to_index.has (path_key, &path))
+    إذا (!recurse_path_to_index.has (path_مفتاح, &path))
     {
       path_index = recurse_path_to_index.get_population () + 1;
-      if (unlikely (!recurse_path_to_index.set (path_key, path_index)))
+      إذا (unlikely (!recurse_path_to_index.set (path_مفتاح, path_index)))
       {
 	depend_data->fail ();
 	lookups_seen.del (lookup_idx);
-	return;
+	إرجاع;
       }
     }
-    else
+    وإلا
       path_index = *path;
     recurse_path = path_index;
-    recurse_func (this, lookup_idx, covered_seq_indices, seq_index, end_index);
+    recurse_func (هذا, lookup_idx, covered_seq_indices, seq_index, end_index);
     recurse_path = parent_path;
     lookups_seen.del (lookup_idx);
   }
 
-  struct active_glyphs_frame_t
+  بنية active_glyphs_frame_t
   {
     hb_set_t glyphs;
     hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-    bool use_root = false;
+    منطقي use_جذر = خطأ;
   };
 
-  const hb_set_t& parent_active_glyphs ()
+  ثابت hb_set_t& parent_active_glyphs ()
   {
-    if (!active_glyphs_stack_depth)
-      return *glyphs;
+    إذا (!active_glyphs_مكدس_depth)
+      إرجاع *glyphs;
 
-    const active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth - 1];
-    return frame.use_root ? *glyphs : frame.glyphs;
+    ثابت active_glyphs_frame_t &frame = active_glyphs_مكدس[active_glyphs_مكدس_depth - 1];
+    إرجاع frame.use_جذر ? *glyphs : frame.glyphs;
   }
 
-  hb_set_t* push_cur_active_glyphs (hb_codepoint_t active_idx = HB_CODEPOINT_INVALID)
+  hb_set_t* ادفع_cur_active_glyphs (hb_codepoint_t active_idx = HB_CODEPOINT_INVALID)
   {
-    if (active_glyphs_stack_depth == active_glyphs_stack.length &&
-	unlikely (!active_glyphs_stack.push_or_fail ()))
-      return nullptr;
+    إذا (active_glyphs_مكدس_depth == active_glyphs_مكدس.length &&
+	unlikely (!active_glyphs_مكدس.ادفع_or_fail ()))
+      إرجاع nullptr;
 
-    active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth++];
+    active_glyphs_frame_t &frame = active_glyphs_مكدس[active_glyphs_مكدس_depth++];
     frame.glyphs.clear ();
     frame.active_idx = active_idx;
-    frame.use_root = false;
-    return &frame.glyphs;
+    frame.use_جذر = خطأ;
+    إرجاع &frame.glyphs;
   }
 
-  bool push_root_active_glyphs ()
+  منطقي ادفع_جذر_active_glyphs ()
   {
-    if (active_glyphs_stack_depth == active_glyphs_stack.length &&
-	unlikely (!active_glyphs_stack.push_or_fail ()))
-      return false;
+    إذا (active_glyphs_مكدس_depth == active_glyphs_مكدس.length &&
+	unlikely (!active_glyphs_مكدس.ادفع_or_fail ()))
+      إرجاع خطأ;
 
-    active_glyphs_stack[active_glyphs_stack_depth++].use_root = true;
-    return true;
+    active_glyphs_مكدس[active_glyphs_مكدس_depth++].use_جذر = true;
+    إرجاع true;
   }
 
-  bool pop_cur_done_glyphs ()
+  منطقي اسحب_cur_done_glyphs ()
   {
-    if (!active_glyphs_stack_depth)
-      return false;
+    إذا (!active_glyphs_مكدس_depth)
+      إرجاع خطأ;
 
-    active_glyphs_stack_depth--;
-    return true;
+    active_glyphs_مكدس_depth--;
+    إرجاع true;
   }
 
-  bool get_parent_active_glyphs_index (hb_codepoint_t *active_idx)
+  منطقي get_parent_active_glyphs_index (hb_codepoint_t *active_idx)
   {
-    if (!active_glyphs_stack_depth ||
-	active_glyphs_stack[active_glyphs_stack_depth - 1].use_root)
+    إذا (!active_glyphs_مكدس_depth ||
+	active_glyphs_مكدس[active_glyphs_مكدس_depth - 1].use_جذر)
     {
       *active_idx = HB_CODEPOINT_INVALID;
-      return true;
+      إرجاع true;
     }
 
-    active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth - 1];
+    active_glyphs_frame_t &frame = active_glyphs_مكدس[active_glyphs_مكدس_depth - 1];
     *active_idx = frame.active_idx;
-    if (*active_idx != HB_CODEPOINT_INVALID)
-      return true;
+    إذا (*active_idx != HB_CODEPOINT_INVALID)
+      إرجاع true;
 
     hb_codepoint_t glyph;
-    if (frame.glyphs.get_singleton (&glyph) &&
+    إذا (frame.glyphs.get_singleton (&glyph) &&
 	likely (glyph < SINGLE_GLYPH_ACTIVE_FLAG))
       *active_idx = glyph | SINGLE_GLYPH_ACTIVE_FLAG;
-    else if (!find_or_create_recurse_set (frame.glyphs, active_idx))
-      return false;
+    وإلا إذا (!find_or_create_recurse_set (frame.glyphs, active_idx))
+      إرجاع خطأ;
 
     frame.active_idx = *active_idx;
-    return true;
+    إرجاع true;
   }
 
-  bool get_context_set_cache_key (const void *rule,
-				  const void *record,
-				  const void *data,
+  منطقي get_context_set_cache_مفتاح (ثابت فراغ *rule,
+				  ثابت فراغ *record,
+				  ثابت فراغ *data,
 				  unsigned value,
 				  unsigned format,
-				  context_set_cache_key_t *key)
+				  context_set_cache_مفتاح_t *key)
   {
     hb_codepoint_t active_idx;
-    if (!get_parent_active_glyphs_index (&active_idx))
-      return false;
-    *key = context_set_cache_key_t (rule, record, data, active_idx, value, format);
-    return true;
+    إذا (!get_parent_active_glyphs_index (&active_idx))
+      إرجاع خطأ;
+    *key = context_set_cache_مفتاح_t (rule, record, data, active_idx, value, format);
+    إرجاع true;
   }
 
-  bool get_recurse_key (unsigned lookup_idx, recurse_key_t *key)
+  منطقي get_recurse_مفتاح (unsigned lookup_idx, recurse_مفتاح_t *key)
   {
     /* The active glyphs and in-progress lookup set are part of the state.
      * Omitting the latter would make memoization incorrect for cyclic lookup
@@ -637,66 +637,66 @@ struct hb_depend_context_t :
      * edge identity, so revisiting with different flags can only find edges
      * that the deduplication table already contains. */
     hb_codepoint_t active_idx;
-    if (!get_parent_active_glyphs_index (&active_idx))
-      return false;
+    إذا (!get_parent_active_glyphs_index (&active_idx))
+      إرجاع خطأ;
 
-    *key = recurse_key_t (lookup_idx,
+    *key = recurse_مفتاح_t (lookup_idx,
                           active_idx,
                           recurse_path,
                           depend_data->current_context_set_index);
-    return !completed_recursions.has (*key);
+    إرجاع !completed_recursions.has (*key);
   }
 
-  void finish_recurse (const recurse_key_t &key)
+  فراغ finish_recurse (ثابت recurse_مفتاح_t &key)
   { depend_data->check_success (completed_recursions.set (key, true)); }
 
-  void reset_recurse_cache ()
+  فراغ reset_recurse_cache ()
   {
     completed_recursions.clear ();
     recurse_path_to_index.clear ();
     recurse_path = 0;
   }
 
-  bool find_or_create_recurse_set (const hb_set_t &set, hb_codepoint_t *index)
+  منطقي find_or_create_recurse_set (ثابت hb_set_t &set, hb_codepoint_t *index)
   {
     hb_codepoint_t *existing = nullptr;
-    if (recurse_set_to_index.has (&set, &existing))
+    إذا (recurse_set_to_index.has (&set, &existing))
     {
       *index = *existing;
-      return true;
+      إرجاع true;
     }
 
     hb_set_t *copy = hb_object_create<hb_set_t> ();
-    if (unlikely (!copy))
-      return depend_data->fail ();
+    إذا (unlikely (!copy))
+      إرجاع depend_data->fail ();
     copy->set (set);
-    if (unlikely (copy->in_error ()))
+    إذا (unlikely (copy->in_error ()))
     {
       hb_set_destroy (copy);
-      return depend_data->fail ();
+      إرجاع depend_data->fail ();
     }
 
     *index = recurse_sets.length;
-    if (unlikely (*index & SINGLE_GLYPH_ACTIVE_FLAG))
+    إذا (unlikely (*index & SINGLE_GLYPH_ACTIVE_FLAG))
     {
       hb_set_destroy (copy);
-      return depend_data->fail ();
+      إرجاع depend_data->fail ();
     }
-    if (unlikely (!recurse_sets.push_or_fail (hb::unique_ptr<hb_set_t> {copy})))
-      return depend_data->fail ();
-    if (unlikely (!recurse_set_to_index.set (recurse_sets[*index].get (), *index)))
-      return depend_data->fail ();
-    return true;
+    إذا (unlikely (!recurse_sets.ادفع_or_fail (hb::unique_ptr<hb_set_t> {copy})))
+      إرجاع depend_data->fail ();
+    إذا (unlikely (!recurse_set_to_index.set (recurse_sets[*index].get (), *index)))
+      إرجاع depend_data->fail ();
+    إرجاع true;
   }
 
-  const hb_set_t *find_or_create_glyph_set (const void *data,
+  ثابت hb_set_t *find_or_create_glyph_set (ثابت فراغ *data,
                                              unsigned value,
                                              glyph_set_type_t type);
-  hb_codepoint_t find_or_create_cached_context_set (const hb_set_t *set);
+  hb_codepoint_t find_or_create_cached_context_set (ثابت hb_set_t *set);
 
-  struct depend_scratch_t
+  بنية depend_scratch_t
   {
-    void clear ()
+    فراغ clear ()
     {
       preliminary_context.clear ();
       position_scratch.clear ();
@@ -706,7 +706,7 @@ struct hb_depend_context_t :
       filtered_disjunctive_indices.clear ();
       backtrack_sets.clear ();
       lookahead_sets.clear ();
-      input_position_glyphs.clear ();
+      إدخال_position_glyphs.clear ();
       cached_context_sets.clear ();
       compact_workspace.clear ();
     }
@@ -717,9 +717,9 @@ struct hb_depend_context_t :
     hb_set_t position_context;
     hb_set_t disjunctive_indices;
     hb_set_t filtered_disjunctive_indices;
-    hb_vector_t<const hb_set_t *> backtrack_sets;
-    hb_vector_t<const hb_set_t *> lookahead_sets;
-    hb_vector_t<const hb_set_t *> input_position_glyphs;
+    hb_vector_t<ثابت hb_set_t *> backtrack_sets;
+    hb_vector_t<ثابت hb_set_t *> lookahead_sets;
+    hb_vector_t<ثابت hb_set_t *> إدخال_position_glyphs;
     hb_vector_t<hb_codepoint_t> cached_context_sets;
     hb_vector_t<unsigned> compact_workspace;
     depend_scratch_t *next = nullptr;
@@ -728,25 +728,25 @@ struct hb_depend_context_t :
   depend_scratch_t *acquire_depend_scratch ()
   {
     depend_scratch_t *scratch = depend_scratch_pool;
-    if (scratch)
+    إذا (scratch)
       depend_scratch_pool = scratch->next;
-    else
+    وإلا
     {
-      scratch = (depend_scratch_t *) hb_malloc (sizeof (depend_scratch_t));
-      if (unlikely (!scratch))
+      scratch = (depend_scratch_t *) hb_malloc (حجم (depend_scratch_t));
+      إذا (unlikely (!scratch))
       {
         depend_data->fail ();
-        return nullptr;
+        إرجاع nullptr;
       }
-      new (scratch) depend_scratch_t ();
+      جديد (scratch) depend_scratch_t ();
     }
 
     scratch->next = nullptr;
     scratch->clear ();
-    return scratch;
+    إرجاع scratch;
   }
 
-  void release_depend_scratch (depend_scratch_t *scratch)
+  فراغ release_depend_scratch (depend_scratch_t *scratch)
   {
     scratch->next = depend_scratch_pool;
     depend_scratch_pool = scratch;
@@ -755,20 +755,20 @@ struct hb_depend_context_t :
   hb_depend_data_builder_t *depend_data;
   hb_face_t *face;
   hb_set_t *glyphs;
-  hb_vector_t<active_glyphs_frame_t> active_glyphs_stack;
-  unsigned active_glyphs_stack_depth = 0;
+  hb_vector_t<active_glyphs_frame_t> active_glyphs_مكدس;
+  unsigned active_glyphs_مكدس_depth = 0;
   recurse_func_t recurse_func;
   hb_codepoint_t lookup_index = HB_CODEPOINT_INVALID;
   hb_bit_set_t lookups_seen;
   hb_vector_t<hb::unique_ptr<hb_set_t>> recurse_sets;
-  hb_hashmap_t<const hb_set_t *, hb_codepoint_t> recurse_set_to_index;
+  hb_hashmap_t<ثابت hb_set_t *, hb_codepoint_t> recurse_set_to_index;
   hb_hashmap_t<uint64_t, hb_codepoint_t> recurse_path_to_index;
   hb_codepoint_t recurse_path = 0;
-  hb_hashmap_t<recurse_key_t, bool> completed_recursions;
+  hb_hashmap_t<recurse_مفتاح_t, منطقي> completed_recursions;
   hb_vector_t<hb::unique_ptr<hb_set_t>> glyph_sets;
-  hb_hashmap_t<glyph_set_cache_key_t, hb_codepoint_t> glyph_set_to_index;
+  hb_hashmap_t<glyph_set_cache_مفتاح_t, hb_codepoint_t> glyph_set_to_index;
   hb_hashmap_t<uintptr_t, hb_codepoint_t> cached_context_set_indices;
-  hb_hashmap_t<context_set_cache_key_t, hb_codepoint_t> context_set_cache;
+  hb_hashmap_t<context_set_cache_مفتاح_t, hb_codepoint_t> context_set_cache;
   depend_scratch_t *depend_scratch_pool = nullptr;
 
   hb_depend_context_t (hb_depend_data_builder_t *depend_data_,
@@ -780,7 +780,7 @@ struct hb_depend_context_t :
                         recurse_func (nullptr) {}
   ~hb_depend_context_t ()
   {
-    while (depend_scratch_pool)
+    بينما (depend_scratch_pool)
     {
       depend_scratch_t *scratch = depend_scratch_pool;
       depend_scratch_pool = scratch->next;
@@ -788,21 +788,21 @@ struct hb_depend_context_t :
       hb_free (scratch);
     }
   }
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  فراغ set_recurse_func (recurse_func_t func) { recurse_func = func; }
 };
 
 template <typename set_t>
-struct hb_collect_coverage_context_t :
-       hb_dispatch_context_t<hb_collect_coverage_context_t<set_t>, const Coverage &>
+بنية hb_collect_coverage_context_t :
+       hb_dispatch_context_t<hb_collect_coverage_context_t<set_t>, ثابت Coverage &>
 {
-  typedef const Coverage &return_t; // Stoopid that we have to dupe this here.
+  تعريفنوع ثابت Coverage &return_t; // Stoopid that we have to dupe this here.
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.get_coverage (); }
-  static return_t default_return_value () { return Null (Coverage); }
-  bool stop_sublookup_iteration (return_t r) const
+  return_t dispatch (ثابت T &obj) { إرجاع obj.get_coverage (); }
+  ساكن return_t default_return_قيمة () { إرجاع Null (Coverage); }
+  منطقي stop_sublookup_iteration (return_t r) ثابت
   {
     r.collect_coverage (set);
-    return false;
+    إرجاع خطأ;
   }
 
   hb_collect_coverage_context_t (set_t *set_) :
@@ -811,12 +811,12 @@ struct hb_collect_coverage_context_t :
   set_t *set;
 };
 
-struct matcher_t
+بنية matcher_t
 {
-  typedef bool (*match_func_t) (hb_glyph_info_t &info, unsigned value, const void *data);
+  تعريفنوع منطقي (*match_func_t) (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data);
 
   template <typename context_t>
-  void init (const context_t *c, bool context_match = false)
+  فراغ init (ثابت context_t *c, منطقي context_match = خطأ)
   {
     set_match_func (nullptr, nullptr);
     lookup_props = c->lookup_props;
@@ -832,11 +832,11 @@ struct matcher_t
     syllable = 0;
   }
 
-  void set_match_func (match_func_t match_func_,
-		       const void *match_data_)
+  فراغ set_match_func (match_func_t match_func_,
+		       ثابت فراغ *match_data_)
   { match_func = match_func_; match_data = match_data_; }
 
-  enum may_match_t {
+  تعداد may_match_t {
     MATCH_NO,
     MATCH_YES,
     MATCH_MAYBE
@@ -846,19 +846,19 @@ struct matcher_t
   HB_ALWAYS_INLINE
 #endif
   may_match_t may_match (hb_glyph_info_t &info,
-			 hb_codepoint_t glyph_data) const
+			 hb_codepoint_t glyph_data) ثابت
   {
-    if (!(info.mask & mask) ||
+    إذا (!(info.mask & mask) ||
 	(per_syllable && syllable && syllable != info.syllable ()))
-      return MATCH_NO;
+      إرجاع MATCH_NO;
 
-    if (match_func)
-      return match_func (info, glyph_data, match_data) ? MATCH_YES : MATCH_NO;
+    إذا (match_func)
+      إرجاع match_func (info, glyph_data, match_data) ? MATCH_YES : MATCH_NO;
 
-    return MATCH_MAYBE;
+    إرجاع MATCH_MAYBE;
   }
 
-  enum may_skip_t {
+  تعداد may_skip_t {
     SKIP_NO,
     SKIP_YES,
     SKIP_MAYBE
@@ -868,64 +868,64 @@ struct matcher_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  may_skip_t may_skip (const context_t *c,
-		       const hb_glyph_info_t &info) const
+  may_skip_t may_skip (ثابت context_t *c,
+		       ثابت hb_glyph_info_t &info) ثابت
   {
-    if (!c->check_glyph_property (&info, lookup_props))
-      return SKIP_YES;
+    إذا (!c->check_glyph_property (&info, lookup_props))
+      إرجاع SKIP_YES;
 
-    if (unlikely (_hb_glyph_info_is_default_ignorable (&info) &&
+    إذا (unlikely (_hb_glyph_info_is_default_ignorable (&info) &&
 		  (ignore_zwnj || !_hb_glyph_info_is_zwnj (&info)) &&
 		  (ignore_zwj || !_hb_glyph_info_is_zwj (&info)) &&
 		  (ignore_hidden || !_hb_glyph_info_is_hidden (&info))))
-      return SKIP_MAYBE;
+      إرجاع SKIP_MAYBE;
 
-    return SKIP_NO;
+    إرجاع SKIP_NO;
   }
 
-  public:
-  unsigned int lookup_props = 0;
+  عام:
+  unsigned صحيح lookup_props = 0;
   hb_mask_t mask = -1;
-  bool ignore_zwnj = false;
-  bool ignore_zwj = false;
-  bool ignore_hidden = false;
-  bool per_syllable = false;
+  منطقي ignore_zwnj = خطأ;
+  منطقي ignore_zwj = خطأ;
+  منطقي ignore_hidden = خطأ;
+  منطقي per_syllable = خطأ;
   uint8_t syllable = 0;
   match_func_t match_func = nullptr;
-  const void *match_data = nullptr;
+  ثابت فراغ *match_data = nullptr;
 };
 
 /* A view of 16- or 24-bit glyph IDs or coverage offsets. */
-struct glyph_data_t
+بنية glyph_data_t
 {
   template <typename T>
-  glyph_data_t (const T *data_) : data (data_)
+  glyph_data_t (ثابت T *data_) : data (data_)
 #ifndef HB_NO_BEYOND_64K
-                              , wide (sizeof (T) == 3)
+                              , wide (حجم (T) == 3)
 #endif
   {
-    static_assert (sizeof (T) == 2 || sizeof (T) == 3, "invalid glyph data size");
+    static_assert (حجم (T) == 2 || حجم (T) == 3, "invalid glyph data size");
   }
 
-  unsigned operator [] (unsigned i) const
+  unsigned operator [] (unsigned i) ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (wide)
-      return ((const HBUINT24 *) data)[i];
+    إذا (wide)
+      إرجاع ((ثابت HBUINT24 *) data)[i];
 #endif
-    return ((const HBUINT16 *) data)[i];
+    إرجاع ((ثابت HBUINT16 *) data)[i];
   }
 
-  const void *data;
+  ثابت فراغ *data;
 #ifndef HB_NO_BEYOND_64K
-  bool wide;
+  منطقي wide;
 #endif
 };
 
 template <typename context_t>
-struct skipping_iterator_t
+بنية skipping_iterator_t
 {
-  void init (context_t *c_, bool context_match = false)
+  فراغ init (context_t *c_, منطقي context_match = خطأ)
   {
     c = c_;
     end = c->buffer->len;
@@ -935,36 +935,36 @@ struct skipping_iterator_t
 #endif
     matcher.init (c, context_match);
   }
-  void set_lookup_props (unsigned int lookup_props)
+  فراغ set_lookup_props (unsigned صحيح lookup_props)
   {
     matcher.lookup_props = lookup_props;
   }
-  void set_match_func (matcher_t::match_func_t match_func_,
-		       const void *match_data_)
+  فراغ set_match_func (matcher_t::match_func_t match_func_,
+		       ثابت فراغ *match_data_)
   {
     matcher.set_match_func (match_func_, match_data_);
   }
-  void set_glyph_data (glyph_data_t glyph_data)
+  فراغ set_glyph_data (glyph_data_t glyph_data)
   {
 #ifndef HB_NO_BEYOND_64K
-    match_glyph_data16 = glyph_data.wide ? nullptr : (const HBUINT16 *) glyph_data.data;
-    match_glyph_data24 = glyph_data.wide ? (const HBUINT24 *) glyph_data.data : nullptr;
-#else
-    match_glyph_data16 = (const HBUINT16 *) glyph_data.data;
+    match_glyph_data16 = glyph_data.wide ? nullptr : (ثابت HBUINT16 *) glyph_data.data;
+    match_glyph_data24 = glyph_data.wide ? (ثابت HBUINT24 *) glyph_data.data : nullptr;
+#وإلا
+    match_glyph_data16 = (ثابت HBUINT16 *) glyph_data.data;
 #endif
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void reset (unsigned int start_index_)
+  فراغ reset (unsigned صحيح start_index_)
   {
     // For GSUB forward iterator
     idx = start_index_;
     end = c->buffer->len;
     matcher.syllable = c->buffer->cur().syllable();
   }
-  void reset_back (unsigned int start_index_, bool from_out_buffer = false)
+  فراغ reset_back (unsigned صحيح start_index_, منطقي from_out_buffer = خطأ)
   {
     // For GSUB backward iterator
     idx = start_index_;
@@ -974,7 +974,7 @@ struct skipping_iterator_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void reset_fast (unsigned int start_index_)
+  فراغ reset_fast (unsigned صحيح start_index_)
   {
     // Doesn't set end or syllable. Used by GPOS which doesn't care / change.
     idx = start_index_;
@@ -983,10 +983,10 @@ struct skipping_iterator_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  matcher_t::may_skip_t may_skip (const hb_glyph_info_t &info) const
-  { return matcher.may_skip (c, info); }
+  matcher_t::may_skip_t may_skip (ثابت hb_glyph_info_t &info) ثابت
+  { إرجاع matcher.may_skip (c, info); }
 
-  enum match_t {
+  تعداد match_t {
     MATCH,
     NOT_MATCH,
     SKIP
@@ -998,186 +998,186 @@ struct skipping_iterator_t
   match_t match (hb_glyph_info_t &info)
   {
     matcher_t::may_skip_t skip = matcher.may_skip (c, info);
-    if (unlikely (skip == matcher_t::SKIP_YES))
-      return SKIP;
+    إذا (unlikely (skip == matcher_t::SKIP_YES))
+      إرجاع SKIP;
 
     matcher_t::may_match_t match = matcher.may_match (info, get_glyph_data ());
-    if (match == matcher_t::MATCH_YES ||
+    إذا (match == matcher_t::MATCH_YES ||
 	(match == matcher_t::MATCH_MAYBE &&
 	 skip == matcher_t::SKIP_NO))
-      return MATCH;
+      إرجاع MATCH;
 
-    if (skip == matcher_t::SKIP_NO)
-      return NOT_MATCH;
+    إذا (skip == matcher_t::SKIP_NO)
+      إرجاع NOT_MATCH;
 
-    return SKIP;
+    إرجاع SKIP;
   }
 
-  bool next (unsigned *unsafe_to = nullptr)
+  منطقي next (unsigned *unsafe_to = nullptr)
   {
     auto *info = c->buffer->info;
-    const signed stop = (signed) end - 1;
-    while ((signed) idx < stop)
+    ثابت signed stop = (signed) end - 1;
+    بينما ((signed) idx < stop)
     {
       idx++;
-      switch (match (info[idx]))
+      بدل (match (info[idx]))
       {
-	case MATCH:
+	حالة MATCH:
 	{
 	  advance_glyph_data ();
-	  return true;
+	  إرجاع true;
 	}
-	case NOT_MATCH:
+	حالة NOT_MATCH:
 	{
-	  if (unsafe_to)
+	  إذا (unsafe_to)
 	    *unsafe_to = idx + 1;
-	  return false;
+	  إرجاع خطأ;
 	}
-	case SKIP:
-	  continue;
+	حالة SKIP:
+	  استمر;
       }
     }
-    if (unsafe_to)
+    إذا (unsafe_to)
       *unsafe_to = end;
-    return false;
+    إرجاع خطأ;
   }
-  bool prev (unsigned *unsafe_from = nullptr)
+  منطقي prev (unsigned *unsafe_from = nullptr)
   {
     auto *out_info = c->buffer->out_info;
-    const unsigned stop = 0;
-    while (idx > stop)
+    ثابت unsigned stop = 0;
+    بينما (idx > stop)
     {
       idx--;
-      switch (match (out_info[idx]))
+      بدل (match (out_info[idx]))
       {
-	case MATCH:
+	حالة MATCH:
 	{
 	  advance_glyph_data ();
-	  return true;
+	  إرجاع true;
 	}
-	case NOT_MATCH:
+	حالة NOT_MATCH:
 	{
-	  if (unsafe_from)
+	  إذا (unsafe_from)
 	    *unsafe_from = hb_max (1u, idx) - 1u;
-	  return false;
+	  إرجاع خطأ;
 	}
-	case SKIP:
-	  continue;
+	حالة SKIP:
+	  استمر;
       }
     }
-    if (unsafe_from)
+    إذا (unsafe_from)
       *unsafe_from = 0;
-    return false;
+    إرجاع خطأ;
   }
 
   HB_ALWAYS_INLINE
   hb_codepoint_t
   get_glyph_data ()
   {
-    if (match_glyph_data16) return *match_glyph_data16;
+    إذا (match_glyph_data16) إرجاع *match_glyph_data16;
 #ifndef HB_NO_BEYOND_64K
-    else
-    if (match_glyph_data24) return *match_glyph_data24;
+    وإلا
+    إذا (match_glyph_data24) إرجاع *match_glyph_data24;
 #endif
-    return 0;
+    إرجاع 0;
   }
   HB_ALWAYS_INLINE
-  void
+  فراغ
   advance_glyph_data ()
   {
-    if (match_glyph_data16) match_glyph_data16++;
+    إذا (match_glyph_data16) match_glyph_data16++;
 #ifndef HB_NO_BEYOND_64K
-    else
-    if (match_glyph_data24) match_glyph_data24++;
+    وإلا
+    إذا (match_glyph_data24) match_glyph_data24++;
 #endif
   }
 
-  unsigned int idx;
-  protected:
+  unsigned صحيح idx;
+  محمي:
   context_t *c;
   matcher_t matcher;
-  const HBUINT16 *match_glyph_data16;
+  ثابت HBUINT16 *match_glyph_data16;
 #ifndef HB_NO_BEYOND_64K
-  const HBUINT24 *match_glyph_data24;
+  ثابت HBUINT24 *match_glyph_data24;
 #endif
 
-  unsigned int end;
+  unsigned صحيح end;
 };
 
-struct hb_ot_apply_context_t :
-       hb_dispatch_context_t<hb_ot_apply_context_t, bool, HB_DEBUG_APPLY>
+بنية hb_ot_apply_context_t :
+       hb_dispatch_context_t<hb_ot_apply_context_t, منطقي, HB_DEBUG_APPLY>
 {
-  const char *get_name () { return "APPLY"; }
-  typedef return_t (*recurse_func_t) (hb_ot_apply_context_t *c, unsigned int lookup_index);
+  ثابت حرف *get_name () { إرجاع "APPLY"; }
+  تعريفنوع return_t (*recurse_func_t) (hb_ot_apply_context_t *c, unsigned صحيح lookup_index);
 
   template <typename T>
-  static inline auto apply_ (const T &obj, hb_ot_apply_context_t *c, hb_priority<1>) HB_RETURN (return_t, obj.apply (c, nullptr) )
+  ساكن مضمن auto apply_ (ثابت T &obj, hb_ot_apply_context_t *c, hb_priority<1>) HB_RETURN (return_t, obj.apply (c, nullptr) )
   template <typename T>
-  static inline auto apply_ (const T &obj, hb_ot_apply_context_t *c, hb_priority<0>) HB_RETURN (return_t, obj.apply (c) )
+  ساكن مضمن auto apply_ (ثابت T &obj, hb_ot_apply_context_t *c, hb_priority<0>) HB_RETURN (return_t, obj.apply (c) )
   template <typename T>
-  return_t dispatch (const T &obj) { return apply_(obj, this, hb_prioritize); }
+  return_t dispatch (ثابت T &obj) { إرجاع apply_(obj, هذا, hb_prioritize); }
 
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
-  return_t recurse (unsigned int sub_lookup_index)
+  ساكن return_t default_return_قيمة () { إرجاع خطأ; }
+  منطقي stop_sublookup_iteration (return_t r) ثابت { إرجاع r; }
+  return_t recurse (unsigned صحيح sub_lookup_index)
   {
-    assert (recurse_func);
-    if (unlikely (nesting_level_left == 0))
+    أكد (recurse_func);
+    إذا (unlikely (nesting_level_يسار == 0))
     {
-      buffer->successful = false;
-      return default_return_value ();
+      buffer->successful = خطأ;
+      إرجاع default_return_قيمة ();
     }
 
     buffer->max_ops--;
-    if (unlikely (buffer->max_ops < 0))
+    إذا (unlikely (buffer->max_ops < 0))
     {
-      buffer->successful = false;
-      return default_return_value ();
+      buffer->successful = خطأ;
+      إرجاع default_return_قيمة ();
     }
 
-    nesting_level_left--;
-    bool ret = recurse_func (this, sub_lookup_index);
-    nesting_level_left++;
-    return ret;
+    nesting_level_يسار--;
+    منطقي ret = recurse_func (هذا, sub_lookup_index);
+    nesting_level_يسار++;
+    إرجاع ret;
   }
 
-  skipping_iterator_t<hb_ot_apply_context_t> iter_input, iter_context;
+  skipping_iterator_t<hb_ot_apply_context_t> iter_إدخال, iter_context;
 
-  unsigned int table_index; /* GSUB/GPOS */
+  unsigned صحيح table_index; /* GSUB/GPOS */
   hb_font_t *font;
   hb_face_t *face;
   hb_buffer_t *buffer;
   hb_sanitize_context_t sanitizer;
   recurse_func_t recurse_func = nullptr;
-  const GDEF &gdef;
-  const GDEF::accelerator_t &gdef_accel;
-  const ItemVariationStore &var_store;
+  ثابت GDEF &gdef;
+  ثابت GDEF::accelerator_t &gdef_accel;
+  ثابت ItemVariationStore &var_store;
   hb_scalar_cache_t *var_store_cache;
 
   hb_direction_t direction;
   hb_mask_t lookup_mask = 1;
-  unsigned int lookup_index = (unsigned) -1;
-  unsigned int lookup_props = 0;
-  unsigned int nesting_level_left = HB_MAX_NESTING_LEVEL;
+  unsigned صحيح lookup_index = (unsigned) -1;
+  unsigned صحيح lookup_props = 0;
+  unsigned صحيح nesting_level_يسار = HB_MAX_NESTING_LEVEL;
 
-  bool has_glyph_classes;
-  bool auto_zwnj = true;
-  bool auto_zwj = true;
-  bool per_syllable = false;
-  bool random = false;
+  منطقي has_glyph_classes;
+  منطقي auto_zwnj = true;
+  منطقي auto_zwj = true;
+  منطقي per_syllable = خطأ;
+  منطقي random = خطأ;
   unsigned new_syllables = (unsigned) -1;
 
   signed last_base = -1; // GPOS uses
   unsigned last_base_until = 0; // GPOS uses
 
   hb_vector_t<uint32_t> match_positions;
-  uint32_t stack_match_positions[8];
+  uint32_t مكدس_match_positions[8];
 #ifndef HB_NO_BUFFER_MESSAGE
   hb_buffer_t::changed_func_t orig_changed_func = nullptr;
-  void *orig_changed_data = nullptr;
+  فراغ *orig_changed_data = nullptr;
 #endif
 
-  hb_ot_apply_context_t (unsigned int table_index_,
+  hb_ot_apply_context_t (unsigned صحيح table_index_,
 			 hb_font_t *font_,
 			 hb_buffer_t *buffer_,
 			 hb_blob_t *table_blob_,
@@ -1188,14 +1188,14 @@ struct hb_ot_apply_context_t :
 			gdef (
 #ifndef HB_NO_OT_LAYOUT
 			      *face->table.GDEF->table
-#else
+#وإلا
 			      Null (GDEF)
 #endif
 			     ),
 			gdef_accel (
 #ifndef HB_NO_OT_LAYOUT
 			      *face->table.GDEF
-#else
+#وإلا
 			      Null (GDEF::accelerator_t)
 #endif
 			     ),
@@ -1205,129 +1205,129 @@ struct hb_ot_apply_context_t :
 			has_glyph_classes (gdef.has_glyph_classes ())
   {
     init_iters ();
-    match_positions.set_storage (stack_match_positions);
+    match_positions.set_storage (مكدس_match_positions);
 
 #ifndef HB_NO_BUFFER_MESSAGE
-    if (buffer->messaging ())
+    إذا (buffer->messaging ())
     {
-      assert (buffer->changed_func == nullptr ||
+      أكد (buffer->changed_func == nullptr ||
 	      buffer->changed_func == buffer_changed_trampoline);
       orig_changed_func = buffer->changed_func;
       orig_changed_data = buffer->changed_data;
       buffer->changed_func = buffer_changed_trampoline;
-      buffer->changed_data = this;
+      buffer->changed_data = هذا;
     }
 #endif
   }
   ~hb_ot_apply_context_t ()
   {
 #ifndef HB_NO_BUFFER_MESSAGE
-    if (buffer->messaging ())
+    إذا (buffer->messaging ())
     {
-      assert (buffer->changed_func == buffer_changed_trampoline);
-      assert (buffer->changed_data == this);
+      أكد (buffer->changed_func == buffer_changed_trampoline);
+      أكد (buffer->changed_data == هذا);
       buffer->changed_func = orig_changed_func;
       buffer->changed_data = orig_changed_data;
     }
 #endif
   }
 
-  void init_iters ()
+  فراغ init_iters ()
   {
-    iter_input.init (this, false);
-    iter_context.init (this, true);
+    iter_إدخال.init (هذا, خطأ);
+    iter_context.init (هذا, true);
   }
 
-  void set_lookup_mask (hb_mask_t mask, bool init = true) { lookup_mask = mask; last_base = -1; last_base_until = 0; if (init) init_iters (); }
-  void set_auto_zwj (bool auto_zwj_, bool init = true) { auto_zwj = auto_zwj_; if (init) init_iters (); }
-  void set_auto_zwnj (bool auto_zwnj_, bool init = true) { auto_zwnj = auto_zwnj_; if (init) init_iters (); }
-  void set_per_syllable (bool per_syllable_, bool init = true) { per_syllable = per_syllable_; if (init) init_iters (); }
-  void set_random (bool random_) { random = random_; }
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
-  void set_lookup_index (unsigned int lookup_index_) { lookup_index = lookup_index_; }
-  void set_lookup_props (unsigned int lookup_props_)
+  فراغ set_lookup_mask (hb_mask_t mask, منطقي init = true) { lookup_mask = mask; last_base = -1; last_base_until = 0; إذا (init) init_iters (); }
+  فراغ set_auto_zwj (منطقي auto_zwj_, منطقي init = true) { auto_zwj = auto_zwj_; إذا (init) init_iters (); }
+  فراغ set_auto_zwnj (منطقي auto_zwnj_, منطقي init = true) { auto_zwnj = auto_zwnj_; إذا (init) init_iters (); }
+  فراغ set_per_syllable (منطقي per_syllable_, منطقي init = true) { per_syllable = per_syllable_; إذا (init) init_iters (); }
+  فراغ set_random (منطقي random_) { random = random_; }
+  فراغ set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  فراغ set_lookup_index (unsigned صحيح lookup_index_) { lookup_index = lookup_index_; }
+  فراغ set_lookup_props (unsigned صحيح lookup_props_)
   {
     lookup_props = gdef_accel.sanitize_lookup_props (lookup_props_);
     init_iters ();
   }
 
-  uint32_t random_number ()
+  uint32_t random_العدد ()
   {
     /* http://www.cplusplus.com/reference/random/minstd_rand/ */
     buffer->random_state = buffer->random_state * 48271 % 2147483647;
-    return buffer->random_state;
+    إرجاع buffer->random_state;
   }
 
-  static void buffer_changed_trampoline (hb_buffer_t *buffer HB_UNUSED, void *user_data)
+  ساكن فراغ buffer_changed_trampoline (hb_buffer_t *buffer HB_UNUSED, فراغ *user_data)
   {
     ((hb_ot_apply_context_t *) user_data)->buffer_changed ();
   }
-  void buffer_changed ()
+  فراغ buffer_changed ()
   {
     buffer->update_digest ();
-    if (likely (has_glyph_classes))
-      for (unsigned i = 0; i < buffer->len; i++)
+    إذا (likely (has_glyph_classes))
+      لكل (unsigned i = 0; i < buffer->len; i++)
 	_set_glyph_class_props (buffer->info[i]);
   }
 
   HB_ALWAYS_INLINE
   HB_HOT
-  bool match_properties_mark (const hb_glyph_info_t *info,
-			      unsigned int    glyph_props,
-			      unsigned int    match_props) const
+  منطقي match_properties_mark (ثابت hb_glyph_info_t *info,
+			      unsigned صحيح    glyph_props,
+			      unsigned صحيح    match_props) ثابت
   {
     /* If using mark filtering sets, the high short of
      * match_props has the set index.
      */
-    if (match_props & LookupFlag::UseMarkFilteringSet)
+    إذا (match_props & LookupFlag::UseMarkFilteringSet)
     {
       unsigned set_index = match_props >> 16;
-      return gdef_accel.mark_set_covers (set_index, info->codepoint);
+      إرجاع gdef_accel.mark_set_covers (set_index, info->codepoint);
     }
 
     /* The second byte of match_props has the meaning
      * "ignore marks of attachment type different than
      * the attachment type specified."
      */
-    if (match_props & LookupFlag::MarkAttachmentType)
-      return (match_props & LookupFlag::MarkAttachmentType) == (glyph_props & LookupFlag::MarkAttachmentType);
+    إذا (match_props & LookupFlag::MarkAttachmentType)
+      إرجاع (match_props & LookupFlag::MarkAttachmentType) == (glyph_props & LookupFlag::MarkAttachmentType);
 
-    return true;
+    إرجاع true;
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_glyph_property (const hb_glyph_info_t *info,
-			     unsigned match_props) const
+  منطقي check_glyph_property (ثابت hb_glyph_info_t *info,
+			     unsigned match_props) ثابت
   {
-    unsigned int glyph_props = _hb_glyph_info_get_glyph_props (info);
+    unsigned صحيح glyph_props = _hb_glyph_info_get_glyph_props (info);
 
     /* Not covered, if, for example, glyph class is ligature and
      * match_props includes LookupFlags::IgnoreLigatures
      */
-    if (glyph_props & match_props & LookupFlag::IgnoreFlags)
-      return false;
+    إذا (glyph_props & match_props & LookupFlag::IgnoreFlags)
+      إرجاع خطأ;
 
-    if (glyph_props & HB_OT_LAYOUT_GLYPH_PROPS_MARK)
-      return match_properties_mark (info, glyph_props, match_props);
+    إذا (glyph_props & HB_OT_LAYOUT_GLYPH_PROPS_MARK)
+      إرجاع match_properties_mark (info, glyph_props, match_props);
 
-    return true;
+    إرجاع true;
   }
 
-  void _set_glyph_class (hb_codepoint_t glyph_index,
-			  unsigned int class_guess = 0,
-			  bool ligature = false,
-			  bool component = false)
+  فراغ _set_glyph_class (hb_codepoint_t glyph_index,
+			  unsigned صحيح class_guess = 0,
+			  منطقي ligature = خطأ,
+			  منطقي component = خطأ)
   {
     buffer->digest.add (glyph_index);
 
-    if (new_syllables != (unsigned) -1)
+    إذا (new_syllables != (unsigned) -1)
       buffer->cur().syllable() = new_syllables;
 
-    unsigned int props = _hb_glyph_info_get_glyph_props (&buffer->cur());
+    unsigned صحيح props = _hb_glyph_info_get_glyph_props (&buffer->cur());
     props |= HB_OT_LAYOUT_GLYPH_PROPS_SUBSTITUTED;
-    if (ligature)
+    إذا (ligature)
     {
       props |= HB_OT_LAYOUT_GLYPH_PROPS_LIGATED;
       /* In the only place that the MULTIPLIED bit is used, Uniscribe
@@ -1338,133 +1338,133 @@ struct hb_ot_apply_context_t :
        */
       props &= ~HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED;
     }
-    if (component)
+    إذا (component)
       props |= HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED;
-    if (likely (has_glyph_classes))
+    إذا (likely (has_glyph_classes))
     {
       _set_glyph_class_props (buffer->cur(), props, glyph_index);
     }
-    else if (class_guess)
+    وإلا إذا (class_guess)
     {
       props &= HB_OT_LAYOUT_GLYPH_PROPS_PRESERVE;
       _hb_glyph_info_set_glyph_props (&buffer->cur(), props | class_guess);
     }
-    else
+    وإلا
       _hb_glyph_info_set_glyph_props (&buffer->cur(), props);
   }
-  void _set_glyph_class_props (hb_glyph_info_t &info,
-			       unsigned int props,
+  فراغ _set_glyph_class_props (hb_glyph_info_t &info,
+			       unsigned صحيح props,
 			       hb_codepoint_t glyph_index)
   {
     props &= HB_OT_LAYOUT_GLYPH_PROPS_PRESERVE;
     _hb_glyph_info_set_glyph_props (&info, props | gdef_accel.get_glyph_props (glyph_index));
   }
-  void _set_glyph_class_props (hb_glyph_info_t &info)
+  فراغ _set_glyph_class_props (hb_glyph_info_t &info)
   {
     _set_glyph_class_props (info,
 			    _hb_glyph_info_get_glyph_props (&info),
 			    info.codepoint);
   }
 
-  void replace_glyph (hb_codepoint_t glyph_index)
+  فراغ replace_glyph (hb_codepoint_t glyph_index)
   {
     _set_glyph_class (glyph_index);
-    (void) buffer->replace_glyph (glyph_index);
+    (فراغ) buffer->replace_glyph (glyph_index);
   }
-  void replace_glyph_inplace (hb_codepoint_t glyph_index)
+  فراغ replace_glyph_inplace (hb_codepoint_t glyph_index)
   {
     _set_glyph_class (glyph_index);
     buffer->cur().codepoint = glyph_index;
   }
-  void replace_glyph_with_ligature (hb_codepoint_t glyph_index,
-				    unsigned int class_guess)
+  فراغ replace_glyph_with_ligature (hb_codepoint_t glyph_index,
+				    unsigned صحيح class_guess)
   {
     _set_glyph_class (glyph_index, class_guess, true);
-    (void) buffer->replace_glyph (glyph_index);
+    (فراغ) buffer->replace_glyph (glyph_index);
   }
-  void output_glyph_for_component (hb_codepoint_t glyph_index,
-				   unsigned int class_guess)
+  فراغ output_glyph_for_component (hb_codepoint_t glyph_index,
+				   unsigned صحيح class_guess)
   {
-    _set_glyph_class (glyph_index, class_guess, false, true);
-    (void) buffer->output_glyph (glyph_index);
+    _set_glyph_class (glyph_index, class_guess, خطأ, true);
+    (فراغ) buffer->output_glyph (glyph_index);
   }
 };
 
-enum class hb_ot_subtable_cache_op_t
+تعداد صنف hb_ot_subtable_cache_op_t
 {
   ENTER,
   LEAVE,
 };
 
-struct hb_accelerate_subtables_context_t :
+بنية hb_accelerate_subtables_context_t :
        hb_dispatch_context_t<hb_accelerate_subtables_context_t>
 {
   template <typename T>
-  static inline auto collect_second_glyphs_ (const T &obj,
+  ساكن مضمن auto collect_second_glyphs_ (ثابت T &obj,
 					     hb_set_digest_t *digest,
-					     hb_priority<1>) HB_RETURN (void, obj.collect_second_glyphs (digest) )
+					     hb_priority<1>) HB_RETURN (فراغ, obj.collect_second_glyphs (digest) )
   template <typename T>
-  static inline void collect_second_glyphs_ (const T &obj HB_UNUSED,
+  ساكن مضمن فراغ collect_second_glyphs_ (ثابت T &obj HB_UNUSED,
 					     hb_set_digest_t *digest,
 					     hb_priority<0>)
   { *digest = hb_set_digest_t::full (); }
 
   template <typename T>
-  static inline auto apply_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<1>) HB_RETURN (bool, obj->apply (c, external_cache) )
+  ساكن مضمن auto apply_ (ثابت T *obj, hb_ot_apply_context_t *c, فراغ *external_cache, hb_priority<1>) HB_RETURN (منطقي, obj->apply (c, external_cache) )
   template <typename T>
-  static inline auto apply_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<0>) HB_RETURN (bool, obj->apply (c) )
+  ساكن مضمن auto apply_ (ثابت T *obj, hb_ot_apply_context_t *c, فراغ *external_cache, hb_priority<0>) HB_RETURN (منطقي, obj->apply (c) )
   template <typename T>
-  static inline bool apply_to (const void *obj, hb_ot_apply_context_t *c, void *external_cache)
+  ساكن مضمن منطقي apply_to (ثابت فراغ *obj, hb_ot_apply_context_t *c, فراغ *external_cache)
   {
-    const T *typed_obj = (const T *) obj;
-    return apply_ (typed_obj, c, external_cache, hb_prioritize);
+    ثابت T *typed_obj = (ثابت T *) obj;
+    إرجاع apply_ (typed_obj, c, external_cache, hb_prioritize);
   }
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<2>) HB_RETURN (bool, obj->apply_cached (c, external_cache) )
+  ساكن مضمن auto apply_cached_ (ثابت T *obj, hb_ot_apply_context_t *c, فراغ *external_cache, hb_priority<2>) HB_RETURN (منطقي, obj->apply_cached (c, external_cache) )
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<1>) HB_RETURN (bool, obj->apply (c, external_cache) )
+  ساكن مضمن auto apply_cached_ (ثابت T *obj, hb_ot_apply_context_t *c, فراغ *external_cache, hb_priority<1>) HB_RETURN (منطقي, obj->apply (c, external_cache) )
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<0>) HB_RETURN (bool, obj->apply (c) )
+  ساكن مضمن auto apply_cached_ (ثابت T *obj, hb_ot_apply_context_t *c, فراغ *external_cache, hb_priority<0>) HB_RETURN (منطقي, obj->apply (c) )
   template <typename T>
-  static inline bool apply_cached_to (const void *obj, hb_ot_apply_context_t *c, void *external_cache)
+  ساكن مضمن منطقي apply_cached_to (ثابت فراغ *obj, hb_ot_apply_context_t *c, فراغ *external_cache)
   {
-    const T *typed_obj = (const T *) obj;
-    return apply_cached_ (typed_obj, c, external_cache, hb_prioritize);
+    ثابت T *typed_obj = (ثابت T *) obj;
+    إرجاع apply_cached_ (typed_obj, c, external_cache, hb_prioritize);
   }
 
   template <typename T>
-  static inline auto cache_func_ (hb_ot_apply_context_t *c,
+  ساكن مضمن auto cache_func_ (hb_ot_apply_context_t *c,
 				  hb_ot_subtable_cache_op_t op,
-				  hb_priority<1>) HB_RETURN (bool, T::cache_func (c, op) )
-  template <typename T=void>
-  static inline bool cache_func_ (hb_ot_apply_context_t *c,
+				  hb_priority<1>) HB_RETURN (منطقي, T::cache_func (c, op) )
+  template <typename T=فراغ>
+  ساكن مضمن منطقي cache_func_ (hb_ot_apply_context_t *c,
 				  hb_ot_subtable_cache_op_t op HB_UNUSED,
-				  hb_priority<0>) { return false; }
+				  hb_priority<0>) { إرجاع خطأ; }
   template <typename Type>
-  static inline bool cache_func_to (hb_ot_apply_context_t *c,
+  ساكن مضمن منطقي cache_func_to (hb_ot_apply_context_t *c,
 				    hb_ot_subtable_cache_op_t op)
   {
-    return cache_func_<Type> (c, op, hb_prioritize);
+    إرجاع cache_func_<Type> (c, op, hb_prioritize);
   }
 #endif
 
-  typedef bool (*hb_apply_func_t) (const void *obj, hb_ot_apply_context_t *c, void *external_cache);
-  typedef bool (*hb_cache_func_t) (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op);
+  تعريفنوع منطقي (*hb_apply_func_t) (ثابت فراغ *obj, hb_ot_apply_context_t *c, فراغ *external_cache);
+  تعريفنوع منطقي (*hb_cache_func_t) (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op);
 
-  struct hb_applicable_t
+  بنية hb_applicable_t
   {
-    friend struct hb_accelerate_subtables_context_t;
-    friend struct hb_ot_layout_lookup_accelerator_t;
+    friend بنية hb_accelerate_subtables_context_t;
+    friend بنية hb_ot_layout_lookup_accelerator_t;
 
     template <typename T>
-    void init (const T &obj_,
+    فراغ init (ثابت T &obj_,
 	       hb_apply_func_t apply_func_
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
 	       , hb_apply_func_t apply_cached_func_
 	       , hb_cache_func_t cache_func_
-	       , void *external_cache_
+	       , فراغ *external_cache_
 #endif
 		)
     {
@@ -1480,74 +1480,74 @@ struct hb_accelerate_subtables_context_t :
     }
 
 #ifdef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    bool apply (hb_ot_apply_context_t *c) const
+    منطقي apply (hb_ot_apply_context_t *c) ثابت
     {
-      return digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, nullptr);
+      إرجاع digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, nullptr);
     }
-    bool apply_no_digest (hb_ot_apply_context_t *c) const
+    منطقي apply_no_digest (hb_ot_apply_context_t *c) ثابت
     {
-      return apply_func (obj, c, nullptr);
+      إرجاع apply_func (obj, c, nullptr);
     }
-#else
-    bool apply (hb_ot_apply_context_t *c) const
+#وإلا
+    منطقي apply (hb_ot_apply_context_t *c) ثابت
     {
-      return digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, external_cache);
+      إرجاع digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, external_cache);
     }
-    bool apply_cached (hb_ot_apply_context_t *c) const
+    منطقي apply_cached (hb_ot_apply_context_t *c) ثابت
     {
-      return digest.may_have (c->buffer->cur().codepoint) &&  apply_cached_func (obj, c, external_cache);
+      إرجاع digest.may_have (c->buffer->cur().codepoint) &&  apply_cached_func (obj, c, external_cache);
     }
-    bool apply_no_digest (hb_ot_apply_context_t *c) const
+    منطقي apply_no_digest (hb_ot_apply_context_t *c) ثابت
     {
-      return apply_func (obj, c, external_cache);
+      إرجاع apply_func (obj, c, external_cache);
     }
-    bool apply_cached_no_digest (hb_ot_apply_context_t *c) const
+    منطقي apply_cached_no_digest (hb_ot_apply_context_t *c) ثابت
     {
-      return apply_cached_func (obj, c, external_cache);
+      إرجاع apply_cached_func (obj, c, external_cache);
     }
 
-    bool cache_enter (hb_ot_apply_context_t *c) const
+    منطقي cache_enter (hb_ot_apply_context_t *c) ثابت
     {
-      return cache_func (c, hb_ot_subtable_cache_op_t::ENTER);
+      إرجاع cache_func (c, hb_ot_subtable_cache_op_t::ENTER);
     }
-    void cache_leave (hb_ot_apply_context_t *c) const
+    فراغ cache_leave (hb_ot_apply_context_t *c) ثابت
     {
       cache_func (c, hb_ot_subtable_cache_op_t::LEAVE);
     }
 #endif
 
-    private:
-    const void *obj;
+    خاص:
+    ثابت فراغ *obj;
     hb_apply_func_t apply_func;
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     hb_apply_func_t apply_cached_func;
     hb_cache_func_t cache_func;
-    void *external_cache;
+    فراغ *external_cache;
 #endif
     hb_set_digest_t digest;
   };
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   template <typename T>
-  auto cache_cost (const T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.cache_cost () )
+  auto cache_cost (ثابت T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.cache_cost () )
   template <typename T>
-  auto cache_cost (const T &obj, hb_priority<0>) HB_AUTO_RETURN ( 0u )
+  auto cache_cost (ثابت T &obj, hb_priority<0>) HB_AUTO_RETURN ( 0u )
 
   template <typename T>
-  auto external_cache_create (const T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.external_cache_create () )
+  auto external_cache_create (ثابت T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.external_cache_create () )
   template <typename T>
-  auto external_cache_create (const T &obj, hb_priority<0>) HB_AUTO_RETURN ( nullptr )
+  auto external_cache_create (ثابت T &obj, hb_priority<0>) HB_AUTO_RETURN ( nullptr )
 #endif
 
   /* Dispatch interface. */
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (ثابت T &obj)
   {
     collect_second_glyphs_ (obj, &digest_second, hb_prioritize);
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    void *external_cache = nullptr;
-    if (i < 8)
+    فراغ *external_cache = nullptr;
+    إذا (i < 8)
       external_cache = external_cache_create (obj, hb_prioritize);
 #endif
 
@@ -1572,16 +1572,16 @@ struct hb_accelerate_subtables_context_t :
      * and we allocate the cache opportunity to the costliest subtable.
      */
     unsigned cost = cache_cost (obj, hb_prioritize);
-    if (cost > subtable_cache_user_cost)
+    إذا (cost > subtable_cache_user_cost)
     {
       subtable_cache_user_idx = i - 1;
       subtable_cache_user_cost = cost;
     }
 #endif
 
-    return hb_empty_t ();
+    إرجاع hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  ساكن return_t default_return_قيمة () { إرجاع hb_empty_t (); }
 
   hb_accelerate_subtables_context_t (hb_applicable_t *array_) :
 				     array (array_) {}
@@ -1597,88 +1597,88 @@ struct hb_accelerate_subtables_context_t :
 };
 
 
-typedef bool (*intersects_func_t) (const hb_set_t *glyphs, unsigned value, const void *data, void *cache);
-typedef void (*intersected_glyphs_func_t) (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, void *cache);
-typedef void (*collect_glyphs_func_t) (hb_set_t *glyphs, unsigned value, const void *data);
-typedef bool (*match_func_t) (hb_glyph_info_t &info, unsigned value, const void *data);
-typedef unsigned (*get_value_func_t) (hb_glyph_info_t &info, const void *data);
+تعريفنوع منطقي (*intersects_func_t) (ثابت hb_set_t *glyphs, unsigned value, ثابت فراغ *data, فراغ *cache);
+تعريفنوع فراغ (*intersected_glyphs_func_t) (ثابت hb_set_t *glyphs, ثابت فراغ *data, unsigned value, hb_set_t *intersected_glyphs, فراغ *cache);
+تعريفنوع فراغ (*collect_glyphs_func_t) (hb_set_t *glyphs, unsigned value, ثابت فراغ *data);
+تعريفنوع منطقي (*match_func_t) (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data);
+تعريفنوع unsigned (*get_قيمة_func_t) (hb_glyph_info_t &info, ثابت فراغ *data);
 
 /* One word per RuleSet, summarizing the classes accepted at the first
  * input position after the current glyph.  Collisions only cause extra work. */
-struct hb_ot_layout_ruleset_digest_t
+بنية hb_ot_layout_ruleset_digest_t
 {
-  void init () { mask = 0; }
-  void set_full () { mask = (uint64_t) -1; }
-  void add (unsigned value) { mask |= (uint64_t) 1 << (value & 63); }
-  bool may_have (unsigned value) const { return mask & ((uint64_t) 1 << (value & 63)); }
+  فراغ init () { mask = 0; }
+  فراغ set_full () { mask = (uint64_t) -1; }
+  فراغ add (unsigned value) { mask |= (uint64_t) 1 << (value & 63); }
+  منطقي may_have (unsigned value) ثابت { إرجاع mask & ((uint64_t) 1 << (value & 63)); }
 
   uint64_t mask;
 };
 
-struct ContextClosureFuncs
+بنية ContextClosureFuncs
 {
   intersects_func_t intersects;
   intersected_glyphs_func_t intersected_glyphs;
 };
-struct ContextCollectGlyphsFuncs
+بنية ContextCollectGlyphsFuncs
 {
   collect_glyphs_func_t collect;
 };
-struct ContextApplyFuncs
+بنية ContextApplyFuncs
 {
   match_func_t match;
 };
-struct ChainContextApplyFuncs
+بنية ChainContextApplyFuncs
 {
   match_func_t match[3];
 };
 
 
-static inline bool intersects_glyph (const hb_set_t *glyphs, unsigned value, const void *data HB_UNUSED, void *cache HB_UNUSED)
+ساكن مضمن منطقي intersects_glyph (ثابت hb_set_t *glyphs, unsigned value, ثابت فراغ *data HB_UNUSED, فراغ *cache HB_UNUSED)
 {
-  return glyphs->has (value);
+  إرجاع glyphs->has (value);
 }
-static inline bool intersects_class (const hb_set_t *glyphs, unsigned value, const void *data, void *cache)
+ساكن مضمن منطقي intersects_class (ثابت hb_set_t *glyphs, unsigned value, ثابت فراغ *data, فراغ *cache)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *>(data);
   hb_map_t *map = (hb_map_t *) cache;
 
   hb_codepoint_t *cached_v;
-  if (map->has (value, &cached_v))
-    return *cached_v;
+  إذا (map->has (value, &cached_v))
+    إرجاع *cached_v;
 
-  bool v = class_def.intersects_class (glyphs, value);
+  منطقي v = class_def.intersects_class (glyphs, value);
   map->set (value, v);
 
-  return v;
+  إرجاع v;
 }
-static inline bool intersects_coverage (const hb_set_t *glyphs, unsigned value, const void *data, void *cache HB_UNUSED)
+ساكن مضمن منطقي intersects_coverage (ثابت hb_set_t *glyphs, unsigned value, ثابت فراغ *data, فراغ *cache HB_UNUSED)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
-  return (data+coverage).intersects (glyphs);
+  إرجاع (data+coverage).intersects (glyphs);
 }
 
 
-static inline void intersected_glyph (const hb_set_t *glyphs HB_UNUSED, const void *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED void *cache)
+ساكن مضمن فراغ intersected_glyph (ثابت hb_set_t *glyphs HB_UNUSED, ثابت فراغ *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED فراغ *cache)
 {
-  unsigned g = reinterpret_cast<const HBUINT16 *>(data)[value];
+  unsigned g = reinterpret_cast<ثابت HBUINT16 *>(data)[value];
   intersected_glyphs->add (g);
 }
 
 using intersected_class_cache_t = hb_hashmap_t<unsigned, hb_set_t>;
 
-static inline void intersected_class_glyphs (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, void *cache)
+ساكن مضمن فراغ intersected_class_glyphs (ثابت hb_set_t *glyphs, ثابت فراغ *data, unsigned value, hb_set_t *intersected_glyphs, فراغ *cache)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *>(data);
 
   intersected_class_cache_t *map = (intersected_class_cache_t *) cache;
 
   hb_set_t *cached_v;
-  if (map->has (value, &cached_v))
+  إذا (map->has (value, &cached_v))
   {
     intersected_glyphs->union_ (*cached_v);
-    return;
+    إرجاع;
   }
 
   hb_set_t v;
@@ -1689,7 +1689,7 @@ static inline void intersected_class_glyphs (const hb_set_t *glyphs, const void 
   map->set (value, std::move (v));
 }
 
-static inline void intersected_coverage_glyphs (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED void *cache)
+ساكن مضمن فراغ intersected_coverage_glyphs (ثابت hb_set_t *glyphs, ثابت فراغ *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED فراغ *cache)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
@@ -1697,255 +1697,255 @@ static inline void intersected_coverage_glyphs (const hb_set_t *glyphs, const vo
 }
 
 
-static inline bool array_is_subset_of (const hb_set_t *glyphs,
-				       unsigned int count,
+ساكن مضمن منطقي array_is_subset_of (ثابت hb_set_t *glyphs,
+				       unsigned صحيح تعداد_2,
 				       glyph_data_t values,
 				       intersects_func_t intersects_func,
-				       const void *intersects_data,
-				       void *cache)
+				       ثابت فراغ *intersects_data,
+				       فراغ *cache)
 {
-  for (unsigned i = 0; i < count; i++)
-    if (!intersects_func (glyphs, values[i], intersects_data, cache)) return false;
-  return true;
+  لكل (unsigned i = 0; i < تعداد_2; i++)
+    إذا (!intersects_func (glyphs, values[i], intersects_data, cache)) إرجاع خطأ;
+  إرجاع true;
 }
 
 
-static inline void collect_glyph (hb_set_t *glyphs, unsigned value, const void *data HB_UNUSED)
+ساكن مضمن فراغ collect_glyph (hb_set_t *glyphs, unsigned value, ثابت فراغ *data HB_UNUSED)
 {
   glyphs->add (value);
 }
-static inline void collect_class (hb_set_t *glyphs, unsigned value, const void *data)
+ساكن مضمن فراغ collect_class (hb_set_t *glyphs, unsigned value, ثابت فراغ *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *>(data);
   class_def.collect_class (glyphs, value);
 }
-static inline void collect_coverage (hb_set_t *glyphs, unsigned value, const void *data)
+ساكن مضمن فراغ collect_coverage (hb_set_t *glyphs, unsigned value, ثابت فراغ *data)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
   (data+coverage).collect_coverage (glyphs);
 }
 
-inline const hb_set_t *
-hb_depend_context_t::find_or_create_glyph_set (const void *data,
+مضمن ثابت hb_set_t *
+hb_depend_context_t::find_or_create_glyph_set (ثابت فراغ *data,
                                                 unsigned value,
                                                 glyph_set_type_t type)
 {
   /* Class definitions and coverages are immutable for the lifetime of the
    * context, so their expanded glyph sets can be shared across traversals. */
-  glyph_set_cache_key_t key (data, value, type);
+  glyph_set_cache_مفتاح_t key (data, value, type);
   hb_codepoint_t *existing = nullptr;
-  if (glyph_set_to_index.has (key, &existing))
-    return glyph_sets[*existing].get ();
+  إذا (glyph_set_to_index.has (key, &existing))
+    إرجاع glyph_sets[*existing].get ();
 
   hb_set_t *set = hb_object_create<hb_set_t> ();
-  if (unlikely (!set))
+  إذا (unlikely (!set))
   {
     depend_data->fail ();
-    return nullptr;
+    إرجاع nullptr;
   }
 
-  if (type == GLYPH_SET_COVERAGE)
+  إذا (type == GLYPH_SET_COVERAGE)
     collect_coverage (set, value, data);
-  else if (type == GLYPH_SET_CLASS)
+  وإلا إذا (type == GLYPH_SET_CLASS)
     collect_class (set, value, data);
-  else
+  وإلا
     set->add (value);
-  if (unlikely (set->in_error ()))
+  إذا (unlikely (set->in_error ()))
   {
     hb_set_destroy (set);
     depend_data->fail ();
-    return nullptr;
+    إرجاع nullptr;
   }
 
   hb_codepoint_t index = glyph_sets.length;
-  if (unlikely (!glyph_sets.push_or_fail (hb::unique_ptr<hb_set_t> {set})))
+  إذا (unlikely (!glyph_sets.ادفع_or_fail (hb::unique_ptr<hb_set_t> {set})))
   {
     depend_data->fail ();
-    return nullptr;
+    إرجاع nullptr;
   }
-  if (unlikely (!glyph_set_to_index.set (key, index)))
+  إذا (unlikely (!glyph_set_to_index.set (key, index)))
   {
     depend_data->fail ();
-    return nullptr;
+    إرجاع nullptr;
   }
-  return glyph_sets[index].get ();
+  إرجاع glyph_sets[index].get ();
 }
 
-inline hb_codepoint_t
-hb_depend_context_t::find_or_create_cached_context_set (const hb_set_t *set)
+مضمن hb_codepoint_t
+hb_depend_context_t::find_or_create_cached_context_set (ثابت hb_set_t *set)
 {
   uintptr_t key = (uintptr_t) set;
   hb_codepoint_t *existing = nullptr;
-  if (cached_context_set_indices.has (key, &existing))
-    return *existing;
+  إذا (cached_context_set_indices.has (key, &existing))
+    إرجاع *existing;
 
   hb_codepoint_t index = depend_data->find_or_create_context_set (*set);
-  if (unlikely (index == HB_CODEPOINT_INVALID))
-    return HB_CODEPOINT_INVALID;
-  if (unlikely (!cached_context_set_indices.set (key, index)))
-    return depend_data->fail_invalid ();
-  return index;
+  إذا (unlikely (index == HB_CODEPOINT_INVALID))
+    إرجاع HB_CODEPOINT_INVALID;
+  إذا (unlikely (!cached_context_set_indices.set (key, index)))
+    إرجاع depend_data->fail_invalid ();
+  إرجاع index;
 }
 
-static inline void collect_array (hb_collect_glyphs_context_t *c HB_UNUSED,
+ساكن مضمن فراغ collect_array (hb_collect_glyphs_context_t *c HB_UNUSED,
 				  hb_set_t *glyphs,
-				  unsigned int count,
+				  unsigned صحيح تعداد_2,
 				  glyph_data_t values,
 				  collect_glyphs_func_t collect_func,
-				  const void *collect_data)
+				  ثابت فراغ *collect_data)
 {
-  for (unsigned i = 0; i < count; i++)
+  لكل (unsigned i = 0; i < تعداد_2; i++)
     collect_func (glyphs, values[i], collect_data);
 }
 
 
-static inline bool match_always (hb_glyph_info_t &info HB_UNUSED, unsigned value HB_UNUSED, const void *data HB_UNUSED)
+ساكن مضمن منطقي match_always (hb_glyph_info_t &info HB_UNUSED, unsigned value HB_UNUSED, ثابت فراغ *data HB_UNUSED)
 {
-  return true;
+  إرجاع true;
 }
-static inline bool match_glyph (hb_glyph_info_t &info, unsigned value, const void *data HB_UNUSED)
+ساكن مضمن منطقي match_glyph (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data HB_UNUSED)
 {
-  return info.codepoint == value;
+  إرجاع info.codepoint == value;
 }
-static inline bool match_class (hb_glyph_info_t &info, unsigned value, const void *data)
+ساكن مضمن منطقي match_class (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return class_def.get_class (info.codepoint) == value;
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *>(data);
+  إرجاع class_def.get_class (info.codepoint) == value;
 }
-static inline unsigned get_class_value (hb_glyph_info_t &info, const void *data)
+ساكن مضمن unsigned get_class_قيمة (hb_glyph_info_t &info, ثابت فراغ *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return class_def.get_class (info.codepoint);
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *> (data);
+  إرجاع class_def.get_class (info.codepoint);
 }
-struct match_class_cache_data_t
+بنية match_class_cache_data_t
 {
-  const ClassDef *class_def;
+  ثابت ClassDef *class_def;
   hb_ot_layout_mapping_cache_t *cache;
 };
-static inline bool match_class_cache (hb_glyph_info_t &info, unsigned value, const void *data)
+ساكن مضمن منطقي match_class_cache (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data)
 {
-  const auto &cache_data = *reinterpret_cast<const match_class_cache_data_t *> (data);
-  return cache_data.class_def->get_class (info.codepoint, cache_data.cache) == value;
+  ثابت auto &cache_data = *reinterpret_cast<ثابت match_class_cache_data_t *> (data);
+  إرجاع cache_data.class_def->get_class (info.codepoint, cache_data.cache) == value;
 }
-static inline unsigned get_class_cache_value (hb_glyph_info_t &info, const void *data)
+ساكن مضمن unsigned get_class_cache_قيمة (hb_glyph_info_t &info, ثابت فراغ *data)
 {
-  const auto &cache_data = *reinterpret_cast<const match_class_cache_data_t *> (data);
-  return cache_data.class_def->get_class (info.codepoint, cache_data.cache);
+  ثابت auto &cache_data = *reinterpret_cast<ثابت match_class_cache_data_t *> (data);
+  إرجاع cache_data.class_def->get_class (info.codepoint, cache_data.cache);
 }
-static inline unsigned get_class_cached (const ClassDef &class_def, hb_glyph_info_t &info)
+ساكن مضمن unsigned get_class_cached (ثابت ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = info.syllable();
-  if (klass < 255)
-    return klass;
+  إذا (klass < 255)
+    إرجاع klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 255))
+  إذا (likely (klass < 255))
     info.syllable() = klass;
-  return klass;
+  إرجاع klass;
 }
-static inline bool match_class_cached (hb_glyph_info_t &info, unsigned value, const void *data)
+ساكن مضمن منطقي match_class_cached (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached (class_def, info) == value;
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *>(data);
+  إرجاع get_class_cached (class_def, info) == value;
 }
-static inline unsigned get_class_cached_value (hb_glyph_info_t &info, const void *data)
+ساكن مضمن unsigned get_class_cached_قيمة (hb_glyph_info_t &info, ثابت فراغ *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return get_class_cached (class_def, info);
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *> (data);
+  إرجاع get_class_cached (class_def, info);
 }
-static inline unsigned get_class_cached1 (const ClassDef &class_def, hb_glyph_info_t &info)
+ساكن مضمن unsigned get_class_cached1 (ثابت ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = info.syllable() & 0x0F;
-  if (klass < 15)
-    return klass;
+  إذا (klass < 15)
+    إرجاع klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 15))
+  إذا (likely (klass < 15))
     info.syllable() = (info.syllable() & 0xF0) | klass;
-  return klass;
+  إرجاع klass;
 }
-static inline bool match_class_cached1 (hb_glyph_info_t &info, unsigned value, const void *data)
+ساكن مضمن منطقي match_class_cached1 (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached1 (class_def, info) == value;
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *>(data);
+  إرجاع get_class_cached1 (class_def, info) == value;
 }
-static inline unsigned get_class_cached2 (const ClassDef &class_def, hb_glyph_info_t &info)
+ساكن مضمن unsigned get_class_cached2 (ثابت ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = (info.syllable() & 0xF0) >> 4;
-  if (klass < 15)
-    return klass;
+  إذا (klass < 15)
+    إرجاع klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 15))
+  إذا (likely (klass < 15))
     info.syllable() = (info.syllable() & 0x0F) | (klass << 4);
-  return klass;
+  إرجاع klass;
 }
-static inline bool match_class_cached2 (hb_glyph_info_t &info, unsigned value, const void *data)
+ساكن مضمن منطقي match_class_cached2 (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached2 (class_def, info) == value;
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *>(data);
+  إرجاع get_class_cached2 (class_def, info) == value;
 }
-static inline unsigned get_class_cached2_value (hb_glyph_info_t &info, const void *data)
+ساكن مضمن unsigned get_class_cached2_قيمة (hb_glyph_info_t &info, ثابت فراغ *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return get_class_cached2 (class_def, info);
+  ثابت ClassDef &class_def = *reinterpret_cast<ثابت ClassDef *> (data);
+  إرجاع get_class_cached2 (class_def, info);
 }
-static inline bool match_coverage (hb_glyph_info_t &info, unsigned value, const void *data)
+ساكن مضمن منطقي match_coverage (hb_glyph_info_t &info, unsigned value, ثابت فراغ *data)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
-  return (data+coverage).get_coverage (info.codepoint) != NOT_COVERED;
+  إرجاع (data+coverage).get_coverage (info.codepoint) != NOT_COVERED;
 }
 
-static inline bool would_match_input (hb_would_apply_context_t *c,
-				      unsigned int count, /* Including the first glyph (not matched) */
-				      glyph_data_t input, /* Array of input values--start with second glyph */
+ساكن مضمن منطقي would_match_إدخال (hb_would_apply_context_t *c,
+				      unsigned صحيح تعداد_2, /* Including the first glyph (not matched) */
+				      glyph_data_t إدخال, /* Array of input values--start with second glyph */
 				      match_func_t match_func,
-				      const void *match_data)
+				      ثابت فراغ *match_data)
 {
-  if (count != c->len)
-    return false;
+  إذا (تعداد_2 != c->len)
+    إرجاع خطأ;
 
-  for (unsigned int i = 1; i < count; i++)
+  لكل (unsigned صحيح i = 1; i < تعداد_2; i++)
   {
     hb_glyph_info_t info;
     info.codepoint = c->glyphs[i];
-    if (likely (!match_func (info, input[i - 1], match_data)))
-      return false;
+    إذا (likely (!match_func (info, إدخال[i - 1], match_data)))
+      إرجاع خطأ;
   }
 
-  return true;
+  إرجاع true;
 }
 #ifndef HB_OPTIMIZE_SIZE
 HB_ALWAYS_INLINE
-#else
-inline
+#وإلا
+مضمن
 #endif
-static bool match_input (hb_ot_apply_context_t *c,
-			 unsigned int count, /* Including the first glyph (not matched) */
-			 glyph_data_t input, /* Array of input values--start with second glyph */
+ساكن منطقي match_إدخال (hb_ot_apply_context_t *c,
+			 unsigned صحيح تعداد_2, /* Including the first glyph (not matched) */
+			 glyph_data_t إدخال, /* Array of input values--start with second glyph */
 			 match_func_t match_func,
-			 const void *match_data,
-			 unsigned int *end_position,
-			 unsigned int *p_total_component_count = nullptr)
+			 ثابت فراغ *match_data,
+			 unsigned صحيح *end_position,
+			 unsigned صحيح *p_total_component_تعداد = nullptr)
 {
   TRACE_APPLY (nullptr);
 
   hb_buffer_t *buffer = c->buffer;
 
-  if (count == 1)
+  إذا (تعداد_2 == 1)
   {
     *end_position = buffer->idx + 1;
     c->match_positions[0] = buffer->idx;
-    if (p_total_component_count)
-      *p_total_component_count = _hb_glyph_info_get_lig_num_comps (&buffer->cur());
+    إذا (p_total_component_تعداد)
+      *p_total_component_تعداد = hb_glyph_info_get_lig_رقم_comps (&buffer->cur());
     return_trace (true);
   }
 
-  if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return_trace (false);
+  إذا (unlikely (تعداد_2 > HB_MAX_CONTEXT_LENGTH)) return_trace (خطأ);
 
-  auto &skippy_iter = c->iter_input;
+  auto &skippy_iter = c->iter_إدخال;
   skippy_iter.reset (buffer->idx);
   skippy_iter.set_match_func (match_func, match_data);
-  skippy_iter.set_glyph_data (input);
+  skippy_iter.set_glyph_data (إدخال);
 
   /*
    * This is perhaps the trickiest part of OpenType...  Remarks:
@@ -1971,98 +1971,98 @@ static bool match_input (hb_ot_apply_context_t *c,
    *     https://github.com/harfbuzz/harfbuzz/issues/545
    */
 
-  unsigned int total_component_count = 0;
+  unsigned صحيح total_component_تعداد = 0;
 
-  unsigned int first_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-  unsigned int first_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
+  unsigned صحيح first_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
+  unsigned صحيح first_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
 
-  enum {
+  تعداد {
     LIGBASE_NOT_CHECKED,
     LIGBASE_MAY_NOT_SKIP,
     LIGBASE_MAY_SKIP
   } ligbase = LIGBASE_NOT_CHECKED;
 
-  for (unsigned int i = 1; i < count; i++)
+  لكل (unsigned صحيح i = 1; i < تعداد_2; i++)
   {
     unsigned unsafe_to;
-    if (!skippy_iter.next (&unsafe_to))
+    إذا (!skippy_iter.next (&unsafe_to))
     {
       *end_position = unsafe_to;
-      return_trace (false);
+      return_trace (خطأ);
     }
 
-    if (unlikely (i + 1 > c->match_positions.length &&
+    إذا (unlikely (i + 1 > c->match_positions.length &&
 		  !c->match_positions.resize_dirty  (i + 1)))
-      return_trace (false);
+      return_trace (خطأ);
     c->match_positions.arrayZ[i] = skippy_iter.idx;
 
-    unsigned int this_lig_id = _hb_glyph_info_get_lig_id (&buffer->info[skippy_iter.idx]);
-    unsigned int this_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->info[skippy_iter.idx]);
+    unsigned صحيح this_lig_id = _hb_glyph_info_get_lig_id (&buffer->info[skippy_iter.idx]);
+    unsigned صحيح this_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->info[skippy_iter.idx]);
 
-    if (first_lig_id && first_lig_comp)
+    إذا (first_lig_id && first_lig_comp)
     {
       /* If first component was attached to a previous ligature component,
        * all subsequent components should be attached to the same ligature
        * component, otherwise we shouldn't ligate them... */
-      if (first_lig_id != this_lig_id || first_lig_comp != this_lig_comp)
+      إذا (first_lig_id != this_lig_id || first_lig_comp != this_lig_comp)
       {
 	/* ...unless, we are attached to a base ligature and that base
 	 * ligature is ignorable. */
-	if (ligbase == LIGBASE_NOT_CHECKED)
+	إذا (ligbase == LIGBASE_NOT_CHECKED)
 	{
-	  bool found = false;
-	  const auto *out = buffer->out_info;
-	  unsigned int j = buffer->out_len;
-	  while (j && _hb_glyph_info_get_lig_id (&out[j - 1]) == first_lig_id)
+	  منطقي found = خطأ;
+	  ثابت auto *out = buffer->out_info;
+	  unsigned صحيح j = buffer->out_len;
+	  بينما (j && _hb_glyph_info_get_lig_id (&out[j - 1]) == first_lig_id)
 	  {
-	    if (_hb_glyph_info_get_lig_comp (&out[j - 1]) == 0)
+	    إذا (_hb_glyph_info_get_lig_comp (&out[j - 1]) == 0)
 	    {
 	      j--;
 	      found = true;
-	      break;
+	      اكسر;
 	    }
 	    j--;
 	  }
 
-	  if (found && skippy_iter.may_skip (out[j]) == matcher_t::SKIP_YES)
+	  إذا (found && skippy_iter.may_skip (out[j]) == matcher_t::SKIP_YES)
 	    ligbase = LIGBASE_MAY_SKIP;
-	  else
+	  وإلا
 	    ligbase = LIGBASE_MAY_NOT_SKIP;
 	}
 
-	if (ligbase == LIGBASE_MAY_NOT_SKIP)
-	  return_trace (false);
+	إذا (ligbase == LIGBASE_MAY_NOT_SKIP)
+	  return_trace (خطأ);
       }
     }
-    else
+    وإلا
     {
       /* If first component was NOT attached to a previous ligature component,
        * all subsequent components should also NOT be attached to any ligature
        * component, unless they are attached to the first component itself! */
-      if (this_lig_id && this_lig_comp && (this_lig_id != first_lig_id))
-	return_trace (false);
+      إذا (this_lig_id && this_lig_comp && (this_lig_id != first_lig_id))
+	return_trace (خطأ);
     }
 
-    total_component_count += _hb_glyph_info_get_lig_num_comps_in_ligation (&buffer->info[skippy_iter.idx]);
+    total_component_تعداد += hb_glyph_info_get_lig_رقم_comps_in_ligation (&buffer->info[skippy_iter.idx]);
   }
 
   *end_position = skippy_iter.idx + 1;
 
-  if (p_total_component_count)
+  إذا (p_total_component_تعداد)
   {
-    total_component_count += _hb_glyph_info_get_lig_num_comps (&buffer->cur());
-    *p_total_component_count = total_component_count;
+    total_component_تعداد += hb_glyph_info_get_lig_رقم_comps (&buffer->cur());
+    *p_total_component_تعداد = total_component_تعداد;
   }
 
   c->match_positions.arrayZ[0] = buffer->idx;
 
   return_trace (true);
 }
-static inline bool ligate_input (hb_ot_apply_context_t *c,
-				 unsigned int count, /* Including the first glyph */
-				 unsigned int match_end,
+ساكن مضمن منطقي ligate_إدخال (hb_ot_apply_context_t *c,
+				 unsigned صحيح تعداد_2, /* Including the first glyph */
+				 unsigned صحيح match_end,
 				 hb_codepoint_t lig_glyph,
-				 unsigned int total_component_count)
+				 unsigned صحيح total_component_تعداد)
 {
   TRACE_APPLY (nullptr);
 
@@ -2102,71 +2102,71 @@ static inline bool ligate_input (hb_ot_apply_context_t *c,
    *   https://bugzilla.gnome.org/show_bug.cgi?id=437633
    */
 
-  bool is_base_ligature = _hb_glyph_info_is_base_glyph (&buffer->info[c->match_positions.arrayZ[0]]);
-  bool is_mark_ligature = _hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[0]]);
-  for (unsigned int i = 1; i < count; i++)
-    if (!_hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[i]]))
+  منطقي is_base_ligature = _hb_glyph_info_is_base_glyph (&buffer->info[c->match_positions.arrayZ[0]]);
+  منطقي is_mark_ligature = _hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[0]]);
+  لكل (unsigned صحيح i = 1; i < تعداد_2; i++)
+    إذا (!_hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[i]]))
     {
-      is_base_ligature = false;
-      is_mark_ligature = false;
-      break;
+      is_base_ligature = خطأ;
+      is_mark_ligature = خطأ;
+      اكسر;
     }
-  bool is_ligature = !is_base_ligature && !is_mark_ligature;
+  منطقي is_ligature = !is_base_ligature && !is_mark_ligature;
 
-  unsigned int klass = is_ligature ? HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE : 0;
-  unsigned int lig_id = is_ligature ? _hb_allocate_lig_id (buffer) : 0;
-  unsigned int last_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-  unsigned int last_num_components = _hb_glyph_info_get_lig_num_comps (&buffer->cur());
-  unsigned int components_so_far = last_num_components;
+  unsigned صحيح klass = is_ligature ? HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE : 0;
+  unsigned صحيح lig_id = is_ligature ? _hb_allocate_lig_id (buffer) : 0;
+  unsigned صحيح last_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
+  unsigned صحيح last_رقم_components = hb_glyph_info_get_lig_رقم_comps (&buffer->cur());
+  unsigned صحيح components_so_far = last_رقم_components;
 
-  if (is_ligature)
+  إذا (is_ligature)
   {
-    _hb_glyph_info_set_lig_props_for_ligature (&buffer->cur(), lig_id, total_component_count);
-    if (_hb_glyph_info_get_general_category (&buffer->cur()) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
+    _hb_glyph_info_set_lig_props_for_ligature (&buffer->cur(), lig_id, total_component_تعداد);
+    إذا (_hb_glyph_info_get_general_category (&buffer->cur()) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
     {
       _hb_glyph_info_set_general_category (&buffer->cur(), HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER);
     }
   }
   c->replace_glyph_with_ligature (lig_glyph, klass);
 
-  for (unsigned int i = 1; i < count; i++)
+  لكل (unsigned صحيح i = 1; i < تعداد_2; i++)
   {
-    while (buffer->idx < c->match_positions.arrayZ[i] && buffer->successful)
+    بينما (buffer->idx < c->match_positions.arrayZ[i] && buffer->successful)
     {
-      if (is_ligature)
+      إذا (is_ligature)
       {
-	unsigned int this_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
-	if (this_comp == 0)
-	  this_comp = last_num_components;
-	assert (components_so_far >= last_num_components);
-	unsigned int new_lig_comp = components_so_far - last_num_components +
-				    hb_min (this_comp, last_num_components);
+	unsigned صحيح this_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
+	إذا (this_comp == 0)
+	  this_comp = last_رقم_components;
+	أكد (components_so_far >= last_رقم_components);
+	unsigned صحيح new_lig_comp = components_so_far - last_رقم_components +
+				    hb_min (this_comp, last_رقم_components);
 	  _hb_glyph_info_set_lig_props_for_mark (&buffer->cur(), lig_id, new_lig_comp);
       }
-      (void) buffer->next_glyph ();
+      (فراغ) buffer->next_glyph ();
     }
 
     last_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-    last_num_components = _hb_glyph_info_get_lig_num_comps_in_ligation (&buffer->cur());
-    components_so_far += last_num_components;
+    last_رقم_components = hb_glyph_info_get_lig_رقم_comps_in_ligation (&buffer->cur());
+    components_so_far += last_رقم_components;
 
     /* Skip the base glyph */
     buffer->idx++;
   }
 
-  if (!is_mark_ligature && last_lig_id)
+  إذا (!is_mark_ligature && last_lig_id)
   {
     /* Re-adjust components for any marks following. */
-    for (unsigned i = buffer->idx; i < buffer->len; ++i)
+    لكل (unsigned i = buffer->idx; i < buffer->len; ++i)
     {
-      if (last_lig_id != _hb_glyph_info_get_lig_id (&buffer->info[i])) break;
+      إذا (last_lig_id != _hb_glyph_info_get_lig_id (&buffer->info[i])) اكسر;
 
       unsigned this_comp = _hb_glyph_info_get_lig_comp (&buffer->info[i]);
-      if (!this_comp) break;
+      إذا (!this_comp) اكسر;
 
-      assert (components_so_far >= last_num_components);
-      unsigned new_lig_comp = components_so_far - last_num_components +
-			      hb_min (this_comp, last_num_components);
+      أكد (components_so_far >= last_رقم_components);
+      unsigned new_lig_comp = components_so_far - last_رقم_components +
+			      hb_min (this_comp, last_رقم_components);
       _hb_glyph_info_set_lig_props_for_mark (&buffer->info[i], lig_id, new_lig_comp);
     }
   }
@@ -2175,19 +2175,19 @@ static inline bool ligate_input (hb_ot_apply_context_t *c,
 
 #ifndef HB_OPTIMIZE_SIZE
 HB_ALWAYS_INLINE
-#else
-inline
+#وإلا
+مضمن
 #endif
-static bool match_backtrack (hb_ot_apply_context_t *c,
-			     unsigned int count,
+ساكن منطقي match_backtrack (hb_ot_apply_context_t *c,
+			     unsigned صحيح تعداد_2,
 			     glyph_data_t backtrack,
 			     match_func_t match_func,
-			     const void *match_data,
-			     unsigned int *match_start)
+			     ثابت فراغ *match_data,
+			     unsigned صحيح *match_start)
 {
   TRACE_APPLY (nullptr);
 
-  if (!count)
+  إذا (!تعداد_2)
   {
     *match_start = c->buffer->backtrack_len ();
     return_trace (true);
@@ -2198,13 +2198,13 @@ static bool match_backtrack (hb_ot_apply_context_t *c,
   skippy_iter.set_match_func (match_func, match_data);
   skippy_iter.set_glyph_data (backtrack);
 
-  for (unsigned int i = 0; i < count; i++)
+  لكل (unsigned صحيح i = 0; i < تعداد_2; i++)
   {
     unsigned unsafe_from;
-    if (!skippy_iter.prev (&unsafe_from))
+    إذا (!skippy_iter.prev (&unsafe_from))
     {
       *match_start = unsafe_from;
-      return_trace (false);
+      return_trace (خطأ);
     }
   }
 
@@ -2214,38 +2214,38 @@ static bool match_backtrack (hb_ot_apply_context_t *c,
 
 #ifndef HB_OPTIMIZE_SIZE
 HB_ALWAYS_INLINE
-#else
-inline
+#وإلا
+مضمن
 #endif
-static bool match_lookahead (hb_ot_apply_context_t *c,
-			     unsigned int count,
+ساكن منطقي match_lookahead (hb_ot_apply_context_t *c,
+			     unsigned صحيح تعداد_2,
 			     glyph_data_t lookahead,
 			     match_func_t match_func,
-			     const void *match_data,
-			     unsigned int start_index,
-			     unsigned int *end_index)
+			     ثابت فراغ *match_data,
+			     unsigned صحيح start_index,
+			     unsigned صحيح *end_index)
 {
   TRACE_APPLY (nullptr);
 
-  if (!count)
+  إذا (!تعداد_2)
   {
     *end_index = start_index;
     return_trace (true);
   }
 
   auto &skippy_iter = c->iter_context;
-  assert (start_index >= 1);
+  أكد (start_index >= 1);
   skippy_iter.reset (start_index - 1);
   skippy_iter.set_match_func (match_func, match_data);
   skippy_iter.set_glyph_data (lookahead);
 
-  for (unsigned int i = 0; i < count; i++)
+  لكل (unsigned صحيح i = 0; i < تعداد_2; i++)
   {
     unsigned unsafe_to;
-    if (!skippy_iter.next (&unsafe_to))
+    إذا (!skippy_iter.next (&unsafe_to))
     {
       *end_index = unsafe_to;
-      return_trace (false);
+      return_trace (خطأ);
     }
   }
 
@@ -2255,213 +2255,213 @@ static bool match_lookahead (hb_ot_apply_context_t *c,
 
 
 
-struct LookupRecord
+بنية LookupRecord
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t         *lookup_map) const
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت hb_map_t         *lookup_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    auto *out = c->embed (*هذا);
+    إذا (unlikely (!out)) return_trace (خطأ);
 
     return_trace (c->check_assign (out->lookupListIndex, lookup_map->get (lookupListIndex), HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
   HBUINT16	sequenceIndex;		/* Index into current glyph
 					 * sequence--first glyph = 0 */
   HBUINT16	lookupListIndex;	/* Lookup to apply to that
 					 * position--zero--based */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (4);
 };
 
-static inline unsigned serialize_lookuprecord_array (hb_serialize_context_t *c,
-						     const hb_array_t<const LookupRecord> lookupRecords,
-						     const hb_map_t *lookup_map)
+ساكن مضمن unsigned serialize_lookuprecord_array (hb_serialize_context_t *c,
+						     ثابت hb_array_t<ثابت LookupRecord> lookupRecords,
+						     ثابت hb_map_t *lookup_map)
 {
-  unsigned count = 0;
-  for (const LookupRecord& r : lookupRecords)
+  unsigned تعداد_2 = 0;
+  لكل (ثابت LookupRecord& r : lookupRecords)
   {
-    if (!lookup_map->has (r.lookupListIndex))
-      continue;
+    إذا (!lookup_map->has (r.lookupListIndex))
+      استمر;
 
-    if (!r.serialize (c, lookup_map))
-      return 0;
+    إذا (!r.serialize (c, lookup_map))
+      إرجاع 0;
 
-    count++;
+    تعداد_2++;
   }
-  return count;
+  إرجاع تعداد_2;
 }
 
-enum ContextFormat { SimpleContext = 1, ClassBasedContext = 2, CoverageBasedContext = 3 };
+تعداد ContextFormat { SimpleContext = 1, ClassBasedContext = 2, CoverageBasedContext = 3 };
 
-static inline const hb_set_t *
+ساكن مضمن ثابت hb_set_t *
 depend_position_glyphs (hb_depend_context_t *c,
 			ContextFormat context_format,
-			const void *data,
+			ثابت فراغ *data,
 			unsigned value,
-			bool filter_class_by_parent,
+			منطقي filter_class_by_parent,
 			hb_set_t *scratch,
 			hb_vector_t<unsigned> *compact_workspace = nullptr)
 {
-  switch (context_format)
+  بدل (context_format)
   {
-    case ContextFormat::SimpleContext:
-      return c->find_or_create_glyph_set (nullptr, value,
+    حالة ContextFormat::SimpleContext:
+      إرجاع c->find_or_create_glyph_set (nullptr, value,
                                            hb_depend_context_t::GLYPH_SET_SINGLE);
-    case ContextFormat::ClassBasedContext:
+    حالة ContextFormat::ClassBasedContext:
     {
-      const hb_set_t *class_set = c->find_or_create_glyph_set (
+      ثابت hb_set_t *class_set = c->find_or_create_glyph_set (
         data, value, hb_depend_context_t::GLYPH_SET_CLASS);
-      if (unlikely (!class_set))
-	return nullptr;
-      if (!filter_class_by_parent)
-	return class_set;
+      إذا (unlikely (!class_set))
+	إرجاع nullptr;
+      إذا (!filter_class_by_parent)
+	إرجاع class_set;
       scratch->set (*class_set);
       scratch->intersect (c->parent_active_glyphs (), compact_workspace);
-      break;
+      اكسر;
     }
-    case ContextFormat::CoverageBasedContext:
-      return c->find_or_create_glyph_set (
+    حالة ContextFormat::CoverageBasedContext:
+      إرجاع c->find_or_create_glyph_set (
         data, value, hb_depend_context_t::GLYPH_SET_COVERAGE);
   }
 
-  if (unlikely (scratch->in_error ()))
+  إذا (unlikely (scratch->in_error ()))
   {
     c->depend_data->fail ();
-    return nullptr;
+    إرجاع nullptr;
   }
-  return scratch;
+  إرجاع scratch;
 }
 
-static inline void context_closure_recurse_lookups (hb_closure_context_t *c,
-					     unsigned inputCount, glyph_data_t input,
-					     unsigned lookupCount,
-					     const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
+ساكن مضمن فراغ context_closure_recurse_lookups (hb_closure_context_t *c,
+					     unsigned إدخال_تعداد, glyph_data_t إدخال,
+					     unsigned lookup_تعداد_2,
+					     ثابت LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
 					     unsigned value,
 					     ContextFormat context_format,
-					     const void *data,
+					     ثابت فراغ *data,
 					     intersected_glyphs_func_t intersected_glyphs_func,
-					     void *cache)
+					     فراغ *cache)
 {
   hb_set_t covered_seq_indicies;
   hb_set_t pos_glyphs;
-  for (unsigned int i = 0; i < lookupCount; i++)
+  لكل (unsigned صحيح i = 0; i < lookup_تعداد_2; i++)
   {
     unsigned seqIndex = lookupRecord[i].sequenceIndex;
-    if (seqIndex >= inputCount) continue;
+    إذا (seqIndex >= إدخال_تعداد) استمر;
 
-    bool has_pos_glyphs = false;
+    منطقي has_pos_glyphs = خطأ;
 
-    if (!covered_seq_indicies.has (seqIndex))
+    إذا (!covered_seq_indicies.has (seqIndex))
     {
       has_pos_glyphs = true;
       pos_glyphs.clear ();
-      if (seqIndex == 0)
+      إذا (seqIndex == 0)
       {
-        switch (context_format) {
-        case ContextFormat::SimpleContext:
+        بدل (context_format) {
+        حالة ContextFormat::SimpleContext:
           pos_glyphs.add (value);
-          break;
-        case ContextFormat::ClassBasedContext:
+          اكسر;
+        حالة ContextFormat::ClassBasedContext:
           intersected_glyphs_func (&c->parent_active_glyphs (), data, value, &pos_glyphs, cache);
-          break;
-        case ContextFormat::CoverageBasedContext:
+          اكسر;
+        حالة ContextFormat::CoverageBasedContext:
           pos_glyphs.set (c->parent_active_glyphs ());
-          break;
+          اكسر;
         }
       }
-      else
+      وإلا
       {
-        const void *input_data = input.data;
-        unsigned input_value = seqIndex - 1;
-        if (context_format != ContextFormat::SimpleContext)
+        ثابت فراغ *إدخال_data = إدخال.data;
+        unsigned إدخال_قيمة = seqIndex - 1;
+        إذا (context_format != ContextFormat::SimpleContext)
         {
-          input_data = data;
-          input_value = input[seqIndex - 1];
+          إدخال_data = data;
+          إدخال_قيمة = إدخال[seqIndex - 1];
         }
 
-        intersected_glyphs_func (c->glyphs, input_data, input_value, &pos_glyphs, cache);
+        intersected_glyphs_func (c->glyphs, إدخال_data, إدخال_قيمة, &pos_glyphs, cache);
       }
     }
 
     covered_seq_indicies.add (seqIndex);
-    hb_set_t *cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
-    if (has_pos_glyphs) {
+    hb_set_t *cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs))
+      إرجاع;
+    إذا (has_pos_glyphs) {
       *cur_active_glyphs = std::move (pos_glyphs);
-    } else {
+    } وإلا {
       *cur_active_glyphs = *c->glyphs;
     }
 
-    unsigned endIndex = inputCount;
-    if (context_format == ContextFormat::CoverageBasedContext)
+    unsigned endIndex = إدخال_تعداد;
+    إذا (context_format == ContextFormat::CoverageBasedContext)
       endIndex += 1;
 
     c->recurse (lookupRecord[i].lookupListIndex, &covered_seq_indicies, seqIndex, endIndex);
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 }
 
-static bool
+ساكن منطقي
 context_depend_sets_are_cached (hb_depend_context_t *c,
-				unsigned input_count,
-				unsigned lookup_count,
-				const LookupRecord lookup_records[],
-				const void *rule,
+				unsigned إدخال_تعداد_2,
+				unsigned lookup_تعداد,
+				ثابت LookupRecord lookup_records[],
+				ثابت فراغ *rule,
 				unsigned value,
 				ContextFormat context_format,
-				const void *data,
+				ثابت فراغ *data,
 				hb_vector_t<hb_codepoint_t> *cached_context_sets)
 {
   hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-  bool have_active_idx = false;
-  for (unsigned i = 0; i < lookup_count; i++)
+  منطقي have_active_idx = خطأ;
+  لكل (unsigned i = 0; i < lookup_تعداد; i++)
   {
-    if (lookup_records[i].sequenceIndex >= input_count)
-      continue;
+    إذا (lookup_records[i].sequenceIndex >= إدخال_تعداد_2)
+      استمر;
 
-    if (!have_active_idx)
+    إذا (!have_active_idx)
     {
-      if (unlikely (!c->get_parent_active_glyphs_index (&active_idx)))
-	return false;
+      إذا (unlikely (!c->get_parent_active_glyphs_index (&active_idx)))
+	إرجاع خطأ;
       have_active_idx = true;
     }
 
-    hb_depend_context_t::context_set_cache_key_t key (
+    hb_depend_context_t::context_set_cache_مفتاح_t key (
       rule, &lookup_records[i], data, active_idx, value, context_format);
     hb_codepoint_t *cached_context_set = nullptr;
-    if (!c->context_set_cache.has (key, &cached_context_set))
-      return false;
-    if (unlikely (!cached_context_sets->push_or_fail (*cached_context_set)))
-      return c->depend_data->fail ();
+    إذا (!c->context_set_cache.has (key, &cached_context_set))
+      إرجاع خطأ;
+    إذا (unlikely (!cached_context_sets->ادفع_or_fail (*cached_context_set)))
+      إرجاع c->depend_data->fail ();
   }
   /* A rule with no valid records has no cache entries, and its preparation
    * can still allocate dependency sets in an observable order. */
-  return have_active_idx;
+  إرجاع have_active_idx;
 }
 
-static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
-					     unsigned inputCount, glyph_data_t input,
-					     unsigned lookupCount,
-					     const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
-					     const void *rule,
+ساكن مضمن فراغ context_depend_recurse_lookups (hb_depend_context_t *c,
+					     unsigned إدخال_تعداد, glyph_data_t إدخال,
+					     unsigned lookup_تعداد_2,
+					     ثابت LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
+					     ثابت فراغ *rule,
 					     unsigned value,
 					     ContextFormat context_format,
-					     const void *data,
+					     ثابت فراغ *data,
 					     intersected_glyphs_func_t intersected_glyphs_func,
-					     void *cache,
-					     const hb_set_t &preliminary_context,
-					     const hb_vector_t<const hb_set_t *> *input_position_glyphs,
-					     const hb_vector_t<hb_codepoint_t> *cached_context_sets,
+					     فراغ *cache,
+					     ثابت hb_set_t &preliminary_context,
+					     ثابت hb_vector_t<ثابت hb_set_t *> *إدخال_position_glyphs,
+					     ثابت hb_vector_t<hb_codepoint_t> *cached_context_sets,
 					     hb_depend_context_t::depend_scratch_t *scratch)
 {
   /* For depend graph extraction, we filter active glyphs by InputCoverage constraints
@@ -2476,8 +2476,8 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
    * A rule longer than HB_MAX_CONTEXT_LENGTH never applies during shaping
    * (the apply path rejects it), so skip it here instead of running past
    * the fixed page in add_range(). */
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH))
-    return;
+  إذا (unlikely (إدخال_تعداد > HB_MAX_CONTEXT_LENGTH))
+    إرجاع;
 
   hb_bit_page_t covered_seq_indices;
   hb_set_t &pos_glyphs = scratch->pos_glyphs;
@@ -2485,29 +2485,29 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
   hb_set_t &disjunctive_indices = scratch->disjunctive_indices;
   hb_set_t &filtered_disjunctive_indices = scratch->filtered_disjunctive_indices;
   unsigned cached_context_index = 0;
-  for (unsigned int i = 0; i < lookupCount; i++)
+  لكل (unsigned صحيح i = 0; i < lookup_تعداد_2; i++)
   {
     unsigned seqIndex = lookupRecord[i].sequenceIndex;
-    if (seqIndex >= inputCount)
-      continue;
+    إذا (seqIndex >= إدخال_تعداد)
+      استمر;
 
-    hb_depend_context_t::context_set_cache_key_t context_cache_key;
-    if (unlikely (!c->get_context_set_cache_key (rule, &lookupRecord[i], data, value,
-						 context_format, &context_cache_key)))
-      return;
+    hb_depend_context_t::context_set_cache_مفتاح_t context_cache_مفتاح;
+    إذا (unlikely (!c->get_context_set_cache_مفتاح (rule, &lookupRecord[i], data, value,
+						 context_format, &context_cache_مفتاح)))
+      إرجاع;
 
     hb_codepoint_t context_set_idx;
     hb_codepoint_t *cached_context_set_idx;
-    if (cached_context_sets)
+    إذا (cached_context_sets)
       context_set_idx = (*cached_context_sets)[cached_context_index++];
-    else if (c->context_set_cache.has (context_cache_key, &cached_context_set_idx))
+    وإلا إذا (c->context_set_cache.has (context_cache_مفتاح, &cached_context_set_idx))
       context_set_idx = *cached_context_set_idx;
-    else
+    وإلا
     {
-      if (unlikely (!input_position_glyphs))
+      إذا (unlikely (!إدخال_position_glyphs))
       {
 	c->depend_data->fail ();
-	return;
+	إرجاع;
       }
 
       /* Build position-specific context_set for this lookup. */
@@ -2516,34 +2516,34 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
       filtered_disjunctive_indices.clear ();
 
       /* Process preliminary_context in one pass. */
-      hb_codepoint_t elem = HB_SET_VALUE_INVALID;
-      while (preliminary_context.next (&elem)) {
-	if (!(elem & HB_DEPEND_CONTEXT_SET_FLAG)) {
+      hb_codepoint_t elem = HB_SET_قيمة_INVALID;
+      بينما (preliminary_context.next (&elem)) {
+	إذا (!(elem & HB_DEPEND_CONTEXT_SET_FLAG)) {
 	  /* Direct glyph */
 	  position_context.add (elem);
-	} else {
+	} وإلا {
 	  /* Encoded set reference - defer processing until we have all direct requirements */
 	  disjunctive_indices.add (elem);
 	}
       }
 
       /* Add singleton glyphs from OTHER input positions. */
-      for (unsigned j = 0; j < input_position_glyphs->length; j++) {
-	if (j != seqIndex && (*input_position_glyphs)[j]->get_population () == 1) {
-	  position_context.add ((*input_position_glyphs)[j]->get_min ());
+      لكل (unsigned j = 0; j < إدخال_position_glyphs->length; j++) {
+	إذا (j != seqIndex && (*إدخال_position_glyphs)[j]->get_population () == 1) {
+	  position_context.add ((*إدخال_position_glyphs)[j]->get_min ());
 	}
       }
 
       /* Now position_context has all direct requirements.
        * Process deferred encoded sets and filter them. */
-      elem = HB_SET_VALUE_INVALID;
-      while (disjunctive_indices.next (&elem)) {
+      elem = HB_SET_قيمة_INVALID;
+      بينما (disjunctive_indices.next (&elem)) {
 	hb_codepoint_t set_idx = elem & 0x7FFFFFFF;
-	const hb_set_t *original_set = c->depend_data->get_set_from_index (set_idx);
-	if (unlikely (!original_set)) continue;
+	ثابت hb_set_t *original_set = c->depend_data->get_set_from_index (set_idx);
+	إذا (unlikely (!original_set)) استمر;
 
 	/* Dependency context sets are never inverted. */
-	if (!original_set->intersects (position_context)) {
+	إذا (!original_set->intersects (position_context)) {
 	  /* No overlap with position_context - add full requirement */
 	  filtered_disjunctive_indices.add (elem);
 	}
@@ -2554,18 +2554,18 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
       }
 
       /* Process non-singleton input positions. */
-      for (unsigned j = 0; j < input_position_glyphs->length; j++) {
-	if (j != seqIndex && (*input_position_glyphs)[j]->get_population () > 1) {
+      لكل (unsigned j = 0; j < إدخال_position_glyphs->length; j++) {
+	إذا (j != seqIndex && (*إدخال_position_glyphs)[j]->get_population () > 1) {
 	  /* Input-position sets are also never inverted. */
-	  if (!(*input_position_glyphs)[j]->intersects (position_context)) {
+	  إذا (!(*إدخال_position_glyphs)[j]->intersects (position_context)) {
 	    /* No overlap with position_context - add full requirement */
-	    bool cached_set = context_format == ContextFormat::CoverageBasedContext ||
+	    منطقي cached_set = context_format == ContextFormat::CoverageBasedContext ||
 			      (context_format == ContextFormat::ClassBasedContext && j != 0);
 	    hb_codepoint_t idx = cached_set
-	      ? c->find_or_create_cached_context_set ((*input_position_glyphs)[j])
-	      : c->depend_data->find_or_create_context_set (*(*input_position_glyphs)[j]);
-	    if (unlikely (idx == HB_CODEPOINT_INVALID))
-	      return;
+	      ? c->find_or_create_cached_context_set ((*إدخال_position_glyphs)[j])
+	      : c->depend_data->find_or_create_context_set (*(*إدخال_position_glyphs)[j]);
+	    إذا (unlikely (idx == HB_CODEPOINT_INVALID))
+	      إرجاع;
 	    filtered_disjunctive_indices.add (HB_DEPEND_CONTEXT_SET_FLAG | idx);
 	  }
 	  /* Otherwise: position_context intersects, requirement satisfied */
@@ -2574,24 +2574,24 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
 
       /* Combine direct + disjunctive. */
       position_context.union_ (filtered_disjunctive_indices);
-      if (unlikely (position_context.in_error () ||
+      إذا (unlikely (position_context.in_error () ||
 		    filtered_disjunctive_indices.in_error ()))
       {
 	c->depend_data->fail ();
-	return;
+	إرجاع;
       }
 
       context_set_idx = position_context.is_empty ()
 	? HB_CODEPOINT_INVALID
 	: c->depend_data->find_or_create_context_set (position_context);
-      if (unlikely (!position_context.is_empty () &&
+      إذا (unlikely (!position_context.is_empty () &&
 		    context_set_idx == HB_CODEPOINT_INVALID))
-	return;
+	إرجاع;
 
-      if (unlikely (!c->context_set_cache.set (context_cache_key, context_set_idx)))
+      إذا (unlikely (!c->context_set_cache.set (context_cache_مفتاح, context_set_idx)))
       {
 	c->depend_data->fail ();
-	return;
+	إرجاع;
       }
     }
 
@@ -2604,7 +2604,7 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
     /* Detect nested contextual: if we already have a context set, we're inside
      * an outer contextual rule that called this one. The outer context will be
      * lost, so edges created here may over-approximate. */
-    bool nested_contextual = (saved_context_set_index != HB_CODEPOINT_INVALID);
+    منطقي nested_contextual = (saved_context_set_index != HB_CODEPOINT_INVALID);
 
     /* Set for this position's edges */
     c->depend_data->current_context_set_index = context_set_idx;
@@ -2618,79 +2618,79 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
      * immediately consumes it as an "intermediate"). So a glyph matching the
      * coverage might not persist at that position when closure traverses. */
     c->depend_data->current_edge_flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE;
-    if (inputCount > 1) {
+    إذا (إدخال_تعداد > 1) {
       c->depend_data->current_edge_flags |= HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION;
     }
-    if (nested_contextual) {
+    إذا (nested_contextual) {
       c->depend_data->current_edge_flags |= HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT;
     }
 
-    bool has_pos_glyphs = false;
+    منطقي has_pos_glyphs = خطأ;
 
-    if (!covered_seq_indices.has (seqIndex))
+    إذا (!covered_seq_indices.has (seqIndex))
     {
       has_pos_glyphs = true;
       pos_glyphs.clear ();
-      if (seqIndex == 0)
+      إذا (seqIndex == 0)
       {
-        switch (context_format) {
-        case ContextFormat::SimpleContext:
+        بدل (context_format) {
+        حالة ContextFormat::SimpleContext:
           pos_glyphs.add (value);
-          break;
-        case ContextFormat::ClassBasedContext:
+          اكسر;
+        حالة ContextFormat::ClassBasedContext:
           intersected_glyphs_func (&c->parent_active_glyphs (), data, value, &pos_glyphs, cache);
-          break;
-        case ContextFormat::CoverageBasedContext:
+          اكسر;
+        حالة ContextFormat::CoverageBasedContext:
           pos_glyphs.set (c->parent_active_glyphs ());
-          break;
+          اكسر;
         }
       }
-      else
+      وإلا
       {
-        const void *input_data = input.data;
-        unsigned input_value = seqIndex - 1;
-        if (context_format != ContextFormat::SimpleContext)
+        ثابت فراغ *إدخال_data = إدخال.data;
+        unsigned إدخال_قيمة = seqIndex - 1;
+        إذا (context_format != ContextFormat::SimpleContext)
         {
-          input_data = data;
-          input_value = input[seqIndex - 1];
+          إدخال_data = data;
+          إدخال_قيمة = إدخال[seqIndex - 1];
         }
 
-        intersected_glyphs_func (c->glyphs, input_data, input_value, &pos_glyphs, cache);
+        intersected_glyphs_func (c->glyphs, إدخال_data, إدخال_قيمة, &pos_glyphs, cache);
       }
     }
 
     covered_seq_indices.add (seqIndex);
-    if (has_pos_glyphs)
+    إذا (has_pos_glyphs)
     {
       hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-      if (context_format == ContextFormat::SimpleContext)
+      إذا (context_format == ContextFormat::SimpleContext)
       {
 	hb_codepoint_t glyph = seqIndex ? pos_glyphs.get_min () : value;
-	if (likely (glyph < hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG))
+	إذا (likely (glyph < hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG))
 	  active_idx = glyph | hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG;
       }
-      hb_set_t *cur_active_glyphs = c->push_cur_active_glyphs (active_idx);
-      if (unlikely (!cur_active_glyphs))
+      hb_set_t *cur_active_glyphs = c->ادفع_cur_active_glyphs (active_idx);
+      إذا (unlikely (!cur_active_glyphs))
       {
 	c->depend_data->current_context_set_index = saved_context_set_index;
 	c->depend_data->current_edge_flags = saved_edge_flags;
-	return;
+	إرجاع;
       }
       *cur_active_glyphs = std::move (pos_glyphs);
     }
-    else if (unlikely (!c->push_root_active_glyphs ()))
+    وإلا إذا (unlikely (!c->ادفع_جذر_active_glyphs ()))
     {
       c->depend_data->current_context_set_index = saved_context_set_index;
       c->depend_data->current_edge_flags = saved_edge_flags;
-      return;
+      إرجاع;
     }
 
-    unsigned endIndex = inputCount;
-    if (context_format == ContextFormat::CoverageBasedContext)
+    unsigned endIndex = إدخال_تعداد;
+    إذا (context_format == ContextFormat::CoverageBasedContext)
       endIndex += 1;
 
     c->recurse (lookupRecord[i].lookupListIndex, &covered_seq_indices, seqIndex, endIndex);
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
 
     /* Restore outer context after this lookup, so subsequent lookups in this
      * rule see the original context rather than this lookup's context. */
@@ -2700,56 +2700,56 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
 }
 
 template <typename context_t>
-static inline void recurse_lookups (context_t *c,
-                                    unsigned int lookupCount,
-                                    const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */)
+ساكن مضمن فراغ recurse_lookups (context_t *c,
+                                    unsigned صحيح lookup_تعداد_2,
+                                    ثابت LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */)
 {
-  for (unsigned int i = 0; i < lookupCount; i++)
+  لكل (unsigned صحيح i = 0; i < lookup_تعداد_2; i++)
     c->recurse (lookupRecord[i].lookupListIndex);
 }
 
-static inline void apply_lookup (hb_ot_apply_context_t *c,
-				 unsigned int count, /* Including the first glyph */
-				 unsigned int lookupCount,
-				 const LookupRecord lookupRecord[], /* Array of LookupRecords--in design order */
-				 unsigned int match_end)
+ساكن مضمن فراغ apply_lookup (hb_ot_apply_context_t *c,
+				 unsigned صحيح تعداد_2, /* Including the first glyph */
+				 unsigned صحيح lookup_تعداد_2,
+				 ثابت LookupRecord lookupRecord[], /* Array of LookupRecords--in design order */
+				 unsigned صحيح match_end)
 {
   hb_buffer_t *buffer = c->buffer;
-  int end;
+  صحيح end;
 
   /* All positions are distance from beginning of *output* buffer.
    * Adjust. */
   {
-    unsigned int bl = buffer->backtrack_len ();
+    unsigned صحيح bl = buffer->backtrack_len ();
     end = bl + match_end - buffer->idx;
 
-    int delta = bl - buffer->idx;
+    صحيح delta = bl - buffer->idx;
     /* Convert positions to new indexing. */
-    for (unsigned int j = 0; j < count; j++)
+    لكل (unsigned صحيح j = 0; j < تعداد_2; j++)
       c->match_positions.arrayZ[j] += delta;
   }
 
-  for (unsigned int i = 0; i < lookupCount && buffer->successful; i++)
+  لكل (unsigned صحيح i = 0; i < lookup_تعداد_2 && buffer->successful; i++)
   {
-    unsigned int idx = lookupRecord[i].sequenceIndex;
-    if (idx >= count)
-      continue;
+    unsigned صحيح idx = lookupRecord[i].sequenceIndex;
+    إذا (idx >= تعداد_2)
+      استمر;
 
-    unsigned int orig_len = buffer->backtrack_len () + buffer->lookahead_len ();
+    unsigned صحيح orig_len = buffer->backtrack_len () + buffer->lookahead_len ();
 
     /* This can happen if earlier recursed lookups deleted many entries. */
-    if (unlikely (c->match_positions.arrayZ[idx] >= orig_len))
-      continue;
+    إذا (unlikely (c->match_positions.arrayZ[idx] >= orig_len))
+      استمر;
 
-    if (unlikely (!buffer->move_to (c->match_positions.arrayZ[idx])))
-      break;
+    إذا (unlikely (!buffer->move_to (c->match_positions.arrayZ[idx])))
+      اكسر;
 
-    if (unlikely (buffer->max_ops <= 0))
-      break;
+    إذا (unlikely (buffer->max_ops <= 0))
+      اكسر;
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    إذا (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
-      if (buffer->have_output)
+      إذا (buffer->have_output)
         c->buffer->sync_so_far ();
       c->buffer->message (c->font,
 			  "start recursing to lookup %u at %u",
@@ -2757,25 +2757,25 @@ static inline void apply_lookup (hb_ot_apply_context_t *c,
 			  buffer->idx);
     }
 
-    bool ret = c->recurse (lookupRecord[i].lookupListIndex);
+    منطقي ret = c->recurse (lookupRecord[i].lookupListIndex);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    إذا (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
-      if (buffer->have_output)
+      إذا (buffer->have_output)
         c->buffer->sync_so_far ();
       c->buffer->message (c->font,
 			  "end recursing to lookup %u",
 			  (unsigned) lookupRecord[i].lookupListIndex);
     }
 
-    if (!ret)
-      continue;
+    إذا (!ret)
+      استمر;
 
-    unsigned int new_len = buffer->backtrack_len () + buffer->lookahead_len ();
-    int delta = new_len - orig_len;
+    unsigned صحيح new_len = buffer->backtrack_len () + buffer->lookahead_len ();
+    صحيح delta = new_len - orig_len;
 
-    if (!delta)
-      continue;
+    إذا (!delta)
+      استمر;
 
     /* Recursed lookup changed buffer len.  Adjust.
      *
@@ -2802,7 +2802,7 @@ static inline void apply_lookup (hb_ot_apply_context_t *c,
      */
 
     end += delta;
-    if (end < int (c->match_positions.arrayZ[idx]))
+    إذا (end < صحيح (c->match_positions.arrayZ[idx]))
     {
       /* End might end up being smaller than match_positions.arrayZ[idx] if the recursed
        * lookup ended up removing many items.
@@ -2816,96 +2816,96 @@ static inline void apply_lookup (hb_ot_apply_context_t *c,
       end = c->match_positions.arrayZ[idx];
     }
 
-    unsigned int next = idx + 1; /* next now is the position after the recursed lookup. */
+    unsigned صحيح next = idx + 1; /* next now is the position after the recursed lookup. */
 
-    if (delta > 0)
+    إذا (delta > 0)
     {
-      if (unlikely (delta + count > HB_MAX_CONTEXT_LENGTH))
-	break;
-      if (unlikely (count + delta > c->match_positions.length &&
-		    !c->match_positions.resize_dirty  (count + delta)))
-        return;
+      إذا (unlikely (delta + تعداد_2 > HB_MAX_CONTEXT_LENGTH))
+	اكسر;
+      إذا (unlikely (تعداد_2 + delta > c->match_positions.length &&
+		    !c->match_positions.resize_dirty  (تعداد_2 + delta)))
+        إرجاع;
     }
-    else
+    وإلا
     {
       /* NOTE: delta is non-positive. */
-      delta = hb_max (delta, (int) next - (int) count);
+      delta = hb_max (delta, (صحيح) next - (صحيح) تعداد_2);
       next -= delta;
     }
 
     /* Shift! */
     memmove (c->match_positions + next + delta, c->match_positions + next,
-	     (count - next) * sizeof (c->match_positions.arrayZ[0]));
+	     (تعداد_2 - next) * حجم (c->match_positions.arrayZ[0]));
     next += delta;
-    count += delta;
+    تعداد_2 += delta;
 
     /* Fill in new entries. */
-    for (unsigned int j = idx + 1; j < next; j++)
+    لكل (unsigned صحيح j = idx + 1; j < next; j++)
       c->match_positions.arrayZ[j] = c->match_positions.arrayZ[j - 1] + 1;
 
     /* And fixup the rest. */
-    for (; next < count; next++)
+    لكل (; next < تعداد_2; next++)
       c->match_positions.arrayZ[next] += delta;
   }
 
-  assert (end >= 0);
-  (void) buffer->move_to (end);
+  أكد (end >= 0);
+  (فراغ) buffer->move_to (end);
 }
 
 
 
 /* Contextual lookups */
 
-struct ContextClosureLookupContext
+بنية ContextClosureLookupContext
 {
   ContextClosureFuncs funcs;
   ContextFormat context_format;
-  const void *intersects_data;
-  void *intersects_cache;
-  void *intersected_glyphs_cache;
+  ثابت فراغ *intersects_data;
+  فراغ *intersects_cache;
+  فراغ *intersected_glyphs_cache;
 };
 
-typedef ContextClosureLookupContext ContextDependLookupContext;
+تعريفنوع ContextClosureLookupContext ContextDependLookupContext;
 
-struct ContextCollectGlyphsLookupContext
+بنية ContextCollectGlyphsLookupContext
 {
   ContextCollectGlyphsFuncs funcs;
-  const void *collect_data;
+  ثابت فراغ *collect_data;
 };
 
-struct ContextApplyLookupContext
+بنية ContextApplyLookupContext
 {
   ContextApplyFuncs funcs;
-  const void *match_data;
-  get_value_func_t get_value;
+  ثابت فراغ *match_data;
+  get_قيمة_func_t get_قيمة;
 };
 
-static inline bool context_intersects (const hb_set_t *glyphs,
-				       unsigned int inputCount, /* Including the first glyph (not matched) */
-				       glyph_data_t input, /* Array of input values--start with second glyph */
+ساكن مضمن منطقي context_intersects (ثابت hb_set_t *glyphs,
+				       unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+				       glyph_data_t إدخال, /* Array of input values--start with second glyph */
 				       ContextClosureLookupContext &lookup_context)
 {
-  return array_is_subset_of (glyphs,
-			     inputCount ? inputCount - 1 : 0, input,
+  إرجاع array_is_subset_of (glyphs,
+			     إدخال_تعداد ? إدخال_تعداد - 1 : 0, إدخال,
 			     lookup_context.funcs.intersects,
 			     lookup_context.intersects_data,
 			     lookup_context.intersects_cache);
 }
 
-static inline void context_closure_lookup (hb_closure_context_t *c,
-					   unsigned int inputCount, /* Including the first glyph (not matched) */
-					   glyph_data_t input, /* Array of input values--start with second glyph */
-					   unsigned int lookupCount,
-					   const LookupRecord lookupRecord[],
+ساكن مضمن فراغ context_closure_lookup (hb_closure_context_t *c,
+					   unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+					   glyph_data_t إدخال, /* Array of input values--start with second glyph */
+					   unsigned صحيح lookup_تعداد_2,
+					   ثابت LookupRecord lookupRecord[],
 					   unsigned value, /* Index of first glyph in Coverage or Class value in ClassDef table */
 					   ContextClosureLookupContext &lookup_context)
 {
-  if (context_intersects (c->glyphs,
-			  inputCount, input,
+  إذا (context_intersects (c->glyphs,
+			  إدخال_تعداد, إدخال,
 			  lookup_context))
     context_closure_recurse_lookups (c,
-				     inputCount, input,
-				     lookupCount, lookupRecord,
+				     إدخال_تعداد, إدخال,
+				     lookup_تعداد_2, lookupRecord,
 				     value,
 				     lookup_context.context_format,
 				     lookup_context.intersects_data,
@@ -2913,73 +2913,73 @@ static inline void context_closure_lookup (hb_closure_context_t *c,
 				     lookup_context.intersected_glyphs_cache);
 }
 
-static inline void context_depend_lookup (hb_depend_context_t *c,
-					  unsigned int inputCount, /* Including the first glyph (not matched) */
-					  glyph_data_t input, /* Array of input values--start with second glyph */
-					  unsigned int lookupCount,
-					  const LookupRecord lookupRecord[],
-					  const void *rule,
+ساكن مضمن فراغ context_depend_lookup (hb_depend_context_t *c,
+					  unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+					  glyph_data_t إدخال, /* Array of input values--start with second glyph */
+					  unsigned صحيح lookup_تعداد_2,
+					  ثابت LookupRecord lookupRecord[],
+					  ثابت فراغ *rule,
 					  unsigned value, /* Index of first glyph in Coverage or Class value in ClassDef table */
 					  ContextDependLookupContext &lookup_context)
 {
-  if (!context_intersects (c->glyphs,
-			   inputCount, input,
+  إذا (!context_intersects (c->glyphs,
+			   إدخال_تعداد, إدخال,
 			   lookup_context))
-    return;
+    إرجاع;
 
   hb_depend_context_t::depend_scratch_t *scratch = c->acquire_depend_scratch ();
-  if (unlikely (!scratch))
-    return;
+  إذا (unlikely (!scratch))
+    إرجاع;
   HB_SCOPE_GUARD (c->release_depend_scratch (scratch));
 
-  bool context_sets_cached = context_depend_sets_are_cached (
-    c, inputCount, lookupCount, lookupRecord, rule, value,
+  منطقي context_sets_cached = context_depend_sets_are_cached (
+    c, إدخال_تعداد, lookup_تعداد_2, lookupRecord, rule, value,
     lookup_context.context_format, lookup_context.intersects_data,
     &scratch->cached_context_sets);
-  if (unlikely (!c->depend_data->successful))
-    return;
+  إذا (unlikely (!c->depend_data->successful))
+    إرجاع;
 
   /* Build preliminary_context (empty for ContextSubst - no backtrack/lookahead) */
   hb_set_t &preliminary_context = scratch->preliminary_context;
 
   /* Build glyph sets for ALL input positions */
   hb_set_t &position_scratch = scratch->position_scratch;
-  hb_vector_t<const hb_set_t *> &input_position_glyphs = scratch->input_position_glyphs;
+  hb_vector_t<ثابت hb_set_t *> &إدخال_position_glyphs = scratch->إدخال_position_glyphs;
 
   /* Cached labels no longer need the expanded input-position sets. */
-  if (!context_sets_cached)
+  إذا (!context_sets_cached)
   {
     /* Position 0 (Coverage glyph) — must be in both the class AND the
      * coverage, so intersect with parent_active_glyphs (= coverage ∩ glyphs
      * set by the ContextFormat2/3 caller). */
-    const hb_set_t *pos0_glyphs = depend_position_glyphs (
+    ثابت hb_set_t *pos0_glyphs = depend_position_glyphs (
       c, lookup_context.context_format, lookup_context.intersects_data, value,
       true, &position_scratch, &scratch->compact_workspace);
-    if (unlikely (!pos0_glyphs ||
-		  !input_position_glyphs.push_or_fail (pos0_glyphs)))
+    إذا (unlikely (!pos0_glyphs ||
+		  !إدخال_position_glyphs.ادفع_or_fail (pos0_glyphs)))
     {
       c->depend_data->fail ();
-      return;
+      إرجاع;
     }
 
     /* Positions 1+ (Input array) */
-    for (unsigned i = 0; i + 1 < inputCount; i++)
+    لكل (unsigned i = 0; i + 1 < إدخال_تعداد; i++)
     {
-      const hb_set_t *pos_glyphs = depend_position_glyphs (
+      ثابت hb_set_t *pos_glyphs = depend_position_glyphs (
 	c, lookup_context.context_format, lookup_context.intersects_data,
-	input[i], false, &position_scratch);
-      if (unlikely (!pos_glyphs ||
-		    !input_position_glyphs.push_or_fail (pos_glyphs)))
+	إدخال[i], خطأ, &position_scratch);
+      إذا (unlikely (!pos_glyphs ||
+		    !إدخال_position_glyphs.ادفع_or_fail (pos_glyphs)))
       {
 	c->depend_data->fail ();
-	return;
+	إرجاع;
       }
     }
   }
 
   context_depend_recurse_lookups (c,
-				  inputCount, input,
-				  lookupCount, lookupRecord,
+				  إدخال_تعداد, إدخال,
+				  lookup_تعداد_2, lookupRecord,
 				  rule,
 				  value,
 				  lookup_context.context_format,
@@ -2987,359 +2987,359 @@ static inline void context_depend_lookup (hb_depend_context_t *c,
 				  lookup_context.funcs.intersected_glyphs,
 				  lookup_context.intersected_glyphs_cache,
 				  preliminary_context,
-				  context_sets_cached ? nullptr : &input_position_glyphs,
+				  context_sets_cached ? nullptr : &إدخال_position_glyphs,
 				  context_sets_cached ? &scratch->cached_context_sets : nullptr,
 				  scratch);
 }
 
-static inline void context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
-						  unsigned int inputCount, /* Including the first glyph (not matched) */
-						  glyph_data_t input, /* Array of input values--start with second glyph */
-						  unsigned int lookupCount,
-						  const LookupRecord lookupRecord[],
+ساكن مضمن فراغ context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
+						  unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+						  glyph_data_t إدخال, /* Array of input values--start with second glyph */
+						  unsigned صحيح lookup_تعداد_2,
+						  ثابت LookupRecord lookupRecord[],
 						  ContextCollectGlyphsLookupContext &lookup_context)
 {
-  collect_array (c, c->input,
-		 inputCount ? inputCount - 1 : 0, input,
+  collect_array (c, c->إدخال,
+		 إدخال_تعداد ? إدخال_تعداد - 1 : 0, إدخال,
 		 lookup_context.funcs.collect, lookup_context.collect_data);
   recurse_lookups (c,
-		   lookupCount, lookupRecord);
+		   lookup_تعداد_2, lookupRecord);
 }
 
-static inline bool context_would_apply_lookup (hb_would_apply_context_t *c,
-					       unsigned int inputCount, /* Including the first glyph (not matched) */
-					       glyph_data_t input, /* Array of input values--start with second glyph */
-					       unsigned int lookupCount HB_UNUSED,
-					       const LookupRecord lookupRecord[] HB_UNUSED,
-					       const ContextApplyLookupContext &lookup_context)
+ساكن مضمن منطقي context_would_apply_lookup (hb_would_apply_context_t *c,
+					       unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+					       glyph_data_t إدخال, /* Array of input values--start with second glyph */
+					       unsigned صحيح lookup_تعداد_2 HB_UNUSED,
+					       ثابت LookupRecord lookupRecord[] HB_UNUSED,
+					       ثابت ContextApplyLookupContext &lookup_context)
 {
-  return would_match_input (c,
-			    inputCount, input,
+  إرجاع would_match_إدخال (c,
+			    إدخال_تعداد, إدخال,
 			    lookup_context.funcs.match, lookup_context.match_data);
 }
 
-static inline bool context_apply_lookup (hb_ot_apply_context_t *c,
-					 unsigned int inputCount, /* Including the first glyph (not matched) */
-					 glyph_data_t input, /* Array of input values--start with second glyph */
-					 unsigned int lookupCount,
-					 const LookupRecord lookupRecord[],
-					 const ContextApplyLookupContext &lookup_context)
+ساكن مضمن منطقي context_apply_lookup (hb_ot_apply_context_t *c,
+					 unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+					 glyph_data_t إدخال, /* Array of input values--start with second glyph */
+					 unsigned صحيح lookup_تعداد_2,
+					 ثابت LookupRecord lookupRecord[],
+					 ثابت ContextApplyLookupContext &lookup_context)
 {
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH)) return false;
+  إذا (unlikely (إدخال_تعداد > HB_MAX_CONTEXT_LENGTH)) إرجاع خطأ;
 
   unsigned match_end = 0;
-  bool ret = false;
-  if (match_input (c,
-		   inputCount, input,
+  منطقي ret = خطأ;
+  إذا (match_إدخال (c,
+		   إدخال_تعداد, إدخال,
 		   lookup_context.funcs.match, lookup_context.match_data,
 		   &match_end))
   {
     c->buffer->unsafe_to_break (c->buffer->idx, match_end);
     apply_lookup (c,
-		  inputCount,
-		  lookupCount, lookupRecord,
+		  إدخال_تعداد,
+		  lookup_تعداد_2, lookupRecord,
 		  match_end);
     ret = true;
   }
-  else
+  وإلا
   {
     c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-    ret = false;
+    ret = خطأ;
   }
 
-  return ret;
+  إرجاع ret;
 }
 
-static inline bool context_cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+ساكن مضمن منطقي context_cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
 {
-  switch (op)
+  بدل (op)
   {
-    case hb_ot_subtable_cache_op_t::ENTER:
+    حالة hb_ot_subtable_cache_op_t::ENTER:
     {
-      if (!HB_BUFFER_TRY_ALLOCATE_VAR (c->buffer, syllable))
-	return false;
+      إذا (!HB_BUFFER_TRY_ALLOCATE_VAR (c->buffer, syllable))
+	إرجاع خطأ;
       auto &info = c->buffer->info;
-      unsigned count = c->buffer->len;
-      for (unsigned i = 0; i < count; i++)
+      unsigned تعداد_2 = c->buffer->len;
+      لكل (unsigned i = 0; i < تعداد_2; i++)
 	info[i].syllable() = 255;
       c->new_syllables = 255;
-      return true;
+      إرجاع true;
     }
-    case hb_ot_subtable_cache_op_t::LEAVE:
+    حالة hb_ot_subtable_cache_op_t::LEAVE:
     {
       c->new_syllables = (unsigned) -1;
       HB_BUFFER_DEALLOCATE_VAR (c->buffer, syllable);
-      break;
+      اكسر;
     }
   }
-  return false;
+  إرجاع خطأ;
 }
 
 template <typename Types>
-struct Rule
+بنية Rule
 {
   template <typename SetTypes, typename RuleType>
-  friend struct RuleSetOf;
+  friend بنية RuleSetOf;
 
-  bool intersects (const hb_set_t *glyphs, ContextClosureLookupContext &lookup_context) const
+  منطقي intersects (ثابت hb_set_t *glyphs, ContextClosureLookupContext &lookup_context) ثابت
   {
-    return context_intersects (glyphs,
-			       inputCount, inputZ.arrayZ,
+    إرجاع context_intersects (glyphs,
+			       إدخال_تعداد, إدخال_Z.arrayZ,
 			       lookup_context);
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) const
+  فراغ depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) ثابت
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    ثابت auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (إدخال_Z.as_array ((إدخال_تعداد ? إدخال_تعداد - 1 : 0)));
     context_depend_lookup (c,
-			   inputCount, inputZ.arrayZ,
-			   lookupCount, lookupRecord.arrayZ,
-			   this,
+			   إدخال_تعداد, إدخال_Z.arrayZ,
+			   lookup_تعداد_2, lookupRecord.arrayZ,
+			   هذا,
 			   value, lookup_context);
   }
 
-  void closure (hb_closure_context_t *c, unsigned value, ContextClosureLookupContext &lookup_context) const
+  فراغ closure (hb_closure_context_t *c, unsigned value, ContextClosureLookupContext &lookup_context) ثابت
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    إذا (unlikely (c->lookup_limit_exceeded ())) إرجاع;
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    ثابت auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (إدخال_Z.as_array ((إدخال_تعداد ? إدخال_تعداد - 1 : 0)));
     context_closure_lookup (c,
-			    inputCount, inputZ.arrayZ,
-			    lookupCount, lookupRecord.arrayZ,
+			    إدخال_تعداد, إدخال_Z.arrayZ,
+			    lookup_تعداد_2, lookupRecord.arrayZ,
 			    value, lookup_context);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ContextClosureLookupContext &lookup_context) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c,
+                        ContextClosureLookupContext &lookup_context) ثابت
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-    if (!intersects (c->glyphs, lookup_context)) return;
+    إذا (unlikely (c->lookup_limit_exceeded ())) إرجاع;
+    إذا (!intersects (c->glyphs, lookup_context)) إرجاع;
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    recurse_lookups (c, lookupCount, lookupRecord.arrayZ);
+    ثابت auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (إدخال_Z.as_array (إدخال_تعداد ? إدخال_تعداد - 1 : 0));
+    recurse_lookups (c, lookup_تعداد_2, lookupRecord.arrayZ);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ContextCollectGlyphsLookupContext &lookup_context) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ContextCollectGlyphsLookupContext &lookup_context) ثابت
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
+    ثابت auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (إدخال_Z.as_array (إدخال_تعداد ? إدخال_تعداد - 1 : 0));
     context_collect_glyphs_lookup (c,
-				   inputCount, inputZ.arrayZ,
-				   lookupCount, lookupRecord.arrayZ,
+				   إدخال_تعداد, إدخال_Z.arrayZ,
+				   lookup_تعداد_2, lookupRecord.arrayZ,
 				   lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *class_def = nullptr) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest,
+			      ثابت ClassDef *class_def = nullptr) ثابت
   {
-    if (inputCount <= 1)
+    إذا (إدخال_تعداد <= 1)
     {
       *digest = hb_set_digest_t::full ();
-      return;
+      إرجاع;
     }
 
-    unsigned second = inputZ.arrayZ[0];
-    if (!class_def)
+    unsigned second = إدخال_Z.arrayZ[0];
+    إذا (!class_def)
       digest->add (second);
-    else if (!second)
+    وإلا إذا (!second)
       *digest = hb_set_digest_t::full ();
-    else
+    وإلا
       class_def->collect_class (digest, second);
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ContextApplyLookupContext &lookup_context) const
+  منطقي would_apply (hb_would_apply_context_t *c,
+		    ثابت ContextApplyLookupContext &lookup_context) ثابت
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    return context_would_apply_lookup (c,
-				       inputCount, inputZ.arrayZ,
-				       lookupCount, lookupRecord.arrayZ,
+    ثابت auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (إدخال_Z.as_array (إدخال_تعداد ? إدخال_تعداد - 1 : 0));
+    إرجاع context_would_apply_lookup (c,
+				       إدخال_تعداد, إدخال_Z.arrayZ,
+				       lookup_تعداد_2, lookupRecord.arrayZ,
 				       lookup_context);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ContextApplyLookupContext &lookup_context) const
+  منطقي apply (hb_ot_apply_context_t *c,
+	      ثابت ContextApplyLookupContext &lookup_context) ثابت
   {
-    TRACE_APPLY (this);
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    return_trace (context_apply_lookup (c, inputCount, inputZ.arrayZ, lookupCount, lookupRecord.arrayZ, lookup_context));
+    TRACE_APPLY (هذا);
+    ثابت auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (إدخال_Z.as_array (إدخال_تعداد ? إدخال_تعداد - 1 : 0));
+    return_trace (context_apply_lookup (c, إدخال_تعداد, إدخال_Z.arrayZ, lookup_تعداد_2, lookupRecord.arrayZ, lookup_context));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t *input_mapping, /* old->new glyphid or class mapping */
-		  const hb_map_t *lookup_map) const
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت hb_map_t *إدخال_mapping, /* old->new glyphid or class mapping */
+		  ثابت hb_map_t *lookup_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    auto *out = c->start_embed (هذا);
+    إذا (unlikely (!c->extend_min (out))) return_trace (خطأ);
 
-    out->inputCount = inputCount;
-    const auto input = inputZ.as_array (inputCount - 1);
-    for (const auto org : input)
+    out->إدخال_تعداد = إدخال_تعداد;
+    ثابت auto إدخال = إدخال_Z.as_array (إدخال_تعداد - 1);
+    لكل (ثابت auto org : إدخال)
     {
       typename Types::HBUINT d;
-      d = input_mapping->get (org);
+      d = إدخال_mapping->get (org);
       c->copy (d);
     }
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    ثابت auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (إدخال_Z.as_array ((إدخال_تعداد ? إدخال_تعداد - 1 : 0)));
 
-    unsigned count = serialize_lookuprecord_array (c, lookupRecord.as_array (lookupCount), lookup_map);
-    return_trace (c->check_assign (out->lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned تعداد_2 = serialize_lookuprecord_array (c, lookupRecord.as_array (lookup_تعداد_2), lookup_map);
+    return_trace (c->check_assign (out->lookup_تعداد_2, تعداد_2, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *klass_map = nullptr) const
+  منطقي subset (hb_subset_context_t *c,
+	       ثابت hb_map_t *lookup_map,
+	       ثابت hb_map_t *klass_map = nullptr) ثابت
   {
-    TRACE_SUBSET (this);
-    if (unlikely (!inputCount)) return_trace (false);
-    const auto input = inputZ.as_array (inputCount - 1);
+    TRACE_SUBSET (هذا);
+    إذا (unlikely (!إدخال_تعداد)) return_trace (خطأ);
+    ثابت auto إدخال = إدخال_Z.as_array (إدخال_تعداد - 1);
 
-    const hb_map_t *mapping = klass_map == nullptr ? c->plan->glyph_map : klass_map;
-    if (!hb_all (input, mapping)) return_trace (false);
+    ثابت hb_map_t *mapping = klass_map == nullptr ? c->plan->glyph_map : klass_map;
+    إذا (!hb_all (إدخال, mapping)) return_trace (خطأ);
     return_trace (serialize (c->serializer, mapping, lookup_map));
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  عام:
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  c->check_range (inputZ.arrayZ,
-				  inputZ.item_size * (inputCount ? inputCount - 1 : 0) +
-				  LookupRecord::static_size * lookupCount));
+		  c->check_range (إدخال_Z.arrayZ,
+				  إدخال_Z.item_size * (إدخال_تعداد ? إدخال_تعداد - 1 : 0) +
+				  LookupRecord::static_size * lookup_تعداد_2));
   }
 
-  protected:
-  HBUINT16	inputCount;		/* Total number of glyphs in input
+  محمي:
+  HBUINT16	إدخال_تعداد;		/* Total number of glyphs in input
 					 * glyph sequence--includes the first
 					 * glyph */
-  HBUINT16	lookupCount;		/* Number of LookupRecords */
+  HBUINT16	lookup_تعداد_2;		/* Number of LookupRecords */
   UnsizedArrayOf<typename Types::HBUINT>
-		inputZ;			/* Array of match inputs--start with
+		إدخال_Z;			/* Array of match inputs--start with
 					 * second glyph */
 /*UnsizedArrayOf<LookupRecord>
 		lookupRecordX;*/	/* Array of LookupRecords--in
 					 * design order */
-  public:
-  DEFINE_SIZE_ARRAY (4, inputZ);
+  عام:
+  DEFINE_SIZE_ARRAY (4, إدخال_Z);
 };
 
 template <typename Types, typename RuleType>
-struct RuleSetOf
+بنية RuleSetOf
 {
-  bool intersects (const hb_set_t *glyphs,
-		   ContextClosureLookupContext &lookup_context) const
+  منطقي intersects (ثابت hb_set_t *glyphs,
+		   ContextClosureLookupContext &lookup_context) ثابت
   {
-    return
+    إرجاع
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleType &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_map ([&] (ثابت RuleType &_) { إرجاع _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  void collect_first_input_classes (hb_ot_layout_ruleset_digest_t *digest) const
+  فراغ collect_first_إدخال_classes (hb_ot_layout_ruleset_digest_t *digest) ثابت
   {
     digest->init ();
-    for (unsigned i = 0; i < rule.len; i++)
+    لكل (unsigned i = 0; i < rule.len; i++)
     {
-      const RuleType &r = this+rule.arrayZ[i];
-      if (r.inputCount <= 1)
+      ثابت RuleType &r = هذا+rule.arrayZ[i];
+      إذا (r.إدخال_تعداد <= 1)
       {
 	digest->set_full ();
-	return;
+	إرجاع;
       }
-      digest->add (r.inputZ.arrayZ[0]);
+      digest->add (r.إدخال_Z.arrayZ[0]);
     }
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) const
+  فراغ depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) ثابت
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.depend (c, value, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت RuleType &_) { _.depend (c, value, lookup_context); })
     ;
   }
 
-  void closure (hb_closure_context_t *c, unsigned value,
-		ContextClosureLookupContext &lookup_context) const
+  فراغ closure (hb_closure_context_t *c, unsigned value,
+		ContextClosureLookupContext &lookup_context) ثابت
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    إذا (unlikely (c->lookup_limit_exceeded ())) إرجاع;
 
-    return
+    إرجاع
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.closure (c, value, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت RuleType &_) { _.closure (c, value, lookup_context); })
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ContextClosureLookupContext &lookup_context) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c,
+                        ContextClosureLookupContext &lookup_context) ثابت
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    إذا (unlikely (c->lookup_limit_exceeded ())) إرجاع;
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت RuleType &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ContextCollectGlyphsLookupContext &lookup_context) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ContextCollectGlyphsLookupContext &lookup_context) ثابت
   {
-    return
+    إرجاع
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت RuleType &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *class_def = nullptr) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest,
+			      ثابت ClassDef *class_def = nullptr) ثابت
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const RuleType &_) { _.collect_second_glyphs (digest, class_def); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([=] (ثابت RuleType &_) { _.collect_second_glyphs (digest, class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ContextApplyLookupContext &lookup_context) const
+  منطقي would_apply (hb_would_apply_context_t *c,
+		    ثابت ContextApplyLookupContext &lookup_context) ثابت
   {
-    return
+    إرجاع
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleType &_) { return _.would_apply (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_map ([&] (ثابت RuleType &_) { إرجاع _.would_apply (c, lookup_context); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ContextApplyLookupContext &lookup_context,
-	      const hb_ot_layout_ruleset_digest_t *digest = nullptr) const
+  منطقي apply (hb_ot_apply_context_t *c,
+	      ثابت ContextApplyLookupContext &lookup_context,
+	      ثابت hb_ot_layout_ruleset_digest_t *digest = nullptr) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    unsigned num_rules = rule.len;
+    unsigned رقم_rules = rule.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_rules <= 4)
+    إذا (HB_OPTIMIZE_SIZE_VAL || رقم_rules <= 4)
 #endif
     {
     slow:
       return_trace (
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const RuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map (hb_add (هذا))
+      | hb_map ([&] (ثابت RuleType &_) { إرجاع _.apply (c, lookup_context); })
       | hb_any
       )
       ;
@@ -3361,189 +3361,189 @@ struct RuleSetOf
     skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
     unsigned unsafe_to = (unsigned) -1, unsafe_to1, unsafe_to2 = 0;
     hb_glyph_info_t *first = nullptr, *second = nullptr;
-    bool matched = skippy_iter.next (&unsafe_to1);
-    if (likely (matched))
+    منطقي matched = skippy_iter.next (&unsafe_to1);
+    إذا (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      إذا (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        اذهب slow;
       }
 
       first = &c->buffer->info[skippy_iter.idx];
       unsafe_to1 = skippy_iter.idx + 1;
 
-      if (digest && lookup_context.get_value &&
-	  !digest->may_have (lookup_context.get_value (*first, lookup_context.match_data)))
+      إذا (digest && lookup_context.get_قيمة &&
+	  !digest->may_have (lookup_context.get_قيمة (*first, lookup_context.match_data)))
 	{
 	  c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
-	  return_trace (false);
+	  return_trace (خطأ);
 	}
     }
-    else
+    وإلا
     {
-      bool unsafe_to_concat = false;
-      bool ret =
+      منطقي unsafe_to_concat = خطأ;
+      منطقي ret =
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_filter ([&] (const RuleType &_)
+      | hb_map (hb_add (هذا))
+      | hb_filter ([&] (ثابت RuleType &_)
 		   {
-		     if (_.inputCount <= 1) return true;
+		     إذا (_.إدخال_تعداد <= 1) إرجاع true;
 		     unsafe_to_concat = true;
-		     return false;
+		     إرجاع خطأ;
 		   })
-      | hb_map ([&] (const RuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map ([&] (ثابت RuleType &_) { إرجاع _.apply (c, lookup_context); })
       | hb_any
       ;
-      if (unsafe_to_concat)
+      إذا (unsafe_to_concat)
 	c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
       return_trace (ret);
     }
     matched = skippy_iter.next ();
-    if (likely (matched))
+    إذا (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      إذا (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        اذهب slow;
       }
 
       second = &c->buffer->info[skippy_iter.idx];
       unsafe_to2 = skippy_iter.idx + 1;
     }
 
-    auto match_input = lookup_context.funcs.match;
-    auto *input_data = lookup_context.match_data;
-    for (unsigned int i = 0; i < num_rules; i++)
+    auto match_إدخال = lookup_context.funcs.match;
+    auto *إدخال_data = lookup_context.match_data;
+    لكل (unsigned صحيح i = 0; i < رقم_rules; i++)
     {
-      const auto &r = this+rule.arrayZ[i];
+      ثابت auto &r = هذا+rule.arrayZ[i];
 
-      const auto &input = r.inputZ;
+      ثابت auto &إدخال = r.إدخال_Z;
 
-      if (r.inputCount <= 1 ||
-	  (!match_input ||
-	   match_input (*first, input.arrayZ[0], input_data)))
+      إذا (r.إدخال_تعداد <= 1 ||
+	  (!match_إدخال ||
+	   match_إدخال (*first, إدخال.arrayZ[0], إدخال_data)))
       {
-        if (!second ||
-	    (r.inputCount <= 2 ||
-	     (!match_input ||
-	      match_input (*second, input.arrayZ[1], input_data)))
+        إذا (!second ||
+	    (r.إدخال_تعداد <= 2 ||
+	     (!match_إدخال ||
+	      match_إدخال (*second, إدخال.arrayZ[1], إدخال_data)))
 	   )
 	{
-	  if (r.apply (c, lookup_context))
+	  إذا (r.apply (c, lookup_context))
 	  {
-	    if (unsafe_to != (unsigned) -1)
+	    إذا (unsafe_to != (unsigned) -1)
 	      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 	    return_trace (true);
 	  }
 	}
-	else
+	وإلا
 	  unsafe_to = unsafe_to2;
       }
-      else
+      وإلا
       {
-	if (unsafe_to == (unsigned) -1)
+	إذا (unsafe_to == (unsigned) -1)
 	  unsafe_to = unsafe_to1;
 
 	// Skip ahead to next possible first glyph match.
-	for (; i + 1 < num_rules; i++)
+	لكل (; i + 1 < رقم_rules; i++)
 	{
-	  const auto &r2 = this+rule.arrayZ[i + 1];
-	  const auto &input2 = r2.inputZ;
-	  if (r2.inputCount <= 1 || input2.arrayZ[0] != input.arrayZ[0])
-	    break;
+	  ثابت auto &r2 = هذا+rule.arrayZ[i + 1];
+	  ثابت auto &input2 = r2.إدخال_Z;
+	  إذا (r2.إدخال_تعداد <= 1 || input2.arrayZ[0] != إدخال.arrayZ[0])
+	    اكسر;
 	}
       }
     }
-    if (likely (unsafe_to != (unsigned) -1))
+    إذا (likely (unsafe_to != (unsigned) -1))
       c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 
-    return_trace (false);
+    return_trace (خطأ);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *klass_map = nullptr) const
+  منطقي subset (hb_subset_context_t *c,
+	       ثابت hb_map_t *lookup_map,
+	       ثابت hb_map_t *klass_map = nullptr) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
     auto snap = c->serializer->snapshot ();
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
 
-    for (const auto& _ : rule)
+    لكل (ثابت auto& _ : rule)
     {
-      if (!_) continue;
+      إذا (!_) استمر;
       auto o_snap = c->serializer->snapshot ();
       auto *o = out->rule.serialize_append (c->serializer);
-      if (unlikely (!o)) continue;
+      إذا (unlikely (!o)) استمر;
 
-      if (!o->serialize_subset (c, _, this, lookup_map, klass_map))
+      إذا (!o->serialize_subset (c, _, هذا, lookup_map, klass_map))
       {
-	out->rule.pop ();
+	out->rule.اسحب ();
 	c->serializer->revert (o_snap);
       }
     }
 
-    bool ret = bool (out->rule);
-    if (!ret) c->serializer->revert (snap);
+    منطقي ret = منطقي (out->rule);
+    إذا (!ret) c->serializer->revert (snap);
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (rule.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (rule.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   Array16Of<typename Types::template OffsetTo<RuleType>>
 		rule;			/* Array of Rule tables
 					 * ordered by preference */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (2, rule);
 };
 
 template <typename Types>
-struct RuleSet : RuleSetOf<SmallTypes, Rule<Types>> {};
+بنية RuleSet : RuleSetOf<SmallTypes, Rule<Types>> {};
 
 template <typename Types>
-struct ClassRuleSet : RuleSetOf<Types, Rule<SmallTypes>> {};
+بنية ClassRuleSet : RuleSetOf<Types, Rule<SmallTypes>> {};
 
 
 template <typename Types>
-struct ContextFormat1_4
+بنية ContextFormat1_4
 {
   using RuleSet = OT::RuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    struct ContextClosureLookupContext lookup_context = {
+    بنية ContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    return
-    + hb_zip (this+coverage, ruleSet)
+    إرجاع
+    + hb_zip (هذا+coverage, ruleSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleSet &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_map ([&] (ثابت RuleSet &_) { إرجاع _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  منطقي may_have_non_1to1 () ثابت
+  { إرجاع true; }
 
-  void depend (hb_depend_context_t *c) const
+  فراغ depend (hb_depend_context_t *c) ثابت
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
     ContextDependLookupContext lookup_context = {
@@ -3554,139 +3554,139 @@ struct ContextFormat1_4
       nullptr   /* intersected_glyphs_cache */
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (هذا+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->parent_active_glyphs ().has (_);
+      إرجاع c->parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const RuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const RuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
+    | hb_map ([&](ثابت hb_pair_t<hb_codepoint_t, unsigned> _) { إرجاع hb_pair_t<unsigned, ثابت RuleSet&> (_.first, هذا+ruleSet[_.second]); })
+    | hb_apply ([&] (ثابت hb_pair_t<unsigned, ثابت RuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ closure (hb_closure_context_t *c) ثابت
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (), *cur_active_glyphs);
 
-    struct ContextClosureLookupContext lookup_context = {
+    بنية ContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (هذا+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->previous_parent_active_glyphs ().has (_);
+      إرجاع c->previous_parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const RuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const RuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
+    | hb_map ([&](ثابت hb_pair_t<hb_codepoint_t, unsigned> _) { إرجاع hb_pair_t<unsigned, ثابت RuleSet&> (_.first, هذا+ruleSet[_.second]); })
+    | hb_apply ([&] (ثابت hb_pair_t<unsigned, ثابت RuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c) ثابت
   {
-    struct ContextClosureLookupContext lookup_context = {
+    بنية ContextClosureLookupContext lookup_context = {
       {intersects_glyph, nullptr},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (هذا+coverage, ruleSet)
     | hb_filter (*c->glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت RuleSet &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    (this+coverage).collect_coverage (c->input);
+    (هذا+coverage).collect_coverage (c->إدخال);
 
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    بنية ContextCollectGlyphsLookupContext lookup_context = {
       {collect_glyph},
       nullptr
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت RuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest) ثابت
   {
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest] (const RuleSet &_) { _.collect_second_glyphs (digest); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([digest] (ثابت RuleSet &_) { _.collect_second_glyphs (digest); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
   {
-    const RuleSet &rule_set = this+ruleSet[(this+coverage).get_coverage (c->glyphs[0])];
-    struct ContextApplyLookupContext lookup_context = {
+    ثابت RuleSet &rule_set = هذا+ruleSet[(هذا+coverage).get_coverage (c->glyphs[0])];
+    بنية ContextApplyLookupContext lookup_context = {
       {match_glyph},
       nullptr
     };
-    return rule_set.would_apply (c, lookup_context);
+    إرجاع rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { إرجاع هذا+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (likely (index == NOT_COVERED))
-      return_trace (false);
+    TRACE_APPLY (هذا);
+    unsigned صحيح index = (هذا+coverage).get_coverage (c->buffer->cur().codepoint);
+    إذا (likely (index == NOT_COVERED))
+      return_trace (خطأ);
 
-    const RuleSet &rule_set = this+ruleSet[index];
-    struct ContextApplyLookupContext lookup_context = {
+    ثابت RuleSet &rule_set = هذا+ruleSet[index];
+    بنية ContextApplyLookupContext lookup_context = {
       {match_glyph},
       nullptr
     };
     return_trace (rule_set.apply (c, lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (هذا);
+    ثابت hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
     out->format = format;
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    ثابت hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (هذا+coverage, ruleSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ruleSet, this, lookup_map), hb_second)
+    | hb_filter (subset_offset_array (c, out->ruleSet, هذا, lookup_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    return_trace (منطقي (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (coverage.sanitize (c, هذا) && ruleSet.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;			/* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -3694,25 +3694,25 @@ struct ContextFormat1_4
   typename Types::template ArrayOf<typename Types::template OffsetTo<RuleSet>>
 		ruleSet;		/* Array of RuleSet tables
 					 * ordered by Coverage Index */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
 };
 
 
 template <typename Types>
-struct ContextFormat2_5
+بنية ContextFormat2_5
 {
   using RuleSet = OT::ClassRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    إذا (!(هذا+coverage).intersects (glyphs))
+      إرجاع خطأ;
 
-    const ClassDef &class_def = this+classDef;
+    ثابت ClassDef &class_def = هذا+classDef;
 
     hb_map_t cache;
-    struct ContextClosureLookupContext lookup_context = {
+    بنية ContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3720,37 +3720,37 @@ struct ContextFormat2_5
     };
 
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
+    (هذا+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
     class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
 
-    return
+    إرجاع
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (هذا))
     | hb_enumerate
-    | hb_map ([&] (const hb_pair_t<unsigned, const RuleSet &> p)
-	      { return class_def.intersects_class (glyphs, p.first) &&
+    | hb_map ([&] (ثابت hb_pair_t<unsigned, ثابت RuleSet &> p)
+	      { إرجاع class_def.intersects_class (glyphs, p.first) &&
 		       coverage_glyph_classes.has (p.first) &&
 		       p.second.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  منطقي may_have_non_1to1 () ثابت
+  { إرجاع true; }
 
-  void depend (hb_depend_context_t *c) const
+  فراغ depend (hb_depend_context_t *c) ثابت
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+coverage).intersects (c->glyphs))
+      إرجاع;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const ClassDef &class_def = this+classDef;
+    ثابت ClassDef &class_def = هذا+classDef;
 
     hb_map_t cache;
     intersected_class_cache_t intersected_cache;
@@ -3764,33 +3764,33 @@ struct ContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { إرجاع class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<RuleSet>&> _)
+    | hb_apply ([&] (ثابت hb_pair_t<unsigned, ثابت typename Types::template OffsetTo<RuleSet>&> _)
                 {
-                  const RuleSet& rule_set = this+_.second;
+                  ثابت RuleSet& rule_set = هذا+_.second;
                   rule_set.depend (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ closure (hb_closure_context_t *c) ثابت
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+coverage).intersects (c->glyphs))
+      إرجاع;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const ClassDef &class_def = this+classDef;
+    ثابت ClassDef &class_def = هذا+classDef;
 
     hb_map_t cache;
     intersected_class_cache_t intersected_cache;
-    struct ContextClosureLookupContext lookup_context = {
+    بنية ContextClosureLookupContext lookup_context = {
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3800,27 +3800,27 @@ struct ContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { إرجاع class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<RuleSet>&> _)
+    | hb_apply ([&] (ثابت hb_pair_t<unsigned, ثابت typename Types::template OffsetTo<RuleSet>&> _)
                 {
-                  const RuleSet& rule_set = this+_.second;
+                  ثابت RuleSet& rule_set = هذا+_.second;
                   rule_set.closure (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c) ثابت
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+coverage).intersects (c->glyphs))
+      إرجاع;
 
-    const ClassDef &class_def = this+classDef;
+    ثابت ClassDef &class_def = هذا+classDef;
 
     hb_map_t cache;
-    struct ContextClosureLookupContext lookup_context = {
+    بنية ContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3828,151 +3828,151 @@ struct ContextFormat2_5
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (هذا))
     | hb_enumerate
-    | hb_filter ([&] (const hb_pair_t<unsigned, const RuleSet &> p)
-    { return class_def.intersects_class (c->glyphs, p.first); })
+    | hb_filter ([&] (ثابت hb_pair_t<unsigned, ثابت RuleSet &> p)
+    { إرجاع class_def.intersects_class (c->glyphs, p.first); })
     | hb_map (hb_second)
-    | hb_apply ([&] (const RuleSet & _)
+    | hb_apply ([&] (ثابت RuleSet & _)
     { _.closure_lookups (c, lookup_context); });
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    (this+coverage).collect_coverage (c->input);
+    (هذا+coverage).collect_coverage (c->إدخال);
 
-    const ClassDef &class_def = this+classDef;
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    ثابت ClassDef &class_def = هذا+classDef;
+    بنية ContextCollectGlyphsLookupContext lookup_context = {
       {collect_class},
       &class_def
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت RuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest) ثابت
   {
-    const ClassDef &class_def = this+classDef;
+    ثابت ClassDef &class_def = هذا+classDef;
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([=, &class_def] (const RuleSet &_) { _.collect_second_glyphs (digest, &class_def); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([=, &class_def] (ثابت RuleSet &_) { _.collect_second_glyphs (digest, &class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
   {
-    const ClassDef &class_def = this+classDef;
-    unsigned int index = class_def.get_class (c->glyphs[0]);
-    const RuleSet &rule_set = this+ruleSet[index];
-    struct ContextApplyLookupContext lookup_context = {
+    ثابت ClassDef &class_def = هذا+classDef;
+    unsigned صحيح index = class_def.get_class (c->glyphs[0]);
+    ثابت RuleSet &rule_set = هذا+ruleSet[index];
+    بنية ContextApplyLookupContext lookup_context = {
       {match_class},
       &class_def
     };
-    return rule_set.would_apply (c, lookup_context);
+    إرجاع rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { إرجاع هذا+coverage; }
 
-  unsigned cache_cost () const
+  unsigned cache_cost () ثابت
   {
-    return (this+classDef).cost ();
+    إرجاع (هذا+classDef).cost ();
   }
-  static bool cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+  ساكن منطقي cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
   {
-    return context_cache_func (c, op);
+    إرجاع context_cache_func (c, op);
   }
 
-  struct external_cache_t
+  بنية external_cache_t
   {
-    hb_ot_layout_binary_cache_t coverage;
+    hb_ot_layout_ثنائي_cache_t coverage;
     hb_ot_layout_ruleset_digest_t rule_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  فراغ *external_cache_create () ثابت
   {
-    unsigned count = ruleSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_ot_layout_ruleset_digest_t) +
-		    count * sizeof (hb_ot_layout_ruleset_digest_t);
+    unsigned تعداد_2 = ruleSet.len;
+    unsigned size = حجم (external_cache_t) -
+		    HB_VAR_ARRAY * حجم (hb_ot_layout_ruleset_digest_t) +
+		    تعداد_2 * حجم (hb_ot_layout_ruleset_digest_t);
     external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    إذا (likely (cache))
     {
       cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
-	(this+ruleSet[i]).collect_first_input_classes (&cache->rule_sets[i]);
+      لكل (unsigned i = 0; i < تعداد_2; i++)
+	(هذا+ruleSet[i]).collect_first_إدخال_classes (&cache->rule_sets[i]);
     }
-    return cache;
+    إرجاع cache;
   }
-  bool apply_cached (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, true, external_cache); }
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, false, external_cache); }
-  bool _apply (hb_ot_apply_context_t *c, bool cached, void *external_cache) const
+  منطقي apply_cached (hb_ot_apply_context_t *c, فراغ *external_cache) ثابت { إرجاع _apply (c, true, external_cache); }
+  منطقي apply (hb_ot_apply_context_t *c, فراغ *external_cache) ثابت { إرجاع _apply (c, خطأ, external_cache); }
+  منطقي _apply (hb_ot_apply_context_t *c, منطقي cached, فراغ *external_cache) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage_binary (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    unsigned صحيح index = (هذا+coverage).get_coverage_ثنائي (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#وإلا
+    unsigned صحيح index = (هذا+coverage).get_coverage (c->buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    إذا (index == NOT_COVERED) return_trace (خطأ);
 
-    const ClassDef &class_def = this+classDef;
+    ثابت ClassDef &class_def = هذا+classDef;
 
-    struct ContextApplyLookupContext lookup_context = {
+    بنية ContextApplyLookupContext lookup_context = {
       {cached ? match_class_cached : match_class},
       &class_def,
-      cached ? get_class_cached_value : get_class_value
+      cached ? get_class_cached_قيمة : get_class_قيمة
     };
 
     index = cached ? get_class_cached (class_def, c->buffer->cur()) : class_def.get_class (c->buffer->cur().codepoint);
-    const RuleSet &rule_set = this+ruleSet[index];
+    ثابت RuleSet &rule_set = هذا+ruleSet[index];
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    const hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
-#else
-    const hb_ot_layout_ruleset_digest_t *digest = nullptr;
+    ثابت hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
+#وإلا
+    ثابت hb_ot_layout_ruleset_digest_t *digest = nullptr;
 #endif
     return_trace (rule_set.apply (c, lookup_context, digest));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    auto *out = c->serializer->start_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
     out->format = format;
-    if (unlikely (!out->coverage.serialize_subset (c, coverage, this)))
-      return_trace (false);
+    إذا (unlikely (!out->coverage.serialize_subset (c, coverage, هذا)))
+      return_trace (خطأ);
 
     hb_map_t klass_map;
-    out->classDef.serialize_subset (c, classDef, this, &klass_map);
+    out->classDef.serialize_subset (c, classDef, هذا, &klass_map);
 
-    const hb_set_t* glyphset = c->plan->glyphset_gsub ();
+    ثابت hb_set_t* glyphset = c->plan->glyphset_gsub ();
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
+    (هذا+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    (this+classDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    (هذا+classDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
-    bool ret = true;
-    int non_zero_index = -1, index = 0;
+    ثابت hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    منطقي ret = true;
+    صحيح non_zero_index = -1, index = 0;
     auto snapshot = c->serializer->snapshot();
-    for (const auto& _ : + hb_enumerate (ruleSet)
+    لكل (ثابت auto& _ : + hb_enumerate (ruleSet)
 			 | hb_filter (klass_map, hb_first))
     {
       auto *o = out->ruleSet.serialize_append (c->serializer);
-      if (unlikely (!o))
+      إذا (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = خطأ;
+	اكسر;
       }
 
-      if (coverage_glyph_classes.has (_.first) &&
-	  o->serialize_subset (c, _.second, this, lookup_map, &klass_map)) {
+      إذا (coverage_glyph_classes.has (_.first) &&
+	  o->serialize_subset (c, _.second, هذا, lookup_map, &klass_map)) {
 	non_zero_index = index;
         snapshot = c->serializer->snapshot();
       }
@@ -3980,27 +3980,27 @@ struct ContextFormat2_5
       index++;
     }
 
-    if (!ret || non_zero_index == -1) return_trace (false);
+    إذا (!ret || non_zero_index == -1) return_trace (خطأ);
 
     //prune empty trailing ruleSets
     --index;
-    while (index > non_zero_index)
+    بينما (index > non_zero_index)
     {
-      out->ruleSet.pop ();
+      out->ruleSet.اسحب ();
       index--;
     }
     c->serializer->revert (snapshot);
 
-    return_trace (bool (out->ruleSet));
+    return_trace (منطقي (out->ruleSet));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && classDef.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (coverage.sanitize (c, هذا) && classDef.sanitize (c, هذا) && ruleSet.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;			/* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -4011,230 +4011,230 @@ struct ContextFormat2_5
   typename Types::template ArrayOf<typename Types::template OffsetTo<RuleSet>>
 		ruleSet;		/* Array of RuleSet tables
 					 * ordered by class */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (2 + 2 * Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
 };
 
 
 template <typename Types>
-struct ContextFormat3_6
+بنية ContextFormat3_6
 {
   using RuleSet = OT::RuleSet<SmallTypes>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    if (!(this+coverageZ[0]).intersects (glyphs))
-      return false;
+    إذا (!(هذا+coverageZ[0]).intersects (glyphs))
+      إرجاع خطأ;
 
-    struct ContextClosureLookupContext lookup_context = {
+    بنية ContextClosureLookupContext lookup_context = {
       {intersects_coverage, nullptr},
       ContextFormat::CoverageBasedContext,
-      this
+      هذا
     };
-    return context_intersects (glyphs,
-			       glyphCount, coverageZ.arrayZ + 1,
+    إرجاع context_intersects (glyphs,
+			       glyph_تعداد_2, coverageZ.arrayZ + 1,
 			       lookup_context);
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  منطقي may_have_non_1to1 () ثابت
+  { إرجاع true; }
 
-  void depend (hb_depend_context_t *c) const
+  فراغ depend (hb_depend_context_t *c) ثابت
   {
-    if (!(this+coverageZ[0]).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+coverageZ[0]).intersects (c->glyphs))
+      إرجاع;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
+    ثابت LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_تعداد_2));
     ContextDependLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      this,
+      هذا,
       nullptr,  /* intersects_cache */
       nullptr   /* intersected_glyphs_cache */
     };
     context_depend_lookup (c,
-			   glyphCount, (const HBUINT16 *) (coverageZ.arrayZ + 1),
-			   lookupCount, lookupRecord,
-			   this,
+			   glyph_تعداد_2, (ثابت HBUINT16 *) (coverageZ.arrayZ + 1),
+			   lookup_تعداد_2, lookupRecord,
+			   هذا,
 			   coverageZ[0], lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ closure (hb_closure_context_t *c) ثابت
   {
-    if (!(this+coverageZ[0]).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+coverageZ[0]).intersects (c->glyphs))
+      إرجاع;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextClosureLookupContext lookup_context = {
+    ثابت LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_تعداد_2));
+    بنية ContextClosureLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      this
+      هذا
     };
     context_closure_lookup (c,
-			    glyphCount, coverageZ.arrayZ + 1,
-			    lookupCount, lookupRecord,
+			    glyph_تعداد_2, coverageZ.arrayZ + 1,
+			    lookup_تعداد_2, lookupRecord,
 			    0, lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c) ثابت
   {
-    if (!intersects (c->glyphs))
-      return;
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    recurse_lookups (c, lookupCount, lookupRecord);
+    إذا (!intersects (c->glyphs))
+      إرجاع;
+    ثابت LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_تعداد_2));
+    recurse_lookups (c, lookup_تعداد_2, lookupRecord);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    (this+coverageZ[0]).collect_coverage (c->input);
+    (هذا+coverageZ[0]).collect_coverage (c->إدخال);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    ثابت LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_تعداد_2));
+    بنية ContextCollectGlyphsLookupContext lookup_context = {
       {collect_coverage},
-      this
+      هذا
     };
 
     context_collect_glyphs_lookup (c,
-				   glyphCount, coverageZ.arrayZ + 1,
-				   lookupCount, lookupRecord,
+				   glyph_تعداد_2, coverageZ.arrayZ + 1,
+				   lookup_تعداد_2, lookupRecord,
 				   lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest) ثابت
   {
-    if (glyphCount <= 1)
+    إذا (glyph_تعداد_2 <= 1)
       *digest = hb_set_digest_t::full ();
-    else
-      (this+coverageZ[1]).collect_coverage (digest);
+    وإلا
+      (هذا+coverageZ[1]).collect_coverage (digest);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
   {
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextApplyLookupContext lookup_context = {
+    ثابت LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_تعداد_2));
+    بنية ContextApplyLookupContext lookup_context = {
       {match_coverage},
-      this
+      هذا
     };
-    return context_would_apply_lookup (c,
-				       glyphCount, coverageZ.arrayZ + 1,
-				       lookupCount, lookupRecord,
+    إرجاع context_would_apply_lookup (c,
+				       glyph_تعداد_2, coverageZ.arrayZ + 1,
+				       lookup_تعداد_2, lookupRecord,
 				       lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverageZ[0]; }
+  ثابت Coverage &get_coverage () ثابت { إرجاع هذا+coverageZ[0]; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverageZ[0]).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (هذا);
+    unsigned صحيح index = (هذا+coverageZ[0]).get_coverage (c->buffer->cur().codepoint);
+    إذا (index == NOT_COVERED) return_trace (خطأ);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextApplyLookupContext lookup_context = {
+    ثابت LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_تعداد_2));
+    بنية ContextApplyLookupContext lookup_context = {
       {match_coverage},
-      this
+      هذا
     };
     return_trace (context_apply_lookup (c,
-					glyphCount,
+					glyph_تعداد_2,
 					coverageZ.arrayZ + 1,
-					lookupCount, lookupRecord,
+					lookup_تعداد_2, lookupRecord,
 					lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    auto *out = c->serializer->start_embed (هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
 
     out->format = format;
-    out->glyphCount = glyphCount;
+    out->glyph_تعداد_2 = glyph_تعداد_2;
 
-    auto coverages = coverageZ.as_array (glyphCount);
+    auto coverages = coverageZ.as_array (glyph_تعداد_2);
 
-    for (const auto& offset : coverages)
+    لكل (ثابت auto& offset : coverages)
     {
       /* TODO(subset) This looks like should not be necessary to write this way. */
       auto *o = c->serializer->allocate_size<typename Types::template OffsetTo<Coverage>> (Types::Offset::static_size);
-      if (unlikely (!o)) return_trace (false);
-      if (!o->serialize_subset (c, offset, this)) return_trace (false);
+      إذا (unlikely (!o)) return_trace (خطأ);
+      إذا (!o->serialize_subset (c, offset, هذا)) return_trace (خطأ);
     }
 
-    const auto& lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>> (coverageZ.as_array (glyphCount));
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    ثابت auto& lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>> (coverageZ.as_array (glyph_تعداد_2));
+    ثابت hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
 
 
-    unsigned count = serialize_lookuprecord_array (c->serializer, lookupRecord.as_array (lookupCount), lookup_map);
-    return_trace (c->serializer->check_assign (out->lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned تعداد_2 = serialize_lookuprecord_array (c->serializer, lookupRecord.as_array (lookup_تعداد_2), lookup_map);
+    return_trace (c->serializer->check_assign (out->lookup_تعداد_2, تعداد_2, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!c->check_struct (هذا))) return_trace (خطأ);
     hb_barrier ();
-    unsigned int count = glyphCount;
-    if (unlikely (!count)) return_trace (false); /* We want to access coverageZ[0] freely. */
-    if (unlikely (!c->check_array (coverageZ.arrayZ, count))) return_trace (false);
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!coverageZ[i].sanitize (c, this))) return_trace (false);
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    return_trace (likely (c->check_array (lookupRecord, lookupCount)));
+    unsigned صحيح تعداد_2 = glyph_تعداد_2;
+    إذا (unlikely (!تعداد_2)) return_trace (خطأ); /* We want to access coverageZ[0] freely. */
+    إذا (unlikely (!c->check_array (coverageZ.arrayZ, تعداد_2))) return_trace (خطأ);
+    لكل (unsigned صحيح i = 0; i < تعداد_2; i++)
+      إذا (unlikely (!coverageZ[i].sanitize (c, هذا))) return_trace (خطأ);
+    ثابت LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_تعداد_2));
+    return_trace (likely (c->check_array (lookupRecord, lookup_تعداد_2)));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;			/* Format identifier--format = 3 */
-  HBUINT16	glyphCount;		/* Number of glyphs in the input glyph
+  HBUINT16	glyph_تعداد_2;		/* Number of glyphs in the input glyph
 					 * sequence */
-  HBUINT16	lookupCount;		/* Number of LookupRecords */
+  HBUINT16	lookup_تعداد_2;		/* Number of LookupRecords */
   UnsizedArrayOf<typename Types::template OffsetTo<Coverage>>
 		coverageZ;		/* Array of offsets to Coverage
 					 * table in glyph sequence order */
 /*UnsizedArrayOf<LookupRecord>
 		lookupRecordX;*/	/* Array of LookupRecords--in
 					 * design order */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (6, coverageZ);
 };
 
-struct Context
+بنية Context
 {
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    إذا (unlikely (!c->may_dispatch (هذا, &u.format.v))) إرجاع c->no_dispatch_return_قيمة ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالة 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    حالة 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
-    case 6: hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
+    حالة 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    حالة 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    حالة 6: hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    افتراضي:return_trace (c->default_return_قيمة ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }	format;		/* Format identifier */
   ContextFormat1_4<SmallTypes>	format1;
   ContextFormat2_5<SmallTypes>	format2;
   ContextFormat3_6<SmallTypes>	format3;
@@ -4249,78 +4249,78 @@ struct Context
 
 /* Chaining Contextual lookups */
 
-struct ChainContextClosureLookupContext
+بنية ChainContextClosureLookupContext
 {
   ContextClosureFuncs funcs;
   ContextFormat context_format;
-  const void *intersects_data[3];
-  void *intersects_cache[3];
-  void *intersected_glyphs_cache;
+  ثابت فراغ *intersects_data[3];
+  فراغ *intersects_cache[3];
+  فراغ *intersected_glyphs_cache;
 };
 
-typedef ChainContextClosureLookupContext ChainContextDependLookupContext;
+تعريفنوع ChainContextClosureLookupContext ChainContextDependLookupContext;
 
-struct ChainContextCollectGlyphsLookupContext
+بنية ChainContextCollectGlyphsLookupContext
 {
   ContextCollectGlyphsFuncs funcs;
-  const void *collect_data[3];
+  ثابت فراغ *collect_data[3];
 };
 
-struct ChainContextApplyLookupContext
+بنية ChainContextApplyLookupContext
 {
   ChainContextApplyFuncs funcs;
-  const void *match_data[3];
-  get_value_func_t get_input_value;
+  ثابت فراغ *match_data[3];
+  get_قيمة_func_t get_إدخال_قيمة;
 };
 
-static inline bool chain_context_intersects (const hb_set_t *glyphs,
-					     unsigned int backtrackCount,
+ساكن مضمن منطقي chain_context_intersects (ثابت hb_set_t *glyphs,
+					     unsigned صحيح backtrack_تعداد,
 					     glyph_data_t backtrack,
-					     unsigned int inputCount, /* Including the first glyph (not matched) */
-					     glyph_data_t input, /* Array of input values--start with second glyph */
-					     unsigned int lookaheadCount,
+					     unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+					     glyph_data_t إدخال, /* Array of input values--start with second glyph */
+					     unsigned صحيح lookahead_تعداد,
 					     glyph_data_t lookahead,
 					     ChainContextClosureLookupContext &lookup_context)
 {
-  bool bt_ok = array_is_subset_of (glyphs,
-			     backtrackCount, backtrack,
+  منطقي bt_ok = array_is_subset_of (glyphs,
+			     backtrack_تعداد, backtrack,
 			     lookup_context.funcs.intersects,
 			     lookup_context.intersects_data[0],
 			     lookup_context.intersects_cache[0]);
-  bool in_ok = array_is_subset_of (glyphs,
-			     inputCount ? inputCount - 1 : 0, input,
+  منطقي in_ok = array_is_subset_of (glyphs,
+			     إدخال_تعداد ? إدخال_تعداد - 1 : 0, إدخال,
 			     lookup_context.funcs.intersects,
 			     lookup_context.intersects_data[1],
 			     lookup_context.intersects_cache[1]);
-  bool la_ok = array_is_subset_of (glyphs,
-			     lookaheadCount, lookahead,
+  منطقي la_ok = array_is_subset_of (glyphs,
+			     lookahead_تعداد, lookahead,
 			     lookup_context.funcs.intersects,
 			     lookup_context.intersects_data[2],
 			     lookup_context.intersects_cache[2]);
 
-  return bt_ok && in_ok && la_ok;
+  إرجاع bt_ok && in_ok && la_ok;
 }
 
-static inline void chain_context_closure_lookup (hb_closure_context_t *c,
-						 unsigned int backtrackCount,
+ساكن مضمن فراغ chain_context_closure_lookup (hb_closure_context_t *c,
+						 unsigned صحيح backtrack_تعداد,
 						 glyph_data_t backtrack,
-						 unsigned int inputCount, /* Including the first glyph (not matched) */
-						 glyph_data_t input, /* Array of input values--start with second glyph */
-						 unsigned int lookaheadCount,
+						 unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+						 glyph_data_t إدخال, /* Array of input values--start with second glyph */
+						 unsigned صحيح lookahead_تعداد,
 						 glyph_data_t lookahead,
-						 unsigned int lookupCount,
-						 const LookupRecord lookupRecord[],
+						 unsigned صحيح lookup_تعداد_2,
+						 ثابت LookupRecord lookupRecord[],
 						 unsigned value,
 						 ChainContextClosureLookupContext &lookup_context)
 {
-  if (chain_context_intersects (c->glyphs,
-				backtrackCount, backtrack,
-				inputCount, input,
-				lookaheadCount, lookahead,
+  إذا (chain_context_intersects (c->glyphs,
+				backtrack_تعداد, backtrack,
+				إدخال_تعداد, إدخال,
+				lookahead_تعداد, lookahead,
 				lookup_context))
     context_closure_recurse_lookups (c,
-		     inputCount, input,
-		     lookupCount, lookupRecord,
+		     إدخال_تعداد, إدخال,
+		     lookup_تعداد_2, lookupRecord,
 		     value,
 		     lookup_context.context_format,
 		     lookup_context.intersects_data[1],
@@ -4328,42 +4328,42 @@ static inline void chain_context_closure_lookup (hb_closure_context_t *c,
 		     lookup_context.intersected_glyphs_cache);
 }
 
-static inline void chain_context_depend_lookup (hb_depend_context_t *c,
-						unsigned int backtrackCount,
+ساكن مضمن فراغ chain_context_depend_lookup (hb_depend_context_t *c,
+						unsigned صحيح backtrack_تعداد,
 						glyph_data_t backtrack,
-						unsigned int inputCount, /* Including the first glyph (not matched) */
-						glyph_data_t input, /* Array of input values--start with second glyph */
-						unsigned int lookaheadCount,
+						unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+						glyph_data_t إدخال, /* Array of input values--start with second glyph */
+						unsigned صحيح lookahead_تعداد,
 						glyph_data_t lookahead,
-						unsigned int lookupCount,
-						const LookupRecord lookupRecord[],
-						const void *rule,
+						unsigned صحيح lookup_تعداد_2,
+						ثابت LookupRecord lookupRecord[],
+						ثابت فراغ *rule,
 						unsigned value,
 						ChainContextDependLookupContext &lookup_context)
 {
-  if (!chain_context_intersects (c->glyphs,
-				 backtrackCount, backtrack,
-				 inputCount, input,
-				 lookaheadCount, lookahead,
+  إذا (!chain_context_intersects (c->glyphs,
+				 backtrack_تعداد, backtrack,
+				 إدخال_تعداد, إدخال,
+				 lookahead_تعداد, lookahead,
 				 lookup_context))
-    return;
+    إرجاع;
 
   hb_depend_context_t::depend_scratch_t *scratch = c->acquire_depend_scratch ();
-  if (unlikely (!scratch))
-    return;
+  إذا (unlikely (!scratch))
+    إرجاع;
   HB_SCOPE_GUARD (c->release_depend_scratch (scratch));
 
-  bool context_sets_cached = context_depend_sets_are_cached (
-    c, inputCount, lookupCount, lookupRecord, rule, value,
+  منطقي context_sets_cached = context_depend_sets_are_cached (
+    c, إدخال_تعداد, lookup_تعداد_2, lookupRecord, rule, value,
     lookup_context.context_format, lookup_context.intersects_data[1],
     &scratch->cached_context_sets);
-  if (unlikely (!c->depend_data->successful))
-    return;
-  if (context_sets_cached)
+  إذا (unlikely (!c->depend_data->successful))
+    إرجاع;
+  إذا (context_sets_cached)
   {
     context_depend_recurse_lookups (c,
-				    inputCount, input,
-				    lookupCount, lookupRecord,
+				    إدخال_تعداد, إدخال,
+				    lookup_تعداد_2, lookupRecord,
 				    rule,
 				    value,
 				    lookup_context.context_format,
@@ -4374,120 +4374,120 @@ static inline void chain_context_depend_lookup (hb_depend_context_t *c,
 				    nullptr,
 				    &scratch->cached_context_sets,
 				    scratch);
-    return;
+    إرجاع;
   }
 
   /* Cache misses and rules without valid records still perform the original
    * dependency-set interning in its observable order. */
   hb_set_t &position_scratch = scratch->position_scratch;
-  hb_vector_t<const hb_set_t *> &backtrack_sets = scratch->backtrack_sets;
-  hb_vector_t<const hb_set_t *> &lookahead_sets = scratch->lookahead_sets;
+  hb_vector_t<ثابت hb_set_t *> &backtrack_sets = scratch->backtrack_sets;
+  hb_vector_t<ثابت hb_set_t *> &lookahead_sets = scratch->lookahead_sets;
 
   /* Extract backtrack glyphs */
-  for (unsigned i = 0; i < backtrackCount; i++)
+  لكل (unsigned i = 0; i < backtrack_تعداد; i++)
   {
-    const hb_set_t *pos_glyphs = depend_position_glyphs (
+    ثابت hb_set_t *pos_glyphs = depend_position_glyphs (
       c, lookup_context.context_format, lookup_context.intersects_data[0],
-      backtrack[i], false, &position_scratch);
-    if (unlikely (!pos_glyphs))
-      return;
-    if (!pos_glyphs->is_empty ())
+      backtrack[i], خطأ, &position_scratch);
+    إذا (unlikely (!pos_glyphs))
+      إرجاع;
+    إذا (!pos_glyphs->is_empty ())
     {
-      if (unlikely (!backtrack_sets.push_or_fail (pos_glyphs)))
+      إذا (unlikely (!backtrack_sets.ادفع_or_fail (pos_glyphs)))
       {
         c->depend_data->fail ();
-        return;
+        إرجاع;
       }
     }
   }
 
   /* Extract lookahead glyphs */
-  for (unsigned i = 0; i < lookaheadCount; i++)
+  لكل (unsigned i = 0; i < lookahead_تعداد; i++)
   {
-    const hb_set_t *pos_glyphs = depend_position_glyphs (
+    ثابت hb_set_t *pos_glyphs = depend_position_glyphs (
       c, lookup_context.context_format, lookup_context.intersects_data[2],
-      lookahead[i], false, &position_scratch);
-    if (unlikely (!pos_glyphs))
-      return;
-    if (!pos_glyphs->is_empty ())
+      lookahead[i], خطأ, &position_scratch);
+    إذا (unlikely (!pos_glyphs))
+      إرجاع;
+    إذا (!pos_glyphs->is_empty ())
     {
-      if (unlikely (!lookahead_sets.push_or_fail (pos_glyphs)))
+      إذا (unlikely (!lookahead_sets.ادفع_or_fail (pos_glyphs)))
       {
         c->depend_data->fail ();
-        return;
+        إرجاع;
       }
     }
   }
 
   /* Build preliminary_context with backtrack + lookahead encoded */
   hb_set_t &preliminary_context = scratch->preliminary_context;
-  for (const hb_set_t *back_set : backtrack_sets)
+  لكل (ثابت hb_set_t *back_set : backtrack_sets)
   {
-    if (back_set->get_population () == 1) {
+    إذا (back_set->get_population () == 1) {
       preliminary_context.add (back_set->get_min ());  // Direct glyph
-    } else if (back_set->get_population () > 1) {
+    } وإلا إذا (back_set->get_population () > 1) {
       hb_codepoint_t set_idx = lookup_context.context_format == ContextFormat::SimpleContext
         ? c->depend_data->find_or_create_context_set (*back_set)
         : c->find_or_create_cached_context_set (back_set);
-      if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-        return;
+      إذا (unlikely (set_idx == HB_CODEPOINT_INVALID))
+        إرجاع;
       preliminary_context.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);  // Encoded set reference
     }
   }
-  for (const hb_set_t *look_set : lookahead_sets)
+  لكل (ثابت hb_set_t *look_set : lookahead_sets)
   {
-    if (look_set->get_population () == 1) {
+    إذا (look_set->get_population () == 1) {
       preliminary_context.add (look_set->get_min ());  // Direct glyph
-    } else if (look_set->get_population () > 1) {
+    } وإلا إذا (look_set->get_population () > 1) {
       hb_codepoint_t set_idx = lookup_context.context_format == ContextFormat::SimpleContext
         ? c->depend_data->find_or_create_context_set (*look_set)
         : c->find_or_create_cached_context_set (look_set);
-      if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-        return;
+      إذا (unlikely (set_idx == HB_CODEPOINT_INVALID))
+        إرجاع;
       preliminary_context.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);  // Encoded set reference
     }
   }
-  if (unlikely (preliminary_context.in_error ()))
+  إذا (unlikely (preliminary_context.in_error ()))
   {
     c->depend_data->fail ();
-    return;
+    إرجاع;
   }
 
   /* Build glyph sets for ALL input positions */
-  hb_vector_t<const hb_set_t *> &input_position_glyphs = scratch->input_position_glyphs;
+  hb_vector_t<ثابت hb_set_t *> &إدخال_position_glyphs = scratch->إدخال_position_glyphs;
 
-  if (!context_sets_cached)
+  إذا (!context_sets_cached)
   {
     /* Position 0 (first input coverage/class/glyph) — must be in both the
      * class AND the coverage, so intersect with parent_active_glyphs. */
-    const hb_set_t *pos0_glyphs = depend_position_glyphs (
+    ثابت hb_set_t *pos0_glyphs = depend_position_glyphs (
       c, lookup_context.context_format, lookup_context.intersects_data[1], value,
       true, &position_scratch, &scratch->compact_workspace);
-    if (unlikely (!pos0_glyphs ||
-		  !input_position_glyphs.push_or_fail (pos0_glyphs)))
+    إذا (unlikely (!pos0_glyphs ||
+		  !إدخال_position_glyphs.ادفع_or_fail (pos0_glyphs)))
     {
       c->depend_data->fail ();
-      return;
+      إرجاع;
     }
 
     /* Positions 1+ (Input array) */
-    for (unsigned i = 0; i + 1 < inputCount; i++)
+    لكل (unsigned i = 0; i + 1 < إدخال_تعداد; i++)
     {
-      const hb_set_t *pos_glyphs = depend_position_glyphs (
+      ثابت hb_set_t *pos_glyphs = depend_position_glyphs (
 	c, lookup_context.context_format, lookup_context.intersects_data[1],
-	input[i], false, &position_scratch);
-      if (unlikely (!pos_glyphs ||
-		    !input_position_glyphs.push_or_fail (pos_glyphs)))
+	إدخال[i], خطأ, &position_scratch);
+      إذا (unlikely (!pos_glyphs ||
+		    !إدخال_position_glyphs.ادفع_or_fail (pos_glyphs)))
       {
 	c->depend_data->fail ();
-	return;
+	إرجاع;
       }
     }
   }
 
   context_depend_recurse_lookups (c,
-				  inputCount, input,
-				  lookupCount, lookupRecord,
+				  إدخال_تعداد, إدخال,
+				  lookup_تعداد_2, lookupRecord,
 				  rule,
 				  value,
 				  lookup_context.context_format,
@@ -4495,243 +4495,243 @@ static inline void chain_context_depend_lookup (hb_depend_context_t *c,
 				  lookup_context.funcs.intersected_glyphs,
 				  lookup_context.intersected_glyphs_cache,
 				  preliminary_context,
-				  context_sets_cached ? nullptr : &input_position_glyphs,
+				  context_sets_cached ? nullptr : &إدخال_position_glyphs,
 				  context_sets_cached ? &scratch->cached_context_sets : nullptr,
 				  scratch);
 }
 
-static inline void chain_context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
-							unsigned int backtrackCount,
+ساكن مضمن فراغ chain_context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
+							unsigned صحيح backtrack_تعداد,
 							glyph_data_t backtrack,
-							unsigned int inputCount, /* Including the first glyph (not matched) */
-							glyph_data_t input, /* Array of input values--start with second glyph */
-							unsigned int lookaheadCount,
+							unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+							glyph_data_t إدخال, /* Array of input values--start with second glyph */
+							unsigned صحيح lookahead_تعداد,
 							glyph_data_t lookahead,
-							unsigned int lookupCount,
-							const LookupRecord lookupRecord[],
+							unsigned صحيح lookup_تعداد_2,
+							ثابت LookupRecord lookupRecord[],
 							ChainContextCollectGlyphsLookupContext &lookup_context)
 {
   collect_array (c, c->before,
-		 backtrackCount, backtrack,
+		 backtrack_تعداد, backtrack,
 		 lookup_context.funcs.collect, lookup_context.collect_data[0]);
-  collect_array (c, c->input,
-		 inputCount ? inputCount - 1 : 0, input,
+  collect_array (c, c->إدخال,
+		 إدخال_تعداد ? إدخال_تعداد - 1 : 0, إدخال,
 		 lookup_context.funcs.collect, lookup_context.collect_data[1]);
   collect_array (c, c->after,
-		 lookaheadCount, lookahead,
+		 lookahead_تعداد, lookahead,
 		 lookup_context.funcs.collect, lookup_context.collect_data[2]);
   recurse_lookups (c,
-		   lookupCount, lookupRecord);
+		   lookup_تعداد_2, lookupRecord);
 }
 
-static inline bool chain_context_would_apply_lookup (hb_would_apply_context_t *c,
-						     unsigned int backtrackCount,
+ساكن مضمن منطقي chain_context_would_apply_lookup (hb_would_apply_context_t *c,
+						     unsigned صحيح backtrack_تعداد,
 						     glyph_data_t backtrack HB_UNUSED,
-						     unsigned int inputCount, /* Including the first glyph (not matched) */
-						     glyph_data_t input, /* Array of input values--start with second glyph */
-						     unsigned int lookaheadCount,
+						     unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+						     glyph_data_t إدخال, /* Array of input values--start with second glyph */
+						     unsigned صحيح lookahead_تعداد,
 						     glyph_data_t lookahead HB_UNUSED,
-						     unsigned int lookupCount HB_UNUSED,
-						     const LookupRecord lookupRecord[] HB_UNUSED,
-						     const ChainContextApplyLookupContext &lookup_context)
+						     unsigned صحيح lookup_تعداد_2 HB_UNUSED,
+						     ثابت LookupRecord lookupRecord[] HB_UNUSED,
+						     ثابت ChainContextApplyLookupContext &lookup_context)
 {
-  return (c->zero_context ? !backtrackCount && !lookaheadCount : true)
-      && would_match_input (c,
-			    inputCount, input,
+  إرجاع (c->zero_context ? !backtrack_تعداد && !lookahead_تعداد : true)
+      && would_match_إدخال (c,
+			    إدخال_تعداد, إدخال,
 			    lookup_context.funcs.match[1], lookup_context.match_data[1]);
 }
 
-static inline bool chain_context_apply_lookup (hb_ot_apply_context_t *c,
-					       unsigned int backtrackCount,
+ساكن مضمن منطقي chain_context_apply_lookup (hb_ot_apply_context_t *c,
+					       unsigned صحيح backtrack_تعداد,
 					       glyph_data_t backtrack,
-					       unsigned int inputCount, /* Including the first glyph (not matched) */
-					       glyph_data_t input, /* Array of input values--start with second glyph */
-					       unsigned int lookaheadCount,
+					       unsigned صحيح إدخال_تعداد, /* Including the first glyph (not matched) */
+					       glyph_data_t إدخال, /* Array of input values--start with second glyph */
+					       unsigned صحيح lookahead_تعداد,
 					       glyph_data_t lookahead,
-					       unsigned int lookupCount,
-					       const LookupRecord lookupRecord[],
-					       const ChainContextApplyLookupContext &lookup_context)
+					       unsigned صحيح lookup_تعداد_2,
+					       ثابت LookupRecord lookupRecord[],
+					       ثابت ChainContextApplyLookupContext &lookup_context)
 {
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH)) return false;
+  إذا (unlikely (إدخال_تعداد > HB_MAX_CONTEXT_LENGTH)) إرجاع خطأ;
 
   unsigned start_index = c->buffer->out_len;
   unsigned end_index = c->buffer->idx;
   unsigned match_end = 0;
-  bool ret = true;
-  if (!(match_input (c,
-		     inputCount, input,
+  منطقي ret = true;
+  إذا (!(match_إدخال (c,
+		     إدخال_تعداد, إدخال,
 		     lookup_context.funcs.match[1], lookup_context.match_data[1],
 		     &match_end) && (end_index = match_end)
        && match_lookahead (c,
-			   lookaheadCount, lookahead,
+			   lookahead_تعداد, lookahead,
 			   lookup_context.funcs.match[2], lookup_context.match_data[2],
 			   match_end, &end_index)))
   {
     c->buffer->unsafe_to_concat (c->buffer->idx, end_index);
-    return false;
+    إرجاع خطأ;
   }
 
-  if (!match_backtrack (c,
-			backtrackCount, backtrack,
+  إذا (!match_backtrack (c,
+			backtrack_تعداد, backtrack,
 			lookup_context.funcs.match[0], lookup_context.match_data[0],
 			&start_index))
   {
     c->buffer->unsafe_to_concat_from_outbuffer (start_index, end_index);
-    return false;
+    إرجاع خطأ;
   }
 
   c->buffer->unsafe_to_break_from_outbuffer (start_index, end_index);
   apply_lookup (c,
-		inputCount,
-		lookupCount, lookupRecord,
+		إدخال_تعداد,
+		lookup_تعداد_2, lookupRecord,
 		match_end);
 
-  return ret;
+  إرجاع ret;
 }
 
 template <typename Types>
-struct ChainRule
+بنية ChainRule
 {
   template <typename SetTypes, typename ChainRuleType>
-  friend struct ChainRuleSetOf;
+  friend بنية ChainRuleSetOf;
 
-  bool intersects (const hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) const
+  منطقي intersects (ثابت hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    return chain_context_intersects (glyphs,
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    إرجاع chain_context_intersects (glyphs,
 				     backtrack.len, backtrack.arrayZ,
-				     input.lenP1, input.arrayZ,
+				     إدخال.lenP1, إدخال.arrayZ,
 				     lookahead.len, lookahead.arrayZ,
 				     lookup_context);
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) const
+  فراغ depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_depend_lookup (c,
 				 backtrack.len, backtrack.arrayZ,
-				 input.lenP1, input.arrayZ,
+				 إدخال.lenP1, إدخال.arrayZ,
 				 lookahead.len, lookahead.arrayZ,
 				 lookup.len, lookup.arrayZ,
-				 this,
+				 هذا,
 				 value,
 				 lookup_context);
   }
 
-  void closure (hb_closure_context_t *c, unsigned value,
-		ChainContextClosureLookupContext &lookup_context) const
+  فراغ closure (hb_closure_context_t *c, unsigned value,
+		ChainContextClosureLookupContext &lookup_context) ثابت
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    إذا (unlikely (c->lookup_limit_exceeded ())) إرجاع;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_closure_lookup (c,
 				  backtrack.len, backtrack.arrayZ,
-				  input.lenP1, input.arrayZ,
+				  إدخال.lenP1, إدخال.arrayZ,
 				  lookahead.len, lookahead.arrayZ,
 				  lookup.len, lookup.arrayZ,
 				  value,
 				  lookup_context);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ChainContextClosureLookupContext &lookup_context) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c,
+                        ChainContextClosureLookupContext &lookup_context) ثابت
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-    if (!intersects (c->glyphs, lookup_context)) return;
+    إذا (unlikely (c->lookup_limit_exceeded ())) إرجاع;
+    إذا (!intersects (c->glyphs, lookup_context)) إرجاع;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     recurse_lookups (c, lookup.len, lookup.arrayZ);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ChainContextCollectGlyphsLookupContext &lookup_context) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ChainContextCollectGlyphsLookupContext &lookup_context) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_collect_glyphs_lookup (c,
 					 backtrack.len, backtrack.arrayZ,
-					 input.lenP1, input.arrayZ,
+					 إدخال.lenP1, إدخال.arrayZ,
 					 lookahead.len, lookahead.arrayZ,
 					 lookup.len, lookup.arrayZ,
 					 lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *input_class_def = nullptr,
-			      const ClassDef *lookahead_class_def = nullptr) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest,
+			      ثابت ClassDef *إدخال_class_def = nullptr,
+			      ثابت ClassDef *lookahead_class_def = nullptr) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
 
     unsigned second;
-    const ClassDef *class_def;
-    if (input.lenP1 > 1)
+    ثابت ClassDef *class_def;
+    إذا (إدخال.lenP1 > 1)
     {
-      second = input.arrayZ[0];
-      class_def = input_class_def;
+      second = إدخال.arrayZ[0];
+      class_def = إدخال_class_def;
     }
-    else if (lookahead.len)
+    وإلا إذا (lookahead.len)
     {
       second = lookahead.arrayZ[0];
       class_def = lookahead_class_def;
     }
-    else
+    وإلا
     {
       *digest = hb_set_digest_t::full ();
-      return;
+      إرجاع;
     }
 
-    if (!class_def)
+    إذا (!class_def)
       digest->add (second);
-    else if (!second)
+    وإلا إذا (!second)
       *digest = hb_set_digest_t::full ();
-    else
+    وإلا
       class_def->collect_class (digest, second);
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ChainContextApplyLookupContext &lookup_context) const
+  منطقي would_apply (hb_would_apply_context_t *c,
+		    ثابت ChainContextApplyLookupContext &lookup_context) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    return chain_context_would_apply_lookup (c,
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    إرجاع chain_context_would_apply_lookup (c,
 					     backtrack.len, backtrack.arrayZ,
-					     input.lenP1, input.arrayZ,
+					     إدخال.lenP1, إدخال.arrayZ,
 					     lookahead.len, lookahead.arrayZ, lookup.len,
 					     lookup.arrayZ, lookup_context);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ChainContextApplyLookupContext &lookup_context) const
+  منطقي apply (hb_ot_apply_context_t *c,
+	      ثابت ChainContextApplyLookupContext &lookup_context) ثابت
   {
-    TRACE_APPLY (this);
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    TRACE_APPLY (هذا);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (chain_context_apply_lookup (c,
 					      backtrack.len, backtrack.arrayZ,
-					      input.lenP1, input.arrayZ,
+					      إدخال.lenP1, إدخال.arrayZ,
 					      lookahead.len, lookahead.arrayZ, lookup.len,
 					      lookup.arrayZ, lookup_context));
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize_array (hb_serialize_context_t *c,
+  فراغ serialize_array (hb_serialize_context_t *c,
 			HBUINT16 len,
-			Iterator it) const
+			Iterator it) ثابت
   {
     c->copy (len);
-    for (const auto g : it)
+    لكل (ثابت auto g : it)
     {
       typename Types::HBUINT d;
       d = g;
@@ -4739,94 +4739,94 @@ struct ChainRule
     }
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t *lookup_map,
-		  const hb_map_t *backtrack_map,
-		  const hb_map_t *input_map = nullptr,
-		  const hb_map_t *lookahead_map = nullptr) const
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت hb_map_t *lookup_map,
+		  ثابت hb_map_t *backtrack_map,
+		  ثابت hb_map_t *إدخال_map = nullptr,
+		  ثابت hb_map_t *lookahead_map = nullptr) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    const hb_map_t *mapping = backtrack_map;
+    ثابت hb_map_t *mapping = backtrack_map;
     serialize_array (c, backtrack.len, + backtrack.iter ()
 				       | hb_map (mapping));
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (input_map) mapping = input_map;
-    serialize_array (c, input.lenP1, + input.iter ()
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    إذا (إدخال_map) mapping = إدخال_map;
+    serialize_array (c, إدخال.lenP1, + إدخال.iter ()
 				     | hb_map (mapping));
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (lookahead_map) mapping = lookahead_map;
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    إذا (lookahead_map) mapping = lookahead_map;
     serialize_array (c, lookahead.len, + lookahead.iter ()
 				       | hb_map (mapping));
 
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
 
-    HBUINT16* lookupCount = c->embed (&(lookup.len));
-    if (!lookupCount) return_trace (false);
+    HBUINT16* lookup_تعداد_2 = c->embed (&(lookup.len));
+    إذا (!lookup_تعداد_2) return_trace (خطأ);
 
-    unsigned count = serialize_lookuprecord_array (c, lookup.as_array (), lookup_map);
-    return_trace (c->check_assign (*lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned تعداد_2 = serialize_lookuprecord_array (c, lookup.as_array (), lookup_map);
+    return_trace (c->check_assign (*lookup_تعداد_2, تعداد_2, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *backtrack_map = nullptr,
-	       const hb_map_t *input_map = nullptr,
-	       const hb_map_t *lookahead_map = nullptr) const
+  منطقي subset (hb_subset_context_t *c,
+	       ثابت hb_map_t *lookup_map,
+	       ثابت hb_map_t *backtrack_map = nullptr,
+	       ثابت hb_map_t *إدخال_map = nullptr,
+	       ثابت hb_map_t *lookahead_map = nullptr) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
 
-    if (!backtrack_map)
+    إذا (!backtrack_map)
     {
-      const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-      if (!hb_all (backtrack, glyphset) ||
-	  !hb_all (input, glyphset) ||
+      ثابت hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+      إذا (!hb_all (backtrack, glyphset) ||
+	  !hb_all (إدخال, glyphset) ||
 	  !hb_all (lookahead, glyphset))
-	return_trace (false);
+	return_trace (خطأ);
 
       serialize (c->serializer, lookup_map, c->plan->glyph_map);
     }
-    else
+    وإلا
     {
-      if (!hb_all (backtrack, backtrack_map) ||
-	  !hb_all (input, input_map) ||
+      إذا (!hb_all (backtrack, backtrack_map) ||
+	  !hb_all (إدخال, إدخال_map) ||
 	  !hb_all (lookahead, lookahead_map))
-	return_trace (false);
+	return_trace (خطأ);
 
-      serialize (c->serializer, lookup_map, backtrack_map, input_map, lookahead_map);
+      serialize (c->serializer, lookup_map, backtrack_map, إدخال_map, lookahead_map);
     }
 
     return_trace (true);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     /* Hyper-optimized sanitized because this is really hot. */
-    if (unlikely (!backtrack.len.sanitize (c))) return_trace (false);
+    إذا (unlikely (!backtrack.len.sanitize (c))) return_trace (خطأ);
     hb_barrier ();
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (unlikely (!input.lenP1.sanitize (c))) return_trace (false);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    إذا (unlikely (!إدخال.lenP1.sanitize (c))) return_trace (خطأ);
     hb_barrier ();
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (unlikely (!lookahead.len.sanitize (c))) return_trace (false);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    إذا (unlikely (!lookahead.len.sanitize (c))) return_trace (خطأ);
     hb_barrier ();
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (likely (lookup.sanitize (c)));
   }
 
-  protected:
+  محمي:
   Array16Of<typename Types::HBUINT>
 		backtrack;		/* Array of backtracking values
 					 * (to be matched before the input
 					 * sequence) */
   HeadlessArray16Of<typename Types::HBUINT>
-		inputX;			/* Array of input values (start with
+		إدخال_X;			/* Array of input values (start with
 					 * second glyph) */
   Array16Of<typename Types::HBUINT>
 		lookaheadX;		/* Array of lookahead values's (to be
@@ -4834,115 +4834,115 @@ struct ChainRule
   Array16Of<LookupRecord>
 		lookupX;		/* Array of LookupRecords--in
 					 * design order) */
-  public:
+  عام:
   DEFINE_SIZE_MIN (8);
 };
 
 template <typename Types, typename ChainRuleType>
-struct ChainRuleSetOf
+بنية ChainRuleSetOf
 {
-  bool intersects (const hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) const
+  منطقي intersects (ثابت hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) ثابت
   {
-    return
+    إرجاع
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleType &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_map ([&] (ثابت ChainRuleType &_) { إرجاع _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  void collect_first_input_classes (hb_ot_layout_ruleset_digest_t *digest) const
+  فراغ collect_first_إدخال_classes (hb_ot_layout_ruleset_digest_t *digest) ثابت
   {
     digest->init ();
-    for (unsigned i = 0; i < rule.len; i++)
+    لكل (unsigned i = 0; i < rule.len; i++)
     {
-      const ChainRuleType &r = this+rule.arrayZ[i];
-      const auto &input = StructAfter<decltype (r.inputX)> (r.backtrack);
-      if (input.lenP1 <= 1)
+      ثابت ChainRuleType &r = هذا+rule.arrayZ[i];
+      ثابت auto &إدخال = StructAfter<decltype (r.إدخال_X)> (r.backtrack);
+      إذا (إدخال.lenP1 <= 1)
       {
 	digest->set_full ();
-	return;
+	إرجاع;
       }
-      digest->add (input.arrayZ[0]);
+      digest->add (إدخال.arrayZ[0]);
     }
   }
-  void depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) const
+  فراغ depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) ثابت
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.depend (c, value, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت ChainRuleType &_) { _.depend (c, value, lookup_context); })
     ;
   }
-  void closure (hb_closure_context_t *c, unsigned value, ChainContextClosureLookupContext &lookup_context) const
+  فراغ closure (hb_closure_context_t *c, unsigned value, ChainContextClosureLookupContext &lookup_context) ثابت
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    إذا (unlikely (c->lookup_limit_exceeded ())) إرجاع;
 
-    return
+    إرجاع
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.closure (c, value, lookup_context); })
-    ;
-  }
-
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ChainContextClosureLookupContext &lookup_context) const
-  {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-
-    + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت ChainRuleType &_) { _.closure (c, value, lookup_context); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c, ChainContextCollectGlyphsLookupContext &lookup_context) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c,
+                        ChainContextClosureLookupContext &lookup_context) ثابت
   {
-    return
+    إذا (unlikely (c->lookup_limit_exceeded ())) إرجاع;
+
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت ChainRuleType &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *input_class_def = nullptr,
-			      const ClassDef *lookahead_class_def = nullptr) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c, ChainContextCollectGlyphsLookupContext &lookup_context) ثابت
   {
+    إرجاع
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const ChainRuleType &_)
-		{ _.collect_second_glyphs (digest, input_class_def, lookahead_class_def); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت ChainRuleType &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ChainContextApplyLookupContext &lookup_context) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest,
+			      ثابت ClassDef *إدخال_class_def = nullptr,
+			      ثابت ClassDef *lookahead_class_def = nullptr) ثابت
   {
-    return
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleType &_) { return _.would_apply (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([=] (ثابت ChainRuleType &_)
+		{ _.collect_second_glyphs (digest, إدخال_class_def, lookahead_class_def); })
+    ;
+  }
+
+  منطقي would_apply (hb_would_apply_context_t *c,
+		    ثابت ChainContextApplyLookupContext &lookup_context) ثابت
+  {
+    إرجاع
+    + hb_iter (rule)
+    | hb_map (hb_add (هذا))
+    | hb_map ([&] (ثابت ChainRuleType &_) { إرجاع _.would_apply (c, lookup_context); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ChainContextApplyLookupContext &lookup_context,
-	      const hb_ot_layout_ruleset_digest_t *digest = nullptr) const
+  منطقي apply (hb_ot_apply_context_t *c,
+	      ثابت ChainContextApplyLookupContext &lookup_context,
+	      ثابت hb_ot_layout_ruleset_digest_t *digest = nullptr) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    unsigned num_rules = rule.len;
+    unsigned رقم_rules = rule.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_rules <= 4)
+    إذا (HB_OPTIMIZE_SIZE_VAL || رقم_rules <= 4)
 #endif
     {
     slow:
       return_trace (
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const ChainRuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map (hb_add (هذا))
+      | hb_map ([&] (ثابت ChainRuleType &_) { إرجاع _.apply (c, lookup_context); })
       | hb_any
       )
       ;
@@ -4964,212 +4964,212 @@ struct ChainRuleSetOf
     skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
     unsigned unsafe_to = (unsigned) -1, unsafe_to1, unsafe_to2 = 0;
     hb_glyph_info_t *first = nullptr, *second = nullptr;
-    bool matched = skippy_iter.next (&unsafe_to1);
-    if (likely (matched))
+    منطقي matched = skippy_iter.next (&unsafe_to1);
+    إذا (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      إذا (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        اذهب slow;
       }
 
       first = &c->buffer->info[skippy_iter.idx];
       unsafe_to1 = skippy_iter.idx + 1;
 
-      if (digest && lookup_context.get_input_value &&
-	  !digest->may_have (lookup_context.get_input_value (*first, lookup_context.match_data[1])))
+      إذا (digest && lookup_context.get_إدخال_قيمة &&
+	  !digest->may_have (lookup_context.get_إدخال_قيمة (*first, lookup_context.match_data[1])))
 	{
 	  c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
-	  return_trace (false);
+	  return_trace (خطأ);
 	}
     }
-    else
+    وإلا
     {
-      bool unsafe_to_concat = false;
-      bool ret =
+      منطقي unsafe_to_concat = خطأ;
+      منطقي ret =
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_filter ([&] (const ChainRuleType &_)
+      | hb_map (hb_add (هذا))
+      | hb_filter ([&] (ثابت ChainRuleType &_)
 		   {
-		     const auto &input = StructAfter<decltype (_.inputX)> (_.backtrack);
-		     const auto &lookahead = StructAfter<decltype (_.lookaheadX)> (input);
-		     if (input.lenP1 <= 1 && lookahead.len == 0) return true;
+		     ثابت auto &إدخال = StructAfter<decltype (_.إدخال_X)> (_.backtrack);
+		     ثابت auto &lookahead = StructAfter<decltype (_.lookaheadX)> (إدخال);
+		     إذا (إدخال.lenP1 <= 1 && lookahead.len == 0) إرجاع true;
 		     unsafe_to_concat = true;
-		     return false;
+		     إرجاع خطأ;
 		   })
-      | hb_map ([&] (const ChainRuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map ([&] (ثابت ChainRuleType &_) { إرجاع _.apply (c, lookup_context); })
       | hb_any
       ;
-      if (unsafe_to_concat)
+      إذا (unsafe_to_concat)
 	c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
       return_trace (ret);
     }
     matched = skippy_iter.next ();
-    if (likely (matched))
+    إذا (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      إذا (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        اذهب slow;
       }
 
       second = &c->buffer->info[skippy_iter.idx];
       unsafe_to2 = skippy_iter.idx + 1;
     }
 
-    auto match_input = lookup_context.funcs.match[1];
+    auto match_إدخال = lookup_context.funcs.match[1];
     auto match_lookahead = lookup_context.funcs.match[2];
-    auto *input_data = lookup_context.match_data[1];
+    auto *إدخال_data = lookup_context.match_data[1];
     auto *lookahead_data = lookup_context.match_data[2];
-    for (unsigned int i = 0; i < num_rules; i++)
+    لكل (unsigned صحيح i = 0; i < رقم_rules; i++)
     {
-      const auto &r = this+rule.arrayZ[i];
+      ثابت auto &r = هذا+rule.arrayZ[i];
 
-      const auto &input = StructAfter<decltype (r.inputX)> (r.backtrack);
-      const auto &lookahead = StructAfter<decltype (r.lookaheadX)> (input);
+      ثابت auto &إدخال = StructAfter<decltype (r.إدخال_X)> (r.backtrack);
+      ثابت auto &lookahead = StructAfter<decltype (r.lookaheadX)> (إدخال);
 
-      unsigned lenP1 = input.lenP1;
-      if (lenP1 > 1 ?
-	   (!match_input ||
-	    match_input (*first, input.arrayZ[0], input_data))
+      unsigned lenP1 = إدخال.lenP1;
+      إذا (lenP1 > 1 ?
+	   (!match_إدخال ||
+	    match_إدخال (*first, إدخال.arrayZ[0], إدخال_data))
 	  :
 	   (!lookahead.len || !match_lookahead ||
 	    match_lookahead (*first, lookahead.arrayZ[0], lookahead_data)))
       {
 	lenP1 = hb_max (lenP1, 1u);
-        if (!second ||
+        إذا (!second ||
 	    (lenP1 > 2 ?
-	     (!match_input ||
-	      match_input (*second, input.arrayZ[1], input_data))
+	     (!match_إدخال ||
+	      match_إدخال (*second, إدخال.arrayZ[1], إدخال_data))
 	     :
 	     (lookahead.len <= 2 - lenP1 || !match_lookahead ||
 	      match_lookahead (*second, lookahead.arrayZ[2 - lenP1], lookahead_data))))
 	{
-	  if (r.apply (c, lookup_context))
+	  إذا (r.apply (c, lookup_context))
 	  {
-	    if (unsafe_to != (unsigned) -1)
+	    إذا (unsafe_to != (unsigned) -1)
 	      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 	    return_trace (true);
 	  }
 	}
-	else
+	وإلا
 	  unsafe_to = unsafe_to2;
       }
-      else
+      وإلا
       {
-	if (unsafe_to == (unsigned) -1)
+	إذا (unsafe_to == (unsigned) -1)
 	  unsafe_to = unsafe_to1;
 
-	if (lenP1 > 1)
+	إذا (lenP1 > 1)
 	{
 	  // Skip ahead to next possible first glyph match.
-	  for (; i + 1 < num_rules; i++)
+	  لكل (; i + 1 < رقم_rules; i++)
 	  {
-	    const auto &r2 = this+rule.arrayZ[i + 1];
-	    const auto &input2 = StructAfter<decltype (r2.inputX)> (r2.backtrack);
-	    if (input2.lenP1 <= 1 || input2.arrayZ[0] != input.arrayZ[0])
-	      break;
+	    ثابت auto &r2 = هذا+rule.arrayZ[i + 1];
+	    ثابت auto &input2 = StructAfter<decltype (r2.إدخال_X)> (r2.backtrack);
+	    إذا (input2.lenP1 <= 1 || input2.arrayZ[0] != إدخال.arrayZ[0])
+	      اكسر;
 	  }
 	}
       }
     }
-    if (likely (unsafe_to != (unsigned) -1))
+    إذا (likely (unsafe_to != (unsigned) -1))
       c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 
-    return_trace (false);
+    return_trace (خطأ);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *backtrack_klass_map = nullptr,
-	       const hb_map_t *input_klass_map = nullptr,
-	       const hb_map_t *lookahead_klass_map = nullptr) const
+  منطقي subset (hb_subset_context_t *c,
+	       ثابت hb_map_t *lookup_map,
+	       ثابت hb_map_t *backtrack_klass_map = nullptr,
+	       ثابت hb_map_t *إدخال_klass_map = nullptr,
+	       ثابت hb_map_t *lookahead_klass_map = nullptr) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
     auto snap = c->serializer->snapshot ();
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
 
-    for (const auto& _ : rule)
+    لكل (ثابت auto& _ : rule)
     {
-      if (!_) continue;
+      إذا (!_) استمر;
       auto o_snap = c->serializer->snapshot ();
       auto *o = out->rule.serialize_append (c->serializer);
-      if (unlikely (!o)) continue;
+      إذا (unlikely (!o)) استمر;
 
-      if (!o->serialize_subset (c, _, this,
+      إذا (!o->serialize_subset (c, _, هذا,
 				lookup_map,
 				backtrack_klass_map,
-				input_klass_map,
+				إدخال_klass_map,
 				lookahead_klass_map))
       {
-	out->rule.pop ();
+	out->rule.اسحب ();
 	c->serializer->revert (o_snap);
       }
     }
 
-    bool ret = bool (out->rule);
-    if (!ret) c->serializer->revert (snap);
+    منطقي ret = منطقي (out->rule);
+    إذا (!ret) c->serializer->revert (snap);
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (rule.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (rule.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   Array16Of<typename Types::template OffsetTo<ChainRuleType>>
 		rule;			/* Array of ChainRule tables
 					 * ordered by preference */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (2, rule);
 };
 
 template <typename Types>
-struct ChainRuleSet : ChainRuleSetOf<Types, ChainRule<Types>> {};
+بنية ChainRuleSet : ChainRuleSetOf<Types, ChainRule<Types>> {};
 
-static_assert (sizeof (ChainRuleSet<MediumTypes>) ==
+static_assert (حجم (ChainRuleSet<MediumTypes>) ==
 	       HBUINT16::static_size + Offset24::static_size, "");
 
 template <typename Types>
-struct ChainClassRuleSet : ChainRuleSetOf<Types, ChainRule<SmallTypes>> {};
+بنية ChainClassRuleSet : ChainRuleSetOf<Types, ChainRule<SmallTypes>> {};
 
 template <typename Types>
-struct ChainContextFormat1_4
+بنية ChainContextFormat1_4
 {
   using ChainRuleSet = OT::ChainRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    struct ChainContextClosureLookupContext lookup_context = {
+    بنية ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    return
-    + hb_zip (this+coverage, ruleSet)
+    إرجاع
+    + hb_zip (هذا+coverage, ruleSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleSet &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_map ([&] (ثابت ChainRuleSet &_) { إرجاع _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  منطقي may_have_non_1to1 () ثابت
+  { إرجاع true; }
 
-  void depend (hb_depend_context_t *c) const
+  فراغ depend (hb_depend_context_t *c) ثابت
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
     ChainContextDependLookupContext lookup_context = {
@@ -5180,139 +5180,139 @@ struct ChainContextFormat1_4
       nullptr                        /* intersected_glyphs_cache */
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (هذا+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->parent_active_glyphs ().has (_);
+      إرجاع c->parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const ChainRuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const ChainRuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
+    | hb_map ([&](ثابت hb_pair_t<hb_codepoint_t, unsigned> _) { إرجاع hb_pair_t<unsigned, ثابت ChainRuleSet&> (_.first, هذا+ruleSet[_.second]); })
+    | hb_apply ([&] (ثابت hb_pair_t<unsigned, ثابت ChainRuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ closure (hb_closure_context_t *c) ثابت
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    struct ChainContextClosureLookupContext lookup_context = {
+    بنية ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (هذا+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->previous_parent_active_glyphs ().has (_);
+      إرجاع c->previous_parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const ChainRuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const ChainRuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
+    | hb_map ([&](ثابت hb_pair_t<hb_codepoint_t, unsigned> _) { إرجاع hb_pair_t<unsigned, ثابت ChainRuleSet&> (_.first, هذا+ruleSet[_.second]); })
+    | hb_apply ([&] (ثابت hb_pair_t<unsigned, ثابت ChainRuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c) ثابت
   {
-    struct ChainContextClosureLookupContext lookup_context = {
+    بنية ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, nullptr},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (هذا+coverage, ruleSet)
     | hb_filter (*c->glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت ChainRuleSet &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    (this+coverage).collect_coverage (c->input);
+    (هذا+coverage).collect_coverage (c->إدخال);
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    بنية ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_glyph},
       {nullptr, nullptr, nullptr}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest) ثابت
   {
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest] (const ChainRuleSet &_) { _.collect_second_glyphs (digest); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([digest] (ثابت ChainRuleSet &_) { _.collect_second_glyphs (digest); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
   {
-    const ChainRuleSet &rule_set = this+ruleSet[(this+coverage).get_coverage (c->glyphs[0])];
-    struct ChainContextApplyLookupContext lookup_context = {
+    ثابت ChainRuleSet &rule_set = هذا+ruleSet[(هذا+coverage).get_coverage (c->glyphs[0])];
+    بنية ChainContextApplyLookupContext lookup_context = {
       {{match_glyph, match_glyph, match_glyph}},
       {nullptr, nullptr, nullptr}
     };
-    return rule_set.would_apply (c, lookup_context);
+    إرجاع rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { إرجاع هذا+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (هذا);
+    unsigned صحيح index = (هذا+coverage).get_coverage (c->buffer->cur().codepoint);
+    إذا (index == NOT_COVERED) return_trace (خطأ);
 
-    const ChainRuleSet &rule_set = this+ruleSet[index];
-    struct ChainContextApplyLookupContext lookup_context = {
+    ثابت ChainRuleSet &rule_set = هذا+ruleSet[index];
+    بنية ChainContextApplyLookupContext lookup_context = {
       {{match_glyph, match_glyph, match_glyph}},
       {nullptr, nullptr, nullptr}
     };
     return_trace (rule_set.apply (c, lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (هذا);
+    ثابت hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
     out->format = format;
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    ثابت hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (هذا+coverage, ruleSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ruleSet, this, lookup_map), hb_second)
+    | hb_filter (subset_offset_array (c, out->ruleSet, هذا, lookup_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    return_trace (منطقي (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (coverage.sanitize (c, هذا) && ruleSet.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;			/* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -5320,67 +5320,67 @@ struct ChainContextFormat1_4
   typename Types::template ArrayOf<typename Types::template OffsetTo<ChainRuleSet>>
 		ruleSet;		/* Array of ChainRuleSet tables
 					 * ordered by Coverage Index */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
 };
 
 template <typename Types>
-struct ChainContextFormat2_5
+بنية ChainContextFormat2_5
 {
   using ChainRuleSet = OT::ChainClassRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    إذا (!(هذا+coverage).intersects (glyphs))
+      إرجاع خطأ;
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ثابت ClassDef &backtrack_class_def = هذا+backtrackClassDef;
+    ثابت ClassDef &إدخال_class_def = هذا+إدخال_Class_Def;
+    ثابت ClassDef &lookahead_class_def = هذا+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
-    struct ChainContextClosureLookupContext lookup_context = {
+    بنية ChainContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &إدخال_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]}
     };
 
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
+    (هذا+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    input_class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    إدخال_class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    return
+    إرجاع
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (هذا))
     | hb_enumerate
-    | hb_map ([&] (const hb_pair_t<unsigned, const ChainRuleSet &> p)
-	      { return input_class_def.intersects_class (glyphs, p.first) &&
+    | hb_map ([&] (ثابت hb_pair_t<unsigned, ثابت ChainRuleSet &> p)
+	      { إرجاع إدخال_class_def.intersects_class (glyphs, p.first) &&
 		       coverage_glyph_classes.has (p.first) &&
 		       p.second.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  منطقي may_have_non_1to1 () ثابت
+  { إرجاع true; }
 
-  void depend (hb_depend_context_t *c) const
+  فراغ depend (hb_depend_context_t *c) ثابت
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+coverage).intersects (c->glyphs))
+      إرجاع;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ثابت ClassDef &backtrack_class_def = هذا+backtrackClassDef;
+    ثابت ClassDef &إدخال_class_def = هذا+إدخال_Class_Def;
+    ثابت ClassDef &lookahead_class_def = هذا+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
     intersected_class_cache_t intersected_cache;
@@ -5388,7 +5388,7 @@ struct ChainContextFormat2_5
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &إدخال_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]},
       &intersected_cache
@@ -5396,39 +5396,39 @@ struct ChainContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return input_class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { إرجاع إدخال_class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<ChainRuleSet>&> _)
+    | hb_apply ([&] (ثابت hb_pair_t<unsigned, ثابت typename Types::template OffsetTo<ChainRuleSet>&> _)
                 {
-                  const ChainRuleSet& chainrule_set = this+_.second;
+                  ثابت ChainRuleSet& chainrule_set = هذا+_.second;
                   chainrule_set.depend (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ closure (hb_closure_context_t *c) ثابت
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+coverage).intersects (c->glyphs))
+      إرجاع;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs)) إرجاع;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ثابت ClassDef &backtrack_class_def = هذا+backtrackClassDef;
+    ثابت ClassDef &إدخال_class_def = هذا+إدخال_Class_Def;
+    ثابت ClassDef &lookahead_class_def = هذا+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
     intersected_class_cache_t intersected_cache;
-    struct ChainContextClosureLookupContext lookup_context = {
+    بنية ChainContextClosureLookupContext lookup_context = {
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &إدخال_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]},
       &intersected_cache
@@ -5436,261 +5436,261 @@ struct ChainContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return input_class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { إرجاع إدخال_class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<ChainRuleSet>&> _)
+    | hb_apply ([&] (ثابت hb_pair_t<unsigned, ثابت typename Types::template OffsetTo<ChainRuleSet>&> _)
                 {
-                  const ChainRuleSet& chainrule_set = this+_.second;
+                  ثابت ChainRuleSet& chainrule_set = هذا+_.second;
                   chainrule_set.closure (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c) ثابت
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+coverage).intersects (c->glyphs))
+      إرجاع;
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ثابت ClassDef &backtrack_class_def = هذا+backtrackClassDef;
+    ثابت ClassDef &إدخال_class_def = هذا+إدخال_Class_Def;
+    ثابت ClassDef &lookahead_class_def = هذا+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
-    struct ChainContextClosureLookupContext lookup_context = {
+    بنية ChainContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &إدخال_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (هذا))
     | hb_enumerate
     | hb_filter([&] (unsigned klass)
-    { return input_class_def.intersects_class (c->glyphs, klass); }, hb_first)
+    { إرجاع إدخال_class_def.intersects_class (c->glyphs, klass); }, hb_first)
     | hb_map (hb_second)
-    | hb_apply ([&] (const ChainRuleSet &_)
+    | hb_apply ([&] (ثابت ChainRuleSet &_)
     { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    (this+coverage).collect_coverage (c->input);
+    (هذا+coverage).collect_coverage (c->إدخال);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ثابت ClassDef &backtrack_class_def = هذا+backtrackClassDef;
+    ثابت ClassDef &إدخال_class_def = هذا+إدخال_Class_Def;
+    ثابت ClassDef &lookahead_class_def = هذا+lookaheadClassDef;
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    بنية ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_class},
       {&backtrack_class_def,
-       &input_class_def,
+       &إدخال_class_def,
        &lookahead_class_def}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest) ثابت
   {
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ثابت ClassDef &إدخال_class_def = هذا+إدخال_Class_Def;
+    ثابت ClassDef &lookahead_class_def = هذا+lookaheadClassDef;
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest, &input_class_def, &lookahead_class_def] (const ChainRuleSet &_)
-		{ _.collect_second_glyphs (digest, &input_class_def, &lookahead_class_def); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([digest, &إدخال_class_def, &lookahead_class_def] (ثابت ChainRuleSet &_)
+		{ _.collect_second_glyphs (digest, &إدخال_class_def, &lookahead_class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
   {
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ثابت ClassDef &backtrack_class_def = هذا+backtrackClassDef;
+    ثابت ClassDef &إدخال_class_def = هذا+إدخال_Class_Def;
+    ثابت ClassDef &lookahead_class_def = هذا+lookaheadClassDef;
 
-    unsigned int index = input_class_def.get_class (c->glyphs[0]);
-    const ChainRuleSet &rule_set = this+ruleSet[index];
-    struct ChainContextApplyLookupContext lookup_context = {
+    unsigned صحيح index = إدخال_class_def.get_class (c->glyphs[0]);
+    ثابت ChainRuleSet &rule_set = هذا+ruleSet[index];
+    بنية ChainContextApplyLookupContext lookup_context = {
       {{match_class, match_class, match_class}},
       {&backtrack_class_def,
-       &input_class_def,
+       &إدخال_class_def,
        &lookahead_class_def}
     };
-    return rule_set.would_apply (c, lookup_context);
+    إرجاع rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { إرجاع هذا+coverage; }
 
-  unsigned cache_cost () const
+  unsigned cache_cost () ثابت
   {
-    return (this+inputClassDef).cost () + (this+lookaheadClassDef).cost ();
+    إرجاع (هذا+إدخال_Class_Def).cost () + (هذا+lookaheadClassDef).cost ();
   }
-  static bool cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+  ساكن منطقي cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
   {
-    return context_cache_func (c, op);
+    إرجاع context_cache_func (c, op);
   }
 
-  struct external_cache_t
+  بنية external_cache_t
   {
-    hb_ot_layout_binary_cache_t coverage;
-    hb_ot_layout_mapping_cache_t input_class;
+    hb_ot_layout_ثنائي_cache_t coverage;
+    hb_ot_layout_mapping_cache_t إدخال_class;
     hb_ot_layout_mapping_cache_t lookahead_class;
     hb_ot_layout_ruleset_digest_t rule_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  فراغ *external_cache_create () ثابت
   {
-    unsigned count = ruleSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_ot_layout_ruleset_digest_t) +
-		    count * sizeof (hb_ot_layout_ruleset_digest_t);
+    unsigned تعداد_2 = ruleSet.len;
+    unsigned size = حجم (external_cache_t) -
+		    HB_VAR_ARRAY * حجم (hb_ot_layout_ruleset_digest_t) +
+		    تعداد_2 * حجم (hb_ot_layout_ruleset_digest_t);
     external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    إذا (likely (cache))
     {
       cache->coverage.clear ();
-      cache->input_class.clear ();
+      cache->إدخال_class.clear ();
       cache->lookahead_class.clear ();
-      for (unsigned i = 0; i < count; i++)
-	(this+ruleSet[i]).collect_first_input_classes (&cache->rule_sets[i]);
+      لكل (unsigned i = 0; i < تعداد_2; i++)
+	(هذا+ruleSet[i]).collect_first_إدخال_classes (&cache->rule_sets[i]);
     }
-    return cache;
+    إرجاع cache;
   }
-  bool apply_cached (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, true, external_cache); }
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, false, external_cache); }
-  bool _apply (hb_ot_apply_context_t *c, bool cached, void *external_cache) const
+  منطقي apply_cached (hb_ot_apply_context_t *c, فراغ *external_cache) ثابت { إرجاع _apply (c, true, external_cache); }
+  منطقي apply (hb_ot_apply_context_t *c, فراغ *external_cache) ثابت { إرجاع _apply (c, خطأ, external_cache); }
+  منطقي _apply (hb_ot_apply_context_t *c, منطقي cached, فراغ *external_cache) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage_binary (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    unsigned صحيح index = (هذا+coverage).get_coverage_ثنائي (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#وإلا
+    unsigned صحيح index = (هذا+coverage).get_coverage (c->buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    إذا (index == NOT_COVERED) return_trace (خطأ);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    ثابت ClassDef &backtrack_class_def = هذا+backtrackClassDef;
+    ثابت ClassDef &إدخال_class_def = هذا+إدخال_Class_Def;
+    ثابت ClassDef &lookahead_class_def = هذا+lookaheadClassDef;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    match_class_cache_data_t input_cache_data = {
-      &input_class_def,
-      cache ? &cache->input_class : nullptr
+    match_class_cache_data_t إدخال_cache_data = {
+      &إدخال_class_def,
+      cache ? &cache->إدخال_class : nullptr
     };
     match_class_cache_data_t lookahead_cache_data = {
       &lookahead_class_def,
       cache ? &cache->lookahead_class : nullptr
     };
-    const void *input_match_data = cached
-      ? static_cast<const void *> (&input_class_def)
-      : static_cast<const void *> (&input_cache_data);
-    const void *lookahead_match_data = cached
-      ? static_cast<const void *> (&lookahead_class_def)
-      : static_cast<const void *> (&lookahead_cache_data);
-    bool backtrack_uses_lookahead_cache =
+    ثابت فراغ *إدخال_match_data = cached
+      ? static_cast<ثابت فراغ *> (&إدخال_class_def)
+      : static_cast<ثابت فراغ *> (&إدخال_cache_data);
+    ثابت فراغ *lookahead_match_data = cached
+      ? static_cast<ثابت فراغ *> (&lookahead_class_def)
+      : static_cast<ثابت فراغ *> (&lookahead_cache_data);
+    منطقي backtrack_uses_lookahead_cache =
       !cached && &backtrack_class_def == &lookahead_class_def;
-    const void *backtrack_match_data = backtrack_uses_lookahead_cache
-      ? static_cast<const void *> (&lookahead_cache_data)
-      : static_cast<const void *> (&backtrack_class_def);
+    ثابت فراغ *backtrack_match_data = backtrack_uses_lookahead_cache
+      ? static_cast<ثابت فراغ *> (&lookahead_cache_data)
+      : static_cast<ثابت فراغ *> (&backtrack_class_def);
 #endif
 
     /* match_class_caches1 is slightly faster. Use it for lookahead,
      * which is typically longer. */
-    struct ChainContextApplyLookupContext lookup_context = {
+    بنية ChainContextApplyLookupContext lookup_context = {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
       {{cached && &backtrack_class_def == &lookahead_class_def ? match_class_cached1 :
         backtrack_uses_lookahead_cache ? match_class_cache : match_class,
         cached ? match_class_cached2 : match_class_cache,
         cached ? match_class_cached1 : match_class_cache}},
       {backtrack_match_data,
-       input_match_data,
+       إدخال_match_data,
        lookahead_match_data},
-      cached ? get_class_cached2_value : get_class_cache_value
-#else
+      cached ? get_class_cached2_قيمة : get_class_cache_قيمة
+#وإلا
       {{cached && &backtrack_class_def == &lookahead_class_def ? match_class_cached1 : match_class,
         cached ? match_class_cached2 : match_class,
         cached ? match_class_cached1 : match_class}},
       {&backtrack_class_def,
-       &input_class_def,
+       &إدخال_class_def,
        &lookahead_class_def},
-      cached ? get_class_cached2_value : get_class_value
+      cached ? get_class_cached2_قيمة : get_class_قيمة
 #endif
     };
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     index = cached
-         ? get_class_cached2 (input_class_def, c->buffer->cur())
-         : input_class_def.get_class (c->buffer->cur().codepoint, input_cache_data.cache);
-#else
+         ? get_class_cached2 (إدخال_class_def, c->buffer->cur())
+         : إدخال_class_def.get_class (c->buffer->cur().codepoint, إدخال_cache_data.cache);
+#وإلا
     index = cached
-         ? get_class_cached2 (input_class_def, c->buffer->cur())
-          : input_class_def.get_class (c->buffer->cur().codepoint);
+         ? get_class_cached2 (إدخال_class_def, c->buffer->cur())
+          : إدخال_class_def.get_class (c->buffer->cur().codepoint);
 #endif
-    const ChainRuleSet &rule_set = this+ruleSet[index];
+    ثابت ChainRuleSet &rule_set = هذا+ruleSet[index];
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    const hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
-#else
-    const hb_ot_layout_ruleset_digest_t *digest = nullptr;
+    ثابت hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
+#وإلا
+    ثابت hb_ot_layout_ruleset_digest_t *digest = nullptr;
 #endif
     return_trace (rule_set.apply (c, lookup_context, digest));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    auto *out = c->serializer->start_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
     out->format = format;
-    out->coverage.serialize_subset (c, coverage, this);
+    out->coverage.serialize_subset (c, coverage, هذا);
 
     hb_map_t backtrack_klass_map;
-    hb_map_t input_klass_map;
+    hb_map_t إدخال_klass_map;
     hb_map_t lookahead_klass_map;
 
-    out->backtrackClassDef.serialize_subset (c, backtrackClassDef, this, &backtrack_klass_map);
+    out->backtrackClassDef.serialize_subset (c, backtrackClassDef, هذا, &backtrack_klass_map);
     // TODO: subset inputClassDef based on glyphs survived in Coverage subsetting
-    out->inputClassDef.serialize_subset (c, inputClassDef, this, &input_klass_map);
-    out->lookaheadClassDef.serialize_subset (c, lookaheadClassDef, this, &lookahead_klass_map);
+    out->إدخال_Class_Def.serialize_subset (c, إدخال_Class_Def, هذا, &إدخال_klass_map);
+    out->lookaheadClassDef.serialize_subset (c, lookaheadClassDef, هذا, &lookahead_klass_map);
 
-    if (unlikely (!c->serializer->propagate_error (backtrack_klass_map,
-						   input_klass_map,
+    إذا (unlikely (!c->serializer->propagate_error (backtrack_klass_map,
+						   إدخال_klass_map,
 						   lookahead_klass_map)))
-      return_trace (false);
+      return_trace (خطأ);
 
-    const hb_set_t* glyphset = c->plan->glyphset_gsub ();
+    ثابت hb_set_t* glyphset = c->plan->glyphset_gsub ();
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
+    (هذا+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    (this+inputClassDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    (هذا+إدخال_Class_Def).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    int non_zero_index = -1, index = 0;
-    bool ret = true;
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    صحيح non_zero_index = -1, index = 0;
+    منطقي ret = true;
+    ثابت hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     auto last_non_zero = c->serializer->snapshot ();
-    for (const auto& _ : + hb_enumerate (ruleSet)
-			 | hb_filter (input_klass_map, hb_first))
+    لكل (ثابت auto& _ : + hb_enumerate (ruleSet)
+			 | hb_filter (إدخال_klass_map, hb_first))
     {
       auto *o = out->ruleSet.serialize_append (c->serializer);
-      if (unlikely (!o))
+      إذا (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = خطأ;
+	اكسر;
       }
-      if (coverage_glyph_classes.has (_.first) &&
-          o->serialize_subset (c, _.second, this,
+      إذا (coverage_glyph_classes.has (_.first) &&
+          o->serialize_subset (c, _.second, هذا,
 			       lookup_map,
 			       &backtrack_klass_map,
-			       &input_klass_map,
+			       &إدخال_klass_map,
 			       &lookahead_klass_map))
       {
         last_non_zero = c->serializer->snapshot ();
@@ -5700,28 +5700,28 @@ struct ChainContextFormat2_5
       index++;
     }
 
-    if (!ret || non_zero_index == -1) return_trace (false);
+    إذا (!ret || non_zero_index == -1) return_trace (خطأ);
 
     // prune empty trailing ruleSets
-    if (index > non_zero_index) {
+    إذا (index > non_zero_index) {
       c->serializer->revert (last_non_zero);
       out->ruleSet.len = non_zero_index + 1;
     }
 
-    return_trace (bool (out->ruleSet));
+    return_trace (منطقي (out->ruleSet));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) &&
-		  backtrackClassDef.sanitize (c, this) &&
-		  inputClassDef.sanitize (c, this) &&
-		  lookaheadClassDef.sanitize (c, this) &&
-		  ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (coverage.sanitize (c, هذا) &&
+		  backtrackClassDef.sanitize (c, هذا) &&
+		  إدخال_Class_Def.sanitize (c, هذا) &&
+		  lookaheadClassDef.sanitize (c, هذا) &&
+		  ruleSet.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;			/* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -5731,7 +5731,7 @@ struct ChainContextFormat2_5
 					 * containing backtrack sequence
 					 * data--from beginning of table */
   typename Types::template LOffsetTo<ClassDef>
-		inputClassDef;		/* Offset to glyph ClassDef
+		إدخال_Class_Def;		/* Offset to glyph ClassDef
 					 * table containing input sequence
 					 * data--from beginning of table */
   typename Types::template LOffsetTo<ClassDef>
@@ -5741,257 +5741,257 @@ struct ChainContextFormat2_5
   Array16Of<typename Types::template OffsetTo<ChainRuleSet>>
 		ruleSet;		/* Array of ChainRuleSet tables
 					 * ordered by class */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (4 + 4 * Types::LOffset::static_size, ruleSet);
 };
 
 template <typename Types>
-struct ChainContextFormat3
+بنية ChainContextFormat3
 {
   using RuleSet = OT::RuleSet<SmallTypes>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (glyphs))
-      return false;
+    إذا (!(هذا+إدخال[0]).intersects (glyphs))
+      إرجاع خطأ;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    struct ChainContextClosureLookupContext lookup_context = {
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    بنية ChainContextClosureLookupContext lookup_context = {
       {intersects_coverage, nullptr},
       ContextFormat::CoverageBasedContext,
-      {this, this, this}
+      {هذا, هذا, هذا}
     };
-    return chain_context_intersects (glyphs,
+    إرجاع chain_context_intersects (glyphs,
 				     backtrack.len, backtrack.arrayZ,
-				     input.len, input.arrayZ + 1,
+				     إدخال.len, إدخال.arrayZ + 1,
 				     lookahead.len, lookahead.arrayZ,
 				     lookup_context);
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  منطقي may_have_non_1to1 () ثابت
+  { إرجاع true; }
 
-  void depend (hb_depend_context_t *c) const
+  فراغ depend (hb_depend_context_t *c) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+إدخال[0]).intersects (c->glyphs))
+      إرجاع;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs))
+      إرجاع;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     ChainContextDependLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      {this, this, this},
+      {هذا, هذا, هذا},
       {nullptr, nullptr, nullptr},  /* intersects_cache */
       nullptr                        /* intersected_glyphs_cache */
     };
     chain_context_depend_lookup (c,
-				 backtrack.len, (const HBUINT16 *) backtrack.arrayZ,
-				 input.len, (const HBUINT16 *) input.arrayZ + 1,
-				 lookahead.len, (const HBUINT16 *) lookahead.arrayZ,
+				 backtrack.len, (ثابت HBUINT16 *) backtrack.arrayZ,
+				 إدخال.len, (ثابت HBUINT16 *) إدخال.arrayZ + 1,
+				 lookahead.len, (ثابت HBUINT16 *) lookahead.arrayZ,
 				 lookup.len, lookup.arrayZ,
-				 this,
-				 input[0], lookup_context);
+				 هذا,
+				 إدخال[0], lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ closure (hb_closure_context_t *c) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (c->glyphs))
-      return;
+    إذا (!(هذا+إدخال[0]).intersects (c->glyphs))
+      إرجاع;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
+    hb_set_t* cur_active_glyphs = c->ادفع_cur_active_glyphs ();
+    إذا (unlikely (!cur_active_glyphs))
+      إرجاع;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextClosureLookupContext lookup_context = {
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    بنية ChainContextClosureLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      {this, this, this}
+      {هذا, هذا, هذا}
     };
     chain_context_closure_lookup (c,
 				  backtrack.len, backtrack.arrayZ,
-				  input.len, input.arrayZ + 1,
+				  إدخال.len, إدخال.arrayZ + 1,
 				  lookahead.len, lookahead.arrayZ,
 				  lookup.len, lookup.arrayZ,
 				  0, lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->اسحب_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c) ثابت
   {
-    if (!intersects (c->glyphs))
-      return;
+    إذا (!intersects (c->glyphs))
+      إرجاع;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     recurse_lookups (c, lookup.len, lookup.arrayZ);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
 
-    (this+input[0]).collect_coverage (c->input);
+    (هذا+إدخال[0]).collect_coverage (c->إدخال);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    بنية ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_coverage},
-      {this, this, this}
+      {هذا, هذا, هذا}
     };
     chain_context_collect_glyphs_lookup (c,
 					 backtrack.len, backtrack.arrayZ,
-					 input.len, input.arrayZ + 1,
+					 إدخال.len, إدخال.arrayZ + 1,
 					 lookahead.len, lookahead.arrayZ,
 					 lookup.len, lookup.arrayZ,
 					 lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (input.len > 1)
-      (this+input[1]).collect_coverage (digest);
-    else if (lookahead.len)
-      (this+lookahead[0]).collect_coverage (digest);
-    else
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    إذا (إدخال.len > 1)
+      (هذا+إدخال[1]).collect_coverage (digest);
+    وإلا إذا (lookahead.len)
+      (هذا+lookahead[0]).collect_coverage (digest);
+    وإلا
       *digest = hb_set_digest_t::full ();
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextApplyLookupContext lookup_context = {
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    بنية ChainContextApplyLookupContext lookup_context = {
       {{match_coverage, match_coverage, match_coverage}},
-      {this, this, this}
+      {هذا, هذا, هذا}
     };
-    return chain_context_would_apply_lookup (c,
+    إرجاع chain_context_would_apply_lookup (c,
 					     backtrack.len, backtrack.arrayZ,
-					     input.len, input.arrayZ + 1,
+					     إدخال.len, إدخال.arrayZ + 1,
 					     lookahead.len, lookahead.arrayZ,
 					     lookup.len, lookup.arrayZ, lookup_context);
   }
 
-  const Coverage &get_coverage () const
+  ثابت Coverage &get_coverage () ثابت
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    return this+input[0];
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    إرجاع هذا+إدخال[0];
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    TRACE_APPLY (هذا);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
 
-    unsigned int index = (this+input[0]).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned صحيح index = (هذا+إدخال[0]).get_coverage (c->buffer->cur().codepoint);
+    إذا (index == NOT_COVERED) return_trace (خطأ);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextApplyLookupContext lookup_context = {
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    بنية ChainContextApplyLookupContext lookup_context = {
       {{match_coverage, match_coverage, match_coverage}},
-      {this, this, this}
+      {هذا, هذا, هذا}
     };
     return_trace (chain_context_apply_lookup (c,
 					      backtrack.len, backtrack.arrayZ,
-					      input.len, input.arrayZ + 1,
+					      إدخال.len, إدخال.arrayZ + 1,
 					      lookahead.len, lookahead.arrayZ,
 					      lookup.len, lookup.arrayZ, lookup_context));
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_coverage_offsets (hb_subset_context_t *c, Iterator it, const void* base) const
+  منطقي serialize_coverage_offsets (hb_subset_context_t *c, Iterator it, ثابت فراغ* base) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    إذا (unlikely (!out->serialize (c->serializer, 0u))) return_trace (خطأ);
 
-    for (auto& offset : it) {
+    لكل (auto& offset : it) {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, base))
-        return_trace (false);
+      إذا (unlikely (!o) || !o->serialize_subset (c, offset, base))
+        return_trace (خطأ);
     }
 
     return_trace (true);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    if (unlikely (!c->serializer->embed (this->format))) return_trace (false);
+    إذا (unlikely (!c->serializer->embed (هذا->format))) return_trace (خطأ);
 
-    if (!serialize_coverage_offsets (c, backtrack.iter (), this))
-      return_trace (false);
+    إذا (!serialize_coverage_offsets (c, backtrack.iter (), هذا))
+      return_trace (خطأ);
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (!serialize_coverage_offsets (c, input.iter (), this))
-      return_trace (false);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    إذا (!serialize_coverage_offsets (c, إدخال.iter (), هذا))
+      return_trace (خطأ);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (!serialize_coverage_offsets (c, lookahead.iter (), this))
-      return_trace (false);
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    إذا (!serialize_coverage_offsets (c, lookahead.iter (), هذا))
+      return_trace (خطأ);
 
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
 
-    HBUINT16 *lookupCount = c->serializer->copy<HBUINT16> (lookup.len);
-    if (!lookupCount) return_trace (false);
+    HBUINT16 *lookup_تعداد_2 = c->serializer->copy<HBUINT16> (lookup.len);
+    إذا (!lookup_تعداد_2) return_trace (خطأ);
 
-    unsigned count = serialize_lookuprecord_array (c->serializer, lookup.as_array (), lookup_map);
-    return_trace (c->serializer->check_assign (*lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned تعداد_2 = serialize_lookuprecord_array (c->serializer, lookup.as_array (), lookup_map);
+    return_trace (c->serializer->check_assign (*lookup_تعداد_2, تعداد_2, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!backtrack.sanitize (c, this))) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!backtrack.sanitize (c, هذا))) return_trace (خطأ);
     hb_barrier ();
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (unlikely (!input.sanitize (c, this))) return_trace (false);
+    ثابت auto &إدخال = StructAfter<decltype (إدخال_X)> (backtrack);
+    إذا (unlikely (!إدخال.sanitize (c, هذا))) return_trace (خطأ);
     hb_barrier ();
-    if (unlikely (!input.len)) return_trace (false); /* To be consistent with Context. */
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (unlikely (!lookahead.sanitize (c, this))) return_trace (false);
+    إذا (unlikely (!إدخال.len)) return_trace (خطأ); /* To be consistent with Context. */
+    ثابت auto &lookahead = StructAfter<decltype (lookaheadX)> (إدخال);
+    إذا (unlikely (!lookahead.sanitize (c, هذا))) return_trace (خطأ);
     hb_barrier ();
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ثابت auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (likely (lookup.sanitize (c)));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;			/* Format identifier--format = 3 */
   Array16Of<typename Types::template OffsetTo<Coverage>>
 		backtrack;		/* Array of coverage tables
 					 * in backtracking sequence, in  glyph
 					 * sequence order */
   Array16Of<typename Types::template OffsetTo<Coverage>>
-		inputX		;	/* Array of coverage
+		إدخال_X		;	/* Array of coverage
 					 * tables in input sequence, in glyph
 					 * sequence order */
   Array16Of<typename Types::template OffsetTo<Coverage>>
@@ -6001,32 +6001,32 @@ struct ChainContextFormat3
   Array16Of<LookupRecord>
 		lookupX;		/* Array of LookupRecords--in
 					 * design order) */
-  public:
+  عام:
   DEFINE_SIZE_MIN (10);
 };
 
-struct ChainContext
+بنية ChainContext
 {
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    إذا (unlikely (!c->may_dispatch (هذا, &u.format.v))) إرجاع c->no_dispatch_return_قيمة ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالة 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    حالة 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    حالة 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    حالة 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    افتراضي:return_trace (c->default_return_قيمة ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;	/* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }		format;	/* Format identifier */
   ChainContextFormat1_4<SmallTypes>	format1;
   ChainContextFormat2_5<SmallTypes>	format2;
   ChainContextFormat3<SmallTypes>	format3;
@@ -6041,79 +6041,79 @@ struct ChainContext
 
 
 template <typename T>
-struct ExtensionFormat1
+بنية ExtensionFormat1
 {
-  unsigned int get_type () const { return extensionLookupType; }
+  unsigned صحيح get_type () ثابت { إرجاع extensionLookupType; }
 
   template <typename X>
-  const X& get_subtable () const
-  { return this + reinterpret_cast<const Offset32To<typename T::SubTable> &> (extensionOffset); }
+  ثابت X& get_subtable () ثابت
+  { إرجاع هذا + reinterpret_cast<ثابت Offset32To<typename T::SubTable> &> (extensionOffset); }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, this))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, format);
+    إذا (unlikely (!c->may_dispatch (هذا, هذا))) إرجاع c->no_dispatch_return_قيمة ();
+    TRACE_DISPATCH (هذا, format);
     return_trace (get_subtable<typename T::SubTable> ().dispatch (c, get_type (), std::forward<Ts> (ds)...));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   { dispatch (c); }
 
   /* This is called from may_dispatch() above with hb_sanitize_context_t. */
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  extensionLookupType != T::SubTable::Extension);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (هذا);
+    إذا (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
 
     out->format = format;
     out->extensionLookupType = extensionLookupType;
 
-    const auto& src_offset =
-        reinterpret_cast<const Offset32To<typename T::SubTable> &> (extensionOffset);
+    ثابت auto& src_offset =
+        reinterpret_cast<ثابت Offset32To<typename T::SubTable> &> (extensionOffset);
     auto& dest_offset =
         reinterpret_cast<Offset32To<typename T::SubTable> &> (out->extensionOffset);
 
-    return_trace (dest_offset.serialize_subset (c, src_offset, this, get_type ()));
+    return_trace (dest_offset.serialize_subset (c, src_offset, هذا, get_type ()));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;			/* Format identifier. Set to 1. */
   HBUINT16	extensionLookupType;	/* Lookup type of subtable referenced
 					 * by ExtensionOffset (i.e. the
 					 * extension subtable). */
   Offset32	extensionOffset;	/* Offset to the extension subtable,
 					 * of lookup type subtable. */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (8);
 };
 
 template <typename T>
-struct Extension
+بنية Extension
 {
-  unsigned int get_type () const
+  unsigned صحيح get_type () ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_type ();
-    default:return 0;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); إرجاع u.format1.get_type ();
+    افتراضي:إرجاع 0;
     }
   }
   template <typename X>
-  const X& get_subtable () const
+  ثابت X& get_subtable () ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.template get_subtable<typename T::SubTable> ();
-    default:return Null (typename T::SubTable);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); إرجاع u.format1.template get_subtable<typename T::SubTable> ();
+    افتراضي:إرجاع Null (typename T::SubTable);
     }
   }
 
@@ -6121,28 +6121,28 @@ struct Extension
   // dispatches to the sub table this points too, but for subset
   // we need to run subset on this subtable too.
   template <typename ...Ts>
-  typename hb_subset_context_t::return_t dispatch (hb_subset_context_t *c, Ts&&... ds) const
+  typename hb_subset_context_t::return_t dispatch (hb_subset_context_t *c, Ts&&... ds) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.subset (c);
-    default: return c->default_return_value ();
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); إرجاع u.format1.subset (c);
+    افتراضي: إرجاع c->default_return_قيمة ();
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.dispatch (c, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    إذا (unlikely (!c->may_dispatch (هذا, &u.format.v))) إرجاع c->no_dispatch_return_قيمة ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (u.format1.dispatch (c, std::forward<Ts> (ds)...));
+    افتراضي:return_trace (c->default_return_قيمة ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }	format;		/* Format identifier */
   ExtensionFormat1<T>	format1;
   } u;
 };
@@ -6152,16 +6152,16 @@ struct Extension
  * GSUB/GPOS Common
  */
 
-struct hb_ot_layout_lookup_accelerator_t
+بنية hb_ot_layout_lookup_accelerator_t
 {
   template <typename TLookup>
-  static hb_ot_layout_lookup_accelerator_t *create (const TLookup &lookup)
+  ساكن hb_ot_layout_lookup_accelerator_t *create (ثابت TLookup &lookup)
   {
-    unsigned count = lookup.get_subtable_count ();
+    unsigned تعداد_2 = lookup.get_subtable_تعداد ();
 
-    unsigned size = sizeof (hb_ot_layout_lookup_accelerator_t) -
-		    HB_VAR_ARRAY * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t) +
-		    count * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t);
+    unsigned size = حجم (hb_ot_layout_lookup_accelerator_t) -
+		    HB_VAR_ARRAY * حجم (hb_accelerate_subtables_context_t::hb_applicable_t) +
+		    تعداد_2 * حجم (hb_accelerate_subtables_context_t::hb_applicable_t);
 
     /* The following is a calloc because when we are collecting subtables,
      * some of them might be invalid and hence not collect; as a result,
@@ -6169,8 +6169,8 @@ struct hb_ot_layout_lookup_accelerator_t
      * Zeroing it allows the set digest to gatekeep it without having to
      * initialize it further. */
     auto *thiz = (hb_ot_layout_lookup_accelerator_t *) hb_calloc (1, size);
-    if (unlikely (!thiz))
-      return nullptr;
+    إذا (unlikely (!thiz))
+      إرجاع nullptr;
 
     hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables);
     lookup.dispatch (&c_accelerate_subtables);
@@ -6178,44 +6178,44 @@ struct hb_ot_layout_lookup_accelerator_t
     /* Invalid subtables do not collect and leave zeroed tail entries
      * (see the calloc note above); trim them so the apply paths never
      * see a null apply func. */
-    while (count && !thiz->subtables[count - 1].apply_func)
-      count--;
+    بينما (تعداد_2 && !thiz->subtables[تعداد_2 - 1].apply_func)
+      تعداد_2--;
 
     thiz->digest.init ();
-    for (auto& subtable : hb_iter (thiz->subtables, count))
+    لكل (auto& subtable : hb_iter (thiz->subtables, تعداد_2))
       thiz->digest.union_ (subtable.digest);
     thiz->digest_second = c_accelerate_subtables.digest_second;
 
-    thiz->count = count;
+    thiz->تعداد_2 = تعداد_2;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     thiz->subtable_cache_user_idx = c_accelerate_subtables.subtable_cache_user_idx;
 
-    for (unsigned i = 0; i < count; i++)
-      if (i != thiz->subtable_cache_user_idx)
+    لكل (unsigned i = 0; i < تعداد_2; i++)
+      إذا (i != thiz->subtable_cache_user_idx)
        thiz->subtables[i].apply_cached_func = thiz->subtables[i].apply_func;
 #endif
 
-    return thiz;
+    إرجاع thiz;
   }
 
-  void fini ()
+  فراغ fini ()
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    for (unsigned i = 0; i < count; i++)
+    لكل (unsigned i = 0; i < تعداد_2; i++)
       hb_free (subtables[i].external_cache);
 #endif
   }
 
-  bool may_have (hb_codepoint_t g) const
-  { return digest.may_have (g); }
+  منطقي may_have (hb_codepoint_t g) ثابت
+  { إرجاع digest.may_have (g); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool apply (hb_ot_apply_context_t *c, bool use_cache) const
+  منطقي apply (hb_ot_apply_context_t *c, منطقي use_cache) ثابت
   {
-    if (count == 1)
+    إذا (تعداد_2 == 1)
     {
       /* The accelerator digest is the union of the subtable digests, so
        * for a single subtable it equals that subtable's digest, which the
@@ -6223,42 +6223,42 @@ struct hb_ot_layout_lookup_accelerator_t
        * invalid entries were trimmed at create time, so the subtable is
        * always valid here. */
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-      if (use_cache)
-	return subtables[0].apply_cached_no_digest (c);
+      إذا (use_cache)
+	إرجاع subtables[0].apply_cached_no_digest (c);
 #endif
-      return subtables[0].apply_no_digest (c);
+      إرجاع subtables[0].apply_no_digest (c);
     }
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    if (use_cache)
+    إذا (use_cache)
     {
-      return
-      + hb_iter (hb_iter (subtables, count))
-      | hb_map ([&c] (const hb_accelerate_subtables_context_t::hb_applicable_t &_) { return _.apply_cached (c); })
+      إرجاع
+      + hb_iter (hb_iter (subtables, تعداد_2))
+      | hb_map ([&c] (ثابت hb_accelerate_subtables_context_t::hb_applicable_t &_) { إرجاع _.apply_cached (c); })
       | hb_any
       ;
     }
-    else
+    وإلا
 #endif
     {
-      return
-      + hb_iter (hb_iter (subtables, count))
-      | hb_map ([&c] (const hb_accelerate_subtables_context_t::hb_applicable_t &_) { return _.apply (c); })
+      إرجاع
+      + hb_iter (hb_iter (subtables, تعداد_2))
+      | hb_map ([&c] (ثابت hb_accelerate_subtables_context_t::hb_applicable_t &_) { إرجاع _.apply (c); })
       | hb_any
       ;
     }
-    return false;
+    إرجاع خطأ;
   }
 
-  bool cache_enter (hb_ot_apply_context_t *c) const
+  منطقي cache_enter (hb_ot_apply_context_t *c) ثابت
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    return subtable_cache_user_idx != (unsigned) -1 &&
+    إرجاع subtable_cache_user_idx != (unsigned) -1 &&
 	   subtables[subtable_cache_user_idx].cache_enter (c);
-#else
-    return false;
+#وإلا
+    إرجاع خطأ;
 #endif
   }
-  void cache_leave (hb_ot_apply_context_t *c) const
+  فراغ cache_leave (hb_ot_apply_context_t *c) ثابت
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     subtables[subtable_cache_user_idx].cache_leave (c);
@@ -6268,15 +6268,15 @@ struct hb_ot_layout_lookup_accelerator_t
 
   hb_set_digest_t digest;
   hb_set_digest_t digest_second;
-  private:
-  unsigned count = 0; /* Number of subtables in the array. */
+  خاص:
+  unsigned تعداد_2 = 0; /* Number of subtables in the array. */
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   unsigned subtable_cache_user_idx = (unsigned) -1;
 #endif
   hb_accelerate_subtables_context_t::hb_applicable_t subtables[HB_VAR_ARRAY];
 };
 
-struct GSUBGPOS
+بنية GSUBGPOS
 {
   using LookupListT = LookupList<SmallTypes>;
   using LookupList2T = LookupList<MediumTypes>;
@@ -6289,149 +6289,149 @@ struct GSUBGPOS
   template <typename TLookup>
   using TLookupOffsetList2 = LookupOffsetList<TLookup, typename MediumTypes::HBLUINT>;
 
-  size_t get_size () const
+  size_t get_size () ثابت
   {
-    if (version.major != 1) return version.static_size;
+    إذا (version.major != 1) إرجاع version.static_size;
 
-    return min_size +
+    إرجاع min_size +
 	   (version.to_int () >= 0x00010001u ? featureVars.static_size : 0) +
 #ifndef HB_NO_BEYOND_64K
 	   (version.to_int () >= 0x00010002u ? 3 * Offset32::static_size : 0)
-#else
+#وإلا
 	   0
 #endif
 	   ;
   }
 
-  const ScriptList &get_script_list () const
+  ثابت ScriptList &get_script_list () ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && scriptList2) return this + scriptList2;
+    إذا (version.to_int () >= 0x00010002u && scriptList2) إرجاع هذا + scriptList2;
 #endif
-    return this + scriptList;
+    إرجاع هذا + scriptList;
   }
-  const FeatureList &get_feature_list () const
+  ثابت FeatureList &get_feature_list () ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && featureList2) return this + featureList2;
+    إذا (version.to_int () >= 0x00010002u && featureList2) إرجاع هذا + featureList2;
 #endif
-    return this + featureList;
+    إرجاع هذا + featureList;
   }
   template <typename TLookup>
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!version.sanitize (c) ||
 		  version.major != 1 ||
-		  !c->check_range (this, get_size ())))
-      return_trace (false);
+		  !c->check_range (هذا, get_size ())))
+      return_trace (خطأ);
     hb_barrier ();
 
-    bool script_list_ok = scriptList.sanitize (c, this);
-    bool feature_list_ok = featureList.sanitize (c, this);
-    bool lookup_list_ok = typed_lookup_list_offset<TLookup> ().sanitize (c, this);
+    منطقي script_list_ok = scriptList.sanitize (c, هذا);
+    منطقي feature_list_ok = featureList.sanitize (c, هذا);
+    منطقي lookup_list_ok = typed_lookup_list_offset<TLookup> ().sanitize (c, هذا);
 
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u)
+    إذا (version.to_int () >= 0x00010002u)
     {
-      if (scriptList2) script_list_ok = scriptList2.sanitize (c, this);
-      if (featureList2) feature_list_ok = featureList2.sanitize (c, this);
-      if (lookupList2) lookup_list_ok = typed_lookup_list2_offset<TLookup> ().sanitize (c, this);
+      إذا (scriptList2) script_list_ok = scriptList2.sanitize (c, هذا);
+      إذا (featureList2) feature_list_ok = featureList2.sanitize (c, هذا);
+      إذا (lookupList2) lookup_list_ok = typed_lookup_list2_offset<TLookup> ().sanitize (c, هذا);
     }
 #endif
 
-    if (unlikely (!(script_list_ok && feature_list_ok && lookup_list_ok)))
-      return_trace (false);
+    إذا (unlikely (!(script_list_ok && feature_list_ok && lookup_list_ok)))
+      return_trace (خطأ);
 
 #ifndef HB_NO_VAR
-    if (unlikely (!(version.to_int () < 0x00010001u ||
-		    featureVars.sanitize (c, this, &get_feature_list ()))))
-      return_trace (false);
+    إذا (unlikely (!(version.to_int () < 0x00010001u ||
+		    featureVars.sanitize (c, هذا, &get_feature_list ()))))
+      return_trace (خطأ);
 #endif
 
     return_trace (true);
   }
 
   template <typename TLookup>
-  bool subset (hb_subset_layout_context_t *c) const
+  منطقي subset (hb_subset_layout_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    if (version.major != 1) return_trace (false);
+    TRACE_SUBSET (هذا);
+    إذا (version.major != 1) return_trace (خطأ);
 
-    auto *out = c->subset_context->serializer->start_embed (this);
-    if (unlikely (!c->subset_context->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->subset_context->serializer->start_embed (هذا);
+    إذا (unlikely (!c->subset_context->serializer->extend_min (out))) return_trace (خطأ);
 
     out->version = version;
 
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u)
+    إذا (version.to_int () >= 0x00010002u)
     {
-      if (unlikely (!c->subset_context->serializer->extend_size (out, get_size ())))
-        return_trace (false);
+      إذا (unlikely (!c->subset_context->serializer->extend_size (out, get_size ())))
+        return_trace (خطأ);
 
       out->scriptList = 0;
       out->featureList = 0;
       out->lookupList = 0;
 
-      if (lookupList2)
+      إذا (lookupList2)
 	serialize_subset_offset (c->subset_context, out->lookupList2,
 				 subset_lookup_list2_offset<TLookup> (),
-				 this, c);
-      else
+				 هذا, c);
+      وإلا
 	serialize_subset_offset (c->subset_context, out->lookupList2,
 				 subset_lookup_list_offset<TLookup> (),
-				 this, c);
+				 هذا, c);
 
-      if (featureList2)
+      إذا (featureList2)
 	serialize_subset_offset (c->subset_context, out->featureList2,
 				 subset_feature_list2_offset (),
-				 this, c);
-      else
+				 هذا, c);
+      وإلا
 	serialize_subset_offset (c->subset_context, out->featureList2,
 				 subset_feature_list_offset (),
-				 this, c);
+				 هذا, c);
 
-      if (scriptList2)
-	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList2, this, c);
-      else
-	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList, this, c);
+      إذا (scriptList2)
+	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList2, هذا, c);
+      وإلا
+	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList, هذا, c);
     }
-    else
+    وإلا
 #endif
     {
       out->subset_lookup_list_offset<TLookup> ()
 	  .serialize_subset (c->subset_context,
 			     subset_lookup_list_offset<TLookup> (),
-			     this,
+			     هذا,
 			     c);
 
       out->subset_feature_list_offset ()
 	  .serialize_subset (c->subset_context,
 			     subset_feature_list_offset (),
-			     this,
+			     هذا,
 			     c);
 
       out->scriptList.serialize_subset (c->subset_context,
 					scriptList,
-					this,
+					هذا,
 					c);
     }
 
 #ifndef HB_NO_VAR
-    if (version.to_int () >= 0x00010001u)
+    إذا (version.to_int () >= 0x00010001u)
     {
       auto snapshot = c->subset_context->serializer->snapshot ();
-      if (version.to_int () < 0x00010002u &&
+      إذا (version.to_int () < 0x00010002u &&
 	  !c->subset_context->serializer->extend_min (&out->featureVars))
-        return_trace (false);
+        return_trace (خطأ);
 
       // if all axes are pinned all feature vars are dropped.
-      bool ret = !c->subset_context->plan->all_axes_pinned
-                 && out->featureVars.serialize_subset (c->subset_context, featureVars, this, c);
-      if (!ret)
+      منطقي ret = !c->subset_context->plan->all_axes_pinned
+                 && out->featureVars.serialize_subset (c->subset_context, featureVars, هذا, c);
+      إذا (!ret)
       {
         out->featureVars = 0;
-	if (version.to_int () < 0x00010002u)
+	إذا (version.to_int () < 0x00010002u)
 	{
 	  c->subset_context->serializer->revert (snapshot);
 	  out->version.major = 1;
@@ -6444,122 +6444,122 @@ struct GSUBGPOS
     return_trace (true);
   }
 
-  unsigned int get_lookup_count () const
+  unsigned صحيح get_lookup_تعداد () ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return (this + lookupList2).len;
+    إذا (version.to_int () >= 0x00010002u && lookupList2)
+      إرجاع (هذا + lookupList2).len;
 #endif
-    return (this + lookupList).len;
+    إرجاع (هذا + lookupList).len;
   }
-  const Lookup& get_lookup (unsigned int i) const
+  ثابت Lookup& get_lookup (unsigned صحيح i) ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return (this + lookupList2)[i];
+    إذا (version.to_int () >= 0x00010002u && lookupList2)
+      إرجاع (هذا + lookupList2)[i];
 #endif
-    return (this + lookupList)[i];
+    إرجاع (هذا + lookupList)[i];
   }
-  const FeatureVariations &get_feature_variations () const
+  ثابت FeatureVariations &get_feature_variations () ثابت
   {
-    return (version.to_int () >= 0x00010001u && hb_barrier ()) ? this+featureVars : Null (FeatureVariations);
+    إرجاع (version.to_int () >= 0x00010001u && hb_barrier ()) ? هذا+featureVars : Null (FeatureVariations);
   }
 
-  bool has_data () const { return version.to_int (); }
-  unsigned int get_script_count () const
-  { return get_script_list ().len; }
-  const Tag& get_script_tag (unsigned int i) const
-  { return get_script_list ().get_tag (i); }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
-  { return get_script_list ().get_tags (start_offset, script_count, script_tags); }
-  const Script& get_script (unsigned int i) const
-  { return get_script_list ()[i]; }
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
-  { return get_script_list ().find_index (tag, index); }
+  منطقي has_data () ثابت { إرجاع version.to_int (); }
+  unsigned صحيح get_script_تعداد () ثابت
+  { إرجاع get_script_list ().len; }
+  ثابت Tag& get_script_tag (unsigned صحيح i) ثابت
+  { إرجاع get_script_list ().get_tag (i); }
+  unsigned صحيح get_script_tags (unsigned صحيح start_offset,
+				unsigned صحيح *script_تعداد /* IN/OUT */,
+				hb_tag_t     *script_tags /* OUT */) ثابت
+  { إرجاع get_script_list ().get_tags (start_offset, script_تعداد, script_tags); }
+  ثابت Script& get_script (unsigned صحيح i) ثابت
+  { إرجاع get_script_list ()[i]; }
+  منطقي find_script_index (hb_tag_t tag, unsigned صحيح *index) ثابت
+  { إرجاع get_script_list ().find_index (tag, index); }
 
-  unsigned int get_feature_count () const
-  { return get_feature_list ().len; }
-  hb_tag_t get_feature_tag (unsigned int i) const
-  { return i == Index::NOT_FOUND_INDEX ? HB_TAG_NONE : get_feature_list ().get_tag (i); }
-  unsigned int get_feature_tags (unsigned int start_offset,
-				 unsigned int *feature_count /* IN/OUT */,
-				 hb_tag_t     *feature_tags /* OUT */) const
-  { return get_feature_list ().get_tags (start_offset, feature_count, feature_tags); }
-  const Feature& get_feature (unsigned int i) const
-  { return get_feature_list ()[i]; }
-  bool find_feature_index (hb_tag_t tag, unsigned int *index) const
-  { return get_feature_list ().find_index (tag, index); }
+  unsigned صحيح get_feature_تعداد () ثابت
+  { إرجاع get_feature_list ().len; }
+  hb_tag_t get_feature_tag (unsigned صحيح i) ثابت
+  { إرجاع i == Index::NOT_FOUND_INDEX ? HB_TAG_NONE : get_feature_list ().get_tag (i); }
+  unsigned صحيح get_feature_tags (unsigned صحيح start_offset,
+				 unsigned صحيح *feature_تعداد_2 /* IN/OUT */,
+				 hb_tag_t     *feature_tags /* OUT */) ثابت
+  { إرجاع get_feature_list ().get_tags (start_offset, feature_تعداد_2, feature_tags); }
+  ثابت Feature& get_feature (unsigned صحيح i) ثابت
+  { إرجاع get_feature_list ()[i]; }
+  منطقي find_feature_index (hb_tag_t tag, unsigned صحيح *index) ثابت
+  { إرجاع get_feature_list ().find_index (tag, index); }
 
-  bool find_variations_index (const int *coords, unsigned int num_coords,
-			      unsigned int *index,
-			      ItemVarStoreInstancer *instancer) const
+  منطقي find_variations_index (ثابت صحيح *coords, unsigned صحيح رقم_coords,
+			      unsigned صحيح *index,
+			      ItemVarStoreInstancer *instancer) ثابت
   {
 #ifdef HB_NO_VAR
     *index = FeatureVariations::NOT_FOUND_INDEX;
-    return false;
+    إرجاع خطأ;
 #endif
-    return get_feature_variations ().find_index (coords, num_coords, index, instancer);
+    إرجاع get_feature_variations ().find_index (coords, رقم_coords, index, instancer);
   }
-  bool get_feature_variations_state (const int *coords,
-				     unsigned int num_coords,
-				     unsigned int *index,
+  منطقي get_feature_variations_state (ثابت صحيح *coords,
+				     unsigned صحيح رقم_coords,
+				     unsigned صحيح *index,
 				     ItemVarStoreInstancer *instancer,
-				     hb_vector_t<unsigned> *lookup_conditions) const
+				     hb_vector_t<unsigned> *lookup_conditions) ثابت
   {
     lookup_conditions->reset ();
 #ifdef HB_NO_VAR
     *index = FeatureVariations::NOT_FOUND_INDEX;
-    return true;
-#else
-    find_variations_index (coords, num_coords, index, instancer);
-    return get_feature_variations ().collect_lookup_conditions (
+    إرجاع true;
+#وإلا
+    find_variations_index (coords, رقم_coords, index, instancer);
+    إرجاع get_feature_variations ().collect_lookup_conditions (
 	coords,
-	num_coords,
+	رقم_coords,
 	instancer,
 	lookup_conditions);
 #endif
   }
-  bool get_lookup_variations (unsigned feature_index,
+  منطقي get_lookup_variations (unsigned feature_index,
                               unsigned variations_index,
-                              hb_sorted_array_t<const unsigned> conditions,
-                              hb_set_t *lookup_indexes) const
+                              hb_sorted_array_t<ثابت unsigned> conditions,
+                              hb_set_t *lookup_indexes) ثابت
   {
 #ifdef HB_NO_VAR
-    return false;
-#else
-    return get_feature_variations ().get_lookup_variations (
+    إرجاع خطأ;
+#وإلا
+    إرجاع get_feature_variations ().get_lookup_variations (
 	feature_index, get_feature_variation (feature_index, variations_index),
 	conditions, lookup_indexes);
 #endif
   }
-  const Feature& get_feature_variation (unsigned int feature_index,
-					unsigned int variations_index) const
+  ثابت Feature& get_feature_variation (unsigned صحيح feature_index,
+					unsigned صحيح variations_index) ثابت
   {
 #ifndef HB_NO_VAR
-    if (FeatureVariations::NOT_FOUND_INDEX != variations_index &&
+    إذا (FeatureVariations::NOT_FOUND_INDEX != variations_index &&
 	version.to_int () >= 0x00010001u)
     {
-      const Feature *feature = get_feature_variations ().find_substitute (variations_index,
+      ثابت Feature *feature = get_feature_variations ().find_substitute (variations_index,
 									  feature_index);
-      if (feature)
-	return *feature;
+      إذا (feature)
+	إرجاع *feature;
     }
 #endif
-    return get_feature (feature_index);
+    إرجاع get_feature (feature_index);
   }
 
-  void feature_variation_collect_lookups (const hb_set_t *feature_indexes,
-					  const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-					  hb_set_t       *lookup_indexes /* OUT */) const
+  فراغ feature_variation_collect_lookups (ثابت hb_set_t *feature_indexes,
+					  ثابت hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
+					  hb_set_t       *lookup_indexes /* OUT */) ثابت
   {
 #ifndef HB_NO_VAR
     get_feature_variations ().collect_lookups (feature_indexes, feature_record_cond_idx_map, lookup_indexes);
 #endif
   }
 
-  void collect_feature_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_feature_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
 #ifndef HB_NO_VAR
     get_feature_variations ().collect_variation_indices (c);
@@ -6567,48 +6567,48 @@ struct GSUBGPOS
   }
 
 #ifndef HB_NO_VAR
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  فراغ collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) ثابت
   { get_feature_variations ().collect_feature_substitutes_with_variations (c); }
 #endif
 
   template <typename TLookup>
-  void closure_lookups (hb_face_t      *face,
-			const hb_set_t *glyphs,
-			hb_set_t       *lookup_indexes /* IN/OUT */) const
+  فراغ closure_lookups (hb_face_t      *face,
+			ثابت hb_set_t *glyphs,
+			hb_set_t       *lookup_indexes /* IN/OUT */) ثابت
   {
     hb_set_t visited_lookups, inactive_lookups;
     hb_closure_lookups_context_t c (face, glyphs, &visited_lookups, &inactive_lookups);
 
     c.set_recurse_func (TLookup::template dispatch_recurse_func<hb_closure_lookups_context_t>);
 
-    for (unsigned lookup_index : *lookup_indexes)
-      reinterpret_cast<const TLookup &> (get_lookup (lookup_index)).closure_lookups (&c, lookup_index);
+    لكل (unsigned lookup_index : *lookup_indexes)
+      reinterpret_cast<ثابت TLookup &> (get_lookup (lookup_index)).closure_lookups (&c, lookup_index);
 
     hb_set_union (lookup_indexes, &visited_lookups);
     hb_set_subtract (lookup_indexes, &inactive_lookups);
   }
 
-  void prune_langsys (const hb_map_t *duplicate_feature_map,
-                      const hb_set_t *layout_scripts,
+  فراغ prune_langsys (ثابت hb_map_t *duplicate_feature_map,
+                      ثابت hb_set_t *layout_scripts,
                       hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map,
-                      hb_set_t       *new_feature_indexes /* OUT */) const
+                      hb_set_t       *new_feature_indexes /* OUT */) ثابت
   {
-    hb_prune_langsys_context_t c (this, script_langsys_map, duplicate_feature_map, new_feature_indexes);
+    hb_prune_langsys_context_t c (هذا, script_langsys_map, duplicate_feature_map, new_feature_indexes);
 
-    unsigned count = get_script_count ();
-    for (unsigned script_index = 0; script_index < count; script_index++)
+    unsigned تعداد_2 = get_script_تعداد ();
+    لكل (unsigned script_index = 0; script_index < تعداد_2; script_index++)
     {
-      const Tag& tag = get_script_tag (script_index);
-      if (!layout_scripts->has (tag)) continue;
-      const Script& s = get_script (script_index);
+      ثابت Tag& tag = get_script_tag (script_index);
+      إذا (!layout_scripts->has (tag)) استمر;
+      ثابت Script& s = get_script (script_index);
       s.prune_langsys (&c, script_index);
     }
   }
 
-  void prune_features (const hb_map_t *lookup_indices, /* IN */
-		       const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map, /* IN */
-		       const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map, /* IN */
-		       hb_set_t       *feature_indices /* IN/OUT */) const
+  فراغ prune_features (ثابت hb_map_t *lookup_indices, /* IN */
+		       ثابت hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map, /* IN */
+		       ثابت hb_hashmap_t<unsigned, ثابت Feature*> *feature_substitutes_map, /* IN */
+		       hb_set_t       *feature_indices /* IN/OUT */) ثابت
   {
 #ifndef HB_NO_VAR
     // This is the set of feature indices which have alternate versions defined
@@ -6616,34 +6616,34 @@ struct GSUBGPOS
     // set of lookup indices.
     hb_set_t alternate_feature_indices;
     get_feature_variations ().closure_features (lookup_indices, feature_record_cond_idx_map, &alternate_feature_indices);
-    if (unlikely (alternate_feature_indices.in_error()))
+    إذا (unlikely (alternate_feature_indices.in_error()))
     {
       feature_indices->err ();
-      return;
+      إرجاع;
     }
 #endif
 
-    for (unsigned i : hb_iter (feature_indices))
+    لكل (unsigned i : hb_iter (feature_indices))
     {
       hb_tag_t tag =  get_feature_tag (i);
-      if (tag == HB_TAG ('p', 'r', 'e', 'f'))
+      إذا (tag == HB_TAG ('p', 'r', 'e', 'f'))
         // Note: Never ever drop feature 'pref', even if it's empty.
         // HarfBuzz chooses shaper for Khmer based on presence of this
         // feature.	See thread at:
 	// http://lists.freedesktop.org/archives/harfbuzz/2012-November/002660.html
-        continue;
+        استمر;
 
 
-      const Feature *f = &(get_feature (i));
-      const Feature** p = nullptr;
-      if (feature_substitutes_map->has (i, &p))
+      ثابت Feature *f = &(get_feature (i));
+      ثابت Feature** p = nullptr;
+      إذا (feature_substitutes_map->has (i, &p))
         f = *p;
 
-      if (!f->featureParams.is_null () &&
+      إذا (!f->featureParams.is_null () &&
           tag == HB_TAG ('s', 'i', 'z', 'e'))
-        continue;
+        استمر;
 
-      if (!f->intersects_lookup_indexes (lookup_indices)
+      إذا (!f->intersects_lookup_indexes (lookup_indices)
 #ifndef HB_NO_VAR
           && !alternate_feature_indices.has (i)
 #endif
@@ -6652,162 +6652,162 @@ struct GSUBGPOS
     }
   }
 
-  void collect_name_ids (const hb_map_t *feature_index_map,
+  فراغ collect_name_ids (ثابت hb_map_t *feature_index_map,
                          hb_set_t *nameids_to_retain, /* OUT */
-                         const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map,
-                         const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map HB_UNUSED,
-                         const hb_set_t *catch_all_features,
-                         bool all_axes_pinned HB_UNUSED) const
+                         ثابت hb_hashmap_t<unsigned, ثابت Feature*> *feature_substitutes_map,
+                         ثابت hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map HB_UNUSED,
+                         ثابت hb_set_t *catch_all_features,
+                         منطقي all_axes_pinned HB_UNUSED) ثابت
   {
-    unsigned count = get_feature_count ();
-    for (unsigned i = 0 ; i < count; i++)
+    unsigned تعداد_2 = get_feature_تعداد ();
+    لكل (unsigned i = 0 ; i < تعداد_2; i++)
     {
-      if (!feature_index_map->has (i)) continue;
+      إذا (!feature_index_map->has (i)) استمر;
       hb_tag_t tag = get_feature_tag (i);
-      const Feature *feature = &get_feature (i);
-      const Feature **substitute;
-      if (feature_substitutes_map->has (i, &substitute))
+      ثابت Feature *feature = &get_feature (i);
+      ثابت Feature **substitute;
+      إذا (feature_substitutes_map->has (i, &substitute))
       {
         feature = *substitute;
-        if (catch_all_features->has (i))
+        إذا (catch_all_features->has (i))
           get_feature (i).collect_name_ids (tag, nameids_to_retain);
       }
       feature->collect_name_ids (tag, nameids_to_retain);
     }
 #ifndef HB_NO_VAR
-    if (!all_axes_pinned)
+    إذا (!all_axes_pinned)
       get_feature_variations ().collect_name_ids (feature_index_map, feature_record_cond_idx_map,
-                                                  [this] (unsigned i) { return get_feature_tag (i); },
+                                                  [هذا] (unsigned i) { إرجاع get_feature_tag (i); },
                                                   nameids_to_retain);
 #endif
   }
 
   template <typename T>
-  struct accelerator_t
+  بنية accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
       sc.lazy_some_gpos = true;
-      this->table = sc.reference_table<T> (face);
+      هذا->table = sc.reference_table<T> (face);
 
-      if (unlikely (this->table->is_blocklisted (this->table.get_blob (), face)))
+      إذا (unlikely (هذا->table->is_blocklisted (هذا->table.get_blob (), face)))
       {
-	hb_blob_destroy (this->table.get_blob ());
-	this->table = hb_blob_get_empty ();
+	hb_blob_destroy (هذا->table.get_blob ());
+	هذا->table = hb_blob_get_empty ();
       }
 
-      this->lookup_count = table->get_lookup_count ();
+      هذا->lookup_تعداد = table->get_lookup_تعداد ();
 
-      this->accels = (hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *) hb_calloc (this->lookup_count, sizeof (*accels));
-      if (unlikely (!this->accels))
+      هذا->accels = (hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *) hb_calloc (هذا->lookup_تعداد, حجم (*accels));
+      إذا (unlikely (!هذا->accels))
       {
-	this->lookup_count = 0;
-	this->table.destroy ();
-	this->table = hb_blob_get_empty ();
+	هذا->lookup_تعداد = 0;
+	هذا->table.destroy ();
+	هذا->table = hb_blob_get_empty ();
       }
     }
     ~accelerator_t ()
     {
-      for (unsigned int i = 0; i < this->lookup_count; i++)
+      لكل (unsigned صحيح i = 0; i < هذا->lookup_تعداد; i++)
       {
-	auto *accel = this->accels[i].get_relaxed ();
-	if (accel)
+	auto *accel = هذا->accels[i].get_relaxed ();
+	إذا (accel)
 	  accel->fini ();
 	hb_free (accel);
       }
-      hb_free (this->accels);
-      this->table.destroy ();
+      hb_free (هذا->accels);
+      هذا->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () ثابت { إرجاع table.get_blob (); }
 
-    hb_ot_layout_lookup_accelerator_t *get_accel (unsigned lookup_index) const
+    hb_ot_layout_lookup_accelerator_t *get_accel (unsigned lookup_index) ثابت
     {
-      if (unlikely (lookup_index >= lookup_count)) return nullptr;
+      إذا (unlikely (lookup_index >= lookup_تعداد)) إرجاع nullptr;
 
     retry:
       auto *accel = accels[lookup_index].get_acquire ();
-      if (unlikely (!accel))
+      إذا (unlikely (!accel))
       {
 	accel = hb_ot_layout_lookup_accelerator_t::create (table->get_lookup (lookup_index));
-	if (unlikely (!accel))
-	  return nullptr;
+	إذا (unlikely (!accel))
+	  إرجاع nullptr;
 
-	if (unlikely (!accels[lookup_index].cmpexch (nullptr, accel)))
+	إذا (unlikely (!accels[lookup_index].cmpexch (nullptr, accel)))
 	{
 	  accel->fini ();
 	  hb_free (accel);
-	  goto retry;
+	  اذهب retry;
 	}
       }
 
-      return accel;
+      إرجاع accel;
     }
 
     hb_blob_ptr_t<T> table;
-    unsigned int lookup_count;
+    unsigned صحيح lookup_تعداد;
     hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *accels;
   };
 
-  protected:
+  محمي:
   template <typename TLookup>
-  const Offset16To<TLookupList<TLookup>>& typed_lookup_list_offset () const
-  { return reinterpret_cast<const Offset16To<TLookupList<TLookup>>&> (lookupList); }
+  ثابت Offset16To<TLookupList<TLookup>>& typed_lookup_list_offset () ثابت
+  { إرجاع reinterpret_cast<ثابت Offset16To<TLookupList<TLookup>>&> (lookupList); }
 
 #ifndef HB_NO_BEYOND_64K
   template <typename TLookup>
-  const Offset32To<TLookupList2<TLookup>>& typed_lookup_list2_offset () const
-  { return reinterpret_cast<const Offset32To<TLookupList2<TLookup>>&> (lookupList2); }
+  ثابت Offset32To<TLookupList2<TLookup>>& typed_lookup_list2_offset () ثابت
+  { إرجاع reinterpret_cast<ثابت Offset32To<TLookupList2<TLookup>>&> (lookupList2); }
 #endif
 
   template <typename TLookup>
-  const Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset () const
-  { return reinterpret_cast<const Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
+  ثابت Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset () ثابت
+  { إرجاع reinterpret_cast<ثابت Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
   template <typename TLookup>
   Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset ()
-  { return reinterpret_cast<Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
+  { إرجاع reinterpret_cast<Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
 
 #ifndef HB_NO_BEYOND_64K
   template <typename TLookup>
-  const Offset32To<TLookupOffsetList2<TLookup>>& subset_lookup_list2_offset () const
-  { return reinterpret_cast<const Offset32To<TLookupOffsetList2<TLookup>>&> (lookupList2); }
+  ثابت Offset32To<TLookupOffsetList2<TLookup>>& subset_lookup_list2_offset () ثابت
+  { إرجاع reinterpret_cast<ثابت Offset32To<TLookupOffsetList2<TLookup>>&> (lookupList2); }
 #endif
 
-  const Offset16To<RecordListOfFeature>& subset_feature_list_offset () const
-  { return reinterpret_cast<const Offset16To<RecordListOfFeature>&> (featureList); }
+  ثابت Offset16To<RecordListOfFeature>& subset_feature_list_offset () ثابت
+  { إرجاع reinterpret_cast<ثابت Offset16To<RecordListOfFeature>&> (featureList); }
   Offset16To<RecordListOfFeature>& subset_feature_list_offset ()
-  { return reinterpret_cast<Offset16To<RecordListOfFeature>&> (featureList); }
+  { إرجاع reinterpret_cast<Offset16To<RecordListOfFeature>&> (featureList); }
 
 #ifndef HB_NO_BEYOND_64K
-  const Offset32To<RecordListOfFeature>& subset_feature_list2_offset () const
-  { return reinterpret_cast<const Offset32To<RecordListOfFeature>&> (featureList2); }
+  ثابت Offset32To<RecordListOfFeature>& subset_feature_list2_offset () ثابت
+  { إرجاع reinterpret_cast<ثابت Offset32To<RecordListOfFeature>&> (featureList2); }
 #endif
 
-  const void* get_lookup_list_field_offset () const
+  ثابت فراغ* get_lookup_list_field_offset () ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2) return &lookupList2;
+    إذا (version.to_int () >= 0x00010002u && lookupList2) إرجاع &lookupList2;
 #endif
-    return &lookupList;
+    إرجاع &lookupList;
   }
 
   template <typename OffsetOut, typename OffsetIn, typename Base, typename ...Ts>
-  static bool serialize_subset_offset (hb_subset_context_t *c,
+  ساكن منطقي serialize_subset_offset (hb_subset_context_t *c,
 				       OffsetOut& out,
-				       const OffsetIn& in,
-				       const Base *base,
+				       ثابت OffsetIn& in,
+				       ثابت Base *base,
 				       Ts&&... ds)
   {
     out = 0;
-    if (in.is_null ()) return false;
+    إذا (in.is_null ()) إرجاع خطأ;
 
     auto *s = c->serializer;
     s->push ();
-    bool ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
-    if (ret) s->add_link (out, s->pop_pack ());
-    else s->pop_discard ();
-    return ret;
+    منطقي ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
+    إذا (ret) s->add_link (out, s->اسحب_pack ());
+    وإلا s->اسحب_discard ();
+    إرجاع ret;
   }
 
   FixedVersion<>version;	/* Version of the GSUB/GPOS table--initially set
@@ -6833,7 +6833,7 @@ struct GSUBGPOS
 		lookupList2;	/* 32-bit offset to LookupList2 table.
 				 * Introduced in version 0x00010002. */
 #endif
-  public:
+  عام:
   DEFINE_SIZE_MIN (10);
 };
 

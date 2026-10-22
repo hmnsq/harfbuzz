@@ -10,11 +10,11 @@
 #ifndef HB_UCD_TABLE_HH
 #define HB_UCD_TABLE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include <stdint.h>
+#ضمن <stdint.h>
 
-static const hb_script_t _hb_ucd_sc_map[179]=
+ساكن ثابت hb_script_t _hb_ucd_sc_map[179]=
 {
                    HB_SCRIPT_COMMON,              HB_SCRIPT_INHERITED,
                   HB_SCRIPT_UNKNOWN,                 HB_SCRIPT_ARABIC,
@@ -107,7 +107,7 @@ static const hb_script_t _hb_ucd_sc_map[179]=
                   HB_SCRIPT_JURCHEN,        HB_SCRIPT_PROTO_CUNEIFORM,
                      HB_SCRIPT_SEAL,
 };
-static const uint16_t _hb_ucd_dm1_p0_map[825]=
+ساكن ثابت uint16_t _hb_ucd_dm1_p0_map[825]=
 {
    0x003B, 0x004B, 0x0060, 0x00B4, 0x00B7, 0x00C5, 0x02B9, 0x0300,
    0x0301, 0x0313, 0x0385, 0x0386, 0x0388, 0x0389, 0x038A, 0x038C,
@@ -214,7 +214,7 @@ static const uint16_t _hb_ucd_dm1_p0_map[825]=
    0x9EFE, 0x9F05, 0x9F0F, 0x9F16, 0x9F3B, 0x9F43, 0x9F8D, 0x9F8E,
    0x9F9C,
 };
-static const uint16_t _hb_ucd_dm1_p2_map[110]=
+ساكن ثابت uint16_t _hb_ucd_dm1_p2_map[110]=
 {
    0x0122, 0x051C, 0x0525, 0x054B, 0x063A, 0x0804, 0x08DE, 0x0A2C,
    0x0B63, 0x14E4, 0x16A8, 0x16EA, 0x19C8, 0x1B18, 0x1D0B, 0x1DE4,
@@ -231,7 +231,7 @@ static const uint16_t _hb_ucd_dm1_p2_map[110]=
    0x8D77, 0x9145, 0x91DF, 0x921A, 0x940A, 0x9496, 0x95B6, 0x9B30,
    0xA0CE, 0xA105, 0xA20E, 0xA291, 0xA392, 0xA600,
 };
-static const uint32_t _hb_ucd_dm2_u32_map[638]=
+ساكن ثابت uint32_t _hb_ucd_dm2_u32_map[638]=
 {
   HB_CODEPOINT_ENCODE3_11_7_14 (0x003C, 0x0338, 0x226E),HB_CODEPOINT_ENCODE3_11_7_14 (0x003D, 0x0338, 0x2260),
   HB_CODEPOINT_ENCODE3_11_7_14 (0x003E, 0x0338, 0x226F),HB_CODEPOINT_ENCODE3_11_7_14 (0x0041, 0x0300, 0x00C0),
@@ -553,7 +553,7 @@ static const uint32_t _hb_ucd_dm2_u32_map[638]=
   HB_CODEPOINT_ENCODE3_11_7_14 (0x04D8, 0x0308, 0x04DA),HB_CODEPOINT_ENCODE3_11_7_14 (0x04D9, 0x0308, 0x04DB),
   HB_CODEPOINT_ENCODE3_11_7_14 (0x04E8, 0x0308, 0x04EA),HB_CODEPOINT_ENCODE3_11_7_14 (0x04E9, 0x0308, 0x04EB),
 };
-static const uint64_t _hb_ucd_dm2_u64_map[408]=
+ساكن ثابت uint64_t _hb_ucd_dm2_u64_map[408]=
 {
      HB_CODEPOINT_ENCODE3 (0x05D0, 0x05B7, 0x0000),   HB_CODEPOINT_ENCODE3 (0x05D0, 0x05B8, 0x0000),
      HB_CODEPOINT_ENCODE3 (0x05D0, 0x05BC, 0x0000),   HB_CODEPOINT_ENCODE3 (0x05D1, 0x05BC, 0x0000),
@@ -763,9 +763,9 @@ static const uint64_t _hb_ucd_dm2_u64_map[408]=
 
 #ifndef HB_OPTIMIZE_SIZE
 
-#include <stdint.h>
+#ضمن <stdint.h>
 
-static const uint8_t _hb_ucd_u8[19991]=
+ساكن ثابت uint8_t _hb_ucd_u8[19991]=
 {
     5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
    21, 22, 23, 24, 25, 26, 27, 28, 29, 30,  2,  2,  2,  2,  2,  2,
@@ -2018,7 +2018,7 @@ static const uint8_t _hb_ucd_u8[19991]=
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,
 };
-static const uint16_t _hb_ucd_u16[11240]=
+ساكن ثابت uint16_t _hb_ucd_u16[11240]=
 {
      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
@@ -2724,7 +2724,7 @@ static const uint16_t _hb_ucd_u16[11240]=
     96, 929, 802, 804, 806,  97,  98, 807, 930,  99, 931, 932, 933, 814, 100, 816,
    817, 818, 819, 820, 821, 935,   0,   0,
 };
-static const int32_t _hb_ucd_palette[39]=
+ساكن ثابت int32_t _hb_ucd_palette[39]=
 {
    -112883,   -2527,   -2250,   -2108,   -2106,   -2104,   -2016,   -1923,
      -1918,   -1914,   -1824,   -1316,    -138,     -16,      -8,      -7,
@@ -2733,42 +2733,42 @@ static const int32_t _hb_ucd_palette[39]=
       2016,    2104,    2106,    2108,    2250,    2527,  112883,
 };
 
-static inline uint8_t _hb_ucd_gc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_gc (unsigned u)
 {
   /* packtab: [2^8,2^5,2^3,2^1] */
-  return u<1114110u ? (uint8_t)(_hb_ucd_u8[7944u+((_hb_ucd_u8[2176u+_hb_ucd_u16[((_hb_ucd_u8[((((((u)>>1))>>3))>>5)])<<5)+((((((u)>>1))>>3))&31)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
+  إرجاع u<1114110u ? (uint8_t)(_hb_ucd_u8[7944u+((_hb_ucd_u8[2176u+_hb_ucd_u16[((_hb_ucd_u8[((((((u)>>1))>>3))>>5)])<<5)+((((((u)>>1))>>3))&31)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
 }
-static inline uint8_t _hb_ucd_ccc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_ccc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^3,2^2] */
-  return u<125259u ? (uint8_t)(_hb_ucd_u8[10432u+((_hb_ucd_u8[9308u+((_hb_ucd_u8[8577u+((_hb_ucd_u8[8332u+((((((u)>>2))>>3))>>4)])<<4)+((((((u)>>2))>>3))&15)])<<3)+((((u)>>2))&7)])<<2)+((u)&3)]) : 0;
+  إرجاع u<125259u ? (uint8_t)(_hb_ucd_u8[10432u+((_hb_ucd_u8[9308u+((_hb_ucd_u8[8577u+((_hb_ucd_u8[8332u+((((((u)>>2))>>3))>>4)])<<4)+((((((u)>>2))>>3))&15)])<<3)+((((u)>>2))&7)])<<2)+((u)&3)]) : 0;
 }
-static inline uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
+ساكن مضمن uint8_t _hb_ucd_b4 (ثابت uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  إرجاع (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline int32_t _hb_ucd_bmg (unsigned u)
+ساكن مضمن int32_t _hb_ucd_bmg (unsigned u)
 {
   /* packtab: [2^4,2^4,2^3,2^2] palette[39] */
-  return u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[11624u+_hb_ucd_u8[11272u+((_hb_ucd_u8[11071u+((_hb_ucd_b4(_hb_ucd_u8+10952u,((((((u)>>2))>>3))>>4)))<<4)+((((((u)>>2))>>3))&15)])<<3)+((((u)>>2))&7)]+((u)&3)]]) : 0;
+  إرجاع u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[11624u+_hb_ucd_u8[11272u+((_hb_ucd_u8[11071u+((_hb_ucd_b4(_hb_ucd_u8+10952u,((((((u)>>2))>>3))>>4)))<<4)+((((((u)>>2))>>3))&15)])<<3)+((((u)>>2))&7)]+((u)&3)]]) : 0;
 }
-static inline uint8_t _hb_ucd_sc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_sc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^3,2^3] */
-  return u<918000u ? (uint8_t)(_hb_ucd_u8[12721u+_hb_ucd_u16[4520u+_hb_ucd_u16[3392u+((_hb_ucd_u8[11824u+((((((u)>>3))>>3))>>4)])<<4)+((((((u)>>3))>>3))&15)]+((((u)>>3))&7)]+((u)&7)]) : 2;
+  إرجاع u<918000u ? (uint8_t)(_hb_ucd_u8[12721u+_hb_ucd_u16[4520u+_hb_ucd_u16[3392u+((_hb_ucd_u8[11824u+((((((u)>>3))>>3))>>4)])<<4)+((((((u)>>3))>>3))&15)]+((((u)>>3))&7)]+((u)&7)]) : 2;
 }
-static inline uint16_t _hb_ucd_dm (unsigned u)
+ساكن مضمن uint16_t _hb_ucd_dm (unsigned u)
 {
   /* packtab: [2^8,2^5,2^4] */
-  return u<195102u ? (uint16_t)(_hb_ucd_u16[7816u+((_hb_ucd_u8[19095u+((_hb_ucd_u8[18713u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
+  إرجاع u<195102u ? (uint16_t)(_hb_ucd_u16[7816u+((_hb_ucd_u8[19095u+((_hb_ucd_u8[18713u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
 }
 
 
-#elif !defined(HB_NO_UCD_UNASSIGNED)
+#وإلاإذا !defined(HB_NO_UCD_UNASSIGNED)
 
-#include <stdint.h>
+#ضمن <stdint.h>
 
-static const uint8_t _hb_ucd_u8[18025]=
+ساكن ثابت uint8_t _hb_ucd_u8[18025]=
 {
     3,  4,  5,  6,  7,  2,  2,  2,  2,  2,  8,  2,  2,  9,  1, 10,
    11, 12, 13, 14, 15,  0, 16,  2, 17, 18, 19, 20, 21, 22, 23, 24,
@@ -3898,7 +3898,7 @@ static const uint8_t _hb_ucd_u8[18025]=
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,
 };
-static const uint16_t _hb_ucd_u16[9777]=
+ساكن ثابت uint16_t _hb_ucd_u16[9777]=
 {
      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
      8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,
@@ -4513,7 +4513,7 @@ static const uint16_t _hb_ucd_u16[9777]=
    807, 930,  99, 931, 932, 933, 814, 100, 816, 817, 818, 819, 820, 821, 935,   0,
      0,
 };
-static const int32_t _hb_ucd_palette[39]=
+ساكن ثابت int32_t _hb_ucd_palette[39]=
 {
    -112883,   -2527,   -2250,   -2108,   -2106,   -2104,   -2016,   -1923,
      -1918,   -1914,   -1824,   -1316,    -138,     -16,      -8,      -7,
@@ -4522,42 +4522,42 @@ static const int32_t _hb_ucd_palette[39]=
       2016,    2104,    2106,    2108,    2250,    2527,  112883,
 };
 
-static inline uint8_t _hb_ucd_gc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_gc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^4,2^3,2^1] */
-  return u<1114110u ? (uint8_t)(_hb_ucd_u8[6600u+((_hb_ucd_u8[832u+_hb_ucd_u16[((_hb_ucd_u8[272u+((_hb_ucd_u8[((((((((u)>>1))>>3))>>4))>>4)])<<4)+((((((((u)>>1))>>3))>>4))&15)])<<4)+((((((u)>>1))>>3))&15)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
+  إرجاع u<1114110u ? (uint8_t)(_hb_ucd_u8[6600u+((_hb_ucd_u8[832u+_hb_ucd_u16[((_hb_ucd_u8[272u+((_hb_ucd_u8[((((((((u)>>1))>>3))>>4))>>4)])<<4)+((((((((u)>>1))>>3))>>4))&15)])<<4)+((((((u)>>1))>>3))&15)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
 }
-static inline uint8_t _hb_ucd_ccc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_ccc (unsigned u)
 {
   /* packtab: [2^8,2^3,2^2,2^2,2^2] */
-  return u<125259u ? (uint8_t)(_hb_ucd_u8[8683u+((_hb_ucd_u8[8084u+((_hb_ucd_u8[7599u+((_hb_ucd_u8[7233u+((_hb_ucd_u8[6988u+((((((((u)>>2))>>2))>>2))>>3)])<<3)+((((((((u)>>2))>>2))>>2))&7)])<<2)+((((((u)>>2))>>2))&3)])<<2)+((((u)>>2))&3)])<<2)+((u)&3)]) : 0;
+  إرجاع u<125259u ? (uint8_t)(_hb_ucd_u8[8683u+((_hb_ucd_u8[8084u+((_hb_ucd_u8[7599u+((_hb_ucd_u8[7233u+((_hb_ucd_u8[6988u+((((((((u)>>2))>>2))>>2))>>3)])<<3)+((((((((u)>>2))>>2))>>2))&7)])<<2)+((((((u)>>2))>>2))&3)])<<2)+((((u)>>2))&3)])<<2)+((u)&3)]) : 0;
 }
-static inline uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
+ساكن مضمن uint8_t _hb_ucd_b4 (ثابت uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  إرجاع (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline int32_t _hb_ucd_bmg (unsigned u)
+ساكن مضمن int32_t _hb_ucd_bmg (unsigned u)
 {
   /* packtab: [2^4,2^3,2^3,2^2,2^2] palette[39] */
-  return u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[9754u+_hb_ucd_u8[9514u+_hb_ucd_u8[9350u+_hb_ucd_u8[9263u+((_hb_ucd_b4(_hb_ucd_u8+9203u,((((((((u)>>2))>>2))>>3))>>3)))<<3)+((((((((u)>>2))>>2))>>3))&7)]+((((((u)>>2))>>2))&7)]+((((u)>>2))&3)]+((u)&3)]]) : 0;
+  إرجاع u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[9754u+_hb_ucd_u8[9514u+_hb_ucd_u8[9350u+_hb_ucd_u8[9263u+((_hb_ucd_b4(_hb_ucd_u8+9203u,((((((((u)>>2))>>2))>>3))>>3)))<<3)+((((((((u)>>2))>>2))>>3))&7)]+((((((u)>>2))>>2))&7)]+((((u)>>2))&3)]+((u)&3)]]) : 0;
 }
-static inline uint8_t _hb_ucd_sc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_sc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^3,2^2,2^3] */
-  return u<918000u ? (uint8_t)(_hb_ucd_u8[10755u+_hb_ucd_u16[4016u+_hb_ucd_u16[2656u+((_hb_ucd_u8[10179u+((_hb_ucd_u8[9954u+((((((((u)>>3))>>2))>>3))>>4)])<<4)+((((((((u)>>3))>>2))>>3))&15)])<<3)+((((((u)>>3))>>2))&7)]+((((u)>>3))&3)]+((u)&7)]) : 2;
+  إرجاع u<918000u ? (uint8_t)(_hb_ucd_u8[10755u+_hb_ucd_u16[4016u+_hb_ucd_u16[2656u+((_hb_ucd_u8[10179u+((_hb_ucd_u8[9954u+((((((((u)>>3))>>2))>>3))>>4)])<<4)+((((((((u)>>3))>>2))>>3))&15)])<<3)+((((((u)>>3))>>2))&7)]+((((u)>>3))&3)]+((u)&7)]) : 2;
 }
-static inline uint16_t _hb_ucd_dm (unsigned u)
+ساكن مضمن uint16_t _hb_ucd_dm (unsigned u)
 {
   /* packtab: [2^8,2^5,2^4] */
-  return u<195102u ? (uint16_t)(_hb_ucd_u16[6353u+((_hb_ucd_u8[17129u+((_hb_ucd_u8[16747u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
+  إرجاع u<195102u ? (uint16_t)(_hb_ucd_u16[6353u+((_hb_ucd_u8[17129u+((_hb_ucd_u8[16747u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
 }
 
 
-#else
+#وإلا
 
-#include <stdint.h>
+#ضمن <stdint.h>
 
-static const uint8_t _hb_ucd_u8[14455]=
+ساكن ثابت uint8_t _hb_ucd_u8[14455]=
 {
     5,  6,  7,  8,  9, 10, 11,  2,  2, 12,  2,  2,  2,  2,  2,  2,
     2,  2,  2,  2, 13, 14,  2,  2,  2,  2,  2, 15,  1,  1,  1, 16,
@@ -5464,7 +5464,7 @@ static const uint8_t _hb_ucd_u8[14455]=
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,
 };
-static const uint16_t _hb_ucd_u16[5908]=
+ساكن ثابت uint16_t _hb_ucd_u16[5908]=
 {
      0,   0,   0,   0,   0,   0,   0,   0,   8,   8,   8,   8,   8,   8,   8,   8,
     16,  16,  16,  16,  16,  16,  16,  16,  24,  24,  24,  24,  24,  24,  24,  24,
@@ -5837,7 +5837,7 @@ static const uint16_t _hb_ucd_u16[5908]=
    806,  97,  98, 807, 930,  99, 931, 932, 933, 814, 100, 816, 817, 818, 819, 820,
    821, 935,   0,   0,
 };
-static const int32_t _hb_ucd_palette[39]=
+ساكن ثابت int32_t _hb_ucd_palette[39]=
 {
    -112883,   -2527,   -2250,   -2108,   -2106,   -2104,   -2016,   -1923,
      -1918,   -1914,   -1824,   -1316,    -138,     -16,      -8,      -7,
@@ -5846,34 +5846,34 @@ static const int32_t _hb_ucd_palette[39]=
       2016,    2104,    2106,    2108,    2250,    2527,  112883,
 };
 
-static inline uint8_t _hb_ucd_gc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_gc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^3,2^3,2^1] */
-  return u<1114112u ? (uint8_t)(_hb_ucd_u8[5368u+((_hb_ucd_u8[1160u+_hb_ucd_u16[((_hb_ucd_u8[544u+((_hb_ucd_u8[((((((((u)>>1))>>3))>>3))>>4)])<<4)+((((((((u)>>1))>>3))>>3))&15)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
+  إرجاع u<1114112u ? (uint8_t)(_hb_ucd_u8[5368u+((_hb_ucd_u8[1160u+_hb_ucd_u16[((_hb_ucd_u8[544u+((_hb_ucd_u8[((((((((u)>>1))>>3))>>3))>>4)])<<4)+((((((((u)>>1))>>3))>>3))&15)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
 }
-static inline uint8_t _hb_ucd_ccc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_ccc (unsigned u)
 {
   /* packtab: [2^8,2^3,2^2,2^2,2^2] */
-  return u<125259u ? (uint8_t)(_hb_ucd_u8[7417u+((_hb_ucd_u8[6818u+((_hb_ucd_u8[6333u+((_hb_ucd_u8[5967u+((_hb_ucd_u8[5722u+((((((((u)>>2))>>2))>>2))>>3)])<<3)+((((((((u)>>2))>>2))>>2))&7)])<<2)+((((((u)>>2))>>2))&3)])<<2)+((((u)>>2))&3)])<<2)+((u)&3)]) : 0;
+  إرجاع u<125259u ? (uint8_t)(_hb_ucd_u8[7417u+((_hb_ucd_u8[6818u+((_hb_ucd_u8[6333u+((_hb_ucd_u8[5967u+((_hb_ucd_u8[5722u+((((((((u)>>2))>>2))>>2))>>3)])<<3)+((((((((u)>>2))>>2))>>2))&7)])<<2)+((((((u)>>2))>>2))&3)])<<2)+((((u)>>2))&3)])<<2)+((u)&3)]) : 0;
 }
-static inline uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
+ساكن مضمن uint8_t _hb_ucd_b4 (ثابت uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  إرجاع (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline int32_t _hb_ucd_bmg (unsigned u)
+ساكن مضمن int32_t _hb_ucd_bmg (unsigned u)
 {
   /* packtab: [2^4,2^3,2^3,2^2,2^2] palette[39] */
-  return u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[8488u+_hb_ucd_u8[8248u+_hb_ucd_u8[8084u+_hb_ucd_u8[7997u+((_hb_ucd_b4(_hb_ucd_u8+7937u,((((((((u)>>2))>>2))>>3))>>3)))<<3)+((((((((u)>>2))>>2))>>3))&7)]+((((((u)>>2))>>2))&7)]+((((u)>>2))&3)]+((u)&3)]]) : 0;
+  إرجاع u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[8488u+_hb_ucd_u8[8248u+_hb_ucd_u8[8084u+_hb_ucd_u8[7997u+((_hb_ucd_b4(_hb_ucd_u8+7937u,((((((((u)>>2))>>2))>>3))>>3)))<<3)+((((((((u)>>2))>>2))>>3))&7)]+((((((u)>>2))>>2))&7)]+((((u)>>2))&3)]+((u)&3)]]) : 0;
 }
-static inline uint8_t _hb_ucd_sc (unsigned u)
+ساكن مضمن uint8_t _hb_ucd_sc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^2,2^3,2^2] */
-  return u<918016u ? (uint8_t)(_hb_ucd_u8[12153u+((_hb_ucd_u8[9817u+_hb_ucd_u16[1712u+((_hb_ucd_u8[9137u+((_hb_ucd_u8[8688u+((((((((u)>>2))>>3))>>2))>>4)])<<4)+((((((((u)>>2))>>3))>>2))&15)])<<2)+((((((u)>>2))>>3))&3)]+((((u)>>2))&7)])<<2)+((u)&3)]) : 2;
+  إرجاع u<918016u ? (uint8_t)(_hb_ucd_u8[12153u+((_hb_ucd_u8[9817u+_hb_ucd_u16[1712u+((_hb_ucd_u8[9137u+((_hb_ucd_u8[8688u+((((((((u)>>2))>>3))>>2))>>4)])<<4)+((((((((u)>>2))>>3))>>2))&15)])<<2)+((((((u)>>2))>>3))&3)]+((((u)>>2))&7)])<<2)+((u)&3)]) : 2;
 }
-static inline uint16_t _hb_ucd_dm (unsigned u)
+ساكن مضمن uint16_t _hb_ucd_dm (unsigned u)
 {
   /* packtab: [2^8,2^5,2^4] */
-  return u<195102u ? (uint16_t)(_hb_ucd_u16[2484u+((_hb_ucd_u8[13559u+((_hb_ucd_u8[13177u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
+  إرجاع u<195102u ? (uint16_t)(_hb_ucd_u16[2484u+((_hb_ucd_u8[13559u+((_hb_ucd_u8[13177u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
 }
 
 

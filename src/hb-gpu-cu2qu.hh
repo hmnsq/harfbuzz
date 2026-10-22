@@ -31,9 +31,9 @@
 #ifndef HB_GPU_CU2QU_HH
 #define HB_GPU_CU2QU_HH
 
-#include "hb-gpu-draw.hh"
+#ضمن "hb-gpu-draw.hh"
 
-#include <cmath>
+#ضمن <cmath>
 
 
 /* Maximum approximation error in font units.
@@ -48,15 +48,15 @@
 #define HB_GPU_CU2QU_MAX_DEPTH 10
 
 
-struct hb_gpu_cu2qu_point_t
+بنية hb_gpu_cu2qu_point_t
 {
-  double x, y;
+  مزدوج x, y;
 };
 
-static inline hb_gpu_cu2qu_point_t
-hb_gpu_cu2qu_lerp (hb_gpu_cu2qu_point_t a, hb_gpu_cu2qu_point_t b, double t)
+ساكن مضمن hb_gpu_cu2qu_point_t
+hb_gpu_cu2qu_lerp (hb_gpu_cu2qu_point_t a, hb_gpu_cu2qu_point_t b, مزدوج t)
 {
-  return {a.x + (b.x - a.x) * t,
+  إرجاع {a.x + (b.x - a.x) * t,
 	  a.y + (b.y - a.y) * t};
 }
 
@@ -64,29 +64,29 @@ hb_gpu_cu2qu_lerp (hb_gpu_cu2qu_point_t a, hb_gpu_cu2qu_point_t b, double t)
 /*
  * Check whether a cubic error curve stays within `tolerance` of the origin.
  */
-static bool
+ساكن منطقي
 hb_gpu_cubic_farthest_fit_inside (hb_gpu_cu2qu_point_t p0,
 				  hb_gpu_cu2qu_point_t p1,
 				  hb_gpu_cu2qu_point_t p2,
 				  hb_gpu_cu2qu_point_t p3,
-				  double tolerance, unsigned depth)
+				  مزدوج tolerance, unsigned depth)
 {
-  if (hypot (p1.x, p1.y) <= tolerance &&
+  إذا (hypot (p1.x, p1.y) <= tolerance &&
       hypot (p2.x, p2.y) <= tolerance)
-    return true;
+    إرجاع true;
 
-  if (depth >= 8)
-    return false;
+  إذا (depth >= 8)
+    إرجاع خطأ;
 
   hb_gpu_cu2qu_point_t mid = {(p0.x + 3 * (p1.x + p2.x) + p3.x) * 0.125,
 			      (p0.y + 3 * (p1.y + p2.y) + p3.y) * 0.125};
-  if (hypot (mid.x, mid.y) > tolerance)
-    return false;
+  إذا (hypot (mid.x, mid.y) > tolerance)
+    إرجاع خطأ;
 
   hb_gpu_cu2qu_point_t d3 = {(p3.x + p2.x - p1.x - p0.x) * 0.125,
 			     (p3.y + p2.y - p1.y - p0.y) * 0.125};
 
-  return hb_gpu_cubic_farthest_fit_inside (
+  إرجاع hb_gpu_cubic_farthest_fit_inside (
     p0,
     hb_gpu_cu2qu_lerp (p0, p1, 0.5),
     {mid.x - d3.x, mid.y - d3.y},
@@ -105,24 +105,24 @@ hb_gpu_cubic_farthest_fit_inside (hb_gpu_cu2qu_point_t p0,
 /*
  * Try to approximate a cubic Bézier with a single quadratic.
  */
-static bool
+ساكن منطقي
 hb_gpu_cubic_approx_quadratic (hb_gpu_cu2qu_point_t c0,
 			       hb_gpu_cu2qu_point_t c1,
 			       hb_gpu_cu2qu_point_t c2,
 			       hb_gpu_cu2qu_point_t c3,
-			       double tolerance,
+			       مزدوج tolerance,
 			       hb_gpu_cu2qu_point_t *q1)
 {
-  double ax = c1.x - c0.x, ay = c1.y - c0.y;
-  double dx = c3.x - c2.x, dy = c3.y - c2.y;
+  مزدوج ax = c1.x - c0.x, ay = c1.y - c0.y;
+  مزدوج dx = c3.x - c2.x, dy = c3.y - c2.y;
 
-  double px = -ay, py = ax;
+  مزدوج px = -ay, py = ax;
 
-  double denom = px * dx + py * dy;
-  if (fabs (denom) < 1e-12)
-    return false;
+  مزدوج denom = px * dx + py * dy;
+  إذا (fabs (denom) < 1e-12)
+    إرجاع خطأ;
 
-  double h = (px * (c0.x - c2.x) + py * (c0.y - c2.y)) / denom;
+  مزدوج h = (px * (c0.x - c2.x) + py * (c0.y - c2.y)) / denom;
 
   q1->x = c2.x + dx * h;
   q1->y = c2.y + dy * h;
@@ -132,14 +132,14 @@ hb_gpu_cubic_approx_quadratic (hb_gpu_cu2qu_point_t c0,
   hb_gpu_cu2qu_point_t err2 = {c3.x + (q1->x - c3.x) * (2.0 / 3.0) - c2.x,
 			       c3.y + (q1->y - c3.y) * (2.0 / 3.0) - c2.y};
 
-  return hb_gpu_cubic_farthest_fit_inside ({0, 0}, err1, err2, {0, 0}, tolerance, 0);
+  إرجاع hb_gpu_cubic_farthest_fit_inside ({0, 0}, err1, err2, {0, 0}, tolerance, 0);
 }
 
 
 /*
  * Split a cubic at t = 0.5 (de Casteljau).
  */
-static void
+ساكن فراغ
 hb_gpu_split_cubic_half (hb_gpu_cu2qu_point_t c0,
 			 hb_gpu_cu2qu_point_t c1,
 			 hb_gpu_cu2qu_point_t c2,
@@ -162,25 +162,25 @@ hb_gpu_split_cubic_half (hb_gpu_cu2qu_point_t c0,
 /*
  * Recursively convert a cubic into quadratic segments.
  */
-static void
+ساكن فراغ
 hb_gpu_cubic_to_quadratics (hb_gpu_draw_t *g,
 			    hb_gpu_cu2qu_point_t c0,
 			    hb_gpu_cu2qu_point_t c1,
 			    hb_gpu_cu2qu_point_t c2,
 			    hb_gpu_cu2qu_point_t c3,
-			    double tolerance, unsigned depth)
+			    مزدوج tolerance, unsigned depth)
 {
   hb_gpu_cu2qu_point_t q1;
-  if (hb_gpu_cubic_approx_quadratic (c0, c1, c2, c3, tolerance, &q1))
+  إذا (hb_gpu_cubic_approx_quadratic (c0, c1, c2, c3, tolerance, &q1))
   {
     g->acc_conic_to (q1.x, q1.y, c3.x, c3.y);
-    return;
+    إرجاع;
   }
 
-  if (depth >= HB_GPU_CU2QU_MAX_DEPTH)
+  إذا (depth >= HB_GPU_CU2QU_MAX_DEPTH)
   {
-    g->acc_line_to (c3.x, c3.y);
-    return;
+    g->acc_سطر_to (c3.x, c3.y);
+    إرجاع;
   }
 
   hb_gpu_cu2qu_point_t pts[7];

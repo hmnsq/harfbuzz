@@ -27,16 +27,16 @@
 #ifndef HB_ARRAY_HH
 #define HB_ARRAY_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-iter.hh"
-#include "hb-null.hh"
+#ضمن "hb.hh"
+#ضمن "hb-algs.hh"
+#ضمن "hb-iter.hh"
+#ضمن "hb-null.hh"
 
 
 template <typename Type>
-struct hb_sorted_array_t;
+بنية hb_sorted_array_t;
 
-enum hb_not_found_t
+تعداد hb_not_found_t
 {
   HB_NOT_FOUND_DONT_STORE,
   HB_NOT_FOUND_STORE,
@@ -45,82 +45,82 @@ enum hb_not_found_t
 
 
 template <typename Type>
-struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
+بنية hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
 {
-  static constexpr bool realloc_move = true;
+  ساكن constexpr منطقي realloc_move = true;
 
   /*
    * Constructors.
    */
-  hb_array_t () = default;
-  hb_array_t (const hb_array_t&) = default;
-  ~hb_array_t () = default;
-  hb_array_t& operator= (const hb_array_t&) = default;
-  hb_array_t& operator= (hb_array_t&&) = default;
+  hb_array_t () = افتراضي;
+  hb_array_t (ثابت hb_array_t&) = افتراضي;
+  ~hb_array_t () = افتراضي;
+  hb_array_t& operator= (ثابت hb_array_t&) = افتراضي;
+  hb_array_t& operator= (hb_array_t&&) = افتراضي;
 
-  constexpr hb_array_t (Type *array_, unsigned int length_) : arrayZ (array_), length (length_) {}
-  template <unsigned int length_>
+  constexpr hb_array_t (Type *array_, unsigned صحيح length_) : arrayZ (array_), length (length_) {}
+  template <unsigned صحيح length_>
   constexpr hb_array_t (Type (&array_)[length_]) : hb_array_t (array_, length_) {}
 
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_array_t (const hb_array_t<U> &o) :
+  constexpr hb_array_t (ثابت hb_array_t<U> &o) :
     hb_iter_with_fallback_t<hb_array_t, Type&> (),
     arrayZ (o.arrayZ), length (o.length), backwards_length (o.backwards_length) {}
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_array_t& operator = (const hb_array_t<U> &o)
-  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; return *this; }
+  hb_array_t& operator = (ثابت hb_array_t<U> &o)
+  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; إرجاع *هذا; }
 
   /*
    * Iterator implementation.
    */
-  typedef Type& __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool has_fast_len = true;
-  Type& __item__ () const
+  تعريفنوع Type& __item_t__;
+  ساكن constexpr منطقي is_random_access_iterator = true;
+  ساكن constexpr منطقي has_fast_len = true;
+  Type& __item__ () ثابت
   {
-    if (unlikely (!length)) return CrapOrNull (Type);
-    return *arrayZ;
+    إذا (unlikely (!length)) إرجاع CrapOrNull (Type);
+    إرجاع *arrayZ;
   }
-  Type& __item_at__ (unsigned i) const
+  Type& __item_at__ (unsigned i) ثابت
   {
-    if (unlikely (i >= length)) return CrapOrNull (Type);
-    return arrayZ[i];
+    إذا (unlikely (i >= length)) إرجاع CrapOrNull (Type);
+    إرجاع arrayZ[i];
   }
-  void __next__ ()
+  فراغ __next__ ()
   {
-    if (unlikely (!length))
-      return;
+    إذا (unlikely (!length))
+      إرجاع;
     length--;
     backwards_length++;
     arrayZ++;
   }
-  void __forward__ (unsigned n)
+  فراغ __forward__ (unsigned n)
   {
-    if (unlikely (n > length))
+    إذا (unlikely (n > length))
       n = length;
     length -= n;
     backwards_length += n;
     arrayZ += n;
   }
-  void __prev__ ()
+  فراغ __prev__ ()
   {
-    if (unlikely (!backwards_length))
-      return;
+    إذا (unlikely (!backwards_length))
+      إرجاع;
     length++;
     backwards_length--;
     arrayZ--;
   }
-  void __rewind__ (unsigned n)
+  فراغ __rewind__ (unsigned n)
   {
-    if (unlikely (n > backwards_length))
+    إذا (unlikely (n > backwards_length))
       n = backwards_length;
     length += n;
     backwards_length -= n;
     arrayZ -= n;
   }
-  unsigned __len__ () const { return length; }
+  unsigned __len__ () ثابت { إرجاع length; }
   /* Ouch. The operator== compares the contents of the array.  For range-based for loops,
    * it's best if we can just compare arrayZ, though comparing contents is still fast,
    * but also would require that Type has operator==.  As such, we optimize this operator
@@ -128,33 +128,33 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    *
    * The above comment is outdated now because we implemented separate begin/end to
    * objects that were using hb_array_t for range-based loop before. */
-  bool operator != (const hb_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  منطقي operator != (ثابت hb_array_t& o) ثابت
+  { إرجاع هذا->arrayZ != o.arrayZ || هذا->length != o.length; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () ثابت { إرجاع arrayZ; }
+  Type *end () ثابت { إرجاع arrayZ + length; }
 
 
   /* Extra operators.
    */
-  Type * operator & () const { return arrayZ; }
-  operator hb_array_t<const Type> () { return hb_array_t<const Type> (arrayZ, length); }
-  template <typename T> operator T * () const { return arrayZ; }
+  Type * operator & () ثابت { إرجاع arrayZ; }
+  operator hb_array_t<ثابت Type> () { إرجاع hb_array_t<ثابت Type> (arrayZ, length); }
+  template <typename T> operator T * () ثابت { إرجاع arrayZ; }
 
-  HB_INTERNAL bool operator == (const hb_array_t &o) const;
+  HB_INTERNAL منطقي operator == (ثابت hb_array_t &o) ثابت;
 
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
     // FNV-1a hash function
     // https://github.com/harfbuzz/harfbuzz/pull/4228
     uint32_t current = /*cbf29ce4*/0x84222325;
-    for (auto &v : *this)
+    لكل (auto &v : *هذا)
     {
       current = current ^ hb_hash (v);
       current = current * 16777619;
     }
-    return current;
+    إرجاع current;
   }
 
   /*
@@ -162,68 +162,68 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    */
 
   /* Note: our compare is NOT lexicographic; it also does NOT call Type::cmp. */
-  int cmp (const hb_array_t &a) const
+  صحيح cmp (ثابت hb_array_t &a) ثابت
   {
-    if (length != a.length)
-      return (int) a.length - (int) length;
-    return hb_memcmp (a.arrayZ, arrayZ, get_size ());
+    إذا (length != a.length)
+      إرجاع (صحيح) a.length - (صحيح) length;
+    إرجاع hb_memcmp (a.arrayZ, arrayZ, get_size ());
   }
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
   {
     hb_array_t *a = (hb_array_t *) pa;
     hb_array_t *b = (hb_array_t *) pb;
-    return b->cmp (*a);
+    إرجاع b->cmp (*a);
   }
 
   template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
+  Type *lsearch (ثابت T &x, Type *not_found = nullptr)
   {
     unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    إرجاع lfind (x, &i) ? &هذا->arrayZ[i] : not_found;
   }
   template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
+  ثابت Type *lsearch (ثابت T &x, ثابت Type *not_found = nullptr) ثابت
   {
     unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    إرجاع lfind (x, &i) ? &هذا->arrayZ[i] : not_found;
   }
   template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr,
+  منطقي lfind (ثابت T &x, unsigned *pos = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+	      unsigned صحيح to_store = (unsigned صحيح) -1) ثابت
   {
-    for (unsigned i = 0; i < length; ++i)
-      if (hb_equal (x, this->arrayZ[i]))
+    لكل (unsigned i = 0; i < length; ++i)
+      إذا (hb_equal (x, هذا->arrayZ[i]))
       {
-	if (pos)
+	إذا (pos)
 	  *pos = i;
-	return true;
+	إرجاع true;
       }
 
-    if (pos)
+    إذا (pos)
     {
-      switch (not_found)
+      بدل (not_found)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	حالة HB_NOT_FOUND_DONT_STORE:
+	  اكسر;
 
-	case HB_NOT_FOUND_STORE:
+	حالة HB_NOT_FOUND_STORE:
 	  *pos = to_store;
-	  break;
+	  اكسر;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
+	حالة HB_NOT_FOUND_STORE_CLOSEST:
 	  *pos = length;
-	  break;
+	  اكسر;
       }
     }
-    return false;
+    إرجاع خطأ;
   }
 
-  hb_sorted_array_t<Type> qsort (int (*cmp)(const void*, const void*))
+  hb_sorted_array_t<Type> qsort (صحيح (*cmp)(ثابت فراغ*, ثابت فراغ*))
   {
-    if (likely (length))
-      hb_qsort (arrayZ, length, this->get_item_size (), cmp);
-    return hb_sorted_array_t<Type> (*this);
+    إذا (likely (length))
+      hb_qsort (arrayZ, length, هذا->get_item_size (), cmp);
+    إرجاع hb_sorted_array_t<Type> (*هذا);
   }
 
   /* Comparator follows the C qsort convention: returns
@@ -231,277 +231,277 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   template <typename Compar>
   hb_sorted_array_t<Type> qsort (Compar compar)
   {
-    if (likely (length))
+    إذا (likely (length))
       hb_qsort_inline (arrayZ, length, compar);
-    return hb_sorted_array_t<Type> (*this);
+    إرجاع hb_sorted_array_t<Type> (*هذا);
   }
 
-  private:
+  خاص:
   template <typename T = Type,
 	    hb_enable_if (std::is_move_assignable<T>::value)>
   hb_sorted_array_t<Type> _qsort (hb_priority<1>)
   {
-    return qsort ([] (const Type &a, const Type &b) { return Type::cmp (&a, &b); });
+    إرجاع qsort ([] (ثابت Type &a, ثابت Type &b) { إرجاع Type::cmp (&a, &b); });
   }
   hb_sorted_array_t<Type> _qsort (hb_priority<0>)
   {
-    return qsort ((int(*)(const void*, const void*)) Type::cmp);
+    إرجاع qsort ((صحيح(*)(ثابت فراغ*, ثابت فراغ*)) Type::cmp);
   }
-  public:
+  عام:
 
   hb_sorted_array_t<Type> qsort ()
   {
-    return _qsort (hb_prioritize);
+    إرجاع _qsort (hb_prioritize);
   }
 
   /*
    * Other methods.
    */
 
-  size_t get_size () const { return length * this->get_item_size (); }
+  size_t get_size () ثابت { إرجاع length * هذا->get_item_size (); }
 
   /*
    * Reverse the order of items in this array in the range [start, end).
    */
-  void reverse (unsigned start = 0, unsigned end = -1)
+  فراغ reverse (unsigned start = 0, unsigned end = -1)
   {
     start = hb_min (start, length);
     end = hb_min (end, length);
 
-    if (end < start + 2)
-      return;
+    إذا (end < start + 2)
+      إرجاع;
 
     unsigned stop = start + (end - start) / 2;
-    for (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
+    لكل (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
       hb_swap (arrayZ[rhs], arrayZ[lhs]);
   }
 
-  hb_array_t sub_array (unsigned int start_offset = 0, unsigned int *seg_count = nullptr /* IN/OUT */) const
+  hb_array_t sub_array (unsigned صحيح start_offset = 0, unsigned صحيح *seg_تعداد = nullptr /* IN/OUT */) ثابت
   {
-    if (!start_offset && !seg_count)
-      return *this;
+    إذا (!start_offset && !seg_تعداد)
+      إرجاع *هذا;
 
-    unsigned int count = length;
-    if (unlikely (start_offset > count))
-      count = 0;
-    else
-      count -= start_offset;
-    if (seg_count)
-      count = *seg_count = hb_min (count, *seg_count);
-    return hb_array_t (arrayZ + start_offset, count);
+    unsigned صحيح تعداد_2 = length;
+    إذا (unlikely (start_offset > تعداد_2))
+      تعداد_2 = 0;
+    وإلا
+      تعداد_2 -= start_offset;
+    إذا (seg_تعداد)
+      تعداد_2 = *seg_تعداد = hb_min (تعداد_2, *seg_تعداد);
+    إرجاع hb_array_t (arrayZ + start_offset, تعداد_2);
   }
-  hb_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_array_t sub_array (unsigned صحيح start_offset, unsigned صحيح seg_تعداد) ثابت
+  { إرجاع sub_array (start_offset, &seg_تعداد); }
 
-  hb_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_array_t truncate (unsigned length) ثابت { إرجاع sub_array (0, length); }
 
   template <typename T,
-	    unsigned P = sizeof (Type),
+	    unsigned P = حجم (Type),
 	    hb_enable_if (P == 1)>
-  const T *as () const
-  { return length < hb_min_size (T) ? &Null (T) : reinterpret_cast<const T *> (arrayZ); }
+  ثابت T *as () ثابت
+  { إرجاع length < hb_min_size (T) ? &Null (T) : reinterpret_cast<ثابت T *> (arrayZ); }
 
   template <typename T,
-	    unsigned P = sizeof (Type),
+	    unsigned P = حجم (Type),
 	    hb_enable_if (P == 1)>
-  bool check_range (const T *p, unsigned int size = T::static_size) const
+  منطقي check_range (ثابت T *p, unsigned صحيح size = T::static_size) ثابت
   {
-    return arrayZ <= ((const char *) p)
-	&& ((const char *) p) <= arrayZ + length
-	&& (unsigned int) (arrayZ + length - (const char *) p) >= size;
+    إرجاع arrayZ <= ((ثابت حرف *) p)
+	&& ((ثابت حرف *) p) <= arrayZ + length
+	&& (unsigned صحيح) (arrayZ + length - (ثابت حرف *) p) >= size;
   }
 
-  template <unsigned P = sizeof (Type),
+  template <unsigned P = حجم (Type),
 	    hb_enable_if (P == 1)>
-  bool check_end (const void *p) const
+  منطقي check_end (ثابت فراغ *p) ثابت
   {
-    return (uintptr_t) (((const char *) p) - arrayZ) <= length;
+    إرجاع (uintptr_t) (((ثابت حرف *) p) - arrayZ) <= length;
   }
 
   /* Only call if you allocated the underlying array using hb_malloc() or similar. */
-  void fini ()
-  { hb_free ((void *) arrayZ); arrayZ = nullptr; length = 0; }
+  فراغ fini ()
+  { hb_free ((فراغ *) arrayZ); arrayZ = nullptr; length = 0; }
 
   template <typename hb_serialize_context_t,
 	    typename U = Type,
-	    hb_enable_if (!(sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+	    hb_enable_if (!(حجم (U) < حجم (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
+  hb_array_t copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
-    for (unsigned i = 0; i < length; i++)
+    إذا (unlikely (!c->extend_size (out, get_size (), خطأ))) return_trace (hb_array_t ());
+    لكل (unsigned i = 0; i < length; i++)
       out[i] = arrayZ[i]; /* TODO: add version that calls c->copy() */
     return_trace (hb_array_t (out, length));
   }
 
   template <typename hb_serialize_context_t,
 	    typename U = Type,
-	    hb_enable_if (sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+	    hb_enable_if (حجم (U) < حجم (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
+  hb_array_t copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
+    إذا (unlikely (!c->extend_size (out, get_size (), خطأ))) return_trace (hb_array_t ());
     hb_memcpy (out, arrayZ, get_size ());
     return_trace (hb_array_t (out, length));
   }
 
   template <typename hb_sanitize_context_t>
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return c->check_array (arrayZ, length); }
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
+  { إرجاع c->check_array (arrayZ, length); }
 
   /*
    * Members
    */
 
-  public:
+  عام:
   Type *arrayZ = nullptr;
-  unsigned int length = 0;
-  unsigned int backwards_length = 0;
+  unsigned صحيح length = 0;
+  unsigned صحيح backwards_length = 0;
 };
-template <typename T> inline hb_array_t<T>
+template <typename T> مضمن hb_array_t<T>
 hb_array ()
-{ return hb_array_t<T> (); }
-template <typename T> inline hb_array_t<T>
-hb_array (T *array, unsigned int length)
-{ return hb_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_array_t<T>
+{ إرجاع hb_array_t<T> (); }
+template <typename T> مضمن hb_array_t<T>
+hb_array (T *array, unsigned صحيح length)
+{ إرجاع hb_array_t<T> (array, length); }
+template <typename T, unsigned صحيح length_> مضمن hb_array_t<T>
 hb_array (T (&array_)[length_])
-{ return hb_array_t<T> (array_); }
+{ إرجاع hb_array_t<T> (array_); }
 
 template <typename Type>
-struct hb_sorted_array_t :
+بنية hb_sorted_array_t :
 	hb_array_t<Type>,
 	hb_iter_t<hb_sorted_array_t<Type>, Type&>
 {
-  typedef hb_iter_t<hb_sorted_array_t, Type&> iter_base_t;
+  تعريفنوع hb_iter_t<hb_sorted_array_t, Type&> iter_base_t;
   HB_ITER_USING (iter_base_t);
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  static constexpr bool has_fast_len = true;
+  ساكن constexpr منطقي is_random_access_iterator = true;
+  ساكن constexpr منطقي is_sorted_iterator = true;
+  ساكن constexpr منطقي has_fast_len = true;
 
-  hb_sorted_array_t () = default;
-  hb_sorted_array_t (const hb_sorted_array_t&) = default;
-  ~hb_sorted_array_t () = default;
-  hb_sorted_array_t& operator= (const hb_sorted_array_t&) = default;
-  hb_sorted_array_t& operator= (hb_sorted_array_t&&) = default;
+  hb_sorted_array_t () = افتراضي;
+  hb_sorted_array_t (ثابت hb_sorted_array_t&) = افتراضي;
+  ~hb_sorted_array_t () = افتراضي;
+  hb_sorted_array_t& operator= (ثابت hb_sorted_array_t&) = افتراضي;
+  hb_sorted_array_t& operator= (hb_sorted_array_t&&) = افتراضي;
 
-  constexpr hb_sorted_array_t (Type *array_, unsigned int length_) : hb_array_t<Type> (array_, length_) {}
-  template <unsigned int length_>
+  constexpr hb_sorted_array_t (Type *array_, unsigned صحيح length_) : hb_array_t<Type> (array_, length_) {}
+  template <unsigned صحيح length_>
   constexpr hb_sorted_array_t (Type (&array_)[length_]) : hb_array_t<Type> (array_) {}
 
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_sorted_array_t (const hb_array_t<U> &o) :
+  constexpr hb_sorted_array_t (ثابت hb_array_t<U> &o) :
     hb_array_t<Type> (o),
     hb_iter_t<hb_sorted_array_t, Type&> () {}
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_sorted_array_t& operator = (const hb_array_t<U> &o)
-  { hb_array_t<Type> (*this) = o; return *this; }
+  hb_sorted_array_t& operator = (ثابت hb_array_t<U> &o)
+  { hb_array_t<Type> (*هذا) = o; إرجاع *هذا; }
 
   /* Iterator implementation. */
 
   /* See comment in hb_array_of::operator != */
-  bool operator != (const hb_sorted_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  منطقي operator != (ثابت hb_sorted_array_t& o) ثابت
+  { إرجاع هذا->arrayZ != o.arrayZ || هذا->length != o.length; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return this->arrayZ; }
-  Type *end () const { return this->arrayZ + this->length; }
+  Type *begin () ثابت { إرجاع هذا->arrayZ; }
+  Type *end () ثابت { إرجاع هذا->arrayZ + هذا->length; }
 
 
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int *seg_count /* IN/OUT */) const
-  { return hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_count)); }
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_sorted_array_t sub_array (unsigned صحيح start_offset, unsigned صحيح *seg_تعداد /* IN/OUT */) ثابت
+  { إرجاع hb_sorted_array_t (((ثابت hb_array_t<Type> *) (هذا))->sub_array (start_offset, seg_تعداد)); }
+  hb_sorted_array_t sub_array (unsigned صحيح start_offset, unsigned صحيح seg_تعداد) ثابت
+  { إرجاع sub_array (start_offset, &seg_تعداد); }
 
-  hb_sorted_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_sorted_array_t truncate (unsigned length) ثابت { إرجاع sub_array (0, length); }
 
   template <typename T>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
+  Type *bsearch (ثابت T &x, Type *not_found = nullptr)
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    unsigned صحيح i;
+    إرجاع bfind (x, &i) ? &هذا->arrayZ[i] : not_found;
   }
   template <typename T>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
+  ثابت Type *bsearch (ثابت T &x, ثابت Type *not_found = nullptr) ثابت
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    unsigned صحيح i;
+    إرجاع bfind (x, &i) ? &هذا->arrayZ[i] : not_found;
   }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  منطقي bfind (ثابت T &x, unsigned صحيح *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+	      unsigned صحيح to_store = (unsigned صحيح) -1) ثابت
   {
     unsigned pos;
 
-    if (bsearch_impl (x, &pos))
+    إذا (bsearch_impl (x, &pos))
     {
-      if (i)
+      إذا (i)
 	*i = pos;
-      return true;
+      إرجاع true;
     }
 
-    if (i)
+    إذا (i)
     {
-      switch (not_found)
+      بدل (not_found)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	حالة HB_NOT_FOUND_DONT_STORE:
+	  اكسر;
 
-	case HB_NOT_FOUND_STORE:
+	حالة HB_NOT_FOUND_STORE:
 	  *i = to_store;
-	  break;
+	  اكسر;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
+	حالة HB_NOT_FOUND_STORE_CLOSEST:
 	  *i = pos;
-	  break;
+	  اكسر;
       }
     }
-    return false;
+    إرجاع خطأ;
   }
   template <typename T, typename ...Ts>
-  bool bsearch_impl (const T &x, unsigned *pos, Ts... ds) const
+  منطقي bsearch_impl (ثابت T &x, unsigned *pos, Ts... ds) ثابت
   {
-    return hb_bsearch_impl (pos,
+    إرجاع hb_bsearch_impl (pos,
 			    x,
-			    this->arrayZ,
-			    this->length,
-			    sizeof (Type),
+			    هذا->arrayZ,
+			    هذا->length,
+			    حجم (Type),
 			    _hb_cmp_method<T, Type, Ts...>,
 			    std::forward<Ts> (ds)...);
   }
 };
-template <typename T> inline hb_sorted_array_t<T>
-hb_sorted_array (T *array, unsigned int length)
-{ return hb_sorted_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_sorted_array_t<T>
+template <typename T> مضمن hb_sorted_array_t<T>
+hb_sorted_array (T *array, unsigned صحيح length)
+{ إرجاع hb_sorted_array_t<T> (array, length); }
+template <typename T, unsigned صحيح length_> مضمن hb_sorted_array_t<T>
 hb_sorted_array (T (&array_)[length_])
-{ return hb_sorted_array_t<T> (array_); }
+{ إرجاع hb_sorted_array_t<T> (array_); }
 
 template <typename T>
-inline bool hb_array_t<T>::operator == (const hb_array_t<T> &o) const
+مضمن منطقي hb_array_t<T>::operator == (ثابت hb_array_t<T> &o) ثابت
 {
-  if (o.length != this->length) return false;
-  for (unsigned int i = 0; i < this->length; i++) {
-    if (this->arrayZ[i] != o.arrayZ[i]) return false;
+  إذا (o.length != هذا->length) إرجاع خطأ;
+  لكل (unsigned صحيح i = 0; i < هذا->length; i++) {
+    إذا (هذا->arrayZ[i] != o.arrayZ[i]) إرجاع خطأ;
   }
-  return true;
+  إرجاع true;
 }
 template <>
-inline bool hb_array_t<const char>::operator == (const hb_array_t<const char> &o) const
+مضمن منطقي hb_array_t<ثابت حرف>::operator == (ثابت hb_array_t<ثابت حرف> &o) ثابت
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  إذا (o.length != هذا->length) إرجاع خطأ;
+  إرجاع 0 == hb_memcmp (arrayZ, o.arrayZ, length);
 }
 template <>
-inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const unsigned char> &o) const
+مضمن منطقي hb_array_t<ثابت unsigned حرف>::operator == (ثابت hb_array_t<ثابت unsigned حرف> &o) ثابت
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  إذا (o.length != هذا->length) إرجاع خطأ;
+  إرجاع 0 == hb_memcmp (arrayZ, o.arrayZ, length);
 }
 
 
@@ -509,23 +509,23 @@ inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const
 
 #ifndef HB_OPTIMIZE_SIZE_MORE
 template <>
-inline uint32_t hb_array_t<const char>::hash () const
+مضمن uint32_t hb_array_t<ثابت حرف>::hash () ثابت
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  إرجاع fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
 }
 
 template <>
-inline uint32_t hb_array_t<const unsigned char>::hash () const
+مضمن uint32_t hb_array_t<ثابت unsigned حرف>::hash () ثابت
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  إرجاع fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
 }
 #endif
 
 
-typedef hb_array_t<const char> hb_bytes_t;
-typedef hb_array_t<const unsigned char> hb_ubytes_t;
+تعريفنوع hb_array_t<ثابت حرف> hb_bytes_t;
+تعريفنوع hb_array_t<ثابت unsigned حرف> hb_ubytes_t;
 
 
 

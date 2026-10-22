@@ -24,24 +24,24 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-set.hh"
+#ضمن "hb.hh"
+#ضمن "hb-algs.hh"
+#ضمن "hb-set.hh"
 
 
-static char *
-test_func (int a, char **b)
+ساكن حرف *
+test_func (صحيح a, حرف **b)
 {
-  return b ? b[a] : nullptr;
+  إرجاع b ? b[a] : nullptr;
 }
 
-struct A
+بنية A
 {
-  void a () {}
+  فراغ a () {}
 };
 
-int
-main (int argc, char **argv)
+صحيح
+الرئيسية (صحيح argc, حرف **argv)
 {
   hb_always_assert (roundf (0.5f) == 1.f);
   hb_always_assert (roundf (-0.5f) == 0.f);
@@ -56,13 +56,13 @@ main (int argc, char **argv)
   hb_always_assert (roundf (8388609.f) == 8388609.f);
   hb_always_assert (roundf (-8388609.f) == -8388609.f);
 
-  int i = 1;
+  صحيح i = 1;
   auto p = hb_pair (1, i);
 
   p.second = 2;
   hb_always_assert (i == 2);
 
-  const int c = 3;
+  ثابت صحيح c = 3;
   auto pc = hb_pair (1, c);
   hb_always_assert (pc.second == 3);
 
@@ -79,17 +79,17 @@ main (int argc, char **argv)
   hb_always_assert (1 == hb_min (8, 1));
   hb_always_assert (8 == hb_max (8, 1));
 
-  int x = 1, y = 2;
+  صحيح x = 1, y = 2;
   hb_min (x, 3);
   hb_min (3, x);
   hb_min (x, 4 + 3);
-  int &z = hb_min (x, y);
+  صحيح &z = hb_min (x, y);
   z = 3;
   hb_always_assert (x == 3);
 
-  hb_pair_t<const int*, int> xp = hb_pair_t<int *, long> (nullptr, 0);
-  xp = hb_pair_t<int *, double> (nullptr, 1);
-  xp = hb_pair_t<const int*, int> (nullptr, 1);
+  hb_pair_t<ثابت صحيح*, صحيح> xp = hb_pair_t<صحيح *, long> (nullptr, 0);
+  xp = hb_pair_t<صحيح *, مزدوج> (nullptr, 1);
+  xp = hb_pair_t<ثابت صحيح*, صحيح> (nullptr, 1);
 
   hb_always_assert (3 == hb_partial (hb_min, 3) (4));
   hb_always_assert (3 == hb_partial<1> (hb_min, 4) (3));
@@ -112,12 +112,12 @@ main (int argc, char **argv)
   hb_always_assert (hb_saturate_neg (2) == -2);
   hb_always_assert (hb_saturate_neg (-2) == 2);
   hb_always_assert (hb_saturate_neg (INT_MIN) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> (1.) == 1);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MAX + 1.) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MIN - 1.) == INT_MIN);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) 1) == 1);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MAX + 1) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MIN - 1) == INT_MIN);
+  hb_always_assert (hb_clamp_to<صحيح> (1.) == 1);
+  hb_always_assert (hb_clamp_to<صحيح> ((مزدوج) INT_MAX + 1.) == INT_MAX);
+  hb_always_assert (hb_clamp_to<صحيح> ((مزدوج) INT_MIN - 1.) == INT_MIN);
+  hb_always_assert (hb_clamp_to<صحيح> ((int64_t) 1) == 1);
+  hb_always_assert (hb_clamp_to<صحيح> ((int64_t) INT_MAX + 1) == INT_MAX);
+  hb_always_assert (hb_clamp_to<صحيح> ((int64_t) INT_MIN - 1) == INT_MIN);
 
   int64_t budget = 10;
   hb_always_assert (hb_budget_spend (budget, 4, 2));
@@ -154,5 +154,5 @@ main (int argc, char **argv)
   hb_always_assert (hb_hash (set1) == hb_hash (hb::shared_ptr<hb_set_t> {hb_set_reference (&set1)}));
   hb_always_assert (hb_hash (set1) == hb_hash (hb::unique_ptr<hb_set_t> {hb_set_reference (&set1)}));
 
-  return 0;
+  إرجاع 0;
 }

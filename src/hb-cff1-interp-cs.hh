@@ -26,35 +26,35 @@
 #ifndef HB_CFF1_INTERP_CS_HH
 #define HB_CFF1_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#ضمن "hb.hh"
+#ضمن "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+using نطاق OT;
 
-typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
+تعريفنوع biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+بنية cff1_cs_interp_env_t : cs_interp_env_t<العدد_t, CFF1Subrs>
 {
   template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff1_cs_interp_env_t (ثابت hb_ubytes_t &str, ACC &acc, unsigned صحيح fd,
+			ثابت صحيح *coords_=nullptr, unsigned صحيح رقم_coords_2=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
   {
-    processed_width = false;
-    has_width = false;
+    processed_width = خطأ;
+    has_width = خطأ;
     arg_start = 0;
-    in_seac = false;
+    in_seac = خطأ;
   }
 
-  void set_width (bool has_width_)
+  فراغ set_width (منطقي has_width_)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    إذا (likely (!processed_width && (SUPER::arg_مكدس.get_تعداد () > 0)))
     {
-      if (has_width_)
+      إذا (has_width_)
       {
-	width = SUPER::argStack[0];
+	width = SUPER::arg_مكدس[0];
 	has_width = true;
 	arg_start = 1;
       }
@@ -62,94 +62,94 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
     processed_width = true;
   }
 
-  void clear_args ()
+  فراغ clear_args ()
   {
     arg_start = 0;
     SUPER::clear_args ();
   }
 
-  void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
+  فراغ set_in_seac (منطقي _in_seac) { in_seac = _in_seac; }
 
-  bool	  processed_width;
-  bool	  has_width;
-  unsigned int  arg_start;
-  number_t	width;
-  bool	  in_seac;
+  منطقي	  processed_width;
+  منطقي	  has_width;
+  unsigned صحيح  arg_start;
+  العدد_t	width;
+  منطقي	  in_seac;
 
-  private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  خاص:
+  تعريفنوع cs_interp_env_t<العدد_t, CFF1Subrs> SUPER;
 };
 
 template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+بنية cff1_cs_opset_t : cs_opset_t<العدد_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_dotsection:
+    بدل (op) {
+      حالة OpCode_dotsection:
 	SUPER::flush_args_and_op (op, env, param);
-	break;
+	اكسر;
 
-      case OpCode_endchar:
+      حالة OpCode_endchar:
 	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+	إذا (env.arg_مكدس.get_تعداد () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
 	OPSET::flush_args_and_op (op, env, param);
 	env.set_endchar (true);
-	break;
+	اكسر;
 
-      default:
+      افتراضي:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    إذا (!env.processed_width)
     {
-      bool  has_width = false;
-      switch (op)
+      منطقي  has_width = خطأ;
+      بدل (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
-	  break;
-	default:
-	  return;
+	حالة OpCode_endchar:
+	حالة OpCode_hstem:
+	حالة OpCode_hstemhm:
+	حالة OpCode_vstem:
+	حالة OpCode_vstemhm:
+	حالة OpCode_hintmask:
+	حالة OpCode_cntrmask:
+	  has_width = ((env.arg_مكدس.get_تعداد () & 1) != 0);
+	  اكسر;
+	حالة OpCode_hmoveto:
+	حالة OpCode_vmoveto:
+	  has_width = (env.arg_مكدس.get_تعداد () > 1);
+	  اكسر;
+	حالة OpCode_rmoveto:
+	  has_width = (env.arg_مكدس.get_تعداد () > 2);
+	  اكسر;
+	افتراضي:
+	  إرجاع;
       }
       env.set_width (has_width);
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ process_seac (cff1_cs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ flush_args (cff1_cs_interp_env_t &env, PARAM& param)
   {
     SUPER::flush_args (env, param);
     env.clear_args ();  /* pop off width */
   }
 
-  private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  خاص:
+  تعريفنوع cs_opset_t<العدد_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
 };
 
 template <typename OPSET, typename PARAM>

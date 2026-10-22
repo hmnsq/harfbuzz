@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import os
-import re
-import sys
+استورد os
+استورد re
+استورد sys
 
 srcdir = sys.argv[1]
 base_srcdir = sys.argv[2]
@@ -13,15 +13,15 @@ os.chdir(srcdir)
 
 def removeprefix(s):
     abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+    إرجاع os.path.relpath(abs_path, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.path.basename(x) لكل x في os.getenv("HBHEADERS", "").split()] أو [
+    x لكل x في os.listdir(".") إذا x.startswith("hb") و x.endswith(".h")
 ]
 
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBSOURCES = [removeprefix(x) لكل x في os.getenv("HBSOURCES", "").split()] أو [
+    x لكل x في os.listdir(".") إذا x.startswith("hb") و x.endswith((".cc", ".hh"))
 ]
 
 
@@ -30,34 +30,34 @@ stat = 0
 print(
     'Checking that public header files #include "hb-common.h" or "hb.h" first (or none)'
 )
-for x in HBHEADERS:
-    if x == "hb.h" or x == "hb-common.h":
-        continue
+لكل x في HBHEADERS:
+    إذا x == "hb.h" أو x == "hb-common.h":
+        استمر
     print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
+    with open(x, "r", encoding="utf-8") كـ f:
+        content = f.اقرأ()
     first = re.findall(r"#.*include.*", content)[0]
-    if first not in ['#include "hb.h"', '#include "hb-common.h"']:
+    إذا first ليس في ['#include "hb.h"', '#include "hb-common.h"']:
         print("failure on %s" % x)
         stat = 1
 
 print("Checking that source files #include a private header first (or none)")
-for x in HBSOURCES:
+لكل x في HBSOURCES:
     print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
+    with open(x, "r", encoding="utf-8") كـ f:
+        content = f.اقرأ()
     includes = re.findall(r"#.*include.*", content)
-    if includes:
-        if not len(re.findall(r'".*\.hh"', includes[0])):
+    إذا includes:
+        إذا ليس len(re.findall(r'".*\.hh"', includes[0])):
             print("failure on %s" % x)
             stat = 1
 
 print("Checking that there is no #include <hb-*.h>")
-for x in HBHEADERS + HBSOURCES:
+لكل x في HBHEADERS + HBSOURCES:
     print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if re.findall("#.*include.*<.*hb", content):
+    with open(x, "r", encoding="utf-8") كـ f:
+        content = f.اقرأ()
+    إذا re.findall("#.*include.*<.*hb", content):
         print("failure on %s" % x)
         stat = 1
 
