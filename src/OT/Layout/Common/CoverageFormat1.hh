@@ -30,102 +30,102 @@
 #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
 #define OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश Common {
 
-#define NOT_COVERED             ((unsigned int) -1)
+#define NOT_COVERED             ((अचिन्हित पूर्णाङ्क) -1)
 
-template <typename Types>
-struct CoverageFormat1_3
+ढाँचा <typename Types>
+संरचना CoverageFormat1_3
 {
-  friend struct Coverage;
+  मित्र संरचना Coverage;
 
-  public:
+  सार्वजनिक:
   HBUINT16      coverageFormat; /* Format identifier--format = 1 */
-  typename Types::template SortedArrayOf<typename Types::HBGlyphID>
+  typename Types::ढाँचा SortedArrayOf<typename Types::HBGlyphID>
                 glyphArray;     /* Array of GlyphIDs--in numerical order */
 
   DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, glyphArray);
 
-  private:
-  bool sanitize (hb_sanitize_context_t *c) const
+  गुप्त:
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (एतत्);
     return_trace (glyphArray.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  अचिन्हित पूर्णाङ्क get_coverage (hb_codepoint_t glyph_id) अचर
   {
-    unsigned int i;
+    अचिन्हित पूर्णाङ्क i;
     glyphArray.bfind (glyph_id, &i, HB_NOT_FOUND_STORE, NOT_COVERED);
-    return i;
+    फर्काऊ i;
   }
 
-  unsigned get_population () const
+  अचिन्हित get_population () अचर
   {
-    return glyphArray.len;
+    फर्काऊ glyphArray.len;
   }
 
-  template <typename Iterator,
+  ढाँचा <typename Iterator,
       hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  तार्किक serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (एतत्);
     return_trace (glyphArray.serialize (c, glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  तार्किक intersects (अचर hb_set_t *glyphs) अचर
   {
-    if (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
+    यदि (glyphArray.len > glyphs->get_population () * hb_bit_storage ((अचिन्हित) glyphArray.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      लागि (स्वतः g : *glyphs)
+        यदि (get_coverage (g) != NOT_COVERED)
+	  फर्काऊ सत्य;
+      फर्काऊ असत्य;
     }
 
-    for (const auto& g : glyphArray.as_array ())
-      if (glyphs->has (g))
-        return true;
-    return false;
+    लागि (अचर स्वतः& g : glyphArray.as_array ())
+      यदि (glyphs->has (g))
+        फर्काऊ सत्य;
+    फर्काऊ असत्य;
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
-  { return glyphs->has (glyphArray[index]); }
+  तार्किक intersects_coverage (अचर hb_set_t *glyphs, अचिन्हित पूर्णाङ्क index) अचर
+  { फर्काऊ glyphs->has (glyphArray[index]); }
 
-  template <typename IterableOut,
+  ढाँचा <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  शून्य intersect_set (अचर hb_set_t &glyphs, IterableOut&& intersect_glyphs) अचर
   {
-    unsigned count = glyphArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphs.has (glyphArray[i]))
+    अचिन्हित गन्ती = glyphArray.len;
+    लागि (अचिन्हित i = 0; i < गन्ती; i++)
+      यदि (glyphs.has (glyphArray[i]))
         intersect_glyphs << glyphArray[i];
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
+  अचिन्हित cost () अचर { फर्काऊ hb_bit_storage ((अचिन्हित) glyphArray.len); /* bsearch cost */ }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_sorted_array (glyphArray.as_array ()); }
+  ढाँचा <typename set_t>
+  तार्किक collect_coverage (set_t *glyphs) अचर
+  { फर्काऊ glyphs->add_sorted_array (glyphArray.as_array ()); }
 
-  public:
+  सार्वजनिक:
   /* Older compilers need this to be public. */
-  struct iter_t
+  संरचना iter_t
   {
-    void init (const struct CoverageFormat1_3 &c_) { c = &c_; i = 0; }
-    bool __more__ () const { return i < c->glyphArray.len; }
-    void __next__ () { i++; }
-    hb_codepoint_t get_glyph () const { return c->glyphArray[i]; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i; }
-    iter_t __end__ () const { iter_t it; it.init (*c); it.i = c->glyphArray.len; return it; }
+    शून्य init (अचर संरचना CoverageFormat1_3 &c_) { c = &c_; i = 0; }
+    तार्किक __more__ () अचर { फर्काऊ i < c->glyphArray.len; }
+    शून्य __next__ () { i++; }
+    hb_codepoint_t get_glyph () अचर { फर्काऊ c->glyphArray[i]; }
+    तार्किक चालक != (अचर iter_t& o) अचर
+    { फर्काऊ i != o.i; }
+    iter_t __end__ () अचर { iter_t it; it.init (*c); it.i = c->glyphArray.len; फर्काऊ it; }
 
-    private:
-    const struct CoverageFormat1_3 *c;
-    unsigned int i;
+    गुप्त:
+    अचर संरचना CoverageFormat1_3 *c;
+    अचिन्हित पूर्णाङ्क i;
   };
-  private:
+  गुप्त:
 };
 
 }

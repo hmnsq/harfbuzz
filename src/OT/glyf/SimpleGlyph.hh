@@ -2,16 +2,16 @@
 #define OT_GLYF_SIMPLEGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#अन्तर्भाव "../../hb-open-type.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+नामाकाश OT {
+नामाकाश glyf_impl {
 
 
-struct SimpleGlyph
+संरचना SimpleGlyph
 {
-  enum simple_glyph_flag_t
+  गणना simple_glyph_flag_t
   {
     FLAG_ON_CURVE       = 0x01,
     FLAG_X_SHORT        = 0x02,
@@ -23,226 +23,226 @@ struct SimpleGlyph
     FLAG_CUBIC          = 0x80
   };
 
-  const GlyphHeader &header;
+  अचर GlyphHeader &header;
   hb_bytes_t bytes;
-  SimpleGlyph (const GlyphHeader &header_, hb_bytes_t bytes_) :
+  SimpleGlyph (अचर GlyphHeader &header_, hb_bytes_t bytes_) :
     header (header_), bytes (bytes_) {}
 
-  unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  अचिन्हित पूर्णाङ्क instruction_len_offset () अचर
+  { फर्काऊ GlyphHeader::static_size + 2 * header.सङ्ख्या_Of_Contours; }
 
-  unsigned int length (unsigned int instruction_len) const
-  { return instruction_len_offset () + 2 + instruction_len; }
+  अचिन्हित पूर्णाङ्क length (अचिन्हित पूर्णाङ्क instruction_len) अचर
+  { फर्काऊ instruction_len_offset () + 2 + instruction_len; }
 
-  bool has_instructions_length () const
+  तार्किक has_instructions_length () अचर
   {
-    return instruction_len_offset () + 2 <= bytes.length;
+    फर्काऊ instruction_len_offset () + 2 <= bytes.length;
   }
 
-  unsigned int instructions_length () const
+  अचिन्हित पूर्णाङ्क instructions_length () अचर
   {
-    unsigned int instruction_length_offset = instruction_len_offset ();
-    if (unlikely (instruction_length_offset + 2 > bytes.length)) return 0;
+    अचिन्हित पूर्णाङ्क instruction_length_offset = instruction_len_offset ();
+    यदि (unlikely (instruction_length_offset + 2 > bytes.length)) फर्काऊ 0;
 
-    const HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
+    अचर HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
     /* Out of bounds of the current glyph */
-    if (unlikely (length (instructionLength) > bytes.length)) return 0;
-    return instructionLength;
+    यदि (unlikely (length (instructionLength) > bytes.length)) फर्काऊ 0;
+    फर्काऊ instructionLength;
   }
 
-  const hb_bytes_t trim_padding () const
+  अचर hb_bytes_t trim_padding () अचर
   {
     /* based on FontTools _g_l_y_f.py::trim */
-    const uint8_t *glyph = (uint8_t*) bytes.arrayZ;
-    const uint8_t *glyph_end = glyph + bytes.length;
+    अचर uint8_t *glyph = (uint8_t*) bytes.arrayZ;
+    अचर uint8_t *glyph_end = glyph + bytes.length;
     /* simple glyph w/contours, possibly trimmable */
     glyph += instruction_len_offset ();
 
-    if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    यदि (unlikely (glyph + 2 >= glyph_end)) फर्काऊ hb_bytes_t ();
+    अचिन्हित पूर्णाङ्क अङ्क_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
+    अचिन्हित पूर्णाङ्क अङ्क_instructions = StructAtOffset<HBUINT16> (glyph, 0);
 
-    glyph += 2 + num_instructions;
+    glyph += 2 + अङ्क_instructions;
 
-    unsigned int coord_bytes = 0;
-    unsigned int coords_with_flags = 0;
-    while (glyph < glyph_end)
+    अचिन्हित पूर्णाङ्क coord_bytes = 0;
+    अचिन्हित पूर्णाङ्क coords_with_flags = 0;
+    जबसम्म (glyph < glyph_end)
     {
       uint8_t flag = *glyph;
       glyph++;
 
-      unsigned int repeat = 1;
-      if (flag & FLAG_REPEAT)
+      अचिन्हित पूर्णाङ्क repeat = 1;
+      यदि (flag & FLAG_REPEAT)
       {
-	if (unlikely (glyph >= glyph_end)) return hb_bytes_t ();
+	यदि (unlikely (glyph >= glyph_end)) फर्काऊ hb_bytes_t ();
 	repeat = *glyph + 1;
 	glyph++;
       }
 
-      unsigned int xBytes, yBytes;
+      अचिन्हित पूर्णाङ्क xBytes, yBytes;
       xBytes = yBytes = 0;
-      if (flag & FLAG_X_SHORT) xBytes = 1;
-      else if ((flag & FLAG_X_SAME) == 0) xBytes = 2;
+      यदि (flag & FLAG_X_SHORT) xBytes = 1;
+      अन्यथा यदि ((flag & FLAG_X_SAME) == 0) xBytes = 2;
 
-      if (flag & FLAG_Y_SHORT) yBytes = 1;
-      else if ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
+      यदि (flag & FLAG_Y_SHORT) yBytes = 1;
+      अन्यथा यदि ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
 
       coord_bytes += (xBytes + yBytes) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      यदि (coords_with_flags >= अङ्क_coordinates) रोक;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
-    return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
+    यदि (unlikely (coords_with_flags != अङ्क_coordinates)) फर्काऊ hb_bytes_t ();
+    फर्काऊ bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
   }
 
   /* zero instruction length */
-  void drop_hints ()
+  शून्य drop_hints ()
   {
-    if (!has_instructions_length ()) return;
+    यदि (!has_instructions_length ()) फर्काऊ;
     GlyphHeader &glyph_header = const_cast<GlyphHeader &> (header);
     (HBUINT16 &) StructAtOffset<HBUINT16> (&glyph_header, instruction_len_offset ()) = 0;
   }
 
-  void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
+  शून्य drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) अचर
   {
-    unsigned int instructions_len = instructions_length ();
-    unsigned int glyph_length = length (instructions_len);
+    अचिन्हित पूर्णाङ्क instructions_len = instructions_length ();
+    अचिन्हित पूर्णाङ्क glyph_length = length (instructions_len);
     dest_start = bytes.sub_array (0, glyph_length - instructions_len);
     dest_end = bytes.sub_array (glyph_length, bytes.length - glyph_length);
   }
 
-  void set_overlaps_flag ()
+  शून्य set_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    यदि (unlikely (!header.सङ्ख्या_Of_Contours)) फर्काऊ;
 
-    unsigned flags_offset = length (instructions_length ());
-    if (unlikely (flags_offset + 1 > bytes.length)) return;
+    अचिन्हित flags_offset = length (instructions_length ());
+    यदि (unlikely (flags_offset + 1 > bytes.length)) फर्काऊ;
 
     HBUINT8 &first_flag = (HBUINT8 &) StructAtOffset<HBUINT16> (&bytes, flags_offset);
     first_flag = (uint8_t) first_flag | FLAG_OVERLAP_SIMPLE;
   }
 
-  static bool read_flags (const HBUINT8 *&p /* IN/OUT */,
+  स्थिर तार्किक read_flags (अचर HBUINT8 *&p /* IN/OUT */,
 			  hb_array_t<contour_point_t> points_ /* IN/OUT */,
-			  const HBUINT8 *end,
-			  bool extended)
+			  अचर HBUINT8 *end,
+			  तार्किक extended)
   {
-    auto *points = points_.arrayZ;
-    unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    स्वतः *points = points_.arrayZ;
+    अचिन्हित गन्ती = points_.length;
+    लागि (अचिन्हित पूर्णाङ्क i = 0; i < गन्ती;)
     {
-      if (unlikely (p + 1 > end)) return false;
+      यदि (unlikely (p + 1 > end)) फर्काऊ असत्य;
       uint8_t flag = *p++;
-      if (!extended)
+      यदि (!extended)
 	flag &= ~FLAG_CUBIC;
       points[i++].flag = flag;
-      if (flag & FLAG_REPEAT)
+      यदि (flag & FLAG_REPEAT)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
-	unsigned stop = hb_min (i + repeat_count, count);
-	for (; i < stop; i++)
+	यदि (unlikely (p + 1 > end)) फर्काऊ असत्य;
+	अचिन्हित पूर्णाङ्क repeat_गन्ती = *p++;
+	अचिन्हित stop = hb_min (i + repeat_गन्ती, गन्ती);
+	लागि (; i < stop; i++)
 	  points[i].flag = flag;
       }
     }
-    return true;
+    फर्काऊ सत्य;
   }
 
-  static bool read_points (const HBUINT8 *&p /* IN/OUT */,
+  स्थिर तार्किक read_points (अचर HBUINT8 *&p /* IN/OUT */,
 			   hb_array_t<contour_point_t> points_ /* IN/OUT */,
-			   const HBUINT8 *end,
-			   float contour_point_t::*m,
-			   const simple_glyph_flag_t short_flag,
-			   const simple_glyph_flag_t same_flag)
+			   अचर HBUINT8 *end,
+			   भिन्न contour_point_t::*m,
+			   अचर simple_glyph_flag_t short_flag,
+			   अचर simple_glyph_flag_t same_flag)
   {
-    int v = 0;
+    पूर्णाङ्क v = 0;
 
-    for (auto &point : points_)
+    लागि (स्वतः &point : points_)
     {
-      unsigned flag = point.flag;
-      if (flag & short_flag)
+      अचिन्हित flag = point.flag;
+      यदि (flag & short_flag)
       {
-	if (unlikely (p + 1 > end)) return false;
-	v += (bool(flag & same_flag) * 2 - 1) * *p++;
+	यदि (unlikely (p + 1 > end)) फर्काऊ असत्य;
+	v += (तार्किक(flag & same_flag) * 2 - 1) * *p++;
       }
-      else
+      अन्यथा
       {
-	if (!(flag & same_flag))
+	यदि (!(flag & same_flag))
 	{
-	  if (unlikely (p + HBINT16::static_size > end)) return false;
-	  v += *(const HBINT16 *) p;
+	  यदि (unlikely (p + HBINT16::static_size > end)) फर्काऊ असत्य;
+	  v += *(अचर HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
       }
       point.*m = v;
     }
-    return true;
+    फर्काऊ सत्य;
   }
 
-  bool get_contour_points (contour_point_vector_t &points /* OUT */,
-			   bool extended,
-			   bool phantom_only = false,
-			   int64_t *budget = nullptr) const
+  तार्किक get_contour_points (contour_point_vector_t &points /* OUT */,
+			   तार्किक extended,
+			   तार्किक phantom_only = असत्य,
+			   int64_t *budget = nullptr) अचर
   {
-    const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
-    assert (num_contours > 0);
+    अचर HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
+    पूर्णाङ्क अङ्क_contours = header.सङ्ख्या_Of_Contours;
+    प्रतिज्ञा (अङ्क_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    यदि (unlikely (!bytes.check_range (&endPtsOfContours[अङ्क_contours]))) फर्काऊ असत्य;
+    अचिन्हित पूर्णाङ्क अङ्क_points = endPtsOfContours[अङ्क_contours - 1] + 1;
+    यदि (unlikely (अङ्क_points < (अचिन्हित) अङ्क_contours)) फर्काऊ असत्य;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    यदि (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, अङ्क_points))) फर्काऊ असत्य;
 
-    unsigned old_length = points.length;
-    points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
-    auto points_ = points.as_array ().sub_array (old_length);
-    if (!phantom_only)
-      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
-    if (phantom_only) return true;
+    अचिन्हित old_length = points.length;
+    points.alloc (points.length + अङ्क_points + 4); // Allocate for phantom points, to avoid a possible copy
+    यदि (unlikely (!points.resize_dirty (points.length + अङ्क_points))) फर्काऊ असत्य;
+    स्वतः points_ = points.as_array ().sub_array (old_length);
+    यदि (!phantom_only)
+      hb_memset (points_.arrayZ, 0, परिमाण (contour_point_t) * अङ्क_points);
+    यदि (phantom_only) फर्काऊ सत्य;
 
-    for (int i = 0; i < num_contours; i++)
-      points_[endPtsOfContours[i]].is_end_point = true;
+    लागि (पूर्णाङ्क i = 0; i < अङ्क_contours; i++)
+      points_[endPtsOfContours[i]].is_end_point = सत्य;
 
     /* Skip instructions */
-    const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
-						 endPtsOfContours[num_contours]);
+    अचर HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[अङ्क_contours + 1],
+						 endPtsOfContours[अङ्क_contours]);
 
-    if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
-    const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
-    if (unlikely (p >= end)) return false;
+    यदि (unlikely ((अचर वर्ण *) p < bytes.arrayZ)) फर्काऊ असत्य; /* Unlikely overflow */
+    अचर HBUINT8 *end = (अचर HBUINT8 *) (bytes.arrayZ + bytes.length);
+    यदि (unlikely (p >= end)) फर्काऊ असत्य;
 
     /* Read x & y coordinates */
-    return read_flags (p, points_, end, extended)
+    फर्काऊ read_flags (p, points_, end, extended)
         && read_points (p, points_, end, &contour_point_t::x,
 			FLAG_X_SHORT, FLAG_X_SAME)
 	&& read_points (p, points_, end, &contour_point_t::y,
 			FLAG_Y_SHORT, FLAG_Y_SAME);
   }
 
-  static void encode_coord (int value,
-                            unsigned &flag,
-                            const simple_glyph_flag_t short_flag,
-                            const simple_glyph_flag_t same_flag,
+  स्थिर शून्य encode_coord (पूर्णाङ्क value,
+                            अचिन्हित &flag,
+                            अचर simple_glyph_flag_t short_flag,
+                            अचर simple_glyph_flag_t same_flag,
                             hb_vector_t<uint8_t> &coords /* OUT */)
   {
-    if (value == 0)
+    यदि (value == 0)
     {
       flag |= same_flag;
     }
-    else if (value >= -255 && value <= 255)
+    अन्यथा यदि (value >= -255 && value <= 255)
     {
       flag |= short_flag;
-      if (value > 0) flag |= same_flag;
-      else value = -value;
+      यदि (value > 0) flag |= same_flag;
+      अन्यथा value = -value;
 
       coords.arrayZ[coords.length++] = (uint8_t) value;
     }
-    else
+    अन्यथा
     {
       int16_t val = value;
       coords.arrayZ[coords.length++] = val >> 8;
@@ -250,59 +250,59 @@ struct SimpleGlyph
     }
   }
 
-  static void encode_flag (unsigned flag,
-                           unsigned &repeat,
-                           unsigned lastflag,
+  स्थिर शून्य encode_flag (अचिन्हित flag,
+                           अचिन्हित &repeat,
+                           अचिन्हित lastflag,
                            hb_vector_t<uint8_t> &flags /* OUT */)
   {
-    if (flag == lastflag && repeat != 255)
+    यदि (flag == lastflag && repeat != 255)
     {
       repeat++;
-      if (repeat == 1)
+      यदि (repeat == 1)
       {
         /* We know there's room. */
         flags.arrayZ[flags.length++] = flag;
       }
-      else
+      अन्यथा
       {
-        unsigned len = flags.length;
+        अचिन्हित len = flags.length;
         flags.arrayZ[len-2] = flag | FLAG_REPEAT;
         flags.arrayZ[len-1] = repeat;
       }
     }
-    else
+    अन्यथा
     {
       repeat = 0;
       flags.arrayZ[flags.length++] = flag;
     }
   }
 
-  bool compile_bytes_with_deltas (const contour_point_vector_t &all_points,
-                                  bool no_hinting,
+  तार्किक compile_bytes_with_deltas (अचर contour_point_vector_t &all_points,
+                                  तार्किक no_hinting,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    यदि (header.सङ्ख्या_Of_Contours == 0 || all_points.length <= 4)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      फर्काऊ सत्य;
     }
-    unsigned num_points = all_points.length - 4;
+    अचिन्हित अङ्क_points = all_points.length - 4;
 
     hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    यदि (unlikely (!flags.alloc_exact (अङ्क_points))) फर्काऊ असत्य;
+    यदि (unlikely (!x_coords.alloc_exact (2*अङ्क_points))) फर्काऊ असत्य;
+    यदि (unlikely (!y_coords.alloc_exact (2*अङ्क_points))) फर्काऊ असत्य;
 
-    unsigned lastflag = 255, repeat = 0;
-    int prev_x = 0, prev_y = 0;
+    अचिन्हित lastflag = 255, repeat = 0;
+    पूर्णाङ्क prev_x = 0, prev_y = 0;
 
-    for (unsigned i = 0; i < num_points; i++)
+    लागि (अचिन्हित i = 0; i < अङ्क_points; i++)
     {
-      unsigned flag = all_points.arrayZ[i].flag;
+      अचिन्हित flag = all_points.arrayZ[i].flag;
       flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
 
-      int cur_x = roundf (all_points.arrayZ[i].x);
-      int cur_y = roundf (all_points.arrayZ[i].y);
+      पूर्णाङ्क cur_x = roundf (all_points.arrayZ[i].x);
+      पूर्णाङ्क cur_y = roundf (all_points.arrayZ[i].y);
       encode_coord (cur_x - prev_x, flag, FLAG_X_SHORT, FLAG_X_SAME, x_coords);
       encode_coord (cur_y - prev_y, flag, FLAG_Y_SHORT, FLAG_Y_SAME, y_coords);
       encode_flag (flag, repeat, lastflag, flags);
@@ -312,24 +312,24 @@ struct SimpleGlyph
       lastflag = flag;
     }
 
-    unsigned len_before_instrs = 2 * header.numberOfContours + 2;
-    unsigned len_instrs = instructions_length ();
-    unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
+    अचिन्हित len_before_instrs = 2 * header.सङ्ख्या_Of_Contours + 2;
+    अचिन्हित len_instrs = instructions_length ();
+    अचिन्हित total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
 
-    if (!no_hinting)
+    यदि (!no_hinting)
       total_len += len_instrs;
 
-    char *p = (char *) hb_malloc (total_len);
-    if (unlikely (!p)) return false;
+    वर्ण *p = (वर्ण *) hb_malloc (total_len);
+    यदि (unlikely (!p)) फर्काऊ असत्य;
 
-    const char *src = bytes.arrayZ + GlyphHeader::static_size;
-    char *cur = p;
+    अचर वर्ण *src = bytes.arrayZ + GlyphHeader::static_size;
+    वर्ण *cur = p;
     hb_memcpy (p, src, len_before_instrs);
 
     cur += len_before_instrs;
     src += len_before_instrs;
 
-    if (!no_hinting)
+    यदि (!no_hinting)
     {
       hb_memcpy (cur, src, len_instrs);
       cur += len_instrs;
@@ -344,7 +344,7 @@ struct SimpleGlyph
     hb_memcpy (cur, y_coords.arrayZ, y_coords.length);
 
     dest_bytes = hb_bytes_t (p, total_len);
-    return true;
+    फर्काऊ सत्य;
   }
 };
 

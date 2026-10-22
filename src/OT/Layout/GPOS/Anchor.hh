@@ -1,80 +1,80 @@
 #ifndef OT_LAYOUT_GPOS_ANCHOR_HH
 #define OT_LAYOUT_GPOS_ANCHOR_HH
 
-#include "AnchorFormat1.hh"
-#include "AnchorFormat2.hh"
-#include "AnchorFormat3.hh"
+#अन्तर्भाव "AnchorFormat1.hh"
+#अन्तर्भाव "AnchorFormat2.hh"
+#अन्तर्भाव "AnchorFormat3.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश GPOS_impl {
 
-struct Anchor
+संरचना Anchor
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  रक्षित:
+  सङ्घ {
+  संरचना { HBUINT16 v; } format;        /* Format identifier */
   AnchorFormat1         format1;
   AnchorFormat2         format2;
   AnchorFormat3         format3;
   } u;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_UNION (2, format.v);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (एतत्);
+    यदि (!u.format.v.sanitize (c)) return_trace (असत्य);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    विकल्प (u.format.v) {
+    पक्ष 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    पक्ष 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    पक्ष 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    स्वभाव:return_trace (सत्य);
     }
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  शून्य get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   भिन्न *x, भिन्न *y) अचर
   {
     *x = *y = 0;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); return;
-    case 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); return;
-    case 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); return;
-    default:                                          return;
+    विकल्प (u.format.v) {
+    पक्ष 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); फर्काऊ;
+    पक्ष 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); फर्काऊ;
+    पक्ष 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); फर्काऊ;
+    स्वभाव:                                          फर्काऊ;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) अचर
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
-    case 2:
+    TRACE_SUBSET (एतत्);
+    विकल्प (u.format.v) {
+    पक्ष 1: hb_barrier (); return_trace (तार्किक (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+    पक्ष 2:
       hb_barrier ();
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      यदि (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       {
         // AnchorFormat 2 just containins extra hinting information, so
         // if hints are being dropped convert to format 1.
-        return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+        return_trace (तार्किक (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
       }
-      return_trace (bool (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
-    case 3: hb_barrier (); return_trace (u.format3.subset (c));
-    default:return_trace (false);
+      return_trace (तार्किक (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
+    पक्ष 3: hb_barrier (); return_trace (u.format3.subset (c));
+    स्वभाव:return_trace (असत्य);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) अचर
   {
-    switch (u.format.v) {
-    case 1: case 2:
-      return;
-    case 3:
+    विकल्प (u.format.v) {
+    पक्ष 1: पक्ष 2:
+      फर्काऊ;
+    पक्ष 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      फर्काऊ;
+    स्वभाव: फर्काऊ;
     }
   }
 };

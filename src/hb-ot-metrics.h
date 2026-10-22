@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#यदि !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_METRICS_H
 #define HB_OT_METRICS_H
 
-#include "hb.h"
-#include "hb-ot-name.h"
+#अन्तर्भाव "hb.h"
+#अन्तर्भाव "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -71,15 +71,15 @@ HB_BEGIN_DECLS
  *
  * Since: 2.6.0
  **/
-typedef enum {
+प्रकारनिर्देश गणना {
   HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER		= HB_TAG ('h','a','s','c'),
   HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER	= HB_TAG ('h','d','s','c'),
-  HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP		= HB_TAG ('h','l','g','p'),
+  HB_OT_METRICS_TAG_HORIZONTAL_पङ्क्ति_GAP		= HB_TAG ('h','l','g','p'),
   HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT	= HB_TAG ('h','c','l','a'),
   HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT	= HB_TAG ('h','c','l','d'),
   HB_OT_METRICS_TAG_VERTICAL_ASCENDER		= HB_TAG ('v','a','s','c'),
   HB_OT_METRICS_TAG_VERTICAL_DESCENDER		= HB_TAG ('v','d','s','c'),
-  HB_OT_METRICS_TAG_VERTICAL_LINE_GAP		= HB_TAG ('v','l','g','p'),
+  HB_OT_METRICS_TAG_VERTICAL_पङ्क्ति_GAP		= HB_TAG ('v','l','g','p'),
   HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE	= HB_TAG ('h','c','r','s'),
   HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN	= HB_TAG ('h','c','r','n'),
   HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET	= HB_TAG ('h','c','o','f'),
@@ -102,7 +102,7 @@ typedef enum {
   HB_OT_METRICS_TAG_UNDERLINE_OFFSET		= HB_TAG ('u','n','d','o'),
 
   /*< private >*/
-  _HB_OT_METRICS_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_METRICS_TAG_MAX_मान = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_metrics_tag_t;
 
 HB_EXTERN hb_bool_t
@@ -110,12 +110,12 @@ hb_ot_metrics_get_position (hb_font_t           *font,
 			    hb_ot_metrics_tag_t  metrics_tag,
 			    hb_position_t       *position     /* OUT.  May be NULL. */);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
 					  hb_ot_metrics_tag_t  metrics_tag,
 					  hb_position_t       *position     /* OUT */);
 
-HB_EXTERN float
+HB_EXTERN भिन्न
 hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag);
 
 HB_EXTERN hb_position_t

@@ -10,29 +10,29 @@
 #ifndef HB_CFF_WIDTH_OPTIMIZER_HH
 #define HB_CFF_WIDTH_OPTIMIZER_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-namespace CFF {
+नामाकाश CFF {
 
 /* Calculate byte cost for encoding a width delta */
-static inline unsigned
-width_delta_cost (int delta)
+स्थिर अन्तःस्थ अचिन्हित
+width_delta_cost (पूर्णाङ्क delta)
 {
-  delta = abs (delta);
-  if (delta <= 107) return 1;
-  if (delta <= 1131) return 2;
-  return 5;
+  delta = असल (delta);
+  यदि (delta <= 107) फर्काऊ 1;
+  यदि (delta <= 1131) फर्काऊ 2;
+  फर्काऊ 5;
 }
 
 /* Cumulative sum forward */
-static void
-cumsum_forward (const hb_hashmap_t<unsigned, unsigned> &freq,
-                unsigned min_w, unsigned max_w,
-                hb_vector_t<unsigned> &cumsum)
+स्थिर शून्य
+cumsum_forward (अचर hb_hashmap_t<अचिन्हित, अचिन्हित> &freq,
+                अचिन्हित min_w, अचिन्हित max_w,
+                hb_vector_t<अचिन्हित> &cumsum)
 {
   cumsum.resize (max_w - min_w + 1);
-  unsigned v = 0;
-  for (unsigned x = min_w; x <= max_w; x++)
+  अचिन्हित v = 0;
+  लागि (अचिन्हित x = min_w; x <= max_w; x++)
   {
     v += freq.get (x);
     cumsum[x - min_w] = v;
@@ -40,14 +40,14 @@ cumsum_forward (const hb_hashmap_t<unsigned, unsigned> &freq,
 }
 
 /* Cumulative max forward */
-static void
-cummax_forward (const hb_hashmap_t<unsigned, unsigned> &freq,
-                unsigned min_w, unsigned max_w,
-                hb_vector_t<unsigned> &cummax)
+स्थिर शून्य
+cummax_forward (अचर hb_hashmap_t<अचिन्हित, अचिन्हित> &freq,
+                अचिन्हित min_w, अचिन्हित max_w,
+                hb_vector_t<अचिन्हित> &cummax)
 {
   cummax.resize (max_w - min_w + 1);
-  unsigned v = 0;
-  for (unsigned x = min_w; x <= max_w; x++)
+  अचिन्हित v = 0;
+  लागि (अचिन्हित x = min_w; x <= max_w; x++)
   {
     v = hb_max (v, freq.get (x));
     cummax[x - min_w] = v;
@@ -55,62 +55,62 @@ cummax_forward (const hb_hashmap_t<unsigned, unsigned> &freq,
 }
 
 /* Cumulative sum backward */
-static void
-cumsum_backward (const hb_hashmap_t<unsigned, unsigned> &freq,
-                 unsigned min_w, unsigned max_w,
-                 hb_vector_t<unsigned> &cumsum)
+स्थिर शून्य
+cumsum_backward (अचर hb_hashmap_t<अचिन्हित, अचिन्हित> &freq,
+                 अचिन्हित min_w, अचिन्हित max_w,
+                 hb_vector_t<अचिन्हित> &cumsum)
 {
   cumsum.resize (max_w - min_w + 1);
-  unsigned v = 0;
-  for (int x = (int) max_w; x >= (int) min_w; x--)
+  अचिन्हित v = 0;
+  लागि (पूर्णाङ्क x = (पूर्णाङ्क) max_w; x >= (पूर्णाङ्क) min_w; x--)
   {
-    v += freq.get ((unsigned) x);
+    v += freq.get ((अचिन्हित) x);
     cumsum[x - min_w] = v;
   }
 }
 
 /* Cumulative max backward */
-static void
-cummax_backward (const hb_hashmap_t<unsigned, unsigned> &freq,
-                 unsigned min_w, unsigned max_w,
-                 hb_vector_t<unsigned> &cummax)
+स्थिर शून्य
+cummax_backward (अचर hb_hashmap_t<अचिन्हित, अचिन्हित> &freq,
+                 अचिन्हित min_w, अचिन्हित max_w,
+                 hb_vector_t<अचिन्हित> &cummax)
 {
   cummax.resize (max_w - min_w + 1);
-  unsigned v = 0;
-  for (int x = (int) max_w; x >= (int) min_w; x--)
+  अचिन्हित v = 0;
+  लागि (पूर्णाङ्क x = (पूर्णाङ्क) max_w; x >= (पूर्णाङ्क) min_w; x--)
   {
-    v = hb_max (v, freq.get ((unsigned) x));
+    v = hb_max (v, freq.get ((अचिन्हित) x));
     cummax[x - min_w] = v;
   }
 }
 
 /* Helper to safely get cumulative value with bounds checking */
-static inline unsigned
-safe_get (const hb_vector_t<unsigned> &vec, int x, unsigned min_w, unsigned max_w)
+स्थिर अन्तःस्थ अचिन्हित
+safe_get (अचर hb_vector_t<अचिन्हित> &vec, पूर्णाङ्क x, अचिन्हित min_w, अचिन्हित max_w)
 {
-  if (x < (int) min_w || x > (int) max_w) return 0;
-  return vec[x - min_w];
+  यदि (x < (पूर्णाङ्क) min_w || x > (पूर्णाङ्क) max_w) फर्काऊ 0;
+  फर्काऊ vec[x - min_w];
 }
 
 /* Optimize defaultWidthX and nominalWidthX from a list of widths
  * O(UPEM+numGlyphs) algorithm from fontTools.cffLib.width */
-static void
-optimize_widths (const hb_vector_t<unsigned> &width_list,
-                 unsigned &default_width,
-                 unsigned &nominal_width)
+स्थिर शून्य
+optimize_widths (अचर hb_vector_t<अचिन्हित> &width_list,
+                 अचिन्हित &default_width,
+                 अचिन्हित &nominal_width)
 {
-  if (width_list.length == 0)
+  यदि (width_list.length == 0)
   {
     default_width = nominal_width = 0;
-    return;
+    फर्काऊ;
   }
 
   /* Build frequency map */
-  hb_hashmap_t<unsigned, unsigned> widths;
-  unsigned min_w = width_list[0];
-  unsigned max_w = width_list[0];
+  hb_hashmap_t<अचिन्हित, अचिन्हित> widths;
+  अचिन्हित min_w = width_list[0];
+  अचिन्हित max_w = width_list[0];
 
-  for (unsigned w : width_list)
+  लागि (अचिन्हित w : width_list)
   {
     widths.set (w, widths.get (w) + 1);
     min_w = hb_min (min_w, w);
@@ -118,15 +118,15 @@ optimize_widths (const hb_vector_t<unsigned> &width_list,
   }
 
   /* Cumulative sum/max forward/backward */
-  hb_vector_t<unsigned> cumFrqU, cumMaxU, cumFrqD, cumMaxD;
+  hb_vector_t<अचिन्हित> cumFrqU, cumMaxU, cumFrqD, cumMaxD;
   cumsum_forward (widths, min_w, max_w, cumFrqU);
   cummax_forward (widths, min_w, max_w, cumMaxU);
   cumsum_backward (widths, min_w, max_w, cumFrqD);
   cummax_backward (widths, min_w, max_w, cumMaxD);
 
   /* Cost per nominal choice, without default consideration */
-  auto nomnCost = [&] (unsigned x) -> unsigned {
-    return safe_get (cumFrqU, x, min_w, max_w) +
+  स्वतः nomnCost = [&] (अचिन्हित x) -> अचिन्हित {
+    फर्काऊ safe_get (cumFrqU, x, min_w, max_w) +
            safe_get (cumFrqU, x - 108, min_w, max_w) +
            safe_get (cumFrqU, x - 1132, min_w, max_w) * 3 +
            safe_get (cumFrqD, x, min_w, max_w) +
@@ -136,24 +136,24 @@ optimize_widths (const hb_vector_t<unsigned> &width_list,
   };
 
   /* Cost-saving per nominal choice, by best default choice */
-  auto dfltCost = [&] (unsigned x) -> unsigned {
-    unsigned u = hb_max (hb_max (safe_get (cumMaxU, x, min_w, max_w),
+  स्वतः dfltCost = [&] (अचिन्हित x) -> अचिन्हित {
+    अचिन्हित u = hb_max (hb_max (safe_get (cumMaxU, x, min_w, max_w),
                                   safe_get (cumMaxU, x - 108, min_w, max_w) * 2),
                          safe_get (cumMaxU, x - 1132, min_w, max_w) * 5);
-    unsigned d = hb_max (hb_max (safe_get (cumMaxD, x, min_w, max_w),
+    अचिन्हित d = hb_max (hb_max (safe_get (cumMaxD, x, min_w, max_w),
                                   safe_get (cumMaxD, x + 108, min_w, max_w) * 2),
                          safe_get (cumMaxD, x + 1132, min_w, max_w) * 5);
-    return hb_max (u, d);
+    फर्काऊ hb_max (u, d);
   };
 
   /* Find best nominal */
-  unsigned best_nominal = min_w;
-  unsigned best_cost = nomnCost (min_w) - dfltCost (min_w);
+  अचिन्हित best_nominal = min_w;
+  अचिन्हित best_cost = nomnCost (min_w) - dfltCost (min_w);
 
-  for (unsigned x = min_w + 1; x <= max_w; x++)
+  लागि (अचिन्हित x = min_w + 1; x <= max_w; x++)
   {
-    unsigned cost = nomnCost (x) - dfltCost (x);
-    if (cost < best_cost)
+    अचिन्हित cost = nomnCost (x) - dfltCost (x);
+    यदि (cost < best_cost)
     {
       best_cost = cost;
       best_nominal = x;
@@ -161,40 +161,40 @@ optimize_widths (const hb_vector_t<unsigned> &width_list,
   }
 
   /* Work back the best default */
-  unsigned best_default = best_nominal;
-  unsigned best_default_cost = (unsigned) -1;
+  अचिन्हित best_default = best_nominal;
+  अचिन्हित best_default_cost = (अचिन्हित) -1;
 
   /* Check candidates around best_nominal */
-  int candidates[] = {
-    (int) best_nominal,
-    (int) best_nominal - 108,
-    (int) best_nominal - 1132,
-    (int) best_nominal + 108,
-    (int) best_nominal + 1132
+  पूर्णाङ्क candidates[] = {
+    (पूर्णाङ्क) best_nominal,
+    (पूर्णाङ्क) best_nominal - 108,
+    (पूर्णाङ्क) best_nominal - 1132,
+    (पूर्णाङ्क) best_nominal + 108,
+    (पूर्णाङ्क) best_nominal + 1132
   };
 
-  for (int candidate : candidates)
+  लागि (पूर्णाङ्क candidate : candidates)
   {
-    if (candidate < (int) min_w || candidate > (int) max_w)
-      continue;
+    यदि (candidate < (पूर्णाङ्क) min_w || candidate > (पूर्णाङ्क) max_w)
+      जारी;
 
     /* Compute actual cost with this default */
-    unsigned cost = 0;
-    for (auto kv : widths.iter ())
+    अचिन्हित cost = 0;
+    लागि (स्वतः kv : widths.iter ())
     {
-      unsigned w = kv.first;
-      unsigned freq = kv.second;
+      अचिन्हित w = kv.first;
+      अचिन्हित freq = kv.second;
 
-      if (w == (unsigned) candidate)
-        continue;
+      यदि (w == (अचिन्हित) candidate)
+        जारी;
 
-      cost += freq * width_delta_cost ((int) w - (int) best_nominal);
+      cost += freq * width_delta_cost ((पूर्णाङ्क) w - (पूर्णाङ्क) best_nominal);
     }
 
-    if (cost < best_default_cost)
+    यदि (cost < best_default_cost)
     {
       best_default_cost = cost;
-      best_default = (unsigned) candidate;
+      best_default = (अचिन्हित) candidate;
     }
   }
 

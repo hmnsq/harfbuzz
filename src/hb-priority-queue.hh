@@ -27,8 +27,8 @@
 #ifndef HB_PRIORITY_QUEUE_HH
 #define HB_PRIORITY_QUEUE_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-vector.hh"
 
 /*
  * hb_priority_queue_t
@@ -42,141 +42,141 @@
  * priority of its children. The heap is stored in an array, with the
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
-template <typename K>
-struct hb_priority_queue_t
+ढाँचा <typename K>
+संरचना hb_priority_queue_t
 {
- public:
-  typedef hb_pair_t<K, unsigned> item_t;
+ सार्वजनिक:
+  प्रकारनिर्देश hb_pair_t<K, अचिन्हित> item_t;
 
- private:
+ गुप्त:
   hb_vector_t<item_t> heap;
 
- public:
+ सार्वजनिक:
 
-  hb_priority_queue_t () = default;
+  hb_priority_queue_t () = स्वभाव;
   hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
+    लागि (पूर्णाङ्क i = (heap.length / 2) - 1; i >= 0; i--)
       bubble_down (i);
   }
 
-  void reset () { heap.clear (); }
+  शून्य reset () { heap.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  तार्किक in_error () अचर { फर्काऊ heap.in_error (); }
 
-  bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  तार्किक alloc (अचिन्हित size)
+  { फर्काऊ heap.alloc (size); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void insert (K priority, unsigned value)
+  शून्य insert (K priority, अचिन्हित value)
   {
     heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
+    यदि (unlikely (heap.in_error ())) फर्काऊ;
     bubble_up (heap.length - 1);
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  item_t pop_minimum ()
+  item_t झिक_minimum ()
   {
-    assert (!is_empty ());
+    प्रतिज्ञा (!is_empty ());
 
     item_t result = heap.arrayZ[0];
 
     heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
     heap.resize (heap.length - 1);
 
-    if (!is_empty ())
+    यदि (!is_empty ())
       bubble_down (0);
 
-    return result;
+    फर्काऊ result;
   }
 
-  const item_t& minimum ()
+  अचर item_t& minimum ()
   {
-    return heap[0];
+    फर्काऊ heap[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  तार्किक is_empty () अचर { फर्काऊ heap.length == 0; }
+  explicit चालक तार्किक () अचर { फर्काऊ !is_empty (); }
+  अचिन्हित पूर्णाङ्क get_population () अचर { फर्काऊ heap.length; }
 
   /* Sink interface. */
-  hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  hb_priority_queue_t& चालक << (item_t item)
+  { insert (item.first, item.second); फर्काऊ *एतत्; }
 
- private:
+ गुप्त:
 
-  static constexpr unsigned parent (unsigned index)
+  स्थिर constexpr अचिन्हित parent (अचिन्हित index)
   {
-    return (index - 1) / 2;
+    फर्काऊ (index - 1) / 2;
   }
 
-  static constexpr unsigned left_child (unsigned index)
+  स्थिर constexpr अचिन्हित बायाँ_child (अचिन्हित index)
   {
-    return 2 * index + 1;
+    फर्काऊ 2 * index + 1;
   }
 
-  static constexpr unsigned right_child (unsigned index)
+  स्थिर constexpr अचिन्हित दायाँ_child (अचिन्हित index)
   {
-    return 2 * index + 2;
+    फर्काऊ 2 * index + 2;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_down (unsigned index)
+  शून्य bubble_down (अचिन्हित index)
   {
     repeat:
-    assert (index < heap.length);
+    प्रतिज्ञा (index < heap.length);
 
-    unsigned left = left_child (index);
-    unsigned right = right_child (index);
+    अचिन्हित left = बायाँ_child (index);
+    अचिन्हित दायाँ = दायाँ_child (index);
 
-    bool has_left = left < heap.length;
-    if (!has_left)
+    तार्किक has_बायाँ = left < heap.length;
+    यदि (!has_बायाँ)
       // If there's no left, then there's also no right.
-      return;
+      फर्काऊ;
 
-    bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
-        && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+    तार्किक has_दायाँ = दायाँ < heap.length;
+    यदि (heap.arrayZ[index].first <= heap.arrayZ[left].first
+        && (!has_दायाँ || heap.arrayZ[index].first <= heap.arrayZ[दायाँ].first))
+      फर्काऊ;
 
-    unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    अचिन्हित child;
+    यदि (!has_दायाँ || heap.arrayZ[left].first < heap.arrayZ[दायाँ].first)
       child = left;
-    else
-      child = right;
+    अन्यथा
+      child = दायाँ;
 
     swap (index, child);
     index = child;
-    goto repeat;
+    गच्छ repeat;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_up (unsigned index)
+  शून्य bubble_up (अचिन्हित index)
   {
     repeat:
-    assert (index < heap.length);
+    प्रतिज्ञा (index < heap.length);
 
-    if (index == 0) return;
+    यदि (index == 0) फर्काऊ;
 
-    unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    अचिन्हित parent_index = parent (index);
+    यदि (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
+      फर्काऊ;
 
     swap (index, parent_index);
     index = parent_index;
-    goto repeat;
+    गच्छ repeat;
   }
 
-  void swap (unsigned a, unsigned b) noexcept
+  शून्य swap (अचिन्हित a, अचिन्हित b) noexcept
   {
-    assert (a < heap.length);
-    assert (b < heap.length);
+    प्रतिज्ञा (a < heap.length);
+    प्रतिज्ञा (b < heap.length);
     hb_swap (heap.arrayZ[a], heap.arrayZ[b]);
   }
 };

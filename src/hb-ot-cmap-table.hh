@@ -27,12 +27,12 @@
 #ifndef HB_OT_CMAP_TABLE_HH
 #define HB_OT_CMAP_TABLE_HH
 
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-shaper-arabic-pua.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-set.hh"
-#include "hb-cache.hh"
+#अन्तर्भाव "hb-ot-os2-table.hh"
+#अन्तर्भाव "hb-ot-shaper-arabic-pua.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-ot-dual.hh"
+#अन्तर्भाव "hb-set.hh"
+#अन्तर्भाव "hb-cache.hh"
 
 /*
  * cmap -- Character to Glyph Index Mapping
@@ -41,11 +41,11 @@
 #define HB_OT_TAG_cmap HB_TAG('c','m','a','p')
 #define HB_OT_TAG_DMAP HB_TAG('D','M','A','P')
 
-namespace OT {
+नामाकाश OT {
 
-static inline uint8_t unicode_to_macroman (hb_codepoint_t u)
+स्थिर अन्तःस्थ uint8_t unicode_to_macroman (hb_codepoint_t u)
 {
-  static const struct unicode_to_macroman_t
+  स्थिर अचर संरचना unicode_to_macroman_t
   {
     uint16_t unicode;
     uint8_t macroman;
@@ -181,39 +181,39 @@ static inline uint8_t unicode_to_macroman (hb_codepoint_t u)
     { 0xFB01, 0xDE },
     { 0xFB02, 0xDF },
   };
-  auto *c = hb_bsearch (u, mapping, ARRAY_LENGTH (mapping), sizeof (mapping[0]),
+  स्वतः *c = hb_bsearch (u, mapping, ARRAY_LENGTH (mapping), परिमाण (mapping[0]),
 			_hb_cmp_operator<uint16_t, uint16_t>);
-  return c ? c->macroman : 0;
+  फर्काऊ c ? c->macroman : 0;
 }
 
-struct CmapSubtableFormat0
+संरचना CmapSubtableFormat0
 {
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  तार्किक get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) अचर
   {
     hb_codepoint_t gid = codepoint < 256 ? glyphIdArray[codepoint] : 0;
-    if (unlikely (!gid))
-      return false;
+    यदि (unlikely (!gid))
+      फर्काऊ असत्य;
     *glyph = gid;
-    return true;
+    फर्काऊ सत्य;
   }
 
-  unsigned get_language () const
+  अचिन्हित get_language () अचर
   {
-    return language;
+    फर्काऊ language;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  शून्य collect_unicodes (hb_set_t *out) अचर
   {
-    for (unsigned int i = 0; i < 256; i++)
-      if (glyphIdArray[i])
+    लागि (अचिन्हित पूर्णाङ्क i = 0; i < 256; i++)
+      यदि (glyphIdArray[i])
 	out->add (i);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) अचर
   {
-    for (unsigned i = 0; i < 256; i++)
-      if (glyphIdArray[i])
+    लागि (अचिन्हित i = 0; i < 256; i++)
+      यदि (glyphIdArray[i])
       {
 	hb_codepoint_t glyph = glyphIdArray[i];
 	unicodes->add (i);
@@ -221,41 +221,41 @@ struct CmapSubtableFormat0
       }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  protected:
+  रक्षित:
   HBUINT16	format;		/* Format number is set to 0. */
   HBUINT16	length;		/* Byte length of this subtable. */
   HBUINT16	language;	/* Ignore. */
   HBUINT8	glyphIdArray[256];/* An array that maps character
 				 * code to glyph index values. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (6 + 256);
 };
 
-struct CmapSubtableFormat4
+संरचना CmapSubtableFormat4
 {
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
       typename Writer,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void to_ranges (Iterator it, Writer& range_writer)
+  शून्य to_ranges (Iterator it, Writer& range_writer)
   {
     hb_codepoint_t start_cp = 0, prev_run_start_cp = 0, run_start_cp = 0, end_cp = 0, last_gid = 0;
-    int run_length = 0 , delta = 0, prev_delta = 0;
+    पूर्णाङ्क run_length = 0 , delta = 0, prev_delta = 0;
 
-    enum {
+    गणना {
       FIRST_SUB_RANGE,
       FOLLOWING_SUB_RANGE,
     } mode;
 
-    while (it) {
+    जबसम्म (it) {
       // Start a new range
       {
-        const auto& pair = *it;
+        अचर स्वतः& pair = *it;
         start_cp = pair.first;
         prev_run_start_cp = start_cp;
         run_start_cp = start_cp;
@@ -269,29 +269,29 @@ struct CmapSubtableFormat4
       mode = FIRST_SUB_RANGE;
       it++;
 
-      while (it) {
+      जबसम्म (it) {
         // Process range
-        const auto& pair = *it;
+        अचर स्वतः& pair = *it;
         hb_codepoint_t next_cp = pair.first;
         hb_codepoint_t next_gid = pair.second;
-        if (next_cp != end_cp + 1) {
+        यदि (next_cp != end_cp + 1) {
           // Current range is over, stop processing.
-          break;
+          रोक;
         }
 
-        if (next_gid == last_gid + 1) {
+        यदि (next_gid == last_gid + 1) {
           // The current run continues.
           end_cp = next_cp;
           run_length++;
           last_gid = next_gid;
           it++;
-          continue;
+          जारी;
         }
 
         // A new run is starting, decide if we want to commit the current run.
-        int split_cost = (mode == FIRST_SUB_RANGE) ? 8 : 16;
-        int run_cost = run_length * 2;
-        if (run_cost >= split_cost) {
+        पूर्णाङ्क split_cost = (mode == FIRST_SUB_RANGE) ? 8 : 16;
+        पूर्णाङ्क run_cost = run_length * 2;
+        यदि (run_cost >= split_cost) {
           commit_current_range(start_cp,
                                prev_run_start_cp,
                                run_start_cp,
@@ -326,7 +326,7 @@ struct CmapSubtableFormat4
                             range_writer);
     }
 
-    if (likely (end_cp != 0xFFFF)) {
+    यदि (likely (end_cp != 0xFFFF)) {
       range_writer (0xFFFF, 0xFFFF, 1);
     }
   }
@@ -334,76 +334,76 @@ struct CmapSubtableFormat4
   /*
    * Writes the current range as either one or two ranges depending on what is most efficient.
    */
-  template<typename Writer>
-  void commit_current_range (hb_codepoint_t start,
+  ढाँचा<typename Writer>
+  शून्य commit_current_range (hb_codepoint_t start,
                              hb_codepoint_t prev_run_start,
                              hb_codepoint_t run_start,
                              hb_codepoint_t end,
-                             int run_delta,
-                             int previous_run_delta,
-                             int split_cost,
+                             पूर्णाङ्क run_delta,
+                             पूर्णाङ्क previous_run_delta,
+                             पूर्णाङ्क split_cost,
                              Writer& range_writer) {
-    bool should_split = false;
-    if (start < run_start && run_start < end) {
-      int run_cost = (end - run_start + 1) * 2;
-      if (run_cost >= split_cost) {
-        should_split = true;
+    तार्किक should_split = असत्य;
+    यदि (start < run_start && run_start < end) {
+      पूर्णाङ्क run_cost = (end - run_start + 1) * 2;
+      यदि (run_cost >= split_cost) {
+        should_split = सत्य;
       }
     }
 
     // A zero delta is also the marker for ranges that need a
     // glyphIdArray; serialize_rangeoffset_glyid() tells the two cases
     // apart by re-checking the mapping.
-    if (should_split) {
-      if (start == prev_run_start)
+    यदि (should_split) {
+      यदि (start == prev_run_start)
         range_writer (start, run_start - 1, previous_run_delta);
-      else
+      अन्यथा
         range_writer (start, run_start - 1, 0);
       range_writer (run_start, end, run_delta);
-      return;
+      फर्काऊ;
     }
 
 
-    if (start == run_start) {
+    यदि (start == run_start) {
       // Range is only a run
       range_writer (start, end, run_delta);
-      return;
+      फर्काऊ;
     }
 
     // Write only a single non-run range.
     range_writer (start, end, 0);
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  unsigned serialize_find_segcount (Iterator it) {
-    struct Counter {
-      unsigned segcount = 0;
+  अचिन्हित serialize_find_segcount (Iterator it) {
+    संरचना Counter {
+      अचिन्हित segcount = 0;
 
-      void operator() (hb_codepoint_t start,
+      शून्य चालक() (hb_codepoint_t start,
                        hb_codepoint_t end,
-                       int delta) {
+                       पूर्णाङ्क delta) {
         segcount++;
       }
     } counter;
 
     to_ranges (+it, counter);
-    return counter.segcount;
+    फर्काऊ counter.segcount;
   }
 
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_start_end_delta_arrays (hb_serialize_context_t *c,
+  तार्किक serialize_start_end_delta_arrays (hb_serialize_context_t *c,
                                          Iterator it,
-                                         int segcount)
+                                         पूर्णाङ्क segcount)
   {
-    struct Writer {
+    संरचना Writer {
       hb_serialize_context_t *serializer_;
       HBUINT16* end_code_;
       HBUINT16* start_code_;
       HBINT16* id_delta_;
-      int index_;
+      पूर्णाङ्क index_;
 
       Writer(hb_serialize_context_t *serializer)
           : serializer_(serializer),
@@ -411,9 +411,9 @@ struct CmapSubtableFormat4
             start_code_(nullptr),
             id_delta_(nullptr),
             index_ (0) {}
-      void operator() (hb_codepoint_t start,
+      शून्य चालक() (hb_codepoint_t start,
                        hb_codepoint_t end,
-                       int delta) {
+                       पूर्णाङ्क delta) {
         start_code_[index_] = start;
         end_code_[index_] = end;
         id_delta_[index_] = delta;
@@ -421,57 +421,57 @@ struct CmapSubtableFormat4
       }
     } writer(c);
 
-    writer.end_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, false);
-    (void) c->allocate_size<HBUINT16> (2); // padding
-    writer.start_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, false);
-    writer.id_delta_ = c->allocate_size<HBINT16> (HBINT16::static_size * segcount, false);
+    writer.end_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, असत्य);
+    (शून्य) c->allocate_size<HBUINT16> (2); // padding
+    writer.start_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, असत्य);
+    writer.id_delta_ = c->allocate_size<HBINT16> (HBINT16::static_size * segcount, असत्य);
 
-    if (unlikely (!writer.end_code_ || !writer.start_code_ || !writer.id_delta_)) return false;
+    यदि (unlikely (!writer.end_code_ || !writer.start_code_ || !writer.id_delta_)) फर्काऊ असत्य;
 
     to_ranges (+it, writer);
-    return true;
+    फर्काऊ सत्य;
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
           hb_requires (hb_is_iterator (Iterator))>
   HBUINT16* serialize_rangeoffset_glyid (hb_serialize_context_t *c,
                                          Iterator it,
 					 HBUINT16 *endCode,
 					 HBUINT16 *startCode,
 					 HBINT16 *idDelta,
-					 unsigned segcount)
+					 अचिन्हित segcount)
   {
     hb_map_t cp_to_gid { it };
 
     HBUINT16 *idRangeOffset = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount);
-    if (unlikely (!c->check_success (idRangeOffset))) return nullptr;
-    if (unlikely ((char *)idRangeOffset - (char *)idDelta != (int) segcount * (int) HBINT16::static_size)) return nullptr;
+    यदि (unlikely (!c->check_success (idRangeOffset))) फर्काऊ nullptr;
+    यदि (unlikely ((वर्ण *)idRangeOffset - (वर्ण *)idDelta != (पूर्णाङ्क) segcount * (पूर्णाङ्क) HBINT16::static_size)) फर्काऊ nullptr;
 
-    for (unsigned i : hb_range (segcount))
+    लागि (अचिन्हित i : hb_range (segcount))
     {
       /* A non-zero delta is always a real run. A zero delta is
        * ambiguous: identity mapping, or the marker for a range that
        * needs a glyphIdArray. Only zero deltas need a check. */
-      int delta = idDelta[i];
-      if (delta)
-	continue;
-      bool use_delta = true;
-      for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
+      पूर्णाङ्क delta = idDelta[i];
+      यदि (delta)
+	जारी;
+      तार्किक use_delta = सत्य;
+      लागि (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
       {
 	hb_codepoint_t gid = cp_to_gid.get (cp);
-	if (gid == HB_MAP_VALUE_INVALID)
+	यदि (gid == HB_MAP_मान_INVALID)
 	  gid = 0;
-	if (gid != cp)
+	यदि (gid != cp)
 	{
-	  use_delta = false;
-	  break;
+	  use_delta = असत्य;
+	  रोक;
 	}
       }
-      if (use_delta)
-	continue;
+      यदि (use_delta)
+	जारी;
 
       idRangeOffset[i] = 2 * (c->start_embed<HBUINT16> () - idRangeOffset - i);
-      for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
+      लागि (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
       {
         HBUINT16 gid;
         gid = cp_to_gid[cp];
@@ -479,25 +479,25 @@ struct CmapSubtableFormat4
       }
     }
 
-    return idRangeOffset;
+    फर्काऊ idRangeOffset;
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  शून्य serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    auto format4_iter =
+    स्वतः format4_iter =
     + it
-    | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return _.first <= 0xFFFF; })
+    | hb_filter ([&] (अचर hb_codepoint_pair_t _)
+		 { फर्काऊ _.first <= 0xFFFF; })
     ;
 
-    if (!format4_iter) return;
+    यदि (!format4_iter) फर्काऊ;
 
-    unsigned table_initpos = c->length ();
-    if (unlikely (!c->extend_min (this))) return;
-    this->format = 4;
+    अचिन्हित table_initpos = c->length ();
+    यदि (unlikely (!c->extend_min (एतत्))) फर्काऊ;
+    एतत्->format = 4;
 
     hb_vector_t<hb_codepoint_pair_t> cp_to_gid {
       format4_iter
@@ -505,9 +505,9 @@ struct CmapSubtableFormat4
 
     //serialize endCode[], startCode[], idDelta[]
     HBUINT16* endCode = c->start_embed<HBUINT16> ();
-    unsigned segcount = serialize_find_segcount (cp_to_gid.iter());
-    if (unlikely (!serialize_start_end_delta_arrays (c, cp_to_gid.iter(), segcount)))
-      return;
+    अचिन्हित segcount = serialize_find_segcount (cp_to_gid.iter());
+    यदि (unlikely (!serialize_start_end_delta_arrays (c, cp_to_gid.iter(), segcount)))
+      फर्काऊ;
 
     HBUINT16 *startCode = endCode + segcount + 1;
     HBINT16 *idDelta = ((HBINT16*)startCode) + segcount;
@@ -518,171 +518,171 @@ struct CmapSubtableFormat4
                                                            startCode,
                                                            idDelta,
                                                            segcount);
-    if (unlikely (!c->check_success (idRangeOffset))) return;
+    यदि (unlikely (!c->check_success (idRangeOffset))) फर्काऊ;
 
-    this->length = c->length () - table_initpos;
-    if ((long long) this->length != (long long) c->length () - table_initpos)
+    एतत्->length = c->length () - table_initpos;
+    यदि ((दीर्घ दीर्घ) एतत्->length != (दीर्घ दीर्घ) c->length () - table_initpos)
     {
       c->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return;
+      फर्काऊ;
     }
 
-    this->segCountX2 = segcount * 2;
-    this->entrySelector = hb_max (1u, hb_bit_storage (segcount)) - 1;
-    this->searchRange = 2 * (1u << this->entrySelector);
-    this->rangeShift = segcount * 2 > this->searchRange
-		       ? 2 * segcount - this->searchRange
+    एतत्->seg_गन्ती_X2 = segcount * 2;
+    एतत्->entrySelector = hb_max (1u, hb_bit_storage (segcount)) - 1;
+    एतत्->खोज_Range = 2 * (1u << एतत्->entrySelector);
+    एतत्->rangeShift = segcount * 2 > एतत्->खोज_Range
+		       ? 2 * segcount - एतत्->खोज_Range
 		       : 0;
   }
 
-  unsigned get_language () const
+  अचिन्हित get_language () अचर
   {
-    return language;
+    फर्काऊ language;
   }
 
-  struct accelerator_t
+  संरचना accelerator_t
   {
     accelerator_t () {}
-    accelerator_t (const CmapSubtableFormat4 *subtable) = delete;
+    accelerator_t (अचर CmapSubtableFormat4 *subtable) = delete;
 
-    void init (const CmapSubtableFormat4 *subtable,
-	       unsigned int              subtable_data_size)
+    शून्य init (अचर CmapSubtableFormat4 *subtable,
+	       अचिन्हित पूर्णाङ्क              subtable_data_size)
     {
-      segCount = subtable->segCountX2 / 2;
-      endCount = subtable->values.arrayZ;
-      startCount = endCount + segCount + 1;
-      idDelta = startCount + segCount;
-      idRangeOffset = idDelta + segCount;
-      glyphIdArray = idRangeOffset + segCount;
+      seg_गन्ती_2 = subtable->seg_गन्ती_X2 / 2;
+      end_गन्ती = subtable->values.arrayZ;
+      start_गन्ती = end_गन्ती + seg_गन्ती_2 + 1;
+      idDelta = start_गन्ती + seg_गन्ती_2;
+      idRangeOffset = idDelta + seg_गन्ती_2;
+      glyphIdArray = idRangeOffset + seg_गन्ती_2;
 
-      unsigned int values_offset = 16 + 8 * segCount;
-      glyphIdArrayLength = subtable_data_size > values_offset
-			   ? (subtable_data_size - values_offset) / 2
+      अचिन्हित पूर्णाङ्क मानहरू_offset = 16 + 8 * seg_गन्ती_2;
+      glyphIdArrayLength = subtable_data_size > मानहरू_offset
+			   ? (subtable_data_size - मानहरू_offset) / 2
 			   : 0;
     }
 
-    bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+    तार्किक get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) अचर
     {
-      struct CustomRange
+      संरचना CustomRange
       {
-	int cmp (hb_codepoint_t k,
-		 unsigned distance) const
+	पूर्णाङ्क cmp (hb_codepoint_t k,
+		 अचिन्हित distance) अचर
 	{
-	  if (k > last) return +1;
-	  if (k < (&last)[distance]/*first*/) return -1;
-	  return 0;
+	  यदि (k > last) फर्काऊ +1;
+	  यदि (k < (&last)[distance]/*first*/) फर्काऊ -1;
+	  फर्काऊ 0;
 	}
 	HBUINT16 last;
       };
 
-      const HBUINT16 *found = hb_bsearch (codepoint,
-					  this->endCount,
-					  this->segCount,
-					  sizeof (CustomRange),
-					  _hb_cmp_method<hb_codepoint_t, CustomRange, unsigned>,
-					  this->segCount + 1);
-      if (unlikely (!found))
-	return false;
-      unsigned int i = found - endCount;
+      अचर HBUINT16 *found = hb_bsearch (codepoint,
+					  एतत्->end_गन्ती,
+					  एतत्->seg_गन्ती_2,
+					  परिमाण (CustomRange),
+					  _hb_cmp_method<hb_codepoint_t, CustomRange, अचिन्हित>,
+					  एतत्->seg_गन्ती_2 + 1);
+      यदि (unlikely (!found))
+	फर्काऊ असत्य;
+      अचिन्हित पूर्णाङ्क i = found - end_गन्ती;
 
       hb_codepoint_t gid;
-      unsigned int rangeOffset = this->idRangeOffset[i];
-      if (rangeOffset == 0)
-	gid = codepoint + this->idDelta[i];
-      else
+      अचिन्हित पूर्णाङ्क rangeOffset = एतत्->idRangeOffset[i];
+      यदि (rangeOffset == 0)
+	gid = codepoint + एतत्->idDelta[i];
+      अन्यथा
       {
 	/* Somebody has been smoking... */
-	unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	if (unlikely (index >= this->glyphIdArrayLength))
-	  return false;
-	gid = this->glyphIdArray[index];
-	if (unlikely (!gid))
-	  return false;
-	gid += this->idDelta[i];
+	अचिन्हित पूर्णाङ्क index = rangeOffset / 2 + (codepoint - एतत्->start_गन्ती[i]) + i - एतत्->seg_गन्ती_2;
+	यदि (unlikely (index >= एतत्->glyphIdArrayLength))
+	  फर्काऊ असत्य;
+	gid = एतत्->glyphIdArray[index];
+	यदि (unlikely (!gid))
+	  फर्काऊ असत्य;
+	gid += एतत्->idDelta[i];
       }
       gid &= 0xFFFFu;
-      if (unlikely (!gid))
-	return false;
+      यदि (unlikely (!gid))
+	फर्काऊ असत्य;
       *glyph = gid;
-      return true;
+      फर्काऊ सत्य;
     }
 
-    HB_INTERNAL static bool get_glyph_func (const void *obj, hb_codepoint_t codepoint, hb_codepoint_t *glyph)
-    { return ((const accelerator_t *) obj)->get_glyph (codepoint, glyph); }
+    HB_INTERNAL स्थिर तार्किक get_glyph_func (अचर शून्य *obj, hb_codepoint_t codepoint, hb_codepoint_t *glyph)
+    { फर्काऊ ((अचर accelerator_t *) obj)->get_glyph (codepoint, glyph); }
 
-    void collect_unicodes (hb_set_t *out) const
+    शून्य collect_unicodes (hb_set_t *out) अचर
     {
-      unsigned int count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
-	count--; /* Skip sentinel segment. */
-      for (unsigned int i = 0; i < count; i++)
+      अचिन्हित पूर्णाङ्क गन्ती = एतत्->seg_गन्ती_2;
+      यदि (गन्ती && एतत्->start_गन्ती[गन्ती - 1] == 0xFFFFu)
+	गन्ती--; /* Skip sentinel segment. */
+      लागि (अचिन्हित पूर्णाङ्क i = 0; i < गन्ती; i++)
       {
-	hb_codepoint_t start = this->startCount[i];
-	hb_codepoint_t end = this->endCount[i];
-	unsigned int rangeOffset = this->idRangeOffset[i];
+	hb_codepoint_t start = एतत्->start_गन्ती[i];
+	hb_codepoint_t end = एतत्->end_गन्ती[i];
+	अचिन्हित पूर्णाङ्क rangeOffset = एतत्->idRangeOffset[i];
         out->add_range(start, end);
-	if (rangeOffset == 0)
+	यदि (rangeOffset == 0)
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  लागि (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    hb_codepoint_t gid = (codepoint + this->idDelta[i]) & 0xFFFFu;
-	    if (unlikely (!gid))
+	    hb_codepoint_t gid = (codepoint + एतत्->idDelta[i]) & 0xFFFFu;
+	    यदि (unlikely (!gid))
               out->del(codepoint);
 	  }
 	}
-	else
+	अन्यथा
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  लागि (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	    if (unlikely (index >= this->glyphIdArrayLength))
+	    अचिन्हित पूर्णाङ्क index = rangeOffset / 2 + (codepoint - एतत्->start_गन्ती[i]) + i - एतत्->seg_गन्ती_2;
+	    यदि (unlikely (index >= एतत्->glyphIdArrayLength))
             {
               out->del_range (codepoint, end);
-	      break;
+	      रोक;
             }
-	    hb_codepoint_t gid = this->glyphIdArray[index];
-	    if (unlikely (!gid))
+	    hb_codepoint_t gid = एतत्->glyphIdArray[index];
+	    यदि (unlikely (!gid))
               out->del(codepoint);
 	  }
 	}
       }
     }
 
-    void collect_mapping (hb_set_t *unicodes, /* OUT */
-			  hb_map_t *mapping /* OUT */) const
+    शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
+			  hb_map_t *mapping /* OUT */) अचर
     {
       // TODO(grieger): optimize similar to collect_unicodes
       // (ie. use add_range())
-      unsigned count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
-	count--; /* Skip sentinel segment. */
-      for (unsigned i = 0; i < count; i++)
+      अचिन्हित गन्ती = एतत्->seg_गन्ती_2;
+      यदि (गन्ती && एतत्->start_गन्ती[गन्ती - 1] == 0xFFFFu)
+	गन्ती--; /* Skip sentinel segment. */
+      लागि (अचिन्हित i = 0; i < गन्ती; i++)
       {
-	hb_codepoint_t start = this->startCount[i];
-	hb_codepoint_t end = this->endCount[i];
-	unsigned rangeOffset = this->idRangeOffset[i];
-	if (rangeOffset == 0)
+	hb_codepoint_t start = एतत्->start_गन्ती[i];
+	hb_codepoint_t end = एतत्->end_गन्ती[i];
+	अचिन्हित rangeOffset = एतत्->idRangeOffset[i];
+	यदि (rangeOffset == 0)
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  लागि (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    hb_codepoint_t gid = (codepoint + this->idDelta[i]) & 0xFFFFu;
-	    if (unlikely (!gid))
-	      continue;
+	    hb_codepoint_t gid = (codepoint + एतत्->idDelta[i]) & 0xFFFFu;
+	    यदि (unlikely (!gid))
+	      जारी;
 	    unicodes->add (codepoint);
 	    mapping->set (codepoint, gid);
 	  }
 	}
-	else
+	अन्यथा
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  लागि (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    unsigned index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	    if (unlikely (index >= this->glyphIdArrayLength))
-	      break;
-	    hb_codepoint_t gid = this->glyphIdArray[index];
-	    if (unlikely (!gid))
-	      continue;
-            gid = (gid + this->idDelta[i]) & 0xFFFFu;
+	    अचिन्हित index = rangeOffset / 2 + (codepoint - एतत्->start_गन्ती[i]) + i - एतत्->seg_गन्ती_2;
+	    यदि (unlikely (index >= एतत्->glyphIdArrayLength))
+	      रोक;
+	    hb_codepoint_t gid = एतत्->glyphIdArray[index];
+	    यदि (unlikely (!gid))
+	      जारी;
+            gid = (gid + एतत्->idDelta[i]) & 0xFFFFu;
 	    unicodes->add (codepoint);
 	    mapping->set (codepoint, gid);
 	  }
@@ -690,148 +690,148 @@ struct CmapSubtableFormat4
       }
     }
 
-    const HBUINT16 *endCount;
-    const HBUINT16 *startCount;
-    const HBUINT16 *idDelta;
-    const HBUINT16 *idRangeOffset;
-    const HBUINT16 *glyphIdArray;
-    unsigned int segCount;
-    unsigned int glyphIdArrayLength;
+    अचर HBUINT16 *end_गन्ती;
+    अचर HBUINT16 *start_गन्ती;
+    अचर HBUINT16 *idDelta;
+    अचर HBUINT16 *idRangeOffset;
+    अचर HBUINT16 *glyphIdArray;
+    अचिन्हित पूर्णाङ्क seg_गन्ती_2;
+    अचिन्हित पूर्णाङ्क glyphIdArrayLength;
   };
 
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph,
-		  unsigned int subtable_data_size) const
+  तार्किक get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph,
+		  अचिन्हित पूर्णाङ्क subtable_data_size) अचर
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
-    return accel.get_glyph_func (&accel, codepoint, glyph);
+    accel.init (एतत्, subtable_data_size);
+    फर्काऊ accel.get_glyph_func (&accel, codepoint, glyph);
   }
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
-  { return false; }
+  तार्किक get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) अचर
+  { फर्काऊ असत्य; }
 
-  void collect_unicodes (hb_set_t *out, unsigned int subtable_data_size) const
+  शून्य collect_unicodes (hb_set_t *out, अचिन्हित पूर्णाङ्क subtable_data_size) अचर
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
+    accel.init (एतत्, subtable_data_size);
     accel.collect_unicodes (out);
   }
-  void collect_unicodes (hb_set_t *out) const
+  शून्य collect_unicodes (hb_set_t *out) अचर
   { collect_unicodes (out, length); }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
+  शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned int subtable_data_size) const
+			अचिन्हित पूर्णाङ्क subtable_data_size) अचर
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
+    accel.init (एतत्, subtable_data_size);
     accel.collect_mapping (unicodes, mapping);
   }
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) अचर
   { collect_mapping (unicodes, mapping, length); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (एतत्);
+    यदि (unlikely (!c->check_struct (एतत्)))
+      return_trace (असत्य);
     hb_barrier ();
 
-    return_trace (c->check_range (values, 2 + 4 * segCountX2));
+    return_trace (c->check_range (values, 2 + 4 * seg_गन्ती_X2));
   }
 
-  protected:
+  रक्षित:
   HBUINT16	format;		/* Format number is set to 4. */
   HBUINT16	length;		/* This is the length in bytes of the
 				 * subtable. */
   HBUINT16	language;	/* Ignore. */
-  HBUINT16	segCountX2;	/* 2 x segCount. */
-  HBUINT16	searchRange;	/* 2 * (2**floor(log2(segCount))) */
+  HBUINT16	seg_गन्ती_X2;	/* 2 x segCount. */
+  HBUINT16	खोज_Range;	/* 2 * (2**floor(log2(segCount))) */
   HBUINT16	entrySelector;	/* log2(searchRange/2) */
   HBUINT16	rangeShift;	/* 2 x segCount - searchRange */
 
   UnsizedArrayOf<HBUINT16>
 		values;
-#if 0
-  HBUINT16	endCount[segCount];	/* End characterCode for each segment,
+#यदि 0
+  HBUINT16	end_गन्ती[seg_गन्ती_2];	/* End characterCode for each segment,
 					 * last=0xFFFFu. */
   HBUINT16	reservedPad;		/* Set to 0. */
-  HBUINT16	startCount[segCount];	/* Start character code for each segment. */
-  HBINT16		idDelta[segCount];	/* Delta for all character codes in segment. */
-  HBUINT16	idRangeOffset[segCount];/* Offsets into glyphIdArray or 0 */
+  HBUINT16	start_गन्ती[seg_गन्ती_2];	/* Start character code for each segment. */
+  HBINT16		idDelta[seg_गन्ती_2];	/* Delta for all character codes in segment. */
+  HBUINT16	idRangeOffset[seg_गन्ती_2];/* Offsets into glyphIdArray or 0 */
   UnsizedArrayOf<HBUINT16>
 		glyphIdArray;	/* Glyph index array (arbitrary length) */
 #endif
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (14, values);
 };
 
-struct CmapSubtableLongGroup
+संरचना CmapSubtableLongGroup
 {
-  friend struct CmapSubtableFormat12;
-  friend struct CmapSubtableFormat13;
-  template<typename U>
-  friend struct CmapSubtableLongSegmented;
-  friend struct cmap;
+  मित्र संरचना CmapSubtableFormat12;
+  मित्र संरचना CmapSubtableFormat13;
+  ढाँचा<typename U>
+  मित्र संरचना CmapSubtableLongSegmented;
+  मित्र संरचना cmap;
 
-  int cmp (hb_codepoint_t codepoint) const
+  पूर्णाङ्क cmp (hb_codepoint_t codepoint) अचर
   {
-    if (codepoint < startCharCode) return -1;
-    if (codepoint > endCharCode)   return +1;
-    return 0;
+    यदि (codepoint < startCharCode) फर्काऊ -1;
+    यदि (codepoint > endCharCode)   फर्काऊ +1;
+    फर्काऊ 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  private:
+  गुप्त:
   HBUINT32		startCharCode;	/* First character code in this group. */
   HBUINT32		endCharCode;	/* Last character code in this group. */
   HBUINT32		glyphID;	/* Glyph index; interpretation depends on
 					 * subtable format. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (12);
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, CmapSubtableLongGroup);
 
-template <typename UINT>
-struct CmapSubtableTrimmed
+ढाँचा <typename UINT>
+संरचना CmapSubtableTrimmed
 {
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  तार्किक get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) अचर
   {
     /* Rely on our implicit array bound-checking. */
     hb_codepoint_t gid = glyphIdArray[codepoint - startCharCode];
-    if (unlikely (!gid))
-      return false;
+    यदि (unlikely (!gid))
+      फर्काऊ असत्य;
     *glyph = gid;
-    return true;
+    फर्काऊ सत्य;
   }
 
-  unsigned get_language () const
+  अचिन्हित get_language () अचर
   {
-    return language;
+    फर्काऊ language;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  शून्य collect_unicodes (hb_set_t *out) अचर
   {
     hb_codepoint_t start = startCharCode;
-    unsigned int count = glyphIdArray.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (glyphIdArray[i])
+    अचिन्हित पूर्णाङ्क गन्ती = glyphIdArray.len;
+    लागि (अचिन्हित पूर्णाङ्क i = 0; i < गन्ती; i++)
+      यदि (glyphIdArray[i])
 	out->add (start + i);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) अचर
   {
     hb_codepoint_t start_cp = startCharCode;
-    unsigned count = glyphIdArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphIdArray[i])
+    अचिन्हित गन्ती = glyphIdArray.len;
+    लागि (अचिन्हित i = 0; i < गन्ती; i++)
+      यदि (glyphIdArray[i])
       {
 	hb_codepoint_t unicode = start_cp + i;
 	hb_codepoint_t glyphid = glyphIdArray[i];
@@ -840,13 +840,13 @@ struct CmapSubtableTrimmed
       }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && glyphIdArray.sanitize (c));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) && glyphIdArray.sanitize (c));
   }
 
-  protected:
+  रक्षित:
   UINT		formatReserved;	/* Subtable format and (maybe) padding. */
   UINT		length;		/* Byte length of this subtable. */
   UINT		language;	/* Ignore. */
@@ -854,88 +854,88 @@ struct CmapSubtableTrimmed
   ArrayOf<HBGlyphID16, UINT>
 		glyphIdArray;	/* Array of glyph index values for character
 				 * codes in the range. */
-  public:
-  DEFINE_SIZE_ARRAY (5 * sizeof (UINT), glyphIdArray);
+  सार्वजनिक:
+  DEFINE_SIZE_ARRAY (5 * परिमाण (UINT), glyphIdArray);
 };
 
-struct CmapSubtableFormat6  : CmapSubtableTrimmed<HBUINT16> {};
-struct CmapSubtableFormat10 : CmapSubtableTrimmed<HBUINT32> {};
+संरचना CmapSubtableFormat6  : CmapSubtableTrimmed<HBUINT16> {};
+संरचना CmapSubtableFormat10 : CmapSubtableTrimmed<HBUINT32> {};
 
-template <typename T>
-struct CmapSubtableLongSegmented
+ढाँचा <typename T>
+संरचना CmapSubtableLongSegmented
 {
-  friend struct cmap;
+  मित्र संरचना cmap;
 
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  तार्किक get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) अचर
   {
-    hb_codepoint_t gid = T::group_get_glyph (groups.bsearch (codepoint), codepoint);
-    if (unlikely (!gid))
-      return false;
+    hb_codepoint_t gid = T::group_get_glyph (groups.द्वा_खोज (codepoint), codepoint);
+    यदि (unlikely (!gid))
+      फर्काऊ असत्य;
     *glyph = gid;
-    return true;
+    फर्काऊ सत्य;
   }
 
-  unsigned get_language () const
+  अचिन्हित get_language () अचर
   {
-    return language;
+    फर्काऊ language;
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  शून्य collect_unicodes (hb_set_t *out, अचिन्हित पूर्णाङ्क अङ्क_glyphs) अचर
   {
-    for (unsigned int i = 0; i < this->groups.len; i++)
+    लागि (अचिन्हित पूर्णाङ्क i = 0; i < एतत्->groups.len; i++)
     {
-      hb_codepoint_t start = this->groups[i].startCharCode;
-      hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups[i].endCharCode,
+      hb_codepoint_t start = एतत्->groups[i].startCharCode;
+      hb_codepoint_t end = hb_min ((hb_codepoint_t) एतत्->groups[i].endCharCode,
 				   (hb_codepoint_t) HB_UNICODE_MAX);
-      hb_codepoint_t gid = this->groups[i].glyphID;
-      if (!gid)
+      hb_codepoint_t gid = एतत्->groups[i].glyphID;
+      यदि (!gid)
       {
 	/* Intention is: if (hb_is_same (T, CmapSubtableFormat13)) continue; */
-	if (! T::group_get_glyph (this->groups[i], end)) continue;
+	यदि (! T::group_get_glyph (एतत्->groups[i], end)) जारी;
 	start++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
-	end = start + (hb_codepoint_t) num_glyphs - gid;
+      यदि (unlikely ((अचिन्हित पूर्णाङ्क) gid >= अङ्क_glyphs)) जारी;
+      यदि (unlikely ((अचिन्हित पूर्णाङ्क) (gid + end - start) >= अङ्क_glyphs))
+	end = start + (hb_codepoint_t) अङ्क_glyphs - gid;
 
       out->add_range (start, hb_min (end, 0x10FFFFu));
     }
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
+  शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned num_glyphs) const
+			अचिन्हित अङ्क_glyphs) अचर
   {
     hb_codepoint_t last_end = 0;
-    unsigned count = this->groups.len;
-    for (unsigned i = 0; i < count; i++)
+    अचिन्हित गन्ती = एतत्->groups.len;
+    लागि (अचिन्हित i = 0; i < गन्ती; i++)
     {
-      hb_codepoint_t start = this->groups.arrayZ[i].startCharCode;
-      hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups.arrayZ[i].endCharCode,
+      hb_codepoint_t start = एतत्->groups.arrayZ[i].startCharCode;
+      hb_codepoint_t end = hb_min ((hb_codepoint_t) एतत्->groups.arrayZ[i].endCharCode,
 				   (hb_codepoint_t) HB_UNICODE_MAX);
-      if (unlikely (start > end || start < last_end)) {
+      यदि (unlikely (start > end || start < last_end)) {
         // Range is not in order and is invalid, skip it.
-        continue;
+        जारी;
       }
       last_end = end;
 
 
-      hb_codepoint_t gid = this->groups.arrayZ[i].glyphID;
-      if (!gid)
+      hb_codepoint_t gid = एतत्->groups.arrayZ[i].glyphID;
+      यदि (!gid)
       {
-        if (T::formatNumber == 13) continue;
+        यदि (T::format_सङ्ख्या == 13) जारी;
 	start++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
-	end = start + (hb_codepoint_t) num_glyphs - gid;
+      यदि (unlikely ((अचिन्हित पूर्णाङ्क) gid >= अङ्क_glyphs)) जारी;
+      यदि (unlikely ((अचिन्हित पूर्णाङ्क) (gid + end - start) >= अङ्क_glyphs))
+	end = start + (hb_codepoint_t) अङ्क_glyphs - gid;
 
       mapping->alloc (mapping->get_population () + end - start + 1);
 
       unicodes->add_range (start, end);
-      for (unsigned cp = start; cp <= end; cp++)
+      लागि (अचिन्हित cp = start; cp <= end; cp++)
       {
 	mapping->set (cp, gid);
         gid += T::increment;
@@ -943,55 +943,55 @@ struct CmapSubtableLongSegmented
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && groups.sanitize (c));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) && groups.sanitize (c));
   }
 
-  protected:
+  रक्षित:
   HBUINT16	format;		/* Subtable format; set to 12. */
   HBUINT16	reserved;	/* Reserved; set to 0. */
   HBUINT32	length;		/* Byte length of this subtable. */
   HBUINT32	language;	/* Ignore. */
   SortedArray32Of<CmapSubtableLongGroup>
 		groups;		/* Groupings. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (16, groups);
 };
 
-struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
+संरचना CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 {
-  static constexpr int increment = 1;
-  static constexpr int formatNumber = 12;
+  स्थिर constexpr पूर्णाङ्क increment = 1;
+  स्थिर constexpr पूर्णाङ्क format_सङ्ख्या = 12;
 
-  static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
+  स्थिर hb_codepoint_t group_get_glyph (अचर CmapSubtableLongGroup &group,
 					 hb_codepoint_t u)
-  { return likely (group.startCharCode <= group.endCharCode) ?
+  { फर्काऊ likely (group.startCharCode <= group.endCharCode) ?
 	   group.glyphID + (u - group.startCharCode) : 0; }
 
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  शून्य serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    if (!it) return;
-    unsigned table_initpos = c->length ();
-    if (unlikely (!c->extend_min (this))) return;
+    यदि (!it) फर्काऊ;
+    अचिन्हित table_initpos = c->length ();
+    यदि (unlikely (!c->extend_min (एतत्))) फर्काऊ;
 
     hb_codepoint_t startCharCode = (hb_codepoint_t) -1, endCharCode = (hb_codepoint_t) -1;
     hb_codepoint_t glyphID = 0;
 
-    for (const auto& _ : +it)
+    लागि (अचर स्वतः& _ : +it)
     {
-      if (startCharCode == (hb_codepoint_t) -1)
+      यदि (startCharCode == (hb_codepoint_t) -1)
       {
 	startCharCode = _.first;
 	endCharCode = _.first;
 	glyphID = _.second;
       }
-      else if (!_is_gid_consecutive (endCharCode, startCharCode, glyphID, _.first, _.second))
+      अन्यथा यदि (!_is_gid_consecutive (endCharCode, startCharCode, glyphID, _.first, _.second))
       {
 	CmapSubtableLongGroup  grouprecord;
 	grouprecord.startCharCode = startCharCode;
@@ -1003,7 +1003,7 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 	endCharCode = _.first;
 	glyphID = _.second;
       }
-      else
+      अन्यथा
 	endCharCode = _.first;
     }
 
@@ -1013,293 +1013,293 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
     record.glyphID = glyphID;
     c->copy<CmapSubtableLongGroup> (record);
 
-    this->format = 12;
-    this->reserved = 0;
-    this->length = c->length () - table_initpos;
-    this->groups.len = (this->length - min_size) / CmapSubtableLongGroup::static_size;
+    एतत्->format = 12;
+    एतत्->reserved = 0;
+    एतत्->length = c->length () - table_initpos;
+    एतत्->groups.len = (एतत्->length - min_size) / CmapSubtableLongGroup::static_size;
   }
 
-  static size_t get_sub_table_size (const hb_sorted_vector_t<CmapSubtableLongGroup> &groups_data)
-  { return 16 + 12 * groups_data.length; }
+  स्थिर माप_प्रकार get_sub_table_size (अचर hb_sorted_vector_t<CmapSubtableLongGroup> &groups_data)
+  { फर्काऊ 16 + 12 * groups_data.length; }
 
-  private:
-  static bool _is_gid_consecutive (hb_codepoint_t endCharCode,
+  गुप्त:
+  स्थिर तार्किक _is_gid_consecutive (hb_codepoint_t endCharCode,
 				   hb_codepoint_t startCharCode,
 				   hb_codepoint_t glyphID,
 				   hb_codepoint_t cp,
 				   hb_codepoint_t new_gid)
   {
-    return (cp - 1 == endCharCode) &&
+    फर्काऊ (cp - 1 == endCharCode) &&
 	new_gid == glyphID + (cp - startCharCode);
   }
 
 };
 
-struct CmapSubtableFormat13 : CmapSubtableLongSegmented<CmapSubtableFormat13>
+संरचना CmapSubtableFormat13 : CmapSubtableLongSegmented<CmapSubtableFormat13>
 {
-  static constexpr int increment = 0;
-  static constexpr int formatNumber = 13;
+  स्थिर constexpr पूर्णाङ्क increment = 0;
+  स्थिर constexpr पूर्णाङ्क format_सङ्ख्या = 13;
 
-  static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
+  स्थिर hb_codepoint_t group_get_glyph (अचर CmapSubtableLongGroup &group,
 					 hb_codepoint_t u HB_UNUSED)
-  { return group.glyphID; }
+  { फर्काऊ group.glyphID; }
 };
 
-typedef enum
+प्रकारनिर्देश गणना
 {
   GLYPH_VARIANT_NOT_FOUND = 0,
   GLYPH_VARIANT_FOUND = 1,
   GLYPH_VARIANT_USE_DEFAULT = 2
 } glyph_variant_t;
 
-struct UnicodeValueRange
+संरचना Unicode_मान_Range
 {
-  int cmp (const hb_codepoint_t &codepoint) const
+  पूर्णाङ्क cmp (अचर hb_codepoint_t &codepoint) अचर
   {
-    if (codepoint < startUnicodeValue) return -1;
-    if (codepoint > startUnicodeValue + additionalCount) return +1;
-    return 0;
+    यदि (codepoint < start_Unicode_मान) फर्काऊ -1;
+    यदि (codepoint > start_Unicode_मान + additional_गन्ती) फर्काऊ +1;
+    फर्काऊ 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  HBUINT24	startUnicodeValue;	/* First value in this range. */
-  HBUINT8	additionalCount;	/* Number of additional values in this
+  HBUINT24	start_Unicode_मान;	/* First value in this range. */
+  HBUINT8	additional_गन्ती;	/* Number of additional values in this
 					 * range. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
+संरचना DefaultUVS : SortedArray32Of<Unicode_मान_Range>
 {
-  void collect_unicodes (hb_set_t *out) const
+  शून्य collect_unicodes (hb_set_t *out) अचर
   {
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    अचिन्हित पूर्णाङ्क गन्ती = len;
+    लागि (अचिन्हित पूर्णाङ्क i = 0; i < गन्ती; i++)
     {
-      hb_codepoint_t first = arrayZ[i].startUnicodeValue;
-      hb_codepoint_t last = hb_min ((hb_codepoint_t) (first + arrayZ[i].additionalCount),
+      hb_codepoint_t first = arrayZ[i].start_Unicode_मान;
+      hb_codepoint_t last = hb_min ((hb_codepoint_t) (first + arrayZ[i].additional_गन्ती),
 				    (hb_codepoint_t) HB_UNICODE_MAX);
       out->add_range (first, last);
     }
   }
 
   DefaultUVS* copy (hb_serialize_context_t *c,
-		    const hb_set_t *unicodes) const
+		    अचर hb_set_t *unicodes) अचर
   {
-    auto *out = c->start_embed<DefaultUVS> ();
-    auto snap = c->snapshot ();
+    स्वतः *out = c->start_embed<DefaultUVS> ();
+    स्वतः snap = c->snapshot ();
 
     HBUINT32 len;
     len = 0;
-    if (unlikely (!c->copy<HBUINT32> (len))) return nullptr;
-    unsigned init_len = c->length ();
+    यदि (unlikely (!c->copy<HBUINT32> (len))) फर्काऊ nullptr;
+    अचिन्हित init_len = c->length ();
 
-    if (this->len > unicodes->get_population () * hb_bit_storage ((unsigned) this->len))
+    यदि (एतत्->len > unicodes->get_population () * hb_bit_storage ((अचिन्हित) एतत्->len))
     {
-      hb_codepoint_t start = HB_SET_VALUE_INVALID;
-      hb_codepoint_t end = HB_SET_VALUE_INVALID;
+      hb_codepoint_t start = HB_SET_मान_INVALID;
+      hb_codepoint_t end = HB_SET_मान_INVALID;
 
-      for (auto u : *unicodes)
+      लागि (स्वतः u : *unicodes)
       {
-        if (!as_array ().bsearch (u))
-	  continue;
-	if (start == HB_SET_VALUE_INVALID)
+        यदि (!as_array ().द्वा_खोज (u))
+	  जारी;
+	यदि (start == HB_SET_मान_INVALID)
 	{
 	  start = u;
 	  end = start - 1;
 	}
-	if (end + 1 != u || end - start == 255)
+	यदि (end + 1 != u || end - start == 255)
         {
-	  UnicodeValueRange rec;
-	  rec.startUnicodeValue = start;
-	  rec.additionalCount = end - start;
-	  c->copy<UnicodeValueRange> (rec);
+	  Unicode_मान_Range rec;
+	  rec.start_Unicode_मान = start;
+	  rec.additional_गन्ती = end - start;
+	  c->copy<Unicode_मान_Range> (rec);
 	  start = u;
 	}
 	end = u;
       }
-      if (start != HB_SET_VALUE_INVALID)
+      यदि (start != HB_SET_मान_INVALID)
       {
-	UnicodeValueRange rec;
-	rec.startUnicodeValue = start;
-	rec.additionalCount = end - start;
-	c->copy<UnicodeValueRange> (rec);
+	Unicode_मान_Range rec;
+	rec.start_Unicode_मान = start;
+	rec.additional_गन्ती = end - start;
+	c->copy<Unicode_मान_Range> (rec);
       }
 
     }
-    else
+    अन्यथा
     {
-      hb_codepoint_t lastCode = HB_SET_VALUE_INVALID;
-      int count = -1;
+      hb_codepoint_t lastCode = HB_SET_मान_INVALID;
+      पूर्णाङ्क गन्ती = -1;
 
-      for (const UnicodeValueRange& _ : *this)
+      लागि (अचर Unicode_मान_Range& _ : *एतत्)
       {
-	hb_codepoint_t curEntry = (hb_codepoint_t) (_.startUnicodeValue - 1);
-	hb_codepoint_t end = curEntry + _.additionalCount + 2;
+	hb_codepoint_t curEntry = (hb_codepoint_t) (_.start_Unicode_मान - 1);
+	hb_codepoint_t end = curEntry + _.additional_गन्ती + 2;
 
-	for (; unicodes->next (&curEntry) && curEntry < end;)
+	लागि (; unicodes->next (&curEntry) && curEntry < end;)
 	{
-	  count += 1;
-	  if (lastCode == HB_SET_VALUE_INVALID)
+	  गन्ती += 1;
+	  यदि (lastCode == HB_SET_मान_INVALID)
 	    lastCode = curEntry;
-	  else if (lastCode + count != curEntry || count > 255)
+	  अन्यथा यदि (lastCode + गन्ती != curEntry || गन्ती > 255)
 	  {
-	    UnicodeValueRange rec;
-	    rec.startUnicodeValue = lastCode;
-	    rec.additionalCount = count - 1;
-	    c->copy<UnicodeValueRange> (rec);
+	    Unicode_मान_Range rec;
+	    rec.start_Unicode_मान = lastCode;
+	    rec.additional_गन्ती = गन्ती - 1;
+	    c->copy<Unicode_मान_Range> (rec);
 
 	    lastCode = curEntry;
-	    count = 0;
+	    गन्ती = 0;
 	  }
 	}
       }
 
-      if (lastCode != HB_MAP_VALUE_INVALID)
+      यदि (lastCode != HB_MAP_मान_INVALID)
       {
-	UnicodeValueRange rec;
-	rec.startUnicodeValue = lastCode;
-	rec.additionalCount = count;
-	c->copy<UnicodeValueRange> (rec);
+	Unicode_मान_Range rec;
+	rec.start_Unicode_मान = lastCode;
+	rec.additional_गन्ती = गन्ती;
+	c->copy<Unicode_मान_Range> (rec);
       }
     }
 
-    if (c->length () - init_len == 0)
+    यदि (c->length () - init_len == 0)
     {
       c->revert (snap);
-      return nullptr;
+      फर्काऊ nullptr;
     }
-    else
+    अन्यथा
     {
-      if (unlikely (!c->check_assign (out->len,
-                                      (c->length () - init_len) / UnicodeValueRange::static_size,
-                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))) return nullptr;
-      return out;
+      यदि (unlikely (!c->check_assign (out->len,
+                                      (c->length () - init_len) / Unicode_मान_Range::static_size,
+                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))) फर्काऊ nullptr;
+      फर्काऊ out;
     }
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (4, *this);
+  सार्वजनिक:
+  DEFINE_SIZE_ARRAY (4, *एतत्);
 };
 
-template <typename Types>
-struct UVSMapping
+ढाँचा <typename Types>
+संरचना UVSMapping
 {
   using GlyphID = typename Types::HBGlyphID;
 
-  int cmp (const hb_codepoint_t &codepoint) const
-  { return unicodeValue.cmp (codepoint); }
+  पूर्णाङ्क cmp (अचर hb_codepoint_t &codepoint) अचर
+  { फर्काऊ unicode_मान.cmp (codepoint); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  HBUINT24	unicodeValue;	/* Base Unicode value of the UVS */
+  HBUINT24	unicode_मान;	/* Base Unicode value of the UVS */
   GlyphID
 		glyphID;	/* Glyph ID of the UVS. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (3 + GlyphID::static_size);
 };
 
-template <typename Types>
-struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
+ढाँचा <typename Types>
+संरचना NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
 {
   using Mapping = UVSMapping<Types>;
 
-  void collect_unicodes (hb_set_t *out) const
+  शून्य collect_unicodes (hb_set_t *out) अचर
   {
-    for (const auto& a : this->as_array ())
-      out->add (a.unicodeValue);
+    लागि (अचर स्वतः& a : एतत्->as_array ())
+      out->add (a.unicode_मान);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) अचर
   {
-    for (const auto& a : this->as_array ())
+    लागि (अचर स्वतः& a : एतत्->as_array ())
     {
-      hb_codepoint_t unicode = a.unicodeValue;
+      hb_codepoint_t unicode = a.unicode_मान;
       hb_codepoint_t glyphid = a.glyphID;
       unicodes->add (unicode);
       mapping->set (unicode, glyphid);
     }
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  शून्य closure_glyphs (अचर hb_set_t      *unicodes,
+		       hb_set_t            *glyphset) अचर
   {
-    + this->as_array ()
-    | hb_filter (unicodes, &Mapping::unicodeValue)
+    + एतत्->as_array ()
+    | hb_filter (unicodes, &Mapping::unicode_मान)
     | hb_map (&Mapping::glyphID)
     | hb_sink (glyphset)
     ;
   }
 
   NonDefaultUVS* copy (hb_serialize_context_t *c,
-		       const hb_set_t *unicodes,
-		       const hb_set_t *glyphs_requested,
-		       const hb_map_t *glyph_map) const
+		       अचर hb_set_t *unicodes,
+		       अचर hb_set_t *glyphs_requested,
+		       अचर hb_map_t *glyph_map) अचर
   {
-    auto *out = c->start_embed<NonDefaultUVS> ();
-    auto it =
-    + this->as_array ()
-    | hb_filter ([&] (const Mapping& _)
+    स्वतः *out = c->start_embed<NonDefaultUVS> ();
+    स्वतः it =
+    + एतत्->as_array ()
+    | hb_filter ([&] (अचर Mapping& _)
 		 {
-		   return unicodes->has (_.unicodeValue) || glyphs_requested->has (_.glyphID);
+		   फर्काऊ unicodes->has (_.unicode_मान) || glyphs_requested->has (_.glyphID);
 		 })
     ;
 
-    if (!it) return nullptr;
+    यदि (!it) फर्काऊ nullptr;
 
     HBUINT32 len;
     len = it.len ();
-    if (unlikely (!c->copy<HBUINT32> (len))) return nullptr;
+    यदि (unlikely (!c->copy<HBUINT32> (len))) फर्काऊ nullptr;
 
-    for (const Mapping& _ : it)
+    लागि (अचर Mapping& _ : it)
     {
       Mapping mapping;
-      mapping.unicodeValue = _.unicodeValue;
+      mapping.unicode_मान = _.unicode_मान;
       mapping.glyphID = glyph_map->get (_.glyphID);
       c->copy<Mapping> (mapping);
     }
 
-    return out;
+    फर्काऊ out;
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (4, *this);
+  सार्वजनिक:
+  DEFINE_SIZE_ARRAY (4, *एतत्);
 };
 
-template <typename Types>
-struct VariationSelectorRecord
+ढाँचा <typename Types>
+संरचना VariationSelectorRecord
 {
   glyph_variant_t get_glyph (hb_codepoint_t codepoint,
 			     hb_codepoint_t *glyph,
-			     const void *base) const
+			     अचर शून्य *base) अचर
   {
-    if ((base+defaultUVS).bfind (codepoint))
-      return GLYPH_VARIANT_USE_DEFAULT;
-    const UVSMapping<Types> &nonDefault = (base+nonDefaultUVS).bsearch (codepoint);
-    if (nonDefault.glyphID)
+    यदि ((base+defaultUVS).bfind (codepoint))
+      फर्काऊ GLYPH_VARIANT_USE_DEFAULT;
+    अचर UVSMapping<Types> &nonDefault = (base+nonDefaultUVS).द्वा_खोज (codepoint);
+    यदि (nonDefault.glyphID)
     {
       *glyph = nonDefault.glyphID;
-       return GLYPH_VARIANT_FOUND;
+       फर्काऊ GLYPH_VARIANT_FOUND;
     }
-    return GLYPH_VARIANT_NOT_FOUND;
+    फर्काऊ GLYPH_VARIANT_NOT_FOUND;
   }
 
-  VariationSelectorRecord(const VariationSelectorRecord& other)
+  VariationSelectorRecord(अचर VariationSelectorRecord& other)
   {
-    *this = other;
+    *एतत् = other;
   }
 
-  void operator= (const VariationSelectorRecord& other)
+  शून्य चालक= (अचर VariationSelectorRecord& other)
   {
     varSelector = other.varSelector;
     HBUINT32 offset = other.defaultUVS;
@@ -1308,68 +1308,68 @@ struct VariationSelectorRecord
     nonDefaultUVS = offset;
   }
 
-  void collect_unicodes (hb_set_t *out, const void *base) const
+  शून्य collect_unicodes (hb_set_t *out, अचर शून्य *base) अचर
   {
     (base+defaultUVS).collect_unicodes (out);
     (base+nonDefaultUVS).collect_unicodes (out);
   }
 
-  void collect_mapping (const void *base,
+  शून्य collect_mapping (अचर शून्य *base,
 			hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+			hb_map_t *mapping /* OUT */) अचर
   {
     (base+defaultUVS).collect_unicodes (unicodes);
     (base+nonDefaultUVS).collect_mapping (unicodes, mapping);
   }
 
-  int cmp (const hb_codepoint_t &variation_selector) const
-  { return varSelector.cmp (variation_selector); }
+  पूर्णाङ्क cmp (अचर hb_codepoint_t &variation_selector) अचर
+  { फर्काऊ varSelector.cmp (variation_selector); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  तार्किक sanitize (hb_sanitize_context_t *c, अचर शून्य *base) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
 		  defaultUVS.sanitize (c, base) &&
 		  nonDefaultUVS.sanitize (c, base));
   }
 
-  hb_pair_t<unsigned, unsigned>
+  hb_pair_t<अचिन्हित, अचिन्हित>
   copy (hb_serialize_context_t *c,
-	const hb_set_t *unicodes,
-	const hb_set_t *glyphs_requested,
-	const hb_map_t *glyph_map,
-	const void *base) const
+	अचर hb_set_t *unicodes,
+	अचर hb_set_t *glyphs_requested,
+	अचर hb_map_t *glyph_map,
+	अचर शून्य *base) अचर
   {
-    auto snap = c->snapshot ();
-    auto *out = c->embed<VariationSelectorRecord> (*this);
-    if (unlikely (!out)) return hb_pair (0, 0);
+    स्वतः snap = c->snapshot ();
+    स्वतः *out = c->embed<VariationSelectorRecord> (*एतत्);
+    यदि (unlikely (!out)) फर्काऊ hb_pair (0, 0);
 
     out->defaultUVS = 0;
     out->nonDefaultUVS = 0;
 
-    unsigned non_default_uvs_objidx = 0;
-    if (nonDefaultUVS != 0)
+    अचिन्हित non_default_uvs_objidx = 0;
+    यदि (nonDefaultUVS != 0)
     {
       c->push ();
-      if (c->copy (base+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
-	non_default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+      यदि (c->copy (base+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
+	non_default_uvs_objidx = c->झिक_pack ();
+      अन्यथा c->झिक_discard ();
     }
 
-    unsigned default_uvs_objidx = 0;
-    if (defaultUVS != 0)
+    अचिन्हित default_uvs_objidx = 0;
+    यदि (defaultUVS != 0)
     {
       c->push ();
-      if (c->copy (base+defaultUVS, unicodes))
-	default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+      यदि (c->copy (base+defaultUVS, unicodes))
+	default_uvs_objidx = c->झिक_pack ();
+      अन्यथा c->झिक_discard ();
     }
 
 
-    if (!default_uvs_objidx && !non_default_uvs_objidx)
+    यदि (!default_uvs_objidx && !non_default_uvs_objidx)
       c->revert (snap);
 
-    return hb_pair (default_uvs_objidx, non_default_uvs_objidx);
+    फर्काऊ hb_pair (default_uvs_objidx, non_default_uvs_objidx);
   }
 
   HBUINT24	varSelector;	/* Variation selector. */
@@ -1377,45 +1377,45 @@ struct VariationSelectorRecord
 		defaultUVS;	/* Offset to Default UVS Table.  May be 0. */
   Offset32To<NonDefaultUVS<Types>>
 		nonDefaultUVS;	/* Offset to Non-Default UVS Table.  May be 0. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (11);
 };
 
-template <typename Types>
-struct CmapSubtableFormat14_15
+ढाँचा <typename Types>
+संरचना CmapSubtableFormat14_15
 {
-  static constexpr unsigned format_value = Types::size == 2 ? 14 : 15;
+  स्थिर constexpr अचिन्हित format_मान = Types::size == 2 ? 14 : 15;
   using Record = VariationSelectorRecord<Types>;
   using NonDefault = NonDefaultUVS<Types>;
 
   glyph_variant_t get_glyph_variant (hb_codepoint_t codepoint,
 				     hb_codepoint_t variation_selector,
-				     hb_codepoint_t *glyph) const
-  { return record.bsearch (variation_selector).get_glyph (codepoint, glyph, this); }
+				     hb_codepoint_t *glyph) अचर
+  { फर्काऊ record.द्वा_खोज (variation_selector).get_glyph (codepoint, glyph, एतत्); }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  शून्य collect_variation_selectors (hb_set_t *out) अचर
   {
-    for (const auto& a : record.as_array ())
+    लागि (अचर स्वतः& a : record.as_array ())
       out->add (a.varSelector);
   }
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				   hb_set_t *out) const
-  { record.bsearch (variation_selector).collect_unicodes (out, this); }
+  शून्य collect_variation_unicodes (hb_codepoint_t variation_selector,
+				   hb_set_t *out) अचर
+  { record.द्वा_खोज (variation_selector).collect_unicodes (out, एतत्); }
 
-  void serialize (hb_serialize_context_t *c,
-		  const hb_set_t *unicodes,
-		  const hb_set_t *glyphs_requested,
-		  const hb_map_t *glyph_map,
-		  const void *base)
+  शून्य serialize (hb_serialize_context_t *c,
+		  अचर hb_set_t *unicodes,
+		  अचर hb_set_t *glyphs_requested,
+		  अचर hb_map_t *glyph_map,
+		  अचर शून्य *base)
   {
-    auto snap = c->snapshot ();
-    unsigned table_initpos = c->length ();
-    const char* init_tail = c->tail;
+    स्वतः snap = c->snapshot ();
+    अचिन्हित table_initpos = c->length ();
+    अचर वर्ण* init_tail = c->tail;
 
-    if (unlikely (!c->extend_min (this))) return;
-    this->format = format_value;
+    यदि (unlikely (!c->extend_min (एतत्))) फर्काऊ;
+    एतत्->format = format_मान;
 
-    auto src_tbl = reinterpret_cast<const CmapSubtableFormat14_15*> (base);
+    स्वतः src_tbl = reinterpret_cast<अचर CmapSubtableFormat14_15*> (base);
 
     /*
      * Some versions of OTS require that offsets are in order. Due to the use
@@ -1430,30 +1430,30 @@ struct CmapSubtableFormat14_15
      * we then have to reverse the order of the written variation selector
      * records after everything is finalized.
      */
-    hb_vector_t<hb_pair_t<unsigned, unsigned>> obj_indices;
-    for (int i = src_tbl->record.len - 1; i >= 0; i--)
+    hb_vector_t<hb_pair_t<अचिन्हित, अचिन्हित>> obj_indices;
+    लागि (पूर्णाङ्क i = src_tbl->record.len - 1; i >= 0; i--)
     {
-      if (!unicodes->has(src_tbl->record[i].varSelector))
-        continue;
+      यदि (!unicodes->has(src_tbl->record[i].varSelector))
+        जारी;
 
-      hb_pair_t<unsigned, unsigned> result = src_tbl->record[i].copy (c, unicodes, glyphs_requested, glyph_map, base);
-      if (result.first || result.second)
+      hb_pair_t<अचिन्हित, अचिन्हित> result = src_tbl->record[i].copy (c, unicodes, glyphs_requested, glyph_map, base);
+      यदि (result.first || result.second)
 	obj_indices.push (result);
     }
 
-    if (c->length () - table_initpos == CmapSubtableFormat14_15::min_size)
+    यदि (c->length () - table_initpos == CmapSubtableFormat14_15::min_size)
     {
       c->revert (snap);
-      return;
+      फर्काऊ;
     }
 
-    if (unlikely (!c->check_success (!obj_indices.in_error ())))
-      return;
+    यदि (unlikely (!c->check_success (!obj_indices.in_error ())))
+      फर्काऊ;
 
-    int tail_len = init_tail - c->tail;
-    c->check_assign (this->length, c->length () - table_initpos + tail_len,
+    पूर्णाङ्क tail_len = init_tail - c->tail;
+    c->check_assign (एतत्->length, c->length () - table_initpos + tail_len,
                      HB_SERIALIZE_ERROR_INT_OVERFLOW);
-    c->check_assign (this->record.len,
+    c->check_assign (एतत्->record.len,
 		     (c->length () - table_initpos - CmapSubtableFormat14_15::min_size) /
 		     Record::static_size,
                      HB_SERIALIZE_ERROR_INT_OVERFLOW);
@@ -1466,247 +1466,247 @@ struct CmapSubtableFormat14_15
     _add_links_to_variation_records (c, obj_indices);
   }
 
-  void _reverse_variation_records ()
+  शून्य _reverse_variation_records ()
   {
     record.as_array ().reverse ();
   }
 
-  void _add_links_to_variation_records (hb_serialize_context_t *c,
-					const hb_vector_t<hb_pair_t<unsigned, unsigned>>& obj_indices)
+  शून्य _add_links_to_variation_records (hb_serialize_context_t *c,
+					अचर hb_vector_t<hb_pair_t<अचिन्हित, अचिन्हित>>& obj_indices)
   {
-    for (unsigned i = 0; i < obj_indices.length; i++)
+    लागि (अचिन्हित i = 0; i < obj_indices.length; i++)
     {
       /*
        * Since the record array has been reversed (see comments in copy())
        * but obj_indices has not been, the indices at obj_indices[i]
        * are for the variation record at record[j].
        */
-      int j = obj_indices.length - 1 - i;
+      पूर्णाङ्क j = obj_indices.length - 1 - i;
       c->add_link (record[j].defaultUVS, obj_indices[i].first);
       c->add_link (record[j].nonDefaultUVS, obj_indices[i].second);
     }
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  शून्य closure_glyphs (अचर hb_set_t      *unicodes,
+		       hb_set_t            *glyphset) अचर
   {
     + hb_iter (record)
     | hb_filter (hb_bool, &Record::nonDefaultUVS)
     | hb_filter (unicodes, &Record::varSelector)
     | hb_map (&Record::nonDefaultUVS)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const NonDefault& _) { _.closure_glyphs (unicodes, glyphset); })
+    | hb_map (hb_add (एतत्))
+    | hb_apply ([=] (अचर NonDefault& _) { _.closure_glyphs (unicodes, glyphset); })
     ;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  शून्य collect_unicodes (hb_set_t *out) अचर
   {
-    for (const Record& _ : record)
-      _.collect_unicodes (out, this);
+    लागि (अचर Record& _ : record)
+      _.collect_unicodes (out, एतत्);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) अचर
   {
-    for (const Record& _ : record)
-      _.collect_mapping (this, unicodes, mapping);
+    लागि (अचर Record& _ : record)
+      _.collect_mapping (एतत्, unicodes, mapping);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  record.sanitize (c, this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
+		  record.sanitize (c, एतत्));
   }
 
-  protected:
+  रक्षित:
   HBUINT16	format;		/* Format number is set to 14 or 15. */
   HBUINT32	length;		/* Byte length of this subtable. */
   SortedArray32Of<Record>
 		record;		/* Variation selector records; sorted
 				 * in increasing order of `varSelector'. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (10, record);
 };
 
-struct CmapSubtable
+संरचना CmapSubtable
 {
   /* Note: We intentionally do NOT implement subtable formats 2 and 8. */
 
-  bool is_variation_selector () const
+  तार्किक is_variation_selector () अचर
   {
-    switch (u.format.v) {
-    case 14:
+    विकल्प (u.format.v) {
+    पक्ष 14:
 #ifndef HB_NO_BEYOND_64K
-    case 15:
+    पक्ष 15:
 #endif
-      return true;
-    default:
-      return false;
+      फर्काऊ सत्य;
+    स्वभाव:
+      फर्काऊ असत्य;
     }
   }
 
   glyph_variant_t get_glyph_variant (hb_codepoint_t codepoint,
 				     hb_codepoint_t variation_selector,
-				     hb_codepoint_t *glyph) const
+				     hb_codepoint_t *glyph) अचर
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); return u.format14.get_glyph_variant (codepoint, variation_selector, glyph);
+    विकल्प (u.format.v) {
+    पक्ष 14: hb_barrier (); फर्काऊ u.format14.get_glyph_variant (codepoint, variation_selector, glyph);
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return u.format15.get_glyph_variant (codepoint, variation_selector, glyph);
+    पक्ष 15: hb_barrier (); फर्काऊ u.format15.get_glyph_variant (codepoint, variation_selector, glyph);
 #endif
-    default: return GLYPH_VARIANT_NOT_FOUND;
+    स्वभाव: फर्काऊ GLYPH_VARIANT_NOT_FOUND;
     }
   }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  शून्य collect_variation_selectors (hb_set_t *out) अचर
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.collect_variation_selectors (out); return;
+    विकल्प (u.format.v) {
+    पक्ष 14: hb_barrier (); u.format14.collect_variation_selectors (out); फर्काऊ;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.collect_variation_selectors (out); return;
+    पक्ष 15: hb_barrier (); u.format15.collect_variation_selectors (out); फर्काऊ;
 #endif
-    default: return;
+    स्वभाव: फर्काऊ;
     }
   }
 
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				    hb_set_t *out) const
+  शून्य collect_variation_unicodes (hb_codepoint_t variation_selector,
+				    hb_set_t *out) अचर
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.collect_variation_unicodes (variation_selector, out); return;
+    विकल्प (u.format.v) {
+    पक्ष 14: hb_barrier (); u.format14.collect_variation_unicodes (variation_selector, out); फर्काऊ;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.collect_variation_unicodes (variation_selector, out); return;
+    पक्ष 15: hb_barrier (); u.format15.collect_variation_unicodes (variation_selector, out); फर्काऊ;
 #endif
-    default: return;
+    स्वभाव: फर्काऊ;
     }
   }
 
-  void closure_glyphs (const hb_set_t *unicodes, hb_set_t *glyphset) const
+  शून्य closure_glyphs (अचर hb_set_t *unicodes, hb_set_t *glyphset) अचर
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.closure_glyphs (unicodes, glyphset); return;
+    विकल्प (u.format.v) {
+    पक्ष 14: hb_barrier (); u.format14.closure_glyphs (unicodes, glyphset); फर्काऊ;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.closure_glyphs (unicodes, glyphset); return;
+    पक्ष 15: hb_barrier (); u.format15.closure_glyphs (unicodes, glyphset); फर्काऊ;
 #endif
-    default: return;
+    स्वभाव: फर्काऊ;
     }
   }
 
-  bool get_glyph (hb_codepoint_t codepoint,
+  तार्किक get_glyph (hb_codepoint_t codepoint,
 		  hb_codepoint_t *glyph,
-		  unsigned int subtable_data_size = 0) const
+		  अचिन्हित पूर्णाङ्क subtable_data_size = 0) अचर
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); return u.format0 .get_glyph (codepoint, glyph);
-    case  4: hb_barrier (); return subtable_data_size
+    विकल्प (u.format.v) {
+    पक्ष  0: hb_barrier (); फर्काऊ u.format0 .get_glyph (codepoint, glyph);
+    पक्ष  4: hb_barrier (); फर्काऊ subtable_data_size
 				      ? u.format4.get_glyph (codepoint, glyph, subtable_data_size)
-				      : false;
-    case  6: hb_barrier (); return u.format6 .get_glyph (codepoint, glyph);
-    case 10: hb_barrier (); return u.format10.get_glyph (codepoint, glyph);
-    case 12: hb_barrier (); return u.format12.get_glyph (codepoint, glyph);
-    case 13: hb_barrier (); return u.format13.get_glyph (codepoint, glyph);
-    case 14:
-    default: return false;
+				      : असत्य;
+    पक्ष  6: hb_barrier (); फर्काऊ u.format6 .get_glyph (codepoint, glyph);
+    पक्ष 10: hb_barrier (); फर्काऊ u.format10.get_glyph (codepoint, glyph);
+    पक्ष 12: hb_barrier (); फर्काऊ u.format12.get_glyph (codepoint, glyph);
+    पक्ष 13: hb_barrier (); फर्काऊ u.format13.get_glyph (codepoint, glyph);
+    पक्ष 14:
+    स्वभाव: फर्काऊ असत्य;
     }
   }
-  void collect_unicodes (hb_set_t *out,
-			 unsigned int num_glyphs = UINT_MAX,
-			 unsigned int subtable_data_size = 0) const
+  शून्य collect_unicodes (hb_set_t *out,
+			 अचिन्हित पूर्णाङ्क अङ्क_glyphs = अच_पूर्णांक_उच्च,
+			 अचिन्हित पूर्णाङ्क subtable_data_size = 0) अचर
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); u.format0 .collect_unicodes (out); return;
-    case  4: hb_barrier (); if (subtable_data_size)
+    विकल्प (u.format.v) {
+    पक्ष  0: hb_barrier (); u.format0 .collect_unicodes (out); फर्काऊ;
+    पक्ष  4: hb_barrier (); यदि (subtable_data_size)
 			      u.format4.collect_unicodes (out, subtable_data_size);
-			    else
+			    अन्यथा
 			      u.format4.collect_unicodes (out);
-			    return;
-    case  6: hb_barrier (); u.format6 .collect_unicodes (out); return;
-    case 10: hb_barrier (); u.format10.collect_unicodes (out); return;
-    case 12: hb_barrier (); u.format12.collect_unicodes (out, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_unicodes (out, num_glyphs); return;
-    case 14:
-    default: return;
+			    फर्काऊ;
+    पक्ष  6: hb_barrier (); u.format6 .collect_unicodes (out); फर्काऊ;
+    पक्ष 10: hb_barrier (); u.format10.collect_unicodes (out); फर्काऊ;
+    पक्ष 12: hb_barrier (); u.format12.collect_unicodes (out, अङ्क_glyphs); फर्काऊ;
+    पक्ष 13: hb_barrier (); u.format13.collect_unicodes (out, अङ्क_glyphs); फर्काऊ;
+    पक्ष 14:
+    स्वभाव: फर्काऊ;
     }
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
+  शून्य collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned num_glyphs = UINT_MAX,
-			unsigned int subtable_data_size = 0) const
+			अचिन्हित अङ्क_glyphs = अच_पूर्णांक_उच्च,
+			अचिन्हित पूर्णाङ्क subtable_data_size = 0) अचर
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); u.format0 .collect_mapping (unicodes, mapping); return;
-    case  4: hb_barrier (); if (subtable_data_size)
+    विकल्प (u.format.v) {
+    पक्ष  0: hb_barrier (); u.format0 .collect_mapping (unicodes, mapping); फर्काऊ;
+    पक्ष  4: hb_barrier (); यदि (subtable_data_size)
 			      u.format4.collect_mapping (unicodes, mapping, subtable_data_size);
-			    else
+			    अन्यथा
 			      u.format4.collect_mapping (unicodes, mapping);
-			    return;
-    case  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); return;
-    case 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); return;
-    case 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, num_glyphs); return;
-    case 14:
-    default: return;
+			    फर्काऊ;
+    पक्ष  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); फर्काऊ;
+    पक्ष 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); फर्काऊ;
+    पक्ष 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, अङ्क_glyphs); फर्काऊ;
+    पक्ष 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, अङ्क_glyphs); फर्काऊ;
+    पक्ष 14:
+    स्वभाव: फर्काऊ;
     }
   }
 
-  unsigned get_language () const
+  अचिन्हित get_language () अचर
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); return u.format0 .get_language ();
-    case  4: hb_barrier (); return u.format4 .get_language ();
-    case  6: hb_barrier (); return u.format6 .get_language ();
-    case 10: hb_barrier (); return u.format10.get_language ();
-    case 12: hb_barrier (); return u.format12.get_language ();
-    case 13: hb_barrier (); return u.format13.get_language ();
-    case 14:
-    default: return 0;
+    विकल्प (u.format.v) {
+    पक्ष  0: hb_barrier (); फर्काऊ u.format0 .get_language ();
+    पक्ष  4: hb_barrier (); फर्काऊ u.format4 .get_language ();
+    पक्ष  6: hb_barrier (); फर्काऊ u.format6 .get_language ();
+    पक्ष 10: hb_barrier (); फर्काऊ u.format10.get_language ();
+    पक्ष 12: hb_barrier (); फर्काऊ u.format12.get_language ();
+    पक्ष 13: hb_barrier (); फर्काऊ u.format13.get_language ();
+    पक्ष 14:
+    स्वभाव: फर्काऊ 0;
     }
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  शून्य serialize (hb_serialize_context_t *c,
 		  Iterator it,
-		  unsigned format,
-		  const hb_subset_plan_t *plan,
-		  const void *base)
+		  अचिन्हित format,
+		  अचर hb_subset_plan_t *plan,
+		  अचर शून्य *base)
   {
-    switch (format) {
-    case  4: hb_barrier (); return u.format4.serialize (c, it);
-    case 12: hb_barrier (); return u.format12.serialize (c, it);
-    case 14: hb_barrier (); return u.format14.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
+    विकल्प (format) {
+    पक्ष  4: hb_barrier (); फर्काऊ u.format4.serialize (c, it);
+    पक्ष 12: hb_barrier (); फर्काऊ u.format12.serialize (c, it);
+    पक्ष 14: hb_barrier (); फर्काऊ u.format14.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return u.format15.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
+    पक्ष 15: hb_barrier (); फर्काऊ u.format15.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
 #endif
-    default: return;
+    स्वभाव: फर्काऊ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (एतत्);
+    यदि (!u.format.v.sanitize (c)) return_trace (असत्य);
     hb_barrier ();
-    switch (u.format.v) {
-    case  0: hb_barrier (); return_trace (u.format0 .sanitize (c));
-    case  4: hb_barrier (); return_trace (u.format4 .sanitize (c));
-    case  6: hb_barrier (); return_trace (u.format6 .sanitize (c));
-    case 10: hb_barrier (); return_trace (u.format10.sanitize (c));
-    case 12: hb_barrier (); return_trace (u.format12.sanitize (c));
-    case 13: hb_barrier (); return_trace (u.format13.sanitize (c));
-    case 14: hb_barrier (); return_trace (u.format14.sanitize (c));
+    विकल्प (u.format.v) {
+    पक्ष  0: hb_barrier (); return_trace (u.format0 .sanitize (c));
+    पक्ष  4: hb_barrier (); return_trace (u.format4 .sanitize (c));
+    पक्ष  6: hb_barrier (); return_trace (u.format6 .sanitize (c));
+    पक्ष 10: hb_barrier (); return_trace (u.format10.sanitize (c));
+    पक्ष 12: hb_barrier (); return_trace (u.format12.sanitize (c));
+    पक्ष 13: hb_barrier (); return_trace (u.format13.sanitize (c));
+    पक्ष 14: hb_barrier (); return_trace (u.format14.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return_trace (u.format15.sanitize (c));
+    पक्ष 15: hb_barrier (); return_trace (u.format15.sanitize (c));
 #endif
-    default:return_trace (true);
+    स्वभाव:return_trace (सत्य);
     }
   }
 
-  public:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  सार्वजनिक:
+  सङ्घ {
+  संरचना { HBUINT16 v; }	format;		/* Format identifier */
   CmapSubtableFormat0	format0;
   CmapSubtableFormat4	format4;
   CmapSubtableFormat6	format6;
@@ -1720,58 +1720,58 @@ struct CmapSubtable
 			format15;
 #endif
   } u;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
 
-struct EncodingRecord
+संरचना EncodingRecord
 {
-  int cmp (const EncodingRecord &other) const
+  पूर्णाङ्क cmp (अचर EncodingRecord &other) अचर
   {
-    int ret;
+    पूर्णाङ्क ret;
     ret = platformID.cmp (other.platformID);
-    if (ret) return ret;
-    if (other.encodingID != 0xFFFF)
+    यदि (ret) फर्काऊ ret;
+    यदि (other.encodingID != 0xFFFF)
     {
       ret = encodingID.cmp (other.encodingID);
-      if (ret) return ret;
+      यदि (ret) फर्काऊ ret;
     }
-    return 0;
+    फर्काऊ 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  तार्किक sanitize (hb_sanitize_context_t *c, अचर शून्य *base) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
 		  subtable.sanitize (c, base));
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
   EncodingRecord* copy (hb_serialize_context_t *c,
 			Iterator it,
-			unsigned format,
-			const void *base,
-			const hb_subset_plan_t *plan,
-			/* INOUT */ unsigned *objidx) const
+			अचिन्हित format,
+			अचर शून्य *base,
+			अचर hb_subset_plan_t *plan,
+			/* INOUT */ अचिन्हित *objidx) अचर
   {
-    TRACE_SERIALIZE (this);
-    auto snap = c->snapshot ();
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    TRACE_SERIALIZE (एतत्);
+    स्वतः snap = c->snapshot ();
+    स्वतः *out = c->embed (एतत्);
+    यदि (unlikely (!out)) return_trace (nullptr);
     out->subtable = 0;
 
-    if (*objidx == 0)
+    यदि (*objidx == 0)
     {
       CmapSubtable *cmapsubtable = c->push<CmapSubtable> ();
-      unsigned origin_length = c->length ();
+      अचिन्हित origin_length = c->length ();
       cmapsubtable->serialize (c, it, format, plan, &(base+subtable));
-      if (c->length () > origin_length && !c->in_error()) *objidx = c->pop_pack ();
-      else c->pop_discard ();
+      यदि (c->length () > origin_length && !c->in_error()) *objidx = c->झिक_pack ();
+      अन्यथा c->झिक_discard ();
     }
 
-    if (*objidx == 0)
+    यदि (*objidx == 0)
     {
       c->revert (snap);
       return_trace (nullptr);
@@ -1785,53 +1785,53 @@ struct EncodingRecord
   HBUINT16	encodingID;	/* Platform-specific encoding ID. */
   Offset32To<CmapSubtable>
 		subtable;	/* Byte offset from beginning of table to the subtable for this encoding. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct cmap;
+संरचना cmap;
 
-struct SubtableUnicodesCache {
+संरचना SubtableUnicodesCache {
 
- private:
+ गुप्त:
   hb_blob_ptr_t<cmap> base_blob;
-  const char* base;
-  unsigned int table_length;
-  hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> cached_unicodes;
+  अचर वर्ण* base;
+  अचिन्हित पूर्णाङ्क table_length;
+  hb_hashmap_t<अचिन्हित, hb::unique_ptr<hb_set_t>> cached_unicodes;
 
- public:
+ सार्वजनिक:
 
-  static SubtableUnicodesCache* create (hb_blob_ptr_t<cmap> source_table)
+  स्थिर SubtableUnicodesCache* create (hb_blob_ptr_t<cmap> source_table)
   {
     SubtableUnicodesCache* cache =
-        (SubtableUnicodesCache*) hb_malloc (sizeof(SubtableUnicodesCache));
+        (SubtableUnicodesCache*) hb_malloc (परिमाण(SubtableUnicodesCache));
 
-    if (unlikely (!cache))
-      return nullptr;
+    यदि (unlikely (!cache))
+      फर्काऊ nullptr;
 
-    new (cache) SubtableUnicodesCache (source_table);
-    return cache;
+    नूतन (cache) SubtableUnicodesCache (source_table);
+    फर्काऊ cache;
   }
 
-  static void destroy (void* value) {
-    if (!value) return;
+  स्थिर शून्य destroy (शून्य* value) {
+    यदि (!value) फर्काऊ;
 
     SubtableUnicodesCache* cache = (SubtableUnicodesCache*) value;
     cache->~SubtableUnicodesCache ();
     hb_free (cache);
   }
 
-  SubtableUnicodesCache(const void* cmap_base,
-			unsigned int table_length_ = 0)
+  SubtableUnicodesCache(अचर शून्य* cmap_base,
+			अचिन्हित पूर्णाङ्क table_length_ = 0)
       : base_blob(),
-        base ((const char*) cmap_base),
+        base ((अचर वर्ण*) cmap_base),
         table_length (table_length_),
         cached_unicodes ()
   {}
 
   SubtableUnicodesCache(hb_blob_ptr_t<cmap> base_blob_)
       : base_blob(base_blob_),
-        base ((const char *) base_blob.get()),
+        base ((अचर वर्ण *) base_blob.get()),
         table_length (base_blob.get_length ()),
         cached_unicodes ()
   {}
@@ -1841,436 +1841,436 @@ struct SubtableUnicodesCache {
     base_blob.destroy ();
   }
 
-  bool same_base(const void* other) const
+  तार्किक same_base(अचर शून्य* other) अचर
   {
-    return other == (const void*) base;
+    फर्काऊ other == (अचर शून्य*) base;
   }
 
-  const hb_set_t* set_for (const EncodingRecord* record,
-                           SubtableUnicodesCache& mutable_cache) const
+  अचर hb_set_t* set_for (अचर EncodingRecord* record,
+                           SubtableUnicodesCache& mutable_cache) अचर
   {
-    if (cached_unicodes.has ((unsigned) ((const char *) record - base)))
-      return cached_unicodes.get ((unsigned) ((const char *) record - base));
+    यदि (cached_unicodes.has ((अचिन्हित) ((अचर वर्ण *) record - base)))
+      फर्काऊ cached_unicodes.get ((अचिन्हित) ((अचर वर्ण *) record - base));
 
-    return mutable_cache.set_for (record);
+    फर्काऊ mutable_cache.set_for (record);
   }
 
-  const hb_set_t* set_for (const EncodingRecord* record)
+  अचर hb_set_t* set_for (अचर EncodingRecord* record)
   {
-    if (!cached_unicodes.has ((unsigned) ((const char *) record - base)))
+    यदि (!cached_unicodes.has ((अचिन्हित) ((अचर वर्ण *) record - base)))
     {
       hb_set_t *s = hb_set_create ();
-      if (unlikely (s->in_error ()))
-	return hb_set_get_empty ();
+      यदि (unlikely (s->in_error ()))
+	फर्काऊ hb_set_get_empty ();
 
-      unsigned int subtable_data_size = record->subtable < table_length
-					? table_length - (unsigned int) record->subtable
+      अचिन्हित पूर्णाङ्क subtable_data_size = record->subtable < table_length
+					? table_length - (अचिन्हित पूर्णाङ्क) record->subtable
 					: 0;
-      (base+record->subtable).collect_unicodes (s, UINT_MAX, subtable_data_size);
+      (base+record->subtable).collect_unicodes (s, अच_पूर्णांक_उच्च, subtable_data_size);
 
-      if (unlikely (!cached_unicodes.set ((unsigned) ((const char *) record - base), hb::unique_ptr<hb_set_t> {s})))
-        return hb_set_get_empty ();
+      यदि (unlikely (!cached_unicodes.set ((अचिन्हित) ((अचर वर्ण *) record - base), hb::unique_ptr<hb_set_t> {s})))
+        फर्काऊ hb_set_get_empty ();
 
-      return s;
+      फर्काऊ s;
     }
-    return cached_unicodes.get ((unsigned) ((const char *) record - base));
+    फर्काऊ cached_unicodes.get ((अचिन्हित) ((अचर वर्ण *) record - base));
   }
 
 };
 
-static inline uint16_t
-_hb_symbol_pua_map (unsigned codepoint)
+स्थिर अन्तःस्थ uint16_t
+hb_चिह्न_pua_map (अचिन्हित codepoint)
 {
-  if (codepoint <= 0x00FFu)
+  यदि (codepoint <= 0x00FFu)
   {
     /* For symbol-encoded OpenType fonts, we duplicate the
      * U+F000..F0FF range at U+0000..U+00FF.  That's what
      * Windows seems to do, and that's hinted about at:
      * https://docs.microsoft.com/en-us/typography/opentype/spec/recom
      * under "Non-Standard (Symbol) Fonts". */
-    return 0xF000u + codepoint;
+    फर्काऊ 0xF000u + codepoint;
   }
-  return 0;
+  फर्काऊ 0;
 }
 
-struct cmap
+संरचना cmap
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_cmap;
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_cmap;
 
 
-  static SubtableUnicodesCache* create_filled_cache(hb_blob_ptr_t<cmap> source_table) {
-    const cmap* cmap = source_table.get();
-    auto it =
+  स्थिर SubtableUnicodesCache* create_filled_cache(hb_blob_ptr_t<cmap> source_table) {
+    अचर cmap* cmap = source_table.get();
+    स्वतः it =
     + hb_iter (cmap->encodingRecord)
-    | hb_filter ([&](const EncodingRecord& _) {
-      return cmap::filter_encoding_records_for_subset (cmap, _);
+    | hb_filter ([&](अचर EncodingRecord& _) {
+      फर्काऊ cmap::filter_encoding_records_for_subset (cmap, _);
     })
     ;
 
     SubtableUnicodesCache* cache = SubtableUnicodesCache::create(source_table);
 
-    if (unlikely (!cache))
-      return nullptr;
+    यदि (unlikely (!cache))
+      फर्काऊ nullptr;
 
-    for (const EncodingRecord& _ : it)
+    लागि (अचर EncodingRecord& _ : it)
       cache->set_for(&_); // populate the cache for this encoding record.
 
-    return cache;
+    फर्काऊ cache;
   }
 
-  template<typename Iterator, typename EncodingRecIter,
+  ढाँचा<typename Iterator, typename EncodingRecIter,
 	   hb_requires (hb_is_iterator (EncodingRecIter))>
-  bool serialize (hb_serialize_context_t *c,
+  तार्किक serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  EncodingRecIter encodingrec_iter,
-		  const void *base,
+		  अचर शून्य *base,
 		  hb_subset_plan_t *plan,
-	                  bool drop_format_4 = false,
-			  unsigned int source_table_length = 0)
+	                  तार्किक drop_format_4 = असत्य,
+			  अचिन्हित पूर्णाङ्क source_table_length = 0)
   {
-    if (unlikely (!c->extend_min ((*this))))  return false;
-    this->version = 0;
+    यदि (unlikely (!c->extend_min ((*एतत्))))  फर्काऊ असत्य;
+    एतत्->version = 0;
 
-    unsigned format4objidx = 0, format12objidx = 0, format14objidx = 0;
+    अचिन्हित format4objidx = 0, format12objidx = 0, format14objidx = 0;
 #ifndef HB_NO_BEYOND_64K
-    unsigned format15objidx = 0;
+    अचिन्हित format15objidx = 0;
 #endif
-    auto snap = c->snapshot ();
+    स्वतः snap = c->snapshot ();
 
     SubtableUnicodesCache local_unicodes_cache (base, source_table_length);
-    const SubtableUnicodesCache* unicodes_cache = &local_unicodes_cache;
+    अचर SubtableUnicodesCache* unicodes_cache = &local_unicodes_cache;
 
-    if (plan->accelerator &&
+    यदि (plan->accelerator &&
         plan->accelerator->cmap_cache &&
         plan->accelerator->cmap_cache->same_base (base))
       unicodes_cache = plan->accelerator->cmap_cache;
 
-    for (const EncodingRecord& _ : encodingrec_iter)
+    लागि (अचर EncodingRecord& _ : encodingrec_iter)
     {
-      if (c->in_error ())
-        return false;
+      यदि (c->in_error ())
+        फर्काऊ असत्य;
 
-      unsigned format = (base+_.subtable).u.format.v;
-      if (format != 4 && format != 12 && format != 14
+      अचिन्हित format = (base+_.subtable).u.format.v;
+      यदि (format != 4 && format != 12 && format != 14
 #ifndef HB_NO_BEYOND_64K
 	  && format != 15
 #endif
-	 ) continue;
+	 ) जारी;
 
-      const hb_set_t* unicodes_set = unicodes_cache->set_for (&_, local_unicodes_cache);
+      अचर hb_set_t* unicodes_set = unicodes_cache->set_for (&_, local_unicodes_cache);
 
-      if (!drop_format_4 && format == 4)
+      यदि (!drop_format_4 && format == 4)
       {
         c->copy (_, + it | hb_filter (*unicodes_set, hb_first), 4u, base, plan, &format4objidx);
-        if (c->in_error () && c->only_overflow ())
+        यदि (c->in_error () && c->only_overflow ())
         {
           // cmap4 overflowed, reset and retry serialization without format 4 subtables.
           c->revert (snap);
-          return serialize (c, it,
+          फर्काऊ serialize (c, it,
                             encodingrec_iter,
                             base,
                             plan,
-                            true,
+                            सत्य,
 			    source_table_length);
         }
       }
 
-      else if (format == 12)
+      अन्यथा यदि (format == 12)
       {
-        if (_can_drop (_,
+        यदि (_can_drop (_,
                        *unicodes_set,
                        base,
                        *unicodes_cache,
                        local_unicodes_cache,
                        + it | hb_map (hb_first), encodingrec_iter))
-          continue;
+          जारी;
         c->copy (_, + it | hb_filter (*unicodes_set, hb_first), 12u, base, plan, &format12objidx);
       }
-      else if (format == 14) c->copy (_, it, 14u, base, plan, &format14objidx);
+      अन्यथा यदि (format == 14) c->copy (_, it, 14u, base, plan, &format14objidx);
 #ifndef HB_NO_BEYOND_64K
-      else if (format == 15) c->copy (_, it, 15u, base, plan, &format15objidx);
+      अन्यथा यदि (format == 15) c->copy (_, it, 15u, base, plan, &format15objidx);
 #endif
     }
-        unsigned length = c->length ();
-        unsigned available = length > cmap::min_size ? length - cmap::min_size : 0;
-        c->check_assign(this->encodingRecord.len,
+        अचिन्हित length = c->length ();
+        अचिन्हित available = length > cmap::min_size ? length - cmap::min_size : 0;
+        c->check_assign(एतत्->encodingRecord.len,
                         available / EncodingRecord::static_size,
                         HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
     // Fail if format 4 was dropped and there is no cmap12.
-    return !drop_format_4 || format12objidx;
+    फर्काऊ !drop_format_4 || format12objidx;
   }
 
-  template<typename Iterator, typename EncodingRecordIterator,
+  ढाँचा<typename Iterator, typename EncodingRecordIterator,
       hb_requires (hb_is_iterator (Iterator)),
       hb_requires (hb_is_iterator (EncodingRecordIterator))>
-  bool _can_drop (const EncodingRecord& cmap12,
-                  const hb_set_t& cmap12_unicodes,
-                  const void* base,
-                  const SubtableUnicodesCache& unicodes_cache,
+  तार्किक _can_drop (अचर EncodingRecord& cmap12,
+                  अचर hb_set_t& cmap12_unicodes,
+                  अचर शून्य* base,
+                  अचर SubtableUnicodesCache& unicodes_cache,
                   SubtableUnicodesCache& local_unicodes_cache,
                   Iterator subset_unicodes,
                   EncodingRecordIterator encoding_records)
   {
-    for (auto cp : + subset_unicodes | hb_filter (cmap12_unicodes))
+    लागि (स्वतः cp : + subset_unicodes | hb_filter (cmap12_unicodes))
     {
-      if (cp >= 0x10000) return false;
+      यदि (cp >= 0x10000) फर्काऊ असत्य;
     }
 
-    unsigned target_platform;
-    unsigned target_encoding;
-    unsigned target_language = (base+cmap12.subtable).get_language ();
+    अचिन्हित target_platform;
+    अचिन्हित target_encoding;
+    अचिन्हित target_language = (base+cmap12.subtable).get_language ();
 
-    if (cmap12.platformID == 0 && cmap12.encodingID == 4)
+    यदि (cmap12.platformID == 0 && cmap12.encodingID == 4)
     {
       target_platform = 0;
       target_encoding = 3;
-    } else if (cmap12.platformID == 3 && cmap12.encodingID == 10) {
+    } अन्यथा यदि (cmap12.platformID == 3 && cmap12.encodingID == 10) {
       target_platform = 3;
       target_encoding = 1;
-    } else {
-      return false;
+    } अन्यथा {
+      फर्काऊ असत्य;
     }
 
-    for (const auto& _ : encoding_records)
+    लागि (अचर स्वतः& _ : encoding_records)
     {
-      if (_.platformID != target_platform
+      यदि (_.platformID != target_platform
           || _.encodingID != target_encoding
           || (base+_.subtable).get_language() != target_language)
-        continue;
+        जारी;
 
-      const hb_set_t* sibling_unicodes = unicodes_cache.set_for (&_, local_unicodes_cache);
+      अचर hb_set_t* sibling_unicodes = unicodes_cache.set_for (&_, local_unicodes_cache);
 
-      auto cmap12 = + subset_unicodes | hb_filter (cmap12_unicodes);
-      auto sibling = + subset_unicodes | hb_filter (*sibling_unicodes);
-      for (; cmap12 && sibling; cmap12++, sibling++)
+      स्वतः cmap12 = + subset_unicodes | hb_filter (cmap12_unicodes);
+      स्वतः sibling = + subset_unicodes | hb_filter (*sibling_unicodes);
+      लागि (; cmap12 && sibling; cmap12++, sibling++)
       {
-        unsigned a = *cmap12;
-        unsigned b = *sibling;
-        if (a != b) return false;
+        अचिन्हित a = *cmap12;
+        अचिन्हित b = *sibling;
+        यदि (a != b) फर्काऊ असत्य;
       }
 
-      return !cmap12 && !sibling;
+      फर्काऊ !cmap12 && !sibling;
     }
 
-    return false;
+    फर्काऊ असत्य;
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  शून्य closure_glyphs (अचर hb_set_t      *unicodes,
+		       hb_set_t            *glyphset) अचर
   {
     + hb_iter (encodingRecord)
     | hb_map (&EncodingRecord::subtable)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (एतत्))
     | hb_filter (&CmapSubtable::is_variation_selector)
-    | hb_apply ([=] (const CmapSubtable& _) { _.closure_glyphs (unicodes, glyphset); })
+    | hb_apply ([=] (अचर CmapSubtable& _) { _.closure_glyphs (unicodes, glyphset); })
     ;
   }
 
-  bool subset (hb_subset_context_t *c) const
-  { return subset (c, false); }
+  तार्किक subset (hb_subset_context_t *c) अचर
+  { फर्काऊ subset (c, असत्य); }
 
-  bool subset (hb_subset_context_t *c, bool is_dmap) const
+  तार्किक subset (hb_subset_context_t *c, तार्किक is_dmap) अचर
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (एतत्);
 
-    cmap *cmap_prime = c->serializer->start_embed<cmap> ();
+    cmap *cmap_अविभाज्य = c->serializer->start_embed<cmap> ();
 
-    auto encodingrec_iter =
+    स्वतः encodingrec_iter =
     + hb_iter (encodingRecord)
-    | hb_filter ([&](const EncodingRecord& _) {
-      return cmap::filter_encoding_records_for_subset (this, _);
+    | hb_filter ([&](अचर EncodingRecord& _) {
+      फर्काऊ cmap::filter_encoding_records_for_subset (एतत्, _);
     })
     ;
 
-    if (unlikely (!encodingrec_iter.len ())) return_trace (false);
+    यदि (unlikely (!encodingrec_iter.len ())) return_trace (असत्य);
 
-    const EncodingRecord *unicode_bmp= nullptr, *unicode_ucs4 = nullptr, *ms_bmp = nullptr, *ms_ucs4 = nullptr;
-    bool has_format12 = false;
+    अचर EncodingRecord *unicode_bmp= nullptr, *unicode_ucs4 = nullptr, *ms_bmp = nullptr, *ms_ucs4 = nullptr;
+    तार्किक has_format12 = असत्य;
 
-    for (const EncodingRecord& _ : encodingrec_iter)
+    लागि (अचर EncodingRecord& _ : encodingrec_iter)
     {
-      unsigned format = (this + _.subtable).u.format.v;
-      if (format == 12) has_format12 = true;
+      अचिन्हित format = (एतत् + _.subtable).u.format.v;
+      यदि (format == 12) has_format12 = सत्य;
 
-      const EncodingRecord *table = std::addressof (_);
-      if      (_.platformID == 0 && _.encodingID ==  3) unicode_bmp = table;
-      else if (_.platformID == 0 && _.encodingID ==  4) unicode_ucs4 = table;
-      else if (_.platformID == 3 && _.encodingID ==  1) ms_bmp = table;
-      else if (_.platformID == 3 && _.encodingID == 10) ms_ucs4 = table;
+      अचर EncodingRecord *table = std::addressof (_);
+      यदि      (_.platformID == 0 && _.encodingID ==  3) unicode_bmp = table;
+      अन्यथा यदि (_.platformID == 0 && _.encodingID ==  4) unicode_ucs4 = table;
+      अन्यथा यदि (_.platformID == 3 && _.encodingID ==  1) ms_bmp = table;
+      अन्यथा यदि (_.platformID == 3 && _.encodingID == 10) ms_ucs4 = table;
     }
 
-    if (unlikely (!is_dmap && !has_format12 && !unicode_bmp && !ms_bmp)) return_trace (false);
-    if (unlikely (!is_dmap && has_format12 && (!unicode_ucs4 && !ms_ucs4))) return_trace (false);
+    यदि (unlikely (!is_dmap && !has_format12 && !unicode_bmp && !ms_bmp)) return_trace (असत्य);
+    यदि (unlikely (!is_dmap && has_format12 && (!unicode_ucs4 && !ms_ucs4))) return_trace (असत्य);
 
-    auto it =
+    स्वतः it =
     + c->plan->unicode_to_new_gid_list.iter ()
-    | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return (_.second != HB_MAP_VALUE_INVALID); })
+    | hb_filter ([&] (अचर hb_codepoint_pair_t _)
+		 { फर्काऊ (_.second != HB_MAP_मान_INVALID); })
     ;
 
-    return_trace (cmap_prime->serialize (c->serializer,
+    return_trace (cmap_अविभाज्य->serialize (c->serializer,
                                          it,
                                          encodingrec_iter,
-                                         this,
+                                         एतत्,
                                          c->plan,
-					 false,
+					 असत्य,
 					 c->source_blob->length));
   }
 
-  const CmapSubtable *find_best_subtable (bool *symbol = nullptr,
-					  bool *mac = nullptr,
-					  bool *macroman = nullptr) const
+  अचर CmapSubtable *find_best_subtable (तार्किक *चिह्न = nullptr,
+					  तार्किक *mac = nullptr,
+					  तार्किक *macroman = nullptr) अचर
   {
-    if (symbol) *symbol = false;
-    if (mac) *mac = false;
-    if (macroman) *macroman = false;
+    यदि (चिह्न) *चिह्न = असत्य;
+    यदि (mac) *mac = असत्य;
+    यदि (macroman) *macroman = असत्य;
 
-    const CmapSubtable *subtable;
+    अचर CmapSubtable *subtable;
 
     /* Symbol subtable.
      * Prefer symbol if available.
      * https://github.com/harfbuzz/harfbuzz/issues/1918 */
-    if ((subtable = this->find_subtable (3, 0)))
+    यदि ((subtable = एतत्->find_subtable (3, 0)))
     {
-      if (symbol) *symbol = true;
-      return subtable;
+      यदि (चिह्न) *चिह्न = सत्य;
+      फर्काऊ subtable;
     }
 
     /* 32-bit subtables. */
-    if ((subtable = this->find_subtable (3, 10))) return subtable;
-    if ((subtable = this->find_subtable (0, 6))) return subtable;
-    if ((subtable = this->find_subtable (0, 4))) return subtable;
+    यदि ((subtable = एतत्->find_subtable (3, 10))) फर्काऊ subtable;
+    यदि ((subtable = एतत्->find_subtable (0, 6))) फर्काऊ subtable;
+    यदि ((subtable = एतत्->find_subtable (0, 4))) फर्काऊ subtable;
 
     /* 16-bit subtables. */
-    if ((subtable = this->find_subtable (3, 1))) return subtable;
-    if ((subtable = this->find_subtable (0, 3))) return subtable;
-    if ((subtable = this->find_subtable (0, 2))) return subtable;
-    if ((subtable = this->find_subtable (0, 1))) return subtable;
-    if ((subtable = this->find_subtable (0, 0))) return subtable;
+    यदि ((subtable = एतत्->find_subtable (3, 1))) फर्काऊ subtable;
+    यदि ((subtable = एतत्->find_subtable (0, 3))) फर्काऊ subtable;
+    यदि ((subtable = एतत्->find_subtable (0, 2))) फर्काऊ subtable;
+    यदि ((subtable = एतत्->find_subtable (0, 1))) फर्काऊ subtable;
+    यदि ((subtable = एतत्->find_subtable (0, 0))) फर्काऊ subtable;
 
     /* MacRoman subtable. */
-    if ((subtable = this->find_subtable (1, 0)))
+    यदि ((subtable = एतत्->find_subtable (1, 0)))
     {
-      if (mac) *mac = true;
-      if (macroman) *macroman = true;
-      return subtable;
+      यदि (mac) *mac = सत्य;
+      यदि (macroman) *macroman = सत्य;
+      फर्काऊ subtable;
     }
     /* Any other Mac subtable; we just map ASCII for these. */
-    if ((subtable = this->find_subtable (1, 0xFFFF)))
+    यदि ((subtable = एतत्->find_subtable (1, 0xFFFF)))
     {
-      if (mac) *mac = true;
-      return subtable;
+      यदि (mac) *mac = सत्य;
+      फर्काऊ subtable;
     }
 
     /* Meh. */
-    return &Null (CmapSubtable);
+    फर्काऊ &Null (CmapSubtable);
   }
 
-  struct accelerator_t
+  संरचना accelerator_t
   {
     using cache_t = hb_cache_t<21, 19>;
-    static_assert (sizeof (cache_t) == 1024, "");
+    static_assert (परिमाण (cache_t) == 1024, "");
 
     accelerator_t (hb_face_t *face, hb_tag_t table_tag = cmap::tableTag)
     {
-      this->table = hb_sanitize_context_t ().reference_table<cmap> (face, table_tag);
-      if (!this->table.get_length ())
-	return;
+      एतत्->table = hb_sanitize_context_t ().reference_table<cmap> (face, table_tag);
+      यदि (!एतत्->table.get_length ())
+	फर्काऊ;
 
-      bool symbol, mac, macroman;
-      this->subtable = table->find_best_subtable (&symbol, &mac, &macroman);
-      this->subtable_uvs = &Null (CmapSubtable);
+      तार्किक चिह्न, mac, macroman;
+      एतत्->subtable = table->find_best_subtable (&चिह्न, &mac, &macroman);
+      एतत्->subtable_uvs = &Null (CmapSubtable);
       {
-	const CmapSubtable *st = table->find_variation_selector_subtable ();
-	if (st)
+	अचर CmapSubtable *st = table->find_variation_selector_subtable ();
+	यदि (st)
 	  subtable_uvs = st;
       }
 
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
-      cache = (cache_t *) hb_malloc (sizeof (cache_t));
-      if (cache)
-	new (cache) cache_t ();
-      else
-        return; // Such that get_glyph_funcZ remains null.
+      cache = (cache_t *) hb_malloc (परिमाण (cache_t));
+      यदि (cache)
+	नूतन (cache) cache_t ();
+      अन्यथा
+        फर्काऊ; // Such that get_glyph_funcZ remains null.
 #endif
 
-      this->get_glyph_data = subtable;
+      एतत्->get_glyph_data = subtable;
 #ifndef HB_NO_CMAP_LEGACY_SUBTABLES
-      bool is_format4 = subtable->u.format.v == 4;
-      auto set_format4_getter = [this] (bool (*func) (const void *,
+      तार्किक is_format4 = subtable->u.format.v == 4;
+      स्वतः set_format4_getter = [एतत्] (तार्किक (*func) (अचर शून्य *,
 						      hb_codepoint_t,
 						      hb_codepoint_t *))
       {
-	this->format4_accel.init (&this->subtable->u.format4,
-				  get_subtable_data_size (this->subtable));
-	this->get_glyph_data = &this->format4_accel;
-	this->get_glyph_funcZ = func;
+	एतत्->format4_accel.init (&एतत्->subtable->u.format4,
+				  get_subtable_data_size (एतत्->subtable));
+	एतत्->get_glyph_data = &एतत्->format4_accel;
+	एतत्->get_glyph_funcZ = func;
       };
-      if (unlikely (symbol))
+      यदि (unlikely (चिह्न))
       {
-	switch ((unsigned) face->table.OS2->get_font_page ()) {
-	case OS2::font_page_t::FONT_PAGE_NONE:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_symbol_pua_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_symbol_pua_map>;
-	  break;
+	विकल्प ((अचिन्हित) face->table.OS2->get_font_page ()) {
+	पक्ष OS2::font_page_t::FONT_PAGE_NONE:
+	  यदि (is_format4)
+	    set_format4_getter (get_glyph_from_चिह्न<CmapSubtableFormat4::accelerator_t, hb_चिह्न_pua_map>);
+	  अन्यथा
+	    एतत्->get_glyph_funcZ = get_glyph_from_चिह्न<CmapSubtable, hb_चिह्न_pua_map>;
+	  रोक;
 #ifndef HB_NO_OT_SHAPER_ARABIC_FALLBACK
-	case OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_simp_map>;
-	  break;
-	case OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_trad_map>;
-	  break;
+	पक्ष OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
+	  यदि (is_format4)
+	    set_format4_getter (get_glyph_from_चिह्न<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
+	  अन्यथा
+	    एतत्->get_glyph_funcZ = get_glyph_from_चिह्न<CmapSubtable, _hb_arabic_pua_simp_map>;
+	  रोक;
+	पक्ष OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
+	  यदि (is_format4)
+	    set_format4_getter (get_glyph_from_चिह्न<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
+	  अन्यथा
+	    एतत्->get_glyph_funcZ = get_glyph_from_चिह्न<CmapSubtable, _hb_arabic_pua_trad_map>;
+	  रोक;
 #endif
-	default:
-	  if (is_format4)
+	स्वभाव:
+	  यदि (is_format4)
 	    set_format4_getter (get_glyph_from<CmapSubtableFormat4::accelerator_t>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
-	  break;
+	  अन्यथा
+	    एतत्->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
+	  रोक;
 	}
       }
-      else if (unlikely (macroman))
+      अन्यथा यदि (unlikely (macroman))
       {
-	if (is_format4)
+	यदि (is_format4)
 	  set_format4_getter (get_glyph_from_macroman<CmapSubtableFormat4::accelerator_t>);
-	else
-	  this->get_glyph_funcZ = get_glyph_from_macroman<CmapSubtable>;
+	अन्यथा
+	  एतत्->get_glyph_funcZ = get_glyph_from_macroman<CmapSubtable>;
       }
-      else if (unlikely (mac))
+      अन्यथा यदि (unlikely (mac))
       {
-	if (is_format4)
+	यदि (is_format4)
 	  set_format4_getter (get_glyph_from_ascii<CmapSubtableFormat4::accelerator_t>);
-	else
-	  this->get_glyph_funcZ = get_glyph_from_ascii<CmapSubtable>;
+	अन्यथा
+	  एतत्->get_glyph_funcZ = get_glyph_from_ascii<CmapSubtable>;
       }
-      else
+      अन्यथा
 #endif
       {
-	switch (subtable->u.format.v) {
+	विकल्प (subtable->u.format.v) {
 	  /* Accelerate format 4 and format 12. */
-	  default:
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
-	    break;
-	  case 12:
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtableFormat12>;
-	    break;
-	  case  4:
+	  स्वभाव:
+	    एतत्->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
+	    रोक;
+	  पक्ष 12:
+	    एतत्->get_glyph_funcZ = get_glyph_from<CmapSubtableFormat12>;
+	    रोक;
+	  पक्ष  4:
 	  {
 	    hb_barrier ();
-	    this->format4_accel.init (&subtable->u.format4,
+	    एतत्->format4_accel.init (&subtable->u.format4,
 				      get_subtable_data_size (subtable));
-	    this->get_glyph_data = &this->format4_accel;
-	    this->get_glyph_funcZ = this->format4_accel.get_glyph_func;
-	    break;
+	    एतत्->get_glyph_data = &एतत्->format4_accel;
+	    एतत्->get_glyph_funcZ = एतत्->format4_accel.get_glyph_func;
+	    रोक;
 	  }
 	}
       }
@@ -2283,163 +2283,163 @@ struct cmap
       table.destroy ();
     }
 
-    inline bool _cached_get (hb_codepoint_t unicode,
-			     hb_codepoint_t *glyph) const
+    अन्तःस्थ तार्किक _cached_get (hb_codepoint_t unicode,
+			     hb_codepoint_t *glyph) अचर
     {
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
       // cache is always non-null if we have a get_glyph_funcZ
-      unsigned v;
-      if (cache->get (unicode, &v))
+      अचिन्हित v;
+      यदि (cache->get (unicode, &v))
       {
         *glyph = v;
-	return true;
+	फर्काऊ सत्य;
       }
 #endif
-      bool ret  = this->get_glyph_funcZ (this->get_glyph_data, unicode, glyph);
+      तार्किक ret  = एतत्->get_glyph_funcZ (एतत्->get_glyph_data, unicode, glyph);
 
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
-      if (ret)
+      यदि (ret)
         cache->set (unicode, *glyph);
 #endif
 
-      return ret;
+      फर्काऊ ret;
     }
 
-    bool get_nominal_glyph (hb_codepoint_t  unicode,
-			    hb_codepoint_t *glyph) const
+    तार्किक get_nominal_glyph (hb_codepoint_t  unicode,
+			    hb_codepoint_t *glyph) अचर
     {
-      if (unlikely (!this->get_glyph_funcZ)) return false;
-      return _cached_get (unicode, glyph);
+      यदि (unlikely (!एतत्->get_glyph_funcZ)) फर्काऊ असत्य;
+      फर्काऊ _cached_get (unicode, glyph);
     }
 
-    unsigned int get_nominal_glyphs (unsigned int count,
-				     const hb_codepoint_t *first_unicode,
-				     unsigned int unicode_stride,
+    अचिन्हित पूर्णाङ्क get_nominal_glyphs (अचिन्हित पूर्णाङ्क गन्ती,
+				     अचर hb_codepoint_t *first_unicode,
+				     अचिन्हित पूर्णाङ्क unicode_stride,
 				     hb_codepoint_t *first_glyph,
-				     unsigned int glyph_stride) const
+				     अचिन्हित पूर्णाङ्क glyph_stride) अचर
     {
-      if (unlikely (!this->get_glyph_funcZ)) return 0;
+      यदि (unlikely (!एतत्->get_glyph_funcZ)) फर्काऊ 0;
 
-      unsigned int done;
-      for (done = 0;
-	   done < count && _cached_get (*first_unicode, first_glyph);
+      अचिन्हित पूर्णाङ्क done;
+      लागि (done = 0;
+	   done < गन्ती && _cached_get (*first_unicode, first_glyph);
 	   done++)
       {
 	first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
 	first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       }
-      return done;
+      फर्काऊ done;
     }
 
-    bool get_variation_glyph (hb_codepoint_t  unicode,
+    तार्किक get_variation_glyph (hb_codepoint_t  unicode,
 			      hb_codepoint_t  variation_selector,
-			      hb_codepoint_t *glyph) const
+			      hb_codepoint_t *glyph) अचर
     {
-      switch (get_glyph_variant (unicode, variation_selector, glyph))
+      विकल्प (get_glyph_variant (unicode, variation_selector, glyph))
       {
-	case GLYPH_VARIANT_NOT_FOUND:	return false;
-	case GLYPH_VARIANT_FOUND:	return true;
-	case GLYPH_VARIANT_USE_DEFAULT:	break;
+	पक्ष GLYPH_VARIANT_NOT_FOUND:	फर्काऊ असत्य;
+	पक्ष GLYPH_VARIANT_FOUND:	फर्काऊ सत्य;
+	पक्ष GLYPH_VARIANT_USE_DEFAULT:	रोक;
       }
 
-      return get_nominal_glyph (unicode, glyph);
+      फर्काऊ get_nominal_glyph (unicode, glyph);
     }
 
     glyph_variant_t get_glyph_variant (hb_codepoint_t  unicode,
 				       hb_codepoint_t  variation_selector,
-				       hb_codepoint_t *glyph) const
+				       hb_codepoint_t *glyph) अचर
     {
-      return this->subtable_uvs->get_glyph_variant (unicode,
+      फर्काऊ एतत्->subtable_uvs->get_glyph_variant (unicode,
 						    variation_selector,
 						    glyph);
     }
 
-    bool has_data () const { return table.get_length (); }
+    तार्किक has_data () अचर { फर्काऊ table.get_length (); }
 
-    void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
-    { subtable->collect_unicodes (out, num_glyphs, get_subtable_data_size (subtable)); }
-    void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
-			  unsigned num_glyphs = UINT_MAX) const
-    { subtable->collect_mapping (unicodes, mapping, num_glyphs, get_subtable_data_size (subtable)); }
-    void collect_variation_selectors (hb_set_t *out) const
+    शून्य collect_unicodes (hb_set_t *out, अचिन्हित पूर्णाङ्क अङ्क_glyphs) अचर
+    { subtable->collect_unicodes (out, अङ्क_glyphs, get_subtable_data_size (subtable)); }
+    शून्य collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
+			  अचिन्हित अङ्क_glyphs = अच_पूर्णांक_उच्च) अचर
+    { subtable->collect_mapping (unicodes, mapping, अङ्क_glyphs, get_subtable_data_size (subtable)); }
+    शून्य collect_variation_selectors (hb_set_t *out) अचर
     { subtable_uvs->collect_variation_selectors (out); }
-    void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				     hb_set_t *out) const
+    शून्य collect_variation_unicodes (hb_codepoint_t variation_selector,
+				     hb_set_t *out) अचर
     { subtable_uvs->collect_variation_unicodes (variation_selector, out); }
 
-    protected:
-    typedef bool (*hb_cmap_get_glyph_func_t) (const void *obj,
+    रक्षित:
+    प्रकारनिर्देश तार्किक (*hb_cmap_get_glyph_func_t) (अचर शून्य *obj,
 					      hb_codepoint_t codepoint,
 					      hb_codepoint_t *glyph);
-    typedef uint16_t (*hb_pua_remap_func_t) (unsigned);
+    प्रकारनिर्देश uint16_t (*hb_pua_remap_func_t) (अचिन्हित);
 
-    template <typename Type>
-    HB_INTERNAL static bool get_glyph_from (const void *obj,
+    ढाँचा <typename Type>
+    HB_INTERNAL स्थिर तार्किक get_glyph_from (अचर शून्य *obj,
 					    hb_codepoint_t codepoint,
 					    hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      return typed_obj->get_glyph (codepoint, glyph);
+      अचर Type *typed_obj = (अचर Type *) obj;
+      फर्काऊ typed_obj->get_glyph (codepoint, glyph);
     }
 
-    template <typename Type, hb_pua_remap_func_t remap>
-    HB_INTERNAL static bool get_glyph_from_symbol (const void *obj,
+    ढाँचा <typename Type, hb_pua_remap_func_t remap>
+    HB_INTERNAL स्थिर तार्किक get_glyph_from_चिह्न (अचर शून्य *obj,
 						   hb_codepoint_t codepoint,
 						   hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      if (likely (typed_obj->get_glyph (codepoint, glyph)))
-	return true;
+      अचर Type *typed_obj = (अचर Type *) obj;
+      यदि (likely (typed_obj->get_glyph (codepoint, glyph)))
+	फर्काऊ सत्य;
 
-      if (hb_codepoint_t c = remap (codepoint))
-	return typed_obj->get_glyph (c, glyph);
+      यदि (hb_codepoint_t c = remap (codepoint))
+	फर्काऊ typed_obj->get_glyph (c, glyph);
 
-      return false;
+      फर्काऊ असत्य;
     }
 
-    template <typename Type>
-    HB_INTERNAL static bool get_glyph_from_ascii (const void *obj,
+    ढाँचा <typename Type>
+    HB_INTERNAL स्थिर तार्किक get_glyph_from_ascii (अचर शून्य *obj,
 						  hb_codepoint_t codepoint,
 						  hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      return codepoint < 0x80 && typed_obj->get_glyph (codepoint, glyph);
+      अचर Type *typed_obj = (अचर Type *) obj;
+      फर्काऊ codepoint < 0x80 && typed_obj->get_glyph (codepoint, glyph);
     }
 
-    template <typename Type>
-    HB_INTERNAL static bool get_glyph_from_macroman (const void *obj,
+    ढाँचा <typename Type>
+    HB_INTERNAL स्थिर तार्किक get_glyph_from_macroman (अचर शून्य *obj,
 						     hb_codepoint_t codepoint,
 						     hb_codepoint_t *glyph)
     {
-      if (get_glyph_from_ascii<Type> (obj, codepoint, glyph))
-	return true;
+      यदि (get_glyph_from_ascii<Type> (obj, codepoint, glyph))
+	फर्काऊ सत्य;
 
-      const Type *typed_obj = (const Type *) obj;
-      unsigned c = unicode_to_macroman (codepoint);
-      return c && typed_obj->get_glyph (c, glyph);
+      अचर Type *typed_obj = (अचर Type *) obj;
+      अचिन्हित c = unicode_to_macroman (codepoint);
+      फर्काऊ c && typed_obj->get_glyph (c, glyph);
     }
 
-    unsigned int get_subtable_data_size (const CmapSubtable *subtable) const
+    अचिन्हित पूर्णाङ्क get_subtable_data_size (अचर CmapSubtable *subtable) अचर
     {
-      unsigned int table_length = this->table.get_length ();
-      uintptr_t table_start = (uintptr_t) (const void *) this->table.get ();
-      uintptr_t subtable_addr = (uintptr_t) (const void *) subtable;
-      if (unlikely (subtable_addr < table_start))
-	return 0;
+      अचिन्हित पूर्णाङ्क table_length = एतत्->table.get_length ();
+      uintptr_t table_start = (uintptr_t) (अचर शून्य *) एतत्->table.get ();
+      uintptr_t subtable_addr = (uintptr_t) (अचर शून्य *) subtable;
+      यदि (unlikely (subtable_addr < table_start))
+	फर्काऊ 0;
 
       uintptr_t subtable_offset = subtable_addr - table_start;
-      if (unlikely (subtable_offset >= table_length))
-	return 0;
+      यदि (unlikely (subtable_offset >= table_length))
+	फर्काऊ 0;
 
-      return table_length - (unsigned int) subtable_offset;
+      फर्काऊ table_length - (अचिन्हित पूर्णाङ्क) subtable_offset;
     }
 
-    private:
-    hb_nonnull_ptr_t<const CmapSubtable> subtable;
-    hb_nonnull_ptr_t<const CmapSubtable> subtable_uvs;
+    गुप्त:
+    hb_nonnull_ptr_t<अचर CmapSubtable> subtable;
+    hb_nonnull_ptr_t<अचर CmapSubtable> subtable_uvs;
 
     hb_cmap_get_glyph_func_t get_glyph_funcZ = nullptr;
-    const void *get_glyph_data = nullptr;
+    अचर शून्य *get_glyph_data = nullptr;
 
     CmapSubtableFormat4::accelerator_t format4_accel;
 
@@ -2447,62 +2447,62 @@ struct cmap
     cache_t *cache = nullptr;
 #endif
 
-    public:
+    सार्वजनिक:
     hb_blob_ptr_t<cmap> table;
   };
 
-  protected:
+  रक्षित:
 
-  const CmapSubtable *find_subtable (unsigned int platform_id,
-				     unsigned int encoding_id) const
+  अचर CmapSubtable *find_subtable (अचिन्हित पूर्णाङ्क platform_id,
+				     अचिन्हित पूर्णाङ्क encoding_id) अचर
   {
     EncodingRecord key;
     key.platformID = platform_id;
     key.encodingID = encoding_id;
 
-    const EncodingRecord &result = encodingRecord.bsearch (key);
-    if (!result.subtable)
-      return nullptr;
+    अचर EncodingRecord &result = encodingRecord.द्वा_खोज (key);
+    यदि (!result.subtable)
+      फर्काऊ nullptr;
 
-    return &(this+result.subtable);
+    फर्काऊ &(एतत्+result.subtable);
   }
 
-  const CmapSubtable *find_variation_selector_subtable () const
+  अचर CmapSubtable *find_variation_selector_subtable () अचर
   {
-    const CmapSubtable *format14 = nullptr;
-    for (const EncodingRecord& record : encodingRecord)
+    अचर CmapSubtable *format14 = nullptr;
+    लागि (अचर EncodingRecord& record : encodingRecord)
     {
-      if (record.platformID != 0 || record.encodingID != 5)
-	continue;
+      यदि (record.platformID != 0 || record.encodingID != 5)
+	जारी;
 
-      const CmapSubtable *subtable = &(this+record.subtable);
+      अचर CmapSubtable *subtable = &(एतत्+record.subtable);
 #ifndef HB_NO_BEYOND_64K
-      if (subtable->u.format.v == 15)
-	return subtable;
+      यदि (subtable->u.format.v == 15)
+	फर्काऊ subtable;
 #endif
-      if (subtable->u.format.v == 14)
+      यदि (subtable->u.format.v == 14)
 	format14 = subtable;
     }
-    return format14;
+    फर्काऊ format14;
   }
 
-  public:
+  सार्वजनिक:
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
 		  hb_barrier () &&
 		  likely (version == 0) &&
-		  encodingRecord.sanitize (c, this));
+		  encodingRecord.sanitize (c, एतत्));
   }
 
- private:
+ गुप्त:
 
-  static bool filter_encoding_records_for_subset(const cmap* cmap,
-                                                 const EncodingRecord& _)
+  स्थिर तार्किक filter_encoding_records_for_subset(अचर cmap* cmap,
+                                                 अचर EncodingRecord& _)
   {
-    return
+    फर्काऊ
         (_.platformID == 0 && _.encodingID == 3) ||
         (_.platformID == 0 && _.encodingID == 4) ||
         (_.platformID == 3 && _.encodingID == 1) ||
@@ -2510,129 +2510,129 @@ struct cmap
         (cmap + _.subtable).is_variation_selector ();
   }
 
-  protected:
+  रक्षित:
   HBUINT16	version;	/* Table version number (0). */
   SortedArray16Of<EncodingRecord>
 		encodingRecord;	/* Encoding tables. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (4, encodingRecord);
 };
 
-struct DMAP : cmap
+संरचना DMAP : cmap
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_DMAP;
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_DMAP;
 
-  bool subset (hb_subset_context_t *c) const
-  { return cmap::subset (c, true); }
+  तार्किक subset (hb_subset_context_t *c) अचर
+  { फर्काऊ cmap::subset (c, सत्य); }
 };
 
-struct cmap_accelerator_t
+संरचना cmap_accelerator_t
 {
   cmap_accelerator_t (hb_face_t *face) :
     dmap (face, HB_OT_TAG_DMAP),
     base (face)
   {}
 
-  bool get_nominal_glyph (hb_codepoint_t  unicode,
-			  hb_codepoint_t *glyph) const
+  तार्किक get_nominal_glyph (hb_codepoint_t  unicode,
+			  hb_codepoint_t *glyph) अचर
   {
-    return dmap.get_nominal_glyph (unicode, glyph) ||
+    फर्काऊ dmap.get_nominal_glyph (unicode, glyph) ||
 	   base.get_nominal_glyph (unicode, glyph);
   }
 
-  unsigned int get_nominal_glyphs (unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+  अचिन्हित पूर्णाङ्क get_nominal_glyphs (अचिन्हित पूर्णाङ्क गन्ती,
+				   अचर hb_codepoint_t *first_unicode,
+				   अचिन्हित पूर्णाङ्क unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride) const
+				   अचिन्हित पूर्णाङ्क glyph_stride) अचर
   {
-    if (likely (!dmap.has_data ()))
-      return base.get_nominal_glyphs (count,
+    यदि (likely (!dmap.has_data ()))
+      फर्काऊ base.get_nominal_glyphs (गन्ती,
 				      first_unicode, unicode_stride,
 				      first_glyph, glyph_stride);
 
-    unsigned int done;
-    for (done = 0;
-	 done < count && get_nominal_glyph (*first_unicode, first_glyph);
+    अचिन्हित पूर्णाङ्क done;
+    लागि (done = 0;
+	 done < गन्ती && get_nominal_glyph (*first_unicode, first_glyph);
 	 done++)
     {
       first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return done;
+    फर्काऊ done;
   }
 
-  bool get_variation_glyph (hb_codepoint_t  unicode,
+  तार्किक get_variation_glyph (hb_codepoint_t  unicode,
 			    hb_codepoint_t  variation_selector,
-			    hb_codepoint_t *glyph) const
+			    hb_codepoint_t *glyph) अचर
   {
     glyph_variant_t result = dmap.get_glyph_variant (unicode,
 						     variation_selector,
 						     glyph);
-    if (result == GLYPH_VARIANT_NOT_FOUND)
+    यदि (result == GLYPH_VARIANT_NOT_FOUND)
       result = base.get_glyph_variant (unicode, variation_selector, glyph);
 
-    switch (result)
+    विकल्प (result)
     {
-      case GLYPH_VARIANT_NOT_FOUND: return false;
-      case GLYPH_VARIANT_FOUND: return true;
-      case GLYPH_VARIANT_USE_DEFAULT: break;
+      पक्ष GLYPH_VARIANT_NOT_FOUND: फर्काऊ असत्य;
+      पक्ष GLYPH_VARIANT_FOUND: फर्काऊ सत्य;
+      पक्ष GLYPH_VARIANT_USE_DEFAULT: रोक;
     }
 
-    return get_nominal_glyph (unicode, glyph);
+    फर्काऊ get_nominal_glyph (unicode, glyph);
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  शून्य collect_unicodes (hb_set_t *out, अचिन्हित पूर्णाङ्क अङ्क_glyphs) अचर
   {
-    base.collect_unicodes (out, num_glyphs);
-    dmap.collect_unicodes (out, num_glyphs);
+    base.collect_unicodes (out, अङ्क_glyphs);
+    dmap.collect_unicodes (out, अङ्क_glyphs);
   }
 
-  void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
-			unsigned num_glyphs = UINT_MAX) const
+  शून्य collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
+			अचिन्हित अङ्क_glyphs = अच_पूर्णांक_उच्च) अचर
   {
-    base.collect_mapping (unicodes, mapping, num_glyphs);
-    dmap.collect_mapping (unicodes, mapping, num_glyphs);
+    base.collect_mapping (unicodes, mapping, अङ्क_glyphs);
+    dmap.collect_mapping (unicodes, mapping, अङ्क_glyphs);
   }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  शून्य collect_variation_selectors (hb_set_t *out) अचर
   {
     base.collect_variation_selectors (out);
     dmap.collect_variation_selectors (out);
   }
 
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				   hb_set_t *out) const
+  शून्य collect_variation_unicodes (hb_codepoint_t variation_selector,
+				   hb_set_t *out) अचर
   {
     base.collect_variation_unicodes (variation_selector, out);
     dmap.collect_variation_unicodes (variation_selector, out);
   }
 
-  void closure_glyphs (const hb_set_t *unicodes,
-		       hb_set_t       *glyphset) const
+  शून्य closure_glyphs (अचर hb_set_t *unicodes,
+		       hb_set_t       *glyphset) अचर
   {
-    if (likely (!dmap.has_data ()))
+    यदि (likely (!dmap.has_data ()))
     {
       base.table->closure_glyphs (unicodes, glyphset);
-      return;
+      फर्काऊ;
     }
 
     hb_set_t variation_selectors;
     collect_variation_selectors (&variation_selectors);
-    for (hb_codepoint_t variation_selector : variation_selectors)
+    लागि (hb_codepoint_t variation_selector : variation_selectors)
     {
-      if (!unicodes->has (variation_selector))
-	continue;
+      यदि (!unicodes->has (variation_selector))
+	जारी;
 
       hb_set_t variation_unicodes;
       collect_variation_unicodes (variation_selector, &variation_unicodes);
-      for (hb_codepoint_t unicode : variation_unicodes)
+      लागि (hb_codepoint_t unicode : variation_unicodes)
       {
-	if (!unicodes->has (unicode))
-	  continue;
+	यदि (!unicodes->has (unicode))
+	  जारी;
 
 	hb_codepoint_t glyph;
-	if (get_variation_glyph (unicode, variation_selector, &glyph))
+	यदि (get_variation_glyph (unicode, variation_selector, &glyph))
 	  glyphset->add (glyph);
       }
     }

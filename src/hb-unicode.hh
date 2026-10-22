@@ -31,10 +31,10 @@
 #ifndef HB_UNICODE_HH
 #define HB_UNICODE_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 
-extern HB_INTERNAL const uint8_t _hb_modified_combining_class[256];
+बाह्य HB_INTERNAL अचर uint8_t _hb_modified_combining_class[256];
 
 /*
  * hb_unicode_funcs_t
@@ -54,20 +54,20 @@ extern HB_INTERNAL const uint8_t _hb_modified_combining_class[256];
 /* Simple callbacks are those taking a hb_codepoint_t and returning a hb_codepoint_t */
 #define HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE \
   HB_UNICODE_FUNC_IMPLEMENT (hb_unicode_combining_class_t, combining_class) \
-  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (unsigned int, eastasian_width)) \
+  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (अचिन्हित पूर्णाङ्क, eastasian_width)) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_unicode_general_category_t, general_category) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_codepoint_t, mirroring) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_script_t, script) \
   /* ^--- Add new simple callbacks here */
 
-struct hb_unicode_funcs_t
+संरचना hb_unicode_funcs_t
 {
   hb_object_header_t header;
 
   hb_unicode_funcs_t *parent;
 
 #define HB_UNICODE_FUNC_IMPLEMENT(return_type, name) \
-  return_type name (hb_codepoint_t unicode) { return func.name (this, unicode, user_data.name); }
+  return_type name (hb_codepoint_t unicode) { फर्काऊ func.name (एतत्, unicode, user_data.name); }
 HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
 #undef HB_UNICODE_FUNC_IMPLEMENT
 
@@ -75,52 +75,52 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
 		     hb_codepoint_t *ab)
   {
     *ab = 0;
-    if (unlikely (!a || !b)) return false;
-    return func.compose (this, a, b, ab, user_data.compose);
+    यदि (unlikely (!a || !b)) फर्काऊ असत्य;
+    फर्काऊ func.compose (एतत्, a, b, ab, user_data.compose);
   }
 
   hb_bool_t decompose (hb_codepoint_t ab,
 		       hb_codepoint_t *a, hb_codepoint_t *b)
   {
     *a = ab; *b = 0;
-    return func.decompose (this, ab, a, b, user_data.decompose);
+    फर्काऊ func.decompose (एतत्, ab, a, b, user_data.decompose);
   }
 
-  unsigned int decompose_compatibility (hb_codepoint_t  u,
+  अचिन्हित पूर्णाङ्क decompose_compatibility (hb_codepoint_t  u,
 					hb_codepoint_t *decomposed)
   {
 #ifdef HB_DISABLE_DEPRECATED
-    unsigned int ret  = 0;
-#else
-    unsigned int ret = func.decompose_compatibility (this, u, decomposed, user_data.decompose_compatibility);
+    अचिन्हित पूर्णाङ्क ret  = 0;
+#अन्यथा
+    अचिन्हित पूर्णाङ्क ret = func.decompose_compatibility (एतत्, u, decomposed, user_data.decompose_compatibility);
 #endif
-    if (ret == 1 && u == decomposed[0]) {
+    यदि (ret == 1 && u == decomposed[0]) {
       decomposed[0] = 0;
-      return 0;
+      फर्काऊ 0;
     }
     decomposed[ret] = 0;
-    return ret;
+    फर्काऊ ret;
   }
 
-  unsigned int
+  अचिन्हित पूर्णाङ्क
   modified_combining_class (hb_codepoint_t u)
   {
     /* Reorder SAKOT to ensure it comes after any tone marks. */
-    if (unlikely (u == 0x1A60u)) return 254;
+    यदि (unlikely (u == 0x1A60u)) फर्काऊ 254;
     /* Reorder PADMA to ensure it comes after any vowel marks. */
-    if (unlikely (u == 0x0FC6u)) return 254;
+    यदि (unlikely (u == 0x0FC6u)) फर्काऊ 254;
     /* Reorder TSA -PHRU to reorder before U+0F74 */
-    if (unlikely (u == 0x0F39u)) return 127;
+    यदि (unlikely (u == 0x0F39u)) फर्काऊ 127;
 
-    return _hb_modified_combining_class[combining_class (u)];
+    फर्काऊ _hb_modified_combining_class[combining_class (u)];
   }
 
-  static hb_bool_t
+  स्थिर hb_bool_t
   is_variation_selector (hb_codepoint_t unicode)
   {
     /* U+180B..180D, U+180F MONGOLIAN FREE VARIATION SELECTORs are handled in the
      * Arabic shaper.  No need to match them here. */
-    return unlikely (hb_in_ranges<hb_codepoint_t> (unicode,
+    फर्काऊ unlikely (hb_in_ranges<hb_codepoint_t> (unicode,
 						   0xFE00u, 0xFE0Fu, /* VARIATION SELECTOR-1..16 */
 						   0xE0100u, 0xE01EFu));  /* VARIATION SELECTOR-17..256 */
   }
@@ -163,35 +163,35 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
    * E0100..E01EF  # Mn [240] VARIATION SELECTOR-17..VARIATION SELECTOR-256
    * E01F0..E0FFF  # Cn [3600] <reserved-E01F0>..<reserved-E0FFF>
    */
-  static hb_bool_t
+  स्थिर hb_bool_t
   is_default_ignorable (hb_codepoint_t ch)
   {
     hb_codepoint_t plane = ch >> 16;
-    if (likely (plane == 0))
+    यदि (likely (plane == 0))
     {
       /* BMP */
       hb_codepoint_t page = ch >> 8;
-      switch (page) {
-	case 0x00: return unlikely (ch == 0x00ADu);
-	case 0x03: return unlikely (ch == 0x034Fu);
-	case 0x06: return unlikely (ch == 0x061Cu);
-	case 0x17: return hb_in_range<hb_codepoint_t> (ch, 0x17B4u, 0x17B5u);
-	case 0x18: return hb_in_range<hb_codepoint_t> (ch, 0x180Bu, 0x180Fu);
-	case 0x20: return hb_in_ranges<hb_codepoint_t> (ch, 0x200Bu, 0x200Fu,
+      विकल्प (page) {
+	पक्ष 0x00: फर्काऊ unlikely (ch == 0x00ADu);
+	पक्ष 0x03: फर्काऊ unlikely (ch == 0x034Fu);
+	पक्ष 0x06: फर्काऊ unlikely (ch == 0x061Cu);
+	पक्ष 0x17: फर्काऊ hb_in_range<hb_codepoint_t> (ch, 0x17B4u, 0x17B5u);
+	पक्ष 0x18: फर्काऊ hb_in_range<hb_codepoint_t> (ch, 0x180Bu, 0x180Fu);
+	पक्ष 0x20: फर्काऊ hb_in_ranges<hb_codepoint_t> (ch, 0x200Bu, 0x200Fu,
 					    0x202Au, 0x202Eu,
 					    0x2060u, 0x206Fu);
-	case 0xFE: return hb_in_range<hb_codepoint_t> (ch, 0xFE00u, 0xFE0Fu) || ch == 0xFEFFu;
-	case 0xFF: return hb_in_range<hb_codepoint_t> (ch, 0xFFF0u, 0xFFF8u);
-	default: return false;
+	पक्ष 0xFE: फर्काऊ hb_in_range<hb_codepoint_t> (ch, 0xFE00u, 0xFE0Fu) || ch == 0xFEFFu;
+	पक्ष 0xFF: फर्काऊ hb_in_range<hb_codepoint_t> (ch, 0xFFF0u, 0xFFF8u);
+	स्वभाव: फर्काऊ असत्य;
       }
     }
-    else
+    अन्यथा
     {
       /* Other planes */
-      switch (plane) {
-	case 0x01: return hb_in_range<hb_codepoint_t> (ch, 0x1D173u, 0x1D17Au);
-	case 0x0E: return hb_in_range<hb_codepoint_t> (ch, 0xE0000u, 0xE0FFFu);
-	default: return false;
+      विकल्प (plane) {
+	पक्ष 0x01: फर्काऊ hb_in_range<hb_codepoint_t> (ch, 0x1D173u, 0x1D17Au);
+	पक्ष 0x0E: फर्काऊ hb_in_range<hb_codepoint_t> (ch, 0xE0000u, 0xE0FFFu);
+	स्वभाव: फर्काऊ असत्य;
       }
     }
   }
@@ -200,7 +200,7 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
    * https://unicode.org/charts/PDF/U2000.pdf
    * https://docs.microsoft.com/en-us/typography/develop/character-design-standards/whitespace
    */
-  enum space_t {
+  गणना space_t {
     NOT_SPACE = 0,
     SPACE_EM   = 1,
     SPACE_EM_2 = 2,
@@ -215,96 +215,96 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
     SPACE_PUNCTUATION,
     SPACE_NARROW,
   };
-  static space_t
+  स्थिर space_t
   space_fallback_type (hb_codepoint_t u)
   {
-    switch (u)
+    विकल्प (u)
     {
       /* All GC=Zs chars that can use a fallback. */
-      default:	    return NOT_SPACE;	/* U+1680 OGHAM SPACE MARK */
-      case 0x0020u: return SPACE;	/* U+0020 SPACE */
-      case 0x00A0u: return SPACE;	/* U+00A0 NO-BREAK SPACE */
-      case 0x2000u: return SPACE_EM_2;	/* U+2000 EN QUAD */
-      case 0x2001u: return SPACE_EM;	/* U+2001 EM QUAD */
-      case 0x2002u: return SPACE_EM_2;	/* U+2002 EN SPACE */
-      case 0x2003u: return SPACE_EM;	/* U+2003 EM SPACE */
-      case 0x2004u: return SPACE_EM_3;	/* U+2004 THREE-PER-EM SPACE */
-      case 0x2005u: return SPACE_EM_4;	/* U+2005 FOUR-PER-EM SPACE */
-      case 0x2006u: return SPACE_EM_6;	/* U+2006 SIX-PER-EM SPACE */
-      case 0x2007u: return SPACE_FIGURE;	/* U+2007 FIGURE SPACE */
-      case 0x2008u: return SPACE_PUNCTUATION;	/* U+2008 PUNCTUATION SPACE */
-      case 0x2009u: return SPACE_EM_5;		/* U+2009 THIN SPACE */
-      case 0x200Au: return SPACE_EM_16;		/* U+200A HAIR SPACE */
-      case 0x202Fu: return SPACE_NARROW;	/* U+202F NARROW NO-BREAK SPACE */
-      case 0x205Fu: return SPACE_4_EM_18;	/* U+205F MEDIUM MATHEMATICAL SPACE */
-      case 0x3000u: return SPACE_EM;		/* U+3000 IDEOGRAPHIC SPACE */
+      स्वभाव:	    फर्काऊ NOT_SPACE;	/* U+1680 OGHAM SPACE MARK */
+      पक्ष 0x0020u: फर्काऊ SPACE;	/* U+0020 SPACE */
+      पक्ष 0x00A0u: फर्काऊ SPACE;	/* U+00A0 NO-BREAK SPACE */
+      पक्ष 0x2000u: फर्काऊ SPACE_EM_2;	/* U+2000 EN QUAD */
+      पक्ष 0x2001u: फर्काऊ SPACE_EM;	/* U+2001 EM QUAD */
+      पक्ष 0x2002u: फर्काऊ SPACE_EM_2;	/* U+2002 EN SPACE */
+      पक्ष 0x2003u: फर्काऊ SPACE_EM;	/* U+2003 EM SPACE */
+      पक्ष 0x2004u: फर्काऊ SPACE_EM_3;	/* U+2004 THREE-PER-EM SPACE */
+      पक्ष 0x2005u: फर्काऊ SPACE_EM_4;	/* U+2005 FOUR-PER-EM SPACE */
+      पक्ष 0x2006u: फर्काऊ SPACE_EM_6;	/* U+2006 SIX-PER-EM SPACE */
+      पक्ष 0x2007u: फर्काऊ SPACE_FIGURE;	/* U+2007 FIGURE SPACE */
+      पक्ष 0x2008u: फर्काऊ SPACE_PUNCTUATION;	/* U+2008 PUNCTUATION SPACE */
+      पक्ष 0x2009u: फर्काऊ SPACE_EM_5;		/* U+2009 THIN SPACE */
+      पक्ष 0x200Au: फर्काऊ SPACE_EM_16;		/* U+200A HAIR SPACE */
+      पक्ष 0x202Fu: फर्काऊ SPACE_NARROW;	/* U+202F NARROW NO-BREAK SPACE */
+      पक्ष 0x205Fu: फर्काऊ SPACE_4_EM_18;	/* U+205F MEDIUM MATHEMATICAL SPACE */
+      पक्ष 0x3000u: फर्काऊ SPACE_EM;		/* U+3000 IDEOGRAPHIC SPACE */
     }
   }
 
-  static hb_codepoint_t
+  स्थिर hb_codepoint_t
   vertical_char_for (hb_codepoint_t u)
   {
-    switch (u >> 8)
+    विकल्प (u >> 8)
     {
-      case 0x20: switch (u) {
-	case 0x2013u: return 0xfe32u; // EN DASH
-	case 0x2014u: return 0xfe31u; // EM DASH
-	case 0x2025u: return 0xfe30u; // TWO DOT LEADER
-	case 0x2026u: return 0xfe19u; // HORIZONTAL ELLIPSIS
-      } break;
-      case 0x30: switch (u) {
-	case 0x3001u: return 0xfe11u; // IDEOGRAPHIC COMMA
-	case 0x3002u: return 0xfe12u; // IDEOGRAPHIC FULL STOP
-	case 0x3008u: return 0xfe3fu; // LEFT ANGLE BRACKET
-	case 0x3009u: return 0xfe40u; // RIGHT ANGLE BRACKET
-	case 0x300au: return 0xfe3du; // LEFT DOUBLE ANGLE BRACKET
-	case 0x300bu: return 0xfe3eu; // RIGHT DOUBLE ANGLE BRACKET
-	case 0x300cu: return 0xfe41u; // LEFT CORNER BRACKET
-	case 0x300du: return 0xfe42u; // RIGHT CORNER BRACKET
-	case 0x300eu: return 0xfe43u; // LEFT WHITE CORNER BRACKET
-	case 0x300fu: return 0xfe44u; // RIGHT WHITE CORNER BRACKET
-	case 0x3010u: return 0xfe3bu; // LEFT BLACK LENTICULAR BRACKET
-	case 0x3011u: return 0xfe3cu; // RIGHT BLACK LENTICULAR BRACKET
-	case 0x3014u: return 0xfe39u; // LEFT TORTOISE SHELL BRACKET
-	case 0x3015u: return 0xfe3au; // RIGHT TORTOISE SHELL BRACKET
-	case 0x3016u: return 0xfe17u; // LEFT WHITE LENTICULAR BRACKET
-	case 0x3017u: return 0xfe18u; // RIGHT WHITE LENTICULAR BRACKET
-      } break;
-      case 0xfe: switch (u) {
-	case 0xfe4fu: return 0xfe34u; // WAVY LOW LINE
-      } break;
-      case 0xff: switch (u) {
-	case 0xff01u: return 0xfe15u; // FULLWIDTH EXCLAMATION MARK
-	case 0xff08u: return 0xfe35u; // FULLWIDTH LEFT PARENTHESIS
-	case 0xff09u: return 0xfe36u; // FULLWIDTH RIGHT PARENTHESIS
-	case 0xff0cu: return 0xfe10u; // FULLWIDTH COMMA
-	case 0xff1au: return 0xfe13u; // FULLWIDTH COLON
-	case 0xff1bu: return 0xfe14u; // FULLWIDTH SEMICOLON
-	case 0xff1fu: return 0xfe16u; // FULLWIDTH QUESTION MARK
-	case 0xff3bu: return 0xfe47u; // FULLWIDTH LEFT SQUARE BRACKET
-	case 0xff3du: return 0xfe48u; // FULLWIDTH RIGHT SQUARE BRACKET
-	case 0xff3fu: return 0xfe33u; // FULLWIDTH LOW LINE
-	case 0xff5bu: return 0xfe37u; // FULLWIDTH LEFT CURLY BRACKET
-	case 0xff5du: return 0xfe38u; // FULLWIDTH RIGHT CURLY BRACKET
-      } break;
+      पक्ष 0x20: विकल्प (u) {
+	पक्ष 0x2013u: फर्काऊ 0xfe32u; // EN DASH
+	पक्ष 0x2014u: फर्काऊ 0xfe31u; // EM DASH
+	पक्ष 0x2025u: फर्काऊ 0xfe30u; // TWO DOT LEADER
+	पक्ष 0x2026u: फर्काऊ 0xfe19u; // HORIZONTAL ELLIPSIS
+      } रोक;
+      पक्ष 0x30: विकल्प (u) {
+	पक्ष 0x3001u: फर्काऊ 0xfe11u; // IDEOGRAPHIC COMMA
+	पक्ष 0x3002u: फर्काऊ 0xfe12u; // IDEOGRAPHIC FULL STOP
+	पक्ष 0x3008u: फर्काऊ 0xfe3fu; // LEFT ANGLE BRACKET
+	पक्ष 0x3009u: फर्काऊ 0xfe40u; // RIGHT ANGLE BRACKET
+	पक्ष 0x300au: फर्काऊ 0xfe3du; // LEFT DOUBLE ANGLE BRACKET
+	पक्ष 0x300bu: फर्काऊ 0xfe3eu; // RIGHT DOUBLE ANGLE BRACKET
+	पक्ष 0x300cu: फर्काऊ 0xfe41u; // LEFT CORNER BRACKET
+	पक्ष 0x300du: फर्काऊ 0xfe42u; // RIGHT CORNER BRACKET
+	पक्ष 0x300eu: फर्काऊ 0xfe43u; // LEFT WHITE CORNER BRACKET
+	पक्ष 0x300fu: फर्काऊ 0xfe44u; // RIGHT WHITE CORNER BRACKET
+	पक्ष 0x3010u: फर्काऊ 0xfe3bu; // LEFT BLACK LENTICULAR BRACKET
+	पक्ष 0x3011u: फर्काऊ 0xfe3cu; // RIGHT BLACK LENTICULAR BRACKET
+	पक्ष 0x3014u: फर्काऊ 0xfe39u; // LEFT TORTOISE SHELL BRACKET
+	पक्ष 0x3015u: फर्काऊ 0xfe3au; // RIGHT TORTOISE SHELL BRACKET
+	पक्ष 0x3016u: फर्काऊ 0xfe17u; // LEFT WHITE LENTICULAR BRACKET
+	पक्ष 0x3017u: फर्काऊ 0xfe18u; // RIGHT WHITE LENTICULAR BRACKET
+      } रोक;
+      पक्ष 0xfe: विकल्प (u) {
+	पक्ष 0xfe4fu: फर्काऊ 0xfe34u; // WAVY LOW LINE
+      } रोक;
+      पक्ष 0xff: विकल्प (u) {
+	पक्ष 0xff01u: फर्काऊ 0xfe15u; // FULLWIDTH EXCLAMATION MARK
+	पक्ष 0xff08u: फर्काऊ 0xfe35u; // FULLWIDTH LEFT PARENTHESIS
+	पक्ष 0xff09u: फर्काऊ 0xfe36u; // FULLWIDTH RIGHT PARENTHESIS
+	पक्ष 0xff0cu: फर्काऊ 0xfe10u; // FULLWIDTH COMMA
+	पक्ष 0xff1au: फर्काऊ 0xfe13u; // FULLWIDTH COLON
+	पक्ष 0xff1bu: फर्काऊ 0xfe14u; // FULLWIDTH SEMICOLON
+	पक्ष 0xff1fu: फर्काऊ 0xfe16u; // FULLWIDTH QUESTION MARK
+	पक्ष 0xff3bu: फर्काऊ 0xfe47u; // FULLWIDTH LEFT SQUARE BRACKET
+	पक्ष 0xff3du: फर्काऊ 0xfe48u; // FULLWIDTH RIGHT SQUARE BRACKET
+	पक्ष 0xff3fu: फर्काऊ 0xfe33u; // FULLWIDTH LOW LINE
+	पक्ष 0xff5bu: फर्काऊ 0xfe37u; // FULLWIDTH LEFT CURLY BRACKET
+	पक्ष 0xff5du: फर्काऊ 0xfe38u; // FULLWIDTH RIGHT CURLY BRACKET
+      } रोक;
     }
 
-    return u;
+    फर्काऊ u;
   }
 
-  struct {
+  संरचना {
 #define HB_UNICODE_FUNC_IMPLEMENT(name) hb_unicode_##name##_func_t name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_UNICODE_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_UNICODE_FUNC_IMPLEMENT(name) void *name;
+  संरचना {
+#define HB_UNICODE_FUNC_IMPLEMENT(name) शून्य *name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_UNICODE_FUNC_IMPLEMENT
   } user_data;
 
-  struct {
+  संरचना {
 #define HB_UNICODE_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_UNICODE_FUNC_IMPLEMENT
@@ -420,20 +420,20 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
  * Ranges, used for bsearch tables.
  */
 
-struct hb_unicode_range_t
+संरचना hb_unicode_range_t
 {
-  static int
-  cmp (const void *_key, const void *_item)
+  स्थिर पूर्णाङ्क
+  cmp (अचर शून्य *साँचो_3, अचर शून्य *_item)
   {
-    hb_codepoint_t cp = *((hb_codepoint_t *) _key);
-    const hb_unicode_range_t *range = (hb_unicode_range_t *) _item;
+    hb_codepoint_t cp = *((hb_codepoint_t *) साँचो_3);
+    अचर hb_unicode_range_t *range = (hb_unicode_range_t *) _item;
 
-    if (cp < range->start)
-      return -1;
-    else if (cp <= range->end)
-      return 0;
-    else
-      return +1;
+    यदि (cp < range->start)
+      फर्काऊ -1;
+    अन्यथा यदि (cp <= range->end)
+      फर्काऊ 0;
+    अन्यथा
+      फर्काऊ +1;
   }
 
   hb_codepoint_t start;
@@ -444,11 +444,11 @@ struct hb_unicode_range_t
  * Emoji.
  */
 
-HB_INTERNAL bool
+HB_INTERNAL तार्किक
 _hb_unicode_is_emoji_Extended_Pictographic (hb_codepoint_t cp);
 
 
-extern "C" HB_INTERNAL hb_unicode_funcs_t *hb_ucd_get_unicode_funcs ();
+बाह्य "C" HB_INTERNAL hb_unicode_funcs_t *hb_ucd_get_unicode_funcs ();
 
 
 #endif /* HB_UNICODE_HH */

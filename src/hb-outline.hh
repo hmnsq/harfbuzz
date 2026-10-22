@@ -25,57 +25,57 @@
 #ifndef HB_OUTLINE_HH
 #define HB_OUTLINE_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-draw.hh"
+#अन्तर्भाव "hb-draw.hh"
 
 
-struct hb_outline_point_t
+संरचना hb_outline_point_t
 {
-  enum class type_t
+  गणना वर्ग type_t
   {
     MOVE_TO,
-    LINE_TO,
+    पङ्क्ति_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (भिन्न x, भिन्न y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  भिन्न x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+संरचना hb_outline_vector_t
 {
-  float normalize_len ()
+  भिन्न normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    भिन्न len = hypotf (x, y);
+    यदि (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    फर्काऊ len;
   }
 
-  float x, y;
+  भिन्न x, y;
 };
 
-struct hb_outline_t
+संरचना hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  शून्य reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL शून्य replay (hb_draw_funcs_t *pen, शून्य *pen_data) अचर;
+  HB_INTERNAL भिन्न control_area () अचर;
+  HB_INTERNAL शून्य translate (भिन्न dx, भिन्न dy);
+  HB_INTERNAL शून्य slant (भिन्न slant_xy);
+  HB_INTERNAL शून्य embolden (भिन्न x_strength, भिन्न y_strength,
+			     भिन्न x_shift, भिन्न y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
-  hb_vector_t<unsigned> contours;
+  hb_vector_t<अचिन्हित> contours;
   int64_t *budget_remaining = nullptr;
 };
 

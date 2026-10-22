@@ -22,13 +22,13 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifdef HAVE_DIRECTWRITE
 
-#include "hb-directwrite.hh"
+#अन्तर्भाव "hb-directwrite.hh"
 
-#include "hb-font.hh"
+#अन्तर्भाव "hb-font.hh"
 
 
 /**
@@ -40,40 +40,40 @@
  * Functions for using HarfBuzz with DirectWrite fonts.
  **/
 
-static inline void free_static_directwrite_global ();
+स्थिर अन्तःस्थ शून्य free_static_directwrite_global ();
 
-static struct hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
+स्थिर संरचना hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
 								     hb_directwrite_global_lazy_loader_t>
 {
-  static hb_directwrite_global_t * create ()
+  स्थिर hb_directwrite_global_t * create ()
   {
     hb_directwrite_global_t *global = hb_directwrite_object_create<hb_directwrite_global_t> ();
 
-    if (unlikely (!global))
-      return nullptr;
-    if (unlikely (!global->success))
+    यदि (unlikely (!global))
+      फर्काऊ nullptr;
+    यदि (unlikely (!global->success))
     {
       hb_directwrite_object_destroy (global);
-      return nullptr;
+      फर्काऊ nullptr;
     }
 
     hb_atexit (free_static_directwrite_global);
 
-    return global;
+    फर्काऊ global;
   }
-  static void destroy (hb_directwrite_global_t *l)
+  स्थिर शून्य destroy (hb_directwrite_global_t *l)
   {
     hb_directwrite_object_destroy (l);
   }
-  static hb_directwrite_global_t * get_null ()
+  स्थिर hb_directwrite_global_t * get_null ()
   {
-    return nullptr;
+    फर्काऊ nullptr;
   }
 } static_directwrite_global;
 
 
-static inline
-void free_static_directwrite_global ()
+स्थिर अन्तःस्थ
+शून्य free_static_directwrite_global ()
 {
   static_directwrite_global.free_instance ();
 }
@@ -81,60 +81,60 @@ void free_static_directwrite_global ()
 hb_directwrite_global_t *
 get_directwrite_global ()
 {
-  return static_directwrite_global.get_unconst ();
+  फर्काऊ static_directwrite_global.get_unconst ();
 }
 
 DWriteFontFileStream::DWriteFontFileStream (hb_blob_t *blob)
 {
-  auto *global = get_directwrite_global ();
+  स्वतः *global = get_directwrite_global ();
   mLoader = global->fontFileLoader;
-  mRefCount.init ();
+  m_Ref_गन्ती.init ();
   mLoader->AddRef ();
   hb_blob_make_immutable (blob);
   mBlob = hb_blob_reference (blob);
   mData = (uint8_t *) hb_blob_get_data (blob, &mSize);
-  fontFileKey = mLoader->RegisterFontFileStream (this);
+  font_File_साँचो = mLoader->RegisterFontFileStream (एतत्);
 }
 
 DWriteFontFileStream::~DWriteFontFileStream()
 {
-  mLoader->UnregisterFontFileStream (fontFileKey);
+  mLoader->UnregisterFontFileStream (font_File_साँचो);
   mLoader->Release ();
   hb_blob_destroy (mBlob);
 }
 
 IDWriteFontFace *
-dw_face_create (hb_blob_t *blob, unsigned index)
+dw_face_create (hb_blob_t *blob, अचिन्हित index)
 {
 #define FAIL(...) \
   HB_STMT_START { \
-    DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
-    return nullptr; \
+    DEBUG_सन्देश (DIRECTWRITE, nullptr, __VA_ARGS__); \
+    फर्काऊ nullptr; \
   } HB_STMT_END
 
-  auto *global = get_directwrite_global ();
-  if (unlikely (!global))
+  स्वतः *global = get_directwrite_global ();
+  यदि (unlikely (!global))
     FAIL ("Couldn't load DirectWrite!");
 
   DWriteFontFileStream *fontFileStream = hb_directwrite_object_create<DWriteFontFileStream> (blob);
-  if (unlikely (!fontFileStream))
+  यदि (unlikely (!fontFileStream))
     FAIL ("Failed to allocate font file stream!");
 
   IDWriteFontFile *fontFile;
-  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->fontFileKey, sizeof (fontFileStream->fontFileKey),
+  स्वतः hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->font_File_साँचो, परिमाण (fontFileStream->font_File_साँचो),
 								  global->fontFileLoader, &fontFile);
 
   fontFileStream->Release ();
 
-  if (FAILED (hr))
+  यदि (FAILED (hr))
     FAIL ("Failed to load font file from data!");
 
   BOOL isSupported;
   DWRITE_FONT_FILE_TYPE fileType;
   DWRITE_FONT_FACE_TYPE faceType;
-  uint32_t numberOfFaces;
-  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &numberOfFaces);
-  if (FAILED (hr) || !isSupported)
+  uint32_t सङ्ख्या_Of_Faces;
+  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &सङ्ख्या_Of_Faces);
+  यदि (FAILED (hr) || !isSupported)
   {
     fontFile->Release ();
     FAIL ("Font file is not supported.");
@@ -147,108 +147,108 @@ dw_face_create (hb_blob_t *blob, unsigned index)
 					 DWRITE_FONT_SIMULATIONS_NONE, &fontFace);
   fontFile->Release ();
 
-  return fontFace;
+  फर्काऊ fontFace;
 }
 
-struct _hb_directwrite_font_table_context {
+संरचना _hb_directwrite_font_table_context {
   IDWriteFontFace *face;
-  void *table_context;
+  शून्य *table_context;
 };
 
-static void
-_hb_directwrite_table_data_release (void *data)
+स्थिर शून्य
+_hb_directwrite_table_data_release (शून्य *data)
 {
   _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) data;
   context->face->ReleaseFontTable (context->table_context);
   hb_free (context);
 }
 
-static hb_blob_t *
+स्थिर hb_blob_t *
 _hb_directwrite_get_file_blob (IDWriteFontFace *dw_face)
 {
-  UINT32 file_count;
-  if (FAILED (dw_face->GetFiles(&file_count, NULL)))
-    return nullptr;
+  UINT32 file_गन्ती;
+  यदि (FAILED (dw_face->GetFiles(&file_गन्ती, रिक्त)))
+    फर्काऊ nullptr;
 
   hb_vector_t<IDWriteFontFile *> files;
-  if (unlikely (!files.resize_exact (file_count)))
-    return nullptr;
-  if (FAILED (dw_face->GetFiles(&file_count, files.arrayZ)))
-    return nullptr;
+  यदि (unlikely (!files.resize_exact (file_गन्ती)))
+    फर्काऊ nullptr;
+  यदि (FAILED (dw_face->GetFiles(&file_गन्ती, files.arrayZ)))
+    फर्काऊ nullptr;
 
   hb_blob_t *blob = nullptr;
-  for (UINT32 i = 0; i < file_count; i++)
+  लागि (UINT32 i = 0; i < file_गन्ती; i++)
   {
-    LPCVOID reference_key;
-    UINT32 reference_key_size;
-    if (FAILED (files[i]->GetReferenceKey(&reference_key, &reference_key_size)))
-      continue;
+    LPCVOID reference_साँचो;
+    UINT32 reference_साँचो_size;
+    यदि (FAILED (files[i]->Get_Reference_साँचो(&reference_साँचो, &reference_साँचो_size)))
+      जारी;
 
     IDWriteFontFileLoader *loader;
-    if (FAILED (files[i]->GetLoader(&loader)))
-      continue;
+    यदि (FAILED (files[i]->GetLoader(&loader)))
+      जारी;
     
     IDWriteFontFileStream *stream;
-    if (FAILED (loader->CreateStreamFromKey (reference_key, reference_key_size, &stream)))
+    यदि (FAILED (loader->Create_Stream_From_साँचो (reference_साँचो, reference_साँचो_size, &stream)))
     {
       loader->Release ();
-      continue;
+      जारी;
     }
 
     UINT64 file_size;
-    const void *fragment;
-    void *context;
-    if (FAILED (stream->GetFileSize(&file_size)) ||
+    अचर शून्य *fragment;
+    शून्य *context;
+    यदि (FAILED (stream->GetFileSize(&file_size)) ||
         FAILED (stream->ReadFileFragment (&fragment, 0, file_size, &context)))
     {
       loader->Release ();
-      continue;
+      जारी;
     }
-    blob = hb_blob_create ((const char *) fragment, file_size, HB_MEMORY_MODE_DUPLICATE, NULL, NULL);
+    blob = hb_blob_create ((अचर वर्ण *) fragment, file_size, HB_MEMORY_MODE_DUPLICATE, रिक्त, रिक्त);
     stream->ReleaseFileFragment (context);
     loader->Release ();
-    break;
+    रोक;
   }
 
-  return blob;
+  फर्काऊ blob;
 }
 
-static hb_blob_t *
-_hb_directwrite_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+स्थिर hb_blob_t *
+_hb_directwrite_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, शून्य *user_data)
 {
   IDWriteFontFace *dw_face = ((IDWriteFontFace *) user_data);
-  const void *data;
+  अचर शून्य *data;
   uint32_t length;
-  void *table_context;
+  शून्य *table_context;
   BOOL exists;
-  if (tag == HB_TAG_NONE)
-    return _hb_directwrite_get_file_blob (dw_face);
+  यदि (tag == HB_TAG_NONE)
+    फर्काऊ _hb_directwrite_get_file_blob (dw_face);
 
-  if (FAILED (dw_face->TryGetFontTable (hb_uint32_swap (tag), &data,
+  यदि (FAILED (dw_face->TryGetFontTable (hb_uint32_swap (tag), &data,
 					&length, &table_context, &exists)))
-    return nullptr;
+    फर्काऊ nullptr;
 
-  if (!data || !exists || !length)
+  यदि (!data || !exists || !length)
   {
     dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    फर्काऊ nullptr;
   }
 
-  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) hb_malloc (sizeof (_hb_directwrite_font_table_context));
-  if (unlikely (!context))
+  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) hb_malloc (परिमाण (_hb_directwrite_font_table_context));
+  यदि (unlikely (!context))
   {
     dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    फर्काऊ nullptr;
   }
   context->face = dw_face;
   context->table_context = table_context;
 
-  return hb_blob_create ((const char *) data, length, HB_MEMORY_MODE_READONLY,
+  फर्काऊ hb_blob_create ((अचर वर्ण *) data, length, HB_MEMORY_MODE_READONLY,
 			 context, _hb_directwrite_table_data_release);
 }
 
-static void
-_hb_directwrite_face_release (void *data)
+स्थिर शून्य
+_hb_directwrite_face_release (शून्य *data)
 {
   ((IDWriteFontFace *) data)->Release ();
 }
@@ -266,8 +266,8 @@ _hb_directwrite_face_release (void *data)
 hb_face_t *
 hb_directwrite_face_create (IDWriteFontFace *dw_face)
 {
-  if (!dw_face)
-    return hb_face_get_empty ();
+  यदि (!dw_face)
+    फर्काऊ hb_face_get_empty ();
 
   dw_face->AddRef ();
   hb_face_t *face = hb_face_create_for_tables (_hb_directwrite_reference_table,
@@ -275,9 +275,9 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
 					       _hb_directwrite_face_release);
 
   hb_face_set_index (face, dw_face->GetIndex ());
-  hb_face_set_glyph_count (face, dw_face->GetGlyphCount ());
+  hb_face_set_glyph_गन्ती (face, dw_face->Get_Glyph_गन्ती ());
 
-  return face;
+  फर्काऊ face;
 }
 
 /**
@@ -297,14 +297,14 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
  * Since: 11.0.0
  */
 hb_face_t *
-hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
-					      unsigned int  index)
+hb_directwrite_face_create_from_file_or_fail (अचर वर्ण   *file_name,
+					      अचिन्हित पूर्णाङ्क  index)
 {
-  auto *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  स्वतः *blob = hb_blob_create_from_file_or_fail (file_name);
+  यदि (unlikely (!blob))
+    फर्काऊ nullptr;
 
-  return hb_directwrite_face_create_from_blob_or_fail (blob, index);
+  फर्काऊ hb_directwrite_face_create_from_blob_or_fail (blob, index);
 }
 
 /**
@@ -325,23 +325,23 @@ hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
  */
 HB_EXTERN hb_face_t *
 hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					      unsigned int  index)
+					      अचिन्हित पूर्णाङ्क  index)
 {
   IDWriteFontFace *dw_face = dw_face_create (blob, index);
-  if (unlikely (!dw_face))
-    return nullptr;
+  यदि (unlikely (!dw_face))
+    फर्काऊ nullptr;
 
   hb_face_t *face = hb_directwrite_face_create (dw_face);
-  if (unlikely (hb_object_is_immutable (face)))
+  यदि (unlikely (hb_object_is_immutable (face)))
   {
     dw_face->Release ();
-    return face;
+    फर्काऊ face;
   }
 
   /* Let there be dragons here... */
   face->data.directwrite.cmpexch (nullptr, (hb_directwrite_face_data_t *) dw_face);
 
-  return face;
+  फर्काऊ face;
 }
 
 /**
@@ -357,7 +357,7 @@ hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
 IDWriteFontFace *
 hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 {
-  return (IDWriteFontFace *) (const void *) face->data.directwrite;
+  फर्काऊ (IDWriteFontFace *) (अचर शून्य *) face->data.directwrite;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -376,7 +376,7 @@ hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 IDWriteFontFace *
 hb_directwrite_face_get_font_face (hb_face_t *face)
 {
-  return hb_directwrite_face_get_dw_font_face (face);
+  फर्काऊ hb_directwrite_face_get_dw_font_face (face);
 }
 
 #endif
@@ -400,26 +400,26 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  यदि (unlikely (hb_object_is_immutable (font)))
+    फर्काऊ font;
 
   /* Copy font variations */
-  if (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (void**) &dw_face5)))
+  यदि (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (शून्य**) &dw_face5)))
   {
-    if (dw_face5->HasVariations ())
+    यदि (dw_face5->HasVariations ())
     {
-      hb_vector_t<DWRITE_FONT_AXIS_VALUE> values;
-      uint32_t count = dw_face5->GetFontAxisValueCount ();
-      if (likely (values.resize_exact (count)) &&
-	  SUCCEEDED (dw_face5->GetFontAxisValues (values.arrayZ, count)))
+      hb_vector_t<DWRITE_FONT_AXIS_मान> values;
+      uint32_t गन्ती = dw_face5->Get_Font_Axis_मान_गन्ती ();
+      यदि (likely (values.resize_exact (गन्ती)) &&
+	  SUCCEEDED (dw_face5->Get_Font_Axis_मानहरू (values.arrayZ, गन्ती)))
       {
 	hb_vector_t<hb_variation_t> vars;
-	if (likely (vars.resize_exact (count)))
+	यदि (likely (vars.resize_exact (गन्ती)))
 	{
-	  for (uint32_t i = 0; i < count; ++i)
+	  लागि (uint32_t i = 0; i < गन्ती; ++i)
 	  {
 	    hb_tag_t tag = hb_uint32_swap (values[i].axisTag);
-	    float value = values[i].value;
+	    भिन्न value = values[i].value;
 	    vars[i] = {tag, value};
 	  }
 	  hb_font_set_variations (font, vars.arrayZ, vars.length);
@@ -433,7 +433,7 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   dw_face->AddRef ();
   font->data.directwrite.cmpexch (nullptr, (hb_directwrite_font_data_t *) dw_face);
 
-  return font;
+  फर्काऊ font;
 }
 
 /**
@@ -449,7 +449,7 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
 IDWriteFontFace *
 hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 {
-  return (IDWriteFontFace *) (const void *) font->data.directwrite;
+  फर्काऊ (IDWriteFontFace *) (अचर शून्य *) font->data.directwrite;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -468,7 +468,7 @@ hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 IDWriteFont *
 hb_directwrite_font_get_dw_font (hb_font_t *font)
 {
-  return nullptr;
+  फर्काऊ nullptr;
 }
 
 #endif

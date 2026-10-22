@@ -25,26 +25,26 @@
 #ifndef HB_SUBSET_CFF2_TO_CFF1_HH
 #define HB_SUBSET_CFF2_TO_CFF1_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifndef HB_NO_SUBSET_CFF
 
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-subset-cff-common.hh"
+#अन्तर्भाव "hb-ot-cff1-table.hh"
+#अन्तर्भाव "hb-ot-cff2-table.hh"
+#अन्तर्भाव "hb-subset-cff-common.hh"
 
-namespace OT {
+नामाकाश OT {
   // Forward declarations - these are defined in hb-subset-cff2.cc
-  struct cff2_subset_plan;
+  संरचना cff2_subset_plan;
 }
 
-namespace CFF {
+नामाकाश CFF {
 
 // Forward declaration
-struct cff2_top_dict_values_t;
+संरचना cff2_शीर्ष_dict_मानहरू_t;
 
 // Default font name for converted CFF1 fonts
-static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
+स्थिर constexpr अचर वर्ण CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
 
 /*
  * CFF2 to CFF1 Converter
@@ -83,60 +83,60 @@ static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
  * - Add endchar to CharStrings (required in CFF1, optional in CFF2)
  */
 
-struct cff1_subset_plan_from_cff2_t
+संरचना cff1_subset_plan_from_cff2_t
 {
   // Inherits most data from cff2_subset_plan
-  const OT::cff2_subset_plan *cff2_plan;
+  अचर OT::cff2_subset_plan *cff2_plan;
 
   // CFF1-specific additions
-  hb_vector_t<unsigned char> fontName;  // Single font name for Name INDEX
+  hb_vector_t<अचिन्हित वर्ण> fontName;  // Single font name for Name INDEX
 
-  bool create (const OT::cff2_subset_plan &cff2_plan_)
+  तार्किक create (अचर OT::cff2_subset_plan &cff2_plan_)
   {
     cff2_plan = &cff2_plan_;
 
     // Create a simple font name (CFF1 requires a Name INDEX)
-    fontName.resize (strlen (CFF1_DEFAULT_FONT_NAME));
-    if (fontName.in_error ()) return false;
-    memcpy (fontName.arrayZ, CFF1_DEFAULT_FONT_NAME, strlen (CFF1_DEFAULT_FONT_NAME));
+    fontName.resize (म_माप (CFF1_DEFAULT_FONT_NAME));
+    यदि (fontName.in_error ()) फर्काऊ असत्य;
+    स_नकल (fontName.arrayZ, CFF1_DEFAULT_FONT_NAME, म_माप (CFF1_DEFAULT_FONT_NAME));
 
-    return true;
+    फर्काऊ सत्य;
   }
 };
 
 /* CFF1 Top DICT operator serializer that adds ROS and removes CFF2-specific ops */
-struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
+संरचना cff1_from_cff2_शीर्ष_dict_op_serializer_t : cff_शीर्ष_dict_op_serializer_t<>
 {
-  bool serialize (hb_serialize_context_t *c,
-                  const op_str_t &opstr,
-                  const cff_sub_table_info_t &info) const
+  तार्किक serialize (hb_serialize_context_t *c,
+                  अचर op_str_t &opstr,
+                  अचर cff_sub_table_info_t &info) अचर
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (एतत्);
 
-    switch (opstr.op)
+    विकल्प (opstr.op)
     {
-      case OpCode_vstore:
+      पक्ष OpCode_vstore:
         // CFF2-only operator, skip it
-        return_trace (true);
+        return_trace (सत्य);
 
-      case OpCode_CharStrings:
+      पक्ष OpCode_CharStrings:
         return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
-      case OpCode_FDSelect:
+      पक्ष OpCode_FDArray:
+      पक्ष OpCode_FDSelect:
         // These are explicitly serialized in the main function to ensure they're present
         // even if CFF2 doesn't have them. Skip them here to avoid duplication.
-        return_trace (true);
+        return_trace (सत्य);
 
-      default:
+      स्वभाव:
         return_trace (copy_opstr (c, opstr));
     }
   }
 
   // Serialize ROS operator to make this a CID-keyed font
-  bool serialize_ros (hb_serialize_context_t *c) const
+  तार्किक serialize_ros (hb_serialize_context_t *c) अचर
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (एतत्);
 
     // ROS = Registry-Ordering-Supplement
     // We use "Adobe", "Identity", 0 for maximum compatibility
@@ -155,20 +155,20 @@ struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
     encoder.encode_int (0);    // Supplement
     encoder.encode_op (OpCode_ROS);
 
-    if (encoder.in_error ())
-      return_trace (false);
+    यदि (encoder.in_error ())
+      return_trace (असत्य);
 
-    auto bytes = buff.as_bytes ();
+    स्वतः bytes = buff.as_bytes ();
     return_trace (c->embed (bytes.arrayZ, bytes.length));
   }
 };
 
 /* Main serialization function */
-HB_INTERNAL bool
+HB_INTERNAL तार्किक
 serialize_cff2_to_cff1 (hb_serialize_context_t *c,
                         OT::cff2_subset_plan &plan,
-                        const cff2_top_dict_values_t &cff2_topDict,
-                        const OT::cff2::accelerator_subset_t &acc);
+                        अचर cff2_शीर्ष_dict_मानहरू_t &cff2_शीर्ष_Dict,
+                        अचर OT::cff2::accelerator_subset_t &acc);
 
 } /* namespace CFF */
 

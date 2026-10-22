@@ -27,184 +27,184 @@
 #ifndef GRAPH_MARKBASEPOS_GRAPH_HH
 #define GRAPH_MARKBASEPOS_GRAPH_HH
 
-#include "split-helpers.hh"
-#include "coverage-graph.hh"
-#include "../OT/Layout/GPOS/MarkBasePos.hh"
-#include "../OT/Layout/GPOS/PosLookupSubTable.hh"
+#अन्तर्भाव "split-helpers.hh"
+#अन्तर्भाव "coverage-graph.hh"
+#अन्तर्भाव "../OT/Layout/GPOS/MarkBasePos.hh"
+#अन्तर्भाव "../OT/Layout/GPOS/PosLookupSubTable.hh"
 
-namespace graph {
+नामाकाश graph {
 
-struct AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
+संरचना AnchorMatrix : सार्वजनिक OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex, unsigned class_count) const
+  graph_result_t<शून्य> sanitize (अचर graph_t::vertex_t& vertex, अचिन्हित class_गन्ती) अचर
   {
-    size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < AnchorMatrix::min_size)) return Err(SANITIZE_FAILURE);
+    माप_प्रकार vertex_len = vertex.table_size();
+    यदि (unlikely (vertex_len < AnchorMatrix::min_size)) फर्काऊ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < AnchorMatrix::min_size +
-                  OT::Offset16::static_size * class_count * this->rows))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    यदि (unlikely (vertex_len < AnchorMatrix::min_size +
+                  OT::Offset16::static_size * class_गन्ती * एतत्->rows))
+      फर्काऊ Err(SANITIZE_FAILURE);
+    फर्काऊ Ok();
   }
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               unsigned this_index,
-                               unsigned old_class_count,
-                               unsigned new_class_count)
+  graph_result_t<शून्य> shrink (gsubgpos_graph_context_t& c,
+                               अचिन्हित this_index,
+                               अचिन्हित old_class_गन्ती,
+                               अचिन्हित new_class_गन्ती)
   {
-    if (unlikely (new_class_count >= old_class_count)) return Err(INVALID_ARGUMENT);
-    auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
-    unsigned base_count = rows;
+    यदि (unlikely (new_class_गन्ती >= old_class_गन्ती)) फर्काऊ Err(INVALID_ARGUMENT);
+    स्वतः& v = c.graph.vertices_[this_index];
+    अचर स्वतः& o = v.obj ();
+    अचिन्हित base_गन्ती = rows;
     v.set_buffer (o.head,
       o.head +
       AnchorMatrix::min_size +
-      OT::Offset16::static_size * base_count * new_class_count);
+      OT::Offset16::static_size * base_गन्ती * new_class_गन्ती);
 
     // Reposition links into the new indexing scheme.
-    for (auto& link : v.real_links_writer ())
+    लागि (स्वतः& link : v.real_links_writer ())
     {
-      unsigned index = (link.position - 2) / 2;
-      unsigned base = index / old_class_count;
-      unsigned klass = index % old_class_count;
-      if (unlikely (klass >= new_class_count))
+      अचिन्हित index = (link.position - 2) / 2;
+      अचिन्हित base = index / old_class_गन्ती;
+      अचिन्हित klass = index % old_class_गन्ती;
+      यदि (unlikely (klass >= new_class_गन्ती))
         // should have already been removed
-        return Err(INVALID_ARGUMENT);
+        फर्काऊ Err(INVALID_ARGUMENT);
 
-      unsigned new_index = base * new_class_count + klass;
+      अचिन्हित new_index = base * new_class_गन्ती + klass;
 
-      link.position = (char*) &(this->matrixZ[new_index]) - (char*) this;
+      link.position = (वर्ण*) &(एतत्->matrixZ[new_index]) - (वर्ण*) एतत्;
     }
 
-    return Ok();
+    फर्काऊ Ok();
   }
 
-  graph_result_t<unsigned> clone (gsubgpos_graph_context_t& c,
-                                  unsigned this_index,
-                                  unsigned start,
-                                  unsigned end,
-                                  unsigned class_count)
+  graph_result_t<अचिन्हित> clone (gsubgpos_graph_context_t& c,
+                                  अचिन्हित this_index,
+                                  अचिन्हित start,
+                                  अचिन्हित end,
+                                  अचिन्हित class_गन्ती)
   {
-    unsigned base_count = rows;
-    unsigned new_class_count = end - start;
-    unsigned size = AnchorMatrix::min_size +
-                    OT::Offset16::static_size * new_class_count * rows;
-    TRY_ASSIGN (unsigned prime_id, c.create_node (size));
-    AnchorMatrix* prime = (AnchorMatrix*) c.graph.object (prime_id).head;
-    prime->rows = base_count;
+    अचिन्हित base_गन्ती = rows;
+    अचिन्हित new_class_गन्ती = end - start;
+    अचिन्हित size = AnchorMatrix::min_size +
+                    OT::Offset16::static_size * new_class_गन्ती * rows;
+    TRY_ASSIGN (अचिन्हित अविभाज्य_id, c.create_गाँठो (size));
+    AnchorMatrix* अविभाज्य = (AnchorMatrix*) c.graph.object (अविभाज्य_id).head;
+    अविभाज्य->rows = base_गन्ती;
 
-    auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
+    स्वतः& v = c.graph.vertices_[this_index];
+    अचर स्वतः& o = v.obj ();
 
-    int num_links = o.real_links.length;
-    for (int i = 0; i < num_links; i++)
+    पूर्णाङ्क अङ्क_links = o.real_links.length;
+    लागि (पूर्णाङ्क i = 0; i < अङ्क_links; i++)
     {
-      const auto& link = o.real_links[i];
-      unsigned old_index = (link.position - 2) / OT::Offset16::static_size;
-      unsigned klass = old_index % class_count;
-      if (klass < start || klass >= end) continue;
+      अचर स्वतः& link = o.real_links[i];
+      अचिन्हित old_index = (link.position - 2) / OT::Offset16::static_size;
+      अचिन्हित klass = old_index % class_गन्ती;
+      यदि (klass < start || klass >= end) जारी;
 
-      unsigned base = old_index / class_count;
-      unsigned new_klass = klass - start;
-      unsigned new_index = base * new_class_count + new_klass;
+      अचिन्हित base = old_index / class_गन्ती;
+      अचिन्हित new_klass = klass - start;
+      अचिन्हित new_index = base * new_class_गन्ती + new_klass;
 
 
-      unsigned child_idx = link.objidx;
-      TRY (c.graph.add_link (&(prime->matrixZ[new_index]),
-                             prime_id,
+      अचिन्हित child_idx = link.objidx;
+      TRY (c.graph.add_link (&(अविभाज्य->matrixZ[new_index]),
+                             अविभाज्य_id,
                              child_idx));
 
-      auto& child = c.graph.vertices_[child_idx];
+      स्वतः& child = c.graph.vertices_[child_idx];
       child.remove_parent (this_index);
 
       v.remove_real_link_unordered (i);
-      num_links--;
+      अङ्क_links--;
       i--;
     }
 
     // Restore correct ordering after the above removes, which mess up link ordering.
     v.sort_real_links ();
 
-    return Ok(prime_id);
+    फर्काऊ Ok(अविभाज्य_id);
   }
 };
 
-struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
+संरचना MarkArray : सार्वजनिक OT::Layout::GPOS_impl::MarkArray<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (अचर graph_t::vertex_t& vertex) अचर
   {
-    size_t vertex_len = vertex.table_size();
-    unsigned min_size = MarkArray::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    माप_प्रकार vertex_len = vertex.table_size();
+    अचिन्हित min_size = MarkArray::min_size;
+    यदि (unlikely (vertex_len < min_size)) फर्काऊ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    यदि (unlikely (vertex_len < get_size ())) फर्काऊ Err(SANITIZE_FAILURE);
+    फर्काऊ Ok();
   }
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               const hb_hashmap_t<unsigned, unsigned>& mark_array_links,
-                               unsigned this_index,
-                               unsigned new_class_count)
+  graph_result_t<शून्य> shrink (gsubgpos_graph_context_t& c,
+                               अचर hb_hashmap_t<अचिन्हित, अचिन्हित>& mark_array_links,
+                               अचिन्हित this_index,
+                               अचिन्हित new_class_गन्ती)
   {
-    auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
-    for (const auto& link : o.real_links)
+    स्वतः& v = c.graph.vertices_[this_index];
+    अचर स्वतः& o = v.obj ();
+    लागि (अचर स्वतः& link : o.real_links)
       c.graph.vertices_[link.objidx].remove_parent (this_index);
     v.clear_real_links ();
 
-    unsigned new_index = 0;
-    for (const auto& record : this->iter ())
+    अचिन्हित new_index = 0;
+    लागि (अचर स्वतः& record : एतत्->iter ())
     {
-      unsigned klass = record.klass;
-      if (klass >= new_class_count) continue;
+      अचिन्हित klass = record.klass;
+      यदि (klass >= new_class_गन्ती) जारी;
 
-      (*this)[new_index].klass = klass;
-      unsigned position = (char*) &record.markAnchor - (char*) this;
-      unsigned* objidx;
-      if (!mark_array_links.has (position, &objidx))
+      (*एतत्)[new_index].klass = klass;
+      अचिन्हित position = (वर्ण*) &record.markAnchor - (वर्ण*) एतत्;
+      अचिन्हित* objidx;
+      यदि (!mark_array_links.has (position, &objidx))
       {
         new_index++;
-        continue;
+        जारी;
       }
 
-      TRY (c.graph.add_link (&(*this)[new_index].markAnchor, this_index, *objidx));
+      TRY (c.graph.add_link (&(*एतत्)[new_index].markAnchor, this_index, *objidx));
       new_index++;
     }
 
-    this->len = new_index;
+    एतत्->len = new_index;
     v.set_buffer (o.head, o.head + MarkArray::min_size +
                   OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size * new_index);
 
-    return Ok();
+    फर्काऊ Ok();
   }
 
-  graph_result_t<unsigned> clone (gsubgpos_graph_context_t& c,
-                                  unsigned this_index,
-                                  const hb_hashmap_t<unsigned, unsigned>& pos_to_index,
+  graph_result_t<अचिन्हित> clone (gsubgpos_graph_context_t& c,
+                                  अचिन्हित this_index,
+                                  अचर hb_hashmap_t<अचिन्हित, अचिन्हित>& pos_to_index,
                                   hb_set_t& marks,
-                                  unsigned start_class)
+                                  अचिन्हित start_class)
   {
-    unsigned size = MarkArray::min_size +
+    अचिन्हित size = MarkArray::min_size +
                     OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size *
                     marks.get_population ();
-    TRY_ASSIGN (unsigned prime_id, c.create_node (size));
-    MarkArray* prime = (MarkArray*) c.graph.object (prime_id).head;
-    prime->len = marks.get_population ();
+    TRY_ASSIGN (अचिन्हित अविभाज्य_id, c.create_गाँठो (size));
+    MarkArray* अविभाज्य = (MarkArray*) c.graph.object (अविभाज्य_id).head;
+    अविभाज्य->len = marks.get_population ();
 
 
-    unsigned i = 0;
-    for (hb_codepoint_t mark : marks)
+    अचिन्हित i = 0;
+    लागि (hb_codepoint_t mark : marks)
     {
-      (*prime)[i].klass = (*this)[mark].klass - start_class;
-      unsigned offset_pos = (char*) &((*this)[mark].markAnchor) - (char*) this;
-      unsigned* anchor_index;
-      if (pos_to_index.has (offset_pos, &anchor_index))
+      (*अविभाज्य)[i].klass = (*एतत्)[mark].klass - start_class;
+      अचिन्हित offset_pos = (वर्ण*) &((*एतत्)[mark].markAnchor) - (वर्ण*) एतत्;
+      अचिन्हित* anchor_index;
+      यदि (pos_to_index.has (offset_pos, &anchor_index))
         TRY (c.graph.move_child (this_index,
-                                 &((*this)[mark].markAnchor),
-                                 prime_id,
-                                 &((*prime)[i].markAnchor)));
+                                 &((*एतत्)[mark].markAnchor),
+                                 अविभाज्य_id,
+                                 &((*अविभाज्य)[i].markAnchor)));
 
       i++;
     }
@@ -212,28 +212,28 @@ struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
     // Restore correct ordering of the vertex links which are disturbed by move_child.
     c.graph.vertices_[this_index].sort_real_links ();
 
-    return Ok(prime_id);
+    फर्काऊ Ok(अविभाज्य_id);
   }
 };
 
-struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>
+संरचना MarkBasePosFormat1 : सार्वजनिक OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (अचर graph_t::vertex_t& vertex) अचर
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < MarkBasePosFormat1::static_size))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    माप_प्रकार vertex_len = vertex.table_size ();
+    यदि (unlikely (vertex_len < MarkBasePosFormat1::static_size))
+      फर्काऊ Err(SANITIZE_FAILURE);
+    फर्काऊ Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  graph_result_t<hb_vector_t<अचिन्हित>> split_subtables (gsubgpos_graph_context_t& c,
+                                                         अचिन्हित this_index)
   {
     hb_set_t visited;
 
-    TRY_ASSIGN (const unsigned base_coverage_id, c.graph.index_for_offset (this_index, &baseCoverage));
+    TRY_ASSIGN (अचर अचिन्हित base_coverage_id, c.graph.index_for_offset (this_index, &baseCoverage));
 
-    const unsigned base_size =
+    अचर अचिन्हित base_size =
         OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>::min_size +
         MarkArray::min_size +
         AnchorMatrix::min_size +
@@ -241,34 +241,34 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
 
     TRY_ASSIGN (hb_vector_t<class_info_t> class_to_info, get_class_info (c, this_index));
 
-    unsigned class_count = classCount;
-    TRY_ASSIGN (auto base_array, c.graph.as_table<AnchorMatrix> (this_index,
+    अचिन्हित class_गन्ती = class_गन्ती_2;
+    TRY_ASSIGN (स्वतः base_array, c.graph.as_table<AnchorMatrix> (this_index,
                                                           &baseArray,
-                                                          class_count));
-    unsigned base_count = base_array.table->rows;
+                                                          class_गन्ती));
+    अचिन्हित base_गन्ती = base_array.table->rows;
 
-    unsigned partial_coverage_size = 4;
-    unsigned accumulated = base_size;
-    hb_vector_t<unsigned> split_points;
+    अचिन्हित partial_coverage_size = 4;
+    अचिन्हित accumulated = base_size;
+    hb_vector_t<अचिन्हित> split_points;
 
-    for (unsigned klass = 0; klass < class_count; klass++)
+    लागि (अचिन्हित klass = 0; klass < class_गन्ती; klass++)
     {
       class_info_t& info = class_to_info[klass];
       partial_coverage_size += OT::HBUINT16::static_size * info.marks.get_population ();
-      unsigned accumulated_delta =
+      अचिन्हित accumulated_delta =
           OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size * info.marks.get_population () +
-          OT::Offset16::static_size * base_count;
+          OT::Offset16::static_size * base_गन्ती;
 
-      for (unsigned objidx : info.child_indices)
-        accumulated_delta += c.graph.find_subgraph_size (objidx, visited).value_or (0);
+      लागि (अचिन्हित objidx : info.child_indices)
+        accumulated_delta += c.graph.find_subgraph_size (objidx, visited).मान_or (0);
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated + partial_coverage_size;
+      अचिन्हित total = accumulated + partial_coverage_size;
 
-      if (total >= (1 << 16))
+      यदि (total >= (1 << 16))
       {
         split_points.push (klass);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
+        TRY (graph_result_t<शून्य>::from (split_points, ALLOCATION_FAILURE));
         accumulated = base_size + accumulated_delta;
         partial_coverage_size = 4 + OT::HBUINT16::static_size * info.marks.get_population ();
         visited.clear (); // node sharing isn't allowed between splits.
@@ -276,127 +276,127 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
     }
 
 
-    TRY_ASSIGN (const unsigned mark_array_id, c.graph.index_for_offset (this_index, &markArray));
-    TRY_ASSIGN (auto mark_array_links, c.graph.vertices_[mark_array_id].position_to_index_map ());
+    TRY_ASSIGN (अचर अचिन्हित mark_array_id, c.graph.index_for_offset (this_index, &markArray));
+    TRY_ASSIGN (स्वतः mark_array_links, c.graph.vertices_[mark_array_id].position_to_index_map ());
 
     split_context_t split_context {
       c,
-      this,
+      एतत्,
       this_index,
       std::move (class_to_info),
       std::move (mark_array_links),
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    फर्काऊ actuate_subtable_split<split_context_t> (split_context, split_points);
   }
 
- private:
+ गुप्त:
 
-  struct class_info_t {
+  संरचना class_info_t {
     hb_set_t marks;
-    hb_vector_t<unsigned> child_indices;
+    hb_vector_t<अचिन्हित> child_indices;
   };
 
-  struct split_context_t {
+  संरचना split_context_t {
     gsubgpos_graph_context_t& c;
     MarkBasePosFormat1* thiz;
-    unsigned this_index;
+    अचिन्हित this_index;
     hb_vector_t<class_info_t> class_to_info;
-    hb_hashmap_t<unsigned, unsigned> mark_array_links;
+    hb_hashmap_t<अचिन्हित, अचिन्हित> mark_array_links;
 
-    hb_set_t marks_for (unsigned start, unsigned end)
+    hb_set_t marks_for (अचिन्हित start, अचिन्हित end)
     {
       hb_set_t marks;
-      for (unsigned klass = start; klass < end; klass++)
+      लागि (अचिन्हित klass = start; klass < end; klass++)
       {
         + class_to_info[klass].marks.iter ()
         | hb_sink (marks)
         ;
       }
-      return marks;
+      फर्काऊ marks;
     }
 
-    unsigned original_count ()
+    अचिन्हित original_गन्ती_2 ()
     {
-      return thiz->classCount;
+      फर्काऊ thiz->class_गन्ती_2;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    graph_result_t<अचिन्हित> clone_range (अचिन्हित start, अचिन्हित end)
     {
-      return thiz->clone_range (*this, this->this_index, start, end);
+      फर्काऊ thiz->clone_range (*एतत्, एतत्->this_index, start, end);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    graph_result_t<शून्य> shrink (अचिन्हित गन्ती)
     {
-      return thiz->shrink (*this, this->this_index, count);
+      फर्काऊ thiz->shrink (*एतत्, एतत्->this_index, गन्ती);
     }
   };
 
   graph_result_t<hb_vector_t<class_info_t>> get_class_info (gsubgpos_graph_context_t& c,
-                                                            unsigned this_index)
+                                                            अचिन्हित this_index)
   {
     hb_vector_t<class_info_t> class_to_info;
 
-    unsigned class_count = classCount;
-    if (!class_count) return class_to_info;
+    अचिन्हित class_गन्ती = class_गन्ती_2;
+    यदि (!class_गन्ती) फर्काऊ class_to_info;
 
-    if (unlikely (!class_to_info.resize (class_count)))
-      return Err(ALLOCATION_FAILURE);
+    यदि (unlikely (!class_to_info.resize (class_गन्ती)))
+      फर्काऊ Err(ALLOCATION_FAILURE);
 
-    TRY_ASSIGN (auto mark_array, c.graph.as_table<MarkArray> (this_index, &markArray));
+    TRY_ASSIGN (स्वतः mark_array, c.graph.as_table<MarkArray> (this_index, &markArray));
 
-    unsigned mark_count = mark_array.table->len;
-    for (unsigned mark = 0; mark < mark_count; mark++)
+    अचिन्हित mark_गन्ती = mark_array.table->len;
+    लागि (अचिन्हित mark = 0; mark < mark_गन्ती; mark++)
     {
-      unsigned klass = (*mark_array.table)[mark].get_class ();
-      if (klass >= class_count) continue;
+      अचिन्हित klass = (*mark_array.table)[mark].get_class ();
+      यदि (klass >= class_गन्ती) जारी;
       class_to_info[klass].marks.add (mark);
     }
 
-    for (const auto& link : mark_array.vertex->obj ().real_links)
+    लागि (अचर स्वतः& link : mark_array.vertex->obj ().real_links)
     {
-      unsigned mark = (link.position - 2) /
+      अचिन्हित mark = (link.position - 2) /
                      OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size;
-      unsigned klass = (*mark_array.table)[mark].get_class ();
-      if (klass >= class_count) continue;
+      अचिन्हित klass = (*mark_array.table)[mark].get_class ();
+      यदि (klass >= class_गन्ती) जारी;
       class_to_info[klass].child_indices.push (link.objidx);
     }
 
-    TRY_ASSIGN (unsigned base_array_id,
+    TRY_ASSIGN (अचिन्हित base_array_id,
          c.graph.index_for_offset (this_index, &baseArray));
 
-    auto& base_array_v = c.graph.vertices_[base_array_id];
+    स्वतः& base_array_v = c.graph.vertices_[base_array_id];
 
-    for (const auto& link : base_array_v.obj ().real_links)
+    लागि (अचर स्वतः& link : base_array_v.obj ().real_links)
     {
-      unsigned index = (link.position - 2) / OT::Offset16::static_size;
-      unsigned klass = index % class_count;
+      अचिन्हित index = (link.position - 2) / OT::Offset16::static_size;
+      अचिन्हित klass = index % class_गन्ती;
       class_to_info[klass].child_indices.push (link.objidx);
     }
 
-    return class_to_info;
+    फर्काऊ class_to_info;
   }
 
-  graph_result_t<void> shrink (split_context_t& sc,
-                               unsigned this_index,
-                               unsigned count)
+  graph_result_t<शून्य> shrink (split_context_t& sc,
+                               अचिन्हित this_index,
+                               अचिन्हित गन्ती)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_सन्देश (SUBSET_REPACK, nullptr,
                "  Shrinking MarkBasePosFormat1 (%u) to [0, %u).",
                this_index,
-               count);
+               गन्ती);
 
-    unsigned old_count = classCount;
-    if (count >= old_count)
-      return Ok();
+    अचिन्हित old_गन्ती = class_गन्ती_2;
+    यदि (गन्ती >= old_गन्ती)
+      फर्काऊ Ok();
 
-    classCount = count;
+    class_गन्ती_2 = गन्ती;
 
-    TRY_ASSIGN (auto mark_coverage, sc.c.graph.as_mutable_table<Coverage> (this_index,
+    TRY_ASSIGN (स्वतः mark_coverage, sc.c.graph.as_mutable_table<Coverage> (this_index,
                                                                     &markCoverage));
 
-    hb_set_t marks = sc.marks_for (0, count);
-    auto new_coverage =
+    hb_set_t marks = sc.marks_for (0, गन्ती);
+    स्वतः new_coverage =
         + hb_enumerate (mark_coverage.table->iter ())
         | hb_filter (marks, hb_first)
         | hb_map_retains_sorting (hb_second)
@@ -406,124 +406,124 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
                                   4 + 2 * marks.get_population ()));
 
 
-    TRY_ASSIGN (auto base_array, sc.c.graph.as_mutable_table<AnchorMatrix> (this_index,
+    TRY_ASSIGN (स्वतः base_array, sc.c.graph.as_mutable_table<AnchorMatrix> (this_index,
                                                                      &baseArray,
-                                                                     old_count));
+                                                                     old_गन्ती));
 
     TRY (base_array.table->shrink (sc.c,
                                    base_array.index,
-                                   old_count,
-                                   count));
+                                   old_गन्ती,
+                                   गन्ती));
 
-    TRY_ASSIGN (auto mark_array, sc.c.graph.as_mutable_table<MarkArray> (this_index,
+    TRY_ASSIGN (स्वतः mark_array, sc.c.graph.as_mutable_table<MarkArray> (this_index,
                                                                   &markArray));
 
     TRY (mark_array.table->shrink (sc.c,
                                    sc.mark_array_links,
                                    mark_array.index,
-                                   count));
+                                   गन्ती));
 
-    return Ok();
+    फर्काऊ Ok();
   }
 
   // Create a new MarkBasePos that has all of the data for classes from [start, end).
-  graph_result_t<unsigned> clone_range (split_context_t& sc,
-                                        unsigned this_index,
-                                        unsigned start, unsigned end) const
+  graph_result_t<अचिन्हित> clone_range (split_context_t& sc,
+                                        अचिन्हित this_index,
+                                        अचिन्हित start, अचिन्हित end) अचर
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_सन्देश (SUBSET_REPACK, nullptr,
                "  Cloning MarkBasePosFormat1 (%u) range [%u, %u).", this_index, start, end);
 
     graph_t& graph = sc.c.graph;
-    unsigned prime_size = OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>::static_size;
+    अचिन्हित अविभाज्य_size = OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>::static_size;
 
-    TRY_ASSIGN (unsigned prime_id, sc.c.create_node (prime_size));
+    TRY_ASSIGN (अचिन्हित अविभाज्य_id, sc.c.create_गाँठो (अविभाज्य_size));
 
-    MarkBasePosFormat1* prime = (MarkBasePosFormat1*) graph.object (prime_id).head;
-    prime->format = this->format;
-    unsigned new_class_count = end - start;
-    prime->classCount = new_class_count;
+    MarkBasePosFormat1* अविभाज्य = (MarkBasePosFormat1*) graph.object (अविभाज्य_id).head;
+    अविभाज्य->format = एतत्->format;
+    अचिन्हित new_class_गन्ती = end - start;
+    अविभाज्य->class_गन्ती_2 = new_class_गन्ती;
 
-    TRY_ASSIGN (unsigned base_coverage_id,
+    TRY_ASSIGN (अचिन्हित base_coverage_id,
          graph.index_for_offset (sc.this_index, &baseCoverage));
 
-    TRY (graph.add_link (&(prime->baseCoverage), prime_id, base_coverage_id));
+    TRY (graph.add_link (&(अविभाज्य->baseCoverage), अविभाज्य_id, base_coverage_id));
 
-    TRY_ASSIGN (auto mark_coverage, sc.c.graph.as_table<Coverage> (this_index,
+    TRY_ASSIGN (स्वतः mark_coverage, sc.c.graph.as_table<Coverage> (this_index,
                                                             &markCoverage));
 
     hb_set_t marks = sc.marks_for (start, end);
-    auto new_coverage =
+    स्वतः new_coverage =
         + hb_enumerate (mark_coverage.table->iter ())
         | hb_filter (marks, hb_first)
         | hb_map_retains_sorting (hb_second)
         ;
     TRY (Coverage::add_coverage (sc.c,
-                                 prime_id,
+                                 अविभाज्य_id,
                                  2,
                                  + new_coverage,
                                  marks.get_population () * 2 + 4));
 
-    TRY_ASSIGN (auto mark_array,
+    TRY_ASSIGN (स्वतः mark_array,
          graph.as_mutable_table <MarkArray> (sc.this_index, &markArray));
 
-    TRY_ASSIGN (unsigned new_mark_array,
+    TRY_ASSIGN (अचिन्हित new_mark_array,
          mark_array.table->clone (sc.c,
                                   mark_array.index,
                                   sc.mark_array_links,
                                   marks,
                                   start));
-    TRY (graph.add_link (&(prime->markArray), prime_id, new_mark_array));
+    TRY (graph.add_link (&(अविभाज्य->markArray), अविभाज्य_id, new_mark_array));
 
-    unsigned class_count = classCount;
-    TRY_ASSIGN (auto base_array,
-         graph.as_mutable_table<AnchorMatrix> (sc.this_index, &baseArray, class_count));
+    अचिन्हित class_गन्ती = class_गन्ती_2;
+    TRY_ASSIGN (स्वतः base_array,
+         graph.as_mutable_table<AnchorMatrix> (sc.this_index, &baseArray, class_गन्ती));
 
-    TRY_ASSIGN (unsigned new_base_array,
+    TRY_ASSIGN (अचिन्हित new_base_array,
          base_array.table->clone (sc.c,
                                   base_array.index,
-                                  start, end, this->classCount));
-    TRY (graph.add_link (&(prime->baseArray), prime_id, new_base_array));
+                                  start, end, एतत्->class_गन्ती_2));
+    TRY (graph.add_link (&(अविभाज्य->baseArray), अविभाज्य_id, new_base_array));
 
-    return Ok(prime_id);
+    फर्काऊ Ok(अविभाज्य_id);
   }
 };
 
 
-struct MarkBasePos : public OT::Layout::GPOS_impl::MarkBasePos
+संरचना MarkBasePos : सार्वजनिक OT::Layout::GPOS_impl::MarkBasePos
 {
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  graph_result_t<hb_vector_t<अचिन्हित>> split_subtables (gsubgpos_graph_context_t& c,
+                                                         अचिन्हित this_index)
   {
-    switch (u.format.v) {
-    case 1:
+    विकल्प (u.format.v) {
+    पक्ष 1:
       hb_barrier ();
-      return ((MarkBasePosFormat1*)(&u.format1))->split_subtables (c, this_index);
+      फर्काऊ ((MarkBasePosFormat1*)(&u.format1))->split_subtables (c, this_index);
 #ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
+    पक्ष 2: HB_FALLTHROUGH;
       // 24-bit MarkBasePos already has widened offsets; leave it unsplit.
 #endif
-    default:
-      return Ok(hb_vector_t<unsigned> ());
+    स्वभाव:
+      फर्काऊ Ok(hb_vector_t<अचिन्हित> ());
     }
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (अचर graph_t::vertex_t& vertex) अचर
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    माप_प्रकार vertex_len = vertex.table_size ();
+    यदि (unlikely (vertex_len < u.format.v.get_size ())) फर्काऊ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    switch (u.format.v) {
-    case 1:
+    विकल्प (u.format.v) {
+    पक्ष 1:
       hb_barrier ();
-      return ((MarkBasePosFormat1*)(&u.format1))->sanitize (vertex);
+      फर्काऊ ((MarkBasePosFormat1*)(&u.format1))->sanitize (vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
+    पक्ष 2: HB_FALLTHROUGH;
 #endif
-    default:
+    स्वभाव:
       // We don't handle format 3 and 4 here.
-      return Err(SANITIZE_FAILURE);
+      फर्काऊ Err(SANITIZE_FAILURE);
     }
   }
 };

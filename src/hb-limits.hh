@@ -25,7 +25,7 @@
 #ifndef HB_LIMITS_HH
 #define HB_LIMITS_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 
 #ifndef HB_BUFFER_MAX_LEN_FACTOR
@@ -80,20 +80,20 @@
 #define HB_MAX_LANGSYS 2000
 #endif
 
-#ifndef HB_MAX_LANGSYS_FEATURE_COUNT
-#define HB_MAX_LANGSYS_FEATURE_COUNT 50000
+#ifndef HB_MAX_LANGSYS_FEATURE_गन्ती
+#define HB_MAX_LANGSYS_FEATURE_गन्ती 50000
 #endif
 
 #ifndef HB_MAX_FEATURE_INDICES
 #define HB_MAX_FEATURE_INDICES 8000
 #endif
 
-#ifndef HB_MAX_LOOKUP_VISIT_COUNT
-#define HB_MAX_LOOKUP_VISIT_COUNT 35000
+#ifndef HB_MAX_LOOKUP_VISIT_गन्ती
+#define HB_MAX_LOOKUP_VISIT_गन्ती 35000
 #endif
 
-#ifndef HB_MAX_GRAPH_EDGE_COUNT
-#define HB_MAX_GRAPH_EDGE_COUNT 16384
+#ifndef HB_MAX_GRAPH_EDGE_गन्ती
+#define HB_MAX_GRAPH_EDGE_गन्ती 16384
 #endif
 
 #ifndef HB_VAR_COMPOSITE_MAX_AXES
@@ -123,7 +123,7 @@
 /* Total bytes of sub-blobs (gradient color stops, clip outlines) in one
  * hb_gpu_paint_t walk; exceeding it makes the paint unsupported. */
 #ifndef HB_GPU_PAINT_MAX_SUB_BYTES
-#define HB_GPU_PAINT_MAX_SUB_BYTES ((unsigned) 64 << 20)
+#define HB_GPU_PAINT_MAX_SUB_BYTES ((अचिन्हित) 64 << 20)
 #endif
 
 /* Tiles emitted by one hb_paint_sweep_gradient_tiles() call.  Also
@@ -136,7 +136,7 @@
 #endif
 
 #ifndef HB_SVG_MAX_DOCUMENT_SIZE
-#define HB_SVG_MAX_DOCUMENT_SIZE ((size_t) 16 << 20)
+#define HB_SVG_MAX_DOCUMENT_SIZE ((माप_प्रकार) 16 << 20)
 #endif
 
 /* Maximum size of one serialized vector document (SVG or PDF) produced by
@@ -146,11 +146,11 @@
  * context, so a flat cap suffices.  Unsigned (not size_t like the SVG-table
  * limit above) to match hb_vector_buf_t's unsigned length arithmetic. */
 #ifndef HB_VECTOR_MAX_DOCUMENT_SIZE
-#define HB_VECTOR_MAX_DOCUMENT_SIZE ((unsigned) 16 << 20)
+#define HB_VECTOR_MAX_DOCUMENT_SIZE ((अचिन्हित) 16 << 20)
 #endif
 
 #ifndef HB_RASTER_MAX_BUFFER_SIZE
-#define HB_RASTER_MAX_BUFFER_SIZE ((size_t) 1 << 30)
+#define HB_RASTER_MAX_BUFFER_SIZE ((माप_प्रकार) 1 << 30)
 #endif
 
 /* Maximum surface dimension (pixels per side) when extents are derived
@@ -197,11 +197,11 @@
 
 /* Precharge COST * MULT.  Callers bound COST and MULT structurally, and live
  * budgets are concrete non-negative values when a session starts. */
-static HB_ALWAYS_INLINE bool
-hb_budget_spend (int64_t &budget, unsigned int cost, unsigned int mult = 1)
+स्थिर HB_ALWAYS_INLINE तार्किक
+hb_budget_spend (int64_t &budget, अचिन्हित पूर्णाङ्क cost, अचिन्हित पूर्णाङ्क mult = 1)
 {
   budget -= (int64_t) cost * mult;
-  return budget >= 0;
+  फर्काऊ budget >= 0;
 }
 
 /* The flat pixel-work floor for one raster paint session.  Pixel and

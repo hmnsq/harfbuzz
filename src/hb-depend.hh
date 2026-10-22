@@ -27,10 +27,10 @@
 #ifndef HB_DEPEND_HH
 #define HB_DEPEND_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-subset-depend.h"
-#include "hb-depend-data.hh"
+#अन्तर्भाव "hb-subset-depend.h"
+#अन्तर्भाव "hb-depend-data.hh"
 
 
 /**
@@ -42,19 +42,19 @@
  * graph once via hb_depend_data_builder_t::compile(). The graph remains
  * immutable for the lifetime of the object.
  */
-struct hb_subset_depend_t
+संरचना hb_subset_depend_t
 {
   HB_INTERNAL hb_subset_depend_t (hb_face_t *face);
 
   hb_object_header_t header;
 
-  bool successful;
+  तार्किक successful;
 
-  bool in_error () const { return !successful; }
+  तार्किक in_error () अचर { फर्काऊ !successful; }
 
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
+  अचर hb_set_t *get_set_from_index (hb_codepoint_t index)
   {
-    return data.get_set_from_index (index);
+    फर्काऊ data.get_set_from_index (index);
   }
 
   hb_depend_data_t data;

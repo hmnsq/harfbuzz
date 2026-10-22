@@ -27,55 +27,55 @@
 #ifndef GRAPH_PAIRPOS_GRAPH_HH
 #define GRAPH_PAIRPOS_GRAPH_HH
 
-#include "split-helpers.hh"
-#include "coverage-graph.hh"
-#include "classdef-graph.hh"
-#include "../OT/Layout/GPOS/PairPos.hh"
-#include "../OT/Layout/GPOS/PosLookupSubTable.hh"
+#अन्तर्भाव "split-helpers.hh"
+#अन्तर्भाव "coverage-graph.hh"
+#अन्तर्भाव "classdef-graph.hh"
+#अन्तर्भाव "../OT/Layout/GPOS/PairPos.hh"
+#अन्तर्भाव "../OT/Layout/GPOS/PosLookupSubTable.hh"
 
-namespace graph {
+नामाकाश graph {
 
-struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>
+संरचना PairPosFormat1 : सार्वजनिक OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (अचर graph_t::vertex_t& vertex) अचर
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    माप_प्रकार vertex_len = vertex.table_size ();
+    अचिन्हित min_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
+    यदि (unlikely (vertex_len < min_size)) फर्काऊ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < min_size + pairSet.get_size () - pairSet.len.get_size()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    यदि (unlikely (vertex_len < min_size + pairSet.get_size () - pairSet.len.get_size()))
+      फर्काऊ Err(SANITIZE_FAILURE);
+    फर्काऊ Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  graph_result_t<hb_vector_t<अचिन्हित>> split_subtables (gsubgpos_graph_context_t& c,
+                                                         अचिन्हित this_index)
   {
     hb_set_t visited;
 
-    TRY_ASSIGN (const unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    const unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
-    const unsigned base_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
+    TRY_ASSIGN (अचर अचिन्हित coverage_id, c.graph.index_for_offset (this_index, &coverage));
+    अचर अचिन्हित coverage_size = c.graph.vertices_[coverage_id].table_size ();
+    अचर अचिन्हित base_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
 
-    unsigned partial_coverage_size = 4;
-    unsigned accumulated = base_size;
-    hb_vector_t<unsigned> split_points;
-    for (unsigned i = 0; i < pairSet.len; i++)
+    अचिन्हित partial_coverage_size = 4;
+    अचिन्हित accumulated = base_size;
+    hb_vector_t<अचिन्हित> split_points;
+    लागि (अचिन्हित i = 0; i < pairSet.len; i++)
     {
-      TRY_ASSIGN (unsigned pair_set_index, pair_set_graph_index (c, this_index, i));
-      unsigned accumulated_delta =
-          c.graph.find_subgraph_size (pair_set_index, visited).value_or (0) +
+      TRY_ASSIGN (अचिन्हित pair_set_index, pair_set_graph_index (c, this_index, i));
+      अचिन्हित accumulated_delta =
+          c.graph.find_subgraph_size (pair_set_index, visited).मान_or (0) +
           SmallTypes::size; // for PairSet offset.
       partial_coverage_size += OT::HBUINT16::static_size;
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated + hb_min (partial_coverage_size, coverage_size);
+      अचिन्हित total = accumulated + hb_min (partial_coverage_size, coverage_size);
 
-      if (total >= (1 << 16))
+      यदि (total >= (1 << 16))
       {
         split_points.push (i);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
+        TRY (graph_result_t<शून्य>::from (split_points, ALLOCATION_FAILURE));
         accumulated = base_size + accumulated_delta;
         partial_coverage_size = 6;
         visited.clear (); // node sharing isn't allowed between splits.
@@ -84,186 +84,186 @@ struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallType
 
     split_context_t split_context {
       c,
-      this,
+      एतत्,
       this_index,
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    फर्काऊ actuate_subtable_split<split_context_t> (split_context, split_points);
   }
 
- private:
+ गुप्त:
 
-  struct split_context_t {
+  संरचना split_context_t {
     gsubgpos_graph_context_t& c;
     PairPosFormat1* thiz;
-    unsigned this_index;
+    अचिन्हित this_index;
 
-    unsigned original_count ()
+    अचिन्हित original_गन्ती_2 ()
     {
-      return thiz->pairSet.len;
+      फर्काऊ thiz->pairSet.len;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    graph_result_t<अचिन्हित> clone_range (अचिन्हित start, अचिन्हित end)
     {
-      return thiz->clone_range (this->c, this->this_index, start, end);
+      फर्काऊ thiz->clone_range (एतत्->c, एतत्->this_index, start, end);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    graph_result_t<शून्य> shrink (अचिन्हित गन्ती)
     {
-      return thiz->shrink (this->c, this->this_index, count);
+      फर्काऊ thiz->shrink (एतत्->c, एतत्->this_index, गन्ती);
     }
   };
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               unsigned this_index,
-                               unsigned count)
+  graph_result_t<शून्य> shrink (gsubgpos_graph_context_t& c,
+                               अचिन्हित this_index,
+                               अचिन्हित गन्ती)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_सन्देश (SUBSET_REPACK, nullptr,
                "  Shrinking PairPosFormat1 (%u) to [0, %u).",
                this_index,
-               count);
-    unsigned old_count = pairSet.len;
-    if (count >= old_count)
-      return Ok();
+               गन्ती);
+    अचिन्हित old_गन्ती = pairSet.len;
+    यदि (गन्ती >= old_गन्ती)
+      फर्काऊ Ok();
 
-    pairSet.len = count;
-    c.graph.vertices_[this_index].shrink_buffer ((old_count - count) * SmallTypes::size);
+    pairSet.len = गन्ती;
+    c.graph.vertices_[this_index].shrink_buffer ((old_गन्ती - गन्ती) * SmallTypes::size);
 
-    TRY_ASSIGN (auto coverage, c.graph.as_mutable_table<Coverage> (this_index, &this->coverage));
+    TRY_ASSIGN (स्वतः coverage, c.graph.as_mutable_table<Coverage> (this_index, &एतत्->coverage));
 
-    unsigned coverage_size = coverage.vertex->table_size ();
-    auto new_coverage =
+    अचिन्हित coverage_size = coverage.vertex->table_size ();
+    स्वतः new_coverage =
         + hb_zip (coverage.table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second < count;
+        | hb_filter ([&] (hb_pair_t<अचिन्हित, अचिन्हित> p) {
+          फर्काऊ p.second < गन्ती;
         })
         | hb_map_retains_sorting (hb_first)
         ;
 
-    return Coverage::make_coverage (c, new_coverage, coverage.index, coverage_size);
+    फर्काऊ Coverage::make_coverage (c, new_coverage, coverage.index, coverage_size);
   }
 
   // Create a new PairPos including PairSet's from start (inclusive) to end (exclusive).
   // Returns object id of the new object.
-  graph_result_t<unsigned> clone_range (gsubgpos_graph_context_t& c,
-                                        unsigned this_index,
-                                        unsigned start, unsigned end) const
+  graph_result_t<अचिन्हित> clone_range (gsubgpos_graph_context_t& c,
+                                        अचिन्हित this_index,
+                                        अचिन्हित start, अचिन्हित end) अचर
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_सन्देश (SUBSET_REPACK, nullptr,
                "  Cloning PairPosFormat1 (%u) range [%u, %u).", this_index, start, end);
 
-    unsigned num_pair_sets = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size
-                          + num_pair_sets * SmallTypes::size;
+    अचिन्हित अङ्क_pair_sets = end - start;
+    अचिन्हित अविभाज्य_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size
+                          + अङ्क_pair_sets * SmallTypes::size;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, c.create_node (prime_size));
+    TRY_ASSIGN (अचिन्हित pair_pos_अविभाज्य_id, c.create_गाँठो (अविभाज्य_size));
 
-    PairPosFormat1* pair_pos_prime = (PairPosFormat1*) c.graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat[0] = this->valueFormat[0];
-    pair_pos_prime->valueFormat[1] = this->valueFormat[1];
-    pair_pos_prime->pairSet.len = num_pair_sets;
+    PairPosFormat1* pair_pos_अविभाज्य = (PairPosFormat1*) c.graph.object (pair_pos_अविभाज्य_id).head;
+    pair_pos_अविभाज्य->format = एतत्->format;
+    pair_pos_अविभाज्य->मान_Format_2[0] = एतत्->मान_Format_2[0];
+    pair_pos_अविभाज्य->मान_Format_2[1] = एतत्->मान_Format_2[1];
+    pair_pos_अविभाज्य->pairSet.len = अङ्क_pair_sets;
 
-    for (unsigned i = start; i < end; i++)
+    लागि (अचिन्हित i = start; i < end; i++)
     {
       TRY (c.graph.move_child<> (this_index,
                                  &pairSet[i],
-                                 pair_pos_prime_id,
-                                 &pair_pos_prime->pairSet[i - start]));
+                                 pair_pos_अविभाज्य_id,
+                                 &pair_pos_अविभाज्य->pairSet[i - start]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
     c.graph.vertices_[this_index].sort_real_links ();
 
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
+    TRY_ASSIGN (अचिन्हित coverage_id, c.graph.index_for_offset (this_index, &coverage));
     TRY (Coverage::clone_coverage (c,
                                    coverage_id,
-                                   pair_pos_prime_id,
+                                   pair_pos_अविभाज्य_id,
                                    2,
                                    start, end));
 
-    return Ok(pair_pos_prime_id);
+    फर्काऊ Ok(pair_pos_अविभाज्य_id);
   }
 
 
 
-  graph_result_t<unsigned> pair_set_graph_index (gsubgpos_graph_context_t& c, unsigned this_index, unsigned i) const
+  graph_result_t<अचिन्हित> pair_set_graph_index (gsubgpos_graph_context_t& c, अचिन्हित this_index, अचिन्हित i) अचर
   {
-    return c.graph.index_for_offset (this_index, &pairSet[i]);
+    फर्काऊ c.graph.index_for_offset (this_index, &pairSet[i]);
   }
 };
 
-struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>
+संरचना PairPosFormat2 : सार्वजनिक OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (अचर graph_t::vertex_t& vertex) अचर
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    माप_प्रकार vertex_len = vertex.table_size ();
+    अचिन्हित min_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
+    यदि (unlikely (vertex_len < min_size)) फर्काऊ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    const unsigned class1_count = class1Count;
-    if (unlikely (vertex_len < min_size + class1_count * get_class1_record_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    अचर अचिन्हित class1_गन्ती = class1_गन्ती_2;
+    यदि (unlikely (vertex_len < min_size + class1_गन्ती * get_class1_record_size ()))
+      फर्काऊ Err(SANITIZE_FAILURE);
+    फर्काऊ Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  graph_result_t<hb_vector_t<अचिन्हित>> split_subtables (gsubgpos_graph_context_t& c,
+                                                         अचिन्हित this_index)
   {
-    const unsigned base_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
-    TRY_ASSIGN (const unsigned class_def_2_size, size_of (c, this_index, &classDef2));
-    TRY_ASSIGN (const Coverage* coverage, get_coverage (c, this_index));
-    TRY_ASSIGN (const ClassDef* class_def_1, get_class_def_1 (c, this_index));
-    auto gid_and_class =
+    अचर अचिन्हित base_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
+    TRY_ASSIGN (अचर अचिन्हित class_def_2_size, size_of (c, this_index, &classDef2));
+    TRY_ASSIGN (अचर Coverage* coverage, get_coverage (c, this_index));
+    TRY_ASSIGN (अचर ClassDef* class_def_1, get_class_def_1 (c, this_index));
+    स्वतः gid_and_class =
         + coverage->iter ()
         | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-          return hb_codepoint_pair_t (gid, class_def_1->get_class (gid));
+          फर्काऊ hb_codepoint_pair_t (gid, class_def_1->get_class (gid));
         })
         ;
     TRY_ASSIGN (class_def_size_estimator_t estimator, class_def_size_estimator_t::create (gid_and_class));
 
-    const unsigned class1_count = class1Count;
-    const unsigned class2_count = class2Count;
-    const unsigned class1_record_size = get_class1_record_size ();
+    अचर अचिन्हित class1_गन्ती = class1_गन्ती_2;
+    अचर अचिन्हित class2_गन्ती = class2_गन्ती_2;
+    अचर अचिन्हित class1_record_size = get_class1_record_size ();
 
-    const unsigned value_1_len = valueFormat1.get_len ();
-    const unsigned value_2_len = valueFormat2.get_len ();
-    const unsigned total_value_len = value_1_len + value_2_len;
+    अचर अचिन्हित मान_1_len = मान_Format1.get_len ();
+    अचर अचिन्हित मान_2_len = मान_Format2.get_len ();
+    अचर अचिन्हित total_मान_len = मान_1_len + मान_2_len;
 
-    unsigned accumulated = base_size;
-    unsigned coverage_size = 4;
-    unsigned class_def_1_size = 4;
-    unsigned max_coverage_size = coverage_size;
-    unsigned max_class_def_1_size = class_def_1_size;
+    अचिन्हित accumulated = base_size;
+    अचिन्हित coverage_size = 4;
+    अचिन्हित class_def_1_size = 4;
+    अचिन्हित max_coverage_size = coverage_size;
+    अचिन्हित max_class_def_1_size = class_def_1_size;
 
-    hb_vector_t<unsigned> split_points;
+    hb_vector_t<अचिन्हित> split_points;
 
-    TRY_ASSIGN (auto device_tables, get_all_device_tables (c, this_index));
-    hb_vector_t<unsigned> format1_device_table_indices = valueFormat1.get_device_table_indices ();
-    hb_vector_t<unsigned> format2_device_table_indices = valueFormat2.get_device_table_indices ();
-    bool has_device_tables = bool(format1_device_table_indices) || bool(format2_device_table_indices);
+    TRY_ASSIGN (स्वतः device_tables, get_all_device_tables (c, this_index));
+    hb_vector_t<अचिन्हित> format1_device_table_indices = मान_Format1.get_device_table_indices ();
+    hb_vector_t<अचिन्हित> format2_device_table_indices = मान_Format2.get_device_table_indices ();
+    तार्किक has_device_tables = तार्किक(format1_device_table_indices) || तार्किक(format2_device_table_indices);
 
     hb_set_t visited;
-    for (unsigned i = 0; i < class1_count; i++)
+    लागि (अचिन्हित i = 0; i < class1_गन्ती; i++)
     {
-      unsigned accumulated_delta = class1_record_size;
+      अचिन्हित accumulated_delta = class1_record_size;
       class_def_1_size = estimator.add_class_def_size (i);
       coverage_size = estimator.coverage_size ();
       max_coverage_size = hb_max (max_coverage_size, coverage_size);
       max_class_def_1_size = hb_max (max_class_def_1_size, class_def_1_size);
 
-      if (has_device_tables) {
-        for (unsigned j = 0; j < class2_count; j++)
+      यदि (has_device_tables) {
+        लागि (अचिन्हित j = 0; j < class2_गन्ती; j++)
         {
-          unsigned value1_index = total_value_len * (class2_count * i + j);
-          unsigned value2_index = value1_index + value_1_len;
-          accumulated_delta += size_of_value_record_children (c,
+          अचिन्हित value1_index = total_मान_len * (class2_गन्ती * i + j);
+          अचिन्हित value2_index = value1_index + मान_1_len;
+          accumulated_delta += size_of_मान_record_children (c,
                                                         device_tables,
                                                         format1_device_table_indices,
                                                         value1_index,
                                                         visited);
-          accumulated_delta += size_of_value_record_children (c,
+          accumulated_delta += size_of_मान_record_children (c,
                                                         device_tables,
                                                         format2_device_table_indices,
                                                         value2_index,
@@ -272,14 +272,14 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
       }
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated
+      अचिन्हित total = accumulated
                        + coverage_size + class_def_1_size + class_def_2_size
                        // The largest object will pack last and can exceed the size limit.
                        - hb_max (hb_max (coverage_size, class_def_1_size), class_def_2_size);
-      if (total >= (1 << 16))
+      यदि (total >= (1 << 16))
       {
         split_points.push (i);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
+        TRY (graph_result_t<शून्य>::from (split_points, ALLOCATION_FAILURE));
         // split does not include i, so add the size for i when we reset the size counters.
         accumulated = base_size + accumulated_delta;
 
@@ -292,12 +292,12 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
 
     split_context_t split_context {
       c,
-      this,
+      एतत्,
       this_index,
       class1_record_size,
-      total_value_len,
-      value_1_len,
-      value_2_len,
+      total_मान_len,
+      मान_1_len,
+      मान_2_len,
       max_coverage_size,
       max_class_def_1_size,
       device_tables,
@@ -305,232 +305,232 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
       format2_device_table_indices
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    फर्काऊ actuate_subtable_split<split_context_t> (split_context, split_points);
   }
- private:
+ गुप्त:
 
-  struct split_context_t
+  संरचना split_context_t
   {
     gsubgpos_graph_context_t& c;
     PairPosFormat2* thiz;
-    unsigned this_index;
-    unsigned class1_record_size;
-    unsigned value_record_len;
-    unsigned value1_record_len;
-    unsigned value2_record_len;
-    unsigned max_coverage_size;
-    unsigned max_class_def_size;
+    अचिन्हित this_index;
+    अचिन्हित class1_record_size;
+    अचिन्हित मान_record_len;
+    अचिन्हित value1_record_len;
+    अचिन्हित value2_record_len;
+    अचिन्हित max_coverage_size;
+    अचिन्हित max_class_def_size;
 
-    const hb_hashmap_t<unsigned, unsigned>& device_tables;
-    const hb_vector_t<unsigned>& format1_device_table_indices;
-    const hb_vector_t<unsigned>& format2_device_table_indices;
+    अचर hb_hashmap_t<अचिन्हित, अचिन्हित>& device_tables;
+    अचर hb_vector_t<अचिन्हित>& format1_device_table_indices;
+    अचर hb_vector_t<अचिन्हित>& format2_device_table_indices;
 
-    unsigned original_count ()
+    अचिन्हित original_गन्ती_2 ()
     {
-      return thiz->class1Count;
+      फर्काऊ thiz->class1_गन्ती_2;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    graph_result_t<अचिन्हित> clone_range (अचिन्हित start, अचिन्हित end)
     {
-      return thiz->clone_range (*this, start, end);
+      फर्काऊ thiz->clone_range (*एतत्, start, end);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    graph_result_t<शून्य> shrink (अचिन्हित गन्ती)
     {
-      return thiz->shrink (*this, count);
+      फर्काऊ thiz->shrink (*एतत्, गन्ती);
     }
   };
 
-  size_t get_class1_record_size () const
+  माप_प्रकार get_class1_record_size () अचर
   {
-    const size_t class2_count = class2Count;
-    return
-        class2_count * (valueFormat1.get_size () + valueFormat2.get_size ());
+    अचर माप_प्रकार class2_गन्ती = class2_गन्ती_2;
+    फर्काऊ
+        class2_गन्ती * (मान_Format1.get_size () + मान_Format2.get_size ());
   }
 
-  graph_result_t<unsigned> clone_range (split_context_t& split_context,
-                                        unsigned start, unsigned end) const
+  graph_result_t<अचिन्हित> clone_range (split_context_t& split_context,
+                                        अचिन्हित start, अचिन्हित end) अचर
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_सन्देश (SUBSET_REPACK, nullptr,
                "  Cloning PairPosFormat2 (%u) range [%u, %u).", split_context.this_index, start, end);
 
     graph_t& graph = split_context.c.graph;
 
-    unsigned num_records = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size
-                          + num_records * split_context.class1_record_size;
+    अचिन्हित अङ्क_records = end - start;
+    अचिन्हित अविभाज्य_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size
+                          + अङ्क_records * split_context.class1_record_size;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, split_context.c.create_node (prime_size));
+    TRY_ASSIGN (अचिन्हित pair_pos_अविभाज्य_id, split_context.c.create_गाँठो (अविभाज्य_size));
 
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat1 = this->valueFormat1;
-    pair_pos_prime->valueFormat2 = this->valueFormat2;
-    pair_pos_prime->class1Count = num_records;
-    pair_pos_prime->class2Count = this->class2Count;
+    PairPosFormat2* pair_pos_अविभाज्य =
+        (PairPosFormat2*) graph.object (pair_pos_अविभाज्य_id).head;
+    pair_pos_अविभाज्य->format = एतत्->format;
+    pair_pos_अविभाज्य->मान_Format1 = एतत्->मान_Format1;
+    pair_pos_अविभाज्य->मान_Format2 = एतत्->मान_Format2;
+    pair_pos_अविभाज्य->class1_गन्ती_2 = अङ्क_records;
+    pair_pos_अविभाज्य->class2_गन्ती_2 = एतत्->class2_गन्ती_2;
     TRY (clone_class1_records (split_context,
-                               pair_pos_prime_id,
+                               pair_pos_अविभाज्य_id,
                                start,
                                end));
 
-    TRY_ASSIGN (unsigned coverage_id,
+    TRY_ASSIGN (अचिन्हित coverage_id,
          graph.index_for_offset (split_context.this_index, &coverage));
-    TRY_ASSIGN (unsigned class_def_1_id,
+    TRY_ASSIGN (अचिन्हित class_def_1_id,
          graph.index_for_offset (split_context.this_index, &classDef1));
 
-    auto& coverage_v = graph.vertices_[coverage_id];
-    auto& class_def_1_v = graph.vertices_[class_def_1_id];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    const ClassDef* class_def_1_table = (const ClassDef*) class_def_1_v.obj().head;
-    if (unlikely (!coverage_table || !class_def_1_table))
-      return Err(INVALID_ARGUMENT);
+    स्वतः& coverage_v = graph.vertices_[coverage_id];
+    स्वतः& class_def_1_v = graph.vertices_[class_def_1_id];
+    अचर Coverage* coverage_table = (अचर Coverage*) coverage_v.obj().head;
+    अचर ClassDef* class_def_1_table = (अचर ClassDef*) class_def_1_v.obj().head;
+    यदि (unlikely (!coverage_table || !class_def_1_table))
+      फर्काऊ Err(INVALID_ARGUMENT);
     TRY (coverage_table->sanitize (coverage_v));
     TRY (class_def_1_table->sanitize (class_def_1_v));
 
-    auto klass_map =
+    स्वतः klass_map =
     + coverage_table->iter ()
     | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-      return hb_codepoint_pair_t (gid, class_def_1_table->get_class (gid));
+      फर्काऊ hb_codepoint_pair_t (gid, class_def_1_table->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass >= start && klass < end;
+      फर्काऊ klass >= start && klass < end;
     }, hb_second)
     | hb_map_retains_sorting ([&] (hb_codepoint_pair_t gid_and_class) {
       // Classes must be from 0...N so subtract start
-      return hb_codepoint_pair_t (gid_and_class.first, gid_and_class.second - start);
+      फर्काऊ hb_codepoint_pair_t (gid_and_class.first, gid_and_class.second - start);
     })
     ;
 
     TRY (Coverage::add_coverage (split_context.c,
-                                 pair_pos_prime_id,
+                                 pair_pos_अविभाज्य_id,
                                  2,
                                  + klass_map | hb_map_retains_sorting (hb_first),
                                  split_context.max_coverage_size));
 
     // classDef1
     TRY (ClassDef::add_class_def (split_context.c,
-                                  pair_pos_prime_id,
+                                  pair_pos_अविभाज्य_id,
                                   8,
                                   + klass_map,
                                   split_context.max_class_def_size));
 
     // classDef2
-    TRY_ASSIGN (unsigned class_def_2_id,
+    TRY_ASSIGN (अचिन्हित class_def_2_id,
          graph.index_for_offset (split_context.this_index, &classDef2));
 
-    TRY(graph.vertices_[pair_pos_prime_id].add_real_link (SmallTypes::size, class_def_2_id, 10));
-    TRY(graph.vertices_[class_def_2_id].add_parent (pair_pos_prime_id, false));
+    TRY(graph.vertices_[pair_pos_अविभाज्य_id].add_real_link (SmallTypes::size, class_def_2_id, 10));
+    TRY(graph.vertices_[class_def_2_id].add_parent (pair_pos_अविभाज्य_id, असत्य));
 
-    return Ok(pair_pos_prime_id);
+    फर्काऊ Ok(pair_pos_अविभाज्य_id);
   }
 
-  graph_result_t<void> clone_class1_records (split_context_t& split_context,
-                                             unsigned pair_pos_prime_id,
-                                             unsigned start, unsigned end) const
+  graph_result_t<शून्य> clone_class1_records (split_context_t& split_context,
+                                             अचिन्हित pair_pos_अविभाज्य_id,
+                                             अचिन्हित start, अचिन्हित end) अचर
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_अविभाज्य =
+        (PairPosFormat2*) split_context.c.graph.object (pair_pos_अविभाज्य_id).head;
 
-    char* start_addr = ((char*)&values[0]) + start * split_context.class1_record_size;
-    unsigned num_records = end - start;
-    hb_memcpy (&pair_pos_prime->values[0],
+    वर्ण* start_addr = ((वर्ण*)&values[0]) + start * split_context.class1_record_size;
+    अचिन्हित अङ्क_records = end - start;
+    hb_memcpy (&pair_pos_अविभाज्य->values[0],
             start_addr,
-            num_records * split_context.class1_record_size);
+            अङ्क_records * split_context.class1_record_size);
 
-    if (!split_context.format1_device_table_indices
+    यदि (!split_context.format1_device_table_indices
         && !split_context.format2_device_table_indices)
       // No device tables to move over.
-      return Ok();
+      फर्काऊ Ok();
 
-    unsigned class2_count = class2Count;
-    for (unsigned i = start; i < end; i++)
+    अचिन्हित class2_गन्ती = class2_गन्ती_2;
+    लागि (अचिन्हित i = start; i < end; i++)
     {
-      for (unsigned j = 0; j < class2_count; j++)
+      लागि (अचिन्हित j = 0; j < class2_गन्ती; j++)
       {
-        unsigned value1_index = split_context.value_record_len * (class2_count * i + j);
-        unsigned value2_index = value1_index + split_context.value1_record_len;
+        अचिन्हित value1_index = split_context.मान_record_len * (class2_गन्ती * i + j);
+        अचिन्हित value2_index = value1_index + split_context.value1_record_len;
 
-        unsigned new_value1_index = split_context.value_record_len * (class2_count * (i - start) + j);
-        unsigned new_value2_index = new_value1_index + split_context.value1_record_len;
+        अचिन्हित new_value1_index = split_context.मान_record_len * (class2_गन्ती * (i - start) + j);
+        अचिन्हित new_value2_index = new_value1_index + split_context.value1_record_len;
 
         TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
+                                     pair_pos_अविभाज्य_id,
                                      split_context.format1_device_table_indices,
                                      value1_index,
                                      new_value1_index));
 
         TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
+                                     pair_pos_अविभाज्य_id,
                                      split_context.format2_device_table_indices,
                                      value2_index,
                                      new_value2_index));
       }
     }
-    return Ok();
+    फर्काऊ Ok();
   }
 
-  graph_result_t<void> transfer_device_tables (split_context_t& split_context,
-                                               unsigned pair_pos_prime_id,
-                                               const hb_vector_t<unsigned>& device_table_indices,
-                                               unsigned old_value_record_index,
-                                               unsigned new_value_record_index) const
+  graph_result_t<शून्य> transfer_device_tables (split_context_t& split_context,
+                                               अचिन्हित pair_pos_अविभाज्य_id,
+                                               अचर hb_vector_t<अचिन्हित>& device_table_indices,
+                                               अचिन्हित old_मान_record_index,
+                                               अचिन्हित new_मान_record_index) अचर
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_अविभाज्य =
+        (PairPosFormat2*) split_context.c.graph.object (pair_pos_अविभाज्य_id).head;
 
-    for (unsigned i : device_table_indices)
+    लागि (अचिन्हित i : device_table_indices)
     {
-      OT::Offset16* record = (OT::Offset16*) &values[old_value_record_index + i];
-      unsigned record_position = ((char*) record) - ((char*) this);
-      if (!split_context.device_tables.has (record_position)) continue;
+      OT::Offset16* record = (OT::Offset16*) &values[old_मान_record_index + i];
+      अचिन्हित record_position = ((वर्ण*) record) - ((वर्ण*) एतत्);
+      यदि (!split_context.device_tables.has (record_position)) जारी;
 
       TRY (split_context.c.graph.move_child (
           split_context.this_index,
           record,
-          pair_pos_prime_id,
-          (OT::Offset16*) &pair_pos_prime->values[new_value_record_index + i]));
+          pair_pos_अविभाज्य_id,
+          (OT::Offset16*) &pair_pos_अविभाज्य->values[new_मान_record_index + i]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
     split_context.c.graph.vertices_[split_context.this_index].sort_real_links ();
 
-    return Ok();
+    फर्काऊ Ok();
   }
 
-  graph_result_t<void> shrink (split_context_t& split_context,
-                               unsigned count)
+  graph_result_t<शून्य> shrink (split_context_t& split_context,
+                               अचिन्हित गन्ती)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_सन्देश (SUBSET_REPACK, nullptr,
                "  Shrinking PairPosFormat2 (%u) to [0, %u).",
                split_context.this_index,
-               count);
-    unsigned old_count = class1Count;
-    if (count >= old_count)
-      return Ok();
+               गन्ती);
+    अचिन्हित old_गन्ती = class1_गन्ती_2;
+    यदि (गन्ती >= old_गन्ती)
+      फर्काऊ Ok();
 
     graph_t& graph = split_context.c.graph;
-    class1Count = count;
+    class1_गन्ती_2 = गन्ती;
     graph.vertices_[split_context.this_index].shrink_buffer(
-        (old_count - count) * split_context.class1_record_size);
+        (old_गन्ती - गन्ती) * split_context.class1_record_size);
 
-    TRY_ASSIGN (auto coverage,
-         graph.as_mutable_table<Coverage> (split_context.this_index, &this->coverage));
+    TRY_ASSIGN (स्वतः coverage,
+         graph.as_mutable_table<Coverage> (split_context.this_index, &एतत्->coverage));
 
-    TRY_ASSIGN (auto class_def_1,
+    TRY_ASSIGN (स्वतः class_def_1,
          graph.as_mutable_table<ClassDef> (split_context.this_index, &classDef1));
 
-    auto klass_map =
+    स्वतः klass_map =
     + coverage.table->iter ()
     | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-      return hb_codepoint_pair_t (gid, class_def_1.table->get_class (gid));
+      फर्काऊ hb_codepoint_pair_t (gid, class_def_1.table->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass < count;
+      फर्काऊ klass < गन्ती;
     }, hb_second)
     ;
 
-    auto new_coverage = + klass_map | hb_map_retains_sorting (hb_first);
+    स्वतः new_coverage = + klass_map | hb_map_retains_sorting (hb_first);
     TRY (Coverage::make_coverage (split_context.c,
                                   + new_coverage,
                                   coverage.index,
@@ -538,114 +538,114 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
                                   // coverage table.
                                   4 + new_coverage.len() * 2));
 
-    return ClassDef::make_class_def (split_context.c,
+    फर्काऊ ClassDef::make_class_def (split_context.c,
                                      + klass_map,
                                      class_def_1.index,
                                      class_def_1.vertex->table_size ());
   }
 
-  graph_result_t<hb_hashmap_t<unsigned, unsigned>>
+  graph_result_t<hb_hashmap_t<अचिन्हित, अचिन्हित>>
   get_all_device_tables (gsubgpos_graph_context_t& c,
-                         unsigned this_index) const
+                         अचिन्हित this_index) अचर
   {
-    const auto& v = c.graph.vertices_[this_index];
-    return v.position_to_index_map ();
+    अचर स्वतः& v = c.graph.vertices_[this_index];
+    फर्काऊ v.position_to_index_map ();
   }
 
-  graph_result_t<const Coverage*> get_coverage (gsubgpos_graph_context_t& c,
-                                                unsigned this_index) const
+  graph_result_t<अचर Coverage*> get_coverage (gsubgpos_graph_context_t& c,
+                                                अचिन्हित this_index) अचर
   {
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    auto& coverage_v = c.graph.vertices_[coverage_id];
+    TRY_ASSIGN (अचिन्हित coverage_id, c.graph.index_for_offset (this_index, &coverage));
+    स्वतः& coverage_v = c.graph.vertices_[coverage_id];
 
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table)) return Err(INVALID_ARGUMENT);
+    अचर Coverage* coverage_table = (अचर Coverage*) coverage_v.obj().head;
+    यदि (unlikely (!coverage_table)) फर्काऊ Err(INVALID_ARGUMENT);
     TRY(coverage_table->sanitize (coverage_v));
 
-    return coverage_table;
+    फर्काऊ coverage_table;
   }
 
-  graph_result_t<const ClassDef*> get_class_def_1 (gsubgpos_graph_context_t& c,
-                                                   unsigned this_index) const
+  graph_result_t<अचर ClassDef*> get_class_def_1 (gsubgpos_graph_context_t& c,
+                                                   अचिन्हित this_index) अचर
   {
-    TRY_ASSIGN (unsigned class_def_1_id, c.graph.index_for_offset (this_index, &classDef1));
-    auto& class_def_1_v = c.graph.vertices_[class_def_1_id];
+    TRY_ASSIGN (अचिन्हित class_def_1_id, c.graph.index_for_offset (this_index, &classDef1));
+    स्वतः& class_def_1_v = c.graph.vertices_[class_def_1_id];
 
-    const ClassDef* class_def_1_table = (const ClassDef*) class_def_1_v.obj().head;
-    if (unlikely (!class_def_1_table)) return Err(INVALID_ARGUMENT);
+    अचर ClassDef* class_def_1_table = (अचर ClassDef*) class_def_1_v.obj().head;
+    यदि (unlikely (!class_def_1_table)) फर्काऊ Err(INVALID_ARGUMENT);
     TRY(class_def_1_table->sanitize (class_def_1_v));
-    return class_def_1_table;
+    फर्काऊ class_def_1_table;
   }
 
-  unsigned size_of_value_record_children (gsubgpos_graph_context_t& c,
-                                          const hb_hashmap_t<unsigned, unsigned>& device_tables,
-                                          const hb_vector_t<unsigned> device_table_indices,
-                                          unsigned value_record_index,
+  अचिन्हित size_of_मान_record_children (gsubgpos_graph_context_t& c,
+                                          अचर hb_hashmap_t<अचिन्हित, अचिन्हित>& device_tables,
+                                          अचर hb_vector_t<अचिन्हित> device_table_indices,
+                                          अचिन्हित मान_record_index,
                                           hb_set_t& visited)
   {
-    unsigned size = 0;
-    for (unsigned i : device_table_indices)
+    अचिन्हित size = 0;
+    लागि (अचिन्हित i : device_table_indices)
     {
-      OT::Layout::GPOS_impl::Value* record = &values[value_record_index + i];
-      unsigned record_position = ((char*) record) - ((char*) this);
-      unsigned* obj_idx;
-      if (!device_tables.has (record_position, &obj_idx)) continue;
-      size += c.graph.find_subgraph_size (*obj_idx, visited).value_or (0);
+      OT::Layout::GPOS_impl::मान* record = &values[मान_record_index + i];
+      अचिन्हित record_position = ((वर्ण*) record) - ((वर्ण*) एतत्);
+      अचिन्हित* obj_idx;
+      यदि (!device_tables.has (record_position, &obj_idx)) जारी;
+      size += c.graph.find_subgraph_size (*obj_idx, visited).मान_or (0);
     }
-    return size;
+    फर्काऊ size;
   }
 
-  graph_result_t<unsigned> size_of (gsubgpos_graph_context_t& c,
-                                    unsigned this_index,
-                                    const void* offset) const
+  graph_result_t<अचिन्हित> size_of (gsubgpos_graph_context_t& c,
+                                    अचिन्हित this_index,
+                                    अचर शून्य* offset) अचर
   {
-    TRY_ASSIGN (const unsigned id, c.graph.index_for_offset (this_index, offset));
-    return Ok(c.graph.vertices_[id].table_size ());
+    TRY_ASSIGN (अचर अचिन्हित id, c.graph.index_for_offset (this_index, offset));
+    फर्काऊ Ok(c.graph.vertices_[id].table_size ());
   }
 };
 
-struct PairPos : public OT::Layout::GPOS_impl::PairPos
+संरचना PairPos : सार्वजनिक OT::Layout::GPOS_impl::PairPos
 {
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  graph_result_t<hb_vector_t<अचिन्हित>> split_subtables (gsubgpos_graph_context_t& c,
+                                                         अचिन्हित this_index)
   {
-    switch (u.format.v) {
-    case 1:
+    विकल्प (u.format.v) {
+    पक्ष 1:
       hb_barrier ();
-      return ((PairPosFormat1*)(&u.format1))->split_subtables (c, this_index);
-    case 2:
+      फर्काऊ ((PairPosFormat1*)(&u.format1))->split_subtables (c, this_index);
+    पक्ष 2:
       hb_barrier ();
-      return ((PairPosFormat2*)(&u.format2))->split_subtables (c, this_index);
+      फर्काऊ ((PairPosFormat2*)(&u.format2))->split_subtables (c, this_index);
 #ifndef HB_NO_BEYOND_64K
-    case 3: HB_FALLTHROUGH;
-    case 4: HB_FALLTHROUGH;
+    पक्ष 3: HB_FALLTHROUGH;
+    पक्ष 4: HB_FALLTHROUGH;
       // 24-bit PairPos formats already have widened offsets; leave them unsplit.
 #endif
-    default:
-      return Ok(hb_vector_t<unsigned> ());
+    स्वभाव:
+      फर्काऊ Ok(hb_vector_t<अचिन्हित> ());
     }
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (अचर graph_t::vertex_t& vertex) अचर
   {
-    size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    माप_प्रकार vertex_len = vertex.table_size();
+    यदि (unlikely (vertex_len < u.format.v.get_size ())) फर्काऊ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    switch (u.format.v) {
-    case 1:
+    विकल्प (u.format.v) {
+    पक्ष 1:
       hb_barrier ();
-      return ((PairPosFormat1*)(&u.format1))->sanitize (vertex);
-    case 2:
+      फर्काऊ ((PairPosFormat1*)(&u.format1))->sanitize (vertex);
+    पक्ष 2:
       hb_barrier ();
-      return ((PairPosFormat2*)(&u.format2))->sanitize (vertex);
+      फर्काऊ ((PairPosFormat2*)(&u.format2))->sanitize (vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 3: HB_FALLTHROUGH;
-    case 4: HB_FALLTHROUGH;
+    पक्ष 3: HB_FALLTHROUGH;
+    पक्ष 4: HB_FALLTHROUGH;
 #endif
-    default:
+    स्वभाव:
       // We don't handle format 3 and 4 here.
-      return Err(SANITIZE_FAILURE);
+      फर्काऊ Err(SANITIZE_FAILURE);
     }
   }
 };

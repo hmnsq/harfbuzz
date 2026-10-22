@@ -29,51 +29,51 @@
 #ifndef HB_OT_LAYOUT_HH
 #define HB_OT_LAYOUT_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-font.hh"
-#include "hb-buffer.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-shape.hh"
-#include "hb-set-digest.hh"
+#अन्तर्भाव "hb-font.hh"
+#अन्तर्भाव "hb-buffer.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-ot-shape.hh"
+#अन्तर्भाव "hb-set-digest.hh"
 
 
-struct hb_ot_shape_plan_t;
+संरचना hb_ot_shape_plan_t;
 
 
 /*
  * kern
  */
 
-HB_INTERNAL bool
+HB_INTERNAL तार्किक
 hb_ot_layout_has_kerning (hb_face_t *face);
 
-HB_INTERNAL bool
+HB_INTERNAL तार्किक
 hb_ot_layout_has_machine_kerning (hb_face_t *face);
 
-HB_INTERNAL bool
+HB_INTERNAL तार्किक
 hb_ot_layout_has_cross_kerning (hb_face_t *face);
 
-HB_INTERNAL void
-hb_ot_layout_kern (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL शून्य
+hb_ot_layout_kern (अचर hb_ot_shape_plan_t *plan,
 		   hb_font_t *font,
 		   hb_buffer_t  *buffer);
 
 
 /* Private API corresponding to hb-ot-layout.h: */
 
-HB_INTERNAL bool
+HB_INTERNAL तार्किक
 hb_ot_layout_table_find_feature (hb_face_t    *face,
 				 hb_tag_t      table_tag,
 				 hb_tag_t      feature_tag,
-				 unsigned int *feature_index);
+				 अचिन्हित पूर्णाङ्क *feature_index);
 
 
 /*
  * GDEF
  */
 
-enum hb_ot_layout_glyph_props_flags_t
+गणना hb_ot_layout_glyph_props_flags_t
 {
   /* The following three match LookupFlags::Ignore* numbers. */
   HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH	= 0x02u,
@@ -98,42 +98,42 @@ HB_MARK_AS_FLAG_T (hb_ot_layout_glyph_props_flags_t);
 
 
 /* Should be called before all the substitute_lookup's are done. */
-HB_INTERNAL void
+HB_INTERNAL शून्य
 hb_ot_layout_substitute_start (hb_font_t    *font,
 			       hb_buffer_t  *buffer);
 
-HB_INTERNAL void
+HB_INTERNAL शून्य
 hb_ot_layout_substitute_start_with_digest (hb_font_t    *font,
 					   hb_buffer_t  *buffer);
 
-namespace OT {
-  struct hb_ot_apply_context_t;
-  struct hb_ot_layout_lookup_accelerator_t;
-namespace Layout {
-namespace GSUB_impl {
-  struct SubstLookup;
+नामाकाश OT {
+  संरचना hb_ot_apply_context_t;
+  संरचना hb_ot_layout_lookup_accelerator_t;
+नामाकाश Layout {
+नामाकाश GSUB_impl {
+  संरचना SubstLookup;
 }
 }
 }
 
-HB_INTERNAL void
+HB_INTERNAL शून्य
 hb_ot_layout_substitute_lookup (OT::hb_ot_apply_context_t *c,
-				const OT::Layout::GSUB_impl::SubstLookup &lookup,
-				const OT::hb_ot_layout_lookup_accelerator_t &accel);
+				अचर OT::Layout::GSUB_impl::SubstLookup &lookup,
+				अचर OT::hb_ot_layout_lookup_accelerator_t &accel);
 
 
 /* Should be called before all the position_lookup's are done. */
-HB_INTERNAL void
+HB_INTERNAL शून्य
 hb_ot_layout_position_start (hb_font_t    *font,
 			     hb_buffer_t  *buffer);
 
 /* Should be called after all the position_lookup's are done, to fini advances. */
-HB_INTERNAL void
+HB_INTERNAL शून्य
 hb_ot_layout_position_finish_advances (hb_font_t    *font,
 				       hb_buffer_t  *buffer);
 
 /* Should be called after hb_ot_layout_position_finish_advances, to fini offsets. */
-HB_INTERNAL void
+HB_INTERNAL शून्य
 hb_ot_layout_position_finish_offsets (hb_font_t    *font,
 				      hb_buffer_t  *buffer);
 
@@ -153,24 +153,24 @@ hb_ot_layout_position_finish_offsets (hb_font_t    *font,
 
 /* Loop over syllables. Based on foreach_cluster(). */
 #define foreach_syllable(buffer, start, end) \
-  for (unsigned int \
-       _count = buffer->len, \
-       start = 0, end = _count ? _hb_next_syllable (buffer, 0) : 0; \
-       start < _count; \
+  लागि (अचिन्हित पूर्णाङ्क \
+       गन्ती_2 = buffer->len, \
+       start = 0, end = गन्ती_2 ? _hb_next_syllable (buffer, 0) : 0; \
+       start < गन्ती_2; \
        start = end, end = _hb_next_syllable (buffer, start))
 
-static inline unsigned int
-_hb_next_syllable (hb_buffer_t *buffer, unsigned int start)
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
+_hb_next_syllable (hb_buffer_t *buffer, अचिन्हित पूर्णाङ्क start)
 {
   hb_glyph_info_t *info = buffer->info;
-  unsigned int count = start + hb_min (buffer->len - start,
-				       (unsigned) HB_MAX_SYLLABLE_LENGTH);
+  अचिन्हित पूर्णाङ्क गन्ती = start + hb_min (buffer->len - start,
+				       (अचिन्हित) HB_MAX_SYLLABLE_LENGTH);
 
-  unsigned int syllable = info[start].syllable();
-  while (++start < count && syllable == info[start].syllable())
+  अचिन्हित पूर्णाङ्क syllable = info[start].syllable();
+  जबसम्म (++start < गन्ती && syllable == info[start].syllable())
     ;
 
-  return start;
+  फर्काऊ start;
 }
 
 
@@ -198,7 +198,7 @@ _hb_next_syllable (hb_buffer_t *buffer, unsigned int start)
  * remember them.
  */
 
-enum hb_unicode_props_flags_t {
+गणना hb_unicode_props_flags_t {
   UPROPS_MASK_GEN_CAT	= 0x001Fu,
   UPROPS_MASK_IGNORABLE	= 0x0020u,
   UPROPS_MASK_HIDDEN	= 0x0040u, /* MONGOLIAN FREE VARIATION SELECTOR 1..4, or TAG characters, or CGJ sometimes */
@@ -212,22 +212,22 @@ enum hb_unicode_props_flags_t {
 };
 HB_MARK_AS_FLAG_T (hb_unicode_props_flags_t);
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_unicode_props (hb_glyph_info_t *info, hb_buffer_t *buffer)
 {
   hb_unicode_funcs_t *unicode = buffer->unicode;
-  unsigned int u = info->codepoint;
-  unsigned int gen_cat = (unsigned int) unicode->general_category (u);
-  unsigned int props = gen_cat;
+  अचिन्हित पूर्णाङ्क u = info->codepoint;
+  अचिन्हित पूर्णाङ्क gen_cat = (अचिन्हित पूर्णाङ्क) unicode->general_category (u);
+  अचिन्हित पूर्णाङ्क props = gen_cat;
 
-  if (u >= 0x80u)
+  यदि (u >= 0x80u)
   {
-    if (unlikely (unicode->is_default_ignorable (u)))
+    यदि (unlikely (unicode->is_default_ignorable (u)))
     {
       buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES;
       props |=  UPROPS_MASK_IGNORABLE;
-      if (u == 0x200Cu) props |= UPROPS_MASK_Cf_ZWNJ;
-      else if (u == 0x200Du) props |= UPROPS_MASK_Cf_ZWJ;
+      यदि (u == 0x200Cu) props |= UPROPS_MASK_Cf_ZWNJ;
+      अन्यथा यदि (u == 0x200Du) props |= UPROPS_MASK_Cf_ZWJ;
       /* Mongolian Free Variation Selectors need to be remembered
        * because although we need to hide them like default-ignorables,
        * they need to non-ignorable during shaping.  This is similar to
@@ -235,20 +235,20 @@ _hb_glyph_info_set_unicode_props (hb_glyph_info_t *info, hb_buffer_t *buffer)
        * FVSes are GC=Mn, we have use a separate bit to remember them.
        * Fixes:
        * https://github.com/harfbuzz/harfbuzz/issues/234 */
-      else if (unlikely (hb_in_ranges<hb_codepoint_t> (u, 0x180Bu, 0x180Du, 0x180Fu, 0x180Fu))) props |= UPROPS_MASK_HIDDEN;
+      अन्यथा यदि (unlikely (hb_in_ranges<hb_codepoint_t> (u, 0x180Bu, 0x180Du, 0x180Fu, 0x180Fu))) props |= UPROPS_MASK_HIDDEN;
       /* TAG characters need similar treatment. Fixes:
        * https://github.com/harfbuzz/harfbuzz/issues/463 */
-      else if (unlikely (hb_in_range<hb_codepoint_t> (u, 0xE0020u, 0xE007Fu))) props |= UPROPS_MASK_HIDDEN;
+      अन्यथा यदि (unlikely (hb_in_range<hb_codepoint_t> (u, 0xE0020u, 0xE007Fu))) props |= UPROPS_MASK_HIDDEN;
       /* COMBINING GRAPHEME JOINER should not be skipped during GSUB either.
        * https://github.com/harfbuzz/harfbuzz/issues/554 */
-      else if (unlikely (u == 0x034Fu))
+      अन्यथा यदि (unlikely (u == 0x034Fu))
       {
 	buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_CGJ;
 	props |= UPROPS_MASK_HIDDEN;
       }
     }
 
-    if (unlikely (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (gen_cat)))
+    यदि (unlikely (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (gen_cat)))
     {
       buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_CONTINUATIONS;
       props |= UPROPS_MASK_CONTINUATION;
@@ -259,137 +259,137 @@ _hb_glyph_info_set_unicode_props (hb_glyph_info_t *info, hb_buffer_t *buffer)
   info->unicode_props() = props;
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_general_category (hb_glyph_info_t *info,
 				     hb_unicode_general_category_t gen_cat)
 {
   /* Clears top-byte. */
-  info->unicode_props() = (unsigned int) gen_cat | (info->unicode_props() & (0xFF & ~UPROPS_MASK_GEN_CAT));
+  info->unicode_props() = (अचिन्हित पूर्णाङ्क) gen_cat | (info->unicode_props() & (0xFF & ~UPROPS_MASK_GEN_CAT));
 }
 
-static inline hb_unicode_general_category_t
-_hb_glyph_info_get_general_category (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ hb_unicode_general_category_t
+_hb_glyph_info_get_general_category (अचर hb_glyph_info_t *info)
 {
-  return (hb_unicode_general_category_t) (info->unicode_props() & UPROPS_MASK_GEN_CAT);
+  फर्काऊ (hb_unicode_general_category_t) (info->unicode_props() & UPROPS_MASK_GEN_CAT);
 }
 
-static inline bool
-_hb_glyph_info_is_unicode_mark (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_unicode_mark (अचर hb_glyph_info_t *info)
 {
-  return HB_UNICODE_GENERAL_CATEGORY_IS_MARK (info->unicode_props() & UPROPS_MASK_GEN_CAT);
+  फर्काऊ HB_UNICODE_GENERAL_CATEGORY_IS_MARK (info->unicode_props() & UPROPS_MASK_GEN_CAT);
 }
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_modified_combining_class (hb_glyph_info_t *info,
-					     unsigned int modified_class)
+					     अचिन्हित पूर्णाङ्क modified_class)
 {
-  if (unlikely (!_hb_glyph_info_is_unicode_mark (info)))
-    return;
+  यदि (unlikely (!_hb_glyph_info_is_unicode_mark (info)))
+    फर्काऊ;
   info->unicode_props() = (modified_class<<8) | (info->unicode_props() & 0xFF);
 }
-static inline unsigned int
-_hb_glyph_info_get_modified_combining_class (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
+_hb_glyph_info_get_modified_combining_class (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_is_unicode_mark (info) ? info->unicode_props()>>8 : 0;
+  फर्काऊ _hb_glyph_info_is_unicode_mark (info) ? info->unicode_props()>>8 : 0;
 }
 #define info_cc(info) (_hb_glyph_info_get_modified_combining_class (&(info)))
 
-static inline bool
-_hb_glyph_info_is_unicode_space (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_unicode_space (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_get_general_category (info) ==
+  फर्काऊ _hb_glyph_info_get_general_category (info) ==
 	 HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
 }
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_unicode_space_fallback_type (hb_glyph_info_t *info, hb_unicode_funcs_t::space_t s)
 {
-  if (unlikely (!_hb_glyph_info_is_unicode_space (info)))
-    return;
-  info->unicode_props() = (((unsigned int) s)<<8) | (info->unicode_props() & 0xFF);
+  यदि (unlikely (!_hb_glyph_info_is_unicode_space (info)))
+    फर्काऊ;
+  info->unicode_props() = (((अचिन्हित पूर्णाङ्क) s)<<8) | (info->unicode_props() & 0xFF);
 }
-static inline hb_unicode_funcs_t::space_t
-_hb_glyph_info_get_unicode_space_fallback_type (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ hb_unicode_funcs_t::space_t
+_hb_glyph_info_get_unicode_space_fallback_type (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_is_unicode_space (info) ?
+  फर्काऊ _hb_glyph_info_is_unicode_space (info) ?
 	 (hb_unicode_funcs_t::space_t) (info->unicode_props()>>8) :
 	 hb_unicode_funcs_t::NOT_SPACE;
 }
-static inline bool
-_hb_glyph_info_is_variation_selector (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_variation_selector (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_get_general_category (info) ==
+  फर्काऊ _hb_glyph_info_get_general_category (info) ==
 	 HB_UNICODE_GENERAL_CATEGORY_FORMAT &&
 	 (info->unicode_props() & UPROPS_MASK_Cf_VS);
 }
-static inline void
-_hb_glyph_info_set_variation_selector (hb_glyph_info_t *info, bool customize)
+स्थिर अन्तःस्थ शून्य
+_hb_glyph_info_set_variation_selector (hb_glyph_info_t *info, तार्किक customize)
 {
-  if (customize)
+  यदि (customize)
   {
     _hb_glyph_info_set_general_category (info, HB_UNICODE_GENERAL_CATEGORY_FORMAT);
     info->unicode_props() |= UPROPS_MASK_Cf_VS;
   }
-  else
+  अन्यथा
   {
     // Reset to their original condition
     _hb_glyph_info_set_general_category (info, HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK);
   }
 }
 
-static inline bool _hb_glyph_info_substituted (const hb_glyph_info_t *info);
+स्थिर अन्तःस्थ तार्किक _hb_glyph_info_substituted (अचर hb_glyph_info_t *info);
 
-static inline bool
-_hb_glyph_info_is_default_ignorable (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_default_ignorable (अचर hb_glyph_info_t *info)
 {
-  return (info->unicode_props() & UPROPS_MASK_IGNORABLE) &&
+  फर्काऊ (info->unicode_props() & UPROPS_MASK_IGNORABLE) &&
 	 !_hb_glyph_info_substituted (info);
 }
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_default_ignorable (hb_glyph_info_t *info)
 {
   info->unicode_props() |= UPROPS_MASK_IGNORABLE;
 }
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_clear_default_ignorable (hb_glyph_info_t *info)
 {
   info->unicode_props() &= ~ UPROPS_MASK_IGNORABLE;
 }
-static inline bool
-_hb_glyph_info_is_hidden (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_hidden (अचर hb_glyph_info_t *info)
 {
-  return info->unicode_props() & UPROPS_MASK_HIDDEN;
+  फर्काऊ info->unicode_props() & UPROPS_MASK_HIDDEN;
 }
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_unhide (hb_glyph_info_t *info)
 {
   info->unicode_props() &= ~ UPROPS_MASK_HIDDEN;
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_continuation (hb_glyph_info_t *info, hb_buffer_t *buffer)
 {
   buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_CONTINUATIONS;
   info->unicode_props() |= UPROPS_MASK_CONTINUATION;
 }
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_clear_continuation (hb_glyph_info_t *info)
 {
   info->unicode_props() &= ~ UPROPS_MASK_CONTINUATION;
 }
-static inline bool
-_hb_glyph_info_is_continuation (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_continuation (अचर hb_glyph_info_t *info)
 {
-  return info->unicode_props() & UPROPS_MASK_CONTINUATION;
+  फर्काऊ info->unicode_props() & UPROPS_MASK_CONTINUATION;
 }
 
-static inline bool
-_hb_grapheme_group_func (const hb_glyph_info_t& a HB_UNUSED,
-			 const hb_glyph_info_t& b)
-{ return _hb_glyph_info_is_continuation (&b); }
+स्थिर अन्तःस्थ तार्किक
+_hb_grapheme_group_func (अचर hb_glyph_info_t& a HB_UNUSED,
+			 अचर hb_glyph_info_t& b)
+{ फर्काऊ _hb_glyph_info_is_continuation (&b); }
 
 #define foreach_grapheme(buffer, start, end) \
 	foreach_group (buffer, start, end, _hb_grapheme_group_func)
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_ot_layout_reverse_graphemes (hb_buffer_t *buffer)
 {
   // MONOTONE_GRAPHEMES was already applied and is taken care of by _hb_grapheme_group_func.
@@ -398,28 +398,28 @@ _hb_ot_layout_reverse_graphemes (hb_buffer_t *buffer)
 			  buffer->cluster_level == HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS);
 }
 
-static inline bool
-_hb_glyph_info_is_unicode_format (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_unicode_format (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_get_general_category (info) ==
+  फर्काऊ _hb_glyph_info_get_general_category (info) ==
 	 HB_UNICODE_GENERAL_CATEGORY_FORMAT;
 }
-static inline bool
-_hb_glyph_info_is_zwnj (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_zwnj (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_is_unicode_format (info) && (info->unicode_props() & UPROPS_MASK_Cf_ZWNJ);
+  फर्काऊ _hb_glyph_info_is_unicode_format (info) && (info->unicode_props() & UPROPS_MASK_Cf_ZWNJ);
 }
-static inline bool
-_hb_glyph_info_is_zwj (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_zwj (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_is_unicode_format (info) && (info->unicode_props() & UPROPS_MASK_Cf_ZWJ);
+  फर्काऊ _hb_glyph_info_is_unicode_format (info) && (info->unicode_props() & UPROPS_MASK_Cf_ZWJ);
 }
-static inline bool
-_hb_glyph_info_is_aat_deleted (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_aat_deleted (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_is_unicode_format (info) && (info->unicode_props() & UPROPS_MASK_Cf_AAT_DELETED);
+  फर्काऊ _hb_glyph_info_is_unicode_format (info) && (info->unicode_props() & UPROPS_MASK_Cf_AAT_DELETED);
 }
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_aat_deleted (hb_glyph_info_t *info)
 {
   _hb_glyph_info_set_general_category (info, HB_UNICODE_GENERAL_CATEGORY_FORMAT);
@@ -452,7 +452,7 @@ _hb_glyph_info_set_aat_deleted (hb_glyph_info_t *info)
  * to marks that belong to the same component of the same ligature.
  */
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_clear_lig_props (hb_glyph_info_t *info)
 {
   info->lig_props() = 0;
@@ -460,199 +460,199 @@ _hb_glyph_info_clear_lig_props (hb_glyph_info_t *info)
 
 #define IS_LIG_BASE 0x10
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_lig_props_for_ligature (hb_glyph_info_t *info,
-					   unsigned int lig_id,
-					   unsigned int lig_num_comps)
+					   अचिन्हित पूर्णाङ्क lig_id,
+					   अचिन्हित पूर्णाङ्क lig_अङ्क_comps)
 {
-  info->lig_props() = (lig_id << 5) | IS_LIG_BASE | (lig_num_comps & 0x0F);
+  info->lig_props() = (lig_id << 5) | IS_LIG_BASE | (lig_अङ्क_comps & 0x0F);
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_set_lig_props_for_mark (hb_glyph_info_t *info,
-				       unsigned int lig_id,
-				       unsigned int lig_comp)
+				       अचिन्हित पूर्णाङ्क lig_id,
+				       अचिन्हित पूर्णाङ्क lig_comp)
 {
   info->lig_props() = (lig_id << 5) | (lig_comp & 0x0F);
 }
 
-static inline void
-_hb_glyph_info_set_lig_props_for_component (hb_glyph_info_t *info, unsigned int comp)
+स्थिर अन्तःस्थ शून्य
+_hb_glyph_info_set_lig_props_for_component (hb_glyph_info_t *info, अचिन्हित पूर्णाङ्क comp)
 {
   _hb_glyph_info_set_lig_props_for_mark (info, 0, comp);
 }
 
-static inline unsigned int
-_hb_glyph_info_get_lig_id (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
+_hb_glyph_info_get_lig_id (अचर hb_glyph_info_t *info)
 {
-  return info->lig_props() >> 5;
+  फर्काऊ info->lig_props() >> 5;
 }
 
-static inline bool
-_hb_glyph_info_ligated_internal (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_ligated_internal (अचर hb_glyph_info_t *info)
 {
-  return info->lig_props() & IS_LIG_BASE;
+  फर्काऊ info->lig_props() & IS_LIG_BASE;
 }
 
-static inline unsigned int
-_hb_glyph_info_get_lig_comp (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
+_hb_glyph_info_get_lig_comp (अचर hb_glyph_info_t *info)
 {
-  if (_hb_glyph_info_ligated_internal (info))
-    return 0;
-  else
-    return info->lig_props() & 0x0F;
+  यदि (_hb_glyph_info_ligated_internal (info))
+    फर्काऊ 0;
+  अन्यथा
+    फर्काऊ info->lig_props() & 0x0F;
 }
 
-static inline unsigned int
-_hb_glyph_info_get_lig_num_comps (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
+hb_glyph_info_get_lig_अङ्क_comps (अचर hb_glyph_info_t *info)
 {
-  if ((info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE) &&
+  यदि ((info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE) &&
       _hb_glyph_info_ligated_internal (info))
-    return info->lig_props() & 0x0F;
-  else
-    return 1;
+    फर्काऊ info->lig_props() & 0x0F;
+  अन्यथा
+    फर्काऊ 1;
 }
 
-static inline uint8_t
+स्थिर अन्तःस्थ uint8_t
 _hb_allocate_lig_id (hb_buffer_t *buffer)
 {
   uint8_t lig_id = buffer->next_serial () & 0x07;
-  if (unlikely (!lig_id))
+  यदि (unlikely (!lig_id))
     lig_id = _hb_allocate_lig_id (buffer); /* in case of overflow */
-  return lig_id;
+  फर्काऊ lig_id;
 }
 
 /* glyph_props: */
 
-static inline void
-_hb_glyph_info_set_glyph_props (hb_glyph_info_t *info, unsigned int props)
+स्थिर अन्तःस्थ शून्य
+_hb_glyph_info_set_glyph_props (hb_glyph_info_t *info, अचिन्हित पूर्णाङ्क props)
 {
   info->glyph_props() = props;
 }
 
-static inline unsigned int
-_hb_glyph_info_get_glyph_props (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
+_hb_glyph_info_get_glyph_props (अचर hb_glyph_info_t *info)
 {
-  return info->glyph_props();
+  फर्काऊ info->glyph_props();
 }
 
-static inline bool
-_hb_glyph_info_is_base_glyph (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_base_glyph (अचर hb_glyph_info_t *info)
 {
-  return info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH;
+  फर्काऊ info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH;
 }
 
-static inline bool
-_hb_glyph_info_is_ligature (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_ligature (अचर hb_glyph_info_t *info)
 {
-  return info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
+  फर्काऊ info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
 }
 
-static inline bool
-_hb_glyph_info_is_mark (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_is_mark (अचर hb_glyph_info_t *info)
 {
-  return info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_MARK;
+  फर्काऊ info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_MARK;
 }
 
-static inline bool
-_hb_glyph_info_substituted (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_substituted (अचर hb_glyph_info_t *info)
 {
-  return info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_SUBSTITUTED;
+  फर्काऊ info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_SUBSTITUTED;
 }
 
-static inline bool
-_hb_glyph_info_ligated (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_ligated (अचर hb_glyph_info_t *info)
 {
-  return info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_LIGATED;
+  फर्काऊ info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_LIGATED;
 }
 
-static inline bool
-_hb_glyph_info_multiplied (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_multiplied (अचर hb_glyph_info_t *info)
 {
-  return info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED;
+  फर्काऊ info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED;
 }
 
-static inline unsigned int
-_hb_glyph_info_get_lig_num_comps_in_ligation (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
+hb_glyph_info_get_lig_अङ्क_comps_in_ligation (अचर hb_glyph_info_t *info)
 {
   /* When a glyph is decomposed by a MultipleSubst and its pieces later become
    * components of a ligature, the pieces belong to the same ligature component
    * as the first piece, matching how MarkBasePos attaches marks only to the
    * first piece.  So the non-first pieces contribute no extra component.
    * https://github.com/harfbuzz/harfbuzz/issues/4969 */
-  if (_hb_glyph_info_multiplied (info) &&
+  यदि (_hb_glyph_info_multiplied (info) &&
       _hb_glyph_info_get_lig_comp (info))
-    return 0;
-  return _hb_glyph_info_get_lig_num_comps (info);
+    फर्काऊ 0;
+  फर्काऊ hb_glyph_info_get_lig_अङ्क_comps (info);
 }
 
-static inline bool
-_hb_glyph_info_ligated_and_didnt_multiply (const hb_glyph_info_t *info)
+स्थिर अन्तःस्थ तार्किक
+_hb_glyph_info_ligated_and_didnt_multiply (अचर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_ligated (info) && !_hb_glyph_info_multiplied (info);
+  फर्काऊ _hb_glyph_info_ligated (info) && !_hb_glyph_info_multiplied (info);
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_clear_ligated_and_multiplied (hb_glyph_info_t *info)
 {
   info->glyph_props() &= ~(HB_OT_LAYOUT_GLYPH_PROPS_LIGATED |
 			   HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED);
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_glyph_info_clear_substituted (hb_glyph_info_t *info)
 {
   info->glyph_props() &= ~(HB_OT_LAYOUT_GLYPH_PROPS_SUBSTITUTED);
 }
 
-static inline bool
-_hb_clear_substitution_flags (const hb_ot_shape_plan_t *plan HB_UNUSED,
+स्थिर अन्तःस्थ तार्किक
+_hb_clear_substitution_flags (अचर hb_ot_shape_plan_t *plan HB_UNUSED,
 			      hb_font_t *font HB_UNUSED,
 			      hb_buffer_t *buffer)
 {
   hb_glyph_info_t *info = buffer->info;
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  अचिन्हित पूर्णाङ्क गन्ती = buffer->len;
+  लागि (अचिन्हित पूर्णाङ्क i = 0; i < गन्ती; i++)
     _hb_glyph_info_clear_substituted (&info[i]);
-  return false;
+  फर्काऊ असत्य;
 }
 
 
 /* Allocation / deallocation. */
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_buffer_allocate_unicode_vars (hb_buffer_t *buffer)
 {
   HB_BUFFER_ALLOCATE_VAR (buffer, unicode_props);
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_buffer_deallocate_unicode_vars (hb_buffer_t *buffer)
 {
   HB_BUFFER_DEALLOCATE_VAR (buffer, unicode_props);
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_buffer_assert_unicode_vars (hb_buffer_t *buffer)
 {
   HB_BUFFER_ASSERT_VAR (buffer, unicode_props);
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_buffer_allocate_gsubgpos_vars (hb_buffer_t *buffer)
 {
   HB_BUFFER_ALLOCATE_VAR (buffer, glyph_props);
   HB_BUFFER_ALLOCATE_VAR (buffer, lig_props);
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_buffer_deallocate_gsubgpos_vars (hb_buffer_t *buffer)
 {
   HB_BUFFER_DEALLOCATE_VAR (buffer, lig_props);
   HB_BUFFER_DEALLOCATE_VAR (buffer, glyph_props);
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_buffer_assert_gsubgpos_vars (hb_buffer_t *buffer)
 {
   HB_BUFFER_ASSERT_VAR (buffer, glyph_props);
@@ -664,17 +664,17 @@ _hb_buffer_assert_gsubgpos_vars (hb_buffer_t *buffer)
 #undef lig_props
 #undef glyph_props
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 _hb_collect_glyph_alternates_add (hb_codepoint_t from,
 				  hb_codepoint_t to,
-				  hb_map_t *alternate_count,
+				  hb_map_t *alternate_गन्ती,
 				  hb_map_t *alternate_glyphs)
 {
   hb_codepoint_t zero = 0;
   hb_codepoint_t *i = &zero;
-  alternate_count->has (from, &i);
+  alternate_गन्ती->has (from, &i);
   alternate_glyphs->set (from | (*i << 24), to);
-  alternate_count->set (from, *i + 1);
+  alternate_गन्ती->set (from, *i + 1);
 }
 
 

@@ -29,20 +29,20 @@
 #ifndef HB_BLOB_HH
 #define HB_BLOB_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 
 /*
  * hb_blob_t
  */
 
-struct hb_blob_t
+संरचना hb_blob_t
 {
   ~hb_blob_t () { destroy_user_data (); }
 
-  void destroy_user_data ()
+  शून्य destroy_user_data ()
   {
-    if (destroy)
+    यदि (destroy)
     {
       destroy (user_data);
       user_data = nullptr;
@@ -50,13 +50,13 @@ struct hb_blob_t
     }
   }
 
-  void replace_buffer (const char       *new_data,
-		       unsigned          new_length,
+  शून्य replace_buffer (अचर वर्ण       *new_data,
+		       अचिन्हित          new_length,
 		       hb_memory_mode_t  new_mode,
-		       void             *new_user_data,
+		       शून्य             *new_user_data,
 		       hb_destroy_func_t new_destroy)
   {
-    if (new_data != data)
+    यदि (new_data != data)
       destroy_user_data ();
     data = new_data;
     length = new_length;
@@ -65,22 +65,22 @@ struct hb_blob_t
     destroy = new_destroy;
   }
 
-  HB_INTERNAL bool try_make_writable ();
-  HB_INTERNAL bool try_make_writable_inplace ();
-  HB_INTERNAL bool try_make_writable_inplace_unix ();
+  HB_INTERNAL तार्किक try_make_writable ();
+  HB_INTERNAL तार्किक try_make_writable_inplace ();
+  HB_INTERNAL तार्किक try_make_writable_inplace_unix ();
 
-  hb_bytes_t as_bytes () const { return hb_bytes_t (data, length); }
-  template <typename Type>
-  const Type* as () const { return as_bytes ().as<Type> (); }
+  hb_bytes_t as_bytes () अचर { फर्काऊ hb_bytes_t (data, length); }
+  ढाँचा <typename Type>
+  अचर Type* as () अचर { फर्काऊ as_bytes ().as<Type> (); }
 
-  public:
+  सार्वजनिक:
   hb_object_header_t header;
 
-  const char *data = nullptr;
-  unsigned int length = 0;
+  अचर वर्ण *data = nullptr;
+  अचिन्हित पूर्णाङ्क length = 0;
   hb_memory_mode_t mode = (hb_memory_mode_t) 0;
 
-  void *user_data = nullptr;
+  शून्य *user_data = nullptr;
   hb_destroy_func_t destroy = nullptr;
 
   /*
@@ -97,15 +97,15 @@ struct hb_blob_t
    * of recycle_data_destroy.
    */
 
-  struct recycle_data_t
+  संरचना recycle_data_t
   {
-    char *buf;
-    unsigned capacity;
+    वर्ण *buf;
+    अचिन्हित capacity;
   };
 
-  static inline void recycle_data_destroy (void *user_data)
+  स्थिर अन्तःस्थ शून्य recycle_data_destroy (शून्य *user_data)
   {
-    auto *bd = (recycle_data_t *) user_data;
+    स्वतः *bd = (recycle_data_t *) user_data;
     hb_free (bd->buf);
     hb_free (bd);
   }
@@ -117,82 +117,82 @@ struct hb_blob_t
    * fails and a fresh buffer was allocated instead -- the caller
    * must hb_free() that buf after recycle_finalize() runs.  Returns
    * nullptr on allocation failure. */
-  static inline char *
+  स्थिर अन्तःस्थ वर्ण *
   recycle_acquire (hb_blob_t *recycled,
-		   unsigned   needed,
-		   unsigned  *out_capacity,
-		   char     **out_replaced_buf)
+		   अचिन्हित   needed,
+		   अचिन्हित  *out_capacity,
+		   वर्ण     **out_replaced_buf)
   {
     *out_replaced_buf = nullptr;
 
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    यदि (recycled && recycled->destroy == recycle_data_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (bd->capacity >= needed)
+      स्वतः *bd = (recycle_data_t *) recycled->user_data;
+      यदि (bd->capacity >= needed)
       {
 	*out_capacity = bd->capacity;
-	return bd->buf;
+	फर्काऊ bd->buf;
       }
       /* Grow with a 1.5x ramp to amortize repeated growth. */
-      unsigned alloc_bytes = needed;
-      if (unlikely (hb_unsigned_add_overflows (needed, needed / 2,
+      अचिन्हित alloc_bytes = needed;
+      यदि (unlikely (hb_unsigned_add_overflows (needed, needed / 2,
 					       &alloc_bytes)))
 	alloc_bytes = needed;
-      char *new_buf = (char *) hb_realloc (bd->buf, alloc_bytes);
-      if (new_buf)
+      वर्ण *new_buf = (वर्ण *) hb_realloc (bd->buf, alloc_bytes);
+      यदि (new_buf)
       {
 	bd->buf = new_buf;
 	bd->capacity = alloc_bytes;
 	*out_capacity = alloc_bytes;
-	return new_buf;
+	फर्काऊ new_buf;
       }
       /* Realloc failed.  Fall through to a fresh hb_malloc and stash
        * the old buf for the caller to free after recycle_finalize. */
       *out_replaced_buf = bd->buf;
     }
 
-    char *buf = (char *) hb_malloc (needed);
-    if (unlikely (!buf))
-      return nullptr;
+    वर्ण *buf = (वर्ण *) hb_malloc (needed);
+    यदि (unlikely (!buf))
+      फर्काऊ nullptr;
     *out_capacity = needed;
-    return buf;
+    फर्काऊ buf;
   }
 
   /* Wrap @buf (of @capacity, with @length used) into an hb_blob_t.
    * If @recycled is one of our blobs, update and return it (cheap);
    * otherwise create a new blob.  Pass @replaced_recycled_buf from
    * recycle_acquire(). */
-  static inline hb_blob_t *
-  recycle_finalize (char      *buf,
-		    unsigned   capacity,
-		    unsigned   length,
+  स्थिर अन्तःस्थ hb_blob_t *
+  recycle_finalize (वर्ण      *buf,
+		    अचिन्हित   capacity,
+		    अचिन्हित   length,
 		    hb_blob_t *recycled,
-		    char      *replaced_recycled_buf)
+		    वर्ण      *replaced_recycled_buf)
   {
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    यदि (recycled && recycled->destroy == recycle_data_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (replaced_recycled_buf && replaced_recycled_buf != buf)
+      स्वतः *bd = (recycle_data_t *) recycled->user_data;
+      यदि (replaced_recycled_buf && replaced_recycled_buf != buf)
 	hb_free (replaced_recycled_buf);
       bd->buf = buf;
       bd->capacity = capacity;
-      recycled->data = (const char *) buf;
+      recycled->data = (अचर वर्ण *) buf;
       recycled->length = length;
-      return recycled;
+      फर्काऊ recycled;
     }
 
     /* No recycled blob to update -- create a fresh one with our
      * destroy closure so the next recycle round can reuse it. */
-    recycle_data_t *bd = (recycle_data_t *) hb_malloc (sizeof (*bd));
-    if (unlikely (!bd))
+    recycle_data_t *bd = (recycle_data_t *) hb_malloc (परिमाण (*bd));
+    यदि (unlikely (!bd))
     {
       hb_free (buf);
-      return nullptr;
+      फर्काऊ nullptr;
     }
     bd->buf = buf;
     bd->capacity = capacity;
 
-    return hb_blob_create ((const char *) buf, length,
+    फर्काऊ hb_blob_create ((अचर वर्ण *) buf, length,
 			   HB_MEMORY_MODE_WRITABLE,
 			   bd, recycle_data_destroy);
   }
@@ -200,14 +200,14 @@ struct hb_blob_t
   /* Discard @buf returned by recycle_acquire without committing to
    * a blob.  Frees @buf if it was a fresh allocation; leaves any
    * recycled buffer untouched. */
-  static inline void
-  recycle_abort (char *buf, hb_blob_t *recycled)
+  स्थिर अन्तःस्थ शून्य
+  recycle_abort (वर्ण *buf, hb_blob_t *recycled)
   {
-    if (!buf) return;
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    यदि (!buf) फर्काऊ;
+    यदि (recycled && recycled->destroy == recycle_data_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (buf == bd->buf) return;  /* owned by the recycled blob */
+      स्वतः *bd = (recycle_data_t *) recycled->user_data;
+      यदि (buf == bd->buf) फर्काऊ;  /* owned by the recycled blob */
     }
     hb_free (buf);
   }
@@ -216,13 +216,13 @@ struct hb_blob_t
    * encode.  Destroys any previously stashed blob.  Safe to call
    * with @blob = nullptr or the empty-singleton blob (treated as
    * "drop"). */
-  static inline void
+  स्थिर अन्तःस्थ शून्य
   recycle_stash (hb_blob_t **slot, hb_blob_t *blob)
   {
     hb_blob_destroy (*slot);
     *slot = nullptr;
-    if (!blob || blob == hb_blob_get_empty ())
-      return;
+    यदि (!blob || blob == hb_blob_get_empty ())
+      फर्काऊ;
     *slot = blob;
   }
 };
@@ -232,23 +232,23 @@ struct hb_blob_t
  * hb_blob_ptr_t
  */
 
-template <typename P>
-struct hb_blob_ptr_t
+ढाँचा <typename P>
+संरचना hb_blob_ptr_t
 {
-  typedef hb_remove_pointer<P> T;
+  प्रकारनिर्देश hb_remove_pointer<P> T;
 
   hb_blob_ptr_t (hb_blob_t *b_ = nullptr) : b (b_) {}
-  hb_blob_t * operator = (hb_blob_t *b_) { return b = b_; }
-  const T * operator -> () const { return get (); }
-  const T & operator * () const  { return *get (); }
-  template <typename C> operator const C * () const { return get (); }
-  operator const char * () const { return (const char *) get (); }
-  const T * get () const { return b->as<T> (); }
-  hb_blob_t * get_blob () const { return b.get_raw (); }
-  unsigned int get_length () const { return b.get ()->length; }
-  void destroy () { hb_blob_destroy (b.get_raw ()); b = nullptr; }
+  hb_blob_t * चालक = (hb_blob_t *b_) { फर्काऊ b = b_; }
+  अचर T * चालक -> () अचर { फर्काऊ get (); }
+  अचर T & चालक * () अचर  { फर्काऊ *get (); }
+  ढाँचा <typename C> चालक अचर C * () अचर { फर्काऊ get (); }
+  चालक अचर वर्ण * () अचर { फर्काऊ (अचर वर्ण *) get (); }
+  अचर T * get () अचर { फर्काऊ b->as<T> (); }
+  hb_blob_t * get_blob () अचर { फर्काऊ b.get_raw (); }
+  अचिन्हित पूर्णाङ्क get_length () अचर { फर्काऊ b.get ()->length; }
+  शून्य destroy () { hb_blob_destroy (b.get_raw ()); b = nullptr; }
 
-  private:
+  गुप्त:
   hb_nonnull_ptr_t<hb_blob_t> b;
 };
 

@@ -27,7 +27,7 @@
 #ifndef HB_FREE_POOL_HH
 #define HB_FREE_POOL_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 /* Memory pool for persistent alloc/free of small objects.
  *
@@ -40,8 +40,8 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-template <typename T, unsigned ChunkLen = 32>
-struct hb_free_pool_t
+ढाँचा <typename T, अचिन्हित ChunkLen = 32>
+संरचना hb_free_pool_t
 {
   hb_free_pool_t () : next (nullptr) {}
   ~hb_free_pool_t ()
@@ -55,11 +55,11 @@ struct hb_free_pool_t
 
   T* alloc ()
   {
-    if (unlikely (!next))
+    यदि (unlikely (!next))
     {
-      if (unlikely (!chunks.alloc (chunks.length + 1))) return nullptr;
-      chunk_t *chunk = (chunk_t *) hb_malloc (sizeof (chunk_t));
-      if (unlikely (!chunk)) return nullptr;
+      यदि (unlikely (!chunks.alloc (chunks.length + 1))) फर्काऊ nullptr;
+      chunk_t *chunk = (chunk_t *) hb_malloc (परिमाण (chunk_t));
+      यदि (unlikely (!chunk)) फर्काऊ nullptr;
       chunks.push (chunk);
       next = chunk->thread ();
     }
@@ -67,33 +67,33 @@ struct hb_free_pool_t
     T* obj = next;
     next = * ((T**) next);
 
-    hb_memset (obj, 0, sizeof (T));
+    hb_memset (obj, 0, परिमाण (T));
 
-    return obj;
+    फर्काऊ obj;
   }
 
-  void release (T* obj)
+  शून्य release (T* obj)
   {
     * (T**) obj = next;
     next = obj;
   }
 
-  private:
+  गुप्त:
 
   static_assert (ChunkLen > 1, "");
-  static_assert (sizeof (T) >= sizeof (void *), "");
-  static_assert (alignof (T) % alignof (void *) == 0, "");
+  static_assert (परिमाण (T) >= परिमाण (शून्य *), "");
+  static_assert (alignof (T) % alignof (शून्य *) == 0, "");
 
-  struct chunk_t
+  संरचना chunk_t
   {
     T* thread ()
     {
-      for (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
+      लागि (अचिन्हित i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
 	* (T**) &arrayZ[i] = &arrayZ[i + 1];
 
       * (T**) &arrayZ[ARRAY_LENGTH (arrayZ) - 1] = nullptr;
 
-      return arrayZ;
+      फर्काऊ arrayZ;
     }
 
     T arrayZ[ChunkLen];

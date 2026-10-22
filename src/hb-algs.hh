@@ -29,27 +29,27 @@
 #ifndef HB_ALGS_HH
 #define HB_ALGS_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
-#include "hb-null.hh"
-#include "hb-number.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-meta.hh"
+#अन्तर्भाव "hb-null.hh"
+#अन्तर्भाव "hb-number.hh"
 
-#include <algorithm>
-#include <initializer_list>
-#include <functional>
-#include <new>
+#अन्तर्भाव <algorithm>
+#अन्तर्भाव <initializer_list>
+#अन्तर्भाव <functional>
+#अन्तर्भाव <new>
 
-static HB_ALWAYS_INLINE void *
-hb_malloc2 (size_t nmemb, size_t size)
+स्थिर HB_ALWAYS_INLINE शून्य *
+hb_malloc2 (माप_प्रकार nmemb, माप_प्रकार size)
 {
-  if (size && nmemb > SIZE_MAX / size) return nullptr;
-  return hb_malloc (nmemb * size);
+  यदि (size && nmemb > SIZE_MAX / size) फर्काऊ nullptr;
+  फर्काऊ hb_malloc (nmemb * size);
 }
-static HB_ALWAYS_INLINE void *
-hb_realloc2 (void *ptr, size_t nmemb, size_t size)
+स्थिर HB_ALWAYS_INLINE शून्य *
+hb_realloc2 (शून्य *ptr, माप_प्रकार nmemb, माप_प्रकार size)
 {
-  if (size && nmemb > SIZE_MAX / size) return nullptr;
-  return hb_realloc (ptr, nmemb * size);
+  यदि (size && nmemb > SIZE_MAX / size) फर्काऊ nullptr;
+  फर्काऊ hb_realloc (ptr, nmemb * size);
 }
 
 /*
@@ -68,26 +68,26 @@ hb_realloc2 (void *ptr, size_t nmemb, size_t size)
 # pragma warning(disable:4800)
 #endif
 #define HB_MARK_AS_FLAG_T(T) \
-	extern "C++" { \
-	  static inline constexpr T operator | (T l, T r) { return T ((unsigned) l | (unsigned) r); } \
-	  static inline constexpr T operator & (T l, T r) { return T ((unsigned) l & (unsigned) r); } \
-	  static inline constexpr T operator ^ (T l, T r) { return T ((unsigned) l ^ (unsigned) r); } \
-	  static inline constexpr unsigned operator ~ (T r) { return (~(unsigned) r); } \
-	  static inline T& operator |= (T &l, T r) { l = l | r; return l; } \
-	  static inline T& operator &= (T& l, T r) { l = l & r; return l; } \
-	  static inline T& operator ^= (T& l, T r) { l = l ^ r; return l; } \
+	बाह्य "C++" { \
+	  स्थिर अन्तःस्थ constexpr T चालक | (T l, T r) { फर्काऊ T ((अचिन्हित) l | (अचिन्हित) r); } \
+	  स्थिर अन्तःस्थ constexpr T चालक & (T l, T r) { फर्काऊ T ((अचिन्हित) l & (अचिन्हित) r); } \
+	  स्थिर अन्तःस्थ constexpr T चालक ^ (T l, T r) { फर्काऊ T ((अचिन्हित) l ^ (अचिन्हित) r); } \
+	  स्थिर अन्तःस्थ constexpr अचिन्हित चालक ~ (T r) { फर्काऊ (~(अचिन्हित) r); } \
+	  स्थिर अन्तःस्थ T& चालक |= (T &l, T r) { l = l | r; फर्काऊ l; } \
+	  स्थिर अन्तःस्थ T& चालक &= (T& l, T r) { l = l & r; फर्काऊ l; } \
+	  स्थिर अन्तःस्थ T& चालक ^= (T& l, T r) { l = l ^ r; फर्काऊ l; } \
 	} \
-	static_assert (true, "")
+	static_assert (सत्य, "")
 
 /* Useful for set-operations on small enums.
  * For example, for testing "x ∈ {x1, x2, x3}" use:
  * (FLAG_UNSAFE(x) & (FLAG(x1) | FLAG(x2) | FLAG(x3)))
  */
-#define FLAG(x) (static_assert_expr ((unsigned)(x) < 32) + (((uint32_t) 1U) << (unsigned)(x)))
-#define FLAG_UNSAFE(x) ((unsigned)(x) < 32 ? (((uint32_t) 1U) << (unsigned)(x)) : 0)
-#define FLAG_RANGE(x,y) (static_assert_expr ((x) < (y)) + FLAG(y+1) - FLAG(x))
-#define FLAG64(x) (static_assert_expr ((unsigned)(x) < 64) + (((uint64_t) 1ULL) << (unsigned)(x)))
-#define FLAG64_UNSAFE(x) ((unsigned)(x) < 64 ? (((uint64_t) 1ULL) << (unsigned)(x)) : 0)
+#define FLAG(x) (static_assert_अभिव्यक्ति ((अचिन्हित)(x) < 32) + (((uint32_t) 1U) << (अचिन्हित)(x)))
+#define FLAG_UNSAFE(x) ((अचिन्हित)(x) < 32 ? (((uint32_t) 1U) << (अचिन्हित)(x)) : 0)
+#define FLAG_RANGE(x,y) (static_assert_अभिव्यक्ति ((x) < (y)) + FLAG(y+1) - FLAG(x))
+#define FLAG64(x) (static_assert_अभिव्यक्ति ((अचिन्हित)(x) < 64) + (((uint64_t) 1ULL) << (अचिन्हित)(x)))
+#define FLAG64_UNSAFE(x) ((अचिन्हित)(x) < 64 ? (((uint64_t) 1ULL) << (अचिन्हित)(x)) : 0)
 
 
 /*
@@ -96,163 +96,163 @@ hb_realloc2 (void *ptr, size_t nmemb, size_t size)
 
 
 /* Endian swap, used in Windows related backends */
-static inline constexpr uint16_t hb_uint16_swap (uint16_t v)
-{ return (v >> 8) | (v << 8); }
-static inline constexpr uint32_t hb_uint32_swap (uint32_t v)
-{ return (hb_uint16_swap (v) << 16) | hb_uint16_swap (v >> 16); }
+स्थिर अन्तःस्थ constexpr uint16_t hb_uint16_swap (uint16_t v)
+{ फर्काऊ (v >> 8) | (v << 8); }
+स्थिर अन्तःस्थ constexpr uint32_t hb_uint32_swap (uint32_t v)
+{ फर्काऊ (hb_uint16_swap (v) << 16) | hb_uint16_swap (v >> 16); }
 
-template <typename Type>
-struct __attribute__((packed)) hb_packed_t
+ढाँचा <typename Type>
+संरचना __attribute__((packed)) hb_packed_t
 {
-  hb_packed_t () = default;
+  hb_packed_t () = स्वभाव;
   constexpr hb_packed_t (Type V) : v (V) {}
-  operator Type () const { return v; }
-  hb_packed_t & operator = (Type V) { v = V; return *this; }
+  चालक Type () अचर { फर्काऊ v; }
+  hb_packed_t & चालक = (Type V) { v = V; फर्काऊ *एतत्; }
 
-  private:
+  गुप्त:
   Type v;
 };
 
-#ifndef HB_FAST_NUM_ACCESS
+#ifndef HB_FAST_अङ्क_ACCESS
 
-#if defined(__OPTIMIZE__) && \
+#यदि defined(__OPTIMIZE__) && \
     defined(__BYTE_ORDER) && \
     (__BYTE_ORDER == __BIG_ENDIAN || \
      (__BYTE_ORDER == __LITTLE_ENDIAN && \
       hb_has_builtin(__builtin_bswap16) && \
       hb_has_builtin(__builtin_bswap32) && \
       hb_has_builtin(__builtin_bswap64)))
-#define HB_FAST_NUM_ACCESS 1
-#else
-#define HB_FAST_NUM_ACCESS 0
+#define HB_FAST_अङ्क_ACCESS 1
+#अन्यथा
+#define HB_FAST_अङ्क_ACCESS 0
 #endif
 
 // https://github.com/harfbuzz/harfbuzz/issues/5456
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ <= 12)
-#undef HB_FAST_NUM_ACCESS
-#define HB_FAST_NUM_ACCESS 0
+#यदि defined(__GNUC__) && !defined(__clang__) && (__GNUC__ <= 12)
+#undef HB_FAST_अङ्क_ACCESS
+#define HB_FAST_अङ्क_ACCESS 0
 #endif
 
 #endif
 
-template <bool BE, typename Type, int Bytes = sizeof (Type)>
-struct HBInt;
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 1>
+ढाँचा <तार्किक BE, typename Type, पूर्णाङ्क Bytes = परिमाण (Type)>
+संरचना HBInt;
+ढाँचा <तार्किक BE, typename Type>
+संरचना HBInt<BE, Type, 1>
 {
-  public:
-  HBInt () = default;
+  सार्वजनिक:
+  HBInt () = स्वभाव;
   constexpr HBInt (Type V) : v {uint8_t (V)} {}
-  constexpr operator Type () const { return v; }
-  private: uint8_t v;
+  constexpr चालक Type () अचर { फर्काऊ v; }
+  गुप्त: uint8_t v;
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 2>
+ढाँचा <तार्किक BE, typename Type>
+संरचना HBInt<BE, Type, 2>
 {
-  public:
-  HBInt () = default;
+  सार्वजनिक:
+  HBInt () = स्वभाव;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#यदि HB_FAST_अङ्क_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    यदि (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint16_t> *) v) = V;
-    else
+    अन्यथा
       *((hb_packed_t<uint16_t> *) v) = __builtin_bswap16 (V);
   }
-#else
+#अन्यथा
     : v {BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >>  8) & 0xFF)} {}
 #endif
 
-  constexpr operator Type () const
+  constexpr चालक Type () अचर
   {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint16_t) *((const hb_packed_t<uint16_t> *) v)
+#यदि HB_FAST_अङ्क_ACCESS
+    फर्काऊ (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint16_t) *((अचर hb_packed_t<uint16_t> *) v)
     :
-      __builtin_bswap16 ((uint16_t) *((const hb_packed_t<uint16_t> *) v))
+      __builtin_bswap16 ((uint16_t) *((अचर hb_packed_t<uint16_t> *) v))
     ;
-#else
-    return (BE ? (v[0] <<  8) : (v[0]      ))
+#अन्यथा
+    फर्काऊ (BE ? (v[0] <<  8) : (v[0]      ))
 	 + (BE ? (v[1]      ) : (v[1] <<  8));
 #endif
   }
-  private: uint8_t v[2];
+  गुप्त: uint8_t v[2];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 3>
+ढाँचा <तार्किक BE, typename Type>
+संरचना HBInt<BE, Type, 3>
 {
   static_assert (!std::is_signed<Type>::value, "");
-  public:
-  HBInt () = default;
+  सार्वजनिक:
+  HBInt () = स्वभाव;
   constexpr HBInt (Type V) : v {BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
 				BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 				BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V      ) & 0xFF)} {}
 
-  constexpr operator Type () const { return (BE ? (v[0] << 16) : (v[0]      ))
+  constexpr चालक Type () अचर { फर्काऊ (BE ? (v[0] << 16) : (v[0]      ))
 					  + (BE ? (v[1] <<  8) : (v[1] <<  8))
 					  + (BE ? (v[2]      ) : (v[2] << 16)); }
-  private: uint8_t v[3];
+  गुप्त: uint8_t v[3];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 4>
+ढाँचा <तार्किक BE, typename Type>
+संरचना HBInt<BE, Type, 4>
 {
-  template <bool, typename, int>
-  friend struct HBFloat;
+  ढाँचा <तार्किक, typename, पूर्णाङ्क>
+  मित्र संरचना HBFloat;
 
-  public:
-  HBInt () = default;
+  सार्वजनिक:
+  HBInt () = स्वभाव;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#यदि HB_FAST_अङ्क_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    यदि (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint32_t> *) v) = V;
-    else
+    अन्यथा
       *((hb_packed_t<uint32_t> *) v) = __builtin_bswap32 (V);
   }
-#else
+#अन्यथा
     : v {BE ? uint8_t ((V >> 24) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 	 BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >> 24) & 0xFF)} {}
 #endif
 
-  constexpr operator Type () const {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint32_t) *((const hb_packed_t<uint32_t> *) v)
+  constexpr चालक Type () अचर {
+#यदि HB_FAST_अङ्क_ACCESS
+    फर्काऊ (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint32_t) *((अचर hb_packed_t<uint32_t> *) v)
     :
-      __builtin_bswap32 ((uint32_t) *((const hb_packed_t<uint32_t> *) v))
+      __builtin_bswap32 ((uint32_t) *((अचर hb_packed_t<uint32_t> *) v))
     ;
-#else
-    return (BE ? (uint32_t (v[0]) << 24) : (uint32_t (v[0])      ))
+#अन्यथा
+    फर्काऊ (BE ? (uint32_t (v[0]) << 24) : (uint32_t (v[0])      ))
 	 + (BE ? (uint32_t (v[1]) << 16) : (uint32_t (v[1]) <<  8))
 	 + (BE ? (uint32_t (v[2]) <<  8) : (uint32_t (v[2]) << 16))
 	 + (BE ? (uint32_t (v[3])      ) : (uint32_t (v[3]) << 24));
 #endif
   }
-  private: uint8_t v[4];
+  गुप्त: uint8_t v[4];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 8>
+ढाँचा <तार्किक BE, typename Type>
+संरचना HBInt<BE, Type, 8>
 {
-  template <bool, typename, int>
-  friend struct HBFloat;
+  ढाँचा <तार्किक, typename, पूर्णाङ्क>
+  मित्र संरचना HBFloat;
 
-  public:
-  HBInt () = default;
+  सार्वजनिक:
+  HBInt () = स्वभाव;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#यदि HB_FAST_अङ्क_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    यदि (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint64_t> *) v) = V;
-    else
+    अन्यथा
       *((hb_packed_t<uint64_t> *) v) = __builtin_bswap64 (V);
   }
-#else
+#अन्यथा
     : v {BE ? uint8_t ((V >> 56) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V >> 48) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 	 BE ? uint8_t ((V >> 40) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
@@ -263,15 +263,15 @@ struct HBInt<BE, Type, 8>
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >> 56) & 0xFF)} {}
 #endif
 
-  constexpr operator Type () const {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint64_t) *((const hb_packed_t<uint64_t> *) v)
+  constexpr चालक Type () अचर {
+#यदि HB_FAST_अङ्क_ACCESS
+    फर्काऊ (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint64_t) *((अचर hb_packed_t<uint64_t> *) v)
     :
-      __builtin_bswap64 ((uint64_t) *((const hb_packed_t<uint64_t> *) v))
+      __builtin_bswap64 ((uint64_t) *((अचर hb_packed_t<uint64_t> *) v))
     ;
-#else
-    return (BE ? (uint64_t (v[0]) << 56) : (uint64_t (v[0])      ))
+#अन्यथा
+    फर्काऊ (BE ? (uint64_t (v[0]) << 56) : (uint64_t (v[0])      ))
 	 + (BE ? (uint64_t (v[1]) << 48) : (uint64_t (v[1]) <<  8))
 	 + (BE ? (uint64_t (v[2]) << 40) : (uint64_t (v[2]) << 16))
 	 + (BE ? (uint64_t (v[3]) << 32) : (uint64_t (v[3]) << 24))
@@ -281,90 +281,90 @@ struct HBInt<BE, Type, 8>
 	 + (BE ? (uint64_t (v[7])      ) : (uint64_t (v[7]) << 56));
 #endif
   }
-  private: uint8_t v[8];
+  गुप्त: uint8_t v[8];
 };
 
 /* Floats. */
 
-template <bool BE, typename Type, int Bytes>
-struct HBFloat
+ढाँचा <तार्किक BE, typename Type, पूर्णाङ्क Bytes>
+संरचना HBFloat
 {
   using IntType = typename std::conditional<Bytes == 4, uint32_t, uint64_t>::type;
 
-  public:
-  HBFloat () = default;
+  सार्वजनिक:
+  HBFloat () = स्वभाव;
 
   HBFloat (Type V)
   {
-#if HB_FAST_NUM_ACCESS
+#यदि HB_FAST_अङ्क_ACCESS
     {
-	      if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+	      यदि (BE == (__BYTE_ORDER == __BIG_ENDIAN))
 	      {
 	        *((hb_packed_t<Type> *) v) = V;
-	        return;
+	        फर्काऊ;
 	      }
 	    }
 #endif
 
-    union {
+    सङ्घ {
       hb_packed_t<Type> f;
       hb_packed_t<IntType> i;
     } u = {{V}};
 
-    const HBInt<BE, IntType> I = (IntType) u.i;
-    for (unsigned i = 0; i < Bytes; i++)
+    अचर HBInt<BE, IntType> I = (IntType) u.i;
+    लागि (अचिन्हित i = 0; i < Bytes; i++)
       v[i] = I.v[i];
   }
 
-  /* c++14 constexpr */ operator Type () const
+  /* c++14 constexpr */ चालक Type () अचर
   {
-#if HB_FAST_NUM_ACCESS
+#यदि HB_FAST_अङ्क_ACCESS
 	    {
-	      if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
-		return (Type) *((const hb_packed_t<Type> *) v);
+	      यदि (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+		फर्काऊ (Type) *((अचर hb_packed_t<Type> *) v);
 	    }
 #endif
 
     HBInt<BE, IntType> I;
-    for (unsigned i = 0; i < Bytes; i++)
+    लागि (अचिन्हित i = 0; i < Bytes; i++)
       I.v[i] = v[i];
 
-    union {
+    सङ्घ {
       hb_packed_t<IntType> i;
       hb_packed_t<Type> f;
     } u = {{I}};
 
-    return (Type) u.f;
+    फर्काऊ (Type) u.f;
   }
-  private: uint8_t v[Bytes];
+  गुप्त: uint8_t v[Bytes];
 };
 
 
 /* We want our rounding towards +infinity. */
-static inline double
-_hb_roundf (double x) { return floor (x + .5); }
+स्थिर अन्तःस्थ द्विगुण
+_hb_roundf (द्विगुण x) { फर्काऊ न्यूनमान (x + .5); }
 
-static inline float
-_hb_roundf (float x) { return floor ((double) x + .5); }
+स्थिर अन्तःस्थ भिन्न
+_hb_roundf (भिन्न x) { फर्काऊ न्यूनमान ((द्विगुण) x + .5); }
 
 #define roundf(x) _hb_roundf(x)
 
-static inline void
-hb_sincos (float rotation, float &s, float &c)
+स्थिर अन्तःस्थ शून्य
+hb_sincos (भिन्न rotation, भिन्न &s, भिन्न &c)
 {
 #ifdef HAVE_SINCOSF
   sincosf (rotation, &s, &c);
-#else
+#अन्यथा
   c = cosf (rotation);
   s = sinf (rotation);
 #endif
 }
-static inline void
-hb_sincos (double rotation, double &s, double &c)
+स्थिर अन्तःस्थ शून्य
+hb_sincos (द्विगुण rotation, द्विगुण &s, द्विगुण &c)
 {
 #ifdef HAVE_SINCOS
   sincos (rotation, &s, &c);
-#else
+#अन्यथा
   c = cos (rotation);
   s = sin (rotation);
 #endif
@@ -385,35 +385,35 @@ hb_sincos (double rotation, double &s, double &c)
 #define HB_CODEPOINT_DECODE3_11_7_14_3(v) ((hb_codepoint_t) (v) & 0x3FFFu)
 
 
-struct
+संरचना
 {
   /* Note.  This is dangerous in that if it's passed an rvalue, it returns rvalue-reference. */
-  template <typename T> constexpr auto
-  operator () (T&& v) const HB_AUTO_RETURN ( std::forward<T> (v) )
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (T&& v) अचर HB_AUTO_RETURN ( std::forward<T> (v) )
 }
 HB_FUNCOBJ (hb_identity);
-struct
+संरचना
 {
   /* Like identity(), but only retains lvalue-references.  Rvalues are returned as rvalues. */
-  template <typename T> constexpr T&
-  operator () (T& v) const { return v; }
+  ढाँचा <typename T> constexpr T&
+  चालक () (T& v) अचर { फर्काऊ v; }
 
-  template <typename T> constexpr hb_remove_reference<T>
-  operator () (T&& v) const { return v; }
+  ढाँचा <typename T> constexpr hb_remove_reference<T>
+  चालक () (T&& v) अचर { फर्काऊ v; }
 }
 HB_FUNCOBJ (hb_lidentity);
-struct
+संरचना
 {
   /* Like identity(), but always returns rvalue. */
-  template <typename T> constexpr hb_remove_reference<T>
-  operator () (T&& v) const { return v; }
+  ढाँचा <typename T> constexpr hb_remove_reference<T>
+  चालक () (T&& v) अचर { फर्काऊ v; }
 }
 HB_FUNCOBJ (hb_ridentity);
 
-struct
+संरचना
 {
-  template <typename T> constexpr bool
-  operator () (T&& v) const { return bool (std::forward<T> (v)); }
+  ढाँचा <typename T> constexpr तार्किक
+  चालक () (T&& v) अचर { फर्काऊ तार्किक (std::forward<T> (v)); }
 }
 HB_FUNCOBJ (hb_bool);
 
@@ -447,37 +447,37 @@ HB_FUNCOBJ (hb_bool);
 // Compression function for Merkle-Damgard construction.
 // This function is generated using the framework provided.
 #define fasthash_mix(h) (					\
-			(void) ((h) ^= (h) >> 23),		\
-			(void) ((h) *= 0x2127599bf4325c37ULL),	\
+			(शून्य) ((h) ^= (h) >> 23),		\
+			(शून्य) ((h) *= 0x2127599bf4325c37ULL),	\
 			(h) ^= (h) >> 47)
 
-static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
+स्थिर अन्तःस्थ uint64_t fasthash64(अचर शून्य *buf, माप_प्रकार len, uint64_t seed)
 {
-	struct __attribute__((packed)) packed_uint64_t { uint64_t v; };
-	const uint64_t    m = 0x880355f21e6d1965ULL;
-	const packed_uint64_t *pos = (const packed_uint64_t *)buf;
-	const packed_uint64_t *end = pos + (len / 8);
-	const unsigned char *pos2;
+	संरचना __attribute__((packed)) packed_uint64_t { uint64_t v; };
+	अचर uint64_t    m = 0x880355f21e6d1965ULL;
+	अचर packed_uint64_t *pos = (अचर packed_uint64_t *)buf;
+	अचर packed_uint64_t *end = pos + (len / 8);
+	अचर अचिन्हित वर्ण *pos2;
 	uint64_t h = seed ^ (len * m);
 	uint64_t v;
 
 #ifndef HB_OPTIMIZE_SIZE
-	if (((uintptr_t) pos & 7) == 0)
+	यदि (((uintptr_t) pos & 7) == 0)
 	{
-	  while (pos != end)
+	  जबसम्म (pos != end)
 	  {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-	    v  = * (const uint64_t *) (pos++);
-#pragma GCC diagnostic pop
+	    v  = * (अचर uint64_t *) (pos++);
+#pragma GCC diagnostic झिक
 	    h ^= fasthash_mix(v);
 	    h *= m;
 	  }
 	}
-	else
+	अन्यथा
 #endif
 	{
-	  while (pos != end)
+	  जबसम्म (pos != end)
 	  {
 	    v  = pos++->v;
 	    h ^= fasthash_mix(v);
@@ -485,90 +485,90 @@ static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
 	  }
 	}
 
-	pos2 = (const unsigned char*)pos;
+	pos2 = (अचर अचिन्हित वर्ण*)pos;
 	v = 0;
 
-	switch (len & 7) {
-	case 7: v ^= (uint64_t)pos2[6] << 48; HB_FALLTHROUGH;
-	case 6: v ^= (uint64_t)pos2[5] << 40; HB_FALLTHROUGH;
-	case 5: v ^= (uint64_t)pos2[4] << 32; HB_FALLTHROUGH;
-	case 4: v ^= (uint64_t)pos2[3] << 24; HB_FALLTHROUGH;
-	case 3: v ^= (uint64_t)pos2[2] << 16; HB_FALLTHROUGH;
-	case 2: v ^= (uint64_t)pos2[1] <<  8; HB_FALLTHROUGH;
-	case 1: v ^= (uint64_t)pos2[0];
+	विकल्प (len & 7) {
+	पक्ष 7: v ^= (uint64_t)pos2[6] << 48; HB_FALLTHROUGH;
+	पक्ष 6: v ^= (uint64_t)pos2[5] << 40; HB_FALLTHROUGH;
+	पक्ष 5: v ^= (uint64_t)pos2[4] << 32; HB_FALLTHROUGH;
+	पक्ष 4: v ^= (uint64_t)pos2[3] << 24; HB_FALLTHROUGH;
+	पक्ष 3: v ^= (uint64_t)pos2[2] << 16; HB_FALLTHROUGH;
+	पक्ष 2: v ^= (uint64_t)pos2[1] <<  8; HB_FALLTHROUGH;
+	पक्ष 1: v ^= (uint64_t)pos2[0];
 		h ^= fasthash_mix(v);
 		h *= m;
 	}
 
-	return fasthash_mix(h);
+	फर्काऊ fasthash_mix(h);
 }
 
-static inline uint32_t fasthash32(const void *buf, size_t len, uint32_t seed)
+स्थिर अन्तःस्थ uint32_t fasthash32(अचर शून्य *buf, माप_प्रकार len, uint32_t seed)
 {
 	// the following trick converts the 64-bit hashcode to Fermat
 	// residue, which shall retain information from both the higher
 	// and lower parts of hashcode.
         uint64_t h = fasthash64(buf, len, seed);
-	return h - (h >> 32);
+	फर्काऊ h - (h >> 32);
 }
 
-struct
+संरचना
 {
-  private:
+  गुप्त:
 
-  template <typename T> constexpr auto
-  impl (const T& v, hb_priority<2>) const HB_RETURN (uint32_t, hb_deref (v).hash ())
+  ढाँचा <typename T> constexpr स्वतः
+  impl (अचर T& v, hb_priority<2>) अचर HB_RETURN (uint32_t, hb_deref (v).hash ())
 
   // Horrible: std:hash() of integers seems to be identity in gcc / clang?!
   // https://github.com/harfbuzz/harfbuzz/pull/4228
   //
   // For performance characteristics see:
   // https://github.com/harfbuzz/harfbuzz/pull/4228#issuecomment-1565079537
-  template <typename T,
-	    hb_enable_if (std::is_integral<T>::value && sizeof (T) <= sizeof (uint32_t))> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, (uint32_t) v * 2654435761u /* Knuh's multiplicative hash */)
-  template <typename T,
-	    hb_enable_if (std::is_integral<T>::value && sizeof (T) > sizeof (uint32_t))> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, (uint32_t) (v ^ (v >> 32)) * 2654435761u /* Knuth's multiplicative hash */)
+  ढाँचा <typename T,
+	    hb_enable_if (std::is_integral<T>::value && परिमाण (T) <= परिमाण (uint32_t))> constexpr स्वतः
+  impl (अचर T& v, hb_priority<1>) अचर HB_RETURN (uint32_t, (uint32_t) v * 2654435761u /* Knuh's multiplicative hash */)
+  ढाँचा <typename T,
+	    hb_enable_if (std::is_integral<T>::value && परिमाण (T) > परिमाण (uint32_t))> constexpr स्वतः
+  impl (अचर T& v, hb_priority<1>) अचर HB_RETURN (uint32_t, (uint32_t) (v ^ (v >> 32)) * 2654435761u /* Knuth's multiplicative hash */)
 
-  template <typename T,
-	    hb_enable_if (std::is_floating_point<T>::value)> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, fasthash32 (std::addressof (v), sizeof (T), 0xf437ffe6))
+  ढाँचा <typename T,
+	    hb_enable_if (std::is_floating_point<T>::value)> constexpr स्वतः
+  impl (अचर T& v, hb_priority<1>) अचर HB_RETURN (uint32_t, fasthash32 (std::addressof (v), परिमाण (T), 0xf437ffe6))
 
-  template <typename T> constexpr auto
-  impl (const T& v, hb_priority<0>) const HB_RETURN (uint32_t, std::hash<hb_decay<decltype (hb_deref (v))>>{} (hb_deref (v)))
+  ढाँचा <typename T> constexpr स्वतः
+  impl (अचर T& v, hb_priority<0>) अचर HB_RETURN (uint32_t, std::hash<hb_decay<decltype (hb_deref (v))>>{} (hb_deref (v)))
 
-  public:
+  सार्वजनिक:
 
-  template <typename T> constexpr auto
-  operator () (const T& v) const HB_RETURN (uint32_t, impl (v, hb_prioritize))
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T& v) अचर HB_RETURN (uint32_t, impl (v, hb_prioritize))
 }
 HB_FUNCOBJ (hb_hash);
 
 
-struct
+संरचना
 {
-  private:
+  गुप्त:
 
   /* Pointer-to-member-function. */
-  template <typename Appl, typename T, typename ...Ts> auto
-  impl (Appl&& a, hb_priority<2>, T &&v, Ts&&... ds) const HB_AUTO_RETURN
+  ढाँचा <typename Appl, typename T, typename ...Ts> स्वतः
+  impl (Appl&& a, hb_priority<2>, T &&v, Ts&&... ds) अचर HB_AUTO_RETURN
   ((hb_deref (std::forward<T> (v)).*std::forward<Appl> (a)) (std::forward<Ts> (ds)...))
 
   /* Pointer-to-member. */
-  template <typename Appl, typename T> auto
-  impl (Appl&& a, hb_priority<1>, T &&v) const HB_AUTO_RETURN
+  ढाँचा <typename Appl, typename T> स्वतः
+  impl (Appl&& a, hb_priority<1>, T &&v) अचर HB_AUTO_RETURN
   ((hb_deref (std::forward<T> (v))).*std::forward<Appl> (a))
 
   /* Operator(). */
-  template <typename Appl, typename ...Ts> auto
-  impl (Appl&& a, hb_priority<0>, Ts&&... ds) const HB_AUTO_RETURN
+  ढाँचा <typename Appl, typename ...Ts> स्वतः
+  impl (Appl&& a, hb_priority<0>, Ts&&... ds) अचर HB_AUTO_RETURN
   (hb_deref (std::forward<Appl> (a)) (std::forward<Ts> (ds)...))
 
-  public:
+  सार्वजनिक:
 
-  template <typename Appl, typename ...Ts> auto
-  operator () (Appl&& a, Ts&&... ds) const HB_AUTO_RETURN
+  ढाँचा <typename Appl, typename ...Ts> स्वतः
+  चालक () (Appl&& a, Ts&&... ds) अचर HB_AUTO_RETURN
   (
     impl (std::forward<Appl> (a),
 	  hb_prioritize,
@@ -577,44 +577,44 @@ struct
 }
 HB_FUNCOBJ (hb_invoke);
 
-template <unsigned Pos, typename Appl, typename V>
-struct hb_partial_t
+ढाँचा <अचिन्हित Pos, typename Appl, typename V>
+संरचना hb_partial_t
 {
   hb_partial_t (Appl a, V v) : a (a), v (v) {}
 
   static_assert (Pos > 0, "");
 
-  template <typename ...Ts,
-	    unsigned P = Pos,
-	    hb_enable_if (P == 1)> auto
-  operator () (Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
+  ढाँचा <typename ...Ts,
+	    अचिन्हित P = Pos,
+	    hb_enable_if (P == 1)> स्वतः
+  चालक () (Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
 						   hb_declval (V),
 						   hb_declval (Ts)...))
   {
-    return hb_invoke (std::forward<Appl> (a),
+    फर्काऊ hb_invoke (std::forward<Appl> (a),
 		      std::forward<V> (v),
 		      std::forward<Ts> (ds)...);
   }
-  template <typename T0, typename ...Ts,
-	    unsigned P = Pos,
-	    hb_enable_if (P == 2)> auto
-  operator () (T0&& d0, Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
+  ढाँचा <typename T0, typename ...Ts,
+	    अचिन्हित P = Pos,
+	    hb_enable_if (P == 2)> स्वतः
+  चालक () (T0&& d0, Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
 							    hb_declval (T0),
 							    hb_declval (V),
 							    hb_declval (Ts)...))
   {
-    return hb_invoke (std::forward<Appl> (a),
+    फर्काऊ hb_invoke (std::forward<Appl> (a),
 		      std::forward<T0> (d0),
 		      std::forward<V> (v),
 		      std::forward<Ts> (ds)...);
   }
 
-  private:
+  गुप्त:
   hb_reference_wrapper<Appl> a;
   V v;
 };
-template <unsigned Pos=1, typename Appl, typename V>
-auto hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
+ढाँचा <अचिन्हित Pos=1, typename Appl, typename V>
+स्वतः hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
 (( hb_partial_t<Pos, Appl, V> (a, v) ))
 
 /* The following, HB_PARTIALIZE, macro uses a particular corner-case
@@ -638,41 +638,41 @@ auto hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
 #ifdef _MSC_VER
 /* https://github.com/harfbuzz/harfbuzz/issues/1730 */ \
 #define HB_PARTIALIZE(Pos) \
-  template <typename _T> \
-  decltype(auto) operator () (_T&& _v) const \
-  { return hb_partial<Pos> (this, std::forward<_T> (_v)); } \
-  static_assert (true, "")
-#else
+  ढाँचा <typename _T> \
+  decltype(स्वतः) चालक () (_T&& _v) अचर \
+  { फर्काऊ hb_partial<Pos> (एतत्, std::forward<_T> (_v)); } \
+  static_assert (सत्य, "")
+#अन्यथा
 /* https://github.com/harfbuzz/harfbuzz/issues/1724 */
 #define HB_PARTIALIZE(Pos) \
-  template <typename _T> \
-  auto operator () (_T&& _v) const HB_AUTO_RETURN \
-  (hb_partial<Pos> (+this, std::forward<_T> (_v))) \
-  static_assert (true, "")
+  ढाँचा <typename _T> \
+  स्वतः चालक () (_T&& _v) अचर HB_AUTO_RETURN \
+  (hb_partial<Pos> (+एतत्, std::forward<_T> (_v))) \
+  static_assert (सत्य, "")
 #endif
 
 
-struct
+संरचना
 {
-  private:
+  गुप्त:
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  ढाँचा <typename Pred, typename Val> स्वतः
+  impl (Pred&& p, Val &&v, hb_priority<1>) अचर HB_AUTO_RETURN
   (
     hb_deref (std::forward<Pred> (p)).has (std::forward<Val> (v))
   )
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  ढाँचा <typename Pred, typename Val> स्वतः
+  impl (Pred&& p, Val &&v, hb_priority<0>) अचर HB_AUTO_RETURN
   (
     hb_invoke (std::forward<Pred> (p),
 	       std::forward<Val> (v))
   )
 
-  public:
+  सार्वजनिक:
 
-  template <typename Pred, typename Val> auto
-  operator () (Pred&& p, Val &&v) const HB_RETURN (bool,
+  ढाँचा <typename Pred, typename Val> स्वतः
+  चालक () (Pred&& p, Val &&v) अचर HB_RETURN (तार्किक,
     impl (std::forward<Pred> (p),
 	  std::forward<Val> (v),
 	  hb_prioritize)
@@ -680,27 +680,27 @@ struct
 }
 HB_FUNCOBJ (hb_has);
 
-struct
+संरचना
 {
-  private:
+  गुप्त:
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  ढाँचा <typename Pred, typename Val> स्वतः
+  impl (Pred&& p, Val &&v, hb_priority<1>) अचर HB_AUTO_RETURN
   (
     hb_has (std::forward<Pred> (p),
 	    std::forward<Val> (v))
   )
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  ढाँचा <typename Pred, typename Val> स्वतः
+  impl (Pred&& p, Val &&v, hb_priority<0>) अचर HB_AUTO_RETURN
   (
     std::forward<Pred> (p) == std::forward<Val> (v)
   )
 
-  public:
+  सार्वजनिक:
 
-  template <typename Pred, typename Val> auto
-  operator () (Pred&& p, Val &&v) const HB_RETURN (bool,
+  ढाँचा <typename Pred, typename Val> स्वतः
+  चालक () (Pred&& p, Val &&v) अचर HB_RETURN (तार्किक,
     impl (std::forward<Pred> (p),
 	  std::forward<Val> (v),
 	  hb_prioritize)
@@ -708,33 +708,33 @@ struct
 }
 HB_FUNCOBJ (hb_match);
 
-struct
+संरचना
 {
-  private:
+  गुप्त:
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<2>) const HB_AUTO_RETURN
+  ढाँचा <typename Proj, typename Val> स्वतः
+  impl (Proj&& f, Val &&v, hb_priority<2>) अचर HB_AUTO_RETURN
   (
     hb_deref (std::forward<Proj> (f)).get (std::forward<Val> (v))
   )
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  ढाँचा <typename Proj, typename Val> स्वतः
+  impl (Proj&& f, Val &&v, hb_priority<1>) अचर HB_AUTO_RETURN
   (
     hb_invoke (std::forward<Proj> (f),
 	       std::forward<Val> (v))
   )
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  ढाँचा <typename Proj, typename Val> स्वतः
+  impl (Proj&& f, Val &&v, hb_priority<0>) अचर HB_AUTO_RETURN
   (
     std::forward<Proj> (f)[std::forward<Val> (v)]
   )
 
-  public:
+  सार्वजनिक:
 
-  template <typename Proj, typename Val> auto
-  operator () (Proj&& f, Val &&v) const HB_AUTO_RETURN
+  ढाँचा <typename Proj, typename Val> स्वतः
+  चालक () (Proj&& f, Val &&v) अचर HB_AUTO_RETURN
   (
     impl (std::forward<Proj> (f),
 	  std::forward<Val> (v),
@@ -743,38 +743,38 @@ struct
 }
 HB_FUNCOBJ (hb_get);
 
-struct
+संरचना
 {
-  private:
+  गुप्त:
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<3>) const HB_AUTO_RETURN
+  ढाँचा <typename T1, typename T2> स्वतः
+  impl (T1&& v1, T2 &&v2, hb_priority<3>) अचर HB_AUTO_RETURN
   (
     std::forward<T2> (v2).cmp (std::forward<T1> (v1)) == 0
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<2>) const HB_AUTO_RETURN
+  ढाँचा <typename T1, typename T2> स्वतः
+  impl (T1&& v1, T2 &&v2, hb_priority<2>) अचर HB_AUTO_RETURN
   (
     std::forward<T1> (v1).cmp (std::forward<T2> (v2)) == 0
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<1>) const HB_AUTO_RETURN
+  ढाँचा <typename T1, typename T2> स्वतः
+  impl (T1&& v1, T2 &&v2, hb_priority<1>) अचर HB_AUTO_RETURN
   (
     std::forward<T1> (v1) == std::forward<T2> (v2)
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<0>) const HB_AUTO_RETURN
+  ढाँचा <typename T1, typename T2> स्वतः
+  impl (T1&& v1, T2 &&v2, hb_priority<0>) अचर HB_AUTO_RETURN
   (
     std::forward<T2> (v2) == std::forward<T1> (v1)
   )
 
-  public:
+  सार्वजनिक:
 
-  template <typename T1, typename T2> auto
-  operator () (T1&& v1, T2 &&v2) const HB_AUTO_RETURN
+  ढाँचा <typename T1, typename T2> स्वतः
+  चालक () (T1&& v1, T2 &&v2) अचर HB_AUTO_RETURN
   (
     impl (std::forward<T1> (v1),
 	  std::forward<T2> (v2),
@@ -783,10 +783,10 @@ struct
 }
 HB_FUNCOBJ (hb_equal);
 
-struct
+संरचना
 {
-  template <typename T> void
-  operator () (T& a, T& b) const
+  ढाँचा <typename T> शून्य
+  चालक () (T& a, T& b) अचर
   {
     using std::swap; // allow ADL
     swap (a, b);
@@ -795,47 +795,47 @@ struct
 HB_FUNCOBJ (hb_swap);
 
 
-template <typename T1, typename T2>
-struct hb_pair_t
+ढाँचा <typename T1, typename T2>
+संरचना hb_pair_t
 {
-  typedef T1 first_t;
-  typedef T2 second_t;
-  typedef hb_pair_t<T1, T2> pair_t;
+  प्रकारनिर्देश T1 first_t;
+  प्रकारनिर्देश T2 second_t;
+  प्रकारनिर्देश hb_pair_t<T1, T2> pair_t;
 
-  template <typename U1 = T1, typename U2 = T2,
+  ढाँचा <typename U1 = T1, typename U2 = T2,
 	    hb_enable_if (std::is_default_constructible<U1>::value &&
 			  std::is_default_constructible<U2>::value)>
   hb_pair_t () : first (), second () {}
   hb_pair_t (T1 a, T2 b) : first (std::forward<T1> (a)), second (std::forward<T2> (b)) {}
 
-  template <typename Q1, typename Q2,
+  ढाँचा <typename Q1, typename Q2,
 	    hb_enable_if (hb_is_convertible (T1, Q1) &&
 			  hb_is_convertible (T2, Q2))>
-  operator hb_pair_t<Q1, Q2> () { return hb_pair_t<Q1, Q2> (first, second); }
+  चालक hb_pair_t<Q1, Q2> () { फर्काऊ hb_pair_t<Q1, Q2> (first, second); }
 
-  hb_pair_t<T1, T2> reverse () const
-  { return hb_pair_t<T1, T2> (second, first); }
+  hb_pair_t<T1, T2> reverse () अचर
+  { फर्काऊ hb_pair_t<T1, T2> (second, first); }
 
-  bool operator == (const pair_t& o) const { return first == o.first && second == o.second; }
-  bool operator != (const pair_t& o) const { return !(*this == o); }
-  bool operator < (const pair_t& o) const { return first < o.first || (first == o.first && second < o.second); }
-  bool operator >= (const pair_t& o) const { return !(*this < o); }
-  bool operator > (const pair_t& o) const { return first > o.first || (first == o.first && second > o.second); }
-  bool operator <= (const pair_t& o) const { return !(*this > o); }
+  तार्किक चालक == (अचर pair_t& o) अचर { फर्काऊ first == o.first && second == o.second; }
+  तार्किक चालक != (अचर pair_t& o) अचर { फर्काऊ !(*एतत् == o); }
+  तार्किक चालक < (अचर pair_t& o) अचर { फर्काऊ first < o.first || (first == o.first && second < o.second); }
+  तार्किक चालक >= (अचर pair_t& o) अचर { फर्काऊ !(*एतत् < o); }
+  तार्किक चालक > (अचर pair_t& o) अचर { फर्काऊ first > o.first || (first == o.first && second > o.second); }
+  तार्किक चालक <= (अचर pair_t& o) अचर { फर्काऊ !(*एतत् > o); }
 
-  static int cmp (const void *pa, const void *pb)
+  स्थिर पूर्णाङ्क cmp (अचर शून्य *pa, अचर शून्य *pb)
   {
     pair_t *a = (pair_t *) pa;
     pair_t *b = (pair_t *) pb;
 
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->second < b->second) return -1;
-    if (a->second > b->second) return +1;
-    return 0;
+    यदि (a->first < b->first) फर्काऊ -1;
+    यदि (a->first > b->first) फर्काऊ +1;
+    यदि (a->second < b->second) फर्काऊ -1;
+    यदि (a->second > b->second) फर्काऊ +1;
+    फर्काऊ 0;
   }
 
-  friend void swap (hb_pair_t& a, hb_pair_t& b) noexcept
+  मित्र शून्य swap (hb_pair_t& a, hb_pair_t& b) noexcept
   {
     hb_swap (a.first, b.first);
     hb_swap (a.second, b.second);
@@ -845,22 +845,22 @@ struct hb_pair_t
   T1 first;
   T2 second;
 };
-template <typename T1, typename T2> static inline hb_pair_t<T1, T2>
-hb_pair (T1&& a, T2&& b) { return hb_pair_t<T1, T2> (a, b); }
+ढाँचा <typename T1, typename T2> स्थिर अन्तःस्थ hb_pair_t<T1, T2>
+hb_pair (T1&& a, T2&& b) { फर्काऊ hb_pair_t<T1, T2> (a, b); }
 
-typedef hb_pair_t<hb_codepoint_t, hb_codepoint_t> hb_codepoint_pair_t;
+प्रकारनिर्देश hb_pair_t<hb_codepoint_t, hb_codepoint_t> hb_codepoint_pair_t;
 
-struct
+संरचना
 {
-  template <typename Pair> constexpr typename Pair::first_t
-  operator () (const Pair& pair) const { return pair.first; }
+  ढाँचा <typename Pair> constexpr typename Pair::first_t
+  चालक () (अचर Pair& pair) अचर { फर्काऊ pair.first; }
 }
 HB_FUNCOBJ (hb_first);
 
-struct
+संरचना
 {
-  template <typename Pair> constexpr typename Pair::second_t
-  operator () (const Pair& pair) const { return pair.second; }
+  ढाँचा <typename Pair> constexpr typename Pair::second_t
+  चालक () (अचर Pair& pair) अचर { फर्काऊ pair.second; }
 }
 HB_FUNCOBJ (hb_second);
 
@@ -868,112 +868,112 @@ HB_FUNCOBJ (hb_second);
  * However, that would silently convert between different-signedness integers.
  * Instead we accept two different types, such that compiler can err if
  * comparing integers of different signedness. */
-struct
+संरचना
 {
-  template <typename T, typename T2> constexpr auto
-  operator () (T&& a, T2&& b) const HB_AUTO_RETURN
+  ढाँचा <typename T, typename T2> constexpr स्वतः
+  चालक () (T&& a, T2&& b) अचर HB_AUTO_RETURN
   (a <= b ? a : b)
 }
 HB_FUNCOBJ (hb_min);
-struct
+संरचना
 {
-  template <typename T, typename T2> constexpr auto
-  operator () (T&& a, T2&& b) const HB_AUTO_RETURN
+  ढाँचा <typename T, typename T2> constexpr स्वतः
+  चालक () (T&& a, T2&& b) अचर HB_AUTO_RETURN
   (a >= b ? a : b)
 }
 HB_FUNCOBJ (hb_max);
-struct
+संरचना
 {
-  template <typename T, typename T2, typename T3> constexpr auto
-  operator () (T&& x, T2&& min, T3&& max) const HB_AUTO_RETURN
+  ढाँचा <typename T, typename T2, typename T3> constexpr स्वतः
+  चालक () (T&& x, T2&& min, T3&& max) अचर HB_AUTO_RETURN
   (hb_min (hb_max (std::forward<T> (x), std::forward<T2> (min)), std::forward<T3> (max)))
 }
 HB_FUNCOBJ (hb_clamp);
 
 /* Signed saturating arithmetic. */
-template <typename T>
-static HB_ALWAYS_INLINE T
+ढाँचा <typename T>
+स्थिर HB_ALWAYS_INLINE T
 hb_saturate_add (T a, T b)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-#if hb_has_builtin(__builtin_add_overflow)
+#यदि hb_has_builtin(__builtin_add_overflow)
   T result;
-  if (likely (!__builtin_add_overflow (a, b, &result)))
-    return result;
-#else
-  if (b > 0)
+  यदि (likely (!__builtin_add_overflow (a, b, &result)))
+    फर्काऊ result;
+#अन्यथा
+  यदि (b > 0)
   {
-    if (likely (a <= hb_int_max (T) - b))
-      return a + b;
+    यदि (likely (a <= hb_int_max (T) - b))
+      फर्काऊ a + b;
   }
-  else if (likely (a >= hb_int_min (T) - b))
-    return a + b;
+  अन्यथा यदि (likely (a >= hb_int_min (T) - b))
+    फर्काऊ a + b;
 #endif
 
-  return a < 0 ? hb_int_min (T) : hb_int_max (T);
+  फर्काऊ a < 0 ? hb_int_min (T) : hb_int_max (T);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
+ढाँचा <typename T>
+स्थिर HB_ALWAYS_INLINE T
 hb_saturate_sub (T a, T b)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-#if hb_has_builtin(__builtin_sub_overflow)
+#यदि hb_has_builtin(__builtin_sub_overflow)
   T result;
-  if (likely (!__builtin_sub_overflow (a, b, &result)))
-    return result;
-#else
-  if (b > 0)
+  यदि (likely (!__builtin_sub_overflow (a, b, &result)))
+    फर्काऊ result;
+#अन्यथा
+  यदि (b > 0)
   {
-    if (likely (a >= hb_int_min (T) + b))
-      return a - b;
+    यदि (likely (a >= hb_int_min (T) + b))
+      फर्काऊ a - b;
   }
-  else if (likely (a <= hb_int_max (T) + b))
-    return a - b;
+  अन्यथा यदि (likely (a <= hb_int_max (T) + b))
+    फर्काऊ a - b;
 #endif
 
-  return b < 0 ? hb_int_max (T) : hb_int_min (T);
+  फर्काऊ b < 0 ? hb_int_max (T) : hb_int_min (T);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
+ढाँचा <typename T>
+स्थिर HB_ALWAYS_INLINE T
 hb_saturate_neg (T a)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-  return hb_saturate_sub ((T) 0, a);
+  फर्काऊ hb_saturate_sub ((T) 0, a);
 }
 
 /* Convert a floating-point value to integer type T, saturating to T's
  * range instead of relying on the undefined behavior of an out-of-range
  * float-to-int conversion.  NaN saturates to the minimum of T. */
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_clamp_to (double v)
+ढाँचा <typename T>
+स्थिर HB_ALWAYS_INLINE T
+hb_clamp_to (द्विगुण v)
 {
-  return (T) hb_clamp (v,
-		       (double) hb_int_min (T),
-		       (double) hb_int_max (T));
+  फर्काऊ (T) hb_clamp (v,
+		       (द्विगुण) hb_int_min (T),
+		       (द्विगुण) hb_int_max (T));
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_clamp_to (float v)
+ढाँचा <typename T>
+स्थिर HB_ALWAYS_INLINE T
+hb_clamp_to (भिन्न v)
 {
   /* Widen explicitly: float cannot represent all integer bounds exactly,
    * so the clamp itself is done in double. */
-  return hb_clamp_to<T> ((double) v);
+  फर्काऊ hb_clamp_to<T> ((द्विगुण) v);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
+ढाँचा <typename T>
+स्थिर HB_ALWAYS_INLINE T
 hb_clamp_to (int64_t v)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-  return (T) hb_clamp (v,
+  फर्काऊ (T) hb_clamp (v,
 		       (int64_t) hb_int_min (T),
 		       (int64_t) hb_int_max (T));
 }
@@ -983,216 +983,216 @@ hb_clamp_to (int64_t v)
  */
 
 /* Return the number of 1 bits in a uint8_t; faster than hb_popcount() */
-static inline unsigned
+स्थिर अन्तःस्थ अचिन्हित
 hb_popcount8 (uint8_t v)
 {
-  static const uint8_t popcount4[16] = {
+  स्थिर अचर uint8_t popcount4[16] = {
     0, 1, 1, 2, 1, 2, 2, 3,
     1, 2, 2, 3, 2, 3, 3, 4
   };
-  return popcount4[v & 0xF] + popcount4[v >> 4];
+  फर्काऊ popcount4[v & 0xF] + popcount4[v >> 4];
 }
 
 /* Return the number of 1 bits in v. */
-template <typename T>
-static inline unsigned int
+ढाँचा <typename T>
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
 hb_popcount (T v)
 {
-#if hb_has_builtin(__builtin_popcount)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return __builtin_popcount (v);
+#यदि hb_has_builtin(__builtin_popcount)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित पूर्णाङ्क))
+    फर्काऊ __builtin_popcount (v);
 #endif
 
-#if hb_has_builtin(__builtin_popcountl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return __builtin_popcountl (v);
+#यदि hb_has_builtin(__builtin_popcountl)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित दीर्घ))
+    फर्काऊ __builtin_popcountl (v);
 #endif
 
-#if hb_has_builtin(__builtin_popcountll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return __builtin_popcountll (v);
+#यदि hb_has_builtin(__builtin_popcountll)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित दीर्घ दीर्घ))
+    फर्काऊ __builtin_popcountll (v);
 #endif
 
-  if (sizeof (T) <= 4)
+  यदि (परिमाण (T) <= 4)
   {
     /* "HACKMEM 169" */
     uint32_t y;
     y = (v >> 1) &033333333333;
     y = v - y - ((y >>1) & 033333333333);
-    return (((y + (y >> 3)) & 030707070707) % 077);
+    फर्काऊ (((y + (y >> 3)) & 030707070707) % 077);
   }
 
-  if (sizeof (T) == 8)
+  यदि (परिमाण (T) == 8)
   {
     uint64_t y = (uint64_t) v;
     y -= ((y >> 1) & 0x5555555555555555ull);
     y = (y & 0x3333333333333333ull) + (y >> 2 & 0x3333333333333333ull);
-    return ((y + (y >> 4)) & 0xf0f0f0f0f0f0f0full) * 0x101010101010101ull >> 56;
+    फर्काऊ ((y + (y >> 4)) & 0xf0f0f0f0f0f0f0full) * 0x101010101010101ull >> 56;
   }
 
-  if (sizeof (T) == 16)
+  यदि (परिमाण (T) == 16)
   {
-    unsigned int shift = 64;
-    return hb_popcount<uint64_t> ((uint64_t) v) + hb_popcount ((uint64_t) (v >> shift));
+    अचिन्हित पूर्णाङ्क shift = 64;
+    फर्काऊ hb_popcount<uint64_t> ((uint64_t) v) + hb_popcount ((uint64_t) (v >> shift));
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  प्रतिज्ञा (0);
+  फर्काऊ 0; /* Shut up stupid compiler. */
 }
 
 /* Returns the number of bits needed to store number */
-template <typename T>
-static inline unsigned int
+ढाँचा <typename T>
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
 hb_bit_storage (T v)
 {
-  if (unlikely (!v)) return 0;
+  यदि (unlikely (!v)) फर्काऊ 0;
 
-#if hb_has_builtin(__builtin_clz)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return sizeof (unsigned int) * 8 - __builtin_clz (v);
+#यदि hb_has_builtin(__builtin_clz)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित पूर्णाङ्क))
+    फर्काऊ परिमाण (अचिन्हित पूर्णाङ्क) * 8 - __builtin_clz (v);
 #endif
 
-#if hb_has_builtin(__builtin_clzl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return sizeof (unsigned long) * 8 - __builtin_clzl (v);
+#यदि hb_has_builtin(__builtin_clzl)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित दीर्घ))
+    फर्काऊ परिमाण (अचिन्हित दीर्घ) * 8 - __builtin_clzl (v);
 #endif
 
-#if hb_has_builtin(__builtin_clzll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return sizeof (unsigned long long) * 8 - __builtin_clzll (v);
+#यदि hb_has_builtin(__builtin_clzll)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित दीर्घ दीर्घ))
+    फर्काऊ परिमाण (अचिन्हित दीर्घ दीर्घ) * 8 - __builtin_clzll (v);
 #endif
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
-  if (sizeof (T) <= sizeof (unsigned int))
+#यदि (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित पूर्णाङ्क))
   {
-    unsigned long where;
+    अचिन्हित दीर्घ where;
     _BitScanReverse (&where, v);
-    return 1 + where;
+    फर्काऊ 1 + where;
   }
-# if defined(_WIN64)
-  if (sizeof (T) <= 8)
+# यदि defined(_WIN64)
+  यदि (परिमाण (T) <= 8)
   {
-    unsigned long where;
+    अचिन्हित दीर्घ where;
     _BitScanReverse64 (&where, v);
-    return 1 + where;
+    फर्काऊ 1 + where;
   }
 # endif
 #endif
 
-  if (sizeof (T) <= 4)
+  यदि (परिमाण (T) <= 4)
   {
     /* "bithacks" */
-    const unsigned int b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
-    const unsigned int S[] = {1, 2, 4, 8, 16};
-    unsigned int r = 0;
-    for (int i = 4; i >= 0; i--)
-      if (v & b[i])
+    अचर अचिन्हित पूर्णाङ्क b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
+    अचर अचिन्हित पूर्णाङ्क S[] = {1, 2, 4, 8, 16};
+    अचिन्हित पूर्णाङ्क r = 0;
+    लागि (पूर्णाङ्क i = 4; i >= 0; i--)
+      यदि (v & b[i])
       {
 	v >>= S[i];
 	r |= S[i];
       }
-    return r + 1;
+    फर्काऊ r + 1;
   }
-  if (sizeof (T) <= 8)
+  यदि (परिमाण (T) <= 8)
   {
     /* "bithacks" */
-    const uint64_t b[] = {0x2ULL, 0xCULL, 0xF0ULL, 0xFF00ULL, 0xFFFF0000ULL, 0xFFFFFFFF00000000ULL};
-    const unsigned int S[] = {1, 2, 4, 8, 16, 32};
-    unsigned int r = 0;
-    for (int i = 5; i >= 0; i--)
-      if (v & b[i])
+    अचर uint64_t b[] = {0x2ULL, 0xCULL, 0xF0ULL, 0xFF00ULL, 0xFFFF0000ULL, 0xFFFFFFFF00000000ULL};
+    अचर अचिन्हित पूर्णाङ्क S[] = {1, 2, 4, 8, 16, 32};
+    अचिन्हित पूर्णाङ्क r = 0;
+    लागि (पूर्णाङ्क i = 5; i >= 0; i--)
+      यदि (v & b[i])
       {
 	v >>= S[i];
 	r |= S[i];
       }
-    return r + 1;
+    फर्काऊ r + 1;
   }
-  if (sizeof (T) == 16)
+  यदि (परिमाण (T) == 16)
   {
-    unsigned int shift = 64;
-    return (v >> shift) ? hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift :
+    अचिन्हित पूर्णाङ्क shift = 64;
+    फर्काऊ (v >> shift) ? hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift :
 			  hb_bit_storage<uint64_t> ((uint64_t) v);
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  प्रतिज्ञा (0);
+  फर्काऊ 0; /* Shut up stupid compiler. */
 }
 
 /* Returns the number of zero bits in the least significant side of v */
-template <typename T>
-static inline unsigned int
+ढाँचा <typename T>
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
 hb_ctz (T v)
 {
-  if (unlikely (!v)) return 8 * sizeof (T);
+  यदि (unlikely (!v)) फर्काऊ 8 * परिमाण (T);
 
-#if hb_has_builtin(__builtin_ctz)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return __builtin_ctz (v);
+#यदि hb_has_builtin(__builtin_ctz)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित पूर्णाङ्क))
+    फर्काऊ __builtin_ctz (v);
 #endif
 
-#if hb_has_builtin(__builtin_ctzl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return __builtin_ctzl (v);
+#यदि hb_has_builtin(__builtin_ctzl)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित दीर्घ))
+    फर्काऊ __builtin_ctzl (v);
 #endif
 
-#if hb_has_builtin(__builtin_ctzll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return __builtin_ctzll (v);
+#यदि hb_has_builtin(__builtin_ctzll)
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित दीर्घ दीर्घ))
+    फर्काऊ __builtin_ctzll (v);
 #endif
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
-  if (sizeof (T) <= sizeof (unsigned int))
+#यदि (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
+  यदि (परिमाण (T) <= परिमाण (अचिन्हित पूर्णाङ्क))
   {
-    unsigned long where;
+    अचिन्हित दीर्घ where;
     _BitScanForward (&where, v);
-    return where;
+    फर्काऊ where;
   }
-# if defined(_WIN64)
-  if (sizeof (T) <= 8)
+# यदि defined(_WIN64)
+  यदि (परिमाण (T) <= 8)
   {
-    unsigned long where;
+    अचिन्हित दीर्घ where;
     _BitScanForward64 (&where, v);
-    return where;
+    फर्काऊ where;
   }
 # endif
 #endif
 
-  if (sizeof (T) <= 4)
+  यदि (परिमाण (T) <= 4)
   {
     /* "bithacks" */
-    unsigned int c = 32;
+    अचिन्हित पूर्णाङ्क c = 32;
     v &= - (int32_t) v;
-    if (v) c--;
-    if (v & 0x0000FFFF) c -= 16;
-    if (v & 0x00FF00FF) c -= 8;
-    if (v & 0x0F0F0F0F) c -= 4;
-    if (v & 0x33333333) c -= 2;
-    if (v & 0x55555555) c -= 1;
-    return c;
+    यदि (v) c--;
+    यदि (v & 0x0000FFFF) c -= 16;
+    यदि (v & 0x00FF00FF) c -= 8;
+    यदि (v & 0x0F0F0F0F) c -= 4;
+    यदि (v & 0x33333333) c -= 2;
+    यदि (v & 0x55555555) c -= 1;
+    फर्काऊ c;
   }
-  if (sizeof (T) <= 8)
+  यदि (परिमाण (T) <= 8)
   {
     /* "bithacks" */
-    unsigned int c = 64;
+    अचिन्हित पूर्णाङ्क c = 64;
     v &= - (int64_t) (v);
-    if (v) c--;
-    if (v & 0x00000000FFFFFFFFULL) c -= 32;
-    if (v & 0x0000FFFF0000FFFFULL) c -= 16;
-    if (v & 0x00FF00FF00FF00FFULL) c -= 8;
-    if (v & 0x0F0F0F0F0F0F0F0FULL) c -= 4;
-    if (v & 0x3333333333333333ULL) c -= 2;
-    if (v & 0x5555555555555555ULL) c -= 1;
-    return c;
+    यदि (v) c--;
+    यदि (v & 0x00000000FFFFFFFFULL) c -= 32;
+    यदि (v & 0x0000FFFF0000FFFFULL) c -= 16;
+    यदि (v & 0x00FF00FF00FF00FFULL) c -= 8;
+    यदि (v & 0x0F0F0F0F0F0F0F0FULL) c -= 4;
+    यदि (v & 0x3333333333333333ULL) c -= 2;
+    यदि (v & 0x5555555555555555ULL) c -= 1;
+    फर्काऊ c;
   }
-  if (sizeof (T) == 16)
+  यदि (परिमाण (T) == 16)
   {
-    unsigned int shift = 64;
-    return (uint64_t) v ? hb_bit_storage<uint64_t> ((uint64_t) v) :
+    अचिन्हित पूर्णाङ्क shift = 64;
+    फर्काऊ (uint64_t) v ? hb_bit_storage<uint64_t> ((uint64_t) v) :
 			  hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift;
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  प्रतिज्ञा (0);
+  फर्काऊ 0; /* Shut up stupid compiler. */
 }
 
 
@@ -1201,84 +1201,84 @@ hb_ctz (T v)
  */
 
 /* ASCII tag/character handling */
-static inline bool ISALPHA (unsigned char c)
-{ return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
-static inline bool ISALNUM (unsigned char c)
-{ return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); }
-static inline bool ISSPACE (unsigned char c)
-{ return c == ' ' || c =='\f'|| c =='\n'|| c =='\r'|| c =='\t'|| c =='\v'; }
-static inline unsigned char TOUPPER (unsigned char c)
-{ return (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c; }
-static inline unsigned char TOLOWER (unsigned char c)
-{ return (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c; }
-static inline bool ISHEX (unsigned char c)
-{ return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
-static inline unsigned char TOHEX (uint8_t c)
-{ return (c & 0xF) <= 9 ? (c & 0xF) + '0' : (c & 0xF) + 'a' - 10; }
-static inline uint8_t FROMHEX (unsigned char c)
-{ return (c >= '0' && c <= '9') ? c - '0' : TOLOWER (c) - 'a' + 10; }
+स्थिर अन्तःस्थ तार्किक ISALPHA (अचिन्हित वर्ण c)
+{ फर्काऊ (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
+स्थिर अन्तःस्थ तार्किक ISALNUM (अचिन्हित वर्ण c)
+{ फर्काऊ (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); }
+स्थिर अन्तःस्थ तार्किक ISSPACE (अचिन्हित वर्ण c)
+{ फर्काऊ c == ' ' || c =='\f'|| c =='\n'|| c =='\r'|| c =='\t'|| c =='\v'; }
+स्थिर अन्तःस्थ अचिन्हित वर्ण TOUPPER (अचिन्हित वर्ण c)
+{ फर्काऊ (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c; }
+स्थिर अन्तःस्थ अचिन्हित वर्ण TOLOWER (अचिन्हित वर्ण c)
+{ फर्काऊ (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c; }
+स्थिर अन्तःस्थ तार्किक ISHEX (अचिन्हित वर्ण c)
+{ फर्काऊ (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
+स्थिर अन्तःस्थ अचिन्हित वर्ण TOHEX (uint8_t c)
+{ फर्काऊ (c & 0xF) <= 9 ? (c & 0xF) + '0' : (c & 0xF) + 'a' - 10; }
+स्थिर अन्तःस्थ uint8_t FROMHEX (अचिन्हित वर्ण c)
+{ फर्काऊ (c >= '0' && c <= '9') ? c - '0' : TOLOWER (c) - 'a' + 10; }
 
-static inline unsigned int DIV_CEIL (const unsigned int a, unsigned int b)
-{ return (a + (b - 1)) / b; }
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क DIV_CEIL (अचर अचिन्हित पूर्णाङ्क a, अचिन्हित पूर्णाङ्क b)
+{ फर्काऊ (a + (b - 1)) / b; }
 
 
 #undef  ARRAY_LENGTH
-template <typename Type, unsigned int n>
-static inline unsigned int ARRAY_LENGTH (const Type (&)[n]) { return n; }
+ढाँचा <typename Type, अचिन्हित पूर्णाङ्क n>
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क ARRAY_LENGTH (अचर Type (&)[n]) { फर्काऊ n; }
 /* A const version, but does not detect erratically being called on pointers. */
-#define ARRAY_LENGTH_CONST(__array) ((signed int) (sizeof (__array) / sizeof (__array[0])))
+#define ARRAY_LENGTH_CONST(__array) ((चिन्हित पूर्णाङ्क) (परिमाण (__array) / परिमाण (__array[0])))
 
 
-static inline void *
-hb_memcpy (void *__restrict dst, const void *__restrict src, size_t len)
+स्थिर अन्तःस्थ शून्य *
+hb_memcpy (शून्य *__restrict dst, अचर शून्य *__restrict src, माप_प्रकार len)
 {
   /* It's illegal to pass 0 as size to memcpy. */
-  if (unlikely (!len)) return dst;
-  return memcpy (dst, src, len);
+  यदि (unlikely (!len)) फर्काऊ dst;
+  फर्काऊ स_नकल (dst, src, len);
 }
 
-static inline int
-hb_memcmp (const void *a, const void *b, unsigned int len)
+स्थिर अन्तःस्थ पूर्णाङ्क
+hb_memcmp (अचर शून्य *a, अचर शून्य *b, अचिन्हित पूर्णाङ्क len)
 {
   /* It's illegal to pass NULL to memcmp(), even if len is zero.
    * So, wrap it.
    * https://sourceware.org/bugzilla/show_bug.cgi?id=23878 */
-  if (unlikely (!len)) return 0;
-  return memcmp (a, b, len);
+  यदि (unlikely (!len)) फर्काऊ 0;
+  फर्काऊ स_भेद (a, b, len);
 }
 
-static inline void *
-hb_memset (void *s, int c, unsigned int n)
+स्थिर अन्तःस्थ शून्य *
+hb_memset (शून्य *s, पूर्णाङ्क c, अचिन्हित पूर्णाङ्क n)
 {
   /* It's illegal to pass NULL to memset(), even if n is zero. */
-  if (unlikely (!n)) return s;
-  return memset (s, c, n);
+  यदि (unlikely (!n)) फर्काऊ s;
+  फर्काऊ स_रखो (s, c, n);
 }
 
-static inline unsigned int
-hb_ceil_to_4 (unsigned int v)
+स्थिर अन्तःस्थ अचिन्हित पूर्णाङ्क
+hb_ceil_to_4 (अचिन्हित पूर्णाङ्क v)
 {
-  return ((v - 1) | 3) + 1;
+  फर्काऊ ((v - 1) | 3) + 1;
 }
 
-template <typename T> static inline bool
+ढाँचा <typename T> स्थिर अन्तःस्थ तार्किक
 hb_in_range (T u, T lo, T hi)
 {
   static_assert (!std::is_signed<T>::value, "");
 
   /* The casts below are important as if T is smaller than int,
    * the subtract results will become a signed int! */
-  return (T)(u - lo) <= (T)(hi - lo);
+  फर्काऊ (T)(u - lo) <= (T)(hi - lo);
 }
-template <typename T> static inline bool
+ढाँचा <typename T> स्थिर अन्तःस्थ तार्किक
 hb_in_ranges (T u, T lo1, T hi1)
 {
-  return hb_in_range (u, lo1, hi1);
+  फर्काऊ hb_in_range (u, lo1, hi1);
 }
-template <typename T, typename ...Ts> static inline bool
+ढाँचा <typename T, typename ...Ts> स्थिर अन्तःस्थ तार्किक
 hb_in_ranges (T u, T lo1, T hi1, Ts... ds)
 {
-  return hb_in_range<T> (u, lo1, hi1) || hb_in_ranges<T> (u, ds...);
+  फर्काऊ hb_in_range<T> (u, lo1, hi1) || hb_in_ranges<T> (u, ds...);
 }
 
 
@@ -1286,34 +1286,34 @@ hb_in_ranges (T u, T lo1, T hi1, Ts... ds)
  * Overflow checking.
  */
 
-static inline bool
-hb_unsigned_mul_overflows (unsigned int count, unsigned int size, unsigned *result = nullptr)
+स्थिर अन्तःस्थ तार्किक
+hb_unsigned_mul_overflows (अचिन्हित पूर्णाङ्क गन्ती, अचिन्हित पूर्णाङ्क size, अचिन्हित *result = nullptr)
 {
-#if hb_has_builtin(__builtin_mul_overflow)
-  unsigned stack_result;
-  if (!result)
-    result = &stack_result;
-  return __builtin_mul_overflow (count, size, result);
+#यदि hb_has_builtin(__builtin_mul_overflow)
+  अचिन्हित थाक_result;
+  यदि (!result)
+    result = &थाक_result;
+  फर्काऊ __builtin_mul_overflow (गन्ती, size, result);
 #endif
 
-  if (result)
-    *result = count * size;
-  return (size > 0) && (count >= ((unsigned int) -1) / size);
+  यदि (result)
+    *result = गन्ती * size;
+  फर्काऊ (size > 0) && (गन्ती >= ((अचिन्हित पूर्णाङ्क) -1) / size);
 }
 
-static inline bool
-hb_unsigned_add_overflows (unsigned int a, unsigned int b, unsigned *result = nullptr)
+स्थिर अन्तःस्थ तार्किक
+hb_unsigned_add_overflows (अचिन्हित पूर्णाङ्क a, अचिन्हित पूर्णाङ्क b, अचिन्हित *result = nullptr)
 {
-#if hb_has_builtin(__builtin_add_overflow)
-  unsigned stack_result;
-  if (!result)
-    result = &stack_result;
-  return __builtin_add_overflow (a, b, result);
+#यदि hb_has_builtin(__builtin_add_overflow)
+  अचिन्हित थाक_result;
+  यदि (!result)
+    result = &थाक_result;
+  फर्काऊ __builtin_add_overflow (a, b, result);
 #endif
 
-  if (result)
+  यदि (result)
     *result = a + b;
-  return b > (unsigned int) -1 - a;
+  फर्काऊ b > (अचिन्हित पूर्णाङ्क) -1 - a;
 }
 
 /* Saturating arithmetic on size_t.  On platforms where size_t is wider than
@@ -1323,142 +1323,142 @@ hb_unsigned_add_overflows (unsigned int a, unsigned int b, unsigned *result = nu
  * unsigned int), they saturate to SIZE_MAX so sanitize/serialize callers
  * naturally reject the resulting size as out-of-range. */
 
-static inline size_t
-hb_unsigned_mul_saturate (size_t a, size_t b)
+स्थिर अन्तःस्थ माप_प्रकार
+hb_unsigned_mul_saturate (माप_प्रकार a, माप_प्रकार b)
 {
-  if (sizeof (size_t) > sizeof (unsigned int))
-    return a * b;
-#if hb_has_builtin(__builtin_mul_overflow)
-  size_t result;
-  if (__builtin_mul_overflow (a, b, &result))
-    return (size_t) -1;
-  return result;
-#else
-  if (b > 0 && a > ((size_t) -1) / b) return (size_t) -1;
-  return a * b;
+  यदि (परिमाण (माप_प्रकार) > परिमाण (अचिन्हित पूर्णाङ्क))
+    फर्काऊ a * b;
+#यदि hb_has_builtin(__builtin_mul_overflow)
+  माप_प्रकार result;
+  यदि (__builtin_mul_overflow (a, b, &result))
+    फर्काऊ (माप_प्रकार) -1;
+  फर्काऊ result;
+#अन्यथा
+  यदि (b > 0 && a > ((माप_प्रकार) -1) / b) फर्काऊ (माप_प्रकार) -1;
+  फर्काऊ a * b;
 #endif
 }
 
-static inline size_t
-hb_unsigned_add_saturate (size_t a, size_t b)
+स्थिर अन्तःस्थ माप_प्रकार
+hb_unsigned_add_saturate (माप_प्रकार a, माप_प्रकार b)
 {
-  if (sizeof (size_t) > sizeof (unsigned int))
-    return a + b;
-#if hb_has_builtin(__builtin_add_overflow)
-  size_t result;
-  if (__builtin_add_overflow (a, b, &result))
-    return (size_t) -1;
-  return result;
-#else
-  if (b > ((size_t) -1) - a) return (size_t) -1;
-  return a + b;
+  यदि (परिमाण (माप_प्रकार) > परिमाण (अचिन्हित पूर्णाङ्क))
+    फर्काऊ a + b;
+#यदि hb_has_builtin(__builtin_add_overflow)
+  माप_प्रकार result;
+  यदि (__builtin_add_overflow (a, b, &result))
+    फर्काऊ (माप_प्रकार) -1;
+  फर्काऊ result;
+#अन्यथा
+  यदि (b > ((माप_प्रकार) -1) - a) फर्काऊ (माप_प्रकार) -1;
+  फर्काऊ a + b;
 #endif
 }
 
 /* Variadic forms: fold left across all arguments. */
-template <typename ...Ts>
-static inline size_t
-hb_unsigned_mul_saturate (size_t a, size_t b, size_t c, Ts... rest)
-{ return hb_unsigned_mul_saturate (hb_unsigned_mul_saturate (a, b), c, rest...); }
+ढाँचा <typename ...Ts>
+स्थिर अन्तःस्थ माप_प्रकार
+hb_unsigned_mul_saturate (माप_प्रकार a, माप_प्रकार b, माप_प्रकार c, Ts... rest)
+{ फर्काऊ hb_unsigned_mul_saturate (hb_unsigned_mul_saturate (a, b), c, rest...); }
 
-template <typename ...Ts>
-static inline size_t
-hb_unsigned_add_saturate (size_t a, size_t b, size_t c, Ts... rest)
-{ return hb_unsigned_add_saturate (hb_unsigned_add_saturate (a, b), c, rest...); }
+ढाँचा <typename ...Ts>
+स्थिर अन्तःस्थ माप_प्रकार
+hb_unsigned_add_saturate (माप_प्रकार a, माप_प्रकार b, माप_प्रकार c, Ts... rest)
+{ फर्काऊ hb_unsigned_add_saturate (hb_unsigned_add_saturate (a, b), c, rest...); }
 
 /* Saturating mul-add: a * b + c.  Covers the dominant get_size() pattern
  * `count * static_size + min_size`. */
-static inline size_t
-hb_unsigned_mul_add_saturate (size_t a, size_t b, size_t c)
-{ return hb_unsigned_add_saturate (hb_unsigned_mul_saturate (a, b), c); }
+स्थिर अन्तःस्थ माप_प्रकार
+hb_unsigned_mul_add_saturate (माप_प्रकार a, माप_प्रकार b, माप_प्रकार c)
+{ फर्काऊ hb_unsigned_add_saturate (hb_unsigned_mul_saturate (a, b), c); }
 
 
 /*
  * Sort and search.
  */
 
-template <typename K, typename V, typename ...Ts>
-static int
-_hb_cmp_method (const void *pkey, const void *pval, Ts... ds)
+ढाँचा <typename K, typename V, typename ...Ts>
+स्थिर पूर्णाङ्क
+_hb_cmp_method (अचर शून्य *pkey, अचर शून्य *pval, Ts... ds)
 {
-  const K& key = * (const K*) pkey;
-  const V& val = * (const V*) pval;
+  अचर K& key = * (अचर K*) pkey;
+  अचर V& val = * (अचर V*) pval;
 
-  return val.cmp (key, ds...);
+  फर्काऊ val.cmp (key, ds...);
 }
 
-template <typename K, typename V>
-static int
-_hb_cmp_operator (const void *pkey, const void *pval)
+ढाँचा <typename K, typename V>
+स्थिर पूर्णाङ्क
+_hb_cmp_operator (अचर शून्य *pkey, अचर शून्य *pval)
 {
-  const K& key = * (const K*) pkey;
-  const V& val = * (const V*) pval;
+  अचर K& key = * (अचर K*) pkey;
+  अचर V& val = * (अचर V*) pval;
 
-  if (key < val) return -1;
-  if (key > val) return  1;
-  return 0;
+  यदि (key < val) फर्काऊ -1;
+  यदि (key > val) फर्काऊ  1;
+  फर्काऊ 0;
 }
 
-template <typename V, typename K, typename ...Ts>
+ढाँचा <typename V, typename K, typename ...Ts>
 HB_HOT
-static inline bool
-hb_bsearch_impl (unsigned *pos, /* Out */
-		 const K& key,
-		 V* base, size_t nmemb, size_t stride,
-		 int (*compar)(const void *_key, const void *_item, Ts... _ds),
+स्थिर अन्तःस्थ तार्किक
+hb_bsearch_impl (अचिन्हित *pos, /* Out */
+		 अचर K& key,
+		 V* base, माप_प्रकार nmemb, माप_प्रकार stride,
+		 पूर्णाङ्क (*compar)(अचर शून्य *साँचो_3, अचर शून्य *_item, Ts... _ds),
 		 Ts... ds)
 {
   /* This is our *only* bsearch implementation. */
 
-  int min = 0, max = (int) nmemb - 1;
-  while (min <= max)
+  पूर्णाङ्क min = 0, max = (पूर्णाङ्क) nmemb - 1;
+  जबसम्म (min <= max)
   {
-    int mid = ((unsigned int) min + (unsigned int) max) / 2;
+    पूर्णाङ्क mid = ((अचिन्हित पूर्णाङ्क) min + (अचिन्हित पूर्णाङ्क) max) / 2;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-    V* p = (V*) (((const char *) base) + (mid * stride));
-#pragma GCC diagnostic pop
-    int c = compar ((const void *) std::addressof (key), (const void *) p, ds...);
-    if (c < 0)
+    V* p = (V*) (((अचर वर्ण *) base) + (mid * stride));
+#pragma GCC diagnostic झिक
+    पूर्णाङ्क c = compar ((अचर शून्य *) std::addressof (key), (अचर शून्य *) p, ds...);
+    यदि (c < 0)
       max = mid - 1;
-    else if (c > 0)
+    अन्यथा यदि (c > 0)
       min = mid + 1;
-    else
+    अन्यथा
     {
       *pos = mid;
-      return true;
+      फर्काऊ सत्य;
     }
   }
   *pos = min;
-  return false;
+  फर्काऊ असत्य;
 }
 
-template <typename V, typename K>
-static inline V*
-hb_bsearch (const K& key, V* base,
-	    size_t nmemb, size_t stride = sizeof (V),
-	    int (*compar)(const void *_key, const void *_item) = _hb_cmp_method<K, V>)
+ढाँचा <typename V, typename K>
+स्थिर अन्तःस्थ V*
+hb_bsearch (अचर K& key, V* base,
+	    माप_प्रकार nmemb, माप_प्रकार stride = परिमाण (V),
+	    पूर्णाङ्क (*compar)(अचर शून्य *साँचो_3, अचर शून्य *_item) = _hb_cmp_method<K, V>)
 {
-  unsigned pos;
+  अचिन्हित pos;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return hb_bsearch_impl (&pos, key, base, nmemb, stride, compar) ?
-	 (V*) (((const char *) base) + (pos * stride)) : nullptr;
-#pragma GCC diagnostic pop
+  फर्काऊ hb_bsearch_impl (&pos, key, base, nmemb, stride, compar) ?
+	 (V*) (((अचर वर्ण *) base) + (pos * stride)) : nullptr;
+#pragma GCC diagnostic झिक
 }
-template <typename V, typename K, typename ...Ts>
-static inline V*
-hb_bsearch (const K& key, V* base,
-	    size_t nmemb, size_t stride,
-	    int (*compar)(const void *_key, const void *_item, Ts... _ds),
+ढाँचा <typename V, typename K, typename ...Ts>
+स्थिर अन्तःस्थ V*
+hb_bsearch (अचर K& key, V* base,
+	    माप_प्रकार nmemb, माप_प्रकार stride,
+	    पूर्णाङ्क (*compar)(अचर शून्य *साँचो_3, अचर शून्य *_item, Ts... _ds),
 	    Ts... ds)
 {
-  unsigned pos;
+  अचिन्हित pos;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return hb_bsearch_impl (&pos, key, base, nmemb, stride, compar, ds...) ?
-	 (V*) (((const char *) base) + (pos * stride)) : nullptr;
-#pragma GCC diagnostic pop
+  फर्काऊ hb_bsearch_impl (&pos, key, base, nmemb, stride, compar, ds...) ?
+	 (V*) (((अचर वर्ण *) base) + (pos * stride)) : nullptr;
+#pragma GCC diagnostic झिक
 }
 
 
@@ -1478,21 +1478,21 @@ hb_bsearch (const K& key, V* base,
  * uses for std::sort.
  *
  * Not stable; equivalent values may be swapped. */
-template <typename T, typename Compar>
-static inline void
-hb_qsort_loop (T *base, size_t nel, Compar compar)
+ढाँचा <typename T, typename Compar>
+स्थिर अन्तःस्थ शून्य
+hb_qsort_loop (T *base, माप_प्रकार nel, Compar compar)
 {
-  while (nel > 24)
+  जबसम्म (nel > 24)
   {
     T *last = base + nel - 1;
     T *mid = base + nel / 2;
 
     /* Median-of-three pivot, parked at last-1. */
-    if (compar (*base, *mid) > 0) hb_swap (*base, *mid);
-    if (compar (*mid, *last) > 0)
+    यदि (compar (*base, *mid) > 0) hb_swap (*base, *mid);
+    यदि (compar (*mid, *last) > 0)
     {
       hb_swap (*mid, *last);
-      if (compar (*base, *mid) > 0) hb_swap (*base, *mid);
+      यदि (compar (*base, *mid) > 0) hb_swap (*base, *mid);
     }
     hb_swap (*mid, *(last - 1));
     T &pivot = *(last - 1);
@@ -1501,36 +1501,36 @@ hb_qsort_loop (T *base, size_t nel, Compar compar)
      * median-of-three left *base <= pivot and *last >= pivot,
      * which act as sentinels. */
     T *i = base, *j = last - 1;
-    while (true)
+    जबसम्म (सत्य)
     {
-      while (compar (*++i, pivot) < 0) {}
-      while (compar (*--j, pivot) > 0) {}
-      if (i >= j) break;
+      जबसम्म (compar (*++i, pivot) < 0) {}
+      जबसम्म (compar (*--j, pivot) > 0) {}
+      यदि (i >= j) रोक;
       hb_swap (*i, *j);
     }
     hb_swap (*i, *(last - 1));
 
     /* Recurse on smaller side, loop on larger — bounds stack
      * depth at O(log n). */
-    size_t left  = (size_t) (i - base);
-    size_t right = nel - left - 1;
-    if (left < right)
+    माप_प्रकार left  = (माप_प्रकार) (i - base);
+    माप_प्रकार दायाँ = nel - left - 1;
+    यदि (left < दायाँ)
     {
       hb_qsort_loop (base, left, compar);
       base = i + 1;
-      nel  = right;
+      nel  = दायाँ;
     }
-    else
+    अन्यथा
     {
-      hb_qsort_loop (i + 1, right, compar);
+      hb_qsort_loop (i + 1, दायाँ, compar);
       nel  = left;
     }
   }
 }
 
-template <typename T, typename Compar>
-static inline void
-hb_qsort_inline (T *base, size_t nel, Compar compar)
+ढाँचा <typename T, typename Compar>
+स्थिर अन्तःस्थ शून्य
+hb_qsort_inline (T *base, माप_प्रकार nel, Compar compar)
 {
   hb_qsort_loop (base, nel, compar);
 
@@ -1538,172 +1538,172 @@ hb_qsort_inline (T *base, size_t nel, Compar compar)
    * the partitioning loop, every element is within the threshold
    * of its sorted position, so this pass is O(n * threshold). */
   T *end = base + nel;
-  for (T *pi = base + 1; pi < end; pi++)
-    for (T *pj = pi; pj > base && compar (pj[-1], pj[0]) > 0; pj--)
+  लागि (T *pi = base + 1; pi < end; pi++)
+    लागि (T *pj = pi; pj > base && compar (pj[-1], pj[0]) > 0; pj--)
       hb_swap (pj[-1], pj[0]);
 }
 
-static inline void
-hb_qsort (void *base, size_t nel, size_t width,
-	  int (*compar)(const void *_a, const void *_b))
+स्थिर अन्तःस्थ शून्य
+hb_qsort (शून्य *base, माप_प्रकार nel, माप_प्रकार width,
+	  पूर्णाङ्क (*compar)(अचर शून्य *_a, अचर शून्य *_b))
 {
-  qsort (base, nel, width, compar);
+  क्विक (base, nel, width, compar);
 }
 
 
 
 
-template <typename T, typename T2, typename T3 = int> static inline void
-hb_stable_sort (T *array, unsigned int len, int(*compar)(const T2 *, const T2 *), T3 *array2 = nullptr)
+ढाँचा <typename T, typename T2, typename T3 = पूर्णाङ्क> स्थिर अन्तःस्थ शून्य
+hb_stable_sort (T *array, अचिन्हित पूर्णाङ्क len, पूर्णाङ्क(*compar)(अचर T2 *, अचर T2 *), T3 *array2 = nullptr)
 {
   static_assert (hb_is_trivially_copy_assignable (T), "");
   static_assert (hb_is_trivially_copy_assignable (T3), "");
 
-  for (unsigned int i = 1; i < len; i++)
+  लागि (अचिन्हित पूर्णाङ्क i = 1; i < len; i++)
   {
-    unsigned int j = i;
-    while (j && compar (&array[j - 1], &array[i]) > 0)
+    अचिन्हित पूर्णाङ्क j = i;
+    जबसम्म (j && compar (&array[j - 1], &array[i]) > 0)
       j--;
-    if (i == j)
-      continue;
+    यदि (i == j)
+      जारी;
     /* Move item i to occupy place for item j, shift what's in between. */
     {
       T t = array[i];
-      memmove (&array[j + 1], &array[j], (i - j) * sizeof (T));
+      स_हटाओ (&array[j + 1], &array[j], (i - j) * परिमाण (T));
       array[j] = t;
     }
-    if (array2)
+    यदि (array2)
     {
       T3 t = array2[i];
-      memmove (&array2[j + 1], &array2[j], (i - j) * sizeof (T3));
+      स_हटाओ (&array2[j + 1], &array2[j], (i - j) * परिमाण (T3));
       array2[j] = t;
     }
   }
 }
 
-static inline hb_bool_t
-hb_codepoint_parse (const char *s, unsigned int len, int base, hb_codepoint_t *out)
+स्थिर अन्तःस्थ hb_bool_t
+hb_codepoint_parse (अचर वर्ण *s, अचिन्हित पूर्णाङ्क len, पूर्णाङ्क base, hb_codepoint_t *out)
 {
-  unsigned int v;
-  const char *p = s;
-  const char *end = p + len;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */, base)))
-    return false;
+  अचिन्हित पूर्णाङ्क v;
+  अचर वर्ण *p = s;
+  अचर वर्ण *end = p + len;
+  यदि (unlikely (!hb_parse_uint (&p, end, &v, सत्य/* whole buffer */, base)))
+    फर्काऊ असत्य;
 
   *out = v;
-  return true;
+  फर्काऊ सत्य;
 }
 
 
 /* Operators. */
 
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a & b)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a, अचर T &b) अचर HB_AUTO_RETURN (a & b)
 }
 HB_FUNCOBJ (hb_bitwise_and);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a | b)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a, अचर T &b) अचर HB_AUTO_RETURN (a | b)
 }
 HB_FUNCOBJ (hb_bitwise_or);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a ^ b)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a, अचर T &b) अचर HB_AUTO_RETURN (a ^ b)
 }
 HB_FUNCOBJ (hb_bitwise_xor);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (~a & b)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a, अचर T &b) अचर HB_AUTO_RETURN (~a & b)
 }
 HB_FUNCOBJ (hb_bitwise_lt);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a & ~b)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a, अचर T &b) अचर HB_AUTO_RETURN (a & ~b)
 }
 HB_FUNCOBJ (hb_bitwise_gt); // aka sub
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (~a | b)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a, अचर T &b) अचर HB_AUTO_RETURN (~a | b)
 }
 HB_FUNCOBJ (hb_bitwise_le);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a | ~b)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a, अचर T &b) अचर HB_AUTO_RETURN (a | ~b)
 }
 HB_FUNCOBJ (hb_bitwise_ge);
-struct
+संरचना
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (~a)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a) अचर HB_AUTO_RETURN (~a)
 }
 HB_FUNCOBJ (hb_bitwise_neg);
 
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a + b)
+  ढाँचा <typename T, typename T2> constexpr स्वतः
+  चालक () (अचर T &a, अचर T2 &b) अचर HB_AUTO_RETURN (a + b)
 }
 HB_FUNCOBJ (hb_add);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a - b)
+  ढाँचा <typename T, typename T2> constexpr स्वतः
+  चालक () (अचर T &a, अचर T2 &b) अचर HB_AUTO_RETURN (a - b)
 }
 HB_FUNCOBJ (hb_sub);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (b - a)
+  ढाँचा <typename T, typename T2> constexpr स्वतः
+  चालक () (अचर T &a, अचर T2 &b) अचर HB_AUTO_RETURN (b - a)
 }
 HB_FUNCOBJ (hb_rsub);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a * b)
+  ढाँचा <typename T, typename T2> constexpr स्वतः
+  चालक () (अचर T &a, अचर T2 &b) अचर HB_AUTO_RETURN (a * b)
 }
 HB_FUNCOBJ (hb_mul);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a / b)
+  ढाँचा <typename T, typename T2> constexpr स्वतः
+  चालक () (अचर T &a, अचर T2 &b) अचर HB_AUTO_RETURN (a / b)
 }
 HB_FUNCOBJ (hb_div);
-struct
+संरचना
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a % b)
+  ढाँचा <typename T, typename T2> constexpr स्वतः
+  चालक () (अचर T &a, अचर T2 &b) अचर HB_AUTO_RETURN (a % b)
 }
 HB_FUNCOBJ (hb_mod);
-struct
+संरचना
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (+a)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a) अचर HB_AUTO_RETURN (+a)
 }
 HB_FUNCOBJ (hb_pos);
-struct
+संरचना
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (-a)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (अचर T &a) अचर HB_AUTO_RETURN (-a)
 }
 HB_FUNCOBJ (hb_neg);
-struct
+संरचना
 {
-  template <typename T> constexpr auto
-  operator () (T &a) const HB_AUTO_RETURN (++a)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (T &a) अचर HB_AUTO_RETURN (++a)
 }
 HB_FUNCOBJ (hb_inc);
-struct
+संरचना
 {
-  template <typename T> constexpr auto
-  operator () (T &a) const HB_AUTO_RETURN (--a)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (T &a) अचर HB_AUTO_RETURN (--a)
 }
 HB_FUNCOBJ (hb_dec);
 
@@ -1718,59 +1718,59 @@ HB_FUNCOBJ (hb_dec);
  * https://docs.rs/kurbo/0.8.1/kurbo/common/fn.solve_itp.html
  * https://github.com/linebender/kurbo/blob/fd839c25ea0c98576c7ce5789305822675a89938/src/common.rs#L162-L248
  */
-template <typename func_t>
-double solve_itp (func_t f,
-		  double a, double b,
-		  double epsilon,
-		  double min_y, double max_y,
-		  double &ya, double &yb, double &y)
+ढाँचा <typename func_t>
+द्विगुण solve_itp (func_t f,
+		  द्विगुण a, द्विगुण b,
+		  द्विगुण epsilon,
+		  द्विगुण min_y, द्विगुण max_y,
+		  द्विगुण &ya, द्विगुण &yb, द्विगुण &y)
 {
   // Guard against degenerate interval
-  if (b - a <= 0.0)
+  यदि (b - a <= 0.0)
   {
     y = ya;
-    return a;
+    फर्काऊ a;
   }
 
-  unsigned n1_2 = (unsigned) (hb_max (ceil (log2 ((b - a) / epsilon)) - 1.0, 0.0));
-  const unsigned n0 = 1; // Hardwired
-  const double k1 = 0.2 / (b - a); // Hardwired.
-  unsigned nmax = n0 + n1_2;
-  double scaled_epsilon = epsilon * double (1llu << nmax);
-  double _2_epsilon = 2.0 * epsilon;
-  while (b - a > _2_epsilon)
+  अचिन्हित n1_2 = (अचिन्हित) (hb_max (उच्चमान (log2 ((b - a) / epsilon)) - 1.0, 0.0));
+  अचर अचिन्हित n0 = 1; // Hardwired
+  अचर द्विगुण k1 = 0.2 / (b - a); // Hardwired.
+  अचिन्हित nmax = n0 + n1_2;
+  द्विगुण scaled_epsilon = epsilon * द्विगुण (1llu << nmax);
+  द्विगुण _2_epsilon = 2.0 * epsilon;
+  जबसम्म (b - a > _2_epsilon)
   {
-    double x1_2 = 0.5 * (a + b);
-    double r = scaled_epsilon - 0.5 * (b - a);
+    द्विगुण x1_2 = 0.5 * (a + b);
+    द्विगुण r = scaled_epsilon - 0.5 * (b - a);
     // Guard against yb == ya to prevent division by zero
-    double xf = (yb != ya) ? (yb * a - ya * b) / (yb - ya) : x1_2;
-    double sigma = x1_2 - xf;
-    double b_a = b - a;
+    द्विगुण xf = (yb != ya) ? (yb * a - ya * b) / (yb - ya) : x1_2;
+    द्विगुण sigma = x1_2 - xf;
+    द्विगुण b_a = b - a;
     // This has k2 = 2 hardwired for efficiency.
-    double b_a_k2 = b_a * b_a;
-    double delta = k1 * b_a_k2;
-    int sigma_sign = sigma >= 0 ? +1 : -1;
-    double xt = delta <= fabs (x1_2 - xf) ? xf + delta * sigma_sign : x1_2;
-    double xitp = fabs (xt - x1_2) <= r ? xt : x1_2 - r * sigma_sign;
-    double yitp = f (xitp);
-    if (yitp > max_y)
+    द्विगुण b_a_k2 = b_a * b_a;
+    द्विगुण delta = k1 * b_a_k2;
+    पूर्णाङ्क sigma_sign = sigma >= 0 ? +1 : -1;
+    द्विगुण xt = delta <= भ_असल (x1_2 - xf) ? xf + delta * sigma_sign : x1_2;
+    द्विगुण xitp = भ_असल (xt - x1_2) <= r ? xt : x1_2 - r * sigma_sign;
+    द्विगुण yitp = f (xitp);
+    यदि (yitp > max_y)
     {
       b = xitp;
       yb = yitp;
     }
-    else if (yitp < min_y)
+    अन्यथा यदि (yitp < min_y)
     {
       a = xitp;
       ya = yitp;
     }
-    else
+    अन्यथा
     {
       y = yitp;
-      return xitp;
+      फर्काऊ xitp;
     }
     scaled_epsilon *= 0.5;
   }
-  return 0.5 * (a + b);
+  फर्काऊ 0.5 * (a + b);
 }
 
 
@@ -1789,36 +1789,36 @@ double solve_itp (func_t f,
  *   ... multiple fallible operations ...
  *   return true;  // buf freed automatically on any return path
  */
-template <typename F>
-struct hb_scope_guard_t
+ढाँचा <typename F>
+संरचना hb_scope_guard_t
 {
-  explicit hb_scope_guard_t (F &&f) : f (std::move (f)), active (true) {}
+  explicit hb_scope_guard_t (F &&f) : f (std::move (f)), active (सत्य) {}
   hb_scope_guard_t (hb_scope_guard_t &&o) noexcept
-    : f (std::move (o.f)), active (o.active) { o.active = false; }
-  hb_scope_guard_t (const hb_scope_guard_t &) = delete;
-  hb_scope_guard_t &operator= (const hb_scope_guard_t &) = delete;
-  hb_scope_guard_t &operator= (hb_scope_guard_t &&) = delete;
-  ~hb_scope_guard_t () { if (active) f (); }
+    : f (std::move (o.f)), active (o.active) { o.active = असत्य; }
+  hb_scope_guard_t (अचर hb_scope_guard_t &) = delete;
+  hb_scope_guard_t &चालक= (अचर hb_scope_guard_t &) = delete;
+  hb_scope_guard_t &चालक= (hb_scope_guard_t &&) = delete;
+  ~hb_scope_guard_t () { यदि (active) f (); }
 
   /* Release: dismiss the guard so the cleanup does NOT run.  Use
    * when transferring ownership out of the scope. */
-  void release () { active = false; }
+  शून्य release () { active = असत्य; }
 
-  private:
+  गुप्त:
   F f;
-  bool active;
+  तार्किक active;
 };
 
-template <typename F>
-static inline hb_scope_guard_t<F> hb_make_scope_guard (F &&f)
-{ return hb_scope_guard_t<F> (std::forward<F> (f)); }
+ढाँचा <typename F>
+स्थिर अन्तःस्थ hb_scope_guard_t<F> hb_make_scope_guard (F &&f)
+{ फर्काऊ hb_scope_guard_t<F> (std::forward<F> (f)); }
 
-#define HB_SCOPE_GUARD_NAME_(line) hb_scope_guard_##line
-#define HB_SCOPE_GUARD_NAME(line) HB_SCOPE_GUARD_NAME_(line)
+#define HB_SCOPE_GUARD_NAME_(पङ्क्ति) hb_scope_guard_##line
+#define HB_SCOPE_GUARD_NAME(पङ्क्ति) HB_SCOPE_GUARD_NAME_(पङ्क्ति)
 #define HB_SCOPE_GUARD(stmt) \
-  auto HB_SCOPE_GUARD_NAME(__LINE__) = \
+  स्वतः HB_SCOPE_GUARD_NAME(__LINE__) = \
     hb_make_scope_guard ([&]() { stmt; }); \
-  (void) HB_SCOPE_GUARD_NAME(__LINE__)
+  (शून्य) HB_SCOPE_GUARD_NAME(__LINE__)
 
 
 #endif /* HB_ALGS_HH */

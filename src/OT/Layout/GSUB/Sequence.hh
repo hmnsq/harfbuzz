@@ -1,53 +1,53 @@
 #ifndef OT_LAYOUT_GSUB_SEQUENCE_HH
 #define OT_LAYOUT_GSUB_SEQUENCE_HH
 
-#include "Common.hh"
+#अन्तर्भाव "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश GSUB_impl {
 
-template <typename Types>
-struct Sequence
+ढाँचा <typename Types>
+संरचना Sequence
 {
-  protected:
+  रक्षित:
   Array16Of<typename Types::HBGlyphID>
                 substitute;             /* String of GlyphIDs to substitute */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (2, substitute);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) अचर
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (एतत्);
     return_trace (substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (substitute, glyphs); }
+  तार्किक intersects (अचर hb_set_t *glyphs) अचर
+  { फर्काऊ hb_all (substitute, glyphs); }
 
-  void closure (hb_closure_context_t *c) const
+  शून्य closure (hb_closure_context_t *c) अचर
   { c->output->add_array (substitute.arrayZ, substitute.len); }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t source) const
+  शून्य depend (hb_depend_context_t *c, hb_codepoint_t source) अचर
   {
     + hb_iter (substitute)
-    | hb_apply ([&] (const hb_codepoint_t &target) { c->depend_data->add_gsub_lookup (source, c->lookup_index, target); })
+    | hb_apply ([&] (अचर hb_codepoint_t &target) { c->depend_data->add_gsub_lookup (source, c->lookup_index, target); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  शून्य collect_glyphs (hb_collect_glyphs_context_t *c) अचर
   { c->output->add_array (substitute.arrayZ, substitute.len); }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  तार्किक apply (hb_ot_apply_context_t *c) अचर
   {
-    TRACE_APPLY (this);
-    unsigned int count = substitute.len;
+    TRACE_APPLY (एतत्);
+    अचिन्हित पूर्णाङ्क गन्ती = substitute.len;
 
     /* Special-case to make it in-place and not consider this
      * as a "multiplied" substitution. */
-    if (unlikely (count == 1))
+    यदि (unlikely (गन्ती == 1))
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -57,20 +57,20 @@ struct Sequence
 
       c->replace_glyph (substitute.arrayZ[0]);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "replaced glyph at %u (multiple substitution)",
 			    c->buffer->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (सत्य);
     }
     /* Spec disallows this, but Uniscribe allows it.
      * https://github.com/harfbuzz/harfbuzz/issues/253 */
-    else if (unlikely (count == 0))
+    अन्यथा यदि (unlikely (गन्ती == 0))
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -80,7 +80,7 @@ struct Sequence
 
       c->buffer->delete_glyph ();
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -88,10 +88,10 @@ struct Sequence
 			    c->buffer->idx);
       }
 
-      return_trace (true);
+      return_trace (सत्य);
     }
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -99,33 +99,33 @@ struct Sequence
 			  c->buffer->idx);
     }
 
-    unsigned int klass = _hb_glyph_info_is_ligature (&c->buffer->cur()) ?
+    अचिन्हित पूर्णाङ्क klass = _hb_glyph_info_is_ligature (&c->buffer->cur()) ?
                          HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH : 0;
-    unsigned lig_id = _hb_glyph_info_get_lig_id (&c->buffer->cur());
+    अचिन्हित lig_id = _hb_glyph_info_get_lig_id (&c->buffer->cur());
 
-    for (unsigned int i = 0; i < count; i++)
+    लागि (अचिन्हित पूर्णाङ्क i = 0; i < गन्ती; i++)
     {
       /* If is attached to a ligature, don't disturb that.
        * https://github.com/harfbuzz/harfbuzz/issues/3069 */
-      if (!lig_id)
+      यदि (!lig_id)
         _hb_glyph_info_set_lig_props_for_component (&c->buffer->cur(), i);
       c->output_glyph_for_component (substitute.arrayZ[i], klass);
     }
     c->buffer->skip_glyph ();
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      वर्ण buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
+      वर्ण *p = buf;
 
-      for (unsigned i = c->buffer->idx - count; i < c->buffer->idx; i++)
+      लागि (अचिन्हित i = c->buffer->idx - गन्ती; i < c->buffer->idx; i++)
       {
-	if (buf < p && sizeof(buf) - 1u > unsigned (p - buf))
+	यदि (buf < p && परिमाण(buf) - 1u > अचिन्हित (p - buf))
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", i);
-	p += strlen(p);
+	snprintf (p, परिमाण(buf) - (p - buf), "%u", i);
+	p += म_माप(p);
       }
 
       c->buffer->message (c->font,
@@ -133,32 +133,32 @@ struct Sequence
 			  buf);
     }
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  template <typename Iterator,
+  ढाँचा <typename Iterator,
             hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  तार्किक serialize (hb_serialize_context_t *c,
                   Iterator subst)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (एतत्);
     return_trace (substitute.serialize (c, subst));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) अचर
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (एतत्);
+    अचर hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    अचर hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset)) return_trace (false);
+    यदि (!intersects (&glyphset)) return_trace (असत्य);
 
-    auto it =
+    स्वतः it =
     + hb_iter (substitute)
     | hb_map (glyph_map)
     ;
 
-    auto *out = c->serializer->start_embed (*this);
+    स्वतः *out = c->serializer->start_embed (*एतत्);
     return_trace (out->serialize (c->serializer, it));
   }
 };

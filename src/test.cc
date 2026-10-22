@@ -24,33 +24,33 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#अन्तर्भाव "hb-ft.h"
 #endif
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+पूर्णाङ्क
+main (पूर्णाङ्क argc, वर्ण **argv)
 {
-  if (argc != 2) {
-    fprintf (stderr, "usage: %s font-file.ttf\n", argv[0]);
-    exit (1);
+  यदि (argc != 2) {
+    ख_लिखो (मानक_त्रुटि, "usage: %s font-file.ttf\n", argv[0]);
+    निकास (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
-  assert (blob);
-  printf ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
+  प्रतिज्ञा (blob);
+  म_लिखो ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
 
   /* Create the face */
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
   blob = nullptr;
-  unsigned int upem = hb_face_get_upem (face);
+  अचिन्हित पूर्णाङ्क upem = hb_face_get_upem (face);
 
   hb_font_t *font = hb_font_create (face);
   hb_font_set_scale (font, upem, upem);
@@ -66,16 +66,16 @@ main (int argc, char **argv)
 
   hb_shape (font, buffer, nullptr, 0);
 
-  unsigned int count = hb_buffer_get_length (buffer);
+  अचिन्हित पूर्णाङ्क गन्ती = hb_buffer_get_length (buffer);
   hb_glyph_info_t *infos = hb_buffer_get_glyph_infos (buffer, nullptr);
   hb_glyph_position_t *positions = hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  for (unsigned int i = 0; i < count; i++)
+  लागि (अचिन्हित पूर्णाङ्क i = 0; i < गन्ती; i++)
   {
     hb_glyph_info_t *info = &infos[i];
     hb_glyph_position_t *pos = &positions[i];
 
-    printf ("cluster %u	glyph 0x%x at	(%d,%d)+(%d,%d)\n",
+    म_लिखो ("cluster %u	glyph 0x%x at	(%d,%d)+(%d,%d)\n",
 	    info->cluster,
 	    info->codepoint,
 	    pos->x_offset,
@@ -89,7 +89,7 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  फर्काऊ 0;
 }
 
 
