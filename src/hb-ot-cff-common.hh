@@ -26,15 +26,15 @@
 #ifndef HB_OT_CFF_COMMON_HH
 #define HB_OT_CFF_COMMON_HH
 
-#include "hb-open-type.hh"
-#include "hb-bimap.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-cff-interp-dict-common.hh"
-#include "hb-subset-plan.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-bimap.hh"
+#ضمن "hb-ot-layout-common.hh"
+#ضمن "hb-cff-interp-dict-common.hh"
+#ضمن "hb-subset-plan.hh"
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+using نطاق OT;
 
 #define CFF_UNDEF_CODE  0xFFFFFFFF
 
@@ -43,59 +43,59 @@ using whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
 template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+ساكن مضمن ثابت Type& StructAtOffsetOrNull (ثابت فراغ *P, صحيح offset, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  إذا (!offset) أرجع Null (Type);
 
-  const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  ثابت حرف *p = (ثابت حرف *) P + offset;
+  إذا (!sc.check_point (p)) أرجع Null (Type);
 
-  const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  ثابت Type &obj = *reinterpret_cast<ثابت Type *> (p);
+  إذا (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) أرجع Null (Type);
 
-  return obj;
+  أرجع obj;
 }
 
 
-struct code_pair_t
+بنية code_pair_t
 {
   unsigned code;
   hb_codepoint_t glyph;
 };
 
 
-using str_buff_t = hb_vector_t<unsigned char>;
+using str_buff_t = hb_vector_t<unsigned حرف>;
 using str_buff_vec_t = hb_vector_t<str_buff_t>;
 using glyph_to_sid_map_t = hb_vector_t<code_pair_t>;
 
 /* Top Dict, Font Dict, Private Dict */
-struct Dict : UnsizedByteStr
+بنية Dict : UnsizedByteStr
 {
   template <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
-  bool serialize (hb_serialize_context_t *c,
-		  const DICTVAL &dictval,
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت DICTVAL &dictval,
 		  OP_SERIALIZER& opszr,
 		  Ts&&... ds)
   {
-    TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
-	return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    لكل (unsigned صحيح i = 0; i < dictval.get_عدد (); i++)
+      إذا (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+	return_trace (خطأ);
 
     return_trace (true);
   }
 
   template <typename T, typename V>
-  static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
+  ساكن منطقي serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    إذا (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      أرجع خطأ;
 
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     /* serialize the opcode */
-    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), خطأ);
+    إذا (unlikely (!p)) return_trace (خطأ);
+    إذا (Is_OpCode_ESC (op))
     {
       *p = OpCode_escape;
       op = Unmake_OpCode_ESC (op);
@@ -106,105 +106,105 @@ struct Dict : UnsizedByteStr
   }
 
   template <typename V>
-  static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  ساكن منطقي serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
+  { أرجع serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
 
   template <typename V>
-  static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  ساكن منطقي serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
+  { أرجع serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
 
-  template <typename T, int int_op>
-  static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
+  template <typename T, صحيح int_op>
+  ساكن منطقي serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
   {
     T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
+    إذا (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) أرجع خطأ;
     c->add_link (ofs, link, whence);
-    return true;
+    أرجع true;
   }
 
-  static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  ساكن منطقي serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
+  { أرجع serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
 
-  static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  ساكن منطقي serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
+  { أرجع serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
-struct FontDict : Dict {};
-struct PrivateDict : Dict {};
+بنية قمة_Dict : Dict {};
+بنية FontDict : Dict {};
+بنية PrivateDict : Dict {};
 
-struct table_info_t
+بنية table_info_t
 {
-  void init () { offset = size = 0; link = 0; }
+  فراغ init () { offset = size = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  unsigned صحيح    offset;
+  unsigned صحيح    size;
   objidx_t	  link;
 };
 
-template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+template <typename عدد_3>
+بنية FDArray : CFFIndex<عدد_3>
 {
   template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c,
+  منطقي serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  OP_SERIALIZER& opszr)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
     /* serialize INDEX data */
     hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    إذا (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
-    char *data_base = c->head;
+    حرف *data_base = c->head;
     + it
-    | hb_map ([&] (const hb_pair_t<const DICTVAL&, const INFO&> &_)
+    | hb_map ([&] (ثابت hb_pair_t<ثابت DICTVAL&, ثابت INFO&> &_)
     {
       FontDict *dict = c->start_embed<FontDict> ();
 		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+		أرجع c->head - (ثابت حرف*)dict;
 	      })
     | hb_sink (sizes)
     ;
     unsigned data_size = c->head - data_base;
-    c->pop_pack (false);
+    c->اسحب_pack (خطأ);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    إذا (unlikely (sizes.in_error ())) return_trace (خطأ);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
 
     /* serialize INDEX header */
-    return_trace (CFFIndex<COUNT>::serialize_header (c, hb_iter (sizes), data_size));
+    return_trace (CFFIndex<عدد_3>::serialize_header (c, hb_iter (sizes), data_size));
   }
 };
 
 /* FDSelect */
-struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+بنية FDSelect0 {
+  منطقي sanitize (hb_sanitize_context_t *c, unsigned صحيح fdcount,
+                 unsigned صحيح glyph_عدد = HB_CODEPOINT_INVALID) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
-      return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!(c->check_struct (هذا))))
+      return_trace (خطأ);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
-                                     c->get_num_glyphs () : glyph_count)))
-      return_trace (false);
+    إذا (unlikely (!c->check_array (fds, glyph_عدد == HB_CODEPOINT_INVALID ?
+                                     c->get_رقم_glyphs () : glyph_عدد)))
+      return_trace (خطأ);
 
     return_trace (true);
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  unsigned get_fd (hb_codepoint_t glyph) ثابت
+  { أرجع fds[glyph]; }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ثابت
+  { أرجع {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_size (unsigned صحيح رقم_glyphs) ثابت
+  { أرجع hb_unsigned_mul_saturate (HBUINT8::static_size, رقم_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
@@ -212,82 +212,82 @@ struct FDSelect0 {
 };
 
 template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4_Range
+بنية FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ * /*nullptr*/, unsigned صحيح fdcount) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  first < c->get_num_glyphs () && (fd < fdcount));
+		  first < c->get_رقم_glyphs () && (fd < fdcount));
   }
 
   GID_TYPE    first;
   FD_TYPE     fd;
-  public:
+  عام:
   DEFINE_SIZE_STATIC (GID_TYPE::static_size + FD_TYPE::static_size);
 };
 
 template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4
+بنية FDSelect3_4
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  size_t get_size () ثابت
+  { أرجع hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  منطقي sanitize (hb_sanitize_context_t *c, unsigned صحيح fdcount,
+                 unsigned صحيح min_glyphs = HB_CODEPOINT_INVALID) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!(c->check_struct (هذا) &&
 		    ranges.sanitize (c, nullptr, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
 		    ranges[0].first == 0)))
-      return_trace (false);
+      return_trace (خطأ);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
-	return_trace (false);
+    لكل (unsigned صحيح i = 1; i < nRanges (); i++)
+      إذا (unlikely (ranges[i - 1].first >= ranges[i].first))
+	return_trace (خطأ);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    إذا (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
                    sentinel() > ranges[nRanges () - 1].first &&
-                   sentinel() <= c->get_num_glyphs () &&
+                   sentinel() <= c->get_رقم_glyphs () &&
                    sentinel() >= (min_glyphs == HB_CODEPOINT_INVALID ?
-                                  c->get_num_glyphs () : min_glyphs))))
-      return_trace (false);
+                                  c->get_رقم_glyphs () : min_glyphs))))
+      return_trace (خطأ);
 
     return_trace (true);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  ساكن صحيح _cmp_range (ثابت فراغ *مفتاح_3, ثابت فراغ *_item)
   {
-    hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
+    hb_codepoint_t glyph = * (hb_codepoint_t *) مفتاح_3;
     FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    إذا (glyph < range[0].first) أرجع -1;
+    إذا (glyph < range[1].first) أرجع 0;
+    أرجع +1;
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  unsigned get_fd (hb_codepoint_t glyph) ثابت
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, حجم (ranges[0]), _cmp_range);
+    أرجع range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ثابت
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
+    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, حجم (ranges[0]), _cmp_range);
     unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
     hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    أرجع {fd, end};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { أرجع ranges.len; }
+  GID_TYPE         nRanges () ثابت { أرجع ranges.len; }
+  GID_TYPE       &sentinel ()       { أرجع StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  ثابت GID_TYPE &sentinel () ثابت { أرجع StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
   ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
@@ -295,84 +295,84 @@ struct FDSelect3_4
   DEFINE_SIZE_ARRAY (GID_TYPE::static_size, ranges);
 };
 
-typedef FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
-typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
+تعريفنوع FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
+تعريفنوع FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
-struct FDSelect
+بنية FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  منطقي serialize (hb_serialize_context_t *c, ثابت FDSelect &src, unsigned صحيح رقم_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
-    FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    unsigned صحيح size = src.get_size (رقم_glyphs);
+    FDSelect *dest = c->allocate_size<FDSelect> (size, خطأ);
+    إذا (unlikely (!dest)) return_trace (خطأ);
     hb_memcpy (dest, &src, size);
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned صحيح رقم_glyphs) ثابت
   {
-    switch (format)
+    بدل (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    حالة 0: hb_barrier (); أرجع hb_unsigned_add_saturate (format.static_size, u.format0.get_size (رقم_glyphs));
+    حالة 3: hb_barrier (); أرجع hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
+    افتراضي:أرجع 0;
     }
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  unsigned get_fd (hb_codepoint_t glyph) ثابت
   {
-    if (this == &Null (FDSelect)) return 0;
+    إذا (هذا == &Null (FDSelect)) أرجع 0;
 
-    switch (format)
+    بدل (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    حالة 0: hb_barrier (); أرجع u.format0.get_fd (glyph);
+    حالة 3: hb_barrier (); أرجع u.format3.get_fd (glyph);
+    افتراضي:أرجع 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ثابت
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    إذا (هذا == &Null (FDSelect)) أرجع {0, 1};
 
-    switch (format)
+    بدل (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    حالة 0: hb_barrier (); أرجع u.format0.get_fd_range (glyph);
+    حالة 3: hb_barrier (); أرجع u.format3.get_fd_range (glyph);
+    افتراضي:أرجع {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  منطقي sanitize (hb_sanitize_context_t *c, unsigned صحيح fdcount) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!c->check_struct (هذا)))
+      return_trace (خطأ);
     hb_barrier ();
 
-    switch (format)
+    بدل (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
-    default:return_trace (false);
+    حالة 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
+    حالة 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
+    افتراضي:return_trace (خطأ);
     }
   }
 
   HBUINT8	format;
-  union {
+  اتحاد {
   FDSelect0	format0;
   FDSelect3	format3;
   } u;
-  public:
+  عام:
   DEFINE_SIZE_MIN (1);
 };
 
-template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+template <typename عدد_3>
+بنية Subrs : CFFIndex<عدد_3>
 {
-  typedef COUNT count_type;
-  typedef CFFIndex<COUNT> SUPER;
+  تعريفنوع عدد_3 عدد_type;
+  تعريفنوع CFFIndex<عدد_3> SUPER;
 };
 
 } /* namespace CFF */
